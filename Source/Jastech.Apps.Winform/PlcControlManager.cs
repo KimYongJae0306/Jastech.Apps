@@ -1129,10 +1129,18 @@ namespace Jastech.Apps.Winform
 
         public string ConvertDoubleWordStringFormat_mm(PlcCommonMap plcCommonMap)
         {
-            int inputValue = Convert.ToInt32(GetValue(plcCommonMap));
-            string outputValue = (inputValue / 10000.0).ToString("F4");
+			// 영진 숙제
+            try
+            {
+                int inputValue = Convert.ToInt32(GetValue(plcCommonMap));
+                string outputValue = (inputValue / 10000.0).ToString("F4");
 
-            return outputValue;
+                return outputValue;
+            }
+            catch (Exception)
+            {
+                return null;
+            }
         }
 
         public double ConvertDoubleWordDoubleFormat_mm(PlcCommonMap plcCommonMap)
