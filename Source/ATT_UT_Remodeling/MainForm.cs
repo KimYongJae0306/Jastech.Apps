@@ -468,7 +468,8 @@ namespace ATT_UT_Remodeling
             LoginForm form = new LoginForm();
             form.CurrentUser = UserManager.Instance().CurrentUser;
             form.UserHandler = UserManager.Instance().UserHandler;
-            form.StopProgramEvent += StopProgramEventFunction;
+            form.StopProgramRequest += SystemManager.Instance().StopAutoMode;
+            form.StopProgram += StopProgramEventFunction;
             form.ShowDialog();
 
             UserManager.Instance().SetCurrentUser(form.CurrentUser.Id);

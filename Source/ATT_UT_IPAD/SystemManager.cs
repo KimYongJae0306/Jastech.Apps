@@ -318,18 +318,26 @@ namespace ATT_UT_IPAD
                 form.Message = "Current Model is null.";
                 return;
             }
+            StopAutoMode();
+        }
 
+        public bool StopAutoMode()
+        {
             if (PlcControlManager.Instance().MachineStatus != MachineStatus.STOP)
             {
                 MessageYesNoForm form = new MessageYesNoForm();
                 form.Message = "Do you want to Stop Auto Mode?";
 
-                if (form.ShowDialog() == DialogResult.Yes)
+                bool isConfirmStop = form.ShowDialog() == DialogResult.Yes;
+                if (isConfirmStop)
                 {
                     ACSBufferManager.Instance().SetStopMode();
                     SetStopMode();
                 }
+                return isConfirmStop;
             }
+            else
+                return true;
         }
 
         public void SetRunMode()

@@ -349,7 +349,7 @@ namespace ATT
             LoginForm form = new LoginForm();
             form.CurrentUser = UserManager.Instance().CurrentUser;
             form.UserHandler = UserManager.Instance().UserHandler;
-            form.StopProgramEvent += StopProgramEventFunction;
+            form.StopProgramRequest += StopProgramEventFunction;
             form.ShowDialog();
 
             UserManager.Instance().SetCurrentUser(form.CurrentUser.Id);
