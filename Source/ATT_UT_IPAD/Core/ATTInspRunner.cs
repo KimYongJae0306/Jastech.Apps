@@ -2266,7 +2266,7 @@ namespace ATT_UT_IPAD.Core
             PointF leftMarkOriginPoint = new PointF(0, 0);
             PointF rightMarkOriginPoint = new PointF(0, 0);
 
-            if (tabInspResult.MarkResult.PanelMark.Judgement != Judgement.FAIL && tabInspResult.MarkResult.FpcMark.Judgement != Judgement.FAIL)
+            if (tabInspResult.MarkResult.PanelMark.Judgement == Judgement.OK && tabInspResult.MarkResult.FpcMark.Judgement == Judgement.OK)
             {
                 if (material == Material.Panel)
                 {
