@@ -1602,7 +1602,9 @@ namespace ATT_UT_IPAD.Core
             string lyData = GetResultAlignResultValue(tabInspResult.AlignResult.LeftY, 4);
             string rxData = GetResultAlignResultValue(tabInspResult.AlignResult.RightX, 4);
             string ryData = GetResultAlignResultValue(tabInspResult.AlignResult.RightY, 4);
-            string cxData = $"{Convert.ToDouble(lxData) + Convert.ToDouble(rxData)}";
+            string cxData = "-";
+            if (lxData != "-" && rxData != "-")
+                cxData = $"{Convert.ToDouble(lxData) + Convert.ToDouble(rxData)}";
 
             var leftAlignShapeList = tabInspResult.GetLeftAlignShapeList();
             if (leftAlignShapeList.Count() > 0)
