@@ -32,10 +32,13 @@
             this.pnlTeachingPage = new System.Windows.Forms.Panel();
             this.pnlTeachingItem = new System.Windows.Forms.Panel();
             this.tlpTeachingItem = new System.Windows.Forms.TableLayoutPanel();
-            this.label1 = new System.Windows.Forms.Label();
+            this.tlpTeaching = new System.Windows.Forms.TableLayoutPanel();
+            this.pnlDisplay = new System.Windows.Forms.Panel();
+            this.pnlTeaching = new System.Windows.Forms.Panel();
             this.tlpTeachingPage.SuspendLayout();
             this.pnlTeachingPage.SuspendLayout();
             this.pnlTeachingItem.SuspendLayout();
+            this.tlpTeaching.SuspendLayout();
             this.SuspendLayout();
             // 
             // tlpTeachingPage
@@ -51,27 +54,27 @@
             this.tlpTeachingPage.Name = "tlpTeachingPage";
             this.tlpTeachingPage.RowCount = 1;
             this.tlpTeachingPage.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tlpTeachingPage.Size = new System.Drawing.Size(600, 600);
+            this.tlpTeachingPage.Size = new System.Drawing.Size(900, 900);
             this.tlpTeachingPage.TabIndex = 0;
             // 
             // pnlTeachingPage
             // 
-            this.pnlTeachingPage.Controls.Add(this.label1);
+            this.pnlTeachingPage.Controls.Add(this.tlpTeaching);
             this.pnlTeachingPage.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pnlTeachingPage.Location = new System.Drawing.Point(0, 0);
             this.pnlTeachingPage.Margin = new System.Windows.Forms.Padding(0);
             this.pnlTeachingPage.Name = "pnlTeachingPage";
-            this.pnlTeachingPage.Size = new System.Drawing.Size(440, 600);
+            this.pnlTeachingPage.Size = new System.Drawing.Size(740, 900);
             this.pnlTeachingPage.TabIndex = 0;
             // 
             // pnlTeachingItem
             // 
             this.pnlTeachingItem.Controls.Add(this.tlpTeachingItem);
             this.pnlTeachingItem.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pnlTeachingItem.Location = new System.Drawing.Point(440, 0);
+            this.pnlTeachingItem.Location = new System.Drawing.Point(740, 0);
             this.pnlTeachingItem.Margin = new System.Windows.Forms.Padding(0);
             this.pnlTeachingItem.Name = "pnlTeachingItem";
-            this.pnlTeachingItem.Size = new System.Drawing.Size(160, 600);
+            this.pnlTeachingItem.Size = new System.Drawing.Size(160, 900);
             this.pnlTeachingItem.TabIndex = 1;
             // 
             // tlpTeachingItem
@@ -89,17 +92,42 @@
             this.tlpTeachingItem.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 100F));
             this.tlpTeachingItem.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tlpTeachingItem.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 100F));
-            this.tlpTeachingItem.Size = new System.Drawing.Size(160, 600);
+            this.tlpTeachingItem.Size = new System.Drawing.Size(160, 900);
             this.tlpTeachingItem.TabIndex = 0;
             // 
-            // label1
+            // tlpTeaching
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(174, 290);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(106, 20);
-            this.label1.TabIndex = 5;
-            this.label1.Text = "TeachingPage";
+            this.tlpTeaching.ColumnCount = 2;
+            this.tlpTeaching.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tlpTeaching.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tlpTeaching.Controls.Add(this.pnlDisplay, 0, 0);
+            this.tlpTeaching.Controls.Add(this.pnlTeaching, 1, 0);
+            this.tlpTeaching.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tlpTeaching.Location = new System.Drawing.Point(0, 0);
+            this.tlpTeaching.Margin = new System.Windows.Forms.Padding(0);
+            this.tlpTeaching.Name = "tlpTeaching";
+            this.tlpTeaching.RowCount = 1;
+            this.tlpTeaching.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tlpTeaching.Size = new System.Drawing.Size(740, 900);
+            this.tlpTeaching.TabIndex = 0;
+            // 
+            // pnlDisplay
+            // 
+            this.pnlDisplay.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pnlDisplay.Location = new System.Drawing.Point(0, 0);
+            this.pnlDisplay.Margin = new System.Windows.Forms.Padding(0);
+            this.pnlDisplay.Name = "pnlDisplay";
+            this.pnlDisplay.Size = new System.Drawing.Size(370, 900);
+            this.pnlDisplay.TabIndex = 0;
+            // 
+            // pnlTeaching
+            // 
+            this.pnlTeaching.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pnlTeaching.Location = new System.Drawing.Point(370, 0);
+            this.pnlTeaching.Margin = new System.Windows.Forms.Padding(0);
+            this.pnlTeaching.Name = "pnlTeaching";
+            this.pnlTeaching.Size = new System.Drawing.Size(370, 900);
+            this.pnlTeaching.TabIndex = 0;
             // 
             // TeachingPage
             // 
@@ -109,11 +137,12 @@
             this.Controls.Add(this.tlpTeachingPage);
             this.Font = new System.Drawing.Font("맑은 고딕", 11.25F, System.Drawing.FontStyle.Bold);
             this.Name = "TeachingPage";
-            this.Size = new System.Drawing.Size(600, 600);
+            this.Size = new System.Drawing.Size(900, 900);
+            this.Load += new System.EventHandler(this.TeachingPage_Load);
             this.tlpTeachingPage.ResumeLayout(false);
             this.pnlTeachingPage.ResumeLayout(false);
-            this.pnlTeachingPage.PerformLayout();
             this.pnlTeachingItem.ResumeLayout(false);
+            this.tlpTeaching.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -124,6 +153,8 @@
         private System.Windows.Forms.Panel pnlTeachingPage;
         private System.Windows.Forms.Panel pnlTeachingItem;
         private System.Windows.Forms.TableLayoutPanel tlpTeachingItem;
-        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.TableLayoutPanel tlpTeaching;
+        private System.Windows.Forms.Panel pnlDisplay;
+        private System.Windows.Forms.Panel pnlTeaching;
     }
 }
