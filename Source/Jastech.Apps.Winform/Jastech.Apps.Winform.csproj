@@ -152,6 +152,10 @@
       <Project>{6244FA20-EDA3-45D4-85C7-50D901C5D376}</Project>
       <Name>Jastech.Framework.Config</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\..\Jastech.Core\src\Jastech.Framework.Structure\Jastech.Framework.Structure.csproj">
+      <Project>{DCFF7B48-8DF8-4ED9-9F0F-F11C2CCB7547}</Project>
+      <Name>Jastech.Framework.Structure</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\..\Jastech.Core\src\Jastech.Framework.Winform.VisionPro\Jastech.Framework.Winform.VisionPro.csproj">
       <Project>{8558B173-0E81-4C55-82B8-02417220E02C}</Project>
       <Name>Jastech.Framework.Winform.VisionPro</Name>

@@ -9,6 +9,8 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using Jastech.Framework.Winform.Controls;
 using Jastech.Framework.Config;
+using Jastech.Apps.Winform.Settings;
+using Jastech.Framework.Structure;
 
 namespace Jastech.Apps.Winform.UI.Pages
 {
@@ -16,7 +18,6 @@ namespace Jastech.Apps.Winform.UI.Pages
     {
         #region 속성
         private ModelControl ModelControl { get; set; } = new ModelControl();
-
         #endregion
 
         public ModelPage()
@@ -31,12 +32,26 @@ namespace Jastech.Apps.Winform.UI.Pages
 
         private void AddControl()
         {
+            ModelControl.ModelPath = AppSettings.Instance().Path.Model;
+            ModelControl.ApplyModelDelegate += new ModelControl.ApplyModelHandler(ApplyModel);
+
             ModelControl.Dock = DockStyle.Fill;
             pnlModelPage.Controls.Add(ModelControl);
+        }
 
-            // TEST용
-            ConfigSet tt = new ConfigSet();
-            ModelControl.ModelPath = tt.Path.Model;
+        public delegate void InvokeApplyModelDelegate(InspModel model);
+        public void ApplyModel(InspModel model)
+        {
+            try
+            {
+                int gg = 0;
+                //AppSettings.Instance
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
         }
     }
 }
