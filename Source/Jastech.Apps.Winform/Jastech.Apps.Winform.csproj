@@ -60,6 +60,30 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UI\Pages\AutoPage.cs" />
+    <Compile Include="UI\Pages\AutoPage.Designer.cs" />
+    <Compile Include="UI\Pages\ConfigPage.cs" />
+    <Compile Include="UI\Pages\ConfigPage.Designer.cs" />
+    <Compile Include="UI\Pages\InspPage.cs" />
+    <Compile Include="UI\Pages\InspPage.Designer.cs" />
+    <Compile Include="UI\Pages\LogPage.cs" />
+    <Compile Include="UI\Pages\LogPage.Designer.cs" />
+    <Compile Include="UI\Pages\RecipePage.cs" />
+    <Compile Include="UI\Pages\RecipePage.Designer.cs" />
+    <Compile Include="UI\Pages\SettingPage.cs" />
+    <Compile Include="UI\Pages\SettingPage.Designer.cs" />
+    <Compile Include="UI\Pages\TeachingPage.cs" />
+    <Compile Include="UI\Pages\TeachingPage.Designer.cs" />
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <EmbeddedResource Include="UI\Pages\AutoPage.resx" />
+    <EmbeddedResource Include="UI\Pages\ConfigPage.resx" />
+    <EmbeddedResource Include="UI\Pages\InspPage.resx" />
+    <EmbeddedResource Include="UI\Pages\LogPage.resx" />
+    <EmbeddedResource Include="UI\Pages\RecipePage.resx" />
+    <EmbeddedResource Include="UI\Pages\SettingPage.resx" />
+    <EmbeddedResource Include="UI\Pages\TeachingPage.resx" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
