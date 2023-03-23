@@ -19,6 +19,7 @@ namespace ATT
         private RecipePage RecipePageControl { get; set; } = new RecipePage();
         private LogPage LogPageControl { get; set; } = new LogPage();
         private ConfigPage ConfigPageControl { get; set; } = new ConfigPage();
+
         private List<UserControl> PageControlList = null;
         private List<Button> PageButtonList = null;
         #endregion
@@ -37,22 +38,20 @@ namespace ATT
 
         private void AddControls()
         {
+            // Page Control List
             PageControlList = new List<UserControl>();
-            PageButtonList = new List<Button>();
-
             PageControlList.Add(AutoPageControl);
-            PageButtonList.Add(btnAutoPage);
-
             PageControlList.Add(TeachingPageControl);
-            PageButtonList.Add(btnTeachPage);
-
             PageControlList.Add(RecipePageControl);
-            PageButtonList.Add(btnRecipePage);
-
             PageControlList.Add(LogPageControl);
-            PageButtonList.Add(btnLogPage);
-
             PageControlList.Add(ConfigPageControl);
+
+            // Button List
+            PageButtonList = new List<Button>();
+            PageButtonList.Add(btnAutoPage);
+            PageButtonList.Add(btnTeachPage);
+            PageButtonList.Add(btnRecipePage);
+            PageButtonList.Add(btnLogPage);
             PageButtonList.Add(btnConfigPage);
         }
 

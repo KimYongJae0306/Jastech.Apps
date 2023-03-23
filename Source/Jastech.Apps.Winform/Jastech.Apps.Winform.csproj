@@ -128,5 +128,11 @@
       <DependentUpon>TeachingPage.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Jastech.Core\src\Jastech.Framework.Winform.VisionPro\Jastech.Framework.Winform.VisionPro.csproj">
+      <Project>{8558B173-0E81-4C55-82B8-02417220E02C}</Project>
+      <Name>Jastech.Framework.Winform.VisionPro</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

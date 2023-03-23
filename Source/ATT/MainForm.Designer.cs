@@ -47,10 +47,10 @@
             this.tlpModel = new System.Windows.Forms.TableLayoutPanel();
             this.lblModel = new System.Windows.Forms.Label();
             this.lblAppliedModel = new System.Windows.Forms.Label();
-            this.btnUser = new System.Windows.Forms.Button();
             this.lblMachineStatus = new System.Windows.Forms.Label();
             this.pnlPage = new System.Windows.Forms.Panel();
             this.tmrMainForm = new System.Windows.Forms.Timer(this.components);
+            this.lblUser = new System.Windows.Forms.Label();
             this.tlpMainForm.SuspendLayout();
             this.pnlFunctionButtons.SuspendLayout();
             this.tlpFunctionButtons.SuspendLayout();
@@ -209,8 +209,8 @@
             this.tlpMachineStatus.Controls.Add(this.picLogo, 0, 0);
             this.tlpMachineStatus.Controls.Add(this.lblSystemName, 1, 0);
             this.tlpMachineStatus.Controls.Add(this.tlpModel, 2, 0);
-            this.tlpMachineStatus.Controls.Add(this.btnUser, 5, 0);
             this.tlpMachineStatus.Controls.Add(this.lblMachineStatus, 4, 0);
+            this.tlpMachineStatus.Controls.Add(this.lblUser, 5, 0);
             this.tlpMachineStatus.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tlpMachineStatus.Location = new System.Drawing.Point(0, 0);
             this.tlpMachineStatus.Margin = new System.Windows.Forms.Padding(0);
@@ -312,19 +312,6 @@
             this.lblAppliedModel.Text = "Applied Model";
             this.lblAppliedModel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // btnUser
-            // 
-            this.btnUser.BackColor = System.Drawing.Color.White;
-            this.btnUser.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.btnUser.Font = new System.Drawing.Font("맑은 고딕", 20F, System.Drawing.FontStyle.Bold);
-            this.btnUser.ForeColor = System.Drawing.Color.Black;
-            this.btnUser.Location = new System.Drawing.Point(1107, 3);
-            this.btnUser.Name = "btnUser";
-            this.btnUser.Size = new System.Drawing.Size(154, 114);
-            this.btnUser.TabIndex = 21;
-            this.btnUser.Text = "User";
-            this.btnUser.UseVisualStyleBackColor = false;
-            // 
             // lblMachineStatus
             // 
             this.lblMachineStatus.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -348,6 +335,17 @@
             // tmrMainForm
             // 
             this.tmrMainForm.Tick += new System.EventHandler(this.tmrMainForm_Tick);
+            // 
+            // lblUser
+            // 
+            this.lblUser.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblUser.Location = new System.Drawing.Point(1107, 3);
+            this.lblUser.Margin = new System.Windows.Forms.Padding(3);
+            this.lblUser.Name = "lblUser";
+            this.lblUser.Size = new System.Drawing.Size(154, 114);
+            this.lblUser.TabIndex = 22;
+            this.lblUser.Text = "User";
+            this.lblUser.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // MainForm
             // 
@@ -394,11 +392,11 @@
         private System.Windows.Forms.TableLayoutPanel tlpModel;
         private System.Windows.Forms.Label lblModel;
         private System.Windows.Forms.Label lblAppliedModel;
-        private System.Windows.Forms.Button btnUser;
         private System.Windows.Forms.Label lblMachineStatus;
         private System.Windows.Forms.Button btnAutoPage;
         private System.Windows.Forms.Panel pnlPage;
         private System.Windows.Forms.Timer tmrMainForm;
+        private System.Windows.Forms.Label lblUser;
     }
 }
 
