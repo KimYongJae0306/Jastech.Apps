@@ -86,6 +86,12 @@
     <Compile Include="UI\Pages\LogPage.designer.cs">
       <DependentUpon>LogPage.cs</DependentUpon>
     </Compile>
+    <Compile Include="UI\Pages\ModelPage.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UI\Pages\ModelPage.Designer.cs">
+      <DependentUpon>ModelPage.cs</DependentUpon>
+    </Compile>
     <Compile Include="UI\Pages\RecipePage.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -118,6 +124,9 @@
     <EmbeddedResource Include="UI\Pages\LogPage.resx">
       <DependentUpon>LogPage.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="UI\Pages\ModelPage.resx">
+      <DependentUpon>ModelPage.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="UI\Pages\RecipePage.resx">
       <DependentUpon>RecipePage.cs</DependentUpon>
     </EmbeddedResource>
@@ -129,9 +138,17 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\Jastech.Core\src\Jastech.Framework.Config\Jastech.Framework.Config.csproj">
+      <Project>{6244FA20-EDA3-45D4-85C7-50D901C5D376}</Project>
+      <Name>Jastech.Framework.Config</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\..\Jastech.Core\src\Jastech.Framework.Winform.VisionPro\Jastech.Framework.Winform.VisionPro.csproj">
       <Project>{8558B173-0E81-4C55-82B8-02417220E02C}</Project>
       <Name>Jastech.Framework.Winform.VisionPro</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Jastech.Core\src\Jastech.Framework.Winform\Jastech.Framework.Winform.csproj">
+      <Project>{D46C7263-535A-4BF9-AD14-5183EDE0A984}</Project>
+      <Name>Jastech.Framework.Winform</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

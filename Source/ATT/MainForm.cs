@@ -1,4 +1,5 @@
 ﻿using Jastech.Apps.Winform.UI.Pages;
+using Jastech.Framework.Config;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -14,8 +15,10 @@ namespace ATT
     public partial class MainForm : Form
     {
         #region 속성
+        // Page Control
         private AutoPage AutoPageControl { get; set; } = new AutoPage();
         private TeachingPage TeachingPageControl { get; set; } = new TeachingPage();
+        private ModelPage ModelPageControl { get; set; } = new ModelPage();
         private RecipePage RecipePageControl { get; set; } = new RecipePage();
         private LogPage LogPageControl { get; set; } = new LogPage();
         private ConfigPage ConfigPageControl { get; set; } = new ConfigPage();
@@ -42,6 +45,7 @@ namespace ATT
             PageControlList = new List<UserControl>();
             PageControlList.Add(AutoPageControl);
             PageControlList.Add(TeachingPageControl);
+            PageControlList.Add(ModelPageControl);
             PageControlList.Add(RecipePageControl);
             PageControlList.Add(LogPageControl);
             PageControlList.Add(ConfigPageControl);
@@ -50,6 +54,7 @@ namespace ATT
             PageButtonList = new List<Button>();
             PageButtonList.Add(btnAutoPage);
             PageButtonList.Add(btnTeachPage);
+            PageButtonList.Add(btnModelPage);
             PageButtonList.Add(btnRecipePage);
             PageButtonList.Add(btnLogPage);
             PageButtonList.Add(btnConfigPage);
@@ -65,6 +70,12 @@ namespace ATT
         {
             SetSelectButton(sender);
             SetSelectPage(selectedControl: TeachingPageControl);
+        }
+
+        private void btnModelPage_Click(object sender, EventArgs e)
+        {
+            SetSelectButton(sender);
+            SetSelectPage(selectedControl: ModelPageControl);
         }
 
         private void btnRecipePage_Click(object sender, EventArgs e)
@@ -117,5 +128,7 @@ namespace ATT
             lblDate.Text = DateTime.Now.ToShortDateString();
             lblTime.Text = DateTime.Now.ToLongTimeString();
         }
+
+        
     }
 }

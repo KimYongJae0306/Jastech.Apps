@@ -5,7 +5,7 @@
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{7B4F950D-89CE-41DC-9F19-DFA232C4867D}</ProjectGuid>
-    <OutputType>WinExe</OutputType>
+    <OutputType>Exe</OutputType>
     <RootNamespace>ATT</RootNamespace>
     <AssemblyName>ATT</AssemblyName>
     <TargetFrameworkVersion>v4.8.1</TargetFrameworkVersion>
@@ -51,6 +51,9 @@
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
     <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -104,6 +107,10 @@
     <Folder Include="UI\Pages\" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\Jastech.Core\src\Jastech.Framework.Config\Jastech.Framework.Config.csproj">
+      <Project>{6244FA20-EDA3-45D4-85C7-50D901C5D376}</Project>
+      <Name>Jastech.Framework.Config</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\..\Jastech.Core\src\Jastech.Framework.Winform.VisionPro\Jastech.Framework.Winform.VisionPro.csproj">
       <Project>{8558B173-0E81-4C55-82B8-02417220E02C}</Project>
       <Name>Jastech.Framework.Winform.VisionPro</Name>

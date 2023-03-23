@@ -42,7 +42,6 @@
             this.tlpDateTime = new System.Windows.Forms.TableLayoutPanel();
             this.lblDate = new System.Windows.Forms.Label();
             this.lblTime = new System.Windows.Forms.Label();
-            this.picLogo = new System.Windows.Forms.PictureBox();
             this.lblSystemName = new System.Windows.Forms.Label();
             this.tlpModel = new System.Windows.Forms.TableLayoutPanel();
             this.lblModel = new System.Windows.Forms.Label();
@@ -51,14 +50,16 @@
             this.pnlPage = new System.Windows.Forms.Panel();
             this.tmrMainForm = new System.Windows.Forms.Timer(this.components);
             this.lblUser = new System.Windows.Forms.Label();
+            this.picLogo = new System.Windows.Forms.PictureBox();
+            this.btnModelPage = new System.Windows.Forms.Button();
             this.tlpMainForm.SuspendLayout();
             this.pnlFunctionButtons.SuspendLayout();
             this.tlpFunctionButtons.SuspendLayout();
             this.pnlMachineStatus.SuspendLayout();
             this.tlpMachineStatus.SuspendLayout();
             this.tlpDateTime.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.picLogo)).BeginInit();
             this.tlpModel.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.picLogo)).BeginInit();
             this.SuspendLayout();
             // 
             // tlpMainForm
@@ -102,11 +103,12 @@
             this.tlpFunctionButtons.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 160F));
             this.tlpFunctionButtons.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 160F));
             this.tlpFunctionButtons.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tlpFunctionButtons.Controls.Add(this.btnConfigPage, 4, 0);
             this.tlpFunctionButtons.Controls.Add(this.btnAutoPage, 0, 0);
             this.tlpFunctionButtons.Controls.Add(this.btnTeachPage, 1, 0);
-            this.tlpFunctionButtons.Controls.Add(this.btnRecipePage, 2, 0);
-            this.tlpFunctionButtons.Controls.Add(this.btnLogPage, 3, 0);
+            this.tlpFunctionButtons.Controls.Add(this.btnConfigPage, 5, 0);
+            this.tlpFunctionButtons.Controls.Add(this.btnLogPage, 4, 0);
+            this.tlpFunctionButtons.Controls.Add(this.btnRecipePage, 3, 0);
+            this.tlpFunctionButtons.Controls.Add(this.btnModelPage, 2, 0);
             this.tlpFunctionButtons.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tlpFunctionButtons.Location = new System.Drawing.Point(0, 0);
             this.tlpFunctionButtons.Margin = new System.Windows.Forms.Padding(0);
@@ -122,7 +124,7 @@
             this.btnConfigPage.Dock = System.Windows.Forms.DockStyle.Fill;
             this.btnConfigPage.Font = new System.Drawing.Font("맑은 고딕", 20F, System.Drawing.FontStyle.Bold);
             this.btnConfigPage.ForeColor = System.Drawing.Color.Black;
-            this.btnConfigPage.Location = new System.Drawing.Point(643, 3);
+            this.btnConfigPage.Location = new System.Drawing.Point(803, 3);
             this.btnConfigPage.Name = "btnConfigPage";
             this.btnConfigPage.Size = new System.Drawing.Size(154, 114);
             this.btnConfigPage.TabIndex = 19;
@@ -164,7 +166,7 @@
             this.btnRecipePage.Dock = System.Windows.Forms.DockStyle.Fill;
             this.btnRecipePage.Font = new System.Drawing.Font("맑은 고딕", 20F, System.Drawing.FontStyle.Bold);
             this.btnRecipePage.ForeColor = System.Drawing.Color.Black;
-            this.btnRecipePage.Location = new System.Drawing.Point(323, 3);
+            this.btnRecipePage.Location = new System.Drawing.Point(483, 3);
             this.btnRecipePage.Name = "btnRecipePage";
             this.btnRecipePage.Size = new System.Drawing.Size(154, 114);
             this.btnRecipePage.TabIndex = 17;
@@ -178,7 +180,7 @@
             this.btnLogPage.Dock = System.Windows.Forms.DockStyle.Fill;
             this.btnLogPage.Font = new System.Drawing.Font("맑은 고딕", 20F, System.Drawing.FontStyle.Bold);
             this.btnLogPage.ForeColor = System.Drawing.Color.Black;
-            this.btnLogPage.Location = new System.Drawing.Point(483, 3);
+            this.btnLogPage.Location = new System.Drawing.Point(643, 3);
             this.btnLogPage.Name = "btnLogPage";
             this.btnLogPage.Size = new System.Drawing.Size(154, 114);
             this.btnLogPage.TabIndex = 20;
@@ -238,6 +240,7 @@
             // 
             // lblDate
             // 
+            this.lblDate.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.lblDate.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lblDate.Location = new System.Drawing.Point(3, 0);
             this.lblDate.Name = "lblDate";
@@ -248,6 +251,7 @@
             // 
             // lblTime
             // 
+            this.lblTime.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.lblTime.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lblTime.Location = new System.Drawing.Point(3, 57);
             this.lblTime.Name = "lblTime";
@@ -256,17 +260,9 @@
             this.lblTime.Text = "Time";
             this.lblTime.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // picLogo
-            // 
-            this.picLogo.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.picLogo.Location = new System.Drawing.Point(3, 3);
-            this.picLogo.Name = "picLogo";
-            this.picLogo.Size = new System.Drawing.Size(194, 114);
-            this.picLogo.TabIndex = 0;
-            this.picLogo.TabStop = false;
-            // 
             // lblSystemName
             // 
+            this.lblSystemName.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.lblSystemName.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lblSystemName.Location = new System.Drawing.Point(203, 3);
             this.lblSystemName.Margin = new System.Windows.Forms.Padding(3);
@@ -294,6 +290,7 @@
             // 
             // lblModel
             // 
+            this.lblModel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.lblModel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lblModel.Location = new System.Drawing.Point(3, 0);
             this.lblModel.Name = "lblModel";
@@ -304,6 +301,7 @@
             // 
             // lblAppliedModel
             // 
+            this.lblAppliedModel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.lblAppliedModel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lblAppliedModel.Location = new System.Drawing.Point(3, 57);
             this.lblAppliedModel.Name = "lblAppliedModel";
@@ -314,6 +312,7 @@
             // 
             // lblMachineStatus
             // 
+            this.lblMachineStatus.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.lblMachineStatus.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lblMachineStatus.Location = new System.Drawing.Point(947, 3);
             this.lblMachineStatus.Margin = new System.Windows.Forms.Padding(3);
@@ -338,6 +337,7 @@
             // 
             // lblUser
             // 
+            this.lblUser.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.lblUser.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lblUser.Location = new System.Drawing.Point(1107, 3);
             this.lblUser.Margin = new System.Windows.Forms.Padding(3);
@@ -346,6 +346,30 @@
             this.lblUser.TabIndex = 22;
             this.lblUser.Text = "User";
             this.lblUser.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // picLogo
+            // 
+            this.picLogo.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.picLogo.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.picLogo.Location = new System.Drawing.Point(3, 3);
+            this.picLogo.Name = "picLogo";
+            this.picLogo.Size = new System.Drawing.Size(194, 114);
+            this.picLogo.TabIndex = 0;
+            this.picLogo.TabStop = false;
+            // 
+            // btnModelPage
+            // 
+            this.btnModelPage.BackColor = System.Drawing.Color.White;
+            this.btnModelPage.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.btnModelPage.Font = new System.Drawing.Font("맑은 고딕", 20F, System.Drawing.FontStyle.Bold);
+            this.btnModelPage.ForeColor = System.Drawing.Color.Black;
+            this.btnModelPage.Location = new System.Drawing.Point(323, 3);
+            this.btnModelPage.Name = "btnModelPage";
+            this.btnModelPage.Size = new System.Drawing.Size(154, 114);
+            this.btnModelPage.TabIndex = 17;
+            this.btnModelPage.Text = "Model";
+            this.btnModelPage.UseVisualStyleBackColor = false;
+            this.btnModelPage.Click += new System.EventHandler(this.btnModelPage_Click);
             // 
             // MainForm
             // 
@@ -367,8 +391,8 @@
             this.pnlMachineStatus.ResumeLayout(false);
             this.tlpMachineStatus.ResumeLayout(false);
             this.tlpDateTime.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.picLogo)).EndInit();
             this.tlpModel.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.picLogo)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -397,6 +421,7 @@
         private System.Windows.Forms.Panel pnlPage;
         private System.Windows.Forms.Timer tmrMainForm;
         private System.Windows.Forms.Label lblUser;
+        private System.Windows.Forms.Button btnModelPage;
     }
 }
 
