@@ -24,7 +24,7 @@ namespace ATT
         private ConfigPage ConfigPageControl { get; set; } = new ConfigPage();
 
         private List<UserControl> PageControlList = null;
-        private List<Button> PageButtonList = null;
+        private List<Label> PageLabelList = null;
         #endregion
 
         public MainForm()
@@ -51,58 +51,52 @@ namespace ATT
             PageControlList.Add(ConfigPageControl);
 
             // Button List
-            PageButtonList = new List<Button>();
-            PageButtonList.Add(btnAutoPage);
-            PageButtonList.Add(btnTeachPage);
-            PageButtonList.Add(btnModelPage);
-            PageButtonList.Add(btnRecipePage);
-            PageButtonList.Add(btnLogPage);
-            PageButtonList.Add(btnConfigPage);
+            PageLabelList = new List<Label>();
+            PageLabelList.Add(lblModelPage);
+            PageLabelList.Add(lblInspectionPage);
+            PageLabelList.Add(lblTeachingPage);
+            PageLabelList.Add(lblLogPage);
+            PageLabelList.Add(lblSettingPage);
         }
 
         private void btnAutoPage_Click(object sender, EventArgs e)
         {
-            SetSelectButton(sender);
-            SetSelectPage(selectedControl: AutoPageControl);
+            
         }
 
         private void btnTeachPage_Click(object sender, EventArgs e)
         {
-            SetSelectButton(sender);
-            SetSelectPage(selectedControl: TeachingPageControl);
+            
         }
 
         private void btnModelPage_Click(object sender, EventArgs e)
         {
-            SetSelectButton(sender);
-            SetSelectPage(selectedControl: ModelPageControl);
+            
         }
 
         private void btnRecipePage_Click(object sender, EventArgs e)
         {
-            SetSelectButton(sender);
+            SetSelectLabel(sender);
             SetSelectPage(selectedControl: RecipePageControl);
         }
 
         private void btnLogPage_Click(object sender, EventArgs e)
         {
-            SetSelectButton(sender);
-            SetSelectPage(selectedControl: LogPageControl);
+            
         }
 
         private void btnConfigPage_Click(object sender, EventArgs e)
         {
-            SetSelectButton(sender);
-            SetSelectPage(selectedControl: ConfigPageControl);
+            
         }
 
-        private void SetSelectButton(object sender)
+        private void SetSelectLabel(object sender)
         {
-            foreach (Button button in PageButtonList)
-                button.ForeColor = Color.Black;
+            foreach (Label label in PageLabelList)
+                label.ForeColor = Color.Black;
 
-            Button btn = sender as Button;
-            btn.ForeColor = Color.Blue;
+            Label currentLabel = sender as Label;
+            currentLabel.ForeColor = Color.Blue;
         }
 
         private void SetSelectPage(UserControl selectedControl)
@@ -117,18 +111,46 @@ namespace ATT
 
         private void InitializeUI()
         {
-            //picLogo.Image = 
-
-            SetSelectButton(btnAutoPage);
+            SetSelectLabel(lblInspectionPage);
             SetSelectPage(selectedControl: AutoPageControl);
         }
 
         private void tmrMainForm_Tick(object sender, EventArgs e)
         {
-            lblDate.Text = DateTime.Now.ToShortDateString();
-            lblTime.Text = DateTime.Now.ToLongTimeString();
+            DateTime now = DateTime.Now;
+            lblCurrentTime.Text = now.ToString("yyyy-MM-dd HH:mm:ss");
+            //lblDate.Text = DateTime.Now.ToShortDateString();
+            //lblTime.Text = DateTime.Now.ToLongTimeString();
         }
 
-        
+        private void ModelPage_Click(object sender, EventArgs e)
+        {
+            SetSelectLabel(sender);
+            SetSelectPage(selectedControl: ModelPageControl);
+        }
+
+        private void InspectionPage_Click(object sender, EventArgs e)
+        {
+            SetSelectLabel(sender);
+            SetSelectPage(selectedControl: AutoPageControl);
+        }
+
+        private void TeachPage_Click(object sender, EventArgs e)
+        {
+            SetSelectLabel(sender);
+            SetSelectPage(selectedControl: TeachingPageControl);
+        }
+
+        private void LogPage_Click(object sender, EventArgs e)
+        {
+            SetSelectLabel(sender);
+            SetSelectPage(selectedControl: LogPageControl);
+        }
+
+        private void SettingPage_Click(object sender, EventArgs e)
+        {
+            SetSelectLabel(sender);
+            SetSelectPage(selectedControl: ConfigPageControl);
+        }
     }
 }
