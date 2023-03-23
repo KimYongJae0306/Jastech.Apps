@@ -28,10 +28,102 @@
         /// </summary>
         private void InitializeComponent()
         {
-            components = new System.ComponentModel.Container();
+            this.tlpInspPage = new System.Windows.Forms.TableLayoutPanel();
+            this.pnlInspPage = new System.Windows.Forms.Panel();
+            this.pnlInspItem = new System.Windows.Forms.Panel();
+            this.tlpInspItem = new System.Windows.Forms.TableLayoutPanel();
+            this.label1 = new System.Windows.Forms.Label();
+            this.tlpInspPage.SuspendLayout();
+            this.pnlInspPage.SuspendLayout();
+            this.pnlInspItem.SuspendLayout();
+            this.SuspendLayout();
+            // 
+            // tlpInspPage
+            // 
+            this.tlpInspPage.ColumnCount = 2;
+            this.tlpInspPage.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tlpInspPage.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 160F));
+            this.tlpInspPage.Controls.Add(this.pnlInspPage, 0, 0);
+            this.tlpInspPage.Controls.Add(this.pnlInspItem, 1, 0);
+            this.tlpInspPage.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tlpInspPage.Location = new System.Drawing.Point(0, 0);
+            this.tlpInspPage.Margin = new System.Windows.Forms.Padding(0);
+            this.tlpInspPage.Name = "tlpInspPage";
+            this.tlpInspPage.RowCount = 1;
+            this.tlpInspPage.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tlpInspPage.Size = new System.Drawing.Size(600, 600);
+            this.tlpInspPage.TabIndex = 1;
+            // 
+            // pnlInspPage
+            // 
+            this.pnlInspPage.Controls.Add(this.label1);
+            this.pnlInspPage.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pnlInspPage.Location = new System.Drawing.Point(0, 0);
+            this.pnlInspPage.Margin = new System.Windows.Forms.Padding(0);
+            this.pnlInspPage.Name = "pnlInspPage";
+            this.pnlInspPage.Size = new System.Drawing.Size(440, 600);
+            this.pnlInspPage.TabIndex = 0;
+            // 
+            // pnlInspItem
+            // 
+            this.pnlInspItem.Controls.Add(this.tlpInspItem);
+            this.pnlInspItem.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pnlInspItem.Location = new System.Drawing.Point(440, 0);
+            this.pnlInspItem.Margin = new System.Windows.Forms.Padding(0);
+            this.pnlInspItem.Name = "pnlInspItem";
+            this.pnlInspItem.Size = new System.Drawing.Size(160, 600);
+            this.pnlInspItem.TabIndex = 1;
+            // 
+            // tlpInspItem
+            // 
+            this.tlpInspItem.ColumnCount = 1;
+            this.tlpInspItem.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tlpInspItem.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tlpInspItem.Location = new System.Drawing.Point(0, 0);
+            this.tlpInspItem.Margin = new System.Windows.Forms.Padding(0);
+            this.tlpInspItem.Name = "tlpInspItem";
+            this.tlpInspItem.RowCount = 6;
+            this.tlpInspItem.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 100F));
+            this.tlpInspItem.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 100F));
+            this.tlpInspItem.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 100F));
+            this.tlpInspItem.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 100F));
+            this.tlpInspItem.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tlpInspItem.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 100F));
+            this.tlpInspItem.Size = new System.Drawing.Size(160, 600);
+            this.tlpInspItem.TabIndex = 0;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(175, 290);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(73, 20);
+            this.label1.TabIndex = 2;
+            this.label1.Text = "InspPage";
+            // 
+            // InspPage
+            // 
+            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackColor = System.Drawing.Color.White;
+            this.Controls.Add(this.tlpInspPage);
+            this.Font = new System.Drawing.Font("맑은 고딕", 11.25F, System.Drawing.FontStyle.Bold);
+            this.Name = "InspPage";
+            this.Size = new System.Drawing.Size(600, 600);
+            this.tlpInspPage.ResumeLayout(false);
+            this.pnlInspPage.ResumeLayout(false);
+            this.pnlInspPage.PerformLayout();
+            this.pnlInspItem.ResumeLayout(false);
+            this.ResumeLayout(false);
+
         }
 
         #endregion
+
+        private System.Windows.Forms.TableLayoutPanel tlpInspPage;
+        private System.Windows.Forms.Panel pnlInspPage;
+        private System.Windows.Forms.Panel pnlInspItem;
+        private System.Windows.Forms.TableLayoutPanel tlpInspItem;
+        private System.Windows.Forms.Label label1;
     }
 }
