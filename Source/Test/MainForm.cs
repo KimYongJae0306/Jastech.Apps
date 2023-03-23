@@ -20,7 +20,7 @@ namespace Test
         CogDisplayControl display;
         CogPMAlignTool CogPMAlignTool;
         ICogImage CogImage;
-
+        CogPatternMatchingParamControl CogPatternMatchingParamControl = new CogPatternMatchingParamControl();
         public MainForm()
         {
             InitializeComponent();
@@ -31,6 +31,9 @@ namespace Test
             display = new CogDisplayControl();
             display.Dock = DockStyle.Fill;
             panel1.Controls.Add(display);
+
+            CogPatternMatchingParamControl.Dock = DockStyle.Fill;
+            pnlTest.Controls.Add(CogPatternMatchingParamControl);
         }
 
         private void btnTest_Click(object sender, EventArgs e)
@@ -39,7 +42,7 @@ namespace Test
             CogImage = CogImageHelper.Load(fileName);
             display.SetImage(CogImage);
         }
-        CogPMAlign cogPMAlign = new CogPMAlign();
+        CogPatternMatching cogPMAlign = new CogPatternMatching();
         private void button1_Click(object sender, EventArgs e)
         {
             display.ClearGraphic();
