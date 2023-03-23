@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace ATT.UI.Pages
+namespace Jastech.Apps.Winform.UI.Pages
 {
     public partial class RecipePage : UserControl
     {

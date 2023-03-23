@@ -1,4 +1,4 @@
-﻿namespace ATT.UI.Pages
+﻿namespace Jastech.Apps.Winform.UI.Pages
 {
     partial class RecipePage
     {

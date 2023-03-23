@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using Jastech.Framework.Winform.VisionPro.Controls;
 
-namespace ATT.UI.Pages
+namespace Jastech.Apps.Winform.UI.Pages
 {
     public partial class TeachingPage : UserControl
     {
