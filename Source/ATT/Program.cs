@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Jastech.Apps.Winform.Settings;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -16,6 +17,9 @@ namespace ATT
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
+
+            Settings.Instance().Initialize();
+
             Application.Run(new MainForm());
         }
     }

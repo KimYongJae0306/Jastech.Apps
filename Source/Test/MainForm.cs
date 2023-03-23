@@ -1,7 +1,9 @@
 ﻿using Cognex.VisionPro;
 using Cognex.VisionPro.PMAlign;
+using Jastech.Apps.Winform.Settings;
 using Jastech.Framework.Imaging.VisionPro;
 using Jastech.Framework.Imaging.VisionPro.VisionAlgorithms;
+using Jastech.Framework.Winform.Forms;
 using Jastech.Framework.Winform.VisionPro.Controls;
 using System;
 using System.Collections.Generic;
@@ -20,6 +22,7 @@ namespace Test
         CogDisplayControl display;
         CogPMAlignTool CogPMAlignTool;
         ICogImage CogImage;
+        ModelForm form;
         CogPatternMatchingParamControl CogPatternMatchingParamControl = new CogPatternMatchingParamControl();
         public MainForm()
         {
@@ -28,12 +31,16 @@ namespace Test
 
         private void MainForm_Load(object sender, EventArgs e)
         {
+            
             display = new CogDisplayControl();
             display.Dock = DockStyle.Fill;
             panel1.Controls.Add(display);
 
+
             CogPatternMatchingParamControl.Dock = DockStyle.Fill;
             pnlTest.Controls.Add(CogPatternMatchingParamControl);
+
+            Settings.Instance().Initialize();
         }
 
         private void btnTest_Click(object sender, EventArgs e)
@@ -66,6 +73,9 @@ namespace Test
 
         private void button2_Click(object sender, EventArgs e)
         {
+            ModelForm form = new ModelForm();
+            form.ModelPath = @"D:\1.Programs\Jastech.Apps\Jastech.Apps\Runtime\Model";
+            form.Show();
         }
     }
 }

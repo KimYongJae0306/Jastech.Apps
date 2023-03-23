@@ -453,6 +453,14 @@
       <Project>{8558B173-0E81-4C55-82B8-02417220E02C}</Project>
       <Name>Jastech.Framework.Winform.VisionPro</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\..\Jastech.Core\src\Jastech.Framework.Winform\Jastech.Framework.Winform.csproj">
+      <Project>{D46C7263-535A-4BF9-AD14-5183EDE0A984}</Project>
+      <Name>Jastech.Framework.Winform</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Jastech.Apps.Winform\Jastech.Apps.Winform.csproj">
+      <Project>{A2FF047D-37DD-46A8-83B8-341608BD1D40}</Project>
+      <Name>Jastech.Apps.Winform</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
