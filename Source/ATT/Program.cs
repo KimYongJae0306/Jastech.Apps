@@ -18,7 +18,7 @@ namespace ATT
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
-            Settings.Instance().Initialize();
+            AppSettings.Instance().Initialize();
 
             Application.Run(new MainForm());
         }

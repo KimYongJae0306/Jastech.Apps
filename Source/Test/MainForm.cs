@@ -40,7 +40,7 @@ namespace Test
             CogPatternMatchingParamControl.Dock = DockStyle.Fill;
             pnlTest.Controls.Add(CogPatternMatchingParamControl);
 
-            Settings.Instance().Initialize();
+            //Settings.Instance().Initialize();
         }
 
         private void btnTest_Click(object sender, EventArgs e)

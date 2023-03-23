@@ -32,34 +32,34 @@
             this.tlpMainForm = new System.Windows.Forms.TableLayoutPanel();
             this.pnlFunctionButtons = new System.Windows.Forms.Panel();
             this.tlpFunctionButtons = new System.Windows.Forms.TableLayoutPanel();
-            this.btnConfigPage = new System.Windows.Forms.Button();
             this.btnAutoPage = new System.Windows.Forms.Button();
             this.btnTeachPage = new System.Windows.Forms.Button();
-            this.btnRecipePage = new System.Windows.Forms.Button();
+            this.btnConfigPage = new System.Windows.Forms.Button();
             this.btnLogPage = new System.Windows.Forms.Button();
+            this.btnRecipePage = new System.Windows.Forms.Button();
+            this.btnModelPage = new System.Windows.Forms.Button();
             this.pnlMachineStatus = new System.Windows.Forms.Panel();
             this.tlpMachineStatus = new System.Windows.Forms.TableLayoutPanel();
             this.tlpDateTime = new System.Windows.Forms.TableLayoutPanel();
             this.lblDate = new System.Windows.Forms.Label();
             this.lblTime = new System.Windows.Forms.Label();
+            this.picLogo = new System.Windows.Forms.PictureBox();
             this.lblSystemName = new System.Windows.Forms.Label();
             this.tlpModel = new System.Windows.Forms.TableLayoutPanel();
             this.lblModel = new System.Windows.Forms.Label();
             this.lblAppliedModel = new System.Windows.Forms.Label();
             this.lblMachineStatus = new System.Windows.Forms.Label();
+            this.lblUser = new System.Windows.Forms.Label();
             this.pnlPage = new System.Windows.Forms.Panel();
             this.tmrMainForm = new System.Windows.Forms.Timer(this.components);
-            this.lblUser = new System.Windows.Forms.Label();
-            this.picLogo = new System.Windows.Forms.PictureBox();
-            this.btnModelPage = new System.Windows.Forms.Button();
             this.tlpMainForm.SuspendLayout();
             this.pnlFunctionButtons.SuspendLayout();
             this.tlpFunctionButtons.SuspendLayout();
             this.pnlMachineStatus.SuspendLayout();
             this.tlpMachineStatus.SuspendLayout();
             this.tlpDateTime.SuspendLayout();
-            this.tlpModel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.picLogo)).BeginInit();
+            this.tlpModel.SuspendLayout();
             this.SuspendLayout();
             // 
             // tlpMainForm
@@ -76,8 +76,7 @@
             this.tlpMainForm.RowCount = 3;
             this.tlpMainForm.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 120F));
             this.tlpMainForm.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tlpMainForm.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 120F));
-            this.tlpMainForm.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tlpMainForm.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 80F));
             this.tlpMainForm.Size = new System.Drawing.Size(1264, 921);
             this.tlpMainForm.TabIndex = 0;
             // 
@@ -85,10 +84,10 @@
             // 
             this.pnlFunctionButtons.Controls.Add(this.tlpFunctionButtons);
             this.pnlFunctionButtons.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pnlFunctionButtons.Location = new System.Drawing.Point(0, 801);
+            this.pnlFunctionButtons.Location = new System.Drawing.Point(0, 841);
             this.pnlFunctionButtons.Margin = new System.Windows.Forms.Padding(0);
             this.pnlFunctionButtons.Name = "pnlFunctionButtons";
-            this.pnlFunctionButtons.Size = new System.Drawing.Size(1264, 120);
+            this.pnlFunctionButtons.Size = new System.Drawing.Size(1264, 80);
             this.pnlFunctionButtons.TabIndex = 0;
             // 
             // tlpFunctionButtons
@@ -115,22 +114,8 @@
             this.tlpFunctionButtons.Name = "tlpFunctionButtons";
             this.tlpFunctionButtons.RowCount = 1;
             this.tlpFunctionButtons.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tlpFunctionButtons.Size = new System.Drawing.Size(1264, 120);
+            this.tlpFunctionButtons.Size = new System.Drawing.Size(1264, 80);
             this.tlpFunctionButtons.TabIndex = 0;
-            // 
-            // btnConfigPage
-            // 
-            this.btnConfigPage.BackColor = System.Drawing.Color.White;
-            this.btnConfigPage.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.btnConfigPage.Font = new System.Drawing.Font("맑은 고딕", 20F, System.Drawing.FontStyle.Bold);
-            this.btnConfigPage.ForeColor = System.Drawing.Color.Black;
-            this.btnConfigPage.Location = new System.Drawing.Point(803, 3);
-            this.btnConfigPage.Name = "btnConfigPage";
-            this.btnConfigPage.Size = new System.Drawing.Size(154, 114);
-            this.btnConfigPage.TabIndex = 19;
-            this.btnConfigPage.Text = "Config";
-            this.btnConfigPage.UseVisualStyleBackColor = false;
-            this.btnConfigPage.Click += new System.EventHandler(this.btnConfigPage_Click);
             // 
             // btnAutoPage
             // 
@@ -140,7 +125,7 @@
             this.btnAutoPage.ForeColor = System.Drawing.Color.Black;
             this.btnAutoPage.Location = new System.Drawing.Point(3, 3);
             this.btnAutoPage.Name = "btnAutoPage";
-            this.btnAutoPage.Size = new System.Drawing.Size(154, 114);
+            this.btnAutoPage.Size = new System.Drawing.Size(154, 74);
             this.btnAutoPage.TabIndex = 17;
             this.btnAutoPage.Text = "Auto";
             this.btnAutoPage.UseVisualStyleBackColor = false;
@@ -154,25 +139,25 @@
             this.btnTeachPage.ForeColor = System.Drawing.Color.Black;
             this.btnTeachPage.Location = new System.Drawing.Point(163, 3);
             this.btnTeachPage.Name = "btnTeachPage";
-            this.btnTeachPage.Size = new System.Drawing.Size(154, 114);
+            this.btnTeachPage.Size = new System.Drawing.Size(154, 74);
             this.btnTeachPage.TabIndex = 18;
             this.btnTeachPage.Text = "Teach";
             this.btnTeachPage.UseVisualStyleBackColor = false;
             this.btnTeachPage.Click += new System.EventHandler(this.btnTeachPage_Click);
             // 
-            // btnRecipePage
+            // btnConfigPage
             // 
-            this.btnRecipePage.BackColor = System.Drawing.Color.White;
-            this.btnRecipePage.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.btnRecipePage.Font = new System.Drawing.Font("맑은 고딕", 20F, System.Drawing.FontStyle.Bold);
-            this.btnRecipePage.ForeColor = System.Drawing.Color.Black;
-            this.btnRecipePage.Location = new System.Drawing.Point(483, 3);
-            this.btnRecipePage.Name = "btnRecipePage";
-            this.btnRecipePage.Size = new System.Drawing.Size(154, 114);
-            this.btnRecipePage.TabIndex = 17;
-            this.btnRecipePage.Text = "Recipe";
-            this.btnRecipePage.UseVisualStyleBackColor = false;
-            this.btnRecipePage.Click += new System.EventHandler(this.btnRecipePage_Click);
+            this.btnConfigPage.BackColor = System.Drawing.Color.White;
+            this.btnConfigPage.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.btnConfigPage.Font = new System.Drawing.Font("맑은 고딕", 20F, System.Drawing.FontStyle.Bold);
+            this.btnConfigPage.ForeColor = System.Drawing.Color.Black;
+            this.btnConfigPage.Location = new System.Drawing.Point(803, 3);
+            this.btnConfigPage.Name = "btnConfigPage";
+            this.btnConfigPage.Size = new System.Drawing.Size(154, 74);
+            this.btnConfigPage.TabIndex = 19;
+            this.btnConfigPage.Text = "Config";
+            this.btnConfigPage.UseVisualStyleBackColor = false;
+            this.btnConfigPage.Click += new System.EventHandler(this.btnConfigPage_Click);
             // 
             // btnLogPage
             // 
@@ -182,11 +167,39 @@
             this.btnLogPage.ForeColor = System.Drawing.Color.Black;
             this.btnLogPage.Location = new System.Drawing.Point(643, 3);
             this.btnLogPage.Name = "btnLogPage";
-            this.btnLogPage.Size = new System.Drawing.Size(154, 114);
+            this.btnLogPage.Size = new System.Drawing.Size(154, 74);
             this.btnLogPage.TabIndex = 20;
             this.btnLogPage.Text = "Log";
             this.btnLogPage.UseVisualStyleBackColor = false;
             this.btnLogPage.Click += new System.EventHandler(this.btnLogPage_Click);
+            // 
+            // btnRecipePage
+            // 
+            this.btnRecipePage.BackColor = System.Drawing.Color.White;
+            this.btnRecipePage.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.btnRecipePage.Font = new System.Drawing.Font("맑은 고딕", 20F, System.Drawing.FontStyle.Bold);
+            this.btnRecipePage.ForeColor = System.Drawing.Color.Black;
+            this.btnRecipePage.Location = new System.Drawing.Point(483, 3);
+            this.btnRecipePage.Name = "btnRecipePage";
+            this.btnRecipePage.Size = new System.Drawing.Size(154, 74);
+            this.btnRecipePage.TabIndex = 17;
+            this.btnRecipePage.Text = "Recipe";
+            this.btnRecipePage.UseVisualStyleBackColor = false;
+            this.btnRecipePage.Click += new System.EventHandler(this.btnRecipePage_Click);
+            // 
+            // btnModelPage
+            // 
+            this.btnModelPage.BackColor = System.Drawing.Color.White;
+            this.btnModelPage.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.btnModelPage.Font = new System.Drawing.Font("맑은 고딕", 20F, System.Drawing.FontStyle.Bold);
+            this.btnModelPage.ForeColor = System.Drawing.Color.Black;
+            this.btnModelPage.Location = new System.Drawing.Point(323, 3);
+            this.btnModelPage.Name = "btnModelPage";
+            this.btnModelPage.Size = new System.Drawing.Size(154, 74);
+            this.btnModelPage.TabIndex = 17;
+            this.btnModelPage.Text = "Model";
+            this.btnModelPage.UseVisualStyleBackColor = false;
+            this.btnModelPage.Click += new System.EventHandler(this.btnModelPage_Click);
             // 
             // pnlMachineStatus
             // 
@@ -260,6 +273,16 @@
             this.lblTime.Text = "Time";
             this.lblTime.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
+            // picLogo
+            // 
+            this.picLogo.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.picLogo.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.picLogo.Location = new System.Drawing.Point(3, 3);
+            this.picLogo.Name = "picLogo";
+            this.picLogo.Size = new System.Drawing.Size(194, 114);
+            this.picLogo.TabIndex = 0;
+            this.picLogo.TabStop = false;
+            // 
             // lblSystemName
             // 
             this.lblSystemName.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
@@ -322,19 +345,6 @@
             this.lblMachineStatus.Text = "Machine Status";
             this.lblMachineStatus.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // pnlPage
-            // 
-            this.pnlPage.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pnlPage.Location = new System.Drawing.Point(0, 120);
-            this.pnlPage.Margin = new System.Windows.Forms.Padding(0);
-            this.pnlPage.Name = "pnlPage";
-            this.pnlPage.Size = new System.Drawing.Size(1264, 681);
-            this.pnlPage.TabIndex = 3;
-            // 
-            // tmrMainForm
-            // 
-            this.tmrMainForm.Tick += new System.EventHandler(this.tmrMainForm_Tick);
-            // 
             // lblUser
             // 
             this.lblUser.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
@@ -347,33 +357,22 @@
             this.lblUser.Text = "User";
             this.lblUser.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // picLogo
+            // pnlPage
             // 
-            this.picLogo.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.picLogo.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.picLogo.Location = new System.Drawing.Point(3, 3);
-            this.picLogo.Name = "picLogo";
-            this.picLogo.Size = new System.Drawing.Size(194, 114);
-            this.picLogo.TabIndex = 0;
-            this.picLogo.TabStop = false;
+            this.pnlPage.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pnlPage.Location = new System.Drawing.Point(0, 120);
+            this.pnlPage.Margin = new System.Windows.Forms.Padding(0);
+            this.pnlPage.Name = "pnlPage";
+            this.pnlPage.Size = new System.Drawing.Size(1264, 721);
+            this.pnlPage.TabIndex = 3;
             // 
-            // btnModelPage
+            // tmrMainForm
             // 
-            this.btnModelPage.BackColor = System.Drawing.Color.White;
-            this.btnModelPage.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.btnModelPage.Font = new System.Drawing.Font("맑은 고딕", 20F, System.Drawing.FontStyle.Bold);
-            this.btnModelPage.ForeColor = System.Drawing.Color.Black;
-            this.btnModelPage.Location = new System.Drawing.Point(323, 3);
-            this.btnModelPage.Name = "btnModelPage";
-            this.btnModelPage.Size = new System.Drawing.Size(154, 114);
-            this.btnModelPage.TabIndex = 17;
-            this.btnModelPage.Text = "Model";
-            this.btnModelPage.UseVisualStyleBackColor = false;
-            this.btnModelPage.Click += new System.EventHandler(this.btnModelPage_Click);
+            this.tmrMainForm.Tick += new System.EventHandler(this.tmrMainForm_Tick);
             // 
             // MainForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(11F, 25F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(1264, 921);
@@ -391,8 +390,8 @@
             this.pnlMachineStatus.ResumeLayout(false);
             this.tlpMachineStatus.ResumeLayout(false);
             this.tlpDateTime.ResumeLayout(false);
-            this.tlpModel.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.picLogo)).EndInit();
+            this.tlpModel.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }

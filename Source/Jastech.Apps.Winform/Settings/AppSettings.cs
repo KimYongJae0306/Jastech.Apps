@@ -7,17 +7,17 @@ using System.Threading.Tasks;
 
 namespace Jastech.Apps.Winform.Settings
 {
-    public class Settings : ConfigSet
+    public class AppSettings : ConfigSet
     {
         #region 필드 
-        private static Settings _instance = null;
+        private static AppSettings _instance = null;
         #endregion
 
-        public static Settings Instance()
+        public static AppSettings Instance()
         {
             if (_instance == null)
             {
-                _instance = new Settings();
+                _instance = new AppSettings();
             }
 
             return _instance;

@@ -62,7 +62,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Settings\Settings.cs" />
+    <Compile Include="Settings\AppSettings.cs" />
+    <Compile Include="UI\Controls\PatternMatchtingControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UI\Controls\PatternMatchtingControl.Designer.cs">
+      <DependentUpon>PatternMatchtingControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="UI\Pages\AutoPage.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -113,6 +119,9 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="UI\Controls\PatternMatchtingControl.resx">
+      <DependentUpon>PatternMatchtingControl.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="UI\Pages\AutoPage.resx">
       <DependentUpon>AutoPage.cs</DependentUpon>
     </EmbeddedResource>
