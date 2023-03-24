@@ -64,7 +64,7 @@ namespace ATT.UI.Pages
                 InspModel prevModel = InspModelService.Load(filePath);
                 prevModel.Name = newModelName;
 
-                InspModelFileService.Save(modelDir, prevModel);
+                ModelFileHelper.Save(modelDir, prevModel);
             }
         }
 
@@ -76,7 +76,7 @@ namespace ATT.UI.Pages
                 string filePath = Path.Combine(modelDir, prevModelName, InspModel.FileName);
                 InspModel prevModel = InspModelService.Load(filePath);
 
-                InspModelFileService.Edit(modelDir, prevModel, editModel);
+                ModelFileHelper.Edit(modelDir, prevModel, editModel);
             }
         }
 
@@ -90,7 +90,7 @@ namespace ATT.UI.Pages
                 newModel.ModifiedDate = model.ModifiedDate;
                 newModel.Description = model.Description;
 
-                InspModelFileService.Save(AppSettings.Instance().Path.Model, newModel);
+                ModelFileHelper.Save(AppSettings.Instance().Path.Model, newModel);
             }
         }
 
