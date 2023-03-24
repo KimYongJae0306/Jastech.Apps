@@ -69,6 +69,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Core\ATTInpModel.cs" />
+    <Compile Include="Core\ATTInspModelService.cs" />
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -77,6 +79,54 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UI\Pages\AutoPage.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UI\Pages\AutoPage.Designer.cs">
+      <DependentUpon>AutoPage.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Pages\ConfigPage.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UI\Pages\ConfigPage.Designer.cs">
+      <DependentUpon>ConfigPage.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Pages\InspPage.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UI\Pages\InspPage.Designer.cs">
+      <DependentUpon>InspPage.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Pages\LogPage.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UI\Pages\LogPage.Designer.cs">
+      <DependentUpon>LogPage.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Pages\ModelPage.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UI\Pages\ModelPage.Designer.cs">
+      <DependentUpon>ModelPage.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Pages\RecipePage.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UI\Pages\RecipePage.Designer.cs">
+      <DependentUpon>RecipePage.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Pages\SettingPage.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UI\Pages\SettingPage.Designer.cs">
+      <DependentUpon>SettingPage.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Pages\TeachingPage.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UI\Pages\TeachingPage.Designer.cs">
+      <DependentUpon>TeachingPage.cs</DependentUpon>
+    </Compile>
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -90,6 +140,30 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <EmbeddedResource Include="UI\Pages\AutoPage.resx">
+      <DependentUpon>AutoPage.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\Pages\ConfigPage.resx">
+      <DependentUpon>ConfigPage.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\Pages\InspPage.resx">
+      <DependentUpon>InspPage.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\Pages\LogPage.resx">
+      <DependentUpon>LogPage.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\Pages\ModelPage.resx">
+      <DependentUpon>ModelPage.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\Pages\RecipePage.resx">
+      <DependentUpon>RecipePage.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\Pages\SettingPage.resx">
+      <DependentUpon>SettingPage.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\Pages\TeachingPage.resx">
+      <DependentUpon>TeachingPage.cs</DependentUpon>
+    </EmbeddedResource>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -105,16 +179,47 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="UI\Controls\" />
-    <Folder Include="UI\Pages\" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\Jastech.Core\src\Jastech.Framework.Comm\Jastech.Framework.Comm.csproj">
+      <Project>{05b26e55-9c49-4078-983a-c6b13f6ee375}</Project>
+      <Name>Jastech.Framework.Comm</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\..\Jastech.Core\src\Jastech.Framework.Config\Jastech.Framework.Config.csproj">
       <Project>{6244FA20-EDA3-45D4-85C7-50D901C5D376}</Project>
       <Name>Jastech.Framework.Config</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\..\Jastech.Core\src\Jastech.Framework.Device\Jastech.Framework.Device.csproj">
+      <Project>{f43ddcca-e65c-4131-b789-db4109e91b68}</Project>
+      <Name>Jastech.Framework.Device</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Jastech.Core\src\Jastech.Framework.Imaging.VisionPro\Jastech.Framework.Imaging.VisionPro.csproj">
+      <Project>{22ee7b1a-e7b2-4547-94dd-4e85bdb56956}</Project>
+      <Name>Jastech.Framework.Imaging.VisionPro</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Jastech.Core\src\Jastech.Framework.Matrox\Jastech.Framework.Matrox.csproj">
+      <Project>{8b4b5cef-5b39-423a-a460-a24f7fd8890e}</Project>
+      <Name>Jastech.Framework.Matrox</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Jastech.Core\src\Jastech.Framework.Structure\Jastech.Framework.Structure.csproj">
+      <Project>{dcff7b48-8df8-4ed9-9f0f-f11c2ccb7547}</Project>
+      <Name>Jastech.Framework.Structure</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Jastech.Core\src\Jastech.Framework.Util\Jastech.Framework.Util.csproj">
+      <Project>{07EF86CC-AC6A-454E-B12B-EB63454A1DCA}</Project>
+      <Name>Jastech.Framework.Util</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\..\Jastech.Core\src\Jastech.Framework.Winform.VisionPro\Jastech.Framework.Winform.VisionPro.csproj">
       <Project>{8558B173-0E81-4C55-82B8-02417220E02C}</Project>
       <Name>Jastech.Framework.Winform.VisionPro</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Jastech.Core\src\Jastech.Framework.Winform\Jastech.Framework.Winform.csproj">
+      <Project>{d46c7263-535a-4bf9-ad14-5183ede0a984}</Project>
+      <Name>Jastech.Framework.Winform</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Jastech.Apps.Structure\Jastech.Apps.Structure.csproj">
+      <Project>{1d6ea4e5-02d4-4c2a-8873-d336d420e726}</Project>
+      <Name>Jastech.Apps.Structure</Name>
     </ProjectReference>
     <ProjectReference Include="..\Jastech.Apps.Winform\Jastech.Apps.Winform.csproj">
       <Project>{A2FF047D-37DD-46A8-83B8-341608BD1D40}</Project>

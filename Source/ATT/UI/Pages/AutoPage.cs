@@ -8,11 +8,11 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace Jastech.Apps.Winform.UI.Pages
+namespace ATT.UI.Pages
 {
-    public partial class InspPage : UserControl
+    public partial class AutoPage : UserControl
     {
-        public InspPage()
+        public AutoPage()
         {
             InitializeComponent();
         }

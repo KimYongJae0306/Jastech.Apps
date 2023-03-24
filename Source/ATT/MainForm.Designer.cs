@@ -33,40 +33,42 @@
             this.tlpMainForm = new System.Windows.Forms.TableLayoutPanel();
             this.pnlFunctionButtons = new System.Windows.Forms.Panel();
             this.tlpFunctionButtons = new System.Windows.Forms.TableLayoutPanel();
+            this.lblCurrentTime = new System.Windows.Forms.Label();
+            this.panel2 = new System.Windows.Forms.Panel();
+            this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
+            this.lblSettingPageImage = new System.Windows.Forms.Label();
+            this.lblSettingPage = new System.Windows.Forms.Label();
             this.panel4 = new System.Windows.Forms.Panel();
             this.tableLayoutPanel4 = new System.Windows.Forms.TableLayoutPanel();
+            this.lblLogPageImage = new System.Windows.Forms.Label();
             this.lblLogPage = new System.Windows.Forms.Label();
             this.panel3 = new System.Windows.Forms.Panel();
             this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
+            this.lblTeachingPageImage = new System.Windows.Forms.Label();
             this.lblTeachingPage = new System.Windows.Forms.Label();
             this.panel8 = new System.Windows.Forms.Panel();
             this.tableLayoutPanel9 = new System.Windows.Forms.TableLayoutPanel();
+            this.lblModelPageImage = new System.Windows.Forms.Label();
             this.lblModelPage = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
+            this.lblInspectionPageImage = new System.Windows.Forms.Label();
             this.lblInspectionPage = new System.Windows.Forms.Label();
             this.pnlMachineStatus = new System.Windows.Forms.Panel();
             this.tlpMachineStatus = new System.Windows.Forms.TableLayoutPanel();
+            this.tableLayoutPanel5 = new System.Windows.Forms.TableLayoutPanel();
+            this.lblCurrentUser = new System.Windows.Forms.Label();
+            this.pictureBox2 = new System.Windows.Forms.PictureBox();
+            this.lblCurrentModel = new System.Windows.Forms.Label();
+            this.picLogo = new System.Windows.Forms.PictureBox();
             this.lblSystemName = new System.Windows.Forms.Label();
             this.pnlPage = new System.Windows.Forms.Panel();
-            this.panel2 = new System.Windows.Forms.Panel();
-            this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
-            this.lblSettingPage = new System.Windows.Forms.Label();
             this.tmrMainForm = new System.Windows.Forms.Timer(this.components);
-            this.lblCurrentUser = new System.Windows.Forms.Label();
-            this.lblCurrentTime = new System.Windows.Forms.Label();
-            this.lblCurrentModel = new System.Windows.Forms.Label();
-            this.tableLayoutPanel5 = new System.Windows.Forms.TableLayoutPanel();
-            this.lblSettingPageImage = new System.Windows.Forms.Label();
-            this.lblLogPageImage = new System.Windows.Forms.Label();
-            this.lblTeachingPageImage = new System.Windows.Forms.Label();
-            this.lblModelPageImage = new System.Windows.Forms.Label();
-            this.lblInspectionPageImage = new System.Windows.Forms.Label();
-            this.pictureBox2 = new System.Windows.Forms.PictureBox();
-            this.picLogo = new System.Windows.Forms.PictureBox();
             this.tlpMainForm.SuspendLayout();
             this.pnlFunctionButtons.SuspendLayout();
             this.tlpFunctionButtons.SuspendLayout();
+            this.panel2.SuspendLayout();
+            this.tableLayoutPanel2.SuspendLayout();
             this.panel4.SuspendLayout();
             this.tableLayoutPanel4.SuspendLayout();
             this.panel3.SuspendLayout();
@@ -77,8 +79,6 @@
             this.tableLayoutPanel1.SuspendLayout();
             this.pnlMachineStatus.SuspendLayout();
             this.tlpMachineStatus.SuspendLayout();
-            this.panel2.SuspendLayout();
-            this.tableLayoutPanel2.SuspendLayout();
             this.tableLayoutPanel5.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.picLogo)).BeginInit();
@@ -140,6 +140,68 @@
             this.tlpFunctionButtons.Size = new System.Drawing.Size(1772, 78);
             this.tlpFunctionButtons.TabIndex = 0;
             // 
+            // lblCurrentTime
+            // 
+            this.lblCurrentTime.BackColor = System.Drawing.Color.Transparent;
+            this.lblCurrentTime.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblCurrentTime.Font = new System.Drawing.Font("맑은 고딕", 12.2F, System.Drawing.FontStyle.Bold);
+            this.lblCurrentTime.ForeColor = System.Drawing.Color.Black;
+            this.lblCurrentTime.Location = new System.Drawing.Point(1603, 3);
+            this.lblCurrentTime.Margin = new System.Windows.Forms.Padding(3);
+            this.lblCurrentTime.Name = "lblCurrentTime";
+            this.lblCurrentTime.Size = new System.Drawing.Size(166, 72);
+            this.lblCurrentTime.TabIndex = 3;
+            this.lblCurrentTime.Text = "DateTime";
+            this.lblCurrentTime.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // panel2
+            // 
+            this.panel2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel2.Controls.Add(this.tableLayoutPanel2);
+            this.panel2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panel2.Location = new System.Drawing.Point(803, 3);
+            this.panel2.Name = "panel2";
+            this.panel2.Size = new System.Drawing.Size(194, 72);
+            this.panel2.TabIndex = 19;
+            // 
+            // tableLayoutPanel2
+            // 
+            this.tableLayoutPanel2.ColumnCount = 2;
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 50F));
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel2.Controls.Add(this.lblSettingPageImage, 0, 0);
+            this.tableLayoutPanel2.Controls.Add(this.lblSettingPage, 1, 0);
+            this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel2.Location = new System.Drawing.Point(0, 0);
+            this.tableLayoutPanel2.Margin = new System.Windows.Forms.Padding(0);
+            this.tableLayoutPanel2.Name = "tableLayoutPanel2";
+            this.tableLayoutPanel2.RowCount = 1;
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel2.Size = new System.Drawing.Size(192, 70);
+            this.tableLayoutPanel2.TabIndex = 0;
+            // 
+            // lblSettingPageImage
+            // 
+            this.lblSettingPageImage.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblSettingPageImage.Image = ((System.Drawing.Image)(resources.GetObject("lblSettingPageImage.Image")));
+            this.lblSettingPageImage.Location = new System.Drawing.Point(3, 0);
+            this.lblSettingPageImage.Name = "lblSettingPageImage";
+            this.lblSettingPageImage.Size = new System.Drawing.Size(44, 70);
+            this.lblSettingPageImage.TabIndex = 1;
+            this.lblSettingPageImage.Click += new System.EventHandler(this.SettingPage_Click);
+            // 
+            // lblSettingPage
+            // 
+            this.lblSettingPage.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblSettingPage.Font = new System.Drawing.Font("맑은 고딕", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.lblSettingPage.Location = new System.Drawing.Point(53, 0);
+            this.lblSettingPage.Name = "lblSettingPage";
+            this.lblSettingPage.Size = new System.Drawing.Size(136, 70);
+            this.lblSettingPage.TabIndex = 0;
+            this.lblSettingPage.Text = "Settings";
+            this.lblSettingPage.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblSettingPage.Click += new System.EventHandler(this.SettingPage_Click);
+            // 
             // panel4
             // 
             this.panel4.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
@@ -164,6 +226,16 @@
             this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel4.Size = new System.Drawing.Size(192, 70);
             this.tableLayoutPanel4.TabIndex = 0;
+            // 
+            // lblLogPageImage
+            // 
+            this.lblLogPageImage.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblLogPageImage.Image = ((System.Drawing.Image)(resources.GetObject("lblLogPageImage.Image")));
+            this.lblLogPageImage.Location = new System.Drawing.Point(3, 0);
+            this.lblLogPageImage.Name = "lblLogPageImage";
+            this.lblLogPageImage.Size = new System.Drawing.Size(44, 70);
+            this.lblLogPageImage.TabIndex = 1;
+            this.lblLogPageImage.Click += new System.EventHandler(this.LogPage_Click);
             // 
             // lblLogPage
             // 
@@ -203,6 +275,16 @@
             this.tableLayoutPanel3.Size = new System.Drawing.Size(192, 70);
             this.tableLayoutPanel3.TabIndex = 0;
             // 
+            // lblTeachingPageImage
+            // 
+            this.lblTeachingPageImage.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblTeachingPageImage.Image = global::ATT.Properties.Resources.Teaching;
+            this.lblTeachingPageImage.Location = new System.Drawing.Point(3, 0);
+            this.lblTeachingPageImage.Name = "lblTeachingPageImage";
+            this.lblTeachingPageImage.Size = new System.Drawing.Size(44, 70);
+            this.lblTeachingPageImage.TabIndex = 1;
+            this.lblTeachingPageImage.Click += new System.EventHandler(this.TeachPage_Click);
+            // 
             // lblTeachingPage
             // 
             this.lblTeachingPage.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -241,6 +323,16 @@
             this.tableLayoutPanel9.Size = new System.Drawing.Size(192, 70);
             this.tableLayoutPanel9.TabIndex = 0;
             // 
+            // lblModelPageImage
+            // 
+            this.lblModelPageImage.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblModelPageImage.Image = ((System.Drawing.Image)(resources.GetObject("lblModelPageImage.Image")));
+            this.lblModelPageImage.Location = new System.Drawing.Point(3, 0);
+            this.lblModelPageImage.Name = "lblModelPageImage";
+            this.lblModelPageImage.Size = new System.Drawing.Size(44, 70);
+            this.lblModelPageImage.TabIndex = 1;
+            this.lblModelPageImage.Click += new System.EventHandler(this.ModelPage_Click);
+            // 
             // lblModelPage
             // 
             this.lblModelPage.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -278,6 +370,16 @@
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel1.Size = new System.Drawing.Size(192, 70);
             this.tableLayoutPanel1.TabIndex = 0;
+            // 
+            // lblInspectionPageImage
+            // 
+            this.lblInspectionPageImage.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblInspectionPageImage.Image = global::ATT.Properties.Resources.Inspection;
+            this.lblInspectionPageImage.Location = new System.Drawing.Point(3, 0);
+            this.lblInspectionPageImage.Name = "lblInspectionPageImage";
+            this.lblInspectionPageImage.Size = new System.Drawing.Size(44, 70);
+            this.lblInspectionPageImage.TabIndex = 1;
+            this.lblInspectionPageImage.Click += new System.EventHandler(this.InspectionPage_Click);
             // 
             // lblInspectionPage
             // 
@@ -323,6 +425,74 @@
             this.tlpMachineStatus.Size = new System.Drawing.Size(1772, 58);
             this.tlpMachineStatus.TabIndex = 1;
             // 
+            // tableLayoutPanel5
+            // 
+            this.tableLayoutPanel5.ColumnCount = 2;
+            this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 46F));
+            this.tableLayoutPanel5.Controls.Add(this.lblCurrentUser, 0, 0);
+            this.tableLayoutPanel5.Controls.Add(this.pictureBox2, 1, 0);
+            this.tableLayoutPanel5.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel5.Location = new System.Drawing.Point(1592, 0);
+            this.tableLayoutPanel5.Margin = new System.Windows.Forms.Padding(0);
+            this.tableLayoutPanel5.Name = "tableLayoutPanel5";
+            this.tableLayoutPanel5.RowCount = 1;
+            this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel5.Size = new System.Drawing.Size(180, 58);
+            this.tableLayoutPanel5.TabIndex = 1;
+            // 
+            // lblCurrentUser
+            // 
+            this.lblCurrentUser.BackColor = System.Drawing.Color.Transparent;
+            this.lblCurrentUser.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblCurrentUser.Font = new System.Drawing.Font("맑은 고딕", 12.2F, System.Drawing.FontStyle.Bold);
+            this.lblCurrentUser.ForeColor = System.Drawing.Color.Black;
+            this.lblCurrentUser.Location = new System.Drawing.Point(3, 3);
+            this.lblCurrentUser.Margin = new System.Windows.Forms.Padding(3);
+            this.lblCurrentUser.Name = "lblCurrentUser";
+            this.lblCurrentUser.Size = new System.Drawing.Size(128, 52);
+            this.lblCurrentUser.TabIndex = 2;
+            this.lblCurrentUser.Text = "Maker";
+            this.lblCurrentUser.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // pictureBox2
+            // 
+            this.pictureBox2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pictureBox2.Image = global::ATT.Properties.Resources.People;
+            this.pictureBox2.Location = new System.Drawing.Point(134, 0);
+            this.pictureBox2.Margin = new System.Windows.Forms.Padding(0);
+            this.pictureBox2.Name = "pictureBox2";
+            this.pictureBox2.Padding = new System.Windows.Forms.Padding(6);
+            this.pictureBox2.Size = new System.Drawing.Size(46, 58);
+            this.pictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.pictureBox2.TabIndex = 4;
+            this.pictureBox2.TabStop = false;
+            // 
+            // lblCurrentModel
+            // 
+            this.lblCurrentModel.BackColor = System.Drawing.Color.Transparent;
+            this.lblCurrentModel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblCurrentModel.Font = new System.Drawing.Font("맑은 고딕", 12.2F, System.Drawing.FontStyle.Bold);
+            this.lblCurrentModel.ForeColor = System.Drawing.Color.Black;
+            this.lblCurrentModel.Location = new System.Drawing.Point(1415, 3);
+            this.lblCurrentModel.Margin = new System.Windows.Forms.Padding(3);
+            this.lblCurrentModel.Name = "lblCurrentModel";
+            this.lblCurrentModel.Size = new System.Drawing.Size(174, 52);
+            this.lblCurrentModel.TabIndex = 3;
+            this.lblCurrentModel.Text = "COG123";
+            this.lblCurrentModel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // picLogo
+            // 
+            this.picLogo.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.picLogo.Image = global::ATT.Properties.Resources.JastechLogo;
+            this.picLogo.Location = new System.Drawing.Point(3, 3);
+            this.picLogo.Name = "picLogo";
+            this.picLogo.Size = new System.Drawing.Size(214, 52);
+            this.picLogo.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.picLogo.TabIndex = 0;
+            this.picLogo.TabStop = false;
+            // 
             // lblSystemName
             // 
             this.lblSystemName.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(165)))), ((int)(((byte)(207)))), ((int)(((byte)(247)))));
@@ -346,183 +516,14 @@
             this.pnlPage.Size = new System.Drawing.Size(1774, 781);
             this.pnlPage.TabIndex = 3;
             // 
-            // panel2
-            // 
-            this.panel2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panel2.Controls.Add(this.tableLayoutPanel2);
-            this.panel2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel2.Location = new System.Drawing.Point(803, 3);
-            this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(194, 72);
-            this.panel2.TabIndex = 19;
-            // 
-            // tableLayoutPanel2
-            // 
-            this.tableLayoutPanel2.ColumnCount = 2;
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 50F));
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel2.Controls.Add(this.lblSettingPageImage, 0, 0);
-            this.tableLayoutPanel2.Controls.Add(this.lblSettingPage, 1, 0);
-            this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel2.Location = new System.Drawing.Point(0, 0);
-            this.tableLayoutPanel2.Margin = new System.Windows.Forms.Padding(0);
-            this.tableLayoutPanel2.Name = "tableLayoutPanel2";
-            this.tableLayoutPanel2.RowCount = 1;
-            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel2.Size = new System.Drawing.Size(192, 70);
-            this.tableLayoutPanel2.TabIndex = 0;
-            // 
-            // lblSettingPage
-            // 
-            this.lblSettingPage.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblSettingPage.Font = new System.Drawing.Font("맑은 고딕", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.lblSettingPage.Location = new System.Drawing.Point(53, 0);
-            this.lblSettingPage.Name = "lblSettingPage";
-            this.lblSettingPage.Size = new System.Drawing.Size(136, 70);
-            this.lblSettingPage.TabIndex = 0;
-            this.lblSettingPage.Text = "Settings";
-            this.lblSettingPage.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.lblSettingPage.Click += new System.EventHandler(this.SettingPage_Click);
-            // 
             // tmrMainForm
             // 
             this.tmrMainForm.Tick += new System.EventHandler(this.tmrMainForm_Tick);
             // 
-            // lblCurrentUser
-            // 
-            this.lblCurrentUser.BackColor = System.Drawing.Color.Transparent;
-            this.lblCurrentUser.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblCurrentUser.Font = new System.Drawing.Font("맑은 고딕", 12.2F, System.Drawing.FontStyle.Bold);
-            this.lblCurrentUser.ForeColor = System.Drawing.Color.Black;
-            this.lblCurrentUser.Location = new System.Drawing.Point(3, 3);
-            this.lblCurrentUser.Margin = new System.Windows.Forms.Padding(3);
-            this.lblCurrentUser.Name = "lblCurrentUser";
-            this.lblCurrentUser.Size = new System.Drawing.Size(128, 52);
-            this.lblCurrentUser.TabIndex = 2;
-            this.lblCurrentUser.Text = "Maker";
-            this.lblCurrentUser.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // lblCurrentTime
-            // 
-            this.lblCurrentTime.BackColor = System.Drawing.Color.Transparent;
-            this.lblCurrentTime.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblCurrentTime.Font = new System.Drawing.Font("맑은 고딕", 12.2F, System.Drawing.FontStyle.Bold);
-            this.lblCurrentTime.ForeColor = System.Drawing.Color.Black;
-            this.lblCurrentTime.Location = new System.Drawing.Point(1603, 3);
-            this.lblCurrentTime.Margin = new System.Windows.Forms.Padding(3);
-            this.lblCurrentTime.Name = "lblCurrentTime";
-            this.lblCurrentTime.Size = new System.Drawing.Size(166, 72);
-            this.lblCurrentTime.TabIndex = 3;
-            this.lblCurrentTime.Text = "DateTime";
-            this.lblCurrentTime.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // lblCurrentModel
-            // 
-            this.lblCurrentModel.BackColor = System.Drawing.Color.Transparent;
-            this.lblCurrentModel.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblCurrentModel.Font = new System.Drawing.Font("맑은 고딕", 12.2F, System.Drawing.FontStyle.Bold);
-            this.lblCurrentModel.ForeColor = System.Drawing.Color.Black;
-            this.lblCurrentModel.Location = new System.Drawing.Point(1415, 3);
-            this.lblCurrentModel.Margin = new System.Windows.Forms.Padding(3);
-            this.lblCurrentModel.Name = "lblCurrentModel";
-            this.lblCurrentModel.Size = new System.Drawing.Size(174, 52);
-            this.lblCurrentModel.TabIndex = 3;
-            this.lblCurrentModel.Text = "COG123";
-            this.lblCurrentModel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // tableLayoutPanel5
-            // 
-            this.tableLayoutPanel5.ColumnCount = 2;
-            this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 46F));
-            this.tableLayoutPanel5.Controls.Add(this.lblCurrentUser, 0, 0);
-            this.tableLayoutPanel5.Controls.Add(this.pictureBox2, 1, 0);
-            this.tableLayoutPanel5.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel5.Location = new System.Drawing.Point(1592, 0);
-            this.tableLayoutPanel5.Margin = new System.Windows.Forms.Padding(0);
-            this.tableLayoutPanel5.Name = "tableLayoutPanel5";
-            this.tableLayoutPanel5.RowCount = 1;
-            this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel5.Size = new System.Drawing.Size(180, 58);
-            this.tableLayoutPanel5.TabIndex = 1;
-            // 
-            // lblSettingPageImage
-            // 
-            this.lblSettingPageImage.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblSettingPageImage.Image = ((System.Drawing.Image)(resources.GetObject("lblSettingPageImage.Image")));
-            this.lblSettingPageImage.Location = new System.Drawing.Point(3, 0);
-            this.lblSettingPageImage.Name = "lblSettingPageImage";
-            this.lblSettingPageImage.Size = new System.Drawing.Size(44, 70);
-            this.lblSettingPageImage.TabIndex = 1;
-            this.lblSettingPageImage.Click += new System.EventHandler(this.SettingPage_Click);
-            // 
-            // lblLogPageImage
-            // 
-            this.lblLogPageImage.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblLogPageImage.Image = ((System.Drawing.Image)(resources.GetObject("lblLogPageImage.Image")));
-            this.lblLogPageImage.Location = new System.Drawing.Point(3, 0);
-            this.lblLogPageImage.Name = "lblLogPageImage";
-            this.lblLogPageImage.Size = new System.Drawing.Size(44, 70);
-            this.lblLogPageImage.TabIndex = 1;
-            this.lblLogPageImage.Click += new System.EventHandler(this.LogPage_Click);
-            // 
-            // lblTeachingPageImage
-            // 
-            this.lblTeachingPageImage.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblTeachingPageImage.Image = global::ATT.Properties.Resources.Teaching;
-            this.lblTeachingPageImage.Location = new System.Drawing.Point(3, 0);
-            this.lblTeachingPageImage.Name = "lblTeachingPageImage";
-            this.lblTeachingPageImage.Size = new System.Drawing.Size(44, 70);
-            this.lblTeachingPageImage.TabIndex = 1;
-            this.lblTeachingPageImage.Click += new System.EventHandler(this.TeachPage_Click);
-            // 
-            // lblModelPageImage
-            // 
-            this.lblModelPageImage.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblModelPageImage.Image = ((System.Drawing.Image)(resources.GetObject("lblModelPageImage.Image")));
-            this.lblModelPageImage.Location = new System.Drawing.Point(3, 0);
-            this.lblModelPageImage.Name = "lblModelPageImage";
-            this.lblModelPageImage.Size = new System.Drawing.Size(44, 70);
-            this.lblModelPageImage.TabIndex = 1;
-            this.lblModelPageImage.Click += new System.EventHandler(this.ModelPage_Click);
-            // 
-            // lblInspectionPageImage
-            // 
-            this.lblInspectionPageImage.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblInspectionPageImage.Image = global::ATT.Properties.Resources.Inspection;
-            this.lblInspectionPageImage.Location = new System.Drawing.Point(3, 0);
-            this.lblInspectionPageImage.Name = "lblInspectionPageImage";
-            this.lblInspectionPageImage.Size = new System.Drawing.Size(44, 70);
-            this.lblInspectionPageImage.TabIndex = 1;
-            this.lblInspectionPageImage.Click += new System.EventHandler(this.InspectionPage_Click);
-            // 
-            // pictureBox2
-            // 
-            this.pictureBox2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pictureBox2.Image = global::ATT.Properties.Resources.People;
-            this.pictureBox2.Location = new System.Drawing.Point(134, 0);
-            this.pictureBox2.Margin = new System.Windows.Forms.Padding(0);
-            this.pictureBox2.Name = "pictureBox2";
-            this.pictureBox2.Padding = new System.Windows.Forms.Padding(6);
-            this.pictureBox2.Size = new System.Drawing.Size(46, 58);
-            this.pictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.pictureBox2.TabIndex = 4;
-            this.pictureBox2.TabStop = false;
-            // 
-            // picLogo
-            // 
-            this.picLogo.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.picLogo.Image = global::ATT.Properties.Resources.JastechLogo;
-            this.picLogo.Location = new System.Drawing.Point(3, 3);
-            this.picLogo.Name = "picLogo";
-            this.picLogo.Size = new System.Drawing.Size(214, 52);
-            this.picLogo.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.picLogo.TabIndex = 0;
-            this.picLogo.TabStop = false;
-            // 
             // MainForm
             // 
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
+            this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(1774, 921);
             this.Controls.Add(this.tlpMainForm);
@@ -536,6 +537,8 @@
             this.tlpMainForm.ResumeLayout(false);
             this.pnlFunctionButtons.ResumeLayout(false);
             this.tlpFunctionButtons.ResumeLayout(false);
+            this.panel2.ResumeLayout(false);
+            this.tableLayoutPanel2.ResumeLayout(false);
             this.panel4.ResumeLayout(false);
             this.tableLayoutPanel4.ResumeLayout(false);
             this.panel3.ResumeLayout(false);
@@ -546,8 +549,6 @@
             this.tableLayoutPanel1.ResumeLayout(false);
             this.pnlMachineStatus.ResumeLayout(false);
             this.tlpMachineStatus.ResumeLayout(false);
-            this.panel2.ResumeLayout(false);
-            this.tableLayoutPanel2.ResumeLayout(false);
             this.tableLayoutPanel5.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.picLogo)).EndInit();

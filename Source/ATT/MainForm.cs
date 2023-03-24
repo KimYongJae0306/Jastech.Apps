@@ -1,10 +1,15 @@
-﻿using Jastech.Apps.Winform.UI.Pages;
+﻿using ATT.Core;
+using ATT.UI.Pages;
+using Jastech.Apps.Structure;
+using Jastech.Apps.Winform.Settings;
 using Jastech.Framework.Config;
+using Jastech.Framework.Structure;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -17,14 +22,22 @@ namespace ATT
         #region 속성
         // Page Control
         private AutoPage AutoPageControl { get; set; } = new AutoPage();
+
         private TeachingPage TeachingPageControl { get; set; } = new TeachingPage();
+
         private ModelPage ModelPageControl { get; set; } = new ModelPage();
+
         private RecipePage RecipePageControl { get; set; } = new RecipePage();
+
         private LogPage LogPageControl { get; set; } = new LogPage();
+
         private ConfigPage ConfigPageControl { get; set; } = new ConfigPage();
 
         private List<UserControl> PageControlList = null;
+
         private List<Label> PageLabelList = null;
+
+        ATTInspModelService ATTInspModelService = new ATTInspModelService();
         #endregion
 
         public MainForm()
@@ -35,7 +48,7 @@ namespace ATT
         private void MainForm_Load(object sender, EventArgs e)
         {
             AddControls();
-            InitializeUI();
+            SelectInspectionPage();
             tmrMainForm.Start();
         }
 
@@ -45,6 +58,9 @@ namespace ATT
             PageControlList = new List<UserControl>();
             PageControlList.Add(AutoPageControl);
             PageControlList.Add(TeachingPageControl);
+
+            ModelPageControl.InspModelService = ATTInspModelService;
+            ModelPageControl.ApplyModelEventHandler += ModelPageControl_ApplyModelEventHandler;
             PageControlList.Add(ModelPageControl);
             PageControlList.Add(RecipePageControl);
             PageControlList.Add(LogPageControl);
@@ -59,35 +75,13 @@ namespace ATT
             PageLabelList.Add(lblSettingPage);
         }
 
-        private void btnAutoPage_Click(object sender, EventArgs e)
+        private void ModelPageControl_ApplyModelEventHandler(string modelName)
         {
-            
-        }
+            string modelDir = AppSettings.Instance().Path.Model;
+            string filePath = Path.Combine(modelDir, modelName, InspModel.FileName);
 
-        private void btnTeachPage_Click(object sender, EventArgs e)
-        {
-            
-        }
-
-        private void btnModelPage_Click(object sender, EventArgs e)
-        {
-            
-        }
-
-        private void btnRecipePage_Click(object sender, EventArgs e)
-        {
-            SetSelectLabel(sender);
-            SetSelectPage(selectedControl: RecipePageControl);
-        }
-
-        private void btnLogPage_Click(object sender, EventArgs e)
-        {
-            
-        }
-
-        private void btnConfigPage_Click(object sender, EventArgs e)
-        {
-            
+            ModelManager.Instance().CurrentModel = ATTInspModelService.Load(filePath);
+            SelectInspectionPage();
         }
 
         private void SetSelectLabel(object sender)
@@ -109,7 +103,7 @@ namespace ATT
             pnlPage.Controls.Add(selectedControl);
         }
 
-        private void InitializeUI()
+        private void SelectInspectionPage()
         {
             SetSelectLabel(lblInspectionPage);
             SetSelectPage(selectedControl: AutoPageControl);
@@ -119,8 +113,6 @@ namespace ATT
         {
             DateTime now = DateTime.Now;
             lblCurrentTime.Text = now.ToString("yyyy-MM-dd HH:mm:ss");
-            //lblDate.Text = DateTime.Now.ToShortDateString();
-            //lblTime.Text = DateTime.Now.ToLongTimeString();
         }
 
         private void ModelPage_Click(object sender, EventArgs e)

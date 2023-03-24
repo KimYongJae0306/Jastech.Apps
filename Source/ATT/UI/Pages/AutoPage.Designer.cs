@@ -1,6 +1,6 @@
-﻿namespace Jastech.Apps.Winform.UI.Pages
+﻿namespace ATT.UI.Pages
 {
-    partial class ConfigPage
+    partial class AutoPage
     {
         /// <summary> 
         /// 필수 디자이너 변수입니다.
@@ -34,20 +34,20 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(346, 490);
+            this.label1.Location = new System.Drawing.Point(213, 81);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(90, 20);
-            this.label1.TabIndex = 1;
-            this.label1.Text = "ConfigPage";
+            this.label1.Size = new System.Drawing.Size(78, 20);
+            this.label1.TabIndex = 0;
+            this.label1.Text = "AutoPage";
             // 
-            // ConfigPage
+            // AutoPage
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
             this.Controls.Add(this.label1);
             this.Font = new System.Drawing.Font("맑은 고딕", 11.25F, System.Drawing.FontStyle.Bold);
-            this.Name = "ConfigPage";
+            this.Name = "AutoPage";
             this.Size = new System.Drawing.Size(600, 600);
             this.ResumeLayout(false);
             this.PerformLayout();

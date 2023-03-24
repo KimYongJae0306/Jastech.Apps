@@ -1,4 +1,4 @@
-﻿namespace Jastech.Apps.Winform.UI.Pages
+﻿namespace ATT.UI.Pages
 {
     partial class ModelPage
     {

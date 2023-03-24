@@ -8,11 +8,11 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace Jastech.Apps.Winform.UI.Pages
+namespace ATT.UI.Pages
 {
-    public partial class RecipePage : UserControl
+    public partial class ConfigPage : UserControl
     {
-        public RecipePage()
+        public ConfigPage()
         {
             InitializeComponent();
         }

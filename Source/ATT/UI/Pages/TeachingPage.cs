@@ -8,8 +8,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Jastech.Framework.Winform.VisionPro.Controls;
+using Jastech.Apps.Winform.UI.Controls;
 
-namespace Jastech.Apps.Winform.UI.Pages
+namespace ATT.UI.Pages
 {
     public partial class TeachingPage : UserControl
     {
@@ -18,7 +19,7 @@ namespace Jastech.Apps.Winform.UI.Pages
         private CogDisplayControl TeachDisplay = null;
 
         // Teach Controls
-        private CogPatternMatchingParamControl PatternMatchControl { get; set; } = new CogPatternMatchingParamControl();
+        private PatternMatchtingControl PatternMatchControl { get; set; } = new PatternMatchtingControl();
 
         // Control List
         private List<UserControl> TeachControlList = null;
