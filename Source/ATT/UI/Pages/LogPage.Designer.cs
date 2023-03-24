@@ -34,7 +34,7 @@
             this.tlpLogItem = new System.Windows.Forms.TableLayoutPanel();
             this.btnAlarm = new System.Windows.Forms.Button();
             this.btnOperation = new System.Windows.Forms.Button();
-            this.label1 = new System.Windows.Forms.Label();
+            this.tabLogPage = new System.Windows.Forms.TabControl();
             this.tlpLogPage.SuspendLayout();
             this.pnlLogPage.SuspendLayout();
             this.pnlLogItem.SuspendLayout();
@@ -59,7 +59,7 @@
             // 
             // pnlLogPage
             // 
-            this.pnlLogPage.Controls.Add(this.label1);
+            this.pnlLogPage.Controls.Add(this.tabLogPage);
             this.pnlLogPage.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pnlLogPage.Location = new System.Drawing.Point(0, 0);
             this.pnlLogPage.Margin = new System.Windows.Forms.Padding(0);
@@ -123,14 +123,18 @@
             this.btnOperation.Text = "OP";
             this.btnOperation.UseVisualStyleBackColor = false;
             // 
-            // label1
+            // tabLogPage
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(184, 290);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(69, 20);
-            this.label1.TabIndex = 3;
-            this.label1.Text = "LogPage";
+            this.tabLogPage.Appearance = System.Windows.Forms.TabAppearance.Buttons;
+            this.tabLogPage.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tabLogPage.Font = new System.Drawing.Font("맑은 고딕", 11.25F, System.Drawing.FontStyle.Bold);
+            this.tabLogPage.Location = new System.Drawing.Point(0, 0);
+            this.tabLogPage.Margin = new System.Windows.Forms.Padding(0);
+            this.tabLogPage.Name = "tabLogPage";
+            this.tabLogPage.SelectedIndex = 0;
+            this.tabLogPage.Size = new System.Drawing.Size(440, 600);
+            this.tabLogPage.TabIndex = 1;
+            this.tabLogPage.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.tabLogPage_DrawItem);
             // 
             // LogPage
             // 
@@ -141,9 +145,9 @@
             this.Font = new System.Drawing.Font("맑은 고딕", 11.25F, System.Drawing.FontStyle.Bold);
             this.Name = "LogPage";
             this.Size = new System.Drawing.Size(600, 600);
+            this.Load += new System.EventHandler(this.LogPage_Load);
             this.tlpLogPage.ResumeLayout(false);
             this.pnlLogPage.ResumeLayout(false);
-            this.pnlLogPage.PerformLayout();
             this.pnlLogItem.ResumeLayout(false);
             this.tlpLogItem.ResumeLayout(false);
             this.ResumeLayout(false);
@@ -158,6 +162,6 @@
         private System.Windows.Forms.TableLayoutPanel tlpLogItem;
         private System.Windows.Forms.Button btnAlarm;
         private System.Windows.Forms.Button btnOperation;
-        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.TabControl tabLogPage;
     }
 }
