@@ -32,11 +32,11 @@ namespace ATT.Core
 
             JsonConvertHelper.LoadToExistingTarget<ATTInspModel>(filePath, model);
 
-            string alignPath = Path.GetDirectoryName(filePath) + @"\Align";
+            string preAlignPath = Path.GetDirectoryName(filePath) + @"\PreAlign";
 
             foreach (var item in model.PreAlignParams)
             {
-                item.LoadTool(alignPath);
+                item.LoadTool(preAlignPath);
             }
 
             return model;
@@ -48,11 +48,11 @@ namespace ATT.Core
 
             JsonConvertHelper.Save(filePath, attInspModel);
 
-            string alignPath = Path.GetDirectoryName(filePath) + @"\Align";
+            string preAlignPath = Path.GetDirectoryName(filePath) + @"\PreAlign";
 
             foreach (var item in attInspModel.PreAlignParams)
             {
-                item.SaveTool(alignPath);
+                item.SaveTool(preAlignPath);
             }
         }
     }

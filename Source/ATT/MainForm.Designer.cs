@@ -479,7 +479,6 @@
             this.lblCurrentModel.Name = "lblCurrentModel";
             this.lblCurrentModel.Size = new System.Drawing.Size(174, 52);
             this.lblCurrentModel.TabIndex = 3;
-            this.lblCurrentModel.Text = "COG123";
             this.lblCurrentModel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // picLogo
