@@ -138,7 +138,7 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         private void lblPrev_Click(object sender, EventArgs e)
         {
-            if (cbxPreAlignList.SelectedIndex < 0)
+            if (cbxPreAlignList.SelectedIndex <= 0)
                 return;
 
             cbxPreAlignList.SelectedIndex -= 1;
@@ -159,6 +159,36 @@ namespace Jastech.Apps.Winform.UI.Controls
         public List<CogPatternMatchingParam> GetTeachingData()
         {
             return PatternMatchingList;
+        }
+
+        private void cbxPreAlignList_DrawItem(object sender, DrawItemEventArgs e)
+        {
+            DrawComboboxCenterAlign(sender, e);
+        }
+
+        private void DrawComboboxCenterAlign(object sender, DrawItemEventArgs e)
+        {
+            ComboBox cmb = sender as ComboBox;
+
+            if (cmb != null)
+            {
+                e.DrawBackground();
+                cmb.ItemHeight = lblPrev.Height - 6;
+
+                if (e.Index >= 0)
+                {
+                    StringFormat sf = new StringFormat();
+                    sf.LineAlignment = StringAlignment.Center;
+                    sf.Alignment = StringAlignment.Center;
+
+                    Brush brush = new SolidBrush(cmb.ForeColor);
+
+                    if ((e.State & DrawItemState.Selected) == DrawItemState.Selected)
+                        brush = SystemBrushes.HighlightText;
+
+                    e.Graphics.DrawString(cmb.Items[e.Index].ToString(), cmb.Font, brush, e.Bounds, sf);
+                }
+            }
         }
     }
 }
