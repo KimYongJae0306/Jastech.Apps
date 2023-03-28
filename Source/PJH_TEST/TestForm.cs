@@ -20,7 +20,7 @@ namespace PJH_TEST
 
         private void button1_Click(object sender, EventArgs e)
         {
-            HistoryForm form = new HistoryForm();
+            KeyBoardForm form = new KeyBoardForm();
             form.ShowDialog();
     }
     }
