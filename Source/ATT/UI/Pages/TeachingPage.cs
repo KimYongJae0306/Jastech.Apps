@@ -28,6 +28,8 @@ namespace ATT.UI.Pages
 
         // Teach Controls
         private PreAlignControl PreAlignControl { get; set; } = new PreAlignControl();
+		private AlignControl AlignControl { get; set; } = new AlignControl();
+        private AkkonControl AkkonControl { get; set; } = new AkkonControl();
 
         // Control List
         private List<UserControl> TeachControlList = null;
@@ -57,6 +59,8 @@ namespace ATT.UI.Pages
             // Teach Control List
             TeachControlList = new List<UserControl>();
             TeachControlList.Add(PreAlignControl);
+			TeachControlList.Add(AlignControl);
+            TeachControlList.Add(AkkonControl);
 
             // Button List
             TeachButtonList = new List<Button>();
@@ -81,11 +85,13 @@ namespace ATT.UI.Pages
         private void btnAlign_Click(object sender, EventArgs e)
         {
             SetSelectButton(sender);
+            SetSelectTeachPage(AlignControl);
         }
 
         private void btnAkkon_Click(object sender, EventArgs e)
         {
             SetSelectButton(sender);
+            SetSelectTeachPage(AkkonControl);
         }
 
         private void SetSelectButton(object sender)

@@ -74,6 +74,18 @@
     </Compile>
     <Compile Include="Settings\AppConfig.cs" />
     <Compile Include="TeachingUIManager.cs" />
+    <Compile Include="UI\Controls\AkkonControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UI\Controls\AkkonControl.designer.cs">
+      <DependentUpon>AkkonControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Controls\AlignControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UI\Controls\AlignControl.designer.cs">
+      <DependentUpon>AlignControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="UI\Controls\PreAlignControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -85,6 +97,12 @@
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\Controls\AkkonControl.resx">
+      <DependentUpon>AkkonControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\Controls\AlignControl.resx">
+      <DependentUpon>AlignControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\Controls\PreAlignControl.resx">
       <DependentUpon>PreAlignControl.cs</DependentUpon>
