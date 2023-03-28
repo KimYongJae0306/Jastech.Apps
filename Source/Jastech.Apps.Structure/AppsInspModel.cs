@@ -23,12 +23,23 @@ namespace Jastech.Apps.Structure
         [JsonProperty]
         public List<CogPatternMatchingParam> PreAlignParams { get; set; } = new List<CogPatternMatchingParam>();
 
+        [JsonProperty]
+        public List<CogCaliperParam> AlignParams { get; set; } = new List<CogCaliperParam>();
+
         public void SetPreAlignParams(List<CogPatternMatchingParam> matchingParam)
         {
             foreach (var prevParam in PreAlignParams)
                 prevParam.Dispose();
 
             PreAlignParams = matchingParam.Select(x => x.DeepCopy()).ToList();
+        }
+
+        public void SetAlignParams(List<CogCaliperParam> caliperParam)
+        {
+            foreach (var prevParam in AlignParams)
+                prevParam.Dispose();
+
+            AlignParams = caliperParam.Select(x => x.DeepCopy()).ToList();
         }
     }
 }
