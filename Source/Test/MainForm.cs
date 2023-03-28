@@ -21,6 +21,7 @@ namespace Test
     {
         CogDisplayControl display;
         CogPMAlignTool CogPMAlignTool;
+        CogThumbnailControl thumbnail;
         ICogImage CogImage;
         ModelForm form;
         CogPatternMatchingParamControl CogPatternMatchingParamControl = new CogPatternMatchingParamControl();
@@ -37,8 +38,10 @@ namespace Test
             panel1.Controls.Add(display);
 
 
-            CogPatternMatchingParamControl.Dock = DockStyle.Fill;
-            pnlTest.Controls.Add(CogPatternMatchingParamControl);
+            //CogPatternMatchingParamControl.Dock = DockStyle.Fill;
+            thumbnail = new CogThumbnailControl();
+            thumbnail.Dock = DockStyle.Fill;
+            pnlTest.Controls.Add(thumbnail);
 
             //Settings.Instance().Initialize();
         }
@@ -73,9 +76,17 @@ namespace Test
 
         private void button2_Click(object sender, EventArgs e)
         {
-            ModelForm form = new ModelForm();
-            form.ModelPath = @"D:\1.Programs\Jastech.Apps\Jastech.Apps\Runtime\Model";
-            form.Show();
+            string filePath = @"D:\06_35_19_0_0.bmp";
+
+            ICogImage image = CogImageHelper.Load(filePath);
+
+            display.SetImage(image);
+            thumbnail.SetThumbnailImage(image);
+            var g = image.ScaleImage(100, 100);
+            //CogImageHelper.Save(g, @"d:\1234.bmp");
+            //ModelForm form = new ModelForm();
+            //form.ModelPath = @"D:\1.Programs\Jastech.Apps\Jastech.Apps\Runtime\Model";
+            //form.Show();
         }
     }
 }
