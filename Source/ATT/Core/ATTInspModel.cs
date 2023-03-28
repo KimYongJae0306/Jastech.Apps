@@ -1,16 +1,15 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Jastech.Apps.Winform.Settings
+namespace ATT.Core
 {
-    public class OperationSettings
+    public class ATTInspModel : Jastech.Apps.Structure.AppsInspModel
     {
-        #region 속성
+        [JsonProperty]
         public int TabCount { get; set; } = 5;
-
-        #endregion
     }
 }

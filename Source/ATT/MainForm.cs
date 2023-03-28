@@ -37,7 +37,7 @@ namespace ATT
 
         private List<Label> PageLabelList = null;
 
-        ATTInspModelService ATTInspModelService = new ATTInspModelService();
+        public ATTInspModelService ATTInspModelService { get; set; } = new ATTInspModelService();
         #endregion
 
         public MainForm()
@@ -49,7 +49,21 @@ namespace ATT
         {
             AddControls();
             SelectInspectionPage();
+
+            ModelManager.Instance().CurrentModelChangedEvent += MainForm_CurrentModelChangedEvent;
+
+            if (ModelManager.Instance().CurrentModel != null)
+            {
+                lblCurrentModel.Text = ModelManager.Instance().CurrentModel.Name;
+                ModelManager.Instance().ApplyChangedEvent();
+            }
+
             tmrMainForm.Start();
+        }
+
+        private void MainForm_CurrentModelChangedEvent(InspModel inspModel)
+        {
+            TeachingPageControl.UpdateModel(inspModel);
         }
 
         private void AddControls()
@@ -77,11 +91,18 @@ namespace ATT
 
         private void ModelPageControl_ApplyModelEventHandler(string modelName)
         {
-            string modelDir = AppSettings.Instance().Path.Model;
+            string modelDir = AppConfig.Instance().Path.Model;
             string filePath = Path.Combine(modelDir, modelName, InspModel.FileName);
 
             ModelManager.Instance().CurrentModel = ATTInspModelService.Load(filePath);
             SelectInspectionPage();
+
+            lblCurrentModel.Text = modelName;
+
+            AppConfig.Instance().Operation.LastModelName = modelName;
+
+            AppConfig.Instance().Operation.Save(AppConfig.Instance().Path.Config);
+            //AppSettings.Instance().Operation.Save();
         }
 
         private void SetSelectLabel(object sender)

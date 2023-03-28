@@ -1,8 +1,10 @@
 ﻿using Jastech.Apps.Structure.VisionTool;
+using Jastech.Framework.Imaging.VisionPro.VisionAlgorithms.Parameters;
 using Jastech.Framework.Structure;
 using Jastech.Framework.Util.Helper;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,24 +15,45 @@ namespace ATT.Core
     {
         public override InspModel New()
         {
-            var newInspModel = new ATTInpModel();
+            var newInspModel = new ATTInspModel();
 
             foreach (PreAlignName type in Enum.GetValues(typeof(PreAlignName)))
             {
-                PatternMachingAlgorithmTool preAlign = new PatternMachingAlgorithmTool();
+                CogPatternMatchingParam preAlign = new CogPatternMatchingParam();
                 preAlign.Name = type.ToString();
-                newInspModel.AlgorithmTool.Align.Add(preAlign);
+                newInspModel.PreAlignParams.Add(preAlign);
             }
             return newInspModel;
         }
 
         public override InspModel Load(string filePath)
-        {
-            var model = new ATTInpModel();
+        {  
+            var model = new ATTInspModel();
 
-            JsonConvertHelper.LoadToExistingTarget<ATTInpModel>(filePath, model);
+            JsonConvertHelper.LoadToExistingTarget<ATTInspModel>(filePath, model);
+
+            string alignPath = Path.GetDirectoryName(filePath) + @"\Align";
+
+            foreach (var item in model.PreAlignParams)
+            {
+                item.LoadTool(alignPath);
+            }
 
             return model;
+        }
+
+        public override void Save(string filePath, InspModel model)
+        {
+            ATTInspModel attInspModel = model as ATTInspModel;
+
+            JsonConvertHelper.Save(filePath, attInspModel);
+
+            string alignPath = Path.GetDirectoryName(filePath) + @"\Align";
+
+            foreach (var item in attInspModel.PreAlignParams)
+            {
+                item.SaveTool(alignPath);
+            }
         }
     }
 }

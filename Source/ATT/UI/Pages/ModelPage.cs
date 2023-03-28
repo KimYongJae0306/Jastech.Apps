@@ -45,7 +45,7 @@ namespace ATT.UI.Pages
 
         private void AddControl()
         {
-            ModelControl.ModelPath = AppSettings.Instance().Path.Model;
+            ModelControl.ModelPath = AppConfig.Instance().Path.Model;
             ModelControl.CreateModelEventHandler += ModelControl_CreateModelEventHandler;
             ModelControl.EditModelEventHandler += ModelControl_EditModelEventHandler;
             ModelControl.CopyModelEventHandler += ModelControl_CopyModelEventHandler;
@@ -59,7 +59,7 @@ namespace ATT.UI.Pages
         {
             if (InspModelService != null)
             {
-                string modelDir = AppSettings.Instance().Path.Model;
+                string modelDir = AppConfig.Instance().Path.Model;
                 string filePath = Path.Combine(modelDir, prevModelName, InspModel.FileName);
                 InspModel prevModel = InspModelService.Load(filePath);
                 prevModel.Name = newModelName;
@@ -72,7 +72,7 @@ namespace ATT.UI.Pages
         {
             if (InspModelService != null)
             {
-                string modelDir = AppSettings.Instance().Path.Model;
+                string modelDir = AppConfig.Instance().Path.Model;
                 string filePath = Path.Combine(modelDir, prevModelName, InspModel.FileName);
                 InspModel prevModel = InspModelService.Load(filePath);
 
@@ -90,7 +90,7 @@ namespace ATT.UI.Pages
                 newModel.ModifiedDate = model.ModifiedDate;
                 newModel.Description = model.Description;
 
-                ModelFileHelper.Save(AppSettings.Instance().Path.Model, newModel);
+                ModelFileHelper.Save(AppConfig.Instance().Path.Model, newModel);
             }
         }
 

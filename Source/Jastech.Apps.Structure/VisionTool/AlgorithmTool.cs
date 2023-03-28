@@ -9,8 +9,8 @@ namespace Jastech.Apps.Structure.VisionTool
 {
     public class AlgorithmTool
     {
-        [JsonProperty]
-        public List<PatternMachingAlgorithmTool> PreAlign { get; set; } = new List<PatternMachingAlgorithmTool>();
+        //[JsonProperty]
+        //public List<PatternMachingAlgorithmTool> PreAlign { get; set; } = new List<PatternMachingAlgorithmTool>();
 
         [JsonProperty]
         public List<IVisionTool> Align { get; set; } = new List<IVisionTool>();
