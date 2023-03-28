@@ -31,7 +31,7 @@ namespace ATT
 
         private LogPage LogPageControl { get; set; } = new LogPage();
 
-        private ConfigPage ConfigPageControl { get; set; } = new ConfigPage();
+        private SettingPage SettingPageControl { get; set; } = new SettingPage();
 
         private List<UserControl> PageControlList = null;
 
@@ -78,7 +78,7 @@ namespace ATT
             PageControlList.Add(ModelPageControl);
             PageControlList.Add(RecipePageControl);
             PageControlList.Add(LogPageControl);
-            PageControlList.Add(ConfigPageControl);
+            PageControlList.Add(SettingPageControl);
 
             // Button List
             PageLabelList = new List<Label>();
@@ -102,7 +102,6 @@ namespace ATT
             AppConfig.Instance().Operation.LastModelName = modelName;
 
             AppConfig.Instance().Operation.Save(AppConfig.Instance().Path.Config);
-            //AppSettings.Instance().Operation.Save();
         }
 
         private void SetSelectLabel(object sender)
@@ -163,7 +162,7 @@ namespace ATT
         private void SettingPage_Click(object sender, EventArgs e)
         {
             SetSelectLabel(sender);
-            SetSelectPage(selectedControl: ConfigPageControl);
+            SetSelectPage(selectedControl: SettingPageControl);
         }
     }
 }

@@ -8,11 +8,11 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace ATT.UI.Pages
+namespace ATT.UI.Controls
 {
-    public partial class ConfigPage : UserControl
+    public partial class OperationSettingsControl : UserControl
     {
-        public ConfigPage()
+        public OperationSettingsControl()
         {
             InitializeComponent();
         }
