@@ -23,6 +23,14 @@ namespace ATT.Core
                 preAlign.Name = type.ToString();
                 newInspModel.PreAlignParams.Add(preAlign);
             }
+
+            foreach (AlignName type in Enum.GetValues(typeof(AlignName)))
+            {
+                CogCaliperParam align = new CogCaliperParam();
+                align.Name = type.ToString();
+                newInspModel.AlignParams.Add(align);
+            }
+
             return newInspModel;
         }
 
@@ -33,11 +41,12 @@ namespace ATT.Core
             JsonConvertHelper.LoadToExistingTarget<ATTInspModel>(filePath, model);
 
             string preAlignPath = Path.GetDirectoryName(filePath) + @"\PreAlign";
-
             foreach (var item in model.PreAlignParams)
-            {
                 item.LoadTool(preAlignPath);
-            }
+
+            string alignPath = Path.GetDirectoryName(filePath) + @"\Align";
+            foreach (var item in model.AlignParams)
+                item.LoadTool(alignPath);
 
             return model;
         }
@@ -49,11 +58,12 @@ namespace ATT.Core
             JsonConvertHelper.Save(filePath, attInspModel);
 
             string preAlignPath = Path.GetDirectoryName(filePath) + @"\PreAlign";
-
             foreach (var item in attInspModel.PreAlignParams)
-            {
                 item.SaveTool(preAlignPath);
-            }
+
+            string alignPath = Path.GetDirectoryName(filePath) + @"\Align";
+            foreach (var item in attInspModel.AlignParams)
+                item.SaveTool(alignPath);
         }
     }
 }

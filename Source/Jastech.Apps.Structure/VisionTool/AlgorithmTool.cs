@@ -36,4 +36,9 @@ namespace Jastech.Apps.Structure.VisionTool
         SubLeft4,
         SubRight4,
     }
+
+    public enum AlignName
+    {
+        Stage1,
+    }
 }
