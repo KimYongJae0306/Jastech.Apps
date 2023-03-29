@@ -14,17 +14,15 @@ namespace Jastech.Apps.Winform.UI.Controls
     public partial class AkkonControl : UserControl
     {
         #region 필드
-        private AkkonParamControl AkkonParamControl { get; set; } = new AkkonParamControl();
         #endregion
+
+        private AkkonParamControl AkkonParamControl { get; set; } = new AkkonParamControl();
 
         #region 속성
         #endregion
 
         #region 이벤트
-        private void AkkonControl_Load(object sender, EventArgs e)
-        {
-            AddControl();
-        }
+
         #endregion
 
         #region 델리게이트
@@ -38,6 +36,11 @@ namespace Jastech.Apps.Winform.UI.Controls
         #endregion
 
         #region 메서드
+        private void AkkonControl_Load(object sender, EventArgs e)
+        {
+            AddControl();
+        }
+
         private void AddControl()
         {
             AkkonParamControl.Dock = DockStyle.Fill;
