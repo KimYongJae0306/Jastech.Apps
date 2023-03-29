@@ -11,5 +11,8 @@ namespace ATT.Core
     {
         [JsonProperty]
         public int TabCount { get; set; } = 5;
+
+        [JsonProperty]
+        public List<Tab> TabList { get; set; } = new List<Tab>();
     }
 }

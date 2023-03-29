@@ -72,6 +72,7 @@
   <ItemGroup>
     <Compile Include="Core\ATTInspModel.cs" />
     <Compile Include="Core\ATTInspModelService.cs" />
+    <Compile Include="Core\Tab.cs" />
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
     </Compile>

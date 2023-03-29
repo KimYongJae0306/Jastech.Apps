@@ -24,12 +24,25 @@ namespace ATT.Core
                 newInspModel.PreAlignParams.Add(preAlign);
             }
 
-            foreach (AlignName type in Enum.GetValues(typeof(AlignName)))
+            for (int i = 0; i < newInspModel.TabCount; i++)
             {
-                CogCaliperParam align = new CogCaliperParam();
-                align.Name = type.ToString();
-                newInspModel.AlignParams.Add(align);
+                Tab tab = new Tab();
+                // 필요한 Tool 추가 
+                //
+                tab.FPCCaliperAlignXList.Add(new CogCaliperParam());
+                tab.FPCCaliperAlignYList.Add(new CogCaliperParam());
+
+                tab.PanelCaliperAlignXList.Add(new CogCaliperParam());
+                tab.PanelCaliperAlignYList.Add(new CogCaliperParam());
+
+                newInspModel.TabList.Add(tab);
             }
+            //foreach (AlignName type in Enum.GetValues(typeof(AlignName)))
+            //{
+            //    CogCaliperParam align = new CogCaliperParam();
+            //    align.Name = type.ToString();
+            //    newInspModel.AlignParams.Add(align);
+            //}
 
             return newInspModel;
         }
