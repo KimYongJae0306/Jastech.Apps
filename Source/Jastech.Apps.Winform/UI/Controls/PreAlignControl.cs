@@ -13,6 +13,7 @@ using Jastech.Framework.Imaging.VisionPro.VisionAlgorithms.Parameters;
 using Cognex.VisionPro;
 using Jastech.Framework.Imaging.VisionPro;
 using Jastech.Framework.Imaging.VisionPro.VisionAlgorithms;
+using Jastech.Apps.Structure;
 
 namespace Jastech.Apps.Winform.UI.Controls
 {
@@ -57,6 +58,9 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         public void SetParams(List<CogPatternMatchingParam> paramList)
         {
+            if (paramList.Count <= 0)
+                return;
+
             PatternMatchingList = paramList;
 
             cbxPreAlignList.Items.Clear();
@@ -83,6 +87,9 @@ namespace Jastech.Apps.Winform.UI.Controls
         {
             var display = TeachingUIManager.Instance().TeachingDisplay;
             if (display.GetImage() == null)
+                return;
+
+            if (ModelManager.Instance().CurrentModel == null)
                 return;
 
             SetNewROI(display);

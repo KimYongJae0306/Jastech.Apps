@@ -11,6 +11,7 @@ using Jastech.Framework.Winform.VisionPro.Controls;
 using Jastech.Framework.Imaging.VisionPro.VisionAlgorithms.Parameters;
 using Jastech.Framework.Imaging.VisionPro.VisionAlgorithms;
 using Cognex.VisionPro;
+using Jastech.Apps.Structure;
 
 namespace Jastech.Apps.Winform.UI.Controls
 {
@@ -72,6 +73,9 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         public void SetParams(List<CogCaliperParam> paramList)
         {
+            if (paramList.Count <= 0)
+                return;
+
             CaliperList = paramList;
 
             cmbAlignList.Items.Clear();
@@ -97,6 +101,9 @@ namespace Jastech.Apps.Winform.UI.Controls
         {
             var display = TeachingUIManager.Instance().TeachingDisplay;
             if (display.GetImage() == null)
+                return;
+
+            if (ModelManager.Instance().CurrentModel == null)
                 return;
 
             SetNewROI(display);
