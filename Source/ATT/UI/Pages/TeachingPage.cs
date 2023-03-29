@@ -118,6 +118,7 @@ namespace ATT.UI.Pages
             ATTInspModel model = inspModel as ATTInspModel;
 
             PreAlignControl.SetParams(model.PreAlignParams.Select(x => x.DeepCopy()).ToList());
+            AlignControl.SetParams(model.AlignParams.Select(x => x.DeepCopy()).ToList());
         }
 
         private void btnLoadImage_Click(object sender, EventArgs e)

@@ -8,6 +8,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Jastech.Framework.Winform.VisionPro.Controls;
+using Jastech.Framework.Imaging.VisionPro.VisionAlgorithms.Parameters;
+using Jastech.Framework.Imaging.VisionPro.VisionAlgorithms;
 
 namespace Jastech.Apps.Winform.UI.Controls
 {
@@ -15,6 +17,14 @@ namespace Jastech.Apps.Winform.UI.Controls
     {
         #region 필드
         private CogCaliperParamControl CogCaliperParamControl { get; set; } = new CogCaliperParamControl();
+        private List<CogCaliperParam> CaliperList { get; set; } = null;
+
+        private CogCaliper CogCaliperAlgorithm = new CogCaliper();
+
+
+
+
+
         private AlignPosition _alignPosition = AlignPosition.Left;
         private TargetObject _targetObject = TargetObject.FPC;
         private EdgeType _edgeType = EdgeType.X;
@@ -195,6 +205,12 @@ namespace Jastech.Apps.Winform.UI.Controls
         private void SetAlignTeachingPosition(AlignPosition alignPosition)
         {
             _alignPosition = alignPosition;
+        }
+
+        ///////////////////////////////
+        public void SetParams(List<CogCaliperParam> paramList)
+        {
+            CaliperList = paramList;
         }
         #endregion
     }
