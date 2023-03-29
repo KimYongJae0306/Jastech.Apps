@@ -24,8 +24,7 @@ namespace ATT.UI.Pages
     {
         #region 속성
         // Display
-        private CogDisplayControl TeachDisplay = null;
-
+        private CogThumbnailDisplayControl Display { get; set; } = new CogThumbnailDisplayControl();
         // Teach Controls
         private PreAlignControl PreAlignControl { get; set; } = new PreAlignControl();
 		private AlignControl AlignControl { get; set; } = new AlignControl();
@@ -49,12 +48,12 @@ namespace ATT.UI.Pages
         private void AddControl()
         {
             // Display Control
-            TeachDisplay = new CogDisplayControl();
-            TeachDisplay.Dock = DockStyle.Fill;
-            pnlDisplay.Controls.Add(TeachDisplay);
+            Display = new CogThumbnailDisplayControl();
+            Display.Dock = DockStyle.Fill;
+            pnlDisplay.Controls.Add(Display);
 
             // TeachingUIManager 참조
-            TeachingUIManager.Instance().TeachingDisplay = TeachDisplay;
+            TeachingUIManager.Instance().TeachingDisplay = Display.GetDisplay();
 
             // Teach Control List
             TeachControlList = new List<UserControl>();
@@ -131,7 +130,7 @@ namespace ATT.UI.Pages
             if (dlg.FileName != "")
             {
                 ICogImage cogImage = CogImageHelper.Load(dlg.FileName);
-                TeachDisplay.SetImage(cogImage);
+                Display.SetImage(cogImage);
                 TeachingUIManager.Instance().TeachingDisplay.SetImage(cogImage);
             }
         }

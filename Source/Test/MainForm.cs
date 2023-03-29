@@ -21,7 +21,7 @@ namespace Test
     {
         CogDisplayControl display;
         CogPMAlignTool CogPMAlignTool;
-        CogThumbnailControl thumbnail;
+        CogThumbnailControl thumbnailDisplay;
         ICogImage CogImage;
         ModelForm form;
         CogPatternMatchingParamControl CogPatternMatchingParamControl = new CogPatternMatchingParamControl();
@@ -35,54 +35,62 @@ namespace Test
             
             display = new CogDisplayControl();
             display.Dock = DockStyle.Fill;
-            panel1.Controls.Add(display);
+         
+            pnlDisplay.Controls.Add(display);
 
 
             //CogPatternMatchingParamControl.Dock = DockStyle.Fill;
-            thumbnail = new CogThumbnailControl();
-            thumbnail.Dock = DockStyle.Fill;
-            pnlTest.Controls.Add(thumbnail);
+            thumbnailDisplay = new CogThumbnailControl();
+            thumbnailDisplay.Dock = DockStyle.Fill;
+            pnlThumbnail.Controls.Add(thumbnailDisplay);
 
+            display.DrawViewRectEventHandler += thumbnailDisplay.DrawViewRect;
             //Settings.Instance().Initialize();
         }
 
         private void btnTest_Click(object sender, EventArgs e)
         {
-            string fileName = @"D:\back\06_35_19_0_0\06_35_19_0_0.bmp";
+            //string fileName = @"D:\back\06_35_19_0_0\06_35_19_0_0.bmp";
+            string fileName = @"D:\Image.png";
             CogImage = CogImageHelper.Load(fileName);
             display.SetImage(CogImage);
+            thumbnailDisplay.SetThumbnailImage(CogImage);
         }
         CogPatternMatching cogPMAlign = new CogPatternMatching();
         private void button1_Click(object sender, EventArgs e)
         {
-            display.ClearGraphic();
+            //display.
+            //display.ClearGraphic();
        
-            ICogImage cogImage = display.GetImage();
+            //ICogImage cogImage = display.GetImage();
 
-            double centerX = cogImage.Width / 2;
-            double centerY = cogImage.Height / 2;
+            //double centerX = cogImage.Width / 2;
+            //double centerY = cogImage.Height / 2;
 
-            CogRectangle rect2 = CogImageHelper.CreateRectangle(centerX - display.GetPan().X, centerY - display.GetPan().Y, 100, 100);
-            CogRectangle rect = CogImageHelper.CreateRectangle(centerX , centerY, cogImage.Width, cogImage.Height);
+            //CogRectangle rect2 = CogImageHelper.CreateRectangle(centerX - display.GetPan().X, centerY - display.GetPan().Y, 100, 100);
+            //CogRectangle rect = CogImageHelper.CreateRectangle(centerX , centerY, cogImage.Width, cogImage.Height);
 
-            cogPMAlign.SetTrainRegion(rect2);
+            //cogPMAlign.SetTrainRegion(rect2);
 
-            display.AddGraphics("tool", cogPMAlign.GetTrainRegion());
+            //display.AddGraphics("tool", cogPMAlign.GetTrainRegion());
 
-            cogPMAlign.SetSearchRegion(rect);
+            //cogPMAlign.SetSearchRegion(rect);
 
-            display.AddGraphics("tool", cogPMAlign.GetSearchRegion());
+            //display.AddGraphics("tool", cogPMAlign.GetSearchRegion());
         }
 
         private void button2_Click(object sender, EventArgs e)
         {
-            string filePath = @"D:\06_35_19_0_0.bmp";
 
-            ICogImage image = CogImageHelper.Load(filePath);
+            //thumbnailDisplay.Test();
 
-            display.SetImage(image);
-            thumbnail.SetThumbnailImage(image);
-            var g = image.ScaleImage(100, 100);
+            //string filePath = @"D:\06_35_19_0_0.bmp";
+
+            //ICogImage image = CogImageHelper.Load(filePath);
+
+            //display.SetImage(image);
+            //thumbnailDisplay.SetThumbnailImage(image);
+                
             //CogImageHelper.Save(g, @"d:\1234.bmp");
             //ModelForm form = new ModelForm();
             //form.ModelPath = @"D:\1.Programs\Jastech.Apps\Jastech.Apps\Runtime\Model";
