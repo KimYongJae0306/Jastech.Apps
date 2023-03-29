@@ -25,8 +25,8 @@ namespace Jastech.Apps.Structure.VisionTool
 
     public enum PreAlignName
     {
-        Left,
-        Right,
+        MainLeft,
+        MainRight,
         SubLeft1,
         SubRight1,
         SubLeft2,
@@ -39,6 +39,6 @@ namespace Jastech.Apps.Structure.VisionTool
 
     public enum AlignName
     {
-        Stage1,
+        Tab1,
     }
 }
