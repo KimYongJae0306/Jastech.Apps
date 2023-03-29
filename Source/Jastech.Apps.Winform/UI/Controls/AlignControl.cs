@@ -10,55 +10,22 @@ using System.Windows.Forms;
 using Jastech.Framework.Winform.VisionPro.Controls;
 using Jastech.Framework.Imaging.VisionPro.VisionAlgorithms.Parameters;
 using Jastech.Framework.Imaging.VisionPro.VisionAlgorithms;
+using Cognex.VisionPro;
 
 namespace Jastech.Apps.Winform.UI.Controls
 {
     public partial class AlignControl : UserControl
     {
         #region 필드
+        private string _prevName { get; set; } = string.Empty;
+        #endregion
+
         private CogCaliperParamControl CogCaliperParamControl { get; set; } = new CogCaliperParamControl();
         private List<CogCaliperParam> CaliperList { get; set; } = null;
 
         private CogCaliper CogCaliperAlgorithm = new CogCaliper();
 
-
-
-
-
-        private AlignPosition _alignPosition = AlignPosition.Left;
-        private TargetObject _targetObject = TargetObject.FPC;
-        private EdgeType _edgeType = EdgeType.X;
-        private Tlqkf _tlqkf = Tlqkf.FPC_X;
-        private List<Label> LabelList = null;
-        private int _index = 0;
-        #endregion
-
         #region 속성
-        public enum AlignPosition
-        {
-            Left,
-            Right
-        }
-
-        public enum Tlqkf
-        {
-            FPC_X,
-            FPC_Y,
-            PANEL_X,
-            PANEL_Y
-        }
-
-        public enum TargetObject
-        {
-            FPC,
-            PANEL
-        }
-
-        public enum EdgeType
-        {
-            X,
-            Y
-        }
         #endregion
 
         #region 이벤트
@@ -78,62 +45,8 @@ namespace Jastech.Apps.Winform.UI.Controls
         private void AlignControl_Load(object sender, EventArgs e)
         {
             AddControl();
-            InitializeUI();
         }
 
-        private void rdoLeft_CheckedChanged(object sender, EventArgs e)
-        {
-            if (rdoLeft.Checked)
-            {
-                MoveDisplayFocus();
-                SetAlignTeachingPosition(AlignPosition.Left);
-                rdoLeft.BackColor = Color.DarkCyan;
-            }
-            else
-                rdoLeft.BackColor = Color.PaleTurquoise;
-        }
-
-        private void rdoRight_CheckedChanged(object sender, EventArgs e)
-        {
-            if (rdoRight.Checked)
-            {
-                MoveDisplayFocus();
-                SetAlignTeachingPosition(AlignPosition.Right);
-                rdoRight.BackColor = Color.DarkCyan;
-            }
-            else
-                rdoRight.BackColor = Color.PaleTurquoise;
-        }
-
-        private void lblPrev_Click(object sender, EventArgs e)
-        {
-            int index = (int)_tlqkf;
-
-            if (index == 0)
-                RefreshTlqkf(Tlqkf.FPC_X);
-            else
-            {
-                index--;
-                RefreshTlqkf((Tlqkf)index);
-            }
-
-            _tlqkf = (Tlqkf)index;
-        }
-
-        private void lblNext_Click(object sender, EventArgs e)
-        {
-            int index = (int)_tlqkf;
-
-            if (index == 3)
-                RefreshTlqkf(Tlqkf.PANEL_Y);
-            else
-            {
-                index++;
-                RefreshTlqkf((Tlqkf)index);
-            }
-
-            _tlqkf = (Tlqkf)index;
-        }
 
         private void chkUseTracking_CheckedChanged(object sender, EventArgs e)
         {
@@ -151,66 +64,139 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         private void AddControl()
         {
-            // Label List
-            LabelList = new List<Label>();
-            LabelList.Add(lblFPCX);
-            LabelList.Add(lblFPCY);
-            LabelList.Add(lblPanelX);
-            LabelList.Add(lblPanelY);
-
             // Add Control
             CogCaliperParamControl.Dock = DockStyle.Fill;
             pnlParam.Controls.Add(CogCaliperParamControl);
         }
 
-        private void InitializeUI()
-        {
-            rdoLeft.Checked = true;
 
-            RefreshTlqkf(Tlqkf.FPC_X);
-        }
-
-        private void RefreshTlqkf(Tlqkf tlqkf = Tlqkf.FPC_X)
-        {
-            foreach (Label label in LabelList)
-                label.BackColor = Color.White;
-
-            foreach (Label label in LabelList)
-            {
-                switch (tlqkf)
-                {
-                    case Tlqkf.FPC_X:
-                        lblFPCX.BackColor = Color.DarkCyan;
-                        break;
-                    case Tlqkf.FPC_Y:
-                        lblFPCY.BackColor = Color.DarkCyan;
-                        break;
-                    case Tlqkf.PANEL_X:
-                        lblPanelX.BackColor = Color.DarkCyan;
-                        break;
-                    case Tlqkf.PANEL_Y:
-                        lblPanelY.BackColor = Color.DarkCyan;
-                        break;
-                    default:
-                        break;
-                }
-            }
-        }
-
-        private void MoveDisplayFocus()
-        {
-            // Teaching Display의 좌, 우 Focus 이동
-        }
-
-        private void SetAlignTeachingPosition(AlignPosition alignPosition)
-        {
-            _alignPosition = alignPosition;
-        }
-
-        ///////////////////////////////
         public void SetParams(List<CogCaliperParam> paramList)
         {
             CaliperList = paramList;
+
+            cmbAlignList.Items.Clear();
+
+            foreach (var item in CaliperList)
+                cmbAlignList.Items.Add(item.Name);
+
+            cmbAlignList.SelectedIndex = 0;
+
+            string name = cmbAlignList.SelectedItem as string;
+            CogCaliperParam(name);
+        }
+
+        private void CogCaliperParam(string name)
+        {
+            var param = CaliperList.Where(x => x.Name == name).First();
+            CogCaliperParamControl.UpdateData(param);
+
+            CogCaliperAlgorithm.CaliperTool = param.CaliperTool;
+        }
+
+        private void btnShowROI_Click(object sender, EventArgs e)
+        {
+            var display = TeachingUIManager.Instance().TeachingDisplay;
+            if (display.GetImage() == null)
+                return;
+
+            SetNewROI(display);
+            DrawROI();
+        }
+
+        private void SetNewROI(CogDisplayControl display)
+        {
+            ICogImage cogImage = display.GetImage();
+
+            double centerX = display.ImageWidth() / 2.0 - display.GetPan().X;
+            double centerY = display.ImageHeight() / 2.0 - display.GetPan().Y;
+
+            CogRectangleAffine cogRectAffine = new CogRectangleAffine(/*CaliperList[0].CaliperTool.Region*/);
+
+            if (cogRectAffine.CenterX <= 70)
+                cogRectAffine.SetCenterLengthsRotationSkew(centerX, centerY, 500, 500, 0, 0);
+
+            CogCaliperAlgorithm.SetRegion(cogRectAffine);
+        }
+
+        private void DrawROI()
+        {
+            var display = TeachingUIManager.Instance().TeachingDisplay;
+            if (display.GetImage() == null)
+                return;
+
+            display.AddGraphics("tool", CogCaliperAlgorithm.GetRegion());
+        }
+
+        private void cmbAlignList_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            string name = cmbAlignList.SelectedItem as string;
+
+            if (_prevName == name)
+                return;
+
+            var display = TeachingUIManager.Instance().TeachingDisplay;
+
+            if (display == null)
+                return;
+
+            CogCaliperParam(name);
+            display.ClearGraphic();
+
+            DrawROI();
+            _prevName = name;
+        }
+
+        public List<CogCaliperParam> GetTeachingData()
+        {
+            return CaliperList;
+        }
+
+        private void lblPrev_Click(object sender, EventArgs e)
+        {
+            if (cmbAlignList.SelectedIndex <= 0)
+                return;
+
+            cmbAlignList.SelectedIndex -= 1;
+        }
+
+        private void lblNext_Click(object sender, EventArgs e)
+        {
+            if (cmbAlignList.SelectedIndex <= 0)
+                return;
+
+            int nextIndex = cmbAlignList.SelectedIndex + 1;
+            if (cmbAlignList.Items.Count > nextIndex)
+                cmbAlignList.SelectedIndex = nextIndex;
+        }
+
+        private void cmbAlignList_DrawItem(object sender, DrawItemEventArgs e)
+        {
+            DrawComboboxCenterAlign(sender, e);
+        }
+
+        private void DrawComboboxCenterAlign(object sender, DrawItemEventArgs e)
+        {
+            ComboBox cmb = sender as ComboBox;
+
+            if (cmb != null)
+            {
+                e.DrawBackground();
+                cmb.ItemHeight = lblPrev.Height - 6;
+
+                if (e.Index >= 0)
+                {
+                    StringFormat sf = new StringFormat();
+                    sf.LineAlignment = StringAlignment.Center;
+                    sf.Alignment = StringAlignment.Center;
+
+                    Brush brush = new SolidBrush(cmb.ForeColor);
+
+                    if ((e.State & DrawItemState.Selected) == DrawItemState.Selected)
+                        brush = SystemBrushes.HighlightText;
+
+                    e.Graphics.DrawString(cmb.Items[e.Index].ToString(), cmb.Font, brush, e.Bounds, sf);
+                }
+            }
         }
         #endregion
     }

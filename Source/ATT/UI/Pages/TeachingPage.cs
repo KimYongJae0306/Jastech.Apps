@@ -144,6 +144,7 @@ namespace ATT.UI.Pages
                 return;
 
             model.SetPreAlignParams(PreAlignControl.GetTeachingData());
+            model.SetAlignParams(AlignControl.GetTeachingData());
 
             SaveModelData(model);
         }

@@ -34,6 +34,11 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         private void PreAlignControl_Load(object sender, EventArgs e)
         {
+            AddControl();
+        }
+
+        private void AddControl()
+        {
             CogPatternMatchingParamControl.Dock = DockStyle.Fill;
             CogPatternMatchingParamControl.SetTrainEventHandler += PreAlignControl_SetTrainEventHandler;
             pnlParam.Controls.Add(CogPatternMatchingParamControl);
@@ -69,7 +74,7 @@ namespace Jastech.Apps.Winform.UI.Controls
         private void CogPatternMachingParam(string name)
         {
             var param = PatternMatchingList.Where(x => x.Name == name).First();
-             CogPatternMatchingParamControl.UpdateData(param);
+            CogPatternMatchingParamControl.UpdateData(param);
 
             CogPMAlignAlgorithm.MatchingTool = param.MatchingTool;
         }
@@ -146,7 +151,7 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         private void lblNext_Click(object sender, EventArgs e)
         {
-            if (cbxPreAlignList.SelectedIndex < 0)
+            if (cbxPreAlignList.SelectedIndex <= 0)
                 return;
 
             int nextIndex = cbxPreAlignList.SelectedIndex + 1;

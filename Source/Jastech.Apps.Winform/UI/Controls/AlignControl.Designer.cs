@@ -31,9 +31,9 @@
             this.tlpAlign = new System.Windows.Forms.TableLayoutPanel();
             this.lblParameter = new System.Windows.Forms.Label();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
-            this.label2 = new System.Windows.Forms.Label();
-            this.cbxTabList = new System.Windows.Forms.ComboBox();
-            this.label1 = new System.Windows.Forms.Label();
+            this.lblPrev = new System.Windows.Forms.Label();
+            this.cmbAlignList = new System.Windows.Forms.ComboBox();
+            this.lblNext = new System.Windows.Forms.Label();
             this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel4 = new System.Windows.Forms.TableLayoutPanel();
             this.tlpPosition = new System.Windows.Forms.TableLayoutPanel();
@@ -49,9 +49,6 @@
             this.pnlParam = new System.Windows.Forms.Panel();
             this.tableLayoutPanel5 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel9 = new System.Windows.Forms.TableLayoutPanel();
-            this.tableLayoutPanel10 = new System.Windows.Forms.TableLayoutPanel();
-            this.lblPrev = new System.Windows.Forms.Label();
-            this.lblNext = new System.Windows.Forms.Label();
             this.tableLayoutPanel11 = new System.Windows.Forms.TableLayoutPanel();
             this.lblFPCX = new System.Windows.Forms.Label();
             this.lblFPCY = new System.Windows.Forms.Label();
@@ -68,7 +65,6 @@
             this.tableLayoutPanel7.SuspendLayout();
             this.tableLayoutPanel5.SuspendLayout();
             this.tableLayoutPanel9.SuspendLayout();
-            this.tableLayoutPanel10.SuspendLayout();
             this.tableLayoutPanel11.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -111,9 +107,9 @@
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 52F));
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel2.Controls.Add(this.label2, 1, 0);
-            this.tableLayoutPanel2.Controls.Add(this.cbxTabList, 0, 0);
-            this.tableLayoutPanel2.Controls.Add(this.label1, 2, 0);
+            this.tableLayoutPanel2.Controls.Add(this.lblPrev, 1, 0);
+            this.tableLayoutPanel2.Controls.Add(this.cmbAlignList, 0, 0);
+            this.tableLayoutPanel2.Controls.Add(this.lblNext, 2, 0);
             this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel2.Location = new System.Drawing.Point(3, 34);
             this.tableLayoutPanel2.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
@@ -123,36 +119,43 @@
             this.tableLayoutPanel2.Size = new System.Drawing.Size(565, 44);
             this.tableLayoutPanel2.TabIndex = 0;
             // 
-            // label2
+            // lblPrev
             // 
-            this.label2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.label2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.label2.Image = global::Jastech.Apps.Winform.Properties.Resources.Prev;
-            this.label2.Location = new System.Drawing.Point(178, 0);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(46, 44);
-            this.label2.TabIndex = 5;
+            this.lblPrev.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblPrev.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblPrev.Image = global::Jastech.Apps.Winform.Properties.Resources.Prev;
+            this.lblPrev.Location = new System.Drawing.Point(178, 0);
+            this.lblPrev.Name = "lblPrev";
+            this.lblPrev.Size = new System.Drawing.Size(46, 44);
+            this.lblPrev.TabIndex = 5;
+            this.lblPrev.Click += new System.EventHandler(this.lblPrev_Click);
             // 
-            // cbxTabList
+            // cmbAlignList
             // 
-            this.cbxTabList.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.cbxTabList.Font = new System.Drawing.Font("맑은 고딕", 19F);
-            this.cbxTabList.FormattingEnabled = true;
-            this.cbxTabList.Location = new System.Drawing.Point(0, 0);
-            this.cbxTabList.Margin = new System.Windows.Forms.Padding(0);
-            this.cbxTabList.Name = "cbxTabList";
-            this.cbxTabList.Size = new System.Drawing.Size(175, 43);
-            this.cbxTabList.TabIndex = 0;
+            this.cmbAlignList.BackColor = System.Drawing.Color.White;
+            this.cmbAlignList.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.cmbAlignList.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.cmbAlignList.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbAlignList.Font = new System.Drawing.Font("맑은 고딕", 14.25F, System.Drawing.FontStyle.Bold);
+            this.cmbAlignList.FormattingEnabled = true;
+            this.cmbAlignList.Location = new System.Drawing.Point(0, 0);
+            this.cmbAlignList.Margin = new System.Windows.Forms.Padding(0);
+            this.cmbAlignList.Name = "cmbAlignList";
+            this.cmbAlignList.Size = new System.Drawing.Size(175, 34);
+            this.cmbAlignList.TabIndex = 0;
+            this.cmbAlignList.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.cmbAlignList_DrawItem);
+            this.cmbAlignList.SelectedIndexChanged += new System.EventHandler(this.cmbAlignList_SelectedIndexChanged);
             // 
-            // label1
+            // lblNext
             // 
-            this.label1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.label1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.label1.Image = global::Jastech.Apps.Winform.Properties.Resources.Next;
-            this.label1.Location = new System.Drawing.Point(230, 0);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(46, 44);
-            this.label1.TabIndex = 2;
+            this.lblNext.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblNext.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblNext.Image = global::Jastech.Apps.Winform.Properties.Resources.Next;
+            this.lblNext.Location = new System.Drawing.Point(230, 0);
+            this.lblNext.Name = "lblNext";
+            this.lblNext.Size = new System.Drawing.Size(46, 44);
+            this.lblNext.TabIndex = 2;
+            this.lblNext.Click += new System.EventHandler(this.lblNext_Click);
             // 
             // tableLayoutPanel3
             // 
@@ -252,7 +255,6 @@
             this.rdoRight.Text = "RIGHT";
             this.rdoRight.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.rdoRight.UseVisualStyleBackColor = false;
-            this.rdoRight.CheckedChanged += new System.EventHandler(this.rdoRight_CheckedChanged);
             // 
             // rdoLeft
             // 
@@ -269,7 +271,6 @@
             this.rdoLeft.Text = "LEFT";
             this.rdoLeft.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.rdoLeft.UseVisualStyleBackColor = false;
-            this.rdoLeft.CheckedChanged += new System.EventHandler(this.rdoLeft_CheckedChanged);
             // 
             // tableLayoutPanel6
             // 
@@ -329,6 +330,7 @@
             this.btnShowROI.TabIndex = 12;
             this.btnShowROI.Text = "SHOW ROI";
             this.btnShowROI.UseVisualStyleBackColor = false;
+            this.btnShowROI.Click += new System.EventHandler(this.btnShowROI_Click);
             // 
             // tableLayoutPanel7
             // 
@@ -373,61 +375,14 @@
             // 
             this.tableLayoutPanel9.ColumnCount = 1;
             this.tableLayoutPanel9.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel9.Controls.Add(this.tableLayoutPanel10, 0, 1);
             this.tableLayoutPanel9.Controls.Add(this.tableLayoutPanel11, 0, 0);
-            this.tableLayoutPanel9.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel9.Location = new System.Drawing.Point(0, 0);
             this.tableLayoutPanel9.Margin = new System.Windows.Forms.Padding(0);
             this.tableLayoutPanel9.Name = "tableLayoutPanel9";
-            this.tableLayoutPanel9.RowCount = 2;
-            this.tableLayoutPanel9.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel9.RowCount = 1;
             this.tableLayoutPanel9.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel9.Size = new System.Drawing.Size(285, 49);
             this.tableLayoutPanel9.TabIndex = 3;
-            // 
-            // tableLayoutPanel10
-            // 
-            this.tableLayoutPanel10.ColumnCount = 2;
-            this.tableLayoutPanel10.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel10.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel10.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel10.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel10.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel10.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel10.Controls.Add(this.lblPrev, 0, 0);
-            this.tableLayoutPanel10.Controls.Add(this.lblNext, 1, 0);
-            this.tableLayoutPanel10.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel10.Location = new System.Drawing.Point(0, 24);
-            this.tableLayoutPanel10.Margin = new System.Windows.Forms.Padding(0);
-            this.tableLayoutPanel10.Name = "tableLayoutPanel10";
-            this.tableLayoutPanel10.RowCount = 1;
-            this.tableLayoutPanel10.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel10.Size = new System.Drawing.Size(285, 25);
-            this.tableLayoutPanel10.TabIndex = 0;
-            // 
-            // lblPrev
-            // 
-            this.lblPrev.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lblPrev.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblPrev.Image = global::Jastech.Apps.Winform.Properties.Resources.Prev;
-            this.lblPrev.Location = new System.Drawing.Point(3, 0);
-            this.lblPrev.Name = "lblPrev";
-            this.lblPrev.Size = new System.Drawing.Size(136, 25);
-            this.lblPrev.TabIndex = 0;
-            this.lblPrev.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.lblPrev.Click += new System.EventHandler(this.lblPrev_Click);
-            // 
-            // lblNext
-            // 
-            this.lblNext.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lblNext.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblNext.Image = global::Jastech.Apps.Winform.Properties.Resources.Next;
-            this.lblNext.Location = new System.Drawing.Point(145, 0);
-            this.lblNext.Name = "lblNext";
-            this.lblNext.Size = new System.Drawing.Size(137, 25);
-            this.lblNext.TabIndex = 0;
-            this.lblNext.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.lblNext.Click += new System.EventHandler(this.lblNext_Click);
             // 
             // tableLayoutPanel11
             // 
@@ -446,7 +401,7 @@
             this.tableLayoutPanel11.Name = "tableLayoutPanel11";
             this.tableLayoutPanel11.RowCount = 1;
             this.tableLayoutPanel11.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel11.Size = new System.Drawing.Size(285, 24);
+            this.tableLayoutPanel11.Size = new System.Drawing.Size(285, 49);
             this.tableLayoutPanel11.TabIndex = 0;
             // 
             // lblFPCX
@@ -455,7 +410,7 @@
             this.lblFPCX.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lblFPCX.Location = new System.Drawing.Point(3, 0);
             this.lblFPCX.Name = "lblFPCX";
-            this.lblFPCX.Size = new System.Drawing.Size(65, 24);
+            this.lblFPCX.Size = new System.Drawing.Size(65, 49);
             this.lblFPCX.TabIndex = 0;
             this.lblFPCX.Text = "FPC X";
             this.lblFPCX.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -466,7 +421,7 @@
             this.lblFPCY.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lblFPCY.Location = new System.Drawing.Point(74, 0);
             this.lblFPCY.Name = "lblFPCY";
-            this.lblFPCY.Size = new System.Drawing.Size(65, 24);
+            this.lblFPCY.Size = new System.Drawing.Size(65, 49);
             this.lblFPCY.TabIndex = 0;
             this.lblFPCY.Text = "FPC Y";
             this.lblFPCY.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -477,7 +432,7 @@
             this.lblPanelX.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lblPanelX.Location = new System.Drawing.Point(145, 0);
             this.lblPanelX.Name = "lblPanelX";
-            this.lblPanelX.Size = new System.Drawing.Size(65, 24);
+            this.lblPanelX.Size = new System.Drawing.Size(65, 49);
             this.lblPanelX.TabIndex = 0;
             this.lblPanelX.Text = "PANEL X";
             this.lblPanelX.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -488,7 +443,7 @@
             this.lblPanelY.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lblPanelY.Location = new System.Drawing.Point(216, 0);
             this.lblPanelY.Name = "lblPanelY";
-            this.lblPanelY.Size = new System.Drawing.Size(66, 24);
+            this.lblPanelY.Size = new System.Drawing.Size(66, 49);
             this.lblPanelY.TabIndex = 0;
             this.lblPanelY.Text = "PANEL Y";
             this.lblPanelY.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -516,7 +471,6 @@
             this.tableLayoutPanel7.ResumeLayout(false);
             this.tableLayoutPanel5.ResumeLayout(false);
             this.tableLayoutPanel9.ResumeLayout(false);
-            this.tableLayoutPanel10.ResumeLayout(false);
             this.tableLayoutPanel11.ResumeLayout(false);
             this.ResumeLayout(false);
 
@@ -527,9 +481,9 @@
         private System.Windows.Forms.TableLayoutPanel tlpAlign;
         private System.Windows.Forms.Label lblParameter;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.ComboBox cbxTabList;
-        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label lblPrev;
+        private System.Windows.Forms.ComboBox cmbAlignList;
+        private System.Windows.Forms.Label lblNext;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel3;
         private System.Windows.Forms.Panel pnlParam;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel4;
@@ -545,13 +499,10 @@
         private System.Windows.Forms.Button btnShowROI;
         private System.Windows.Forms.CheckBox chkUseTracking;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel9;
-        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel10;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel11;
         private System.Windows.Forms.Label lblFPCX;
         private System.Windows.Forms.Label lblFPCY;
         private System.Windows.Forms.Label lblPanelX;
         private System.Windows.Forms.Label lblPanelY;
-        private System.Windows.Forms.Label lblPrev;
-        private System.Windows.Forms.Label lblNext;
     }
 }
