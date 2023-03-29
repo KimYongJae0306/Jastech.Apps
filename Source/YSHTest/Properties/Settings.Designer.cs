@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace YangTest.Properties
+namespace YSHTest.Properties
 {
 
 

@@ -1,0 +1,153 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{E2689AB7-9037-4126-BD99-35FEC506FA3C}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <RootNamespace>YSHTest</RootNamespace>
+    <AssemblyName>YSHTest</AssemblyName>
+    <TargetFrameworkVersion>v4.8.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <Deterministic>true</Deterministic>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x64\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
+    <OutputPath>bin\x64\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Cognex.VisionPro, Version=71.2.0.0, Culture=neutral, PublicKeyToken=ef0f902af9dee505, processorArchitecture=AMD64">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Jastech.Library\Cognex\9.6\Cognex.VisionPro.dll</HintPath>
+    </Reference>
+    <Reference Include="Cognex.VisionPro.Core, Version=71.2.0.0, Culture=neutral, PublicKeyToken=ef0f902af9dee505, processorArchitecture=AMD64">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Jastech.Library\Cognex\9.6\Cognex.VisionPro.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Cognex.VisionPro.ImageFile, Version=71.2.0.0, Culture=neutral, PublicKeyToken=ef0f902af9dee505, processorArchitecture=AMD64">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Jastech.Library\Cognex\9.6\Cognex.VisionPro.ImageFile.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Form1.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form1.Designer.cs">
+      <DependentUpon>Form1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="Form1.resx">
+      <DependentUpon>Form1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Jastech.Core\src\Jastech.Framework.Comm\Jastech.Framework.Comm.csproj">
+      <Project>{05b26e55-9c49-4078-983a-c6b13f6ee375}</Project>
+      <Name>Jastech.Framework.Comm</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Jastech.Core\src\Jastech.Framework.Config\Jastech.Framework.Config.csproj">
+      <Project>{6244fa20-eda3-45d4-85c7-50d901c5d376}</Project>
+      <Name>Jastech.Framework.Config</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Jastech.Core\src\Jastech.Framework.Device\Jastech.Framework.Device.csproj">
+      <Project>{f43ddcca-e65c-4131-b789-db4109e91b68}</Project>
+      <Name>Jastech.Framework.Device</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Jastech.Core\src\Jastech.Framework.Imaging.VisionPro\Jastech.Framework.Imaging.VisionPro.csproj">
+      <Project>{22EE7B1A-E7B2-4547-94DD-4E85BDB56956}</Project>
+      <Name>Jastech.Framework.Imaging.VisionPro</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Jastech.Core\src\Jastech.Framework.Matrox\Jastech.Framework.Matrox.csproj">
+      <Project>{8b4b5cef-5b39-423a-a460-a24f7fd8890e}</Project>
+      <Name>Jastech.Framework.Matrox</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Jastech.Core\src\Jastech.Framework.Structure\Jastech.Framework.Structure.csproj">
+      <Project>{dcff7b48-8df8-4ed9-9f0f-f11c2ccb7547}</Project>
+      <Name>Jastech.Framework.Structure</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Jastech.Core\src\Jastech.Framework.Util\Jastech.Framework.Util.csproj">
+      <Project>{07ef86cc-ac6a-454e-b12b-eb63454a1dca}</Project>
+      <Name>Jastech.Framework.Util</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Jastech.Core\src\Jastech.Framework.Winform.VisionPro\Jastech.Framework.Winform.VisionPro.csproj">
+      <Project>{8558B173-0E81-4C55-82B8-02417220E02C}</Project>
+      <Name>Jastech.Framework.Winform.VisionPro</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Jastech.Core\src\Jastech.Framework.Winform\Jastech.Framework.Winform.csproj">
+      <Project>{d46c7263-535a-4bf9-ad14-5183ede0a984}</Project>
+      <Name>Jastech.Framework.Winform</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>
