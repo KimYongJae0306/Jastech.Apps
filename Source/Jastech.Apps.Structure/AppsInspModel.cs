@@ -28,6 +28,9 @@ namespace Jastech.Apps.Structure
 
         public void SetPreAlignParams(List<CogPatternMatchingParam> matchingParam)
         {
+            if (matchingParam == null)
+                return;
+
             foreach (var prevParam in PreAlignParams)
                 prevParam.Dispose();
 
@@ -36,6 +39,9 @@ namespace Jastech.Apps.Structure
 
         public void SetAlignParams(List<CogCaliperParam> caliperParam)
         {
+            if (caliperParam == null)
+                return;
+
             foreach (var prevParam in AlignParams)
                 prevParam.Dispose();
 

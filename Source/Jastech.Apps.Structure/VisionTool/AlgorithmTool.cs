@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using Jastech.Framework.Imaging.VisionPro.VisionAlgorithms;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,11 +10,8 @@ namespace Jastech.Apps.Structure.VisionTool
 {
     public class AlgorithmTool
     {
-        //[JsonProperty]
-        //public List<PatternMachingAlgorithmTool> PreAlign { get; set; } = new List<PatternMachingAlgorithmTool>();
-
-        [JsonProperty]
-        public List<IVisionTool> Align { get; set; } = new List<IVisionTool>();
+        //public void InspectPreAlign()
+        public CogPatternMatching PatternAlgorithm = new CogPatternMatching();
     }
 
     public enum InspectionType

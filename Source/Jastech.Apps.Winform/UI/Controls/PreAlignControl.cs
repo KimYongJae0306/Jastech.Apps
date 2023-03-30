@@ -14,6 +14,7 @@ using Cognex.VisionPro;
 using Jastech.Framework.Imaging.VisionPro;
 using Jastech.Framework.Imaging.VisionPro.VisionAlgorithms;
 using Jastech.Apps.Structure;
+using Cognex.VisionPro.PMAlign;
 
 namespace Jastech.Apps.Winform.UI.Controls
 {
@@ -22,11 +23,11 @@ namespace Jastech.Apps.Winform.UI.Controls
         #region 필드
         private string _prevName { get; set; } = "";
         #endregion
-        private CogPatternMatchingParamControl CogPatternMatchingParamControl { get; set; } = new CogPatternMatchingParamControl();
+        private CogPatternMatchingParamControl ParamControl { get; set; } = new CogPatternMatchingParamControl();
 
         private List<CogPatternMatchingParam> PatternMatchingList { get; set; } = null;
 
-        private CogPatternMatching CogPMAlignAlgorithm = new CogPatternMatching();
+        private AlgorithmTool Algorithm = new AlgorithmTool();
 
         public PreAlignControl()
         {
@@ -40,20 +41,14 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         private void AddControl()
         {
-            CogPatternMatchingParamControl.Dock = DockStyle.Fill;
-            CogPatternMatchingParamControl.SetTrainEventHandler += PreAlignControl_SetTrainEventHandler;
-            pnlParam.Controls.Add(CogPatternMatchingParamControl);
+            ParamControl.Dock = DockStyle.Fill;
+            ParamControl.GetOriginImageHandler += PreAlignControl_GetOriginImageHandler;
+            pnlParam.Controls.Add(ParamControl);
         }
 
-        private void PreAlignControl_SetTrainEventHandler()
+        private ICogImage PreAlignControl_GetOriginImageHandler()
         {
-            var display = TeachingUIManager.Instance().TeachingDisplay;
-            if (display == null)
-                return;
-
-           var g = CogPMAlignAlgorithm.GetTrainRegion();
-            // Lockkey 때매 임시 잠금
-            //CogPMAlignAlgorithm.Train(display.GetImage());
+            return TeachingUIManager.Instance().TeachingDisplay.GetImage();
         }
 
         public void SetParams(List<CogPatternMatchingParam> paramList)
@@ -62,7 +57,14 @@ namespace Jastech.Apps.Winform.UI.Controls
                 return;
 
             PatternMatchingList = paramList;
+            InitializeComboBox();
 
+            string name = cbxPreAlignList.SelectedItem as string;
+            UpdateParam(name);
+        }
+
+        private void InitializeComboBox()
+        {
             cbxPreAlignList.Items.Clear();
 
             foreach (var item in PatternMatchingList)
@@ -70,17 +72,12 @@ namespace Jastech.Apps.Winform.UI.Controls
                 cbxPreAlignList.Items.Add(item.Name);
             }
             cbxPreAlignList.SelectedIndex = 0;
-
-            string name = cbxPreAlignList.SelectedItem as string;
-            CogPatternMachingParam(name);
         }
 
-        private void CogPatternMachingParam(string name)
+        private void UpdateParam(string name)
         {
             var param = PatternMatchingList.Where(x => x.Name == name).First();
-            CogPatternMatchingParamControl.UpdateData(param);
-
-            CogPMAlignAlgorithm.MatchingTool = param.MatchingTool;
+            ParamControl.UpdateData(param);
         }
 
         private void lblAddROI_Click(object sender, EventArgs e)
@@ -102,23 +99,17 @@ namespace Jastech.Apps.Winform.UI.Controls
             if (display.GetImage() == null)
                 return;
 
-            if (CogPMAlignAlgorithm.IsTrained())
-            {
-                display.AddGraphics("tool", CogPMAlignAlgorithm.GetTrainRegion());
-                display.AddGraphics("tool", CogPMAlignAlgorithm.GetSearchRegion());
+            CogPMAlignCurrentRecordConstants constants = CogPMAlignCurrentRecordConstants.InputImage | CogPMAlignCurrentRecordConstants.SearchRegion
+                | CogPMAlignCurrentRecordConstants.TrainImage | CogPMAlignCurrentRecordConstants.TrainRegion | CogPMAlignCurrentRecordConstants.PatternOrigin;
 
-                CogRectangle roi = CogPMAlignAlgorithm.GetTrainRegion() as CogRectangle;
-                PointToScreen(new Point((int)roi.CenterX, (int)roi.CenterY));
-            }
-            else
-            {
-                display.AddGraphics("tool", CogPMAlignAlgorithm.GetTrainRegion());
-                display.AddGraphics("tool", CogPMAlignAlgorithm.GetSearchRegion());
-            }
+            var currentParam = ParamControl.GetCurrentParam();
+        
+            display.SetInteractiveGraphics("tool", currentParam.CreateCurrentRecord(constants));
         }
 
         private void SetNewROI(CogDisplayControl display)
         {
+            display.ClearGraphic();
             ICogImage cogImage = display.GetImage();
 
             double centerX = display.ImageWidth() / 2.0;
@@ -127,8 +118,10 @@ namespace Jastech.Apps.Winform.UI.Controls
             CogRectangle roi = CogImageHelper.CreateRectangle(centerX - display.GetPan().X, centerY - display.GetPan().Y, 100, 100);
             CogRectangle searchRoi = CogImageHelper.CreateRectangle(roi.CenterX, roi.CenterY, roi.Width * 2, roi.Height * 2);
 
-            CogPMAlignAlgorithm.SetTrainRegion(roi);
-            CogPMAlignAlgorithm.SetSearchRegion(searchRoi);
+            var currentParam = ParamControl.GetCurrentParam();
+
+            currentParam.SetTrainRegion(roi);
+            currentParam.SetSearchRegion(searchRoi);
         }
 
         private void cbxPreAlignList_SelectedIndexChanged(object sender, EventArgs e)
@@ -141,7 +134,7 @@ namespace Jastech.Apps.Winform.UI.Controls
             var display = TeachingUIManager.Instance().TeachingDisplay;
             if (display == null)
                 return;
-            CogPatternMachingParam(name);
+            UpdateParam(name);
             display.ClearGraphic();
 
             DrawROI();
@@ -158,9 +151,6 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         private void lblNext_Click(object sender, EventArgs e)
         {
-            if (cbxPreAlignList.SelectedIndex <= 0)
-                return;
-
             int nextIndex = cbxPreAlignList.SelectedIndex + 1;
             if (cbxPreAlignList.Items.Count > nextIndex)
             {
@@ -201,6 +191,14 @@ namespace Jastech.Apps.Winform.UI.Controls
                     e.Graphics.DrawString(cmb.Items[e.Index].ToString(), cmb.Font, brush, e.Bounds, sf);
                 }
             }
+        }
+
+        private void lblInspection_Click(object sender, EventArgs e)
+        {
+            var currentParam = ParamControl.GetCurrentParam();
+
+            ICogImage cogImage = display.GetImage();
+            Algorithm.PatternAlgorithm.Run(cogImage, currentParam);
         }
     }
 }

@@ -258,6 +258,7 @@
             this.lblInspection.TabIndex = 21;
             this.lblInspection.Text = "Inspect";
             this.lblInspection.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblInspection.Click += new System.EventHandler(this.lblInspection_Click);
             // 
             // lblPrev
             // 

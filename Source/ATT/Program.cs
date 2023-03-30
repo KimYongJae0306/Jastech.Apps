@@ -2,6 +2,7 @@
 using Jastech.Apps.Structure;
 using Jastech.Apps.Winform.Settings;
 using Jastech.Framework.Structure;
+using Jastech.Framework.Util.Helper;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -24,6 +25,9 @@ namespace ATT
 
             AppConfig.Instance().Initialize();
             AppConfig.Instance().Load();
+
+            LogHelper.Initialize(AppConfig.Instance().Path.Log);
+
             var mainForm = new MainForm();
            
             SystemManager.Instance().Initialize(mainForm);

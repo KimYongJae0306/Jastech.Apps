@@ -156,6 +156,7 @@
     <None Include="Resources\Next.png" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Core\" />
     <Folder Include="UI\Pages\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

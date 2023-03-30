@@ -74,8 +74,7 @@ namespace ATT
                     DoReportProgress(reportProgress, percent, "Model Loading");
                     ModelManager.Instance().CurrentModel =  _mainForm.ATTInspModelService.Load(filePath);
                 }
-            }
-
+            }   
             return true;
         }
 
