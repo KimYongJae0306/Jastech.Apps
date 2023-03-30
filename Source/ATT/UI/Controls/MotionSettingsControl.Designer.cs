@@ -33,6 +33,7 @@
             this.tlpMotionFunction = new System.Windows.Forms.TableLayoutPanel();
             this.tlpStatus = new System.Windows.Forms.TableLayoutPanel();
             this.pnlJog = new System.Windows.Forms.Panel();
+            this.tlpMotionParameter = new System.Windows.Forms.TableLayoutPanel();
             this.tlpMotionSettings.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             this.tlpMotionFunction.SuspendLayout();
@@ -44,6 +45,7 @@
             this.tlpMotionSettings.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 40F));
             this.tlpMotionSettings.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 60F));
             this.tlpMotionSettings.Controls.Add(this.tableLayoutPanel1, 0, 0);
+            this.tlpMotionSettings.Controls.Add(this.tlpMotionParameter, 1, 0);
             this.tlpMotionSettings.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tlpMotionSettings.Location = new System.Drawing.Point(0, 0);
             this.tlpMotionSettings.Margin = new System.Windows.Forms.Padding(0);
@@ -112,6 +114,21 @@
             this.pnlJog.Size = new System.Drawing.Size(434, 180);
             this.pnlJog.TabIndex = 1;
             // 
+            // tlpMotionParameter
+            // 
+            this.tlpMotionParameter.ColumnCount = 1;
+            this.tlpMotionParameter.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tlpMotionParameter.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tlpMotionParameter.Location = new System.Drawing.Point(440, 0);
+            this.tlpMotionParameter.Margin = new System.Windows.Forms.Padding(0);
+            this.tlpMotionParameter.Name = "tlpMotionParameter";
+            this.tlpMotionParameter.RowCount = 3;
+            this.tlpMotionParameter.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this.tlpMotionParameter.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this.tlpMotionParameter.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this.tlpMotionParameter.Size = new System.Drawing.Size(660, 600);
+            this.tlpMotionParameter.TabIndex = 1;
+            // 
             // MotionSettingsControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
@@ -136,5 +153,6 @@
         private System.Windows.Forms.TableLayoutPanel tlpMotionFunction;
         private System.Windows.Forms.TableLayoutPanel tlpStatus;
         private System.Windows.Forms.Panel pnlJog;
+        private System.Windows.Forms.TableLayoutPanel tlpMotionParameter;
     }
 }
