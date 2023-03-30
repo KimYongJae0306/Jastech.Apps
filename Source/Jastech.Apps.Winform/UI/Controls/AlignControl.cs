@@ -48,7 +48,6 @@ namespace Jastech.Apps.Winform.UI.Controls
             AddControl();
         }
 
-
         private void chkUseTracking_CheckedChanged(object sender, EventArgs e)
         {
             if (chkUseTracking.Checked)
@@ -65,11 +64,9 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         private void AddControl()
         {
-            // Add Control
             CogCaliperParamControl.Dock = DockStyle.Fill;
             pnlParam.Controls.Add(CogCaliperParamControl);
         }
-
 
         public void SetParams(List<CogCaliperParam> paramList)
         {
@@ -158,22 +155,38 @@ namespace Jastech.Apps.Winform.UI.Controls
             return CaliperList;
         }
 
-        private void lblPrev_Click(object sender, EventArgs e)
+        private void lblPrevTab_Click(object sender, EventArgs e)
         {
-            if (cmbAlignList.SelectedIndex <= 0)
-                return;
-
-            cmbAlignList.SelectedIndex -= 1;
+            PrevTab();
         }
 
-        private void lblNext_Click(object sender, EventArgs e)
+        private void PrevTab()
         {
-            if (cmbAlignList.SelectedIndex <= 0)
+            if (cmbTabList.SelectedIndex <= 0)
                 return;
 
-            int nextIndex = cmbAlignList.SelectedIndex + 1;
-            if (cmbAlignList.Items.Count > nextIndex)
-                cmbAlignList.SelectedIndex = nextIndex;
+            cmbTabList.SelectedIndex -= 1;
+        }
+
+        private void lblNextTab_Click(object sender, EventArgs e)
+        {
+            NextTab();
+        }
+
+        private void NextTab()
+        {
+            if (cmbTabList.SelectedIndex <= 0)
+                return;
+
+            int nextIndex = cmbTabList.SelectedIndex + 1;
+
+            if (cmbTabList.Items.Count > nextIndex)
+                cmbTabList.SelectedIndex = nextIndex;
+        }
+
+        private void cmbTabList_DrawItem(object sender, DrawItemEventArgs e)
+        {
+            DrawComboboxCenterAlign(sender, e);
         }
 
         private void cmbAlignList_DrawItem(object sender, DrawItemEventArgs e)

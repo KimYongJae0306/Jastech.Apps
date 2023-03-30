@@ -54,6 +54,7 @@
             this.lblFPCY = new System.Windows.Forms.Label();
             this.lblPanelX = new System.Windows.Forms.Label();
             this.lblPanelY = new System.Windows.Forms.Label();
+            this.cmbTabList = new System.Windows.Forms.ComboBox();
             this.tlpAlign.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
             this.tableLayoutPanel3.SuspendLayout();
@@ -108,8 +109,9 @@
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel2.Controls.Add(this.lblPrev, 1, 0);
-            this.tableLayoutPanel2.Controls.Add(this.cmbAlignList, 0, 0);
             this.tableLayoutPanel2.Controls.Add(this.lblNext, 2, 0);
+            this.tableLayoutPanel2.Controls.Add(this.cmbAlignList, 3, 0);
+            this.tableLayoutPanel2.Controls.Add(this.cmbTabList, 0, 0);
             this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel2.Location = new System.Drawing.Point(3, 34);
             this.tableLayoutPanel2.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
@@ -128,7 +130,7 @@
             this.lblPrev.Name = "lblPrev";
             this.lblPrev.Size = new System.Drawing.Size(46, 44);
             this.lblPrev.TabIndex = 5;
-            this.lblPrev.Click += new System.EventHandler(this.lblPrev_Click);
+            this.lblPrev.Click += new System.EventHandler(this.lblPrevTab_Click);
             // 
             // cmbAlignList
             // 
@@ -138,10 +140,10 @@
             this.cmbAlignList.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbAlignList.Font = new System.Drawing.Font("맑은 고딕", 14.25F, System.Drawing.FontStyle.Bold);
             this.cmbAlignList.FormattingEnabled = true;
-            this.cmbAlignList.Location = new System.Drawing.Point(0, 0);
+            this.cmbAlignList.Location = new System.Drawing.Point(279, 0);
             this.cmbAlignList.Margin = new System.Windows.Forms.Padding(0);
             this.cmbAlignList.Name = "cmbAlignList";
-            this.cmbAlignList.Size = new System.Drawing.Size(175, 34);
+            this.cmbAlignList.Size = new System.Drawing.Size(143, 34);
             this.cmbAlignList.TabIndex = 0;
             this.cmbAlignList.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.cmbAlignList_DrawItem);
             this.cmbAlignList.SelectedIndexChanged += new System.EventHandler(this.cmbAlignList_SelectedIndexChanged);
@@ -155,7 +157,7 @@
             this.lblNext.Name = "lblNext";
             this.lblNext.Size = new System.Drawing.Size(46, 44);
             this.lblNext.TabIndex = 2;
-            this.lblNext.Click += new System.EventHandler(this.lblNext_Click);
+            this.lblNext.Click += new System.EventHandler(this.lblNextTab_Click);
             // 
             // tableLayoutPanel3
             // 
@@ -448,6 +450,22 @@
             this.lblPanelY.Text = "PANEL Y";
             this.lblPanelY.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
+            // cmbTabList
+            // 
+            this.cmbTabList.BackColor = System.Drawing.Color.White;
+            this.cmbTabList.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.cmbTabList.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.cmbTabList.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbTabList.Font = new System.Drawing.Font("맑은 고딕", 14.25F, System.Drawing.FontStyle.Bold);
+            this.cmbTabList.FormattingEnabled = true;
+            this.cmbTabList.Location = new System.Drawing.Point(0, 0);
+            this.cmbTabList.Margin = new System.Windows.Forms.Padding(0);
+            this.cmbTabList.Name = "cmbTabList";
+            this.cmbTabList.Size = new System.Drawing.Size(175, 34);
+            this.cmbTabList.TabIndex = 0;
+            this.cmbTabList.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.cmbTabList_DrawItem);
+            this.cmbTabList.SelectedIndexChanged += new System.EventHandler(this.cmbAlignList_SelectedIndexChanged);
+            // 
             // AlignControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
@@ -504,5 +522,6 @@
         private System.Windows.Forms.Label lblFPCY;
         private System.Windows.Forms.Label lblPanelX;
         private System.Windows.Forms.Label lblPanelY;
+        private System.Windows.Forms.ComboBox cmbTabList;
     }
 }
