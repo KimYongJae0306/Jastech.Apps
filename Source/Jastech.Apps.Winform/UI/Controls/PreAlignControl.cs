@@ -15,6 +15,7 @@ using Jastech.Framework.Imaging.VisionPro;
 using Jastech.Framework.Imaging.VisionPro.VisionAlgorithms;
 using Jastech.Apps.Structure;
 using Cognex.VisionPro.PMAlign;
+using Jastech.Framework.Imaging.VisionPro.VisionAlgorithms.Results;
 
 namespace Jastech.Apps.Winform.UI.Controls
 {
@@ -93,7 +94,7 @@ namespace Jastech.Apps.Winform.UI.Controls
             DrawROI();
         }
 
-        private void DrawROI()
+        public void DrawROI()
         {
             var display = TeachingUIManager.Instance().TeachingDisplay;
             if (display.GetImage() == null)
@@ -195,11 +196,35 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         private void lblInspection_Click(object sender, EventArgs e)
         {
-            var currentParam = ParamControl.GetCurrentParam();
             var display = TeachingUIManager.Instance().TeachingDisplay;
+            var currentParam = ParamControl.GetCurrentParam();
+
+            if (display == null || currentParam == null)
+                return;
 
             ICogImage cogImage = display.GetImage();
-            Algorithm.PatternAlgorithm.Run(cogImage, currentParam);
+            CogPatternMatchingResult result = Algorithm.PatternAlgorithm.Run(cogImage, currentParam);
+
+            UpdateResult(result);
+
+        }
+
+        private void UpdateResult(CogPatternMatchingResult result)
+        {
+            gvResult.Rows.Clear();
+
+            int count = 1;
+            foreach (var matchPos in result.MatchPosList)
+            {
+                string no = count.ToString();
+                string score = string.Format("{0:0.000}", (matchPos.Score * 100));
+                string x = string.Format("{0:0.000}", matchPos.FoundPos.X);
+                string y = string.Format("{0:0.000}", matchPos.FoundPos.Y);
+                string angle = string.Format("{0:0.000}", matchPos.Angle);
+
+                gvResult.Rows.Add(no, score, x, y, angle);
+                count++;
+            }
         }
     }
 }

@@ -132,6 +132,7 @@ namespace ATT.UI.Pages
                 ICogImage cogImage = CogImageHelper.Load(dlg.FileName);
                 Display.SetImage(cogImage);
                 TeachingUIManager.Instance().TeachingDisplay.SetImage(cogImage);
+                PreAlignControl.DrawROI();
             }
         }
 

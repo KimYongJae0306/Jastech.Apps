@@ -10,7 +10,6 @@ namespace Jastech.Apps.Structure.VisionTool
 {
     public class AlgorithmTool
     {
-        //public void InspectPreAlign()
         public CogPatternMatching PatternAlgorithm = new CogPatternMatching();
     }
 
