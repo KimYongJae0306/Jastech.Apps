@@ -196,6 +196,7 @@ namespace Jastech.Apps.Winform.UI.Controls
         private void lblInspection_Click(object sender, EventArgs e)
         {
             var currentParam = ParamControl.GetCurrentParam();
+            var display = TeachingUIManager.Instance().TeachingDisplay;
 
             ICogImage cogImage = display.GetImage();
             Algorithm.PatternAlgorithm.Run(cogImage, currentParam);
