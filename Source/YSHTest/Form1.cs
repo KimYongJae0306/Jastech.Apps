@@ -1,6 +1,7 @@
 ﻿using Cognex.VisionPro;
 using Jastech.Framework.Imaging.VisionPro;
 using Jastech.Framework.Winform.VisionPro.Controls;
+using Cognex.VisionPro.Caliper;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -19,7 +20,8 @@ namespace YSHTest
         private ICogImage CogImage;
         private ICogImage RegionImage;
         private ICogImage RegionConversionImage;
-        private CogImage8Grey CogGreyImage;
+        private CogImage8Grey CogOriginImage;
+        private CogImage8Grey CogRegionImage;
         private CogRectangle CogRect = new CogRectangle();
         public Form1()
         {
@@ -50,7 +52,7 @@ namespace YSHTest
                 CogImage = CogImageHelper.Load(openFile.FileName);
                 CogDisplay.SetImage(CogImage);
 
-                CogGreyImage = (CogImage8Grey)CogImage;
+                CogOriginImage = (CogImage8Grey)CogImage;
             }
         }
 
@@ -62,8 +64,8 @@ namespace YSHTest
         private void ShowROI()      
         {
             CogDisplay.ClearGraphic();
-            double centerX = CogGreyImage.Width / 2;
-            double centerY = CogGreyImage.Height / 2;
+            double centerX = CogOriginImage.Width / 2;
+            double centerY = CogOriginImage.Height / 2;
 
             CogRect = CogImageHelper.CreateRectangle(centerX - CogDisplay.GetPan().X, centerY - CogDisplay.GetPan().Y, 100, 100);
             CogRect.Interactive = true;
@@ -83,34 +85,41 @@ namespace YSHTest
             if (CogImage == null)
                 return;
 
-            //RegionImage = CogImageHelper.CogCopyRegionTool2(CogImage, CogRect);
+            RegionImage = CogImageHelper.CropImage(CogImage, CogRect);
+            CogRegionImage = CogImageHelper.Threshold((CogImage8Grey)RegionImage, 10, 120, 255, true);
+            CogDisplay.SetImage(CogRegionImage);
         }
 
         private void AutoLeadROI()
         {
-            CogImage8Grey TempRegionImage = (CogImage8Grey)RegionImage;
-            ICogImage image = CogImageHelper.Load(@"D:\123.bmp");
-            //CogImageHelper.Save((ICogImage)TempRegionImage, @"D:\123.bmp");
-            CogImageHelper.Save(TempRegionImage, @"D:\123.bmp");
+            CogRectangleAffine cogRectAffine = new CogRectangleAffine();
+            CogCaliperTool cogCaliper = new CogCaliperTool();
+            cogCaliper.InputImage = CogRegionImage;
 
-            //CogImage8Grey ConversionImage;
-            //ConversionImage = CogImageHelper.Threadhold(TempRegionImage, 50, 255, true);
-            //CogImageHelper.Save(ConversionImage, "D:\\Test_Region.bmp");
-            //CogImageHelper.Save(TempRegionImage, @"D:\1234.bmp");
-            //CogImageHelper.Save()
-            /////////////////////////////////////////////////////////////
 
-            //CogImage8Grey TempRegionImage;
-            //string fileName = @"D:\Conversion.bmp";
-            //RegionConversionImage = CogImageHelper.Load(fileName);
-            //TempRegionImage = (CogImage8Grey)RegionConversionImage;
+            cogRectAffine.SetCenterLengthsRotationSkew((CogRect.Width / 2), CogRect.Y + 20, CogRect.Width, 50, 0, 0);
+            cogRectAffine.GraphicDOFEnable = CogRectangleAffineDOFConstants.Position | CogRectangleAffineDOFConstants.Size | CogRectangleAffineDOFConstants.Skew | CogRectangleAffineDOFConstants.Rotation;
+            cogRectAffine.Rotation = 0; //좌->우 방향 고정
+            cogRectAffine.Interactive = false;
+            CogDisplay.AddGraphics("ROI", cogRectAffine);
 
-            //CogRectangleAffine cogRectAffine = new CogRectangleAffine();
-            //cogRectAffine.SetCenterLengthsRotationSkew((TempRegionImage.Width / 2), (TempRegionImage.Height / 2), TempRegionImage.Width, 50, 0, 0);
-            //cogRectAffine.GraphicDOFEnable = CogRectangleAffineDOFConstants.Position | CogRectangleAffineDOFConstants.Size | CogRectangleAffineDOFConstants.Skew | CogRectangleAffineDOFConstants.Rotation;
-            //cogRectAffine.Interactive = false;
-            //CogDisplay.AddGraphics("ROI", cogRectAffine);
+            //Caliper Params 적용
+            cogCaliper.Region = cogRectAffine;
+            cogCaliper.RunParams.Edge0Polarity = CogCaliperPolarityConstants.LightToDark;
+            cogCaliper.RunParams.EdgeMode = CogCaliperEdgeModeConstants.SingleEdge;
+            cogCaliper.RunParams.ContrastThreshold = 10;
+            cogCaliper.RunParams.FilterHalfSizeInPixels = 5;
 
+            //Caliper Search
+            cogCaliper.Run();
+            
+            if (cogCaliper.Results != null && cogCaliper.Results.Count > 0)
+            {
+                for (int i = 0; i < cogCaliper.Results.Count; i++)
+                {
+                    CogDisplay.AddGraphics("Search", cogCaliper.Results[i].CreateResultGraphics(CogCaliperResultGraphicConstants.Edges));
+                }
+            }
         }
     }
 }
