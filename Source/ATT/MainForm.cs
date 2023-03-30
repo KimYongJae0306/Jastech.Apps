@@ -61,6 +61,12 @@ namespace ATT
             tmrMainForm.Start();
         }
 
+        private void tmrMainForm_Tick(object sender, EventArgs e)
+        {
+            DateTime now = DateTime.Now;
+            lblCurrentTime.Text = now.ToString("yyyy-MM-dd HH:mm:ss");
+        }
+
         private void MainForm_CurrentModelChangedEvent(InspModel inspModel)
         {
             TeachingPageControl.UpdateModel(inspModel);
@@ -87,6 +93,7 @@ namespace ATT
             PageLabelList.Add(lblTeachingPage);
             PageLabelList.Add(lblLogPage);
             PageLabelList.Add(lblSettingPage);
+            PageLabelList.Add(lblModelPage);
         }
 
         private void ModelPageControl_ApplyModelEventHandler(string modelName)
@@ -129,12 +136,7 @@ namespace ATT
             SetSelectPage(selectedControl: AutoPageControl);
         }
 
-        private void tmrMainForm_Tick(object sender, EventArgs e)
-        {
-            DateTime now = DateTime.Now;
-            lblCurrentTime.Text = now.ToString("yyyy-MM-dd HH:mm:ss");
-        }
-
+        
         private void ModelPage_Click(object sender, EventArgs e)
         {
             SetSelectLabel(sender);

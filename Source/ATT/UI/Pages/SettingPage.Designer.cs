@@ -29,12 +29,12 @@
         private void InitializeComponent()
         {
             this.tlpSettingPage = new System.Windows.Forms.TableLayoutPanel();
+            this.pnlSettingPage = new System.Windows.Forms.Panel();
             this.pnlSettingItem = new System.Windows.Forms.Panel();
             this.tlpSettingItem = new System.Windows.Forms.TableLayoutPanel();
             this.btnSave = new System.Windows.Forms.Button();
             this.btnMotion = new System.Windows.Forms.Button();
             this.btnSettings = new System.Windows.Forms.Button();
-            this.pnlSettingPage = new System.Windows.Forms.Panel();
             this.tlpSettingPage.SuspendLayout();
             this.pnlSettingItem.SuspendLayout();
             this.tlpSettingItem.SuspendLayout();
@@ -55,6 +55,15 @@
             this.tlpSettingPage.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tlpSettingPage.Size = new System.Drawing.Size(600, 600);
             this.tlpSettingPage.TabIndex = 1;
+            // 
+            // pnlSettingPage
+            // 
+            this.pnlSettingPage.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pnlSettingPage.Location = new System.Drawing.Point(0, 0);
+            this.pnlSettingPage.Margin = new System.Windows.Forms.Padding(0);
+            this.pnlSettingPage.Name = "pnlSettingPage";
+            this.pnlSettingPage.Size = new System.Drawing.Size(440, 600);
+            this.pnlSettingPage.TabIndex = 0;
             // 
             // pnlSettingItem
             // 
@@ -114,6 +123,7 @@
             this.btnMotion.TabIndex = 21;
             this.btnMotion.Text = "Motion";
             this.btnMotion.UseVisualStyleBackColor = false;
+            this.btnMotion.Click += new System.EventHandler(this.btnMotion_Click);
             // 
             // btnSettings
             // 
@@ -129,15 +139,6 @@
             this.btnSettings.Text = "Settings";
             this.btnSettings.UseVisualStyleBackColor = false;
             this.btnSettings.Click += new System.EventHandler(this.btnSettings_Click);
-            // 
-            // pnlSettingPage
-            // 
-            this.pnlSettingPage.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pnlSettingPage.Location = new System.Drawing.Point(0, 0);
-            this.pnlSettingPage.Margin = new System.Windows.Forms.Padding(0);
-            this.pnlSettingPage.Name = "pnlSettingPage";
-            this.pnlSettingPage.Size = new System.Drawing.Size(440, 600);
-            this.pnlSettingPage.TabIndex = 0;
             // 
             // SettingPage
             // 

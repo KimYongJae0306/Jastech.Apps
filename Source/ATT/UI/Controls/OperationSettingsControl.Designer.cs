@@ -765,7 +765,6 @@
             this.BackColor = System.Drawing.Color.White;
             this.Controls.Add(this.tableLayoutPanel1);
             this.Font = new System.Drawing.Font("맑은 고딕", 11.25F, System.Drawing.FontStyle.Bold);
-            this.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.Name = "OperationSettingsControl";
             this.Size = new System.Drawing.Size(1127, 674);
             this.tableLayoutPanel1.ResumeLayout(false);

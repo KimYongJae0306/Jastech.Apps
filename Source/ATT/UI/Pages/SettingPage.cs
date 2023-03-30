@@ -23,6 +23,7 @@ namespace ATT.UI.Pages
         private List<Button> SettingButtonList = null;
 
         private OperationSettingsControl OperationSettingsControl = null;
+        private MotionSettingsControl MotionSettingsControl = null;
         #endregion
 
         #region 이벤트
@@ -41,20 +42,30 @@ namespace ATT.UI.Pages
         #region 메서드        
         private void SettingPage_Load(object sender, EventArgs e)
         {
+            InitializeUI();
             AddControl();
+        }
+
+        private void InitializeUI()
+        {
+            btnSettings.ForeColor = Color.Blue;
         }
 
         private void AddControl()
         {
-            // Operation Setting
             OperationSettingsControl = new OperationSettingsControl();
             OperationSettingsControl.Dock = DockStyle.Fill;
             pnlSettingPage.Controls.Add(OperationSettingsControl);
-            btnSettings.ForeColor = Color.Blue;
+
+            MotionSettingsControl = new MotionSettingsControl();
+            MotionSettingsControl.Dock = DockStyle.Fill;
+            pnlSettingPage.Controls.Add(MotionSettingsControl);
+            
                 
             // Teach Control List
             SettingControlList = new List<UserControl>();
             SettingControlList.Add(OperationSettingsControl);
+            SettingControlList.Add(MotionSettingsControl);
 
             // Button List
             SettingButtonList = new List<Button>();
@@ -86,8 +97,12 @@ namespace ATT.UI.Pages
             SetSelectButton(sender);
             SetSelectSettingPage(OperationSettingsControl);
         }
+
+        private void btnMotion_Click(object sender, EventArgs e)
+        {
+            SetSelectButton(sender);
+            SetSelectSettingPage(MotionSettingsControl);
+        }
         #endregion
-
-
     }
 }

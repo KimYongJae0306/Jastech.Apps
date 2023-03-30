@@ -82,6 +82,12 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SystemManager.cs" />
+    <Compile Include="UI\Controls\MotionSettingsControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UI\Controls\MotionSettingsControl.Designer.cs">
+      <DependentUpon>MotionSettingsControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="UI\Controls\OperationSettingsControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -143,6 +149,9 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <EmbeddedResource Include="UI\Controls\MotionSettingsControl.resx">
+      <DependentUpon>MotionSettingsControl.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="UI\Controls\OperationSettingsControl.resx">
       <DependentUpon>OperationSettingsControl.cs</DependentUpon>
     </EmbeddedResource>
