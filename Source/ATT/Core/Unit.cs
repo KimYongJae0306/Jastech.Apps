@@ -7,10 +7,12 @@ using System.Threading.Tasks;
 
 namespace ATT.Core
 {
-    public class ATTInspModel : Jastech.Apps.Structure.AppsInspModel
+    public class Unit
     {
-       
-        //[JsonProperty]
-        //public List<Tab> TabList { get; set; } = new List<Tab>();
+        [JsonProperty]
+        public string Name { get; set; }
+
+        [JsonProperty]
+        public List<Tab> TabList = new List<Tab>();
     }
 }

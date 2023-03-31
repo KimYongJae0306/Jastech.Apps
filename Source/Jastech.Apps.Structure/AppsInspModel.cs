@@ -21,6 +21,15 @@ namespace Jastech.Apps.Structure
     public class AppsInspModel : InspModel
     {
         [JsonProperty]
+        public int UnitCount { get; set; } = 1;
+
+        [JsonProperty]
+        public int TabCount { get; set; } = 5;
+
+        [JsonProperty]
+        public List<Unit> Units { get; set; } = new List<Unit>();
+
+        [JsonProperty]
         public List<CogPatternMatchingParam> PreAlignParams { get; set; } = new List<CogPatternMatchingParam>();
 
         [JsonProperty]

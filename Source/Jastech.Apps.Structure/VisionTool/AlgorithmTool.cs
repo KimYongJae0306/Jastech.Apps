@@ -26,8 +26,8 @@ namespace Jastech.Apps.Structure.VisionTool
                 matchingResult.Result = Result.Fail;
             else
             {
-                if (matchingResult.MaxScore >= param.Score)
-                    matchingResult.Result = Result.Good;
+                if ((matchingResult.MaxScore * 100) >= param.Score)
+                    matchingResult.Result = Result.OK;
                 else
                     matchingResult.Result = Result.NG;
             }
