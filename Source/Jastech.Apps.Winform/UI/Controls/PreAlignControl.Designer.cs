@@ -28,12 +28,12 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle12 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle8 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle9 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle10 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle11 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
             this.gvResult = new System.Windows.Forms.DataGridView();
@@ -48,8 +48,8 @@
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.lblAddROI = new System.Windows.Forms.Label();
             this.lblInspection = new System.Windows.Forms.Label();
-            this.lblPrev = new System.Windows.Forms.Label();
             this.cbxPreAlignList = new System.Windows.Forms.ComboBox();
+            this.lblPrev = new System.Windows.Forms.Label();
             this.lblNext = new System.Windows.Forms.Label();
             this.tableLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel3.SuspendLayout();
@@ -98,14 +98,14 @@
             this.gvResult.AllowUserToResizeRows = false;
             this.gvResult.BackgroundColor = System.Drawing.Color.White;
             this.gvResult.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            dataGridViewCellStyle7.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle7.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(55)))), ((int)(((byte)(174)))), ((int)(((byte)(224)))));
-            dataGridViewCellStyle7.Font = new System.Drawing.Font("맑은 고딕", 11.25F, System.Drawing.FontStyle.Bold);
-            dataGridViewCellStyle7.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle7.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle7.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle7.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.gvResult.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle7;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(55)))), ((int)(((byte)(174)))), ((int)(((byte)(224)))));
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("맑은 고딕", 11.25F, System.Drawing.FontStyle.Bold);
+            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.gvResult.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             this.gvResult.ColumnHeadersHeight = 40;
             this.gvResult.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             this.gvResult.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
@@ -122,14 +122,14 @@
             this.gvResult.MultiSelect = false;
             this.gvResult.Name = "gvResult";
             this.gvResult.ReadOnly = true;
-            dataGridViewCellStyle12.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle12.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle12.Font = new System.Drawing.Font("굴림", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            dataGridViewCellStyle12.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle12.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle12.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle12.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.gvResult.RowHeadersDefaultCellStyle = dataGridViewCellStyle12;
+            dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle6.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle6.Font = new System.Drawing.Font("굴림", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            dataGridViewCellStyle6.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle6.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle6.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle6.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.gvResult.RowHeadersDefaultCellStyle = dataGridViewCellStyle6;
             this.gvResult.RowHeadersVisible = false;
             this.gvResult.RowTemplate.Height = 23;
             this.gvResult.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
@@ -146,9 +146,9 @@
             // 
             // ColumnGlassID
             // 
-            dataGridViewCellStyle8.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle8.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.ColumnGlassID.DefaultCellStyle = dataGridViewCellStyle8;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ColumnGlassID.DefaultCellStyle = dataGridViewCellStyle2;
             this.ColumnGlassID.HeaderText = "Score";
             this.ColumnGlassID.MinimumWidth = 90;
             this.ColumnGlassID.Name = "ColumnGlassID";
@@ -158,9 +158,9 @@
             // 
             // ColumnResult
             // 
-            dataGridViewCellStyle9.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle9.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.ColumnResult.DefaultCellStyle = dataGridViewCellStyle9;
+            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle3.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ColumnResult.DefaultCellStyle = dataGridViewCellStyle3;
             this.ColumnResult.HeaderText = "X";
             this.ColumnResult.MinimumWidth = 90;
             this.ColumnResult.Name = "ColumnResult";
@@ -170,9 +170,9 @@
             // 
             // ColumnImagePath
             // 
-            dataGridViewCellStyle10.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle10.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.ColumnImagePath.DefaultCellStyle = dataGridViewCellStyle10;
+            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle4.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ColumnImagePath.DefaultCellStyle = dataGridViewCellStyle4;
             this.ColumnImagePath.HeaderText = "Y";
             this.ColumnImagePath.MinimumWidth = 90;
             this.ColumnImagePath.Name = "ColumnImagePath";
@@ -182,9 +182,9 @@
             // 
             // ColumnUpdated
             // 
-            dataGridViewCellStyle11.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle11.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.ColumnUpdated.DefaultCellStyle = dataGridViewCellStyle11;
+            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle5.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ColumnUpdated.DefaultCellStyle = dataGridViewCellStyle5;
             this.ColumnUpdated.HeaderText = "Angle";
             this.ColumnUpdated.MinimumWidth = 80;
             this.ColumnUpdated.Name = "ColumnUpdated";
@@ -270,17 +270,6 @@
             this.lblInspection.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.lblInspection.Click += new System.EventHandler(this.lblInspection_Click);
             // 
-            // lblPrev
-            // 
-            this.lblPrev.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lblPrev.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblPrev.Image = global::Jastech.Apps.Winform.Properties.Resources.Prev;
-            this.lblPrev.Location = new System.Drawing.Point(178, 0);
-            this.lblPrev.Name = "lblPrev";
-            this.lblPrev.Size = new System.Drawing.Size(46, 44);
-            this.lblPrev.TabIndex = 5;
-            this.lblPrev.Click += new System.EventHandler(this.lblPrev_Click);
-            // 
             // cbxPreAlignList
             // 
             this.cbxPreAlignList.BackColor = System.Drawing.Color.White;
@@ -296,6 +285,17 @@
             this.cbxPreAlignList.TabIndex = 0;
             this.cbxPreAlignList.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.cbxPreAlignList_DrawItem);
             this.cbxPreAlignList.SelectedIndexChanged += new System.EventHandler(this.cbxPreAlignList_SelectedIndexChanged);
+            // 
+            // lblPrev
+            // 
+            this.lblPrev.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblPrev.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblPrev.Image = global::Jastech.Apps.Winform.Properties.Resources.Prev;
+            this.lblPrev.Location = new System.Drawing.Point(178, 0);
+            this.lblPrev.Name = "lblPrev";
+            this.lblPrev.Size = new System.Drawing.Size(46, 44);
+            this.lblPrev.TabIndex = 5;
+            this.lblPrev.Click += new System.EventHandler(this.lblPrev_Click);
             // 
             // lblNext
             // 

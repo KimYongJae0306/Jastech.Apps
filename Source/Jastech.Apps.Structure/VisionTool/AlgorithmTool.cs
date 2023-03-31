@@ -15,6 +15,8 @@ namespace Jastech.Apps.Structure.VisionTool
     {
         private CogPatternMatching PatternAlgorithm { get; set; } = new CogPatternMatching();
 
+        public CogCaliper CaliperAlgorithm { get; set; } = new CogCaliper();
+
         public CogPatternMatchingResult RunPreAlign(ICogImage image, CogPatternMatchingParam param)
         {
             if (image == null)
@@ -34,7 +36,7 @@ namespace Jastech.Apps.Structure.VisionTool
 
             return matchingResult;
         }
-        public CogCaliper CaliperAlgorithm = new CogCaliper();
+     
     }
 
     public enum InspectionType
@@ -42,20 +44,6 @@ namespace Jastech.Apps.Structure.VisionTool
         PreAlign,
         Align,
         Akkon,
-    }
-
-    public enum PreAlignName
-    {
-        MainLeft,
-        MainRight,
-        SubLeft1,
-        SubRight1,
-        SubLeft2,
-        SubRight2,
-        SubLeft3,
-        SubRight3,
-        SubLeft4,
-        SubRight4,
     }
 
     public enum AlignName

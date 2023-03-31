@@ -31,6 +31,8 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         private AlgorithmTool Algorithm = new AlgorithmTool();
 
+        private List<Tab> TeachingTabList { get; set; } = new List<Tab>();
+
         //private CogCaliper CogCaliperAlgorithm = new CogCaliper();
 
         #region 속성
@@ -75,23 +77,28 @@ namespace Jastech.Apps.Winform.UI.Controls
             pnlParam.Controls.Add(CogCaliperParamControl);
         }
 
-        public void SetParams(List<CogCaliperParam> paramList)
+        public void SetParams(List<Tab> tabList)
         {
-            if (paramList.Count <= 0)
-                return;
-
-            CaliperList = paramList;
-
-            cmbAlignList.Items.Clear();
-
-            foreach (var item in CaliperList)
-                cmbAlignList.Items.Add(item.Name);
-
-            cmbAlignList.SelectedIndex = 0;
-
-            string name = cmbAlignList.SelectedItem as string;
-            CogCaliperParam(name);
+            TeachingTabList = tabList;
         }
+
+        //public void SetParams(List<CogCaliperParam> paramList)
+        //{
+        //    if (paramList.Count <= 0)
+        //        return;
+
+        //    CaliperList = paramList;
+
+        //    cmbAlignList.Items.Clear();
+
+        //    foreach (var item in CaliperList)
+        //        cmbAlignList.Items.Add(item.Name);
+
+        //    cmbAlignList.SelectedIndex = 0;
+
+        //    string name = cmbAlignList.SelectedItem as string;
+        //    CogCaliperParam(name);
+        //}
 
         private void CogCaliperParam(string name)
         {

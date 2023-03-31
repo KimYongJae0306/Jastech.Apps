@@ -111,6 +111,12 @@ namespace ATT
         {
             _mainForm.ATTInspModelService.Save(filePath, inspModel);
         }
+
+        public ATTTeachingData GetTeachingData()
+        {
+            return _mainForm.TeachingData;
+        }
+
         #endregion
     }
 }

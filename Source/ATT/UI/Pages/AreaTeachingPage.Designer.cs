@@ -1,6 +1,6 @@
 ﻿namespace ATT.UI.Pages
 {
-    partial class TeachingPage
+    partial class AreaTeachingPage
     {
         /// <summary> 
         /// 필수 디자이너 변수입니다.
@@ -107,11 +107,11 @@
             // 
             this.tableLayoutPanel1.ColumnCount = 1;
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel1.Controls.Add(this.pnlTeach, 0, 1);
             this.tableLayoutPanel1.Controls.Add(this.panel1, 0, 0);
+            this.tableLayoutPanel1.Controls.Add(this.pnlTeach, 0, 1);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel1.Location = new System.Drawing.Point(552, 2);
-            this.tableLayoutPanel1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tableLayoutPanel1.Margin = new System.Windows.Forms.Padding(2);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 2;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 80F));
@@ -133,7 +133,7 @@
             this.panel1.Controls.Add(this.btnLoadImage);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel1.Location = new System.Drawing.Point(2, 2);
-            this.panel1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.panel1.Margin = new System.Windows.Forms.Padding(2);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(543, 76);
             this.panel1.TabIndex = 1;
@@ -143,8 +143,8 @@
             this.btnLoadImage.BackColor = System.Drawing.Color.White;
             this.btnLoadImage.Font = new System.Drawing.Font("맑은 고딕", 10F, System.Drawing.FontStyle.Bold);
             this.btnLoadImage.ForeColor = System.Drawing.Color.Black;
-            this.btnLoadImage.Location = new System.Drawing.Point(12, 13);
-            this.btnLoadImage.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.btnLoadImage.Location = new System.Drawing.Point(11, 13);
+            this.btnLoadImage.Margin = new System.Windows.Forms.Padding(2);
             this.btnLoadImage.Name = "btnLoadImage";
             this.btnLoadImage.Size = new System.Drawing.Size(116, 38);
             this.btnLoadImage.TabIndex = 20;
@@ -167,10 +167,10 @@
             this.tlpTeachingItem.ColumnCount = 1;
             this.tlpTeachingItem.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tlpTeachingItem.Controls.Add(this.btnSave, 0, 5);
-            this.tlpTeachingItem.Controls.Add(this.btnLinescan, 0, 0);
-            this.tlpTeachingItem.Controls.Add(this.btnPreAlign, 0, 1);
             this.tlpTeachingItem.Controls.Add(this.btnAlign, 0, 2);
             this.tlpTeachingItem.Controls.Add(this.btnAkkon, 0, 3);
+            this.tlpTeachingItem.Controls.Add(this.btnLinescan, 0, 4);
+            this.tlpTeachingItem.Controls.Add(this.btnPreAlign, 0, 0);
             this.tlpTeachingItem.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tlpTeachingItem.Location = new System.Drawing.Point(0, 0);
             this.tlpTeachingItem.Margin = new System.Windows.Forms.Padding(0);
@@ -192,7 +192,7 @@
             this.btnSave.Font = new System.Drawing.Font("맑은 고딕", 20F, System.Drawing.FontStyle.Bold);
             this.btnSave.ForeColor = System.Drawing.Color.Black;
             this.btnSave.Location = new System.Drawing.Point(2, 642);
-            this.btnSave.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.btnSave.Margin = new System.Windows.Forms.Padding(2);
             this.btnSave.Name = "btnSave";
             this.btnSave.Size = new System.Drawing.Size(140, 76);
             this.btnSave.TabIndex = 19;
@@ -203,16 +203,16 @@
             // btnLinescan
             // 
             this.btnLinescan.BackColor = System.Drawing.Color.White;
-            this.btnLinescan.Dock = System.Windows.Forms.DockStyle.Fill;
             this.btnLinescan.Font = new System.Drawing.Font("맑은 고딕", 20F, System.Drawing.FontStyle.Bold);
             this.btnLinescan.ForeColor = System.Drawing.Color.Black;
-            this.btnLinescan.Location = new System.Drawing.Point(2, 2);
-            this.btnLinescan.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.btnLinescan.Location = new System.Drawing.Point(2, 322);
+            this.btnLinescan.Margin = new System.Windows.Forms.Padding(2);
             this.btnLinescan.Name = "btnLinescan";
             this.btnLinescan.Size = new System.Drawing.Size(140, 76);
             this.btnLinescan.TabIndex = 19;
             this.btnLinescan.Text = "Linescan";
             this.btnLinescan.UseVisualStyleBackColor = false;
+            this.btnLinescan.Visible = false;
             this.btnLinescan.Click += new System.EventHandler(this.btnLinescan_Click);
             // 
             // btnPreAlign
@@ -221,8 +221,8 @@
             this.btnPreAlign.Dock = System.Windows.Forms.DockStyle.Fill;
             this.btnPreAlign.Font = new System.Drawing.Font("맑은 고딕", 20F, System.Drawing.FontStyle.Bold);
             this.btnPreAlign.ForeColor = System.Drawing.Color.Black;
-            this.btnPreAlign.Location = new System.Drawing.Point(2, 82);
-            this.btnPreAlign.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.btnPreAlign.Location = new System.Drawing.Point(2, 2);
+            this.btnPreAlign.Margin = new System.Windows.Forms.Padding(2);
             this.btnPreAlign.Name = "btnPreAlign";
             this.btnPreAlign.Size = new System.Drawing.Size(140, 76);
             this.btnPreAlign.TabIndex = 19;
@@ -237,12 +237,13 @@
             this.btnAlign.Font = new System.Drawing.Font("맑은 고딕", 20F, System.Drawing.FontStyle.Bold);
             this.btnAlign.ForeColor = System.Drawing.Color.Black;
             this.btnAlign.Location = new System.Drawing.Point(2, 162);
-            this.btnAlign.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.btnAlign.Margin = new System.Windows.Forms.Padding(2);
             this.btnAlign.Name = "btnAlign";
             this.btnAlign.Size = new System.Drawing.Size(140, 76);
             this.btnAlign.TabIndex = 19;
             this.btnAlign.Text = "Align";
             this.btnAlign.UseVisualStyleBackColor = false;
+            this.btnAlign.Visible = false;
             this.btnAlign.Click += new System.EventHandler(this.btnAlign_Click);
             // 
             // btnAkkon
@@ -252,23 +253,24 @@
             this.btnAkkon.Font = new System.Drawing.Font("맑은 고딕", 20F, System.Drawing.FontStyle.Bold);
             this.btnAkkon.ForeColor = System.Drawing.Color.Black;
             this.btnAkkon.Location = new System.Drawing.Point(2, 242);
-            this.btnAkkon.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.btnAkkon.Margin = new System.Windows.Forms.Padding(2);
             this.btnAkkon.Name = "btnAkkon";
             this.btnAkkon.Size = new System.Drawing.Size(140, 76);
             this.btnAkkon.TabIndex = 19;
             this.btnAkkon.Text = "Akkon";
             this.btnAkkon.UseVisualStyleBackColor = false;
+            this.btnAkkon.Visible = false;
             this.btnAkkon.Click += new System.EventHandler(this.btnAkkon_Click);
             // 
-            // TeachingPage
+            // AreaTeachingPage
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.BackColor = System.Drawing.Color.White;
             this.Controls.Add(this.tlpTeachingPage);
             this.Font = new System.Drawing.Font("맑은 고딕", 11.25F, System.Drawing.FontStyle.Bold);
-            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.Name = "TeachingPage";
+            this.Margin = new System.Windows.Forms.Padding(2);
+            this.Name = "AreaTeachingPage";
             this.Size = new System.Drawing.Size(1245, 720);
             this.Load += new System.EventHandler(this.TeachingPage_Load);
             this.tlpTeachingPage.ResumeLayout(false);

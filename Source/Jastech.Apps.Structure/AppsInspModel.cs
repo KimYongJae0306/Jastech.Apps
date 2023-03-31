@@ -27,34 +27,31 @@ namespace Jastech.Apps.Structure
         public int TabCount { get; set; } = 5;
 
         [JsonProperty]
-        public List<Unit> Units { get; set; } = new List<Unit>();
+        public List<Unit> UnitList { get; private set; } = new List<Unit>();
 
-        [JsonProperty]
-        public List<CogPatternMatchingParam> PreAlignParams { get; set; } = new List<CogPatternMatchingParam>();
-
-        [JsonProperty]
-        public List<CogCaliperParam> AlignParams { get; set; } = new List<CogCaliperParam>();
-
-        public void SetPreAlignParams(List<CogPatternMatchingParam> matchingParam)
+        public Unit GetUnit(string name)
         {
-            if (matchingParam == null)
-                return;
-
-            foreach (var prevParam in PreAlignParams)
-                prevParam.Dispose();
-
-            PreAlignParams = matchingParam.Select(x => x.DeepCopy()).ToList();
+            return UnitList.Select(x => x.Name == name) as Unit;
         }
 
-        public void SetAlignParams(List<CogCaliperParam> caliperParam)
+        public void AddUnit(Unit unit)
         {
-            if (caliperParam == null)
-                return;
+            UnitList.Add(unit);
+        }
 
-            foreach (var prevParam in AlignParams)
-                prevParam.Dispose();
+        public List<Unit> GetUnitList()
+        {
+            return UnitList;
+        }
 
-            AlignParams = caliperParam.Select(x => x.DeepCopy()).ToList();
+        public void SetUnitList(List<Unit> newUnitList)
+        {
+            foreach (var unit in UnitList)
+                unit.Dispose();
+
+            UnitList.Clear();
+
+            UnitList.AddRange(newUnitList);
         }
     }
 }

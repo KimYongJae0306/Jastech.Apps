@@ -20,11 +20,18 @@ using Jastech.Apps.Winform.Settings;
 
 namespace ATT.UI.Pages
 {
-    public partial class TeachingPage : UserControl
+    public partial class AreaTeachingPage : UserControl
     {
+        #region 필드
+        private string _prevName { get; set; } = "";
+        #endregion
+
         #region 속성
+        public string UnitName { get; set; } = "";
         // Display
         private CogThumbnailDisplayControl Display { get; set; } = new CogThumbnailDisplayControl();
+
+       
         // Teach Controls
         private PreAlignControl PreAlignControl { get; set; } = new PreAlignControl();
 		private AlignControl AlignControl { get; set; } = new AlignControl();
@@ -35,7 +42,7 @@ namespace ATT.UI.Pages
         private List<Button> TeachButtonList = null;
         #endregion
 
-        public TeachingPage()
+        public AreaTeachingPage()
         {
             InitializeComponent();
         }
@@ -43,6 +50,7 @@ namespace ATT.UI.Pages
         private void TeachingPage_Load(object sender, EventArgs e)
         {
             AddControl();
+            SelectPreAlign();
         }
 
         private void AddControl()
@@ -77,8 +85,24 @@ namespace ATT.UI.Pages
 
         private void btnPreAlign_Click(object sender, EventArgs e)
         {
-            SetSelectButton(sender);
-            SetSelectTeachPage(PreAlignControl);
+            SelectPreAlign();
+        }
+
+        public void UpdateSelectPage()
+        {
+            SelectPreAlign();
+        }
+
+        private void SelectPreAlign()
+        {
+            if (ModelManager.Instance().CurrentModel == null || UnitName == "")
+                return;
+
+            btnPreAlign.ForeColor = Color.Blue;
+            pnlTeach.Controls.Add(PreAlignControl);
+
+            var preAlignParam = SystemManager.Instance().GetTeachingData().GetPreAlignParameters(UnitName);
+            PreAlignControl.SetParams(preAlignParam);
         }
 
         private void btnAlign_Click(object sender, EventArgs e)
@@ -112,14 +136,6 @@ namespace ATT.UI.Pages
             pnlTeach.Controls.Add(selectedControl);
         }
 
-        public void UpdateModel(InspModel inspModel)
-        {
-            ATTInspModel model = inspModel as ATTInspModel;
-
-            PreAlignControl.SetParams(model.PreAlignParams.Select(x => x.DeepCopy()).ToList());
-            AlignControl.SetParams(model.AlignParams.Select(x => x.DeepCopy()).ToList());
-        }
-
         private void btnLoadImage_Click(object sender, EventArgs e)
         {
             OpenFileDialog dlg = new OpenFileDialog();
@@ -133,7 +149,7 @@ namespace ATT.UI.Pages
                 Display.SetImage(cogImage);
                 TeachingUIManager.Instance().TeachingDisplay.SetImage(cogImage);
                 PreAlignControl.DrawROI();
-                AlignControl.DrawROI();
+                //AlignControl.DrawROI();
             }
         }
 
@@ -144,16 +160,16 @@ namespace ATT.UI.Pages
             if (model == null)
                 return;
 
-            model.SetPreAlignParams(PreAlignControl.GetTeachingData());
-            model.SetAlignParams(AlignControl.GetTeachingData());
-
             SaveModelData(model);
         }
 
         private void SaveModelData(ATTInspModel model)
         {
+            model.SetUnitList(SystemManager.Instance().GetTeachingData().UnitList);
+
             string fileName = System.IO.Path.Combine(AppConfig.Instance().Path.Model, model.Name, InspModel.FileName);
             SystemManager.Instance().SaveModel(fileName, model);
+
         }
     }
 }

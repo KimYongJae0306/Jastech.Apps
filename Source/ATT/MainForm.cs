@@ -2,6 +2,7 @@
 using ATT.UI.Pages;
 using Jastech.Apps.Structure;
 using Jastech.Apps.Winform.Settings;
+using Jastech.Apps.Winform.UI.Forms;
 using Jastech.Framework.Config;
 using Jastech.Framework.Structure;
 using System;
@@ -20,10 +21,11 @@ namespace ATT
     public partial class MainForm : Form
     {
         #region 속성
+        public ATTTeachingData TeachingData { get; set; } = new ATTTeachingData();
         // Page Control
         private AutoPage AutoPageControl { get; set; } = new AutoPage();
 
-        private TeachingPage TeachingPageControl { get; set; } = new TeachingPage();
+        private AreaTeachingPage AreaTeachingPageControl { get; set; } = new AreaTeachingPage();
 
         private ModelPage ModelPageControl { get; set; } = new ModelPage();
 
@@ -69,7 +71,12 @@ namespace ATT
 
         private void MainForm_CurrentModelChangedEvent(InspModel inspModel)
         {
-            TeachingPageControl.UpdateModel(inspModel);
+            ATTInspModel model = inspModel as ATTInspModel;
+
+            TeachingData.Dispose();
+            TeachingData.Initialize(model);
+
+            AreaTeachingPageControl.UpdateSelectPage();
         }
 
         private void AddControls()
@@ -77,7 +84,7 @@ namespace ATT
             // Page Control List
             PageControlList = new List<UserControl>();
             PageControlList.Add(AutoPageControl);
-            PageControlList.Add(TeachingPageControl);
+            PageControlList.Add(AreaTeachingPageControl);
 
             ModelPageControl.InspModelService = ATTInspModelService;
             ModelPageControl.ApplyModelEventHandler += ModelPageControl_ApplyModelEventHandler;
@@ -151,8 +158,14 @@ namespace ATT
 
         private void TeachPage_Click(object sender, EventArgs e)
         {
-            SetSelectLabel(sender);
-            SetSelectPage(selectedControl: TeachingPageControl);
+            UnitSelectForm form = new UnitSelectForm();
+            if(form.ShowDialog() == DialogResult.OK)
+            {
+                AreaTeachingPageControl.UnitName = form.UnitName;
+
+                SetSelectLabel(sender);
+                SetSelectPage(selectedControl: AreaTeachingPageControl);
+            }
         }
 
         private void LogPage_Click(object sender, EventArgs e)

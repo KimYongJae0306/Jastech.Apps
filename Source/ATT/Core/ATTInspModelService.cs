@@ -1,4 +1,5 @@
-﻿using Jastech.Apps.Structure.VisionTool;
+﻿using Jastech.Apps.Structure;
+using Jastech.Apps.Structure.VisionTool;
 using Jastech.Framework.Imaging.VisionPro.VisionAlgorithms.Parameters;
 using Jastech.Framework.Structure;
 using Jastech.Framework.Util.Helper;
@@ -17,33 +18,39 @@ namespace ATT.Core
         {
             var newInspModel = new ATTInspModel();
 
-            foreach (PreAlignName type in Enum.GetValues(typeof(PreAlignName)))
+            for (int i = 0; i < newInspModel.UnitCount; i++)
             {
-                CogPatternMatchingParam preAlign = new CogPatternMatchingParam();
-                preAlign.Name = type.ToString();
-                newInspModel.PreAlignParams.Add(preAlign);
+                Unit unit = new Unit();
+
+                unit.Name = i.ToString(); // 임시 -> Apps에서 변경
+
+                // Prev Align 등록
+                foreach (ATTAlignName type in Enum.GetValues(typeof(ATTAlignName)))
+                {
+                    CogPatternMatchingParam preAlign = new CogPatternMatchingParam();
+                    preAlign.Name = type.ToString();
+                    unit.PreAlignParams.Add(preAlign);
+                }
+
+                for (int k = 0; k < newInspModel.TabCount; k++)
+                {
+                    Tab tab = new Tab();
+                    tab.Name = k.ToString();
+                    tab.Index = k;
+
+                    // Tab Align 등록
+                    foreach (ATTTabAlignName type in Enum.GetValues(typeof(ATTTabAlignName)))
+                    {
+                        CogCaliperParam align = new CogCaliperParam();
+                        align.Name = type.ToString();
+                        tab.AlignParams.Add(align);
+                    }
+
+                    unit.AddTab(tab);
+                }
+
+                newInspModel.AddUnit(unit);
             }
-
-            //for (int i = 0; i < newInspModel.TabCount; i++)
-            //{
-            //    Tab tab = new Tab();
-            //    // 필요한 Tool 추가 
-            //    //
-            //    tab.FPCCaliperAlignXList.Add(new CogCaliperParam());
-            //    tab.FPCCaliperAlignYList.Add(new CogCaliperParam());
-
-            //    tab.PanelCaliperAlignXList.Add(new CogCaliperParam());
-            //    tab.PanelCaliperAlignYList.Add(new CogCaliperParam());
-
-            //    newInspModel.TabList.Add(tab);
-            //}
-            //foreach (AlignName type in Enum.GetValues(typeof(AlignName)))
-            //{
-            //    CogCaliperParam align = new CogCaliperParam();
-            //    align.Name = type.ToString();
-            //    newInspModel.AlignParams.Add(align);
-            //}
-
             return newInspModel;
         }
 
@@ -53,14 +60,29 @@ namespace ATT.Core
 
             JsonConvertHelper.LoadToExistingTarget<ATTInspModel>(filePath, model);
 
-            string preAlignPath = Path.GetDirectoryName(filePath) + @"\PreAlign";
-            foreach (var item in model.PreAlignParams)
-                item.LoadTool(preAlignPath);
+            string rootDir = Path.GetDirectoryName(filePath);
 
-            string alignPath = Path.GetDirectoryName(filePath) + @"\Align";
-            foreach (var item in model.AlignParams)
-                item.LoadTool(alignPath);
+            foreach (var unit in model.GetUnitList())
+            {
+                string unitDir = rootDir + @"\Unit_" + unit.Name;
 
+                string preAlignPath = unitDir + @"\PreAlign";
+
+                //PreAlign Load
+                foreach (var item in unit.PreAlignParams)
+                    item.LoadTool(preAlignPath);
+
+                foreach (var tab in unit.GetTabList())
+                {
+                    string tabDir = unitDir + @"\" + "Tab_" + tab.Name;
+
+                    //TabAlign 저장
+                    string tabAlignDir = tabDir + @"\Align";
+                    foreach (var item in tab.AlignParams)
+                        item.LoadTool(tabAlignDir);
+                }
+
+            }
             return model;
         }
 
@@ -70,13 +92,55 @@ namespace ATT.Core
 
             JsonConvertHelper.Save(filePath, attInspModel);
 
-            string preAlignPath = Path.GetDirectoryName(filePath) + @"\PreAlign";
-            foreach (var item in attInspModel.PreAlignParams)
-                item.SaveTool(preAlignPath);
+            foreach (var unit in attInspModel.GetUnitList())
+            {
+                string unitDir = Path.GetDirectoryName(filePath) + @"\Unit_" + unit.Name;
+                string preAlignPath = unitDir + @"\PreAlign";
 
-            string alignPath = Path.GetDirectoryName(filePath) + @"\Align";
-            foreach (var item in attInspModel.AlignParams)
-                item.SaveTool(alignPath);
+                //PreAlign 저장
+                foreach (var item in unit.PreAlignParams)
+                    item.SaveTool(preAlignPath);
+
+                foreach (var tab in unit.GetTabList())
+                {
+                    string tabDir = unitDir + @"\" + "Tab_" + tab.Name;
+
+                    //TabAlign 저장
+                    string tabAlignDir = tabDir + @"\Align";
+                    foreach (var item in tab.AlignParams)
+                        item.SaveTool(tabAlignDir);
+                }
+            }
         }
+    }
+
+
+    public enum ATTAlignName
+    {
+        MainLeft,
+        MainRight,
+        SubLeft1,
+        SubRight1,
+        SubLeft2,
+        SubRight2,
+        SubLeft3,
+        SubRight3,
+        SubLeft4,
+        SubRight4,
+    }
+
+    public enum ATTTabAlignName
+    {
+        LeftFPCX,
+        LeftPFCY,
+
+        RightFPCX,
+        RightPFCY,
+
+        LeftPanelX,
+        LeftPanelY,
+
+        RightPanelX,
+        RightPanelY,
     }
 }

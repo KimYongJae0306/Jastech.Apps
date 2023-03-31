@@ -64,6 +64,8 @@
     <Compile Include="AppsInspModel.cs" />
     <Compile Include="ModelManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Tab.cs" />
+    <Compile Include="Unit.cs" />
     <Compile Include="VisionTool\AlgorithmTool.cs" />
     <Compile Include="VisionTool\IVisionTool.cs" />
   </ItemGroup>

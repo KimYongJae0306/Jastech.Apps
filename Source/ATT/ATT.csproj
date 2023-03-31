@@ -72,7 +72,7 @@
   <ItemGroup>
     <Compile Include="Core\ATTInspModel.cs" />
     <Compile Include="Core\ATTInspModelService.cs" />
-    <Compile Include="Core\Tab.cs" />
+    <Compile Include="Core\ATTTeachingData.cs" />
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -93,6 +93,12 @@
     </Compile>
     <Compile Include="UI\Controls\OperationSettingsControl.Designer.cs">
       <DependentUpon>OperationSettingsControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Pages\LineTeachingPage.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UI\Pages\LineTeachingPage.Designer.cs">
+      <DependentUpon>LineTeachingPage.cs</DependentUpon>
     </Compile>
     <Compile Include="UI\Pages\AutoPage.cs">
       <SubType>UserControl</SubType>
@@ -130,11 +136,11 @@
     <Compile Include="UI\Pages\SettingPage.Designer.cs">
       <DependentUpon>SettingPage.cs</DependentUpon>
     </Compile>
-    <Compile Include="UI\Pages\TeachingPage.cs">
+    <Compile Include="UI\Pages\AreaTeachingPage.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="UI\Pages\TeachingPage.Designer.cs">
-      <DependentUpon>TeachingPage.cs</DependentUpon>
+    <Compile Include="UI\Pages\AreaTeachingPage.Designer.cs">
+      <DependentUpon>AreaTeachingPage.cs</DependentUpon>
     </Compile>
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
@@ -173,8 +179,8 @@
     <EmbeddedResource Include="UI\Pages\SettingPage.resx">
       <DependentUpon>SettingPage.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="UI\Pages\TeachingPage.resx">
-      <DependentUpon>TeachingPage.cs</DependentUpon>
+    <EmbeddedResource Include="UI\Pages\AreaTeachingPage.resx">
+      <DependentUpon>AreaTeachingPage.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -189,7 +195,9 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <None Include="Resources\Next.png" />
+  </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\Jastech.Core\src\Jastech.Framework.Comm\Jastech.Framework.Comm.csproj">
       <Project>{05b26e55-9c49-4078-983a-c6b13f6ee375}</Project>
@@ -267,6 +275,9 @@
     <PackageReference Include="Newtonsoft.Json">
       <Version>13.0.3</Version>
     </PackageReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Prev.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
