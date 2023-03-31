@@ -1,4 +1,7 @@
-﻿using Jastech.Framework.Imaging.VisionPro.VisionAlgorithms;
+﻿using Cognex.VisionPro;
+using Jastech.Framework.Imaging.VisionPro.VisionAlgorithms;
+using Jastech.Framework.Imaging.VisionPro.VisionAlgorithms.Parameters;
+using Jastech.Framework.Imaging.VisionPro.VisionAlgorithms.Results;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -10,7 +13,27 @@ namespace Jastech.Apps.Structure.VisionTool
 {
     public class AlgorithmTool
     {
-        public CogPatternMatching PatternAlgorithm = new CogPatternMatching();
+        private CogPatternMatching PatternAlgorithm { get; set; } = new CogPatternMatching();
+
+        public CogPatternMatchingResult RunPreAlign(ICogImage image, CogPatternMatchingParam param)
+        {
+            if (image == null)
+                return null;
+
+            CogPatternMatchingResult matchingResult = PatternAlgorithm.Run(image, param);
+
+            if (matchingResult.MatchPosList.Count <= 0)
+                matchingResult.Result = Result.Fail;
+            else
+            {
+                if (matchingResult.MaxScore >= param.Score)
+                    matchingResult.Result = Result.Good;
+                else
+                    matchingResult.Result = Result.NG;
+            }
+
+            return matchingResult;
+        }
     }
 
     public enum InspectionType
