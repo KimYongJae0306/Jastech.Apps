@@ -203,13 +203,12 @@ namespace Jastech.Apps.Winform.UI.Controls
                 return;
 
             ICogImage cogImage = display.GetImage();
-            CogPatternMatchingResult result = Algorithm.PatternAlgorithm.Run(cogImage, currentParam);
+            CogPatternMatchingResult result = Algorithm.RunPreAlign(cogImage, currentParam);
 
-            UpdateResult(result);
-
+            UpdateGridResult(result);
         }
 
-        private void UpdateResult(CogPatternMatchingResult result)
+        private void UpdateGridResult(CogPatternMatchingResult result)
         {
             gvResult.Rows.Clear();
 
