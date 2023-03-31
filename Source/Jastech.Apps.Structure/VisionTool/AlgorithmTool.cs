@@ -34,6 +34,7 @@ namespace Jastech.Apps.Structure.VisionTool
 
             return matchingResult;
         }
+        public CogCaliper CaliperAlgorithm = new CogCaliper();
     }
 
     public enum InspectionType

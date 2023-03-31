@@ -133,6 +133,7 @@ namespace ATT.UI.Pages
                 Display.SetImage(cogImage);
                 TeachingUIManager.Instance().TeachingDisplay.SetImage(cogImage);
                 PreAlignControl.DrawROI();
+                AlignControl.DrawROI();
             }
         }
 
