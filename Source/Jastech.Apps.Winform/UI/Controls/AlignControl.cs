@@ -12,6 +12,11 @@ using Jastech.Framework.Imaging.VisionPro.VisionAlgorithms.Parameters;
 using Jastech.Framework.Imaging.VisionPro.VisionAlgorithms;
 using Cognex.VisionPro;
 using Jastech.Apps.Structure;
+using Jastech.Framework.Imaging.VisionPro.VisionAlgorithms.Results;
+using Jastech.Apps.Structure.VisionTool;
+using Jastech.Framework.Imaging.VisionPro;
+using Cognex.VisionPro.Caliper;
+using CogCaliperResult = Jastech.Framework.Imaging.VisionPro.VisionAlgorithms.Results.CogCaliperResult;
 
 namespace Jastech.Apps.Winform.UI.Controls
 {
@@ -24,7 +29,9 @@ namespace Jastech.Apps.Winform.UI.Controls
         private CogCaliperParamControl CogCaliperParamControl { get; set; } = new CogCaliperParamControl();
         private List<CogCaliperParam> CaliperList { get; set; } = null;
 
-        private CogCaliper CogCaliperAlgorithm = new CogCaliper();
+        private AlgorithmTool Algorithm = new AlgorithmTool();
+
+        //private CogCaliper CogCaliperAlgorithm = new CogCaliper();
 
         #region 속성
         #endregion
@@ -91,21 +98,9 @@ namespace Jastech.Apps.Winform.UI.Controls
             var param = CaliperList.Where(x => x.Name == name).First();
             CogCaliperParamControl.UpdateData(param);
 
-            CogCaliperAlgorithm.CaliperTool = param.CaliperTool;
+            //CogCaliperAlgorithm.CaliperTool = param.CaliperTool;
         }
 
-        private void btnShowROI_Click(object sender, EventArgs e)
-        {
-            var display = TeachingUIManager.Instance().TeachingDisplay;
-            if (display.GetImage() == null)
-                return;
-
-            if (ModelManager.Instance().CurrentModel == null)
-                return;
-
-            SetNewROI(display);
-            DrawROI();
-        }
 
         private void SetNewROI(CogDisplayControl display)
         {
@@ -114,21 +109,25 @@ namespace Jastech.Apps.Winform.UI.Controls
             double centerX = display.ImageWidth() / 2.0 - display.GetPan().X;
             double centerY = display.ImageHeight() / 2.0 - display.GetPan().Y;
 
-            CogRectangleAffine cogRectAffine = new CogRectangleAffine(/*CaliperList[0].CaliperTool.Region*/);
+            CogRectangleAffine roi = CogImageHelper.CreateRectangleAffine(centerX - display.GetPan().X, centerY - display.GetPan().Y, 100, 100);
 
-            if (cogRectAffine.CenterX <= 70)
-                cogRectAffine.SetCenterLengthsRotationSkew(centerX, centerY, 500, 500, 0, 0);
+            if (roi.CenterX <= 70)
+                roi.SetCenterLengthsRotationSkew(centerX, centerY, 500, 500, 0, 0);
 
-            CogCaliperAlgorithm.SetRegion(cogRectAffine);
+            var currentParam = CogCaliperParamControl.GetCurrentParam();
+
+            currentParam.SetRegion(roi);
         }
 
-        private void DrawROI()
+        public void DrawROI()
         {
             var display = TeachingUIManager.Instance().TeachingDisplay;
             if (display.GetImage() == null)
                 return;
 
-            display.AddGraphics("tool", CogCaliperAlgorithm.GetRegion());
+            CogCaliperCurrentRecordConstants constants = CogCaliperCurrentRecordConstants.InputImage | CogCaliperCurrentRecordConstants.Region;
+            var currentParam = CogCaliperParamControl.GetCurrentParam();
+            display.SetInteractiveGraphics("tool", currentParam.CreateCurrentRecord(constants));
         }
 
         private void cmbAlignList_SelectedIndexChanged(object sender, EventArgs e)
@@ -219,5 +218,41 @@ namespace Jastech.Apps.Winform.UI.Controls
             }
         }
         #endregion
+
+        private void lblInspection_Click(object sender, EventArgs e)
+        {
+            Inspection();
+        }
+
+        private void Inspection()
+        {
+            var display = TeachingUIManager.Instance().TeachingDisplay;
+            var currentParam = CogCaliperParamControl.GetCurrentParam();
+
+            if (display == null || currentParam == null)
+                return;
+
+            ICogImage cogImage = display.GetImage();
+
+            CogCaliperResult result = Algorithm.CaliperAlgorithm.Run(cogImage, currentParam);
+        }
+
+        private void lblAddROI_Click(object sender, EventArgs e)
+        {
+            AddROI();
+        }
+
+        private void AddROI()
+        {
+            var display = TeachingUIManager.Instance().TeachingDisplay;
+            if (display.GetImage() == null)
+                return;
+
+            if (ModelManager.Instance().CurrentModel == null)
+                return;
+
+            SetNewROI(display);
+            DrawROI();
+        }
     }
 }

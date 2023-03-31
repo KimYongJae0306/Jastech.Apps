@@ -11,6 +11,7 @@ namespace Jastech.Apps.Structure.VisionTool
     public class AlgorithmTool
     {
         public CogPatternMatching PatternAlgorithm = new CogPatternMatching();
+        public CogCaliper CaliperAlgorithm = new CogCaliper();
     }
 
     public enum InspectionType
