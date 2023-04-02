@@ -116,10 +116,9 @@
             this.btnMotion.Dock = System.Windows.Forms.DockStyle.Fill;
             this.btnMotion.Font = new System.Drawing.Font("맑은 고딕", 20F, System.Drawing.FontStyle.Bold);
             this.btnMotion.ForeColor = System.Drawing.Color.Black;
-            this.btnMotion.Location = new System.Drawing.Point(2, 82);
-            this.btnMotion.Margin = new System.Windows.Forms.Padding(2);
+            this.btnMotion.Location = new System.Drawing.Point(3, 83);
             this.btnMotion.Name = "btnMotion";
-            this.btnMotion.Size = new System.Drawing.Size(156, 76);
+            this.btnMotion.Size = new System.Drawing.Size(154, 74);
             this.btnMotion.TabIndex = 21;
             this.btnMotion.Text = "Motion";
             this.btnMotion.UseVisualStyleBackColor = false;
@@ -131,10 +130,9 @@
             this.btnSettings.Dock = System.Windows.Forms.DockStyle.Fill;
             this.btnSettings.Font = new System.Drawing.Font("맑은 고딕", 20F, System.Drawing.FontStyle.Bold);
             this.btnSettings.ForeColor = System.Drawing.Color.Black;
-            this.btnSettings.Location = new System.Drawing.Point(2, 2);
-            this.btnSettings.Margin = new System.Windows.Forms.Padding(2);
+            this.btnSettings.Location = new System.Drawing.Point(3, 3);
             this.btnSettings.Name = "btnSettings";
-            this.btnSettings.Size = new System.Drawing.Size(156, 76);
+            this.btnSettings.Size = new System.Drawing.Size(154, 74);
             this.btnSettings.TabIndex = 20;
             this.btnSettings.Text = "Settings";
             this.btnSettings.UseVisualStyleBackColor = false;
