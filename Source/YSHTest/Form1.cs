@@ -76,6 +76,7 @@ namespace YSHTest
 
         private void btnApply_Click(object sender, EventArgs e)
         {
+            CogDisplay.ClearGraphic();
             ImageConversion();
             AutoLeadROI();
         }
@@ -95,14 +96,15 @@ namespace YSHTest
             CogRectangleAffine cogRectAffine = new CogRectangleAffine();
             CogCaliperTool cogCaliper = new CogCaliperTool();
             cogCaliper.InputImage = CogRegionImage;
-
-
+        
             cogRectAffine.SetCenterLengthsRotationSkew((CogRect.Width / 2), CogRect.Y + 20, CogRect.Width, 50, 0, 0);
             cogRectAffine.GraphicDOFEnable = CogRectangleAffineDOFConstants.Position | CogRectangleAffineDOFConstants.Size | CogRectangleAffineDOFConstants.Skew | CogRectangleAffineDOFConstants.Rotation;
             cogRectAffine.Rotation = 0; //좌->우 방향 고정
             cogRectAffine.Interactive = false;
             CogDisplay.AddGraphics("ROI", cogRectAffine);
 
+
+            //맨 우측까지 Search 완료 시 탈출
             //Caliper Params 적용
             cogCaliper.Region = cogRectAffine;
             cogCaliper.RunParams.Edge0Polarity = CogCaliperPolarityConstants.LightToDark;
@@ -113,13 +115,20 @@ namespace YSHTest
             //Caliper Search
             cogCaliper.Run();
             
+            //Search OK
             if (cogCaliper.Results != null && cogCaliper.Results.Count > 0)
             {
                 for (int i = 0; i < cogCaliper.Results.Count; i++)
                 {
-                    CogDisplay.AddGraphics("Search", cogCaliper.Results[i].CreateResultGraphics(CogCaliperResultGraphicConstants.Edges));
+                    CogDisplay.AddGraphics("Search", cogCaliper.Results[i].CreateResultGraphics(CogCaliperResultGraphicConstants.Edges));                    
                 }
             }
+
+            //임의로 10pixel 정도 이동
+            cogRectAffine.SetCenterLengthsRotationSkew(cogRectAffine.CenterX + 10, CogRect.Y + 20, cogRectAffine.SideXLength - 10, 50, 0, 0);
+            cogRectAffine.Color = CogColorConstants.Red;
+            CogDisplay.AddGraphics("ROI", cogRectAffine);
+
         }
     }
 }
