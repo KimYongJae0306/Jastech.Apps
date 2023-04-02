@@ -16,6 +16,7 @@ using Jastech.Framework.Imaging.VisionPro.VisionAlgorithms;
 using Jastech.Apps.Structure;
 using Cognex.VisionPro.PMAlign;
 using Jastech.Framework.Imaging.VisionPro.VisionAlgorithms.Results;
+using Jastech.Framework.Winform.Forms;
 
 namespace Jastech.Apps.Winform.UI.Controls
 {
@@ -201,6 +202,13 @@ namespace Jastech.Apps.Winform.UI.Controls
 
             if (display == null || currentParam == null)
                 return;
+
+            if(currentParam.IsTrained() == false)
+            {
+                MessageConfirmForm form = new MessageConfirmForm();
+                form.Message = "Pattern is not trained.";
+                return;
+            }
 
             ICogImage cogImage = display.GetImage();
             CogPatternMatchingResult result = Algorithm.RunPreAlign(cogImage, currentParam);
