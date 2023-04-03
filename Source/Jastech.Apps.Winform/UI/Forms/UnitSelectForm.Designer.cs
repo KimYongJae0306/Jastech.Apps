@@ -152,7 +152,6 @@
             this.Name = "UnitSelectForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = " ";
-            this.Load += new System.EventHandler(this.UnitSelectForm_Load);
             this.tlpUnitSelectForm.ResumeLayout(false);
             this.tlpBasicFunction.ResumeLayout(false);
             this.panel10.ResumeLayout(false);
