@@ -1,5 +1,6 @@
 ﻿using Jastech.Apps.Structure;
 using Jastech.Apps.Structure.VisionTool;
+using Jastech.Framework.Device.Motions;
 using Jastech.Framework.Imaging.VisionPro.VisionAlgorithms.Parameters;
 using Jastech.Framework.Structure;
 using Jastech.Framework.Util.Helper;
@@ -51,6 +52,11 @@ namespace ATT.Core
 
                 newInspModel.AddUnit(unit);
             }
+
+            newInspModel.AddTeachingPosition(new TeachingPosition(TeachingPositionType.Standby.ToString(), new AxisMovingParam(), "Standby"));
+            newInspModel.AddTeachingPosition(new TeachingPosition(TeachingPositionType.Stage1_PreAlign_Left.ToString(), new AxisMovingParam(), "Stage#1 PreAlign Left Position"));
+            newInspModel.AddTeachingPosition(new TeachingPosition(TeachingPositionType.Stage1_PreAlign_Right.ToString(), new AxisMovingParam(), "Stage#1 PreAlign Right Position"));
+            newInspModel.AddTeachingPosition(new TeachingPosition(TeachingPositionType.Stage1_Scan_Start.ToString(), new AxisMovingParam(), "Stage#1 ScanStart"));
             return newInspModel;
         }
 

@@ -18,6 +18,7 @@ using Jastech.Apps.Structure;
 using Jastech.Framework.Util.Helper;
 using Jastech.Apps.Winform.Settings;
 using Jastech.Framework.Winform.Forms;
+using Jastech.Apps.Winform.UI.Forms;
 
 namespace ATT.UI.Pages
 {
