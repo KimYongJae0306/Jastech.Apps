@@ -108,10 +108,10 @@
             // pnlJog
             // 
             this.pnlJog.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pnlJog.Location = new System.Drawing.Point(3, 180);
-            this.pnlJog.Margin = new System.Windows.Forms.Padding(3, 0, 3, 0);
+            this.pnlJog.Location = new System.Drawing.Point(0, 180);
+            this.pnlJog.Margin = new System.Windows.Forms.Padding(0);
             this.pnlJog.Name = "pnlJog";
-            this.pnlJog.Size = new System.Drawing.Size(434, 180);
+            this.pnlJog.Size = new System.Drawing.Size(440, 180);
             this.pnlJog.TabIndex = 1;
             // 
             // tlpMotionParameter
