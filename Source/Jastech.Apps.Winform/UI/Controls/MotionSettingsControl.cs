@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using Jastech.Framework.Winform.Controls;
 
-namespace ATT.UI.Controls
+namespace Jastech.Apps.Winform.UI.Controls
 {
     public partial class MotionSettingsControl : UserControl
     {
