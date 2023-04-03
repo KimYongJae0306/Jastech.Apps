@@ -17,7 +17,7 @@ namespace Jastech.Apps.Winform.UI.Controls
         private MotionFunctionControl MotionFunctionControl { get; set; } = new MotionFunctionControl();
         private List<MotionCommandControl> MotionCommandControlList { get; set; } = new List<MotionCommandControl>();
         private List<MotionParameterControl> MotionParameterControlList { get; set; } = new List<MotionParameterControl>();
-        private MotionJogControl JogControl { get; set; } = new MotionJogControl();
+        private MotionJogControl MotionJogControl { get; set; } = new MotionJogControl();
         #endregion
 
         #region 속성
@@ -80,8 +80,8 @@ namespace Jastech.Apps.Winform.UI.Controls
 
             }
 
-            JogControl.Dock = DockStyle.Fill;
-            pnlJog.Controls.Add(JogControl);
+            MotionJogControl.Dock = DockStyle.Fill;
+            pnlJog.Controls.Add(MotionJogControl);
         }
 
         public void UpdateUI()
