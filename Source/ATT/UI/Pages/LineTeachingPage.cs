@@ -11,6 +11,7 @@ using Jastech.Framework.Winform.VisionPro.Controls;
 using Jastech.Apps.Winform.UI.Controls;
 using Jastech.Apps.Structure;
 using Jastech.Framework.Winform.Forms;
+using Jastech.Apps.Winform;
 
 namespace ATT.UI.Pages
 {
@@ -63,6 +64,7 @@ namespace ATT.UI.Pages
         private void btnMotionPopup_Click(object sender, EventArgs e)
         {
             MotionPopupForm motionPopupForm = new MotionPopupForm();
+            motionPopupForm.SetAxisHandler(AppsMotionManager.Instance().GetAxisHandler(AxisHandlerName.Unit0));
             motionPopupForm.ShowDialog();
         }
 

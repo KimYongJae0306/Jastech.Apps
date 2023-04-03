@@ -176,6 +176,7 @@ namespace ATT.UI.Pages
         private void btnMotionPopup_Click(object sender, EventArgs e)
         {
             MotionPopupForm motionPopupForm = new MotionPopupForm();
+            motionPopupForm.SetAxisHandler(AppsMotionManager.Instance().GetAxisHandler(AxisHandlerName.Unit0));
             motionPopupForm.ShowDialog();
         }
     }

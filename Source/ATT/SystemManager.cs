@@ -1,5 +1,6 @@
 ﻿using ATT.Core;
 using Jastech.Apps.Structure;
+using Jastech.Apps.Winform;
 using Jastech.Apps.Winform.Settings;
 using Jastech.Framework.Device.Cameras;
 using Jastech.Framework.Device.Motions;
@@ -61,6 +62,8 @@ namespace ATT
             DoReportProgress(reportProgress, percent, "Initialize Device");
             DeviceManager.Instance().Initialized += SystemManager_Initialized;
             DeviceManager.Instance().Initialize(AppConfig.Instance());
+
+            AppsMotionManager.Instance().CreateAxisHanlder();
 
             percent += 30;
 

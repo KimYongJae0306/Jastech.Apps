@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Jastech.Framework.Winform.Controls;
+using Jastech.Framework.Device.Motions;
 
 namespace Jastech.Apps.Winform.UI.Controls
 {
@@ -15,13 +16,16 @@ namespace Jastech.Apps.Winform.UI.Controls
     {
         #region 필드
         private MotionFunctionControl MotionFunctionControl { get; set; } = new MotionFunctionControl();
+
         private List<MotionCommandControl> MotionCommandControlList { get; set; } = new List<MotionCommandControl>();
+
         private List<MotionParameterControl> MotionParameterControlList { get; set; } = new List<MotionParameterControl>();
+
         private MotionJogControl MotionJogControl { get; set; } = new MotionJogControl();
         #endregion
 
         #region 속성
-
+       private List<AxisHandler> AxisHanlderList { get; set; } = new List<AxisHandler>();
         #endregion
 
         #region 이벤트
@@ -48,27 +52,12 @@ namespace Jastech.Apps.Winform.UI.Controls
             MotionFunctionControl.Dock = DockStyle.Fill;
             tlpStatus.Controls.Add(MotionFunctionControl);
 
-            for (int i = 0; i < 3; i++)
+            foreach (var axis in AppsMotionManager.Instance().GetAxisHandler(AxisHandlerName.Unit0).AxisList)
             {
                 MotionCommandControl motionCommandControl = new MotionCommandControl();
                 MotionParameterControl motionParameterControl = new MotionParameterControl();
-
-                if (i == 0)
-                {
-                    motionCommandControl.AxisName = "X";
-                    motionParameterControl.AxisName = "X";
-                }
-                if (i == 1)
-                {
-                    motionCommandControl.AxisName = "Y";
-                    motionParameterControl.AxisName = "Y";
-                }
-                else if (i == 2)
-                {
-                    motionCommandControl.AxisName = "Z";
-                    motionParameterControl.AxisName = "Z";
-                }
-                else { }
+                motionCommandControl.SetAxis(axis);
+                motionParameterControl.SetAxis(axis);
 
                 motionCommandControl.Dock = DockStyle.Fill;
                 tlpStatus.Controls.Add(motionCommandControl);
@@ -77,9 +66,9 @@ namespace Jastech.Apps.Winform.UI.Controls
                 motionParameterControl.Dock = DockStyle.Fill;
                 tlpMotionParameter.Controls.Add(motionParameterControl);
                 MotionParameterControlList.Add(motionParameterControl);
-
             }
-
+     
+            MotionJogControl.SetAxisHanlder(AppsMotionManager.Instance().GetAxisHandler(AxisHandlerName.Unit0));
             MotionJogControl.Dock = DockStyle.Fill;
             pnlJog.Controls.Add(MotionJogControl);
         }

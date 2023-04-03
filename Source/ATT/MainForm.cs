@@ -162,6 +162,9 @@ namespace ATT
 
         private void TeachPage_Click(object sender, EventArgs e)
         {
+            if (ModelManager.Instance().CurrentModel == null)
+                return;
+
             UnitSelectForm form = new UnitSelectForm();
 
             if(form.ShowDialog() == DialogResult.OK)
