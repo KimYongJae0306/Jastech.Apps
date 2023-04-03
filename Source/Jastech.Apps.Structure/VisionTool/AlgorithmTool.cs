@@ -19,9 +19,8 @@ namespace Jastech.Apps.Structure.VisionTool
 
         public CogPatternMatchingResult RunPreAlign(ICogImage image, CogPatternMatchingParam param)
         {
-            if (image == null)
+            if (image == null || param == null)
                 return null;
-
             CogPatternMatchingResult matchingResult = PatternAlgorithm.Run(image, param);
 
             if (matchingResult.MatchPosList.Count <= 0)

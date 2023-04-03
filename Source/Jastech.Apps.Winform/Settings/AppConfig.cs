@@ -1,6 +1,7 @@
 ﻿using Jastech.Apps.Structure;
 using Jastech.Framework.Config;
 using Jastech.Framework.Device.Cameras;
+using Jastech.Framework.Device.Motions;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -57,10 +58,14 @@ namespace Jastech.Apps.Winform.Settings
 
                 var camera1 = new CameraVirtual(CameraName.RightArea.ToString(), 4096, 1024, ColorFormat.Gray, SensorType.Area);
                 config.Add(camera1);
+
+                var motion = new VirtualMotion("VirtualMotion", 2);
+                config.Add(motion);
             }
             else
             {
-
+                var motion = new ACSMotion("Motion", 2);
+                config.Add(motion);
             }
         }
 

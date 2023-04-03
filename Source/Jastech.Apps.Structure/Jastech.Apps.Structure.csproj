@@ -70,6 +70,10 @@
     <Compile Include="VisionTool\IVisionTool.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\Jastech.Core\src\Jastech.Framework.Device\Jastech.Framework.Device.csproj">
+      <Project>{F43DDCCA-E65C-4131-B789-DB4109E91B68}</Project>
+      <Name>Jastech.Framework.Device</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\..\Jastech.Core\src\Jastech.Framework.Imaging.VisionPro\Jastech.Framework.Imaging.VisionPro.csproj">
       <Project>{22EE7B1A-E7B2-4547-94DD-4E85BDB56956}</Project>
       <Name>Jastech.Framework.Imaging.VisionPro</Name>
@@ -81,6 +85,10 @@
     <ProjectReference Include="..\..\..\Jastech.Core\src\Jastech.Framework.Util\Jastech.Framework.Util.csproj">
       <Project>{07EF86CC-AC6A-454E-B12B-EB63454A1DCA}</Project>
       <Name>Jastech.Framework.Util</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Jastech.Core\src\Jastech.Framework.Winform\Jastech.Framework.Winform.csproj">
+      <Project>{D46C7263-535A-4BF9-AD14-5183EDE0A984}</Project>
+      <Name>Jastech.Framework.Winform</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
