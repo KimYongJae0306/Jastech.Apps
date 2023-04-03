@@ -73,9 +73,5 @@ namespace Jastech.Apps.Winform.UI.Forms
             this.Close();
         }
         #endregion
-
-        private void UnitSelectForm_FormClosed(object sender, FormClosedEventArgs e)
-        {
-        }
     }
 }

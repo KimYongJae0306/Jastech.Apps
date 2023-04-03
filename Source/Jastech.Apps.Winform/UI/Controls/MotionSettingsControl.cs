@@ -17,7 +17,7 @@ namespace Jastech.Apps.Winform.UI.Controls
         private MotionFunctionControl MotionFunctionControl { get; set; } = new MotionFunctionControl();
         private List<MotionCommandControl> MotionCommandControlList { get; set; } = new List<MotionCommandControl>();
         private List<MotionParameterControl> MotionParameterControlList { get; set; } = new List<MotionParameterControl>();
-        private JogControl JogControl { get; set; } = new JogControl();
+        private MotionJogControl JogControl { get; set; } = new MotionJogControl();
         #endregion
 
         #region 속성
