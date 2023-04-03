@@ -17,6 +17,7 @@ using Jastech.Apps.Winform;
 using Jastech.Apps.Structure;
 using Jastech.Framework.Util.Helper;
 using Jastech.Apps.Winform.Settings;
+using Jastech.Framework.Winform.Forms;
 
 namespace ATT.UI.Pages
 {
@@ -170,6 +171,12 @@ namespace ATT.UI.Pages
             string fileName = System.IO.Path.Combine(AppConfig.Instance().Path.Model, model.Name, InspModel.FileName);
             SystemManager.Instance().SaveModel(fileName, model);
 
+        }
+
+        private void btnMotionPopup_Click(object sender, EventArgs e)
+        {
+            MotionPopupForm motionPopupForm = new MotionPopupForm();
+            motionPopupForm.ShowDialog();
         }
     }
 }

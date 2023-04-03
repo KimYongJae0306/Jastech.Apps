@@ -10,6 +10,7 @@ using System.Windows.Forms;
 using Jastech.Framework.Winform.VisionPro.Controls;
 using Jastech.Apps.Winform.UI.Controls;
 using Jastech.Apps.Structure;
+using Jastech.Framework.Winform.Forms;
 
 namespace ATT.UI.Pages
 {
@@ -58,8 +59,13 @@ namespace ATT.UI.Pages
             var alignParam = SystemManager.Instance().GetTeachingData().GetAlignParameters(UnitName);
             AlignControl.SetParams(alignParam);
         }
+
+        private void btnMotionPopup_Click(object sender, EventArgs e)
+        {
+            MotionPopupForm motionPopupForm = new MotionPopupForm();
+            motionPopupForm.ShowDialog();
+        }
+
         #endregion
-
-
     }
 }
