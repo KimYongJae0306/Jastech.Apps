@@ -1,4 +1,5 @@
-﻿using Jastech.Framework.Device.Motions;
+﻿using Jastech.Apps.Structure;
+using Jastech.Framework.Device.Motions;
 using Jastech.Framework.Winform.Controls;
 using System;
 using System.Collections.Generic;
@@ -47,9 +48,41 @@ namespace Jastech.Apps.Winform.UI.Forms
 
         private void AddControl()
         {
+            AddTeachingPositionControl();
+            AddParameterControl();
+            AddJogControl();
+        }
+
+        private void AddTeachingPositionControl()
+        {
+            tlpTeachingList.ColumnStyles.Clear();
+            tlpTeachingList.RowStyles.Clear();
+            tlpTeachingList.ColumnCount = Enum.GetValues(typeof(TeachingPositionType)).Length;
+            tlpTeachingList.Dock = DockStyle.Fill;
+
+            for (int columnIndex = 0; columnIndex < tlpTeachingList.ColumnCount; columnIndex++)
+            {
+                tlpTeachingList.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, (float)(100 / tlpTeachingList.ColumnCount)));
+                tlpTeachingList.Controls.Add(CreateTeachingPositionButton(ModelManager.Instance().CurrentModel.PositionList[columnIndex].Description), columnIndex, 0);
+            }
+        }
+
+        private Button CreateTeachingPositionButton(string description)
+        {
+            Button btn = new Button() { BackColor = Color.White, Dock = DockStyle.Fill, Text = description };
+            btn.Click += Btn_Click;
+            return btn;
+        }
+
+        private void Btn_Click(object sender, EventArgs e)
+        {
+        }
+
+        private void AddParameterControl()
+        {
             TableLayoutPanel tlp = new TableLayoutPanel();
             tlp.Dock = DockStyle.Fill;
-            tlp.RowCount = 3;
+            tlp.RowCount = selectedAxisHanlder.AxisList.Count;
 
             for (int rowIndex = 0; rowIndex < tlp.RowCount; rowIndex++)
                 tlp.RowStyles.Add(new RowStyle(SizeType.Percent, (float)(100 / tlp.RowCount)));
@@ -61,10 +94,13 @@ namespace Jastech.Apps.Winform.UI.Forms
                 motionPopupParameterControl.Dock = DockStyle.Fill;
                 tlp.Controls.Add(motionPopupParameterControl);
             }
-         
+
             pnlMotionParameter.Controls.Add(tlp);
             pnlMotionParameter.Dock = DockStyle.Fill;
+        }
 
+        private void AddJogControl()
+        {
             MotionJogControl.Dock = DockStyle.Fill;
             MotionJogControl.SetAxisHanlder(selectedAxisHanlder);
             pnlJog.Controls.Add(MotionJogControl);
