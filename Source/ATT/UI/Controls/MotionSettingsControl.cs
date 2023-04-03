@@ -10,7 +10,7 @@ using System.Windows.Forms;
 using Jastech.Framework.Winform.Controls;
 using Jastech.Framework.Device.Motions;
 
-namespace Jastech.Apps.Winform.UI.Controls
+namespace ATT.UI.Controls
 {
     public partial class MotionSettingsControl : UserControl
     {

@@ -1,4 +1,4 @@
-﻿namespace Jastech.Apps.Winform.UI.Controls
+﻿namespace ATT.UI.Controls
 {
     partial class MotionSettingsControl
     {

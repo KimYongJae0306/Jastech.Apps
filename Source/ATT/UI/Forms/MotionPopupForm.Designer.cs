@@ -40,7 +40,7 @@
             this.pnlFunction = new System.Windows.Forms.Panel();
             this.pnlMotionParameter = new System.Windows.Forms.Panel();
             this.pnlJog = new System.Windows.Forms.Panel();
-            this.tlpTeachingList = new System.Windows.Forms.TableLayoutPanel();
+            this.pnlTeachingPositionList = new System.Windows.Forms.Panel();
             this.tlpMotionPopup.SuspendLayout();
             this.tlpFormFunction.SuspendLayout();
             this.pnlFunction.SuspendLayout();
@@ -52,7 +52,7 @@
             this.tlpMotionPopup.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tlpMotionPopup.Controls.Add(this.tlpFormFunction, 0, 2);
             this.tlpMotionPopup.Controls.Add(this.pnlFunction, 0, 1);
-            this.tlpMotionPopup.Controls.Add(this.tlpTeachingList, 0, 0);
+            this.tlpMotionPopup.Controls.Add(this.pnlTeachingPositionList, 0, 0);
             this.tlpMotionPopup.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tlpMotionPopup.Location = new System.Drawing.Point(0, 0);
             this.tlpMotionPopup.Margin = new System.Windows.Forms.Padding(0);
@@ -206,18 +206,14 @@
             this.pnlJog.Size = new System.Drawing.Size(380, 380);
             this.pnlJog.TabIndex = 5;
             // 
-            // tlpTeachingList
+            // pnlTeachingPositionList
             // 
-            this.tlpTeachingList.ColumnCount = 1;
-            this.tlpTeachingList.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tlpTeachingList.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tlpTeachingList.Location = new System.Drawing.Point(0, 0);
-            this.tlpTeachingList.Margin = new System.Windows.Forms.Padding(0);
-            this.tlpTeachingList.Name = "tlpTeachingList";
-            this.tlpTeachingList.RowCount = 1;
-            this.tlpTeachingList.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tlpTeachingList.Size = new System.Drawing.Size(684, 56);
-            this.tlpTeachingList.TabIndex = 1;
+            this.pnlTeachingPositionList.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pnlTeachingPositionList.Location = new System.Drawing.Point(0, 0);
+            this.pnlTeachingPositionList.Margin = new System.Windows.Forms.Padding(0);
+            this.pnlTeachingPositionList.Name = "pnlTeachingPositionList";
+            this.pnlTeachingPositionList.Size = new System.Drawing.Size(684, 56);
+            this.pnlTeachingPositionList.TabIndex = 3;
             // 
             // MotionPopupForm
             // 
@@ -254,8 +250,8 @@
         private System.Windows.Forms.Button btnCommand;
         private System.Windows.Forms.Button btnParameter;
         private System.Windows.Forms.Panel pnlFunction;
-        private System.Windows.Forms.TableLayoutPanel tlpTeachingList;
         private System.Windows.Forms.Panel pnlJog;
         private System.Windows.Forms.Panel pnlMotionParameter;
+        private System.Windows.Forms.Panel pnlTeachingPositionList;
     }
 }
