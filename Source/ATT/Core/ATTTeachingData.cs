@@ -39,5 +39,20 @@ namespace ATT.Core
 
             return unit.PreAlignParams;
         }
+
+        public List<Tab> GetAlignParameters(string unitName)
+        {
+            List<Tab> alignParam = new List<Tab>();
+
+            Unit unit = GetUnit(unitName);
+
+            for (int i = 0; i < UnitList.Count; i++)
+            {
+                var tab = unit.GetTab(i);
+                alignParam.Add(tab);
+            }
+
+            return alignParam;
+        }
     }
 }

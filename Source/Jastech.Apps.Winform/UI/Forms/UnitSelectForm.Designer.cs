@@ -106,6 +106,7 @@
             // label13
             // 
             this.label13.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.label13.Image = global::Jastech.Apps.Winform.Properties.Resources.Cancel;
             this.label13.Location = new System.Drawing.Point(3, 0);
             this.label13.Name = "label13";
             this.label13.Size = new System.Drawing.Size(38, 50);
@@ -115,7 +116,7 @@
             // lblCancel
             // 
             this.lblCancel.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblCancel.Font = new System.Drawing.Font("맑은 고딕", 11.25F, System.Drawing.FontStyle.Bold);
+            this.lblCancel.Font = new System.Drawing.Font("맑은 고딕", 14F, System.Drawing.FontStyle.Bold);
             this.lblCancel.Location = new System.Drawing.Point(47, 0);
             this.lblCancel.Name = "lblCancel";
             this.lblCancel.Size = new System.Drawing.Size(117, 50);

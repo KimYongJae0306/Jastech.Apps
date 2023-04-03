@@ -33,16 +33,14 @@
             this.tlpTeaching = new System.Windows.Forms.TableLayoutPanel();
             this.pnlDisplay = new System.Windows.Forms.Panel();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
-            this.pnlTeach = new System.Windows.Forms.Panel();
             this.panel1 = new System.Windows.Forms.Panel();
             this.btnLoadImage = new System.Windows.Forms.Button();
+            this.pnlTeach = new System.Windows.Forms.Panel();
             this.pnlTeachingItem = new System.Windows.Forms.Panel();
             this.tlpTeachingItem = new System.Windows.Forms.TableLayoutPanel();
             this.btnSave = new System.Windows.Forms.Button();
             this.btnLinescan = new System.Windows.Forms.Button();
             this.btnPreAlign = new System.Windows.Forms.Button();
-            this.btnAlign = new System.Windows.Forms.Button();
-            this.btnAkkon = new System.Windows.Forms.Button();
             this.tlpTeachingPage.SuspendLayout();
             this.pnlTeachingPage.SuspendLayout();
             this.tlpTeaching.SuspendLayout();
@@ -119,15 +117,6 @@
             this.tableLayoutPanel1.Size = new System.Drawing.Size(547, 716);
             this.tableLayoutPanel1.TabIndex = 1;
             // 
-            // pnlTeach
-            // 
-            this.pnlTeach.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pnlTeach.Location = new System.Drawing.Point(0, 80);
-            this.pnlTeach.Margin = new System.Windows.Forms.Padding(0);
-            this.pnlTeach.Name = "pnlTeach";
-            this.pnlTeach.Size = new System.Drawing.Size(547, 636);
-            this.pnlTeach.TabIndex = 0;
-            // 
             // panel1
             // 
             this.panel1.Controls.Add(this.btnLoadImage);
@@ -152,6 +141,15 @@
             this.btnLoadImage.UseVisualStyleBackColor = false;
             this.btnLoadImage.Click += new System.EventHandler(this.btnLoadImage_Click);
             // 
+            // pnlTeach
+            // 
+            this.pnlTeach.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pnlTeach.Location = new System.Drawing.Point(0, 80);
+            this.pnlTeach.Margin = new System.Windows.Forms.Padding(0);
+            this.pnlTeach.Name = "pnlTeach";
+            this.pnlTeach.Size = new System.Drawing.Size(547, 636);
+            this.pnlTeach.TabIndex = 0;
+            // 
             // pnlTeachingItem
             // 
             this.pnlTeachingItem.Controls.Add(this.tlpTeachingItem);
@@ -167,8 +165,6 @@
             this.tlpTeachingItem.ColumnCount = 1;
             this.tlpTeachingItem.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tlpTeachingItem.Controls.Add(this.btnSave, 0, 5);
-            this.tlpTeachingItem.Controls.Add(this.btnAlign, 0, 2);
-            this.tlpTeachingItem.Controls.Add(this.btnAkkon, 0, 3);
             this.tlpTeachingItem.Controls.Add(this.btnLinescan, 0, 4);
             this.tlpTeachingItem.Controls.Add(this.btnPreAlign, 0, 0);
             this.tlpTeachingItem.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -230,38 +226,6 @@
             this.btnPreAlign.UseVisualStyleBackColor = false;
             this.btnPreAlign.Click += new System.EventHandler(this.btnPreAlign_Click);
             // 
-            // btnAlign
-            // 
-            this.btnAlign.BackColor = System.Drawing.Color.White;
-            this.btnAlign.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.btnAlign.Font = new System.Drawing.Font("맑은 고딕", 20F, System.Drawing.FontStyle.Bold);
-            this.btnAlign.ForeColor = System.Drawing.Color.Black;
-            this.btnAlign.Location = new System.Drawing.Point(2, 162);
-            this.btnAlign.Margin = new System.Windows.Forms.Padding(2);
-            this.btnAlign.Name = "btnAlign";
-            this.btnAlign.Size = new System.Drawing.Size(140, 76);
-            this.btnAlign.TabIndex = 19;
-            this.btnAlign.Text = "Align";
-            this.btnAlign.UseVisualStyleBackColor = false;
-            this.btnAlign.Visible = false;
-            this.btnAlign.Click += new System.EventHandler(this.btnAlign_Click);
-            // 
-            // btnAkkon
-            // 
-            this.btnAkkon.BackColor = System.Drawing.Color.White;
-            this.btnAkkon.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.btnAkkon.Font = new System.Drawing.Font("맑은 고딕", 20F, System.Drawing.FontStyle.Bold);
-            this.btnAkkon.ForeColor = System.Drawing.Color.Black;
-            this.btnAkkon.Location = new System.Drawing.Point(2, 242);
-            this.btnAkkon.Margin = new System.Windows.Forms.Padding(2);
-            this.btnAkkon.Name = "btnAkkon";
-            this.btnAkkon.Size = new System.Drawing.Size(140, 76);
-            this.btnAkkon.TabIndex = 19;
-            this.btnAkkon.Text = "Akkon";
-            this.btnAkkon.UseVisualStyleBackColor = false;
-            this.btnAkkon.Visible = false;
-            this.btnAkkon.Click += new System.EventHandler(this.btnAkkon_Click);
-            // 
             // AreaTeachingPage
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
@@ -269,7 +233,6 @@
             this.BackColor = System.Drawing.Color.White;
             this.Controls.Add(this.tlpTeachingPage);
             this.Font = new System.Drawing.Font("맑은 고딕", 11.25F, System.Drawing.FontStyle.Bold);
-            this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "AreaTeachingPage";
             this.Size = new System.Drawing.Size(1245, 720);
             this.Load += new System.EventHandler(this.TeachingPage_Load);
@@ -296,8 +259,6 @@
         private System.Windows.Forms.Button btnSave;
         private System.Windows.Forms.Button btnLinescan;
         private System.Windows.Forms.Button btnPreAlign;
-        private System.Windows.Forms.Button btnAlign;
-        private System.Windows.Forms.Button btnAkkon;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Button btnLoadImage;

@@ -94,6 +94,12 @@
     <Compile Include="UI\Controls\PreAlignControl.Designer.cs">
       <DependentUpon>PreAlignControl.cs</DependentUpon>
     </Compile>
+    <Compile Include="UI\Controls\UnitSelectControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UI\Controls\UnitSelectControl.Designer.cs">
+      <DependentUpon>UnitSelectControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="UI\Forms\UnitSelectForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -114,6 +120,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UI\Controls\PreAlignControl.resx">
       <DependentUpon>PreAlignControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\Controls\UnitSelectControl.resx">
+      <DependentUpon>UnitSelectControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\Forms\UnitSelectForm.resx">
       <DependentUpon>UnitSelectForm.cs</DependentUpon>
@@ -167,6 +176,9 @@
   <ItemGroup>
     <Folder Include="Core\" />
     <Folder Include="UI\Pages\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Cancel.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

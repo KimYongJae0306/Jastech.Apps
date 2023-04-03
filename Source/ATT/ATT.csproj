@@ -167,6 +167,9 @@
     <EmbeddedResource Include="UI\Pages\InspPage.resx">
       <DependentUpon>InspPage.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="UI\Pages\LineTeachingPage.resx">
+      <DependentUpon>LineTeachingPage.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="UI\Pages\LogPage.resx">
       <DependentUpon>LogPage.cs</DependentUpon>
     </EmbeddedResource>

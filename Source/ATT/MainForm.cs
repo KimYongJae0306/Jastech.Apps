@@ -26,6 +26,7 @@ namespace ATT
         private AutoPage AutoPageControl { get; set; } = new AutoPage();
 
         private AreaTeachingPage AreaTeachingPageControl { get; set; } = new AreaTeachingPage();
+        private LineTeachingPage LineTeachingPageControl { get; set; } = new LineTeachingPage();
 
         private ModelPage ModelPageControl { get; set; } = new ModelPage();
 
@@ -77,6 +78,7 @@ namespace ATT
             TeachingData.Initialize(model);
 
             AreaTeachingPageControl.UpdateSelectPage();
+            LineTeachingPageControl.UpdateSelectPage();
         }
 
         private void AddControls()
@@ -85,10 +87,12 @@ namespace ATT
             PageControlList = new List<UserControl>();
             PageControlList.Add(AutoPageControl);
             PageControlList.Add(AreaTeachingPageControl);
+            PageControlList.Add(LineTeachingPageControl);
 
             ModelPageControl.InspModelService = ATTInspModelService;
             ModelPageControl.ApplyModelEventHandler += ModelPageControl_ApplyModelEventHandler;
             PageControlList.Add(ModelPageControl);
+
             PageControlList.Add(RecipePageControl);
             PageControlList.Add(LogPageControl);
             PageControlList.Add(SettingPageControl);
@@ -159,12 +163,24 @@ namespace ATT
         private void TeachPage_Click(object sender, EventArgs e)
         {
             UnitSelectForm form = new UnitSelectForm();
+
             if(form.ShowDialog() == DialogResult.OK)
             {
-                AreaTeachingPageControl.UnitName = form.UnitName;
+                if (form.SensorType == Jastech.Framework.Device.Cameras.SensorType.Area)
+                {
+                    AreaTeachingPageControl.UnitName = form.UnitName;
 
-                SetSelectLabel(sender);
-                SetSelectPage(selectedControl: AreaTeachingPageControl);
+                    SetSelectLabel(sender);
+                    SetSelectPage(selectedControl: AreaTeachingPageControl);
+                }
+                else if (form.SensorType == Jastech.Framework.Device.Cameras.SensorType.Line)
+                {
+                    LineTeachingPageControl.UnitName = form.UnitName;
+
+                    SetSelectLabel(sender);
+                    SetSelectPage(selectedControl: LineTeachingPageControl);
+                }
+                else { }
             }
         }
 
