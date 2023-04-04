@@ -55,6 +55,7 @@ namespace ATT.UI.Controls
         private void AddControl()
         {
             TeachingPositionListControl.Dock = DockStyle.Fill;
+            TeachingPositionListControl.UnitName = AxisHandlerName.Unit0.ToString();
             pnlTeachingPositionList.Controls.Add(TeachingPositionListControl);
 
             MotionFunctionControl.Dock = DockStyle.Fill;

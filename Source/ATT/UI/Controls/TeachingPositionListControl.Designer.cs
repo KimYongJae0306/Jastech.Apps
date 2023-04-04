@@ -71,9 +71,10 @@
             this.btnNext.Font = new System.Drawing.Font("맑은 고딕", 11.25F, System.Drawing.FontStyle.Bold);
             this.btnNext.ForeColor = System.Drawing.Color.Black;
             this.btnNext.Image = global::ATT.Properties.Resources.Next;
-            this.btnNext.Location = new System.Drawing.Point(569, 3);
+            this.btnNext.Location = new System.Drawing.Point(566, 0);
+            this.btnNext.Margin = new System.Windows.Forms.Padding(0);
             this.btnNext.Name = "btnNext";
-            this.btnNext.Size = new System.Drawing.Size(34, 114);
+            this.btnNext.Size = new System.Drawing.Size(40, 120);
             this.btnNext.TabIndex = 14;
             this.btnNext.UseVisualStyleBackColor = false;
             this.btnNext.Click += new System.EventHandler(this.btnNext_Click);
@@ -85,9 +86,10 @@
             this.btnPrev.Font = new System.Drawing.Font("맑은 고딕", 11.25F, System.Drawing.FontStyle.Bold);
             this.btnPrev.ForeColor = System.Drawing.Color.Black;
             this.btnPrev.Image = global::ATT.Properties.Resources.Prev;
-            this.btnPrev.Location = new System.Drawing.Point(3, 3);
+            this.btnPrev.Location = new System.Drawing.Point(0, 0);
+            this.btnPrev.Margin = new System.Windows.Forms.Padding(0);
             this.btnPrev.Name = "btnPrev";
-            this.btnPrev.Size = new System.Drawing.Size(34, 114);
+            this.btnPrev.Size = new System.Drawing.Size(40, 120);
             this.btnPrev.TabIndex = 13;
             this.btnPrev.UseVisualStyleBackColor = false;
             this.btnPrev.Click += new System.EventHandler(this.btnPrev_Click);

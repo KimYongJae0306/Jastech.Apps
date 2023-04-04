@@ -230,7 +230,6 @@
             this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
             this.Text = " ";
             this.TopMost = true;
-            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.MotionPopupForm_FormClosed);
             this.Load += new System.EventHandler(this.MotionPopupForm_Load);
             this.tlpMotionPopup.ResumeLayout(false);
             this.tlpFormFunction.ResumeLayout(false);

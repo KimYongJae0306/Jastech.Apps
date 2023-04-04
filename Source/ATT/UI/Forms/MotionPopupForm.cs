@@ -1,5 +1,6 @@
 ﻿using ATT.UI.Controls;
 using Jastech.Apps.Structure;
+using Jastech.Apps.Winform;
 using Jastech.Apps.Winform.UI.Controls;
 using Jastech.Framework.Device.Motions;
 using Jastech.Framework.Winform.Controls;
@@ -28,7 +29,6 @@ namespace ATT.UI.Forms
         #endregion
 
         #region 이벤트
-        public Action CloseEventDelegate;
         #endregion
 
         #region 델리게이트
@@ -59,30 +59,9 @@ namespace ATT.UI.Forms
         private void AddTeachingPositionControl()
         {
             TeachingPositionListControl.Dock = DockStyle.Fill;
+            TeachingPositionListControl.UnitName = AxisHandlerName.Unit0.ToString();
             pnlTeachingPositionList.Controls.Add(TeachingPositionListControl);
             pnlTeachingPositionList.Dock = DockStyle.Fill;
-
-            //tlpTeachingList.ColumnStyles.Clear();
-            //tlpTeachingList.RowStyles.Clear();
-            //tlpTeachingList.ColumnCount = Enum.GetValues(typeof(TeachingPositionType)).Length;
-            //tlpTeachingList.Dock = DockStyle.Fill;
-
-            //for (int columnIndex = 0; columnIndex < tlpTeachingList.ColumnCount; columnIndex++)
-            //{
-            //    tlpTeachingList.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, (float)(100 / tlpTeachingList.ColumnCount)));
-            //    tlpTeachingList.Controls.Add(CreateTeachingPositionButton(ModelManager.Instance().CurrentModel.PositionList[columnIndex].Description), columnIndex, 0);
-            //}
-        }
-
-        private Button CreateTeachingPositionButton(string description)
-        {
-            Button btn = new Button() { BackColor = Color.White, Dock = DockStyle.Fill, Text = description };
-            btn.Click += Btn_Click;
-            return btn;
-        }
-
-        private void Btn_Click(object sender, EventArgs e)
-        {
         }
 
         private void AddParameterControl()
@@ -125,17 +104,6 @@ namespace ATT.UI.Forms
         public void SetAxisHandler(AxisHandler axisHandler)
         {
             selectedAxisHanlder = axisHandler;
-        }
-
-        private void MakeTeachingListControl()
-        {
-
-        }
-
-        private void MotionPopupForm_FormClosed(object sender, FormClosedEventArgs e)
-        {
-            if (CloseEventDelegate != null)
-                CloseEventDelegate();
         }
 
         private void btnExit_Click(object sender, EventArgs e)
