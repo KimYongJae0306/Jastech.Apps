@@ -1,4 +1,4 @@
-﻿namespace Jastech.Apps.Winform.UI.Forms
+﻿namespace ATT.UI.Forms
 {
     partial class MotionPopupForm
     {
@@ -58,8 +58,8 @@
             this.tlpMotionPopup.Margin = new System.Windows.Forms.Padding(0);
             this.tlpMotionPopup.Name = "tlpMotionPopup";
             this.tlpMotionPopup.RowCount = 3;
-            this.tlpMotionPopup.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 10F));
-            this.tlpMotionPopup.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 90F));
+            this.tlpMotionPopup.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 100F));
+            this.tlpMotionPopup.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tlpMotionPopup.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 100F));
             this.tlpMotionPopup.Size = new System.Drawing.Size(684, 661);
             this.tlpMotionPopup.TabIndex = 2;
@@ -82,12 +82,12 @@
             this.tlpFormFunction.Controls.Add(this.btnCommand, 0, 0);
             this.tlpFormFunction.Controls.Add(this.btnParameter, 1, 0);
             this.tlpFormFunction.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tlpFormFunction.Location = new System.Drawing.Point(0, 560);
+            this.tlpFormFunction.Location = new System.Drawing.Point(0, 561);
             this.tlpFormFunction.Margin = new System.Windows.Forms.Padding(0);
             this.tlpFormFunction.Name = "tlpFormFunction";
             this.tlpFormFunction.RowCount = 1;
             this.tlpFormFunction.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tlpFormFunction.Size = new System.Drawing.Size(684, 101);
+            this.tlpFormFunction.Size = new System.Drawing.Size(684, 100);
             this.tlpFormFunction.TabIndex = 1;
             // 
             // btnMoveTeachingPosition
@@ -98,7 +98,7 @@
             this.btnMoveTeachingPosition.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
             this.btnMoveTeachingPosition.Location = new System.Drawing.Point(245, 3);
             this.btnMoveTeachingPosition.Name = "btnMoveTeachingPosition";
-            this.btnMoveTeachingPosition.Size = new System.Drawing.Size(94, 95);
+            this.btnMoveTeachingPosition.Size = new System.Drawing.Size(94, 94);
             this.btnMoveTeachingPosition.TabIndex = 199;
             this.btnMoveTeachingPosition.Text = "MOVE TARGET";
             this.btnMoveTeachingPosition.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
@@ -113,7 +113,7 @@
             this.btnExit.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
             this.btnExit.Location = new System.Drawing.Point(587, 3);
             this.btnExit.Name = "btnExit";
-            this.btnExit.Size = new System.Drawing.Size(94, 95);
+            this.btnExit.Size = new System.Drawing.Size(94, 94);
             this.btnExit.TabIndex = 293;
             this.btnExit.Text = "EXIT";
             this.btnExit.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
@@ -128,7 +128,7 @@
             this.btnStopTeachingPosition.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
             this.btnStopTeachingPosition.Location = new System.Drawing.Point(345, 3);
             this.btnStopTeachingPosition.Name = "btnStopTeachingPosition";
-            this.btnStopTeachingPosition.Size = new System.Drawing.Size(94, 95);
+            this.btnStopTeachingPosition.Size = new System.Drawing.Size(94, 94);
             this.btnStopTeachingPosition.TabIndex = 200;
             this.btnStopTeachingPosition.Text = "SET";
             this.btnStopTeachingPosition.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
@@ -143,7 +143,7 @@
             this.btnSave.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
             this.btnSave.Location = new System.Drawing.Point(487, 3);
             this.btnSave.Name = "btnSave";
-            this.btnSave.Size = new System.Drawing.Size(94, 95);
+            this.btnSave.Size = new System.Drawing.Size(94, 94);
             this.btnSave.TabIndex = 292;
             this.btnSave.Text = "SAVE";
             this.btnSave.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
@@ -157,7 +157,7 @@
             this.btnCommand.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
             this.btnCommand.Location = new System.Drawing.Point(3, 3);
             this.btnCommand.Name = "btnCommand";
-            this.btnCommand.Size = new System.Drawing.Size(94, 95);
+            this.btnCommand.Size = new System.Drawing.Size(94, 94);
             this.btnCommand.TabIndex = 292;
             this.btnCommand.Text = "PREV PAGE";
             this.btnCommand.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
@@ -172,7 +172,7 @@
             this.btnParameter.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
             this.btnParameter.Location = new System.Drawing.Point(103, 3);
             this.btnParameter.Name = "btnParameter";
-            this.btnParameter.Size = new System.Drawing.Size(94, 95);
+            this.btnParameter.Size = new System.Drawing.Size(94, 94);
             this.btnParameter.TabIndex = 292;
             this.btnParameter.Text = "NEXT PAGE";
             this.btnParameter.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
@@ -184,10 +184,10 @@
             this.pnlFunction.Controls.Add(this.pnlMotionParameter);
             this.pnlFunction.Controls.Add(this.pnlJog);
             this.pnlFunction.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pnlFunction.Location = new System.Drawing.Point(0, 56);
+            this.pnlFunction.Location = new System.Drawing.Point(0, 100);
             this.pnlFunction.Margin = new System.Windows.Forms.Padding(0);
             this.pnlFunction.Name = "pnlFunction";
-            this.pnlFunction.Size = new System.Drawing.Size(684, 504);
+            this.pnlFunction.Size = new System.Drawing.Size(684, 461);
             this.pnlFunction.TabIndex = 2;
             // 
             // pnlMotionParameter
@@ -212,7 +212,7 @@
             this.pnlTeachingPositionList.Location = new System.Drawing.Point(0, 0);
             this.pnlTeachingPositionList.Margin = new System.Windows.Forms.Padding(0);
             this.pnlTeachingPositionList.Name = "pnlTeachingPositionList";
-            this.pnlTeachingPositionList.Size = new System.Drawing.Size(684, 56);
+            this.pnlTeachingPositionList.Size = new System.Drawing.Size(684, 100);
             this.pnlTeachingPositionList.TabIndex = 3;
             // 
             // MotionPopupForm

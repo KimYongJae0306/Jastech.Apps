@@ -98,12 +98,6 @@
     <Compile Include="UI\Controls\AlignControl.designer.cs">
       <DependentUpon>AlignControl.cs</DependentUpon>
     </Compile>
-    <Compile Include="UI\Controls\MotionSettingsControl.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="UI\Controls\MotionSettingsControl.Designer.cs">
-      <DependentUpon>MotionSettingsControl.cs</DependentUpon>
-    </Compile>
     <Compile Include="UI\Controls\PreAlignControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -115,12 +109,6 @@
     </Compile>
     <Compile Include="UI\Controls\UnitSelectControl.Designer.cs">
       <DependentUpon>UnitSelectControl.cs</DependentUpon>
-    </Compile>
-    <Compile Include="UI\Forms\MotionPopupForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="UI\Forms\MotionPopupForm.Designer.cs">
-      <DependentUpon>MotionPopupForm.cs</DependentUpon>
     </Compile>
     <Compile Include="UI\Forms\UnitSelectForm.cs">
       <SubType>Form</SubType>
@@ -140,17 +128,11 @@
     <EmbeddedResource Include="UI\Controls\AlignControl.resx">
       <DependentUpon>AlignControl.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="UI\Controls\MotionSettingsControl.resx">
-      <DependentUpon>MotionSettingsControl.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="UI\Controls\PreAlignControl.resx">
       <DependentUpon>PreAlignControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\Controls\UnitSelectControl.resx">
       <DependentUpon>UnitSelectControl.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="UI\Forms\MotionPopupForm.resx">
-      <DependentUpon>MotionPopupForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\Forms\UnitSelectForm.resx">
       <DependentUpon>UnitSelectForm.cs</DependentUpon>

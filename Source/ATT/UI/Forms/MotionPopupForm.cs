@@ -1,4 +1,5 @@
-﻿using Jastech.Apps.Structure;
+﻿using ATT.UI.Controls;
+using Jastech.Apps.Structure;
 using Jastech.Apps.Winform.UI.Controls;
 using Jastech.Framework.Device.Motions;
 using Jastech.Framework.Winform.Controls;
@@ -12,12 +13,13 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace Jastech.Apps.Winform.UI.Forms
+namespace ATT.UI.Forms
 {
     public partial class MotionPopupForm : Form
     {
         #region 필드
-        private TeachingPositionControl TeachingPositionControl { get; set; } = new TeachingPositionControl();
+        private TeachingPositionListControl TeachingPositionListControl { get; set; } = new TeachingPositionListControl();
+
         private MotionJogControl MotionJogControl { get; set; } = new MotionJogControl();
         #endregion
 
@@ -56,8 +58,8 @@ namespace Jastech.Apps.Winform.UI.Forms
 
         private void AddTeachingPositionControl()
         {
-            TeachingPositionControl.Dock = DockStyle.Fill;
-            pnlTeachingPositionList.Controls.Add(TeachingPositionControl);
+            TeachingPositionListControl.Dock = DockStyle.Fill;
+            pnlTeachingPositionList.Controls.Add(TeachingPositionListControl);
             pnlTeachingPositionList.Dock = DockStyle.Fill;
 
             //tlpTeachingList.ColumnStyles.Clear();
@@ -94,10 +96,10 @@ namespace Jastech.Apps.Winform.UI.Forms
 
             foreach (var axis in selectedAxisHanlder.AxisList)
             {
-                MotionPopupParameterControl motionPopupParameterControl = new MotionPopupParameterControl();
-                motionPopupParameterControl.SetAxis(axis);
-                motionPopupParameterControl.Dock = DockStyle.Fill;
-                tlp.Controls.Add(motionPopupParameterControl);
+                MotionParameterVariableControl motionParameterVariableControl = new MotionParameterVariableControl();
+                motionParameterVariableControl.SetAxis(axis);
+                motionParameterVariableControl.Dock = DockStyle.Fill;
+                tlp.Controls.Add(motionParameterVariableControl);
             }
 
             pnlMotionParameter.Controls.Add(tlp);
