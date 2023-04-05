@@ -50,9 +50,10 @@ namespace Jastech.Apps.Structure
             foreach (var unit in UnitList)
                 unit.Dispose();
 
+
             UnitList.Clear();
 
-            UnitList.AddRange(newUnitList);
+            UnitList.AddRange(newUnitList.Select(x => x.DeepCopy()).ToList());
         }
     }
 }

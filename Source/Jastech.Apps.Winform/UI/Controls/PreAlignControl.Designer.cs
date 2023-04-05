@@ -48,8 +48,8 @@
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.lblAddROI = new System.Windows.Forms.Label();
             this.lblInspection = new System.Windows.Forms.Label();
-            this.cbxPreAlignList = new System.Windows.Forms.ComboBox();
             this.lblPrev = new System.Windows.Forms.Label();
+            this.cbxPreAlignList = new System.Windows.Forms.ComboBox();
             this.lblNext = new System.Windows.Forms.Label();
             this.tableLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel3.SuspendLayout();
@@ -270,6 +270,17 @@
             this.lblInspection.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.lblInspection.Click += new System.EventHandler(this.lblInspection_Click);
             // 
+            // lblPrev
+            // 
+            this.lblPrev.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblPrev.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblPrev.Image = global::Jastech.Apps.Winform.Properties.Resources.Prev;
+            this.lblPrev.Location = new System.Drawing.Point(178, 0);
+            this.lblPrev.Name = "lblPrev";
+            this.lblPrev.Size = new System.Drawing.Size(46, 44);
+            this.lblPrev.TabIndex = 5;
+            this.lblPrev.Click += new System.EventHandler(this.lblPrev_Click);
+            // 
             // cbxPreAlignList
             // 
             this.cbxPreAlignList.BackColor = System.Drawing.Color.White;
@@ -285,17 +296,6 @@
             this.cbxPreAlignList.TabIndex = 0;
             this.cbxPreAlignList.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.cbxPreAlignList_DrawItem);
             this.cbxPreAlignList.SelectedIndexChanged += new System.EventHandler(this.cbxPreAlignList_SelectedIndexChanged);
-            // 
-            // lblPrev
-            // 
-            this.lblPrev.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lblPrev.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblPrev.Image = global::Jastech.Apps.Winform.Properties.Resources.Prev;
-            this.lblPrev.Location = new System.Drawing.Point(178, 0);
-            this.lblPrev.Name = "lblPrev";
-            this.lblPrev.Size = new System.Drawing.Size(46, 44);
-            this.lblPrev.TabIndex = 5;
-            this.lblPrev.Click += new System.EventHandler(this.lblPrev_Click);
             // 
             // lblNext
             // 

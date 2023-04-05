@@ -79,6 +79,8 @@ namespace ATT
 
             AreaTeachingPageControl.UpdateSelectPage();
             LineTeachingPageControl.UpdateSelectPage();
+
+            SettingPageControl.UpdateModelData();
         }
 
         private void AddControls()

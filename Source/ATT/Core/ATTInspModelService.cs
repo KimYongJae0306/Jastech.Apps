@@ -1,5 +1,7 @@
 ﻿using Jastech.Apps.Structure;
 using Jastech.Apps.Structure.VisionTool;
+using Jastech.Apps.Winform;
+using Jastech.Framework.Device.Motions;
 using Jastech.Framework.Imaging.VisionPro.VisionAlgorithms.Parameters;
 using Jastech.Framework.Structure;
 using Jastech.Framework.Util.Helper;
@@ -50,8 +52,38 @@ namespace ATT.Core
                 }
 
                 newInspModel.AddUnit(unit);
+                AddTeachingPosition(unit);
             }
+
+            
+
             return newInspModel;
+        }
+
+        private void AddTeachingPosition(Unit unit)
+        {
+            var currentAxisHandler = AppsMotionManager.Instance().GetAxisHandler(AxisHandlerName.Unit0);
+            string unitName = "0";
+
+            TeachingPosition t1 = new TeachingPosition();
+            t1.CreateTeachingPosition(TeachingPositionType.Standby.ToString(), "Standby", currentAxisHandler);
+            unit.AddTeachingPosition(t1);
+
+            TeachingPosition t2 = new TeachingPosition();
+            t2.CreateTeachingPosition(TeachingPositionType.Stage1_PreAlign_Left.ToString(), "Stage#1 PreAlign Left Position", currentAxisHandler);
+            unit.AddTeachingPosition(t2);
+
+            TeachingPosition t3 = new TeachingPosition();
+            t3.CreateTeachingPosition(TeachingPositionType.Stage1_PreAlign_Right.ToString(), "Stage#1 PreAlign Right Position", currentAxisHandler);
+            unit.AddTeachingPosition(t3);
+
+            TeachingPosition t4 = new TeachingPosition();
+            t4.CreateTeachingPosition(TeachingPositionType.Stage1_Scan_Start.ToString(), "Stage#1 ScanStart", currentAxisHandler);
+            unit.AddTeachingPosition(t4);
+
+            TeachingPosition t5 = new TeachingPosition();
+            t5.CreateTeachingPosition(TeachingPositionType.Stage1_Scan_End.ToString(), "Stage#1 ScanEnd", currentAxisHandler);
+            unit.AddTeachingPosition(t5);
         }
 
         public override InspModel Load(string filePath)
@@ -111,6 +143,13 @@ namespace ATT.Core
                         item.SaveTool(tabAlignDir);
                 }
             }
+        }
+
+        public void SaveExceptVpp(string filePath, InspModel model)
+        {
+            ATTInspModel attInspModel = model as ATTInspModel;
+
+            JsonConvertHelper.Save(filePath, attInspModel);
         }
     }
 

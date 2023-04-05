@@ -100,12 +100,6 @@
     <Compile Include="UI\Controls\AlignControl.designer.cs">
       <DependentUpon>AlignControl.cs</DependentUpon>
     </Compile>
-    <Compile Include="UI\Controls\MotionSettingsControl.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="UI\Controls\MotionSettingsControl.Designer.cs">
-      <DependentUpon>MotionSettingsControl.cs</DependentUpon>
-    </Compile>
     <Compile Include="UI\Controls\PreAlignControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -135,9 +129,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UI\Controls\AlignControl.resx">
       <DependentUpon>AlignControl.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="UI\Controls\MotionSettingsControl.resx">
-      <DependentUpon>MotionSettingsControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\Controls\PreAlignControl.resx">
       <DependentUpon>PreAlignControl.cs</DependentUpon>

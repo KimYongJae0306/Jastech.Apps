@@ -18,6 +18,8 @@ using Jastech.Apps.Structure;
 using Jastech.Framework.Util.Helper;
 using Jastech.Apps.Winform.Settings;
 using Jastech.Framework.Winform.Forms;
+using Jastech.Apps.Winform.UI.Forms;
+using ATT.UI.Forms;
 
 namespace ATT.UI.Pages
 {
@@ -170,7 +172,6 @@ namespace ATT.UI.Pages
 
             string fileName = System.IO.Path.Combine(AppConfig.Instance().Path.Model, model.Name, InspModel.FileName);
             SystemManager.Instance().SaveModel(fileName, model);
-
         }
 
         private void btnMotionPopup_Click(object sender, EventArgs e)

@@ -82,11 +82,29 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SystemManager.cs" />
+    <Compile Include="UI\Controls\MotionSettingsControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UI\Controls\MotionSettingsControl.Designer.cs">
+      <DependentUpon>MotionSettingsControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="UI\Controls\OperationSettingsControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="UI\Controls\OperationSettingsControl.Designer.cs">
       <DependentUpon>OperationSettingsControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Controls\TeachingPositionListControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UI\Controls\TeachingPositionListControl.Designer.cs">
+      <DependentUpon>TeachingPositionListControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Forms\MotionPopupForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\Forms\MotionPopupForm.Designer.cs">
+      <DependentUpon>MotionPopupForm.cs</DependentUpon>
     </Compile>
     <Compile Include="UI\Pages\LineTeachingPage.cs">
       <SubType>UserControl</SubType>
@@ -149,8 +167,17 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <EmbeddedResource Include="UI\Controls\MotionSettingsControl.resx">
+      <DependentUpon>MotionSettingsControl.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="UI\Controls\OperationSettingsControl.resx">
       <DependentUpon>OperationSettingsControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\Controls\TeachingPositionListControl.resx">
+      <DependentUpon>TeachingPositionListControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\Forms\MotionPopupForm.resx">
+      <DependentUpon>MotionPopupForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\Pages\AutoPage.resx">
       <DependentUpon>AutoPage.cs</DependentUpon>
