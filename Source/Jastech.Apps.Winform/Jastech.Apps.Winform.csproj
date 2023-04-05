@@ -79,6 +79,7 @@
   <ItemGroup>
     <Compile Include="AppsCameraManager.cs" />
     <Compile Include="AppsMotionManager.cs" />
+    <Compile Include="AppsTeachingUIManager.cs" />
     <Compile Include="Core\ScanImage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
@@ -87,7 +88,6 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="Settings\AppConfig.cs" />
-    <Compile Include="TeachingUIManager.cs" />
     <Compile Include="UI\Controls\AkkonControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
