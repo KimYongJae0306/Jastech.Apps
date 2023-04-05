@@ -38,18 +38,18 @@
             this.btnCommand = new System.Windows.Forms.Button();
             this.btnParameter = new System.Windows.Forms.Button();
             this.pnlFunction = new System.Windows.Forms.Panel();
-            this.pnlTeachingPositionList = new System.Windows.Forms.Panel();
-            this.tlpMotionFunction = new System.Windows.Forms.TableLayoutPanel();
-            this.tlpStatus = new System.Windows.Forms.TableLayoutPanel();
-            this.pnlJog = new System.Windows.Forms.Panel();
             this.tlpVariableParameters = new System.Windows.Forms.TableLayoutPanel();
             this.lblVariableParameter = new System.Windows.Forms.Label();
             this.tlpVariableParameter = new System.Windows.Forms.TableLayoutPanel();
+            this.tlpMotionFunction = new System.Windows.Forms.TableLayoutPanel();
+            this.tlpStatus = new System.Windows.Forms.TableLayoutPanel();
+            this.pnlJog = new System.Windows.Forms.Panel();
+            this.pnlTeachingPositionList = new System.Windows.Forms.Panel();
             this.tlpMotionPopup.SuspendLayout();
             this.tlpFormFunction.SuspendLayout();
             this.pnlFunction.SuspendLayout();
-            this.tlpMotionFunction.SuspendLayout();
             this.tlpVariableParameters.SuspendLayout();
+            this.tlpMotionFunction.SuspendLayout();
             this.SuspendLayout();
             // 
             // tlpMotionPopup
@@ -154,6 +154,7 @@
             this.btnSave.Text = "SAVE";
             this.btnSave.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
             this.btnSave.UseVisualStyleBackColor = false;
+            this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
             // 
             // btnCommand
             // 
@@ -195,58 +196,6 @@
             this.pnlFunction.Name = "pnlFunction";
             this.pnlFunction.Size = new System.Drawing.Size(684, 461);
             this.pnlFunction.TabIndex = 2;
-            // 
-            // pnlTeachingPositionList
-            // 
-            this.pnlTeachingPositionList.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pnlTeachingPositionList.Location = new System.Drawing.Point(0, 0);
-            this.pnlTeachingPositionList.Margin = new System.Windows.Forms.Padding(0);
-            this.pnlTeachingPositionList.Name = "pnlTeachingPositionList";
-            this.pnlTeachingPositionList.Size = new System.Drawing.Size(684, 100);
-            this.pnlTeachingPositionList.TabIndex = 3;
-            // 
-            // tlpMotionFunction
-            // 
-            this.tlpMotionFunction.ColumnCount = 1;
-            this.tlpMotionFunction.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tlpMotionFunction.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tlpMotionFunction.Controls.Add(this.tlpStatus, 0, 0);
-            this.tlpMotionFunction.Controls.Add(this.pnlJog, 0, 1);
-            this.tlpMotionFunction.Location = new System.Drawing.Point(8, 8);
-            this.tlpMotionFunction.Margin = new System.Windows.Forms.Padding(0);
-            this.tlpMotionFunction.Name = "tlpMotionFunction";
-            this.tlpMotionFunction.RowCount = 3;
-            this.tlpMotionFunction.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tlpMotionFunction.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tlpMotionFunction.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tlpMotionFunction.Size = new System.Drawing.Size(330, 400);
-            this.tlpMotionFunction.TabIndex = 7;
-            // 
-            // tlpStatus
-            // 
-            this.tlpStatus.ColumnCount = 4;
-            this.tlpStatus.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
-            this.tlpStatus.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
-            this.tlpStatus.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
-            this.tlpStatus.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
-            this.tlpStatus.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tlpStatus.GrowStyle = System.Windows.Forms.TableLayoutPanelGrowStyle.AddColumns;
-            this.tlpStatus.Location = new System.Drawing.Point(0, 0);
-            this.tlpStatus.Margin = new System.Windows.Forms.Padding(0);
-            this.tlpStatus.Name = "tlpStatus";
-            this.tlpStatus.RowCount = 1;
-            this.tlpStatus.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tlpStatus.Size = new System.Drawing.Size(330, 190);
-            this.tlpStatus.TabIndex = 0;
-            // 
-            // pnlJog
-            // 
-            this.pnlJog.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pnlJog.Location = new System.Drawing.Point(0, 190);
-            this.pnlJog.Margin = new System.Windows.Forms.Padding(0);
-            this.pnlJog.Name = "pnlJog";
-            this.pnlJog.Size = new System.Drawing.Size(330, 190);
-            this.pnlJog.TabIndex = 1;
             // 
             // tlpVariableParameters
             // 
@@ -292,6 +241,58 @@
             this.tlpVariableParameter.Size = new System.Drawing.Size(330, 360);
             this.tlpVariableParameter.TabIndex = 7;
             // 
+            // tlpMotionFunction
+            // 
+            this.tlpMotionFunction.ColumnCount = 1;
+            this.tlpMotionFunction.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tlpMotionFunction.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tlpMotionFunction.Controls.Add(this.tlpStatus, 0, 0);
+            this.tlpMotionFunction.Controls.Add(this.pnlJog, 0, 1);
+            this.tlpMotionFunction.Location = new System.Drawing.Point(8, 8);
+            this.tlpMotionFunction.Margin = new System.Windows.Forms.Padding(0);
+            this.tlpMotionFunction.Name = "tlpMotionFunction";
+            this.tlpMotionFunction.RowCount = 3;
+            this.tlpMotionFunction.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tlpMotionFunction.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tlpMotionFunction.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tlpMotionFunction.Size = new System.Drawing.Size(330, 400);
+            this.tlpMotionFunction.TabIndex = 7;
+            // 
+            // tlpStatus
+            // 
+            this.tlpStatus.ColumnCount = 4;
+            this.tlpStatus.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
+            this.tlpStatus.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
+            this.tlpStatus.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
+            this.tlpStatus.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
+            this.tlpStatus.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tlpStatus.GrowStyle = System.Windows.Forms.TableLayoutPanelGrowStyle.AddColumns;
+            this.tlpStatus.Location = new System.Drawing.Point(0, 0);
+            this.tlpStatus.Margin = new System.Windows.Forms.Padding(0);
+            this.tlpStatus.Name = "tlpStatus";
+            this.tlpStatus.RowCount = 1;
+            this.tlpStatus.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tlpStatus.Size = new System.Drawing.Size(330, 190);
+            this.tlpStatus.TabIndex = 0;
+            // 
+            // pnlJog
+            // 
+            this.pnlJog.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pnlJog.Location = new System.Drawing.Point(0, 190);
+            this.pnlJog.Margin = new System.Windows.Forms.Padding(0);
+            this.pnlJog.Name = "pnlJog";
+            this.pnlJog.Size = new System.Drawing.Size(330, 190);
+            this.pnlJog.TabIndex = 1;
+            // 
+            // pnlTeachingPositionList
+            // 
+            this.pnlTeachingPositionList.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pnlTeachingPositionList.Location = new System.Drawing.Point(0, 0);
+            this.pnlTeachingPositionList.Margin = new System.Windows.Forms.Padding(0);
+            this.pnlTeachingPositionList.Name = "pnlTeachingPositionList";
+            this.pnlTeachingPositionList.Size = new System.Drawing.Size(684, 100);
+            this.pnlTeachingPositionList.TabIndex = 3;
+            // 
             // MotionPopupForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(11F, 25F);
@@ -311,8 +312,8 @@
             this.tlpMotionPopup.ResumeLayout(false);
             this.tlpFormFunction.ResumeLayout(false);
             this.pnlFunction.ResumeLayout(false);
-            this.tlpMotionFunction.ResumeLayout(false);
             this.tlpVariableParameters.ResumeLayout(false);
+            this.tlpMotionFunction.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }

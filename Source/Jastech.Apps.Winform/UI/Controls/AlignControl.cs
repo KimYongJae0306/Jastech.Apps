@@ -62,7 +62,7 @@ namespace Jastech.Apps.Winform.UI.Controls
             if (chkUseTracking.Checked)
             {
                 chkUseTracking.Text = "ROI Tracking : USE";
-                chkUseTracking.BackColor = Color.DarkCyan;
+                chkUseTracking.BackColor = Color.DeepSkyBlue;
             }
             else
             {

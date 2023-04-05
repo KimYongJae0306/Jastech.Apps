@@ -78,10 +78,7 @@ namespace ATT.UI.Controls
 
         private void AddControl()
         {
-            TeachingPositionListControl.Dock = DockStyle.Fill;
-            TeachingPositionListControl.UnitName = "0";
-            pnlTeachingPositionList.Controls.Add(TeachingPositionListControl);
-            TeachingPositionListControl.SendEventHandler += new TeachingPositionListControl.SetTeachingPositionListDelegate(ReceiveTeachingPosition);
+            AddTeachingPositionListControl();
 
             MotionFunctionControl.Dock = DockStyle.Fill;
             tlpStatus.Controls.Add(MotionFunctionControl);
@@ -95,6 +92,14 @@ namespace ATT.UI.Controls
             MotionJogControl.SetAxisHanlder(AppsMotionManager.Instance().GetAxisHandler(AxisHandlerName.Unit0));
             MotionJogControl.Dock = DockStyle.Fill;
             pnlJog.Controls.Add(MotionJogControl);
+        }
+
+        private void AddTeachingPositionListControl()
+        {
+            TeachingPositionListControl.Dock = DockStyle.Fill;
+            TeachingPositionListControl.UnitName = "0";
+            TeachingPositionListControl.SendEventHandler += new TeachingPositionListControl.SetTeachingPositionListDelegate(ReceiveTeachingPosition);
+            pnlTeachingPositionList.Controls.Add(TeachingPositionListControl);
         }
 
         private void ReceiveTeachingPosition(TeachingPositionType teachingPositionType)
@@ -190,7 +195,7 @@ namespace ATT.UI.Controls
             // Common Params
             XCommonControl.UpdateData(axisHandler.GetAxis(AxisName.X).AxisCommonParams.DeepCopy());
             YCommonControl.UpdateData(axisHandler.GetAxis(AxisName.Y).AxisCommonParams.DeepCopy());
-            ZCommonControl.UpdateData(axisHandler.GetAxis(AxisName.Y).AxisCommonParams.DeepCopy());
+            ZCommonControl.UpdateData(axisHandler.GetAxis(AxisName.Z).AxisCommonParams.DeepCopy());
 
             var inspModel = ModelManager.Instance().CurrentModel as Core.ATTInspModel;
             string unitName = TeachingPositionListControl.UnitName;
@@ -198,20 +203,7 @@ namespace ATT.UI.Controls
             if (inspModel == null || unitName == "")
                 return;
 
-            //////////////////////////////////////////////
-            //foreach (var item in SystemManager.Instance().GetTeachingData().GetUnit(unitName).PositionList)
-            //{
-            //    XVariableControl.Initialize(item.GetMovingParams(AxisName.X));
-            //    YVariableControl.Initialize(item.GetMovingParams(AxisName.Y));
-            //    ZVariableControl.Initialize(item.GetMovingParams(AxisName.Z));
-
-            //    XCommandControl.Intialize(item.AxisInfoList[(int)AxisName.X]);
-            //    YCommandControl.Intialize(item.AxisInfoList[(int)AxisName.Y]);
-            //    ZCommandControl.Intialize(item.AxisInfoList[(int)AxisName.Z]);
-            //}
-            //////////////////////////////////////////////
-
-            //// Variable Params
+            // Variable Params
             var posData = SystemManager.Instance().GetTeachingData().GetUnit(unitName).PositionList[(int)teachingPositionType];
 
             XVariableControl.UpdateData(posData.GetMovingParams(AxisName.X));
@@ -234,29 +226,7 @@ namespace ATT.UI.Controls
             axisHandler.GetAxis(AxisName.Z).AxisCommonParams.SetCommonParams(ZCommonControl.GetCurrentData());
 
 
-
-            //////////////////////////////////////////////
-            //string unitName = TeachingPositionListControl.UnitName;
-            //foreach (var item in SystemManager.Instance().GetTeachingData().GetUnit(unitName).PositionList)
-            //{
-            //    item.SetMovingParams(AxisName.X, XVariableControl.GetCurrentData());
-            //    item.SetMovingParams(AxisName.Y, YVariableControl.GetCurrentData());
-            //    item.SetMovingParams(AxisName.Z, ZVariableControl.GetCurrentData());
-
-
-
-            //    item.SetTargetPosition(AxisName.X, XCommandControl.GetCurrentData().TargetPosition);
-            //    item.SetOffset(AxisName.X, XCommandControl.GetCurrentData().Offset);
-
-            //    item.SetTargetPosition(AxisName.Y, YCommandControl.GetCurrentData().TargetPosition);
-            //    item.SetOffset(AxisName.Y, YCommandControl.GetCurrentData().Offset);
-
-            //    item.SetTargetPosition(AxisName.Z, ZCommandControl.GetCurrentData().TargetPosition);
-            //    item.SetOffset(AxisName.Z, ZCommandControl.GetCurrentData().Offset);
-            //}
-            //////////////////////////////////////////////
-
-            //// Variable Params
+            // Variable Params
             string unitName = TeachingPositionListControl.UnitName;
             var posData = SystemManager.Instance().GetTeachingData().GetUnit(unitName).PositionList[(int)TeachingPositionType];
 
