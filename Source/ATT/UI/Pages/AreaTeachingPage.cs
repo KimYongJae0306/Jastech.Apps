@@ -33,16 +33,12 @@ namespace ATT.UI.Pages
         public string UnitName { get; set; } = "";
         // Display
         private CogThumbnailDisplayControl Display { get; set; } = new CogThumbnailDisplayControl();
-
        
         // Teach Controls
         private PreAlignControl PreAlignControl { get; set; } = new PreAlignControl();
-		//private AlignControl AlignControl { get; set; } = new AlignControl();
-  //      private AkkonControl AkkonControl { get; set; } = new AkkonControl();
 
         // Control List
         private List<UserControl> TeachControlList = null;
-        private List<Button> TeachButtonList = null;
         #endregion
 
         public AreaTeachingPage()
@@ -64,26 +60,15 @@ namespace ATT.UI.Pages
             pnlDisplay.Controls.Add(Display);
 
             // TeachingUIManager 참조
-            TeachingUIManager.Instance().TeachingDisplay = Display.GetDisplay();
+            AppsTeachingUIManager.Instance().TeachingDisplay = Display.GetDisplay();
 
             // Teach Control List
             TeachControlList = new List<UserControl>();
             TeachControlList.Add(PreAlignControl);
-			//TeachControlList.Add(AlignControl);
-   //         TeachControlList.Add(AkkonControl);
-
-            // Button List
-            TeachButtonList = new List<Button>();
-            TeachButtonList.Add(btnLinescan);
-            TeachButtonList.Add(btnPreAlign);
-            //TeachButtonList.Add(btnAlign);
-            //TeachButtonList.Add(btnAkkon);
-
         }
 
         private void btnLinescan_Click(object sender, EventArgs e)
         {
-            SetSelectButton(sender);
         }
 
         private void btnPreAlign_Click(object sender, EventArgs e)
@@ -108,27 +93,6 @@ namespace ATT.UI.Pages
             PreAlignControl.SetParams(preAlignParam);
         }
 
-        //private void btnAlign_Click(object sender, EventArgs e)
-        //{
-        //    SetSelectButton(sender);
-        //    SetSelectTeachPage(AlignControl);
-        //}
-
-        //private void btnAkkon_Click(object sender, EventArgs e)
-        //{
-        //    SetSelectButton(sender);
-        //    SetSelectTeachPage(AkkonControl);
-        //}
-
-        private void SetSelectButton(object sender)
-        {
-            foreach (Button button in TeachButtonList)
-                button.ForeColor = Color.Black;
-
-            Button btn = sender as Button;
-            btn.ForeColor = Color.Blue;
-        }
-
         private void SetSelectTeachPage(UserControl selectedControl)
         {
             foreach (UserControl control in TeachControlList)
@@ -150,9 +114,8 @@ namespace ATT.UI.Pages
             {
                 ICogImage cogImage = CogImageHelper.Load(dlg.FileName);
                 Display.SetImage(cogImage);
-                TeachingUIManager.Instance().TeachingDisplay.SetImage(cogImage);
+                AppsTeachingUIManager.Instance().TeachingDisplay.SetImage(cogImage);
                 PreAlignControl.DrawROI();
-                //AlignControl.DrawROI();
             }
         }
 

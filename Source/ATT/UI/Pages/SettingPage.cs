@@ -131,8 +131,8 @@ namespace ATT.UI.Pages
 
         private void UpdateCurrentData()
         {
-            OperationSettingsControl.GetCurrentData();
-            MotionSettingsControl.GetCurrentData();
+            OperationSettingsControl.UpdateCuurentData();
+            MotionSettingsControl.UpdateCuurentData();
         }
 
         public void UpdateModelData()

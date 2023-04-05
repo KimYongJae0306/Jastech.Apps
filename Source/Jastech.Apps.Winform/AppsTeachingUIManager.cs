@@ -8,10 +8,10 @@ using System.Threading.Tasks;
 
 namespace Jastech.Apps.Winform
 {
-    public class TeachingUIManager
+    public class AppsTeachingUIManager
     {
         #region 필드
-        private static TeachingUIManager _instance = null;
+        private static AppsTeachingUIManager _instance = null;
         #endregion
 
         #region 속성
@@ -28,11 +28,11 @@ namespace Jastech.Apps.Winform
         #endregion
 
         #region 메서드
-        public static TeachingUIManager Instance()
+        public static AppsTeachingUIManager Instance()
         {
             if (_instance == null)
             {
-                _instance = new TeachingUIManager();
+                _instance = new AppsTeachingUIManager();
             }
 
             return _instance;

@@ -128,7 +128,7 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         public void DrawROI()
         {
-            var display = TeachingUIManager.Instance().TeachingDisplay;
+            var display = AppsTeachingUIManager.Instance().TeachingDisplay;
             if (display.GetImage() == null)
                 return;
 
@@ -144,7 +144,7 @@ namespace Jastech.Apps.Winform.UI.Controls
             if (_prevName == name)
                 return;
 
-            var display = TeachingUIManager.Instance().TeachingDisplay;
+            var display = AppsTeachingUIManager.Instance().TeachingDisplay;
 
             if (display == null)
                 return;
@@ -233,7 +233,7 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         private void Inspection()
         {
-            var display = TeachingUIManager.Instance().TeachingDisplay;
+            var display = AppsTeachingUIManager.Instance().TeachingDisplay;
             var currentParam = CogCaliperParamControl.GetCurrentParam();
 
             if (display == null || currentParam == null)
@@ -251,7 +251,7 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         private void AddROI()
         {
-            var display = TeachingUIManager.Instance().TeachingDisplay;
+            var display = AppsTeachingUIManager.Instance().TeachingDisplay;
             if (display.GetImage() == null)
                 return;
 

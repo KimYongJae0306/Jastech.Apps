@@ -236,6 +236,10 @@
       <Project>{22ee7b1a-e7b2-4547-94dd-4e85bdb56956}</Project>
       <Name>Jastech.Framework.Imaging.VisionPro</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\..\Jastech.Core\src\Jastech.Framework.Imaging\Jastech.Framework.Imaging.csproj">
+      <Project>{2380DA0F-851A-4430-9A43-E7B2DEEE29F2}</Project>
+      <Name>Jastech.Framework.Imaging</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\..\Jastech.Core\src\Jastech.Framework.Matrox\Jastech.Framework.Matrox.csproj">
       <Project>{8b4b5cef-5b39-423a-a460-a24f7fd8890e}</Project>
       <Name>Jastech.Framework.Matrox</Name>

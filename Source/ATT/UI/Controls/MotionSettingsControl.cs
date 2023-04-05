@@ -225,7 +225,7 @@ namespace ATT.UI.Controls
             ZCommandControl.UpdateData(posData.AxisInfoList[(int)AxisName.Z]);
         }
 
-        public void GetCurrentData()
+        public void UpdateCuurentData()
         {
             // Common Params
             var axisHandler = AppsMotionManager.Instance().GetAxisHandler(AxisHandlerName.Unit0);
