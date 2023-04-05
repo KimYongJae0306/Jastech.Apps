@@ -207,6 +207,7 @@ namespace Jastech.Apps.Winform.UI.Controls
             {
                 MessageConfirmForm form = new MessageConfirmForm();
                 form.Message = "Pattern is not trained.";
+                form.ShowDialog();
                 return;
             }
 
@@ -215,8 +216,17 @@ namespace Jastech.Apps.Winform.UI.Controls
 
             UpdateGridResult(result);
 
-            display.ClearGraphic();
-            display.UpdateResult(result);
+            if(result.MatchPosList.Count > 0)
+            {
+                display.ClearGraphic();
+                display.UpdateResult(result);
+            }
+            else
+            {
+                MessageConfirmForm form = new MessageConfirmForm();
+                form.Message = "Pattern is Not Found.";
+                form.ShowDialog();
+            }
         }
 
         private void UpdateGridResult(CogPatternMatchingResult result)
