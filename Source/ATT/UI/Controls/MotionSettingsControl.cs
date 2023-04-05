@@ -51,6 +51,8 @@ namespace ATT.UI.Controls
 
         MotionParameterVariableControl ZVariableControl = new MotionParameterVariableControl();
         #region 속성
+
+        public TeachingPositionType TeachingPositionType = TeachingPositionType.Standby;
         #endregion
 
         #region 이벤트
@@ -67,16 +69,11 @@ namespace ATT.UI.Controls
         #endregion
 
         #region 메서드
-
-        
-
         private void MotionSettingsControl_Load(object sender, EventArgs e)
         {
             AddControl();
             StartTimer();
-
-            //if(ModelManager.Instance().CurrentModel != null)
-                SetParams();
+            SetParams();
         }
 
         private void AddControl()
@@ -84,6 +81,7 @@ namespace ATT.UI.Controls
             TeachingPositionListControl.Dock = DockStyle.Fill;
             TeachingPositionListControl.UnitName = "0";
             pnlTeachingPositionList.Controls.Add(TeachingPositionListControl);
+            TeachingPositionListControl.SendEventHandler += new TeachingPositionListControl.SetTeachingPositionListDelegate(ReceiveTeachingPosition);
 
             MotionFunctionControl.Dock = DockStyle.Fill;
             tlpStatus.Controls.Add(MotionFunctionControl);
@@ -97,6 +95,14 @@ namespace ATT.UI.Controls
             MotionJogControl.SetAxisHanlder(AppsMotionManager.Instance().GetAxisHandler(AxisHandlerName.Unit0));
             MotionJogControl.Dock = DockStyle.Fill;
             pnlJog.Controls.Add(MotionJogControl);
+        }
+
+        private void ReceiveTeachingPosition(TeachingPositionType teachingPositionType)
+        {
+            Console.WriteLine(teachingPositionType.ToString());
+            TeachingPositionType = teachingPositionType;
+
+            SetParams(TeachingPositionType);
         }
 
         private void AddCommandControl()
@@ -177,14 +183,14 @@ namespace ATT.UI.Controls
             }
         }
 
-        public void SetParams()
+        public void SetParams(TeachingPositionType teachingPositionType = TeachingPositionType.Standby)
         {
             var axisHandler = AppsMotionManager.Instance().GetAxisHandler(AxisHandlerName.Unit0);
 
             // Common Params
-            XCommonControl.Initialize(axisHandler.GetAxis(AxisName.X).AxisCommonParams.DeepCopy());
-            YCommonControl.Initialize(axisHandler.GetAxis(AxisName.Y).AxisCommonParams.DeepCopy());
-            ZCommonControl.Initialize(axisHandler.GetAxis(AxisName.Y).AxisCommonParams.DeepCopy());
+            XCommonControl.UpdateData(axisHandler.GetAxis(AxisName.X).AxisCommonParams.DeepCopy());
+            YCommonControl.UpdateData(axisHandler.GetAxis(AxisName.Y).AxisCommonParams.DeepCopy());
+            ZCommonControl.UpdateData(axisHandler.GetAxis(AxisName.Y).AxisCommonParams.DeepCopy());
 
             var inspModel = ModelManager.Instance().CurrentModel as Core.ATTInspModel;
             string unitName = TeachingPositionListControl.UnitName;
@@ -192,19 +198,31 @@ namespace ATT.UI.Controls
             if (inspModel == null || unitName == "")
                 return;
 
+            //////////////////////////////////////////////
+            //foreach (var item in SystemManager.Instance().GetTeachingData().GetUnit(unitName).PositionList)
+            //{
+            //    XVariableControl.Initialize(item.GetMovingParams(AxisName.X));
+            //    YVariableControl.Initialize(item.GetMovingParams(AxisName.Y));
+            //    ZVariableControl.Initialize(item.GetMovingParams(AxisName.Z));
 
-            // Variable Params
-            var posData = SystemManager.Instance().GetTeachingData().GetUnit(unitName).PositionList[0];
+            //    XCommandControl.Intialize(item.AxisInfoList[(int)AxisName.X]);
+            //    YCommandControl.Intialize(item.AxisInfoList[(int)AxisName.Y]);
+            //    ZCommandControl.Intialize(item.AxisInfoList[(int)AxisName.Z]);
+            //}
+            //////////////////////////////////////////////
 
-            XVariableControl.Initialize(posData.GetMovingParams(AxisName.X));
-            YVariableControl.Initialize(posData.GetMovingParams(AxisName.Y));
-            ZVariableControl.Initialize(posData.GetMovingParams(AxisName.Z));
+            //// Variable Params
+            var posData = SystemManager.Instance().GetTeachingData().GetUnit(unitName).PositionList[(int)teachingPositionType];
+
+            XVariableControl.UpdateData(posData.GetMovingParams(AxisName.X));
+            YVariableControl.UpdateData(posData.GetMovingParams(AxisName.Y));
+            ZVariableControl.UpdateData(posData.GetMovingParams(AxisName.Z));
 
 
             // Command Params
-            XCommandControl.Intialize(posData.AxisInfoList[(int)AxisName.X]);
-            YCommandControl.Intialize(posData.AxisInfoList[(int)AxisName.Y]);
-            ZCommandControl.Intialize(posData.AxisInfoList[(int)AxisName.Z]);
+            XCommandControl.UpdateData(posData.AxisInfoList[(int)AxisName.X]);
+            YCommandControl.UpdateData(posData.AxisInfoList[(int)AxisName.Y]);
+            ZCommandControl.UpdateData(posData.AxisInfoList[(int)AxisName.Z]);
         }
 
         public void GetCurrentData()
@@ -216,9 +234,31 @@ namespace ATT.UI.Controls
             axisHandler.GetAxis(AxisName.Z).AxisCommonParams.SetCommonParams(ZCommonControl.GetCurrentData());
 
 
-            // Variable Params
+
+            //////////////////////////////////////////////
+            //string unitName = TeachingPositionListControl.UnitName;
+            //foreach (var item in SystemManager.Instance().GetTeachingData().GetUnit(unitName).PositionList)
+            //{
+            //    item.SetMovingParams(AxisName.X, XVariableControl.GetCurrentData());
+            //    item.SetMovingParams(AxisName.Y, YVariableControl.GetCurrentData());
+            //    item.SetMovingParams(AxisName.Z, ZVariableControl.GetCurrentData());
+
+
+
+            //    item.SetTargetPosition(AxisName.X, XCommandControl.GetCurrentData().TargetPosition);
+            //    item.SetOffset(AxisName.X, XCommandControl.GetCurrentData().Offset);
+
+            //    item.SetTargetPosition(AxisName.Y, YCommandControl.GetCurrentData().TargetPosition);
+            //    item.SetOffset(AxisName.Y, YCommandControl.GetCurrentData().Offset);
+
+            //    item.SetTargetPosition(AxisName.Z, ZCommandControl.GetCurrentData().TargetPosition);
+            //    item.SetOffset(AxisName.Z, ZCommandControl.GetCurrentData().Offset);
+            //}
+            //////////////////////////////////////////////
+
+            //// Variable Params
             string unitName = TeachingPositionListControl.UnitName;
-            var posData = SystemManager.Instance().GetTeachingData().GetUnit(unitName).PositionList[0];
+            var posData = SystemManager.Instance().GetTeachingData().GetUnit(unitName).PositionList[(int)TeachingPositionType];
 
             posData.SetMovingParams(AxisName.X, XVariableControl.GetCurrentData());
             posData.SetMovingParams(AxisName.Y, YVariableControl.GetCurrentData());
@@ -227,12 +267,12 @@ namespace ATT.UI.Controls
 
             // Command Params
             posData.SetTargetPosition(AxisName.X, XCommandControl.GetCurrentData().TargetPosition);
-            posData.SetOffset(AxisName.X, ZCommandControl.GetCurrentData().Offset);
+            posData.SetOffset(AxisName.X, XCommandControl.GetCurrentData().Offset);
 
-            posData.SetTargetPosition(AxisName.Y, XCommandControl.GetCurrentData().TargetPosition);
-            posData.SetOffset(AxisName.Y, ZCommandControl.GetCurrentData().Offset);
+            posData.SetTargetPosition(AxisName.Y, YCommandControl.GetCurrentData().TargetPosition);
+            posData.SetOffset(AxisName.Y, YCommandControl.GetCurrentData().Offset);
 
-            posData.SetTargetPosition(AxisName.Z, XCommandControl.GetCurrentData().TargetPosition);
+            posData.SetTargetPosition(AxisName.Z, ZCommandControl.GetCurrentData().TargetPosition);
             posData.SetOffset(AxisName.Z, ZCommandControl.GetCurrentData().Offset);
         }
         #endregion

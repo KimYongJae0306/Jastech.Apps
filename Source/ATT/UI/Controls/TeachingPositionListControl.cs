@@ -29,7 +29,7 @@ namespace ATT.UI.Controls
         #endregion
 
         #region 델리게이트
-        public delegate void SetTeachingPositionListDelegate(TeachingPosition teachingPosition);
+        public delegate void SetTeachingPositionListDelegate(TeachingPositionType teachingPositionType);
         #endregion
 
         #region 생성자
@@ -67,30 +67,29 @@ namespace ATT.UI.Controls
 
         private void btnStandby_Click(object sender, EventArgs e)
         {
-
-            //AxisHandler.
+            SendEventHandler(TeachingPositionType.Standby);
         }
 
         private void btnPreAlignLeft_Click(object sender, EventArgs e)
         {
-
+            SendEventHandler(TeachingPositionType.Stage1_PreAlign_Left);
         }
 
         private void btnPreAlignRight_Click(object sender, EventArgs e)
         {
-
+            SendEventHandler(TeachingPositionType.Stage1_PreAlign_Right);
         }
 
         private void btnScanStart_Click(object sender, EventArgs e)
         {
-
+            SendEventHandler(TeachingPositionType.Stage1_Scan_Start);
         }
 
         private void btnScanEnd_Click(object sender, EventArgs e)
         {
+            SendEventHandler(TeachingPositionType.Stage1_Scan_End);
             //SendEventHandler(Jastech.Apps.Structure.ModelManager.Instance().CurrentModel.PositionList[(int)Jastech.Apps.Structure.TeachingPositionType.Stage1_Scan_End]);
         }
-
         #endregion
     }
 }
