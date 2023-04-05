@@ -305,6 +305,7 @@
             this.txtPreAlignToleranceTheta.Name = "txtPreAlignToleranceTheta";
             this.txtPreAlignToleranceTheta.Size = new System.Drawing.Size(142, 33);
             this.txtPreAlignToleranceTheta.TabIndex = 8;
+            this.txtPreAlignToleranceTheta.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // tableLayoutPanel4
             // 
@@ -352,6 +353,7 @@
             this.txtPreAlignToleranceY.Name = "txtPreAlignToleranceY";
             this.txtPreAlignToleranceY.Size = new System.Drawing.Size(142, 33);
             this.txtPreAlignToleranceY.TabIndex = 8;
+            this.txtPreAlignToleranceY.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // tableLayoutPanel5
             // 
@@ -399,6 +401,7 @@
             this.txtPreAlignToleranceX.Name = "txtPreAlignToleranceX";
             this.txtPreAlignToleranceX.Size = new System.Drawing.Size(142, 33);
             this.txtPreAlignToleranceX.TabIndex = 8;
+            this.txtPreAlignToleranceX.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // panel2
             // 
@@ -465,6 +468,7 @@
             this.txtDistanceY.Name = "txtDistanceY";
             this.txtDistanceY.Size = new System.Drawing.Size(142, 33);
             this.txtDistanceY.TabIndex = 8;
+            this.txtDistanceY.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // tableLayoutPanel2
             // 
@@ -501,6 +505,7 @@
             this.txtDistanceX.Name = "txtDistanceX";
             this.txtDistanceX.Size = new System.Drawing.Size(142, 33);
             this.txtDistanceX.TabIndex = 8;
+            this.txtDistanceX.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // label1
             // 
@@ -691,6 +696,7 @@
             this.txtDataStoringCapcity.Name = "txtDataStoringCapcity";
             this.txtDataStoringCapcity.Size = new System.Drawing.Size(142, 33);
             this.txtDataStoringCapcity.TabIndex = 8;
+            this.txtDataStoringCapcity.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // tableLayoutPanel9
             // 
@@ -738,6 +744,7 @@
             this.txtDataStoringDays.Name = "txtDataStoringDays";
             this.txtDataStoringDays.Size = new System.Drawing.Size(142, 33);
             this.txtDataStoringDays.TabIndex = 8;
+            this.txtDataStoringDays.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // panel5
             // 
@@ -767,6 +774,7 @@
             this.Font = new System.Drawing.Font("맑은 고딕", 11.25F, System.Drawing.FontStyle.Bold);
             this.Name = "OperationSettingsControl";
             this.Size = new System.Drawing.Size(1127, 674);
+            this.Load += new System.EventHandler(this.OperationSettingsControl_Load);
             this.tableLayoutPanel1.ResumeLayout(false);
             this.panel1.ResumeLayout(false);
             this.tableLayoutPanel7.ResumeLayout(false);
