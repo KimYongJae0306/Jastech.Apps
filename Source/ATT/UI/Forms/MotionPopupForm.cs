@@ -142,9 +142,9 @@ namespace ATT.UI.Forms
 
             var posData = SystemManager.Instance().GetTeachingData().GetUnit(unitName).PositionList[0];
 
-            XVariableControl.Initialize(/*AxisName.X, */posData.GetMovingParams(AxisName.X));
-            YVariableControl.Initialize(/*AxisName.Y, */posData.GetMovingParams(AxisName.Y));
-            ZVariableControl.Initialize(/*AxisName.Z, */posData.GetMovingParams(AxisName.Z));
+            XVariableControl.UpdateData(/*AxisName.X, */posData.GetMovingParams(AxisName.X));
+            YVariableControl.UpdateData(/*AxisName.Y, */posData.GetMovingParams(AxisName.Y));
+            ZVariableControl.UpdateData(/*AxisName.Z, */posData.GetMovingParams(AxisName.Z));
         }
 
         private void AddCommandControl()
