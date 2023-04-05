@@ -9,6 +9,12 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using ATT.UI.Controls;
 using Jastech.Apps.Winform.UI.Controls;
+using Jastech.Apps.Winform;
+using Jastech.Apps.Structure;
+using Jastech.Apps.Winform.Settings;
+using Jastech.Framework.Structure;
+using ATT.Core;
+using Jastech.Framework.Util.Helper;
 
 namespace ATT.UI.Pages
 {
@@ -23,8 +29,8 @@ namespace ATT.UI.Pages
 
         private List<Button> SettingButtonList = null;
 
-        private OperationSettingsControl OperationSettingsControl = null;
-        private MotionSettingsControl MotionSettingsControl = null;
+        private OperationSettingsControl OperationSettingsControl = new OperationSettingsControl();
+        private MotionSettingsControl MotionSettingsControl = new MotionSettingsControl();
         #endregion
 
         #region 이벤트
@@ -54,11 +60,9 @@ namespace ATT.UI.Pages
 
         private void AddControl()
         {
-            OperationSettingsControl = new OperationSettingsControl();
             OperationSettingsControl.Dock = DockStyle.Fill;
             pnlSettingPage.Controls.Add(OperationSettingsControl);
 
-            MotionSettingsControl = new MotionSettingsControl();
             MotionSettingsControl.Dock = DockStyle.Fill;
             pnlSettingPage.Controls.Add(MotionSettingsControl);
             
@@ -104,6 +108,39 @@ namespace ATT.UI.Pages
             SetSelectButton(sender);
             SetSelectSettingPage(MotionSettingsControl);
         }
-        #endregion
+
+        private void btnSave_Click(object sender, EventArgs e)
+        {
+            UpdateCurrentData();
+            Save();
+        }
+
+        private void Save()
+        {
+            // Save AxisHandler
+            var axisHandler = AppsMotionManager.Instance().GetAxisHandler(AxisHandlerName.Unit0);
+            AppsMotionManager.Instance().Save(axisHandler);
+
+            // Save Model
+            var model = ModelManager.Instance().CurrentModel as ATTInspModel;
+            model.SetUnitList(SystemManager.Instance().GetTeachingData().UnitList);
+
+            string fileName = System.IO.Path.Combine(AppConfig.Instance().Path.Model, model.Name, InspModel.FileName);
+            SystemManager.Instance().SaveModel(fileName, model);
+        }
+
+        private void UpdateCurrentData()
+        {
+            OperationSettingsControl.GetCurrentData();
+            MotionSettingsControl.GetCurrentData();
+        }
+
+        public void UpdateModelData()
+        {
+            MotionSettingsControl.SetParams();
+        }
     }
+    #endregion
+
+
 }

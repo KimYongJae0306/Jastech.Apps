@@ -37,10 +37,10 @@
             this.tlpMotionParameter = new System.Windows.Forms.TableLayoutPanel();
             this.tlpVariableParameters = new System.Windows.Forms.TableLayoutPanel();
             this.lblVariableParameter = new System.Windows.Forms.Label();
+            this.tlpVariableParameter = new System.Windows.Forms.TableLayoutPanel();
             this.tlpCommonParameters = new System.Windows.Forms.TableLayoutPanel();
             this.lblCommonParameter = new System.Windows.Forms.Label();
             this.tlpCommonParameter = new System.Windows.Forms.TableLayoutPanel();
-            this.tlpVariableParameter = new System.Windows.Forms.TableLayoutPanel();
             this.tlpMotionSettings.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             this.tlpMotionFunction.SuspendLayout();
@@ -179,6 +179,22 @@
             this.lblVariableParameter.Text = "Variable";
             this.lblVariableParameter.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
+            // tlpVariableParameter
+            // 
+            this.tlpVariableParameter.ColumnCount = 1;
+            this.tlpVariableParameter.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tlpVariableParameter.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tlpVariableParameter.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tlpVariableParameter.Location = new System.Drawing.Point(0, 40);
+            this.tlpVariableParameter.Margin = new System.Windows.Forms.Padding(0);
+            this.tlpVariableParameter.Name = "tlpVariableParameter";
+            this.tlpVariableParameter.RowCount = 3;
+            this.tlpVariableParameter.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this.tlpVariableParameter.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this.tlpVariableParameter.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this.tlpVariableParameter.Size = new System.Drawing.Size(605, 260);
+            this.tlpVariableParameter.TabIndex = 7;
+            // 
             // tlpCommonParameters
             // 
             this.tlpCommonParameters.ColumnCount = 1;
@@ -223,22 +239,6 @@
             this.tlpCommonParameter.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
             this.tlpCommonParameter.Size = new System.Drawing.Size(605, 260);
             this.tlpCommonParameter.TabIndex = 7;
-            // 
-            // tlpVariableParameter
-            // 
-            this.tlpVariableParameter.ColumnCount = 1;
-            this.tlpVariableParameter.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tlpVariableParameter.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tlpVariableParameter.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tlpVariableParameter.Location = new System.Drawing.Point(0, 40);
-            this.tlpVariableParameter.Margin = new System.Windows.Forms.Padding(0);
-            this.tlpVariableParameter.Name = "tlpVariableParameter";
-            this.tlpVariableParameter.RowCount = 3;
-            this.tlpVariableParameter.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
-            this.tlpVariableParameter.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
-            this.tlpVariableParameter.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
-            this.tlpVariableParameter.Size = new System.Drawing.Size(605, 260);
-            this.tlpVariableParameter.TabIndex = 7;
             // 
             // MotionSettingsControl
             // 

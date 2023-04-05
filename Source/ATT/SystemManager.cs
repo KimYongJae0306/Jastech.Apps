@@ -110,9 +110,12 @@ namespace ATT
             reportProgress?.ReportProgress(percentage, message);
         }
 
-        public void SaveModel(string filePath, ATTInspModel inspModel)
+        public void SaveModel(string filePath, ATTInspModel inspModel, bool isSaveVpp = true)
         {
-            _mainForm.ATTInspModelService.Save(filePath, inspModel);
+            if (isSaveVpp)
+                _mainForm.ATTInspModelService.Save(filePath, inspModel);
+            else
+                _mainForm.ATTInspModelService.SaveExceptVpp(filePath, inspModel);
         }
 
         public ATTTeachingData GetTeachingData()

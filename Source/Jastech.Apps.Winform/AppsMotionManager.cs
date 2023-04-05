@@ -64,6 +64,18 @@ namespace Jastech.Apps.Winform
             return true;
         }
 
+        public void Save(AxisHandler axishandler)
+        {
+            string dir = Path.Combine(AppConfig.Instance().Path.Config, "AxisHanlder");
+            string unit0FileName = string.Format("AxisHanlder_{0}.json", axishandler.Name);
+            string unit0FilePath = Path.Combine(dir, unit0FileName);
+
+            if (!Directory.Exists(dir))
+                Directory.CreateDirectory(dir);
+
+            JsonConvertHelper.Save(unit0FilePath, axishandler);
+        }
+
         public Axis GetAxis(AxisHandlerName axisHandlerName, AxisName axisName)
         {
             foreach (var axisHandler in AxisHandlerList)

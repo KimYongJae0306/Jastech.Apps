@@ -172,7 +172,6 @@ namespace ATT.UI.Pages
 
             string fileName = System.IO.Path.Combine(AppConfig.Instance().Path.Model, model.Name, InspModel.FileName);
             SystemManager.Instance().SaveModel(fileName, model);
-
         }
 
         private void btnMotionPopup_Click(object sender, EventArgs e)

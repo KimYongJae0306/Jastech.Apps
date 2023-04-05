@@ -8,6 +8,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Jastech.Framework.Structure;
+using Jastech.Framework.Device.Motions;
+using Jastech.Apps.Structure;
 
 namespace ATT.UI.Controls
 {
@@ -18,6 +20,8 @@ namespace ATT.UI.Controls
 
         #region 속성
         public string UnitName { get; set; } = string.Empty;
+
+        public AxisHandler AxisHandler = null;
         #endregion
 
         #region 이벤트
@@ -41,6 +45,11 @@ namespace ATT.UI.Controls
             InitializeUI();
         }
 
+        public void SetAxisHanlder(AxisHandler axisHandler)
+        {
+            AxisHandler = axisHandler;
+        }
+
         private void InitializeUI()
         {
             lblUnit.Text = UnitName;
@@ -48,7 +57,7 @@ namespace ATT.UI.Controls
 
         private void btnPrev_Click(object sender, EventArgs e)
         {
-
+            //SendEventHandler()
         }
 
         private void btnNext_Click(object sender, EventArgs e)
@@ -59,6 +68,7 @@ namespace ATT.UI.Controls
         private void btnStandby_Click(object sender, EventArgs e)
         {
 
+            //AxisHandler.
         }
 
         private void btnPreAlignLeft_Click(object sender, EventArgs e)
@@ -78,8 +88,9 @@ namespace ATT.UI.Controls
 
         private void btnScanEnd_Click(object sender, EventArgs e)
         {
-            SendEventHandler(Jastech.Apps.Structure.ModelManager.Instance().CurrentModel.PositionList[(int)Jastech.Apps.Structure.TeachingPositionType.Stage1_Scan_End]);
+            //SendEventHandler(Jastech.Apps.Structure.ModelManager.Instance().CurrentModel.PositionList[(int)Jastech.Apps.Structure.TeachingPositionType.Stage1_Scan_End]);
         }
+
         #endregion
     }
 }
