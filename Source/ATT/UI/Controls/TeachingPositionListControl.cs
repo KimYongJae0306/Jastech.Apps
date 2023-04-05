@@ -53,6 +53,7 @@ namespace ATT.UI.Controls
         private void InitializeUI()
         {
             lblUnit.Text = UnitName;
+            SetButtonStatus(btnStandby);
         }
 
         private void btnPrev_Click(object sender, EventArgs e)
@@ -67,28 +68,45 @@ namespace ATT.UI.Controls
 
         private void btnStandby_Click(object sender, EventArgs e)
         {
+            SetButtonStatus(sender);
             SendEventHandler(TeachingPositionType.Standby);
         }
 
         private void btnPreAlignLeft_Click(object sender, EventArgs e)
         {
+            SetButtonStatus(sender);
             SendEventHandler(TeachingPositionType.Stage1_PreAlign_Left);
         }
 
         private void btnPreAlignRight_Click(object sender, EventArgs e)
         {
+            SetButtonStatus(sender);
             SendEventHandler(TeachingPositionType.Stage1_PreAlign_Right);
         }
 
         private void btnScanStart_Click(object sender, EventArgs e)
         {
+            SetButtonStatus(sender);
             SendEventHandler(TeachingPositionType.Stage1_Scan_Start);
         }
 
         private void btnScanEnd_Click(object sender, EventArgs e)
         {
+            SetButtonStatus(sender);
             SendEventHandler(TeachingPositionType.Stage1_Scan_End);
-            //SendEventHandler(Jastech.Apps.Structure.ModelManager.Instance().CurrentModel.PositionList[(int)Jastech.Apps.Structure.TeachingPositionType.Stage1_Scan_End]);
+        }
+
+        private void SetButtonStatus(object sender)
+        {
+            Button btn = sender as Button;
+
+            btnStandby.BackColor = Color.White;
+            btnPreAlignLeft.BackColor = Color.White;
+            btnPreAlignRight.BackColor = Color.White;
+            btnScanStart.BackColor = Color.White;
+            btnScanEnd.BackColor = Color.White;
+
+            btn.BackColor = Color.DeepSkyBlue;
         }
         #endregion
     }

@@ -115,6 +115,12 @@ namespace ATT.UI.Pages
             Save();
         }
 
+        private void UpdateCurrentData()
+        {
+            OperationSettingsControl.UpdateCuurentData();
+            MotionSettingsControl.UpdateCuurentData();
+        }
+
         private void Save()
         {
             // Save AxisHandler
@@ -127,12 +133,6 @@ namespace ATT.UI.Pages
 
             string fileName = System.IO.Path.Combine(AppConfig.Instance().Path.Model, model.Name, InspModel.FileName);
             SystemManager.Instance().SaveModel(fileName, model);
-        }
-
-        private void UpdateCurrentData()
-        {
-            OperationSettingsControl.UpdateCuurentData();
-            MotionSettingsControl.UpdateCuurentData();
         }
 
         public void UpdateModelData()

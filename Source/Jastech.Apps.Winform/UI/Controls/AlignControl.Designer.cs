@@ -275,7 +275,7 @@
             // 
             this.rdoRight.Appearance = System.Windows.Forms.Appearance.Button;
             this.rdoRight.AutoSize = true;
-            this.rdoRight.BackColor = System.Drawing.Color.PaleTurquoise;
+            this.rdoRight.BackColor = System.Drawing.Color.White;
             this.rdoRight.Dock = System.Windows.Forms.DockStyle.Fill;
             this.rdoRight.Location = new System.Drawing.Point(71, 0);
             this.rdoRight.Margin = new System.Windows.Forms.Padding(0);
@@ -291,7 +291,7 @@
             // 
             this.rdoLeft.Appearance = System.Windows.Forms.Appearance.Button;
             this.rdoLeft.AutoSize = true;
-            this.rdoLeft.BackColor = System.Drawing.Color.PaleTurquoise;
+            this.rdoLeft.BackColor = System.Drawing.Color.White;
             this.rdoLeft.Dock = System.Windows.Forms.DockStyle.Fill;
             this.rdoLeft.Location = new System.Drawing.Point(0, 0);
             this.rdoLeft.Margin = new System.Windows.Forms.Padding(0);
