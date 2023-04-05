@@ -57,6 +57,8 @@ namespace ATT.UI.Pages
             // Display Control
             Display = new CogThumbnailDisplayControl();
             Display.Dock = DockStyle.Fill;
+            //Event 연결
+            Display.DeleteEventHandler += Display_DeleteEventHandler;
             pnlDisplay.Controls.Add(Display);
 
             // TeachingUIManager 참조
@@ -65,6 +67,11 @@ namespace ATT.UI.Pages
             // Teach Control List
             TeachControlList = new List<UserControl>();
             TeachControlList.Add(PreAlignControl);
+        }
+
+        private void Display_DeleteEventHandler(object sender, EventArgs e)
+        {
+            PreAlignControl.DrawROI();
         }
 
         private void btnLinescan_Click(object sender, EventArgs e)
