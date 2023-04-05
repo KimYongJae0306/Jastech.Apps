@@ -2,6 +2,7 @@
 using Jastech.Framework.Config;
 using Jastech.Framework.Device.Cameras;
 using Jastech.Framework.Device.Motions;
+using Jastech.Framework.Imaging;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -64,6 +65,12 @@ namespace Jastech.Apps.Winform.Settings
             }
             else
             {
+                var camera0 = new CameraVieworksVT(CameraName.LinscanMIL0.ToString(), 4096, 1024, ColorFormat.Gray, SensorType.Line);
+                config.Add(camera0);
+
+                var camera1 = new CameraVirtual(CameraName.LinscanVT0.ToString(), 4096, 1024, ColorFormat.Gray, SensorType.Line);
+                config.Add(camera1);
+
                 var motion = new ACSMotion("Motion", 2);
                 config.Add(motion);
             }

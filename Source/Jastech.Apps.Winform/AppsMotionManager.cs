@@ -13,10 +13,15 @@ namespace Jastech.Apps.Winform
 {
     public class AppsMotionManager
     {
+        #region 필드
         private static AppsMotionManager _instance = null;
+        #endregion
 
+        #region 속성
         private List<AxisHandler> AxisHandlerList { get; set; } = new List<AxisHandler>();
+        #endregion
 
+        #region 메서드
         public static AppsMotionManager Instance()
         {
             if (_instance == null)
@@ -35,7 +40,7 @@ namespace Jastech.Apps.Winform
 
             string dir = Path.Combine(AppConfig.Instance().Path.Config, "AxisHanlder");
 
-            if(Directory.Exists(dir) == false)
+            if (Directory.Exists(dir) == false)
             {
                 Directory.CreateDirectory(dir);
             }
@@ -81,6 +86,7 @@ namespace Jastech.Apps.Winform
         {
             return AxisHandlerList.Where(x => x.Name == axisHandlerName.ToString()).First();
         }
+        #endregion
     }
 
     public enum AxisHandlerName

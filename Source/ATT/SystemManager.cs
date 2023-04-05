@@ -65,6 +65,12 @@ namespace ATT
 
             AppsMotionManager.Instance().CreateAxisHanlder();
 
+            if(AppConfig.Instance().Operation.VirtualMode == false)
+            {
+                //var cameraMil = DeviceManager.Instance().CameraHandler.Where(x => x.Name == CameraName.LinscanVT0.ToString()).First();
+                //cameraMil.ImageGrabbed += AppsCameraManager.Instance().LinscanImageGrabbed;
+            }
+
             percent += 30;
 
             if (AppConfig.Instance().Operation.LastModelName != "")

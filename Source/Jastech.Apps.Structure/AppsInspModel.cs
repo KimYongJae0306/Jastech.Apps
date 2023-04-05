@@ -15,7 +15,8 @@ namespace Jastech.Apps.Structure
     {
         LeftArea,
         RightArea,
-        Linscan0,
+        LinscanMIL0,
+        LinscanVT0,
     }
 
     public class AppsInspModel : InspModel

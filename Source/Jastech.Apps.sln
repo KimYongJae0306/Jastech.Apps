@@ -39,6 +39,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PJH_TEST", "PJH_TEST\PJH_TE
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "YSHTest", "YSHTest\YSHTest.csproj", "{E2689AB7-9037-4126-BD99-35FEC506FA3C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Jastech.Framework.Imaging", "..\..\Jastech.Core\src\Jastech.Framework.Imaging\Jastech.Framework.Imaging.csproj", "{2380DA0F-851A-4430-9A43-E7B2DEEE29F2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -167,6 +169,14 @@ Global
 		{E2689AB7-9037-4126-BD99-35FEC506FA3C}.Release|Any CPU.Build.0 = Release|Any CPU
 		{E2689AB7-9037-4126-BD99-35FEC506FA3C}.Release|x64.ActiveCfg = Release|x64
 		{E2689AB7-9037-4126-BD99-35FEC506FA3C}.Release|x64.Build.0 = Release|x64
+		{2380DA0F-851A-4430-9A43-E7B2DEEE29F2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2380DA0F-851A-4430-9A43-E7B2DEEE29F2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2380DA0F-851A-4430-9A43-E7B2DEEE29F2}.Debug|x64.ActiveCfg = Debug|x64
+		{2380DA0F-851A-4430-9A43-E7B2DEEE29F2}.Debug|x64.Build.0 = Debug|x64
+		{2380DA0F-851A-4430-9A43-E7B2DEEE29F2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2380DA0F-851A-4430-9A43-E7B2DEEE29F2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2380DA0F-851A-4430-9A43-E7B2DEEE29F2}.Release|x64.ActiveCfg = Release|Any CPU
+		{2380DA0F-851A-4430-9A43-E7B2DEEE29F2}.Release|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -187,6 +197,7 @@ Global
 		{E3F1C98F-048B-4DE1-BF95-ACF69E632082} = {1FDDFFDE-CFFC-4F79-BAC3-D9C9A93130E0}
 		{27072629-7A48-4D18-B8C0-4C1B62586FD2} = {1FDDFFDE-CFFC-4F79-BAC3-D9C9A93130E0}
 		{E2689AB7-9037-4126-BD99-35FEC506FA3C} = {1FDDFFDE-CFFC-4F79-BAC3-D9C9A93130E0}
+		{2380DA0F-851A-4430-9A43-E7B2DEEE29F2} = {77065DBD-BA4A-409F-A55A-5245536F61A1}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {A02D7837-DE94-4017-830C-FE767A908E4D}

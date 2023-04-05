@@ -1,14 +1,18 @@
 ﻿using Cognex.VisionPro;
 using Cognex.VisionPro.PMAlign;
 using Jastech.Apps.Winform.Settings;
+using Jastech.Framework.Imaging.Helper;
 using Jastech.Framework.Imaging.VisionPro;
 using Jastech.Framework.Imaging.VisionPro.VisionAlgorithms;
+using Jastech.Framework.Util.Helper;
 using Jastech.Framework.Winform.Forms;
 using Jastech.Framework.Winform.VisionPro.Controls;
+using OpenCvSharp;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -32,7 +36,8 @@ namespace Test
 
         private void MainForm_Load(object sender, EventArgs e)
         {
-            
+            LogHelper.Initialize(@"D:\0.Works\1.Programs\ATT\Jastech.Apps\Runtime\Log");
+            LogHelper.Error(ErrorType.Grabber, "Test");
             display = new CogDisplayControl();
             display.Dock = DockStyle.Fill;
          
@@ -95,6 +100,28 @@ namespace Test
             //ModelForm form = new ModelForm();
             //form.ModelPath = @"D:\1.Programs\Jastech.Apps\Jastech.Apps\Runtime\Model";
             //form.Show();
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            Stopwatch sw = new Stopwatch();
+            Mat image1 = new Mat(@"D:\0.Works\3.테스트이미지\06_35_19_0_0.bmp");
+
+            //sw.Restart();
+            //Mat mat1 = Transpose(image1);
+            //sw.Stop();
+            //Debug.WriteLine(sw.ElapsedMilliseconds.ToString());
+
+            //mat1.SaveImage(@"D:\trans.bmp");
+
+            //sw.Reset();
+            //sw.Restart();
+            //Mat mat2 = CvHelper.Rotate(image1, -90);
+            //sw.Stop();
+            //Debug.WriteLine(sw.ElapsedMilliseconds.ToString());
+
+            //mat1.SaveImage(@"D:\rotate.bmp");
+
         }
     }
 }
