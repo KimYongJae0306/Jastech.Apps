@@ -246,5 +246,10 @@ namespace ATT.UI.Controls
             posData.SetOffset(AxisName.Z, ZCommandControl.GetCurrentData().Offset);
         }
         #endregion
+
+        private void btnMoveToTeachingPosition_Click(object sender, EventArgs e)
+        {
+            Console.WriteLine(TeachingPositionType.ToString());
+        }
     }
 }

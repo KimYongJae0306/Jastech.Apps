@@ -113,13 +113,13 @@
             // tlpTeachingPosition
             // 
             this.tlpTeachingPosition.ColumnCount = 7;
-            this.tlpTeachingPosition.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 90F));
+            this.tlpTeachingPosition.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 100F));
             this.tlpTeachingPosition.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tlpTeachingPosition.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 90F));
-            this.tlpTeachingPosition.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 90F));
+            this.tlpTeachingPosition.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 100F));
+            this.tlpTeachingPosition.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 100F));
             this.tlpTeachingPosition.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tlpTeachingPosition.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 90F));
-            this.tlpTeachingPosition.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 90F));
+            this.tlpTeachingPosition.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 100F));
+            this.tlpTeachingPosition.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 100F));
             this.tlpTeachingPosition.Controls.Add(this.btnPreAlignRight, 3, 0);
             this.tlpTeachingPosition.Controls.Add(this.btnPreAlignLeft, 2, 0);
             this.tlpTeachingPosition.Controls.Add(this.btnStandby, 0, 0);
@@ -140,9 +140,9 @@
             this.btnPreAlignRight.Dock = System.Windows.Forms.DockStyle.Fill;
             this.btnPreAlignRight.Font = new System.Drawing.Font("맑은 고딕", 11.25F, System.Drawing.FontStyle.Bold);
             this.btnPreAlignRight.ForeColor = System.Drawing.Color.Black;
-            this.btnPreAlignRight.Location = new System.Drawing.Point(221, 3);
+            this.btnPreAlignRight.Location = new System.Drawing.Point(216, 3);
             this.btnPreAlignRight.Name = "btnPreAlignRight";
-            this.btnPreAlignRight.Size = new System.Drawing.Size(84, 74);
+            this.btnPreAlignRight.Size = new System.Drawing.Size(94, 74);
             this.btnPreAlignRight.TabIndex = 12;
             this.btnPreAlignRight.Text = "PreAlign\r\nRight";
             this.btnPreAlignRight.UseVisualStyleBackColor = false;
@@ -154,9 +154,9 @@
             this.btnPreAlignLeft.Dock = System.Windows.Forms.DockStyle.Fill;
             this.btnPreAlignLeft.Font = new System.Drawing.Font("맑은 고딕", 11.25F, System.Drawing.FontStyle.Bold);
             this.btnPreAlignLeft.ForeColor = System.Drawing.Color.Black;
-            this.btnPreAlignLeft.Location = new System.Drawing.Point(131, 3);
+            this.btnPreAlignLeft.Location = new System.Drawing.Point(116, 3);
             this.btnPreAlignLeft.Name = "btnPreAlignLeft";
-            this.btnPreAlignLeft.Size = new System.Drawing.Size(84, 74);
+            this.btnPreAlignLeft.Size = new System.Drawing.Size(94, 74);
             this.btnPreAlignLeft.TabIndex = 12;
             this.btnPreAlignLeft.Text = "PreAlign\r\nLeft";
             this.btnPreAlignLeft.UseVisualStyleBackColor = false;
@@ -170,7 +170,7 @@
             this.btnStandby.ForeColor = System.Drawing.Color.Black;
             this.btnStandby.Location = new System.Drawing.Point(3, 3);
             this.btnStandby.Name = "btnStandby";
-            this.btnStandby.Size = new System.Drawing.Size(84, 74);
+            this.btnStandby.Size = new System.Drawing.Size(94, 74);
             this.btnStandby.TabIndex = 12;
             this.btnStandby.Text = "Standby";
             this.btnStandby.UseVisualStyleBackColor = false;
@@ -182,9 +182,9 @@
             this.btnScanEnd.Dock = System.Windows.Forms.DockStyle.Fill;
             this.btnScanEnd.Font = new System.Drawing.Font("맑은 고딕", 11.25F, System.Drawing.FontStyle.Bold);
             this.btnScanEnd.ForeColor = System.Drawing.Color.Black;
-            this.btnScanEnd.Location = new System.Drawing.Point(439, 3);
+            this.btnScanEnd.Location = new System.Drawing.Point(429, 3);
             this.btnScanEnd.Name = "btnScanEnd";
-            this.btnScanEnd.Size = new System.Drawing.Size(84, 74);
+            this.btnScanEnd.Size = new System.Drawing.Size(94, 74);
             this.btnScanEnd.TabIndex = 12;
             this.btnScanEnd.Text = "Scan\r\nEnd";
             this.btnScanEnd.UseVisualStyleBackColor = false;
@@ -196,9 +196,9 @@
             this.btnScanStart.Dock = System.Windows.Forms.DockStyle.Fill;
             this.btnScanStart.Font = new System.Drawing.Font("맑은 고딕", 11.25F, System.Drawing.FontStyle.Bold);
             this.btnScanStart.ForeColor = System.Drawing.Color.Black;
-            this.btnScanStart.Location = new System.Drawing.Point(349, 3);
+            this.btnScanStart.Location = new System.Drawing.Point(329, 3);
             this.btnScanStart.Name = "btnScanStart";
-            this.btnScanStart.Size = new System.Drawing.Size(84, 74);
+            this.btnScanStart.Size = new System.Drawing.Size(94, 74);
             this.btnScanStart.TabIndex = 12;
             this.btnScanStart.Text = "Scan\r\nStart";
             this.btnScanStart.UseVisualStyleBackColor = false;

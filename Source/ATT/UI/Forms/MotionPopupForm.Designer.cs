@@ -67,7 +67,7 @@
             this.tlpMotionPopup.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 100F));
             this.tlpMotionPopup.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tlpMotionPopup.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 100F));
-            this.tlpMotionPopup.Size = new System.Drawing.Size(684, 661);
+            this.tlpMotionPopup.Size = new System.Drawing.Size(684, 861);
             this.tlpMotionPopup.TabIndex = 2;
             // 
             // tlpFormFunction
@@ -88,7 +88,7 @@
             this.tlpFormFunction.Controls.Add(this.btnCommand, 0, 0);
             this.tlpFormFunction.Controls.Add(this.btnParameter, 1, 0);
             this.tlpFormFunction.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tlpFormFunction.Location = new System.Drawing.Point(0, 561);
+            this.tlpFormFunction.Location = new System.Drawing.Point(0, 761);
             this.tlpFormFunction.Margin = new System.Windows.Forms.Padding(0);
             this.tlpFormFunction.Name = "tlpFormFunction";
             this.tlpFormFunction.RowCount = 1;
@@ -194,7 +194,7 @@
             this.pnlFunction.Location = new System.Drawing.Point(0, 100);
             this.pnlFunction.Margin = new System.Windows.Forms.Padding(0);
             this.pnlFunction.Name = "pnlFunction";
-            this.pnlFunction.Size = new System.Drawing.Size(684, 461);
+            this.pnlFunction.Size = new System.Drawing.Size(684, 661);
             this.pnlFunction.TabIndex = 2;
             // 
             // tlpVariableParameters
@@ -298,7 +298,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(11F, 25F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(684, 661);
+            this.ClientSize = new System.Drawing.Size(684, 861);
             this.ControlBox = false;
             this.Controls.Add(this.tlpMotionPopup);
             this.Font = new System.Drawing.Font("맑은 고딕", 14F, System.Drawing.FontStyle.Bold);
@@ -307,7 +307,6 @@
             this.Name = "MotionPopupForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
             this.Text = " ";
-            this.TopMost = true;
             this.Load += new System.EventHandler(this.MotionPopupForm_Load);
             this.tlpMotionPopup.ResumeLayout(false);
             this.tlpFormFunction.ResumeLayout(false);
