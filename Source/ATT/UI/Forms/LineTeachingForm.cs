@@ -20,11 +20,14 @@ using ATT.Core;
 using Jastech.Apps.Winform.Settings;
 using Jastech.Framework.Structure;
 
-namespace ATT.UI.Pages
+namespace ATT.UI.Forms
 {
-    public partial class LineTeachingPage : UserControl
+    public partial class LineTeachingForm : Form
     {
         #region 필드
+        private Color _selectedColor;
+
+        private Color _noneSelectedColor;
         #endregion
 
         #region 속성
@@ -46,14 +49,14 @@ namespace ATT.UI.Pages
         #endregion
 
         #region 생성자
-        public LineTeachingPage()
+        public LineTeachingForm()
         {
             InitializeComponent();
         }
         #endregion
 
         #region 메서드
-        private void LineTeachingPage_Load(object sender, EventArgs e)
+        private void LineTeachingForm_Load(object sender, EventArgs e)
         {
             AddControl();
             SelectAlign();
@@ -61,6 +64,9 @@ namespace ATT.UI.Pages
 
         private void AddControl()
         {
+            _selectedColor = Color.FromArgb(104, 104, 104);
+            _noneSelectedColor = Color.FromArgb(52, 52, 52);
+
             // Display Control
             Display = new CogThumbnailDisplayControl();
             Display.Dock = DockStyle.Fill;
@@ -98,8 +104,8 @@ namespace ATT.UI.Pages
 
         private void ClearSelectedButton()
         {
-            btnAlign.ForeColor = Color.Black;
-            btnAkkon.ForeColor = Color.Black;
+            btnAlign.ForeColor = Color.White;
+            btnAkkon.ForeColor = Color.White;
             pnlTeach.Controls.Clear();
         }
 
@@ -178,6 +184,11 @@ namespace ATT.UI.Pages
         private void btnPattern_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void btnCancel_Click(object sender, EventArgs e)
+        {
+            this.Close();
         }
     }
 }

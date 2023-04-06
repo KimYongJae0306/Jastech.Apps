@@ -73,6 +73,7 @@
             this.btnModelPage.TabIndex = 1;
             this.btnModelPage.Text = "Algorithm";
             this.btnModelPage.UseVisualStyleBackColor = false;
+            this.btnModelPage.Click += new System.EventHandler(this.btnModelPage_Click);
             // 
             // TeachingPage
             // 

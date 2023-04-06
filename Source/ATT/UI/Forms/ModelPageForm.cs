@@ -18,7 +18,7 @@ using Jastech.Framework.Structure.Helper;
 
 namespace ATT.UI.Forms
 {
-    public partial class ModelPageForm : Form//UserControl
+    public partial class ModelPageForm : Form
     {
         #region 속성
         private ModelControl ModelControl { get; set; } = new ModelControl();

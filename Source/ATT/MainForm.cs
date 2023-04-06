@@ -25,11 +25,7 @@ namespace ATT
         // Page Control
         private AutoPage AutoPageControl { get; set; } = new AutoPage();
 
-        private AreaTeachingPage AreaTeachingPageControl { get; set; } = new AreaTeachingPage();
-
-        private LineTeachingPage LineTeachingPageControl { get; set; } = new LineTeachingPage();
-
-        private RecipePage RecipePageControl { get; set; } = new RecipePage();
+        private TeachingPage TeachingPageControl { get; set; } = new TeachingPage();
 
         private DataPage DataPageControl { get; set; } = new DataPage();
 
@@ -76,8 +72,8 @@ namespace ATT
             TeachingData.Dispose();
             TeachingData.Initialize(model);
 
-            AreaTeachingPageControl.UpdateSelectPage();
-            LineTeachingPageControl.UpdateSelectPage();
+            //AreaTeachingPageControl.UpdateSelectPage();
+            //LineTeachingPageControl.UpdateSelectPage();
         }
 
         private void AddControls()
@@ -86,11 +82,11 @@ namespace ATT
             PageControlList = new List<UserControl>();
             PageControlList.Add(AutoPageControl);
             PageControlList.Add(DataPageControl);
-            PageControlList.Add(AreaTeachingPageControl);
-            PageControlList.Add(LineTeachingPageControl);
-
-            PageControlList.Add(RecipePageControl);
+            PageControlList.Add(TeachingPageControl);
             PageControlList.Add(LogPageControl);
+
+            DataPageControl.SetInspModelService(ATTInspModelService);
+            DataPageControl.ApplyModelEventHandler += ModelPageControl_ApplyModelEventHandler;
 
             // Button List
             PageLabelList = new List<Label>();
@@ -160,26 +156,29 @@ namespace ATT
             if (ModelManager.Instance().CurrentModel == null)
                 return;
 
-            UnitSelectForm form = new UnitSelectForm();
+            SetSelectLabel(sender);
+            SetSelectPage(selectedControl: TeachingPageControl);
 
-            if(form.ShowDialog() == DialogResult.OK)
-            {
-                if (form.SensorType == Jastech.Framework.Device.Cameras.SensorType.Area)
-                {
-                    AreaTeachingPageControl.UnitName = form.UnitName;
+            //UnitSelectForm form = new UnitSelectForm();
 
-                    SetSelectLabel(sender);
-                    SetSelectPage(selectedControl: AreaTeachingPageControl);
-                }
-                else if (form.SensorType == Jastech.Framework.Device.Cameras.SensorType.Line)
-                {
-                    LineTeachingPageControl.UnitName = form.UnitName;
+            //if(form.ShowDialog() == DialogResult.OK)
+            //{
+            //    if (form.SensorType == Jastech.Framework.Device.Cameras.SensorType.Area)
+            //    {
+            //        AreaTeachingPageControl.UnitName = form.UnitName;
 
-                    SetSelectLabel(sender);
-                    SetSelectPage(selectedControl: LineTeachingPageControl);
-                }
-                else { }
-            }
+            //        SetSelectLabel(sender);
+            //        SetSelectPage(selectedControl: AreaTeachingPageControl);
+            //    }
+            //    else if (form.SensorType == Jastech.Framework.Device.Cameras.SensorType.Line)
+            //    {
+            //        LineTeachingPageControl.UnitName = form.UnitName;
+
+            //        SetSelectLabel(sender);
+            //        SetSelectPage(selectedControl: LineTeachingPageControl);
+            //    }
+            //    else { }
+            //}
         }
 
         private void LogPage_Click(object sender, EventArgs e)

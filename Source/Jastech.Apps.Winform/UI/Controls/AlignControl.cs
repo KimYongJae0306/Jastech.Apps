@@ -93,6 +93,9 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         private void UpdateParam(string name)
         {
+            if (CaliperList == null)
+                return;
+
             var param = CaliperList.Where(x => x.Name == name).First();
             CogCaliperParamControl.UpdateData(param);
         }
