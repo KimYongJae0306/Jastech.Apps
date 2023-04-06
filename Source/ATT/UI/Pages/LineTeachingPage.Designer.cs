@@ -261,6 +261,7 @@
             this.btnPattern.TabIndex = 19;
             this.btnPattern.Text = "Pattern";
             this.btnPattern.UseVisualStyleBackColor = false;
+            this.btnPattern.Click += new System.EventHandler(this.btnPattern_Click);
             // 
             // btnMotionPopup
             // 

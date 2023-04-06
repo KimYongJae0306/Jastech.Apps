@@ -82,32 +82,11 @@ namespace Jastech.Apps.Winform.UI.Controls
             TeachingTabList = tabList;
         }
 
-        //public void SetParams(List<CogCaliperParam> paramList)
-        //{
-        //    if (paramList.Count <= 0)
-        //        return;
-
-        //    CaliperList = paramList;
-
-        //    cmbAlignList.Items.Clear();
-
-        //    foreach (var item in CaliperList)
-        //        cmbAlignList.Items.Add(item.Name);
-
-        //    cmbAlignList.SelectedIndex = 0;
-
-        //    string name = cmbAlignList.SelectedItem as string;
-        //    CogCaliperParam(name);
-        //}
-
-        private void CogCaliperParam(string name)
+        private void UpdateParam(string name)
         {
             var param = CaliperList.Where(x => x.Name == name).First();
             CogCaliperParamControl.UpdateData(param);
-
-            //CogCaliperAlgorithm.CaliperTool = param.CaliperTool;
         }
-
 
         private void SetNewROI(CogDisplayControl display)
         {
@@ -137,24 +116,24 @@ namespace Jastech.Apps.Winform.UI.Controls
             display.SetInteractiveGraphics("tool", currentParam.CreateCurrentRecord(constants));
         }
 
-        private void cmbAlignList_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            string name = cmbAlignList.SelectedItem as string;
+        //private void cmbAlignList_SelectedIndexChanged(object sender, EventArgs e)
+        //{
+        //    string name = cmbAlignList.SelectedItem as string;
 
-            if (_prevName == name)
-                return;
+        //    if (_prevName == name)
+        //        return;
 
-            var display = AppsTeachingUIManager.Instance().TeachingDisplay;
+        //    var display = AppsTeachingUIManager.Instance().TeachingDisplay;
 
-            if (display == null)
-                return;
+        //    if (display == null)
+        //        return;
 
-            CogCaliperParam(name);
-            display.ClearGraphic();
+        //    UpdateParam(name);
+        //    display.ClearGraphic();
 
-            DrawROI();
-            _prevName = name;
-        }
+        //    DrawROI();
+        //    _prevName = name;
+        //}
 
         public List<CogCaliperParam> GetTeachingData()
         {
@@ -163,67 +142,14 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         private void lblPrevTab_Click(object sender, EventArgs e)
         {
-            PrevTab();
         }
 
-        private void PrevTab()
-        {
-            if (cmbTabList.SelectedIndex <= 0)
-                return;
-
-            cmbTabList.SelectedIndex -= 1;
-        }
 
         private void lblNextTab_Click(object sender, EventArgs e)
         {
-            NextTab();
         }
 
-        private void NextTab()
-        {
-            if (cmbTabList.SelectedIndex <= 0)
-                return;
 
-            int nextIndex = cmbTabList.SelectedIndex + 1;
-
-            if (cmbTabList.Items.Count > nextIndex)
-                cmbTabList.SelectedIndex = nextIndex;
-        }
-
-        private void cmbTabList_DrawItem(object sender, DrawItemEventArgs e)
-        {
-            DrawComboboxCenterAlign(sender, e);
-        }
-
-        private void cmbAlignList_DrawItem(object sender, DrawItemEventArgs e)
-        {
-            DrawComboboxCenterAlign(sender, e);
-        }
-
-        private void DrawComboboxCenterAlign(object sender, DrawItemEventArgs e)
-        {
-            ComboBox cmb = sender as ComboBox;
-
-            if (cmb != null)
-            {
-                e.DrawBackground();
-                cmb.ItemHeight = lblPrev.Height - 6;
-
-                if (e.Index >= 0)
-                {
-                    StringFormat sf = new StringFormat();
-                    sf.LineAlignment = StringAlignment.Center;
-                    sf.Alignment = StringAlignment.Center;
-
-                    Brush brush = new SolidBrush(cmb.ForeColor);
-
-                    if ((e.State & DrawItemState.Selected) == DrawItemState.Selected)
-                        brush = SystemBrushes.HighlightText;
-
-                    e.Graphics.DrawString(cmb.Items[e.Index].ToString(), cmb.Font, brush, e.Bounds, sf);
-                }
-            }
-        }
         #endregion
 
         private void lblInspection_Click(object sender, EventArgs e)

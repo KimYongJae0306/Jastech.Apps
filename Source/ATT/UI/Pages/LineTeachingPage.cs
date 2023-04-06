@@ -172,8 +172,12 @@ namespace ATT.UI.Pages
             motionPopupForm.ShowDialog();
         }
 
+
         #endregion
 
-        
+        private void btnPattern_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }
