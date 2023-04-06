@@ -39,9 +39,9 @@
             this.pnlTeachingItem = new System.Windows.Forms.Panel();
             this.tlpTeachingItem = new System.Windows.Forms.TableLayoutPanel();
             this.btnSave = new System.Windows.Forms.Button();
-            this.btnLinescan = new System.Windows.Forms.Button();
             this.btnPreAlign = new System.Windows.Forms.Button();
             this.btnMotionPopup = new System.Windows.Forms.Button();
+            this.btnLinescan = new System.Windows.Forms.Button();
             this.tlpTeachingPage.SuspendLayout();
             this.pnlTeachingPage.SuspendLayout();
             this.tlpTeaching.SuspendLayout();
@@ -199,22 +199,6 @@
             this.btnSave.UseVisualStyleBackColor = false;
             this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
             // 
-            // btnLinescan
-            // 
-            this.btnLinescan.BackColor = System.Drawing.Color.White;
-            this.btnLinescan.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.btnLinescan.Font = new System.Drawing.Font("맑은 고딕", 20F, System.Drawing.FontStyle.Bold);
-            this.btnLinescan.ForeColor = System.Drawing.Color.Black;
-            this.btnLinescan.Location = new System.Drawing.Point(2, 242);
-            this.btnLinescan.Margin = new System.Windows.Forms.Padding(2);
-            this.btnLinescan.Name = "btnLinescan";
-            this.btnLinescan.Size = new System.Drawing.Size(140, 76);
-            this.btnLinescan.TabIndex = 19;
-            this.btnLinescan.Text = "Linescan";
-            this.btnLinescan.UseVisualStyleBackColor = false;
-            this.btnLinescan.Visible = false;
-            this.btnLinescan.Click += new System.EventHandler(this.btnLinescan_Click);
-            // 
             // btnPreAlign
             // 
             this.btnPreAlign.BackColor = System.Drawing.Color.White;
@@ -245,13 +229,30 @@
             this.btnMotionPopup.UseVisualStyleBackColor = false;
             this.btnMotionPopup.Click += new System.EventHandler(this.btnMotionPopup_Click);
             // 
+            // btnLinescan
+            // 
+            this.btnLinescan.BackColor = System.Drawing.Color.White;
+            this.btnLinescan.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.btnLinescan.Font = new System.Drawing.Font("맑은 고딕", 20F, System.Drawing.FontStyle.Bold);
+            this.btnLinescan.ForeColor = System.Drawing.Color.Black;
+            this.btnLinescan.Location = new System.Drawing.Point(2, 242);
+            this.btnLinescan.Margin = new System.Windows.Forms.Padding(2);
+            this.btnLinescan.Name = "btnLinescan";
+            this.btnLinescan.Size = new System.Drawing.Size(140, 76);
+            this.btnLinescan.TabIndex = 19;
+            this.btnLinescan.Text = "Linescan";
+            this.btnLinescan.UseVisualStyleBackColor = false;
+            this.btnLinescan.Visible = false;
+            this.btnLinescan.Click += new System.EventHandler(this.btnLinescan_Click);
+            // 
             // AreaTeachingPage
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
-            this.BackColor = System.Drawing.Color.White;
+            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
             this.Controls.Add(this.tlpTeachingPage);
             this.Font = new System.Drawing.Font("맑은 고딕", 11.25F, System.Drawing.FontStyle.Bold);
+            this.ForeColor = System.Drawing.Color.White;
             this.Name = "AreaTeachingPage";
             this.Size = new System.Drawing.Size(1245, 720);
             this.Load += new System.EventHandler(this.TeachingPage_Load);

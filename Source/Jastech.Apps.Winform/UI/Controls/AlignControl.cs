@@ -27,6 +27,7 @@ namespace Jastech.Apps.Winform.UI.Controls
         #endregion
 
         private CogCaliperParamControl CogCaliperParamControl { get; set; } = new CogCaliperParamControl();
+
         private List<CogCaliperParam> CaliperList { get; set; } = null;
 
         private AlgorithmTool Algorithm = new AlgorithmTool();
@@ -79,9 +80,10 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         public void SetParams(List<Tab> tabList)
         {
+            return;
+
             if (tabList.Count <= 0)
                 return;
-
 
             TeachingTabList = tabList;
 

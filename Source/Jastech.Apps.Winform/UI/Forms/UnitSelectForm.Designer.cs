@@ -32,9 +32,9 @@
             this.tlpBasicFunction = new System.Windows.Forms.TableLayoutPanel();
             this.panel10 = new System.Windows.Forms.Panel();
             this.tableLayoutPanel11 = new System.Windows.Forms.TableLayoutPanel();
-            this.label13 = new System.Windows.Forms.Label();
             this.lblCancel = new System.Windows.Forms.Label();
             this.tlpUnitSelect = new System.Windows.Forms.TableLayoutPanel();
+            this.label13 = new System.Windows.Forms.Label();
             this.tlpUnitSelectForm.SuspendLayout();
             this.tlpBasicFunction.SuspendLayout();
             this.panel10.SuspendLayout();
@@ -103,20 +103,11 @@
             this.tableLayoutPanel11.Size = new System.Drawing.Size(167, 50);
             this.tableLayoutPanel11.TabIndex = 0;
             // 
-            // label13
-            // 
-            this.label13.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.label13.Image = global::Jastech.Apps.Winform.Properties.Resources.Cancel;
-            this.label13.Location = new System.Drawing.Point(3, 0);
-            this.label13.Name = "label13";
-            this.label13.Size = new System.Drawing.Size(38, 50);
-            this.label13.TabIndex = 1;
-            this.label13.Click += new System.EventHandler(this.lblCancel_Click);
-            // 
             // lblCancel
             // 
             this.lblCancel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lblCancel.Font = new System.Drawing.Font("맑은 고딕", 14F, System.Drawing.FontStyle.Bold);
+            this.lblCancel.ForeColor = System.Drawing.Color.White;
             this.lblCancel.Location = new System.Drawing.Point(47, 0);
             this.lblCancel.Name = "lblCancel";
             this.lblCancel.Size = new System.Drawing.Size(117, 50);
@@ -138,11 +129,21 @@
             this.tlpUnitSelect.Size = new System.Drawing.Size(584, 305);
             this.tlpUnitSelect.TabIndex = 4;
             // 
+            // label13
+            // 
+            this.label13.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.label13.Image = global::Jastech.Apps.Winform.Properties.Resources.Cancel_White;
+            this.label13.Location = new System.Drawing.Point(3, 0);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(38, 50);
+            this.label13.TabIndex = 1;
+            this.label13.Click += new System.EventHandler(this.lblCancel_Click);
+            // 
             // UnitSelectForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.Color.White;
+            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
             this.ClientSize = new System.Drawing.Size(584, 361);
             this.ControlBox = false;
             this.Controls.Add(this.tlpUnitSelectForm);

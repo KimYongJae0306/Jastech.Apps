@@ -58,8 +58,7 @@ namespace Jastech.Apps.Winform.UI.Controls
                 tlpUnitSelect.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, (float)(100 / tlpUnitSelect.ColumnCount)));
 
             Button btn1 = new Button();
-            btn1.BackColor = Color.White;
-            btn1.ForeColor = Color.Black;
+            btn1.ForeColor = Color.White;
             btn1.Font = new Font("맑은 고딕", 20, FontStyle.Bold);
             btn1.Text = "PreAlign";
             btn1.Dock = DockStyle.Fill;
@@ -67,8 +66,7 @@ namespace Jastech.Apps.Winform.UI.Controls
             tlpUnitSelect.Controls.Add(btn1, 0, 0);
 
             Button btn2 = new Button();
-            btn2.BackColor = Color.White;
-            btn2.ForeColor = Color.Black;
+            btn2.ForeColor = Color.White;
             btn2.Font = new Font("맑은 고딕", 20, FontStyle.Bold);
             btn2.Text = "Inspection";
             btn2.Dock = DockStyle.Fill;

@@ -96,13 +96,13 @@
             this.gvResult.AllowUserToAddRows = false;
             this.gvResult.AllowUserToDeleteRows = false;
             this.gvResult.AllowUserToResizeRows = false;
-            this.gvResult.BackgroundColor = System.Drawing.Color.White;
+            this.gvResult.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
             this.gvResult.BorderStyle = System.Windows.Forms.BorderStyle.None;
             dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(55)))), ((int)(((byte)(174)))), ((int)(((byte)(224)))));
+            dataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(104)))), ((int)(((byte)(104)))), ((int)(((byte)(104)))));
             dataGridViewCellStyle1.Font = new System.Drawing.Font("맑은 고딕", 11.25F, System.Drawing.FontStyle.Bold);
             dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(104)))), ((int)(((byte)(104)))), ((int)(((byte)(104)))));
             dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
             dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
             this.gvResult.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
@@ -117,14 +117,14 @@
             this.Column1});
             this.gvResult.Dock = System.Windows.Forms.DockStyle.Fill;
             this.gvResult.EnableHeadersVisualStyles = false;
-            this.gvResult.Location = new System.Drawing.Point(3, 404);
-            this.gvResult.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.gvResult.Location = new System.Drawing.Point(0, 400);
+            this.gvResult.Margin = new System.Windows.Forms.Padding(0);
             this.gvResult.MultiSelect = false;
             this.gvResult.Name = "gvResult";
             this.gvResult.ReadOnly = true;
             dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
             dataGridViewCellStyle6.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle6.Font = new System.Drawing.Font("굴림", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            dataGridViewCellStyle6.Font = new System.Drawing.Font("맑은 고딕", 11.25F, System.Drawing.FontStyle.Bold);
             dataGridViewCellStyle6.ForeColor = System.Drawing.SystemColors.WindowText;
             dataGridViewCellStyle6.SelectionBackColor = System.Drawing.SystemColors.Highlight;
             dataGridViewCellStyle6.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
@@ -133,7 +133,7 @@
             this.gvResult.RowHeadersVisible = false;
             this.gvResult.RowTemplate.Height = 23;
             this.gvResult.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.gvResult.Size = new System.Drawing.Size(905, 198);
+            this.gvResult.Size = new System.Drawing.Size(911, 206);
             this.gvResult.TabIndex = 5;
             // 
             // Column2
@@ -211,9 +211,10 @@
             // 
             // lblParameter
             // 
-            this.lblParameter.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(63)))), ((int)(((byte)(175)))), ((int)(((byte)(223)))));
+            this.lblParameter.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(104)))), ((int)(((byte)(104)))), ((int)(((byte)(104)))));
             this.lblParameter.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lblParameter.Font = new System.Drawing.Font("맑은 고딕", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.lblParameter.ForeColor = System.Drawing.Color.White;
             this.lblParameter.Location = new System.Drawing.Point(0, 0);
             this.lblParameter.Margin = new System.Windows.Forms.Padding(0);
             this.lblParameter.Name = "lblParameter";
@@ -312,8 +313,10 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
-            this.BackColor = System.Drawing.Color.White;
+            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
             this.Controls.Add(this.tableLayoutPanel1);
+            this.Font = new System.Drawing.Font("맑은 고딕", 11.25F, System.Drawing.FontStyle.Bold);
+            this.ForeColor = System.Drawing.Color.White;
             this.Margin = new System.Windows.Forms.Padding(0);
             this.Name = "PreAlignControl";
             this.Size = new System.Drawing.Size(911, 686);

@@ -98,7 +98,7 @@
             // 
             // btnMoveTeachingPosition
             // 
-            this.btnMoveTeachingPosition.BackColor = System.Drawing.Color.White;
+            this.btnMoveTeachingPosition.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
             this.btnMoveTeachingPosition.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.btnMoveTeachingPosition.Dock = System.Windows.Forms.DockStyle.Fill;
             this.btnMoveTeachingPosition.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
@@ -112,7 +112,7 @@
             // 
             // btnExit
             // 
-            this.btnExit.BackColor = System.Drawing.Color.White;
+            this.btnExit.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
             this.btnExit.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnExit.BackgroundImage")));
             this.btnExit.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.btnExit.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -128,7 +128,7 @@
             // 
             // btnStopTeachingPosition
             // 
-            this.btnStopTeachingPosition.BackColor = System.Drawing.Color.White;
+            this.btnStopTeachingPosition.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
             this.btnStopTeachingPosition.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.btnStopTeachingPosition.Dock = System.Windows.Forms.DockStyle.Fill;
             this.btnStopTeachingPosition.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
@@ -142,7 +142,7 @@
             // 
             // btnSave
             // 
-            this.btnSave.BackColor = System.Drawing.Color.White;
+            this.btnSave.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
             this.btnSave.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnSave.BackgroundImage")));
             this.btnSave.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.btnSave.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -158,7 +158,7 @@
             // 
             // btnCommand
             // 
-            this.btnCommand.BackColor = System.Drawing.Color.White;
+            this.btnCommand.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
             this.btnCommand.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.btnCommand.Dock = System.Windows.Forms.DockStyle.Fill;
             this.btnCommand.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
@@ -173,7 +173,7 @@
             // 
             // btnParameter
             // 
-            this.btnParameter.BackColor = System.Drawing.Color.White;
+            this.btnParameter.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
             this.btnParameter.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.btnParameter.Dock = System.Windows.Forms.DockStyle.Fill;
             this.btnParameter.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
@@ -215,7 +215,7 @@
             // 
             // lblVariableParameter
             // 
-            this.lblVariableParameter.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(55)))), ((int)(((byte)(174)))), ((int)(((byte)(224)))));
+            this.lblVariableParameter.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(104)))), ((int)(((byte)(104)))), ((int)(((byte)(104)))));
             this.lblVariableParameter.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lblVariableParameter.Font = new System.Drawing.Font("맑은 고딕", 14F, System.Drawing.FontStyle.Bold);
             this.lblVariableParameter.Location = new System.Drawing.Point(3, 0);
@@ -297,11 +297,12 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(11F, 25F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.Color.White;
+            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
             this.ClientSize = new System.Drawing.Size(684, 861);
             this.ControlBox = false;
             this.Controls.Add(this.tlpMotionPopup);
             this.Font = new System.Drawing.Font("맑은 고딕", 14F, System.Drawing.FontStyle.Bold);
+            this.ForeColor = System.Drawing.Color.White;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.Margin = new System.Windows.Forms.Padding(5, 6, 5, 6);
             this.Name = "MotionPopupForm";
