@@ -57,6 +57,7 @@ namespace ATT.UI.Pages
             // Display Control
             Display = new CogThumbnailDisplayControl();
             Display.Dock = DockStyle.Fill;
+
             //Event 연결
             Display.DeleteEventHandler += Display_DeleteEventHandler;
             pnlDisplay.Controls.Add(Display);
