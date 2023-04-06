@@ -40,12 +40,18 @@ namespace Jastech.Apps.Winform.UI.Controls
         private void AkkonControl_Load(object sender, EventArgs e)
         {
             AddControl();
+            InitializeUI();
         }
 
         private void AddControl()
         {
             AkkonParamControl.Dock = DockStyle.Fill;
             pnlParam.Controls.Add(AkkonParamControl);
+        }
+
+        private void InitializeUI()
+        {
+            lblTab.Text = "tlqkf";
         }
 
         public void SetParams(List<Tab> tabList)

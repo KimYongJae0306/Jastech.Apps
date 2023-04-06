@@ -79,7 +79,14 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         public void SetParams(List<Tab> tabList)
         {
+            if (tabList.Count <= 0)
+                return;
+
+
             TeachingTabList = tabList;
+
+            string name = tabList[0].Name;
+            UpdateParam(name);
         }
 
         private void UpdateParam(string name)
