@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Jastech.Framework.Winform.Controls;
+using Jastech.Apps.Structure;
 
 namespace Jastech.Apps.Winform.UI.Controls
 {
@@ -17,7 +18,7 @@ namespace Jastech.Apps.Winform.UI.Controls
         #endregion
 
         private AkkonParamControl AkkonParamControl { get; set; } = new AkkonParamControl();
-
+        private List<Tab> TeachingTabList { get; set; } = new List<Tab>();
         #region 속성
         #endregion
 
@@ -45,6 +46,11 @@ namespace Jastech.Apps.Winform.UI.Controls
         {
             AkkonParamControl.Dock = DockStyle.Fill;
             pnlParam.Controls.Add(AkkonParamControl);
+        }
+
+        public void SetParams(List<Tab> tabList)
+        {
+            TeachingTabList = tabList;
         }
         #endregion
     }

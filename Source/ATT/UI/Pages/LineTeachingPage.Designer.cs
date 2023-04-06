@@ -142,6 +142,7 @@
             this.btnLoadImage.TabIndex = 20;
             this.btnLoadImage.Text = "Load Image";
             this.btnLoadImage.UseVisualStyleBackColor = false;
+            this.btnLoadImage.Click += new System.EventHandler(this.btnLoadImage_Click);
             // 
             // pnlTeach
             // 
@@ -200,6 +201,7 @@
             this.btnSave.TabIndex = 19;
             this.btnSave.Text = "Save";
             this.btnSave.UseVisualStyleBackColor = false;
+            this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
             // 
             // btnLinescan
             // 
@@ -229,6 +231,7 @@
             this.btnAkkon.TabIndex = 19;
             this.btnAkkon.Text = "Akkon";
             this.btnAkkon.UseVisualStyleBackColor = false;
+            this.btnAkkon.Click += new System.EventHandler(this.btnAkkon_Click);
             // 
             // btnAlign
             // 
@@ -243,6 +246,7 @@
             this.btnAlign.TabIndex = 19;
             this.btnAlign.Text = "Align";
             this.btnAlign.UseVisualStyleBackColor = false;
+            this.btnAlign.Click += new System.EventHandler(this.btnAlign_Click);
             // 
             // btnPattern
             // 
@@ -282,6 +286,7 @@
             this.Font = new System.Drawing.Font("맑은 고딕", 11.25F, System.Drawing.FontStyle.Bold);
             this.Name = "LineTeachingPage";
             this.Size = new System.Drawing.Size(1245, 720);
+            this.Load += new System.EventHandler(this.LineTeachingPage_Load);
             this.tlpTeachingPage.ResumeLayout(false);
             this.pnlTeachingPage.ResumeLayout(false);
             this.tlpTeaching.ResumeLayout(false);

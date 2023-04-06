@@ -54,5 +54,20 @@ namespace ATT.Core
 
             return alignParam;
         }
+
+        public List<Tab> GetAkkonParameters(string unitName)
+        {
+            List<Tab> akkonParam = new List<Tab>();
+
+            Unit unit = GetUnit(unitName);
+
+            for (int i = 0; i < UnitList.Count; i++)
+            {
+                var tab = unit.GetTab(i);
+                akkonParam.Add(tab);
+            }
+
+            return akkonParam;
+        }
     }
 }
