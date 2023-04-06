@@ -10,14 +10,23 @@ using System.Windows.Forms;
 using Jastech.Apps.Winform.Settings;
 using Jastech.Framework.Imaging;
 
-namespace ATT.UI.Controls
+namespace ATT.UI.Forms
 {
-    public partial class OperationSettingsControl : UserControl
+    public partial class OperationSettingsForm : Form
     {
         #region 필드
         #endregion
 
         #region 속성
+        protected override CreateParams CreateParams
+        {
+            get
+            {
+                var cp = base.CreateParams;
+                cp.ExStyle |= 0x02000000;
+                return cp;
+            }
+        }
         #endregion
 
         #region 이벤트
@@ -27,14 +36,14 @@ namespace ATT.UI.Controls
         #endregion
 
         #region 생성자
-        public OperationSettingsControl()
+        public OperationSettingsForm()
         {
             InitializeComponent();
         }
         #endregion
 
         #region 메서드
-        private void OperationSettingsControl_Load(object sender, EventArgs e)
+        private void OperationSettingsForm_Load(object sender, EventArgs e)
         {
             foreach (ImageExtension type in Enum.GetValues(typeof(ImageExtension)))
             {
@@ -104,5 +113,16 @@ namespace ATT.UI.Controls
             operation.ExtensionNGImage = (ImageExtension)Enum.Parse(typeof(ImageExtension), mcbxNGExtension.SelectedItem as string);
         }
         #endregion
+
+        private void lblSave_Click(object sender, EventArgs e)
+        {
+            UpdateCuurentData();
+            AppConfig.Instance().Operation.Save(AppConfig.Instance().Path.Config);
+        }
+
+        private void lblCancel_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
     }
 }

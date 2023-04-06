@@ -16,9 +16,9 @@ using Jastech.Apps.Structure;
 using static Jastech.Framework.Winform.Controls.ModelControl;
 using Jastech.Framework.Structure.Helper;
 
-namespace ATT.UI.Pages
+namespace ATT.UI.Forms
 {
-    public partial class ModelPage : UserControl
+    public partial class ModelPageForm : Form//UserControl
     {
         #region 속성
         private ModelControl ModelControl { get; set; } = new ModelControl();
@@ -26,21 +26,29 @@ namespace ATT.UI.Pages
 
         #region 속성
         public Jastech.Framework.Structure.Service.InspModelService InspModelService = null;
+
+        protected override CreateParams CreateParams
+        {
+            get
+            {
+                var cp = base.CreateParams;
+                cp.ExStyle |= 0x02000000;
+                return cp;
+            }
+        }
         #endregion
 
         #region 이벤트
         public event ApplyModelDelegate ApplyModelEventHandler;
         #endregion
-        public ModelPage()
+        public ModelPageForm()
         {
             InitializeComponent();
         }
 
-        private void ModelPage_Load(object sender, EventArgs e)
+        private void ModelPageForm_Load(object sender, EventArgs e)
         {
             AddControl();
-
-            
         }
 
         private void AddControl()
@@ -50,9 +58,14 @@ namespace ATT.UI.Pages
             ModelControl.EditModelEventHandler += ModelControl_EditModelEventHandler;
             ModelControl.CopyModelEventHandler += ModelControl_CopyModelEventHandler;
             ModelControl.ApplyModelEventHandler += ModelControl_ApplyModelEventHandler;
-
+            ModelControl.CloseEventHandler += ModelControl_CloseEventHandler;
             ModelControl.Dock = DockStyle.Fill;
             pnlModelPage.Controls.Add(ModelControl);
+        }
+
+        private void ModelControl_CloseEventHandler(object sender, EventArgs e)
+        {
+            this.Close();
         }
 
         private void ModelControl_CopyModelEventHandler(string prevModelName, string newModelName)

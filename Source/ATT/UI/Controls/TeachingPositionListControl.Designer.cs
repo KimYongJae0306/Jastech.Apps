@@ -29,8 +29,6 @@
         private void InitializeComponent()
         {
             this.tlpTeachingUnitControl = new System.Windows.Forms.TableLayoutPanel();
-            this.btnNext = new System.Windows.Forms.Button();
-            this.btnPrev = new System.Windows.Forms.Button();
             this.tlpUnitList = new System.Windows.Forms.TableLayoutPanel();
             this.tlpTeachingPosition = new System.Windows.Forms.TableLayoutPanel();
             this.btnPreAlignRight = new System.Windows.Forms.Button();
@@ -39,6 +37,8 @@
             this.btnScanEnd = new System.Windows.Forms.Button();
             this.btnScanStart = new System.Windows.Forms.Button();
             this.lblUnit = new System.Windows.Forms.Label();
+            this.btnNext = new System.Windows.Forms.Button();
+            this.btnPrev = new System.Windows.Forms.Button();
             this.tlpTeachingUnitControl.SuspendLayout();
             this.tlpUnitList.SuspendLayout();
             this.tlpTeachingPosition.SuspendLayout();
@@ -59,40 +59,10 @@
             this.tlpTeachingUnitControl.Name = "tlpTeachingUnitControl";
             this.tlpTeachingUnitControl.RowCount = 1;
             this.tlpTeachingUnitControl.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tlpTeachingUnitControl.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tlpTeachingUnitControl.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tlpTeachingUnitControl.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 120F));
+            this.tlpTeachingUnitControl.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 120F));
             this.tlpTeachingUnitControl.Size = new System.Drawing.Size(606, 120);
             this.tlpTeachingUnitControl.TabIndex = 2;
-            // 
-            // btnNext
-            // 
-            this.btnNext.BackColor = System.Drawing.Color.White;
-            this.btnNext.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.btnNext.Font = new System.Drawing.Font("맑은 고딕", 11.25F, System.Drawing.FontStyle.Bold);
-            this.btnNext.ForeColor = System.Drawing.Color.Black;
-            this.btnNext.Image = global::ATT.Properties.Resources.Next;
-            this.btnNext.Location = new System.Drawing.Point(566, 0);
-            this.btnNext.Margin = new System.Windows.Forms.Padding(0);
-            this.btnNext.Name = "btnNext";
-            this.btnNext.Size = new System.Drawing.Size(40, 120);
-            this.btnNext.TabIndex = 14;
-            this.btnNext.UseVisualStyleBackColor = false;
-            this.btnNext.Click += new System.EventHandler(this.btnNext_Click);
-            // 
-            // btnPrev
-            // 
-            this.btnPrev.BackColor = System.Drawing.Color.White;
-            this.btnPrev.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.btnPrev.Font = new System.Drawing.Font("맑은 고딕", 11.25F, System.Drawing.FontStyle.Bold);
-            this.btnPrev.ForeColor = System.Drawing.Color.Black;
-            this.btnPrev.Image = global::ATT.Properties.Resources.Prev;
-            this.btnPrev.Location = new System.Drawing.Point(0, 0);
-            this.btnPrev.Margin = new System.Windows.Forms.Padding(0);
-            this.btnPrev.Name = "btnPrev";
-            this.btnPrev.Size = new System.Drawing.Size(40, 120);
-            this.btnPrev.TabIndex = 13;
-            this.btnPrev.UseVisualStyleBackColor = false;
-            this.btnPrev.Click += new System.EventHandler(this.btnPrev_Click);
             // 
             // tlpUnitList
             // 
@@ -136,10 +106,9 @@
             // 
             // btnPreAlignRight
             // 
-            this.btnPreAlignRight.BackColor = System.Drawing.Color.White;
             this.btnPreAlignRight.Dock = System.Windows.Forms.DockStyle.Fill;
             this.btnPreAlignRight.Font = new System.Drawing.Font("맑은 고딕", 11.25F, System.Drawing.FontStyle.Bold);
-            this.btnPreAlignRight.ForeColor = System.Drawing.Color.Black;
+            this.btnPreAlignRight.ForeColor = System.Drawing.Color.White;
             this.btnPreAlignRight.Location = new System.Drawing.Point(216, 3);
             this.btnPreAlignRight.Name = "btnPreAlignRight";
             this.btnPreAlignRight.Size = new System.Drawing.Size(94, 74);
@@ -150,10 +119,9 @@
             // 
             // btnPreAlignLeft
             // 
-            this.btnPreAlignLeft.BackColor = System.Drawing.Color.White;
             this.btnPreAlignLeft.Dock = System.Windows.Forms.DockStyle.Fill;
             this.btnPreAlignLeft.Font = new System.Drawing.Font("맑은 고딕", 11.25F, System.Drawing.FontStyle.Bold);
-            this.btnPreAlignLeft.ForeColor = System.Drawing.Color.Black;
+            this.btnPreAlignLeft.ForeColor = System.Drawing.Color.White;
             this.btnPreAlignLeft.Location = new System.Drawing.Point(116, 3);
             this.btnPreAlignLeft.Name = "btnPreAlignLeft";
             this.btnPreAlignLeft.Size = new System.Drawing.Size(94, 74);
@@ -164,10 +132,9 @@
             // 
             // btnStandby
             // 
-            this.btnStandby.BackColor = System.Drawing.Color.White;
             this.btnStandby.Dock = System.Windows.Forms.DockStyle.Fill;
             this.btnStandby.Font = new System.Drawing.Font("맑은 고딕", 11.25F, System.Drawing.FontStyle.Bold);
-            this.btnStandby.ForeColor = System.Drawing.Color.Black;
+            this.btnStandby.ForeColor = System.Drawing.Color.White;
             this.btnStandby.Location = new System.Drawing.Point(3, 3);
             this.btnStandby.Name = "btnStandby";
             this.btnStandby.Size = new System.Drawing.Size(94, 74);
@@ -178,10 +145,9 @@
             // 
             // btnScanEnd
             // 
-            this.btnScanEnd.BackColor = System.Drawing.Color.White;
             this.btnScanEnd.Dock = System.Windows.Forms.DockStyle.Fill;
             this.btnScanEnd.Font = new System.Drawing.Font("맑은 고딕", 11.25F, System.Drawing.FontStyle.Bold);
-            this.btnScanEnd.ForeColor = System.Drawing.Color.Black;
+            this.btnScanEnd.ForeColor = System.Drawing.Color.White;
             this.btnScanEnd.Location = new System.Drawing.Point(429, 3);
             this.btnScanEnd.Name = "btnScanEnd";
             this.btnScanEnd.Size = new System.Drawing.Size(94, 74);
@@ -192,10 +158,9 @@
             // 
             // btnScanStart
             // 
-            this.btnScanStart.BackColor = System.Drawing.Color.White;
             this.btnScanStart.Dock = System.Windows.Forms.DockStyle.Fill;
             this.btnScanStart.Font = new System.Drawing.Font("맑은 고딕", 11.25F, System.Drawing.FontStyle.Bold);
-            this.btnScanStart.ForeColor = System.Drawing.Color.Black;
+            this.btnScanStart.ForeColor = System.Drawing.Color.White;
             this.btnScanStart.Location = new System.Drawing.Point(329, 3);
             this.btnScanStart.Name = "btnScanStart";
             this.btnScanStart.Size = new System.Drawing.Size(94, 74);
@@ -206,9 +171,10 @@
             // 
             // lblUnit
             // 
-            this.lblUnit.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(55)))), ((int)(((byte)(174)))), ((int)(((byte)(224)))));
+            this.lblUnit.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(104)))), ((int)(((byte)(104)))), ((int)(((byte)(104)))));
             this.lblUnit.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lblUnit.Font = new System.Drawing.Font("맑은 고딕", 14F, System.Drawing.FontStyle.Bold);
+            this.lblUnit.ForeColor = System.Drawing.Color.White;
             this.lblUnit.Location = new System.Drawing.Point(3, 0);
             this.lblUnit.Name = "lblUnit";
             this.lblUnit.Size = new System.Drawing.Size(520, 40);
@@ -216,11 +182,39 @@
             this.lblUnit.Text = "Unit";
             this.lblUnit.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
+            // btnNext
+            // 
+            this.btnNext.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.btnNext.Font = new System.Drawing.Font("맑은 고딕", 11.25F, System.Drawing.FontStyle.Bold);
+            this.btnNext.ForeColor = System.Drawing.Color.White;
+            this.btnNext.Image = global::ATT.Properties.Resources.Next_White;
+            this.btnNext.Location = new System.Drawing.Point(566, 0);
+            this.btnNext.Margin = new System.Windows.Forms.Padding(0);
+            this.btnNext.Name = "btnNext";
+            this.btnNext.Size = new System.Drawing.Size(40, 120);
+            this.btnNext.TabIndex = 14;
+            this.btnNext.UseVisualStyleBackColor = false;
+            this.btnNext.Click += new System.EventHandler(this.btnNext_Click);
+            // 
+            // btnPrev
+            // 
+            this.btnPrev.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.btnPrev.Font = new System.Drawing.Font("맑은 고딕", 11.25F, System.Drawing.FontStyle.Bold);
+            this.btnPrev.ForeColor = System.Drawing.Color.White;
+            this.btnPrev.Image = global::ATT.Properties.Resources.Prev_White;
+            this.btnPrev.Location = new System.Drawing.Point(0, 0);
+            this.btnPrev.Margin = new System.Windows.Forms.Padding(0);
+            this.btnPrev.Name = "btnPrev";
+            this.btnPrev.Size = new System.Drawing.Size(40, 120);
+            this.btnPrev.TabIndex = 13;
+            this.btnPrev.UseVisualStyleBackColor = false;
+            this.btnPrev.Click += new System.EventHandler(this.btnPrev_Click);
+            // 
             // TeachingPositionListControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.Color.White;
+            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
             this.Controls.Add(this.tlpTeachingUnitControl);
             this.Font = new System.Drawing.Font("맑은 고딕", 11.25F, System.Drawing.FontStyle.Bold);
             this.Name = "TeachingPositionListControl";

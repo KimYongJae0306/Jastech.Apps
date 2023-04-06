@@ -12,10 +12,14 @@ using Jastech.Framework.Device.Motions;
 using Jastech.Apps.Winform;
 using Jastech.Apps.Structure;
 using System.Reflection;
+using ATT.UI.Controls;
+using ATT.Core;
+using Jastech.Apps.Winform.Settings;
+using Jastech.Framework.Structure;
 
-namespace ATT.UI.Controls
+namespace ATT.UI.Forms
 {
-    public partial class MotionSettingsControl : UserControl
+    public partial class MotionSettingsForm : Form
     {
         #region 필드
         private System.Threading.Timer _controlTimer = null;
@@ -51,8 +55,17 @@ namespace ATT.UI.Controls
 
         MotionParameterVariableControl ZVariableControl = new MotionParameterVariableControl();
         #region 속성
-
         public TeachingPositionType TeachingPositionType = TeachingPositionType.Standby;
+
+        protected override CreateParams CreateParams
+        {
+            get
+            {
+                var cp = base.CreateParams;
+                cp.ExStyle |= 0x02000000;
+                return cp;
+            }
+        }
         #endregion
 
         #region 이벤트
@@ -62,14 +75,14 @@ namespace ATT.UI.Controls
         #endregion
 
         #region 생성자
-        public MotionSettingsControl()
+        public MotionSettingsForm()
         {
             InitializeComponent();
         }
         #endregion
 
         #region 메서드
-        private void MotionSettingsControl_Load(object sender, EventArgs e)
+        private void MotionSettingsForm_Load(object sender, EventArgs e)
         {
             AddControl();
             StartTimer();
@@ -250,6 +263,30 @@ namespace ATT.UI.Controls
         private void btnMoveToTeachingPosition_Click(object sender, EventArgs e)
         {
             Console.WriteLine(TeachingPositionType.ToString());
+        }
+
+        private void lblSave_Click(object sender, EventArgs e)
+        {
+            Save();
+        }
+
+        private void lblCancel_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
+
+        private void Save()
+        {
+            // Save AxisHandler
+            var axisHandler = AppsMotionManager.Instance().GetAxisHandler(AxisHandlerName.Unit0);
+            AppsMotionManager.Instance().Save(axisHandler);
+
+            // Save Model
+            var model = ModelManager.Instance().CurrentModel as ATTInspModel;
+            model.SetUnitList(SystemManager.Instance().GetTeachingData().UnitList);
+
+            string fileName = System.IO.Path.Combine(AppConfig.Instance().Path.Model, model.Name, InspModel.FileName);
+            SystemManager.Instance().SaveModel(fileName, model);
         }
     }
 }

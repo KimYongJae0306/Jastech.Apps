@@ -29,8 +29,8 @@
         private void InitializeComponent()
         {
             this.tlpUnitSelectControl = new System.Windows.Forms.TableLayoutPanel();
-            this.tlpUnitSelect = new System.Windows.Forms.TableLayoutPanel();
             this.lblUnitName = new System.Windows.Forms.Label();
+            this.tlpUnitSelect = new System.Windows.Forms.TableLayoutPanel();
             this.tlpUnitSelectControl.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -50,6 +50,19 @@
             this.tlpUnitSelectControl.Size = new System.Drawing.Size(193, 250);
             this.tlpUnitSelectControl.TabIndex = 0;
             // 
+            // lblUnitName
+            // 
+            this.lblUnitName.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(104)))), ((int)(((byte)(104)))), ((int)(((byte)(104)))));
+            this.lblUnitName.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblUnitName.Font = new System.Drawing.Font("맑은 고딕", 14F, System.Drawing.FontStyle.Bold);
+            this.lblUnitName.ForeColor = System.Drawing.Color.White;
+            this.lblUnitName.Location = new System.Drawing.Point(3, 0);
+            this.lblUnitName.Name = "lblUnitName";
+            this.lblUnitName.Size = new System.Drawing.Size(187, 40);
+            this.lblUnitName.TabIndex = 5;
+            this.lblUnitName.Text = "Unit Name";
+            this.lblUnitName.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
             // tlpUnitSelect
             // 
             this.tlpUnitSelect.ColumnCount = 1;
@@ -63,23 +76,11 @@
             this.tlpUnitSelect.Size = new System.Drawing.Size(193, 210);
             this.tlpUnitSelect.TabIndex = 0;
             // 
-            // lblUnitName
-            // 
-            this.lblUnitName.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(55)))), ((int)(((byte)(174)))), ((int)(((byte)(224)))));
-            this.lblUnitName.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblUnitName.Font = new System.Drawing.Font("맑은 고딕", 14F, System.Drawing.FontStyle.Bold);
-            this.lblUnitName.Location = new System.Drawing.Point(3, 0);
-            this.lblUnitName.Name = "lblUnitName";
-            this.lblUnitName.Size = new System.Drawing.Size(187, 40);
-            this.lblUnitName.TabIndex = 5;
-            this.lblUnitName.Text = "Unit Name";
-            this.lblUnitName.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
             // UnitSelectControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.Color.White;
+            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
             this.Controls.Add(this.tlpUnitSelectControl);
             this.Font = new System.Drawing.Font("맑은 고딕", 11.25F, System.Drawing.FontStyle.Bold);
             this.Name = "UnitSelectControl";

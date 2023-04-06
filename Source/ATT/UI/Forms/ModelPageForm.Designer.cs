@@ -1,6 +1,6 @@
-﻿namespace ATT.UI.Pages
+﻿namespace ATT.UI.Forms
 {
-    partial class ModelPage
+    partial class ModelPageForm
     {
         /// <summary> 
         /// 필수 디자이너 변수입니다.
@@ -37,7 +37,7 @@
             this.pnlModelPage.Location = new System.Drawing.Point(0, 0);
             this.pnlModelPage.Margin = new System.Windows.Forms.Padding(0);
             this.pnlModelPage.Name = "pnlModelPage";
-            this.pnlModelPage.Size = new System.Drawing.Size(600, 600);
+            this.pnlModelPage.Size = new System.Drawing.Size(930, 317);
             this.pnlModelPage.TabIndex = 0;
             // 
             // ModelPage
@@ -45,12 +45,15 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
+            this.ClientSize = new System.Drawing.Size(930, 317);
             this.Controls.Add(this.pnlModelPage);
             this.Cursor = System.Windows.Forms.Cursors.Default;
             this.Font = new System.Drawing.Font("맑은 고딕", 11.25F, System.Drawing.FontStyle.Bold);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "ModelPage";
-            this.Size = new System.Drawing.Size(600, 600);
-            this.Load += new System.EventHandler(this.ModelPage_Load);
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+            this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
+            this.Load += new System.EventHandler(this.ModelPageForm_Load);
             this.ResumeLayout(false);
 
         }

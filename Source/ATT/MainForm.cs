@@ -26,15 +26,14 @@ namespace ATT
         private AutoPage AutoPageControl { get; set; } = new AutoPage();
 
         private AreaTeachingPage AreaTeachingPageControl { get; set; } = new AreaTeachingPage();
-        private LineTeachingPage LineTeachingPageControl { get; set; } = new LineTeachingPage();
 
-        private ModelPage ModelPageControl { get; set; } = new ModelPage();
+        private LineTeachingPage LineTeachingPageControl { get; set; } = new LineTeachingPage();
 
         private RecipePage RecipePageControl { get; set; } = new RecipePage();
 
-        private LogPage LogPageControl { get; set; } = new LogPage();
+        private DataPage DataPageControl { get; set; } = new DataPage();
 
-        private SettingPage SettingPageControl { get; set; } = new SettingPage();
+        private LogPage LogPageControl { get; set; } = new LogPage();
 
         private List<UserControl> PageControlList = null;
 
@@ -79,8 +78,6 @@ namespace ATT
 
             AreaTeachingPageControl.UpdateSelectPage();
             LineTeachingPageControl.UpdateSelectPage();
-
-            SettingPageControl.UpdateModelData();
         }
 
         private void AddControls()
@@ -88,25 +85,19 @@ namespace ATT
             // Page Control List
             PageControlList = new List<UserControl>();
             PageControlList.Add(AutoPageControl);
+            PageControlList.Add(DataPageControl);
             PageControlList.Add(AreaTeachingPageControl);
             PageControlList.Add(LineTeachingPageControl);
 
-            ModelPageControl.InspModelService = ATTInspModelService;
-            ModelPageControl.ApplyModelEventHandler += ModelPageControl_ApplyModelEventHandler;
-            PageControlList.Add(ModelPageControl);
-
             PageControlList.Add(RecipePageControl);
             PageControlList.Add(LogPageControl);
-            PageControlList.Add(SettingPageControl);
 
             // Button List
             PageLabelList = new List<Label>();
-            PageLabelList.Add(lblModelPage);
-            PageLabelList.Add(lblInspectionPage);
+            PageLabelList.Add(lblMainPage);
             PageLabelList.Add(lblTeachingPage);
+            PageLabelList.Add(lblDataPage);
             PageLabelList.Add(lblLogPage);
-            PageLabelList.Add(lblSettingPage);
-            PageLabelList.Add(lblModelPage);
         }
 
         private void ModelPageControl_ApplyModelEventHandler(string modelName)
@@ -127,7 +118,9 @@ namespace ATT
         private void SetSelectLabel(object sender)
         {
             foreach (Label label in PageLabelList)
-                label.ForeColor = Color.Black;
+            {
+                label.ForeColor = Color.White;
+            }
 
             Label currentLabel = sender as Label;
             currentLabel.ForeColor = Color.Blue;
@@ -145,18 +138,18 @@ namespace ATT
 
         private void SelectInspectionPage()
         {
-            SetSelectLabel(lblInspectionPage);
+            SetSelectLabel(lblMainPage);
             SetSelectPage(selectedControl: AutoPageControl);
         }
 
         
-        private void ModelPage_Click(object sender, EventArgs e)
+        private void DataPage_Click(object sender, EventArgs e)
         {
             SetSelectLabel(sender);
-            SetSelectPage(selectedControl: ModelPageControl);
+            SetSelectPage(selectedControl: DataPageControl);
         }
 
-        private void InspectionPage_Click(object sender, EventArgs e)
+        private void lblMainPage_Click(object sender, EventArgs e)
         {
             SetSelectLabel(sender);
             SetSelectPage(selectedControl: AutoPageControl);
@@ -193,12 +186,6 @@ namespace ATT
         {
             SetSelectLabel(sender);
             SetSelectPage(selectedControl: LogPageControl);
-        }
-
-        private void SettingPage_Click(object sender, EventArgs e)
-        {
-            SetSelectLabel(sender);
-            SetSelectPage(selectedControl: SettingPageControl);
         }
     }
 }
