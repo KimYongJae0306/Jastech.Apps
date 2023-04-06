@@ -53,7 +53,7 @@ namespace Jastech.Apps.Structure
 
         public Tab GetTab(int index)
         {
-            return TabList.Select(x => x.Index == index) as Tab;
+            return TabList.Where(x => x.Index == index).First();
         }
 
         public void AddTab(Tab tab)

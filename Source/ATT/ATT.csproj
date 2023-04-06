@@ -112,11 +112,11 @@
     <Compile Include="UI\Pages\DataPage.Designer.cs">
       <DependentUpon>DataPage.cs</DependentUpon>
     </Compile>
-    <Compile Include="UI\Pages\LineTeachingPage.cs">
-      <SubType>UserControl</SubType>
+    <Compile Include="UI\Forms\LineTeachingForm.cs">
+      <SubType>Form</SubType>
     </Compile>
-    <Compile Include="UI\Pages\LineTeachingPage.Designer.cs">
-      <DependentUpon>LineTeachingPage.cs</DependentUpon>
+    <Compile Include="UI\Forms\LineTeachingForm.Designer.cs">
+      <DependentUpon>LineTeachingForm.cs</DependentUpon>
     </Compile>
     <Compile Include="UI\Pages\AutoPage.cs">
       <SubType>UserControl</SubType>
@@ -141,12 +141,6 @@
     </Compile>
     <Compile Include="UI\Forms\ModelPageForm.Designer.cs">
       <DependentUpon>ModelPageForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="UI\Pages\RecipePage.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="UI\Pages\RecipePage.Designer.cs">
-      <DependentUpon>RecipePage.cs</DependentUpon>
     </Compile>
     <Compile Include="UI\Pages\AreaTeachingPage.cs">
       <SubType>UserControl</SubType>
@@ -194,17 +188,14 @@
     <EmbeddedResource Include="UI\Pages\InspPage.resx">
       <DependentUpon>InspPage.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="UI\Pages\LineTeachingPage.resx">
-      <DependentUpon>LineTeachingPage.cs</DependentUpon>
+    <EmbeddedResource Include="UI\Forms\LineTeachingForm.resx">
+      <DependentUpon>LineTeachingForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\Pages\LogPage.resx">
       <DependentUpon>LogPage.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\Forms\ModelPageForm.resx">
       <DependentUpon>ModelPageForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="UI\Pages\RecipePage.resx">
-      <DependentUpon>RecipePage.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\Pages\AreaTeachingPage.resx">
       <DependentUpon>AreaTeachingPage.cs</DependentUpon>
