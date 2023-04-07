@@ -97,8 +97,8 @@ namespace ATT.UI.Pages
             btnPreAlign.ForeColor = Color.Blue;
             pnlTeach.Controls.Add(PreAlignControl);
 
-            var preAlignParam = SystemManager.Instance().GetTeachingData().GetPreAlignParameters(UnitName);
-            PreAlignControl.SetParams(preAlignParam);
+            var preAlignParams = SystemManager.Instance().GetTeachingData().GetPreAlign(UnitName);
+            PreAlignControl.SetParams(preAlignParams);
         }
 
         private void SetSelectTeachPage(UserControl selectedControl)

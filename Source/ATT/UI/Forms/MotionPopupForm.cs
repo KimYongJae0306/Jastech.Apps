@@ -131,7 +131,7 @@ namespace ATT.UI.Forms
             if (inspModel == null || unitName == "")
                 return;
 
-            var posData = SystemManager.Instance().GetTeachingData().GetUnit(unitName).PositionList[(int)teachingPositionType];
+            var posData = SystemManager.Instance().GetTeachingData().GetUnit(unitName).TeachingPositions[(int)teachingPositionType];
 
 
             // Variable Params
@@ -250,7 +250,7 @@ namespace ATT.UI.Forms
         {
             // Variable Params
             string unitName = TeachingPositionListControl.UnitName;
-            var posData = SystemManager.Instance().GetTeachingData().GetUnit(unitName).PositionList[(int)TeachingPositionType];
+            var posData = SystemManager.Instance().GetTeachingData().GetUnit(unitName).TeachingPositions[(int)TeachingPositionType];
 
             posData.SetMovingParams(AxisName.X, XVariableControl.GetCurrentData());
             posData.SetMovingParams(AxisName.Y, YVariableControl.GetCurrentData());

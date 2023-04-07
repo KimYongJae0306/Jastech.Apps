@@ -433,8 +433,8 @@
             // 
             this.lblCurrentModel.BackColor = System.Drawing.Color.Transparent;
             this.lblCurrentModel.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblCurrentModel.Font = new System.Drawing.Font("맑은 고딕", 12.2F, System.Drawing.FontStyle.Bold);
-            this.lblCurrentModel.ForeColor = System.Drawing.Color.Black;
+            this.lblCurrentModel.Font = new System.Drawing.Font("맑은 고딕", 15F, System.Drawing.FontStyle.Bold);
+            this.lblCurrentModel.ForeColor = System.Drawing.Color.White;
             this.lblCurrentModel.Location = new System.Drawing.Point(1415, 3);
             this.lblCurrentModel.Margin = new System.Windows.Forms.Padding(3);
             this.lblCurrentModel.Name = "lblCurrentModel";
@@ -486,11 +486,10 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
             this.ClientSize = new System.Drawing.Size(1774, 921);
-            this.ControlBox = false;
             this.Controls.Add(this.tlpMainForm);
             this.Font = new System.Drawing.Font("맑은 고딕", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.ForeColor = System.Drawing.Color.White;
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.Name = "MainForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;

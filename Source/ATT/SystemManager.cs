@@ -41,7 +41,7 @@ namespace ATT
         {
             _mainForm = mainForm;
             
-            LogHelper.Write(LogType.System, "Init SplashForm");
+            Logger.Write(LogType.System, "Init SplashForm");
 
             SplashForm form = new SplashForm();
 
@@ -56,7 +56,7 @@ namespace ATT
 
         private bool SplashSetupAction(IReportProgress reportProgress)
         {
-            LogHelper.Write(LogType.System, "Initialize Device");
+            Logger.Write(LogType.System, "Initialize Device");
 
             int percent = 0;
             DoReportProgress(reportProgress, percent, "Initialize Device");
@@ -111,7 +111,7 @@ namespace ATT
 
         private void DoReportProgress(IReportProgress reportProgress, int percentage, string message)
         {
-            LogHelper.Write(LogType.System, message);
+            Logger.Write(LogType.System, message);
 
             reportProgress?.ReportProgress(percentage, message);
         }

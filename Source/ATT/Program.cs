@@ -1,6 +1,7 @@
 ﻿using ATT.Core;
 using Jastech.Apps.Structure;
 using Jastech.Apps.Winform.Settings;
+using Jastech.Framework.Device.LightCtrls;
 using Jastech.Framework.Structure;
 using Jastech.Framework.Util.Helper;
 using System;
@@ -26,7 +27,7 @@ namespace ATT
             AppConfig.Instance().Initialize();
             AppConfig.Instance().Load();
 
-            LogHelper.Initialize(AppConfig.Instance().Path.Log);
+            Logger.Initialize(AppConfig.Instance().Path.Log);
 
             var mainForm = new MainForm();
            

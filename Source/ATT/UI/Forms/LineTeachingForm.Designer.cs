@@ -38,18 +38,17 @@
             this.pnlTeach = new System.Windows.Forms.Panel();
             this.pnlTeachingItem = new System.Windows.Forms.Panel();
             this.tlpTeachingItem = new System.Windows.Forms.TableLayoutPanel();
-            this.btnSave = new System.Windows.Forms.Button();
+            this.btnMotionPopup = new System.Windows.Forms.Button();
             this.btnAutoFocus = new System.Windows.Forms.Button();
             this.btnAkkon = new System.Windows.Forms.Button();
             this.btnAlign = new System.Windows.Forms.Button();
             this.btnPattern = new System.Windows.Forms.Button();
-            this.btnMotionPopup = new System.Windows.Forms.Button();
             this.btnCancel = new System.Windows.Forms.Button();
+            this.btnSave = new System.Windows.Forms.Button();
             this.tlpTeachingPage.SuspendLayout();
             this.pnlTeachingPage.SuspendLayout();
             this.tlpTeaching.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
-            this.panel1.SuspendLayout();
             this.pnlTeachingItem.SuspendLayout();
             this.tlpTeachingItem.SuspendLayout();
             this.SuspendLayout();
@@ -123,7 +122,6 @@
             // 
             // panel1
             // 
-            this.panel1.Controls.Add(this.btnLoadImage);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel1.Location = new System.Drawing.Point(2, 2);
             this.panel1.Margin = new System.Windows.Forms.Padding(2);
@@ -136,7 +134,7 @@
             this.btnLoadImage.BackColor = System.Drawing.Color.White;
             this.btnLoadImage.Font = new System.Drawing.Font("맑은 고딕", 10F, System.Drawing.FontStyle.Bold);
             this.btnLoadImage.ForeColor = System.Drawing.Color.Black;
-            this.btnLoadImage.Location = new System.Drawing.Point(11, 13);
+            this.btnLoadImage.Location = new System.Drawing.Point(2, 322);
             this.btnLoadImage.Margin = new System.Windows.Forms.Padding(2);
             this.btnLoadImage.Name = "btnLoadImage";
             this.btnLoadImage.Size = new System.Drawing.Size(116, 38);
@@ -168,6 +166,7 @@
             // 
             this.tlpTeachingItem.ColumnCount = 1;
             this.tlpTeachingItem.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tlpTeachingItem.Controls.Add(this.btnLoadImage, 0, 4);
             this.tlpTeachingItem.Controls.Add(this.btnMotionPopup, 0, 5);
             this.tlpTeachingItem.Controls.Add(this.btnAutoFocus, 0, 0);
             this.tlpTeachingItem.Controls.Add(this.btnAkkon, 0, 3);
@@ -191,20 +190,20 @@
             this.tlpTeachingItem.Size = new System.Drawing.Size(144, 779);
             this.tlpTeachingItem.TabIndex = 0;
             // 
-            // btnSave
+            // btnMotionPopup
             // 
-            this.btnSave.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(34)))), ((int)(((byte)(34)))), ((int)(((byte)(34)))));
-            this.btnSave.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.btnSave.Font = new System.Drawing.Font("맑은 고딕", 20F, System.Drawing.FontStyle.Bold);
-            this.btnSave.ForeColor = System.Drawing.Color.White;
-            this.btnSave.Location = new System.Drawing.Point(2, 621);
-            this.btnSave.Margin = new System.Windows.Forms.Padding(2);
-            this.btnSave.Name = "btnSave";
-            this.btnSave.Size = new System.Drawing.Size(140, 76);
-            this.btnSave.TabIndex = 19;
-            this.btnSave.Text = "Save";
-            this.btnSave.UseVisualStyleBackColor = false;
-            this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
+            this.btnMotionPopup.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(34)))), ((int)(((byte)(34)))), ((int)(((byte)(34)))));
+            this.btnMotionPopup.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.btnMotionPopup.Font = new System.Drawing.Font("맑은 고딕", 20F, System.Drawing.FontStyle.Bold);
+            this.btnMotionPopup.ForeColor = System.Drawing.Color.White;
+            this.btnMotionPopup.Location = new System.Drawing.Point(2, 541);
+            this.btnMotionPopup.Margin = new System.Windows.Forms.Padding(2);
+            this.btnMotionPopup.Name = "btnMotionPopup";
+            this.btnMotionPopup.Size = new System.Drawing.Size(140, 76);
+            this.btnMotionPopup.TabIndex = 19;
+            this.btnMotionPopup.Text = "Motion\r\nPopup";
+            this.btnMotionPopup.UseVisualStyleBackColor = false;
+            this.btnMotionPopup.Click += new System.EventHandler(this.btnMotionPopup_Click);
             // 
             // btnAutoFocus
             // 
@@ -265,34 +264,8 @@
             this.btnPattern.UseVisualStyleBackColor = false;
             this.btnPattern.Click += new System.EventHandler(this.btnPattern_Click);
             // 
-            // btnMotionPopup
-            // 
-            this.btnMotionPopup.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(34)))), ((int)(((byte)(34)))), ((int)(((byte)(34)))));
-            this.btnMotionPopup.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.btnMotionPopup.Font = new System.Drawing.Font("맑은 고딕", 20F, System.Drawing.FontStyle.Bold);
-            this.btnMotionPopup.ForeColor = System.Drawing.Color.White;
-            this.btnMotionPopup.Location = new System.Drawing.Point(2, 541);
-            this.btnMotionPopup.Margin = new System.Windows.Forms.Padding(2);
-            this.btnMotionPopup.Name = "btnMotionPopup";
-            this.btnMotionPopup.Size = new System.Drawing.Size(140, 76);
-            this.btnMotionPopup.TabIndex = 19;
-            this.btnMotionPopup.Text = "Motion\r\nPopup";
-            this.btnMotionPopup.UseVisualStyleBackColor = false;
-            this.btnMotionPopup.Click += new System.EventHandler(this.btnMotionPopup_Click);
-            // 
             // btnCancel
             // 
-//<<<<<<< HEAD:Source/ATT/UI/Pages/LineTeachingPage.Designer.cs
-//            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
-//            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-//            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
-//            this.Controls.Add(this.tlpTeachingPage);
-//            this.Font = new System.Drawing.Font("맑은 고딕", 11.25F, System.Drawing.FontStyle.Bold);
-//            this.ForeColor = System.Drawing.Color.White;
-//            this.Name = "LineTeachingPage";
-//            this.Size = new System.Drawing.Size(1245, 720);
-//            this.Load += new System.EventHandler(this.LineTeachingPage_Load);
-//=======
             this.btnCancel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(34)))), ((int)(((byte)(34)))), ((int)(((byte)(34)))));
             this.btnCancel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.btnCancel.Font = new System.Drawing.Font("맑은 고딕", 20F, System.Drawing.FontStyle.Bold);
@@ -305,6 +278,21 @@
             this.btnCancel.Text = "Cancel";
             this.btnCancel.UseVisualStyleBackColor = false;
             this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
+            // 
+            // btnSave
+            // 
+            this.btnSave.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(34)))), ((int)(((byte)(34)))), ((int)(((byte)(34)))));
+            this.btnSave.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.btnSave.Font = new System.Drawing.Font("맑은 고딕", 20F, System.Drawing.FontStyle.Bold);
+            this.btnSave.ForeColor = System.Drawing.Color.White;
+            this.btnSave.Location = new System.Drawing.Point(2, 621);
+            this.btnSave.Margin = new System.Windows.Forms.Padding(2);
+            this.btnSave.Name = "btnSave";
+            this.btnSave.Size = new System.Drawing.Size(140, 76);
+            this.btnSave.TabIndex = 19;
+            this.btnSave.Text = "Save";
+            this.btnSave.UseVisualStyleBackColor = false;
+            this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
             // 
             // LineTeachingForm
             // 
@@ -319,12 +307,10 @@
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.Load += new System.EventHandler(this.LineTeachingForm_Load);
-//>>>>>>> 616cc5a5db2247201a8bcc4219b3e71fefb0e2fe:Source/ATT/UI/Forms/LineTeachingForm.Designer.cs
             this.tlpTeachingPage.ResumeLayout(false);
             this.pnlTeachingPage.ResumeLayout(false);
             this.tlpTeaching.ResumeLayout(false);
             this.tableLayoutPanel1.ResumeLayout(false);
-            this.panel1.ResumeLayout(false);
             this.pnlTeachingItem.ResumeLayout(false);
             this.tlpTeachingItem.ResumeLayout(false);
             this.ResumeLayout(false);

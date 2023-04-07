@@ -1,0 +1,40 @@
+﻿using Jastech.Framework.Device.LightCtrls;
+using Jastech.Framework.Imaging.VisionPro.VisionAlgorithms.Parameters;
+using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Jastech.Apps.Structure
+{
+    public class PreAlign
+    {
+        [JsonProperty]
+        public string Name { get; set; } = "";
+
+        [JsonProperty]
+        public CogPatternMatchingParam InspParam { get; set; } = null;
+
+        [JsonProperty]
+        public List<LightParameter> LightParams { get; set; } = null;
+
+        public PreAlign DeepCopy()
+        {
+            PreAlign preAlign = new PreAlign();
+            if(InspParam != null)
+                preAlign.InspParam = InspParam.DeepCopy();
+
+            if (preAlign.LightParams != null)
+                preAlign.LightParams = LightParams.Select(x => x.DeepCopy()).ToList();
+
+            return preAlign;
+        }
+
+        public void Dispose()
+        {
+            InspParam.Dispose();
+        }
+    }
+}

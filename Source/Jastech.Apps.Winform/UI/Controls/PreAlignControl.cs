@@ -27,7 +27,7 @@ namespace Jastech.Apps.Winform.UI.Controls
         #endregion
         private CogPatternMatchingParamControl ParamControl { get; set; } = new CogPatternMatchingParamControl();
 
-        private List<CogPatternMatchingParam> PatternMatchingList { get; set; } = null;
+        private List<PreAlign> PreAlignList { get; set; } = null;
 
         private AlgorithmTool Algorithm = new AlgorithmTool();
 
@@ -53,12 +53,12 @@ namespace Jastech.Apps.Winform.UI.Controls
             return AppsTeachingUIManager.Instance().TeachingDisplay.GetImage();
         }
 
-        public void SetParams(List<CogPatternMatchingParam> paramList)
+        public void SetParams(List<PreAlign> preAligns)
         {
-            if (paramList.Count <= 0)
+            if (preAligns.Count <= 0)
                 return;
 
-            PatternMatchingList = paramList;
+            PreAlignList = preAligns;
             InitializeComboBox();
 
             string name = cbxPreAlignList.SelectedItem as string;
@@ -69,7 +69,7 @@ namespace Jastech.Apps.Winform.UI.Controls
         {
             cbxPreAlignList.Items.Clear();
 
-            foreach (var item in PatternMatchingList)
+            foreach (var item in PreAlignList)
             {
                 cbxPreAlignList.Items.Add(item.Name);
             }
@@ -78,7 +78,7 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         private void UpdateParam(string name)
         {
-            var param = PatternMatchingList.Where(x => x.Name == name).First();
+            var param = PreAlignList.Where(x => x.Name == name).First().InspParam;
             ParamControl.UpdateData(param);
         }
 
@@ -160,9 +160,9 @@ namespace Jastech.Apps.Winform.UI.Controls
             }
         }
 
-        public List<CogPatternMatchingParam> GetTeachingData()
+        public List<PreAlign> GetTeachingData()
         {
-            return PatternMatchingList;
+            return PreAlignList;
         }
 
         private void cbxPreAlignList_DrawItem(object sender, DrawItemEventArgs e)

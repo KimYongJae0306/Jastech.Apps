@@ -41,11 +41,15 @@ namespace ATT.UI.Forms
         #region 이벤트
         public event ApplyModelDelegate ApplyModelEventHandler;
         #endregion
+
+        #region 생성자
         public ModelPageForm()
         {
             InitializeComponent();
         }
+        #endregion
 
+        #region 메서드
         private void ModelPageForm_Load(object sender, EventArgs e)
         {
             AddControl();
@@ -109,10 +113,11 @@ namespace ATT.UI.Forms
 
         private void ModelControl_ApplyModelEventHandler(string modelName)
         {
-            if(InspModelService != null)
+            if (InspModelService != null)
             {
                 ApplyModelEventHandler?.Invoke(modelName);
             }
         }
+        #endregion
     }
 }

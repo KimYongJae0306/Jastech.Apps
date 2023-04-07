@@ -19,6 +19,7 @@ using Jastech.Framework.Imaging.VisionPro;
 using ATT.Core;
 using Jastech.Apps.Winform.Settings;
 using Jastech.Framework.Structure;
+using Jastech.Framework.Winform.Controls;
 
 namespace ATT.UI.Forms
 {
@@ -40,6 +41,16 @@ namespace ATT.UI.Forms
         private AkkonControl AkkonControl { get; set; } = new AkkonControl() { Dock = DockStyle.Fill };
 
         private List<UserControl> TeachControlList = null;
+
+        protected override CreateParams CreateParams
+        {
+            get
+            {
+                var cp = base.CreateParams;
+                cp.ExStyle |= 0x02000000;
+                return cp;
+            }
+        }
         #endregion
 
         #region 이벤트

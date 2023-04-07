@@ -37,6 +37,8 @@ namespace ATT.UI.Forms
         private List<MotionParameterVariableControl> MotionParameterVariableControlList { get; set; } = new List<MotionParameterVariableControl>();
         #endregion
 
+
+        #region 속성
         MotionCommandControl XCommandControl = new MotionCommandControl();
 
         MotionCommandControl YCommandControl = new MotionCommandControl();
@@ -54,7 +56,7 @@ namespace ATT.UI.Forms
         MotionParameterVariableControl YVariableControl = new MotionParameterVariableControl();
 
         MotionParameterVariableControl ZVariableControl = new MotionParameterVariableControl();
-        #region 속성
+
         public TeachingPositionType TeachingPositionType = TeachingPositionType.Standby;
 
         protected override CreateParams CreateParams
@@ -217,7 +219,7 @@ namespace ATT.UI.Forms
                 return;
 
             // Variable Params
-            var posData = SystemManager.Instance().GetTeachingData().GetUnit(unitName).PositionList[(int)teachingPositionType];
+            var posData = SystemManager.Instance().GetTeachingData().GetUnit(unitName).TeachingPositions[(int)teachingPositionType];
 
             XVariableControl.UpdateData(posData.GetMovingParams(AxisName.X));
             YVariableControl.UpdateData(posData.GetMovingParams(AxisName.Y));
@@ -241,7 +243,7 @@ namespace ATT.UI.Forms
 
             // Variable Params
             string unitName = TeachingPositionListControl.UnitName;
-            var posData = SystemManager.Instance().GetTeachingData().GetUnit(unitName).PositionList[(int)TeachingPositionType];
+            var posData = SystemManager.Instance().GetTeachingData().GetUnit(unitName).TeachingPositions[(int)TeachingPositionType];
 
             posData.SetMovingParams(AxisName.X, XVariableControl.GetCurrentData());
             posData.SetMovingParams(AxisName.Y, YVariableControl.GetCurrentData());

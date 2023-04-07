@@ -141,6 +141,10 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\Jastech.Core\src\Jastech.Framework.Comm\Jastech.Framework.Comm.csproj">
+      <Project>{05B26E55-9C49-4078-983A-C6B13F6EE375}</Project>
+      <Name>Jastech.Framework.Comm</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\..\Jastech.Core\src\Jastech.Framework.Config\Jastech.Framework.Config.csproj">
       <Project>{6244FA20-EDA3-45D4-85C7-50D901C5D376}</Project>
       <Name>Jastech.Framework.Config</Name>

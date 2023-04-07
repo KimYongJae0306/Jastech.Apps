@@ -1,6 +1,8 @@
 ﻿using Jastech.Apps.Structure;
 using Jastech.Apps.Structure.VisionTool;
 using Jastech.Apps.Winform;
+using Jastech.Apps.Winform.Settings;
+using Jastech.Framework.Device.LightCtrls;
 using Jastech.Framework.Device.Motions;
 using Jastech.Framework.Imaging.VisionPro.VisionAlgorithms.Parameters;
 using Jastech.Framework.Structure;
@@ -29,10 +31,17 @@ namespace ATT.Core
                 // Prev Align 등록
                 foreach (ATTAlignName type in Enum.GetValues(typeof(ATTAlignName)))
                 {
-                    CogPatternMatchingParam preAlign = new CogPatternMatchingParam();
+                    PreAlign preAlign = new PreAlign();
                     preAlign.Name = type.ToString();
-                    unit.PreAlignParams.Add(preAlign);
+                    preAlign.InspParam = new CogPatternMatchingParam();
+                    preAlign.LightParams = new List<LightParameter>();
+                    preAlign.LightParams.AddRange(CreatePreAlignLightParameter());
+
+                    unit.PreAligns.Add(preAlign);
                 }
+
+                // LineScan 조명 Parameter 생성
+                unit.LightParams.AddRange(CreateLightParameter());
 
                 for (int k = 0; k < newInspModel.TabCount; k++)
                 {
@@ -51,11 +60,9 @@ namespace ATT.Core
                     unit.AddTab(tab);
                 }
 
-                newInspModel.AddUnit(unit);
                 AddTeachingPosition(unit);
+                newInspModel.AddUnit(unit);
             }
-
-            
 
             return newInspModel;
         }
@@ -63,7 +70,6 @@ namespace ATT.Core
         private void AddTeachingPosition(Unit unit)
         {
             var currentAxisHandler = AppsMotionManager.Instance().GetAxisHandler(AxisHandlerName.Unit0);
-            string unitName = "0";
 
             TeachingPosition t1 = new TeachingPosition();
             t1.CreateTeachingPosition(TeachingPositionType.Standby.ToString(), "Standby", currentAxisHandler);
@@ -86,6 +92,51 @@ namespace ATT.Core
             unit.AddTeachingPosition(t5);
         }
 
+        // PreAlign 검사 시
+        private List<LightParameter> CreatePreAlignLightParameter()
+        {
+            // PreAlign 사용할 경우 작성
+            List<LightParameter> lightParamList = new List<LightParameter>();
+
+            return lightParamList;
+        }
+
+        private List<LightParameter> CreateLightParameter()
+        {
+            List<LightParameter> lightParameterList = new List<LightParameter>();
+
+            var lightCtrls = AppConfig.Instance().Machine.GetDevices<LightCtrl>();
+            if (lightCtrls == null)
+                return lightParameterList;
+            
+            foreach (var light in lightCtrls)
+            {
+                if(light.Name == "LvsLight12V")
+                {
+                    LightParameter lightParameter = new LightParameter(light.Name);
+                    LightValue lightValue = new LightValue(light.TotalChannelCount);
+                    lightValue.LightLevels[light.ChannelNameMap["Ch.Blue"]] = 100;
+                    lightValue.LightLevels[light.ChannelNameMap["Ch.RedSpot"]] = 100;
+
+                    lightParameter.Add(light, lightValue);
+
+                    lightParameterList.Add(lightParameter);
+                }
+                else if(light.Name == "LvsLight24V")
+                {
+                    LightParameter lightParameter = new LightParameter(light.Name);
+                    LightValue lightValue = new LightValue(light.TotalChannelCount);
+                    lightValue.LightLevels[light.ChannelNameMap["Ch.RedRing"]] = 100;
+
+                    lightParameter.Add(light, lightValue);
+
+                    lightParameterList.Add(lightParameter);
+                }
+            }
+
+            return lightParameterList;
+        }
+
         public override InspModel Load(string filePath)
         {  
             var model = new ATTInspModel();
@@ -94,6 +145,7 @@ namespace ATT.Core
 
             string rootDir = Path.GetDirectoryName(filePath);
 
+            // Vpp Load
             foreach (var unit in model.GetUnitList())
             {
                 string unitDir = rootDir + @"\Unit_" + unit.Name;
@@ -101,8 +153,8 @@ namespace ATT.Core
                 string preAlignPath = unitDir + @"\PreAlign";
 
                 //PreAlign Load
-                foreach (var item in unit.PreAlignParams)
-                    item.LoadTool(preAlignPath);
+                foreach (var item in unit.PreAligns)
+                    item.InspParam.LoadTool(preAlignPath);
 
                 foreach (var tab in unit.GetTabList())
                 {
@@ -124,14 +176,15 @@ namespace ATT.Core
 
             JsonConvertHelper.Save(filePath, attInspModel);
 
+            // Vpp 저장
             foreach (var unit in attInspModel.GetUnitList())
             {
                 string unitDir = Path.GetDirectoryName(filePath) + @"\Unit_" + unit.Name;
                 string preAlignPath = unitDir + @"\PreAlign";
 
                 //PreAlign 저장
-                foreach (var item in unit.PreAlignParams)
-                    item.SaveTool(preAlignPath);
+                foreach (var item in unit.PreAligns)
+                    item.InspParam.SaveTool(preAlignPath);
 
                 foreach (var tab in unit.GetTabList())
                 {

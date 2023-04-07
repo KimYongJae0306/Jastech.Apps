@@ -33,11 +33,17 @@ namespace ATT.Core
             return UnitList.Where(x => x.Name == name).First();
         }
 
-        public List<CogPatternMatchingParam> GetPreAlignParameters(string unitName)
+        public List<PreAlign> GetPreAlign(string unitName)
         {
             Unit unit = GetUnit(unitName);
 
-            return unit.PreAlignParams;
+            return unit.PreAligns;
+        }
+
+        public CogPatternMatchingParam GetPreAlignParameters(string unitName, string preAlignName)
+        {
+            Unit unit = GetUnit(unitName);
+            return unit.PreAligns.Where(x => x.Name == preAlignName).First().InspParam as CogPatternMatchingParam;
         }
 
         public List<Tab> GetAlignParameters(string unitName)
