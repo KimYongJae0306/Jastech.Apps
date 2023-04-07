@@ -28,13 +28,10 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MotionPopupForm));
             this.tlpMotionPopup = new System.Windows.Forms.TableLayoutPanel();
             this.tlpFormFunction = new System.Windows.Forms.TableLayoutPanel();
             this.btnMoveTeachingPosition = new System.Windows.Forms.Button();
-            this.btnExit = new System.Windows.Forms.Button();
             this.btnStopTeachingPosition = new System.Windows.Forms.Button();
-            this.btnSave = new System.Windows.Forms.Button();
             this.btnCommand = new System.Windows.Forms.Button();
             this.btnParameter = new System.Windows.Forms.Button();
             this.pnlFunction = new System.Windows.Forms.Panel();
@@ -45,6 +42,8 @@
             this.tlpStatus = new System.Windows.Forms.TableLayoutPanel();
             this.pnlJog = new System.Windows.Forms.Panel();
             this.pnlTeachingPositionList = new System.Windows.Forms.Panel();
+            this.btnExit = new System.Windows.Forms.Button();
+            this.btnSave = new System.Windows.Forms.Button();
             this.tlpMotionPopup.SuspendLayout();
             this.tlpFormFunction.SuspendLayout();
             this.pnlFunction.SuspendLayout();
@@ -107,24 +106,7 @@
             this.btnMoveTeachingPosition.Size = new System.Drawing.Size(94, 94);
             this.btnMoveTeachingPosition.TabIndex = 199;
             this.btnMoveTeachingPosition.Text = "MOVE TARGET";
-            this.btnMoveTeachingPosition.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
             this.btnMoveTeachingPosition.UseVisualStyleBackColor = false;
-            // 
-            // btnExit
-            // 
-            this.btnExit.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
-            this.btnExit.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnExit.BackgroundImage")));
-            this.btnExit.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.btnExit.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.btnExit.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
-            this.btnExit.Location = new System.Drawing.Point(587, 3);
-            this.btnExit.Name = "btnExit";
-            this.btnExit.Size = new System.Drawing.Size(94, 94);
-            this.btnExit.TabIndex = 293;
-            this.btnExit.Text = "EXIT";
-            this.btnExit.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
-            this.btnExit.UseVisualStyleBackColor = false;
-            this.btnExit.Click += new System.EventHandler(this.btnExit_Click);
             // 
             // btnStopTeachingPosition
             // 
@@ -137,24 +119,7 @@
             this.btnStopTeachingPosition.Size = new System.Drawing.Size(94, 94);
             this.btnStopTeachingPosition.TabIndex = 200;
             this.btnStopTeachingPosition.Text = "SET";
-            this.btnStopTeachingPosition.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
             this.btnStopTeachingPosition.UseVisualStyleBackColor = false;
-            // 
-            // btnSave
-            // 
-            this.btnSave.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
-            this.btnSave.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnSave.BackgroundImage")));
-            this.btnSave.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.btnSave.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.btnSave.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
-            this.btnSave.Location = new System.Drawing.Point(487, 3);
-            this.btnSave.Name = "btnSave";
-            this.btnSave.Size = new System.Drawing.Size(94, 94);
-            this.btnSave.TabIndex = 292;
-            this.btnSave.Text = "SAVE";
-            this.btnSave.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
-            this.btnSave.UseVisualStyleBackColor = false;
-            this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
             // 
             // btnCommand
             // 
@@ -167,7 +132,6 @@
             this.btnCommand.Size = new System.Drawing.Size(94, 94);
             this.btnCommand.TabIndex = 292;
             this.btnCommand.Text = "PREV PAGE";
-            this.btnCommand.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
             this.btnCommand.UseVisualStyleBackColor = false;
             this.btnCommand.Click += new System.EventHandler(this.btnCommand_Click);
             // 
@@ -182,7 +146,6 @@
             this.btnParameter.Size = new System.Drawing.Size(94, 94);
             this.btnParameter.TabIndex = 292;
             this.btnParameter.Text = "NEXT PAGE";
-            this.btnParameter.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
             this.btnParameter.UseVisualStyleBackColor = false;
             this.btnParameter.Click += new System.EventHandler(this.btnParameter_Click);
             // 
@@ -292,6 +255,38 @@
             this.pnlTeachingPositionList.Name = "pnlTeachingPositionList";
             this.pnlTeachingPositionList.Size = new System.Drawing.Size(684, 100);
             this.pnlTeachingPositionList.TabIndex = 3;
+            // 
+            // btnExit
+            // 
+            this.btnExit.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
+            this.btnExit.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.btnExit.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.btnExit.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
+            this.btnExit.Image = global::ATT.Properties.Resources.Exit_White;
+            this.btnExit.Location = new System.Drawing.Point(587, 3);
+            this.btnExit.Name = "btnExit";
+            this.btnExit.Size = new System.Drawing.Size(94, 94);
+            this.btnExit.TabIndex = 293;
+            this.btnExit.Text = "EXIT";
+            this.btnExit.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
+            this.btnExit.UseVisualStyleBackColor = false;
+            this.btnExit.Click += new System.EventHandler(this.btnExit_Click);
+            // 
+            // btnSave
+            // 
+            this.btnSave.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
+            this.btnSave.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.btnSave.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.btnSave.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
+            this.btnSave.Image = global::ATT.Properties.Resources.Save_White;
+            this.btnSave.Location = new System.Drawing.Point(487, 3);
+            this.btnSave.Name = "btnSave";
+            this.btnSave.Size = new System.Drawing.Size(94, 94);
+            this.btnSave.TabIndex = 292;
+            this.btnSave.Text = "SAVE";
+            this.btnSave.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
+            this.btnSave.UseVisualStyleBackColor = false;
+            this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
             // 
             // MotionPopupForm
             // 

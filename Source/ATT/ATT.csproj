@@ -316,5 +316,8 @@
   <ItemGroup>
     <None Include="Resources\Next_White.png" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Exit_White.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
