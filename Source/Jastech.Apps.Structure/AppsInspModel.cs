@@ -28,6 +28,9 @@ namespace Jastech.Apps.Structure
         public int TabCount { get; set; } = 5;
 
         [JsonProperty]
+        public bool EnablePreAlign { get; set; } = false;
+
+        [JsonProperty]
         public List<Unit> UnitList { get; private set; } = new List<Unit>();
 
         public Unit GetUnit(string name)

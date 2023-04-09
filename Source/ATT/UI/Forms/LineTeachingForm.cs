@@ -34,7 +34,7 @@ namespace ATT.UI.Forms
         #region 속성
         public string UnitName { get; set; } = "";
 
-        private CogThumbnailDisplayControl Display { get; set; } = new CogThumbnailDisplayControl();
+        private CogTeachingDisplayControl Display { get; set; } = new CogTeachingDisplayControl();
 
         private AlignControl AlignControl { get; set; } = new AlignControl() { Dock = DockStyle.Fill };
 
@@ -79,7 +79,7 @@ namespace ATT.UI.Forms
             _noneSelectedColor = Color.FromArgb(52, 52, 52);
 
             // Display Control
-            Display = new CogThumbnailDisplayControl();
+            Display = new CogTeachingDisplayControl();
             Display.Dock = DockStyle.Fill;
             //Event 연결
             Display.DeleteEventHandler += Display_DeleteEventHandler;
