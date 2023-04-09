@@ -34,10 +34,10 @@
             this.pnlDisplay = new System.Windows.Forms.Panel();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.btnLoadImage = new System.Windows.Forms.Button();
             this.pnlTeach = new System.Windows.Forms.Panel();
             this.pnlTeachingItem = new System.Windows.Forms.Panel();
             this.tlpTeachingItem = new System.Windows.Forms.TableLayoutPanel();
+            this.btnLoadImage = new System.Windows.Forms.Button();
             this.btnMotionPopup = new System.Windows.Forms.Button();
             this.btnAutoFocus = new System.Windows.Forms.Button();
             this.btnAkkon = new System.Windows.Forms.Button();
@@ -129,20 +129,6 @@
             this.panel1.Size = new System.Drawing.Size(535, 76);
             this.panel1.TabIndex = 1;
             // 
-            // btnLoadImage
-            // 
-            this.btnLoadImage.BackColor = System.Drawing.Color.White;
-            this.btnLoadImage.Font = new System.Drawing.Font("맑은 고딕", 10F, System.Drawing.FontStyle.Bold);
-            this.btnLoadImage.ForeColor = System.Drawing.Color.Black;
-            this.btnLoadImage.Location = new System.Drawing.Point(2, 322);
-            this.btnLoadImage.Margin = new System.Windows.Forms.Padding(2);
-            this.btnLoadImage.Name = "btnLoadImage";
-            this.btnLoadImage.Size = new System.Drawing.Size(116, 38);
-            this.btnLoadImage.TabIndex = 20;
-            this.btnLoadImage.Text = "Load Image";
-            this.btnLoadImage.UseVisualStyleBackColor = false;
-            this.btnLoadImage.Click += new System.EventHandler(this.btnLoadImage_Click);
-            // 
             // pnlTeach
             // 
             this.pnlTeach.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -179,16 +165,30 @@
             this.tlpTeachingItem.Margin = new System.Windows.Forms.Padding(0);
             this.tlpTeachingItem.Name = "tlpTeachingItem";
             this.tlpTeachingItem.RowCount = 8;
-            this.tlpTeachingItem.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 80F));
-            this.tlpTeachingItem.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 80F));
-            this.tlpTeachingItem.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 80F));
-            this.tlpTeachingItem.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 80F));
+            this.tlpTeachingItem.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 100F));
+            this.tlpTeachingItem.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 100F));
+            this.tlpTeachingItem.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 100F));
+            this.tlpTeachingItem.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 100F));
             this.tlpTeachingItem.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tlpTeachingItem.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 80F));
-            this.tlpTeachingItem.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 80F));
-            this.tlpTeachingItem.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 80F));
+            this.tlpTeachingItem.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 100F));
+            this.tlpTeachingItem.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 100F));
+            this.tlpTeachingItem.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 100F));
             this.tlpTeachingItem.Size = new System.Drawing.Size(144, 779);
             this.tlpTeachingItem.TabIndex = 0;
+            // 
+            // btnLoadImage
+            // 
+            this.btnLoadImage.BackColor = System.Drawing.Color.White;
+            this.btnLoadImage.Font = new System.Drawing.Font("맑은 고딕", 10F, System.Drawing.FontStyle.Bold);
+            this.btnLoadImage.ForeColor = System.Drawing.Color.Black;
+            this.btnLoadImage.Location = new System.Drawing.Point(2, 402);
+            this.btnLoadImage.Margin = new System.Windows.Forms.Padding(2);
+            this.btnLoadImage.Name = "btnLoadImage";
+            this.btnLoadImage.Size = new System.Drawing.Size(116, 38);
+            this.btnLoadImage.TabIndex = 20;
+            this.btnLoadImage.Text = "Load Image";
+            this.btnLoadImage.UseVisualStyleBackColor = false;
+            this.btnLoadImage.Click += new System.EventHandler(this.btnLoadImage_Click);
             // 
             // btnMotionPopup
             // 
@@ -196,10 +196,10 @@
             this.btnMotionPopup.Dock = System.Windows.Forms.DockStyle.Fill;
             this.btnMotionPopup.Font = new System.Drawing.Font("맑은 고딕", 20F, System.Drawing.FontStyle.Bold);
             this.btnMotionPopup.ForeColor = System.Drawing.Color.White;
-            this.btnMotionPopup.Location = new System.Drawing.Point(2, 541);
+            this.btnMotionPopup.Location = new System.Drawing.Point(2, 481);
             this.btnMotionPopup.Margin = new System.Windows.Forms.Padding(2);
             this.btnMotionPopup.Name = "btnMotionPopup";
-            this.btnMotionPopup.Size = new System.Drawing.Size(140, 76);
+            this.btnMotionPopup.Size = new System.Drawing.Size(140, 96);
             this.btnMotionPopup.TabIndex = 19;
             this.btnMotionPopup.Text = "Motion\r\nPopup";
             this.btnMotionPopup.UseVisualStyleBackColor = false;
@@ -214,7 +214,7 @@
             this.btnAutoFocus.Location = new System.Drawing.Point(2, 2);
             this.btnAutoFocus.Margin = new System.Windows.Forms.Padding(2);
             this.btnAutoFocus.Name = "btnAutoFocus";
-            this.btnAutoFocus.Size = new System.Drawing.Size(140, 76);
+            this.btnAutoFocus.Size = new System.Drawing.Size(140, 96);
             this.btnAutoFocus.TabIndex = 19;
             this.btnAutoFocus.Text = "Linescan";
             this.btnAutoFocus.UseVisualStyleBackColor = false;
@@ -225,10 +225,10 @@
             this.btnAkkon.Dock = System.Windows.Forms.DockStyle.Fill;
             this.btnAkkon.Font = new System.Drawing.Font("맑은 고딕", 20F, System.Drawing.FontStyle.Bold);
             this.btnAkkon.ForeColor = System.Drawing.Color.White;
-            this.btnAkkon.Location = new System.Drawing.Point(2, 242);
+            this.btnAkkon.Location = new System.Drawing.Point(2, 302);
             this.btnAkkon.Margin = new System.Windows.Forms.Padding(2);
             this.btnAkkon.Name = "btnAkkon";
-            this.btnAkkon.Size = new System.Drawing.Size(140, 76);
+            this.btnAkkon.Size = new System.Drawing.Size(140, 96);
             this.btnAkkon.TabIndex = 19;
             this.btnAkkon.Text = "Akkon";
             this.btnAkkon.UseVisualStyleBackColor = false;
@@ -240,10 +240,10 @@
             this.btnAlign.Dock = System.Windows.Forms.DockStyle.Fill;
             this.btnAlign.Font = new System.Drawing.Font("맑은 고딕", 20F, System.Drawing.FontStyle.Bold);
             this.btnAlign.ForeColor = System.Drawing.Color.White;
-            this.btnAlign.Location = new System.Drawing.Point(2, 162);
+            this.btnAlign.Location = new System.Drawing.Point(2, 202);
             this.btnAlign.Margin = new System.Windows.Forms.Padding(2);
             this.btnAlign.Name = "btnAlign";
-            this.btnAlign.Size = new System.Drawing.Size(140, 76);
+            this.btnAlign.Size = new System.Drawing.Size(140, 96);
             this.btnAlign.TabIndex = 19;
             this.btnAlign.Text = "Align";
             this.btnAlign.UseVisualStyleBackColor = false;
@@ -255,10 +255,10 @@
             this.btnPattern.Dock = System.Windows.Forms.DockStyle.Fill;
             this.btnPattern.Font = new System.Drawing.Font("맑은 고딕", 20F, System.Drawing.FontStyle.Bold);
             this.btnPattern.ForeColor = System.Drawing.Color.White;
-            this.btnPattern.Location = new System.Drawing.Point(2, 82);
+            this.btnPattern.Location = new System.Drawing.Point(2, 102);
             this.btnPattern.Margin = new System.Windows.Forms.Padding(2);
             this.btnPattern.Name = "btnPattern";
-            this.btnPattern.Size = new System.Drawing.Size(140, 76);
+            this.btnPattern.Size = new System.Drawing.Size(140, 96);
             this.btnPattern.TabIndex = 19;
             this.btnPattern.Text = "Pattern";
             this.btnPattern.UseVisualStyleBackColor = false;
@@ -270,10 +270,10 @@
             this.btnCancel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.btnCancel.Font = new System.Drawing.Font("맑은 고딕", 20F, System.Drawing.FontStyle.Bold);
             this.btnCancel.ForeColor = System.Drawing.Color.White;
-            this.btnCancel.Location = new System.Drawing.Point(2, 701);
+            this.btnCancel.Location = new System.Drawing.Point(2, 681);
             this.btnCancel.Margin = new System.Windows.Forms.Padding(2);
             this.btnCancel.Name = "btnCancel";
-            this.btnCancel.Size = new System.Drawing.Size(140, 76);
+            this.btnCancel.Size = new System.Drawing.Size(140, 96);
             this.btnCancel.TabIndex = 20;
             this.btnCancel.Text = "Cancel";
             this.btnCancel.UseVisualStyleBackColor = false;
@@ -285,10 +285,10 @@
             this.btnSave.Dock = System.Windows.Forms.DockStyle.Fill;
             this.btnSave.Font = new System.Drawing.Font("맑은 고딕", 20F, System.Drawing.FontStyle.Bold);
             this.btnSave.ForeColor = System.Drawing.Color.White;
-            this.btnSave.Location = new System.Drawing.Point(2, 621);
+            this.btnSave.Location = new System.Drawing.Point(2, 581);
             this.btnSave.Margin = new System.Windows.Forms.Padding(2);
             this.btnSave.Name = "btnSave";
-            this.btnSave.Size = new System.Drawing.Size(140, 76);
+            this.btnSave.Size = new System.Drawing.Size(140, 96);
             this.btnSave.TabIndex = 19;
             this.btnSave.Text = "Save";
             this.btnSave.UseVisualStyleBackColor = false;
