@@ -32,7 +32,7 @@ namespace ATT.UI.Pages
         #region 속성
         public string UnitName { get; set; } = "";
         // Display
-        private CogThumbnailDisplayControl Display { get; set; } = new CogThumbnailDisplayControl();
+        private CogTeachingDisplayControl Display { get; set; } = new CogTeachingDisplayControl();
        
         // Teach Controls
         private PreAlignControl PreAlignControl { get; set; } = new PreAlignControl();
@@ -55,7 +55,7 @@ namespace ATT.UI.Pages
         private void AddControl()
         {
             // Display Control
-            Display = new CogThumbnailDisplayControl();
+            Display = new CogTeachingDisplayControl();
             Display.Dock = DockStyle.Fill;
 
             //Event 연결
