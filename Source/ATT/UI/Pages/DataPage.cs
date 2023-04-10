@@ -12,7 +12,7 @@ using Jastech.Apps.Winform.Settings;
 using ATT.UI.Forms;
 using Jastech.Framework.Structure.Service;
 using ATT.Core;
-using static Jastech.Framework.Winform.Controls.ModelControl;
+using static Jastech.Framework.Modeller.Controls.ModelControl;
 
 namespace ATT.UI.Pages
 {

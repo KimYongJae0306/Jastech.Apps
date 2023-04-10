@@ -244,6 +244,10 @@
       <Project>{8b4b5cef-5b39-423a-a460-a24f7fd8890e}</Project>
       <Name>Jastech.Framework.Matrox</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\..\Jastech.Core\src\Jastech.Framework.Modeller\Jastech.Framework.Modeller.csproj">
+      <Project>{FEB6EA9B-86D3-41B0-A950-C5B2555916CF}</Project>
+      <Name>Jastech.Framework.Modeller</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\..\Jastech.Core\src\Jastech.Framework.Structure\Jastech.Framework.Structure.csproj">
       <Project>{dcff7b48-8df8-4ed9-9f0f-f11c2ccb7547}</Project>
       <Name>Jastech.Framework.Structure</Name>

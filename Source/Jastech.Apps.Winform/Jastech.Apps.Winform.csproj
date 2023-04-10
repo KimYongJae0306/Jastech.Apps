@@ -149,6 +149,24 @@
     <Compile Include="UI\Controls\UnitSelectControl.Designer.cs">
       <DependentUpon>UnitSelectControl.cs</DependentUpon>
     </Compile>
+    <Compile Include="UI\Forms\CopyATTModelForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\Forms\CopyATTModelForm.designer.cs">
+      <DependentUpon>CopyATTModelForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Forms\CreateATTModelForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\Forms\CreateATTModelForm.designer.cs">
+      <DependentUpon>CreateATTModelForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Forms\EditATTModelForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\Forms\EditATTModelForm.designer.cs">
+      <DependentUpon>EditATTModelForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="UI\Forms\UnitSelectForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -191,6 +209,15 @@
     <EmbeddedResource Include="UI\Controls\UnitSelectControl.resx">
       <DependentUpon>UnitSelectControl.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="UI\Forms\CopyATTModelForm.resx">
+      <DependentUpon>CopyATTModelForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\Forms\CreateATTModelForm.resx">
+      <DependentUpon>CreateATTModelForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\Forms\EditATTModelForm.resx">
+      <DependentUpon>EditATTModelForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="UI\Forms\UnitSelectForm.resx">
       <DependentUpon>UnitSelectForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -215,6 +242,10 @@
     <ProjectReference Include="..\..\..\Jastech.Core\src\Jastech.Framework.Imaging\Jastech.Framework.Imaging.csproj">
       <Project>{2380da0f-851a-4430-9a43-e7b2deee29f2}</Project>
       <Name>Jastech.Framework.Imaging</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Jastech.Core\src\Jastech.Framework.Modeller\Jastech.Framework.Modeller.csproj">
+      <Project>{FEB6EA9B-86D3-41B0-A950-C5B2555916CF}</Project>
+      <Name>Jastech.Framework.Modeller</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\..\Jastech.Core\src\Jastech.Framework.Structure\Jastech.Framework.Structure.csproj">
       <Project>{DCFF7B48-8DF8-4ED9-9F0F-F11C2CCB7547}</Project>
@@ -261,13 +292,43 @@
     <None Include="Resources\Cancel.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\Cancel_White.png" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Resources\Next_White.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Prev_White.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Arrow_down_White.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Arrow_Left_White.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Arrow_Right_White.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Arrow_Up_White.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Cancel_White.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Copy_White.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Delete_White.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Edit_White.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\New_White.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Select_White.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Stop_Circle_White.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
