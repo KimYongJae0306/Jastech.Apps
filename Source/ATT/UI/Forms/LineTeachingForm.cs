@@ -81,6 +81,7 @@ namespace ATT.UI.Forms
             // Display Control
             Display = new CogTeachingDisplayControl();
             Display.Dock = DockStyle.Fill;
+
             //Event 연결
             Display.DeleteEventHandler += Display_DeleteEventHandler;
             pnlDisplay.Controls.Add(Display);
@@ -89,13 +90,18 @@ namespace ATT.UI.Forms
             AppsTeachingUIManager.Instance().TeachingDisplay = Display.GetDisplay();
 
             // Teach Control List
-            TeachControlList = new List<UserControl>();
-            TeachControlList.Add(AlignControl);
+            //TeachControlList = new List<UserControl>();
+            //TeachControlList.Add(AlignControl);
         }
 
         private void Display_DeleteEventHandler(object sender, EventArgs e)
         {
             AlignControl.DrawROI();
+        }
+
+        private void btnPattern_Click(object sender, EventArgs e)
+        {
+            
         }
 
         private void btnAlign_Click(object sender, EventArgs e)
@@ -160,7 +166,7 @@ namespace ATT.UI.Forms
                 ICogImage cogImage = CogImageHelper.Load(dlg.FileName);
                 Display.SetImage(cogImage);
                 AppsTeachingUIManager.Instance().TeachingDisplay.SetImage(cogImage);
-                AlignControl.DrawROI();
+                //AlignControl.DrawROI();
             }
         }
 
@@ -192,10 +198,7 @@ namespace ATT.UI.Forms
 
         #endregion
 
-        private void btnPattern_Click(object sender, EventArgs e)
-        {
-
-        }
+        
 
         private void btnCancel_Click(object sender, EventArgs e)
         {

@@ -33,7 +33,6 @@ namespace Jastech.Apps.Winform.UI.Controls
         private AlgorithmTool Algorithm = new AlgorithmTool();
 
         private List<Tab> TeachingTabList { get; set; } = new List<Tab>();
-
         //private CogCaliper CogCaliperAlgorithm = new CogCaliper();
 
         #region 속성
@@ -80,28 +79,30 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         public void SetParams(List<Tab> tabList)
         {
-            return;
-
             if (tabList.Count <= 0)
                 return;
 
             TeachingTabList = tabList;
 
-            string name = tabList[0].Name;
-            UpdateParam(name);
+            string tabName = tabList[0].Name;
+            UpdateParam(tabName);
         }
 
-        private void UpdateParam(string name)
+        private void UpdateParam(string tabName)
         {
-            if (CaliperList == null)
+            if (TeachingTabList.Count <= 0)
                 return;
 
-            var param = CaliperList.Where(x => x.Name == name).First();
+
+            //var param = CaliperList.Where(x => x.Name == name).First();
+            //var param = TeachingTabList[0].AlignParams.Where(x => x.Name == Name).First();
+            var param = TeachingTabList.Where(x => x.Name == tabName).First().AlignParams[0];
             CogCaliperParamControl.UpdateData(param);
         }
 
         private void SetNewROI(CogDisplayControl display)
         {
+            display.ClearGraphic();
             ICogImage cogImage = display.GetImage();
 
             double centerX = display.ImageWidth() / 2.0 - display.GetPan().X;
@@ -123,8 +124,9 @@ namespace Jastech.Apps.Winform.UI.Controls
             if (display.GetImage() == null)
                 return;
 
-            CogCaliperCurrentRecordConstants constants = CogCaliperCurrentRecordConstants.InputImage | CogCaliperCurrentRecordConstants.Region;
+            CogCaliperCurrentRecordConstants constants = CogCaliperCurrentRecordConstants.All;  //CogCaliperCurrentRecordConstants.InputImage | CogCaliperCurrentRecordConstants.Region;
             var currentParam = CogCaliperParamControl.GetCurrentParam();
+
             display.SetInteractiveGraphics("tool", currentParam.CreateCurrentRecord(constants));
         }
 
@@ -147,9 +149,9 @@ namespace Jastech.Apps.Winform.UI.Controls
         //    _prevName = name;
         //}
 
-        public List<CogCaliperParam> GetTeachingData()
+        public List<Tab> GetTeachingData()
         {
-            return CaliperList;
+            return TeachingTabList;
         }
 
         private void lblPrevTab_Click(object sender, EventArgs e)
