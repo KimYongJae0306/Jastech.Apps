@@ -16,6 +16,10 @@ namespace ATT_UT_Remodeling
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
+            //
+
+            
+            //
             Application.Run(new MainForm());
         }
     }
