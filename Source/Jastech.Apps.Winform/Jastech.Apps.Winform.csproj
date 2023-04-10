@@ -69,6 +69,7 @@
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Windows.Forms.DataVisualization" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -94,17 +95,53 @@
     <Compile Include="UI\Controls\AkkonControl.designer.cs">
       <DependentUpon>AkkonControl.cs</DependentUpon>
     </Compile>
+    <Compile Include="UI\Controls\AkkonInspResultControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UI\Controls\AkkonInspResultControl.Designer.cs">
+      <DependentUpon>AkkonInspResultControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="UI\Controls\AlignControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="UI\Controls\AlignControl.designer.cs">
       <DependentUpon>AlignControl.cs</DependentUpon>
     </Compile>
+    <Compile Include="UI\Controls\AkkonInspDisplayControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UI\Controls\AkkonInspDisplayControl.Designer.cs">
+      <DependentUpon>AkkonInspDisplayControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Controls\AlignInspDisplayControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UI\Controls\AlignInspDisplayControl.Designer.cs">
+      <DependentUpon>AlignInspDisplayControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Controls\AlignInspResultControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UI\Controls\AlignInspResultControl.Designer.cs">
+      <DependentUpon>AlignInspResultControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="UI\Controls\PreAlignControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="UI\Controls\PreAlignControl.Designer.cs">
       <DependentUpon>PreAlignControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Controls\ResultChartControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UI\Controls\ResultChartControl.Designer.cs">
+      <DependentUpon>ResultChartControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Controls\TabBtnControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UI\Controls\TabBtnControl.Designer.cs">
+      <DependentUpon>TabBtnControl.cs</DependentUpon>
     </Compile>
     <Compile Include="UI\Controls\UnitSelectControl.cs">
       <SubType>UserControl</SubType>
@@ -127,11 +164,29 @@
     <EmbeddedResource Include="UI\Controls\AkkonControl.resx">
       <DependentUpon>AkkonControl.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="UI\Controls\AkkonInspResultControl.resx">
+      <DependentUpon>AkkonInspResultControl.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="UI\Controls\AlignControl.resx">
       <DependentUpon>AlignControl.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="UI\Controls\AkkonInspDisplayControl.resx">
+      <DependentUpon>AkkonInspDisplayControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\Controls\AlignInspDisplayControl.resx">
+      <DependentUpon>AlignInspDisplayControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\Controls\AlignInspResultControl.resx">
+      <DependentUpon>AlignInspResultControl.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="UI\Controls\PreAlignControl.resx">
       <DependentUpon>PreAlignControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\Controls\ResultChartControl.resx">
+      <DependentUpon>ResultChartControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\Controls\TabBtnControl.resx">
+      <DependentUpon>TabBtnControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\Controls\UnitSelectControl.resx">
       <DependentUpon>UnitSelectControl.cs</DependentUpon>

@@ -23,7 +23,7 @@ namespace ATT
         #region 속성
         public ATTTeachingData TeachingData { get; set; } = new ATTTeachingData();
         // Page Control
-        private AutoPage AutoPageControl { get; set; } = new AutoPage();
+        private MainPage MainPageControl { get; set; } = new MainPage();
 
         private TeachingPage TeachingPageControl { get; set; } = new TeachingPage();
 
@@ -46,7 +46,7 @@ namespace ATT
         private void MainForm_Load(object sender, EventArgs e)
         {
             AddControls();
-            SelectInspectionPage();
+            SelectMainPage();
 
             ModelManager.Instance().CurrentModelChangedEvent += MainForm_CurrentModelChangedEvent;
 
@@ -80,7 +80,7 @@ namespace ATT
         {
             // Page Control List
             PageControlList = new List<UserControl>();
-            PageControlList.Add(AutoPageControl);
+            PageControlList.Add(MainPageControl);
             PageControlList.Add(DataPageControl);
             PageControlList.Add(TeachingPageControl);
             PageControlList.Add(LogPageControl);
@@ -102,7 +102,7 @@ namespace ATT
             string filePath = Path.Combine(modelDir, modelName, InspModel.FileName);
 
             ModelManager.Instance().CurrentModel = ATTInspModelService.Load(filePath);
-            SelectInspectionPage();
+            SelectMainPage();
 
             lblCurrentModel.Text = modelName;
 
@@ -132,10 +132,10 @@ namespace ATT
             pnlPage.Controls.Add(selectedControl);
         }
 
-        private void SelectInspectionPage()
+        private void SelectMainPage()
         {
             SetSelectLabel(lblMainPage);
-            SetSelectPage(selectedControl: AutoPageControl);
+            SetSelectPage(selectedControl: MainPageControl);
         }
 
         
@@ -148,7 +148,7 @@ namespace ATT
         private void lblMainPage_Click(object sender, EventArgs e)
         {
             SetSelectLabel(sender);
-            SetSelectPage(selectedControl: AutoPageControl);
+            SetSelectPage(selectedControl: MainPageControl);
         }
 
         private void TeachPage_Click(object sender, EventArgs e)

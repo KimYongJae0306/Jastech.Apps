@@ -8,13 +8,18 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace ATT.UI.Pages
+namespace Jastech.Apps.Winform.UI.Controls
 {
-    public partial class AutoPage : UserControl
+    public partial class AkkonInspResultControl : UserControl
     {
-        public AutoPage()
+        public AkkonInspResultControl()
         {
             InitializeComponent();
+        }
+
+        private void AkkonInspResultControl_Load(object sender, EventArgs e)
+        {
+
         }
     }
 }
