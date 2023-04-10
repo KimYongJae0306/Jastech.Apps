@@ -1,6 +1,7 @@
-﻿using ATT.Core;
-using Jastech.Apps.Structure;
+﻿using Jastech.Apps.Structure;
+using Jastech.Apps.Structure.Core;
 using Jastech.Apps.Winform;
+using Jastech.Apps.Winform.Core;
 using Jastech.Apps.Winform.Settings;
 using Jastech.Framework.Device.Cameras;
 using Jastech.Framework.Device.Motions;

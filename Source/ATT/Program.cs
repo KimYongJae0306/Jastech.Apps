@@ -1,5 +1,4 @@
-﻿using ATT.Core;
-using Jastech.Apps.Structure;
+﻿using Jastech.Apps.Structure;
 using Jastech.Apps.Winform.Settings;
 using Jastech.Framework.Device.LightCtrls;
 using Jastech.Framework.Structure;

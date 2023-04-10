@@ -1,6 +1,6 @@
-﻿namespace ATT.UI.Pages
+﻿namespace Jastech.Apps.Winform.UI.Controls
 {
-    partial class AutoPage
+    partial class AutoFocusControl
     {
         /// <summary> 
         /// 필수 디자이너 변수입니다.
@@ -28,34 +28,18 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.label1 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
-            // label1
+            // AutoFocusControl
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(213, 81);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(78, 20);
-            this.label1.TabIndex = 0;
-            this.label1.Text = "AutoPage";
-            // 
-            // AutoPage
-            // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.Color.White;
-            this.Controls.Add(this.label1);
-            this.Font = new System.Drawing.Font("맑은 고딕", 11.25F, System.Drawing.FontStyle.Bold);
-            this.Name = "AutoPage";
-            this.Size = new System.Drawing.Size(600, 600);
+            this.Name = "AutoFocusControl";
+            this.Size = new System.Drawing.Size(780, 762);
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
         #endregion
-
-        private System.Windows.Forms.Label label1;
     }
 }

@@ -10,7 +10,6 @@ using System.Windows.Forms;
 using Jastech.Framework.Winform.VisionPro.Controls;
 using Jastech.Apps.Winform.UI.Controls;
 using Jastech.Framework.Structure;
-using ATT.Core;
 using Jastech.Framework.Imaging.VisionPro;
 using Cognex.VisionPro;
 using Jastech.Apps.Winform;
@@ -20,6 +19,8 @@ using Jastech.Apps.Winform.Settings;
 using Jastech.Framework.Winform.Forms;
 using Jastech.Apps.Winform.UI.Forms;
 using ATT.UI.Forms;
+using Jastech.Apps.Winform.Core;
+using Jastech.Apps.Structure.Core;
 
 namespace ATT.UI.Pages
 {

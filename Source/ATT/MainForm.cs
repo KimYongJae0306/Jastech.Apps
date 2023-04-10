@@ -1,6 +1,8 @@
 ﻿using ATT.Core;
 using ATT.UI.Pages;
 using Jastech.Apps.Structure;
+using Jastech.Apps.Structure.Core;
+using Jastech.Apps.Winform.Core;
 using Jastech.Apps.Winform.Settings;
 using Jastech.Apps.Winform.UI.Forms;
 using Jastech.Framework.Config;
@@ -23,7 +25,7 @@ namespace ATT
         #region 속성
         public ATTTeachingData TeachingData { get; set; } = new ATTTeachingData();
         // Page Control
-        private AutoPage AutoPageControl { get; set; } = new AutoPage();
+        private MainPage MainPageControl { get; set; } = new MainPage();
 
         private TeachingPage TeachingPageControl { get; set; } = new TeachingPage();
 
@@ -46,7 +48,7 @@ namespace ATT
         private void MainForm_Load(object sender, EventArgs e)
         {
             AddControls();
-            SelectInspectionPage();
+            SelectMainPage();
 
             ModelManager.Instance().CurrentModelChangedEvent += MainForm_CurrentModelChangedEvent;
 
@@ -72,6 +74,7 @@ namespace ATT
             TeachingData.Dispose();
             TeachingData.Initialize(model);
 
+            MainPageControl.UpdateTabCount(model.TabCount);
             //AreaTeachingPageControl.UpdateSelectPage();
             //LineTeachingPageControl.UpdateSelectPage();
         }
@@ -80,7 +83,7 @@ namespace ATT
         {
             // Page Control List
             PageControlList = new List<UserControl>();
-            PageControlList.Add(AutoPageControl);
+            PageControlList.Add(MainPageControl);
             PageControlList.Add(DataPageControl);
             PageControlList.Add(TeachingPageControl);
             PageControlList.Add(LogPageControl);
@@ -102,7 +105,7 @@ namespace ATT
             string filePath = Path.Combine(modelDir, modelName, InspModel.FileName);
 
             ModelManager.Instance().CurrentModel = ATTInspModelService.Load(filePath);
-            SelectInspectionPage();
+            SelectMainPage();
 
             lblCurrentModel.Text = modelName;
 
@@ -132,10 +135,10 @@ namespace ATT
             pnlPage.Controls.Add(selectedControl);
         }
 
-        private void SelectInspectionPage()
+        private void SelectMainPage()
         {
             SetSelectLabel(lblMainPage);
-            SetSelectPage(selectedControl: AutoPageControl);
+            SetSelectPage(selectedControl: MainPageControl);
         }
 
         
@@ -148,7 +151,7 @@ namespace ATT
         private void lblMainPage_Click(object sender, EventArgs e)
         {
             SetSelectLabel(sender);
-            SetSelectPage(selectedControl: AutoPageControl);
+            SetSelectPage(selectedControl: MainPageControl);
         }
 
         private void TeachPage_Click(object sender, EventArgs e)
@@ -158,27 +161,6 @@ namespace ATT
 
             SetSelectLabel(sender);
             SetSelectPage(selectedControl: TeachingPageControl);
-
-            //UnitSelectForm form = new UnitSelectForm();
-
-            //if(form.ShowDialog() == DialogResult.OK)
-            //{
-            //    if (form.SensorType == Jastech.Framework.Device.Cameras.SensorType.Area)
-            //    {
-            //        AreaTeachingPageControl.UnitName = form.UnitName;
-
-            //        SetSelectLabel(sender);
-            //        SetSelectPage(selectedControl: AreaTeachingPageControl);
-            //    }
-            //    else if (form.SensorType == Jastech.Framework.Device.Cameras.SensorType.Line)
-            //    {
-            //        LineTeachingPageControl.UnitName = form.UnitName;
-
-            //        SetSelectLabel(sender);
-            //        SetSelectPage(selectedControl: LineTeachingPageControl);
-            //    }
-            //    else { }
-            //}
         }
 
         private void LogPage_Click(object sender, EventArgs e)

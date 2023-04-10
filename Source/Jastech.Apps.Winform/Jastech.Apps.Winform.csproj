@@ -69,6 +69,7 @@
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Windows.Forms.DataVisualization" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -94,11 +95,41 @@
     <Compile Include="UI\Controls\AkkonControl.designer.cs">
       <DependentUpon>AkkonControl.cs</DependentUpon>
     </Compile>
+    <Compile Include="UI\Controls\AkkonInspResultControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UI\Controls\AkkonInspResultControl.Designer.cs">
+      <DependentUpon>AkkonInspResultControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="UI\Controls\AlignControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="UI\Controls\AlignControl.designer.cs">
       <DependentUpon>AlignControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Controls\AkkonInspDisplayControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UI\Controls\AkkonInspDisplayControl.Designer.cs">
+      <DependentUpon>AkkonInspDisplayControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Controls\AlignInspDisplayControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UI\Controls\AlignInspDisplayControl.Designer.cs">
+      <DependentUpon>AlignInspDisplayControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Controls\AlignInspResultControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UI\Controls\AlignInspResultControl.Designer.cs">
+      <DependentUpon>AlignInspResultControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Controls\AutoFocusControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UI\Controls\AutoFocusControl.Designer.cs">
+      <DependentUpon>AutoFocusControl.cs</DependentUpon>
     </Compile>
     <Compile Include="UI\Controls\PreAlignControl.cs">
       <SubType>UserControl</SubType>
@@ -106,11 +137,41 @@
     <Compile Include="UI\Controls\PreAlignControl.Designer.cs">
       <DependentUpon>PreAlignControl.cs</DependentUpon>
     </Compile>
+    <Compile Include="UI\Controls\ResultChartControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UI\Controls\ResultChartControl.Designer.cs">
+      <DependentUpon>ResultChartControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Controls\TabBtnControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UI\Controls\TabBtnControl.Designer.cs">
+      <DependentUpon>TabBtnControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="UI\Controls\UnitSelectControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="UI\Controls\UnitSelectControl.Designer.cs">
       <DependentUpon>UnitSelectControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Forms\CreateATTModelForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\Forms\CreateATTModelForm.designer.cs">
+      <DependentUpon>CreateATTModelForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Forms\EditATTModelForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\Forms\EditATTModelForm.designer.cs">
+      <DependentUpon>EditATTModelForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Forms\ATTModellerForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\Forms\ATTModellerForm.Designer.cs">
+      <DependentUpon>ATTModellerForm.cs</DependentUpon>
     </Compile>
     <Compile Include="UI\Forms\UnitSelectForm.cs">
       <SubType>Form</SubType>
@@ -127,14 +188,44 @@
     <EmbeddedResource Include="UI\Controls\AkkonControl.resx">
       <DependentUpon>AkkonControl.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="UI\Controls\AkkonInspResultControl.resx">
+      <DependentUpon>AkkonInspResultControl.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="UI\Controls\AlignControl.resx">
       <DependentUpon>AlignControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\Controls\AkkonInspDisplayControl.resx">
+      <DependentUpon>AkkonInspDisplayControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\Controls\AlignInspDisplayControl.resx">
+      <DependentUpon>AlignInspDisplayControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\Controls\AlignInspResultControl.resx">
+      <DependentUpon>AlignInspResultControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\Controls\AutoFocusControl.resx">
+      <DependentUpon>AutoFocusControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\Controls\PreAlignControl.resx">
       <DependentUpon>PreAlignControl.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="UI\Controls\ResultChartControl.resx">
+      <DependentUpon>ResultChartControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\Controls\TabBtnControl.resx">
+      <DependentUpon>TabBtnControl.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="UI\Controls\UnitSelectControl.resx">
       <DependentUpon>UnitSelectControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\Forms\CreateATTModelForm.resx">
+      <DependentUpon>CreateATTModelForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\Forms\EditATTModelForm.resx">
+      <DependentUpon>EditATTModelForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\Forms\ATTModellerForm.resx">
+      <DependentUpon>ATTModellerForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\Forms\UnitSelectForm.resx">
       <DependentUpon>UnitSelectForm.cs</DependentUpon>
@@ -160,6 +251,14 @@
     <ProjectReference Include="..\..\..\Jastech.Core\src\Jastech.Framework.Imaging\Jastech.Framework.Imaging.csproj">
       <Project>{2380da0f-851a-4430-9a43-e7b2deee29f2}</Project>
       <Name>Jastech.Framework.Imaging</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Jastech.Core\src\Jastech.Framework.Matrox\Jastech.Framework.Matrox.csproj">
+      <Project>{8b4b5cef-5b39-423a-a460-a24f7fd8890e}</Project>
+      <Name>Jastech.Framework.Matrox</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Jastech.Core\src\Jastech.Framework.Modeller\Jastech.Framework.Modeller.csproj">
+      <Project>{FEB6EA9B-86D3-41B0-A950-C5B2555916CF}</Project>
+      <Name>Jastech.Framework.Modeller</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\..\Jastech.Core\src\Jastech.Framework.Structure\Jastech.Framework.Structure.csproj">
       <Project>{DCFF7B48-8DF8-4ED9-9F0F-F11C2CCB7547}</Project>
@@ -206,13 +305,43 @@
     <None Include="Resources\Cancel.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\Cancel_White.png" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Resources\Next_White.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Prev_White.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Arrow_down_White.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Arrow_Left_White.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Arrow_Right_White.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Arrow_Up_White.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Cancel_White.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Copy_White.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Delete_White.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Edit_White.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\New_White.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Select_White.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Stop_Circle_White.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

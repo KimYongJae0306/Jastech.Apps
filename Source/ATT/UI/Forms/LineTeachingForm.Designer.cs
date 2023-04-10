@@ -218,6 +218,7 @@
             this.btnAutoFocus.TabIndex = 19;
             this.btnAutoFocus.Text = "Linescan";
             this.btnAutoFocus.UseVisualStyleBackColor = false;
+            this.btnAutoFocus.Click += new System.EventHandler(this.btnAutoFocus_Click);
             // 
             // btnAkkon
             // 

@@ -1,10 +1,8 @@
 ﻿using Jastech.Apps.Structure;
 using Jastech.Apps.Structure.Core;
-using Jastech.Apps.Structure.VisionTool;
 using Jastech.Apps.Winform;
 using Jastech.Apps.Winform.Settings;
 using Jastech.Framework.Device.LightCtrls;
-using Jastech.Framework.Device.Motions;
 using Jastech.Framework.Imaging.VisionPro.VisionAlgorithms.Parameters;
 using Jastech.Framework.Structure;
 using Jastech.Framework.Util.Helper;
@@ -15,7 +13,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ATT.Core
+namespace ATT_UT_Remodeling.Core
 {
     public class ATTInspModelService : Jastech.Framework.Structure.Service.InspModelService
     {
@@ -28,6 +26,18 @@ namespace ATT.Core
                 Unit unit = new Unit();
 
                 unit.Name = i.ToString(); // 임시 -> Apps에서 변경
+
+                // Prev Align 등록
+                foreach (ATTPreAlignName type in Enum.GetValues(typeof(ATTPreAlignName)))
+                {
+                    PreAlign preAlign = new PreAlign();
+                    preAlign.Name = type.ToString();
+                    preAlign.InspParam = new CogPatternMatchingParam();
+                    preAlign.LightParams = new List<LightParameter>();
+                    preAlign.LightParams.AddRange(CreatePreAlignLightParameter());
+
+                    unit.PreAligns.Add(preAlign);
+                }
 
                 // LineScan 조명 Parameter 생성
                 unit.LightParams.AddRange(CreateLightParameter());
@@ -60,28 +70,10 @@ namespace ATT.Core
         {
             var currentAxisHandler = AppsMotionManager.Instance().GetAxisHandler(AxisHandlerName.Unit0);
 
-            TeachingPosition t1 = new TeachingPosition();
-            t1.CreateTeachingPosition(TeachingPositionType.Standby.ToString(), "Standby", currentAxisHandler);
-            unit.AddTeachingPosition(t1);
-
-            TeachingPosition t2 = new TeachingPosition();
-            t2.CreateTeachingPosition(TeachingPositionType.Stage1_PreAlign_Left.ToString(), "Stage#1 PreAlign Left Position", currentAxisHandler);
-            unit.AddTeachingPosition(t2);
-
-            TeachingPosition t3 = new TeachingPosition();
-            t3.CreateTeachingPosition(TeachingPositionType.Stage1_PreAlign_Right.ToString(), "Stage#1 PreAlign Right Position", currentAxisHandler);
-            unit.AddTeachingPosition(t3);
-
-            TeachingPosition t4 = new TeachingPosition();
-            t4.CreateTeachingPosition(TeachingPositionType.Stage1_Scan_Start.ToString(), "Stage#1 ScanStart", currentAxisHandler);
-            unit.AddTeachingPosition(t4);
-
-            TeachingPosition t5 = new TeachingPosition();
-            t5.CreateTeachingPosition(TeachingPositionType.Stage1_Scan_End.ToString(), "Stage#1 ScanEnd", currentAxisHandler);
-            unit.AddTeachingPosition(t5);
+            // ATT 프로젝트 보고 작성
         }
 
-        // PreAlign 검사 시
+    
         private List<LightParameter> CreatePreAlignLightParameter()
         {
             // PreAlign 사용할 경우 작성
@@ -97,37 +89,17 @@ namespace ATT.Core
             var lightCtrls = AppConfig.Instance().Machine.GetDevices<LightCtrl>();
             if (lightCtrls == null)
                 return lightParameterList;
-            
+
             foreach (var light in lightCtrls)
             {
-                if(light.Name == "LvsLight12V")
-                {
-                    LightParameter lightParameter = new LightParameter(light.Name);
-                    LightValue lightValue = new LightValue(light.TotalChannelCount);
-                    lightValue.LightLevels[light.ChannelNameMap["Ch.Blue"]] = 100;
-                    lightValue.LightLevels[light.ChannelNameMap["Ch.RedSpot"]] = 100;
-
-                    lightParameter.Add(light, lightValue);
-
-                    lightParameterList.Add(lightParameter);
-                }
-                else if(light.Name == "LvsLight24V")
-                {
-                    LightParameter lightParameter = new LightParameter(light.Name);
-                    LightValue lightValue = new LightValue(light.TotalChannelCount);
-                    lightValue.LightLevels[light.ChannelNameMap["Ch.RedRing"]] = 100;
-
-                    lightParameter.Add(light, lightValue);
-
-                    lightParameterList.Add(lightParameter);
-                }
+                // ATT 프로젝트 보고 작성
             }
 
             return lightParameterList;
         }
 
         public override InspModel Load(string filePath)
-        {  
+        {
             var model = new ATTInspModel();
 
             JsonConvertHelper.LoadToExistingTarget<ATTInspModel>(filePath, model);

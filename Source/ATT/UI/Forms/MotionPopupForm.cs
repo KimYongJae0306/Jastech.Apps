@@ -1,7 +1,8 @@
-﻿using ATT.Core;
-using ATT.UI.Controls;
+﻿using ATT.UI.Controls;
 using Jastech.Apps.Structure;
+using Jastech.Apps.Structure.Core;
 using Jastech.Apps.Winform;
+using Jastech.Apps.Winform.Core;
 using Jastech.Apps.Winform.Settings;
 using Jastech.Apps.Winform.UI.Controls;
 using Jastech.Framework.Device.Motions;
@@ -125,7 +126,7 @@ namespace ATT.UI.Forms
 
         public void SetParams(TeachingPositionType teachingPositionType = TeachingPositionType.Standby)
         {
-            var inspModel = ModelManager.Instance().CurrentModel as Core.ATTInspModel;
+            var inspModel = ModelManager.Instance().CurrentModel as ATTInspModel;
             string unitName = TeachingPositionListControl.UnitName;
 
             if (inspModel == null || unitName == "")
