@@ -60,6 +60,12 @@ namespace ATT.UI.Pages
             AlignInspControl.Dock = DockStyle.Fill;
             pnlAlign.Controls.Add(AlignInspControl);
         }
+
+        public void UpdateTabCount(int tabCount)
+        {
+            AkkonInspControl.UpdateTabCount(tabCount);
+            AlignInspControl.UpdateTabCount(tabCount);
+        }
         #endregion
     }
 }

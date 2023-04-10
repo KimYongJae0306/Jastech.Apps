@@ -16,6 +16,8 @@ namespace Jastech.Apps.Winform.UI.Controls
     public partial class AlignInspDisplayControl : UserControl
     {
         #region 필드
+        private int _prevTabCount { get; set; } = -1;
+
         private Color _selectedColor;
 
         private Color _noneSelectedColor;
@@ -74,7 +76,12 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         public void UpdateTabCount(int tabCount)
         {
-            int controlWidth = pnlTabButton.Width / tabCount;
+            if (_prevTabCount == tabCount)
+                return;
+
+            ClearTabBtnList();
+
+            int controlWidth = 100;
             Point point = new Point(0, 0);
 
             for (int i = 0; i < tabCount; i++)
@@ -92,6 +99,16 @@ namespace Jastech.Apps.Winform.UI.Controls
 
             if (TabBtnControlList.Count > 0)
                 TabBtnControlList[0].UpdateData();
+        }
+
+        private void ClearTabBtnList()
+        {
+            foreach (var btn in TabBtnControlList)
+            {
+                btn.SetTabEventHandler -= ButtonControl_SetTabEventHandler;
+            }
+            TabBtnControlList.Clear();
+            pnlTabButton.Controls.Clear();
         }
 
         private void ButtonControl_SetTabEventHandler(int tabNum)

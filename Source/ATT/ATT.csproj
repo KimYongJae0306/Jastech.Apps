@@ -118,12 +118,6 @@
     <Compile Include="UI\Forms\LineTeachingForm.Designer.cs">
       <DependentUpon>LineTeachingForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="UI\Pages\InspPage.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="UI\Pages\InspPage.Designer.cs">
-      <DependentUpon>InspPage.cs</DependentUpon>
-    </Compile>
     <Compile Include="UI\Pages\LogPage.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -175,9 +169,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UI\Pages\DataPage.resx">
       <DependentUpon>DataPage.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="UI\Pages\InspPage.resx">
-      <DependentUpon>InspPage.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\Forms\LineTeachingForm.resx">
       <DependentUpon>LineTeachingForm.cs</DependentUpon>

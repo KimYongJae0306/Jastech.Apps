@@ -29,12 +29,12 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ATTModellerForm));
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle49 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle50 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle51 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle52 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle53 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle54 = new System.Windows.Forms.DataGridViewCellStyle();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.panel5 = new System.Windows.Forms.Panel();
@@ -65,7 +65,15 @@
             this.lblApply = new System.Windows.Forms.Label();
             this.tableLayoutPanel7 = new System.Windows.Forms.TableLayoutPanel();
             this.gvModelList = new System.Windows.Forms.DataGridView();
+            this.ColumnCamNo = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ColumnSerialNo = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ColumnCamAddress = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ColumnCamStatus = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.panel6 = new System.Windows.Forms.Panel();
+            this.lblSelectedTabCount = new System.Windows.Forms.Label();
+            this.panel13 = new System.Windows.Forms.Panel();
+            this.label4 = new System.Windows.Forms.Label();
             this.lblSelectedDescription = new System.Windows.Forms.Label();
             this.lblSelectedModifiedDate = new System.Windows.Forms.Label();
             this.lblSelectedCreateDate = new System.Windows.Forms.Label();
@@ -79,14 +87,8 @@
             this.panel7 = new System.Windows.Forms.Panel();
             this.label8 = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
-            this.lblSelectedTabCount = new System.Windows.Forms.Label();
-            this.panel13 = new System.Windows.Forms.Panel();
-            this.label4 = new System.Windows.Forms.Label();
-            this.ColumnCamNo = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ColumnSerialNo = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ColumnCamAddress = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ColumnCamStatus = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.tableLayoutPanel10 = new System.Windows.Forms.TableLayoutPanel();
+            this.panel14 = new System.Windows.Forms.Panel();
             this.tableLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
             this.panel5.SuspendLayout();
@@ -106,6 +108,8 @@
             this.tableLayoutPanel7.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.gvModelList)).BeginInit();
             this.panel6.SuspendLayout();
+            this.tableLayoutPanel10.SuspendLayout();
+            this.panel14.SuspendLayout();
             this.SuspendLayout();
             // 
             // tableLayoutPanel1
@@ -122,7 +126,7 @@
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 70F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 70F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(1393, 861);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(1393, 1100);
             this.tableLayoutPanel1.TabIndex = 1;
             // 
             // tableLayoutPanel2
@@ -346,7 +350,7 @@
             // 
             this.panel2.Controls.Add(this.tableLayoutPanel8);
             this.panel2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel2.Location = new System.Drawing.Point(3, 794);
+            this.panel2.Location = new System.Drawing.Point(3, 1033);
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(1387, 64);
             this.panel2.TabIndex = 1;
@@ -480,7 +484,7 @@
             this.tableLayoutPanel7.Name = "tableLayoutPanel7";
             this.tableLayoutPanel7.RowCount = 1;
             this.tableLayoutPanel7.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel7.Size = new System.Drawing.Size(1387, 715);
+            this.tableLayoutPanel7.Size = new System.Drawing.Size(1387, 954);
             this.tableLayoutPanel7.TabIndex = 3;
             // 
             // gvModelList
@@ -489,14 +493,14 @@
             this.gvModelList.AllowUserToDeleteRows = false;
             this.gvModelList.AllowUserToResizeRows = false;
             this.gvModelList.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(104)))), ((int)(((byte)(104)))), ((int)(((byte)(104)))));
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("맑은 고딕", 11.25F, System.Drawing.FontStyle.Bold);
-            dataGridViewCellStyle1.ForeColor = System.Drawing.Color.White;
-            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.gvModelList.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle49.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle49.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(104)))), ((int)(((byte)(104)))), ((int)(((byte)(104)))));
+            dataGridViewCellStyle49.Font = new System.Drawing.Font("맑은 고딕", 11.25F, System.Drawing.FontStyle.Bold);
+            dataGridViewCellStyle49.ForeColor = System.Drawing.Color.White;
+            dataGridViewCellStyle49.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle49.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle49.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.gvModelList.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle49;
             this.gvModelList.ColumnHeadersHeight = 40;
             this.gvModelList.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             this.gvModelList.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
@@ -516,208 +520,18 @@
             this.gvModelList.RowTemplate.DefaultCellStyle.Font = new System.Drawing.Font("맑은 고딕", 14F, System.Drawing.FontStyle.Bold);
             this.gvModelList.RowTemplate.Height = 40;
             this.gvModelList.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.gvModelList.Size = new System.Drawing.Size(1081, 707);
+            this.gvModelList.Size = new System.Drawing.Size(1081, 946);
             this.gvModelList.TabIndex = 3;
             this.gvModelList.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.gvModelList_CellClick);
             this.gvModelList.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.gvModelList_CellDoubleClick);
             // 
-            // panel6
-            // 
-            this.panel6.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panel6.Controls.Add(this.lblSelectedTabCount);
-            this.panel6.Controls.Add(this.panel13);
-            this.panel6.Controls.Add(this.label4);
-            this.panel6.Controls.Add(this.lblSelectedDescription);
-            this.panel6.Controls.Add(this.lblSelectedModifiedDate);
-            this.panel6.Controls.Add(this.lblSelectedCreateDate);
-            this.panel6.Controls.Add(this.lblSelectedName);
-            this.panel6.Controls.Add(this.panel12);
-            this.panel6.Controls.Add(this.label15);
-            this.panel6.Controls.Add(this.panel11);
-            this.panel6.Controls.Add(this.label12);
-            this.panel6.Controls.Add(this.panel9);
-            this.panel6.Controls.Add(this.label11);
-            this.panel6.Controls.Add(this.panel7);
-            this.panel6.Controls.Add(this.label8);
-            this.panel6.Controls.Add(this.label7);
-            this.panel6.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel6.Location = new System.Drawing.Point(1090, 3);
-            this.panel6.Name = "panel6";
-            this.panel6.Size = new System.Drawing.Size(294, 709);
-            this.panel6.TabIndex = 0;
-            // 
-            // lblSelectedDescription
-            // 
-            this.lblSelectedDescription.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lblSelectedDescription.Font = new System.Drawing.Font("맑은 고딕", 14F, System.Drawing.FontStyle.Bold);
-            this.lblSelectedDescription.ForeColor = System.Drawing.Color.White;
-            this.lblSelectedDescription.Location = new System.Drawing.Point(7, 439);
-            this.lblSelectedDescription.Name = "lblSelectedDescription";
-            this.lblSelectedDescription.Size = new System.Drawing.Size(277, 260);
-            this.lblSelectedDescription.TabIndex = 13;
-            // 
-            // lblSelectedModifiedDate
-            // 
-            this.lblSelectedModifiedDate.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lblSelectedModifiedDate.Font = new System.Drawing.Font("맑은 고딕", 14F, System.Drawing.FontStyle.Bold);
-            this.lblSelectedModifiedDate.ForeColor = System.Drawing.Color.White;
-            this.lblSelectedModifiedDate.Location = new System.Drawing.Point(7, 349);
-            this.lblSelectedModifiedDate.Name = "lblSelectedModifiedDate";
-            this.lblSelectedModifiedDate.Size = new System.Drawing.Size(277, 37);
-            this.lblSelectedModifiedDate.TabIndex = 12;
-            this.lblSelectedModifiedDate.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // lblSelectedCreateDate
-            // 
-            this.lblSelectedCreateDate.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lblSelectedCreateDate.Font = new System.Drawing.Font("맑은 고딕", 14F, System.Drawing.FontStyle.Bold);
-            this.lblSelectedCreateDate.ForeColor = System.Drawing.Color.White;
-            this.lblSelectedCreateDate.Location = new System.Drawing.Point(7, 257);
-            this.lblSelectedCreateDate.Name = "lblSelectedCreateDate";
-            this.lblSelectedCreateDate.Size = new System.Drawing.Size(277, 37);
-            this.lblSelectedCreateDate.TabIndex = 11;
-            this.lblSelectedCreateDate.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // lblSelectedName
-            // 
-            this.lblSelectedName.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lblSelectedName.Font = new System.Drawing.Font("맑은 고딕", 14F, System.Drawing.FontStyle.Bold);
-            this.lblSelectedName.ForeColor = System.Drawing.Color.White;
-            this.lblSelectedName.Location = new System.Drawing.Point(8, 85);
-            this.lblSelectedName.Name = "lblSelectedName";
-            this.lblSelectedName.Size = new System.Drawing.Size(277, 37);
-            this.lblSelectedName.TabIndex = 10;
-            this.lblSelectedName.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // panel12
-            // 
-            this.panel12.BackColor = System.Drawing.SystemColors.Highlight;
-            this.panel12.Location = new System.Drawing.Point(7, 436);
-            this.panel12.Margin = new System.Windows.Forms.Padding(0);
-            this.panel12.Name = "panel12";
-            this.panel12.Size = new System.Drawing.Size(277, 2);
-            this.panel12.TabIndex = 9;
-            // 
-            // label15
-            // 
-            this.label15.Font = new System.Drawing.Font("맑은 고딕", 14F, System.Drawing.FontStyle.Bold);
-            this.label15.ForeColor = System.Drawing.Color.White;
-            this.label15.Location = new System.Drawing.Point(3, 398);
-            this.label15.Name = "label15";
-            this.label15.Size = new System.Drawing.Size(217, 41);
-            this.label15.TabIndex = 8;
-            this.label15.Text = "Description";
-            this.label15.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // panel11
-            // 
-            this.panel11.BackColor = System.Drawing.SystemColors.Highlight;
-            this.panel11.Location = new System.Drawing.Point(7, 346);
-            this.panel11.Margin = new System.Windows.Forms.Padding(0);
-            this.panel11.Name = "panel11";
-            this.panel11.Size = new System.Drawing.Size(277, 2);
-            this.panel11.TabIndex = 7;
-            // 
-            // label12
-            // 
-            this.label12.Font = new System.Drawing.Font("맑은 고딕", 14F, System.Drawing.FontStyle.Bold);
-            this.label12.ForeColor = System.Drawing.Color.White;
-            this.label12.Location = new System.Drawing.Point(3, 308);
-            this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(247, 41);
-            this.label12.TabIndex = 6;
-            this.label12.Text = "Modified Date";
-            this.label12.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // panel9
-            // 
-            this.panel9.BackColor = System.Drawing.SystemColors.Highlight;
-            this.panel9.Location = new System.Drawing.Point(7, 254);
-            this.panel9.Margin = new System.Windows.Forms.Padding(0);
-            this.panel9.Name = "panel9";
-            this.panel9.Size = new System.Drawing.Size(277, 2);
-            this.panel9.TabIndex = 5;
-            // 
-            // label11
-            // 
-            this.label11.Font = new System.Drawing.Font("맑은 고딕", 14F, System.Drawing.FontStyle.Bold);
-            this.label11.ForeColor = System.Drawing.Color.White;
-            this.label11.Location = new System.Drawing.Point(3, 216);
-            this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(256, 41);
-            this.label11.TabIndex = 4;
-            this.label11.Text = "Create Date";
-            this.label11.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // panel7
-            // 
-            this.panel7.BackColor = System.Drawing.SystemColors.Highlight;
-            this.panel7.Location = new System.Drawing.Point(8, 83);
-            this.panel7.Margin = new System.Windows.Forms.Padding(0);
-            this.panel7.Name = "panel7";
-            this.panel7.Size = new System.Drawing.Size(277, 2);
-            this.panel7.TabIndex = 3;
-            // 
-            // label8
-            // 
-            this.label8.Font = new System.Drawing.Font("맑은 고딕", 14F, System.Drawing.FontStyle.Bold);
-            this.label8.ForeColor = System.Drawing.Color.White;
-            this.label8.Location = new System.Drawing.Point(3, 47);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(278, 41);
-            this.label8.TabIndex = 2;
-            this.label8.Text = "Name";
-            this.label8.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // label7
-            // 
-            this.label7.Font = new System.Drawing.Font("맑은 고딕", 14F, System.Drawing.FontStyle.Bold);
-            this.label7.ForeColor = System.Drawing.Color.White;
-            this.label7.Location = new System.Drawing.Point(3, 11);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(136, 41);
-            this.label7.TabIndex = 1;
-            this.label7.Text = "Model Info";
-            this.label7.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // lblSelectedTabCount
-            // 
-            this.lblSelectedTabCount.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lblSelectedTabCount.Font = new System.Drawing.Font("맑은 고딕", 14F, System.Drawing.FontStyle.Bold);
-            this.lblSelectedTabCount.ForeColor = System.Drawing.Color.White;
-            this.lblSelectedTabCount.Location = new System.Drawing.Point(8, 174);
-            this.lblSelectedTabCount.Name = "lblSelectedTabCount";
-            this.lblSelectedTabCount.Size = new System.Drawing.Size(277, 37);
-            this.lblSelectedTabCount.TabIndex = 16;
-            this.lblSelectedTabCount.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // panel13
-            // 
-            this.panel13.BackColor = System.Drawing.SystemColors.Highlight;
-            this.panel13.Location = new System.Drawing.Point(8, 172);
-            this.panel13.Margin = new System.Windows.Forms.Padding(0);
-            this.panel13.Name = "panel13";
-            this.panel13.Size = new System.Drawing.Size(277, 2);
-            this.panel13.TabIndex = 15;
-            // 
-            // label4
-            // 
-            this.label4.Font = new System.Drawing.Font("맑은 고딕", 14F, System.Drawing.FontStyle.Bold);
-            this.label4.ForeColor = System.Drawing.Color.White;
-            this.label4.Location = new System.Drawing.Point(6, 134);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(278, 41);
-            this.label4.TabIndex = 14;
-            this.label4.Text = "TabCount";
-            this.label4.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
             // ColumnCamNo
             // 
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
-            dataGridViewCellStyle2.Font = new System.Drawing.Font("맑은 고딕", 11.25F, System.Drawing.FontStyle.Bold);
-            dataGridViewCellStyle2.ForeColor = System.Drawing.Color.White;
-            this.ColumnCamNo.DefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle50.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle50.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
+            dataGridViewCellStyle50.Font = new System.Drawing.Font("맑은 고딕", 11.25F, System.Drawing.FontStyle.Bold);
+            dataGridViewCellStyle50.ForeColor = System.Drawing.Color.White;
+            this.ColumnCamNo.DefaultCellStyle = dataGridViewCellStyle50;
             this.ColumnCamNo.HeaderText = "Name";
             this.ColumnCamNo.MinimumWidth = 300;
             this.ColumnCamNo.Name = "ColumnCamNo";
@@ -727,11 +541,11 @@
             // 
             // Column1
             // 
-            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
-            dataGridViewCellStyle3.Font = new System.Drawing.Font("맑은 고딕", 11.25F, System.Drawing.FontStyle.Bold);
-            dataGridViewCellStyle3.ForeColor = System.Drawing.Color.White;
-            this.Column1.DefaultCellStyle = dataGridViewCellStyle3;
+            dataGridViewCellStyle51.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle51.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
+            dataGridViewCellStyle51.Font = new System.Drawing.Font("맑은 고딕", 11.25F, System.Drawing.FontStyle.Bold);
+            dataGridViewCellStyle51.ForeColor = System.Drawing.Color.White;
+            this.Column1.DefaultCellStyle = dataGridViewCellStyle51;
             this.Column1.HeaderText = "TabCount";
             this.Column1.MinimumWidth = 100;
             this.Column1.Name = "Column1";
@@ -740,11 +554,11 @@
             // 
             // ColumnSerialNo
             // 
-            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle4.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
-            dataGridViewCellStyle4.Font = new System.Drawing.Font("맑은 고딕", 11.25F, System.Drawing.FontStyle.Bold);
-            dataGridViewCellStyle4.ForeColor = System.Drawing.Color.White;
-            this.ColumnSerialNo.DefaultCellStyle = dataGridViewCellStyle4;
+            dataGridViewCellStyle52.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle52.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
+            dataGridViewCellStyle52.Font = new System.Drawing.Font("맑은 고딕", 11.25F, System.Drawing.FontStyle.Bold);
+            dataGridViewCellStyle52.ForeColor = System.Drawing.Color.White;
+            this.ColumnSerialNo.DefaultCellStyle = dataGridViewCellStyle52;
             this.ColumnSerialNo.HeaderText = "Create Date";
             this.ColumnSerialNo.MinimumWidth = 200;
             this.ColumnSerialNo.Name = "ColumnSerialNo";
@@ -754,11 +568,11 @@
             // 
             // ColumnCamAddress
             // 
-            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle5.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
-            dataGridViewCellStyle5.Font = new System.Drawing.Font("맑은 고딕", 11.25F, System.Drawing.FontStyle.Bold);
-            dataGridViewCellStyle5.ForeColor = System.Drawing.Color.White;
-            this.ColumnCamAddress.DefaultCellStyle = dataGridViewCellStyle5;
+            dataGridViewCellStyle53.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle53.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
+            dataGridViewCellStyle53.Font = new System.Drawing.Font("맑은 고딕", 11.25F, System.Drawing.FontStyle.Bold);
+            dataGridViewCellStyle53.ForeColor = System.Drawing.Color.White;
+            this.ColumnCamAddress.DefaultCellStyle = dataGridViewCellStyle53;
             this.ColumnCamAddress.FillWeight = 200F;
             this.ColumnCamAddress.HeaderText = "Modified Date";
             this.ColumnCamAddress.MinimumWidth = 200;
@@ -770,23 +584,240 @@
             // ColumnCamStatus
             // 
             this.ColumnCamStatus.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle6.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
-            dataGridViewCellStyle6.Font = new System.Drawing.Font("맑은 고딕", 11.25F, System.Drawing.FontStyle.Bold);
-            dataGridViewCellStyle6.ForeColor = System.Drawing.Color.White;
-            this.ColumnCamStatus.DefaultCellStyle = dataGridViewCellStyle6;
+            dataGridViewCellStyle54.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle54.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
+            dataGridViewCellStyle54.Font = new System.Drawing.Font("맑은 고딕", 11.25F, System.Drawing.FontStyle.Bold);
+            dataGridViewCellStyle54.ForeColor = System.Drawing.Color.White;
+            this.ColumnCamStatus.DefaultCellStyle = dataGridViewCellStyle54;
             this.ColumnCamStatus.HeaderText = "Description";
             this.ColumnCamStatus.MinimumWidth = 80;
             this.ColumnCamStatus.Name = "ColumnCamStatus";
             this.ColumnCamStatus.ReadOnly = true;
             this.ColumnCamStatus.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
             // 
+            // panel6
+            // 
+            this.panel6.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel6.Controls.Add(this.tableLayoutPanel10);
+            this.panel6.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panel6.Location = new System.Drawing.Point(1090, 3);
+            this.panel6.Name = "panel6";
+            this.panel6.Size = new System.Drawing.Size(294, 948);
+            this.panel6.TabIndex = 0;
+            // 
+            // lblSelectedTabCount
+            // 
+            this.lblSelectedTabCount.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblSelectedTabCount.Font = new System.Drawing.Font("맑은 고딕", 14F, System.Drawing.FontStyle.Bold);
+            this.lblSelectedTabCount.ForeColor = System.Drawing.Color.White;
+            this.lblSelectedTabCount.Location = new System.Drawing.Point(6, 193);
+            this.lblSelectedTabCount.Name = "lblSelectedTabCount";
+            this.lblSelectedTabCount.Size = new System.Drawing.Size(277, 37);
+            this.lblSelectedTabCount.TabIndex = 16;
+            this.lblSelectedTabCount.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // panel13
+            // 
+            this.panel13.BackColor = System.Drawing.SystemColors.Highlight;
+            this.panel13.Location = new System.Drawing.Point(6, 191);
+            this.panel13.Margin = new System.Windows.Forms.Padding(0);
+            this.panel13.Name = "panel13";
+            this.panel13.Size = new System.Drawing.Size(277, 2);
+            this.panel13.TabIndex = 15;
+            // 
+            // label4
+            // 
+            this.label4.Font = new System.Drawing.Font("맑은 고딕", 14F, System.Drawing.FontStyle.Bold);
+            this.label4.ForeColor = System.Drawing.Color.White;
+            this.label4.Location = new System.Drawing.Point(6, 150);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(278, 41);
+            this.label4.TabIndex = 14;
+            this.label4.Text = "TabCount";
+            this.label4.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // lblSelectedDescription
+            // 
+            this.lblSelectedDescription.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblSelectedDescription.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblSelectedDescription.Font = new System.Drawing.Font("맑은 고딕", 14F, System.Drawing.FontStyle.Bold);
+            this.lblSelectedDescription.ForeColor = System.Drawing.Color.White;
+            this.lblSelectedDescription.Location = new System.Drawing.Point(6, 473);
+            this.lblSelectedDescription.Margin = new System.Windows.Forms.Padding(6, 0, 9, 0);
+            this.lblSelectedDescription.Name = "lblSelectedDescription";
+            this.lblSelectedDescription.Size = new System.Drawing.Size(277, 473);
+            this.lblSelectedDescription.TabIndex = 13;
+            // 
+            // lblSelectedModifiedDate
+            // 
+            this.lblSelectedModifiedDate.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblSelectedModifiedDate.Font = new System.Drawing.Font("맑은 고딕", 14F, System.Drawing.FontStyle.Bold);
+            this.lblSelectedModifiedDate.ForeColor = System.Drawing.Color.White;
+            this.lblSelectedModifiedDate.Location = new System.Drawing.Point(6, 372);
+            this.lblSelectedModifiedDate.Name = "lblSelectedModifiedDate";
+            this.lblSelectedModifiedDate.Size = new System.Drawing.Size(277, 37);
+            this.lblSelectedModifiedDate.TabIndex = 12;
+            this.lblSelectedModifiedDate.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // lblSelectedCreateDate
+            // 
+            this.lblSelectedCreateDate.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblSelectedCreateDate.Font = new System.Drawing.Font("맑은 고딕", 14F, System.Drawing.FontStyle.Bold);
+            this.lblSelectedCreateDate.ForeColor = System.Drawing.Color.White;
+            this.lblSelectedCreateDate.Location = new System.Drawing.Point(6, 279);
+            this.lblSelectedCreateDate.Name = "lblSelectedCreateDate";
+            this.lblSelectedCreateDate.Size = new System.Drawing.Size(277, 37);
+            this.lblSelectedCreateDate.TabIndex = 11;
+            this.lblSelectedCreateDate.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // lblSelectedName
+            // 
+            this.lblSelectedName.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblSelectedName.Font = new System.Drawing.Font("맑은 고딕", 14F, System.Drawing.FontStyle.Bold);
+            this.lblSelectedName.ForeColor = System.Drawing.Color.White;
+            this.lblSelectedName.Location = new System.Drawing.Point(6, 113);
+            this.lblSelectedName.Name = "lblSelectedName";
+            this.lblSelectedName.Size = new System.Drawing.Size(277, 37);
+            this.lblSelectedName.TabIndex = 10;
+            this.lblSelectedName.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // panel12
+            // 
+            this.panel12.BackColor = System.Drawing.SystemColors.Highlight;
+            this.panel12.Location = new System.Drawing.Point(6, 460);
+            this.panel12.Margin = new System.Windows.Forms.Padding(0);
+            this.panel12.Name = "panel12";
+            this.panel12.Size = new System.Drawing.Size(277, 2);
+            this.panel12.TabIndex = 9;
+            // 
+            // label15
+            // 
+            this.label15.Font = new System.Drawing.Font("맑은 고딕", 14F, System.Drawing.FontStyle.Bold);
+            this.label15.ForeColor = System.Drawing.Color.White;
+            this.label15.Location = new System.Drawing.Point(6, 419);
+            this.label15.Name = "label15";
+            this.label15.Size = new System.Drawing.Size(217, 41);
+            this.label15.TabIndex = 8;
+            this.label15.Text = "Description";
+            this.label15.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // panel11
+            // 
+            this.panel11.BackColor = System.Drawing.SystemColors.Highlight;
+            this.panel11.Location = new System.Drawing.Point(6, 370);
+            this.panel11.Margin = new System.Windows.Forms.Padding(0);
+            this.panel11.Name = "panel11";
+            this.panel11.Size = new System.Drawing.Size(277, 2);
+            this.panel11.TabIndex = 7;
+            // 
+            // label12
+            // 
+            this.label12.Font = new System.Drawing.Font("맑은 고딕", 14F, System.Drawing.FontStyle.Bold);
+            this.label12.ForeColor = System.Drawing.Color.White;
+            this.label12.Location = new System.Drawing.Point(6, 329);
+            this.label12.Name = "label12";
+            this.label12.Size = new System.Drawing.Size(247, 41);
+            this.label12.TabIndex = 6;
+            this.label12.Text = "Modified Date";
+            this.label12.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // panel9
+            // 
+            this.panel9.BackColor = System.Drawing.SystemColors.Highlight;
+            this.panel9.Location = new System.Drawing.Point(6, 277);
+            this.panel9.Margin = new System.Windows.Forms.Padding(0);
+            this.panel9.Name = "panel9";
+            this.panel9.Size = new System.Drawing.Size(277, 2);
+            this.panel9.TabIndex = 5;
+            // 
+            // label11
+            // 
+            this.label11.Font = new System.Drawing.Font("맑은 고딕", 14F, System.Drawing.FontStyle.Bold);
+            this.label11.ForeColor = System.Drawing.Color.White;
+            this.label11.Location = new System.Drawing.Point(6, 236);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(256, 41);
+            this.label11.TabIndex = 4;
+            this.label11.Text = "Create Date";
+            this.label11.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // panel7
+            // 
+            this.panel7.BackColor = System.Drawing.SystemColors.Highlight;
+            this.panel7.Location = new System.Drawing.Point(6, 110);
+            this.panel7.Margin = new System.Windows.Forms.Padding(0);
+            this.panel7.Name = "panel7";
+            this.panel7.Size = new System.Drawing.Size(277, 2);
+            this.panel7.TabIndex = 3;
+            // 
+            // label8
+            // 
+            this.label8.Font = new System.Drawing.Font("맑은 고딕", 14F, System.Drawing.FontStyle.Bold);
+            this.label8.ForeColor = System.Drawing.Color.White;
+            this.label8.Location = new System.Drawing.Point(6, 66);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(278, 41);
+            this.label8.TabIndex = 2;
+            this.label8.Text = "Name";
+            this.label8.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // label7
+            // 
+            this.label7.Font = new System.Drawing.Font("맑은 고딕", 14F, System.Drawing.FontStyle.Bold);
+            this.label7.ForeColor = System.Drawing.Color.White;
+            this.label7.Location = new System.Drawing.Point(8, 6);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(136, 41);
+            this.label7.TabIndex = 1;
+            this.label7.Text = "Model Info";
+            this.label7.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // tableLayoutPanel10
+            // 
+            this.tableLayoutPanel10.ColumnCount = 1;
+            this.tableLayoutPanel10.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel10.Controls.Add(this.lblSelectedDescription, 0, 1);
+            this.tableLayoutPanel10.Controls.Add(this.panel14, 0, 0);
+            this.tableLayoutPanel10.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel10.Location = new System.Drawing.Point(0, 0);
+            this.tableLayoutPanel10.Margin = new System.Windows.Forms.Padding(0);
+            this.tableLayoutPanel10.Name = "tableLayoutPanel10";
+            this.tableLayoutPanel10.RowCount = 2;
+            this.tableLayoutPanel10.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel10.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel10.Size = new System.Drawing.Size(292, 946);
+            this.tableLayoutPanel10.TabIndex = 17;
+            // 
+            // panel14
+            // 
+            this.panel14.Controls.Add(this.label7);
+            this.panel14.Controls.Add(this.lblSelectedTabCount);
+            this.panel14.Controls.Add(this.label8);
+            this.panel14.Controls.Add(this.panel13);
+            this.panel14.Controls.Add(this.panel7);
+            this.panel14.Controls.Add(this.label4);
+            this.panel14.Controls.Add(this.label11);
+            this.panel14.Controls.Add(this.lblSelectedModifiedDate);
+            this.panel14.Controls.Add(this.panel9);
+            this.panel14.Controls.Add(this.lblSelectedCreateDate);
+            this.panel14.Controls.Add(this.label12);
+            this.panel14.Controls.Add(this.lblSelectedName);
+            this.panel14.Controls.Add(this.panel11);
+            this.panel14.Controls.Add(this.panel12);
+            this.panel14.Controls.Add(this.label15);
+            this.panel14.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panel14.Location = new System.Drawing.Point(0, 0);
+            this.panel14.Margin = new System.Windows.Forms.Padding(0);
+            this.panel14.Name = "panel14";
+            this.panel14.Size = new System.Drawing.Size(292, 473);
+            this.panel14.TabIndex = 14;
+            // 
             // ATTModellerForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
-            this.ClientSize = new System.Drawing.Size(1393, 861);
+            this.ClientSize = new System.Drawing.Size(1393, 1100);
             this.Controls.Add(this.tableLayoutPanel1);
             this.Font = new System.Drawing.Font("맑은 고딕", 11.25F, System.Drawing.FontStyle.Bold);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
@@ -813,6 +844,8 @@
             this.tableLayoutPanel7.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.gvModelList)).EndInit();
             this.panel6.ResumeLayout(false);
+            this.tableLayoutPanel10.ResumeLayout(false);
+            this.panel14.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -871,5 +904,7 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn ColumnSerialNo;
         private System.Windows.Forms.DataGridViewTextBoxColumn ColumnCamAddress;
         private System.Windows.Forms.DataGridViewTextBoxColumn ColumnCamStatus;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel10;
+        private System.Windows.Forms.Panel panel14;
     }
 }

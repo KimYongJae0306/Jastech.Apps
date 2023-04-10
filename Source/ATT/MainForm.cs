@@ -72,6 +72,7 @@ namespace ATT
             TeachingData.Dispose();
             TeachingData.Initialize(model);
 
+            MainPageControl.UpdateTabCount(model.TabCount);
             //AreaTeachingPageControl.UpdateSelectPage();
             //LineTeachingPageControl.UpdateSelectPage();
         }
@@ -158,27 +159,6 @@ namespace ATT
 
             SetSelectLabel(sender);
             SetSelectPage(selectedControl: TeachingPageControl);
-
-            //UnitSelectForm form = new UnitSelectForm();
-
-            //if(form.ShowDialog() == DialogResult.OK)
-            //{
-            //    if (form.SensorType == Jastech.Framework.Device.Cameras.SensorType.Area)
-            //    {
-            //        AreaTeachingPageControl.UnitName = form.UnitName;
-
-            //        SetSelectLabel(sender);
-            //        SetSelectPage(selectedControl: AreaTeachingPageControl);
-            //    }
-            //    else if (form.SensorType == Jastech.Framework.Device.Cameras.SensorType.Line)
-            //    {
-            //        LineTeachingPageControl.UnitName = form.UnitName;
-
-            //        SetSelectLabel(sender);
-            //        SetSelectPage(selectedControl: LineTeachingPageControl);
-            //    }
-            //    else { }
-            //}
         }
 
         private void LogPage_Click(object sender, EventArgs e)

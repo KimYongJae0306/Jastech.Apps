@@ -236,7 +236,7 @@
             // lblDataPageImage
             // 
             this.lblDataPageImage.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblDataPageImage.Image = global::ATT.Properties.Resources.Teaching;
+            this.lblDataPageImage.Image = global::ATT.Properties.Resources.Settings;
             this.lblDataPageImage.Location = new System.Drawing.Point(3, 0);
             this.lblDataPageImage.Name = "lblDataPageImage";
             this.lblDataPageImage.Size = new System.Drawing.Size(44, 70);

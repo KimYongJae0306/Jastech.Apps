@@ -29,8 +29,8 @@
         private void InitializeComponent()
         {
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
-            this.pnlAkkon = new System.Windows.Forms.Panel();
             this.pnlAlign = new System.Windows.Forms.Panel();
+            this.pnlAkkon = new System.Windows.Forms.Panel();
             this.tableLayoutPanel1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -49,15 +49,6 @@
             this.tableLayoutPanel1.Size = new System.Drawing.Size(1056, 562);
             this.tableLayoutPanel1.TabIndex = 0;
             // 
-            // pnlAkkon
-            // 
-            this.pnlAkkon.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pnlAkkon.Location = new System.Drawing.Point(0, 0);
-            this.pnlAkkon.Margin = new System.Windows.Forms.Padding(0);
-            this.pnlAkkon.Name = "pnlAkkon";
-            this.pnlAkkon.Size = new System.Drawing.Size(1056, 281);
-            this.pnlAkkon.TabIndex = 0;
-            // 
             // pnlAlign
             // 
             this.pnlAlign.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -66,6 +57,15 @@
             this.pnlAlign.Name = "pnlAlign";
             this.pnlAlign.Size = new System.Drawing.Size(1056, 281);
             this.pnlAlign.TabIndex = 1;
+            // 
+            // pnlAkkon
+            // 
+            this.pnlAkkon.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pnlAkkon.Location = new System.Drawing.Point(0, 0);
+            this.pnlAkkon.Margin = new System.Windows.Forms.Padding(0);
+            this.pnlAkkon.Name = "pnlAkkon";
+            this.pnlAkkon.Size = new System.Drawing.Size(1056, 281);
+            this.pnlAkkon.TabIndex = 0;
             // 
             // MainPage
             // 
