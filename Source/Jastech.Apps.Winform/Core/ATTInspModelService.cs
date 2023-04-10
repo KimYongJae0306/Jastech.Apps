@@ -1,6 +1,5 @@
 ﻿using Jastech.Apps.Structure;
 using Jastech.Apps.Structure.VisionTool;
-using Jastech.Apps.Winform;
 using Jastech.Apps.Winform.Settings;
 using Jastech.Framework.Device.LightCtrls;
 using Jastech.Framework.Device.Motions;
@@ -14,7 +13,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ATT.Core
+namespace Jastech.Apps.Winform.Core
 {
     public class ATTInspModelService : Jastech.Framework.Structure.Service.InspModelService
     {

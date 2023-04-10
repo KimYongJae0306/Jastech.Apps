@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ATT.Core
+namespace Jastech.Apps.Winform.Core
 {
     public class ATTInspModel : Jastech.Apps.Structure.AppsInspModel
     {

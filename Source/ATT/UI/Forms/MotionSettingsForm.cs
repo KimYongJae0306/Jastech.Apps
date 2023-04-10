@@ -13,9 +13,9 @@ using Jastech.Apps.Winform;
 using Jastech.Apps.Structure;
 using System.Reflection;
 using ATT.UI.Controls;
-using ATT.Core;
 using Jastech.Apps.Winform.Settings;
 using Jastech.Framework.Structure;
+using Jastech.Apps.Winform.Core;
 
 namespace ATT.UI.Forms
 {
@@ -212,7 +212,7 @@ namespace ATT.UI.Forms
             YCommonControl.UpdateData(axisHandler.GetAxis(AxisName.Y).AxisCommonParams.DeepCopy());
             ZCommonControl.UpdateData(axisHandler.GetAxis(AxisName.Z).AxisCommonParams.DeepCopy());
 
-            var inspModel = ModelManager.Instance().CurrentModel as Core.ATTInspModel;
+            var inspModel = ModelManager.Instance().CurrentModel as ATTInspModel;
             string unitName = TeachingPositionListControl.UnitName;
 
             if (inspModel == null || unitName == "")

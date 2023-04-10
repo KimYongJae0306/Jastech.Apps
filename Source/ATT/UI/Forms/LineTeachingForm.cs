@@ -16,10 +16,10 @@ using Jastech.Apps.Winform.UI.Forms;
 using ATT.UI.Forms;
 using Cognex.VisionPro;
 using Jastech.Framework.Imaging.VisionPro;
-using ATT.Core;
 using Jastech.Apps.Winform.Settings;
 using Jastech.Framework.Structure;
 using Jastech.Framework.Winform.Controls;
+using Jastech.Apps.Winform.Core;
 
 namespace ATT.UI.Forms
 {
@@ -200,6 +200,11 @@ namespace ATT.UI.Forms
         private void btnCancel_Click(object sender, EventArgs e)
         {
             this.Close();
+        }
+
+        private void btnAutoFocus_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

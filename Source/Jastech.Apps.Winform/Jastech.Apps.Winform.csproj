@@ -81,6 +81,9 @@
     <Compile Include="AppsCameraManager.cs" />
     <Compile Include="AppsMotionManager.cs" />
     <Compile Include="AppsTeachingUIManager.cs" />
+    <Compile Include="Core\ATTInspModel.cs" />
+    <Compile Include="Core\ATTInspModelService.cs" />
+    <Compile Include="Core\ATTTeachingData.cs" />
     <Compile Include="Core\ScanImage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
@@ -124,6 +127,12 @@
     </Compile>
     <Compile Include="UI\Controls\AlignInspResultControl.Designer.cs">
       <DependentUpon>AlignInspResultControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Controls\AutoFocusControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UI\Controls\AutoFocusControl.Designer.cs">
+      <DependentUpon>AutoFocusControl.cs</DependentUpon>
     </Compile>
     <Compile Include="UI\Controls\PreAlignControl.cs">
       <SubType>UserControl</SubType>
@@ -196,6 +205,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UI\Controls\AlignInspResultControl.resx">
       <DependentUpon>AlignInspResultControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\Controls\AutoFocusControl.resx">
+      <DependentUpon>AutoFocusControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\Controls\PreAlignControl.resx">
       <DependentUpon>PreAlignControl.cs</DependentUpon>

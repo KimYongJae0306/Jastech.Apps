@@ -11,9 +11,9 @@ using Jastech.Framework.Winform.Controls;
 using Jastech.Apps.Winform.Settings;
 using ATT.UI.Forms;
 using Jastech.Framework.Structure.Service;
-using ATT.Core;
 using static Jastech.Framework.Modeller.Controls.ModelControl;
 using Jastech.Apps.Winform.UI.Forms;
+using Jastech.Apps.Winform.Core;
 
 namespace ATT.UI.Pages
 {
