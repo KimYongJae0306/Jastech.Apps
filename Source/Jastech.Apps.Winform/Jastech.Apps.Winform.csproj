@@ -81,9 +81,6 @@
     <Compile Include="AppsCameraManager.cs" />
     <Compile Include="AppsMotionManager.cs" />
     <Compile Include="AppsTeachingUIManager.cs" />
-    <Compile Include="Core\ATTInspModel.cs" />
-    <Compile Include="Core\ATTInspModelService.cs" />
-    <Compile Include="Core\ATTTeachingData.cs" />
     <Compile Include="Core\ScanImage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">

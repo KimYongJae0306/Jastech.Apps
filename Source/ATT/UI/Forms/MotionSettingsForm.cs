@@ -16,6 +16,7 @@ using ATT.UI.Controls;
 using Jastech.Apps.Winform.Settings;
 using Jastech.Framework.Structure;
 using Jastech.Apps.Winform.Core;
+using Jastech.Apps.Structure.Core;
 
 namespace ATT.UI.Forms
 {

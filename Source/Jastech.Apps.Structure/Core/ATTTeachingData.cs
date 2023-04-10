@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Jastech.Apps.Winform.Core
+namespace Jastech.Apps.Structure.Core
 {
     public class ATTTeachingData
     {

@@ -20,6 +20,7 @@ using Jastech.Framework.Winform.Forms;
 using Jastech.Apps.Winform.UI.Forms;
 using ATT.UI.Forms;
 using Jastech.Apps.Winform.Core;
+using Jastech.Apps.Structure.Core;
 
 namespace ATT.UI.Pages
 {

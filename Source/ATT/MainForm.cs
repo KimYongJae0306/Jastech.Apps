@@ -1,5 +1,7 @@
-﻿using ATT.UI.Pages;
+﻿using ATT.Core;
+using ATT.UI.Pages;
 using Jastech.Apps.Structure;
+using Jastech.Apps.Structure.Core;
 using Jastech.Apps.Winform.Core;
 using Jastech.Apps.Winform.Settings;
 using Jastech.Apps.Winform.UI.Forms;
