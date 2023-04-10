@@ -66,6 +66,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Core\ATTInspModelService.cs" />
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -95,6 +96,60 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Jastech.Core\src\Jastech.Framework.Comm\Jastech.Framework.Comm.csproj">
+      <Project>{05b26e55-9c49-4078-983a-c6b13f6ee375}</Project>
+      <Name>Jastech.Framework.Comm</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Jastech.Core\src\Jastech.Framework.Config\Jastech.Framework.Config.csproj">
+      <Project>{6244fa20-eda3-45d4-85c7-50d901c5d376}</Project>
+      <Name>Jastech.Framework.Config</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Jastech.Core\src\Jastech.Framework.Device\Jastech.Framework.Device.csproj">
+      <Project>{F43DDCCA-E65C-4131-B789-DB4109E91B68}</Project>
+      <Name>Jastech.Framework.Device</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Jastech.Core\src\Jastech.Framework.Imaging.VisionPro\Jastech.Framework.Imaging.VisionPro.csproj">
+      <Project>{22ee7b1a-e7b2-4547-94dd-4e85bdb56956}</Project>
+      <Name>Jastech.Framework.Imaging.VisionPro</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Jastech.Core\src\Jastech.Framework.Imaging\Jastech.Framework.Imaging.csproj">
+      <Project>{2380da0f-851a-4430-9a43-e7b2deee29f2}</Project>
+      <Name>Jastech.Framework.Imaging</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Jastech.Core\src\Jastech.Framework.Matrox\Jastech.Framework.Matrox.csproj">
+      <Project>{8b4b5cef-5b39-423a-a460-a24f7fd8890e}</Project>
+      <Name>Jastech.Framework.Matrox</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Jastech.Core\src\Jastech.Framework.Modeller\Jastech.Framework.Modeller.csproj">
+      <Project>{feb6ea9b-86d3-41b0-a950-c5b2555916cf}</Project>
+      <Name>Jastech.Framework.Modeller</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Jastech.Core\src\Jastech.Framework.Structure\Jastech.Framework.Structure.csproj">
+      <Project>{DCFF7B48-8DF8-4ED9-9F0F-F11C2CCB7547}</Project>
+      <Name>Jastech.Framework.Structure</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Jastech.Core\src\Jastech.Framework.Util\Jastech.Framework.Util.csproj">
+      <Project>{07EF86CC-AC6A-454E-B12B-EB63454A1DCA}</Project>
+      <Name>Jastech.Framework.Util</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Jastech.Core\src\Jastech.Framework.Winform.VisionPro\Jastech.Framework.Winform.VisionPro.csproj">
+      <Project>{8558b173-0e81-4c55-82b8-02417220e02c}</Project>
+      <Name>Jastech.Framework.Winform.VisionPro</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Jastech.Core\src\Jastech.Framework.Winform\Jastech.Framework.Winform.csproj">
+      <Project>{d46c7263-535a-4bf9-ad14-5183ede0a984}</Project>
+      <Name>Jastech.Framework.Winform</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Jastech.Apps.Structure\Jastech.Apps.Structure.csproj">
+      <Project>{1D6EA4E5-02D4-4C2A-8873-D336D420E726}</Project>
+      <Name>Jastech.Apps.Structure</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Jastech.Apps.Winform\Jastech.Apps.Winform.csproj">
+      <Project>{A2FF047D-37DD-46A8-83B8-341608BD1D40}</Project>
+      <Name>Jastech.Apps.Winform</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

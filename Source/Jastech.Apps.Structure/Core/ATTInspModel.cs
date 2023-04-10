@@ -9,8 +9,34 @@ namespace Jastech.Apps.Structure.Core
 {
     public class ATTInspModel : Jastech.Apps.Structure.AppsInspModel
     {
-       
-        //[JsonProperty]
-        //public List<Tab> TabList { get; set; } = new List<Tab>();
+    }
+
+    public enum ATTPreAlignName
+    {
+        MainLeft,
+        MainRight,
+        SubLeft1,
+        SubRight1,
+        SubLeft2,
+        SubRight2,
+        SubLeft3,
+        SubRight3,
+        SubLeft4,
+        SubRight4,
+    }
+
+    public enum ATTTabAlignName
+    {
+        LeftFPCX,
+        LeftPFCY,
+
+        RightFPCX,
+        RightPFCY,
+
+        LeftPanelX,
+        LeftPanelY,
+
+        RightPanelX,
+        RightPanelY,
     }
 }
