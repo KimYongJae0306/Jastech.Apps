@@ -28,11 +28,12 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         private CogCaliperParamControl CogCaliperParamControl { get; set; } = new CogCaliperParamControl();
 
+        private List<Tab> TeachingTabList { get; set; } = new List<Tab>();
+
         private List<CogCaliperParam> CaliperList { get; set; } = null;
 
         private AlgorithmTool Algorithm = new AlgorithmTool();
 
-        private List<Tab> TeachingTabList { get; set; } = new List<Tab>();
         //private CogCaliper CogCaliperAlgorithm = new CogCaliper();
 
         #region 속성
@@ -57,24 +58,16 @@ namespace Jastech.Apps.Winform.UI.Controls
             AddControl();
         }
 
-        private void chkUseTracking_CheckedChanged(object sender, EventArgs e)
-        {
-            if (chkUseTracking.Checked)
-            {
-                chkUseTracking.Text = "ROI Tracking : USE";
-                chkUseTracking.BackColor = Color.DeepSkyBlue;
-            }
-            else
-            {
-                chkUseTracking.Text = "ROI Tracking : UNUSE";
-                chkUseTracking.BackColor = Color.White;
-            }
-        }
-
         private void AddControl()
         {
             CogCaliperParamControl.Dock = DockStyle.Fill;
+            CogCaliperParamControl.GetOriginImageHandler += AlignControl_GetOriginImageHandler;
             pnlParam.Controls.Add(CogCaliperParamControl);
+        }
+
+        private ICogImage AlignControl_GetOriginImageHandler()
+        {
+            return AppsTeachingUIManager.Instance().TeachingDisplay.GetImage();
         }
 
         public void SetParams(List<Tab> tabList)
@@ -83,9 +76,21 @@ namespace Jastech.Apps.Winform.UI.Controls
                 return;
 
             TeachingTabList = tabList;
+            InitializeComboBox();
 
-            string tabName = tabList[0].Name;
+            //string tabName = tabList[0].Name;
+            string tabName = cmbTabList.SelectedItem as string;
             UpdateParam(tabName);
+        }
+
+        private void InitializeComboBox()
+        {
+            cmbTabList.Items.Clear();
+
+            foreach (var item in TeachingTabList)
+                cmbTabList.Items.Add(item.Name);
+
+            cmbTabList.SelectedIndex = 0;
         }
 
         private void UpdateParam(string tabName)
@@ -93,11 +98,26 @@ namespace Jastech.Apps.Winform.UI.Controls
             if (TeachingTabList.Count <= 0)
                 return;
 
-
-            //var param = CaliperList.Where(x => x.Name == name).First();
-            //var param = TeachingTabList[0].AlignParams.Where(x => x.Name == Name).First();
             var param = TeachingTabList.Where(x => x.Name == tabName).First().AlignParams[0];
             CogCaliperParamControl.UpdateData(param);
+        }
+
+        private void lblAddROI_Click(object sender, EventArgs e)
+        {
+            AddROI();
+        }
+
+        private void AddROI()
+        {
+            var display = AppsTeachingUIManager.Instance().TeachingDisplay;
+            if (display.GetImage() == null)
+                return;
+
+            if (ModelManager.Instance().CurrentModel == null)
+                return;
+
+            SetNewROI(display);
+            DrawROI();
         }
 
         private void SetNewROI(CogDisplayControl display)
@@ -128,30 +148,6 @@ namespace Jastech.Apps.Winform.UI.Controls
             var currentParam = CogCaliperParamControl.GetCurrentParam();
 
             display.SetInteractiveGraphics("tool", currentParam.CreateCurrentRecord(constants));
-        }
-
-        //private void cmbAlignList_SelectedIndexChanged(object sender, EventArgs e)
-        //{
-        //    string name = cmbAlignList.SelectedItem as string;
-
-        //    if (_prevName == name)
-        //        return;
-
-        //    var display = AppsTeachingUIManager.Instance().TeachingDisplay;
-
-        //    if (display == null)
-        //        return;
-
-        //    UpdateParam(name);
-        //    display.ClearGraphic();
-
-        //    DrawROI();
-        //    _prevName = name;
-        //}
-
-        public List<Tab> GetTeachingData()
-        {
-            return TeachingTabList;
         }
 
         private void cmbTabList_SelectedIndexChanged(object sender, EventArgs e)
@@ -203,15 +199,25 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         private void lblPrevTab_Click(object sender, EventArgs e)
         {
+            if (cmbTabList.SelectedIndex <= 0)
+                return;
+
+            cmbTabList.SelectedIndex -= 1;
         }
 
 
         private void lblNextTab_Click(object sender, EventArgs e)
         {
+            int nextIndex = cmbTabList.SelectedIndex + 1;
+
+            if (cmbTabList.Items.Count > nextIndex)
+                cmbTabList.SelectedIndex = nextIndex;
         }
 
-
-        #endregion
+        public List<Tab> GetTeachingData()
+        {
+            return TeachingTabList;
+        }
 
         private void lblInspection_Click(object sender, EventArgs e)
         {
@@ -230,26 +236,21 @@ namespace Jastech.Apps.Winform.UI.Controls
 
             CogCaliperResult result = Algorithm.CaliperAlgorithm.Run(cogImage, currentParam);
         }
+        #endregion
 
-        private void lblAddROI_Click(object sender, EventArgs e)
+        private void chkUseTracking_CheckedChanged(object sender, EventArgs e)
         {
-            AddROI();
+            if (chkUseTracking.Checked)
+            {
+                chkUseTracking.Text = "ROI Tracking : USE";
+                chkUseTracking.BackColor = Color.DeepSkyBlue;
+            }
+            else
+            {
+                chkUseTracking.Text = "ROI Tracking : UNUSE";
+                chkUseTracking.BackColor = Color.White;
+            }
         }
 
-        private void AddROI()
-        {
-            var display = AppsTeachingUIManager.Instance().TeachingDisplay;
-            if (display.GetImage() == null)
-                return;
-
-            if (ModelManager.Instance().CurrentModel == null)
-                return;
-
-            SetNewROI(display);
-            DrawROI();
-        }
-
-
-        
     }
 }
