@@ -1,4 +1,5 @@
-﻿using Jastech.Framework.Structure;
+﻿using Jastech.Apps.Structure;
+using Jastech.Framework.Structure;
 using Jastech.Framework.Structure.Helper;
 using Jastech.Framework.Structure.Service;
 using Jastech.Framework.Winform.Forms;
@@ -44,12 +45,19 @@ namespace Jastech.Apps.Winform.UI.Forms
         {
             string modelName = txtModelName.Text;
             string description = txtModelDescription.Text;
+            string tabCount = txtTabCount.Text;
 
             DateTime time = DateTime.Now;
 
             if (modelName == "")
             {
                 ShowMessageBox("Enter your model name.");
+                return;
+            }
+
+            if(tabCount == "" || tabCount == "0")
+            {
+                ShowMessageBox("Enter your tab count.");
                 return;
             }
 
@@ -60,12 +68,13 @@ namespace Jastech.Apps.Winform.UI.Forms
                 return;
             }
 
-            InspModel model = new InspModel
+            AppsInspModel model = new AppsInspModel
             {
                 Name = modelName,
                 Description = description,
                 CreateDate = time,
                 ModifiedDate = time,
+                TabCount = Convert.ToInt32(tabCount),
             };
 
             DialogResult = DialogResult.OK;

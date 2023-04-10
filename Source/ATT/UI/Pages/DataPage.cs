@@ -13,6 +13,7 @@ using ATT.UI.Forms;
 using Jastech.Framework.Structure.Service;
 using ATT.Core;
 using static Jastech.Framework.Modeller.Controls.ModelControl;
+using Jastech.Apps.Winform.UI.Forms;
 
 namespace ATT.UI.Pages
 {
@@ -29,7 +30,7 @@ namespace ATT.UI.Pages
 
         private void btnModelPage_Click(object sender, EventArgs e)
         {
-            ModelPageForm form = new ModelPageForm();
+            ATTModellerForm form = new ATTModellerForm();
             form.InspModelService = ATTInspModelService;
             form.ApplyModelEventHandler += Form_ApplyModelEventHandler;
             form.ShowDialog();

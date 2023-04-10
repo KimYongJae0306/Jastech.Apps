@@ -1,4 +1,5 @@
-﻿using Jastech.Framework.Structure;
+﻿using Jastech.Apps.Structure;
+using Jastech.Framework.Structure;
 using Jastech.Framework.Structure.Helper;
 using Jastech.Framework.Structure.Service;
 using Jastech.Framework.Winform.Forms;
@@ -26,6 +27,8 @@ namespace Jastech.Apps.Winform.UI.Forms
 
         public string ModelPath { get; set; }
 
+        public string PrevTabCount { get; set; }
+
         public string PrevDescription { get; set; }
         #endregion
 
@@ -43,6 +46,7 @@ namespace Jastech.Apps.Winform.UI.Forms
         {
             txtModelName.Text = PrevModelName;
             txtDescription.Text = PrevDescription;
+            txtTabCount.Text = PrevTabCount;
         }
         #endregion
 
@@ -70,10 +74,11 @@ namespace Jastech.Apps.Winform.UI.Forms
 
             if(isEdit)
             {
-                InspModel inspModel = new InspModel
+                AppsInspModel inspModel = new AppsInspModel
                 {
                     Name = txtModelName.Text,
                     Description = txtDescription.Text,
+                    TabCount = Convert.ToInt32(txtTabCount.Text),
                 };
 
                 DialogResult = DialogResult.OK;

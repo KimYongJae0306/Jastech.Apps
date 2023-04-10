@@ -149,12 +149,6 @@
     <Compile Include="UI\Controls\UnitSelectControl.Designer.cs">
       <DependentUpon>UnitSelectControl.cs</DependentUpon>
     </Compile>
-    <Compile Include="UI\Forms\CopyATTModelForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="UI\Forms\CopyATTModelForm.designer.cs">
-      <DependentUpon>CopyATTModelForm.cs</DependentUpon>
-    </Compile>
     <Compile Include="UI\Forms\CreateATTModelForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -166,6 +160,12 @@
     </Compile>
     <Compile Include="UI\Forms\EditATTModelForm.designer.cs">
       <DependentUpon>EditATTModelForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Forms\ATTModellerForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\Forms\ATTModellerForm.Designer.cs">
+      <DependentUpon>ATTModellerForm.cs</DependentUpon>
     </Compile>
     <Compile Include="UI\Forms\UnitSelectForm.cs">
       <SubType>Form</SubType>
@@ -209,14 +209,14 @@
     <EmbeddedResource Include="UI\Controls\UnitSelectControl.resx">
       <DependentUpon>UnitSelectControl.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="UI\Forms\CopyATTModelForm.resx">
-      <DependentUpon>CopyATTModelForm.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="UI\Forms\CreateATTModelForm.resx">
       <DependentUpon>CreateATTModelForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\Forms\EditATTModelForm.resx">
       <DependentUpon>EditATTModelForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\Forms\ATTModellerForm.resx">
+      <DependentUpon>ATTModellerForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\Forms\UnitSelectForm.resx">
       <DependentUpon>UnitSelectForm.cs</DependentUpon>
@@ -242,6 +242,10 @@
     <ProjectReference Include="..\..\..\Jastech.Core\src\Jastech.Framework.Imaging\Jastech.Framework.Imaging.csproj">
       <Project>{2380da0f-851a-4430-9a43-e7b2deee29f2}</Project>
       <Name>Jastech.Framework.Imaging</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Jastech.Core\src\Jastech.Framework.Matrox\Jastech.Framework.Matrox.csproj">
+      <Project>{8b4b5cef-5b39-423a-a460-a24f7fd8890e}</Project>
+      <Name>Jastech.Framework.Matrox</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\..\Jastech.Core\src\Jastech.Framework.Modeller\Jastech.Framework.Modeller.csproj">
       <Project>{FEB6EA9B-86D3-41B0-A950-C5B2555916CF}</Project>

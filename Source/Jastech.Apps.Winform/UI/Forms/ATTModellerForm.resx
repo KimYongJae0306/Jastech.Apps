@@ -117,4 +117,35 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <data name="label5.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAL
+        EwAACxMBAJqcGAAAAhBJREFUaEPtmT1Ow0AQhdOGlgtwBi7EMaALUNGmoOAstPy0VBT8iCLXSAhvMk/s
+        2OPgbMYbGWk/6SmJ3/itXxRnpWQSZb1eH0HX0Ae0hKIsoDl0zCXKgUXk4p+hEnxCJ1yqDFhA3vmSfEHl
+        SiBcPjalKVcCwe3P/Ct0s6PaPEB30GrzqkmZEprd4JJWL5y3bM7F4xl0mBKa2yBcQMDzbSXkxh7u20kz
+        GwxSQMDrbSXmHInDQMtgBQQc6yqxoN0NBiIb06AFBBy/VfuXFS0PzOjGFClwD513SI43YIQHXnRjihTY
+        GUZ44EU3ppwCXTfoTjDCAy93Y2qTU+BFT8mHER76lj8viDOWnAKnkJT4lhNzYISHvqVYgV2RTI1O0PLQ
+        t9QCUSRToxO0PPQttUAUydToBC0PfUstEEUyNTpBy0PfUgtEkUyNTtDy0LfUAlEkU6MTtDz0LbVAFMnU
+        6AQtD31LLRBFMjU6QctD31ILRJFMjU7Q8tC31AJRJFOjE7Q89C19Bbp+BLiAun7f2UeSJZmWJZf3cMDS
+        V+AQ/w+0eePyHg5Y+gpc6dhBmXF5DwcsfQWm0NNm8jA8QlMu79GZBr03JWakhNxo79AQ/1K2kUzJnkHb
+        L16Q6Ra9BXKRTI1O0IrDPEst0EYyNTpBKw7zLP+uwLg2plwQNq6NKReEjWtjygVh49qY9kECoXFsTL1M
+        Jj+WZn+L3I9xNwAAAABJRU5ErkJggg==
+</value>
+  </data>
+  <metadata name="ColumnCamNo.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="Column1.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="ColumnSerialNo.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="ColumnCamAddress.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="ColumnCamStatus.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
 </root>

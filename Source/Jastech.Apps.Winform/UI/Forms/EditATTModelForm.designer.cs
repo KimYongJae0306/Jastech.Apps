@@ -48,6 +48,9 @@
             this.label8 = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.txtTabCount = new System.Windows.Forms.TextBox();
+            this.panel2 = new System.Windows.Forms.Panel();
+            this.label2 = new System.Windows.Forms.Label();
             this.tableLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel8.SuspendLayout();
             this.panel10.SuspendLayout();
@@ -73,7 +76,7 @@
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 56F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(542, 541);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(542, 596);
             this.tableLayoutPanel1.TabIndex = 3;
             // 
             // label1
@@ -100,7 +103,7 @@
             this.tableLayoutPanel8.Controls.Add(this.panel10, 2, 0);
             this.tableLayoutPanel8.Controls.Add(this.panel8, 1, 0);
             this.tableLayoutPanel8.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel8.Location = new System.Drawing.Point(0, 485);
+            this.tableLayoutPanel8.Location = new System.Drawing.Point(0, 540);
             this.tableLayoutPanel8.Margin = new System.Windows.Forms.Padding(0);
             this.tableLayoutPanel8.Name = "tableLayoutPanel8";
             this.tableLayoutPanel8.RowCount = 1;
@@ -211,6 +214,9 @@
             // panel6
             // 
             this.panel6.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel6.Controls.Add(this.txtTabCount);
+            this.panel6.Controls.Add(this.panel2);
+            this.panel6.Controls.Add(this.label2);
             this.panel6.Controls.Add(this.txtDescription);
             this.panel6.Controls.Add(this.txtModelName);
             this.panel6.Controls.Add(this.panel12);
@@ -222,7 +228,7 @@
             this.panel6.Location = new System.Drawing.Point(3, 42);
             this.panel6.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.panel6.Name = "panel6";
-            this.panel6.Size = new System.Drawing.Size(536, 441);
+            this.panel6.Size = new System.Drawing.Size(536, 496);
             this.panel6.TabIndex = 1;
             // 
             // txtDescription
@@ -230,7 +236,7 @@
             this.txtDescription.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
             this.txtDescription.Font = new System.Drawing.Font("맑은 고딕", 14F, System.Drawing.FontStyle.Bold);
             this.txtDescription.ForeColor = System.Drawing.Color.White;
-            this.txtDescription.Location = new System.Drawing.Point(7, 183);
+            this.txtDescription.Location = new System.Drawing.Point(7, 238);
             this.txtDescription.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.txtDescription.Multiline = true;
             this.txtDescription.Name = "txtDescription";
@@ -251,7 +257,7 @@
             // panel12
             // 
             this.panel12.BackColor = System.Drawing.SystemColors.Highlight;
-            this.panel12.Location = new System.Drawing.Point(6, 178);
+            this.panel12.Location = new System.Drawing.Point(6, 233);
             this.panel12.Margin = new System.Windows.Forms.Padding(0);
             this.panel12.Name = "panel12";
             this.panel12.Size = new System.Drawing.Size(525, 2);
@@ -261,7 +267,7 @@
             // 
             this.label15.Font = new System.Drawing.Font("맑은 고딕", 14F, System.Drawing.FontStyle.Bold);
             this.label15.ForeColor = System.Drawing.Color.White;
-            this.label15.Location = new System.Drawing.Point(3, 148);
+            this.label15.Location = new System.Drawing.Point(3, 203);
             this.label15.Name = "label15";
             this.label15.Size = new System.Drawing.Size(119, 33);
             this.label15.TabIndex = 8;
@@ -307,20 +313,52 @@
             this.panel1.Location = new System.Drawing.Point(0, 0);
             this.panel1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(544, 543);
+            this.panel1.Size = new System.Drawing.Size(544, 598);
             this.panel1.TabIndex = 4;
             // 
-            // EditModelForm
+            // txtTabCount
+            // 
+            this.txtTabCount.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
+            this.txtTabCount.Enabled = false;
+            this.txtTabCount.Font = new System.Drawing.Font("맑은 고딕", 14F, System.Drawing.FontStyle.Bold);
+            this.txtTabCount.ForeColor = System.Drawing.Color.White;
+            this.txtTabCount.Location = new System.Drawing.Point(6, 174);
+            this.txtTabCount.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.txtTabCount.Name = "txtTabCount";
+            this.txtTabCount.Size = new System.Drawing.Size(525, 32);
+            this.txtTabCount.TabIndex = 17;
+            // 
+            // panel2
+            // 
+            this.panel2.BackColor = System.Drawing.SystemColors.Highlight;
+            this.panel2.Location = new System.Drawing.Point(5, 169);
+            this.panel2.Margin = new System.Windows.Forms.Padding(0);
+            this.panel2.Name = "panel2";
+            this.panel2.Size = new System.Drawing.Size(525, 2);
+            this.panel2.TabIndex = 16;
+            // 
+            // label2
+            // 
+            this.label2.Font = new System.Drawing.Font("맑은 고딕", 14F, System.Drawing.FontStyle.Bold);
+            this.label2.ForeColor = System.Drawing.Color.White;
+            this.label2.Location = new System.Drawing.Point(3, 139);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(119, 33);
+            this.label2.TabIndex = 15;
+            this.label2.Text = "Tab Count";
+            this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // EditATTModelForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
-            this.ClientSize = new System.Drawing.Size(544, 543);
+            this.ClientSize = new System.Drawing.Size(544, 598);
             this.ControlBox = false;
             this.Controls.Add(this.panel1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.Name = "EditModelForm";
+            this.Name = "EditATTModelForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Load += new System.EventHandler(this.EditATTModelForm_Load);
             this.tableLayoutPanel1.ResumeLayout(false);
@@ -358,5 +396,8 @@
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.TextBox txtTabCount;
+        private System.Windows.Forms.Panel panel2;
+        private System.Windows.Forms.Label label2;
     }
 }
