@@ -28,16 +28,19 @@ namespace ATT.Core
 
                 unit.Name = i.ToString(); // 임시 -> Apps에서 변경
 
-                // Prev Align 등록
-                foreach (ATTAlignName type in Enum.GetValues(typeof(ATTAlignName)))
+                if(newInspModel.EnablePreAlign)
                 {
-                    PreAlign preAlign = new PreAlign();
-                    preAlign.Name = type.ToString();
-                    preAlign.InspParam = new CogPatternMatchingParam();
-                    preAlign.LightParams = new List<LightParameter>();
-                    preAlign.LightParams.AddRange(CreatePreAlignLightParameter());
+                    // Prev Align 등록
+                    foreach (ATTAlignName type in Enum.GetValues(typeof(ATTAlignName)))
+                    {
+                        PreAlign preAlign = new PreAlign();
+                        preAlign.Name = type.ToString();
+                        preAlign.InspParam = new CogPatternMatchingParam();
+                        preAlign.LightParams = new List<LightParameter>();
+                        preAlign.LightParams.AddRange(CreatePreAlignLightParameter());
 
-                    unit.PreAligns.Add(preAlign);
+                        unit.PreAligns.Add(preAlign);
+                    }
                 }
 
                 // LineScan 조명 Parameter 생성

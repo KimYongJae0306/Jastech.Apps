@@ -118,12 +118,6 @@
     <Compile Include="UI\Forms\LineTeachingForm.Designer.cs">
       <DependentUpon>LineTeachingForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="UI\Pages\AutoPage.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="UI\Pages\AutoPage.Designer.cs">
-      <DependentUpon>AutoPage.cs</DependentUpon>
-    </Compile>
     <Compile Include="UI\Pages\InspPage.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -147,6 +141,12 @@
     </Compile>
     <Compile Include="UI\Pages\AreaTeachingPage.Designer.cs">
       <DependentUpon>AreaTeachingPage.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Pages\MainPage.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UI\Pages\MainPage.Designer.cs">
+      <DependentUpon>MainPage.cs</DependentUpon>
     </Compile>
     <Compile Include="UI\Pages\TeachingPage.cs">
       <SubType>UserControl</SubType>
@@ -179,9 +179,6 @@
     <EmbeddedResource Include="UI\Forms\MotionPopupForm.resx">
       <DependentUpon>MotionPopupForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="UI\Pages\AutoPage.resx">
-      <DependentUpon>AutoPage.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="UI\Pages\DataPage.resx">
       <DependentUpon>DataPage.cs</DependentUpon>
     </EmbeddedResource>
@@ -199,6 +196,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UI\Pages\AreaTeachingPage.resx">
       <DependentUpon>AreaTeachingPage.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\Pages\MainPage.resx">
+      <DependentUpon>MainPage.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\Pages\TeachingPage.resx">
       <DependentUpon>TeachingPage.cs</DependentUpon>
