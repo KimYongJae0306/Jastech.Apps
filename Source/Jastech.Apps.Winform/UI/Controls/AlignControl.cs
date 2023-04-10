@@ -154,6 +154,53 @@ namespace Jastech.Apps.Winform.UI.Controls
             return TeachingTabList;
         }
 
+        private void cmbTabList_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            string name = cmbTabList.SelectedItem as string;
+
+            if (_prevName == name)
+                return;
+
+            var display = AppsTeachingUIManager.Instance().TeachingDisplay;
+            if (display == null)
+                return;
+            UpdateParam(name);
+            display.ClearGraphic();
+
+            DrawROI();
+            _prevName = name;
+        }
+
+        private void cmbTabList_DrawItem(object sender, DrawItemEventArgs e)
+        {
+            DrawComboboxCenterAlign(sender, e);
+        }
+
+        private void DrawComboboxCenterAlign(object sender, DrawItemEventArgs e)
+        {
+            ComboBox cmb = sender as ComboBox;
+
+            if (cmb != null)
+            {
+                e.DrawBackground();
+                cmb.ItemHeight = lblPrev.Height - 6;
+
+                if (e.Index >= 0)
+                {
+                    StringFormat sf = new StringFormat();
+                    sf.LineAlignment = StringAlignment.Center;
+                    sf.Alignment = StringAlignment.Center;
+
+                    Brush brush = new SolidBrush(cmb.ForeColor);
+
+                    if ((e.State & DrawItemState.Selected) == DrawItemState.Selected)
+                        brush = SystemBrushes.HighlightText;
+
+                    e.Graphics.DrawString(cmb.Items[e.Index].ToString(), cmb.Font, brush, e.Bounds, sf);
+                }
+            }
+        }
+
         private void lblPrevTab_Click(object sender, EventArgs e)
         {
         }
@@ -201,5 +248,8 @@ namespace Jastech.Apps.Winform.UI.Controls
             SetNewROI(display);
             DrawROI();
         }
+
+
+        
     }
 }

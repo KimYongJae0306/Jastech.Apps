@@ -31,7 +31,6 @@
             this.tlpAlign = new System.Windows.Forms.TableLayoutPanel();
             this.lblParameter = new System.Windows.Forms.Label();
             this.tlpBasic = new System.Windows.Forms.TableLayoutPanel();
-            this.lblTab = new System.Windows.Forms.Label();
             this.lblAddROI = new System.Windows.Forms.Label();
             this.lblPrev = new System.Windows.Forms.Label();
             this.lblNext = new System.Windows.Forms.Label();
@@ -49,6 +48,7 @@
             this.lblPanelX = new System.Windows.Forms.Label();
             this.chkUseTracking = new System.Windows.Forms.CheckBox();
             this.pnlParam = new System.Windows.Forms.Panel();
+            this.cmbTabList = new System.Windows.Forms.ComboBox();
             this.tlpAlign.SuspendLayout();
             this.tlpBasic.SuspendLayout();
             this.pnlPosition.SuspendLayout();
@@ -99,11 +99,11 @@
             this.tlpBasic.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 100F));
             this.tlpBasic.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 100F));
             this.tlpBasic.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tlpBasic.Controls.Add(this.lblTab, 0, 0);
             this.tlpBasic.Controls.Add(this.lblAddROI, 4, 0);
             this.tlpBasic.Controls.Add(this.lblPrev, 1, 0);
             this.tlpBasic.Controls.Add(this.lblNext, 2, 0);
             this.tlpBasic.Controls.Add(this.lblInspection, 3, 0);
+            this.tlpBasic.Controls.Add(this.cmbTabList, 0, 0);
             this.tlpBasic.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tlpBasic.Location = new System.Drawing.Point(0, 32);
             this.tlpBasic.Margin = new System.Windows.Forms.Padding(0);
@@ -112,19 +112,6 @@
             this.tlpBasic.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tlpBasic.Size = new System.Drawing.Size(670, 50);
             this.tlpBasic.TabIndex = 0;
-            // 
-            // lblTab
-            // 
-            this.lblTab.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lblTab.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblTab.Font = new System.Drawing.Font("맑은 고딕", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.lblTab.Location = new System.Drawing.Point(0, 0);
-            this.lblTab.Margin = new System.Windows.Forms.Padding(0);
-            this.lblTab.Name = "lblTab";
-            this.lblTab.Size = new System.Drawing.Size(200, 50);
-            this.lblTab.TabIndex = 25;
-            this.lblTab.Text = "TAB : 1";
-            this.lblTab.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // lblAddROI
             // 
@@ -328,6 +315,20 @@
             this.pnlParam.Size = new System.Drawing.Size(670, 300);
             this.pnlParam.TabIndex = 15;
             // 
+            // cmbTabList
+            // 
+            this.cmbTabList.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.cmbTabList.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.cmbTabList.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbTabList.Font = new System.Drawing.Font("맑은 고딕", 14.25F, System.Drawing.FontStyle.Bold);
+            this.cmbTabList.FormattingEnabled = true;
+            this.cmbTabList.Location = new System.Drawing.Point(3, 3);
+            this.cmbTabList.Name = "cmbTabList";
+            this.cmbTabList.Size = new System.Drawing.Size(194, 34);
+            this.cmbTabList.TabIndex = 24;
+            this.cmbTabList.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.cmbTabList_DrawItem);
+            this.cmbTabList.SelectedIndexChanged += new System.EventHandler(this.cmbTabList_SelectedIndexChanged);
+            // 
             // AlignControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
@@ -361,7 +362,6 @@
         private System.Windows.Forms.Label lblPanelY;
         private System.Windows.Forms.Label lblInspection;
         private System.Windows.Forms.Label lblAddROI;
-        private System.Windows.Forms.Label lblTab;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label3;
@@ -370,5 +370,6 @@
         private System.Windows.Forms.Label lblRight;
         private System.Windows.Forms.Panel pnlPosition;
         private System.Windows.Forms.Panel pnlParam;
+        private System.Windows.Forms.ComboBox cmbTabList;
     }
 }
