@@ -48,15 +48,11 @@
             this.lblLeftPanelY = new System.Windows.Forms.Label();
             this.lblLeftPanelX = new System.Windows.Forms.Label();
             this.chkUseTracking = new System.Windows.Forms.CheckBox();
-  			this.pnlCaliperParam = new System.Windows.Forms.Panel();
             this.tlpParams = new System.Windows.Forms.TableLayoutPanel();
+            this.pnlCaliperParam = new System.Windows.Forms.Panel();
             this.pnlLeadParam = new System.Windows.Forms.Panel();
-            this.lblLead = new System.Windows.Forms.Label();
             this.lblLeadCount = new System.Windows.Forms.Label();
-            this.tlpParams = new System.Windows.Forms.TableLayoutPanel();
-            this.pnlLeadParam = new System.Windows.Forms.Panel();
             this.lblLead = new System.Windows.Forms.Label();
-            this.lblLeadCount = new System.Windows.Forms.Label();
             this.tlpAlign.SuspendLayout();
             this.tlpBasic.SuspendLayout();
             this.pnlPosition.SuspendLayout();
@@ -338,16 +334,6 @@
             this.chkUseTracking.UseVisualStyleBackColor = false;
             this.chkUseTracking.CheckedChanged += new System.EventHandler(this.chkUseTracking_CheckedChanged);
             // 
-            // pnlCaliperParam
-            // 
-            this.pnlCaliperParam.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pnlCaliperParam.Location = new System.Drawing.Point(0, 60);
-            this.pnlCaliperParam.Margin = new System.Windows.Forms.Padding(0);
-            this.pnlCaliperParam.Name = "pnlCaliperParam";
-            this.pnlCaliperParam.Padding = new System.Windows.Forms.Padding(4);
-            this.pnlCaliperParam.Size = new System.Drawing.Size(578, 205);
-            this.pnlCaliperParam.TabIndex = 15;
-            // 
             // tlpParams
             // 
             this.tlpParams.ColumnCount = 1;
@@ -363,6 +349,16 @@
             this.tlpParams.Size = new System.Drawing.Size(578, 265);
             this.tlpParams.TabIndex = 25;
             // 
+            // pnlCaliperParam
+            // 
+            this.pnlCaliperParam.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pnlCaliperParam.Location = new System.Drawing.Point(0, 60);
+            this.pnlCaliperParam.Margin = new System.Windows.Forms.Padding(0);
+            this.pnlCaliperParam.Name = "pnlCaliperParam";
+            this.pnlCaliperParam.Padding = new System.Windows.Forms.Padding(4);
+            this.pnlCaliperParam.Size = new System.Drawing.Size(578, 205);
+            this.pnlCaliperParam.TabIndex = 15;
+            // 
             // pnlLeadParam
             // 
             this.pnlLeadParam.Controls.Add(this.lblLeadCount);
@@ -373,17 +369,6 @@
             this.pnlLeadParam.Name = "pnlLeadParam";
             this.pnlLeadParam.Size = new System.Drawing.Size(578, 60);
             this.pnlLeadParam.TabIndex = 16;
-            // 
-            // lblLead
-            // 
-            this.lblLead.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lblLead.Location = new System.Drawing.Point(5, 10);
-            this.lblLead.Margin = new System.Windows.Forms.Padding(0);
-            this.lblLead.Name = "lblLead";
-            this.lblLead.Size = new System.Drawing.Size(200, 40);
-            this.lblLead.TabIndex = 1;
-            this.lblLead.Text = "Lead Count";
-            this.lblLead.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // lblLeadCount
             // 
@@ -396,6 +381,17 @@
             this.lblLeadCount.Text = "0";
             this.lblLeadCount.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.lblLeadCount.Click += new System.EventHandler(this.lblLeadCount_Click);
+            // 
+            // lblLead
+            // 
+            this.lblLead.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblLead.Location = new System.Drawing.Point(5, 10);
+            this.lblLead.Margin = new System.Windows.Forms.Padding(0);
+            this.lblLead.Name = "lblLead";
+            this.lblLead.Size = new System.Drawing.Size(200, 40);
+            this.lblLead.TabIndex = 1;
+            this.lblLead.Text = "Lead Count";
+            this.lblLead.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // AlignControl
             // 
