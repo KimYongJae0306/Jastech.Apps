@@ -154,10 +154,10 @@ namespace Jastech.Apps.Winform.UI.Controls
             double centerX = display.ImageWidth() / 2.0 - display.GetPan().X;
             double centerY = display.ImageHeight() / 2.0 - display.GetPan().Y;
 
-            CogRectangleAffine roi = CogImageHelper.CreateRectangleAffine(centerX - display.GetPan().X, centerY - display.GetPan().Y, 100, 100);
+            CogRectangleAffine roi = CogImageHelper.CreateRectangleAffine(centerX, centerY, 100, 100);
 
-            if (roi.CenterX <= 70)
-                roi.SetCenterLengthsRotationSkew(centerX, centerY, 500, 500, 0, 0);
+            //if (roi.CenterX <= 70)
+            //    roi.SetCenterLengthsRotationSkew(centerX, centerY, 500, 500, 0, 0);
 
             var currentParam = CogCaliperParamControl.GetCurrentParam();
 
