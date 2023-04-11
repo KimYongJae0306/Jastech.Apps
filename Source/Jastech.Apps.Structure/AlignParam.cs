@@ -27,6 +27,7 @@ namespace Jastech.Apps.Structure
         public AlignParam DeepCopy()
         {
             AlignParam align = new AlignParam();
+            align.Name = Name;
             align.LeadCount = LeadCount;
             align.CaliperParams = CaliperParams.DeepCopy();
 

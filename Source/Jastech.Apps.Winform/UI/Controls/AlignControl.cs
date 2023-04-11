@@ -124,6 +124,7 @@ namespace Jastech.Apps.Winform.UI.Controls
             var param = TeachingTabList.Where(x => x.Name == tabName).First().AlignParamList[(int)_alignName];
             //var param = TeachingTabList.Where(x => x.Name == tabName).First().AlignParams.Where(x => x.Name == _alignName).First();
             CogCaliperParamControl.UpdateData(param);
+            lblLeadCount.Text = param.LeadCount.ToString();
         }
 
         private void lblAddROI_Click(object sender, EventArgs e)
@@ -376,19 +377,22 @@ namespace Jastech.Apps.Winform.UI.Controls
             Label lbl = sender as Label;
             lbl.BackColor = _selectedColor;
 
-            if (_alignName == ATTTabAlignName.LeftFPCY || _alignName == ATTTabAlignName.RightFPCY
-                || _alignName == ATTTabAlignName.LeftPanelY || _alignName == ATTTabAlignName.RightPanelY)
-            {
-                lblLeadCount.Enabled = false;
-            }
-            else
-                lblLeadCount.Enabled = true;
+            //if (_alignName == ATTTabAlignName.LeftFPCY || _alignName == ATTTabAlignName.RightFPCY
+            //    || _alignName == ATTTabAlignName.LeftPanelY || _alignName == ATTTabAlignName.RightPanelY)
+            //{
+            //    lblLeadCount.Enabled = false;
+            //}
+            //else
+            //    lblLeadCount.Enabled = true;
         }
 
         private void lblLeadCount_Click(object sender, EventArgs e)
         {
+            string tabName = cmbTabList.SelectedItem as string;
+            
             int leadCount = SetLabelIntegerData(sender);
 
+            TeachingTabList.Where(x => x.Name == tabName).First().GetAlignParam(_alignName).LeadCount = leadCount;
         }
 
         private int SetLabelIntegerData(object sender)

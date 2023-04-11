@@ -1,4 +1,5 @@
-﻿using Jastech.Framework.Imaging.VisionPro.VisionAlgorithms.Parameters;
+﻿using Jastech.Apps.Structure.Core;
+using Jastech.Framework.Imaging.VisionPro.VisionAlgorithms.Parameters;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -12,6 +13,7 @@ namespace Jastech.Apps.Structure
     {
         [JsonProperty]
         public string Name { get; set; } = "";
+
         [JsonProperty]
         public int Index { get; set; }
 
@@ -37,15 +39,18 @@ namespace Jastech.Apps.Structure
             AlignParamList.Clear();
         }
 
-        public void SetAlignParams(List<AlignParam> alignParamList)
+        public AlignParam GetAlignParam(ATTTabAlignName alignName)
         {
-            if (alignParamList == null)
+            return AlignParamList.Where(x => x.Name == alignName.ToString()).First();
+        }
+
+        public void SetAlignParam(ATTTabAlignName alignName, AlignParam alignParam)
+        {
+            if (alignParam == null)
                 return;
 
-            foreach (var prevParam in AlignParamList)
-                prevParam.Dispose();
-
-            AlignParamList = AlignParamList.Select(x => x.DeepCopy()).ToList();
+            AlignParamList.Where(x => x.Name == alignName.ToString()).First().LeadCount = alignParam.LeadCount;
+            AlignParamList.Where(x => x.Name == alignName.ToString()).First().CaliperParams = alignParam.CaliperParams.DeepCopy();
         }
     }
 }
