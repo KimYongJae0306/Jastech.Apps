@@ -16,7 +16,7 @@ namespace Jastech.Apps.Structure
         public string Name { get; set; } = "";
 
         [JsonProperty]
-        public List<PreAlign> PreAligns { get; set; } = new List<PreAlign>();
+        public List<PreAlignParam> PreAligns { get; set; } = new List<PreAlignParam>();
 
         [JsonProperty]
         public List<LightParameter> LightParams { get; set; } = new List<LightParameter>();   // LineScan 용 조명 파라메터

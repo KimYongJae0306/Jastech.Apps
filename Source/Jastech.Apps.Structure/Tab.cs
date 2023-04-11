@@ -16,36 +16,36 @@ namespace Jastech.Apps.Structure
         public int Index { get; set; }
 
         [JsonProperty]
-        public List<CogCaliperParam> AlignParams { get; set; } = new List<CogCaliperParam>();
+        public List<AlignParam> AlignParamList { get; set; } = new List<AlignParam>();
 
         public Tab DeepCopy()
         {
             Tab tab = new Tab();
             tab.Name = Name;
             tab.Index = Index;
-            tab.AlignParams = AlignParams.Select(x => x.DeepCopy()).ToList();
+            tab.AlignParamList = AlignParamList.Select(x => x.DeepCopy()).ToList();
 
             return tab;
         }
 
         public void Dispose()
         {
-            foreach (var item in AlignParams)
+            foreach (var item in AlignParamList)
             {
                 item.Dispose();
             }
-            AlignParams.Clear();
+            AlignParamList.Clear();
         }
 
-        public void SetAlignParams(List<CogCaliperParam> caliperParam)
+        public void SetAlignParams(List<AlignParam> alignParamList)
         {
-            if (caliperParam == null)
+            if (alignParamList == null)
                 return;
 
-            foreach (var prevParam in AlignParams)
+            foreach (var prevParam in AlignParamList)
                 prevParam.Dispose();
 
-            AlignParams = caliperParam.Select(x => x.DeepCopy()).ToList();
+            AlignParamList = AlignParamList.Select(x => x.DeepCopy()).ToList();
         }
     }
 }

@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Jastech.Apps.Structure
 {
-    public class PreAlign
+    public class PreAlignParam
     {
         [JsonProperty]
         public string Name { get; set; } = "";
@@ -20,9 +20,9 @@ namespace Jastech.Apps.Structure
         [JsonProperty]
         public List<LightParameter> LightParams { get; set; } = null;
 
-        public PreAlign DeepCopy()
+        public PreAlignParam DeepCopy()
         {
-            PreAlign preAlign = new PreAlign();
+            PreAlignParam preAlign = new PreAlignParam();
             if(InspParam != null)
                 preAlign.InspParam = InspParam.DeepCopy();
 

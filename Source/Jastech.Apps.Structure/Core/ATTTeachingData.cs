@@ -33,7 +33,7 @@ namespace Jastech.Apps.Structure.Core
             return UnitList.Where(x => x.Name == name).First();
         }
 
-        public List<PreAlign> GetPreAlign(string unitName)
+        public List<PreAlignParam> GetPreAlign(string unitName)
         {
             Unit unit = GetUnit(unitName);
 
@@ -52,7 +52,7 @@ namespace Jastech.Apps.Structure.Core
 
             Unit unit = GetUnit(unitName);
 
-            for (int i = 0; i < UnitList.Count; i++)
+            for (int i = 0; i < unit.GetTabList().Count; i++)
             {
                 var tab = unit.GetTab(i);
                 alignParam.Add(tab);

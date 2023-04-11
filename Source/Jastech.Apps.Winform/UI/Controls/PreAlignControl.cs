@@ -27,7 +27,7 @@ namespace Jastech.Apps.Winform.UI.Controls
         #endregion
         private CogPatternMatchingParamControl ParamControl { get; set; } = new CogPatternMatchingParamControl();
 
-        private List<PreAlign> PreAlignList { get; set; } = null;
+        private List<PreAlignParam> PreAlignList { get; set; } = null;
 
         private AlgorithmTool Algorithm = new AlgorithmTool();
 
@@ -53,7 +53,7 @@ namespace Jastech.Apps.Winform.UI.Controls
             return AppsTeachingUIManager.Instance().TeachingDisplay.GetImage();
         }
 
-        public void SetParams(List<PreAlign> preAligns)
+        public void SetParams(List<PreAlignParam> preAligns)
         {
             if (preAligns.Count <= 0)
                 return;
@@ -160,7 +160,7 @@ namespace Jastech.Apps.Winform.UI.Controls
             }
         }
 
-        public List<PreAlign> GetTeachingData()
+        public List<PreAlignParam> GetTeachingData()
         {
             return PreAlignList;
         }

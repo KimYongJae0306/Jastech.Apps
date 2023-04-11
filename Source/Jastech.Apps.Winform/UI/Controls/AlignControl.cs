@@ -17,22 +17,28 @@ using Jastech.Apps.Structure.VisionTool;
 using Jastech.Framework.Imaging.VisionPro;
 using Cognex.VisionPro.Caliper;
 using CogCaliperResult = Jastech.Framework.Imaging.VisionPro.VisionAlgorithms.Results.CogCaliperResult;
+using Jastech.Framework.Winform.Forms;
+using Jastech.Apps.Structure.Core;
 
 namespace Jastech.Apps.Winform.UI.Controls
 {
     public partial class AlignControl : UserControl
     {
         #region 필드
-        private string _prevName { get; set; } = string.Empty;
+        private string _prevTabName { get; set; } = string.Empty;
+        private ATTTabAlignName _alignName { get; set; } = ATTTabAlignName.LeftFPCX;
+        private Color _selectedColor = new Color();
+        private Color _nonSelectedColor = new Color();
         #endregion
 
         private CogCaliperParamControl CogCaliperParamControl { get; set; } = new CogCaliperParamControl();
+
+        private List<Tab> TeachingTabList { get; set; } = new List<Tab>();
 
         private List<CogCaliperParam> CaliperList { get; set; } = null;
 
         private AlgorithmTool Algorithm = new AlgorithmTool();
 
-        private List<Tab> TeachingTabList { get; set; } = new List<Tab>();
         //private CogCaliper CogCaliperAlgorithm = new CogCaliper();
 
         #region 속성
@@ -55,26 +61,25 @@ namespace Jastech.Apps.Winform.UI.Controls
         private void AlignControl_Load(object sender, EventArgs e)
         {
             AddControl();
-        }
-
-        private void chkUseTracking_CheckedChanged(object sender, EventArgs e)
-        {
-            if (chkUseTracking.Checked)
-            {
-                chkUseTracking.Text = "ROI Tracking : USE";
-                chkUseTracking.BackColor = Color.DeepSkyBlue;
-            }
-            else
-            {
-                chkUseTracking.Text = "ROI Tracking : UNUSE";
-                chkUseTracking.BackColor = Color.White;
-            }
+            InitializeUI();
         }
 
         private void AddControl()
         {
             CogCaliperParamControl.Dock = DockStyle.Fill;
-            pnlParam.Controls.Add(CogCaliperParamControl);
+            CogCaliperParamControl.GetOriginImageHandler += AlignControl_GetOriginImageHandler;
+            pnlCaliperParam.Controls.Add(CogCaliperParamControl);
+        }
+
+        private void InitializeUI()
+        {
+            InitializeLabelColor();
+            InitializeAlignName();
+        }
+
+        private ICogImage AlignControl_GetOriginImageHandler()
+        {
+            return AppsTeachingUIManager.Instance().TeachingDisplay.GetImage();
         }
 
         public void SetParams(List<Tab> tabList)
@@ -83,9 +88,32 @@ namespace Jastech.Apps.Winform.UI.Controls
                 return;
 
             TeachingTabList = tabList;
+            InitializeComboBox();
 
-            string tabName = tabList[0].Name;
+            string tabName = cmbTabList.SelectedItem as string;
             UpdateParam(tabName);
+        }
+
+        private void InitializeLabelColor()
+        {
+            _selectedColor = Color.FromArgb(104, 104, 104);
+            _nonSelectedColor = Color.FromArgb(52, 52, 52);
+        }
+
+        private void InitializeComboBox()
+        {
+            cmbTabList.Items.Clear();
+
+            foreach (var item in TeachingTabList)
+                cmbTabList.Items.Add(item.Name);
+
+            cmbTabList.SelectedIndex = 0;
+        }
+
+        private void InitializeAlignName()
+        {
+            _alignName = ATTTabAlignName.LeftFPCX;
+            UpdateSelectedAlignName(lblLeftFPCX);
         }
 
         private void UpdateParam(string tabName)
@@ -93,11 +121,27 @@ namespace Jastech.Apps.Winform.UI.Controls
             if (TeachingTabList.Count <= 0)
                 return;
 
-
-            //var param = CaliperList.Where(x => x.Name == name).First();
-            //var param = TeachingTabList[0].AlignParams.Where(x => x.Name == Name).First();
-            var param = TeachingTabList.Where(x => x.Name == tabName).First().AlignParams[0];
+            var param = TeachingTabList.Where(x => x.Name == tabName).First().AlignParamList[(int)_alignName];
+            //var param = TeachingTabList.Where(x => x.Name == tabName).First().AlignParams.Where(x => x.Name == _alignName).First();
             CogCaliperParamControl.UpdateData(param);
+        }
+
+        private void lblAddROI_Click(object sender, EventArgs e)
+        {
+            AddROI();
+        }
+
+        private void AddROI()
+        {
+            var display = AppsTeachingUIManager.Instance().TeachingDisplay;
+            if (display.GetImage() == null)
+                return;
+
+            if (ModelManager.Instance().CurrentModel == null)
+                return;
+
+            SetNewROI(display);
+            DrawROI();
         }
 
         private void SetNewROI(CogDisplayControl display)
@@ -115,7 +159,7 @@ namespace Jastech.Apps.Winform.UI.Controls
 
             var currentParam = CogCaliperParamControl.GetCurrentParam();
 
-            currentParam.SetRegion(roi);
+            currentParam.CaliperParams.SetRegion(roi);
         }
 
         public void DrawROI()
@@ -127,48 +171,25 @@ namespace Jastech.Apps.Winform.UI.Controls
             CogCaliperCurrentRecordConstants constants = CogCaliperCurrentRecordConstants.All;  //CogCaliperCurrentRecordConstants.InputImage | CogCaliperCurrentRecordConstants.Region;
             var currentParam = CogCaliperParamControl.GetCurrentParam();
 
-            display.SetInteractiveGraphics("tool", currentParam.CreateCurrentRecord(constants));
-        }
-
-        //private void cmbAlignList_SelectedIndexChanged(object sender, EventArgs e)
-        //{
-        //    string name = cmbAlignList.SelectedItem as string;
-
-        //    if (_prevName == name)
-        //        return;
-
-        //    var display = AppsTeachingUIManager.Instance().TeachingDisplay;
-
-        //    if (display == null)
-        //        return;
-
-        //    UpdateParam(name);
-        //    display.ClearGraphic();
-
-        //    DrawROI();
-        //    _prevName = name;
-        //}
-
-        public List<Tab> GetTeachingData()
-        {
-            return TeachingTabList;
+            display.SetInteractiveGraphics("tool", currentParam.CaliperParams.CreateCurrentRecord(constants));
         }
 
         private void cmbTabList_SelectedIndexChanged(object sender, EventArgs e)
         {
-            string name = cmbTabList.SelectedItem as string;
+            string tabName = cmbTabList.SelectedItem as string;
 
-            if (_prevName == name)
+            if (_prevTabName == tabName)
                 return;
 
             var display = AppsTeachingUIManager.Instance().TeachingDisplay;
             if (display == null)
                 return;
-            UpdateParam(name);
+
+            UpdateParam(tabName);
             display.ClearGraphic();
 
             DrawROI();
-            _prevName = name;
+            _prevTabName = tabName;
         }
 
         private void cmbTabList_DrawItem(object sender, DrawItemEventArgs e)
@@ -203,15 +224,25 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         private void lblPrevTab_Click(object sender, EventArgs e)
         {
+            if (cmbTabList.SelectedIndex <= 0)
+                return;
+
+            cmbTabList.SelectedIndex -= 1;
         }
 
 
         private void lblNextTab_Click(object sender, EventArgs e)
         {
+            int nextIndex = cmbTabList.SelectedIndex + 1;
+
+            if (cmbTabList.Items.Count > nextIndex)
+                cmbTabList.SelectedIndex = nextIndex;
         }
 
-
-        #endregion
+        public List<Tab> GetTeachingData()
+        {
+            return TeachingTabList;
+        }
 
         private void lblInspection_Click(object sender, EventArgs e)
         {
@@ -228,28 +259,149 @@ namespace Jastech.Apps.Winform.UI.Controls
 
             ICogImage cogImage = display.GetImage();
 
-            CogCaliperResult result = Algorithm.CaliperAlgorithm.Run(cogImage, currentParam);
-        }
+            CogCaliperResult result = Algorithm.CaliperAlgorithm.Run(cogImage, currentParam.CaliperParams);
 
-        private void lblAddROI_Click(object sender, EventArgs e)
+            if (result.CaliperMatchList.Count > 0)
+            {
+                display.ClearGraphic();
+                display.UpdateResult(result);
+            }
+            else
+            {
+                MessageConfirmForm form = new MessageConfirmForm();
+                form.Message = "Caliper is Not Found.";
+                form.ShowDialog();
+            }
+        }
+        #endregion
+
+        private void chkUseTracking_CheckedChanged(object sender, EventArgs e)
         {
-            AddROI();
+            if (chkUseTracking.Checked)
+            {
+                chkUseTracking.Text = "ROI Tracking : USE";
+                chkUseTracking.BackColor = Color.DeepSkyBlue;
+            }
+            else
+            {
+                chkUseTracking.Text = "ROI Tracking : UNUSE";
+                chkUseTracking.BackColor = Color.White;
+            }
         }
 
-        private void AddROI()
+        private void lblLeftFPCX_Click(object sender, EventArgs e)
         {
-            var display = AppsTeachingUIManager.Instance().TeachingDisplay;
-            if (display.GetImage() == null)
-                return;
+            _alignName = ATTTabAlignName.LeftFPCX;
+            UpdateSelectedAlignName(sender);
 
-            if (ModelManager.Instance().CurrentModel == null)
-                return;
-
-            SetNewROI(display);
-            DrawROI();
+            string tabName = cmbTabList.SelectedItem as string;
+            UpdateParam(tabName);
         }
 
+        private void lblLeftFPCY_Click(object sender, EventArgs e)
+        {
+            _alignName = ATTTabAlignName.LeftFPCY;
+            UpdateSelectedAlignName(sender);
 
-        
+            string tabName = cmbTabList.SelectedItem as string;
+            UpdateParam(tabName);
+        }
+
+        private void lblLeftPanelX_Click(object sender, EventArgs e)
+        {
+            _alignName = ATTTabAlignName.LeftPanelX;
+            UpdateSelectedAlignName(sender);
+
+            string tabName = cmbTabList.SelectedItem as string;
+            UpdateParam(tabName);
+        }
+
+        private void lblLeftPanelY_Click(object sender, EventArgs e)
+        {
+            _alignName = ATTTabAlignName.LeftPanelY;
+            UpdateSelectedAlignName(sender);
+
+            string tabName = cmbTabList.SelectedItem as string;
+            UpdateParam(tabName);
+        }
+
+        private void lblRightFPCX_Click(object sender, EventArgs e)
+        {
+            _alignName = ATTTabAlignName.RightFPCX;
+            UpdateSelectedAlignName(sender);
+
+            string tabName = cmbTabList.SelectedItem as string;
+            UpdateParam(tabName);
+        }
+
+        private void lblRightFPCY_Click(object sender, EventArgs e)
+        {
+            _alignName = ATTTabAlignName.RightFPCY;
+            UpdateSelectedAlignName(sender);
+
+            string tabName = cmbTabList.SelectedItem as string;
+            UpdateParam(tabName);
+        }
+
+        private void lblRightPanelX_Click(object sender, EventArgs e)
+        {
+            _alignName = ATTTabAlignName.RightPanelX;
+            UpdateSelectedAlignName(sender);
+
+            string tabName = cmbTabList.SelectedItem as string;
+            UpdateParam(tabName);
+        }
+
+        private void lblRightPanelY_Click(object sender, EventArgs e)
+        {
+            _alignName = ATTTabAlignName.RightPanelY;
+            UpdateSelectedAlignName(sender);
+
+            string tabName = cmbTabList.SelectedItem as string;
+            UpdateParam(tabName);
+        }
+
+        private void UpdateSelectedAlignName(object sender)
+        {
+            lblLeftFPCX.BackColor = _nonSelectedColor;
+            lblLeftFPCY.BackColor = _nonSelectedColor;
+            lblLeftPanelX.BackColor = _nonSelectedColor;
+            lblLeftPanelY.BackColor = _nonSelectedColor;
+
+            lblRightFPCX.BackColor = _nonSelectedColor;
+            lblRightFPCY.BackColor = _nonSelectedColor;
+            lblRightPanelX.BackColor = _nonSelectedColor;
+            lblRightPanelY.BackColor = _nonSelectedColor;
+
+            Label lbl = sender as Label;
+            lbl.BackColor = _selectedColor;
+
+            if (_alignName == ATTTabAlignName.LeftFPCY || _alignName == ATTTabAlignName.RightFPCY
+                || _alignName == ATTTabAlignName.LeftPanelY || _alignName == ATTTabAlignName.RightPanelY)
+            {
+                lblLeadCount.Enabled = false;
+            }
+            else
+                lblLeadCount.Enabled = true;
+        }
+
+        private void lblLeadCount_Click(object sender, EventArgs e)
+        {
+            int leadCount = SetLabelIntegerData(sender);
+
+        }
+
+        private int SetLabelIntegerData(object sender)
+        {
+            KeyPadForm keyPadForm = new KeyPadForm();
+            keyPadForm.ShowDialog();
+
+            int inputData = Convert.ToInt16(keyPadForm.PadValue);
+
+            Label label = (Label)sender;
+            label.Text = inputData.ToString();
+
+            return inputData;
+        }
     }
 }

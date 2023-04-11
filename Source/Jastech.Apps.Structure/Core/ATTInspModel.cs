@@ -28,10 +28,10 @@ namespace Jastech.Apps.Structure.Core
     public enum ATTTabAlignName
     {
         LeftFPCX,
-        LeftPFCY,
+        LeftFPCY,
 
         RightFPCX,
-        RightPFCY,
+        RightFPCY,
 
         LeftPanelX,
         LeftPanelY,

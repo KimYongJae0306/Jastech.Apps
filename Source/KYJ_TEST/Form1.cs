@@ -32,29 +32,7 @@ namespace KYJ_TEST
     {
         //double centerX, double centerY, double sideXLength, double sideYLength, double rotation = 0, double skew = 0, bool
         //interactive = true, CogRectangleAffineDOFConstants constants = CogRectangleAffineDOFConstants.All
-        [JsonProperty]
-        public double CenterX { get; set; } = 1;
-
-        [JsonProperty]
-        public double CenterY { get; set; } = 2;
-
-        [JsonProperty]
-        public double SideXLength { get; set; } = 3;
-
-        [JsonProperty]
-        public double SideYLength { get; set; } = 4;
-
-        [JsonProperty]
-        public double Rotation { get; set; } = 5;
-
-        [JsonProperty]
-        public double Skew { get; set; } = 6;
-
-        [JsonProperty]
-        public bool Interactive { get; set; } = false;
-
-        [JsonProperty]
-        public CogRectangleAffineDOFConstants constants = CogRectangleAffineDOFConstants.All;
+       
 
 
         public void Save()

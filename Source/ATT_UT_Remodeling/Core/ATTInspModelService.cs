@@ -30,7 +30,7 @@ namespace ATT_UT_Remodeling.Core
                 // Prev Align 등록
                 foreach (ATTPreAlignName type in Enum.GetValues(typeof(ATTPreAlignName)))
                 {
-                    PreAlign preAlign = new PreAlign();
+                    PreAlignParam preAlign = new PreAlignParam();
                     preAlign.Name = type.ToString();
                     preAlign.InspParam = new CogPatternMatchingParam();
                     preAlign.LightParams = new List<LightParameter>();
@@ -51,9 +51,9 @@ namespace ATT_UT_Remodeling.Core
                     // Tab Align 등록
                     foreach (ATTTabAlignName type in Enum.GetValues(typeof(ATTTabAlignName)))
                     {
-                        CogCaliperParam align = new CogCaliperParam();
+                        AlignParam align = new AlignParam();
                         align.Name = type.ToString();
-                        tab.AlignParams.Add(align);
+                        tab.AlignParamList.Add(align);
                     }
 
                     unit.AddTab(tab);
@@ -123,8 +123,8 @@ namespace ATT_UT_Remodeling.Core
 
                     //TabAlign 저장
                     string tabAlignDir = tabDir + @"\Align";
-                    foreach (var item in tab.AlignParams)
-                        item.LoadTool(tabAlignDir);
+                    foreach (var alignParam in tab.AlignParamList)
+                        alignParam.CaliperParams.LoadTool(tabAlignDir, alignParam.Name);
                 }
 
             }
@@ -153,8 +153,8 @@ namespace ATT_UT_Remodeling.Core
 
                     //TabAlign 저장
                     string tabAlignDir = tabDir + @"\Align";
-                    foreach (var item in tab.AlignParams)
-                        item.SaveTool(tabAlignDir);
+                    foreach (var alignParam in tab.AlignParamList)
+                        alignParam.CaliperParams.SaveTool(tabAlignDir, alignParam.Name);
                 }
             }
         }
