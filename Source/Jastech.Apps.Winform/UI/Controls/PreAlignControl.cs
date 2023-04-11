@@ -111,7 +111,6 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         private void SetNewROI(CogDisplayControl display)
         {
-            display.ClearGraphic();
             ICogImage cogImage = display.GetImage();
 
             double centerX = display.ImageWidth() / 2.0;

@@ -125,6 +125,8 @@ namespace Jastech.Apps.Winform.UI.Controls
             //var param = TeachingTabList.Where(x => x.Name == tabName).First().AlignParams.Where(x => x.Name == _alignName).First();
             CogCaliperParamControl.UpdateData(param);
             lblLeadCount.Text = param.LeadCount.ToString();
+
+            DrawROI();
         }
 
         private void lblAddROI_Click(object sender, EventArgs e)
@@ -147,7 +149,6 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         private void SetNewROI(CogDisplayControl display)
         {
-            display.ClearGraphic();
             ICogImage cogImage = display.GetImage();
 
             double centerX = display.ImageWidth() / 2.0 - display.GetPan().X;
@@ -166,6 +167,9 @@ namespace Jastech.Apps.Winform.UI.Controls
         public void DrawROI()
         {
             var display = AppsTeachingUIManager.Instance().TeachingDisplay;
+
+            display.ClearGraphic();
+
             if (display.GetImage() == null)
                 return;
 
@@ -231,7 +235,6 @@ namespace Jastech.Apps.Winform.UI.Controls
             cmbTabList.SelectedIndex -= 1;
         }
 
-
         private void lblNextTab_Click(object sender, EventArgs e)
         {
             int nextIndex = cmbTabList.SelectedIndex + 1;
@@ -253,6 +256,8 @@ namespace Jastech.Apps.Winform.UI.Controls
         private void Inspection()
         {
             var display = AppsTeachingUIManager.Instance().TeachingDisplay;
+            display.ClearGraphic();
+
             var currentParam = CogCaliperParamControl.GetCurrentParam();
 
             if (display == null || currentParam == null)
@@ -260,7 +265,12 @@ namespace Jastech.Apps.Winform.UI.Controls
 
             ICogImage cogImage = display.GetImage();
 
-            CogCaliperResult result = Algorithm.CaliperAlgorithm.Run(cogImage, currentParam.CaliperParams);
+            CogCaliperResult result = new CogCaliperResult();
+
+            if (_alignName.ToString().Contains("X"))
+                result = Algorithm.RunAlignX(cogImage, currentParam.CaliperParams, currentParam.LeadCount);
+            else
+                result = Algorithm.RunAlignY(cogImage, currentParam.CaliperParams);
 
             if (result.CaliperMatchList.Count > 0)
             {
@@ -273,6 +283,54 @@ namespace Jastech.Apps.Winform.UI.Controls
                 form.Message = "Caliper is Not Found.";
                 form.ShowDialog();
             }
+        }
+
+        private void ExcuteCaliperX(AlignParam alignParam)
+        {
+            int leadCount = alignParam.LeadCount * 2;
+
+            if (leadCount <= 0)
+                return;
+
+            CogCaliperTool tool = new CogCaliperTool(alignParam.CaliperParams.CaliperTool);
+            CogRectangleAffine[] divideRegion = new CogRectangleAffine[leadCount];
+
+            //tool.Region.CornerXY
+            double dNewX = (tool.Region.CenterX - tool.Region.SideXLength / 2) + tool.Region.SideXLength / (leadCount * 2);
+            double dNewY = tool.Region.CenterY;
+
+            for (int leadIndex = 0; leadIndex < leadCount; leadIndex++)
+            {
+                divideRegion[leadIndex] = new CogRectangleAffine(alignParam.CaliperParams.CaliperTool.Region);
+
+                double dX = tool.Region.SideXLength / leadCount * leadIndex * Math.Cos(tool.Region.Rotation);
+                double dY = tool.Region.SideXLength / leadCount * leadIndex * tool.Region.Rotation;
+
+                divideRegion[leadIndex].SideXLength = divideRegion[leadIndex].SideXLength / leadCount;
+                divideRegion[leadIndex].CenterX = dNewX + dX;
+                divideRegion[leadIndex].CenterY = dNewY + dY;
+
+                if (leadIndex % 2 == 0)
+                {
+                    divideRegion[leadIndex].Rotation = divideRegion[leadIndex].Rotation - Math.PI;
+
+                    if (tool.RunParams.Edge0Polarity == CogCaliperPolarityConstants.DarkToLight)
+                        tool.RunParams.Edge0Polarity = CogCaliperPolarityConstants.LightToDark;
+                }
+                else
+                {
+                    if (tool.RunParams.Edge0Polarity == CogCaliperPolarityConstants.DarkToLight)
+                        tool.RunParams.Edge0Polarity = CogCaliperPolarityConstants.LightToDark;
+                }
+
+                tool.Region = divideRegion[leadIndex];
+                tool.Run();
+            }
+        }
+
+        private void ExcuteCaliperY()
+        {
+
         }
         #endregion
 
