@@ -18,5 +18,10 @@ namespace ATT.UI.Forms
         {
             InitializeComponent();
         }
+
+        private void btnGrabStart_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

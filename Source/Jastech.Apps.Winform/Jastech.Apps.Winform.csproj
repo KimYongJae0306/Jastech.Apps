@@ -78,7 +78,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AppsCameraManager.cs" />
+    <Compile Include="AppsLineCameraManager.cs" />
     <Compile Include="AppsMotionManager.cs" />
     <Compile Include="AppsTeachingUIManager.cs" />
     <Compile Include="Core\ScanImage.cs" />

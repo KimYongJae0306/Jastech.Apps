@@ -1,7 +1,10 @@
 ﻿using Cognex.VisionPro;
+using Jastech.Apps.Structure;
+using Jastech.Apps.Winform.Settings;
 using Jastech.Framework.Device.Cameras;
 using Jastech.Framework.Imaging.Helper;
 using Jastech.Framework.Imaging.VisionPro;
+using Jastech.Framework.Winform;
 using OpenCvSharp;
 using System;
 using System.Collections.Generic;
@@ -11,30 +14,36 @@ using System.Threading.Tasks;
 
 namespace Jastech.Apps.Winform
 {
-    public class AppsCameraManager
+    public class AppsLineCameraManager
     {
         #region 필드
-        private static AppsCameraManager _instance = null;
+        private static AppsLineCameraManager _instance = null;
 
         private object _objLock { get; set; } = new object();
+
+        private int _grabCount { get; set; } = 0;
         #endregion
 
         #region 속성
         public List<Mat> ScanImageList { get; private set; } = new List<Mat>();
+
+        public bool IsGrabbing { get; private set; } = false;
         #endregion
 
         #region 이벤트
+        public event TeachingImageGrabbedDelete TeachingImageGrabbed;
         #endregion
 
         #region 델리게이트
+        public delegate void TeachingImageGrabbedDelete(Mat image);
         #endregion
 
         #region 생성자
-        public static AppsCameraManager Instance()
+        public static AppsLineCameraManager Instance()
         {
             if (_instance == null)
             {
-                _instance = new AppsCameraManager();
+                _instance = new AppsLineCameraManager();
             }
 
             return _instance;
@@ -43,14 +52,41 @@ namespace Jastech.Apps.Winform
         #endregion
 
         #region 메서드
-        public void StartGrab()
+        public void StartGrab(CameraName name)
         {
             ClearScanImage();
+
+            if (GetCamera(name) is Camera camera)
+            {
+                if (IsGrabbing)
+                    StopGrab(name);
+
+                IsGrabbing = true;
+
+                camera.GrabMuti(AppConfig.Instance().GrabCount);
+            }
+        }
+
+        public void StopGrab(CameraName name)
+        {
+            IsGrabbing = false;
+
+            if (GetCamera(name) is Camera camera)
+                camera.Stop();
+        }
+
+        private Camera GetCamera(CameraName name)
+        {
+            var cameraHandler = DeviceManager.Instance().CameraHandler;
+            Camera camera = cameraHandler.Get(name.ToString());
+
+            return camera;
         }
 
         public void ClearScanImage()
         {
-            lock(_objLock)
+            _grabCount = 0;
+            lock (_objLock)
             {
                 lock(ScanImageList)
                 {
@@ -62,7 +98,6 @@ namespace Jastech.Apps.Winform
                     ScanImageList.Clear();
                 }
             }
-            
         }
 
         public void LinscanImageGrabbed(Camera camera)
@@ -77,22 +112,33 @@ namespace Jastech.Apps.Winform
                 if (data != null)
                 {
                     //kyj : 최적화 생각해봐야함...
+                    //kyj : Grabber 단에서 돌리면 더 빠를수도???
                     Mat grabImage = new Mat(camera.ImageWidth, camera.ImageHeight, MatType.CV_8UC1, data);
                     Mat rotatedMat = MatHelper.Rotate(grabImage, -90);
 
                     ScanImageList.Add(grabImage);
                     grabImage.Dispose();
+
+                    if(ScanImageList.Count == AppConfig.Instance().GrabCount)
+                    {
+                        IsGrabbing = false;
+                        TeachingImageGrabbed?.Invoke(GetMergeImage());
+                    }
                 }
             }
         }
 
         public Mat GetMergeImage()
         {
-            Mat mergeImage = new Mat();
+            if(ScanImageList.Count >0)
+            {
+                Mat mergeImage = new Mat();
 
-            Cv2.HConcat(ScanImageList, mergeImage);
+                Cv2.HConcat(ScanImageList, mergeImage);
 
-            return mergeImage;
+                return mergeImage;
+            }
+            return null;
         }
         #endregion
     }

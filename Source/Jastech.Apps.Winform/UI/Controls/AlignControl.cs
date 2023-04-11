@@ -79,7 +79,7 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         private ICogImage AlignControl_GetOriginImageHandler()
         {
-            return AppsTeachingUIManager.Instance().TeachingDisplay.GetImage();
+            return AppsTeachingUIManager.Instance().GetPrevImage();
         }
 
         public void SetParams(List<Tab> tabList)
@@ -136,7 +136,7 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         private void AddROI()
         {
-            var display = AppsTeachingUIManager.Instance().TeachingDisplay;
+            var display = AppsTeachingUIManager.Instance().GetDisplay();
             if (display.GetImage() == null)
                 return;
 
@@ -166,7 +166,7 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         public void DrawROI()
         {
-            var display = AppsTeachingUIManager.Instance().TeachingDisplay;
+            var display = AppsTeachingUIManager.Instance().GetDisplay();
 
             display.ClearGraphic();
 
@@ -186,7 +186,7 @@ namespace Jastech.Apps.Winform.UI.Controls
             if (_prevTabName == tabName)
                 return;
 
-            var display = AppsTeachingUIManager.Instance().TeachingDisplay;
+            var display = AppsTeachingUIManager.Instance().GetDisplay();
             if (display == null)
                 return;
 
@@ -255,7 +255,7 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         private void Inspection()
         {
-            var display = AppsTeachingUIManager.Instance().TeachingDisplay;
+            var display = AppsTeachingUIManager.Instance().GetDisplay();
             display.ClearGraphic();
 
             var currentParam = CogCaliperParamControl.GetCurrentParam();

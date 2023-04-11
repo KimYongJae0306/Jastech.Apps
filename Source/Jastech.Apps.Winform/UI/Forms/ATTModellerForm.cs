@@ -220,6 +220,10 @@ namespace Jastech.Apps.Winform.UI.Forms
                 return;
 
             ApplyModelEventHandler?.Invoke(lblSelectedName.Text);
+
+            MessageConfirmForm form = new MessageConfirmForm();
+            form.Message = "Model Load Completed.";
+            form.ShowDialog();
         }
 
         public List<AppsInspModel> GetModelList(string modelPath)

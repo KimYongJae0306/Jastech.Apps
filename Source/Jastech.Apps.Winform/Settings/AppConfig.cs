@@ -18,14 +18,16 @@ namespace Jastech.Apps.Winform.Settings
 {
     public class AppConfig : ConfigSet
     {
-        #region 필드 
+        #region 필드
         private static AppConfig _instance = null;
         #endregion
 
         #region 속성
-        //public OperationSettings Operation { get; set; } = new OperationSettings();
-
+        [JsonProperty]
+        public int GrabCount { get; set; } = 10;
         #endregion
+
+        #region 메서드
         public static AppConfig Instance()
         {
             if (_instance == null)
@@ -44,10 +46,9 @@ namespace Jastech.Apps.Winform.Settings
             base.Initialize();
         }
 
-      
         private void AppConfig_OperationConfigCreated(OperationConfig config)
         {
-            if(MessageBox.Show("Do you want to Virtual Mode?", "Setup", MessageBoxButtons.YesNo) == DialogResult.Yes)
+            if (MessageBox.Show("Do you want to Virtual Mode?", "Setup", MessageBoxButtons.YesNo) == DialogResult.Yes)
             {
                 config.VirtualMode = true;
             }
@@ -115,13 +116,12 @@ namespace Jastech.Apps.Winform.Settings
         public override void Save()
         {
             base.Save();
-            //Operation.Save();
         }
 
         public override void Load()
         {
             base.Load();
-           // Operation.Load();
         }
+        #endregion
     }
 }

@@ -15,7 +15,9 @@ namespace Jastech.Apps.Winform
         #endregion
 
         #region 속성
-        public CogDisplayControl TeachingDisplay { get; set; } = null;
+        private CogDisplayControl TeachingDisplay { get; set; } = null;
+
+        public ICogImage PrevImage { get; set; } = null;
         #endregion
 
         #region 이벤트
@@ -36,6 +38,27 @@ namespace Jastech.Apps.Winform
             }
 
             return _instance;
+        }
+
+        public CogDisplayControl GetDisplay()
+        {
+            return TeachingDisplay;
+        }
+
+        public void SetDisplay(CogDisplayControl display)
+        {
+            TeachingDisplay = display;
+        }
+
+        public void SetImage(ICogImage image)
+        {
+            PrevImage = image;
+            TeachingDisplay?.SetImage(image);
+        }
+
+        public ICogImage GetPrevImage()
+        {
+            return PrevImage;
         }
         #endregion
 

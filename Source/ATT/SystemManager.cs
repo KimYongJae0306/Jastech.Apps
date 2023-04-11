@@ -4,6 +4,7 @@ using Jastech.Apps.Winform;
 using Jastech.Apps.Winform.Core;
 using Jastech.Apps.Winform.Settings;
 using Jastech.Framework.Device.Cameras;
+using Jastech.Framework.Device.LightCtrls;
 using Jastech.Framework.Device.Motions;
 using Jastech.Framework.Structure;
 using Jastech.Framework.Util.Helper;
@@ -68,8 +69,10 @@ namespace ATT
 
             if(AppConfig.Instance().Operation.VirtualMode == false)
             {
-                //var cameraMil = DeviceManager.Instance().CameraHandler.Where(x => x.Name == CameraName.LinscanVT0.ToString()).First();
-                //cameraMil.ImageGrabbed += AppsCameraManager.Instance().LinscanImageGrabbed;
+                var cameraHandler = DeviceManager.Instance().CameraHandler;
+                Camera camera = cameraHandler.Get(CameraName.LinscanMIL0.ToString());
+
+                camera.ImageGrabbed += AppsLineCameraManager.Instance().LinscanImageGrabbed;
             }
 
             percent += 30;
@@ -92,6 +95,7 @@ namespace ATT
         {
             if (success)
                 return;
+
             string message = "";
             if (deviceType == typeof(Camera))
             {
@@ -101,10 +105,11 @@ namespace ATT
             {
                 message = "Motion Initialize Fail";
             }
-            else
+            else if(deviceType == typeof(LightCtrl))
             {
-
+                message = "LightCtrl Initialize Fail";
             }
+
             MessageYesNoForm form = new MessageYesNoForm();
             form.Message = message;
             form.ShowDialog();

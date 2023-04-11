@@ -23,6 +23,7 @@ using Jastech.Apps.Winform.Core;
 using Jastech.Apps.Structure.Core;
 using Jastech.Framework.Winform;
 using Jastech.Framework.Device.Cameras;
+using OpenCvSharp;
 
 namespace ATT.UI.Forms
 {
@@ -78,6 +79,13 @@ namespace ATT.UI.Forms
             SelectAlign();
 
             lblStageCam.Text = $"STAGE : {UnitName} / CAM : {TitleCameraName}";
+
+            AppsLineCameraManager.Instance().TeachingImageGrabbed += LineTeachingForm_TeachingImageGrabbed;
+
+            var image = AppsTeachingUIManager.Instance().GetDisplay().GetImage();
+
+            if (image != null)
+                Display.SetImage(image);
         }
 
         private void AddControl()
@@ -94,7 +102,7 @@ namespace ATT.UI.Forms
             pnlDisplay.Controls.Add(Display);
 
             // TeachingUIManager 참조
-            AppsTeachingUIManager.Instance().TeachingDisplay = Display.GetDisplay();
+            AppsTeachingUIManager.Instance().SetDisplay(Display.GetDisplay());
 
             // Teach Control List
             //TeachControlList = new List<UserControl>();
@@ -169,6 +177,10 @@ namespace ATT.UI.Forms
                 return;
 
             SaveModelData(model);
+
+            MessageConfirmForm form = new MessageConfirmForm();
+            form.Message = "Save Model Completed.";
+            form.ShowDialog();
         }
 
         private void SaveModelData(ATTInspModel model)
@@ -178,10 +190,6 @@ namespace ATT.UI.Forms
             string fileName = System.IO.Path.Combine(AppConfig.Instance().Path.Model, model.Name, InspModel.FileName);
             SystemManager.Instance().SaveModel(fileName, model);
         }
-
-        #endregion
-
-        
 
         private void btnCancel_Click(object sender, EventArgs e)
         {
@@ -204,7 +212,7 @@ namespace ATT.UI.Forms
             {
                 ICogImage cogImage = CogImageHelper.Load(dlg.FileName);
                 Display.SetImage(cogImage);
-                AppsTeachingUIManager.Instance().TeachingDisplay.SetImage(cogImage);
+                AppsTeachingUIManager.Instance().SetImage(cogImage);
                 //AlignControl.DrawROI();
             }
         }
@@ -218,27 +226,26 @@ namespace ATT.UI.Forms
 
         private void btnGrabStart_Click(object sender, EventArgs e)
         {
-            var cameraHandler = DeviceManager.Instance().CameraHandler;
-            Camera camera = cameraHandler.Get(CameraName.LinscanMIL0.ToString());
-
-            if (camera == null)
-                return;
-
-            if(camera.IsGrabbing)
-                camera.Stop();
-
-            camera.GrabMuti(-1); // 카메라 테스트 시  GrabCount 확인 후 처리 해야함
+            AppsLineCameraManager.Instance().StartGrab(CameraName.LinscanMIL0);
         }
 
         private void btnGrabStop_Click(object sender, EventArgs e)
         {
-            var cameraHandler = DeviceManager.Instance().CameraHandler;
-            Camera camera = cameraHandler.Get(CameraName.LinscanMIL0.ToString());
+            AppsLineCameraManager.Instance().StopGrab(CameraName.LinscanMIL0);
+        }
 
-            if (camera == null)
+        private void LineTeachingForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            AppsLineCameraManager.Instance().TeachingImageGrabbed -= LineTeachingForm_TeachingImageGrabbed;
+        }
+
+        private void LineTeachingForm_TeachingImageGrabbed(Mat image)
+        {
+            if (image == null)
                 return;
 
-            camera.Stop();
+            // Display Update
         }
+        #endregion
     }
 }

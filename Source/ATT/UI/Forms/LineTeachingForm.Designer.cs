@@ -405,6 +405,7 @@
             this.Name = "LineTeachingForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.LineTeachingForm_FormClosing);
             this.Load += new System.EventHandler(this.LineTeachingForm_Load);
             this.tlpTeachingPage.ResumeLayout(false);
             this.pnlTeachingPage.ResumeLayout(false);

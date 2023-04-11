@@ -34,12 +34,6 @@
             this.pnlDisplay = new System.Windows.Forms.Panel();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.pnlTeach = new System.Windows.Forms.Panel();
-            this.pnlTeachingItem = new System.Windows.Forms.Panel();
-            this.tlpTeachingItem = new System.Windows.Forms.TableLayoutPanel();
-            this.btnAutoFocus = new System.Windows.Forms.Button();
-            this.btnCancel = new System.Windows.Forms.Button();
-            this.btnSave = new System.Windows.Forms.Button();
             this.tlpCommon = new System.Windows.Forms.TableLayoutPanel();
             this.tlpUnit = new System.Windows.Forms.TableLayoutPanel();
             this.btnMotionPopup = new System.Windows.Forms.Button();
@@ -47,16 +41,22 @@
             this.tlpLoadImage = new System.Windows.Forms.TableLayoutPanel();
             this.btnGrabStop = new System.Windows.Forms.Button();
             this.btnGrabStart = new System.Windows.Forms.Button();
+            this.pnlTeach = new System.Windows.Forms.Panel();
+            this.pnlTeachingItem = new System.Windows.Forms.Panel();
+            this.tlpTeachingItem = new System.Windows.Forms.TableLayoutPanel();
+            this.btnAutoFocus = new System.Windows.Forms.Button();
+            this.btnCancel = new System.Windows.Forms.Button();
+            this.btnSave = new System.Windows.Forms.Button();
             this.tlpTeachingPage.SuspendLayout();
             this.pnlTeachingPage.SuspendLayout();
             this.tlpTeaching.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             this.panel1.SuspendLayout();
-            this.pnlTeachingItem.SuspendLayout();
-            this.tlpTeachingItem.SuspendLayout();
             this.tlpCommon.SuspendLayout();
             this.tlpUnit.SuspendLayout();
             this.tlpLoadImage.SuspendLayout();
+            this.pnlTeachingItem.SuspendLayout();
+            this.tlpTeachingItem.SuspendLayout();
             this.SuspendLayout();
             // 
             // tlpTeachingPage
@@ -135,90 +135,6 @@
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(474, 76);
             this.panel1.TabIndex = 1;
-            // 
-            // pnlTeach
-            // 
-            this.pnlTeach.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pnlTeach.Location = new System.Drawing.Point(0, 80);
-            this.pnlTeach.Margin = new System.Windows.Forms.Padding(0);
-            this.pnlTeach.Name = "pnlTeach";
-            this.pnlTeach.Size = new System.Drawing.Size(478, 675);
-            this.pnlTeach.TabIndex = 0;
-            // 
-            // pnlTeachingItem
-            // 
-            this.pnlTeachingItem.Controls.Add(this.tlpTeachingItem);
-            this.pnlTeachingItem.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pnlTeachingItem.Location = new System.Drawing.Point(963, 0);
-            this.pnlTeachingItem.Margin = new System.Windows.Forms.Padding(0);
-            this.pnlTeachingItem.Name = "pnlTeachingItem";
-            this.pnlTeachingItem.Size = new System.Drawing.Size(144, 759);
-            this.pnlTeachingItem.TabIndex = 1;
-            // 
-            // tlpTeachingItem
-            // 
-            this.tlpTeachingItem.ColumnCount = 1;
-            this.tlpTeachingItem.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tlpTeachingItem.Controls.Add(this.btnAutoFocus, 0, 0);
-            this.tlpTeachingItem.Controls.Add(this.btnCancel, 0, 7);
-            this.tlpTeachingItem.Controls.Add(this.btnSave, 0, 6);
-            this.tlpTeachingItem.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tlpTeachingItem.Location = new System.Drawing.Point(0, 0);
-            this.tlpTeachingItem.Margin = new System.Windows.Forms.Padding(0);
-            this.tlpTeachingItem.Name = "tlpTeachingItem";
-            this.tlpTeachingItem.RowCount = 8;
-            this.tlpTeachingItem.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 100F));
-            this.tlpTeachingItem.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 100F));
-            this.tlpTeachingItem.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 100F));
-            this.tlpTeachingItem.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 100F));
-            this.tlpTeachingItem.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tlpTeachingItem.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 100F));
-            this.tlpTeachingItem.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 100F));
-            this.tlpTeachingItem.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 100F));
-            this.tlpTeachingItem.Size = new System.Drawing.Size(144, 759);
-            this.tlpTeachingItem.TabIndex = 0;
-            // 
-            // btnAutoFocus
-            // 
-            this.btnAutoFocus.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(34)))), ((int)(((byte)(34)))), ((int)(((byte)(34)))));
-            this.btnAutoFocus.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.btnAutoFocus.Font = new System.Drawing.Font("맑은 고딕", 20F, System.Drawing.FontStyle.Bold);
-            this.btnAutoFocus.ForeColor = System.Drawing.Color.White;
-            this.btnAutoFocus.Location = new System.Drawing.Point(2, 2);
-            this.btnAutoFocus.Margin = new System.Windows.Forms.Padding(2);
-            this.btnAutoFocus.Name = "btnAutoFocus";
-            this.btnAutoFocus.Size = new System.Drawing.Size(140, 96);
-            this.btnAutoFocus.TabIndex = 19;
-            this.btnAutoFocus.Text = "Linescan";
-            this.btnAutoFocus.UseVisualStyleBackColor = false;
-            // 
-            // btnCancel
-            // 
-            this.btnCancel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(34)))), ((int)(((byte)(34)))), ((int)(((byte)(34)))));
-            this.btnCancel.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.btnCancel.Font = new System.Drawing.Font("맑은 고딕", 20F, System.Drawing.FontStyle.Bold);
-            this.btnCancel.ForeColor = System.Drawing.Color.White;
-            this.btnCancel.Location = new System.Drawing.Point(2, 661);
-            this.btnCancel.Margin = new System.Windows.Forms.Padding(2);
-            this.btnCancel.Name = "btnCancel";
-            this.btnCancel.Size = new System.Drawing.Size(140, 96);
-            this.btnCancel.TabIndex = 20;
-            this.btnCancel.Text = "Cancel";
-            this.btnCancel.UseVisualStyleBackColor = false;
-            // 
-            // btnSave
-            // 
-            this.btnSave.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(34)))), ((int)(((byte)(34)))), ((int)(((byte)(34)))));
-            this.btnSave.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.btnSave.Font = new System.Drawing.Font("맑은 고딕", 20F, System.Drawing.FontStyle.Bold);
-            this.btnSave.ForeColor = System.Drawing.Color.White;
-            this.btnSave.Location = new System.Drawing.Point(2, 561);
-            this.btnSave.Margin = new System.Windows.Forms.Padding(2);
-            this.btnSave.Name = "btnSave";
-            this.btnSave.Size = new System.Drawing.Size(140, 96);
-            this.btnSave.TabIndex = 19;
-            this.btnSave.Text = "Save";
-            this.btnSave.UseVisualStyleBackColor = false;
             // 
             // tlpCommon
             // 
@@ -329,6 +245,91 @@
             this.btnGrabStart.TabIndex = 199;
             this.btnGrabStart.Text = "GRAB START";
             this.btnGrabStart.UseVisualStyleBackColor = false;
+            this.btnGrabStart.Click += new System.EventHandler(this.btnGrabStart_Click);
+            // 
+            // pnlTeach
+            // 
+            this.pnlTeach.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pnlTeach.Location = new System.Drawing.Point(0, 80);
+            this.pnlTeach.Margin = new System.Windows.Forms.Padding(0);
+            this.pnlTeach.Name = "pnlTeach";
+            this.pnlTeach.Size = new System.Drawing.Size(478, 675);
+            this.pnlTeach.TabIndex = 0;
+            // 
+            // pnlTeachingItem
+            // 
+            this.pnlTeachingItem.Controls.Add(this.tlpTeachingItem);
+            this.pnlTeachingItem.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pnlTeachingItem.Location = new System.Drawing.Point(963, 0);
+            this.pnlTeachingItem.Margin = new System.Windows.Forms.Padding(0);
+            this.pnlTeachingItem.Name = "pnlTeachingItem";
+            this.pnlTeachingItem.Size = new System.Drawing.Size(144, 759);
+            this.pnlTeachingItem.TabIndex = 1;
+            // 
+            // tlpTeachingItem
+            // 
+            this.tlpTeachingItem.ColumnCount = 1;
+            this.tlpTeachingItem.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tlpTeachingItem.Controls.Add(this.btnAutoFocus, 0, 0);
+            this.tlpTeachingItem.Controls.Add(this.btnCancel, 0, 7);
+            this.tlpTeachingItem.Controls.Add(this.btnSave, 0, 6);
+            this.tlpTeachingItem.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tlpTeachingItem.Location = new System.Drawing.Point(0, 0);
+            this.tlpTeachingItem.Margin = new System.Windows.Forms.Padding(0);
+            this.tlpTeachingItem.Name = "tlpTeachingItem";
+            this.tlpTeachingItem.RowCount = 8;
+            this.tlpTeachingItem.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 100F));
+            this.tlpTeachingItem.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 100F));
+            this.tlpTeachingItem.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 100F));
+            this.tlpTeachingItem.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 100F));
+            this.tlpTeachingItem.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tlpTeachingItem.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 100F));
+            this.tlpTeachingItem.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 100F));
+            this.tlpTeachingItem.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 100F));
+            this.tlpTeachingItem.Size = new System.Drawing.Size(144, 759);
+            this.tlpTeachingItem.TabIndex = 0;
+            // 
+            // btnAutoFocus
+            // 
+            this.btnAutoFocus.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(34)))), ((int)(((byte)(34)))), ((int)(((byte)(34)))));
+            this.btnAutoFocus.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.btnAutoFocus.Font = new System.Drawing.Font("맑은 고딕", 20F, System.Drawing.FontStyle.Bold);
+            this.btnAutoFocus.ForeColor = System.Drawing.Color.White;
+            this.btnAutoFocus.Location = new System.Drawing.Point(2, 2);
+            this.btnAutoFocus.Margin = new System.Windows.Forms.Padding(2);
+            this.btnAutoFocus.Name = "btnAutoFocus";
+            this.btnAutoFocus.Size = new System.Drawing.Size(140, 96);
+            this.btnAutoFocus.TabIndex = 19;
+            this.btnAutoFocus.Text = "Linescan";
+            this.btnAutoFocus.UseVisualStyleBackColor = false;
+            // 
+            // btnCancel
+            // 
+            this.btnCancel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(34)))), ((int)(((byte)(34)))), ((int)(((byte)(34)))));
+            this.btnCancel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.btnCancel.Font = new System.Drawing.Font("맑은 고딕", 20F, System.Drawing.FontStyle.Bold);
+            this.btnCancel.ForeColor = System.Drawing.Color.White;
+            this.btnCancel.Location = new System.Drawing.Point(2, 661);
+            this.btnCancel.Margin = new System.Windows.Forms.Padding(2);
+            this.btnCancel.Name = "btnCancel";
+            this.btnCancel.Size = new System.Drawing.Size(140, 96);
+            this.btnCancel.TabIndex = 20;
+            this.btnCancel.Text = "Cancel";
+            this.btnCancel.UseVisualStyleBackColor = false;
+            // 
+            // btnSave
+            // 
+            this.btnSave.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(34)))), ((int)(((byte)(34)))), ((int)(((byte)(34)))));
+            this.btnSave.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.btnSave.Font = new System.Drawing.Font("맑은 고딕", 20F, System.Drawing.FontStyle.Bold);
+            this.btnSave.ForeColor = System.Drawing.Color.White;
+            this.btnSave.Location = new System.Drawing.Point(2, 561);
+            this.btnSave.Margin = new System.Windows.Forms.Padding(2);
+            this.btnSave.Name = "btnSave";
+            this.btnSave.Size = new System.Drawing.Size(140, 96);
+            this.btnSave.TabIndex = 19;
+            this.btnSave.Text = "Save";
+            this.btnSave.UseVisualStyleBackColor = false;
             // 
             // AutoFocusTeachingForm
             // 
@@ -347,11 +348,11 @@
             this.tlpTeaching.ResumeLayout(false);
             this.tableLayoutPanel1.ResumeLayout(false);
             this.panel1.ResumeLayout(false);
-            this.pnlTeachingItem.ResumeLayout(false);
-            this.tlpTeachingItem.ResumeLayout(false);
             this.tlpCommon.ResumeLayout(false);
             this.tlpUnit.ResumeLayout(false);
             this.tlpLoadImage.ResumeLayout(false);
+            this.pnlTeachingItem.ResumeLayout(false);
+            this.tlpTeachingItem.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }

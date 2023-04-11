@@ -64,7 +64,7 @@ namespace ATT.UI.Pages
             pnlDisplay.Controls.Add(Display);
 
             // TeachingUIManager 참조
-            AppsTeachingUIManager.Instance().TeachingDisplay = Display.GetDisplay();
+            AppsTeachingUIManager.Instance().SetDisplay(Display.GetDisplay());
 
             // Teach Control List
             TeachControlList = new List<UserControl>();
@@ -123,7 +123,7 @@ namespace ATT.UI.Pages
             {
                 ICogImage cogImage = CogImageHelper.Load(dlg.FileName);
                 Display.SetImage(cogImage);
-                AppsTeachingUIManager.Instance().TeachingDisplay.SetImage(cogImage);
+                AppsTeachingUIManager.Instance().SetImage(cogImage);
                 PreAlignControl.DrawROI();
             }
         }
