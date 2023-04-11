@@ -41,9 +41,12 @@ namespace ATT.Core
                     // Tab Align 등록
                     foreach (ATTTabAlignName type in Enum.GetValues(typeof(ATTTabAlignName)))
                     {
-                        CogCaliperParam align = new CogCaliperParam();
+                        AlignParam align = new AlignParam();
                         align.Name = type.ToString();
-                        tab.AlignParams.Add(align);
+                        tab.AlignParamList.Add(align);
+                        //CogCaliperParam align = new CogCaliperParam();
+                        //align.Name = type.ToString();
+                        //tab.AlignParams.Add(align);
                     }
 
                     unit.AddTab(tab);
@@ -151,8 +154,8 @@ namespace ATT.Core
 
                     //TabAlign 저장
                     string tabAlignDir = tabDir + @"\Align";
-                    foreach (var item in tab.AlignParams)
-                        item.LoadTool(tabAlignDir);
+                    foreach (var item in tab.AlignParamList)
+                        item.CaliperParams.LoadTool(tabAlignDir);
                 }
 
             }
@@ -181,8 +184,8 @@ namespace ATT.Core
 
                     //TabAlign 저장
                     string tabAlignDir = tabDir + @"\Align";
-                    foreach (var item in tab.AlignParams)
-                        item.SaveTool(tabAlignDir);
+                    foreach (var item in tab.AlignParamList)
+                        item.CaliperParams.SaveTool(tabAlignDir);
                 }
             }
         }

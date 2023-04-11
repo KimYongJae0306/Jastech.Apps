@@ -30,7 +30,7 @@ namespace ATT_UT_Remodeling.Core
                 // Prev Align 등록
                 foreach (ATTPreAlignName type in Enum.GetValues(typeof(ATTPreAlignName)))
                 {
-                    PreAlign preAlign = new PreAlign();
+                    PreAlignParam preAlign = new PreAlignParam();
                     preAlign.Name = type.ToString();
                     preAlign.InspParam = new CogPatternMatchingParam();
                     preAlign.LightParams = new List<LightParameter>();
