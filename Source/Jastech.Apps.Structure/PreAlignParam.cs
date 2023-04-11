@@ -15,7 +15,7 @@ namespace Jastech.Apps.Structure
         public string Name { get; set; } = "";
 
         [JsonProperty]
-        public CogPatternMatchingParam InspParam { get; set; } = null;
+        public VisionProPatternMatchingParam InspParam { get; set; } = null;
 
         [JsonProperty]
         public List<LightParameter> LightParams { get; set; } = null;

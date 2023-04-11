@@ -18,33 +18,55 @@ namespace Jastech.Apps.Structure.VisionTool
 
         public CogAlignCaliper AlignAlgorithm { get; set; } = new CogAlignCaliper();
 
-        public CogCaliperResult RunAlignX(ICogImage image, CogCaliperParam param, int leadCount)
+        public CogAlignCaliperResult RunAlignX(ICogImage image, VisionProCaliperParam param, int leadCount)
         {
             if (image == null || param == null)
                 return null;
 
-            CogCaliperResult result = AlignAlgorithm.RunAlignX(image, param, leadCount);
+            CogAlignCaliperResult alignResult = new CogAlignCaliperResult();
+            alignResult.AddAlignResult(AlignAlgorithm.RunAlignX(image, param, leadCount));
 
-            if (result.CaliperMatchList.Count <= 0)
-                result.Result = Result.Fail;
+            bool isFounded = false;
+            foreach (var item in alignResult.CogAlignResult)
+            {
+                isFounded |= item.Found;
+            }
 
-            return result;
+            alignResult.Judgement = isFounded ? Result.OK : Result.Fail;
+
+            if(alignResult.Judgement == Result.OK)
+            {
+                if (leadCount != alignResult.CogAlignResult.Count() / 2)
+                    alignResult.Judgement = Result.NG;
+            }
+            
+                
+            return alignResult;
         }
 
-        public CogCaliperResult RunAlignY(ICogImage image, CogCaliperParam param)
+        public CogAlignCaliperResult RunAlignY(ICogImage image, VisionProCaliperParam param)
         {
             if (image == null || param == null)
                 return null;
 
-            CogCaliperResult result = AlignAlgorithm.RunAlignY(image, param);
+            CogAlignCaliperResult alignResult = new CogAlignCaliperResult();
+            alignResult.AddAlignResult(AlignAlgorithm.RunAlignY(image, param));
 
-            if (result.CaliperMatchList.Count <= 0)
-                result.Result = Result.Fail;
+            bool isFounded = false;
+            foreach (var item in alignResult.CogAlignResult)
+            {
+                if (item == null)
+                    continue;
 
-            return result;
+                isFounded |= item.Found;
+            }
+
+            alignResult.Judgement = isFounded ? Result.OK : Result.Fail;
+
+            return alignResult;
         }
 
-        public CogPatternMatchingResult RunPreAlign(ICogImage image, CogPatternMatchingParam param)
+        public CogPatternMatchingResult RunPreAlign(ICogImage image, VisionProPatternMatchingParam param)
         {
             if (image == null || param == null)
                 return null;

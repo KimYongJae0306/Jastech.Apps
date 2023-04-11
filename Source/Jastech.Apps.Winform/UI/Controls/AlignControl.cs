@@ -16,7 +16,7 @@ using Jastech.Framework.Imaging.VisionPro.VisionAlgorithms.Results;
 using Jastech.Apps.Structure.VisionTool;
 using Jastech.Framework.Imaging.VisionPro;
 using Cognex.VisionPro.Caliper;
-using CogCaliperResult = Jastech.Framework.Imaging.VisionPro.VisionAlgorithms.Results.CogCaliperResult;
+using CogCaliperResult = Jastech.Framework.Imaging.VisionPro.VisionAlgorithms.Results.VisionProCaliperResult;
 using Jastech.Framework.Winform.Forms;
 using Jastech.Apps.Structure.Core;
 
@@ -35,7 +35,7 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         private List<Tab> TeachingTabList { get; set; } = new List<Tab>();
 
-        private List<CogCaliperParam> CaliperList { get; set; } = null;
+        private List<VisionProCaliperParam> CaliperList { get; set; } = null;
 
         private AlgorithmTool Algorithm = new AlgorithmTool();
 
@@ -256,7 +256,7 @@ namespace Jastech.Apps.Winform.UI.Controls
         private void Inspection()
         {
             var display = AppsTeachingUIManager.Instance().GetDisplay();
-            display.ClearGraphic();
+            //display.ClearGraphic();
 
             var currentParam = CogCaliperParamControl.GetCurrentParam();
 
@@ -265,23 +265,23 @@ namespace Jastech.Apps.Winform.UI.Controls
 
             ICogImage cogImage = display.GetImage();
 
-            CogCaliperResult result = new CogCaliperResult();
+            CogAlignCaliperResult result = new CogAlignCaliperResult();
 
             if (_alignName.ToString().Contains("X"))
                 result = Algorithm.RunAlignX(cogImage, currentParam.CaliperParams, currentParam.LeadCount);
             else
                 result = Algorithm.RunAlignY(cogImage, currentParam.CaliperParams);
 
-            if (result.CaliperMatchList.Count > 0)
-            {
-                display.ClearGraphic();
-                display.UpdateResult(result);
-            }
-            else
+            if (result.Judgement == Result.Fail)
             {
                 MessageConfirmForm form = new MessageConfirmForm();
                 form.Message = "Caliper is Not Found.";
                 form.ShowDialog();
+            }
+            else
+            {
+                display.ClearGraphic();
+                display.UpdateResult(result);
             }
         }
 
@@ -464,6 +464,34 @@ namespace Jastech.Apps.Winform.UI.Controls
             label.Text = inputData.ToString();
 
             return inputData;
+        }
+
+        private void lblApply_Click(object sender, EventArgs e)
+        {
+            Apply();
+        }
+
+        private void Apply()
+        {
+            string tabName = cmbTabList.SelectedItem as string;
+            int leadCount = TeachingTabList.Where(x => x.Name == tabName).First().GetAlignParam(_alignName).LeadCount;
+
+            var currentParam = CogCaliperParamControl.GetCurrentParam();
+            CogRectangleAffine rect = new CogRectangleAffine(currentParam.CaliperParams.CaliperTool.Region);
+
+            List<CogRectangleAffine> cropRectList = CogImageHelper.DivideRegion(rect, leadCount);
+
+            var display = AppsTeachingUIManager.Instance().GetDisplay();
+
+            display.ClearGraphic();
+
+            if (display.GetImage() == null)
+                return;
+
+            foreach (var cogRect in cropRectList)
+            {
+                display.SetStaticGraphics("tool", cogRect);
+            }
         }
     }
 }

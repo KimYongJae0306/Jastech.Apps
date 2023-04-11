@@ -32,7 +32,7 @@ namespace ATT_UT_Remodeling.Core
                 {
                     PreAlignParam preAlign = new PreAlignParam();
                     preAlign.Name = type.ToString();
-                    preAlign.InspParam = new CogPatternMatchingParam();
+                    preAlign.InspParam = new VisionProPatternMatchingParam();
                     preAlign.LightParams = new List<LightParameter>();
                     preAlign.LightParams.AddRange(CreatePreAlignLightParameter());
 

@@ -40,10 +40,10 @@ namespace Jastech.Apps.Structure.Core
             return unit.PreAligns;
         }
 
-        public CogPatternMatchingParam GetPreAlignParameters(string unitName, string preAlignName)
+        public VisionProPatternMatchingParam GetPreAlignParameters(string unitName, string preAlignName)
         {
             Unit unit = GetUnit(unitName);
-            return unit.PreAligns.Where(x => x.Name == preAlignName).First().InspParam as CogPatternMatchingParam;
+            return unit.PreAligns.Where(x => x.Name == preAlignName).First().InspParam as VisionProPatternMatchingParam;
         }
 
         public List<Tab> GetAlignParameters(string unitName)

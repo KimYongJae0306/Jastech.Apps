@@ -17,7 +17,7 @@ namespace Jastech.Apps.Structure
         public int LeadCount { get; set; } = 5;
 
         [JsonProperty]
-        public CogCaliperParam CaliperParams { get; set; } = new CogCaliperParam();
+        public VisionProCaliperParam CaliperParams { get; set; } = new VisionProCaliperParam();
 
         public void Dispose()
         {
