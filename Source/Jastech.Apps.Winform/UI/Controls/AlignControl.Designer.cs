@@ -35,6 +35,7 @@
             this.lblPrev = new System.Windows.Forms.Label();
             this.lblNext = new System.Windows.Forms.Label();
             this.lblInspection = new System.Windows.Forms.Label();
+            this.cmbTabList = new System.Windows.Forms.ComboBox();
             this.pnlPosition = new System.Windows.Forms.Panel();
             this.label4 = new System.Windows.Forms.Label();
             this.lblLeft = new System.Windows.Forms.Label();
@@ -48,7 +49,6 @@
             this.lblPanelX = new System.Windows.Forms.Label();
             this.chkUseTracking = new System.Windows.Forms.CheckBox();
             this.pnlParam = new System.Windows.Forms.Panel();
-            this.cmbTabList = new System.Windows.Forms.ComboBox();
             this.tlpAlign.SuspendLayout();
             this.tlpBasic.SuspendLayout();
             this.pnlPosition.SuspendLayout();
@@ -164,6 +164,20 @@
             this.lblInspection.Text = "Inspect";
             this.lblInspection.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.lblInspection.Click += new System.EventHandler(this.lblInspection_Click);
+            // 
+            // cmbTabList
+            // 
+            this.cmbTabList.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.cmbTabList.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.cmbTabList.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbTabList.Font = new System.Drawing.Font("맑은 고딕", 14.25F, System.Drawing.FontStyle.Bold);
+            this.cmbTabList.FormattingEnabled = true;
+            this.cmbTabList.Location = new System.Drawing.Point(3, 3);
+            this.cmbTabList.Name = "cmbTabList";
+            this.cmbTabList.Size = new System.Drawing.Size(194, 34);
+            this.cmbTabList.TabIndex = 24;
+            this.cmbTabList.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.cmbTabList_DrawItem);
+            this.cmbTabList.SelectedIndexChanged += new System.EventHandler(this.cmbTabList_SelectedIndexChanged);
             // 
             // pnlPosition
             // 
@@ -314,20 +328,6 @@
             this.pnlParam.Name = "pnlParam";
             this.pnlParam.Size = new System.Drawing.Size(670, 300);
             this.pnlParam.TabIndex = 15;
-            // 
-            // cmbTabList
-            // 
-            this.cmbTabList.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.cmbTabList.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
-            this.cmbTabList.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmbTabList.Font = new System.Drawing.Font("맑은 고딕", 14.25F, System.Drawing.FontStyle.Bold);
-            this.cmbTabList.FormattingEnabled = true;
-            this.cmbTabList.Location = new System.Drawing.Point(3, 3);
-            this.cmbTabList.Name = "cmbTabList";
-            this.cmbTabList.Size = new System.Drawing.Size(194, 34);
-            this.cmbTabList.TabIndex = 24;
-            this.cmbTabList.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.cmbTabList_DrawItem);
-            this.cmbTabList.SelectedIndexChanged += new System.EventHandler(this.cmbTabList_SelectedIndexChanged);
             // 
             // AlignControl
             // 

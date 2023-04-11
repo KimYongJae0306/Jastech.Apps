@@ -13,6 +13,7 @@ namespace Jastech.Apps.Structure
 {
     public enum CameraName
     {
+        Area,
         LeftArea,
         RightArea,
         LinscanMIL0,

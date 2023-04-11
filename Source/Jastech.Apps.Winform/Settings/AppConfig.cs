@@ -77,10 +77,10 @@ namespace Jastech.Apps.Winform.Settings
             }
             else
             {
-                var camera0 = new CameraVieworksVT(CameraName.LinscanMIL0.ToString(), 4096, 1024, ColorFormat.Gray, SensorType.Line);
+                var camera0 = new CameraVieworksVT(CameraName.LinscanVT0.ToString(), 4096, 1024, ColorFormat.Gray, SensorType.Line);
                 config.Add(camera0);
 
-                var camera1 = new CameraVirtual(CameraName.LinscanVT0.ToString(), 4096, 1024, ColorFormat.Gray, SensorType.Line);
+                var camera1 = new CameraMil(CameraName.LinscanMIL0.ToString(), 4096, 1024, ColorFormat.Gray, SensorType.Line);
                 config.Add(camera1);
 
                 var motion = new ACSMotion("Motion", 3);

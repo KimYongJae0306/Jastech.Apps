@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using ATT.UI.Forms;
+using Jastech.Apps.Structure;
 
 namespace ATT.UI.Pages
 {
@@ -22,6 +23,7 @@ namespace ATT.UI.Pages
         {
             LineTeachingForm form = new LineTeachingForm();
             form.UnitName = "0";
+            form.TitleCameraName = "LineScan";
             form.ShowDialog();
         }
     }

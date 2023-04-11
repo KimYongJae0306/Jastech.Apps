@@ -21,6 +21,8 @@ using Jastech.Framework.Structure;
 using Jastech.Framework.Winform.Controls;
 using Jastech.Apps.Winform.Core;
 using Jastech.Apps.Structure.Core;
+using Jastech.Framework.Winform;
+using Jastech.Framework.Device.Cameras;
 
 namespace ATT.UI.Forms
 {
@@ -34,6 +36,8 @@ namespace ATT.UI.Forms
 
         #region 속성
         public string UnitName { get; set; } = "";
+
+        public string TitleCameraName { get; set; } = "";
 
         private CogTeachingDisplayControl Display { get; set; } = new CogTeachingDisplayControl();
 
@@ -72,6 +76,8 @@ namespace ATT.UI.Forms
         {
             AddControl();
             SelectAlign();
+
+            lblStageCam.Text = $"STAGE : {UnitName} / CAM : {TitleCameraName}";
         }
 
         private void AddControl()
@@ -155,22 +161,6 @@ namespace ATT.UI.Forms
             AkkonControl.SetParams(akkonParam);
         }
 
-        private void btnLoadImage_Click(object sender, EventArgs e)
-        {
-            OpenFileDialog dlg = new OpenFileDialog();
-            dlg.ReadOnlyChecked = true;
-            dlg.Filter = "Bmp File | *.bmp";
-            dlg.ShowDialog();
-
-            if (dlg.FileName != "")
-            {
-                ICogImage cogImage = CogImageHelper.Load(dlg.FileName);
-                Display.SetImage(cogImage);
-                AppsTeachingUIManager.Instance().TeachingDisplay.SetImage(cogImage);
-                //AlignControl.DrawROI();
-            }
-        }
-
         private void btnSave_Click(object sender, EventArgs e)
         {
             ATTInspModel model = ModelManager.Instance().CurrentModel as ATTInspModel;
@@ -189,14 +179,6 @@ namespace ATT.UI.Forms
             SystemManager.Instance().SaveModel(fileName, model);
         }
 
-        private void btnMotionPopup_Click(object sender, EventArgs e)
-        {
-            MotionPopupForm motionPopupForm = new MotionPopupForm();
-            motionPopupForm.SetAxisHandler(AppsMotionManager.Instance().GetAxisHandler(AxisHandlerName.Unit0));
-            motionPopupForm.ShowDialog();
-        }
-
-
         #endregion
 
         
@@ -209,6 +191,54 @@ namespace ATT.UI.Forms
         private void btnAutoFocus_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void btnLoadImage_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog dlg = new OpenFileDialog();
+            dlg.ReadOnlyChecked = true;
+            dlg.Filter = "BMP Files (*.bmp)|*.bmp";
+            dlg.ShowDialog();
+
+            if (dlg.FileName != "")
+            {
+                ICogImage cogImage = CogImageHelper.Load(dlg.FileName);
+                Display.SetImage(cogImage);
+                AppsTeachingUIManager.Instance().TeachingDisplay.SetImage(cogImage);
+                //AlignControl.DrawROI();
+            }
+        }
+
+        private void btnMotionPopup_Click(object sender, EventArgs e)
+        {
+            MotionPopupForm motionPopupForm = new MotionPopupForm();
+            motionPopupForm.SetAxisHandler(AppsMotionManager.Instance().GetAxisHandler(AxisHandlerName.Unit0));
+            motionPopupForm.ShowDialog();
+        }
+
+        private void btnGrabStart_Click(object sender, EventArgs e)
+        {
+            var cameraHandler = DeviceManager.Instance().CameraHandler;
+            Camera camera = cameraHandler.Get(CameraName.LinscanMIL0.ToString());
+
+            if (camera == null)
+                return;
+
+            if(camera.IsGrabbing)
+                camera.Stop();
+
+            camera.GrabMuti(-1); // 카메라 테스트 시  GrabCount 확인 후 처리 해야함
+        }
+
+        private void btnGrabStop_Click(object sender, EventArgs e)
+        {
+            var cameraHandler = DeviceManager.Instance().CameraHandler;
+            Camera camera = cameraHandler.Get(CameraName.LinscanMIL0.ToString());
+
+            if (camera == null)
+                return;
+
+            camera.Stop();
         }
     }
 }
