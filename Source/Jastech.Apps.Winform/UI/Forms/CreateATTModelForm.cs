@@ -61,6 +61,11 @@ namespace Jastech.Apps.Winform.UI.Forms
                 return;
             }
 
+            if(Convert.ToInt16(tabCount) > 10)
+            {
+                ShowMessageBox("TabCount Max is 10.");
+                return;
+            }
 
             if (ModelFileHelper.IsExistModel(ModelPath, modelName))
             {
