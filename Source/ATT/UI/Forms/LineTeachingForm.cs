@@ -82,7 +82,7 @@ namespace ATT.UI.Forms
 
             AppsLineCameraManager.Instance().TeachingImageGrabbed += LineTeachingForm_TeachingImageGrabbed;
 
-            var image = AppsTeachingUIManager.Instance().GetDisplay().GetImage();
+            var image = AppsTeachingUIManager.Instance().GetPrevImage();
 
             if (image != null)
                 Display.SetImage(image);
