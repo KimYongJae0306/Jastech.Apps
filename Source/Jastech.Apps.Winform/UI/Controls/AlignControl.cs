@@ -176,6 +176,9 @@ namespace Jastech.Apps.Winform.UI.Controls
             var currentParam = CogCaliperParamControl.GetCurrentParam();
 
             display.SetInteractiveGraphics("tool", currentParam.CaliperParams.CreateCurrentRecord(constants));
+
+            var rect = currentParam.CaliperParams.CaliperTool.Region as CogRectangleAffine;
+            display.SetDisplayToCenter(new Point((int)rect.CenterX, (int)rect.CenterY));
         }
 
         private void cmbTabList_SelectedIndexChanged(object sender, EventArgs e)

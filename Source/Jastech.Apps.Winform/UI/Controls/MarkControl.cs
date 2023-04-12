@@ -380,6 +380,9 @@ namespace Jastech.Apps.Winform.UI.Controls
             var currentParam = ParamControl.GetCurrentParam();
 
             display.SetInteractiveGraphics("tool", currentParam.CreateCurrentRecord(constants));
+
+            var rect = currentParam.GetTrainRegion() as CogRectangle;
+            display.SetDisplayToCenter(new Point((int)rect.CenterX, (int)rect.CenterY));
         }
 
         private void lblInspection_Click(object sender, EventArgs e)
