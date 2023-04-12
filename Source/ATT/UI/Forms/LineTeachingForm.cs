@@ -151,11 +151,11 @@ namespace ATT.UI.Forms
 
             ClearSelectedButton();
 
-            btnMark.ForeColor = Color.Blue;
-            pnlTeach.Controls.Add(MarkControl);
-
             var alignParam = SystemManager.Instance().GetTeachingData().GetAlignParameters(UnitName);
             MarkControl.SetParams(alignParam);
+            pnlTeach.Controls.Add(MarkControl);
+         
+            btnMark.ForeColor = Color.Blue;
         }
 
         private void SelectAlign()

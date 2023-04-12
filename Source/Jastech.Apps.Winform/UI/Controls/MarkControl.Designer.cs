@@ -48,7 +48,7 @@
             this.lblPrev = new System.Windows.Forms.Label();
             this.lblNext = new System.Windows.Forms.Label();
             this.lblInspection = new System.Windows.Forms.Label();
-            this.cmbTabList = new System.Windows.Forms.ComboBox();
+            this.cbxTabNumList = new System.Windows.Forms.ComboBox();
             this.lblParameter = new System.Windows.Forms.Label();
             this.tlpPattern = new System.Windows.Forms.TableLayoutPanel();
             this.pnlParam = new System.Windows.Forms.Panel();
@@ -273,7 +273,7 @@
             this.tlpBasic.Controls.Add(this.lblPrev, 1, 0);
             this.tlpBasic.Controls.Add(this.lblNext, 2, 0);
             this.tlpBasic.Controls.Add(this.lblInspection, 3, 0);
-            this.tlpBasic.Controls.Add(this.cmbTabList, 0, 0);
+            this.tlpBasic.Controls.Add(this.cbxTabNumList, 0, 0);
             this.tlpBasic.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tlpBasic.Location = new System.Drawing.Point(0, 32);
             this.tlpBasic.Margin = new System.Windows.Forms.Padding(0);
@@ -295,6 +295,7 @@
             this.lblAddROI.TabIndex = 23;
             this.lblAddROI.Text = "Add ROI";
             this.lblAddROI.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblAddROI.Click += new System.EventHandler(this.lblAddROI_Click);
             // 
             // lblPrev
             // 
@@ -306,6 +307,7 @@
             this.lblPrev.Name = "lblPrev";
             this.lblPrev.Size = new System.Drawing.Size(50, 50);
             this.lblPrev.TabIndex = 5;
+            this.lblPrev.Click += new System.EventHandler(this.lblPrev_Click);
             // 
             // lblNext
             // 
@@ -317,6 +319,7 @@
             this.lblNext.Name = "lblNext";
             this.lblNext.Size = new System.Drawing.Size(50, 50);
             this.lblNext.TabIndex = 2;
+            this.lblNext.Click += new System.EventHandler(this.lblNext_Click);
             // 
             // lblInspection
             // 
@@ -330,18 +333,21 @@
             this.lblInspection.TabIndex = 22;
             this.lblInspection.Text = "Inspect";
             this.lblInspection.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblInspection.Click += new System.EventHandler(this.lblInspection_Click);
             // 
-            // cmbTabList
+            // cbxTabNumList
             // 
-            this.cmbTabList.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.cmbTabList.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
-            this.cmbTabList.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmbTabList.Font = new System.Drawing.Font("맑은 고딕", 14.25F, System.Drawing.FontStyle.Bold);
-            this.cmbTabList.FormattingEnabled = true;
-            this.cmbTabList.Location = new System.Drawing.Point(3, 3);
-            this.cmbTabList.Name = "cmbTabList";
-            this.cmbTabList.Size = new System.Drawing.Size(194, 34);
-            this.cmbTabList.TabIndex = 24;
+            this.cbxTabNumList.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.cbxTabNumList.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.cbxTabNumList.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbxTabNumList.Font = new System.Drawing.Font("맑은 고딕", 14.25F, System.Drawing.FontStyle.Bold);
+            this.cbxTabNumList.FormattingEnabled = true;
+            this.cbxTabNumList.Location = new System.Drawing.Point(3, 3);
+            this.cbxTabNumList.Name = "cbxTabNumList";
+            this.cbxTabNumList.Size = new System.Drawing.Size(194, 34);
+            this.cbxTabNumList.TabIndex = 24;
+            this.cbxTabNumList.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.cbxTabNumList_DrawItem);
+            this.cbxTabNumList.SelectedIndexChanged += new System.EventHandler(this.cbxTabNumList_SelectedIndexChanged);
             // 
             // lblParameter
             // 
@@ -416,7 +422,6 @@
         private System.Windows.Forms.Label lblPrev;
         private System.Windows.Forms.Label lblNext;
         private System.Windows.Forms.Label lblInspection;
-        private System.Windows.Forms.ComboBox cmbTabList;
         private System.Windows.Forms.Label lblParameter;
         private System.Windows.Forms.TableLayoutPanel tlpPattern;
         private System.Windows.Forms.Label lblLeftSub4;
@@ -428,5 +433,6 @@
         private System.Windows.Forms.Label lblRight;
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.Panel pnlParam;
+        private System.Windows.Forms.ComboBox cbxTabNumList;
     }
 }

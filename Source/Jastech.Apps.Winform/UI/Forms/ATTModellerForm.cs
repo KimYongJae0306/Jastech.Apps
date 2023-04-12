@@ -109,7 +109,7 @@ namespace Jastech.Apps.Winform.UI.Forms
                 newModel.Description = createModel.Description;
                 newModel.TabCount = createModel.TabCount;
 
-                InspModelService.CreateModelInfo(newModel);
+                InspModelService.AddModelData(newModel);
 
                 ModelFileHelper.Save(AppConfig.Instance().Path.Model, newModel);
             }

@@ -256,7 +256,6 @@ namespace Jastech.Apps.Winform.UI.Controls
         private void Inspection()
         {
             var display = AppsTeachingUIManager.Instance().GetDisplay();
-            //display.ClearGraphic();
 
             var currentParam = CogCaliperParamControl.GetCurrentParam();
 

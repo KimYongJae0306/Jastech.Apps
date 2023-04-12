@@ -25,7 +25,7 @@ namespace ATT.Core
             return new AppsInspModel();
         }
 
-        public override void CreateModelInfo(InspModel inspModel)
+        public override void AddModelData(InspModel inspModel)
         {
             AppsInspModel appInspModel = inspModel as AppsInspModel;
 
@@ -226,6 +226,16 @@ namespace ATT.Core
                 foreach (var tab in unit.GetTabList())
                 {
                     string tabDir = unitDir + @"\" + "Tab_" + tab.Name;
+
+                    //Tab FPC Mark 저장
+                    string tabFpcMarkDir = tabDir + @"\FPC_Mark";
+                    foreach (var alignParam in tab.FpcMarkParamList)
+                        alignParam.InspParam.SaveTool(tabFpcMarkDir);
+
+                    //Tab Panel Mark 저장
+                    string tabPanelMarkDir = tabDir + @"\Panel_Mark";
+                    foreach (var alignParam in tab.PanelMarkParamList)
+                        alignParam.InspParam.SaveTool(tabPanelMarkDir);
 
                     //TabAlign 저장
                     string tabAlignDir = tabDir + @"\Align";
