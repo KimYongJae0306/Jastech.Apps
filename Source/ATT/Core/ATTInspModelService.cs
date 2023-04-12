@@ -22,9 +22,14 @@ namespace ATT.Core
     {
         public override InspModel New()
         {
-            var newInspModel = new AppsInspModel();
+            return new AppsInspModel();
+        }
 
-            for (int i = 0; i < newInspModel.UnitCount; i++)
+        public override void CreateModelInfo(InspModel inspModel)
+        {
+            AppsInspModel appInspModel = inspModel as AppsInspModel;
+
+            for (int i = 0; i < appInspModel.UnitCount; i++)
             {
                 Unit unit = new Unit();
 
@@ -33,7 +38,7 @@ namespace ATT.Core
                 // LineScan 조명 Parameter 생성
                 unit.LightParams.AddRange(CreateLightParameter());
 
-                for (int k = 0; k < newInspModel.TabCount; k++)
+                for (int k = 0; k < appInspModel.TabCount; k++)
                 {
                     Tab tab = new Tab();
                     tab.Name = k.ToString();
@@ -84,11 +89,10 @@ namespace ATT.Core
                 }
 
                 AddTeachingPosition(unit);
-                newInspModel.AddUnit(unit);
+                appInspModel.AddUnit(unit);
             }
-
-            return newInspModel;
         }
+
 
         private void AddTeachingPosition(Unit unit)
         {
