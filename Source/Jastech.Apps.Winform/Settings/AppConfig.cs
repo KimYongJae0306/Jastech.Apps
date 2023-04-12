@@ -1,4 +1,5 @@
 ﻿using Jastech.Apps.Structure;
+using Jastech.Apps.Structure.Data;
 using Jastech.Framework.Comm;
 using Jastech.Framework.Config;
 using Jastech.Framework.Device.Cameras;

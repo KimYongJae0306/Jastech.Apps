@@ -47,7 +47,7 @@
             this.btnAutoFocus = new System.Windows.Forms.Button();
             this.btnAkkon = new System.Windows.Forms.Button();
             this.btnAlign = new System.Windows.Forms.Button();
-            this.btnPattern = new System.Windows.Forms.Button();
+            this.btnMark = new System.Windows.Forms.Button();
             this.btnCancel = new System.Windows.Forms.Button();
             this.btnSave = new System.Windows.Forms.Button();
             this.tlpTeachingPage.SuspendLayout();
@@ -284,7 +284,7 @@
             this.tlpTeachingItem.Controls.Add(this.btnAutoFocus, 0, 0);
             this.tlpTeachingItem.Controls.Add(this.btnAkkon, 0, 3);
             this.tlpTeachingItem.Controls.Add(this.btnAlign, 0, 2);
-            this.tlpTeachingItem.Controls.Add(this.btnPattern, 0, 1);
+            this.tlpTeachingItem.Controls.Add(this.btnMark, 0, 1);
             this.tlpTeachingItem.Controls.Add(this.btnCancel, 0, 7);
             this.tlpTeachingItem.Controls.Add(this.btnSave, 0, 6);
             this.tlpTeachingItem.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -348,20 +348,20 @@
             this.btnAlign.UseVisualStyleBackColor = false;
             this.btnAlign.Click += new System.EventHandler(this.btnAlign_Click);
             // 
-            // btnPattern
+            // btnMark
             // 
-            this.btnPattern.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(34)))), ((int)(((byte)(34)))), ((int)(((byte)(34)))));
-            this.btnPattern.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.btnPattern.Font = new System.Drawing.Font("맑은 고딕", 20F, System.Drawing.FontStyle.Bold);
-            this.btnPattern.ForeColor = System.Drawing.Color.White;
-            this.btnPattern.Location = new System.Drawing.Point(2, 102);
-            this.btnPattern.Margin = new System.Windows.Forms.Padding(2);
-            this.btnPattern.Name = "btnPattern";
-            this.btnPattern.Size = new System.Drawing.Size(140, 96);
-            this.btnPattern.TabIndex = 19;
-            this.btnPattern.Text = "Pattern";
-            this.btnPattern.UseVisualStyleBackColor = false;
-            this.btnPattern.Click += new System.EventHandler(this.btnPattern_Click);
+            this.btnMark.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(34)))), ((int)(((byte)(34)))), ((int)(((byte)(34)))));
+            this.btnMark.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.btnMark.Font = new System.Drawing.Font("맑은 고딕", 20F, System.Drawing.FontStyle.Bold);
+            this.btnMark.ForeColor = System.Drawing.Color.White;
+            this.btnMark.Location = new System.Drawing.Point(2, 102);
+            this.btnMark.Margin = new System.Windows.Forms.Padding(2);
+            this.btnMark.Name = "btnMark";
+            this.btnMark.Size = new System.Drawing.Size(140, 96);
+            this.btnMark.TabIndex = 19;
+            this.btnMark.Text = "Mark";
+            this.btnMark.UseVisualStyleBackColor = false;
+            this.btnMark.Click += new System.EventHandler(this.btnMark_Click);
             // 
             // btnCancel
             // 
@@ -434,7 +434,7 @@
         private System.Windows.Forms.Button btnAutoFocus;
         private System.Windows.Forms.Button btnAlign;
         private System.Windows.Forms.Button btnAkkon;
-        private System.Windows.Forms.Button btnPattern;
+        private System.Windows.Forms.Button btnMark;
         private System.Windows.Forms.Button btnCancel;
         private System.Windows.Forms.TableLayoutPanel tlpCommon;
         private System.Windows.Forms.TableLayoutPanel tlpUnit;

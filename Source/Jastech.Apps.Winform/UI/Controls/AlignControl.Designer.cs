@@ -36,6 +36,7 @@
             this.lblNext = new System.Windows.Forms.Label();
             this.lblInspection = new System.Windows.Forms.Label();
             this.cmbTabList = new System.Windows.Forms.ComboBox();
+            this.lblApply = new System.Windows.Forms.Label();
             this.pnlPosition = new System.Windows.Forms.Panel();
             this.lblRightPanelY = new System.Windows.Forms.Label();
             this.lblLeft = new System.Windows.Forms.Label();
@@ -53,7 +54,6 @@
             this.pnlLeadParam = new System.Windows.Forms.Panel();
             this.lblLeadCount = new System.Windows.Forms.Label();
             this.lblLead = new System.Windows.Forms.Label();
-            this.lblApply = new System.Windows.Forms.Label();
             this.tlpAlign.SuspendLayout();
             this.tlpBasic.SuspendLayout();
             this.pnlPosition.SuspendLayout();
@@ -187,6 +187,20 @@
             this.cmbTabList.TabIndex = 24;
             this.cmbTabList.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.cmbTabList_DrawItem);
             this.cmbTabList.SelectedIndexChanged += new System.EventHandler(this.cmbTabList_SelectedIndexChanged);
+            // 
+            // lblApply
+            // 
+            this.lblApply.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblApply.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblApply.Font = new System.Drawing.Font("맑은 고딕", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.lblApply.Location = new System.Drawing.Point(500, 0);
+            this.lblApply.Margin = new System.Windows.Forms.Padding(0);
+            this.lblApply.Name = "lblApply";
+            this.lblApply.Size = new System.Drawing.Size(100, 50);
+            this.lblApply.TabIndex = 23;
+            this.lblApply.Text = "Apply";
+            this.lblApply.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblApply.Click += new System.EventHandler(this.lblApply_Click);
             // 
             // pnlPosition
             // 
@@ -395,20 +409,6 @@
             this.lblLead.TabIndex = 1;
             this.lblLead.Text = "Lead Count";
             this.lblLead.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // lblApply
-            // 
-            this.lblApply.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lblApply.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblApply.Font = new System.Drawing.Font("맑은 고딕", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.lblApply.Location = new System.Drawing.Point(500, 0);
-            this.lblApply.Margin = new System.Windows.Forms.Padding(0);
-            this.lblApply.Name = "lblApply";
-            this.lblApply.Size = new System.Drawing.Size(100, 50);
-            this.lblApply.TabIndex = 23;
-            this.lblApply.Text = "Apply";
-            this.lblApply.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.lblApply.Click += new System.EventHandler(this.lblApply_Click);
             // 
             // AlignControl
             // 

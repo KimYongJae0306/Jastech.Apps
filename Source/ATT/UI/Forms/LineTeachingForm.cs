@@ -20,10 +20,10 @@ using Jastech.Apps.Winform.Settings;
 using Jastech.Framework.Structure;
 using Jastech.Framework.Winform.Controls;
 using Jastech.Apps.Winform.Core;
-using Jastech.Apps.Structure.Core;
 using Jastech.Framework.Winform;
 using Jastech.Framework.Device.Cameras;
 using OpenCvSharp;
+using Jastech.Apps.Structure.Data;
 
 namespace ATT.UI.Forms
 {
@@ -45,6 +45,8 @@ namespace ATT.UI.Forms
         private AlignControl AlignControl { get; set; } = new AlignControl() { Dock = DockStyle.Fill };
 
         private AkkonControl AkkonControl { get; set; } = new AkkonControl() { Dock = DockStyle.Fill };
+
+        private MarkControl MarkControl { get; set; } = new MarkControl() { Dock = DockStyle.Fill };
 
         private List<UserControl> TeachControlList = null;
 
@@ -114,9 +116,9 @@ namespace ATT.UI.Forms
             AlignControl.DrawROI();
         }
 
-        private void btnPattern_Click(object sender, EventArgs e)
+        private void btnMark_Click(object sender, EventArgs e)
         {
-            
+            SelectMark();
         }
 
         private void btnAlign_Click(object sender, EventArgs e)
@@ -136,9 +138,24 @@ namespace ATT.UI.Forms
 
         private void ClearSelectedButton()
         {
+            btnMark.ForeColor = Color.White;
             btnAlign.ForeColor = Color.White;
             btnAkkon.ForeColor = Color.White;
             pnlTeach.Controls.Clear();
+        }
+
+        private void SelectMark()
+        {
+            if (ModelManager.Instance().CurrentModel == null || UnitName == "")
+                return;
+
+            ClearSelectedButton();
+
+            btnMark.ForeColor = Color.Blue;
+            pnlTeach.Controls.Add(MarkControl);
+
+            var alignParam = SystemManager.Instance().GetTeachingData().GetAlignParameters(UnitName);
+            MarkControl.SetParams(alignParam);
         }
 
         private void SelectAlign()
@@ -171,7 +188,7 @@ namespace ATT.UI.Forms
 
         private void btnSave_Click(object sender, EventArgs e)
         {
-            ATTInspModel model = ModelManager.Instance().CurrentModel as ATTInspModel;
+            AppsInspModel model = ModelManager.Instance().CurrentModel as AppsInspModel;
 
             if (model == null)
                 return;
@@ -183,7 +200,7 @@ namespace ATT.UI.Forms
             form.ShowDialog();
         }
 
-        private void SaveModelData(ATTInspModel model)
+        private void SaveModelData(AppsInspModel model)
         {
             model.SetUnitList(SystemManager.Instance().GetTeachingData().UnitList);
 

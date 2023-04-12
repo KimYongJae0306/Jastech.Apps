@@ -10,6 +10,7 @@ using System.Windows.Forms;
 using Jastech.Framework.Structure;
 using Jastech.Framework.Device.Motions;
 using Jastech.Apps.Structure;
+using Jastech.Apps.Structure.Data;
 
 namespace ATT.UI.Controls
 {

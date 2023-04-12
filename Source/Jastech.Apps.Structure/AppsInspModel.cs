@@ -1,4 +1,5 @@
-﻿using Jastech.Apps.Structure.VisionTool;
+﻿using Jastech.Apps.Structure.Data;
+using Jastech.Apps.Structure.VisionTool;
 using Jastech.Framework.Imaging.VisionPro.VisionAlgorithms.Parameters;
 using Jastech.Framework.Structure;
 using Jastech.Framework.Util.Helper;
@@ -11,15 +12,6 @@ using System.Threading.Tasks;
 
 namespace Jastech.Apps.Structure
 {
-    public enum CameraName
-    {
-        Area,
-        LeftArea,
-        RightArea,
-        LinscanMIL0,
-        LinscanVT0,
-    }
-
     public class AppsInspModel : InspModel
     {
         [JsonProperty]

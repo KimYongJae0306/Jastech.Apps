@@ -1,5 +1,6 @@
 ﻿using Cognex.VisionPro;
 using Jastech.Apps.Structure;
+using Jastech.Apps.Structure.Data;
 using Jastech.Apps.Winform.Settings;
 using Jastech.Framework.Device.Cameras;
 using Jastech.Framework.Imaging.Helper;

@@ -1,5 +1,6 @@
 ﻿using Jastech.Apps.Structure;
-using Jastech.Apps.Structure.Core;
+using Jastech.Apps.Structure.Data;
+using Jastech.Apps.Structure.Parameters;
 using Jastech.Apps.Winform;
 using Jastech.Apps.Winform.Settings;
 using Jastech.Framework.Device.LightCtrls;
@@ -9,9 +10,6 @@ using Jastech.Framework.Util.Helper;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ATT_UT_Remodeling.Core
 {
@@ -19,7 +17,7 @@ namespace ATT_UT_Remodeling.Core
     {
         public override InspModel New()
         {
-            var newInspModel = new ATTInspModel();
+            var newInspModel = new AppsInspModel();
 
             for (int i = 0; i < newInspModel.UnitCount; i++)
             {
@@ -28,7 +26,7 @@ namespace ATT_UT_Remodeling.Core
                 unit.Name = i.ToString(); // 임시 -> Apps에서 변경
 
                 // Prev Align 등록
-                foreach (ATTPreAlignName type in Enum.GetValues(typeof(ATTPreAlignName)))
+                foreach (MarkName type in Enum.GetValues(typeof(MarkName)))
                 {
                     PreAlignParam preAlign = new PreAlignParam();
                     preAlign.Name = type.ToString();
@@ -100,9 +98,9 @@ namespace ATT_UT_Remodeling.Core
 
         public override InspModel Load(string filePath)
         {
-            var model = new ATTInspModel();
+            var model = new AppsInspModel();
 
-            JsonConvertHelper.LoadToExistingTarget<ATTInspModel>(filePath, model);
+            JsonConvertHelper.LoadToExistingTarget<AppsInspModel>(filePath, model);
 
             string rootDir = Path.GetDirectoryName(filePath);
 
@@ -133,7 +131,7 @@ namespace ATT_UT_Remodeling.Core
 
         public override void Save(string filePath, InspModel model)
         {
-            ATTInspModel attInspModel = model as ATTInspModel;
+            AppsInspModel attInspModel = model as AppsInspModel;
 
             JsonConvertHelper.Save(filePath, attInspModel);
 
@@ -161,7 +159,7 @@ namespace ATT_UT_Remodeling.Core
 
         public void SaveExceptVpp(string filePath, InspModel model)
         {
-            ATTInspModel attInspModel = model as ATTInspModel;
+            AppsInspModel attInspModel = model as AppsInspModel;
 
             JsonConvertHelper.Save(filePath, attInspModel);
         }

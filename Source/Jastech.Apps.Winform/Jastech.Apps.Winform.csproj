@@ -131,6 +131,12 @@
     <Compile Include="UI\Controls\AutoFocusControl.Designer.cs">
       <DependentUpon>AutoFocusControl.cs</DependentUpon>
     </Compile>
+    <Compile Include="UI\Controls\MarkControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UI\Controls\MarkControl.Designer.cs">
+      <DependentUpon>MarkControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="UI\Controls\PreAlignControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -205,6 +211,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UI\Controls\AutoFocusControl.resx">
       <DependentUpon>AutoFocusControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\Controls\MarkControl.resx">
+      <DependentUpon>MarkControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\Controls\PreAlignControl.resx">
       <DependentUpon>PreAlignControl.cs</DependentUpon>

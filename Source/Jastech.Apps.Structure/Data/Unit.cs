@@ -1,4 +1,5 @@
-﻿using Jastech.Framework.Device.LightCtrls;
+﻿using Jastech.Apps.Structure.Parameters;
+using Jastech.Framework.Device.LightCtrls;
 using Jastech.Framework.Imaging.VisionPro.VisionAlgorithms.Parameters;
 using Jastech.Framework.Structure;
 using Newtonsoft.Json;
@@ -8,12 +9,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Jastech.Apps.Structure
+namespace Jastech.Apps.Structure.Data
 {
     public class Unit
     {
         [JsonProperty]
         public string Name { get; set; } = "";
+
+        [JsonProperty]
+        public List<MarkParam> Marks { get; set; } = new List<MarkParam>();
 
         [JsonProperty]
         public List<PreAlignParam> PreAligns { get; set; } = new List<PreAlignParam>();
@@ -36,6 +40,7 @@ namespace Jastech.Apps.Structure
         {
             Unit unit = new Unit();
             unit.Name = Name;
+            unit.Marks = Marks.Select(x => x.DeepCopy()).ToList();
             unit.PreAligns = PreAligns.Select(x => x.DeepCopy()).ToList();
             unit.LightParams = LightParams.Select(x => x.DeepCopy()).ToList();
             unit.TabList = TabList.Select(x => x.DeepCopy()).ToList();
@@ -46,12 +51,16 @@ namespace Jastech.Apps.Structure
 
         public void Dispose()
         {
-            foreach (var item in PreAligns)
-                item.Dispose();
+            foreach (var mark in Marks)
+                mark.Dispose();
 
-            foreach (var item in TabList)
-                item.Dispose();
+            foreach (var preAlign in PreAligns)
+                preAlign.Dispose();
 
+            foreach (var tap in TabList)
+                tap.Dispose();
+
+            Marks.Clear();
             PreAligns.Clear();
             TabList.Clear();
         }

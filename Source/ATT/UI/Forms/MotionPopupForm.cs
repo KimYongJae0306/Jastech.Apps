@@ -1,6 +1,6 @@
 ﻿using ATT.UI.Controls;
 using Jastech.Apps.Structure;
-using Jastech.Apps.Structure.Core;
+using Jastech.Apps.Structure.Data;
 using Jastech.Apps.Winform;
 using Jastech.Apps.Winform.Core;
 using Jastech.Apps.Winform.Settings;
@@ -126,7 +126,7 @@ namespace ATT.UI.Forms
 
         public void SetParams(TeachingPositionType teachingPositionType = TeachingPositionType.Standby)
         {
-            var inspModel = ModelManager.Instance().CurrentModel as ATTInspModel;
+            var inspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
             string unitName = TeachingPositionListControl.UnitName;
 
             if (inspModel == null || unitName == "")
@@ -276,7 +276,7 @@ namespace ATT.UI.Forms
             AppsMotionManager.Instance().Save(axisHandler);
 
             // Save Model
-            var model = ModelManager.Instance().CurrentModel as ATTInspModel;
+            var model = ModelManager.Instance().CurrentModel as AppsInspModel;
             model.SetUnitList(SystemManager.Instance().GetTeachingData().UnitList);
 
             string fileName = System.IO.Path.Combine(AppConfig.Instance().Path.Model, model.Name, InspModel.FileName);

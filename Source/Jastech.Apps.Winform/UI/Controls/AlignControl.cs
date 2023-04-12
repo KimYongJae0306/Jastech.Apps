@@ -16,9 +16,9 @@ using Jastech.Framework.Imaging.VisionPro.VisionAlgorithms.Results;
 using Jastech.Apps.Structure.VisionTool;
 using Jastech.Framework.Imaging.VisionPro;
 using Cognex.VisionPro.Caliper;
-using CogCaliperResult = Jastech.Framework.Imaging.VisionPro.VisionAlgorithms.Results.VisionProCaliperResult;
 using Jastech.Framework.Winform.Forms;
-using Jastech.Apps.Structure.Core;
+using Jastech.Apps.Structure.Data;
+using Jastech.Apps.Structure.Parameters;
 
 namespace Jastech.Apps.Winform.UI.Controls
 {

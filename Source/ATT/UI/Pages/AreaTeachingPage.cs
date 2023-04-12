@@ -20,7 +20,6 @@ using Jastech.Framework.Winform.Forms;
 using Jastech.Apps.Winform.UI.Forms;
 using ATT.UI.Forms;
 using Jastech.Apps.Winform.Core;
-using Jastech.Apps.Structure.Core;
 
 namespace ATT.UI.Pages
 {
@@ -130,7 +129,7 @@ namespace ATT.UI.Pages
 
         private void btnSave_Click(object sender, EventArgs e)
         {
-            ATTInspModel model = ModelManager.Instance().CurrentModel as ATTInspModel;
+            AppsInspModel model = ModelManager.Instance().CurrentModel as AppsInspModel;
 
             if (model == null)
                 return;
@@ -138,7 +137,7 @@ namespace ATT.UI.Pages
             SaveModelData(model);
         }
 
-        private void SaveModelData(ATTInspModel model)
+        private void SaveModelData(AppsInspModel model)
         {
             model.SetUnitList(SystemManager.Instance().GetTeachingData().UnitList);
 

@@ -1,4 +1,6 @@
 ﻿using Jastech.Apps.Structure;
+using Jastech.Apps.Structure.Data;
+using Jastech.Apps.Structure.Parameters;
 using Jastech.Framework.Imaging.VisionPro.VisionAlgorithms.Parameters;
 using System;
 using System.Collections.Generic;
@@ -6,13 +8,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Jastech.Apps.Structure.Core
+namespace Jastech.Apps.Structure.Data
 {
-    public class ATTTeachingData
+    public class TeachingData
     {
         public List<Unit> UnitList { get; set; } = new List<Unit>();
 
-        public void Initialize(ATTInspModel inspModel)
+        public void Initialize(AppsInspModel inspModel)
         {
             Dispose();
 

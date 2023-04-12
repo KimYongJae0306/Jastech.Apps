@@ -17,6 +17,7 @@ using Jastech.Apps.Structure;
 using Cognex.VisionPro.PMAlign;
 using Jastech.Framework.Imaging.VisionPro.VisionAlgorithms.Results;
 using Jastech.Framework.Winform.Forms;
+using Jastech.Apps.Structure.Parameters;
 
 namespace Jastech.Apps.Winform.UI.Controls
 {

@@ -1,5 +1,6 @@
 ﻿using Jastech.Apps.Structure;
-using Jastech.Apps.Structure.Core;
+using Jastech.Apps.Structure.Data;
+using Jastech.Apps.Structure.Parameters;
 using Jastech.Apps.Structure.VisionTool;
 using Jastech.Apps.Winform;
 using Jastech.Apps.Winform.Settings;
@@ -21,7 +22,7 @@ namespace ATT.Core
     {
         public override InspModel New()
         {
-            var newInspModel = new ATTInspModel();
+            var newInspModel = new AppsInspModel();
 
             for (int i = 0; i < newInspModel.UnitCount; i++)
             {
@@ -38,15 +39,45 @@ namespace ATT.Core
                     tab.Name = k.ToString();
                     tab.Index = k;
 
+                    // Tab Fpc Mark 등록
+                    foreach (MarkName type in Enum.GetValues(typeof(MarkName)))
+                    {
+                        MarkParam leftMark = new MarkParam();
+                        leftMark.Name = type;
+                        leftMark.InspParam.Name = MarkDirecton.Left.ToString() + type.ToString();
+                        leftMark.Direction = MarkDirecton.Left;
+
+                        MarkParam RightMark = new MarkParam();
+                        RightMark.Name = type;
+                        RightMark.InspParam.Name = MarkDirecton.Right.ToString() + type.ToString();
+                        RightMark.Direction = MarkDirecton.Right;
+
+                        tab.FpcMarkParamList.Add(leftMark);
+                        tab.FpcMarkParamList.Add(RightMark);
+                    }
+                    // Tab Panel Mark 등록
+                    foreach (MarkName type in Enum.GetValues(typeof(MarkName)))
+                    {
+                        MarkParam leftMark = new MarkParam();
+                        leftMark.Name = type;
+                        leftMark.InspParam.Name = MarkDirecton.Left.ToString() + type.ToString();
+                        leftMark.Direction = MarkDirecton.Left;
+
+                        MarkParam RightMark = new MarkParam();
+                        RightMark.Name = type;
+                        RightMark.InspParam.Name = MarkDirecton.Right.ToString() + type.ToString();
+                        RightMark.Direction = MarkDirecton.Right;
+
+                        tab.PanelMarkParamList.Add(leftMark);
+                        tab.PanelMarkParamList.Add(RightMark);
+                    }
+
                     // Tab Align 등록
                     foreach (ATTTabAlignName type in Enum.GetValues(typeof(ATTTabAlignName)))
                     {
                         AlignParam align = new AlignParam();
                         align.Name = type.ToString();
                         tab.AlignParamList.Add(align);
-                        //CogCaliperParam align = new CogCaliperParam();
-                        //align.Name = type.ToString();
-                        //tab.AlignParams.Add(align);
                     }
 
                     unit.AddTab(tab);
@@ -131,9 +162,9 @@ namespace ATT.Core
 
         public override InspModel Load(string filePath)
         {  
-            var model = new ATTInspModel();
+            var model = new AppsInspModel();
 
-            JsonConvertHelper.LoadToExistingTarget<ATTInspModel>(filePath, model);
+            JsonConvertHelper.LoadToExistingTarget<AppsInspModel>(filePath, model);
 
             string rootDir = Path.GetDirectoryName(filePath);
 
@@ -152,7 +183,17 @@ namespace ATT.Core
                 {
                     string tabDir = unitDir + @"\" + "Tab_" + tab.Name;
 
-                    //TabAlign 저장
+                    //Tab FPC Mark 열기
+                    string tabFpcMarkDir = tabDir + @"\FPC_Mark";
+                    foreach (var alignParam in tab.FpcMarkParamList)
+                        alignParam.InspParam.LoadTool(tabFpcMarkDir);
+
+                    //Tab Panel Mark 열기
+                    string tabPanelMarkDir = tabDir + @"\Panel_Mark";
+                    foreach (var alignParam in tab.PanelMarkParamList)
+                        alignParam.InspParam.LoadTool(tabPanelMarkDir);
+
+                    //Tab Align 열기
                     string tabAlignDir = tabDir + @"\Align";
                     foreach (var alignParam in tab.AlignParamList)
                         alignParam.CaliperParams.LoadTool(tabAlignDir, alignParam.Name);
@@ -164,7 +205,7 @@ namespace ATT.Core
 
         public override void Save(string filePath, InspModel model)
         {
-            ATTInspModel attInspModel = model as ATTInspModel;
+            AppsInspModel attInspModel = model as AppsInspModel;
 
             JsonConvertHelper.Save(filePath, attInspModel);
 
@@ -192,7 +233,7 @@ namespace ATT.Core
 
         public void SaveExceptVpp(string filePath, InspModel model)
         {
-            ATTInspModel attInspModel = model as ATTInspModel;
+            AppsInspModel attInspModel = model as AppsInspModel;
 
             JsonConvertHelper.Save(filePath, attInspModel);
         }

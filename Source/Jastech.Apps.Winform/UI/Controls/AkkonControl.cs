@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using Jastech.Framework.Winform.Controls;
 using Jastech.Apps.Structure;
+using Jastech.Apps.Structure.Data;
 
 namespace Jastech.Apps.Winform.UI.Controls
 {
@@ -51,7 +52,7 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         private void InitializeUI()
         {
-            lblTab.Text = "tlqkf";
+            //lblTab.Text = "tlqkf";
         }
 
         public void SetParams(List<Tab> tabList)

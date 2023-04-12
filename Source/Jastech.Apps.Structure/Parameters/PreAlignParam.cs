@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Jastech.Apps.Structure
+namespace Jastech.Apps.Structure.Parameters
 {
     public class PreAlignParam
     {

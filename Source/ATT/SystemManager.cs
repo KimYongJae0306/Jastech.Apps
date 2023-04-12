@@ -1,5 +1,5 @@
 ﻿using Jastech.Apps.Structure;
-using Jastech.Apps.Structure.Core;
+using Jastech.Apps.Structure.Data;
 using Jastech.Apps.Winform;
 using Jastech.Apps.Winform.Core;
 using Jastech.Apps.Winform.Settings;
@@ -122,7 +122,7 @@ namespace ATT
             reportProgress?.ReportProgress(percentage, message);
         }
 
-        public void SaveModel(string filePath, ATTInspModel inspModel, bool isSaveVpp = true)
+        public void SaveModel(string filePath, AppsInspModel inspModel, bool isSaveVpp = true)
         {
             if (isSaveVpp)
                 _mainForm.ATTInspModelService.Save(filePath, inspModel);
@@ -130,7 +130,7 @@ namespace ATT
                 _mainForm.ATTInspModelService.SaveExceptVpp(filePath, inspModel);
         }
 
-        public ATTTeachingData GetTeachingData()
+        public TeachingData GetTeachingData()
         {
             return _mainForm.TeachingData;
         }

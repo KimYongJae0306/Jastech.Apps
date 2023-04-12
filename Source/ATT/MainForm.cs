@@ -1,7 +1,7 @@
 ﻿using ATT.Core;
 using ATT.UI.Pages;
 using Jastech.Apps.Structure;
-using Jastech.Apps.Structure.Core;
+using Jastech.Apps.Structure.Data;
 using Jastech.Apps.Winform.Core;
 using Jastech.Apps.Winform.Settings;
 using Jastech.Apps.Winform.UI.Forms;
@@ -23,7 +23,7 @@ namespace ATT
     public partial class MainForm : Form
     {
         #region 속성
-        public ATTTeachingData TeachingData { get; set; } = new ATTTeachingData();
+        public TeachingData TeachingData { get; set; } = new TeachingData();
         // Page Control
         private MainPage MainPageControl { get; set; } = new MainPage();
 
@@ -69,7 +69,7 @@ namespace ATT
 
         private void MainForm_CurrentModelChangedEvent(InspModel inspModel)
         {
-            ATTInspModel model = inspModel as ATTInspModel;
+            AppsInspModel model = inspModel as AppsInspModel;
 
             TeachingData.Dispose();
             TeachingData.Initialize(model);

@@ -1,7 +1,6 @@
 ﻿using Cognex.VisionPro;
 using Jastech.Framework.Imaging.VisionPro;
 using Jastech.Framework.Util.Helper;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;

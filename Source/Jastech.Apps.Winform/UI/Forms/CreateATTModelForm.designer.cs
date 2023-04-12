@@ -91,6 +91,7 @@
             this.txtTabCount.Name = "txtTabCount";
             this.txtTabCount.Size = new System.Drawing.Size(525, 32);
             this.txtTabCount.TabIndex = 14;
+            this.txtTabCount.Text = "5";
             this.txtTabCount.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtTabCount_KeyPress);
             // 
             // panel2
@@ -347,7 +348,7 @@
             this.panel1.Size = new System.Drawing.Size(545, 597);
             this.panel1.TabIndex = 3;
             // 
-            // CreateModelForm
+            // CreateATTModelForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
@@ -357,7 +358,7 @@
             this.Controls.Add(this.panel1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.Name = "CreateModelForm";
+            this.Name = "CreateATTModelForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = " ";
             this.panel6.ResumeLayout(false);

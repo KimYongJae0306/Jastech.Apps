@@ -31,7 +31,6 @@
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.tlpMainForm = new System.Windows.Forms.TableLayoutPanel();
-            this.pnlFunctionButtons = new System.Windows.Forms.Panel();
             this.tlpFunctionButtons = new System.Windows.Forms.TableLayoutPanel();
             this.lblCurrentTime = new System.Windows.Forms.Label();
             this.panel2 = new System.Windows.Forms.Panel();
@@ -51,6 +50,8 @@
             this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
             this.lblTeachingPageImage = new System.Windows.Forms.Label();
             this.lblTeachingPage = new System.Windows.Forms.Label();
+            this.pnlFunctionButtons = new System.Windows.Forms.Panel();
+            this.pnlPage = new System.Windows.Forms.Panel();
             this.pnlMachineStatus = new System.Windows.Forms.Panel();
             this.tlpMachineStatus = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel5 = new System.Windows.Forms.TableLayoutPanel();
@@ -59,10 +60,8 @@
             this.lblCurrentModel = new System.Windows.Forms.Label();
             this.picLogo = new System.Windows.Forms.PictureBox();
             this.lblSystemName = new System.Windows.Forms.Label();
-            this.pnlPage = new System.Windows.Forms.Panel();
             this.tmrMainForm = new System.Windows.Forms.Timer(this.components);
             this.tlpMainForm.SuspendLayout();
-            this.pnlFunctionButtons.SuspendLayout();
             this.tlpFunctionButtons.SuspendLayout();
             this.panel4.SuspendLayout();
             this.tableLayoutPanel4.SuspendLayout();
@@ -72,6 +71,7 @@
             this.tableLayoutPanel1.SuspendLayout();
             this.panel1.SuspendLayout();
             this.tableLayoutPanel3.SuspendLayout();
+            this.pnlFunctionButtons.SuspendLayout();
             this.pnlMachineStatus.SuspendLayout();
             this.tlpMachineStatus.SuspendLayout();
             this.tableLayoutPanel5.SuspendLayout();
@@ -94,18 +94,8 @@
             this.tlpMainForm.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 50F));
             this.tlpMainForm.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 50F));
             this.tlpMainForm.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tlpMainForm.Size = new System.Drawing.Size(1550, 766);
+            this.tlpMainForm.Size = new System.Drawing.Size(1540, 766);
             this.tlpMainForm.TabIndex = 0;
-            // 
-            // pnlFunctionButtons
-            // 
-            this.pnlFunctionButtons.Controls.Add(this.pnlPage);
-            this.pnlFunctionButtons.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pnlFunctionButtons.Location = new System.Drawing.Point(0, 100);
-            this.pnlFunctionButtons.Margin = new System.Windows.Forms.Padding(0);
-            this.pnlFunctionButtons.Name = "pnlFunctionButtons";
-            this.pnlFunctionButtons.Size = new System.Drawing.Size(1550, 666);
-            this.pnlFunctionButtons.TabIndex = 0;
             // 
             // tlpFunctionButtons
             // 
@@ -132,7 +122,7 @@
             this.tlpFunctionButtons.Name = "tlpFunctionButtons";
             this.tlpFunctionButtons.RowCount = 1;
             this.tlpFunctionButtons.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tlpFunctionButtons.Size = new System.Drawing.Size(1550, 50);
+            this.tlpFunctionButtons.Size = new System.Drawing.Size(1540, 50);
             this.tlpFunctionButtons.TabIndex = 0;
             // 
             // lblCurrentTime
@@ -348,6 +338,25 @@
             this.lblTeachingPage.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.lblTeachingPage.Click += new System.EventHandler(this.TeachPage_Click);
             // 
+            // pnlFunctionButtons
+            // 
+            this.pnlFunctionButtons.Controls.Add(this.pnlPage);
+            this.pnlFunctionButtons.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pnlFunctionButtons.Location = new System.Drawing.Point(0, 100);
+            this.pnlFunctionButtons.Margin = new System.Windows.Forms.Padding(0);
+            this.pnlFunctionButtons.Name = "pnlFunctionButtons";
+            this.pnlFunctionButtons.Size = new System.Drawing.Size(1540, 666);
+            this.pnlFunctionButtons.TabIndex = 0;
+            // 
+            // pnlPage
+            // 
+            this.pnlPage.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pnlPage.Location = new System.Drawing.Point(0, 0);
+            this.pnlPage.Margin = new System.Windows.Forms.Padding(0);
+            this.pnlPage.Name = "pnlPage";
+            this.pnlPage.Size = new System.Drawing.Size(1540, 666);
+            this.pnlPage.TabIndex = 3;
+            // 
             // pnlMachineStatus
             // 
             this.pnlMachineStatus.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
@@ -356,7 +365,7 @@
             this.pnlMachineStatus.Location = new System.Drawing.Point(0, 0);
             this.pnlMachineStatus.Margin = new System.Windows.Forms.Padding(0);
             this.pnlMachineStatus.Name = "pnlMachineStatus";
-            this.pnlMachineStatus.Size = new System.Drawing.Size(1550, 50);
+            this.pnlMachineStatus.Size = new System.Drawing.Size(1540, 50);
             this.pnlMachineStatus.TabIndex = 2;
             // 
             // tlpMachineStatus
@@ -377,7 +386,7 @@
             this.tlpMachineStatus.Name = "tlpMachineStatus";
             this.tlpMachineStatus.RowCount = 1;
             this.tlpMachineStatus.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tlpMachineStatus.Size = new System.Drawing.Size(1548, 48);
+            this.tlpMachineStatus.Size = new System.Drawing.Size(1538, 48);
             this.tlpMachineStatus.TabIndex = 1;
             // 
             // tableLayoutPanel5
@@ -388,7 +397,7 @@
             this.tableLayoutPanel5.Controls.Add(this.lblCurrentUser, 0, 0);
             this.tableLayoutPanel5.Controls.Add(this.pictureBox2, 1, 0);
             this.tableLayoutPanel5.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel5.Location = new System.Drawing.Point(1368, 0);
+            this.tableLayoutPanel5.Location = new System.Drawing.Point(1358, 0);
             this.tableLayoutPanel5.Margin = new System.Windows.Forms.Padding(0);
             this.tableLayoutPanel5.Name = "tableLayoutPanel5";
             this.tableLayoutPanel5.RowCount = 1;
@@ -429,7 +438,7 @@
             this.lblCurrentModel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lblCurrentModel.Font = new System.Drawing.Font("맑은 고딕", 15F, System.Drawing.FontStyle.Bold);
             this.lblCurrentModel.ForeColor = System.Drawing.Color.White;
-            this.lblCurrentModel.Location = new System.Drawing.Point(1191, 3);
+            this.lblCurrentModel.Location = new System.Drawing.Point(1181, 3);
             this.lblCurrentModel.Margin = new System.Windows.Forms.Padding(3);
             this.lblCurrentModel.Name = "lblCurrentModel";
             this.lblCurrentModel.Size = new System.Drawing.Size(174, 42);
@@ -456,19 +465,10 @@
             this.lblSystemName.Location = new System.Drawing.Point(223, 3);
             this.lblSystemName.Margin = new System.Windows.Forms.Padding(3);
             this.lblSystemName.Name = "lblSystemName";
-            this.lblSystemName.Size = new System.Drawing.Size(962, 42);
+            this.lblSystemName.Size = new System.Drawing.Size(952, 42);
             this.lblSystemName.TabIndex = 1;
             this.lblSystemName.Text = "ATT Inspection";
             this.lblSystemName.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // pnlPage
-            // 
-            this.pnlPage.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pnlPage.Location = new System.Drawing.Point(0, 0);
-            this.pnlPage.Margin = new System.Windows.Forms.Padding(0);
-            this.pnlPage.Name = "pnlPage";
-            this.pnlPage.Size = new System.Drawing.Size(1550, 666);
-            this.pnlPage.TabIndex = 3;
             // 
             // tmrMainForm
             // 
@@ -479,18 +479,16 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
-            this.ClientSize = new System.Drawing.Size(1550, 766);
+            this.ClientSize = new System.Drawing.Size(1540, 766);
             this.Controls.Add(this.tlpMainForm);
             this.Font = new System.Drawing.Font("맑은 고딕", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.ForeColor = System.Drawing.Color.White;
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.Name = "MainForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.Load += new System.EventHandler(this.MainForm_Load);
             this.tlpMainForm.ResumeLayout(false);
-            this.pnlFunctionButtons.ResumeLayout(false);
             this.tlpFunctionButtons.ResumeLayout(false);
             this.panel4.ResumeLayout(false);
             this.tableLayoutPanel4.ResumeLayout(false);
@@ -500,6 +498,7 @@
             this.tableLayoutPanel1.ResumeLayout(false);
             this.panel1.ResumeLayout(false);
             this.tableLayoutPanel3.ResumeLayout(false);
+            this.pnlFunctionButtons.ResumeLayout(false);
             this.pnlMachineStatus.ResumeLayout(false);
             this.tlpMachineStatus.ResumeLayout(false);
             this.tableLayoutPanel5.ResumeLayout(false);

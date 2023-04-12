@@ -61,16 +61,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AlignParam.cs" />
+    <Compile Include="Parameters\AlignParam.cs" />
     <Compile Include="AppsInspModel.cs" />
-    <Compile Include="Core\ATTInspModel.cs" />
-    <Compile Include="Core\ATTTeachingData.cs" />
+    <Compile Include="Data\TeachingData.cs" />
+    <Compile Include="Parameters\MarkParam.cs" />
     <Compile Include="ModelManager.cs" />
-    <Compile Include="PreAlignParam.cs" />
+    <Compile Include="Parameters\PreAlignParam.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Tab.cs" />
-    <Compile Include="TeachingPositionType.cs" />
-    <Compile Include="Unit.cs" />
+    <Compile Include="Data\Tab.cs" />
+    <Compile Include="Data\AppsEnum.cs" />
+    <Compile Include="Data\Unit.cs" />
     <Compile Include="VisionTool\AlgorithmTool.cs" />
     <Compile Include="VisionTool\IVisionTool.cs" />
   </ItemGroup>
