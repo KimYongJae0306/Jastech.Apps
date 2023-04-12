@@ -1,5 +1,6 @@
 ﻿using Jastech.Apps.Structure.Parameters;
 using Jastech.Framework.Imaging.VisionPro.VisionAlgorithms.Parameters;
+using Jastech.Framework.Macron.Akkon.Parameters;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -26,6 +27,9 @@ namespace Jastech.Apps.Structure.Data
         [JsonProperty]
         public List<MarkParam> PanelMarkParamList { get; set; } = new List<MarkParam>();
 
+        [JsonProperty]
+        public AkkonParam AkkonParam { get; set; } = new AkkonParam();
+
         public Tab DeepCopy()
         {
             Tab tab = new Tab();
@@ -34,6 +38,7 @@ namespace Jastech.Apps.Structure.Data
             tab.FpcMarkParamList = FpcMarkParamList.Select(x => x.DeepCopy()).ToList();
             tab.PanelMarkParamList = PanelMarkParamList.Select(x => x.DeepCopy()).ToList();
             tab.AlignParamList = AlignParamList.Select(x => x.DeepCopy()).ToList();
+            tab.AkkonParam = AkkonParam.DeepCopy();
 
             return tab;
         }
@@ -73,11 +78,14 @@ namespace Jastech.Apps.Structure.Data
             return FpcMarkParamList.Where(x => x.Name == name && x.Direction == direction).First();
         }
 
-     
-
         public MarkParam GetPanelMark(MarkDirecton direction, MarkName name)
         {
             return PanelMarkParamList.Where(x => x.Name == name && x.Direction == direction).First();
+        }
+
+        public AkkonParam GetAkkonParam()
+        {
+            return AkkonParam;
         }
     }
 }

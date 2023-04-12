@@ -84,7 +84,11 @@ namespace Jastech.Apps.Structure.VisionTool
 
             return matchingResult;
         }
-     
+
+        public void RunAkkon()
+        {
+
+        }
     }
 
     public enum InspectionType

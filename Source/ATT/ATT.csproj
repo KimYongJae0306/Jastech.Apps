@@ -229,6 +229,10 @@
       <Project>{2380DA0F-851A-4430-9A43-E7B2DEEE29F2}</Project>
       <Name>Jastech.Framework.Imaging</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\..\Jastech.Core\src\Jastech.Framework.Macron.Akkon\Jastech.Framework.Macron.Akkon.csproj">
+      <Project>{8C3EF380-9484-4B6B-B8C9-C4B6D762D858}</Project>
+      <Name>Jastech.Framework.Macron.Akkon</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\..\Jastech.Core\src\Jastech.Framework.Matrox\Jastech.Framework.Matrox.csproj">
       <Project>{8b4b5cef-5b39-423a-a460-a24f7fd8890e}</Project>
       <Name>Jastech.Framework.Matrox</Name>

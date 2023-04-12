@@ -83,6 +83,10 @@
       <Project>{22EE7B1A-E7B2-4547-94DD-4E85BDB56956}</Project>
       <Name>Jastech.Framework.Imaging.VisionPro</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\..\Jastech.Core\src\Jastech.Framework.Macron.Akkon\Jastech.Framework.Macron.Akkon.csproj">
+      <Project>{8C3EF380-9484-4B6B-B8C9-C4B6D762D858}</Project>
+      <Name>Jastech.Framework.Macron.Akkon</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\..\Jastech.Core\src\Jastech.Framework.Structure\Jastech.Framework.Structure.csproj">
       <Project>{DCFF7B48-8DF8-4ED9-9F0F-F11C2CCB7547}</Project>
       <Name>Jastech.Framework.Structure</Name>

@@ -7,6 +7,7 @@ using Jastech.Apps.Winform.Settings;
 using Jastech.Framework.Device.LightCtrls;
 using Jastech.Framework.Device.Motions;
 using Jastech.Framework.Imaging.VisionPro.VisionAlgorithms.Parameters;
+using Jastech.Framework.Macron.Akkon.Parameters;
 using Jastech.Framework.Structure;
 using Jastech.Framework.Util.Helper;
 using System;
@@ -84,6 +85,11 @@ namespace ATT.Core
                         align.Name = type.ToString();
                         tab.AlignParamList.Add(align);
                     }
+
+                    // Tab Akkon 등록
+                    AkkonParam akkon = new AkkonParam();
+                    akkon.Name = tab.Name;
+                    tab.AkkonParam = akkon.DeepCopy();
 
                     unit.AddTab(tab);
                 }

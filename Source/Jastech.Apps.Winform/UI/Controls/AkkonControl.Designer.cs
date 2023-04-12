@@ -28,11 +28,11 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle41 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle42 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle43 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle44 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle45 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle11 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle12 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle13 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle14 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle15 = new System.Windows.Forms.DataGridViewCellStyle();
             this.pnlParam = new System.Windows.Forms.Panel();
             this.tlpAkkon = new System.Windows.Forms.TableLayoutPanel();
             this.tlpAkkonDataGridView = new System.Windows.Forms.TableLayoutPanel();
@@ -55,12 +55,12 @@
             this.rdoAkkonResult = new System.Windows.Forms.RadioButton();
             this.rdoAkkonROI = new System.Windows.Forms.RadioButton();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
+            this.lblNext = new System.Windows.Forms.Label();
+            this.lblPrev = new System.Windows.Forms.Label();
+            this.cmbTabList = new System.Windows.Forms.ComboBox();
             this.lblAddROI = new System.Windows.Forms.Label();
             this.lblInspection = new System.Windows.Forms.Label();
             this.lblParameter = new System.Windows.Forms.Label();
-            this.cmbTabList = new System.Windows.Forms.ComboBox();
-            this.lblPrev = new System.Windows.Forms.Label();
-            this.lblNext = new System.Windows.Forms.Label();
             this.tlpAkkon.SuspendLayout();
             this.tlpAkkonDataGridView.SuspendLayout();
             this.tabAkkonData.SuspendLayout();
@@ -149,14 +149,14 @@
             this.dgvAkkonROI.AllowUserToAddRows = false;
             this.dgvAkkonROI.AllowUserToDeleteRows = false;
             this.dgvAkkonROI.BackgroundColor = System.Drawing.Color.White;
-            dataGridViewCellStyle41.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle41.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle41.Font = new System.Drawing.Font("맑은 고딕", 11.25F, System.Drawing.FontStyle.Bold);
-            dataGridViewCellStyle41.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle41.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle41.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle41.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgvAkkonROI.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle41;
+            dataGridViewCellStyle11.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle11.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle11.Font = new System.Drawing.Font("맑은 고딕", 11.25F, System.Drawing.FontStyle.Bold);
+            dataGridViewCellStyle11.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle11.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle11.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle11.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvAkkonROI.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle11;
             this.dgvAkkonROI.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvAkkonROI.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.colROINo,
@@ -164,21 +164,21 @@
             this.colRightTop,
             this.colRightBottom,
             this.colLeftBottom});
-            dataGridViewCellStyle42.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle42.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle42.Font = new System.Drawing.Font("맑은 고딕", 11.25F, System.Drawing.FontStyle.Bold);
-            dataGridViewCellStyle42.ForeColor = System.Drawing.Color.White;
-            dataGridViewCellStyle42.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle42.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle42.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgvAkkonROI.DefaultCellStyle = dataGridViewCellStyle42;
+            dataGridViewCellStyle12.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle12.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle12.Font = new System.Drawing.Font("맑은 고딕", 11.25F, System.Drawing.FontStyle.Bold);
+            dataGridViewCellStyle12.ForeColor = System.Drawing.Color.White;
+            dataGridViewCellStyle12.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle12.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle12.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvAkkonROI.DefaultCellStyle = dataGridViewCellStyle12;
             this.dgvAkkonROI.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgvAkkonROI.Location = new System.Drawing.Point(0, 0);
             this.dgvAkkonROI.Margin = new System.Windows.Forms.Padding(0);
             this.dgvAkkonROI.Name = "dgvAkkonROI";
             this.dgvAkkonROI.ReadOnly = true;
-            dataGridViewCellStyle43.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
-            this.dgvAkkonROI.RowsDefaultCellStyle = dataGridViewCellStyle43;
+            dataGridViewCellStyle13.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
+            this.dgvAkkonROI.RowsDefaultCellStyle = dataGridViewCellStyle13;
             this.dgvAkkonROI.RowTemplate.Height = 23;
             this.dgvAkkonROI.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgvAkkonROI.Size = new System.Drawing.Size(563, 208);
@@ -248,14 +248,14 @@
             // 
             this.dgvAkkonResult.AllowUserToAddRows = false;
             this.dgvAkkonResult.AllowUserToDeleteRows = false;
-            dataGridViewCellStyle44.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle44.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle44.Font = new System.Drawing.Font("맑은 고딕", 11.25F, System.Drawing.FontStyle.Bold);
-            dataGridViewCellStyle44.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle44.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle44.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle44.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgvAkkonResult.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle44;
+            dataGridViewCellStyle14.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle14.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle14.Font = new System.Drawing.Font("맑은 고딕", 11.25F, System.Drawing.FontStyle.Bold);
+            dataGridViewCellStyle14.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle14.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle14.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle14.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvAkkonResult.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle14;
             this.dgvAkkonResult.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvAkkonResult.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.colResultNo,
@@ -263,14 +263,14 @@
             this.colLength,
             this.colStrength,
             this.colJudgement});
-            dataGridViewCellStyle45.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle45.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle45.Font = new System.Drawing.Font("맑은 고딕", 11.25F, System.Drawing.FontStyle.Bold);
-            dataGridViewCellStyle45.ForeColor = System.Drawing.Color.White;
-            dataGridViewCellStyle45.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle45.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle45.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgvAkkonResult.DefaultCellStyle = dataGridViewCellStyle45;
+            dataGridViewCellStyle15.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle15.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle15.Font = new System.Drawing.Font("맑은 고딕", 11.25F, System.Drawing.FontStyle.Bold);
+            dataGridViewCellStyle15.ForeColor = System.Drawing.Color.White;
+            dataGridViewCellStyle15.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle15.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle15.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvAkkonResult.DefaultCellStyle = dataGridViewCellStyle15;
             this.dgvAkkonResult.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgvAkkonResult.Location = new System.Drawing.Point(0, 0);
             this.dgvAkkonResult.Name = "dgvAkkonResult";
@@ -355,6 +355,7 @@
             this.rdoAkkonResult.Text = "AKKON INSPECTION RESULT";
             this.rdoAkkonResult.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.rdoAkkonResult.UseVisualStyleBackColor = false;
+            this.rdoAkkonResult.CheckedChanged += new System.EventHandler(this.rdoAkkonResult_CheckedChanged);
             // 
             // rdoAkkonROI
             // 
@@ -372,6 +373,7 @@
             this.rdoAkkonROI.Text = "LEAD ROI LIST";
             this.rdoAkkonROI.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.rdoAkkonROI.UseVisualStyleBackColor = false;
+            this.rdoAkkonROI.CheckedChanged += new System.EventHandler(this.rdoAkkonROI_CheckedChanged);
             // 
             // tableLayoutPanel2
             // 
@@ -394,6 +396,44 @@
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel2.Size = new System.Drawing.Size(565, 44);
             this.tableLayoutPanel2.TabIndex = 2;
+            // 
+            // lblNext
+            // 
+            this.lblNext.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblNext.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblNext.Image = global::Jastech.Apps.Winform.Properties.Resources.Next_White;
+            this.lblNext.Location = new System.Drawing.Point(227, 0);
+            this.lblNext.Margin = new System.Windows.Forms.Padding(0);
+            this.lblNext.Name = "lblNext";
+            this.lblNext.Size = new System.Drawing.Size(52, 44);
+            this.lblNext.TabIndex = 27;
+            this.lblNext.Click += new System.EventHandler(this.lblNext_Click);
+            // 
+            // lblPrev
+            // 
+            this.lblPrev.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblPrev.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblPrev.Image = global::Jastech.Apps.Winform.Properties.Resources.Prev_White;
+            this.lblPrev.Location = new System.Drawing.Point(175, 0);
+            this.lblPrev.Margin = new System.Windows.Forms.Padding(0);
+            this.lblPrev.Name = "lblPrev";
+            this.lblPrev.Size = new System.Drawing.Size(52, 44);
+            this.lblPrev.TabIndex = 26;
+            this.lblPrev.Click += new System.EventHandler(this.lblPrev_Click);
+            // 
+            // cmbTabList
+            // 
+            this.cmbTabList.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.cmbTabList.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.cmbTabList.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbTabList.Font = new System.Drawing.Font("맑은 고딕", 14.25F, System.Drawing.FontStyle.Bold);
+            this.cmbTabList.FormattingEnabled = true;
+            this.cmbTabList.Location = new System.Drawing.Point(3, 3);
+            this.cmbTabList.Name = "cmbTabList";
+            this.cmbTabList.Size = new System.Drawing.Size(169, 34);
+            this.cmbTabList.TabIndex = 25;
+            this.cmbTabList.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.cmbTabList_DrawItem);
+            this.cmbTabList.SelectedIndexChanged += new System.EventHandler(this.cmbTabList_SelectedIndexChanged);
             // 
             // lblAddROI
             // 
@@ -434,44 +474,6 @@
             this.lblParameter.TabIndex = 1;
             this.lblParameter.Text = "Parameter";
             this.lblParameter.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // cmbTabList
-            // 
-            this.cmbTabList.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.cmbTabList.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
-            this.cmbTabList.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmbTabList.Font = new System.Drawing.Font("맑은 고딕", 14.25F, System.Drawing.FontStyle.Bold);
-            this.cmbTabList.FormattingEnabled = true;
-            this.cmbTabList.Location = new System.Drawing.Point(3, 3);
-            this.cmbTabList.Name = "cmbTabList";
-            this.cmbTabList.Size = new System.Drawing.Size(169, 34);
-            this.cmbTabList.TabIndex = 25;
-            this.cmbTabList.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.cmbTabList_DrawItem);
-            this.cmbTabList.SelectedIndexChanged += new System.EventHandler(this.cmbTabList_SelectedIndexChanged);
-            // 
-            // lblPrev
-            // 
-            this.lblPrev.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lblPrev.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblPrev.Image = global::Jastech.Apps.Winform.Properties.Resources.Prev_White;
-            this.lblPrev.Location = new System.Drawing.Point(175, 0);
-            this.lblPrev.Margin = new System.Windows.Forms.Padding(0);
-            this.lblPrev.Name = "lblPrev";
-            this.lblPrev.Size = new System.Drawing.Size(52, 44);
-            this.lblPrev.TabIndex = 26;
-            this.lblPrev.Click += new System.EventHandler(this.lblPrev_Click);
-            // 
-            // lblNext
-            // 
-            this.lblNext.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lblNext.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblNext.Image = global::Jastech.Apps.Winform.Properties.Resources.Next_White;
-            this.lblNext.Location = new System.Drawing.Point(227, 0);
-            this.lblNext.Margin = new System.Windows.Forms.Padding(0);
-            this.lblNext.Name = "lblNext";
-            this.lblNext.Size = new System.Drawing.Size(52, 44);
-            this.lblNext.TabIndex = 27;
-            this.lblNext.Click += new System.EventHandler(this.lblNext_Click);
             // 
             // AkkonControl
             // 

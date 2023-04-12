@@ -176,9 +176,6 @@ namespace Jastech.Apps.Winform.UI.Controls
             var currentParam = CogCaliperParamControl.GetCurrentParam();
 
             display.SetInteractiveGraphics("tool", currentParam.CaliperParams.CreateCurrentRecord(constants));
-
-            var rect = currentParam.CaliperParams.CaliperTool.Region as CogRectangleAffine;
-            display.SetDisplayToCenter(new Point((int)rect.CenterX, (int)rect.CenterY));
         }
 
         private void cmbTabList_SelectedIndexChanged(object sender, EventArgs e)
@@ -284,54 +281,6 @@ namespace Jastech.Apps.Winform.UI.Controls
                 display.ClearGraphic();
                 display.UpdateResult(result);
             }
-        }
-
-        private void ExcuteCaliperX(AlignParam alignParam)
-        {
-            int leadCount = alignParam.LeadCount * 2;
-
-            if (leadCount <= 0)
-                return;
-
-            CogCaliperTool tool = new CogCaliperTool(alignParam.CaliperParams.CaliperTool);
-            CogRectangleAffine[] divideRegion = new CogRectangleAffine[leadCount];
-
-            //tool.Region.CornerXY
-            double dNewX = (tool.Region.CenterX - tool.Region.SideXLength / 2) + tool.Region.SideXLength / (leadCount * 2);
-            double dNewY = tool.Region.CenterY;
-
-            for (int leadIndex = 0; leadIndex < leadCount; leadIndex++)
-            {
-                divideRegion[leadIndex] = new CogRectangleAffine(alignParam.CaliperParams.CaliperTool.Region);
-
-                double dX = tool.Region.SideXLength / leadCount * leadIndex * Math.Cos(tool.Region.Rotation);
-                double dY = tool.Region.SideXLength / leadCount * leadIndex * tool.Region.Rotation;
-
-                divideRegion[leadIndex].SideXLength = divideRegion[leadIndex].SideXLength / leadCount;
-                divideRegion[leadIndex].CenterX = dNewX + dX;
-                divideRegion[leadIndex].CenterY = dNewY + dY;
-
-                if (leadIndex % 2 == 0)
-                {
-                    divideRegion[leadIndex].Rotation = divideRegion[leadIndex].Rotation - Math.PI;
-
-                    if (tool.RunParams.Edge0Polarity == CogCaliperPolarityConstants.DarkToLight)
-                        tool.RunParams.Edge0Polarity = CogCaliperPolarityConstants.LightToDark;
-                }
-                else
-                {
-                    if (tool.RunParams.Edge0Polarity == CogCaliperPolarityConstants.DarkToLight)
-                        tool.RunParams.Edge0Polarity = CogCaliperPolarityConstants.LightToDark;
-                }
-
-                tool.Region = divideRegion[leadIndex];
-                tool.Run();
-            }
-        }
-
-        private void ExcuteCaliperY()
-        {
-
         }
         #endregion
 
