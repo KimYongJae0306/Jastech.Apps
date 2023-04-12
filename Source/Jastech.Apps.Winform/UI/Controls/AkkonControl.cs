@@ -10,6 +10,7 @@ using System.Windows.Forms;
 using Jastech.Framework.Winform.Controls;
 using Jastech.Apps.Structure;
 using Jastech.Apps.Structure.Data;
+using Cognex.VisionPro;
 
 namespace Jastech.Apps.Winform.UI.Controls
 {
@@ -41,13 +42,19 @@ namespace Jastech.Apps.Winform.UI.Controls
         private void AkkonControl_Load(object sender, EventArgs e)
         {
             AddControl();
-            InitializeUI();
+            //InitializeUI();
         }
 
         private void AddControl()
         {
             AkkonParamControl.Dock = DockStyle.Fill;
+            //AkkonParamControl.GetOriginImageHandler += AkkonControl_GetOriginImageHandler;
             pnlParam.Controls.Add(AkkonParamControl);
+        }
+
+        private ICogImage AkkonControl_GetOriginImageHandler()
+        {
+            return AppsTeachingUIManager.Instance().GetPrevImage();
         }
 
         private void InitializeUI()
@@ -57,8 +64,68 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         public void SetParams(List<Tab> tabList)
         {
+            if (tabList.Count <= 0)
+                return;
+
             TeachingTabList = tabList;
+            InitializeComboBox();
+
+            string tabName = cmbTabList.SelectedItem as string;
+            UpdateParam(tabName);
+        }
+
+        private void InitializeComboBox()
+        {
+            cmbTabList.Items.Clear();
+
+            foreach (var item in TeachingTabList)
+                cmbTabList.Items.Add(item.Name);
+
+            cmbTabList.SelectedIndex = 0;
+        }
+
+        private void UpdateParam(string tabName)
+        {
+            //if (TeachingTabList.Count <= 0)
+            //    return;
+
+            //var param = TeachingTabList.Where(x => x.Name == tabName).First().AlignParamList[(int)_alignName];
+
+            //CogCaliperParamControl.UpdateData(param);
+            //lblLeadCount.Text = param.LeadCount.ToString();
+
+            //DrawROI();
         }
         #endregion
+
+        private void cmbTabList_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void cmbTabList_DrawItem(object sender, DrawItemEventArgs e)
+        {
+
+        }
+
+        private void lblPrev_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void lblNext_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void lblInspection_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void lblAddROI_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }
