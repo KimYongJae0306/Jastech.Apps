@@ -122,7 +122,6 @@ namespace Jastech.Apps.Winform.UI.Controls
                 return;
 
             var param = TeachingTabList.Where(x => x.Name == tabName).First().AlignParamList[(int)_alignName];
-            //var param = TeachingTabList.Where(x => x.Name == tabName).First().AlignParams.Where(x => x.Name == _alignName).First();
             CogCaliperParamControl.UpdateData(param);
             lblLeadCount.Text = param.LeadCount.ToString();
 
