@@ -48,6 +48,11 @@ namespace Jastech.Apps.Structure.Data
             return unit.PreAligns.Where(x => x.Name == preAlignName).First().InspParam as VisionProPatternMatchingParam;
         }
 
+        //public VisionProPatternMatchingParam GetMarkParameters()
+        //{
+
+        //}
+
         public List<Tab> GetAlignParameters(string unitName)
         {
             List<Tab> alignParam = new List<Tab>();
