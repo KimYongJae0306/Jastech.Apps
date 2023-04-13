@@ -363,5 +363,8 @@
   <ItemGroup>
     <None Include="Resources\Copy_Vertical_White.png" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ATT_Recipe.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

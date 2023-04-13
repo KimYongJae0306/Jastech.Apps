@@ -139,7 +139,7 @@ namespace Jastech.Apps.Winform
     {
         private object _lock { get; set; } = new object();
 
-        private string Name { get; set; }
+        public string Name { get; set; }
 
         private int CenterofGravity { get; set; }
 
