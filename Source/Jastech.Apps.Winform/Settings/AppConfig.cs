@@ -4,6 +4,8 @@ using Jastech.Framework.Comm;
 using Jastech.Framework.Comm.Protocol;
 using Jastech.Framework.Config;
 using Jastech.Framework.Device.Cameras;
+using Jastech.Framework.Device.LAF;
+using Jastech.Framework.Device.LAFCtrl;
 using Jastech.Framework.Device.LightCtrls;
 using Jastech.Framework.Device.LightCtrls.Lvs;
 using Jastech.Framework.Device.LightCtrls.Lvs.Parser;
@@ -79,6 +81,9 @@ namespace Jastech.Apps.Winform.Settings
                 var light2 = new VirtualLightCtrl("LvsLight24V", 6);
                 light2.ChannelNameMap["Ch.RedRing"] = 0;
                 config.Add(light2);
+
+                var laf = new VirtualLAFCtrl("LaserAutoFocus");
+                config.Add(laf);
             }
             else
             {
@@ -105,6 +110,14 @@ namespace Jastech.Apps.Winform.Settings
                 var light2 = new LvsLightCtrl("LvsLight24V", 6, new SerialPortComm("COM3", 9600), new LvsSerialParser());
                 light2.ChannelNameMap["Ch.RedRing"] = 0;
                 config.Add(light2);
+
+                var laf = new NuriOneLAFCtrl("LaserAutoFocus");
+                laf.SerialPortComm = new SerialPortComm
+                {
+                    PortName = "COM2",
+                    BaudRate = 9600,
+                };
+                config.Add(laf);
             }
         }
 

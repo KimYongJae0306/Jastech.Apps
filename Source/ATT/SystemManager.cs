@@ -4,6 +4,7 @@ using Jastech.Apps.Winform;
 using Jastech.Apps.Winform.Core;
 using Jastech.Apps.Winform.Settings;
 using Jastech.Framework.Device.Cameras;
+using Jastech.Framework.Device.LAFCtrl;
 using Jastech.Framework.Device.LightCtrls;
 using Jastech.Framework.Device.Motions;
 using Jastech.Framework.Structure;
@@ -73,7 +74,12 @@ namespace ATT
                 Camera camera = cameraHandler.Get(CameraName.LinscanMIL0.ToString());
 
                 camera.ImageGrabbed += AppsLineCameraManager.Instance().LinscanImageGrabbed;
+
+                var lafHandler = DeviceManager.Instance().LAFCtrlHandler;
+                LAFCtrl laf = lafHandler.Get("LaserAutoFocus");
+                laf.DataReceived += AppsLAFManager.Instance().DataReceived;
             }
+
 
             percent += 30;
 
