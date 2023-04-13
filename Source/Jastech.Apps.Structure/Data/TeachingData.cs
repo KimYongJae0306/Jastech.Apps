@@ -53,34 +53,48 @@ namespace Jastech.Apps.Structure.Data
 
         //}
 
-        public List<Tab> GetAlignParameters(string unitName)
+        public List<Tab> GetTabList(string unitName)
         {
-            List<Tab> alignParam = new List<Tab>();
+            List<Tab> tabList = new List<Tab>();
 
             Unit unit = GetUnit(unitName);
 
             for (int i = 0; i < unit.GetTabList().Count; i++)
             {
                 var tab = unit.GetTab(i);
-                alignParam.Add(tab);
+                tabList.Add(tab);
             }
 
-            return alignParam;
+            return tabList;
         }
+        //public List<Tab> GetAlignParameters(string unitName)
+        //{
+        //    List<Tab> alignParam = new List<Tab>();
 
-        public List<Tab> GetAkkonParameters(string unitName)
-        {
-            List<Tab> akkonParam = new List<Tab>();
+        //    Unit unit = GetUnit(unitName);
 
-            Unit unit = GetUnit(unitName);
+        //    for (int i = 0; i < unit.GetTabList().Count; i++)
+        //    {
+        //        var tab = unit.GetTab(i);
+        //        alignParam.Add(tab);
+        //    }
 
-            for (int i = 0; i < UnitList.Count; i++)
-            {
-                var tab = unit.GetTab(i);
-                akkonParam.Add(tab);
-            }
+        //    return alignParam;
+        //}
 
-            return akkonParam;
-        }
+        //public List<Tab> GetAkkonParameters(string unitName)
+        //{
+        //    List<Tab> akkonParam = new List<Tab>();
+
+        //    Unit unit = GetUnit(unitName);
+
+        //    for (int i = 0; i < UnitList.Count; i++)
+        //    {
+        //        var tab = unit.GetTab(i);
+        //        akkonParam.Add(tab);
+        //    }
+
+        //    return akkonParam;
+        //}
     }
 }

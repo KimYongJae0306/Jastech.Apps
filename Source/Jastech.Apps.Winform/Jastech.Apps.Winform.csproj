@@ -356,5 +356,11 @@
   <ItemGroup>
     <None Include="Resources\Stop_Circle_White.png" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Copy_Horizontal_White.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Copy_Vertical_White.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

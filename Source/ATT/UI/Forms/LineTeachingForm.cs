@@ -151,10 +151,10 @@ namespace ATT.UI.Forms
 
             ClearSelectedButton();
 
-            var alignParam = SystemManager.Instance().GetTeachingData().GetAlignParameters(UnitName);
-            MarkControl.SetParams(alignParam);
+            var tabList = SystemManager.Instance().GetTeachingData().GetTabList(UnitName);
+            MarkControl.SetParams(tabList);
+
             pnlTeach.Controls.Add(MarkControl);
-         
             btnMark.ForeColor = Color.Blue;
         }
 
@@ -165,11 +165,11 @@ namespace ATT.UI.Forms
 
             ClearSelectedButton();
 
+            var tabList = SystemManager.Instance().GetTeachingData().GetTabList(UnitName);
+            AlignControl.SetParams(tabList);
+
             btnAlign.ForeColor = Color.Blue;
             pnlTeach.Controls.Add(AlignControl);
-
-            var alignParam = SystemManager.Instance().GetTeachingData().GetAlignParameters(UnitName);
-            AlignControl.SetParams(alignParam);
         }
 
         private void SelectAkkon()
@@ -179,11 +179,11 @@ namespace ATT.UI.Forms
 
             ClearSelectedButton();
 
+            var tabList = SystemManager.Instance().GetTeachingData().GetTabList(UnitName);
+            AkkonControl.SetParams(tabList);
+
             btnAkkon.ForeColor = Color.Blue;
             pnlTeach.Controls.Add(AkkonControl);
-
-            var akkonParam = SystemManager.Instance().GetTeachingData().GetAkkonParameters(UnitName);
-            AkkonControl.SetParams(akkonParam);
         }
 
         private void btnSave_Click(object sender, EventArgs e)

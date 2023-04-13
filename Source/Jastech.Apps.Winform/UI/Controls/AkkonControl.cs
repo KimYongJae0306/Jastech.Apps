@@ -16,6 +16,8 @@ namespace Jastech.Apps.Winform.UI.Controls
     {
         #region 필드
         private string _prevTabName { get; set; } = string.Empty;
+        private Color _selectedColor = new Color();
+        private Color _nonSelectedColor = new Color();
         #endregion
 
         private AkkonParamControl AkkonParamControl { get; set; } = new AkkonParamControl();
@@ -45,6 +47,7 @@ namespace Jastech.Apps.Winform.UI.Controls
         #region 메서드
         private void AkkonControl_Load(object sender, EventArgs e)
         {
+            InitializeUI();
             AddControl();
         }
 
@@ -53,6 +56,17 @@ namespace Jastech.Apps.Winform.UI.Controls
             AkkonParamControl.Dock = DockStyle.Fill;
             AkkonParamControl.GetOriginImageHandler += AkkonControl_GetOriginImageHandler;
             pnlParam.Controls.Add(AkkonParamControl);
+        }
+
+        private void InitializeUI()
+        {
+            _selectedColor = Color.FromArgb(104, 104, 104);
+            _nonSelectedColor = Color.FromArgb(52, 52, 52);
+
+            dgvAkkonResult.Dock = DockStyle.Fill;
+            pnlGroup.Dock = DockStyle.Fill;
+
+            ShowGroup();
         }
 
         private ICogImage AkkonControl_GetOriginImageHandler()
@@ -88,8 +102,7 @@ namespace Jastech.Apps.Winform.UI.Controls
                 return;
 
             var param = TeachingTabList.Where(x => x.Name == tabName).First().AkkonParam;
-            AkkonParamControl.UpdateData(param);
-            //lblLeadCount.Text = param.LeadCount.ToString();
+            AkkonParamControl.Initialize(param);
 
             DrawROI();
         }
@@ -126,11 +139,6 @@ namespace Jastech.Apps.Winform.UI.Controls
 
             DrawROI();
             _prevTabName = tabName;
-        }
-
-        private void cmbTabList_DrawItem(object sender, DrawItemEventArgs e)
-        {
-            DrawComboboxCenterAlign(sender, e);
         }
 
         private void DrawComboboxCenterAlign(object sender, DrawItemEventArgs e)
@@ -220,12 +228,78 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         }
 
-        private void rdoAkkonROI_CheckedChanged(object sender, EventArgs e)
+
+        private void lblGroup_Click(object sender, EventArgs e)
+        {
+            ShowGroup();
+        }
+
+        private void lblResult_Click(object sender, EventArgs e)
+        {
+            ShowResult();
+        }
+
+        private void ShowGroup()
+        {
+            lblGroup.BackColor = _selectedColor;
+            pnlGroup.Visible = true;
+
+            lblResult.BackColor = _nonSelectedColor;
+            dgvAkkonResult.Visible = false;
+        }
+
+        private void ShowResult()
+        {
+            lblResult.BackColor = _selectedColor;
+            dgvAkkonResult.Visible = true;
+
+            lblGroup.BackColor = _nonSelectedColor;
+            pnlGroup.Visible = false;
+        }
+
+        private void cmb_DrawItem(object sender, DrawItemEventArgs e)
+        {
+            DrawComboboxCenterAlign(sender, e);
+        }
+
+        private void lblGroupCountValue_Click(object sender, EventArgs e)
         {
 
         }
 
-        private void rdoAkkonResult_CheckedChanged(object sender, EventArgs e)
+        private void lblLeadCountValue_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void lblROIWidthValue_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void lblLeadPitchValue_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void lblROIHeightValue_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void lblCloneVertical_Click(object sender, EventArgs e)
+        {
+            lblCloneVertical.BackColor = _selectedColor;
+            lblCloneHorizontal.BackColor = _nonSelectedColor;
+        }
+
+        private void lblCloneHorizontal_Click(object sender, EventArgs e)
+        {
+            lblCloneHorizontal.BackColor = _selectedColor;
+            lblCloneVertical.BackColor = _nonSelectedColor;
+        }
+
+        private void lblCloneExecute_Click(object sender, EventArgs e)
         {
 
         }
