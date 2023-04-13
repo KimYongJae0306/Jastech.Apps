@@ -18,6 +18,8 @@ namespace Jastech.Apps.Winform
 
         private static AppsLAFManager _instance = null;
 
+        public LAFStatus Status { get; set; } = new LAFStatus();
+
         public static AppsLAFManager Instance()
         {
             if (_instance == null)
@@ -63,13 +65,18 @@ namespace Jastech.Apps.Winform
         {
             string dataString = Encoding.Default.GetString(data);
 
-            string cogValue = GetValue(dataString, "cog");
+            if (int.TryParse(GetValue(dataString, "cog"), out int cog))
+                Status.CenterofGravity = cog;
 
-            string mPosValue = GetValue(dataString, "mpos");
+            if (double.TryParse(GetValue(dataString, "mpos"), out double mpos))
+                Status.MPos = cog;
 
-            string ls1Value = GetValue(dataString, "ls1");
 
-            string ls2Value = GetValue(dataString, "ls2");
+            if (bool.TryParse(GetValue(dataString, "ls1"), out bool ls1))
+                Status.IsNegativeLimit = ls1;
+
+            if (bool.TryParse(GetValue(dataString, "ls2"), out bool ls2))
+                Status.IsPositiveLimit = ls2;
         }
 
         private string GetValue(string data, string dataName)
@@ -93,5 +100,16 @@ namespace Jastech.Apps.Winform
             }
             return "";
         }
+    }
+
+    public class LAFStatus
+    {
+        public int CenterofGravity { get; set; }
+
+        public double MPos { get; set; }
+
+        public bool IsNegativeLimit { get; set; }
+
+        public bool IsPositiveLimit { get; set; }
     }
 }
