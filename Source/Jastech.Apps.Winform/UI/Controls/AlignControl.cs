@@ -121,8 +121,8 @@ namespace Jastech.Apps.Winform.UI.Controls
             if (TeachingTabList.Count <= 0)
                 return;
 
-            var param = TeachingTabList.Where(x => x.Name == tabName).First().AlignParamList[(int)_alignName];
-            CogCaliperParamControl.UpdateData(param);
+            var param = TeachingTabList.Where(x => x.Name == tabName).First().GetAlignParam(_alignName);
+            CogCaliperParamControl.UpdateData(param.CaliperParams);
             lblLeadCount.Text = param.LeadCount.ToString();
 
             DrawROI();
@@ -160,7 +160,7 @@ namespace Jastech.Apps.Winform.UI.Controls
 
             var currentParam = CogCaliperParamControl.GetCurrentParam();
 
-            currentParam.CaliperParams.SetRegion(roi);
+            currentParam.SetRegion(roi);
         }
 
         public void DrawROI()
@@ -172,10 +172,10 @@ namespace Jastech.Apps.Winform.UI.Controls
             if (display.GetImage() == null)
                 return;
 
-            CogCaliperCurrentRecordConstants constants = CogCaliperCurrentRecordConstants.All;  //CogCaliperCurrentRecordConstants.InputImage | CogCaliperCurrentRecordConstants.Region;
+            CogCaliperCurrentRecordConstants constants = CogCaliperCurrentRecordConstants.All;
             var currentParam = CogCaliperParamControl.GetCurrentParam();
 
-            display.SetInteractiveGraphics("tool", currentParam.CaliperParams.CreateCurrentRecord(constants));
+            display.SetInteractiveGraphics("tool", currentParam.CreateCurrentRecord(constants));
         }
 
         private void cmbTabList_SelectedIndexChanged(object sender, EventArgs e)
@@ -261,14 +261,17 @@ namespace Jastech.Apps.Winform.UI.Controls
             if (display == null || currentParam == null)
                 return;
 
+            string tabName = cmbTabList.SelectedItem as string;
+            var param = TeachingTabList.Where(x => x.Name == tabName).First().GetAlignParam(_alignName);
+
             ICogImage cogImage = display.GetImage();
 
             CogAlignCaliperResult result = new CogAlignCaliperResult();
 
             if (_alignName.ToString().Contains("X"))
-                result = Algorithm.RunAlignX(cogImage, currentParam.CaliperParams, currentParam.LeadCount);
+                result = Algorithm.RunAlignX(cogImage, currentParam, param.LeadCount);
             else
-                result = Algorithm.RunAlignY(cogImage, currentParam.CaliperParams);
+                result = Algorithm.RunAlignY(cogImage, currentParam);
 
             if (result.Judgement == Result.Fail)
             {
@@ -427,7 +430,7 @@ namespace Jastech.Apps.Winform.UI.Controls
             int leadCount = TeachingTabList.Where(x => x.Name == tabName).First().GetAlignParam(_alignName).LeadCount;
 
             var currentParam = CogCaliperParamControl.GetCurrentParam();
-            CogRectangleAffine rect = new CogRectangleAffine(currentParam.CaliperParams.CaliperTool.Region);
+            CogRectangleAffine rect = new CogRectangleAffine(currentParam.CaliperTool.Region);
 
             List<CogRectangleAffine> cropRectList = CogImageHelper.DivideRegion(rect, leadCount);
 
