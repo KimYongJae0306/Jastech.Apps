@@ -82,7 +82,7 @@ namespace Jastech.Apps.Winform.Settings
                 light2.ChannelNameMap["Ch.RedRing"] = 0;
                 config.Add(light2);
 
-                var laf = new VirtualLAFCtrl("LaserAutoFocus");
+                var laf = new VirtualLAFCtrl(LAFName.Align.ToString());
                 config.Add(laf);
             }
             else
@@ -111,13 +111,21 @@ namespace Jastech.Apps.Winform.Settings
                 light2.ChannelNameMap["Ch.RedRing"] = 0;
                 config.Add(light2);
 
-                var laf = new NuriOneLAFCtrl("LaserAutoFocus");
-                laf.SerialPortComm = new SerialPortComm
+                var laf1 = new NuriOneLAFCtrl(LAFName.Align.ToString());
+                laf1.SerialPortComm = new SerialPortComm
                 {
                     PortName = "COM2",
                     BaudRate = 9600,
                 };
-                config.Add(laf);
+                config.Add(laf1);
+
+                var laf2 = new NuriOneLAFCtrl(LAFName.Akkon.ToString());
+                laf2.SerialPortComm = new SerialPortComm
+                {
+                    PortName = "COM3",
+                    BaudRate = 9600,
+                };
+                config.Add(laf2);
             }
         }
 

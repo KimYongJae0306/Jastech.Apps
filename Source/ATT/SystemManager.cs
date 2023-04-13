@@ -76,7 +76,7 @@ namespace ATT
                 camera.ImageGrabbed += AppsLineCameraManager.Instance().LinscanImageGrabbed;
 
                 var lafHandler = DeviceManager.Instance().LAFCtrlHandler;
-                LAFCtrl laf = lafHandler.Get("LaserAutoFocus");
+                LAFCtrl laf = lafHandler.Get(LAFName.Align.ToString());
                 laf.DataReceived += AppsLAFManager.Instance().DataReceived;
             }
 

@@ -31,6 +31,12 @@ namespace Jastech.Apps.Structure.Data
         LinscanVT0,
     }
 
+    public enum LAFName
+    {
+        Align,
+        Akkon,
+    }
+
     public enum MarkName
     {
         Main,
