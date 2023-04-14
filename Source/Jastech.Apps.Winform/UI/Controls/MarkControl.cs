@@ -370,9 +370,13 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         public void DrawROI()
         {
+            if (Enabled == false)
+                return;
+            
             var display = AppsTeachingUIManager.Instance().GetDisplay();
             if (display.GetImage() == null)
                 return;
+            display.ClearGraphic();
 
             CogPMAlignCurrentRecordConstants constants = CogPMAlignCurrentRecordConstants.InputImage | CogPMAlignCurrentRecordConstants.SearchRegion
                 | CogPMAlignCurrentRecordConstants.TrainImage | CogPMAlignCurrentRecordConstants.TrainRegion | CogPMAlignCurrentRecordConstants.PatternOrigin;
@@ -380,9 +384,10 @@ namespace Jastech.Apps.Winform.UI.Controls
             var currentParam = ParamControl.GetCurrentParam();
 
             display.SetInteractiveGraphics("tool", currentParam.CreateCurrentRecord(constants));
-
+            
             var rect = currentParam.GetTrainRegion() as CogRectangle;
-            display.SetDisplayToCenter(new Point((int)rect.CenterX, (int)rect.CenterY));
+            if(rect != null)
+                display.SetDisplayToCenter(new Point((int)rect.CenterX, (int)rect.CenterY));
         }
 
         private void lblInspection_Click(object sender, EventArgs e)

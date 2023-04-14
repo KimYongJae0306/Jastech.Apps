@@ -115,7 +115,15 @@ namespace ATT.UI.Forms
 
         private void Display_DeleteEventHandler(object sender, EventArgs e)
         {
-            AlignControl.DrawROI();
+            if(pnlTeach.Controls.Count >0)
+            {
+                if (pnlTeach.Controls[0] as MarkControl != null)
+                    MarkControl.DrawROI();
+                else if (pnlTeach.Controls[0] as AlignControl != null)
+                    AlignControl.DrawROI();
+                else if (pnlTeach.Controls[0] as AkkonControl != null)
+                    AkkonControl.DrawROI();
+            }
         }
 
         private void btnMark_Click(object sender, EventArgs e)

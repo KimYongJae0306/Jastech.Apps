@@ -165,6 +165,8 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         public void DrawROI()
         {
+                bool g = Focused;
+            bool g1 = Enabled;
             var display = AppsTeachingUIManager.Instance().GetDisplay();
 
             display.ClearGraphic();
