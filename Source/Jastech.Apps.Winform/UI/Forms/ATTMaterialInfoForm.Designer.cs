@@ -390,7 +390,7 @@
             this.txtDistance8.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.txtDistance8.Click += new System.EventHandler(this.textbox_KeyPad_Click);
             this.txtDistance8.TextChanged += new System.EventHandler(this.txtKeyPad_TextChanged);
-            this.txtDistance8.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtKeyPad_KeyPress);
+            this.txtDistance8.Leave += new System.EventHandler(this.txtKeyPad_Leave);
             // 
             // label39
             // 
@@ -456,7 +456,7 @@
             this.txtDistance7.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.txtDistance7.Click += new System.EventHandler(this.textbox_KeyPad_Click);
             this.txtDistance7.TextChanged += new System.EventHandler(this.txtKeyPad_TextChanged);
-            this.txtDistance7.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtKeyPad_KeyPress);
+            this.txtDistance7.Leave += new System.EventHandler(this.txtKeyPad_Leave);
             // 
             // label36
             // 
@@ -522,7 +522,7 @@
             this.txtDistance6.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.txtDistance6.Click += new System.EventHandler(this.textbox_KeyPad_Click);
             this.txtDistance6.TextChanged += new System.EventHandler(this.txtKeyPad_TextChanged);
-            this.txtDistance6.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtKeyPad_KeyPress);
+            this.txtDistance6.Leave += new System.EventHandler(this.txtKeyPad_Leave);
             // 
             // label33
             // 
@@ -588,7 +588,7 @@
             this.txtDistance5.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.txtDistance5.Click += new System.EventHandler(this.textbox_KeyPad_Click);
             this.txtDistance5.TextChanged += new System.EventHandler(this.txtKeyPad_TextChanged);
-            this.txtDistance5.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtKeyPad_KeyPress);
+            this.txtDistance5.Leave += new System.EventHandler(this.txtKeyPad_Leave);
             // 
             // label30
             // 
@@ -654,7 +654,7 @@
             this.txtDistance4.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.txtDistance4.Click += new System.EventHandler(this.textbox_KeyPad_Click);
             this.txtDistance4.TextChanged += new System.EventHandler(this.txtKeyPad_TextChanged);
-            this.txtDistance4.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtKeyPad_KeyPress);
+            this.txtDistance4.Leave += new System.EventHandler(this.txtKeyPad_Leave);
             // 
             // label27
             // 
@@ -720,7 +720,7 @@
             this.txtDistance3.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.txtDistance3.Click += new System.EventHandler(this.textbox_KeyPad_Click);
             this.txtDistance3.TextChanged += new System.EventHandler(this.txtKeyPad_TextChanged);
-            this.txtDistance3.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtKeyPad_KeyPress);
+            this.txtDistance3.Leave += new System.EventHandler(this.txtKeyPad_Leave);
             // 
             // label24
             // 
@@ -786,7 +786,7 @@
             this.txtDistance2.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.txtDistance2.Click += new System.EventHandler(this.textbox_KeyPad_Click);
             this.txtDistance2.TextChanged += new System.EventHandler(this.txtKeyPad_TextChanged);
-            this.txtDistance2.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtKeyPad_KeyPress);
+            this.txtDistance2.Leave += new System.EventHandler(this.txtKeyPad_Leave);
             // 
             // label21
             // 
@@ -852,7 +852,7 @@
             this.txtDistance1.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.txtDistance1.Click += new System.EventHandler(this.textbox_KeyPad_Click);
             this.txtDistance1.TextChanged += new System.EventHandler(this.txtKeyPad_TextChanged);
-            this.txtDistance1.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtKeyPad_KeyPress);
+            this.txtDistance1.Leave += new System.EventHandler(this.txtKeyPad_Leave);
             // 
             // label18
             // 
@@ -918,7 +918,7 @@
             this.txtPanelEdgeToFirst.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.txtPanelEdgeToFirst.Click += new System.EventHandler(this.textbox_KeyPad_Click);
             this.txtPanelEdgeToFirst.TextChanged += new System.EventHandler(this.txtKeyPad_TextChanged);
-            this.txtPanelEdgeToFirst.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtKeyPad_KeyPress);
+            this.txtPanelEdgeToFirst.Leave += new System.EventHandler(this.txtKeyPad_Leave);
             // 
             // label10
             // 
@@ -984,7 +984,7 @@
             this.txtTabWidth.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.txtTabWidth.Click += new System.EventHandler(this.textbox_KeyPad_Click);
             this.txtTabWidth.TextChanged += new System.EventHandler(this.txtKeyPad_TextChanged);
-            this.txtTabWidth.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtKeyPad_KeyPress);
+            this.txtTabWidth.Leave += new System.EventHandler(this.txtKeyPad_Leave);
             // 
             // label6
             // 
@@ -1051,7 +1051,7 @@
             this.txtMarkToMark.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.txtMarkToMark.Click += new System.EventHandler(this.textbox_KeyPad_Click);
             this.txtMarkToMark.TextChanged += new System.EventHandler(this.txtKeyPad_TextChanged);
-            this.txtMarkToMark.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtKeyPad_KeyPress);
+            this.txtMarkToMark.Leave += new System.EventHandler(this.txtKeyPad_Leave);
             // 
             // label2
             // 
@@ -1117,7 +1117,7 @@
             this.txtPanelXSize.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.txtPanelXSize.Click += new System.EventHandler(this.textbox_KeyPad_Click);
             this.txtPanelXSize.TextChanged += new System.EventHandler(this.txtKeyPad_TextChanged);
-            this.txtPanelXSize.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtKeyPad_KeyPress);
+            this.txtPanelXSize.Leave += new System.EventHandler(this.txtKeyPad_Leave);
             // 
             // label3
             // 

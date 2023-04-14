@@ -23,5 +23,15 @@ namespace ATT.UI.Forms
         {
 
         }
+
+        private void btnGrabStop_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btnMotionPopup_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

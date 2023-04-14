@@ -336,6 +336,9 @@
             this.txtPreAlignToleranceTheta.Size = new System.Drawing.Size(142, 33);
             this.txtPreAlignToleranceTheta.TabIndex = 8;
             this.txtPreAlignToleranceTheta.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.txtPreAlignToleranceTheta.Click += new System.EventHandler(this.textbox_KeyPad_Click);
+            this.txtPreAlignToleranceTheta.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtKeyPad_KeyPress);
+            this.txtPreAlignToleranceTheta.Leave += new System.EventHandler(this.txtKeyPad_Leave);
             // 
             // tableLayoutPanel4
             // 
@@ -388,6 +391,9 @@
             this.txtPreAlignToleranceY.Size = new System.Drawing.Size(142, 33);
             this.txtPreAlignToleranceY.TabIndex = 8;
             this.txtPreAlignToleranceY.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.txtPreAlignToleranceY.Click += new System.EventHandler(this.textbox_KeyPad_Click);
+            this.txtPreAlignToleranceY.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtKeyPad_KeyPress);
+            this.txtPreAlignToleranceY.Leave += new System.EventHandler(this.txtKeyPad_Leave);
             // 
             // tableLayoutPanel5
             // 
@@ -440,6 +446,9 @@
             this.txtPreAlignToleranceX.Size = new System.Drawing.Size(142, 33);
             this.txtPreAlignToleranceX.TabIndex = 8;
             this.txtPreAlignToleranceX.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.txtPreAlignToleranceX.Click += new System.EventHandler(this.textbox_KeyPad_Click);
+            this.txtPreAlignToleranceX.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtKeyPad_KeyPress);
+            this.txtPreAlignToleranceX.Leave += new System.EventHandler(this.txtKeyPad_Leave);
             // 
             // panel2
             // 
@@ -512,6 +521,9 @@
             this.txtDistanceY.Size = new System.Drawing.Size(142, 33);
             this.txtDistanceY.TabIndex = 8;
             this.txtDistanceY.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.txtDistanceY.Click += new System.EventHandler(this.textbox_KeyPad_Click);
+            this.txtDistanceY.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtKeyPad_KeyPress);
+            this.txtDistanceY.Leave += new System.EventHandler(this.txtKeyPad_Leave);
             // 
             // tableLayoutPanel2
             // 
@@ -552,6 +564,9 @@
             this.txtDistanceX.Size = new System.Drawing.Size(142, 33);
             this.txtDistanceX.TabIndex = 8;
             this.txtDistanceX.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.txtDistanceX.Click += new System.EventHandler(this.textbox_KeyPad_Click);
+            this.txtDistanceX.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtKeyPad_KeyPress);
+            this.txtDistanceX.Leave += new System.EventHandler(this.txtKeyPad_Leave);
             // 
             // label1
             // 
@@ -759,6 +774,9 @@
             this.txtDataStoringCapcity.Size = new System.Drawing.Size(142, 33);
             this.txtDataStoringCapcity.TabIndex = 8;
             this.txtDataStoringCapcity.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.txtDataStoringCapcity.Click += new System.EventHandler(this.textbox_KeyPad_Click);
+            this.txtDataStoringCapcity.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtDataStoringDays_KeyPress);
+            this.txtDataStoringCapcity.Leave += new System.EventHandler(this.txtDataStoringDays_Leave);
             // 
             // tableLayoutPanel9
             // 
@@ -811,6 +829,9 @@
             this.txtDataStoringDays.Size = new System.Drawing.Size(142, 33);
             this.txtDataStoringDays.TabIndex = 8;
             this.txtDataStoringDays.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.txtDataStoringDays.Click += new System.EventHandler(this.textbox_KeyPad_Click);
+            this.txtDataStoringDays.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtDataStoringDays_KeyPress);
+            this.txtDataStoringDays.Leave += new System.EventHandler(this.txtDataStoringDays_Leave);
             // 
             // panel5
             // 

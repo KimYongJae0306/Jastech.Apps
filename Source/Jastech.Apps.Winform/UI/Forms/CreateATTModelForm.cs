@@ -134,8 +134,8 @@ namespace Jastech.Apps.Winform.UI.Forms
 
         private void txtTabCount_KeyPress(object sender, KeyPressEventArgs e)
         {
-            //숫자만 입력되도록 필터링             
-            if (!(char.IsDigit(e.KeyChar) || e.KeyChar == Convert.ToChar(Keys.Back)))    //숫자와 백스페이스를 제외한 나머지를 바로 처리             
+            //숫자, 백스페이스 를 제외한 나머지를 바로 처리             
+            if (!(char.IsDigit(e.KeyChar) || e.KeyChar == Convert.ToChar(Keys.Back)))
             {
                 e.Handled = true;
             }
@@ -148,12 +148,17 @@ namespace Jastech.Apps.Winform.UI.Forms
 
         private void textbox_KeyPad_Click(object sender, EventArgs e)
         {
-            if(OperationConfig.UseKeyboard)
+            if (OperationConfig.UseKeyboard)
             {
+                var textBox = (TextBox)sender;
+
+                if (textBox.Text == "")
+                    textBox.Text = "0";
+
                 KeyPadForm keyPadForm = new KeyPadForm();
+                keyPadForm.PreviousValue = Convert.ToDouble(textBox.Text);
                 keyPadForm.ShowDialog();
 
-                var textBox = (TextBox)sender;
                 textBox.Text = keyPadForm.PadValue.ToString();
             }
         }
@@ -163,23 +168,25 @@ namespace Jastech.Apps.Winform.UI.Forms
             if (OperationConfig.UseKeyboard)
             {
                 KeyBoardForm form = new KeyBoardForm();
-                form.ShowDialog();
 
-                var textBox = (TextBox)sender;
-                textBox.Text = form.KeyValue;
+                if(form.ShowDialog() == DialogResult.OK)
+                {
+                    var textBox = (TextBox)sender;
+                    textBox.Text = form.KeyValue;
+                }
             }
         }
 
         private void txtKeyPad_KeyPress(object sender, KeyPressEventArgs e)
         {
-            //숫자만 입력되도록 필터링             
-            if (!(char.IsDigit(e.KeyChar) || e.KeyChar == Convert.ToChar(Keys.Back)))    //숫자와 백스페이스를 제외한 나머지를 바로 처리             
+            //숫자, 백스페이스, '.' 를 제외한 나머지를 바로 처리             
+            if (!(char.IsDigit(e.KeyChar) || e.KeyChar == Convert.ToChar(Keys.Back) || e.KeyChar == Convert.ToChar('.')))
             {
                 e.Handled = true;
             }
         }
 
-        private void txtKeyPad_TextChanged(object sender, EventArgs e)
+        private void txtKeyPad_Leave(object sender, EventArgs e)
         {
             var textBox = (TextBox)sender;
 

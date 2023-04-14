@@ -48,21 +48,22 @@ namespace Jastech.Apps.Winform.UI.Forms
         {
             if (OperationConfig.UseKeyboard)
             {
-                KeyPadForm keyPadForm = new KeyPadForm();
-                keyPadForm.ShowDialog();
-
                 var textBox = (TextBox)sender;
+
+                if (textBox.Text == "")
+                    textBox.Text = "0";
+
+                KeyPadForm keyPadForm = new KeyPadForm();
+                keyPadForm.PreviousValue = Convert.ToDouble(textBox.Text);
+                keyPadForm.ShowDialog();
+                
                 textBox.Text = keyPadForm.PadValue.ToString();
             }
         }
 
         private void txtKeyPad_KeyPress(object sender, KeyPressEventArgs e)
         {
-            //숫자만 입력되도록 필터링             
-            if (!(char.IsDigit(e.KeyChar) || e.KeyChar == Convert.ToChar(Keys.Back)))    //숫자와 백스페이스를 제외한 나머지를 바로 처리             
-            {
-                e.Handled = true;
-            }
+
         }
 
         private void txtKeyPad_TextChanged(object sender, EventArgs e)
@@ -101,6 +102,16 @@ namespace Jastech.Apps.Winform.UI.Forms
         {
             DialogResult = DialogResult.Cancel;
             Close();
+        }
+
+        private void txtKeyPad_Leave(object sender, EventArgs e)
+        {
+            var textBox = (TextBox)sender;
+
+            if (double.TryParse(textBox.Text, out double value))
+                textBox.Text = string.Format("{0:0.000}", value);
+            else
+                textBox.Text = "0.000";
         }
     }
 }
