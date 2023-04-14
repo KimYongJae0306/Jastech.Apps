@@ -82,6 +82,7 @@ namespace Jastech.Apps.Winform.UI.Controls
 
             TeachingTabList = tabList;
             InitializeTabComboBox();
+            InitializeGroupComboBox();
 
             string tabName = cmbTabList.SelectedItem as string;
             UpdateParam(tabName, 0);
@@ -97,14 +98,47 @@ namespace Jastech.Apps.Winform.UI.Controls
             cmbTabList.SelectedIndex = 0;
         }
 
+        private void cmbTabList_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            string tabName = cmbTabList.SelectedItem as string;
+
+            if (_prevTabName == tabName)
+                return;
+
+            var display = AppsTeachingUIManager.Instance().GetDisplay();
+            if (display == null)
+                return;
+
+            UpdateParam(tabName, 0);
+            display.ClearGraphic();
+
+            DrawROI();
+            _prevTabName = tabName;
+        }
+
         private void UpdateParam(string tabName, int groupIndex)
         {
             if (TeachingTabList.Count <= 0)
                 return;
 
-            var param = TeachingTabList.Where(x => x.Name == tabName).First().GetAkkonGroup(groupIndex);
-            //MacronAkkonParamControl.UpdateData(param.MacronAkkonParams);
-            MacronAkkonParamControl.UpdateData(param.MacronAkkonParam);
+            var tabList = TeachingTabList.Where(x => x.Name == tabName).First();
+            var groupParam = tabList.GetAkkonGroup(groupIndex);
+
+            if (groupParam == null)
+                return;
+
+            if (cmbGroupNumber.SelectedIndex == -1)
+                return;
+
+            lblGroupCountValue.Text = tabList.AkkonParam.GroupList.Count.ToString();
+            cmbGroupNumber.SelectedIndex = groupIndex;
+
+            lblLeadCountValue.Text = tabList.AkkonParam.GroupList[groupIndex].Count.ToString();
+            lblLeadPitchValue.Text = tabList.AkkonParam.GroupList[groupIndex].Pitch.ToString();
+            lblROIWidthValue.Text = tabList.AkkonParam.GroupList[groupIndex].Width.ToString();
+            lblROIHeightValue.Text = tabList.AkkonParam.GroupList[groupIndex].Height.ToString();
+
+            MacronAkkonParamControl.UpdateData(groupParam.MacronAkkonParam);
 
             DrawROI();
         }
@@ -125,23 +159,7 @@ namespace Jastech.Apps.Winform.UI.Controls
         }
         #endregion
 
-        private void cmbTabList_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            string tabName = cmbTabList.SelectedItem as string;
-
-            if (_prevTabName == tabName)
-                return;
-
-            var display = AppsTeachingUIManager.Instance().GetDisplay();
-            if (display == null)
-                return;
-
-            UpdateParam(tabName, 0);
-            display.ClearGraphic();
-
-            DrawROI();
-            _prevTabName = tabName;
-        }
+        
 
         private void DrawComboboxCenterAlign(object sender, DrawItemEventArgs e)
         {
@@ -270,25 +288,39 @@ namespace Jastech.Apps.Winform.UI.Controls
 
             string tabName = cmbTabList.SelectedItem as string;
             TeachingTabList.Where(x => x.Name == tabName).First().AkkonParam.AdjustGroupCount(groupCount);
-
+            InitializeGroupComboBox();
         }
 
         private void InitializeGroupComboBox()
         {
             cmbGroupNumber.Items.Clear();
 
+            string tabName = cmbTabList.SelectedItem as string;
+            var akkonParam = TeachingTabList.Where(x => x.Name == tabName).First().AkkonParam;
+
+            for (int groupIndex = 0; groupIndex < akkonParam.GroupList.Count(); groupIndex++)
+                cmbGroupNumber.Items.Add(akkonParam.GroupList[groupIndex].Index.ToString());
 
             cmbGroupNumber.SelectedIndex = 0;
         }
 
         private void lblLeadCountValue_Click(object sender, EventArgs e)
         {
+            int leadCount = SetLabelIntegerData(sender);
 
+            int groupIndex = cmbGroupNumber.SelectedIndex;
+            string tabName = cmbTabList.SelectedItem as string;
+
+            TeachingTabList.Where(x => x.Name == tabName).First().AkkonParam.GroupList[groupIndex].Count = leadCount;
         }
 
         private int SetLabelIntegerData(object sender)
         {
+            Label lbl = sender as Label;
+            int prevData = Convert.ToInt32(lbl.Text);
+
             KeyPadForm keyPadForm = new KeyPadForm();
+            keyPadForm.PreviousValue = (double)prevData;
             keyPadForm.ShowDialog();
 
             int inputData = Convert.ToInt16(keyPadForm.PadValue);
@@ -301,17 +333,49 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         private void lblROIWidthValue_Click(object sender, EventArgs e)
         {
+            double leadWidth = SetLabelDoubleData(sender);
 
-        }
+            string tabName = cmbTabList.SelectedItem as string;
+            int groupIndex = cmbGroupNumber.SelectedIndex;
 
-        private void lblLeadPitchValue_Click(object sender, EventArgs e)
-        {
-
+            TeachingTabList.Where(x => x.Name == tabName).First().AkkonParam.GroupList[groupIndex].Width = leadWidth;
         }
 
         private void lblROIHeightValue_Click(object sender, EventArgs e)
         {
+            double leadHeight = SetLabelDoubleData(sender);
 
+            string tabName = cmbTabList.SelectedItem as string;
+            int groupIndex = cmbGroupNumber.SelectedIndex;
+
+            TeachingTabList.Where(x => x.Name == tabName).First().AkkonParam.GroupList[groupIndex].Height = leadHeight;
+        }
+
+        private void lblLeadPitchValue_Click(object sender, EventArgs e)
+        {
+            double leadPitch = SetLabelDoubleData(sender);
+
+            string tabName = cmbTabList.SelectedItem as string;
+            int groupIndex = cmbGroupNumber.SelectedIndex;
+
+            TeachingTabList.Where(x => x.Name == tabName).First().AkkonParam.GroupList[groupIndex].Pitch = leadPitch;
+        }
+
+        private double SetLabelDoubleData(object sender)
+        {
+            Label lbl = sender as Label;
+            double prevData = Convert.ToDouble(lbl.Text);
+
+            KeyPadForm keyPadForm = new KeyPadForm();
+            keyPadForm.PreviousValue = prevData;
+            keyPadForm.ShowDialog();
+
+            double inputData = keyPadForm.PadValue;
+
+            Label label = (Label)sender;
+            label.Text = inputData.ToString();
+
+            return inputData;
         }
 
         private void lblCloneVertical_Click(object sender, EventArgs e)
@@ -329,6 +393,14 @@ namespace Jastech.Apps.Winform.UI.Controls
         private void lblCloneExecute_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void cmbGroupNumber_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            int selectedGroupIndex = cmbGroupNumber.SelectedIndex;
+
+            string tabName = cmbTabList.SelectedItem as string;
+            UpdateParam(tabName, selectedGroupIndex);
         }
     }
 }

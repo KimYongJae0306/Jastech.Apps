@@ -1,4 +1,5 @@
 ﻿using Jastech.Framework.Macron.Akkon.Parameters;
+using Jastech.Framework.Util.Helper;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -11,7 +12,7 @@ namespace Jastech.Apps.Structure.Parameters
     public class AkkonParam
     {
         [JsonProperty]
-        public List<MacronAkkonGroup> GroupList { get; private set; } = new List<MacronAkkonGroup>();
+        public List<MacronAkkonGroup> GroupList { get; set; } = new List<MacronAkkonGroup>();
 
         private void AddGroup()
         {
@@ -78,6 +79,8 @@ namespace Jastech.Apps.Structure.Parameters
 
         public MacronAkkonGroup GetAkkonGroup(int index)
         {
+            if (GroupList.Count() <= 0)
+                return null;
             return GroupList.Where(x => x.Index == index).First();
         }
 
@@ -90,8 +93,7 @@ namespace Jastech.Apps.Structure.Parameters
 
         public AkkonParam DeepCopy()
         {
-            AkkonParam param = new AkkonParam();
-            return param;
+            return JsonConvertHelper.DeepCopy(this) as AkkonParam;
         }
     }
 }

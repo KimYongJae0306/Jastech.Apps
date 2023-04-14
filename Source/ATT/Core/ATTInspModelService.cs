@@ -221,9 +221,9 @@ namespace ATT.Core
                         alignParam.CaliperParams.LoadTool(tabAlignDir, alignParam.Name);
 
                     //Tab Akkon 열기
-                    string tabAkkonDir = tabDir + @"\Akkon";
-                    foreach (var akkonParam in tab.AkkonParam.GroupList)
-                        akkonParam.MacronAkkonParam.LoadData(tabAkkonDir, akkonParam.Index.ToString());
+                    //string tabAkkonDir = tabDir + @"\Akkon";
+                    //foreach (var akkonParam in tab.AkkonParam.GroupList)
+                    //    akkonParam.MacronAkkonParam.LoadData(tabAkkonDir, akkonParam.Index.ToString());
                 }
 
             }
@@ -265,10 +265,10 @@ namespace ATT.Core
                     foreach (var alignParam in tab.AlignParamList)
                         alignParam.CaliperParams.SaveTool(tabAlignDir, alignParam.Name);
 
-                    //TabAkkon 저장
-                    string tabAkkonDir = tabDir + @"\Akkon";
-                    foreach (var akkonParam in tab.AkkonParam.GroupList)
-                        akkonParam.MacronAkkonParam.SaveData(tabAlignDir, akkonParam.Index.ToString());
+                    ////TabAkkon 저장
+                    //string tabAkkonDir = tabDir + @"\Akkon";
+                    //foreach (var akkonParam in tab.AkkonParam.GroupList)
+                    //    akkonParam.MacronAkkonParam.SaveData(tabAlignDir, akkonParam.Index.ToString());
                 }
             }
         }
