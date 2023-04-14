@@ -21,6 +21,12 @@ namespace Jastech.Apps.Structure
         public int TabCount { get; set; } = 5;
 
         [JsonProperty]
+        public SpecInfo SpecInfo { get; set; } = new SpecInfo();
+
+        [JsonProperty]
+        public MaterialInfo MaterialInfo { get; set; } = new MaterialInfo();
+
+        [JsonProperty]
         public List<Unit> UnitList { get; private set; } = new List<Unit>();
 
         public Unit GetUnit(string name)
@@ -42,7 +48,6 @@ namespace Jastech.Apps.Structure
         {
             foreach (var unit in UnitList)
                 unit.Dispose();
-
 
             UnitList.Clear();
 

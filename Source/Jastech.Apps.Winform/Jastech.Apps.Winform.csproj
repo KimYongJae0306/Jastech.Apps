@@ -162,6 +162,12 @@
     <Compile Include="UI\Controls\UnitSelectControl.Designer.cs">
       <DependentUpon>UnitSelectControl.cs</DependentUpon>
     </Compile>
+    <Compile Include="UI\Forms\ATTMaterialInfoForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\Forms\ATTMaterialInfoForm.Designer.cs">
+      <DependentUpon>ATTMaterialInfoForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="UI\Forms\CreateATTModelForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -227,6 +233,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UI\Controls\UnitSelectControl.resx">
       <DependentUpon>UnitSelectControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\Forms\ATTMaterialInfoForm.resx">
+      <DependentUpon>ATTMaterialInfoForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\Forms\CreateATTModelForm.resx">
       <DependentUpon>CreateATTModelForm.cs</DependentUpon>
