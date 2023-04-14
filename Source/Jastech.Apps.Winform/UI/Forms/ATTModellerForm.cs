@@ -125,16 +125,16 @@ namespace Jastech.Apps.Winform.UI.Forms
             EditATTModelForm form = new EditATTModelForm();
             form.PrevModelName = lblSelectedName.Text;
             form.ModelPath = ModelPath;
-            form.EditModelEvent += ATTModellerForm__EditModelEvent;
+            form.EditModelEvent += ATTModellerForm_EditModelEvent;
 
             if (form.ShowDialog() == DialogResult.OK)
             {
                 UpdateModelList();
             }
-            form.EditModelEvent += ATTModellerForm__EditModelEvent;
+            form.EditModelEvent += ATTModellerForm_EditModelEvent;
         }
 
-        private void ATTModellerForm__EditModelEvent(string prevModelName, InspModel editModel)
+        private void ATTModellerForm_EditModelEvent(string prevModelName, InspModel editModel)
         {
             if (InspModelService != null)
             {

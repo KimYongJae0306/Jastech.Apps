@@ -141,6 +141,10 @@ namespace ATT
             return _mainForm.TeachingData;
         }
 
+        public void UpdateTeachingData()
+        {
+            _mainForm.UpdateTeachingData();
+        }
         #endregion
     }
 }

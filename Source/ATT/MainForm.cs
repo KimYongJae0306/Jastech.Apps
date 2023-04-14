@@ -71,12 +71,7 @@ namespace ATT
         {
             AppsInspModel model = inspModel as AppsInspModel;
 
-            TeachingData.Dispose();
-            TeachingData.Initialize(model);
-
             MainPageControl.UpdateTabCount(model.TabCount);
-            //AreaTeachingPageControl.UpdateSelectPage();
-            //LineTeachingPageControl.UpdateSelectPage();
         }
 
         private void AddControls()
@@ -167,6 +162,16 @@ namespace ATT
         {
             SetSelectLabel(sender);
             SetSelectPage(selectedControl: LogPageControl);
+        }
+
+        public void UpdateTeachingData()
+        {
+            var currentModel = ModelManager.Instance().CurrentModel as AppsInspModel;
+            if (currentModel == null)
+            {
+                TeachingData.Dispose();
+                TeachingData.Initialize(currentModel);
+            }
         }
     }
 }
