@@ -38,7 +38,6 @@ namespace ATT.UI.Forms
         private List<MotionParameterVariableControl> MotionParameterVariableControlList { get; set; } = new List<MotionParameterVariableControl>();
         #endregion
 
-
         #region 속성
         MotionCommandControl XCommandControl = new MotionCommandControl();
 
@@ -87,6 +86,8 @@ namespace ATT.UI.Forms
         #region 메서드
         private void MotionSettingsForm_Load(object sender, EventArgs e)
         {
+            SystemManager.Instance().UpdateTeachingData();
+
             AddControl();
             StartTimer();
             SetParams();
@@ -261,7 +262,6 @@ namespace ATT.UI.Forms
             posData.SetTargetPosition(AxisName.Z, ZCommandControl.GetCurrentData().TargetPosition);
             posData.SetOffset(AxisName.Z, ZCommandControl.GetCurrentData().Offset);
         }
-        #endregion
 
         private void btnMoveToTeachingPosition_Click(object sender, EventArgs e)
         {
@@ -291,5 +291,6 @@ namespace ATT.UI.Forms
             string fileName = System.IO.Path.Combine(AppConfig.Instance().Path.Model, model.Name, InspModel.FileName);
             SystemManager.Instance().SaveModel(fileName, model);
         }
+        #endregion
     }
 }

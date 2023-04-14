@@ -167,7 +167,7 @@ namespace ATT
         public void UpdateTeachingData()
         {
             var currentModel = ModelManager.Instance().CurrentModel as AppsInspModel;
-            if (currentModel == null)
+            if (currentModel != null)
             {
                 TeachingData.Dispose();
                 TeachingData.Initialize(currentModel);

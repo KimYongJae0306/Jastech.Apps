@@ -77,6 +77,8 @@ namespace ATT.UI.Forms
         #region 메서드
         private void LineTeachingForm_Load(object sender, EventArgs e)
         {
+            SystemManager.Instance().UpdateTeachingData();
+
             AddControl();
             SelectAlign();
 

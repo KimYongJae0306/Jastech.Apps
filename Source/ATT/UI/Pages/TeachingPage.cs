@@ -21,7 +21,6 @@ namespace ATT.UI.Pages
 
         private void btnModelPage_Click(object sender, EventArgs e)
         {
-            SystemManager.Instance().UpdateTeachingData();
             LineTeachingForm form = new LineTeachingForm();
             form.UnitName = "0";
             form.TitleCameraName = "LineScan";
