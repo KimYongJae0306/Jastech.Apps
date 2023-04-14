@@ -86,10 +86,22 @@ namespace ATT.Core
                         tab.AlignParamList.Add(align);
                     }
 
-                    // Tab Akkon 등록
                     AkkonParam akkon = new AkkonParam();
-                    akkon.Name = tab.Name;
-                    tab.AkkonParam = akkon.DeepCopy();
+                    int cnt = 0;
+                    foreach (var item in akkon.GroupList)
+                    {
+                        MacronAkkonGroup group = new MacronAkkonGroup();
+                        group.Index = cnt;
+                        tab.AkkonParam.SetAkkonGroup(group.Index, group);
+
+                    }
+                    //for (int groupIndex = 0; groupIndex < 5; groupIndex++)
+                    //{
+                    //    // Tab Akkon 등록
+                    //    AkkonParam akkon = new AkkonParam();
+                    //    akkon.Name = tab.Name;
+                    //    tab.AkkonParamList.Add(akkon);
+                    //}
 
                     unit.AddTab(tab);
                 }
@@ -207,6 +219,11 @@ namespace ATT.Core
                     string tabAlignDir = tabDir + @"\Align";
                     foreach (var alignParam in tab.AlignParamList)
                         alignParam.CaliperParams.LoadTool(tabAlignDir, alignParam.Name);
+
+                    //Tab Akkon 열기
+                    string tabAkkonDir = tabDir + @"\Akkon";
+                    foreach (var akkonParam in tab.AkkonParam.GroupList)
+                        akkonParam.MacronAkkonParam.LoadData(tabAkkonDir, akkonParam.Index.ToString());
                 }
 
             }
@@ -247,6 +264,11 @@ namespace ATT.Core
                     string tabAlignDir = tabDir + @"\Align";
                     foreach (var alignParam in tab.AlignParamList)
                         alignParam.CaliperParams.SaveTool(tabAlignDir, alignParam.Name);
+
+                    //TabAkkon 저장
+                    string tabAkkonDir = tabDir + @"\Akkon";
+                    foreach (var akkonParam in tab.AkkonParam.GroupList)
+                        akkonParam.MacronAkkonParam.SaveData(tabAlignDir, akkonParam.Index.ToString());
                 }
             }
         }

@@ -83,9 +83,19 @@ namespace Jastech.Apps.Structure.Data
             return PanelMarkParamList.Where(x => x.Name == name && x.Direction == direction).First();
         }
 
-        public AkkonParam GetAkkonParam()
+        public MacronAkkonGroup GetAkkonGroup(int index)
         {
-            return AkkonParam;
+            return AkkonParam.GetAkkonGroup(index);
+        }
+
+        public void SetAkkonGroup(int index, MacronAkkonGroup newGroup)
+        {
+            AkkonParam.SetAkkonGroup(index, newGroup);
+        }
+
+        public void AdjustAkkonGroup(int newGroupCount)
+        {
+            AkkonParam.AdjustGroupCount(newGroupCount);
         }
     }
 }

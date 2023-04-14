@@ -9,6 +9,7 @@ using Jastech.Framework.Winform.Controls;
 using System.Linq;
 using System.Drawing;
 using Jastech.Framework.Macron.Akkon.Controls;
+using Jastech.Framework.Winform.Forms;
 
 namespace Jastech.Apps.Winform.UI.Controls
 {
@@ -20,7 +21,7 @@ namespace Jastech.Apps.Winform.UI.Controls
         private Color _nonSelectedColor = new Color();
         #endregion
 
-        private AkkonParamControl AkkonParamControl { get; set; } = new AkkonParamControl();
+        private MacronAkkonParamControl MacronAkkonParamControl { get; set; } = new MacronAkkonParamControl();
         private List<Tab> TeachingTabList { get; set; } = new List<Tab>();
 
         //private List<VisionProCaliperParam> CaliperList { get; set; } = null;
@@ -53,9 +54,9 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         private void AddControl()
         {
-            AkkonParamControl.Dock = DockStyle.Fill;
-            AkkonParamControl.GetOriginImageHandler += AkkonControl_GetOriginImageHandler;
-            pnlParam.Controls.Add(AkkonParamControl);
+            MacronAkkonParamControl.Dock = DockStyle.Fill;
+            MacronAkkonParamControl.GetOriginImageHandler += AkkonControl_GetOriginImageHandler;
+            pnlParam.Controls.Add(MacronAkkonParamControl);
         }
 
         private void InitializeUI()
@@ -80,13 +81,13 @@ namespace Jastech.Apps.Winform.UI.Controls
                 return;
 
             TeachingTabList = tabList;
-            InitializeComboBox();
+            InitializeTabComboBox();
 
             string tabName = cmbTabList.SelectedItem as string;
-            UpdateParam(tabName);
+            UpdateParam(tabName, 0);
         }
 
-        private void InitializeComboBox()
+        private void InitializeTabComboBox()
         {
             cmbTabList.Items.Clear();
 
@@ -96,13 +97,14 @@ namespace Jastech.Apps.Winform.UI.Controls
             cmbTabList.SelectedIndex = 0;
         }
 
-        private void UpdateParam(string tabName)
+        private void UpdateParam(string tabName, int groupIndex)
         {
             if (TeachingTabList.Count <= 0)
                 return;
 
-            var param = TeachingTabList.Where(x => x.Name == tabName).First().AkkonParam;
-            AkkonParamControl.Initialize(param);
+            var param = TeachingTabList.Where(x => x.Name == tabName).First().GetAkkonGroup(groupIndex);
+            //MacronAkkonParamControl.UpdateData(param.MacronAkkonParams);
+            MacronAkkonParamControl.UpdateData(param.MacronAkkonParam);
 
             DrawROI();
         }
@@ -134,7 +136,7 @@ namespace Jastech.Apps.Winform.UI.Controls
             if (display == null)
                 return;
 
-            UpdateParam(tabName);
+            UpdateParam(tabName, 0);
             display.ClearGraphic();
 
             DrawROI();
@@ -264,12 +266,37 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         private void lblGroupCountValue_Click(object sender, EventArgs e)
         {
+            int groupCount = SetLabelIntegerData(sender);
 
+            string tabName = cmbTabList.SelectedItem as string;
+            TeachingTabList.Where(x => x.Name == tabName).First().AkkonParam.AdjustGroupCount(groupCount);
+
+        }
+
+        private void InitializeGroupComboBox()
+        {
+            cmbGroupNumber.Items.Clear();
+
+
+            cmbGroupNumber.SelectedIndex = 0;
         }
 
         private void lblLeadCountValue_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private int SetLabelIntegerData(object sender)
+        {
+            KeyPadForm keyPadForm = new KeyPadForm();
+            keyPadForm.ShowDialog();
+
+            int inputData = Convert.ToInt16(keyPadForm.PadValue);
+
+            Label label = (Label)sender;
+            label.Text = inputData.ToString();
+
+            return inputData;
         }
 
         private void lblROIWidthValue_Click(object sender, EventArgs e)
