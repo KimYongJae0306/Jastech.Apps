@@ -108,6 +108,8 @@ namespace Jastech.Apps.Winform.UI.Forms
                 newModel.ModifiedDate = createModel.ModifiedDate;
                 newModel.Description = createModel.Description;
                 newModel.TabCount = createModel.TabCount;
+                newModel.SpecInfo = createModel.SpecInfo;
+                newModel.MaterialInfo = createModel.MaterialInfo;
 
                 InspModelService.AddModelData(newModel);
 
@@ -122,8 +124,6 @@ namespace Jastech.Apps.Winform.UI.Forms
 
             EditATTModelForm form = new EditATTModelForm();
             form.PrevModelName = lblSelectedName.Text;
-            form.PrevDescription = lblSelectedDescription.Text;
-            form.PrevTabCount = lblSelectedTabCount.Text;
             form.ModelPath = ModelPath;
             form.EditModelEvent += ATTModellerForm__EditModelEvent;
 
@@ -140,7 +140,13 @@ namespace Jastech.Apps.Winform.UI.Forms
             {
                 string modelDir = AppConfig.Instance().Path.Model;
                 string filePath = Path.Combine(modelDir, prevModelName, InspModel.FileName);
-                InspModel prevModel = InspModelService.Load(filePath);
+                AppsInspModel prevModel = InspModelService.Load(filePath) as AppsInspModel;
+
+                prevModel.SpecInfo.AlignToleranceX_um = (editModel as AppsInspModel).SpecInfo.AlignToleranceX_um;
+                prevModel.SpecInfo.AlignToleranceY_um = (editModel as AppsInspModel).SpecInfo.AlignToleranceY_um;
+                prevModel.SpecInfo.AlignToleranceCx_um = (editModel as AppsInspModel).SpecInfo.AlignToleranceCx_um;
+                prevModel.SpecInfo.AlignStandard_um = (editModel as AppsInspModel).SpecInfo.AlignStandard_um;
+                prevModel.MaterialInfo = (editModel as AppsInspModel).MaterialInfo;
 
                 ModelFileHelper.Edit(modelDir, prevModel, editModel);
             }

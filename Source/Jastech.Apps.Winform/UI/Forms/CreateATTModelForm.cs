@@ -1,4 +1,6 @@
 ﻿using Jastech.Apps.Structure;
+using Jastech.Apps.Winform.Settings;
+using Jastech.Framework.Config;
 using Jastech.Framework.Structure;
 using Jastech.Framework.Structure.Helper;
 using Jastech.Framework.Structure.Service;
@@ -61,9 +63,9 @@ namespace Jastech.Apps.Winform.UI.Forms
                 return;
             }
 
-            if(Convert.ToInt16(tabCount) > 10)
+            if(Convert.ToInt16(tabCount) > 8)
             {
-                ShowMessageBox("TabCount Max is 10.");
+                ShowMessageBox("TabCount Max is 8.");
                 return;
             }
 
@@ -73,14 +75,42 @@ namespace Jastech.Apps.Winform.UI.Forms
                 return;
             }
 
+            if (txtSpecInfoX.Text == "")
+                txtSpecInfoX.Text = "0";
+
+            if (txtSpecInfoY.Text == "")
+                txtSpecInfoY.Text = "0";
+
+            if (txtSpecInfoCx.Text == "")
+                txtSpecInfoCx.Text = "0";
+
+            if (txtSpecInfoStandardValue.Text == "")
+                txtSpecInfoStandardValue.Text = "0";
+
             AppsInspModel model = new AppsInspModel
             {
                 Name = modelName,
                 Description = description,
                 CreateDate = time,
                 ModifiedDate = time,
+                SpecInfo = new Structure.Data.SpecInfo
+                {
+                    AlignToleranceX_um = Convert.ToDouble(txtSpecInfoX.Text),
+                    AlignToleranceY_um = Convert.ToDouble(txtSpecInfoY.Text),
+                    AlignToleranceCx_um = Convert.ToDouble(txtSpecInfoCx.Text),
+                    AlignStandard_um = Convert.ToDouble(txtSpecInfoStandardValue.Text),
+                },
                 TabCount = Convert.ToInt32(tabCount),
             };
+
+            if (AppConfig.Instance().UseMaterialInfo)
+            {
+                ATTMaterialInfoForm form = new ATTMaterialInfoForm();
+                if (form.ShowDialog() == DialogResult.OK)
+                    model.MaterialInfo = form.NewMaterialInfo;
+                else
+                    return;
+            }
 
             DialogResult = DialogResult.OK;
             Close();
@@ -109,6 +139,54 @@ namespace Jastech.Apps.Winform.UI.Forms
             {
                 e.Handled = true;
             }
+        }
+
+        private void lblKeyPadForm_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void textbox_KeyPad_Click(object sender, EventArgs e)
+        {
+            if(OperationConfig.UseKeyboard)
+            {
+                KeyPadForm keyPadForm = new KeyPadForm();
+                keyPadForm.ShowDialog();
+
+                var textBox = (TextBox)sender;
+                textBox.Text = keyPadForm.PadValue.ToString();
+            }
+        }
+
+        private void textbox_KeyBoard_Click(object sender, EventArgs e)
+        {
+            if (OperationConfig.UseKeyboard)
+            {
+                KeyBoardForm form = new KeyBoardForm();
+                form.ShowDialog();
+
+                var textBox = (TextBox)sender;
+                textBox.Text = form.KeyValue;
+            }
+        }
+
+        private void txtKeyPad_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            //숫자만 입력되도록 필터링             
+            if (!(char.IsDigit(e.KeyChar) || e.KeyChar == Convert.ToChar(Keys.Back)))    //숫자와 백스페이스를 제외한 나머지를 바로 처리             
+            {
+                e.Handled = true;
+            }
+        }
+
+        private void txtKeyPad_TextChanged(object sender, EventArgs e)
+        {
+            var textBox = (TextBox)sender;
+
+            if (double.TryParse(textBox.Text, out double value))
+                textBox.Text = string.Format("{0:0.000}", value);
+            else
+                textBox.Text = "0.000";
         }
     }
 }
