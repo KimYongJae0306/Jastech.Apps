@@ -182,6 +182,7 @@
             this.btnMotionPopup.TabIndex = 295;
             this.btnMotionPopup.Text = "MOTION";
             this.btnMotionPopup.UseVisualStyleBackColor = false;
+            this.btnMotionPopup.Click += new System.EventHandler(this.btnMotionPopup_Click);
             // 
             // lblStageCam
             // 
@@ -230,6 +231,7 @@
             this.btnGrabStop.TabIndex = 200;
             this.btnGrabStop.Text = "GRAB STOP";
             this.btnGrabStop.UseVisualStyleBackColor = false;
+            this.btnGrabStop.Click += new System.EventHandler(this.btnGrabStop_Click);
             // 
             // btnGrabStart
             // 

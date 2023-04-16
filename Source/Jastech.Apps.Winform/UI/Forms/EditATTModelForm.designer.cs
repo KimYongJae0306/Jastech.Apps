@@ -307,8 +307,8 @@
             this.txtSpecInfoCx.Text = "1.000";
             this.txtSpecInfoCx.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.txtSpecInfoCx.Click += new System.EventHandler(this.textbox_KeyPad_Click);
-            this.txtSpecInfoCx.TextChanged += new System.EventHandler(this.txtKeyPad_TextChanged);
             this.txtSpecInfoCx.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtKeyPad_KeyPress);
+            this.txtSpecInfoCx.Leave += new System.EventHandler(this.txtKeyPad_Leave);
             // 
             // label43
             // 
@@ -373,8 +373,8 @@
             this.txtSpecInfoStandardValue.Text = "0";
             this.txtSpecInfoStandardValue.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.txtSpecInfoStandardValue.Click += new System.EventHandler(this.textbox_KeyPad_Click);
-            this.txtSpecInfoStandardValue.TextChanged += new System.EventHandler(this.txtKeyPad_TextChanged);
             this.txtSpecInfoStandardValue.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtKeyPad_KeyPress);
+            this.txtSpecInfoStandardValue.Leave += new System.EventHandler(this.txtKeyPad_Leave);
             // 
             // label46
             // 
@@ -439,8 +439,8 @@
             this.txtSpecInfoY.Text = "1.000";
             this.txtSpecInfoY.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.txtSpecInfoY.Click += new System.EventHandler(this.textbox_KeyPad_Click);
-            this.txtSpecInfoY.TextChanged += new System.EventHandler(this.txtKeyPad_TextChanged);
             this.txtSpecInfoY.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtKeyPad_KeyPress);
+            this.txtSpecInfoY.Leave += new System.EventHandler(this.txtKeyPad_Leave);
             // 
             // label49
             // 
@@ -528,8 +528,8 @@
             this.txtSpecInfoX.Text = "1.000";
             this.txtSpecInfoX.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.txtSpecInfoX.Click += new System.EventHandler(this.textbox_KeyPad_Click);
-            this.txtSpecInfoX.TextChanged += new System.EventHandler(this.txtKeyPad_TextChanged);
             this.txtSpecInfoX.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtKeyPad_KeyPress);
+            this.txtSpecInfoX.Leave += new System.EventHandler(this.txtKeyPad_Leave);
             // 
             // panel3
             // 

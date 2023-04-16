@@ -9,6 +9,8 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using Jastech.Apps.Winform.Settings;
 using Jastech.Framework.Imaging;
+using Jastech.Framework.Config;
+using Jastech.Framework.Winform.Forms;
 
 namespace ATT.UI.Forms
 {
@@ -93,18 +95,18 @@ namespace ATT.UI.Forms
         {
             var operation = AppConfig.Instance().Operation;
 
-            operation.DistanceFromPreAlignToLineScanX = Convert.ToSingle(txtDistanceX.Text);
-            operation.DistanceFromPreAlignToLineScanY = Convert.ToSingle(txtDistanceY.Text);
+            operation.DistanceFromPreAlignToLineScanX = Convert.ToSingle(GetValue(txtDistanceX.Text));
+            operation.DistanceFromPreAlignToLineScanY = Convert.ToSingle(GetValue(txtDistanceY.Text));
 
-            operation.PreAlignToleranceX = Convert.ToSingle(txtPreAlignToleranceX.Text);
-            operation.PreAlignToleranceY = Convert.ToSingle(txtPreAlignToleranceY.Text);
-            operation.PreAlignToleranceTheta = Convert.ToSingle(txtPreAlignToleranceTheta.Text);
+            operation.PreAlignToleranceX = Convert.ToSingle(GetValue(txtPreAlignToleranceX.Text));
+            operation.PreAlignToleranceY = Convert.ToSingle(GetValue(txtPreAlignToleranceY.Text));
+            operation.PreAlignToleranceTheta = Convert.ToSingle(GetValue(txtPreAlignToleranceTheta.Text));
 
             operation.EnablePreAlign = mtgEnablePreAlign.Checked;
             operation.EnableAkkon = mtgEnableAkkon.Checked;
 
-            operation.DataStoringDuration = Convert.ToInt32(txtDataStoringDays.Text);
-            operation.DataStiringCapcity = Convert.ToInt32(txtDataStoringCapcity.Text);
+            operation.DataStoringDuration = (int)Convert.ToDouble(GetValue(txtDataStoringDays.Text));
+            operation.DataStiringCapcity = (int)Convert.ToDouble(GetValue(txtDataStoringCapcity.Text));
 
             operation.SaveImageOK = mtgSaveOK.Checked;
             operation.SaveImageNG = mtgSaveNG.Checked;
@@ -112,17 +114,93 @@ namespace ATT.UI.Forms
             operation.ExtensionOKImage = (ImageExtension)Enum.Parse(typeof(ImageExtension), mcbxOKExtension.SelectedItem as string);
             operation.ExtensionNGImage = (ImageExtension)Enum.Parse(typeof(ImageExtension), mcbxNGExtension.SelectedItem as string);
         }
+
+        public string GetValue(string value)
+        {
+            if (value == "")
+                value = "0";
+            return value;
+        }
         #endregion
 
         private void lblSave_Click(object sender, EventArgs e)
         {
             UpdateCuurentData();
             AppConfig.Instance().Operation.Save(AppConfig.Instance().Path.Config);
+
+            MessageConfirmForm form = new MessageConfirmForm();
+            form.Message = "Save Completed.";
+            form.ShowDialog();
         }
 
         private void lblCancel_Click(object sender, EventArgs e)
         {
             this.Close();
+        }
+
+        private void txtKeyPad_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            //숫자, 백스페이스, '.' 를 제외한 나머지를 바로 처리             
+            if (!(char.IsDigit(e.KeyChar) || e.KeyChar == Convert.ToChar(Keys.Back) || e.KeyChar == Convert.ToChar('.')))
+            {
+                e.Handled = true;
+            }
+        }
+
+        private void txtDataStoringDays_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            //숫자, 백스페이스 를 제외한 나머지를 바로 처리             
+            if (!(char.IsDigit(e.KeyChar) || e.KeyChar == Convert.ToChar(Keys.Back)))
+            {
+                e.Handled = true;
+            }
+        }
+
+        private void txtDataStoringCapcity_Leave(object sender, EventArgs e)
+        {
+            var textBox = (TextBox)sender;
+
+            if (double.TryParse(textBox.Text, out double value))
+                textBox.Text = string.Format("{0:0.00}", value);
+            else
+                textBox.Text = "0.00";
+        }
+
+        private void txtKeyPad_Leave(object sender, EventArgs e)
+        {
+            var textBox = (TextBox)sender;
+
+            if (double.TryParse(textBox.Text, out double value))
+                textBox.Text = string.Format("{0:0.000}", value);
+            else
+                textBox.Text = "0.000";
+        }
+
+        private void textbox_KeyPad_Click(object sender, EventArgs e)
+        {
+            if (OperationConfig.UseKeyboard)
+            {
+                var textBox = (TextBox)sender;
+
+                if (textBox.Text == "")
+                    textBox.Text = "0";
+
+                KeyPadForm keyPadForm = new KeyPadForm();
+                keyPadForm.PreviousValue = Convert.ToDouble(textBox.Text);
+                keyPadForm.ShowDialog();
+
+                textBox.Text = keyPadForm.PadValue.ToString();
+            }
+        }
+
+        private void txtDataStoringDays_Leave(object sender, EventArgs e)
+        {
+            var textBox = (TextBox)sender;
+
+            if (double.TryParse(textBox.Text, out double value))
+                textBox.Text = string.Format("{0:0}", value);
+            else
+                textBox.Text = "0";
         }
     }
 }
