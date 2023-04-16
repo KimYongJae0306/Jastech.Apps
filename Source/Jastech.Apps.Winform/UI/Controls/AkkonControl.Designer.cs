@@ -28,18 +28,25 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle8 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle9 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle10 = new System.Windows.Forms.DataGridViewCellStyle();
             this.pnlParam = new System.Windows.Forms.Panel();
             this.tlpAkkon = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.pnlROIData = new System.Windows.Forms.Panel();
             this.dgvAkkonROI = new System.Windows.Forms.DataGridView();
+            this.colROINo = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colLeftTop = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colRightTop = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colLeftBottom = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colRightBottom = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.panel2 = new System.Windows.Forms.Panel();
             this.pnlGroup = new System.Windows.Forms.Panel();
+            this.lblDelete = new System.Windows.Forms.Label();
+            this.lblRegister = new System.Windows.Forms.Label();
             this.lblCloneExecute = new System.Windows.Forms.Label();
             this.lblROIHeightValue = new System.Windows.Forms.Label();
             this.lblCloneHorizontal = new System.Windows.Forms.Label();
@@ -72,13 +79,6 @@
             this.panel1 = new System.Windows.Forms.Panel();
             this.lblResult = new System.Windows.Forms.Label();
             this.lblGroup = new System.Windows.Forms.Label();
-            this.lblRegister = new System.Windows.Forms.Label();
-            this.colROINo = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colLeftTop = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colRightTop = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colLeftBottom = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colRightBottom = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.lblDelete = new System.Windows.Forms.Label();
             this.tlpAkkon.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             this.pnlROIData.SuspendLayout();
@@ -155,14 +155,14 @@
             this.dgvAkkonROI.AllowUserToAddRows = false;
             this.dgvAkkonROI.AllowUserToDeleteRows = false;
             this.dgvAkkonROI.BackgroundColor = System.Drawing.Color.White;
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("맑은 고딕", 11.25F, System.Drawing.FontStyle.Bold);
-            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgvAkkonROI.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle6.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle6.Font = new System.Drawing.Font("맑은 고딕", 11.25F, System.Drawing.FontStyle.Bold);
+            dataGridViewCellStyle6.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle6.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle6.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle6.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvAkkonROI.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle6;
             this.dgvAkkonROI.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvAkkonROI.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.colROINo,
@@ -170,25 +170,74 @@
             this.colRightTop,
             this.colLeftBottom,
             this.colRightBottom});
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle2.Font = new System.Drawing.Font("맑은 고딕", 11.25F, System.Drawing.FontStyle.Bold);
-            dataGridViewCellStyle2.ForeColor = System.Drawing.Color.White;
-            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgvAkkonROI.DefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle7.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle7.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle7.Font = new System.Drawing.Font("맑은 고딕", 11.25F, System.Drawing.FontStyle.Bold);
+            dataGridViewCellStyle7.ForeColor = System.Drawing.Color.White;
+            dataGridViewCellStyle7.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle7.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle7.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvAkkonROI.DefaultCellStyle = dataGridViewCellStyle7;
             this.dgvAkkonROI.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgvAkkonROI.Location = new System.Drawing.Point(0, 0);
             this.dgvAkkonROI.Margin = new System.Windows.Forms.Padding(0);
             this.dgvAkkonROI.Name = "dgvAkkonROI";
             this.dgvAkkonROI.ReadOnly = true;
-            dataGridViewCellStyle3.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
-            this.dgvAkkonROI.RowsDefaultCellStyle = dataGridViewCellStyle3;
+            dataGridViewCellStyle8.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
+            this.dgvAkkonROI.RowsDefaultCellStyle = dataGridViewCellStyle8;
             this.dgvAkkonROI.RowTemplate.Height = 23;
             this.dgvAkkonROI.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgvAkkonROI.Size = new System.Drawing.Size(386, 328);
             this.dgvAkkonROI.TabIndex = 0;
+            // 
+            // colROINo
+            // 
+            this.colROINo.FillWeight = 110F;
+            this.colROINo.HeaderText = "NO";
+            this.colROINo.MinimumWidth = 70;
+            this.colROINo.Name = "colROINo";
+            this.colROINo.ReadOnly = true;
+            this.colROINo.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.colROINo.Width = 70;
+            // 
+            // colLeftTop
+            // 
+            this.colLeftTop.FillWeight = 140F;
+            this.colLeftTop.HeaderText = "LEFT TOP";
+            this.colLeftTop.MinimumWidth = 160;
+            this.colLeftTop.Name = "colLeftTop";
+            this.colLeftTop.ReadOnly = true;
+            this.colLeftTop.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.colLeftTop.Width = 160;
+            // 
+            // colRightTop
+            // 
+            this.colRightTop.FillWeight = 140F;
+            this.colRightTop.HeaderText = "RIGHT TOP";
+            this.colRightTop.MinimumWidth = 160;
+            this.colRightTop.Name = "colRightTop";
+            this.colRightTop.ReadOnly = true;
+            this.colRightTop.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.colRightTop.Width = 160;
+            // 
+            // colLeftBottom
+            // 
+            this.colLeftBottom.FillWeight = 140F;
+            this.colLeftBottom.HeaderText = "LEFT BOTTOM";
+            this.colLeftBottom.MinimumWidth = 160;
+            this.colLeftBottom.Name = "colLeftBottom";
+            this.colLeftBottom.ReadOnly = true;
+            this.colLeftBottom.Width = 160;
+            // 
+            // colRightBottom
+            // 
+            this.colRightBottom.FillWeight = 140F;
+            this.colRightBottom.HeaderText = "RIGHT BOTTOM";
+            this.colRightBottom.MinimumWidth = 160;
+            this.colRightBottom.Name = "colRightBottom";
+            this.colRightBottom.ReadOnly = true;
+            this.colRightBottom.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.colRightBottom.Width = 160;
             // 
             // panel2
             // 
@@ -226,6 +275,36 @@
             this.pnlGroup.Name = "pnlGroup";
             this.pnlGroup.Size = new System.Drawing.Size(497, 330);
             this.pnlGroup.TabIndex = 2;
+            // 
+            // lblDelete
+            // 
+            this.lblDelete.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
+            this.lblDelete.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblDelete.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
+            this.lblDelete.ForeColor = System.Drawing.Color.White;
+            this.lblDelete.Location = new System.Drawing.Point(260, 144);
+            this.lblDelete.Margin = new System.Windows.Forms.Padding(0);
+            this.lblDelete.Name = "lblDelete";
+            this.lblDelete.Size = new System.Drawing.Size(140, 40);
+            this.lblDelete.TabIndex = 148;
+            this.lblDelete.Text = "Delete";
+            this.lblDelete.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblDelete.Click += new System.EventHandler(this.lblDelete_Click);
+            // 
+            // lblRegister
+            // 
+            this.lblRegister.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
+            this.lblRegister.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblRegister.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
+            this.lblRegister.ForeColor = System.Drawing.Color.White;
+            this.lblRegister.Location = new System.Drawing.Point(260, 98);
+            this.lblRegister.Margin = new System.Windows.Forms.Padding(0);
+            this.lblRegister.Name = "lblRegister";
+            this.lblRegister.Size = new System.Drawing.Size(140, 40);
+            this.lblRegister.TabIndex = 147;
+            this.lblRegister.Text = "ROI Register";
+            this.lblRegister.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblRegister.Click += new System.EventHandler(this.lblRegister_Click);
             // 
             // lblCloneExecute
             // 
@@ -469,14 +548,14 @@
             this.dgvAkkonResult.AllowUserToAddRows = false;
             this.dgvAkkonResult.AllowUserToDeleteRows = false;
             this.dgvAkkonResult.BackgroundColor = System.Drawing.Color.White;
-            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle4.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle4.Font = new System.Drawing.Font("맑은 고딕", 11.25F, System.Drawing.FontStyle.Bold);
-            dataGridViewCellStyle4.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgvAkkonResult.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle4;
+            dataGridViewCellStyle9.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle9.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle9.Font = new System.Drawing.Font("맑은 고딕", 11.25F, System.Drawing.FontStyle.Bold);
+            dataGridViewCellStyle9.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle9.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle9.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle9.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvAkkonResult.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle9;
             this.dgvAkkonResult.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvAkkonResult.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.colResultNo,
@@ -484,14 +563,14 @@
             this.colLength,
             this.colStrength,
             this.colJudgement});
-            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle5.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle5.Font = new System.Drawing.Font("맑은 고딕", 11.25F, System.Drawing.FontStyle.Bold);
-            dataGridViewCellStyle5.ForeColor = System.Drawing.Color.White;
-            dataGridViewCellStyle5.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle5.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle5.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgvAkkonResult.DefaultCellStyle = dataGridViewCellStyle5;
+            dataGridViewCellStyle10.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle10.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle10.Font = new System.Drawing.Font("맑은 고딕", 11.25F, System.Drawing.FontStyle.Bold);
+            dataGridViewCellStyle10.ForeColor = System.Drawing.Color.White;
+            dataGridViewCellStyle10.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle10.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle10.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvAkkonResult.DefaultCellStyle = dataGridViewCellStyle10;
             this.dgvAkkonResult.Location = new System.Drawing.Point(6, 14);
             this.dgvAkkonResult.Margin = new System.Windows.Forms.Padding(0);
             this.dgvAkkonResult.Name = "dgvAkkonResult";
@@ -559,12 +638,12 @@
             this.tableLayoutPanel2.Controls.Add(this.lblAddROI, 4, 0);
             this.tableLayoutPanel2.Controls.Add(this.lblInspection, 3, 0);
             this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel2.Location = new System.Drawing.Point(3, 34);
-            this.tableLayoutPanel2.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.tableLayoutPanel2.Location = new System.Drawing.Point(0, 32);
+            this.tableLayoutPanel2.Margin = new System.Windows.Forms.Padding(0);
             this.tableLayoutPanel2.Name = "tableLayoutPanel2";
             this.tableLayoutPanel2.RowCount = 1;
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel2.Size = new System.Drawing.Size(959, 46);
+            this.tableLayoutPanel2.Size = new System.Drawing.Size(965, 50);
             this.tableLayoutPanel2.TabIndex = 2;
             // 
             // lblNext
@@ -575,7 +654,7 @@
             this.lblNext.Location = new System.Drawing.Point(250, 0);
             this.lblNext.Margin = new System.Windows.Forms.Padding(0);
             this.lblNext.Name = "lblNext";
-            this.lblNext.Size = new System.Drawing.Size(50, 46);
+            this.lblNext.Size = new System.Drawing.Size(50, 50);
             this.lblNext.TabIndex = 27;
             this.lblNext.Click += new System.EventHandler(this.lblNext_Click);
             // 
@@ -587,7 +666,7 @@
             this.lblPrev.Location = new System.Drawing.Point(200, 0);
             this.lblPrev.Margin = new System.Windows.Forms.Padding(0);
             this.lblPrev.Name = "lblPrev";
-            this.lblPrev.Size = new System.Drawing.Size(50, 46);
+            this.lblPrev.Size = new System.Drawing.Size(50, 50);
             this.lblPrev.TabIndex = 26;
             this.lblPrev.Click += new System.EventHandler(this.lblPrev_Click);
             // 
@@ -610,9 +689,10 @@
             this.lblAddROI.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.lblAddROI.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lblAddROI.Font = new System.Drawing.Font("맑은 고딕", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.lblAddROI.Location = new System.Drawing.Point(403, 0);
+            this.lblAddROI.Location = new System.Drawing.Point(400, 0);
+            this.lblAddROI.Margin = new System.Windows.Forms.Padding(0);
             this.lblAddROI.Name = "lblAddROI";
-            this.lblAddROI.Size = new System.Drawing.Size(94, 46);
+            this.lblAddROI.Size = new System.Drawing.Size(100, 50);
             this.lblAddROI.TabIndex = 23;
             this.lblAddROI.Text = "Add ROI";
             this.lblAddROI.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -623,9 +703,10 @@
             this.lblInspection.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.lblInspection.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lblInspection.Font = new System.Drawing.Font("맑은 고딕", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.lblInspection.Location = new System.Drawing.Point(303, 0);
+            this.lblInspection.Location = new System.Drawing.Point(300, 0);
+            this.lblInspection.Margin = new System.Windows.Forms.Padding(0);
             this.lblInspection.Name = "lblInspection";
-            this.lblInspection.Size = new System.Drawing.Size(94, 46);
+            this.lblInspection.Size = new System.Drawing.Size(100, 50);
             this.lblInspection.TabIndex = 22;
             this.lblInspection.Text = "Inspect";
             this.lblInspection.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -679,85 +760,6 @@
             this.lblGroup.Text = "Group";
             this.lblGroup.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.lblGroup.Click += new System.EventHandler(this.lblGroup_Click);
-            // 
-            // lblRegister
-            // 
-            this.lblRegister.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
-            this.lblRegister.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lblRegister.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
-            this.lblRegister.ForeColor = System.Drawing.Color.White;
-            this.lblRegister.Location = new System.Drawing.Point(260, 98);
-            this.lblRegister.Margin = new System.Windows.Forms.Padding(0);
-            this.lblRegister.Name = "lblRegister";
-            this.lblRegister.Size = new System.Drawing.Size(140, 40);
-            this.lblRegister.TabIndex = 147;
-            this.lblRegister.Text = "ROI Register";
-            this.lblRegister.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.lblRegister.Click += new System.EventHandler(this.lblRegister_Click);
-            // 
-            // colROINo
-            // 
-            this.colROINo.FillWeight = 110F;
-            this.colROINo.HeaderText = "NO";
-            this.colROINo.MinimumWidth = 70;
-            this.colROINo.Name = "colROINo";
-            this.colROINo.ReadOnly = true;
-            this.colROINo.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.colROINo.Width = 70;
-            // 
-            // colLeftTop
-            // 
-            this.colLeftTop.FillWeight = 140F;
-            this.colLeftTop.HeaderText = "LEFT TOP";
-            this.colLeftTop.MinimumWidth = 160;
-            this.colLeftTop.Name = "colLeftTop";
-            this.colLeftTop.ReadOnly = true;
-            this.colLeftTop.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.colLeftTop.Width = 160;
-            // 
-            // colRightTop
-            // 
-            this.colRightTop.FillWeight = 140F;
-            this.colRightTop.HeaderText = "RIGHT TOP";
-            this.colRightTop.MinimumWidth = 160;
-            this.colRightTop.Name = "colRightTop";
-            this.colRightTop.ReadOnly = true;
-            this.colRightTop.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.colRightTop.Width = 160;
-            // 
-            // colLeftBottom
-            // 
-            this.colLeftBottom.FillWeight = 140F;
-            this.colLeftBottom.HeaderText = "LEFT BOTTOM";
-            this.colLeftBottom.MinimumWidth = 160;
-            this.colLeftBottom.Name = "colLeftBottom";
-            this.colLeftBottom.ReadOnly = true;
-            this.colLeftBottom.Width = 160;
-            // 
-            // colRightBottom
-            // 
-            this.colRightBottom.FillWeight = 140F;
-            this.colRightBottom.HeaderText = "RIGHT BOTTOM";
-            this.colRightBottom.MinimumWidth = 160;
-            this.colRightBottom.Name = "colRightBottom";
-            this.colRightBottom.ReadOnly = true;
-            this.colRightBottom.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.colRightBottom.Width = 160;
-            // 
-            // lblDelete
-            // 
-            this.lblDelete.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
-            this.lblDelete.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lblDelete.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
-            this.lblDelete.ForeColor = System.Drawing.Color.White;
-            this.lblDelete.Location = new System.Drawing.Point(260, 144);
-            this.lblDelete.Margin = new System.Windows.Forms.Padding(0);
-            this.lblDelete.Name = "lblDelete";
-            this.lblDelete.Size = new System.Drawing.Size(140, 40);
-            this.lblDelete.TabIndex = 148;
-            this.lblDelete.Text = "Delete";
-            this.lblDelete.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.lblDelete.Click += new System.EventHandler(this.lblDelete_Click);
             // 
             // AkkonControl
             // 

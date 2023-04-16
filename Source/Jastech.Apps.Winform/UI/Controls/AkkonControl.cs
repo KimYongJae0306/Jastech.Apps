@@ -425,6 +425,9 @@ namespace Jastech.Apps.Winform.UI.Controls
             string tabName = cmbTabList.SelectedItem as string;
             var akkonParam = TeachingTabList.Where(x => x.Name == tabName).First().AkkonParam;
 
+            if (akkonParam.GroupList.Count() <= 0)
+                return;
+
             for (int groupIndex = 0; groupIndex < akkonParam.GroupList.Count(); groupIndex++)
                 cmbGroupNumber.Items.Add(akkonParam.GroupList[groupIndex].Index.ToString());
 

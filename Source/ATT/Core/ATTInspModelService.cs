@@ -93,7 +93,6 @@ namespace ATT.Core
                         MacronAkkonGroup group = new MacronAkkonGroup();
                         group.Index = cnt;
                         tab.AkkonParam.SetAkkonGroup(group.Index, group);
-
                     }
                     //for (int groupIndex = 0; groupIndex < 5; groupIndex++)
                     //{
