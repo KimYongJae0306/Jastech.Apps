@@ -24,11 +24,12 @@ namespace Jastech.Apps.Winform.UI.Controls
         private string _prevTabName { get; set; } = string.Empty;
         private Color _selectedColor = new Color();
         private Color _nonSelectedColor = new Color();
+        private CogRectangleAffine _firstCogRectAffine { get; set; } = new CogRectangleAffine();
+        private AkkonROI _firstAkkonRoi { get; set; } = new AkkonROI();
         #endregion
 
         private MacronAkkonParamControl MacronAkkonParamControl { get; set; } = new MacronAkkonParamControl();
         private List<Tab> TeachingTabList { get; set; } = new List<Tab>();
-        private AkkonROI CreateAkkonROI { get; set; } = new AkkonROI();
         //private List<VisionProCaliperParam> CaliperList { get; set; } = null;
 
         private AlgorithmTool Algorithm = new AlgorithmTool();
@@ -176,58 +177,25 @@ namespace Jastech.Apps.Winform.UI.Controls
             double roiheight = Convert.ToDouble(lblROIHeightValue.Text);
 
             CogRectangleAffineDOFConstants constants = CogRectangleAffineDOFConstants.Position | CogRectangleAffineDOFConstants.Size | CogRectangleAffineDOFConstants.Skew;
-            CogRectangleAffine roi = CogImageHelper.CreateRectangleAffine(centerX, centerY, roiwidth, roiheight, constants: constants);
+            _firstCogRectAffine = CogImageHelper.CreateRectangleAffine(centerX, centerY, roiwidth, roiheight, constants: constants);
 
             var teachingDisplay = AppsTeachingUIManager.Instance().GetDisplay();
             if (teachingDisplay.GetImage() == null)
                 return;
 
             CogGraphicInteractiveCollection collect = new CogGraphicInteractiveCollection();
-            collect.Add(roi);
-
-            AkkonROI newROI = new AkkonROI();
-            newROI.CornerOriginX = roi.CornerOriginX;
-            newROI.CornerOriginY = roi.CornerOriginY;
-            newROI.CornerXX = roi.CornerXX;
-            newROI.CornerXY = roi.CornerXY;
-            newROI.CornerYX = roi.CornerYX;
-            newROI.CornerYY = roi.CornerYY;
-            newROI.CornerOppositeX = roi.CornerOppositeX;
-            newROI.CornerOppositeY = roi.CornerOppositeY;
-
-            SetFirstROI(newROI);
-
+            collect.Add(_firstCogRectAffine);
             teachingDisplay.SetInteractiveGraphics("tool", collect);
-
-
-
-
-
-            //string tabName = cmbTabList.SelectedItem as string;
-            //var tabList = TeachingTabList.Where(x => x.Name == tabName).First();
-            //int groupIndex = cmbGroupNumber.SelectedIndex;
-            //var roiList = tabList.GetAkkonGroup(groupIndex).AkkonROIList;
-            //roiList.Add(new AkkonROI
-            //{
-            //    OriginX = roi.CornerOriginX,
-            //    OriginY = roi.CornerOriginY,
-            //    CornerXX = roi.CornerXX,
-            //    CornerXY = roi.CornerXY,
-            //    CornerYX = roi.CornerYX,
-            //    CornerYY = roi.CornerYY,
-            //    CornerOppositeX = roi.CornerOppositeX,
-            //    CornerOppsiteY = roi.CornerOppositeY,
-            //});
         }
-
+        
         private void SetFirstROI(AkkonROI roi)
         {
-            CreateAkkonROI = roi.DeepCopy();
+            _firstAkkonRoi = roi.DeepCopy();
         }
 
         private AkkonROI GetFirstROI()
         {
-            return CreateAkkonROI;
+            return _firstAkkonRoi;
         }
 
         private void RegisterROI()
@@ -235,13 +203,29 @@ namespace Jastech.Apps.Winform.UI.Controls
             string tabName = cmbTabList.SelectedItem as string;
             var tabList = TeachingTabList.Where(x => x.Name == tabName).First();
             int groupIndex = cmbGroupNumber.SelectedIndex;
-            var roiList = tabList.GetAkkonGroup(groupIndex).AkkonROIList;
 
-            AkkonROI roi = new AkkonROI();
-            roi = GetFirstROI();
+            List<AkkonROI> roiList = new List<AkkonROI>();
+            var akkonRoi = ConvertCogRectAffineToAkkonRoi(_firstCogRectAffine);
+            roiList.Add(akkonRoi);
 
-            roiList.Add(roi);
+            SetFirstROI(akkonRoi);
             UpdateROIDataGridView(roiList);
+        }
+
+        private AkkonROI ConvertCogRectAffineToAkkonRoi(CogRectangleAffine cogRectAffine)
+        {
+            AkkonROI akkonRoi = new AkkonROI();
+
+            akkonRoi.CornerOriginX = cogRectAffine.CornerOriginX;
+            akkonRoi.CornerOriginY = cogRectAffine.CornerOriginY;
+            akkonRoi.CornerXX = cogRectAffine.CornerXX;
+            akkonRoi.CornerXY = cogRectAffine.CornerXY;
+            akkonRoi.CornerYX = cogRectAffine.CornerYX;
+            akkonRoi.CornerYY = cogRectAffine.CornerYY;
+            akkonRoi.CornerOppositeX = cogRectAffine.CornerOppositeX;
+            akkonRoi.CornerOppositeY = cogRectAffine.CornerOppositeY;
+
+            return akkonRoi;
         }
 
         private void UpdateROIDataGridView(List<AkkonROI> roiList)
@@ -249,16 +233,34 @@ namespace Jastech.Apps.Winform.UI.Controls
             if (roiList.Count <= 0)
                 return;
 
+            dgvAkkonROI.Rows.Clear();
+
             int index = 0;
             foreach (var item in roiList)
             {
-                string leftTop = item.CornerOriginX.ToString() + "," + item.CornerOriginY.ToString();
-                string rightTop = item.CornerXX.ToString() + "," + item.CornerXY.ToString();
-                string leftBottom = item.CornerYX.ToString() + "," + item.CornerYY.ToString();
-                string rightBottom = item.CornerOppositeX.ToString() + "," + item.CornerOppositeY.ToString(); 
+                string leftTop = item.CornerOriginX.ToString("F2") + " , " + item.CornerOriginY.ToString("F2");
+                string rightTop = item.CornerXX.ToString("F2") + " , " + item.CornerXY.ToString("F2");
+                string leftBottom = item.CornerYX.ToString("F2") + " , " + item.CornerYY.ToString("F2");
+                string rightBottom = item.CornerOppositeX.ToString("F2") + " , " + item.CornerOppositeY.ToString("F2"); 
 
                 dgvAkkonROI.Rows.Add(index.ToString(), leftTop, rightTop, leftBottom, rightBottom);
+
+                index++;
             }
+        }
+
+        private void UpdataeROIDataGridView(int index, CogRectangleAffine cogRectAffine)
+        {
+            string leftTop = cogRectAffine.CornerOriginX.ToString("F2") + " , " + cogRectAffine.CornerOriginY.ToString("F2");
+            string rightTop = cogRectAffine.CornerXX.ToString("F2") + " , " + cogRectAffine.CornerXY.ToString("F2");
+            string leftBottom = cogRectAffine.CornerYX.ToString("F2") + " , " + cogRectAffine.CornerYY.ToString("F2");
+            string rightBottom = cogRectAffine.CornerOppositeX.ToString("F2") + " , " + cogRectAffine.CornerOppositeY.ToString("F2");
+
+            dgvAkkonROI[0, index].Value = index.ToString();
+            dgvAkkonROI[1, index].Value = leftTop;
+            dgvAkkonROI[2, index].Value = rightTop;
+            dgvAkkonROI[3, index].Value = leftBottom;
+            dgvAkkonROI[4, index].Value = rightBottom;
         }
 
         public void DrawROI()
@@ -276,17 +278,28 @@ namespace Jastech.Apps.Winform.UI.Controls
             var roiList = tabList.GetAkkonGroup(groupIndex).AkkonROIList;
 
             CogGraphicInteractiveCollection collect = new CogGraphicInteractiveCollection();
+
+            int count = 0;
             foreach (var roi in roiList)
             {
-                CogRectangleAffine rect = new CogRectangleAffine();
-                rect.SetOriginCornerXCornerY(roi.CornerOriginX, roi.CornerOriginY, roi.CornerXX, roi.CornerXY, roi.CornerYX, roi.CornerYY);
+                CogRectangleAffine rect = ConvertAkkonRoiToCogRectAffine(roi);
                 collect.Add(rect);
+                _cogRectAffineList.Add(rect);
+
+                CogGraphicLabel cogLabel = new CogGraphicLabel();
+                cogLabel.Color = CogColorConstants.Green;
+                cogLabel.Font = new Font("맑은 고딕", 20, FontStyle.Bold);
+                cogLabel.Text = count.ToString();
+                cogLabel.X = (rect.CornerOppositeX + rect.CornerYX) / 2;
+                cogLabel.Y = rect.CornerYY + 40;
+                collect.Add(cogLabel);
+                count++;
             }
 
-            //CogCaliperCurrentRecordConstants constants = CogCaliperCurrentRecordConstants.All;  //CogCaliperCurrentRecordConstants.InputImage | CogCaliperCurrentRecordConstants.Region;
-            //var currentParam = CogCaliperParamControl.GetCurrentParam();
-
-            //display.SetInteractiveGraphics("tool", currentParam.CaliperParams.CreateCurrentRecord(constants));
+            var teachingDisplay = AppsTeachingUIManager.Instance().GetDisplay();
+            if (teachingDisplay.GetImage() == null)
+                return;
+            teachingDisplay.SetInteractiveGraphics("tool", collect);
         }
         #endregion
 
@@ -299,7 +312,11 @@ namespace Jastech.Apps.Winform.UI.Controls
             if (cmb != null)
             {
                 e.DrawBackground();
-                cmb.ItemHeight = lblPrev.Height - 6;
+
+                if (cmb.Name.ToString().ToLower().Contains("group"))
+                    cmb.ItemHeight = lblGroupNumber.Height - 6;
+                else
+                    cmb.ItemHeight = lblPrev.Height - 6;
 
                 if (e.Index >= 0)
                 {
@@ -513,14 +530,14 @@ namespace Jastech.Apps.Winform.UI.Controls
         {
             lblCloneVertical.BackColor = _selectedColor;
             lblCloneHorizontal.BackColor = _nonSelectedColor;
-            _cloneDirection = ROICloneDirection.Horizontal;
+            _cloneDirection = ROICloneDirection.Vertical;
         }
 
         private void lblCloneHorizontal_Click(object sender, EventArgs e)
         {
             lblCloneHorizontal.BackColor = _selectedColor;
             lblCloneVertical.BackColor = _nonSelectedColor;
-            _cloneDirection = ROICloneDirection.Vertical;
+            _cloneDirection = ROICloneDirection.Horizontal;
         }
 
         private void lblCloneExecute_Click(object sender, EventArgs e)
@@ -534,31 +551,46 @@ namespace Jastech.Apps.Winform.UI.Controls
             var tabList = TeachingTabList.Where(x => x.Name == tabName).First();
 
             int groupIndex = cmbGroupNumber.SelectedIndex;
+            var group = tabList.AkkonParam.GroupList[groupIndex];
+            group.AkkonROIList.Clear();
+            _cogRectAffineList.Clear();
+
             var leadCount = tabList.GetAkkonGroup(groupIndex).Count;
             var camera = DeviceManager.Instance().CameraHandler.Get(CameraName.LinscanMIL0.ToString());
             double calcResolution = /*camera.PixelResolution_mm*/0.0035 / /*camera.LensScale*/5 / 1000;
 
-            double newOriginX = 0.0;
-            double newOriginY = 0.0;
-
+            AkkonROI firstRoi = GetFirstROI();
+            
             for (int leadIndex = 0; leadIndex < leadCount; leadIndex++)
             {
-                if (leadIndex == 0)
-                    continue;
-
-                var group = tabList.AkkonParam.GroupList[groupIndex];
+                AkkonROI newRoi = firstRoi.DeepCopy();
 
                 if (_cloneDirection == ROICloneDirection.Horizontal)
-                    newOriginX += (group.Pitch * leadIndex / calcResolution);
+                {
+                    newRoi.CornerOriginX += (group.Pitch * leadIndex/* / calcResolution*/);
+                    newRoi.CornerXX += (group.Pitch * leadIndex/* / calcResolution*/);
+                    newRoi.CornerYX += (group.Pitch * leadIndex/* / calcResolution*/);
+                    newRoi.CornerOppositeX += (group.Pitch * leadIndex/* / calcResolution*/);
+                }
                 else
-                    newOriginY += (group.Pitch * leadIndex / calcResolution);
+                {
+                    newRoi.CornerOriginY += (group.Pitch * leadIndex/* / calcResolution*/);
+                    newRoi.CornerXY += (group.Pitch * leadIndex/* / calcResolution*/);
+                    newRoi.CornerYY += (group.Pitch * leadIndex/* / calcResolution*/);
+                    newRoi.CornerOppositeY += (group.Pitch * leadIndex/* / calcResolution*/);
+                }
 
-                //CreateAkkonROI.
-                //group.AddROI();
-                //group.AkkonROIList[leadIndex].CornerOriginX = newOriginX;
-                //group.AkkonROIList.Add()
+                group.AddROI(newRoi);
+
+                CogRectangleAffine cogRect = ConvertAkkonRoiToCogRectAffine(newRoi);
+                cogRect.GraphicDOFEnable = CogRectangleAffineDOFConstants.Position | CogRectangleAffineDOFConstants.Size | CogRectangleAffineDOFConstants.Skew;
+               // _cogRectAffineList.Add(cogRect);
             }
+
+            UpdateROIDataGridView(group.AkkonROIList);
+            DrawROI();
         }
+
 
         private void cmbGroupNumber_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -580,11 +612,191 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         private void DeleteROI()
         {
+            string tabName = cmbTabList.SelectedItem as string;
+            var tabList = TeachingTabList.Where(x => x.Name == tabName).First();
+            int groupIndex = cmbGroupNumber.SelectedIndex;
+            var group = tabList.AkkonParam.GroupList[groupIndex];
+
             foreach (DataGridViewRow row in dgvAkkonROI.SelectedRows)
             {
                 int index = row.Index;
                 dgvAkkonROI.Rows.RemoveAt(index);
+                group.DeleteROI(index);
             }
         }
+
+        private void dgvAkkonROI_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            SetSelectAkkonROI(e.RowIndex);
+        }
+
+        private void SetSelectAkkonROI(int index)
+        {
+            string tabName = cmbTabList.SelectedItem as string;
+            var tabList = TeachingTabList.Where(x => x.Name == tabName).First();
+
+            int groupIndex = cmbGroupNumber.SelectedIndex;
+            var group = tabList.AkkonParam.GroupList[groupIndex];
+
+            foreach (DataGridViewRow row in dgvAkkonROI.Rows)
+                _cogRectAffineList[row.Index].Color = CogColorConstants.Blue;
+
+            _cogRectAffineList[index].Color = CogColorConstants.DarkRed;
+
+            CogGraphicInteractiveCollection collect = new CogGraphicInteractiveCollection();
+            foreach (var item in _cogRectAffineList)
+                collect.Add(item);
+
+            var display = AppsTeachingUIManager.Instance().GetDisplay();
+            display.ClearGraphic();
+            display.SetInteractiveGraphics("lead", collect);
+        }
+
+        private List<CogRectangleAffine> _cogRectAffineList = new List<CogRectangleAffine>();
+
+        private CogRectangleAffine ConvertAkkonRoiToCogRectAffine(AkkonROI akkonRoi)
+        {
+            CogRectangleAffine cogRectAffine = new CogRectangleAffine();
+
+            cogRectAffine.SetOriginCornerXCornerY(akkonRoi.CornerOriginX, akkonRoi.CornerOriginY, akkonRoi.CornerXX, akkonRoi.CornerXY, akkonRoi.CornerYX, akkonRoi.CornerYY);
+
+            return cogRectAffine;
+        }
+
+        private void lblSort_Click(object sender, EventArgs e)
+        {
+            SortROI();
+        }
+
+        private void SortROI()
+        {
+            if (_cogRectAffineList.Count <= 0)
+                return;
+
+            
+        }
+
+        private void lblROIJog_Click(object sender, EventArgs e)
+        {
+            ROIJogControl roiJogForm = new ROIJogControl();
+            roiJogForm.SendEventHandler += new ROIJogControl.SendClickEventDelegate(ReceiveClickEvent);
+            roiJogForm.ShowDialog();
+        }
+
+        private void ReceiveClickEvent(string jogType, int jogScale)
+        {
+            if (jogType.Contains("Skew"))
+                SkewMode(jogType, jogScale);
+            else if (jogType.Contains("Move"))
+                MoveMode(jogType, jogScale);
+            else if (jogType.Contains("Zoom"))
+                SizeMode(jogType, jogScale);
+            else { }
+        }
+
+        private void SkewMode(string skewType, int jogScale)
+        {
+            var display = AppsTeachingUIManager.Instance().GetDisplay();
+
+            double skewUnit = (double)jogScale / 1000;
+            double zoom = display.GetZoomValue();
+            skewUnit /= zoom;
+
+            bool isSkewZero = false;
+
+            if (skewType.ToLower().Contains("skewccw"))
+                skewUnit *= -1;
+            else if (skewType.ToLower().Contains("skewcw"))
+                skewUnit *= 1;
+            else if (skewType.ToLower().Contains("skewzero"))
+                isSkewZero = true;
+            else { }
+
+            int cellCount = dgvAkkonROI.GetCellCount(DataGridViewElementStates.Selected);
+            if (cellCount < 0)
+                return;
+
+            int selectedIndex = dgvAkkonROI.CurrentCell.RowIndex;
+            if (isSkewZero)
+                _cogRectAffineList[selectedIndex].Skew = 0;
+            else
+                _cogRectAffineList[selectedIndex].Skew += skewUnit;
+
+            UpdataeROIDataGridView(selectedIndex, _cogRectAffineList[selectedIndex]);
+
+            CogGraphicInteractiveCollection collect = new CogGraphicInteractiveCollection();
+            collect.Add(_cogRectAffineList[selectedIndex]);
+            display.SetInteractiveGraphics("lead", collect);
+        }
+
+        private void MoveMode(string moveType, int jogScale)
+        {
+            var display = AppsTeachingUIManager.Instance().GetDisplay();
+
+            int movePixel = jogScale;
+            int jogMoveX = 0;
+            int jogMoveY = 0;
+
+            if (moveType.ToLower().Contains("moveleft"))
+                jogMoveX = movePixel * (-1);
+            else if (moveType.ToLower().Contains("moveright"))
+                jogMoveX = movePixel * (1);
+            else if (moveType.ToLower().Contains("movedown"))
+                jogMoveY = movePixel * (1);
+            else if (moveType.ToLower().Contains("moveup"))
+                jogMoveY = movePixel * (-1);
+            else { }
+
+            int cellCount = dgvAkkonROI.GetCellCount(DataGridViewElementStates.Selected);
+            if (cellCount < 0)
+                return;
+
+            int selectedIndex = dgvAkkonROI.CurrentCell.RowIndex;
+
+            _cogRectAffineList[selectedIndex].CenterX += jogMoveX;
+            _cogRectAffineList[selectedIndex].CenterY += jogMoveY;
+
+            UpdataeROIDataGridView(selectedIndex, _cogRectAffineList[selectedIndex]);
+
+            CogGraphicInteractiveCollection collect = new CogGraphicInteractiveCollection();
+            collect.Add(_cogRectAffineList[selectedIndex]);
+            display.SetInteractiveGraphics("lead", collect);
+        }
+
+        private void SizeMode(string sizeType, int jogScale)
+        {
+            var display = AppsTeachingUIManager.Instance().GetDisplay();
+
+            int sizePixel = jogScale;
+            int jogSizeX = 0;
+            int jogSizeY = 0;
+
+            if (sizeType.Contains("ZoomOutHorizontal"))
+                jogSizeX = sizePixel * (-1);
+            else if (sizeType.Contains("ZoomInHorizontal"))
+                jogSizeX = sizePixel * (1);
+            else if (sizeType.Contains("ZoomOutVertical"))
+                jogSizeY = sizePixel * (-1);
+            else if (sizeType.Contains("ZoomInVertical"))
+                jogSizeY = sizePixel * (1);
+            else { }
+
+            int cellCount = dgvAkkonROI.GetCellCount(DataGridViewElementStates.Selected);
+            if (cellCount < 0)
+                return;
+
+            int selectedIndex = dgvAkkonROI.CurrentCell.RowIndex;
+
+            _cogRectAffineList[selectedIndex].SideXLength += jogSizeX;
+            _cogRectAffineList[selectedIndex].SideYLength += jogSizeY;
+
+            UpdataeROIDataGridView(selectedIndex, _cogRectAffineList[selectedIndex]);
+
+            CogGraphicInteractiveCollection collect = new CogGraphicInteractiveCollection();
+            collect.Add(_cogRectAffineList[selectedIndex]);
+            display.SetInteractiveGraphics("lead", collect);
+        }
+
+        
     }
 }

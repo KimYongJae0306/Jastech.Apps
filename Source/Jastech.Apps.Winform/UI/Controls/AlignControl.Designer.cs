@@ -181,9 +181,10 @@
             this.cmbTabList.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbTabList.Font = new System.Drawing.Font("맑은 고딕", 14.25F, System.Drawing.FontStyle.Bold);
             this.cmbTabList.FormattingEnabled = true;
-            this.cmbTabList.Location = new System.Drawing.Point(3, 3);
+            this.cmbTabList.Location = new System.Drawing.Point(0, 0);
+            this.cmbTabList.Margin = new System.Windows.Forms.Padding(0);
             this.cmbTabList.Name = "cmbTabList";
-            this.cmbTabList.Size = new System.Drawing.Size(194, 34);
+            this.cmbTabList.Size = new System.Drawing.Size(200, 34);
             this.cmbTabList.TabIndex = 24;
             this.cmbTabList.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.cmbTabList_DrawItem);
             this.cmbTabList.SelectedIndexChanged += new System.EventHandler(this.cmbTabList_SelectedIndexChanged);
