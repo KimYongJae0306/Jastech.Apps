@@ -129,15 +129,19 @@ namespace Jastech.Apps.Winform
             }
         }
 
+        
         public Mat GetMergeImage()
         {
-            if(ScanImageList.Count >0)
+            lock (_objLock)
             {
-                Mat mergeImage = new Mat();
+                if (ScanImageList.Count > 0)
+                {
+                    Mat mergeImage = new Mat();
 
-                Cv2.HConcat(ScanImageList, mergeImage);
+                    Cv2.HConcat(ScanImageList, mergeImage);
 
-                return mergeImage;
+                    return mergeImage;
+                }
             }
             return null;
         }

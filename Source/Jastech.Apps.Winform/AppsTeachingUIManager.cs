@@ -52,13 +52,16 @@ namespace Jastech.Apps.Winform
 
         public void SetImage(ICogImage image)
         {
-            PrevImage = image;
+            PrevImage = image.CopyBase(CogImageCopyModeConstants.CopyPixels);
             TeachingDisplay?.SetImage(image);
         }
 
         public ICogImage GetPrevImage()
         {
-            return PrevImage;
+            if (PrevImage == null)
+                return null;
+
+            return PrevImage.CopyBase(CogImageCopyModeConstants.CopyPixels); ;
         }
         #endregion
 

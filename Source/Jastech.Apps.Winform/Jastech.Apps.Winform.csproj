@@ -96,6 +96,12 @@
     <Compile Include="UI\Controls\AkkonControl.designer.cs">
       <DependentUpon>AkkonControl.cs</DependentUpon>
     </Compile>
+    <Compile Include="UI\Controls\AkkonAutoControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UI\Controls\AkkonAutoControl.designer.cs">
+      <DependentUpon>AkkonAutoControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="UI\Controls\AkkonInspResultControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -200,6 +206,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UI\Controls\AkkonControl.resx">
       <DependentUpon>AkkonControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\Controls\AkkonAutoControl.resx">
+      <DependentUpon>AkkonAutoControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\Controls\AkkonInspResultControl.resx">
       <DependentUpon>AkkonInspResultControl.cs</DependentUpon>

@@ -45,6 +45,7 @@
             this.colRightBottom = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.panel2 = new System.Windows.Forms.Panel();
             this.pnlGroup = new System.Windows.Forms.Panel();
+            this.lblSort = new System.Windows.Forms.Label();
             this.lblDelete = new System.Windows.Forms.Label();
             this.lblRegister = new System.Windows.Forms.Label();
             this.lblCloneExecute = new System.Windows.Forms.Label();
@@ -80,7 +81,6 @@
             this.panel1 = new System.Windows.Forms.Panel();
             this.lblResult = new System.Windows.Forms.Label();
             this.lblGroup = new System.Windows.Forms.Label();
-            this.lblSort = new System.Windows.Forms.Label();
             this.tlpAkkon.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             this.pnlROIData.SuspendLayout();
@@ -281,6 +281,21 @@
             this.pnlGroup.Name = "pnlGroup";
             this.pnlGroup.Size = new System.Drawing.Size(497, 330);
             this.pnlGroup.TabIndex = 2;
+            // 
+            // lblSort
+            // 
+            this.lblSort.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
+            this.lblSort.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblSort.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
+            this.lblSort.ForeColor = System.Drawing.Color.White;
+            this.lblSort.Location = new System.Drawing.Point(260, 144);
+            this.lblSort.Margin = new System.Windows.Forms.Padding(0);
+            this.lblSort.Name = "lblSort";
+            this.lblSort.Size = new System.Drawing.Size(140, 40);
+            this.lblSort.TabIndex = 149;
+            this.lblSort.Text = "Sort";
+            this.lblSort.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblSort.Click += new System.EventHandler(this.lblSort_Click);
             // 
             // lblDelete
             // 
@@ -783,21 +798,6 @@
             this.lblGroup.Text = "Group";
             this.lblGroup.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.lblGroup.Click += new System.EventHandler(this.lblGroup_Click);
-            // 
-            // lblSort
-            // 
-            this.lblSort.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
-            this.lblSort.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lblSort.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
-            this.lblSort.ForeColor = System.Drawing.Color.White;
-            this.lblSort.Location = new System.Drawing.Point(260, 144);
-            this.lblSort.Margin = new System.Windows.Forms.Padding(0);
-            this.lblSort.Name = "lblSort";
-            this.lblSort.Size = new System.Drawing.Size(140, 40);
-            this.lblSort.TabIndex = 149;
-            this.lblSort.Text = "Sort";
-            this.lblSort.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.lblSort.Click += new System.EventHandler(this.lblSort_Click);
             // 
             // AkkonControl
             // 
