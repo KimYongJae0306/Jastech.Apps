@@ -249,7 +249,7 @@ namespace Jastech.Apps.Winform.UI.Controls
             }
         }
 
-        private void UpdataeROIDataGridView(int index, CogRectangleAffine cogRectAffine)
+        private void UpdateROIDataGridView(int index, CogRectangleAffine cogRectAffine)
         {
             string leftTop = cogRectAffine.CornerOriginX.ToString("F2") + " , " + cogRectAffine.CornerOriginY.ToString("F2");
             string rightTop = cogRectAffine.CornerXX.ToString("F2") + " , " + cogRectAffine.CornerXY.ToString("F2");
@@ -275,6 +275,10 @@ namespace Jastech.Apps.Winform.UI.Controls
             string tabName = cmbTabList.SelectedItem as string;
             var tabList = TeachingTabList.Where(x => x.Name == tabName).First();
             int groupIndex = cmbGroupNumber.SelectedIndex;
+
+            if (groupIndex < 0)
+                return;
+
             var roiList = tabList.GetAkkonGroup(groupIndex).AkkonROIList;
 
             CogGraphicInteractiveCollection collect = new CogGraphicInteractiveCollection();
@@ -461,21 +465,14 @@ namespace Jastech.Apps.Winform.UI.Controls
             TeachingTabList.Where(x => x.Name == tabName).First().AkkonParam.GroupList[groupIndex].Count = leadCount;
         }
 
-        private int SetLabelIntegerData(object sender)
+        private void lblLeadPitchValue_Click(object sender, EventArgs e)
         {
-            Label lbl = sender as Label;
-            int prevData = Convert.ToInt32(lbl.Text);
+            double leadPitch = SetLabelDoubleData(sender);
 
-            KeyPadForm keyPadForm = new KeyPadForm();
-            keyPadForm.PreviousValue = (double)prevData;
-            keyPadForm.ShowDialog();
+            string tabName = cmbTabList.SelectedItem as string;
+            int groupIndex = cmbGroupNumber.SelectedIndex;
 
-            int inputData = Convert.ToInt16(keyPadForm.PadValue);
-
-            Label label = (Label)sender;
-            label.Text = inputData.ToString();
-
-            return inputData;
+            TeachingTabList.Where(x => x.Name == tabName).First().AkkonParam.GroupList[groupIndex].Pitch = leadPitch;
         }
 
         private void lblROIWidthValue_Click(object sender, EventArgs e)
@@ -498,14 +495,21 @@ namespace Jastech.Apps.Winform.UI.Controls
             TeachingTabList.Where(x => x.Name == tabName).First().AkkonParam.GroupList[groupIndex].Height = leadHeight;
         }
 
-        private void lblLeadPitchValue_Click(object sender, EventArgs e)
+        private int SetLabelIntegerData(object sender)
         {
-            double leadPitch = SetLabelDoubleData(sender);
+            Label lbl = sender as Label;
+            int prevData = Convert.ToInt32(lbl.Text);
 
-            string tabName = cmbTabList.SelectedItem as string;
-            int groupIndex = cmbGroupNumber.SelectedIndex;
+            KeyPadForm keyPadForm = new KeyPadForm();
+            keyPadForm.PreviousValue = (double)prevData;
+            keyPadForm.ShowDialog();
 
-            TeachingTabList.Where(x => x.Name == tabName).First().AkkonParam.GroupList[groupIndex].Pitch = leadPitch;
+            int inputData = Convert.ToInt16(keyPadForm.PadValue);
+
+            Label label = (Label)sender;
+            label.Text = inputData.ToString();
+
+            return inputData;
         }
 
         private double SetLabelDoubleData(object sender)
@@ -581,16 +585,15 @@ namespace Jastech.Apps.Winform.UI.Controls
                 }
 
                 group.AddROI(newRoi);
-
+                
                 CogRectangleAffine cogRect = ConvertAkkonRoiToCogRectAffine(newRoi);
                 cogRect.GraphicDOFEnable = CogRectangleAffineDOFConstants.Position | CogRectangleAffineDOFConstants.Size | CogRectangleAffineDOFConstants.Skew;
-               // _cogRectAffineList.Add(cogRect);
+                //UpdateROIDataGridView(leadIndex, cogRect);
             }
 
             UpdateROIDataGridView(group.AkkonROIList);
             DrawROI();
         }
-
 
         private void cmbGroupNumber_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -673,7 +676,45 @@ namespace Jastech.Apps.Winform.UI.Controls
             if (_cogRectAffineList.Count <= 0)
                 return;
 
-            
+            var display = AppsTeachingUIManager.Instance().GetDisplay();
+
+            string tabName = cmbTabList.SelectedItem as string;
+            var tabList = TeachingTabList.Where(x => x.Name == tabName).First();
+
+            int groupIndex = cmbGroupNumber.SelectedIndex;
+            var group = tabList.AkkonParam.GroupList[groupIndex];
+            var leadCount = tabList.GetAkkonGroup(groupIndex).Count;
+
+            float deltaX = 0, deltaY = 0;
+            CogRadian firstAngle = 0, lastAngle = 0, deltaAngle = 0;
+            int intervalCount = leadCount - 1;
+
+            deltaX = ((float)(_cogRectAffineList.Last().CenterX - _cogRectAffineList[0].CenterX) / intervalCount);
+            deltaY = ((float)(_cogRectAffineList.Last().CenterY - _cogRectAffineList[0].CenterY) / intervalCount);
+            group.Pitch = deltaX;
+
+            firstAngle = _cogRectAffineList[0].Skew;
+            lastAngle = _cogRectAffineList.Last().Skew;
+            deltaAngle = (float)(lastAngle.Value - firstAngle.Value) / intervalCount;
+
+            double newCenterX = 0.0, newCenterY = 0.0;
+            CogRadian newSkew = 0;
+            for (int leadIndex = 0; leadIndex < leadCount; leadIndex++)
+            {
+                newCenterX = _cogRectAffineList[0].CenterX + (deltaX * leadIndex);
+                newCenterY = _cogRectAffineList[0].CenterY + (deltaY * leadIndex);
+                newSkew = _cogRectAffineList[0].Skew + (deltaAngle.Value * leadIndex);
+
+                _cogRectAffineList[leadIndex].CenterX = newCenterX;
+                _cogRectAffineList[leadIndex].CenterY = newCenterY;
+                _cogRectAffineList[leadIndex].Skew = newSkew.Value;
+
+                UpdateROIDataGridView(leadIndex, _cogRectAffineList[leadIndex]);
+
+                CogGraphicInteractiveCollection collect = new CogGraphicInteractiveCollection();
+                collect.Add(_cogRectAffineList[leadIndex]);
+                display.SetInteractiveGraphics("lead", collect);
+            }
         }
 
         private void lblROIJog_Click(object sender, EventArgs e)
@@ -722,7 +763,7 @@ namespace Jastech.Apps.Winform.UI.Controls
             else
                 _cogRectAffineList[selectedIndex].Skew += skewUnit;
 
-            UpdataeROIDataGridView(selectedIndex, _cogRectAffineList[selectedIndex]);
+            UpdateROIDataGridView(selectedIndex, _cogRectAffineList[selectedIndex]);
 
             CogGraphicInteractiveCollection collect = new CogGraphicInteractiveCollection();
             collect.Add(_cogRectAffineList[selectedIndex]);
@@ -756,7 +797,7 @@ namespace Jastech.Apps.Winform.UI.Controls
             _cogRectAffineList[selectedIndex].CenterX += jogMoveX;
             _cogRectAffineList[selectedIndex].CenterY += jogMoveY;
 
-            UpdataeROIDataGridView(selectedIndex, _cogRectAffineList[selectedIndex]);
+            UpdateROIDataGridView(selectedIndex, _cogRectAffineList[selectedIndex]);
 
             CogGraphicInteractiveCollection collect = new CogGraphicInteractiveCollection();
             collect.Add(_cogRectAffineList[selectedIndex]);
@@ -790,13 +831,56 @@ namespace Jastech.Apps.Winform.UI.Controls
             _cogRectAffineList[selectedIndex].SideXLength += jogSizeX;
             _cogRectAffineList[selectedIndex].SideYLength += jogSizeY;
 
-            UpdataeROIDataGridView(selectedIndex, _cogRectAffineList[selectedIndex]);
+            UpdateROIDataGridView(selectedIndex, _cogRectAffineList[selectedIndex]);
 
             CogGraphicInteractiveCollection collect = new CogGraphicInteractiveCollection();
             collect.Add(_cogRectAffineList[selectedIndex]);
             display.SetInteractiveGraphics("lead", collect);
         }
 
-        
+        public void SaveAkkonParam()
+        {
+            string tabName = cmbTabList.SelectedItem as string;
+            var tabList = TeachingTabList.Where(x => x.Name == tabName).First();
+
+            int groupIndex = cmbGroupNumber.SelectedIndex;
+            var group = tabList.AkkonParam.GroupList[groupIndex];
+            group.AkkonROIList.Clear();
+
+            foreach (DataGridViewRow row in dgvAkkonROI.Rows)
+            {
+                List<Tuple<double, double>> parsedData = ParseDataGridViewData(row);
+
+                AkkonROI akkonRoi = new AkkonROI();
+
+                akkonRoi.CornerOriginX = parsedData[0].Item1;
+                akkonRoi.CornerOriginY = parsedData[0].Item2;
+                akkonRoi.CornerXX = parsedData[1].Item1;
+                akkonRoi.CornerXY = parsedData[1].Item2;
+                akkonRoi.CornerYX = parsedData[2].Item1;
+                akkonRoi.CornerYY = parsedData[2].Item2;
+                akkonRoi.CornerOppositeX = parsedData[3].Item1;
+                akkonRoi.CornerOppositeY = parsedData[3].Item2;
+
+                group.AddROI(akkonRoi);
+            }
+        }
+
+        private List<Tuple<double, double>> ParseDataGridViewData(DataGridViewRow row)
+        {
+            string[] leftTop = row.Cells[1].Value.ToString().Split(',');
+            string[] rightTop = row.Cells[2].Value.ToString().Split(',');
+            string[] leftBottom = row.Cells[3].Value.ToString().Split(',');
+            string[] rightBottom = row.Cells[4].Value.ToString().Split(',');
+
+            List<Tuple<double, double>> outputData = new List<Tuple<double, double>>();
+
+            outputData.Add(new Tuple<double, double>(Convert.ToDouble(leftTop[0].Trim()), Convert.ToDouble(leftTop[1].Trim())));
+            outputData.Add(new Tuple<double, double>(Convert.ToDouble(rightTop[0].Trim()), Convert.ToDouble(rightTop[1].Trim())));
+            outputData.Add(new Tuple<double, double>(Convert.ToDouble(leftBottom[0].Trim()), Convert.ToDouble(leftBottom[1].Trim())));
+            outputData.Add(new Tuple<double, double>(Convert.ToDouble(rightBottom[0].Trim()), Convert.ToDouble(rightBottom[1].Trim())));
+
+            return outputData;
+        }
     }
 }
