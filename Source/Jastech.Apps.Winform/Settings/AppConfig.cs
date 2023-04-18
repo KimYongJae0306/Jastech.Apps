@@ -90,13 +90,13 @@ namespace Jastech.Apps.Winform.Settings
             }
             else
             {
-                var camera0 = new CameraVieworksVT(CameraName.LinscanVT0.ToString(), 4096, 1024, ColorFormat.Gray, SensorType.Line);
-                camera0.SerialPortComm = new SerialPortComm
-                {
-                    PortName = "COM6",
-                    BaudRate = 115200,
-                };
-                config.Add(camera0);
+                //var camera0 = new CameraVieworksVT(CameraName.LinscanVT0.ToString(), 4096, 1024, ColorFormat.Gray, SensorType.Line);
+                //camera0.SerialPortComm = new SerialPortComm
+                //{
+                //    PortName = "COM6",
+                //    BaudRate = 115200,
+                //};
+                //config.Add(camera0);
 
                 var camera1 = new CameraMil(CameraName.LinscanMIL0.ToString(), 4096, 1024, ColorFormat.Gray, SensorType.Line);
                 config.Add(camera1);

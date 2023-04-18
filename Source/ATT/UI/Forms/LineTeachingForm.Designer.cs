@@ -44,6 +44,7 @@
             this.pnlTeach = new System.Windows.Forms.Panel();
             this.pnlTeachingItem = new System.Windows.Forms.Panel();
             this.tlpTeachingItem = new System.Windows.Forms.TableLayoutPanel();
+            this.btnAutoAkkon = new System.Windows.Forms.Button();
             this.btnAutoFocus = new System.Windows.Forms.Button();
             this.btnAkkon = new System.Windows.Forms.Button();
             this.btnAlign = new System.Windows.Forms.Button();
@@ -281,6 +282,7 @@
             // 
             this.tlpTeachingItem.ColumnCount = 1;
             this.tlpTeachingItem.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tlpTeachingItem.Controls.Add(this.btnAutoAkkon, 0, 4);
             this.tlpTeachingItem.Controls.Add(this.btnAutoFocus, 0, 0);
             this.tlpTeachingItem.Controls.Add(this.btnAkkon, 0, 3);
             this.tlpTeachingItem.Controls.Add(this.btnAlign, 0, 2);
@@ -296,12 +298,27 @@
             this.tlpTeachingItem.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 100F));
             this.tlpTeachingItem.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 100F));
             this.tlpTeachingItem.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 100F));
-            this.tlpTeachingItem.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tlpTeachingItem.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 100F));
+            this.tlpTeachingItem.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tlpTeachingItem.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 100F));
             this.tlpTeachingItem.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 100F));
             this.tlpTeachingItem.Size = new System.Drawing.Size(144, 779);
             this.tlpTeachingItem.TabIndex = 0;
+            // 
+            // btnAutoAkkon
+            // 
+            this.btnAutoAkkon.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(34)))), ((int)(((byte)(34)))), ((int)(((byte)(34)))));
+            this.btnAutoAkkon.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.btnAutoAkkon.Font = new System.Drawing.Font("맑은 고딕", 20F, System.Drawing.FontStyle.Bold);
+            this.btnAutoAkkon.ForeColor = System.Drawing.Color.White;
+            this.btnAutoAkkon.Location = new System.Drawing.Point(2, 402);
+            this.btnAutoAkkon.Margin = new System.Windows.Forms.Padding(2);
+            this.btnAutoAkkon.Name = "btnAutoAkkon";
+            this.btnAutoAkkon.Size = new System.Drawing.Size(140, 96);
+            this.btnAutoAkkon.TabIndex = 20;
+            this.btnAutoAkkon.Text = "A.Akkon";
+            this.btnAutoAkkon.UseVisualStyleBackColor = false;
+            this.btnAutoAkkon.Click += new System.EventHandler(this.btnAutoAkkon_Click);
             // 
             // btnAutoFocus
             // 
@@ -444,5 +461,6 @@
         private System.Windows.Forms.Button btnLoadImage;
         private System.Windows.Forms.Button btnGrabStop;
         private System.Windows.Forms.Button btnGrabStart;
+        private System.Windows.Forms.Button btnAutoAkkon;
     }
 }

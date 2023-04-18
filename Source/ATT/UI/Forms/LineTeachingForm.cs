@@ -46,6 +46,8 @@ namespace ATT.UI.Forms
 
         private AkkonControl AkkonControl { get; set; } = new AkkonControl() { Dock = DockStyle.Fill };
 
+        private AkkonAutoControl AkkonAutoControl { get; set; } = new AkkonAutoControl() { Dock = DockStyle.Fill };
+
         private MarkControl MarkControl { get; set; } = new MarkControl() { Dock = DockStyle.Fill };
 
         private List<UserControl> TeachControlList = null;
@@ -123,6 +125,8 @@ namespace ATT.UI.Forms
                     AlignControl.DrawROI();
                 else if (pnlTeach.Controls[0] as AkkonControl != null)
                     AkkonControl.DrawROI();
+                else if (pnlDisplay.Controls[0] as AkkonAutoControl != null)
+                    AkkonAutoControl.DrawROI();
             }
         }
 
@@ -151,6 +155,8 @@ namespace ATT.UI.Forms
             btnMark.ForeColor = Color.White;
             btnAlign.ForeColor = Color.White;
             btnAkkon.ForeColor = Color.White;
+            btnAutoAkkon.ForeColor = Color.White;
+
             pnlTeach.Controls.Clear();
         }
 
@@ -194,6 +200,20 @@ namespace ATT.UI.Forms
 
             btnAkkon.ForeColor = Color.Blue;
             pnlTeach.Controls.Add(AkkonControl);
+        }
+
+        private void btnAutoAkkon_Click(object sender, EventArgs e)
+        {
+            if (ModelManager.Instance().CurrentModel == null || UnitName == "")
+                return;
+
+            ClearSelectedButton();
+
+            var tabList = SystemManager.Instance().GetTeachingData().GetTabList(UnitName);
+            AkkonAutoControl.SetParams(tabList);
+
+            btnAutoAkkon.ForeColor = Color.Blue;
+            pnlTeach.Controls.Add(AkkonAutoControl);
         }
 
         private void btnSave_Click(object sender, EventArgs e)
