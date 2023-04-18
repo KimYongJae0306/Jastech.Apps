@@ -232,6 +232,7 @@ namespace ATT.UI.Forms
 
         private void SaveModelData(AppsInspModel model)
         {
+            AkkonControl.SaveAkkonParam();
             model.SetUnitList(SystemManager.Instance().GetTeachingData().UnitList);
 
             string fileName = System.IO.Path.Combine(AppConfig.Instance().Path.Model, model.Name, InspModel.FileName);
