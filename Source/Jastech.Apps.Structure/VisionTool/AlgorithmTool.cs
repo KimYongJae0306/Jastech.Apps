@@ -1,4 +1,5 @@
 ﻿using Cognex.VisionPro;
+using Jastech.Framework.Imaging.Result;
 using Jastech.Framework.Imaging.VisionPro.VisionAlgorithms;
 using Jastech.Framework.Imaging.VisionPro.VisionAlgorithms.Parameters;
 using Jastech.Framework.Imaging.VisionPro.VisionAlgorithms.Results;
@@ -32,12 +33,12 @@ namespace Jastech.Apps.Structure.VisionTool
                 isFounded |= item.Found;
             }
 
-            alignResult.Judgement = isFounded ? Result.OK : Result.Fail;
+            alignResult.Result = isFounded ? Result.OK : Result.Fail;
 
-            if(alignResult.Judgement == Result.OK)
+            if(alignResult.Result == Result.OK)
             {
                 if (leadCount != alignResult.CogAlignResult.Count() / 2)
-                    alignResult.Judgement = Result.NG;
+                    alignResult.Result = Result.NG;
             }
             
                 
@@ -61,7 +62,7 @@ namespace Jastech.Apps.Structure.VisionTool
                 isFounded |= item.Found;
             }
 
-            alignResult.Judgement = isFounded ? Result.OK : Result.Fail;
+            alignResult.Result = isFounded ? Result.OK : Result.Fail;
 
             return alignResult;
         }

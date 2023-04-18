@@ -61,7 +61,6 @@ namespace Jastech.Apps.Winform.UI.Controls
         private void AddControl()
         {
             MacronAkkonParamControl.Dock = DockStyle.Fill;
-            MacronAkkonParamControl.GetOriginImageHandler += AkkonControl_GetOriginImageHandler;
             pnlParam.Controls.Add(MacronAkkonParamControl);
         }
 
@@ -74,11 +73,6 @@ namespace Jastech.Apps.Winform.UI.Controls
             pnlGroup.Dock = DockStyle.Fill;
 
             ShowGroup();
-        }
-
-        private ICogImage AkkonControl_GetOriginImageHandler()
-        {
-            return AppsTeachingUIManager.Instance().GetPrevImage();
         }
 
         public void SetParams(List<Tab> tabList)

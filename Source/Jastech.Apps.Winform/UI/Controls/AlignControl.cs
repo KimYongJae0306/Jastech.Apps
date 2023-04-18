@@ -19,6 +19,7 @@ using Cognex.VisionPro.Caliper;
 using Jastech.Framework.Winform.Forms;
 using Jastech.Apps.Structure.Data;
 using Jastech.Apps.Structure.Parameters;
+using Jastech.Framework.Imaging.Result;
 
 namespace Jastech.Apps.Winform.UI.Controls
 {
@@ -275,7 +276,7 @@ namespace Jastech.Apps.Winform.UI.Controls
             else
                 result = Algorithm.RunAlignY(cogImage, currentParam);
 
-            if (result.Judgement == Result.Fail)
+            if (result.Result == Result.Fail)
             {
                 MessageConfirmForm form = new MessageConfirmForm();
                 form.Message = "Caliper is Not Found.";
