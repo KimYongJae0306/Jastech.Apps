@@ -670,13 +670,11 @@ namespace Jastech.Apps.Winform.UI.Controls
 
             _cogRectAffineList[index].Color = CogColorConstants.DarkRed;
 
-            //DrawROI();
             CogGraphicInteractiveCollection collect = new CogGraphicInteractiveCollection();
             foreach (var item in _cogRectAffineList)
                 collect.Add(item);
 
             var display = AppsTeachingUIManager.Instance().GetDisplay();
-            //display.ClearGraphic();
             display.SetInteractiveGraphics("lead", collect);
         }
 
@@ -789,9 +787,13 @@ namespace Jastech.Apps.Winform.UI.Controls
 
             UpdateROIDataGridView(selectedIndex, _cogRectAffineList[selectedIndex]);
 
-            CogGraphicInteractiveCollection collect = new CogGraphicInteractiveCollection();
-            collect.Add(_cogRectAffineList[selectedIndex]);
-            display.SetInteractiveGraphics("lead", collect);
+            string tabName = cmbTabList.SelectedItem as string;
+            var tabList = TeachingTabList.Where(x => x.Name == tabName).First();
+            int groupIndex = cmbGroupNumber.SelectedIndex;
+            var group = tabList.AkkonParam.GroupList[groupIndex];
+            group.AkkonROIList[selectedIndex] = ConvertCogRectAffineToAkkonRoi(_cogRectAffineList[selectedIndex]).DeepCopy();
+            DrawROI();
+            SetSelectAkkonROI(selectedIndex);
         }
 
         private void MoveMode(string moveType, int jogScale)
@@ -819,24 +821,16 @@ namespace Jastech.Apps.Winform.UI.Controls
 
             _cogRectAffineList[selectedIndex].CenterX += jogMoveX;
             _cogRectAffineList[selectedIndex].CenterY += jogMoveY;
-
-            string tabName = cmbTabList.SelectedItem as string;
-            var tabList = TeachingTabList.Where(x => x.Name == tabName).First();
-
-            
             
             UpdateROIDataGridView(selectedIndex, _cogRectAffineList[selectedIndex]);
 
-            //CogGraphicInteractiveCollection collect = new CogGraphicInteractiveCollection();
-            //collect.Add(_cogRectAffineList[selectedIndex]);
-            //display.SetInteractiveGraphics("lead", collect);
-
-            ////
+            string tabName = cmbTabList.SelectedItem as string;
+            var tabList = TeachingTabList.Where(x => x.Name == tabName).First();
             int groupIndex = cmbGroupNumber.SelectedIndex;
             var group = tabList.AkkonParam.GroupList[groupIndex];
             group.AkkonROIList[selectedIndex] = ConvertCogRectAffineToAkkonRoi(_cogRectAffineList[selectedIndex]).DeepCopy();
             DrawROI();
-            ////
+            SetSelectAkkonROI(selectedIndex);
         }
 
         private void SizeMode(string sizeType, int jogScale)
@@ -872,9 +866,13 @@ namespace Jastech.Apps.Winform.UI.Controls
 
             UpdateROIDataGridView(selectedIndex, _cogRectAffineList[selectedIndex]);
 
-            CogGraphicInteractiveCollection collect = new CogGraphicInteractiveCollection();
-            collect.Add(_cogRectAffineList[selectedIndex]);
-            display.SetInteractiveGraphics("lead", collect);
+            string tabName = cmbTabList.SelectedItem as string;
+            var tabList = TeachingTabList.Where(x => x.Name == tabName).First();
+            int groupIndex = cmbGroupNumber.SelectedIndex;
+            var group = tabList.AkkonParam.GroupList[groupIndex];
+            group.AkkonROIList[selectedIndex] = ConvertCogRectAffineToAkkonRoi(_cogRectAffineList[selectedIndex]).DeepCopy();
+            DrawROI();
+            SetSelectAkkonROI(selectedIndex);
         }
 
         public void SaveAkkonParam()

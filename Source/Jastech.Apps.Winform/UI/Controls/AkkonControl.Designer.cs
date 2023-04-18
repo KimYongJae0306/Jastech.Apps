@@ -38,6 +38,11 @@
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.pnlROIData = new System.Windows.Forms.Panel();
             this.dgvAkkonROI = new System.Windows.Forms.DataGridView();
+            this.colROINo = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colLeftTop = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colRightTop = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colLeftBottom = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colRightBottom = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.panel2 = new System.Windows.Forms.Panel();
             this.pnlGroup = new System.Windows.Forms.Panel();
             this.lblSort = new System.Windows.Forms.Label();
@@ -76,11 +81,6 @@
             this.panel1 = new System.Windows.Forms.Panel();
             this.lblResult = new System.Windows.Forms.Label();
             this.lblGroup = new System.Windows.Forms.Label();
-            this.colROINo = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colLeftTop = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colRightTop = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colLeftBottom = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colRightBottom = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tlpAkkon.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             this.pnlROIData.SuspendLayout();
@@ -196,6 +196,56 @@
             this.dgvAkkonROI.Size = new System.Drawing.Size(483, 328);
             this.dgvAkkonROI.TabIndex = 0;
             this.dgvAkkonROI.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvAkkonROI_CellClick);
+            // 
+            // colROINo
+            // 
+            this.colROINo.FillWeight = 110F;
+            this.colROINo.HeaderText = "NO";
+            this.colROINo.MinimumWidth = 70;
+            this.colROINo.Name = "colROINo";
+            this.colROINo.ReadOnly = true;
+            this.colROINo.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.colROINo.Width = 70;
+            // 
+            // colLeftTop
+            // 
+            this.colLeftTop.FillWeight = 140F;
+            this.colLeftTop.HeaderText = "LEFT TOP";
+            this.colLeftTop.MinimumWidth = 160;
+            this.colLeftTop.Name = "colLeftTop";
+            this.colLeftTop.ReadOnly = true;
+            this.colLeftTop.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.colLeftTop.Width = 160;
+            // 
+            // colRightTop
+            // 
+            this.colRightTop.FillWeight = 140F;
+            this.colRightTop.HeaderText = "RIGHT TOP";
+            this.colRightTop.MinimumWidth = 160;
+            this.colRightTop.Name = "colRightTop";
+            this.colRightTop.ReadOnly = true;
+            this.colRightTop.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.colRightTop.Width = 160;
+            // 
+            // colLeftBottom
+            // 
+            this.colLeftBottom.FillWeight = 140F;
+            this.colLeftBottom.HeaderText = "LEFT BOTTOM";
+            this.colLeftBottom.MinimumWidth = 160;
+            this.colLeftBottom.Name = "colLeftBottom";
+            this.colLeftBottom.ReadOnly = true;
+            this.colLeftBottom.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.colLeftBottom.Width = 160;
+            // 
+            // colRightBottom
+            // 
+            this.colRightBottom.FillWeight = 140F;
+            this.colRightBottom.HeaderText = "RIGHT BOTTOM";
+            this.colRightBottom.MinimumWidth = 160;
+            this.colRightBottom.Name = "colRightBottom";
+            this.colRightBottom.ReadOnly = true;
+            this.colRightBottom.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.colRightBottom.Width = 160;
             // 
             // panel2
             // 
@@ -751,56 +801,6 @@
             this.lblGroup.Text = "Group";
             this.lblGroup.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.lblGroup.Click += new System.EventHandler(this.lblGroup_Click);
-            // 
-            // colROINo
-            // 
-            this.colROINo.FillWeight = 110F;
-            this.colROINo.HeaderText = "NO";
-            this.colROINo.MinimumWidth = 70;
-            this.colROINo.Name = "colROINo";
-            this.colROINo.ReadOnly = true;
-            this.colROINo.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.colROINo.Width = 70;
-            // 
-            // colLeftTop
-            // 
-            this.colLeftTop.FillWeight = 140F;
-            this.colLeftTop.HeaderText = "LEFT TOP";
-            this.colLeftTop.MinimumWidth = 160;
-            this.colLeftTop.Name = "colLeftTop";
-            this.colLeftTop.ReadOnly = true;
-            this.colLeftTop.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.colLeftTop.Width = 160;
-            // 
-            // colRightTop
-            // 
-            this.colRightTop.FillWeight = 140F;
-            this.colRightTop.HeaderText = "RIGHT TOP";
-            this.colRightTop.MinimumWidth = 160;
-            this.colRightTop.Name = "colRightTop";
-            this.colRightTop.ReadOnly = true;
-            this.colRightTop.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.colRightTop.Width = 160;
-            // 
-            // colLeftBottom
-            // 
-            this.colLeftBottom.FillWeight = 140F;
-            this.colLeftBottom.HeaderText = "LEFT BOTTOM";
-            this.colLeftBottom.MinimumWidth = 160;
-            this.colLeftBottom.Name = "colLeftBottom";
-            this.colLeftBottom.ReadOnly = true;
-            this.colLeftBottom.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.colLeftBottom.Width = 160;
-            // 
-            // colRightBottom
-            // 
-            this.colRightBottom.FillWeight = 140F;
-            this.colRightBottom.HeaderText = "RIGHT BOTTOM";
-            this.colRightBottom.MinimumWidth = 160;
-            this.colRightBottom.Name = "colRightBottom";
-            this.colRightBottom.ReadOnly = true;
-            this.colRightBottom.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.colRightBottom.Width = 160;
             // 
             // AkkonControl
             // 
