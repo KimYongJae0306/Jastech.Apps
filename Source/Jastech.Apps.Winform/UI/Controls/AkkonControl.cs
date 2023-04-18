@@ -140,10 +140,10 @@ namespace Jastech.Apps.Winform.UI.Controls
             cmbGroupNumber.SelectedIndex = groupIndex;
 
             lblLeadCountValue.Text = tabList.AkkonParam.GroupList[groupIndex].Count.ToString();
-            lblLeadPitchValue.Text = tabList.AkkonParam.GroupList[groupIndex].Pitch.ToString();
-            lblROIWidthValue.Text = tabList.AkkonParam.GroupList[groupIndex].Width.ToString();
-            lblROIHeightValue.Text = tabList.AkkonParam.GroupList[groupIndex].Height.ToString();
-
+            lblLeadPitchValue.Text = tabList.AkkonParam.GroupList[groupIndex].Pitch.ToString("F2");
+            lblROIWidthValue.Text = tabList.AkkonParam.GroupList[groupIndex].Width.ToString("F2");
+            lblROIHeightValue.Text = tabList.AkkonParam.GroupList[groupIndex].Height.ToString("F2");
+            UpdateROIDataGridView(groupParam.AkkonROIList);
             MacronAkkonParamControl.UpdateData(groupParam.MacronAkkonParam);
 
             DrawROI();
@@ -168,6 +168,7 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         private void SetNewROI(CogDisplayControl display)
         {
+            display.ClearGraphic();
             ICogImage cogImage = display.GetImage();
 
             double centerX = display.ImageWidth() / 2.0 - display.GetPan().X;
@@ -200,6 +201,12 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         private void RegisterROI()
         {
+            var display = AppsTeachingUIManager.Instance().GetDisplay();
+            if (display == null)
+                return;
+
+            //display.ClearGraphic();
+
             string tabName = cmbTabList.SelectedItem as string;
             var tabList = TeachingTabList.Where(x => x.Name == tabName).First();
             int groupIndex = cmbGroupNumber.SelectedIndex;
@@ -284,6 +291,7 @@ namespace Jastech.Apps.Winform.UI.Controls
             CogGraphicInteractiveCollection collect = new CogGraphicInteractiveCollection();
 
             int count = 0;
+            _cogRectAffineList.Clear();
             foreach (var roi in roiList)
             {
                 CogRectangleAffine rect = ConvertAkkonRoiToCogRectAffine(roi);
@@ -414,6 +422,18 @@ namespace Jastech.Apps.Winform.UI.Controls
 
             lblResult.BackColor = _nonSelectedColor;
             dgvAkkonResult.Visible = false;
+
+            if (_cloneDirection == ROICloneDirection.Horizontal)
+            {
+                lblCloneHorizontal.BackColor = _selectedColor;
+                lblCloneVertical.BackColor = _nonSelectedColor;
+            }
+            else
+            {
+                lblCloneHorizontal.BackColor = _nonSelectedColor;
+                lblCloneVertical.BackColor = _selectedColor;
+            }
+
         }
 
         private void ShowResult()
@@ -623,9 +643,13 @@ namespace Jastech.Apps.Winform.UI.Controls
             foreach (DataGridViewRow row in dgvAkkonROI.SelectedRows)
             {
                 int index = row.Index;
-                dgvAkkonROI.Rows.RemoveAt(index);
+
+                //dgvAkkonROI.Rows.RemoveAt(index);
                 group.DeleteROI(index);
+                _cogRectAffineList.RemoveAt(index);
             }
+            UpdateROIDataGridView(group.AkkonROIList);
+            DrawROI();
         }
 
         private void dgvAkkonROI_CellClick(object sender, DataGridViewCellEventArgs e)
@@ -646,12 +670,13 @@ namespace Jastech.Apps.Winform.UI.Controls
 
             _cogRectAffineList[index].Color = CogColorConstants.DarkRed;
 
+            //DrawROI();
             CogGraphicInteractiveCollection collect = new CogGraphicInteractiveCollection();
             foreach (var item in _cogRectAffineList)
                 collect.Add(item);
 
             var display = AppsTeachingUIManager.Instance().GetDisplay();
-            display.ClearGraphic();
+            //display.ClearGraphic();
             display.SetInteractiveGraphics("lead", collect);
         }
 
@@ -753,8 +778,7 @@ namespace Jastech.Apps.Winform.UI.Controls
                 isSkewZero = true;
             else { }
 
-            int cellCount = dgvAkkonROI.GetCellCount(DataGridViewElementStates.Selected);
-            if (cellCount < 0)
+            if (dgvAkkonROI.CurrentCell == null)
                 return;
 
             int selectedIndex = dgvAkkonROI.CurrentCell.RowIndex;
@@ -788,8 +812,7 @@ namespace Jastech.Apps.Winform.UI.Controls
                 jogMoveY = movePixel * (-1);
             else { }
 
-            int cellCount = dgvAkkonROI.GetCellCount(DataGridViewElementStates.Selected);
-            if (cellCount < 0)
+            if (dgvAkkonROI.CurrentCell == null)
                 return;
 
             int selectedIndex = dgvAkkonROI.CurrentCell.RowIndex;
@@ -797,11 +820,23 @@ namespace Jastech.Apps.Winform.UI.Controls
             _cogRectAffineList[selectedIndex].CenterX += jogMoveX;
             _cogRectAffineList[selectedIndex].CenterY += jogMoveY;
 
+            string tabName = cmbTabList.SelectedItem as string;
+            var tabList = TeachingTabList.Where(x => x.Name == tabName).First();
+
+            
+            
             UpdateROIDataGridView(selectedIndex, _cogRectAffineList[selectedIndex]);
 
-            CogGraphicInteractiveCollection collect = new CogGraphicInteractiveCollection();
-            collect.Add(_cogRectAffineList[selectedIndex]);
-            display.SetInteractiveGraphics("lead", collect);
+            //CogGraphicInteractiveCollection collect = new CogGraphicInteractiveCollection();
+            //collect.Add(_cogRectAffineList[selectedIndex]);
+            //display.SetInteractiveGraphics("lead", collect);
+
+            ////
+            int groupIndex = cmbGroupNumber.SelectedIndex;
+            var group = tabList.AkkonParam.GroupList[groupIndex];
+            group.AkkonROIList[selectedIndex] = ConvertCogRectAffineToAkkonRoi(_cogRectAffineList[selectedIndex]).DeepCopy();
+            DrawROI();
+            ////
         }
 
         private void SizeMode(string sizeType, int jogScale)
@@ -822,11 +857,15 @@ namespace Jastech.Apps.Winform.UI.Controls
                 jogSizeY = sizePixel * (1);
             else { }
 
-            int cellCount = dgvAkkonROI.GetCellCount(DataGridViewElementStates.Selected);
-            if (cellCount < 0)
+            if (dgvAkkonROI.CurrentCell == null)
                 return;
 
             int selectedIndex = dgvAkkonROI.CurrentCell.RowIndex;
+
+            double minimumX = _cogRectAffineList[selectedIndex].SideXLength + jogSizeX;
+            double minimumY = _cogRectAffineList[selectedIndex].SideYLength + jogSizeY;
+            if (minimumX <= 0 || minimumY <= 0)
+                return;
 
             _cogRectAffineList[selectedIndex].SideXLength += jogSizeX;
             _cogRectAffineList[selectedIndex].SideYLength += jogSizeY;
