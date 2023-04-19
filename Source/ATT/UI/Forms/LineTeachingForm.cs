@@ -24,6 +24,9 @@ using Jastech.Framework.Winform;
 using Jastech.Framework.Device.Cameras;
 using OpenCvSharp;
 using Jastech.Apps.Structure.Data;
+using System.Runtime.InteropServices;
+using Jastech.Framework.Imaging;
+using ATT.UI.Controls;
 
 namespace ATT.UI.Forms
 {
@@ -159,7 +162,6 @@ namespace ATT.UI.Forms
 
         private void ClearSelectedButton()
         {
-            btnLinescan.ForeColor = Color.White;
             btnMark.ForeColor = Color.White;
             btnAlign.ForeColor = Color.White;
             btnAkkon.ForeColor = Color.White;
@@ -178,8 +180,8 @@ namespace ATT.UI.Forms
             var tabList = SystemManager.Instance().GetTeachingData().GetTabList(UnitName);
             //LinescanControl.SetParams(tabList);
 
-            btnLinescan.ForeColor = Color.Blue;
             pnlTeach.Controls.Add(LinescanControl);
+            btnLinescan.ForeColor = Color.Blue;
         }
 
         private void SelectMark()
@@ -311,9 +313,16 @@ namespace ATT.UI.Forms
             if (image == null)
                 return;
 
+            int size = image.Width * image.Height * image.Channels();
+            byte[] dataArray = new byte[size];
+            Marshal.Copy(image.Data, dataArray, 0, size);
+
+            ColorFormat format = image.Channels() == 1 ? ColorFormat.Gray : ColorFormat.RGB24;
+
+            var cogImage = CogImageHelper.CovertImage(dataArray, image.Width, image.Height, format);
+            Display.SetImage(cogImage);
             // Display Update
         }
-
         #endregion
 
         

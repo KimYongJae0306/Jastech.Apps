@@ -28,6 +28,7 @@ namespace Jastech.Apps.Structure.Data
         LeftArea,
         RightArea,
         LinscanMIL0,
+        LinscanMIL1,
         LinscanVT0,
     }
 

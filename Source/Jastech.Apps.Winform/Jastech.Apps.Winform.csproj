@@ -132,12 +132,6 @@
     <Compile Include="UI\Controls\AlignInspResultControl.Designer.cs">
       <DependentUpon>AlignInspResultControl.cs</DependentUpon>
     </Compile>
-    <Compile Include="UI\Controls\LinescanControl.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="UI\Controls\LinescanControl.designer.cs">
-      <DependentUpon>LinescanControl.cs</DependentUpon>
-    </Compile>
     <Compile Include="UI\Controls\MarkControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -224,9 +218,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UI\Controls\AlignInspResultControl.resx">
       <DependentUpon>AlignInspResultControl.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="UI\Controls\LinescanControl.resx">
-      <DependentUpon>LinescanControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\Controls\MarkControl.resx">
       <DependentUpon>MarkControl.cs</DependentUpon>

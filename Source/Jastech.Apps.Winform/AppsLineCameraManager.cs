@@ -3,14 +3,17 @@ using Jastech.Apps.Structure;
 using Jastech.Apps.Structure.Data;
 using Jastech.Apps.Winform.Settings;
 using Jastech.Framework.Device.Cameras;
+using Jastech.Framework.Device.LAFCtrl;
 using Jastech.Framework.Imaging.Helper;
 using Jastech.Framework.Imaging.VisionPro;
 using Jastech.Framework.Winform;
 using OpenCvSharp;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Jastech.Apps.Winform
@@ -53,6 +56,22 @@ namespace Jastech.Apps.Winform
         #endregion
 
         #region 메서드
+        public void Initialize()
+        {
+            Mat initialImage = new Mat();
+            initialImage.Dispose();
+            var cameraCtrlHandler = DeviceManager.Instance().CameraHandler;
+
+            if (cameraCtrlHandler == null)
+                return;
+
+            foreach (var camera in cameraCtrlHandler)
+            {
+                if (camera is CameraMil)
+                    camera.ImageGrabbed += LinscanImageGrabbed;
+            }
+        }
+
         public void StartGrab(CameraName name)
         {
             ClearScanImage();
@@ -114,14 +133,21 @@ namespace Jastech.Apps.Winform
                 {
                     //kyj : 최적화 생각해봐야함...
                     //kyj : Grabber 단에서 돌리면 더 빠를수도???
+                    Stopwatch sw = new Stopwatch();
+                    sw.Restart();
+
                     Mat grabImage = new Mat(camera.ImageWidth, camera.ImageHeight, MatType.CV_8UC1, data);
                     Mat rotatedMat = MatHelper.Rotate(grabImage, -90);
 
-                    ScanImageList.Add(grabImage);
+                    ScanImageList.Add(rotatedMat);
                     grabImage.Dispose();
 
-                    if(ScanImageList.Count == AppConfig.Instance().GrabCount)
+                    sw.Stop();
+                    Console.WriteLine("Covert : " + sw.ElapsedMilliseconds.ToString() + "ms");
+
+                    if (ScanImageList.Count == AppConfig.Instance().GrabCount)
                     {
+                        camera.Stop();
                         IsGrabbing = false;
                         TeachingImageGrabbed?.Invoke(GetMergeImage());
                     }

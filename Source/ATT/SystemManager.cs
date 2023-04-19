@@ -68,6 +68,7 @@ namespace ATT
 
             AppsMotionManager.Instance().CreateAxisHanlder();
             AppsLAFManager.Instance().Initialize();
+            AppsLineCameraManager.Instance().Initialize();
 
             if(AppConfig.Instance().Operation.VirtualMode == false)
             {
