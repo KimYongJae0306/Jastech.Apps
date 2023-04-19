@@ -45,13 +45,13 @@
             this.lblLeftSub2 = new System.Windows.Forms.Label();
             this.tlpBasic = new System.Windows.Forms.TableLayoutPanel();
             this.lblAddROI = new System.Windows.Forms.Label();
-            this.lblPrev = new System.Windows.Forms.Label();
-            this.lblNext = new System.Windows.Forms.Label();
             this.lblInspection = new System.Windows.Forms.Label();
             this.cbxTabNumList = new System.Windows.Forms.ComboBox();
             this.lblParameter = new System.Windows.Forms.Label();
             this.tlpPattern = new System.Windows.Forms.TableLayoutPanel();
             this.pnlParam = new System.Windows.Forms.Panel();
+            this.lblPrev = new System.Windows.Forms.Label();
+            this.lblNext = new System.Windows.Forms.Label();
             this.pnlPosition.SuspendLayout();
             this.tlpBasic.SuspendLayout();
             this.tlpPattern.SuspendLayout();
@@ -297,30 +297,6 @@
             this.lblAddROI.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.lblAddROI.Click += new System.EventHandler(this.lblAddROI_Click);
             // 
-            // lblPrev
-            // 
-            this.lblPrev.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lblPrev.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblPrev.Image = global::Jastech.Apps.Winform.Properties.Resources.Prev_White;
-            this.lblPrev.Location = new System.Drawing.Point(200, 0);
-            this.lblPrev.Margin = new System.Windows.Forms.Padding(0);
-            this.lblPrev.Name = "lblPrev";
-            this.lblPrev.Size = new System.Drawing.Size(50, 50);
-            this.lblPrev.TabIndex = 5;
-            this.lblPrev.Click += new System.EventHandler(this.lblPrev_Click);
-            // 
-            // lblNext
-            // 
-            this.lblNext.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lblNext.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblNext.Image = global::Jastech.Apps.Winform.Properties.Resources.Next_White;
-            this.lblNext.Location = new System.Drawing.Point(250, 0);
-            this.lblNext.Margin = new System.Windows.Forms.Padding(0);
-            this.lblNext.Name = "lblNext";
-            this.lblNext.Size = new System.Drawing.Size(50, 50);
-            this.lblNext.TabIndex = 2;
-            this.lblNext.Click += new System.EventHandler(this.lblNext_Click);
-            // 
             // lblInspection
             // 
             this.lblInspection.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
@@ -392,12 +368,37 @@
             this.pnlParam.Size = new System.Drawing.Size(679, 297);
             this.pnlParam.TabIndex = 8;
             // 
+            // lblPrev
+            // 
+            this.lblPrev.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblPrev.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblPrev.Image = global::Jastech.Apps.Winform.Properties.Resources.Prev_White;
+            this.lblPrev.Location = new System.Drawing.Point(200, 0);
+            this.lblPrev.Margin = new System.Windows.Forms.Padding(0);
+            this.lblPrev.Name = "lblPrev";
+            this.lblPrev.Size = new System.Drawing.Size(50, 50);
+            this.lblPrev.TabIndex = 5;
+            this.lblPrev.Click += new System.EventHandler(this.lblPrev_Click);
+            // 
+            // lblNext
+            // 
+            this.lblNext.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblNext.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblNext.Image = global::Jastech.Apps.Winform.Properties.Resources.Next_White;
+            this.lblNext.Location = new System.Drawing.Point(250, 0);
+            this.lblNext.Margin = new System.Windows.Forms.Padding(0);
+            this.lblNext.Name = "lblNext";
+            this.lblNext.Size = new System.Drawing.Size(50, 50);
+            this.lblNext.TabIndex = 2;
+            this.lblNext.Click += new System.EventHandler(this.lblNext_Click);
+            // 
             // MarkControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
             this.Controls.Add(this.tlpPattern);
+            this.Font = new System.Drawing.Font("맑은 고딕", 11.25F, System.Drawing.FontStyle.Bold);
             this.ForeColor = System.Drawing.Color.White;
             this.Name = "MarkControl";
             this.Size = new System.Drawing.Size(685, 685);

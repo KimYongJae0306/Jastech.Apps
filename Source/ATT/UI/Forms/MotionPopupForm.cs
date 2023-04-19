@@ -7,6 +7,7 @@ using Jastech.Apps.Winform.Settings;
 using Jastech.Apps.Winform.UI.Controls;
 using Jastech.Framework.Device.Motions;
 using Jastech.Framework.Structure;
+using Jastech.Framework.Winform;
 using Jastech.Framework.Winform.Controls;
 using System;
 using System.Collections.Generic;
@@ -28,7 +29,7 @@ namespace ATT.UI.Forms
 
         private TeachingPositionListControl TeachingPositionListControl { get; set; } = new TeachingPositionListControl();
 
-        private MotionJogControl MotionJogControl { get; set; } = new MotionJogControl();
+        private Controls.JogControl MotionJogControl { get; set; } = new Controls.JogControl();
         #endregion
 
         #region 속성
@@ -94,25 +95,12 @@ namespace ATT.UI.Forms
             tlpVariableParameters.Dock = DockStyle.Fill;
         }
 
-        MotionCommandControl XCommandControl = new MotionCommandControl();
-
-        MotionCommandControl YCommandControl = new MotionCommandControl();
-
-        MotionCommandControl ZCommandControl = new MotionCommandControl();
-
         MotionParameterVariableControl XVariableControl = new MotionParameterVariableControl();
 
         MotionParameterVariableControl YVariableControl = new MotionParameterVariableControl();
 
         MotionParameterVariableControl ZVariableControl = new MotionParameterVariableControl();
 
-        private MotionFunctionControl MotionFunctionControl { get; set; } = new MotionFunctionControl();
-
-        private void AddTitleControl()
-        {
-            MotionFunctionControl.Dock = DockStyle.Fill;
-            tlpStatus.Controls.Add(MotionFunctionControl);
-        }
 
         public TeachingPositionType TeachingPositionType = TeachingPositionType.Standby;
         private void ReceiveTeachingPosition(TeachingPositionType teachingPositionType)
@@ -138,41 +126,45 @@ namespace ATT.UI.Forms
             // Variable Params
             XVariableControl.UpdateData(posData.GetMovingParams(AxisName.X));
             YVariableControl.UpdateData(posData.GetMovingParams(AxisName.Y));
-            ZVariableControl.UpdateData(posData.GetMovingParams(AxisName.Z));
+            //ZVariableControl.UpdateData(posData.GetMovingParams(AxisName.Z));
 
 
             // Command Params
-            XCommandControl.UpdateData(posData.AxisInfoList[(int)AxisName.X]);
-            YCommandControl.UpdateData(posData.AxisInfoList[(int)AxisName.Y]);
-            ZCommandControl.UpdateData(posData.AxisInfoList[(int)AxisName.Z]);
+            //XCommandControl.UpdateData(posData.AxisInfoList[(int)AxisName.X]);
+            //YCommandControl.UpdateData(posData.AxisInfoList[(int)AxisName.Y]);
+            //ZCommandControl.UpdateData(posData.AxisInfoList[(int)AxisName.Z]);
+            //AkkonAFControl.UpdateData(posData.AxisInfoList[(int)AxisName.Z]);
         }
 
         private void AddCommandControl()
         {
-            AddTitleControl();
+            //AddTitleControl();
 
             var axisHandler = AppsMotionManager.Instance().GetAxisHandler(AxisHandlerName.Unit0);
 
-            XCommandControl.Dock = DockStyle.Fill;
-            XCommandControl.SetAxis(axisHandler.GetAxis(AxisName.X));
+            //XCommandControl.Dock = DockStyle.Fill;
+            //XCommandControl.SetAxis(axisHandler.GetAxis(AxisName.X));
 
-            YCommandControl.Dock = DockStyle.Fill;
-            YCommandControl.SetAxis(axisHandler.GetAxis(AxisName.Y));
+            //YCommandControl.Dock = DockStyle.Fill;
+            //YCommandControl.SetAxis(axisHandler.GetAxis(AxisName.Y));
 
-            ZCommandControl.Dock = DockStyle.Fill;
-            ZCommandControl.SetAxis(axisHandler.GetAxis(AxisName.Z));
+            var lafctrl = DeviceManager.Instance().LAFCtrlHandler.Where(x => x.Name == LAFName.Align.ToString()).First();
 
-            tlpStatus.Controls.Add(XCommandControl);
-            tlpStatus.Controls.Add(YCommandControl);
-            tlpStatus.Controls.Add(ZCommandControl);
+            //AkkonAFControl.Dock = DockStyle.Fill;
+            //AkkonAFControl.SetLAFCtrl(lafctrl);
+
+            ////tlpStatus.Controls.Add(XCommandControl);
+            ////tlpStatus.Controls.Add(YCommandControl);
+            //tlpStatus.Controls.Add(AkkonAFControl);
 
             tlpMotionFunction.Dock = DockStyle.Fill;
         }
 
         private void AddJogControl()
         {
+            var lafCtrl = AppsLAFManager.Instance().GetLAFCtrl(LAFName.Akkon);
             MotionJogControl.Dock = DockStyle.Fill;
-            MotionJogControl.SetAxisHanlder(selectedAxisHanlder);
+            MotionJogControl.SetAxisHanlder(selectedAxisHanlder, lafCtrl);
             pnlJog.Controls.Add(MotionJogControl);
             pnlJog.Dock = DockStyle.Fill;
         }
@@ -186,14 +178,16 @@ namespace ATT.UI.Forms
         {
             try
             {
-                if (this.XCommandControl != null)
-                    XCommandControl.UpdateAxisStatus();
+                //if (this.XCommandControl != null)
+                //    XCommandControl.UpdateAxisStatus();
 
-                if (this.XCommandControl != null)
-                    YCommandControl.UpdateAxisStatus();
+                //if (this.YCommandControl != null)
+                //    YCommandControl.UpdateAxisStatus();
 
-                if (this.XCommandControl != null)
-                    ZCommandControl.UpdateAxisStatus();
+                //if (this.XCommandControl != null)
+                //    ZCommandControl.UpdateAxisStatus();
+                //if (this.AkkonAFControl != null)
+                //    AkkonAFControl.UpdateAutoFocusStatus();
             }
             catch (Exception err)
             {
@@ -259,14 +253,17 @@ namespace ATT.UI.Forms
 
 
             // Command Params
-            posData.SetTargetPosition(AxisName.X, XCommandControl.GetCurrentData().TargetPosition);
-            posData.SetOffset(AxisName.X, XCommandControl.GetCurrentData().Offset);
+            //posData.SetTargetPosition(AxisName.X, XCommandControl.GetCurrentData().TargetPosition);
+            //posData.SetOffset(AxisName.X, XCommandControl.GetCurrentData().Offset);
 
-            posData.SetTargetPosition(AxisName.Y, YCommandControl.GetCurrentData().TargetPosition);
-            posData.SetOffset(AxisName.Y, YCommandControl.GetCurrentData().Offset);
+            //posData.SetTargetPosition(AxisName.Y, YCommandControl.GetCurrentData().TargetPosition);
+            //posData.SetOffset(AxisName.Y, YCommandControl.GetCurrentData().Offset);
 
-            posData.SetTargetPosition(AxisName.Z, ZCommandControl.GetCurrentData().TargetPosition);
-            posData.SetOffset(AxisName.Z, ZCommandControl.GetCurrentData().Offset);
+            //posData.SetTargetPosition(AxisName.Z, ZCommandControl.GetCurrentData().TargetPosition);
+            //posData.SetOffset(AxisName.Z, ZCommandControl.GetCurrentData().Offset);
+
+            //posData.SetTargetPosition(AxisName.Z, AkkonAFControl.GetCurrentData().TargetPosition);
+            //posData.SetOffset(AxisName.Z, AkkonAFControl.GetCurrentData().Offset);
         }
 
         private void Save()

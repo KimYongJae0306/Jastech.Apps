@@ -67,17 +67,19 @@ namespace ATT
             DeviceManager.Instance().Initialize(AppConfig.Instance());
 
             AppsMotionManager.Instance().CreateAxisHanlder();
+            AppsLAFManager.Instance().Initialize();
 
             if(AppConfig.Instance().Operation.VirtualMode == false)
             {
-                var cameraHandler = DeviceManager.Instance().CameraHandler;
-                Camera camera = cameraHandler.Get(CameraName.LinscanMIL0.ToString());
+                //kyj
+                //var cameraHandler = DeviceManager.Instance().CameraHandler;
+                //Camera camera = cameraHandler.Get(CameraName.LinscanMIL0.ToString());
 
-                camera.ImageGrabbed += AppsLineCameraManager.Instance().LinscanImageGrabbed;
+                //camera.ImageGrabbed += AppsLineCameraManager.Instance().LinscanImageGrabbed;
 
-                var lafHandler = DeviceManager.Instance().LAFCtrlHandler;
-                LAFCtrl laf = lafHandler.Get(LAFName.Align.ToString());
-                laf.DataReceived += AppsLAFManager.Instance().DataReceived;
+                //var lafHandler = DeviceManager.Instance().LAFCtrlHandler;
+                //LAFCtrl laf = lafHandler.Get(LAFName.Align.ToString());
+                //laf.DataReceived += AppsLAFManager.Instance().DataReceived;
             }
 
 

@@ -1,6 +1,7 @@
 ﻿using Jastech.Apps.Structure;
 using Jastech.Apps.Winform.Settings;
 using Jastech.Framework.Device.LightCtrls;
+using Jastech.Framework.Matrox;
 using Jastech.Framework.Structure;
 using Jastech.Framework.Util.Helper;
 using System;
@@ -22,6 +23,8 @@ namespace ATT
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
+
+            MilHelper.InitApplication();
 
             AppConfig.Instance().Initialize();
             AppConfig.Instance().Load();

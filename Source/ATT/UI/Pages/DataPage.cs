@@ -15,6 +15,11 @@ using static Jastech.Framework.Modeller.Controls.ModelControl;
 using Jastech.Apps.Winform.UI.Forms;
 using Jastech.Apps.Winform.Core;
 using ATT.Core;
+using Jastech.Apps.Structure;
+using Jastech.Framework.Winform.Forms;
+using Jastech.Apps.Winform;
+using Jastech.Apps.Structure.Data;
+using Jastech.Framework.Winform;
 
 namespace ATT.UI.Pages
 {
@@ -44,7 +49,14 @@ namespace ATT.UI.Pages
 
         private void btnMotionData_Click(object sender, EventArgs e)
         {
-            MotionSettingsForm form = new MotionSettingsForm();
+            if(ModelManager.Instance().CurrentModel == null)
+            {
+                MessageConfirmForm confirmForm = new MessageConfirmForm();
+                confirmForm.Message = "None Current Model.";
+                confirmForm.ShowDialog();
+                return;
+            }
+            MotionSettingsForm form = new MotionSettingsForm() { UnitName = "0" };
             form.ShowDialog();
         }
 

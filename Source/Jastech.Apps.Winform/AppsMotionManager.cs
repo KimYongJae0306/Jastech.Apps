@@ -51,9 +51,9 @@ namespace Jastech.Apps.Winform
             {
                 AxisHandler unit0 = new AxisHandler(AxisHandlerName.Unit0.ToString());
 
-                unit0.AddAxis(AxisName.X, motion, 0, 1);
-                unit0.AddAxis(AxisName.Y, motion, 0, 1);
-                unit0.AddAxis(AxisName.Z, motion, 0, 0);
+                unit0.AddAxis(AxisName.X, motion, 0, 2);
+                unit0.AddAxis(AxisName.Y, motion, 8, 1);
+                unit0.AddAxis(AxisName.Z, motion, 0, 2);
 
                 AxisHandlerList.Add(unit0);
 
@@ -64,6 +64,10 @@ namespace Jastech.Apps.Winform
                 AxisHandler unit0 = new AxisHandler();
                 JsonConvertHelper.LoadToExistingTarget<AxisHandler>(unit0FilePath, unit0);
 
+                foreach (var axis in unit0.AxisList)
+                {
+                    axis.SetMotion(motion);
+                }
                 AxisHandlerList.Add(unit0);
             }
             return true;

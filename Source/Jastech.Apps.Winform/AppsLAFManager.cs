@@ -1,4 +1,5 @@
-﻿using Jastech.Framework.Device.LAFCtrl;
+﻿using Jastech.Apps.Structure.Data;
+using Jastech.Framework.Device.LAFCtrl;
 using Jastech.Framework.Winform;
 using System;
 using System.Collections.Generic;
@@ -20,8 +21,6 @@ namespace Jastech.Apps.Winform
 
         #region 속성
         public List<Thread> StatusThreadList { get; private set; } = new List<Thread>();
-
-        public List<LAFStatus> StatusList { get; private set; } = new List<LAFStatus>();
         #endregion
 
         #region 메서드
@@ -39,16 +38,20 @@ namespace Jastech.Apps.Winform
         {
             var lafCtrlHandler = DeviceManager.Instance().LAFCtrlHandler;
 
+            if (lafCtrlHandler == null)
+                return;
+
             _isStop = false;
 
             foreach (var laf in lafCtrlHandler)
             {
+                laf.DataReceived += DataReceived;
+
                 Thread statusThread = new Thread(() => RequestStatusData(laf.Name));
 
                 LAFStatus status = new LAFStatus();
                 status.Name = laf.Name;
 
-                StatusList.Add(status);
                 StatusThreadList.Add(statusThread);
 
                 statusThread.Start();
@@ -61,13 +64,20 @@ namespace Jastech.Apps.Winform
 
             Thread.Sleep(300);
 
+            var lafCtrlHandler = DeviceManager.Instance().LAFCtrlHandler;
+
+            if (lafCtrlHandler != null)
+            {
+                foreach (var laf in lafCtrlHandler)
+                    laf.DataReceived -= DataReceived;
+            }
+
             foreach (var thread in StatusThreadList)
             {
                 thread.Interrupt();
                 thread.Abort();
             }
             StatusThreadList.Clear();
-            StatusList.Clear();
         }
 
         public void RequestStatusData(string name)
@@ -87,7 +97,7 @@ namespace Jastech.Apps.Winform
 
         public void DataReceived(string name, byte[] data)
         {
-            if(StatusList.Where(x => x.Name == name).First() is LAFStatus status)
+            if (DeviceManager.Instance().LAFCtrlHandler.Get(name) is NuriOneLAFCtrl laf)
             {
                 string dataString = Encoding.Default.GetString(data);
 
@@ -96,19 +106,39 @@ namespace Jastech.Apps.Winform
                 bool isNegativeLimit = false;
                 bool isPositiveLimit = false;
                 // ex : "4\rcog: -2139 mpos: +98050 ls1: 0 ls2: 0 "
+
+                bool isContain = false;
                 if (int.TryParse(GetValue(dataString, "cog"), out int cog))
+                {
+                    isContain = true;
                     centerofGravity = cog;
+                }
 
                 if (double.TryParse(GetValue(dataString, "mpos"), out double mpos))
-                    mPos = cog;
+                {
+                    isContain = true;
+                    mPos = mpos;
+                }
 
-                if (bool.TryParse(GetValue(dataString, "ls1"), out bool ls1))
-                    isNegativeLimit = ls1;
+                if (int.TryParse(GetValue(dataString, "ls1"), out int ls1))
+                {
+                    isContain = true;
+                    isNegativeLimit = Convert.ToBoolean(ls1);
+                }
 
-                if (bool.TryParse(GetValue(dataString, "ls2"), out bool ls2))
-                    isPositiveLimit = ls2;
+                if (int.TryParse(GetValue(dataString, "ls2"), out int ls2))
+                {
+                    isContain = true;
+                    isPositiveLimit = Convert.ToBoolean(ls2);
+                }
 
-                status.SetStatus(centerofGravity, mPos, isNegativeLimit, isPositiveLimit);
+                if(isContain)
+                {
+                    laf.Status.CenterofGravity = centerofGravity;
+                    laf.Status.MPos = mPos;
+                    laf.Status.IsNegativeLimit = isNegativeLimit;
+                    laf.Status.IsPositiveLimit = isPositiveLimit;
+                }
             }
         }
 
@@ -127,43 +157,23 @@ namespace Jastech.Apps.Winform
                     if (Regex.IsMatch(content[i].ToString(), "^[a-zA-Z]"))
                         break;
                 }
-
-                return content.Substring(0, nextAlphabetIndex).Replace(" ", "");
+                if (content.Length > 0)
+                    return content.Substring(0, nextAlphabetIndex).Replace(" ", "");
+                else
+                    return "";
             }
             return "";
         }
+
+        public LAFCtrl GetLAFCtrl(LAFName name)
+        {
+            var lafCtrlHandler = DeviceManager.Instance().LAFCtrlHandler;
+
+            if (lafCtrlHandler == null)
+                return null;
+
+            return lafCtrlHandler.Where(x => x.Name == name.ToString()).First();
+        }
         #endregion
-    }
-
-    public class LAFStatus
-    {
-        private object _lock { get; set; } = new object();
-
-        public string Name { get; set; }
-
-        private int CenterofGravity { get; set; }
-
-        private double MPos { get; set; }
-
-        private bool IsNegativeLimit { get; set; }
-
-        private bool IsPositiveLimit { get; set; }
-
-        public void SetStatus(int centerOfCravity, double mPos, bool isNegativeLimit, bool isPositiveLimit)
-        {
-            lock(_lock)
-            {
-                CenterofGravity = centerOfCravity;
-                MPos = mPos;
-                IsNegativeLimit = isNegativeLimit;
-                IsPositiveLimit = isPositiveLimit;
-            }
-        }
-
-        public LAFStatus GetStatus()
-        {
-            lock (_lock)
-                return this;
-        }
     }
 }

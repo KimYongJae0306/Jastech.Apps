@@ -42,6 +42,8 @@ namespace ATT.UI.Forms
 
         private CogTeachingDisplayControl Display { get; set; } = new CogTeachingDisplayControl();
 
+        private LinescanControl LinescanControl { get; set; } = new LinescanControl() { Dock = DockStyle.Fill };
+
         private AlignControl AlignControl { get; set; } = new AlignControl() { Dock = DockStyle.Fill };
 
         private AkkonControl AkkonControl { get; set; } = new AkkonControl() { Dock = DockStyle.Fill };
@@ -130,6 +132,11 @@ namespace ATT.UI.Forms
             }
         }
 
+        private void btnLinescan_Click(object sender, EventArgs e)
+        {
+            SelectLinescan();
+        }
+
         private void btnMark_Click(object sender, EventArgs e)
         {
             SelectMark();
@@ -152,12 +159,27 @@ namespace ATT.UI.Forms
 
         private void ClearSelectedButton()
         {
+            btnLinescan.ForeColor = Color.White;
             btnMark.ForeColor = Color.White;
             btnAlign.ForeColor = Color.White;
             btnAkkon.ForeColor = Color.White;
             btnAutoAkkon.ForeColor = Color.White;
 
             pnlTeach.Controls.Clear();
+        }
+
+        private void SelectLinescan()
+        {
+            if (ModelManager.Instance().CurrentModel == null || UnitName == "")
+                return;
+
+            ClearSelectedButton();
+
+            var tabList = SystemManager.Instance().GetTeachingData().GetTabList(UnitName);
+            //LinescanControl.SetParams(tabList);
+
+            btnLinescan.ForeColor = Color.Blue;
+            pnlTeach.Controls.Add(LinescanControl);
         }
 
         private void SelectMark()
@@ -244,10 +266,7 @@ namespace ATT.UI.Forms
             this.Close();
         }
 
-        private void btnAutoFocus_Click(object sender, EventArgs e)
-        {
-
-        }
+        
 
         private void btnLoadImage_Click(object sender, EventArgs e)
         {
@@ -294,6 +313,9 @@ namespace ATT.UI.Forms
 
             // Display Update
         }
+
         #endregion
+
+        
     }
 }

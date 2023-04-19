@@ -81,7 +81,7 @@
             this.tlpAlign.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 300F));
             this.tlpAlign.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 100F));
             this.tlpAlign.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tlpAlign.Size = new System.Drawing.Size(670, 600);
+            this.tlpAlign.Size = new System.Drawing.Size(685, 685);
             this.tlpAlign.TabIndex = 1;
             // 
             // lblParameter
@@ -92,7 +92,7 @@
             this.lblParameter.Location = new System.Drawing.Point(0, 0);
             this.lblParameter.Margin = new System.Windows.Forms.Padding(0);
             this.lblParameter.Name = "lblParameter";
-            this.lblParameter.Size = new System.Drawing.Size(670, 32);
+            this.lblParameter.Size = new System.Drawing.Size(685, 32);
             this.lblParameter.TabIndex = 0;
             this.lblParameter.Text = "Parameter";
             this.lblParameter.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -119,7 +119,7 @@
             this.tlpBasic.Name = "tlpBasic";
             this.tlpBasic.RowCount = 1;
             this.tlpBasic.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tlpBasic.Size = new System.Drawing.Size(670, 50);
+            this.tlpBasic.Size = new System.Drawing.Size(685, 50);
             this.tlpBasic.TabIndex = 0;
             // 
             // lblAddROI
@@ -218,7 +218,7 @@
             this.pnlPosition.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pnlPosition.Location = new System.Drawing.Point(3, 85);
             this.pnlPosition.Name = "pnlPosition";
-            this.pnlPosition.Size = new System.Drawing.Size(664, 114);
+            this.pnlPosition.Size = new System.Drawing.Size(679, 114);
             this.pnlPosition.TabIndex = 7;
             // 
             // lblRightPanelY
@@ -421,7 +421,7 @@
             this.ForeColor = System.Drawing.Color.White;
             this.Margin = new System.Windows.Forms.Padding(0);
             this.Name = "AlignControl";
-            this.Size = new System.Drawing.Size(670, 600);
+            this.Size = new System.Drawing.Size(685, 685);
             this.Load += new System.EventHandler(this.AlignControl_Load);
             this.tlpAlign.ResumeLayout(false);
             this.tlpBasic.ResumeLayout(false);

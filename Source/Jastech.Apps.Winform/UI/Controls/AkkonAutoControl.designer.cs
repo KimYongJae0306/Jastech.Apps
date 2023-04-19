@@ -38,8 +38,14 @@
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.pnlROIData = new System.Windows.Forms.Panel();
             this.dgvAkkonROI = new System.Windows.Forms.DataGridView();
+            this.colROINo = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colLeftTop = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colRightTop = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colRightBottom = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colLeftBottom = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.panel2 = new System.Windows.Forms.Panel();
             this.pnlGroup = new System.Windows.Forms.Panel();
+            this.lblThreshold = new System.Windows.Forms.Label();
             this.lblCloneExecute = new System.Windows.Forms.Label();
             this.cmbGroupNumber = new System.Windows.Forms.ComboBox();
             this.lblGroupCountValue = new System.Windows.Forms.Label();
@@ -63,12 +69,6 @@
             this.panel1 = new System.Windows.Forms.Panel();
             this.lblResult = new System.Windows.Forms.Label();
             this.lblGroup = new System.Windows.Forms.Label();
-            this.lblThreshold = new System.Windows.Forms.Label();
-            this.colROINo = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colLeftTop = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colRightTop = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colRightBottom = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colLeftBottom = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tlpAkkon.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             this.pnlROIData.SuspendLayout();
@@ -164,8 +164,8 @@
             this.colLeftBottom});
             dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
             dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle2.Font = new System.Drawing.Font("맑은 고딕", 9F, System.Drawing.FontStyle.Bold);
-            dataGridViewCellStyle2.ForeColor = System.Drawing.Color.Black;
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("맑은 고딕", 11.25F, System.Drawing.FontStyle.Bold);
+            dataGridViewCellStyle2.ForeColor = System.Drawing.Color.White;
             dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
             dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
             dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
@@ -187,6 +187,51 @@
             this.dgvAkkonROI.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgvAkkonROI.Size = new System.Drawing.Size(483, 328);
             this.dgvAkkonROI.TabIndex = 0;
+            // 
+            // colROINo
+            // 
+            this.colROINo.FillWeight = 70F;
+            this.colROINo.HeaderText = "NO";
+            this.colROINo.MinimumWidth = 70;
+            this.colROINo.Name = "colROINo";
+            this.colROINo.ReadOnly = true;
+            this.colROINo.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.colROINo.Width = 70;
+            // 
+            // colLeftTop
+            // 
+            this.colLeftTop.HeaderText = "LEFT TOP";
+            this.colLeftTop.MinimumWidth = 160;
+            this.colLeftTop.Name = "colLeftTop";
+            this.colLeftTop.ReadOnly = true;
+            this.colLeftTop.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.colLeftTop.Width = 160;
+            // 
+            // colRightTop
+            // 
+            this.colRightTop.HeaderText = "RIGHT TOP";
+            this.colRightTop.MinimumWidth = 160;
+            this.colRightTop.Name = "colRightTop";
+            this.colRightTop.ReadOnly = true;
+            this.colRightTop.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.colRightTop.Width = 160;
+            // 
+            // colRightBottom
+            // 
+            this.colRightBottom.HeaderText = "RIGHT BOTTOM";
+            this.colRightBottom.MinimumWidth = 160;
+            this.colRightBottom.Name = "colRightBottom";
+            this.colRightBottom.ReadOnly = true;
+            this.colRightBottom.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.colRightBottom.Width = 160;
+            // 
+            // colLeftBottom
+            // 
+            this.colLeftBottom.HeaderText = "LEFT BOTTOM";
+            this.colLeftBottom.MinimumWidth = 160;
+            this.colLeftBottom.Name = "colLeftBottom";
+            this.colLeftBottom.ReadOnly = true;
+            this.colLeftBottom.Width = 160;
             // 
             // panel2
             // 
@@ -214,6 +259,21 @@
             this.pnlGroup.Name = "pnlGroup";
             this.pnlGroup.Size = new System.Drawing.Size(497, 330);
             this.pnlGroup.TabIndex = 2;
+            // 
+            // lblThreshold
+            // 
+            this.lblThreshold.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
+            this.lblThreshold.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblThreshold.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
+            this.lblThreshold.ForeColor = System.Drawing.Color.White;
+            this.lblThreshold.Location = new System.Drawing.Point(246, 98);
+            this.lblThreshold.Margin = new System.Windows.Forms.Padding(0);
+            this.lblThreshold.Name = "lblThreshold";
+            this.lblThreshold.Size = new System.Drawing.Size(96, 40);
+            this.lblThreshold.TabIndex = 147;
+            this.lblThreshold.Text = "Preview";
+            this.lblThreshold.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblThreshold.Click += new System.EventHandler(this.lblThreshold_Click);
             // 
             // lblCloneExecute
             // 
@@ -535,66 +595,6 @@
             this.lblGroup.Text = "Group";
             this.lblGroup.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.lblGroup.Click += new System.EventHandler(this.lblGroup_Click);
-            // 
-            // lblThreshold
-            // 
-            this.lblThreshold.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
-            this.lblThreshold.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lblThreshold.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
-            this.lblThreshold.ForeColor = System.Drawing.Color.White;
-            this.lblThreshold.Location = new System.Drawing.Point(246, 98);
-            this.lblThreshold.Margin = new System.Windows.Forms.Padding(0);
-            this.lblThreshold.Name = "lblThreshold";
-            this.lblThreshold.Size = new System.Drawing.Size(96, 40);
-            this.lblThreshold.TabIndex = 147;
-            this.lblThreshold.Text = "Preview";
-            this.lblThreshold.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.lblThreshold.Click += new System.EventHandler(this.lblThreshold_Click);
-            // 
-            // colROINo
-            // 
-            this.colROINo.FillWeight = 70F;
-            this.colROINo.HeaderText = "NO";
-            this.colROINo.MinimumWidth = 70;
-            this.colROINo.Name = "colROINo";
-            this.colROINo.ReadOnly = true;
-            this.colROINo.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.colROINo.Width = 70;
-            // 
-            // colLeftTop
-            // 
-            this.colLeftTop.HeaderText = "LEFT TOP";
-            this.colLeftTop.MinimumWidth = 160;
-            this.colLeftTop.Name = "colLeftTop";
-            this.colLeftTop.ReadOnly = true;
-            this.colLeftTop.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.colLeftTop.Width = 160;
-            // 
-            // colRightTop
-            // 
-            this.colRightTop.HeaderText = "RIGHT TOP";
-            this.colRightTop.MinimumWidth = 160;
-            this.colRightTop.Name = "colRightTop";
-            this.colRightTop.ReadOnly = true;
-            this.colRightTop.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.colRightTop.Width = 160;
-            // 
-            // colRightBottom
-            // 
-            this.colRightBottom.HeaderText = "RIGHT BOTTOM";
-            this.colRightBottom.MinimumWidth = 160;
-            this.colRightBottom.Name = "colRightBottom";
-            this.colRightBottom.ReadOnly = true;
-            this.colRightBottom.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.colRightBottom.Width = 160;
-            // 
-            // colLeftBottom
-            // 
-            this.colLeftBottom.HeaderText = "LEFT BOTTOM";
-            this.colLeftBottom.MinimumWidth = 160;
-            this.colLeftBottom.Name = "colLeftBottom";
-            this.colLeftBottom.ReadOnly = true;
-            this.colLeftBottom.Width = 160;
             // 
             // AkkonAutoControl
             // 

@@ -56,6 +56,10 @@
     <StartupObject />
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Cognex.VisionPro, Version=71.2.0.0, Culture=neutral, PublicKeyToken=ef0f902af9dee505, processorArchitecture=AMD64">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Jastech.Library\Cognex\9.6\Cognex.VisionPro.dll</HintPath>
+    </Reference>
     <Reference Include="Cognex.VisionPro.Core, Version=71.2.0.0, Culture=neutral, PublicKeyToken=ef0f902af9dee505, processorArchitecture=AMD64" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -80,6 +84,12 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SystemManager.cs" />
+    <Compile Include="UI\Controls\JogControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UI\Controls\JogControl.designer.cs">
+      <DependentUpon>JogControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="UI\Forms\AutoFocusTeachingForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -159,6 +169,9 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <EmbeddedResource Include="UI\Controls\JogControl.resx">
+      <DependentUpon>JogControl.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="UI\Forms\AutoFocusTeachingForm.resx">
       <DependentUpon>AutoFocusTeachingForm.cs</DependentUpon>
     </EmbeddedResource>
