@@ -84,30 +84,6 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SystemManager.cs" />
-    <Compile Include="UI\Controls\AutoFocusControl.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="UI\Controls\AutoFocusControl.Designer.cs">
-      <DependentUpon>AutoFocusControl.cs</DependentUpon>
-    </Compile>
-    <Compile Include="UI\Controls\JogControl.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="UI\Controls\JogControl.designer.cs">
-      <DependentUpon>JogControl.cs</DependentUpon>
-    </Compile>
-    <Compile Include="UI\Controls\LinescanControl.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="UI\Controls\LinescanControl.Designer.cs">
-      <DependentUpon>LinescanControl.cs</DependentUpon>
-    </Compile>
-    <Compile Include="UI\Controls\MotionRepeatControl.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="UI\Controls\MotionRepeatControl.Designer.cs">
-      <DependentUpon>MotionRepeatControl.cs</DependentUpon>
-    </Compile>
     <Compile Include="UI\Forms\AutoFocusTeachingForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -187,18 +163,6 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
-    <EmbeddedResource Include="UI\Controls\AutoFocusControl.resx">
-      <DependentUpon>AutoFocusControl.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="UI\Controls\JogControl.resx">
-      <DependentUpon>JogControl.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="UI\Controls\LinescanControl.resx">
-      <DependentUpon>LinescanControl.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="UI\Controls\MotionRepeatControl.resx">
-      <DependentUpon>MotionRepeatControl.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="UI\Forms\AutoFocusTeachingForm.resx">
       <DependentUpon>AutoFocusTeachingForm.cs</DependentUpon>
     </EmbeddedResource>

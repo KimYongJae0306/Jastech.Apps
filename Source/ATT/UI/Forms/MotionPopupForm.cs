@@ -29,7 +29,6 @@ namespace ATT.UI.Forms
 
         private TeachingPositionListControl TeachingPositionListControl { get; set; } = new TeachingPositionListControl();
 
-        private Controls.JogControl MotionJogControl { get; set; } = new Controls.JogControl();
         #endregion
 
         #region 속성
@@ -162,11 +161,6 @@ namespace ATT.UI.Forms
 
         private void AddJogControl()
         {
-            var lafCtrl = AppsLAFManager.Instance().GetLAFCtrl(LAFName.Akkon);
-            MotionJogControl.Dock = DockStyle.Fill;
-            MotionJogControl.SetAxisHanlder(selectedAxisHanlder, lafCtrl);
-            pnlJog.Controls.Add(MotionJogControl);
-            pnlJog.Dock = DockStyle.Fill;
         }
 
         private void StartTimer()
