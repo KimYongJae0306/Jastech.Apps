@@ -180,6 +180,11 @@ namespace Jastech.Apps.Winform.UI.Controls
             if (ModelManager.Instance().CurrentModel == null)
                 return;
 
+            string tabName = cbxTabList.SelectedItem as string;
+            var tabList = TeachingTabList.Where(x => x.Name == tabName).First();
+            if (tabList.AkkonParam.GroupList.Count <= 0)
+                return;
+
             if (_teachingMode == TeachingMode.Manual)
                 SetNewManualROI(display);
             else
@@ -218,8 +223,8 @@ namespace Jastech.Apps.Winform.UI.Controls
             double centerX = display.ImageWidth() / 2.0 - display.GetPan().X;
             double centerY = display.ImageHeight() / 2.0 - display.GetPan().Y;
 
-            //_autoTeachingRect = CogImageHelper.CreateRectangle(centerX, centerY, display.ImageWidth(), display.ImageHeight());
-            _autoTeachingRect = CogImageHelper.CreateRectangle(centerX, centerY, 100, 100);
+            _autoTeachingRect = CogImageHelper.CreateRectangle(centerX, centerY, display.ImageWidth(), display.ImageHeight());
+            //_autoTeachingRect = CogImageHelper.CreateRectangle(centerX, centerY, 100, 100);
             _autoTeachingRect.DraggingStopped += AutoTeachingRect_DraggingStopped;
 
             var teachingDisplay = AppsTeachingUIManager.Instance().GetDisplay();
@@ -350,14 +355,14 @@ namespace Jastech.Apps.Winform.UI.Controls
                 collect.Add(rect);
                 _cogRectAffineList.Add(rect);
 
-                CogGraphicLabel cogLabel = new CogGraphicLabel();
-                cogLabel.Color = CogColorConstants.Green;
-                cogLabel.Font = new Font("맑은 고딕", 20, FontStyle.Bold);
-                cogLabel.Text = count.ToString();
-                cogLabel.X = (rect.CornerOppositeX + rect.CornerYX) / 2;
-                cogLabel.Y = rect.CornerYY + 40;
-                collect.Add(cogLabel);
-                count++;
+                //CogGraphicLabel cogLabel = new CogGraphicLabel();
+                //cogLabel.Color = CogColorConstants.Green;
+                //cogLabel.Font = new Font("맑은 고딕", 20, FontStyle.Bold);
+                //cogLabel.Text = count.ToString();
+                //cogLabel.X = (rect.CornerOppositeX + rect.CornerYX) / 2;
+                //cogLabel.Y = rect.CornerYY + 40;
+                //collect.Add(cogLabel);
+                //count++;
             }
 
             var teachingDisplay = AppsTeachingUIManager.Instance().GetDisplay();
@@ -1115,7 +1120,8 @@ namespace Jastech.Apps.Winform.UI.Controls
             List<int> topEdgePointList = new List<int>();
             List<int> bottomEdgePointList = new List<int>();
 
-            ImageHelper.GetEdgePoint(topDataArray, bottomDataArray, 0, (int)CalcResolution, ref topEdgePointList, ref bottomEdgePointList);
+            // 39 :  나중에 변경해야함
+            ImageHelper.GetEdgePoint(topDataArray, bottomDataArray, 0, 30, ref topEdgePointList, ref bottomEdgePointList);
 
             if (topEdgePointList.Count != bottomEdgePointList.Count)
             {

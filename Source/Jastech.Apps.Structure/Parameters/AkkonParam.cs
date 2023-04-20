@@ -58,9 +58,9 @@ namespace Jastech.Apps.Structure.Parameters
             {
                 int deleteCount = GroupList.Count() - newGroupCount;
 
-                for (int i = GroupList.Count(); i > deleteCount; i--)
+                for (int i = 0; i < deleteCount; i++)
                 {
-                    DeleteGroup(i);
+                    DeleteGroup(GroupList.Count - 1);
                 }
             }
         }

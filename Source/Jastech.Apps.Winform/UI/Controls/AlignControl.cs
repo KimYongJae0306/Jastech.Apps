@@ -411,7 +411,11 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         private int SetLabelIntegerData(object sender)
         {
+            Label lbl = sender as Label;
+            int prevData = Convert.ToInt32(lbl.Text);
+
             KeyPadForm keyPadForm = new KeyPadForm();
+            keyPadForm.PreviousValue = (double)prevData;
             keyPadForm.ShowDialog();
 
             int inputData = Convert.ToInt16(keyPadForm.PadValue);
