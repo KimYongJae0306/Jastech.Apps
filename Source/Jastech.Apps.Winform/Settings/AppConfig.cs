@@ -150,4 +150,10 @@ namespace Jastech.Apps.Winform.Settings
         }
         #endregion
     }
+
+    public enum TeachingMode
+    {
+        Manual,
+        Auto,
+    }
 }

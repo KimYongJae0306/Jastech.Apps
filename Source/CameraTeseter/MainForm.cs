@@ -36,7 +36,6 @@ namespace CameraTeseter
 
         private void MainForm_Load(object sender, EventArgs e)
         {
-            MilHelper.InitApplication();
             pbxImageCam0 = new DoubleBufferPictureBox();
             pbxImageCam0.Dock = DockStyle.Fill;
             pnlCam0Display.Controls.Add(pbxImageCam0);

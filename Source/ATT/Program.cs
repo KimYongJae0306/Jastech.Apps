@@ -24,8 +24,6 @@ namespace ATT
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
-            MilHelper.InitApplication();
-
             AppConfig.Instance().Initialize();
             AppConfig.Instance().Load();
 
