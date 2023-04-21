@@ -10,6 +10,7 @@ using System.Windows.Forms;
 using Jastech.Framework.Winform.Forms;
 using Jastech.Framework.Structure;
 using Jastech.Framework.Device.Motions;
+using Jastech.Framework.Device.LAFCtrl;
 
 namespace Jastech.Apps.Winform.UI.Controls
 {
@@ -59,13 +60,16 @@ namespace Jastech.Apps.Winform.UI.Controls
             }
         }
 
+        private LAFCtrl LAFCtrl { get; set; } = null;
         private void UpdateStatus()
         {
-            if (!SelectedAxis.IsConnected())
+            var status = LAFCtrl.Status;
+
+            if (status == null)
                 return;
 
-            lblCurrentPosition.Text = SelectedAxis.GetActualPosition().ToString("F3");
-            lblCurrentCogValue.Text = "0";
+            lblCuttentPositionValue.Text = status.MPos.ToString();
+            lblCurrentCogValue.Text = status.CenterofGravity.ToString();
         }
 
         public void SetAxisHanlder(AxisHandler axisHandler)
@@ -77,6 +81,11 @@ namespace Jastech.Apps.Winform.UI.Controls
         private void SetAxis(AxisHandler axisHandler)
         {
             SelectedAxis = axisHandler.GetAxis(AxisName.Z);
+        }
+
+        public void SetLAFCtrl(LAFCtrl lafCtrl)
+        {
+            LAFCtrl = lafCtrl;
         }
 
         private void lblTargetPositionZValue_Click(object sender, EventArgs e)

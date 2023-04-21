@@ -55,14 +55,21 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         private void AddControl()
         {
-            pnlAutoFocus.Controls.Add(AutoFocusControl);
-
             AxisHandler axisHandler = AppsMotionManager.Instance().GetAxisHandler(AxisHandlerName.Unit0);
+
+            var lafCtrl = AppsLAFManager.Instance().GetLAFCtrl(LAFName.Akkon);
+            pnlAutoFocus.Controls.Add(AutoFocusControl);
+            AutoFocusControl.SetAxisHanlder(axisHandler);
+            AutoFocusControl.SetLAFCtrl(lafCtrl);
+
             MotionRepeatControl.SetAxisHanlder(axisHandler);
             pnlMotionRepeat.Controls.Add(MotionRepeatControl);
 
             pnlMotionJog.Controls.Add(MotionJogControl);
+            MotionJogControl.SetAxisHanlder(AxisHandler);
+
             pnlLAFJog.Controls.Add(LAFJogControl);
+            LAFJogControl.SetSelectedLafCtrl(LAFCtrl);
         }
 
         private void rdoGrabType_CheckedChanged(object sender, EventArgs e)
@@ -129,18 +136,19 @@ namespace Jastech.Apps.Winform.UI.Controls
             nudLightDimmingLevel.Text = "";
         }
 
-        private delegate void UpdateUIDelegate(object obj);
-        public void UpdateUI(object obj)
+        private delegate void UpdateUIDelegate();
+        public void UpdateUI()
         {
             if (this.InvokeRequired)
             {
                 UpdateUIDelegate callback = UpdateUI;
-                BeginInvoke(callback, obj);
+                BeginInvoke(callback);
                 return;
             }
 
             UpdateMotionStatus();
             MotionRepeatControl.UpdateRepeatCount();
+            AutoFocusControl.UpdateAxisStatus();
         }
 
         public void SetParams()
@@ -193,7 +201,7 @@ namespace Jastech.Apps.Winform.UI.Controls
             if (axis == null || !axis.IsConnected())
                 return;
 
-            lblCurrentPositionX.Text = axis.GetActualPosition().ToString();
+            lblCurrentPositionX.Text = axis.GetActualPosition().ToString("F3");
 
             if (axis.IsNegativeLimit())
                 lblNegativeLimitX.BackColor = Color.Red;
@@ -213,7 +221,7 @@ namespace Jastech.Apps.Winform.UI.Controls
             if (axis == null || !axis.IsConnected())
                 return;
 
-            lblCurrentPositionY.Text = axis.GetActualPosition().ToString();
+            lblCurrentPositionY.Text = axis.GetActualPosition().ToString("F3");
 
             if (axis.IsNegativeLimit())
                 lblNegativeLimitY.BackColor = Color.Red;

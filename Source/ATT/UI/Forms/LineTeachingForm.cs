@@ -82,12 +82,32 @@ namespace ATT.UI.Forms
         #endregion
 
         #region 메서드
+        private System.Threading.Timer _formTimer = null;
+        private void StartTimer()
+        {
+            _formTimer = new System.Threading.Timer(UpdateStatus, null, 1000, 1000);
+        }
+
+        private delegate void UpdateStatusDelegate(object obj);
+        private void UpdateStatus(object obj)
+        {
+            if (this.InvokeRequired)
+            {
+                UpdateStatusDelegate callback = UpdateStatus;
+                BeginInvoke(callback, obj);
+                return;
+            }
+
+            if (LinescanControl != null && isSetParamLinescanPage)
+                LinescanControl.UpdateUI();
+        }
+
         private void LineTeachingForm_Load(object sender, EventArgs e)
         {
             SystemManager.Instance().UpdateTeachingData();
-
             AddControl();
             SelectAlign();
+            StartTimer();
 
             lblStageCam.Text = $"STAGE : {UnitName} / CAM : {TitleCameraName}";
 
@@ -170,6 +190,7 @@ namespace ATT.UI.Forms
             pnlTeach.Controls.Clear();
         }
 
+        bool isSetParamLinescanPage = false;
         private void SelectLinescan()
         {
             if (ModelManager.Instance().CurrentModel == null || UnitName == "")
@@ -184,6 +205,8 @@ namespace ATT.UI.Forms
             pnlTeach.Controls.Add(LinescanControl);
             //LinescanControl.SetParams(tabList);
             btnLinescan.ForeColor = Color.Blue;
+
+            isSetParamLinescanPage = true;
         }
 
         private void SelectMark()
@@ -269,8 +292,6 @@ namespace ATT.UI.Forms
         {
             this.Close();
         }
-
-        
 
         private void btnLoadImage_Click(object sender, EventArgs e)
         {

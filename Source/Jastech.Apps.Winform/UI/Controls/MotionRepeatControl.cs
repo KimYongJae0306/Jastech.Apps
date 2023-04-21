@@ -198,8 +198,14 @@ namespace Jastech.Apps.Winform.UI.Controls
             int repeatCount = repeatParam.RepeatCount;
             int count = 0;
 
+            if (repeatCount == 0)
+            { }
+            else
+                _remainCount = repeatCount;
+
             while (_isRepeat)
             {
+
                 SelectedAxis.MoveTo(repeatParam.EndPosition, movingParam);
                 while (!SelectedAxis.WaitForDone())
                     System.Threading.Thread.Sleep(Convert.ToInt16(movingParam.AfterWaitTime));
@@ -238,8 +244,8 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         public void UpdateRepeatCount()
         {
-            if (!_isRepeat)
-                return;
+            //if (!_isRepeat)
+            //    return;
 
             lblRepeatRemain.Text = _remainCount + " / " + lblRepeatCount.Text;
         }
