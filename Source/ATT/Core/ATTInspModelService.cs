@@ -30,20 +30,20 @@ namespace ATT.Core
         {
             AppsInspModel appInspModel = inspModel as AppsInspModel;
 
-            for (int i = 0; i < appInspModel.UnitCount; i++)
+            for (int unit = 0; unit < appInspModel.UnitCount; unit++)
             {
                 Unit unit = new Unit();
 
-                unit.Name = i.ToString(); // 임시 -> Apps에서 변경
+                unit.Name = unit.ToString(); // 임시 -> Apps에서 변경
 
                 // LineScan 조명 Parameter 생성
                 unit.LightParams.AddRange(CreateLightParameter());
 
-                for (int k = 0; k < appInspModel.TabCount; k++)
+                for (int tab = 0; tab < appInspModel.TabCount; tab++)
                 {
                     Tab tab = new Tab();
-                    tab.Name = k.ToString();
-                    tab.Index = k;
+                    tab.Name = tab.ToString();
+                    tab.Index = tab;
 
                     // Tab Fpc Mark 등록
                     foreach (MarkName type in Enum.GetValues(typeof(MarkName)))
@@ -92,6 +92,8 @@ namespace ATT.Core
                     {
                         MacronAkkonGroup group = new MacronAkkonGroup();
                         group.Index = cnt;
+                        group.Stage = unit;
+                        group.TabNo = tab;
                         tab.AkkonParam.SetAkkonGroup(group.Index, group);
                     }
                     //for (int groupIndex = 0; groupIndex < 5; groupIndex++)

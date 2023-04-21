@@ -14,7 +14,7 @@ namespace Jastech.Apps.Structure.Parameters
         [JsonProperty]
         public List<MacronAkkonGroup> GroupList { get; set; } = new List<MacronAkkonGroup>();
 
-        private void AddGroup()
+        private void AddGroup(int stageNo, int tabNo)
         {
             if(GroupList.Count() > 0)
             {
@@ -32,19 +32,19 @@ namespace Jastech.Apps.Structure.Parameters
             }
         }
 
-        public void AddGroup(int count)
+        public void AddGroup(int count, int stageNo, int tabNo)
         {
             for (int i = 0; i < count; i++)
                 AddGroup();
         }
 
-        public void CreateGroup(int groupCount)
+        public void CreateGroup(int groupCount, int stageNo, int tabNo)
         {
             for (int i = 0; i < groupCount; i++)
                 AddGroup();
         }
 
-        public void AdjustGroupCount(int newGroupCount)
+        public void AdjustGroupCount(int newGroupCount, int stageNo, int tabNo)
         {
             if (GroupList.Count() == newGroupCount)
                 return;

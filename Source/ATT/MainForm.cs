@@ -47,6 +47,11 @@ namespace ATT
 
         private void MainForm_Load(object sender, EventArgs e)
         {
+            //MacronAkkon te = new MacronAkkon();
+            //te.ATT_InitSystem(this.Handle, 8, 0xF8);   // Core 1111 1000
+            //te.PrepareInspect();
+
+
             AddControls();
             SelectMainPage();
 

@@ -1,6 +1,7 @@
 ﻿using Jastech.Apps.Structure;
 using Jastech.Apps.Winform.Settings;
 using Jastech.Framework.Device.LightCtrls;
+using Jastech.Framework.Macron.Akkon;
 using Jastech.Framework.Matrox;
 using Jastech.Framework.Structure;
 using Jastech.Framework.Util.Helper;
@@ -25,7 +26,10 @@ namespace ATT
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
-            Application.ThreadException += new System.Threading.ThreadExceptionEventHandler(Application_ThreadException);
+            Application.ThreadException += Application_ThreadException;
+            Application.SetUnhandledExceptionMode(UnhandledExceptionMode.ThrowException);
+            AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
+
             MilHelper.InitApplication();
             AppConfig.Instance().Initialize();
             AppConfig.Instance().Load();
@@ -41,7 +45,22 @@ namespace ATT
 
         private static void Application_ThreadException(object sender, ThreadExceptionEventArgs e)
         {
-            throw new NotImplementedException();
+            string message = "Application_ThreadException " + e.Exception.Message;
+            Logger.Error(ErrorType.Apps, message);
+            System.Diagnostics.Trace.WriteLine(message);
+            MessageBox.Show(message);
+            Application.Exit(new System.ComponentModel.CancelEventArgs(false));
+        }
+
+        private static void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
+        {
+            var exception = (Exception)e.ExceptionObject;
+            string message = "CurrentDomain_UnhandledException " + exception.Message + " Source: " + exception.Source.ToString() + "StackTrack :" + exception.StackTrace.ToString();
+            Logger.Error(ErrorType.Apps, message);
+
+            System.Diagnostics.Trace.WriteLine(message);
+            MessageBox.Show(message);
+
         }
     }
 }
