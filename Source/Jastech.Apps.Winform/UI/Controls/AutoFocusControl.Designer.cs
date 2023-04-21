@@ -49,10 +49,11 @@
             // 
             // tlpAutoFocusControl
             // 
-            this.tlpAutoFocusControl.ColumnCount = 3;
-            this.tlpAutoFocusControl.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33332F));
-            this.tlpAutoFocusControl.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33334F));
-            this.tlpAutoFocusControl.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33334F));
+            this.tlpAutoFocusControl.ColumnCount = 4;
+            this.tlpAutoFocusControl.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 140F));
+            this.tlpAutoFocusControl.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 140F));
+            this.tlpAutoFocusControl.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 140F));
+            this.tlpAutoFocusControl.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tlpAutoFocusControl.Controls.Add(this.lblAutoFocusOnOff, 0, 4);
             this.tlpAutoFocusControl.Controls.Add(this.lblTargetPositionValue, 1, 0);
             this.tlpAutoFocusControl.Controls.Add(this.lblTargetPosition, 0, 0);
@@ -70,15 +71,14 @@
             this.tlpAutoFocusControl.Location = new System.Drawing.Point(0, 0);
             this.tlpAutoFocusControl.Margin = new System.Windows.Forms.Padding(0);
             this.tlpAutoFocusControl.Name = "tlpAutoFocusControl";
-            this.tlpAutoFocusControl.RowCount = 5;
-            this.tlpAutoFocusControl.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20F));
-            this.tlpAutoFocusControl.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20F));
-            this.tlpAutoFocusControl.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20F));
-            this.tlpAutoFocusControl.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20F));
-            this.tlpAutoFocusControl.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20F));
-            this.tlpAutoFocusControl.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tlpAutoFocusControl.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tlpAutoFocusControl.Size = new System.Drawing.Size(448, 342);
+            this.tlpAutoFocusControl.RowCount = 6;
+            this.tlpAutoFocusControl.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
+            this.tlpAutoFocusControl.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
+            this.tlpAutoFocusControl.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
+            this.tlpAutoFocusControl.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
+            this.tlpAutoFocusControl.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
+            this.tlpAutoFocusControl.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tlpAutoFocusControl.Size = new System.Drawing.Size(436, 300);
             this.tlpAutoFocusControl.TabIndex = 3;
             // 
             // lblAutoFocusOnOff
@@ -87,10 +87,10 @@
             this.lblAutoFocusOnOff.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.lblAutoFocusOnOff.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lblAutoFocusOnOff.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
-            this.lblAutoFocusOnOff.Location = new System.Drawing.Point(0, 272);
+            this.lblAutoFocusOnOff.Location = new System.Drawing.Point(0, 160);
             this.lblAutoFocusOnOff.Margin = new System.Windows.Forms.Padding(0);
             this.lblAutoFocusOnOff.Name = "lblAutoFocusOnOff";
-            this.lblAutoFocusOnOff.Size = new System.Drawing.Size(149, 70);
+            this.lblAutoFocusOnOff.Size = new System.Drawing.Size(140, 40);
             this.lblAutoFocusOnOff.TabIndex = 205;
             this.lblAutoFocusOnOff.Text = "AUTO FOCUS\r\nON/OFF";
             this.lblAutoFocusOnOff.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -101,10 +101,10 @@
             this.lblTargetPositionValue.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.lblTargetPositionValue.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lblTargetPositionValue.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
-            this.lblTargetPositionValue.Location = new System.Drawing.Point(149, 0);
+            this.lblTargetPositionValue.Location = new System.Drawing.Point(140, 0);
             this.lblTargetPositionValue.Margin = new System.Windows.Forms.Padding(0);
             this.lblTargetPositionValue.Name = "lblTargetPositionValue";
-            this.lblTargetPositionValue.Size = new System.Drawing.Size(149, 68);
+            this.lblTargetPositionValue.Size = new System.Drawing.Size(140, 40);
             this.lblTargetPositionValue.TabIndex = 1;
             this.lblTargetPositionValue.Text = "0.0";
             this.lblTargetPositionValue.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -119,7 +119,7 @@
             this.lblTargetPosition.Location = new System.Drawing.Point(0, 0);
             this.lblTargetPosition.Margin = new System.Windows.Forms.Padding(0);
             this.lblTargetPosition.Name = "lblTargetPosition";
-            this.lblTargetPosition.Size = new System.Drawing.Size(149, 68);
+            this.lblTargetPosition.Size = new System.Drawing.Size(140, 40);
             this.lblTargetPosition.TabIndex = 1;
             this.lblTargetPosition.Text = "TARGET\r\nPOSITION";
             this.lblTargetPosition.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -130,10 +130,10 @@
             this.btnCurrentToTeach.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.btnCurrentToTeach.Dock = System.Windows.Forms.DockStyle.Fill;
             this.btnCurrentToTeach.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
-            this.btnCurrentToTeach.Location = new System.Drawing.Point(298, 204);
+            this.btnCurrentToTeach.Location = new System.Drawing.Point(280, 120);
             this.btnCurrentToTeach.Margin = new System.Windows.Forms.Padding(0);
             this.btnCurrentToTeach.Name = "btnCurrentToTeach";
-            this.btnCurrentToTeach.Size = new System.Drawing.Size(150, 68);
+            this.btnCurrentToTeach.Size = new System.Drawing.Size(140, 40);
             this.btnCurrentToTeach.TabIndex = 200;
             this.btnCurrentToTeach.Text = "SET";
             this.btnCurrentToTeach.UseVisualStyleBackColor = false;
@@ -145,10 +145,10 @@
             this.lblCurrentCogValue.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.lblCurrentCogValue.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lblCurrentCogValue.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
-            this.lblCurrentCogValue.Location = new System.Drawing.Point(149, 204);
+            this.lblCurrentCogValue.Location = new System.Drawing.Point(140, 120);
             this.lblCurrentCogValue.Margin = new System.Windows.Forms.Padding(0);
             this.lblCurrentCogValue.Name = "lblCurrentCogValue";
-            this.lblCurrentCogValue.Size = new System.Drawing.Size(149, 68);
+            this.lblCurrentCogValue.Size = new System.Drawing.Size(140, 40);
             this.lblCurrentCogValue.TabIndex = 1;
             this.lblCurrentCogValue.Text = "0";
             this.lblCurrentCogValue.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -159,10 +159,10 @@
             this.lblCurrentCog.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.lblCurrentCog.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lblCurrentCog.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
-            this.lblCurrentCog.Location = new System.Drawing.Point(0, 204);
+            this.lblCurrentCog.Location = new System.Drawing.Point(0, 120);
             this.lblCurrentCog.Margin = new System.Windows.Forms.Padding(0);
             this.lblCurrentCog.Name = "lblCurrentCog";
-            this.lblCurrentCog.Size = new System.Drawing.Size(149, 68);
+            this.lblCurrentCog.Size = new System.Drawing.Size(140, 40);
             this.lblCurrentCog.TabIndex = 203;
             this.lblCurrentCog.Text = "CURRENT COG";
             this.lblCurrentCog.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -173,10 +173,10 @@
             this.lblTeachCog.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.lblTeachCog.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lblTeachCog.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
-            this.lblTeachCog.Location = new System.Drawing.Point(0, 136);
+            this.lblTeachCog.Location = new System.Drawing.Point(0, 80);
             this.lblTeachCog.Margin = new System.Windows.Forms.Padding(0);
             this.lblTeachCog.Name = "lblTeachCog";
-            this.lblTeachCog.Size = new System.Drawing.Size(149, 68);
+            this.lblTeachCog.Size = new System.Drawing.Size(140, 40);
             this.lblTeachCog.TabIndex = 203;
             this.lblTeachCog.Text = "COG";
             this.lblTeachCog.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -187,10 +187,10 @@
             this.lblTeachCogValue.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.lblTeachCogValue.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lblTeachCogValue.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
-            this.lblTeachCogValue.Location = new System.Drawing.Point(149, 136);
+            this.lblTeachCogValue.Location = new System.Drawing.Point(140, 80);
             this.lblTeachCogValue.Margin = new System.Windows.Forms.Padding(0);
             this.lblTeachCogValue.Name = "lblTeachCogValue";
-            this.lblTeachCogValue.Size = new System.Drawing.Size(149, 68);
+            this.lblTeachCogValue.Size = new System.Drawing.Size(140, 40);
             this.lblTeachCogValue.TabIndex = 202;
             this.lblTeachCogValue.Text = "0";
             this.lblTeachCogValue.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -201,10 +201,10 @@
             this.btnSetCurrentToTarget.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
             this.btnSetCurrentToTarget.Dock = System.Windows.Forms.DockStyle.Fill;
             this.btnSetCurrentToTarget.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
-            this.btnSetCurrentToTarget.Location = new System.Drawing.Point(298, 68);
+            this.btnSetCurrentToTarget.Location = new System.Drawing.Point(280, 40);
             this.btnSetCurrentToTarget.Margin = new System.Windows.Forms.Padding(0);
             this.btnSetCurrentToTarget.Name = "btnSetCurrentToTarget";
-            this.btnSetCurrentToTarget.Size = new System.Drawing.Size(150, 68);
+            this.btnSetCurrentToTarget.Size = new System.Drawing.Size(140, 40);
             this.btnSetCurrentToTarget.TabIndex = 4;
             this.btnSetCurrentToTarget.Text = "SET";
             this.btnSetCurrentToTarget.UseVisualStyleBackColor = false;
@@ -216,10 +216,10 @@
             this.lblCuttentPositionValue.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.lblCuttentPositionValue.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lblCuttentPositionValue.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
-            this.lblCuttentPositionValue.Location = new System.Drawing.Point(149, 68);
+            this.lblCuttentPositionValue.Location = new System.Drawing.Point(140, 40);
             this.lblCuttentPositionValue.Margin = new System.Windows.Forms.Padding(0);
             this.lblCuttentPositionValue.Name = "lblCuttentPositionValue";
-            this.lblCuttentPositionValue.Size = new System.Drawing.Size(149, 68);
+            this.lblCuttentPositionValue.Size = new System.Drawing.Size(140, 40);
             this.lblCuttentPositionValue.TabIndex = 1;
             this.lblCuttentPositionValue.Text = "0.0";
             this.lblCuttentPositionValue.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -230,10 +230,10 @@
             this.lblCurrentPosition.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.lblCurrentPosition.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lblCurrentPosition.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
-            this.lblCurrentPosition.Location = new System.Drawing.Point(0, 68);
+            this.lblCurrentPosition.Location = new System.Drawing.Point(0, 40);
             this.lblCurrentPosition.Margin = new System.Windows.Forms.Padding(0);
             this.lblCurrentPosition.Name = "lblCurrentPosition";
-            this.lblCurrentPosition.Size = new System.Drawing.Size(149, 68);
+            this.lblCurrentPosition.Size = new System.Drawing.Size(140, 40);
             this.lblCurrentPosition.TabIndex = 1;
             this.lblCurrentPosition.Text = "CURRENT\r\nPOSITION";
             this.lblCurrentPosition.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -244,10 +244,10 @@
             this.btnAFOff.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.btnAFOff.Dock = System.Windows.Forms.DockStyle.Fill;
             this.btnAFOff.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
-            this.btnAFOff.Location = new System.Drawing.Point(298, 272);
+            this.btnAFOff.Location = new System.Drawing.Point(280, 160);
             this.btnAFOff.Margin = new System.Windows.Forms.Padding(0);
             this.btnAFOff.Name = "btnAFOff";
-            this.btnAFOff.Size = new System.Drawing.Size(150, 70);
+            this.btnAFOff.Size = new System.Drawing.Size(140, 40);
             this.btnAFOff.TabIndex = 204;
             this.btnAFOff.Text = "A/F OFF";
             this.btnAFOff.UseVisualStyleBackColor = false;
@@ -259,10 +259,10 @@
             this.bnAFOn.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.bnAFOn.Dock = System.Windows.Forms.DockStyle.Fill;
             this.bnAFOn.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
-            this.bnAFOn.Location = new System.Drawing.Point(149, 272);
+            this.bnAFOn.Location = new System.Drawing.Point(140, 160);
             this.bnAFOn.Margin = new System.Windows.Forms.Padding(0);
             this.bnAFOn.Name = "bnAFOn";
-            this.bnAFOn.Size = new System.Drawing.Size(149, 70);
+            this.bnAFOn.Size = new System.Drawing.Size(140, 40);
             this.bnAFOn.TabIndex = 204;
             this.bnAFOn.Text = "A/F ON";
             this.bnAFOn.UseVisualStyleBackColor = false;
@@ -278,7 +278,7 @@
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 1;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 300F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(448, 342);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(436, 211);
             this.tableLayoutPanel1.TabIndex = 6;
             // 
             // AutoFocusControl
@@ -290,7 +290,7 @@
             this.Font = new System.Drawing.Font("맑은 고딕", 11.25F, System.Drawing.FontStyle.Bold);
             this.ForeColor = System.Drawing.Color.White;
             this.Name = "AutoFocusControl";
-            this.Size = new System.Drawing.Size(448, 342);
+            this.Size = new System.Drawing.Size(436, 211);
             this.tlpAutoFocusControl.ResumeLayout(false);
             this.tableLayoutPanel1.ResumeLayout(false);
             this.ResumeLayout(false);

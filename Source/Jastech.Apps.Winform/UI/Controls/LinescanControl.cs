@@ -46,6 +46,11 @@ namespace Jastech.Apps.Winform.UI.Controls
         {
             _selectedColor = Color.FromArgb(104, 104, 104);
             _nonSelectedColor = Color.FromArgb(52, 52, 52);
+
+            rdoAreaMode.Checked = true;
+
+            rdoJogSlowMode.Checked = true;
+            rdoJogMode.Checked = true;
         }
 
         private void AddControl()
@@ -142,6 +147,7 @@ namespace Jastech.Apps.Winform.UI.Controls
         {
 
         }
+
         private void UpdateData()
         {
             var axisHandler = AppsMotionManager.Instance().GetAxisHandler(AxisHandlerName.Unit0);
