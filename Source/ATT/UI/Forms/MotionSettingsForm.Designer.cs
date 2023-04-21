@@ -31,8 +31,28 @@
             this.tlpMotionSettings = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.tlpMotionFunction = new System.Windows.Forms.TableLayoutPanel();
+            this.tlpJogControl = new System.Windows.Forms.TableLayoutPanel();
+            this.tlpJogFunction = new System.Windows.Forms.TableLayoutPanel();
+            this.tlpJogOption = new System.Windows.Forms.TableLayoutPanel();
+            this.tlpPitchZ = new System.Windows.Forms.TableLayoutPanel();
+            this.lblPitchZ = new System.Windows.Forms.Label();
+            this.lblPitchZValue = new System.Windows.Forms.Label();
+            this.tlpPitchXY = new System.Windows.Forms.TableLayoutPanel();
+            this.lblPitchXY = new System.Windows.Forms.Label();
+            this.lblPitchXYValue = new System.Windows.Forms.Label();
+            this.tlpJogMode = new System.Windows.Forms.TableLayoutPanel();
+            this.rdoIncreaseMode = new System.Windows.Forms.RadioButton();
+            this.rdoJogMode = new System.Windows.Forms.RadioButton();
+            this.tlpJogSpeedMode = new System.Windows.Forms.TableLayoutPanel();
+            this.rdoJogFastMode = new System.Windows.Forms.RadioButton();
+            this.rdoJogSlowMode = new System.Windows.Forms.RadioButton();
+            this.tlpJog = new System.Windows.Forms.TableLayoutPanel();
+            this.pnlMotionJog = new System.Windows.Forms.Panel();
+            this.tableLayoutPanel5 = new System.Windows.Forms.TableLayoutPanel();
+            this.pnlLAFJog = new System.Windows.Forms.Panel();
+            this.lblJog = new System.Windows.Forms.Label();
             this.tlpStatus = new System.Windows.Forms.TableLayoutPanel();
-            this.tableLayoutPanel4 = new System.Windows.Forms.TableLayoutPanel();
+            this.tlpLAFStatus = new System.Windows.Forms.TableLayoutPanel();
             this.label10 = new System.Windows.Forms.Label();
             this.label11 = new System.Windows.Forms.Label();
             this.label12 = new System.Windows.Forms.Label();
@@ -81,27 +101,6 @@
             this.label3 = new System.Windows.Forms.Label();
             this.lblOffsetX = new System.Windows.Forms.Label();
             this.lblOffsetY = new System.Windows.Forms.Label();
-            this.pnlJog = new System.Windows.Forms.Panel();
-            this.tlpJogControl = new System.Windows.Forms.TableLayoutPanel();
-            this.tlpJogFunction = new System.Windows.Forms.TableLayoutPanel();
-            this.tlpJogOption = new System.Windows.Forms.TableLayoutPanel();
-            this.tlpPitchZ = new System.Windows.Forms.TableLayoutPanel();
-            this.lblPitchZ = new System.Windows.Forms.Label();
-            this.lblPitchZValue = new System.Windows.Forms.Label();
-            this.tlpPitchXY = new System.Windows.Forms.TableLayoutPanel();
-            this.lblPitchXY = new System.Windows.Forms.Label();
-            this.lblPitchXYValue = new System.Windows.Forms.Label();
-            this.tlpJogMode = new System.Windows.Forms.TableLayoutPanel();
-            this.rdoIncreaseMode = new System.Windows.Forms.RadioButton();
-            this.rdoJogMode = new System.Windows.Forms.RadioButton();
-            this.tlpJogSpeedMode = new System.Windows.Forms.TableLayoutPanel();
-            this.rdoJogFastMode = new System.Windows.Forms.RadioButton();
-            this.rdoJogSlowMode = new System.Windows.Forms.RadioButton();
-            this.tlpJog = new System.Windows.Forms.TableLayoutPanel();
-            this.pnlMotionJog = new System.Windows.Forms.Panel();
-            this.tableLayoutPanel5 = new System.Windows.Forms.TableLayoutPanel();
-            this.pnlLAFJog = new System.Windows.Forms.Panel();
-            this.lblJog = new System.Windows.Forms.Label();
             this.pnlTeachingPositionList = new System.Windows.Forms.Panel();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.btnMoveToTeachingPosition = new System.Windows.Forms.Button();
@@ -126,10 +125,6 @@
             this.tlpMotionSettings.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             this.tlpMotionFunction.SuspendLayout();
-            this.tlpStatus.SuspendLayout();
-            this.tableLayoutPanel4.SuspendLayout();
-            this.tlpMotionStatus.SuspendLayout();
-            this.pnlJog.SuspendLayout();
             this.tlpJogControl.SuspendLayout();
             this.tlpJogFunction.SuspendLayout();
             this.tlpJogOption.SuspendLayout();
@@ -139,6 +134,9 @@
             this.tlpJogSpeedMode.SuspendLayout();
             this.tlpJog.SuspendLayout();
             this.tableLayoutPanel5.SuspendLayout();
+            this.tlpStatus.SuspendLayout();
+            this.tlpLAFStatus.SuspendLayout();
+            this.tlpMotionStatus.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
             this.tlpMotionParameter.SuspendLayout();
             this.tlpVariableParameters.SuspendLayout();
@@ -194,8 +192,8 @@
             this.tlpMotionFunction.ColumnCount = 1;
             this.tlpMotionFunction.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tlpMotionFunction.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tlpMotionFunction.Controls.Add(this.tlpJogControl, 0, 1);
             this.tlpMotionFunction.Controls.Add(this.tlpStatus, 0, 0);
-            this.tlpMotionFunction.Controls.Add(this.pnlJog, 0, 1);
             this.tlpMotionFunction.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tlpMotionFunction.Location = new System.Drawing.Point(0, 244);
             this.tlpMotionFunction.Margin = new System.Windows.Forms.Padding(0);
@@ -206,13 +204,325 @@
             this.tlpMotionFunction.Size = new System.Drawing.Size(487, 700);
             this.tlpMotionFunction.TabIndex = 0;
             // 
+            // tlpJogControl
+            // 
+            this.tlpJogControl.ColumnCount = 2;
+            this.tlpJogControl.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 20F));
+            this.tlpJogControl.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 80F));
+            this.tlpJogControl.Controls.Add(this.tlpJogFunction, 1, 0);
+            this.tlpJogControl.Controls.Add(this.lblJog, 0, 0);
+            this.tlpJogControl.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tlpJogControl.Location = new System.Drawing.Point(0, 350);
+            this.tlpJogControl.Margin = new System.Windows.Forms.Padding(0);
+            this.tlpJogControl.Name = "tlpJogControl";
+            this.tlpJogControl.RowCount = 1;
+            this.tlpJogControl.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tlpJogControl.Size = new System.Drawing.Size(487, 350);
+            this.tlpJogControl.TabIndex = 0;
+            // 
+            // tlpJogFunction
+            // 
+            this.tlpJogFunction.ColumnCount = 1;
+            this.tlpJogFunction.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tlpJogFunction.Controls.Add(this.tlpJogOption, 0, 0);
+            this.tlpJogFunction.Controls.Add(this.tlpJog, 0, 1);
+            this.tlpJogFunction.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tlpJogFunction.Location = new System.Drawing.Point(97, 0);
+            this.tlpJogFunction.Margin = new System.Windows.Forms.Padding(0);
+            this.tlpJogFunction.Name = "tlpJogFunction";
+            this.tlpJogFunction.RowCount = 2;
+            this.tlpJogFunction.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 40F));
+            this.tlpJogFunction.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 60F));
+            this.tlpJogFunction.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tlpJogFunction.Size = new System.Drawing.Size(390, 350);
+            this.tlpJogFunction.TabIndex = 23;
+            // 
+            // tlpJogOption
+            // 
+            this.tlpJogOption.ColumnCount = 2;
+            this.tlpJogOption.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tlpJogOption.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tlpJogOption.Controls.Add(this.tlpPitchZ, 1, 1);
+            this.tlpJogOption.Controls.Add(this.tlpPitchXY, 0, 1);
+            this.tlpJogOption.Controls.Add(this.tlpJogMode, 1, 0);
+            this.tlpJogOption.Controls.Add(this.tlpJogSpeedMode, 0, 0);
+            this.tlpJogOption.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tlpJogOption.Location = new System.Drawing.Point(0, 0);
+            this.tlpJogOption.Margin = new System.Windows.Forms.Padding(0);
+            this.tlpJogOption.Name = "tlpJogOption";
+            this.tlpJogOption.RowCount = 2;
+            this.tlpJogOption.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tlpJogOption.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tlpJogOption.Size = new System.Drawing.Size(390, 140);
+            this.tlpJogOption.TabIndex = 20;
+            // 
+            // tlpPitchZ
+            // 
+            this.tlpPitchZ.ColumnCount = 2;
+            this.tlpPitchZ.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tlpPitchZ.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tlpPitchZ.Controls.Add(this.lblPitchZ, 0, 0);
+            this.tlpPitchZ.Controls.Add(this.lblPitchZValue, 1, 0);
+            this.tlpPitchZ.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tlpPitchZ.Location = new System.Drawing.Point(198, 73);
+            this.tlpPitchZ.Name = "tlpPitchZ";
+            this.tlpPitchZ.RowCount = 1;
+            this.tlpPitchZ.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tlpPitchZ.Size = new System.Drawing.Size(189, 64);
+            this.tlpPitchZ.TabIndex = 0;
+            // 
+            // lblPitchZ
+            // 
+            this.lblPitchZ.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
+            this.lblPitchZ.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblPitchZ.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblPitchZ.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
+            this.lblPitchZ.ForeColor = System.Drawing.Color.White;
+            this.lblPitchZ.Location = new System.Drawing.Point(0, 0);
+            this.lblPitchZ.Margin = new System.Windows.Forms.Padding(0);
+            this.lblPitchZ.Name = "lblPitchZ";
+            this.lblPitchZ.Size = new System.Drawing.Size(94, 64);
+            this.lblPitchZ.TabIndex = 4;
+            this.lblPitchZ.Text = "PITCH Z";
+            this.lblPitchZ.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // lblPitchZValue
+            // 
+            this.lblPitchZValue.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
+            this.lblPitchZValue.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblPitchZValue.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblPitchZValue.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
+            this.lblPitchZValue.ForeColor = System.Drawing.Color.White;
+            this.lblPitchZValue.Location = new System.Drawing.Point(94, 0);
+            this.lblPitchZValue.Margin = new System.Windows.Forms.Padding(0);
+            this.lblPitchZValue.Name = "lblPitchZValue";
+            this.lblPitchZValue.Size = new System.Drawing.Size(95, 64);
+            this.lblPitchZValue.TabIndex = 2;
+            this.lblPitchZValue.Text = "0.1";
+            this.lblPitchZValue.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblPitchZValue.Click += new System.EventHandler(this.lblPitchZValue_Click);
+            // 
+            // tlpPitchXY
+            // 
+            this.tlpPitchXY.ColumnCount = 2;
+            this.tlpPitchXY.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tlpPitchXY.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tlpPitchXY.Controls.Add(this.lblPitchXY, 0, 0);
+            this.tlpPitchXY.Controls.Add(this.lblPitchXYValue, 1, 0);
+            this.tlpPitchXY.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tlpPitchXY.Location = new System.Drawing.Point(3, 73);
+            this.tlpPitchXY.Name = "tlpPitchXY";
+            this.tlpPitchXY.RowCount = 1;
+            this.tlpPitchXY.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tlpPitchXY.Size = new System.Drawing.Size(189, 64);
+            this.tlpPitchXY.TabIndex = 0;
+            // 
+            // lblPitchXY
+            // 
+            this.lblPitchXY.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
+            this.lblPitchXY.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblPitchXY.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblPitchXY.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
+            this.lblPitchXY.ForeColor = System.Drawing.Color.White;
+            this.lblPitchXY.Location = new System.Drawing.Point(0, 0);
+            this.lblPitchXY.Margin = new System.Windows.Forms.Padding(0);
+            this.lblPitchXY.Name = "lblPitchXY";
+            this.lblPitchXY.Size = new System.Drawing.Size(94, 64);
+            this.lblPitchXY.TabIndex = 4;
+            this.lblPitchXY.Text = "PITCH XY";
+            this.lblPitchXY.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // lblPitchXYValue
+            // 
+            this.lblPitchXYValue.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
+            this.lblPitchXYValue.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblPitchXYValue.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblPitchXYValue.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
+            this.lblPitchXYValue.ForeColor = System.Drawing.Color.White;
+            this.lblPitchXYValue.Location = new System.Drawing.Point(94, 0);
+            this.lblPitchXYValue.Margin = new System.Windows.Forms.Padding(0);
+            this.lblPitchXYValue.Name = "lblPitchXYValue";
+            this.lblPitchXYValue.Size = new System.Drawing.Size(95, 64);
+            this.lblPitchXYValue.TabIndex = 2;
+            this.lblPitchXYValue.Text = "1.0";
+            this.lblPitchXYValue.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblPitchXYValue.Click += new System.EventHandler(this.lblPitchXYValue_Click);
+            // 
+            // tlpJogMode
+            // 
+            this.tlpJogMode.ColumnCount = 2;
+            this.tlpJogMode.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tlpJogMode.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tlpJogMode.Controls.Add(this.rdoIncreaseMode, 0, 0);
+            this.tlpJogMode.Controls.Add(this.rdoJogMode, 0, 0);
+            this.tlpJogMode.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tlpJogMode.Location = new System.Drawing.Point(198, 3);
+            this.tlpJogMode.Name = "tlpJogMode";
+            this.tlpJogMode.RowCount = 1;
+            this.tlpJogMode.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tlpJogMode.Size = new System.Drawing.Size(189, 64);
+            this.tlpJogMode.TabIndex = 0;
+            // 
+            // rdoIncreaseMode
+            // 
+            this.rdoIncreaseMode.Appearance = System.Windows.Forms.Appearance.Button;
+            this.rdoIncreaseMode.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
+            this.rdoIncreaseMode.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.rdoIncreaseMode.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.rdoIncreaseMode.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
+            this.rdoIncreaseMode.ForeColor = System.Drawing.Color.White;
+            this.rdoIncreaseMode.Location = new System.Drawing.Point(94, 0);
+            this.rdoIncreaseMode.Margin = new System.Windows.Forms.Padding(0);
+            this.rdoIncreaseMode.Name = "rdoIncreaseMode";
+            this.rdoIncreaseMode.Size = new System.Drawing.Size(95, 64);
+            this.rdoIncreaseMode.TabIndex = 145;
+            this.rdoIncreaseMode.Tag = "0";
+            this.rdoIncreaseMode.Text = "INC MODE";
+            this.rdoIncreaseMode.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.rdoIncreaseMode.UseVisualStyleBackColor = false;
+            this.rdoIncreaseMode.CheckedChanged += new System.EventHandler(this.rdoIncreaseMode_CheckedChanged);
+            // 
+            // rdoJogMode
+            // 
+            this.rdoJogMode.Appearance = System.Windows.Forms.Appearance.Button;
+            this.rdoJogMode.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
+            this.rdoJogMode.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.rdoJogMode.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.rdoJogMode.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
+            this.rdoJogMode.ForeColor = System.Drawing.Color.White;
+            this.rdoJogMode.Location = new System.Drawing.Point(0, 0);
+            this.rdoJogMode.Margin = new System.Windows.Forms.Padding(0);
+            this.rdoJogMode.Name = "rdoJogMode";
+            this.rdoJogMode.Size = new System.Drawing.Size(94, 64);
+            this.rdoJogMode.TabIndex = 144;
+            this.rdoJogMode.Tag = "0";
+            this.rdoJogMode.Text = "JOG MODE";
+            this.rdoJogMode.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.rdoJogMode.UseVisualStyleBackColor = false;
+            this.rdoJogMode.CheckedChanged += new System.EventHandler(this.rdoJogMode_CheckedChanged);
+            // 
+            // tlpJogSpeedMode
+            // 
+            this.tlpJogSpeedMode.ColumnCount = 2;
+            this.tlpJogSpeedMode.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tlpJogSpeedMode.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tlpJogSpeedMode.Controls.Add(this.rdoJogFastMode, 0, 0);
+            this.tlpJogSpeedMode.Controls.Add(this.rdoJogSlowMode, 0, 0);
+            this.tlpJogSpeedMode.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tlpJogSpeedMode.Location = new System.Drawing.Point(3, 3);
+            this.tlpJogSpeedMode.Name = "tlpJogSpeedMode";
+            this.tlpJogSpeedMode.RowCount = 1;
+            this.tlpJogSpeedMode.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tlpJogSpeedMode.Size = new System.Drawing.Size(189, 64);
+            this.tlpJogSpeedMode.TabIndex = 0;
+            // 
+            // rdoJogFastMode
+            // 
+            this.rdoJogFastMode.Appearance = System.Windows.Forms.Appearance.Button;
+            this.rdoJogFastMode.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
+            this.rdoJogFastMode.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.rdoJogFastMode.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.rdoJogFastMode.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
+            this.rdoJogFastMode.ForeColor = System.Drawing.Color.White;
+            this.rdoJogFastMode.Location = new System.Drawing.Point(94, 0);
+            this.rdoJogFastMode.Margin = new System.Windows.Forms.Padding(0);
+            this.rdoJogFastMode.Name = "rdoJogFastMode";
+            this.rdoJogFastMode.Size = new System.Drawing.Size(95, 64);
+            this.rdoJogFastMode.TabIndex = 144;
+            this.rdoJogFastMode.Tag = "0";
+            this.rdoJogFastMode.Text = "FAST";
+            this.rdoJogFastMode.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.rdoJogFastMode.UseVisualStyleBackColor = false;
+            this.rdoJogFastMode.CheckedChanged += new System.EventHandler(this.rdoJogFastMode_CheckedChanged);
+            // 
+            // rdoJogSlowMode
+            // 
+            this.rdoJogSlowMode.Appearance = System.Windows.Forms.Appearance.Button;
+            this.rdoJogSlowMode.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
+            this.rdoJogSlowMode.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.rdoJogSlowMode.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.rdoJogSlowMode.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
+            this.rdoJogSlowMode.ForeColor = System.Drawing.Color.White;
+            this.rdoJogSlowMode.Location = new System.Drawing.Point(0, 0);
+            this.rdoJogSlowMode.Margin = new System.Windows.Forms.Padding(0);
+            this.rdoJogSlowMode.Name = "rdoJogSlowMode";
+            this.rdoJogSlowMode.Size = new System.Drawing.Size(94, 64);
+            this.rdoJogSlowMode.TabIndex = 143;
+            this.rdoJogSlowMode.Tag = "0";
+            this.rdoJogSlowMode.Text = "SLOW";
+            this.rdoJogSlowMode.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.rdoJogSlowMode.UseVisualStyleBackColor = false;
+            this.rdoJogSlowMode.CheckedChanged += new System.EventHandler(this.rdoJogSlowMode_CheckedChanged);
+            // 
+            // tlpJog
+            // 
+            this.tlpJog.ColumnCount = 2;
+            this.tlpJog.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tlpJog.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tlpJog.Controls.Add(this.pnlMotionJog, 0, 0);
+            this.tlpJog.Controls.Add(this.tableLayoutPanel5, 1, 0);
+            this.tlpJog.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tlpJog.Location = new System.Drawing.Point(3, 143);
+            this.tlpJog.Name = "tlpJog";
+            this.tlpJog.RowCount = 1;
+            this.tlpJog.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tlpJog.Size = new System.Drawing.Size(384, 204);
+            this.tlpJog.TabIndex = 21;
+            // 
+            // pnlMotionJog
+            // 
+            this.pnlMotionJog.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pnlMotionJog.Location = new System.Drawing.Point(0, 0);
+            this.pnlMotionJog.Margin = new System.Windows.Forms.Padding(0);
+            this.pnlMotionJog.Name = "pnlMotionJog";
+            this.pnlMotionJog.Size = new System.Drawing.Size(192, 204);
+            this.pnlMotionJog.TabIndex = 0;
+            // 
+            // tableLayoutPanel5
+            // 
+            this.tableLayoutPanel5.ColumnCount = 3;
+            this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this.tableLayoutPanel5.Controls.Add(this.pnlLAFJog, 1, 0);
+            this.tableLayoutPanel5.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel5.Location = new System.Drawing.Point(192, 0);
+            this.tableLayoutPanel5.Margin = new System.Windows.Forms.Padding(0);
+            this.tableLayoutPanel5.Name = "tableLayoutPanel5";
+            this.tableLayoutPanel5.RowCount = 1;
+            this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel5.Size = new System.Drawing.Size(192, 204);
+            this.tableLayoutPanel5.TabIndex = 1;
+            // 
+            // pnlLAFJog
+            // 
+            this.pnlLAFJog.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pnlLAFJog.Location = new System.Drawing.Point(64, 0);
+            this.pnlLAFJog.Margin = new System.Windows.Forms.Padding(0);
+            this.pnlLAFJog.Name = "pnlLAFJog";
+            this.pnlLAFJog.Size = new System.Drawing.Size(64, 204);
+            this.pnlLAFJog.TabIndex = 0;
+            // 
+            // lblJog
+            // 
+            this.lblJog.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblJog.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblJog.ForeColor = System.Drawing.Color.White;
+            this.lblJog.Location = new System.Drawing.Point(4, 1);
+            this.lblJog.Margin = new System.Windows.Forms.Padding(4, 1, 4, 1);
+            this.lblJog.Name = "lblJog";
+            this.lblJog.Size = new System.Drawing.Size(89, 348);
+            this.lblJog.TabIndex = 0;
+            this.lblJog.Text = "Jog";
+            this.lblJog.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
             // tlpStatus
             // 
             this.tlpStatus.ColumnCount = 3;
             this.tlpStatus.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 60F));
             this.tlpStatus.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 10F));
             this.tlpStatus.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 40F));
-            this.tlpStatus.Controls.Add(this.tableLayoutPanel4, 2, 0);
+            this.tlpStatus.Controls.Add(this.tlpLAFStatus, 2, 0);
             this.tlpStatus.Controls.Add(this.tlpMotionStatus, 0, 0);
             this.tlpStatus.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tlpStatus.GrowStyle = System.Windows.Forms.TableLayoutPanelGrowStyle.AddColumns;
@@ -224,48 +534,48 @@
             this.tlpStatus.Size = new System.Drawing.Size(487, 350);
             this.tlpStatus.TabIndex = 0;
             // 
-            // tableLayoutPanel4
+            // tlpLAFStatus
             // 
-            this.tableLayoutPanel4.ColumnCount = 2;
-            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel4.Controls.Add(this.label10, 0, 9);
-            this.tableLayoutPanel4.Controls.Add(this.label11, 0, 5);
-            this.tableLayoutPanel4.Controls.Add(this.label12, 0, 8);
-            this.tableLayoutPanel4.Controls.Add(this.label13, 0, 3);
-            this.tableLayoutPanel4.Controls.Add(this.label14, 0, 7);
-            this.tableLayoutPanel4.Controls.Add(this.label15, 0, 4);
-            this.tableLayoutPanel4.Controls.Add(this.label16, 0, 6);
-            this.tableLayoutPanel4.Controls.Add(this.label17, 0, 2);
-            this.tableLayoutPanel4.Controls.Add(this.label18, 0, 1);
-            this.tableLayoutPanel4.Controls.Add(this.lblTargetPositionZ, 1, 1);
-            this.tableLayoutPanel4.Controls.Add(this.label19, 0, 0);
-            this.tableLayoutPanel4.Controls.Add(this.lblAxisName, 1, 0);
-            this.tableLayoutPanel4.Controls.Add(this.lblCurrentPositionZ, 1, 2);
-            this.tableLayoutPanel4.Controls.Add(this.lblCurrentToTargetZ, 1, 3);
-            this.tableLayoutPanel4.Controls.Add(this.lblCurrentCenterOfGravityZ, 1, 5);
-            this.tableLayoutPanel4.Controls.Add(this.lblTeachedCenterOfGravityZ, 1, 4);
-            this.tableLayoutPanel4.Controls.Add(this.lblAutoFocusOnOffZ, 1, 9);
-            this.tableLayoutPanel4.Controls.Add(this.lblSensorZ, 1, 8);
-            this.tableLayoutPanel4.Controls.Add(this.lblMoveToTargetZ, 1, 7);
-            this.tableLayoutPanel4.Controls.Add(this.lblCurrentToTargetenterOfGravityZ, 1, 6);
-            this.tableLayoutPanel4.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel4.Location = new System.Drawing.Point(296, 0);
-            this.tableLayoutPanel4.Margin = new System.Windows.Forms.Padding(0);
-            this.tableLayoutPanel4.Name = "tableLayoutPanel4";
-            this.tableLayoutPanel4.RowCount = 10;
-            this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 10F));
-            this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 10F));
-            this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 10F));
-            this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 10F));
-            this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 10F));
-            this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 10F));
-            this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 10F));
-            this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 10F));
-            this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 10F));
-            this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 10F));
-            this.tableLayoutPanel4.Size = new System.Drawing.Size(191, 350);
-            this.tableLayoutPanel4.TabIndex = 1;
+            this.tlpLAFStatus.ColumnCount = 2;
+            this.tlpLAFStatus.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tlpLAFStatus.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tlpLAFStatus.Controls.Add(this.label10, 0, 9);
+            this.tlpLAFStatus.Controls.Add(this.label11, 0, 5);
+            this.tlpLAFStatus.Controls.Add(this.label12, 0, 8);
+            this.tlpLAFStatus.Controls.Add(this.label13, 0, 3);
+            this.tlpLAFStatus.Controls.Add(this.label14, 0, 7);
+            this.tlpLAFStatus.Controls.Add(this.label15, 0, 4);
+            this.tlpLAFStatus.Controls.Add(this.label16, 0, 6);
+            this.tlpLAFStatus.Controls.Add(this.label17, 0, 2);
+            this.tlpLAFStatus.Controls.Add(this.label18, 0, 1);
+            this.tlpLAFStatus.Controls.Add(this.lblTargetPositionZ, 1, 1);
+            this.tlpLAFStatus.Controls.Add(this.label19, 0, 0);
+            this.tlpLAFStatus.Controls.Add(this.lblAxisName, 1, 0);
+            this.tlpLAFStatus.Controls.Add(this.lblCurrentPositionZ, 1, 2);
+            this.tlpLAFStatus.Controls.Add(this.lblCurrentToTargetZ, 1, 3);
+            this.tlpLAFStatus.Controls.Add(this.lblCurrentCenterOfGravityZ, 1, 5);
+            this.tlpLAFStatus.Controls.Add(this.lblTeachedCenterOfGravityZ, 1, 4);
+            this.tlpLAFStatus.Controls.Add(this.lblAutoFocusOnOffZ, 1, 9);
+            this.tlpLAFStatus.Controls.Add(this.lblSensorZ, 1, 8);
+            this.tlpLAFStatus.Controls.Add(this.lblMoveToTargetZ, 1, 7);
+            this.tlpLAFStatus.Controls.Add(this.lblCurrentToTargetenterOfGravityZ, 1, 6);
+            this.tlpLAFStatus.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tlpLAFStatus.Location = new System.Drawing.Point(296, 0);
+            this.tlpLAFStatus.Margin = new System.Windows.Forms.Padding(0);
+            this.tlpLAFStatus.Name = "tlpLAFStatus";
+            this.tlpLAFStatus.RowCount = 10;
+            this.tlpLAFStatus.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 10F));
+            this.tlpLAFStatus.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 10F));
+            this.tlpLAFStatus.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 10F));
+            this.tlpLAFStatus.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 10F));
+            this.tlpLAFStatus.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 10F));
+            this.tlpLAFStatus.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 10F));
+            this.tlpLAFStatus.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 10F));
+            this.tlpLAFStatus.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 10F));
+            this.tlpLAFStatus.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 10F));
+            this.tlpLAFStatus.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 10F));
+            this.tlpLAFStatus.Size = new System.Drawing.Size(191, 350);
+            this.tlpLAFStatus.TabIndex = 1;
             // 
             // label10
             // 
@@ -481,7 +791,7 @@
             this.lblCurrentCenterOfGravityZ.Name = "lblCurrentCenterOfGravityZ";
             this.lblCurrentCenterOfGravityZ.Size = new System.Drawing.Size(94, 33);
             this.lblCurrentCenterOfGravityZ.TabIndex = 6;
-            this.lblCurrentCenterOfGravityZ.Text = "0.0";
+            this.lblCurrentCenterOfGravityZ.Text = "0";
             this.lblCurrentCenterOfGravityZ.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // lblTeachedCenterOfGravityZ
@@ -496,7 +806,7 @@
             this.lblTeachedCenterOfGravityZ.Name = "lblTeachedCenterOfGravityZ";
             this.lblTeachedCenterOfGravityZ.Size = new System.Drawing.Size(94, 33);
             this.lblTeachedCenterOfGravityZ.TabIndex = 6;
-            this.lblTeachedCenterOfGravityZ.Text = "0.0";
+            this.lblTeachedCenterOfGravityZ.Text = "0";
             this.lblTeachedCenterOfGravityZ.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.lblTeachedCenterOfGravityZ.Click += new System.EventHandler(this.lblTeachedCenterOfGravityZ_Click);
             // 
@@ -1020,328 +1330,6 @@
             this.lblOffsetY.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.lblOffsetY.Click += new System.EventHandler(this.lblOffsetY_Click);
             // 
-            // pnlJog
-            // 
-            this.pnlJog.Controls.Add(this.tlpJogControl);
-            this.pnlJog.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pnlJog.Location = new System.Drawing.Point(0, 350);
-            this.pnlJog.Margin = new System.Windows.Forms.Padding(0);
-            this.pnlJog.Name = "pnlJog";
-            this.pnlJog.Size = new System.Drawing.Size(487, 350);
-            this.pnlJog.TabIndex = 1;
-            // 
-            // tlpJogControl
-            // 
-            this.tlpJogControl.ColumnCount = 2;
-            this.tlpJogControl.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 20F));
-            this.tlpJogControl.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 80F));
-            this.tlpJogControl.Controls.Add(this.tlpJogFunction, 1, 0);
-            this.tlpJogControl.Controls.Add(this.lblJog, 0, 0);
-            this.tlpJogControl.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tlpJogControl.Location = new System.Drawing.Point(0, 0);
-            this.tlpJogControl.Margin = new System.Windows.Forms.Padding(0);
-            this.tlpJogControl.Name = "tlpJogControl";
-            this.tlpJogControl.RowCount = 1;
-            this.tlpJogControl.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tlpJogControl.Size = new System.Drawing.Size(487, 350);
-            this.tlpJogControl.TabIndex = 0;
-            // 
-            // tlpJogFunction
-            // 
-            this.tlpJogFunction.ColumnCount = 1;
-            this.tlpJogFunction.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tlpJogFunction.Controls.Add(this.tlpJogOption, 0, 0);
-            this.tlpJogFunction.Controls.Add(this.tlpJog, 0, 1);
-            this.tlpJogFunction.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tlpJogFunction.Location = new System.Drawing.Point(97, 0);
-            this.tlpJogFunction.Margin = new System.Windows.Forms.Padding(0);
-            this.tlpJogFunction.Name = "tlpJogFunction";
-            this.tlpJogFunction.RowCount = 2;
-            this.tlpJogFunction.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 40F));
-            this.tlpJogFunction.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 60F));
-            this.tlpJogFunction.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tlpJogFunction.Size = new System.Drawing.Size(390, 350);
-            this.tlpJogFunction.TabIndex = 23;
-            // 
-            // tlpJogOption
-            // 
-            this.tlpJogOption.ColumnCount = 2;
-            this.tlpJogOption.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tlpJogOption.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tlpJogOption.Controls.Add(this.tlpPitchZ, 1, 1);
-            this.tlpJogOption.Controls.Add(this.tlpPitchXY, 0, 1);
-            this.tlpJogOption.Controls.Add(this.tlpJogMode, 1, 0);
-            this.tlpJogOption.Controls.Add(this.tlpJogSpeedMode, 0, 0);
-            this.tlpJogOption.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tlpJogOption.Location = new System.Drawing.Point(0, 0);
-            this.tlpJogOption.Margin = new System.Windows.Forms.Padding(0);
-            this.tlpJogOption.Name = "tlpJogOption";
-            this.tlpJogOption.RowCount = 2;
-            this.tlpJogOption.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tlpJogOption.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tlpJogOption.Size = new System.Drawing.Size(390, 140);
-            this.tlpJogOption.TabIndex = 20;
-            // 
-            // tlpPitchZ
-            // 
-            this.tlpPitchZ.ColumnCount = 2;
-            this.tlpPitchZ.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tlpPitchZ.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tlpPitchZ.Controls.Add(this.lblPitchZ, 0, 0);
-            this.tlpPitchZ.Controls.Add(this.lblPitchZValue, 1, 0);
-            this.tlpPitchZ.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tlpPitchZ.Location = new System.Drawing.Point(198, 73);
-            this.tlpPitchZ.Name = "tlpPitchZ";
-            this.tlpPitchZ.RowCount = 1;
-            this.tlpPitchZ.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tlpPitchZ.Size = new System.Drawing.Size(189, 64);
-            this.tlpPitchZ.TabIndex = 0;
-            // 
-            // lblPitchZ
-            // 
-            this.lblPitchZ.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
-            this.lblPitchZ.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lblPitchZ.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblPitchZ.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
-            this.lblPitchZ.ForeColor = System.Drawing.Color.White;
-            this.lblPitchZ.Location = new System.Drawing.Point(0, 0);
-            this.lblPitchZ.Margin = new System.Windows.Forms.Padding(0);
-            this.lblPitchZ.Name = "lblPitchZ";
-            this.lblPitchZ.Size = new System.Drawing.Size(94, 64);
-            this.lblPitchZ.TabIndex = 4;
-            this.lblPitchZ.Text = "PITCH Z";
-            this.lblPitchZ.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // lblPitchZValue
-            // 
-            this.lblPitchZValue.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
-            this.lblPitchZValue.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lblPitchZValue.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblPitchZValue.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
-            this.lblPitchZValue.ForeColor = System.Drawing.Color.White;
-            this.lblPitchZValue.Location = new System.Drawing.Point(94, 0);
-            this.lblPitchZValue.Margin = new System.Windows.Forms.Padding(0);
-            this.lblPitchZValue.Name = "lblPitchZValue";
-            this.lblPitchZValue.Size = new System.Drawing.Size(95, 64);
-            this.lblPitchZValue.TabIndex = 2;
-            this.lblPitchZValue.Text = "0.1";
-            this.lblPitchZValue.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.lblPitchZValue.Click += new System.EventHandler(this.lblPitchZValue_Click);
-            // 
-            // tlpPitchXY
-            // 
-            this.tlpPitchXY.ColumnCount = 2;
-            this.tlpPitchXY.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tlpPitchXY.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tlpPitchXY.Controls.Add(this.lblPitchXY, 0, 0);
-            this.tlpPitchXY.Controls.Add(this.lblPitchXYValue, 1, 0);
-            this.tlpPitchXY.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tlpPitchXY.Location = new System.Drawing.Point(3, 73);
-            this.tlpPitchXY.Name = "tlpPitchXY";
-            this.tlpPitchXY.RowCount = 1;
-            this.tlpPitchXY.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tlpPitchXY.Size = new System.Drawing.Size(189, 64);
-            this.tlpPitchXY.TabIndex = 0;
-            // 
-            // lblPitchXY
-            // 
-            this.lblPitchXY.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
-            this.lblPitchXY.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lblPitchXY.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblPitchXY.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
-            this.lblPitchXY.ForeColor = System.Drawing.Color.White;
-            this.lblPitchXY.Location = new System.Drawing.Point(0, 0);
-            this.lblPitchXY.Margin = new System.Windows.Forms.Padding(0);
-            this.lblPitchXY.Name = "lblPitchXY";
-            this.lblPitchXY.Size = new System.Drawing.Size(94, 64);
-            this.lblPitchXY.TabIndex = 4;
-            this.lblPitchXY.Text = "PITCH XY";
-            this.lblPitchXY.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // lblPitchXYValue
-            // 
-            this.lblPitchXYValue.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
-            this.lblPitchXYValue.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lblPitchXYValue.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblPitchXYValue.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
-            this.lblPitchXYValue.ForeColor = System.Drawing.Color.White;
-            this.lblPitchXYValue.Location = new System.Drawing.Point(94, 0);
-            this.lblPitchXYValue.Margin = new System.Windows.Forms.Padding(0);
-            this.lblPitchXYValue.Name = "lblPitchXYValue";
-            this.lblPitchXYValue.Size = new System.Drawing.Size(95, 64);
-            this.lblPitchXYValue.TabIndex = 2;
-            this.lblPitchXYValue.Text = "1.0";
-            this.lblPitchXYValue.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.lblPitchXYValue.Click += new System.EventHandler(this.lblPitchXYValue_Click);
-            // 
-            // tlpJogMode
-            // 
-            this.tlpJogMode.ColumnCount = 2;
-            this.tlpJogMode.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tlpJogMode.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tlpJogMode.Controls.Add(this.rdoIncreaseMode, 0, 0);
-            this.tlpJogMode.Controls.Add(this.rdoJogMode, 0, 0);
-            this.tlpJogMode.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tlpJogMode.Location = new System.Drawing.Point(198, 3);
-            this.tlpJogMode.Name = "tlpJogMode";
-            this.tlpJogMode.RowCount = 1;
-            this.tlpJogMode.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tlpJogMode.Size = new System.Drawing.Size(189, 64);
-            this.tlpJogMode.TabIndex = 0;
-            // 
-            // rdoIncreaseMode
-            // 
-            this.rdoIncreaseMode.Appearance = System.Windows.Forms.Appearance.Button;
-            this.rdoIncreaseMode.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
-            this.rdoIncreaseMode.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.rdoIncreaseMode.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.rdoIncreaseMode.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
-            this.rdoIncreaseMode.ForeColor = System.Drawing.Color.White;
-            this.rdoIncreaseMode.Location = new System.Drawing.Point(94, 0);
-            this.rdoIncreaseMode.Margin = new System.Windows.Forms.Padding(0);
-            this.rdoIncreaseMode.Name = "rdoIncreaseMode";
-            this.rdoIncreaseMode.Size = new System.Drawing.Size(95, 64);
-            this.rdoIncreaseMode.TabIndex = 145;
-            this.rdoIncreaseMode.Tag = "0";
-            this.rdoIncreaseMode.Text = "INC MODE";
-            this.rdoIncreaseMode.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.rdoIncreaseMode.UseVisualStyleBackColor = false;
-            this.rdoIncreaseMode.CheckedChanged += new System.EventHandler(this.rdoIncreaseMode_CheckedChanged);
-            // 
-            // rdoJogMode
-            // 
-            this.rdoJogMode.Appearance = System.Windows.Forms.Appearance.Button;
-            this.rdoJogMode.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
-            this.rdoJogMode.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.rdoJogMode.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.rdoJogMode.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
-            this.rdoJogMode.ForeColor = System.Drawing.Color.White;
-            this.rdoJogMode.Location = new System.Drawing.Point(0, 0);
-            this.rdoJogMode.Margin = new System.Windows.Forms.Padding(0);
-            this.rdoJogMode.Name = "rdoJogMode";
-            this.rdoJogMode.Size = new System.Drawing.Size(94, 64);
-            this.rdoJogMode.TabIndex = 144;
-            this.rdoJogMode.Tag = "0";
-            this.rdoJogMode.Text = "JOG MODE";
-            this.rdoJogMode.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.rdoJogMode.UseVisualStyleBackColor = false;
-            this.rdoJogMode.CheckedChanged += new System.EventHandler(this.rdoJogMode_CheckedChanged);
-            // 
-            // tlpJogSpeedMode
-            // 
-            this.tlpJogSpeedMode.ColumnCount = 2;
-            this.tlpJogSpeedMode.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tlpJogSpeedMode.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tlpJogSpeedMode.Controls.Add(this.rdoJogFastMode, 0, 0);
-            this.tlpJogSpeedMode.Controls.Add(this.rdoJogSlowMode, 0, 0);
-            this.tlpJogSpeedMode.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tlpJogSpeedMode.Location = new System.Drawing.Point(3, 3);
-            this.tlpJogSpeedMode.Name = "tlpJogSpeedMode";
-            this.tlpJogSpeedMode.RowCount = 1;
-            this.tlpJogSpeedMode.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tlpJogSpeedMode.Size = new System.Drawing.Size(189, 64);
-            this.tlpJogSpeedMode.TabIndex = 0;
-            // 
-            // rdoJogFastMode
-            // 
-            this.rdoJogFastMode.Appearance = System.Windows.Forms.Appearance.Button;
-            this.rdoJogFastMode.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
-            this.rdoJogFastMode.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.rdoJogFastMode.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.rdoJogFastMode.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
-            this.rdoJogFastMode.ForeColor = System.Drawing.Color.White;
-            this.rdoJogFastMode.Location = new System.Drawing.Point(94, 0);
-            this.rdoJogFastMode.Margin = new System.Windows.Forms.Padding(0);
-            this.rdoJogFastMode.Name = "rdoJogFastMode";
-            this.rdoJogFastMode.Size = new System.Drawing.Size(95, 64);
-            this.rdoJogFastMode.TabIndex = 144;
-            this.rdoJogFastMode.Tag = "0";
-            this.rdoJogFastMode.Text = "FAST";
-            this.rdoJogFastMode.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.rdoJogFastMode.UseVisualStyleBackColor = false;
-            this.rdoJogFastMode.CheckedChanged += new System.EventHandler(this.rdoJogFastMode_CheckedChanged);
-            // 
-            // rdoJogSlowMode
-            // 
-            this.rdoJogSlowMode.Appearance = System.Windows.Forms.Appearance.Button;
-            this.rdoJogSlowMode.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
-            this.rdoJogSlowMode.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.rdoJogSlowMode.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.rdoJogSlowMode.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
-            this.rdoJogSlowMode.ForeColor = System.Drawing.Color.White;
-            this.rdoJogSlowMode.Location = new System.Drawing.Point(0, 0);
-            this.rdoJogSlowMode.Margin = new System.Windows.Forms.Padding(0);
-            this.rdoJogSlowMode.Name = "rdoJogSlowMode";
-            this.rdoJogSlowMode.Size = new System.Drawing.Size(94, 64);
-            this.rdoJogSlowMode.TabIndex = 143;
-            this.rdoJogSlowMode.Tag = "0";
-            this.rdoJogSlowMode.Text = "SLOW";
-            this.rdoJogSlowMode.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.rdoJogSlowMode.UseVisualStyleBackColor = false;
-            this.rdoJogSlowMode.CheckedChanged += new System.EventHandler(this.rdoJogSlowMode_CheckedChanged);
-            // 
-            // tlpJog
-            // 
-            this.tlpJog.ColumnCount = 2;
-            this.tlpJog.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tlpJog.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tlpJog.Controls.Add(this.pnlMotionJog, 0, 0);
-            this.tlpJog.Controls.Add(this.tableLayoutPanel5, 1, 0);
-            this.tlpJog.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tlpJog.Location = new System.Drawing.Point(3, 143);
-            this.tlpJog.Name = "tlpJog";
-            this.tlpJog.RowCount = 1;
-            this.tlpJog.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tlpJog.Size = new System.Drawing.Size(384, 204);
-            this.tlpJog.TabIndex = 21;
-            // 
-            // pnlMotionJog
-            // 
-            this.pnlMotionJog.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pnlMotionJog.Location = new System.Drawing.Point(0, 0);
-            this.pnlMotionJog.Margin = new System.Windows.Forms.Padding(0);
-            this.pnlMotionJog.Name = "pnlMotionJog";
-            this.pnlMotionJog.Size = new System.Drawing.Size(192, 204);
-            this.pnlMotionJog.TabIndex = 0;
-            // 
-            // tableLayoutPanel5
-            // 
-            this.tableLayoutPanel5.ColumnCount = 3;
-            this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
-            this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
-            this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
-            this.tableLayoutPanel5.Controls.Add(this.pnlLAFJog, 1, 0);
-            this.tableLayoutPanel5.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel5.Location = new System.Drawing.Point(192, 0);
-            this.tableLayoutPanel5.Margin = new System.Windows.Forms.Padding(0);
-            this.tableLayoutPanel5.Name = "tableLayoutPanel5";
-            this.tableLayoutPanel5.RowCount = 1;
-            this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel5.Size = new System.Drawing.Size(192, 204);
-            this.tableLayoutPanel5.TabIndex = 1;
-            // 
-            // pnlLAFJog
-            // 
-            this.pnlLAFJog.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pnlLAFJog.Location = new System.Drawing.Point(64, 0);
-            this.pnlLAFJog.Margin = new System.Windows.Forms.Padding(0);
-            this.pnlLAFJog.Name = "pnlLAFJog";
-            this.pnlLAFJog.Size = new System.Drawing.Size(64, 204);
-            this.pnlLAFJog.TabIndex = 0;
-            // 
-            // lblJog
-            // 
-            this.lblJog.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lblJog.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblJog.ForeColor = System.Drawing.Color.White;
-            this.lblJog.Location = new System.Drawing.Point(4, 1);
-            this.lblJog.Margin = new System.Windows.Forms.Padding(4, 1, 4, 1);
-            this.lblJog.Name = "lblJog";
-            this.lblJog.Size = new System.Drawing.Size(89, 348);
-            this.lblJog.TabIndex = 0;
-            this.lblJog.Text = "Jog";
-            this.lblJog.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
             // pnlTeachingPositionList
             // 
             this.pnlTeachingPositionList.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -1646,10 +1634,6 @@
             this.tlpMotionSettings.ResumeLayout(false);
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tlpMotionFunction.ResumeLayout(false);
-            this.tlpStatus.ResumeLayout(false);
-            this.tableLayoutPanel4.ResumeLayout(false);
-            this.tlpMotionStatus.ResumeLayout(false);
-            this.pnlJog.ResumeLayout(false);
             this.tlpJogControl.ResumeLayout(false);
             this.tlpJogFunction.ResumeLayout(false);
             this.tlpJogOption.ResumeLayout(false);
@@ -1659,6 +1643,9 @@
             this.tlpJogSpeedMode.ResumeLayout(false);
             this.tlpJog.ResumeLayout(false);
             this.tableLayoutPanel5.ResumeLayout(false);
+            this.tlpStatus.ResumeLayout(false);
+            this.tlpLAFStatus.ResumeLayout(false);
+            this.tlpMotionStatus.ResumeLayout(false);
             this.tableLayoutPanel2.ResumeLayout(false);
             this.tlpMotionParameter.ResumeLayout(false);
             this.tlpVariableParameters.ResumeLayout(false);
@@ -1701,7 +1688,6 @@
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel10;
         private System.Windows.Forms.Label lblApplyImage;
         private System.Windows.Forms.Label lblSave;
-        private System.Windows.Forms.Panel pnlJog;
         private System.Windows.Forms.TableLayoutPanel tlpMotionStatus;
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.Label label8;
@@ -1750,7 +1736,7 @@
         private System.Windows.Forms.Label lblSensorZ;
         private System.Windows.Forms.Label lblMoveToTargetZ;
         private System.Windows.Forms.Label lblCurrentToTargetenterOfGravityZ;
-        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel4;
+        private System.Windows.Forms.TableLayoutPanel tlpLAFStatus;
         private System.Windows.Forms.TableLayoutPanel tlpJogControl;
         private System.Windows.Forms.TableLayoutPanel tlpJogFunction;
         private System.Windows.Forms.TableLayoutPanel tlpJogOption;

@@ -30,46 +30,37 @@ namespace ATT.UI.Forms
         #region 필드
         private System.Threading.Timer _formTimer = null;
 
-        private JogSpeedMode _jogSpeedMode = JogSpeedMode.Slow;
-
-        private JogMode _jogMode = JogMode.Jog;
-
         private Color _selectedColor;
 
-        private Color _noneSelectedColor;
-
-
-        private TeachingPositionListControl TeachingPositionListControl { get; set; } = new TeachingPositionListControl();
-
-        //private MotionStatusControl MotionStatusControl { get; set; } = new MotionStatusControl() { Dock = DockStyle.Fill };
-        //private AutoFocusStatusControl AutoFocusStatusControl { get; set; } = new AutoFocusStatusControl() { Dock = DockStyle.Fill};
-        
-        //private JogControl JogControl { get; set; } = new JogControl() { Dock = DockStyle.Fill };
-
-        private List<MotionParameterCommonControl> MotionParameterCommonControlList { get; set; } = new List<MotionParameterCommonControl>();
-
-        private List<MotionParameterVariableControl> MotionParameterVariableControlList { get; set; } = new List<MotionParameterVariableControl>();
+        private Color _nonSelectedColor;
         #endregion
 
         #region 속성
+        private TeachingPositionListControl TeachingPositionListControl { get; set; } = new TeachingPositionListControl();
+
         public string UnitName { get; set; } = string.Empty;
-        private TeachingPosition TeachingPositionInfo { get; set; } = null;
+
+        private List<TeachingPosition> TeachingPositionList { get; set; } = null;
+
         private AxisHandler AxisHandler { get; set; } = null;
+
         private LAFCtrl LAFCtrl { get; set; } = null;
 
         private MotionJogControl MotionJogControl { get; set; } = new MotionJogControl() { Dock = DockStyle.Fill };
-        private LAFJogControl LAFJogControl { get; set;} = new LAFJogControl() { Dock = DockStyle.Fill };
-        MotionParameterCommonControl XCommonControl = new MotionParameterCommonControl();
 
-        MotionParameterCommonControl YCommonControl = new MotionParameterCommonControl();
+        private LAFJogControl LAFJogControl { get; set; } = new LAFJogControl() { Dock = DockStyle.Fill };
 
-        MotionParameterCommonControl ZCommonControl = new MotionParameterCommonControl();
+        private MotionParameterCommonControl XCommonControl = new MotionParameterCommonControl();
 
-        MotionParameterVariableControl XVariableControl = new MotionParameterVariableControl();
+        private MotionParameterCommonControl YCommonControl = new MotionParameterCommonControl();
 
-        MotionParameterVariableControl YVariableControl = new MotionParameterVariableControl();
+        private MotionParameterCommonControl ZCommonControl = new MotionParameterCommonControl();
 
-        MotionParameterVariableControl ZVariableControl = new MotionParameterVariableControl();
+        private MotionParameterVariableControl XVariableControl = new MotionParameterVariableControl();
+
+        private MotionParameterVariableControl YVariableControl = new MotionParameterVariableControl();
+
+        private MotionParameterVariableControl ZVariableControl = new MotionParameterVariableControl();
 
         public TeachingPositionType TeachingPositionType = TeachingPositionType.Standby;
 
@@ -101,18 +92,16 @@ namespace ATT.UI.Forms
         private void MotionSettingsForm_Load(object sender, EventArgs e)
         {
             SystemManager.Instance().UpdateTeachingData();
-
             UpdateData();
             AddControl();
             StartTimer();
-            SetParams();
             InitializeUI();
         }
 
         private void InitializeUI()
         {
             _selectedColor = Color.FromArgb(104, 104, 104);
-            _noneSelectedColor = Color.FromArgb(52, 52, 52);
+            _nonSelectedColor = Color.FromArgb(52, 52, 52);
 
             rdoJogSlowMode.Checked = true;
             rdoJogMode.Checked = true;
@@ -121,13 +110,7 @@ namespace ATT.UI.Forms
         private void AddControl()
         {
             AddTeachingPositionListControl();
-
-            pnlMotionJog.Controls.Add(MotionJogControl);
-            MotionJogControl.SetAxisHanlder(AxisHandler);
-
-            pnlLAFJog.Controls.Add(LAFJogControl);
-            LAFJogControl.SetSelectedLafCtrl(LAFCtrl);
-
+            AddJogControl();
             AddCommonControl();
             AddVariableControl();
         }
@@ -135,7 +118,7 @@ namespace ATT.UI.Forms
         private void AddTeachingPositionListControl()
         {
             TeachingPositionListControl.Dock = DockStyle.Fill;
-            TeachingPositionListControl.UnitName = "";
+            TeachingPositionListControl.UnitName = "0";
             TeachingPositionListControl.SendEventHandler += new TeachingPositionListControl.SetTeachingPositionListDelegate(ReceiveTeachingPosition);
             pnlTeachingPositionList.Controls.Add(TeachingPositionListControl);
         }
@@ -145,40 +128,85 @@ namespace ATT.UI.Forms
             Console.WriteLine(teachingPositionType.ToString());
             TeachingPositionType = teachingPositionType;
 
-            SetParams(TeachingPositionType);
+            UpdateVariableParam(teachingPositionType);
         }
 
-        private void AddCommandControl()
+        private void UpdateData(TeachingPositionType teachingPositionType = TeachingPositionType.Standby)
         {
-            //var axisHandler = AppsMotionManager.Instance().GetAxisHandler(AxisHandlerName.Unit0);
+            var axisHandler = AppsMotionManager.Instance().GetAxisHandler(AxisHandlerName.Unit0);
+            SetAxisHandler(axisHandler);
 
-            //XCommandControl.Dock = DockStyle.Fill;
-            //XCommandControl.SetAxis(axisHandler.GetAxis(AxisName.X));
+            string unitName = "0";// TeachingPositionListControl.UnitName;
+            var posData = SystemManager.Instance().GetTeachingData().GetUnit(unitName).TeachingPositions;
+            SetTeachingPosition(posData);
 
-            //YCommandControl.Dock = DockStyle.Fill;
-            //YCommandControl.SetAxis(axisHandler.GetAxis(AxisName.Y));
+            var lafCtrl = AppsLAFManager.Instance().GetLAFCtrl(LAFName.Akkon);
+            SetLAFCtrl(lafCtrl);
 
-            var lafctrl = DeviceManager.Instance().LAFCtrlHandler.Where(x => x.Name == LAFName.Akkon.ToString()).First();
-            //AutoFocusStatusControl.SetLAFCtrl(lafctrl);
+            UpdateCommonParam();
+            UpdateVariableParam();
+        }
 
-            //tlpStatus.Controls.Add(XCommandControl);
-            //tlpStatus.Controls.Add(YCommandControl);
-            //tlpStatus.Controls.Add(ZCommandControl);
-            //tlpStatus.Controls.Add(AutoFocusStatusControl);
+        private void UpdateVariableParam(TeachingPositionType teachingPositionType = TeachingPositionType.Standby)
+        {
+            var param = TeachingPositionList.Where(x => x.Name == teachingPositionType.ToString()).First();
+            if (param == null)
+                return;
+
+            lblTargetPositionX.Text = param.GetTargetPosition(AxisName.X).ToString();
+            lblOffsetX.Text = param.GetOffset(AxisName.X).ToString();
+            XVariableControl.UpdateData(param.GetMovingParams(AxisName.X));
+
+            lblTargetPositionY.Text = param.GetTargetPosition(AxisName.Y).ToString();
+            lblOffsetY.Text = param.GetOffset(AxisName.Y).ToString();
+            YVariableControl.UpdateData(param.GetMovingParams(AxisName.Y));
+
+            lblTargetPositionZ.Text = param.GetTargetPosition(AxisName.Z).ToString();
+            lblTeachedCenterOfGravityZ.Text = param.GetCenterOfGravity(AxisName.Z).ToString();
+            ZVariableControl.UpdateData(param.GetMovingParams(AxisName.Z));
+        }
+
+        private void UpdateCommonParam()
+        {
+            XCommonControl.UpdateData(AxisHandler.GetAxis(AxisName.X).AxisCommonParams.DeepCopy());
+            YCommonControl.UpdateData(AxisHandler.GetAxis(AxisName.Y).AxisCommonParams.DeepCopy());
+            ZCommonControl.UpdateData(AxisHandler.GetAxis(AxisName.Z).AxisCommonParams.DeepCopy());
+        }
+
+        private void SetAxisHandler(AxisHandler axisHandler)
+        {
+            AxisHandler = axisHandler;
+        }
+
+        private void SetTeachingPosition(List<TeachingPosition> teacingPositionList)
+        {
+            TeachingPositionList = teacingPositionList;
+        }
+
+        private void SetLAFCtrl(LAFCtrl lafCtrl)
+        {
+            LAFCtrl = lafCtrl;
+        }
+
+        private void AddJogControl()
+        {
+            pnlMotionJog.Controls.Add(MotionJogControl);
+            MotionJogControl.SetAxisHanlder(AxisHandler);
+
+            pnlLAFJog.Controls.Add(LAFJogControl);
+            LAFJogControl.SetSelectedLafCtrl(LAFCtrl);
         }
 
         private void AddCommonControl()
         {
-            var axisHandler = AppsMotionManager.Instance().GetAxisHandler(AxisHandlerName.Unit0);
-
             XCommonControl.Dock = DockStyle.Fill;
-            XCommonControl.SetAxis(axisHandler.GetAxis(AxisName.X));
+            XCommonControl.SetAxis(AxisHandler.GetAxis(AxisName.X));
 
             YCommonControl.Dock = DockStyle.Fill;
-            YCommonControl.SetAxis(axisHandler.GetAxis(AxisName.Y));
+            YCommonControl.SetAxis(AxisHandler.GetAxis(AxisName.Y));
 
             ZCommonControl.Dock = DockStyle.Fill;
-            ZCommonControl.SetAxis(axisHandler.GetAxis(AxisName.Z));
+            ZCommonControl.SetAxis(AxisHandler.GetAxis(AxisName.Z));
 
             tlpCommonParameter.Controls.Add(XCommonControl);
             tlpCommonParameter.Controls.Add(YCommonControl);
@@ -187,16 +215,14 @@ namespace ATT.UI.Forms
 
         private void AddVariableControl()
         {
-            var axisHandler = AppsMotionManager.Instance().GetAxisHandler(AxisHandlerName.Unit0);
-
             XVariableControl.Dock = DockStyle.Fill;
-            XVariableControl.SetAxis(axisHandler.GetAxis(AxisName.X));
+            XVariableControl.SetAxis(AxisHandler.GetAxis(AxisName.X));
 
             YVariableControl.Dock = DockStyle.Fill;
-            YVariableControl.SetAxis(axisHandler.GetAxis(AxisName.Y));
+            YVariableControl.SetAxis(AxisHandler.GetAxis(AxisName.Y));
 
             ZVariableControl.Dock = DockStyle.Fill;
-            ZVariableControl.SetAxis(axisHandler.GetAxis(AxisName.Z));
+            ZVariableControl.SetAxis(AxisHandler.GetAxis(AxisName.Z));
 
             tlpVariableParameter.Controls.Add(XVariableControl);
             tlpVariableParameter.Controls.Add(YVariableControl);
@@ -206,40 +232,6 @@ namespace ATT.UI.Forms
         private void StartTimer()
         {
             _formTimer = new System.Threading.Timer(UpdateStatus, null, 1000, 1000);
-        }
-
-        //public void UpdateData(AxisHandler axisHandler, TeachingPosition teacingPosition, LAFCtrl lafCtrl)
-        //{
-        //    SetTeachingPosition(teacingPosition);
-        //    SetAxisHandler(axisHandler);
-        //    SetLAFCtrl(lafCtrl);
-        //}
-
-        private void UpdateData()
-        {
-            var axisHandler = AppsMotionManager.Instance().GetAxisHandler(AxisHandlerName.Unit0);
-            SetAxisHandler(axisHandler);
-
-            var posData = SystemManager.Instance().GetTeachingData().GetUnit(UnitName).TeachingPositions[(int)TeachingPositionType];
-            SetTeachingPosition(posData);
-
-            var lafCtrl = AppsLAFManager.Instance().GetLAFCtrl(LAFName.Akkon);
-            SetLAFCtrl(lafCtrl);
-        }
-
-        private void SetAxisHandler(AxisHandler axisHandler)
-        {
-            AxisHandler = axisHandler;
-        }
-
-        private void SetTeachingPosition(TeachingPosition teacingPosition)
-        {
-            TeachingPositionInfo = teacingPosition.DeepCopy();
-        }
-
-        private void SetLAFCtrl(LAFCtrl lafCtrl)
-        {
-            LAFCtrl = lafCtrl;
         }
 
         private delegate void UpdateStatusDelegate(object obj);
@@ -307,7 +299,6 @@ namespace ATT.UI.Forms
 
         private void UpdateStatusAutoFocusZ()
         {
-            //var axis = AxisHandler.AxisList[(int)AxisName.Z];
             var status = LAFCtrl.Status;
 
             if (status == null)
@@ -324,34 +315,6 @@ namespace ATT.UI.Forms
                 lblSensorZ.Text = "";
         }
 
-        public void SetParams(TeachingPositionType teachingPositionType = TeachingPositionType.Standby)
-        {
-            SetCommonParams();
-            SetVariableParams();
-        }
-
-        private void SetCommonParams()
-        {
-            XCommonControl.UpdateData(AxisHandler.GetAxis(AxisName.X).AxisCommonParams.DeepCopy());
-            YCommonControl.UpdateData(AxisHandler.GetAxis(AxisName.Y).AxisCommonParams.DeepCopy());
-            ZCommonControl.UpdateData(AxisHandler.GetAxis(AxisName.Z).AxisCommonParams.DeepCopy());
-        }
-
-        private void SetVariableParams()
-        {
-            lblTargetPositionX.Text = TeachingPositionInfo.GetTargetPosition(AxisName.X).ToString();
-            lblOffsetX.Text = TeachingPositionInfo.GetOffset(AxisName.X).ToString();
-            XVariableControl.UpdateData(TeachingPositionInfo.GetMovingParams(AxisName.X));
-
-            lblTargetPositionY.Text = TeachingPositionInfo.GetTargetPosition(AxisName.Y).ToString();
-            lblOffsetY.Text = TeachingPositionInfo.GetOffset(AxisName.Y).ToString();
-            YVariableControl.UpdateData(TeachingPositionInfo.GetMovingParams(AxisName.Y));
-
-            lblTargetPositionZ.Text = TeachingPositionInfo.GetTargetPosition(AxisName.Z).ToString();
-            lblTeachedCenterOfGravityZ.Text = TeachingPositionInfo.GetCenterOfGravity(AxisName.Z).ToString();
-            ZVariableControl.UpdateData(TeachingPositionInfo.GetMovingParams(AxisName.Z));
-        }
-
         public void UpdateCurrentData()
         {
             GetCurrentCommonParams();
@@ -360,25 +323,21 @@ namespace ATT.UI.Forms
 
         private void GetCurrentCommonParams()
         {
-            AxisHandler.GetAxis(AxisName.X).AxisCommonParams.SetCommonParams(XCommonControl.GetCurrentData());
-            AxisHandler.GetAxis(AxisName.Y).AxisCommonParams.SetCommonParams(YCommonControl.GetCurrentData());
-            AxisHandler.GetAxis(AxisName.Z).AxisCommonParams.SetCommonParams(ZCommonControl.GetCurrentData());
+            var axisHandler = AppsMotionManager.Instance().GetAxisHandler(AxisHandlerName.Unit0);
+
+            axisHandler.GetAxis(AxisName.X).AxisCommonParams.SetCommonParams(XCommonControl.GetCurrentData());
+            axisHandler.GetAxis(AxisName.Y).AxisCommonParams.SetCommonParams(YCommonControl.GetCurrentData());
+            axisHandler.GetAxis(AxisName.Z).AxisCommonParams.SetCommonParams(ZCommonControl.GetCurrentData());
         }
 
         private void GetCurrentVariableParams()
         {
-            TeachingPositionInfo.SetTargetPosition(AxisName.X, Convert.ToDouble(lblTargetPositionX.Text));
-            TeachingPositionInfo.SetOffset(AxisName.X, Convert.ToDouble(lblOffsetX.Text));
-            TeachingPositionInfo.SetMovingParams(AxisName.X, XVariableControl.GetCurrentData());
+            string unitName = TeachingPositionListControl.UnitName;
+            var posData = SystemManager.Instance().GetTeachingData().GetUnit(unitName).TeachingPositions[(int)TeachingPositionType];
 
-            int gg = 0;
-            TeachingPositionInfo.SetTargetPosition(AxisName.Y, Convert.ToDouble(lblTargetPositionY.Text));
-            TeachingPositionInfo.SetOffset(AxisName.Y, Convert.ToDouble(lblOffsetY.Text));
-            TeachingPositionInfo.SetMovingParams(AxisName.Y, YVariableControl.GetCurrentData());
-
-            TeachingPositionInfo.SetTargetPosition(AxisName.Z, Convert.ToDouble(lblTargetPositionZ.Text));
-            TeachingPositionInfo.SetCenterOfGravity(AxisName.Z, Convert.ToInt32(lblTeachedCenterOfGravityZ.Text));
-            TeachingPositionInfo.SetMovingParams(AxisName.Z, ZVariableControl.GetCurrentData());
+            posData.SetMovingParams(AxisName.X, XVariableControl.GetCurrentData());
+            posData.SetMovingParams(AxisName.Y, YVariableControl.GetCurrentData());
+            posData.SetMovingParams(AxisName.Z, ZVariableControl.GetCurrentData());
         }
 
         private void btnMoveToTeachingPosition_Click(object sender, EventArgs e)
@@ -408,7 +367,6 @@ namespace ATT.UI.Forms
             var model = ModelManager.Instance().CurrentModel as AppsInspModel;
             model.SetUnitList(SystemManager.Instance().GetTeachingData().UnitList);
 
-            var tlqkf = SystemManager.Instance().GetTeachingData().UnitList;
             string fileName = System.IO.Path.Combine(AppConfig.Instance().Path.Model, model.Name, InspModel.FileName);
             SystemManager.Instance().SaveModel(fileName, model);
         }
@@ -417,27 +375,27 @@ namespace ATT.UI.Forms
         private void lblTargetPositionX_Click(object sender, EventArgs e)
         {
             double targetPosition = SetLabelDoubleData(sender);
-            TeachingPositionInfo.SetTargetPosition(AxisName.X, targetPosition);
+            TeachingPositionList.Where(x => x.Name == TeachingPositionType.ToString()).First().SetTargetPosition(AxisName.X, targetPosition);
         }
 
         private void lblOffsetX_Click(object sender, EventArgs e)
         {
             double offset = SetLabelDoubleData(sender);
-            TeachingPositionInfo.SetOffset(AxisName.X, offset);
+            TeachingPositionList.Where(x => x.Name == TeachingPositionType.ToString()).First().SetOffset(AxisName.X, offset);
         }
 
         private void lblCurrentToTargetX_Click(object sender, EventArgs e)
         {
             double currentPosition = Convert.ToDouble(lblCurrentPositionX.Text);
-            lblTargetPositionX.Text = currentPosition.ToString();
+            TeachingPositionList.Where(x => x.Name == TeachingPositionType.ToString()).First().SetTargetPosition(AxisName.X, currentPosition);
 
-            TeachingPositionInfo.SetTargetPosition(AxisName.X, currentPosition);
+            lblTargetPositionX.Text = currentPosition.ToString();
         }
 
         private void lblMoveToTargetX_Click(object sender, EventArgs e)
         {
-            double targetPosition = TeachingPositionInfo.GetTargetPosition(AxisName.X);
-            var movingParam = TeachingPositionInfo.GetMovingParams(AxisName.X);
+            double targetPosition = TeachingPositionList.Where(x => x.Name == TeachingPositionType.ToString()).First().GetTargetPosition(AxisName.X);
+            var movingParam = TeachingPositionList.Where(x => x.Name == TeachingPositionType.ToString()).First().GetMovingParams(AxisName.X);
 
             AxisHandler.AxisList[(int)AxisName.X].MoveTo(targetPosition, movingParam);
         }
@@ -453,27 +411,27 @@ namespace ATT.UI.Forms
         private void lblTargetPositionY_Click(object sender, EventArgs e)
         {
             double targetPosition = SetLabelDoubleData(sender);
-            TeachingPositionInfo.SetTargetPosition(AxisName.Y, targetPosition);
+            TeachingPositionList.Where(x => x.Name == TeachingPositionType.ToString()).First().SetTargetPosition(AxisName.Y, targetPosition);
         }
 
         private void lblOffsetY_Click(object sender, EventArgs e)
         {
             double offset = SetLabelDoubleData(sender);
-            TeachingPositionInfo.SetOffset(AxisName.Y, offset);
+            TeachingPositionList.Where(x => x.Name == TeachingPositionType.ToString()).First().SetOffset(AxisName.Y, offset);
         }
 
         private void lblCurrentToTargetY_Click(object sender, EventArgs e)
         {
-            double currentPosition = Convert.ToDouble(lblCurrentPositionY.Text);
-            lblTargetPositionY.Text = currentPosition.ToString();
+            double currentPosition = Convert.ToDouble(lblCurrentPositionX.Text);
+            TeachingPositionList.Where(x => x.Name == TeachingPositionType.ToString()).First().SetTargetPosition(AxisName.Y, currentPosition);
 
-            TeachingPositionInfo.SetTargetPosition(AxisName.Y, currentPosition);
+            lblTargetPositionY.Text = currentPosition.ToString();
         }
 
         private void lblMoveToTargetY_Click(object sender, EventArgs e)
         {
-            double targetPosition = TeachingPositionInfo.GetTargetPosition(AxisName.Y);
-            var movingParam = TeachingPositionInfo.GetMovingParams(AxisName.Y);
+            double targetPosition = TeachingPositionList.Where(x => x.Name == TeachingPositionType.ToString()).First().GetTargetPosition(AxisName.Y);
+            var movingParam = TeachingPositionList.Where(x => x.Name == TeachingPositionType.ToString()).First().GetMovingParams(AxisName.Y);
 
             AxisHandler.AxisList[(int)AxisName.Y].MoveTo(targetPosition, movingParam);
         }
@@ -489,34 +447,34 @@ namespace ATT.UI.Forms
         private void lblTargetPositionZ_Click(object sender, EventArgs e)
         {
             double targetPosition = SetLabelDoubleData(sender);
-            TeachingPositionInfo.SetTargetPosition(AxisName.Z, targetPosition);
+            TeachingPositionList.Where(x => x.Name == TeachingPositionType.ToString()).First().SetTargetPosition(AxisName.Z, targetPosition);
         }
 
         private void lblCurrentToTargetZ_Click(object sender, EventArgs e)
         {
-            double currentPosition = Convert.ToDouble(lblCurrentPositionZ.Text);
-            lblTargetPositionZ.Text = currentPosition.ToString();
+            double currentPosition = Convert.ToDouble(lblCurrentPositionX.Text);
+            TeachingPositionList.Where(x => x.Name == TeachingPositionType.ToString()).First().SetTargetPosition(AxisName.Z, currentPosition);
 
-            TeachingPositionInfo.SetTargetPosition(AxisName.Z, currentPosition);
+            lblTargetPositionZ.Text = currentPosition.ToString();
         }
 
         private void lblTeachedCenterOfGravityZ_Click(object sender, EventArgs e)
         {
             int targetCenterOfGravity = SetLabelIntegerData(sender);
-            TeachingPositionInfo.SetCenterOfGravity(AxisName.Z, targetCenterOfGravity);
+            TeachingPositionList.Where(x => x.Name == TeachingPositionType.ToString()).First().SetCenterOfGravity(AxisName.Z, targetCenterOfGravity);
         }
 
         private void lblCurrentToTargetenterOfGravityZ_Click(object sender, EventArgs e)
         {
-            int currentCenterOfGravity = Convert.ToInt32(lblCurrentCenterOfGravityZ.Text);
-            lblCurrentToTargetenterOfGravityZ.Text = currentCenterOfGravity.ToString();
+            int targetCenterOfGravity = Convert.ToInt32(lblCurrentCenterOfGravityZ.Text);
+            TeachingPositionList.Where(x => x.Name == TeachingPositionType.ToString()).First().SetCenterOfGravity(AxisName.Z, targetCenterOfGravity);
 
-            TeachingPositionInfo.SetTargetPosition(AxisName.Z, currentCenterOfGravity);
+            lblTeachedCenterOfGravityZ.Text = targetCenterOfGravity.ToString();
         }
 
         private void lblMoveToTargetZ_Click(object sender, EventArgs e)
         {
-            double targetPosition = TeachingPositionInfo.GetTargetPosition(AxisName.Z);
+            double targetPosition = TeachingPositionList.Where(x => x.Name == TeachingPositionType.ToString()).First().GetTargetPosition(AxisName.Z);
             double currentPosition = LAFCtrl.Status.MPos;
 
             Direction direction = Direction.CCW;
@@ -534,32 +492,15 @@ namespace ATT.UI.Forms
             //LAFCtrl.IsLaserOn
         }
 
-        private void rdoIncreaseMode_CheckedChanged(object sender, EventArgs e)
+        private void rdoJogSlowMode_CheckedChanged(object sender, EventArgs e)
         {
-            if (rdoIncreaseMode.Checked)
+            if (rdoJogSlowMode.Checked)
             {
-                SetSelectJogMode(JogMode.Increase);
-                rdoIncreaseMode.BackColor = _selectedColor;
+                SetSelectJogSpeedMode(JogSpeedMode.Slow);
+                rdoJogSlowMode.BackColor = _selectedColor;
             }
             else
-                rdoIncreaseMode.BackColor = _noneSelectedColor;
-        }
-
-        private void rdoJogMode_CheckedChanged(object sender, EventArgs e)
-        {
-            if (rdoJogMode.Checked)
-            {
-                SetSelectJogMode(JogMode.Jog);
-                rdoJogMode.BackColor = _selectedColor;
-            }
-            else
-                rdoJogMode.BackColor = _noneSelectedColor;
-        }
-
-        private void SetSelectJogMode(JogMode jogMode)
-        {
-            MotionJogControl.JogMode = jogMode;
-            LAFJogControl.JogMode = jogMode;
+                rdoJogSlowMode.BackColor = _nonSelectedColor;
         }
 
         private void rdoJogFastMode_CheckedChanged(object sender, EventArgs e)
@@ -570,24 +511,41 @@ namespace ATT.UI.Forms
                 rdoJogFastMode.BackColor = _selectedColor;
             }
             else
-                rdoJogFastMode.BackColor = _noneSelectedColor;
-        }
-
-        private void rdoJogSlowMode_CheckedChanged(object sender, EventArgs e)
-        {
-            if (rdoJogSlowMode.Checked)
-            {
-                SetSelectJogSpeedMode(JogSpeedMode.Slow);
-                rdoJogSlowMode.BackColor = _selectedColor;
-            }
-            else
-                rdoJogSlowMode.BackColor = _noneSelectedColor;
+                rdoJogFastMode.BackColor = _nonSelectedColor;
         }
 
         private void SetSelectJogSpeedMode(JogSpeedMode jogSpeedMode)
         {
             MotionJogControl.JogSpeedMode = jogSpeedMode;
             LAFJogControl.JogSpeedMode = jogSpeedMode;
+        }
+
+        private void rdoJogMode_CheckedChanged(object sender, EventArgs e)
+        {
+            if (rdoJogMode.Checked)
+            {
+                SetSelectJogMode(JogMode.Jog);
+                rdoJogMode.BackColor = _selectedColor;
+            }
+            else
+                rdoJogMode.BackColor = _nonSelectedColor;
+        }
+
+        private void rdoIncreaseMode_CheckedChanged(object sender, EventArgs e)
+        {
+            if (rdoIncreaseMode.Checked)
+            {
+                SetSelectJogMode(JogMode.Increase);
+                rdoIncreaseMode.BackColor = _selectedColor;
+            }
+            else
+                rdoIncreaseMode.BackColor = _nonSelectedColor;
+        }
+
+        private void SetSelectJogMode(JogMode jogMode)
+        {
+            MotionJogControl.JogMode = jogMode;
+            LAFJogControl.JogMode = jogMode;
         }
 
         private void lblPitchXYValue_Click(object sender, EventArgs e)

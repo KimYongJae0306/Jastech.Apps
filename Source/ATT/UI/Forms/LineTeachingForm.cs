@@ -180,7 +180,9 @@ namespace ATT.UI.Forms
             var tabList = SystemManager.Instance().GetTeachingData().GetTabList(UnitName);
             //LinescanControl.SetParams(tabList);
 
+            var posData = SystemManager.Instance().GetTeachingData().GetUnit(UnitName);
             pnlTeach.Controls.Add(LinescanControl);
+            //LinescanControl.SetParams(tabList);
             btnLinescan.ForeColor = Color.Blue;
         }
 
@@ -289,7 +291,9 @@ namespace ATT.UI.Forms
         private void btnMotionPopup_Click(object sender, EventArgs e)
         {
             MotionPopupForm motionPopupForm = new MotionPopupForm();
-            motionPopupForm.SetAxisHandler(AppsMotionManager.Instance().GetAxisHandler(AxisHandlerName.Unit0));
+            //motionPopupForm.SetAxisHandler(AppsMotionManager.Instance().GetAxisHandler(AxisHandlerName.Unit0));
+            //motionPopupForm.SetTeachingPosition(SystemManager.Instance().GetTeachingData().GetUnit(UnitName).TeachingPositions);
+            //motionPopupForm.SetLAFCtrl(AppsLAFManager.Instance().GetLAFCtrl(LAFName.Akkon));
             motionPopupForm.ShowDialog();
         }
 

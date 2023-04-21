@@ -180,6 +180,7 @@ namespace Jastech.Apps.Winform.UI.Controls
 
             public int RepeatCount { get; set; } = 0;
         }
+
         private System.Threading.Thread _repeatThread = null;
         private bool _isRepeat = false;
         private bool _isInfinite = false;
@@ -221,20 +222,20 @@ namespace Jastech.Apps.Winform.UI.Controls
             //lblStart.Text = "Stop";
         }
 
-        private delegate void UpdateUIDelegate(object obj);
-        public void UpdateUI(object obj)
-        {
-            if (this.InvokeRequired)
-            {
-                UpdateUIDelegate callback = UpdateUI;
-                BeginInvoke(callback, obj);
-                return;
-            }
+        //private delegate void UpdateRepeatCountDelegate(object obj);
+        //public void UpdateRepeatCount(object obj)
+        //{
+        //    if (this.InvokeRequired)
+        //    {
+        //        UpdateRepeatCountDelegate callback = UpdateRepeatCount;
+        //        BeginInvoke(callback, obj);
+        //        return;
+        //    }
 
-            UpdateRepeatCount();
-        }
+        //    UpdateRepeatCount();
+        //}
 
-        private void UpdateRepeatCount()
+        public void UpdateRepeatCount()
         {
             if (!_isRepeat)
                 return;
