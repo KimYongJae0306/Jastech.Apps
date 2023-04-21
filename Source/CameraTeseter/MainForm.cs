@@ -2,6 +2,7 @@
 using Cognex.VisionPro.Display;
 using Jastech.Apps.Structure.Data;
 using Jastech.Framework.Imaging;
+using Jastech.Framework.Imaging.Helper;
 using Jastech.Framework.Imaging.VisionPro;
 using Jastech.Framework.Matrox;
 using Jastech.Framework.Util.Helper;
@@ -25,10 +26,11 @@ namespace CameraTeseter
 {
     public partial class MainForm : Form
     {
-        //public CogDisplay Cam0Display { get; set; }
-
-        //public CogDisplay Cam1Display { get; set; }
         public DoubleBufferPictureBox pbxImageCam0 { get; set; }
+
+        public DoubleBufferPictureBox pbxImageCam1 { get; set; }
+
+        public bool StopThread { get; set; } = false;
         public MainForm()
         {
             InitializeComponent();
@@ -36,13 +38,18 @@ namespace CameraTeseter
 
         private void MainForm_Load(object sender, EventArgs e)
         {
+            MilHelper.InitApplication();
+
             pbxImageCam0 = new DoubleBufferPictureBox();
             pbxImageCam0.Dock = DockStyle.Fill;
+            pbxImageCam0.SizeMode = PictureBoxSizeMode.Zoom;
             pnlCam0Display.Controls.Add(pbxImageCam0);
 
-            //Cam1Display = new CogDisplay();
-            //Cam1Display.Dock = DockStyle.Fill;
-            //pnlCam1Display.Controls.Add(Cam1Display);
+            pbxImageCam1 = new DoubleBufferPictureBox();
+            pbxImageCam1.Dock = DockStyle.Fill;
+            pbxImageCam1.SizeMode = PictureBoxSizeMode.Zoom;
+            pnlCam1Display.Controls.Add(pbxImageCam1);
+
             Logger.Initialize(TestAppConfig.Instance().Path.Log);
             TestAppConfig.Instance().Initialize();
             DeviceManager.Instance().Initialize(TestAppConfig.Instance());
@@ -50,81 +57,84 @@ namespace CameraTeseter
             TestAppCameraManager.Instance().Initialize();
             TestAppCameraManager.Instance().TeachingImageGrabbed += MainForm_TeachingImageGrabbed;
 
-            Thread th = new Thread(Test);
+            Thread th = new Thread(Cam0LiveUpdate);
             th.Start();
+
+            Thread th2 = new Thread(Cam1LiveUpdate);
+            th2.Start();
         }
 
-        private void Test()
+        private void Cam0LiveUpdate()
         {
-            while(true)
+            while(StopThread == false)
             {
-                lock(_lock)
+                lock(_cam0Lock)
                 {
-                    if(liveImageList.Count>0)
+                    if(liveImageCam0List.Count>0)
                     {
-                        var image = liveImageList.Dequeue();
-                        if (pbxImageCam0.Image != null)
-                        {
-                            pbxImageCam0.Image.Dispose();
-                            pbxImageCam0.Image = null;
-                        }
-                        pbxImageCam0.Image = image;
+                        var image = liveImageCam0List.Dequeue();
+                        UpdatePictureBox(image, pbxImageCam0);
                     }
-                    
                 }
-                Thread.Sleep(100);
+                Thread.Sleep(50);
+            }
+        }
+
+        public delegate void UpdatePictureBoxDele(Bitmap bmp, PictureBox pictureBox);
+        public void UpdatePictureBox(Bitmap bmp, PictureBox pictureBox)
+        {
+            if(this.InvokeRequired)
+            {
+                UpdatePictureBoxDele callback = UpdatePictureBox;
+                BeginInvoke(callback, bmp, pictureBox);
+                return;
+            }
+
+            if (pictureBox.Image != null)
+            {
+                pictureBox.Image.Dispose();
+                pictureBox.Image = null;
+            }
+            pictureBox.Image = bmp;
+        }
+
+        private void Cam1LiveUpdate()
+        {
+            while (StopThread == false)
+            {
+                lock (_cam1Lock)
+                {
+                    if (liveImageCam1List.Count > 0)
+                    {
+                        var image = liveImageCam1List.Dequeue();
+                        UpdatePictureBox(image, pbxImageCam1);
+                    }
+
+                }
+                Thread.Sleep(50);
             }
         }
 
         static int ccCount = 0;
         Stopwatch sw1 = new Stopwatch();
-        public object _lock = new object();
-        Queue<Bitmap> liveImageList = new Queue<Bitmap>();
+        public object _cam0Lock = new object();
+        public object _cam1Lock = new object();
+        Queue<Bitmap> liveImageCam0List = new Queue<Bitmap>();
+        Queue<Bitmap> liveImageCam1List = new Queue<Bitmap>();
         private void MainForm_TeachingImageGrabbed(string name, OpenCvSharp.Mat image)
         {
-            Console.WriteLine("main com");
             if (image == null)
                 return;
 
-            int size = image.Width * image.Height * image.Channels();
-            byte[] dataArray = new byte[size];
-            Marshal.Copy(image.Data, dataArray, 0, size);
-
-            ColorFormat format = image.Channels() == 1 ? ColorFormat.Gray : ColorFormat.RGB24;
-
-            var cogImage = CogImageHelper.CovertImage(dataArray, image.Width, image.Height, format) as CogImage8Grey;
-            CogImageHelper.Save(cogImage, @"D:\123.bmp");
-            //Console.WriteLine("convert");
-            lock(_lock)
-                liveImageList.Enqueue(OpenCvSharp.Extensions.BitmapConverter.ToBitmap(image));
-
             if (name == CameraName.LinscanMIL0.ToString())
             {
-                //if (pictureBox1.Image != null)
-                //{
-                //    pictureBox1.Image.Dispose();
-                //    pictureBox1.Image = null;
-                //}
-                //pictureBox1.Image = OpenCvSharp.Extensions.BitmapConverter.ToBitmap(image);
-                //cogDisplay1.Image = null;
-                //if(sw1.ElapsedMilliseconds >1000)
-                //{
-                //cogDisplay1.Image = cogImage;
-                //Thread.Sleep(500);
-                //    while (cogDisplay1.Image != cogImage)
-                //    {
-                //        Thread.Sleep(10);
-                //    }
-
-                //    sw1.Restart();
-                //}
-
-                Console.WriteLine("ccCount : " + ccCount);
-                ccCount++;
+                lock (_cam0Lock)
+                    liveImageCam0List.Enqueue(OpenCvSharp.Extensions.BitmapConverter.ToBitmap(image));
             }
             else if(name == CameraName.LinscanMIL1.ToString())
             {
-                //cogDisplay2.Image = cogImage;
+                lock (_cam1Lock)
+                    liveImageCam1List.Enqueue(OpenCvSharp.Extensions.BitmapConverter.ToBitmap(image));
             }
         }
 
@@ -147,6 +157,14 @@ namespace CameraTeseter
         private void btnGrabStopCam1_Click(object sender, EventArgs e)
         {
             TestAppCameraManager.Instance().StopGrab(CameraName.LinscanMIL1);
+        }
+
+        private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            TestAppCameraManager.Instance().StopGrab(CameraName.LinscanMIL0);
+            TestAppCameraManager.Instance().StopGrab(CameraName.LinscanMIL1);
+            StopThread = true;
+            DeviceManager.Instance().Release();
         }
     }
 }

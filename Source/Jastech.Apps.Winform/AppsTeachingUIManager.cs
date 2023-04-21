@@ -61,7 +61,7 @@ namespace Jastech.Apps.Winform
             if (PrevImage == null)
                 return null;
 
-            return PrevImage.CopyBase(CogImageCopyModeConstants.CopyPixels); ;
+            return PrevImage.CopyBase(CogImageCopyModeConstants.CopyPixels);
         }
         #endregion
 

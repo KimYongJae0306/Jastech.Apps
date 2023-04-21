@@ -9,9 +9,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Jastech.Framework.Winform;
-using OpenCvSharp;
 using Jastech.Apps.Winform.Settings;
 using Cognex.VisionPro;
+using OpenCvSharp;
 
 namespace CameraTeseter
 {
@@ -133,10 +133,10 @@ namespace CameraTeseter
                     Stopwatch sw = new Stopwatch();
                     sw.Restart();
 
-                    Mat grabImage = new Mat(camera.ImageWidth, camera.ImageHeight, MatType.CV_8UC1, data);
-                    Mat rotatedMat = MatHelper.Rotate(grabImage, -90);
+                    Mat grabImage = new Mat(camera.ImageHeight, camera.ImageWidth, MatType.CV_8UC1, data);
+                    Mat rotatedMat = MatHelper.Transpose(grabImage);
 
-                    ScanImageList.Add(rotatedMat);
+                    //ScanImageList.Add(rotatedMat);
                     grabImage.Dispose();
 
                     sw.Stop();
@@ -145,8 +145,7 @@ namespace CameraTeseter
                     Console.WriteLine("Count : " + count.ToString());
                     count++;
                     sw.Restart();
-                    //TeachingImageGrabbed?.Invoke(camera.Name, GetMergeImage());
-                    TeachingImageGrabbed?.Invoke(camera.Name, new Mat(4096,1024, MatType.CV_8UC1));
+                    TeachingImageGrabbed?.Invoke(camera.Name, rotatedMat);
                     sw.Stop();
                     Console.WriteLine("---------"  );
                     // Console.WriteLine("Name : " + camera.Name.ToString() + "Image Drawing and Merge : " + sw.ElapsedMilliseconds.ToString() + "ms");

@@ -1120,8 +1120,7 @@ namespace Jastech.Apps.Winform.UI.Controls
             List<int> topEdgePointList = new List<int>();
             List<int> bottomEdgePointList = new List<int>();
 
-            // 39 :  나중에 변경해야함
-            ImageHelper.GetEdgePoint(topDataArray, bottomDataArray, 0, 30, ref topEdgePointList, ref bottomEdgePointList);
+            ImageHelper.GetEdgePoint(topDataArray, bottomDataArray, 0, (int)CalcResolution, ref topEdgePointList, ref bottomEdgePointList);
 
             if (topEdgePointList.Count != bottomEdgePointList.Count)
             {

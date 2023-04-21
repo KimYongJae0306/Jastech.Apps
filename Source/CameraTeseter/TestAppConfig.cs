@@ -1,6 +1,7 @@
 ﻿using Jastech.Apps.Structure.Data;
 using Jastech.Framework.Config;
 using Jastech.Framework.Device.Cameras;
+using Jastech.Framework.Device.Grabbers;
 using Jastech.Framework.Imaging;
 using System;
 using System.Collections.Generic;
@@ -67,12 +68,14 @@ namespace CameraTeseter
                 camera1.MilSystemType = Jastech.Framework.Device.Grabbers.MilSystemType.Rapixo;
                 camera1.SystemNum = 0;
                 camera1.DigitizerNum = 0;
+                camera1.TriggerMode = TriggerMode.Software;
                 config.Add(camera1);
 
                 var camera2 = new CameraMil(CameraName.LinscanMIL1.ToString(), 4640, 1024, ColorFormat.Gray, SensorType.Line);
                 camera2.MilSystemType = Jastech.Framework.Device.Grabbers.MilSystemType.Rapixo;
                 camera2.SystemNum = 0;
                 camera2.DigitizerNum = 2;
+                camera2.TriggerMode = TriggerMode.Software;
                 config.Add(camera2);
             }
         }

@@ -96,6 +96,10 @@ namespace Jastech.Apps.Winform.Settings
             {
                 var camera1 = new CameraMil(CameraName.LinscanMIL0.ToString(), 4640, 1024, ColorFormat.Gray, SensorType.Line);
                 camera1.MilSystemType = Framework.Device.Grabbers.MilSystemType.Rapixo;
+                camera1.TriggerMode = TriggerMode.Hardware;
+                camera1.TriggerSource = (int)MilCxpTriggerSource.Cxp;
+                camera1.TriggerSignalType = MilTriggerSignalType.TL_Trigger;
+                camera1.TriggerIoSourceType = MILIoSourceType.AUX_IO0;
                 config.Add(camera1);
 
                 //var camera0 = new CameraVirtual(CameraName.LeftArea.ToString(), 4096, 1024, ColorFormat.Gray, SensorType.Area);

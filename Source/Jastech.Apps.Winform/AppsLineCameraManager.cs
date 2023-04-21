@@ -136,8 +136,8 @@ namespace Jastech.Apps.Winform
                     Stopwatch sw = new Stopwatch();
                     sw.Restart();
 
-                    Mat grabImage = new Mat(camera.ImageWidth, camera.ImageHeight, MatType.CV_8UC1, data);
-                    Mat rotatedMat = MatHelper.Rotate(grabImage, -90);
+                    Mat grabImage = new Mat(camera.ImageHeight, camera.ImageWidth, MatType.CV_8UC1, data);
+                    Mat rotatedMat = MatHelper.Transpose(grabImage);
 
                     ScanImageList.Add(rotatedMat);
                     grabImage.Dispose();

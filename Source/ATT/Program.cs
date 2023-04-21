@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -24,6 +25,8 @@ namespace ATT
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
+            Application.ThreadException += new System.Threading.ThreadExceptionEventHandler(Application_ThreadException);
+            MilHelper.InitApplication();
             AppConfig.Instance().Initialize();
             AppConfig.Instance().Load();
 
@@ -34,6 +37,11 @@ namespace ATT
             SystemManager.Instance().Initialize(mainForm);
 
             Application.Run(mainForm);
+        }
+
+        private static void Application_ThreadException(object sender, ThreadExceptionEventArgs e)
+        {
+            throw new NotImplementedException();
         }
     }
 }
