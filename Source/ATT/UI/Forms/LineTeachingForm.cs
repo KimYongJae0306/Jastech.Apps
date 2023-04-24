@@ -55,8 +55,6 @@ namespace ATT.UI.Forms
 
         private MarkControl MarkControl { get; set; } = new MarkControl() { Dock = DockStyle.Fill };
 
-        private List<UserControl> TeachControlList = null;
-
         protected override CreateParams CreateParams
         {
             get
@@ -134,10 +132,6 @@ namespace ATT.UI.Forms
 
             // TeachingUIManager 참조
             AppsTeachingUIManager.Instance().SetDisplay(Display.GetDisplay());
-
-            // Teach Control List
-            //TeachControlList = new List<UserControl>();
-            //TeachControlList.Add(AlignControl);
         }
 
         private void Display_DeleteEventHandler(object sender, EventArgs e)

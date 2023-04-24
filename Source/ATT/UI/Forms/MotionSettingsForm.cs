@@ -593,5 +593,20 @@ namespace ATT.UI.Forms
 
             return inputData;
         }
+
+        private void lblOriginZ_Click(object sender, EventArgs e)
+        {
+            AppsLAFManager.Instance().StartHomeThread(LAFName.Akkon);
+        }
+
+        private void lblOriginX_Click(object sender, EventArgs e)
+        {
+            AxisHandler.AxisList[(int)AxisName.X].StartHome();
+        }
+
+        private void lblOriginY_Click(object sender, EventArgs e)
+        {
+            AxisHandler.AxisList[(int)AxisName.Y].StartHome();
+        }
     }
 }
