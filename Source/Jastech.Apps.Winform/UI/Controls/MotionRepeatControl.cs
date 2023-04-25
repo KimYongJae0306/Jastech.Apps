@@ -52,7 +52,7 @@ namespace Jastech.Apps.Winform.UI.Controls
             _selectedColor = Color.FromArgb(104, 104, 104);
             _noneSelectedColor = Color.FromArgb(52, 52, 52);
 
-            rdoForward.Checked = true;
+            SetScanDirection(Direction.CW);
         }
 
         private void lblRepeatVelocityValue_Click(object sender, EventArgs e)
@@ -70,28 +70,29 @@ namespace Jastech.Apps.Winform.UI.Controls
             SetLabelIntegerData(sender);
         }
 
-        private void rdoScanDirection_CheckedChanged(object sender, EventArgs e)
+        private void lblFoward_Click(object sender, EventArgs e)
         {
-            SetSelecteScanDirection(sender);
+            SetScanDirection(Direction.CW);
         }
 
-        private void SetSelecteScanDirection(object sender)
+        private void lblBackward_Click(object sender, EventArgs e)
         {
-            RadioButton btn = sender as RadioButton;
-
-            if (btn.Text.ToLower().Contains("forward"))
-                SetScanDirection(Direction.CW);
-            else
-                SetScanDirection(Direction.CCW);
-
-            if (btn.Checked)
-                btn.BackColor = _selectedColor;
-            else
-                btn.BackColor = _noneSelectedColor;
+            SetScanDirection(Direction.CCW);
         }
 
         private void SetScanDirection(Direction direction)
         {
+            if (direction == Direction.CW)
+            {
+                lblForward.BackColor = _selectedColor;
+                lblBackward.BackColor = _noneSelectedColor;
+            }
+            else
+            {
+                lblForward.BackColor = _noneSelectedColor;
+                lblBackward.BackColor = _selectedColor;
+            }
+
             _direction = direction;
         }
 
@@ -197,8 +198,14 @@ namespace Jastech.Apps.Winform.UI.Controls
             int repeatCount = repeatParam.RepeatCount;
             int count = 0;
 
+            if (repeatCount == 0)
+            { }
+            else
+                _remainCount = repeatCount;
+
             while (_isRepeat)
             {
+
                 SelectedAxis.MoveTo(repeatParam.EndPosition, movingParam);
                 while (!SelectedAxis.WaitForDone())
                     System.Threading.Thread.Sleep(Convert.ToInt16(movingParam.AfterWaitTime));
@@ -237,8 +244,8 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         public void UpdateRepeatCount()
         {
-            if (!_isRepeat)
-                return;
+            //if (!_isRepeat)
+            //    return;
 
             lblRepeatRemain.Text = _remainCount + " / " + lblRepeatCount.Text;
         }

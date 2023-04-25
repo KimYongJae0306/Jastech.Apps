@@ -57,8 +57,6 @@ namespace ATT.UI.Forms
 
         private MarkControl MarkControl { get; set; } = new MarkControl() { Dock = DockStyle.Fill };
 
-        private List<UserControl> TeachControlList = null;
-
         protected override CreateParams CreateParams
         {
             get
@@ -84,15 +82,35 @@ namespace ATT.UI.Forms
         #endregion
 
         #region 메서드
+        private System.Threading.Timer _formTimer = null;
+        private void StartTimer()
+        {
+            _formTimer = new System.Threading.Timer(UpdateStatus, null, 1000, 1000);
+        }
+
+        private delegate void UpdateStatusDelegate(object obj);
+        private void UpdateStatus(object obj)
+        {
+            if (this.InvokeRequired)
+            {
+                UpdateStatusDelegate callback = UpdateStatus;
+                BeginInvoke(callback, obj);
+                return;
+            }
+
+            if (LinescanControl != null && isSetParamLinescanPage)
+                LinescanControl.UpdateUI();
+        }
+
         private void LineTeachingForm_Load(object sender, EventArgs e)
         {
             //int akkonThreadCount = AppConfig.Instance().AkkonThreadCount;
             //MacronAkkon.ATT_InitSystem(this.Handle, akkonThreadCount, 0xF8);
 
             SystemManager.Instance().UpdateTeachingData();
-
             AddControl();
             SelectAlign();
+            StartTimer();
 
             lblStageCam.Text = $"STAGE : {UnitName} / CAM : {TitleCameraName}";
 
@@ -119,10 +137,6 @@ namespace ATT.UI.Forms
 
             // TeachingUIManager 참조
             AppsTeachingUIManager.Instance().SetDisplay(Display.GetDisplay());
-
-            // Teach Control List
-            //TeachControlList = new List<UserControl>();
-            //TeachControlList.Add(AlignControl);
         }
 
         private void Display_DeleteEventHandler(object sender, EventArgs e)
@@ -175,6 +189,7 @@ namespace ATT.UI.Forms
             pnlTeach.Controls.Clear();
         }
 
+        bool isSetParamLinescanPage = false;
         private void SelectLinescan()
         {
             if (ModelManager.Instance().CurrentModel == null || UnitName == "")
@@ -189,6 +204,8 @@ namespace ATT.UI.Forms
             pnlTeach.Controls.Add(LinescanControl);
             //LinescanControl.SetParams(tabList);
             btnLinescan.ForeColor = Color.Blue;
+
+            isSetParamLinescanPage = true;
         }
 
         private void SelectMark()
@@ -274,8 +291,6 @@ namespace ATT.UI.Forms
         {
             this.Close();
         }
-
-        
 
         private void btnLoadImage_Click(object sender, EventArgs e)
         {

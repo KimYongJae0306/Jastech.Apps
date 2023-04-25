@@ -71,12 +71,12 @@ namespace CameraTeseter
                 camera1.TriggerMode = TriggerMode.Software;
                 config.Add(camera1);
 
-                var camera2 = new CameraMil(CameraName.LinscanMIL1.ToString(), 4640, 1024, ColorFormat.Gray, SensorType.Line);
-                camera2.MilSystemType = Jastech.Framework.Device.Grabbers.MilSystemType.Rapixo;
-                camera2.SystemNum = 0;
-                camera2.DigitizerNum = 2;
-                camera2.TriggerMode = TriggerMode.Software;
-                config.Add(camera2);
+                //var camera2 = new CameraMil(CameraName.LinscanMIL1.ToString(), 4640, 1024, ColorFormat.Gray, SensorType.Line);
+                //camera2.MilSystemType = Jastech.Framework.Device.Grabbers.MilSystemType.Rapixo;
+                //camera2.SystemNum = 0;
+                //camera2.DigitizerNum = 2;
+                //camera2.TriggerMode = TriggerMode.Software;
+                //config.Add(camera2);
             }
         }
 

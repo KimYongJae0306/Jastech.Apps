@@ -91,6 +91,9 @@ namespace ATT.UI.Forms
             this.Location = new Point(1000, 40);
             this.Size = new Size(800, 1000);
 
+            _selectedColor = Color.FromArgb(104, 104, 104);
+            _nonSelectedColor = Color.FromArgb(52, 52, 52);
+
             tlpMotionFunction.Dock = DockStyle.Fill;
             tlpVariableParameters.Dock = DockStyle.Fill;
 
@@ -327,7 +330,6 @@ namespace ATT.UI.Forms
             posData.SetMovingParams(AxisName.X, XVariableControl.GetCurrentData());
             posData.SetMovingParams(AxisName.Y, YVariableControl.GetCurrentData());
             posData.SetMovingParams(AxisName.Z, ZVariableControl.GetCurrentData());
-
         }
 
         private void Save()
@@ -482,6 +484,11 @@ namespace ATT.UI.Forms
             label.Text = inputData.ToString();
 
             return inputData;
+        }
+
+        private void lblOriginZ_Click(object sender, EventArgs e)
+        {
+            AppsLAFManager.Instance().StartHomeThread(LAFName.Akkon);
         }
     }
     #endregion

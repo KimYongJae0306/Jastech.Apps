@@ -83,7 +83,7 @@ namespace Jastech.Apps.Winform
 
                 IsGrabbing = true;
 
-                camera.GrabMuti(AppConfig.Instance().GrabCount);
+                camera.GrabMulti(AppConfig.Instance().GrabCount);
             }
         }
 
@@ -101,6 +101,12 @@ namespace Jastech.Apps.Winform
             Camera camera = cameraHandler.Get(name.ToString());
 
             return camera;
+        }
+        
+        public void SetOperationMode(CameraName name, TDIOperationMode operationMode)
+        {
+            var camera = GetCamera(name);
+            camera.SetOperationMode(operationMode);
         }
 
         public void ClearScanImage()

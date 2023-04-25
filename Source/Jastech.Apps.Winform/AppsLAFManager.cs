@@ -8,6 +8,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
+using static Jastech.Framework.Device.Motions.AxisMovingParam;
 
 namespace Jastech.Apps.Winform
 {
@@ -173,6 +174,174 @@ namespace Jastech.Apps.Winform
                 return null;
 
             return lafCtrlHandler.Where(x => x.Name == name.ToString()).First();
+        }
+
+        private HomeSequenceStep _homeSequenceStep = HomeSequenceStep.Stop;
+        private enum HomeSequenceStep
+        {
+            Stop,
+            Start,
+
+            MoveToNegativeLimit,
+            MoveToStep,
+            ReleaseNegativeLimitDetection,
+            MoveAfterDeceleration1,
+            MoveAfterDeceleration2,
+            ZeroSet,
+
+            End,
+        }
+
+        private bool _isHomeThreadStop = false;
+        private Thread _homeThread = null;
+
+        public void StartHomeThread(LAFName lafName)
+        {
+            _isHomeThreadStop = false;
+            _homeThread = new Thread(new ParameterizedThreadStart(HomeSequenceThread));
+            _homeThread.Start(lafName);
+        }
+
+        private void HomeSequenceThread(object obj)
+        {
+            LAFName lafName = (LAFName)obj;
+            _homeSequenceStep = HomeSequenceStep.Start;
+
+            while (!_isHomeThreadStop)
+            {
+                HomeSequence(lafName);
+                Thread.Sleep(100);
+            }
+        }
+
+        private void PrepareHome(LAFName lafName)
+        {
+            var lafCtrl = GetLAFCtrl(lafName);
+
+            lafCtrl.SetMotionNegativeLimit(0);
+            lafCtrl.SetMotionPositiveLimit(0);
+            lafCtrl.SetMotionMaxSpeed(1);
+            lafCtrl.SetMotionZeroSet();
+            Thread.Sleep(50);
+        }
+
+        const double HOMING_SEARCH_DISTANCE = 0.100;        // mm
+        const double HOMING_DISTANCE_AWAY_FROM_LIMIT = 0.5; // mm
+
+        private void HomeSequence(LAFName lafName)
+        {
+            var lafCtrl = GetLAFCtrl(lafName);
+            var status = lafCtrl.Status;
+            try
+            {
+                switch (_homeSequenceStep)
+                {
+                    case HomeSequenceStep.Stop:
+                        break;
+
+                    case HomeSequenceStep.Start:
+                        PrepareHome(lafName);
+                        _homeSequenceStep = HomeSequenceStep.MoveToNegativeLimit;
+                        break;
+
+                    case HomeSequenceStep.MoveToNegativeLimit:
+                        if (status.IsNegativeLimit)
+                        {
+                            lafCtrl.SetMotionStop();
+                            Thread.Sleep(1000);
+
+                            lafCtrl.SetMotionZeroSet();
+                            Thread.Sleep(500);
+
+                            _homeSequenceStep = HomeSequenceStep.MoveToStep;
+                        }
+                        break;
+
+                    case HomeSequenceStep.MoveToStep:
+                        lafCtrl.SetMotionRelativeMove(Direction.CCW, HOMING_SEARCH_DISTANCE);
+                        _homeSequenceStep = HomeSequenceStep.ReleaseNegativeLimitDetection;
+                        break;
+
+                    case HomeSequenceStep.ReleaseNegativeLimitDetection:
+                        if (!status.IsNegativeLimit)
+                        {
+                            lafCtrl.SetMotionStop();
+                            Thread.Sleep(100);
+
+                            lafCtrl.SetMotionZeroSet();
+                            Thread.Sleep(500);
+
+                            _homeSequenceStep = HomeSequenceStep.MoveAfterDeceleration1;
+                        }
+                        else
+                            _homeSequenceStep = HomeSequenceStep.MoveToStep;
+                        break;
+
+                    case HomeSequenceStep.MoveAfterDeceleration1:
+                        if (status.IsNegativeLimit)
+                        {
+                            lafCtrl.SetMotionStop();
+                            Thread.Sleep(100);
+
+                            lafCtrl.SetMotionZeroSet();
+                            Thread.Sleep(500);
+
+                            _homeSequenceStep = HomeSequenceStep.MoveAfterDeceleration2;
+                        }
+                        else
+                            lafCtrl.SetMotionRelativeMove(Direction.CW, HOMING_SEARCH_DISTANCE / 10);
+                        break;
+
+                    case HomeSequenceStep.MoveAfterDeceleration2:
+                        if (status.IsNegativeLimit)
+                        {
+                            lafCtrl.SetMotionStop();
+                            Thread.Sleep(500);
+
+                            lafCtrl.SetMotionZeroSet();
+                            Thread.Sleep(500);
+
+                            lafCtrl.SetMotionRelativeMove(Direction.CW, HOMING_DISTANCE_AWAY_FROM_LIMIT);
+
+                            _homeSequenceStep = HomeSequenceStep.MoveAfterDeceleration2;
+                        }
+                        else
+                            lafCtrl.SetMotionRelativeMove(Direction.CW, HOMING_SEARCH_DISTANCE / 10);
+                        break;
+
+                    case HomeSequenceStep.ZeroSet:
+                        if (Math.Abs(status.MPos - HOMING_DISTANCE_AWAY_FROM_LIMIT) <= float.Epsilon)
+                        {
+                            lafCtrl.SetMotionStop();
+                            Thread.Sleep(500);
+
+                            lafCtrl.SetMotionZeroSet();
+                            Thread.Sleep(100);
+
+                            lafCtrl.SetMotionMaxSpeed(15);
+                            Thread.Sleep(100);
+
+                            // 대기 위치로 이동 - 포지션 필요함
+                            lafCtrl.SetMotionAbsoluteMove(0);
+                            Thread.Sleep(1000);
+                        }
+                        _homeSequenceStep = HomeSequenceStep.End;
+                        break;
+
+                    case HomeSequenceStep.End:
+                        _isHomeThreadStop = true;
+                        _homeSequenceStep = HomeSequenceStep.Stop;
+                        break;
+
+                    default:
+                        break;
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+                _isHomeThreadStop = true;
+            }
         }
         #endregion
     }

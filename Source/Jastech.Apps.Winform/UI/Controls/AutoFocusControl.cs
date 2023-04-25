@@ -10,6 +10,8 @@ using System.Windows.Forms;
 using Jastech.Framework.Winform.Forms;
 using Jastech.Framework.Structure;
 using Jastech.Framework.Device.Motions;
+using Jastech.Framework.Device.LAFCtrl;
+using Jastech.Apps.Structure.Data;
 
 namespace Jastech.Apps.Winform.UI.Controls
 {
@@ -59,13 +61,16 @@ namespace Jastech.Apps.Winform.UI.Controls
             }
         }
 
+        private LAFCtrl LAFCtrl { get; set; } = null;
         private void UpdateStatus()
         {
-            if (!SelectedAxis.IsConnected())
+            var status = LAFCtrl.Status;
+
+            if (status == null)
                 return;
 
-            lblCurrentPosition.Text = SelectedAxis.GetActualPosition().ToString("F3");
-            lblCurrentCogValue.Text = "0";
+            lblCuttentPositionValue.Text = status.MPos.ToString();
+            lblCurrentCogValue.Text = status.CenterofGravity.ToString();
         }
 
         public void SetAxisHanlder(AxisHandler axisHandler)
@@ -79,45 +84,29 @@ namespace Jastech.Apps.Winform.UI.Controls
             SelectedAxis = axisHandler.GetAxis(AxisName.Z);
         }
 
+        public void SetLAFCtrl(LAFCtrl lafCtrl)
+        {
+            LAFCtrl = lafCtrl;
+        }
+
+        private List<TeachingPosition> TeachingPositionList { get; set; } = null;
+        public TeachingPositionType TeachingPositionType = TeachingPositionType.Stage1_Scan_Start;
+
         private void lblTargetPositionZValue_Click(object sender, EventArgs e)
         {
-            SetLabelDoubleData(sender);
+            double targetPosition = SetLabelDoubleData(sender);
+            TeachingPositionList.Where(x => x.Name == TeachingPositionType.ToString()).First().SetTargetPosition(AxisName.Z, targetPosition);
         }
 
-        private double SetLabelDoubleData(object sender)
-        {
-            KeyPadForm keyPadForm = new KeyPadForm();
-            keyPadForm.ShowDialog();
-
-            double inputData = keyPadForm.PadValue;
-
-            Label label = (Label)sender;
-            label.Text = inputData.ToString();
-
-            return inputData;
-        }
-
-        private void btnSetCurrentToTarget_Click(object sender, EventArgs e)
+         private void btnSetCurrentToTarget_Click(object sender, EventArgs e)
         {
             lblTargetPositionValue.Text = lblCuttentPositionValue.Text;
         }
 
         private void lblTeachCogValue_Click(object sender, EventArgs e)
         {
-            SetLabelIntegerData(sender);
-        }
-
-        private int SetLabelIntegerData(object sender)
-        {
-            KeyPadForm keyPadForm = new KeyPadForm();
-            keyPadForm.ShowDialog();
-
-            int inputData = Convert.ToInt32(keyPadForm.PadValue);
-
-            Label label = (Label)sender;
-            label.Text = inputData.ToString();
-
-            return inputData;
+            int centerOfGravity = SetLabelIntegerData(sender);
+            TeachingPositionList.Where(x => x.Name == TeachingPositionType.ToString()).First().SetCenterOfGravity(AxisName.Z, centerOfGravity);
         }
 
         private void btnCurrentToTeach_Click(object sender, EventArgs e)
@@ -129,7 +118,7 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         private void bnAFOn_Click(object sender, EventArgs e)
         {
-
+            LAFCtrl.Initialize();
         }
 
         private void btnAFOff_Click(object sender, EventArgs e)
@@ -154,6 +143,40 @@ namespace Jastech.Apps.Winform.UI.Controls
             //}
 
             //Main.LAF.SetAutoFocusOnOFF(isOn);
+        }
+
+        private double SetLabelDoubleData(object sender)
+        {
+            Label lbl = sender as Label;
+            double prevData = Convert.ToDouble(lbl.Text);
+
+            KeyPadForm keyPadForm = new KeyPadForm();
+            keyPadForm.PreviousValue = prevData;
+            keyPadForm.ShowDialog();
+
+            double inputData = keyPadForm.PadValue;
+
+            Label label = (Label)sender;
+            label.Text = inputData.ToString();
+
+            return inputData;
+        }
+
+        private int SetLabelIntegerData(object sender)
+        {
+            Label lbl = sender as Label;
+            int prevData = Convert.ToInt32(lbl.Text);
+
+            KeyPadForm keyPadForm = new KeyPadForm();
+            keyPadForm.PreviousValue = (double)prevData;
+            keyPadForm.ShowDialog();
+
+            int inputData = Convert.ToInt16(keyPadForm.PadValue);
+
+            Label label = (Label)sender;
+            label.Text = inputData.ToString();
+
+            return inputData;
         }
 
         public TeachingAxisInfo GetCurrentData()
