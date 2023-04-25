@@ -22,11 +22,13 @@ using Jastech.Framework.Winform.Controls;
 using Jastech.Apps.Winform.Core;
 using Jastech.Framework.Winform;
 using Jastech.Framework.Device.Cameras;
-using OpenCvSharp;
 using Jastech.Apps.Structure.Data;
 using System.Runtime.InteropServices;
 using Jastech.Framework.Imaging;
 using ATT.UI.Controls;
+using Emgu.CV;
+using Jastech.Framework.Macron.Akkon;
+using Emgu.CV.CvEnum;
 
 namespace ATT.UI.Forms
 {
@@ -51,7 +53,7 @@ namespace ATT.UI.Forms
 
         private AkkonControl AkkonControl { get; set; } = new AkkonControl() { Dock = DockStyle.Fill };
 
-        private AkkonAutoControl AkkonAutoControl { get; set; } = new AkkonAutoControl() { Dock = DockStyle.Fill };
+        //private AkkonAutoControl AkkonAutoControl { get; set; } = new AkkonAutoControl() { Dock = DockStyle.Fill };
 
         private MarkControl MarkControl { get; set; } = new MarkControl() { Dock = DockStyle.Fill };
 
@@ -84,6 +86,9 @@ namespace ATT.UI.Forms
         #region 메서드
         private void LineTeachingForm_Load(object sender, EventArgs e)
         {
+            //int akkonThreadCount = AppConfig.Instance().AkkonThreadCount;
+            //MacronAkkon.ATT_InitSystem(this.Handle, akkonThreadCount, 0xF8);
+
             SystemManager.Instance().UpdateTeachingData();
 
             AddControl();
@@ -93,7 +98,7 @@ namespace ATT.UI.Forms
 
             AppsLineCameraManager.Instance().TeachingImageGrabbed += LineTeachingForm_TeachingImageGrabbed;
 
-            var image = AppsTeachingUIManager.Instance().GetPrevImage();
+            var image = AppsTeachingUIManager.Instance().GetPrevCogImage();
 
             if (image != null)
                 Display.SetImage(image);
@@ -130,8 +135,8 @@ namespace ATT.UI.Forms
                     AlignControl.DrawROI();
                 else if (pnlTeach.Controls[0] as AkkonControl != null)
                     AkkonControl.DrawROI();
-                else if (pnlDisplay.Controls[0] as AkkonAutoControl != null)
-                    AkkonAutoControl.DrawROI();
+                //else if (pnlDisplay.Controls[0] as AkkonAutoControl != null)
+                //    AkkonAutoControl.DrawROI();
             }
         }
 
@@ -220,11 +225,11 @@ namespace ATT.UI.Forms
                 return;
 
             ClearSelectedButton();
-
+           
+            btnAkkon.ForeColor = Color.Blue;
+          
             var tabList = SystemManager.Instance().GetTeachingData().GetTabList(UnitName);
             AkkonControl.SetParams(tabList);
-
-            btnAkkon.ForeColor = Color.Blue;
             pnlTeach.Controls.Add(AkkonControl);
         }
 
@@ -233,13 +238,13 @@ namespace ATT.UI.Forms
             if (ModelManager.Instance().CurrentModel == null || UnitName == "")
                 return;
 
-            ClearSelectedButton();
+            //ClearSelectedButton();
 
-            var tabList = SystemManager.Instance().GetTeachingData().GetTabList(UnitName);
-            AkkonAutoControl.SetParams(tabList);
+            //var tabList = SystemManager.Instance().GetTeachingData().GetTabList(UnitName);
+            //AkkonAutoControl.SetParams(tabList);
 
-            btnAutoAkkon.ForeColor = Color.Blue;
-            pnlTeach.Controls.Add(AkkonAutoControl);
+            //btnAutoAkkon.ForeColor = Color.Blue;
+            //pnlTeach.Controls.Add(AkkonAutoControl);
         }
 
         private void btnSave_Click(object sender, EventArgs e)
@@ -284,6 +289,7 @@ namespace ATT.UI.Forms
                 ICogImage cogImage = CogImageHelper.Load(dlg.FileName);
                 Display.SetImage(cogImage);
                 AppsTeachingUIManager.Instance().SetImage(cogImage);
+                AppsTeachingUIManager.Instance().SetImage(new Mat(dlg.FileName, ImreadModes.Grayscale));
                 //AlignControl.DrawROI();
             }
         }
@@ -317,11 +323,11 @@ namespace ATT.UI.Forms
             if (image == null)
                 return;
 
-            int size = image.Width * image.Height * image.Channels();
+            int size = image.Width * image.Height * image.NumberOfChannels;
             byte[] dataArray = new byte[size];
-            Marshal.Copy(image.Data, dataArray, 0, size);
+            Marshal.Copy(image.DataPointer, dataArray, 0, size);
 
-            ColorFormat format = image.Channels() == 1 ? ColorFormat.Gray : ColorFormat.RGB24;
+            ColorFormat format = image.NumberOfChannels == 1 ? ColorFormat.Gray : ColorFormat.RGB24;
 
             var cogImage = CogImageHelper.CovertImage(dataArray, image.Width, image.Height, format);
             Display.SetImage(cogImage);

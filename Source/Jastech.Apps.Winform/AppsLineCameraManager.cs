@@ -1,4 +1,5 @@
 ﻿using Cognex.VisionPro;
+using Emgu.CV;
 using Jastech.Apps.Structure;
 using Jastech.Apps.Structure.Data;
 using Jastech.Apps.Winform.Settings;
@@ -7,7 +8,6 @@ using Jastech.Framework.Device.LAFCtrl;
 using Jastech.Framework.Imaging.Helper;
 using Jastech.Framework.Imaging.VisionPro;
 using Jastech.Framework.Winform;
-using OpenCvSharp;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -136,7 +136,7 @@ namespace Jastech.Apps.Winform
                     Stopwatch sw = new Stopwatch();
                     sw.Restart();
 
-                    Mat grabImage = new Mat(camera.ImageHeight, camera.ImageWidth, MatType.CV_8UC1, data);
+                    Mat grabImage = MatHelper.ByteArrayToMat(data, camera.ImageWidth, camera.ImageHeight, 1);
                     Mat rotatedMat = MatHelper.Transpose(grabImage);
 
                     ScanImageList.Add(rotatedMat);
@@ -164,7 +164,7 @@ namespace Jastech.Apps.Winform
                 {
                     Mat mergeImage = new Mat();
 
-                    Cv2.HConcat(ScanImageList, mergeImage);
+                    CvInvoke.HConcat(ScanImageList.ToArray(), mergeImage);
 
                     return mergeImage;
                 }

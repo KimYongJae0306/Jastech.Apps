@@ -17,6 +17,12 @@ using Jastech.Framework.Macron.Akkon;
 using Jastech.Framework.Winform;
 using Jastech.Apps.Winform.Settings;
 using Jastech.Framework.Imaging.Helper;
+using Emgu.CV;
+using Emgu.CV.CvEnum;
+using System.Runtime.InteropServices;
+using System.Diagnostics;
+using Jastech.Apps.Structure.Parameters;
+using Jastech.Framework.Macron.Akkon.Results;
 
 namespace Jastech.Apps.Winform.UI.Controls
 {
@@ -38,10 +44,15 @@ namespace Jastech.Apps.Winform.UI.Controls
         private CogRectangleAffine _firstCogRectAffine { get; set; } = new CogRectangleAffine();
 
         private AkkonROI _firstAkkonRoi { get; set; } = new AkkonROI();
+
+        private bool _isLoading { get; set; } = false;
+
         #endregion
 
         #region 속성
-        public MacronAkkonParamControl MacronAkkonParamControl { get; private set; } = new MacronAkkonParamControl();
+        public AlgorithmTool AlgorithmTool = new AlgorithmTool();
+
+        public MacronAkkonParamControl MacronAkkonParamControl { get; private set; } = null;
 
         public List<Tab> TeachingTabList { get; private set; } = new List<Tab>();
 
@@ -68,12 +79,21 @@ namespace Jastech.Apps.Winform.UI.Controls
         #region 메서드
         private void AkkonControl_Load(object sender, EventArgs e)
         {
-            InitializeUI();
+            _isLoading = true;
+
             AddControl();
+            InitializeUI();
+            InitializeTabComboBox();
+
+            _isLoading = false;
+
+            ChangeTabInfo();
+            UpdateData();
         }
 
         private void AddControl()
         {
+            MacronAkkonParamControl = new MacronAkkonParamControl();
             MacronAkkonParamControl.Dock = DockStyle.Fill;
             pnlParam.Controls.Add(MacronAkkonParamControl);
         }
@@ -97,11 +117,6 @@ namespace Jastech.Apps.Winform.UI.Controls
                 return;
 
             TeachingTabList = tabList;
-            InitializeTabComboBox();
-            InitializeGroupComboBox();
-
-            string tabName = cbxTabList.SelectedItem as string;
-            UpdateParam(tabName, 0);
         }
 
         private void InitializeTabComboBox()
@@ -116,40 +131,93 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         private void cbxTabList_SelectedIndexChanged(object sender, EventArgs e)
         {
+            if (_isLoading)
+                return;
+
             string tabName = cbxTabList.SelectedItem as string;
 
-            if (_prevTabName == tabName)
-                return;
+          
+
+            ChangeTabInfo();
 
             var display = AppsTeachingUIManager.Instance().GetDisplay();
             if (display == null)
                 return;
 
-            UpdateParam(tabName, 0);
             display.ClearGraphic();
-
             DrawROI();
+
             _prevTabName = tabName;
         }
 
-        private void UpdateParam(string tabName, int groupIndex)
+        private void ChangeTabInfo()
         {
-            if (TeachingTabList.Count <= 0)
+            _isLoading = true;
+            string tabName = cbxTabList.SelectedItem as string;
+
+            if (_prevTabName == tabName || tabName == "")
+                return;
+           
+            var tab = TeachingTabList.Where(x => x.Name == tabName).First();
+
+            int groupNum = tab.AkkonParam.GroupList.Count;
+
+            cbxGroupNumber.Items.Clear();
+            for (int i = 0; i < groupNum; i++)
+                cbxGroupNumber.Items.Add(i);
+
+            if (cbxGroupNumber.Items.Count > 0)
+                cbxGroupNumber.SelectedIndex = 0;
+
+            _prevTabName = tabName;
+            _isLoading = false;
+        }
+
+        private void UpdateData()
+        {
+            string tabName = cbxTabList.SelectedItem as string;
+            if (tabName == null)
                 return;
 
-            var tabList = TeachingTabList.Where(x => x.Name == tabName).First();
-            var groupParam = tabList.GetAkkonGroup(groupIndex);
+            int groupNo = cbxGroupNumber.SelectedIndex;
+            if (groupNo < 0)
+                return;
+
+            var tab = TeachingTabList.Where(x => x.Name == tabName).First();
+            var group = tab.AkkonParam.GroupList[groupNo];
+            // Manual Teaching
+            lblGroupCountValue.Text = tab.AkkonParam.GroupList.Count.ToString();
+            lblLeadCountValue.Text = group.Count.ToString();
+            lblLeadPitchValue.Text = group.Pitch.ToString("F2");
+            lblROIWidthValue.Text = group.Width.ToString("F2");
+            lblROIHeightValue.Text = group.Height.ToString("F2");
+
+            //Auto Teaching
+            lblAutoThresholdValue.Text = group.Threshold.ToString();
+            lblAutoLeadPitch.Text = group.Pitch.ToString("F2");
+
+            UpdateROIDataGridView(tab.GetAkkonGroup(groupNo).AkkonROIList);
+
+            MacronAkkonParamControl.SetParam(tab.AkkonParam.MacronAkkonParam);
+            MacronAkkonParamControl.UpdateData();
+
+            DrawROI();
+
+        }
+        private void UpdateParam(string tabName, int groupIndex)
+        {
+            if (TeachingTabList.Count <= 0 || tabName == null)
+                return;
+
+            var tab = TeachingTabList.Where(x => x.Name == tabName).First();
+            var groupParam = tab.GetAkkonGroup(groupIndex);
 
             if (groupParam == null)
                 return;
 
-            if (cmbGroupNumber.SelectedIndex == -1)
-                return;
+            lblGroupCountValue.Text = tab.AkkonParam.GroupList.Count.ToString();
+            MacronAkkonGroup group = tab.AkkonParam.GroupList[groupIndex];
 
-            lblGroupCountValue.Text = tabList.AkkonParam.GroupList.Count.ToString();
-            cmbGroupNumber.SelectedIndex = groupIndex;
-
-            MacronAkkonGroup group = tabList.AkkonParam.GroupList[groupIndex];
             // Manual Teaching
             lblLeadCountValue.Text = group.Count.ToString();
             lblLeadPitchValue.Text = group.Pitch.ToString("F2");
@@ -161,10 +229,47 @@ namespace Jastech.Apps.Winform.UI.Controls
             lblAutoLeadPitch.Text = group.Pitch.ToString("F2");
 
             UpdateROIDataGridView(groupParam.AkkonROIList);
-            MacronAkkonParamControl.UpdateData(groupParam.MacronAkkonParam);
 
+            MacronAkkonParamControl.SetParam(tab.AkkonParam.MacronAkkonParam);
+            MacronAkkonParamControl.UpdateData();
             DrawROI();
+
         }
+
+        //private void UpdateParam(string tabName, int groupIndex)
+        //{
+        //    if (TeachingTabList.Count <= 0)
+        //        return;
+
+        //    if (tabName == null)
+        //        return;
+
+        //    var tab = TeachingTabList.Where(x => x.Name == tabName).First();
+        //    var groupParam = tab.GetAkkonGroup(groupIndex);
+
+        //    if (groupParam == null)
+        //        return;
+
+        //    lblGroupCountValue.Text = tab.AkkonParam.GroupList.Count.ToString();
+        //    cbxGroupNumber.SelectedIndex = groupIndex;
+
+        //    MacronAkkonGroup group = tab.AkkonParam.GroupList[groupIndex];
+        //    // Manual Teaching
+        //    lblLeadCountValue.Text = group.Count.ToString();
+        //    lblLeadPitchValue.Text = group.Pitch.ToString("F2");
+        //    lblROIWidthValue.Text = group.Width.ToString("F2");
+        //    lblROIHeightValue.Text = group.Height.ToString("F2");
+
+        //    //Auto Teaching
+        //    lblAutoThresholdValue.Text = group.Threshold.ToString();
+        //    lblAutoLeadPitch.Text = group.Pitch.ToString("F2");
+
+        //    UpdateROIDataGridView(groupParam.AkkonROIList);
+
+        //    MacronAkkonParamControl.SetParam(tab.AkkonParam.MacronAkkonParam);
+        //    MacronAkkonParamControl.UpdateData();
+        //    DrawROI();
+        //}
 
         private void lblAddROI_Click(object sender, EventArgs e)
         {
@@ -181,8 +286,8 @@ namespace Jastech.Apps.Winform.UI.Controls
                 return;
 
             string tabName = cbxTabList.SelectedItem as string;
-            var tabList = TeachingTabList.Where(x => x.Name == tabName).First();
-            if (tabList.AkkonParam.GroupList.Count <= 0)
+            var tab = TeachingTabList.Where(x => x.Name == tabName).First();
+            if (tab.AkkonParam.GroupList.Count <= 0)
                 return;
 
             if (_teachingMode == TeachingMode.Manual)
@@ -243,7 +348,7 @@ namespace Jastech.Apps.Winform.UI.Controls
             if (display.GetImage() == null)
                 return;
 
-            display.SetImage(AppsTeachingUIManager.Instance().GetPrevImage());
+            display.SetImage(AppsTeachingUIManager.Instance().GetPrevCogImage());
         }
 
         private void SetFirstROI(AkkonROI roi)
@@ -266,7 +371,7 @@ namespace Jastech.Apps.Winform.UI.Controls
 
             string tabName = cbxTabList.SelectedItem as string;
             var tabList = TeachingTabList.Where(x => x.Name == tabName).First();
-            int groupIndex = cmbGroupNumber.SelectedIndex;
+            int groupIndex = cbxGroupNumber.SelectedIndex;
 
             List<AkkonROI> roiList = new List<AkkonROI>();
             var akkonRoi = ConvertCogRectAffineToAkkonRoi(_firstCogRectAffine);
@@ -337,13 +442,13 @@ namespace Jastech.Apps.Winform.UI.Controls
                 return;
 
             string tabName = cbxTabList.SelectedItem as string;
-            var tabList = TeachingTabList.Where(x => x.Name == tabName).First();
-            int groupIndex = cmbGroupNumber.SelectedIndex;
+            var tab = TeachingTabList.Where(x => x.Name == tabName).First();
+            int groupIndex = cbxGroupNumber.SelectedIndex;
 
             if (groupIndex < 0)
                 return;
 
-            var roiList = tabList.GetAkkonGroup(groupIndex).AkkonROIList;
+            var roiList = tab.GetAkkonGroup(groupIndex).AkkonROIList;
 
             CogGraphicInteractiveCollection collect = new CogGraphicInteractiveCollection();
 
@@ -371,8 +476,6 @@ namespace Jastech.Apps.Winform.UI.Controls
             teachingDisplay.SetInteractiveGraphics("tool", collect);
         }
         #endregion
-
-
 
         private void DrawComboboxCenterAlign(object sender, DrawItemEventArgs e)
         {
@@ -428,39 +531,47 @@ namespace Jastech.Apps.Winform.UI.Controls
         {
             Inspection();
         }
-
-        private void Inspection()
+      
+        private void UpdateResult(List<AkkonResult> akkonResults)
         {
-            var display = AppsTeachingUIManager.Instance().GetDisplay();
+            int no = 0;
+            foreach (var tabResult in akkonResults)
+            {
+                foreach (var lead in tabResult.LeadResultList)
+                {
+                    string[] row = { no.ToString(), lead.BlobCount.ToString(), lead.Length.ToString(), lead.LeadStdDev.ToString(), lead.IsGood.ToString() };
+                    dgvAkkonResult.Rows.Add(row);
 
-            //var currentParam = CogCaliperParamControl.GetCurrentParam();
-
-            //if (display == null || currentParam == null)
-            //    return;
-
-            //ICogImage cogImage = display.GetImage();
-
-            //CogAlignCaliperResult result = new CogAlignCaliperResult();
-
-            //if (_alignName.ToString().Contains("X"))
-            //    result = Algorithm.RunAlignX(cogImage, currentParam.CaliperParams, currentParam.LeadCount);
-            //else
-            //    result = Algorithm.RunAlignY(cogImage, currentParam.CaliperParams);
-
-            //if (result.Judgement == Result.Fail)
-            //{
-            //    MessageConfirmForm form = new MessageConfirmForm();
-            //    form.Message = "Caliper is Not Found.";
-            //    form.ShowDialog();
-            //}
-            //else
-            //{
-            //    display.ClearGraphic();
-            //    display.UpdateResult(result);
-            //}
+                    no++;
+                }
+            }
         }
 
+        private ICogImage GetResultImage(Mat mat, AkkonParam akkonParam, float resize)
+        {
+            double width = Math.Truncate(mat.Width * resize);
+            double height = Math.Truncate(mat.Height * resize);
 
+            Mat testMat = new Mat((int)height, (int)width, DepthType.Cv8U, 1);
+            Mat resultMatImage = Algorithm.LastAkkonResultImage(testMat, akkonParam, 0, 0);
+
+            Mat matR = MatHelper.ColorChannelSprate(resultMatImage, MatHelper.ColorChannel.R);
+            Mat matG = MatHelper.ColorChannelSprate(resultMatImage, MatHelper.ColorChannel.G);
+            Mat matB = MatHelper.ColorChannelSprate(resultMatImage, MatHelper.ColorChannel.B);
+
+            byte[] dataR = new byte[matR.Width * matR.Height];
+            Marshal.Copy(matR.DataPointer, dataR, 0, matR.Width * matR.Height);
+
+            byte[] dataG = new byte[matG.Width * matG.Height];
+            Marshal.Copy(matG.DataPointer, dataG, 0, matG.Width * matG.Height);
+
+            byte[] dataB = new byte[matB.Width * matB.Height];
+            Marshal.Copy(matB.DataPointer, dataB, 0, matB.Width * matB.Height);
+
+            var cogImage = CogImageHelper.CovertImage(dataR, dataG, dataB, matB.Width, matB.Height);
+
+            return cogImage;
+        }
 
         private void lblGroup_Click(object sender, EventArgs e)
         {
@@ -513,7 +624,7 @@ namespace Jastech.Apps.Winform.UI.Controls
             tlpnlGroup.Visible = false;
         }
 
-        private void cmb_DrawItem(object sender, DrawItemEventArgs e)
+        private void cbx_DrawItem(object sender, DrawItemEventArgs e)
         {
             DrawComboboxCenterAlign(sender, e);
         }
@@ -529,7 +640,7 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         private void InitializeGroupComboBox()
         {
-            cmbGroupNumber.Items.Clear();
+            cbxGroupNumber.Items.Clear();
 
             string tabName = cbxTabList.SelectedItem as string;
             var akkonParam = TeachingTabList.Where(x => x.Name == tabName).First().AkkonParam;
@@ -538,16 +649,16 @@ namespace Jastech.Apps.Winform.UI.Controls
                 return;
 
             for (int groupIndex = 0; groupIndex < akkonParam.GroupList.Count(); groupIndex++)
-                cmbGroupNumber.Items.Add(akkonParam.GroupList[groupIndex].Index.ToString());
+                cbxGroupNumber.Items.Add(akkonParam.GroupList[groupIndex].Index.ToString());
 
-            cmbGroupNumber.SelectedIndex = 0;
+            cbxGroupNumber.SelectedIndex = 0;
         }
 
         private void lblLeadCountValue_Click(object sender, EventArgs e)
         {
             int leadCount = SetLabelIntegerData(sender);
 
-            int groupIndex = cmbGroupNumber.SelectedIndex;
+            int groupIndex = cbxGroupNumber.SelectedIndex;
             string tabName = cbxTabList.SelectedItem as string;
 
             TeachingTabList.Where(x => x.Name == tabName).First().AkkonParam.GroupList[groupIndex].Count = leadCount;
@@ -558,7 +669,7 @@ namespace Jastech.Apps.Winform.UI.Controls
             double leadPitch = SetLabelDoubleData(sender);
 
             string tabName = cbxTabList.SelectedItem as string;
-            int groupIndex = cmbGroupNumber.SelectedIndex;
+            int groupIndex = cbxGroupNumber.SelectedIndex;
 
             TeachingTabList.Where(x => x.Name == tabName).First().AkkonParam.GroupList[groupIndex].Pitch = leadPitch;
 
@@ -571,7 +682,7 @@ namespace Jastech.Apps.Winform.UI.Controls
             double leadWidth = SetLabelDoubleData(sender);
 
             string tabName = cbxTabList.SelectedItem as string;
-            int groupIndex = cmbGroupNumber.SelectedIndex;
+            int groupIndex = cbxGroupNumber.SelectedIndex;
 
             TeachingTabList.Where(x => x.Name == tabName).First().AkkonParam.GroupList[groupIndex].Width = leadWidth;
         }
@@ -581,7 +692,7 @@ namespace Jastech.Apps.Winform.UI.Controls
             double leadHeight = SetLabelDoubleData(sender);
 
             string tabName = cbxTabList.SelectedItem as string;
-            int groupIndex = cmbGroupNumber.SelectedIndex;
+            int groupIndex = cbxGroupNumber.SelectedIndex;
 
             TeachingTabList.Where(x => x.Name == tabName).First().AkkonParam.GroupList[groupIndex].Height = leadHeight;
         }
@@ -645,7 +756,7 @@ namespace Jastech.Apps.Winform.UI.Controls
             string tabName = cbxTabList.SelectedItem as string;
             var tabList = TeachingTabList.Where(x => x.Name == tabName).First();
 
-            int groupIndex = cmbGroupNumber.SelectedIndex;
+            int groupIndex = cbxGroupNumber.SelectedIndex;
             var group = tabList.AkkonParam.GroupList[groupIndex];
             group.AkkonROIList.Clear();
             _cogRectAffineList.Clear();
@@ -685,12 +796,15 @@ namespace Jastech.Apps.Winform.UI.Controls
             DrawROI();
         }
 
-        private void cmbGroupNumber_SelectedIndexChanged(object sender, EventArgs e)
+        private void cbxGroupNumber_SelectedIndexChanged(object sender, EventArgs e)
         {
-            int selectedGroupIndex = cmbGroupNumber.SelectedIndex;
+            if (_isLoading)
+                return;
+
+            int selectedGroupIndex = cbxGroupNumber.SelectedIndex;
 
             string tabName = cbxTabList.SelectedItem as string;
-            UpdateParam(tabName, selectedGroupIndex);
+            //UpdateParam(tabName, selectedGroupIndex);
         }
 
         private void lblRegister_Click(object sender, EventArgs e)
@@ -707,7 +821,7 @@ namespace Jastech.Apps.Winform.UI.Controls
         {
             string tabName = cbxTabList.SelectedItem as string;
             var tabList = TeachingTabList.Where(x => x.Name == tabName).First();
-            int groupIndex = cmbGroupNumber.SelectedIndex;
+            int groupIndex = cbxGroupNumber.SelectedIndex;
             var group = tabList.AkkonParam.GroupList[groupIndex];
 
             foreach (DataGridViewRow row in dgvAkkonROI.SelectedRows)
@@ -729,10 +843,12 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         private void SetSelectAkkonROI(int index)
         {
+            if (_cogRectAffineList.Count <= 0)
+                return;
             string tabName = cbxTabList.SelectedItem as string;
             var tabList = TeachingTabList.Where(x => x.Name == tabName).First();
 
-            int groupIndex = cmbGroupNumber.SelectedIndex;
+            int groupIndex = cbxGroupNumber.SelectedIndex;
             var group = tabList.AkkonParam.GroupList[groupIndex];
 
             foreach (DataGridViewRow row in dgvAkkonROI.Rows)
@@ -774,7 +890,7 @@ namespace Jastech.Apps.Winform.UI.Controls
             string tabName = cbxTabList.SelectedItem as string;
             var tabList = TeachingTabList.Where(x => x.Name == tabName).First();
 
-            int groupIndex = cmbGroupNumber.SelectedIndex;
+            int groupIndex = cbxGroupNumber.SelectedIndex;
             var group = tabList.AkkonParam.GroupList[groupIndex];
             var leadCount = tabList.GetAkkonGroup(groupIndex).Count;
 
@@ -859,7 +975,7 @@ namespace Jastech.Apps.Winform.UI.Controls
 
             string tabName = cbxTabList.SelectedItem as string;
             var tabList = TeachingTabList.Where(x => x.Name == tabName).First();
-            int groupIndex = cmbGroupNumber.SelectedIndex;
+            int groupIndex = cbxGroupNumber.SelectedIndex;
             var group = tabList.AkkonParam.GroupList[groupIndex];
             group.AkkonROIList[selectedIndex] = ConvertCogRectAffineToAkkonRoi(_cogRectAffineList[selectedIndex]).DeepCopy();
             DrawROI();
@@ -896,7 +1012,7 @@ namespace Jastech.Apps.Winform.UI.Controls
 
             string tabName = cbxTabList.SelectedItem as string;
             var tabList = TeachingTabList.Where(x => x.Name == tabName).First();
-            int groupIndex = cmbGroupNumber.SelectedIndex;
+            int groupIndex = cbxGroupNumber.SelectedIndex;
             var group = tabList.AkkonParam.GroupList[groupIndex];
             group.AkkonROIList[selectedIndex] = ConvertCogRectAffineToAkkonRoi(_cogRectAffineList[selectedIndex]).DeepCopy();
             DrawROI();
@@ -938,7 +1054,7 @@ namespace Jastech.Apps.Winform.UI.Controls
 
             string tabName = cbxTabList.SelectedItem as string;
             var tabList = TeachingTabList.Where(x => x.Name == tabName).First();
-            int groupIndex = cmbGroupNumber.SelectedIndex;
+            int groupIndex = cbxGroupNumber.SelectedIndex;
             var group = tabList.AkkonParam.GroupList[groupIndex];
             group.AkkonROIList[selectedIndex] = ConvertCogRectAffineToAkkonRoi(_cogRectAffineList[selectedIndex]).DeepCopy();
             DrawROI();
@@ -950,7 +1066,7 @@ namespace Jastech.Apps.Winform.UI.Controls
             string tabName = cbxTabList.SelectedItem as string;
             var tabList = TeachingTabList.Where(x => x.Name == tabName).First();
 
-            int groupIndex = cmbGroupNumber.SelectedIndex;
+            int groupIndex = cbxGroupNumber.SelectedIndex;
             var group = tabList.AkkonParam.GroupList[groupIndex];
             group.AkkonROIList.Clear();
 
@@ -970,6 +1086,11 @@ namespace Jastech.Apps.Winform.UI.Controls
                 akkonRoi.CornerOppositeY = parsedData[3].Item2;
 
                 group.AddROI(akkonRoi);
+
+                //Console.WriteLine(string.Format("{0} {1} {2} {3} {4} {5} {6} {7}", akkonRoi.CornerOriginX, akkonRoi.CornerOriginY, 
+                //                                                                    akkonRoi.CornerXX, akkonRoi.CornerXY, 
+                //                                                                    akkonRoi.CornerOppositeX, akkonRoi.CornerOppositeY,
+                //                                                                    akkonRoi.CornerYX, akkonRoi.CornerYY));
             }
         }
 
@@ -995,7 +1116,7 @@ namespace Jastech.Apps.Winform.UI.Controls
             double leadPitch = SetLabelDoubleData(sender);
 
             string tabName = cbxTabList.SelectedItem as string;
-            int groupIndex = cmbGroupNumber.SelectedIndex;
+            int groupIndex = cbxGroupNumber.SelectedIndex;
 
             TeachingTabList.Where(x => x.Name == tabName).First().AkkonParam.GroupList[groupIndex].Pitch = leadPitch;
 
@@ -1007,7 +1128,7 @@ namespace Jastech.Apps.Winform.UI.Controls
         {
             int threshold = SetLabelIntegerData(sender);
             string tabName = cbxTabList.SelectedItem as string;
-            int groupIndex = cmbGroupNumber.SelectedIndex;
+            int groupIndex = cbxGroupNumber.SelectedIndex;
 
             TeachingTabList.Where(x => x.Name == tabName).First().AkkonParam.GroupList[groupIndex].Threshold = threshold;
         }
@@ -1025,7 +1146,7 @@ namespace Jastech.Apps.Winform.UI.Controls
                 _autoTeachingCollect.Clear();
                 _autoTeachingCollect.Add(_autoTeachingRect);
 
-                teachingDisplay.SetImage(AppsTeachingUIManager.Instance().GetPrevImage());
+                teachingDisplay.SetImage(AppsTeachingUIManager.Instance().GetPrevCogImage());
 
                 teachingDisplay.DeleteInInteractiveGraphics("tool");
                 teachingDisplay.SetInteractiveGraphics("tool", _autoTeachingCollect);
@@ -1047,7 +1168,7 @@ namespace Jastech.Apps.Winform.UI.Controls
                     var cropImage = CogImageHelper.CropImage(cogImage, roi);
                     var binaryImage = CogImageHelper.Threshold(cropImage as CogImage8Grey, threshold, 255);
                     var convertImage = CogImageHelper.CogCopyRegionTool(cogImage, binaryImage, roi, true);
-                    display.SetBinaryImage(convertImage as CogImage8Grey);
+                    display.SetTempImage(convertImage as CogImage8Grey);
                 }
             }
         }
@@ -1072,7 +1193,7 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         private void lblAutoTeachingExcute_Click(object sender, EventArgs e)
         {
-            var image = AppsTeachingUIManager.Instance().GetPrevImage();
+            var image = AppsTeachingUIManager.Instance().GetPrevCogImage();
             if (image == null)
                 return;
 
@@ -1090,22 +1211,6 @@ namespace Jastech.Apps.Winform.UI.Controls
 
             UpdateROIDataGridView(GetGroup().AkkonROIList);
             DrawROI();
-
-            //var teachingDisplay = AppsTeachingUIManager.Instance().GetDisplay();
-            //if (teachingDisplay.GetImage() == null)
-            //    return;
-            //teachingDisplay.SetImage(image);
-            //_autoTeachingCollect.Clear();
-            //_autoTeachingCollect.Add(_cogROI);
-            //teachingDisplay.DeleteInInteractiveGraphics("tool");
-
-            //CogGraphicInteractiveCollection collect = new CogGraphicInteractiveCollection();
-
-            //foreach (var roi in roiList)
-            //{
-            //    collect.Add(roi);
-            //}
-            //teachingDisplay.SetInteractiveGraphics("tool", collect);
         }
         
         private List<CogRectangleAffine> GetAutoTeachingRoiList(ICogImage image)
@@ -1120,7 +1225,7 @@ namespace Jastech.Apps.Winform.UI.Controls
             List<int> topEdgePointList = new List<int>();
             List<int> bottomEdgePointList = new List<int>();
 
-            ImageHelper.GetEdgePoint(topDataArray, bottomDataArray, 0, (int)CalcResolution, ref topEdgePointList, ref bottomEdgePointList);
+            ImageHelper.GetEdgePoint(topDataArray, bottomDataArray, 0, (int)20/*CalcResolution*/, ref topEdgePointList, ref bottomEdgePointList);
 
             if (topEdgePointList.Count != bottomEdgePointList.Count)
             {
@@ -1175,15 +1280,145 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         private MacronAkkonGroup GetGroup()
         {
-            if (cmbGroupNumber.SelectedIndex < 0)
+            if (cbxGroupNumber.SelectedIndex < 0)
                 return null;
 
             string tabName = cbxTabList.SelectedItem as string;
             var tabList = TeachingTabList.Where(x => x.Name == tabName).First();
-            var group = tabList.AkkonParam.GroupList[cmbGroupNumber.SelectedIndex];
+            var group = tabList.AkkonParam.GroupList[cbxGroupNumber.SelectedIndex];
 
             return group;
         }
 
+        private void lblTest_Click(object sender, EventArgs e)
+        {
+            CropInspection();
+        }
+
+        private void Inspection()
+        {
+            string tabName = cbxTabList.SelectedItem as string;
+            var tab = TeachingTabList.Where(x => x.Name == tabName).First();
+            int groupIndex = cbxGroupNumber.SelectedIndex;
+
+            if (groupIndex < 0)
+                return;
+
+            int akkonThreadCount = AppConfig.Instance().AkkonThreadCount;
+            tab.AkkonParam.MacronAkkonParam = MacronAkkonParamControl.GetCurrentParam();
+
+            Mat matImage = AppsTeachingUIManager.Instance().PrevMatImage;
+            if (matImage == null)
+                return;
+
+            tab.AkkonParam.MacronAkkonParam.InspOption.InspResizeRatio = TestResize;
+            tab.AkkonParam.MacronAkkonParam.DrawOption.DrawResizeRatio = TestResize;
+
+            MacronAkkonParam macron = tab.AkkonParam.MacronAkkonParam;
+            macron.SliceHeight = matImage.Height;
+
+            var tabResults = Algorithm.RunAkkon(matImage, tab.AkkonParam, tab.StageIndex, tab.Index);
+
+            dgvAkkonResult.Rows.Clear();
+
+            UpdateResult(tabResults);
+
+            var resultImage = GetResultImage(matImage, tab.AkkonParam, tab.AkkonParam.MacronAkkonParam.InspOption.InspResizeRatio);
+            if (resultImage != null)
+            {
+                var display = AppsTeachingUIManager.Instance().GetDisplay();
+                display.SetTempImage(resultImage);
+            }
+        }
+
+        public float TestResize = 1.0f;
+        private void CropInspection()
+        {
+            string tabName = cbxTabList.SelectedItem as string;
+            var tab = TeachingTabList.Where(x => x.Name == tabName).First();
+            int groupIndex = cbxGroupNumber.SelectedIndex;
+
+            if (groupIndex < 0)
+                return;
+
+            int akkonThreadCount = AppConfig.Instance().AkkonThreadCount;
+            tab.AkkonParam.MacronAkkonParam = MacronAkkonParamControl.GetCurrentParam();
+
+            Mat matImage = AppsTeachingUIManager.Instance().PrevMatImage;
+            if (matImage == null)
+                return;
+
+            if(TestResize != 1.0)
+            {
+                tab.AkkonParam.MacronAkkonParam.InspOption.InspResizeRatio = 0.7f;
+                tab.AkkonParam.MacronAkkonParam.DrawOption.DrawResizeRatio = 0.7f;
+            }
+            else
+            {
+                tab.AkkonParam.MacronAkkonParam.InspOption.InspResizeRatio = TestResize;
+                tab.AkkonParam.MacronAkkonParam.DrawOption.DrawResizeRatio = TestResize;
+            }
+            
+
+            var roiList = tab.AkkonParam.GetAkkonROIList();
+            var rect = GetContainInROI(roiList);
+
+            Mat cropImage = MatHelper.CropRoi(matImage, rect);
+            MacronAkkonParam macron = tab.AkkonParam.MacronAkkonParam;
+            macron.SliceHeight = cropImage.Height;
+
+            var tabResults = Algorithm.RunCropAkkon(cropImage, new PointF(rect.X, rect.Y), tab.AkkonParam, tab.StageIndex, tab.Index);
+
+            dgvAkkonResult.Rows.Clear();
+
+            UpdateResult(tabResults);
+
+            var resultImage = GetResultImage(cropImage, tab.AkkonParam, tab.AkkonParam.MacronAkkonParam.InspOption.InspResizeRatio);
+            //CogImageHelper.CogCopyRegionTool()
+            if (resultImage != null)
+            {
+                var display = AppsTeachingUIManager.Instance().GetDisplay();
+                display.SetTempImage(resultImage);
+            }
+        }
+
+        private Rectangle GetContainInROI(List<AkkonROI> akkonROIs)
+        {
+            var leftTopX = akkonROIs.Select(x => x.CornerOriginX).Min();
+            var leftTopY = akkonROIs.Select(x => x.CornerOriginY).Min();
+            var leftBottomX = akkonROIs.Select(x => x.CornerYX).Min();
+            var leftBottomY = akkonROIs.Select(x => x.CornerYY).Max();
+
+            var rightTopX = akkonROIs.Select(x => x.CornerXX).Max();
+            var rightTopY = akkonROIs.Select(x => x.CornerXY).Min();
+            var rightBottomX = akkonROIs.Select(x => x.CornerOppositeX).Max();
+            var rightBottomY = akkonROIs.Select(x => x.CornerOppositeY).Max();
+
+            double left = leftTopX > leftBottomX ? leftBottomX : leftTopX;
+            double top = leftTopY > rightTopY ? rightTopY : leftTopY;
+            double right = rightTopX > rightBottomX ? rightTopX : rightBottomX;
+            double bottom = rightBottomY > leftBottomY ? rightBottomY : leftBottomY;
+
+            Rectangle rect = new Rectangle();
+            double interval = 30;
+
+
+            rect.X = (int)(left - interval);
+            rect.Y = (int)(top - interval);
+            rect.Width = (int)(Math.Abs(right - left) + (interval * 2));
+            rect.Height = (int)(Math.Abs(bottom - top) + (interval * 2));
+
+            return rect;
+        }
+
+        private void label1_Click(object sender, EventArgs e)
+        {
+            TestResize = 0.6f;
+        }
+
+        private void label2_Click(object sender, EventArgs e)
+        {
+            TestResize = 1.0f;
+        }
     }
 }

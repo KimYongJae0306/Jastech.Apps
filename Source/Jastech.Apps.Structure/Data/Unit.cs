@@ -1,7 +1,9 @@
 ﻿using Jastech.Apps.Structure.Parameters;
 using Jastech.Framework.Device.LightCtrls;
 using Jastech.Framework.Imaging.VisionPro.VisionAlgorithms.Parameters;
+using Jastech.Framework.Macron.Akkon.Parameters;
 using Jastech.Framework.Structure;
+using Jastech.Framework.Util.Helper;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -38,15 +40,7 @@ namespace Jastech.Apps.Structure.Data
 
         public Unit DeepCopy()
         {
-            Unit unit = new Unit();
-            unit.Name = Name;
-            unit.Marks = Marks.Select(x => x.DeepCopy()).ToList();
-            unit.PreAligns = PreAligns.Select(x => x.DeepCopy()).ToList();
-            unit.LightParams = LightParams.Select(x => x.DeepCopy()).ToList();
-            unit.TabList = TabList.Select(x => x.DeepCopy()).ToList();
-            unit.TeachingPositions = TeachingPositions.Select(x => x.DeepCopy()).ToList();
-
-            return unit;
+            return JsonConvertHelper.DeepCopy(this) as Unit;
         }
 
         public void Dispose()

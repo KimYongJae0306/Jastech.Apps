@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 using Jastech.Framework.Winform;
 using Jastech.Apps.Winform.Settings;
 using Cognex.VisionPro;
-using OpenCvSharp;
+using Emgu.CV;
 
 namespace CameraTeseter
 {
@@ -133,7 +133,7 @@ namespace CameraTeseter
                     Stopwatch sw = new Stopwatch();
                     sw.Restart();
 
-                    Mat grabImage = new Mat(camera.ImageHeight, camera.ImageWidth, MatType.CV_8UC1, data);
+                    Mat grabImage = MatHelper.ByteArrayToMat(data, camera.ImageWidth, camera.ImageHeight, 1);
                     Mat rotatedMat = MatHelper.Transpose(grabImage);
 
                     //ScanImageList.Add(rotatedMat);
@@ -168,7 +168,7 @@ namespace CameraTeseter
                 {
                     Mat mergeImage = new Mat();
 
-                    Cv2.HConcat(ScanImageList, mergeImage);
+                    CvInvoke.HConcat(ScanImageList.ToArray(), mergeImage);
 
                     return mergeImage;
                 }

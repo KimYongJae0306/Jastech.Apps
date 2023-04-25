@@ -59,8 +59,8 @@ namespace Jastech.Apps.Winform.UI.Controls
         #region 메서드
         private void AkkonAutoControl_Load(object sender, EventArgs e)
         {
-            InitializeUI();
             AddControl();
+            InitializeUI();
         }
 
         private void AddControl()
@@ -126,8 +126,8 @@ namespace Jastech.Apps.Winform.UI.Controls
             if (TeachingTabList.Count <= 0)
                 return;
 
-            var tabList = TeachingTabList.Where(x => x.Name == tabName).First();
-            var groupParam = tabList.GetAkkonGroup(groupIndex);
+            var tab = TeachingTabList.Where(x => x.Name == tabName).First();
+            var groupParam = tab.GetAkkonGroup(groupIndex);
 
             if (groupParam == null)
                 return;
@@ -135,12 +135,12 @@ namespace Jastech.Apps.Winform.UI.Controls
             if (cmbGroupNumber.SelectedIndex == -1)
                 return;
 
-            lblGroupCountValue.Text = tabList.AkkonParam.GroupList.Count.ToString();
+            lblGroupCountValue.Text = tab.AkkonParam.GroupList.Count.ToString();
             cmbGroupNumber.SelectedIndex = groupIndex;
 
-            lblThresholdValue.Text = tabList.AkkonParam.GroupList[groupIndex].Threshold.ToString();
+            lblThresholdValue.Text = tab.AkkonParam.GroupList[groupIndex].Threshold.ToString();
 
-            MacronAkkonParamControl.UpdateData(groupParam.MacronAkkonParam);
+            //MacronAkkonParamControl.UpdateData(tab.AkkonParam.MacronAkkonParam);
 
             DrawROI();
         }
@@ -404,7 +404,7 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         private void lblCloneExecute_Click(object sender, EventArgs e)
         {
-            var image = AppsTeachingUIManager.Instance().GetPrevImage();
+            var image = AppsTeachingUIManager.Instance().GetPrevCogImage();
             if (image == null)
                 return;
 
@@ -578,7 +578,7 @@ namespace Jastech.Apps.Winform.UI.Controls
             if (display.GetImage() == null)
                 return;
             //_cogROI.Width = 23000;
-            display.SetImage(AppsTeachingUIManager.Instance().GetPrevImage());
+            display.SetImage(AppsTeachingUIManager.Instance().GetPrevCogImage());
         }
 
         private void lblThreshold_Click(object sender, EventArgs e)
@@ -596,7 +596,7 @@ namespace Jastech.Apps.Winform.UI.Controls
                 CogThresholdCollection.Clear();
                 CogThresholdCollection.Add(_cogROI);
 
-                teachingDisplay.SetImage(AppsTeachingUIManager.Instance().GetPrevImage());
+                teachingDisplay.SetImage(AppsTeachingUIManager.Instance().GetPrevCogImage());
 
                 teachingDisplay.DeleteInInteractiveGraphics("tool");
                 teachingDisplay.SetInteractiveGraphics("tool", CogThresholdCollection);
@@ -618,7 +618,7 @@ namespace Jastech.Apps.Winform.UI.Controls
                     var cropImage = CogImageHelper.CropImage(cogImage, roi);
                     var binaryImage = CogImageHelper.Threshold(cropImage as CogImage8Grey, threshold, 255);
                     var convertImage = CogImageHelper.CogCopyRegionTool(cogImage, binaryImage, roi, true);
-                    display.SetBinaryImage(convertImage as CogImage8Grey);
+                    display.SetTempImage(convertImage as CogImage8Grey);
                 }
             }
             
