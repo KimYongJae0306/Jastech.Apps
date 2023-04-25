@@ -72,8 +72,6 @@
             this.lblLight = new System.Windows.Forms.Label();
             this.lblGrabMode = new System.Windows.Forms.Label();
             this.tlpGrabModeSelect = new System.Windows.Forms.TableLayoutPanel();
-            this.rdoAreaMode = new System.Windows.Forms.RadioButton();
-            this.rdoLineMode = new System.Windows.Forms.RadioButton();
             this.tlpMotionStatus = new System.Windows.Forms.TableLayoutPanel();
             this.lblMotionStatus = new System.Windows.Forms.Label();
             this.tlpMotionStatus_ = new System.Windows.Forms.TableLayoutPanel();
@@ -99,6 +97,8 @@
             this.pnlAutoFocus = new System.Windows.Forms.Panel();
             this.lblAutoFocus = new System.Windows.Forms.Label();
             this.tlpGrabMode = new System.Windows.Forms.TableLayoutPanel();
+            this.lblAreaMode = new System.Windows.Forms.Label();
+            this.lblLineMode = new System.Windows.Forms.Label();
             this.tlpJog.SuspendLayout();
             this.tlpJogFunction.SuspendLayout();
             this.tlpJogOption.SuspendLayout();
@@ -800,8 +800,8 @@
             // 
             this.tlpGrabModeSelect.ColumnCount = 1;
             this.tlpGrabModeSelect.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tlpGrabModeSelect.Controls.Add(this.rdoAreaMode, 0, 0);
-            this.tlpGrabModeSelect.Controls.Add(this.rdoLineMode, 0, 1);
+            this.tlpGrabModeSelect.Controls.Add(this.lblAreaMode, 0, 0);
+            this.tlpGrabModeSelect.Controls.Add(this.lblLineMode, 0, 1);
             this.tlpGrabModeSelect.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tlpGrabModeSelect.Location = new System.Drawing.Point(0, 30);
             this.tlpGrabModeSelect.Margin = new System.Windows.Forms.Padding(0);
@@ -811,40 +811,6 @@
             this.tlpGrabModeSelect.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tlpGrabModeSelect.Size = new System.Drawing.Size(160, 80);
             this.tlpGrabModeSelect.TabIndex = 151;
-            // 
-            // rdoAreaMode
-            // 
-            this.rdoAreaMode.Appearance = System.Windows.Forms.Appearance.Button;
-            this.rdoAreaMode.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
-            this.rdoAreaMode.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.rdoAreaMode.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.rdoAreaMode.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
-            this.rdoAreaMode.Location = new System.Drawing.Point(0, 0);
-            this.rdoAreaMode.Margin = new System.Windows.Forms.Padding(0);
-            this.rdoAreaMode.Name = "rdoAreaMode";
-            this.rdoAreaMode.Size = new System.Drawing.Size(160, 40);
-            this.rdoAreaMode.TabIndex = 0;
-            this.rdoAreaMode.Text = "AREA MODE";
-            this.rdoAreaMode.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.rdoAreaMode.UseVisualStyleBackColor = false;
-            this.rdoAreaMode.CheckedChanged += new System.EventHandler(this.rdoGrabType_CheckedChanged);
-            // 
-            // rdoLineMode
-            // 
-            this.rdoLineMode.Appearance = System.Windows.Forms.Appearance.Button;
-            this.rdoLineMode.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
-            this.rdoLineMode.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.rdoLineMode.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.rdoLineMode.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
-            this.rdoLineMode.Location = new System.Drawing.Point(0, 40);
-            this.rdoLineMode.Margin = new System.Windows.Forms.Padding(0);
-            this.rdoLineMode.Name = "rdoLineMode";
-            this.rdoLineMode.Size = new System.Drawing.Size(160, 40);
-            this.rdoLineMode.TabIndex = 1;
-            this.rdoLineMode.Text = "LINE MODE";
-            this.rdoLineMode.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.rdoLineMode.UseVisualStyleBackColor = false;
-            this.rdoLineMode.CheckedChanged += new System.EventHandler(this.rdoGrabType_CheckedChanged);
             // 
             // tlpMotionStatus
             // 
@@ -1226,6 +1192,36 @@
             this.tlpGrabMode.Size = new System.Drawing.Size(160, 110);
             this.tlpGrabMode.TabIndex = 297;
             // 
+            // lblAreaMode
+            // 
+            this.lblAreaMode.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
+            this.lblAreaMode.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblAreaMode.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblAreaMode.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
+            this.lblAreaMode.Location = new System.Drawing.Point(0, 0);
+            this.lblAreaMode.Margin = new System.Windows.Forms.Padding(0);
+            this.lblAreaMode.Name = "lblAreaMode";
+            this.lblAreaMode.Size = new System.Drawing.Size(160, 40);
+            this.lblAreaMode.TabIndex = 145;
+            this.lblAreaMode.Text = "AREA MODE";
+            this.lblAreaMode.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblAreaMode.Click += new System.EventHandler(this.lblAreaMode_Click);
+            // 
+            // lblLineMode
+            // 
+            this.lblLineMode.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
+            this.lblLineMode.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblLineMode.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblLineMode.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
+            this.lblLineMode.Location = new System.Drawing.Point(0, 40);
+            this.lblLineMode.Margin = new System.Windows.Forms.Padding(0);
+            this.lblLineMode.Name = "lblLineMode";
+            this.lblLineMode.Size = new System.Drawing.Size(160, 40);
+            this.lblLineMode.TabIndex = 145;
+            this.lblLineMode.Text = "LINE MODE";
+            this.lblLineMode.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblLineMode.Click += new System.EventHandler(this.lblLineMode_Click);
+            // 
             // LinescanControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
@@ -1308,8 +1304,6 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label lblGrabMode;
         private System.Windows.Forms.TableLayoutPanel tlpGrabModeSelect;
-        private System.Windows.Forms.RadioButton rdoAreaMode;
-        private System.Windows.Forms.RadioButton rdoLineMode;
         private System.Windows.Forms.TableLayoutPanel tlpCamera;
         private System.Windows.Forms.TableLayoutPanel tlpCamera_;
         private System.Windows.Forms.Label lblCameraGainValue;
@@ -1348,5 +1342,7 @@
         private System.Windows.Forms.Label lblLightOff;
         private System.Windows.Forms.Label lblLightOn;
         private System.Windows.Forms.TableLayoutPanel tlpGrabMode;
+        private System.Windows.Forms.Label lblAreaMode;
+        private System.Windows.Forms.Label lblLineMode;
     }
 }

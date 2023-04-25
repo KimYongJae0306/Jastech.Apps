@@ -10,6 +10,8 @@ using static Jastech.Framework.Device.Motions.AxisMovingParam;
 using Jastech.Framework.Winform.Controls;
 using Jastech.Apps.Structure.Data;
 using Jastech.Framework.Structure;
+using Jastech.Framework.Winform;
+using Jastech.Framework.Device.Cameras;
 
 namespace Jastech.Apps.Winform.UI.Controls
 {
@@ -23,8 +25,8 @@ namespace Jastech.Apps.Winform.UI.Controls
         private MotionJogControl MotionJogControl { get; set; } = new MotionJogControl() { Dock = DockStyle.Fill };
         private LAFJogControl LAFJogControl { get; set; } = new LAFJogControl() { Dock = DockStyle.Fill };
 
-        private GrabMode _grabMode = GrabMode.AreaMode;
-        public enum GrabMode
+        private OperationMode _grabMode = OperationMode.AreaMode;
+        public enum OperationMode
         {
             AreaMode,
             LineMode,
@@ -40,14 +42,13 @@ namespace Jastech.Apps.Winform.UI.Controls
             UpdateData();
             AddControl();
             InitializeUI();
+            //SetOperationMode(TDIOperationMode.Area);
         }
 
         private void InitializeUI()
         {
             _selectedColor = Color.FromArgb(104, 104, 104);
             _nonSelectedColor = Color.FromArgb(52, 52, 52);
-
-            rdoAreaMode.Checked = true;
 
             rdoJogSlowMode.Checked = true;
             rdoJogMode.Checked = true;
@@ -72,68 +73,38 @@ namespace Jastech.Apps.Winform.UI.Controls
             LAFJogControl.SetSelectedLafCtrl(LAFCtrl);
         }
 
-        private void rdoGrabType_CheckedChanged(object sender, EventArgs e)
+        private void lblAreaMode_Click(object sender, EventArgs e)
         {
-            SetSelecteGrabType(sender);
+            SetOperationMode(TDIOperationMode.Area);
         }
 
-        private void SetSelecteGrabType(object sender)
+        
+        private void lblLineMode_Click(object sender, EventArgs e)
         {
-            RadioButton btn = sender as RadioButton;
-
-            if (btn.Checked)
-            {
-                if (btn.Text.ToLower().Contains("area"))
-                    ShowUpdateUI(GrabMode.AreaMode);
-                else
-                    ShowUpdateUI(GrabMode.LineMode);
-
-                btn.BackColor = _selectedColor;
-            }
-            else
-                btn.BackColor = _nonSelectedColor;
-
-            UpdateCameraSetting();
+            SetOperationMode(TDIOperationMode.TDI);
         }
 
-        private void ShowUpdateUI(GrabMode grabMode)
+        private void SetOperationMode(TDIOperationMode operationMode)
         {
-            switch (grabMode)
+            switch (operationMode)
             {
-                case GrabMode.AreaMode:
-                    ShowAreaMode();
+                case TDIOperationMode.TDI:
+                    lblLineMode.BackColor = _selectedColor;
+                    lblAreaMode.BackColor = _nonSelectedColor;
+                    lblCameraExposure.Text = "D GAIN (0 ~ 8[dB])";
+                    AppsLineCameraManager.Instance().SetOperationMode(CameraName.LinscanMIL0, TDIOperationMode.TDI);
                     break;
 
-                case GrabMode.LineMode:
-                    ShowLineMode();
+                case TDIOperationMode.Area:
+                    lblLineMode.BackColor = _nonSelectedColor;
+                    lblAreaMode.BackColor = _selectedColor;
+                    lblCameraExposure.Text = "EXPOSURE [us]";
+                    AppsLineCameraManager.Instance().SetOperationMode(CameraName.LinscanMIL0, TDIOperationMode.Area);
                     break;
 
                 default:
                     break;
             }
-        }
-
-        private void ShowAreaMode()
-        {
-            _grabMode = GrabMode.AreaMode;
-            lblCameraExposure.Text = "EXPOSURE [us]";
-        }
-
-        private void ShowLineMode()
-        {
-            _grabMode = GrabMode.LineMode;
-            lblCameraExposure.Text = "D GAIN (0 ~ 8[dB])";
-        }
-
-        private void UpdateCameraSetting()
-        {
-            if (GrabMode.AreaMode == _grabMode)
-                lblCameraExposureValue.Text = "";
-            else
-                lblCameraExposureValue.Text = "";
-
-            lblCameraGainValue.Text = "";
-            nudLightDimmingLevel.Text = "";
         }
 
         private delegate void UpdateUIDelegate();
@@ -259,7 +230,7 @@ namespace Jastech.Apps.Winform.UI.Controls
         {
             int exposureTime = 0;
             int digitalGain = 0;
-            if (_grabMode == GrabMode.AreaMode)
+            if (_grabMode == OperationMode.AreaMode)
             {
                 exposureTime = SetLabelIntegerData(sender);
             }

@@ -80,7 +80,7 @@ namespace CameraTeseter
 
                 IsGrabbing = true;
 
-                camera.GrabMuti(AppConfig.Instance().GrabCount);
+                camera.GrabMulti(AppConfig.Instance().GrabCount);
             }
         }
 
