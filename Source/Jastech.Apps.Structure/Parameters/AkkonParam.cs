@@ -14,6 +14,9 @@ namespace Jastech.Apps.Structure.Parameters
         [JsonProperty]
         public List<MacronAkkonGroup> GroupList { get; set; } = new List<MacronAkkonGroup>();
 
+        [JsonProperty]
+        public MacronAkkonParam MacronAkkonParam { get; set; } = new MacronAkkonParam();
+
         private void AddGroup()
         {
             if(GroupList.Count() > 0)
@@ -89,6 +92,17 @@ namespace Jastech.Apps.Structure.Parameters
             var group = GetAkkonGroup(index);
             if (group != null)
                 group = newGroupParam;
+        }
+
+        public List<AkkonROI> GetAkkonROIList()
+        {
+            List<AkkonROI> roiList = new List<AkkonROI>();
+
+            for (int i = 0; i < GroupList.Count; i++)
+            {
+                roiList.AddRange(GetAkkonGroup(i).AkkonROIList);
+            }
+            return roiList;
         }
 
         public AkkonParam DeepCopy()

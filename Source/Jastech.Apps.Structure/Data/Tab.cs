@@ -19,6 +19,9 @@ namespace Jastech.Apps.Structure.Data
         public int Index { get; set; }
 
         [JsonProperty]
+        public int StageIndex { get; set; }
+
+        [JsonProperty]
         public List<AlignParam> AlignParamList { get; set; } = new List<AlignParam>();
 
         [JsonProperty]
@@ -35,6 +38,7 @@ namespace Jastech.Apps.Structure.Data
             Tab tab = new Tab();
             tab.Name = Name;
             tab.Index = Index;
+            tab.StageIndex = StageIndex;
             tab.FpcMarkParamList = FpcMarkParamList.Select(x => x.DeepCopy()).ToList();
             tab.PanelMarkParamList = PanelMarkParamList.Select(x => x.DeepCopy()).ToList();
             tab.AlignParamList = AlignParamList.Select(x => x.DeepCopy()).ToList();

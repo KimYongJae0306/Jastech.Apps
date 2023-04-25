@@ -42,8 +42,9 @@ namespace ATT.Core
                 for (int tabIndex = 0; tabIndex < appInspModel.TabCount; tabIndex++)
                 {
                     Tab tab = new Tab();
-                    tab.Name = tab.ToString();
+                    tab.Name = tabIndex.ToString(); // 임시
                     tab.Index = tabIndex;
+                    tab.StageIndex = unitIndex;
 
                     // Tab Fpc Mark 등록
                     foreach (MarkName type in Enum.GetValues(typeof(MarkName)))
@@ -86,24 +87,20 @@ namespace ATT.Core
                         tab.AlignParamList.Add(align);
                     }
 
-                    AkkonParam akkon = new AkkonParam();
+                    tab.AkkonParam = new AkkonParam();
+
+                    tab.AkkonParam.MacronAkkonParam.StageCount = appInspModel.UnitCount;
+                    tab.AkkonParam.MacronAkkonParam.TabCount = appInspModel.TabCount;
+                    tab.AkkonParam.MacronAkkonParam.SetDefaultParameter();
+
                     int cnt = 0;
-                    foreach (var item in akkon.GroupList)
+                    foreach (var item in tab.AkkonParam.GroupList)
                     {
                         MacronAkkonGroup group = new MacronAkkonGroup();
                         group.Index = cnt;
-                        //group.Stage = unit;
-                        //group.TabNo = tab;
                         tab.AkkonParam.SetAkkonGroup(group.Index, group);
                     }
-                    //for (int groupIndex = 0; groupIndex < 5; groupIndex++)
-                    //{
-                    //    // Tab Akkon 등록
-                    //    AkkonParam akkon = new AkkonParam();
-                    //    akkon.Name = tab.Name;
-                    //    tab.AkkonParamList.Add(akkon);
-                    //}
-
+                    
                     unit.AddTab(tab);
                 }
 
