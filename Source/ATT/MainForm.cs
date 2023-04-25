@@ -6,6 +6,7 @@ using Jastech.Apps.Winform.Core;
 using Jastech.Apps.Winform.Settings;
 using Jastech.Apps.Winform.UI.Forms;
 using Jastech.Framework.Config;
+using Jastech.Framework.Macron.Akkon;
 using Jastech.Framework.Structure;
 using System;
 using System.Collections.Generic;
@@ -47,10 +48,8 @@ namespace ATT
 
         private void MainForm_Load(object sender, EventArgs e)
         {
-            //MacronAkkon te = new MacronAkkon();
-            //te.ATT_InitSystem(this.Handle, 8, 0xF8);   // Core 1111 1000
-            //te.PrepareInspect();
-
+            int akkonThreadCount = AppConfig.Instance().AkkonThreadCount;
+            MacronAkkon.ATT_InitSystem(this.Handle, akkonThreadCount, 0xF8);
 
             AddControls();
             SelectMainPage();

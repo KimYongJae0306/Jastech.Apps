@@ -34,6 +34,10 @@ namespace Jastech.Apps.Winform.Settings
 
         [JsonProperty]
         public int GrabCount { get; set; } = 10;
+
+        [JsonProperty]
+        public int AkkonThreadCount { get; set; } = 8;
+
         #endregion
 
         #region 메서드

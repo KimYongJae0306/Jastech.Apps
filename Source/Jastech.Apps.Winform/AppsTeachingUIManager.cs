@@ -1,4 +1,5 @@
 ﻿using Cognex.VisionPro;
+using Emgu.CV;
 using Jastech.Framework.Winform.VisionPro.Controls;
 using System;
 using System.Collections.Generic;
@@ -18,6 +19,8 @@ namespace Jastech.Apps.Winform
         private CogDisplayControl TeachingDisplay { get; set; } = null;
 
         public ICogImage PrevImage { get; set; } = null;
+
+        public Mat PrevMatImage { get; set; } = null;
         #endregion
 
         #region 이벤트
@@ -56,12 +59,30 @@ namespace Jastech.Apps.Winform
             TeachingDisplay?.SetImage(image);
         }
 
-        public ICogImage GetPrevImage()
+        public void SetImage(Mat image)
+        {
+            if(PrevMatImage != null)
+            {
+                PrevMatImage.Dispose();
+                PrevMatImage = null;
+            }
+            PrevMatImage = image;
+        }
+
+        public ICogImage GetPrevCogImage()
         {
             if (PrevImage == null)
                 return null;
 
             return PrevImage.CopyBase(CogImageCopyModeConstants.CopyPixels);
+        }
+
+        public Mat GetPrevMatImage()
+        {
+            if (PrevMatImage == null)
+                return null;
+
+            return PrevMatImage;
         }
         #endregion
 
