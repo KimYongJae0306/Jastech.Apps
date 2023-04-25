@@ -27,6 +27,7 @@ using Jastech.Apps.Structure.Data;
 using System.Runtime.InteropServices;
 using Jastech.Framework.Imaging;
 using ATT.UI.Controls;
+using System.Web.UI.WebControls;
 
 namespace ATT.UI.Forms
 {
@@ -44,6 +45,7 @@ namespace ATT.UI.Forms
         public string TitleCameraName { get; set; } = "";
 
         private CogTeachingDisplayControl Display { get; set; } = new CogTeachingDisplayControl();
+        private LiveViewPanel LiveDisplay { get; set; } = new LiveViewPanel();
 
         private LinescanControl LinescanControl { get; set; } = new LinescanControl() { Dock = DockStyle.Fill };
 
@@ -129,6 +131,13 @@ namespace ATT.UI.Forms
             //Event 연결
             Display.DeleteEventHandler += Display_DeleteEventHandler;
             pnlDisplay.Controls.Add(Display);
+            Display.Visible = false;
+
+            LiveDisplay = new LiveViewPanel();
+            LiveDisplay.ImageSource = null;
+            LiveDisplay.Dock = DockStyle.Fill;
+            pnlDisplay.Controls.Add(LiveDisplay);
+            LiveDisplay.Visible = true;
 
             // TeachingUIManager 참조
             AppsTeachingUIManager.Instance().SetDisplay(Display.GetDisplay());
@@ -136,7 +145,7 @@ namespace ATT.UI.Forms
 
         private void Display_DeleteEventHandler(object sender, EventArgs e)
         {
-            if(pnlTeach.Controls.Count >0)
+            if(pnlTeach.Controls.Count > 0)
             {
                 if (pnlTeach.Controls[0] as MarkControl != null)
                     MarkControl.DrawROI();
