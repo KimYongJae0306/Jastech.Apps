@@ -236,41 +236,6 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         }
 
-        //private void UpdateParam(string tabName, int groupIndex)
-        //{
-        //    if (TeachingTabList.Count <= 0)
-        //        return;
-
-        //    if (tabName == null)
-        //        return;
-
-        //    var tab = TeachingTabList.Where(x => x.Name == tabName).First();
-        //    var groupParam = tab.GetAkkonGroup(groupIndex);
-
-        //    if (groupParam == null)
-        //        return;
-
-        //    lblGroupCountValue.Text = tab.AkkonParam.GroupList.Count.ToString();
-        //    cbxGroupNumber.SelectedIndex = groupIndex;
-
-        //    MacronAkkonGroup group = tab.AkkonParam.GroupList[groupIndex];
-        //    // Manual Teaching
-        //    lblLeadCountValue.Text = group.Count.ToString();
-        //    lblLeadPitchValue.Text = group.Pitch.ToString("F2");
-        //    lblROIWidthValue.Text = group.Width.ToString("F2");
-        //    lblROIHeightValue.Text = group.Height.ToString("F2");
-
-        //    //Auto Teaching
-        //    lblAutoThresholdValue.Text = group.Threshold.ToString();
-        //    lblAutoLeadPitch.Text = group.Pitch.ToString("F2");
-
-        //    UpdateROIDataGridView(groupParam.AkkonROIList);
-
-        //    MacronAkkonParamControl.SetParam(tab.AkkonParam.MacronAkkonParam);
-        //    MacronAkkonParamControl.UpdateData();
-        //    DrawROI();
-        //}
-
         private void lblAddROI_Click(object sender, EventArgs e)
         {
             AddROI();
@@ -1328,10 +1293,17 @@ namespace Jastech.Apps.Winform.UI.Controls
             tab.AkkonParam.MacronAkkonParam.DrawOption.DrawResizeRatio = TestResize;
 
             MacronAkkonParam macron = tab.AkkonParam.MacronAkkonParam;
-            //if(macronInspParam.PanelInfo == TargetType.COG)
-            //{
 
-            //}
+            float resizeRatio = 1.0f;
+            if (macron.InspParam.PanelInfo == (int)TargetType.COG)
+                resizeRatio = 1.0f;
+            else if(macron.InspParam.PanelInfo == (int)TargetType.COF)
+                resizeRatio = 0.5f;
+            else if(macron.InspParam.PanelInfo == (int)TargetType.FOG)
+                resizeRatio = 0.6f;
+
+            tab.AkkonParam.MacronAkkonParam.InspOption.InspResizeRatio = resizeRatio;
+            tab.AkkonParam.MacronAkkonParam.DrawOption.DrawResizeRatio = resizeRatio;
 
             macron.SliceHeight = matImage.Height;
 

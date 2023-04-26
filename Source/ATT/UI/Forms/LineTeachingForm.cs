@@ -26,6 +26,8 @@ using Jastech.Apps.Structure.Data;
 using System.Runtime.InteropServices;
 using Jastech.Framework.Imaging;
 using ATT.UI.Controls;
+using Emgu.CV;
+using Emgu.CV.CvEnum;
 
 namespace ATT.UI.Forms
 {
