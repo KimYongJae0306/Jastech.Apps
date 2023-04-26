@@ -113,7 +113,7 @@ namespace Jastech.Apps.Structure.VisionTool
 
             if (AkkonAlgorithm.CreateDllBuffer(marcon))
             {
-                AkkonAlgorithm.CreateImageBuffer(0,0,mat.Width, mat.Height, marcon.InspOption.InspResizeRatio);
+                AkkonAlgorithm.CreateImageBuffer(stageNo, tabNo, mat.Width, mat.Height, marcon.InspOption.InspResizeRatio);
 
                 var akkonRoiList = akkonParam.GetAkkonROIList();
 

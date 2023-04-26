@@ -412,6 +412,19 @@ namespace Jastech.Apps.Winform.UI.Controls
                 string leftBottom = item.CornerYX.ToString("F2") + " , " + item.CornerYY.ToString("F2");
                 string rightBottom = item.CornerOppositeX.ToString("F2") + " , " + item.CornerOppositeY.ToString("F2");
 
+                //string message = string.Format("{0} {1} {2} {3} {4} {5} {6} {7}"
+                //    , (int)item.CornerOriginX
+                //    , (int)item.CornerOriginY
+                //    , (int)item.CornerXX
+                //    , (int)item.CornerXY
+                //    , (int)item.CornerOppositeX
+                //    , (int)item.CornerOppositeY
+                //    , (int)item.CornerYX
+                //    , (int)item.CornerYY
+                //    );
+
+                //Console.WriteLine(message);
+
                 dgvAkkonROI.Rows.Add(index.ToString(), leftTop, rightTop, leftBottom, rightBottom);
 
                 index++;
@@ -1087,8 +1100,8 @@ namespace Jastech.Apps.Winform.UI.Controls
 
                 group.AddROI(akkonRoi);
 
-                //Console.WriteLine(string.Format("{0} {1} {2} {3} {4} {5} {6} {7}", akkonRoi.CornerOriginX, akkonRoi.CornerOriginY, 
-                //                                                                    akkonRoi.CornerXX, akkonRoi.CornerXY, 
+                //Console.WriteLine(string.Format("{0} {1} {2} {3} {4} {5} {6} {7}", akkonRoi.CornerOriginX, akkonRoi.CornerOriginY,
+                //                                                                    akkonRoi.CornerXX, akkonRoi.CornerXY,
                 //                                                                    akkonRoi.CornerOppositeX, akkonRoi.CornerOppositeY,
                 //                                                                    akkonRoi.CornerYX, akkonRoi.CornerYY));
             }
@@ -1225,15 +1238,15 @@ namespace Jastech.Apps.Winform.UI.Controls
             List<int> topEdgePointList = new List<int>();
             List<int> bottomEdgePointList = new List<int>();
 
-            ImageHelper.GetEdgePoint(topDataArray, bottomDataArray, 0, (int)20/*CalcResolution*/, ref topEdgePointList, ref bottomEdgePointList);
+            ImageHelper.GetEdgePoint(topDataArray, bottomDataArray, 0, (int)30/*CalcResolution*/, ref topEdgePointList, ref bottomEdgePointList);
 
-            if (topEdgePointList.Count != bottomEdgePointList.Count)
-            {
-                MessageConfirmForm form = new MessageConfirmForm();
-                form.Message = "The number of edge points found is different.";
-                form.ShowDialog();
-                return new List<CogRectangleAffine>();
-            }
+            //if (topEdgePointList.Count != bottomEdgePointList.Count)
+            //{
+            //    MessageConfirmForm form = new MessageConfirmForm();
+            //    form.Message = "The number of edge points found is different.";
+            //    form.ShowDialog();
+            //    return new List<CogRectangleAffine>();
+            //}
 
             List<PointF> topPointList = new List<PointF>();
             foreach (var xIndex in topEdgePointList)
@@ -1315,6 +1328,11 @@ namespace Jastech.Apps.Winform.UI.Controls
             tab.AkkonParam.MacronAkkonParam.DrawOption.DrawResizeRatio = TestResize;
 
             MacronAkkonParam macron = tab.AkkonParam.MacronAkkonParam;
+            //if(macronInspParam.PanelInfo == TargetType.COG)
+            //{
+
+            //}
+
             macron.SliceHeight = matImage.Height;
 
             var tabResults = Algorithm.RunAkkon(matImage, tab.AkkonParam, tab.StageIndex, tab.Index);
@@ -1413,7 +1431,7 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         private void label1_Click(object sender, EventArgs e)
         {
-            TestResize = 0.6f;
+            TestResize = 0.5f;
         }
 
         private void label2_Click(object sender, EventArgs e)

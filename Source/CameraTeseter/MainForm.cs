@@ -55,7 +55,7 @@ namespace CameraTeseter
             DeviceManager.Instance().Initialize(TestAppConfig.Instance());
 
             TestAppCameraManager.Instance().Initialize();
-            TestAppCameraManager.Instance().TeachingImageGrabbed += MainForm_TeachingImageGrabbed;
+            //TestAppCameraManager.Instance().TeachingImageGrabbed += MainForm_TeachingImageGrabbed;
 
             Thread th = new Thread(Cam0LiveUpdate);
             th.Start();

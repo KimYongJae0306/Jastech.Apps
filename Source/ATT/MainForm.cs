@@ -50,6 +50,7 @@ namespace ATT
         {
             int akkonThreadCount = AppConfig.Instance().AkkonThreadCount;
             MacronAkkon.ATT_InitSystem(this.Handle, akkonThreadCount, 0xF8);
+            //MacronAkkon.ATT_InitSystem(this.Handle, akkonThreadCount, 0xF1);
 
             AddControls();
             SelectMainPage();
