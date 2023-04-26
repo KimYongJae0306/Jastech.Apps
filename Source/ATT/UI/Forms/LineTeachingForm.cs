@@ -134,13 +134,12 @@ namespace ATT.UI.Forms
             //Event 연결
             Display.DeleteEventHandler += Display_DeleteEventHandler;
             pnlDisplay.Controls.Add(Display);
-            Display.Visible = false;
 
-            LiveDisplay = new LiveViewPanel();
-            LiveDisplay.ImageSource = null;
-            LiveDisplay.Dock = DockStyle.Fill;
-            pnlDisplay.Controls.Add(LiveDisplay);
-            LiveDisplay.Visible = true;
+            //LiveDisplay = new LiveViewPanel();
+            //LiveDisplay.ImageSource = null;
+            //LiveDisplay.Dock = DockStyle.Fill;
+            //pnlDisplay.Controls.Add(LiveDisplay);
+            //LiveDisplay.Visible = true;
 
             // TeachingUIManager 참조
             AppsTeachingUIManager.Instance().SetDisplay(Display.GetDisplay());
