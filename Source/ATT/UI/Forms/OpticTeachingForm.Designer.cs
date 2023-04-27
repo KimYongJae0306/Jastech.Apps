@@ -28,8 +28,14 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.tlpJog = new System.Windows.Forms.TableLayoutPanel();
             this.tlpJogFunction = new System.Windows.Forms.TableLayoutPanel();
+            this.pnlJog = new System.Windows.Forms.Panel();
+            this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
+            this.pnlMotionJog = new System.Windows.Forms.Panel();
+            this.tableLayoutPanel5 = new System.Windows.Forms.TableLayoutPanel();
+            this.pnlLAFJog = new System.Windows.Forms.Panel();
             this.tlpJogOption = new System.Windows.Forms.TableLayoutPanel();
             this.tlpPitchZ = new System.Windows.Forms.TableLayoutPanel();
             this.lblPitchZ = new System.Windows.Forms.Label();
@@ -43,10 +49,6 @@
             this.tlpJogSpeedMode = new System.Windows.Forms.TableLayoutPanel();
             this.rdoJogFastMode = new System.Windows.Forms.RadioButton();
             this.rdoJogSlowMode = new System.Windows.Forms.RadioButton();
-            this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
-            this.pnlMotionJog = new System.Windows.Forms.Panel();
-            this.tableLayoutPanel5 = new System.Windows.Forms.TableLayoutPanel();
-            this.pnlLAFJog = new System.Windows.Forms.Panel();
             this.lblJog = new System.Windows.Forms.Label();
             this.tlpRepeatOption = new System.Windows.Forms.TableLayoutPanel();
             this.label3 = new System.Windows.Forms.Label();
@@ -117,16 +119,18 @@
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.pnlDisplay = new System.Windows.Forms.Panel();
             this.pnlHistogram = new System.Windows.Forms.Panel();
-            this.pnlJog = new System.Windows.Forms.Panel();
+            this.AreaTimer = new System.Windows.Forms.Timer(this.components);
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.tlpJog.SuspendLayout();
             this.tlpJogFunction.SuspendLayout();
+            this.pnlJog.SuspendLayout();
+            this.tableLayoutPanel3.SuspendLayout();
+            this.tableLayoutPanel5.SuspendLayout();
             this.tlpJogOption.SuspendLayout();
             this.tlpPitchZ.SuspendLayout();
             this.tlpPitchXY.SuspendLayout();
             this.tlpJogMode.SuspendLayout();
             this.tlpJogSpeedMode.SuspendLayout();
-            this.tableLayoutPanel3.SuspendLayout();
-            this.tableLayoutPanel5.SuspendLayout();
             this.tlpRepeatOption.SuspendLayout();
             this.tlpCamera.SuspendLayout();
             this.tlpCamera_.SuspendLayout();
@@ -154,7 +158,8 @@
             this.tlpLoadImage.SuspendLayout();
             this.pnlTeach.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
-            this.pnlJog.SuspendLayout();
+            this.pnlHistogram.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
             // tlpJog
@@ -189,6 +194,66 @@
             this.tlpJogFunction.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 120F));
             this.tlpJogFunction.Size = new System.Drawing.Size(400, 200);
             this.tlpJogFunction.TabIndex = 155;
+            // 
+            // pnlJog
+            // 
+            this.pnlJog.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.pnlJog.Controls.Add(this.tableLayoutPanel3);
+            this.pnlJog.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pnlJog.Location = new System.Drawing.Point(0, 80);
+            this.pnlJog.Margin = new System.Windows.Forms.Padding(0);
+            this.pnlJog.Name = "pnlJog";
+            this.pnlJog.Size = new System.Drawing.Size(400, 120);
+            this.pnlJog.TabIndex = 0;
+            // 
+            // tableLayoutPanel3
+            // 
+            this.tableLayoutPanel3.ColumnCount = 2;
+            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel3.Controls.Add(this.pnlMotionJog, 0, 0);
+            this.tableLayoutPanel3.Controls.Add(this.tableLayoutPanel5, 1, 0);
+            this.tableLayoutPanel3.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel3.Location = new System.Drawing.Point(0, 0);
+            this.tableLayoutPanel3.Name = "tableLayoutPanel3";
+            this.tableLayoutPanel3.RowCount = 1;
+            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel3.Size = new System.Drawing.Size(398, 118);
+            this.tableLayoutPanel3.TabIndex = 21;
+            // 
+            // pnlMotionJog
+            // 
+            this.pnlMotionJog.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pnlMotionJog.Location = new System.Drawing.Point(0, 0);
+            this.pnlMotionJog.Margin = new System.Windows.Forms.Padding(0);
+            this.pnlMotionJog.Name = "pnlMotionJog";
+            this.pnlMotionJog.Size = new System.Drawing.Size(199, 118);
+            this.pnlMotionJog.TabIndex = 0;
+            // 
+            // tableLayoutPanel5
+            // 
+            this.tableLayoutPanel5.ColumnCount = 3;
+            this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this.tableLayoutPanel5.Controls.Add(this.pnlLAFJog, 1, 0);
+            this.tableLayoutPanel5.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel5.Location = new System.Drawing.Point(199, 0);
+            this.tableLayoutPanel5.Margin = new System.Windows.Forms.Padding(0);
+            this.tableLayoutPanel5.Name = "tableLayoutPanel5";
+            this.tableLayoutPanel5.RowCount = 1;
+            this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel5.Size = new System.Drawing.Size(199, 118);
+            this.tableLayoutPanel5.TabIndex = 1;
+            // 
+            // pnlLAFJog
+            // 
+            this.pnlLAFJog.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pnlLAFJog.Location = new System.Drawing.Point(66, 0);
+            this.pnlLAFJog.Margin = new System.Windows.Forms.Padding(0);
+            this.pnlLAFJog.Name = "pnlLAFJog";
+            this.pnlLAFJog.Size = new System.Drawing.Size(66, 118);
+            this.pnlLAFJog.TabIndex = 0;
             // 
             // tlpJogOption
             // 
@@ -410,55 +475,6 @@
             this.rdoJogSlowMode.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.rdoJogSlowMode.UseVisualStyleBackColor = false;
             this.rdoJogSlowMode.CheckedChanged += new System.EventHandler(this.rdoJogSlowMode_CheckedChanged);
-            // 
-            // tableLayoutPanel3
-            // 
-            this.tableLayoutPanel3.ColumnCount = 2;
-            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel3.Controls.Add(this.pnlMotionJog, 0, 0);
-            this.tableLayoutPanel3.Controls.Add(this.tableLayoutPanel5, 1, 0);
-            this.tableLayoutPanel3.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel3.Location = new System.Drawing.Point(0, 0);
-            this.tableLayoutPanel3.Name = "tableLayoutPanel3";
-            this.tableLayoutPanel3.RowCount = 1;
-            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel3.Size = new System.Drawing.Size(398, 118);
-            this.tableLayoutPanel3.TabIndex = 21;
-            // 
-            // pnlMotionJog
-            // 
-            this.pnlMotionJog.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pnlMotionJog.Location = new System.Drawing.Point(0, 0);
-            this.pnlMotionJog.Margin = new System.Windows.Forms.Padding(0);
-            this.pnlMotionJog.Name = "pnlMotionJog";
-            this.pnlMotionJog.Size = new System.Drawing.Size(199, 118);
-            this.pnlMotionJog.TabIndex = 0;
-            // 
-            // tableLayoutPanel5
-            // 
-            this.tableLayoutPanel5.ColumnCount = 3;
-            this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
-            this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
-            this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
-            this.tableLayoutPanel5.Controls.Add(this.pnlLAFJog, 1, 0);
-            this.tableLayoutPanel5.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel5.Location = new System.Drawing.Point(199, 0);
-            this.tableLayoutPanel5.Margin = new System.Windows.Forms.Padding(0);
-            this.tableLayoutPanel5.Name = "tableLayoutPanel5";
-            this.tableLayoutPanel5.RowCount = 1;
-            this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel5.Size = new System.Drawing.Size(199, 118);
-            this.tableLayoutPanel5.TabIndex = 1;
-            // 
-            // pnlLAFJog
-            // 
-            this.pnlLAFJog.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pnlLAFJog.Location = new System.Drawing.Point(66, 0);
-            this.pnlLAFJog.Margin = new System.Windows.Forms.Padding(0);
-            this.pnlLAFJog.Name = "pnlLAFJog";
-            this.pnlLAFJog.Size = new System.Drawing.Size(66, 118);
-            this.pnlLAFJog.TabIndex = 0;
             // 
             // lblJog
             // 
@@ -1458,6 +1474,7 @@
             this.btnGrabStop.TabIndex = 200;
             this.btnGrabStop.Text = "GRAB STOP";
             this.btnGrabStop.UseVisualStyleBackColor = false;
+            this.btnGrabStop.Click += new System.EventHandler(this.btnGrabStop_Click);
             // 
             // btnGrabStart
             // 
@@ -1473,6 +1490,7 @@
             this.btnGrabStart.TabIndex = 199;
             this.btnGrabStart.Text = "GRAB START";
             this.btnGrabStart.UseVisualStyleBackColor = false;
+            this.btnGrabStart.Click += new System.EventHandler(this.btnGrabStart_Click);
             // 
             // pnlTeach
             // 
@@ -1517,6 +1535,7 @@
             // 
             // pnlHistogram
             // 
+            this.pnlHistogram.Controls.Add(this.pictureBox1);
             this.pnlHistogram.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pnlHistogram.Location = new System.Drawing.Point(0, 602);
             this.pnlHistogram.Margin = new System.Windows.Forms.Padding(0);
@@ -1524,16 +1543,20 @@
             this.pnlHistogram.Size = new System.Drawing.Size(620, 259);
             this.pnlHistogram.TabIndex = 0;
             // 
-            // pnlJog
+            // AreaTimer
             // 
-            this.pnlJog.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.pnlJog.Controls.Add(this.tableLayoutPanel3);
-            this.pnlJog.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pnlJog.Location = new System.Drawing.Point(0, 80);
-            this.pnlJog.Margin = new System.Windows.Forms.Padding(0);
-            this.pnlJog.Name = "pnlJog";
-            this.pnlJog.Size = new System.Drawing.Size(400, 120);
-            this.pnlJog.TabIndex = 0;
+            this.AreaTimer.Tick += new System.EventHandler(this.AreaTimer_Tick);
+            // 
+            // pictureBox1
+            // 
+            this.pictureBox1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pictureBox1.Location = new System.Drawing.Point(0, 0);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(620, 259);
+            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.pictureBox1.TabIndex = 0;
+            this.pictureBox1.TabStop = false;
+            this.pictureBox1.Paint += new System.Windows.Forms.PaintEventHandler(this.pictureBox1_Paint);
             // 
             // OpticTeachingForm
             // 
@@ -1547,16 +1570,18 @@
             this.Name = "OpticTeachingForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.OpticTeachingForm_FormClosing);
             this.Load += new System.EventHandler(this.LinescanControl_Load);
             this.tlpJog.ResumeLayout(false);
             this.tlpJogFunction.ResumeLayout(false);
+            this.pnlJog.ResumeLayout(false);
+            this.tableLayoutPanel3.ResumeLayout(false);
+            this.tableLayoutPanel5.ResumeLayout(false);
             this.tlpJogOption.ResumeLayout(false);
             this.tlpPitchZ.ResumeLayout(false);
             this.tlpPitchXY.ResumeLayout(false);
             this.tlpJogMode.ResumeLayout(false);
             this.tlpJogSpeedMode.ResumeLayout(false);
-            this.tableLayoutPanel3.ResumeLayout(false);
-            this.tableLayoutPanel5.ResumeLayout(false);
             this.tlpRepeatOption.ResumeLayout(false);
             this.tlpCamera.ResumeLayout(false);
             this.tlpCamera_.ResumeLayout(false);
@@ -1586,7 +1611,8 @@
             this.tlpLoadImage.ResumeLayout(false);
             this.pnlTeach.ResumeLayout(false);
             this.tableLayoutPanel1.ResumeLayout(false);
-            this.pnlJog.ResumeLayout(false);
+            this.pnlHistogram.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -1682,5 +1708,7 @@
         private System.Windows.Forms.Button btnGrabStart;
         private System.Windows.Forms.Panel pnlTeach;
         private System.Windows.Forms.Panel pnlJog;
+        private System.Windows.Forms.Timer AreaTimer;
+        private System.Windows.Forms.PictureBox pictureBox1;
     }
 }

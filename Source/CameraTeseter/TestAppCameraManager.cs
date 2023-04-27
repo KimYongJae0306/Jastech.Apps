@@ -13,6 +13,7 @@ using Jastech.Apps.Winform.Settings;
 using Cognex.VisionPro;
 using Emgu.CV;
 using Jastech.Framework.Util.Helper;
+using System.Runtime.InteropServices.WindowsRuntime;
 
 namespace CameraTeseter
 {
@@ -74,13 +75,14 @@ namespace CameraTeseter
         {
             ClearScanImage();
 
-            if (GetCamera(name) is Camera camera)
+            if (GetCamera(name) is CameraMil camera)
             {
                 if (IsGrabbing)
                     StopGrab(name);
 
                 IsGrabbing = true;
-
+                camera.SetOperationMode(TDIOperationMode.Area);
+                camera.SetTriggerMode(TriggerMode.Software);
                 camera.GrabMulti(AppConfig.Instance().GrabCount);
             }
         }
@@ -123,7 +125,7 @@ namespace CameraTeseter
             if (camera is CameraVirtual)
                 return;
 
-            //lock (_objLock)
+            lock (_objLock)
             {
                 byte[] data = camera.GetGrabbedImage();
 
@@ -145,6 +147,25 @@ namespace CameraTeseter
             }
         }
 
+        public Mat Test()
+        {
+            var camera = GetCamera(CameraName.LinscanMIL0);
+
+            lock (_objLock)
+            {
+                byte[] data = camera.GetGrabbedImage();
+
+                if (data != null)
+                {
+                    //kyj : 최적화 생각해봐야함...
+                    //kyj : Grabber 단에서 돌리면 더 빠를수도???
+                    Mat grabImage = MatHelper.ByteArrayToMat(data, camera.ImageWidth, camera.ImageHeight, 1);
+
+                    return grabImage;
+                }
+            }
+            return null;
+        }
 
         public Mat GetMergeImage()
         {

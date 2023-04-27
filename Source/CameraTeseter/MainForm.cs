@@ -1,13 +1,16 @@
 ﻿using Cognex.VisionPro;
 using Cognex.VisionPro.Display;
+using Emgu.CV;
 using Jastech.Apps.Structure.Data;
+using Jastech.Apps.Winform.Settings;
+using Jastech.Framework.Device.Cameras;
+using Jastech.Framework.Device.Grabbers;
 using Jastech.Framework.Imaging;
 using Jastech.Framework.Imaging.Helper;
 using Jastech.Framework.Imaging.VisionPro;
 using Jastech.Framework.Matrox;
 using Jastech.Framework.Util.Helper;
 using Jastech.Framework.Winform;
-using OpenCvSharp;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -31,6 +34,7 @@ namespace CameraTeseter
         public DoubleBufferPictureBox pbxImageCam1 { get; set; }
 
         public bool StopThread { get; set; } = false;
+
         public MainForm()
         {
             InitializeComponent();
@@ -55,7 +59,7 @@ namespace CameraTeseter
             DeviceManager.Instance().Initialize(TestAppConfig.Instance());
 
             TestAppCameraManager.Instance().Initialize();
-            //TestAppCameraManager.Instance().TeachingImageGrabbed += MainForm_TeachingImageGrabbed;
+            TestAppCameraManager.Instance().TeachingImageGrabbed += MainForm_TeachingImageGrabbed;
 
             Thread th = new Thread(Cam0LiveUpdate);
             th.Start();
@@ -70,7 +74,7 @@ namespace CameraTeseter
             {
                 lock(_cam0Lock)
                 {
-                    if(liveImageCam0List.Count>0)
+                    if(liveImageCam0List.Count > 0)
                     {
                         var image = liveImageCam0List.Dequeue();
                         UpdatePictureBox(image, pbxImageCam0);
@@ -121,32 +125,50 @@ namespace CameraTeseter
         public object _cam1Lock = new object();
         Queue<Bitmap> liveImageCam0List = new Queue<Bitmap>();
         Queue<Bitmap> liveImageCam1List = new Queue<Bitmap>();
-        private void MainForm_TeachingImageGrabbed(string name, OpenCvSharp.Mat image)
+
+        private void MainForm_TeachingImageGrabbed(string name, Mat image)
         {
             if (image == null)
                 return;
 
+            //if(ccCount % 50 != 0)
+            //{
+            //    ccCount++;
+            //    return;
+            //}
+            ccCount = 1;
+            Console.WriteLine("Update");
+            //if (isGrabbing == false)
+            //    return;
+
             if (name == CameraName.LinscanMIL0.ToString())
             {
                 lock (_cam0Lock)
-                    liveImageCam0List.Enqueue(OpenCvSharp.Extensions.BitmapConverter.ToBitmap(image));
+                    liveImageCam0List.Enqueue(image.ToBitmap());
             }
             else if(name == CameraName.LinscanMIL1.ToString())
             {
                 lock (_cam1Lock)
-                    liveImageCam1List.Enqueue(OpenCvSharp.Extensions.BitmapConverter.ToBitmap(image));
+                    liveImageCam1List.Enqueue(image.ToBitmap());
             }
         }
 
         private void btnGrabStartCam0_Click(object sender, EventArgs e)
         {
-            sw1.Restart();
             TestAppCameraManager.Instance().StartGrab(CameraName.LinscanMIL0);
         }
 
         private void btnGrabStopCam0_Click(object sender, EventArgs e)
         {
             TestAppCameraManager.Instance().StopGrab(CameraName.LinscanMIL0);
+            lock (_cam0Lock)
+            {
+                for (int i = 0; i < liveImageCam0List.Count; i++)
+                {
+                    var image = liveImageCam0List.Dequeue();
+                    image.Dispose();
+                }
+            }
         }
 
         private void btnGrabStartCam1_Click(object sender, EventArgs e)
@@ -157,6 +179,14 @@ namespace CameraTeseter
         private void btnGrabStopCam1_Click(object sender, EventArgs e)
         {
             TestAppCameraManager.Instance().StopGrab(CameraName.LinscanMIL1);
+            lock (_cam1Lock)
+            {
+                for (int i = 0; i < liveImageCam1List.Count; i++)
+                {
+                    var image = liveImageCam1List.Dequeue();
+                    image.Dispose();
+                }
+            }
         }
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
@@ -164,7 +194,70 @@ namespace CameraTeseter
             TestAppCameraManager.Instance().StopGrab(CameraName.LinscanMIL0);
             TestAppCameraManager.Instance().StopGrab(CameraName.LinscanMIL1);
             StopThread = true;
+            Thread.Sleep(1000);
             DeviceManager.Instance().Release();
+            GrabberMil.Release();
+            MilHelper.FreeApplication();
+        }
+
+        bool isGrabbing = false;
+        private void GrabTimer_Tick(object sender, EventArgs e)
+        {
+            //var mat = TestAppCameraManager.Instance().Test();
+            //UpdatePictureBox(mat.ToBitmap(), pbxImageCam0);
+            isGrabbing = false;
+            lock (_cam0Lock)
+            {
+                for (int i = 0; i < liveImageCam0List.Count; i++)
+                {
+                    var image = liveImageCam0List.Dequeue();
+                    image.Dispose();
+                }
+            }
+            lock (_cam1Lock)
+            {
+                for (int i = 0; i < liveImageCam1List.Count; i++)
+                {
+                    var image = liveImageCam1List.Dequeue();
+                    image.Dispose();
+                }
+            }
+
+            isGrabbing = true;
+            TestAppCameraManager.Instance().StartGrab(CameraName.LinscanMIL0);
+            //TestAppCameraManager.Instance().StartGrab(CameraName.LinscanMIL1);
+        }
+
+        private void btnTimerStart_Click(object sender, EventArgs e)
+        {
+            isGrabbing = true;
+            TestAppCameraManager.Instance().StartGrab(CameraName.LinscanMIL0);
+            //TestAppCameraManager.Instance().StartGrab(CameraName.LinscanMIL1);
+
+            GrabTimer.Start();
+        }
+
+        private void btnTimerStop_Click(object sender, EventArgs e)
+        {
+            GrabTimer.Stop();
+            TestAppCameraManager.Instance().StopGrab(CameraName.LinscanMIL0);
+            TestAppCameraManager.Instance().StopGrab(CameraName.LinscanMIL1);
+            lock (_cam0Lock)
+            {
+                for (int i = 0; i < liveImageCam0List.Count; i++)
+                {
+                    var image = liveImageCam0List.Dequeue();
+                    image.Dispose();
+                }
+            }
+            lock (_cam1Lock)
+            {
+                for (int i = 0; i < liveImageCam1List.Count; i++)
+                {
+                    var image = liveImageCam1List.Dequeue();
+                    image.Dispose();
+                }
+            }
         }
     }
 }

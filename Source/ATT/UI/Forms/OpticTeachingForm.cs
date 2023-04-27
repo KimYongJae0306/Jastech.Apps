@@ -20,6 +20,15 @@ using Jastech.Apps.Winform;
 using Cognex.VisionPro;
 using Jastech.Framework.Imaging;
 using System.Runtime.InteropServices;
+using Jastech.Framework.Winform.Helper;
+using Emgu.CV;
+using Jastech.Framework.Imaging.VisionPro;
+using System.Threading;
+using Jastech.Framework.Imaging.Helper;
+using Emgu.CV.CvEnum;
+using Jastech.Apps.Structure.Parameters;
+using static Emgu.CV.XImgproc.SupperpixelSLIC;
+using Emgu.CV.XFeatures2D;
 
 namespace ATT.UI.Forms
 {
@@ -38,13 +47,6 @@ namespace ATT.UI.Forms
 
         private LAFJogControl LAFJogControl { get; set; } = new LAFJogControl() { Dock = DockStyle.Fill };
 
-        private OperationMode _grabMode = OperationMode.AreaMode;
-        public enum OperationMode
-        {
-            AreaMode,
-            LineMode,
-        }
-
         public OpticTeachingForm()
         {
             InitializeComponent();
@@ -53,7 +55,7 @@ namespace ATT.UI.Forms
         private void LinescanControl_Load(object sender, EventArgs e)
         {
             SystemManager.Instance().UpdateTeachingData();
-
+            AppsLineCameraManager.Instance().TeachingLiveImageGrabbed += LiveDisplay;
             UpdateData();
             AddControl();
             InitializeUI();
@@ -128,6 +130,7 @@ namespace ATT.UI.Forms
                 default:
                     break;
             }
+            AppsLineCameraManager.Instance().CurrentOperationMode = operationMode;
         }
 
         private delegate void UpdateUIDelegate();
@@ -253,19 +256,19 @@ namespace ATT.UI.Forms
         {
             int exposureTime = 0;
             int digitalGain = 0;
-            if (_grabMode == OperationMode.AreaMode)
+            if (AppsLineCameraManager.Instance().CurrentOperationMode == TDIOperationMode.Area)
             {
-                exposureTime = SetLabelIntegerData(sender);
+                exposureTime = KeyPadHelper.SetLabelIntegerData((Label)sender);
             }
             else
             {
-                digitalGain = SetLabelIntegerData(sender);
+                digitalGain = KeyPadHelper.SetLabelIntegerData((Label)sender);
             }
         }
 
         private void lblCameraGainValue_Click(object sender, EventArgs e)
         {
-            int analogGain = SetLabelIntegerData(sender);
+            int analogGain = KeyPadHelper.SetLabelIntegerData((Label)sender);
         }
 
         private void trbDimmingLevelValue_Scroll(object sender, EventArgs e)
@@ -361,48 +364,14 @@ namespace ATT.UI.Forms
 
         private void lblPitchXYValue_Click(object sender, EventArgs e)
         {
-            double pitchXY = SetLabelDoubleData(sender);
+            double pitchXY = KeyPadHelper.SetLabelDoubleData((Label)sender);
             MotionJogControl.JogPitch = pitchXY;
         }
 
         private void lblPitchZValue_Click(object sender, EventArgs e)
         {
-            double pitchZ = SetLabelDoubleData(sender);
+            double pitchZ = KeyPadHelper.SetLabelDoubleData((Label)sender);
             LAFJogControl.MoveAmount = pitchZ;
-        }
-
-        private int SetLabelIntegerData(object sender)
-        {
-            Label lbl = sender as Label;
-            int prevData = Convert.ToInt32(lbl.Text);
-
-            KeyPadForm keyPadForm = new KeyPadForm();
-            keyPadForm.PreviousValue = (double)prevData;
-            keyPadForm.ShowDialog();
-
-            int inputData = Convert.ToInt16(keyPadForm.PadValue);
-
-            Label label = (Label)sender;
-            label.Text = inputData.ToString();
-
-            return inputData;
-        }
-
-        private double SetLabelDoubleData(object sender)
-        {
-            Label lbl = sender as Label;
-            double prevData = Convert.ToDouble(lbl.Text);
-
-            KeyPadForm keyPadForm = new KeyPadForm();
-            keyPadForm.PreviousValue = prevData;
-            keyPadForm.ShowDialog();
-
-            double inputData = keyPadForm.PadValue;
-
-            Label label = (Label)sender;
-            label.Text = inputData.ToString();
-
-            return inputData;
         }
 
         private void UpdateCurrentdata()
@@ -448,39 +417,78 @@ namespace ATT.UI.Forms
             MotionPopupForm motionPopupForm = new MotionPopupForm();
             motionPopupForm.ShowDialog();
         }
-
-        private void LiveDisplay(CameraHandler cameraHandler)
+        private void LiveDisplay(Mat image)
         {
-            if (cameraHandler == null)
+            if (image == null)
                 return;
 
-            Camera camera = cameraHandler.Get(CameraName.LinscanMIL0.ToString());
+            int size = image.Width * image.Height * image.NumberOfChannels;
+            byte[] dataArray = new byte[size];
+            Marshal.Copy(image.DataPointer, dataArray, 0, size);
 
-            if (camera is CameraVirtual)
-                return;
+            ColorFormat format = image.NumberOfChannels == 1 ? ColorFormat.Gray : ColorFormat.RGB24;
 
-            byte[] imageArray = camera.GetGrabbedImage();
-
-            if (imageArray == null) 
-                return;
-
-            var cogImage = Convert8BitRawImageToCognexImage(imageArray, 4640, 256);
+            var cogImage = CogImageHelper.CovertImage(dataArray, image.Width, image.Height, format);
             CogDisplayControl.SetImage(cogImage);
+
+            if (pictureBox1.Image != null)
+            {
+                pictureBox1.Image.Dispose();
+                pictureBox1.Image = null;
+            }
+            pictureBox1.Image = image.ToBitmap();
+ 
         }
 
-        private ICogImage Convert8BitRawImageToCognexImage(byte[] imageData, int width, int height)
+        private void btnGrabStart_Click(object sender, EventArgs e)
         {
-            var rawSize = width * height;
-            var buf = new SafeMalloc(rawSize);
-            Marshal.Copy(imageData, 0, buf, rawSize);
+            if (AppsLineCameraManager.Instance().CurrentOperationMode == TDIOperationMode.TDI)
+                AppsLineCameraManager.Instance().StartGrab(CameraName.LinscanMIL0);
+            else
+            {
+                //AreaTimer.Start();
+                AppsLineCameraManager.Instance().StartGrabContinous(CameraName.LinscanMIL0);
+            }
+        }
 
-            var cogRoot = new CogImage8Root();
-            cogRoot.Initialize(width, height, buf, width, buf);
+        private void btnGrabStop_Click(object sender, EventArgs e)
+        {
+            if (AppsLineCameraManager.Instance().CurrentOperationMode == TDIOperationMode.TDI)
+                AppsLineCameraManager.Instance().StopGrab(CameraName.LinscanMIL0);
+            else
+                AreaTimer.Stop();
+        }
 
-            var cogImage = new CogImage8Grey();
-            cogImage.SetRoot(cogRoot);
+        private void OpticTeachingForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            AppsLineCameraManager.Instance().TeachingLiveImageGrabbed -= LiveDisplay;
+            AppsLineCameraManager.Instance().StopGrab(CameraName.LinscanMIL0);
+            AppsLineCameraManager.Instance().SetOperationMode(CameraName.LinscanMIL0, TDIOperationMode.TDI);
+        }
 
-            return cogImage;
+        private void AreaTimer_Tick(object sender, EventArgs e)
+        {
+            //byte[] dataArray = AppsLineCameraManager.Instance().OnceGrab(CameraName.LinscanMIL0);
+            //Mat grabImage = MatHelper.ByteArrayToMat(dataArray, 4640,1024, 1);
+            //if(pictureBox1.Image != null)
+            //{
+            //    pictureBox1.Image.Dispose();
+            //    pictureBox1.Image = null;
+            //}
+            //pictureBox1.Image = grabImage.ToBitmap();
+            ////grabImage.Save(@"D:\grab.bmp");
+            //var cogImage = CogImageHelper.CovertImage(dataArray, 4640, 1024, ColorFormat.Gray);
+            //CogDisplayControl.SetImage(cogImage);
+        }
+        static int aaaa = 100;
+        private void pictureBox1_Paint(object sender, PaintEventArgs e)
+        {
+            aaaa += 1;
+            e.Graphics.DrawRectangle(new Pen(Color.Yellow), new Rectangle(100, 100, aaaa, aaaa));
+
+            if (aaaa > 2000)
+                aaaa = 100;
+
         }
     }
 }

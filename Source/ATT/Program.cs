@@ -60,7 +60,6 @@ namespace ATT
 
             System.Diagnostics.Trace.WriteLine(message);
             MessageBox.Show(message);
-
         }
     }
 }

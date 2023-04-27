@@ -32,10 +32,14 @@ namespace Jastech.Apps.Winform
         public List<Mat> ScanImageList { get; private set; } = new List<Mat>();
 
         public bool IsGrabbing { get; private set; } = false;
+
+        public TDIOperationMode CurrentOperationMode = TDIOperationMode.Area;
         #endregion
 
         #region 이벤트
         public event TeachingImageGrabbedDelete TeachingImageGrabbed;
+
+        public event TeachingImageGrabbedDelete TeachingLiveImageGrabbed;
         #endregion
 
         #region 델리게이트
@@ -72,6 +76,24 @@ namespace Jastech.Apps.Winform
             }
         }
 
+        public byte[] OnceGrab(CameraName name)
+        {
+            //ClearScanImage();
+
+            if (GetCamera(name) is CameraMil camera)
+            {
+                //if (IsGrabbing)
+                //    StopGrab(name);
+
+                IsGrabbing = true;
+
+                camera.GrabOnce();
+                //Thread.Sleep(50);
+                return camera.GetGrabbedImage();
+            }
+            return null;
+        }
+
         public void StartGrab(CameraName name)
         {
             ClearScanImage();
@@ -87,6 +109,22 @@ namespace Jastech.Apps.Winform
             }
         }
 
+        public void StartGrabContinous(CameraName name)
+        {
+            ClearScanImage();
+
+            if (GetCamera(name) is CameraMil camera)
+            {
+                if (IsGrabbing)
+                    StopGrab(name);
+
+                IsGrabbing = true;
+
+                //camera.SetTriggerMode(TriggerMode.Software);
+                camera.SetOperationMode(TDIOperationMode.Area);
+                camera.GrabMulti(AppConfig.Instance().GrabCount);
+            }
+        }
         public void StopGrab(CameraName name)
         {
             IsGrabbing = false;
@@ -98,15 +136,28 @@ namespace Jastech.Apps.Winform
         private Camera GetCamera(CameraName name)
         {
             var cameraHandler = DeviceManager.Instance().CameraHandler;
-            Camera camera = cameraHandler.Get(name.ToString());
+            Camera camera = cameraHandler.Where(x => x.Name == name.ToString()).First();
 
             return camera;
         }
         
         public void SetOperationMode(CameraName name, TDIOperationMode operationMode)
         {
-            var camera = GetCamera(name);
-            camera.SetOperationMode(operationMode);
+            //var camera = GetCamera(name);
+
+            //if(camera is CameraMil milCamera)
+            //{
+            //    if (operationMode == TDIOperationMode.TDI)
+            //    {
+            //        milCamera.SetTriggerMode(TriggerMode.Hardware);
+            //    }
+            //    else
+            //    {
+            //        milCamera.SetTriggerMode(TriggerMode.Software);
+            //    }
+            //}
+          
+            //camera.SetOperationMode(operationMode);
         }
 
         public void ClearScanImage()
@@ -137,25 +188,36 @@ namespace Jastech.Apps.Winform
 
                 if (data != null)
                 {
-                    //kyj : 최적화 생각해봐야함...
-                    //kyj : Grabber 단에서 돌리면 더 빠를수도???
-                    Stopwatch sw = new Stopwatch();
-                    sw.Restart();
-
-                    Mat grabImage = MatHelper.ByteArrayToMat(data, camera.ImageWidth, camera.ImageHeight, 1);
-                    Mat rotatedMat = MatHelper.Transpose(grabImage);
-
-                    ScanImageList.Add(rotatedMat);
-                    grabImage.Dispose();
-
-                    sw.Stop();
-                    Console.WriteLine("Covert : " + sw.ElapsedMilliseconds.ToString() + "ms");
-
-                    if (ScanImageList.Count == AppConfig.Instance().GrabCount)
+                    if(CurrentOperationMode == TDIOperationMode.TDI)
                     {
-                        camera.Stop();
-                        IsGrabbing = false;
-                        TeachingImageGrabbed?.Invoke(GetMergeImage());
+                        //kyj : 최적화 생각해봐야함...
+                        //kyj : Grabber 단에서 돌리면 더 빠를수도???
+                        Stopwatch sw = new Stopwatch();
+                        sw.Restart();
+
+                        Mat grabImage = MatHelper.ByteArrayToMat(data, camera.ImageWidth, camera.ImageHeight, 1);
+                        Mat rotatedMat = MatHelper.Transpose(grabImage);
+
+                        ScanImageList.Add(rotatedMat);
+                        grabImage.Dispose();
+
+                        sw.Stop();
+                        Console.WriteLine("Covert : " + sw.ElapsedMilliseconds.ToString() + "ms");
+
+                        if (ScanImageList.Count == AppConfig.Instance().GrabCount)
+                        {
+                            camera.Stop();
+                            IsGrabbing = false;
+                            TeachingImageGrabbed?.Invoke(GetMergeImage());
+                        }
+                    }
+                    else
+                    {
+                        if(camera is CameraMil cameraMil)
+                        {
+                            Mat grabImage = MatHelper.ByteArrayToMat(data, camera.ImageWidth, cameraMil.TDIStages, 1);  // 256 : TDI CAM AREA SIZE
+                            TeachingLiveImageGrabbed?.Invoke(grabImage);
+                        }
                     }
                 }
             }

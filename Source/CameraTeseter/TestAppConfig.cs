@@ -1,4 +1,5 @@
 ﻿using Jastech.Apps.Structure.Data;
+using Jastech.Apps.Winform.Settings;
 using Jastech.Framework.Config;
 using Jastech.Framework.Device.Cameras;
 using Jastech.Framework.Device.Grabbers;
@@ -68,15 +69,24 @@ namespace CameraTeseter
                 camera1.MilSystemType = Jastech.Framework.Device.Grabbers.MilSystemType.Rapixo;
                 camera1.SystemNum = 0;
                 camera1.DigitizerNum = 0;
+                camera1.MilSystemType = MilSystemType.Rapixo;
                 camera1.TriggerMode = TriggerMode.Software;
+                //camera1.TriggerMode = TriggerMode.Hardware;
+                camera1.TriggerSource = (int)MilCxpTriggerSource.Cxp;
+                camera1.TriggerSignalType = MilTriggerSignalType.TL_Trigger;
+                camera1.TriggerIoSourceType = MILIoSourceType.AUX_IO0;
                 config.Add(camera1);
 
-                //var camera2 = new CameraMil(CameraName.LinscanMIL1.ToString(), 4640, 1024, ColorFormat.Gray, SensorType.Line);
-                //camera2.MilSystemType = Jastech.Framework.Device.Grabbers.MilSystemType.Rapixo;
-                //camera2.SystemNum = 0;
-                //camera2.DigitizerNum = 2;
-                //camera2.TriggerMode = TriggerMode.Software;
-                //config.Add(camera2);
+                var camera2 = new CameraMil(CameraName.LinscanMIL1.ToString(), 4640, 1024, ColorFormat.Gray, SensorType.Line);
+                camera2.MilSystemType = Jastech.Framework.Device.Grabbers.MilSystemType.Rapixo;
+                camera2.SystemNum = 0;
+                camera2.DigitizerNum = 2;
+                camera2.MilSystemType = MilSystemType.Rapixo;
+                camera2.TriggerMode = TriggerMode.Hardware;
+                camera2.TriggerSource = (int)MilCxpTriggerSource.Cxp;
+                camera2.TriggerSignalType = MilTriggerSignalType.TL_Trigger;
+                camera2.TriggerIoSourceType = MILIoSourceType.AUX_IO0;
+                config.Add(camera2);
             }
         }
 
