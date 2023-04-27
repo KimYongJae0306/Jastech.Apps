@@ -75,11 +75,11 @@ namespace Jastech.Apps.Winform.Settings
         {
             if (Operation.VirtualMode)
             {
-                var camera0 = new CameraVirtual(CameraName.LeftArea.ToString(), 4096, 1024, ColorFormat.Gray, SensorType.Area);
+                var camera0 = new CameraVirtual(CameraName.LinscanMIL0.ToString(), 4640, 1024, ColorFormat.Gray, SensorType.Area);
                 config.Add(camera0);
 
-                var camera1 = new CameraVirtual(CameraName.RightArea.ToString(), 4096, 1024, ColorFormat.Gray, SensorType.Area);
-                config.Add(camera1);
+                //var camera1 = new CameraVirtual(CameraName.LinscanMIL1.ToString(), 4096, 1024, ColorFormat.Gray, SensorType.Area);
+                //config.Add(camera1);
 
                 var motion = new VirtualMotion("VirtualMotion", 3);
                 config.Add(motion);

@@ -92,6 +92,12 @@
     <Compile Include="UI\Forms\AutoFocusTeachingForm.Designer.cs">
       <DependentUpon>AutoFocusTeachingForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="UI\Forms\OpticTeachingForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\Forms\OpticTeachingForm.Designer.cs">
+      <DependentUpon>OpticTeachingForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="UI\Forms\MotionSettingsForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -167,6 +173,9 @@
     </Compile>
     <EmbeddedResource Include="UI\Forms\AutoFocusTeachingForm.resx">
       <DependentUpon>AutoFocusTeachingForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\Forms\OpticTeachingForm.resx">
+      <DependentUpon>OpticTeachingForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\Forms\MotionSettingsForm.resx">
       <DependentUpon>MotionSettingsForm.cs</DependentUpon>

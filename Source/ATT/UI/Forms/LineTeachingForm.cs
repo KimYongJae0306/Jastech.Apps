@@ -45,9 +45,6 @@ namespace ATT.UI.Forms
         public string TitleCameraName { get; set; } = "";
 
         private CogTeachingDisplayControl Display { get; set; } = new CogTeachingDisplayControl();
-        private LiveViewPanel LiveDisplay { get; set; } = new LiveViewPanel();
-
-        private LinescanControl LinescanControl { get; set; } = new LinescanControl() { Dock = DockStyle.Fill };
 
         private AlignControl AlignControl { get; set; } = new AlignControl() { Dock = DockStyle.Fill };
 
@@ -97,9 +94,6 @@ namespace ATT.UI.Forms
                 BeginInvoke(callback, obj);
                 return;
             }
-
-            if (LinescanControl != null && isSetParamLinescanPage)
-                LinescanControl.UpdateUI();
         }
 
         private void LineTeachingForm_Load(object sender, EventArgs e)
@@ -162,7 +156,7 @@ namespace ATT.UI.Forms
 
         private void btnLinescan_Click(object sender, EventArgs e)
         {
-            SelectLinescan();
+            //SelectLinescan();
         }
 
         private void btnMark_Click(object sender, EventArgs e)
@@ -180,11 +174,6 @@ namespace ATT.UI.Forms
             SelectAkkon();
         }
 
-        public void UpdateSelectPage()
-        {
-            SelectAlign();
-        }
-
         private void ClearSelectedButton()
         {
             btnMark.ForeColor = Color.White;
@@ -193,25 +182,6 @@ namespace ATT.UI.Forms
             btnAutoAkkon.ForeColor = Color.White;
 
             pnlTeach.Controls.Clear();
-        }
-
-        bool isSetParamLinescanPage = false;
-        private void SelectLinescan()
-        {
-            if (ModelManager.Instance().CurrentModel == null || UnitName == "")
-                return;
-
-            ClearSelectedButton();
-
-            var tabList = SystemManager.Instance().GetTeachingData().GetTabList(UnitName);
-            //LinescanControl.SetParams(tabList);
-
-            var posData = SystemManager.Instance().GetTeachingData().GetUnit(UnitName);
-            pnlTeach.Controls.Add(LinescanControl);
-            //LinescanControl.SetParams(tabList);
-            btnLinescan.ForeColor = Color.Blue;
-
-            isSetParamLinescanPage = true;
         }
 
         private void SelectMark()
@@ -318,9 +288,6 @@ namespace ATT.UI.Forms
         private void btnMotionPopup_Click(object sender, EventArgs e)
         {
             MotionPopupForm motionPopupForm = new MotionPopupForm();
-            //motionPopupForm.SetAxisHandler(AppsMotionManager.Instance().GetAxisHandler(AxisHandlerName.Unit0));
-            //motionPopupForm.SetTeachingPosition(SystemManager.Instance().GetTeachingData().GetUnit(UnitName).TeachingPositions);
-            //motionPopupForm.SetLAFCtrl(AppsLAFManager.Instance().GetLAFCtrl(LAFName.Akkon));
             motionPopupForm.ShowDialog();
         }
 

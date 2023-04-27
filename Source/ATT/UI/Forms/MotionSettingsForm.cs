@@ -369,6 +369,10 @@ namespace ATT.UI.Forms
 
             string fileName = System.IO.Path.Combine(AppConfig.Instance().Path.Model, model.Name, InspModel.FileName);
             SystemManager.Instance().SaveModel(fileName, model);
+
+            MessageConfirmForm form = new MessageConfirmForm();
+            form.Message = "Save Motion Data Completed.";
+            form.ShowDialog();
         }
         #endregion
 
