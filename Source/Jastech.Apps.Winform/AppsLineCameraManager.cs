@@ -72,62 +72,6 @@ namespace Jastech.Apps.Winform
             }
         }
 
-        public void Release()
-        {
-            //var cameraCtrlHandler = DeviceManager.Instance().CameraHandler;
-
-            //if (cameraCtrlHandler == null)
-            //    return;
-
-
-            //List<CameraMil> milCameraList = new List<CameraMil>();
-
-            //foreach (var camera in cameraCtrlHandler)
-            //{
-            //    if (camera is CameraMil)
-            //    {
-            //        milCameraList.Add(camera as CameraMil);
-            //    }
-            //}
-
-            //if(milCameraList.Count > 0)
-            //{
-            //    var maxGrabberIndex = milCameraList.Select(x => x.SystemNum).Max();
-            //    List<CameraMil>[] sortCameraList = new List<CameraMil>[maxGrabberIndex + 1];
-            //    foreach (var milCam in milCameraList)
-            //    {
-            //        if (sortCameraList[milCam.SystemNum] == null)
-            //            sortCameraList[milCam.SystemNum] = new List<CameraMil>();
-
-            //        sortCameraList[milCam.SystemNum].Add(milCam);
-            //    }
-
-            //    foreach (var milCam in sortCameraList)
-            //    {
-            //        milCam.Sort((f1, f2) => f1.SystemNum.CompareTo(f2.DigitizerNum));
-            //    }
-            //}
-
-            //DigitizerNum
-            //var maxGrabberIndex = MilSystemList.Select(x => x.SystemNum).Max();
-
-            //List<MilSystem>[] sortMilSystemList = new List<MilSystem>[maxGrabberIndex + 1];
-
-            //// 참조형식으로 정렬
-            //foreach (var milSystem in MilSystemList)
-            //{
-            //    if (sortMilSystemList[milSystem.SystemNum] == null)
-            //        sortMilSystemList[milSystem.SystemNum] = new List<MilSystem>();
-
-            //    sortMilSystemList[milSystem.SystemNum].Add(milSystem);
-            //}
-            //foreach (var milSystem in sortMilSystemList)
-            //{
-            //    milSystem.Sort((f1, f2) => f1.SystemNum.CompareTo(f2.CxpIndex));
-            //}
-
-        }
-
         public void StartGrab(CameraName name)
         {
             ClearScanImage();

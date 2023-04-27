@@ -12,6 +12,7 @@ using Jastech.Framework.Winform;
 using Jastech.Apps.Winform.Settings;
 using Cognex.VisionPro;
 using Emgu.CV;
+using Jastech.Framework.Util.Helper;
 
 namespace CameraTeseter
 {
@@ -135,26 +136,11 @@ namespace CameraTeseter
 
                     Mat grabImage = MatHelper.ByteArrayToMat(data, camera.ImageWidth, camera.ImageHeight, 1);
                     Mat rotatedMat = MatHelper.Transpose(grabImage);
-
-                    //ScanImageList.Add(rotatedMat);
                     grabImage.Dispose();
 
                     sw.Stop();
-                    //Console.WriteLine("Covert : " + sw.ElapsedMilliseconds.ToString() + "ms");
 
-                    Console.WriteLine("Count : " + count.ToString());
-                    count++;
-                    sw.Restart();
                     TeachingImageGrabbed?.Invoke(camera.Name, rotatedMat);
-                    sw.Stop();
-                    Console.WriteLine("---------"  );
-                    // Console.WriteLine("Name : " + camera.Name.ToString() + "Image Drawing and Merge : " + sw.ElapsedMilliseconds.ToString() + "ms");
-                    //if (ScanImageList.Count == AppConfig.Instance().GrabCount)
-                    //{
-                    //    camera.Stop();
-                    //    IsGrabbing = false;
-                    //    TeachingImageGrabbed?.Invoke(camera.Name, GetMergeImage());
-                    //}
                 }
             }
         }
@@ -166,9 +152,16 @@ namespace CameraTeseter
             {
                 if (ScanImageList.Count > 0)
                 {
-                    Mat mergeImage = new Mat();
+                    Stopwatch sw = new Stopwatch();
+                    sw.Restart();
 
+                    Mat mergeImage = new Mat();
+                    
                     CvInvoke.HConcat(ScanImageList.ToArray(), mergeImage);
+
+                    sw.Stop();
+
+                    Logger.Debug(LogType.Imaging, "MerImage Image TactTime : " + sw.ElapsedMilliseconds.ToString() + "ms");
 
                     return mergeImage;
                 }
