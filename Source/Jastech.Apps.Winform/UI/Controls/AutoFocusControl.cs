@@ -95,7 +95,8 @@ namespace Jastech.Apps.Winform.UI.Controls
         private void lblTargetPositionZValue_Click(object sender, EventArgs e)
         {
             double targetPosition = SetLabelDoubleData(sender);
-            TeachingPositionList.Where(x => x.Name == TeachingPositionType.ToString()).First().SetTargetPosition(AxisName.Z, targetPosition);
+            //TeachingPositionList.Where(x => x.Name == TeachingPositionType.ToString()).First().SetTargetPosition(AxisName.Z, targetPosition);
+            AxisInfo.TargetPosition = targetPosition;
         }
 
          private void btnSetCurrentToTarget_Click(object sender, EventArgs e)
@@ -106,7 +107,8 @@ namespace Jastech.Apps.Winform.UI.Controls
         private void lblTeachCogValue_Click(object sender, EventArgs e)
         {
             int centerOfGravity = SetLabelIntegerData(sender);
-            TeachingPositionList.Where(x => x.Name == TeachingPositionType.ToString()).First().SetCenterOfGravity(AxisName.Z, centerOfGravity);
+            //TeachingPositionList.Where(x => x.Name == TeachingPositionType.ToString()).First().SetCenterOfGravity(AxisName.Z, centerOfGravity);
+            AxisInfo.CenterOfGravity = centerOfGravity;
         }
 
         private void btnCurrentToTeach_Click(object sender, EventArgs e)
@@ -183,12 +185,10 @@ namespace Jastech.Apps.Winform.UI.Controls
         {
             TeachingAxisInfo param = new TeachingAxisInfo();
 
-            param.TargetPosition = 0;
-            param.CenterOfGravity = 0;
+            param.TargetPosition = AxisInfo.TargetPosition;
+            param.CenterOfGravity = AxisInfo.CenterOfGravity;
 
-            AxisInfo = param.DeepCopy();
-
-            return AxisInfo;
+            return param.DeepCopy();
         }
     }
 }

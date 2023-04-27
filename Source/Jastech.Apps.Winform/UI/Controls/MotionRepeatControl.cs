@@ -18,8 +18,6 @@ namespace Jastech.Apps.Winform.UI.Controls
     {
         private Axis SelectedAxis { get; set; } = null;
 
-        public TeachingAxisInfo AxisInfo { get; set; } = null;
-        
         private AxisHandler AxisHandler { get; set; } = null;
 
         private Direction _direction = Direction.CW;

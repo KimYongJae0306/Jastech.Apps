@@ -80,7 +80,7 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         private ICogImage AlignControl_GetOriginImageHandler()
         {
-            return AppsTeachingUIManager.Instance().GetPrevCogImage();
+            return AppsTeachingUIManager.Instance().GetOriginCogImageBuffer(true);
         }
 
         public void SetParams(List<Tab> tabList)

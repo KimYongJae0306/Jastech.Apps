@@ -27,7 +27,6 @@ using System.Runtime.InteropServices;
 using Jastech.Framework.Imaging;
 using ATT.UI.Controls;
 using Emgu.CV;
-using Jastech.Framework.Macron.Akkon;
 using Emgu.CV.CvEnum;
 
 namespace ATT.UI.Forms
@@ -46,8 +45,6 @@ namespace ATT.UI.Forms
         public string TitleCameraName { get; set; } = "";
 
         private CogTeachingDisplayControl Display { get; set; } = new CogTeachingDisplayControl();
-
-        private LinescanControl LinescanControl { get; set; } = new LinescanControl() { Dock = DockStyle.Fill };
 
         private AlignControl AlignControl { get; set; } = new AlignControl() { Dock = DockStyle.Fill };
 
@@ -97,9 +94,6 @@ namespace ATT.UI.Forms
                 BeginInvoke(callback, obj);
                 return;
             }
-
-            if (LinescanControl != null && isSetParamLinescanPage)
-                LinescanControl.UpdateUI();
         }
 
         private void LineTeachingForm_Load(object sender, EventArgs e)
@@ -116,7 +110,7 @@ namespace ATT.UI.Forms
 
             AppsLineCameraManager.Instance().TeachingImageGrabbed += LineTeachingForm_TeachingImageGrabbed;
 
-            var image = AppsTeachingUIManager.Instance().GetPrevCogImage();
+            var image = AppsTeachingUIManager.Instance().GetOriginCogImageBuffer(true);
 
             if (image != null)
                 Display.SetImage(image);
@@ -135,13 +129,19 @@ namespace ATT.UI.Forms
             Display.DeleteEventHandler += Display_DeleteEventHandler;
             pnlDisplay.Controls.Add(Display);
 
+            //LiveDisplay = new LiveViewPanel();
+            //LiveDisplay.ImageSource = null;
+            //LiveDisplay.Dock = DockStyle.Fill;
+            //pnlDisplay.Controls.Add(LiveDisplay);
+            //LiveDisplay.Visible = true;
+
             // TeachingUIManager 참조
             AppsTeachingUIManager.Instance().SetDisplay(Display.GetDisplay());
         }
 
         private void Display_DeleteEventHandler(object sender, EventArgs e)
         {
-            if(pnlTeach.Controls.Count >0)
+            if(pnlTeach.Controls.Count > 0)
             {
                 if (pnlTeach.Controls[0] as MarkControl != null)
                     MarkControl.DrawROI();
@@ -156,7 +156,7 @@ namespace ATT.UI.Forms
 
         private void btnLinescan_Click(object sender, EventArgs e)
         {
-            SelectLinescan();
+            //SelectLinescan();
         }
 
         private void btnMark_Click(object sender, EventArgs e)
@@ -174,11 +174,6 @@ namespace ATT.UI.Forms
             SelectAkkon();
         }
 
-        public void UpdateSelectPage()
-        {
-            SelectAlign();
-        }
-
         private void ClearSelectedButton()
         {
             btnMark.ForeColor = Color.White;
@@ -187,25 +182,6 @@ namespace ATT.UI.Forms
             btnAutoAkkon.ForeColor = Color.White;
 
             pnlTeach.Controls.Clear();
-        }
-
-        bool isSetParamLinescanPage = false;
-        private void SelectLinescan()
-        {
-            if (ModelManager.Instance().CurrentModel == null || UnitName == "")
-                return;
-
-            ClearSelectedButton();
-
-            var tabList = SystemManager.Instance().GetTeachingData().GetTabList(UnitName);
-            //LinescanControl.SetParams(tabList);
-
-            var posData = SystemManager.Instance().GetTeachingData().GetUnit(UnitName);
-            pnlTeach.Controls.Add(LinescanControl);
-            //LinescanControl.SetParams(tabList);
-            btnLinescan.ForeColor = Color.Blue;
-
-            isSetParamLinescanPage = true;
         }
 
         private void SelectMark()
@@ -303,8 +279,8 @@ namespace ATT.UI.Forms
             {
                 ICogImage cogImage = CogImageHelper.Load(dlg.FileName);
                 Display.SetImage(cogImage);
-                AppsTeachingUIManager.Instance().SetImage(cogImage);
-                AppsTeachingUIManager.Instance().SetImage(new Mat(dlg.FileName, ImreadModes.Grayscale));
+                AppsTeachingUIManager.Instance().SetOrginCogImageBuffer(cogImage);
+                AppsTeachingUIManager.Instance().SetOriginMatImageBuffer(new Mat(dlg.FileName, ImreadModes.Grayscale));
                 //AlignControl.DrawROI();
             }
         }
@@ -312,9 +288,6 @@ namespace ATT.UI.Forms
         private void btnMotionPopup_Click(object sender, EventArgs e)
         {
             MotionPopupForm motionPopupForm = new MotionPopupForm();
-            //motionPopupForm.SetAxisHandler(AppsMotionManager.Instance().GetAxisHandler(AxisHandlerName.Unit0));
-            //motionPopupForm.SetTeachingPosition(SystemManager.Instance().GetTeachingData().GetUnit(UnitName).TeachingPositions);
-            //motionPopupForm.SetLAFCtrl(AppsLAFManager.Instance().GetLAFCtrl(LAFName.Akkon));
             motionPopupForm.ShowDialog();
         }
 

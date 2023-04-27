@@ -73,6 +73,8 @@
             this.lblSensorZ = new System.Windows.Forms.Label();
             this.lblMoveToTargetZ = new System.Windows.Forms.Label();
             this.lblCurrentToTargetenterOfGravityZ = new System.Windows.Forms.Label();
+            this.label20 = new System.Windows.Forms.Label();
+            this.lblOriginZ = new System.Windows.Forms.Label();
             this.tlpMotionStatus = new System.Windows.Forms.TableLayoutPanel();
             this.label9 = new System.Windows.Forms.Label();
             this.label8 = new System.Windows.Forms.Label();
@@ -101,6 +103,9 @@
             this.label3 = new System.Windows.Forms.Label();
             this.lblOffsetX = new System.Windows.Forms.Label();
             this.lblOffsetY = new System.Windows.Forms.Label();
+            this.lblOrigin = new System.Windows.Forms.Label();
+            this.lblOriginX = new System.Windows.Forms.Label();
+            this.lblOriginY = new System.Windows.Forms.Label();
             this.pnlTeachingPositionList = new System.Windows.Forms.Panel();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.btnMoveToTeachingPosition = new System.Windows.Forms.Button();
@@ -122,11 +127,7 @@
             this.tableLayoutPanel10 = new System.Windows.Forms.TableLayoutPanel();
             this.lblApplyImage = new System.Windows.Forms.Label();
             this.lblSave = new System.Windows.Forms.Label();
-            this.label20 = new System.Windows.Forms.Label();
-            this.lblOriginZ = new System.Windows.Forms.Label();
-            this.lblOrigin = new System.Windows.Forms.Label();
-            this.lblOriginX = new System.Windows.Forms.Label();
-            this.lblOriginY = new System.Windows.Forms.Label();
+            this.pnlJog = new System.Windows.Forms.Panel();
             this.tlpMotionSettings.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             this.tlpMotionFunction.SuspendLayout();
@@ -153,6 +154,7 @@
             this.tableLayoutPanel11.SuspendLayout();
             this.panel8.SuspendLayout();
             this.tableLayoutPanel10.SuspendLayout();
+            this.pnlJog.SuspendLayout();
             this.SuspendLayout();
             // 
             // tlpMotionSettings
@@ -229,8 +231,8 @@
             // 
             this.tlpJogFunction.ColumnCount = 1;
             this.tlpJogFunction.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tlpJogFunction.Controls.Add(this.pnlJog, 0, 1);
             this.tlpJogFunction.Controls.Add(this.tlpJogOption, 0, 0);
-            this.tlpJogFunction.Controls.Add(this.tlpJog, 0, 1);
             this.tlpJogFunction.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tlpJogFunction.Location = new System.Drawing.Point(97, 0);
             this.tlpJogFunction.Margin = new System.Windows.Forms.Padding(0);
@@ -467,11 +469,11 @@
             this.tlpJog.Controls.Add(this.pnlMotionJog, 0, 0);
             this.tlpJog.Controls.Add(this.tableLayoutPanel5, 1, 0);
             this.tlpJog.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tlpJog.Location = new System.Drawing.Point(3, 143);
+            this.tlpJog.Location = new System.Drawing.Point(0, 0);
             this.tlpJog.Name = "tlpJog";
             this.tlpJog.RowCount = 1;
             this.tlpJog.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tlpJog.Size = new System.Drawing.Size(384, 204);
+            this.tlpJog.Size = new System.Drawing.Size(382, 202);
             this.tlpJog.TabIndex = 21;
             // 
             // pnlMotionJog
@@ -480,7 +482,7 @@
             this.pnlMotionJog.Location = new System.Drawing.Point(0, 0);
             this.pnlMotionJog.Margin = new System.Windows.Forms.Padding(0);
             this.pnlMotionJog.Name = "pnlMotionJog";
-            this.pnlMotionJog.Size = new System.Drawing.Size(192, 204);
+            this.pnlMotionJog.Size = new System.Drawing.Size(191, 202);
             this.pnlMotionJog.TabIndex = 0;
             // 
             // tableLayoutPanel5
@@ -491,21 +493,21 @@
             this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
             this.tableLayoutPanel5.Controls.Add(this.pnlLAFJog, 1, 0);
             this.tableLayoutPanel5.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel5.Location = new System.Drawing.Point(192, 0);
+            this.tableLayoutPanel5.Location = new System.Drawing.Point(191, 0);
             this.tableLayoutPanel5.Margin = new System.Windows.Forms.Padding(0);
             this.tableLayoutPanel5.Name = "tableLayoutPanel5";
             this.tableLayoutPanel5.RowCount = 1;
             this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel5.Size = new System.Drawing.Size(192, 204);
+            this.tableLayoutPanel5.Size = new System.Drawing.Size(191, 202);
             this.tableLayoutPanel5.TabIndex = 1;
             // 
             // pnlLAFJog
             // 
             this.pnlLAFJog.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pnlLAFJog.Location = new System.Drawing.Point(64, 0);
+            this.pnlLAFJog.Location = new System.Drawing.Point(63, 0);
             this.pnlLAFJog.Margin = new System.Windows.Forms.Padding(0);
             this.pnlLAFJog.Name = "pnlLAFJog";
-            this.pnlLAFJog.Size = new System.Drawing.Size(64, 204);
+            this.pnlLAFJog.Size = new System.Drawing.Size(63, 202);
             this.pnlLAFJog.TabIndex = 0;
             // 
             // lblJog
@@ -880,6 +882,35 @@
             this.lblCurrentToTargetenterOfGravityZ.Text = "Set";
             this.lblCurrentToTargetenterOfGravityZ.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.lblCurrentToTargetenterOfGravityZ.Click += new System.EventHandler(this.lblCurrentToTargetenterOfGravityZ_Click);
+            // 
+            // label20
+            // 
+            this.label20.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.label20.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.label20.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
+            this.label20.ForeColor = System.Drawing.Color.White;
+            this.label20.Location = new System.Drawing.Point(1, 249);
+            this.label20.Margin = new System.Windows.Forms.Padding(1);
+            this.label20.Name = "label20";
+            this.label20.Size = new System.Drawing.Size(93, 29);
+            this.label20.TabIndex = 11;
+            this.label20.Text = "Origin";
+            this.label20.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // lblOriginZ
+            // 
+            this.lblOriginZ.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblOriginZ.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblOriginZ.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
+            this.lblOriginZ.ForeColor = System.Drawing.Color.White;
+            this.lblOriginZ.Location = new System.Drawing.Point(96, 249);
+            this.lblOriginZ.Margin = new System.Windows.Forms.Padding(1);
+            this.lblOriginZ.Name = "lblOriginZ";
+            this.lblOriginZ.Size = new System.Drawing.Size(94, 29);
+            this.lblOriginZ.TabIndex = 11;
+            this.lblOriginZ.Text = "Origin";
+            this.lblOriginZ.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblOriginZ.Click += new System.EventHandler(this.lblOriginZ_Click);
             // 
             // tlpMotionStatus
             // 
@@ -1342,6 +1373,50 @@
             this.lblOffsetY.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.lblOffsetY.Click += new System.EventHandler(this.lblOffsetY_Click);
             // 
+            // lblOrigin
+            // 
+            this.lblOrigin.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblOrigin.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblOrigin.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
+            this.lblOrigin.ForeColor = System.Drawing.Color.White;
+            this.lblOrigin.Location = new System.Drawing.Point(1, 187);
+            this.lblOrigin.Margin = new System.Windows.Forms.Padding(1);
+            this.lblOrigin.Name = "lblOrigin";
+            this.lblOrigin.Size = new System.Drawing.Size(93, 29);
+            this.lblOrigin.TabIndex = 11;
+            this.lblOrigin.Text = "Origin";
+            this.lblOrigin.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // lblOriginX
+            // 
+            this.lblOriginX.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblOriginX.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblOriginX.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
+            this.lblOriginX.ForeColor = System.Drawing.Color.White;
+            this.lblOriginX.Location = new System.Drawing.Point(96, 187);
+            this.lblOriginX.Margin = new System.Windows.Forms.Padding(1);
+            this.lblOriginX.Name = "lblOriginX";
+            this.lblOriginX.Size = new System.Drawing.Size(93, 29);
+            this.lblOriginX.TabIndex = 11;
+            this.lblOriginX.Text = "Origin";
+            this.lblOriginX.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblOriginX.Click += new System.EventHandler(this.lblOriginX_Click);
+            // 
+            // lblOriginY
+            // 
+            this.lblOriginY.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblOriginY.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblOriginY.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
+            this.lblOriginY.ForeColor = System.Drawing.Color.White;
+            this.lblOriginY.Location = new System.Drawing.Point(191, 187);
+            this.lblOriginY.Margin = new System.Windows.Forms.Padding(1);
+            this.lblOriginY.Name = "lblOriginY";
+            this.lblOriginY.Size = new System.Drawing.Size(94, 29);
+            this.lblOriginY.TabIndex = 11;
+            this.lblOriginY.Text = "Origin";
+            this.lblOriginY.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblOriginY.Click += new System.EventHandler(this.lblOriginY_Click);
+            // 
             // pnlTeachingPositionList
             // 
             this.pnlTeachingPositionList.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -1630,78 +1705,15 @@
             this.lblSave.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.lblSave.Click += new System.EventHandler(this.lblSave_Click);
             // 
-            // label20
+            // pnlJog
             // 
-            this.label20.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.label20.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.label20.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
-            this.label20.ForeColor = System.Drawing.Color.White;
-            this.label20.Location = new System.Drawing.Point(1, 249);
-            this.label20.Margin = new System.Windows.Forms.Padding(1);
-            this.label20.Name = "label20";
-            this.label20.Size = new System.Drawing.Size(93, 29);
-            this.label20.TabIndex = 11;
-            this.label20.Text = "Origin";
-            this.label20.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // lblOriginZ
-            // 
-            this.lblOriginZ.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lblOriginZ.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblOriginZ.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
-            this.lblOriginZ.ForeColor = System.Drawing.Color.White;
-            this.lblOriginZ.Location = new System.Drawing.Point(96, 249);
-            this.lblOriginZ.Margin = new System.Windows.Forms.Padding(1);
-            this.lblOriginZ.Name = "lblOriginZ";
-            this.lblOriginZ.Size = new System.Drawing.Size(94, 29);
-            this.lblOriginZ.TabIndex = 11;
-            this.lblOriginZ.Text = "Origin";
-            this.lblOriginZ.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.lblOriginZ.Click += new System.EventHandler(this.lblOriginZ_Click);
-            // 
-            // lblOrigin
-            // 
-            this.lblOrigin.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lblOrigin.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblOrigin.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
-            this.lblOrigin.ForeColor = System.Drawing.Color.White;
-            this.lblOrigin.Location = new System.Drawing.Point(1, 187);
-            this.lblOrigin.Margin = new System.Windows.Forms.Padding(1);
-            this.lblOrigin.Name = "lblOrigin";
-            this.lblOrigin.Size = new System.Drawing.Size(93, 29);
-            this.lblOrigin.TabIndex = 11;
-            this.lblOrigin.Text = "Origin";
-            this.lblOrigin.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // lblOriginX
-            // 
-            this.lblOriginX.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lblOriginX.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblOriginX.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
-            this.lblOriginX.ForeColor = System.Drawing.Color.White;
-            this.lblOriginX.Location = new System.Drawing.Point(96, 187);
-            this.lblOriginX.Margin = new System.Windows.Forms.Padding(1);
-            this.lblOriginX.Name = "lblOriginX";
-            this.lblOriginX.Size = new System.Drawing.Size(93, 29);
-            this.lblOriginX.TabIndex = 11;
-            this.lblOriginX.Text = "Origin";
-            this.lblOriginX.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.lblOriginX.Click += new System.EventHandler(this.lblOriginX_Click);
-            // 
-            // lblOriginY
-            // 
-            this.lblOriginY.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lblOriginY.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblOriginY.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
-            this.lblOriginY.ForeColor = System.Drawing.Color.White;
-            this.lblOriginY.Location = new System.Drawing.Point(191, 187);
-            this.lblOriginY.Margin = new System.Windows.Forms.Padding(1);
-            this.lblOriginY.Name = "lblOriginY";
-            this.lblOriginY.Size = new System.Drawing.Size(94, 29);
-            this.lblOriginY.TabIndex = 11;
-            this.lblOriginY.Text = "Origin";
-            this.lblOriginY.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.lblOriginY.Click += new System.EventHandler(this.lblOriginY_Click);
+            this.pnlJog.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.pnlJog.Controls.Add(this.tlpJog);
+            this.pnlJog.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pnlJog.Location = new System.Drawing.Point(3, 143);
+            this.pnlJog.Name = "pnlJog";
+            this.pnlJog.Size = new System.Drawing.Size(384, 204);
+            this.pnlJog.TabIndex = 0;
             // 
             // MotionSettingsForm
             // 
@@ -1742,6 +1754,7 @@
             this.tableLayoutPanel11.ResumeLayout(false);
             this.panel8.ResumeLayout(false);
             this.tableLayoutPanel10.ResumeLayout(false);
+            this.pnlJog.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -1847,5 +1860,6 @@
         private System.Windows.Forms.Label lblOrigin;
         private System.Windows.Forms.Label lblOriginX;
         private System.Windows.Forms.Label lblOriginY;
+        private System.Windows.Forms.Panel pnlJog;
     }
 }

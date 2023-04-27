@@ -2,12 +2,15 @@
 using ATT.UI.Pages;
 using Jastech.Apps.Structure;
 using Jastech.Apps.Structure.Data;
+using Jastech.Apps.Winform;
 using Jastech.Apps.Winform.Core;
 using Jastech.Apps.Winform.Settings;
 using Jastech.Apps.Winform.UI.Forms;
 using Jastech.Framework.Config;
 using Jastech.Framework.Macron.Akkon;
+using Jastech.Framework.Matrox;
 using Jastech.Framework.Structure;
+using Jastech.Framework.Winform;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -50,6 +53,7 @@ namespace ATT
         {
             int akkonThreadCount = AppConfig.Instance().AkkonThreadCount;
             MacronAkkon.ATT_InitSystem(this.Handle, akkonThreadCount, 0xF8);
+            //MacronAkkon.ATT_InitSystem(this.Handle, akkonThreadCount, 0xF1);
 
             AddControls();
             SelectMainPage();
@@ -176,6 +180,15 @@ namespace ATT
                 TeachingData.Dispose();
                 TeachingData.Initialize(currentModel);
             }
+        }
+
+        private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            AppsLAFManager.Instance().Release();
+           
+            DeviceManager.Instance().Release();
+
+            MilHelper.FreeApplication();
         }
     }
 }

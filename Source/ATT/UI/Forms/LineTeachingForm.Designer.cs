@@ -45,7 +45,6 @@
             this.pnlTeachingItem = new System.Windows.Forms.Panel();
             this.tlpTeachingItem = new System.Windows.Forms.TableLayoutPanel();
             this.btnAutoAkkon = new System.Windows.Forms.Button();
-            this.btnLinescan = new System.Windows.Forms.Button();
             this.btnAkkon = new System.Windows.Forms.Button();
             this.btnAlign = new System.Windows.Forms.Button();
             this.btnMark = new System.Windows.Forms.Button();
@@ -283,7 +282,6 @@
             this.tlpTeachingItem.ColumnCount = 1;
             this.tlpTeachingItem.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tlpTeachingItem.Controls.Add(this.btnAutoAkkon, 0, 4);
-            this.tlpTeachingItem.Controls.Add(this.btnLinescan, 0, 0);
             this.tlpTeachingItem.Controls.Add(this.btnAkkon, 0, 3);
             this.tlpTeachingItem.Controls.Add(this.btnAlign, 0, 2);
             this.tlpTeachingItem.Controls.Add(this.btnMark, 0, 1);
@@ -319,21 +317,6 @@
             this.btnAutoAkkon.Text = "A.Akkon";
             this.btnAutoAkkon.UseVisualStyleBackColor = false;
             this.btnAutoAkkon.Click += new System.EventHandler(this.btnAutoAkkon_Click);
-            // 
-            // btnLinescan
-            // 
-            this.btnLinescan.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(34)))), ((int)(((byte)(34)))), ((int)(((byte)(34)))));
-            this.btnLinescan.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.btnLinescan.Font = new System.Drawing.Font("맑은 고딕", 20F, System.Drawing.FontStyle.Bold);
-            this.btnLinescan.ForeColor = System.Drawing.Color.White;
-            this.btnLinescan.Location = new System.Drawing.Point(2, 2);
-            this.btnLinescan.Margin = new System.Windows.Forms.Padding(2);
-            this.btnLinescan.Name = "btnLinescan";
-            this.btnLinescan.Size = new System.Drawing.Size(140, 96);
-            this.btnLinescan.TabIndex = 19;
-            this.btnLinescan.Text = "Linescan";
-            this.btnLinescan.UseVisualStyleBackColor = false;
-            this.btnLinescan.Click += new System.EventHandler(this.btnLinescan_Click);
             // 
             // btnAkkon
             // 
@@ -448,7 +431,6 @@
         private System.Windows.Forms.Panel pnlTeachingItem;
         private System.Windows.Forms.TableLayoutPanel tlpTeachingItem;
         private System.Windows.Forms.Button btnSave;
-        private System.Windows.Forms.Button btnLinescan;
         private System.Windows.Forms.Button btnAlign;
         private System.Windows.Forms.Button btnAkkon;
         private System.Windows.Forms.Button btnMark;
