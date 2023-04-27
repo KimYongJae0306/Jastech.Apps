@@ -101,13 +101,6 @@ namespace Jastech.Apps.Structure.VisionTool
         {
 
             var marcon = akkonParam.MacronAkkonParam;
-            //if (marcon.SliceHeight != mat.Height)
-            //{
-            //    string message = string.Format("Diff Height => Akkon Param Slice Height : {0}, Image Height : {1}", akkonParam.MacronAkkonParam.SliceHeight, mat.Height);
-            //    Logger.Dedug(LogType.Inspection, message);
-            //    return new List<AkkonResult>();
-            //}
-            //test
 
             marcon.SliceHeight = mat.Height;
 
@@ -122,7 +115,6 @@ namespace Jastech.Apps.Structure.VisionTool
                 AkkonAlgorithm.InitPrepareInspect();
                 int overlapCount = AkkonAlgorithm.PrepareInspect(0, tabNo);
                 marcon.InspOption.Overlap = overlapCount;
-                marcon.InspParam.PanelInfo = 0;
                 
                 AkkonAlgorithm.SetAkkonParam(0, tabNo, ref marcon);
                 AkkonAlgorithm.EnableInspFlag();
@@ -133,7 +125,7 @@ namespace Jastech.Apps.Structure.VisionTool
             }
             else
             {
-                Logger.Dedug(LogType.Inspection, "ATT is not Initalized");
+                Logger.Debug(LogType.Inspection, "ATT is not Initalized");
                 return new List<AkkonResult>();
             }
         }
@@ -152,7 +144,6 @@ namespace Jastech.Apps.Structure.VisionTool
                 AkkonAlgorithm.InitPrepareInspect();
                 int overlapCount = AkkonAlgorithm.PrepareInspect(0, tabNo);
                 marcon.InspOption.Overlap = overlapCount;
-                marcon.InspParam.PanelInfo = 0;
 
                 AkkonAlgorithm.SetAkkonParam(0, tabNo, ref marcon);
                 AkkonAlgorithm.EnableInspFlag();
@@ -161,39 +152,6 @@ namespace Jastech.Apps.Structure.VisionTool
 
                 return results;
             }
-            //var marcon = akkonParam.MacronAkkonParam;
-            //if (marcon.SliceHeight != mat.Height)
-            //{
-            //    string message = string.Format("Diff Height => Akkon Param Slice Height : {0}, Image Height : {1}", akkonParam.MacronAkkonParam.SliceHeight, mat.Height);
-            //    Logger.Dedug(LogType.Inspection, message);
-            //    return new List<AkkonResult>();
-            //}
-            //if (AkkonAlgorithm.CreateDllBuffer(marcon))
-            //{
-
-            //    AkkonAlgorithm.CreateImageBuffer(0, 0, mat.Width, mat.Height, marcon.InspOption.InspResizeRatio);
-
-            //    var akkonRoiList = akkonParam.GetAkkonROIList();
-
-            //    AkkonAlgorithm.SetConvertROIData(akkonRoiList, 0, tabNo, new PointF(mat.Width / 2, mat.Height / 2), new PointF(0, 0), 0);
-
-            //    AkkonAlgorithm.InitPrepareInspect();
-            //    int overlapCount = AkkonAlgorithm.PrepareInspect(0, tabNo);
-            //    marcon.InspOption.Overlap = overlapCount;
-            //    marcon.InspParam.PanelInfo = 0;
-
-            //    AkkonAlgorithm.SetAkkonParam(0, tabNo, ref marcon);
-            //    AkkonAlgorithm.EnableInspFlag();
-
-            //    var results = AkkonAlgorithm.Inspect(0, tabNo, mat);
-
-            //    return results;
-            //}
-            //else
-            //{
-            //    Logger.Dedug(LogType.Inspection, "ATT is not Initalized");
-            //    return new List<AkkonResult>();
-            //}
             return null;
         }
 

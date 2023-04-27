@@ -116,7 +116,7 @@ namespace ATT.UI.Forms
 
             AppsLineCameraManager.Instance().TeachingImageGrabbed += LineTeachingForm_TeachingImageGrabbed;
 
-            var image = AppsTeachingUIManager.Instance().GetPrevCogImage();
+            var image = AppsTeachingUIManager.Instance().GetOriginCogImageBuffer(true);
 
             if (image != null)
                 Display.SetImage(image);
@@ -309,8 +309,8 @@ namespace ATT.UI.Forms
             {
                 ICogImage cogImage = CogImageHelper.Load(dlg.FileName);
                 Display.SetImage(cogImage);
-                AppsTeachingUIManager.Instance().SetImage(cogImage);
-                AppsTeachingUIManager.Instance().SetImage(new Mat(dlg.FileName, ImreadModes.Grayscale));
+                AppsTeachingUIManager.Instance().SetOrginCogImageBuffer(cogImage);
+                AppsTeachingUIManager.Instance().SetOriginMatImageBuffer(new Mat(dlg.FileName, ImreadModes.Grayscale));
                 //AlignControl.DrawROI();
             }
         }

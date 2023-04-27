@@ -1,5 +1,6 @@
 ﻿using Cognex.VisionPro;
 using Emgu.CV;
+using Jastech.Framework.Imaging.Helper;
 using Jastech.Framework.Winform.VisionPro.Controls;
 using System;
 using System.Collections.Generic;
@@ -18,9 +19,17 @@ namespace Jastech.Apps.Winform
         #region 속성
         private CogDisplayControl TeachingDisplay { get; set; } = null;
 
-        public ICogImage PrevImage { get; set; } = null;
+        private ICogImage OrginCogImageBuffer { get; set; } = null;
 
-        public Mat PrevMatImage { get; set; } = null;
+        private Mat OriginMatImageBuffer { get; set; } = null;
+
+        private ICogImage BinaryCogImageBuffer { get; set; } = null;
+
+        private ICogImage ResultCogImageBuffer { get; set; } = null;
+
+        //public Mat PrevMatImage { get; private set; } = null;
+
+        //public ICogImage PrevResultImage { get; private set; } = null;
         #endregion
 
         #region 이벤트
@@ -53,36 +62,89 @@ namespace Jastech.Apps.Winform
             TeachingDisplay = display;
         }
 
-        public void SetImage(ICogImage image)
+        public ICogImage GetOriginCogImageBuffer(bool isDeepCopy)
         {
-            PrevImage = image.CopyBase(CogImageCopyModeConstants.CopyPixels);
-            TeachingDisplay?.SetImage(image);
-        }
-
-        public void SetImage(Mat image)
-        {
-            if(PrevMatImage != null)
+            if (isDeepCopy)
             {
-                PrevMatImage.Dispose();
-                PrevMatImage = null;
+                if (OrginCogImageBuffer == null)
+                    return null;
+
+                return OrginCogImageBuffer.CopyBase(CogImageCopyModeConstants.CopyPixels);
             }
-            PrevMatImage = image;
+
+            return OrginCogImageBuffer;
         }
 
-        public ICogImage GetPrevCogImage()
+        public void SetOrginCogImageBuffer(ICogImage cogImage)
         {
-            if (PrevImage == null)
-                return null;
+            OrginCogImageBuffer = null;
+            BinaryCogImageBuffer = null;
+            ResultCogImageBuffer = null;
+            OrginCogImageBuffer = cogImage.CopyBase(CogImageCopyModeConstants.CopyPixels);
 
-            return PrevImage.CopyBase(CogImageCopyModeConstants.CopyPixels);
+            if (OriginMatImageBuffer != null)
+            {
+                OriginMatImageBuffer.Dispose();
+                OriginMatImageBuffer = null;
+            }
+
+            TeachingDisplay?.SetImage(cogImage);
         }
 
-        public Mat GetPrevMatImage()
+        public void SetOriginMatImageBuffer(Mat mat)
         {
-            if (PrevMatImage == null)
-                return null;
+            if(OriginMatImageBuffer != null)
+            {
+                OriginMatImageBuffer.Dispose();
+                OriginMatImageBuffer = null;
+            }
+            OriginMatImageBuffer = mat;
+        }
 
-            return PrevMatImage;
+        public Mat GetOriginMatImageBuffer(bool isDeepCopy)
+        {
+            if(isDeepCopy)
+                return MatHelper.DeepCopy(OriginMatImageBuffer);
+
+            return OriginMatImageBuffer;
+        }
+
+        public void SetBinaryCogImageBuffer(ICogImage cogImage)
+        {
+            BinaryCogImageBuffer = cogImage;
+            TeachingDisplay?.SetImage(BinaryCogImageBuffer);
+        }
+
+        public ICogImage GetBinaryCogImage(bool isDeepCopy)
+        {
+            if (isDeepCopy)
+            {
+                if (BinaryCogImageBuffer == null)
+                    return null;
+
+                return BinaryCogImageBuffer.CopyBase(CogImageCopyModeConstants.CopyPixels);
+            }
+
+            return BinaryCogImageBuffer;
+        }
+
+        public void SetResultCogImage(ICogImage cogImage)
+        {
+            ResultCogImageBuffer = cogImage;
+            TeachingDisplay?.SetImage(ResultCogImageBuffer);
+        }
+
+        public ICogImage GetResultCogImage(bool isDeepCopy)
+        {
+            if (isDeepCopy)
+            {
+                if (ResultCogImageBuffer == null)
+                    return null;
+
+                return ResultCogImageBuffer.CopyBase(CogImageCopyModeConstants.CopyPixels);
+            }
+
+            return ResultCogImageBuffer;
         }
         #endregion
 
