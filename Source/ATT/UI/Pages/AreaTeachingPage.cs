@@ -122,7 +122,7 @@ namespace ATT.UI.Pages
             {
                 ICogImage cogImage = CogImageHelper.Load(dlg.FileName);
                 Display.SetImage(cogImage);
-                AppsTeachingUIManager.Instance().SetImage(cogImage);
+                AppsTeachingUIManager.Instance().SetOrginCogImageBuffer(cogImage);
                 PreAlignControl.DrawROI();
             }
         }

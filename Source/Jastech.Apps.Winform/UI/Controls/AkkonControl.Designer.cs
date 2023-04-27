@@ -85,17 +85,19 @@
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.lblNext = new System.Windows.Forms.Label();
             this.lblPrev = new System.Windows.Forms.Label();
+            this.lblTest = new System.Windows.Forms.Label();
             this.cbxTabList = new System.Windows.Forms.ComboBox();
             this.lblAddROI = new System.Windows.Forms.Label();
             this.lblInspection = new System.Windows.Forms.Label();
             this.lblROIJog = new System.Windows.Forms.Label();
             this.lblParameter = new System.Windows.Forms.Label();
+            this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.label2 = new System.Windows.Forms.Label();
-            this.label1 = new System.Windows.Forms.Label();
-            this.lblTest = new System.Windows.Forms.Label();
             this.lblResult = new System.Windows.Forms.Label();
             this.lblGroup = new System.Windows.Forms.Label();
+            this.panel3 = new System.Windows.Forms.Panel();
+            this.lblResultImage = new System.Windows.Forms.Label();
+            this.lblOrginalImage = new System.Windows.Forms.Label();
             this.pnlAuto.SuspendLayout();
             this.tlpAkkon.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
@@ -108,7 +110,9 @@
             this.pnlROIData.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvAkkonROI)).BeginInit();
             this.tableLayoutPanel2.SuspendLayout();
+            this.tableLayoutPanel3.SuspendLayout();
             this.panel1.SuspendLayout();
+            this.panel3.SuspendLayout();
             this.SuspendLayout();
             // 
             // pnlParam
@@ -230,7 +234,7 @@
             this.tlpAkkon.Controls.Add(this.tableLayoutPanel2, 0, 1);
             this.tlpAkkon.Controls.Add(this.pnlParam, 0, 4);
             this.tlpAkkon.Controls.Add(this.lblParameter, 0, 0);
-            this.tlpAkkon.Controls.Add(this.panel1, 0, 2);
+            this.tlpAkkon.Controls.Add(this.tableLayoutPanel3, 0, 2);
             this.tlpAkkon.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tlpAkkon.Location = new System.Drawing.Point(0, 0);
             this.tlpAkkon.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
@@ -382,8 +386,8 @@
             // 
             // pnlTeachingMode
             // 
-            this.pnlTeachingMode.Controls.Add(this.pnlAuto);
             this.pnlTeachingMode.Controls.Add(this.pnlManual);
+            this.pnlTeachingMode.Controls.Add(this.pnlAuto);
             this.pnlTeachingMode.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pnlTeachingMode.Location = new System.Drawing.Point(0, 95);
             this.pnlTeachingMode.Margin = new System.Windows.Forms.Padding(0);
@@ -408,10 +412,11 @@
             this.pnlManual.Controls.Add(this.lblROIHeight);
             this.pnlManual.Controls.Add(this.lblCloneVertical);
             this.pnlManual.Controls.Add(this.lblClone);
+            this.pnlManual.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pnlManual.Location = new System.Drawing.Point(0, 0);
             this.pnlManual.Name = "pnlManual";
-            this.pnlManual.Size = new System.Drawing.Size(367, 131);
-            this.pnlManual.TabIndex = 0;
+            this.pnlManual.Size = new System.Drawing.Size(500, 273);
+            this.pnlManual.TabIndex = 4;
             // 
             // lblSort
             // 
@@ -426,7 +431,6 @@
             this.lblSort.TabIndex = 149;
             this.lblSort.Text = "Sort";
             this.lblSort.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.lblSort.Click += new System.EventHandler(this.lblSort_Click);
             // 
             // lblLeadCount
             // 
@@ -455,7 +459,6 @@
             this.lblDelete.TabIndex = 148;
             this.lblDelete.Text = "Delete";
             this.lblDelete.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.lblDelete.Click += new System.EventHandler(this.lblDelete_Click);
             // 
             // lblLeadPitch
             // 
@@ -484,7 +487,6 @@
             this.lblRegister.TabIndex = 147;
             this.lblRegister.Text = "ROI Register";
             this.lblRegister.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.lblRegister.Click += new System.EventHandler(this.lblRegister_Click);
             // 
             // lblLeadCountValue
             // 
@@ -499,7 +501,6 @@
             this.lblLeadCountValue.TabIndex = 19;
             this.lblLeadCountValue.Text = "0";
             this.lblLeadCountValue.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.lblLeadCountValue.Click += new System.EventHandler(this.lblLeadCountValue_Click);
             // 
             // lblCloneExecute
             // 
@@ -514,7 +515,6 @@
             this.lblCloneExecute.TabIndex = 146;
             this.lblCloneExecute.Text = "Execute";
             this.lblCloneExecute.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.lblCloneExecute.Click += new System.EventHandler(this.lblCloneExecute_Click);
             // 
             // lblROIWidth
             // 
@@ -543,7 +543,6 @@
             this.lblROIHeightValue.TabIndex = 17;
             this.lblROIHeightValue.Text = "0";
             this.lblROIHeightValue.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.lblROIHeightValue.Click += new System.EventHandler(this.lblROIHeightValue_Click);
             // 
             // lblROIWidthValue
             // 
@@ -558,7 +557,6 @@
             this.lblROIWidthValue.TabIndex = 16;
             this.lblROIWidthValue.Text = "0";
             this.lblROIWidthValue.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.lblROIWidthValue.Click += new System.EventHandler(this.lblROIWidthValue_Click);
             // 
             // lblCloneHorizontal
             // 
@@ -573,7 +571,6 @@
             this.lblCloneHorizontal.Size = new System.Drawing.Size(60, 40);
             this.lblCloneHorizontal.TabIndex = 145;
             this.lblCloneHorizontal.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.lblCloneHorizontal.Click += new System.EventHandler(this.lblCloneHorizontal_Click);
             // 
             // lblLeadPitchValue
             // 
@@ -588,7 +585,6 @@
             this.lblLeadPitchValue.TabIndex = 18;
             this.lblLeadPitchValue.Text = "0";
             this.lblLeadPitchValue.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.lblLeadPitchValue.Click += new System.EventHandler(this.lblLeadPitchValue_Click);
             // 
             // lblROIHeight
             // 
@@ -617,7 +613,6 @@
             this.lblCloneVertical.Size = new System.Drawing.Size(60, 40);
             this.lblCloneVertical.TabIndex = 145;
             this.lblCloneVertical.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.lblCloneVertical.Click += new System.EventHandler(this.lblCloneVertical_Click);
             // 
             // lblClone
             // 
@@ -836,7 +831,7 @@
             // 
             // tableLayoutPanel2
             // 
-            this.tableLayoutPanel2.ColumnCount = 7;
+            this.tableLayoutPanel2.ColumnCount = 8;
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 200F));
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 50F));
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 50F));
@@ -844,8 +839,10 @@
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 100F));
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 100F));
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 100F));
             this.tableLayoutPanel2.Controls.Add(this.lblNext, 0, 0);
             this.tableLayoutPanel2.Controls.Add(this.lblPrev, 0, 0);
+            this.tableLayoutPanel2.Controls.Add(this.lblTest, 7, 0);
             this.tableLayoutPanel2.Controls.Add(this.cbxTabList, 0, 0);
             this.tableLayoutPanel2.Controls.Add(this.lblAddROI, 4, 0);
             this.tableLayoutPanel2.Controls.Add(this.lblInspection, 3, 0);
@@ -882,6 +879,19 @@
             this.lblPrev.Size = new System.Drawing.Size(50, 50);
             this.lblPrev.TabIndex = 26;
             this.lblPrev.Click += new System.EventHandler(this.lblPrev_Click);
+            // 
+            // lblTest
+            // 
+            this.lblTest.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblTest.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblTest.Location = new System.Drawing.Point(865, 0);
+            this.lblTest.Margin = new System.Windows.Forms.Padding(0);
+            this.lblTest.Name = "lblTest";
+            this.lblTest.Size = new System.Drawing.Size(100, 50);
+            this.lblTest.TabIndex = 296;
+            this.lblTest.Text = "CropTest";
+            this.lblTest.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblTest.Click += new System.EventHandler(this.lblTest_Click);
             // 
             // cbxTabList
             // 
@@ -954,63 +964,41 @@
             this.lblParameter.Text = "Parameter";
             this.lblParameter.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
+            // tableLayoutPanel3
+            // 
+            this.tableLayoutPanel3.ColumnCount = 3;
+            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 400F));
+            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 400F));
+            this.tableLayoutPanel3.Controls.Add(this.panel1, 0, 0);
+            this.tableLayoutPanel3.Controls.Add(this.panel3, 2, 0);
+            this.tableLayoutPanel3.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel3.Location = new System.Drawing.Point(0, 82);
+            this.tableLayoutPanel3.Margin = new System.Windows.Forms.Padding(0);
+            this.tableLayoutPanel3.Name = "tableLayoutPanel3";
+            this.tableLayoutPanel3.RowCount = 1;
+            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel3.Size = new System.Drawing.Size(965, 60);
+            this.tableLayoutPanel3.TabIndex = 295;
+            // 
             // panel1
             // 
-            this.panel1.Controls.Add(this.label2);
-            this.panel1.Controls.Add(this.label1);
-            this.panel1.Controls.Add(this.lblTest);
             this.panel1.Controls.Add(this.lblResult);
             this.panel1.Controls.Add(this.lblGroup);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel1.Location = new System.Drawing.Point(0, 82);
+            this.panel1.Location = new System.Drawing.Point(0, 0);
             this.panel1.Margin = new System.Windows.Forms.Padding(0);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(965, 60);
+            this.panel1.Size = new System.Drawing.Size(400, 60);
             this.panel1.TabIndex = 295;
-            // 
-            // label2
-            // 
-            this.label2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.label2.Location = new System.Drawing.Point(772, 10);
-            this.label2.Margin = new System.Windows.Forms.Padding(0);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(72, 40);
-            this.label2.TabIndex = 298;
-            this.label2.Text = "1.0";
-            this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.label2.Click += new System.EventHandler(this.label2_Click);
-            // 
-            // label1
-            // 
-            this.label1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.label1.Location = new System.Drawing.Point(700, 10);
-            this.label1.Margin = new System.Windows.Forms.Padding(0);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(72, 40);
-            this.label1.TabIndex = 297;
-            this.label1.Text = "0.6";
-            this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.label1.Click += new System.EventHandler(this.label1_Click);
-            // 
-            // lblTest
-            // 
-            this.lblTest.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lblTest.Location = new System.Drawing.Point(500, 10);
-            this.lblTest.Margin = new System.Windows.Forms.Padding(0);
-            this.lblTest.Name = "lblTest";
-            this.lblTest.Size = new System.Drawing.Size(200, 40);
-            this.lblTest.TabIndex = 296;
-            this.lblTest.Text = "CropTest";
-            this.lblTest.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.lblTest.Click += new System.EventHandler(this.lblTest_Click);
             // 
             // lblResult
             // 
             this.lblResult.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lblResult.Location = new System.Drawing.Point(223, 10);
+            this.lblResult.Location = new System.Drawing.Point(112, 10);
             this.lblResult.Margin = new System.Windows.Forms.Padding(0);
             this.lblResult.Name = "lblResult";
-            this.lblResult.Size = new System.Drawing.Size(200, 40);
+            this.lblResult.Size = new System.Drawing.Size(102, 40);
             this.lblResult.TabIndex = 295;
             this.lblResult.Text = "Result";
             this.lblResult.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -1022,11 +1010,46 @@
             this.lblGroup.Location = new System.Drawing.Point(6, 10);
             this.lblGroup.Margin = new System.Windows.Forms.Padding(0);
             this.lblGroup.Name = "lblGroup";
-            this.lblGroup.Size = new System.Drawing.Size(200, 40);
+            this.lblGroup.Size = new System.Drawing.Size(102, 40);
             this.lblGroup.TabIndex = 295;
             this.lblGroup.Text = "Group";
             this.lblGroup.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.lblGroup.Click += new System.EventHandler(this.lblGroup_Click);
+            // 
+            // panel3
+            // 
+            this.panel3.Controls.Add(this.lblResultImage);
+            this.panel3.Controls.Add(this.lblOrginalImage);
+            this.panel3.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panel3.Location = new System.Drawing.Point(565, 0);
+            this.panel3.Margin = new System.Windows.Forms.Padding(0);
+            this.panel3.Name = "panel3";
+            this.panel3.Size = new System.Drawing.Size(400, 60);
+            this.panel3.TabIndex = 296;
+            // 
+            // lblResultImage
+            // 
+            this.lblResultImage.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblResultImage.Location = new System.Drawing.Point(226, 10);
+            this.lblResultImage.Margin = new System.Windows.Forms.Padding(0);
+            this.lblResultImage.Name = "lblResultImage";
+            this.lblResultImage.Size = new System.Drawing.Size(162, 40);
+            this.lblResultImage.TabIndex = 295;
+            this.lblResultImage.Text = "Result Image";
+            this.lblResultImage.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblResultImage.Click += new System.EventHandler(this.lblResultImage_Click);
+            // 
+            // lblOrginalImage
+            // 
+            this.lblOrginalImage.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblOrginalImage.Location = new System.Drawing.Point(58, 10);
+            this.lblOrginalImage.Margin = new System.Windows.Forms.Padding(0);
+            this.lblOrginalImage.Name = "lblOrginalImage";
+            this.lblOrginalImage.Size = new System.Drawing.Size(168, 40);
+            this.lblOrginalImage.TabIndex = 295;
+            this.lblOrginalImage.Text = "Origin Image";
+            this.lblOrginalImage.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblOrginalImage.Click += new System.EventHandler(this.lblOrginalImage_Click);
             // 
             // AkkonControl
             // 
@@ -1052,7 +1075,9 @@
             this.pnlROIData.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgvAkkonROI)).EndInit();
             this.tableLayoutPanel2.ResumeLayout(false);
+            this.tableLayoutPanel3.ResumeLayout(false);
             this.panel1.ResumeLayout(false);
+            this.panel3.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -1075,26 +1100,10 @@
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
         private System.Windows.Forms.Panel pnlROIData;
         private System.Windows.Forms.Label lblResult;
-        private System.Windows.Forms.Label lblROIWidth;
-        private System.Windows.Forms.Label lblROIWidthValue;
-        private System.Windows.Forms.Label lblROIHeight;
-        private System.Windows.Forms.Label lblROIHeightValue;
-        private System.Windows.Forms.Label lblLeadCount;
-        private System.Windows.Forms.Label lblLeadCountValue;
-        private System.Windows.Forms.Label lblLeadPitch;
-        private System.Windows.Forms.Label lblLeadPitchValue;
-        private System.Windows.Forms.Label lblClone;
         private System.Windows.Forms.Panel panel2;
-        private System.Windows.Forms.Label lblCloneVertical;
-        private System.Windows.Forms.Label lblCloneHorizontal;
-        private System.Windows.Forms.Label lblCloneExecute;
-        private System.Windows.Forms.Label lblRegister;
-        private System.Windows.Forms.Label lblDelete;
         private System.Windows.Forms.Label lblROIJog;
-        private System.Windows.Forms.Label lblSort;
         private System.Windows.Forms.TableLayoutPanel tlpnlGroup;
         private System.Windows.Forms.Panel pnlTeachingMode;
-        private System.Windows.Forms.Panel pnlManual;
         private System.Windows.Forms.Panel panel4;
         private System.Windows.Forms.ComboBox cbxGroupNumber;
         private System.Windows.Forms.Label lblGroupCount;
@@ -1119,7 +1128,25 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn colLeftBottom;
         private System.Windows.Forms.DataGridViewTextBoxColumn colRightBottom;
         private System.Windows.Forms.Label lblTest;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel3;
+        private System.Windows.Forms.Panel pnlManual;
+        private System.Windows.Forms.Label lblSort;
+        private System.Windows.Forms.Label lblLeadCount;
+        private System.Windows.Forms.Label lblDelete;
+        private System.Windows.Forms.Label lblLeadPitch;
+        private System.Windows.Forms.Label lblRegister;
+        private System.Windows.Forms.Label lblLeadCountValue;
+        private System.Windows.Forms.Label lblCloneExecute;
+        private System.Windows.Forms.Label lblROIWidth;
+        private System.Windows.Forms.Label lblROIHeightValue;
+        private System.Windows.Forms.Label lblROIWidthValue;
+        private System.Windows.Forms.Label lblCloneHorizontal;
+        private System.Windows.Forms.Label lblLeadPitchValue;
+        private System.Windows.Forms.Label lblROIHeight;
+        private System.Windows.Forms.Label lblCloneVertical;
+        private System.Windows.Forms.Label lblClone;
+        private System.Windows.Forms.Panel panel3;
+        private System.Windows.Forms.Label lblResultImage;
+        private System.Windows.Forms.Label lblOrginalImage;
     }
 }

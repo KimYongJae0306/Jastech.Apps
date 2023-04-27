@@ -404,7 +404,7 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         private void lblCloneExecute_Click(object sender, EventArgs e)
         {
-            var image = AppsTeachingUIManager.Instance().GetPrevCogImage();
+            var image = AppsTeachingUIManager.Instance().GetOriginCogImageBuffer(true);
             if (image == null)
                 return;
 
@@ -578,7 +578,7 @@ namespace Jastech.Apps.Winform.UI.Controls
             if (display.GetImage() == null)
                 return;
             //_cogROI.Width = 23000;
-            display.SetImage(AppsTeachingUIManager.Instance().GetPrevCogImage());
+            display.SetImage(AppsTeachingUIManager.Instance().GetOriginCogImageBuffer(true));
         }
 
         private void lblThreshold_Click(object sender, EventArgs e)
@@ -596,7 +596,7 @@ namespace Jastech.Apps.Winform.UI.Controls
                 CogThresholdCollection.Clear();
                 CogThresholdCollection.Add(_cogROI);
 
-                teachingDisplay.SetImage(AppsTeachingUIManager.Instance().GetPrevCogImage());
+                teachingDisplay.SetImage(AppsTeachingUIManager.Instance().GetOriginCogImageBuffer(true));
 
                 teachingDisplay.DeleteInInteractiveGraphics("tool");
                 teachingDisplay.SetInteractiveGraphics("tool", CogThresholdCollection);
@@ -618,7 +618,7 @@ namespace Jastech.Apps.Winform.UI.Controls
                     var cropImage = CogImageHelper.CropImage(cogImage, roi);
                     var binaryImage = CogImageHelper.Threshold(cropImage as CogImage8Grey, threshold, 255);
                     var convertImage = CogImageHelper.CogCopyRegionTool(cogImage, binaryImage, roi, true);
-                    display.SetTempImage(convertImage as CogImage8Grey);
+                    AppsTeachingUIManager.Instance().SetBinaryCogImageBuffer(convertImage as CogImage8Grey);
                 }
             }
             
