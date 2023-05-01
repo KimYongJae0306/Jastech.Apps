@@ -5,7 +5,7 @@
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{9F797C8E-6546-4D38-AAF4-AFAE9792BD51}</ProjectGuid>
-    <OutputType>WinExe</OutputType>
+    <OutputType>Exe</OutputType>
     <RootNamespace>KYJ_TEST</RootNamespace>
     <AssemblyName>KYJ_TEST</AssemblyName>
     <TargetFrameworkVersion>v4.8.1</TargetFrameworkVersion>
@@ -51,6 +51,9 @@
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
     <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Cognex.VisionPro.Core, Version=71.2.0.0, Culture=neutral, PublicKeyToken=ef0f902af9dee505, processorArchitecture=AMD64" />
@@ -113,6 +116,10 @@
     <ProjectReference Include="..\..\..\Jastech.Core\src\Jastech.Framework.Util\Jastech.Framework.Util.csproj">
       <Project>{07EF86CC-AC6A-454E-B12B-EB63454A1DCA}</Project>
       <Name>Jastech.Framework.Util</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Jastech.Core\src\Jastech.Framework.Winform\Jastech.Framework.Winform.csproj">
+      <Project>{D46C7263-535A-4BF9-AD14-5183EDE0A984}</Project>
+      <Name>Jastech.Framework.Winform</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
