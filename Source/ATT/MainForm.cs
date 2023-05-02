@@ -190,5 +190,11 @@ namespace ATT
 
             MilHelper.FreeApplication();
         }
+
+        private void picLogo_Click(object sender, EventArgs e)
+        {
+            ATTInspRunner tt = new ATTInspRunner();
+            tt.SeqRun();
+        }
     }
 }

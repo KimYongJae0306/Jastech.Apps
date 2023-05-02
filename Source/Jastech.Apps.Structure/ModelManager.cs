@@ -56,6 +56,14 @@ namespace Jastech.Apps.Structure
         {
             CurrentModelChangedEvent?.Invoke(CurrentModel);
         }
+
         #endregion
+    }
+
+    public enum UnitName
+    {
+        Unit0,
+        Unit1,
+        Unit2,
     }
 }

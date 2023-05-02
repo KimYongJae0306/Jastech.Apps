@@ -212,7 +212,7 @@ namespace Jastech.Apps.Winform.UI.Controls
             }
 
             ICogImage cogImage = display.GetImage();
-            CogPatternMatchingResult result = Algorithm.RunPreAlign(cogImage, currentParam);
+            CogPatternMatchingResult result = Algorithm.RunPatternMatch(cogImage, currentParam);
 
             UpdateGridResult(result);
 

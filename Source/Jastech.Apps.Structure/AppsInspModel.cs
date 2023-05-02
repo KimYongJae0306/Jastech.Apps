@@ -31,7 +31,12 @@ namespace Jastech.Apps.Structure
 
         public Unit GetUnit(string name)
         {
-            return UnitList.Select(x => x.Name == name) as Unit;
+            return UnitList.Where(x => x.Name == name).First();
+        }
+
+        public Unit GetUnit(UnitName name)
+        {
+            return UnitList.Where(x => x.Name == name.ToString()).First();
         }
 
         public void AddUnit(Unit unit)

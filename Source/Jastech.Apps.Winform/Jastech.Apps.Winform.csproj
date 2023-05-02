@@ -139,6 +139,12 @@
     <Compile Include="UI\Controls\AutoFocusControl.Designer.cs">
       <DependentUpon>AutoFocusControl.cs</DependentUpon>
     </Compile>
+    <Compile Include="UI\Controls\LogControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UI\Controls\LogControl.Designer.cs">
+      <DependentUpon>LogControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="UI\Controls\MarkControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -234,6 +240,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UI\Controls\AutoFocusControl.resx">
       <DependentUpon>AutoFocusControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\Controls\LogControl.resx">
+      <DependentUpon>LogControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\Controls\MarkControl.resx">
       <DependentUpon>MarkControl.cs</DependentUpon>

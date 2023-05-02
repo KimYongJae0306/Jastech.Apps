@@ -30,11 +30,11 @@ namespace ATT.Core
         {
             AppsInspModel appInspModel = inspModel as AppsInspModel;
 
-            for (int unitIndex = 0; unitIndex < appInspModel.UnitCount; unitIndex++)
+            foreach (UnitName unitName in Enum.GetValues(typeof(UnitName)))
             {
                 Unit unit = new Unit();
 
-                unit.Name = unitIndex.ToString(); // 임시 -> Apps에서 변경
+                unit.Name = unitName.ToString(); // 임시 -> Apps에서 변경
 
                 // LineScan 조명 Parameter 생성
                 unit.LightParams.AddRange(CreateLightParameter());
@@ -44,7 +44,7 @@ namespace ATT.Core
                     Tab tab = new Tab();
                     tab.Name = tabIndex.ToString(); // 임시
                     tab.Index = tabIndex;
-                    tab.StageIndex = unitIndex;
+                    tab.StageIndex = (int)unitName;
 
                     // Tab Fpc Mark 등록
                     foreach (MarkName type in Enum.GetValues(typeof(MarkName)))
@@ -100,19 +100,96 @@ namespace ATT.Core
                         group.Index = cnt;
                         tab.AkkonParam.SetAkkonGroup(group.Index, group);
                     }
-                    
+
                     unit.AddTab(tab);
                 }
 
                 AddTeachingPosition(unit);
                 appInspModel.AddUnit(unit);
             }
+            for (int unitIndex = 0; unitIndex < appInspModel.UnitCount; unitIndex++)
+            {
+                //Unit unit = new Unit();
+
+                //unit.Name = unitIndex.ToString(); // 임시 -> Apps에서 변경
+
+                //// LineScan 조명 Parameter 생성
+                //unit.LightParams.AddRange(CreateLightParameter());
+
+                //for (int tabIndex = 0; tabIndex < appInspModel.TabCount; tabIndex++)
+                //{
+                //    Tab tab = new Tab();
+                //    tab.Name = tabIndex.ToString(); // 임시
+                //    tab.Index = tabIndex;
+                //    tab.StageIndex = unitIndex;
+
+                //    // Tab Fpc Mark 등록
+                //    foreach (MarkName type in Enum.GetValues(typeof(MarkName)))
+                //    {
+                //        MarkParam leftMark = new MarkParam();
+                //        leftMark.Name = type;
+                //        leftMark.InspParam.Name = MarkDirecton.Left.ToString() + type.ToString();
+                //        leftMark.Direction = MarkDirecton.Left;
+
+                //        MarkParam RightMark = new MarkParam();
+                //        RightMark.Name = type;
+                //        RightMark.InspParam.Name = MarkDirecton.Right.ToString() + type.ToString();
+                //        RightMark.Direction = MarkDirecton.Right;
+
+                //        tab.FpcMarkParamList.Add(leftMark);
+                //        tab.FpcMarkParamList.Add(RightMark);
+                //    }
+                //    // Tab Panel Mark 등록
+                //    foreach (MarkName type in Enum.GetValues(typeof(MarkName)))
+                //    {
+                //        MarkParam leftMark = new MarkParam();
+                //        leftMark.Name = type;
+                //        leftMark.InspParam.Name = MarkDirecton.Left.ToString() + type.ToString();
+                //        leftMark.Direction = MarkDirecton.Left;
+
+                //        MarkParam RightMark = new MarkParam();
+                //        RightMark.Name = type;
+                //        RightMark.InspParam.Name = MarkDirecton.Right.ToString() + type.ToString();
+                //        RightMark.Direction = MarkDirecton.Right;
+
+                //        tab.PanelMarkParamList.Add(leftMark);
+                //        tab.PanelMarkParamList.Add(RightMark);
+                //    }
+
+                //    // Tab Align 등록
+                //    foreach (ATTTabAlignName type in Enum.GetValues(typeof(ATTTabAlignName)))
+                //    {
+                //        AlignParam align = new AlignParam();
+                //        align.Name = type.ToString();
+                //        tab.AlignParamList.Add(align);
+                //    }
+
+                //    tab.AkkonParam = new AkkonParam();
+
+                //    tab.AkkonParam.MacronAkkonParam.StageCount = appInspModel.UnitCount;
+                //    tab.AkkonParam.MacronAkkonParam.TabCount = appInspModel.TabCount;
+                //    tab.AkkonParam.MacronAkkonParam.SetDefaultParameter();
+
+                //    int cnt = 0;
+                //    foreach (var item in tab.AkkonParam.GroupList)
+                //    {
+                //        MacronAkkonGroup group = new MacronAkkonGroup();
+                //        group.Index = cnt;
+                //        tab.AkkonParam.SetAkkonGroup(group.Index, group);
+                //    }
+                    
+                //    unit.AddTab(tab);
+                //}
+
+                //AddTeachingPosition(unit);
+                //appInspModel.AddUnit(unit);
+            }
         }
 
 
         private void AddTeachingPosition(Unit unit)
         {
-            var currentAxisHandler = AppsMotionManager.Instance().GetAxisHandler(AxisHandlerName.Unit0);
+            var currentAxisHandler = AppsMotionManager.Instance().GetAxisHandler(AxisHandlerName.Handler0);
 
             TeachingPosition t1 = new TeachingPosition();
             t1.CreateTeachingPosition(TeachingPositionType.Standby.ToString(), "Standby", currentAxisHandler);

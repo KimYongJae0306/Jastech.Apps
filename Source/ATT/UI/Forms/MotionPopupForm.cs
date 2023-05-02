@@ -127,7 +127,7 @@ namespace ATT.UI.Forms
 
         private void UpdateData()
         {
-            var axisHandler = AppsMotionManager.Instance().GetAxisHandler(AxisHandlerName.Unit0);
+            var axisHandler = AppsMotionManager.Instance().GetAxisHandler(AxisHandlerName.Handler0);
             SetAxisHandler(axisHandler);
 
             string unitName = "0";// TeachingPositionListControl.UnitName;
@@ -337,7 +337,7 @@ namespace ATT.UI.Forms
             UpdateCurrentData();
 
             // Save AxisHandler
-            var axisHandler = AppsMotionManager.Instance().GetAxisHandler(AxisHandlerName.Unit0);
+            var axisHandler = AppsMotionManager.Instance().GetAxisHandler(AxisHandlerName.Handler0);
             AppsMotionManager.Instance().Save(axisHandler);
 
             // Save Model

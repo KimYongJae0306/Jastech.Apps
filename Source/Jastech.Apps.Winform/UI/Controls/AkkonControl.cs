@@ -1372,7 +1372,7 @@ namespace Jastech.Apps.Winform.UI.Controls
             Mat cropImage = MatHelper.CropRoi(matImage, rect);
             
             macron.SliceHeight = cropImage.Height;
-            var tabResults = Algorithm.RunCropAkkon(cropImage, new PointF(rect.X, rect.Y), tab.AkkonParam, tab.StageIndex, tab.Index);
+            var tabResults = Algorithm.RunCropAkkon(cropImage, new PointF(rect.X, rect.Y), tab.AkkonParam, tab.Index);
 
             cropSW.Stop();
             Console.WriteLine("Crop : " + cropSW.ElapsedMilliseconds.ToString());
