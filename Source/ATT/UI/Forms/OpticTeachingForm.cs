@@ -35,9 +35,12 @@ namespace ATT.UI.Forms
     public partial class OpticTeachingForm : Form
     {
         private Color _selectedColor = new Color();
+
         private Color _nonSelectedColor = new Color();
 
-        private CogDisplayControl CogDisplayControl { get; set; } = new CogDisplayControl() { Dock = DockStyle.Fill };
+        private DrawBoxControl DrawBoxControl { get; set; } = new DrawBoxControl() { Dock = DockStyle.Fill };
+
+        private PixelValueGraphControl PixelValueGraphControl { get; set; } = new PixelValueGraphControl() { Dock = DockStyle.Fill };
 
         private AutoFocusControl AutoFocusControl { get; set; } = new AutoFocusControl() { Dock = DockStyle.Fill };
 
@@ -73,7 +76,9 @@ namespace ATT.UI.Forms
 
         private void AddControl()
         {
-            pnlDisplay.Controls.Add(CogDisplayControl);
+            DrawBoxControl.FigureDataDelegateEventHanlder += DrawBoxControl_FigureDataDelegateEventHanlder;
+            pnlDisplay.Controls.Add(DrawBoxControl);
+            pnlHistogram.Controls.Add(PixelValueGraphControl);
 
             string unitName = "0";// TeachingPositionListControl.UnitName;
             var posData = SystemManager.Instance().GetTeachingData().GetUnit(unitName).TeachingPositions;
@@ -93,6 +98,11 @@ namespace ATT.UI.Forms
 
             pnlLAFJog.Controls.Add(LAFJogControl);
             LAFJogControl.SetSelectedLafCtrl(LAFCtrl);
+        }
+
+        private void DrawBoxControl_FigureDataDelegateEventHanlder(byte[] data)
+        {
+            PixelValueGraphControl.SetData(data);
         }
 
         private void lblAreaMode_Click(object sender, EventArgs e)
@@ -422,22 +432,7 @@ namespace ATT.UI.Forms
             if (image == null)
                 return;
 
-            int size = image.Width * image.Height * image.NumberOfChannels;
-            byte[] dataArray = new byte[size];
-            Marshal.Copy(image.DataPointer, dataArray, 0, size);
-
-            ColorFormat format = image.NumberOfChannels == 1 ? ColorFormat.Gray : ColorFormat.RGB24;
-
-            var cogImage = CogImageHelper.CovertImage(dataArray, image.Width, image.Height, format);
-            CogDisplayControl.SetImage(cogImage);
-
-            if (pictureBox1.Image != null)
-            {
-                pictureBox1.Image.Dispose();
-                pictureBox1.Image = null;
-            }
-            pictureBox1.Image = image.ToBitmap();
- 
+            DrawBoxControl.SetImage(image.ToBitmap());
         }
 
         private void btnGrabStart_Click(object sender, EventArgs e)

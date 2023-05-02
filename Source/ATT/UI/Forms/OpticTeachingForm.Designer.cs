@@ -120,7 +120,6 @@
             this.pnlDisplay = new System.Windows.Forms.Panel();
             this.pnlHistogram = new System.Windows.Forms.Panel();
             this.AreaTimer = new System.Windows.Forms.Timer(this.components);
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.tlpJog.SuspendLayout();
             this.tlpJogFunction.SuspendLayout();
             this.pnlJog.SuspendLayout();
@@ -158,8 +157,6 @@
             this.tlpLoadImage.SuspendLayout();
             this.pnlTeach.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
-            this.pnlHistogram.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
             // tlpJog
@@ -741,7 +738,7 @@
             this.trbDimmingLevelValue.Margin = new System.Windows.Forms.Padding(0);
             this.trbDimmingLevelValue.Maximum = 255;
             this.trbDimmingLevelValue.Name = "trbDimmingLevelValue";
-            this.trbDimmingLevelValue.Size = new System.Drawing.Size(98, 23);
+            this.trbDimmingLevelValue.Size = new System.Drawing.Size(98, 45);
             this.trbDimmingLevelValue.TabIndex = 208;
             this.trbDimmingLevelValue.TickStyle = System.Windows.Forms.TickStyle.None;
             this.trbDimmingLevelValue.Scroll += new System.EventHandler(this.trbDimmingLevelValue_Scroll);
@@ -1535,7 +1532,6 @@
             // 
             // pnlHistogram
             // 
-            this.pnlHistogram.Controls.Add(this.pictureBox1);
             this.pnlHistogram.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pnlHistogram.Location = new System.Drawing.Point(0, 602);
             this.pnlHistogram.Margin = new System.Windows.Forms.Padding(0);
@@ -1546,17 +1542,6 @@
             // AreaTimer
             // 
             this.AreaTimer.Tick += new System.EventHandler(this.AreaTimer_Tick);
-            // 
-            // pictureBox1
-            // 
-            this.pictureBox1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pictureBox1.Location = new System.Drawing.Point(0, 0);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(620, 259);
-            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.pictureBox1.TabIndex = 0;
-            this.pictureBox1.TabStop = false;
-            this.pictureBox1.Paint += new System.Windows.Forms.PaintEventHandler(this.pictureBox1_Paint);
             // 
             // OpticTeachingForm
             // 
@@ -1611,8 +1596,6 @@
             this.tlpLoadImage.ResumeLayout(false);
             this.pnlTeach.ResumeLayout(false);
             this.tableLayoutPanel1.ResumeLayout(false);
-            this.pnlHistogram.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -1709,6 +1692,5 @@
         private System.Windows.Forms.Panel pnlTeach;
         private System.Windows.Forms.Panel pnlJog;
         private System.Windows.Forms.Timer AreaTimer;
-        private System.Windows.Forms.PictureBox pictureBox1;
     }
 }
