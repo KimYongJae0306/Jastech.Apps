@@ -82,7 +82,7 @@ namespace ATT.UI.Forms
 
             string unitName = "0";// TeachingPositionListControl.UnitName;
             var posData = SystemManager.Instance().GetTeachingData().GetUnit(unitName).TeachingPositions;
-            AxisHandler axisHandler = AppsMotionManager.Instance().GetAxisHandler(AxisHandlerName.Unit0);
+            AxisHandler axisHandler = AppsMotionManager.Instance().GetAxisHandler(AxisHandlerName.Handler0);
             var lafCtrl = AppsLAFManager.Instance().GetLAFCtrl(LAFName.Akkon);
 
             pnlAutoFocus.Controls.Add(AutoFocusControl);
@@ -165,7 +165,7 @@ namespace ATT.UI.Forms
 
         private void UpdateData()
         {
-            var axisHandler = AppsMotionManager.Instance().GetAxisHandler(AxisHandlerName.Unit0);
+            var axisHandler = AppsMotionManager.Instance().GetAxisHandler(AxisHandlerName.Handler0);
             SetAxisHandler(axisHandler);
 
             //var posData = SystemManager.Instance().GetTeachingData().GetUnit(UnitName).TeachingPositions[(int)TeachingPositionType];

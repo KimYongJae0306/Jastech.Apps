@@ -78,11 +78,15 @@ namespace Jastech.Apps.Structure.VisionTool
             return alignResult;
         }
 
-        public CogPatternMatchingResult RunPreAlign(ICogImage image, VisionProPatternMatchingParam param)
+        public CogPatternMatchingResult RunPatternMatch(ICogImage image, VisionProPatternMatchingParam param)
         {
             if (image == null || param == null)
                 return null;
+
             CogPatternMatchingResult matchingResult = PatternAlgorithm.Run(image, param);
+
+            if (matchingResult == null)
+                return null;
 
             if (matchingResult.MatchPosList.Count <= 0)
                 matchingResult.Result = Result.Fail;
@@ -99,6 +103,8 @@ namespace Jastech.Apps.Structure.VisionTool
 
         public List<AkkonResult> RunAkkon(Mat mat, AkkonParam akkonParam, int stageNo, int tabNo)
         {
+            if (mat == null)
+                return null;
 
             var marcon = akkonParam.MacronAkkonParam;
 
@@ -130,7 +136,7 @@ namespace Jastech.Apps.Structure.VisionTool
             }
         }
 
-        public List<AkkonResult> RunCropAkkon(Mat mat, PointF cropOffset, AkkonParam akkonParam, int stageNo, int tabNo)
+        public List<AkkonResult> RunCropAkkon(Mat mat, PointF cropOffset, AkkonParam akkonParam, int tabNo)
         {
             var marcon = akkonParam.MacronAkkonParam;
             if (AkkonAlgorithm.CreateDllBuffer(marcon))

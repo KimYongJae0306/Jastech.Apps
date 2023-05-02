@@ -1,4 +1,5 @@
-﻿using Jastech.Apps.Structure.Parameters;
+﻿using Emgu.CV.Flann;
+using Jastech.Apps.Structure.Parameters;
 using Jastech.Framework.Device.LightCtrls;
 using Jastech.Framework.Imaging.VisionPro.VisionAlgorithms.Parameters;
 using Jastech.Framework.Macron.Akkon.Parameters;
@@ -62,6 +63,11 @@ namespace Jastech.Apps.Structure.Data
         public Tab GetTab(int index)
         {
             return TabList.Where(x => x.Index == index).First();
+        }
+
+        public Tab GetTab(string tabName)
+        {
+            return TabList.Where(x => x.Name == tabName).First();
         }
 
         public void AddTab(Tab tab)

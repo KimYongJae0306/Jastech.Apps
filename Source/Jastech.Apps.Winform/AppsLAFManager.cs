@@ -96,6 +96,12 @@ namespace Jastech.Apps.Winform
             }
         }
 
+        public void AutoFocusOnOff(string name, bool isOn)
+        {
+            if (DeviceManager.Instance().LAFCtrlHandler.Get(name) is NuriOneLAFCtrl laf)
+                laf.SetAutoFocusOnOFF(isOn);
+        }
+
         public void DataReceived(string name, byte[] data)
         {
             if (DeviceManager.Instance().LAFCtrlHandler.Get(name) is NuriOneLAFCtrl laf)

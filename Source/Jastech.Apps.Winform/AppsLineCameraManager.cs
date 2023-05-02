@@ -37,13 +37,13 @@ namespace Jastech.Apps.Winform
         #endregion
 
         #region 이벤트
-        public event TeachingImageGrabbedDelete TeachingImageGrabbed;
+        public event TeachingImageGrabbedDelegate TeachingImageGrabbed;
 
-        public event TeachingImageGrabbedDelete TeachingLiveImageGrabbed;
+        public event TeachingImageGrabbedDelegate TeachingLiveImageGrabbed;
         #endregion
 
         #region 델리게이트
-        public delegate void TeachingImageGrabbedDelete(Mat image);
+        public delegate void TeachingImageGrabbedDelegate(Mat image);
         #endregion
 
         #region 생성자
@@ -216,7 +216,7 @@ namespace Jastech.Apps.Winform
                         grabImage.Dispose();
 
                         sw.Stop();
-                        Console.WriteLine("Covert : " + sw.ElapsedMilliseconds.ToString() + "ms");
+                        Console.WriteLine("Convert : " + sw.ElapsedMilliseconds.ToString() + "ms");
 
                         if (ScanImageList.Count == AppConfig.Instance().GrabCount)
                         {
@@ -252,6 +252,11 @@ namespace Jastech.Apps.Winform
                 }
             }
             return null;
+        }
+
+        public bool IsGrabCompleted()
+        {
+            return true;
         }
         #endregion
     }
