@@ -30,7 +30,7 @@ namespace Jastech.Apps.Winform.Settings
 
         #region 속성
         [JsonProperty]
-        public bool UseMaterialInfo { get; set; } = false;
+        public bool UseMaterialInfo { get; set; } = true;
 
         [JsonProperty]
         public int GrabCount { get; set; } = 10;

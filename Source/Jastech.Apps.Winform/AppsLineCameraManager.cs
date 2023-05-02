@@ -177,6 +177,20 @@ namespace Jastech.Apps.Winform
             }
         }
 
+        public void InitCameraGrabSettings()
+        {
+            AppsInspModel inspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
+
+            if (inspModel == null)
+                return;
+
+            Camera camera = GetCamera(CameraName.LinscanMIL0);
+
+            int tabCount = inspModel.TabCount;
+            float resolution = (float)(camera.PixelResolution_mm / camera.LensScale);
+            int totalScanLine = inspModel.MaterialInfo.PanelXSize_mm /
+        }
+
         public void LinscanImageGrabbed(Camera camera)
         {
             if (camera is CameraVirtual)
