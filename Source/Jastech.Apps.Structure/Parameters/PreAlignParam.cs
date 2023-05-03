@@ -23,6 +23,7 @@ namespace Jastech.Apps.Structure.Parameters
         public PreAlignParam DeepCopy()
         {
             PreAlignParam preAlign = new PreAlignParam();
+
             if(InspParam != null)
                 preAlign.InspParam = InspParam.DeepCopy();
 

@@ -20,9 +20,6 @@ namespace Jastech.Apps.Structure.Data
         public string Name { get; set; } = "";
 
         [JsonProperty]
-        public List<MarkParam> Marks { get; set; } = new List<MarkParam>();
-
-        [JsonProperty]
         public List<PreAlignParam> PreAligns { get; set; } = new List<PreAlignParam>();
 
         [JsonProperty]
@@ -41,21 +38,24 @@ namespace Jastech.Apps.Structure.Data
 
         public Unit DeepCopy()
         {
-            return JsonConvertHelper.DeepCopy(this) as Unit;
+            // Cognex Tool 때문에 개별 DeepCopy 호출 해줘야함(Json DeepCopy 안됨)
+            Unit unit = new Unit();
+            unit.Name = Name;
+            unit.PreAligns = PreAligns.Select(x => x.DeepCopy()).ToList();
+            unit.LightParams = LightParams.Select(x => x.DeepCopy()).ToList();
+            unit.TabList = TabList.Select(x => x.DeepCopy()).ToList();
+            unit.TeachingPositions = TeachingPositions.Select(x => x.DeepCopy()).ToList();
+            return unit;
         }
 
         public void Dispose()
         {
-            foreach (var mark in Marks)
-                mark.Dispose();
-
             foreach (var preAlign in PreAligns)
                 preAlign.Dispose();
 
             foreach (var tap in TabList)
                 tap.Dispose();
 
-            Marks.Clear();
             PreAligns.Clear();
             TabList.Clear();
         }

@@ -47,6 +47,7 @@
             this.pnlLeadParam = new System.Windows.Forms.Panel();
             this.lblLeadCount = new System.Windows.Forms.Label();
             this.lblLead = new System.Windows.Forms.Label();
+            this.lblApply = new System.Windows.Forms.Label();
             this.tlpAlign.SuspendLayout();
             this.pnlPosition.SuspendLayout();
             this.tlpParams.SuspendLayout();
@@ -249,7 +250,7 @@
             this.tlpParams.RowCount = 2;
             this.tlpParams.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 60F));
             this.tlpParams.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tlpParams.Size = new System.Drawing.Size(578, 265);
+            this.tlpParams.Size = new System.Drawing.Size(666, 265);
             this.tlpParams.TabIndex = 25;
             // 
             // pnlCaliperParam
@@ -259,18 +260,19 @@
             this.pnlCaliperParam.Margin = new System.Windows.Forms.Padding(0);
             this.pnlCaliperParam.Name = "pnlCaliperParam";
             this.pnlCaliperParam.Padding = new System.Windows.Forms.Padding(4);
-            this.pnlCaliperParam.Size = new System.Drawing.Size(578, 205);
+            this.pnlCaliperParam.Size = new System.Drawing.Size(666, 205);
             this.pnlCaliperParam.TabIndex = 15;
             // 
             // pnlLeadParam
             // 
+            this.pnlLeadParam.Controls.Add(this.lblApply);
             this.pnlLeadParam.Controls.Add(this.lblLeadCount);
             this.pnlLeadParam.Controls.Add(this.lblLead);
             this.pnlLeadParam.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pnlLeadParam.Location = new System.Drawing.Point(0, 0);
             this.pnlLeadParam.Margin = new System.Windows.Forms.Padding(0);
             this.pnlLeadParam.Name = "pnlLeadParam";
-            this.pnlLeadParam.Size = new System.Drawing.Size(578, 60);
+            this.pnlLeadParam.Size = new System.Drawing.Size(666, 60);
             this.pnlLeadParam.TabIndex = 16;
             // 
             // lblLeadCount
@@ -295,6 +297,18 @@
             this.lblLead.TabIndex = 1;
             this.lblLead.Text = "Lead Count";
             this.lblLead.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // lblApply
+            // 
+            this.lblApply.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblApply.Location = new System.Drawing.Point(436, 10);
+            this.lblApply.Margin = new System.Windows.Forms.Padding(0);
+            this.lblApply.Name = "lblApply";
+            this.lblApply.Size = new System.Drawing.Size(209, 40);
+            this.lblApply.TabIndex = 3;
+            this.lblApply.Text = "Apply";
+            this.lblApply.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblApply.Click += new System.EventHandler(this.lblApply_Click);
             // 
             // AlignControl
             // 
@@ -337,5 +351,6 @@
         private System.Windows.Forms.Panel pnlLeadParam;
         private System.Windows.Forms.Label lblLeadCount;
         private System.Windows.Forms.Label lblLead;
+        private System.Windows.Forms.Label lblApply;
     }
 }

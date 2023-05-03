@@ -105,7 +105,7 @@ namespace Jastech.Apps.Winform
 
         public void StartGrabContinous(CameraName name)
         {
-            ClearScanImage();
+            //ClearScanImage();
 
             if (GetCamera(name) is CameraMil camera)
             {

@@ -67,6 +67,7 @@
   <ItemGroup>
     <Compile Include="Data\MaterialInfo.cs" />
     <Compile Include="Data\SpecInfo.cs" />
+    <Compile Include="Data\TabScanImage.cs" />
     <Compile Include="Parameters\AkkonParam.cs" />
     <Compile Include="Parameters\AlignParam.cs" />
     <Compile Include="AppsInspModel.cs" />
@@ -112,6 +113,15 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="Emgu.CV">
+      <Version>4.7.0.5276</Version>
+    </PackageReference>
+    <PackageReference Include="Emgu.CV.Bitmap">
+      <Version>4.7.0.5276</Version>
+    </PackageReference>
+    <PackageReference Include="Emgu.CV.runtime.windows">
+      <Version>4.7.0.5276</Version>
+    </PackageReference>
     <PackageReference Include="Newtonsoft.Json">
       <Version>13.0.3</Version>
     </PackageReference>

@@ -43,6 +43,8 @@ namespace ATT.UI.Forms
         private Control _selectControl { get; set; } = null;
 
         private DisplayType _displayType { get; set; } = DisplayType.Align;
+
+        private string _prevTabNo { get; set; } = "";
         #endregion
 
         #region 속성
@@ -92,14 +94,13 @@ namespace ATT.UI.Forms
             _isLoading = true;
 
             SystemManager.Instance().UpdateTeachingData();
-            TeachingTabList = SystemManager.Instance().GetTeachingData().GetTabList(UnitName);
+            TeachingTabList = SystemManager.Instance().GetTeachingData().GetUnit(UnitName).GetTabList();
 
             AddControl();
             InitializeTabComboBox();
 
             _isLoading = false;
 
-            SelectPage(DisplayType.Align);
 
             lblStageCam.Text = $"STAGE : {UnitName} / CAM : {TitleCameraName}";
 
@@ -109,6 +110,8 @@ namespace ATT.UI.Forms
 
             if (image != null)
                 Display.SetImage(image);
+
+            SelectPage(DisplayType.Align);
         }
 
         private void LineTeachingForm_GrabDoneEventHanlder(bool isGrabDone)
@@ -210,35 +213,43 @@ namespace ATT.UI.Forms
             if (ModelManager.Instance().CurrentModel == null || UnitName == "")
                 return;
 
-            _displayType = type;
+            ClearSelectedButton();
 
-            btnMark.ForeColor = Color.White;
-            btnAlign.ForeColor = Color.White;
-            btnAkkon.ForeColor = Color.White;
-            btnAutoAkkon.ForeColor = Color.White;
+            _displayType = type;
 
             pnlTeach.Controls.Clear();
 
-            if(type == DisplayType.Align)
+            switch (type)
             {
-                btnAlign.BackColor = Color.Blue;
+                case DisplayType.Mark:
+                    btnMark.BackColor = _selectedColor;
+                    MarkControl.SetParams(CurrentTab);
+                    pnlTeach.Controls.Add(MarkControl);
+                    break;
 
-                AlignControl.SetParams(CurrentTab);
-                pnlTeach.Controls.Add(AlignControl);
+                case DisplayType.Align:
+                    btnAlign.BackColor = _selectedColor;
+                    AlignControl.SetParams(CurrentTab);
+                    pnlTeach.Controls.Add(AlignControl);
+                    break;
+
+                case DisplayType.Akkon:
+                    btnAkkon.BackColor = _selectedColor;
+                    AkkonControl.SetParams(CurrentTab);
+                    pnlTeach.Controls.Add(AkkonControl);
+                    break;
+
+                default:
+                    break;
             }
-            else if(type == DisplayType.Mark)
-            {
-                btnMark.BackColor = Color.Blue;
+        }
 
-                MarkControl.SetParams(CurrentTab);
-                pnlTeach.Controls.Add(MarkControl);
-            }
-            else if(type == DisplayType.Akkon)
+        private void ClearSelectedButton()
+        {
+            foreach (Control control in tlpTeachingItem.Controls)
             {
-                btnAkkon.BackColor = Color.Blue;
-
-                AkkonControl.SetParams(CurrentTab);
-                pnlTeach.Controls.Add(AkkonControl);
+                if (control is Button)
+                    control.BackColor = _noneSelectedColor;
             }
         }
 
@@ -368,8 +379,30 @@ namespace ATT.UI.Forms
                 return;
 
             string tabIndex = cbxTabList.SelectedItem as string;
-            //Tab TeachingTabList.Where(x => x.Name == tabName).First(); 
+            int tabNo = Convert.ToInt32(tabIndex);
 
+            if (_prevTabNo == tabIndex)
+                return;
+
+            CurrentTab = TeachingTabList.Where(x => x.Index == tabNo).First();
+
+            if(_displayType == DisplayType.Mark)
+            {
+                MarkControl.SetParams(CurrentTab);
+                MarkControl.DrawROI();
+            }
+            else if(_displayType == DisplayType.Align)
+            {
+                AlignControl.SetParams(CurrentTab);
+                AlignControl.DrawROI();
+            }
+            else if (_displayType == DisplayType.Akkon)
+            {
+                AkkonControl.SetParams(CurrentTab);
+                AkkonControl.DrawROI();
+            }
+
+            _prevTabNo = tabIndex;
         }
 
         private void lblPrev_Click(object sender, EventArgs e)

@@ -63,7 +63,7 @@ namespace Jastech.Apps.Structure
     public enum UnitName
     {
         Unit0,
-        Unit1,
-        Unit2,
+        //Unit1,
+        //Unit2,
     }
 }

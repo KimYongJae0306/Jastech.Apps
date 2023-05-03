@@ -110,7 +110,7 @@ namespace Jastech.Apps.Winform.UI.Controls
             pnlManual.Dock = DockStyle.Fill;
             pnlAuto.Dock = DockStyle.Fill;
 
-            //ShowGroup();
+            ShowGroup();
 
             lblOrginalImage.BackColor = _selectedColor;
             lblResultImage.BackColor = _nonSelectedColor;
@@ -122,6 +122,8 @@ namespace Jastech.Apps.Winform.UI.Controls
                 return;
 
             CurrentTab = tab;
+            InitializeGroupInfo();
+            UpdateData();
         }
 
         private void InitializeGroupInfo()
@@ -148,7 +150,11 @@ namespace Jastech.Apps.Winform.UI.Controls
         {
             int groupNo = cbxGroupNumber.SelectedIndex;
             if (groupNo < 0 || CurrentTab == null)
+            {
+                lblGroupCountValue.Text = "0";
+                DrawROI();
                 return;
+            }
 
             var akkonParam = CurrentTab.AkkonParam;
 
