@@ -99,7 +99,6 @@ namespace ATT.UI.Forms
 
             _isLoading = false;
 
-            SelectPage(DisplayType.Align);
 
             lblStageCam.Text = $"STAGE : {UnitName} / CAM : {TitleCameraName}";
 
@@ -108,6 +107,8 @@ namespace ATT.UI.Forms
 
             if (image != null)
                 Display.SetImage(image);
+
+            SelectPage(DisplayType.Align);
         }
 
         private void InitializeTabComboBox()
@@ -185,35 +186,44 @@ namespace ATT.UI.Forms
         {
             if (ModelManager.Instance().CurrentModel == null || UnitName == "")
                 return;
-            _displayType = type;
 
-            btnMark.ForeColor = Color.White;
-            btnAlign.ForeColor = Color.White;
-            btnAkkon.ForeColor = Color.White;
-            btnAutoAkkon.ForeColor = Color.White;
+            ClearSelectedButton();
+
+            _displayType = type;
 
             pnlTeach.Controls.Clear();
 
-            if(type == DisplayType.Align)
+            switch (type)
             {
-                btnAlign.BackColor = Color.Blue;
+                case DisplayType.Mark:
+                    btnMark.BackColor = _selectedColor;
+                    MarkControl.SetParams(CurrentTab);
+                    pnlTeach.Controls.Add(MarkControl);
+                    break;
 
-                AlignControl.SetParams(CurrentTab);
-                pnlTeach.Controls.Add(AlignControl);
+                case DisplayType.Align:
+                    btnAlign.BackColor = _selectedColor;
+                    AlignControl.SetParams(CurrentTab);
+                    pnlTeach.Controls.Add(AlignControl);
+                    break;
+
+                case DisplayType.Akkon:
+                    btnAkkon.BackColor = _selectedColor;
+                    AkkonControl.SetParams(CurrentTab);
+                    pnlTeach.Controls.Add(AkkonControl);
+                    break;
+
+                default:
+                    break;
             }
-            else if(type == DisplayType.Mark)
-            {
-                btnMark.BackColor = Color.Blue;
+        }
 
-                MarkControl.SetParams(CurrentTab);
-                pnlTeach.Controls.Add(MarkControl);
-            }
-            else if(type == DisplayType.Akkon)
+        private void ClearSelectedButton()
+        {
+            foreach (Control control in tlpTeachingItem.Controls)
             {
-                btnAkkon.BackColor = Color.Blue;
-
-                AkkonControl.SetParams(CurrentTab);
-                pnlTeach.Controls.Add(AkkonControl);
+                if (control is Button)
+                    control.BackColor = _noneSelectedColor;
             }
         }
 

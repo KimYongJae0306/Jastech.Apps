@@ -110,7 +110,7 @@ namespace Jastech.Apps.Winform.UI.Controls
             pnlManual.Dock = DockStyle.Fill;
             pnlAuto.Dock = DockStyle.Fill;
 
-            //ShowGroup();
+            ShowGroup();
 
             lblOrginalImage.BackColor = _selectedColor;
             lblResultImage.BackColor = _nonSelectedColor;

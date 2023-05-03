@@ -21,6 +21,7 @@ using Jastech.Apps.Structure.Data;
 using Jastech.Apps.Structure.Parameters;
 using Jastech.Framework.Imaging.Result;
 using Jastech.Framework.Winform.Helper;
+using Jastech.Framework.Winform.Controls;
 
 namespace Jastech.Apps.Winform.UI.Controls
 {
@@ -202,6 +203,11 @@ namespace Jastech.Apps.Winform.UI.Controls
             alignParam.LeadCount = leadCount;
         }
 
+        private void lblApply_Click(object sender, EventArgs e)
+        {
+            Apply();
+        }
+
         public void Apply()
         {
             var alignParam = CurrentTab.GetAlignParam(CurrentAlignName);
@@ -221,9 +227,7 @@ namespace Jastech.Apps.Winform.UI.Controls
                 return;
 
             foreach (var cogRect in cropRectList)
-            {
                 display.SetStaticGraphics("tool", cogRect);
-            }
         }
 
         public void AddROI()
@@ -303,10 +307,114 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         public void ShowROIJog()
         {
-
+            ROIJogControl roiJogForm = new ROIJogControl();
+            roiJogForm.SendEventHandler += new ROIJogControl.SendClickEventDelegate(ReceiveClickEvent);
+            roiJogForm.ShowDialog();
         }
+
+        private void ReceiveClickEvent(string jogType, int jogScale)
+        {
+            if (jogType.Contains("Skew")) { }
+            //SkewMode(jogType, jogScale);
+            else if (jogType.Contains("Move"))
+                MoveMode(jogType, jogScale);
+            else if (jogType.Contains("Zoom"))
+                SizeMode(jogType, jogScale);
+            else { }
+        }
+
+        private void MoveMode(string moveType, int jogScale)
+        {
+            if (CurrentTab == null)
+                return;
+
+            var display = AppsTeachingUIManager.Instance().GetDisplay();
+
+            int movePixel = jogScale;
+            int jogMoveX = 0;
+            int jogMoveY = 0;
+
+            if (moveType.ToLower().Contains("moveleft"))
+                jogMoveX = movePixel * (-1);
+            else if (moveType.ToLower().Contains("moveright"))
+                jogMoveX = movePixel * (1);
+            else if (moveType.ToLower().Contains("movedown"))
+                jogMoveY = movePixel * (1);
+            else if (moveType.ToLower().Contains("moveup"))
+                jogMoveY = movePixel * (-1);
+            else { }
+
+
+            var currentParam = CogCaliperParamControl.GetCurrentParam();
+            CogRectangleAffine roi = new CogRectangleAffine(currentParam.CaliperTool.Region);
+            //roi.Interactive = true;
+
+            roi.CenterX += jogMoveX;
+            roi.CenterY += jogMoveY;
+
+            currentParam.CaliperTool.Region = roi;
+            DrawROI();
+
+            //if (dgvAkkonROI.CurrentCell == null)
+            //    return;
+
+            //int selectedIndex = dgvAkkonROI.CurrentCell.RowIndex;
+
+            //_cogRectAffineList[selectedIndex].CenterX += jogMoveX;
+            //_cogRectAffineList[selectedIndex].CenterY += jogMoveY;
+
+            //UpdateROIDataGridView(selectedIndex, _cogRectAffineList[selectedIndex]);
+
+            //int groupIndex = cbxGroupNumber.SelectedIndex;
+            //var group = CurrentTab.AkkonParam.GroupList[groupIndex];
+            //group.AkkonROIList[selectedIndex] = ConvertCogRectAffineToAkkonRoi(_cogRectAffineList[selectedIndex]).DeepCopy();
+            //DrawROI();
+            //SetSelectAkkonROI(selectedIndex);
+        }
+
+        private void SizeMode(string sizeType, int jogScale)
+        {
+            if (CurrentTab == null)
+                return;
+
+            var display = AppsTeachingUIManager.Instance().GetDisplay();
+
+            int sizePixel = jogScale;
+            int jogSizeX = 0;
+            int jogSizeY = 0;
+
+            if (sizeType.Contains("ZoomOutHorizontal"))
+                jogSizeX = sizePixel * (-1);
+            else if (sizeType.Contains("ZoomInHorizontal"))
+                jogSizeX = sizePixel * (1);
+            else if (sizeType.Contains("ZoomOutVertical"))
+                jogSizeY = sizePixel * (-1);
+            else if (sizeType.Contains("ZoomInVertical"))
+                jogSizeY = sizePixel * (1);
+            else { }
+
+            //if (dgvAkkonROI.CurrentCell == null)
+            //    return;
+
+            //int selectedIndex = dgvAkkonROI.CurrentCell.RowIndex;
+
+            //double minimumX = _cogRectAffineList[selectedIndex].SideXLength + jogSizeX;
+            //double minimumY = _cogRectAffineList[selectedIndex].SideYLength + jogSizeY;
+            //if (minimumX <= 0 || minimumY <= 0)
+            //    return;
+
+            //_cogRectAffineList[selectedIndex].SideXLength += jogSizeX;
+            //_cogRectAffineList[selectedIndex].SideYLength += jogSizeY;
+
+            //UpdateROIDataGridView(selectedIndex, _cogRectAffineList[selectedIndex]);
+
+            //int groupIndex = cbxGroupNumber.SelectedIndex;
+            //var group = CurrentTab.AkkonParam.GroupList[groupIndex];
+            //group.AkkonROIList[selectedIndex] = ConvertCogRectAffineToAkkonRoi(_cogRectAffineList[selectedIndex]).DeepCopy();
+            //DrawROI();
+            //SetSelectAkkonROI(selectedIndex);
+        }
+
         #endregion
-
-
     }
 }
