@@ -122,23 +122,26 @@ namespace ATT.UI.Forms
                 int tabNo = Convert.ToInt32(tabIndex);
                 var scanImage = SystemManager.Instance().GetTeachingData().GetScanImage(tabNo);
 
-               // Display.SetImage(scanImage.GetMergeImage());
+                var image = scanImage.GetMergeImage();
+
+                UpdateDisplay(image);
             }
         }
 
-        private void UpdateDisplay()
+        private void UpdateDisplay(Mat image)
         {
-            //if (image == null)
-            //    return;
+            if (image == null)
+                return;
 
-            //int size = image.Width * image.Height * image.NumberOfChannels;
-            //byte[] dataArray = new byte[size];
-            //Marshal.Copy(image.DataPointer, dataArray, 0, size);
+            int size = image.Width * image.Height * image.NumberOfChannels;
+            byte[] dataArray = new byte[size];
+            Marshal.Copy(image.DataPointer, dataArray, 0, size);
 
-            //ColorFormat format = image.NumberOfChannels == 1 ? ColorFormat.Gray : ColorFormat.RGB24;
+            ColorFormat format = image.NumberOfChannels == 1 ? ColorFormat.Gray : ColorFormat.RGB24;
 
-            //var cogImage = CogImageHelper.CovertImage(dataArray, image.Width, image.Height, format);
-            //Display.SetImage(cogImage);
+            var cogImage = CogImageHelper.CovertImage(dataArray, image.Width, image.Height, format);
+
+            Display.SetImage(cogImage);
         }
 
         private void InitializeTabComboBox()
@@ -294,7 +297,6 @@ namespace ATT.UI.Forms
                 Display.SetImage(cogImage);
                 AppsTeachingUIManager.Instance().SetOrginCogImageBuffer(cogImage);
                 AppsTeachingUIManager.Instance().SetOriginMatImageBuffer(new Mat(dlg.FileName, ImreadModes.Grayscale));
-                //AlignControl.DrawROI();
             }
         }
 
@@ -318,26 +320,9 @@ namespace ATT.UI.Forms
 
         private void LineTeachingForm_FormClosing(object sender, FormClosingEventArgs e)
         {
-            //AppsLineCameraManager.Instance().TeachingImageGrabbed -= LineTeachingForm_TeachingImageGrabbed;
+            AppsLineCameraManager.Instance().TabImageGrabCompletedEventHandler -= LineTeachingForm_TabImageGrabCompletedEventHandler;
+            AppsLineCameraManager.Instance().GrabDoneEventHanlder -= LineTeachingForm_GrabDoneEventHanlder;
         }
-
-
-        //private void LineTeachingForm_TeachingImageGrabbed(Mat image)
-        //{
-        //    if (image == null)
-        //        return;
-
-        //    int size = image.Width * image.Height * image.NumberOfChannels;
-        //    byte[] dataArray = new byte[size];
-        //    Marshal.Copy(image.DataPointer, dataArray, 0, size);
-
-        //    ColorFormat format = image.NumberOfChannels == 1 ? ColorFormat.Gray : ColorFormat.RGB24;
-
-        //    var cogImage = CogImageHelper.CovertImage(dataArray, image.Width, image.Height, format);
-        //    Display.SetImage(cogImage);
-        //    // Display Update
-        //}
-        #endregion
 
         private void cbxTabList_DrawItem(object sender, DrawItemEventArgs e)
         {
@@ -386,12 +371,12 @@ namespace ATT.UI.Forms
 
             CurrentTab = TeachingTabList.Where(x => x.Index == tabNo).First();
 
-            if(_displayType == DisplayType.Mark)
+            if (_displayType == DisplayType.Mark)
             {
                 MarkControl.SetParams(CurrentTab);
                 MarkControl.DrawROI();
             }
-            else if(_displayType == DisplayType.Align)
+            else if (_displayType == DisplayType.Align)
             {
                 AlignControl.SetParams(CurrentTab);
                 AlignControl.DrawROI();
@@ -450,6 +435,7 @@ namespace ATT.UI.Forms
             else if (_displayType == DisplayType.Akkon)
                 AkkonControl.ShowROIJog();
         }
+        #endregion
     }
 
     public enum DisplayType
