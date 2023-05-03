@@ -1,12 +1,8 @@
 ﻿using Jastech.Apps.Structure.Parameters;
-using Jastech.Framework.Imaging.VisionPro.VisionAlgorithms.Parameters;
 using Jastech.Framework.Macron.Akkon.Parameters;
 using Newtonsoft.Json;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Jastech.Apps.Structure.Data
 {

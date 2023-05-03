@@ -103,11 +103,39 @@ namespace ATT.UI.Forms
 
             lblStageCam.Text = $"STAGE : {UnitName} / CAM : {TitleCameraName}";
 
-            AppsLineCameraManager.Instance().StackTabImageCompletedEventHanlder += LineTeachingForm_StackTabImageCompletedEventHanlder;
+            AppsLineCameraManager.Instance().TabImageGrabCompletedEventHandler += LineTeachingForm_TabImageGrabCompletedEventHandler;
+            AppsLineCameraManager.Instance().GrabDoneEventHanlder += LineTeachingForm_GrabDoneEventHanlder;
             var image = AppsTeachingUIManager.Instance().GetOriginCogImageBuffer(true);
 
             if (image != null)
                 Display.SetImage(image);
+        }
+
+        private void LineTeachingForm_GrabDoneEventHanlder(bool isGrabDone)
+        {
+            if(isGrabDone)
+            {
+                string tabIndex = cbxTabList.SelectedItem as string;
+                int tabNo = Convert.ToInt32(tabIndex);
+                var scanImage = SystemManager.Instance().GetTeachingData().GetScanImage(tabNo);
+
+               // Display.SetImage(scanImage.GetMergeImage());
+            }
+        }
+
+        private void UpdateDisplay()
+        {
+            //if (image == null)
+            //    return;
+
+            //int size = image.Width * image.Height * image.NumberOfChannels;
+            //byte[] dataArray = new byte[size];
+            //Marshal.Copy(image.DataPointer, dataArray, 0, size);
+
+            //ColorFormat format = image.NumberOfChannels == 1 ? ColorFormat.Gray : ColorFormat.RGB24;
+
+            //var cogImage = CogImageHelper.CovertImage(dataArray, image.Width, image.Height, format);
+            //Display.SetImage(cogImage);
         }
 
         private void InitializeTabComboBox()
@@ -121,19 +149,15 @@ namespace ATT.UI.Forms
             CurrentTab = TeachingTabList[0];
         }
 
-        private void LineTeachingForm_StackTabImageCompletedEventHanlder(TabScanImage image)
+        private void LineTeachingForm_TabImageGrabCompletedEventHandler(TabScanImage tabScanImage)
         {
-            //if (image == null)
-            //    return;
+            if (tabScanImage == null)
+                return;
+            if (tabScanImage.GetMergeImage() == null)
+                return;
 
-            //int size = image.Width * image.Height * image.NumberOfChannels;
-            //byte[] dataArray = new byte[size];
-            //Marshal.Copy(image.DataPointer, dataArray, 0, size);
-
-            //ColorFormat format = image.NumberOfChannels == 1 ? ColorFormat.Gray : ColorFormat.RGB24;
-
-            //var cogImage = CogImageHelper.CovertImage(dataArray, image.Width, image.Height, format);
-            //Display.SetImage(cogImage);
+            SystemManager.Instance().GetTeachingData().ScanImageList.Add(tabScanImage);
+         
         }
 
         private void AddControl()
@@ -185,6 +209,7 @@ namespace ATT.UI.Forms
         {
             if (ModelManager.Instance().CurrentModel == null || UnitName == "")
                 return;
+
             _displayType = type;
 
             btnMark.ForeColor = Color.White;
@@ -270,6 +295,8 @@ namespace ATT.UI.Forms
 
         private void btnGrabStart_Click(object sender, EventArgs e)
         {
+            SystemManager.Instance().GetTeachingData().ClearScanImage();
+
             AppsLineCameraManager.Instance().StartGrab(CameraName.LinscanMIL0);
         }
 
@@ -340,7 +367,7 @@ namespace ATT.UI.Forms
             if (_isLoading)
                 return;
 
-            string tabName = cbxTabList.SelectedItem as string;
+            string tabIndex = cbxTabList.SelectedItem as string;
             //Tab TeachingTabList.Where(x => x.Name == tabName).First(); 
 
         }

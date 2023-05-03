@@ -44,7 +44,7 @@ namespace Jastech.Apps.Winform
 
         public event TeachingImageGrabbedDelegate TeachingLiveImageGrabbed;
 
-        public event StackTabImageCompletedDelegate StackTabImageCompletedEventHanlder;
+        public event TabImageGrabCompletedDelegate TabImageGrabCompletedEventHandler;
 
         public event GrabDoneDelegate GrabDoneEventHanlder;
         #endregion
@@ -54,7 +54,7 @@ namespace Jastech.Apps.Winform
 
         public delegate void GrabDoneDelegate(bool isGrabDone);
 
-        public delegate void StackTabImageCompletedDelegate(TabScanImage image);
+        public delegate void TabImageGrabCompletedDelegate(TabScanImage image);
         #endregion
 
         #region 생성자
@@ -105,18 +105,18 @@ namespace Jastech.Apps.Winform
 
         public void StartGrabContinous(CameraName name)
         {
-            //ClearScanImage();
+            ClearScanImage();
 
-            //if (GetCamera(name) is CameraMil camera)
-            //{
-            //    if (IsGrabbing)
-            //        StopGrab(name);
+            if (GetCamera(name) is CameraMil camera)
+            {
+                if (IsGrabbing)
+                    StopGrab(name);
 
-            //    IsGrabbing = true;
+                IsGrabbing = true;
 
-            //    camera.SetOperationMode(TDIOperationMode.Area);
-            //    camera.GrabMulti(AppConfig.Instance().GrabCount);
-            //}
+                camera.SetOperationMode(TDIOperationMode.Area);
+                camera.GrabMulti(AppConfig.Instance().GrabCount);
+            }
         }
 
         public void StopGrab(CameraName name)
@@ -244,7 +244,7 @@ namespace Jastech.Apps.Winform
 
                                 if (scanImage.IsAddImageDone())
                                 {
-                                    StackTabImageCompletedEventHanlder?.Invoke(scanImage);
+                                    TabImageGrabCompletedEventHandler?.Invoke(scanImage);
                                     StackTabNo++;
                                 }
                             }

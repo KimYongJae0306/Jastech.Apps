@@ -14,6 +14,8 @@ namespace Jastech.Apps.Structure.Data
     {
         public List<Unit> UnitList { get; set; } = new List<Unit>();
 
+        public List<TabScanImage> ScanImageList = new List<TabScanImage>();
+
         public void Initialize(AppsInspModel inspModel)
         {
             Dispose();
@@ -28,6 +30,23 @@ namespace Jastech.Apps.Structure.Data
                 unit.Dispose();
 
             UnitList.Clear();
+
+            ClearScanImage();
+        }
+
+        public void ClearScanImage()
+        {
+            for (int i = 0; i < ScanImageList.Count(); i++)
+            {
+                ScanImageList[i].Dispose();
+                ScanImageList[i] = null;
+            }
+            ScanImageList.Clear();
+        }
+
+        public TabScanImage GetScanImage(int tabNo)
+        {
+            return ScanImageList.Where(x => x.Index == tabNo).First();
         }
 
         public Unit GetUnit(string name)
@@ -48,11 +67,6 @@ namespace Jastech.Apps.Structure.Data
             return unit.PreAligns.Where(x => x.Name == preAlignName).First().InspParam as VisionProPatternMatchingParam;
         }
 
-        //public VisionProPatternMatchingParam GetMarkParameters()
-        //{
-
-        //}
-
         public List<Tab> GetTabList(string unitName)
         {
             List<Tab> tabList = new List<Tab>();
@@ -67,34 +81,5 @@ namespace Jastech.Apps.Structure.Data
 
             return tabList;
         }
-        //public List<Tab> GetAlignParameters(string unitName)
-        //{
-        //    List<Tab> alignParam = new List<Tab>();
-
-        //    Unit unit = GetUnit(unitName);
-
-        //    for (int i = 0; i < unit.GetTabList().Count; i++)
-        //    {
-        //        var tab = unit.GetTab(i);
-        //        alignParam.Add(tab);
-        //    }
-
-        //    return alignParam;
-        //}
-
-        //public List<Tab> GetAkkonParameters(string unitName)
-        //{
-        //    List<Tab> akkonParam = new List<Tab>();
-
-        //    Unit unit = GetUnit(unitName);
-
-        //    for (int i = 0; i < UnitList.Count; i++)
-        //    {
-        //        var tab = unit.GetTab(i);
-        //        akkonParam.Add(tab);
-        //    }
-
-        //    return akkonParam;
-        //}
     }
 }
