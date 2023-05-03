@@ -47,7 +47,7 @@ namespace Jastech.Apps.Structure.Data
         Sub4,
     }
 
-    public enum MarkDirecton
+    public enum MarkDirection
     {
         Left,
         Right,

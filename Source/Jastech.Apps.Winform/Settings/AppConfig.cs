@@ -159,7 +159,7 @@ namespace Jastech.Apps.Winform.Settings
         #endregion
     }
 
-    public enum TeachingMode
+    public enum AkkonTeachingMode
     {
         Manual,
         Auto,

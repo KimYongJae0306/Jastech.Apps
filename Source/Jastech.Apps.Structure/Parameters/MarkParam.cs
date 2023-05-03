@@ -15,7 +15,7 @@ namespace Jastech.Apps.Structure.Parameters
         public MarkName Name { get; set; } = MarkName.Main;
 
         [JsonProperty]
-        public MarkDirecton Direction { get; set; } = MarkDirecton.Left;
+        public MarkDirection Direction { get; set; } = MarkDirection.Left;
 
         [JsonProperty]
         public VisionProPatternMatchingParam InspParam { get; set; } = new VisionProPatternMatchingParam();

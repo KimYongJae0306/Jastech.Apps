@@ -44,5 +44,27 @@ namespace Jastech.Apps.Structure.Data
 
         [JsonProperty]
         public double TabToTabDistance7_mm { get; set; }
+
+        public double GetTabToTabDistance(int tabNo)
+        {
+            if (tabNo == 0)
+                return TabToTabDistance0_mm;
+            else if (tabNo == 1)
+                return TabToTabDistance1_mm;
+            else if (tabNo == 2)
+                return TabToTabDistance2_mm;
+            else if (tabNo == 3)
+                return TabToTabDistance3_mm;
+            else if (tabNo == 4)
+                return TabToTabDistance4_mm;
+            else if (tabNo == 5)
+                return TabToTabDistance5_mm;
+            else if (tabNo == 6)
+                return TabToTabDistance6_mm;
+            else if (tabNo == 7)
+                return TabToTabDistance7_mm;
+            else
+                return 0;
+        }
     }
 }

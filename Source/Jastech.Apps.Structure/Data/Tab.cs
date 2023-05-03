@@ -77,12 +77,12 @@ namespace Jastech.Apps.Structure.Data
             AlignParamList.Where(x => x.Name == alignName.ToString()).First().CaliperParams = alignParam.CaliperParams.DeepCopy();
         }
 
-        public MarkParam GetFPCMark(MarkDirecton direction, MarkName name)
+        public MarkParam GetFPCMark(MarkDirection direction, MarkName name)
         {
             return FpcMarkParamList.Where(x => x.Name == name && x.Direction == direction).First();
         }
 
-        public MarkParam GetPanelMark(MarkDirecton direction, MarkName name)
+        public MarkParam GetPanelMark(MarkDirection direction, MarkName name)
         {
             return PanelMarkParamList.Where(x => x.Name == name && x.Direction == direction).First();
         }

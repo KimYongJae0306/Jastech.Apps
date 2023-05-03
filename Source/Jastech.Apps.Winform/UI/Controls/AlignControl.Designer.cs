@@ -30,13 +30,6 @@
         {
             this.tlpAlign = new System.Windows.Forms.TableLayoutPanel();
             this.lblParameter = new System.Windows.Forms.Label();
-            this.tlpBasic = new System.Windows.Forms.TableLayoutPanel();
-            this.lblAddROI = new System.Windows.Forms.Label();
-            this.lblPrev = new System.Windows.Forms.Label();
-            this.lblNext = new System.Windows.Forms.Label();
-            this.lblInspection = new System.Windows.Forms.Label();
-            this.cmbTabList = new System.Windows.Forms.ComboBox();
-            this.lblApply = new System.Windows.Forms.Label();
             this.pnlPosition = new System.Windows.Forms.Panel();
             this.lblRightPanelY = new System.Windows.Forms.Label();
             this.lblLeft = new System.Windows.Forms.Label();
@@ -55,7 +48,6 @@
             this.lblLeadCount = new System.Windows.Forms.Label();
             this.lblLead = new System.Windows.Forms.Label();
             this.tlpAlign.SuspendLayout();
-            this.tlpBasic.SuspendLayout();
             this.pnlPosition.SuspendLayout();
             this.tlpParams.SuspendLayout();
             this.pnlLeadParam.SuspendLayout();
@@ -66,21 +58,20 @@
             this.tlpAlign.ColumnCount = 1;
             this.tlpAlign.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tlpAlign.Controls.Add(this.lblParameter, 0, 0);
-            this.tlpAlign.Controls.Add(this.tlpBasic, 0, 1);
-            this.tlpAlign.Controls.Add(this.pnlPosition, 0, 2);
-            this.tlpAlign.Controls.Add(this.chkUseTracking, 0, 4);
-            this.tlpAlign.Controls.Add(this.tlpParams, 0, 3);
+            this.tlpAlign.Controls.Add(this.pnlPosition, 0, 1);
+            this.tlpAlign.Controls.Add(this.chkUseTracking, 0, 3);
+            this.tlpAlign.Controls.Add(this.tlpParams, 0, 2);
             this.tlpAlign.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tlpAlign.Location = new System.Drawing.Point(0, 0);
             this.tlpAlign.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.tlpAlign.Name = "tlpAlign";
-            this.tlpAlign.RowCount = 6;
+            this.tlpAlign.RowCount = 5;
             this.tlpAlign.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 32F));
-            this.tlpAlign.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 50F));
             this.tlpAlign.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 120F));
             this.tlpAlign.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 300F));
             this.tlpAlign.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 100F));
             this.tlpAlign.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tlpAlign.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tlpAlign.Size = new System.Drawing.Size(685, 685);
             this.tlpAlign.TabIndex = 1;
             // 
@@ -97,112 +88,6 @@
             this.lblParameter.Text = "Parameter";
             this.lblParameter.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // tlpBasic
-            // 
-            this.tlpBasic.ColumnCount = 7;
-            this.tlpBasic.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 200F));
-            this.tlpBasic.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 50F));
-            this.tlpBasic.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 50F));
-            this.tlpBasic.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 100F));
-            this.tlpBasic.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 100F));
-            this.tlpBasic.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 100F));
-            this.tlpBasic.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tlpBasic.Controls.Add(this.lblAddROI, 4, 0);
-            this.tlpBasic.Controls.Add(this.lblPrev, 1, 0);
-            this.tlpBasic.Controls.Add(this.lblNext, 2, 0);
-            this.tlpBasic.Controls.Add(this.lblInspection, 3, 0);
-            this.tlpBasic.Controls.Add(this.cmbTabList, 0, 0);
-            this.tlpBasic.Controls.Add(this.lblApply, 5, 0);
-            this.tlpBasic.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tlpBasic.Location = new System.Drawing.Point(0, 32);
-            this.tlpBasic.Margin = new System.Windows.Forms.Padding(0);
-            this.tlpBasic.Name = "tlpBasic";
-            this.tlpBasic.RowCount = 1;
-            this.tlpBasic.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tlpBasic.Size = new System.Drawing.Size(685, 50);
-            this.tlpBasic.TabIndex = 0;
-            // 
-            // lblAddROI
-            // 
-            this.lblAddROI.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lblAddROI.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblAddROI.Font = new System.Drawing.Font("맑은 고딕", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.lblAddROI.Location = new System.Drawing.Point(400, 0);
-            this.lblAddROI.Margin = new System.Windows.Forms.Padding(0);
-            this.lblAddROI.Name = "lblAddROI";
-            this.lblAddROI.Size = new System.Drawing.Size(100, 50);
-            this.lblAddROI.TabIndex = 23;
-            this.lblAddROI.Text = "Add ROI";
-            this.lblAddROI.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.lblAddROI.Click += new System.EventHandler(this.lblAddROI_Click);
-            // 
-            // lblPrev
-            // 
-            this.lblPrev.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lblPrev.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblPrev.Image = global::Jastech.Apps.Winform.Properties.Resources.Prev_White;
-            this.lblPrev.Location = new System.Drawing.Point(200, 0);
-            this.lblPrev.Margin = new System.Windows.Forms.Padding(0);
-            this.lblPrev.Name = "lblPrev";
-            this.lblPrev.Size = new System.Drawing.Size(50, 50);
-            this.lblPrev.TabIndex = 5;
-            this.lblPrev.Click += new System.EventHandler(this.lblPrevTab_Click);
-            // 
-            // lblNext
-            // 
-            this.lblNext.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lblNext.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblNext.Image = global::Jastech.Apps.Winform.Properties.Resources.Next_White;
-            this.lblNext.Location = new System.Drawing.Point(250, 0);
-            this.lblNext.Margin = new System.Windows.Forms.Padding(0);
-            this.lblNext.Name = "lblNext";
-            this.lblNext.Size = new System.Drawing.Size(50, 50);
-            this.lblNext.TabIndex = 2;
-            this.lblNext.Click += new System.EventHandler(this.lblNextTab_Click);
-            // 
-            // lblInspection
-            // 
-            this.lblInspection.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lblInspection.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblInspection.Font = new System.Drawing.Font("맑은 고딕", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.lblInspection.Location = new System.Drawing.Point(300, 0);
-            this.lblInspection.Margin = new System.Windows.Forms.Padding(0);
-            this.lblInspection.Name = "lblInspection";
-            this.lblInspection.Size = new System.Drawing.Size(100, 50);
-            this.lblInspection.TabIndex = 22;
-            this.lblInspection.Text = "Inspect";
-            this.lblInspection.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.lblInspection.Click += new System.EventHandler(this.lblInspection_Click);
-            // 
-            // cmbTabList
-            // 
-            this.cmbTabList.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.cmbTabList.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
-            this.cmbTabList.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmbTabList.Font = new System.Drawing.Font("맑은 고딕", 14.25F, System.Drawing.FontStyle.Bold);
-            this.cmbTabList.FormattingEnabled = true;
-            this.cmbTabList.Location = new System.Drawing.Point(0, 0);
-            this.cmbTabList.Margin = new System.Windows.Forms.Padding(0);
-            this.cmbTabList.Name = "cmbTabList";
-            this.cmbTabList.Size = new System.Drawing.Size(200, 34);
-            this.cmbTabList.TabIndex = 24;
-            this.cmbTabList.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.cmbTabList_DrawItem);
-            this.cmbTabList.SelectedIndexChanged += new System.EventHandler(this.cmbTabList_SelectedIndexChanged);
-            // 
-            // lblApply
-            // 
-            this.lblApply.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lblApply.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblApply.Font = new System.Drawing.Font("맑은 고딕", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.lblApply.Location = new System.Drawing.Point(500, 0);
-            this.lblApply.Margin = new System.Windows.Forms.Padding(0);
-            this.lblApply.Name = "lblApply";
-            this.lblApply.Size = new System.Drawing.Size(100, 50);
-            this.lblApply.TabIndex = 23;
-            this.lblApply.Text = "Apply";
-            this.lblApply.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.lblApply.Click += new System.EventHandler(this.lblApply_Click);
-            // 
             // pnlPosition
             // 
             this.pnlPosition.Controls.Add(this.lblRightPanelY);
@@ -216,7 +101,7 @@
             this.pnlPosition.Controls.Add(this.lblLeftPanelY);
             this.pnlPosition.Controls.Add(this.lblLeftPanelX);
             this.pnlPosition.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pnlPosition.Location = new System.Drawing.Point(3, 85);
+            this.pnlPosition.Location = new System.Drawing.Point(3, 35);
             this.pnlPosition.Name = "pnlPosition";
             this.pnlPosition.Size = new System.Drawing.Size(679, 114);
             this.pnlPosition.TabIndex = 7;
@@ -343,7 +228,7 @@
             // 
             this.chkUseTracking.Appearance = System.Windows.Forms.Appearance.Button;
             this.chkUseTracking.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
-            this.chkUseTracking.Location = new System.Drawing.Point(3, 505);
+            this.chkUseTracking.Location = new System.Drawing.Point(3, 455);
             this.chkUseTracking.Name = "chkUseTracking";
             this.chkUseTracking.Size = new System.Drawing.Size(214, 53);
             this.chkUseTracking.TabIndex = 13;
@@ -358,7 +243,7 @@
             this.tlpParams.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tlpParams.Controls.Add(this.pnlCaliperParam, 0, 1);
             this.tlpParams.Controls.Add(this.pnlLeadParam, 0, 0);
-            this.tlpParams.Location = new System.Drawing.Point(0, 202);
+            this.tlpParams.Location = new System.Drawing.Point(0, 152);
             this.tlpParams.Margin = new System.Windows.Forms.Padding(0);
             this.tlpParams.Name = "tlpParams";
             this.tlpParams.RowCount = 2;
@@ -424,7 +309,6 @@
             this.Size = new System.Drawing.Size(685, 685);
             this.Load += new System.EventHandler(this.AlignControl_Load);
             this.tlpAlign.ResumeLayout(false);
-            this.tlpBasic.ResumeLayout(false);
             this.pnlPosition.ResumeLayout(false);
             this.tlpParams.ResumeLayout(false);
             this.pnlLeadParam.ResumeLayout(false);
@@ -436,16 +320,11 @@
 
         private System.Windows.Forms.TableLayoutPanel tlpAlign;
         private System.Windows.Forms.Label lblParameter;
-        private System.Windows.Forms.TableLayoutPanel tlpBasic;
-        private System.Windows.Forms.Label lblPrev;
-        private System.Windows.Forms.Label lblNext;
         private System.Windows.Forms.CheckBox chkUseTracking;
         private System.Windows.Forms.Label lblLeftFPCX;
         private System.Windows.Forms.Label lblLeftFPCY;
         private System.Windows.Forms.Label lblLeftPanelX;
         private System.Windows.Forms.Label lblLeftPanelY;
-        private System.Windows.Forms.Label lblInspection;
-        private System.Windows.Forms.Label lblAddROI;
         private System.Windows.Forms.Label lblRightFPCX;
         private System.Windows.Forms.Label lblRightFPCY;
         private System.Windows.Forms.Label lblRightPanelX;
@@ -454,11 +333,9 @@
         private System.Windows.Forms.Label lblRight;
         private System.Windows.Forms.Panel pnlPosition;
         private System.Windows.Forms.Panel pnlCaliperParam;
-        private System.Windows.Forms.ComboBox cmbTabList;
         private System.Windows.Forms.TableLayoutPanel tlpParams;
         private System.Windows.Forms.Panel pnlLeadParam;
         private System.Windows.Forms.Label lblLeadCount;
         private System.Windows.Forms.Label lblLead;
-        private System.Windows.Forms.Label lblApply;
     }
 }

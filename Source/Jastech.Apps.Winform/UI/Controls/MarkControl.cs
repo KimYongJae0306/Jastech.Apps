@@ -35,9 +35,9 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         private MarkName _curMarkName = MarkName.Main;
 
-        private MarkDirecton _curDirection = MarkDirecton.Left;
+        private MarkDirection _curDirection = MarkDirection.Left;
 
-        private List<Tab> TeachingUnitList { get; set; } = new List<Tab>();
+        private Tab CurrentTab { get; set; } = null;
 
         private CogPatternMatchingParamControl ParamControl { get; set; } = new CogPatternMatchingParamControl();
 
@@ -49,9 +49,14 @@ namespace Jastech.Apps.Winform.UI.Controls
         private void MarkControl_Load(object sender, EventArgs e)
         {
             AddControl();
-            InitializeLabelColor();
+            InitializeUI();
 
-            UpdateParam(_curTabNo);
+            lblFpc.BackColor = _selectedColor;
+            lblLeftMain.BackColor = _selectedColor;
+
+            _curDirection = MarkDirection.Left;
+            _curMarkName = MarkName.Main;
+            UpdateParam();
         }
 
         private void AddControl()
@@ -66,48 +71,31 @@ namespace Jastech.Apps.Winform.UI.Controls
             return AppsTeachingUIManager.Instance().GetDisplay().GetImage();
         }
 
-        private void InitializeLabelColor()
+        private void InitializeUI()
         {
             _selectedColor = Color.FromArgb(104, 104, 104);
             _nonSelectedColor = Color.FromArgb(52, 52, 52);
-
-            lblFpc.BackColor = _selectedColor;
-            lblLeftMain.BackColor = _selectedColor;
         }
 
-        public void SetParams(List<Tab> unitList)
+        public void SetParams(Tab tab)
         {
-            if (unitList.Count <= 0)
+            if (tab == null)
                 return;
 
-            TeachingUnitList = unitList;
-            InitializeComboBox();
-
-            string name = cbxTabNumList.SelectedItem as string;
-            UpdateParam(name);
+            CurrentTab = tab;
+            UpdateParam();
         }
 
-        private void InitializeComboBox()
+        private void UpdateParam()
         {
-            cbxTabNumList.Items.Clear();
-
-            foreach (var item in TeachingUnitList)
-                cbxTabNumList.Items.Add(item.Name);
-
-            cbxTabNumList.SelectedIndex = 0;
-        }
-
-        private void UpdateParam(string tabName)
-        {
-            if (TeachingUnitList.Count <= 0)
+            if (CurrentTab == null)
                 return;
 
-            var tab = TeachingUnitList.Where(x => x.Name == tabName).First();
             MarkParam currentParam = null;
             if (_curMaterial == Material.Fpc)
-                currentParam = tab.GetFPCMark(_curDirection, _curMarkName);
+                currentParam = CurrentTab.GetFPCMark(_curDirection, _curMarkName);
             else
-                currentParam = tab.GetPanelMark(_curDirection, _curMarkName);
+                currentParam = CurrentTab.GetPanelMark(_curDirection, _curMarkName);
 
             if(currentParam != null)
                 ParamControl.UpdateData(currentParam.InspParam);
@@ -118,13 +106,13 @@ namespace Jastech.Apps.Winform.UI.Controls
         private void lblFpc_Click(object sender, EventArgs e)
         {
             SelectMaterial(Material.Fpc);
-            UpdateParam(_curTabNo);
+            UpdateParam();
         }
 
         private void lblPanel_Click(object sender, EventArgs e)
         {
             SelectMaterial(Material.Panel);
-            UpdateParam(_curTabNo);
+            UpdateParam();
         }
 
         private void SelectMaterial(Material material)
@@ -145,122 +133,122 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         private void lblLeftMain_Click(object sender, EventArgs e)
         {
-            if (TeachingUnitList.Count <= 0)
+            if (CurrentTab == null)
                 return;
 
             UpdateBtnBackColor(sender);
 
-            _curDirection = MarkDirecton.Left;
+            _curDirection = MarkDirection.Left;
             _curMarkName = MarkName.Main;
-            UpdateParam(_curTabNo);
+            UpdateParam();
         }
 
         private void lblLeftSub1_Click(object sender, EventArgs e)
         {
-            if (TeachingUnitList.Count <= 0)
+            if (CurrentTab == null)
                 return;
 
             UpdateBtnBackColor(sender);
 
-            _curDirection = MarkDirecton.Left;
+            _curDirection = MarkDirection.Left;
             _curMarkName = MarkName.Sub1;
-            UpdateParam(_curTabNo);
+            UpdateParam();
         }
 
         private void lblLeftSub2_Click(object sender, EventArgs e)
         {
-            if (TeachingUnitList.Count <= 0)
+            if (CurrentTab == null)
                 return;
 
             UpdateBtnBackColor(sender);
 
-            _curDirection = MarkDirecton.Left;
+            _curDirection = MarkDirection.Left;
             _curMarkName = MarkName.Sub2;
-            UpdateParam(_curTabNo);
+            UpdateParam();
         }
 
         private void lblLeftSub3_Click(object sender, EventArgs e)
         {
-            if (TeachingUnitList.Count <= 0)
+            if (CurrentTab == null)
                 return;
 
             UpdateBtnBackColor(sender);
 
-            _curDirection = MarkDirecton.Left;
+            _curDirection = MarkDirection.Left;
             _curMarkName = MarkName.Sub3;
-            UpdateParam(_curTabNo);
+            UpdateParam();
         }
 
         private void lblLeftSub4_Click(object sender, EventArgs e)
         {
-            if (TeachingUnitList.Count <= 0)
+            if (CurrentTab == null)
                 return;
 
             UpdateBtnBackColor(sender);
 
-            _curDirection = MarkDirecton.Left;
+            _curDirection = MarkDirection.Left;
             _curMarkName = MarkName.Sub4;
-            UpdateParam(_curTabNo);
+            UpdateParam();
         }
 
         private void lblRightMain_Click(object sender, EventArgs e)
         {
-            if (TeachingUnitList.Count <= 0)
+            if (CurrentTab == null)
                 return;
 
             UpdateBtnBackColor(sender);
 
-            _curDirection = MarkDirecton.Right;
+            _curDirection = MarkDirection.Right;
             _curMarkName = MarkName.Main;
-            UpdateParam(_curTabNo);
+            UpdateParam();
         }
 
         private void lblRightSub1_Click(object sender, EventArgs e)
         {
-            if (TeachingUnitList.Count <= 0)
+            if (CurrentTab == null)
                 return;
 
             UpdateBtnBackColor(sender);
 
-            _curDirection = MarkDirecton.Right;
+            _curDirection = MarkDirection.Right;
             _curMarkName = MarkName.Sub1;
-            UpdateParam(_curTabNo);
+            UpdateParam();
         }
 
         private void lblRightSub2_Click(object sender, EventArgs e)
         {
-            if (TeachingUnitList.Count <= 0)
+            if (CurrentTab == null)
                 return;
 
             UpdateBtnBackColor(sender);
 
-            _curDirection = MarkDirecton.Right;
+            _curDirection = MarkDirection.Right;
             _curMarkName = MarkName.Sub2;
-            UpdateParam(_curTabNo);
+            UpdateParam();
         }
 
         private void lblRightSub3_Click(object sender, EventArgs e)
         {
-            if (TeachingUnitList.Count <= 0)
+            if (CurrentTab == null)
                 return;
 
             UpdateBtnBackColor(sender);
 
-            _curDirection = MarkDirecton.Right;
+            _curDirection = MarkDirection.Right;
             _curMarkName = MarkName.Sub3;
-            UpdateParam(_curTabNo);
+            UpdateParam();
         }
 
         private void lblRightSub4_Click(object sender, EventArgs e)
         {
-            if (TeachingUnitList.Count <= 0)
+            if (CurrentTab == null)
                 return;
 
             UpdateBtnBackColor(sender);
 
-            _curDirection = MarkDirecton.Right;
+            _curDirection = MarkDirection.Right;
             _curMarkName = MarkName.Sub4;
-            UpdateParam(_curTabNo);
+            UpdateParam();
         }
 
         private void UpdateBtnBackColor(object sender)
@@ -280,66 +268,8 @@ namespace Jastech.Apps.Winform.UI.Controls
             Label lbl = sender as Label;
             lbl.BackColor = _selectedColor;
         }
-
-        private void cbxTabNumList_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            string tabNo = cbxTabNumList.SelectedItem as string;
-
-            if (_curTabNo == tabNo)
-                return;
-
-            UpdateParam(tabNo);
-
-            _curTabNo = tabNo;
-        }
-
-        private void cbxTabNumList_DrawItem(object sender, DrawItemEventArgs e)
-        {
-            DrawComboboxCenterAlign(sender, e);
-        }
-
-        private void DrawComboboxCenterAlign(object sender, DrawItemEventArgs e)
-        {
-            ComboBox cmb = sender as ComboBox;
-
-            if (cmb != null)
-            {
-                e.DrawBackground();
-                cmb.ItemHeight = lblPrev.Height - 6;
-
-                if (e.Index >= 0)
-                {
-                    StringFormat sf = new StringFormat();
-                    sf.LineAlignment = StringAlignment.Center;
-                    sf.Alignment = StringAlignment.Center;
-
-                    Brush brush = new SolidBrush(cmb.ForeColor);
-
-                    if ((e.State & DrawItemState.Selected) == DrawItemState.Selected)
-                        brush = SystemBrushes.HighlightText;
-
-                    e.Graphics.DrawString(cmb.Items[e.Index].ToString(), cmb.Font, brush, e.Bounds, sf);
-                }
-            }
-        }
-
-        private void lblPrev_Click(object sender, EventArgs e)
-        {
-            if (cbxTabNumList.SelectedIndex <= 0)
-                return;
-
-            cbxTabNumList.SelectedIndex -= 1;
-        }
-
-        private void lblNext_Click(object sender, EventArgs e)
-        {
-            int nextIndex = cbxTabNumList.SelectedIndex + 1;
-
-            if (cbxTabNumList.Items.Count > nextIndex)
-                cbxTabNumList.SelectedIndex = nextIndex;
-        }
-
-        private void lblAddROI_Click(object sender, EventArgs e)
+     
+        public void AddROI()
         {
             var display = AppsTeachingUIManager.Instance().GetDisplay();
             if (display.GetImage() == null)
@@ -390,7 +320,7 @@ namespace Jastech.Apps.Winform.UI.Controls
                 display.SetDisplayToCenter(new Point((int)rect.CenterX, (int)rect.CenterY));
         }
 
-        private void lblInspection_Click(object sender, EventArgs e)
+        public void Inspection()
         {
             var display = AppsTeachingUIManager.Instance().GetDisplay();
             var currentParam = ParamControl.GetCurrentParam();
@@ -422,6 +352,11 @@ namespace Jastech.Apps.Winform.UI.Controls
                 form.Message = "Pattern is Not Found.";
                 form.ShowDialog();
             }
+        }
+
+        public void ShowROIJog()
+        {
+
         }
     }
 }

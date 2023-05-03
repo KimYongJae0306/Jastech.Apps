@@ -51,13 +51,13 @@ namespace ATT.Core
                     {
                         MarkParam leftMark = new MarkParam();
                         leftMark.Name = type;
-                        leftMark.InspParam.Name = MarkDirecton.Left.ToString() + type.ToString();
-                        leftMark.Direction = MarkDirecton.Left;
+                        leftMark.InspParam.Name = MarkDirection.Left.ToString() + type.ToString();
+                        leftMark.Direction = MarkDirection.Left;
 
                         MarkParam RightMark = new MarkParam();
                         RightMark.Name = type;
-                        RightMark.InspParam.Name = MarkDirecton.Right.ToString() + type.ToString();
-                        RightMark.Direction = MarkDirecton.Right;
+                        RightMark.InspParam.Name = MarkDirection.Right.ToString() + type.ToString();
+                        RightMark.Direction = MarkDirection.Right;
 
                         tab.FpcMarkParamList.Add(leftMark);
                         tab.FpcMarkParamList.Add(RightMark);
@@ -67,13 +67,13 @@ namespace ATT.Core
                     {
                         MarkParam leftMark = new MarkParam();
                         leftMark.Name = type;
-                        leftMark.InspParam.Name = MarkDirecton.Left.ToString() + type.ToString();
-                        leftMark.Direction = MarkDirecton.Left;
+                        leftMark.InspParam.Name = MarkDirection.Left.ToString() + type.ToString();
+                        leftMark.Direction = MarkDirection.Left;
 
                         MarkParam RightMark = new MarkParam();
                         RightMark.Name = type;
-                        RightMark.InspParam.Name = MarkDirecton.Right.ToString() + type.ToString();
-                        RightMark.Direction = MarkDirecton.Right;
+                        RightMark.InspParam.Name = MarkDirection.Right.ToString() + type.ToString();
+                        RightMark.Direction = MarkDirection.Right;
 
                         tab.PanelMarkParamList.Add(leftMark);
                         tab.PanelMarkParamList.Add(RightMark);

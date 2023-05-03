@@ -33,6 +33,14 @@
             this.tlpTeaching = new System.Windows.Forms.TableLayoutPanel();
             this.pnlDisplay = new System.Windows.Forms.Panel();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
+            this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
+            this.lblNext = new System.Windows.Forms.Label();
+            this.lblPrev = new System.Windows.Forms.Label();
+            this.lblTest = new System.Windows.Forms.Label();
+            this.cbxTabList = new System.Windows.Forms.ComboBox();
+            this.lblAddROI = new System.Windows.Forms.Label();
+            this.lblInspection = new System.Windows.Forms.Label();
+            this.lblROIJog = new System.Windows.Forms.Label();
             this.tlpCommon = new System.Windows.Forms.TableLayoutPanel();
             this.tlpUnit = new System.Windows.Forms.TableLayoutPanel();
             this.btnMotionPopup = new System.Windows.Forms.Button();
@@ -54,6 +62,7 @@
             this.pnlTeachingPage.SuspendLayout();
             this.tlpTeaching.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
+            this.tableLayoutPanel2.SuspendLayout();
             this.tlpCommon.SuspendLayout();
             this.tlpUnit.SuspendLayout();
             this.tlpLoadImage.SuspendLayout();
@@ -74,7 +83,7 @@
             this.tlpTeachingPage.Name = "tlpTeachingPage";
             this.tlpTeachingPage.RowCount = 1;
             this.tlpTeachingPage.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tlpTeachingPage.Size = new System.Drawing.Size(1229, 779);
+            this.tlpTeachingPage.Size = new System.Drawing.Size(1675, 779);
             this.tlpTeachingPage.TabIndex = 1;
             // 
             // pnlTeachingPage
@@ -84,7 +93,7 @@
             this.pnlTeachingPage.Location = new System.Drawing.Point(0, 0);
             this.pnlTeachingPage.Margin = new System.Windows.Forms.Padding(0);
             this.pnlTeachingPage.Name = "pnlTeachingPage";
-            this.pnlTeachingPage.Size = new System.Drawing.Size(1085, 779);
+            this.pnlTeachingPage.Size = new System.Drawing.Size(1531, 779);
             this.pnlTeachingPage.TabIndex = 0;
             // 
             // tlpTeaching
@@ -100,7 +109,7 @@
             this.tlpTeaching.Name = "tlpTeaching";
             this.tlpTeaching.RowCount = 1;
             this.tlpTeaching.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tlpTeaching.Size = new System.Drawing.Size(1085, 779);
+            this.tlpTeaching.Size = new System.Drawing.Size(1531, 779);
             this.tlpTeaching.TabIndex = 0;
             // 
             // pnlDisplay
@@ -109,24 +118,148 @@
             this.pnlDisplay.Location = new System.Drawing.Point(0, 0);
             this.pnlDisplay.Margin = new System.Windows.Forms.Padding(0);
             this.pnlDisplay.Name = "pnlDisplay";
-            this.pnlDisplay.Size = new System.Drawing.Size(542, 779);
+            this.pnlDisplay.Size = new System.Drawing.Size(765, 779);
             this.pnlDisplay.TabIndex = 0;
             // 
             // tableLayoutPanel1
             // 
             this.tableLayoutPanel1.ColumnCount = 1;
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel1.Controls.Add(this.tableLayoutPanel2, 0, 2);
             this.tableLayoutPanel1.Controls.Add(this.tlpCommon, 0, 0);
-            this.tableLayoutPanel1.Controls.Add(this.pnlTeach, 0, 1);
+            this.tableLayoutPanel1.Controls.Add(this.pnlTeach, 0, 3);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel1.Location = new System.Drawing.Point(544, 2);
+            this.tableLayoutPanel1.Location = new System.Drawing.Point(767, 2);
             this.tableLayoutPanel1.Margin = new System.Windows.Forms.Padding(2);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
-            this.tableLayoutPanel1.RowCount = 2;
+            this.tableLayoutPanel1.RowCount = 4;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 80F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 10F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 50F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(539, 775);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(762, 775);
             this.tableLayoutPanel1.TabIndex = 1;
+            // 
+            // tableLayoutPanel2
+            // 
+            this.tableLayoutPanel2.ColumnCount = 8;
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 200F));
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 50F));
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 50F));
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 100F));
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 100F));
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 100F));
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 100F));
+            this.tableLayoutPanel2.Controls.Add(this.lblNext, 0, 0);
+            this.tableLayoutPanel2.Controls.Add(this.lblPrev, 0, 0);
+            this.tableLayoutPanel2.Controls.Add(this.lblTest, 7, 0);
+            this.tableLayoutPanel2.Controls.Add(this.cbxTabList, 0, 0);
+            this.tableLayoutPanel2.Controls.Add(this.lblAddROI, 4, 0);
+            this.tableLayoutPanel2.Controls.Add(this.lblInspection, 3, 0);
+            this.tableLayoutPanel2.Controls.Add(this.lblROIJog, 5, 0);
+            this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel2.ForeColor = System.Drawing.Color.White;
+            this.tableLayoutPanel2.Location = new System.Drawing.Point(0, 90);
+            this.tableLayoutPanel2.Margin = new System.Windows.Forms.Padding(0);
+            this.tableLayoutPanel2.Name = "tableLayoutPanel2";
+            this.tableLayoutPanel2.RowCount = 1;
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel2.Size = new System.Drawing.Size(762, 50);
+            this.tableLayoutPanel2.TabIndex = 3;
+            // 
+            // lblNext
+            // 
+            this.lblNext.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblNext.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblNext.Image = global::ATT.Properties.Resources.Next_White;
+            this.lblNext.Location = new System.Drawing.Point(250, 0);
+            this.lblNext.Margin = new System.Windows.Forms.Padding(0);
+            this.lblNext.Name = "lblNext";
+            this.lblNext.Size = new System.Drawing.Size(50, 50);
+            this.lblNext.TabIndex = 27;
+            this.lblNext.Click += new System.EventHandler(this.lblNext_Click);
+            // 
+            // lblPrev
+            // 
+            this.lblPrev.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblPrev.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblPrev.Image = global::ATT.Properties.Resources.Prev_White;
+            this.lblPrev.Location = new System.Drawing.Point(200, 0);
+            this.lblPrev.Margin = new System.Windows.Forms.Padding(0);
+            this.lblPrev.Name = "lblPrev";
+            this.lblPrev.Size = new System.Drawing.Size(50, 50);
+            this.lblPrev.TabIndex = 26;
+            this.lblPrev.Click += new System.EventHandler(this.lblPrev_Click);
+            // 
+            // lblTest
+            // 
+            this.lblTest.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblTest.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblTest.Location = new System.Drawing.Point(662, 0);
+            this.lblTest.Margin = new System.Windows.Forms.Padding(0);
+            this.lblTest.Name = "lblTest";
+            this.lblTest.Size = new System.Drawing.Size(100, 50);
+            this.lblTest.TabIndex = 296;
+            this.lblTest.Text = "CropTest";
+            this.lblTest.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // cbxTabList
+            // 
+            this.cbxTabList.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.cbxTabList.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.cbxTabList.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbxTabList.Font = new System.Drawing.Font("맑은 고딕", 14.25F, System.Drawing.FontStyle.Bold);
+            this.cbxTabList.FormattingEnabled = true;
+            this.cbxTabList.Location = new System.Drawing.Point(0, 0);
+            this.cbxTabList.Margin = new System.Windows.Forms.Padding(0);
+            this.cbxTabList.Name = "cbxTabList";
+            this.cbxTabList.Size = new System.Drawing.Size(200, 34);
+            this.cbxTabList.TabIndex = 25;
+            this.cbxTabList.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.cbxTabList_DrawItem);
+            this.cbxTabList.SelectedIndexChanged += new System.EventHandler(this.cbxTabList_SelectedIndexChanged);
+            // 
+            // lblAddROI
+            // 
+            this.lblAddROI.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblAddROI.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblAddROI.Font = new System.Drawing.Font("맑은 고딕", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.lblAddROI.Location = new System.Drawing.Point(400, 0);
+            this.lblAddROI.Margin = new System.Windows.Forms.Padding(0);
+            this.lblAddROI.Name = "lblAddROI";
+            this.lblAddROI.Size = new System.Drawing.Size(100, 50);
+            this.lblAddROI.TabIndex = 23;
+            this.lblAddROI.Text = "Add ROI";
+            this.lblAddROI.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblAddROI.Click += new System.EventHandler(this.lblAddROI_Click);
+            // 
+            // lblInspection
+            // 
+            this.lblInspection.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblInspection.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblInspection.Font = new System.Drawing.Font("맑은 고딕", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.lblInspection.Location = new System.Drawing.Point(300, 0);
+            this.lblInspection.Margin = new System.Windows.Forms.Padding(0);
+            this.lblInspection.Name = "lblInspection";
+            this.lblInspection.Size = new System.Drawing.Size(100, 50);
+            this.lblInspection.TabIndex = 22;
+            this.lblInspection.Text = "Inspect";
+            this.lblInspection.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblInspection.Click += new System.EventHandler(this.lblInspection_Click);
+            // 
+            // lblROIJog
+            // 
+            this.lblROIJog.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblROIJog.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblROIJog.Font = new System.Drawing.Font("맑은 고딕", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.lblROIJog.Location = new System.Drawing.Point(500, 0);
+            this.lblROIJog.Margin = new System.Windows.Forms.Padding(0);
+            this.lblROIJog.Name = "lblROIJog";
+            this.lblROIJog.Size = new System.Drawing.Size(100, 50);
+            this.lblROIJog.TabIndex = 23;
+            this.lblROIJog.Text = "ROI Jog";
+            this.lblROIJog.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblROIJog.Click += new System.EventHandler(this.lblROIJog_Click);
             // 
             // tlpCommon
             // 
@@ -141,7 +274,7 @@
             this.tlpCommon.RowCount = 2;
             this.tlpCommon.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tlpCommon.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tlpCommon.Size = new System.Drawing.Size(539, 80);
+            this.tlpCommon.Size = new System.Drawing.Size(762, 80);
             this.tlpCommon.TabIndex = 3;
             // 
             // tlpUnit
@@ -157,7 +290,7 @@
             this.tlpUnit.Name = "tlpUnit";
             this.tlpUnit.RowCount = 1;
             this.tlpUnit.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tlpUnit.Size = new System.Drawing.Size(539, 40);
+            this.tlpUnit.Size = new System.Drawing.Size(762, 40);
             this.tlpUnit.TabIndex = 287;
             // 
             // btnMotionPopup
@@ -167,10 +300,10 @@
             this.btnMotionPopup.Dock = System.Windows.Forms.DockStyle.Fill;
             this.btnMotionPopup.Font = new System.Drawing.Font("맑은 고딕", 14F, System.Drawing.FontStyle.Bold);
             this.btnMotionPopup.ForeColor = System.Drawing.Color.White;
-            this.btnMotionPopup.Location = new System.Drawing.Point(359, 0);
+            this.btnMotionPopup.Location = new System.Drawing.Point(507, 0);
             this.btnMotionPopup.Margin = new System.Windows.Forms.Padding(0);
             this.btnMotionPopup.Name = "btnMotionPopup";
-            this.btnMotionPopup.Size = new System.Drawing.Size(180, 40);
+            this.btnMotionPopup.Size = new System.Drawing.Size(255, 40);
             this.btnMotionPopup.TabIndex = 295;
             this.btnMotionPopup.Text = "MOTION";
             this.btnMotionPopup.UseVisualStyleBackColor = false;
@@ -186,7 +319,7 @@
             this.lblStageCam.Location = new System.Drawing.Point(0, 0);
             this.lblStageCam.Margin = new System.Windows.Forms.Padding(0);
             this.lblStageCam.Name = "lblStageCam";
-            this.lblStageCam.Size = new System.Drawing.Size(359, 40);
+            this.lblStageCam.Size = new System.Drawing.Size(507, 40);
             this.lblStageCam.TabIndex = 294;
             this.lblStageCam.Text = "STAGE : / CAM :";
             this.lblStageCam.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -207,7 +340,7 @@
             this.tlpLoadImage.Name = "tlpLoadImage";
             this.tlpLoadImage.RowCount = 1;
             this.tlpLoadImage.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tlpLoadImage.Size = new System.Drawing.Size(539, 40);
+            this.tlpLoadImage.Size = new System.Drawing.Size(762, 40);
             this.tlpLoadImage.TabIndex = 2;
             // 
             // btnLoadImage
@@ -217,10 +350,10 @@
             this.btnLoadImage.Dock = System.Windows.Forms.DockStyle.Fill;
             this.btnLoadImage.Font = new System.Drawing.Font("맑은 고딕", 14F, System.Drawing.FontStyle.Bold);
             this.btnLoadImage.ForeColor = System.Drawing.Color.White;
-            this.btnLoadImage.Location = new System.Drawing.Point(358, 0);
+            this.btnLoadImage.Location = new System.Drawing.Point(508, 0);
             this.btnLoadImage.Margin = new System.Windows.Forms.Padding(0);
             this.btnLoadImage.Name = "btnLoadImage";
-            this.btnLoadImage.Size = new System.Drawing.Size(181, 40);
+            this.btnLoadImage.Size = new System.Drawing.Size(254, 40);
             this.btnLoadImage.TabIndex = 201;
             this.btnLoadImage.Text = "LOAD IMAGE";
             this.btnLoadImage.UseVisualStyleBackColor = false;
@@ -233,10 +366,10 @@
             this.btnGrabStop.Dock = System.Windows.Forms.DockStyle.Fill;
             this.btnGrabStop.Font = new System.Drawing.Font("맑은 고딕", 14F, System.Drawing.FontStyle.Bold);
             this.btnGrabStop.ForeColor = System.Drawing.Color.White;
-            this.btnGrabStop.Location = new System.Drawing.Point(179, 0);
+            this.btnGrabStop.Location = new System.Drawing.Point(254, 0);
             this.btnGrabStop.Margin = new System.Windows.Forms.Padding(0);
             this.btnGrabStop.Name = "btnGrabStop";
-            this.btnGrabStop.Size = new System.Drawing.Size(179, 40);
+            this.btnGrabStop.Size = new System.Drawing.Size(254, 40);
             this.btnGrabStop.TabIndex = 200;
             this.btnGrabStop.Text = "GRAB STOP";
             this.btnGrabStop.UseVisualStyleBackColor = false;
@@ -252,7 +385,7 @@
             this.btnGrabStart.Location = new System.Drawing.Point(0, 0);
             this.btnGrabStart.Margin = new System.Windows.Forms.Padding(0);
             this.btnGrabStart.Name = "btnGrabStart";
-            this.btnGrabStart.Size = new System.Drawing.Size(179, 40);
+            this.btnGrabStart.Size = new System.Drawing.Size(254, 40);
             this.btnGrabStart.TabIndex = 199;
             this.btnGrabStart.Text = "GRAB START";
             this.btnGrabStart.UseVisualStyleBackColor = false;
@@ -261,17 +394,17 @@
             // pnlTeach
             // 
             this.pnlTeach.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pnlTeach.Location = new System.Drawing.Point(0, 80);
+            this.pnlTeach.Location = new System.Drawing.Point(0, 140);
             this.pnlTeach.Margin = new System.Windows.Forms.Padding(0);
             this.pnlTeach.Name = "pnlTeach";
-            this.pnlTeach.Size = new System.Drawing.Size(539, 695);
+            this.pnlTeach.Size = new System.Drawing.Size(762, 635);
             this.pnlTeach.TabIndex = 0;
             // 
             // pnlTeachingItem
             // 
             this.pnlTeachingItem.Controls.Add(this.tlpTeachingItem);
             this.pnlTeachingItem.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pnlTeachingItem.Location = new System.Drawing.Point(1085, 0);
+            this.pnlTeachingItem.Location = new System.Drawing.Point(1531, 0);
             this.pnlTeachingItem.Margin = new System.Windows.Forms.Padding(0);
             this.pnlTeachingItem.Name = "pnlTeachingItem";
             this.pnlTeachingItem.Size = new System.Drawing.Size(144, 779);
@@ -316,7 +449,6 @@
             this.btnAutoAkkon.TabIndex = 20;
             this.btnAutoAkkon.Text = "A.Akkon";
             this.btnAutoAkkon.UseVisualStyleBackColor = false;
-            this.btnAutoAkkon.Click += new System.EventHandler(this.btnAutoAkkon_Click);
             // 
             // btnAkkon
             // 
@@ -398,7 +530,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
-            this.ClientSize = new System.Drawing.Size(1229, 779);
+            this.ClientSize = new System.Drawing.Size(1675, 779);
             this.Controls.Add(this.tlpTeachingPage);
             this.Font = new System.Drawing.Font("맑은 고딕", 11.25F, System.Drawing.FontStyle.Bold);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
@@ -411,6 +543,7 @@
             this.pnlTeachingPage.ResumeLayout(false);
             this.tlpTeaching.ResumeLayout(false);
             this.tableLayoutPanel1.ResumeLayout(false);
+            this.tableLayoutPanel2.ResumeLayout(false);
             this.tlpCommon.ResumeLayout(false);
             this.tlpUnit.ResumeLayout(false);
             this.tlpLoadImage.ResumeLayout(false);
@@ -444,5 +577,13 @@
         private System.Windows.Forms.Button btnGrabStop;
         private System.Windows.Forms.Button btnGrabStart;
         private System.Windows.Forms.Button btnAutoAkkon;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
+        private System.Windows.Forms.Label lblNext;
+        private System.Windows.Forms.Label lblPrev;
+        private System.Windows.Forms.Label lblTest;
+        private System.Windows.Forms.ComboBox cbxTabList;
+        private System.Windows.Forms.Label lblAddROI;
+        private System.Windows.Forms.Label lblInspection;
+        private System.Windows.Forms.Label lblROIJog;
     }
 }

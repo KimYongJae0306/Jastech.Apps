@@ -738,7 +738,7 @@
             this.trbDimmingLevelValue.Margin = new System.Windows.Forms.Padding(0);
             this.trbDimmingLevelValue.Maximum = 255;
             this.trbDimmingLevelValue.Name = "trbDimmingLevelValue";
-            this.trbDimmingLevelValue.Size = new System.Drawing.Size(98, 45);
+            this.trbDimmingLevelValue.Size = new System.Drawing.Size(98, 23);
             this.trbDimmingLevelValue.TabIndex = 208;
             this.trbDimmingLevelValue.TickStyle = System.Windows.Forms.TickStyle.None;
             this.trbDimmingLevelValue.Scroll += new System.EventHandler(this.trbDimmingLevelValue_Scroll);

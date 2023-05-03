@@ -82,22 +82,14 @@
             this.colRightTop = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colLeftBottom = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colRightBottom = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
-            this.lblNext = new System.Windows.Forms.Label();
-            this.lblPrev = new System.Windows.Forms.Label();
-            this.lblTest = new System.Windows.Forms.Label();
-            this.cbxTabList = new System.Windows.Forms.ComboBox();
-            this.lblAddROI = new System.Windows.Forms.Label();
-            this.lblInspection = new System.Windows.Forms.Label();
-            this.lblROIJog = new System.Windows.Forms.Label();
             this.lblParameter = new System.Windows.Forms.Label();
-            this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
-            this.panel1 = new System.Windows.Forms.Panel();
-            this.lblResult = new System.Windows.Forms.Label();
-            this.lblGroup = new System.Windows.Forms.Label();
             this.panel3 = new System.Windows.Forms.Panel();
-            this.lblResultImage = new System.Windows.Forms.Label();
             this.lblOrginalImage = new System.Windows.Forms.Label();
+            this.lblResultImage = new System.Windows.Forms.Label();
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.lblGroup = new System.Windows.Forms.Label();
+            this.lblResult = new System.Windows.Forms.Label();
+            this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
             this.pnlAuto.SuspendLayout();
             this.tlpAkkon.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
@@ -109,10 +101,9 @@
             this.panel4.SuspendLayout();
             this.pnlROIData.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvAkkonROI)).BeginInit();
-            this.tableLayoutPanel2.SuspendLayout();
-            this.tableLayoutPanel3.SuspendLayout();
-            this.panel1.SuspendLayout();
             this.panel3.SuspendLayout();
+            this.panel1.SuspendLayout();
+            this.tableLayoutPanel3.SuspendLayout();
             this.SuspendLayout();
             // 
             // pnlParam
@@ -230,18 +221,16 @@
             // 
             this.tlpAkkon.ColumnCount = 1;
             this.tlpAkkon.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tlpAkkon.Controls.Add(this.tableLayoutPanel1, 0, 3);
-            this.tlpAkkon.Controls.Add(this.tableLayoutPanel2, 0, 1);
-            this.tlpAkkon.Controls.Add(this.pnlParam, 0, 4);
+            this.tlpAkkon.Controls.Add(this.tableLayoutPanel1, 0, 2);
+            this.tlpAkkon.Controls.Add(this.pnlParam, 0, 3);
             this.tlpAkkon.Controls.Add(this.lblParameter, 0, 0);
-            this.tlpAkkon.Controls.Add(this.tableLayoutPanel3, 0, 2);
+            this.tlpAkkon.Controls.Add(this.tableLayoutPanel3, 0, 1);
             this.tlpAkkon.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tlpAkkon.Location = new System.Drawing.Point(0, 0);
             this.tlpAkkon.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.tlpAkkon.Name = "tlpAkkon";
-            this.tlpAkkon.RowCount = 6;
+            this.tlpAkkon.RowCount = 5;
             this.tlpAkkon.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 32F));
-            this.tlpAkkon.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 50F));
             this.tlpAkkon.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 60F));
             this.tlpAkkon.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 340F));
             this.tlpAkkon.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 400F));
@@ -829,127 +818,6 @@
             this.colRightBottom.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
             this.colRightBottom.Width = 160;
             // 
-            // tableLayoutPanel2
-            // 
-            this.tableLayoutPanel2.ColumnCount = 8;
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 200F));
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 50F));
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 50F));
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 100F));
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 100F));
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 100F));
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 100F));
-            this.tableLayoutPanel2.Controls.Add(this.lblNext, 0, 0);
-            this.tableLayoutPanel2.Controls.Add(this.lblPrev, 0, 0);
-            this.tableLayoutPanel2.Controls.Add(this.lblTest, 7, 0);
-            this.tableLayoutPanel2.Controls.Add(this.cbxTabList, 0, 0);
-            this.tableLayoutPanel2.Controls.Add(this.lblAddROI, 4, 0);
-            this.tableLayoutPanel2.Controls.Add(this.lblInspection, 3, 0);
-            this.tableLayoutPanel2.Controls.Add(this.lblROIJog, 5, 0);
-            this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel2.Location = new System.Drawing.Point(0, 32);
-            this.tableLayoutPanel2.Margin = new System.Windows.Forms.Padding(0);
-            this.tableLayoutPanel2.Name = "tableLayoutPanel2";
-            this.tableLayoutPanel2.RowCount = 1;
-            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel2.Size = new System.Drawing.Size(965, 50);
-            this.tableLayoutPanel2.TabIndex = 2;
-            // 
-            // lblNext
-            // 
-            this.lblNext.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lblNext.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblNext.Image = global::Jastech.Apps.Winform.Properties.Resources.Next_White;
-            this.lblNext.Location = new System.Drawing.Point(250, 0);
-            this.lblNext.Margin = new System.Windows.Forms.Padding(0);
-            this.lblNext.Name = "lblNext";
-            this.lblNext.Size = new System.Drawing.Size(50, 50);
-            this.lblNext.TabIndex = 27;
-            this.lblNext.Click += new System.EventHandler(this.lblNext_Click);
-            // 
-            // lblPrev
-            // 
-            this.lblPrev.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lblPrev.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblPrev.Image = global::Jastech.Apps.Winform.Properties.Resources.Prev_White;
-            this.lblPrev.Location = new System.Drawing.Point(200, 0);
-            this.lblPrev.Margin = new System.Windows.Forms.Padding(0);
-            this.lblPrev.Name = "lblPrev";
-            this.lblPrev.Size = new System.Drawing.Size(50, 50);
-            this.lblPrev.TabIndex = 26;
-            this.lblPrev.Click += new System.EventHandler(this.lblPrev_Click);
-            // 
-            // lblTest
-            // 
-            this.lblTest.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lblTest.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblTest.Location = new System.Drawing.Point(865, 0);
-            this.lblTest.Margin = new System.Windows.Forms.Padding(0);
-            this.lblTest.Name = "lblTest";
-            this.lblTest.Size = new System.Drawing.Size(100, 50);
-            this.lblTest.TabIndex = 296;
-            this.lblTest.Text = "CropTest";
-            this.lblTest.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.lblTest.Click += new System.EventHandler(this.lblTest_Click);
-            // 
-            // cbxTabList
-            // 
-            this.cbxTabList.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.cbxTabList.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
-            this.cbxTabList.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cbxTabList.Font = new System.Drawing.Font("맑은 고딕", 14.25F, System.Drawing.FontStyle.Bold);
-            this.cbxTabList.FormattingEnabled = true;
-            this.cbxTabList.Location = new System.Drawing.Point(0, 0);
-            this.cbxTabList.Margin = new System.Windows.Forms.Padding(0);
-            this.cbxTabList.Name = "cbxTabList";
-            this.cbxTabList.Size = new System.Drawing.Size(200, 34);
-            this.cbxTabList.TabIndex = 25;
-            this.cbxTabList.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.cbx_DrawItem);
-            this.cbxTabList.SelectedIndexChanged += new System.EventHandler(this.cbxTabList_SelectedIndexChanged);
-            // 
-            // lblAddROI
-            // 
-            this.lblAddROI.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lblAddROI.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblAddROI.Font = new System.Drawing.Font("맑은 고딕", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.lblAddROI.Location = new System.Drawing.Point(400, 0);
-            this.lblAddROI.Margin = new System.Windows.Forms.Padding(0);
-            this.lblAddROI.Name = "lblAddROI";
-            this.lblAddROI.Size = new System.Drawing.Size(100, 50);
-            this.lblAddROI.TabIndex = 23;
-            this.lblAddROI.Text = "Add ROI";
-            this.lblAddROI.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.lblAddROI.Click += new System.EventHandler(this.lblAddROI_Click);
-            // 
-            // lblInspection
-            // 
-            this.lblInspection.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lblInspection.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblInspection.Font = new System.Drawing.Font("맑은 고딕", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.lblInspection.Location = new System.Drawing.Point(300, 0);
-            this.lblInspection.Margin = new System.Windows.Forms.Padding(0);
-            this.lblInspection.Name = "lblInspection";
-            this.lblInspection.Size = new System.Drawing.Size(100, 50);
-            this.lblInspection.TabIndex = 22;
-            this.lblInspection.Text = "Inspect";
-            this.lblInspection.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.lblInspection.Click += new System.EventHandler(this.lblInspection_Click);
-            // 
-            // lblROIJog
-            // 
-            this.lblROIJog.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lblROIJog.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblROIJog.Font = new System.Drawing.Font("맑은 고딕", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.lblROIJog.Location = new System.Drawing.Point(500, 0);
-            this.lblROIJog.Margin = new System.Windows.Forms.Padding(0);
-            this.lblROIJog.Name = "lblROIJog";
-            this.lblROIJog.Size = new System.Drawing.Size(100, 50);
-            this.lblROIJog.TabIndex = 23;
-            this.lblROIJog.Text = "ROI Jog";
-            this.lblROIJog.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.lblROIJog.Click += new System.EventHandler(this.lblROIJog_Click);
-            // 
             // lblParameter
             // 
             this.lblParameter.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(104)))), ((int)(((byte)(104)))), ((int)(((byte)(104)))));
@@ -963,6 +831,76 @@
             this.lblParameter.TabIndex = 1;
             this.lblParameter.Text = "Parameter";
             this.lblParameter.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // panel3
+            // 
+            this.panel3.Controls.Add(this.lblResultImage);
+            this.panel3.Controls.Add(this.lblOrginalImage);
+            this.panel3.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panel3.Location = new System.Drawing.Point(565, 0);
+            this.panel3.Margin = new System.Windows.Forms.Padding(0);
+            this.panel3.Name = "panel3";
+            this.panel3.Size = new System.Drawing.Size(400, 60);
+            this.panel3.TabIndex = 296;
+            // 
+            // lblOrginalImage
+            // 
+            this.lblOrginalImage.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblOrginalImage.Location = new System.Drawing.Point(58, 10);
+            this.lblOrginalImage.Margin = new System.Windows.Forms.Padding(0);
+            this.lblOrginalImage.Name = "lblOrginalImage";
+            this.lblOrginalImage.Size = new System.Drawing.Size(168, 40);
+            this.lblOrginalImage.TabIndex = 295;
+            this.lblOrginalImage.Text = "Origin Image";
+            this.lblOrginalImage.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblOrginalImage.Click += new System.EventHandler(this.lblOrginalImage_Click);
+            // 
+            // lblResultImage
+            // 
+            this.lblResultImage.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblResultImage.Location = new System.Drawing.Point(226, 10);
+            this.lblResultImage.Margin = new System.Windows.Forms.Padding(0);
+            this.lblResultImage.Name = "lblResultImage";
+            this.lblResultImage.Size = new System.Drawing.Size(162, 40);
+            this.lblResultImage.TabIndex = 295;
+            this.lblResultImage.Text = "Result Image";
+            this.lblResultImage.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblResultImage.Click += new System.EventHandler(this.lblResultImage_Click);
+            // 
+            // panel1
+            // 
+            this.panel1.Controls.Add(this.lblResult);
+            this.panel1.Controls.Add(this.lblGroup);
+            this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panel1.Location = new System.Drawing.Point(0, 0);
+            this.panel1.Margin = new System.Windows.Forms.Padding(0);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(400, 60);
+            this.panel1.TabIndex = 295;
+            // 
+            // lblGroup
+            // 
+            this.lblGroup.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblGroup.Location = new System.Drawing.Point(6, 10);
+            this.lblGroup.Margin = new System.Windows.Forms.Padding(0);
+            this.lblGroup.Name = "lblGroup";
+            this.lblGroup.Size = new System.Drawing.Size(102, 40);
+            this.lblGroup.TabIndex = 295;
+            this.lblGroup.Text = "Group";
+            this.lblGroup.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblGroup.Click += new System.EventHandler(this.lblGroup_Click);
+            // 
+            // lblResult
+            // 
+            this.lblResult.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblResult.Location = new System.Drawing.Point(112, 10);
+            this.lblResult.Margin = new System.Windows.Forms.Padding(0);
+            this.lblResult.Name = "lblResult";
+            this.lblResult.Size = new System.Drawing.Size(102, 40);
+            this.lblResult.TabIndex = 295;
+            this.lblResult.Text = "Result";
+            this.lblResult.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblResult.Click += new System.EventHandler(this.lblResult_Click);
             // 
             // tableLayoutPanel3
             // 
@@ -980,76 +918,6 @@
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel3.Size = new System.Drawing.Size(965, 60);
             this.tableLayoutPanel3.TabIndex = 295;
-            // 
-            // panel1
-            // 
-            this.panel1.Controls.Add(this.lblResult);
-            this.panel1.Controls.Add(this.lblGroup);
-            this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel1.Location = new System.Drawing.Point(0, 0);
-            this.panel1.Margin = new System.Windows.Forms.Padding(0);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(400, 60);
-            this.panel1.TabIndex = 295;
-            // 
-            // lblResult
-            // 
-            this.lblResult.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lblResult.Location = new System.Drawing.Point(112, 10);
-            this.lblResult.Margin = new System.Windows.Forms.Padding(0);
-            this.lblResult.Name = "lblResult";
-            this.lblResult.Size = new System.Drawing.Size(102, 40);
-            this.lblResult.TabIndex = 295;
-            this.lblResult.Text = "Result";
-            this.lblResult.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.lblResult.Click += new System.EventHandler(this.lblResult_Click);
-            // 
-            // lblGroup
-            // 
-            this.lblGroup.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lblGroup.Location = new System.Drawing.Point(6, 10);
-            this.lblGroup.Margin = new System.Windows.Forms.Padding(0);
-            this.lblGroup.Name = "lblGroup";
-            this.lblGroup.Size = new System.Drawing.Size(102, 40);
-            this.lblGroup.TabIndex = 295;
-            this.lblGroup.Text = "Group";
-            this.lblGroup.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.lblGroup.Click += new System.EventHandler(this.lblGroup_Click);
-            // 
-            // panel3
-            // 
-            this.panel3.Controls.Add(this.lblResultImage);
-            this.panel3.Controls.Add(this.lblOrginalImage);
-            this.panel3.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel3.Location = new System.Drawing.Point(565, 0);
-            this.panel3.Margin = new System.Windows.Forms.Padding(0);
-            this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(400, 60);
-            this.panel3.TabIndex = 296;
-            // 
-            // lblResultImage
-            // 
-            this.lblResultImage.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lblResultImage.Location = new System.Drawing.Point(226, 10);
-            this.lblResultImage.Margin = new System.Windows.Forms.Padding(0);
-            this.lblResultImage.Name = "lblResultImage";
-            this.lblResultImage.Size = new System.Drawing.Size(162, 40);
-            this.lblResultImage.TabIndex = 295;
-            this.lblResultImage.Text = "Result Image";
-            this.lblResultImage.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.lblResultImage.Click += new System.EventHandler(this.lblResultImage_Click);
-            // 
-            // lblOrginalImage
-            // 
-            this.lblOrginalImage.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lblOrginalImage.Location = new System.Drawing.Point(58, 10);
-            this.lblOrginalImage.Margin = new System.Windows.Forms.Padding(0);
-            this.lblOrginalImage.Name = "lblOrginalImage";
-            this.lblOrginalImage.Size = new System.Drawing.Size(168, 40);
-            this.lblOrginalImage.TabIndex = 295;
-            this.lblOrginalImage.Text = "Origin Image";
-            this.lblOrginalImage.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.lblOrginalImage.Click += new System.EventHandler(this.lblOrginalImage_Click);
             // 
             // AkkonControl
             // 
@@ -1074,10 +942,9 @@
             this.panel4.ResumeLayout(false);
             this.pnlROIData.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgvAkkonROI)).EndInit();
-            this.tableLayoutPanel2.ResumeLayout(false);
-            this.tableLayoutPanel3.ResumeLayout(false);
-            this.panel1.ResumeLayout(false);
             this.panel3.ResumeLayout(false);
+            this.panel1.ResumeLayout(false);
+            this.tableLayoutPanel3.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -1087,21 +954,11 @@
         private System.Windows.Forms.Panel pnlParam;
         private System.Windows.Forms.TableLayoutPanel tlpAkkon;
         private System.Windows.Forms.Label lblParameter;
-        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
-        private System.Windows.Forms.Label lblAddROI;
-        private System.Windows.Forms.Label lblInspection;
         private System.Windows.Forms.DataGridView dgvAkkonROI;
         private System.Windows.Forms.DataGridView dgvAkkonResult;
-        private System.Windows.Forms.ComboBox cbxTabList;
-        private System.Windows.Forms.Label lblPrev;
-        private System.Windows.Forms.Label lblNext;
-        private System.Windows.Forms.Label lblGroup;
-        private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
         private System.Windows.Forms.Panel pnlROIData;
-        private System.Windows.Forms.Label lblResult;
         private System.Windows.Forms.Panel panel2;
-        private System.Windows.Forms.Label lblROIJog;
         private System.Windows.Forms.TableLayoutPanel tlpnlGroup;
         private System.Windows.Forms.Panel pnlTeachingMode;
         private System.Windows.Forms.Panel panel4;
@@ -1127,8 +984,6 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn colRightTop;
         private System.Windows.Forms.DataGridViewTextBoxColumn colLeftBottom;
         private System.Windows.Forms.DataGridViewTextBoxColumn colRightBottom;
-        private System.Windows.Forms.Label lblTest;
-        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel3;
         private System.Windows.Forms.Panel pnlManual;
         private System.Windows.Forms.Label lblSort;
         private System.Windows.Forms.Label lblLeadCount;
@@ -1145,6 +1000,10 @@
         private System.Windows.Forms.Label lblROIHeight;
         private System.Windows.Forms.Label lblCloneVertical;
         private System.Windows.Forms.Label lblClone;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel3;
+        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.Label lblResult;
+        private System.Windows.Forms.Label lblGroup;
         private System.Windows.Forms.Panel panel3;
         private System.Windows.Forms.Label lblResultImage;
         private System.Windows.Forms.Label lblOrginalImage;

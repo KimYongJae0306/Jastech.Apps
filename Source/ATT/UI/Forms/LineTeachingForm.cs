@@ -37,6 +37,12 @@ namespace ATT.UI.Forms
         private Color _selectedColor;
 
         private Color _noneSelectedColor;
+
+        private bool _isLoading { get; set; } = false;
+
+        private Control _selectControl { get; set; } = null;
+
+        private DisplayType _displayType { get; set; } = DisplayType.Align;
         #endregion
 
         #region 속성
@@ -44,13 +50,15 @@ namespace ATT.UI.Forms
 
         public string TitleCameraName { get; set; } = "";
 
+        public List<Tab> TeachingTabList { get; private set; } = null;
+
+        public Tab CurrentTab { get; set; } = null;
+
         private CogTeachingDisplayControl Display { get; set; } = new CogTeachingDisplayControl();
 
         private AlignControl AlignControl { get; set; } = new AlignControl() { Dock = DockStyle.Fill };
 
         private AkkonControl AkkonControl { get; set; } = new AkkonControl() { Dock = DockStyle.Fill };
-
-        //private AkkonAutoControl AkkonAutoControl { get; set; } = new AkkonAutoControl() { Dock = DockStyle.Fill };
 
         private MarkControl MarkControl { get; set; } = new MarkControl() { Dock = DockStyle.Fill };
 
@@ -79,41 +87,53 @@ namespace ATT.UI.Forms
         #endregion
 
         #region 메서드
-        private System.Threading.Timer _formTimer = null;
-        private void StartTimer()
-        {
-            _formTimer = new System.Threading.Timer(UpdateStatus, null, 1000, 1000);
-        }
-
-        private delegate void UpdateStatusDelegate(object obj);
-        private void UpdateStatus(object obj)
-        {
-            if (this.InvokeRequired)
-            {
-                UpdateStatusDelegate callback = UpdateStatus;
-                BeginInvoke(callback, obj);
-                return;
-            }
-        }
-
         private void LineTeachingForm_Load(object sender, EventArgs e)
         {
-            //int akkonThreadCount = AppConfig.Instance().AkkonThreadCount;
-            //MacronAkkon.ATT_InitSystem(this.Handle, akkonThreadCount, 0xF8);
+            _isLoading = true;
 
             SystemManager.Instance().UpdateTeachingData();
+            TeachingTabList = SystemManager.Instance().GetTeachingData().GetTabList(UnitName);
+
             AddControl();
-            SelectAlign();
-            StartTimer();
+            InitializeTabComboBox();
+
+            _isLoading = false;
+
+            SelectPage(DisplayType.Align);
 
             lblStageCam.Text = $"STAGE : {UnitName} / CAM : {TitleCameraName}";
 
-            AppsLineCameraManager.Instance().TeachingImageGrabbed += LineTeachingForm_TeachingImageGrabbed;
-
+            AppsLineCameraManager.Instance().StackTabImageCompletedEventHanlder += LineTeachingForm_StackTabImageCompletedEventHanlder;
             var image = AppsTeachingUIManager.Instance().GetOriginCogImageBuffer(true);
 
             if (image != null)
                 Display.SetImage(image);
+        }
+
+        private void InitializeTabComboBox()
+        {
+            cbxTabList.Items.Clear();
+
+            foreach (var item in TeachingTabList)
+                cbxTabList.Items.Add(item.Name);
+
+            cbxTabList.SelectedIndex = 0;
+            CurrentTab = TeachingTabList[0];
+        }
+
+        private void LineTeachingForm_StackTabImageCompletedEventHanlder(TabScanImage image)
+        {
+            //if (image == null)
+            //    return;
+
+            //int size = image.Width * image.Height * image.NumberOfChannels;
+            //byte[] dataArray = new byte[size];
+            //Marshal.Copy(image.DataPointer, dataArray, 0, size);
+
+            //ColorFormat format = image.NumberOfChannels == 1 ? ColorFormat.Gray : ColorFormat.RGB24;
+
+            //var cogImage = CogImageHelper.CovertImage(dataArray, image.Width, image.Height, format);
+            //Display.SetImage(cogImage);
         }
 
         private void AddControl()
@@ -129,12 +149,6 @@ namespace ATT.UI.Forms
             Display.DeleteEventHandler += Display_DeleteEventHandler;
             pnlDisplay.Controls.Add(Display);
 
-            //LiveDisplay = new LiveViewPanel();
-            //LiveDisplay.ImageSource = null;
-            //LiveDisplay.Dock = DockStyle.Fill;
-            //pnlDisplay.Controls.Add(LiveDisplay);
-            //LiveDisplay.Visible = true;
-
             // TeachingUIManager 참조
             AppsTeachingUIManager.Instance().SetDisplay(Display.GetDisplay());
         }
@@ -149,95 +163,58 @@ namespace ATT.UI.Forms
                     AlignControl.DrawROI();
                 else if (pnlTeach.Controls[0] as AkkonControl != null)
                     AkkonControl.DrawROI();
-                //else if (pnlDisplay.Controls[0] as AkkonAutoControl != null)
-                //    AkkonAutoControl.DrawROI();
             }
-        }
-
-        private void btnLinescan_Click(object sender, EventArgs e)
-        {
-            //SelectLinescan();
         }
 
         private void btnMark_Click(object sender, EventArgs e)
         {
-            SelectMark();
+            SelectPage(DisplayType.Mark);
         }
 
         private void btnAlign_Click(object sender, EventArgs e)
         {
-            SelectAlign();
+            SelectPage(DisplayType.Align);
         }
 
         private void btnAkkon_Click(object sender, EventArgs e)
         {
-            SelectAkkon();
+            SelectPage(DisplayType.Akkon);
         }
 
-        private void ClearSelectedButton()
+        private void SelectPage(DisplayType type)
         {
+            if (ModelManager.Instance().CurrentModel == null || UnitName == "")
+                return;
+            _displayType = type;
+
             btnMark.ForeColor = Color.White;
             btnAlign.ForeColor = Color.White;
             btnAkkon.ForeColor = Color.White;
             btnAutoAkkon.ForeColor = Color.White;
 
             pnlTeach.Controls.Clear();
-        }
 
-        private void SelectMark()
-        {
-            if (ModelManager.Instance().CurrentModel == null || UnitName == "")
-                return;
+            if(type == DisplayType.Align)
+            {
+                btnAlign.BackColor = Color.Blue;
 
-            ClearSelectedButton();
+                AlignControl.SetParams(CurrentTab);
+                pnlTeach.Controls.Add(AlignControl);
+            }
+            else if(type == DisplayType.Mark)
+            {
+                btnMark.BackColor = Color.Blue;
 
-            var tabList = SystemManager.Instance().GetTeachingData().GetTabList(UnitName);
-            MarkControl.SetParams(tabList);
+                MarkControl.SetParams(CurrentTab);
+                pnlTeach.Controls.Add(MarkControl);
+            }
+            else if(type == DisplayType.Akkon)
+            {
+                btnAkkon.BackColor = Color.Blue;
 
-            pnlTeach.Controls.Add(MarkControl);
-            btnMark.ForeColor = Color.Blue;
-        }
-
-        private void SelectAlign()
-        {
-            if (ModelManager.Instance().CurrentModel == null || UnitName == "")
-                return;
-
-            ClearSelectedButton();
-
-            var tabList = SystemManager.Instance().GetTeachingData().GetTabList(UnitName);
-            AlignControl.SetParams(tabList);
-
-            btnAlign.ForeColor = Color.Blue;
-            pnlTeach.Controls.Add(AlignControl);
-        }
-
-        private void SelectAkkon()
-        {
-            if (ModelManager.Instance().CurrentModel == null || UnitName == "")
-                return;
-
-            ClearSelectedButton();
-           
-            btnAkkon.ForeColor = Color.Blue;
-          
-            var tabList = SystemManager.Instance().GetTeachingData().GetTabList(UnitName);
-            AkkonControl.SetParams(tabList);
-            pnlTeach.Controls.Add(AkkonControl);
-        }
-
-        private void btnAutoAkkon_Click(object sender, EventArgs e)
-        {
-            if (ModelManager.Instance().CurrentModel == null || UnitName == "")
-                return;
-
-            //ClearSelectedButton();
-
-            //var tabList = SystemManager.Instance().GetTeachingData().GetTabList(UnitName);
-            //AkkonAutoControl.SetParams(tabList);
-
-            //btnAutoAkkon.ForeColor = Color.Blue;
-            //pnlTeach.Controls.Add(AkkonAutoControl);
+                AkkonControl.SetParams(CurrentTab);
+                pnlTeach.Controls.Add(AkkonControl);
+            }
         }
 
         private void btnSave_Click(object sender, EventArgs e)
@@ -303,26 +280,122 @@ namespace ATT.UI.Forms
 
         private void LineTeachingForm_FormClosing(object sender, FormClosingEventArgs e)
         {
-            AppsLineCameraManager.Instance().TeachingImageGrabbed -= LineTeachingForm_TeachingImageGrabbed;
+            //AppsLineCameraManager.Instance().TeachingImageGrabbed -= LineTeachingForm_TeachingImageGrabbed;
         }
 
-        private void LineTeachingForm_TeachingImageGrabbed(Mat image)
-        {
-            if (image == null)
-                return;
 
-            int size = image.Width * image.Height * image.NumberOfChannels;
-            byte[] dataArray = new byte[size];
-            Marshal.Copy(image.DataPointer, dataArray, 0, size);
+        //private void LineTeachingForm_TeachingImageGrabbed(Mat image)
+        //{
+        //    if (image == null)
+        //        return;
 
-            ColorFormat format = image.NumberOfChannels == 1 ? ColorFormat.Gray : ColorFormat.RGB24;
+        //    int size = image.Width * image.Height * image.NumberOfChannels;
+        //    byte[] dataArray = new byte[size];
+        //    Marshal.Copy(image.DataPointer, dataArray, 0, size);
 
-            var cogImage = CogImageHelper.CovertImage(dataArray, image.Width, image.Height, format);
-            Display.SetImage(cogImage);
-            // Display Update
-        }
+        //    ColorFormat format = image.NumberOfChannels == 1 ? ColorFormat.Gray : ColorFormat.RGB24;
+
+        //    var cogImage = CogImageHelper.CovertImage(dataArray, image.Width, image.Height, format);
+        //    Display.SetImage(cogImage);
+        //    // Display Update
+        //}
         #endregion
 
-        
+        private void cbxTabList_DrawItem(object sender, DrawItemEventArgs e)
+        {
+            DrawComboboxCenterAlign(sender, e);
+        }
+
+        private void DrawComboboxCenterAlign(object sender, DrawItemEventArgs e)
+        {
+            ComboBox cmb = sender as ComboBox;
+
+            if (cmb != null)
+            {
+                e.DrawBackground();
+
+                if (cmb.Name.ToString().ToLower().Contains("group"))
+                    cmb.ItemHeight = lblPrev.Height - 6;
+                else
+                    cmb.ItemHeight = lblPrev.Height - 6;
+
+                if (e.Index >= 0)
+                {
+                    StringFormat sf = new StringFormat();
+                    sf.LineAlignment = StringAlignment.Center;
+                    sf.Alignment = StringAlignment.Center;
+
+                    Brush brush = new SolidBrush(cmb.ForeColor);
+
+                    if ((e.State & DrawItemState.Selected) == DrawItemState.Selected)
+                        brush = SystemBrushes.HighlightText;
+
+                    e.Graphics.DrawString(cmb.Items[e.Index].ToString(), cmb.Font, brush, e.Bounds, sf);
+                }
+            }
+        }
+
+        private void cbxTabList_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (_isLoading)
+                return;
+
+            string tabName = cbxTabList.SelectedItem as string;
+            //Tab TeachingTabList.Where(x => x.Name == tabName).First(); 
+
+        }
+
+        private void lblPrev_Click(object sender, EventArgs e)
+        {
+            if (cbxTabList.SelectedIndex <= 0)
+                return;
+
+            cbxTabList.SelectedIndex -= 1;
+        }
+
+        private void lblNext_Click(object sender, EventArgs e)
+        {
+            int nextIndex = cbxTabList.SelectedIndex + 1;
+
+            if (cbxTabList.Items.Count > nextIndex)
+                cbxTabList.SelectedIndex = nextIndex;
+        }
+
+        private void lblInspection_Click(object sender, EventArgs e)
+        {
+            if (_displayType == DisplayType.Mark)
+                MarkControl.Inspection();
+            else if (_displayType == DisplayType.Align)
+                AlignControl.Inspection();
+            else if (_displayType == DisplayType.Akkon)
+                AkkonControl.Inspection();
+        }
+
+        private void lblAddROI_Click(object sender, EventArgs e)
+        {
+            if (_displayType == DisplayType.Mark)
+                MarkControl.AddROI();
+            else if (_displayType == DisplayType.Align)
+                AlignControl.AddROI();
+            else if (_displayType == DisplayType.Akkon)
+                AkkonControl.AddROI();
+        }
+
+        private void lblROIJog_Click(object sender, EventArgs e)
+        {
+            if (_displayType == DisplayType.Mark)
+                MarkControl.ShowROIJog();
+            else if (_displayType == DisplayType.Align)
+                AlignControl.ShowROIJog();
+            else if (_displayType == DisplayType.Akkon)
+                AkkonControl.ShowROIJog();
+        }
+    }
+
+    public enum DisplayType
+    {
+        Mark,
+        Align,
+        Akkon,
     }
 }
