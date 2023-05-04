@@ -1,4 +1,5 @@
-﻿using Jastech.Apps.Structure;
+﻿using ATT.Core;
+using Jastech.Apps.Structure;
 using Jastech.Apps.Structure.Data;
 using Jastech.Apps.Winform;
 using Jastech.Apps.Winform.Core;
@@ -27,8 +28,10 @@ namespace ATT
         private static SystemManager _instance = null;
 
         private MainForm _mainForm = null;
-        #endregion
 
+        private ATTInspRunner _inspRunner = new ATTInspRunner();
+        #endregion
+        
         #region 메서드
         public static SystemManager Instance()
         {
@@ -49,7 +52,7 @@ namespace ATT
             SplashForm form = new SplashForm();
 
             form.Title = "ATT Inspection";
-            form.Version = AppConfig.Instance().Operation.SystemVersion;
+            form.Version = AppsConfig.Instance().Operation.SystemVersion;
             form.SetupActionEventHandler = SplashSetupAction;
 
             form.ShowDialog();
@@ -64,32 +67,18 @@ namespace ATT
             int percent = 0;
             DoReportProgress(reportProgress, percent, "Initialize Device");
             DeviceManager.Instance().Initialized += SystemManager_Initialized;
-            DeviceManager.Instance().Initialize(AppConfig.Instance());
+            DeviceManager.Instance().Initialize(AppsConfig.Instance());
 
             AppsMotionManager.Instance().CreateAxisHanlder();
             AppsLAFManager.Instance().Initialize();
             AppsLineCameraManager.Instance().Initialize();
 
-            if(AppConfig.Instance().Operation.VirtualMode == false)
-            {
-                //kyj
-                //var cameraHandler = DeviceManager.Instance().CameraHandler;
-                //Camera camera = cameraHandler.Get(CameraName.LinscanMIL0.ToString());
-
-                //camera.ImageGrabbed += AppsLineCameraManager.Instance().LinscanImageGrabbed;
-
-                //var lafHandler = DeviceManager.Instance().LAFCtrlHandler;
-                //LAFCtrl laf = lafHandler.Get(LAFName.Align.ToString());
-                //laf.DataReceived += AppsLAFManager.Instance().DataReceived;
-            }
-
-
             percent += 30;
 
-            if (AppConfig.Instance().Operation.LastModelName != "")
+            if (AppsConfig.Instance().Operation.LastModelName != "")
             {
-                string filePath = Path.Combine(AppConfig.Instance().Path.Model,
-                                    AppConfig.Instance().Operation.LastModelName,
+                string filePath = Path.Combine(AppsConfig.Instance().Path.Model,
+                                    AppsConfig.Instance().Operation.LastModelName,
                                     InspModel.FileName);
                 if(File.Exists(filePath))
                 {
@@ -147,6 +136,16 @@ namespace ATT
         public void UpdateTeachingData()
         {
             _mainForm.UpdateTeachingData();
+        }
+
+        public void StartRun()
+        {
+            _inspRunner.SeqRun();
+        }
+
+        public void StopRun()
+        {
+            _inspRunner.SeqStop();
         }
         #endregion
     }

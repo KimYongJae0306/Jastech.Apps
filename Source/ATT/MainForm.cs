@@ -51,9 +51,8 @@ namespace ATT
 
         private void MainForm_Load(object sender, EventArgs e)
         {
-            int akkonThreadCount = AppConfig.Instance().AkkonThreadCount;
+            int akkonThreadCount = AppsConfig.Instance().AkkonThreadCount;
             MacronAkkon.ATT_InitSystem(this.Handle, akkonThreadCount, 0xF8);
-            //MacronAkkon.ATT_InitSystem(this.Handle, akkonThreadCount, 0xF1);
 
             AddControls();
             SelectMainPage();
@@ -104,7 +103,7 @@ namespace ATT
 
         private void ModelPageControl_ApplyModelEventHandler(string modelName)
         {
-            string modelDir = AppConfig.Instance().Path.Model;
+            string modelDir = AppsConfig.Instance().Path.Model;
             string filePath = Path.Combine(modelDir, modelName, InspModel.FileName);
 
             ModelManager.Instance().CurrentModel = ATTInspModelService.Load(filePath);
@@ -112,9 +111,9 @@ namespace ATT
 
             lblCurrentModel.Text = modelName;
 
-            AppConfig.Instance().Operation.LastModelName = modelName;
+            AppsConfig.Instance().Operation.LastModelName = modelName;
 
-            AppConfig.Instance().Operation.Save(AppConfig.Instance().Path.Config);
+            AppsConfig.Instance().Operation.Save(AppsConfig.Instance().Path.Config);
         }
 
         private void SetSelectLabel(object sender)
@@ -195,6 +194,11 @@ namespace ATT
         {
             ATTInspRunner tt = new ATTInspRunner();
             tt.SeqRun();
+        }
+
+        private void label1_Click(object sender, EventArgs e)
+        {
+            SystemManager.Instance().StartRun();
         }
     }
 }

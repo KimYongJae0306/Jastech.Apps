@@ -44,7 +44,7 @@ namespace Jastech.Apps.Winform.UI.Forms
         #region 메서드
         private void ATTModellerForm_Load(object sender, EventArgs e)
         {
-            ModelPath = AppConfig.Instance().Path.Model;
+            ModelPath = AppsConfig.Instance().Path.Model;
 
             UpdateModelList();
         }
@@ -113,7 +113,7 @@ namespace Jastech.Apps.Winform.UI.Forms
 
                 InspModelService.AddModelData(newModel);
 
-                ModelFileHelper.Save(AppConfig.Instance().Path.Model, newModel);
+                ModelFileHelper.Save(AppsConfig.Instance().Path.Model, newModel);
             }
         }
 
@@ -138,7 +138,7 @@ namespace Jastech.Apps.Winform.UI.Forms
         {
             if (InspModelService != null)
             {
-                string modelDir = AppConfig.Instance().Path.Model;
+                string modelDir = AppsConfig.Instance().Path.Model;
                 string filePath = Path.Combine(modelDir, prevModelName, InspModel.FileName);
                 AppsInspModel prevModel = InspModelService.Load(filePath) as AppsInspModel;
 
@@ -188,7 +188,7 @@ namespace Jastech.Apps.Winform.UI.Forms
         {
             if (InspModelService != null)
             {
-                string modelDir = AppConfig.Instance().Path.Model;
+                string modelDir = AppsConfig.Instance().Path.Model;
                 string filePath = Path.Combine(modelDir, prevModelName, InspModel.FileName);
                 InspModel prevModel = InspModelService.Load(filePath);
                 prevModel.Name = newModelName;

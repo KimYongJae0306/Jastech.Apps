@@ -46,7 +46,7 @@ namespace Jastech.Apps.Structure.Data
 
         public TabScanImage GetScanImage(int tabNo)
         {
-            return ScanImageList.Where(x => x.Index == tabNo).First();
+            return ScanImageList.Where(x => x.TabNo == tabNo).First();
         }
 
         public Unit GetUnit(string name)

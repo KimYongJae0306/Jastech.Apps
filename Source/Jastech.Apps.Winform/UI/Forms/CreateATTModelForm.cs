@@ -103,7 +103,7 @@ namespace Jastech.Apps.Winform.UI.Forms
                 TabCount = Convert.ToInt32(tabCount),
             };
 
-            if (AppConfig.Instance().UseMaterialInfo)
+            if (AppsConfig.Instance().UseMaterialInfo)
             {
                 ATTMaterialInfoForm form = new ATTMaterialInfoForm();
                 if (form.ShowDialog() == DialogResult.OK)

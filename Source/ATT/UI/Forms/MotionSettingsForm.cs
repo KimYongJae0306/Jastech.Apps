@@ -40,7 +40,7 @@ namespace ATT.UI.Forms
 
         public string UnitName { get; set; } = string.Empty;
 
-        private List<TeachingPosition> TeachingPositionList { get; set; } = null;
+        private List<TeachingInfo> TeachingPositionList { get; set; } = null;
 
         private AxisHandler AxisHandler { get; set; } = null;
 
@@ -62,7 +62,7 @@ namespace ATT.UI.Forms
 
         private MotionParameterVariableControl ZVariableControl = new MotionParameterVariableControl();
 
-        public TeachingPositionType TeachingPositionType = TeachingPositionType.Standby;
+        public TeachingPosType TeachingPositionType = TeachingPosType.Standby;
 
         protected override CreateParams CreateParams
         {
@@ -123,7 +123,7 @@ namespace ATT.UI.Forms
             pnlTeachingPositionList.Controls.Add(TeachingPositionListControl);
         }
 
-        private void ReceiveTeachingPosition(TeachingPositionType teachingPositionType)
+        private void ReceiveTeachingPosition(TeachingPosType teachingPositionType)
         {
             Console.WriteLine(teachingPositionType.ToString());
             TeachingPositionType = teachingPositionType;
@@ -131,13 +131,13 @@ namespace ATT.UI.Forms
             UpdateVariableParam(teachingPositionType);
         }
 
-        private void UpdateData(TeachingPositionType teachingPositionType = TeachingPositionType.Standby)
+        private void UpdateData(TeachingPosType teachingPositionType = TeachingPosType.Standby)
         {
             var axisHandler = AppsMotionManager.Instance().GetAxisHandler(AxisHandlerName.Handler0);
             SetAxisHandler(axisHandler);
 
             string unitName = "0";// TeachingPositionListControl.UnitName;
-            var posData = SystemManager.Instance().GetTeachingData().GetUnit(unitName).TeachingPositions;
+            var posData = SystemManager.Instance().GetTeachingData().GetUnit(unitName).TeachingInfoList;
             SetTeachingPosition(posData);
 
             var lafCtrl = AppsLAFManager.Instance().GetLAFCtrl(LAFName.Akkon);
@@ -147,7 +147,7 @@ namespace ATT.UI.Forms
             UpdateVariableParam();
         }
 
-        private void UpdateVariableParam(TeachingPositionType teachingPositionType = TeachingPositionType.Standby)
+        private void UpdateVariableParam(TeachingPosType teachingPositionType = TeachingPosType.Standby)
         {
             var param = TeachingPositionList.Where(x => x.Name == teachingPositionType.ToString()).First();
             if (param == null)
@@ -178,7 +178,7 @@ namespace ATT.UI.Forms
             AxisHandler = axisHandler;
         }
 
-        private void SetTeachingPosition(List<TeachingPosition> teacingPositionList)
+        private void SetTeachingPosition(List<TeachingInfo> teacingPositionList)
         {
             TeachingPositionList = teacingPositionList;
         }
@@ -333,7 +333,7 @@ namespace ATT.UI.Forms
         private void GetCurrentVariableParams()
         {
             string unitName = TeachingPositionListControl.UnitName;
-            var posData = SystemManager.Instance().GetTeachingData().GetUnit(unitName).TeachingPositions[(int)TeachingPositionType];
+            var posData = SystemManager.Instance().GetTeachingData().GetUnit(unitName).TeachingInfoList[(int)TeachingPositionType];
 
             posData.SetMovingParams(AxisName.X, XVariableControl.GetCurrentData());
             posData.SetMovingParams(AxisName.Y, YVariableControl.GetCurrentData());
@@ -367,7 +367,7 @@ namespace ATT.UI.Forms
             var model = ModelManager.Instance().CurrentModel as AppsInspModel;
             model.SetUnitList(SystemManager.Instance().GetTeachingData().UnitList);
 
-            string fileName = System.IO.Path.Combine(AppConfig.Instance().Path.Model, model.Name, InspModel.FileName);
+            string fileName = System.IO.Path.Combine(AppsConfig.Instance().Path.Model, model.Name, InspModel.FileName);
             SystemManager.Instance().SaveModel(fileName, model);
 
             MessageConfirmForm form = new MessageConfirmForm();

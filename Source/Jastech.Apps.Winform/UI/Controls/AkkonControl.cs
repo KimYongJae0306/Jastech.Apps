@@ -953,6 +953,9 @@ namespace Jastech.Apps.Winform.UI.Controls
                 return;
 
             int groupIndex = cbxGroupNumber.SelectedIndex;
+            if (groupIndex < 0)
+                return;
+
             var group = CurrentTab.AkkonParam.GroupList[groupIndex];
             group.AkkonROIList.Clear();
 
@@ -1184,7 +1187,7 @@ namespace Jastech.Apps.Winform.UI.Controls
                 return;
 
             var akkonParam = CurrentTab.AkkonParam;
-            int akkonThreadCount = AppConfig.Instance().AkkonThreadCount;
+            int akkonThreadCount = AppsConfig.Instance().AkkonThreadCount;
             akkonParam.MacronAkkonParam = MacronAkkonParamControl.GetCurrentParam();
 
             Mat matImage = AppsTeachingUIManager.Instance().GetOriginMatImageBuffer(false);
@@ -1232,7 +1235,7 @@ namespace Jastech.Apps.Winform.UI.Controls
 
             var akkonParam = CurrentTab.AkkonParam;
 
-            int akkonThreadCount = AppConfig.Instance().AkkonThreadCount;
+            int akkonThreadCount = AppsConfig.Instance().AkkonThreadCount;
             akkonParam.MacronAkkonParam = MacronAkkonParamControl.GetCurrentParam();
 
             Mat matImage = AppsTeachingUIManager.Instance().GetOriginMatImageBuffer(false);

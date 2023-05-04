@@ -13,7 +13,6 @@ namespace ATT.UI.Pages
 {
     public partial class MainPage : UserControl
     {
-
         #region 필드
         #endregion
 
@@ -65,6 +64,11 @@ namespace ATT.UI.Pages
         {
             AkkonInspControl.UpdateTabCount(tabCount);
             AlignInspControl.UpdateTabCount(tabCount);
+        }
+
+        public void UpdateResult()
+        {
+
         }
         #endregion
     }

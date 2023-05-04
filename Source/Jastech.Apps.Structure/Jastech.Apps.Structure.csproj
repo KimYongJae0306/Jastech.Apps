@@ -65,6 +65,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Data\AppsInspResult.cs" />
     <Compile Include="Data\MaterialInfo.cs" />
     <Compile Include="Data\SpecInfo.cs" />
     <Compile Include="Data\TabScanImage.cs" />

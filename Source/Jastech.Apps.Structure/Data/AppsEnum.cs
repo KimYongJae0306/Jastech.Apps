@@ -12,7 +12,7 @@ namespace Jastech.Apps.Structure.Data
         Panel,
     }
 
-    public enum TeachingPositionType
+    public enum TeachingPosType
     {
         Standby,
 

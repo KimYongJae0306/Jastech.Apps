@@ -92,7 +92,7 @@ namespace Jastech.Apps.Winform.UI.Forms
                 },
 
             };
-            if (AppConfig.Instance().UseMaterialInfo)
+            if (AppsConfig.Instance().UseMaterialInfo)
             {
                 ATTMaterialInfoForm form = new ATTMaterialInfoForm();
                 form.PrevMaterialInfo = PrevModel.MaterialInfo;
