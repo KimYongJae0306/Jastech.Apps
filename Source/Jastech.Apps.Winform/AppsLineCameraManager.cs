@@ -34,14 +34,12 @@ namespace Jastech.Apps.Winform
         #region 속성
         public List<TabScanImage> TabScanImageList { get; private set; } = new List<TabScanImage>();
 
-        public bool IsGrabbing { get; private set; } = false;
+        //public bool IsGrabbing { get; private set; } = false;
 
         public TDIOperationMode CurrentOperationMode = TDIOperationMode.Area;
         #endregion
 
         #region 이벤트
-        public event TeachingImageGrabbedDelegate TeachingImageGrabbed;
-
         public event TeachingImageGrabbedDelegate TeachingLiveImageGrabbed;
 
         public event TabImageGrabCompletedDelegate TabImageGrabCompletedEventHandler;
@@ -90,16 +88,36 @@ namespace Jastech.Apps.Winform
 
         public void StartGrab(CameraName name)
         {
-            InitGrabSettings();
+            InitGrabSettings(name);
 
             if (GetCamera(name) is Camera camera)
             {
-                if (IsGrabbing)
+                if (camera.IsGrabbing())
                     StopGrab(name);
 
-                IsGrabbing = true;
+                camera.GrabMulti(AppsConfig.Instance().GrabCount);
+            }
+        }
 
-                camera.GrabMulti(AppConfig.Instance().GrabCount);
+        public void StartGrab(CameraName name, float scanLength_mm)
+        {
+            if (GetCamera(name) is Camera camera)
+            {
+                if (camera.IsGrabbing())
+                    StopGrab(name);
+
+                ClearTabScanImage();
+            
+                float resolution_mm = (float)(camera.PixelResolution_um / camera.LensScale) / 1000;
+                int totalScanSubImageCount = (int)Math.Ceiling(scanLength_mm / resolution_mm / camera.ImageHeight);
+
+                AppsConfig.Instance().GrabCount = totalScanSubImageCount;
+
+                TabScanImage scanImage = new TabScanImage(0, 0, totalScanSubImageCount);
+                TabScanImageList.Add(scanImage);
+
+                // LineScan Page에서 Line 모드 GrabStart 할 때 Height Set 해줘야함
+                camera.GrabMulti(AppsConfig.Instance().GrabCount);
             }
         }
 
@@ -109,21 +127,25 @@ namespace Jastech.Apps.Winform
 
             if (GetCamera(name) is CameraMil camera)
             {
-                if (IsGrabbing)
+                if (camera.IsGrabbing())
                     StopGrab(name);
 
-                IsGrabbing = true;
-
                 camera.SetOperationMode(TDIOperationMode.Area);
-                camera.GrabMulti(AppConfig.Instance().GrabCount);
+                camera.GrabMulti(AppsConfig.Instance().GrabCount);
             }
         }
 
         public void StopGrab(CameraName name)
         {
-            IsGrabbing = false;
-
             if (GetCamera(name) is Camera camera)
+                camera.Stop();
+        }
+
+        public void StopGrab()
+        {
+            var cameraHandler = DeviceManager.Instance().CameraHandler;
+           
+            foreach (var camera in cameraHandler)
                 camera.Stop();
         }
 
@@ -137,21 +159,21 @@ namespace Jastech.Apps.Winform
         
         public void SetOperationMode(CameraName name, TDIOperationMode operationMode)
         {
-            //var camera = GetCamera(name);
+            var camera = GetCamera(name);
 
-            //if(camera is CameraMil milCamera)
-            //{
-            //    if (operationMode == TDIOperationMode.TDI)
-            //    {
-            //        milCamera.SetTriggerMode(TriggerMode.Hardware);
-            //    }
-            //    else
-            //    {
-            //        milCamera.SetTriggerMode(TriggerMode.Software);
-            //    }
-            //}
-          
-            //camera.SetOperationMode(operationMode);
+            if (camera is CameraMil milCamera)
+            {
+                if (operationMode == TDIOperationMode.TDI)
+                {
+                    milCamera.SetTriggerMode(TriggerMode.Hardware);
+                }
+                else
+                {
+                    milCamera.SetTriggerMode(TriggerMode.Software);
+                }
+            }
+
+            camera.SetOperationMode(operationMode);
         }
 
         public void ClearTabScanImage()
@@ -163,22 +185,11 @@ namespace Jastech.Apps.Winform
 
                 TabScanImageList.Clear();
             }
-            //_grabCount = 0;
-            //lock (_objLock)
-            //{
-            //    lock(ScanImageList)
-            //    {
-            //        for (int i = 0; i < ScanImageList.Count; i++)
-            //        {
-            //            ScanImageList[i]?.Dispose();
-            //            ScanImageList[i] = null;
-            //        }
-            //        ScanImageList.Clear();
-            //    }
-            //}
+            _grabCount = 0;
+            StackTabNo = 0;
         }
 
-        public void InitGrabSettings()
+        public void InitGrabSettings(CameraName cameraName)
         {
             AppsInspModel inspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
             MaterialInfo materialInfo = inspModel.MaterialInfo;
@@ -189,11 +200,11 @@ namespace Jastech.Apps.Winform
 
             ClearTabScanImage();
 
-            Camera camera = GetCamera(CameraName.LinscanMIL0);
+            Camera camera = GetCamera(cameraName);
             float resolution_mm = (float)(camera.PixelResolution_um / camera.LensScale) / 1000; // ex) 3.5 um / 5 / 1000 = 0.0007mm
             int totalScanSubImageCount = (int)Math.Ceiling(materialInfo.PanelXSize_mm / resolution_mm / camera.ImageHeight); // ex) 500mm / 0.0007mm / 1024 pixel
 
-            AppConfig.Instance().GrabCount = totalScanSubImageCount;
+            AppsConfig.Instance().GrabCount = totalScanSubImageCount;
             _grabCount = 0;
             StackTabNo = 0;
 
@@ -224,22 +235,20 @@ namespace Jastech.Apps.Winform
             lock (_objLock)
             {
                 byte[] data = camera.GetGrabbedImage();
-
                 if (data != null)
                 {
-                    if(CurrentOperationMode == TDIOperationMode.TDI)
+                    Mat grabImage = MatHelper.ByteArrayToMat(data, camera.ImageWidth, camera.ImageHeight, 1);
+
+                    if (CurrentOperationMode == TDIOperationMode.TDI)
                     {
                         //kyj : 최적화 생각해봐야함...
-                        Mat grabImage = MatHelper.ByteArrayToMat(data, camera.ImageWidth, camera.ImageHeight, 1);
                         Mat rotatedMat = MatHelper.Transpose(grabImage);
 
-                        grabImage.Dispose();
-
-                        if(TabScanImageList.Count > 0)
+                        if (TabScanImageList.Count > 0 && TabScanImageList.Count < StackTabNo)
                         {
-                            if(GetTabScanImage(StackTabNo) is TabScanImage scanImage)
+                            if (GetTabScanImage(StackTabNo) is TabScanImage scanImage)
                             {
-                                if(scanImage.StartIndex <= _grabCount && _grabCount <= scanImage.EndIndex)
+                                if (scanImage.StartIndex <= _grabCount && _grabCount <= scanImage.EndIndex)
                                     scanImage.AddImage(rotatedMat);
 
                                 if (scanImage.IsAddImageDone())
@@ -252,29 +261,26 @@ namespace Jastech.Apps.Winform
 
                         _grabCount++;
 
-                        if(_grabCount == AppConfig.Instance().GrabCount)
+                        if (_grabCount == AppsConfig.Instance().GrabCount)
                         {
                             camera.Stop();
-                            IsGrabbing = false;
-
                             GrabDoneEventHanlder?.Invoke(true);
                         }
                     }
                     else
                     {
-                        if(camera is CameraMil cameraMil)
-                        {
-                            Mat grabImage = MatHelper.ByteArrayToMat(data, camera.ImageWidth, cameraMil.TDIStages, 1);  // 256 : TDI CAM AREA SIZE
+                        if (camera is CameraMil cameraMil)
                             TeachingLiveImageGrabbed?.Invoke(grabImage);
-                        }
                     }
+
+                    grabImage.Dispose();
                 }
             }
         }
        
-        public bool IsGrabCompleted()
+        public bool IsGrabbing(CameraName name)
         {
-            return true;
+            return GetCamera(name).IsGrabbing() == false;
         }
 
         private TabScanImage GetTabScanImage(int tabNo)

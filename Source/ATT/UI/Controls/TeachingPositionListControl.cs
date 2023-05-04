@@ -33,7 +33,7 @@ namespace ATT.UI.Controls
         #endregion
 
         #region 델리게이트
-        public delegate void SetTeachingPositionListDelegate(TeachingPositionType teachingPositionType);
+        public delegate void SetTeachingPositionListDelegate(TeachingPosType teachingPositionType);
         #endregion
 
         #region 생성자
@@ -75,31 +75,31 @@ namespace ATT.UI.Controls
         private void btnStandby_Click(object sender, EventArgs e)
         {
             SetButtonStatus(sender);
-            SendEventHandler(TeachingPositionType.Standby);
+            SendEventHandler(TeachingPosType.Standby);
         }
 
         private void btnPreAlignLeft_Click(object sender, EventArgs e)
         {
             SetButtonStatus(sender);
-            SendEventHandler(TeachingPositionType.Stage1_PreAlign_Left);
+            SendEventHandler(TeachingPosType.Stage1_PreAlign_Left);
         }
 
         private void btnPreAlignRight_Click(object sender, EventArgs e)
         {
             SetButtonStatus(sender);
-            SendEventHandler(TeachingPositionType.Stage1_PreAlign_Right);
+            SendEventHandler(TeachingPosType.Stage1_PreAlign_Right);
         }
 
         private void btnScanStart_Click(object sender, EventArgs e)
         {
             SetButtonStatus(sender);
-            SendEventHandler(TeachingPositionType.Stage1_Scan_Start);
+            SendEventHandler(TeachingPosType.Stage1_Scan_Start);
         }
 
         private void btnScanEnd_Click(object sender, EventArgs e)
         {
             SetButtonStatus(sender);
-            SendEventHandler(TeachingPositionType.Stage1_Scan_End);
+            SendEventHandler(TeachingPosType.Stage1_Scan_End);
         }
 
         private void SetButtonStatus(object sender)

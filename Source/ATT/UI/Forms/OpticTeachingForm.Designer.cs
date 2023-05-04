@@ -28,7 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
             this.tlpJog = new System.Windows.Forms.TableLayoutPanel();
             this.tlpJogFunction = new System.Windows.Forms.TableLayoutPanel();
             this.pnlJog = new System.Windows.Forms.Panel();
@@ -119,7 +118,6 @@
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.pnlDisplay = new System.Windows.Forms.Panel();
             this.pnlHistogram = new System.Windows.Forms.Panel();
-            this.AreaTimer = new System.Windows.Forms.Timer(this.components);
             this.tlpJog.SuspendLayout();
             this.tlpJogFunction.SuspendLayout();
             this.pnlJog.SuspendLayout();
@@ -1539,10 +1537,6 @@
             this.pnlHistogram.Size = new System.Drawing.Size(620, 259);
             this.pnlHistogram.TabIndex = 0;
             // 
-            // AreaTimer
-            // 
-            this.AreaTimer.Tick += new System.EventHandler(this.AreaTimer_Tick);
-            // 
             // OpticTeachingForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
@@ -1691,6 +1685,5 @@
         private System.Windows.Forms.Button btnGrabStart;
         private System.Windows.Forms.Panel pnlTeach;
         private System.Windows.Forms.Panel pnlJog;
-        private System.Windows.Forms.Timer AreaTimer;
     }
 }

@@ -1,5 +1,6 @@
 ﻿using Jastech.Apps.Structure.Data;
 using Jastech.Framework.Device.LAFCtrl;
+using Jastech.Framework.Util.Helper;
 using Jastech.Framework.Winform;
 using System;
 using System.Collections.Generic;

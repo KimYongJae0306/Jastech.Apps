@@ -41,7 +41,7 @@ namespace Jastech.Apps.Winform
             if (motion == null)
                 return false;
 
-            string dir = Path.Combine(AppConfig.Instance().Path.Config, "AxisHanlder");
+            string dir = Path.Combine(AppsConfig.Instance().Path.Config, "AxisHanlder");
 
             if (Directory.Exists(dir) == false)
             {
@@ -78,7 +78,7 @@ namespace Jastech.Apps.Winform
 
         public void Save(AxisHandler axishandler)
         {
-            string dir = Path.Combine(AppConfig.Instance().Path.Config, "AxisHanlder");
+            string dir = Path.Combine(AppsConfig.Instance().Path.Config, "AxisHanlder");
             string unit0FileName = string.Format("AxisHanlder_{0}.json", axishandler.Name);
             string unit0FilePath = Path.Combine(dir, unit0FileName);
 
@@ -104,47 +104,29 @@ namespace Jastech.Apps.Winform
             return null;
         }
 
-        //public Axis GetAxis(string axisHandlerName, AxisName axisName)
-        //{
-        //    foreach (var axisHandler in AxisHandlerList)
-        //    {
-        //        if (axisHandler.Name == axisHandlerName)
-        //        {
-        //            foreach (var axis in axisHandler.AxisList)
-        //            {
-        //                if (axis.Name == axisName.ToString())
-        //                    return axis;
-        //            }
-        //        }
-        //    }
-        //    return null;
-        //}
-
         public AxisHandler GetAxisHandler(AxisHandlerName axisHandlerName)
          {
             return AxisHandlerList.Where(x => x.Name == axisHandlerName.ToString()).First();
         }
 
-        public void MoveTo(UnitName unitName, AxisHandlerName handlerName, AxisName axisName, TeachingPositionType teachingPosition)
+        public void MoveTo(UnitName unitName, TeachingPosType teachingPosType, Axis axis)
         {
             AppsInspModel inspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
             var unit = inspModel.GetUnit(unitName);
-            var axis = GetAxis(handlerName, axisName);
+            var posData = unit.GetTeachingInfo(teachingPosType);
 
-            var posData = unit.TeachingPositions[(int)teachingPosition];
-            var targetPosition = posData.GetTargetPosition(axisName);
-            var movingParam = posData.GetMovingParams(axisName);
+            var targetPosition = posData.GetTargetPosition(axis.Name);
+            var movingParam = posData.GetMovingParams(axis.Name);
 
             axis.MoveTo(targetPosition, movingParam);
         }
 
-        public bool IsMovingCompleted(UnitName unitName, AxisHandlerName handlerName, AxisName axisName, TeachingPositionType teachingPosition)
+        public bool IsAxisInPosition(UnitName unitName, TeachingPosType teachingPosition, Axis axis)
         {
-            var axis = GetAxis(handlerName, axisName);
             var inspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
 
-            var posData = inspModel.GetUnit(unitName).TeachingPositions[(int)teachingPosition];
-            var targetPosition = posData.GetTargetPosition(axisName);
+            var posData = inspModel.GetUnit(unitName).TeachingInfoList[(int)teachingPosition];
+            var targetPosition = posData.GetTargetPosition(axis.Name);
             var actualPosition = axis.GetActualPosition();
 
             if (Math.Abs(targetPosition - actualPosition) <= 0.1)
@@ -152,6 +134,7 @@ namespace Jastech.Apps.Winform
 
             return false;
         }
+
         #endregion
     }
 

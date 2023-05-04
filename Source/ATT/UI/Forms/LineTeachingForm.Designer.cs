@@ -52,7 +52,6 @@
             this.pnlTeach = new System.Windows.Forms.Panel();
             this.pnlTeachingItem = new System.Windows.Forms.Panel();
             this.tlpTeachingItem = new System.Windows.Forms.TableLayoutPanel();
-            this.btnAutoAkkon = new System.Windows.Forms.Button();
             this.btnAkkon = new System.Windows.Forms.Button();
             this.btnAlign = new System.Windows.Forms.Button();
             this.btnMark = new System.Windows.Forms.Button();
@@ -414,12 +413,11 @@
             // 
             this.tlpTeachingItem.ColumnCount = 1;
             this.tlpTeachingItem.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tlpTeachingItem.Controls.Add(this.btnAutoAkkon, 0, 4);
-            this.tlpTeachingItem.Controls.Add(this.btnAkkon, 0, 3);
-            this.tlpTeachingItem.Controls.Add(this.btnAlign, 0, 2);
-            this.tlpTeachingItem.Controls.Add(this.btnMark, 0, 1);
             this.tlpTeachingItem.Controls.Add(this.btnCancel, 0, 7);
             this.tlpTeachingItem.Controls.Add(this.btnSave, 0, 6);
+            this.tlpTeachingItem.Controls.Add(this.btnMark, 0, 0);
+            this.tlpTeachingItem.Controls.Add(this.btnAlign, 0, 1);
+            this.tlpTeachingItem.Controls.Add(this.btnAkkon, 0, 2);
             this.tlpTeachingItem.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tlpTeachingItem.Location = new System.Drawing.Point(0, 0);
             this.tlpTeachingItem.Margin = new System.Windows.Forms.Padding(0);
@@ -436,27 +434,13 @@
             this.tlpTeachingItem.Size = new System.Drawing.Size(144, 779);
             this.tlpTeachingItem.TabIndex = 0;
             // 
-            // btnAutoAkkon
-            // 
-            this.btnAutoAkkon.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(34)))), ((int)(((byte)(34)))), ((int)(((byte)(34)))));
-            this.btnAutoAkkon.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.btnAutoAkkon.Font = new System.Drawing.Font("맑은 고딕", 20F, System.Drawing.FontStyle.Bold);
-            this.btnAutoAkkon.ForeColor = System.Drawing.Color.White;
-            this.btnAutoAkkon.Location = new System.Drawing.Point(2, 402);
-            this.btnAutoAkkon.Margin = new System.Windows.Forms.Padding(2);
-            this.btnAutoAkkon.Name = "btnAutoAkkon";
-            this.btnAutoAkkon.Size = new System.Drawing.Size(140, 96);
-            this.btnAutoAkkon.TabIndex = 20;
-            this.btnAutoAkkon.Text = "A.Akkon";
-            this.btnAutoAkkon.UseVisualStyleBackColor = false;
-            // 
             // btnAkkon
             // 
             this.btnAkkon.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(34)))), ((int)(((byte)(34)))), ((int)(((byte)(34)))));
             this.btnAkkon.Dock = System.Windows.Forms.DockStyle.Fill;
             this.btnAkkon.Font = new System.Drawing.Font("맑은 고딕", 20F, System.Drawing.FontStyle.Bold);
             this.btnAkkon.ForeColor = System.Drawing.Color.White;
-            this.btnAkkon.Location = new System.Drawing.Point(2, 302);
+            this.btnAkkon.Location = new System.Drawing.Point(2, 202);
             this.btnAkkon.Margin = new System.Windows.Forms.Padding(2);
             this.btnAkkon.Name = "btnAkkon";
             this.btnAkkon.Size = new System.Drawing.Size(140, 96);
@@ -471,7 +455,7 @@
             this.btnAlign.Dock = System.Windows.Forms.DockStyle.Fill;
             this.btnAlign.Font = new System.Drawing.Font("맑은 고딕", 20F, System.Drawing.FontStyle.Bold);
             this.btnAlign.ForeColor = System.Drawing.Color.White;
-            this.btnAlign.Location = new System.Drawing.Point(2, 202);
+            this.btnAlign.Location = new System.Drawing.Point(2, 102);
             this.btnAlign.Margin = new System.Windows.Forms.Padding(2);
             this.btnAlign.Name = "btnAlign";
             this.btnAlign.Size = new System.Drawing.Size(140, 96);
@@ -486,7 +470,7 @@
             this.btnMark.Dock = System.Windows.Forms.DockStyle.Fill;
             this.btnMark.Font = new System.Drawing.Font("맑은 고딕", 20F, System.Drawing.FontStyle.Bold);
             this.btnMark.ForeColor = System.Drawing.Color.White;
-            this.btnMark.Location = new System.Drawing.Point(2, 102);
+            this.btnMark.Location = new System.Drawing.Point(2, 2);
             this.btnMark.Margin = new System.Windows.Forms.Padding(2);
             this.btnMark.Name = "btnMark";
             this.btnMark.Size = new System.Drawing.Size(140, 96);
@@ -533,7 +517,7 @@
             this.ClientSize = new System.Drawing.Size(1675, 779);
             this.Controls.Add(this.tlpTeachingPage);
             this.Font = new System.Drawing.Font("맑은 고딕", 11.25F, System.Drawing.FontStyle.Bold);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D;
             this.Name = "LineTeachingForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
@@ -576,7 +560,6 @@
         private System.Windows.Forms.Button btnLoadImage;
         private System.Windows.Forms.Button btnGrabStop;
         private System.Windows.Forms.Button btnGrabStart;
-        private System.Windows.Forms.Button btnAutoAkkon;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
         private System.Windows.Forms.Label lblNext;
         private System.Windows.Forms.Label lblPrev;

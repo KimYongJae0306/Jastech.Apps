@@ -22,10 +22,10 @@ using System.Windows.Forms;
 
 namespace Jastech.Apps.Winform.Settings
 {
-    public class AppConfig : ConfigSet
+    public class AppsConfig : ConfigSet
     {
         #region 필드
-        private static AppConfig _instance = null;
+        private static AppsConfig _instance = null;
         #endregion
 
         #region 속성
@@ -41,11 +41,11 @@ namespace Jastech.Apps.Winform.Settings
         #endregion
 
         #region 메서드
-        public static AppConfig Instance()
+        public static AppsConfig Instance()
         {
             if (_instance == null)
             {
-                _instance = new AppConfig();
+                _instance = new AppsConfig();
             }
 
             return _instance;
@@ -106,10 +106,6 @@ namespace Jastech.Apps.Winform.Settings
                 camera1.TriggerIoSourceType = MILIoSourceType.AUX_IO0;
                 config.Add(camera1);
 
-                //var camera0 = new CameraVirtual(CameraName.LeftArea.ToString(), 4096, 1024, ColorFormat.Gray, SensorType.Area);
-                //config.Add(camera0);
-
-                // Motion OK
                 var motion = new ACSMotion("Motion", 2, ACSConnectType.Ethernet);
                 motion.IpAddress = "10.0.0.100";
                 config.Add(motion);
@@ -123,7 +119,6 @@ namespace Jastech.Apps.Winform.Settings
                 //light2.ChannelNameMap["Ch.RedRing"] = 0;
                 //config.Add(light2);
 
-                // LAF OK
                 var laf1 = new NuriOneLAFCtrl(LAFName.Akkon.ToString());
                 laf1.SerialPortComm = new SerialPortComm
                 {

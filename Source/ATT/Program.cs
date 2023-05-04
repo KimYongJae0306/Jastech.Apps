@@ -31,10 +31,10 @@ namespace ATT
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
 
             MilHelper.InitApplication();
-            AppConfig.Instance().Initialize();
-            AppConfig.Instance().Load();
+            AppsConfig.Instance().Initialize();
+            AppsConfig.Instance().Load();
 
-            Logger.Initialize(AppConfig.Instance().Path.Log);
+            Logger.Initialize(AppsConfig.Instance().Path.Log);
 
             var mainForm = new MainForm();
            

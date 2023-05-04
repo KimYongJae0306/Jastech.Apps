@@ -34,10 +34,13 @@ namespace ATT.UI.Forms
 {
     public partial class OpticTeachingForm : Form
     {
+        #region 필드
         private Color _selectedColor = new Color();
 
         private Color _nonSelectedColor = new Color();
+        #endregion
 
+        #region 속성
         private DrawBoxControl DrawBoxControl { get; set; } = new DrawBoxControl() { Dock = DockStyle.Fill };
 
         private PixelValueGraphControl PixelValueGraphControl { get; set; } = new PixelValueGraphControl() { Dock = DockStyle.Fill };
@@ -50,18 +53,44 @@ namespace ATT.UI.Forms
 
         private LAFJogControl LAFJogControl { get; set; } = new LAFJogControl() { Dock = DockStyle.Fill };
 
+        private AxisHandler AxisHandler { get; set; } = null;
+
+        private LAFCtrl LAFCtrl { get; set; } = null;
+
+        private TeachingInfo TeachingPositionInfo { get; set; } = null;
+        #endregion
+
+        #region 이벤트
+        #endregion
+
+        #region 델리게이트
+        private delegate void UpdateUIDelegate();
+        #endregion
+
+        #region 생성자
         public OpticTeachingForm()
         {
             InitializeComponent();
         }
+        #endregion
 
+        #region 메서드
         private void LinescanControl_Load(object sender, EventArgs e)
         {
             SystemManager.Instance().UpdateTeachingData();
             AppsLineCameraManager.Instance().TeachingLiveImageGrabbed += LiveDisplay;
+            AppsLineCameraManager.Instance().TabImageGrabCompletedEventHandler += OpticTeachingForm_TabImageGrabCompletedEventHandler;
             UpdateData();
             AddControl();
             InitializeUI();
+        }
+
+        private void OpticTeachingForm_TabImageGrabCompletedEventHandler(TabScanImage image)
+        {
+            if(image.GetMergeImage() is Mat mat)
+            {
+                DrawBoxControl.SetImage(mat.ToBitmap());
+            }
         }
 
         private void InitializeUI()
@@ -80,13 +109,13 @@ namespace ATT.UI.Forms
             pnlDisplay.Controls.Add(DrawBoxControl);
             pnlHistogram.Controls.Add(PixelValueGraphControl);
 
-            string unitName = "0";// TeachingPositionListControl.UnitName;
-            var posData = SystemManager.Instance().GetTeachingData().GetUnit(unitName).TeachingPositions;
+            string unitName = UnitName.Unit0.ToString();
+            var posData = SystemManager.Instance().GetTeachingData().GetUnit(unitName).TeachingInfoList;
             AxisHandler axisHandler = AppsMotionManager.Instance().GetAxisHandler(AxisHandlerName.Handler0);
             var lafCtrl = AppsLAFManager.Instance().GetLAFCtrl(LAFName.Akkon);
 
             pnlAutoFocus.Controls.Add(AutoFocusControl);
-            AutoFocusControl.UpdateData(posData[(int)TeachingPositionType.Stage1_Scan_Start].AxisInfoList[(int)AxisName.Z]);
+            AutoFocusControl.UpdateData(posData[(int)TeachingPosType.Stage1_Scan_Start].AxisInfoList[(int)AxisName.Z]);
             AutoFocusControl.SetAxisHanlder(axisHandler);
             AutoFocusControl.SetLAFCtrl(lafCtrl);
 
@@ -110,7 +139,6 @@ namespace ATT.UI.Forms
             SetOperationMode(TDIOperationMode.Area);
         }
 
-        
         private void lblLineMode_Click(object sender, EventArgs e)
         {
             SetOperationMode(TDIOperationMode.TDI);
@@ -118,7 +146,7 @@ namespace ATT.UI.Forms
 
         private void SetOperationMode(TDIOperationMode operationMode)
         {
-            if (AppsLineCameraManager.Instance().IsGrabbing)
+            if (AppsLineCameraManager.Instance().IsGrabbing(CameraName.LinscanMIL0))
                 AppsLineCameraManager.Instance().StopGrab(CameraName.LinscanMIL0);
 
             switch (operationMode)
@@ -143,7 +171,6 @@ namespace ATT.UI.Forms
             AppsLineCameraManager.Instance().CurrentOperationMode = operationMode;
         }
 
-        private delegate void UpdateUIDelegate();
         public void UpdateUI()
         {
             if (this.InvokeRequired)
@@ -168,27 +195,20 @@ namespace ATT.UI.Forms
             var axisHandler = AppsMotionManager.Instance().GetAxisHandler(AxisHandlerName.Handler0);
             SetAxisHandler(axisHandler);
 
-            //var posData = SystemManager.Instance().GetTeachingData().GetUnit(UnitName).TeachingPositions[(int)TeachingPositionType];
-            //var posData = GetUnit(UnitName).TeachingPositions[(int)TeachingPositionType];
-            //SetTeachingPosition(posData);
-
             var lafCtrl = AppsLAFManager.Instance().GetLAFCtrl(LAFName.Akkon);
             SetLAFCtrl(lafCtrl);
         }
-
-        private AxisHandler AxisHandler { get; set; } = null;
+    
         private void SetAxisHandler(AxisHandler axisHandler)
         {
             AxisHandler = axisHandler;
         }
-
-        private TeachingPosition TeachingPositionInfo { get; set; } = null;
-        private void SetTeachingPosition(TeachingPosition teacingPosition)
+      
+        private void SetTeachingPosition(TeachingInfo teacingPosition)
         {
             TeachingPositionInfo = teacingPosition.DeepCopy();
         }
-
-        private LAFCtrl LAFCtrl { get; set; } = null;
+     
         private void SetLAFCtrl(LAFCtrl lafCtrl)
         {
             LAFCtrl = lafCtrl;
@@ -311,7 +331,7 @@ namespace ATT.UI.Forms
 
             }
             else
-            { 
+            {
 
             }
         }
@@ -388,7 +408,7 @@ namespace ATT.UI.Forms
         {
             string unitName = "0";
             var unit = SystemManager.Instance().GetTeachingData().GetUnit(unitName);
-            var posData = unit.TeachingPositions[(int)TeachingPositionType.Stage1_Scan_Start];
+            var posData = unit.TeachingInfoList[(int)TeachingPosType.Stage1_Scan_Start];
 
             posData.AxisInfoList[(int)AxisName.Z].TargetPosition = AutoFocusControl.GetCurrentData().TargetPosition;
             posData.AxisInfoList[(int)AxisName.Z].CenterOfGravity = AutoFocusControl.GetCurrentData().CenterOfGravity;
@@ -413,7 +433,7 @@ namespace ATT.UI.Forms
             UpdateCurrentdata();
             model.SetUnitList(SystemManager.Instance().GetTeachingData().UnitList);
 
-            string fileName = System.IO.Path.Combine(AppConfig.Instance().Path.Model, model.Name, InspModel.FileName);
+            string fileName = System.IO.Path.Combine(AppsConfig.Instance().Path.Model, model.Name, InspModel.FileName);
             SystemManager.Instance().SaveModel(fileName, model);
         }
 
@@ -427,6 +447,7 @@ namespace ATT.UI.Forms
             MotionPopupForm motionPopupForm = new MotionPopupForm();
             motionPopupForm.ShowDialog();
         }
+
         private void LiveDisplay(Mat image)
         {
             if (image == null)
@@ -440,18 +461,12 @@ namespace ATT.UI.Forms
             if (AppsLineCameraManager.Instance().CurrentOperationMode == TDIOperationMode.TDI)
                 AppsLineCameraManager.Instance().StartGrab(CameraName.LinscanMIL0);
             else
-            {
-                //AreaTimer.Start();
                 AppsLineCameraManager.Instance().StartGrabContinous(CameraName.LinscanMIL0);
-            }
         }
 
         private void btnGrabStop_Click(object sender, EventArgs e)
         {
-            if (AppsLineCameraManager.Instance().CurrentOperationMode == TDIOperationMode.TDI)
-                AppsLineCameraManager.Instance().StopGrab(CameraName.LinscanMIL0);
-            else
-                AreaTimer.Stop();
+            AppsLineCameraManager.Instance().StopGrab(CameraName.LinscanMIL0);
         }
 
         private void OpticTeachingForm_FormClosing(object sender, FormClosingEventArgs e)
@@ -460,30 +475,6 @@ namespace ATT.UI.Forms
             AppsLineCameraManager.Instance().StopGrab(CameraName.LinscanMIL0);
             AppsLineCameraManager.Instance().SetOperationMode(CameraName.LinscanMIL0, TDIOperationMode.TDI);
         }
-
-        private void AreaTimer_Tick(object sender, EventArgs e)
-        {
-            //byte[] dataArray = AppsLineCameraManager.Instance().OnceGrab(CameraName.LinscanMIL0);
-            //Mat grabImage = MatHelper.ByteArrayToMat(dataArray, 4640,1024, 1);
-            //if(pictureBox1.Image != null)
-            //{
-            //    pictureBox1.Image.Dispose();
-            //    pictureBox1.Image = null;
-            //}
-            //pictureBox1.Image = grabImage.ToBitmap();
-            ////grabImage.Save(@"D:\grab.bmp");
-            //var cogImage = CogImageHelper.CovertImage(dataArray, 4640, 1024, ColorFormat.Gray);
-            //CogDisplayControl.SetImage(cogImage);
-        }
-        static int aaaa = 100;
-        private void pictureBox1_Paint(object sender, PaintEventArgs e)
-        {
-            aaaa += 1;
-            e.Graphics.DrawRectangle(new Pen(Color.Yellow), new Rectangle(100, 100, aaaa, aaaa));
-
-            if (aaaa > 2000)
-                aaaa = 100;
-
-        }
+        #endregion
     }
 }

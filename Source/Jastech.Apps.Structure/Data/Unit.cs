@@ -29,11 +29,16 @@ namespace Jastech.Apps.Structure.Data
         private List<Tab> TabList { get; set; } = new List<Tab>();
 
         [JsonProperty]
-        public List<TeachingPosition> TeachingPositions { get; set; } = new List<TeachingPosition>();
+        public List<TeachingInfo> TeachingInfoList { get; set; } = new List<TeachingInfo>();
 
-        public void AddTeachingPosition(TeachingPosition position)
+        public void AddTeachingInfo(TeachingInfo position)
         {
-            TeachingPositions.Add(position);
+            TeachingInfoList.Add(position);
+        }
+
+        public TeachingInfo GetTeachingInfo(TeachingPosType type)
+        {
+            return TeachingInfoList.Where(x => x.Name == type.ToString()).First();
         }
 
         public Unit DeepCopy()
@@ -44,7 +49,7 @@ namespace Jastech.Apps.Structure.Data
             unit.PreAligns = PreAligns.Select(x => x.DeepCopy()).ToList();
             unit.LightParams = LightParams.Select(x => x.DeepCopy()).ToList();
             unit.TabList = TabList.Select(x => x.DeepCopy()).ToList();
-            unit.TeachingPositions = TeachingPositions.Select(x => x.DeepCopy()).ToList();
+            unit.TeachingInfoList = TeachingInfoList.Select(x => x.DeepCopy()).ToList();
             return unit;
         }
 

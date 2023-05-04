@@ -89,8 +89,8 @@ namespace Jastech.Apps.Winform.UI.Controls
             LAFCtrl = lafCtrl;
         }
 
-        private List<TeachingPosition> TeachingPositionList { get; set; } = null;
-        public TeachingPositionType TeachingPositionType = TeachingPositionType.Stage1_Scan_Start;
+        private List<TeachingInfo> TeachingPositionList { get; set; } = null;
+        public TeachingPosType TeachingPositionType = TeachingPosType.Stage1_Scan_Start;
 
         private void lblTargetPositionZValue_Click(object sender, EventArgs e)
         {

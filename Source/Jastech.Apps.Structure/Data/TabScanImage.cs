@@ -11,7 +11,7 @@ namespace Jastech.Apps.Structure.Data
     {
         private object _objLock = new object();
 
-        public int Index { get; set; }
+        public int TabNo { get; set; }
 
         public int StartIndex { get; set; }
 
@@ -21,9 +21,9 @@ namespace Jastech.Apps.Structure.Data
 
         private List<Mat> ScanImageList { get; set; } = new List<Mat>();
 
-        public TabScanImage(int index, int startIndex, int endIndex)
+        public TabScanImage(int tabNo, int startIndex, int endIndex)
         {
-            Index = index;
+            TabNo = tabNo;
             StartIndex = startIndex;
             EndIndex = endIndex;
 

@@ -38,7 +38,7 @@
             this.mtgEnableAkkon = new MetroFramework.Controls.MetroToggle();
             this.tableLayoutPanel10 = new System.Windows.Forms.TableLayoutPanel();
             this.label14 = new System.Windows.Forms.Label();
-            this.mtgEnablePreAlign = new MetroFramework.Controls.MetroToggle();
+            this.mtgEnableAlign = new MetroFramework.Controls.MetroToggle();
             this.panel8 = new System.Windows.Forms.Panel();
             this.label20 = new System.Windows.Forms.Label();
             this.tableLayoutPanel6 = new System.Windows.Forms.TableLayoutPanel();
@@ -232,7 +232,7 @@
             this.tableLayoutPanel10.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel10.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 100F));
             this.tableLayoutPanel10.Controls.Add(this.label14, 0, 0);
-            this.tableLayoutPanel10.Controls.Add(this.mtgEnablePreAlign, 1, 0);
+            this.tableLayoutPanel10.Controls.Add(this.mtgEnableAlign, 1, 0);
             this.tableLayoutPanel10.Location = new System.Drawing.Point(58, 446);
             this.tableLayoutPanel10.Name = "tableLayoutPanel10";
             this.tableLayoutPanel10.RowCount = 1;
@@ -249,21 +249,21 @@
             this.label14.Name = "label14";
             this.label14.Size = new System.Drawing.Size(114, 36);
             this.label14.TabIndex = 5;
-            this.label14.Text = "PrevAlign";
+            this.label14.Text = "Align";
             this.label14.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // mtgEnablePreAlign
+            // mtgEnableAlign
             // 
-            this.mtgEnablePreAlign.AutoSize = true;
-            this.mtgEnablePreAlign.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.mtgEnablePreAlign.FontWeight = MetroFramework.MetroLinkWeight.Bold;
-            this.mtgEnablePreAlign.Location = new System.Drawing.Point(123, 3);
-            this.mtgEnablePreAlign.Name = "mtgEnablePreAlign";
-            this.mtgEnablePreAlign.Size = new System.Drawing.Size(72, 30);
-            this.mtgEnablePreAlign.TabIndex = 12;
-            this.mtgEnablePreAlign.Text = "Off";
-            this.mtgEnablePreAlign.Theme = MetroFramework.MetroThemeStyle.Dark;
-            this.mtgEnablePreAlign.UseSelectable = true;
+            this.mtgEnableAlign.AutoSize = true;
+            this.mtgEnableAlign.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.mtgEnableAlign.FontWeight = MetroFramework.MetroLinkWeight.Bold;
+            this.mtgEnableAlign.Location = new System.Drawing.Point(123, 3);
+            this.mtgEnableAlign.Name = "mtgEnableAlign";
+            this.mtgEnableAlign.Size = new System.Drawing.Size(72, 30);
+            this.mtgEnableAlign.TabIndex = 12;
+            this.mtgEnableAlign.Text = "Off";
+            this.mtgEnableAlign.Theme = MetroFramework.MetroThemeStyle.Dark;
+            this.mtgEnableAlign.UseSelectable = true;
             // 
             // panel8
             // 
@@ -1099,7 +1099,7 @@
         private MetroFramework.Controls.MetroToggle mtgEnableAkkon;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel10;
         private System.Windows.Forms.Label label14;
-        private MetroFramework.Controls.MetroToggle mtgEnablePreAlign;
+        private MetroFramework.Controls.MetroToggle mtgEnableAlign;
         private System.Windows.Forms.Panel panel8;
         private System.Windows.Forms.Label label20;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel13;

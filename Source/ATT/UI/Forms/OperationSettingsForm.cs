@@ -58,7 +58,7 @@ namespace ATT.UI.Forms
 
         private void LoadData()
         {
-            var operation = AppConfig.Instance().Operation;
+            var operation = AppsConfig.Instance().Operation;
 
             txtDistanceX.Text = operation.DistanceFromPreAlignToLineScanX.ToString();
             txtDistanceY.Text = operation.DistanceFromPreAlignToLineScanY.ToString();
@@ -67,7 +67,7 @@ namespace ATT.UI.Forms
             txtPreAlignToleranceY.Text = operation.PreAlignToleranceY.ToString();
             txtPreAlignToleranceTheta.Text = operation.PreAlignToleranceTheta.ToString();
 
-            mtgEnablePreAlign.Checked = operation.EnablePreAlign;
+            mtgEnableAlign.Checked = operation.EnableAlign;
             mtgEnableAkkon.Checked = operation.EnableAkkon;
 
             txtDataStoringDays.Text = operation.DataStoringDuration.ToString();
@@ -93,7 +93,7 @@ namespace ATT.UI.Forms
 
         public void UpdateCuurentData()
         {
-            var operation = AppConfig.Instance().Operation;
+            var operation = AppsConfig.Instance().Operation;
 
             operation.DistanceFromPreAlignToLineScanX = Convert.ToSingle(GetValue(txtDistanceX.Text));
             operation.DistanceFromPreAlignToLineScanY = Convert.ToSingle(GetValue(txtDistanceY.Text));
@@ -102,7 +102,7 @@ namespace ATT.UI.Forms
             operation.PreAlignToleranceY = Convert.ToSingle(GetValue(txtPreAlignToleranceY.Text));
             operation.PreAlignToleranceTheta = Convert.ToSingle(GetValue(txtPreAlignToleranceTheta.Text));
 
-            operation.EnablePreAlign = mtgEnablePreAlign.Checked;
+            operation.EnableAlign = mtgEnableAlign.Checked;
             operation.EnableAkkon = mtgEnableAkkon.Checked;
 
             operation.DataStoringDuration = (int)Convert.ToDouble(GetValue(txtDataStoringDays.Text));
@@ -126,7 +126,7 @@ namespace ATT.UI.Forms
         private void lblSave_Click(object sender, EventArgs e)
         {
             UpdateCuurentData();
-            AppConfig.Instance().Operation.Save(AppConfig.Instance().Path.Config);
+            AppsConfig.Instance().Operation.Save(AppsConfig.Instance().Path.Config);
 
             MessageConfirmForm form = new MessageConfirmForm();
             form.Message = "Save Completed.";

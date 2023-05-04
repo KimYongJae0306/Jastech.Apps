@@ -191,25 +191,25 @@ namespace ATT.Core
         {
             var currentAxisHandler = AppsMotionManager.Instance().GetAxisHandler(AxisHandlerName.Handler0);
 
-            TeachingPosition t1 = new TeachingPosition();
-            t1.CreateTeachingPosition(TeachingPositionType.Standby.ToString(), "Standby", currentAxisHandler);
-            unit.AddTeachingPosition(t1);
+            TeachingInfo t1 = new TeachingInfo();
+            t1.CreateTeachingInfo(TeachingPosType.Standby.ToString(), "Standby", currentAxisHandler);
+            unit.AddTeachingInfo(t1);
 
-            TeachingPosition t2 = new TeachingPosition();
-            t2.CreateTeachingPosition(TeachingPositionType.Stage1_PreAlign_Left.ToString(), "Stage#1 PreAlign Left Position", currentAxisHandler);
-            unit.AddTeachingPosition(t2);
+            TeachingInfo t2 = new TeachingInfo();
+            t2.CreateTeachingInfo(TeachingPosType.Stage1_PreAlign_Left.ToString(), "Stage#1 PreAlign Left Position", currentAxisHandler);
+            unit.AddTeachingInfo(t2);
 
-            TeachingPosition t3 = new TeachingPosition();
-            t3.CreateTeachingPosition(TeachingPositionType.Stage1_PreAlign_Right.ToString(), "Stage#1 PreAlign Right Position", currentAxisHandler);
-            unit.AddTeachingPosition(t3);
+            TeachingInfo t3 = new TeachingInfo();
+            t3.CreateTeachingInfo(TeachingPosType.Stage1_PreAlign_Right.ToString(), "Stage#1 PreAlign Right Position", currentAxisHandler);
+            unit.AddTeachingInfo(t3);
 
-            TeachingPosition t4 = new TeachingPosition();
-            t4.CreateTeachingPosition(TeachingPositionType.Stage1_Scan_Start.ToString(), "Stage#1 ScanStart", currentAxisHandler);
-            unit.AddTeachingPosition(t4);
+            TeachingInfo t4 = new TeachingInfo();
+            t4.CreateTeachingInfo(TeachingPosType.Stage1_Scan_Start.ToString(), "Stage#1 ScanStart", currentAxisHandler);
+            unit.AddTeachingInfo(t4);
 
-            TeachingPosition t5 = new TeachingPosition();
-            t5.CreateTeachingPosition(TeachingPositionType.Stage1_Scan_End.ToString(), "Stage#1 ScanEnd", currentAxisHandler);
-            unit.AddTeachingPosition(t5);
+            TeachingInfo t5 = new TeachingInfo();
+            t5.CreateTeachingInfo(TeachingPosType.Stage1_Scan_End.ToString(), "Stage#1 ScanEnd", currentAxisHandler);
+            unit.AddTeachingInfo(t5);
         }
 
         // PreAlign 검사 시
@@ -225,7 +225,7 @@ namespace ATT.Core
         {
             List<LightParameter> lightParameterList = new List<LightParameter>();
 
-            var lightCtrls = AppConfig.Instance().Machine.GetDevices<LightCtrl>();
+            var lightCtrls = AppsConfig.Instance().Machine.GetDevices<LightCtrl>();
             if (lightCtrls == null)
                 return lightParameterList;
             
