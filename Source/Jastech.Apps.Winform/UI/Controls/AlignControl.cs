@@ -22,6 +22,7 @@ using Jastech.Apps.Structure.Parameters;
 using Jastech.Framework.Imaging.Result;
 using Jastech.Framework.Winform.Helper;
 using Jastech.Framework.Winform.Controls;
+using static Jastech.Framework.Device.Motions.AxisMovingParam;
 
 namespace Jastech.Apps.Winform.UI.Controls
 {
@@ -30,7 +31,7 @@ namespace Jastech.Apps.Winform.UI.Controls
         #region 필드
         private string _prevTabName { get; set; } = string.Empty;
 
-    
+
         private Color _selectedColor = new Color();
 
         private Color _nonSelectedColor = new Color();
@@ -88,7 +89,7 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         public void SetParams(Tab tab)
         {
-            if(tab == null)
+            if (tab == null)
                 return;
 
             CurrentTab = tab;
@@ -313,10 +314,10 @@ namespace Jastech.Apps.Winform.UI.Controls
             roiJogForm.ShowDialog();
         }
 
-        private void ReceiveClickEvent(string jogType, int jogScale)
+        private void ReceiveClickEvent(string jogType, int jogScale, ROIType roiType)
         {
-            if (jogType.Contains("Skew")) { }
-            //SkewMode(jogType, jogScale);
+            if (jogType.Contains("Skew"))
+                SkewMode(jogType, jogScale);
             else if (jogType.Contains("Move"))
                 MoveMode(jogType, jogScale);
             else if (jogType.Contains("Zoom"))
@@ -324,12 +325,43 @@ namespace Jastech.Apps.Winform.UI.Controls
             else { }
         }
 
-        private void MoveMode(string moveType, int jogScale)
+        private void SkewMode(string skewType, int jogScale)
         {
             if (CurrentTab == null)
                 return;
 
             var display = AppsTeachingUIManager.Instance().GetDisplay();
+
+            double skewUnit = (double)jogScale / 1000;
+            double zoom = display.GetZoomValue();
+            skewUnit /= zoom;
+
+            bool isSkewZero = false;
+
+            if (skewType.ToLower().Contains("skewccw"))
+                skewUnit *= -1;
+            else if (skewType.ToLower().Contains("skewcw"))
+                skewUnit *= 1;
+            else if (skewType.ToLower().Contains("skewzero"))
+                isSkewZero = true;
+            else { }
+
+            var currentParam = CogCaliperParamControl.GetCurrentParam();
+            CogRectangleAffine roi = new CogRectangleAffine(currentParam.CaliperTool.Region);
+
+            if (isSkewZero)
+                roi.Skew = 0;
+            else
+                roi.Skew += skewUnit;
+
+            currentParam.CaliperTool.Region = roi;
+            DrawROI();
+        }
+
+        private void MoveMode(string moveType, int jogScale)
+        {
+            if (CurrentTab == null)
+                return;
 
             int movePixel = jogScale;
             int jogMoveX = 0;
@@ -345,40 +377,20 @@ namespace Jastech.Apps.Winform.UI.Controls
                 jogMoveY = movePixel * (-1);
             else { }
 
-
             var currentParam = CogCaliperParamControl.GetCurrentParam();
             CogRectangleAffine roi = new CogRectangleAffine(currentParam.CaliperTool.Region);
-            //roi.Interactive = true;
 
             roi.CenterX += jogMoveX;
             roi.CenterY += jogMoveY;
 
             currentParam.CaliperTool.Region = roi;
             DrawROI();
-
-            //if (dgvAkkonROI.CurrentCell == null)
-            //    return;
-
-            //int selectedIndex = dgvAkkonROI.CurrentCell.RowIndex;
-
-            //_cogRectAffineList[selectedIndex].CenterX += jogMoveX;
-            //_cogRectAffineList[selectedIndex].CenterY += jogMoveY;
-
-            //UpdateROIDataGridView(selectedIndex, _cogRectAffineList[selectedIndex]);
-
-            //int groupIndex = cbxGroupNumber.SelectedIndex;
-            //var group = CurrentTab.AkkonParam.GroupList[groupIndex];
-            //group.AkkonROIList[selectedIndex] = ConvertCogRectAffineToAkkonRoi(_cogRectAffineList[selectedIndex]).DeepCopy();
-            //DrawROI();
-            //SetSelectAkkonROI(selectedIndex);
         }
 
         private void SizeMode(string sizeType, int jogScale)
         {
             if (CurrentTab == null)
                 return;
-
-            var display = AppsTeachingUIManager.Instance().GetDisplay();
 
             int sizePixel = jogScale;
             int jogSizeX = 0;
@@ -394,28 +406,15 @@ namespace Jastech.Apps.Winform.UI.Controls
                 jogSizeY = sizePixel * (1);
             else { }
 
-            //if (dgvAkkonROI.CurrentCell == null)
-            //    return;
+            var currentParam = CogCaliperParamControl.GetCurrentParam();
+            CogRectangleAffine roi = new CogRectangleAffine(currentParam.CaliperTool.Region);
 
-            //int selectedIndex = dgvAkkonROI.CurrentCell.RowIndex;
+            roi.SideXLength += jogSizeX;
+            roi.SideYLength += jogSizeY;
 
-            //double minimumX = _cogRectAffineList[selectedIndex].SideXLength + jogSizeX;
-            //double minimumY = _cogRectAffineList[selectedIndex].SideYLength + jogSizeY;
-            //if (minimumX <= 0 || minimumY <= 0)
-            //    return;
-
-            //_cogRectAffineList[selectedIndex].SideXLength += jogSizeX;
-            //_cogRectAffineList[selectedIndex].SideYLength += jogSizeY;
-
-            //UpdateROIDataGridView(selectedIndex, _cogRectAffineList[selectedIndex]);
-
-            //int groupIndex = cbxGroupNumber.SelectedIndex;
-            //var group = CurrentTab.AkkonParam.GroupList[groupIndex];
-            //group.AkkonROIList[selectedIndex] = ConvertCogRectAffineToAkkonRoi(_cogRectAffineList[selectedIndex]).DeepCopy();
-            //DrawROI();
-            //SetSelectAkkonROI(selectedIndex);
+            currentParam.CaliperTool.Region = roi;
+            DrawROI();
         }
-
         #endregion
     }
 }

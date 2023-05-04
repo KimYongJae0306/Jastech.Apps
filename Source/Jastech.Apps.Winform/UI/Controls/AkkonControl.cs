@@ -728,7 +728,6 @@ namespace Jastech.Apps.Winform.UI.Controls
         {
             if (_cogRectAffineList.Count <= 0 || CurrentTab == null)
                 return;
-
             
             int groupIndex = cbxGroupNumber.SelectedIndex;
             var group = CurrentTab.AkkonParam.GroupList[groupIndex];
@@ -816,7 +815,7 @@ namespace Jastech.Apps.Winform.UI.Controls
             roiJogForm.ShowDialog();
         }
 
-        private void ReceiveClickEvent(string jogType, int jogScale)
+        private void ReceiveClickEvent(string jogType, int jogScale, ROIType roiType)
         {
             if (jogType.Contains("Skew"))
                 SkewMode(jogType, jogScale);
@@ -871,8 +870,6 @@ namespace Jastech.Apps.Winform.UI.Controls
             if (CurrentTab == null)
                 return;
 
-            var display = AppsTeachingUIManager.Instance().GetDisplay();
-
             int movePixel = jogScale;
             int jogMoveX = 0;
             int jogMoveY = 0;
@@ -908,8 +905,6 @@ namespace Jastech.Apps.Winform.UI.Controls
         {
             if (CurrentTab == null)
                 return;
-
-            var display = AppsTeachingUIManager.Instance().GetDisplay();
 
             int sizePixel = jogScale;
             int jogSizeX = 0;
