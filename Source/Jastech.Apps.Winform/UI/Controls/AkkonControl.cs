@@ -24,6 +24,7 @@ using System.Diagnostics;
 using Jastech.Apps.Structure.Parameters;
 using Jastech.Framework.Macron.Akkon.Results;
 using Jastech.Framework.Winform.Helper;
+using static Jastech.Framework.Device.Motions.AxisMovingParam;
 
 namespace Jastech.Apps.Winform.UI.Controls
 {
@@ -731,7 +732,6 @@ namespace Jastech.Apps.Winform.UI.Controls
         {
             if (_cogRectAffineList.Count <= 0 || CurrentTab == null)
                 return;
-
             
             int groupIndex = cbxGroupNumber.SelectedIndex;
             var group = CurrentTab.AkkonParam.GroupList[groupIndex];
@@ -815,11 +815,12 @@ namespace Jastech.Apps.Winform.UI.Controls
         public void ShowROIJog()
         {
             ROIJogControl roiJogForm = new ROIJogControl();
+            roiJogForm.SetTeachingItem(TeachingItem.Akkon);
             roiJogForm.SendEventHandler += new ROIJogControl.SendClickEventDelegate(ReceiveClickEvent);
             roiJogForm.ShowDialog();
         }
 
-        private void ReceiveClickEvent(string jogType, int jogScale)
+        private void ReceiveClickEvent(string jogType, int jogScale, ROIType roiType)
         {
             if (jogType.Contains("Skew"))
                 SkewMode(jogType, jogScale);
@@ -852,29 +853,34 @@ namespace Jastech.Apps.Winform.UI.Controls
             else { }
 
             if (dgvAkkonROI.CurrentCell == null)
-                return;
-
-            int selectedIndex = dgvAkkonROI.CurrentCell.RowIndex;
-            if (isSkewZero)
-                _cogRectAffineList[selectedIndex].Skew = 0;
+            {
+                if (isSkewZero)
+                    _firstCogRectAffine.Skew = 0;
+                else
+                    _firstCogRectAffine.Skew += skewUnit;
+            }
             else
-                _cogRectAffineList[selectedIndex].Skew += skewUnit;
+            {
+                int selectedIndex = dgvAkkonROI.CurrentCell.RowIndex;
+                if (isSkewZero)
+                    _cogRectAffineList[selectedIndex].Skew = 0;
+                else
+                    _cogRectAffineList[selectedIndex].Skew += skewUnit;
 
-            UpdateROIDataGridView(selectedIndex, _cogRectAffineList[selectedIndex]);
+                UpdateROIDataGridView(selectedIndex, _cogRectAffineList[selectedIndex]);
 
-            int groupIndex = cbxGroupNumber.SelectedIndex;
-            var group = CurrentTab.AkkonParam.GroupList[groupIndex];
-            group.AkkonROIList[selectedIndex] = ConvertCogRectAffineToAkkonRoi(_cogRectAffineList[selectedIndex]).DeepCopy();
-            DrawROI();
-            SetSelectAkkonROI(selectedIndex);
+                int groupIndex = cbxGroupNumber.SelectedIndex;
+                var group = CurrentTab.AkkonParam.GroupList[groupIndex];
+                group.AkkonROIList[selectedIndex] = ConvertCogRectAffineToAkkonRoi(_cogRectAffineList[selectedIndex]).DeepCopy();
+                DrawROI();
+                SetSelectAkkonROI(selectedIndex);
+            }
         }
 
         private void MoveMode(string moveType, int jogScale)
         {
             if (CurrentTab == null)
                 return;
-
-            var display = AppsTeachingUIManager.Instance().GetDisplay();
 
             int movePixel = jogScale;
             int jogMoveX = 0;
@@ -891,28 +897,31 @@ namespace Jastech.Apps.Winform.UI.Controls
             else { }
 
             if (dgvAkkonROI.CurrentCell == null)
-                return;
+            {
+                _firstCogRectAffine.CenterX += jogMoveX;
+                _firstCogRectAffine.CenterY += jogMoveY;
+            }
+            else
+            {
+                int selectedIndex = dgvAkkonROI.CurrentCell.RowIndex;
 
-            int selectedIndex = dgvAkkonROI.CurrentCell.RowIndex;
+                _cogRectAffineList[selectedIndex].CenterX += jogMoveX;
+                _cogRectAffineList[selectedIndex].CenterY += jogMoveY;
 
-            _cogRectAffineList[selectedIndex].CenterX += jogMoveX;
-            _cogRectAffineList[selectedIndex].CenterY += jogMoveY;
+                UpdateROIDataGridView(selectedIndex, _cogRectAffineList[selectedIndex]);
 
-            UpdateROIDataGridView(selectedIndex, _cogRectAffineList[selectedIndex]);
-
-            int groupIndex = cbxGroupNumber.SelectedIndex;
-            var group = CurrentTab.AkkonParam.GroupList[groupIndex];
-            group.AkkonROIList[selectedIndex] = ConvertCogRectAffineToAkkonRoi(_cogRectAffineList[selectedIndex]).DeepCopy();
-            DrawROI();
-            SetSelectAkkonROI(selectedIndex);
+                int groupIndex = cbxGroupNumber.SelectedIndex;
+                var group = CurrentTab.AkkonParam.GroupList[groupIndex];
+                group.AkkonROIList[selectedIndex] = ConvertCogRectAffineToAkkonRoi(_cogRectAffineList[selectedIndex]).DeepCopy();
+                DrawROI();
+                SetSelectAkkonROI(selectedIndex);
+            }
         }
 
         private void SizeMode(string sizeType, int jogScale)
         {
             if (CurrentTab == null)
                 return;
-
-            var display = AppsTeachingUIManager.Instance().GetDisplay();
 
             int sizePixel = jogScale;
             int jogSizeX = 0;
@@ -929,25 +938,30 @@ namespace Jastech.Apps.Winform.UI.Controls
             else { }
 
             if (dgvAkkonROI.CurrentCell == null)
-                return;
+            {
+                _firstCogRectAffine.SideXLength += jogSizeX;
+                _firstCogRectAffine.SideYLength += jogSizeY;
+            }
+            else
+            {
+                int selectedIndex = dgvAkkonROI.CurrentCell.RowIndex;
 
-            int selectedIndex = dgvAkkonROI.CurrentCell.RowIndex;
+                double minimumX = _cogRectAffineList[selectedIndex].SideXLength + jogSizeX;
+                double minimumY = _cogRectAffineList[selectedIndex].SideYLength + jogSizeY;
+                if (minimumX <= 0 || minimumY <= 0)
+                    return;
 
-            double minimumX = _cogRectAffineList[selectedIndex].SideXLength + jogSizeX;
-            double minimumY = _cogRectAffineList[selectedIndex].SideYLength + jogSizeY;
-            if (minimumX <= 0 || minimumY <= 0)
-                return;
+                _cogRectAffineList[selectedIndex].SideXLength += jogSizeX;
+                _cogRectAffineList[selectedIndex].SideYLength += jogSizeY;
 
-            _cogRectAffineList[selectedIndex].SideXLength += jogSizeX;
-            _cogRectAffineList[selectedIndex].SideYLength += jogSizeY;
+                UpdateROIDataGridView(selectedIndex, _cogRectAffineList[selectedIndex]);
 
-            UpdateROIDataGridView(selectedIndex, _cogRectAffineList[selectedIndex]);
-
-            int groupIndex = cbxGroupNumber.SelectedIndex;
-            var group = CurrentTab.AkkonParam.GroupList[groupIndex];
-            group.AkkonROIList[selectedIndex] = ConvertCogRectAffineToAkkonRoi(_cogRectAffineList[selectedIndex]).DeepCopy();
-            DrawROI();
-            SetSelectAkkonROI(selectedIndex);
+                int groupIndex = cbxGroupNumber.SelectedIndex;
+                var group = CurrentTab.AkkonParam.GroupList[groupIndex];
+                group.AkkonROIList[selectedIndex] = ConvertCogRectAffineToAkkonRoi(_cogRectAffineList[selectedIndex]).DeepCopy();
+                DrawROI();
+                SetSelectAkkonROI(selectedIndex);
+            }
         }
 
         public void SaveAkkonParam()

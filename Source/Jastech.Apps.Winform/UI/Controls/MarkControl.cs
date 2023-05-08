@@ -18,6 +18,8 @@ using Cognex.VisionPro.PMAlign;
 using Jastech.Framework.Winform.Forms;
 using Jastech.Framework.Imaging.VisionPro.VisionAlgorithms.Results;
 using Jastech.Apps.Structure.VisionTool;
+using Jastech.Framework.Winform.Controls;
+using static Jastech.Framework.Device.Motions.AxisMovingParam;
 
 namespace Jastech.Apps.Winform.UI.Controls
 {
@@ -356,7 +358,108 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         public void ShowROIJog()
         {
+            ROIJogControl roiJogForm = new ROIJogControl();
+            roiJogForm.SetTeachingItem(TeachingItem.Mark);
+            roiJogForm.SendEventHandler += new ROIJogControl.SendClickEventDelegate(ReceiveClickEvent);
+            roiJogForm.ShowDialog();
+        }
 
+        private void ReceiveClickEvent(string jogType, int jogScale, ROIType roiType)
+        {
+            if (jogType.Contains("Move"))
+                MoveMode(jogType, jogScale, roiType);
+            else if (jogType.Contains("Zoom"))
+                SizeMode(jogType, jogScale, roiType);
+            else { }
+        }
+
+        private void MoveMode(string moveType, int jogScale, ROIType roiType)
+        {
+            if (CurrentTab == null)
+                return;
+
+            int movePixel = jogScale;
+            int jogMoveX = 0;
+            int jogMoveY = 0;
+
+            if (moveType.ToLower().Contains("moveleft"))
+                jogMoveX = movePixel * (-1);
+            else if (moveType.ToLower().Contains("moveright"))
+                jogMoveX = movePixel * (1);
+            else if (moveType.ToLower().Contains("movedown"))
+                jogMoveY = movePixel * (1);
+            else if (moveType.ToLower().Contains("moveup"))
+                jogMoveY = movePixel * (-1);
+            else { }
+
+            var currentParam = ParamControl.GetCurrentParam();
+
+            if (roiType == ROIType.Origin)
+            {
+                CogTransform2DLinear origin = currentParam.GetOrigin();
+                origin.TranslationX += jogMoveX;
+                origin.TranslationY += jogMoveY;
+            }
+            else
+            {
+                CogRectangle roi = new CogRectangle();
+
+                if (roiType == ROIType.ROI)
+                    roi = currentParam.GetSearchRegion() as CogRectangle;
+                else if (roiType == ROIType.Train)
+                    roi = currentParam.GetTrainRegion() as CogRectangle;
+                else { }
+
+                roi.X += jogMoveX;
+                roi.Y += jogMoveY;
+            }
+
+            //currentParam.SetSearchRegion(roi);
+            DrawROI();
+        }
+
+        private void SizeMode(string sizeType, int jogScale, ROIType roiType)
+        {
+            if (CurrentTab == null)
+                return;
+
+            int sizePixel = jogScale;
+            int jogSizeX = 0;
+            int jogSizeY = 0;
+
+            if (sizeType.Contains("ZoomOutHorizontal"))
+                jogSizeX = sizePixel * (-1);
+            else if (sizeType.Contains("ZoomInHorizontal"))
+                jogSizeX = sizePixel * (1);
+            else if (sizeType.Contains("ZoomOutVertical"))
+                jogSizeY = sizePixel * (-1);
+            else if (sizeType.Contains("ZoomInVertical"))
+                jogSizeY = sizePixel * (1);
+            else { }
+
+            var currentParam = ParamControl.GetCurrentParam();
+            if (roiType == ROIType.Origin)
+            {
+                CogTransform2DLinear origin = currentParam.GetOrigin();
+                origin.TranslationX += jogSizeX;
+                origin.TranslationY += jogSizeY;
+            }
+            else
+            {
+                CogRectangle roi = new CogRectangle();
+
+                if (roiType == ROIType.ROI)
+                    roi = currentParam.GetSearchRegion() as CogRectangle;
+                else if (roiType == ROIType.Train)
+                    roi = currentParam.GetTrainRegion() as CogRectangle;
+                else { }
+
+                roi.Width += jogSizeX;
+                roi.Height += jogSizeY;
+            }
+
+            //currentParam.SetSearchRegion(roi);
+            DrawROI();
         }
     }
 }
