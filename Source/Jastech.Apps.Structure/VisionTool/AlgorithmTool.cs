@@ -118,7 +118,6 @@ namespace Jastech.Apps.Structure.VisionTool
                 if (leadCount != alignResult.CogAlignResult.Count() / 2)
                     alignResult.Judgement = Judgement.NG;
             }
-            
                 
             return alignResult;
         }
@@ -126,7 +125,8 @@ namespace Jastech.Apps.Structure.VisionTool
         public CogAlignCaliperResult RunAlignY(ICogImage image, VisionProCaliperParam param)
         {
             CogAlignCaliperResult alignResult = new CogAlignCaliperResult();
-            alignResult.AddAlignResult(AlignAlgorithm.RunAlignY(image, param));
+            var result = AlignAlgorithm.RunAlignY(image, param);
+            alignResult.AddAlignResult(result);
 
             bool isFounded = false;
             foreach (var item in alignResult.CogAlignResult)
@@ -178,6 +178,17 @@ namespace Jastech.Apps.Structure.VisionTool
                 Logger.Debug(LogType.Inspection, "Akkon Roi is nothing.");
                 return new List<AkkonResult>();
             }
+
+            float resizeRatio = 1.0f;
+            if (marcon.InspParam.PanelInfo == (int)TargetType.COG)
+                resizeRatio = 1.0f;
+            else if (marcon.InspParam.PanelInfo == (int)TargetType.COF)
+                resizeRatio = 0.5f;
+            else if (marcon.InspParam.PanelInfo == (int)TargetType.FOG)
+                resizeRatio = 0.6f;
+
+            akkonParam.MacronAkkonParam.InspOption.InspResizeRatio = resizeRatio;
+            akkonParam.MacronAkkonParam.DrawOption.DrawResizeRatio = resizeRatio;
 
             marcon.SliceHeight = mat.Height;
 

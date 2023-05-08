@@ -70,6 +70,12 @@ namespace ATT.UI.Pages
         public void UpdateMainResult(AppsInspResult result)
         {
             AlignInspControl.UpdateMainResult(result);
+            AkkonInspControl.UpdateMainResult(result);
+        }
+
+        public void InitializeResult(int tabCount)
+        {
+            AlignInspControl.InitalizeResultData(tabCount);
         }
         #endregion
     }

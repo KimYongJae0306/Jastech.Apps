@@ -81,7 +81,7 @@ namespace CameraTeseter
                     StopGrab(name);
 
                 IsGrabbing = true;
-                camera.SetOperationMode(TDIOperationMode.Area);
+                camera.SetTDIOperationMode(TDIOperationMode.Area);
                 camera.SetTriggerMode(TriggerMode.Software);
                 camera.GrabMulti(AppsConfig.Instance().GrabCount);
             }

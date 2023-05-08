@@ -173,11 +173,13 @@ namespace Jastech.Apps.Winform.UI.Controls
 
             UpdateROIDataGridView(CurrentTab.GetAkkonGroup(groupNo).AkkonROIList);
 
-            MacronAkkonParamControl.SetParam(akkonParam.MacronAkkonParam);
-            MacronAkkonParamControl.UpdateData();
+            if(MacronAkkonParamControl != null)
+            {
+                MacronAkkonParamControl.SetParam(akkonParam.MacronAkkonParam);
+                MacronAkkonParamControl.UpdateData();
 
-            DrawROI();
-
+                DrawROI();
+            }
         }
 
         private void UpdateParam(int groupIndex)

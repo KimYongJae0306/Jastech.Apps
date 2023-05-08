@@ -13,9 +13,11 @@ using Jastech.Framework.Macron.Akkon.Results;
 using Jastech.Framework.Structure;
 using Jastech.Framework.Util.Helper;
 using Jastech.Framework.Winform;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -42,33 +44,36 @@ namespace ATT.Core
 
         private bool IsGrabDone { get; set; } = false;
 
-        private List<AppsInspResult> AppsInspResultList { get; set; } = new List<AppsInspResult>();
+        private AppsInspResult AppsInspResult { get; set; } = null;
+
+        private Stopwatch LastInspSW { get; set; } = new Stopwatch();
 
         public ATTInspRunner()
         {
-            AppsLineCameraManager.Instance().TabImageGrabCompletedEventHandler += ATTSeqRunner_TabImageGrabCompletedEventHandler;
-            AppsLineCameraManager.Instance().GrabDoneEventHanlder += ATTSeqRunner_GrabDoneEventHanlder;
+          
         }
 
-        private void ATTSeqRunner_TabImageGrabCompletedEventHandler(TabScanImage image)
+        private void ATTSeqRunner_TabImageGrabCompletedEventHandler(string cameraName, TabScanImage image)
         {
             Task task = new Task(() => Run(image));
             task.Start();
         }
 
-        private void ATTSeqRunner_GrabDoneEventHanlder(bool isGrabDone)
+        private void ATTSeqRunner_GrabDoneEventHanlder(string cameraName, bool isGrabDone)
         {
             IsGrabDone = isGrabDone;
         }
 
         public void ClearResult()
         {
-            for (int i = 0; i < AppsInspResultList.Count(); i++)
-            {
-                AppsInspResultList[i].Dispose();
-                AppsInspResultList[i] = null;
-            }
-            AppsInspResultList.Clear();
+            if (AppsInspResult == null)
+                AppsInspResult = new AppsInspResult();
+
+            if (AppsInspResult != null)
+                AppsInspResult.Dispose();
+
+            AppsInspModel inspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
+            SystemManager.Instance().InitializeResult(inspModel.TabCount);
         }
 
         public bool IsInspectionDone()
@@ -79,9 +84,9 @@ namespace ATT.Core
                 RunVirtual();
                 return true;
             }
-            lock (AppsInspResultList)
+            lock (AppsInspResult)
             {
-                if (AppsInspResultList.Count() == inspModel.TabCount)
+                if (AppsInspResult.TabResultList.Count() == inspModel.TabCount)
                     return true;
             }
             return false;
@@ -91,6 +96,10 @@ namespace ATT.Core
         {
             if (ModelManager.Instance().CurrentModel == null)
                 return;
+
+            var appsLineCamera = AppsLineCameraManager.Instance().GetAppsCamera(CameraName.LinscanMIL0.ToString());
+            appsLineCamera.TabImageGrabCompletedEventHandler += ATTSeqRunner_TabImageGrabCompletedEventHandler;
+            appsLineCamera.GrabDoneEventHanlder += ATTSeqRunner_GrabDoneEventHanlder;
 
             if (SeqTask != null)
             {
@@ -105,6 +114,9 @@ namespace ATT.Core
 
         public void SeqStop()
         {
+            var appsLineCamera = AppsLineCameraManager.Instance().GetAppsCamera(CameraName.LinscanMIL0.ToString());
+            appsLineCamera.TabImageGrabCompletedEventHandler -= ATTSeqRunner_TabImageGrabCompletedEventHandler;
+            appsLineCamera.GrabDoneEventHanlder -= ATTSeqRunner_GrabDoneEventHanlder;
 
             Logger.Write(LogType.Seq, "Stop Sequence.");
 
@@ -121,7 +133,7 @@ namespace ATT.Core
             AppsLAFManager.Instance().AutoFocusOnOff(LAFName.Akkon.ToString(), false);
             Logger.Write(LogType.Seq, "AutoFocus Off.");
 
-            AppsLineCameraManager.Instance().StopGrab();
+            AppsLineCameraManager.Instance().Stop(CameraName.LinscanMIL0);
             Logger.Write(LogType.Seq, "Stop Grab.");
 
         }
@@ -142,7 +154,7 @@ namespace ATT.Core
                 {
                     SeqStep = SeqStep.SEQ_IDLE;
                     //조명 Off
-                    AppsLineCameraManager.Instance().StopGrab();
+                    AppsLineCameraManager.Instance().Stop(CameraName.LinscanMIL0);
                     break;
                 }
                 SeqTaskLoop();
@@ -176,6 +188,7 @@ namespace ATT.Core
 
                 case SeqStep.SEQ_START:
 
+                   // break;
                     SeqStep = SeqStep.SEQ_READY;
                     break;
 
@@ -201,6 +214,9 @@ namespace ATT.Core
                     ClearResult();
                     Logger.Write(LogType.Seq, "Clear Result.");
 
+                    AppsInspResult.StartInspTime = DateTime.Now;
+                    AppsInspResult.Cell_ID = DateTime.Now.ToString("yyyyMMddHHmmss");
+
                     AppsLAFManager.Instance().AutoFocusOnOff(LAFName.Akkon.ToString(), true);
                     Logger.Write(LogType.Seq, "AutoFocus On.");
 
@@ -212,14 +228,14 @@ namespace ATT.Core
                     IsGrabDone = false;
                     // 조명 코드 작성 요망
 
-                    AppsLineCameraManager.Instance().StartGrab(CameraName.LinscanMIL0);
+                    AppsLineCameraManager.Instance().Stop(CameraName.LinscanMIL0);
                     Logger.Write(LogType.Seq, "Start Grab.");
 
                     if (MoveTo(TeachingPosType.Stage1_Scan_End, out string error2) == false)
                     {
                         // Alarm
                         // 조명 Off
-                        AppsLineCameraManager.Instance().StopGrab(CameraName.LinscanMIL0);
+                        AppsLineCameraManager.Instance().Stop(CameraName.LinscanMIL0);
                         Logger.Write(LogType.Seq, "Stop Grab.");
                         break;
                     }
@@ -233,13 +249,14 @@ namespace ATT.Core
                         if (IsGrabDone == false)
                             break;
                     }
-       
+                    LastInspSW.Restart();
+
                     Logger.Write(LogType.Seq, "Scan Grab Completed.");
 
                     AppsLAFManager.Instance().AutoFocusOnOff(LAFName.Akkon.ToString(), false);
                     Logger.Write(LogType.Seq, "AutoFocus Off.");
 
-                    AppsLineCameraManager.Instance().StopGrab(CameraName.LinscanMIL0);
+                    AppsLineCameraManager.Instance().Stop(CameraName.LinscanMIL0);
                     Logger.Write(LogType.Seq, "Stop Grab.");
 
                     SeqStep = SeqStep.SEQ_WAITING_INSPECTION_DONE;
@@ -249,25 +266,29 @@ namespace ATT.Core
                     if(IsInspectionDone() == false)
                         break;
 
+
+                    LastInspSW.Stop();
+                    AppsInspResult.EndInspTime = DateTime.Now;
+                    AppsInspResult.LastInspTime = LastInspSW.ElapsedMilliseconds.ToString();
+
                     SeqStep = SeqStep.SEQ_UI_RESULT_UPDATE;
                     break;
 
                 case SeqStep.SEQ_UI_RESULT_UPDATE:
-
-
+                    SystemManager.Instance().UpdateMainResult(AppsInspResult);
                     SeqStep = SeqStep.SEQ_SAVE_IMAGE;
                     break;
 
                 case SeqStep.SEQ_SAVE_IMAGE:
 
-                    SaveImage(AppsInspResultList);
+                    SaveImage(AppsInspResult);
 
                     SeqStep = SeqStep.SEQ_DELETE_DATA;
                     break;
 
                 case SeqStep.SEQ_DELETE_DATA:
 
-                    SeqStep = SeqStep.SEQ_CHECK_STANDBY;
+                    SeqStep = SeqStep.SEQ_IDLE;
                     break;
 
                 case SeqStep.SEQ_CHECK_STANDBY:
@@ -453,16 +474,119 @@ namespace ATT.Core
 
            var result = tool.MainRunInspect(tab, tabMatImage, 30.0f, 80.0f);
 
-            SystemManager.Instance().UpdateMainResult(result);
+            AppsInspResult.TabResultList.Add(result);
         }
 
-        private void SaveImage(List<AppsInspResult> insResultList)
+        private void SaveImage(AppsInspResult inspResult)
         {
-            //foreach (var item in collection)
-            //{
+            AppsInspModel inspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
+            DateTime currentTime = inspResult.StartInspTime;
+            string today = currentTime.ToString("yyyyMMdd");
+            string time = currentTime.ToString("yyyyMMddHHmmss");
 
-            //}
+            string folderPath = inspResult.Cell_ID + "_" + time;
+
+            string path = Path.Combine(AppsConfig.Instance().Path.Result, inspModel.Name, today, folderPath);
+
+            if (Directory.Exists(path) == false)
+                Directory.CreateDirectory(path);
+
+            // OrgImage
+            SaveOrgImage(path, inspResult.TabResultList);
+            SaveAlignResult(path, inspResult.Cell_ID, inspResult.TabResultList);
         }
+
+        private void SaveOrgImage(string resultPath, List<TabInspResult> insTabResultList)
+        {
+            if (AppsConfig.Instance().Operation.VirtualMode)
+                return;
+
+            string path = Path.Combine(resultPath, "Orgin");
+            if (Directory.Exists(path) == false)
+                Directory.CreateDirectory(path);
+
+            foreach (var result in insTabResultList)
+            {
+                string imageName = "Tab_" + result.TabNo.ToString() + ".bmp";
+                string imagePath = Path.Combine(path, imageName);
+                result.Image.Save(imagePath);
+            }
+        }
+
+        private void SaveAlignResult(string resultPath, string panelId, List<TabInspResult> inspTabResultList)
+        {
+            string csvFile = Path.Combine(resultPath, "Align.csv");
+            if(File.Exists(csvFile) == false)
+            {
+                List<string> header = new List<string>();
+                header.Add("Panel ID");
+                header.Add("Tab No");
+                header.Add("Judge");
+                header.Add("Lx");
+                header.Add("Ly");
+                header.Add("Rx");
+                header.Add("Ry");
+                header.Add("Cx");
+
+                CSVHelper.WriteHeader(csvFile, header);
+            }
+          
+            foreach (var tabResult in inspTabResultList)
+            {
+                List<string> dataList = new List<string>();
+                dataList.Add(panelId);
+                dataList.Add(tabResult.TabNo.ToString());
+                dataList.Add(tabResult.AlignJudgement.ToString());
+
+                float lx = tabResult.LeftAlignX.X;
+                float ly = tabResult.LeftAlignY.Y;
+                float rx = tabResult.RightAlignX.X;
+                float ry = tabResult.RightAlignY.Y;
+                float cx = (lx + rx) / 2.0f;
+
+                dataList.Add(lx.ToString("F3"));
+                dataList.Add(ly.ToString("F3"));
+                dataList.Add(rx.ToString("F3"));
+                dataList.Add(ry.ToString("F3"));
+                dataList.Add(cx.ToString("F3"));
+
+
+            }
+        }
+
+        private string GetExtensionOKImage()
+        {
+            return "." + AppsConfig.Instance().Operation.ExtensionOKImage;
+        }
+
+        private string GetExtensionNGImage()
+        {
+            return "." + AppsConfig.Instance().Operation.ExtensionNGImage;
+        }
+    }
+
+    public class Test
+    {
+        [JsonProperty]
+        public float A { get; set; } = 0.0f;
+
+        [JsonProperty]
+        public float B { get; set; } = 1.0f;
+
+        [JsonProperty]
+        public float C { get; set; } = 2.0f;
+
+        [JsonProperty]
+        public float D { get; set; } = 3.0f;
+
+        [JsonProperty]
+        public float E { get; set; } = 4.0f;
+
+        [JsonProperty]
+        public float F { get; set; } = 5.0f;
+
+        [JsonProperty]
+        public float G { get; set; } = 6.0f;
     }
 
     public enum SeqStep

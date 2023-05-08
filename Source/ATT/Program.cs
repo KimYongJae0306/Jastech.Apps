@@ -31,6 +31,7 @@ namespace ATT
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
 
             MilHelper.InitApplication();
+            SystemHelper.StartChecker(@"D:\ATT_Memory_Test.txt");
             AppsConfig.Instance().Initialize();
             AppsConfig.Instance().Load();
 
@@ -39,7 +40,7 @@ namespace ATT
             var mainForm = new MainForm();
            
             SystemManager.Instance().Initialize(mainForm);
-
+           
             Application.Run(mainForm);
         }
 

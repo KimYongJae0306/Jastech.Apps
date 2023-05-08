@@ -18,13 +18,14 @@ namespace Jastech.Apps.Structure.VisionTool
 {
     public class MainAlgorithmTool : AlgorithmTool
     {
-        public AppsInspResult MainRunInspect(Tab tab, Mat matImage, float judgementX, float judgementY)
+        public TabInspResult MainRunInspect(Tab tab, Mat matImage, float judgementX, float judgementY)
         {
-            AppsInspResult inspResult = new AppsInspResult();
+            TabInspResult inspResult = new TabInspResult();
             inspResult.TabNo = tab.Index;
 
             #region Mark 검사
             ICogImage cogImage = ConvertCogImage(matImage);
+            inspResult.Image = matImage;
             inspResult.CogImage = cogImage;
 
             RunFpcMark(cogImage, tab, ref inspResult);
@@ -37,13 +38,34 @@ namespace Jastech.Apps.Structure.VisionTool
             #endregion
 
             // 마크 결과값으로 포인트에 적용
-            RunLeftAlign(cogImage, tab, ref inspResult, judgementX, judgementY);
-            if (inspResult.LeftAlignX.Judgement != Judgement.OK || inspResult.LeftAlignY.Judgement != Judgement.OK)
-                return inspResult;
 
-            RunRightAlign(cogImage, tab, ref inspResult, judgementX, judgementY);
-            if (inspResult.RightAlignX.Judgement != Judgement.OK || inspResult.RightAlignY.Judgement != Judgement.OK)
+            inspResult.LeftAlignX = RunLeftAlignX(cogImage, tab, judgementX);
+            if(inspResult.LeftAlignX.Judgement != Judgement.OK)
+            {
+                inspResult.AlignJudgement = Judgement.NG;
                 return inspResult;
+            }
+
+            inspResult.LeftAlignY = RunLeftAlignY(cogImage, tab, judgementY);
+            if (inspResult.LeftAlignY.Judgement != Judgement.OK)
+            {
+                inspResult.AlignJudgement = Judgement.NG;
+                return inspResult;
+            }
+
+            inspResult.RightAlignX = RunRightAlignX(cogImage, tab, judgementX);
+            if (inspResult.RightAlignX.Judgement != Judgement.OK)
+            {
+                inspResult.AlignJudgement = Judgement.NG;
+                return inspResult;
+            }
+
+            inspResult.RightAlignY = RunRightAlignY(cogImage, tab, judgementY);
+            if (inspResult.RightAlignY.Judgement != Judgement.OK)
+            {
+                inspResult.AlignJudgement = Judgement.NG;
+                return inspResult;
+            }
 
             // 압흔검사
             var akkonParam = tab.AkkonParam;
@@ -58,38 +80,66 @@ namespace Jastech.Apps.Structure.VisionTool
             return inspResult;
         }
 
-        private void RunLeftAlign(ICogImage cogImage, Tab tab, ref AppsInspResult inspResult, float judgementX, float judgementY)
+        private AlignResult RunLeftAlignX(ICogImage cogImage, Tab tab, float judgementX)
         {
-            string ngReason = "";
-
-            inspResult.LeftAlignX = RunMainAlignX(cogImage, tab, ATTTabAlignName.LeftPanelX, ATTTabAlignName.LeftFPCX, judgementX, out ngReason); 
-            if (ngReason != "")
-                Logger.Debug(LogType.Inspection, ngReason);
-
-            inspResult.LeftAlignY = RunMainAlignY(cogImage, tab, ATTTabAlignName.LeftPanelY, ATTTabAlignName.LeftFPCY, judgementY, out ngReason);
-            if (ngReason != "")
-                Logger.Debug(LogType.Inspection, ngReason);
-
-
+            var result = RunMainAlignX(cogImage, tab, ATTTabAlignName.LeftPanelX, ATTTabAlignName.LeftFPCX);
+            
+            float lx = Math.Abs(result.X);
+            if (lx > judgementX)
+            {
+                result.Judgement = Judgement.NG;
+                string message = string.Format("Main Alignment Lx NG : {0} / {1}", lx, judgementX);
+                Logger.Debug(LogType.Inspection, message);
+            }
+            return result;
         }
 
-        private void RunRightAlign(ICogImage cogImage, Tab tab, ref AppsInspResult inspResult, float judgementX, float judgementY)
+        private AlignResult RunLeftAlignY(ICogImage cogImage, Tab tab, float judgementY)
         {
-            string ngReason = "";
+            var result = RunMainAlignY(cogImage, tab, ATTTabAlignName.LeftPanelY, ATTTabAlignName.LeftFPCY);
 
-            inspResult.RightAlignX = RunMainAlignX(cogImage, tab, ATTTabAlignName.RightPanelX, ATTTabAlignName.RightFPCX, judgementX, out ngReason);
-            if (ngReason != "")
-                Logger.Debug(LogType.Inspection, ngReason);
-
-            inspResult.RightAlignY = RunMainAlignY(cogImage, tab, ATTTabAlignName.RightPanelY, ATTTabAlignName.RightFPCY, judgementY, out ngReason); // 100.0f 컨피그로 빼야함
-            if (ngReason != "")
-                Logger.Debug(LogType.Inspection, ngReason);
+            float ly = Math.Abs(result.Y);
+            if (ly > judgementY)
+            {
+                result.Judgement = Judgement.NG;
+                string message = string.Format("Main Alignment Ly NG : {0} / {1}", ly, judgementY);
+                Logger.Debug(LogType.Inspection, message);
+            }
+            return result;
         }
 
-        private AlignResult RunMainAlignX(ICogImage cogImage, Tab tab, ATTTabAlignName panelAlign, ATTTabAlignName fpcAlign, float judgementValue, out string ngReason)
+        private AlignResult RunRightAlignX(ICogImage cogImage, Tab tab, float judgementX)
+        {
+            var result = RunMainAlignX(cogImage, tab, ATTTabAlignName.RightPanelX, ATTTabAlignName.RightFPCX);
+
+            float rx = Math.Abs(result.X);
+            if (rx > judgementX)
+            {
+                result.Judgement = Judgement.NG;
+                string message = string.Format("Main Alignment Rx NG : {0} / {1}", rx, judgementX);
+                Logger.Debug(LogType.Inspection, message);
+            }
+
+            return result;
+        }
+
+        private AlignResult RunRightAlignY(ICogImage cogImage, Tab tab, float judgementY)
+        {
+            var result = RunMainAlignY(cogImage, tab, ATTTabAlignName.RightPanelY, ATTTabAlignName.RightFPCY);
+
+            float ry = Math.Abs(result.Y);
+            if (ry > judgementY)
+            {
+                result.Judgement = Judgement.NG;
+                string message = string.Format("Main Alignment Ry NG : {0} / {1}", ry, judgementY);
+                Logger.Debug(LogType.Inspection, message);
+            }
+            return result;
+        }
+
+        private AlignResult RunMainAlignX(ICogImage cogImage, Tab tab, ATTTabAlignName panelAlign, ATTTabAlignName fpcAlign)
         {
             AlignResult result = new AlignResult();
-            ngReason = "";
 
             var panelParam = tab.GetAlignParam(panelAlign);
             var fpcParam = tab.GetAlignParam(fpcAlign);
@@ -101,7 +151,7 @@ namespace Jastech.Apps.Structure.VisionTool
             {
                 List<float> intervalValueX = new List<float>();
 
-                for (int i = 0; i < panelParam.LeadCount * 2; i+= 2)
+                for (int i = 0; i < panelParam.LeadCount * 2; i += 2)
                 {
                     var panelResult1 = result.Panel.CogAlignResult[i];
                     var panelResult2 = result.Panel.CogAlignResult[i + 1];
@@ -120,35 +170,34 @@ namespace Jastech.Apps.Structure.VisionTool
                 float max = intervalValueX.Max();
                 float min = intervalValueX.Min();
 
-                Judgement judgement = Judgement.OK;
-
-                foreach (var avg in intervalValueX)
+                float temp = 0.0f;
+                int count = 0;
+                foreach (var value in intervalValueX)
                 {
-                    if (avg == max || avg == min)
+                    if (value == max || value == min)
                         continue;
 
-                    if (avg >= judgementValue)
-                    {
-                        ngReason = string.Format("Main AlignmentX NG : Panel({0}), FPC({1})", panelAlign.ToString(), fpcAlign.ToString());
-                        judgement = Judgement.NG;
-                        break;
-                    }
+                    temp += value;
+                    count++;
                 }
-                result.Judgement = judgement;
+
+                result.Judgement = Judgement.OK;
+                result.X = temp / count;
             }
             else
             {
-                ngReason = string.Format(" Main CaliperX Search Fail. Panel({0}), FPC({1})", panelAlign.ToString(), fpcAlign.ToString());
+                string message = string.Format(" Main CaliperX Search Fail. Panel({0}), FPC({1})", panelAlign.ToString(), fpcAlign.ToString());
+                Logger.Debug(LogType.Inspection, message);
+
                 result.Judgement = Judgement.Fail;
             }
 
             return result;
         }
 
-        private AlignResult RunMainAlignY(ICogImage cogImage, Tab tab, ATTTabAlignName panelAlign, ATTTabAlignName fpcAlign, float judgementValue, out string ngReason)
+        private AlignResult RunMainAlignY(ICogImage cogImage, Tab tab, ATTTabAlignName panelAlign, ATTTabAlignName fpcAlign)
         {
             AlignResult result = new AlignResult();
-            ngReason = "";
 
             var panelParam = tab.GetAlignParam(panelAlign);
             var fpcParam = tab.GetAlignParam(fpcAlign);
@@ -163,24 +212,21 @@ namespace Jastech.Apps.Structure.VisionTool
 
                 float newY = panelY - fpcY;
 
-                if (Math.Abs(newY) <= judgementValue)
-                    result.Judgement = Judgement.OK;
-                else
-                {
-                    ngReason = string.Format("Main AlignmentY NG : Panel({0}), FPC({1})", panelAlign.ToString(), fpcAlign.ToString());
-                    result.Judgement = Judgement.NG;
-                }
+                result.Judgement = Judgement.OK;
+                result.Y = newY;
             }
             else
             {
-                ngReason = string.Format(" Main CaliperY Search Fail. Panel({0}), FPC({1})", panelAlign.ToString(), fpcAlign.ToString());
+                string message = string.Format("Main CaliperY Search Fail. Panel({0}), FPC({1})", panelAlign.ToString(), fpcAlign.ToString());
+                Logger.Debug(LogType.Inspection, message);
+
                 result.Judgement = Judgement.Fail;
             }
 
             return result;
         }
 
-        public void RunFpcMark(ICogImage cogImage, Tab tab, ref AppsInspResult inspResult)
+        public void RunFpcMark(ICogImage cogImage, Tab tab, ref TabInspResult inspResult)
         {
             var result = inspResult.FpcMark;
 
@@ -220,7 +266,7 @@ namespace Jastech.Apps.Structure.VisionTool
             }
         }
 
-        public void RunPanelMark(ICogImage cogImage, Tab tab, ref AppsInspResult inspResult)
+        public void RunPanelMark(ICogImage cogImage, Tab tab, ref TabInspResult inspResult)
         {
             var result = inspResult.PanelMark;
 
@@ -285,6 +331,5 @@ namespace Jastech.Apps.Structure.VisionTool
 
             return cogImage;
         }
-
     }
 }

@@ -17,6 +17,8 @@ namespace Jastech.Apps.Structure.Data
 
         public int EndIndex { get; set; }
 
+        public bool ExcuteMerge { get; set; }
+
         public int TotalGrabCount { get => Math.Abs(EndIndex - StartIndex); }
 
         private List<Mat> ScanImageList { get; set; } = new List<Mat>();

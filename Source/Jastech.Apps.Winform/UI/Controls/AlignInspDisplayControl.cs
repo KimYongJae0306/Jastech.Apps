@@ -22,7 +22,7 @@ namespace Jastech.Apps.Winform.UI.Controls
     public partial class AlignInspDisplayControl : UserControl
     {
         #region 필드
-        private int _prevTabCount { get; set; } = -1;
+        private int _prevTabCount = -1;
 
         private Color _selectedColor;
 
@@ -38,7 +38,9 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         public ResultChartControl ResultChartControl { get; private set; } = new ResultChartControl();
 
-        public AppsInspResult InspResult { get; set; } = null;
+        public Dictionary<int, TabInspResult> InspResultDic { get; set; } = new Dictionary<int, TabInspResult>();
+
+        private int CurrentTabNo { get; set; } = -1;
         #endregion
 
         #region 이벤트
@@ -107,6 +109,8 @@ namespace Jastech.Apps.Winform.UI.Controls
 
             if (TabBtnControlList.Count > 0)
                 TabBtnControlList[0].UpdateData();
+
+            _prevTabCount = tabCount;
         }
 
         private void ClearTabBtnList()
@@ -123,23 +127,57 @@ namespace Jastech.Apps.Winform.UI.Controls
         {
             TabBtnControlList.ForEach(x => x.BackColor = _noneSelectedColor);
             TabBtnControlList[tabNum].BackColor = _selectedColor;
-        }
 
-        public void UpdateMainResult(AppsInspResult result)
-        {
-            if(InspResult != null)
+            CurrentTabNo = tabNum;
+
+            if(InspResultDic.ContainsKey(tabNum))
             {
-                InspResult.Dispose();
-                InspResult = null;
+                UpdateLeftAlignResult(InspResultDic[tabNum]);
+                UpdateRightAlignResult(InspResultDic[tabNum]);
             }
-
-            InspResult = result;
-
-            UpdateLeftAlignResult(InspResult);
-            UpdateRightAlignResult(InspResult);
+            else
+            {
+                InspAlignDisplay.ClearImage();
+            }
         }
 
-        private void UpdateLeftAlignResult(AppsInspResult result)
+        public void UpdateMainResult(AppsInspResult inspResult)
+        {
+            InspAlignDisplay.ClearImage();
+
+            for (int i = 0; i < inspResult.TabResultList.Count(); i++)
+            {
+                int tabNo = inspResult.TabResultList[i].TabNo;
+                if(InspResultDic.ContainsKey(tabNo))
+                {
+                    InspResultDic[tabNo].Dispose();
+                    InspResultDic.Remove(tabNo);
+                }
+
+                InspResultDic.Add(tabNo, inspResult.TabResultList[i]);
+
+                if(CurrentTabNo == tabNo)
+                {
+                    UpdateLeftAlignResult(inspResult.TabResultList[i]);
+                    UpdateRightAlignResult(inspResult.TabResultList[i]);
+                }
+            }
+        }
+
+        public void InitalizeResultData(int tabCount)
+        {
+            if (InspResultDic.Count() > 0)
+            {
+                for (int i = 0; i < InspResultDic.Count(); i++)
+                {
+                    InspResultDic[i].Dispose();
+                    InspResultDic[i] = null;
+                }
+            }
+            InspResultDic.Clear();
+        }
+
+        private void UpdateLeftAlignResult(TabInspResult result)
         {
             List<CogCompositeShape> leftResultList = new List<CogCompositeShape>();
             List<PointF> pointList = new List<PointF>();
@@ -185,9 +223,9 @@ namespace Jastech.Apps.Winform.UI.Controls
             InspAlignDisplay.UpdateLeftDisplay(result.CogImage, leftResultList, GetCenterPoint(pointList));
         }
 
-        private void UpdateRightAlignResult(AppsInspResult result)
+        private void UpdateRightAlignResult(TabInspResult result)
         {
-            List<CogCompositeShape> leftResultList = new List<CogCompositeShape>();
+            List<CogCompositeShape> rightResultList = new List<CogCompositeShape>();
             List<PointF> pointList = new List<PointF>();
 
             var rightAlignX = result.RightAlignX;
@@ -199,7 +237,7 @@ namespace Jastech.Apps.Winform.UI.Controls
                     pointList.Add(fpc.MaxCaliperMatch.FoundPos);
 
                     var rightFpcX = fpc.MaxCaliperMatch.ResultGraphics;
-                    leftResultList.Add(rightFpcX);
+                    rightResultList.Add(rightFpcX);
                 }
             }
             if (rightAlignX.Panel.CogAlignResult.Count() > 0)
@@ -209,7 +247,7 @@ namespace Jastech.Apps.Winform.UI.Controls
                     pointList.Add(panel.MaxCaliperMatch.FoundPos);
 
                     var rightPanelX = panel.MaxCaliperMatch.ResultGraphics;
-                    leftResultList.Add(rightPanelX);
+                    rightResultList.Add(rightPanelX);
                 }
             }
 
@@ -219,16 +257,16 @@ namespace Jastech.Apps.Winform.UI.Controls
                 pointList.Add(rightAlignY.Fpc.CogAlignResult[0].MaxCaliperMatch.FoundPos);
 
                 var rightFpcY = rightAlignY.Fpc.CogAlignResult[0].MaxCaliperMatch.ResultGraphics;
-                leftResultList.Add(rightFpcY);
+                rightResultList.Add(rightFpcY);
             }
             if (rightAlignY.Panel.CogAlignResult[0].MaxCaliperMatch != null)
             {
                 pointList.Add(rightAlignY.Panel.CogAlignResult[0].MaxCaliperMatch.FoundPos);
                 var rightPanelY = rightAlignY.Panel.CogAlignResult[0].MaxCaliperMatch.ResultGraphics;
-                leftResultList.Add(rightPanelY);
+                rightResultList.Add(rightPanelY);
             }
 
-            InspAlignDisplay.UpdateLeftDisplay(result.CogImage, leftResultList, GetCenterPoint(pointList));
+            InspAlignDisplay.UpdateRightDisplay(result.CogImage, rightResultList, GetCenterPoint(pointList));
         }
 
         private Point GetCenterPoint(List<PointF> pointList)

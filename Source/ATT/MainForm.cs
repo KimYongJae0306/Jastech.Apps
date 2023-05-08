@@ -205,5 +205,10 @@ namespace ATT
         {
             MainPageControl.UpdateMainResult(result);
         }
+
+        public void InitializeResult(int tabCount)
+        {
+            MainPageControl.InitializeResult(tabCount);
+        }
     }
 }

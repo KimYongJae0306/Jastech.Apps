@@ -44,7 +44,7 @@ namespace ATT.UI.Forms
 
         private DisplayType _displayType { get; set; } = DisplayType.Align;
 
-        private string _prevTabNo { get; set; } = "";
+        private string _currentTabNo { get; set; } = "";
         #endregion
 
         #region 속성
@@ -55,6 +55,8 @@ namespace ATT.UI.Forms
         public List<Tab> TeachingTabList { get; private set; } = null;
 
         public Tab CurrentTab { get; set; } = null;
+
+        public CameraName CameraName { get; set; }
 
         private CogTeachingDisplayControl Display { get; set; } = new CogTeachingDisplayControl();
 
@@ -104,8 +106,10 @@ namespace ATT.UI.Forms
 
             lblStageCam.Text = $"STAGE : {UnitName} / CAM : {TitleCameraName}";
 
-            AppsLineCameraManager.Instance().TabImageGrabCompletedEventHandler += LineTeachingForm_TabImageGrabCompletedEventHandler;
-            AppsLineCameraManager.Instance().GrabDoneEventHanlder += LineTeachingForm_GrabDoneEventHanlder;
+            var appsLineCamera = AppsLineCameraManager.Instance().GetLineCamera(CameraName);
+            appsLineCamera.TabImageGrabCompletedEventHandler += LineTeachingForm_TabImageGrabCompletedEventHandler;
+            appsLineCamera.GrabDoneEventHanlder += LineTeachingForm_GrabDoneEventHanlder;
+
             var image = AppsTeachingUIManager.Instance().GetOriginCogImageBuffer(true);
 
             if (image != null)
@@ -114,7 +118,7 @@ namespace ATT.UI.Forms
             SelectPage(DisplayType.Align);
         }
 
-        private void LineTeachingForm_GrabDoneEventHanlder(bool isGrabDone)
+        private void LineTeachingForm_GrabDoneEventHanlder(string cameraName, bool isGrabDone)
         {
             if(isGrabDone)
             {
@@ -155,7 +159,7 @@ namespace ATT.UI.Forms
             CurrentTab = TeachingTabList[0];
         }
 
-        private void LineTeachingForm_TabImageGrabCompletedEventHandler(TabScanImage tabScanImage)
+        private void LineTeachingForm_TabImageGrabCompletedEventHandler(string cameraName, TabScanImage tabScanImage)
         {
             if (tabScanImage == null)
                 return;
@@ -309,19 +313,26 @@ namespace ATT.UI.Forms
         private void btnGrabStart_Click(object sender, EventArgs e)
         {
             SystemManager.Instance().GetTeachingData().ClearScanImage();
+            var appsLineCamera = AppsLineCameraManager.Instance().GetLineCamera(CameraName);
 
-            AppsLineCameraManager.Instance().StartGrab(CameraName.LinscanMIL0);
+            AppsInspModel inspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
+            double length = inspModel.MaterialInfo.GetTabToTabDistance(Convert.ToInt32(_currentTabNo));
+
+            // Motion 이동 추가
+            appsLineCamera.StartGrab((float)length);
         }
 
         private void btnGrabStop_Click(object sender, EventArgs e)
         {
-            AppsLineCameraManager.Instance().StopGrab(CameraName.LinscanMIL0);
+            var appsLineCamera = AppsLineCameraManager.Instance().GetLineCamera(CameraName);
+            appsLineCamera.StopGrab();
         }
 
         private void LineTeachingForm_FormClosing(object sender, FormClosingEventArgs e)
         {
-            AppsLineCameraManager.Instance().TabImageGrabCompletedEventHandler -= LineTeachingForm_TabImageGrabCompletedEventHandler;
-            AppsLineCameraManager.Instance().GrabDoneEventHanlder -= LineTeachingForm_GrabDoneEventHanlder;
+            var appsLineCamera = AppsLineCameraManager.Instance().GetLineCamera(CameraName.LinscanMIL0);
+            appsLineCamera.TabImageGrabCompletedEventHandler -= LineTeachingForm_TabImageGrabCompletedEventHandler;
+            appsLineCamera.GrabDoneEventHanlder -= LineTeachingForm_GrabDoneEventHanlder;
         }
 
         private void cbxTabList_DrawItem(object sender, DrawItemEventArgs e)
@@ -366,7 +377,7 @@ namespace ATT.UI.Forms
             string tabIndex = cbxTabList.SelectedItem as string;
             int tabNo = Convert.ToInt32(tabIndex);
 
-            if (_prevTabNo == tabIndex)
+            if (_currentTabNo == tabIndex)
                 return;
 
             CurrentTab = TeachingTabList.Where(x => x.Index == tabNo).First();
@@ -387,7 +398,7 @@ namespace ATT.UI.Forms
                 AkkonControl.DrawROI();
             }
 
-            _prevTabNo = tabIndex;
+            _currentTabNo = tabIndex;
         }
 
         private void lblPrev_Click(object sender, EventArgs e)

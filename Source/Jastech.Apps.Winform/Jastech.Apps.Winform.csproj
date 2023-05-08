@@ -80,6 +80,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AppsLAFManager.cs" />
+    <Compile Include="AppsLineCamera.cs" />
     <Compile Include="AppsLineCameraManager.cs" />
     <Compile Include="AppsMotionManager.cs" />
     <Compile Include="AppsTeachingUIManager.cs" />

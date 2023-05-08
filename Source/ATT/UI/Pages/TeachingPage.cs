@@ -10,6 +10,7 @@ using System.Windows.Forms;
 using ATT.UI.Forms;
 using Jastech.Apps.Structure;
 using Jastech.Apps.Winform.UI.Controls;
+using Jastech.Apps.Structure.Data;
 
 namespace ATT.UI.Pages
 {
@@ -25,12 +26,14 @@ namespace ATT.UI.Pages
             LineTeachingForm form = new LineTeachingForm();
             form.UnitName = "Unit0";
             form.TitleCameraName = "LineScan";
+            form.CameraName = CameraName.LinscanMIL0;
             form.ShowDialog();
         }
 
         private void btnLinescanSetting_Click(object sender, EventArgs e)
         {
             OpticTeachingForm form = new OpticTeachingForm();
+            form.CameraName = CameraName.LinscanMIL0;
             form.ShowDialog();
         }
     }

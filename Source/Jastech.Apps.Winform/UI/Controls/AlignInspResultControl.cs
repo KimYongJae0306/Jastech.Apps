@@ -16,5 +16,10 @@ namespace Jastech.Apps.Winform.UI.Controls
         {
             InitializeComponent();
         }
+
+        public void UpdateResult()
+        {
+
+        }
     }
 }

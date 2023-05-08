@@ -152,6 +152,11 @@ namespace ATT
         {
             _mainForm.UpdateMainResult(result);
         }
+
+        public void InitializeResult(int tabCount)
+        {
+            _mainForm.InitializeResult(tabCount);
+        }
         #endregion
     }
 }

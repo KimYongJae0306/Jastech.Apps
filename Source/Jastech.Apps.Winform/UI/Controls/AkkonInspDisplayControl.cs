@@ -10,6 +10,7 @@ using System.Windows.Forms;
 using Jastech.Framework.Winform.VisionPro.Controls;
 using Jastech.Apps.Structure;
 using static Jastech.Apps.Winform.UI.Controls.ResultChartControl;
+using Jastech.Apps.Structure.Data;
 
 namespace Jastech.Apps.Winform.UI.Controls
 {
@@ -31,6 +32,10 @@ namespace Jastech.Apps.Winform.UI.Controls
         public AkkonInspResultControl AkkonInspResultControl { get; private set; } = new AkkonInspResultControl();
 
         public ResultChartControl ResultChartControl { get; private set; } = new ResultChartControl();
+
+        public Dictionary<int, TabInspResult> InspResultDic { get; set; } = new Dictionary<int, TabInspResult>();
+
+        public int CurrentTabNo { get; set; } = -1;
         #endregion
 
         #region 이벤트
@@ -117,9 +122,40 @@ namespace Jastech.Apps.Winform.UI.Controls
         {
             TabBtnControlList.ForEach(x => x.BackColor = _nonSelectedColor);
             TabBtnControlList[tabNum].BackColor = _selectedColor;
+
+            CurrentTabNo = tabNum;
+
+            if (InspResultDic.ContainsKey(tabNum))
+            {
+                InspDisplayControl.SetImage(InspResultDic[tabNum].AkkonResultImage);
+            }
+            else
+            {
+                InspDisplayControl.Clear();
+            }
+        }
+
+        public void UpdateMainResult(AppsInspResult inspResult)
+        {
+            InspDisplayControl.Clear();
+
+            for (int i = 0; i < inspResult.TabResultList.Count(); i++)
+            {
+                int tabNo = inspResult.TabResultList[i].TabNo;
+                if (InspResultDic.ContainsKey(tabNo))
+                {
+                    InspResultDic[tabNo].Dispose();
+                    InspResultDic.Remove(tabNo);
+                }
+
+                InspResultDic.Add(tabNo, inspResult.TabResultList[i]);
+
+                if (CurrentTabNo == tabNo)
+                {
+                    InspDisplayControl.SetImage(inspResult.TabResultList[i].AkkonResultImage);
+                }
+            }
         }
         #endregion
-
-
     }
 }

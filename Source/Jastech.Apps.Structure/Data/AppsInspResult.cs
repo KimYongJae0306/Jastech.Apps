@@ -14,6 +14,30 @@ namespace Jastech.Apps.Structure.Data
 {
     public class AppsInspResult
     {
+        public DateTime StartInspTime { get; set; }
+
+        public DateTime EndInspTime { get; set; }
+
+        public string LastInspTime { get; set; }
+
+        public string Cell_ID { get; set; } = "";
+
+        public List<TabInspResult> TabResultList { get; set; } = new List<TabInspResult>();
+
+        public void Dispose()
+        {
+            for (int i = 0; i < TabResultList.Count(); i++)
+            {
+                TabResultList[i].Dispose();
+                TabResultList[i] = null;
+            }
+
+            TabResultList.Clear();
+        }
+    }
+
+    public class TabInspResult
+    {
         [JsonIgnore]
         public Mat Image { get; set; } = null;
 
@@ -29,6 +53,8 @@ namespace Jastech.Apps.Structure.Data
 
         public MarkResult PanelMark { get; set; } = new MarkResult();
 
+        public Judgement AlignJudgement { get; set; } = Judgement.OK;
+
         public AlignResult LeftAlignX { get; set; } = null;
 
         public AlignResult LeftAlignY { get; set; } = null;
@@ -40,13 +66,12 @@ namespace Jastech.Apps.Structure.Data
         [JsonProperty]
         public List<AkkonResult> AkkonResultList { get; set; } = new List<AkkonResult>();
 
-
         [JsonProperty]
         public List<AkkonResult> Akkon { get; set; } = null;
 
         public void Dispose()
         {
-            if(Image != null)
+            if (Image != null)
             {
                 Image.Dispose();
                 Image = null;
@@ -56,7 +81,6 @@ namespace Jastech.Apps.Structure.Data
                 AkkonResultImage = null;
         }
     }
-
     public class MarkResult
     {
         [JsonProperty]
@@ -85,6 +109,10 @@ namespace Jastech.Apps.Structure.Data
     public class AlignResult
     {
         public Judgement Judgement { get; set; } = Judgement.OK;
+
+        public float X { get; set; } = 0.0f;
+
+        public float Y { get; set; } = 0.0f;
 
         public CogAlignCaliperResult Panel { get; set; } = null;
 

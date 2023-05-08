@@ -58,6 +58,8 @@ namespace ATT.UI.Forms
         private LAFCtrl LAFCtrl { get; set; } = null;
 
         private TeachingInfo TeachingPositionInfo { get; set; } = null;
+
+        public CameraName CameraName { get; set; }
         #endregion
 
         #region 이벤트
@@ -78,14 +80,17 @@ namespace ATT.UI.Forms
         private void LinescanControl_Load(object sender, EventArgs e)
         {
             SystemManager.Instance().UpdateTeachingData();
-            AppsLineCameraManager.Instance().TeachingLiveImageGrabbed += LiveDisplay;
-            AppsLineCameraManager.Instance().TabImageGrabCompletedEventHandler += OpticTeachingForm_TabImageGrabCompletedEventHandler;
+
+            AppsLineCamera camera = AppsLineCameraManager.Instance().GetLineCamera(CameraName);
+            camera.TeachingLiveImageGrabbed += LiveDisplay;
+            camera.TabImageGrabCompletedEventHandler += OpticTeachingForm_TabImageGrabCompletedEventHandler;
+
             UpdateData();
             AddControl();
             InitializeUI();
         }
 
-        private void OpticTeachingForm_TabImageGrabCompletedEventHandler(TabScanImage image)
+        private void OpticTeachingForm_TabImageGrabCompletedEventHandler(string camearaName, TabScanImage image)
         {
             if(image.GetMergeImage() is Mat mat)
             {
@@ -146,8 +151,16 @@ namespace ATT.UI.Forms
 
         private void SetOperationMode(TDIOperationMode operationMode)
         {
-            if (AppsLineCameraManager.Instance().IsGrabbing(CameraName.LinscanMIL0))
-                AppsLineCameraManager.Instance().StopGrab(CameraName.LinscanMIL0);
+            var camera = AppsLineCameraManager.Instance().GetLineCamera(CameraName).Camera;
+            camera.Stop();
+
+            if (camera is ICameraTDIavailable tdiCamera)
+            {
+                if (operationMode == TDIOperationMode.TDI)
+                    tdiCamera.SetTDIOperationMode(TDIOperationMode.TDI);
+                else
+                    tdiCamera.SetTDIOperationMode(TDIOperationMode.Area);
+            }
 
             switch (operationMode)
             {
@@ -155,20 +168,19 @@ namespace ATT.UI.Forms
                     lblLineMode.BackColor = _selectedColor;
                     lblAreaMode.BackColor = _nonSelectedColor;
                     lblCameraExposure.Text = "D GAIN (0 ~ 8[dB])";
-                    AppsLineCameraManager.Instance().SetOperationMode(CameraName.LinscanMIL0, TDIOperationMode.TDI);
+                  
                     break;
 
                 case TDIOperationMode.Area:
                     lblLineMode.BackColor = _nonSelectedColor;
                     lblAreaMode.BackColor = _selectedColor;
                     lblCameraExposure.Text = "EXPOSURE [us]";
-                    AppsLineCameraManager.Instance().SetOperationMode(CameraName.LinscanMIL0, TDIOperationMode.Area);
+                 
                     break;
 
                 default:
                     break;
             }
-            AppsLineCameraManager.Instance().CurrentOperationMode = operationMode;
         }
 
         public void UpdateUI()
@@ -286,7 +298,10 @@ namespace ATT.UI.Forms
         {
             int exposureTime = 0;
             int digitalGain = 0;
-            if (AppsLineCameraManager.Instance().CurrentOperationMode == TDIOperationMode.Area)
+
+            var appsLineCamera = AppsLineCameraManager.Instance().GetLineCamera(CameraName).Camera as CameraMil;
+
+            if (appsLineCamera.TDIOperationMode == TDIOperationMode.Area)
             {
                 exposureTime = KeyPadHelper.SetLabelIntegerData((Label)sender);
             }
@@ -448,7 +463,7 @@ namespace ATT.UI.Forms
             motionPopupForm.ShowDialog();
         }
 
-        private void LiveDisplay(Mat image)
+        private void LiveDisplay(string cameraName, Mat image)
         {
             if (image == null)
                 return;
@@ -458,22 +473,38 @@ namespace ATT.UI.Forms
 
         private void btnGrabStart_Click(object sender, EventArgs e)
         {
-            if (AppsLineCameraManager.Instance().CurrentOperationMode == TDIOperationMode.TDI)
-                AppsLineCameraManager.Instance().StartGrab(CameraName.LinscanMIL0);
-            else
-                AppsLineCameraManager.Instance().StartGrabContinous(CameraName.LinscanMIL0);
+            var camera = AppsLineCameraManager.Instance().GetLineCamera(CameraName);
+
+            if(camera is ICameraTDIavailable tdiCamera)
+            {
+                if (tdiCamera.TDIOperationMode == TDIOperationMode.TDI)
+                {
+                    AppsInspModel inspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
+                    double length = 0; // repeat Length
+
+                    // Motion 이동 추가
+                    camera.StartGrab((float)length);
+                }
+                else
+                    camera.StartGrabContinous();
+            }
+            
         }
 
         private void btnGrabStop_Click(object sender, EventArgs e)
         {
-            AppsLineCameraManager.Instance().StopGrab(CameraName.LinscanMIL0);
+            AppsLineCamera camera = AppsLineCameraManager.Instance().GetLineCamera(CameraName);
+            camera.StopGrab();
         }
 
         private void OpticTeachingForm_FormClosing(object sender, FormClosingEventArgs e)
         {
-            AppsLineCameraManager.Instance().TeachingLiveImageGrabbed -= LiveDisplay;
-            AppsLineCameraManager.Instance().StopGrab(CameraName.LinscanMIL0);
-            AppsLineCameraManager.Instance().SetOperationMode(CameraName.LinscanMIL0, TDIOperationMode.TDI);
+            AppsLineCamera camera = AppsLineCameraManager.Instance().GetLineCamera(CameraName);
+            camera.TeachingLiveImageGrabbed -= LiveDisplay;
+            camera.TabImageGrabCompletedEventHandler -= OpticTeachingForm_TabImageGrabCompletedEventHandler;
+            camera.StopGrab();
+
+            camera.SetOperationMode(TDIOperationMode.TDI);
         }
         #endregion
     }
