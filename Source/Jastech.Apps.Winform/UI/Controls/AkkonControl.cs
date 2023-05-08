@@ -460,8 +460,9 @@ namespace Jastech.Apps.Winform.UI.Controls
             }
         }
 
-        private ICogImage GetResultImage(Mat mat, AkkonParam akkonParam, float resize)
+        private ICogImage GetResultImage(Mat mat, AkkonParam akkonParam)
         {
+            float resize = akkonParam.MacronAkkonParam.InspOption.InspResizeRatio;
             double width = Math.Truncate(mat.Width * resize);
             double height = Math.Truncate(mat.Height * resize);
 
@@ -1027,10 +1028,12 @@ namespace Jastech.Apps.Winform.UI.Controls
         {
             if (CurrentTab == null)
                 return;
-
-            int threshold = KeyPadHelper.SetLabelIntegerData((Label)sender);
             int groupIndex = cbxGroupNumber.SelectedIndex;
 
+            if (groupIndex < 0)
+                return;
+
+            int threshold = KeyPadHelper.SetLabelIntegerData((Label)sender);
             CurrentTab.AkkonParam.GroupList[groupIndex].Threshold = threshold;
         }
 
@@ -1229,7 +1232,7 @@ namespace Jastech.Apps.Winform.UI.Controls
 
             UpdateResult(tabResults);
 
-            var resultImage = GetResultImage(matImage, CurrentTab.AkkonParam, CurrentTab.AkkonParam.MacronAkkonParam.InspOption.InspResizeRatio);
+            var resultImage = GetResultImage(matImage, CurrentTab.AkkonParam);
 
             if (resultImage != null)
             {
@@ -1286,7 +1289,7 @@ namespace Jastech.Apps.Winform.UI.Controls
 
             UpdateResult(tabResults);
 
-            var resultImage = GetResultImage(cropImage, CurrentTab.AkkonParam, CurrentTab.AkkonParam.MacronAkkonParam.InspOption.InspResizeRatio);
+            var resultImage = GetResultImage(cropImage, CurrentTab.AkkonParam);
             if (resultImage != null)
             {
                 lblOrginalImage.BackColor = _nonSelectedColor;

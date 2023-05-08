@@ -273,6 +273,10 @@ namespace Jastech.Apps.Winform.UI.Controls
             var currentParam = CogCaliperParamControl.GetCurrentParam();
 
             display.SetInteractiveGraphics("tool", currentParam.CreateCurrentRecord(constants));
+
+            var rect = currentParam.GetRegion() as CogRectangleAffine;
+            if (rect != null)
+                display.SetDisplayToCenter(new Point((int)rect.CenterX, (int)rect.CenterY));
         }
 
         public void Inspection()

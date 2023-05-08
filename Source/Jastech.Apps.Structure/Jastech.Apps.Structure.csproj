@@ -82,6 +82,7 @@
     <Compile Include="Data\Unit.cs" />
     <Compile Include="VisionTool\AlgorithmTool.cs" />
     <Compile Include="VisionTool\IVisionTool.cs" />
+    <Compile Include="VisionTool\MainAlgorithmTool.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\Jastech.Core\src\Jastech.Framework.Device\Jastech.Framework.Device.csproj">

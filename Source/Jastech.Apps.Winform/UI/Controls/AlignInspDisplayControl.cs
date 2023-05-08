@@ -10,6 +10,12 @@ using System.Windows.Forms;
 using Jastech.Apps.Structure;
 using Jastech.Framework.Winform.VisionPro.Controls;
 using static Jastech.Apps.Winform.UI.Controls.ResultChartControl;
+using Jastech.Apps.Structure.Data;
+using Cognex.VisionPro;
+using Emgu.CV;
+using System.Runtime.InteropServices;
+using Jastech.Framework.Imaging;
+using Jastech.Framework.Imaging.VisionPro;
 
 namespace Jastech.Apps.Winform.UI.Controls
 {
@@ -31,6 +37,8 @@ namespace Jastech.Apps.Winform.UI.Controls
         public AlignInspResultControl AlignInspResultControl { get; private set; } = new AlignInspResultControl();
 
         public ResultChartControl ResultChartControl { get; private set; } = new ResultChartControl();
+
+        public AppsInspResult InspResult { get; set; } = null;
         #endregion
 
         #region 이벤트
@@ -116,6 +124,100 @@ namespace Jastech.Apps.Winform.UI.Controls
             TabBtnControlList.ForEach(x => x.BackColor = _noneSelectedColor);
             TabBtnControlList[tabNum].BackColor = _selectedColor;
         }
+
+        public void UpdateMainResult(AppsInspResult result)
+        {
+            if(InspResult != null)
+            {
+                InspResult.Dispose();
+                InspResult = null;
+            }
+
+            InspResult = result;
+            //CogCompositeShape
+
+            UpdateAlignResult(InspResult);
+            //InspAlignDisplay.UpdateResult(InspResult);
+            //InspAlignDisplay.UpdateResult(InspResult);
+
+        }
+
+        private void UpdateAlignResult(AppsInspResult result)
+        {
+            List<CogCompositeShape> leftResultList = new List<CogCompositeShape>();
+            List<PointF> pointList = new List<PointF>();
+
+            var leftAlignX = result.LeftAlignX;
+
+            if (leftAlignX.Fpc.CogAlignResult.Count > 0)
+            {
+                foreach (var fpc in leftAlignX.Fpc.CogAlignResult)
+                {
+                    pointList.Add(fpc.MaxCaliperMatch.FoundPos);
+
+                    var leftFpcX = fpc.MaxCaliperMatch.ResultGraphics;
+                    leftResultList.Add(leftFpcX);
+                }
+            }
+            if (leftAlignX.Panel.CogAlignResult.Count() > 0)
+            {
+                foreach (var panel in leftAlignX.Panel.CogAlignResult)
+                {
+                    pointList.Add(panel.MaxCaliperMatch.FoundPos);
+
+                    var leftPanelX = panel.MaxCaliperMatch.ResultGraphics;
+                    leftResultList.Add(leftPanelX);
+                }
+            }
+
+            var leftAlignY = result.LeftAlignY;
+            if (leftAlignY.Fpc.CogAlignResult[0].MaxCaliperMatch != null)
+            {
+                pointList.Add(leftAlignY.Fpc.CogAlignResult[0].MaxCaliperMatch.FoundPos);
+
+                var leftFpcY = leftAlignY.Fpc.CogAlignResult[0].MaxCaliperMatch.ResultGraphics;
+                leftResultList.Add(leftFpcY);
+            }
+            if (leftAlignY.Panel.CogAlignResult[0].MaxCaliperMatch != null)
+            {
+                pointList.Add(leftAlignY.Panel.CogAlignResult[0].MaxCaliperMatch.FoundPos);
+                var leftPanelY = leftAlignY.Panel.CogAlignResult[0].MaxCaliperMatch.ResultGraphics;
+                leftResultList.Add(leftPanelY);
+            }
+
+            InspAlignDisplay.UpdateLeftDisplay(result.CogImage, leftResultList, GetCenterPoint(pointList));
+        }
+
+        private Point GetCenterPoint(List<PointF> pointList)
+        {
+            float minX = pointList.Select(point => point.X).Min();
+            float maxX = pointList.Select(point => point.X).Max();
+
+            float minY = pointList.Select(point => point.Y).Min();
+            float maxY = pointList.Select(point => point.Y).Max();
+
+            float width = (maxX - minX) / 2.0f;
+            float height = (maxY - minY) / 2.0f;
+
+            return new Point((int)(minX + width), (int)(minY + height));
+        }
+
+        public ICogImage ConvertCogImage(Mat image)
+        {
+            if (image == null)
+                return null;
+
+            int size = image.Width * image.Height * image.NumberOfChannels;
+            byte[] dataArray = new byte[size];
+            Marshal.Copy(image.DataPointer, dataArray, 0, size);
+
+            ColorFormat format = image.NumberOfChannels == 1 ? ColorFormat.Gray : ColorFormat.RGB24;
+
+            var cogImage = CogImageHelper.CovertImage(dataArray, image.Width, image.Height, format);
+
+            return cogImage;
+        }
+
         #endregion
     }
 }

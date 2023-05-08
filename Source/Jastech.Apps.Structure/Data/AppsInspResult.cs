@@ -1,4 +1,5 @@
-﻿using Emgu.CV;
+﻿using Cognex.VisionPro;
+using Emgu.CV;
 using Jastech.Framework.Imaging.Result;
 using Jastech.Framework.Imaging.VisionPro.VisionAlgorithms.Results;
 using Jastech.Framework.Macron.Akkon.Results;
@@ -13,14 +14,16 @@ namespace Jastech.Apps.Structure.Data
 {
     public class AppsInspResult
     {
-        [JsonProperty]
-        public int TabNo { get; set; }
-
         [JsonIgnore]
         public Mat Image { get; set; } = null;
 
         [JsonIgnore]
-        public Mat AkkonResultImage { get; set; } = null;
+        public ICogImage CogImage { get; set; } = null;
+
+        [JsonIgnore]
+        public ICogImage AkkonResultImage { get; set; } = null;
+
+        public int TabNo { get; set; } = -1;
 
         public MarkResult FpcMark { get; set; } = new MarkResult();
 
@@ -33,6 +36,9 @@ namespace Jastech.Apps.Structure.Data
         public AlignResult RightAlignX { get; set; } = null;
 
         public AlignResult RightAlignY { get; set; } = null;
+
+        [JsonProperty]
+        public List<AkkonResult> AkkonResultList { get; set; } = new List<AkkonResult>();
 
 
         [JsonProperty]
@@ -47,10 +53,7 @@ namespace Jastech.Apps.Structure.Data
             }
 
             if (AkkonResultImage != null)
-            {
-                AkkonResultImage.Dispose();
                 AkkonResultImage = null;
-            }
         }
     }
 

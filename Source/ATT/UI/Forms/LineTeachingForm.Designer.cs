@@ -52,11 +52,11 @@
             this.pnlTeach = new System.Windows.Forms.Panel();
             this.pnlTeachingItem = new System.Windows.Forms.Panel();
             this.tlpTeachingItem = new System.Windows.Forms.TableLayoutPanel();
-            this.btnAkkon = new System.Windows.Forms.Button();
-            this.btnAlign = new System.Windows.Forms.Button();
-            this.btnMark = new System.Windows.Forms.Button();
             this.btnCancel = new System.Windows.Forms.Button();
             this.btnSave = new System.Windows.Forms.Button();
+            this.btnMark = new System.Windows.Forms.Button();
+            this.btnAlign = new System.Windows.Forms.Button();
+            this.btnAkkon = new System.Windows.Forms.Button();
             this.tlpTeachingPage.SuspendLayout();
             this.pnlTeachingPage.SuspendLayout();
             this.tlpTeaching.SuspendLayout();
@@ -434,51 +434,6 @@
             this.tlpTeachingItem.Size = new System.Drawing.Size(144, 779);
             this.tlpTeachingItem.TabIndex = 0;
             // 
-            // btnAkkon
-            // 
-            this.btnAkkon.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(34)))), ((int)(((byte)(34)))), ((int)(((byte)(34)))));
-            this.btnAkkon.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.btnAkkon.Font = new System.Drawing.Font("맑은 고딕", 20F, System.Drawing.FontStyle.Bold);
-            this.btnAkkon.ForeColor = System.Drawing.Color.White;
-            this.btnAkkon.Location = new System.Drawing.Point(2, 202);
-            this.btnAkkon.Margin = new System.Windows.Forms.Padding(2);
-            this.btnAkkon.Name = "btnAkkon";
-            this.btnAkkon.Size = new System.Drawing.Size(140, 96);
-            this.btnAkkon.TabIndex = 19;
-            this.btnAkkon.Text = "Akkon";
-            this.btnAkkon.UseVisualStyleBackColor = false;
-            this.btnAkkon.Click += new System.EventHandler(this.btnAkkon_Click);
-            // 
-            // btnAlign
-            // 
-            this.btnAlign.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(34)))), ((int)(((byte)(34)))), ((int)(((byte)(34)))));
-            this.btnAlign.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.btnAlign.Font = new System.Drawing.Font("맑은 고딕", 20F, System.Drawing.FontStyle.Bold);
-            this.btnAlign.ForeColor = System.Drawing.Color.White;
-            this.btnAlign.Location = new System.Drawing.Point(2, 102);
-            this.btnAlign.Margin = new System.Windows.Forms.Padding(2);
-            this.btnAlign.Name = "btnAlign";
-            this.btnAlign.Size = new System.Drawing.Size(140, 96);
-            this.btnAlign.TabIndex = 19;
-            this.btnAlign.Text = "Align";
-            this.btnAlign.UseVisualStyleBackColor = false;
-            this.btnAlign.Click += new System.EventHandler(this.btnAlign_Click);
-            // 
-            // btnMark
-            // 
-            this.btnMark.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(34)))), ((int)(((byte)(34)))), ((int)(((byte)(34)))));
-            this.btnMark.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.btnMark.Font = new System.Drawing.Font("맑은 고딕", 20F, System.Drawing.FontStyle.Bold);
-            this.btnMark.ForeColor = System.Drawing.Color.White;
-            this.btnMark.Location = new System.Drawing.Point(2, 2);
-            this.btnMark.Margin = new System.Windows.Forms.Padding(2);
-            this.btnMark.Name = "btnMark";
-            this.btnMark.Size = new System.Drawing.Size(140, 96);
-            this.btnMark.TabIndex = 19;
-            this.btnMark.Text = "Mark";
-            this.btnMark.UseVisualStyleBackColor = false;
-            this.btnMark.Click += new System.EventHandler(this.btnMark_Click);
-            // 
             // btnCancel
             // 
             this.btnCancel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(34)))), ((int)(((byte)(34)))), ((int)(((byte)(34)))));
@@ -508,6 +463,51 @@
             this.btnSave.Text = "Save";
             this.btnSave.UseVisualStyleBackColor = false;
             this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
+            // 
+            // btnMark
+            // 
+            this.btnMark.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(34)))), ((int)(((byte)(34)))), ((int)(((byte)(34)))));
+            this.btnMark.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.btnMark.Font = new System.Drawing.Font("맑은 고딕", 20F, System.Drawing.FontStyle.Bold);
+            this.btnMark.ForeColor = System.Drawing.Color.White;
+            this.btnMark.Location = new System.Drawing.Point(2, 2);
+            this.btnMark.Margin = new System.Windows.Forms.Padding(2);
+            this.btnMark.Name = "btnMark";
+            this.btnMark.Size = new System.Drawing.Size(140, 96);
+            this.btnMark.TabIndex = 19;
+            this.btnMark.Text = "Mark";
+            this.btnMark.UseVisualStyleBackColor = false;
+            this.btnMark.Click += new System.EventHandler(this.btnMark_Click);
+            // 
+            // btnAlign
+            // 
+            this.btnAlign.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(34)))), ((int)(((byte)(34)))), ((int)(((byte)(34)))));
+            this.btnAlign.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.btnAlign.Font = new System.Drawing.Font("맑은 고딕", 20F, System.Drawing.FontStyle.Bold);
+            this.btnAlign.ForeColor = System.Drawing.Color.White;
+            this.btnAlign.Location = new System.Drawing.Point(2, 102);
+            this.btnAlign.Margin = new System.Windows.Forms.Padding(2);
+            this.btnAlign.Name = "btnAlign";
+            this.btnAlign.Size = new System.Drawing.Size(140, 96);
+            this.btnAlign.TabIndex = 19;
+            this.btnAlign.Text = "Align";
+            this.btnAlign.UseVisualStyleBackColor = false;
+            this.btnAlign.Click += new System.EventHandler(this.btnAlign_Click);
+            // 
+            // btnAkkon
+            // 
+            this.btnAkkon.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(34)))), ((int)(((byte)(34)))), ((int)(((byte)(34)))));
+            this.btnAkkon.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.btnAkkon.Font = new System.Drawing.Font("맑은 고딕", 20F, System.Drawing.FontStyle.Bold);
+            this.btnAkkon.ForeColor = System.Drawing.Color.White;
+            this.btnAkkon.Location = new System.Drawing.Point(2, 202);
+            this.btnAkkon.Margin = new System.Windows.Forms.Padding(2);
+            this.btnAkkon.Name = "btnAkkon";
+            this.btnAkkon.Size = new System.Drawing.Size(140, 96);
+            this.btnAkkon.TabIndex = 19;
+            this.btnAkkon.Text = "Akkon";
+            this.btnAkkon.UseVisualStyleBackColor = false;
+            this.btnAkkon.Click += new System.EventHandler(this.btnAkkon_Click);
             // 
             // LineTeachingForm
             // 

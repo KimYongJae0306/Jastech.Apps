@@ -200,5 +200,10 @@ namespace ATT
         {
             SystemManager.Instance().StartRun();
         }
+
+        public void UpdateMainResult(AppsInspResult result)
+        {
+            MainPageControl.UpdateMainResult(result);
+        }
     }
 }
