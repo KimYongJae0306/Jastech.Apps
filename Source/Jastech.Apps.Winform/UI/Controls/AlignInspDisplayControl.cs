@@ -134,15 +134,12 @@ namespace Jastech.Apps.Winform.UI.Controls
             }
 
             InspResult = result;
-            //CogCompositeShape
 
-            UpdateAlignResult(InspResult);
-            //InspAlignDisplay.UpdateResult(InspResult);
-            //InspAlignDisplay.UpdateResult(InspResult);
-
+            UpdateLeftAlignResult(InspResult);
+            UpdateRightAlignResult(InspResult);
         }
 
-        private void UpdateAlignResult(AppsInspResult result)
+        private void UpdateLeftAlignResult(AppsInspResult result)
         {
             List<CogCompositeShape> leftResultList = new List<CogCompositeShape>();
             List<PointF> pointList = new List<PointF>();
@@ -183,6 +180,52 @@ namespace Jastech.Apps.Winform.UI.Controls
                 pointList.Add(leftAlignY.Panel.CogAlignResult[0].MaxCaliperMatch.FoundPos);
                 var leftPanelY = leftAlignY.Panel.CogAlignResult[0].MaxCaliperMatch.ResultGraphics;
                 leftResultList.Add(leftPanelY);
+            }
+
+            InspAlignDisplay.UpdateLeftDisplay(result.CogImage, leftResultList, GetCenterPoint(pointList));
+        }
+
+        private void UpdateRightAlignResult(AppsInspResult result)
+        {
+            List<CogCompositeShape> leftResultList = new List<CogCompositeShape>();
+            List<PointF> pointList = new List<PointF>();
+
+            var rightAlignX = result.RightAlignX;
+
+            if (rightAlignX.Fpc.CogAlignResult.Count > 0)
+            {
+                foreach (var fpc in rightAlignX.Fpc.CogAlignResult)
+                {
+                    pointList.Add(fpc.MaxCaliperMatch.FoundPos);
+
+                    var rightFpcX = fpc.MaxCaliperMatch.ResultGraphics;
+                    leftResultList.Add(rightFpcX);
+                }
+            }
+            if (rightAlignX.Panel.CogAlignResult.Count() > 0)
+            {
+                foreach (var panel in rightAlignX.Panel.CogAlignResult)
+                {
+                    pointList.Add(panel.MaxCaliperMatch.FoundPos);
+
+                    var rightPanelX = panel.MaxCaliperMatch.ResultGraphics;
+                    leftResultList.Add(rightPanelX);
+                }
+            }
+
+            var rightAlignY = result.RightAlignY;
+            if (rightAlignY.Fpc.CogAlignResult[0].MaxCaliperMatch != null)
+            {
+                pointList.Add(rightAlignY.Fpc.CogAlignResult[0].MaxCaliperMatch.FoundPos);
+
+                var rightFpcY = rightAlignY.Fpc.CogAlignResult[0].MaxCaliperMatch.ResultGraphics;
+                leftResultList.Add(rightFpcY);
+            }
+            if (rightAlignY.Panel.CogAlignResult[0].MaxCaliperMatch != null)
+            {
+                pointList.Add(rightAlignY.Panel.CogAlignResult[0].MaxCaliperMatch.FoundPos);
+                var rightPanelY = rightAlignY.Panel.CogAlignResult[0].MaxCaliperMatch.ResultGraphics;
+                leftResultList.Add(rightPanelY);
             }
 
             InspAlignDisplay.UpdateLeftDisplay(result.CogImage, leftResultList, GetCenterPoint(pointList));
