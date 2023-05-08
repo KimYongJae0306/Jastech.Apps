@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Jastech.Apps.Winform.UI.Controls;
+using Jastech.Apps.Structure.Data;
 
 namespace ATT.UI.Pages
 {
@@ -66,9 +67,9 @@ namespace ATT.UI.Pages
             AlignInspControl.UpdateTabCount(tabCount);
         }
 
-        public void UpdateResult()
+        public void UpdateMainResult(AppsInspResult result)
         {
-
+            AlignInspControl.UpdateMainResult(result);
         }
         #endregion
     }

@@ -81,199 +81,6 @@ namespace Jastech.Apps.Structure.VisionTool
 
         //}
 
-        public bool Test(Tab tab, Mat matImage)
-        {
-            AppsInspResult inspResult = new AppsInspResult();
-            inspResult.TabNo = tab.Index;
-
-            #region Mark 검사
-
-            ICogImage cogImage = ConvertCogImage(matImage);
-
-            RunFpcMark(cogImage, tab, ref inspResult);
-            if (inspResult.FpcMark.Judement == Judgement.NG)
-                return false;    // 검사 실패
-
-            RunPanelMark(cogImage, tab, ref inspResult);
-            if (inspResult.PanelMark.Judement == Judgement.NG)
-                return false;    // 검사 실패
-
-            #endregion
-
-
-            // 마크 결과값으로 포인트에 적용
-
-            RunLeftAlign(cogImage, tab, ref inspResult);
-            if (inspResult.LeftAlignX.Judgement != Judgement.OK || inspResult.LeftAlignY.Judgement != Judgement.OK)
-                return false;
-
-            RunRightAlign(cogImage, tab, ref inspResult);
-            if (inspResult.RightAlignX.Judgement != Judgement.OK || inspResult.RightAlignY.Judgement != Judgement.OK)
-                return false;
-
-
-            // 압흔검사
-
-            return true;
-        }
-
-        private void RunLeftAlign(ICogImage cogImage, Tab tab, ref AppsInspResult inspResult)
-        {
-            string ngReason = "";
-
-            inspResult.LeftAlignY = RunLeftAlignY(cogImage, tab, 100.0f, out ngReason); // 100.0f 컨피그로 빼야함
-            if (ngReason != "")
-                Logger.Debug(LogType.Inspection, ngReason);
-        }
-
-        private void RunRightAlign(ICogImage cogImage, Tab tab, ref AppsInspResult inspResult)
-        {
-            string ngReason = "";
-
-            inspResult.RightAlignY = RunRightAlignY(cogImage, tab, 100.0f, out ngReason); // 100.0f 컨피그로 빼야함
-            if (ngReason != "")
-                Logger.Debug(LogType.Inspection, ngReason);
-        }
-
-        private AlignResult RunLeftAlignY(ICogImage cogImage, Tab tab, float judgementValue, out string ngReason)
-        {
-            AlignResult result = new AlignResult();
-            ngReason = "";
-
-            var panelParam = tab.GetAlignParam(ATTTabAlignName.LeftPanelY);
-            var fpcParam = tab.GetAlignParam(ATTTabAlignName.LeftFPCY);
-
-            result.Panel = RunAlignY(cogImage, panelParam.CaliperParams);
-            result.Fpc = RunAlignY(cogImage, fpcParam.CaliperParams);
-
-            if (result.Panel.Judgement == Judgement.OK && result.Fpc.Judgement == Judgement.OK)
-            {
-                float panelY = result.Panel.CogAlignResult[0].MaxCaliperMatch.FoundPos.Y;
-                float fpcY = result.Fpc.CogAlignResult[0].MaxCaliperMatch.FoundPos.Y;
-
-                if (Math.Abs(panelY - fpcY) <= judgementValue)
-                    result.Judgement = Judgement.OK;
-                else
-                {
-                    ngReason = "Alignment NG";
-                    result.Judgement = Judgement.NG;
-                }
-            }
-            else
-            {
-                ngReason = "LeftAlignY Caliper Search Fail.";
-                result.Judgement = Judgement.Fail;
-            }
-
-            return result;
-        }
-
-        private AlignResult RunRightAlignY(ICogImage cogImage, Tab tab, float judgementValue, out string ngReason)
-        {
-            AlignResult result = new AlignResult();
-            ngReason = "";
-
-            var panelParam = tab.GetAlignParam(ATTTabAlignName.RightPanelY);
-            var fpcParam = tab.GetAlignParam(ATTTabAlignName.RightFPCY);
-
-            result.Panel = RunAlignY(cogImage, panelParam.CaliperParams);
-            result.Fpc = RunAlignY(cogImage, fpcParam.CaliperParams);
-
-            if (result.Panel.Judgement == Judgement.OK && result.Fpc.Judgement == Judgement.OK)
-            {
-                float panelY = result.Panel.CogAlignResult[0].MaxCaliperMatch.FoundPos.Y;
-                float fpcY = result.Fpc.CogAlignResult[0].MaxCaliperMatch.FoundPos.Y;
-
-                if (Math.Abs(panelY - fpcY) <= judgementValue)
-                    result.Judgement = Judgement.OK;
-                else
-                {
-                    ngReason = "Alignment NG";
-                    result.Judgement = Judgement.NG;
-                }
-            }
-            else
-            {
-                ngReason = "LeftAlignY Caliper Search Fail.";
-                result.Judgement = Judgement.Fail;
-            }
-
-            return result;
-        }
-
-        public void RunFpcMark(ICogImage cogImage, Tab tab, ref AppsInspResult inspResult)
-        {
-            var result = inspResult.FpcMark;
-
-            foreach (MarkName markName in Enum.GetValues(typeof(MarkName)))
-            {
-                var leftParam = tab.GetFPCMark(MarkDirection.Left, markName);
-                var rightParam = tab.GetFPCMark(MarkDirection.Right, markName);
-
-                var leftResult = RunPatternMatch(cogImage, leftParam.InspParam);
-                if(leftResult == null)
-                    continue;
-
-                var rightResult = RunPatternMatch(cogImage, rightParam.InspParam);
-                if(rightResult == null)
-                    continue;
-
-                if (leftResult.Judgement == Judgement.OK && rightResult.Judgement == Judgement.OK)
-                {
-                    result.Judement = Judgement.OK;
-                    result.FoundedMark.Left = leftResult;
-                    result.FoundedMark.Right = rightResult;
-
-                    return;
-                }
-                else
-                {
-                    MarkMatchingResult matchingResult = new MarkMatchingResult();
-                    matchingResult.Left = leftResult;
-                    matchingResult.Right = rightResult;
-
-                    result.FailMarks.Add(matchingResult);
-                    result.Judement = Judgement.NG;
-                }
-            }
-        }
-
-        public void RunPanelMark(ICogImage cogImage, Tab tab, ref AppsInspResult inspResult)
-        {
-            var result = inspResult.PanelMark;
-
-            foreach (MarkName markName in Enum.GetValues(typeof(MarkName)))
-            {
-                var leftParam = tab.GetPanelMark(MarkDirection.Left, markName);
-                var rightParam = tab.GetPanelMark(MarkDirection.Right, markName);
-
-                var leftResult = RunPatternMatch(cogImage, leftParam.InspParam);
-                if (leftResult == null)
-                    continue;
-
-                var rightResult = RunPatternMatch(cogImage, rightParam.InspParam);
-                if (rightResult == null)
-                    continue;
-
-                if (leftResult.Judgement == Judgement.OK && rightResult.Judgement == Judgement.OK)
-                {
-                    result.Judement = Judgement.OK;
-                    result.FoundedMark.Left = leftResult;
-                    result.FoundedMark.Right = rightResult;
-                    return;
-                }
-                else
-                {
-                    MarkMatchingResult matchingResult = new MarkMatchingResult();
-                    matchingResult.Left = leftResult;
-                    matchingResult.Right = rightResult;
-
-                    result.FailMarks.Add(matchingResult);
-                    result.Judement = Judgement.NG;
-                }
-            }
-        }
-
         public ICogImage ConvertCogImage(Mat image)
         {
             if (image == null)
@@ -364,25 +171,29 @@ namespace Jastech.Apps.Structure.VisionTool
                 return null;
 
             var marcon = akkonParam.MacronAkkonParam;
+            var akkonRoiList = akkonParam.GetAkkonROIList();
+
+            if(akkonRoiList.Count<=0)
+            {
+                Logger.Debug(LogType.Inspection, "Akkon Roi is nothing.");
+                return new List<AkkonResult>();
+            }
 
             marcon.SliceHeight = mat.Height;
 
             if (AkkonAlgorithm.CreateDllBuffer(marcon))
             {
                 AkkonAlgorithm.CreateImageBuffer(stageNo, tabNo, mat.Width, mat.Height, marcon.InspOption.InspResizeRatio);
-
-                var akkonRoiList = akkonParam.GetAkkonROIList();
-
-                AkkonAlgorithm.SetConvertROIData(akkonRoiList, 0, tabNo, new PointF(mat.Width / 2, mat.Height / 2), new PointF(0, 0), 0, akkonParam.MacronAkkonParam.InspOption.InspResizeRatio);
+                AkkonAlgorithm.SetConvertROIData(akkonRoiList, stageNo, tabNo, new PointF(mat.Width / 2, mat.Height / 2), new PointF(0, 0), 0, akkonParam.MacronAkkonParam.InspOption.InspResizeRatio);
 
                 AkkonAlgorithm.InitPrepareInspect();
-                int overlapCount = AkkonAlgorithm.PrepareInspect(0, tabNo);
+                int overlapCount = AkkonAlgorithm.PrepareInspect(stageNo, tabNo);
                 marcon.InspOption.Overlap = overlapCount;
                 
-                AkkonAlgorithm.SetAkkonParam(0, tabNo, ref marcon);
+                AkkonAlgorithm.SetAkkonParam(stageNo, tabNo, ref marcon);
                 AkkonAlgorithm.EnableInspFlag();
 
-                var results = AkkonAlgorithm.Inspect(0, tabNo, mat);
+                var results = AkkonAlgorithm.Inspect(stageNo, tabNo, mat);
               
                 return results;
             }

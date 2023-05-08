@@ -147,6 +147,11 @@ namespace ATT
         {
             _inspRunner.SeqStop();
         }
+
+        public void UpdateMainResult(AppsInspResult result)
+        {
+            _mainForm.UpdateMainResult(result);
+        }
         #endregion
     }
 }

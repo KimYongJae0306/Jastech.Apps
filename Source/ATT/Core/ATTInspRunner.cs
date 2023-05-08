@@ -405,7 +405,12 @@ namespace ATT.Core
 
         public void Run(TabScanImage ScanImage)
         {
-            //AppsInspModel inspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
+            AppsInspModel inspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
+
+            MainAlgorithmTool tool = new MainAlgorithmTool();
+            Tab tab = inspModel.GetUnit(UnitName.Unit0).GetTab(ScanImage.TabNo);
+            tool.MainRunInspect(tab, ScanImage.GetMergeImage(), 10.0f, 10.0f);
+            //
 
             //Tab tab = inspModel.GetUnit(UnitName.Unit0).GetTab(ScanImage.TabNo);
 
@@ -437,36 +442,18 @@ namespace ATT.Core
 
         public void RunVirtual()
         {
-            //AppsInspModel inspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
+            AppsInspModel inspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
 
-            //Tab tab = inspModel.GetUnit(UnitName.Unit0).GetTab(0);
+            Tab tab = inspModel.GetUnit(UnitName.Unit0).GetTab(0);
 
-            //Mat tabMatImage = new Mat(@"D:\Tab1.bmp");
+            Mat tabMatImage = new Mat(@"D:\Tab1.bmp", Emgu.CV.CvEnum.ImreadModes.Grayscale);
 
             //ICogImage tabCogImage = AlgorithmTool.ConvertCogImage(tabMatImage);
+            MainAlgorithmTool tool = new MainAlgorithmTool();
 
-            //AppsInspResult result = new AppsInspResult();
+           var result = tool.MainRunInspect(tab, tabMatImage, 30.0f, 80.0f);
 
-            //result.TabNo = tab.Index;
-            //result.Image = tabMatImage;
-
-            //result.FpcMarkResult = AlgorithmTool.RunPatternMatching(tab, tabCogImage);
-
-            //if (result.PatternMatching == null)
-            //{
-            //    string message = string.Format("Pattern Matching Fail.");
-            //    Logger.Debug(LogType.Inspection, message);
-
-            //    lock (AppsInspResultList)
-            //        AppsInspResultList.Add(result);
-
-            //    return;
-            //}
-
-            //result.Akkon = AlgorithmTool.RunAkkon(tabMatImage, tab.AkkonParam, tab.StageIndex, tab.Index);
-
-            //lock (AppsInspResultList)
-            //    AppsInspResultList.Add(result);
+            SystemManager.Instance().UpdateMainResult(result);
         }
 
         private void SaveImage(List<AppsInspResult> insResultList)
