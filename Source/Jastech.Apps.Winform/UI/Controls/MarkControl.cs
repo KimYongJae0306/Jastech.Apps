@@ -359,6 +359,7 @@ namespace Jastech.Apps.Winform.UI.Controls
         public void ShowROIJog()
         {
             ROIJogControl roiJogForm = new ROIJogControl();
+            roiJogForm.SetTeachingItem(TeachingItem.Mark);
             roiJogForm.SendEventHandler += new ROIJogControl.SendClickEventDelegate(ReceiveClickEvent);
             roiJogForm.ShowDialog();
         }

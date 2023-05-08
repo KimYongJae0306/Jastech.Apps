@@ -23,6 +23,7 @@ using Jastech.Framework.Imaging.Result;
 using Jastech.Framework.Winform.Helper;
 using Jastech.Framework.Winform.Controls;
 using static Jastech.Framework.Device.Motions.AxisMovingParam;
+using System.Diagnostics;
 
 namespace Jastech.Apps.Winform.UI.Controls
 {
@@ -310,6 +311,7 @@ namespace Jastech.Apps.Winform.UI.Controls
         public void ShowROIJog()
         {
             ROIJogControl roiJogForm = new ROIJogControl();
+            roiJogForm.SetTeachingItem(TeachingItem.Align);
             roiJogForm.SendEventHandler += new ROIJogControl.SendClickEventDelegate(ReceiveClickEvent);
             roiJogForm.ShowDialog();
         }
