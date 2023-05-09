@@ -1,4 +1,5 @@
 ﻿using Emgu.CV;
+using Emgu.CV.Reg;
 using Jastech.Apps.Structure;
 using Jastech.Apps.Structure.Data;
 using Jastech.Framework.Device.Cameras;
@@ -9,6 +10,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using static Jastech.Framework.Device.Cameras.Camera;
 
 namespace Jastech.Apps.Winform
 {
@@ -19,6 +21,8 @@ namespace Jastech.Apps.Winform
         private int _curGrabCount { get; set; } = 0;
 
         private int _stackTabNo { get; set; } = 0;
+
+        private object _lock = new object();
         #endregion
 
         #region 속성
@@ -29,6 +33,10 @@ namespace Jastech.Apps.Winform
         public int GrabCount { get; private set; } = 0;
 
         public List<TabScanImage> TabScanImageList { get; private set; } = new List<TabScanImage>();
+
+        public Queue<Mat> LiveMatQueue = new Queue<Mat>();
+
+        public Thread TestTrhead = null;
         #endregion
 
         #region 이벤트
@@ -51,6 +59,9 @@ namespace Jastech.Apps.Winform
         public AppsLineCamera(Camera camera)
         {
             Camera = camera;
+
+            TestTrhead = new Thread(() => LiveThread());
+            TestTrhead.Start();
         }
         #endregion
 
@@ -68,7 +79,7 @@ namespace Jastech.Apps.Winform
             _stackTabNo = 0;
         }
 
-        public void InitGrabSettings(CameraName cameraName)
+        public void InitGrabSettings()
         {
             AppsInspModel inspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
             MaterialInfo materialInfo = inspModel.MaterialInfo;
@@ -144,6 +155,14 @@ namespace Jastech.Apps.Winform
         {
             if (Camera == null)
                 return;
+
+            lock(_lock)
+            {
+                foreach (var mat in LiveMatQueue)
+                    mat.Dispose();
+                LiveMatQueue.Clear();
+            }
+
             Camera.Stop();
         }
 
@@ -151,7 +170,9 @@ namespace Jastech.Apps.Winform
         {
             if (IsLive)
             {
-                TeachingLiveImageGrabbed?.Invoke(Camera.Name, mat);
+                lock (_lock)
+                    LiveMatQueue.Enqueue(mat.Clone());
+                //TeachingLiveImageGrabbed?.Invoke(Camera.Name, mat);
             }
             else
             {
@@ -194,6 +215,21 @@ namespace Jastech.Apps.Winform
                     }
                 }
                 Thread.Sleep(50);
+            }
+        }
+
+        public void LiveThread()
+        {
+            while(true)
+            {
+                Mat mat = null;
+                lock (_lock)
+                {
+                    if (LiveMatQueue.Count() > 0)
+                        mat = LiveMatQueue.Dequeue();
+                    if (mat != null)
+                        TeachingLiveImageGrabbed?.Invoke(Camera.Name, mat);
+                }
             }
         }
 

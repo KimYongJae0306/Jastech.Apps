@@ -69,6 +69,7 @@ namespace Jastech.Apps.Winform
 
             foreach (var camera in cameraCtrlHandler)
             {
+                camera.ImageGrabbed += LinscanImageGrabbed;
                 CameraList.Add(new AppsLineCamera(camera));
             }
         }
@@ -146,6 +147,19 @@ namespace Jastech.Apps.Winform
         public AppsLineCamera GetLineCamera(CameraName cameraName)
         {
             return CameraList.Where(x => x.Camera.Name == cameraName.ToString()).First();
+        }
+
+        public void Dispose()
+        {
+            var cameraCtrlHandler = DeviceManager.Instance().CameraHandler;
+
+            if (cameraCtrlHandler == null)
+                return;
+
+            foreach (var camera in cameraCtrlHandler)
+            {
+                camera.ImageGrabbed -= LinscanImageGrabbed;
+            }
         }
         #endregion
     }

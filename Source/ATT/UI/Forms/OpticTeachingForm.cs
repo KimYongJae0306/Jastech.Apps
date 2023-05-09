@@ -157,9 +157,16 @@ namespace ATT.UI.Forms
             if (camera is ICameraTDIavailable tdiCamera)
             {
                 if (operationMode == TDIOperationMode.TDI)
+                {
+                    AppsLineCameraManager.Instance().GetLineCamera(CameraName).IsLive = false;
                     tdiCamera.SetTDIOperationMode(TDIOperationMode.TDI);
+                }
                 else
+                {
+                    AppsLineCameraManager.Instance().GetLineCamera(CameraName).IsLive = true;
+
                     tdiCamera.SetTDIOperationMode(TDIOperationMode.Area);
+                }
             }
 
             switch (operationMode)
@@ -467,15 +474,14 @@ namespace ATT.UI.Forms
         {
             if (image == null)
                 return;
-
             DrawBoxControl.SetImage(image.ToBitmap());
         }
 
         private void btnGrabStart_Click(object sender, EventArgs e)
         {
-            var camera = AppsLineCameraManager.Instance().GetLineCamera(CameraName);
+            var appsLineCamera = AppsLineCameraManager.Instance().GetLineCamera(CameraName);
 
-            if(camera is ICameraTDIavailable tdiCamera)
+            if(appsLineCamera.Camera is ICameraTDIavailable tdiCamera)
             {
                 if (tdiCamera.TDIOperationMode == TDIOperationMode.TDI)
                 {
@@ -483,10 +489,10 @@ namespace ATT.UI.Forms
                     double length = 0; // repeat Length
 
                     // Motion 이동 추가
-                    camera.StartGrab((float)length);
+                    appsLineCamera.StartGrab((float)length);
                 }
                 else
-                    camera.StartGrabContinous();
+                    appsLineCamera.StartGrabContinous();
             }
             
         }
