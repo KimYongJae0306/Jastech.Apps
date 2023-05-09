@@ -9,6 +9,7 @@ using Jastech.Framework.Imaging.VisionPro;
 using Jastech.Framework.Util.Helper;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -37,6 +38,10 @@ namespace Jastech.Apps.Structure.VisionTool
                 return inspResult;    // 검사 실패
             #endregion
 
+
+            PointF tlqkf = MathHelper.ThetaCoordinate(inspResult.FpcMark.FailMarks[0].Left.MaxMatchPos.FoundPos,
+                                                        inspResult.FpcMark.FailMarks[0].Right.MaxMatchPos.FoundPos,
+                                                        new Point());
             // 마크 결과값으로 포인트에 적용
 
             inspResult.LeftAlignX = RunLeftAlignX(cogImage, tab, judgementX);
