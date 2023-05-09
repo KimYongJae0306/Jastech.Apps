@@ -30,7 +30,7 @@ namespace ATT.UI.Pages
         #endregion
 
         #region 속성
-        public string UnitName { get; set; } = "";
+        public UnitName UnitName { get; set; } = UnitName.Unit0;
         // Display
         private CogTeachingDisplayControl Display { get; set; } = new CogTeachingDisplayControl();
        
@@ -91,13 +91,13 @@ namespace ATT.UI.Pages
 
         private void SelectPreAlign()
         {
-            if (ModelManager.Instance().CurrentModel == null || UnitName == "")
+            if (ModelManager.Instance().CurrentModel == null || UnitName.ToString() == "")
                 return;
 
             btnPreAlign.ForeColor = Color.Blue;
             pnlTeach.Controls.Add(PreAlignControl);
 
-            var preAlignParams = SystemManager.Instance().GetTeachingData().GetPreAlign(UnitName);
+            var preAlignParams = SystemManager.Instance().GetTeachingData().GetPreAlign(UnitName.ToString());
             PreAlignControl.SetParams(preAlignParams);
         }
 
@@ -148,7 +148,7 @@ namespace ATT.UI.Pages
         private void btnMotionPopup_Click(object sender, EventArgs e)
         {
             MotionPopupForm motionPopupForm = new MotionPopupForm();
-            //motionPopupForm.SetAxisHandler(AppsMotionManager.Instance().GetAxisHandler(AxisHandlerName.Unit0));
+            motionPopupForm.UnitName = UnitName;
             motionPopupForm.ShowDialog();
         }
     }

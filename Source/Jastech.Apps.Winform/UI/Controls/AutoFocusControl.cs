@@ -114,7 +114,7 @@ namespace Jastech.Apps.Winform.UI.Controls
         private void btnCurrentToTeach_Click(object sender, EventArgs e)
         {
             int cog = Convert.ToInt32(lblCurrentCogValue.Text);
-            //Main.LAF.SetFocusPosition(cog);
+            AppsLAFManager.Instance().SetCenterOfGravity(LAFName.Akkon.ToString(), cog);
             lblTeachCogValue.Text = cog.ToString();
         }
 

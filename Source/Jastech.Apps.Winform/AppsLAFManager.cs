@@ -4,11 +4,13 @@ using Jastech.Framework.Util.Helper;
 using Jastech.Framework.Winform;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 using static Jastech.Framework.Device.Motions.AxisMovingParam;
 
 namespace Jastech.Apps.Winform
@@ -95,6 +97,12 @@ namespace Jastech.Apps.Winform
                 }
                 Thread.Sleep(300);
             }
+        }
+
+        public void SetCenterOfGravity(string name, int value)
+        {
+            if (DeviceManager.Instance().LAFCtrlHandler.Get(name) is NuriOneLAFCtrl laf)
+                laf.SetCenterOfGravity(value);
         }
 
         public void AutoFocusOnOff(string name, bool isOn)

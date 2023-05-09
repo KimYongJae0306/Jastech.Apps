@@ -23,7 +23,7 @@ namespace ATT.UI.Controls
         #endregion
 
         #region 속성
-        public string UnitName { get; set; } = string.Empty;
+        public UnitName UnitName { get; set; } = UnitName.Unit0;
 
         public AxisHandler AxisHandler = null;
         #endregion
@@ -58,7 +58,7 @@ namespace ATT.UI.Controls
         {
             _selectedColor = Color.FromArgb(104,104,104);
             _noneSelectedColor = Color.FromArgb(52, 52, 52);
-            lblUnit.Text = UnitName;
+            lblUnit.Text = UnitName.ToString();
             SetButtonStatus(btnStandby);
         }
 

@@ -48,7 +48,7 @@ namespace ATT.UI.Forms
         #endregion
 
         #region 속성
-        public string UnitName { get; set; } = "";
+        public UnitName UnitName { get; set; } = UnitName.Unit0;
 
         public string TitleCameraName { get; set; } = "";
 
@@ -96,7 +96,7 @@ namespace ATT.UI.Forms
             _isLoading = true;
 
             SystemManager.Instance().UpdateTeachingData();
-            TeachingTabList = SystemManager.Instance().GetTeachingData().GetUnit(UnitName).GetTabList();
+            TeachingTabList = SystemManager.Instance().GetTeachingData().GetUnit(UnitName.ToString()).GetTabList();
 
             AddControl();
             InitializeTabComboBox();
@@ -217,7 +217,7 @@ namespace ATT.UI.Forms
 
         private void SelectPage(DisplayType type)
         {
-            if (ModelManager.Instance().CurrentModel == null || UnitName == "")
+            if (ModelManager.Instance().CurrentModel == null || UnitName.ToString() == "")
                 return;
 
             ClearSelectedButton();
@@ -307,6 +307,7 @@ namespace ATT.UI.Forms
         private void btnMotionPopup_Click(object sender, EventArgs e)
         {
             MotionPopupForm motionPopupForm = new MotionPopupForm();
+            motionPopupForm.UnitName = UnitName;
             motionPopupForm.ShowDialog();
         }
 

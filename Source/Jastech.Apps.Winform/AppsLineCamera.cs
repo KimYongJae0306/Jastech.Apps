@@ -132,7 +132,7 @@ namespace Jastech.Apps.Winform
 
             float resolution_mm = (float)(Camera.PixelResolution_um / Camera.LensScale) / 1000;
             int totalScanSubImageCount = (int)Math.Ceiling(scanLength_mm / resolution_mm / Camera.ImageHeight) + 2;
-            totalScanSubImageCount = 10;
+            totalScanSubImageCount = 55;
             TabScanImage scanImage = new TabScanImage(0, 0, totalScanSubImageCount);
             TabScanImageList.Add(scanImage);
 

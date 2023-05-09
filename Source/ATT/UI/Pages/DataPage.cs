@@ -56,7 +56,7 @@ namespace ATT.UI.Pages
                 confirmForm.ShowDialog();
                 return;
             }
-            MotionSettingsForm form = new MotionSettingsForm() { UnitName = "0" };
+            MotionSettingsForm form = new MotionSettingsForm() { UnitName = UnitName.Unit0 };
             form.ShowDialog();
         }
 

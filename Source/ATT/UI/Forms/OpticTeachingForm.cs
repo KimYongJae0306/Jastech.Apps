@@ -42,6 +42,8 @@ namespace ATT.UI.Forms
         #endregion
 
         #region 속성
+        public UnitName UnitName { get; set; } = UnitName.Unit0;
+
         private DrawBoxControl DrawBoxControl { get; set; } = new DrawBoxControl() { Dock = DockStyle.Fill };
 
         private PixelValueGraphControl PixelValueGraphControl { get; set; } = new PixelValueGraphControl() { Dock = DockStyle.Fill };
@@ -155,7 +157,7 @@ namespace ATT.UI.Forms
         private void SetOperationMode(TDIOperationMode operationMode)
         {
             var camera = AppsLineCameraManager.Instance().GetLineCamera(CameraName).Camera;
-            camera.Stop();
+            //camera.Stop();
 
             if (camera is ICameraTDIavailable tdiCamera)
             {
@@ -321,6 +323,7 @@ namespace ATT.UI.Forms
             else
             {
                 digitalGain = KeyPadHelper.SetLabelIntegerData((Label)sender);
+                appsLineCamera.SetDigitalGain(digitalGain);
             }
         }
 
@@ -480,6 +483,7 @@ namespace ATT.UI.Forms
         private void btnMotionPopup_Click(object sender, EventArgs e)
         {
             MotionPopupForm motionPopupForm = new MotionPopupForm();
+            motionPopupForm.UnitName = UnitName;
             motionPopupForm.ShowDialog();
         }
 
@@ -495,6 +499,7 @@ namespace ATT.UI.Forms
                 if (tdiCamera.TDIOperationMode == TDIOperationMode.Area)
                 {
                     int tdiStage = tdiCamera.TDIStages;
+                    tdiStage = 256;
                     Mat cropImage = MatHelper.CropRoi(image, new Rectangle(0, 0, camera.ImageWidth, tdiStage));
 
                     //Bitmap bmp = cropImage.ToBitmap();

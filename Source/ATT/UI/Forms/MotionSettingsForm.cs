@@ -36,9 +36,9 @@ namespace ATT.UI.Forms
         #endregion
 
         #region 속성
-        private TeachingPositionListControl TeachingPositionListControl { get; set; } = new TeachingPositionListControl();
+        public UnitName UnitName { get; set; } = UnitName.Unit0;
 
-        public string UnitName { get; set; } = string.Empty;
+        private TeachingPositionListControl TeachingPositionListControl { get; set; } = new TeachingPositionListControl();
 
         private List<TeachingInfo> TeachingPositionList { get; set; } = null;
 
@@ -118,7 +118,7 @@ namespace ATT.UI.Forms
         private void AddTeachingPositionListControl()
         {
             TeachingPositionListControl.Dock = DockStyle.Fill;
-            TeachingPositionListControl.UnitName = "0";
+            TeachingPositionListControl.UnitName = UnitName;
             TeachingPositionListControl.SendEventHandler += new TeachingPositionListControl.SetTeachingPositionListDelegate(ReceiveTeachingPosition);
             pnlTeachingPositionList.Controls.Add(TeachingPositionListControl);
         }
@@ -136,8 +136,7 @@ namespace ATT.UI.Forms
             var axisHandler = AppsMotionManager.Instance().GetAxisHandler(AxisHandlerName.Handler0);
             SetAxisHandler(axisHandler);
 
-            string unitName = "0";// TeachingPositionListControl.UnitName;
-            var posData = SystemManager.Instance().GetTeachingData().GetUnit(unitName).TeachingInfoList;
+            var posData = SystemManager.Instance().GetTeachingData().GetUnit(UnitName.ToString()).TeachingInfoList;
             SetTeachingPosition(posData);
 
             var lafCtrl = AppsLAFManager.Instance().GetLAFCtrl(LAFName.Akkon);
@@ -256,7 +255,7 @@ namespace ATT.UI.Forms
             if (axis == null || !axis.IsConnected())
                 return;
 
-            lblCurrentPositionX.Text = axis.GetActualPosition().ToString();
+            lblCurrentPositionX.Text = axis.GetActualPosition().ToString("F3");
 
             if (axis.IsNegativeLimit())
                 lblSensorX.Text = "-";
@@ -280,7 +279,7 @@ namespace ATT.UI.Forms
             if (axis == null || !axis.IsConnected())
                 return;
 
-            lblCurrentPositionY.Text = axis.GetActualPosition().ToString();
+            lblCurrentPositionY.Text = axis.GetActualPosition().ToString("F3");
 
             if (axis.IsNegativeLimit())
                 lblSensorY.Text = "-";
@@ -332,8 +331,7 @@ namespace ATT.UI.Forms
 
         private void GetCurrentVariableParams()
         {
-            string unitName = TeachingPositionListControl.UnitName;
-            var posData = SystemManager.Instance().GetTeachingData().GetUnit(unitName).TeachingInfoList[(int)TeachingPositionType];
+            var posData = SystemManager.Instance().GetTeachingData().GetUnit(UnitName.ToString()).TeachingInfoList[(int)TeachingPositionType];
 
             posData.SetMovingParams(AxisName.X, XVariableControl.GetCurrentData());
             posData.SetMovingParams(AxisName.Y, YVariableControl.GetCurrentData());
@@ -393,7 +391,7 @@ namespace ATT.UI.Forms
             double currentPosition = Convert.ToDouble(lblCurrentPositionX.Text);
             TeachingPositionList.Where(x => x.Name == TeachingPositionType.ToString()).First().SetTargetPosition(AxisName.X, currentPosition);
 
-            lblTargetPositionX.Text = currentPosition.ToString();
+            lblTargetPositionX.Text = currentPosition.ToString("F3");
         }
 
         private void lblMoveToTargetX_Click(object sender, EventArgs e)
@@ -426,10 +424,10 @@ namespace ATT.UI.Forms
 
         private void lblCurrentToTargetY_Click(object sender, EventArgs e)
         {
-            double currentPosition = Convert.ToDouble(lblCurrentPositionX.Text);
+            double currentPosition = Convert.ToDouble(lblCurrentPositionY.Text);
             TeachingPositionList.Where(x => x.Name == TeachingPositionType.ToString()).First().SetTargetPosition(AxisName.Y, currentPosition);
 
-            lblTargetPositionY.Text = currentPosition.ToString();
+            lblTargetPositionY.Text = currentPosition.ToString("F3");
         }
 
         private void lblMoveToTargetY_Click(object sender, EventArgs e)
@@ -456,10 +454,10 @@ namespace ATT.UI.Forms
 
         private void lblCurrentToTargetZ_Click(object sender, EventArgs e)
         {
-            double currentPosition = Convert.ToDouble(lblCurrentPositionX.Text);
+            double currentPosition = Convert.ToDouble(lblCurrentPositionZ.Text);
             TeachingPositionList.Where(x => x.Name == TeachingPositionType.ToString()).First().SetTargetPosition(AxisName.Z, currentPosition);
 
-            lblTargetPositionZ.Text = currentPosition.ToString();
+            lblTargetPositionZ.Text = currentPosition.ToString("F3");
         }
 
         private void lblTeachedCenterOfGravityZ_Click(object sender, EventArgs e)
@@ -468,7 +466,7 @@ namespace ATT.UI.Forms
             TeachingPositionList.Where(x => x.Name == TeachingPositionType.ToString()).First().SetCenterOfGravity(AxisName.Z, targetCenterOfGravity);
         }
 
-        private void lblCurrentToTargetenterOfGravityZ_Click(object sender, EventArgs e)
+        private void lblCurrentToTargetCenterOfGravityZ_Click(object sender, EventArgs e)
         {
             int targetCenterOfGravity = Convert.ToInt32(lblCurrentCenterOfGravityZ.Text);
             TeachingPositionList.Where(x => x.Name == TeachingPositionType.ToString()).First().SetCenterOfGravity(AxisName.Z, targetCenterOfGravity);
@@ -493,7 +491,7 @@ namespace ATT.UI.Forms
 
         private void lblAutoFocusOnOffZ_Click(object sender, EventArgs e)
         {
-            //LAFCtrl.IsLaserOn
+            //AppsLAFManager.Instance().AutoFocusOnOff(LAFName.Akkon.ToString(), true);
         }
 
         private void rdoJogSlowMode_CheckedChanged(object sender, EventArgs e)
