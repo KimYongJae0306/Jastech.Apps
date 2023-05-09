@@ -30,7 +30,16 @@ namespace Jastech.Apps.Winform.UI.Forms
                 txtPanelXSize.Text = PrevMaterialInfo.PanelXSize_mm.ToString();
                 txtMarkToMark.Text = PrevMaterialInfo.MarkToMark_mm.ToString();
                 txtPanelEdgeToFirst.Text = PrevMaterialInfo.PanelEdgeToFirst_mm.ToString();
-                txtTabWidth.Text = PrevMaterialInfo.TabWidth_mm.ToString();
+
+                // Tab Width
+                txtTab1Width.Text = PrevMaterialInfo.Tab0Width_mm.ToString();
+                txtTab2Width.Text = PrevMaterialInfo.Tab1Width_mm.ToString();
+                txtTab3Width.Text = PrevMaterialInfo.Tab2Width_mm.ToString();
+                txtTab4Width.Text = PrevMaterialInfo.Tab3Width_mm.ToString();
+                txtTab5Width.Text = PrevMaterialInfo.Tab4Width_mm.ToString();
+                txtTab6Width.Text = PrevMaterialInfo.Tab5Width_mm.ToString();
+                txtTab7Width.Text = PrevMaterialInfo.Tab6Width_mm.ToString();
+                txtTab8Width.Text = PrevMaterialInfo.Tab7Width_mm.ToString();
 
                 // Tab To Tab Distance
                 txtDistance1.Text = PrevMaterialInfo.TabToTabDistance0_mm.ToString();
@@ -83,7 +92,16 @@ namespace Jastech.Apps.Winform.UI.Forms
                 PanelXSize_mm = Convert.ToDouble(txtPanelXSize.Text),
                 MarkToMark_mm = Convert.ToDouble(txtMarkToMark.Text),
                 PanelEdgeToFirst_mm = Convert.ToDouble(txtPanelEdgeToFirst.Text),
-                TabWidth_mm = Convert.ToDouble(txtTabWidth.Text),
+
+                Tab0Width_mm = Convert.ToDouble(txtTab1Width.Text),
+                Tab1Width_mm = Convert.ToDouble(txtTab2Width.Text),
+                Tab2Width_mm = Convert.ToDouble(txtTab3Width.Text),
+                Tab3Width_mm = Convert.ToDouble(txtTab4Width.Text),
+                Tab4Width_mm = Convert.ToDouble(txtTab5Width.Text),
+                Tab5Width_mm = Convert.ToDouble(txtTab6Width.Text),
+                Tab6Width_mm = Convert.ToDouble(txtTab7Width.Text),
+                Tab7Width_mm = Convert.ToDouble(txtTab8Width.Text),
+
                 TabToTabDistance0_mm = Convert.ToDouble(txtDistance1.Text),
                 TabToTabDistance1_mm = Convert.ToDouble(txtDistance2.Text),
                 TabToTabDistance2_mm = Convert.ToDouble(txtDistance3.Text),

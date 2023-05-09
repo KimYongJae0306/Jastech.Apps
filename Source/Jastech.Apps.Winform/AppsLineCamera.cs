@@ -36,7 +36,9 @@ namespace Jastech.Apps.Winform
 
         public Queue<Mat> LiveMatQueue = new Queue<Mat>();
 
-        public Thread TestTrhead = null;
+        public Thread LiveThread = null;
+
+        public bool IsStopLiveUpdate = false;
         #endregion
 
         #region 이벤트
@@ -59,9 +61,6 @@ namespace Jastech.Apps.Winform
         public AppsLineCamera(Camera camera)
         {
             Camera = camera;
-
-            TestTrhead = new Thread(() => LiveThread());
-            TestTrhead.Start();
         }
         #endregion
 
@@ -105,11 +104,11 @@ namespace Jastech.Apps.Winform
 
                 int startIndex = (int)(tempPos / resolution_mm / Camera.ImageHeight);
 
-                tempPos += Math.Ceiling((materialInfo.GetTabToTabDistance(i) - materialInfo.TabWidth_mm));
+                tempPos += Math.Ceiling((materialInfo.GetTabToTabDistance(i) - materialInfo.Tab0Width_mm));
 
                 int endIndex = (int)(tempPos / resolution_mm / Camera.ImageHeight);
 
-                tempPos += materialInfo.TabWidth_mm;
+                tempPos += materialInfo.Tab0Width_mm;
 
                 TabScanImage scanImage = new TabScanImage(i, startIndex, endIndex);
                 TabScanImageList.Add(scanImage);
@@ -171,8 +170,9 @@ namespace Jastech.Apps.Winform
             if (IsLive)
             {
                 lock (_lock)
+                {
                     LiveMatQueue.Enqueue(mat.Clone());
-                //TeachingLiveImageGrabbed?.Invoke(Camera.Name, mat);
+                }
             }
             else
             {
@@ -218,9 +218,22 @@ namespace Jastech.Apps.Winform
             }
         }
 
-        public void LiveThread()
+        public void StartUpdateLive()
         {
-            while(true)
+            IsStopLiveUpdate = false;
+            if(LiveThread != null)
+                LiveThread = new Thread(() => UpdateLiveImage());
+            LiveThread.Start();
+        }
+
+        public void StopUpdateLive()
+        {
+            IsStopLiveUpdate = true;
+        }
+
+        public void UpdateLiveImage()
+        {
+            while(IsStopLiveUpdate == false)
             {
                 Mat mat = null;
                 lock (_lock)
@@ -228,9 +241,12 @@ namespace Jastech.Apps.Winform
                     if (LiveMatQueue.Count() > 0)
                         mat = LiveMatQueue.Dequeue();
                     if (mat != null)
+                    {
                         TeachingLiveImageGrabbed?.Invoke(Camera.Name, mat);
+                    }
                 }
             }
+            LiveThread = null;
         }
 
         private TabScanImage GetTabScanImage(int tabNo)

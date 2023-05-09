@@ -19,7 +19,28 @@ namespace Jastech.Apps.Structure.Data
         public double PanelEdgeToFirst_mm { get; set; }
 
         [JsonProperty]
-        public double TabWidth_mm { get; set; }
+        public double Tab0Width_mm { get; set; }
+
+        [JsonProperty]
+        public double Tab1Width_mm { get; set; }
+
+        [JsonProperty]
+        public double Tab2Width_mm { get; set; }
+
+        [JsonProperty]
+        public double Tab3Width_mm { get; set; }
+
+        [JsonProperty]
+        public double Tab4Width_mm { get; set; }
+
+        [JsonProperty]
+        public double Tab5Width_mm { get; set; }
+
+        [JsonProperty]
+        public double Tab6Width_mm { get; set; }
+
+        [JsonProperty]
+        public double Tab7Width_mm { get; set; }
 
         [JsonProperty]
         public double TabToTabDistance0_mm { get; set; }
@@ -63,6 +84,28 @@ namespace Jastech.Apps.Structure.Data
                 return TabToTabDistance6_mm;
             else if (tabNo == 7)
                 return TabToTabDistance7_mm;
+            else
+                return 0;
+        }
+
+        public double GetTabWidth(int tabNo)
+        {
+            if (tabNo == 0)
+                return Tab0Width_mm;
+            else if (tabNo == 1)
+                return Tab1Width_mm;
+            else if (tabNo == 2)
+                return Tab2Width_mm;
+            else if (tabNo == 3)
+                return Tab3Width_mm;
+            else if (tabNo == 4)
+                return Tab4Width_mm;
+            else if (tabNo == 5)
+                return Tab5Width_mm;
+            else if (tabNo == 6)
+                return Tab6Width_mm;
+            else if (tabNo == 7)
+                return Tab7Width_mm;
             else
                 return 0;
         }

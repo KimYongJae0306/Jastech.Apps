@@ -29,6 +29,7 @@ using Emgu.CV.CvEnum;
 using Jastech.Apps.Structure.Parameters;
 using static Emgu.CV.XImgproc.SupperpixelSLIC;
 using Emgu.CV.XFeatures2D;
+using System.Threading.Tasks;
 
 namespace ATT.UI.Forms
 {
@@ -159,12 +160,13 @@ namespace ATT.UI.Forms
                 if (operationMode == TDIOperationMode.TDI)
                 {
                     AppsLineCameraManager.Instance().GetLineCamera(CameraName).IsLive = false;
+                    AppsLineCameraManager.Instance().GetLineCamera(CameraName).StopUpdateLive();
                     tdiCamera.SetTDIOperationMode(TDIOperationMode.TDI);
                 }
                 else
                 {
                     AppsLineCameraManager.Instance().GetLineCamera(CameraName).IsLive = true;
-
+                    AppsLineCameraManager.Instance().GetLineCamera(CameraName).StartUpdateLive();
                     tdiCamera.SetTDIOperationMode(TDIOperationMode.Area);
                 }
             }
@@ -474,7 +476,26 @@ namespace ATT.UI.Forms
         {
             if (image == null)
                 return;
-            DrawBoxControl.SetImage(image.ToBitmap());
+
+            var camera = AppsLineCameraManager.Instance().GetLineCamera(CameraName).Camera;
+
+            if(camera is ICameraTDIavailable tdiCamera)
+            {
+                if (tdiCamera.TDIOperationMode == TDIOperationMode.Area)
+                {
+                    int tdiStage = tdiCamera.TDIStages;
+                    Mat cropImage = MatHelper.CropRoi(image, new Rectangle(0, 0, camera.ImageWidth, tdiStage));
+
+                    DrawBoxControl.SetImage(cropImage.ToBitmap());
+
+                    cropImage.Dispose();
+                }
+                else
+                {
+                    DrawBoxControl.SetImage(image.ToBitmap());
+                }
+            }
+            image.Dispose();
         }
 
         private void btnGrabStart_Click(object sender, EventArgs e)
@@ -492,9 +513,10 @@ namespace ATT.UI.Forms
                     appsLineCamera.StartGrab((float)length);
                 }
                 else
+                {
                     appsLineCamera.StartGrabContinous();
+                }
             }
-            
         }
 
         private void btnGrabStop_Click(object sender, EventArgs e)
@@ -506,6 +528,8 @@ namespace ATT.UI.Forms
         private void OpticTeachingForm_FormClosing(object sender, FormClosingEventArgs e)
         {
             AppsLineCamera camera = AppsLineCameraManager.Instance().GetLineCamera(CameraName);
+            AppsLineCameraManager.Instance().GetLineCamera(CameraName).StopUpdateLive();
+
             camera.TeachingLiveImageGrabbed -= LiveDisplay;
             camera.TabImageGrabCompletedEventHandler -= OpticTeachingForm_TabImageGrabCompletedEventHandler;
             camera.StopGrab();
