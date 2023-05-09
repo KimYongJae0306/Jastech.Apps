@@ -164,15 +164,15 @@ namespace ATT.UI.Forms
                 if (operationMode == TDIOperationMode.TDI)
                 {
                     AppsLineCameraManager.Instance().GetLineCamera(CameraName).IsLive = false;
-                    AppsLineCameraManager.Instance().GetLineCamera(CameraName).StopUpdateLive();
-                    AppsLineCameraManager.Instance().GetLineCamera(CameraName).StartMergeTread();
+                    AppsLineCameraManager.Instance().GetLineCamera(CameraName).StopLiveTask();
+                    AppsLineCameraManager.Instance().GetLineCamera(CameraName).StartMergeTask();
                     tdiCamera.SetTDIOperationMode(TDIOperationMode.TDI);
                 }
                 else
                 {
                     AppsLineCameraManager.Instance().GetLineCamera(CameraName).IsLive = true;
-                    AppsLineCameraManager.Instance().GetLineCamera(CameraName).StartUpdateLive();
-                    AppsLineCameraManager.Instance().GetLineCamera(CameraName).StopMergeTread();
+                    AppsLineCameraManager.Instance().GetLineCamera(CameraName).StartLiveTask();
+                    AppsLineCameraManager.Instance().GetLineCamera(CameraName).StopMergeTask();
                     tdiCamera.SetTDIOperationMode(TDIOperationMode.Area);
                 }
             }
@@ -545,7 +545,7 @@ namespace ATT.UI.Forms
         private void OpticTeachingForm_FormClosing(object sender, FormClosingEventArgs e)
         {
             AppsLineCamera camera = AppsLineCameraManager.Instance().GetLineCamera(CameraName);
-            AppsLineCameraManager.Instance().GetLineCamera(CameraName).StopUpdateLive();
+            AppsLineCameraManager.Instance().GetLineCamera(CameraName).StopLiveTask();
 
             camera.TeachingLiveImageGrabbed -= LiveDisplay;
             camera.TabImageGrabCompletedEventHandler -= OpticTeachingForm_TabImageGrabCompletedEventHandler;

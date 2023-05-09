@@ -37,13 +37,13 @@ namespace Jastech.Apps.Winform
 
         public Queue<Mat> LiveMatQueue = new Queue<Mat>();
 
-        public Thread LiveThread = null;
+        public Task MergeTask { get; set; }
 
-        public bool IsStopLiveUpdate = false;
+        public Task LiveTask { get; set; }
 
-        public Thread MergeThread = null;
+        public CancellationTokenSource CancelMergeTask { get; set; }
 
-        public bool isMergeThreadEnable = false;
+        public CancellationTokenSource CancelLiveTask { get; set; }
         #endregion
 
         #region 이벤트
@@ -183,7 +183,7 @@ namespace Jastech.Apps.Winform
             {
                 Mat rotatedMat = MatHelper.Transpose(mat);
 
-                if (TabScanImageList.Count > 0/* && TabScanImageList.Count < _stackTabNo*/)
+                if (TabScanImageList.Count > 0)
                 {
                     if (GetTabScanImage(_stackTabNo) is TabScanImage scanImage)
                     {
@@ -207,10 +207,16 @@ namespace Jastech.Apps.Winform
             }
         }
 
-        public void UpdateMergeThread()
+        public void UpdateMergeImage()
         {
-            while (isMergeThreadEnable)
+            while(true)
             {
+                if(CancelMergeTask.IsCancellationRequested)
+                {
+                    ClearTabScanImage();
+                    break;
+                }
+
                 foreach (var scanImage in TabScanImageList)
                 {
                     if (scanImage.ExcuteMerge)
@@ -219,48 +225,61 @@ namespace Jastech.Apps.Winform
                         scanImage.ExcuteMerge = false;
                     }
                 }
+
                 Thread.Sleep(50);
             }
-            MergeThread = null;
         }
-        public void StartMergeTread()
-        {
-            isMergeThreadEnable = true;
 
-            if(MergeThread == null)
-            {
-                MergeThread = new Thread(() => UpdateMergeThread());
-                MergeThread.Start();
-            }
-         
+        public void StartMergeTask()
+        {
+            if (MergeTask != null)
+                return;
+
+            CancelMergeTask = new CancellationTokenSource();
+            MergeTask = new Task(UpdateMergeImage, CancelMergeTask.Token);
+            MergeTask.Start();
         }
        
-        public void StopMergeTread()
+        public void StopMergeTask()
         {
-            isMergeThreadEnable = false;
-            Thread.Sleep(100);
+            if (MergeTask == null)
+                return;
+
+            CancelMergeTask.Cancel();
+            MergeTask.Wait();
+            MergeTask = null;
         }
 
-        public void StartUpdateLive()
+        public void StartLiveTask()
         {
-            IsStopLiveUpdate = false;
-            if(LiveThread == null)
-            {
-                LiveThread = new Thread(() => UpdateLiveImage());
-                LiveThread.Start();
-            }
+            if (LiveTask != null)
+                return;
+
+            CancelLiveTask = new CancellationTokenSource();
+            LiveTask = new Task(UpdateLiveImage, CancelLiveTask.Token);
+            LiveTask.Start();
         }
 
-        public void StopUpdateLive()
+        public void StopLiveTask()
         {
-            IsStopLiveUpdate = true;
-            Thread.Sleep(100);
+            if (LiveTask == null)
+                return;
+
+            CancelLiveTask.Cancel();
+            LiveTask.Wait();
+            LiveTask = null;
         }
 
         public void UpdateLiveImage()
         {
-            while(IsStopLiveUpdate == false)
+            while (true)
             {
+                if (CancelMergeTask.IsCancellationRequested)
+                {
+                    ClearTabScanImage();
+                    break;
+                }
+
                 Mat mat = null;
                 lock (_lock)
                 {
@@ -271,8 +290,9 @@ namespace Jastech.Apps.Winform
                         TeachingLiveImageGrabbed?.Invoke(Camera.Name, mat);
                     }
                 }
+
+                Thread.Sleep(50);
             }
-            LiveThread = null;
         }
 
         private TabScanImage GetTabScanImage(int tabNo)
