@@ -120,12 +120,12 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         private void bnAFOn_Click(object sender, EventArgs e)
         {
-            LAFCtrl.Initialize();
+            AppsLAFManager.Instance().AutoFocusOnOff(LAFName.Akkon.ToString(), true);
         }
 
         private void btnAFOff_Click(object sender, EventArgs e)
         {
-
+            AppsLAFManager.Instance().AutoFocusOnOff(LAFName.Akkon.ToString(), false);
         }
 
         private void AutoFocusOnOff(bool isOn)

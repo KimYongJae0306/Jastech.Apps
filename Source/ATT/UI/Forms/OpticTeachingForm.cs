@@ -89,6 +89,7 @@ namespace ATT.UI.Forms
             UpdateData();
             AddControl();
             InitializeUI();
+            StatusTimer.Start();
         }
 
         private void OpticTeachingForm_TabImageGrabCompletedEventHandler(string camearaName, TabScanImage image)
@@ -96,6 +97,7 @@ namespace ATT.UI.Forms
             if(image.GetMergeImage() is Mat mat)
             {
                 DrawBoxControl.SetImage(mat.ToBitmap());
+                mat.Dispose();
             }
         }
 
@@ -161,12 +163,14 @@ namespace ATT.UI.Forms
                 {
                     AppsLineCameraManager.Instance().GetLineCamera(CameraName).IsLive = false;
                     AppsLineCameraManager.Instance().GetLineCamera(CameraName).StopUpdateLive();
+                    AppsLineCameraManager.Instance().GetLineCamera(CameraName).StartMergeTread();
                     tdiCamera.SetTDIOperationMode(TDIOperationMode.TDI);
                 }
                 else
                 {
                     AppsLineCameraManager.Instance().GetLineCamera(CameraName).IsLive = true;
                     AppsLineCameraManager.Instance().GetLineCamera(CameraName).StartUpdateLive();
+                    AppsLineCameraManager.Instance().GetLineCamera(CameraName).StopMergeTread();
                     tdiCamera.SetTDIOperationMode(TDIOperationMode.Area);
                 }
             }
@@ -323,6 +327,13 @@ namespace ATT.UI.Forms
         private void lblCameraGainValue_Click(object sender, EventArgs e)
         {
             int analogGain = KeyPadHelper.SetLabelIntegerData((Label)sender);
+
+            var appsLineCamera = AppsLineCameraManager.Instance().GetLineCamera(CameraName);
+
+            if(appsLineCamera != null)
+            {
+                appsLineCamera.Camera.SetAnalogGain(analogGain);
+            }
         }
 
         private void trbDimmingLevelValue_Scroll(object sender, EventArgs e)
@@ -430,7 +441,7 @@ namespace ATT.UI.Forms
 
         private void UpdateCurrentdata()
         {
-            string unitName = "0";
+            string unitName = UnitName.Unit0.ToString();
             var unit = SystemManager.Instance().GetTeachingData().GetUnit(unitName);
             var posData = unit.TeachingInfoList[(int)TeachingPosType.Stage1_Scan_Start];
 
@@ -486,6 +497,7 @@ namespace ATT.UI.Forms
                     int tdiStage = tdiCamera.TDIStages;
                     Mat cropImage = MatHelper.CropRoi(image, new Rectangle(0, 0, camera.ImageWidth, tdiStage));
 
+                    //Bitmap bmp = cropImage.ToBitmap();
                     DrawBoxControl.SetImage(cropImage.ToBitmap());
 
                     cropImage.Dispose();
@@ -507,7 +519,7 @@ namespace ATT.UI.Forms
                 if (tdiCamera.TDIOperationMode == TDIOperationMode.TDI)
                 {
                     AppsInspModel inspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
-                    double length = 0; // repeat Length
+                    double length = MotionRepeatControl.GetScanLength(); // repeat Length
 
                     // Motion 이동 추가
                     appsLineCamera.StartGrab((float)length);
@@ -535,7 +547,13 @@ namespace ATT.UI.Forms
             camera.StopGrab();
 
             camera.SetOperationMode(TDIOperationMode.TDI);
+            StatusTimer.Stop();
         }
         #endregion
+
+        private void StatusTimer_Tick(object sender, EventArgs e)
+        {
+            UpdateUI();
+        }
     }
 }

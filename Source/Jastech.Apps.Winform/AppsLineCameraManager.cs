@@ -130,9 +130,8 @@ namespace Jastech.Apps.Winform
                 if (data != null)
                 {
                     Mat grabImage = MatHelper.ByteArrayToMat(data, camera.ImageWidth, camera.ImageHeight, 1);
-
-                    if(GetAppsCamera(camera.Name) is AppsLineCamera lineCamera)
-                        GetAppsCamera(camera.Name).AddImage(grabImage);
+                    if (GetAppsCamera(camera.Name) is AppsLineCamera lineCamera)
+                        GetAppsCamera(camera.Name).AddImage(grabImage, camera.GrabCount);
                  
                     grabImage.Dispose();
                 }

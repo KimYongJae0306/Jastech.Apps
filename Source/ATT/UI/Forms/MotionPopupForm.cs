@@ -31,8 +31,6 @@ namespace ATT.UI.Forms
         #region 속성
         private TeachingPositionListControl TeachingPositionListControl { get; set; } = new TeachingPositionListControl();
 
-        public string UnitName { get; set; } = string.Empty;
-
         private List<TeachingInfo> TeachingPositionList { get; set; } = null;
 
         private AxisHandler AxisHandler { get; set; } = null;
@@ -130,7 +128,7 @@ namespace ATT.UI.Forms
             var axisHandler = AppsMotionManager.Instance().GetAxisHandler(AxisHandlerName.Handler0);
             SetAxisHandler(axisHandler);
 
-            string unitName = "0";// TeachingPositionListControl.UnitName;
+            string unitName = UnitName.Unit0.ToString();  // 나중에 변수로...
             var posData = SystemManager.Instance().GetTeachingData().GetUnit(unitName).TeachingInfoList;
             SetTeachingPosition(posData);
 

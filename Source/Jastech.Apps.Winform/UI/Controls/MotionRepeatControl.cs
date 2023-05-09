@@ -128,6 +128,11 @@ namespace Jastech.Apps.Winform.UI.Controls
             return inputData;
         }
 
+        public double GetScanLength()
+        {
+            return Convert.ToDouble(lblScanXLength.Text);
+        }
+
         private void MoveRepeat(bool isRepeat)
         {
             if (isRepeat)
@@ -173,6 +178,7 @@ namespace Jastech.Apps.Winform.UI.Controls
             public double AccDec { get; set; } = 0.0;
 
             public int DwellTime { get; set; } = 0;
+
             public double StartPosition { get; set; } = 0.0;
 
             public double EndPosition { get; set; } = 0.0;

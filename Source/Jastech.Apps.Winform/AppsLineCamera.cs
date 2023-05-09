@@ -7,6 +7,7 @@ using Jastech.Framework.Imaging.Helper;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -39,6 +40,10 @@ namespace Jastech.Apps.Winform
         public Thread LiveThread = null;
 
         public bool IsStopLiveUpdate = false;
+
+        public Thread MergeThread = null;
+
+        public bool isMergeThreadEnable = false;
         #endregion
 
         #region 이벤트
@@ -126,8 +131,8 @@ namespace Jastech.Apps.Winform
             ClearTabScanImage();
 
             float resolution_mm = (float)(Camera.PixelResolution_um / Camera.LensScale) / 1000;
-            int totalScanSubImageCount = (int)Math.Ceiling(scanLength_mm / resolution_mm / Camera.ImageHeight);
-
+            int totalScanSubImageCount = (int)Math.Ceiling(scanLength_mm / resolution_mm / Camera.ImageHeight) + 2;
+            totalScanSubImageCount = 10;
             TabScanImage scanImage = new TabScanImage(0, 0, totalScanSubImageCount);
             TabScanImageList.Add(scanImage);
 
@@ -165,7 +170,7 @@ namespace Jastech.Apps.Winform
             Camera.Stop();
         }
 
-        public void AddImage(Mat mat)
+        public void AddImage(Mat mat, int grabCount)
         {
             if (IsLive)
             {
@@ -178,12 +183,12 @@ namespace Jastech.Apps.Winform
             {
                 Mat rotatedMat = MatHelper.Transpose(mat);
 
-                if (TabScanImageList.Count > 0 && TabScanImageList.Count < _stackTabNo)
+                if (TabScanImageList.Count > 0/* && TabScanImageList.Count < _stackTabNo*/)
                 {
                     if (GetTabScanImage(_stackTabNo) is TabScanImage scanImage)
                     {
                         if (scanImage.StartIndex <= _curGrabCount && _curGrabCount <= scanImage.EndIndex)
-                            scanImage.AddImage(mat);
+                            scanImage.AddImage(rotatedMat, grabCount);
 
                         if (scanImage.IsAddImageDone())
                         {
@@ -202,9 +207,9 @@ namespace Jastech.Apps.Winform
             }
         }
 
-        public void MergeThread()
+        public void UpdateMergeThread()
         {
-            while (true)
+            while (isMergeThreadEnable)
             {
                 foreach (var scanImage in TabScanImageList)
                 {
@@ -216,19 +221,40 @@ namespace Jastech.Apps.Winform
                 }
                 Thread.Sleep(50);
             }
+            MergeThread = null;
+        }
+        public void StartMergeTread()
+        {
+            isMergeThreadEnable = true;
+
+            if(MergeThread == null)
+            {
+                MergeThread = new Thread(() => UpdateMergeThread());
+                MergeThread.Start();
+            }
+         
+        }
+       
+        public void StopMergeTread()
+        {
+            isMergeThreadEnable = false;
+            Thread.Sleep(100);
         }
 
         public void StartUpdateLive()
         {
             IsStopLiveUpdate = false;
-            if(LiveThread != null)
+            if(LiveThread == null)
+            {
                 LiveThread = new Thread(() => UpdateLiveImage());
-            LiveThread.Start();
+                LiveThread.Start();
+            }
         }
 
         public void StopUpdateLive()
         {
             IsStopLiveUpdate = true;
+            Thread.Sleep(100);
         }
 
         public void UpdateLiveImage()

@@ -104,7 +104,7 @@ namespace Jastech.Apps.Winform.Settings
                 camera1.TriggerSource = (int)MilCxpTriggerSource.Cxp;
                 camera1.TriggerSignalType = MilTriggerSignalType.TL_Trigger;
                 camera1.TriggerIoSourceType = MILIoSourceType.AUX_IO0;
-                camera1.DigitizerNum = 2;
+                camera1.DigitizerNum = 0;
                 config.Add(camera1);
 
                 var motion = new ACSMotion("Motion", 2, ACSConnectType.Ethernet);

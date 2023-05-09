@@ -37,7 +37,7 @@ namespace Jastech.Apps.Structure.Data
             bool isDone = false;
 
             lock (_objLock)
-                isDone = TotalGrabCount == ScanImageList.Count() ? true : false;
+                isDone = (TotalGrabCount - 2) == ScanImageList.Count() ? true : false;
 
             return isDone;
         }
@@ -55,10 +55,15 @@ namespace Jastech.Apps.Structure.Data
             }
         }
 
-        public void AddImage(Mat mat)
+        public void AddImage(Mat mat, int grabCount)
         {
             lock (_objLock)
+            {
+                if (grabCount <= 1 || TotalGrabCount <= grabCount)
+                    return;
+
                 ScanImageList.Add(mat);
+            }
         }
 
         public Mat GetMergeImage()
