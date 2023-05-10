@@ -1131,7 +1131,7 @@ namespace Jastech.Apps.Winform.UI.Controls
             List<int> topEdgePointList = new List<int>();
             List<int> bottomEdgePointList = new List<int>();
 
-            ImageHelper.GetEdgePoint(topDataArray, bottomDataArray, 0, (int)30/*CalcResolution*/, ref topEdgePointList, ref bottomEdgePointList);
+            ImageHelper.GetEdgePoint(topDataArray, bottomDataArray, 0, (int)10/*CalcResolution*/, ref topEdgePointList, ref bottomEdgePointList);
 
             //if (topEdgePointList.Count != bottomEdgePointList.Count)
             //{
@@ -1182,6 +1182,7 @@ namespace Jastech.Apps.Winform.UI.Controls
                     group.AddROI(akkonRoi);
                 }
             }
+            
         }
 
         private MacronAkkonGroup GetGroup()
@@ -1338,7 +1339,17 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         private void lblResultImage_Click(object sender, EventArgs e)
         {
-            SetResultImageView();
+            var group = GetGroup();
+
+            for (int i = 0; i < group.AkkonROIList.Count(); i++)
+            {
+                AkkonROI roi = group.AkkonROIList[i];
+                roi.CornerOriginY = roi.CornerOriginY +500;
+                roi.CornerXY = roi.CornerXY + 500;
+                //roi.CornerYY = roi.CornerYY
+            }
+            UpdateROIDataGridView(group.AkkonROIList);
+            //SetResultImageView();
         }
 
         private void SetOrginImageView()

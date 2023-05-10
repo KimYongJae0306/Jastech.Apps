@@ -2,10 +2,14 @@
 using Emgu.CV.Reg;
 using Jastech.Apps.Structure;
 using Jastech.Apps.Structure.Data;
+using Jastech.Apps.Winform.Settings;
 using Jastech.Framework.Device.Cameras;
+using Jastech.Framework.Device.Motions;
 using Jastech.Framework.Imaging.Helper;
+using Jastech.Framework.Util.Helper;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
@@ -109,15 +113,86 @@ namespace Jastech.Apps.Winform
 
                 int startIndex = (int)(tempPos / resolution_mm / Camera.ImageHeight);
 
-                tempPos += Math.Ceiling((materialInfo.GetTabToTabDistance(i) - materialInfo.Tab0Width_mm));
-
+                double tabWidth = materialInfo.GetTabWidth(i);
+                tempPos += tabWidth;
                 int endIndex = (int)(tempPos / resolution_mm / Camera.ImageHeight);
 
-                tempPos += materialInfo.Tab0Width_mm;
+                var temp = endIndex - startIndex;
+
+                tempPos += materialInfo.GetTabToTabDistance(i);
 
                 TabScanImage scanImage = new TabScanImage(i, startIndex, endIndex);
                 TabScanImageList.Add(scanImage);
             }
+        }
+
+
+        public void StartGrab()
+        {
+            if (Camera == null)
+                return;
+
+            Camera.Stop();
+
+            InitGrabSettings();
+
+            string error = "";
+            MoveTo(TeachingPosType.Stage1_Scan_Start, out error);
+            Camera.GrabMulti(GrabCount);
+            Thread.Sleep(100);
+            MoveTo(TeachingPosType.Stage1_Scan_End, out error);
+        }
+
+        public bool MoveTo(TeachingPosType teachingPos, out string error)
+        {
+            error = "";
+
+            if (AppsConfig.Instance().Operation.VirtualMode)
+                return true;
+
+            AppsInspModel inspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
+
+            var teachingInfo = inspModel.GetUnit(UnitName.Unit0).GetTeachingInfo(teachingPos);
+
+            Axis axisX = AppsMotionManager.Instance().GetAxis(AxisHandlerName.Handler0, AxisName.X);
+
+            var movingParamX = teachingInfo.GetMovingParam(AxisName.X.ToString());
+
+            if (MoveAxis(teachingPos, axisX, movingParamX) == false)
+            {
+                error = string.Format("Move To Axis X TimeOut!({0})", movingParamX.MovingTimeOut.ToString());
+                Logger.Write(LogType.Seq, error);
+                return false;
+            }
+         
+            string message = string.Format("Move Completed.(Teaching Pos : {0})", teachingPos.ToString());
+            Logger.Write(LogType.Seq, message);
+
+            return true;
+        }
+
+        private bool MoveAxis(TeachingPosType teachingPos, Axis axis, AxisMovingParam movingParam)
+        {
+            AppsMotionManager manager = AppsMotionManager.Instance();
+            if (manager.IsAxisInPosition(UnitName.Unit0, teachingPos, axis) == false)
+            {
+                Stopwatch sw = new Stopwatch();
+                sw.Restart();
+
+                manager.MoveTo(UnitName.Unit0, teachingPos, axis);
+
+                while (manager.IsAxisInPosition(UnitName.Unit0, teachingPos, axis) == false)
+                {
+
+                    if (sw.ElapsedMilliseconds >= movingParam.MovingTimeOut)
+                    {
+                        return false;
+                    }
+                    Thread.Sleep(10);
+                }
+            }
+            Console.WriteLine("Dove Done.");
+            return true;
         }
 
         public void StartGrab(float scanLength_mm)
@@ -132,7 +207,7 @@ namespace Jastech.Apps.Winform
 
             float resolution_mm = (float)(Camera.PixelResolution_um / Camera.LensScale) / 1000;
             int totalScanSubImageCount = (int)Math.Ceiling(scanLength_mm / resolution_mm / Camera.ImageHeight) + 2;
-            totalScanSubImageCount = 55;
+        
             TabScanImage scanImage = new TabScanImage(0, 0, totalScanSubImageCount);
             TabScanImageList.Add(scanImage);
 
@@ -187,11 +262,16 @@ namespace Jastech.Apps.Winform
                 {
                     if (GetTabScanImage(_stackTabNo) is TabScanImage scanImage)
                     {
+
                         if (scanImage.StartIndex <= _curGrabCount && _curGrabCount <= scanImage.EndIndex)
+                        {
                             scanImage.AddImage(rotatedMat, grabCount);
+                            Console.WriteLine("Add ScanImage : " + _stackTabNo.ToString() + " " + scanImage.GetImageCount().ToString() + " " + scanImage.TotalGrabCount.ToString());
+                        }
 
                         if (scanImage.IsAddImageDone())
                         {
+                            Console.WriteLine("Add Image Done." + _stackTabNo.ToString());
                             _stackTabNo++;
                             scanImage.ExcuteMerge = true;
                         }
@@ -217,12 +297,15 @@ namespace Jastech.Apps.Winform
                     break;
                 }
 
-                foreach (var scanImage in TabScanImageList)
+                lock(TabScanImageList)
                 {
-                    if (scanImage.ExcuteMerge)
+                    foreach (var scanImage in TabScanImageList)
                     {
-                        TabImageGrabCompletedEventHandler?.Invoke(Camera.Name, scanImage);
-                        scanImage.ExcuteMerge = false;
+                        if (scanImage.ExcuteMerge)
+                        {
+                            TabImageGrabCompletedEventHandler?.Invoke(Camera.Name, scanImage);
+                            scanImage.ExcuteMerge = false;
+                        }
                     }
                 }
 
@@ -274,7 +357,7 @@ namespace Jastech.Apps.Winform
         {
             while (true)
             {
-                if (CancelMergeTask.IsCancellationRequested)
+                if (CancelLiveTask.IsCancellationRequested)
                 {
                     ClearTabScanImage();
                     break;

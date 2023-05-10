@@ -37,7 +37,7 @@ namespace Jastech.Apps.Structure.Data
             bool isDone = false;
 
             lock (_objLock)
-                isDone = (TotalGrabCount - 2) == ScanImageList.Count() ? true : false;
+                isDone = TotalGrabCount == ScanImageList.Count() ? true : false;
 
             return isDone;
         }
@@ -59,11 +59,16 @@ namespace Jastech.Apps.Structure.Data
         {
             lock (_objLock)
             {
-                if (grabCount <= 1 || TotalGrabCount <= grabCount)
+                if (StartIndex > grabCount && grabCount > EndIndex)
                     return;
 
                 ScanImageList.Add(mat);
             }
+        }
+
+        public int GetImageCount()
+        {
+            return ScanImageList.Count();
         }
 
         public Mat GetMergeImage()

@@ -108,7 +108,7 @@ namespace ATT.UI.Forms
             _selectedColor = Color.FromArgb(104, 104, 104);
             _nonSelectedColor = Color.FromArgb(52, 52, 52);
 
-            SetOperationMode(TDIOperationMode.Area);
+            SetOperationMode(TDIOperationMode.TDI);
             rdoJogSlowMode.Checked = true;
             rdoJogMode.Checked = true;
         }
@@ -146,6 +146,7 @@ namespace ATT.UI.Forms
 
         private void lblAreaMode_Click(object sender, EventArgs e)
         {
+            return;
             SetOperationMode(TDIOperationMode.Area);
         }
 
