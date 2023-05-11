@@ -92,8 +92,8 @@ namespace Jastech.Apps.Structure.VisionTool
             ColorFormat format = image.NumberOfChannels == 1 ? ColorFormat.Gray : ColorFormat.RGB24;
             var cogImage = CogImageHelper.CovertImage(dataArray, image.Width, image.Height, format);
 
-            //return cogImage;
-            return null;
+            return cogImage;
+            //return null;
         }
 
         public CogAlignCaliperResult RunAlignX(ICogImage image, VisionProCaliperParam param, int leadCount)

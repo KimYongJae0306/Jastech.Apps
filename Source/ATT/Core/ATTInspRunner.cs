@@ -5,9 +5,11 @@ using Jastech.Apps.Structure;
 using Jastech.Apps.Structure.Data;
 using Jastech.Apps.Structure.VisionTool;
 using Jastech.Apps.Winform;
+using Jastech.Apps.Winform.Core;
 using Jastech.Apps.Winform.Settings;
 using Jastech.Framework.Device.Motions;
 using Jastech.Framework.Imaging.Result;
+using Jastech.Framework.Imaging.VisionPro;
 using Jastech.Framework.Imaging.VisionPro.VisionAlgorithms.Parameters;
 using Jastech.Framework.Imaging.VisionPro.VisionAlgorithms.Results;
 using Jastech.Framework.Macron.Akkon.Results;
@@ -54,13 +56,13 @@ namespace ATT.Core
         {
           
         }
-        private void ATTSeqRunner_TabImageGrabCompletedEventHandler(string cameraName, TabScanImage image)
+        private void ATTSeqRunner_TabImageGrabCompletedEventHandler(string cameraName, TabScanImage tabScanImage)
         {
-            if (image.TabNo >= 1)
-                return;
+            Mat matImage = tabScanImage.GetMergeImage();
+            ICogImage cogImage = tabScanImage.ConvertCogGrayImage(matImage);
 
-            Console.WriteLine("Run Inspection. " + image.TabNo.ToString());
-            Task task = new Task(() => Run(image));
+            Console.WriteLine("Run Inspection. " + tabScanImage.TabNo.ToString());
+            Task task = new Task(() => Run(tabScanImage, matImage, cogImage));
             task.Start();
         }
 
@@ -258,8 +260,7 @@ namespace ATT.Core
                         if (IsGrabDone == false)
                             break;
                     }
-                    SeqStep = SeqStep.SEQ_IDLE;
-                    break;
+
                     LastInspSW.Restart();
 
                     Logger.Write(LogType.Seq, "Scan Grab Completed.");
@@ -292,7 +293,7 @@ namespace ATT.Core
 
                 case SeqStep.SEQ_SAVE_IMAGE:
 
-                    SaveImage(AppsInspResult);
+                    //SaveImage(AppsInspResult);
 
                     SeqStep = SeqStep.SEQ_DELETE_DATA;
                     break;
@@ -309,48 +310,6 @@ namespace ATT.Core
 
                     SeqStep = SeqStep.SEQ_IDLE;
                     break;
-
-                //case SeqStep.SEQ_ALIGN_INSPECTION:
-
-                //    var alignParam = tab.AlignParamList;
-
-                //    var alignResultX = AlgorithmTool.RunAlignX(cogImage, alignParam[0].CaliperParams, alignParam[0].LeadCount);
-                //    var alignResultY = AlgorithmTool.RunAlignY(cogImage, alignParam[0].CaliperParams);
-
-                //    if (alignResultX.Result == Result.OK)
-                //    {
-                //        message = "Align X Search OK - Result : " + alignResultX.Result.ToString() + " / T/T : " + alignResultX.CogAlignResult[0].TactTime.ToString();
-                //        Logger.Write(LogType.Seq, message, DateTime.Now);
-
-                //        SetAlignXResult(alignResultX);
-                //    }
-                //    else if (alignResultY.Result == Result.Fail)
-                //    {
-                //        message = "Align X Search FAIL";
-                //        Logger.Write(LogType.Seq, message, DateTime.Now);
-                //    }
-                //    else { }
-
-                //    if (alignResultY.Result == Result.OK)
-                //    {
-                //        message = "Align Y Search OK - Result : " + alignResultY.Result.ToString() + " / T/T : " + alignResultY.CogAlignResult[0].TactTime.ToString();
-                //        Logger.Write(LogType.Seq, message, DateTime.Now);
-
-                //        SetAlignYResult(alignResultY);
-                //    }
-                //    else if (alignResultY.Result == Result.Fail)
-                //    {
-                //        message = "Align Y Search FAIL";
-                //        Logger.Write(LogType.Seq, message, DateTime.Now);
-                //    }
-                //    else { }
-
-                //    SeqStep = SeqStep.SEQ_ALIGN_INSPECTION_COMPLETED;
-                //    break;
-
-
-
-
                 default:
                     break;
             }
@@ -435,44 +394,19 @@ namespace ATT.Core
             return true;
         }
 
-        public void Run(TabScanImage ScanImage)
+        public void Run(TabScanImage ScanImage, Mat mergeMat, ICogImage cogMergeImage)
         {
             Console.WriteLine("In Run Thread  : " + ScanImage.TabNo.ToString());
             AppsInspModel inspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
 
             MainAlgorithmTool tool = new MainAlgorithmTool();
             Tab tab = inspModel.GetUnit(UnitName.Unit0).GetTab(ScanImage.TabNo);
-            //tool.MainRunInspect(tab, ScanImage.GetMergeImage(), 100.0f, 100.0f);
+           
+            var result = tool.MainRunInspect(tab, mergeMat, cogMergeImage, 100.0f, 100.0f);
+
+            AppsInspResult.TabResultList.Add(result);
 
             Console.WriteLine("Out Run Thread  : " + ScanImage.TabNo.ToString());
-            //
-
-            //Tab tab = inspModel.GetUnit(UnitName.Unit0).GetTab(ScanImage.TabNo);
-
-            //Mat tabMatImage = ScanImage.GetMergeImage();
-            //ICogImage tabCogImage = AlgorithmTool.ConvertCogImage(tabMatImage);
-
-            //AppsInspResult result = new AppsInspResult();
-
-            //result.TabNo = tab.Index;
-            //result.Image = tabMatImage;
-            //result.PatternMatching = AlgorithmTool.RunPatternMatching(tab, tabCogImage);
-
-            //if (result.PatternMatching == null)
-            //{
-            //    string message = string.Format("Pattern Matching Fail.");
-            //    Logger.Debug(LogType.Inspection, message);
-
-            //    lock (AppsInspResultList)
-            //        AppsInspResultList.Add(result);
-
-            //    return;
-            //}
-
-            //result.Akkon = AlgorithmTool.RunAkkon(tabMatImage, tab.AkkonParam, tab.StageIndex, tab.Index);
-
-            //lock (AppsInspResultList)
-            //    AppsInspResultList.Add(result);
         }
 
         public void RunVirtual()
@@ -483,12 +417,12 @@ namespace ATT.Core
 
             Mat tabMatImage = new Mat(@"D:\Tab1.bmp", Emgu.CV.CvEnum.ImreadModes.Grayscale);
 
-            //ICogImage tabCogImage = AlgorithmTool.ConvertCogImage(tabMatImage);
-            MainAlgorithmTool tool = new MainAlgorithmTool();
+           // ICogImage tabCogImage = ConvertCogImage(tabMatImage);
+           // MainAlgorithmTool tool = new MainAlgorithmTool();
 
-           var result = tool.MainRunInspect(tab, tabMatImage, 30.0f, 80.0f);
+           //var result = tool.MainRunInspect(tab, tabMatImage, 30.0f, 80.0f);
 
-            AppsInspResult.TabResultList.Add(result);
+           // AppsInspResult.TabResultList.Add(result);
         }
 
         private void SaveImage(AppsInspResult inspResult)
@@ -577,30 +511,6 @@ namespace ATT.Core
         {
             return "." + AppsConfig.Instance().Operation.ExtensionNGImage;
         }
-    }
-
-    public class Test
-    {
-        [JsonProperty]
-        public float A { get; set; } = 0.0f;
-
-        [JsonProperty]
-        public float B { get; set; } = 1.0f;
-
-        [JsonProperty]
-        public float C { get; set; } = 2.0f;
-
-        [JsonProperty]
-        public float D { get; set; } = 3.0f;
-
-        [JsonProperty]
-        public float E { get; set; } = 4.0f;
-
-        [JsonProperty]
-        public float F { get; set; } = 5.0f;
-
-        [JsonProperty]
-        public float G { get; set; } = 6.0f;
     }
 
     public enum SeqStep

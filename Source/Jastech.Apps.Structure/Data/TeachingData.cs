@@ -1,6 +1,10 @@
-﻿using Jastech.Apps.Structure;
+﻿using Cognex.VisionPro;
+using Emgu.CV;
+using Jastech.Apps.Structure;
 using Jastech.Apps.Structure.Data;
 using Jastech.Apps.Structure.Parameters;
+using Jastech.Framework.Imaging;
+using Jastech.Framework.Imaging.VisionPro;
 using Jastech.Framework.Imaging.VisionPro.VisionAlgorithms.Parameters;
 using System;
 using System.Collections.Generic;
@@ -14,7 +18,7 @@ namespace Jastech.Apps.Structure.Data
     {
         public List<Unit> UnitList { get; set; } = new List<Unit>();
 
-        public List<TabScanImage> ScanImageList = new List<TabScanImage>();
+        private List<TeachingImageBuffer> ImageBufferList { get; set; } = new List<TeachingImageBuffer>();
 
         public void Initialize(AppsInspModel inspModel)
         {
@@ -31,32 +35,58 @@ namespace Jastech.Apps.Structure.Data
 
             UnitList.Clear();
 
-            ClearScanImage();
+            ClearTeachingImageBuffer();
         }
 
-        public void ClearScanImage()
+
+        public void ClearTeachingImageBuffer()
         {
-            for (int i = 0; i < ScanImageList.Count(); i++)
+            lock (ImageBufferList)
             {
-                ScanImageList[i].Dispose();
-                ScanImageList[i] = null;
+                foreach (var buffer in ImageBufferList)
+                    buffer.Dispose();
+
+                ImageBufferList.Clear();
             }
-            ScanImageList.Clear();
         }
 
-        public TabScanImage GetScanImage(int tabNo)
+        public TeachingImageBuffer GetBufferImage(int tabNo)
         {
-            if(ScanImageList.Count() > 0)
+            lock (ImageBufferList)
             {
-                foreach(var scanImage in ScanImageList)
+                if (ImageBufferList.Count() > 0)
                 {
-                    if (tabNo == scanImage.TabNo)
-                        return scanImage;
+                    foreach (var buffer in ImageBufferList)
+                    {
+                        if (tabNo == buffer.TabNo)
+                            return buffer;
+                    }
                 }
+                return null;
             }
-            return null;
         }
 
+        public void AddBufferImage(int tabNo, Mat tabImage)
+        {
+            lock (ImageBufferList)
+                ImageBufferList.Add(new TeachingImageBuffer 
+                {
+                    TabNo = tabNo,
+                    TabImage = tabImage
+                });
+        }
+
+        public ICogImage ConvertCogGrayImage(Mat mat)
+        {
+            if (mat == null)
+                return null;
+
+            int size = mat.Width * mat.Height * mat.NumberOfChannels;
+            ColorFormat format = mat.NumberOfChannels == 1 ? ColorFormat.Gray : ColorFormat.RGB24;
+            var cogImage = CogImageHelper.CovertImage(mat.DataPointer, mat.Width, mat.Height, format);
+            return cogImage;
+        }
+        
         public Unit GetUnit(string name)
         {
             return UnitList.Where(x => x.Name == name).First();
@@ -88,6 +118,22 @@ namespace Jastech.Apps.Structure.Data
             }
 
             return tabList;
+        }
+    }
+
+    public class TeachingImageBuffer
+    {
+        public int TabNo { get; set; }
+
+        public Mat TabImage { get; set; } = null;
+
+        public void Dispose()
+        {
+            if(TabImage != null)
+            {
+                TabImage.Dispose();
+                TabImage = null;
+            }
         }
     }
 }

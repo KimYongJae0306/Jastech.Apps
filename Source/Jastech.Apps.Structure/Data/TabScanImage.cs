@@ -1,7 +1,11 @@
-﻿using Emgu.CV;
+﻿using Cognex.VisionPro;
+using Emgu.CV;
+using Jastech.Framework.Imaging;
+using Jastech.Framework.Imaging.VisionPro;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -86,6 +90,17 @@ namespace Jastech.Apps.Structure.Data
                 }
             }
             return mergeImage;
+        }
+
+        public ICogImage ConvertCogGrayImage(Mat mat)
+        {
+            if (mat == null)
+                return null;
+
+            int size = mat.Width * mat.Height * mat.NumberOfChannels;
+            ColorFormat format = mat.NumberOfChannels == 1 ? ColorFormat.Gray : ColorFormat.RGB24;
+            var cogImage = CogImageHelper.CovertImage(mat.DataPointer, mat.Width, mat.Height, format);
+            return cogImage;
         }
     }
 }

@@ -116,6 +116,8 @@ namespace ATT.UI.Forms
             var appsLineCamera = AppsLineCameraManager.Instance().GetLineCamera(CameraName);
             appsLineCamera.TabImageGrabCompletedEventHandler += LineTeachingForm_TabImageGrabCompletedEventHandler;
             appsLineCamera.GrabDoneEventHanlder += LineTeachingForm_GrabDoneEventHanlder;
+            appsLineCamera.StartMainGrabTask();
+            appsLineCamera.StartMergeTask();
 
             var image = AppsTeachingUIManager.Instance().GetOriginCogImageBuffer(true);
 
@@ -123,32 +125,25 @@ namespace ATT.UI.Forms
                 Display.SetImage(image);
 
             SelectPage(DisplayType.Align);
-            AppsLineCameraManager.Instance().GetLineCamera(CameraName).StartMergeTask();
+       
         }
 
         private void LineTeachingForm_GrabDoneEventHanlder(string cameraName, bool isGrabDone)
         {
         }
 
-        public delegate void UpdateDisplayDele(Mat image);
-        private void UpdateDisplay(Mat image)
+        public delegate void UpdateDisplayDele(ICogImage cogImage);
+        private void UpdateDisplay(ICogImage cogImage)
         {
-            if(this.InvokeRequired)
+            if (this.InvokeRequired)
             {
                 UpdateDisplayDele callback = UpdateDisplay;
-                BeginInvoke(callback, image);
+                BeginInvoke(callback, cogImage);
                 return;
             }
-            if (image == null)
+
+            if (cogImage == null)
                 return;
-
-            int size = image.Width * image.Height * image.NumberOfChannels;
-            byte[] dataArray = new byte[size];
-            Marshal.Copy(image.DataPointer, dataArray, 0, size);
-
-            ColorFormat format = image.NumberOfChannels == 1 ? ColorFormat.Gray : ColorFormat.RGB24;
-
-            var cogImage = CogImageHelper.CovertImage(dataArray, image.Width, image.Height, format);
 
             Display.SetImage(cogImage);
             Console.WriteLine("LineTeachingForm 이미지 업데이트.");
@@ -170,43 +165,25 @@ namespace ATT.UI.Forms
         {
             if (tabScanImage == null)
                 return;
-            if (tabScanImage.GetMergeImage() == null)
-                return;
-            
-            SystemManager.Instance().GetTeachingData().ScanImageList.Add(tabScanImage);
 
-            //Thread saveThread = new Thread(new ParameterizedThreadStart(SaveScanImage));
-            
-            //saveThread.Start(tabScanImage);
+            var teachingData = SystemManager.Instance().GetTeachingData();
+            Mat mat = tabScanImage.GetMergeImage();
+
+            teachingData.AddBufferImage(tabScanImage.TabNo, mat);
 
             int tabNo = Convert.ToInt32(_currentTabNo);
-
             if(tabNo == tabScanImage.TabNo)
             {
-                var scanImage = SystemManager.Instance().GetTeachingData().GetScanImage(tabNo);
+                var scanImage = tabScanImage;
                 if (scanImage == null)
                     return;
 
-                var image = scanImage.GetMergeImage();
-
-                UpdateDisplay(image);
+                var matImage = teachingData.GetBufferImage(tabNo);
+                var cogImage = teachingData.ConvertCogGrayImage(matImage.TabImage);
+                UpdateDisplay(cogImage);
             }
         }
 
-        private void SaveScanImage(object tabScanImage)
-        {
-   
-            TeachingImagePath = @"D:\ATT\Jastech.Apps\Runtime\Model\test1\TeachingImage\Test";
-            if (Directory.Exists(TeachingImagePath) == false)
-                Directory.CreateDirectory(TeachingImagePath);
-
-            for (int i = 0; i < 5; i++)
-            {
-                string tabPath = string.Format(@"{0}\{1}.bmp", TeachingImagePath, i.ToString());
-                var scanImage = SystemManager.Instance().GetTeachingData().GetScanImage(i);
-                scanImage.GetMergeImage().Save(tabPath);
-            }
-        }
         private void AddControl()
         {
             _selectedColor = Color.FromArgb(104, 104, 104);
@@ -327,8 +304,8 @@ namespace ATT.UI.Forms
 
         private void btnLoadImage_Click(object sender, EventArgs e)
         {
-            //SaveScanImage(null);
-            //return;
+            SaveScanImage();
+            return;
             OpenFileDialog dlg = new OpenFileDialog();
             dlg.ReadOnlyChecked = true;
             dlg.Filter = "BMP Files (*.bmp)|*.bmp";
@@ -346,13 +323,20 @@ namespace ATT.UI.Forms
 
                 var cogImage = CogImageHelper.CovertImage(dataArray, image.Width, image.Height, format);
 
-                //ICogImage cogImage = CogImageHelper.Load(dlg.FileName);
-                //CogImageHelper.Save(cogImage, @"D:\Cog1.bmp");
-
                 Display.SetImage(cogImage);
                 AppsTeachingUIManager.Instance().SetOrginCogImageBuffer(cogImage);
                 AppsTeachingUIManager.Instance().SetOriginMatImageBuffer(new Mat(dlg.FileName, ImreadModes.Grayscale));
             }
+        }
+
+        private void SaveScanImage()
+        {
+            for (int i = 0; i < 5; i++)
+            {
+                var teacingData = SystemManager.Instance().GetTeachingData().GetBufferImage(i);
+                teacingData.TabImage.Save(string.Format(@"D:\tab_{0}.bmp", i));
+            }
+            
         }
 
         private void btnMotionPopup_Click(object sender, EventArgs e)
@@ -364,13 +348,14 @@ namespace ATT.UI.Forms
 
         private void btnGrabStart_Click(object sender, EventArgs e)
         {
-            SystemManager.Instance().GetTeachingData().ClearScanImage();
             var appsLineCamera = AppsLineCameraManager.Instance().GetLineCamera(CameraName);
 
             AppsInspModel inspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
             TeachingImagePath = Path.Combine(AppsConfig.Instance().Path.Model, inspModel.Name, "TeachingImage", DateTime.Now.ToString("yyyyMMdd_HHmmss"));
 
             AppsLAFManager.Instance().AutoFocusOnOff(LAFName.Akkon.ToString(), true);
+
+            SystemManager.Instance().GetTeachingData().ClearTeachingImageBuffer();
 
             appsLineCamera.StartGrab();
         }
@@ -386,7 +371,8 @@ namespace ATT.UI.Forms
             var appsLineCamera = AppsLineCameraManager.Instance().GetLineCamera(CameraName.LinscanMIL0);
             appsLineCamera.TabImageGrabCompletedEventHandler -= LineTeachingForm_TabImageGrabCompletedEventHandler;
             appsLineCamera.GrabDoneEventHanlder -= LineTeachingForm_GrabDoneEventHanlder;
-            AppsLineCameraManager.Instance().GetLineCamera(CameraName).StopMergeTask();
+            appsLineCamera.StartMainGrabTask();
+            appsLineCamera.StopMergeTask();
         }
 
         private void cbxTabList_DrawItem(object sender, DrawItemEventArgs e)
@@ -434,28 +420,34 @@ namespace ATT.UI.Forms
             if (_currentTabNo == tabIndex)
                 return;
             CurrentTab = TeachingTabList.Where(x => x.Index == tabNo).First();
-
-            var scanImage = SystemManager.Instance().GetTeachingData().GetScanImage(tabNo);
-            if (scanImage != null)
-                UpdateDisplay(scanImage.GetMergeImage());
-            
-            if (_displayType == DisplayType.Mark)
-            {
-                MarkControl.SetParams(CurrentTab);
-                MarkControl.DrawROI();
-            }
-            else if (_displayType == DisplayType.Align)
-            {
-                AlignControl.SetParams(CurrentTab);
-                AlignControl.DrawROI();
-            }
-            else if (_displayType == DisplayType.Akkon)
-            {
-                AkkonControl.SetParams(CurrentTab);
-                AkkonControl.DrawROI();
-            }
-
             _currentTabNo = tabIndex;
+
+            var teachingData = SystemManager.Instance().GetTeachingData();
+
+            if(teachingData.GetBufferImage(tabNo) is TeachingImageBuffer buffer)
+            {
+                if (buffer.TabImage == null)
+                    return;
+
+                ICogImage cogImage = teachingData.ConvertCogGrayImage(buffer.TabImage);
+                UpdateDisplay(cogImage);
+
+                if (_displayType == DisplayType.Mark)
+                {
+                    MarkControl.SetParams(CurrentTab);
+                    MarkControl.DrawROI();
+                }
+                else if (_displayType == DisplayType.Align)
+                {
+                    AlignControl.SetParams(CurrentTab);
+                    AlignControl.DrawROI();
+                }
+                else if (_displayType == DisplayType.Akkon)
+                {
+                    AkkonControl.SetParams(CurrentTab);
+                    AkkonControl.DrawROI();
+                }
+            }
         }
 
         private void lblPrev_Click(object sender, EventArgs e)

@@ -183,44 +183,49 @@ namespace Jastech.Apps.Winform.UI.Controls
             List<PointF> pointList = new List<PointF>();
 
             var leftAlignX = result.LeftAlignX;
-
-            if (leftAlignX.Fpc.CogAlignResult.Count > 0)
+            if (leftAlignX != null)
             {
-                foreach (var fpc in leftAlignX.Fpc.CogAlignResult)
+                if (leftAlignX.Fpc.CogAlignResult.Count > 0)
                 {
-                    pointList.Add(fpc.MaxCaliperMatch.FoundPos);
+                    foreach (var fpc in leftAlignX.Fpc.CogAlignResult)
+                    {
+                        pointList.Add(fpc.MaxCaliperMatch.FoundPos);
 
-                    var leftFpcX = fpc.MaxCaliperMatch.ResultGraphics;
-                    leftResultList.Add(leftFpcX);
+                        var leftFpcX = fpc.MaxCaliperMatch.ResultGraphics;
+                        leftResultList.Add(leftFpcX);
+                    }
                 }
-            }
-            if (leftAlignX.Panel.CogAlignResult.Count() > 0)
-            {
-                foreach (var panel in leftAlignX.Panel.CogAlignResult)
+                if (leftAlignX.Panel.CogAlignResult.Count() > 0)
                 {
-                    pointList.Add(panel.MaxCaliperMatch.FoundPos);
+                    foreach (var panel in leftAlignX.Panel.CogAlignResult)
+                    {
+                        pointList.Add(panel.MaxCaliperMatch.FoundPos);
 
-                    var leftPanelX = panel.MaxCaliperMatch.ResultGraphics;
-                    leftResultList.Add(leftPanelX);
+                        var leftPanelX = panel.MaxCaliperMatch.ResultGraphics;
+                        leftResultList.Add(leftPanelX);
+                    }
                 }
             }
 
             var leftAlignY = result.LeftAlignY;
-            if (leftAlignY.Fpc.CogAlignResult[0].MaxCaliperMatch != null)
+            if(leftAlignY != null)
             {
-                pointList.Add(leftAlignY.Fpc.CogAlignResult[0].MaxCaliperMatch.FoundPos);
+                if (leftAlignY.Fpc.CogAlignResult[0].MaxCaliperMatch != null)
+                {
+                    pointList.Add(leftAlignY.Fpc.CogAlignResult[0].MaxCaliperMatch.FoundPos);
 
-                var leftFpcY = leftAlignY.Fpc.CogAlignResult[0].MaxCaliperMatch.ResultGraphics;
-                leftResultList.Add(leftFpcY);
+                    var leftFpcY = leftAlignY.Fpc.CogAlignResult[0].MaxCaliperMatch.ResultGraphics;
+                    leftResultList.Add(leftFpcY);
+                }
+                if (leftAlignY.Panel.CogAlignResult[0].MaxCaliperMatch != null)
+                {
+                    pointList.Add(leftAlignY.Panel.CogAlignResult[0].MaxCaliperMatch.FoundPos);
+                    var leftPanelY = leftAlignY.Panel.CogAlignResult[0].MaxCaliperMatch.ResultGraphics;
+                    leftResultList.Add(leftPanelY);
+                }
             }
-            if (leftAlignY.Panel.CogAlignResult[0].MaxCaliperMatch != null)
-            {
-                pointList.Add(leftAlignY.Panel.CogAlignResult[0].MaxCaliperMatch.FoundPos);
-                var leftPanelY = leftAlignY.Panel.CogAlignResult[0].MaxCaliperMatch.ResultGraphics;
-                leftResultList.Add(leftPanelY);
-            }
-
-            InspAlignDisplay.UpdateLeftDisplay(result.CogImage, leftResultList, GetCenterPoint(pointList));
+            var deepCopyImage = result.CogImage.CopyBase(CogImageCopyModeConstants.CopyPixels);
+            InspAlignDisplay.UpdateLeftDisplay(deepCopyImage, leftResultList, GetCenterPoint(pointList));
         }
 
         private void UpdateRightAlignResult(TabInspResult result)
@@ -229,48 +234,59 @@ namespace Jastech.Apps.Winform.UI.Controls
             List<PointF> pointList = new List<PointF>();
 
             var rightAlignX = result.RightAlignX;
-
-            if (rightAlignX.Fpc.CogAlignResult.Count > 0)
+            if(rightAlignX != null)
             {
-                foreach (var fpc in rightAlignX.Fpc.CogAlignResult)
+                if (rightAlignX.Fpc.CogAlignResult.Count > 0)
                 {
-                    pointList.Add(fpc.MaxCaliperMatch.FoundPos);
+                    foreach (var fpc in rightAlignX.Fpc.CogAlignResult)
+                    {
+                        pointList.Add(fpc.MaxCaliperMatch.FoundPos);
 
-                    var rightFpcX = fpc.MaxCaliperMatch.ResultGraphics;
-                    rightResultList.Add(rightFpcX);
+                        var rightFpcX = fpc.MaxCaliperMatch.ResultGraphics;
+                        rightResultList.Add(rightFpcX);
+                    }
                 }
-            }
-            if (rightAlignX.Panel.CogAlignResult.Count() > 0)
-            {
-                foreach (var panel in rightAlignX.Panel.CogAlignResult)
+                if (rightAlignX.Panel.CogAlignResult.Count() > 0)
                 {
-                    pointList.Add(panel.MaxCaliperMatch.FoundPos);
+                    foreach (var panel in rightAlignX.Panel.CogAlignResult)
+                    {
+                        pointList.Add(panel.MaxCaliperMatch.FoundPos);
 
-                    var rightPanelX = panel.MaxCaliperMatch.ResultGraphics;
-                    rightResultList.Add(rightPanelX);
+                        var rightPanelX = panel.MaxCaliperMatch.ResultGraphics;
+                        rightResultList.Add(rightPanelX);
+                    }
                 }
             }
 
             var rightAlignY = result.RightAlignY;
-            if (rightAlignY.Fpc.CogAlignResult[0].MaxCaliperMatch != null)
+            if(rightAlignY != null)
             {
-                pointList.Add(rightAlignY.Fpc.CogAlignResult[0].MaxCaliperMatch.FoundPos);
+                if (rightAlignY.Fpc.CogAlignResult[0].MaxCaliperMatch != null)
+                {
+                    pointList.Add(rightAlignY.Fpc.CogAlignResult[0].MaxCaliperMatch.FoundPos);
 
-                var rightFpcY = rightAlignY.Fpc.CogAlignResult[0].MaxCaliperMatch.ResultGraphics;
-                rightResultList.Add(rightFpcY);
+                    var rightFpcY = rightAlignY.Fpc.CogAlignResult[0].MaxCaliperMatch.ResultGraphics;
+                    rightResultList.Add(rightFpcY);
+                }
+                if (rightAlignY.Panel.CogAlignResult[0].MaxCaliperMatch != null)
+                {
+                    pointList.Add(rightAlignY.Panel.CogAlignResult[0].MaxCaliperMatch.FoundPos);
+                    var rightPanelY = rightAlignY.Panel.CogAlignResult[0].MaxCaliperMatch.ResultGraphics;
+                    rightResultList.Add(rightPanelY);
+                }
             }
-            if (rightAlignY.Panel.CogAlignResult[0].MaxCaliperMatch != null)
-            {
-                pointList.Add(rightAlignY.Panel.CogAlignResult[0].MaxCaliperMatch.FoundPos);
-                var rightPanelY = rightAlignY.Panel.CogAlignResult[0].MaxCaliperMatch.ResultGraphics;
-                rightResultList.Add(rightPanelY);
-            }
-
-            InspAlignDisplay.UpdateRightDisplay(result.CogImage, rightResultList, GetCenterPoint(pointList));
+            var deepCopyImage = result.CogImage.CopyBase(CogImageCopyModeConstants.CopyPixels);
+            InspAlignDisplay.UpdateRightDisplay(deepCopyImage, rightResultList, GetCenterPoint(pointList));
         }
 
         private Point GetCenterPoint(List<PointF> pointList)
         {
+            if (pointList == null)
+                return new Point();
+
+            if (pointList.Count == 0)
+                return new Point();
+
             float minX = pointList.Select(point => point.X).Min();
             float maxX = pointList.Select(point => point.X).Max();
 

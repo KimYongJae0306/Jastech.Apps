@@ -261,6 +261,7 @@ namespace Jastech.Apps.Winform
             }
         }
 
+        int count = 0;
         public void UpdateMergeImage()
         {
             while(true)
@@ -281,6 +282,7 @@ namespace Jastech.Apps.Winform
                             {
                                 scanImage.IsInspection = true;
                                 scanImage.ExcuteMerge = false;
+
                                 TabImageGrabCompletedEventHandler?.Invoke(Camera.Name, scanImage);
                             }
                         }
@@ -366,6 +368,8 @@ namespace Jastech.Apps.Winform
                     byte[] data = DataQueue.Dequeue();
                     if (data != null)
                     {
+                        if (_stackTabNo >= TabScanImageList.Count())
+                            continue;
                         TabScanImage tabScanImage = GetTabScanImage(_stackTabNo);
 
                         if (tabScanImage.StartIndex <= _curGrabCount && _curGrabCount <= tabScanImage.EndIndex)
@@ -393,7 +397,7 @@ namespace Jastech.Apps.Winform
                         _curGrabCount++;
                     }
                 }
-                Thread.Sleep(10);
+                Thread.Sleep(0);
             }
         }
 
@@ -426,7 +430,7 @@ namespace Jastech.Apps.Winform
 
         private TabScanImage GetTabScanImage(int tabNo)
         {
-            if (tabNo < TabScanImageList.Count)
+            if (tabNo <= TabScanImageList.Count)
             {
                 return TabScanImageList[tabNo];
             }
