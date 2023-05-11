@@ -32,6 +32,7 @@ using Cognex.VisionPro.Implementation.Internal;
 using System.Threading;
 using System.IO;
 using static System.Net.Mime.MediaTypeNames;
+using Jastech.Framework.Device.LAFCtrl;
 
 namespace ATT.UI.Forms
 {
@@ -368,7 +369,9 @@ namespace ATT.UI.Forms
 
             AppsInspModel inspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
             TeachingImagePath = Path.Combine(AppsConfig.Instance().Path.Model, inspModel.Name, "TeachingImage", DateTime.Now.ToString("yyyyMMdd_HHmmss"));
-            
+
+            AppsLAFManager.Instance().AutoFocusOnOff(LAFName.Akkon.ToString(), true);
+
             appsLineCamera.StartGrab();
         }
 

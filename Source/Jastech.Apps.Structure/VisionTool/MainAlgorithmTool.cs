@@ -39,48 +39,48 @@ namespace Jastech.Apps.Structure.VisionTool
             #endregion
 
 
-            PointF tlqkf = MathHelper.ThetaCoordinate(inspResult.FpcMark.FailMarks[0].Left.MaxMatchPos.FoundPos,
-                                                        inspResult.FpcMark.FailMarks[0].Right.MaxMatchPos.FoundPos,
-                                                        new Point());
-            // 마크 결과값으로 포인트에 적용
+            //PointF tlqkf = MathHelper.ThetaCoordinate(inspResult.FpcMark.FailMarks[0].Left.MaxMatchPos.FoundPos,
+            //                                            inspResult.FpcMark.FailMarks[0].Right.MaxMatchPos.FoundPos,
+            //                                            new Point());
+            //// 마크 결과값으로 포인트에 적용
 
-            inspResult.LeftAlignX = RunLeftAlignX(cogImage, tab, judgementX);
-            if(inspResult.LeftAlignX.Judgement != Judgement.OK)
-            {
-                inspResult.AlignJudgement = Judgement.NG;
-                return inspResult;
-            }
+            //inspResult.LeftAlignX = RunLeftAlignX(cogImage, tab, judgementX);
+            //if (inspResult.LeftAlignX.Judgement != Judgement.OK)
+            //{
+            //    inspResult.AlignJudgement = Judgement.NG;
+            //    return inspResult;
+            //}
 
-            inspResult.LeftAlignY = RunLeftAlignY(cogImage, tab, judgementY);
-            if (inspResult.LeftAlignY.Judgement != Judgement.OK)
-            {
-                inspResult.AlignJudgement = Judgement.NG;
-                return inspResult;
-            }
+            //inspResult.LeftAlignY = RunLeftAlignY(cogImage, tab, judgementY);
+            //if (inspResult.LeftAlignY.Judgement != Judgement.OK)
+            //{
+            //    inspResult.AlignJudgement = Judgement.NG;
+            //    return inspResult;
+            //}
 
-            inspResult.RightAlignX = RunRightAlignX(cogImage, tab, judgementX);
-            if (inspResult.RightAlignX.Judgement != Judgement.OK)
-            {
-                inspResult.AlignJudgement = Judgement.NG;
-                return inspResult;
-            }
+            //inspResult.RightAlignX = RunRightAlignX(cogImage, tab, judgementX);
+            //if (inspResult.RightAlignX.Judgement != Judgement.OK)
+            //{
+            //    inspResult.AlignJudgement = Judgement.NG;
+            //    return inspResult;
+            //}
 
-            inspResult.RightAlignY = RunRightAlignY(cogImage, tab, judgementY);
-            if (inspResult.RightAlignY.Judgement != Judgement.OK)
-            {
-                inspResult.AlignJudgement = Judgement.NG;
-                return inspResult;
-            }
+            //inspResult.RightAlignY = RunRightAlignY(cogImage, tab, judgementY);
+            //if (inspResult.RightAlignY.Judgement != Judgement.OK)
+            //{
+            //    inspResult.AlignJudgement = Judgement.NG;
+            //    return inspResult;
+            //}
 
             // 압흔검사
-            var akkonParam = tab.AkkonParam;
-            var akkonResult = RunAkkon(matImage, akkonParam, tab.StageIndex, tab.Index);
+            //var akkonParam = tab.AkkonParam;
+            //var akkonResult = RunAkkon(matImage, akkonParam, tab.StageIndex, tab.Index);
 
-            if(akkonResult.Count() > 0)
-            {
-                inspResult.AkkonResultList.AddRange(akkonResult);
-                inspResult.AkkonResultImage = GetResultImage(matImage, tab, akkonParam);
-            }
+            //if(akkonResult.Count() > 0)
+            //{
+            //    inspResult.AkkonResultList.AddRange(akkonResult);
+            //    inspResult.AkkonResultImage = GetResultImage(matImage, tab, akkonParam);
+            //}
 
             return inspResult;
         }

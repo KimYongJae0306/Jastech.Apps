@@ -296,7 +296,13 @@ namespace ATT.UI.Forms
             if (status == null)
                 return;
 
-            lblCurrentPositionZ.Text = status.MPos.ToString("F3");
+            double mPos_um = 0.0;
+            if (LAFCtrl is NuriOneLAFCtrl nuriOne)
+                mPos_um = status.MPosPulse / nuriOne.ResolutionAxisZ;
+            else
+                mPos_um = status.MPosPulse;
+
+            lblCurrentPositionZ.Text = mPos_um.ToString("F3");
 
             if (status.IsNegativeLimit)
                 lblNegativeLimitZ.BackColor = Color.Red;
@@ -519,8 +525,10 @@ namespace ATT.UI.Forms
         private void btnGrabStart_Click(object sender, EventArgs e)
         {
             var appsLineCamera = AppsLineCameraManager.Instance().GetLineCamera(CameraName);
+            //if (LAFCtrl is NuriOneLAFCtrl nuriOne)
+            //    nuriOne.SetAutoFocusOnOFF(true);
 
-            if(appsLineCamera.Camera is ICameraTDIavailable tdiCamera)
+            if (appsLineCamera.Camera is ICameraTDIavailable tdiCamera)
             {
                 if (tdiCamera.TDIOperationMode == TDIOperationMode.TDI)
                 {

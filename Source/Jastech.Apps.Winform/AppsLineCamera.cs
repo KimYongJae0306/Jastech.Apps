@@ -41,6 +41,8 @@ namespace Jastech.Apps.Winform
 
         public Queue<Mat> LiveMatQueue = new Queue<Mat>();
 
+        public Queue<byte[]> CameraDataQueue = new Queue<byte[]>();
+
         public Task MergeTask { get; set; }
 
         public Task LiveTask { get; set; }
@@ -122,7 +124,8 @@ namespace Jastech.Apps.Winform
                 tempPos += materialInfo.GetTabToTabDistance(i);
 
                 TabScanImage scanImage = new TabScanImage(i, startIndex, endIndex);
-                TabScanImageList.Add(scanImage);
+                lock(TabScanImageList)
+                    TabScanImageList.Add(scanImage);
             }
         }
 
@@ -139,7 +142,7 @@ namespace Jastech.Apps.Winform
             string error = "";
             MoveTo(TeachingPosType.Stage1_Scan_Start, out error);
             Camera.GrabMulti(GrabCount);
-            Thread.Sleep(100);
+     
             MoveTo(TeachingPosType.Stage1_Scan_End, out error);
         }
 
@@ -209,7 +212,8 @@ namespace Jastech.Apps.Winform
             int totalScanSubImageCount = (int)Math.Ceiling(scanLength_mm / resolution_mm / Camera.ImageHeight) + 2;
         
             TabScanImage scanImage = new TabScanImage(0, 0, totalScanSubImageCount);
-            TabScanImageList.Add(scanImage);
+            lock(TabScanImageList)
+                TabScanImageList.Add(scanImage);
 
             GrabCount = totalScanSubImageCount;
             // LineScan Page에서 Line 모드 GrabStart 할 때 Height Set 해줘야함
@@ -247,6 +251,11 @@ namespace Jastech.Apps.Winform
 
         public void AddImage(Mat mat, int grabCount)
         {
+            if(grabCount == 448)
+            {
+                GrabDoneEventHanlder?.Invoke(Camera.Name, true);
+            }
+            return;
             if (IsLive)
             {
                 lock (_lock)
@@ -256,6 +265,11 @@ namespace Jastech.Apps.Winform
             }
             else
             {
+                lock (_lock)
+                {
+                    LiveMatQueue.Enqueue(mat.Clone());
+                }
+
                 Mat rotatedMat = MatHelper.Transpose(mat);
 
                 if (TabScanImageList.Count > 0)
@@ -266,7 +280,6 @@ namespace Jastech.Apps.Winform
                         if (scanImage.StartIndex <= _curGrabCount && _curGrabCount <= scanImage.EndIndex)
                         {
                             scanImage.AddImage(rotatedMat, grabCount);
-                            Console.WriteLine("Add ScanImage : " + _stackTabNo.ToString() + " " + scanImage.GetImageCount().ToString() + " " + scanImage.TotalGrabCount.ToString());
                         }
 
                         if (scanImage.IsAddImageDone())
@@ -274,14 +287,16 @@ namespace Jastech.Apps.Winform
                             Console.WriteLine("Add Image Done." + _stackTabNo.ToString());
                             _stackTabNo++;
                             scanImage.ExcuteMerge = true;
+
+                            if(_stackTabNo == TabScanImageList.Count())
+                            {
+                                Console.WriteLine("CurrentGrab Count :" + _curGrabCount.ToString() + " GrabCount : " + GrabCount.ToString());
+                                Camera.Stop();
+                                GrabDoneEventHanlder?.Invoke(Camera.Name, true);
+                            }
                         }
                         _curGrabCount++;
-
-                        if (_curGrabCount == GrabCount)
-                        {
-                            Camera.Stop();
-                            GrabDoneEventHanlder?.Invoke(Camera.Name, true);
-                        }
+                        
                     }
                 }
             }
@@ -301,11 +316,17 @@ namespace Jastech.Apps.Winform
                 {
                     foreach (var scanImage in TabScanImageList)
                     {
-                        if (scanImage.ExcuteMerge)
+                        if(scanImage.IsInspection == false)
                         {
-                            TabImageGrabCompletedEventHandler?.Invoke(Camera.Name, scanImage);
-                            scanImage.ExcuteMerge = false;
+                            if (scanImage.ExcuteMerge)
+                            {
+                                scanImage.IsInspection = true;
+                                scanImage.ExcuteMerge = false;
+                                TabImageGrabCompletedEventHandler?.Invoke(Camera.Name, scanImage);
+                                
+                            }
                         }
+                        
                     }
                 }
 

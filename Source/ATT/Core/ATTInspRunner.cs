@@ -1,4 +1,5 @@
 ﻿using Cognex.VisionPro;
+using Cognex.VisionPro.Implementation.Internal;
 using Emgu.CV;
 using Jastech.Apps.Structure;
 using Jastech.Apps.Structure.Data;
@@ -19,6 +20,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -52,9 +54,13 @@ namespace ATT.Core
         {
           
         }
-
+        static int TestCount = 0;
         private void ATTSeqRunner_TabImageGrabCompletedEventHandler(string cameraName, TabScanImage image)
         {
+            if (image.TabNo >= 1)
+                return;
+
+            Console.WriteLine("Run Inspection. " + image.TabNo.ToString());
             Task task = new Task(() => Run(image));
             task.Start();
         }
@@ -100,6 +106,7 @@ namespace ATT.Core
             var appsLineCamera = AppsLineCameraManager.Instance().GetAppsCamera(CameraName.LinscanMIL0.ToString());
             appsLineCamera.TabImageGrabCompletedEventHandler += ATTSeqRunner_TabImageGrabCompletedEventHandler;
             appsLineCamera.GrabDoneEventHanlder += ATTSeqRunner_GrabDoneEventHanlder;
+            AppsLineCameraManager.Instance().GetLineCamera(CameraName.LinscanMIL0).StartMergeTask();
 
             if (SeqTask != null)
             {
@@ -117,7 +124,7 @@ namespace ATT.Core
             var appsLineCamera = AppsLineCameraManager.Instance().GetAppsCamera(CameraName.LinscanMIL0.ToString());
             appsLineCamera.TabImageGrabCompletedEventHandler -= ATTSeqRunner_TabImageGrabCompletedEventHandler;
             appsLineCamera.GrabDoneEventHanlder -= ATTSeqRunner_GrabDoneEventHanlder;
-
+            AppsLineCameraManager.Instance().GetLineCamera(CameraName.LinscanMIL0).StopGrab();
             Logger.Write(LogType.Seq, "Stop Sequence.");
 
             if (SeqTask == null)
@@ -228,9 +235,10 @@ namespace ATT.Core
                     IsGrabDone = false;
                     // 조명 코드 작성 요망
 
-                    AppsLineCameraManager.Instance().Stop(CameraName.LinscanMIL0);
+                    AppsLineCameraManager.Instance().GetLineCamera(CameraName.LinscanMIL0).StartGrab();
                     Logger.Write(LogType.Seq, "Start Grab.");
 
+                    Thread.Sleep(1000);
                     if (MoveTo(TeachingPosType.Stage1_Scan_End, out string error2) == false)
                     {
                         // Alarm
@@ -249,6 +257,8 @@ namespace ATT.Core
                         if (IsGrabDone == false)
                             break;
                     }
+                    SeqStep = SeqStep.SEQ_IDLE;
+                    break;
                     LastInspSW.Restart();
 
                     Logger.Write(LogType.Seq, "Scan Grab Completed.");
@@ -369,18 +379,18 @@ namespace ATT.Core
   
             Axis axisX = GetAxis(AxisHandlerName.Handler0, AxisName.X);
             Axis axisY = GetAxis(AxisHandlerName.Handler0, AxisName.Y);
-            Axis axisZ = GetAxis(AxisHandlerName.Handler0, AxisName.Z);
+            //Axis axisZ = GetAxis(AxisHandlerName.Handler0, AxisName.Z);
 
             var movingParamX = teachingInfo.GetMovingParam(AxisName.X.ToString());
             var movingParamY = teachingInfo.GetMovingParam(AxisName.Y.ToString());
             var movingParamZ = teachingInfo.GetMovingParam(AxisName.Z.ToString());
 
-            if (MoveAxis(teachingPos, axisZ, movingParamZ) == false)
-            {
-                error = string.Format("Move To Axis Z TimeOut!({0})", movingParamZ.MovingTimeOut.ToString());
-                Logger.Write(LogType.Seq, error);
-                return false;
-            }
+            //if (MoveAxis(teachingPos, axisZ, movingParamZ) == false)
+            //{
+            //    error = string.Format("Move To Axis Z TimeOut!({0})", movingParamZ.MovingTimeOut.ToString());
+            //    Logger.Write(LogType.Seq, error);
+            //    return false;
+            //}
             if(MoveAxis(teachingPos, axisX, movingParamX) == false)
             {
                 error = string.Format("Move To Axis X TimeOut!({0})", movingParamX.MovingTimeOut.ToString());
@@ -426,11 +436,14 @@ namespace ATT.Core
 
         public void Run(TabScanImage ScanImage)
         {
+            Console.WriteLine("In Run Thread  : " + ScanImage.TabNo.ToString());
             AppsInspModel inspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
 
             MainAlgorithmTool tool = new MainAlgorithmTool();
             Tab tab = inspModel.GetUnit(UnitName.Unit0).GetTab(ScanImage.TabNo);
-            tool.MainRunInspect(tab, ScanImage.GetMergeImage(), 10.0f, 10.0f);
+            //tool.MainRunInspect(tab, ScanImage.GetMergeImage(), 100.0f, 100.0f);
+
+            Console.WriteLine("Out Run Thread  : " + ScanImage.TabNo.ToString());
             //
 
             //Tab tab = inspModel.GetUnit(UnitName.Unit0).GetTab(ScanImage.TabNo);

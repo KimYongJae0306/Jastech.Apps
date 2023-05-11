@@ -69,7 +69,13 @@ namespace Jastech.Apps.Winform.UI.Controls
             if (status == null)
                 return;
 
-            lblCuttentPositionValue.Text = status.MPos.ToString();
+            double mPos_um = 0.0;
+            if (LAFCtrl is NuriOneLAFCtrl nuriOne)
+                mPos_um = status.MPosPulse / nuriOne.ResolutionAxisZ;
+            else
+                mPos_um = status.MPosPulse;
+
+            lblCuttentPositionValue.Text = mPos_um.ToString();
             lblCurrentCogValue.Text = status.CenterofGravity.ToString();
         }
 

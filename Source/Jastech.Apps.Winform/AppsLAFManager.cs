@@ -118,7 +118,7 @@ namespace Jastech.Apps.Winform
                 string dataString = Encoding.Default.GetString(data);
 
                 int centerofGravity = -1;
-                double mPos = -1;
+                double mPosPulse = -1;
                 bool isNegativeLimit = false;
                 bool isPositiveLimit = false;
                 // ex : "4\rcog: -2139 mpos: +98050 ls1: 0 ls2: 0 "
@@ -130,10 +130,10 @@ namespace Jastech.Apps.Winform
                     centerofGravity = cog;
                 }
 
-                if (double.TryParse(GetValue(dataString, "mpos"), out double mpos))
+                if (double.TryParse(GetValue(dataString, "mpos"), out double mposPulse))
                 {
                     isContain = true;
-                    mPos = mpos;
+                    mPosPulse = mposPulse;
                 }
 
                 if (int.TryParse(GetValue(dataString, "ls1"), out int ls1))
@@ -151,7 +151,7 @@ namespace Jastech.Apps.Winform
                 if(isContain)
                 {
                     laf.Status.CenterofGravity = centerofGravity;
-                    laf.Status.MPos = mPos;
+                    laf.Status.MPosPulse = mPosPulse;
                     laf.Status.IsNegativeLimit = isNegativeLimit;
                     laf.Status.IsPositiveLimit = isPositiveLimit;
                 }
@@ -325,7 +325,7 @@ namespace Jastech.Apps.Winform
                         break;
 
                     case HomeSequenceStep.ZeroSet:
-                        if (Math.Abs(status.MPos - HOMING_DISTANCE_AWAY_FROM_LIMIT) <= float.Epsilon)
+                        if (Math.Abs(status.MPosPulse - HOMING_DISTANCE_AWAY_FROM_LIMIT) <= float.Epsilon)
                         {
                             lafCtrl.SetMotionStop();
                             Thread.Sleep(500);

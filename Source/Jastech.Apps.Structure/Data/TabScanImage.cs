@@ -19,6 +19,8 @@ namespace Jastech.Apps.Structure.Data
 
         public bool ExcuteMerge { get; set; }
 
+        public bool IsInspection { get; set; }
+
         public int TotalGrabCount { get => Math.Abs(EndIndex - StartIndex); }
 
         private List<Mat> ScanImageList { get; set; } = new List<Mat>();
@@ -57,10 +59,10 @@ namespace Jastech.Apps.Structure.Data
 
         public void AddImage(Mat mat, int grabCount)
         {
+             if (StartIndex > grabCount && grabCount > EndIndex)
+                    return;
             lock (_objLock)
             {
-                if (StartIndex > grabCount && grabCount > EndIndex)
-                    return;
 
                 ScanImageList.Add(mat);
             }

@@ -303,7 +303,13 @@ namespace ATT.UI.Forms
             if (status == null)
                 return;
 
-            lblCurrentPositionZ.Text = status.MPos.ToString("F3");
+            double mPos_um = 0.0;
+            if (LAFCtrl is NuriOneLAFCtrl nuriOne)
+                mPos_um = status.MPosPulse / nuriOne.ResolutionAxisZ;
+            else
+                mPos_um = status.MPosPulse;
+
+            lblCurrentPositionZ.Text = mPos_um.ToString("F3");
             lblCurrentCenterOfGravityZ.Text = status.CenterofGravity.ToString();
 
             if (status.IsNegativeLimit)
@@ -477,7 +483,14 @@ namespace ATT.UI.Forms
         private void lblMoveToTargetZ_Click(object sender, EventArgs e)
         {
             double targetPosition = TeachingPositionList.Where(x => x.Name == TeachingPositionType.ToString()).First().GetTargetPosition(AxisName.Z);
-            double currentPosition = LAFCtrl.Status.MPos;
+
+            double mPos_um = 0.0;
+            if (LAFCtrl is NuriOneLAFCtrl nuriOne)
+                mPos_um = LAFCtrl.Status.MPosPulse / nuriOne.ResolutionAxisZ;
+            else
+                mPos_um = LAFCtrl.Status.MPosPulse;
+
+            double currentPosition = mPos_um;
 
             Direction direction = Direction.CCW;
             double moveAmount = targetPosition - currentPosition;
