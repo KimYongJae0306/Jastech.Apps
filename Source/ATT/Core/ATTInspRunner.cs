@@ -54,7 +54,6 @@ namespace ATT.Core
         {
           
         }
-        static int TestCount = 0;
         private void ATTSeqRunner_TabImageGrabCompletedEventHandler(string cameraName, TabScanImage image)
         {
             if (image.TabNo >= 1)
@@ -106,6 +105,7 @@ namespace ATT.Core
             var appsLineCamera = AppsLineCameraManager.Instance().GetAppsCamera(CameraName.LinscanMIL0.ToString());
             appsLineCamera.TabImageGrabCompletedEventHandler += ATTSeqRunner_TabImageGrabCompletedEventHandler;
             appsLineCamera.GrabDoneEventHanlder += ATTSeqRunner_GrabDoneEventHanlder;
+            AppsLineCameraManager.Instance().GetLineCamera(CameraName.LinscanMIL0).StartMainGrabTask();
             AppsLineCameraManager.Instance().GetLineCamera(CameraName.LinscanMIL0).StartMergeTask();
 
             if (SeqTask != null)
@@ -124,6 +124,7 @@ namespace ATT.Core
             var appsLineCamera = AppsLineCameraManager.Instance().GetAppsCamera(CameraName.LinscanMIL0.ToString());
             appsLineCamera.TabImageGrabCompletedEventHandler -= ATTSeqRunner_TabImageGrabCompletedEventHandler;
             appsLineCamera.GrabDoneEventHanlder -= ATTSeqRunner_GrabDoneEventHanlder;
+            AppsLineCameraManager.Instance().GetLineCamera(CameraName.LinscanMIL0).StopMainGrabTask();
             AppsLineCameraManager.Instance().GetLineCamera(CameraName.LinscanMIL0).StopGrab();
             Logger.Write(LogType.Seq, "Stop Sequence.");
 

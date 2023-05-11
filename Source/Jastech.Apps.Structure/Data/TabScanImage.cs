@@ -10,9 +10,12 @@ namespace Jastech.Apps.Structure.Data
     public class TabScanImage
     {
         private object _objLock = new object();
-
         public int TabNo { get; set; }
 
+        public int SubImageWidth { get; set; }
+
+        public int SubImageHeight { get; set; }
+      
         public int StartIndex { get; set; }
 
         public int EndIndex { get; set; }
@@ -23,13 +26,15 @@ namespace Jastech.Apps.Structure.Data
 
         public int TotalGrabCount { get => Math.Abs(EndIndex - StartIndex); }
 
-        private List<Mat> ScanImageList { get; set; } = new List<Mat>();
+        private List<Mat> SubImageList { get; set; } = new List<Mat>();
 
-        public TabScanImage(int tabNo, int startIndex, int endIndex)
+        public TabScanImage(int tabNo, int startIndex, int endIndex, int subImageWidth, int subImageHeight)
         {
             TabNo = tabNo;
             StartIndex = startIndex;
             EndIndex = endIndex;
+            SubImageWidth = subImageWidth;
+            SubImageHeight = subImageHeight;
 
             Dispose();
         }
@@ -39,7 +44,7 @@ namespace Jastech.Apps.Structure.Data
             bool isDone = false;
 
             lock (_objLock)
-                isDone = TotalGrabCount == ScanImageList.Count() ? true : false;
+                isDone = TotalGrabCount == SubImageList.Count() ? true : false;
 
             return isDone;
         }
@@ -48,29 +53,24 @@ namespace Jastech.Apps.Structure.Data
         {
             lock (_objLock)
             {
-                for (int i = 0; i < ScanImageList.Count(); i++)
+                for (int i = 0; i < SubImageList.Count(); i++)
                 {
-                    ScanImageList[i].Dispose();
-                    ScanImageList[i] = null;
+                    SubImageList[i].Dispose();
+                    SubImageList[i] = null;
                 }
-                ScanImageList.Clear();
+                SubImageList.Clear();
             }
         }
 
-        public void AddImage(Mat mat, int grabCount)
+        public void AddSubImage(Mat mat)
         {
-             if (StartIndex > grabCount && grabCount > EndIndex)
-                    return;
-            lock (_objLock)
-            {
-
-                ScanImageList.Add(mat);
-            }
+             lock (_objLock)
+                SubImageList.Add(mat);
         }
 
         public int GetImageCount()
         {
-            return ScanImageList.Count();
+            return SubImageList.Count();
         }
 
         public Mat GetMergeImage()
@@ -78,11 +78,11 @@ namespace Jastech.Apps.Structure.Data
             Mat mergeImage = null;
             lock (_objLock)
             {
-                if (ScanImageList.Count > 0)
+                if (SubImageList.Count > 0)
                 {
                     mergeImage = new Mat();
 
-                    CvInvoke.HConcat(ScanImageList.ToArray(), mergeImage);
+                    CvInvoke.HConcat(SubImageList.ToArray(), mergeImage);
                 }
             }
             return mergeImage;

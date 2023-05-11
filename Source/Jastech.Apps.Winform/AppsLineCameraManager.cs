@@ -85,34 +85,6 @@ namespace Jastech.Apps.Winform
             GetAppsCamera(name.ToString()).StopGrab();
         }
 
-        //public void StartGrab(CameraName name)
-        //{
-        //    InitGrabSettings(name);
-
-        //    if (GetCamera(name) is Camera camera)
-        //    {
-        //        if (camera.IsGrabbing())
-        //            StopGrab(name);
-
-        //        camera.GrabMulti(AppsConfig.Instance().GrabCount);
-        //    }
-        //}
-
-
-        //public void StopGrab(CameraName name)
-        //{
-        //    if (GetCamera(name) is Camera camera)
-        //        camera.Stop();
-        //}
-
-        //public void StopGrab()
-        //{
-        //    var cameraHandler = DeviceManager.Instance().CameraHandler;
-
-        //    foreach (var camera in cameraHandler)
-        //        camera.Stop();
-        //}
-
         private Camera GetCamera(CameraName name)
         {
             var cameraHandler = DeviceManager.Instance().CameraHandler;
@@ -131,13 +103,8 @@ namespace Jastech.Apps.Winform
                 byte[] data = camera.GetGrabbedImage();
                 if (data != null)
                 {
-                    //Mat grabImage = MatHelper.ByteArrayToMat(data, camera.ImageWidth, camera.ImageHeight, 1); // 마샬
-                    Mat grabImage = new Mat(new Size(camera.ImageWidth, camera.ImageHeight), Emgu.CV.CvEnum.DepthType.Cv8U, 1);
-
                     if (GetAppsCamera(camera.Name) is AppsLineCamera lineCamera)
-                        GetAppsCamera(camera.Name).AddImage(grabImage, camera.GrabCount);
-                 
-                    grabImage.Dispose();
+                        GetAppsCamera(camera.Name).AddSubImage(data, camera.GrabCount);
                 }
             }
         }

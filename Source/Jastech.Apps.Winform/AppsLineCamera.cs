@@ -21,7 +21,6 @@ namespace Jastech.Apps.Winform
 {
     public class AppsLineCamera
     {
-
         #region 필드
         private int _curGrabCount { get; set; } = 0;
 
@@ -39,17 +38,21 @@ namespace Jastech.Apps.Winform
 
         public List<TabScanImage> TabScanImageList { get; private set; } = new List<TabScanImage>();
 
-        public Queue<Mat> LiveMatQueue = new Queue<Mat>();
+        public Queue<byte[]> LiveDataQueue = new Queue<byte[]>();
 
-        public Queue<byte[]> CameraDataQueue = new Queue<byte[]>();
+        public Queue<byte[]> DataQueue = new Queue<byte[]>();
 
         public Task MergeTask { get; set; }
 
         public Task LiveTask { get; set; }
 
+        public Task MainGrabTask { get; set; }
+
         public CancellationTokenSource CancelMergeTask { get; set; }
 
         public CancellationTokenSource CancelLiveTask { get; set; }
+
+        public CancellationTokenSource CancelMainGrabTask { get; set; }
         #endregion
 
         #region 이벤트
@@ -123,12 +126,11 @@ namespace Jastech.Apps.Winform
 
                 tempPos += materialInfo.GetTabToTabDistance(i);
 
-                TabScanImage scanImage = new TabScanImage(i, startIndex, endIndex);
+                TabScanImage scanImage = new TabScanImage(i, startIndex, endIndex, Camera.ImageWidth, Camera.ImageHeight);
                 lock(TabScanImageList)
                     TabScanImageList.Add(scanImage);
             }
         }
-
 
         public void StartGrab()
         {
@@ -211,7 +213,7 @@ namespace Jastech.Apps.Winform
             float resolution_mm = (float)(Camera.PixelResolution_um / Camera.LensScale) / 1000;
             int totalScanSubImageCount = (int)Math.Ceiling(scanLength_mm / resolution_mm / Camera.ImageHeight) + 2;
         
-            TabScanImage scanImage = new TabScanImage(0, 0, totalScanSubImageCount);
+            TabScanImage scanImage = new TabScanImage(0, 0, totalScanSubImageCount, Camera.ImageWidth, Camera.ImageHeight);
             lock(TabScanImageList)
                 TabScanImageList.Add(scanImage);
 
@@ -240,65 +242,22 @@ namespace Jastech.Apps.Winform
                 return;
 
             lock(_lock)
-            {
-                foreach (var mat in LiveMatQueue)
-                    mat.Dispose();
-                LiveMatQueue.Clear();
-            }
+                LiveDataQueue.Clear();
 
             Camera.Stop();
         }
 
-        public void AddImage(Mat mat, int grabCount)
+        public void AddSubImage(byte[] data, int grabCount)
         {
-            if(grabCount == 448)
-            {
-                GrabDoneEventHanlder?.Invoke(Camera.Name, true);
-            }
-            return;
             if (IsLive)
             {
                 lock (_lock)
-                {
-                    LiveMatQueue.Enqueue(mat.Clone());
-                }
+                    LiveDataQueue.Enqueue(data);
             }
             else
             {
                 lock (_lock)
-                {
-                    LiveMatQueue.Enqueue(mat.Clone());
-                }
-
-                Mat rotatedMat = MatHelper.Transpose(mat);
-
-                if (TabScanImageList.Count > 0)
-                {
-                    if (GetTabScanImage(_stackTabNo) is TabScanImage scanImage)
-                    {
-
-                        if (scanImage.StartIndex <= _curGrabCount && _curGrabCount <= scanImage.EndIndex)
-                        {
-                            scanImage.AddImage(rotatedMat, grabCount);
-                        }
-
-                        if (scanImage.IsAddImageDone())
-                        {
-                            Console.WriteLine("Add Image Done." + _stackTabNo.ToString());
-                            _stackTabNo++;
-                            scanImage.ExcuteMerge = true;
-
-                            if(_stackTabNo == TabScanImageList.Count())
-                            {
-                                Console.WriteLine("CurrentGrab Count :" + _curGrabCount.ToString() + " GrabCount : " + GrabCount.ToString());
-                                Camera.Stop();
-                                GrabDoneEventHanlder?.Invoke(Camera.Name, true);
-                            }
-                        }
-                        _curGrabCount++;
-                        
-                    }
-                }
+                    DataQueue.Enqueue(data);
             }
         }
 
@@ -323,10 +282,8 @@ namespace Jastech.Apps.Winform
                                 scanImage.IsInspection = true;
                                 scanImage.ExcuteMerge = false;
                                 TabImageGrabCompletedEventHandler?.Invoke(Camera.Name, scanImage);
-                                
                             }
                         }
-                        
                     }
                 }
 
@@ -374,6 +331,72 @@ namespace Jastech.Apps.Winform
             LiveTask = null;
         }
 
+        public void StartMainGrabTask()
+        {
+            if (MainGrabTask != null)
+                return;
+
+            CancelMainGrabTask = new CancellationTokenSource();
+            MainGrabTask = new Task(MainGrabManagement, CancelMainGrabTask.Token);
+            MainGrabTask.Start();
+        }
+
+        public void StopMainGrabTask()
+        {
+            if (MainGrabTask == null)
+                return;
+
+            CancelMainGrabTask.Cancel();
+            MainGrabTask.Wait();
+            MainGrabTask = null;
+        }
+
+        public void MainGrabManagement()
+        {
+            while (true)
+            {
+                if (CancelMainGrabTask.IsCancellationRequested)
+                {
+                    ClearTabScanImage();
+                    break;
+                }
+
+                if(DataQueue.Count > 0)
+                {
+                    byte[] data = DataQueue.Dequeue();
+                    if (data != null)
+                    {
+                        TabScanImage tabScanImage = GetTabScanImage(_stackTabNo);
+
+                        if (tabScanImage.StartIndex <= _curGrabCount && _curGrabCount <= tabScanImage.EndIndex)
+                        {
+                            Mat mat = MatHelper.ByteArrayToMat(data, tabScanImage.SubImageWidth, tabScanImage.SubImageHeight, 1);
+                            Mat rotatedMat = MatHelper.Transpose(mat);
+                            tabScanImage.AddSubImage(rotatedMat);
+
+                            mat.Dispose();
+                        }
+
+                        if (tabScanImage.IsAddImageDone())
+                        {
+                            Console.WriteLine("Add Image Done." + _stackTabNo.ToString());
+                            _stackTabNo++;
+                            tabScanImage.ExcuteMerge = true;
+
+                            if (_stackTabNo == TabScanImageList.Count())
+                            {
+                                Console.WriteLine("CurrentGrab Count :" + _curGrabCount.ToString() + " GrabCount : " + GrabCount.ToString());
+                                Camera.Stop();
+                                GrabDoneEventHanlder?.Invoke(Camera.Name, true);
+                            }
+                        }
+                        _curGrabCount++;
+                    }
+                }
+                Thread.Sleep(10);
+            }
+        }
+
         public void UpdateLiveImage()
         {
             while (true)
@@ -387,11 +410,13 @@ namespace Jastech.Apps.Winform
                 Mat mat = null;
                 lock (_lock)
                 {
-                    if (LiveMatQueue.Count() > 0)
-                        mat = LiveMatQueue.Dequeue();
-                    if (mat != null)
+                    if (LiveDataQueue.Count() > 0)
                     {
-                        TeachingLiveImageGrabbed?.Invoke(Camera.Name, mat);
+                       byte[] data = LiveDataQueue.Dequeue();
+                        mat = MatHelper.ByteArrayToMat(data, Camera.ImageWidth, Camera.ImageHeight, 1);
+
+                        if (mat != null)
+                            TeachingLiveImageGrabbed?.Invoke(Camera.Name, mat);
                     }
                 }
 
