@@ -41,7 +41,7 @@
             this.lblCuttentPositionValue = new System.Windows.Forms.Label();
             this.lblCurrentPosition = new System.Windows.Forms.Label();
             this.btnAFOff = new System.Windows.Forms.Button();
-            this.bnAFOn = new System.Windows.Forms.Button();
+            this.bntAFOn = new System.Windows.Forms.Button();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.tlpAutoFocusControl.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
@@ -66,7 +66,7 @@
             this.tlpAutoFocusControl.Controls.Add(this.lblCuttentPositionValue, 1, 1);
             this.tlpAutoFocusControl.Controls.Add(this.lblCurrentPosition, 0, 1);
             this.tlpAutoFocusControl.Controls.Add(this.btnAFOff, 2, 4);
-            this.tlpAutoFocusControl.Controls.Add(this.bnAFOn, 1, 4);
+            this.tlpAutoFocusControl.Controls.Add(this.bntAFOn, 1, 4);
             this.tlpAutoFocusControl.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tlpAutoFocusControl.Location = new System.Drawing.Point(0, 0);
             this.tlpAutoFocusControl.Margin = new System.Windows.Forms.Padding(0);
@@ -253,20 +253,20 @@
             this.btnAFOff.UseVisualStyleBackColor = false;
             this.btnAFOff.Click += new System.EventHandler(this.btnAFOff_Click);
             // 
-            // bnAFOn
+            // bntAFOn
             // 
-            this.bnAFOn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
-            this.bnAFOn.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.bnAFOn.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.bnAFOn.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
-            this.bnAFOn.Location = new System.Drawing.Point(140, 160);
-            this.bnAFOn.Margin = new System.Windows.Forms.Padding(0);
-            this.bnAFOn.Name = "bnAFOn";
-            this.bnAFOn.Size = new System.Drawing.Size(140, 40);
-            this.bnAFOn.TabIndex = 204;
-            this.bnAFOn.Text = "A/F ON";
-            this.bnAFOn.UseVisualStyleBackColor = false;
-            this.bnAFOn.Click += new System.EventHandler(this.bnAFOn_Click);
+            this.bntAFOn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
+            this.bntAFOn.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.bntAFOn.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.bntAFOn.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
+            this.bntAFOn.Location = new System.Drawing.Point(140, 160);
+            this.bntAFOn.Margin = new System.Windows.Forms.Padding(0);
+            this.bntAFOn.Name = "bntAFOn";
+            this.bntAFOn.Size = new System.Drawing.Size(140, 40);
+            this.bntAFOn.TabIndex = 204;
+            this.bntAFOn.Text = "A/F ON";
+            this.bntAFOn.UseVisualStyleBackColor = false;
+            this.bntAFOn.Click += new System.EventHandler(this.bntAFOn_Click);
             // 
             // tableLayoutPanel1
             // 
@@ -283,14 +283,15 @@
             // 
             // AutoFocusControl
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
             this.Controls.Add(this.tableLayoutPanel1);
             this.Font = new System.Drawing.Font("맑은 고딕", 11.25F, System.Drawing.FontStyle.Bold);
             this.ForeColor = System.Drawing.Color.White;
             this.Name = "AutoFocusControl";
             this.Size = new System.Drawing.Size(436, 211);
+            this.Load += new System.EventHandler(this.AutoFocusControl_Load);
             this.tlpAutoFocusControl.ResumeLayout(false);
             this.tableLayoutPanel1.ResumeLayout(false);
             this.ResumeLayout(false);
@@ -311,7 +312,7 @@
         private System.Windows.Forms.Label lblCuttentPositionValue;
         private System.Windows.Forms.Label lblCurrentPosition;
         private System.Windows.Forms.Button btnAFOff;
-        private System.Windows.Forms.Button bnAFOn;
+        private System.Windows.Forms.Button bntAFOn;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
     }
 }

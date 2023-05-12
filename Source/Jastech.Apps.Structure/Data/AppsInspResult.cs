@@ -108,13 +108,13 @@ namespace Jastech.Apps.Structure.Data
             result.Image = Image?.Clone();
             result.CogImage = CogImage?.CopyBase(CogImageCopyModeConstants.CopyPixels);
             result.AkkonResultImage = AkkonResultImage?.CopyBase(CogImageCopyModeConstants.CopyPixels);
-            result.FpcMark = FpcMark.DeepCopy();
-            result.PanelMark = PanelMark.DeepCopy();
-            result.LeftAlignX = LeftAlignX.DeepCopy();
-            result.LeftAlignY = LeftAlignY.DeepCopy();
-            result.RightAlignX = RightAlignX.DeepCopy();
-            result.RightAlignY = RightAlignY.DeepCopy();
-            result.AkkonResult = AkkonResult.DeepCopy();
+            result.FpcMark = FpcMark?.DeepCopy();
+            result.PanelMark = PanelMark?.DeepCopy();
+            result.LeftAlignX = LeftAlignX?.DeepCopy();
+            result.LeftAlignY = LeftAlignY?.DeepCopy();
+            result.RightAlignX = RightAlignX?.DeepCopy();
+            result.RightAlignY = RightAlignY?.DeepCopy();
+            result.AkkonResult = AkkonResult?.DeepCopy();
 
             return result;
 
@@ -151,8 +151,8 @@ namespace Jastech.Apps.Structure.Data
             result.TranslateX = TranslateX;
             result.TranslateY = TranslateY;
             result.TranslateRotion = TranslateRotion;
-            result.FoundedMark = FoundedMark.DeepCopy();
-            result.FailMarks = FailMarks.Select(x => x.DeepCopy()).ToList();
+            result.FoundedMark = FoundedMark?.DeepCopy();
+            result.FailMarks = FailMarks?.Select(x => x.DeepCopy()).ToList();
 
             return result;
         }

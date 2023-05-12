@@ -17,17 +17,42 @@ namespace Jastech.Apps.Winform.UI.Controls
 {
     public partial class AutoFocusControl : UserControl
     {
+        #region 필드
+        private Color _selectedColor;
+
+        private Color _noneSelectedColor;
+        #endregion
+
+        #region 속성
         private Axis SelectedAxis { get; set; } = null;
 
         public TeachingAxisInfo AxisInfo { get; set; } = null;
 
         private AxisHandler AxisHandler { get; set; } = null;
 
-        private delegate void UpdateMotionStatusDelegate();
+        private LAFCtrl LAFCtrl { get; set; } = null;
 
+        private List<TeachingInfo> TeachingPositionList { get; set; } = null;
+        
+        public TeachingPosType TeachingPositionType = TeachingPosType.Stage1_Scan_Start;
+        #endregion
+
+        #region 델리게이트  
+        private delegate void UpdateMotionStatusDelegate();
+        #endregion
+
+        #region 생성자
         public AutoFocusControl()
         {
             InitializeComponent();
+        }
+        #endregion
+
+        #region 메서드
+        private void AutoFocusControl_Load(object sender, EventArgs e)
+        {
+            _selectedColor = Color.FromArgb(104, 104, 104);
+            _noneSelectedColor = Color.FromArgb(52, 52, 52);
         }
 
         public void UpdateData(TeachingAxisInfo axisInfo)
@@ -61,7 +86,6 @@ namespace Jastech.Apps.Winform.UI.Controls
             }
         }
 
-        private LAFCtrl LAFCtrl { get; set; } = null;
         private void UpdateStatus()
         {
             var status = LAFCtrl.Status;
@@ -77,6 +101,17 @@ namespace Jastech.Apps.Winform.UI.Controls
 
             lblCuttentPositionValue.Text = mPos_um.ToString();
             lblCurrentCogValue.Text = status.CenterofGravity.ToString();
+
+            if (status.IsAutoFocusOn)
+            {
+                bntAFOn.BackColor = _selectedColor;
+                btnAFOff.BackColor = _noneSelectedColor;
+            }
+            else
+            {
+                bntAFOn.BackColor = _noneSelectedColor;
+                btnAFOff.BackColor = _selectedColor;
+            }
         }
 
         public void SetAxisHanlder(AxisHandler axisHandler)
@@ -95,9 +130,6 @@ namespace Jastech.Apps.Winform.UI.Controls
             LAFCtrl = lafCtrl;
         }
 
-        private List<TeachingInfo> TeachingPositionList { get; set; } = null;
-        public TeachingPosType TeachingPositionType = TeachingPosType.Stage1_Scan_Start;
-
         private void lblTargetPositionZValue_Click(object sender, EventArgs e)
         {
             double targetPosition = SetLabelDoubleData(sender);
@@ -105,7 +137,7 @@ namespace Jastech.Apps.Winform.UI.Controls
             AxisInfo.TargetPosition = targetPosition;
         }
 
-         private void btnSetCurrentToTarget_Click(object sender, EventArgs e)
+        private void btnSetCurrentToTarget_Click(object sender, EventArgs e)
         {
             lblTargetPositionValue.Text = lblCuttentPositionValue.Text;
         }
@@ -124,7 +156,7 @@ namespace Jastech.Apps.Winform.UI.Controls
             lblTeachCogValue.Text = cog.ToString();
         }
 
-        private void bnAFOn_Click(object sender, EventArgs e)
+        private void bntAFOn_Click(object sender, EventArgs e)
         {
             AppsLAFManager.Instance().AutoFocusOnOff(LAFName.Akkon.ToString(), true);
         }
@@ -132,25 +164,6 @@ namespace Jastech.Apps.Winform.UI.Controls
         private void btnAFOff_Click(object sender, EventArgs e)
         {
             AppsLAFManager.Instance().AutoFocusOnOff(LAFName.Akkon.ToString(), false);
-        }
-
-        private void AutoFocusOnOff(bool isOn)
-        {
-            //if (isOn)
-            //{
-            //    int negative = Convert.ToInt32(Main.TeachingPositionList[(int)_teachingPosition].UnitPositionList[(int)eAxis.Axis_Z].TargetPosition - (Main.TeachingPositionList[(int)_teachingPosition].UnitPositionList[(int)eAxis.Axis_Z].MotionProperty.NegativeSWLimit * Main.LAF.GetPulseResolution()));
-            //    int positive = Convert.ToInt32(Main.TeachingPositionList[(int)_teachingPosition].UnitPositionList[(int)eAxis.Axis_Z].TargetPosition + (Main.TeachingPositionList[(int)_teachingPosition].UnitPositionList[(int)eAxis.Axis_Z].MotionProperty.PositiveSWLimit * Main.LAF.GetPulseResolution()));
-
-            //    Main.LAF.SetMotionNegativeLimit(negative);
-            //    Main.LAF.SetMotionPositiveLimit(positive);
-            //}
-            //else
-            //{
-            //    Main.LAF.SetMotionNegativeLimit(0);
-            //    Main.LAF.SetMotionPositiveLimit(0);
-            //}
-
-            //Main.LAF.SetAutoFocusOnOFF(isOn);
         }
 
         private double SetLabelDoubleData(object sender)
@@ -196,5 +209,6 @@ namespace Jastech.Apps.Winform.UI.Controls
 
             return param.DeepCopy();
         }
+        #endregion
     }
 }

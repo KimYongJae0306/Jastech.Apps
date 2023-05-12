@@ -86,15 +86,29 @@ namespace Jastech.Apps.Winform
 
         public void RequestStatusData(string name)
         {
+            int count = 0;
             while (_isStop == false)
             {
                 if (DeviceManager.Instance().LAFCtrlHandler.Get(name) is NuriOneLAFCtrl laf)
                 {
-                    // cog, mpos, ls1, ls2 값 동시 요청
-                    string command = "uc rep cog mpos ls1 ls2";
-
-
-                    laf.RequestData(command);
+                    if (count % 3 == 0)
+                    { // cog, mpos, ls1, ls2 값 동시 요청
+                        string command = "uc rep cog mpos ls1 ls2";
+                        laf.RequestData(command);
+                    }
+                    else if (count % 3 == 1)
+                    {
+                        string command = "uc lasergate";
+                        laf.RequestData(command);
+                    }
+                    else if (count % 3 == 2)
+                    {
+                        string command = "uc motiontrack";
+                        laf.RequestData(command);
+                    }
+                    if (count >= int.MaxValue)
+                        count = 0;
+                    count++;
                 }
                 Thread.Sleep(300);
             }
@@ -118,44 +132,25 @@ namespace Jastech.Apps.Winform
             {
                 string dataString = Encoding.Default.GetString(data);
 
-                int centerofGravity = -1;
-                double mPosPulse = -1;
-                bool isNegativeLimit = false;
-                bool isPositiveLimit = false;
+                //int centerofGravity = -1;
+                //double mPosPulse = -1;
+                //bool isNegativeLimit = false;
+                //bool isPositiveLimit = false;
                 // ex : "4\rcog: -2139 mpos: +98050 ls1: 0 ls2: 0 "
-
-                bool isContain = false;
+                var status = laf.Status;
                 if (int.TryParse(GetValue(dataString, "cog"), out int cog))
-                {
-                    isContain = true;
-                    centerofGravity = cog;
-                }
-
+                    status.CenterofGravity = cog;
                 if (double.TryParse(GetValue(dataString, "mpos"), out double mposPulse))
-                {
-                    isContain = true;
-                    mPosPulse = mposPulse;
-                }
-
+                    status.MPosPulse = mposPulse;
                 if (int.TryParse(GetValue(dataString, "ls1"), out int ls1))
-                {
-                    isContain = true;
-                    isNegativeLimit = Convert.ToBoolean(ls1);
-                }
-
+                    status.IsNegativeLimit = Convert.ToBoolean(ls1);
                 if (int.TryParse(GetValue(dataString, "ls2"), out int ls2))
-                {
-                    isContain = true;
-                    isPositiveLimit = Convert.ToBoolean(ls2);
-                }
+                    status.IsPositiveLimit = Convert.ToBoolean(ls2);
 
-                if(isContain)
-                {
-                    laf.Status.CenterofGravity = centerofGravity;
-                    laf.Status.MPosPulse = mPosPulse;
-                    laf.Status.IsNegativeLimit = isNegativeLimit;
-                    laf.Status.IsPositiveLimit = isPositiveLimit;
-                }
+                if (int.TryParse(GetValue(dataString, "lasergate"), out int lasergate))
+                    status.IsLaserOn = Convert.ToBoolean(lasergate);
+                if (int.TryParse(GetValue(dataString, "motiontrack"), out int motiontrack))
+                    status.IsAutoFocusOn = Convert.ToBoolean(motiontrack);
             }
         }
 
@@ -163,19 +158,43 @@ namespace Jastech.Apps.Winform
         {
             if (data.Contains(dataName))
             {
-                int startIndex = data.IndexOf(dataName) + dataName.Length + 1; // +1 => ':' 길이 계산 값
+                while (data.Contains("\n4"))
+                    data = data.Replace("\n4", "");
+
+                while (data.Contains(":"))
+                    data = data.Replace(":", "");
+
+                while (data.Contains("\n"))
+                    data = data.Replace("\n", "");
+
+                while (data.Contains("\r"))
+                    data = data.Replace("\r", "");
+
+                while(data.Contains("0x00000001"))
+                    data = data.Replace("0x00000001", "");
+                //int startIndex = data.IndexOf(dataName) + dataName.Length + 1; // +1 => ':' 길이 계산 값
+                int startIndex = data.IndexOf(dataName) + dataName.Length; // +1 => ':' 길이 계산 값
                 string content = data.Substring(startIndex);
 
                 int nextAlphabetIndex = -1;
                 for (int i = 0; i < content.Length; i++)
                 {
-                    string gg = content[i].ToString();
+                    char value = content[i];
                     nextAlphabetIndex = i;
                     if (Regex.IsMatch(content[i].ToString(), "^[a-zA-Z]"))
                         break;
+                    if (Regex.IsMatch(content[i].ToString(), "\r"))
+                        break;
+                    if (Regex.IsMatch(content[i].ToString(), "\n"))
+                        break;
                 }
                 if (content.Length > 0)
-                    return content.Substring(0, nextAlphabetIndex).Replace(" ", "");
+                {
+                    string temp = content.Substring(0, nextAlphabetIndex);
+                    string value = content.Substring(0, nextAlphabetIndex).Replace(" ", "");
+                    return value;
+                }
+                    
                 else
                     return "";
             }
