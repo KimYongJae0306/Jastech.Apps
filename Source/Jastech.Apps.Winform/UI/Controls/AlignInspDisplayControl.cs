@@ -27,6 +27,8 @@ namespace Jastech.Apps.Winform.UI.Controls
         private Color _selectedColor;
 
         private Color _noneSelectedColor;
+
+        private AppsInspResult _curAppsInspResult = null;
         #endregion
 
         #region 속성
@@ -143,6 +145,9 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         public void UpdateMainResult(AppsInspResult inspResult)
         {
+            _curAppsInspResult = inspResult.DeepCopy();
+
+
             InspAlignDisplay.ClearImage();
 
             for (int i = 0; i < inspResult.TabResultList.Count(); i++)

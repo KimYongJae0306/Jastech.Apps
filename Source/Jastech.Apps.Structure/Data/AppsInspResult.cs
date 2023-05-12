@@ -42,7 +42,7 @@ namespace Jastech.Apps.Structure.Data
             result.EndInspTime = EndInspTime;
             result.LastInspTime = LastInspTime;
             result.Cell_ID = Cell_ID;
-            result.TabResultList = TabResultList.Select(() => DeepCopy()).;
+            result.TabResultList = TabResultList.Select(x => x.DeepCopy()).ToList();
 
             return result;
         }
@@ -50,23 +50,24 @@ namespace Jastech.Apps.Structure.Data
 
     public class TabInspResult
     {
-        [JsonIgnore]
-        public Mat Image { get; set; } = null;
-
-        [JsonIgnore]
-        public ICogImage CogImage { get; set; } = null;
-
-        [JsonIgnore]
-        public ICogImage AkkonResultImage { get; set; } = null;
-
         public int TabNo { get; set; } = -1;
 
-        public MarkResult FpcMark { get; set; } = new MarkResult();
-
-        public MarkResult PanelMark { get; set; } = new MarkResult();
+        public Judgement MarkJudgement { get; set; } = Judgement.OK;
 
         public Judgement AlignJudgement { get; set; } = Judgement.OK;
 
+        public Judgement AkkonJudgement { get; set; } = Judgement.OK;
+
+        public Mat Image { get; set; } = null;
+
+        public ICogImage CogImage { get; set; } = null;
+
+        public ICogImage AkkonResultImage { get; set; } = null;
+      
+        public MarkResult FpcMark { get; set; } = new MarkResult();
+
+        public MarkResult PanelMark { get; set; } = new MarkResult();
+   
         public AlignResult LeftAlignX { get; set; } = null;
 
         public AlignResult LeftAlignY { get; set; } = null;
@@ -75,11 +76,7 @@ namespace Jastech.Apps.Structure.Data
 
         public AlignResult RightAlignY { get; set; } = null;
 
-        [JsonProperty]
-        public List<AkkonResult> AkkonResultList { get; set; } = new List<AkkonResult>();
-
-        [JsonProperty]
-        public List<AkkonResult> Akkon { get; set; } = null;
+        public AkkonResult AkkonResult { get; set; } = new AkkonResult();
 
         public void Dispose()
         {
@@ -88,15 +85,45 @@ namespace Jastech.Apps.Structure.Data
                 Image.Dispose();
                 Image = null;
             }
+            CogImage = null;
+            AkkonResultImage = null;
 
-            if (AkkonResultImage != null)
-                AkkonResultImage = null;
+            FpcMark?.Dispose();
+            PanelMark?.Dispose();
+            LeftAlignX?.Dispose();
+            LeftAlignY?.Dispose();
+            RightAlignX?.Dispose();
+            RightAlignY?.Dispose();
+            AkkonResult?.Dispose();
+        }
+
+        public TabInspResult DeepCopy()
+        {
+            TabInspResult result = new TabInspResult();
+
+            result.TabNo = TabNo;
+            result.MarkJudgement = MarkJudgement;
+            result.AlignJudgement = AlignJudgement;
+            result.AkkonJudgement = AkkonJudgement;
+            result.Image = Image?.Clone();
+            result.CogImage = CogImage?.CopyBase(CogImageCopyModeConstants.CopyPixels);
+            result.AkkonResultImage = AkkonResultImage?.CopyBase(CogImageCopyModeConstants.CopyPixels);
+            result.FpcMark = FpcMark.DeepCopy();
+            result.PanelMark = PanelMark.DeepCopy();
+            result.LeftAlignX = LeftAlignX.DeepCopy();
+            result.LeftAlignY = LeftAlignY.DeepCopy();
+            result.RightAlignX = RightAlignX.DeepCopy();
+            result.RightAlignY = RightAlignY.DeepCopy();
+            result.AkkonResult = AkkonResult.DeepCopy();
+
+            return result;
+
         }
     }
     public class MarkResult
     {
-        [JsonProperty]
-        public Judgement Judement { get; set; } = Judgement.OK;
+        #region 속성
+        public Judgement Judgement { get; set; } = Judgement.OK;
 
         public double TranslateX { get; set; } = 0;
 
@@ -107,19 +134,61 @@ namespace Jastech.Apps.Structure.Data
         public MarkMatchingResult FoundedMark { get; set; } = null;
 
         public List<MarkMatchingResult> FailMarks { get; set; } = new List<MarkMatchingResult>();
+        #endregion
+
+        #region 메서드
+        public void Dispose()
+        {
+            FoundedMark?.Dispose();
+            FailMarks.ForEach(x => x.Dispose());
+            FailMarks.Clear();
+        }
+
+        public MarkResult DeepCopy()
+        {
+            MarkResult result = new MarkResult();
+            result.Judgement = Judgement;
+            result.TranslateX = TranslateX;
+            result.TranslateY = TranslateY;
+            result.TranslateRotion = TranslateRotion;
+            result.FoundedMark = FoundedMark.DeepCopy();
+            result.FailMarks = FailMarks.Select(x => x.DeepCopy()).ToList();
+
+            return result;
+        }
+        #endregion
     }
 
     public class MarkMatchingResult
     {
-        [JsonProperty]
+        #region 속성
         public CogPatternMatchingResult Left { get; set; } = null;
 
-        [JsonProperty]
         public CogPatternMatchingResult Right { get; set; } = null;
+        #endregion
+
+        #region 메서드
+        public void Dispose()
+        {
+            Left?.Dispose();
+            Right?.Dispose();
+        }
+
+        public MarkMatchingResult DeepCopy()
+        {
+            MarkMatchingResult result = new MarkMatchingResult();
+
+            result.Left = Left?.DeepCopy();
+            result.Right = Right?.DeepCopy();
+
+            return result;
+        }
+        #endregion
     }
 
     public class AlignResult
     {
+        #region 속성
         public Judgement Judgement { get; set; } = Judgement.OK;
 
         public float X { get; set; } = 0.0f;
@@ -129,5 +198,26 @@ namespace Jastech.Apps.Structure.Data
         public CogAlignCaliperResult Panel { get; set; } = null;
 
         public CogAlignCaliperResult Fpc { get; set; } = null;
+        #endregion
+
+        #region 메서드
+        public void Dispose()
+        {
+            Panel?.Dispose();
+            Fpc?.Dispose();
+        }
+
+        public AlignResult DeepCopy()
+        {
+            AlignResult result = new AlignResult();
+            result.Judgement = Judgement;
+            result.X = X;
+            result.Y = Y;
+            result.Panel = Panel.DeepCopy();
+            result.Fpc = Fpc.DeepCopy();
+
+            return result;
+        }
+        #endregion
     }
 }

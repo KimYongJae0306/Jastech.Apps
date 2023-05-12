@@ -93,6 +93,7 @@ namespace Jastech.Apps.Winform
                     // cog, mpos, ls1, ls2 값 동시 요청
                     string command = "uc rep cog mpos ls1 ls2";
 
+
                     laf.RequestData(command);
                 }
                 Thread.Sleep(300);

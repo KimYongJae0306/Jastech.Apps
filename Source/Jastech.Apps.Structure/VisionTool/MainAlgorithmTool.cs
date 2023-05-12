@@ -29,12 +29,18 @@ namespace Jastech.Apps.Structure.VisionTool
             inspResult.CogImage = cogImage;
 
             RunFpcMark(cogImage, tab, ref inspResult);
-            if (inspResult.FpcMark.Judement == Judgement.NG)
+            if (inspResult.FpcMark.Judgement == Judgement.NG)
+            {
+                inspResult.MarkJudgement = Judgement.NG;
                 return inspResult;    // 검사 실패
+            }
 
             RunPanelMark(cogImage, tab, ref inspResult);
-            if (inspResult.PanelMark.Judement == Judgement.NG)
+            if (inspResult.PanelMark.Judgement == Judgement.NG)
+            {
+                inspResult.MarkJudgement = Judgement.NG;
                 return inspResult;    // 검사 실패
+            }
             #endregion
 
 
@@ -254,7 +260,7 @@ namespace Jastech.Apps.Structure.VisionTool
                     matchingResult.Right = rightResult;
 
                     result.FoundedMark = matchingResult;
-                    result.Judement = Judgement.OK;
+                    result.Judgement = Judgement.OK;
 
                     return;
                 }
@@ -265,7 +271,7 @@ namespace Jastech.Apps.Structure.VisionTool
                     matchingResult.Right = rightResult;
 
                     result.FailMarks.Add(matchingResult);
-                    result.Judement = Judgement.NG;
+                    result.Judgement = Judgement.NG;
                 }
             }
         }
@@ -294,7 +300,7 @@ namespace Jastech.Apps.Structure.VisionTool
                     matchingResult.Right = rightResult;
 
                     result.FoundedMark = matchingResult;
-                    result.Judement = Judgement.OK;
+                    result.Judgement = Judgement.OK;
                     return;
                 }
                 else
@@ -304,7 +310,7 @@ namespace Jastech.Apps.Structure.VisionTool
                     matchingResult.Right = rightResult;
 
                     result.FailMarks.Add(matchingResult);
-                    result.Judement = Judgement.NG;
+                    result.Judgement = Judgement.NG;
                 }
             }
         }
