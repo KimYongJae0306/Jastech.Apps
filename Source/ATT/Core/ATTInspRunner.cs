@@ -7,6 +7,7 @@ using Jastech.Apps.Structure.VisionTool;
 using Jastech.Apps.Winform;
 using Jastech.Apps.Winform.Core;
 using Jastech.Apps.Winform.Settings;
+using Jastech.Framework.Device.Cameras;
 using Jastech.Framework.Device.Motions;
 using Jastech.Framework.Imaging.Result;
 using Jastech.Framework.Imaging.VisionPro;
@@ -237,8 +238,9 @@ namespace ATT.Core
 
                     IsGrabDone = false;
                     // 조명 코드 작성 요망
-
-                    AppsLineCameraManager.Instance().GetLineCamera(CameraName.LinscanMIL0).StartGrab();
+                    var appsLineCamera = AppsLineCameraManager.Instance().GetLineCamera(CameraName.LinscanMIL0);
+                    appsLineCamera.SetOperationMode(TDIOperationMode.TDI);
+                    appsLineCamera.StartGrab();
                     Logger.Write(LogType.Seq, "Start Grab.");
 
                     Thread.Sleep(1000);

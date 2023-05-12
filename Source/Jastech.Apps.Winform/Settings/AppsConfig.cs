@@ -1,4 +1,5 @@
-﻿using Jastech.Apps.Structure;
+﻿using Cognex.VisionPro;
+using Jastech.Apps.Structure;
 using Jastech.Apps.Structure.Data;
 using Jastech.Framework.Comm;
 using Jastech.Framework.Comm.Protocol;
@@ -14,6 +15,7 @@ using Jastech.Framework.Imaging;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -105,6 +107,8 @@ namespace Jastech.Apps.Winform.Settings
                 camera1.TriggerSignalType = MilTriggerSignalType.TL_Trigger;
                 camera1.TriggerIoSourceType = MILIoSourceType.AUX_IO0;
                 camera1.DigitizerNum = 0;
+
+                camera1.DcfFile = GetDcfFile(CameraType.VT_6k35c_trigger);
                 config.Add(camera1);
 
                 var motion = new ACSMotion("Motion", 2, ACSConnectType.Ethernet);
@@ -136,6 +140,20 @@ namespace Jastech.Apps.Winform.Settings
                 //};
                 //config.Add(laf2);
             }
+        }
+
+        private string GetDcfFile(CameraType cameraType)
+        {
+            string curDir = Environment.CurrentDirectory;
+            string dcfFilePath = "";
+            if (cameraType == CameraType.VT_6k35c_trigger)
+                dcfFilePath = System.IO.Path.Combine(curDir, "VT_6k3.5c_Trigger.dcf");
+
+
+            if (File.Exists(dcfFilePath) == false)
+                dcfFilePath = "";
+
+            return dcfFilePath;
         }
 
         private void AppConfig_PathConfigCreated(PathConfig config)

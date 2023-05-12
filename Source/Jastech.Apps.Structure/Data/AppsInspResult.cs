@@ -34,6 +34,18 @@ namespace Jastech.Apps.Structure.Data
 
             TabResultList.Clear();
         }
+
+        public AppsInspResult DeepCopy()
+        {
+            AppsInspResult result = new AppsInspResult();
+            result.StartInspTime = StartInspTime;
+            result.EndInspTime = EndInspTime;
+            result.LastInspTime = LastInspTime;
+            result.Cell_ID = Cell_ID;
+            result.TabResultList = TabResultList.Select(() => DeepCopy()).;
+
+            return result;
+        }
     }
 
     public class TabInspResult

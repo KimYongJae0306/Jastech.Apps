@@ -233,7 +233,7 @@ namespace Jastech.Apps.Winform
             if(Camera is ICameraTDIavailable tdiCamera)
                 tdiCamera.SetTDIOperationMode(TDIOperationMode.Area);
 
-            Camera.GrabMulti(-1); // -1 이거 디버깅 확인해봐야함
+            Camera.GrabContinous();
         }
 
         public void StopGrab()
@@ -412,6 +412,7 @@ namespace Jastech.Apps.Winform
                 }
 
                 Mat mat = null;
+                
                 lock (_lock)
                 {
                     if (LiveDataQueue.Count() > 0)
@@ -424,7 +425,7 @@ namespace Jastech.Apps.Winform
                     }
                 }
 
-                Thread.Sleep(50);
+                Thread.Sleep(0);
             }
         }
 
