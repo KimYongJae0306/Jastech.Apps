@@ -62,20 +62,14 @@ namespace ATT.Core
             Mat matImage = tabScanImage.GetMergeImage();
             ICogImage cogImage = tabScanImage.ConvertCogGrayImage(matImage);
             //AppsInspResult.TabResultList.Add(new TabInspResult());
-            //if(tabScanImage.TabNo == 0)
+            //if (tabScanImage.TabNo == 0)
             //{
-            //    Mat matImage = tabScanImage.GetMergeImage();
-            //    ICogImage cogImage = tabScanImage.ConvertCogGrayImage(matImage);
-            //    Console.WriteLine("Run Inspection. " + tabScanImage.TabNo.ToString());
-            //    Task task = new Task(() => Run(tabScanImage, matImage, cogImage));
-            //    task.Start();
+                Console.WriteLine("Run Inspection. " + tabScanImage.TabNo.ToString());
+                Task task = new Task(() => Run(tabScanImage, matImage, cogImage));
+                task.Start();
             //}
-            //else if(tabScanImage.TabNo == 4)
+            //else if (tabScanImage.TabNo == 4)
             //{
-            //    while (AppsInspResult.TabResultList.Count ==0)
-            //    {
-            //        Thread.Sleep(0);
-            //    }
             //    AppsInspResult.TabResultList.Add(new TabInspResult());
             //    AppsInspResult.TabResultList.Add(new TabInspResult());
             //    AppsInspResult.TabResultList.Add(new TabInspResult());
@@ -260,7 +254,7 @@ namespace ATT.Core
                     appsLineCamera.StartGrab();
                     Logger.Write(LogType.Seq, "Start Grab.");
 
-                    Thread.Sleep(1000);
+                    //Thread.Sleep(1000);
                     if (MoveTo(TeachingPosType.Stage1_Scan_End, out string error2) == false)
                     {
                         // Alarm

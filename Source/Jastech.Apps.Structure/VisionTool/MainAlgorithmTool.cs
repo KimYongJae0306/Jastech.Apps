@@ -32,14 +32,14 @@ namespace Jastech.Apps.Structure.VisionTool
             if (inspResult.FpcMark.Judgement == Judgement.NG)
             {
                 inspResult.MarkJudgement = Judgement.NG;
-                return inspResult;    // 검사 실패
+                //return inspResult;    // 검사 실패
             }
 
             RunPanelMark(cogImage, tab, ref inspResult);
             if (inspResult.PanelMark.Judgement == Judgement.NG)
             {
                 inspResult.MarkJudgement = Judgement.NG;
-                return inspResult;    // 검사 실패
+                // return inspResult;    // 검사 실패
             }
             #endregion
 
@@ -67,7 +67,7 @@ namespace Jastech.Apps.Structure.VisionTool
             if (inspResult.RightAlignX.Judgement != Judgement.OK)
             {
                 inspResult.AlignJudgement = Judgement.NG;
-               // return inspResult;
+                // return inspResult;
             }
 
             inspResult.RightAlignY = RunRightAlignY(cogImage, tab, judgementY);
@@ -78,13 +78,17 @@ namespace Jastech.Apps.Structure.VisionTool
             }
 
             // 압흔검사
-            var akkonParam = tab.AkkonParam;
-            var akkonResult = RunAkkon(matImage, akkonParam, tab.StageIndex, tab.Index);
-
-            if (akkonResult.Count() > 0)
+            if (tab.Index == 0)
             {
-                inspResult.AkkonResultList.AddRange(akkonResult);
-                inspResult.AkkonResultImage = GetResultImage(matImage, tab, akkonParam);
+                var akkonParam = tab.AkkonParam;
+                var akkonResult = RunAkkon(matImage, akkonParam, tab.StageIndex, tab.Index);
+
+                if (akkonResult.Count() > 0)
+                {
+                    inspResult.AkkonResultList.AddRange(akkonResult);
+                    inspResult.AkkonResultImage = GetResultImage(matImage, tab, akkonParam);
+                }
+
             }
 
             return inspResult;
