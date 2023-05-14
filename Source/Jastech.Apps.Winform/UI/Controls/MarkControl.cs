@@ -100,7 +100,10 @@ namespace Jastech.Apps.Winform.UI.Controls
                 currentParam = CurrentTab.GetPanelMark(_curDirection, _curMarkName);
 
             if(currentParam != null)
+            {
                 ParamControl.UpdateData(currentParam.InspParam);
+
+            }
 
             DrawROI();
         }

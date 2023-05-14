@@ -76,7 +76,7 @@ namespace Jastech.Apps.Structure.Data
 
         public AlignResult RightAlignY { get; set; } = null;
 
-        public AkkonResult AkkonResult { get; set; } = new AkkonResult();
+        public List<AkkonResult> AkkonResultList { get; set; } = new List<AkkonResult>();
 
         public void Dispose()
         {
@@ -94,7 +94,8 @@ namespace Jastech.Apps.Structure.Data
             LeftAlignY?.Dispose();
             RightAlignX?.Dispose();
             RightAlignY?.Dispose();
-            AkkonResult?.Dispose();
+            AkkonResultList?.ForEach(x => x.Dispose());
+            AkkonResultList?.Clear();
         }
 
         public TabInspResult DeepCopy()
@@ -114,7 +115,7 @@ namespace Jastech.Apps.Structure.Data
             result.LeftAlignY = LeftAlignY?.DeepCopy();
             result.RightAlignX = RightAlignX?.DeepCopy();
             result.RightAlignY = RightAlignY?.DeepCopy();
-            result.AkkonResult = AkkonResult?.DeepCopy();
+            result.AkkonResultList = AkkonResultList.Select(x => x.DeepCopy()).ToList();
 
             return result;
 

@@ -2,6 +2,7 @@
 using Jastech.Framework.Macron.Akkon.Parameters;
 using Newtonsoft.Json;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 
 namespace Jastech.Apps.Structure.Data
@@ -75,6 +76,9 @@ namespace Jastech.Apps.Structure.Data
 
         public MarkParam GetFPCMark(MarkDirection direction, MarkName name)
         {
+            if (FpcMarkParamList.Count <= 0)
+                return null;
+            
             return FpcMarkParamList.Where(x => x.Name == name && x.Direction == direction).First();
         }
 

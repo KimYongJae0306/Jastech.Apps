@@ -304,8 +304,8 @@ namespace ATT.UI.Forms
 
         private void btnLoadImage_Click(object sender, EventArgs e)
         {
-            SaveScanImage();
-            return;
+            //SaveScanImage();
+            //return;
             OpenFileDialog dlg = new OpenFileDialog();
             dlg.ReadOnlyChecked = true;
             dlg.Filter = "BMP Files (*.bmp)|*.bmp";

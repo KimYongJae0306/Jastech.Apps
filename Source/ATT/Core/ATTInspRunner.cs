@@ -61,10 +61,27 @@ namespace ATT.Core
         {
             Mat matImage = tabScanImage.GetMergeImage();
             ICogImage cogImage = tabScanImage.ConvertCogGrayImage(matImage);
+            //AppsInspResult.TabResultList.Add(new TabInspResult());
+            //if(tabScanImage.TabNo == 0)
+            //{
+            //    Mat matImage = tabScanImage.GetMergeImage();
+            //    ICogImage cogImage = tabScanImage.ConvertCogGrayImage(matImage);
+            //    Console.WriteLine("Run Inspection. " + tabScanImage.TabNo.ToString());
+            //    Task task = new Task(() => Run(tabScanImage, matImage, cogImage));
+            //    task.Start();
+            //}
+            //else if(tabScanImage.TabNo == 4)
+            //{
+            //    while (AppsInspResult.TabResultList.Count ==0)
+            //    {
+            //        Thread.Sleep(0);
+            //    }
+            //    AppsInspResult.TabResultList.Add(new TabInspResult());
+            //    AppsInspResult.TabResultList.Add(new TabInspResult());
+            //    AppsInspResult.TabResultList.Add(new TabInspResult());
+            //    AppsInspResult.TabResultList.Add(new TabInspResult());
+            //}
 
-            Console.WriteLine("Run Inspection. " + tabScanImage.TabNo.ToString());
-            Task task = new Task(() => Run(tabScanImage, matImage, cogImage));
-            task.Start();
         }
 
         private void ATTSeqRunner_GrabDoneEventHanlder(string cameraName, bool isGrabDone)

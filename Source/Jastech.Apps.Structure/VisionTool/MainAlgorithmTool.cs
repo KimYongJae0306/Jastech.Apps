@@ -53,39 +53,39 @@ namespace Jastech.Apps.Structure.VisionTool
             if (inspResult.LeftAlignX.Judgement != Judgement.OK)
             {
                 inspResult.AlignJudgement = Judgement.NG;
-                return inspResult;
+                //return inspResult;
             }
 
             inspResult.LeftAlignY = RunLeftAlignY(cogImage, tab, judgementY);
             if (inspResult.LeftAlignY.Judgement != Judgement.OK)
             {
                 inspResult.AlignJudgement = Judgement.NG;
-                return inspResult;
+                //return inspResult;
             }
 
             inspResult.RightAlignX = RunRightAlignX(cogImage, tab, judgementX);
             if (inspResult.RightAlignX.Judgement != Judgement.OK)
             {
                 inspResult.AlignJudgement = Judgement.NG;
-                return inspResult;
+               // return inspResult;
             }
 
             inspResult.RightAlignY = RunRightAlignY(cogImage, tab, judgementY);
             if (inspResult.RightAlignY.Judgement != Judgement.OK)
             {
                 inspResult.AlignJudgement = Judgement.NG;
-                return inspResult;
+                //return inspResult;
             }
 
             // 압흔검사
-            //var akkonParam = tab.AkkonParam;
-            //var akkonResult = RunAkkon(matImage, akkonParam, tab.StageIndex, tab.Index);
+            var akkonParam = tab.AkkonParam;
+            var akkonResult = RunAkkon(matImage, akkonParam, tab.StageIndex, tab.Index);
 
-            //if(akkonResult.Count() > 0)
-            //{
-            //    inspResult.AkkonResultList.AddRange(akkonResult);
-            //    inspResult.AkkonResultImage = GetResultImage(matImage, tab, akkonParam);
-            //}
+            if (akkonResult.Count() > 0)
+            {
+                inspResult.AkkonResultList.AddRange(akkonResult);
+                inspResult.AkkonResultImage = GetResultImage(matImage, tab, akkonParam);
+            }
 
             return inspResult;
         }
