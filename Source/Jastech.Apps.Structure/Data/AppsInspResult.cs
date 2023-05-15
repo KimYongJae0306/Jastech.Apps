@@ -52,22 +52,16 @@ namespace Jastech.Apps.Structure.Data
     {
         public int TabNo { get; set; } = -1;
 
-        public Judgement MarkJudgement { get; set; } = Judgement.OK;
-
-        public Judgement AlignJudgement { get; set; } = Judgement.OK;
-
-        public Judgement AkkonJudgement { get; set; } = Judgement.OK;
-
         public Mat Image { get; set; } = null;
 
         public ICogImage CogImage { get; set; } = null;
 
         public ICogImage AkkonResultImage { get; set; } = null;
       
-        public MarkResult FpcMark { get; set; } = new MarkResult();
+        public MarkResult FpcMark { get; set; }
 
-        public MarkResult PanelMark { get; set; } = new MarkResult();
-   
+        public MarkResult PanelMark { get; set; }
+
         public AlignResult LeftAlignX { get; set; } = null;
 
         public AlignResult LeftAlignY { get; set; } = null;
@@ -76,7 +70,52 @@ namespace Jastech.Apps.Structure.Data
 
         public AlignResult RightAlignY { get; set; } = null;
 
-        public List<AkkonResult> AkkonResultList { get; set; } = new List<AkkonResult>();
+        public List<AkkonResult> AkkonResultList { get; set; }
+
+        public bool IsMarkGood()
+        {
+            if (FpcMark == null || PanelMark == null)
+                return false;
+
+            bool isGood = true;
+            if (FpcMark.Judgement != Judgement.OK)
+                isGood = false;
+
+            if (PanelMark.Judgement != Judgement.OK)
+                isGood = false;
+
+            return isGood;
+        }
+
+        public bool IsLeftAlignXGood()
+        {
+            if (LeftAlignX.Fpc == null || LeftAlignX.Panel == null)
+                return false;
+
+            bool isGood = true;
+            if (LeftAlignX.Fpc.Judgement != Judgement.OK)
+                isGood = false;
+
+            if (LeftAlignX.Panel.Judgement != Judgement.OK)
+                isGood = false;
+
+            return isGood;
+        }
+
+        public bool IsLeftAlignYGood()
+        {
+            if (LeftAlignY.Fpc == null || LeftAlignY.Panel == null)
+                return false;
+
+            bool isGood = true;
+            if (LeftAlignY.Fpc.Judgement != Judgement.OK)
+                isGood = false;
+
+            if (LeftAlignY.Panel.Judgement != Judgement.OK)
+                isGood = false;
+
+            return isGood;
+        }
 
         public void Dispose()
         {
@@ -103,9 +142,6 @@ namespace Jastech.Apps.Structure.Data
             TabInspResult result = new TabInspResult();
 
             result.TabNo = TabNo;
-            result.MarkJudgement = MarkJudgement;
-            result.AlignJudgement = AlignJudgement;
-            result.AkkonJudgement = AkkonJudgement;
             result.Image = Image?.Clone();
             result.CogImage = CogImage?.CopyBase(CogImageCopyModeConstants.CopyPixels);
             result.AkkonResultImage = AkkonResultImage?.CopyBase(CogImageCopyModeConstants.CopyPixels);
@@ -115,7 +151,7 @@ namespace Jastech.Apps.Structure.Data
             result.LeftAlignY = LeftAlignY?.DeepCopy();
             result.RightAlignX = RightAlignX?.DeepCopy();
             result.RightAlignY = RightAlignY?.DeepCopy();
-            result.AkkonResultList = AkkonResultList.Select(x => x.DeepCopy()).ToList();
+            result.AkkonResultList = AkkonResultList?.Select(x => x.DeepCopy()).ToList();
 
             return result;
 
@@ -190,11 +226,9 @@ namespace Jastech.Apps.Structure.Data
     public class AlignResult
     {
         #region 속성
-        public Judgement Judgement { get; set; } = Judgement.OK;
+        public Judgement Judgement { get; set; }
 
-        public float X { get; set; } = 0.0f;
-
-        public float Y { get; set; } = 0.0f;
+        public float ResultValue { get; set; } = 0.0f;
 
         public CogAlignCaliperResult Panel { get; set; } = null;
 
@@ -202,6 +236,21 @@ namespace Jastech.Apps.Structure.Data
         #endregion
 
         #region 메서드
+        public bool IsGood()
+        {
+            if (Panel == null || Fpc == null)
+                return false;
+
+            bool isGood = true;
+            if (Panel.Judgement != Judgement.OK)
+                isGood = false;
+
+            if (Fpc.Judgement != Judgement.OK)
+                isGood = false;
+
+            return isGood;
+        }
+
         public void Dispose()
         {
             Panel?.Dispose();
@@ -211,9 +260,7 @@ namespace Jastech.Apps.Structure.Data
         public AlignResult DeepCopy()
         {
             AlignResult result = new AlignResult();
-            result.Judgement = Judgement;
-            result.X = X;
-            result.Y = Y;
+            result.ResultValue = ResultValue;
             result.Panel = Panel.DeepCopy();
             result.Fpc = Fpc.DeepCopy();
 
