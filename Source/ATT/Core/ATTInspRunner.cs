@@ -210,12 +210,14 @@ namespace ATT.Core
                     Mat image = akkon.TabInspResult.Image;
                     Tab tab = akkon.Tab;
 
-                    var akkonResult = AkkonAlgorithmTool.RunAkkon(image, akkon.Tab.AkkonParam, akkon.Tab.StageIndex, akkon.Tab.Index);
-                    result.AkkonResultImage = AkkonAlgorithmTool.GetResultImage(image, akkon.Tab);
+                    int tabIndex = 0; // 매크론 DLL 에서 TabNo = 0 만 검사됨... 나중에 Dll 확인 필요
+                    var akkonResult = AkkonAlgorithmTool.RunAkkon(image, akkon.Tab.AkkonParam, akkon.Tab.StageIndex, tabIndex);
+                    //result.AkkonResultImage = AkkonAlgorithmTool.GetResultImage(image, akkon.Tab, tabIndex);
 
                     if (result.AkkonResultList == null)
                         result.AkkonResultList = new List<AkkonResult>();
                     result.AkkonResultList.AddRange(akkonResult);
+                    AppsInspResult.TabResultList.Add(result);
                     Console.WriteLine("Add Akkon Result");
                 }
                 Thread.Sleep(10);
@@ -428,8 +430,6 @@ namespace ATT.Core
                             break;
                     }
 
-                    LastInspSW.Restart();
-
                     Logger.Write(LogType.Seq, "Scan Grab Completed.");
 
                     AppsLAFManager.Instance().AutoFocusOnOff(LAFName.Akkon.ToString(), false);
@@ -437,6 +437,9 @@ namespace ATT.Core
 
                     AppsLineCameraManager.Instance().Stop(CameraName.LinscanMIL0);
                     Logger.Write(LogType.Seq, "Stop Grab.");
+
+                    LastInspSW.Restart();
+
 
                     SeqStep = SeqStep.SEQ_WAITING_INSPECTION_DONE;
                     break;
@@ -455,6 +458,7 @@ namespace ATT.Core
 
                 case SeqStep.SEQ_UI_RESULT_UPDATE:
                     SystemManager.Instance().UpdateMainResult(AppsInspResult);
+                    Console.WriteLine("Scan End to Insp Compelte : " + LastInspSW.ElapsedMilliseconds.ToString());
                     SeqStep = SeqStep.SEQ_SAVE_IMAGE;
                     break;
 

@@ -26,7 +26,7 @@ namespace Jastech.Apps.Structure.VisionTool
         {
             if (mat == null)
                 return null;
-            Console.WriteLine("Akkon " + stageNo.ToString() + "   " + tabNo.ToString());
+
             var marcon = akkonParam.MacronAkkonParam;
             var akkonRoiList = akkonParam.GetAkkonROIList();
 
@@ -104,7 +104,7 @@ namespace Jastech.Apps.Structure.VisionTool
             return AkkonAlgorithm.GetDrawResultImage(mat, stageNo, tabNo, ref marcon);
         }
 
-        public ICogImage GetResultImage(Mat mat, Tab tab)
+        public ICogImage GetResultImage(Mat mat, Tab tab, int tabIndex)
         {
             AkkonParam akkonParam = tab.AkkonParam;
             float resize = akkonParam.MacronAkkonParam.InspOption.InspResizeRatio;
@@ -112,7 +112,7 @@ namespace Jastech.Apps.Structure.VisionTool
             double height = Math.Truncate(mat.Height * resize);
 
             Mat testMat = new Mat((int)height, (int)width, DepthType.Cv8U, 1);
-            Mat resultMatImage = LastAkkonResultImage(testMat, akkonParam, tab.StageIndex, tab.Index);
+            Mat resultMatImage = LastAkkonResultImage(testMat, akkonParam, tab.StageIndex, tabIndex);
 
             Mat matR = MatHelper.ColorChannelSprate(resultMatImage, MatHelper.ColorChannel.R);
             Mat matG = MatHelper.ColorChannelSprate(resultMatImage, MatHelper.ColorChannel.G);
