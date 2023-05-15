@@ -166,6 +166,9 @@ namespace Jastech.Apps.Winform.UI.Controls
         {
             string dir = Path.Combine(AppsConfig.Instance().Path.Temp, "AlignInspection_Stage1_Top.csv");
 
+            if (File.Exists(dir) == false)
+                return new List<AppsInspResult>();
+
             Tuple<string[], List<string[]>> readData = CSVHelper.ReadData(dir);
             List<string[]> contents = readData.Item2;
 
