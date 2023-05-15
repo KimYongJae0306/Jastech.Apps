@@ -119,7 +119,6 @@ namespace Jastech.Apps.Structure.VisionTool
 
         public List<AkkonResult> RunAkkon(Mat mat, AkkonParam akkonParam, int stageNo, int tabNo)
         {
-            tabNo = 0;
             if (mat == null)
                 return null;
             Console.WriteLine("Akkon " + stageNo.ToString() + "   " + tabNo.ToString());
@@ -156,7 +155,6 @@ namespace Jastech.Apps.Structure.VisionTool
                 
                 AkkonAlgorithm.SetAkkonParam(stageNo, tabNo, ref marcon);
                 AkkonAlgorithm.EnableInspFlag();
-
                 var results = AkkonAlgorithm.Inspect(stageNo, tabNo, mat);
               
                 return results;

@@ -428,7 +428,7 @@ namespace ATT.UI.Forms
 
                 Display.SetImage(cogImage);
                 AppsTeachingUIManager.Instance().SetOrginCogImageBuffer(cogImage);
-                AppsTeachingUIManager.Instance().SetOriginMatImageBuffer(buffer.TabImage);
+                AppsTeachingUIManager.Instance().SetOriginMatImageBuffer(buffer.TabImage.Clone());
 
                 if (_displayType == DisplayType.Mark)
                 {
