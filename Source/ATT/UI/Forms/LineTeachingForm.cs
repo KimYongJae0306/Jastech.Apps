@@ -1,38 +1,24 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
-using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using Jastech.Framework.Winform.VisionPro.Controls;
-using Jastech.Apps.Winform.UI.Controls;
-using Jastech.Apps.Structure;
-using Jastech.Framework.Winform.Forms;
-using Jastech.Apps.Winform;
-using Jastech.Apps.Winform.UI.Forms;
-using ATT.UI.Forms;
-using Cognex.VisionPro;
-using Jastech.Framework.Imaging.VisionPro;
-using Jastech.Apps.Winform.Settings;
-using Jastech.Framework.Structure;
-using Jastech.Framework.Winform.Controls;
-using Jastech.Apps.Winform.Core;
-using Jastech.Framework.Winform;
-using Jastech.Framework.Device.Cameras;
-using Jastech.Apps.Structure.Data;
-using System.Runtime.InteropServices;
-using Jastech.Framework.Imaging;
-using ATT.UI.Controls;
+﻿using Cognex.VisionPro;
 using Emgu.CV;
 using Emgu.CV.CvEnum;
-using Cognex.VisionPro.Implementation.Internal;
-using System.Threading;
+using Jastech.Apps.Structure;
+using Jastech.Apps.Structure.Data;
+using Jastech.Apps.Winform;
+using Jastech.Apps.Winform.Settings;
+using Jastech.Apps.Winform.UI.Controls;
+using Jastech.Framework.Imaging;
+using Jastech.Framework.Imaging.VisionPro;
+using Jastech.Framework.Structure;
+using Jastech.Framework.Winform.Forms;
+using Jastech.Framework.Winform.VisionPro.Controls;
+using System;
+using System.Collections.Generic;
+using System.Data;
+using System.Drawing;
 using System.IO;
-using static System.Net.Mime.MediaTypeNames;
-using Jastech.Framework.Device.LAFCtrl;
+using System.Linq;
+using System.Runtime.InteropServices;
+using System.Windows.Forms;
 
 namespace ATT.UI.Forms
 {
@@ -125,7 +111,7 @@ namespace ATT.UI.Forms
                 Display.SetImage(image);
 
             SelectPage(DisplayType.Align);
-       
+
         }
 
         private void LineTeachingForm_GrabDoneEventHanlder(string cameraName, bool isGrabDone)
@@ -193,7 +179,7 @@ namespace ATT.UI.Forms
 
         private void Display_DeleteEventHandler(object sender, EventArgs e)
         {
-            if(pnlTeach.Controls.Count > 0)
+            if (pnlTeach.Controls.Count > 0)
             {
                 if (pnlTeach.Controls[0] as MarkControl != null)
                     MarkControl.DrawROI();
@@ -326,7 +312,7 @@ namespace ATT.UI.Forms
                 var teacingData = SystemManager.Instance().GetTeachingData().GetBufferImage(i);
                 teacingData.TabImage.Save(string.Format(@"D:\tab_{0}.bmp", i));
             }
-            
+
         }
 
         private void btnMotionPopup_Click(object sender, EventArgs e)
@@ -410,28 +396,6 @@ namespace ATT.UI.Forms
             if (_currentTabNo == tabIndex)
                 return;
             CurrentTab = TeachingTabList.Where(x => x.Index == tabNo).First();
-			
-            var scanImage = SystemManager.Instance().GetTeachingData().GetScanImage(tabNo);
-            if (scanImage != null)
-                UpdateDisplay(scanImage.GetMergeImage());
-            
-            if (_displayType == DisplayType.Mark)
-            {
-                MarkControl.SetParams(CurrentTab);
-                MarkControl.DrawROI();
-            }
-            else if (_displayType == DisplayType.Align)
-            {
-                AlignControl.SetParams(CurrentTab);
-                AlignControl.DrawROI();
-            }
-            else if (_displayType == DisplayType.Akkon)
-            {
-                AkkonControl.ClearDataGridView();
-                AkkonControl.SetParams(CurrentTab);
-                AkkonControl.DrawROI();
-            }
-
             _currentTabNo = tabIndex;
 
             UpdateDisplayImage(tabNo);
@@ -516,25 +480,6 @@ namespace ATT.UI.Forms
                 AkkonControl.ShowROIJog();
         }
         #endregion
-
-        private void lblStageCam_Click(object sender, EventArgs e)
-        {
-            //CopyDataTabtoTab(0, 4);
-            return;
-        }
-
-        private void CopyDataTabtoTab(int originTab, int targetTab)
-        {
-            if (originTab == targetTab)
-                return;
-
-            var copyTabData = TeachingTabList.Where(x => x.Index == targetTab).First();
-            var originTabData = TeachingTabList.Where(x => x.Index == originTab).First();
-
-            copyTabData.AkkonParam = originTabData.AkkonParam.DeepCopy();
-
-            TeachingTabList[targetTab].AkkonParam = copyTabData.AkkonParam.DeepCopy();
-        }
     }
 
     public enum DisplayType
