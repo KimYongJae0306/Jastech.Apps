@@ -6,6 +6,7 @@ using Jastech.Apps.Structure.Parameters;
 using Jastech.Framework.Imaging.Helper;
 using Jastech.Framework.Imaging.Result;
 using Jastech.Framework.Imaging.VisionPro;
+using Jastech.Framework.Imaging.VisionPro.VisionAlgorithms.Parameters;
 using Jastech.Framework.Util.Helper;
 using System;
 using System.Collections.Generic;
@@ -17,146 +18,78 @@ using System.Threading.Tasks;
 
 namespace Jastech.Apps.Structure.VisionTool
 {
-    public class MainAlgorithmTool : AlgorithmTool
+    public partial class MainAlgorithmTool : AlgorithmTool
     {
-        public TabInspResult MainRunInspect(Tab tab, Mat matImage, ICogImage cogImage, float judgementX, float judgementY)
+        public void MainMarkInspect(ICogImage cogImage, Tab tab, ref TabInspResult tabInspResult)
         {
-            TabInspResult inspResult = new TabInspResult();
-            inspResult.TabNo = tab.Index;
-
-            #region Mark 검사
-            inspResult.Image = matImage;
-            inspResult.CogImage = cogImage;
-
-            RunFpcMark(cogImage, tab, ref inspResult);
-            if (inspResult.FpcMark.Judgement == Judgement.NG)
-            {
-                inspResult.MarkJudgement = Judgement.NG;
-                //return inspResult;    // 검사 실패
-            }
-
-            RunPanelMark(cogImage, tab, ref inspResult);
-            if (inspResult.PanelMark.Judgement == Judgement.NG)
-            {
-                inspResult.MarkJudgement = Judgement.NG;
-                // return inspResult;    // 검사 실패
-            }
-            #endregion
-
-
-            //PointF tlqkf = MathHelper.ThetaCoordinate(inspResult.FpcMark.FailMarks[0].Left.MaxMatchPos.FoundPos,
-            //                                            inspResult.FpcMark.FailMarks[0].Right.MaxMatchPos.FoundPos,
-            //                                            new Point());
-            //// 마크 결과값으로 포인트에 적용
-
-            inspResult.LeftAlignX = RunLeftAlignX(cogImage, tab, judgementX);
-            if (inspResult.LeftAlignX.Judgement != Judgement.OK)
-            {
-                inspResult.AlignJudgement = Judgement.NG;
-                //return inspResult;
-            }
-
-            inspResult.LeftAlignY = RunLeftAlignY(cogImage, tab, judgementY);
-            if (inspResult.LeftAlignY.Judgement != Judgement.OK)
-            {
-                inspResult.AlignJudgement = Judgement.NG;
-                //return inspResult;
-            }
-
-            inspResult.RightAlignX = RunRightAlignX(cogImage, tab, judgementX);
-            if (inspResult.RightAlignX.Judgement != Judgement.OK)
-            {
-                inspResult.AlignJudgement = Judgement.NG;
-                // return inspResult;
-            }
-
-            inspResult.RightAlignY = RunRightAlignY(cogImage, tab, judgementY);
-            if (inspResult.RightAlignY.Judgement != Judgement.OK)
-            {
-                inspResult.AlignJudgement = Judgement.NG;
-                //return inspResult;
-            }
-
-            // 압흔검사
-            if (tab.Index == 0)
-            {
-                var akkonParam = tab.AkkonParam;
-                var akkonResult = RunAkkon(matImage, akkonParam, tab.StageIndex, tab.Index);
-
-                if (akkonResult.Count() > 0)
-                {
-                    inspResult.AkkonResultList.AddRange(akkonResult);
-                    inspResult.AkkonResultImage = GetResultImage(matImage, tab, akkonParam);
-                }
-
-            }
-
-            return inspResult;
+            tabInspResult.FpcMark = RunFpcMark(cogImage, tab);
+            tabInspResult.PanelMark = RunPanelMark(cogImage, tab);
         }
 
-        private AlignResult RunLeftAlignX(ICogImage cogImage, Tab tab, float judgementX)
+        public AlignResult RunMainLeftAlignX(ICogImage cogImage, Tab tab, double fpcTheta, double panelTheta, double judgementX)
         {
-            var result = RunMainAlignX(cogImage, tab, ATTTabAlignName.LeftPanelX, ATTTabAlignName.LeftFPCX);
-            
-            float lx = Math.Abs(result.X);
-            if (lx > judgementX)
-            {
-                result.Judgement = Judgement.NG;
-                string message = string.Format("Main Alignment Lx NG : {0} / {1}", lx, judgementX);
-                Logger.Debug(LogType.Inspection, message);
-            }
+            var fpcParam = tab.GetAlignParam(ATTTabAlignName.LeftFPCX).DeepCopy();
+            var panelParam = tab.GetAlignParam(ATTTabAlignName.LeftPanelX).DeepCopy();
+
+            var calcFpcRegion = CalcTheta(fpcParam.CaliperParams.GetRegion() as CogRectangleAffine, fpcTheta);
+            var calcPanelRegion = CalcTheta(panelParam.CaliperParams.GetRegion() as CogRectangleAffine, fpcTheta);
+
+            fpcParam.CaliperParams.SetRegion(calcFpcRegion);
+            panelParam.CaliperParams.SetRegion(calcPanelRegion);
+
+            var result = RunMainAlignX(cogImage, fpcParam, panelParam, judgementX);
             return result;
         }
 
-        private AlignResult RunLeftAlignY(ICogImage cogImage, Tab tab, float judgementY)
+        public AlignResult RunMainLeftAlignY(ICogImage cogImage, Tab tab, double fpcTheta, double panelTheta, double judgementY)
         {
-            var result = RunMainAlignY(cogImage, tab, ATTTabAlignName.LeftPanelY, ATTTabAlignName.LeftFPCY);
+            var fpcParam = tab.GetAlignParam(ATTTabAlignName.LeftFPCY).DeepCopy();
+            var panelParam = tab.GetAlignParam(ATTTabAlignName.LeftPanelY).DeepCopy();
 
-            float ly = Math.Abs(result.Y);
-            if (ly > judgementY)
-            {
-                result.Judgement = Judgement.NG;
-                string message = string.Format("Main Alignment Ly NG : {0} / {1}", ly, judgementY);
-                Logger.Debug(LogType.Inspection, message);
-            }
+            var calcFpcRegion = CalcTheta(fpcParam.CaliperParams.GetRegion() as CogRectangleAffine, fpcTheta);
+            var calcPanelRegion = CalcTheta(panelParam.CaliperParams.GetRegion() as CogRectangleAffine, fpcTheta);
+
+            fpcParam.CaliperParams.SetRegion(calcFpcRegion);
+            panelParam.CaliperParams.SetRegion(calcPanelRegion);
+
+            var result = RunMainAlignY(cogImage, fpcParam, panelParam, judgementY);
             return result;
         }
 
-        private AlignResult RunRightAlignX(ICogImage cogImage, Tab tab, float judgementX)
+        public AlignResult RunMainRightAlignX(ICogImage cogImage, Tab tab, double fpcTheta, double panelTheta, double judgementX)
         {
-            var result = RunMainAlignX(cogImage, tab, ATTTabAlignName.RightPanelX, ATTTabAlignName.RightFPCX);
+            var fpcParam = tab.GetAlignParam(ATTTabAlignName.RightFPCX);
+            var panelParam = tab.GetAlignParam(ATTTabAlignName.RightPanelX);
 
-            float rx = Math.Abs(result.X);
-            if (rx > judgementX)
-            {
-                result.Judgement = Judgement.NG;
-                string message = string.Format("Main Alignment Rx NG : {0} / {1}", rx, judgementX);
-                Logger.Debug(LogType.Inspection, message);
-            }
+            var calcFpcRegion = CalcTheta(fpcParam.CaliperParams.GetRegion() as CogRectangleAffine, fpcTheta);
+            var calcPanelParam = CalcTheta(panelParam.CaliperParams.GetRegion() as CogRectangleAffine, fpcTheta);
+
+            fpcParam.CaliperParams.SetRegion(calcFpcRegion);
+            panelParam.CaliperParams.SetRegion(calcPanelParam);
+
+            var result = RunMainAlignX(cogImage, fpcParam, panelParam, judgementX);
 
             return result;
         }
 
-        private AlignResult RunRightAlignY(ICogImage cogImage, Tab tab, float judgementY)
+        public AlignResult RunMainRightAlignY(ICogImage cogImage, Tab tab, double fpcTheta, double panelTheta, double judgementY)
         {
-            var result = RunMainAlignY(cogImage, tab, ATTTabAlignName.RightPanelY, ATTTabAlignName.RightFPCY);
+            var fpcParam = tab.GetAlignParam(ATTTabAlignName.RightFPCY).DeepCopy();
+            var panelParam = tab.GetAlignParam(ATTTabAlignName.RightPanelY).DeepCopy();
 
-            float ry = Math.Abs(result.Y);
-            if (ry > judgementY)
-            {
-                result.Judgement = Judgement.NG;
-                string message = string.Format("Main Alignment Ry NG : {0} / {1}", ry, judgementY);
-                Logger.Debug(LogType.Inspection, message);
-            }
+            var calcFpcRegion = CalcTheta(fpcParam.CaliperParams.GetRegion() as CogRectangleAffine, fpcTheta);
+            var calcPanelRegion = CalcTheta(panelParam.CaliperParams.GetRegion() as CogRectangleAffine, fpcTheta);
+
+            fpcParam.CaliperParams.SetRegion(calcFpcRegion);
+            panelParam.CaliperParams.SetRegion(calcPanelRegion);
+
+            var result = RunMainAlignY(cogImage, fpcParam, panelParam, judgementY);
             return result;
         }
 
-        private AlignResult RunMainAlignX(ICogImage cogImage, Tab tab, ATTTabAlignName panelAlign, ATTTabAlignName fpcAlign)
+        public AlignResult RunMainAlignX(ICogImage cogImage, AlignParam fpcParam, AlignParam panelParam, double judegementX)
         {
             AlignResult result = new AlignResult();
-
-            var panelParam = tab.GetAlignParam(panelAlign);
-            var fpcParam = tab.GetAlignParam(fpcAlign);
 
             result.Panel = RunAlignX(cogImage, panelParam.CaliperParams, panelParam.LeadCount);
             result.Fpc = RunAlignX(cogImage, fpcParam.CaliperParams, fpcParam.LeadCount);
@@ -195,26 +128,26 @@ namespace Jastech.Apps.Structure.VisionTool
                     count++;
                 }
 
-                result.Judgement = Judgement.OK;
-                result.X = temp / count;
+                result.ResultValue = temp / count;
+
+                if (Math.Abs(result.ResultValue) <= judegementX)
+                    result.Judgement = Judgement.OK;
+                else
+                    result.Judgement = Judgement.NG;
             }
             else
             {
-                string message = string.Format(" Main CaliperX Search Fail. Panel({0}), FPC({1})", panelAlign.ToString(), fpcAlign.ToString());
-                Logger.Debug(LogType.Inspection, message);
-
                 result.Judgement = Judgement.Fail;
+                string message = string.Format(" Main CaliperX Search Fail. Panel({0}), FPC({1})", panelParam.Name, fpcParam.Name);
+                Logger.Debug(LogType.Inspection, message);
             }
 
             return result;
         }
 
-        private AlignResult RunMainAlignY(ICogImage cogImage, Tab tab, ATTTabAlignName panelAlign, ATTTabAlignName fpcAlign)
+        private AlignResult RunMainAlignY(ICogImage cogImage, AlignParam fpcParam, AlignParam panelParam, double judgementY)
         {
             AlignResult result = new AlignResult();
-
-            var panelParam = tab.GetAlignParam(panelAlign);
-            var fpcParam = tab.GetAlignParam(fpcAlign);
 
             result.Panel = RunAlignY(cogImage, panelParam.CaliperParams);
             result.Fpc = RunAlignY(cogImage, fpcParam.CaliperParams);
@@ -226,23 +159,26 @@ namespace Jastech.Apps.Structure.VisionTool
 
                 float newY = panelY - fpcY;
 
-                result.Judgement = Judgement.OK;
-                result.Y = newY;
+                result.ResultValue = newY;
+
+                if (Math.Abs(result.ResultValue) <= judgementY)
+                    result.Judgement = Judgement.OK;
+                else
+                    result.Judgement = Judgement.NG;
             }
             else
             {
-                string message = string.Format("Main CaliperY Search Fail. Panel({0}), FPC({1})", panelAlign.ToString(), fpcAlign.ToString());
+                string message = string.Format("Main CaliperY Search Fail. Panel({0}), FPC({1})", panelParam.Name, fpcParam.Name);
                 Logger.Debug(LogType.Inspection, message);
-
                 result.Judgement = Judgement.Fail;
             }
 
             return result;
         }
 
-        public void RunFpcMark(ICogImage cogImage, Tab tab, ref TabInspResult inspResult)
+        public MarkResult RunFpcMark(ICogImage cogImage, Tab tab)
         {
-            var result = inspResult.FpcMark;
+            MarkResult result = new MarkResult();
 
             foreach (MarkName markName in Enum.GetValues(typeof(MarkName)))
             {
@@ -266,7 +202,7 @@ namespace Jastech.Apps.Structure.VisionTool
                     result.FoundedMark = matchingResult;
                     result.Judgement = Judgement.OK;
 
-                    return;
+                    return result;
                 }
                 else
                 {
@@ -278,11 +214,12 @@ namespace Jastech.Apps.Structure.VisionTool
                     result.Judgement = Judgement.NG;
                 }
             }
+            return result;
         }
 
-        public void RunPanelMark(ICogImage cogImage, Tab tab, ref TabInspResult inspResult)
+        public MarkResult RunPanelMark(ICogImage cogImage, Tab tab)
         {
-            var result = inspResult.PanelMark;
+            MarkResult result = new MarkResult();
 
             foreach (MarkName markName in Enum.GetValues(typeof(MarkName)))
             {
@@ -305,7 +242,7 @@ namespace Jastech.Apps.Structure.VisionTool
 
                     result.FoundedMark = matchingResult;
                     result.Judgement = Judgement.OK;
-                    return;
+                    return result;
                 }
                 else
                 {
@@ -317,6 +254,7 @@ namespace Jastech.Apps.Structure.VisionTool
                     result.Judgement = Judgement.NG;
                 }
             }
+            return result;
         }
 
         private ICogImage GetResultImage(Mat mat, Tab tab, AkkonParam akkonParam)
@@ -344,6 +282,29 @@ namespace Jastech.Apps.Structure.VisionTool
             var cogImage = CogImageHelper.CovertImage(dataR, dataG, dataB, matB.Width, matB.Height);
 
             return cogImage;
+        }
+    }
+
+    public partial class MainAlgorithmTool : AlgorithmTool
+    {
+        public CogRectangleAffine CalcTheta(CogRectangleAffine orginRegion, double theta)
+        {
+            PointF orginPoint = new PointF((float)orginRegion.CornerOriginX, (float)orginRegion.CornerOriginY);
+            PointF corner1Point = new PointF((float)orginRegion.CornerXX, (float)orginRegion.CornerXX);
+            PointF corner2Point = new PointF((float)orginRegion.CornerYX, (float)orginRegion.CornerYY);
+
+            CogRectangleAffine roi = new CogRectangleAffine();
+
+            double originX = orginPoint.X;
+            double originY = orginPoint.Y;
+            double cornerXX = corner1Point.X;
+            double cornerXY = corner1Point.Y;
+            double cornerYX = corner2Point.X;
+            double cornerYY = corner2Point.Y;
+
+            orginRegion.SetOriginCornerXCornerY(originX, originY, cornerXX, cornerXY, cornerYX, cornerYY);
+
+            return CogRectangleAffine;
         }
     }
 }

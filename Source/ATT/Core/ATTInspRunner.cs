@@ -21,6 +21,7 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
@@ -31,12 +32,13 @@ using System.Windows.Forms;
 
 namespace ATT.Core
 {
-    public class ATTInspRunner
+    public partial class ATTInspRunner
     {
+        #region 필드
         private Axis _axis { get; set; } = null;
+        #endregion
 
-        private AlgorithmTool AlgorithmTool = new AlgorithmTool();
-
+        #region 속성
         private Task SeqTask { get; set; }
 
         private CancellationTokenSource SeqTaskCancellationTokenSource { get; set; }
@@ -52,11 +54,18 @@ namespace ATT.Core
         private AppsInspResult AppsInspResult { get; set; } = null;
 
         private Stopwatch LastInspSW { get; set; } = new Stopwatch();
+        #endregion
 
-        public ATTInspRunner()
-        {
-          
-        }
+        #region 이벤트
+        #endregion
+
+        #region 델리게이트
+        #endregion
+
+        #region 생성자
+        #endregion
+
+        #region 메서드
         private void ATTSeqRunner_TabImageGrabCompletedEventHandler(string cameraName, TabScanImage tabScanImage)
         {
             Mat matImage = tabScanImage.GetMergeImage();
@@ -64,9 +73,9 @@ namespace ATT.Core
             //AppsInspResult.TabResultList.Add(new TabInspResult());
             //if (tabScanImage.TabNo == 0)
             //{
-                Console.WriteLine("Run Inspection. " + tabScanImage.TabNo.ToString());
-                Task task = new Task(() => Run(tabScanImage, matImage, cogImage));
-                task.Start();
+            Console.WriteLine("Run Inspection. " + tabScanImage.TabNo.ToString());
+            Task task = new Task(() => Run(tabScanImage, matImage, cogImage));
+            task.Start();
             //}
             //else if (tabScanImage.TabNo == 4)
             //{
@@ -76,6 +85,92 @@ namespace ATT.Core
             //    AppsInspResult.TabResultList.Add(new TabInspResult());
             //}
 
+        }
+
+        public void Run(TabScanImage ScanImage, Mat mergeMat, ICogImage cogMergeImage)
+        {
+            AppsInspModel inspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
+            Tab tab = inspModel.GetUnit(UnitName.Unit0).GetTab(ScanImage.TabNo);
+
+            MainAlgorithmTool algorithmTool = new MainAlgorithmTool();
+
+            TabInspResult inspResult = new TabInspResult();
+            inspResult.TabNo = tab.Index;
+            inspResult.Image = mergeMat;
+            inspResult.CogImage = cogMergeImage;
+
+            #region Mark 검사
+            algorithmTool.MainMarkInspect(cogMergeImage, tab, ref inspResult);
+
+            if(inspResult.IsMarkGood() == false)
+            { 
+                // 검사 실패
+                string message = string.Format("Mark Inspection NG !!! Tab_{0} / Fpc_{1}, Panel_{2}", tab.Index, inspResult.FpcMark.Judgement, inspResult.PanelMark.Judgement);
+                Logger.Debug(LogType.Inspection, message);
+                //return;
+            }
+            #endregion
+
+            double fpcTheta = 0.0;
+            double panelTheta = 0.0;
+
+            #region 보정 값 계산
+            if (inspResult.FpcMark.Judgement == Judgement.OK)
+            {
+                PointF point1 = inspResult.FpcMark.FoundedMark.Left.MaxMatchPos.FoundPos;
+                PointF point2 = inspResult.FpcMark.FoundedMark.Right.MaxMatchPos.FoundPos;
+                fpcTheta = MathHelper.GetTheta(point1, point2);
+            }
+
+            if (inspResult.PanelMark.Judgement == Judgement.OK)
+            {
+                PointF point1 = inspResult.PanelMark.FoundedMark.Left.MaxMatchPos.FoundPos;
+                PointF point2 = inspResult.PanelMark.FoundedMark.Right.MaxMatchPos.FoundPos;
+                panelTheta = MathHelper.GetTheta(point1, point2);
+            }
+            #endregion
+
+            double judgementX = 100.0;
+            double judgementY = 100.0;
+
+            #region Left Align
+            inspResult.LeftAlignX = algorithmTool.RunMainLeftAlignX(cogMergeImage, tab, fpcTheta, panelTheta, judgementX);
+            if (inspResult.LeftAlignX.Judgement != Judgement.OK)
+            {
+                var leftAlignX = inspResult.LeftAlignX;
+                string message = string.Format("Left AlignX Inspection NG !!! Tab_{0} / Fpc_{1}, Panel_{2}", tab.Index, leftAlignX.Fpc.Judgement, leftAlignX.Panel.Judgement);
+                Logger.Debug(LogType.Inspection, message);
+            }
+
+            inspResult.LeftAlignY = algorithmTool.RunMainLeftAlignY(cogMergeImage, tab, fpcTheta, panelTheta, judgementY);
+            if (inspResult.IsLeftAlignYGood() == false)
+            {
+                var leftAlignY = inspResult.LeftAlignY;
+                string message = string.Format("Left AlignY Inspection NG !!! Tab_{0} / Fpc_{1}, Panel_{2}", tab.Index, leftAlignY.Fpc.Judgement, leftAlignY.Panel.Judgement);
+                Logger.Debug(LogType.Inspection, message);
+            }
+            #endregion
+
+            #region Right Align
+            inspResult.RightAlignX = algorithmTool.RunMainRightAlignX(cogMergeImage, tab, fpcTheta, panelTheta, judgementX);
+            if(inspResult.RightAlignX.Judgement != Judgement.OK)
+            {
+                var rightAlignX = inspResult.RightAlignX;
+                string message = string.Format("Right AlignX Inspection NG !!! Tab_{0} / Fpc_{1}, Panel_{2}", tab.Index, rightAlignX.Fpc.Judgement, rightAlignX.Panel.Judgement);
+                Logger.Debug(LogType.Inspection, message);
+            }
+
+            inspResult.RightAlignY = algorithmTool.RunMainRightAlignY(cogMergeImage, tab, fpcTheta, panelTheta, judgementY);
+            if (inspResult.RightAlignY.Judgement != Judgement.OK)
+            {
+                var rightAlignY = inspResult.RightAlignY;
+                string message = string.Format("Right AlignY Inspection NG !!! Tab_{0} / Fpc_{1}, Panel_{2}", tab.Index, rightAlignY.Fpc.Judgement, rightAlignY.Panel.Judgement);
+                Logger.Debug(LogType.Inspection, message);
+            }
+            #endregion
+
+            algorithmTool.RunAkkon(mergeMat, tab.AkkonParam, tab.StageIndex, tab.Index);
+            //inspResult, mergeMat, tab
         }
 
         private void ATTSeqRunner_GrabDoneEventHanlder(string cameraName, bool isGrabDone)
@@ -98,7 +193,7 @@ namespace ATT.Core
         public bool IsInspectionDone()
         {
             AppsInspModel inspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
-            if(AppsConfig.Instance().Operation.VirtualMode)
+            if (AppsConfig.Instance().Operation.VirtualMode)
             {
                 RunVirtual();
                 return true;
@@ -121,6 +216,7 @@ namespace ATT.Core
             appsLineCamera.GrabDoneEventHanlder += ATTSeqRunner_GrabDoneEventHanlder;
             AppsLineCameraManager.Instance().GetLineCamera(CameraName.LinscanMIL0).StartMainGrabTask();
             AppsLineCameraManager.Instance().GetLineCamera(CameraName.LinscanMIL0).StartMergeTask();
+            Logger.Write(LogType.Seq, "Start Sequence.");
 
             if (SeqTask != null)
             {
@@ -145,12 +241,6 @@ namespace ATT.Core
             if (SeqTask == null)
                 return;
 
-            //if (CurrentInspState == InspState.Idle)
-            //{
-            //    PlcService.CheckHeartBeat = false;
-            //    return;
-            //}
-
             // 조명 off
             AppsLAFManager.Instance().AutoFocusOnOff(LAFName.Akkon.ToString(), false);
             Logger.Write(LogType.Seq, "AutoFocus Off.");
@@ -160,11 +250,8 @@ namespace ATT.Core
 
         }
 
-
         private void SeqTaskAction()
         {
-            Logger.Write(LogType.Seq, "Start Sequence.");
-
             var cancellationToken = SeqTaskCancellationTokenSource.Token;
             cancellationToken.ThrowIfCancellationRequested();
             SeqStep = SeqStep.SEQ_START;
@@ -210,7 +297,7 @@ namespace ATT.Core
 
                 case SeqStep.SEQ_START:
 
-                   // break;
+                    // break;
                     SeqStep = SeqStep.SEQ_READY;
                     break;
 
@@ -227,7 +314,7 @@ namespace ATT.Core
                 case SeqStep.SEQ_WAITING:
                     //if (IsPanelIn == false)
                     //    break;
-                    
+
                     SeqStep = SeqStep.SEQ_SCAN_READY;
                     break;
 
@@ -254,7 +341,6 @@ namespace ATT.Core
                     appsLineCamera.StartGrab();
                     Logger.Write(LogType.Seq, "Start Grab.");
 
-                    //Thread.Sleep(1000);
                     if (MoveTo(TeachingPosType.Stage1_Scan_End, out string error2) == false)
                     {
                         // Alarm
@@ -268,7 +354,7 @@ namespace ATT.Core
                     break;
 
                 case SeqStep.SEQ_WAITING_SCAN_COMPLETED:
-                    if(AppsConfig.Instance().Operation.VirtualMode == false)
+                    if (AppsConfig.Instance().Operation.VirtualMode == false)
                     {
                         if (IsGrabDone == false)
                             break;
@@ -288,7 +374,7 @@ namespace ATT.Core
                     break;
 
                 case SeqStep.SEQ_WAITING_INSPECTION_DONE:
-                    if(IsInspectionDone() == false)
+                    if (IsInspectionDone() == false)
                         break;
 
 
@@ -328,100 +414,6 @@ namespace ATT.Core
             }
         }
 
-        private Axis GetAxis(AxisHandlerName axisHandlerName, AxisName axisName)
-        {
-            return AppsMotionManager.Instance().GetAxis(axisHandlerName, axisName);
-        }
-
-        public bool IsAxisInPosition(UnitName unitName, TeachingPosType teachingPos, Axis axis)
-        {
-            return AppsMotionManager.Instance().IsAxisInPosition(unitName, teachingPos, axis);
-        }
-
-        public bool MoveTo(TeachingPosType teachingPos, out string error)
-        {
-            error = "";
-
-            if (AppsConfig.Instance().Operation.VirtualMode)
-                return true;
-
-            AppsInspModel inspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
-            AppsMotionManager manager = AppsMotionManager.Instance();
-
-            var teachingInfo = inspModel.GetUnit(UnitName.Unit0).GetTeachingInfo(teachingPos);
-  
-            Axis axisX = GetAxis(AxisHandlerName.Handler0, AxisName.X);
-            Axis axisY = GetAxis(AxisHandlerName.Handler0, AxisName.Y);
-            //Axis axisZ = GetAxis(AxisHandlerName.Handler0, AxisName.Z);
-
-            var movingParamX = teachingInfo.GetMovingParam(AxisName.X.ToString());
-            var movingParamY = teachingInfo.GetMovingParam(AxisName.Y.ToString());
-            var movingParamZ = teachingInfo.GetMovingParam(AxisName.Z.ToString());
-
-            //if (MoveAxis(teachingPos, axisZ, movingParamZ) == false)
-            //{
-            //    error = string.Format("Move To Axis Z TimeOut!({0})", movingParamZ.MovingTimeOut.ToString());
-            //    Logger.Write(LogType.Seq, error);
-            //    return false;
-            //}
-            if(MoveAxis(teachingPos, axisX, movingParamX) == false)
-            {
-                error = string.Format("Move To Axis X TimeOut!({0})", movingParamX.MovingTimeOut.ToString());
-                Logger.Write(LogType.Seq, error);
-                return false;
-            }
-            if(MoveAxis(teachingPos, axisY, movingParamY) == false)
-            {
-                error = string.Format("Move To Axis Y TimeOut!({0})", movingParamY.MovingTimeOut.ToString());
-                Logger.Write(LogType.Seq, error);
-                return false;
-            }
-
-            string message = string.Format("Move Completed.(Teaching Pos : {0})", teachingPos.ToString());
-            Logger.Write(LogType.Seq, message);
-
-            return true;
-        }
-
-        private bool MoveAxis(TeachingPosType teachingPos, Axis axis, AxisMovingParam movingParam)
-        {
-            AppsMotionManager manager = AppsMotionManager.Instance();
-            if (manager.IsAxisInPosition(UnitName.Unit0, teachingPos, axis) == false)
-            {
-                Stopwatch sw = new Stopwatch();
-                sw.Restart();
-
-                manager.MoveTo(UnitName.Unit0, teachingPos, axis);
-                
-                while (manager.IsAxisInPosition(UnitName.Unit0, teachingPos, axis) == false)
-                {
-
-                    if(sw.ElapsedMilliseconds >= movingParam.MovingTimeOut)
-                    {
-                        return false;
-                    }
-                    Thread.Sleep(10);
-                }
-            }
-
-            return true;
-        }
-
-        public void Run(TabScanImage ScanImage, Mat mergeMat, ICogImage cogMergeImage)
-        {
-            Console.WriteLine("In Run Thread  : " + ScanImage.TabNo.ToString());
-            AppsInspModel inspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
-
-            MainAlgorithmTool tool = new MainAlgorithmTool();
-            Tab tab = inspModel.GetUnit(UnitName.Unit0).GetTab(ScanImage.TabNo);
-           
-            var result = tool.MainRunInspect(tab, mergeMat, cogMergeImage, 100.0f, 100.0f);
-
-            AppsInspResult.TabResultList.Add(result);
-
-            Console.WriteLine("Out Run Thread  : " + ScanImage.TabNo.ToString());
-        }
-
         public void RunVirtual()
         {
             AppsInspModel inspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
@@ -430,14 +422,19 @@ namespace ATT.Core
 
             Mat tabMatImage = new Mat(@"D:\Tab1.bmp", Emgu.CV.CvEnum.ImreadModes.Grayscale);
 
-           // ICogImage tabCogImage = ConvertCogImage(tabMatImage);
-           // MainAlgorithmTool tool = new MainAlgorithmTool();
+            // ICogImage tabCogImage = ConvertCogImage(tabMatImage);
+            // MainAlgorithmTool tool = new MainAlgorithmTool();
 
-           //var result = tool.MainRunInspect(tab, tabMatImage, 30.0f, 80.0f);
+            //var result = tool.MainRunInspect(tab, tabMatImage, 30.0f, 80.0f);
 
-           // AppsInspResult.TabResultList.Add(result);
+            // AppsInspResult.TabResultList.Add(result);
         }
+        #endregion
+    }
 
+    public partial class ATTInspRunner
+    {
+        #region 메서드
         private void SaveImage(AppsInspResult inspResult)
         {
             AppsInspModel inspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
@@ -477,7 +474,7 @@ namespace ATT.Core
         private void SaveAlignResult(string resultPath, string panelId, List<TabInspResult> inspTabResultList)
         {
             string csvFile = Path.Combine(resultPath, "Align.csv");
-            if(File.Exists(csvFile) == false)
+            if (File.Exists(csvFile) == false)
             {
                 List<string> header = new List<string>();
                 header.Add("Panel ID");
@@ -491,7 +488,7 @@ namespace ATT.Core
 
                 CSVHelper.WriteHeader(csvFile, header);
             }
-          
+
             foreach (var tabResult in inspTabResultList)
             {
                 List<string> dataList = new List<string>();
@@ -499,10 +496,10 @@ namespace ATT.Core
                 dataList.Add(tabResult.TabNo.ToString());
                 dataList.Add(tabResult.AlignJudgement.ToString());
 
-                float lx = tabResult.LeftAlignX.X;
-                float ly = tabResult.LeftAlignY.Y;
-                float rx = tabResult.RightAlignX.X;
-                float ry = tabResult.RightAlignY.Y;
+                float lx = tabResult.LeftAlignX.ResultValue;
+                float ly = tabResult.LeftAlignY.ResultY;
+                float rx = tabResult.RightAlignX.ResultValue;
+                float ry = tabResult.RightAlignY.ResultY;
                 float cx = (lx + rx) / 2.0f;
 
                 dataList.Add(lx.ToString("F3"));
@@ -524,6 +521,86 @@ namespace ATT.Core
         {
             return "." + AppsConfig.Instance().Operation.ExtensionNGImage;
         }
+
+        private Axis GetAxis(AxisHandlerName axisHandlerName, AxisName axisName)
+        {
+            return AppsMotionManager.Instance().GetAxis(axisHandlerName, axisName);
+        }
+
+        public bool IsAxisInPosition(UnitName unitName, TeachingPosType teachingPos, Axis axis)
+        {
+            return AppsMotionManager.Instance().IsAxisInPosition(unitName, teachingPos, axis);
+        }
+
+        public bool MoveTo(TeachingPosType teachingPos, out string error)
+        {
+            error = "";
+
+            if (AppsConfig.Instance().Operation.VirtualMode)
+                return true;
+
+            AppsInspModel inspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
+            AppsMotionManager manager = AppsMotionManager.Instance();
+
+            var teachingInfo = inspModel.GetUnit(UnitName.Unit0).GetTeachingInfo(teachingPos);
+
+            Axis axisX = GetAxis(AxisHandlerName.Handler0, AxisName.X);
+            Axis axisY = GetAxis(AxisHandlerName.Handler0, AxisName.Y);
+            //Axis axisZ = GetAxis(AxisHandlerName.Handler0, AxisName.Z);
+
+            var movingParamX = teachingInfo.GetMovingParam(AxisName.X.ToString());
+            var movingParamY = teachingInfo.GetMovingParam(AxisName.Y.ToString());
+            var movingParamZ = teachingInfo.GetMovingParam(AxisName.Z.ToString());
+
+            //if (MoveAxis(teachingPos, axisZ, movingParamZ) == false)
+            //{
+            //    error = string.Format("Move To Axis Z TimeOut!({0})", movingParamZ.MovingTimeOut.ToString());
+            //    Logger.Write(LogType.Seq, error);
+            //    return false;
+            //}
+            if (MoveAxis(teachingPos, axisX, movingParamX) == false)
+            {
+                error = string.Format("Move To Axis X TimeOut!({0})", movingParamX.MovingTimeOut.ToString());
+                Logger.Write(LogType.Seq, error);
+                return false;
+            }
+            if (MoveAxis(teachingPos, axisY, movingParamY) == false)
+            {
+                error = string.Format("Move To Axis Y TimeOut!({0})", movingParamY.MovingTimeOut.ToString());
+                Logger.Write(LogType.Seq, error);
+                return false;
+            }
+
+            string message = string.Format("Move Completed.(Teaching Pos : {0})", teachingPos.ToString());
+            Logger.Write(LogType.Seq, message);
+
+            return true;
+        }
+
+        private bool MoveAxis(TeachingPosType teachingPos, Axis axis, AxisMovingParam movingParam)
+        {
+            AppsMotionManager manager = AppsMotionManager.Instance();
+            if (manager.IsAxisInPosition(UnitName.Unit0, teachingPos, axis) == false)
+            {
+                Stopwatch sw = new Stopwatch();
+                sw.Restart();
+
+                manager.MoveTo(UnitName.Unit0, teachingPos, axis);
+
+                while (manager.IsAxisInPosition(UnitName.Unit0, teachingPos, axis) == false)
+                {
+
+                    if (sw.ElapsedMilliseconds >= movingParam.MovingTimeOut)
+                    {
+                        return false;
+                    }
+                    Thread.Sleep(10);
+                }
+            }
+
+            return true;
+        }
+        #endregion
     }
 
     public enum SeqStep

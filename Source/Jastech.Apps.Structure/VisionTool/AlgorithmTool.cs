@@ -35,53 +35,7 @@ namespace Jastech.Apps.Structure.VisionTool
 
         public CogAlignCaliper AlignAlgorithm { get; set; } = new CogAlignCaliper();
 
-        //public AppsPatternMatchingResult RunPatternMatching(Tab tab, ICogImage cogImage)
-        //{
-        //    var paramCount = tab.FpcMarkParamList.Count() / 2;
-
-        //    Logger.Debug(LogType.Inspection, "Run Pattern Matching.");
-
-        //    for (int i = 0; i < paramCount; i++)
-        //    {
-        //        var fpcParam = tab.FpcMarkParamList[i];
-        //        var panelParam = tab.PanelMarkParamList[i];
-
-        //        var fpcMarkResult = RunPatternMatch(cogImage, fpcParam.InspParam);
-        //        var panelMarkResult = RunPatternMatch(cogImage, fpcParam.InspParam);
-
-        //        if (fpcMarkResult == null || panelMarkResult == null)
-        //        {
-        //            string message = string.Format("RunPatternMatch is null. Index : {0}", i.ToString());
-        //            Logger.Debug(LogType.Inspection, message);
-        //            continue;
-        //        }
-
-        //        if (fpcMarkResult.Result == Result.OK && panelMarkResult.Result == Result.OK)
-        //        {
-        //            string message = string.Format("RunPatternMatch Result : FPC Result_{0}, Panel_Result_{1}"
-        //                                    , fpcMarkResult.Result.ToString(), panelMarkResult.Result.ToString());
-        //            Logger.Debug(LogType.Inspection, message);
-
-        //            AppsPatternMatchingResult result = new AppsPatternMatchingResult();
-
-        //            result.FpcResult = fpcMarkResult;
-        //            result.PanelResult = panelMarkResult;
-
-        //            return result;
-        //        }
-        //        else
-        //        {
-        //            string message = string.Format("RunPatternMatch Result : FPC Result_{0}, Panel Result_{1}"
-        //                                    , fpcMarkResult.Result.ToString(), panelMarkResult.Result.ToString());
-        //            Logger.Debug(LogType.Inspection, message);
-        //        }
-        //    }
-
-        //    return null;
-
-        //}
-
-        public ICogImage ConvertCogImage(Mat image)
+       public ICogImage ConvertCogImage(Mat image)
         {
             if (image == null)
                 return null;
@@ -93,7 +47,6 @@ namespace Jastech.Apps.Structure.VisionTool
             var cogImage = CogImageHelper.CovertImage(dataArray, image.Width, image.Height, format);
 
             return cogImage;
-            //return null;
         }
 
         public CogAlignCaliperResult RunAlignX(ICogImage image, VisionProCaliperParam param, int leadCount)
@@ -168,7 +121,7 @@ namespace Jastech.Apps.Structure.VisionTool
         {
             if (mat == null)
                 return null;
-
+            Console.WriteLine("Akkon " + stageNo.ToString() + "   " + tabNo.ToString());
             var marcon = akkonParam.MacronAkkonParam;
             var akkonRoiList = akkonParam.GetAkkonROIList();
 
