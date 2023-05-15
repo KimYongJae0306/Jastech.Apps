@@ -151,7 +151,7 @@ namespace Jastech.Apps.Structure.Data
             result.LeftAlignY = LeftAlignY?.DeepCopy();
             result.RightAlignX = RightAlignX?.DeepCopy();
             result.RightAlignY = RightAlignY?.DeepCopy();
-            result.AkkonResultList = AkkonResultList.Select(x => x.DeepCopy()).ToList();
+            result.AkkonResultList = AkkonResultList?.Select(x => x.DeepCopy()).ToList();
 
             return result;
 

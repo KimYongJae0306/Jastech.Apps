@@ -169,8 +169,13 @@ namespace ATT.Core
             }
             #endregion
 
-            algorithmTool.RunAkkon(mergeMat, tab.AkkonParam, tab.StageIndex, tab.Index);
-            //inspResult, mergeMat, tab
+            var akkonResult = algorithmTool.RunAkkon(mergeMat, tab.AkkonParam, tab.StageIndex, tab.Index);
+            if (inspResult.AkkonResultList == null)
+                inspResult.AkkonResultList = new List<AkkonResult>();
+            inspResult.AkkonResultList.AddRange(akkonResult);
+
+
+            AppsInspResult.TabResultList.Add(inspResult);
         }
 
         private void ATTSeqRunner_GrabDoneEventHanlder(string cameraName, bool isGrabDone)
