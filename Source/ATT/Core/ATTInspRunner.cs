@@ -168,13 +168,15 @@ namespace ATT.Core
                 Logger.Debug(LogType.Inspection, message);
             }
             #endregion
-
-            var akkonResult = algorithmTool.RunAkkon(mergeMat, tab.AkkonParam, tab.StageIndex, tab.Index);
-            if (inspResult.AkkonResultList == null)
-                inspResult.AkkonResultList = new List<AkkonResult>();
-            inspResult.AkkonResultList.AddRange(akkonResult);
-
-
+            
+            //if(tab.Index == 1)
+            //{
+            //    var akkonResult = algorithmTool.RunAkkon(mergeMat, tab.AkkonParam, tab.StageIndex, tab.Index);
+            //    if (inspResult.AkkonResultList == null)
+            //        inspResult.AkkonResultList = new List<AkkonResult>();
+            //    inspResult.AkkonResultList.AddRange(akkonResult);
+            //}
+            //Console.WriteLine("Add Result");
             AppsInspResult.TabResultList.Add(inspResult);
         }
 
