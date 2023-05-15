@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Windows.Forms.DataVisualization.Charting;
+using Jastech.Apps.Structure.Data;
 
 namespace Jastech.Apps.Winform.UI.Controls
 {
@@ -44,6 +45,8 @@ namespace Jastech.Apps.Winform.UI.Controls
         #endregion
 
         #region 델리게이트
+        private delegate void UpdateAlignResultDelegate(AppsInspResult result);
+        private delegate void UpdateAkkonResultDelegate(AppsInspResult result);
         #endregion
 
         #region 생성자
@@ -131,6 +134,39 @@ namespace Jastech.Apps.Winform.UI.Controls
         public void SetInspChartType(InspChartType chartType)
         {
             ChartType = chartType;
+        }
+
+        public void UpdateAlignResult(AppsInspResult result)
+        {
+            if (this.InvokeRequired)
+            {
+                UpdateAlignResultDelegate callback = UpdateAlignResult;
+                BeginInvoke(callback);
+                return;
+            }
+
+            UpdateChart(result, InspChartType.Align);
+        }
+
+        public void UpdateAkkonResult(AppsInspResult result)
+        {
+            if (this.InvokeRequired)
+            {
+                UpdateAlignResultDelegate callback = UpdateAkkonResult;
+                BeginInvoke(callback);
+                return;
+            }
+
+            UpdateChart(result, InspChartType.Akkon);
+        }
+
+        private void UpdateChart(AppsInspResult result, InspChartType inspType)
+        {
+            AlignSeriesLx.Points.Add(result.TabResultList[0].LeftAlignX.X);
+            AlignSeriesLy.Points.Add(result.TabResultList[0].LeftAlignX.Y);
+            AlignSeriesRx.Points.Add(result.TabResultList[0].RightAlignX.X);
+            AlignSeriesRy.Points.Add(result.TabResultList[0].RightAlignY.Y);
+            AlignSeriesCx.Points.Add(Math.Abs((result.TabResultList[0].LeftAlignX.X - result.TabResultList[0].RightAlignX.X) / 2));
         }
         #endregion
     }

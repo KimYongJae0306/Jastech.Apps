@@ -7,19 +7,66 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Jastech.Apps.Structure.Data;
 
 namespace Jastech.Apps.Winform.UI.Controls
 {
     public partial class AlignInspResultControl : UserControl
     {
+        #region 필드
+        #endregion
+
+        #region 속성
+        public List<AppsInspResult> resultList = new List<AppsInspResult>();
+        #endregion
+
+        #region 이벤트
+        #endregion
+
+        #region 델리게이트
+        private delegate void UpdateAlignResultDelegate(AppsInspResult result);
+        #endregion
+
+        #region 생성자
+        #endregion
+
+        #region 메서드
+        #endregion
+
         public AlignInspResultControl()
         {
             InitializeComponent();
         }
 
-        public void UpdateResult()
+        public void UpdateAlignResult(AppsInspResult result)
         {
+            if (this.InvokeRequired)
+            {
+                UpdateAlignResultDelegate callback = UpdateAlignResult;
+                BeginInvoke(callback);
+                return;
+            }
 
+            UpdateDataGridView(result);
+        }
+
+        private void UpdateDataGridView(AppsInspResult result)
+        {
+            foreach (var item in result.TabResultList)
+            {
+                string inspectionTime = result.LastInspTime;
+                string panelID = result.Cell_ID;
+                string tabNumber = item.TabNo.ToString();
+                string judge = item.AlignJudgement.ToString();
+                string leftAlignX = item.LeftAlignX.X.ToString("F2");
+                string leftAlignY = item.LeftAlignY.Y.ToString("F2");
+                string rightAlignX = item.RightAlignX.X.ToString("F2");
+                string rightAlignY = item.RightAlignY.Y.ToString("F2");
+                string centerAlignX = Math.Abs((item.LeftAlignX.X - item.RightAlignX.X) / 2).ToString("F2");
+
+                string[] row = { inspectionTime, panelID, tabNumber, judge, leftAlignX, leftAlignY, rightAlignX, rightAlignY, centerAlignX };
+                dgvAlignHistory.Rows.Add(row);
+            }
         }
     }
 }
