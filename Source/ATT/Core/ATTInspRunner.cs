@@ -54,6 +54,14 @@ namespace ATT.Core
         private AppsInspResult AppsInspResult { get; set; } = null;
 
         private Stopwatch LastInspSW { get; set; } = new Stopwatch();
+
+        public Task AkkonInspTask { get; set; }
+
+        public CancellationTokenSource CancelAkkonInspTask { get; set; }
+
+        public Queue<AkkonThreadParam> AkkonInspQueue = new Queue<AkkonThreadParam>();
+
+        public AkkonAlgorithmTool AkkonAlgorithmTool { get; set; } = new AkkonAlgorithmTool();
         #endregion
 
         #region 이벤트
@@ -181,12 +189,63 @@ namespace ATT.Core
             //    inspResult.AkkonResultList.AddRange(akkonResult);
             //}
             //Console.WriteLine("Add Result");
-            AppsInspResult.TabResultList.Add(inspResult);
+            //AppsInspResult.TabResultList.Add(inspResult);
         }
 
         private void ATTSeqRunner_GrabDoneEventHanlder(string cameraName, bool isGrabDone)
         {
             IsGrabDone = isGrabDone;
+        }
+
+        private void AkkonInspection()
+        {
+            while(true)
+            {
+                if (CancelAkkonInspTask.IsCancellationRequested)
+                {
+                    break;
+                }
+
+                if(AkkonInspQueue.Count > 0)
+                {
+                    var akkon = AkkonInspQueue.Dequeue();
+
+                    var result = akkon.TabInspResult;
+                    Mat image = akkon.TabInspResult.Image;
+                    Tab tab = akkon.Tab;
+
+                    int tabIndex = 0; // 매크론 DLL 에서 TabNo = 0 만 검사됨... 나중에 Dll 확인 필요
+                    var akkonResult = AkkonAlgorithmTool.RunAkkon(image, akkon.Tab.AkkonParam, akkon.Tab.StageIndex, tabIndex);
+                    //result.AkkonResultImage = AkkonAlgorithmTool.GetResultImage(image, akkon.Tab, tabIndex);
+
+                    if (result.AkkonResultList == null)
+                        result.AkkonResultList = new List<AkkonResult>();
+                    result.AkkonResultList.AddRange(akkonResult);
+                    AppsInspResult.TabResultList.Add(result);
+                    Console.WriteLine("Add Akkon Result");
+                }
+                Thread.Sleep(10);
+            }
+        }
+
+        public void StartAkkonInspTask()
+        {
+            if (AkkonInspTask != null)
+                return;
+
+            CancelAkkonInspTask = new CancellationTokenSource();
+            AkkonInspTask = new Task(AkkonInspection, CancelAkkonInspTask.Token);
+            AkkonInspTask.Start();
+        }
+
+        public void StopAkkonInspTask()
+        {
+            if (AkkonInspTask == null)
+                return;
+
+            CancelAkkonInspTask.Cancel();
+            AkkonInspTask.Wait();
+            AkkonInspTask = null;
         }
 
         public void ClearResult()
@@ -227,6 +286,9 @@ namespace ATT.Core
             appsLineCamera.GrabDoneEventHanlder += ATTSeqRunner_GrabDoneEventHanlder;
             AppsLineCameraManager.Instance().GetLineCamera(CameraName.LinscanMIL0).StartMainGrabTask();
             AppsLineCameraManager.Instance().GetLineCamera(CameraName.LinscanMIL0).StartMergeTask();
+            StartAkkonInspTask();
+
+
             Logger.Write(LogType.Seq, "Start Sequence.");
 
             if (SeqTask != null)
@@ -247,6 +309,7 @@ namespace ATT.Core
             appsLineCamera.GrabDoneEventHanlder -= ATTSeqRunner_GrabDoneEventHanlder;
             AppsLineCameraManager.Instance().GetLineCamera(CameraName.LinscanMIL0).StopMainGrabTask();
             AppsLineCameraManager.Instance().GetLineCamera(CameraName.LinscanMIL0).StopGrab();
+            StopAkkonInspTask();
             Logger.Write(LogType.Seq, "Stop Sequence.");
 
             if (SeqTask == null)
@@ -371,8 +434,6 @@ namespace ATT.Core
                             break;
                     }
 
-                    LastInspSW.Restart();
-
                     Logger.Write(LogType.Seq, "Scan Grab Completed.");
 
                     AppsLAFManager.Instance().AutoFocusOnOff(LAFName.Akkon.ToString(), false);
@@ -380,6 +441,9 @@ namespace ATT.Core
 
                     AppsLineCameraManager.Instance().Stop(CameraName.LinscanMIL0);
                     Logger.Write(LogType.Seq, "Stop Grab.");
+
+                    LastInspSW.Restart();
+
 
                     SeqStep = SeqStep.SEQ_WAITING_INSPECTION_DONE;
                     break;
@@ -398,6 +462,7 @@ namespace ATT.Core
 
                 case SeqStep.SEQ_UI_RESULT_UPDATE:
                     SystemManager.Instance().UpdateMainResult(AppsInspResult);
+                    Console.WriteLine("Scan End to Insp Compelte : " + LastInspSW.ElapsedMilliseconds.ToString());
                     SeqStep = SeqStep.SEQ_SAVE_IMAGE;
                     break;
 
@@ -627,5 +692,12 @@ namespace ATT.Core
         SEQ_SAVE_IMAGE,
         SEQ_DELETE_DATA,
         SEQ_CHECK_STANDBY,
+    }
+
+    public class AkkonThreadParam
+    {
+        public TabInspResult TabInspResult { get; set; } = null;
+
+        public Tab Tab { get; set; } = null;
     }
 }

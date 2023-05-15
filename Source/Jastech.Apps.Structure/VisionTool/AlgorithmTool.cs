@@ -29,8 +29,7 @@ namespace Jastech.Apps.Structure.VisionTool
 {
     public class AlgorithmTool
     {
-        private MacronAkkon AkkonAlgorithm { get; set; } = new MacronAkkon();
-
+       
         private CogPatternMatching PatternAlgorithm { get; set; } = new CogPatternMatching();
 
         public CogAlignCaliper AlignAlgorithm { get; set; } = new CogAlignCaliper();
@@ -115,89 +114,6 @@ namespace Jastech.Apps.Structure.VisionTool
             }
 
             return matchingResult;
-        }
-
-        public List<AkkonResult> RunAkkon(Mat mat, AkkonParam akkonParam, int stageNo, int tabNo)
-        {
-            if (mat == null)
-                return null;
-            Console.WriteLine("Akkon " + stageNo.ToString() + "   " + tabNo.ToString());
-            var marcon = akkonParam.MacronAkkonParam;
-            var akkonRoiList = akkonParam.GetAkkonROIList();
-
-            if(akkonRoiList.Count<=0)
-            {
-                Logger.Debug(LogType.Inspection, "Akkon Roi is nothing.");
-                return new List<AkkonResult>();
-            }
-
-            float resizeRatio = 1.0f;
-            if (marcon.InspParam.PanelInfo == (int)TargetType.COG)
-                resizeRatio = 1.0f;
-            else if (marcon.InspParam.PanelInfo == (int)TargetType.COF)
-                resizeRatio = 0.5f;
-            else if (marcon.InspParam.PanelInfo == (int)TargetType.FOG)
-                resizeRatio = 0.6f;
-
-            akkonParam.MacronAkkonParam.InspOption.InspResizeRatio = resizeRatio;
-            akkonParam.MacronAkkonParam.DrawOption.DrawResizeRatio = resizeRatio;
-
-            marcon.SliceHeight = mat.Height;
-
-            if (AkkonAlgorithm.CreateDllBuffer(marcon))
-            {
-                AkkonAlgorithm.CreateImageBuffer(stageNo, tabNo, mat.Width, mat.Height, marcon.InspOption.InspResizeRatio);
-                AkkonAlgorithm.SetConvertROIData(akkonRoiList, stageNo, tabNo, new PointF(mat.Width / 2, mat.Height / 2), new PointF(0, 0), 0, akkonParam.MacronAkkonParam.InspOption.InspResizeRatio);
-
-                AkkonAlgorithm.InitPrepareInspect();
-                int overlapCount = AkkonAlgorithm.PrepareInspect(stageNo, tabNo);
-                marcon.InspOption.Overlap = overlapCount;
-                
-                AkkonAlgorithm.SetAkkonParam(stageNo, tabNo, ref marcon);
-                AkkonAlgorithm.EnableInspFlag();
-
-                var results = AkkonAlgorithm.Inspect(stageNo, tabNo, mat);
-              
-                return results;
-            }
-            else
-            {
-                Logger.Debug(LogType.Inspection, "ATT is not Initalized");
-                return new List<AkkonResult>();
-            }
-        }
-
-        public List<AkkonResult> RunCropAkkon(Mat mat, PointF cropOffset, AkkonParam akkonParam, int tabNo)
-        {
-            var marcon = akkonParam.MacronAkkonParam;
-            if (AkkonAlgorithm.CreateDllBuffer(marcon))
-            {
-                AkkonAlgorithm.CreateImageBuffer(0, 0, mat.Width, mat.Height, marcon.InspOption.InspResizeRatio);
-
-                var calcROIList = AkkonAlgorithm.GetCalcROI(cropOffset, akkonParam.GetAkkonROIList());
-
-                AkkonAlgorithm.SetConvertROIData(calcROIList, 0, tabNo, new PointF(mat.Width / 2, mat.Height / 2), new PointF(0, 0), 0);
-
-                AkkonAlgorithm.InitPrepareInspect();
-                int overlapCount = AkkonAlgorithm.PrepareInspect(0, tabNo);
-                marcon.InspOption.Overlap = overlapCount;
-
-                AkkonAlgorithm.SetAkkonParam(0, tabNo, ref marcon);
-                AkkonAlgorithm.EnableInspFlag();
-
-                var results = AkkonAlgorithm.Inspect(0, tabNo, mat);
-
-                return results;
-            }
-            return null;
-        }
-
-        public Mat LastAkkonResultImage(Mat mat, AkkonParam akkonParam, int stageNo, int tabNo)
-        {
-            var marcon = akkonParam.MacronAkkonParam;
-            marcon.DrawOption.Contour = true;
-            marcon.DrawOption.Center = false;
-            return AkkonAlgorithm.GetDrawResultImage(mat, stageNo, tabNo, ref marcon);
         }
     }
 

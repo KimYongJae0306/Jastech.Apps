@@ -130,6 +130,8 @@ namespace ATT.UI.Forms
 
         private void LineTeachingForm_GrabDoneEventHanlder(string cameraName, bool isGrabDone)
         {
+            int tabNo = Convert.ToInt32(_currentTabNo);
+            UpdateDisplayImage(tabNo);
         }
 
         public delegate void UpdateDisplayDele(ICogImage cogImage);
@@ -170,20 +172,6 @@ namespace ATT.UI.Forms
             Mat mat = tabScanImage.GetMergeImage();
 
             teachingData.AddBufferImage(tabScanImage.TabNo, mat);
-
-            int tabNo = Convert.ToInt32(_currentTabNo);
-            if(tabNo == tabScanImage.TabNo)
-            {
-                var scanImage = tabScanImage;
-                if (scanImage == null)
-                    return;
-
-                var matImage = teachingData.GetBufferImage(tabNo);
-                var cogImage = teachingData.ConvertCogGrayImage(matImage.TabImage);
-                //UpdateDisplay(cogImage);
-                AppsTeachingUIManager.Instance().SetOrginCogImageBuffer(cogImage);
-                AppsTeachingUIManager.Instance().SetOriginMatImageBuffer(matImage.TabImage);
-            }
         }
 
         private void AddControl()
@@ -424,15 +412,23 @@ namespace ATT.UI.Forms
             CurrentTab = TeachingTabList.Where(x => x.Index == tabNo).First();
             _currentTabNo = tabIndex;
 
+            UpdateDisplayImage(tabNo);
+        }
+
+        private void UpdateDisplayImage(int tabNo)
+        {
             var teachingData = SystemManager.Instance().GetTeachingData();
 
-            if(teachingData.GetBufferImage(tabNo) is TeachingImageBuffer buffer)
+            if (teachingData.GetBufferImage(tabNo) is TeachingImageBuffer buffer)
             {
                 if (buffer.TabImage == null)
                     return;
 
                 ICogImage cogImage = teachingData.ConvertCogGrayImage(buffer.TabImage);
-                UpdateDisplay(cogImage);
+
+                Display.SetImage(cogImage);
+                AppsTeachingUIManager.Instance().SetOrginCogImageBuffer(cogImage);
+                AppsTeachingUIManager.Instance().SetOriginMatImageBuffer(buffer.TabImage.Clone());
 
                 if (_displayType == DisplayType.Mark)
                 {

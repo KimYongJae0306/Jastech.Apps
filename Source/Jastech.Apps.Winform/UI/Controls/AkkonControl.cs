@@ -62,6 +62,8 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         public AlgorithmTool Algorithm { get; private set; } = new AlgorithmTool();
 
+        public AkkonAlgorithmTool AkkonAlgorithm { get; set; } = new AkkonAlgorithmTool();
+
         public double CalcResolution { get; private set; } = 0.0; // ex :  /camera.PixelResolution_mm(0.0035) / camera.LensScale(5) / 1000;
         #endregion
 
@@ -127,8 +129,16 @@ namespace Jastech.Apps.Winform.UI.Controls
             UpdateData();
         }
 
+        public delegate void InitializeGroupInfoDele();
         private void InitializeGroupInfo()
         {
+            if(this.InvokeRequired)
+            {
+                InitializeGroupInfoDele callback = InitializeGroupInfo;
+                BeginInvoke(callback);
+                return;
+            }
+
             _isLoading = true;
 
             if (CurrentTab == null)
@@ -147,8 +157,15 @@ namespace Jastech.Apps.Winform.UI.Controls
             _isLoading = false;
         }
 
+        public delegate void UpdateDataDele();
         private void UpdateData()
         {
+            if(this.InvokeRequired)
+            {
+                UpdateDataDele callback = UpdateData;
+                BeginInvoke(callback);
+                return;
+            }
             int groupNo = cbxGroupNumber.SelectedIndex;
             if (groupNo < 0 || CurrentTab == null)
             {
@@ -462,14 +479,15 @@ namespace Jastech.Apps.Winform.UI.Controls
             }
         }
 
-        private ICogImage GetResultImage(Mat mat, AkkonParam akkonParam)
+        private ICogImage GetResultImage(Mat mat, AkkonParam akkonParam, int stageNo, int tabNo)
         {
             float resize = akkonParam.MacronAkkonParam.InspOption.InspResizeRatio;
             double width = Math.Truncate(mat.Width * resize);
             double height = Math.Truncate(mat.Height * resize);
 
             Mat testMat = new Mat((int)height, (int)width, DepthType.Cv8U, 1);
-            Mat resultMatImage = Algorithm.LastAkkonResultImage(testMat, akkonParam, 0, 0);
+            
+            Mat resultMatImage = AkkonAlgorithm.LastAkkonResultImage(testMat, akkonParam, stageNo, tabNo);
 
             Mat matR = MatHelper.ColorChannelSprate(resultMatImage, MatHelper.ColorChannel.R);
             Mat matG = MatHelper.ColorChannelSprate(resultMatImage, MatHelper.ColorChannel.G);
@@ -1229,13 +1247,14 @@ namespace Jastech.Apps.Winform.UI.Controls
 
             macron.SliceHeight = matImage.Height;
 
-            var tabResults = Algorithm.RunAkkon(matImage, CurrentTab.AkkonParam, CurrentTab.StageIndex, CurrentTab.Index);
+            int tabIndex = 0; // 매크론 DLL 에서 TabNo = 0 만 검사됨... 나중에 Dll 확인 필요
+            var tabResults = AkkonAlgorithm.RunAkkon(matImage, CurrentTab.AkkonParam, CurrentTab.StageIndex, tabIndex);
 
             dgvAkkonResult.Rows.Clear();
 
             UpdateResult(tabResults);
 
-            var resultImage = GetResultImage(matImage, CurrentTab.AkkonParam);
+            var resultImage = GetResultImage(matImage, CurrentTab.AkkonParam, CurrentTab.StageIndex, tabIndex);
 
             if (resultImage != null)
             {
@@ -1283,7 +1302,7 @@ namespace Jastech.Apps.Winform.UI.Controls
             Mat cropImage = MatHelper.CropRoi(matImage, rect);
             
             macron.SliceHeight = cropImage.Height;
-            var tabResults = Algorithm.RunCropAkkon(cropImage, new PointF(rect.X, rect.Y), akkonParam, CurrentTab.Index);
+            var tabResults = AkkonAlgorithm.RunCropAkkon(cropImage, new PointF(rect.X, rect.Y), akkonParam, CurrentTab.Index);
 
             cropSW.Stop();
             Console.WriteLine("Crop : " + cropSW.ElapsedMilliseconds.ToString());
@@ -1292,7 +1311,7 @@ namespace Jastech.Apps.Winform.UI.Controls
 
             UpdateResult(tabResults);
 
-            var resultImage = GetResultImage(cropImage, CurrentTab.AkkonParam);
+            var resultImage = GetResultImage(cropImage, CurrentTab.AkkonParam, CurrentTab.StageIndex, CurrentTab.Index);
             if (resultImage != null)
             {
                 lblOrginalImage.BackColor = _nonSelectedColor;

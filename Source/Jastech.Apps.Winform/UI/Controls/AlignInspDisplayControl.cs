@@ -228,7 +228,7 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         public void UpdateMainResult(AppsInspResult inspResult)
         {
-            _curAppsInspResult = inspResult.DeepCopy();
+           // _curAppsInspResult = inspResult.DeepCopy();
 
             InspAlignDisplay.ClearImage();
 
@@ -252,6 +252,8 @@ namespace Jastech.Apps.Winform.UI.Controls
                     UpdateRightAlignResult(inspResult.TabResultList[i]);
                 }
             }
+            //UpdateAlignResult(inspResult);
+            //UpdateAlignChart(inspResult);
         }
 
         private void UpdateAlignResult(AppsInspResult inspResult)

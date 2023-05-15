@@ -257,32 +257,6 @@ namespace Jastech.Apps.Structure.VisionTool
             return result;
         }
 
-        private ICogImage GetResultImage(Mat mat, Tab tab, AkkonParam akkonParam)
-        {
-            float resize = akkonParam.MacronAkkonParam.InspOption.InspResizeRatio;
-            double width = Math.Truncate(mat.Width * resize);
-            double height = Math.Truncate(mat.Height * resize);
-
-            Mat testMat = new Mat((int)height, (int)width, DepthType.Cv8U, 1);
-            Mat resultMatImage = LastAkkonResultImage(testMat, akkonParam, tab.StageIndex, tab.Index);
-
-            Mat matR = MatHelper.ColorChannelSprate(resultMatImage, MatHelper.ColorChannel.R);
-            Mat matG = MatHelper.ColorChannelSprate(resultMatImage, MatHelper.ColorChannel.G);
-            Mat matB = MatHelper.ColorChannelSprate(resultMatImage, MatHelper.ColorChannel.B);
-
-            byte[] dataR = new byte[matR.Width * matR.Height];
-            Marshal.Copy(matR.DataPointer, dataR, 0, matR.Width * matR.Height);
-
-            byte[] dataG = new byte[matG.Width * matG.Height];
-            Marshal.Copy(matG.DataPointer, dataG, 0, matG.Width * matG.Height);
-
-            byte[] dataB = new byte[matB.Width * matB.Height];
-            Marshal.Copy(matB.DataPointer, dataB, 0, matB.Width * matB.Height);
-
-            var cogImage = CogImageHelper.CovertImage(dataR, dataG, dataB, matB.Width, matB.Height);
-
-            return cogImage;
-        }
     }
 
     public partial class MainAlgorithmTool : AlgorithmTool
