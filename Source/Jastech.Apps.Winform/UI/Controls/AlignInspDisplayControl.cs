@@ -43,6 +43,8 @@ namespace Jastech.Apps.Winform.UI.Controls
         public Dictionary<int, TabInspResult> InspResultDic { get; set; } = new Dictionary<int, TabInspResult>();
 
         private int CurrentTabNo { get; set; } = -1;
+
+        public List<AppsInspResult> ResultList = new List<AppsInspResult>();
         #endregion
 
         #region 이벤트
@@ -68,7 +70,7 @@ namespace Jastech.Apps.Winform.UI.Controls
 
             AppsInspModel inspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
             if (inspModel == null)
-                UpdateTabCount(1);
+                UpdateTabCount();
             else
                 UpdateTabCount(inspModel.TabCount);
         }
@@ -86,7 +88,7 @@ namespace Jastech.Apps.Winform.UI.Controls
             pnlAlignGraph.Controls.Add(ResultChartControl);
         }
 
-        public void UpdateTabCount(int tabCount)
+        public void UpdateTabCount(int tabCount = 1)
         {
             if (_prevTabCount == tabCount)
                 return;
@@ -147,7 +149,6 @@ namespace Jastech.Apps.Winform.UI.Controls
         {
             _curAppsInspResult = inspResult.DeepCopy();
 
-
             InspAlignDisplay.ClearImage();
 
             for (int i = 0; i < inspResult.TabResultList.Count(); i++)
@@ -167,6 +168,24 @@ namespace Jastech.Apps.Winform.UI.Controls
                     UpdateRightAlignResult(inspResult.TabResultList[i]);
                 }
             }
+
+            UpdateAlignResult(inspResult);
+            UpdateAlignChart(inspResult);
+        }
+
+        public void Initialize()
+        {
+            //resultList.Add(null);
+        }
+
+        private void UpdateAlignResult(AppsInspResult inspResult)
+        {
+            AlignInspResultControl.UpdateAlignResult(inspResult);
+        }
+
+        private void UpdateAlignChart(AppsInspResult inspResult)
+        {
+            ResultChartControl.UpdateAlignResult(inspResult);
         }
 
         public void InitalizeResultData(int tabCount)
@@ -240,6 +259,7 @@ namespace Jastech.Apps.Winform.UI.Controls
                     }
                 }
             }
+
             var deepCopyImage = result.CogImage.CopyBase(CogImageCopyModeConstants.CopyPixels);
             InspAlignDisplay.UpdateLeftDisplay(deepCopyImage, leftResultList, GetCenterPoint(pointList));
         }
