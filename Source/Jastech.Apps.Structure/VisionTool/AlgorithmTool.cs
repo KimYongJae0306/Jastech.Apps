@@ -119,6 +119,7 @@ namespace Jastech.Apps.Structure.VisionTool
 
         public List<AkkonResult> RunAkkon(Mat mat, AkkonParam akkonParam, int stageNo, int tabNo)
         {
+            tabNo = 0;
             if (mat == null)
                 return null;
             Console.WriteLine("Akkon " + stageNo.ToString() + "   " + tabNo.ToString());

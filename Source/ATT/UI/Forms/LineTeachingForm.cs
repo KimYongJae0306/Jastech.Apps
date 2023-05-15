@@ -174,8 +174,6 @@ namespace ATT.UI.Forms
             teachingData.AddBufferImage(tabScanImage.TabNo, mat);
         }
 
-        //private void Current
-
         private void AddControl()
         {
             _selectedColor = Color.FromArgb(104, 104, 104);
@@ -414,7 +412,7 @@ namespace ATT.UI.Forms
             CurrentTab = TeachingTabList.Where(x => x.Index == tabNo).First();
             _currentTabNo = tabIndex;
 
-            UpdateDisplayImage(_currentTabNo);
+            UpdateDisplayImage(tabNo);
         }
 
         private void UpdateDisplayImage(int tabNo)
@@ -427,7 +425,10 @@ namespace ATT.UI.Forms
                     return;
 
                 ICogImage cogImage = teachingData.ConvertCogGrayImage(buffer.TabImage);
-                UpdateDisplay(cogImage);
+
+                Display.SetImage(cogImage);
+                AppsTeachingUIManager.Instance().SetOrginCogImageBuffer(cogImage);
+                AppsTeachingUIManager.Instance().SetOriginMatImageBuffer(buffer.TabImage);
 
                 if (_displayType == DisplayType.Mark)
                 {
