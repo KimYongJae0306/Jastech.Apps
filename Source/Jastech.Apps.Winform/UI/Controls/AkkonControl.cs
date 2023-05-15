@@ -62,6 +62,8 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         public AlgorithmTool Algorithm { get; private set; } = new AlgorithmTool();
 
+        public AkkonAlgorithmTool AkkonAlgorithm { get; set; } = new AkkonAlgorithmTool();
+
         public double CalcResolution { get; private set; } = 0.0; // ex :  /camera.PixelResolution_mm(0.0035) / camera.LensScale(5) / 1000;
         #endregion
 
@@ -485,7 +487,7 @@ namespace Jastech.Apps.Winform.UI.Controls
 
             Mat testMat = new Mat((int)height, (int)width, DepthType.Cv8U, 1);
             
-            Mat resultMatImage = Algorithm.LastAkkonResultImage(testMat, akkonParam, stageNo, tabNo);
+            Mat resultMatImage = AkkonAlgorithm.LastAkkonResultImage(testMat, akkonParam, stageNo, tabNo);
 
             Mat matR = MatHelper.ColorChannelSprate(resultMatImage, MatHelper.ColorChannel.R);
             Mat matG = MatHelper.ColorChannelSprate(resultMatImage, MatHelper.ColorChannel.G);
@@ -1245,8 +1247,8 @@ namespace Jastech.Apps.Winform.UI.Controls
 
             macron.SliceHeight = matImage.Height;
 
-            int tabIndex = 0; //
-            var tabResults = Algorithm.RunAkkon(matImage, CurrentTab.AkkonParam, CurrentTab.StageIndex, tabIndex);
+            int tabIndex = 0; // 매크론 DLL 에서 TabNo = 0 만 검사됨... 나중에 Dll 확인 필요
+            var tabResults = AkkonAlgorithm.RunAkkon(matImage, CurrentTab.AkkonParam, CurrentTab.StageIndex, tabIndex);
 
             dgvAkkonResult.Rows.Clear();
 
@@ -1300,7 +1302,7 @@ namespace Jastech.Apps.Winform.UI.Controls
             Mat cropImage = MatHelper.CropRoi(matImage, rect);
             
             macron.SliceHeight = cropImage.Height;
-            var tabResults = Algorithm.RunCropAkkon(cropImage, new PointF(rect.X, rect.Y), akkonParam, CurrentTab.Index);
+            var tabResults = AkkonAlgorithm.RunCropAkkon(cropImage, new PointF(rect.X, rect.Y), akkonParam, CurrentTab.Index);
 
             cropSW.Stop();
             Console.WriteLine("Crop : " + cropSW.ElapsedMilliseconds.ToString());
