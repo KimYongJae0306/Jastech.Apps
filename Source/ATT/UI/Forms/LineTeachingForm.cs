@@ -180,7 +180,9 @@ namespace ATT.UI.Forms
 
                 var matImage = teachingData.GetBufferImage(tabNo);
                 var cogImage = teachingData.ConvertCogGrayImage(matImage.TabImage);
-                UpdateDisplay(cogImage);
+                //UpdateDisplay(cogImage);
+                AppsTeachingUIManager.Instance().SetOrginCogImageBuffer(cogImage);
+                AppsTeachingUIManager.Instance().SetOriginMatImageBuffer(matImage.TabImage);
             }
         }
 
