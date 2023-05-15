@@ -177,11 +177,11 @@ namespace Jastech.Apps.Winform.UI.Controls
                 result.LastInspTime = item[0].ToString();
                 result.Cell_ID = item[1].ToString();
 
-                result.TabResultList.Add(AdjustData(tabNo: 0, item));
-                result.TabResultList.Add(AdjustData(tabNo: 1, item));
-                result.TabResultList.Add(AdjustData(tabNo: 2, item));
-                result.TabResultList.Add(AdjustData(tabNo: 3, item));
-                result.TabResultList.Add(AdjustData(tabNo: 4, item));
+                //result.TabResultList.Add(AdjustData(tabNo: 0, item));
+                //result.TabResultList.Add(AdjustData(tabNo: 1, item));
+                //result.TabResultList.Add(AdjustData(tabNo: 2, item));
+                //result.TabResultList.Add(AdjustData(tabNo: 3, item));
+                //result.TabResultList.Add(AdjustData(tabNo: 4, item));
 
                 resultList.Add(result);
             }
