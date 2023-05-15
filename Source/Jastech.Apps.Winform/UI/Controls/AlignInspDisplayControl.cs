@@ -85,11 +85,6 @@ namespace Jastech.Apps.Winform.UI.Controls
             {
                 UpdateAlignResult(ResultList[i]);
             }
-            
-            //for (int tabNo = 0; tabNo < inspModel.TabCount; tabNo++)
-            //{
-            //    UpdateAlignResult(tabNo, ResultList[tabNo]);
-            //}
         }
 
         private void AddControls()
@@ -173,18 +168,18 @@ namespace Jastech.Apps.Winform.UI.Controls
             List<string[]> contents = readData.Item2;
 
             List<AppsInspResult> resultList = new List<AppsInspResult>();
-            foreach (var item in contents)
+
+            AppsInspModel model = ModelManager.Instance().CurrentModel as AppsInspModel;
+
+            foreach (string[] item in contents)
             {
                 AppsInspResult result = new AppsInspResult();
 
                 result.LastInspTime = item[0].ToString();
                 result.Cell_ID = item[1].ToString();
 
-                //result.TabResultList.Add(AdjustData(tabNo: 0, item));
-                //result.TabResultList.Add(AdjustData(tabNo: 1, item));
-                //result.TabResultList.Add(AdjustData(tabNo: 2, item));
-                //result.TabResultList.Add(AdjustData(tabNo: 3, item));
-                //result.TabResultList.Add(AdjustData(tabNo: 4, item));
+                for (int tabIndex = 0; tabIndex < model.TabCount; tabIndex++)
+                    result.TabResultList.Add(AdjustData(tabIndex, item));
 
                 resultList.Add(result);
             }
