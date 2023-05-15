@@ -410,6 +410,28 @@ namespace ATT.UI.Forms
             if (_currentTabNo == tabIndex)
                 return;
             CurrentTab = TeachingTabList.Where(x => x.Index == tabNo).First();
+			
+            var scanImage = SystemManager.Instance().GetTeachingData().GetScanImage(tabNo);
+            if (scanImage != null)
+                UpdateDisplay(scanImage.GetMergeImage());
+            
+            if (_displayType == DisplayType.Mark)
+            {
+                MarkControl.SetParams(CurrentTab);
+                MarkControl.DrawROI();
+            }
+            else if (_displayType == DisplayType.Align)
+            {
+                AlignControl.SetParams(CurrentTab);
+                AlignControl.DrawROI();
+            }
+            else if (_displayType == DisplayType.Akkon)
+            {
+                AkkonControl.ClearDataGridView();
+                AkkonControl.SetParams(CurrentTab);
+                AkkonControl.DrawROI();
+            }
+
             _currentTabNo = tabIndex;
 
             UpdateDisplayImage(tabNo);
@@ -494,6 +516,25 @@ namespace ATT.UI.Forms
                 AkkonControl.ShowROIJog();
         }
         #endregion
+
+        private void lblStageCam_Click(object sender, EventArgs e)
+        {
+            //CopyDataTabtoTab(0, 4);
+            return;
+        }
+
+        private void CopyDataTabtoTab(int originTab, int targetTab)
+        {
+            if (originTab == targetTab)
+                return;
+
+            var copyTabData = TeachingTabList.Where(x => x.Index == targetTab).First();
+            var originTabData = TeachingTabList.Where(x => x.Index == originTab).First();
+
+            copyTabData.AkkonParam = originTabData.AkkonParam.DeepCopy();
+
+            TeachingTabList[targetTab].AkkonParam = copyTabData.AkkonParam.DeepCopy();
+        }
     }
 
     public enum DisplayType
