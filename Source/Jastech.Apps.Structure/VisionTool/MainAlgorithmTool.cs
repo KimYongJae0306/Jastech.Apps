@@ -302,9 +302,9 @@ namespace Jastech.Apps.Structure.VisionTool
             double cornerYX = corner2Point.X;
             double cornerYY = corner2Point.Y;
 
-            orginRegion.SetOriginCornerXCornerY(originX, originY, cornerXX, cornerXY, cornerYX, cornerYY);
+            roi.SetOriginCornerXCornerY(originX, originY, cornerXX, cornerXY, cornerYX, cornerYY);
 
-            return CogRectangleAffine;
+            return roi;
         }
     }
 }

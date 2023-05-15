@@ -494,18 +494,13 @@ namespace ATT.Core
                 List<string> dataList = new List<string>();
                 dataList.Add(panelId);
                 dataList.Add(tabResult.TabNo.ToString());
-                dataList.Add(tabResult.AlignJudgement.ToString());
 
                 float lx = tabResult.LeftAlignX.ResultValue;
-                float ly = tabResult.LeftAlignY.ResultY;
                 float rx = tabResult.RightAlignX.ResultValue;
-                float ry = tabResult.RightAlignY.ResultY;
                 float cx = (lx + rx) / 2.0f;
 
                 dataList.Add(lx.ToString("F3"));
-                dataList.Add(ly.ToString("F3"));
                 dataList.Add(rx.ToString("F3"));
-                dataList.Add(ry.ToString("F3"));
                 dataList.Add(cx.ToString("F3"));
 
 

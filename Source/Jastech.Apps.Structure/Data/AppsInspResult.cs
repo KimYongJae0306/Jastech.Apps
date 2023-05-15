@@ -52,12 +52,6 @@ namespace Jastech.Apps.Structure.Data
     {
         public int TabNo { get; set; } = -1;
 
-        //public Judgement MarkJudgement { get; set; } = Judgement.OK;
-
-        //public Judgement AlignJudgement { get; set; } = Judgement.OK;
-
-        //public Judgement AkkonJudgement { get; set; } = Judgement.OK;
-
         public Mat Image { get; set; } = null;
 
         public ICogImage CogImage { get; set; } = null;
@@ -148,9 +142,6 @@ namespace Jastech.Apps.Structure.Data
             TabInspResult result = new TabInspResult();
 
             result.TabNo = TabNo;
-            result.MarkJudgement = MarkJudgement;
-            result.AlignJudgement = AlignJudgement;
-            result.AkkonJudgement = AkkonJudgement;
             result.Image = Image?.Clone();
             result.CogImage = CogImage?.CopyBase(CogImageCopyModeConstants.CopyPixels);
             result.AkkonResultImage = AkkonResultImage?.CopyBase(CogImageCopyModeConstants.CopyPixels);
@@ -270,7 +261,6 @@ namespace Jastech.Apps.Structure.Data
         {
             AlignResult result = new AlignResult();
             result.ResultValue = ResultValue;
-            result.ResultY = ResultY;
             result.Panel = Panel.DeepCopy();
             result.Fpc = Fpc.DeepCopy();
 
