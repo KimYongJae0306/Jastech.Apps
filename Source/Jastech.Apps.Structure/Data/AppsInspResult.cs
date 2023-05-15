@@ -117,6 +117,48 @@ namespace Jastech.Apps.Structure.Data
             return isGood;
         }
 
+        public bool IsRightAlignXGood()
+        {
+            if (RightAlignX.Fpc == null || RightAlignX.Panel == null)
+                return false;
+
+            bool isGood = true;
+            if (RightAlignX.Fpc.Judgement != Judgement.OK)
+                isGood = false;
+
+            if (RightAlignX.Panel.Judgement != Judgement.OK)
+                isGood = false;
+
+            return isGood;
+        }
+
+        public bool IsRightAlignYGood()
+        {
+            if (RightAlignY.Fpc == null || RightAlignY.Panel == null)
+                return false;
+
+            bool isGood = true;
+            if (RightAlignY.Fpc.Judgement != Judgement.OK)
+                isGood = false;
+
+            if (RightAlignY.Panel.Judgement != Judgement.OK)
+                isGood = false;
+
+            return isGood;
+        }
+
+        public Judgement IsAlignGood()
+        {
+            Judgement judgement = Judgement.OK;
+
+            if (IsLeftAlignXGood() && IsLeftAlignYGood() && IsRightAlignXGood() && IsRightAlignYGood())
+                judgement = Judgement.OK;
+            else
+                judgement = Judgement.NG;
+
+            return judgement;
+        }
+
         public void Dispose()
         {
             if (Image != null)

@@ -162,11 +162,11 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         private void UpdateChart(AppsInspResult result, InspChartType inspType)
         {
-            AlignSeriesLx.Points.Add(result.TabResultList[0].LeftAlignX.X);
-            AlignSeriesLy.Points.Add(result.TabResultList[0].LeftAlignX.Y);
-            AlignSeriesRx.Points.Add(result.TabResultList[0].RightAlignX.X);
-            AlignSeriesRy.Points.Add(result.TabResultList[0].RightAlignY.Y);
-            AlignSeriesCx.Points.Add(Math.Abs((result.TabResultList[0].LeftAlignX.X - result.TabResultList[0].RightAlignX.X) / 2));
+            AlignSeriesLx.Points.Add(result.TabResultList[0].LeftAlignX.ResultValue);
+            AlignSeriesLy.Points.Add(result.TabResultList[0].LeftAlignX.ResultValue);
+            AlignSeriesRx.Points.Add(result.TabResultList[0].RightAlignX.ResultValue);
+            AlignSeriesRy.Points.Add(result.TabResultList[0].RightAlignY.ResultValue);
+            AlignSeriesCx.Points.Add(Math.Abs((result.TabResultList[0].LeftAlignX.ResultValue - result.TabResultList[0].RightAlignX.ResultValue) / 2));
         }
         #endregion
     }

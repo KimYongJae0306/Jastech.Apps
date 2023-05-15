@@ -57,12 +57,12 @@ namespace Jastech.Apps.Winform.UI.Controls
                 string inspectionTime = result.LastInspTime;
                 string panelID = result.Cell_ID;
                 string tabNumber = item.TabNo.ToString();
-                string judge = item.AlignJudgement.ToString();
-                string leftAlignX = item.LeftAlignX.X.ToString("F2");
-                string leftAlignY = item.LeftAlignY.Y.ToString("F2");
-                string rightAlignX = item.RightAlignX.X.ToString("F2");
-                string rightAlignY = item.RightAlignY.Y.ToString("F2");
-                string centerAlignX = Math.Abs((item.LeftAlignX.X - item.RightAlignX.X) / 2).ToString("F2");
+                string judge = item.IsAlignGood().ToString();
+                string leftAlignX = item.LeftAlignX.ResultValue.ToString("F2");
+                string leftAlignY = item.LeftAlignY.ResultValue.ToString("F2");
+                string rightAlignX = item.RightAlignX.ResultValue.ToString("F2");
+                string rightAlignY = item.RightAlignY.ResultValue.ToString("F2");
+                string centerAlignX = Math.Abs((item.LeftAlignX.ResultValue - item.RightAlignX.ResultValue) / 2).ToString("F2");
 
                 string[] row = { inspectionTime, panelID, tabNumber, judge, leftAlignX, leftAlignY, rightAlignX, rightAlignY, centerAlignX };
                 dgvAlignHistory.Rows.Add(row);

@@ -175,7 +175,7 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         public void Initialize()
         {
-            //resultList.Add(null);
+            ResultList.Add(null);
         }
 
         private void UpdateAlignResult(AppsInspResult inspResult)

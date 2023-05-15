@@ -135,7 +135,7 @@ namespace ATT.Core
 
             #region Left Align
             inspResult.LeftAlignX = algorithmTool.RunMainLeftAlignX(cogMergeImage, tab, fpcTheta, panelTheta, judgementX);
-            if (inspResult.LeftAlignX.Judgement != Judgement.OK)
+            if (inspResult.IsLeftAlignXGood() == false)
             {
                 var leftAlignX = inspResult.LeftAlignX;
                 string message = string.Format("Left AlignX Inspection NG !!! Tab_{0} / Fpc_{1}, Panel_{2}", tab.Index, leftAlignX.Fpc.Judgement, leftAlignX.Panel.Judgement);
@@ -153,7 +153,7 @@ namespace ATT.Core
 
             #region Right Align
             inspResult.RightAlignX = algorithmTool.RunMainRightAlignX(cogMergeImage, tab, fpcTheta, panelTheta, judgementX);
-            if(inspResult.RightAlignX.Judgement != Judgement.OK)
+            if(inspResult.IsRightAlignXGood() == false)
             {
                 var rightAlignX = inspResult.RightAlignX;
                 string message = string.Format("Right AlignX Inspection NG !!! Tab_{0} / Fpc_{1}, Panel_{2}", tab.Index, rightAlignX.Fpc.Judgement, rightAlignX.Panel.Judgement);
@@ -161,7 +161,7 @@ namespace ATT.Core
             }
 
             inspResult.RightAlignY = algorithmTool.RunMainRightAlignY(cogMergeImage, tab, fpcTheta, panelTheta, judgementY);
-            if (inspResult.RightAlignY.Judgement != Judgement.OK)
+            if (inspResult.IsRightAlignYGood() == false)
             {
                 var rightAlignY = inspResult.RightAlignY;
                 string message = string.Format("Right AlignY Inspection NG !!! Tab_{0} / Fpc_{1}, Panel_{2}", tab.Index, rightAlignY.Fpc.Judgement, rightAlignY.Panel.Judgement);
