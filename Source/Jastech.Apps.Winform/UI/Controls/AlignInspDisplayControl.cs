@@ -16,6 +16,11 @@ using Emgu.CV;
 using System.Runtime.InteropServices;
 using Jastech.Framework.Imaging;
 using Jastech.Framework.Imaging.VisionPro;
+using System.IO;
+using Jastech.Framework.Util.Helper;
+using Jastech.Apps.Winform.Settings;
+using Jastech.Framework.Imaging.Result;
+using System.Drawing.Text;
 
 namespace Jastech.Apps.Winform.UI.Controls
 {
@@ -73,6 +78,18 @@ namespace Jastech.Apps.Winform.UI.Controls
                 UpdateTabCount();
             else
                 UpdateTabCount(inspModel.TabCount);
+
+            ResultList = LoadResult();
+
+            for (int i = 0; i < ResultList.Count; i++)
+            {
+                UpdateAlignResult(ResultList[i]);
+            }
+            
+            //for (int tabNo = 0; tabNo < inspModel.TabCount; tabNo++)
+            //{
+            //    UpdateAlignResult(tabNo, ResultList[tabNo]);
+            //}
         }
 
         private void AddControls()
@@ -134,7 +151,7 @@ namespace Jastech.Apps.Winform.UI.Controls
 
             CurrentTabNo = tabNum;
 
-            if(InspResultDic.ContainsKey(tabNum))
+            if (InspResultDic.ContainsKey(tabNum))
             {
                 UpdateLeftAlignResult(InspResultDic[tabNum]);
                 UpdateRightAlignResult(InspResultDic[tabNum]);
@@ -145,11 +162,78 @@ namespace Jastech.Apps.Winform.UI.Controls
             }
         }
 
+        private List<AppsInspResult> LoadResult()
+        {
+            string dir = Path.Combine(AppsConfig.Instance().Path.Temp, "AlignInspection_Stage1_Top.csv");
+
+            Tuple<string[], List<string[]>> readData = CSVHelper.ReadData(dir);
+            List<string[]> contents = readData.Item2;
+
+            List<AppsInspResult> resultList = new List<AppsInspResult>();
+            foreach (var item in contents)
+            {
+                AppsInspResult result = new AppsInspResult();
+
+                result.LastInspTime = item[0].ToString();
+                result.Cell_ID = item[1].ToString();
+
+                result.TabResultList.Add(AdjustData(tabNo: 0, item));
+                result.TabResultList.Add(AdjustData(tabNo: 1, item));
+                result.TabResultList.Add(AdjustData(tabNo: 2, item));
+                result.TabResultList.Add(AdjustData(tabNo: 3, item));
+                result.TabResultList.Add(AdjustData(tabNo: 4, item));
+
+                resultList.Add(result);
+            }
+
+            int maximumRow = 100;
+            return CheckResultCount(maximumRow, resultList.ToList());
+        }
+
+        private List<AppsInspResult> CheckResultCount(int maximumCount, List<AppsInspResult> resultList)
+        {
+            if (resultList.Count <= 0)
+                return null;
+
+            if (resultList.Count > maximumCount)
+                resultList.RemoveRange(0, resultList.Count - maximumCount);
+
+            return resultList;
+        }
+
+        private TabInspResult AdjustData(int tabNo, string[] datas)
+        {
+            TabInspResult data = new TabInspResult();
+
+            data.LeftAlignX = new AlignResult();
+            data.LeftAlignY = new AlignResult();
+            data.RightAlignX = new AlignResult();
+            data.RightAlignY = new AlignResult();
+
+            int startIndex = 2;
+            int interval = 7;
+            startIndex = startIndex + interval * tabNo;
+
+            data.TabNo = Convert.ToInt32(datas[startIndex].ToString());
+            data.Judgement = (Judgement)Enum.Parse(typeof(Judgement), datas[startIndex + 1].ToString());
+
+            data.LeftAlignX.ResultValue = (float)Convert.ToDouble(datas[startIndex + 2].ToString());
+            data.LeftAlignY.ResultValue = (float)Convert.ToDouble(datas[startIndex + 3].ToString());
+            data.RightAlignX.ResultValue = (float)Convert.ToDouble(datas[startIndex + 4].ToString());
+            data.RightAlignY.ResultValue = (float)Convert.ToDouble(datas[startIndex + 5].ToString());
+            data.CenterX = (float)Convert.ToDouble(datas[startIndex + 6].ToString());
+
+            return data;
+        }
+
         public void UpdateMainResult(AppsInspResult inspResult)
         {
             _curAppsInspResult = inspResult.DeepCopy();
 
             InspAlignDisplay.ClearImage();
+
+            // T
+            ResultList.Add(inspResult);
 
             for (int i = 0; i < inspResult.TabResultList.Count(); i++)
             {
@@ -168,14 +252,6 @@ namespace Jastech.Apps.Winform.UI.Controls
                     UpdateRightAlignResult(inspResult.TabResultList[i]);
                 }
             }
-
-            UpdateAlignResult(inspResult);
-            UpdateAlignChart(inspResult);
-        }
-
-        public void Initialize()
-        {
-            ResultList.Add(null);
         }
 
         private void UpdateAlignResult(AppsInspResult inspResult)
@@ -183,7 +259,7 @@ namespace Jastech.Apps.Winform.UI.Controls
             AlignInspResultControl.UpdateAlignResult(inspResult);
         }
 
-        private void UpdateAlignChart(AppsInspResult inspResult)
+        private void UpdateAlignChart(int tabNo, AppsInspResult inspResult)
         {
             ResultChartControl.UpdateAlignResult(inspResult);
         }

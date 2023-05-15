@@ -52,6 +52,8 @@ namespace Jastech.Apps.Structure.Data
     {
         public int TabNo { get; set; } = -1;
 
+        public Judgement Judgement { get; set; }
+
         public Mat Image { get; set; } = null;
 
         public ICogImage CogImage { get; set; } = null;
@@ -69,6 +71,8 @@ namespace Jastech.Apps.Structure.Data
         public AlignResult RightAlignX { get; set; } = null;
 
         public AlignResult RightAlignY { get; set; } = null;
+
+        public float CenterX { get; set; }
 
         public List<AkkonResult> AkkonResultList { get; set; }
 
@@ -149,14 +153,14 @@ namespace Jastech.Apps.Structure.Data
 
         public Judgement IsAlignGood()
         {
-            Judgement judgement = Judgement.OK;
+            Judgement = Judgement.OK;
 
             if (IsLeftAlignXGood() && IsLeftAlignYGood() && IsRightAlignXGood() && IsRightAlignYGood())
-                judgement = Judgement.OK;
+                Judgement = Judgement.OK;
             else
-                judgement = Judgement.NG;
+                Judgement = Judgement.NG;
 
-            return judgement;
+            return Judgement;
         }
 
         public void Dispose()
@@ -184,6 +188,7 @@ namespace Jastech.Apps.Structure.Data
             TabInspResult result = new TabInspResult();
 
             result.TabNo = TabNo;
+            result.Judgement = Judgement;
             result.Image = Image?.Clone();
             result.CogImage = CogImage?.CopyBase(CogImageCopyModeConstants.CopyPixels);
             result.AkkonResultImage = AkkonResultImage?.CopyBase(CogImageCopyModeConstants.CopyPixels);
@@ -193,6 +198,7 @@ namespace Jastech.Apps.Structure.Data
             result.LeftAlignY = LeftAlignY?.DeepCopy();
             result.RightAlignX = RightAlignX?.DeepCopy();
             result.RightAlignY = RightAlignY?.DeepCopy();
+            result.CenterX = CenterX;
             result.AkkonResultList = AkkonResultList?.Select(x => x.DeepCopy()).ToList();
 
             return result;

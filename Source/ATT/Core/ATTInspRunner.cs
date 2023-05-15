@@ -168,7 +168,11 @@ namespace ATT.Core
                 Logger.Debug(LogType.Inspection, message);
             }
             #endregion
-            
+
+            #region Center Align
+            inspResult.CenterX = Math.Abs(inspResult.LeftAlignX.ResultValue - inspResult.RightAlignX.ResultValue);
+            #endregion
+
             //if(tab.Index == 1)
             //{
             //    var akkonResult = algorithmTool.RunAkkon(mergeMat, tab.AkkonParam, tab.StageIndex, tab.Index);
@@ -484,6 +488,7 @@ namespace ATT.Core
             if (File.Exists(csvFile) == false)
             {
                 List<string> header = new List<string>();
+                header.Add("Inspection Time");
                 header.Add("Panel ID");
                 header.Add("Tab No");
                 header.Add("Judge");
@@ -509,8 +514,6 @@ namespace ATT.Core
                 dataList.Add(lx.ToString("F3"));
                 dataList.Add(rx.ToString("F3"));
                 dataList.Add(cx.ToString("F3"));
-
-
             }
         }
 

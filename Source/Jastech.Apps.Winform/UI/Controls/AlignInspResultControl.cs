@@ -62,7 +62,7 @@ namespace Jastech.Apps.Winform.UI.Controls
                 string leftAlignY = item.LeftAlignY.ResultValue.ToString("F2");
                 string rightAlignX = item.RightAlignX.ResultValue.ToString("F2");
                 string rightAlignY = item.RightAlignY.ResultValue.ToString("F2");
-                string centerAlignX = Math.Abs((item.LeftAlignX.ResultValue - item.RightAlignX.ResultValue) / 2).ToString("F2");
+                string centerAlignX = item.CenterX.ToString("F2");
 
                 string[] row = { inspectionTime, panelID, tabNumber, judge, leftAlignX, leftAlignY, rightAlignX, rightAlignY, centerAlignX };
                 dgvAlignHistory.Rows.Add(row);

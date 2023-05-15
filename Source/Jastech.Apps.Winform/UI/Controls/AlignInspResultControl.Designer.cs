@@ -30,6 +30,7 @@
         {
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle8 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle9 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
@@ -92,6 +93,8 @@
             this.dgvAlignHistory.Name = "dgvAlignHistory";
             this.dgvAlignHistory.ReadOnly = true;
             this.dgvAlignHistory.RowHeadersVisible = false;
+            dataGridViewCellStyle9.ForeColor = System.Drawing.Color.Black;
+            this.dgvAlignHistory.RowsDefaultCellStyle = dataGridViewCellStyle9;
             this.dgvAlignHistory.RowTemplate.DefaultCellStyle.BackColor = System.Drawing.Color.White;
             this.dgvAlignHistory.RowTemplate.Height = 23;
             this.dgvAlignHistory.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
