@@ -399,7 +399,7 @@ namespace Jastech.Apps.Winform
                         _curGrabCount++;
                     }
                 }
-                Thread.Sleep(0);
+                Thread.Sleep(50);
             }
         }
 

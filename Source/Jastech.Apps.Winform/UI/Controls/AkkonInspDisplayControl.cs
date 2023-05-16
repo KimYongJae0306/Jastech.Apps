@@ -77,7 +77,7 @@ namespace Jastech.Apps.Winform.UI.Controls
             else
                 UpdateTabCount(inspModel.TabCount);
 
-            ResultList = LoadResult();
+            //ResultList = LoadResult();
 
             ClearAkkonChart();
 
