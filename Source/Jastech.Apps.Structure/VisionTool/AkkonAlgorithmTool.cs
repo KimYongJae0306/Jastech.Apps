@@ -28,7 +28,7 @@ namespace Jastech.Apps.Structure.VisionTool
 
         private MacronAkkon AkkonAlgorithm { get; set; } = new MacronAkkon();
 
-        public List<AkkonResult> RunAkkonForTeachingData(Mat mat, Tab tab, int stageCount, int tabCount, float resizeRatio)
+        public AkkonResult RunAkkonForTeachingData(Mat mat, Tab tab, int stageCount, int tabCount, float resizeRatio)
         {
             if (mat == null)
                 return null;
@@ -39,7 +39,7 @@ namespace Jastech.Apps.Structure.VisionTool
             if (akkonRoiList.Count <= 0)
             {
                 Logger.Debug(LogType.Inspection, "Akkon Roi is nothing.");
-                return new List<AkkonResult>();
+                return new AkkonResult();
             }
 
             marcon.DrawOption.DrawResizeRatio = resizeRatio;
@@ -85,15 +85,15 @@ namespace Jastech.Apps.Structure.VisionTool
             int[][] intSliceCnt = TotalSliceCnt.Select(list => list.ToArray()).ToArray();
             AkkonAlgorithm.EnableInspFlag(intSliceCnt); //검사 FLag 할당
             AkkonAlgorithm.SetAkkonParam(tab.StageIndex, tab.Index, ref marcon);
-            var results = AkkonAlgorithm.Inspect(tab.StageIndex, tab.Index, mat);
+            var result = AkkonAlgorithm.Inspect(tab.StageIndex, tab.Index, mat);
 
-            return results;
+            return result;
         }
-        public List<AkkonResult> RunMultiAkkon(Mat mat, int stageNo, int tabNo)
+        public AkkonResult RunMultiAkkon(Mat mat, int stageNo, int tabNo)
         {
-            var results = AkkonAlgorithm.Inspect(stageNo, tabNo, mat);
+            var result = AkkonAlgorithm.Inspect(stageNo, tabNo, mat);
 
-            return results;
+            return result;
         }
 
         public void PrepareMultiInspection(AppsInspModel inspModel, List<TabScanImage> tabscanImageList, float resizeRatio)

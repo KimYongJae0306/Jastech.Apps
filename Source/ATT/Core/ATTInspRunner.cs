@@ -199,14 +199,11 @@ namespace ATT.Core
                     Mat image = akkon.TabInspResult.Image;
                     Tab tab = akkon.Tab;
 
-                    //var akkonResult = AkkonAlgorithmTool.RunMultiAkkon(image, tab.StageIndex, tab.Index);
-                    //if (result.AkkonResultList == null)
-                    //    result.AkkonResultList = new List<AkkonResult>();
+                    var akkonResult = AkkonAlgorithmTool.RunMultiAkkon(image, tab.StageIndex, tab.Index);
+                    result.AkkonResult = akkonResult;
+                    AppsInspResult.TabResultList.Add(result);
 
-                    //result.AkkonResultList.AddRange(akkonResult);
-                    //AppsInspResult.TabResultList.Add(result);
-
-                    AppsInspResult.TabResultList.Add(new TabInspResult());
+                    //AppsInspResult.TabResultList.Add(new TabInspResult());
 
                     Console.WriteLine("Add Akkon Result");
                 }

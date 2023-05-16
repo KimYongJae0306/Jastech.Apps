@@ -475,18 +475,15 @@ namespace Jastech.Apps.Winform.UI.Controls
             }
         }
 
-        private void UpdateResult(List<AkkonResult> akkonResults)
+        private void UpdateResult(AkkonResult akkonResult)
         {
             int no = 0;
-            foreach (var tabResult in akkonResults)
+            foreach (var lead in akkonResult.LeadResultList)
             {
-                foreach (var lead in tabResult.LeadResultList)
-                {
-                    string[] row = { no.ToString(), lead.BlobCount.ToString(), lead.Length.ToString(), lead.LeadStdDev.ToString(), lead.IsGood.ToString() };
-                    dgvAkkonResult.Rows.Add(row);
+                string[] row = { no.ToString(), lead.BlobCount.ToString(), lead.Length.ToString(), lead.LeadStdDev.ToString(), lead.IsGood.ToString() };
+                dgvAkkonResult.Rows.Add(row);
 
-                    no++;
-                }
+                no++;
             }
         }
 
