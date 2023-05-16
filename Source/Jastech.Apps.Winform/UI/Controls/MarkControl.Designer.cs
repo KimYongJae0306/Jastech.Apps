@@ -46,12 +46,14 @@
             this.lblParameter = new System.Windows.Forms.Label();
             this.tlpPattern = new System.Windows.Forms.TableLayoutPanel();
             this.pnlParam = new System.Windows.Forms.Panel();
+            this.lblTest = new System.Windows.Forms.Label();
             this.pnlPosition.SuspendLayout();
             this.tlpPattern.SuspendLayout();
             this.SuspendLayout();
             // 
             // pnlPosition
             // 
+            this.pnlPosition.Controls.Add(this.lblTest);
             this.pnlPosition.Controls.Add(this.lblRight);
             this.pnlPosition.Controls.Add(this.label8);
             this.pnlPosition.Controls.Add(this.lblRightSub4);
@@ -292,6 +294,19 @@
             this.pnlParam.Size = new System.Drawing.Size(679, 347);
             this.pnlParam.TabIndex = 8;
             // 
+            // lblTest
+            // 
+            this.lblTest.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblTest.Font = new System.Drawing.Font("맑은 고딕", 11.25F, System.Drawing.FontStyle.Bold);
+            this.lblTest.Location = new System.Drawing.Point(592, 216);
+            this.lblTest.Margin = new System.Windows.Forms.Padding(0);
+            this.lblTest.Name = "lblTest";
+            this.lblTest.Size = new System.Drawing.Size(87, 40);
+            this.lblTest.TabIndex = 12;
+            this.lblTest.Text = "Panel";
+            this.lblTest.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblTest.Click += new System.EventHandler(this.lblTest_Click);
+            // 
             // MarkControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
@@ -328,5 +343,6 @@
         private System.Windows.Forms.Label lblRight;
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.Panel pnlParam;
+        private System.Windows.Forms.Label lblTest;
     }
 }
