@@ -462,6 +462,7 @@ namespace ATT.Core
 
                 case SeqStep.SEQ_DELETE_DATA:
 
+                    Thread.Sleep(1000);
                     SeqStep = SeqStep.SEQ_IDLE;
                     break;
 

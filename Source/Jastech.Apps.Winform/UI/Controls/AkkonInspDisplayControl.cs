@@ -301,28 +301,31 @@ namespace Jastech.Apps.Winform.UI.Controls
 
             CSVHelper.WriteHeader(filePath, header);
 
-            List<string> data = new List<string>
-            {
-                inspResult.LastInspTime.ToString(),
-                inspResult.Cell_ID.ToString()
-            };
+            List<List<string>> dataList = new List<List<string>>();
 
-            foreach (var item in inspResult.TabResultList)
+            foreach (var item in inspResult.TabResultList[tabNo].AkkonResult.LeadResultList)
             {
-                data.Add(item.AkkonResult.LeadResultList[tabNo].Id.ToString());
-                data.Add(item.AkkonResult.LeadResultList[tabNo].BlobCount.ToString());
-                data.Add(item.AkkonResult.LeadResultList[tabNo].Length.ToString());
-                data.Add(item.AkkonResult.LeadResultList[tabNo].AvgStrength.ToString());
+                List<string> datas = new List<string>
+                {
+                    inspResult.LastInspTime.ToString(),
+                    inspResult.Cell_ID.ToString(),
+                    item.Id.ToString(),
+                    item.BlobCount.ToString(),
+                    item.Length.ToString("F2"),
+                    item.AvgStrength.ToString("F2")
+                };
 
-                if (item.AkkonResult.LeadResultList[tabNo].IsGood)
-                    data.Add(Judgement.OK.ToString());
+                if (item.IsGood)
+                    datas.Add(Judgement.OK.ToString());
                 else
-                    data.Add(Judgement.NG.ToString());
+                    datas.Add(Judgement.NG.ToString());
 
-                data.Add(item.AkkonResult.LeadResultList[tabNo].LeadStdDev.ToString());
+                datas.Add(item.LeadStdDev.ToString());
+
+                dataList.Add(datas);
             }
 
-            CSVHelper.WriteData(filePath, header);
+            CSVHelper.WriteData(filePath, dataList);
         }
         #endregion
     }

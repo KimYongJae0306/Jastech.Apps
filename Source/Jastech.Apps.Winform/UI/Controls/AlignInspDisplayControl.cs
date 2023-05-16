@@ -321,6 +321,8 @@ namespace Jastech.Apps.Winform.UI.Controls
                 data.Add(item.RightAlignY.ResultValue.ToString("F2"));
                 data.Add(item.CenterX.ToString("F2"));
             }
+
+            CSVHelper.WriteData(filePath, data);
         }
 
         public void InitalizeResultData(int tabCount)
