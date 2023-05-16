@@ -204,7 +204,7 @@ namespace ATT.Core
                         result.AkkonResultList = new List<AkkonResult>();
 
                     result.AkkonResultList.AddRange(akkonResult);
-
+                    AppsInspResult.TabResultList.Add(result);
                     Console.WriteLine("Add Akkon Result");
                 }
                 Thread.Sleep(10);
@@ -447,6 +447,7 @@ namespace ATT.Core
                     break;
 
                 case SeqStep.SEQ_UI_RESULT_UPDATE:
+                    GetAkkonResultImage();
                     SystemManager.Instance().UpdateMainResult(AppsInspResult);
                     Console.WriteLine("Scan End to Insp Compelte : " + LastInspSW.ElapsedMilliseconds.ToString());
                     SeqStep = SeqStep.SEQ_SAVE_IMAGE;
@@ -473,6 +474,18 @@ namespace ATT.Core
                     break;
                 default:
                     break;
+            }
+        }
+
+        private void GetAkkonResultImage()
+        {
+            AppsInspModel inspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
+            var unit = inspModel.GetUnit(UnitName.Unit0);
+            for (int i = 0; i < AppsInspResult.TabResultList.Count(); i++)
+            {
+                var tabResult = AppsInspResult.TabResultList[i];
+                Tab tab = unit.GetTab(tabResult.TabNo);
+                tabResult.AkkonResultImage = AkkonAlgorithmTool.GetResultImage(tabResult.Image.Width, tabResult.Image.Height, tab, AppsConfig.Instance().AkkonResizeRatio);
             }
         }
 

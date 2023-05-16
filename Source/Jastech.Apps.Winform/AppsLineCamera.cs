@@ -106,11 +106,12 @@ namespace Jastech.Apps.Winform
             float resolution_mm = (float)(Camera.PixelResolution_um / Camera.LensScale) / 1000; // ex) 3.5 um / 5 / 1000 = 0.0007mm
             int totalScanSubImageCount = (int)Math.Ceiling(materialInfo.PanelXSize_mm / resolution_mm / Camera.ImageHeight); // ex) 500mm / 0.0007mm / 1024 pixel
 
-            GrabCount = 450;// totalScanSubImageCount;
+            //GrabCount = 450;// totalScanSubImageCount;
             _curGrabCount = 0;
             _stackTabNo = 0;
 
             double tempPos = 0.0;
+            int maxEndIndex = 0;
             for (int i = 0; i < tabCount; i++)
             {
                 if (i == 0)
@@ -121,6 +122,8 @@ namespace Jastech.Apps.Winform
                 double tabWidth = materialInfo.GetTabWidth(i);
                 tempPos += tabWidth;
                 int endIndex = (int)(tempPos / resolution_mm / Camera.ImageHeight);
+                if(maxEndIndex <= endIndex)
+                    maxEndIndex = endIndex;
 
                 var temp = endIndex - startIndex;
 
@@ -130,6 +133,7 @@ namespace Jastech.Apps.Winform
                 lock(TabScanImageList)
                     TabScanImageList.Add(scanImage);
             }
+            GrabCount = maxEndIndex;
         }
 
         public void StartGrab()

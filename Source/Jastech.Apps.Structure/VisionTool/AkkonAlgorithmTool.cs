@@ -185,14 +185,17 @@ namespace Jastech.Apps.Structure.VisionTool
             return AkkonAlgorithm.GetDrawResultImage(mat, stageNo, tabNo, ref marcon);
         }
 
-        public ICogImage GetResultImage(Mat mat, Tab tab, int tabIndex, float resizeRatio)
+        public ICogImage GetResultImage(int orgWidth, int orgHeight, Tab tab, float resizeRatio)
         {
             AkkonParam akkonParam = tab.AkkonParam;
-            double width = Math.Truncate(mat.Width * resizeRatio);
-            double height = Math.Truncate(mat.Height * resizeRatio);
+            //double width = Math.Truncate(orgWidth * resizeRatio);
+            //double height = Math.Truncate(orgHeight * resizeRatio);
+
+            double width = orgWidth;
+            double height = orgHeight;
 
             Mat testMat = new Mat((int)height, (int)width, DepthType.Cv8U, 1);
-            Mat resultMatImage = LastAkkonResultImage(testMat, akkonParam, tab.StageIndex, tabIndex);
+            Mat resultMatImage = LastAkkonResultImage(testMat, akkonParam, tab.StageIndex, tab.Index);
 
             Mat matR = MatHelper.ColorChannelSprate(resultMatImage, MatHelper.ColorChannel.R);
             Mat matG = MatHelper.ColorChannelSprate(resultMatImage, MatHelper.ColorChannel.G);
@@ -208,6 +211,12 @@ namespace Jastech.Apps.Structure.VisionTool
             Marshal.Copy(matB.DataPointer, dataB, 0, matB.Width * matB.Height);
 
             var cogImage = CogImageHelper.CovertImage(dataR, dataG, dataB, matB.Width, matB.Height);
+
+            resultMatImage.Dispose();
+            testMat.Dispose();
+            matR.Dispose();
+            matG.Dispose();
+            matB.Dispose();
 
             return cogImage;
         }

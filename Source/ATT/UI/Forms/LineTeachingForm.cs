@@ -333,7 +333,7 @@ namespace ATT.UI.Forms
             AppsLAFManager.Instance().AutoFocusOnOff(LAFName.Akkon.ToString(), true);
 
             SystemManager.Instance().GetTeachingData().ClearTeachingImageBuffer();
-
+            appsLineCamera.InitGrabSettings();
             appsLineCamera.StartGrab();
         }
 
