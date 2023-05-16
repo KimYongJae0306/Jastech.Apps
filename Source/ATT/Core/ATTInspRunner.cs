@@ -324,6 +324,7 @@ namespace ATT.Core
                     break;
                 }
                 SeqTaskLoop();
+                Thread.Sleep(50);
             }
         }
 

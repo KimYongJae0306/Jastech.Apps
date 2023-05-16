@@ -291,7 +291,7 @@ namespace Jastech.Apps.Winform
                     }
                 }
 
-                Thread.Sleep(50);
+                Thread.Sleep(300);
             }
         }
 

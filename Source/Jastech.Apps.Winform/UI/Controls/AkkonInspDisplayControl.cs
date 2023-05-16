@@ -249,7 +249,7 @@ namespace Jastech.Apps.Winform.UI.Controls
             {
                 int tabNo = inspResult.TabResultList[i].TabNo;
 
-                WriteAkkonResult(null, tabNo, inspResult);
+                // 임시 WriteAkkonResult(null, tabNo, inspResult);
 
                 if (InspResultDic.ContainsKey(tabNo))
                 {

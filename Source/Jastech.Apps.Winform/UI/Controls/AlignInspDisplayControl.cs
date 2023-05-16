@@ -238,7 +238,7 @@ namespace Jastech.Apps.Winform.UI.Controls
             InspAlignDisplay.ClearImage();
 
             ResultList.Add(inspResult);
-            WriteAlignResult(null, inspResult);
+            //임시 WriteAlignResult(null, inspResult); 
 
             for (int i = 0; i < inspResult.TabResultList.Count(); i++)
             {
