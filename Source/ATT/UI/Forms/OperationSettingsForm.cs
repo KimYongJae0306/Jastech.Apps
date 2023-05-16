@@ -89,6 +89,9 @@ namespace ATT.UI.Forms
                 if (type == operation.ExtensionNGImage)
                     mcbxNGExtension.SelectedIndex = i;
             }
+
+            txtAlignResultCount.Text = operation.AlignResultCount.ToString();
+            txtAkkonResultCount.Text = operation.AkkonResultCount.ToString();
         }
 
         public void UpdateCuurentData()
@@ -113,6 +116,9 @@ namespace ATT.UI.Forms
 
             operation.ExtensionOKImage = (ImageExtension)Enum.Parse(typeof(ImageExtension), mcbxOKExtension.SelectedItem as string);
             operation.ExtensionNGImage = (ImageExtension)Enum.Parse(typeof(ImageExtension), mcbxNGExtension.SelectedItem as string);
+
+            operation.AlignResultCount = Convert.ToInt32(GetValue(txtAlignResultCount.Text));
+            operation.AkkonResultCount = Convert.ToInt32(GetValue(txtAkkonResultCount.Text));
         }
 
         public string GetValue(string value)

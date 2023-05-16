@@ -62,23 +62,6 @@ namespace Jastech.Apps.Winform.UI.Controls
                 string[] row = { inspectionTime, panelID, tabNumber, judge, count, length };
                 dgvAkkonHistory.Rows.Add(row);
             }
-
-            //foreach (TabInspResult tabResult in result.TabResultList)
-            //{
-            //    string inspectionTime = result.LastInspTime;
-            //    string panelID = result.Cell_ID;
-
-            //    foreach (var item in tabResult.AkkonResultList)
-            //    {
-            //        string tabNumber = item.TabNo.ToString();
-            //        string judge = item.Judgement.ToString();
-            //        string count = item.AvgBlobCount.ToString();
-            //        string length = item.AvgLength.ToString();
-
-            //        string[] row = { inspectionTime, panelID, tabNumber, judge, count, length };
-            //        dgvAkkonHistory.Rows.Add(row);
-            //    }
-            //}
         }
         #endregion
     }

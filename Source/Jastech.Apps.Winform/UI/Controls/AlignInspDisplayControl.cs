@@ -83,7 +83,7 @@ namespace Jastech.Apps.Winform.UI.Controls
 
             ClearAlignChart();
 
-            for (int resultCount = 0; resultCount < ResultList.Count; resultCount++)
+            for (int resultCount = ResultList.Count - 1; resultCount >= 0 ; resultCount--)
             {
                 UpdateAlignResult(ResultList[resultCount]);
                 UpdateAlignChart(ResultList[resultCount].TabResultList[0]);
@@ -167,7 +167,7 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         private List<AppsInspResult> LoadResult()
         {
-            List<AppsInspResult> resultList = new List<AppsInspResult>();
+            List<AppsInspResult> inspResultList = new List<AppsInspResult>();
 
             string dir = Path.Combine(AppsConfig.Instance().Path.Result, @"Align\AlignInspection_Stage1_Top.csv");
 
@@ -181,30 +181,29 @@ namespace Jastech.Apps.Winform.UI.Controls
 
             foreach (var item in contents)
             {
-                AppsInspResult result = new AppsInspResult();
+                AppsInspResult inspResult = new AppsInspResult();
 
-                result.LastInspTime = item[0].ToString();
-                result.Cell_ID = item[1].ToString();
+                inspResult.LastInspTime = item[0].ToString();
+                inspResult.Cell_ID = item[1].ToString();
 
                 for (int tabIndex = 0; tabIndex < model.TabCount; tabIndex++)
-                    result.TabResultList.Add(AdjustData(tabIndex, item));
+                    inspResult.TabResultList.Add(AdjustData(tabIndex, item));
 
-                resultList.Add(result);
+                inspResultList.Add(inspResult);
             }
 
-            int maximumRow = 100;
-            return CheckResultCount(maximumRow, resultList.ToList());
+            return CheckResultCount(AppsConfig.Instance().Operation.AlignResultCount, inspResultList.ToList());
         }
 
-        private List<AppsInspResult> CheckResultCount(int maximumCount, List<AppsInspResult> resultList)
+        private List<AppsInspResult> CheckResultCount(int maximumCount, List<AppsInspResult> inspResultList)
         {
-            if (resultList.Count <= 0)
+            if (inspResultList.Count <= 0)
                 return null;
 
-            if (resultList.Count > maximumCount)
-                resultList.RemoveRange(0, resultList.Count - maximumCount);
+            if (inspResultList.Count > maximumCount)
+                inspResultList.RemoveRange(0, inspResultList.Count - maximumCount);
 
-            return resultList;
+            return inspResultList;
         }
 
         private TabInspResult AdjustData(int tabNo, string[] datas)
@@ -239,6 +238,7 @@ namespace Jastech.Apps.Winform.UI.Controls
             InspAlignDisplay.ClearImage();
 
             ResultList.Add(inspResult);
+            WriteAlignResult(null, inspResult);
 
             for (int i = 0; i < inspResult.TabResultList.Count(); i++)
             {
@@ -274,6 +274,53 @@ namespace Jastech.Apps.Winform.UI.Controls
         private void ClearAlignChart()
         {
             ResultChartControl.ClearChart();
+        }
+
+        private void WriteAlignResult(string filePath, AppsInspResult inspResult)
+        {
+            // TEST
+            filePath = Path.Combine(AppsConfig.Instance().Path.Result, @"Align\AlignInspection_Stage1_Top.csv");
+
+            if (File.Exists(filePath) == false)
+            {
+                AppsInspModel model = ModelManager.Instance().CurrentModel as AppsInspModel;
+
+                List<string> header = new List<string>
+                {
+                    "Inspection Time",
+                    "Panel ID"
+                };
+
+                for (int tabNo = 0; tabNo < model.TabCount; tabNo++)
+                {
+                    header.Add("Tab No");
+                    header.Add("Judge");
+                    header.Add("Lx");
+                    header.Add("Ly");
+                    header.Add("Rx");
+                    header.Add("Ry");
+                    header.Add("Cx");
+                }
+
+                CSVHelper.WriteHeader(filePath, header);
+            }
+
+            List<string> data = new List<string>
+            {
+                inspResult.LastInspTime.ToString(),
+                inspResult.Cell_ID.ToString()
+            };
+
+            foreach (var item in inspResult.TabResultList)
+            {
+                data.Add(item.TabNo.ToString());
+                data.Add(item.IsAlignGood().ToString());
+                data.Add(item.LeftAlignX.ResultValue.ToString("F2"));
+                data.Add(item.LeftAlignY.ResultValue.ToString("F2"));
+                data.Add(item.RightAlignX.ResultValue.ToString("F2"));
+                data.Add(item.RightAlignY.ResultValue.ToString("F2"));
+                data.Add(item.CenterX.ToString("F2"));
+            }
         }
 
         public void InitalizeResultData(int tabCount)
@@ -445,7 +492,6 @@ namespace Jastech.Apps.Winform.UI.Controls
 
             return cogImage;
         }
-
         #endregion
     }
 }

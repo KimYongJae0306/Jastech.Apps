@@ -64,6 +64,8 @@
             this.txtDistanceX = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.panel3 = new System.Windows.Forms.Panel();
+            this.panel12 = new System.Windows.Forms.Panel();
+            this.label21 = new System.Windows.Forms.Label();
             this.tableLayoutPanel12 = new System.Windows.Forms.TableLayoutPanel();
             this.mcbxNGExtension = new MetroFramework.Controls.MetroComboBox();
             this.label23 = new System.Windows.Forms.Label();
@@ -74,6 +76,14 @@
             this.mtgSaveOK = new MetroFramework.Controls.MetroToggle();
             this.panel6 = new System.Windows.Forms.Panel();
             this.label22 = new System.Windows.Forms.Label();
+            this.tableLayoutPanel18 = new System.Windows.Forms.TableLayoutPanel();
+            this.label27 = new System.Windows.Forms.Label();
+            this.label28 = new System.Windows.Forms.Label();
+            this.txtAkkonResultCount = new System.Windows.Forms.TextBox();
+            this.tableLayoutPanel17 = new System.Windows.Forms.TableLayoutPanel();
+            this.label25 = new System.Windows.Forms.Label();
+            this.label26 = new System.Windows.Forms.Label();
+            this.txtAlignResultCount = new System.Windows.Forms.TextBox();
             this.tableLayoutPanel8 = new System.Windows.Forms.TableLayoutPanel();
             this.label15 = new System.Windows.Forms.Label();
             this.label16 = new System.Windows.Forms.Label();
@@ -107,6 +117,8 @@
             this.panel3.SuspendLayout();
             this.tableLayoutPanel12.SuspendLayout();
             this.tableLayoutPanel11.SuspendLayout();
+            this.tableLayoutPanel18.SuspendLayout();
+            this.tableLayoutPanel17.SuspendLayout();
             this.tableLayoutPanel8.SuspendLayout();
             this.tableLayoutPanel9.SuspendLayout();
             this.tableLayoutPanel13.SuspendLayout();
@@ -581,10 +593,14 @@
             // 
             // panel3
             // 
+            this.panel3.Controls.Add(this.panel12);
+            this.panel3.Controls.Add(this.label21);
             this.panel3.Controls.Add(this.tableLayoutPanel12);
             this.panel3.Controls.Add(this.tableLayoutPanel11);
             this.panel3.Controls.Add(this.panel6);
             this.panel3.Controls.Add(this.label22);
+            this.panel3.Controls.Add(this.tableLayoutPanel18);
+            this.panel3.Controls.Add(this.tableLayoutPanel17);
             this.panel3.Controls.Add(this.tableLayoutPanel8);
             this.panel3.Controls.Add(this.tableLayoutPanel9);
             this.panel3.Controls.Add(this.panel5);
@@ -595,6 +611,26 @@
             this.panel3.Size = new System.Drawing.Size(362, 553);
             this.panel3.TabIndex = 1;
             // 
+            // panel12
+            // 
+            this.panel12.BackColor = System.Drawing.SystemColors.Highlight;
+            this.panel12.Location = new System.Drawing.Point(14, 433);
+            this.panel12.Margin = new System.Windows.Forms.Padding(0);
+            this.panel12.Name = "panel12";
+            this.panel12.Size = new System.Drawing.Size(345, 2);
+            this.panel12.TabIndex = 22;
+            // 
+            // label21
+            // 
+            this.label21.Font = new System.Drawing.Font("맑은 고딕", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.label21.ForeColor = System.Drawing.Color.White;
+            this.label21.Location = new System.Drawing.Point(12, 400);
+            this.label21.Name = "label21";
+            this.label21.Size = new System.Drawing.Size(323, 33);
+            this.label21.TabIndex = 27;
+            this.label21.Text = "Inspection Result";
+            this.label21.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
             // tableLayoutPanel12
             // 
             this.tableLayoutPanel12.ColumnCount = 3;
@@ -604,10 +640,12 @@
             this.tableLayoutPanel12.Controls.Add(this.mcbxNGExtension, 2, 0);
             this.tableLayoutPanel12.Controls.Add(this.label23, 0, 0);
             this.tableLayoutPanel12.Controls.Add(this.mtgSaveNG, 1, 0);
-            this.tableLayoutPanel12.Location = new System.Drawing.Point(58, 278);
+            this.tableLayoutPanel12.Location = new System.Drawing.Point(58, 276);
             this.tableLayoutPanel12.Name = "tableLayoutPanel12";
             this.tableLayoutPanel12.RowCount = 1;
             this.tableLayoutPanel12.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel12.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 36F));
+            this.tableLayoutPanel12.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 36F));
             this.tableLayoutPanel12.Size = new System.Drawing.Size(298, 36);
             this.tableLayoutPanel12.TabIndex = 26;
             // 
@@ -658,7 +696,7 @@
             this.tableLayoutPanel11.Controls.Add(this.mcbxOKExtension, 2, 0);
             this.tableLayoutPanel11.Controls.Add(this.label24, 0, 0);
             this.tableLayoutPanel11.Controls.Add(this.mtgSaveOK, 1, 0);
-            this.tableLayoutPanel11.Location = new System.Drawing.Point(58, 232);
+            this.tableLayoutPanel11.Location = new System.Drawing.Point(58, 230);
             this.tableLayoutPanel11.Name = "tableLayoutPanel11";
             this.tableLayoutPanel11.RowCount = 1;
             this.tableLayoutPanel11.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
@@ -706,7 +744,7 @@
             // panel6
             // 
             this.panel6.BackColor = System.Drawing.SystemColors.Highlight;
-            this.panel6.Location = new System.Drawing.Point(14, 219);
+            this.panel6.Location = new System.Drawing.Point(14, 217);
             this.panel6.Margin = new System.Windows.Forms.Padding(0);
             this.panel6.Name = "panel6";
             this.panel6.Size = new System.Drawing.Size(345, 2);
@@ -716,12 +754,122 @@
             // 
             this.label22.Font = new System.Drawing.Font("맑은 고딕", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.label22.ForeColor = System.Drawing.Color.White;
-            this.label22.Location = new System.Drawing.Point(9, 186);
+            this.label22.Location = new System.Drawing.Point(9, 184);
             this.label22.Name = "label22";
             this.label22.Size = new System.Drawing.Size(323, 33);
             this.label22.TabIndex = 22;
             this.label22.Text = "Image Save Options";
             this.label22.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // tableLayoutPanel18
+            // 
+            this.tableLayoutPanel18.ColumnCount = 3;
+            this.tableLayoutPanel18.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 100F));
+            this.tableLayoutPanel18.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel18.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 50F));
+            this.tableLayoutPanel18.Controls.Add(this.label27, 2, 0);
+            this.tableLayoutPanel18.Controls.Add(this.label28, 0, 0);
+            this.tableLayoutPanel18.Controls.Add(this.txtAkkonResultCount, 1, 0);
+            this.tableLayoutPanel18.Location = new System.Drawing.Point(58, 492);
+            this.tableLayoutPanel18.Name = "tableLayoutPanel18";
+            this.tableLayoutPanel18.RowCount = 1;
+            this.tableLayoutPanel18.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel18.Size = new System.Drawing.Size(298, 40);
+            this.tableLayoutPanel18.TabIndex = 20;
+            // 
+            // label27
+            // 
+            this.label27.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.label27.Font = new System.Drawing.Font("맑은 고딕", 10.25F, System.Drawing.FontStyle.Bold);
+            this.label27.ForeColor = System.Drawing.Color.White;
+            this.label27.Location = new System.Drawing.Point(251, 0);
+            this.label27.Name = "label27";
+            this.label27.Size = new System.Drawing.Size(44, 40);
+            this.label27.TabIndex = 11;
+            this.label27.Text = "ea";
+            this.label27.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // label28
+            // 
+            this.label28.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.label28.Font = new System.Drawing.Font("맑은 고딕", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.label28.ForeColor = System.Drawing.Color.White;
+            this.label28.Location = new System.Drawing.Point(3, 0);
+            this.label28.Name = "label28";
+            this.label28.Size = new System.Drawing.Size(94, 40);
+            this.label28.TabIndex = 5;
+            this.label28.Text = "Akkon";
+            this.label28.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // txtAkkonResultCount
+            // 
+            this.txtAkkonResultCount.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
+            this.txtAkkonResultCount.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.txtAkkonResultCount.Font = new System.Drawing.Font("맑은 고딕", 14.25F, System.Drawing.FontStyle.Bold);
+            this.txtAkkonResultCount.ForeColor = System.Drawing.Color.White;
+            this.txtAkkonResultCount.Location = new System.Drawing.Point(103, 3);
+            this.txtAkkonResultCount.Name = "txtAkkonResultCount";
+            this.txtAkkonResultCount.Size = new System.Drawing.Size(142, 33);
+            this.txtAkkonResultCount.TabIndex = 8;
+            this.txtAkkonResultCount.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.txtAkkonResultCount.Click += new System.EventHandler(this.textbox_KeyPad_Click);
+            this.txtAkkonResultCount.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtDataStoringDays_KeyPress);
+            this.txtAkkonResultCount.Leave += new System.EventHandler(this.txtDataStoringDays_Leave);
+            // 
+            // tableLayoutPanel17
+            // 
+            this.tableLayoutPanel17.ColumnCount = 3;
+            this.tableLayoutPanel17.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 100F));
+            this.tableLayoutPanel17.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel17.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 50F));
+            this.tableLayoutPanel17.Controls.Add(this.label25, 2, 0);
+            this.tableLayoutPanel17.Controls.Add(this.label26, 0, 0);
+            this.tableLayoutPanel17.Controls.Add(this.txtAlignResultCount, 1, 0);
+            this.tableLayoutPanel17.Location = new System.Drawing.Point(58, 442);
+            this.tableLayoutPanel17.Name = "tableLayoutPanel17";
+            this.tableLayoutPanel17.RowCount = 1;
+            this.tableLayoutPanel17.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel17.Size = new System.Drawing.Size(298, 40);
+            this.tableLayoutPanel17.TabIndex = 20;
+            // 
+            // label25
+            // 
+            this.label25.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.label25.Font = new System.Drawing.Font("맑은 고딕", 10.25F, System.Drawing.FontStyle.Bold);
+            this.label25.ForeColor = System.Drawing.Color.White;
+            this.label25.Location = new System.Drawing.Point(251, 0);
+            this.label25.Name = "label25";
+            this.label25.Size = new System.Drawing.Size(44, 40);
+            this.label25.TabIndex = 11;
+            this.label25.Text = "ea";
+            this.label25.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // label26
+            // 
+            this.label26.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.label26.Font = new System.Drawing.Font("맑은 고딕", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.label26.ForeColor = System.Drawing.Color.White;
+            this.label26.Location = new System.Drawing.Point(3, 0);
+            this.label26.Name = "label26";
+            this.label26.Size = new System.Drawing.Size(94, 40);
+            this.label26.TabIndex = 5;
+            this.label26.Text = "Align";
+            this.label26.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // txtAlignResultCount
+            // 
+            this.txtAlignResultCount.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
+            this.txtAlignResultCount.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.txtAlignResultCount.Font = new System.Drawing.Font("맑은 고딕", 14.25F, System.Drawing.FontStyle.Bold);
+            this.txtAlignResultCount.ForeColor = System.Drawing.Color.White;
+            this.txtAlignResultCount.Location = new System.Drawing.Point(103, 3);
+            this.txtAlignResultCount.Name = "txtAlignResultCount";
+            this.txtAlignResultCount.Size = new System.Drawing.Size(142, 33);
+            this.txtAlignResultCount.TabIndex = 8;
+            this.txtAlignResultCount.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.txtAlignResultCount.Click += new System.EventHandler(this.textbox_KeyPad_Click);
+            this.txtAlignResultCount.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtDataStoringDays_KeyPress);
+            this.txtAlignResultCount.Leave += new System.EventHandler(this.txtDataStoringDays_Leave);
             // 
             // tableLayoutPanel8
             // 
@@ -1029,6 +1177,10 @@
             this.tableLayoutPanel12.PerformLayout();
             this.tableLayoutPanel11.ResumeLayout(false);
             this.tableLayoutPanel11.PerformLayout();
+            this.tableLayoutPanel18.ResumeLayout(false);
+            this.tableLayoutPanel18.PerformLayout();
+            this.tableLayoutPanel17.ResumeLayout(false);
+            this.tableLayoutPanel17.PerformLayout();
             this.tableLayoutPanel8.ResumeLayout(false);
             this.tableLayoutPanel8.PerformLayout();
             this.tableLayoutPanel9.ResumeLayout(false);
@@ -1113,5 +1265,15 @@
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel16;
         private System.Windows.Forms.Label lblApplyImage;
         private System.Windows.Forms.Label lblSave;
+        private System.Windows.Forms.Panel panel12;
+        private System.Windows.Forms.Label label21;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel18;
+        private System.Windows.Forms.Label label27;
+        private System.Windows.Forms.Label label28;
+        private System.Windows.Forms.TextBox txtAkkonResultCount;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel17;
+        private System.Windows.Forms.Label label25;
+        private System.Windows.Forms.Label label26;
+        private System.Windows.Forms.TextBox txtAlignResultCount;
     }
 }

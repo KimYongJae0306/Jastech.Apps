@@ -20,6 +20,7 @@ using System.Diagnostics;
 using System.Runtime.InteropServices;
 using Emgu.CV.Flann;
 using System.Runtime.InteropServices.ComTypes;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace Jastech.Apps.Winform.UI.Controls
 {
@@ -80,7 +81,7 @@ namespace Jastech.Apps.Winform.UI.Controls
 
             ClearAkkonChart();
 
-            for (int resultCount = 0; resultCount < ResultList.Count; resultCount++)
+            for (int resultCount = ResultList.Count - 1; resultCount >= 0; resultCount--)
             {
                 UpdateAkkonResult(ResultList[resultCount]);
                 UpdateAkkonChart(ResultList[resultCount].TabResultList[0]);
@@ -214,11 +215,9 @@ namespace Jastech.Apps.Winform.UI.Controls
 
             string[] files = Directory.GetFiles(dataFilePath);
 
-            int maximumCount = 100;
-            List<string> sortFileList = files.OrderByDescending(x => x).Take(model.TabCount * maximumCount).ToList();
-            sortFileList.Reverse();
+            List<string> sortFileList = files.OrderBy(x => x).ToList();
 
-            for (int index = 0; index < maximumCount * model.TabCount; index += model.TabCount)
+            for (int index = 0; index < sortFileList.Count; index += model.TabCount)
             {
                 AppsInspResult inspResult = new AppsInspResult();
 
@@ -227,54 +226,31 @@ namespace Jastech.Apps.Winform.UI.Controls
                 inspResultList.Add(inspResult);
             }
 
-            return inspResultList;
+            return CheckResultCount(AppsConfig.Instance().Operation.AkkonResultCount, inspResultList.ToList());
         }
 
-        //private List<TabInspResult> CheckResultCount(int maximumCount, List<TabInspResult> resultList)
-        //{
-        //    if (resultList.Count <= 0)
-        //        return null;
+        private List<AppsInspResult> CheckResultCount(int maximumCount, List<AppsInspResult> inspResultList)
+        {
+            if (inspResultList.Count <= 0)
+                return null;
 
-        //    if (resultList.Count > maximumCount)
-        //        resultList.RemoveRange(0, resultList.Count - maximumCount);
+            if (inspResultList.Count > maximumCount)
+                inspResultList.RemoveRange(0, inspResultList.Count - maximumCount);
 
-        //    return resultList;
-        //}
-
-        //private TabInspResult AdjustData(int tabNo, string[] datas)
-        //{
-        //    TabInspResult data = new TabInspResult();
-
-        //    data.LeftAlignX = new AlignResult();
-        //    data.LeftAlignY = new AlignResult();
-        //    data.RightAlignX = new AlignResult();
-        //    data.RightAlignY = new AlignResult();
-
-        //    int startIndex = 2;
-        //    int interval = 7;
-        //    startIndex = startIndex + interval * tabNo;
-
-        //    data.TabNo = Convert.ToInt32(datas[startIndex].ToString());
-        //    data.Judgement = (Judgement)Enum.Parse(typeof(Judgement), datas[startIndex + 1].ToString());
-
-        //    data.LeftAlignX.ResultValue = (float)Convert.ToDouble(datas[startIndex + 2].ToString());
-        //    data.LeftAlignY.ResultValue = (float)Convert.ToDouble(datas[startIndex + 3].ToString());
-        //    data.RightAlignX.ResultValue = (float)Convert.ToDouble(datas[startIndex + 4].ToString());
-        //    data.RightAlignY.ResultValue = (float)Convert.ToDouble(datas[startIndex + 5].ToString());
-        //    data.CenterX = (float)Convert.ToDouble(datas[startIndex + 6].ToString());
-
-        //    return data;
-        //}
+            return inspResultList;
+        }
 
         public void UpdateMainResult(AppsInspResult inspResult)
         {
             InspDisplayControl.Clear();
 
             ResultList.Add(inspResult);
-
             for (int i = 0; i < inspResult.TabResultList.Count(); i++)
             {
                 int tabNo = inspResult.TabResultList[i].TabNo;
+
+                WriteAkkonResult(null, tabNo, inspResult);
+
                 if (InspResultDic.ContainsKey(tabNo))
                 {
                     InspResultDic[tabNo].Dispose();
@@ -303,6 +279,50 @@ namespace Jastech.Apps.Winform.UI.Controls
         private void ClearAkkonChart()
         {
             ResultChartControl.ClearChart();
+        }
+
+        private void WriteAkkonResult(string filePath, int tabNo, AppsInspResult inspResult)
+        {
+            // TEST
+            filePath = Path.Combine(AppsConfig.Instance().Path.Result, @"Akkon\");
+            filePath += DateTime.Now.ToString("[yyyyMMdd_HHmmss]") + "[CellID]Akkon_Tab" + tabNo + ".csv";
+
+            List<string> header = new List<string>
+            {
+                "Inspection Time",
+                "Cell ID",
+                "Bump No.",
+                "Count",
+                "Length",
+                "Strength",
+                "Judgement",
+                "STD"
+            };
+
+            CSVHelper.WriteHeader(filePath, header);
+
+            List<string> data = new List<string>
+            {
+                inspResult.LastInspTime.ToString(),
+                inspResult.Cell_ID.ToString()
+            };
+
+            foreach (var item in inspResult.TabResultList)
+            {
+                data.Add(item.AkkonResult.LeadResultList[tabNo].Id.ToString());
+                data.Add(item.AkkonResult.LeadResultList[tabNo].BlobCount.ToString());
+                data.Add(item.AkkonResult.LeadResultList[tabNo].Length.ToString());
+                data.Add(item.AkkonResult.LeadResultList[tabNo].AvgStrength.ToString());
+
+                if (item.AkkonResult.LeadResultList[tabNo].IsGood)
+                    data.Add(Judgement.OK.ToString());
+                else
+                    data.Add(Judgement.NG.ToString());
+
+                data.Add(item.AkkonResult.LeadResultList[tabNo].LeadStdDev.ToString());
+            }
+
+            CSVHelper.WriteData(filePath, header);
         }
         #endregion
     }
