@@ -479,6 +479,8 @@ namespace ATT.Core
 
         private void GetAkkonResultImage()
         {
+            Stopwatch sw = new Stopwatch();
+            sw.Restart();
             AppsInspModel inspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
             var unit = inspModel.GetUnit(UnitName.Unit0);
             for (int i = 0; i < AppsInspResult.TabResultList.Count(); i++)
@@ -487,6 +489,8 @@ namespace ATT.Core
                 Tab tab = unit.GetTab(tabResult.TabNo);
                 tabResult.AkkonResultImage = AkkonAlgorithmTool.GetResultImage(tabResult.Image.Width, tabResult.Image.Height, tab, AppsConfig.Instance().AkkonResizeRatio);
             }
+            sw.Stop();
+            Console.WriteLine("Get Akkon Result Image : " + sw.ElapsedMilliseconds.ToString() + "ms");
         }
 
         private void InitializeBuffer()

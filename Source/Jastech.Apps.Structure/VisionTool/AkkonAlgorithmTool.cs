@@ -104,7 +104,9 @@ namespace Jastech.Apps.Structure.VisionTool
             int stageCount = inspModel.UnitCount;
             int tabCount = inspModel.TabCount;
 
-            AkkonAlgorithm.CreateDllBuffer(stageCount, tabCount, SliceWidth, tabscanImageList[0].SubImageHeight, resizeRatio);
+            int sliceHeight = tabscanImageList[0].SubImageWidth;
+            
+            AkkonAlgorithm.CreateDllBuffer(stageCount, tabCount, SliceWidth, sliceHeight, resizeRatio);
 
             TotalSliceOverlap.Clear();
             TotalSliceCnt.Clear();
@@ -122,8 +124,8 @@ namespace Jastech.Apps.Structure.VisionTool
                     Tab tab = inspModel.GetUnit(UnitName.Unit0).GetTab(tabNo);
 
                     var tabScanImageBuffer = GetTabScanImage(tabscanImageList, tabNo);
-                    int width = tabScanImageBuffer.TotalGrabCount * tabScanImageBuffer.SubImageWidth;
-                    int height = tabScanImageBuffer.SubImageHeight;
+                    int width = tabScanImageBuffer.TotalGrabCount * tabScanImageBuffer.SubImageHeight;
+                    int height = tabScanImageBuffer.SubImageWidth;
 
                     AkkonAlgorithm.CreateImageBuffer(stageNo, tabNo, width, height, resizeRatio);
 
@@ -182,18 +184,17 @@ namespace Jastech.Apps.Structure.VisionTool
             var marcon = akkonParam.MacronAkkonParam;
             marcon.DrawOption.Contour = true;
             marcon.DrawOption.Center = false;
-            marcon.DrawOption.DrawResizeRatio = 1.0f;
             return AkkonAlgorithm.GetDrawResultImage(mat, stageNo, tabNo, ref marcon);
         }
 
         public ICogImage GetResultImage(int orgWidth, int orgHeight, Tab tab, float resizeRatio)
         {
             AkkonParam akkonParam = tab.AkkonParam;
-            //double width = Math.Truncate(orgWidth * resizeRatio);
-            //double height = Math.Truncate(orgHeight * resizeRatio);
+            double width = Math.Truncate(orgWidth * resizeRatio);
+            double height = Math.Truncate(orgHeight * resizeRatio);
 
-            double width = orgWidth;
-            double height = orgHeight;
+            //double width = orgWidth;
+            //double height = orgHeight;
 
             Mat testMat = new Mat((int)height, (int)width, DepthType.Cv8U, 1);
             Mat resultMatImage = LastAkkonResultImage(testMat, akkonParam, tab.StageIndex, tab.Index);
