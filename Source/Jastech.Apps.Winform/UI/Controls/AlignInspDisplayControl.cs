@@ -81,9 +81,12 @@ namespace Jastech.Apps.Winform.UI.Controls
 
             ResultList = LoadResult();
 
-            for (int i = 0; i < ResultList.Count; i++)
+            ClearAlignChart();
+
+            for (int resultCount = 0; resultCount < ResultList.Count; resultCount++)
             {
-                UpdateAlignResult(ResultList[i]);
+                UpdateAlignResult(ResultList[resultCount]);
+                UpdateAlignChart(ResultList[resultCount].TabResultList[0]);
             }
         }
 
@@ -155,11 +158,18 @@ namespace Jastech.Apps.Winform.UI.Controls
             {
                 InspAlignDisplay.ClearImage();
             }
+
+            ClearAlignChart();
+
+            for (int resultCount = 0; resultCount < ResultList.Count; resultCount++)
+                UpdateAlignChart(ResultList[resultCount].TabResultList[tabNum]);
         }
 
         private List<AppsInspResult> LoadResult()
         {
-            string dir = Path.Combine(AppsConfig.Instance().Path.Temp, "AlignInspection_Stage1_Top.csv");
+            List<AppsInspResult> resultList = new List<AppsInspResult>();
+
+            string dir = Path.Combine(AppsConfig.Instance().Path.Result, @"Align\AlignInspection_Stage1_Top.csv");
 
             if (File.Exists(dir) == false)
                 return new List<AppsInspResult>();
@@ -167,11 +177,9 @@ namespace Jastech.Apps.Winform.UI.Controls
             Tuple<string[], List<string[]>> readData = CSVHelper.ReadData(dir);
             List<string[]> contents = readData.Item2;
 
-            List<AppsInspResult> resultList = new List<AppsInspResult>();
-
             AppsInspModel model = ModelManager.Instance().CurrentModel as AppsInspModel;
 
-            foreach (string[] item in contents)
+            foreach (var item in contents)
             {
                 AppsInspResult result = new AppsInspResult();
 
@@ -230,7 +238,6 @@ namespace Jastech.Apps.Winform.UI.Controls
 
             InspAlignDisplay.ClearImage();
 
-            // T
             ResultList.Add(inspResult);
 
             for (int i = 0; i < inspResult.TabResultList.Count(); i++)
@@ -259,9 +266,14 @@ namespace Jastech.Apps.Winform.UI.Controls
             AlignInspResultControl.UpdateAlignResult(inspResult);
         }
 
-        private void UpdateAlignChart(int tabNo, AppsInspResult inspResult)
+        private void UpdateAlignChart(TabInspResult tabInspResult)
         {
-            ResultChartControl.UpdateAlignResult(inspResult);
+            ResultChartControl.UpdateAlignChart(tabInspResult);
+        }
+
+        private void ClearAlignChart()
+        {
+            ResultChartControl.ClearChart();
         }
 
         public void InitalizeResultData(int tabCount)

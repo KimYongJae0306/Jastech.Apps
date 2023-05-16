@@ -45,8 +45,8 @@ namespace Jastech.Apps.Winform.UI.Controls
         #endregion
 
         #region 델리게이트
-        private delegate void UpdateAlignResultDelegate(AppsInspResult result);
-        private delegate void UpdateAkkonResultDelegate(AppsInspResult result);
+        private delegate void UpdateAlignChartDelegate(TabInspResult result);
+        private delegate void UpdateAkkonChartDelegate(TabInspResult result);
         #endregion
 
         #region 생성자
@@ -136,11 +136,11 @@ namespace Jastech.Apps.Winform.UI.Controls
             ChartType = chartType;
         }
 
-        public void UpdateAlignResult(AppsInspResult result)
+        public void UpdateAlignChart(TabInspResult result)
         {
             if (this.InvokeRequired)
             {
-                UpdateAlignResultDelegate callback = UpdateAlignResult;
+                UpdateAlignChartDelegate callback = UpdateAlignChart;
                 BeginInvoke(callback);
                 return;
             }
@@ -148,11 +148,11 @@ namespace Jastech.Apps.Winform.UI.Controls
             UpdateChart(result, InspChartType.Align);
         }
 
-        public void UpdateAkkonResult(AppsInspResult result)
+        public void UpdateAkkonChart(TabInspResult result)
         {
             if (this.InvokeRequired)
             {
-                UpdateAlignResultDelegate callback = UpdateAkkonResult;
+                UpdateAlignChartDelegate callback = UpdateAkkonChart;
                 BeginInvoke(callback);
                 return;
             }
@@ -160,13 +160,38 @@ namespace Jastech.Apps.Winform.UI.Controls
             UpdateChart(result, InspChartType.Akkon);
         }
 
-        private void UpdateChart(AppsInspResult result, InspChartType inspType)
+        private void UpdateChart(TabInspResult tabInspResult, InspChartType inspType)
         {
-            AlignSeriesLx.Points.Add(result.TabResultList[0].LeftAlignX.ResultValue);
-            AlignSeriesLy.Points.Add(result.TabResultList[0].LeftAlignX.ResultValue);
-            AlignSeriesRx.Points.Add(result.TabResultList[0].RightAlignX.ResultValue);
-            AlignSeriesRy.Points.Add(result.TabResultList[0].RightAlignY.ResultValue);
-            AlignSeriesCx.Points.Add(Math.Abs((result.TabResultList[0].LeftAlignX.ResultValue - result.TabResultList[0].RightAlignX.ResultValue) / 2));
+            if (ChartType == InspChartType.Align)
+            {
+                AlignSeriesLx.Points.Add(tabInspResult.LeftAlignX.ResultValue);
+                AlignSeriesLy.Points.Add(tabInspResult.LeftAlignX.ResultValue);
+                AlignSeriesRx.Points.Add(tabInspResult.RightAlignX.ResultValue);
+                AlignSeriesRy.Points.Add(tabInspResult.RightAlignY.ResultValue);
+                AlignSeriesCx.Points.Add(tabInspResult.CenterX);
+            }
+            else
+            {
+                AkkonSeriesCount.Points.Add(tabInspResult.AkkonResult.AvgBlobCount);
+                AkkonSeriesLength.Points.Add(tabInspResult.AkkonResult.AvgLength);
+            }
+        }
+
+        public void ClearChart()
+        {
+            if (ChartType == InspChartType.Align)
+            {
+                AlignSeriesLx.Points.Clear();
+                AlignSeriesLy.Points.Clear();
+                AlignSeriesRx.Points.Clear();
+                AlignSeriesRy.Points.Clear();
+                AlignSeriesCx.Points.Clear();
+            }
+            else
+            {
+                AkkonSeriesCount.Points.Clear();
+                AkkonSeriesLength.Points.Clear();
+            }
         }
         #endregion
     }

@@ -30,6 +30,7 @@
         {
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle8 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle9 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
@@ -86,6 +87,8 @@
             this.dgvAkkonHistory.Name = "dgvAkkonHistory";
             this.dgvAkkonHistory.ReadOnly = true;
             this.dgvAkkonHistory.RowHeadersVisible = false;
+            dataGridViewCellStyle9.ForeColor = System.Drawing.Color.Black;
+            this.dgvAkkonHistory.RowsDefaultCellStyle = dataGridViewCellStyle9;
             this.dgvAkkonHistory.RowTemplate.DefaultCellStyle.BackColor = System.Drawing.Color.White;
             this.dgvAkkonHistory.RowTemplate.Height = 23;
             this.dgvAkkonHistory.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
@@ -174,7 +177,6 @@
             this.Controls.Add(this.dgvAkkonHistory);
             this.Name = "AkkonInspResultControl";
             this.Size = new System.Drawing.Size(420, 236);
-            this.Load += new System.EventHandler(this.AkkonInspResultControl_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dgvAkkonHistory)).EndInit();
             this.ResumeLayout(false);
 
