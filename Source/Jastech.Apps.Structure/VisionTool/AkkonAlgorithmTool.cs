@@ -182,6 +182,7 @@ namespace Jastech.Apps.Structure.VisionTool
             var marcon = akkonParam.MacronAkkonParam;
             marcon.DrawOption.Contour = true;
             marcon.DrawOption.Center = false;
+            marcon.DrawOption.DrawResizeRatio = 1.0f;
             return AkkonAlgorithm.GetDrawResultImage(mat, stageNo, tabNo, ref marcon);
         }
 
