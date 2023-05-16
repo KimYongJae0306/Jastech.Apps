@@ -40,6 +40,8 @@ namespace Jastech.Apps.Winform.Settings
         [JsonProperty]
         public int AkkonThreadCount { get; set; } = 8;
 
+        [JsonProperty]
+        public float AkkonResizeRatio { get; set; } = 0.5f;
         #endregion
 
         #region 메서드

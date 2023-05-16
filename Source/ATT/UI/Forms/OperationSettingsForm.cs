@@ -126,7 +126,8 @@ namespace ATT.UI.Forms
         private void lblSave_Click(object sender, EventArgs e)
         {
             UpdateCuurentData();
-            AppsConfig.Instance().Operation.Save(AppsConfig.Instance().Path.Config);
+            //AppsConfig.Instance().Operation.Save(AppsConfig.Instance().Path.Config);
+            AppsConfig.Instance().Save();
 
             MessageConfirmForm form = new MessageConfirmForm();
             form.Message = "Save Completed.";

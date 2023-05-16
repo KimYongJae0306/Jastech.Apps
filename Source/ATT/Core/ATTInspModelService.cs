@@ -89,8 +89,6 @@ namespace ATT.Core
 
                     tab.AkkonParam = new AkkonParam();
 
-                    tab.AkkonParam.MacronAkkonParam.StageCount = appInspModel.UnitCount;
-                    tab.AkkonParam.MacronAkkonParam.TabCount = appInspModel.TabCount;
                     tab.AkkonParam.MacronAkkonParam.SetDefaultParameter();
 
                     int cnt = 0;

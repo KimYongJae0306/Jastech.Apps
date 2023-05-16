@@ -78,20 +78,10 @@ namespace ATT.Core
         {
             Mat matImage = tabScanImage.GetMergeImage();
             ICogImage cogImage = tabScanImage.ConvertCogGrayImage(matImage);
-            //AppsInspResult.TabResultList.Add(new TabInspResult());
-            //if (tabScanImage.TabNo == 0)
-            //{
+
             Console.WriteLine("Run Inspection. " + tabScanImage.TabNo.ToString());
             Task task = new Task(() => Run(tabScanImage, matImage, cogImage));
             task.Start();
-            //}
-            //else if (tabScanImage.TabNo == 4)
-            //{
-            //    AppsInspResult.TabResultList.Add(new TabInspResult());
-            //    AppsInspResult.TabResultList.Add(new TabInspResult());
-            //    AppsInspResult.TabResultList.Add(new TabInspResult());
-            //    AppsInspResult.TabResultList.Add(new TabInspResult());
-            //}
 
         }
 
@@ -181,15 +171,10 @@ namespace ATT.Core
             inspResult.CenterX = Math.Abs(inspResult.LeftAlignX.ResultValue - inspResult.RightAlignX.ResultValue);
             #endregion
 
-            //if(tab.Index == 1)
-            //{
-            //    var akkonResult = algorithmTool.RunAkkon(mergeMat, tab.AkkonParam, tab.StageIndex, tab.Index);
-            //    if (inspResult.AkkonResultList == null)
-            //        inspResult.AkkonResultList = new List<AkkonResult>();
-            //    inspResult.AkkonResultList.AddRange(akkonResult);
-            //}
-            //Console.WriteLine("Add Result");
-            //AppsInspResult.TabResultList.Add(inspResult);
+            AkkonThreadParam param = new AkkonThreadParam();
+            param.Tab = tab;
+            param.TabInspResult = inspResult;
+            AkkonInspQueue.Enqueue(param);
         }
 
         private void ATTSeqRunner_GrabDoneEventHanlder(string cameraName, bool isGrabDone)
@@ -214,14 +199,12 @@ namespace ATT.Core
                     Mat image = akkon.TabInspResult.Image;
                     Tab tab = akkon.Tab;
 
-                    int tabIndex = 0; // 매크론 DLL 에서 TabNo = 0 만 검사됨... 나중에 Dll 확인 필요
-                    var akkonResult = AkkonAlgorithmTool.RunAkkon(image, akkon.Tab.AkkonParam, akkon.Tab.StageIndex, tabIndex);
-                    //result.AkkonResultImage = AkkonAlgorithmTool.GetResultImage(image, akkon.Tab, tabIndex);
-
+                    var akkonResult = AkkonAlgorithmTool.RunMultiAkkon(image, tab.StageIndex, tab.Index);
                     if (result.AkkonResultList == null)
                         result.AkkonResultList = new List<AkkonResult>();
+
                     result.AkkonResultList.AddRange(akkonResult);
-                    AppsInspResult.TabResultList.Add(result);
+
                     Console.WriteLine("Add Akkon Result");
                 }
                 Thread.Sleep(10);
@@ -348,6 +331,7 @@ namespace ATT.Core
         {
             //ICogImage cogImage = Jastech.Framework.Imaging.VisionPro.CogImageHelper.Load(@"D:\Tab1.bmp");
 
+         
             var inspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
             if (inspModel == null)
                 return;
@@ -397,6 +381,9 @@ namespace ATT.Core
                     ClearResult();
                     Logger.Write(LogType.Seq, "Clear Result.");
 
+                    InitializeBuffer();
+                    Logger.Write(LogType.Seq, "Initialize Buffer.");
+
                     AppsInspResult.StartInspTime = DateTime.Now;
                     AppsInspResult.Cell_ID = DateTime.Now.ToString("yyyyMMddHHmmss");
 
@@ -436,8 +423,8 @@ namespace ATT.Core
 
                     Logger.Write(LogType.Seq, "Scan Grab Completed.");
 
-                    AppsLAFManager.Instance().AutoFocusOnOff(LAFName.Akkon.ToString(), false);
-                    Logger.Write(LogType.Seq, "AutoFocus Off.");
+                    //AppsLAFManager.Instance().AutoFocusOnOff(LAFName.Akkon.ToString(), false);
+                    //Logger.Write(LogType.Seq, "AutoFocus Off.");
 
                     AppsLineCameraManager.Instance().Stop(CameraName.LinscanMIL0);
                     Logger.Write(LogType.Seq, "Stop Grab.");
@@ -451,7 +438,6 @@ namespace ATT.Core
                 case SeqStep.SEQ_WAITING_INSPECTION_DONE:
                     if (IsInspectionDone() == false)
                         break;
-
 
                     LastInspSW.Stop();
                     AppsInspResult.EndInspTime = DateTime.Now;
@@ -488,6 +474,15 @@ namespace ATT.Core
                 default:
                     break;
             }
+        }
+
+        private void InitializeBuffer()
+        {
+            var appsLineCamera = AppsLineCameraManager.Instance().GetLineCamera(CameraName.LinscanMIL0);
+            appsLineCamera.InitGrabSettings();
+
+            var inspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
+            AkkonAlgorithmTool.PrepareMultiInspection(inspModel, appsLineCamera.TabScanImageList, AppsConfig.Instance().AkkonResizeRatio);
         }
 
         public void RunVirtual()

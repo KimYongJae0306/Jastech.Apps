@@ -130,7 +130,10 @@ namespace Jastech.Apps.Winform
 
         public void SetResultCogImage(ICogImage cogImage)
         {
-            ResultCogImageBuffer = cogImage;
+            if (ResultCogImageBuffer != null)
+                ResultCogImageBuffer = null;
+
+            ResultCogImageBuffer = cogImage.CopyBase(CogImageCopyModeConstants.CopyPixels);
             TeachingDisplay?.SetImage(ResultCogImageBuffer);
         }
 

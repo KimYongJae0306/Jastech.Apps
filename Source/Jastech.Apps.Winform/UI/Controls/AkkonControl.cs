@@ -490,11 +490,10 @@ namespace Jastech.Apps.Winform.UI.Controls
             }
         }
 
-        private ICogImage GetResultImage(Mat mat, AkkonParam akkonParam, int stageNo, int tabNo)
+        private ICogImage GetResultImage(Mat mat, AkkonParam akkonParam, int stageNo, int tabNo, float resizeRatio)
         {
-            float resize = akkonParam.MacronAkkonParam.InspOption.InspResizeRatio;
-            double width = Math.Truncate(mat.Width * resize);
-            double height = Math.Truncate(mat.Height * resize);
+            double width = Math.Truncate(mat.Width * resizeRatio);
+            double height = Math.Truncate(mat.Height * resizeRatio);
 
             Mat testMat = new Mat((int)height, (int)width, DepthType.Cv8U, 1);
             
@@ -514,6 +513,12 @@ namespace Jastech.Apps.Winform.UI.Controls
             Marshal.Copy(matB.DataPointer, dataB, 0, matB.Width * matB.Height);
 
             var cogImage = CogImageHelper.CovertImage(dataR, dataG, dataB, matB.Width, matB.Height);
+
+            testMat.Dispose();
+            resultMatImage.Dispose();
+            matR.Dispose();
+            matG.Dispose();
+            matB.Dispose();
 
             return cogImage;
         }
@@ -1323,38 +1328,28 @@ namespace Jastech.Apps.Winform.UI.Controls
             int groupIndex = cbxGroupNumber.SelectedIndex;
             if (groupIndex < 0 || CurrentTab == null)
                 return;
-
-            var akkonParam = CurrentTab.AkkonParam;
-            int akkonThreadCount = AppsConfig.Instance().AkkonThreadCount;
-            akkonParam.MacronAkkonParam = MacronAkkonParamControl.GetCurrentParam();
-
+     
             Mat matImage = AppsTeachingUIManager.Instance().GetOriginMatImageBuffer(false);
             if (matImage == null)
                 return;
+            AppsInspModel appsInspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
 
-            MacronAkkonParam macron = akkonParam.MacronAkkonParam;
+            var akkonParam = CurrentTab.AkkonParam;
+            int akkonThreadCount = AppsConfig.Instance().AkkonThreadCount;
+            MacronAkkonParam macron = MacronAkkonParamControl.GetCurrentParam();
 
-            float resizeRatio = 1.0f;
-            if (macron.InspParam.PanelInfo == (int)TargetType.COG)
-                resizeRatio = 1.0f;
-            else if(macron.InspParam.PanelInfo == (int)TargetType.COF)
-                resizeRatio = 0.5f;
-            else if(macron.InspParam.PanelInfo == (int)TargetType.FOG)
-                resizeRatio = 0.6f;
+            float resizeRatio = AppsConfig.Instance().AkkonResizeRatio;
 
-            akkonParam.MacronAkkonParam.InspOption.InspResizeRatio = resizeRatio;
-            akkonParam.MacronAkkonParam.DrawOption.DrawResizeRatio = resizeRatio;
+            macron.DrawOption.DrawResizeRatio = resizeRatio;
 
-            macron.SliceHeight = matImage.Height;
-
-            int tabIndex = 0; // 매크론 DLL 에서 TabNo = 0 만 검사됨... 나중에 Dll 확인 필요
-            var tabResults = AkkonAlgorithm.RunAkkon(matImage, CurrentTab.AkkonParam, CurrentTab.StageIndex, tabIndex);
+            int tabIndex = CurrentTab.Index;
+            var tabResults = AkkonAlgorithm.RunAkkonForTeachingData(matImage, CurrentTab, appsInspModel.UnitCount, appsInspModel.TabCount, resizeRatio);
 
             dgvAkkonResult.Rows.Clear();
 
             UpdateResult(tabResults);
 
-            var resultImage = GetResultImage(matImage, CurrentTab.AkkonParam, CurrentTab.StageIndex, tabIndex);
+            var resultImage = GetResultImage(matImage, CurrentTab.AkkonParam, CurrentTab.StageIndex, tabIndex, resizeRatio);
 
             if (resultImage != null)
             {
@@ -1368,58 +1363,58 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         private void CropInspection()
         {
-            int groupIndex = cbxGroupNumber.SelectedIndex;
-            if (groupIndex < 0 || CurrentTab == null)
-                return;
+            //int groupIndex = cbxGroupNumber.SelectedIndex;
+            //if (groupIndex < 0 || CurrentTab == null)
+            //    return;
 
-            var akkonParam = CurrentTab.AkkonParam;
+            //var akkonParam = CurrentTab.AkkonParam;
 
-            int akkonThreadCount = AppsConfig.Instance().AkkonThreadCount;
-            akkonParam.MacronAkkonParam = MacronAkkonParamControl.GetCurrentParam();
+            //int akkonThreadCount = AppsConfig.Instance().AkkonThreadCount;
+            //akkonParam.MacronAkkonParam = MacronAkkonParamControl.GetCurrentParam();
 
-            Mat matImage = AppsTeachingUIManager.Instance().GetOriginMatImageBuffer(false);
-            if (matImage == null)
-                return;
+            //Mat matImage = AppsTeachingUIManager.Instance().GetOriginMatImageBuffer(false);
+            //if (matImage == null)
+            //    return;
 
-            MacronAkkonParam macron = CurrentTab.AkkonParam.MacronAkkonParam;
-            float resizeRatio = 1.0f;
-            if (macron.InspParam.PanelInfo == (int)TargetType.COG)
-                resizeRatio = 1.0f;
-            else if (macron.InspParam.PanelInfo == (int)TargetType.COF)
-                resizeRatio = 0.5f;
-            else if (macron.InspParam.PanelInfo == (int)TargetType.FOG)
-                resizeRatio = 0.6f;
+            //MacronAkkonParam macron = CurrentTab.AkkonParam.MacronAkkonParam;
+            //float resizeRatio = 1.0f;
+            //if (macron.InspParam.PanelInfo == (int)TargetType.COG)
+            //    resizeRatio = 1.0f;
+            //else if (macron.InspParam.PanelInfo == (int)TargetType.COF)
+            //    resizeRatio = 0.5f;
+            //else if (macron.InspParam.PanelInfo == (int)TargetType.FOG)
+            //    resizeRatio = 0.6f;
 
-            akkonParam.MacronAkkonParam.InspOption.InspResizeRatio = resizeRatio;
-            akkonParam.MacronAkkonParam.DrawOption.DrawResizeRatio = resizeRatio;
+            //akkonParam.MacronAkkonParam.InspOption.InspResizeRatio = resizeRatio;
+            //akkonParam.MacronAkkonParam.DrawOption.DrawResizeRatio = resizeRatio;
 
-            var roiList = akkonParam.GetAkkonROIList();
-            var rect = GetContainInROI(roiList);
+            //var roiList = akkonParam.GetAkkonROIList();
+            //var rect = GetContainInROI(roiList);
 
-            Stopwatch cropSW = new Stopwatch();
-            cropSW.Restart();
+            //Stopwatch cropSW = new Stopwatch();
+            //cropSW.Restart();
 
-            Mat cropImage = MatHelper.CropRoi(matImage, rect);
+            //Mat cropImage = MatHelper.CropRoi(matImage, rect);
             
-            macron.SliceHeight = cropImage.Height;
-            var tabResults = AkkonAlgorithm.RunCropAkkon(cropImage, new PointF(rect.X, rect.Y), akkonParam, CurrentTab.Index);
+            //macron.SliceHeight = cropImage.Height;
+            //var tabResults = AkkonAlgorithm.RunCropAkkon(cropImage, new PointF(rect.X, rect.Y), akkonParam, CurrentTab.Index);
 
-            cropSW.Stop();
-            Console.WriteLine("Crop : " + cropSW.ElapsedMilliseconds.ToString());
+            //cropSW.Stop();
+            //Console.WriteLine("Crop : " + cropSW.ElapsedMilliseconds.ToString());
 
-            dgvAkkonResult.Rows.Clear();
+            //dgvAkkonResult.Rows.Clear();
 
-            UpdateResult(tabResults);
+            //UpdateResult(tabResults);
 
-            var resultImage = GetResultImage(cropImage, CurrentTab.AkkonParam, CurrentTab.StageIndex, CurrentTab.Index);
-            if (resultImage != null)
-            {
-                lblOrginalImage.BackColor = _nonSelectedColor;
-                lblResultImage.BackColor = _selectedColor;
+            //var resultImage = GetResultImage(cropImage, CurrentTab.AkkonParam, CurrentTab.StageIndex, CurrentTab.Index);
+            //if (resultImage != null)
+            //{
+            //    lblOrginalImage.BackColor = _nonSelectedColor;
+            //    lblResultImage.BackColor = _selectedColor;
 
-                AppsTeachingUIManager.Instance().SetResultCogImage(resultImage);
-                ClearDisplay();
-            }
+            //    AppsTeachingUIManager.Instance().SetResultCogImage(resultImage);
+            //    ClearDisplay();
+            //}
         }
 
         private Rectangle GetContainInROI(List<AkkonROI> akkonROIs)

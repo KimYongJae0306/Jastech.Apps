@@ -299,9 +299,10 @@ namespace ATT.UI.Forms
 
                 var cogImage = CogImageHelper.CovertImage(dataArray, image.Width, image.Height, format);
 
-                Display.SetImage(cogImage);
+               
                 AppsTeachingUIManager.Instance().SetOrginCogImageBuffer(cogImage);
                 AppsTeachingUIManager.Instance().SetOriginMatImageBuffer(new Mat(dlg.FileName, ImreadModes.Grayscale));
+                Display.SetImage(AppsTeachingUIManager.Instance().GetOriginCogImageBuffer(false));
             }
         }
 
@@ -358,31 +359,40 @@ namespace ATT.UI.Forms
 
         private void DrawComboboxCenterAlign(object sender, DrawItemEventArgs e)
         {
-            ComboBox cmb = sender as ComboBox;
-
-            if (cmb != null)
+            try
             {
-                e.DrawBackground();
+                ComboBox cmb = sender as ComboBox;
 
-                if (cmb.Name.ToString().ToLower().Contains("group"))
-                    cmb.ItemHeight = lblPrev.Height - 6;
-                else
-                    cmb.ItemHeight = lblPrev.Height - 6;
-
-                if (e.Index >= 0)
+                if (cmb != null)
                 {
-                    StringFormat sf = new StringFormat();
-                    sf.LineAlignment = StringAlignment.Center;
-                    sf.Alignment = StringAlignment.Center;
+                    e.DrawBackground();
 
-                    Brush brush = new SolidBrush(cmb.ForeColor);
+                    if (cmb.Name.ToString().ToLower().Contains("group"))
+                        cmb.ItemHeight = lblPrev.Height - 6;
+                    else
+                        cmb.ItemHeight = lblPrev.Height - 6;
 
-                    if ((e.State & DrawItemState.Selected) == DrawItemState.Selected)
-                        brush = SystemBrushes.HighlightText;
+                    if (e.Index >= 0)
+                    {
+                        StringFormat sf = new StringFormat();
+                        sf.LineAlignment = StringAlignment.Center;
+                        sf.Alignment = StringAlignment.Center;
 
-                    e.Graphics.DrawString(cmb.Items[e.Index].ToString(), cmb.Font, brush, e.Bounds, sf);
+                        Brush brush = new SolidBrush(cmb.ForeColor);
+
+                        if ((e.State & DrawItemState.Selected) == DrawItemState.Selected)
+                            brush = SystemBrushes.HighlightText;
+
+                        e.Graphics.DrawString(cmb.Items[e.Index].ToString(), cmb.Font, brush, e.Bounds, sf);
+                    }
                 }
             }
+            catch (Exception err)
+            {
+
+                throw;
+            }
+         
         }
 
         private void cbxTabList_SelectedIndexChanged(object sender, EventArgs e)
@@ -403,18 +413,21 @@ namespace ATT.UI.Forms
 
         private void UpdateDisplayImage(int tabNo)
         {
-            var teachingData = SystemManager.Instance().GetTeachingData();
-
-            if (teachingData.GetBufferImage(tabNo) is TeachingImageBuffer buffer)
+            try
             {
-                if (buffer.TabImage == null)
-                    return;
+                var teachingData = SystemManager.Instance().GetTeachingData();
 
-                ICogImage cogImage = teachingData.ConvertCogGrayImage(buffer.TabImage);
+                if (teachingData.GetBufferImage(tabNo) is TeachingImageBuffer buffer)
+                {
+                    if (buffer.TabImage == null)
+                        return;
 
-                Display.SetImage(cogImage);
-                AppsTeachingUIManager.Instance().SetOrginCogImageBuffer(cogImage);
-                AppsTeachingUIManager.Instance().SetOriginMatImageBuffer(buffer.TabImage.Clone());
+                    ICogImage cogImage = teachingData.ConvertCogGrayImage(buffer.TabImage);
+
+                    Display.SetImage(cogImage);
+                    AppsTeachingUIManager.Instance().SetOrginCogImageBuffer(cogImage);
+                    AppsTeachingUIManager.Instance().SetOriginMatImageBuffer(buffer.TabImage.Clone());
+                }
 
                 if (_displayType == DisplayType.Mark)
                 {
@@ -432,6 +445,12 @@ namespace ATT.UI.Forms
                     AkkonControl.DrawROI();
                 }
             }
+            catch (Exception err)
+            {
+
+                throw;
+            }
+           
         }
 
         private void lblPrev_Click(object sender, EventArgs e)

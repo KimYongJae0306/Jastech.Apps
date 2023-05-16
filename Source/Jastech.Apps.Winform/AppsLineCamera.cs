@@ -139,8 +139,6 @@ namespace Jastech.Apps.Winform
 
             Camera.Stop();
 
-            InitGrabSettings();
-
             string error = "";
             MoveTo(TeachingPosType.Stage1_Scan_Start, out error);
             Camera.GrabMulti(GrabCount);
