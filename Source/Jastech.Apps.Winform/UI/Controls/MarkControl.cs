@@ -464,5 +464,10 @@ namespace Jastech.Apps.Winform.UI.Controls
             //currentParam.SetSearchRegion(roi);
             DrawROI();
         }
+
+        private void lblTest_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }
