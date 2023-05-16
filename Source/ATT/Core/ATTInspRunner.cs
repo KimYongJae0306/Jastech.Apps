@@ -100,8 +100,8 @@ namespace ATT.Core
             #region Mark 검사
             algorithmTool.MainMarkInspect(cogMergeImage, tab, ref inspResult);
 
-            if(inspResult.IsMarkGood() == false)
-            { 
+            if (inspResult.IsMarkGood() == false)
+            {
                 // 검사 실패
                 string message = string.Format("Mark Inspection NG !!! Tab_{0} / Fpc_{1}, Panel_{2}", tab.Index, inspResult.FpcMark.Judgement, inspResult.PanelMark.Judgement);
                 Logger.Debug(LogType.Inspection, message);
@@ -151,7 +151,7 @@ namespace ATT.Core
 
             #region Right Align
             inspResult.RightAlignX = algorithmTool.RunMainRightAlignX(cogMergeImage, tab, fpcTheta, panelTheta, judgementX);
-            if(inspResult.IsRightAlignXGood() == false)
+            if (inspResult.IsRightAlignXGood() == false)
             {
                 var rightAlignX = inspResult.RightAlignX;
                 string message = string.Format("Right AlignX Inspection NG !!! Tab_{0} / Fpc_{1}, Panel_{2}", tab.Index, rightAlignX.Fpc.Judgement, rightAlignX.Panel.Judgement);
@@ -199,15 +199,18 @@ namespace ATT.Core
                     Mat image = akkon.TabInspResult.Image;
                     Tab tab = akkon.Tab;
 
-                    var akkonResult = AkkonAlgorithmTool.RunMultiAkkon(image, tab.StageIndex, tab.Index);
-                    if (result.AkkonResultList == null)
-                        result.AkkonResultList = new List<AkkonResult>();
+                    //var akkonResult = AkkonAlgorithmTool.RunMultiAkkon(image, tab.StageIndex, tab.Index);
+                    //if (result.AkkonResultList == null)
+                    //    result.AkkonResultList = new List<AkkonResult>();
 
-                    result.AkkonResultList.AddRange(akkonResult);
-                    AppsInspResult.TabResultList.Add(result);
+                    //result.AkkonResultList.AddRange(akkonResult);
+                    //AppsInspResult.TabResultList.Add(result);
+
+                    AppsInspResult.TabResultList.Add(new TabInspResult());
+
                     Console.WriteLine("Add Akkon Result");
                 }
-                Thread.Sleep(10);
+                Thread.Sleep(0);
             }
         }
 
@@ -447,7 +450,7 @@ namespace ATT.Core
                     break;
 
                 case SeqStep.SEQ_UI_RESULT_UPDATE:
-                    GetAkkonResultImage();
+                    //GetAkkonResultImage();
                     SystemManager.Instance().UpdateMainResult(AppsInspResult);
                     Console.WriteLine("Scan End to Insp Compelte : " + LastInspSW.ElapsedMilliseconds.ToString());
                     SeqStep = SeqStep.SEQ_SAVE_IMAGE;
