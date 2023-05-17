@@ -303,7 +303,7 @@
             this.lblTest.Name = "lblTest";
             this.lblTest.Size = new System.Drawing.Size(87, 40);
             this.lblTest.TabIndex = 12;
-            this.lblTest.Text = "Panel";
+            this.lblTest.Text = "Test";
             this.lblTest.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.lblTest.Click += new System.EventHandler(this.lblTest_Click);
             // 

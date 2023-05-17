@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Jastech.Framework.Util.Helper;
+using System;
+using System.Collections.Generic;
 using System.IO;
 
 namespace PJH_TEST
@@ -27,20 +29,46 @@ namespace PJH_TEST
             //txtCellIndex.Text = (cellIndex + 1).ToString();
 
 
-            DirectoryInfo di = new DirectoryInfo(@"D:\99. Private\JastechApps\Jastech.Apps\Runtime\Result\Akkon");
-            
+            //DirectoryInfo di = new DirectoryInfo(@"D:\99. Private\JastechApps\Jastech.Apps\Runtime\Result\Akkon");
 
-            foreach (FileInfo file in di.GetFiles()) 
+
+            //foreach (FileInfo file in di.GetFiles()) 
+            //{
+            //    string tt = file.Name;
+
+            //    string date = tt.Substring(1, 8);
+            //    string time = tt.Substring(10, 6);
+
+            //    string oldText = "[09:00:00]";
+            //    string newText = "[" + time.Substring(0, 2) + ":" + time.Substring(2, 2) + ":" + time.Substring(4) + "]";
+
+            //    StreamWriter sw = new StreamWriter(file.FullName, false);
+            //}
+
+            List<string> list = new List<string>();
+
+            Random rand = new Random();
+
+            for (int i = 0; i < 100; i++)
             {
-                string tt = file.Name;
+                string hour = rand.Next(0, 23).ToString("D2");
+                string min = rand.Next(0, 59).ToString("D2");
+                string sec = rand.Next(0, 59).ToString("D2");
 
-                string date = tt.Substring(1, 8);
-                string time = tt.Substring(10, 6);
+                string result = "[" + hour + ":" + min + ":" + sec + "]";
 
-                string oldText = "[09:00:00]";
-                string newText = "[" + time.Substring(0, 2) + ":" + time.Substring(2, 2) + ":" + time.Substring(4) + "]";
+                for(int j = 0; j < 5; j++) 
+                {
+                    list.Add(result);
+                }
+            }
 
-                StreamWriter sw = new StreamWriter(file.FullName, false);
+            list.Sort();
+
+            for (int i = 0; i < list.Count;i++)
+            {
+                Console.WriteLine(list[i]);
+
             }
         }
     }

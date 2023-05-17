@@ -77,15 +77,15 @@ namespace Jastech.Apps.Winform.UI.Controls
             else
                 UpdateTabCount(inspModel.TabCount);
 
-            ResultList = LoadResult();
+            //ResultList = LoadResult();
 
             ClearAkkonChart();
 
-            for (int resultCount = ResultList.Count - 1; resultCount >= 0; resultCount--)
-            {
-                UpdateAkkonResult(ResultList[resultCount]);
-                UpdateAkkonChart(ResultList[resultCount].TabResultList[0]);
-            }
+            //for (int resultCount = ResultList.Count - 1; resultCount >= 0; resultCount--)
+            //{
+            //    UpdateAkkonResult(ResultList[resultCount]);
+            //    UpdateAkkonChart(ResultList[resultCount].TabResultList[0]);
+            //}
         }
 
         private void AddControls()
@@ -158,8 +158,8 @@ namespace Jastech.Apps.Winform.UI.Controls
 
             ClearAkkonChart();
 
-            for (int resultCount = 0; resultCount < ResultList.Count; resultCount++)
-                UpdateAkkonChart(ResultList[resultCount].TabResultList[tabNum]);
+            //for (int resultCount = 0; resultCount < ResultList.Count; resultCount++)
+            //    UpdateAkkonChart(ResultList[resultCount].TabResultList[tabNum]);
         }
 
         private AppsInspResult ParseInspResult(List<string> fileList, int index)
@@ -174,14 +174,14 @@ namespace Jastech.Apps.Winform.UI.Controls
                 TabInspResult tabResult = new TabInspResult();
                 tabResult.AkkonResult = new AkkonResult();
 
-                var panelResult = fileList[tabNo + index];
+                var panelResultPath = fileList[tabNo + index];
 
-                Tuple<string[], List<string[]>> readData = CSVHelper.ReadData(panelResult);
+                Tuple<string[], List<string[]>> readData = CSVHelper.ReadData(panelResultPath);
                 List<string[]> contents = readData.Item2;
                 foreach (var item in contents)
                 {
-                    int searchIndex = panelResult.IndexOf("][");
-                    result.Cell_ID = panelResult.Substring(searchIndex + 2, 8);
+                    int searchIndex = panelResultPath.IndexOf("][");
+                    result.Cell_ID = panelResultPath.Substring(searchIndex + 2, 8);
                     result.LastInspTime = item[0].ToString();
 
                     LeadResult leadResult = new LeadResult();
@@ -244,12 +244,15 @@ namespace Jastech.Apps.Winform.UI.Controls
         {
             InspDisplayControl.Clear();
 
-            ResultList.Add(inspResult);
+            //ResultList.Add(inspResult);
+            WriteAkkonTempFile(inspResult);
+            ReadAkkonTempFile();
+
             for (int i = 0; i < inspResult.TabResultList.Count(); i++)
             {
                 int tabNo = inspResult.TabResultList[i].TabNo;
 
-                WriteAkkonResult(null, tabNo, inspResult);
+                //WriteAkkonResult(null, tabNo, inspResult);
 
                 if (InspResultDic.ContainsKey(tabNo))
                 {
@@ -323,6 +326,85 @@ namespace Jastech.Apps.Winform.UI.Controls
                 datas.Add(item.LeadStdDev.ToString());
 
                 dataList.Add(datas);
+            }
+
+            CSVHelper.WriteData(filePath, dataList);
+        }
+
+        private void ReadAkkonTempFile()
+        {
+            string filePath = Path.Combine(AppsConfig.Instance().Path.Result, @"Akkon.csv");
+
+            if (File.Exists(filePath) == false)
+                return;
+
+            Tuple<string[], List<string[]>> readData = CSVHelper.ReadData(filePath);
+            List<string[]> contents = readData.Item2;
+
+            AppsInspModel model = ModelManager.Instance().CurrentModel as AppsInspModel;
+            
+            AppsInspResult inspResult = new AppsInspResult();
+
+            for (int readLine = 0; readLine < contents.Count; readLine += model.TabCount)
+            {
+                inspResult.EndInspTime = DateTime.Parse(contents[readLine][0].ToString());
+                inspResult.Cell_ID = contents[readLine][1].ToString();
+
+                TabInspResult tabInspResult = new TabInspResult();
+
+                tabInspResult.AkkonResult.TabNo = Convert.ToInt32(contents[readLine][2]);
+                tabInspResult.AkkonResult.Judgement = (Judgement)Enum.Parse(typeof(Judgement), contents[readLine][3].ToString());
+                tabInspResult.AkkonResult.AvgBlobCount = Convert.ToInt32(contents[readLine][4]);
+                tabInspResult.AkkonResult.AvgLength = Convert.ToInt32(contents[readLine][5]);
+
+                inspResult.TabResultList.Add(tabInspResult);
+            }
+
+            UpdateAkkonResult(inspResult);
+
+            for (int tabNo = 0; tabNo < model.TabCount; tabNo++)
+                UpdateAkkonChart(inspResult.TabResultList[tabNo]);
+        }
+
+        private void WriteAkkonTempFile(AppsInspResult inspResult)
+        {
+            string filePath = Path.Combine(AppsConfig.Instance().Path.Result, @"Akkon.csv");
+
+            if (File.Exists(filePath) == false)
+            {
+                List<string> header = new List<string>
+                {
+                    "Time",
+                    "Panel",
+                    "Tab",
+                    "Judge",
+                    "Count",
+                    "Length",
+                };
+
+                CSVHelper.WriteHeader(filePath, header);
+            }
+
+            List<string> dataList = new List<string>();
+
+            foreach (var item in inspResult.TabResultList)
+            {
+                dataList.Add(inspResult.EndInspTime.ToString());
+                dataList.Add(inspResult.Cell_ID.ToString());
+                dataList.Add(item.TabNo.ToString());
+                dataList.Add(item.AkkonResult.Judgement.ToString());
+                dataList.Add(item.AkkonResult.AvgBlobCount.ToString());
+                dataList.Add(item.AkkonResult.AvgLength.ToString());
+            }
+
+            Tuple<string[], List<string[]>> readData = CSVHelper.ReadData(filePath);
+            List<string[]> contents = readData.Item2;
+
+            if (contents.Count >= AppsConfig.Instance().Operation.AkkonResultCount)
+            {
+                contents.RemoveRange(0, 5);
+                string[] dataArray = dataList.ToArray();
+                contents.Add(dataArray);
             }
 
             CSVHelper.WriteData(filePath, dataList);
