@@ -178,7 +178,7 @@ namespace ATT.Core
 
         private void ATTSeqRunner_GrabDoneEventHanlder(string cameraName, bool isGrabDone)
         {
-            IsGrabDone = isGrabDone;
+            IsGrabDone = isGrabDone; 
         }
 
         private void AkkonInspection()
