@@ -82,7 +82,6 @@ namespace ATT.Core
             Console.WriteLine("Run Inspection. " + tabScanImage.TabNo.ToString());
             Task task = new Task(() => Run(tabScanImage, matImage, cogImage));
             task.Start();
-
         }
 
         public void Run(TabScanImage ScanImage, Mat mergeMat, ICogImage cogMergeImage)
@@ -324,6 +323,7 @@ namespace ATT.Core
                     break;
                 }
                 SeqTaskLoop();
+                Thread.Sleep(50);
             }
         }
 
