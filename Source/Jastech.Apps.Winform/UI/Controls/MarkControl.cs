@@ -86,6 +86,9 @@ namespace Jastech.Apps.Winform.UI.Controls
 
             CurrentTab = tab;
             UpdateParam();
+
+            // Test
+            DeepCopy(tab);
         }
 
         private void UpdateParam()
@@ -100,10 +103,7 @@ namespace Jastech.Apps.Winform.UI.Controls
                 currentParam = CurrentTab.GetPanelMark(_curDirection, _curMarkName);
 
             if(currentParam != null)
-            {
                 ParamControl.UpdateData(currentParam.InspParam);
-
-            }
 
             DrawROI();
         }
@@ -465,9 +465,72 @@ namespace Jastech.Apps.Winform.UI.Controls
             DrawROI();
         }
 
+        private Tab _origin = null;
+
+        private void DeepCopy(Tab tab)
+        {
+            if (tab == null)
+                return;
+
+            _origin = new Tab();
+            _origin = tab.DeepCopy();
+        }
+
+        private Tab GetOriginData()
+        {
+            return _origin;
+        }
+
         private void lblTest_Click(object sender, EventArgs e)
         {
+            var display = AppsTeachingUIManager.Instance().GetDisplay();
+            var currentParam = ParamControl.GetCurrentParam();
 
+            Tab origin = new Tab();
+            origin = GetOriginData();
+
+            ICogImage cogImage = display.GetImage();
+
+            MarkParam fpcLeft = new MarkParam();
+            fpcLeft = origin.GetFPCMark(MarkDirection.Left, MarkName.Main);
+
+            CogPatternMatchingResult originFpcLeftResult = Algorithm.RunPatternMatch(cogImage, fpcLeft.InspParam);
+            CogPatternMatchingResult currentFpcLeftResult = Algorithm.RunPatternMatch(cogImage, currentParam);
+
+            PointF originPos = originFpcLeftResult.MaxMatchPos.FoundPos;
+            PointF currentPos = currentFpcLeftResult.MaxMatchPos.FoundPos;
+
+
+            int gg = 0;
+
+            double diffX = originPos.X - currentPos.X;
+            double diffY = originPos.Y - currentPos.Y;
+
+            
+            MarkParam fpcRight = new MarkParam();
+            fpcRight = origin.GetFPCMark(MarkDirection.Right, MarkName.Main);
+
+            MarkParam panelLeft = new MarkParam();
+            panelLeft = origin.GetPanelMark(MarkDirection.Left, MarkName.Main);
+
+            MarkParam panelRight = new MarkParam();
+            panelRight = origin.GetPanelMark(MarkDirection.Right, MarkName.Main);
+        }
+
+        private MarkParam CoordinateMark(double x, double y)
+        {
+
+            return null;
+        }
+
+        private AlignParam CoordinateAlign()
+        {
+            return null;
+        }
+
+        private AkkonParam CoordinateAkkon()
+        {
+            return null;
         }
     }
 }

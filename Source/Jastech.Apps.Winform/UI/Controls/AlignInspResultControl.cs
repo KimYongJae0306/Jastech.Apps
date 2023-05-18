@@ -57,7 +57,7 @@ namespace Jastech.Apps.Winform.UI.Controls
                 string inspectionTime = result.LastInspTime;
                 string panelID = result.Cell_ID;
                 string tabNumber = item.TabNo.ToString();
-                string judge = item.IsAlignGood().ToString();
+                string judge = item.AlignJudgment.ToString();
                 string leftAlignX = item.LeftAlignX.ResultValue.ToString("F2");
                 string leftAlignY = item.LeftAlignY.ResultValue.ToString("F2");
                 string rightAlignX = item.RightAlignX.ResultValue.ToString("F2");

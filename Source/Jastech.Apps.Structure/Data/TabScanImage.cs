@@ -31,9 +31,6 @@ namespace Jastech.Apps.Structure.Data
 
         public int TotalGrabCount { get => Math.Abs(EndIndex - StartIndex); }
 
-        private List<byte[]> DataArrayList = new List<byte[]>();
-
-
         private List<Mat> SubImageList { get; set; } = new List<Mat>();
 
         public TabScanImage(int tabNo, int startIndex, int endIndex, int subImageWidth, int subImageHeight)
@@ -52,20 +49,10 @@ namespace Jastech.Apps.Structure.Data
             bool isDone = false;
 
             lock (_objLock)
-                isDone = TotalGrabCount == DataArrayList.Count() ? true : false;
+                isDone = TotalGrabCount == SubImageList.Count() ? true : false;
 
             return isDone;
         }
-
-        //public bool IsAddImageDone()
-        //{
-        //    bool isDone = false;
-
-        //    lock (_objLock)
-        //        isDone = TotalGrabCount == SubImageList.Count() ? true : false;
-
-        //    return isDone;
-        //}
 
         public void Dispose()
         {
@@ -77,49 +64,31 @@ namespace Jastech.Apps.Structure.Data
                     SubImageList[i] = null;
                 }
                 SubImageList.Clear();
-                DataArrayList.Clear();
             }
         }
-        public void AddSubImage(byte[] data)
+
+        public void AddSubImage(Mat mat)
         {
             lock (_objLock)
-                DataArrayList.Add(data);
+                SubImageList.Add(mat);
         }
-        //public void AddSubImage(Mat mat)
-        //{
-        //     lock (_objLock)
-        //        SubImageList.Add(mat);
-        //}
 
-        //public int GetImageCount()
-        //{
-        //    return SubImageList.Count();
-        //}
+        public int GetSubImageCount()
+        {
+            return SubImageList.Count();
+        }
 
         public Mat GetMergeImage()
         {
             Mat mergeImage = null;
             lock (_objLock)
             {
-                List<Mat> imageList = new List<Mat>();
-                for (int i = 0; i < DataArrayList.Count(); i++)
-                {
-                    byte[] data = DataArrayList[i];
-                    Mat mat = MatHelper.ByteArrayToMat(data, SubImageWidth, SubImageWidth, 1);
-                    Mat rotatedMat = MatHelper.Transpose(mat);
-                    imageList.Add(rotatedMat);
-                    mat.Dispose();
-                }
-
-                //mat.Dispose();
-                if (imageList.Count > 0)
+                if (SubImageList.Count > 0)
                 {
                     mergeImage = new Mat();
 
-                    CvInvoke.HConcat(imageList.ToArray(), mergeImage);
+                    CvInvoke.HConcat(SubImageList.ToArray(), mergeImage);
                 }
-
-                imageList.ForEach(x => x.Dispose());
             }
             return mergeImage;
         }
