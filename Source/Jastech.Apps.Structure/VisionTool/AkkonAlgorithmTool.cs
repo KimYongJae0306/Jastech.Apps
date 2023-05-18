@@ -26,132 +26,134 @@ namespace Jastech.Apps.Structure.VisionTool
 
         private List<List<int>> TotalSliceCnt = new List<List<int>>();
 
-        private MacronAkkon AkkonAlgorithm { get; set; } = new MacronAkkon();
+        //private MacronAkkon AkkonAlgorithm { get; set; } = new MacronAkkon();
 
         public AkkonResult RunAkkonForTeachingData(Mat mat, Tab tab, int stageCount, int tabCount, float resizeRatio)
         {
-            if (mat == null)
-                return null;
+            return new AkkonResult();
+            //if (mat == null)
+            //    return null;
 
-            var marcon = tab.AkkonParam.MacronAkkonParam;
-            var akkonRoiList = tab.AkkonParam.GetAkkonROIList();
+            //var marcon = tab.AkkonParam.MacronAkkonParam;
+            //var akkonRoiList = tab.AkkonParam.GetAkkonROIList();
 
-            if (akkonRoiList.Count <= 0)
-            {
-                Logger.Debug(LogType.Inspection, "Akkon Roi is nothing.");
-                return new AkkonResult();
-            }
+            //if (akkonRoiList.Count <= 0)
+            //{
+            //    Logger.Debug(LogType.Inspection, "Akkon Roi is nothing.");
+            //    return new AkkonResult();
+            //}
 
-            marcon.DrawOption.DrawResizeRatio = resizeRatio;
+            //marcon.DrawOption.DrawResizeRatio = resizeRatio;
             
-            AkkonAlgorithm.CreateDllBuffer(stageCount, tabCount , SliceWidth, mat.Height, resizeRatio);
+            //AkkonAlgorithm.CreateDllBuffer(stageCount, tabCount , SliceWidth, mat.Height, resizeRatio);
 
-            TotalSliceOverlap.Clear();
-            TotalSliceCnt.Clear();
+            //TotalSliceOverlap.Clear();
+            //TotalSliceCnt.Clear();
 
-            for (int stageNo = 0; stageNo < stageCount; stageNo++)
-            {
-                List<int> stageSliceOverLap = new List<int>();
-                List<int> stageTotalSliceCnt = new List<int>();
+            //for (int stageNo = 0; stageNo < stageCount; stageNo++)
+            //{
+            //    List<int> stageSliceOverLap = new List<int>();
+            //    List<int> stageTotalSliceCnt = new List<int>();
 
-                stageSliceOverLap.Clear();
-                stageTotalSliceCnt.Clear();
+            //    stageSliceOverLap.Clear();
+            //    stageTotalSliceCnt.Clear();
 
-                for (int tabNo = 0; tabNo < tabCount; tabNo++)
-                {
-                    if (tabNo == tab.Index)
-                    {
-                        AkkonAlgorithm.CreateImageBuffer(tab.StageIndex, tabNo, mat.Width, mat.Height, resizeRatio);
+            //    for (int tabNo = 0; tabNo < tabCount; tabNo++)
+            //    {
+            //        if (tabNo == tab.Index)
+            //        {
+            //            AkkonAlgorithm.CreateImageBuffer(tab.StageIndex, tabNo, mat.Width, mat.Height, resizeRatio);
 
-                        PointF centerPoint = new PointF(mat.Width / 2, mat.Height / 2); // ?? 검사 결과 넣기?
-                        AkkonAlgorithm.SetConvertROIData(akkonRoiList, tab.StageIndex, tabNo, centerPoint, new PointF(0, 0), 0, resizeRatio);
+            //            PointF centerPoint = new PointF(mat.Width / 2, mat.Height / 2); // ?? 검사 결과 넣기?
+            //            AkkonAlgorithm.SetConvertROIData(akkonRoiList, tab.StageIndex, tabNo, centerPoint, new PointF(0, 0), 0, resizeRatio);
 
-                        int overlap = AkkonAlgorithm.GetCalcSliceOverlap(tab.StageIndex, tabNo);
-                        int total = AkkonAlgorithm.GetCalcTotalSliceCnt(tab.StageIndex, tabNo, overlap, mat.Width, mat.Height);
+            //            int overlap = AkkonAlgorithm.GetCalcSliceOverlap(tab.StageIndex, tabNo);
+            //            int total = AkkonAlgorithm.GetCalcTotalSliceCnt(tab.StageIndex, tabNo, overlap, mat.Width, mat.Height);
 
-                        stageSliceOverLap.Add(overlap);
-                        stageTotalSliceCnt.Add(total);
-                    }
-                    else
-                    {
-                        stageSliceOverLap.Add(0);
-                        stageTotalSliceCnt.Add(0);
-                    }
-                }
-                TotalSliceOverlap.Add(stageSliceOverLap);
-                TotalSliceCnt.Add(stageTotalSliceCnt);
-            }
+            //            stageSliceOverLap.Add(overlap);
+            //            stageTotalSliceCnt.Add(total);
+            //        }
+            //        else
+            //        {
+            //            stageSliceOverLap.Add(0);
+            //            stageTotalSliceCnt.Add(0);
+            //        }
+            //    }
+            //    TotalSliceOverlap.Add(stageSliceOverLap);
+            //    TotalSliceCnt.Add(stageTotalSliceCnt);
+            //}
 
-            int[][] intSliceCnt = TotalSliceCnt.Select(list => list.ToArray()).ToArray();
-            AkkonAlgorithm.EnableInspFlag(intSliceCnt); //검사 FLag 할당
-            AkkonAlgorithm.SetAkkonParam(tab.StageIndex, tab.Index, ref marcon);
-            var result = AkkonAlgorithm.Inspect(tab.StageIndex, tab.Index, mat);
+            //int[][] intSliceCnt = TotalSliceCnt.Select(list => list.ToArray()).ToArray();
+            //AkkonAlgorithm.EnableInspFlag(intSliceCnt); //검사 FLag 할당
+            //AkkonAlgorithm.SetAkkonParam(tab.StageIndex, tab.Index, ref marcon);
+            //var result = AkkonAlgorithm.Inspect(tab.StageIndex, tab.Index, mat);
 
-            return result;
+            //return result;
         }
         public AkkonResult RunMultiAkkon(Mat mat, int stageNo, int tabNo)
         {
-            var result = AkkonAlgorithm.Inspect(stageNo, tabNo, mat);
+            return null;
+            //var result = AkkonAlgorithm.Inspect(stageNo, tabNo, mat);
 
-            return result;
+            //return result;
         }
 
         public void PrepareMultiInspection(AppsInspModel inspModel, List<TabScanImage> tabscanImageList, float resizeRatio)
         {
-            if (tabscanImageList.Count < 0)
-                return;
+            //if (tabscanImageList.Count < 0)
+            //    return;
 
-            int stageCount = inspModel.UnitCount;
-            int tabCount = inspModel.TabCount;
+            //int stageCount = inspModel.UnitCount;
+            //int tabCount = inspModel.TabCount;
 
-            int sliceHeight = tabscanImageList[0].SubImageWidth;
+            //int sliceHeight = tabscanImageList[0].SubImageWidth;
             
-            AkkonAlgorithm.CreateDllBuffer(stageCount, tabCount, SliceWidth, sliceHeight, resizeRatio);
+            //AkkonAlgorithm.CreateDllBuffer(stageCount, tabCount, SliceWidth, sliceHeight, resizeRatio);
 
-            TotalSliceOverlap.Clear();
-            TotalSliceCnt.Clear();
+            //TotalSliceOverlap.Clear();
+            //TotalSliceCnt.Clear();
 
-            for (int stageNo = 0; stageNo < stageCount; stageNo++)
-            {
-                List<int> stageSliceOverLap = new List<int>();
-                List<int> stageTotalSliceCnt = new List<int>();
+            //for (int stageNo = 0; stageNo < stageCount; stageNo++)
+            //{
+            //    List<int> stageSliceOverLap = new List<int>();
+            //    List<int> stageTotalSliceCnt = new List<int>();
 
-                stageSliceOverLap.Clear();
-                stageTotalSliceCnt.Clear();
+            //    stageSliceOverLap.Clear();
+            //    stageTotalSliceCnt.Clear();
 
-                for (int tabNo = 0; tabNo < tabCount; tabNo++)
-                {
-                    Tab tab = inspModel.GetUnit(UnitName.Unit0).GetTab(tabNo);
+            //    for (int tabNo = 0; tabNo < tabCount; tabNo++)
+            //    {
+            //        Tab tab = inspModel.GetUnit(UnitName.Unit0).GetTab(tabNo);
 
-                    var tabScanImageBuffer = GetTabScanImage(tabscanImageList, tabNo);
-                    int width = tabScanImageBuffer.TotalGrabCount * tabScanImageBuffer.SubImageHeight;
-                    int height = tabScanImageBuffer.SubImageWidth;
+            //        var tabScanImageBuffer = GetTabScanImage(tabscanImageList, tabNo);
+            //        int width = tabScanImageBuffer.TotalGrabCount * tabScanImageBuffer.SubImageHeight;
+            //        int height = tabScanImageBuffer.SubImageWidth;
 
-                    AkkonAlgorithm.CreateImageBuffer(stageNo, tabNo, width, height, resizeRatio);
+            //        AkkonAlgorithm.CreateImageBuffer(stageNo, tabNo, width, height, resizeRatio);
 
-                    var akkonRoiList = tab.AkkonParam.GetAkkonROIList();
-                    PointF centerPoint = new PointF(width / 2, height / 2); // ?? 검사 결과 넣기?
-                    AkkonAlgorithm.SetConvertROIData(akkonRoiList, tab.StageIndex, tabNo, centerPoint, new PointF(0, 0), 0, resizeRatio);
+            //        var akkonRoiList = tab.AkkonParam.GetAkkonROIList();
+            //        PointF centerPoint = new PointF(width / 2, height / 2); // ?? 검사 결과 넣기?
+            //        AkkonAlgorithm.SetConvertROIData(akkonRoiList, tab.StageIndex, tabNo, centerPoint, new PointF(0, 0), 0, resizeRatio);
 
-                    int overlap = AkkonAlgorithm.GetCalcSliceOverlap(tab.StageIndex, tabNo);
-                    int total = AkkonAlgorithm.GetCalcTotalSliceCnt(tab.StageIndex, tabNo, overlap, width, height);
+            //        int overlap = AkkonAlgorithm.GetCalcSliceOverlap(tab.StageIndex, tabNo);
+            //        int total = AkkonAlgorithm.GetCalcTotalSliceCnt(tab.StageIndex, tabNo, overlap, width, height);
 
-                    stageSliceOverLap.Add(overlap);
-                    stageTotalSliceCnt.Add(total);
+            //        stageSliceOverLap.Add(overlap);
+            //        stageTotalSliceCnt.Add(total);
 
-                    var marcon = tab.AkkonParam.MacronAkkonParam;
-                    marcon.InspOption.Overlap = overlap;
-                    marcon.DrawOption.DrawResizeRatio = resizeRatio;
+            //        var marcon = tab.AkkonParam.MacronAkkonParam;
+            //        marcon.InspOption.Overlap = overlap;
+            //        marcon.DrawOption.DrawResizeRatio = resizeRatio;
 
-                    AkkonAlgorithm.SetAkkonParam(tab.StageIndex, tab.Index, ref marcon);
-                }
+            //        AkkonAlgorithm.SetAkkonParam(tab.StageIndex, tab.Index, ref marcon);
+            //    }
 
-                TotalSliceOverlap.Add(stageSliceOverLap);
-                TotalSliceCnt.Add(stageTotalSliceCnt);
-            }
+            //    TotalSliceOverlap.Add(stageSliceOverLap);
+            //    TotalSliceCnt.Add(stageTotalSliceCnt);
+            //}
 
-            int[][] intSliceCnt = TotalSliceCnt.Select(list => list.ToArray()).ToArray();
-            AkkonAlgorithm.EnableInspFlag(intSliceCnt); //검사 FLag 할당
+            //int[][] intSliceCnt = TotalSliceCnt.Select(list => list.ToArray()).ToArray();
+            //AkkonAlgorithm.EnableInspFlag(intSliceCnt); //검사 FLag 할당
         }
 
         public List<AkkonResult> RunCropAkkon(Mat mat, PointF cropOffset, AkkonParam akkonParam, int tabNo)
@@ -181,10 +183,11 @@ namespace Jastech.Apps.Structure.VisionTool
 
         public Mat LastAkkonResultImage(Mat mat, AkkonParam akkonParam, int stageNo, int tabNo)
         {
-            var marcon = akkonParam.MacronAkkonParam;
-            marcon.DrawOption.Contour = true;
-            marcon.DrawOption.Center = false;
-            return AkkonAlgorithm.GetDrawResultImage(mat, stageNo, tabNo, ref marcon);
+            return null;
+            //var marcon = akkonParam.MacronAkkonParam;
+            //marcon.DrawOption.Contour = true;
+            //marcon.DrawOption.Center = false;
+            //return AkkonAlgorithm.GetDrawResultImage(mat, stageNo, tabNo, ref marcon);
         }
 
         public ICogImage GetResultImage(int orgWidth, int orgHeight, Tab tab, float resizeRatio)
