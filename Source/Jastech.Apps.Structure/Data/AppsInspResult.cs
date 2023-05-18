@@ -64,6 +64,8 @@ namespace Jastech.Apps.Structure.Data
 
         public MarkResult PanelMark { get; set; }
 
+        public Judgement AlignJudgment { get; set; }
+
         public AlignResult LeftAlignX { get; set; } = null;
 
         public AlignResult LeftAlignY { get; set; } = null;
@@ -153,14 +155,14 @@ namespace Jastech.Apps.Structure.Data
 
         public Judgement IsAlignGood()
         {
-            Judgement = Judgement.OK;
+            AlignJudgment = Judgement.OK;
 
             if (IsLeftAlignXGood() && IsLeftAlignYGood() && IsRightAlignXGood() && IsRightAlignYGood())
-                Judgement = Judgement.OK;
+                AlignJudgment = Judgement.OK;
             else
-                Judgement = Judgement.NG;
+                AlignJudgment = Judgement.NG;
 
-            return Judgement;
+            return AlignJudgment;
         }
 
         public void Dispose()

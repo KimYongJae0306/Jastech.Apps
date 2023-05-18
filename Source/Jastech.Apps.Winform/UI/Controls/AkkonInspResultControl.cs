@@ -54,8 +54,8 @@ namespace Jastech.Apps.Winform.UI.Controls
             {
                 string inspectionTime = result.LastInspTime;
                 string panelID = result.Cell_ID;
-                string tabNumber = item.TabNo.ToString();
-                string judge = item.Judgement.ToString();
+                string tabNumber = item.AkkonResult.TabNo.ToString();
+                string judge = item.AkkonResult.Judgement.ToString();
                 string count = item.AkkonResult.AvgBlobCount.ToString();
                 string length = item.AkkonResult.AvgLength.ToString("F2");
 

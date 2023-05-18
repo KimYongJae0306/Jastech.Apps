@@ -21,6 +21,7 @@ using System.Runtime.InteropServices;
 using Emgu.CV.Flann;
 using System.Runtime.InteropServices.ComTypes;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
+using Emgu.CV.Dnn;
 
 namespace Jastech.Apps.Winform.UI.Controls
 {
@@ -77,15 +78,9 @@ namespace Jastech.Apps.Winform.UI.Controls
             else
                 UpdateTabCount(inspModel.TabCount);
 
-            //ResultList = LoadResult();
-
-            ClearAkkonChart();
-
-            //for (int resultCount = ResultList.Count - 1; resultCount >= 0; resultCount--)
-            //{
-            //    UpdateAkkonResult(ResultList[resultCount]);
-            //    UpdateAkkonChart(ResultList[resultCount].TabResultList[0]);
-            //}
+            ReadAkkonTempFile();
+            UpdateAkkonResult();
+            UpdateAkkonChart();
         }
 
         private void AddControls()
@@ -156,10 +151,7 @@ namespace Jastech.Apps.Winform.UI.Controls
                 InspDisplayControl.Clear();
             }
 
-            ClearAkkonChart();
-
-            //for (int resultCount = 0; resultCount < ResultList.Count; resultCount++)
-            //    UpdateAkkonChart(ResultList[resultCount].TabResultList[tabNum]);
+            UpdateAkkonChart();
         }
 
         private AppsInspResult ParseInspResult(List<string> fileList, int index)
@@ -187,9 +179,9 @@ namespace Jastech.Apps.Winform.UI.Controls
                     LeadResult leadResult = new LeadResult();
 
                     leadResult.BlobCount = Convert.ToInt32(item[3].ToString());
-                    leadResult.Length = (float)Convert.ToDouble(item[4].ToString());
-                    leadResult.AvgStrength = (float)Convert.ToDouble(item[5].ToString());
-                    leadResult.LeadStdDev = (float)Convert.ToDouble(item[7].ToString());
+                    leadResult.Length = Convert.ToSingle(item[4].ToString());
+                    leadResult.AvgStrength = Convert.ToSingle(item[5].ToString());
+                    leadResult.LeadStdDev = Convert.ToSingle(item[7].ToString());
 
                     tabResult.AkkonResult.LeadResultList.Add(leadResult);
                 }
@@ -205,54 +197,50 @@ namespace Jastech.Apps.Winform.UI.Controls
             return result;
         }
 
-        private List<AppsInspResult> LoadResult()
-        {
-            List<AppsInspResult> inspResultList = new List<AppsInspResult>();
+        //private List<AppsInspResult> LoadResult()
+        //{
+        //    List<AppsInspResult> inspResultList = new List<AppsInspResult>();
 
-            AppsInspModel model = ModelManager.Instance().CurrentModel as AppsInspModel;
+        //    AppsInspModel model = ModelManager.Instance().CurrentModel as AppsInspModel;
 
-            string dataFilePath = Path.Combine(AppsConfig.Instance().Path.Result + @"\Akkon");
+        //    string dataFilePath = Path.Combine(AppsConfig.Instance().Path.Result + @"\Akkon");
 
-            string[] files = Directory.GetFiles(dataFilePath);
+        //    string[] files = Directory.GetFiles(dataFilePath);
 
-            List<string> sortFileList = files.OrderBy(x => x).ToList();
+        //    List<string> sortFileList = files.OrderBy(x => x).ToList();
 
-            for (int index = 0; index < sortFileList.Count; index += model.TabCount)
-            {
-                AppsInspResult inspResult = new AppsInspResult();
+        //    for (int index = 0; index < sortFileList.Count; index += model.TabCount)
+        //    {
+        //        AppsInspResult inspResult = new AppsInspResult();
 
-                inspResult = ParseInspResult(sortFileList, index);
+        //        inspResult = ParseInspResult(sortFileList, index);
 
-                inspResultList.Add(inspResult);
-            }
+        //        inspResultList.Add(inspResult);
+        //    }
 
-            return CheckResultCount(AppsConfig.Instance().Operation.AkkonResultCount, inspResultList.ToList());
-        }
+        //    return CheckResultCount(AppsConfig.Instance().Operation.AkkonResultCount, inspResultList.ToList());
+        //}
 
-        private List<AppsInspResult> CheckResultCount(int maximumCount, List<AppsInspResult> inspResultList)
-        {
-            if (inspResultList.Count <= 0)
-                return null;
+        //private List<AppsInspResult> CheckResultCount(int maximumCount, List<AppsInspResult> inspResultList)
+        //{
+        //    if (inspResultList.Count <= 0)
+        //        return null;
 
-            if (inspResultList.Count > maximumCount)
-                inspResultList.RemoveRange(0, inspResultList.Count - maximumCount);
+        //    if (inspResultList.Count > maximumCount)
+        //        inspResultList.RemoveRange(0, inspResultList.Count - maximumCount);
 
-            return inspResultList;
-        }
+        //    return inspResultList;
+        //}
 
         public void UpdateMainResult(AppsInspResult inspResult)
         {
             InspDisplayControl.Clear();
 
-            //ResultList.Add(inspResult);
             WriteAkkonTempFile(inspResult);
-            ReadAkkonTempFile();
 
             for (int i = 0; i < inspResult.TabResultList.Count(); i++)
             {
                 int tabNo = inspResult.TabResultList[i].TabNo;
-
-                //WriteAkkonResult(null, tabNo, inspResult);
 
                 if (InspResultDic.ContainsKey(tabNo))
                 {
@@ -267,16 +255,30 @@ namespace Jastech.Apps.Winform.UI.Controls
                     InspDisplayControl.SetImage(inspResult.TabResultList[i].AkkonResultImage);
                 }
             }
+
+            ReadAkkonTempFile();
         }
 
-        private void UpdateAkkonResult(AppsInspResult inspResult)
+        private void UpdateAkkonResult()
         {
-            AkkonInspResultControl.UpdateAkkonResult(inspResult);
+            var resultList = GetTempAkkonResultList();
+            if (resultList.Count > 0)
+            {
+                for (int resultIndex = 0; resultIndex < resultList.Count; resultIndex++)
+                    AkkonInspResultControl.UpdateAkkonResult(resultList[resultIndex]);
+            }
         }
 
-        private void UpdateAkkonChart(TabInspResult tabInspResult)
+        private void UpdateAkkonChart()
         {
-            ResultChartControl.UpdateAkkonChart(tabInspResult);
+            ClearAkkonChart();
+
+            var resultList = GetTempAkkonResultList();
+            if (resultList.Count > 0)
+            {
+                for (int resultIndex = 0; resultIndex < resultList.Count; resultIndex++)
+                    ResultChartControl.UpdateAkkonChart(resultList[resultIndex].TabResultList[CurrentTabNo]);
+            }
         }
 
         private void ClearAkkonChart()
@@ -284,56 +286,118 @@ namespace Jastech.Apps.Winform.UI.Controls
             ResultChartControl.ClearChart();
         }
 
-        private void WriteAkkonResult(string filePath, int tabNo, AppsInspResult inspResult)
+        //private void WriteAkkonResult(string filePath, int tabNo, AppsInspResult inspResult)
+        //{
+        //    // TEST
+        //    filePath = Path.Combine(AppsConfig.Instance().Path.Result, @"Akkon\");
+        //    filePath += DateTime.Now.ToString("[yyyyMMdd_HHmmss]") + "[CellID]Akkon_Tab" + tabNo + ".csv";
+
+        //    List<string> header = new List<string>
+        //    {
+        //        "Inspection Time",
+        //        "Cell ID",
+        //        "Bump No.",
+        //        "Count",
+        //        "Length",
+        //        "Strength",
+        //        "Judgement",
+        //        "STD"
+        //    };
+
+        //    CSVHelper.WriteHeader(filePath, header);
+
+        //    List<List<string>> dataList = new List<List<string>>();
+
+        //    foreach (var item in inspResult.TabResultList[tabNo].AkkonResult.LeadResultList)
+        //    {
+        //        List<string> datas = new List<string>
+        //        {
+        //            inspResult.LastInspTime.ToString(),
+        //            inspResult.Cell_ID.ToString(),
+        //            item.Id.ToString(),
+        //            item.BlobCount.ToString(),
+        //            item.Length.ToString("F2"),
+        //            item.AvgStrength.ToString("F2")
+        //        };
+
+        //        if (item.IsGood)
+        //            datas.Add(Judgement.OK.ToString());
+        //        else
+        //            datas.Add(Judgement.NG.ToString());
+
+        //        datas.Add(item.LeadStdDev.ToString());
+
+        //        dataList.Add(datas);
+        //    }
+
+        //    CSVHelper.WriteData(filePath, dataList);
+        //}
+
+
+        private void WriteAkkonTempFile(AppsInspResult inspResult)
         {
-            // TEST
-            filePath = Path.Combine(AppsConfig.Instance().Path.Result, @"Akkon\");
-            filePath += DateTime.Now.ToString("[yyyyMMdd_HHmmss]") + "[CellID]Akkon_Tab" + tabNo + ".csv";
+            string filePath = Path.Combine(AppsConfig.Instance().Path.Temp, @"Akkon.csv");
 
-            List<string> header = new List<string>
+            AppsInspModel model = ModelManager.Instance().CurrentModel as AppsInspModel;
+
+            if (File.Exists(filePath) == false)
             {
-                "Inspection Time",
-                "Cell ID",
-                "Bump No.",
-                "Count",
-                "Length",
-                "Strength",
-                "Judgement",
-                "STD"
-            };
-
-            CSVHelper.WriteHeader(filePath, header);
-
-            List<List<string>> dataList = new List<List<string>>();
-
-            foreach (var item in inspResult.TabResultList[tabNo].AkkonResult.LeadResultList)
-            {
-                List<string> datas = new List<string>
+                List<string> header = new List<string>
                 {
-                    inspResult.LastInspTime.ToString(),
-                    inspResult.Cell_ID.ToString(),
-                    item.Id.ToString(),
-                    item.BlobCount.ToString(),
-                    item.Length.ToString("F2"),
-                    item.AvgStrength.ToString("F2")
+                    "Time",
+                    "Panel",
                 };
 
-                if (item.IsGood)
-                    datas.Add(Judgement.OK.ToString());
-                else
-                    datas.Add(Judgement.NG.ToString());
+                for (int tabNo = 0; tabNo < model.TabCount; tabNo++)
+                {
+                    header.Add("Tab");
+                    header.Add("Judge");
+                    header.Add("Count");
+                    header.Add("Length");
+                    header.Add("Strength");
+                    header.Add("STD");
+                }
 
-                datas.Add(item.LeadStdDev.ToString());
+                CSVHelper.WriteHeader(filePath, header);
+            }
 
-                dataList.Add(datas);
+            List<string> dataList = new List<string>
+            {
+                inspResult.LastInspTime.ToString(),
+                inspResult.Cell_ID.ToString()
+            };
+
+            foreach (var item in inspResult.TabResultList)
+            {
+                dataList.Add(item.TabNo.ToString());
+                dataList.Add(item.AkkonResult.Judgement.ToString());
+                dataList.Add(item.AkkonResult.AvgBlobCount.ToString());
+                dataList.Add(item.AkkonResult.AvgLength.ToString());
+                dataList.Add(item.AkkonResult.AvgStrength.ToString());
+                dataList.Add(item.AkkonResult.AvgStd.ToString());
             }
 
             CSVHelper.WriteData(filePath, dataList);
         }
 
+        //private List<string> CheckTempFileCount(List<string> inputData)
+        //{
+        //    string filePath = Path.Combine(AppsConfig.Instance().Path.Temp, @"Akkon.csv");
+
+        //    AppsInspModel model = ModelManager.Instance().CurrentModel as AppsInspModel;
+
+        //    Tuple<string[], List<string[]>> readData = CSVHelper.ReadData(filePath);
+        //    List<string[]> contents = readData.Item2;
+
+        //    if (contents.Count >= AppsConfig.Instance().Operation.AkkonResultCount)
+        //        contents.RemoveRange(0, model.TabCount);
+        //}
+
         private void ReadAkkonTempFile()
         {
-            string filePath = Path.Combine(AppsConfig.Instance().Path.Result, @"Akkon.csv");
+            List<AppsInspResult> inspResultList = new List<AppsInspResult>();
+
+            string filePath = Path.Combine(AppsConfig.Instance().Path.Temp, @"Akkon.csv");
 
             if (File.Exists(filePath) == false)
                 return;
@@ -342,72 +406,49 @@ namespace Jastech.Apps.Winform.UI.Controls
             List<string[]> contents = readData.Item2;
 
             AppsInspModel model = ModelManager.Instance().CurrentModel as AppsInspModel;
-            
-            AppsInspResult inspResult = new AppsInspResult();
 
-            for (int readLine = 0; readLine < contents.Count; readLine += model.TabCount)
+            for (int readLine = 0; readLine < contents.Count; readLine++)
             {
-                inspResult.EndInspTime = DateTime.Parse(contents[readLine][0].ToString());
+                AppsInspResult inspResult = new AppsInspResult();
+
+                inspResult.LastInspTime = contents[readLine][0].ToString();
                 inspResult.Cell_ID = contents[readLine][1].ToString();
 
-                TabInspResult tabInspResult = new TabInspResult();
+                for (int tabNo = 0; tabNo < model.TabCount; tabNo++)
+                {
+                    int startIndex = 2;
+                    int interval = 6;
+                    startIndex = startIndex + interval * tabNo;
 
-                tabInspResult.AkkonResult.TabNo = Convert.ToInt32(contents[readLine][2]);
-                tabInspResult.AkkonResult.Judgement = (Judgement)Enum.Parse(typeof(Judgement), contents[readLine][3].ToString());
-                tabInspResult.AkkonResult.AvgBlobCount = Convert.ToInt32(contents[readLine][4]);
-                tabInspResult.AkkonResult.AvgLength = Convert.ToInt32(contents[readLine][5]);
+                    TabInspResult tabInspResult = new TabInspResult();
+                    tabInspResult.AkkonResult = new AkkonResult();
 
-                inspResult.TabResultList.Add(tabInspResult);
+                    tabInspResult.AkkonResult.TabNo = Convert.ToInt32(contents[readLine][startIndex]);
+                    tabInspResult.AkkonResult.Judgement = (Judgement)Enum.Parse(typeof(Judgement), contents[readLine][startIndex + 1].ToString());
+                    tabInspResult.AkkonResult.AvgBlobCount = Convert.ToInt32(contents[readLine][startIndex + 2]);
+                    tabInspResult.AkkonResult.AvgLength = Convert.ToSingle(contents[readLine][startIndex + 3]);
+                    tabInspResult.AkkonResult.AvgStrength = Convert.ToSingle(contents[readLine][startIndex + 4]);
+                    tabInspResult.AkkonResult .AvgStd = Convert.ToSingle(contents[readLine][startIndex + 5]);
+
+                    inspResult.TabResultList.Add(tabInspResult);
+                }
+
+                inspResultList.Add(inspResult);
             }
 
-            UpdateAkkonResult(inspResult);
-
-            for (int tabNo = 0; tabNo < model.TabCount; tabNo++)
-                UpdateAkkonChart(inspResult.TabResultList[tabNo]);
+            SetTempAkkonResultList(inspResultList);
         }
 
-        private void WriteAkkonTempFile(AppsInspResult inspResult)
+        private List<AppsInspResult> _resultList { get; set; } = new List<AppsInspResult>();
+        private void SetTempAkkonResultList(List<AppsInspResult> inspResultList)
         {
-            string filePath = Path.Combine(AppsConfig.Instance().Path.Result, @"Akkon.csv");
+            _resultList = new List<AppsInspResult>();
+            _resultList = inspResultList.ToList();
+        }
 
-            if (File.Exists(filePath) == false)
-            {
-                List<string> header = new List<string>
-                {
-                    "Time",
-                    "Panel",
-                    "Tab",
-                    "Judge",
-                    "Count",
-                    "Length",
-                };
-
-                CSVHelper.WriteHeader(filePath, header);
-            }
-
-            List<string> dataList = new List<string>();
-
-            foreach (var item in inspResult.TabResultList)
-            {
-                dataList.Add(inspResult.EndInspTime.ToString());
-                dataList.Add(inspResult.Cell_ID.ToString());
-                dataList.Add(item.TabNo.ToString());
-                dataList.Add(item.AkkonResult.Judgement.ToString());
-                dataList.Add(item.AkkonResult.AvgBlobCount.ToString());
-                dataList.Add(item.AkkonResult.AvgLength.ToString());
-            }
-
-            Tuple<string[], List<string[]>> readData = CSVHelper.ReadData(filePath);
-            List<string[]> contents = readData.Item2;
-
-            if (contents.Count >= AppsConfig.Instance().Operation.AkkonResultCount)
-            {
-                contents.RemoveRange(0, 5);
-                string[] dataArray = dataList.ToArray();
-                contents.Add(dataArray);
-            }
-
-            CSVHelper.WriteData(filePath, dataList);
+        private List<AppsInspResult> GetTempAkkonResultList()
+        {
+            return _resultList;
         }
         #endregion
     }

@@ -45,31 +45,29 @@ namespace PJH_TEST
             //    StreamWriter sw = new StreamWriter(file.FullName, false);
             //}
 
-            List<string> list = new List<string>();
+            //List<string> list = new List<string>();
 
-            Random rand = new Random();
+            //Random rand = new Random();
+
+            //for (int i = 0; i < 100; i++)
+            //{
+            //    string hour = rand.Next(0, 23).ToString("D2");
+            //    string min = rand.Next(0, 59).ToString("D2");
+            //    string sec = rand.Next(0, 59).ToString("D2");
+
+            //    string result = "[" + hour + ":" + min + ":" + sec + "]";
+
+            //    for(int j = 0; j < 5; j++) 
+            //        list.Add(result);
+            //}
+
+            //list.Sort();
+
+            //for (int i = 0; i < list.Count;i++)
+            //    Console.WriteLine(list[i]);
 
             for (int i = 0; i < 100; i++)
-            {
-                string hour = rand.Next(0, 23).ToString("D2");
-                string min = rand.Next(0, 59).ToString("D2");
-                string sec = rand.Next(0, 59).ToString("D2");
-
-                string result = "[" + hour + ":" + min + ":" + sec + "]";
-
-                for(int j = 0; j < 5; j++) 
-                {
-                    list.Add(result);
-                }
-            }
-
-            list.Sort();
-
-            for (int i = 0; i < list.Count;i++)
-            {
-                Console.WriteLine(list[i]);
-
-            }
+                Console.WriteLine("Cell_" + i.ToString("D3"));
         }
     }
 }
