@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Windows.Forms.DataVisualization.Charting;
 using Jastech.Apps.Structure.Data;
+using Jastech.Apps.Winform.Service;
 
 namespace Jastech.Apps.Winform.UI.Controls
 {
@@ -45,10 +46,9 @@ namespace Jastech.Apps.Winform.UI.Controls
         #endregion
 
         #region 델리게이트
-        private delegate void UpdateAlignChartDelegate(TabInspResult result);
-        private delegate void UpdateAkkonChartDelegate(TabInspResult result);
-        private delegate void ClearAlignChartDelegate();
-        private delegate void ClearAkkonChartDelegate();
+        private delegate void UpdateAlignChartDelegate(AlignDailyInfo align);
+        private delegate void UpdateAkkonChartDelegate(AkkonDailyInfo akkon);
+        private delegate void ClearChartDelegate();
         #endregion
 
         #region 생성자
@@ -62,31 +62,6 @@ namespace Jastech.Apps.Winform.UI.Controls
         private void ResultChartControl_Load(object sender, EventArgs e)
         {
             Initialize();
-
-            //Test
-
-            //if (ChartType == InspChartType.Akkon)
-            //{
-            //    for (int i = 0; i < 100; i++)
-            //    {
-            //        AkkonSeriesCount.Points.AddXY(i, i);
-            //        AkkonSeriesLength.Points.AddXY(i, 100 - i);
-            //    }
-            //}
-            //else
-            //{
-            //    for (int i = 0; i < 100; i++)
-            //    {
-            //        AlignSeriesLx.Points.AddXY(i, i);
-            //        AlignSeriesLy.Points.AddXY(i, 100 - i);
-
-            //        AlignSeriesRx.Points.AddXY(50, i);
-            //        AlignSeriesRy.Points.AddXY(100, 100 - i);
-
-            //        AlignSeriesCx.Points.AddXY(25, 100-i);
-
-            //    }
-            //}
         }
 
         private void Initialize()
@@ -138,64 +113,54 @@ namespace Jastech.Apps.Winform.UI.Controls
             ChartType = chartType;
         }
 
-        public void UpdateAlignChart(TabInspResult result)
+        public void UpdateAlignDaily(AlignDailyInfo align)
         {
             if (this.InvokeRequired)
             {
-                UpdateAlignChartDelegate callback = UpdateAlignChart;
+                UpdateAlignChartDelegate callback = UpdateAlignDaily;
                 BeginInvoke(callback);
                 return;
             }
 
-            UpdateChart(result, InspChartType.Align);
+            UpdateAlignChart(align);
         }
 
-        public void UpdateAkkonChart(TabInspResult result)
+        private void UpdateAlignChart(AlignDailyInfo align)
         {
-            if (this.InvokeRequired)
-            {
-                UpdateAlignChartDelegate callback = UpdateAkkonChart;
-                BeginInvoke(callback);
-                return;
-            }
-
-            UpdateChart(result, InspChartType.Akkon);
-        }
-
-        private void UpdateChart(TabInspResult tabInspResult, InspChartType inspType)
-        {
-            if (ChartType == InspChartType.Align)
-            {
-                AlignSeriesLx.Points.Add(tabInspResult.LeftAlignX.ResultValue);
-                AlignSeriesLy.Points.Add(tabInspResult.LeftAlignX.ResultValue);
-                AlignSeriesRx.Points.Add(tabInspResult.RightAlignX.ResultValue);
-                AlignSeriesRy.Points.Add(tabInspResult.RightAlignY.ResultValue);
-                AlignSeriesCx.Points.Add(tabInspResult.CenterX);
-            }
-            else
-            {
-                AkkonSeriesCount.Points.Add(tabInspResult.AkkonResult.AvgBlobCount);
-                AkkonSeriesLength.Points.Add(tabInspResult.AkkonResult.AvgLength);
-            }
-        }
-
-        public void ClearAlignChart()
-        {
-            if (this.InvokeRequired)
-            {
-                ClearAlignChartDelegate callback = ClearAlignChart;
-                BeginInvoke(callback);
-                return;
-            }
-
             ClearChartData();
+
+            AlignSeriesLx.Points.Add(align.LX);
+            AlignSeriesLy.Points.Add(align.LY);
+            AlignSeriesRx.Points.Add(align.RX);
+            AlignSeriesRy.Points.Add(align.RY);
+            AlignSeriesCx.Points.Add(align.CX);
         }
 
-        public void ClearAkkonChart()
+        public void UpdateAkkonDaily(AkkonDailyInfo akkon)
         {
             if (this.InvokeRequired)
             {
-                ClearAkkonChartDelegate callback = ClearAkkonChart;
+                UpdateAkkonChartDelegate callback = UpdateAkkonDaily;
+                BeginInvoke(callback);
+                return;
+            }
+
+            UpdateAkkonChart(akkon);
+        }
+
+        private void UpdateAkkonChart(AkkonDailyInfo akkon)
+        {
+            ClearChartData();
+
+            AkkonSeriesCount.Points.Add(akkon.AvgBlobCount);
+            AkkonSeriesLength.Points.Add(akkon.AvgLength);
+        }
+
+        public void ClearChart()
+        {
+            if (this.InvokeRequired)
+            {
+                ClearChartDelegate callback = ClearChart;
                 BeginInvoke(callback);
                 return;
             }

@@ -22,6 +22,7 @@ using Emgu.CV.Flann;
 using System.Runtime.InteropServices.ComTypes;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 using Emgu.CV.Dnn;
+using Jastech.Apps.Winform.Service;
 
 namespace Jastech.Apps.Winform.UI.Controls
 {
@@ -48,7 +49,7 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         public int CurrentTabNo { get; set; } = -1;
 
-        public List<AppsInspResult> ResultList = new List<AppsInspResult>();
+        public DailyInfo DailyInfo = new DailyInfo();
         #endregion
 
         #region 이벤트
@@ -78,9 +79,10 @@ namespace Jastech.Apps.Winform.UI.Controls
             else
                 UpdateTabCount(inspModel.TabCount);
 
-            ReadAkkonTempFile();
-            UpdateAkkonResult();
-            UpdateAkkonChart();
+            DailyInfo.Load();
+
+            UpdateDailyDataGridView(DailyInfo);
+            UpdateDailyChart(DailyInfo, 0);
         }
 
         private void AddControls()
@@ -151,18 +153,20 @@ namespace Jastech.Apps.Winform.UI.Controls
                 InspDisplayControl.Clear();
             }
 
-            UpdateAkkonChart();
+            UpdateDailyChart(DailyInfo, tabNum);
         }
 
         public void UpdateMainResult(AppsInspResult inspResult)
         {
             InspDisplayControl.Clear();
 
-            WriteAkkonTempFile(inspResult);
+            UpdateDailyInfo(inspResult);
 
             for (int i = 0; i < inspResult.TabResultList.Count(); i++)
             {
                 int tabNo = inspResult.TabResultList[i].TabNo;
+
+                UpdateDailyChart(DailyInfo, tabNo);
 
                 if (InspResultDic.ContainsKey(tabNo))
                 {
@@ -178,156 +182,167 @@ namespace Jastech.Apps.Winform.UI.Controls
                 }
             }
 
-            //ReadAkkonTempFile();
-            UpdateAkkonResult();
-            UpdateAkkonChart();
+            DailyInfo.Save();
         }
 
-        private void UpdateAkkonResult()
+        private void UpdateDailyInfo(AppsInspResult inspResult)
         {
-            var resultList = GetTempAkkonResultList();
-            if (resultList.Count > 0)
+            foreach (var item in inspResult.TabResultList)
             {
-                for (int resultIndex = 0; resultIndex < resultList.Count; resultIndex++)
-                    AkkonInspResultControl.UpdateAkkonResult(resultList[resultIndex]);
+                AkkonDailyInfo akkonInfo = new AkkonDailyInfo();
+
+                akkonInfo.InspectionTime = inspResult.LastInspTime;
+                akkonInfo.PanelID = inspResult.Cell_ID;
+                akkonInfo.TabNo = item.TabNo;
+                akkonInfo.Judgement = item.Judgement;
+                akkonInfo.AvgBlobCount = item.AkkonResult.AvgBlobCount;
+                akkonInfo.AvgLength = item.AkkonResult.AvgLength;
+                akkonInfo.AvgStrength = item.AkkonResult.AvgStrength;
+                akkonInfo.AvgSTD = item.AkkonResult.AvgStd;
+
+                DailyInfo.AddAkkonInfo(akkonInfo);
             }
+
+            UpdateDailyDataGridView(DailyInfo);
         }
 
-        private void UpdateAkkonChart()
+        private void UpdateDailyDataGridView(DailyInfo dailyInfo)
         {
-            ClearAkkonChart();
+            AkkonInspResultControl.UpdateAkkonDaily(dailyInfo);
+        }
 
-            var resultList = GetTempAkkonResultList();
-            if (resultList.Count > 0)
-            {
-                for (int resultIndex = 0; resultIndex < resultList.Count; resultIndex++)
-                    ResultChartControl.UpdateAkkonChart(resultList[resultIndex].TabResultList[CurrentTabNo]);
-            }
+        private void UpdateDailyChart(DailyInfo dailyInfo, int tabNo)
+        {
+            if (dailyInfo == null)
+                return;
+
+            if (dailyInfo.AkkonDailyInfoList.Count > 0)
+                ResultChartControl.UpdateAkkonDaily(dailyInfo.AkkonDailyInfoList[tabNo]);
         }
 
         private void ClearAkkonChart()
         {
-            ResultChartControl.ClearAlignChart();
+            ResultChartControl.ClearChart();
         }
 
-        private void WriteAkkonTempFile(AppsInspResult inspResult)
-        {
-            string filePath = Path.Combine(AppsConfig.Instance().Path.Temp, @"Akkon.csv");
+        //private void WriteAkkonTempFile(AppsInspResult inspResult)
+        //{
+        //    string filePath = Path.Combine(AppsConfig.Instance().Path.Temp, @"Akkon.csv");
 
-            AppsInspModel model = ModelManager.Instance().CurrentModel as AppsInspModel;
+        //    AppsInspModel model = ModelManager.Instance().CurrentModel as AppsInspModel;
 
-            if (File.Exists(filePath) == false)
-            {
-                List<string> header = new List<string>
-                {
-                    "Time",
-                    "Panel",
-                };
+        //    if (File.Exists(filePath) == false)
+        //    {
+        //        List<string> header = new List<string>
+        //        {
+        //            "Time",
+        //            "Panel",
+        //        };
 
-                for (int tabNo = 0; tabNo < model.TabCount; tabNo++)
-                {
-                    header.Add("Tab");
-                    header.Add("Judge");
-                    header.Add("Count");
-                    header.Add("Length");
-                    header.Add("Strength");
-                    header.Add("STD");
-                }
+        //        for (int tabNo = 0; tabNo < model.TabCount; tabNo++)
+        //        {
+        //            header.Add("Tab");
+        //            header.Add("Judge");
+        //            header.Add("Count");
+        //            header.Add("Length");
+        //            header.Add("Strength");
+        //            header.Add("STD");
+        //        }
 
-                CSVHelper.WriteHeader(filePath, header);
-            }
+        //        CSVHelper.WriteHeader(filePath, header);
+        //    }
 
-            CheckTempFileCount(filePath);
+        //    CheckTempFileCount(filePath);
 
-            List<string> dataList = new List<string>
-            {
-                inspResult.LastInspTime.ToString(),
-                inspResult.Cell_ID.ToString()
-            };
+        //    List<string> dataList = new List<string>
+        //    {
+        //        inspResult.LastInspTime.ToString(),
+        //        inspResult.Cell_ID.ToString()
+        //    };
 
-            foreach (var item in inspResult.TabResultList)
-            {
-                dataList.Add(item.TabNo.ToString());
-                dataList.Add(item.AkkonResult.Judgement.ToString());
-                dataList.Add(item.AkkonResult.AvgBlobCount.ToString());
-                dataList.Add(item.AkkonResult.AvgLength.ToString());
-                dataList.Add(item.AkkonResult.AvgStrength.ToString());
-                dataList.Add(item.AkkonResult.AvgStd.ToString());
-            }
+        //    foreach (var item in inspResult.TabResultList)
+        //    {
+        //        dataList.Add(item.TabNo.ToString());
+        //        dataList.Add(item.AkkonResult.Judgement.ToString());
+        //        dataList.Add(item.AkkonResult.AvgBlobCount.ToString());
+        //        dataList.Add(item.AkkonResult.AvgLength.ToString());
+        //        dataList.Add(item.AkkonResult.AvgStrength.ToString());
+        //        dataList.Add(item.AkkonResult.AvgStd.ToString());
+        //    }
 
-            CSVHelper.WriteData(filePath, dataList);
-        }
+        //    CSVHelper.WriteData(filePath, dataList);
+        //}
 
-        private void CheckTempFileCount(string filePath)
-        {
-            Tuple<string[], List<string[]>> readData = CSVHelper.ReadData(filePath);
-            string[] header = readData.Item1;
-            List<string[]> contents = readData.Item2;
+        //private void CheckTempFileCount(string filePath)
+        //{
+        //    Tuple<string[], List<string[]>> readData = CSVHelper.ReadData(filePath);
+        //    string[] header = readData.Item1;
+        //    List<string[]> contents = readData.Item2;
 
-            if (contents.Count >= AppsConfig.Instance().Operation.AkkonResultCount)
-            {
-                contents.RemoveAt(0);
-                CSVHelper.WriteAllData(filePath, header, contents);
-            }
-        }
+        //    if (contents.Count >= AppsConfig.Instance().Operation.AkkonResultCount)
+        //    {
+        //        contents.RemoveAt(0);
+        //        CSVHelper.WriteAllData(filePath, header, contents);
+        //    }
+        //}
 
-        private void ReadAkkonTempFile()
-        {
-            List<AppsInspResult> inspResultList = new List<AppsInspResult>();
+        //private void ReadAkkonTempFile()
+        //{
+        //    List<AppsInspResult> inspResultList = new List<AppsInspResult>();
 
-            string filePath = Path.Combine(AppsConfig.Instance().Path.Temp, @"Akkon.csv");
+        //    string filePath = Path.Combine(AppsConfig.Instance().Path.Temp, @"Akkon.csv");
 
-            if (File.Exists(filePath) == false)
-                return;
+        //    if (File.Exists(filePath) == false)
+        //        return;
 
-            Tuple<string[], List<string[]>> readData = CSVHelper.ReadData(filePath);
-            List<string[]> contents = readData.Item2;
+        //    Tuple<string[], List<string[]>> readData = CSVHelper.ReadData(filePath);
+        //    List<string[]> contents = readData.Item2;
 
-            AppsInspModel model = ModelManager.Instance().CurrentModel as AppsInspModel;
+        //    AppsInspModel model = ModelManager.Instance().CurrentModel as AppsInspModel;
 
-            for (int readLine = 0; readLine < contents.Count; readLine++)
-            {
-                AppsInspResult inspResult = new AppsInspResult();
+        //    for (int readLine = 0; readLine < contents.Count; readLine++)
+        //    {
+        //        AppsInspResult inspResult = new AppsInspResult();
 
-                inspResult.LastInspTime = contents[readLine][0].ToString();
-                inspResult.Cell_ID = contents[readLine][1].ToString();
+        //        inspResult.LastInspTime = contents[readLine][0].ToString();
+        //        inspResult.Cell_ID = contents[readLine][1].ToString();
 
-                for (int tabNo = 0; tabNo < model.TabCount; tabNo++)
-                {
-                    int startIndex = 2;
-                    int interval = 6;
-                    startIndex = startIndex + interval * tabNo;
+        //        for (int tabNo = 0; tabNo < model.TabCount; tabNo++)
+        //        {
+        //            int startIndex = 2;
+        //            int interval = 6;
+        //            startIndex = startIndex + interval * tabNo;
 
-                    TabInspResult tabInspResult = new TabInspResult();
-                    tabInspResult.AkkonResult = new AkkonResult();
+        //            TabInspResult tabInspResult = new TabInspResult();
+        //            tabInspResult.AkkonResult = new AkkonResult();
 
-                    tabInspResult.AkkonResult.TabNo = Convert.ToInt32(contents[readLine][startIndex]);
-                    tabInspResult.AkkonResult.Judgement = (Judgement)Enum.Parse(typeof(Judgement), contents[readLine][startIndex + 1].ToString());
-                    tabInspResult.AkkonResult.AvgBlobCount = Convert.ToInt32(contents[readLine][startIndex + 2]);
-                    tabInspResult.AkkonResult.AvgLength = Convert.ToSingle(contents[readLine][startIndex + 3]);
-                    tabInspResult.AkkonResult.AvgStrength = Convert.ToSingle(contents[readLine][startIndex + 4]);
-                    tabInspResult.AkkonResult .AvgStd = Convert.ToSingle(contents[readLine][startIndex + 5]);
+        //            tabInspResult.AkkonResult.TabNo = Convert.ToInt32(contents[readLine][startIndex]);
+        //            tabInspResult.AkkonResult.Judgement = (Judgement)Enum.Parse(typeof(Judgement), contents[readLine][startIndex + 1].ToString());
+        //            tabInspResult.AkkonResult.AvgBlobCount = Convert.ToInt32(contents[readLine][startIndex + 2]);
+        //            tabInspResult.AkkonResult.AvgLength = Convert.ToSingle(contents[readLine][startIndex + 3]);
+        //            tabInspResult.AkkonResult.AvgStrength = Convert.ToSingle(contents[readLine][startIndex + 4]);
+        //            tabInspResult.AkkonResult .AvgStd = Convert.ToSingle(contents[readLine][startIndex + 5]);
 
-                    inspResult.TabResultList.Add(tabInspResult);
-                }
+        //            inspResult.TabResultList.Add(tabInspResult);
+        //        }
 
-                inspResultList.Add(inspResult);
-            }
+        //        inspResultList.Add(inspResult);
+        //    }
 
-            SetTempAkkonResultList(inspResultList);
-        }
+        //    SetTempAkkonResultList(inspResultList);
+        //}
 
-        private List<AppsInspResult> _akkonResultList { get; set; } = new List<AppsInspResult>();
-        private void SetTempAkkonResultList(List<AppsInspResult> inspResultList)
-        {
-            _akkonResultList = new List<AppsInspResult>();
-            _akkonResultList = inspResultList.ToList();
-        }
+        //private List<AppsInspResult> _akkonResultList { get; set; } = new List<AppsInspResult>();
+        //private void SetTempAkkonResultList(List<AppsInspResult> inspResultList)
+        //{
+        //    _akkonResultList = new List<AppsInspResult>();
+        //    _akkonResultList = inspResultList.ToList();
+        //}
 
-        private List<AppsInspResult> GetTempAkkonResultList()
-        {
-            return _akkonResultList;
-        }
+        //private List<AppsInspResult> GetTempAkkonResultList()
+        //{
+        //    return _akkonResultList;
+        //}
         #endregion
     }
 }

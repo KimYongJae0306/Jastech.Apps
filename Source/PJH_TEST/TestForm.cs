@@ -66,8 +66,8 @@ namespace PJH_TEST
             //for (int i = 0; i < list.Count;i++)
             //    Console.WriteLine(list[i]);
 
-            for (int i = 0; i < 100; i++)
-                Console.WriteLine("Cell_" + i.ToString("D3"));
+            //for (int i = 0; i < 100; i++)
+            //    Console.WriteLine("Cell_" + i.ToString("D3"));
         }
     }
 }

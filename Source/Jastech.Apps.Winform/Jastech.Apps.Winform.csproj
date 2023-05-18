@@ -92,6 +92,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="Service\DailyInfo.cs" />
     <Compile Include="Settings\AppsConfig.cs" />
     <Compile Include="UI\Controls\AkkonControl.cs">
       <SubType>UserControl</SubType>

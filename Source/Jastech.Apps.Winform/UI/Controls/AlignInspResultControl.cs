@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Jastech.Apps.Structure.Data;
+using Jastech.Apps.Winform.Service;
 
 namespace Jastech.Apps.Winform.UI.Controls
 {
@@ -24,7 +25,8 @@ namespace Jastech.Apps.Winform.UI.Controls
         #endregion
 
         #region 델리게이트
-        private delegate void UpdateAlignResultDelegate(AppsInspResult result);
+        //private delegate void UpdateAlignResultDelegate(AppsInspResult result);
+        private delegate void UpdateAlignResultDelegate(DailyInfo dailyInfo);
         #endregion
 
         #region 생성자
@@ -38,31 +40,43 @@ namespace Jastech.Apps.Winform.UI.Controls
             InitializeComponent();
         }
 
-        public void UpdateAlignResult(AppsInspResult result)
+        //public void UpdateAlignResult(AppsInspResult result)
+        //{
+        //    if (this.InvokeRequired)
+        //    {
+        //        UpdateAlignResultDelegate callback = UpdateAlignResult;
+        //        BeginInvoke(callback);
+        //        return;
+        //    }
+
+        //    UpdateDataGridView(result);
+        //}
+
+        public void UpdateAlignDaily(DailyInfo dailyInfo)
         {
             if (this.InvokeRequired)
             {
-                UpdateAlignResultDelegate callback = UpdateAlignResult;
+                UpdateAlignResultDelegate callback = UpdateAlignDaily;
                 BeginInvoke(callback);
                 return;
             }
 
-            UpdateDataGridView(result);
+            UpdateDataGridView(dailyInfo);
         }
 
-        private void UpdateDataGridView(AppsInspResult result)
+        private void UpdateDataGridView(DailyInfo dailyInfo)
         {
-            foreach (var item in result.TabResultList)
+            foreach (var item in dailyInfo.AlignDailyInfoList)
             {
-                string inspectionTime = result.LastInspTime;
-                string panelID = result.Cell_ID;
+                string inspectionTime = item.InspectionTime;
+                string panelID = item.PanelID;
                 string tabNumber = item.TabNo.ToString();
-                string judge = item.AlignJudgment.ToString();
-                string leftAlignX = item.LeftAlignX.ResultValue.ToString("F2");
-                string leftAlignY = item.LeftAlignY.ResultValue.ToString("F2");
-                string rightAlignX = item.RightAlignX.ResultValue.ToString("F2");
-                string rightAlignY = item.RightAlignY.ResultValue.ToString("F2");
-                string centerAlignX = item.CenterX.ToString("F2");
+                string judge = item.Judgement.ToString();
+                string leftAlignX = item.LX.ToString("F2");
+                string leftAlignY = item.LX.ToString("F2");
+                string rightAlignX = item.RX.ToString("F2");
+                string rightAlignY = item.RY.ToString("F2");
+                string centerAlignX = item.CX.ToString("F2");
 
                 string[] row = { inspectionTime, panelID, tabNumber, judge, leftAlignX, leftAlignY, rightAlignX, rightAlignY, centerAlignX };
                 dgvAlignHistory.Rows.Add(row);
