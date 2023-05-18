@@ -154,84 +154,6 @@ namespace Jastech.Apps.Winform.UI.Controls
             UpdateAkkonChart();
         }
 
-        private AppsInspResult ParseInspResult(List<string> fileList, int index)
-        {
-            AppsInspResult result = new AppsInspResult();
-            result.TabResultList = new List<TabInspResult>();
-
-            AppsInspModel model = ModelManager.Instance().CurrentModel as AppsInspModel;
-
-            for (int tabNo = 0; tabNo < model.TabCount; tabNo++)
-            {
-                TabInspResult tabResult = new TabInspResult();
-                tabResult.AkkonResult = new AkkonResult();
-
-                var panelResultPath = fileList[tabNo + index];
-
-                Tuple<string[], List<string[]>> readData = CSVHelper.ReadData(panelResultPath);
-                List<string[]> contents = readData.Item2;
-                foreach (var item in contents)
-                {
-                    int searchIndex = panelResultPath.IndexOf("][");
-                    result.Cell_ID = panelResultPath.Substring(searchIndex + 2, 8);
-                    result.LastInspTime = item[0].ToString();
-
-                    LeadResult leadResult = new LeadResult();
-
-                    leadResult.BlobCount = Convert.ToInt32(item[3].ToString());
-                    leadResult.Length = Convert.ToSingle(item[4].ToString());
-                    leadResult.AvgStrength = Convert.ToSingle(item[5].ToString());
-                    leadResult.LeadStdDev = Convert.ToSingle(item[7].ToString());
-
-                    tabResult.AkkonResult.LeadResultList.Add(leadResult);
-                }
-
-                tabResult.TabNo = tabNo + 1;
-                tabResult.AkkonResult.TabNo = tabNo + 1;
-                tabResult.AkkonResult.AvgBlobCount = Convert.ToInt32(Math.Truncate(tabResult.AkkonResult.LeadResultList.Average(x => x.BlobCount)));
-                tabResult.AkkonResult.AvgLength = tabResult.AkkonResult.LeadResultList.Average(x => x.Length);
-
-                result.TabResultList.Add(tabResult);
-            }
-
-            return result;
-        }
-
-        //private List<AppsInspResult> LoadResult()
-        //{
-        //    List<AppsInspResult> inspResultList = new List<AppsInspResult>();
-
-        //    AppsInspModel model = ModelManager.Instance().CurrentModel as AppsInspModel;
-
-        //    string dataFilePath = Path.Combine(AppsConfig.Instance().Path.Result + @"\Akkon");
-
-        //    string[] files = Directory.GetFiles(dataFilePath);
-
-        //    List<string> sortFileList = files.OrderBy(x => x).ToList();
-
-        //    for (int index = 0; index < sortFileList.Count; index += model.TabCount)
-        //    {
-        //        AppsInspResult inspResult = new AppsInspResult();
-
-        //        inspResult = ParseInspResult(sortFileList, index);
-
-        //        inspResultList.Add(inspResult);
-        //    }
-
-        //    return CheckResultCount(AppsConfig.Instance().Operation.AkkonResultCount, inspResultList.ToList());
-        //}
-
-        //private List<AppsInspResult> CheckResultCount(int maximumCount, List<AppsInspResult> inspResultList)
-        //{
-        //    if (inspResultList.Count <= 0)
-        //        return null;
-
-        //    if (inspResultList.Count > maximumCount)
-        //        inspResultList.RemoveRange(0, inspResultList.Count - maximumCount);
-
-        //    return inspResultList;
-        //}
-
         public void UpdateMainResult(AppsInspResult inspResult)
         {
             InspDisplayControl.Clear();
@@ -256,7 +178,9 @@ namespace Jastech.Apps.Winform.UI.Controls
                 }
             }
 
-            ReadAkkonTempFile();
+            //ReadAkkonTempFile();
+            UpdateAkkonResult();
+            UpdateAkkonChart();
         }
 
         private void UpdateAkkonResult()
@@ -283,56 +207,8 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         private void ClearAkkonChart()
         {
-            ResultChartControl.ClearChart();
+            ResultChartControl.ClearAlignChart();
         }
-
-        //private void WriteAkkonResult(string filePath, int tabNo, AppsInspResult inspResult)
-        //{
-        //    // TEST
-        //    filePath = Path.Combine(AppsConfig.Instance().Path.Result, @"Akkon\");
-        //    filePath += DateTime.Now.ToString("[yyyyMMdd_HHmmss]") + "[CellID]Akkon_Tab" + tabNo + ".csv";
-
-        //    List<string> header = new List<string>
-        //    {
-        //        "Inspection Time",
-        //        "Cell ID",
-        //        "Bump No.",
-        //        "Count",
-        //        "Length",
-        //        "Strength",
-        //        "Judgement",
-        //        "STD"
-        //    };
-
-        //    CSVHelper.WriteHeader(filePath, header);
-
-        //    List<List<string>> dataList = new List<List<string>>();
-
-        //    foreach (var item in inspResult.TabResultList[tabNo].AkkonResult.LeadResultList)
-        //    {
-        //        List<string> datas = new List<string>
-        //        {
-        //            inspResult.LastInspTime.ToString(),
-        //            inspResult.Cell_ID.ToString(),
-        //            item.Id.ToString(),
-        //            item.BlobCount.ToString(),
-        //            item.Length.ToString("F2"),
-        //            item.AvgStrength.ToString("F2")
-        //        };
-
-        //        if (item.IsGood)
-        //            datas.Add(Judgement.OK.ToString());
-        //        else
-        //            datas.Add(Judgement.NG.ToString());
-
-        //        datas.Add(item.LeadStdDev.ToString());
-
-        //        dataList.Add(datas);
-        //    }
-
-        //    CSVHelper.WriteData(filePath, dataList);
-        //}
-
 
         private void WriteAkkonTempFile(AppsInspResult inspResult)
         {
@@ -361,6 +237,8 @@ namespace Jastech.Apps.Winform.UI.Controls
                 CSVHelper.WriteHeader(filePath, header);
             }
 
+            CheckTempFileCount(filePath);
+
             List<string> dataList = new List<string>
             {
                 inspResult.LastInspTime.ToString(),
@@ -380,18 +258,18 @@ namespace Jastech.Apps.Winform.UI.Controls
             CSVHelper.WriteData(filePath, dataList);
         }
 
-        //private List<string> CheckTempFileCount(List<string> inputData)
-        //{
-        //    string filePath = Path.Combine(AppsConfig.Instance().Path.Temp, @"Akkon.csv");
+        private void CheckTempFileCount(string filePath)
+        {
+            Tuple<string[], List<string[]>> readData = CSVHelper.ReadData(filePath);
+            string[] header = readData.Item1;
+            List<string[]> contents = readData.Item2;
 
-        //    AppsInspModel model = ModelManager.Instance().CurrentModel as AppsInspModel;
-
-        //    Tuple<string[], List<string[]>> readData = CSVHelper.ReadData(filePath);
-        //    List<string[]> contents = readData.Item2;
-
-        //    if (contents.Count >= AppsConfig.Instance().Operation.AkkonResultCount)
-        //        contents.RemoveRange(0, model.TabCount);
-        //}
+            if (contents.Count >= AppsConfig.Instance().Operation.AkkonResultCount)
+            {
+                contents.RemoveAt(0);
+                CSVHelper.WriteAllData(filePath, header, contents);
+            }
+        }
 
         private void ReadAkkonTempFile()
         {
@@ -439,16 +317,16 @@ namespace Jastech.Apps.Winform.UI.Controls
             SetTempAkkonResultList(inspResultList);
         }
 
-        private List<AppsInspResult> _resultList { get; set; } = new List<AppsInspResult>();
+        private List<AppsInspResult> _akkonResultList { get; set; } = new List<AppsInspResult>();
         private void SetTempAkkonResultList(List<AppsInspResult> inspResultList)
         {
-            _resultList = new List<AppsInspResult>();
-            _resultList = inspResultList.ToList();
+            _akkonResultList = new List<AppsInspResult>();
+            _akkonResultList = inspResultList.ToList();
         }
 
         private List<AppsInspResult> GetTempAkkonResultList()
         {
-            return _resultList;
+            return _akkonResultList;
         }
         #endregion
     }

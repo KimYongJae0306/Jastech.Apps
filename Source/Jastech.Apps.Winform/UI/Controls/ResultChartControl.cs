@@ -47,6 +47,8 @@ namespace Jastech.Apps.Winform.UI.Controls
         #region 델리게이트
         private delegate void UpdateAlignChartDelegate(TabInspResult result);
         private delegate void UpdateAkkonChartDelegate(TabInspResult result);
+        private delegate void ClearAlignChartDelegate();
+        private delegate void ClearAkkonChartDelegate();
         #endregion
 
         #region 생성자
@@ -177,7 +179,31 @@ namespace Jastech.Apps.Winform.UI.Controls
             }
         }
 
-        public void ClearChart()
+        public void ClearAlignChart()
+        {
+            if (this.InvokeRequired)
+            {
+                ClearAlignChartDelegate callback = ClearAlignChart;
+                BeginInvoke(callback);
+                return;
+            }
+
+            ClearChartData();
+        }
+
+        public void ClearAkkonChart()
+        {
+            if (this.InvokeRequired)
+            {
+                ClearAkkonChartDelegate callback = ClearAkkonChart;
+                BeginInvoke(callback);
+                return;
+            }
+
+            ClearChartData();
+        }
+
+        private void ClearChartData()
         {
             if (ChartType == InspChartType.Align)
             {
