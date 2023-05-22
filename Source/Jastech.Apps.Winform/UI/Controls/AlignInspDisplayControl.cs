@@ -165,13 +165,13 @@ namespace Jastech.Apps.Winform.UI.Controls
 
             InspAlignDisplay.ClearImage();
 
-            UpdateDailyInfo(inspResult);
+            //UpdateDailyInfo(inspResult);
 
             for (int i = 0; i < inspResult.TabResultList.Count(); i++)
             {
                 int tabNo = inspResult.TabResultList[i].TabNo;
 
-                UpdateDailyChart(DailyInfo, tabNo);
+                //UpdateDailyChart(DailyInfo, tabNo);
 
                 if (InspResultDic.ContainsKey(tabNo))
                 {

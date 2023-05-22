@@ -32,6 +32,8 @@ namespace Jastech.Apps.Winform.Service
                 AlignDailyInfoList.RemoveAt(0);
 
             AlignDailyInfoList.Add(alignDailyInfo);
+
+            //AlignDailyInfoList.Reverse();
         }
 
         public void AddAkkonInfo(AkkonDailyInfo akkonDailyInfo) 
@@ -40,6 +42,8 @@ namespace Jastech.Apps.Winform.Service
                 AkkonDailyInfoList.RemoveAt(0);
 
             AkkonDailyInfoList.Add(akkonDailyInfo);
+
+            //AkkonDailyInfoList.Reverse();
         }
 
         public void Save()

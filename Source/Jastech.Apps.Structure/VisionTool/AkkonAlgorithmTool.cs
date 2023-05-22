@@ -26,7 +26,7 @@ namespace Jastech.Apps.Structure.VisionTool
 
         private List<List<int>> TotalSliceCnt = new List<List<int>>();
 
-        //private MacronAkkon AkkonAlgorithm { get; set; } = new MacronAkkon();
+        private MacronAkkon AkkonAlgorithm { get; set; } = new MacronAkkon();
 
         public AkkonResult RunAkkonForTeachingData(Mat mat, Tab tab, int stageCount, int tabCount, float resizeRatio)
         {
@@ -92,10 +92,10 @@ namespace Jastech.Apps.Structure.VisionTool
         }
         public AkkonResult RunMultiAkkon(Mat mat, int stageNo, int tabNo)
         {
-            return null;
-            //var result = AkkonAlgorithm.Inspect(stageNo, tabNo, mat);
+            //return null;
+            var result = AkkonAlgorithm.Inspect(stageNo, tabNo, mat);
 
-            //return result;
+            return result;
         }
 
         public void PrepareMultiInspection(AppsInspModel inspModel, List<TabScanImage> tabscanImageList, float resizeRatio)

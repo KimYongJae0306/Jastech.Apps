@@ -81,7 +81,7 @@ namespace Jastech.Apps.Winform.UI.Controls
 
             DailyInfo.Load();
 
-            UpdateDailyDataGridView(DailyInfo);
+            //UpdateDailyDataGridView(DailyInfo);
             UpdateDailyChart(DailyInfo, 0);
         }
 
@@ -160,13 +160,13 @@ namespace Jastech.Apps.Winform.UI.Controls
         {
             InspDisplayControl.Clear();
 
-            UpdateDailyInfo(inspResult);
+            //UpdateDailyInfo(inspResult);
 
             for (int i = 0; i < inspResult.TabResultList.Count(); i++)
             {
                 int tabNo = inspResult.TabResultList[i].TabNo;
 
-                UpdateDailyChart(DailyInfo, tabNo);
+                //UpdateDailyChart(DailyInfo, tabNo);
 
                 if (InspResultDic.ContainsKey(tabNo))
                 {
@@ -203,7 +203,7 @@ namespace Jastech.Apps.Winform.UI.Controls
                 DailyInfo.AddAkkonInfo(akkonInfo);
             }
 
-            UpdateDailyDataGridView(DailyInfo);
+            //UpdateDailyDataGridView(DailyInfo);
         }
 
         private void UpdateDailyDataGridView(DailyInfo dailyInfo)

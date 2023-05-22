@@ -181,7 +181,7 @@ namespace Jastech.Apps.Structure.Data
             LeftAlignY?.Dispose();
             RightAlignX?.Dispose();
             RightAlignY?.Dispose();
-            AkkonResult.Dispose();
+            AkkonResult?.Dispose();
         }
 
         public TabInspResult DeepCopy()
