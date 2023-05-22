@@ -198,8 +198,8 @@ namespace ATT.Core
                     Mat image = akkon.TabInspResult.Image;
                     Tab tab = akkon.Tab;
 
-                    var akkonResult = AkkonAlgorithmTool.RunMultiAkkon(image, tab.StageIndex, tab.Index);
-                    result.AkkonResult = akkonResult;
+                    //var akkonResult = AkkonAlgorithmTool.RunMultiAkkon(image, tab.StageIndex, tab.Index);
+                    //result.AkkonResult = akkonResult;
                     AppsInspResult.TabResultList.Add(result);
 
                     //AppsInspResult.TabResultList.Add(new TabInspResult());
@@ -455,7 +455,7 @@ namespace ATT.Core
 
                 case SeqStep.SEQ_SAVE_IMAGE:
 
-                    //SaveImage(AppsInspResult);
+                    SaveImage(AppsInspResult);
 
                     SeqStep = SeqStep.SEQ_DELETE_DATA;
                     break;
