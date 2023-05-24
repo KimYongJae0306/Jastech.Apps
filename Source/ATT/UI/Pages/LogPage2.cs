@@ -11,13 +11,13 @@ using Jastech.Framework.Winform.Controls;
 
 namespace ATT.UI.Pages
 {
-    public partial class LogPage : UserControl
+    public partial class LogPage2 : UserControl
     {
         #region 속성
         private List<LogControl> LogControlList { get; set; } = new List<LogControl>();
         #endregion
 
-        public LogPage()
+        public LogPage2()
         {
             InitializeComponent();
         }

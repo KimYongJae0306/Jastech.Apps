@@ -1,6 +1,6 @@
 ﻿namespace ATT.UI.Pages
 {
-    partial class LogPage
+    partial class LogPage2
     {
         /// <summary> 
         /// 필수 디자이너 변수입니다.
