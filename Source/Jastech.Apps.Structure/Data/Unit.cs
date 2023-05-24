@@ -31,16 +31,6 @@ namespace Jastech.Apps.Structure.Data
         [JsonProperty]
         public List<TeachingInfo> TeachingInfoList { get; set; } = new List<TeachingInfo>();
 
-        public void AddTeachingInfo(TeachingInfo position)
-        {
-            TeachingInfoList.Add(position);
-        }
-
-        public TeachingInfo GetTeachingInfo(TeachingPosType type)
-        {
-            return TeachingInfoList.Where(x => x.Name == type.ToString()).First();
-        }
-
         public Unit DeepCopy()
         {
             // Cognex Tool 때문에 개별 DeepCopy 호출 해줘야함(Json DeepCopy 안됨)
@@ -58,11 +48,26 @@ namespace Jastech.Apps.Structure.Data
             foreach (var preAlign in PreAligns)
                 preAlign.Dispose();
 
-            foreach (var tap in TabList)
-                tap.Dispose();
+            foreach (var tab in TabList)
+                tab.Dispose();
 
             PreAligns.Clear();
             TabList.Clear();
+        }
+
+        public TeachingInfo GetTeachingInfo(TeachingPosType type)
+        {
+            return TeachingInfoList.Where(x => x.Name == type.ToString()).First();
+        }
+
+        public void AddTeachingInfo(TeachingInfo position)
+        {
+            TeachingInfoList.Add(position);
+        }
+
+        public List<TeachingInfo> GetTeachingInfoList()
+        {
+            return TeachingInfoList;
         }
 
         public Tab GetTab(int index)

@@ -20,6 +20,8 @@ using Jastech.Framework.Imaging.VisionPro.VisionAlgorithms.Results;
 using Jastech.Apps.Structure.VisionTool;
 using Jastech.Framework.Winform.Controls;
 using static Jastech.Framework.Device.Motions.AxisMovingParam;
+using Jastech.Framework.Util.Helper;
+using Cognex.VisionPro.Caliper;
 
 namespace Jastech.Apps.Winform.UI.Controls
 {
@@ -491,30 +493,130 @@ namespace Jastech.Apps.Winform.UI.Controls
 
             ICogImage cogImage = display.GetImage();
 
-            MarkParam fpcLeft = new MarkParam();
-            fpcLeft = origin.GetFPCMark(MarkDirection.Left, MarkName.Main);
+            if (cogImage == null)
+                return;
 
-            CogPatternMatchingResult originFpcLeftResult = Algorithm.RunPatternMatch(cogImage, fpcLeft.InspParam);
-            CogPatternMatchingResult currentFpcLeftResult = Algorithm.RunPatternMatch(cogImage, currentParam);
+            // 1. FPC Mark 기반으로 Align의 FPC ROI 틀기
+            // 2. Panel Mark 기반으로 Align의 Panel ROI 틀기
+            // 3. Panel Mark 기반으로 Akkon의 ROI 틀기
 
-            PointF originPos = originFpcLeftResult.MaxMatchPos.FoundPos;
-            PointF currentPos = currentFpcLeftResult.MaxMatchPos.FoundPos;
+            if (_curMarkName != MarkName.Main)
+                return;
+
+            // ToDo
+            // 1. 자재 위치별 좌, 우 등록된 패턴 위치로 Theta 및 거리 산출
+            // 2. 신규로 움직인 좌, 우 등록된 패턴하고 차이값 구하기
+
+            // ToDo 1
+            // 티칭한 Left FPC 좌표
+            MarkParam leftReferenceMarkParam = origin.GetFPCMark(MarkDirection.Left, MarkName.Main);
+            CogTransform2DLinear tlf = leftReferenceMarkParam.InspParam.GetOrigin();
+            PointF tlfp = new PointF(Convert.ToSingle(tlf.TranslationX), Convert.ToSingle(tlf.TranslationY));
+
+            // 찾은 Left FPC 좌표
+            CogPatternMatchingResult leftReferenceMarkResult = Algorithm.RunPatternMatch(cogImage, leftReferenceMarkParam.InspParam);
+            PointF leftReferencePoint = leftReferenceMarkResult.MaxMatchPos.FoundPos;
 
 
+            // 티칭한 Right FPC 좌표
+            MarkParam rightReferenceMarkparam = origin.GetFPCMark(MarkDirection.Right, MarkName.Main);
+            CogTransform2DLinear trf = rightReferenceMarkparam.InspParam.GetOrigin();
+            PointF trfp = new PointF(Convert.ToSingle(trf.TranslationX), Convert.ToSingle(trf.TranslationY));
+
+            // 찾은 Right FPC 좌표
+            CogPatternMatchingResult rightReferenceMarkResult = Algorithm.RunPatternMatch(cogImage, rightReferenceMarkparam.InspParam);
+            PointF rightReferencePoint = rightReferenceMarkResult.MaxMatchPos.FoundPos;
+
+            double tDegree = MathHelper.GetTheta(tlfp, trfp);
+            double sDegree = MathHelper.GetTheta(leftReferencePoint, rightReferencePoint);
             int gg = 0;
 
-            double diffX = originPos.X - currentPos.X;
-            double diffY = originPos.Y - currentPos.Y;
 
-            
-            MarkParam fpcRight = new MarkParam();
-            fpcRight = origin.GetFPCMark(MarkDirection.Right, MarkName.Main);
+            //double theta = MathHelper.GetTheta(leftReferencePoint, rightReferencePoint);
+            //double distance = Math.Sqrt(Math.Pow(leftReferencePoint.X - rightReferencePoint.X, 2) + Math.Pow(leftReferencePoint.Y - rightReferencePoint.Y, 2));
+            PointF centerPoint = new PointF((leftReferencePoint.X + rightReferencePoint.X) / 2, (leftReferencePoint.Y + rightReferencePoint.Y) / 2);
 
-            MarkParam panelLeft = new MarkParam();
-            panelLeft = origin.GetPanelMark(MarkDirection.Left, MarkName.Main);
 
-            MarkParam panelRight = new MarkParam();
-            panelRight = origin.GetPanelMark(MarkDirection.Right, MarkName.Main);
+            foreach (var item in origin.AlignParamList)
+            {
+                //CogRectangleAffine roi = new CogRectangleAffine();
+
+                int tt = 0;
+
+                //var currentParam = CogCaliperParamControl.GetCurrentParam();
+                CogRectangleAffine roi = new CogRectangleAffine(item.CaliperParams.CaliperTool.Region);
+
+                var newPoint = MathHelper.GetCoordinate(new PointF(Convert.ToSingle(roi.CenterX), Convert.ToSingle(roi.CenterY)), sDegree, centerPoint, leftReferencePoint, rightReferencePoint);
+                roi.CenterX = newPoint.X;
+                roi.CenterY = newPoint.Y;
+
+                item.CaliperParams.CaliperTool.Region = roi;
+
+                //roi.CenterX += jogMoveX;
+                //roi.CenterY += jogMoveY;
+
+                //currentParam.CaliperTool.Region = roi;
+
+                //item.CaliperParams.CaliperTool.Region = roi.;
+                //item.CaliperParams.CaliperTool.Region;
+
+                CogCaliperCurrentRecordConstants constants = CogCaliperCurrentRecordConstants.All;
+                display.SetInteractiveGraphics("tool", item.CaliperParams.CreateCurrentRecord(constants));
+            }
+
+
+            return;
+
+
+
+
+
+
+
+
+
+            MarkParam referenceMarkParam = new MarkParam();
+            PointF referencePoint = new PointF();
+
+            if (_curMaterial == Material.Fpc)
+            {
+                referenceMarkParam = origin.GetFPCMark(_curDirection, MarkName.Main);
+                CogPatternMatchingResult referenceResult = Algorithm.RunPatternMatch(cogImage, referenceMarkParam.InspParam);
+                referencePoint = referenceResult.MaxMatchPos.FoundPos;
+            }
+            else
+            {
+                referenceMarkParam = origin.GetPanelMark(_curDirection, MarkName.Main);
+                CogPatternMatchingResult referenceResult = Algorithm.RunPatternMatch(cogImage, referenceMarkParam.InspParam);
+                referencePoint = referenceResult.MaxMatchPos.FoundPos;
+            }
+
+            CogPatternMatchingResult currentFpcLeftResult = Algorithm.RunPatternMatch(cogImage, currentParam);
+            PointF currentPos = currentFpcLeftResult.MaxMatchPos.FoundPos;
+
+            double diffX = referencePoint.X - currentPos.X;
+            double diffY = referencePoint.Y - currentPos.Y;
+
+            if (diffX == 0 && diffY == 0)
+                return;
+
+
+
+
+
+
+
+            //MarkParam fpcLeft = new MarkParam();
+            //fpcLeft = origin.GetFPCMark(MarkDirection.Left, MarkName.Main);
+
+            //MarkParam fpcRight = new MarkParam();
+            //fpcRight = origin.GetFPCMark(MarkDirection.Right, MarkName.Main);
+
+            //MarkParam panelLeft = new MarkParam();
+            //panelLeft = origin.GetPanelMark(MarkDirection.Left, MarkName.Main);
+
+            //MarkParam panelRight = new MarkParam();
+            //panelRight = origin.GetPanelMark(MarkDirection.Right, MarkName.Main);
         }
 
         private MarkParam CoordinateMark(double x, double y)

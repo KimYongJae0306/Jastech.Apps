@@ -128,6 +128,12 @@ namespace ATT
                 _mainForm.ATTInspModelService.SaveExceptVpp(filePath, inspModel);
         }
 
+        //public void SaveTeachingPosition(List<TeachingInfo> teachingInfoList)
+        //{
+        //    foreach (var item in GetTeachingData().UnitList)
+        //        item.TeachingInfoList = teachingInfoList.Select(x => x.DeepCopy()).ToList();
+        //}
+
         public TeachingData GetTeachingData()
         {
             return _mainForm.TeachingData;

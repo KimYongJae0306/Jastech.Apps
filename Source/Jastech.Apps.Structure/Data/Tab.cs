@@ -76,8 +76,8 @@ namespace Jastech.Apps.Structure.Data
 
         public MarkParam GetFPCMark(MarkDirection direction, MarkName name)
         {
-            if (FpcMarkParamList.Count <= 0)
-                return null;
+            //if (FpcMarkParamList.Count <= 0)
+            //    return null;
             
             return FpcMarkParamList.Where(x => x.Name == name && x.Direction == direction).First();
         }
