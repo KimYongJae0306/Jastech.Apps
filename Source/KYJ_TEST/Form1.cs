@@ -33,31 +33,15 @@ namespace KYJ_TEST
             byte[] dataArray = new byte[size];
             Marshal.Copy(mat.DataPointer, dataArray, 0, size);
 
-            AkkonAlgorithm.Run(dataArray, mat.Width, mat.Height, new AkkonParameters());
+            AkkonAlgorithm.Test();
+            AkkonAlgorithm.Run(mat.DataPointer, mat.Width, mat.Height, new AkkonParameters());
+            //AkkonAlgorithm.Run(dataArray, mat.Width, mat.Height, new AkkonParameters());
             //Test(dataArray, mat.Width, mat.Height);
             //LiveViewPanel = new LiveViewPanel();
             //LiveViewPanel.Dock = DockStyle.Fill;
             //panel1.Controls.Add(LiveViewPanel);
         }
 
-
-        public static void Test(byte[] sourceData, int width, int height)
-        {
-            int srcStep;
-            int dstStep;
-            IntPtr src16Ptr = IPPWrapper.ippiMalloc_16s_C1(width, height, out srcStep); // 16비트 메모리 할당
-
-            IntPtr dst16Ptr = IPPWrapper.ippiMalloc_16s_C1(width, height, out dstStep); // 16비트 메모리 할당
-            int dst16Size = dstStep * height;
-            short[] dst16Data = new short[dst16Size];
-            Marshal.Copy(dst16Ptr, dst16Data, 0, dst16Size);
-
-            IPPWrapper.ippiScale_8u16s_C1R(sourceData, srcStep, dst16Data, dstStep, width, height, 0.0, -128); // 8Bit->16Bit로 변경
-
-
-            IPPWrapper.ippiFree(src16Ptr);
-            IPPWrapper.ippiFree(dst16Ptr);
-        }
 
         //void SepConv16s_rowfirst(Ipp16s* pSrcBuffer, Ipp16s* pDstBuffer, IppiSize size, Ipp16s* xkernel, int xn, int xdivisor, Ipp16s* ykernel, int yn, int ydivisor)
         //{
