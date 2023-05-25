@@ -52,6 +52,7 @@
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
     <Prefer32Bit>true</Prefer32Bit>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup>
     <StartupObject />
@@ -146,6 +147,14 @@
     <ProjectReference Include="..\..\..\Jastech.Core\src\Jastech.Framework.Imaging.Ipp\Jastech.Framework.Imaging.Ipp.csproj">
       <Project>{5b0ab97f-b524-4884-aa4e-b05a055eb9e9}</Project>
       <Name>Jastech.Framework.Imaging.Ipp</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Jastech.Core\src\Jastech.Framework.Imaging\Jastech.Framework.Imaging.csproj">
+      <Project>{2380DA0F-851A-4430-9A43-E7B2DEEE29F2}</Project>
+      <Name>Jastech.Framework.Imaging</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Jastech.Core\src\Jastech.Framework.Util\Jastech.Framework.Util.csproj">
+      <Project>{07EF86CC-AC6A-454E-B12B-EB63454A1DCA}</Project>
+      <Name>Jastech.Framework.Util</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
