@@ -34,6 +34,7 @@
             this.tlpFunctionButtons = new System.Windows.Forms.TableLayoutPanel();
             this.lblCurrentTime = new System.Windows.Forms.Label();
             this.panel2 = new System.Windows.Forms.Panel();
+            this.label1 = new System.Windows.Forms.Label();
             this.panel4 = new System.Windows.Forms.Panel();
             this.tableLayoutPanel4 = new System.Windows.Forms.TableLayoutPanel();
             this.lblLogPageImage = new System.Windows.Forms.Label();
@@ -61,7 +62,6 @@
             this.picLogo = new System.Windows.Forms.PictureBox();
             this.lblSystemName = new System.Windows.Forms.Label();
             this.tmrMainForm = new System.Windows.Forms.Timer(this.components);
-            this.label1 = new System.Windows.Forms.Label();
             this.tlpMainForm.SuspendLayout();
             this.tlpFunctionButtons.SuspendLayout();
             this.panel2.SuspendLayout();
@@ -149,6 +149,19 @@
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(194, 44);
             this.panel2.TabIndex = 19;
+            // 
+            // label1
+            // 
+            this.label1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.label1.Font = new System.Drawing.Font("맑은 고딕", 16F, System.Drawing.FontStyle.Bold);
+            this.label1.ForeColor = System.Drawing.Color.White;
+            this.label1.Location = new System.Drawing.Point(0, 0);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(194, 44);
+            this.label1.TabIndex = 1;
+            this.label1.Text = "Test";
+            this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.label1.Click += new System.EventHandler(this.label1_Click);
             // 
             // panel4
             // 
@@ -477,19 +490,6 @@
             // tmrMainForm
             // 
             this.tmrMainForm.Tick += new System.EventHandler(this.tmrMainForm_Tick);
-            // 
-            // label1
-            // 
-            this.label1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.label1.Font = new System.Drawing.Font("맑은 고딕", 16F, System.Drawing.FontStyle.Bold);
-            this.label1.ForeColor = System.Drawing.Color.White;
-            this.label1.Location = new System.Drawing.Point(0, 0);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(194, 44);
-            this.label1.TabIndex = 1;
-            this.label1.Text = "Test";
-            this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.label1.Click += new System.EventHandler(this.label1_Click);
             // 
             // MainForm
             // 
