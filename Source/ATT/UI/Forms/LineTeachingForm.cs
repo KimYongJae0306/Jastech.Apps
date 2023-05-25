@@ -96,7 +96,6 @@ namespace ATT.UI.Forms
 
             _isLoading = false;
 
-
             lblStageCam.Text = $"STAGE : {UnitName} / CAM : {TitleCameraName}";
 
             var appsLineCamera = AppsLineCameraManager.Instance().GetLineCamera(CameraName);
@@ -110,7 +109,7 @@ namespace ATT.UI.Forms
             if (image != null)
                 Display.SetImage(image);
 
-            SelectPage(DisplayType.Align);
+            SelectPage(DisplayType.Mark);
 
         }
 
@@ -269,7 +268,7 @@ namespace ATT.UI.Forms
             AkkonControl.SaveAkkonParam();
             model.SetUnitList(SystemManager.Instance().GetTeachingData().UnitList);
 
-            string fileName = System.IO.Path.Combine(AppsConfig.Instance().Path.Model, model.Name, InspModel.FileName);
+            string fileName = Path.Combine(AppsConfig.Instance().Path.Model, model.Name, InspModel.FileName);
             SystemManager.Instance().SaveModel(fileName, model);
         }
 
@@ -320,7 +319,7 @@ namespace ATT.UI.Forms
         {
             MotionPopupForm motionPopupForm = new MotionPopupForm();
             motionPopupForm.UnitName = UnitName;
-            motionPopupForm.ShowDialog();
+            motionPopupForm.Show();
         }
 
         private void btnGrabStart_Click(object sender, EventArgs e)

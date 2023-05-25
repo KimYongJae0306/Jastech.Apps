@@ -1,6 +1,6 @@
-﻿namespace Jastech.Framework.Winform.Controls
+﻿namespace ATT.UI.Controls
 {
-    partial class LogControl
+    partial class TrendViewControl
     {
         /// <summary> 
         /// 필수 디자이너 변수입니다.
@@ -28,36 +28,40 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.rtxLogMessage = new System.Windows.Forms.RichTextBox();
+            this.tlpTrend = new System.Windows.Forms.TableLayoutPanel();
             this.SuspendLayout();
             // 
-            // rtxLogMessage
+            // tlpTrend
             // 
-            this.rtxLogMessage.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
-            this.rtxLogMessage.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.rtxLogMessage.ForeColor = System.Drawing.Color.White;
-            this.rtxLogMessage.Location = new System.Drawing.Point(0, 0);
-            this.rtxLogMessage.Name = "rtxLogMessage";
-            this.rtxLogMessage.Size = new System.Drawing.Size(300, 300);
-            this.rtxLogMessage.TabIndex = 0;
-            this.rtxLogMessage.Text = "";
+            this.tlpTrend.ColumnCount = 2;
+            this.tlpTrend.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tlpTrend.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tlpTrend.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tlpTrend.Location = new System.Drawing.Point(0, 0);
+            this.tlpTrend.Margin = new System.Windows.Forms.Padding(0);
+            this.tlpTrend.Name = "tlpTrend";
+            this.tlpTrend.RowCount = 1;
+            this.tlpTrend.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tlpTrend.Size = new System.Drawing.Size(951, 506);
+            this.tlpTrend.TabIndex = 0;
             // 
-            // LogControl
+            // TrendControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
-            this.Controls.Add(this.rtxLogMessage);
+            this.Controls.Add(this.tlpTrend);
             this.Font = new System.Drawing.Font("맑은 고딕", 11.25F, System.Drawing.FontStyle.Bold);
             this.ForeColor = System.Drawing.Color.White;
-            this.Name = "LogControl";
-            this.Size = new System.Drawing.Size(300, 300);
+            this.Name = "TrendControl";
+            this.Size = new System.Drawing.Size(951, 506);
+            this.Load += new System.EventHandler(this.TrendControl_Load);
             this.ResumeLayout(false);
 
         }
 
         #endregion
 
-        private System.Windows.Forms.RichTextBox rtxLogMessage;
+        private System.Windows.Forms.TableLayoutPanel tlpTrend;
     }
 }

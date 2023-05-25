@@ -1,21 +1,27 @@
-﻿using System;
+﻿using ATT.UI.Controls;
+using Jastech.Apps.Winform.UI.Controls;
+using Jastech.Framework.Winform.Controls;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Drawing;
 using System.Data;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using Jastech.Framework.Winform.Controls;
 
 namespace ATT.UI.Pages
 {
     public partial class LogPage : UserControl
     {
-        #region 속성
-        private List<LogControl> LogControlList { get; set; } = new List<LogControl>();
-        #endregion
+        private Color _selectedColor;
+
+        private Color _nonSelectedColor;
+
+        private UPHControl_old UPHControl { get; set; } = new UPHControl_old() { Dock = DockStyle.Fill };
+
+        private TrendViewControl TrendControl { get; set; } = new TrendViewControl() { Dock = DockStyle.Fill };
 
         public LogPage()
         {
@@ -24,95 +30,57 @@ namespace ATT.UI.Pages
 
         private void LogPage_Load(object sender, EventArgs e)
         {
-            AddControl();
+            InitializeUI();
         }
 
-        private void AddControl()
+        private void InitializeUI()
         {
-            for (int unitIndex = 0; unitIndex < 2; unitIndex++)
-            {
-                string tempText = string.Empty;
-                if (unitIndex == 0)
-                    tempText = "PREALIGN";
-                else if (unitIndex == 1)
-                    tempText = "INSPECTION";
-
-                this.tabLogPage.DrawMode = TabDrawMode.OwnerDrawFixed;
-                this.tabLogPage.SizeMode = TabSizeMode.Fixed;
-
-                Size tabSize = this.tabLogPage.ItemSize;
-                tabSize.Width = 160;
-                tabSize.Height += 6;
-                this.tabLogPage.ItemSize = tabSize;
-
-                string pageName = tempText;
-                TabPage tp = new TabPage(pageName);
-                tp.BackColor = Color.White;
-                tp.Size = new Size(200, 200);
-
-                LogControl logControl = new LogControl();
-                logControl.Dock = DockStyle.Fill;
-                LogControlList.Add(logControl);
-
-                tp.Controls.Add(logControl);
-                tabLogPage.TabPages.Add(tp);
-            }
+            _selectedColor = Color.FromArgb(104, 104, 104);
+            _nonSelectedColor = Color.FromArgb(52, 52, 52);
         }
 
-        private void tabLogPage_DrawItem(object sender, DrawItemEventArgs e)
+        private void lblTrend_Click(object sender, EventArgs e)
         {
-            Brush textBrush;
-            Brush boxBrush;
-            Pen boxPen;
+            SelectHistoryType(HistoryType.Trend);
+        }
 
-            int tabMargin = 3;
+        private void lblUPH_Click(object sender, EventArgs e)
+        {
+            SelectHistoryType(HistoryType.UPH);
+        }
 
-            Rectangle tabRectangle = this.tabLogPage.GetTabRect(e.Index);
+        private void SelectHistoryType(HistoryType historyType)
+        {
+            ClearSelectedButton();
+            pnlContents.Controls.Clear();
 
-            if (e.State == DrawItemState.Selected)
+            switch (historyType) 
             {
-                e.Graphics.FillRectangle(Brushes.Aquamarine, tabRectangle);
+                case HistoryType.Trend:
+                    pnlContents.Controls.Add(TrendControl);
+                    lblTrend.BackColor = _selectedColor;
+                    break;
 
-                e.DrawFocusRectangle();
-
-                textBrush = Brushes.Blue;
-                boxBrush = Brushes.Silver;
-                boxPen = Pens.DarkBlue;
-            }
-            else
-            {
-                e.Graphics.FillRectangle(Brushes.White, tabRectangle);
-
-                textBrush = Brushes.Black;
-                boxBrush = Brushes.LightGray;
-                boxPen = Pens.DarkBlue;
-            }
-
-            RectangleF layoutRectangle = new RectangleF
-            (
-                tabRectangle.Left + tabMargin,
-                tabRectangle.Y + tabMargin,
-                tabRectangle.Width - 2 * tabMargin,
-                tabRectangle.Height - 2 * tabMargin
-            );
-
-            using (StringFormat stringFormat = new StringFormat())
-            {
-                using (Font largeFont = new Font("맑은 고딕", 11.25F, FontStyle.Bold))
-                {
-                    stringFormat.Alignment = StringAlignment.Center;
-                    stringFormat.LineAlignment = StringAlignment.Center;
-
-                    e.Graphics.DrawString
-                    (
-                        this.tabLogPage.TabPages[e.Index].Text,
-                        largeFont,
-                        textBrush,
-                        layoutRectangle,
-                        stringFormat
-                    );
-                }
+                case HistoryType.UPH:
+                    pnlContents.Controls.Add(UPHControl);
+                    lblUPH.BackColor = _selectedColor;
+                    break;
             }
         }
+
+        private void ClearSelectedButton()
+        {
+            foreach (Control control in pnlHisotryType.Controls)
+            {
+                if (control is Label)
+                    control.BackColor = _nonSelectedColor;
+            }
+        }
+    }
+
+    public enum HistoryType
+    {
+        Trend,
+        UPH,
     }
 }

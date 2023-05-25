@@ -135,17 +135,23 @@
     <Compile Include="UI\Forms\LineTeachingForm.Designer.cs">
       <DependentUpon>LineTeachingForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="UI\Pages\AreaTeachingPage.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UI\Pages\AreaTeachingPage.Designer.cs">
+      <DependentUpon>AreaTeachingPage.cs</DependentUpon>
+    </Compile>
     <Compile Include="UI\Pages\LogPage.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="UI\Pages\LogPage.Designer.cs">
       <DependentUpon>LogPage.cs</DependentUpon>
     </Compile>
-    <Compile Include="UI\Pages\AreaTeachingPage.cs">
+    <Compile Include="UI\Pages\LogPage2.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="UI\Pages\AreaTeachingPage.Designer.cs">
-      <DependentUpon>AreaTeachingPage.cs</DependentUpon>
+    <Compile Include="UI\Pages\LogPage2.designer.cs">
+      <DependentUpon>LogPage2.cs</DependentUpon>
     </Compile>
     <Compile Include="UI\Pages\MainPage.cs">
       <SubType>UserControl</SubType>
@@ -196,11 +202,14 @@
     <EmbeddedResource Include="UI\Forms\LineTeachingForm.resx">
       <DependentUpon>LineTeachingForm.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="UI\Pages\AreaTeachingPage.resx">
+      <DependentUpon>AreaTeachingPage.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="UI\Pages\LogPage.resx">
       <DependentUpon>LogPage.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="UI\Pages\AreaTeachingPage.resx">
-      <DependentUpon>AreaTeachingPage.cs</DependentUpon>
+    <EmbeddedResource Include="UI\Pages\LogPage2.resx">
+      <DependentUpon>LogPage2.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\Pages\MainPage.resx">
       <DependentUpon>MainPage.cs</DependentUpon>

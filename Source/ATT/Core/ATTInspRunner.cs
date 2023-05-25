@@ -1,6 +1,7 @@
 ﻿using Cognex.VisionPro;
 using Cognex.VisionPro.Implementation.Internal;
 using Emgu.CV;
+using Emgu.CV.CvEnum;
 using Jastech.Apps.Structure;
 using Jastech.Apps.Structure.Data;
 using Jastech.Apps.Structure.VisionTool;
@@ -540,7 +541,9 @@ namespace ATT.Core
 
             // OrgImage
             SaveOrgImage(path, inspResult.TabResultList);
-            SaveAlignResult(path, inspResult.Cell_ID, inspResult.TabResultList);
+            SaveAlignResult(path, inspResult);
+            SaveAkkonResult(path, inspResult);
+            SaveTotalResult(path, inspResult);
         }
 
         private void SaveOrgImage(string resultPath, List<TabInspResult> insTabResultList)
@@ -560,39 +563,163 @@ namespace ATT.Core
             }
         }
 
-        private void SaveAlignResult(string resultPath, string panelId, List<TabInspResult> inspTabResultList)
+        private void SaveAlignResult(string resultPath, AppsInspResult inspResult)
         {
-            string csvFile = Path.Combine(resultPath, "Align.csv");
+            string filename = string.Format("[{0}]Align.csv", DateTime.Today);
+            string csvFile = Path.Combine(resultPath, filename);
             if (File.Exists(csvFile) == false)
             {
-                List<string> header = new List<string>();
-                header.Add("Inspection Time");
-                header.Add("Panel ID");
-                header.Add("Tab No");
-                header.Add("Judge");
-                header.Add("Lx");
-                header.Add("Ly");
-                header.Add("Rx");
-                header.Add("Ry");
-                header.Add("Cx");
+                List<string> header = new List<string>
+                {
+                    "Inspection Time",
+                    "Panel ID",
+                };
+
+                for (int tabNo = 0; tabNo < inspResult.TabResultList.Count; tabNo++)
+                {
+                    header.Add("Tab");
+                    header.Add("Judge");
+                    header.Add("Lx");
+                    header.Add("Ly");
+                    header.Add("Cx");
+                    header.Add("Rx");
+                    header.Add("Ry");
+                }
 
                 CSVHelper.WriteHeader(csvFile, header);
             }
 
-            foreach (var tabResult in inspTabResultList)
+            List<string> dataList = new List<string>
             {
-                List<string> dataList = new List<string>();
-                dataList.Add(panelId);
-                dataList.Add(tabResult.TabNo.ToString());
+                inspResult.EndInspTime.ToString("hhmmss"),
+                inspResult.Cell_ID.ToString()
+            };
 
+            foreach (var tabResult in inspResult.TabResultList)
+            {
+                int tabNo = tabResult.TabNo;
+                var judge = tabResult.AlignJudgment;
                 float lx = tabResult.LeftAlignX.ResultValue;
+                float ly = tabResult.LeftAlignY.ResultValue;
                 float rx = tabResult.RightAlignX.ResultValue;
+                float ry = tabResult.RightAlignY.ResultValue;
                 float cx = (lx + rx) / 2.0f;
 
+                dataList.Add(tabNo.ToString());
+                dataList.Add(judge.ToString());
                 dataList.Add(lx.ToString("F3"));
-                dataList.Add(rx.ToString("F3"));
+                dataList.Add(ly.ToString("F3"));
                 dataList.Add(cx.ToString("F3"));
+                dataList.Add(rx.ToString("F3"));
+                dataList.Add(ry.ToString("F3"));
             }
+
+            CSVHelper.WriteData(csvFile, dataList);
+        }
+
+        private void SaveAkkonResult(string resultPath, AppsInspResult inspResult)
+        {
+            string filename = string.Format("[{0}]Akkon.csv", DateTime.Today);
+            string csvFile = Path.Combine(resultPath, filename);
+            if (File.Exists(csvFile) == false)
+            {
+                List<string> header = new List<string>
+                {
+                    "Inspection Time",
+                    "Panel ID",
+                };
+
+                for (int tabNo = 0; tabNo < inspResult.TabResultList.Count; tabNo++)
+                {
+                    header.Add("Tab");
+                    header.Add("Judge");
+                    header.Add("Count");
+                    header.Add("Length");
+                    header.Add("Strength");
+                    header.Add("STD");
+                }
+
+                CSVHelper.WriteHeader(csvFile, header);
+            }
+
+            List<string> dataList = new List<string>
+            {
+                inspResult.EndInspTime.ToString("hhmmss"),
+                inspResult.Cell_ID.ToString()
+            };
+
+            foreach (var tabResult in inspResult.TabResultList)
+            {
+                int tabNo = tabResult.TabNo;
+                var judge = tabResult.AkkonResult.Judgement;
+                int count = tabResult.AkkonResult.AvgBlobCount;
+                float length = tabResult.AkkonResult.AvgLength;
+                float strength = tabResult.AkkonResult.AvgStrength;
+                float std = tabResult.AkkonResult.AvgStd;
+
+                dataList.Add(tabNo.ToString());
+                dataList.Add(judge.ToString());
+                dataList.Add(count.ToString());
+                dataList.Add(length.ToString("F3"));
+                dataList.Add(strength.ToString("F3"));
+                dataList.Add(std.ToString("F3"));
+            }
+
+            CSVHelper.WriteData(csvFile, dataList);
+        }
+
+        private void SaveTotalResult(string resultPath, AppsInspResult inspResult)
+        {
+            string filename = string.Format("[{0}]Total.csv", DateTime.Today);
+            string csvFile = Path.Combine(resultPath, filename);
+            if (File.Exists(csvFile) == false)
+            {
+                List<string> header = new List<string>
+                {
+                    "Inspection Time",
+                    "Panel ID",
+                    "Tab No.",
+
+                    "Count Avg",
+                    "Length Avg",
+                    "Strength Avg",
+                    "Std Avg",
+
+                    "Left Align X",
+                    "Left Align Y",
+                    "Center Align X",
+                    "Right Align X",
+                    "Right Align Y",
+                };
+
+                CSVHelper.WriteHeader(csvFile, header);
+            }
+
+            List<List<string>> dataList = new List<List<string>>();
+            for (int tabNo = 0; tabNo < inspResult.TabResultList.Count; tabNo++)
+            {
+                List<string> tabData = new List<string>
+                {
+                    inspResult.LastInspTime,
+                    inspResult.Cell_ID,
+                    tabNo.ToString(),
+
+                    inspResult.TabResultList[tabNo].AkkonResult.AvgBlobCount.ToString(),
+                    inspResult.TabResultList[tabNo].AkkonResult.AvgLength.ToString("F3"),
+                    inspResult.TabResultList[tabNo].AkkonResult.AvgStrength.ToString("F3"),
+                    inspResult.TabResultList[tabNo].AkkonResult.AvgStd.ToString("F3"),
+
+                    inspResult.TabResultList[tabNo].LeftAlignX.ResultValue.ToString("F3"),
+                    inspResult.TabResultList[tabNo].LeftAlignY.ResultValue.ToString("F3"),
+                    inspResult.TabResultList[tabNo].CenterX.ToString("F3"),
+                    inspResult.TabResultList[tabNo].RightAlignX.ResultValue.ToString("F3"),
+                    inspResult.TabResultList[tabNo].RightAlignY.ResultValue.ToString("F3")
+                };
+
+                dataList.Add(tabData);
+            }
+
+            CSVHelper.WriteData(csvFile, dataList);
         }
 
         private string GetExtensionOKImage()

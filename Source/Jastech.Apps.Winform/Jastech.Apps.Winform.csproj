@@ -178,6 +178,12 @@
     <Compile Include="UI\Controls\TabBtnControl.Designer.cs">
       <DependentUpon>TabBtnControl.cs</DependentUpon>
     </Compile>
+    <Compile Include="UI\Controls\TrendViewControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UI\Controls\TrendViewControl.Designer.cs">
+      <DependentUpon>TrendViewControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="UI\Controls\UnitSelectControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -261,6 +267,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UI\Controls\TabBtnControl.resx">
       <DependentUpon>TabBtnControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\Controls\TrendViewControl.resx">
+      <DependentUpon>TrendViewControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\Controls\UnitSelectControl.resx">
       <DependentUpon>UnitSelectControl.cs</DependentUpon>

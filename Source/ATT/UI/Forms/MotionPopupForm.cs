@@ -79,7 +79,6 @@ namespace ATT.UI.Forms
 
         private void MotionPopupForm_Load(object sender, EventArgs e)
         {
-            SystemManager.Instance().UpdateTeachingData();
             UpdateData();
             AddControl();
             StartTimer();

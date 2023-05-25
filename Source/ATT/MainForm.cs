@@ -11,6 +11,7 @@ using Jastech.Framework.Macron.Akkon;
 using Jastech.Framework.Matrox;
 using Jastech.Framework.Structure;
 using Jastech.Framework.Winform;
+using Jastech.Framework.Winform.Forms;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -168,8 +169,17 @@ namespace ATT
 
         private void LogPage_Click(object sender, EventArgs e)
         {
-            SetSelectLabel(sender);
-            SetSelectPage(selectedControl: LogPageControl);
+            //SetSelectLabel(sender);
+            //SetSelectPage(selectedControl: LogPageControl);
+
+            LogForm logForm = new LogForm();
+
+            string logPath = AppsConfig.Instance().Path.Log;
+            string resultPath = AppsConfig.Instance().Path.Result;
+            string modelName = AppsConfig.Instance().Operation.LastModelName;
+
+            logForm.SetLogViewPath(logPath, resultPath, modelName);
+            logForm.ShowDialog();
         }
 
         public void UpdateTeachingData()

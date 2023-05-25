@@ -179,7 +179,7 @@ namespace ATT.UI.Forms
 
         private void SetTeachingPosition(List<TeachingInfo> teacingPositionList)
         {
-            TeachingPositionList = teacingPositionList;
+            TeachingPositionList = teacingPositionList.ToList();
         }
 
         private void SetLAFCtrl(LAFCtrl lafCtrl)
