@@ -178,7 +178,7 @@ namespace Jastech.Apps.Winform.UI.Controls
             }
         }
 
-        private CogRectangleAffine ConvertAkkonRoiToCogRectAffine(AkkonROI akkonRoi)
+        private CogRectangleAffine ConvertAkkonRoiToCogRectAffine(MacronAkkonROI akkonRoi)
         {
             CogRectangleAffine cogRectAffine = new CogRectangleAffine();
 
@@ -479,7 +479,7 @@ namespace Jastech.Apps.Winform.UI.Controls
                 group.AkkonROIList.Clear();
                 foreach (var roi in roiList)
                 {
-                    AkkonROI akkonRoi = new AkkonROI
+                    MacronAkkonROI akkonRoi = new MacronAkkonROI
                     {
                         CornerOppositeX = roi.CornerOppositeX,
                         CornerOppositeY = roi.CornerOppositeY,

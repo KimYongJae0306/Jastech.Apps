@@ -48,7 +48,7 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         private CogRectangleAffine _firstCogRectAffine { get; set; } = new CogRectangleAffine();
 
-        private AkkonROI _firstAkkonRoi { get; set; } = new AkkonROI();
+        private MacronAkkonROI _firstAkkonRoi { get; set; } = new MacronAkkonROI();
 
         private bool _isLoading { get; set; } = false;
 
@@ -306,12 +306,12 @@ namespace Jastech.Apps.Winform.UI.Controls
             display.SetImage(AppsTeachingUIManager.Instance().GetOriginCogImageBuffer(true));
         }
 
-        private void SetFirstROI(AkkonROI roi)
+        private void SetFirstROI(MacronAkkonROI roi)
         {
             _firstAkkonRoi = roi.DeepCopy();
         }
 
-        private AkkonROI GetFirstROI()
+        private MacronAkkonROI GetFirstROI()
         {
             return _firstAkkonRoi;
         }
@@ -324,7 +324,7 @@ namespace Jastech.Apps.Winform.UI.Controls
 
             int groupIndex = cbxGroupNumber.SelectedIndex;
 
-            List<AkkonROI> roiList = new List<AkkonROI>();
+            List<MacronAkkonROI> roiList = new List<MacronAkkonROI>();
             var akkonRoi = ConvertCogRectAffineToAkkonRoi(_firstCogRectAffine);
             roiList.Add(akkonRoi);
 
@@ -332,9 +332,9 @@ namespace Jastech.Apps.Winform.UI.Controls
             UpdateROIDataGridView(roiList);
         }
 
-        private AkkonROI ConvertCogRectAffineToAkkonRoi(CogRectangleAffine cogRectAffine)
+        private MacronAkkonROI ConvertCogRectAffineToAkkonRoi(CogRectangleAffine cogRectAffine)
         {
-            AkkonROI akkonRoi = new AkkonROI();
+            MacronAkkonROI akkonRoi = new MacronAkkonROI();
 
             akkonRoi.CornerOriginX = cogRectAffine.CornerOriginX;
             akkonRoi.CornerOriginY = cogRectAffine.CornerOriginY;
@@ -353,7 +353,7 @@ namespace Jastech.Apps.Winform.UI.Controls
             dgvAkkonROI.Rows.Clear();
         }
 
-        private void UpdateROIDataGridView(List<AkkonROI> roiList, List<int> selectedIndex = null)
+        private void UpdateROIDataGridView(List<MacronAkkonROI> roiList, List<int> selectedIndex = null)
         {
             dgvAkkonROI.Rows.Clear();
 
@@ -684,8 +684,8 @@ namespace Jastech.Apps.Winform.UI.Controls
 
             var leadCount = CurrentTab.GetAkkonGroup(groupIndex).Count;
             var camera = DeviceManager.Instance().CameraHandler.Get(CameraName.LinscanMIL0.ToString());
-          
-            AkkonROI firstRoi = GetFirstROI();
+
+            MacronAkkonROI firstRoi = GetFirstROI();
 
             CalcResolution = camera.PixelResolution_um / camera.LensScale;//camera.PixelResolution_mm(0.0035) / camera.LensScale(5) / 1000;
             if (CalcResolution == 0)
@@ -693,7 +693,7 @@ namespace Jastech.Apps.Winform.UI.Controls
 
             for (int leadIndex = 0; leadIndex < leadCount; leadIndex++)
             {
-                AkkonROI newRoi = firstRoi.DeepCopy();
+                MacronAkkonROI newRoi = firstRoi.DeepCopy();
 
                 if (_cloneDirection == ROICloneDirection.Horizontal)
                 {
@@ -798,7 +798,7 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         private List<CogRectangleAffine> _cogRectAffineList = new List<CogRectangleAffine>();
 
-        private CogRectangleAffine ConvertAkkonRoiToCogRectAffine(AkkonROI akkonRoi)
+        private CogRectangleAffine ConvertAkkonRoiToCogRectAffine(MacronAkkonROI akkonRoi)
         {
             CogRectangleAffine cogRectAffine = new CogRectangleAffine();
 
@@ -1101,7 +1101,7 @@ namespace Jastech.Apps.Winform.UI.Controls
             {
                 List<Tuple<double, double>> parsedData = ParseDataGridViewData(row);
 
-                AkkonROI akkonRoi = new AkkonROI();
+                MacronAkkonROI akkonRoi = new MacronAkkonROI();
 
                 akkonRoi.CornerOriginX = parsedData[0].Item1;
                 akkonRoi.CornerOriginY = parsedData[0].Item2;
@@ -1289,7 +1289,7 @@ namespace Jastech.Apps.Winform.UI.Controls
                 group.AkkonROIList.Clear();
                 foreach (var roi in roiList)
                 {
-                    AkkonROI akkonRoi = new AkkonROI
+                    MacronAkkonROI akkonRoi = new MacronAkkonROI
                     {
                         CornerOppositeX = roi.CornerOppositeX,
                         CornerOppositeY = roi.CornerOppositeY,
@@ -1414,7 +1414,7 @@ namespace Jastech.Apps.Winform.UI.Controls
             //}
         }
 
-        private Rectangle GetContainInROI(List<AkkonROI> akkonROIs)
+        private Rectangle GetContainInROI(List<MacronAkkonROI> akkonROIs)
         {
             var leftTopX = akkonROIs.Select(x => x.CornerOriginX).Min();
             var leftTopY = akkonROIs.Select(x => x.CornerOriginY).Min();
@@ -1454,7 +1454,7 @@ namespace Jastech.Apps.Winform.UI.Controls
 
             for (int i = 0; i < group.AkkonROIList.Count(); i++)
             {
-                AkkonROI roi = group.AkkonROIList[i];
+                MacronAkkonROI roi = group.AkkonROIList[i];
                 roi.CornerOriginY = roi.CornerOriginY +500;
                 roi.CornerXY = roi.CornerXY + 500;
                 //roi.CornerYY = roi.CornerYY
@@ -1528,7 +1528,7 @@ namespace Jastech.Apps.Winform.UI.Controls
             int groupIndex = cbxGroupNumber.SelectedIndex;
             var group = CurrentTab.AkkonParam.GroupList[groupIndex];
 
-            List<AkkonROI> newRoiList = new List<AkkonROI>();
+            List<MacronAkkonROI> newRoiList = new List<MacronAkkonROI>();
 
             foreach (var roi in group.AkkonROIList)
             {
