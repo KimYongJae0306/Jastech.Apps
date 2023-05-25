@@ -152,7 +152,7 @@
             // lblUPH
             // 
             this.lblUPH.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lblUPH.Location = new System.Drawing.Point(648, 34);
+            this.lblUPH.Location = new System.Drawing.Point(660, 40);
             this.lblUPH.Margin = new System.Windows.Forms.Padding(0);
             this.lblUPH.Name = "lblUPH";
             this.lblUPH.Size = new System.Drawing.Size(120, 60);
@@ -164,7 +164,7 @@
             // lblAkkonTrend
             // 
             this.lblAkkonTrend.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lblAkkonTrend.Location = new System.Drawing.Point(494, 34);
+            this.lblAkkonTrend.Location = new System.Drawing.Point(500, 40);
             this.lblAkkonTrend.Margin = new System.Windows.Forms.Padding(0);
             this.lblAkkonTrend.Name = "lblAkkonTrend";
             this.lblAkkonTrend.Size = new System.Drawing.Size(120, 60);
@@ -176,7 +176,7 @@
             // lblLog
             // 
             this.lblLog.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lblLog.Location = new System.Drawing.Point(20, 34);
+            this.lblLog.Location = new System.Drawing.Point(20, 40);
             this.lblLog.Margin = new System.Windows.Forms.Padding(0);
             this.lblLog.Name = "lblLog";
             this.lblLog.Size = new System.Drawing.Size(120, 60);
@@ -188,7 +188,7 @@
             // lblImage
             // 
             this.lblImage.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lblImage.Location = new System.Drawing.Point(179, 34);
+            this.lblImage.Location = new System.Drawing.Point(180, 40);
             this.lblImage.Margin = new System.Windows.Forms.Padding(0);
             this.lblImage.Name = "lblImage";
             this.lblImage.Size = new System.Drawing.Size(120, 60);
@@ -200,7 +200,7 @@
             // lblAlignTrend
             // 
             this.lblAlignTrend.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lblAlignTrend.Location = new System.Drawing.Point(342, 34);
+            this.lblAlignTrend.Location = new System.Drawing.Point(340, 40);
             this.lblAlignTrend.Margin = new System.Windows.Forms.Padding(0);
             this.lblAlignTrend.Name = "lblAlignTrend";
             this.lblAlignTrend.Size = new System.Drawing.Size(120, 60);

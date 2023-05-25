@@ -112,6 +112,12 @@
     <Compile Include="UI\Controls\AkkonInspResultControl.Designer.cs">
       <DependentUpon>AkkonInspResultControl.cs</DependentUpon>
     </Compile>
+    <Compile Include="UI\Controls\AkkonTrendControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UI\Controls\AkkonTrendControl.Designer.cs">
+      <DependentUpon>AkkonTrendControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="UI\Controls\AlignControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -135,6 +141,12 @@
     </Compile>
     <Compile Include="UI\Controls\AlignInspResultControl.Designer.cs">
       <DependentUpon>AlignInspResultControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Controls\AlignTrendControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UI\Controls\AlignTrendControl.Designer.cs">
+      <DependentUpon>AlignTrendControl.cs</DependentUpon>
     </Compile>
     <Compile Include="UI\Controls\AutoFocusControl.cs">
       <SubType>UserControl</SubType>
@@ -190,6 +202,12 @@
     <Compile Include="UI\Controls\UnitSelectControl.Designer.cs">
       <DependentUpon>UnitSelectControl.cs</DependentUpon>
     </Compile>
+    <Compile Include="UI\Controls\UPHControl_old.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UI\Controls\UPHControl_old.Designer.cs">
+      <DependentUpon>UPHControl_old.cs</DependentUpon>
+    </Compile>
     <Compile Include="UI\Forms\ATTMaterialInfoForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -214,6 +232,12 @@
     <Compile Include="UI\Forms\ATTModellerForm.Designer.cs">
       <DependentUpon>ATTModellerForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="UI\Forms\LogForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\Forms\LogForm.Designer.cs">
+      <DependentUpon>LogForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="UI\Forms\UnitSelectForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -235,6 +259,9 @@
     <EmbeddedResource Include="UI\Controls\AkkonInspResultControl.resx">
       <DependentUpon>AkkonInspResultControl.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="UI\Controls\AkkonTrendControl.resx">
+      <DependentUpon>AkkonTrendControl.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="UI\Controls\AlignControl.resx">
       <DependentUpon>AlignControl.cs</DependentUpon>
     </EmbeddedResource>
@@ -246,6 +273,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UI\Controls\AlignInspResultControl.resx">
       <DependentUpon>AlignInspResultControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\Controls\AlignTrendControl.resx">
+      <DependentUpon>AlignTrendControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\Controls\AutoFocusControl.resx">
       <DependentUpon>AutoFocusControl.cs</DependentUpon>
@@ -274,6 +304,9 @@
     <EmbeddedResource Include="UI\Controls\UnitSelectControl.resx">
       <DependentUpon>UnitSelectControl.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="UI\Controls\UPHControl_old.resx">
+      <DependentUpon>UPHControl_old.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="UI\Forms\ATTMaterialInfoForm.resx">
       <DependentUpon>ATTMaterialInfoForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -285,6 +318,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UI\Forms\ATTModellerForm.resx">
       <DependentUpon>ATTModellerForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\Forms\LogForm.resx">
+      <DependentUpon>LogForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\Forms\UnitSelectForm.resx">
       <DependentUpon>UnitSelectForm.cs</DependentUpon>
