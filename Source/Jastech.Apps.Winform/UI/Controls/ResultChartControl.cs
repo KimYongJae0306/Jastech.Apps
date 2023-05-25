@@ -225,6 +225,31 @@ namespace Jastech.Apps.Winform.UI.Controls
             }
         }
 
+        public void UpdateAkkonChart(DataTable dataTable, TabType tabType, AkkonResultType akkonResultType)
+        {
+            if (dataTable == null)
+                return;
+
+            ClearChartData();
+
+
+            var dt = ParseData(dataTable, (int)tabType);
+
+            if (akkonResultType == AkkonResultType.All)
+            {
+                AlignSeriesLx.Points.DataBind(dt.AsEnumerable(), "Time", "Lx", "");
+                AlignSeriesLy.Points.DataBind(dt.AsEnumerable(), "Time", "Ly", "");
+                AlignSeriesCx.Points.DataBind(dt.AsEnumerable(), "Time", "Cx", "");
+                AlignSeriesRx.Points.DataBind(dt.AsEnumerable(), "Time", "Rx", "");
+                AlignSeriesRy.Points.DataBind(dt.AsEnumerable(), "Time", "Ry", "");
+            }
+            else
+            {
+                var alignSeries = AlignSeriesList.Where(x => x.Name == akkonResultType.ToString()).First();
+                alignSeries.Points.DataBind(dt.AsEnumerable(), "Time", akkonResultType.ToString(), "");
+            }
+        }
+
         private DataTable ParseData(DataTable dataTable, int tabNo)
         {
             DataTable newDataTable = new DataTable();
