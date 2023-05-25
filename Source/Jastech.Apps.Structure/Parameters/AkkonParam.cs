@@ -94,9 +94,9 @@ namespace Jastech.Apps.Structure.Parameters
                 group = newGroupParam;
         }
 
-        public List<AkkonROI> GetAkkonROIList()
+        public List<MacronAkkonROI> GetAkkonROIList()
         {
-            List<AkkonROI> roiList = new List<AkkonROI>();
+            List<MacronAkkonROI> roiList = new List<MacronAkkonROI>();
 
             for (int i = 0; i < GroupList.Count; i++)
             {
