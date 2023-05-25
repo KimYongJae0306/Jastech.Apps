@@ -173,7 +173,12 @@ namespace ATT
             //SetSelectPage(selectedControl: LogPageControl);
 
             LogForm logForm = new LogForm();
-            logForm.SetLogViewPath(AppsConfig.Instance().Path.Log, AppsConfig.Instance().Path.Image, AppsConfig.Instance().Path.Result);
+
+            string logPath = AppsConfig.Instance().Path.Log;
+            string resultPath = AppsConfig.Instance().Path.Result;
+            string modelName = AppsConfig.Instance().Operation.LastModelName;
+
+            logForm.SetLogViewPath(logPath, resultPath, modelName);
             logForm.ShowDialog();
         }
 
