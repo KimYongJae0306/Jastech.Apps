@@ -14,6 +14,7 @@ using Jastech.Framework.Imaging.VisionPro;
 using Jastech.Apps.Structure;
 using Jastech.Framework.Imaging.Helper;
 using Jastech.Framework.Macron.Akkon.Parameters;
+using Jastech.Framework.Algorithms.Akkon.Parameters;
 
 namespace Jastech.Apps.Winform.UI.Controls
 {
@@ -178,11 +179,12 @@ namespace Jastech.Apps.Winform.UI.Controls
             }
         }
 
-        private CogRectangleAffine ConvertAkkonRoiToCogRectAffine(MacronAkkonROI akkonRoi)
+        private CogRectangleAffine ConvertAkkonRoiToCogRectAffine(AkkonROI akkonRoi)
         {
             CogRectangleAffine cogRectAffine = new CogRectangleAffine();
 
-            cogRectAffine.SetOriginCornerXCornerY(akkonRoi.CornerOriginX, akkonRoi.CornerOriginY, akkonRoi.CornerXX, akkonRoi.CornerXY, akkonRoi.CornerYX, akkonRoi.CornerYY);
+            cogRectAffine.SetOriginCornerXCornerY(akkonRoi.LeftTopX, akkonRoi.LeftTopY, 
+                                        akkonRoi.RightTopX, akkonRoi.RightTopY, akkonRoi.LeftBottomX, akkonRoi.LeftBottomY);
 
             return cogRectAffine;
         }
@@ -412,11 +414,11 @@ namespace Jastech.Apps.Winform.UI.Controls
                 return;
 
             int threshold = Convert.ToInt32(lblThresholdValue.Text);
-            var cropImage = CogImageHelper.CropImage(image, _cogROI);
-            var binaryImage = CogImageHelper.Threshold(cropImage as CogImage8Grey, threshold, 255, true);
+            var cropImage = VisionProImageHelper.CropImage(image, _cogROI);
+            var binaryImage = VisionProImageHelper.Threshold(cropImage as CogImage8Grey, threshold, 255, true);
 
-            byte[] topDataArray = CogImageHelper.GetWidthDataArray(binaryImage, 0);
-            byte[] bottomDataArray = CogImageHelper.GetWidthDataArray(binaryImage, cropImage.Height - 1);
+            byte[] topDataArray = VisionProImageHelper.GetWidthDataArray(binaryImage, 0);
+            byte[] bottomDataArray = VisionProImageHelper.GetWidthDataArray(binaryImage, cropImage.Height - 1);
 
             List<int> topEdgePointList = new List<int>();
             List<int> bottomEdgePointList = new List<int>();
@@ -447,7 +449,7 @@ namespace Jastech.Apps.Winform.UI.Controls
                 bottomPointList.Add(new PointF(pointX, pointY));
             }
 
-            var roiList = CogImageHelper.CreateRectangleAffine(topPointList, bottomPointList);
+            var roiList = VisionProImageHelper.CreateRectangleAffine(topPointList, bottomPointList);
 
             if (roiList == null)
                 return;
@@ -479,16 +481,16 @@ namespace Jastech.Apps.Winform.UI.Controls
                 group.AkkonROIList.Clear();
                 foreach (var roi in roiList)
                 {
-                    MacronAkkonROI akkonRoi = new MacronAkkonROI
+                    AkkonROI akkonRoi = new AkkonROI
                     {
-                        CornerOppositeX = roi.CornerOppositeX,
-                        CornerOppositeY = roi.CornerOppositeY,
-                        CornerOriginX = roi.CornerOriginX,
-                        CornerOriginY = roi.CornerOriginY,
-                        CornerXX = roi.CornerXX,
-                        CornerXY = roi.CornerXY,
-                        CornerYX = roi.CornerYX,
-                        CornerYY = roi.CornerYY,
+                        RightBottomX = roi.CornerOppositeX,
+                        RightBottomY = roi.CornerOppositeY,
+                        LeftTopX = roi.CornerOriginX,
+                        LeftTopY = roi.CornerOriginY,
+                        RightTopX = roi.CornerXX,
+                        RightTopY = roi.CornerXY,
+                        LeftBottomX = roi.CornerYX,
+                        LeftBottomY = roi.CornerYY,
                     };
                     group.AddROI(akkonRoi);
                 }
@@ -503,10 +505,10 @@ namespace Jastech.Apps.Winform.UI.Controls
                 int index = 0;
                 foreach (var roi in group.AkkonROIList)
                 {
-                    string leftTop = roi.CornerOriginX.ToString("F2") + " , " + roi.CornerOriginY.ToString("F2");
-                    string rightTop = roi.CornerXX.ToString("F2") + " , " + roi.CornerXY.ToString("F2");
-                    string leftBottom = roi.CornerYX.ToString("F2") + " , " + roi.CornerYY.ToString("F2");
-                    string rightBottom = roi.CornerOppositeX.ToString("F2") + " , " + roi.CornerOppositeY.ToString("F2");
+                    string leftTop = roi.LeftTopX.ToString("F2") + " , " + roi.LeftTopY.ToString("F2");
+                    string rightTop = roi.RightTopX.ToString("F2") + " , " + roi.RightTopY.ToString("F2");
+                    string leftBottom = roi.LeftBottomX.ToString("F2") + " , " + roi.LeftBottomY.ToString("F2");
+                    string rightBottom = roi.RightBottomX.ToString("F2") + " , " + roi.RightBottomY.ToString("F2");
 
                     dgvAkkonROI.Rows.Add(index.ToString(), leftTop, rightTop, leftBottom, rightBottom);
 
@@ -559,7 +561,7 @@ namespace Jastech.Apps.Winform.UI.Controls
             double centerX = display.ImageWidth() / 2.0 - display.GetPan().X;
             double centerY = display.ImageHeight() / 2.0 - display.GetPan().Y;
 
-            _cogROI = CogImageHelper.CreateRectangle(centerX, centerY, display.ImageWidth(), display.ImageHeight());
+            _cogROI = VisionProImageHelper.CreateRectangle(centerX, centerY, display.ImageWidth(), display.ImageHeight());
             _cogROI.DraggingStopped += _cogROI_DraggingStopped;
 
             var teachingDisplay = AppsTeachingUIManager.Instance().GetDisplay();
@@ -615,9 +617,9 @@ namespace Jastech.Apps.Winform.UI.Controls
                     ICogImage cogImage = display.GetImage();
                     var roi = CogThresholdCollection[0] as CogRectangle;
 
-                    var cropImage = CogImageHelper.CropImage(cogImage, roi);
-                    var binaryImage = CogImageHelper.Threshold(cropImage as CogImage8Grey, threshold, 255);
-                    var convertImage = CogImageHelper.CogCopyRegionTool(cogImage, binaryImage, roi, true);
+                    var cropImage = VisionProImageHelper.CropImage(cogImage, roi);
+                    var binaryImage = VisionProImageHelper.Threshold(cropImage as CogImage8Grey, threshold, 255);
+                    var convertImage = VisionProImageHelper.CogCopyRegionTool(cogImage, binaryImage, roi, true);
                     AppsTeachingUIManager.Instance().SetBinaryCogImageBuffer(convertImage as CogImage8Grey);
                 }
             }

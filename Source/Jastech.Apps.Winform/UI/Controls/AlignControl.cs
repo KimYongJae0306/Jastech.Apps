@@ -220,7 +220,7 @@ namespace Jastech.Apps.Winform.UI.Controls
             var currentParam = CogCaliperParamControl.GetCurrentParam();
             CogRectangleAffine rect = new CogRectangleAffine(currentParam.CaliperTool.Region);
 
-            List<CogRectangleAffine> cropRectList = CogImageHelper.DivideRegion(rect, leadCount);
+            List<CogRectangleAffine> cropRectList = VisionProImageHelper.DivideRegion(rect, leadCount);
 
             var display = AppsTeachingUIManager.Instance().GetDisplay();
 
@@ -253,7 +253,7 @@ namespace Jastech.Apps.Winform.UI.Controls
             double centerX = display.ImageWidth() / 2.0 - display.GetPan().X;
             double centerY = display.ImageHeight() / 2.0 - display.GetPan().Y;
 
-            CogRectangleAffine roi = CogImageHelper.CreateRectangleAffine(centerX, centerY, 100, 100);
+            CogRectangleAffine roi = VisionProImageHelper.CreateRectangleAffine(centerX, centerY, 100, 100);
 
             var currentParam = CogCaliperParamControl.GetCurrentParam();
 
@@ -292,7 +292,7 @@ namespace Jastech.Apps.Winform.UI.Controls
 
             ICogImage cogImage = display.GetImage();
 
-            CogAlignCaliperResult result = new CogAlignCaliperResult();
+            VisionProAlignCaliperResult result = new VisionProAlignCaliperResult();
 
             if (CurrentAlignName.ToString().Contains("X"))
                 result = Algorithm.RunAlignX(cogImage, currentParam, param.LeadCount);

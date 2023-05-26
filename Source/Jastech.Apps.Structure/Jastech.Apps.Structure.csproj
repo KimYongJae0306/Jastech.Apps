@@ -121,12 +121,16 @@
     <Compile Include="Data\Tab.cs" />
     <Compile Include="Data\AppsEnum.cs" />
     <Compile Include="Data\Unit.cs" />
-    <Compile Include="VisionTool\AkkonAlgorithmTool.cs" />
     <Compile Include="VisionTool\AlgorithmTool.cs" />
     <Compile Include="VisionTool\IVisionTool.cs" />
+    <Compile Include="VisionTool\MacronAkkonAlgorithmTool.cs" />
     <Compile Include="VisionTool\MainAlgorithmTool.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\Jastech.Core\src\Jastech.Framework.Algorithms\Jastech.Framework.Algorithms.csproj">
+      <Project>{C9BEB460-E99A-4BFA-8E39-F610B2605499}</Project>
+      <Name>Jastech.Framework.Algorithms</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\..\Jastech.Core\src\Jastech.Framework.Device\Jastech.Framework.Device.csproj">
       <Project>{F43DDCCA-E65C-4131-B789-DB4109E91B68}</Project>
       <Name>Jastech.Framework.Device</Name>

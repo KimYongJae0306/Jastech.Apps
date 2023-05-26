@@ -117,8 +117,8 @@ namespace Jastech.Apps.Winform.UI.Controls
             double centerX = display.ImageWidth() / 2.0;
             double centerY = display.ImageHeight() / 2.0;
 
-            CogRectangle roi = CogImageHelper.CreateRectangle(centerX - display.GetPan().X, centerY - display.GetPan().Y, 100, 100);
-            CogRectangle searchRoi = CogImageHelper.CreateRectangle(roi.CenterX, roi.CenterY, roi.Width * 2, roi.Height * 2);
+            CogRectangle roi = VisionProImageHelper.CreateRectangle(centerX - display.GetPan().X, centerY - display.GetPan().Y, 100, 100);
+            CogRectangle searchRoi = VisionProImageHelper.CreateRectangle(roi.CenterX, roi.CenterY, roi.Width * 2, roi.Height * 2);
 
             var currentParam = ParamControl.GetCurrentParam();
 
@@ -212,7 +212,7 @@ namespace Jastech.Apps.Winform.UI.Controls
             }
 
             ICogImage cogImage = display.GetImage();
-            CogPatternMatchingResult result = Algorithm.RunPatternMatch(cogImage, currentParam);
+            VisionProPatternMatchingResult result = Algorithm.RunPatternMatch(cogImage, currentParam);
 
             UpdateGridResult(result);
 
@@ -229,7 +229,7 @@ namespace Jastech.Apps.Winform.UI.Controls
             }
         }
 
-        private void UpdateGridResult(CogPatternMatchingResult result)
+        private void UpdateGridResult(VisionProPatternMatchingResult result)
         {
             gvResult.Rows.Clear();
 

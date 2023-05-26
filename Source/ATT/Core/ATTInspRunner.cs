@@ -8,13 +8,13 @@ using Jastech.Apps.Structure.VisionTool;
 using Jastech.Apps.Winform;
 using Jastech.Apps.Winform.Core;
 using Jastech.Apps.Winform.Settings;
+using Jastech.Framework.Algorithms.Akkon;
 using Jastech.Framework.Device.Cameras;
 using Jastech.Framework.Device.Motions;
 using Jastech.Framework.Imaging.Result;
 using Jastech.Framework.Imaging.VisionPro;
 using Jastech.Framework.Imaging.VisionPro.VisionAlgorithms.Parameters;
 using Jastech.Framework.Imaging.VisionPro.VisionAlgorithms.Results;
-using Jastech.Framework.Macron.Akkon.Results;
 using Jastech.Framework.Structure;
 using Jastech.Framework.Util.Helper;
 using Jastech.Framework.Winform;
@@ -62,7 +62,9 @@ namespace ATT.Core
 
         public Queue<AkkonThreadParam> AkkonInspQueue = new Queue<AkkonThreadParam>();
 
-        public AkkonAlgorithmTool AkkonAlgorithmTool { get; set; } = new AkkonAlgorithmTool();
+        public MacronAkkonAlgorithmTool MacronAkkonAlgorithmTool { get; set; } = null;
+
+        public AkkonAlgorithm AkkonAlgorithm { get; set; } = null;
         #endregion
 
         #region 이벤트
@@ -72,6 +74,13 @@ namespace ATT.Core
         #endregion
 
         #region 생성자
+        public ATTInspRunner()
+        {
+            if(AppsConfig.Instance().AkkonAlgorithmType == AkkonAlgorithmType.Macron)
+                MacronAkkonAlgorithmTool = new MacronAkkonAlgorithmTool();
+            else
+                AkkonAlgorithm = new AkkonAlgorithm();
+        }
         #endregion
 
         #region 메서드
@@ -489,7 +498,7 @@ namespace ATT.Core
             {
                 var tabResult = AppsInspResult.TabResultList[i];
                 Tab tab = unit.GetTab(tabResult.TabNo);
-                tabResult.AkkonResultImage = AkkonAlgorithmTool.GetResultImage(tabResult.Image.Width, tabResult.Image.Height, tab, AppsConfig.Instance().AkkonResizeRatio);
+                tabResult.AkkonResultImage = MacronAkkonAlgorithmTool.GetResultImage(tabResult.Image.Width, tabResult.Image.Height, tab, AppsConfig.Instance().AkkonResizeRatio);
             }
             sw.Stop();
             Console.WriteLine("Get Akkon Result Image : " + sw.ElapsedMilliseconds.ToString() + "ms");
@@ -501,7 +510,7 @@ namespace ATT.Core
             appsLineCamera.InitGrabSettings();
 
             var inspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
-            AkkonAlgorithmTool.PrepareMultiInspection(inspModel, appsLineCamera.TabScanImageList, AppsConfig.Instance().AkkonResizeRatio);
+            MacronAkkonAlgorithmTool.PrepareMultiInspection(inspModel, appsLineCamera.TabScanImageList, AppsConfig.Instance().AkkonResizeRatio);
         }
 
         public void RunVirtual()

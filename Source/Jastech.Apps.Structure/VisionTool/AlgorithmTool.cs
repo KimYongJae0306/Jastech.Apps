@@ -12,7 +12,6 @@ using Jastech.Framework.Imaging.VisionPro.VisionAlgorithms.Parameters;
 using Jastech.Framework.Imaging.VisionPro.VisionAlgorithms.Results;
 using Jastech.Framework.Macron.Akkon;
 using Jastech.Framework.Macron.Akkon.Parameters;
-using Jastech.Framework.Macron.Akkon.Results;
 using Jastech.Framework.Util.Helper;
 using Newtonsoft.Json;
 using System;
@@ -23,14 +22,14 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using static Jastech.Framework.Imaging.VisionPro.VisionAlgorithms.CogCaliper;
+using static Jastech.Framework.Imaging.VisionPro.VisionAlgorithms.VisionProCaliper;
 
 namespace Jastech.Apps.Structure.VisionTool
 {
     public class AlgorithmTool
     {
        
-        private CogPatternMatching PatternAlgorithm { get; set; } = new CogPatternMatching();
+        private VisionProPatternMatching PatternAlgorithm { get; set; } = new VisionProPatternMatching();
 
         public CogAlignCaliper AlignAlgorithm { get; set; } = new CogAlignCaliper();
 
@@ -43,17 +42,17 @@ namespace Jastech.Apps.Structure.VisionTool
             byte[] dataArray = new byte[size];
             Marshal.Copy(image.DataPointer, dataArray, 0, size);
             ColorFormat format = image.NumberOfChannels == 1 ? ColorFormat.Gray : ColorFormat.RGB24;
-            var cogImage = CogImageHelper.CovertImage(dataArray, image.Width, image.Height, format);
+            var cogImage = VisionProImageHelper.CovertImage(dataArray, image.Width, image.Height, format);
 
             return cogImage;
         }
 
-        public CogAlignCaliperResult RunAlignX(ICogImage image, VisionProCaliperParam param, int leadCount)
+        public VisionProAlignCaliperResult RunAlignX(ICogImage image, VisionProCaliperParam param, int leadCount)
         {
             if (image == null || param == null)
                 return null;
 
-            CogAlignCaliperResult alignResult = new CogAlignCaliperResult();
+            VisionProAlignCaliperResult alignResult = new VisionProAlignCaliperResult();
             alignResult.AddAlignResult(AlignAlgorithm.RunAlignX(image, param, leadCount));
 
             bool isFounded = false;
@@ -73,9 +72,9 @@ namespace Jastech.Apps.Structure.VisionTool
             return alignResult;
         }
 
-        public CogAlignCaliperResult RunAlignY(ICogImage image, VisionProCaliperParam param)
+        public VisionProAlignCaliperResult RunAlignY(ICogImage image, VisionProCaliperParam param)
         {
-            CogAlignCaliperResult alignResult = new CogAlignCaliperResult();
+            VisionProAlignCaliperResult alignResult = new VisionProAlignCaliperResult();
             var result = AlignAlgorithm.RunAlignY(image, param);
             alignResult.AddAlignResult(result);
 
@@ -93,12 +92,12 @@ namespace Jastech.Apps.Structure.VisionTool
             return alignResult;
         }
 
-        public CogPatternMatchingResult RunPatternMatch(ICogImage image, VisionProPatternMatchingParam param)
+        public VisionProPatternMatchingResult RunPatternMatch(ICogImage image, VisionProPatternMatchingParam param)
         {
             if (image == null || param == null)
                 return null;
 
-            CogPatternMatchingResult matchingResult = PatternAlgorithm.Run(image, param);
+            VisionProPatternMatchingResult matchingResult = PatternAlgorithm.Run(image, param);
 
             if (matchingResult == null)
                 return null;
