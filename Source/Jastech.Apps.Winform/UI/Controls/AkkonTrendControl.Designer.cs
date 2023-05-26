@@ -31,18 +31,18 @@
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             this.tlpAkkonTrend = new System.Windows.Forms.TableLayoutPanel();
-            this.pnlAlignType = new System.Windows.Forms.Panel();
+            this.pnlAkkonType = new System.Windows.Forms.Panel();
             this.lblStd = new System.Windows.Forms.Label();
             this.lblStrength = new System.Windows.Forms.Label();
             this.lblLength = new System.Windows.Forms.Label();
             this.lblCount = new System.Windows.Forms.Label();
-            this.lblAlign = new System.Windows.Forms.Label();
+            this.lblAkkon = new System.Windows.Forms.Label();
             this.tlpData = new System.Windows.Forms.TableLayoutPanel();
             this.dgvAkkonTrendData = new System.Windows.Forms.DataGridView();
             this.pnlTabs = new System.Windows.Forms.Panel();
             this.lblTab = new System.Windows.Forms.Label();
             this.tlpAkkonTrend.SuspendLayout();
-            this.pnlAlignType.SuspendLayout();
+            this.pnlAkkonType.SuspendLayout();
             this.tlpData.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvAkkonTrendData)).BeginInit();
             this.pnlTabs.SuspendLayout();
@@ -52,7 +52,7 @@
             // 
             this.tlpAkkonTrend.ColumnCount = 1;
             this.tlpAkkonTrend.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tlpAkkonTrend.Controls.Add(this.pnlAlignType, 0, 1);
+            this.tlpAkkonTrend.Controls.Add(this.pnlAkkonType, 0, 1);
             this.tlpAkkonTrend.Controls.Add(this.tlpData, 0, 2);
             this.tlpAkkonTrend.Controls.Add(this.pnlTabs, 0, 0);
             this.tlpAkkonTrend.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -66,19 +66,19 @@
             this.tlpAkkonTrend.Size = new System.Drawing.Size(851, 498);
             this.tlpAkkonTrend.TabIndex = 1;
             // 
-            // pnlAlignType
+            // pnlAkkonType
             // 
-            this.pnlAlignType.Controls.Add(this.lblStd);
-            this.pnlAlignType.Controls.Add(this.lblStrength);
-            this.pnlAlignType.Controls.Add(this.lblLength);
-            this.pnlAlignType.Controls.Add(this.lblCount);
-            this.pnlAlignType.Controls.Add(this.lblAlign);
-            this.pnlAlignType.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pnlAlignType.Location = new System.Drawing.Point(0, 60);
-            this.pnlAlignType.Margin = new System.Windows.Forms.Padding(0);
-            this.pnlAlignType.Name = "pnlAlignType";
-            this.pnlAlignType.Size = new System.Drawing.Size(851, 60);
-            this.pnlAlignType.TabIndex = 2;
+            this.pnlAkkonType.Controls.Add(this.lblStd);
+            this.pnlAkkonType.Controls.Add(this.lblStrength);
+            this.pnlAkkonType.Controls.Add(this.lblLength);
+            this.pnlAkkonType.Controls.Add(this.lblCount);
+            this.pnlAkkonType.Controls.Add(this.lblAkkon);
+            this.pnlAkkonType.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pnlAkkonType.Location = new System.Drawing.Point(0, 60);
+            this.pnlAkkonType.Margin = new System.Windows.Forms.Padding(0);
+            this.pnlAkkonType.Name = "pnlAkkonType";
+            this.pnlAkkonType.Size = new System.Drawing.Size(851, 60);
+            this.pnlAkkonType.TabIndex = 2;
             // 
             // lblStd
             // 
@@ -90,6 +90,7 @@
             this.lblStd.TabIndex = 4;
             this.lblStd.Text = "STD";
             this.lblStd.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblStd.Click += new System.EventHandler(this.lblStd_Click);
             // 
             // lblStrength
             // 
@@ -101,6 +102,7 @@
             this.lblStrength.TabIndex = 3;
             this.lblStrength.Text = "Strength";
             this.lblStrength.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblStrength.Click += new System.EventHandler(this.lblStrength_Click);
             // 
             // lblLength
             // 
@@ -112,6 +114,7 @@
             this.lblLength.TabIndex = 2;
             this.lblLength.Text = "Length";
             this.lblLength.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblLength.Click += new System.EventHandler(this.lblLength_Click);
             // 
             // lblCount
             // 
@@ -123,17 +126,19 @@
             this.lblCount.TabIndex = 1;
             this.lblCount.Text = "Count";
             this.lblCount.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblCount.Click += new System.EventHandler(this.lblCount_Click);
             // 
-            // lblAlign
+            // lblAkkon
             // 
-            this.lblAlign.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lblAlign.Location = new System.Drawing.Point(0, 0);
-            this.lblAlign.Margin = new System.Windows.Forms.Padding(0);
-            this.lblAlign.Name = "lblAlign";
-            this.lblAlign.Size = new System.Drawing.Size(120, 60);
-            this.lblAlign.TabIndex = 0;
-            this.lblAlign.Text = "Align";
-            this.lblAlign.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblAkkon.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblAkkon.Location = new System.Drawing.Point(0, 0);
+            this.lblAkkon.Margin = new System.Windows.Forms.Padding(0);
+            this.lblAkkon.Name = "lblAkkon";
+            this.lblAkkon.Size = new System.Drawing.Size(120, 60);
+            this.lblAkkon.TabIndex = 0;
+            this.lblAkkon.Text = "Akkon";
+            this.lblAkkon.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblAkkon.Click += new System.EventHandler(this.lblAkkon_Click);
             // 
             // tlpData
             // 
@@ -211,8 +216,9 @@
             this.ForeColor = System.Drawing.Color.White;
             this.Name = "AkkonTrendControl";
             this.Size = new System.Drawing.Size(851, 498);
+            this.Load += new System.EventHandler(this.AkkonTrendControl_Load);
             this.tlpAkkonTrend.ResumeLayout(false);
-            this.pnlAlignType.ResumeLayout(false);
+            this.pnlAkkonType.ResumeLayout(false);
             this.tlpData.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgvAkkonTrendData)).EndInit();
             this.pnlTabs.ResumeLayout(false);
@@ -223,12 +229,12 @@
         #endregion
 
         private System.Windows.Forms.TableLayoutPanel tlpAkkonTrend;
-        private System.Windows.Forms.Panel pnlAlignType;
+        private System.Windows.Forms.Panel pnlAkkonType;
         private System.Windows.Forms.Label lblStd;
         private System.Windows.Forms.Label lblStrength;
         private System.Windows.Forms.Label lblLength;
         private System.Windows.Forms.Label lblCount;
-        private System.Windows.Forms.Label lblAlign;
+        private System.Windows.Forms.Label lblAkkon;
         private System.Windows.Forms.TableLayoutPanel tlpData;
         private System.Windows.Forms.DataGridView dgvAkkonTrendData;
         private System.Windows.Forms.Panel pnlTabs;

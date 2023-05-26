@@ -38,16 +38,13 @@ namespace Jastech.Apps.Winform.UI.Controls
         #endregion
 
         #region 생성자
-        #endregion
-
-        #region 메서드
-        #endregion
-
         public AlignTrendControl()
         {
             InitializeComponent();
         }
+        #endregion
 
+        #region 메서드
         private void AlignTrendControl_Load(object sender, EventArgs e)
         {
             AddControl();
@@ -64,7 +61,6 @@ namespace Jastech.Apps.Winform.UI.Controls
         {
             _selectedColor = Color.FromArgb(104, 104, 104);
             _nonSelectedColor = Color.FromArgb(52, 52, 52);
-            //SetTab((int)TabType.All);
         }
 
         public void MakeTabListControl(int tabCount)
@@ -273,6 +269,7 @@ namespace Jastech.Apps.Winform.UI.Controls
                 SetDataTable(table.Copy());
             }
         }
+        #endregion
     }
 
     public enum AlignResultType
