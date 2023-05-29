@@ -345,6 +345,10 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\Jastech.Core\src\Jastech.Framework.Algorithms\Jastech.Framework.Algorithms.csproj">
+      <Project>{C9BEB460-E99A-4BFA-8E39-F610B2605499}</Project>
+      <Name>Jastech.Framework.Algorithms</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\..\Jastech.Core\src\Jastech.Framework.Comm\Jastech.Framework.Comm.csproj">
       <Project>{05B26E55-9C49-4078-983A-C6B13F6EE375}</Project>
       <Name>Jastech.Framework.Comm</Name>

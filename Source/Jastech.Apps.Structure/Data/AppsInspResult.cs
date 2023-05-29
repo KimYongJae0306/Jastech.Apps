@@ -1,8 +1,8 @@
 ﻿using Cognex.VisionPro;
 using Emgu.CV;
+using Jastech.Framework.Algorithms.Akkon.Results;
 using Jastech.Framework.Imaging.Result;
 using Jastech.Framework.Imaging.VisionPro.VisionAlgorithms.Results;
-using Jastech.Framework.Macron.Akkon.Results;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -248,9 +248,9 @@ namespace Jastech.Apps.Structure.Data
     public class MarkMatchingResult
     {
         #region 속성
-        public CogPatternMatchingResult Left { get; set; } = null;
+        public VisionProPatternMatchingResult Left { get; set; } = null;
 
-        public CogPatternMatchingResult Right { get; set; } = null;
+        public VisionProPatternMatchingResult Right { get; set; } = null;
         #endregion
 
         #region 메서드
@@ -279,9 +279,9 @@ namespace Jastech.Apps.Structure.Data
 
         public float ResultValue { get; set; } = 0.0f;
 
-        public CogAlignCaliperResult Panel { get; set; } = null;
+        public VisionProAlignCaliperResult Panel { get; set; } = null;
 
-        public CogAlignCaliperResult Fpc { get; set; } = null;
+        public VisionProAlignCaliperResult Fpc { get; set; } = null;
         #endregion
 
         #region 메서드

@@ -120,7 +120,7 @@ namespace ATT.UI.Pages
 
             if (dlg.FileName != "")
             {
-                ICogImage cogImage = CogImageHelper.Load(dlg.FileName);
+                ICogImage cogImage = VisionProImageHelper.Load(dlg.FileName);
                 Display.SetImage(cogImage);
                 AppsTeachingUIManager.Instance().SetOrginCogImageBuffer(cogImage);
                 PreAlignControl.DrawROI();

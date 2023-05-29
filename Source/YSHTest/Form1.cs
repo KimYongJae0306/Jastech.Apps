@@ -49,7 +49,7 @@ namespace YSHTest
             openFile.ReadOnlyChecked = true;
             if (openFile.ShowDialog() == DialogResult.OK)
             {
-                CogImage = CogImageHelper.Load(openFile.FileName);
+                CogImage = VisionProImageHelper.Load(openFile.FileName);
                 CogDisplay.SetImage(CogImage);
 
                 CogOriginImage = (CogImage8Grey)CogImage;
@@ -67,7 +67,7 @@ namespace YSHTest
             double centerX = CogOriginImage.Width / 2;
             double centerY = CogOriginImage.Height / 2;
 
-            CogRect = CogImageHelper.CreateRectangle(centerX - CogDisplay.GetPan().X, centerY - CogDisplay.GetPan().Y, 100, 100);
+            CogRect = VisionProImageHelper.CreateRectangle(centerX - CogDisplay.GetPan().X, centerY - CogDisplay.GetPan().Y, 100, 100);
             CogRect.Interactive = true;
             CogRect.GraphicDOFEnable = CogRectangleDOFConstants.All;
             CogRect.Color = CogColorConstants.Green;
@@ -86,8 +86,8 @@ namespace YSHTest
             if (CogImage == null)
                 return;
 
-            RegionImage = CogImageHelper.CropImage(CogImage, CogRect);
-            CogRegionImage = CogImageHelper.Threshold((CogImage8Grey)RegionImage, 10, 120, 255, true);
+            RegionImage = VisionProImageHelper.CropImage(CogImage, CogRect);
+            CogRegionImage = VisionProImageHelper.Threshold((CogImage8Grey)RegionImage, 10, 120, 255, true);
             CogDisplay.SetImage(CogRegionImage);
         }
 

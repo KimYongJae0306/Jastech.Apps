@@ -6,6 +6,7 @@ using Jastech.Framework.Algorithms.Akkon;
 using Jastech.Framework.Algorithms.Akkon.Parameters;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -19,7 +20,7 @@ namespace AkkonTester
 
         private AkkonAlgorithm AkkonAlgorithm { get; set; } = new AkkonAlgorithm();
 
-        public AkkonParam AkkonParameters { get; set; } = new AkkonParam();
+        public AkkonAlgoritmParam AkkonParameters { get; set; } = new AkkonAlgoritmParam();
 
         public Mat OrginalImage { get; set; } = null;
 
@@ -80,7 +81,13 @@ namespace AkkonTester
             slice.ProcessingMat?.Dispose();
             slice.MaskingMat?.Dispose();
 
+            Stopwatch sw = new Stopwatch();
+            sw.Restart();
+
             List<AkkonBlob> result = AkkonAlgorithm.RunForDebug(ref slice, AkkonParameters);
+
+            sw.Stop();
+            Console.WriteLine(" RunForDebug TactTime : " + sw.ElapsedMilliseconds);
 
             CurrentResult.Clear();
             CurrentResult.AddRange(result);
@@ -91,8 +98,12 @@ namespace AkkonTester
             if (OrginalImage == null)
                 return null;
 
+            Stopwatch sw = new Stopwatch();
+            sw.Restart();
             List<AkkonBlob> result = AkkonAlgorithm.Run(OrginalImage, CurrentAkkonROI, AkkonParameters);
 
+            sw.Stop();
+            Console.WriteLine("Run : " + sw.ElapsedMilliseconds);
             return result;
         }
 
@@ -113,10 +124,10 @@ namespace AkkonTester
                 var lead = result.Lead;
                 var startPoint = new Point((int)result.OffsetToWorldX, (int)result.OffsetToWorldY);
                     
-                Point leftTop = new Point(lead.LeftTop.X + startPoint.X, lead.LeftTop.Y + startPoint.Y);
-                Point leftBottom = new Point(lead.LeftBottom.X + startPoint.X, lead.LeftBottom.Y + startPoint.Y);
-                Point rightTop = new Point(lead.RightTop.X + startPoint.X, lead.RightTop.Y + startPoint.Y);
-                Point rightBottom = new Point(lead.RightBottom.X + startPoint.X, lead.RightBottom.Y + startPoint.Y);
+                Point leftTop = new Point((int)lead.LeftTopX + startPoint.X, (int)lead.LeftTopY + startPoint.Y);
+                Point leftBottom = new Point((int)lead.LeftBottomX + startPoint.X, (int)lead.LeftBottomY + startPoint.Y);
+                Point rightTop = new Point((int)lead.RightTopX + startPoint.X, (int)lead.RightTopY + startPoint.Y);
+                Point rightBottom = new Point((int)lead.RightBottomX + startPoint.X, (int)lead.RightBottomY + startPoint.Y);
 
                 if(AkkonParameters.DrawOption.ContainLeadROI)
                 {

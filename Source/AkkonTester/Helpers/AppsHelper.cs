@@ -24,7 +24,7 @@ namespace AkkonTester.Helpers
 
             int size = mat.Width * mat.Height * mat.NumberOfChannels;
             ColorFormat format = mat.NumberOfChannels == 1 ? ColorFormat.Gray : ColorFormat.RGB24;
-            var cogImage = CogImageHelper.CovertImage(mat.DataPointer, mat.Width, mat.Height, format);
+            var cogImage = VisionProImageHelper.CovertImage(mat.DataPointer, mat.Width, mat.Height, format);
             return cogImage;
         }
 
@@ -43,7 +43,7 @@ namespace AkkonTester.Helpers
             byte[] dataB = new byte[matB.Width * matB.Height];
             Marshal.Copy(matB.DataPointer, dataB, 0, matB.Width * matB.Height);
 
-            var cogImage = CogImageHelper.CovertImage(dataR, dataG, dataB, matB.Width, matB.Height);
+            var cogImage = VisionProImageHelper.CovertImage(dataR, dataG, dataB, matB.Width, matB.Height);
 
             matR.Dispose();
             matG.Dispose();
@@ -65,10 +65,17 @@ namespace AkkonTester.Helpers
 
                 string[] values = line.Split(' ');
 
-                roi.LeftTop = new Point(Convert.ToInt32(values[0]) + offsetX, Convert.ToInt32(values[1]) + offsetY);
-                roi.RightTop = new Point(Convert.ToInt32(values[2]) + offsetX, Convert.ToInt32(values[3]) + offsetY);
-                roi.RightBottom = new Point(Convert.ToInt32(values[4]) + offsetX, Convert.ToInt32(values[5]) + offsetY);
-                roi.LeftBottom = new Point(Convert.ToInt32(values[6]) + offsetX, Convert.ToInt32(values[7]) + offsetY);
+                roi.LeftTopX = Convert.ToDouble(values[0]) + offsetX;
+                roi.LeftTopY = Convert.ToDouble(values[1]) + offsetY;
+
+                roi.RightTopX = Convert.ToDouble(values[2]) + offsetX;
+                roi.RightTopY = Convert.ToDouble(values[3]) + offsetY;
+
+                roi.RightBottomX = Convert.ToDouble(values[4]) + offsetX;
+                roi.RightBottomY = Convert.ToDouble(values[5]) + offsetY;
+
+                roi.LeftBottomX = Convert.ToDouble(values[6]) + offsetX;
+                roi.LeftBottomY = Convert.ToDouble(values[7]) + offsetY;
 
                 roiList.Add(roi);
             }

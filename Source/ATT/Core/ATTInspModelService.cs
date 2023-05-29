@@ -4,6 +4,7 @@ using Jastech.Apps.Structure.Parameters;
 using Jastech.Apps.Structure.VisionTool;
 using Jastech.Apps.Winform;
 using Jastech.Apps.Winform.Settings;
+using Jastech.Framework.Algorithms.Akkon.Parameters;
 using Jastech.Framework.Device.LightCtrls;
 using Jastech.Framework.Device.Motions;
 using Jastech.Framework.Imaging.VisionPro.VisionAlgorithms.Parameters;
@@ -90,6 +91,9 @@ namespace ATT.Core
                     tab.AkkonParam = new AkkonParam();
 
                     tab.AkkonParam.MacronAkkonParam.SetDefaultParameter();
+
+                    tab.AkkonParam.AkkonAlgoritmParam.Initalize();
+                    tab.AkkonParam.AkkonAlgoritmParam.AddMacronFilter();
 
                     int cnt = 0;
                     foreach (var item in tab.AkkonParam.GroupList)

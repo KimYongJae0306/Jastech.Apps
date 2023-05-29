@@ -16,6 +16,7 @@ using Emgu.CV;
 using Emgu.CV.Structure;
 using Emgu.CV.CvEnum;
 using Cognex.VisionPro.Display;
+using System.Diagnostics;
 
 namespace AkkonTester.UI.Pages
 {
@@ -316,14 +317,14 @@ namespace AkkonTester.UI.Pages
         {
             CogRectangleAffine cogRectAffine = new CogRectangleAffine();
 
-            double originX = akkonRoi.LeftTop.X;
-            double originY = akkonRoi.LeftTop.Y;
+            double originX = akkonRoi.LeftTopX;
+            double originY = akkonRoi.LeftTopY;
 
-            double cornerXX = akkonRoi.RightTop.X;
-            double cornerXY = akkonRoi.RightTop.Y;
+            double cornerXX = akkonRoi.RightTopX;
+            double cornerXY = akkonRoi.RightTopY;
 
-            double cornerYX = akkonRoi.LeftBottom.X;
-            double cornerYY = akkonRoi.LeftBottom.Y;
+            double cornerYX = akkonRoi.LeftBottomX;
+            double cornerYY = akkonRoi.LeftBottomY;
 
             cogRectAffine.SetOriginCornerXCornerY(originX, originY, cornerXX, cornerXY, cornerYX, cornerYY);
 
@@ -374,6 +375,7 @@ namespace AkkonTester.UI.Pages
                 return;
 
             UpdateData();
+
             SystemManager.Instance().RunForDebug(cbxSliceList.SelectedIndex);
 
             UpdateResult(cbxSliceList.SelectedIndex);
@@ -390,7 +392,7 @@ namespace AkkonTester.UI.Pages
 
             ICogImage cogProcessingImage = AppsHelper.ConvertCogGrayImage(curSlice.ProcessingMat);
             ProcessingDisplay.SetImage(cogProcessingImage);
-
+        
             ICogImage cogMaskingImage = AppsHelper.ConvertCogGrayImage(curSlice.MaskingMat);
             MaskingDisplay.SetImage(cogMaskingImage);
 
@@ -419,8 +421,22 @@ namespace AkkonTester.UI.Pages
                         CvInvoke.Circle(colorMat, center, radius / 2, new MCvScalar(255,0,0), 1);
                     else
                     {
-                        if(curParam.DrawOption.ContainNG)
-                            CvInvoke.Circle(colorMat, center, radius / 2, new MCvScalar(0,0,255), 1);
+                        if(blob.BoundingRect.Width == 141 && blob.BoundingRect.Height == 783)
+                        {
+                        }
+                        else
+                        {
+                            int ga = 1;
+                            if (curParam.DrawOption.ContainNG)
+                            {
+                                blob.BoundingRect.X = leftFromSlice;
+                                blob.BoundingRect.Y = topFromSlice;
+
+                                CvInvoke.Rectangle(colorMat, blob.BoundingRect, new MCvScalar(0, 0, 255), 1);
+                                //CvInvoke.Circle(colorMat, center, radius / 2, new MCvScalar(0,0,255), 1);
+                            }
+                        }
+                        
                     }
                 }
             }
@@ -431,10 +447,10 @@ namespace AkkonTester.UI.Pages
 
         private void TempDrawLead(ref Mat mat, AkkonROI roi, Point startPoint)
         {
-            Point leftTop = new Point(roi.LeftTop.X + startPoint.X, roi.LeftTop.Y + startPoint.Y);
-            Point leftBottom = new Point(roi.LeftBottom.X + startPoint.X, roi.LeftBottom.Y + startPoint.Y);
-            Point rightTop = new Point(roi.RightTop.X + startPoint.X, roi.RightTop.Y + startPoint.Y);
-            Point rightBottom = new Point(roi.RightBottom.X + startPoint.X, roi.RightBottom.Y + startPoint.Y);
+            Point leftTop = new Point((int)roi.LeftTopX + startPoint.X, (int)roi.LeftTopY + startPoint.Y);
+            Point leftBottom = new Point((int)roi.LeftBottomX + startPoint.X, (int)roi.LeftBottomY + startPoint.Y);
+            Point rightTop = new Point((int)roi.RightTopX + startPoint.X, (int)roi.RightTopY + startPoint.Y);
+            Point rightBottom = new Point((int)roi.RightBottomX + startPoint.X, (int)roi.RightBottomY + startPoint.Y);
 
             CvInvoke.Line(mat, leftTop, leftBottom, new MCvScalar(255), 1);
             CvInvoke.Line(mat, leftTop, rightTop, new MCvScalar(255), 1);

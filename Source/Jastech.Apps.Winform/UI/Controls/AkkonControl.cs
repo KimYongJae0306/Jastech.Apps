@@ -22,10 +22,13 @@ using Emgu.CV.CvEnum;
 using System.Runtime.InteropServices;
 using System.Diagnostics;
 using Jastech.Apps.Structure.Parameters;
-using Jastech.Framework.Macron.Akkon.Results;
 using Jastech.Framework.Winform.Helper;
 using static Jastech.Framework.Device.Motions.AxisMovingParam;
 using Jastech.Framework.Device.Cameras;
+using Jastech.Framework.Algorithms.UI.Controls;
+using Jastech.Framework.Algorithms.Akkon.Parameters;
+using Jastech.Framework.Algorithms.Akkon;
+using Jastech.Framework.Algorithms.Akkon.Results;
 
 namespace Jastech.Apps.Winform.UI.Controls
 {
@@ -48,7 +51,7 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         private CogRectangleAffine _firstCogRectAffine { get; set; } = new CogRectangleAffine();
 
-        private MacronAkkonROI _firstAkkonRoi { get; set; } = new MacronAkkonROI();
+        private AkkonROI _firstAkkonRoi { get; set; } = new AkkonROI();
 
         private bool _isLoading { get; set; } = false;
 
@@ -59,11 +62,15 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         public MacronAkkonParamControl MacronAkkonParamControl { get; private set; } = null;
 
+        public AkkonParamControl AkkonParamControl { get; private set; } = null;
+
         public Tab CurrentTab { get; private set; } = null;
 
         public AlgorithmTool Algorithm { get; private set; } = new AlgorithmTool();
 
-        public AkkonAlgorithmTool AkkonAlgorithm { get; set; } = new AkkonAlgorithmTool();
+        public MacronAkkonAlgorithmTool MacronAkkonAlgorithm { get; set; } = null;
+
+        public AkkonAlgorithm AkkonAlgorithm { get; set; } = null;
 
         public double CalcResolution { get; private set; } = 0.0; // ex :  /camera.PixelResolution_mm(0.0035) / camera.LensScale(5) / 1000;
         #endregion
@@ -87,6 +94,11 @@ namespace Jastech.Apps.Winform.UI.Controls
         {
             _isLoading = true;
 
+            if (AppsConfig.Instance().AkkonAlgorithmType == AkkonAlgorithmType.Macron)
+                MacronAkkonAlgorithm = new MacronAkkonAlgorithmTool();
+            else
+                AkkonAlgorithm = new AkkonAlgorithm();
+
             AddControl();
             InitializeUI();
             InitializeGroupInfo();
@@ -99,9 +111,18 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         private void AddControl()
         {
-            MacronAkkonParamControl = new MacronAkkonParamControl();
-            MacronAkkonParamControl.Dock = DockStyle.Fill;
-            pnlParam.Controls.Add(MacronAkkonParamControl);
+            if(AppsConfig.Instance().AkkonAlgorithmType == AkkonAlgorithmType.Macron)
+            {
+                MacronAkkonParamControl = new MacronAkkonParamControl();
+                MacronAkkonParamControl.Dock = DockStyle.Fill;
+                pnlParam.Controls.Add(MacronAkkonParamControl);
+            }
+            else
+            {
+                AkkonParamControl = new AkkonParamControl();
+                AkkonParamControl.Dock = DockStyle.Fill;
+                pnlParam.Controls.Add(AkkonParamControl);
+            }
         }
 
         private void InitializeUI()
@@ -192,13 +213,24 @@ namespace Jastech.Apps.Winform.UI.Controls
 
             UpdateROIDataGridView(CurrentTab.GetAkkonGroup(groupNo).AkkonROIList);
 
-            if(MacronAkkonParamControl != null)
+            if(AppsConfig.Instance().AkkonAlgorithmType == AkkonAlgorithmType.Macron)
             {
-                MacronAkkonParamControl.SetParam(akkonParam.MacronAkkonParam);
-                MacronAkkonParamControl.UpdateData();
-
-                DrawROI();
+                if (MacronAkkonParamControl != null)
+                {
+                    MacronAkkonParamControl.SetParam(akkonParam.MacronAkkonParam);
+                    MacronAkkonParamControl.UpdateData();
+                }
             }
+            else
+            {
+                if (AkkonParamControl != null)
+                {
+                    AkkonParamControl.SetParam(akkonParam.AkkonAlgoritmParam);
+                    AkkonParamControl.UpdateData();
+                }
+            }
+            DrawROI();
+
         }
 
         private void UpdateParam(int groupIndex)
@@ -224,8 +256,22 @@ namespace Jastech.Apps.Winform.UI.Controls
 
             UpdateROIDataGridView(groupParam.AkkonROIList);
 
-            MacronAkkonParamControl.SetParam(akkonParam.MacronAkkonParam);
-            MacronAkkonParamControl.UpdateData();
+            if(AppsConfig.Instance().AkkonAlgorithmType == AkkonAlgorithmType.Macron)
+            {
+                if (MacronAkkonParamControl != null)
+                {
+                    MacronAkkonParamControl.SetParam(akkonParam.MacronAkkonParam);
+                    MacronAkkonParamControl.UpdateData();
+                }
+            }
+            else
+            {
+                if (AkkonParamControl != null)
+                {
+                    AkkonParamControl.SetParam(akkonParam.AkkonAlgoritmParam);
+                    AkkonParamControl.UpdateData();
+                }
+            }
 
             DrawROI();
         }
@@ -263,7 +309,7 @@ namespace Jastech.Apps.Winform.UI.Controls
             double roiheight = Convert.ToDouble(lblROIHeightValue.Text);
 
             CogRectangleAffineDOFConstants constants = CogRectangleAffineDOFConstants.Position | CogRectangleAffineDOFConstants.Size | CogRectangleAffineDOFConstants.Skew;
-            _firstCogRectAffine = CogImageHelper.CreateRectangleAffine(centerX, centerY, GetCalcumToPixel(roiwidth), GetCalcumToPixel(roiheight), constants: constants);
+            _firstCogRectAffine = VisionProImageHelper.CreateRectangleAffine(centerX, centerY, GetCalcumToPixel(roiwidth), GetCalcumToPixel(roiheight), constants: constants);
 
             var teachingDisplay = AppsTeachingUIManager.Instance().GetDisplay();
             if (teachingDisplay.GetImage() == null)
@@ -283,7 +329,7 @@ namespace Jastech.Apps.Winform.UI.Controls
             double centerX = display.ImageWidth() / 2.0 - display.GetPan().X;
             double centerY = display.ImageHeight() / 2.0 - display.GetPan().Y;
 
-            _autoTeachingRect = CogImageHelper.CreateRectangle(centerX, centerY, display.ImageWidth(), display.ImageHeight());
+            _autoTeachingRect = VisionProImageHelper.CreateRectangle(centerX, centerY, display.ImageWidth(), display.ImageHeight());
             //_autoTeachingRect = CogImageHelper.CreateRectangle(centerX, centerY, 100, 100);
             _autoTeachingRect.DraggingStopped += AutoTeachingRect_DraggingStopped;
 
@@ -306,12 +352,12 @@ namespace Jastech.Apps.Winform.UI.Controls
             display.SetImage(AppsTeachingUIManager.Instance().GetOriginCogImageBuffer(true));
         }
 
-        private void SetFirstROI(MacronAkkonROI roi)
+        private void SetFirstROI(AkkonROI roi)
         {
             _firstAkkonRoi = roi.DeepCopy();
         }
 
-        private MacronAkkonROI GetFirstROI()
+        private AkkonROI GetFirstROI()
         {
             return _firstAkkonRoi;
         }
@@ -324,7 +370,7 @@ namespace Jastech.Apps.Winform.UI.Controls
 
             int groupIndex = cbxGroupNumber.SelectedIndex;
 
-            List<MacronAkkonROI> roiList = new List<MacronAkkonROI>();
+            List<AkkonROI> roiList = new List<AkkonROI>();
             var akkonRoi = ConvertCogRectAffineToAkkonRoi(_firstCogRectAffine);
             roiList.Add(akkonRoi);
 
@@ -332,18 +378,21 @@ namespace Jastech.Apps.Winform.UI.Controls
             UpdateROIDataGridView(roiList);
         }
 
-        private MacronAkkonROI ConvertCogRectAffineToAkkonRoi(CogRectangleAffine cogRectAffine)
+        private AkkonROI ConvertCogRectAffineToAkkonRoi(CogRectangleAffine cogRectAffine)
         {
-            MacronAkkonROI akkonRoi = new MacronAkkonROI();
+            AkkonROI akkonRoi = new AkkonROI();
 
-            akkonRoi.CornerOriginX = cogRectAffine.CornerOriginX;
-            akkonRoi.CornerOriginY = cogRectAffine.CornerOriginY;
-            akkonRoi.CornerXX = cogRectAffine.CornerXX;
-            akkonRoi.CornerXY = cogRectAffine.CornerXY;
-            akkonRoi.CornerYX = cogRectAffine.CornerYX;
-            akkonRoi.CornerYY = cogRectAffine.CornerYY;
-            akkonRoi.CornerOppositeX = cogRectAffine.CornerOppositeX;
-            akkonRoi.CornerOppositeY = cogRectAffine.CornerOppositeY;
+            akkonRoi.LeftTopX = cogRectAffine.CornerOriginX;
+            akkonRoi.LeftTopY = cogRectAffine.CornerOriginY;
+
+            akkonRoi.RightTopX = cogRectAffine.CornerXX;
+            akkonRoi.RightTopY = cogRectAffine.CornerXY;
+
+            akkonRoi.LeftBottomX = cogRectAffine.CornerYX;
+            akkonRoi.LeftBottomY = cogRectAffine.CornerYY;
+
+            akkonRoi.RightBottomX = cogRectAffine.CornerOppositeX;
+            akkonRoi.RightBottomY = cogRectAffine.CornerOppositeY;
 
             return akkonRoi;
         }
@@ -353,7 +402,7 @@ namespace Jastech.Apps.Winform.UI.Controls
             dgvAkkonROI.Rows.Clear();
         }
 
-        private void UpdateROIDataGridView(List<MacronAkkonROI> roiList, List<int> selectedIndex = null)
+        private void UpdateROIDataGridView(List<AkkonROI> roiList, List<int> selectedIndex = null)
         {
             dgvAkkonROI.Rows.Clear();
 
@@ -363,10 +412,10 @@ namespace Jastech.Apps.Winform.UI.Controls
             int index = 0;
             foreach (var item in roiList)
             {
-                string leftTop = item.CornerOriginX.ToString("F2") + " , " + item.CornerOriginY.ToString("F2");
-                string rightTop = item.CornerXX.ToString("F2") + " , " + item.CornerXY.ToString("F2");
-                string leftBottom = item.CornerYX.ToString("F2") + " , " + item.CornerYY.ToString("F2");
-                string rightBottom = item.CornerOppositeX.ToString("F2") + " , " + item.CornerOppositeY.ToString("F2");
+                string leftTop = item.LeftTopX.ToString("F2") + " , " + item.LeftTopY.ToString("F2");
+                string rightTop = item.RightTopX.ToString("F2") + " , " + item.RightTopY.ToString("F2");
+                string leftBottom = item.LeftBottomX.ToString("F2") + " , " + item.LeftBottomY.ToString("F2");
+                string rightBottom = item.RightBottomX.ToString("F2") + " , " + item.RightBottomY.ToString("F2");
 
                 dgvAkkonROI.Rows.Add(index.ToString(), leftTop, rightTop, leftBottom, rightBottom);
 
@@ -494,7 +543,7 @@ namespace Jastech.Apps.Winform.UI.Controls
 
             Mat testMat = new Mat((int)height, (int)width, DepthType.Cv8U, 1);
             
-            Mat resultMatImage = AkkonAlgorithm.LastAkkonResultImage(testMat, akkonParam, stageNo, tabNo);
+            Mat resultMatImage = MacronAkkonAlgorithm.LastAkkonResultImage(testMat, akkonParam, stageNo, tabNo);
 
             Mat matR = MatHelper.ColorChannelSprate(resultMatImage, MatHelper.ColorChannel.R);
             Mat matG = MatHelper.ColorChannelSprate(resultMatImage, MatHelper.ColorChannel.G);
@@ -509,7 +558,7 @@ namespace Jastech.Apps.Winform.UI.Controls
             byte[] dataB = new byte[matB.Width * matB.Height];
             Marshal.Copy(matB.DataPointer, dataB, 0, matB.Width * matB.Height);
 
-            var cogImage = CogImageHelper.CovertImage(dataR, dataG, dataB, matB.Width, matB.Height);
+            var cogImage = VisionProImageHelper.CovertImage(dataR, dataG, dataB, matB.Width, matB.Height);
 
             testMat.Dispose();
             resultMatImage.Dispose();
@@ -685,7 +734,7 @@ namespace Jastech.Apps.Winform.UI.Controls
             var leadCount = CurrentTab.GetAkkonGroup(groupIndex).Count;
             var camera = DeviceManager.Instance().CameraHandler.Get(CameraName.LinscanMIL0.ToString());
 
-            MacronAkkonROI firstRoi = GetFirstROI();
+            AkkonROI firstRoi = GetFirstROI();
 
             CalcResolution = camera.PixelResolution_um / camera.LensScale;//camera.PixelResolution_mm(0.0035) / camera.LensScale(5) / 1000;
             if (CalcResolution == 0)
@@ -693,25 +742,23 @@ namespace Jastech.Apps.Winform.UI.Controls
 
             for (int leadIndex = 0; leadIndex < leadCount; leadIndex++)
             {
-                MacronAkkonROI newRoi = firstRoi.DeepCopy();
+                AkkonROI newRoi = firstRoi.DeepCopy();
 
                 if (_cloneDirection == ROICloneDirection.Horizontal)
                 {
-                    newRoi.CornerOriginX += (group.Pitch * leadIndex / CalcResolution);
-                    newRoi.CornerXX += (group.Pitch * leadIndex / CalcResolution);
-                    newRoi.CornerYX += (group.Pitch * leadIndex / CalcResolution);
-                    newRoi.CornerOppositeX += (group.Pitch * leadIndex / CalcResolution);
+                    newRoi.LeftTopX += (group.Pitch * leadIndex / CalcResolution);
+                    newRoi.RightTopX += (group.Pitch * leadIndex / CalcResolution);
+                    newRoi.LeftBottomX += (group.Pitch * leadIndex / CalcResolution);
+                    newRoi.RightBottomX += (group.Pitch * leadIndex / CalcResolution);
                 }
                 else
                 {
-                    newRoi.CornerOriginY += (group.Pitch * leadIndex / CalcResolution);
-                    newRoi.CornerXY += (group.Pitch * leadIndex / CalcResolution);
-                    newRoi.CornerYY += (group.Pitch * leadIndex / CalcResolution);
-                    newRoi.CornerOppositeY += (group.Pitch * leadIndex / CalcResolution);
+                    newRoi.LeftTopY += (group.Pitch * leadIndex / CalcResolution);
+                    newRoi.RightTopY += (group.Pitch * leadIndex / CalcResolution);
+                    newRoi.LeftBottomY += (group.Pitch * leadIndex / CalcResolution);
+                    newRoi.RightBottomY += (group.Pitch * leadIndex / CalcResolution);
                 }
-
                 group.AddROI(newRoi);
-
                 CogRectangleAffine cogRect = ConvertAkkonRoiToCogRectAffine(newRoi);
                 cogRect.GraphicDOFEnable = CogRectangleAffineDOFConstants.Position | CogRectangleAffineDOFConstants.Size | CogRectangleAffineDOFConstants.Skew;
             }
@@ -798,11 +845,12 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         private List<CogRectangleAffine> _cogRectAffineList = new List<CogRectangleAffine>();
 
-        private CogRectangleAffine ConvertAkkonRoiToCogRectAffine(MacronAkkonROI akkonRoi)
+        private CogRectangleAffine ConvertAkkonRoiToCogRectAffine(AkkonROI akkonRoi)
         {
             CogRectangleAffine cogRectAffine = new CogRectangleAffine();
 
-            cogRectAffine.SetOriginCornerXCornerY(akkonRoi.CornerOriginX, akkonRoi.CornerOriginY, akkonRoi.CornerXX, akkonRoi.CornerXY, akkonRoi.CornerYX, akkonRoi.CornerYY);
+            cogRectAffine.SetOriginCornerXCornerY(akkonRoi.LeftTopX, akkonRoi.LeftTopY, 
+                                                    akkonRoi.RightTopX, akkonRoi.RightTopY, akkonRoi.LeftBottomX, akkonRoi.LeftBottomY);
 
             return cogRectAffine;
         }
@@ -1101,16 +1149,19 @@ namespace Jastech.Apps.Winform.UI.Controls
             {
                 List<Tuple<double, double>> parsedData = ParseDataGridViewData(row);
 
-                MacronAkkonROI akkonRoi = new MacronAkkonROI();
+                AkkonROI akkonRoi = new AkkonROI();
 
-                akkonRoi.CornerOriginX = parsedData[0].Item1;
-                akkonRoi.CornerOriginY = parsedData[0].Item2;
-                akkonRoi.CornerXX = parsedData[1].Item1;
-                akkonRoi.CornerXY = parsedData[1].Item2;
-                akkonRoi.CornerYX = parsedData[2].Item1;
-                akkonRoi.CornerYY = parsedData[2].Item2;
-                akkonRoi.CornerOppositeX = parsedData[3].Item1;
-                akkonRoi.CornerOppositeY = parsedData[3].Item2;
+                akkonRoi.LeftTopX = parsedData[0].Item1;
+                akkonRoi.LeftTopY = parsedData[0].Item2;
+
+                akkonRoi.RightTopX = parsedData[1].Item1;
+                akkonRoi.RightTopY = parsedData[1].Item2;
+
+                akkonRoi.LeftBottomX = parsedData[2].Item1;
+                akkonRoi.LeftBottomY = parsedData[2].Item2;
+
+                akkonRoi.RightBottomX = parsedData[3].Item1;
+                akkonRoi.RightBottomY = parsedData[3].Item2;
 
                 group.AddROI(akkonRoi);
             }
@@ -1192,9 +1243,9 @@ namespace Jastech.Apps.Winform.UI.Controls
                     ICogImage cogImage = display.GetImage();
                     var roi = _autoTeachingCollect[0] as CogRectangle;
 
-                    var cropImage = CogImageHelper.CropImage(cogImage, roi);
-                    var binaryImage = CogImageHelper.Threshold(cropImage as CogImage8Grey, threshold, 255);
-                    var convertImage = CogImageHelper.CogCopyRegionTool(cogImage, binaryImage, roi, true);
+                    var cropImage = VisionProImageHelper.CropImage(cogImage, roi);
+                    var binaryImage = VisionProImageHelper.Threshold(cropImage as CogImage8Grey, threshold, 255);
+                    var convertImage = VisionProImageHelper.CogCopyRegionTool(cogImage, binaryImage, roi, true);
                     AppsTeachingUIManager.Instance().SetBinaryCogImageBuffer(convertImage as CogImage8Grey);
                 }
             }
@@ -1243,11 +1294,11 @@ namespace Jastech.Apps.Winform.UI.Controls
         private List<CogRectangleAffine> GetAutoTeachingRoiList(ICogImage image)
         {
             int threshold = Convert.ToInt32(lblAutoThresholdValue.Text);
-            var cropImage = CogImageHelper.CropImage(image, _autoTeachingRect);
-            var binaryImage = CogImageHelper.Threshold(cropImage as CogImage8Grey, threshold, 255, true);
+            var cropImage = VisionProImageHelper.CropImage(image, _autoTeachingRect);
+            var binaryImage = VisionProImageHelper.Threshold(cropImage as CogImage8Grey, threshold, 255, true);
 
-            byte[] topDataArray = CogImageHelper.GetWidthDataArray(binaryImage, 0);
-            byte[] bottomDataArray = CogImageHelper.GetWidthDataArray(binaryImage, cropImage.Height - 1);
+            byte[] topDataArray = VisionProImageHelper.GetWidthDataArray(binaryImage, 0);
+            byte[] bottomDataArray = VisionProImageHelper.GetWidthDataArray(binaryImage, cropImage.Height - 1);
 
             List<int> topEdgePointList = new List<int>();
             List<int> bottomEdgePointList = new List<int>();
@@ -1278,7 +1329,7 @@ namespace Jastech.Apps.Winform.UI.Controls
                 bottomPointList.Add(new PointF(pointX, pointY));
             }
 
-            var roiList = CogImageHelper.CreateRectangleAffine(topPointList, bottomPointList);
+            var roiList = VisionProImageHelper.CreateRectangleAffine(topPointList, bottomPointList);
             return roiList;
         }
 
@@ -1289,17 +1340,21 @@ namespace Jastech.Apps.Winform.UI.Controls
                 group.AkkonROIList.Clear();
                 foreach (var roi in roiList)
                 {
-                    MacronAkkonROI akkonRoi = new MacronAkkonROI
+                    AkkonROI akkonRoi = new AkkonROI
                     {
-                        CornerOppositeX = roi.CornerOppositeX,
-                        CornerOppositeY = roi.CornerOppositeY,
-                        CornerOriginX = roi.CornerOriginX,
-                        CornerOriginY = roi.CornerOriginY,
-                        CornerXX = roi.CornerXX,
-                        CornerXY = roi.CornerXY,
-                        CornerYX = roi.CornerYX,
-                        CornerYY = roi.CornerYY,
+                        LeftTopX = roi.CornerOriginX,
+                        LeftTopY = roi.CornerOriginY,
+
+                        RightTopX = roi.CornerXX,
+                        RightTopY = roi.CornerXY,
+
+                        LeftBottomX = roi.CornerYX,
+                        LeftBottomY = roi.CornerYY,
+
+                        RightBottomX = roi.CornerOppositeX,
+                        RightBottomY = roi.CornerOppositeY, 
                     };
+
                     group.AddROI(akkonRoi);
                 }
             }
@@ -1333,28 +1388,47 @@ namespace Jastech.Apps.Winform.UI.Controls
 
             var akkonParam = CurrentTab.AkkonParam;
             int akkonThreadCount = AppsConfig.Instance().AkkonThreadCount;
-            MacronAkkonParam macron = MacronAkkonParamControl.GetCurrentParam();
 
-            float resizeRatio = AppsConfig.Instance().AkkonResizeRatio;
-
-            macron.DrawOption.DrawResizeRatio = resizeRatio;
-
-            int tabIndex = CurrentTab.Index;
-            var tabResults = AkkonAlgorithm.RunAkkonForTeachingData(matImage, CurrentTab, appsInspModel.UnitCount, appsInspModel.TabCount, resizeRatio);
-
-            dgvAkkonResult.Rows.Clear();
-
-            UpdateResult(tabResults);
-
-            var resultImage = GetResultImage(matImage, CurrentTab.AkkonParam, CurrentTab.StageIndex, tabIndex, resizeRatio);
-
-            if (resultImage != null)
+            if(AppsConfig.Instance().AkkonAlgorithmType == AkkonAlgorithmType.Macron)
             {
-                lblOrginalImage.BackColor = _nonSelectedColor;
-                lblResultImage.BackColor = _selectedColor;
+                MacronAkkonParam macron = MacronAkkonParamControl.GetCurrentParam();
 
-                AppsTeachingUIManager.Instance().SetResultCogImage(resultImage);
-                ClearDisplay();
+                float resizeRatio = AppsConfig.Instance().AkkonResizeRatio;
+
+                macron.DrawOption.DrawResizeRatio = resizeRatio;
+
+                int tabIndex = CurrentTab.Index;
+                var tabResults = MacronAkkonAlgorithm.RunAkkonForTeachingData(matImage, CurrentTab, appsInspModel.UnitCount, appsInspModel.TabCount, resizeRatio);
+
+                dgvAkkonResult.Rows.Clear();
+                UpdateResult(tabResults);
+
+                var resultImage = GetResultImage(matImage, CurrentTab.AkkonParam, CurrentTab.StageIndex, tabIndex, resizeRatio);
+
+                if (resultImage != null)
+                {
+                    lblOrginalImage.BackColor = _nonSelectedColor;
+                    lblResultImage.BackColor = _selectedColor;
+
+                    AppsTeachingUIManager.Instance().SetResultCogImage(resultImage);
+                    ClearDisplay();
+                }
+            }
+            else
+            {
+                AkkonAlgoritmParam akkonAlgorithmParam = AkkonParamControl.GetCurrentParam();
+                var roiList = CurrentTab.AkkonParam.GetAkkonROIList();
+                var tabResult = AkkonAlgorithm.Run(matImage, roiList, akkonAlgorithmParam);
+                AkkonResult akkonResult = new AkkonResult();
+
+                akkonResult.StageNo = CurrentTab.StageIndex;
+                akkonResult.TabNo = CurrentTab.Index;
+                dgvAkkonResult.Rows.Clear();
+
+                //AkkonAlgorithm.
+                //UpdateResult(tabResult);
+                //int tabIndex = CurrentTab.Index;
+                //var tabResults = MacronAkkonAlgorithm.RunAkkonForTeachingData(matImage, CurrentTab, appsInspModel.UnitCount, appsInspModel.TabCount, resizeRatio);
             }
         }
 
@@ -1414,17 +1488,17 @@ namespace Jastech.Apps.Winform.UI.Controls
             //}
         }
 
-        private Rectangle GetContainInROI(List<MacronAkkonROI> akkonROIs)
+        private Rectangle GetContainInROI(List<AkkonROI> akkonROIs)
         {
-            var leftTopX = akkonROIs.Select(x => x.CornerOriginX).Min();
-            var leftTopY = akkonROIs.Select(x => x.CornerOriginY).Min();
-            var leftBottomX = akkonROIs.Select(x => x.CornerYX).Min();
-            var leftBottomY = akkonROIs.Select(x => x.CornerYY).Max();
+            var leftTopX = akkonROIs.Select(x => x.LeftTopX).Min();
+            var leftTopY = akkonROIs.Select(x => x.LeftTopY).Min();
+            var leftBottomX = akkonROIs.Select(x => x.LeftBottomX).Min();
+            var leftBottomY = akkonROIs.Select(x => x.LeftBottomY).Max();
 
-            var rightTopX = akkonROIs.Select(x => x.CornerXX).Max();
-            var rightTopY = akkonROIs.Select(x => x.CornerXY).Min();
-            var rightBottomX = akkonROIs.Select(x => x.CornerOppositeX).Max();
-            var rightBottomY = akkonROIs.Select(x => x.CornerOppositeY).Max();
+            var rightTopX = akkonROIs.Select(x => x.RightTopX).Max();
+            var rightTopY = akkonROIs.Select(x => x.RightTopY).Min();
+            var rightBottomX = akkonROIs.Select(x => x.RightBottomX).Max();
+            var rightBottomY = akkonROIs.Select(x => x.RightBottomY).Max();
 
             double left = leftTopX > leftBottomX ? leftBottomX : leftTopX;
             double top = leftTopY > rightTopY ? rightTopY : leftTopY;
@@ -1454,9 +1528,9 @@ namespace Jastech.Apps.Winform.UI.Controls
 
             for (int i = 0; i < group.AkkonROIList.Count(); i++)
             {
-                MacronAkkonROI roi = group.AkkonROIList[i];
-                roi.CornerOriginY = roi.CornerOriginY +500;
-                roi.CornerXY = roi.CornerXY + 500;
+                AkkonROI roi = group.AkkonROIList[i];
+                roi.LeftTopY = roi.LeftTopY + 500;
+                roi.RightTopY = roi.RightTopY + 500;
                 //roi.CornerYY = roi.CornerYY
             }
             UpdateROIDataGridView(group.AkkonROIList);
@@ -1501,10 +1575,10 @@ namespace Jastech.Apps.Winform.UI.Controls
 
             var lastRoi = group.AkkonROIList.Last().DeepCopy();
 
-            lastRoi.CornerOriginX += group.Pitch;
-            lastRoi.CornerXX += group.Pitch;
-            lastRoi.CornerYX += group.Pitch;
-            lastRoi.CornerOppositeX += group.Pitch;
+            lastRoi.LeftTopX += group.Pitch;
+            lastRoi.RightTopX += group.Pitch;
+            lastRoi.LeftBottomX += group.Pitch;
+            lastRoi.RightBottomX += group.Pitch;
 
             group.AddROI(lastRoi);
 
@@ -1528,21 +1602,21 @@ namespace Jastech.Apps.Winform.UI.Controls
             int groupIndex = cbxGroupNumber.SelectedIndex;
             var group = CurrentTab.AkkonParam.GroupList[groupIndex];
 
-            List<MacronAkkonROI> newRoiList = new List<MacronAkkonROI>();
+            List<AkkonROI> newRoiList = new List<AkkonROI>();
 
             foreach (var roi in group.AkkonROIList)
             {
-                roi.CornerOriginX += moveX;
-                roi.CornerOriginY += moveY;
+                roi.LeftTopX += moveX;
+                roi.LeftTopY += moveY;
 
-                roi.CornerXX += moveX;
-                roi.CornerXY += moveY;
+                roi.RightTopX += moveX;
+                roi.RightTopY += moveY;
 
-                roi.CornerYX += moveX;
-                roi.CornerYY += moveY;
+                roi.LeftBottomX += moveX;
+                roi.LeftBottomY += moveY;
 
-                roi.CornerOppositeX += moveX;
-                roi.CornerOppositeY += moveY;
+                roi.RightBottomX += moveX;
+                roi.RightBottomY += moveY;
 
                 CogRectangleAffine cogRect = ConvertAkkonRoiToCogRectAffine(roi);
                 cogRect.GraphicDOFEnable = CogRectangleAffineDOFConstants.Position | CogRectangleAffineDOFConstants.Size | CogRectangleAffineDOFConstants.Skew;
@@ -1560,4 +1634,5 @@ namespace Jastech.Apps.Winform.UI.Controls
             DrawROI();
         }
     }
+
 }

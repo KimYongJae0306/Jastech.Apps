@@ -373,7 +373,7 @@ namespace Jastech.Framework.Winform.Forms
 
                 ColorFormat format = image.NumberOfChannels == 1 ? ColorFormat.Gray : ColorFormat.RGB24;
 
-                var cogImage = CogImageHelper.CovertImage(dataArray, image.Width, image.Height, format);
+                var cogImage = VisionProImageHelper.CovertImage(dataArray, image.Width, image.Height, format);
                 CogDisplayControl.SetImage(cogImage.CopyBase(CogImageCopyModeConstants.CopyPixels));
             }
             catch (Exception ex)

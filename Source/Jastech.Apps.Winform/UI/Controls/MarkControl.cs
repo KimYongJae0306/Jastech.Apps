@@ -296,8 +296,8 @@ namespace Jastech.Apps.Winform.UI.Controls
             double centerX = display.ImageWidth() / 2.0;
             double centerY = display.ImageHeight() / 2.0;
 
-            CogRectangle roi = CogImageHelper.CreateRectangle(centerX - display.GetPan().X, centerY - display.GetPan().Y, 100, 100);
-            CogRectangle searchRoi = CogImageHelper.CreateRectangle(roi.CenterX, roi.CenterY, roi.Width * 2, roi.Height * 2);
+            CogRectangle roi = VisionProImageHelper.CreateRectangle(centerX - display.GetPan().X, centerY - display.GetPan().Y, 100, 100);
+            CogRectangle searchRoi = VisionProImageHelper.CreateRectangle(roi.CenterX, roi.CenterY, roi.Width * 2, roi.Height * 2);
 
             var currentParam = ParamControl.GetCurrentParam();
 
@@ -344,8 +344,8 @@ namespace Jastech.Apps.Winform.UI.Controls
             }
 
             ICogImage cogImage = display.GetImage();
-            CogPatternMatchingResult result = Algorithm.RunPatternMatch(cogImage, currentParam);
-
+            VisionProPatternMatchingResult result = Algorithm.RunPatternMatch(cogImage, currentParam);
+            //result.DeepCopy();
             //UpdateGridResult(result);
 
             if (result.MatchPosList.Count > 0)
@@ -514,7 +514,7 @@ namespace Jastech.Apps.Winform.UI.Controls
             PointF tlfp = new PointF(Convert.ToSingle(tlf.TranslationX), Convert.ToSingle(tlf.TranslationY));
 
             // 찾은 Left FPC 좌표
-            CogPatternMatchingResult leftReferenceMarkResult = Algorithm.RunPatternMatch(cogImage, leftReferenceMarkParam.InspParam);
+            VisionProPatternMatchingResult leftReferenceMarkResult = Algorithm.RunPatternMatch(cogImage, leftReferenceMarkParam.InspParam);
             PointF leftReferencePoint = leftReferenceMarkResult.MaxMatchPos.FoundPos;
 
 
@@ -524,7 +524,7 @@ namespace Jastech.Apps.Winform.UI.Controls
             PointF trfp = new PointF(Convert.ToSingle(trf.TranslationX), Convert.ToSingle(trf.TranslationY));
 
             // 찾은 Right FPC 좌표
-            CogPatternMatchingResult rightReferenceMarkResult = Algorithm.RunPatternMatch(cogImage, rightReferenceMarkparam.InspParam);
+            VisionProPatternMatchingResult rightReferenceMarkResult = Algorithm.RunPatternMatch(cogImage, rightReferenceMarkparam.InspParam);
             PointF rightReferencePoint = rightReferenceMarkResult.MaxMatchPos.FoundPos;
 
             double tDegree = MathHelper.GetTheta(tlfp, trfp);
@@ -581,17 +581,17 @@ namespace Jastech.Apps.Winform.UI.Controls
             if (_curMaterial == Material.Fpc)
             {
                 referenceMarkParam = origin.GetFPCMark(_curDirection, MarkName.Main);
-                CogPatternMatchingResult referenceResult = Algorithm.RunPatternMatch(cogImage, referenceMarkParam.InspParam);
+                VisionProPatternMatchingResult referenceResult = Algorithm.RunPatternMatch(cogImage, referenceMarkParam.InspParam);
                 referencePoint = referenceResult.MaxMatchPos.FoundPos;
             }
             else
             {
                 referenceMarkParam = origin.GetPanelMark(_curDirection, MarkName.Main);
-                CogPatternMatchingResult referenceResult = Algorithm.RunPatternMatch(cogImage, referenceMarkParam.InspParam);
+                VisionProPatternMatchingResult referenceResult = Algorithm.RunPatternMatch(cogImage, referenceMarkParam.InspParam);
                 referencePoint = referenceResult.MaxMatchPos.FoundPos;
             }
 
-            CogPatternMatchingResult currentFpcLeftResult = Algorithm.RunPatternMatch(cogImage, currentParam);
+            VisionProPatternMatchingResult currentFpcLeftResult = Algorithm.RunPatternMatch(cogImage, currentParam);
             PointF currentPos = currentFpcLeftResult.MaxMatchPos.FoundPos;
 
             double diffX = referencePoint.X - currentPos.X;

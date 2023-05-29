@@ -296,7 +296,7 @@ namespace ATT.UI.Forms
 
                 ColorFormat format = image.NumberOfChannels == 1 ? ColorFormat.Gray : ColorFormat.RGB24;
 
-                var cogImage = CogImageHelper.CovertImage(dataArray, image.Width, image.Height, format);
+                var cogImage = VisionProImageHelper.CovertImage(dataArray, image.Width, image.Height, format);
 
                
                 AppsTeachingUIManager.Instance().SetOrginCogImageBuffer(cogImage);

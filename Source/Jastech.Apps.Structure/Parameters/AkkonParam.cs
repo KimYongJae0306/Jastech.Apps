@@ -1,4 +1,5 @@
-﻿using Jastech.Framework.Macron.Akkon.Parameters;
+﻿using Jastech.Framework.Algorithms.Akkon.Parameters;
+using Jastech.Framework.Macron.Akkon.Parameters;
 using Jastech.Framework.Util.Helper;
 using Newtonsoft.Json;
 using System;
@@ -16,6 +17,9 @@ namespace Jastech.Apps.Structure.Parameters
 
         [JsonProperty]
         public MacronAkkonParam MacronAkkonParam { get; set; } = new MacronAkkonParam();
+
+        [JsonProperty]
+        public AkkonAlgoritmParam AkkonAlgoritmParam { get; set; } = new AkkonAlgoritmParam();
 
         private void AddGroup()
         {
@@ -94,9 +98,9 @@ namespace Jastech.Apps.Structure.Parameters
                 group = newGroupParam;
         }
 
-        public List<MacronAkkonROI> GetAkkonROIList()
+        public List<AkkonROI> GetAkkonROIList()
         {
-            List<MacronAkkonROI> roiList = new List<MacronAkkonROI>();
+            List<AkkonROI> roiList = new List<AkkonROI>();
 
             for (int i = 0; i < GroupList.Count; i++)
             {

@@ -15,7 +15,6 @@ using Jastech.Apps.Winform.Settings;
 using Jastech.Framework.Util.Helper;
 using System.IO;
 using Jastech.Framework.Imaging.Result;
-using Jastech.Framework.Macron.Akkon.Results;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 using Emgu.CV.Flann;

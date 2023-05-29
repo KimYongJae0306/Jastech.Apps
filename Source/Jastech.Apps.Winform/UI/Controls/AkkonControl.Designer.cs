@@ -307,7 +307,7 @@
             this.dgvAkkonResult.RowsDefaultCellStyle = dataGridViewCellStyle3;
             this.dgvAkkonResult.RowTemplate.Height = 23;
             this.dgvAkkonResult.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvAkkonResult.Size = new System.Drawing.Size(60, 308);
+            this.dgvAkkonResult.Size = new System.Drawing.Size(114, 308);
             this.dgvAkkonResult.TabIndex = 1;
             // 
             // colResultNo
