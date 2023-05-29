@@ -71,7 +71,7 @@
             this.tlpUPHControl.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 80F));
             this.tlpUPHControl.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tlpUPHControl.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tlpUPHControl.Size = new System.Drawing.Size(1000, 700);
+            this.tlpUPHControl.Size = new System.Drawing.Size(860, 540);
             this.tlpUPHControl.TabIndex = 0;
             // 
             // tableLayoutPanel1
@@ -87,7 +87,7 @@
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 1;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(1000, 310);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(860, 230);
             this.tableLayoutPanel1.TabIndex = 0;
             // 
             // chartPie
@@ -107,7 +107,7 @@
             series1.Legend = "Legend1";
             series1.Name = "Series1";
             this.chartPie.Series.Add(series1);
-            this.chartPie.Size = new System.Drawing.Size(494, 304);
+            this.chartPie.Size = new System.Drawing.Size(424, 224);
             this.chartPie.TabIndex = 0;
             this.chartPie.Text = "chart1";
             // 
@@ -132,10 +132,10 @@
             dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
             this.dgvUPHData.DefaultCellStyle = dataGridViewCellStyle2;
             this.dgvUPHData.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dgvUPHData.Location = new System.Drawing.Point(503, 3);
+            this.dgvUPHData.Location = new System.Drawing.Point(433, 3);
             this.dgvUPHData.Name = "dgvUPHData";
             this.dgvUPHData.RowTemplate.Height = 23;
-            this.dgvUPHData.Size = new System.Drawing.Size(494, 304);
+            this.dgvUPHData.Size = new System.Drawing.Size(424, 224);
             this.dgvUPHData.TabIndex = 1;
             // 
             // tlpFunctions
@@ -157,7 +157,7 @@
             this.tlpFunctions.Name = "tlpFunctions";
             this.tlpFunctions.RowCount = 1;
             this.tlpFunctions.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tlpFunctions.Size = new System.Drawing.Size(994, 74);
+            this.tlpFunctions.Size = new System.Drawing.Size(854, 74);
             this.tlpFunctions.TabIndex = 1;
             // 
             // lblDownload
@@ -166,9 +166,9 @@
             this.lblDownload.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.lblDownload.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lblDownload.Font = new System.Drawing.Font("맑은 고딕", 14F, System.Drawing.FontStyle.Bold);
-            this.lblDownload.Location = new System.Drawing.Point(795, 0);
+            this.lblDownload.Location = new System.Drawing.Point(683, 0);
             this.lblDownload.Name = "lblDownload";
-            this.lblDownload.Size = new System.Drawing.Size(196, 74);
+            this.lblDownload.Size = new System.Drawing.Size(168, 74);
             this.lblDownload.TabIndex = 5;
             this.lblDownload.Text = "DOWNLOAD";
             this.lblDownload.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -179,9 +179,9 @@
             this.lblTotalFail.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.lblTotalFail.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lblTotalFail.Font = new System.Drawing.Font("맑은 고딕", 14F, System.Drawing.FontStyle.Bold);
-            this.lblTotalFail.Location = new System.Drawing.Point(597, 0);
+            this.lblTotalFail.Location = new System.Drawing.Point(513, 0);
             this.lblTotalFail.Name = "lblTotalFail";
-            this.lblTotalFail.Size = new System.Drawing.Size(192, 74);
+            this.lblTotalFail.Size = new System.Drawing.Size(164, 74);
             this.lblTotalFail.TabIndex = 4;
             this.lblTotalFail.Text = "TOTAL\r\nFAIL : 0";
             this.lblTotalFail.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -192,9 +192,9 @@
             this.lblTotalNG.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.lblTotalNG.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lblTotalNG.Font = new System.Drawing.Font("맑은 고딕", 14F, System.Drawing.FontStyle.Bold);
-            this.lblTotalNG.Location = new System.Drawing.Point(399, 0);
+            this.lblTotalNG.Location = new System.Drawing.Point(343, 0);
             this.lblTotalNG.Name = "lblTotalNG";
-            this.lblTotalNG.Size = new System.Drawing.Size(192, 74);
+            this.lblTotalNG.Size = new System.Drawing.Size(164, 74);
             this.lblTotalNG.TabIndex = 3;
             this.lblTotalNG.Text = "TOTAL\r\nNG : 0";
             this.lblTotalNG.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -205,9 +205,9 @@
             this.lblTotalOK.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.lblTotalOK.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lblTotalOK.Font = new System.Drawing.Font("맑은 고딕", 14F, System.Drawing.FontStyle.Bold);
-            this.lblTotalOK.Location = new System.Drawing.Point(201, 0);
+            this.lblTotalOK.Location = new System.Drawing.Point(173, 0);
             this.lblTotalOK.Name = "lblTotalOK";
-            this.lblTotalOK.Size = new System.Drawing.Size(192, 74);
+            this.lblTotalOK.Size = new System.Drawing.Size(164, 74);
             this.lblTotalOK.TabIndex = 2;
             this.lblTotalOK.Text = "TOTAL\r\nOK : 0";
             this.lblTotalOK.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -219,7 +219,7 @@
             this.lblTotalProduction.Font = new System.Drawing.Font("맑은 고딕", 14F, System.Drawing.FontStyle.Bold);
             this.lblTotalProduction.Location = new System.Drawing.Point(3, 0);
             this.lblTotalProduction.Name = "lblTotalProduction";
-            this.lblTotalProduction.Size = new System.Drawing.Size(192, 74);
+            this.lblTotalProduction.Size = new System.Drawing.Size(164, 74);
             this.lblTotalProduction.TabIndex = 1;
             this.lblTotalProduction.Text = "TOTAL";
             this.lblTotalProduction.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -234,13 +234,13 @@
             this.chartBar.Dock = System.Windows.Forms.DockStyle.Fill;
             legend2.Name = "Legend1";
             this.chartBar.Legends.Add(legend2);
-            this.chartBar.Location = new System.Drawing.Point(3, 393);
+            this.chartBar.Location = new System.Drawing.Point(3, 313);
             this.chartBar.Name = "chartBar";
             series2.ChartArea = "ChartArea1";
             series2.Legend = "Legend1";
             series2.Name = "Series1";
             this.chartBar.Series.Add(series2);
-            this.chartBar.Size = new System.Drawing.Size(994, 304);
+            this.chartBar.Size = new System.Drawing.Size(854, 224);
             this.chartBar.TabIndex = 2;
             this.chartBar.Text = "chart2";
             // 
@@ -252,7 +252,7 @@
             this.Controls.Add(this.tlpUPHControl);
             this.Font = new System.Drawing.Font("맑은 고딕", 11.25F, System.Drawing.FontStyle.Bold);
             this.Name = "UPHControl_old";
-            this.Size = new System.Drawing.Size(1000, 700);
+            this.Size = new System.Drawing.Size(860, 540);
             this.Load += new System.EventHandler(this.UPHControl_Load);
             this.tlpUPHControl.ResumeLayout(false);
             this.tableLayoutPanel1.ResumeLayout(false);

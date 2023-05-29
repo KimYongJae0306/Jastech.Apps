@@ -2,6 +2,7 @@
 using Emgu.CV;
 using Emgu.CV.CvEnum;
 using Jastech.Apps.Structure;
+using Jastech.Apps.Structure.Data;
 using Jastech.Apps.Winform.UI.Controls;
 using Jastech.Framework.Imaging;
 using Jastech.Framework.Imaging.VisionPro;
@@ -13,6 +14,7 @@ using System.IO;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
 using static System.Net.WebRequestMethods;
+using static System.Windows.Forms.AxHost;
 
 namespace Jastech.Framework.Winform.Forms
 {
@@ -39,7 +41,12 @@ namespace Jastech.Framework.Winform.Forms
 
         private AlignTrendControl AlignTrendControl { get; set; } = new AlignTrendControl() { Dock= DockStyle.Fill };
 
-        private UPHControl_old UPHControl { get; set; } = new UPHControl_old() { Dock = DockStyle.Fill };
+        private AkkonTrendControl AkkonTrendControl { get; set; } = new AkkonTrendControl() { Dock= DockStyle.Fill };
+
+        private UPHControl UPHControl { get; set; } = new UPHControl() { Dock = DockStyle.Fill };
+
+        private ProcessCapabilityControl ProcessCapabilityControl { get; set; } = new ProcessCapabilityControl() { Dock= DockStyle.Fill };
+
         #endregion
 
         #region 속성
@@ -109,6 +116,9 @@ namespace Jastech.Framework.Winform.Forms
                 case PageType.AkkonTrend:
                     _selectedPagePath = _resultPath;
                     lblAkkonTrend.BackColor = _selectedColor;
+
+                    AkkonTrendControl.MakeTabListControl(inspModel.TabCount);
+                    pnlContents.Controls.Add(AkkonTrendControl);
                     break;
 
                 case PageType.UPH:
@@ -116,6 +126,16 @@ namespace Jastech.Framework.Winform.Forms
                     lblUPH.BackColor = _selectedColor;
 
                     pnlContents.Controls.Add(UPHControl);
+                    break;
+
+                case PageType.ProcessCapability:
+                    _selectedPagePath = _resultPath;
+                    lblProcessCapability.BackColor = _selectedColor;
+
+                    pnlContents.Controls.Add(ProcessCapabilityControl);
+                    break;
+
+                default:
                     break;
             }
 
@@ -161,6 +181,11 @@ namespace Jastech.Framework.Winform.Forms
             SetPageType(PageType.UPH);
         }
 
+        private void lblProcessCapability_Click(object sender, EventArgs e)
+        {
+            SetPageType(PageType.ProcessCapability);
+        }
+
         public void SetLogViewPath(string logPath, string resultPath, string modelName)
         {
             _logPath = logPath;
@@ -183,6 +208,8 @@ namespace Jastech.Framework.Winform.Forms
                 tvwLogPath.Nodes.RemoveAt(index - 1);
 
             DateTime date = cdrMonthCalendar.SelectionStart;
+            SetSelectionStartDate(date);
+
             string path = Path.Combine(_selectedPagePath, date.Month.ToString("D2"), date.Day.ToString("D2"));
 
             SetSelectedDirectoryFullPath(path);
@@ -194,6 +221,17 @@ namespace Jastech.Framework.Winform.Forms
                 tvwLogPath.Nodes.Add(treeNode);
                 RecursiveDirectory(directoryInfo, treeNode);
             }
+        }
+
+        public DateTime DateTime { get; set; } = DateTime.Now;
+        private void SetSelectionStartDate(DateTime date)
+        {
+            DateTime = date;
+        }
+
+        public DateTime GetSelectionStartDate()
+        { 
+            return DateTime;
         }
         
         private void SetSelectedDirectoryFullPath(string path)
@@ -215,7 +253,16 @@ namespace Jastech.Framework.Winform.Forms
                 {
                     TreeNode node = new TreeNode(files2.Name);
 
-                    if (_selectedPageType == PageType.Image && files2.Name.Contains(".csv"))
+                    if (_selectedPageType == PageType.Image && files2.Name.ToLower().Contains(".csv"))
+                        continue;
+
+                    if ((_selectedPageType == PageType.AlignTrend || _selectedPageType == PageType.ProcessCapability ) && files2.Name.ToLower().Contains("align") == false)
+                        continue;
+
+                    if (_selectedPageType == PageType.AkkonTrend && files2.Name.ToLower().Contains("akkon") == false)
+                        continue;
+
+                    if (_selectedPageType == PageType.UPH && files2.Name.ToLower().Contains("uph") == false)
                         continue;
 
                     treeNode.Nodes.Add(node);
@@ -226,11 +273,12 @@ namespace Jastech.Framework.Winform.Forms
                 {
                     TreeNode upperNode = new TreeNode(dirInfo.Name);
 
-                    if (_selectedPageType == PageType.AlignTrend || _selectedPageType == PageType.AkkonTrend)
+                    if (_selectedPageType == PageType.AlignTrend || _selectedPageType == PageType.AkkonTrend || _selectedPageType == PageType.UPH || _selectedPageType == PageType.ProcessCapability)
                     {
                         if (dirInfo.Name.ToLower().Contains("origin"))
                             continue;
                     }
+
                     treeNode.Nodes.Add(upperNode);
 
                     files = dirInfo.GetFiles();
@@ -342,20 +390,27 @@ namespace Jastech.Framework.Winform.Forms
                     AlignTrendControl.UpdateDataGridView(fullPath);
                     AlignTrendControl.SetAlignResultType(AlignResultType.All);
                     AlignTrendControl.SetTabType(TabType.Tab1);
-                    //AlignTrendControl.UpdateChart(TabType.Tab1, AlignType.All);
                     break;
 
                 case PageType.AkkonTrend:
+                    AkkonTrendControl.UpdateDataGridView(fullPath);
+                    AkkonTrendControl.SetAkkonResultType(AkkonResultType.All);
+                    AkkonTrendControl.SetTabType(TabType.Tab1);
+                    break;
+
+                case PageType.UPH:
+                    UPHControl.ReadDataFromCSVFile(fullPath);
+                    break;
+
+                case PageType.ProcessCapability:
+                    ProcessCapabilityControl.UpdateParameterDataGridView(fullPath);
+                    ProcessCapabilityControl.SetSelectionStartDate(GetSelectionStartDate());
+                    ProcessCapabilityControl.SetAlignResultType(AlignResultType.Lx);
                     break;
 
                 default:
                     break;
             }
-        }
-
-        private void DisplayUPH(string fullPath)
-        {
-            //UPHControl.SetFilePath(fullPath);
         }
         #endregion
     }
@@ -367,6 +422,7 @@ namespace Jastech.Framework.Winform.Forms
         AlignTrend,
         AkkonTrend,
         UPH,
+        ProcessCapability,
     }
 
     public enum TabType
@@ -376,5 +432,15 @@ namespace Jastech.Framework.Winform.Forms
         Tab3,
         Tab4,
         Tab5,
+    }
+
+    public enum AlignResultType
+    {
+        All,
+        Lx,
+        Ly,
+        Cx,
+        Rx,
+        Ry,
     }
 }

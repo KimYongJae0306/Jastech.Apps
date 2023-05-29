@@ -137,7 +137,7 @@ namespace Jastech.Apps.Structure.VisionTool
             }
             else
             {
-                result.Judgement = Judgement.Fail;
+                result.Judgement = Judgement.FAIL;
                 string message = string.Format(" Main CaliperX Search Fail. Panel({0}), FPC({1})", panelParam.Name, fpcParam.Name);
                 Logger.Debug(LogType.Inspection, message);
             }
@@ -170,7 +170,7 @@ namespace Jastech.Apps.Structure.VisionTool
             {
                 string message = string.Format("Main CaliperY Search Fail. Panel({0}), FPC({1})", panelParam.Name, fpcParam.Name);
                 Logger.Debug(LogType.Inspection, message);
-                result.Judgement = Judgement.Fail;
+                result.Judgement = Judgement.FAIL;
             }
 
             return result;

@@ -62,7 +62,7 @@ namespace Jastech.Apps.Structure.VisionTool
                 isFounded |= item.Found;
             }
 
-            alignResult.Judgement = isFounded ? Judgement.OK : Judgement.Fail;
+            alignResult.Judgement = isFounded ? Judgement.OK : Judgement.FAIL;
 
             if(alignResult.Judgement == Judgement.OK)
             {
@@ -88,7 +88,7 @@ namespace Jastech.Apps.Structure.VisionTool
                 isFounded |= item.Found;
             }
 
-            alignResult.Judgement = isFounded ? Judgement.OK : Judgement.Fail;
+            alignResult.Judgement = isFounded ? Judgement.OK : Judgement.FAIL;
 
             return alignResult;
         }
@@ -104,7 +104,7 @@ namespace Jastech.Apps.Structure.VisionTool
                 return null;
 
             if (matchingResult.MatchPosList.Count <= 0)
-                matchingResult.Judgement = Judgement.Fail;
+                matchingResult.Judgement = Judgement.FAIL;
             else
             {
                 if ((matchingResult.MaxScore * 100) >= param.Score)

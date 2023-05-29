@@ -178,6 +178,12 @@
     <Compile Include="UI\Controls\PreAlignControl.Designer.cs">
       <DependentUpon>PreAlignControl.cs</DependentUpon>
     </Compile>
+    <Compile Include="UI\Controls\ProcessCapabilityControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UI\Controls\ProcessCapabilityControl.Designer.cs">
+      <DependentUpon>ProcessCapabilityControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="UI\Controls\ResultChartControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -201,6 +207,12 @@
     </Compile>
     <Compile Include="UI\Controls\UnitSelectControl.Designer.cs">
       <DependentUpon>UnitSelectControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Controls\UPHControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UI\Controls\UPHControl.Designer.cs">
+      <DependentUpon>UPHControl.cs</DependentUpon>
     </Compile>
     <Compile Include="UI\Controls\UPHControl_old.cs">
       <SubType>UserControl</SubType>
@@ -292,6 +304,9 @@
     <EmbeddedResource Include="UI\Controls\PreAlignControl.resx">
       <DependentUpon>PreAlignControl.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="UI\Controls\ProcessCapabilityControl.resx">
+      <DependentUpon>ProcessCapabilityControl.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="UI\Controls\ResultChartControl.resx">
       <DependentUpon>ResultChartControl.cs</DependentUpon>
     </EmbeddedResource>
@@ -303,6 +318,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UI\Controls\UnitSelectControl.resx">
       <DependentUpon>UnitSelectControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\Controls\UPHControl.resx">
+      <DependentUpon>UPHControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\Controls\UPHControl_old.resx">
       <DependentUpon>UPHControl_old.cs</DependentUpon>

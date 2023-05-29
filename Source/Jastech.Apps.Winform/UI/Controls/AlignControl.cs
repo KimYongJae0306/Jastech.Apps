@@ -299,7 +299,7 @@ namespace Jastech.Apps.Winform.UI.Controls
             else
                 result = Algorithm.RunAlignY(cogImage, currentParam);
 
-            if (result.Judgement == Judgement.Fail)
+            if (result.Judgement == Judgement.FAIL)
             {
                 MessageConfirmForm form = new MessageConfirmForm();
                 form.Message = "Caliper is Not Found.";

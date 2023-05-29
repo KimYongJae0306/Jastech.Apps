@@ -53,8 +53,8 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         private void AddControl()
         {
-            ChartControl.ChartType = ResultChartControl.InspChartType.Align;
-            tlpData.Controls.Add(ChartControl, 0, 0);
+            ChartControl.ChartType = ResultChartControl.InspChartType.Akkon;
+            pnlChart.Controls.Add(ChartControl);
         }
 
         private void InitializeUI()
@@ -143,7 +143,7 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         private void lblStd_Click(object sender, EventArgs e)
         {
-            SetAkkonResultType(AkkonResultType.Std);
+            SetAkkonResultType(AkkonResultType.STD);
             UpdateChart(_tabType, _akkonResultType);
         }
 
@@ -175,7 +175,7 @@ namespace Jastech.Apps.Winform.UI.Controls
                     lblStrength.BackColor = _selectedColor;
                     break;
 
-                case AkkonResultType.Std:
+                case AkkonResultType.STD:
                     lblStd.BackColor = _selectedColor;
                     break;
 
@@ -225,11 +225,10 @@ namespace Jastech.Apps.Winform.UI.Controls
                 table.Columns.Add("Panel ID");
                 table.Columns.Add("Tab");
                 table.Columns.Add("Judge");
-                table.Columns.Add("Lx");
-                table.Columns.Add("Ly");
-                table.Columns.Add("Cx");
-                table.Columns.Add("Rx");
-                table.Columns.Add("Ry");
+                table.Columns.Add("Count");
+                table.Columns.Add("Length");
+                table.Columns.Add("Strength");
+                table.Columns.Add("STD");
 
                 StreamReader sr = new StreamReader(fs);
 
@@ -246,7 +245,7 @@ namespace Jastech.Apps.Winform.UI.Controls
                         string[] dataArray = contents.Split(',');
 
                         table.Rows.Add(dataArray[0], dataArray[1], dataArray[2], dataArray[3],
-                            dataArray[4], dataArray[5], dataArray[6], dataArray[7], dataArray[8]);
+                            dataArray[4], dataArray[5], dataArray[6], dataArray[7]);
                     }
 
                     readLine++;
@@ -260,7 +259,6 @@ namespace Jastech.Apps.Winform.UI.Controls
             }
         }
         #endregion
-
     }
 
     public enum AkkonResultType
@@ -269,7 +267,7 @@ namespace Jastech.Apps.Winform.UI.Controls
         Count,
         Length,
         Strength,
-        Std,
+        STD,
     }
 
 

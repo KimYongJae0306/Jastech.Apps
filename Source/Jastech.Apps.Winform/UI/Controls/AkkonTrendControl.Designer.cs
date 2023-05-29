@@ -28,8 +28,8 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
             this.tlpAkkonTrend = new System.Windows.Forms.TableLayoutPanel();
             this.pnlAkkonType = new System.Windows.Forms.Panel();
             this.lblStd = new System.Windows.Forms.Label();
@@ -41,6 +41,7 @@
             this.dgvAkkonTrendData = new System.Windows.Forms.DataGridView();
             this.pnlTabs = new System.Windows.Forms.Panel();
             this.lblTab = new System.Windows.Forms.Label();
+            this.pnlChart = new System.Windows.Forms.Panel();
             this.tlpAkkonTrend.SuspendLayout();
             this.pnlAkkonType.SuspendLayout();
             this.tlpData.SuspendLayout();
@@ -63,7 +64,7 @@
             this.tlpAkkonTrend.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 60F));
             this.tlpAkkonTrend.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 60F));
             this.tlpAkkonTrend.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tlpAkkonTrend.Size = new System.Drawing.Size(851, 498);
+            this.tlpAkkonTrend.Size = new System.Drawing.Size(860, 540);
             this.tlpAkkonTrend.TabIndex = 1;
             // 
             // pnlAkkonType
@@ -77,7 +78,7 @@
             this.pnlAkkonType.Location = new System.Drawing.Point(0, 60);
             this.pnlAkkonType.Margin = new System.Windows.Forms.Padding(0);
             this.pnlAkkonType.Name = "pnlAkkonType";
-            this.pnlAkkonType.Size = new System.Drawing.Size(851, 60);
+            this.pnlAkkonType.Size = new System.Drawing.Size(860, 60);
             this.pnlAkkonType.TabIndex = 2;
             // 
             // lblStd
@@ -145,6 +146,7 @@
             this.tlpData.ColumnCount = 2;
             this.tlpData.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 55F));
             this.tlpData.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 45F));
+            this.tlpData.Controls.Add(this.pnlChart, 0, 0);
             this.tlpData.Controls.Add(this.dgvAkkonTrendData, 1, 0);
             this.tlpData.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tlpData.Location = new System.Drawing.Point(0, 120);
@@ -152,37 +154,37 @@
             this.tlpData.Name = "tlpData";
             this.tlpData.RowCount = 1;
             this.tlpData.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tlpData.Size = new System.Drawing.Size(851, 378);
+            this.tlpData.Size = new System.Drawing.Size(860, 420);
             this.tlpData.TabIndex = 3;
             // 
             // dgvAkkonTrendData
             // 
             this.dgvAkkonTrendData.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.DisplayedCells;
             this.dgvAkkonTrendData.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("맑은 고딕", 11.25F, System.Drawing.FontStyle.Bold);
-            dataGridViewCellStyle1.ForeColor = System.Drawing.Color.White;
-            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(104)))), ((int)(((byte)(104)))), ((int)(((byte)(104)))));
-            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgvAkkonTrendData.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle5.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
+            dataGridViewCellStyle5.Font = new System.Drawing.Font("맑은 고딕", 11.25F, System.Drawing.FontStyle.Bold);
+            dataGridViewCellStyle5.ForeColor = System.Drawing.Color.White;
+            dataGridViewCellStyle5.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(104)))), ((int)(((byte)(104)))), ((int)(((byte)(104)))));
+            dataGridViewCellStyle5.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle5.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvAkkonTrendData.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle5;
             this.dgvAkkonTrendData.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
-            dataGridViewCellStyle2.Font = new System.Drawing.Font("맑은 고딕", 11.25F, System.Drawing.FontStyle.Bold);
-            dataGridViewCellStyle2.ForeColor = System.Drawing.Color.White;
-            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(104)))), ((int)(((byte)(104)))), ((int)(((byte)(104)))));
-            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgvAkkonTrendData.DefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle6.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
+            dataGridViewCellStyle6.Font = new System.Drawing.Font("맑은 고딕", 11.25F, System.Drawing.FontStyle.Bold);
+            dataGridViewCellStyle6.ForeColor = System.Drawing.Color.White;
+            dataGridViewCellStyle6.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(104)))), ((int)(((byte)(104)))), ((int)(((byte)(104)))));
+            dataGridViewCellStyle6.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle6.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvAkkonTrendData.DefaultCellStyle = dataGridViewCellStyle6;
             this.dgvAkkonTrendData.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dgvAkkonTrendData.Location = new System.Drawing.Point(471, 3);
+            this.dgvAkkonTrendData.Location = new System.Drawing.Point(476, 3);
             this.dgvAkkonTrendData.Name = "dgvAkkonTrendData";
             this.dgvAkkonTrendData.ReadOnly = true;
             this.dgvAkkonTrendData.RowHeadersVisible = false;
             this.dgvAkkonTrendData.RowTemplate.Height = 23;
-            this.dgvAkkonTrendData.Size = new System.Drawing.Size(377, 372);
+            this.dgvAkkonTrendData.Size = new System.Drawing.Size(381, 414);
             this.dgvAkkonTrendData.TabIndex = 0;
             // 
             // pnlTabs
@@ -192,7 +194,7 @@
             this.pnlTabs.Location = new System.Drawing.Point(0, 0);
             this.pnlTabs.Margin = new System.Windows.Forms.Padding(0);
             this.pnlTabs.Name = "pnlTabs";
-            this.pnlTabs.Size = new System.Drawing.Size(851, 60);
+            this.pnlTabs.Size = new System.Drawing.Size(860, 60);
             this.pnlTabs.TabIndex = 4;
             // 
             // lblTab
@@ -206,16 +208,25 @@
             this.lblTab.Text = "Tab";
             this.lblTab.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
+            // pnlChart
+            // 
+            this.pnlChart.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pnlChart.Location = new System.Drawing.Point(0, 0);
+            this.pnlChart.Margin = new System.Windows.Forms.Padding(0);
+            this.pnlChart.Name = "pnlChart";
+            this.pnlChart.Size = new System.Drawing.Size(473, 420);
+            this.pnlChart.TabIndex = 2;
+            // 
             // AkkonTrendControl
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
             this.Controls.Add(this.tlpAkkonTrend);
             this.Font = new System.Drawing.Font("맑은 고딕", 11.25F, System.Drawing.FontStyle.Bold);
             this.ForeColor = System.Drawing.Color.White;
             this.Name = "AkkonTrendControl";
-            this.Size = new System.Drawing.Size(851, 498);
+            this.Size = new System.Drawing.Size(860, 540);
             this.Load += new System.EventHandler(this.AkkonTrendControl_Load);
             this.tlpAkkonTrend.ResumeLayout(false);
             this.pnlAkkonType.ResumeLayout(false);
@@ -239,5 +250,6 @@
         private System.Windows.Forms.DataGridView dgvAkkonTrendData;
         private System.Windows.Forms.Panel pnlTabs;
         private System.Windows.Forms.Label lblTab;
+        private System.Windows.Forms.Panel pnlChart;
     }
 }

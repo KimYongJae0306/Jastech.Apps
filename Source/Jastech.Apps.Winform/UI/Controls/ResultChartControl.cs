@@ -33,6 +33,12 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         public Series AkkonSeriesLength { get; private set; } = null;
 
+        public Series AkkonSeriesStrength { get; private set; } = null;
+
+        public Series AkkonSeriesStd { get; private set; } = null;
+
+        private List<Series> AkkonSeriesList { get; set; } = new List<Series>();
+
         public Series AlignSeriesLx { get; private set; } = null;
 
         public Series AlignSeriesLy { get; private set; } = null;
@@ -76,12 +82,30 @@ namespace Jastech.Apps.Winform.UI.Controls
                 AkkonSeriesCount = chtData.Series.Add("Count");
                 AkkonSeriesCount.ChartType = SeriesChartType.Line;
                 AkkonSeriesCount.Color = Color.Blue;
+                AkkonSeriesCount.Name = "Count";
                     
                 AkkonSeriesLength = new Series();
                 AkkonSeriesLength = chtData.Series.Add("Length");
                 AkkonSeriesLength.ChartType = SeriesChartType.Line;
-                //AkkonSeriesLength.Color = Color.Purple;
                 AkkonSeriesLength.Color = Color.FromArgb(142, 89, 159);
+                AkkonSeriesLength.Name = "Length";
+
+                AkkonSeriesStrength = new Series();
+                AkkonSeriesStrength = chtData.Series.Add("Strength");
+                AkkonSeriesStrength.ChartType = SeriesChartType.Line;
+                AkkonSeriesStrength.Color = Color.Green;
+                AkkonSeriesStrength.Name = "Strength";
+
+                AkkonSeriesStd = new Series();
+                AkkonSeriesStd = chtData.Series.Add("STD");
+                AkkonSeriesStd.ChartType = SeriesChartType.Line;
+                AkkonSeriesStd.Color = Color.Yellow;
+                AkkonSeriesStd.Name = "STD";
+
+                AkkonSeriesList.Add(AkkonSeriesCount);
+                AkkonSeriesList.Add(AkkonSeriesLength);
+                AkkonSeriesList.Add(AkkonSeriesStrength);
+                AkkonSeriesList.Add(AkkonSeriesStd);
             }
             else
             {
@@ -187,16 +211,24 @@ namespace Jastech.Apps.Winform.UI.Controls
         {
             if (ChartType == InspChartType.Align)
             {
-                AlignSeriesLx.Points.Clear();
-                AlignSeriesLy.Points.Clear();
-                AlignSeriesRx.Points.Clear();
-                AlignSeriesRy.Points.Clear();
-                AlignSeriesCx.Points.Clear();
+                //AlignSeriesLx.Points.Clear();
+                //AlignSeriesLy.Points.Clear();
+                //AlignSeriesRx.Points.Clear();
+                //AlignSeriesRy.Points.Clear();
+                //AlignSeriesCx.Points.Clear();
+
+                foreach (var alignSeries in AlignSeriesList)
+                    alignSeries.Points.Clear();
             }
             else
             {
-                AkkonSeriesCount.Points.Clear();
-                AkkonSeriesLength.Points.Clear();
+                //AkkonSeriesCount.Points.Clear();
+                //AkkonSeriesLength.Points.Clear();
+                //AkkonSeriesStrength.Points.Clear();
+                //AkkonSeriesStd.Points.Clear();
+
+                foreach (var akkonSeries in AkkonSeriesList)
+                    akkonSeries.Points.Clear();
             }
         }
 
@@ -206,7 +238,6 @@ namespace Jastech.Apps.Winform.UI.Controls
                 return;
 
             ClearChartData();
-            
 
             var dt = ParseData(dataTable, (int)tabType);
 
@@ -232,21 +263,19 @@ namespace Jastech.Apps.Winform.UI.Controls
 
             ClearChartData();
 
-
             var dt = ParseData(dataTable, (int)tabType);
 
             if (akkonResultType == AkkonResultType.All)
             {
-                AlignSeriesLx.Points.DataBind(dt.AsEnumerable(), "Time", "Lx", "");
-                AlignSeriesLy.Points.DataBind(dt.AsEnumerable(), "Time", "Ly", "");
-                AlignSeriesCx.Points.DataBind(dt.AsEnumerable(), "Time", "Cx", "");
-                AlignSeriesRx.Points.DataBind(dt.AsEnumerable(), "Time", "Rx", "");
-                AlignSeriesRy.Points.DataBind(dt.AsEnumerable(), "Time", "Ry", "");
+                AkkonSeriesCount.Points.DataBind(dt.AsEnumerable(), "Time", "Count", "");
+                AkkonSeriesLength.Points.DataBind(dt.AsEnumerable(), "Time", "Length", "");
+                AkkonSeriesStrength.Points.DataBind(dt.AsEnumerable(), "Time", "Strength", "");
+                AkkonSeriesStd.Points.DataBind(dt.AsEnumerable(), "Time", "STD", "");
             }
             else
             {
-                var alignSeries = AlignSeriesList.Where(x => x.Name == akkonResultType.ToString()).First();
-                alignSeries.Points.DataBind(dt.AsEnumerable(), "Time", akkonResultType.ToString(), "");
+                var akkonSeries = AkkonSeriesList.Where(x => x.Name == akkonResultType.ToString()).First();
+                akkonSeries.Points.DataBind(dt.AsEnumerable(), "Time", akkonResultType.ToString(), "");
             }
         }
 

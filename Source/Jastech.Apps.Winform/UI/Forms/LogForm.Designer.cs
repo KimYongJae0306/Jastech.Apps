@@ -41,6 +41,7 @@
             this.lblImage = new System.Windows.Forms.Label();
             this.lblAlignTrend = new System.Windows.Forms.Label();
             this.pnlContents = new System.Windows.Forms.Panel();
+            this.lblProcessCapability = new System.Windows.Forms.Label();
             this.tlpLog.SuspendLayout();
             this.tlpBasicFunction.SuspendLayout();
             this.tlpContents.SuspendLayout();
@@ -61,7 +62,7 @@
             this.tlpLog.RowCount = 1;
             this.tlpLog.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 162F));
             this.tlpLog.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tlpLog.Size = new System.Drawing.Size(1184, 981);
+            this.tlpLog.Size = new System.Drawing.Size(1380, 981);
             this.tlpLog.TabIndex = 0;
             // 
             // tlpBasicFunction
@@ -72,7 +73,7 @@
             this.tlpBasicFunction.Controls.Add(this.cdrMonthCalendar, 0, 0);
             this.tlpBasicFunction.Controls.Add(this.btnExit, 0, 2);
             this.tlpBasicFunction.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tlpBasicFunction.Location = new System.Drawing.Point(784, 0);
+            this.tlpBasicFunction.Location = new System.Drawing.Point(980, 0);
             this.tlpBasicFunction.Margin = new System.Windows.Forms.Padding(0);
             this.tlpBasicFunction.Name = "tlpBasicFunction";
             this.tlpBasicFunction.RowCount = 3;
@@ -132,11 +133,12 @@
             this.tlpContents.RowCount = 2;
             this.tlpContents.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 162F));
             this.tlpContents.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tlpContents.Size = new System.Drawing.Size(784, 981);
+            this.tlpContents.Size = new System.Drawing.Size(980, 981);
             this.tlpContents.TabIndex = 10;
             // 
             // pnlLogType
             // 
+            this.pnlLogType.Controls.Add(this.lblProcessCapability);
             this.pnlLogType.Controls.Add(this.lblUPH);
             this.pnlLogType.Controls.Add(this.lblAkkonTrend);
             this.pnlLogType.Controls.Add(this.lblLog);
@@ -146,7 +148,7 @@
             this.pnlLogType.Location = new System.Drawing.Point(0, 0);
             this.pnlLogType.Margin = new System.Windows.Forms.Padding(0);
             this.pnlLogType.Name = "pnlLogType";
-            this.pnlLogType.Size = new System.Drawing.Size(784, 162);
+            this.pnlLogType.Size = new System.Drawing.Size(980, 162);
             this.pnlLogType.TabIndex = 8;
             // 
             // lblUPH
@@ -215,15 +217,27 @@
             this.pnlContents.Location = new System.Drawing.Point(0, 162);
             this.pnlContents.Margin = new System.Windows.Forms.Padding(0);
             this.pnlContents.Name = "pnlContents";
-            this.pnlContents.Size = new System.Drawing.Size(784, 819);
+            this.pnlContents.Size = new System.Drawing.Size(980, 819);
             this.pnlContents.TabIndex = 9;
+            // 
+            // lblProcessCapability
+            // 
+            this.lblProcessCapability.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblProcessCapability.Location = new System.Drawing.Point(820, 40);
+            this.lblProcessCapability.Margin = new System.Windows.Forms.Padding(0);
+            this.lblProcessCapability.Name = "lblProcessCapability";
+            this.lblProcessCapability.Size = new System.Drawing.Size(120, 60);
+            this.lblProcessCapability.TabIndex = 3;
+            this.lblProcessCapability.Text = "Process Capability";
+            this.lblProcessCapability.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblProcessCapability.Click += new System.EventHandler(this.lblProcessCapability_Click);
             // 
             // LogForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
-            this.ClientSize = new System.Drawing.Size(1184, 981);
+            this.ClientSize = new System.Drawing.Size(1380, 981);
             this.ControlBox = false;
             this.Controls.Add(this.tlpLog);
             this.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
@@ -259,5 +273,6 @@
         private System.Windows.Forms.TreeView tvwLogPath;
         private System.Windows.Forms.Label lblLog;
         private System.Windows.Forms.Label lblImage;
+        private System.Windows.Forms.Label lblProcessCapability;
     }
 }

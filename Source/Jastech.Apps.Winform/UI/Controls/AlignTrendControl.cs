@@ -54,7 +54,7 @@ namespace Jastech.Apps.Winform.UI.Controls
         private void AddControl()
         {
             ChartControl.ChartType = ResultChartControl.InspChartType.Align;
-            tlpData.Controls.Add(ChartControl, 0, 0);
+            pnlChart.Controls.Add(ChartControl);
         }
 
         private void InitializeUI()
@@ -270,15 +270,5 @@ namespace Jastech.Apps.Winform.UI.Controls
             }
         }
         #endregion
-    }
-
-    public enum AlignResultType
-    {
-        All,
-        Lx,
-        Ly,
-        Cx,
-        Rx,
-        Ry,
     }
 }
