@@ -1417,8 +1417,8 @@ namespace Jastech.Apps.Winform.UI.Controls
             else
             {
                 AkkonAlgoritmParam akkonAlgorithmParam = AkkonParamControl.GetCurrentParam();
-
-                var tabResult = AkkonAlgorithm.Run(matImage, CurrentTab.AkkonParam.GetAkkonROIList(), akkonAlgorithmParam);
+                var roiList = CurrentTab.AkkonParam.GetAkkonROIList();
+                var tabResult = AkkonAlgorithm.Run(matImage, roiList, akkonAlgorithmParam);
                 AkkonResult akkonResult = new AkkonResult();
 
                 akkonResult.StageNo = CurrentTab.StageIndex;

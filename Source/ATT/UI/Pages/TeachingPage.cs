@@ -23,20 +23,11 @@ namespace ATT.UI.Pages
 
         private void btnModelPage_Click(object sender, EventArgs e)
         {
-            try
-            {
-                LineTeachingForm form = new LineTeachingForm();
-                form.UnitName = UnitName.Unit0;
-                form.TitleCameraName = "LineScan";
-                form.CameraName = CameraName.LinscanMIL0;
-                form.ShowDialog();
-            }
-            catch (Exception err)
-            {
-
-                throw;
-            }
-            
+            LineTeachingForm form = new LineTeachingForm();
+            form.UnitName = UnitName.Unit0;
+            form.TitleCameraName = "LineScan";
+            form.CameraName = CameraName.LinscanMIL0;
+            form.ShowDialog();
         }
 
         private void btnLinescanSetting_Click(object sender, EventArgs e)
