@@ -68,7 +68,7 @@ namespace Jastech.Apps.Winform.UI.Controls
                 string tabNumber = item.TabNo.ToString();
                 string judge = item.Judgement.ToString();
                 string leftAlignX = item.LX.ToString("F2");
-                string leftAlignY = item.LX.ToString("F2");
+                string leftAlignY = item.LY.ToString("F2");
                 string rightAlignX = item.RX.ToString("F2");
                 string rightAlignY = item.RY.ToString("F2");
                 string centerAlignX = item.CX.ToString("F2");
