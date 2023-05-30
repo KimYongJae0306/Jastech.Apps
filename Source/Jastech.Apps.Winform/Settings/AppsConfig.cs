@@ -32,7 +32,7 @@ namespace Jastech.Apps.Winform.Settings
 
         #region 속성
         [JsonProperty]
-        public AkkonAlgorithmType AkkonAlgorithmType { get; set; } = AkkonAlgorithmType.Jastech;
+        public AkkonAlgorithmType AkkonAlgorithmType { get; set; } = AkkonAlgorithmType.Macron;
 
         [JsonProperty]
         public bool UseMaterialInfo { get; set; } = true;

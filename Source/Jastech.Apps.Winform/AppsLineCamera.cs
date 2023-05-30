@@ -145,6 +145,7 @@ namespace Jastech.Apps.Winform
 
             string error = "";
             MoveTo(TeachingPosType.Stage1_Scan_Start, out error);
+            Thread.Sleep(2000);
             Camera.GrabMulti(GrabCount);
      
             MoveTo(TeachingPosType.Stage1_Scan_End, out error);

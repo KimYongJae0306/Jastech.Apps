@@ -491,7 +491,7 @@ namespace ATT.UI.Forms
         {
             MotionPopupForm motionPopupForm = new MotionPopupForm();
             motionPopupForm.UnitName = UnitName;
-            motionPopupForm.ShowDialog();
+            motionPopupForm.Show();
         }
 
         private void LiveDisplay(string cameraName, Mat image)

@@ -149,7 +149,7 @@ namespace ATT.UI.Pages
         {
             MotionPopupForm motionPopupForm = new MotionPopupForm();
             motionPopupForm.UnitName = UnitName;
-            motionPopupForm.ShowDialog();
+            motionPopupForm.Show();
         }
     }
 }
