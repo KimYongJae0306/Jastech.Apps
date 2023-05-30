@@ -194,10 +194,10 @@ namespace Jastech.Apps.Winform.UI.Controls
                 akkonInfo.PanelID = inspResult.Cell_ID;
                 akkonInfo.TabNo = item.TabNo;
                 akkonInfo.Judgement = item.Judgement;
-                akkonInfo.AvgBlobCount = item.AkkonResult.AvgBlobCount;
-                akkonInfo.AvgLength = item.AkkonResult.AvgLength;
-                akkonInfo.AvgStrength = item.AkkonResult.AvgStrength;
-                akkonInfo.AvgSTD = item.AkkonResult.AvgStd;
+                akkonInfo.AvgBlobCount = item.MacronAkkonResult.AvgBlobCount;
+                akkonInfo.AvgLength = item.MacronAkkonResult.AvgLength;
+                akkonInfo.AvgStrength = item.MacronAkkonResult.AvgStrength;
+                akkonInfo.AvgSTD = item.MacronAkkonResult.AvgStd;
 
                 DailyInfo.AddAkkonInfo(akkonInfo);
             }

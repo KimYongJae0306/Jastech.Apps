@@ -2,6 +2,7 @@
 using Cognex.VisionPro.Implementation.Internal;
 using Emgu.CV;
 using Emgu.CV.CvEnum;
+using Emgu.CV.Structure;
 using Jastech.Apps.Structure;
 using Jastech.Apps.Structure.Data;
 using Jastech.Apps.Structure.VisionTool;
@@ -9,8 +10,10 @@ using Jastech.Apps.Winform;
 using Jastech.Apps.Winform.Core;
 using Jastech.Apps.Winform.Settings;
 using Jastech.Framework.Algorithms.Akkon;
+using Jastech.Framework.Algorithms.Akkon.Parameters;
 using Jastech.Framework.Device.Cameras;
 using Jastech.Framework.Device.Motions;
+using Jastech.Framework.Imaging.Helper;
 using Jastech.Framework.Imaging.Result;
 using Jastech.Framework.Imaging.VisionPro;
 using Jastech.Framework.Imaging.VisionPro.VisionAlgorithms.Parameters;
@@ -208,9 +211,19 @@ namespace ATT.Core
                     Mat image = akkon.TabInspResult.Image;
                     Tab tab = akkon.Tab;
 
-                    //var akkonResult = AkkonAlgorithmTool.RunMultiAkkon(image, tab.StageIndex, tab.Index);
-                    //result.AkkonResult = akkonResult;
-                    AppsInspResult.TabResultList.Add(result);
+                    if(AppsConfig.Instance().AkkonAlgorithmType == AkkonAlgorithmType.Macron)
+                    {
+                        var akkonResult = MacronAkkonAlgorithmTool.RunMultiAkkon(image, tab.StageIndex, tab.Index);
+                        result.MacronAkkonResult = akkonResult;
+                        AppsInspResult.TabResultList.Add(result);
+                    }
+                    else
+                    {
+                        var roiList = tab.AkkonParam.GetAkkonROIList();
+                        var akkonResult = AkkonAlgorithm.Run(image, roiList, tab.AkkonParam.AkkonAlgoritmParam);
+                        result.AkkonResultList.AddRange(akkonResult);
+                        AppsInspResult.TabResultList.Add(result);
+                    }
 
                     //AppsInspResult.TabResultList.Add(new TabInspResult());
 
@@ -457,7 +470,7 @@ namespace ATT.Core
                     break;
 
                 case SeqStep.SEQ_UI_RESULT_UPDATE:
-                    //GetAkkonResultImage();
+                    GetAkkonResultImage();
                     SystemManager.Instance().UpdateMainResult(AppsInspResult);
                     Console.WriteLine("Scan End to Insp Compelte : " + LastInspSW.ElapsedMilliseconds.ToString());
                     SeqStep = SeqStep.SEQ_SAVE_IMAGE;
@@ -492,16 +505,137 @@ namespace ATT.Core
         {
             Stopwatch sw = new Stopwatch();
             sw.Restart();
-            AppsInspModel inspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
-            var unit = inspModel.GetUnit(UnitName.Unit0);
-            for (int i = 0; i < AppsInspResult.TabResultList.Count(); i++)
+
+            if(AppsConfig.Instance().AkkonAlgorithmType == AkkonAlgorithmType.Macron)
             {
-                var tabResult = AppsInspResult.TabResultList[i];
-                Tab tab = unit.GetTab(tabResult.TabNo);
-                tabResult.AkkonResultImage = MacronAkkonAlgorithmTool.GetResultImage(tabResult.Image.Width, tabResult.Image.Height, tab, AppsConfig.Instance().AkkonResizeRatio);
+                AppsInspModel inspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
+                var unit = inspModel.GetUnit(UnitName.Unit0);
+                for (int i = 0; i < AppsInspResult.TabResultList.Count(); i++)
+                {
+                    var tabResult = AppsInspResult.TabResultList[i];
+                    Tab tab = unit.GetTab(tabResult.TabNo);
+                    tabResult.AkkonResultImage = MacronAkkonAlgorithmTool.GetResultImage(tabResult.Image.Width, tabResult.Image.Height, tab, AppsConfig.Instance().AkkonResizeRatio);
+                }
+            }
+            else
+            {
+                AppsInspModel inspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
+                var unit = inspModel.GetUnit(UnitName.Unit0);
+                for (int i = 0; i < AppsInspResult.TabResultList.Count(); i++)
+                {
+                    var tabResult = AppsInspResult.TabResultList[i];
+                    Tab tab = unit.GetTab(tabResult.TabNo);
+                   
+                    Mat resultMat = GetResultImage(tabResult.Image, tabResult.AkkonResultList, tab.AkkonParam.AkkonAlgoritmParam);
+                    ICogImage cogImage = ConvertCogColorImage(resultMat);
+                    tabResult.AkkonResultImage = cogImage;
+                    resultMat.Dispose();
+                }
             }
             sw.Stop();
             Console.WriteLine("Get Akkon Result Image : " + sw.ElapsedMilliseconds.ToString() + "ms");
+        }
+
+        public ICogImage ConvertCogColorImage(Mat mat)
+        {
+            Mat matR = MatHelper.ColorChannelSprate(mat, MatHelper.ColorChannel.R);
+            Mat matG = MatHelper.ColorChannelSprate(mat, MatHelper.ColorChannel.G);
+            Mat matB = MatHelper.ColorChannelSprate(mat, MatHelper.ColorChannel.B);
+
+            byte[] dataR = new byte[matR.Width * matR.Height];
+            Marshal.Copy(matR.DataPointer, dataR, 0, matR.Width * matR.Height);
+
+            byte[] dataG = new byte[matG.Width * matG.Height];
+            Marshal.Copy(matG.DataPointer, dataG, 0, matG.Width * matG.Height);
+
+            byte[] dataB = new byte[matB.Width * matB.Height];
+            Marshal.Copy(matB.DataPointer, dataB, 0, matB.Width * matB.Height);
+
+            var cogImage = VisionProImageHelper.CovertImage(dataR, dataG, dataB, matB.Width, matB.Height);
+
+            matR.Dispose();
+            matG.Dispose();
+            matB.Dispose();
+
+            return cogImage;
+        }
+
+        public Mat GetResultImage(Mat mat, List<AkkonBlob> resultList, AkkonAlgoritmParam AkkonParameters)
+        {
+            if (mat == null)
+                return null;
+
+            Mat resizeMat = new Mat();
+            Size newSize = new Size((int)(mat.Width * AkkonParameters.ResizeRatio), (int)(mat.Height * AkkonParameters.ResizeRatio));
+            CvInvoke.Resize(mat, resizeMat, newSize);
+            Mat colorMat = new Mat();
+            CvInvoke.CvtColor(resizeMat, colorMat, ColorConversion.Gray2Bgr);
+            resizeMat.Dispose();
+
+            foreach (var result in resultList)
+            {
+                var lead = result.Lead;
+                var startPoint = new Point((int)result.OffsetToWorldX, (int)result.OffsetToWorldY);
+
+                Point leftTop = new Point((int)lead.LeftTopX + startPoint.X, (int)lead.LeftTopY + startPoint.Y);
+                Point leftBottom = new Point((int)lead.LeftBottomX + startPoint.X, (int)lead.LeftBottomY + startPoint.Y);
+                Point rightTop = new Point((int)lead.RightTopX + startPoint.X, (int)lead.RightTopY + startPoint.Y);
+                Point rightBottom = new Point((int)lead.RightBottomX + startPoint.X, (int)lead.RightBottomY + startPoint.Y);
+
+                if (AkkonParameters.DrawOption.ContainLeadROI)
+                {
+                    CvInvoke.Line(colorMat, leftTop, leftBottom, new MCvScalar(50, 230, 50, 255), 1);
+                    CvInvoke.Line(colorMat, leftTop, rightTop, new MCvScalar(50, 230, 50, 255), 1);
+                    CvInvoke.Line(colorMat, rightTop, rightBottom, new MCvScalar(50, 230, 50, 255), 1);
+                    CvInvoke.Line(colorMat, rightBottom, leftBottom, new MCvScalar(50, 230, 50, 255), 1);
+                }
+
+                int blobCount = 0;
+                foreach (var blob in result.BlobList)
+                {
+                    Rectangle rectRect = new Rectangle();
+                    rectRect.X = (int)(blob.BoundingRect.X + result.OffsetToWorldX + result.LeadOffsetX);
+                    rectRect.Y = (int)(blob.BoundingRect.Y + result.OffsetToWorldY + result.LeadOffsetY);
+                    rectRect.Width = blob.BoundingRect.Width;
+                    rectRect.Height = blob.BoundingRect.Height;
+
+                    Point center = new Point(rectRect.X + (rectRect.Width / 2), rectRect.Y + (rectRect.Height / 2));
+                    int radius = rectRect.Width > rectRect.Height ? rectRect.Width : rectRect.Height;
+
+                    int size = blob.BoundingRect.Width * blob.BoundingRect.Height;
+                    if (AkkonParameters.ResultFilter.MinSize <= size && size <= AkkonParameters.ResultFilter.MaxSize)
+                    {
+                        blobCount++;
+                        CvInvoke.Circle(colorMat, center, radius / 2, new MCvScalar(255), 1);
+                    }
+                    else
+                    {
+                        if (AkkonParameters.DrawOption.ContainNG)
+                            CvInvoke.Circle(colorMat, center, radius / 2, new MCvScalar(0), 1);
+                    }
+
+                }
+
+                if (AkkonParameters.DrawOption.ContainLeadCount)
+                {
+                    string leadIndexString = result.LeadIndex.ToString();
+                    string blobCountString = string.Format("[{0}]", blobCount);
+
+                    Point centerPt = new Point((int)((leftBottom.X + rightBottom.X) / 2.0), leftBottom.Y);
+
+                    int baseLine = 0;
+                    Size textSize = CvInvoke.GetTextSize(leadIndexString, FontFace.HersheyComplex, 0.3, 1, ref baseLine);
+                    int textX = centerPt.X - (textSize.Width / 2);
+                    int textY = centerPt.Y + (baseLine / 2);
+                    CvInvoke.PutText(colorMat, leadIndexString, new Point(textX, textY + 30), FontFace.HersheyComplex, 0.3, new MCvScalar(50, 230, 50, 255));
+
+                    textSize = CvInvoke.GetTextSize(blobCountString, FontFace.HersheyComplex, 0.3, 1, ref baseLine);
+                    textX = centerPt.X - (textSize.Width / 2);
+                    textY = centerPt.Y + (baseLine / 2);
+                    CvInvoke.PutText(colorMat, blobCountString, new Point(textX, textY + 60), FontFace.HersheyComplex, 0.3, new MCvScalar(50, 230, 50, 255));
+                }
+            }
+            return colorMat;
         }
 
         private void InitializeBuffer()
@@ -660,11 +794,11 @@ namespace ATT.Core
             foreach (var tabResult in inspResult.TabResultList)
             {
                 int tabNo = tabResult.TabNo;
-                var judge = tabResult.AkkonResult.Judgement;
-                int count = tabResult.AkkonResult.AvgBlobCount;
-                float length = tabResult.AkkonResult.AvgLength;
-                float strength = tabResult.AkkonResult.AvgStrength;
-                float std = tabResult.AkkonResult.AvgStd;
+                var judge = tabResult.MacronAkkonResult.Judgement;
+                int count = tabResult.MacronAkkonResult.AvgBlobCount;
+                float length = tabResult.MacronAkkonResult.AvgLength;
+                float strength = tabResult.MacronAkkonResult.AvgStrength;
+                float std = tabResult.MacronAkkonResult.AvgStd;
 
                 dataList.Add(tabNo.ToString());
                 dataList.Add(judge.ToString());
@@ -713,10 +847,10 @@ namespace ATT.Core
                     inspResult.Cell_ID,
                     tabNo.ToString(),
 
-                    inspResult.TabResultList[tabNo].AkkonResult.AvgBlobCount.ToString(),
-                    inspResult.TabResultList[tabNo].AkkonResult.AvgLength.ToString("F3"),
-                    inspResult.TabResultList[tabNo].AkkonResult.AvgStrength.ToString("F3"),
-                    inspResult.TabResultList[tabNo].AkkonResult.AvgStd.ToString("F3"),
+                    inspResult.TabResultList[tabNo].MacronAkkonResult.AvgBlobCount.ToString(),
+                    inspResult.TabResultList[tabNo].MacronAkkonResult.AvgLength.ToString("F3"),
+                    inspResult.TabResultList[tabNo].MacronAkkonResult.AvgStrength.ToString("F3"),
+                    inspResult.TabResultList[tabNo].MacronAkkonResult.AvgStd.ToString("F3"),
 
                     inspResult.TabResultList[tabNo].LeftAlignX.ResultValue.ToString("F3"),
                     inspResult.TabResultList[tabNo].LeftAlignY.ResultValue.ToString("F3"),
