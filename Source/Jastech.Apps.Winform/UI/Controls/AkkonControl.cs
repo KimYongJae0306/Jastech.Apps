@@ -29,6 +29,7 @@ using Jastech.Framework.Algorithms.UI.Controls;
 using Jastech.Framework.Algorithms.Akkon.Parameters;
 using Jastech.Framework.Algorithms.Akkon;
 using Jastech.Framework.Algorithms.Akkon.Results;
+using Emgu.CV.Structure;
 
 namespace Jastech.Apps.Winform.UI.Controls
 {
@@ -130,7 +131,16 @@ namespace Jastech.Apps.Winform.UI.Controls
             _selectedColor = Color.FromArgb(104, 104, 104);
             _nonSelectedColor = Color.FromArgb(52, 52, 52);
 
-            dgvAkkonResult.Dock = DockStyle.Fill;
+            if(AppsConfig.Instance().AkkonAlgorithmType == AkkonAlgorithmType.Macron)
+            {
+                dgvMacronAkkonResult.Dock = DockStyle.Fill;
+                dgvJastechAkkonResult.Visible = false;
+            }
+            else
+            {
+                dgvMacronAkkonResult.Visible = false;
+                dgvJastechAkkonResult.Dock = DockStyle.Fill;
+            }
             tlpnlGroup.Dock = DockStyle.Fill;
             pnlManual.Dock = DockStyle.Fill;
             pnlAuto.Dock = DockStyle.Fill;
@@ -524,13 +534,36 @@ namespace Jastech.Apps.Winform.UI.Controls
             }
         }
 
+        private void UpdateResult(List<AkkonBlob> blobList)
+        {
+            int no = 0;
+            dgvJastechAkkonResult.Rows.Clear();
+       
+            foreach (var lead in blobList)
+            {
+                string noString = no.ToString();
+                int blobCount = lead.BlobList.Count();
+
+                double avg = 0.0;
+                for (int i = 0; i < blobCount; i++)
+                    avg += lead.BlobList[i].Avg;
+
+                avg /= blobCount;
+
+                string[] row = { no.ToString(), lead.BlobList.Count().ToString(), Math.Round(avg, 2).ToString() };
+                dgvJastechAkkonResult.Rows.Add(row);
+
+                no++;
+            }
+        }
+
         private void UpdateResult(AkkonResult akkonResult)
         {
             int no = 0;
             foreach (var lead in akkonResult.LeadResultList)
             {
                 string[] row = { no.ToString(), lead.BlobCount.ToString(), lead.Length.ToString(), lead.LeadStdDev.ToString(), lead.IsGood.ToString() };
-                dgvAkkonResult.Rows.Add(row);
+                dgvMacronAkkonResult.Rows.Add(row);
 
                 no++;
             }
@@ -596,7 +629,8 @@ namespace Jastech.Apps.Winform.UI.Controls
             }
 
             lblResult.BackColor = _nonSelectedColor;
-            dgvAkkonResult.Visible = false;
+            dgvMacronAkkonResult.Visible = false;
+            dgvJastechAkkonResult.Visible = false;
 
             if (_cloneDirection == ROICloneDirection.Horizontal)
             {
@@ -614,7 +648,10 @@ namespace Jastech.Apps.Winform.UI.Controls
         private void ShowResult()
         {
             lblResult.BackColor = _selectedColor;
-            dgvAkkonResult.Visible = true;
+            if (AppsConfig.Instance().AkkonAlgorithmType == AkkonAlgorithmType.Macron)
+                dgvMacronAkkonResult.Visible = true;
+            else
+                dgvJastechAkkonResult.Visible = true;
 
             lblGroup.BackColor = _nonSelectedColor;
             tlpnlGroup.Visible = false;
@@ -1396,11 +1433,11 @@ namespace Jastech.Apps.Winform.UI.Controls
                 float resizeRatio = AppsConfig.Instance().AkkonResizeRatio;
 
                 macron.DrawOption.DrawResizeRatio = resizeRatio;
-
+                
                 int tabIndex = CurrentTab.Index;
                 var tabResults = MacronAkkonAlgorithm.RunAkkonForTeachingData(matImage, CurrentTab, appsInspModel.UnitCount, appsInspModel.TabCount, resizeRatio);
 
-                dgvAkkonResult.Rows.Clear();
+                dgvMacronAkkonResult.Rows.Clear();
                 UpdateResult(tabResults);
 
                 var resultImage = GetResultImage(matImage, CurrentTab.AkkonParam, CurrentTab.StageIndex, tabIndex, resizeRatio);
@@ -1423,13 +1460,93 @@ namespace Jastech.Apps.Winform.UI.Controls
 
                 akkonResult.StageNo = CurrentTab.StageIndex;
                 akkonResult.TabNo = CurrentTab.Index;
-                dgvAkkonResult.Rows.Clear();
+                dgvMacronAkkonResult.Rows.Clear();
 
-                //AkkonAlgorithm.
-                //UpdateResult(tabResult);
-                //int tabIndex = CurrentTab.Index;
-                //var tabResults = MacronAkkonAlgorithm.RunAkkonForTeachingData(matImage, CurrentTab, appsInspModel.UnitCount, appsInspModel.TabCount, resizeRatio);
+                UpdateResult(tabResult);
+                Mat resultMat = GetResultImage(matImage, tabResult, akkonAlgorithmParam);
+                var cogImage = ConvertCogColorImage(resultMat);
+                AppsTeachingUIManager.Instance().SetResultCogImage(cogImage);
+                resultMat.Dispose();
+                ClearDisplay();
             }
+        }
+
+        public Mat GetResultImage(Mat mat, List<AkkonBlob> resultList, AkkonAlgoritmParam AkkonParameters)
+        {
+            if (mat == null)
+                return null;
+
+            Mat resizeMat = new Mat();
+            Size newSize = new Size((int)(mat.Width * AkkonParameters.ResizeRatio), (int)(mat.Height * AkkonParameters.ResizeRatio));
+            CvInvoke.Resize(mat, resizeMat, newSize);
+            Mat colorMat = new Mat();
+            CvInvoke.CvtColor(resizeMat, colorMat, ColorConversion.Gray2Bgr);
+            resizeMat.Dispose();
+
+            foreach (var result in resultList)
+            {
+                var lead = result.Lead;
+                var startPoint = new Point((int)result.OffsetToWorldX, (int)result.OffsetToWorldY);
+
+                Point leftTop = new Point((int)lead.LeftTopX + startPoint.X, (int)lead.LeftTopY + startPoint.Y);
+                Point leftBottom = new Point((int)lead.LeftBottomX + startPoint.X, (int)lead.LeftBottomY + startPoint.Y);
+                Point rightTop = new Point((int)lead.RightTopX + startPoint.X, (int)lead.RightTopY + startPoint.Y);
+                Point rightBottom = new Point((int)lead.RightBottomX + startPoint.X, (int)lead.RightBottomY + startPoint.Y);
+
+                if (AkkonParameters.DrawOption.ContainLeadROI)
+                {
+                    CvInvoke.Line(colorMat, leftTop, leftBottom, new MCvScalar(50, 230, 50, 255), 1);
+                    CvInvoke.Line(colorMat, leftTop, rightTop, new MCvScalar(50, 230, 50, 255), 1);
+                    CvInvoke.Line(colorMat, rightTop, rightBottom, new MCvScalar(50, 230, 50, 255), 1);
+                    CvInvoke.Line(colorMat, rightBottom, leftBottom, new MCvScalar(50, 230, 50, 255), 1);
+                }
+
+                int blobCount = 0;
+                foreach (var blob in result.BlobList)
+                {
+                    Rectangle rectRect = new Rectangle();
+                    rectRect.X = (int)(blob.BoundingRect.X + result.OffsetToWorldX + result.LeadOffsetX);
+                    rectRect.Y = (int)(blob.BoundingRect.Y + result.OffsetToWorldY + result.LeadOffsetY);
+                    rectRect.Width = blob.BoundingRect.Width;
+                    rectRect.Height = blob.BoundingRect.Height;
+
+                    Point center = new Point(rectRect.X + (rectRect.Width / 2), rectRect.Y + (rectRect.Height / 2));
+                    int radius = rectRect.Width > rectRect.Height ? rectRect.Width : rectRect.Height;
+
+                    int size = blob.BoundingRect.Width * blob.BoundingRect.Height;
+                    if (AkkonParameters.ResultFilter.MinSize <= size && size <= AkkonParameters.ResultFilter.MaxSize)
+                    {
+                        blobCount++;
+                        CvInvoke.Circle(colorMat, center, radius / 2, new MCvScalar(255), 1);
+                    }
+                    else
+                    {
+                        if (AkkonParameters.DrawOption.ContainNG)
+                            CvInvoke.Circle(colorMat, center, radius / 2, new MCvScalar(0), 1);
+                    }
+
+                }
+
+                if (AkkonParameters.DrawOption.ContainLeadCount)
+                {
+                    string leadIndexString = result.LeadIndex.ToString();
+                    string blobCountString = string.Format("[{0}]", blobCount);
+
+                    Point centerPt = new Point((int)((leftBottom.X + rightBottom.X) / 2.0), leftBottom.Y);
+
+                    int baseLine = 0;
+                    Size textSize = CvInvoke.GetTextSize(leadIndexString, FontFace.HersheyComplex, 0.3, 1, ref baseLine);
+                    int textX = centerPt.X - (textSize.Width / 2);
+                    int textY = centerPt.Y + (baseLine / 2);
+                    CvInvoke.PutText(colorMat, leadIndexString, new Point(textX, textY + 30), FontFace.HersheyComplex, 0.3, new MCvScalar(50, 230, 50, 255));
+
+                    textSize = CvInvoke.GetTextSize(blobCountString, FontFace.HersheyComplex, 0.3, 1, ref baseLine);
+                    textX = centerPt.X - (textSize.Width / 2);
+                    textY = centerPt.Y + (baseLine / 2);
+                    CvInvoke.PutText(colorMat, blobCountString, new Point(textX, textY + 60), FontFace.HersheyComplex, 0.3, new MCvScalar(50, 230, 50, 255));
+                }
+            }
+            return colorMat;
         }
 
         private void CropInspection()
@@ -1632,6 +1749,30 @@ namespace Jastech.Apps.Winform.UI.Controls
                 group.AddROI(item);
 
             DrawROI();
+        }
+
+        public ICogImage ConvertCogColorImage(Mat mat)
+        {
+            Mat matR = MatHelper.ColorChannelSprate(mat, MatHelper.ColorChannel.R);
+            Mat matG = MatHelper.ColorChannelSprate(mat, MatHelper.ColorChannel.G);
+            Mat matB = MatHelper.ColorChannelSprate(mat, MatHelper.ColorChannel.B);
+
+            byte[] dataR = new byte[matR.Width * matR.Height];
+            Marshal.Copy(matR.DataPointer, dataR, 0, matR.Width * matR.Height);
+
+            byte[] dataG = new byte[matG.Width * matG.Height];
+            Marshal.Copy(matG.DataPointer, dataG, 0, matG.Width * matG.Height);
+
+            byte[] dataB = new byte[matB.Width * matB.Height];
+            Marshal.Copy(matB.DataPointer, dataB, 0, matB.Width * matB.Height);
+
+            var cogImage = VisionProImageHelper.CovertImage(dataR, dataG, dataB, matB.Width, matB.Height);
+
+            matR.Dispose();
+            matG.Dispose();
+            matB.Dispose();
+
+            return cogImage;
         }
     }
 

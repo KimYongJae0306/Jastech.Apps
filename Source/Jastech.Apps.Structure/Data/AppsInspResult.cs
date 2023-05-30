@@ -1,5 +1,6 @@
 ﻿using Cognex.VisionPro;
 using Emgu.CV;
+using Jastech.Framework.Algorithms.Akkon.Parameters;
 using Jastech.Framework.Algorithms.Akkon.Results;
 using Jastech.Framework.Imaging.Result;
 using Jastech.Framework.Imaging.VisionPro.VisionAlgorithms.Results;
@@ -76,7 +77,9 @@ namespace Jastech.Apps.Structure.Data
 
         public float CenterX { get; set; }
 
-        public AkkonResult AkkonResult { get; set; } = null;
+        public AkkonResult MacronAkkonResult { get; set; } = null;
+
+        public List<AkkonBlob> AkkonResultList { get; set; } = new List<AkkonBlob>();
 
         public bool IsMarkGood()
         {
@@ -181,7 +184,7 @@ namespace Jastech.Apps.Structure.Data
             LeftAlignY?.Dispose();
             RightAlignX?.Dispose();
             RightAlignY?.Dispose();
-            AkkonResult?.Dispose();
+            MacronAkkonResult?.Dispose();
         }
 
         public TabInspResult DeepCopy()
@@ -200,7 +203,7 @@ namespace Jastech.Apps.Structure.Data
             result.RightAlignX = RightAlignX?.DeepCopy();
             result.RightAlignY = RightAlignY?.DeepCopy();
             result.CenterX = CenterX;
-            result.AkkonResult = AkkonResult?.DeepCopy();
+            result.MacronAkkonResult = MacronAkkonResult?.DeepCopy();
 
             return result;
 

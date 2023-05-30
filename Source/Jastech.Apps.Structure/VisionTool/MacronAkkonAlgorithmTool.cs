@@ -44,6 +44,7 @@ namespace Jastech.Apps.Structure.VisionTool
 
             marcon.DrawOption.DrawResizeRatio = resizeRatio;
 
+            tabCount = 1;
             AkkonAlgorithm.CreateDllBuffer(stageCount, tabCount, SliceWidth, mat.Height, resizeRatio);
 
             TotalSliceOverlap.Clear();
@@ -84,6 +85,7 @@ namespace Jastech.Apps.Structure.VisionTool
 
             int[][] intSliceCnt = TotalSliceCnt.Select(list => list.ToArray()).ToArray();
             AkkonAlgorithm.EnableInspFlag(intSliceCnt); //검사 FLag 할당
+//            marcon.InspOption.Overlap = ;
             AkkonAlgorithm.SetAkkonParam(tab.StageIndex, tab.Index, ref marcon);
             var result = AkkonAlgorithm.Inspect(tab.StageIndex, tab.Index, mat);
 
