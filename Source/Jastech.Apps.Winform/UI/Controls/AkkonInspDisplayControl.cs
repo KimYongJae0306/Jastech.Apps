@@ -48,7 +48,7 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         public int CurrentTabNo { get; set; } = -1;
 
-        public DailyInfo DailyInfo = new DailyInfo();
+        //public DailyInfo DailyInfo = new DailyInfo();
         #endregion
 
         #region 이벤트
@@ -78,13 +78,10 @@ namespace Jastech.Apps.Winform.UI.Controls
             else
                 UpdateTabCount(inspModel.TabCount);
 
-            //DailyInfo.Load();
-
-            foreach (var item in DailyInfo.DailyDataList)
-            {
+            var dailyInfo = DailyInfoService.GetDailyInfo();
+            foreach (var item in dailyInfo.DailyDataList)
                 UpdateDailyDataGridView(item);
-            }
-            UpdateDailyChart(DailyInfo, 0);
+            UpdateDailyChart(dailyInfo, 0);
         }
 
         private void AddControls()
@@ -155,12 +152,15 @@ namespace Jastech.Apps.Winform.UI.Controls
                 InspDisplayControl.Clear();
             }
 
-            UpdateDailyChart(DailyInfo, tabNum);
+            var dailyInfo = DailyInfoService.GetDailyInfo();
+            UpdateDailyChart(dailyInfo, tabNum);
         }
 
         public void UpdateMainResult(AppsInspResult inspResult)
         {
             InspDisplayControl.Clear();
+
+            var dailyInfo = DailyInfoService.GetDailyInfo();
 
             UpdateDailyInfo(inspResult);
 
@@ -168,7 +168,7 @@ namespace Jastech.Apps.Winform.UI.Controls
             {
                 int tabNo = inspResult.TabResultList[i].TabNo;
 
-                UpdateDailyChart(DailyInfo, tabNo);
+                UpdateDailyChart(dailyInfo, tabNo);
 
                 if (InspResultDic.ContainsKey(tabNo))
                 {
@@ -184,7 +184,7 @@ namespace Jastech.Apps.Winform.UI.Controls
                 }
             }
 
-            DailyInfo.Save();
+            DailyInfoService.Save();
         }
 
         private void UpdateDailyInfo(AppsInspResult inspResult)
@@ -212,7 +212,8 @@ namespace Jastech.Apps.Winform.UI.Controls
                 dailyData.AddAkkonInfo(akkonInfo);
             }
 
-            DailyInfo.AddDailyData(dailyData);
+            var dailyInfo = DailyInfoService.GetDailyInfo();
+            dailyInfo.AddDailyData(dailyData);
             UpdateDailyDataGridView(dailyData);
         }
 

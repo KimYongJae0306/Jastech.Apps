@@ -51,7 +51,7 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         private int CurrentTabNo { get; set; } = -1;
 
-        public DailyInfo DailyInfo = new DailyInfo();
+        //public DailyInfo DailyInfo = new DailyInfo();
         #endregion
 
         #region 이벤트
@@ -81,13 +81,10 @@ namespace Jastech.Apps.Winform.UI.Controls
             else
                 UpdateTabCount(inspModel.TabCount);
 
-            DailyInfo.Load();
-
-            foreach (var item in DailyInfo.DailyDataList)
-            {
+            var dailyInfo = DailyInfoService.GetDailyInfo();
+            foreach (var item in dailyInfo.DailyDataList)
                 UpdateDailyDataGridView(item);
-            }
-            UpdateDailyChart(DailyInfo, 0);
+            UpdateDailyChart(dailyInfo, 0);
         }
 
         private void AddControls()
@@ -159,7 +156,8 @@ namespace Jastech.Apps.Winform.UI.Controls
                 InspAlignDisplay.ClearImage();
             }
 
-            UpdateDailyChart(DailyInfo, tabNum);
+            var dailyInfo = DailyInfoService.GetDailyInfo();
+            UpdateDailyChart(dailyInfo, tabNum);
         }
 
         public void UpdateMainResult(AppsInspResult inspResult)
@@ -168,13 +166,15 @@ namespace Jastech.Apps.Winform.UI.Controls
 
             InspAlignDisplay.ClearImage();
 
+            var dailyInfo = DailyInfoService.GetDailyInfo();
+
             UpdateDailyInfo(inspResult);
 
             for (int i = 0; i < inspResult.TabResultList.Count(); i++)
             {
                 int tabNo = inspResult.TabResultList[i].TabNo;
 
-                UpdateDailyChart(DailyInfo, tabNo);
+                UpdateDailyChart(dailyInfo, tabNo);
 
                 if (InspResultDic.ContainsKey(tabNo))
                 {
@@ -191,7 +191,7 @@ namespace Jastech.Apps.Winform.UI.Controls
                 }
             }
 
-            DailyInfo.Save();
+            DailyInfoService.Save();
         }
 
         private void UpdateDailyInfo(AppsInspResult inspResult)
@@ -215,7 +215,8 @@ namespace Jastech.Apps.Winform.UI.Controls
                 dailyData.AddAlignInfo(alignInfo);
             }
 
-            DailyInfo.AddDailyData(dailyData);
+            var dailyInfo = DailyInfoService.GetDailyInfo();
+            dailyInfo.AddDailyData(dailyData);
             UpdateDailyDataGridView(dailyData);
         }
 

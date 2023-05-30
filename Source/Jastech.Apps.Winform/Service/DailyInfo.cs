@@ -17,9 +17,7 @@ namespace Jastech.Apps.Winform.Service
 {
     public class DailyInfo
     {
-        public string AlignFileName { get; private set; } = "Align.cfg";
-
-        public string AkkonFileName { get; private set; } = "Akkon.cfg";
+        public string FileName { get; private set; } = "DailyInfo.cfg";
 
         [JsonProperty]
         public List<DailyData> DailyDataList { get; set; } = new List<DailyData>();
@@ -34,13 +32,13 @@ namespace Jastech.Apps.Winform.Service
 
         public void Save()
         {
-            string filePath = Path.Combine(AppsConfig.Instance().Path.Temp, AlignFileName);
+            string filePath = Path.Combine(AppsConfig.Instance().Path.Temp, FileName);
             JsonConvertHelper.Save(filePath, this);
         }
 
         public void Load()
         {
-            string filePath = Path.Combine(AppsConfig.Instance().Path.Temp, AlignFileName);
+            string filePath = Path.Combine(AppsConfig.Instance().Path.Temp, FileName);
             JsonConvertHelper.LoadToExistingTarget<DailyInfo>(filePath, this);
         }
     }
