@@ -25,8 +25,7 @@ namespace Jastech.Apps.Winform.UI.Controls
         #endregion
 
         #region 델리게이트
-        //private delegate void UpdateAkkonResultDelegate(AppsInspResult result);
-        private delegate void UpdateAkkonResultDelegate(DailyInfo dailyInfo);
+        private delegate void UpdateAkkonResultDelegate(DailyData dailyData);
         #endregion
 
         #region 생성자
@@ -37,21 +36,21 @@ namespace Jastech.Apps.Winform.UI.Controls
         #endregion
 
         #region 메서드
-        public void UpdateAkkonDaily(DailyInfo dailyInfo)
+        public void UpdateAkkonDaily(DailyData dailyData)
         {
             if (this.InvokeRequired)
             {
                 UpdateAkkonResultDelegate callback = UpdateAkkonDaily;
-                BeginInvoke(callback, dailyInfo);
+                BeginInvoke(callback, dailyData);
                 return;
             }
 
-            UpdateDataGridView(dailyInfo);
+            UpdateDataGridView(dailyData);
         }
 
-        private void UpdateDataGridView(DailyInfo dailyInfo)
+        private void UpdateDataGridView(DailyData dailyData)
         {
-            foreach (var item in dailyInfo.AkkonDailyInfoList)
+            foreach (var item in dailyData.AkkonDailyInfoList)
             {
                 string inspectionTime = item.InspectionTime.ToString();
                 string panelID = item.PanelID.ToString();

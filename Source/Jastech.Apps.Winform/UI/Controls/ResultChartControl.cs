@@ -56,8 +56,8 @@ namespace Jastech.Apps.Winform.UI.Controls
         #endregion
 
         #region 델리게이트
-        private delegate void UpdateAlignChartDelegate(AlignDailyInfo align);
-        private delegate void UpdateAkkonChartDelegate(AkkonDailyInfo akkon);
+        private delegate void UpdateAlignChartDelegate(DailyInfo dailyInfo, int tabNo);
+        private delegate void UpdateAkkonChartDelegate(DailyInfo dailyInfo, int tabNo);
         private delegate void ClearChartDelegate();
         #endregion
 
@@ -152,47 +152,64 @@ namespace Jastech.Apps.Winform.UI.Controls
             ChartType = chartType;
         }
 
-        public void UpdateAlignDaily(AlignDailyInfo align)
+        public void UpdateAlignDaily(DailyInfo dailyInfo, int tabNo)
         {
             if (this.InvokeRequired)
             {
                 UpdateAlignChartDelegate callback = UpdateAlignDaily;
-                BeginInvoke(callback, align);
+                BeginInvoke(callback, dailyInfo, tabNo);
                 return;
             }
 
-            UpdateAlignChart(align);
+            UpdateAlignChart(dailyInfo, tabNo);
         }
 
-        private void UpdateAlignChart(AlignDailyInfo align)
+        private void UpdateAlignChart(DailyInfo dailyInfo, int tabNo)
         {
             ClearChartData();
 
-            AlignSeriesLx.Points.Add(align.LX);
-            AlignSeriesLy.Points.Add(align.LY);
-            AlignSeriesRx.Points.Add(align.RX);
-            AlignSeriesRy.Points.Add(align.RY);
-            AlignSeriesCx.Points.Add(align.CX);
+            foreach (var item in dailyInfo.DailyDataList)
+            {
+                if (item.AlignDailyInfoList.Count > 0)
+                {
+                    var tabData = item.AlignDailyInfoList.Where(x => x.TabNo == tabNo).First();
+
+                    AlignSeriesLx.Points.Add(tabData.LX);
+                    AlignSeriesLy.Points.Add(tabData.LY);
+                    AlignSeriesRx.Points.Add(tabData.RX);
+                    AlignSeriesRy.Points.Add(tabData.RY);
+                    AlignSeriesCx.Points.Add(tabData.CX);
+
+                }
+            }
         }
 
-        public void UpdateAkkonDaily(AkkonDailyInfo akkon)
+        public void UpdateAkkonDaily(DailyInfo dailyInfo, int tabNo)
         {
             if (this.InvokeRequired)
             {
                 UpdateAkkonChartDelegate callback = UpdateAkkonDaily;
-                BeginInvoke(callback, akkon);
+                BeginInvoke(callback, dailyInfo, tabNo);
                 return;
             }
 
-            UpdateAkkonChart(akkon);
+            UpdateAkkonChart(dailyInfo, tabNo);
         }
 
-        private void UpdateAkkonChart(AkkonDailyInfo akkon)
+        private void UpdateAkkonChart(DailyInfo dailyInfo, int tabNo)
         {
             ClearChartData();
 
-            AkkonSeriesCount.Points.Add(akkon.AvgBlobCount);
-            AkkonSeriesLength.Points.Add(akkon.AvgLength);
+            foreach (var item in dailyInfo.DailyDataList)
+            {
+                if (item.AkkonDailyInfoList.Count > 0)
+                {
+                    var tabData = item.AkkonDailyInfoList.Where(x => x.TabNo == tabNo).First();
+
+                    AkkonSeriesCount.Points.Add(tabData.AvgBlobCount);
+                    AkkonSeriesLength.Points.Add(tabData.AvgLength);
+                }
+            }
         }
 
         public void ClearChart()

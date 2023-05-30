@@ -23,8 +23,6 @@ namespace Jastech.Apps.Structure
         [JsonProperty]
         public SpecInfo SpecInfo { get; set; } = new SpecInfo();
 
-       
-
         [JsonProperty]
         public MaterialInfo MaterialInfo { get; set; } = new MaterialInfo();
 

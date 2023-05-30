@@ -1,5 +1,4 @@
 ﻿using Cognex.VisionPro;
-using Cognex.VisionPro.Implementation.Internal;
 using Emgu.CV;
 using Emgu.CV.CvEnum;
 using Emgu.CV.Structure;
@@ -7,7 +6,6 @@ using Jastech.Apps.Structure;
 using Jastech.Apps.Structure.Data;
 using Jastech.Apps.Structure.VisionTool;
 using Jastech.Apps.Winform;
-using Jastech.Apps.Winform.Core;
 using Jastech.Apps.Winform.Settings;
 using Jastech.Framework.Algorithms.Akkon;
 using Jastech.Framework.Algorithms.Akkon.Parameters;
@@ -16,12 +14,7 @@ using Jastech.Framework.Device.Motions;
 using Jastech.Framework.Imaging.Helper;
 using Jastech.Framework.Imaging.Result;
 using Jastech.Framework.Imaging.VisionPro;
-using Jastech.Framework.Imaging.VisionPro.VisionAlgorithms.Parameters;
-using Jastech.Framework.Imaging.VisionPro.VisionAlgorithms.Results;
-using Jastech.Framework.Structure;
 using Jastech.Framework.Util.Helper;
-using Jastech.Framework.Winform;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -29,12 +22,8 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Windows.Forms;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.ProgressBar;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.Tab;
 
 namespace ATT.Core
 {

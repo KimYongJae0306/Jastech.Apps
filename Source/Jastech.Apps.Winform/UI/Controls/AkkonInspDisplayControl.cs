@@ -78,9 +78,12 @@ namespace Jastech.Apps.Winform.UI.Controls
             else
                 UpdateTabCount(inspModel.TabCount);
 
-            DailyInfo.Load();
+            //DailyInfo.Load();
 
-            //UpdateDailyDataGridView(DailyInfo);
+            foreach (var item in DailyInfo.DailyDataList)
+            {
+                UpdateDailyDataGridView(item);
+            }
             UpdateDailyChart(DailyInfo, 0);
         }
 
@@ -186,6 +189,8 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         private void UpdateDailyInfo(AppsInspResult inspResult)
         {
+            DailyData dailyData = new DailyData();
+
             foreach (var item in inspResult.TabResultList)
             {
                 AkkonDailyInfo akkonInfo = new AkkonDailyInfo();
@@ -204,15 +209,16 @@ namespace Jastech.Apps.Winform.UI.Controls
                 akkonInfo.AvgStrength = 10;
                 akkonInfo.AvgSTD = 10;
 
-                DailyInfo.AddAkkonInfo(akkonInfo);
+                dailyData.AddAkkonInfo(akkonInfo);
             }
 
-            UpdateDailyDataGridView(DailyInfo);
+            DailyInfo.AddDailyData(dailyData);
+            UpdateDailyDataGridView(dailyData);
         }
 
-        private void UpdateDailyDataGridView(DailyInfo dailyInfo)
+        private void UpdateDailyDataGridView(DailyData dailyData)
         {
-            AkkonInspResultControl.UpdateAkkonDaily(dailyInfo);
+            AkkonInspResultControl.UpdateAkkonDaily(dailyData);
         }
 
         private void UpdateDailyChart(DailyInfo dailyInfo, int tabNo)
@@ -220,8 +226,8 @@ namespace Jastech.Apps.Winform.UI.Controls
             if (dailyInfo == null)
                 return;
 
-            if (dailyInfo.AkkonDailyInfoList.Count > 0)
-                ResultChartControl.UpdateAkkonDaily(dailyInfo.AkkonDailyInfoList[tabNo]);
+            if (dailyInfo.DailyDataList.Count > 0)
+                ResultChartControl.UpdateAkkonDaily(dailyInfo, tabNo);
         }
 
         private void ClearAkkonChart()
