@@ -1,5 +1,6 @@
 ﻿using Emgu.CV.Dnn;
 using Jastech.Apps.Structure;
+using Jastech.Apps.Structure.Data;
 using Jastech.Apps.Winform.Settings;
 using Jastech.Framework.Imaging.Result;
 using Jastech.Framework.Util.Helper;
@@ -21,6 +22,32 @@ namespace Jastech.Apps.Winform.Service
         public string AkkonFileName { get; private set; } = "Akkon.cfg";
 
         [JsonProperty]
+        public List<DailyData> DailyDataList { get; set; } = new List<DailyData>();
+
+        public void AddDailyData(DailyData dailyData)
+        {
+            if (DailyDataList.Count >= AppsConfig.Instance().Operation.AlignResultCount)
+                DailyDataList.RemoveAt(0);
+
+            DailyDataList.Add(dailyData);
+        }
+
+        public void Save()
+        {
+            string filePath = Path.Combine(AppsConfig.Instance().Path.Temp, AlignFileName);
+            JsonConvertHelper.Save(filePath, this);
+        }
+
+        public void Load()
+        {
+            string filePath = Path.Combine(AppsConfig.Instance().Path.Temp, AlignFileName);
+            JsonConvertHelper.LoadToExistingTarget<DailyInfo>(filePath, this);
+        }
+    }
+
+    public class DailyData
+    {
+        [JsonProperty]
         public List<AlignDailyInfo> AlignDailyInfoList { get; set; } = new List<AlignDailyInfo>();
 
         [JsonProperty]
@@ -36,7 +63,7 @@ namespace Jastech.Apps.Winform.Service
             //AlignDailyInfoList.Reverse();
         }
 
-        public void AddAkkonInfo(AkkonDailyInfo akkonDailyInfo) 
+        public void AddAkkonInfo(AkkonDailyInfo akkonDailyInfo)
         {
             if (AkkonDailyInfoList.Count >= AppsConfig.Instance().Operation.AkkonResultCount)
                 AkkonDailyInfoList.RemoveAt(0);
@@ -44,18 +71,6 @@ namespace Jastech.Apps.Winform.Service
             AkkonDailyInfoList.Add(akkonDailyInfo);
 
             //AkkonDailyInfoList.Reverse();
-        }
-
-        public void Save()
-        {
-            string filePath = Path.Combine(AppsConfig.Instance().Path.Temp, AlignFileName);
-            JsonConvertHelper.Save(filePath, this);
-        }
-
-        public void Load()
-        {
-            string filePath = Path.Combine(AppsConfig.Instance().Path.Temp, AlignFileName);
-            JsonConvertHelper.LoadToExistingTarget<DailyInfo>(filePath, this);
         }
     }
 

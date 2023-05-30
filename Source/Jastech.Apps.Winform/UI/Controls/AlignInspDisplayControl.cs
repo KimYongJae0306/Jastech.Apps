@@ -83,7 +83,10 @@ namespace Jastech.Apps.Winform.UI.Controls
 
             DailyInfo.Load();
 
-            UpdateDailyDataGridView(DailyInfo);
+            foreach (var item in DailyInfo.DailyDataList)
+            {
+                UpdateDailyDataGridView(item);
+            }
             UpdateDailyChart(DailyInfo, 0);
         }
 
@@ -193,6 +196,8 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         private void UpdateDailyInfo(AppsInspResult inspResult)
         {
+            DailyData dailyData = new DailyData();
+
             foreach (var item in inspResult.TabResultList)
             {
                 AlignDailyInfo alignInfo = new AlignDailyInfo();
@@ -207,15 +212,16 @@ namespace Jastech.Apps.Winform.UI.Controls
                 alignInfo.RY = item.RightAlignY.ResultValue;
                 alignInfo.CX = item.CenterX;
 
-                DailyInfo.AddAlignInfo(alignInfo);
+                dailyData.AddAlignInfo(alignInfo);
             }
 
-            UpdateDailyDataGridView(DailyInfo);
+            DailyInfo.AddDailyData(dailyData);
+            UpdateDailyDataGridView(dailyData);
         }
 
-        private void UpdateDailyDataGridView(DailyInfo dailyInfo)
+        private void UpdateDailyDataGridView(DailyData dailyData)
         {
-            AlignInspResultControl.UpdateAlignDaily(dailyInfo);
+            AlignInspResultControl.UpdateAlignDaily(dailyData);
         }
 
         private void UpdateDailyChart(DailyInfo dailyInfo, int tabNo)
@@ -223,8 +229,8 @@ namespace Jastech.Apps.Winform.UI.Controls
             if (dailyInfo == null)
                 return;
 
-            if (dailyInfo.AlignDailyInfoList.Count > 0)
-                ResultChartControl.UpdateAlignDaily(dailyInfo.AlignDailyInfoList[tabNo]);
+            if (dailyInfo.DailyDataList.Count > 0)
+                ResultChartControl.UpdateAlignDaily(dailyInfo, tabNo);
         }
 
         private void ClearAlignChart()
