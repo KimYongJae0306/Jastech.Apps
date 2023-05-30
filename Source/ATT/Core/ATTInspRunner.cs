@@ -34,6 +34,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.ProgressBar;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.Tab;
 
 namespace ATT.Core
 {
@@ -472,7 +473,12 @@ namespace ATT.Core
                 case SeqStep.SEQ_UI_RESULT_UPDATE:
                     GetAkkonResultImage();
                     SystemManager.Instance().UpdateMainResult(AppsInspResult);
-                    Console.WriteLine("Scan End to Insp Compelte : " + LastInspSW.ElapsedMilliseconds.ToString());
+                    Console.WriteLine("Scan End to Insp Complete : " + LastInspSW.ElapsedMilliseconds.ToString());
+                    SeqStep = SeqStep.SEQ_SAVE_RESULT_DATA;
+                    break;
+
+                case SeqStep.SEQ_SAVE_RESULT_DATA:
+                    SaveInspectionResult(AppsInspResult);
                     SeqStep = SeqStep.SEQ_SAVE_IMAGE;
                     break;
 
@@ -673,21 +679,17 @@ namespace ATT.Core
         {
             AppsInspModel inspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
             DateTime currentTime = inspResult.StartInspTime;
-            string today = currentTime.ToString("yyyyMMdd");
-            string time = currentTime.ToString("yyyyMMddHHmmss");
 
-            string folderPath = inspResult.Cell_ID + "_" + time;
+            string month = currentTime.ToString("MM");
+            string day = currentTime.ToString("dd");
+            string folderPath = inspResult.Cell_ID;
 
-            string path = Path.Combine(AppsConfig.Instance().Path.Result, inspModel.Name, today, folderPath);
+            string path = Path.Combine(AppsConfig.Instance().Path.Result, inspModel.Name, month, day, folderPath);
 
             if (Directory.Exists(path) == false)
                 Directory.CreateDirectory(path);
 
-            // OrgImage
             SaveOrgImage(path, inspResult.TabResultList);
-            //SaveAlignResult(path, inspResult);
-            //SaveAkkonResult(path, inspResult);
-            //SaveTotalResult(path, inspResult);
         }
 
         private void SaveOrgImage(string resultPath, List<TabInspResult> insTabResultList)
@@ -707,9 +709,28 @@ namespace ATT.Core
             }
         }
 
+        private void SaveInspectionResult(AppsInspResult inspResult)
+        {
+            AppsInspModel inspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
+            DateTime currentTime = inspResult.StartInspTime;
+
+            string month = currentTime.ToString("MM");
+            string day = currentTime.ToString("dd");
+            string folderPath = inspResult.Cell_ID;
+
+            string path = Path.Combine(AppsConfig.Instance().Path.Result, inspModel.Name, month, day);
+
+            if (Directory.Exists(path) == false)
+                Directory.CreateDirectory(path);
+
+            SaveAlignResult(path, inspResult);
+            SaveAkkonResult(path, inspResult);
+            SaveUPHResult(path, inspResult);
+        }
+
         private void SaveAlignResult(string resultPath, AppsInspResult inspResult)
         {
-            string filename = string.Format("[{0}]Align.csv", DateTime.Today);
+            string filename = string.Format("Align.csv");
             string csvFile = Path.Combine(resultPath, filename);
             if (File.Exists(csvFile) == false)
             {
@@ -735,7 +756,7 @@ namespace ATT.Core
 
             List<string> dataList = new List<string>
             {
-                inspResult.EndInspTime.ToString("hhmmss"),
+                inspResult.EndInspTime.ToString("HH:mm:ss"),
                 inspResult.Cell_ID.ToString()
             };
 
@@ -763,7 +784,7 @@ namespace ATT.Core
 
         private void SaveAkkonResult(string resultPath, AppsInspResult inspResult)
         {
-            string filename = string.Format("[{0}]Akkon.csv", DateTime.Today);
+            string filename = string.Format("Akkon.csv");
             string csvFile = Path.Combine(resultPath, filename);
             if (File.Exists(csvFile) == false)
             {
@@ -788,13 +809,12 @@ namespace ATT.Core
 
             List<string> dataList = new List<string>
             {
-                inspResult.EndInspTime.ToString("hhmmss"),
+                inspResult.EndInspTime.ToString("HH:mm:ss"),
                 inspResult.Cell_ID.ToString()
             };
 
             foreach (var tabResult in inspResult.TabResultList)
             {
-                
                 if(AppsConfig.Instance().AkkonAlgorithmType == AkkonAlgorithmType.Macron)
                 {
                     int tabNo = tabResult.TabNo;
@@ -826,16 +846,14 @@ namespace ATT.Core
                     dataList.Add(strength.ToString("F3"));
                     dataList.Add(std.ToString("F3"));
                 }
-
-               
             }
 
             CSVHelper.WriteData(csvFile, dataList);
         }
 
-        private void SaveTotalResult(string resultPath, AppsInspResult inspResult)
+        private void SaveUPHResult(string resultPath, AppsInspResult inspResult)
         {
-            string filename = string.Format("[{0}]Total.csv", DateTime.Today);
+            string filename = string.Format("UPH.csv");
             string csvFile = Path.Combine(resultPath, filename);
             if (File.Exists(csvFile) == false)
             {
@@ -873,6 +891,10 @@ namespace ATT.Core
                     //inspResult.TabResultList[tabNo].MacronAkkonResult.AvgLength.ToString("F3"),
                     //inspResult.TabResultList[tabNo].MacronAkkonResult.AvgStrength.ToString("F3"),
                     //inspResult.TabResultList[tabNo].MacronAkkonResult.AvgStd.ToString("F3"),
+                    10.ToString(),
+                    0.ToString("F3"),
+                    0.ToString("F3"),
+                    0.ToString("F3"),
 
                     inspResult.TabResultList[tabNo].LeftAlignX.ResultValue.ToString("F3"),
                     inspResult.TabResultList[tabNo].LeftAlignY.ResultValue.ToString("F3"),
@@ -994,6 +1016,7 @@ namespace ATT.Core
         SEQ_AKKON_INSPECTION,
         SEQ_AKKON_INSPECTION_COMPLETED,
         SEQ_UI_RESULT_UPDATE,
+        SEQ_SAVE_RESULT_DATA,
         SEQ_SAVE_IMAGE,
         SEQ_DELETE_DATA,
         SEQ_CHECK_STANDBY,

@@ -26,7 +26,6 @@ namespace Jastech.Apps.Winform.UI.Controls
         #endregion
 
         #region 델리게이트
-        //private delegate void UpdateAlignResultDelegate(AppsInspResult result);
         private delegate void UpdateAlignResultDelegate(DailyInfo dailyInfo);
         #endregion
 
@@ -41,28 +40,23 @@ namespace Jastech.Apps.Winform.UI.Controls
             InitializeComponent();
         }
 
-        //public void UpdateAlignResult(AppsInspResult result)
-        //{
-        //    if (this.InvokeRequired)
-        //    {
-        //        UpdateAlignResultDelegate callback = UpdateAlignResult;
-        //        BeginInvoke(callback);
-        //        return;
-        //    }
-
-        //    UpdateDataGridView(result);
-        //}
-
         public void UpdateAlignDaily(DailyInfo dailyInfo)
         {
-            if (this.InvokeRequired)
+            try
             {
-                UpdateAlignResultDelegate callback = UpdateAlignDaily;
-                BeginInvoke(callback);
-                return;
-            }
+                if (this.InvokeRequired)
+                {
+                    UpdateAlignResultDelegate callback = UpdateAlignDaily;
+                    BeginInvoke(callback, dailyInfo);
+                    return;
+                }
 
-            UpdateDataGridView(dailyInfo);
+                UpdateDataGridView(dailyInfo);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(System.Reflection.MethodBase.GetCurrentMethod().Name.ToString() + " : " + ex.Message);
+            }
         }
 
         private void UpdateDataGridView(DailyInfo dailyInfo)

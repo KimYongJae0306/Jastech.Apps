@@ -157,7 +157,7 @@ namespace Jastech.Apps.Winform.UI.Controls
             if (this.InvokeRequired)
             {
                 UpdateAlignChartDelegate callback = UpdateAlignDaily;
-                BeginInvoke(callback);
+                BeginInvoke(callback, align);
                 return;
             }
 
@@ -180,7 +180,7 @@ namespace Jastech.Apps.Winform.UI.Controls
             if (this.InvokeRequired)
             {
                 UpdateAkkonChartDelegate callback = UpdateAkkonDaily;
-                BeginInvoke(callback);
+                BeginInvoke(callback, akkon);
                 return;
             }
 
