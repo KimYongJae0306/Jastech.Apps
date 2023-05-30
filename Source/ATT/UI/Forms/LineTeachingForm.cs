@@ -155,7 +155,7 @@ namespace ATT.UI.Forms
 
             var teachingData = SystemManager.Instance().GetTeachingData();
             Mat mat = tabScanImage.GetMergeImage();
-
+            Console.WriteLine("Complete : " + tabScanImage.TabNo);
             teachingData.AddBufferImage(tabScanImage.TabNo, mat);
         }
 

@@ -56,6 +56,8 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         private bool _isLoading { get; set; } = false;
 
+        private int _curSelectedGroup { get; set; } = -1;
+
         #endregion
 
         #region 속성
@@ -102,7 +104,7 @@ namespace Jastech.Apps.Winform.UI.Controls
 
             AddControl();
             InitializeUI();
-            InitializeGroupInfo();
+            InitializeGroupInfo(true);
 
             _isLoading = false;
 
@@ -157,21 +159,21 @@ namespace Jastech.Apps.Winform.UI.Controls
                 return;
 
             CurrentTab = tab;
-            InitializeGroupInfo();
+            InitializeGroupInfo(false);
             UpdateData();
         }
 
-        public delegate void InitializeGroupInfoDele();
-        private void InitializeGroupInfo()
+        public delegate void InitializeGroupInfoDele(bool isLoading);
+        private void InitializeGroupInfo(bool isLoading = false)
         {
             if(this.InvokeRequired)
             {
                 InitializeGroupInfoDele callback = InitializeGroupInfo;
-                BeginInvoke(callback);
+                BeginInvoke(callback, isLoading);
                 return;
             }
 
-            _isLoading = true;
+            _isLoading = isLoading;
 
             if (CurrentTab == null)
                 return;
@@ -184,7 +186,10 @@ namespace Jastech.Apps.Winform.UI.Controls
 
             if (cbxGroupNumber.Items.Count > 0)
                 cbxGroupNumber.SelectedIndex = 0;
-
+            else
+            {
+                _curSelectedGroup = -1;
+            }
             _prevTabName = CurrentTab.Name;
             _isLoading = false;
         }
@@ -465,7 +470,7 @@ namespace Jastech.Apps.Winform.UI.Controls
             if (CurrentTab == null)
                 return;
 
-            int groupIndex = cbxGroupNumber.SelectedIndex;
+            int groupIndex = _curSelectedGroup;// cbxGroupNumber.SelectedIndex;
             if (groupIndex < 0)
                 return;
 
@@ -809,8 +814,8 @@ namespace Jastech.Apps.Winform.UI.Controls
             if (_isLoading)
                 return;
 
-            int selectedGroupIndex = cbxGroupNumber.SelectedIndex;
-            UpdateParam(selectedGroupIndex);
+            _curSelectedGroup = cbxGroupNumber.SelectedIndex;
+            UpdateParam(_curSelectedGroup);
         }
 
         private void lblRegister_Click(object sender, EventArgs e)
@@ -1340,7 +1345,7 @@ namespace Jastech.Apps.Winform.UI.Controls
             List<int> topEdgePointList = new List<int>();
             List<int> bottomEdgePointList = new List<int>();
 
-            ImageHelper.GetEdgePoint(topDataArray, bottomDataArray, 0, (int)10/*CalcResolution*/, ref topEdgePointList, ref bottomEdgePointList);
+            ImageHelper.GetEdgePoint(topDataArray, bottomDataArray, 0, (int)200/*CalcResolution*/, ref topEdgePointList, ref bottomEdgePointList);
 
             //if (topEdgePointList.Count != bottomEdgePointList.Count)
             //{
@@ -1354,7 +1359,7 @@ namespace Jastech.Apps.Winform.UI.Controls
             foreach (var xIndex in topEdgePointList)
             {
                 float pointX = (float)(_autoTeachingRect.X + xIndex);
-                float pointY = (float)_autoTeachingRect.Y;
+                float pointY = (float)_autoTeachingRect.Y - 1450;
                 topPointList.Add(new PointF(pointX, pointY));
             }
 

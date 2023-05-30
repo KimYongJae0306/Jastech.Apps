@@ -181,7 +181,7 @@ namespace Jastech.Apps.Winform.UI.Controls
                 }
             }
 
-            DailyInfo.Save();
+            //DailyInfo.Save();
         }
 
         private void UpdateDailyInfo(AppsInspResult inspResult)
@@ -194,10 +194,15 @@ namespace Jastech.Apps.Winform.UI.Controls
                 akkonInfo.PanelID = inspResult.Cell_ID;
                 akkonInfo.TabNo = item.TabNo;
                 akkonInfo.Judgement = item.Judgement;
-                akkonInfo.AvgBlobCount = item.MacronAkkonResult.AvgBlobCount;
-                akkonInfo.AvgLength = item.MacronAkkonResult.AvgLength;
-                akkonInfo.AvgStrength = item.MacronAkkonResult.AvgStrength;
-                akkonInfo.AvgSTD = item.MacronAkkonResult.AvgStd;
+                //akkonInfo.AvgBlobCount = item.MacronAkkonResult.AvgBlobCount;
+                //akkonInfo.AvgLength = item.MacronAkkonResult.AvgLength;
+                //akkonInfo.AvgStrength = item.MacronAkkonResult.AvgStrength;
+                //akkonInfo.AvgSTD = item.MacronAkkonResult.AvgStd;
+
+                akkonInfo.AvgBlobCount = 10;
+                akkonInfo.AvgLength = 10;
+                akkonInfo.AvgStrength = 10;
+                akkonInfo.AvgSTD = 10;
 
                 DailyInfo.AddAkkonInfo(akkonInfo);
             }

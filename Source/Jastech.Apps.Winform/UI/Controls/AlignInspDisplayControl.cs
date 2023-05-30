@@ -188,7 +188,7 @@ namespace Jastech.Apps.Winform.UI.Controls
                 }
             }
 
-            DailyInfo.Save();
+            //DailyInfo.Save();
         }
 
         private void UpdateDailyInfo(AppsInspResult inspResult)
@@ -223,8 +223,8 @@ namespace Jastech.Apps.Winform.UI.Controls
             if (dailyInfo == null)
                 return;
 
-            if (dailyInfo.AkkonDailyInfoList.Count > 0)
-                ResultChartControl.UpdateAkkonDaily(dailyInfo.AkkonDailyInfoList[tabNo]);
+            if (dailyInfo.AlignDailyInfoList.Count > 0)
+                ResultChartControl.UpdateAlignDaily(dailyInfo.AlignDailyInfoList[tabNo]);
         }
 
         private void ClearAkkonChart()

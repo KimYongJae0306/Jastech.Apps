@@ -34,8 +34,8 @@ namespace Jastech.Apps.Structure.VisionTool
             var calcFpcRegion = CalcTheta(fpcParam.CaliperParams.GetRegion() as CogRectangleAffine, fpcTheta);
             var calcPanelRegion = CalcTheta(panelParam.CaliperParams.GetRegion() as CogRectangleAffine, fpcTheta);
 
-            fpcParam.CaliperParams.SetRegion(calcFpcRegion);
-            panelParam.CaliperParams.SetRegion(calcPanelRegion);
+            //fpcParam.CaliperParams.SetRegion(calcFpcRegion);
+            //panelParam.CaliperParams.SetRegion(calcPanelRegion);
 
             var result = RunMainAlignX(cogImage, fpcParam, panelParam, judgementX);
             return result;
@@ -49,8 +49,8 @@ namespace Jastech.Apps.Structure.VisionTool
             var calcFpcRegion = CalcTheta(fpcParam.CaliperParams.GetRegion() as CogRectangleAffine, fpcTheta);
             var calcPanelRegion = CalcTheta(panelParam.CaliperParams.GetRegion() as CogRectangleAffine, fpcTheta);
 
-            fpcParam.CaliperParams.SetRegion(calcFpcRegion);
-            panelParam.CaliperParams.SetRegion(calcPanelRegion);
+            //fpcParam.CaliperParams.SetRegion(calcFpcRegion);
+            //panelParam.CaliperParams.SetRegion(calcPanelRegion);
 
             var result = RunMainAlignY(cogImage, fpcParam, panelParam, judgementY);
             return result;
@@ -64,8 +64,8 @@ namespace Jastech.Apps.Structure.VisionTool
             var calcFpcRegion = CalcTheta(fpcParam.CaliperParams.GetRegion() as CogRectangleAffine, fpcTheta);
             var calcPanelParam = CalcTheta(panelParam.CaliperParams.GetRegion() as CogRectangleAffine, fpcTheta);
 
-            fpcParam.CaliperParams.SetRegion(calcFpcRegion);
-            panelParam.CaliperParams.SetRegion(calcPanelParam);
+            //fpcParam.CaliperParams.SetRegion(calcFpcRegion);
+            //panelParam.CaliperParams.SetRegion(calcPanelParam);
 
             var result = RunMainAlignX(cogImage, fpcParam, panelParam, judgementX);
 
@@ -80,8 +80,8 @@ namespace Jastech.Apps.Structure.VisionTool
             var calcFpcRegion = CalcTheta(fpcParam.CaliperParams.GetRegion() as CogRectangleAffine, fpcTheta);
             var calcPanelRegion = CalcTheta(panelParam.CaliperParams.GetRegion() as CogRectangleAffine, fpcTheta);
 
-            fpcParam.CaliperParams.SetRegion(calcFpcRegion);
-            panelParam.CaliperParams.SetRegion(calcPanelRegion);
+            //fpcParam.CaliperParams.SetRegion(calcFpcRegion);
+            //panelParam.CaliperParams.SetRegion(calcPanelRegion);
 
             var result = RunMainAlignY(cogImage, fpcParam, panelParam, judgementY);
             return result;

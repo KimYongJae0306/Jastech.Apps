@@ -33,6 +33,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.ProgressBar;
 
 namespace ATT.Core
 {
@@ -395,7 +396,6 @@ namespace ATT.Core
                 case SeqStep.SEQ_WAITING:
                     //if (IsPanelIn == false)
                     //    break;
-
                     SeqStep = SeqStep.SEQ_SCAN_READY;
                     break;
 
@@ -465,7 +465,7 @@ namespace ATT.Core
                     LastInspSW.Stop();
                     AppsInspResult.EndInspTime = DateTime.Now;
                     AppsInspResult.LastInspTime = LastInspSW.ElapsedMilliseconds.ToString();
-
+                    Console.WriteLine("Total Tact Time : " + LastInspSW.ElapsedMilliseconds.ToString());
                     SeqStep = SeqStep.SEQ_UI_RESULT_UPDATE;
                     break;
 
@@ -644,7 +644,8 @@ namespace ATT.Core
             appsLineCamera.InitGrabSettings();
 
             var inspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
-            MacronAkkonAlgorithmTool.PrepareMultiInspection(inspModel, appsLineCamera.TabScanImageList, AppsConfig.Instance().AkkonResizeRatio);
+            if (AppsConfig.Instance().AkkonAlgorithmType == AkkonAlgorithmType.Macron)
+                MacronAkkonAlgorithmTool.PrepareMultiInspection(inspModel, appsLineCamera.TabScanImageList, AppsConfig.Instance().AkkonResizeRatio);
         }
 
         public void RunVirtual()
@@ -684,9 +685,9 @@ namespace ATT.Core
 
             // OrgImage
             SaveOrgImage(path, inspResult.TabResultList);
-            SaveAlignResult(path, inspResult);
-            SaveAkkonResult(path, inspResult);
-            SaveTotalResult(path, inspResult);
+            //SaveAlignResult(path, inspResult);
+            //SaveAkkonResult(path, inspResult);
+            //SaveTotalResult(path, inspResult);
         }
 
         private void SaveOrgImage(string resultPath, List<TabInspResult> insTabResultList)
@@ -793,19 +794,40 @@ namespace ATT.Core
 
             foreach (var tabResult in inspResult.TabResultList)
             {
-                int tabNo = tabResult.TabNo;
-                var judge = tabResult.MacronAkkonResult.Judgement;
-                int count = tabResult.MacronAkkonResult.AvgBlobCount;
-                float length = tabResult.MacronAkkonResult.AvgLength;
-                float strength = tabResult.MacronAkkonResult.AvgStrength;
-                float std = tabResult.MacronAkkonResult.AvgStd;
+                
+                if(AppsConfig.Instance().AkkonAlgorithmType == AkkonAlgorithmType.Macron)
+                {
+                    int tabNo = tabResult.TabNo;
+                    var judge = tabResult.MacronAkkonResult.Judgement;
+                    int count = tabResult.MacronAkkonResult.AvgBlobCount;
+                    float length = tabResult.MacronAkkonResult.AvgLength;
+                    float strength = tabResult.MacronAkkonResult.AvgStrength;
+                    float std = tabResult.MacronAkkonResult.AvgStd;
+                    dataList.Add(tabNo.ToString());
+                    dataList.Add(judge.ToString());
+                    dataList.Add(count.ToString());
+                    dataList.Add(length.ToString("F3"));
+                    dataList.Add(strength.ToString("F3"));
+                    dataList.Add(std.ToString("F3"));
+                }
+                else
+                {
+                    int tabNo = tabResult.TabNo;
+                    var judge = "OK";
+                    int count = 10;
+                    float length = 0.0f;
+                    float strength = 0.0f;
+                    float std = 0.0f;
 
-                dataList.Add(tabNo.ToString());
-                dataList.Add(judge.ToString());
-                dataList.Add(count.ToString());
-                dataList.Add(length.ToString("F3"));
-                dataList.Add(strength.ToString("F3"));
-                dataList.Add(std.ToString("F3"));
+                    dataList.Add(tabNo.ToString());
+                    dataList.Add(judge.ToString());
+                    dataList.Add(count.ToString());
+                    dataList.Add(length.ToString("F3"));
+                    dataList.Add(strength.ToString("F3"));
+                    dataList.Add(std.ToString("F3"));
+                }
+
+               
             }
 
             CSVHelper.WriteData(csvFile, dataList);
@@ -847,10 +869,10 @@ namespace ATT.Core
                     inspResult.Cell_ID,
                     tabNo.ToString(),
 
-                    inspResult.TabResultList[tabNo].MacronAkkonResult.AvgBlobCount.ToString(),
-                    inspResult.TabResultList[tabNo].MacronAkkonResult.AvgLength.ToString("F3"),
-                    inspResult.TabResultList[tabNo].MacronAkkonResult.AvgStrength.ToString("F3"),
-                    inspResult.TabResultList[tabNo].MacronAkkonResult.AvgStd.ToString("F3"),
+                    //inspResult.TabResultList[tabNo].MacronAkkonResult.AvgBlobCount.ToString(),
+                    //inspResult.TabResultList[tabNo].MacronAkkonResult.AvgLength.ToString("F3"),
+                    //inspResult.TabResultList[tabNo].MacronAkkonResult.AvgStrength.ToString("F3"),
+                    //inspResult.TabResultList[tabNo].MacronAkkonResult.AvgStd.ToString("F3"),
 
                     inspResult.TabResultList[tabNo].LeftAlignX.ResultValue.ToString("F3"),
                     inspResult.TabResultList[tabNo].LeftAlignY.ResultValue.ToString("F3"),
