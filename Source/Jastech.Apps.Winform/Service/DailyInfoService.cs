@@ -27,5 +27,20 @@ namespace Jastech.Apps.Winform.Service
         {
             return DailyInfo;
         }
+
+        public static void AddDailyData(DailyData dailyData)
+        {
+            DailyInfo.AddDailyData(dailyData);
+        }
+
+        public static DailyData GetDailyData() 
+        {
+            return DailyInfo.GetDailyData();
+        }
+
+        public static void SetDailyData(DailyData dailyData)
+        {
+            DailyInfo.SetDailyData(dailyData);
+        }
     }
 }

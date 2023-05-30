@@ -191,7 +191,7 @@ namespace Jastech.Apps.Winform.UI.Controls
                 }
             }
 
-            DailyInfoService.Save();
+            //DailyInfoService.Save();
         }
 
         private void UpdateDailyInfo(AppsInspResult inspResult)
@@ -215,8 +215,10 @@ namespace Jastech.Apps.Winform.UI.Controls
                 dailyData.AddAlignInfo(alignInfo);
             }
 
-            var dailyInfo = DailyInfoService.GetDailyInfo();
-            dailyInfo.AddDailyData(dailyData);
+            //var dailyInfo = DailyInfoService.GetDailyInfo();
+            //dailyInfo.AddDailyData(dailyData);
+
+            DailyInfoService.SetDailyData(dailyData);
             UpdateDailyDataGridView(dailyData);
         }
 

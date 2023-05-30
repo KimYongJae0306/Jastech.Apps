@@ -22,6 +22,19 @@ namespace Jastech.Apps.Winform.Service
         [JsonProperty]
         public List<DailyData> DailyDataList { get; set; } = new List<DailyData>();
 
+        private DailyData DailyData { get; set; } = new DailyData();
+
+        public void SetDailyData(DailyData dailyData)
+        {
+            DailyData.AlignDailyInfoList.AddRange(dailyData.AlignDailyInfoList);
+            DailyData.AkkonDailyInfoList.AddRange(dailyData.AkkonDailyInfoList);
+        }
+
+        public DailyData GetDailyData()
+        {
+            return DailyData.GetDailyData();
+        }
+
         public void AddDailyData(DailyData dailyData)
         {
             if (DailyDataList.Count >= AppsConfig.Instance().Operation.AlignResultCount)
@@ -50,6 +63,11 @@ namespace Jastech.Apps.Winform.Service
 
         [JsonProperty]
         public List<AkkonDailyInfo> AkkonDailyInfoList { get; set; } = new List<AkkonDailyInfo>();
+
+        public DailyData GetDailyData()
+        {
+            return this;
+        }
 
         public void AddAlignInfo(AlignDailyInfo alignDailyInfo)
         {

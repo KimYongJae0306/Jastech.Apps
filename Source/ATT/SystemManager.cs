@@ -58,6 +58,8 @@ namespace ATT
 
             form.ShowDialog();
 
+            DailyInfoService.Load();
+
             return true;
         }
 

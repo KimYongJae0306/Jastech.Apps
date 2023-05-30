@@ -6,6 +6,7 @@ using Jastech.Apps.Structure;
 using Jastech.Apps.Structure.Data;
 using Jastech.Apps.Structure.VisionTool;
 using Jastech.Apps.Winform;
+using Jastech.Apps.Winform.Service;
 using Jastech.Apps.Winform.Settings;
 using Jastech.Framework.Algorithms.Akkon;
 using Jastech.Framework.Algorithms.Akkon.Parameters;
@@ -467,6 +468,10 @@ namespace ATT.Core
                     break;
 
                 case SeqStep.SEQ_SAVE_RESULT_DATA:
+                    var dailyData = DailyInfoService.GetDailyData();
+                    DailyInfoService.AddDailyData(dailyData);
+                    DailyInfoService.Save();
+
                     SaveInspectionResult(AppsInspResult);
                     SeqStep = SeqStep.SEQ_SAVE_IMAGE;
                     break;
