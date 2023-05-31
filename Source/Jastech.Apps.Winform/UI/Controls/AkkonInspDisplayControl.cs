@@ -189,7 +189,8 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         private void UpdateDailyInfo(AppsInspResult inspResult)
         {
-            DailyData dailyData = new DailyData();
+            var dailyData = DailyInfoService.GetDailyData();
+            dailyData.ClearAkkonInfo();
 
             foreach (var item in inspResult.TabResultList)
             {
@@ -211,9 +212,6 @@ namespace Jastech.Apps.Winform.UI.Controls
 
                 dailyData.AddAkkonInfo(akkonInfo);
             }
-
-            var dailyInfo = DailyInfoService.GetDailyInfo();
-            dailyInfo.SetAkkonDailyData(dailyData.AkkonDailyInfoList);
 
             UpdateDailyDataGridView(dailyData);
         }

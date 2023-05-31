@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -22,23 +23,6 @@ namespace Jastech.Apps.Winform.Service
 
         [JsonProperty]
         public List<DailyData> DailyDataList { get; set; } = new List<DailyData>();
-
-        private DailyData DailyData { get; set; } = new DailyData();
-
-        public void SetAkkonDailyData(List<AkkonDailyInfo> akkonDailyInfoList)
-        {
-            DailyData.AkkonDailyInfoList.AddRange(akkonDailyInfoList);
-        }
-
-        public void SetAlignDailyData(List<AlignDailyInfo> alignDailyInfoList)
-        {
-            DailyData.AlignDailyInfoList.AddRange(alignDailyInfoList);
-        }
-
-        public DailyData GetDailyData()
-        {
-            return DailyData;
-        }
 
         public void AddDailyDataList(DailyData dailyData)
         {
@@ -69,29 +53,24 @@ namespace Jastech.Apps.Winform.Service
         [JsonProperty]
         public List<AkkonDailyInfo> AkkonDailyInfoList { get; set; } = new List<AkkonDailyInfo>();
 
-
         public void AddAlignInfo(AlignDailyInfo alignDailyInfo)
         {
-            if (AlignDailyInfoList.Count >= AppsConfig.Instance().Operation.AlignResultCount)
-                AlignDailyInfoList.RemoveAt(0);
-
             AlignDailyInfoList.Add(alignDailyInfo);
+        }
 
-            //AlignDailyInfoList.Reverse();
-
-            //re.AlignDailyInfoList.Add(alignDailyInfo);
+        public void ClearAlignInfo()
+        {
+            AlignDailyInfoList.Clear();
         }
 
         public void AddAkkonInfo(AkkonDailyInfo akkonDailyInfo)
         {
-            if (AkkonDailyInfoList.Count >= AppsConfig.Instance().Operation.AkkonResultCount)
-                AkkonDailyInfoList.RemoveAt(0);
-
             AkkonDailyInfoList.Add(akkonDailyInfo);
+        }
 
-            //AkkonDailyInfoList.Reverse();
-
-            //re.AkkonDailyInfoList.Add(akkonDailyInfo);
+        public void ClearAkkonInfo()
+        {
+            AkkonDailyInfoList.Clear();
         }
     }
 

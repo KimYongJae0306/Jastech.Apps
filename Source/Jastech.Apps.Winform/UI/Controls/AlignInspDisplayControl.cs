@@ -190,13 +190,12 @@ namespace Jastech.Apps.Winform.UI.Controls
                     UpdateRightAlignResult(inspResult.TabResultList[i]);
                 }
             }
-
-            //DailyInfoService.Save();
         }
 
         private void UpdateDailyInfo(AppsInspResult inspResult)
         {
-            DailyData dailyData = new DailyData();
+            var dailyData = DailyInfoService.GetDailyData();
+            dailyData.ClearAlignInfo();
 
             foreach (var item in inspResult.TabResultList)
             {
@@ -214,9 +213,6 @@ namespace Jastech.Apps.Winform.UI.Controls
 
                 dailyData.AddAlignInfo(alignInfo);
             }
-
-            var dailyInfo = DailyInfoService.GetDailyInfo();
-            dailyInfo.SetAlignDailyData(dailyData.AlignDailyInfoList);
 
             UpdateDailyDataGridView(dailyData);
         }

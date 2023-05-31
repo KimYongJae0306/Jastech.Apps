@@ -13,6 +13,8 @@ namespace PJH_TEST
         public Form()
         {
             InitializeComponent();
+
+            DailyInfoService.Load();
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -75,11 +77,10 @@ namespace PJH_TEST
 
         private void btnAlignTest_Click(object sender, EventArgs e)
         {
-            //var dailyInfo = DailyInfoService.GetDailyInfo();
+            //var dailyData = DailyInfoService.GetDailyData();
+            //dailyData.ClearAlignInfo();
 
-            //DailyData dailyData = new DailyData();
-
-            //for (int tabNo = 0; tabNo < 4; tabNo++)
+            //for (int tabNo = 0; tabNo < 2; tabNo++)
             //{
             //    AlignDailyInfo alignInfo = new AlignDailyInfo();
 
@@ -96,18 +97,14 @@ namespace PJH_TEST
 
             //    dailyData.AddAlignInfo(alignInfo);
             //}
-
-            //dailyInfo.SetAlignDailyData(dailyData.AlignDailyInfoList);
-            //int gg = 0;
         }
 
         private void btnAkkonTest_Click(object sender, EventArgs e)
         {
-            //var dailyInfo = DailyInfoService.GetDailyInfo();
+            //var dailyData = DailyInfoService.GetDailyData();
+            //dailyData.ClearAkkonInfo();
 
-            //DailyData dailyData = new DailyData();
-
-            //for (int tabNo = 0; tabNo < 4; tabNo++)
+            //for (int tabNo = 0; tabNo < 2; tabNo++)
             //{
             //    AkkonDailyInfo akkonInfo = new AkkonDailyInfo();
 
@@ -123,20 +120,16 @@ namespace PJH_TEST
 
             //    dailyData.AddAkkonInfo(akkonInfo);
             //}
-
-            //dailyInfo.SetAkkonDailyData(dailyData.AkkonDailyInfoList);
-            //int gg = 0;
         }
 
         private void btnTest_Click(object sender, EventArgs e)
         {
-            //int gg = 0;
-
             //var dailyInfo = DailyInfoService.GetDailyInfo();
+            //var dailyData = DailyInfoService.GetDailyData();
 
-            //int tt = 0;
+            //dailyInfo.AddDailyDataList(dailyData);
 
-            //dailyInfo.AddDailyDataList(dailyInfo.GetDailyData());
+            //DailyInfoService.Save();
         }
     }
 }

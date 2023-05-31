@@ -707,7 +707,12 @@ namespace ATT.Core
             if (dailyInfo == null)
                 return;
 
-            dailyInfo.AddDailyDataList(dailyInfo.GetDailyData());
+            var dailyData = DailyInfoService.GetDailyData();
+
+            if (dailyData == null)
+                return;
+
+            dailyInfo.AddDailyDataList(dailyData);
 
             DailyInfoService.Save();
         }
