@@ -196,7 +196,7 @@ namespace Jastech.Apps.Winform.UI.Controls
             {
                 AkkonDailyInfo akkonInfo = new AkkonDailyInfo();
 
-                akkonInfo.InspectionTime = inspResult.LastInspTime;
+                akkonInfo.InspectionTime = inspResult.EndInspTime.ToString("HH:mm:ss");
                 akkonInfo.PanelID = inspResult.Cell_ID;
                 akkonInfo.TabNo = item.TabNo;
                 akkonInfo.Judgement = item.Judgement;

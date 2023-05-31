@@ -201,7 +201,7 @@ namespace Jastech.Apps.Winform.UI.Controls
             {
                 AlignDailyInfo alignInfo = new AlignDailyInfo();
 
-                alignInfo.InspectionTime = inspResult.LastInspTime;
+                alignInfo.InspectionTime = inspResult.EndInspTime.ToString("HH:mm:ss");
                 alignInfo.PanelID = inspResult.Cell_ID;
                 alignInfo.TabNo = item.TabNo;
                 alignInfo.Judgement = item.Judgement;

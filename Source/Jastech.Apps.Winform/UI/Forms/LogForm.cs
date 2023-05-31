@@ -132,6 +132,7 @@ namespace Jastech.Framework.Winform.Forms
                     _selectedPagePath = _resultPath;
                     lblProcessCapability.BackColor = _selectedColor;
 
+                    ProcessCapabilityControl.MakeTabListControl(inspModel.TabCount);
                     pnlContents.Controls.Add(ProcessCapabilityControl);
                     break;
 
