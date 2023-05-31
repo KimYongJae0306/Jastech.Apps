@@ -79,8 +79,9 @@ namespace Jastech.Apps.Winform.UI.Controls
                 UpdateTabCount(inspModel.TabCount);
 
             var dailyInfo = DailyInfoService.GetDailyInfo();
-            foreach (var item in dailyInfo.DailyDataList)
-                UpdateDailyDataGridView(item);
+            //foreach (var item in dailyInfo.DailyDataList)
+            //    UpdateDailyDataGridView(item);
+            UpdateDailyDataGridView(dailyInfo);
             UpdateDailyChart(dailyInfo, 0);
         }
 
@@ -160,9 +161,9 @@ namespace Jastech.Apps.Winform.UI.Controls
         {
             InspDisplayControl.Clear();
 
-            var dailyInfo = DailyInfoService.GetDailyInfo();
-
             UpdateDailyInfo(inspResult);
+            var dailyInfo = DailyInfoService.GetDailyInfo();
+            UpdateDailyDataGridView(dailyInfo);
 
             for (int i = 0; i < inspResult.TabResultList.Count(); i++)
             {
@@ -213,12 +214,17 @@ namespace Jastech.Apps.Winform.UI.Controls
                 dailyData.AddAkkonInfo(akkonInfo);
             }
 
-            UpdateDailyDataGridView(dailyData);
+            //UpdateDailyDataGridView(dailyData);
         }
 
-        private void UpdateDailyDataGridView(DailyData dailyData)
+        //private void UpdateDailyDataGridView(DailyData dailyData)
+        //{
+        //    AkkonInspResultControl.UpdateAkkonDaily(dailyData);
+        //}
+
+        private void UpdateDailyDataGridView(DailyInfo dailyInfo)
         {
-            AkkonInspResultControl.UpdateAkkonDaily(dailyData);
+            AkkonInspResultControl.UpdateAkkonDaily(dailyInfo);
         }
 
         private void UpdateDailyChart(DailyInfo dailyInfo, int tabNo)

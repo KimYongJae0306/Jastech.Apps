@@ -25,7 +25,8 @@ namespace Jastech.Apps.Winform.UI.Controls
         #endregion
 
         #region 델리게이트
-        private delegate void UpdateAkkonResultDelegate(DailyData dailyData);
+        //private delegate void UpdateAkkonResultDelegate(DailyData dailyData);
+        private delegate void UpdateAkkonResultDelegate(DailyInfo dailyInfo);
         #endregion
 
         #region 생성자
@@ -36,33 +37,58 @@ namespace Jastech.Apps.Winform.UI.Controls
         #endregion
 
         #region 메서드
-        public void UpdateAkkonDaily(DailyData dailyData)
+        //public void UpdateAkkonDaily(DailyData dailyData)
+        public void UpdateAkkonDaily(DailyInfo dailyInfo)
         {
             if (this.InvokeRequired)
             {
                 UpdateAkkonResultDelegate callback = UpdateAkkonDaily;
-                BeginInvoke(callback, dailyData);
+                BeginInvoke(callback, dailyInfo);
                 return;
             }
 
-            UpdateDataGridView(dailyData);
+            UpdateDataGridView(dailyInfo);
         }
 
-        private void UpdateDataGridView(DailyData dailyData)
+        private void UpdateDataGridView(DailyInfo dailyInfo)
         {
-            foreach (var item in dailyData.AkkonDailyInfoList)
-            {
-                string inspectionTime = item.InspectionTime.ToString();
-                string panelID = item.PanelID.ToString();
-                string tabNumber = item.TabNo.ToString();
-                string judge = item.Judgement.ToString();
-                string count = item.AvgBlobCount.ToString();
-                string length = item.AvgLength.ToString("F2");
+            dgvAkkonHistory.Rows.Clear();
 
-                string[] row = { inspectionTime, panelID, tabNumber, judge, count, length };
-                dgvAkkonHistory.Rows.Add(row);
+            List<DailyData> reverseList = new List<DailyData>();
+            reverseList = Enumerable.Reverse(dailyInfo.DailyDataList).ToList();
+
+            foreach (var dailyDataList in dailyInfo.DailyDataList)
+            {
+                foreach (var item in dailyDataList.AkkonDailyInfoList)
+                {
+                    string inspectionTime = item.InspectionTime.ToString();
+                    string panelID = item.PanelID.ToString();
+                    string tabNumber = item.TabNo.ToString();
+                    string judge = item.Judgement.ToString();
+                    string count = item.AvgBlobCount.ToString();
+                    string length = item.AvgLength.ToString("F2");
+
+                    string[] row = { inspectionTime, panelID, tabNumber, judge, count, length };
+                    dgvAkkonHistory.Rows.Add(row);
+                }
             }
         }
+
+        //private void UpdateDataGridView(DailyData dailyData)
+        //{
+        //    foreach (var item in dailyData.AkkonDailyInfoList)
+        //    {
+        //        string inspectionTime = item.InspectionTime.ToString();
+        //        string panelID = item.PanelID.ToString();
+        //        string tabNumber = item.TabNo.ToString();
+        //        string judge = item.Judgement.ToString();
+        //        string count = item.AvgBlobCount.ToString();
+        //        string length = item.AvgLength.ToString("F2");
+
+        //        string[] row = { inspectionTime, panelID, tabNumber, judge, count, length };
+        //        dgvAkkonHistory.Rows.Add(row);
+        //    }
+        //}
         #endregion
     }
 }

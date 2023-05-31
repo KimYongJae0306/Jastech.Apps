@@ -179,7 +179,6 @@ namespace Jastech.Apps.Winform.UI.Controls
                     AlignSeriesRx.Points.Add(tabData.RX);
                     AlignSeriesRy.Points.Add(tabData.RY);
                     AlignSeriesCx.Points.Add(tabData.CX);
-
                 }
             }
         }
