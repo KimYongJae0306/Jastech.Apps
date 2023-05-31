@@ -870,6 +870,7 @@ namespace ATT.Core
                     "Inspection Time",
                     "Panel ID",
                     "Tab No.",
+                    "Judge",
 
                     "Count Avg",
                     "Length Avg",
@@ -891,9 +892,10 @@ namespace ATT.Core
             {
                 List<string> tabData = new List<string>
                 {
-                    inspResult.LastInspTime,
+                    inspResult.EndInspTime.ToString("HH:mm:ss"),
                     inspResult.Cell_ID,
                     tabNo.ToString(),
+                    inspResult.TabResultList[tabNo].Judgement.ToString(),
 
                     //inspResult.TabResultList[tabNo].MacronAkkonResult.AvgBlobCount.ToString(),
                     //inspResult.TabResultList[tabNo].MacronAkkonResult.AvgLength.ToString("F3"),
