@@ -12,6 +12,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace Jastech.Apps.Winform.Service
 {
@@ -24,18 +25,22 @@ namespace Jastech.Apps.Winform.Service
 
         private DailyData DailyData { get; set; } = new DailyData();
 
-        public void SetDailyData(DailyData dailyData)
+        public void SetAkkonDailyData(List<AkkonDailyInfo> akkonDailyInfoList)
         {
-            DailyData.AlignDailyInfoList.AddRange(dailyData.AlignDailyInfoList);
-            DailyData.AkkonDailyInfoList.AddRange(dailyData.AkkonDailyInfoList);
+            DailyData.AkkonDailyInfoList.AddRange(akkonDailyInfoList);
+        }
+
+        public void SetAlignDailyData(List<AlignDailyInfo> alignDailyInfoList)
+        {
+            DailyData.AlignDailyInfoList.AddRange(alignDailyInfoList);
         }
 
         public DailyData GetDailyData()
         {
-            return DailyData.GetDailyData();
+            return DailyData;
         }
 
-        public void AddDailyData(DailyData dailyData)
+        public void AddDailyDataList(DailyData dailyData)
         {
             if (DailyDataList.Count >= AppsConfig.Instance().Operation.AlignResultCount)
                 DailyDataList.RemoveAt(0);
@@ -64,10 +69,6 @@ namespace Jastech.Apps.Winform.Service
         [JsonProperty]
         public List<AkkonDailyInfo> AkkonDailyInfoList { get; set; } = new List<AkkonDailyInfo>();
 
-        public DailyData GetDailyData()
-        {
-            return this;
-        }
 
         public void AddAlignInfo(AlignDailyInfo alignDailyInfo)
         {
@@ -77,6 +78,8 @@ namespace Jastech.Apps.Winform.Service
             AlignDailyInfoList.Add(alignDailyInfo);
 
             //AlignDailyInfoList.Reverse();
+
+            //re.AlignDailyInfoList.Add(alignDailyInfo);
         }
 
         public void AddAkkonInfo(AkkonDailyInfo akkonDailyInfo)
@@ -87,11 +90,16 @@ namespace Jastech.Apps.Winform.Service
             AkkonDailyInfoList.Add(akkonDailyInfo);
 
             //AkkonDailyInfoList.Reverse();
+
+            //re.AkkonDailyInfoList.Add(akkonDailyInfo);
         }
     }
 
     public class AlignDailyInfo
     {
+        [JsonProperty]
+        public string Name { get; set; } =  "Align";
+
         [JsonProperty]
         public string InspectionTime { get; set; } = string.Empty;
 
@@ -122,6 +130,9 @@ namespace Jastech.Apps.Winform.Service
 
     public class AkkonDailyInfo
     {
+        [JsonProperty]
+        public string Name { get; set; } = "Akkon";
+
         [JsonProperty]
         public string InspectionTime { get; set; } = string.Empty;
 

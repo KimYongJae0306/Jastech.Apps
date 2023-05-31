@@ -468,10 +468,7 @@ namespace ATT.Core
                     break;
 
                 case SeqStep.SEQ_SAVE_RESULT_DATA:
-                    var dailyData = DailyInfoService.GetDailyData();
-                    DailyInfoService.AddDailyData(dailyData);
-                    DailyInfoService.Save();
-
+                    SaveDailyInfo();
                     SaveInspectionResult(AppsInspResult);
                     SeqStep = SeqStep.SEQ_SAVE_IMAGE;
                     break;
@@ -701,6 +698,18 @@ namespace ATT.Core
                 string imagePath = Path.Combine(path, imageName);
                 result.Image.Save(imagePath);
             }
+        }
+
+        private void SaveDailyInfo()
+        {
+            var dailyInfo = DailyInfoService.GetDailyInfo();
+
+            if (dailyInfo == null)
+                return;
+
+            dailyInfo.AddDailyDataList(dailyInfo.GetDailyData());
+
+            DailyInfoService.Save();
         }
 
         private void SaveInspectionResult(AppsInspResult inspResult)

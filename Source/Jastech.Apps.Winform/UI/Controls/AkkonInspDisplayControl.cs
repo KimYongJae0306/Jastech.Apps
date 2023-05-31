@@ -212,10 +212,9 @@ namespace Jastech.Apps.Winform.UI.Controls
                 dailyData.AddAkkonInfo(akkonInfo);
             }
 
-            //var dailyInfo = DailyInfoService.GetDailyInfo();
-            //dailyInfo.AddDailyData(dailyData);
+            var dailyInfo = DailyInfoService.GetDailyInfo();
+            dailyInfo.SetAkkonDailyData(dailyData.AkkonDailyInfoList);
 
-            DailyInfoService.SetDailyData(dailyData);
             UpdateDailyDataGridView(dailyData);
         }
 
