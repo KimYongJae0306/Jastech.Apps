@@ -27,7 +27,7 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         private TabType _tabType { get; set; } = TabType.Tab1;
 
-        private AlignResultType _alignResultType { get; set; } = AlignResultType.All;
+        private AlignResultType _alignResultType { get; set; } = AlignResultType.Lx;
 
         public DateTime StartDate { get; set; } = DateTime.Now;
 
@@ -309,27 +309,31 @@ namespace Jastech.Apps.Winform.UI.Controls
         private void lblLx_Click(object sender, EventArgs e)
         {
             SetAlignResultType(AlignResultType.Lx);
+            UpdateChart(_tabType, _alignResultType);
         }
 
         private void lblLy_Click(object sender, EventArgs e)
         {
             SetAlignResultType(AlignResultType.Ly);
+            UpdateChart(_tabType, _alignResultType);
         }
 
         private void lblCx_Click(object sender, EventArgs e)
         {
             SetAlignResultType(AlignResultType.Cx);
+            UpdateChart(_tabType, _alignResultType);
         }
 
         private void lblRx_Click(object sender, EventArgs e)
         {
             SetAlignResultType(AlignResultType.Rx);
+            UpdateChart(_tabType, _alignResultType);
         }
 
         private void lblRy_Click(object sender, EventArgs e)
         {
             SetAlignResultType(AlignResultType.Ry);
-            //UpdateChart()
+            UpdateChart(_tabType, _alignResultType);
         }
 
         public void SetAlignResultType(AlignResultType alignResultType)
@@ -405,6 +409,9 @@ namespace Jastech.Apps.Winform.UI.Controls
         {
             List<Result> resultList = new List<Result>();
             //UpdateProcessCapabilityResult();
+            var tq = GetDataTable();
+
+            //int columnIndex = tq.Select()
         }
 
         private void UpdateProcessCapabilityResult(List<Result> processCapabilityResultList)
