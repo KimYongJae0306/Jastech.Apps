@@ -34,6 +34,9 @@ namespace Jastech.Apps.Structure.Data
 
             for (int index = 0; index < valueList.Count; index++)
             {
+                if (index == valueList.Count - 1)
+                    continue;
+
                 double diff = Math.Abs(valueList[index + 1] - valueList[index]);
                 listMove.Add(diff);
             }
@@ -61,7 +64,7 @@ namespace Jastech.Apps.Structure.Data
             foreach (var item in valueList)
                 sumOfDeviation += Math.Pow(item - average, 2);
 
-            double std = Math.Sqrt(sumOfDeviation / valueList.Count - 1);
+            double std = Math.Sqrt(sumOfDeviation / (valueList.Count - 1));
             return std;
         }
     }

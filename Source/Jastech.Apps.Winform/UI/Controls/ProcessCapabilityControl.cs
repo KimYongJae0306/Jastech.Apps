@@ -1,4 +1,5 @@
-﻿using Jastech.Apps.Structure.Data;
+﻿using Jastech.Apps.Structure;
+using Jastech.Apps.Structure.Data;
 using Jastech.Framework.Winform.Forms;
 using System;
 using System.Collections.Generic;
@@ -45,7 +46,7 @@ namespace Jastech.Apps.Winform.UI.Controls
         #region 델리게이트
         #endregion
 
-        private DataTable _dataTable = new DataTable();
+        private DataTable _resultDataTable = new DataTable();
 
         private ProcessCapability ProcessCapability { get; set; } = new ProcessCapability();
 
@@ -148,16 +149,16 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         private void InitializeResultDataTable()
         {
-            _dataTable.Columns.Add("No");
-            _dataTable.Columns.Add("Cp");
-            _dataTable.Columns.Add("Cpk");
-            _dataTable.Columns.Add("Pp");
-            _dataTable.Columns.Add("Ppk");
+            _resultDataTable.Columns.Add("Type");
+            _resultDataTable.Columns.Add("Cp");
+            _resultDataTable.Columns.Add("Cpk");
+            _resultDataTable.Columns.Add("Pp");
+            _resultDataTable.Columns.Add("Ppk");
 
             int dataCount = GetDataCount();
             SetDataCount(dataCount);
 
-            InitializeDataGridView(_dataTable.Copy());
+            InitializeDataGridView(_resultDataTable.Copy());
         }
 
         private void InitializeDataGridView(DataTable dataTable)
@@ -309,37 +310,35 @@ namespace Jastech.Apps.Winform.UI.Controls
         private void lblLx_Click(object sender, EventArgs e)
         {
             SetAlignResultType(AlignResultType.Lx);
-            UpdateChart(_tabType, _alignResultType);
         }
 
         private void lblLy_Click(object sender, EventArgs e)
         {
             SetAlignResultType(AlignResultType.Ly);
-            UpdateChart(_tabType, _alignResultType);
         }
 
         private void lblCx_Click(object sender, EventArgs e)
         {
             SetAlignResultType(AlignResultType.Cx);
-            UpdateChart(_tabType, _alignResultType);
         }
 
         private void lblRx_Click(object sender, EventArgs e)
         {
             SetAlignResultType(AlignResultType.Rx);
-            UpdateChart(_tabType, _alignResultType);
         }
 
         private void lblRy_Click(object sender, EventArgs e)
         {
             SetAlignResultType(AlignResultType.Ry);
-            UpdateChart(_tabType, _alignResultType);
         }
 
         public void SetAlignResultType(AlignResultType alignResultType)
         {
             _alignResultType = alignResultType;
             UpdateSelectedAlignResultType(alignResultType);
+
+            UpdateChart(_tabType, _alignResultType);
+            UpdateDataGridView(_tabType, _alignResultType);
         }
 
         private void UpdateSelectedAlignResultType(AlignResultType alignResultType)
@@ -399,36 +398,119 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         private void UpdateChart(TabType tabType, AlignResultType alignResultType)
         {
-            if (_bindingDataTable == null)
+            if (GetDataTable() == null)
                 return;
 
-            ChartControl.UpdateAlignChart(_bindingDataTable, tabType, alignResultType);
+            ChartControl.UpdateAlignChart(GetDataTable(), tabType, alignResultType);
+        }
+
+        private DataTable ParseData(DataTable dataTable, int tabNo)
+        {
+            DataTable newDataTable = new DataTable();
+
+            newDataTable = dataTable.Clone();
+
+            AppsInspModel inspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
+
+            for (int rowIndex = 0; rowIndex < dataTable.Rows.Count / inspModel.TabCount; rowIndex++)
+            {
+                int index = (rowIndex * inspModel.TabCount) + tabNo;
+
+                var rowData = dataTable.Rows[index];
+
+                newDataTable.Rows.Add(rowData.ItemArray);
+            }
+
+            return newDataTable;
         }
 
         private void UpdateDataGridView(TabType tabType, AlignResultType alignResultType)
         {
-            List<Result> resultList = new List<Result>();
-            //UpdateProcessCapabilityResult();
-            var tq = GetDataTable();
+            var dataTable = GetDataTable();
 
-            //int columnIndex = tq.Select()
-        }
+            string queryTab = SelectQuery(tabType);
+            DataRow[] dataRowArray = dataTable.Select(queryTab);
 
-        private void UpdateProcessCapabilityResult(List<Result> processCapabilityResultList)
-        {
-            dgvPCResult.Rows.Clear();
+            int columnIndex = dataTable.Columns.IndexOf(alignResultType.ToString());
 
-            foreach (var item in processCapabilityResultList)
+            List<double> valueList = new List<double>();
+
+            foreach (var item in dataRowArray)
             {
-                string name = "tt";
-                string cp = item.Cp.ToString();
-                string cpk = item.Cpk.ToString();
-                string pp = item.Pp.ToString();
-                string ppk = item.Ppk.ToString("F2");
-
-                string[] row = { name, cp, cpk, pp, ppk };
-                dgvPCResult.Rows.Add(row);
+                var value = Convert.ToDouble(item.ItemArray[columnIndex]);
+                valueList.Add(value);
             }
+            
+            double upperSpecLimit = Convert.ToDouble(lblUpperSpecLimit.Text);
+            double lowerSpecLimit = Convert.ToDouble(lblLowerSpecLimit.Text);
+            var result = ProcessCapability.GetResult(valueList, upperSpecLimit, lowerSpecLimit);
+
+            List<string> dataList = new List<string>();
+            dataList.Add(alignResultType.ToString());
+            dataList.Add(result.Cp.ToString());
+            dataList.Add(result.Cpk.ToString());
+            dataList.Add(result.Pp.ToString());
+            dataList.Add(result.Ppk.ToString());
+
+            DataTable newDataTable = new DataTable();
+            newDataTable = _resultDataTable.Clone();
+
+
+            //string[] dataArray = { alignResultType.ToString(), result.Cp.ToString(), result.Cpk.ToString(), result.Pp.ToString(), result.Ppk.ToString() };
+
+            DataRow dr = newDataTable.NewRow();
+            dr.ItemArray = dataList.ToArray();
+
+            newDataTable.Rows.Add(dr);
+
+            dgvPCResult.DataSource = newDataTable;
         }
+
+        private string SelectQuery(TabType tabType)
+        {
+            string query = string.Empty;
+
+            switch (tabType)
+            {
+                case TabType.Tab1:
+                    query = "Tab = '0'";
+                    break;
+
+                case TabType.Tab2:
+                    query = "Tab = '1'";
+                    break;
+
+                case TabType.Tab3:
+                    query = "Tab = '2'";
+                    break;
+                case TabType.Tab4:
+                    query = "Tab = '3'";
+                    break;
+                case TabType.Tab5:
+                    query = "Tab = '4'";
+                    break;
+                default:
+                    break;
+            }
+
+            return query;
+        }
+
+        //private void UpdateProcessCapabilityResult(List<Result> processCapabilityResultList)
+        //{
+        //    dgvPCResult.Rows.Clear();
+
+        //    foreach (var item in processCapabilityResultList)
+        //    {
+        //        string name = "tt";
+        //        string cp = item.Cp.ToString();
+        //        string cpk = item.Cpk.ToString();
+        //        string pp = item.Pp.ToString();
+        //        string ppk = item.Ppk.ToString("F2");
+
+        //        string[] row = { name, cp, cpk, pp, ppk };
+        //        dgvPCResult.Rows.Add(row);
+        //    }
+        //}
     }
 }

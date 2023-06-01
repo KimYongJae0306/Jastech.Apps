@@ -83,6 +83,24 @@ namespace ATT.UI.Forms
             AddControl();
             StartTimer();
             InitializeUI();
+            SetDefaultValue();
+        }
+
+        private void SetDefaultValue()
+        {
+            if (MotionJogControl != null)
+            {
+                MotionJogControl.JogMode = JogMode.Jog;
+                MotionJogControl.JogSpeedMode = JogSpeedMode.Slow;
+                MotionJogControl.JogPitch = Convert.ToInt32(lblPitchXYValue.Text);
+            }
+
+            if (LAFJogControl != null)
+            {
+                LAFJogControl.JogMode = JogMode.Jog;
+                LAFJogControl.JogSpeedMode = JogSpeedMode.Slow;
+                LAFJogControl.MoveAmount = Convert.ToInt32(lblPitchZValue.Text);
+            }
         }
 
         private void InitializeUI()
