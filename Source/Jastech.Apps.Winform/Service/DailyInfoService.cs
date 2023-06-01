@@ -29,10 +29,5 @@ namespace Jastech.Apps.Winform.Service
         {
             return DailyInfo;
         }
-
-        public static DailyData GetDailyData()
-        {
-            return DailyData;
-        }
     }
 }

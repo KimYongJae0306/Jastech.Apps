@@ -705,16 +705,15 @@ namespace ATT.Core
 
         private void UpdateDailyInfo(AppsInspResult inspResult)
         {
-            UpdateAlignDailyInfo(inspResult);
-            UpdateAkkonDailyInfo(inspResult);
-            AddDailyInfo();
+            var dailyData = new DailyData();
+            UpdateAlignDailyInfo(inspResult, ref dailyData);
+            UpdateAkkonDailyInfo(inspResult, ref dailyData);
+
+            AddDailyInfo(dailyData);
         }
 
-        private void UpdateAlignDailyInfo(AppsInspResult inspResult)
+        private void UpdateAlignDailyInfo(AppsInspResult inspResult, ref DailyData dailyData)
         {
-            var dailyData = DailyInfoService.GetDailyData();
-            dailyData.ClearAlignInfo();
-
             foreach (var item in inspResult.TabResultList)
             {
                 AlignDailyInfo alignInfo = new AlignDailyInfo();
@@ -733,11 +732,8 @@ namespace ATT.Core
             }
         }
 
-        private void UpdateAkkonDailyInfo(AppsInspResult inspResult)
+        private void UpdateAkkonDailyInfo(AppsInspResult inspResult, ref DailyData dailyData)
         {
-            var dailyData = DailyInfoService.GetDailyData();
-            dailyData.ClearAkkonInfo();
-
             foreach (var item in inspResult.TabResultList)
             {
                 AkkonDailyInfo akkonInfo = new AkkonDailyInfo();
@@ -760,16 +756,11 @@ namespace ATT.Core
             }
         }
 
-        private void AddDailyInfo()
+        private void AddDailyInfo(DailyData dailyData)
         {
             var dailyInfo = DailyInfoService.GetDailyInfo();
 
             if (dailyInfo == null)
-                return;
-
-            var dailyData = DailyInfoService.GetDailyData();
-
-            if (dailyData == null)
                 return;
 
             dailyInfo.AddDailyDataList(dailyData);

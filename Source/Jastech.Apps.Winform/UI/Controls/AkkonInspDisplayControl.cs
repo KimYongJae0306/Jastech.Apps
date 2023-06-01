@@ -184,33 +184,6 @@ namespace Jastech.Apps.Winform.UI.Controls
             }
         }
 
-        //private void UpdateDailyInfo(AppsInspResult inspResult)
-        //{
-        //    var dailyData = DailyInfoService.GetDailyData();
-        //    dailyData.ClearAkkonInfo();
-
-        //    foreach (var item in inspResult.TabResultList)
-        //    {
-        //        AkkonDailyInfo akkonInfo = new AkkonDailyInfo();
-
-        //        akkonInfo.InspectionTime = inspResult.EndInspTime.ToString("HH:mm:ss");
-        //        akkonInfo.PanelID = inspResult.Cell_ID;
-        //        akkonInfo.TabNo = item.TabNo;
-        //        akkonInfo.Judgement = item.Judgement;
-        //        //akkonInfo.AvgBlobCount = item.MacronAkkonResult.AvgBlobCount;
-        //        //akkonInfo.AvgLength = item.MacronAkkonResult.AvgLength;
-        //        //akkonInfo.AvgStrength = item.MacronAkkonResult.AvgStrength;
-        //        //akkonInfo.AvgSTD = item.MacronAkkonResult.AvgStd;
-
-        //        akkonInfo.AvgBlobCount = 10;
-        //        akkonInfo.AvgLength = 10;
-        //        akkonInfo.AvgStrength = 10;
-        //        akkonInfo.AvgSTD = 10;
-
-        //        dailyData.AddAkkonInfo(akkonInfo);
-        //    }
-        //}
-
         private void UpdateDailyDataGridView(DailyInfo dailyInfo)
         {
             AkkonInspResultControl.UpdateAkkonDaily(dailyInfo);

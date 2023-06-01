@@ -191,29 +191,6 @@ namespace Jastech.Apps.Winform.UI.Controls
             }
         }
 
-        //private void UpdateDailyInfo(AppsInspResult inspResult)
-        //{
-        //    var dailyData = DailyInfoService.GetDailyData();
-        //    dailyData.ClearAlignInfo();
-
-        //    foreach (var item in inspResult.TabResultList)
-        //    {
-        //        AlignDailyInfo alignInfo = new AlignDailyInfo();
-
-        //        alignInfo.InspectionTime = inspResult.EndInspTime.ToString("HH:mm:ss");
-        //        alignInfo.PanelID = inspResult.Cell_ID;
-        //        alignInfo.TabNo = item.TabNo;
-        //        alignInfo.Judgement = item.Judgement;
-        //        alignInfo.LX = item.LeftAlignX.ResultValue;
-        //        alignInfo.LY = item.LeftAlignY.ResultValue;
-        //        alignInfo.RX = item.RightAlignX.ResultValue;
-        //        alignInfo.RY = item.RightAlignY.ResultValue;
-        //        alignInfo.CX = item.CenterX;
-
-        //        dailyData.AddAlignInfo(alignInfo);
-        //    }
-        //}
-
         private void UpdateDailyDataGridView(DailyInfo dailyInfo)
         {
             AlignInspResultControl.UpdateAlignDaily(dailyInfo);
