@@ -66,6 +66,7 @@ namespace Jastech.Apps.Winform.UI.Controls
         private void AddControl()
         {
             ChartControl.ChartType = ResultChartControl.InspChartType.Align;
+            pnlChart.Controls.Add(ChartControl);
         }
 
         private void InitializeUI()
@@ -78,10 +79,10 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         public void MakeTabListControl(int tabCount)
         {
-            int controlWidth = 120;
-            int controlHeight = 60;
-            Point point = new Point(160, 0);
-            int interval = 20;
+            //int controlWidth = 120;
+            //int controlHeight = 60;
+            //Point point = new Point(160, 0);
+            //int interval = 20;
 
             for (int tabIndex = 0; tabIndex < tabCount; tabIndex++)
             {
@@ -92,12 +93,13 @@ namespace Jastech.Apps.Winform.UI.Controls
                 lbl.TextAlign = ContentAlignment.MiddleCenter;
                 lbl.Text = "Tab" + (tabIndex + 1);
                 lbl.Margin = new Padding(0);
-                lbl.Size = new Size(controlWidth, controlHeight);
+                //lbl.Size = new Size(controlWidth, controlHeight);
                 lbl.MouseClick += LabelControl_SetTabEventHandler;
-                lbl.Location = point;
+                //lbl.Location = point;
+                lbl.Dock = DockStyle.Fill;
 
                 tlpTab.Controls.Add(lbl);
-                point.X += controlWidth + interval;
+                //point.X += controlWidth + interval;
 
                 _tabLabelList.Add(lbl);
             }
@@ -120,6 +122,7 @@ namespace Jastech.Apps.Winform.UI.Controls
             _tabLabelList[(int)tabType].BackColor = _selectedColor;
 
             UpdateChart(_tabType, _alignResultType);
+            UpdateDataGridView(_tabType, _alignResultType);
         }
 
         private void ClearSelectedTabLabel()
@@ -255,52 +258,52 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         }
 
-        public void UpdateParameterDataGridView(string path)
+        public void UpdateAlignDataGridView(string path)
         {
-            //using (FileStream fs = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
-            //{
-            //    int readLine = 0;
-            //    int headerLine = 0;
+            using (FileStream fs = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
+            {
+                int readLine = 0;
+                int headerLine = 0;
 
-            //    DataTable table = new DataTable();
+                DataTable table = new DataTable();
 
-            //    table.Columns.Add("Time");
-            //    table.Columns.Add("Panel ID");
-            //    table.Columns.Add("Tab");
-            //    table.Columns.Add("Judge");
-            //    table.Columns.Add("Lx");
-            //    table.Columns.Add("Ly");
-            //    table.Columns.Add("Cx");
-            //    table.Columns.Add("Rx");
-            //    table.Columns.Add("Ry");
+                table.Columns.Add("Time");
+                table.Columns.Add("Panel ID");
+                table.Columns.Add("Tab");
+                table.Columns.Add("Judge");
+                table.Columns.Add("Lx");
+                table.Columns.Add("Ly");
+                table.Columns.Add("Cx");
+                table.Columns.Add("Rx");
+                table.Columns.Add("Ry");
 
-            //    StreamReader sr = new StreamReader(fs);
+                StreamReader sr = new StreamReader(fs);
 
-            //    while (!sr.EndOfStream)
-            //    {
-            //        if (readLine == headerLine)
-            //        {
-            //            string header = sr.ReadLine();
-            //        }
-            //        else
-            //        {
-            //            string contents = sr.ReadLine();
+                while (!sr.EndOfStream)
+                {
+                    if (readLine == headerLine)
+                    {
+                        string header = sr.ReadLine();
+                    }
+                    else
+                    {
+                        string contents = sr.ReadLine();
 
-            //            string[] dataArray = contents.Split(',');
+                        string[] dataArray = contents.Split(',');
 
-            //            table.Rows.Add(dataArray[0], dataArray[1], dataArray[2], dataArray[3],
-            //                dataArray[4], dataArray[5], dataArray[6], dataArray[7], dataArray[8]);
-            //        }
+                        table.Rows.Add(dataArray[0], dataArray[1], dataArray[2], dataArray[3],
+                            dataArray[4], dataArray[5], dataArray[6], dataArray[7], dataArray[8]);
+                    }
 
-            //        readLine++;
-            //    }
+                    readLine++;
+                }
 
-            //    sr.Close();
+                sr.Close();
 
-            //    dgvAlignTrendData.DataSource = table;
+                dgvAlignData.DataSource = table;
 
-            //    SetDataTable(table.Copy());
-            //}
+                SetDataTable(table.Copy());
+            }
         }
 
         private void lblLx_Click(object sender, EventArgs e)
@@ -379,14 +382,6 @@ namespace Jastech.Apps.Winform.UI.Controls
             }
         }
 
-        private void UpdateChart(TabType tabType, AlignResultType alignResultType)
-        {
-            if (_bindingDataTable == null)
-                return;
-
-            ChartControl.UpdateAlignChart(_bindingDataTable, tabType, alignResultType);
-        }
-
         private DataTable _bindingDataTable = new DataTable();
         private void SetDataTable(DataTable dt)
         {
@@ -398,51 +393,34 @@ namespace Jastech.Apps.Winform.UI.Controls
             return _bindingDataTable;
         }
 
-        public void UpdateDataGridView(string path)
+        private void UpdateChart(TabType tabType, AlignResultType alignResultType)
         {
-            using (FileStream fs = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
+            if (_bindingDataTable == null)
+                return;
+
+            ChartControl.UpdateAlignChart(_bindingDataTable, tabType, alignResultType);
+        }
+
+        private void UpdateDataGridView(TabType tabType, AlignResultType alignResultType)
+        {
+            List<Result> resultList = new List<Result>();
+            //UpdateProcessCapabilityResult();
+        }
+
+        private void UpdateProcessCapabilityResult(List<Result> processCapabilityResultList)
+        {
+            dgvPCResult.Rows.Clear();
+
+            foreach (var item in processCapabilityResultList)
             {
-                int readLine = 0;
-                int headerLine = 0;
+                string name = "tt";
+                string cp = item.Cp.ToString();
+                string cpk = item.Cpk.ToString();
+                string pp = item.Pp.ToString();
+                string ppk = item.Ppk.ToString("F2");
 
-                DataTable table = new DataTable();
-
-                table.Columns.Add("Time");
-                table.Columns.Add("Panel ID");
-                table.Columns.Add("Tab");
-                table.Columns.Add("Judge");
-                table.Columns.Add("Lx");
-                table.Columns.Add("Ly");
-                table.Columns.Add("Cx");
-                table.Columns.Add("Rx");
-                table.Columns.Add("Ry");
-
-                StreamReader sr = new StreamReader(fs);
-
-                while (!sr.EndOfStream)
-                {
-                    if (readLine == headerLine)
-                    {
-                        string header = sr.ReadLine();
-                    }
-                    else
-                    {
-                        string contents = sr.ReadLine();
-
-                        string[] dataArray = contents.Split(',');
-
-                        table.Rows.Add(dataArray[0], dataArray[1], dataArray[2], dataArray[3],
-                            dataArray[4], dataArray[5], dataArray[6], dataArray[7], dataArray[8]);
-                    }
-
-                    readLine++;
-                }
-
-                sr.Close();
-
-                //dgvAlignTrendData.DataSource = table;
-
-                SetDataTable(table.Copy());
+                string[] row = { name, cp, cpk, pp, ppk };
+                dgvPCResult.Rows.Add(row);
             }
         }
     }
