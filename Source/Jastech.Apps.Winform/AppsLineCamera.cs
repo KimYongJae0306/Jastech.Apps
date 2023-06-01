@@ -267,10 +267,41 @@ namespace Jastech.Apps.Winform
             }
             else
             {
-             
-                //lock (_lock)
-                lock(_dataLock)
-                    DataQueue.Enqueue(data);
+
+                //lock(_dataLock)
+                //    DataQueue.Enqueue(data);
+
+                if (data != null)
+                {
+                    if (_stackTabNo >= TabScanImageList.Count())
+                        return;
+
+                    TabScanImage tabScanImage = GetTabScanImage(_stackTabNo);
+
+                    if (tabScanImage.StartIndex <= _curGrabCount && _curGrabCount <= tabScanImage.EndIndex)
+                    {
+                        Mat mat = MatHelper.ByteArrayToMat(data, tabScanImage.SubImageWidth, tabScanImage.SubImageHeight, 1);
+                        Mat rotatedMat = MatHelper.Transpose(mat);
+                        tabScanImage.AddSubImage(rotatedMat);
+                        mat.Dispose();
+                    }
+
+                    if (tabScanImage.IsAddImageDone())
+                    {
+                        //Console.WriteLine("Add Image Done." + _stackTabNo.ToString());
+                        _stackTabNo++;
+                        tabScanImage.ExcuteMerge = true;
+
+                        if (_stackTabNo == TabScanImageList.Count())
+                        {
+                            Console.WriteLine("CurrentGrab Count :" + _curGrabCount.ToString() + " StackNo : " + _stackTabNo.ToString() + " GrabCount : " + GrabCount.ToString());
+                            Camera.Stop();
+                            GrabDoneEventHanlder?.Invoke(Camera.Name, true);
+                        }
+                        TabImageGrabCompletedEventHandler?.Invoke(Camera.Name, tabScanImage);
+                    }
+                    _curGrabCount++;
+                }
             }
         }
 

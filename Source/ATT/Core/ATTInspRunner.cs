@@ -198,15 +198,15 @@ namespace ATT.Core
 
             AppsInspResult.TabResultList.Add(new TabInspResult());
 
-            AkkonThreadParam param = new AkkonThreadParam();
-            param.Tab = tab;
-            param.TabInspResult = inspResult;
-            lock (_akkonLock)
-            {
-                Console.WriteLine("Add Akkon : " + tab.Index);
-                AkkonInspQueue.Enqueue(param);
+            //AkkonThreadParam param = new AkkonThreadParam();
+            //param.Tab = tab;
+            //param.TabInspResult = inspResult;
+            //lock (_akkonLock)
+            //{
+            //    Console.WriteLine("Add Akkon : " + tab.Index);
+            //    AkkonInspQueue.Enqueue(param);
 
-            }
+            //}
 
         }
 
@@ -249,7 +249,7 @@ namespace ATT.Core
                 //    Console.WriteLine("Add Akkon Result_" + tab.Index);
                 //}
 
-                Thread.Sleep(50);
+                Thread.Sleep(100);
                 //AppsInspResult.TabResultList.Add(new TabInspResult());
             }
         }
@@ -323,10 +323,9 @@ namespace ATT.Core
             var appsLineCamera = AppsLineCameraManager.Instance().GetAppsCamera(CameraName.LinscanMIL0.ToString());
             appsLineCamera.TabImageGrabCompletedEventHandler += ATTSeqRunner_TabImageGrabCompletedEventHandler;
             appsLineCamera.GrabDoneEventHanlder += ATTSeqRunner_GrabDoneEventHanlder;
-            AppsLineCameraManager.Instance().GetLineCamera(CameraName.LinscanMIL0).StartMainGrabTask();
+            //AppsLineCameraManager.Instance().GetLineCamera(CameraName.LinscanMIL0).StartMainGrabTask();
             //AppsLineCameraManager.Instance().GetLineCamera(CameraName.LinscanMIL0).StartMergeTask();
-            StartAkkonInspTask();
-
+            //StartAkkonInspTask();
 
             Logger.Write(LogType.Seq, "Start Sequence.");
 
