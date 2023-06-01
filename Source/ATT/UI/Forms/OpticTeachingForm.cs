@@ -197,6 +197,8 @@ namespace ATT.UI.Forms
                 default:
                     break;
             }
+
+            UpdateData();
         }
 
         public void UpdateUI()
@@ -226,7 +228,7 @@ namespace ATT.UI.Forms
             if (appsLineCamera != null)
             {
                 if (appsLineCamera.TDIOperationMode == TDIOperationMode.Area)
-                    lblCameraExposureValue.Text = appsLineCamera.GetExposureTime().ToString("F3");
+                    lblCameraExposureValue.Text = Convert.ToInt32(appsLineCamera.GetExposureTime()).ToString();
                 else
                     lblCameraExposureValue.Text = appsLineCamera.GetDigitalGain().ToString("F3");
 

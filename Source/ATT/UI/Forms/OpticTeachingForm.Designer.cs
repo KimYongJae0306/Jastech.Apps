@@ -28,7 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
             this.tlpJog = new System.Windows.Forms.TableLayoutPanel();
             this.tlpJogFunction = new System.Windows.Forms.TableLayoutPanel();
             this.pnlJog = new System.Windows.Forms.Panel();
@@ -119,7 +118,7 @@
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.pnlDisplay = new System.Windows.Forms.Panel();
             this.pnlHistogram = new System.Windows.Forms.Panel();
-            this.StatusTimer = new System.Windows.Forms.Timer(this.components);
+            this.StatusTimer = new System.Windows.Forms.Timer();
             this.tlpJog.SuspendLayout();
             this.tlpJogFunction.SuspendLayout();
             this.pnlJog.SuspendLayout();
@@ -1210,7 +1209,7 @@
             // tlpAutoFocus
             // 
             this.tlpAutoFocus.ColumnCount = 2;
-            this.tlpAutoFocus.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 420F));
+            this.tlpAutoFocus.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 400F));
             this.tlpAutoFocus.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tlpAutoFocus.Controls.Add(this.pnlAutoFocus, 0, 1);
             this.tlpAutoFocus.Controls.Add(this.lblAutoFocus, 0, 0);
@@ -1230,7 +1229,7 @@
             this.pnlAutoFocus.Location = new System.Drawing.Point(0, 30);
             this.pnlAutoFocus.Margin = new System.Windows.Forms.Padding(0);
             this.pnlAutoFocus.Name = "pnlAutoFocus";
-            this.pnlAutoFocus.Size = new System.Drawing.Size(420, 200);
+            this.pnlAutoFocus.Size = new System.Drawing.Size(400, 200);
             this.pnlAutoFocus.TabIndex = 0;
             // 
             // lblAutoFocus
@@ -1242,7 +1241,7 @@
             this.lblAutoFocus.Location = new System.Drawing.Point(0, 0);
             this.lblAutoFocus.Margin = new System.Windows.Forms.Padding(0);
             this.lblAutoFocus.Name = "lblAutoFocus";
-            this.lblAutoFocus.Size = new System.Drawing.Size(420, 30);
+            this.lblAutoFocus.Size = new System.Drawing.Size(400, 30);
             this.lblAutoFocus.TabIndex = 153;
             this.lblAutoFocus.Text = "AUTO FOCUS CONTROL";
             this.lblAutoFocus.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
