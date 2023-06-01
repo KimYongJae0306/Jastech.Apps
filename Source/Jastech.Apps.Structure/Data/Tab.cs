@@ -36,6 +36,7 @@ namespace Jastech.Apps.Structure.Data
             tab.Name = Name;
             tab.Index = Index;
             tab.StageIndex = StageIndex;
+
             tab.FpcMarkParamList = FpcMarkParamList.Select(x => x.DeepCopy()).ToList();
             tab.PanelMarkParamList = PanelMarkParamList.Select(x => x.DeepCopy()).ToList();
             tab.AlignParamList = AlignParamList.Select(x => x.DeepCopy()).ToList();
@@ -58,6 +59,7 @@ namespace Jastech.Apps.Structure.Data
             FpcMarkParamList.Clear();
             PanelMarkParamList.Clear();
             AlignParamList.Clear();
+            AkkonParam.Dispose();
         }
 
         public AlignParam GetAlignParam(ATTTabAlignName alignName)

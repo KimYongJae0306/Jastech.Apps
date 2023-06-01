@@ -1,6 +1,7 @@
 ﻿using Cognex.VisionPro;
 using Cognex.VisionPro.Blob;
 using Cognex.VisionPro.Caliper;
+using Cognex.VisionPro.PMAlign;
 using Emgu.CV;
 using Emgu.CV.CvEnum;
 using Emgu.CV.Structure;
@@ -37,9 +38,35 @@ namespace KYJ_TEST
         {
             InitializeComponent();
         }
-
+        CogPMAlignTool tool = new CogPMAlignTool();
         private void Form1_Load(object sender, EventArgs e)
         {
+            Mat srcMat = new Mat(@"D:\Test\srcMatMat.bmp", ImreadModes.Grayscale);
+            Mat maskMat = new Mat(@"D:\Test\MaskMat.bmp", ImreadModes.Grayscale);
+
+            for (int i = 0; i < 10; i++)
+            {
+                MCvScalar meanScalar = new MCvScalar();
+                MCvScalar sigmaScalar = new MCvScalar();
+                CvInvoke.MeanStdDev(srcMat, ref meanScalar, ref sigmaScalar, maskMat);
+
+                double va = meanScalar.V0 + sigmaScalar.V0 * 1.0;
+                Console.WriteLine(" meanScalar.V0 : " + meanScalar.V0 + "  sigmaScalar.V0 : " + sigmaScalar.V0 + "   " + va);
+            }
+
+            //srcMat = new Mat(@"D:\Test\srcMatMat - 복사본.bmp", ImreadModes.Grayscale);
+            maskMat = new Mat(@"D:\Test\MaskMat - 복사본.bmp", ImreadModes.Grayscale);
+            for (int i = 0; i < 10; i++)
+            {
+                MCvScalar meanScalar = new MCvScalar();
+                MCvScalar sigmaScalar = new MCvScalar();
+                CvInvoke.MeanStdDev(srcMat, ref meanScalar, ref sigmaScalar, maskMat);
+
+                double va = meanScalar.V0 + sigmaScalar.V0 * 1.0;
+                Console.WriteLine(" meanScalar.V0 : " + meanScalar.V0 + "  sigmaScalar.V0 : " + sigmaScalar.V0 + "   " + va);
+            }
+            Console.WriteLine("----------------");
+            int gg1 = 0;
             //VisionProHelper.InitMemory();
             //ICogImage cogImage = new CogImage8Grey(new Bitmap(10, 10));
             //CogBlobTool tool = new CogBlobTool();
@@ -51,7 +78,7 @@ namespace KYJ_TEST
             //panel1.Controls.Add(CogDisplayControl);
             //Test();
             //Test2();
-            TestAkkon();
+            //TestAkkon();
           
         }
         private void Test2()
@@ -151,8 +178,8 @@ namespace KYJ_TEST
 
             var roiList = ReadROI(maskFile);
             var param = new AkkonAlgoritmParam();
-            param.ThresParam.Weight = 1;
-            param.ResizeRatio = 0.5;
+            param.ImageFilterParam.Weight = 1;
+            param.ImageFilterParam.ResizeRatio = 0.5;
             Stopwatch sw = new Stopwatch();
 
             for (int i = 0; i < 1000; i++)

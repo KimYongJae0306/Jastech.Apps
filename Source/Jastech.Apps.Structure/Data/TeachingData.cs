@@ -23,7 +23,6 @@ namespace Jastech.Apps.Structure.Data
         public void Initialize(AppsInspModel inspModel)
         {
             Dispose();
-
             foreach (var unit in inspModel.GetUnitList())
                 UnitList.Add(unit.DeepCopy());
         }

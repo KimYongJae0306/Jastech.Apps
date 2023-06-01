@@ -9,6 +9,7 @@ using Jastech.Apps.Winform.UI.Controls;
 using Jastech.Framework.Imaging;
 using Jastech.Framework.Imaging.VisionPro;
 using Jastech.Framework.Structure;
+using Jastech.Framework.Users;
 using Jastech.Framework.Winform.Forms;
 using Jastech.Framework.Winform.VisionPro.Controls;
 using System;
@@ -89,8 +90,8 @@ namespace ATT.UI.Forms
             _isLoading = true;
 
             SystemManager.Instance().UpdateTeachingData();
+            
             TeachingTabList = SystemManager.Instance().GetTeachingData().GetUnit(UnitName.ToString()).GetTabList();
-
             AddControl();
             InitializeTabComboBox();
 
@@ -232,6 +233,10 @@ namespace ATT.UI.Forms
                 case DisplayType.Akkon:
                     btnAkkon.BackColor = _selectedColor;
                     AkkonControl.SetParams(CurrentTab);
+                    if (UserManager.Instance().CurrentUser.Type == AuthorityType.Maker)
+                        AkkonControl.UserMaker = true;
+                    else
+                        AkkonControl.UserMaker = false;
                     pnlTeach.Controls.Add(AkkonControl);
                     break;
 
@@ -344,6 +349,9 @@ namespace ATT.UI.Forms
 
         private void LineTeachingForm_FormClosing(object sender, FormClosingEventArgs e)
         {
+            Display.DisposeImage();
+            MarkControl.DisposeImage();
+
             var appsLineCamera = AppsLineCameraManager.Instance().GetLineCamera(CameraName.LinscanMIL0);
             appsLineCamera.TabImageGrabCompletedEventHandler -= LineTeachingForm_TabImageGrabCompletedEventHandler;
             appsLineCamera.GrabDoneEventHanlder -= LineTeachingForm_GrabDoneEventHanlder;

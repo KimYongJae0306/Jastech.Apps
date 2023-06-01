@@ -1,4 +1,5 @@
 ﻿using Jastech.Apps.Structure;
+using Jastech.Apps.Winform;
 using Jastech.Apps.Winform.Settings;
 using Jastech.Framework.Device.LightCtrls;
 using Jastech.Framework.Imaging.VisionPro.VisionAlgorithms;
@@ -36,6 +37,7 @@ namespace ATT
             SystemHelper.StartChecker(@"D:\ATT_Memory_Test.txt");
             AppsConfig.Instance().Initialize();
             AppsConfig.Instance().Load();
+            UserManager.Instance().Initialize();
 
             Logger.Initialize(AppsConfig.Instance().Path.Log);
 

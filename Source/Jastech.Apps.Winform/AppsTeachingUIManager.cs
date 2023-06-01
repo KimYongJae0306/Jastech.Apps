@@ -1,6 +1,7 @@
 ﻿using Cognex.VisionPro;
 using Emgu.CV;
 using Jastech.Framework.Imaging.Helper;
+using Jastech.Framework.Imaging.VisionPro;
 using Jastech.Framework.Winform.VisionPro.Controls;
 using System;
 using System.Collections.Generic;
@@ -130,10 +131,19 @@ namespace Jastech.Apps.Winform
 
         public void SetResultCogImage(ICogImage cogImage)
         {
-            if (ResultCogImageBuffer != null)
-                ResultCogImageBuffer = null;
+            if(ResultCogImageBuffer is CogImage8Grey grey)
+            {
+                grey.Dispose();
+                grey = null;
+            }
+            if (ResultCogImageBuffer is CogImage24PlanarColor color)
+            {
+                color.Dispose();
+                color = null;
+            }
 
-            ResultCogImageBuffer = cogImage.CopyBase(CogImageCopyModeConstants.CopyPixels);
+            //ResultCogImageBuffer = cogImage.CopyBase(CogImageCopyModeConstants.CopyPixels);
+            ResultCogImageBuffer = cogImage;
             TeachingDisplay?.SetImage(ResultCogImageBuffer);
         }
 

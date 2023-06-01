@@ -256,6 +256,7 @@
     <Compile Include="UI\Forms\UnitSelectForm.Designer.cs">
       <DependentUpon>UnitSelectForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="UserManager.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Properties\Resources.resx">
@@ -396,6 +397,10 @@
     <ProjectReference Include="..\..\..\Jastech.Core\src\Jastech.Framework.Winform\Jastech.Framework.Winform.csproj">
       <Project>{D46C7263-535A-4BF9-AD14-5183EDE0A984}</Project>
       <Name>Jastech.Framework.Winform</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Jastech.Core\src\Jastech.Framework\Jastech.Framework.csproj">
+      <Project>{28E92A79-C5AB-4B93-9ABA-A9F40DE4DBCE}</Project>
+      <Name>Jastech.Framework</Name>
     </ProjectReference>
     <ProjectReference Include="..\Jastech.Apps.Structure\Jastech.Apps.Structure.csproj">
       <Project>{1D6EA4E5-02D4-4C2A-8873-D336D420E726}</Project>

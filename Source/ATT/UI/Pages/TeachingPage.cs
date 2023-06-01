@@ -28,6 +28,7 @@ namespace ATT.UI.Pages
             form.TitleCameraName = "LineScan";
             form.CameraName = CameraName.LinscanMIL0;
             form.ShowDialog();
+            GC.Collect();
         }
 
         private void btnLinescanSetting_Click(object sender, EventArgs e)

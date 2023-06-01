@@ -553,6 +553,8 @@ namespace ATT.UI.Forms
 
         private void OpticTeachingForm_FormClosing(object sender, FormClosingEventArgs e)
         {
+            DrawBoxControl.DisposeImage();
+
             AppsLineCamera appsLineCamera = AppsLineCameraManager.Instance().GetLineCamera(CameraName);
             appsLineCamera.StopLiveTask();
             appsLineCamera.StopMainGrabTask();
