@@ -918,19 +918,29 @@ namespace ATT.Core
                 {
                     "Inspection Time",
                     "Panel ID",
+                    "Stage No.",
                     "Tab No.",
-                    "Judge",
 
+                    "Count Min",
                     "Count Avg",
+                    "Length Min",
                     "Length Avg",
+                    "Strength Min",
                     "Strength Avg",
-                    "Std Avg",
 
                     "Left Align X",
                     "Left Align Y",
                     "Center Align X",
                     "Right Align X",
                     "Right Align Y",
+
+                    "ACF Head",
+                    "Pre Head",
+                    "Main Head",
+
+                    "Judge",
+                    "Cause",
+                    "Op Judge"
                 };
 
                 CSVHelper.WriteHeader(csvFile, header);
@@ -941,25 +951,35 @@ namespace ATT.Core
             {
                 List<string> tabData = new List<string>
                 {
-                    inspResult.EndInspTime.ToString("HH:mm:ss"),
-                    inspResult.Cell_ID,
-                    tabNo.ToString(),
-                    inspResult.TabResultList[tabNo].Judgement.ToString(),
+                    inspResult.EndInspTime.ToString("HH:mm:ss"),                                    // Insp Time
+                    inspResult.Cell_ID,                                                             // Panel ID
+                    1.ToString(),                                                                   // Stage
+                    tabNo.ToString(),                                                               // Tab
 
                     //inspResult.TabResultList[tabNo].MacronAkkonResult.AvgBlobCount.ToString(),
                     //inspResult.TabResultList[tabNo].MacronAkkonResult.AvgLength.ToString("F3"),
                     //inspResult.TabResultList[tabNo].MacronAkkonResult.AvgStrength.ToString("F3"),
                     //inspResult.TabResultList[tabNo].MacronAkkonResult.AvgStd.ToString("F3"),
-                    10.ToString(),
-                    0.ToString("F3"),
-                    0.ToString("F3"),
-                    0.ToString("F3"),
+                    (tabNo + 1).ToString(),                                                         // Count Min
+                    (tabNo + 2).ToString("F3"),                                                     // Count Avg
+                    (tabNo + 3).ToString(),                                                         // Length Min
+                    (tabNo + 4).ToString("F3"),                                                     // Length Avg
+                    (tabNo + 5).ToString(),                                                         // Strength Min
+                    (tabNo + 6).ToString("F3"),                                                     // Strength Avg
 
-                    inspResult.TabResultList[tabNo].LeftAlignX.ResultValue.ToString("F3"),
-                    inspResult.TabResultList[tabNo].LeftAlignY.ResultValue.ToString("F3"),
-                    inspResult.TabResultList[tabNo].CenterX.ToString("F3"),
-                    inspResult.TabResultList[tabNo].RightAlignX.ResultValue.ToString("F3"),
-                    inspResult.TabResultList[tabNo].RightAlignY.ResultValue.ToString("F3")
+                    inspResult.TabResultList[tabNo].LeftAlignX.ResultValue.ToString("F3"),          // Left Align X
+                    inspResult.TabResultList[tabNo].LeftAlignY.ResultValue.ToString("F3"),          // Left Align Y
+                    inspResult.TabResultList[tabNo].CenterX.ToString("F3"),                         // Center Align X
+                    inspResult.TabResultList[tabNo].RightAlignX.ResultValue.ToString("F3"),         // Right Align X
+                    inspResult.TabResultList[tabNo].RightAlignY.ResultValue.ToString("F3"),         // Right Align Y
+
+                    (tabNo + 7).ToString(),                                                         // ACF Head
+                    (tabNo + 8).ToString(),                                                         // Pre Head
+                    (tabNo + 9).ToString(),                                                         // Main Head
+
+                    inspResult.TabResultList[tabNo].Judgement.ToString(),                           // Judge
+                    "Count",                                                                        // Cause
+                    "OP_OK"                                                                         // OP Judge
                 };
 
                 dataList.Add(tabData);
