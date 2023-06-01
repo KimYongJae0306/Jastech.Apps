@@ -220,6 +220,20 @@ namespace ATT.UI.Forms
 
         private void UpdateData()
         {
+            // Camera Exposure, Gain Load
+            var appsLineCamera = AppsLineCameraManager.Instance().GetLineCamera(CameraName).Camera as CameraMil;
+
+            if (appsLineCamera != null)
+            {
+                if (appsLineCamera.TDIOperationMode == TDIOperationMode.Area)
+                    lblCameraExposureValue.Text = appsLineCamera.GetExposureTime().ToString("F3");
+                else
+                    lblCameraExposureValue.Text = appsLineCamera.GetDigitalGain().ToString("F3");
+
+                lblCameraGainValue.Text = appsLineCamera.GetAnalogGain().ToString();
+            }
+            // Camera Exposure, Gain Load
+
             var axisHandler = AppsMotionManager.Instance().GetAxisHandler(AxisHandlerName.Handler0);
             SetAxisHandler(axisHandler);
 
@@ -323,14 +337,17 @@ namespace ATT.UI.Forms
 
             var appsLineCamera = AppsLineCameraManager.Instance().GetLineCamera(CameraName).Camera as CameraMil;
 
-            if (appsLineCamera.TDIOperationMode == TDIOperationMode.Area)
+            if (appsLineCamera != null)
             {
-                exposureTime = KeyPadHelper.SetLabelIntegerData((Label)sender);
-            }
-            else
-            {
-                digitalGain = KeyPadHelper.SetLabelIntegerData((Label)sender);
-                appsLineCamera.SetDigitalGain(digitalGain);
+                if (appsLineCamera.TDIOperationMode == TDIOperationMode.Area)
+                {
+                    exposureTime = KeyPadHelper.SetLabelIntegerData((Label)sender);
+                }
+                else
+                {
+                    digitalGain = KeyPadHelper.SetLabelIntegerData((Label)sender);
+                    appsLineCamera.SetDigitalGain(digitalGain);
+                }
             }
         }
 
