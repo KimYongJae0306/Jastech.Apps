@@ -300,12 +300,7 @@ namespace Jastech.Apps.Winform.UI.Controls
             DataTable newDataTable = new DataTable();
 
             newDataTable = dataTable.Clone();
-            int gg = 0;
 
-            //foreach (var item in dt.Rows)
-            //{
-            //    int tlqkf = 0;
-            //}
             AppsInspModel inspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
 
             for (int rowIndex = 0; rowIndex < dataTable.Rows.Count / inspModel.TabCount; rowIndex++)
@@ -316,7 +311,6 @@ namespace Jastech.Apps.Winform.UI.Controls
 
                 newDataTable.Rows.Add(rowData.ItemArray);
             }
-            int tt = 0;
 
             return newDataTable;
         }

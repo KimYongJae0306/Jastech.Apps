@@ -120,43 +120,39 @@ namespace Jastech.Apps.Winform.UI.Controls
         private void lblAlign_Click(object sender, EventArgs e)
         {
             SetAlignResultType(AlignResultType.All);
-            UpdateChart(_tabType, _alignResultType);
         }
 
         private void lblLx_Click(object sender, EventArgs e)
         {
             SetAlignResultType(AlignResultType.Lx);
-            UpdateChart(_tabType, _alignResultType);
         }
 
         private void lblLy_Click(object sender, EventArgs e)
         {
             SetAlignResultType(AlignResultType.Ly);
-            UpdateChart(_tabType, _alignResultType);
         }
 
         private void lblCx_Click(object sender, EventArgs e)
         {
             SetAlignResultType(AlignResultType.Cx);
-            UpdateChart(_tabType, _alignResultType);
         }
 
         private void lblRx_Click(object sender, EventArgs e)
         {
             SetAlignResultType(AlignResultType.Rx);
-            UpdateChart(_tabType, _alignResultType);
         }
 
         private void lblRy_Click(object sender, EventArgs e)
         {
             SetAlignResultType(AlignResultType.Ry);
-            UpdateChart(_tabType, _alignResultType);
         }
 
         public void SetAlignResultType(AlignResultType alignResultType)
         {
             _alignResultType = alignResultType;
             UpdateSelectedAlignResultType(alignResultType);
+
+            UpdateChart(_tabType, _alignResultType);
         }
 
         private void UpdateSelectedAlignResultType(AlignResultType alignResultType)
@@ -205,10 +201,10 @@ namespace Jastech.Apps.Winform.UI.Controls
         
         private void UpdateChart(TabType tabType, AlignResultType alignResultType)
         {
-            if (_bindingDataTable == null)
+            if (GetDataTable() == null)
                 return;
 
-            ChartControl.UpdateAlignChart(_bindingDataTable, tabType, alignResultType);
+            ChartControl.UpdateAlignChart(GetDataTable(), tabType, alignResultType);
         }
 
         private DataTable _bindingDataTable = new DataTable();
