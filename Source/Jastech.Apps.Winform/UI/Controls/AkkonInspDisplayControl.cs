@@ -79,8 +79,6 @@ namespace Jastech.Apps.Winform.UI.Controls
                 UpdateTabCount(inspModel.TabCount);
 
             var dailyInfo = DailyInfoService.GetDailyInfo();
-            //foreach (var item in dailyInfo.DailyDataList)
-            //    UpdateDailyDataGridView(item);
             UpdateDailyDataGridView(dailyInfo);
             UpdateDailyChart(dailyInfo, 0);
         }
@@ -161,7 +159,7 @@ namespace Jastech.Apps.Winform.UI.Controls
         {
             InspDisplayControl.Clear();
 
-            UpdateDailyInfo(inspResult);
+            //UpdateDailyInfo(inspResult);
             var dailyInfo = DailyInfoService.GetDailyInfo();
             UpdateDailyDataGridView(dailyInfo);
 
@@ -184,42 +182,33 @@ namespace Jastech.Apps.Winform.UI.Controls
                     InspDisplayControl.SetImage(inspResult.TabResultList[i].AkkonResultImage);
                 }
             }
-
-            //DailyInfoService.Save();
         }
 
-        private void UpdateDailyInfo(AppsInspResult inspResult)
-        {
-            var dailyData = DailyInfoService.GetDailyData();
-            dailyData.ClearAkkonInfo();
-
-            foreach (var item in inspResult.TabResultList)
-            {
-                AkkonDailyInfo akkonInfo = new AkkonDailyInfo();
-
-                akkonInfo.InspectionTime = inspResult.EndInspTime.ToString("HH:mm:ss");
-                akkonInfo.PanelID = inspResult.Cell_ID;
-                akkonInfo.TabNo = item.TabNo;
-                akkonInfo.Judgement = item.Judgement;
-                //akkonInfo.AvgBlobCount = item.MacronAkkonResult.AvgBlobCount;
-                //akkonInfo.AvgLength = item.MacronAkkonResult.AvgLength;
-                //akkonInfo.AvgStrength = item.MacronAkkonResult.AvgStrength;
-                //akkonInfo.AvgSTD = item.MacronAkkonResult.AvgStd;
-
-                akkonInfo.AvgBlobCount = 10;
-                akkonInfo.AvgLength = 10;
-                akkonInfo.AvgStrength = 10;
-                akkonInfo.AvgSTD = 10;
-
-                dailyData.AddAkkonInfo(akkonInfo);
-            }
-
-            //UpdateDailyDataGridView(dailyData);
-        }
-
-        //private void UpdateDailyDataGridView(DailyData dailyData)
+        //private void UpdateDailyInfo(AppsInspResult inspResult)
         //{
-        //    AkkonInspResultControl.UpdateAkkonDaily(dailyData);
+        //    var dailyData = DailyInfoService.GetDailyData();
+        //    dailyData.ClearAkkonInfo();
+
+        //    foreach (var item in inspResult.TabResultList)
+        //    {
+        //        AkkonDailyInfo akkonInfo = new AkkonDailyInfo();
+
+        //        akkonInfo.InspectionTime = inspResult.EndInspTime.ToString("HH:mm:ss");
+        //        akkonInfo.PanelID = inspResult.Cell_ID;
+        //        akkonInfo.TabNo = item.TabNo;
+        //        akkonInfo.Judgement = item.Judgement;
+        //        //akkonInfo.AvgBlobCount = item.MacronAkkonResult.AvgBlobCount;
+        //        //akkonInfo.AvgLength = item.MacronAkkonResult.AvgLength;
+        //        //akkonInfo.AvgStrength = item.MacronAkkonResult.AvgStrength;
+        //        //akkonInfo.AvgSTD = item.MacronAkkonResult.AvgStd;
+
+        //        akkonInfo.AvgBlobCount = 10;
+        //        akkonInfo.AvgLength = 10;
+        //        akkonInfo.AvgStrength = 10;
+        //        akkonInfo.AvgSTD = 10;
+
+        //        dailyData.AddAkkonInfo(akkonInfo);
+        //    }
         //}
 
         private void UpdateDailyDataGridView(DailyInfo dailyInfo)

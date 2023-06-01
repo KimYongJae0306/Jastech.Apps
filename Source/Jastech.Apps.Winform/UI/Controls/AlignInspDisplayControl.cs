@@ -82,8 +82,6 @@ namespace Jastech.Apps.Winform.UI.Controls
                 UpdateTabCount(inspModel.TabCount);
 
             var dailyInfo = DailyInfoService.GetDailyInfo();
-            //foreach (var item in dailyInfo.DailyDataList)
-            //    UpdateDailyDataGridView(item);
             UpdateDailyDataGridView(dailyInfo);
             UpdateDailyChart(dailyInfo, 0);
         }
@@ -167,7 +165,7 @@ namespace Jastech.Apps.Winform.UI.Controls
 
             InspAlignDisplay.ClearImage();
 
-            UpdateDailyInfo(inspResult);
+            //UpdateDailyInfo(inspResult);
             var dailyInfo = DailyInfoService.GetDailyInfo();
             UpdateDailyDataGridView(dailyInfo);
 
@@ -193,34 +191,27 @@ namespace Jastech.Apps.Winform.UI.Controls
             }
         }
 
-        private void UpdateDailyInfo(AppsInspResult inspResult)
-        {
-            var dailyData = DailyInfoService.GetDailyData();
-            dailyData.ClearAlignInfo();
-
-            foreach (var item in inspResult.TabResultList)
-            {
-                AlignDailyInfo alignInfo = new AlignDailyInfo();
-
-                alignInfo.InspectionTime = inspResult.EndInspTime.ToString("HH:mm:ss");
-                alignInfo.PanelID = inspResult.Cell_ID;
-                alignInfo.TabNo = item.TabNo;
-                alignInfo.Judgement = item.Judgement;
-                alignInfo.LX = item.LeftAlignX.ResultValue;
-                alignInfo.LY = item.LeftAlignY.ResultValue;
-                alignInfo.RX = item.RightAlignX.ResultValue;
-                alignInfo.RY = item.RightAlignY.ResultValue;
-                alignInfo.CX = item.CenterX;
-
-                dailyData.AddAlignInfo(alignInfo);
-            }
-
-            //UpdateDailyDataGridView(dailyData);
-        }
-
-        //private void UpdateDailyDataGridView(DailyData dailyData)
+        //private void UpdateDailyInfo(AppsInspResult inspResult)
         //{
-        //    AlignInspResultControl.UpdateAlignDaily(dailyData);
+        //    var dailyData = DailyInfoService.GetDailyData();
+        //    dailyData.ClearAlignInfo();
+
+        //    foreach (var item in inspResult.TabResultList)
+        //    {
+        //        AlignDailyInfo alignInfo = new AlignDailyInfo();
+
+        //        alignInfo.InspectionTime = inspResult.EndInspTime.ToString("HH:mm:ss");
+        //        alignInfo.PanelID = inspResult.Cell_ID;
+        //        alignInfo.TabNo = item.TabNo;
+        //        alignInfo.Judgement = item.Judgement;
+        //        alignInfo.LX = item.LeftAlignX.ResultValue;
+        //        alignInfo.LY = item.LeftAlignY.ResultValue;
+        //        alignInfo.RX = item.RightAlignX.ResultValue;
+        //        alignInfo.RY = item.RightAlignY.ResultValue;
+        //        alignInfo.CX = item.CenterX;
+
+        //        dailyData.AddAlignInfo(alignInfo);
+        //    }
         //}
 
         private void UpdateDailyDataGridView(DailyInfo dailyInfo)

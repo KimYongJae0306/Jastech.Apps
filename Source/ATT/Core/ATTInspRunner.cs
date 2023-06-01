@@ -462,8 +462,9 @@ namespace ATT.Core
 
                 case SeqStep.SEQ_UI_RESULT_UPDATE:
                     GetAkkonResultImage();
+                    UpdateDailyInfo(AppsInspResult);
                     SystemManager.Instance().UpdateMainResult(AppsInspResult);
-                    AddDailyInfo();
+                    //AddDailyInfo();
                     Console.WriteLine("Scan End to Insp Complete : " + LastInspSW.ElapsedMilliseconds.ToString());
                     SeqStep = SeqStep.SEQ_SAVE_RESULT_DATA;
                     break;
@@ -699,6 +700,63 @@ namespace ATT.Core
                 string imageName = "Tab_" + result.TabNo.ToString() + ".bmp";
                 string imagePath = Path.Combine(path, imageName);
                 result.Image.Save(imagePath);
+            }
+        }
+
+        private void UpdateDailyInfo(AppsInspResult inspResult)
+        {
+            UpdateAlignDailyInfo(inspResult);
+            UpdateAkkonDailyInfo(inspResult);
+            AddDailyInfo();
+        }
+
+        private void UpdateAlignDailyInfo(AppsInspResult inspResult)
+        {
+            var dailyData = DailyInfoService.GetDailyData();
+            dailyData.ClearAlignInfo();
+
+            foreach (var item in inspResult.TabResultList)
+            {
+                AlignDailyInfo alignInfo = new AlignDailyInfo();
+
+                alignInfo.InspectionTime = inspResult.EndInspTime.ToString("HH:mm:ss");
+                alignInfo.PanelID = inspResult.Cell_ID;
+                alignInfo.TabNo = item.TabNo;
+                alignInfo.Judgement = item.Judgement;
+                alignInfo.LX = item.LeftAlignX.ResultValue;
+                alignInfo.LY = item.LeftAlignY.ResultValue;
+                alignInfo.RX = item.RightAlignX.ResultValue;
+                alignInfo.RY = item.RightAlignY.ResultValue;
+                alignInfo.CX = item.CenterX;
+
+                dailyData.AddAlignInfo(alignInfo);
+            }
+        }
+
+        private void UpdateAkkonDailyInfo(AppsInspResult inspResult)
+        {
+            var dailyData = DailyInfoService.GetDailyData();
+            dailyData.ClearAkkonInfo();
+
+            foreach (var item in inspResult.TabResultList)
+            {
+                AkkonDailyInfo akkonInfo = new AkkonDailyInfo();
+
+                akkonInfo.InspectionTime = inspResult.EndInspTime.ToString("HH:mm:ss");
+                akkonInfo.PanelID = inspResult.Cell_ID;
+                akkonInfo.TabNo = item.TabNo;
+                akkonInfo.Judgement = item.Judgement;
+                //akkonInfo.AvgBlobCount = item.MacronAkkonResult.AvgBlobCount;
+                //akkonInfo.AvgLength = item.MacronAkkonResult.AvgLength;
+                //akkonInfo.AvgStrength = item.MacronAkkonResult.AvgStrength;
+                //akkonInfo.AvgSTD = item.MacronAkkonResult.AvgStd;
+
+                akkonInfo.AvgBlobCount = 10;
+                akkonInfo.AvgLength = 10;
+                akkonInfo.AvgStrength = 10;
+                akkonInfo.AvgSTD = 10;
+
+                dailyData.AddAkkonInfo(akkonInfo);
             }
         }
 
