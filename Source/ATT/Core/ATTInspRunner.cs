@@ -463,12 +463,14 @@ namespace ATT.Core
                 case SeqStep.SEQ_UI_RESULT_UPDATE:
                     GetAkkonResultImage();
                     SystemManager.Instance().UpdateMainResult(AppsInspResult);
+                    AddDailyInfo();
                     Console.WriteLine("Scan End to Insp Complete : " + LastInspSW.ElapsedMilliseconds.ToString());
                     SeqStep = SeqStep.SEQ_SAVE_RESULT_DATA;
                     break;
 
                 case SeqStep.SEQ_SAVE_RESULT_DATA:
-                    SaveDailyInfo();
+                    DailyInfoService.Save();
+
                     SaveInspectionResult(AppsInspResult);
                     SeqStep = SeqStep.SEQ_SAVE_IMAGE;
                     break;
@@ -700,7 +702,7 @@ namespace ATT.Core
             }
         }
 
-        private void SaveDailyInfo()
+        private void AddDailyInfo()
         {
             var dailyInfo = DailyInfoService.GetDailyInfo();
 
@@ -713,8 +715,6 @@ namespace ATT.Core
                 return;
 
             dailyInfo.AddDailyDataList(dailyData);
-
-            DailyInfoService.Save();
         }
 
         private void SaveInspectionResult(AppsInspResult inspResult)

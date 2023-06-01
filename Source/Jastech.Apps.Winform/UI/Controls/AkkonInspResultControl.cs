@@ -57,7 +57,7 @@ namespace Jastech.Apps.Winform.UI.Controls
             List<DailyData> reverseList = new List<DailyData>();
             reverseList = Enumerable.Reverse(dailyInfo.DailyDataList).ToList();
 
-            foreach (var dailyDataList in dailyInfo.DailyDataList)
+            foreach (var dailyDataList in reverseList)
             {
                 foreach (var item in dailyDataList.AkkonDailyInfoList)
                 {
