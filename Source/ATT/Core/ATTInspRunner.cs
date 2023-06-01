@@ -32,6 +32,8 @@ namespace ATT.Core
     {
         #region 필드
         private Axis _axis { get; set; } = null;
+
+        private object _akkonLock = new object();
         #endregion
 
         #region 속성
@@ -79,14 +81,20 @@ namespace ATT.Core
         #endregion
 
         #region 메서드
-        private void ATTSeqRunner_TabImageGrabCompletedEventHandler(string cameraName, TabScanImage tabScanImage)
+        private async void ATTSeqRunner_TabImageGrabCompletedEventHandler(string cameraName, TabScanImage tabScanImage)
         {
+            //Console.WriteLine("Run in");
+            //AppsInspResult.TabResultList.Add(new TabInspResult());
+            //return;
             Mat matImage = tabScanImage.GetMergeImage();
             ICogImage cogImage = tabScanImage.ConvertCogGrayImage(matImage);
 
             Console.WriteLine("Run Inspection. " + tabScanImage.TabNo.ToString());
-            Task task = new Task(() => Run(tabScanImage, matImage, cogImage));
-            task.Start();
+
+            await Task.Run(() => Run(tabScanImage, matImage, cogImage));
+
+            //Task task = new Task(() => Run(tabScanImage, matImage, cogImage));
+            //task.Start();
         }
 
         public void Run(TabScanImage ScanImage, Mat mergeMat, ICogImage cogMergeImage)
@@ -112,7 +120,6 @@ namespace ATT.Core
                 //return;
             }
             #endregion
-
             double fpcTheta = 0.0;
             double panelTheta = 0.0;
 
@@ -131,7 +138,6 @@ namespace ATT.Core
                 panelTheta = MathHelper.GetTheta(point1, point2);
             }
             #endregion
-
             double judgementX = 100.0;
             double judgementY = 100.0;
 
@@ -170,15 +176,38 @@ namespace ATT.Core
                 Logger.Debug(LogType.Inspection, message);
             }
             #endregion
-
             #region Center Align
             inspResult.CenterX = Math.Abs(inspResult.LeftAlignX.ResultValue - inspResult.RightAlignX.ResultValue);
             #endregion
 
+
+
+            //if (AppsConfig.Instance().AkkonAlgorithmType == AkkonAlgorithmType.Macron)
+            //{
+            //    var akkonResult = MacronAkkonAlgorithmTool.RunMultiAkkon(inspResult.Image, tab.StageIndex, tab.Index);
+            //    inspResult.MacronAkkonResult = akkonResult;
+            //    AppsInspResult.TabResultList.Add(inspResult);
+            //}
+            //else
+            //{
+            //    var roiList = tab.AkkonParam.GetAkkonROIList();
+            //    var akkonResult = AkkonAlgorithm.Run(inspResult.Image, roiList, tab.AkkonParam.AkkonAlgoritmParam);
+            //    inspResult.AkkonResultList.AddRange(akkonResult);
+            //    AppsInspResult.TabResultList.Add(inspResult);
+            //}
+
+            AppsInspResult.TabResultList.Add(new TabInspResult());
+
             AkkonThreadParam param = new AkkonThreadParam();
             param.Tab = tab;
             param.TabInspResult = inspResult;
-            AkkonInspQueue.Enqueue(param);
+            lock (_akkonLock)
+            {
+                Console.WriteLine("Add Akkon : " + tab.Index);
+                AkkonInspQueue.Enqueue(param);
+
+            }
+
         }
 
         private void ATTSeqRunner_GrabDoneEventHanlder(string cameraName, bool isGrabDone)
@@ -195,33 +224,46 @@ namespace ATT.Core
                     break;
                 }
 
-                if(AkkonInspQueue.Count > 0)
+                //var akkon = GetAkkonThreadParam();
+
+                //if(akkon != null)
+                //{
+                //    var result = akkon.TabInspResult;
+                //    Mat image = akkon.TabInspResult.Image;
+                //    Tab tab = akkon.Tab;
+
+                //    if (AppsConfig.Instance().AkkonAlgorithmType == AkkonAlgorithmType.Macron)
+                //    {
+                //        var akkonResult = MacronAkkonAlgorithmTool.RunMultiAkkon(image, tab.StageIndex, tab.Index);
+                //        result.MacronAkkonResult = akkonResult;
+                //        AppsInspResult.TabResultList.Add(result);
+                //    }
+                //    else
+                //    {
+                //        var roiList = tab.AkkonParam.GetAkkonROIList();
+                //       /var akkonResult = AkkonAlgorithm.Run(image, roiList, tab.AkkonParam.AkkonAlgoritmParam);
+                //        var akkonResult = new List<AkkonBlob>();
+                //        result.AkkonResultList.AddRange(akkonResult);
+                //        AppsInspResult.TabResultList.Add(result);
+                //    }
+                //    Console.WriteLine("Add Akkon Result_" + tab.Index);
+                //}
+
+                Thread.Sleep(50);
+                //AppsInspResult.TabResultList.Add(new TabInspResult());
+            }
+        }
+
+        private AkkonThreadParam GetAkkonThreadParam()
+        {
+            lock (_akkonLock)
+            {
+                if (AkkonInspQueue.Count > 0)
                 {
-                    var akkon = AkkonInspQueue.Dequeue();
-
-                    var result = akkon.TabInspResult;
-                    Mat image = akkon.TabInspResult.Image;
-                    Tab tab = akkon.Tab;
-
-                    if(AppsConfig.Instance().AkkonAlgorithmType == AkkonAlgorithmType.Macron)
-                    {
-                        var akkonResult = MacronAkkonAlgorithmTool.RunMultiAkkon(image, tab.StageIndex, tab.Index);
-                        result.MacronAkkonResult = akkonResult;
-                        AppsInspResult.TabResultList.Add(result);
-                    }
-                    else
-                    {
-                        var roiList = tab.AkkonParam.GetAkkonROIList();
-                        var akkonResult = AkkonAlgorithm.Run(image, roiList, tab.AkkonParam.AkkonAlgoritmParam);
-                        result.AkkonResultList.AddRange(akkonResult);
-                        AppsInspResult.TabResultList.Add(result);
-                    }
-
-                    //AppsInspResult.TabResultList.Add(new TabInspResult());
-
-                    Console.WriteLine("Add Akkon Result");
+                    return AkkonInspQueue.Dequeue();
                 }
-                Thread.Sleep(0);
+                else
+                    return null;
             }
         }
 
@@ -277,12 +319,12 @@ namespace ATT.Core
         {
             if (ModelManager.Instance().CurrentModel == null)
                 return;
-
+            //SeqStop();
             var appsLineCamera = AppsLineCameraManager.Instance().GetAppsCamera(CameraName.LinscanMIL0.ToString());
             appsLineCamera.TabImageGrabCompletedEventHandler += ATTSeqRunner_TabImageGrabCompletedEventHandler;
             appsLineCamera.GrabDoneEventHanlder += ATTSeqRunner_GrabDoneEventHanlder;
             AppsLineCameraManager.Instance().GetLineCamera(CameraName.LinscanMIL0).StartMainGrabTask();
-            AppsLineCameraManager.Instance().GetLineCamera(CameraName.LinscanMIL0).StartMergeTask();
+            //AppsLineCameraManager.Instance().GetLineCamera(CameraName.LinscanMIL0).StartMergeTask();
             StartAkkonInspTask();
 
 
@@ -375,7 +417,7 @@ namespace ATT.Core
                     break;
 
                 case SeqStep.SEQ_READY:
-
+                    break;
                     if (MoveTo(TeachingPosType.Stage1_Scan_Start, out string error1) == false)
                     {
                         // Alarm
@@ -457,6 +499,10 @@ namespace ATT.Core
                     AppsInspResult.EndInspTime = DateTime.Now;
                     AppsInspResult.LastInspTime = LastInspSW.ElapsedMilliseconds.ToString();
                     Console.WriteLine("Total Tact Time : " + LastInspSW.ElapsedMilliseconds.ToString());
+
+                    SeqStep = SeqStep.SEQ_IDLE;
+                    break;
+
                     SeqStep = SeqStep.SEQ_UI_RESULT_UPDATE;
                     break;
 
@@ -464,7 +510,6 @@ namespace ATT.Core
                     GetAkkonResultImage();
                     UpdateDailyInfo(AppsInspResult);
                     SystemManager.Instance().UpdateMainResult(AppsInspResult);
-                    //AddDailyInfo();
                     Console.WriteLine("Scan End to Insp Complete : " + LastInspSW.ElapsedMilliseconds.ToString());
                     SeqStep = SeqStep.SEQ_SAVE_RESULT_DATA;
                     break;
@@ -478,14 +523,13 @@ namespace ATT.Core
 
                 case SeqStep.SEQ_SAVE_IMAGE:
 
-                    SaveImage(AppsInspResult);
+                    //SaveImage(AppsInspResult);
 
                     SeqStep = SeqStep.SEQ_DELETE_DATA;
                     break;
 
                 case SeqStep.SEQ_DELETE_DATA:
 
-                    Thread.Sleep(1000);
                     SeqStep = SeqStep.SEQ_IDLE;
                     break;
 
