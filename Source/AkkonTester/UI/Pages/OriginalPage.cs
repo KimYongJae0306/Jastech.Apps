@@ -92,7 +92,7 @@ namespace AkkonTester.UI.Pages
                 MessageBox.Show("ROI data is not exist.");
                 return;
             }
-            SystemManager.Instance().AkkonParameters.ResizeRatio = Convert.ToDouble(txtResizeRatio.Text);
+            SystemManager.Instance().AkkonParameters.ImageFilterParam.ResizeRatio = Convert.ToDouble(txtResizeRatio.Text);
 
             SystemManager.Instance().CalcSliceImage();
             SystemManager.Instance().UpdateSliceData();
@@ -147,7 +147,7 @@ namespace AkkonTester.UI.Pages
 
         private void btnInspection_Click(object sender, EventArgs e)
         {
-            SystemManager.Instance().AkkonParameters.ResizeRatio = Convert.ToDouble(txtResizeRatio.Text);
+            SystemManager.Instance().AkkonParameters.ImageFilterParam.ResizeRatio = Convert.ToDouble(txtResizeRatio.Text);
             SystemManager.Instance().UpdateParam();
 
             var resultList = SystemManager.Instance().Run();

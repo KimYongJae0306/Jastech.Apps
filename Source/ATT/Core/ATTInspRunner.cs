@@ -566,7 +566,7 @@ namespace ATT.Core
                 return null;
 
             Mat resizeMat = new Mat();
-            Size newSize = new Size((int)(mat.Width * AkkonParameters.ResizeRatio), (int)(mat.Height * AkkonParameters.ResizeRatio));
+            Size newSize = new Size((int)(mat.Width * AkkonParameters.ImageFilterParam.ResizeRatio), (int)(mat.Height * AkkonParameters.ImageFilterParam.ResizeRatio));
             CvInvoke.Resize(mat, resizeMat, newSize);
             Mat colorMat = new Mat();
             CvInvoke.CvtColor(resizeMat, colorMat, ColorConversion.Gray2Bgr);
@@ -603,15 +603,15 @@ namespace ATT.Core
                     int radius = rectRect.Width > rectRect.Height ? rectRect.Width : rectRect.Height;
 
                     int size = blob.BoundingRect.Width * blob.BoundingRect.Height;
-                    if (AkkonParameters.ResultFilter.MinSize <= size && size <= AkkonParameters.ResultFilter.MaxSize)
+                    if (AkkonParameters.ResultFilterParam.MinArea <= size && size <= AkkonParameters.ResultFilterParam.MaxArea)
                     {
                         blobCount++;
                         CvInvoke.Circle(colorMat, center, radius / 2, new MCvScalar(255), 1);
                     }
                     else
                     {
-                        if (AkkonParameters.DrawOption.ContainNG)
-                            CvInvoke.Circle(colorMat, center, radius / 2, new MCvScalar(0), 1);
+                        //if (AkkonParameters.DrawOption.ContainNG)
+                        //    CvInvoke.Circle(colorMat, center, radius / 2, new MCvScalar(0), 1);
                     }
 
                 }

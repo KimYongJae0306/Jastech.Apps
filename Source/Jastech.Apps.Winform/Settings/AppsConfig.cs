@@ -12,6 +12,7 @@ using Jastech.Framework.Device.LightCtrls.Lvs;
 using Jastech.Framework.Device.LightCtrls.Lvs.Parser;
 using Jastech.Framework.Device.Motions;
 using Jastech.Framework.Imaging;
+using Jastech.Framework.Users;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -45,6 +46,7 @@ namespace Jastech.Apps.Winform.Settings
 
         [JsonProperty]
         public float AkkonResizeRatio { get; set; } = 0.5f;
+
         #endregion
 
         #region 메서드

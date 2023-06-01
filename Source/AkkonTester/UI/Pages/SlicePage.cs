@@ -155,7 +155,7 @@ namespace AkkonTester.UI.Pages
 
         private void InitializeComboBox()
         {
-            var filterList = SystemManager.Instance().AkkonParameters.GetImageFilter();
+            var filterList = SystemManager.Instance().AkkonParameters.ImageFilterParam.Filters;
 
             foreach (var filter in filterList)
                 cbxFilterType.Items.Add(filter.Name);
@@ -172,33 +172,53 @@ namespace AkkonTester.UI.Pages
             var param = SystemManager.Instance().AkkonParameters;
 
             // Filter
-            var filter = param.GetCurrentFilter();
+            var filter = param.ImageFilterParam.GetCurrentFilter();
             if(filter == null)
             {
                 cbxFilterType.SelectedIndex = 0;
                 string currentFilterName = cbxFilterType.SelectedItem as string;
-                param.CurrentFilterName = currentFilterName;
+                param.ImageFilterParam.CurrentFilterName = currentFilterName;
 
-                var curFilter = param.GetCurrentFilter();
+                var curFilter = param.ImageFilterParam.GetCurrentFilter();
                 txtSigma.Text = curFilter.Sigma.ToString();
                 txtScaleFactor.Text = curFilter.ScaleFactor.ToString();
                 txtGusWidth.Text = curFilter.GusWidth.ToString();
                 txtLogWidth.Text = curFilter.LogWidth.ToString();
             }
-
+            else
+            {
+                int selectIndex = -1;
+                for (int i = 0; i < cbxFilterType.Items.Count; i++)
+                {
+                    if (filter.Name == cbxFilterType.Items[i] as string)
+                    {
+                        selectIndex = i;
+                        break;
+                    }
+                }
+                cbxFilterType.SelectedIndex = selectIndex;
+            }
             // Image Processing
-            cbxFilterDirection.SelectedIndex = (int)param.FilterDir;
-            cbxThresholdMode.SelectedIndex = (int)param.ThresParam.Mode;
-            txtThresholdWeight.Text = param.ThresParam.Weight.ToString();
+            cbxFilterDirection.SelectedIndex = (int)param.ImageFilterParam.FilterDir;
+            cbxThresholdMode.SelectedIndex = (int)param.ImageFilterParam.Mode;
+            txtThresholdWeight.Text = param.ImageFilterParam.Weight.ToString();
 
-            // Filters
-            txtMinSize.Text = param.ResultFilter.MinSize.ToString();
-            txtMaxSize.Text = param.ResultFilter.MaxSize.ToString();
+            // Judgement
+            txtMinArea.Text = param.ResultFilterParam.MinArea.ToString();
+            txtMaxArea.Text = param.ResultFilterParam.MaxArea.ToString();
+            txtAkkonStrength.Text = param.ResultFilterParam.AkkonStrength.ToString();
+            txtAkkonScaleFactor.Text = param.ResultFilterParam.AkkonStrengthScaleFactor.ToString();
+
+            txtLeadLengthX.Text = param.JudgementParam.LengthX.ToString();
+            txtLeadLengthY.Text = param.JudgementParam.LengthY.ToString();
+            txtLeadStdDev.Text = param.JudgementParam.LeadStdDev.ToString();
 
             // Draw Options
             ckbContainLeadCount.Checked = param.DrawOption.ContainLeadCount;
             ckbContainLeadCount.Checked = param.DrawOption.ContainLeadROI;
             ckbContainNG.Checked = param.DrawOption.ContainNG;
+            ckbDrawArea.Checked = param.DrawOption.ContainArea;
+            ckbDrawStrength.Checked = param.DrawOption.ContainStrength;
         }
 
         private void UpdateFilterUI(string filterName)
@@ -378,10 +398,32 @@ namespace AkkonTester.UI.Pages
 
             SystemManager.Instance().RunForDebug(cbxSliceList.SelectedIndex);
 
-            UpdateResult(cbxSliceList.SelectedIndex);
+            UpdateProcessingImage(cbxSliceList.SelectedIndex);
+            UpdateResultImage(cbxSliceList.SelectedIndex);
+            UpdateResultValue();
         }
 
-        private void UpdateResult(int index)
+        private void UpdateResultValue()
+        {
+            var curResultList = SystemManager.Instance().CurrentResult;
+            dgvResult.Rows.Clear();
+
+            foreach (var result in curResultList)
+            {
+                string index = result.LeadIndex.ToString();
+                string count = result.DetectCount.ToString();
+                string lengthX = result.LeadLengthX.ToString("F2");
+                string lengthY = result.LeadLengthY.ToString("F2");
+                string stdDev = result.StdDev.ToString("F2");
+
+                string message = string.Format("Count : {0} LengthX : {1}, LengthY : {2}, StdDev : {3}",count, lengthX, lengthY, stdDev);
+
+                string[] row = { index, message };
+                dgvResult.Rows.Add(row);
+            }
+        }
+
+        private void UpdateProcessingImage(int index)
         {
             var curSlice = SystemManager.Instance().SliceList[index];
             var curResultList = SystemManager.Instance().CurrentResult;
@@ -392,23 +434,30 @@ namespace AkkonTester.UI.Pages
 
             ICogImage cogProcessingImage = AppsHelper.ConvertCogGrayImage(curSlice.ProcessingMat);
             ProcessingDisplay.SetImage(cogProcessingImage);
-        
+
             ICogImage cogMaskingImage = AppsHelper.ConvertCogGrayImage(curSlice.MaskingMat);
             MaskingDisplay.SetImage(cogMaskingImage);
+        }
+
+        private void UpdateResultImage(int index)
+        {
+            var curSlice = SystemManager.Instance().SliceList[index];
+            var curResultList = SystemManager.Instance().CurrentResult;
+            var curParam = SystemManager.Instance().AkkonParameters;
 
             Mat colorMat = new Mat();
             CvInvoke.CvtColor(curSlice.Image, colorMat, ColorConversion.Gray2Bgr);
 
             foreach (var result in curResultList)
             {
-                if (curParam.DrawOption.ContainLeadROI)
+                if (curParam.DrawOption.ContainLeadROI != true)
                 {
                     var startPoint = new Point((int)result.OffsetToWorldX, (int)result.OffsetToWorldY);
                     TempDrawLead(ref colorMat, result.Lead, new Point(0,0));
                 }
-
                 foreach (var blob in result.BlobList)
                 {
+                    
                     int leftFromSlice = (int)(blob.BoundingRect.X + result.LeadOffsetX);
                     int topFromSlice = (int)(blob.BoundingRect.Y + result.LeadOffsetY);
 
@@ -417,30 +466,43 @@ namespace AkkonTester.UI.Pages
 
                     int size = blob.BoundingRect.Width * blob.BoundingRect.Height;
 
-                    if(curParam.ResultFilter.MinSize <= size && size <= curParam.ResultFilter.MaxSize)
-                        CvInvoke.Circle(colorMat, center, radius / 2, new MCvScalar(255,0,0), 1);
+                    if (blob.BoundingRect.Width <= 1 || blob.BoundingRect.Height <= 1)
+                        continue;
+
+                    if(blob.IsPass)
+                    {
+                        CvInvoke.Circle(colorMat, center, radius / 2, new MCvScalar(255, 0, 0), 1, LineType.Filled);
+                    }
                     else
                     {
-                        if(blob.BoundingRect.Width == 141 && blob.BoundingRect.Height == 783)
+                        if (curParam.DrawOption.ContainNG)
                         {
-                        }
-                        else
-                        {
-                            int ga = 1;
-                            if (curParam.DrawOption.ContainNG)
-                            {
-                                blob.BoundingRect.X = leftFromSlice;
-                                blob.BoundingRect.Y = topFromSlice;
+                            blob.BoundingRect.X = leftFromSlice;
+                            blob.BoundingRect.Y = topFromSlice;
 
-                                CvInvoke.Rectangle(colorMat, blob.BoundingRect, new MCvScalar(0, 0, 255), 1);
-                                //CvInvoke.Circle(colorMat, center, radius / 2, new MCvScalar(0,0,255), 1);
-                            }
+                            CvInvoke.Rectangle(colorMat, blob.BoundingRect, new MCvScalar(0, 0, 255), 1);
                         }
-                        
+                    }
+                 
+                    if(curParam.DrawOption.ContainArea)
+                    {
+                        if (blob.IsPass)
+                        {
+                            Point pt = new Point(leftFromSlice + blob.BoundingRect.Width, topFromSlice);
+                            CvInvoke.PutText(colorMat, ((int)blob.Area).ToString(), pt, FontFace.HersheyScriptSimplex, 0.3, new MCvScalar(255,255,255));
+                        }
+                    }
+
+                    if (curParam.DrawOption.ContainStrength)
+                    {
+                        if (blob.IsPass)
+                        {
+                            Point pt = new Point(leftFromSlice + blob.BoundingRect.Width, topFromSlice);
+                            CvInvoke.PutText(colorMat, blob.Strength.ToString("F2"), pt, FontFace.HersheyPlain, 0.6, new MCvScalar(255, 255, 255));
+                        }
                     }
                 }
             }
-
             ICogImage cogResultImage = AppsHelper.ConvertCogColorImage(colorMat);
             ResultDisplay.SetImage(cogResultImage);
         }
@@ -467,7 +529,7 @@ namespace AkkonTester.UI.Pages
             string filterName = cbxFilterType.SelectedItem as string;
             UpdateFilterUI(filterName);
 
-            var filter = SystemManager.Instance().AkkonParameters.GetImageFilter(filterName);
+            var filter = SystemManager.Instance().AkkonParameters.ImageFilterParam.GetImageFilter(filterName);
             txtSigma.Text = filter.Sigma.ToString();
             txtScaleFactor.Text = filter.ScaleFactor.ToString();
             txtGusWidth.Text = filter.GusWidth.ToString();
@@ -483,22 +545,30 @@ namespace AkkonTester.UI.Pages
             if (curFilterName == null)
                 return;
 
-            param.CurrentFilterName = curFilterName;
-            param.GetImageFilter(curFilterName).Sigma = Convert.ToDouble(txtSigma.Text);
-            param.GetImageFilter(curFilterName).ScaleFactor = Convert.ToDouble(txtScaleFactor.Text);
-            param.GetImageFilter(curFilterName).GusWidth = Convert.ToInt16(txtGusWidth.Text);
-            param.GetImageFilter(curFilterName).LogWidth = Convert.ToInt16(txtLogWidth.Text);
+            param.ImageFilterParam.CurrentFilterName = curFilterName;
+            param.ImageFilterParam.GetImageFilter(curFilterName).Sigma = Convert.ToDouble(txtSigma.Text);
+            param.ImageFilterParam.GetImageFilter(curFilterName).ScaleFactor = Convert.ToDouble(txtScaleFactor.Text);
+            param.ImageFilterParam.GetImageFilter(curFilterName).GusWidth = Convert.ToInt16(txtGusWidth.Text);
+            param.ImageFilterParam.GetImageFilter(curFilterName).LogWidth = Convert.ToInt16(txtLogWidth.Text);
 
-            param.FilterDir = (AkkonFilterDir)cbxFilterDirection.SelectedIndex;
-            param.ThresParam.Mode = (AkkonThMode)cbxThresholdMode.SelectedIndex;
-            param.ThresParam.Weight = Convert.ToDouble(txtThresholdWeight.Text);
+            param.ImageFilterParam.FilterDir = (AkkonFilterDir)cbxFilterDirection.SelectedIndex;
+            param.ImageFilterParam.Mode = (AkkonThMode)cbxThresholdMode.SelectedIndex;
+            param.ImageFilterParam.Weight = Convert.ToDouble(txtThresholdWeight.Text);
 
-            param.ResultFilter.MinSize = Convert.ToDouble(txtMinSize.Text);
-            param.ResultFilter.MaxSize = Convert.ToDouble(txtMaxSize.Text);
+            param.ResultFilterParam.MinArea = Convert.ToDouble(txtMinArea.Text);
+            param.ResultFilterParam.MaxArea = Convert.ToDouble(txtMaxArea.Text);
+            param.ResultFilterParam.AkkonStrength = Convert.ToDouble(txtAkkonStrength.Text);
+            param.ResultFilterParam.AkkonStrengthScaleFactor = Convert.ToDouble(txtAkkonScaleFactor.Text);
+
+            param.JudgementParam.LengthX = Convert.ToDouble(txtLeadLengthX.Text);
+            param.JudgementParam.LengthY = Convert.ToDouble(txtLeadLengthY.Text);
+            param.JudgementParam.LeadStdDev = Convert.ToDouble(txtLeadStdDev.Text);
 
             param.DrawOption.ContainLeadCount = ckbContainLeadCount.Checked;
             param.DrawOption.ContainLeadROI = ckbContainLeadROI.Checked;
             param.DrawOption.ContainNG = ckbContainNG.Checked;
+            param.DrawOption.ContainArea = ckbDrawArea.Checked;
+            param.DrawOption.ContainStrength = ckbDrawStrength.Checked;
         }
     }
 

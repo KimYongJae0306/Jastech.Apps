@@ -45,10 +45,10 @@ namespace AkkonTester
         {
             _mainForm = mainForm;
 
-            if(AkkonParameters.GetImageFilterCount() == 0)
+            if(AkkonParameters.ImageFilterParam.Filters.Count == 0)
             {
                 AkkonParameters.Initalize();
-                AkkonParameters.AddMacronFilter();
+                AkkonParameters.ImageFilterParam.AddMacronFilter();
             }
 
             return true;
@@ -62,7 +62,7 @@ namespace AkkonTester
             SliceList.ForEach(x => x.Dispose());
             SliceList.Clear();
 
-            double resizeRatio = AkkonParameters.ResizeRatio;
+            double resizeRatio = AkkonParameters.ImageFilterParam.ResizeRatio;
             List<AkkonSlice> slices = AkkonAlgorithm.PrepareInspect(OrginalImage, CurrentAkkonROI, 2048, resizeRatio);
 
             SliceList.AddRange(slices);
@@ -83,6 +83,7 @@ namespace AkkonTester
 
             Stopwatch sw = new Stopwatch();
             sw.Restart();
+
 
             List<AkkonBlob> result = AkkonAlgorithm.RunForDebug(ref slice, AkkonParameters);
 
@@ -113,7 +114,7 @@ namespace AkkonTester
                 return null;
 
             Mat resizeMat = new Mat();
-            Size newSize = new Size((int)(OrginalImage.Width * AkkonParameters.ResizeRatio), (int)(OrginalImage.Height * AkkonParameters.ResizeRatio));
+            Size newSize = new Size((int)(OrginalImage.Width * AkkonParameters.ImageFilterParam.ResizeRatio), (int)(OrginalImage.Height * AkkonParameters.ImageFilterParam.ResizeRatio));
             CvInvoke.Resize(OrginalImage, resizeMat, newSize);
             Mat colorMat = new Mat();
             CvInvoke.CvtColor(resizeMat, colorMat, ColorConversion.Gray2Bgr);
@@ -150,7 +151,7 @@ namespace AkkonTester
                     int radius = rectRect.Width > rectRect.Height ? rectRect.Width : rectRect.Height;
 
                     int size = blob.BoundingRect.Width * blob.BoundingRect.Height;
-                    if (AkkonParameters.ResultFilter.MinSize <= size && size <= AkkonParameters.ResultFilter.MaxSize)
+                    if (AkkonParameters.ResultFilterParam.MinArea <= size && size <= AkkonParameters.ResultFilterParam.MaxArea)
                     {
                         blobCount++;
                         CvInvoke.Circle(colorMat, center, radius / 2, new MCvScalar(255), 1);

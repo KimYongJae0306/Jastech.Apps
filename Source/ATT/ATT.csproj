@@ -286,6 +286,10 @@
       <Project>{d46c7263-535a-4bf9-ad14-5183ede0a984}</Project>
       <Name>Jastech.Framework.Winform</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\..\Jastech.Core\src\Jastech.Framework\Jastech.Framework.csproj">
+      <Project>{28e92a79-c5ab-4b93-9aba-a9f40de4dbce}</Project>
+      <Name>Jastech.Framework</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Jastech.Apps.Structure\Jastech.Apps.Structure.csproj">
       <Project>{1d6ea4e5-02d4-4c2a-8873-d336d420e726}</Project>
       <Name>Jastech.Apps.Structure</Name>

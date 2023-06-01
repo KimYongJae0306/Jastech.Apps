@@ -93,7 +93,7 @@ namespace ATT.Core
                     tab.AkkonParam.MacronAkkonParam.SetDefaultParameter();
 
                     tab.AkkonParam.AkkonAlgoritmParam.Initalize();
-                    tab.AkkonParam.AkkonAlgoritmParam.AddMacronFilter();
+                    tab.AkkonParam.AkkonAlgoritmParam.ImageFilterParam.AddMacronFilter();
 
                     int cnt = 0;
                     foreach (var item in tab.AkkonParam.GroupList)

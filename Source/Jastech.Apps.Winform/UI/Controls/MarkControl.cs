@@ -378,6 +378,11 @@ namespace Jastech.Apps.Winform.UI.Controls
             else { }
         }
 
+        public void DisposeImage()
+        {
+            ParamControl?.DisposeImage();
+        }
+
         private void MoveMode(string moveType, int jogScale, ROIType roiType)
         {
             if (CurrentTab == null)

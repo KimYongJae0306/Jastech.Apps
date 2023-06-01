@@ -113,5 +113,13 @@ namespace Jastech.Apps.Structure.Parameters
         {
             return JsonConvertHelper.DeepCopy(this) as AkkonParam;
         }
+
+        public void Dispose()
+        {
+            GroupList.ForEach(x => x.Dispose());
+            GroupList.Clear();
+
+            AkkonAlgoritmParam.Dispose();
+        }
     }
 }

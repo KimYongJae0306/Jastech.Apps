@@ -75,6 +75,9 @@ namespace ATT
         {
             DateTime now = DateTime.Now;
             lblCurrentTime.Text = now.ToString("yyyy-MM-dd HH:mm:ss");
+
+            var user = UserManager.Instance().CurrentUser;
+            lblCurrentUser.Text = user.Id.ToString();
         }
 
         private void MainForm_CurrentModelChangedEvent(InspModel inspModel)
@@ -221,6 +224,17 @@ namespace ATT
         public void InitializeResult(int tabCount)
         {
             MainPageControl.InitializeResult(tabCount);
+        }
+
+        private void lblCurrentUser_Click(object sender, EventArgs e)
+        {
+            LoginForm form = new LoginForm();
+            form.CurrentUser = UserManager.Instance().CurrentUser;
+            form.UserHandler = UserManager.Instance().UserHanlder;
+            
+            form.ShowDialog();
+
+            UserManager.Instance().SetCurrentUser(form.CurrentUser.Id);
         }
     }
 }

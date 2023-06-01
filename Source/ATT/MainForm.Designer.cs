@@ -434,6 +434,7 @@
             this.lblCurrentUser.TabIndex = 2;
             this.lblCurrentUser.Text = "Maker";
             this.lblCurrentUser.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblCurrentUser.Click += new System.EventHandler(this.lblCurrentUser_Click);
             // 
             // pictureBox2
             // 
@@ -447,6 +448,7 @@
             this.pictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.pictureBox2.TabIndex = 4;
             this.pictureBox2.TabStop = false;
+            this.pictureBox2.Click += new System.EventHandler(this.lblCurrentUser_Click);
             // 
             // lblCurrentModel
             // 

@@ -75,6 +75,8 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         public AkkonAlgorithm AkkonAlgorithm { get; set; } = null;
 
+        public bool UserMaker { get; set; } = false;
+
         public double CalcResolution { get; private set; } = 0.0; // ex :  /camera.PixelResolution_mm(0.0035) / camera.LensScale(5) / 1000;
         #endregion
 
@@ -124,6 +126,7 @@ namespace Jastech.Apps.Winform.UI.Controls
             {
                 AkkonParamControl = new AkkonParamControl();
                 AkkonParamControl.Dock = DockStyle.Fill;
+                AkkonParamControl.UserMaker = UserMaker;
                 pnlParam.Controls.Add(AkkonParamControl);
             }
         }
@@ -1324,6 +1327,7 @@ namespace Jastech.Apps.Winform.UI.Controls
                 return;
 
             var roiList = GetAutoTeachingRoiList(image);
+        
             if (roiList.Count == 0)
                 return;
 
@@ -1345,21 +1349,21 @@ namespace Jastech.Apps.Winform.UI.Controls
             List<int> topEdgePointList = new List<int>();
             List<int> bottomEdgePointList = new List<int>();
 
-            ImageHelper.GetEdgePoint(topDataArray, bottomDataArray, 0, (int)200/*CalcResolution*/, ref topEdgePointList, ref bottomEdgePointList);
+            ImageHelper.GetEdgePoint(topDataArray, bottomDataArray, 0, (int)21/*CalcResolution*/, ref topEdgePointList, ref bottomEdgePointList);
 
-            //if (topEdgePointList.Count != bottomEdgePointList.Count)
-            //{
-            //    MessageConfirmForm form = new MessageConfirmForm();
-            //    form.Message = "The number of edge points found is different.";
-            //    form.ShowDialog();
-            //    return new List<CogRectangleAffine>();
-            //}
+            if (topEdgePointList.Count != bottomEdgePointList.Count)
+            {
+                MessageConfirmForm form = new MessageConfirmForm();
+                form.Message = "The number of edge points found is different.";
+                form.ShowDialog();
+                return new List<CogRectangleAffine>();
+            }
 
             List<PointF> topPointList = new List<PointF>();
             foreach (var xIndex in topEdgePointList)
             {
                 float pointX = (float)(_autoTeachingRect.X + xIndex);
-                float pointY = (float)_autoTeachingRect.Y - 1450;
+                float pointY = (float)_autoTeachingRect.Y;
                 topPointList.Add(new PointF(pointX, pointY));
             }
 
@@ -1372,6 +1376,13 @@ namespace Jastech.Apps.Winform.UI.Controls
             }
 
             var roiList = VisionProImageHelper.CreateRectangleAffine(topPointList, bottomPointList);
+            if (roiList == null)
+            {
+                MessageConfirmForm form = new MessageConfirmForm();
+                form.Message = "The top and bottom of the found edge points are different.";
+                form.ShowDialog();
+                return new List<CogRectangleAffine>();
+            }
             return roiList;
         }
 
@@ -1473,6 +1484,7 @@ namespace Jastech.Apps.Winform.UI.Controls
                 AppsTeachingUIManager.Instance().SetResultCogImage(cogImage);
                 resultMat.Dispose();
                 ClearDisplay();
+                Console.WriteLine("Completed.");
             }
         }
 
@@ -1482,7 +1494,7 @@ namespace Jastech.Apps.Winform.UI.Controls
                 return null;
 
             Mat resizeMat = new Mat();
-            Size newSize = new Size((int)(mat.Width * AkkonParameters.ResizeRatio), (int)(mat.Height * AkkonParameters.ResizeRatio));
+            Size newSize = new Size((int)(mat.Width * AkkonParameters.ImageFilterParam.ResizeRatio), (int)(mat.Height * AkkonParameters.ImageFilterParam.ResizeRatio));
             CvInvoke.Resize(mat, resizeMat, newSize);
             Mat colorMat = new Mat();
             CvInvoke.CvtColor(resizeMat, colorMat, ColorConversion.Gray2Bgr);
@@ -1506,7 +1518,6 @@ namespace Jastech.Apps.Winform.UI.Controls
                     CvInvoke.Line(colorMat, rightBottom, leftBottom, new MCvScalar(50, 230, 50, 255), 1);
                 }
 
-                int blobCount = 0;
                 foreach (var blob in result.BlobList)
                 {
                     Rectangle rectRect = new Rectangle();
@@ -1519,9 +1530,8 @@ namespace Jastech.Apps.Winform.UI.Controls
                     int radius = rectRect.Width > rectRect.Height ? rectRect.Width : rectRect.Height;
 
                     int size = blob.BoundingRect.Width * blob.BoundingRect.Height;
-                    if (AkkonParameters.ResultFilter.MinSize <= size && size <= AkkonParameters.ResultFilter.MaxSize)
+                    if (blob.IsPass)
                     {
-                        blobCount++;
                         CvInvoke.Circle(colorMat, center, radius / 2, new MCvScalar(255), 1);
                     }
                     else
@@ -1530,12 +1540,33 @@ namespace Jastech.Apps.Winform.UI.Controls
                             CvInvoke.Circle(colorMat, center, radius / 2, new MCvScalar(0), 1);
                     }
 
+                    if (AkkonParameters.DrawOption.ContainArea)
+                    {
+                        if (blob.IsPass)
+                        {
+                            int temp = (int)(radius / 2.0);
+                            Point pt = new Point(center.X + temp, center.Y - temp);
+                            CvInvoke.PutText(colorMat, ((int)blob.Area).ToString(), pt, FontFace.HersheyScriptSimplex, 0.25, new MCvScalar(255, 255, 255));
+                        }
+                    }
+                    else
+                    {
+                        if (AkkonParameters.DrawOption.ContainStrength)
+                        {
+                            if (blob.IsPass)
+                            {
+                                int temp = (int)(radius / 2.0);
+                                Point pt = new Point(center.X + temp, center.Y - temp);
+                                CvInvoke.PutText(colorMat, ((int)blob.Strength).ToString("F2"), pt, FontFace.HersheyScriptSimplex, 0.25, new MCvScalar(255, 255, 255));
+                            }
+                        }
+                    }
                 }
 
                 if (AkkonParameters.DrawOption.ContainLeadCount)
                 {
                     string leadIndexString = result.LeadIndex.ToString();
-                    string blobCountString = string.Format("[{0}]", blobCount);
+                    string blobCountString = string.Format("[{0}]", result.DetectCount);
 
                     Point centerPt = new Point((int)((leftBottom.X + rightBottom.X) / 2.0), leftBottom.Y);
 
@@ -1543,12 +1574,12 @@ namespace Jastech.Apps.Winform.UI.Controls
                     Size textSize = CvInvoke.GetTextSize(leadIndexString, FontFace.HersheyComplex, 0.3, 1, ref baseLine);
                     int textX = centerPt.X - (textSize.Width / 2);
                     int textY = centerPt.Y + (baseLine / 2);
-                    CvInvoke.PutText(colorMat, leadIndexString, new Point(textX, textY + 30), FontFace.HersheyComplex, 0.3, new MCvScalar(50, 230, 50, 255));
+                    CvInvoke.PutText(colorMat, leadIndexString, new Point(textX, textY + 30), FontFace.HersheyComplex, 0.25, new MCvScalar(50, 230, 50, 255));
 
                     textSize = CvInvoke.GetTextSize(blobCountString, FontFace.HersheyComplex, 0.3, 1, ref baseLine);
                     textX = centerPt.X - (textSize.Width / 2);
                     textY = centerPt.Y + (baseLine / 2);
-                    CvInvoke.PutText(colorMat, blobCountString, new Point(textX, textY + 60), FontFace.HersheyComplex, 0.3, new MCvScalar(50, 230, 50, 255));
+                    CvInvoke.PutText(colorMat, blobCountString, new Point(textX, textY + 60), FontFace.HersheyComplex, 0.25, new MCvScalar(50, 230, 50, 255));
                 }
             }
             return colorMat;
