@@ -25,7 +25,7 @@ namespace Jastech.Apps.Winform.UI.Controls
         #endregion
 
         #region 델리게이트
-        //private delegate void UpdateAkkonResultDelegate(AppsInspResult result);
+        //private delegate void UpdateAkkonResultDelegate(DailyData dailyData);
         private delegate void UpdateAkkonResultDelegate(DailyInfo dailyInfo);
         #endregion
 
@@ -37,61 +37,58 @@ namespace Jastech.Apps.Winform.UI.Controls
         #endregion
 
         #region 메서드
-        //public void UpdateAkkonResult(AppsInspResult result)
-        //{
-        //    if (this.InvokeRequired)
-        //    {
-        //        UpdateAkkonResultDelegate callback = UpdateAkkonResult;
-        //        BeginInvoke(callback);
-        //        return;
-        //    }
-
-        //    UpdateDataGridView(result);
-        //}
-
+        //public void UpdateAkkonDaily(DailyData dailyData)
         public void UpdateAkkonDaily(DailyInfo dailyInfo)
         {
             if (this.InvokeRequired)
             {
                 UpdateAkkonResultDelegate callback = UpdateAkkonDaily;
-                BeginInvoke(callback);
+                BeginInvoke(callback, dailyInfo);
                 return;
             }
 
             UpdateDataGridView(dailyInfo);
         }
 
-        //private void UpdateDataGridView(AppsInspResult result)
+        private void UpdateDataGridView(DailyInfo dailyInfo)
+        {
+            dgvAkkonHistory.Rows.Clear();
+
+            List<DailyData> reverseList = new List<DailyData>();
+            reverseList = Enumerable.Reverse(dailyInfo.DailyDataList).ToList();
+
+            foreach (var dailyDataList in reverseList)
+            {
+                foreach (var item in dailyDataList.AkkonDailyInfoList)
+                {
+                    string inspectionTime = item.InspectionTime.ToString();
+                    string panelID = item.PanelID.ToString();
+                    string tabNumber = item.TabNo.ToString();
+                    string judge = item.Judgement.ToString();
+                    string count = item.AvgBlobCount.ToString();
+                    string length = item.AvgLength.ToString("F2");
+
+                    string[] row = { inspectionTime, panelID, tabNumber, judge, count, length };
+                    dgvAkkonHistory.Rows.Add(row);
+                }
+            }
+        }
+
+        //private void UpdateDataGridView(DailyData dailyData)
         //{
-        //    foreach (var item in result.TabResultList)
+        //    foreach (var item in dailyData.AkkonDailyInfoList)
         //    {
-        //        string inspectionTime = result.LastInspTime;
-        //        string panelID = result.Cell_ID;
-        //        string tabNumber = item.AkkonResult.TabNo.ToString();
-        //        string judge = item.AkkonResult.Judgement.ToString();
-        //        string count = item.AkkonResult.AvgBlobCount.ToString();
-        //        string length = item.AkkonResult.AvgLength.ToString("F2");
+        //        string inspectionTime = item.InspectionTime.ToString();
+        //        string panelID = item.PanelID.ToString();
+        //        string tabNumber = item.TabNo.ToString();
+        //        string judge = item.Judgement.ToString();
+        //        string count = item.AvgBlobCount.ToString();
+        //        string length = item.AvgLength.ToString("F2");
 
         //        string[] row = { inspectionTime, panelID, tabNumber, judge, count, length };
         //        dgvAkkonHistory.Rows.Add(row);
         //    }
         //}
-
-        private void UpdateDataGridView(DailyInfo dailyInfo)
-        {
-            foreach (var item in dailyInfo.AkkonDailyInfoList)
-            {
-                string inspectionTime = item.InspectionTime.ToString();
-                string panelID = item.PanelID.ToString();
-                string tabNumber = item.TabNo.ToString();
-                string judge = item.Judgement.ToString();
-                string count = item.AvgBlobCount.ToString();
-                string length = item.AvgLength.ToString("F2");
-
-                string[] row = { inspectionTime, panelID, tabNumber, judge, count, length };
-                dgvAkkonHistory.Rows.Add(row);
-            }
-        }
         #endregion
     }
 }

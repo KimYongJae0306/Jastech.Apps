@@ -25,9 +25,15 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         public double _lowerSpecLimit { get; set; } = 0.0;
 
-        private AlignResultType _alignResultType { get; set; } = AlignResultType.All;
+        private TabType _tabType { get; set; } = TabType.Tab1;
 
-        public DateTime DateTime { get; set; } = DateTime.Now;
+        private AlignResultType _alignResultType { get; set; } = AlignResultType.Lx;
+
+        public DateTime StartDate { get; set; } = DateTime.Now;
+
+        private ResultChartControl ChartControl = new ResultChartControl() { Dock = DockStyle.Fill };
+
+        private List<Label> _tabLabelList = new List<Label>();
         #endregion
 
         #region 속성
@@ -53,7 +59,14 @@ namespace Jastech.Apps.Winform.UI.Controls
         #region 메서드
         private void ProcessCapabilityControl_Load(object sender, EventArgs e)
         {
+            AddControl();
             InitializeUI();
+        }
+
+        private void AddControl()
+        {
+            ChartControl.ChartType = ResultChartControl.InspChartType.Align;
+            pnlChart.Controls.Add(ChartControl);
         }
 
         private void InitializeUI()
@@ -62,6 +75,63 @@ namespace Jastech.Apps.Winform.UI.Controls
             _nonSelectedColor = Color.FromArgb(52, 52, 52);
 
             InitializeResultDataTable();
+        }
+
+        public void MakeTabListControl(int tabCount)
+        {
+            //int controlWidth = 120;
+            //int controlHeight = 60;
+            //Point point = new Point(160, 0);
+            //int interval = 20;
+
+            for (int tabIndex = 0; tabIndex < tabCount; tabIndex++)
+            {
+                Label lbl = new Label();
+
+                lbl.BorderStyle = BorderStyle.FixedSingle;
+                lbl.Font = new Font("맑은 고딕", 11F, FontStyle.Bold);
+                lbl.TextAlign = ContentAlignment.MiddleCenter;
+                lbl.Text = "Tab" + (tabIndex + 1);
+                lbl.Margin = new Padding(0);
+                //lbl.Size = new Size(controlWidth, controlHeight);
+                lbl.MouseClick += LabelControl_SetTabEventHandler;
+                //lbl.Location = point;
+                lbl.Dock = DockStyle.Fill;
+
+                tlpTab.Controls.Add(lbl);
+                //point.X += controlWidth + interval;
+
+                _tabLabelList.Add(lbl);
+            }
+        }
+
+        private void LabelControl_SetTabEventHandler(object sender, MouseEventArgs e)
+        {
+            Label lbl = (Label)sender;
+            string tabNo = lbl.Text.Substring(3, 1);
+            int tabIndex = Convert.ToInt32(tabNo) - 1;
+
+            SetTabType((TabType)tabIndex);
+        }
+
+        public void SetTabType(TabType tabType)
+        {
+            ClearSelectedTabLabel();
+            _tabType = tabType;
+
+            _tabLabelList[(int)tabType].BackColor = _selectedColor;
+
+            UpdateChart(_tabType, _alignResultType);
+            UpdateDataGridView(_tabType, _alignResultType);
+        }
+
+        private void ClearSelectedTabLabel()
+        {
+            foreach (Control control in tlpTab.Controls)
+            {
+                if (control is Label)
+                    control.BackColor = _nonSelectedColor;
+            }
         }
 
         private int GetDataCount()
@@ -102,12 +172,12 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         public void SetSelectionStartDate(DateTime date)
         {
-            DateTime = date;
+            StartDate = date;
         }
 
         private DateTime GetSelectionStartDate()
         {
-            return DateTime;
+            return StartDate;
         }
 
         private void SetData(int dayCount)
@@ -188,77 +258,82 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         }
 
-        public void UpdateParameterDataGridView(string path)
+        public void UpdateAlignDataGridView(string path)
         {
-            //using (FileStream fs = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
-            //{
-            //    int readLine = 0;
-            //    int headerLine = 0;
+            using (FileStream fs = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
+            {
+                int readLine = 0;
+                int headerLine = 0;
 
-            //    DataTable table = new DataTable();
+                DataTable table = new DataTable();
 
-            //    table.Columns.Add("Time");
-            //    table.Columns.Add("Panel ID");
-            //    table.Columns.Add("Tab");
-            //    table.Columns.Add("Judge");
-            //    table.Columns.Add("Lx");
-            //    table.Columns.Add("Ly");
-            //    table.Columns.Add("Cx");
-            //    table.Columns.Add("Rx");
-            //    table.Columns.Add("Ry");
+                table.Columns.Add("Time");
+                table.Columns.Add("Panel ID");
+                table.Columns.Add("Tab");
+                table.Columns.Add("Judge");
+                table.Columns.Add("Lx");
+                table.Columns.Add("Ly");
+                table.Columns.Add("Cx");
+                table.Columns.Add("Rx");
+                table.Columns.Add("Ry");
 
-            //    StreamReader sr = new StreamReader(fs);
+                StreamReader sr = new StreamReader(fs);
 
-            //    while (!sr.EndOfStream)
-            //    {
-            //        if (readLine == headerLine)
-            //        {
-            //            string header = sr.ReadLine();
-            //        }
-            //        else
-            //        {
-            //            string contents = sr.ReadLine();
+                while (!sr.EndOfStream)
+                {
+                    if (readLine == headerLine)
+                    {
+                        string header = sr.ReadLine();
+                    }
+                    else
+                    {
+                        string contents = sr.ReadLine();
 
-            //            string[] dataArray = contents.Split(',');
+                        string[] dataArray = contents.Split(',');
 
-            //            table.Rows.Add(dataArray[0], dataArray[1], dataArray[2], dataArray[3],
-            //                dataArray[4], dataArray[5], dataArray[6], dataArray[7], dataArray[8]);
-            //        }
+                        table.Rows.Add(dataArray[0], dataArray[1], dataArray[2], dataArray[3],
+                            dataArray[4], dataArray[5], dataArray[6], dataArray[7], dataArray[8]);
+                    }
 
-            //        readLine++;
-            //    }
+                    readLine++;
+                }
 
-            //    sr.Close();
+                sr.Close();
 
-            //    dgvAlignTrendData.DataSource = table;
+                dgvAlignData.DataSource = table;
 
-            //    SetDataTable(table.Copy());
-            //}
+                SetDataTable(table.Copy());
+            }
         }
 
         private void lblLx_Click(object sender, EventArgs e)
         {
             SetAlignResultType(AlignResultType.Lx);
+            UpdateChart(_tabType, _alignResultType);
         }
 
         private void lblLy_Click(object sender, EventArgs e)
         {
             SetAlignResultType(AlignResultType.Ly);
+            UpdateChart(_tabType, _alignResultType);
         }
 
         private void lblCx_Click(object sender, EventArgs e)
         {
             SetAlignResultType(AlignResultType.Cx);
+            UpdateChart(_tabType, _alignResultType);
         }
 
         private void lblRx_Click(object sender, EventArgs e)
         {
             SetAlignResultType(AlignResultType.Rx);
+            UpdateChart(_tabType, _alignResultType);
         }
 
         private void lblRy_Click(object sender, EventArgs e)
         {
             SetAlignResultType(AlignResultType.Ry);
+            UpdateChart(_tabType, _alignResultType);
         }
 
         public void SetAlignResultType(AlignResultType alignResultType)
@@ -311,6 +386,49 @@ namespace Jastech.Apps.Winform.UI.Controls
             }
         }
 
-       
+        private DataTable _bindingDataTable = new DataTable();
+        private void SetDataTable(DataTable dt)
+        {
+            _bindingDataTable = dt.Copy();
+        }
+
+        private DataTable GetDataTable()
+        {
+            return _bindingDataTable;
+        }
+
+        private void UpdateChart(TabType tabType, AlignResultType alignResultType)
+        {
+            if (_bindingDataTable == null)
+                return;
+
+            ChartControl.UpdateAlignChart(_bindingDataTable, tabType, alignResultType);
+        }
+
+        private void UpdateDataGridView(TabType tabType, AlignResultType alignResultType)
+        {
+            List<Result> resultList = new List<Result>();
+            //UpdateProcessCapabilityResult();
+            var tq = GetDataTable();
+
+            //int columnIndex = tq.Select()
+        }
+
+        private void UpdateProcessCapabilityResult(List<Result> processCapabilityResultList)
+        {
+            dgvPCResult.Rows.Clear();
+
+            foreach (var item in processCapabilityResultList)
+            {
+                string name = "tt";
+                string cp = item.Cp.ToString();
+                string cpk = item.Cpk.ToString();
+                string pp = item.Pp.ToString();
+                string ppk = item.Ppk.ToString("F2");
+
+                string[] row = { name, cp, cpk, pp, ppk };
+                dgvPCResult.Rows.Add(row);
+            }
+        }
     }
 }

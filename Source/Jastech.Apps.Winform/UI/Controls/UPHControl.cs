@@ -42,12 +42,6 @@ namespace Jastech.Apps.Winform.UI.Controls
         #endregion
 
         #region 메서드
-        
-
-        
-
-        
-
         private void UPHControl_Load(object sender, EventArgs e)
         {
             InitializeUI();

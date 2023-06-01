@@ -551,7 +551,7 @@ namespace Jastech.Apps.Winform.UI.Controls
                 //var currentParam = CogCaliperParamControl.GetCurrentParam();
                 CogRectangleAffine roi = new CogRectangleAffine(item.CaliperParams.CaliperTool.Region);
 
-                var newPoint = MathHelper.GetCoordinate(new PointF(Convert.ToSingle(roi.CenterX), Convert.ToSingle(roi.CenterY)), sDegree, centerPoint, leftReferencePoint, rightReferencePoint);
+                var newPoint = MathHelper.GetCoordinate(new PointF(Convert.ToSingle(roi.CenterX), Convert.ToSingle(roi.CenterY)), sDegree);
                 roi.CenterX = newPoint.X;
                 roi.CenterY = newPoint.Y;
 

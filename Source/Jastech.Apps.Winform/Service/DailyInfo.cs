@@ -1,5 +1,6 @@
 ﻿using Emgu.CV.Dnn;
 using Jastech.Apps.Structure;
+using Jastech.Apps.Structure.Data;
 using Jastech.Apps.Winform.Settings;
 using Jastech.Framework.Imaging.Result;
 using Jastech.Framework.Util.Helper;
@@ -9,17 +10,43 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace Jastech.Apps.Winform.Service
 {
     public class DailyInfo
     {
-        public string AlignFileName { get; private set; } = "Align.cfg";
+        public string FileName { get; private set; } = "DailyInfo.cfg";
 
-        public string AkkonFileName { get; private set; } = "Akkon.cfg";
+        [JsonProperty]
+        public List<DailyData> DailyDataList { get; set; } = new List<DailyData>();
 
+        public void AddDailyDataList(DailyData dailyData)
+        {
+            if (DailyDataList.Count >= AppsConfig.Instance().Operation.AlignResultCount)
+                DailyDataList.RemoveAt(0);
+
+            DailyDataList.Add(dailyData);
+        }
+
+        public void Save()
+        {
+            string filePath = Path.Combine(AppsConfig.Instance().Path.Temp, FileName);
+            JsonConvertHelper.Save(filePath, this);
+        }
+
+        public void Load()
+        {
+            string filePath = Path.Combine(AppsConfig.Instance().Path.Temp, FileName);
+            JsonConvertHelper.LoadToExistingTarget<DailyInfo>(filePath, this);
+        }
+    }
+
+    public class DailyData
+    {
         [JsonProperty]
         public List<AlignDailyInfo> AlignDailyInfoList { get; set; } = new List<AlignDailyInfo>();
 
@@ -28,39 +55,30 @@ namespace Jastech.Apps.Winform.Service
 
         public void AddAlignInfo(AlignDailyInfo alignDailyInfo)
         {
-            if (AlignDailyInfoList.Count >= AppsConfig.Instance().Operation.AlignResultCount)
-                AlignDailyInfoList.RemoveAt(0);
-
             AlignDailyInfoList.Add(alignDailyInfo);
-
-            //AlignDailyInfoList.Reverse();
         }
 
-        public void AddAkkonInfo(AkkonDailyInfo akkonDailyInfo) 
+        public void ClearAlignInfo()
         {
-            if (AkkonDailyInfoList.Count >= AppsConfig.Instance().Operation.AkkonResultCount)
-                AkkonDailyInfoList.RemoveAt(0);
+            AlignDailyInfoList.Clear();
+        }
 
+        public void AddAkkonInfo(AkkonDailyInfo akkonDailyInfo)
+        {
             AkkonDailyInfoList.Add(akkonDailyInfo);
-
-            //AkkonDailyInfoList.Reverse();
         }
 
-        public void Save()
+        public void ClearAkkonInfo()
         {
-            string filePath = Path.Combine(AppsConfig.Instance().Path.Temp, AlignFileName);
-            JsonConvertHelper.Save(filePath, this);
-        }
-
-        public void Load()
-        {
-            string filePath = Path.Combine(AppsConfig.Instance().Path.Temp, AlignFileName);
-            JsonConvertHelper.LoadToExistingTarget<DailyInfo>(filePath, this);
+            AkkonDailyInfoList.Clear();
         }
     }
 
     public class AlignDailyInfo
     {
+        [JsonProperty]
+        public string Name { get; set; } =  "Align";
+
         [JsonProperty]
         public string InspectionTime { get; set; } = string.Empty;
 
@@ -91,6 +109,9 @@ namespace Jastech.Apps.Winform.Service
 
     public class AkkonDailyInfo
     {
+        [JsonProperty]
+        public string Name { get; set; } = "Akkon";
+
         [JsonProperty]
         public string InspectionTime { get; set; } = string.Empty;
 

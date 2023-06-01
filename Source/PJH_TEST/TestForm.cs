@@ -1,7 +1,10 @@
-﻿using Jastech.Framework.Util.Helper;
+﻿using Jastech.Apps.Winform.Service;
+using Jastech.Framework.Imaging.Result;
+using Jastech.Framework.Util.Helper;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 
 namespace PJH_TEST
 {
@@ -10,6 +13,8 @@ namespace PJH_TEST
         public Form()
         {
             InitializeComponent();
+
+            DailyInfoService.Load();
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -68,6 +73,63 @@ namespace PJH_TEST
 
             //for (int i = 0; i < 100; i++)
             //    Console.WriteLine("Cell_" + i.ToString("D3"));
+        }
+
+        private void btnAlignTest_Click(object sender, EventArgs e)
+        {
+            //var dailyData = DailyInfoService.GetDailyData();
+            //dailyData.ClearAlignInfo();
+
+            //for (int tabNo = 0; tabNo < 2; tabNo++)
+            //{
+            //    AlignDailyInfo alignInfo = new AlignDailyInfo();
+
+            //    alignInfo.InspectionTime = DateTime.Now.ToString("yyyyMMdd_HHmm");
+            //    alignInfo.PanelID = DateTime.Now.ToString("yyyyMMdd_HHmm");
+            //    alignInfo.TabNo = tabNo;
+            //    alignInfo.Judgement = Judgement.OK;
+
+            //    alignInfo.LX = (tabNo * 1) + tabNo;
+            //    alignInfo.LY = (tabNo * 2) + tabNo;
+            //    alignInfo.RX = (tabNo * 3) + tabNo;
+            //    alignInfo.RY = (tabNo * 4) + tabNo;
+            //    alignInfo.CX = (tabNo * 5) + tabNo;
+
+            //    dailyData.AddAlignInfo(alignInfo);
+            //}
+        }
+
+        private void btnAkkonTest_Click(object sender, EventArgs e)
+        {
+            //var dailyData = DailyInfoService.GetDailyData();
+            //dailyData.ClearAkkonInfo();
+
+            //for (int tabNo = 0; tabNo < 2; tabNo++)
+            //{
+            //    AkkonDailyInfo akkonInfo = new AkkonDailyInfo();
+
+            //    akkonInfo.InspectionTime = DateTime.Now.ToString("yyyyMMdd_HHmm");
+            //    akkonInfo.PanelID = DateTime.Now.ToString("yyyyMMdd_HHmm");
+            //    akkonInfo.TabNo = tabNo;
+            //    akkonInfo.Judgement = Judgement.OK;
+
+            //    akkonInfo.AvgBlobCount = (tabNo * 10) + tabNo;
+            //    akkonInfo.AvgLength = (tabNo * 20) + tabNo;
+            //    akkonInfo.AvgStrength = (tabNo * 30) + tabNo;
+            //    akkonInfo.AvgSTD = (tabNo * 40) + tabNo;
+
+            //    dailyData.AddAkkonInfo(akkonInfo);
+            //}
+        }
+
+        private void btnTest_Click(object sender, EventArgs e)
+        {
+            //var dailyInfo = DailyInfoService.GetDailyInfo();
+            //var dailyData = DailyInfoService.GetDailyData();
+
+            //dailyInfo.AddDailyDataList(dailyData);
+
+            //DailyInfoService.Save();
         }
     }
 }

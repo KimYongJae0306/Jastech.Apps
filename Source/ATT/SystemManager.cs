@@ -3,6 +3,7 @@ using Jastech.Apps.Structure;
 using Jastech.Apps.Structure.Data;
 using Jastech.Apps.Winform;
 using Jastech.Apps.Winform.Core;
+using Jastech.Apps.Winform.Service;
 using Jastech.Apps.Winform.Settings;
 using Jastech.Framework.Device.Cameras;
 using Jastech.Framework.Device.LAFCtrl;
@@ -56,6 +57,8 @@ namespace ATT
             form.SetupActionEventHandler = SplashSetupAction;
 
             form.ShowDialog();
+
+            DailyInfoService.Load();
 
             return true;
         }
@@ -127,12 +130,6 @@ namespace ATT
             else
                 _mainForm.ATTInspModelService.SaveExceptVpp(filePath, inspModel);
         }
-
-        //public void SaveTeachingPosition(List<TeachingInfo> teachingInfoList)
-        //{
-        //    foreach (var item in GetTeachingData().UnitList)
-        //        item.TeachingInfoList = teachingInfoList.Select(x => x.DeepCopy()).ToList();
-        //}
 
         public TeachingData GetTeachingData()
         {

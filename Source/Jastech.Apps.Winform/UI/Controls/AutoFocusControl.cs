@@ -104,13 +104,13 @@ namespace Jastech.Apps.Winform.UI.Controls
 
             if (status.IsAutoFocusOn)
             {
-                bntAFOn.BackColor = _selectedColor;
-                btnAFOff.BackColor = _noneSelectedColor;
+                lblAFOn.BackColor = _selectedColor;
+                lblAFOff.BackColor = _noneSelectedColor;
             }
             else
             {
-                bntAFOn.BackColor = _noneSelectedColor;
-                btnAFOff.BackColor = _selectedColor;
+                lblAFOn.BackColor = _noneSelectedColor;
+                lblAFOff.BackColor = _selectedColor;
             }
         }
 
@@ -137,7 +137,7 @@ namespace Jastech.Apps.Winform.UI.Controls
             AxisInfo.TargetPosition = targetPosition;
         }
 
-        private void btnSetCurrentToTarget_Click(object sender, EventArgs e)
+        private void lblSetCurrentToTarget_Click(object sender, EventArgs e)
         {
             lblTargetPositionValue.Text = lblCuttentPositionValue.Text;
         }
@@ -149,21 +149,36 @@ namespace Jastech.Apps.Winform.UI.Controls
             AxisInfo.CenterOfGravity = centerOfGravity;
         }
 
-        private void btnCurrentToTeach_Click(object sender, EventArgs e)
+        private void lblCurrentToTeach_Click(object sender, EventArgs e)
         {
             int cog = Convert.ToInt32(lblCurrentCogValue.Text);
             AppsLAFManager.Instance().SetCenterOfGravity(LAFName.Akkon.ToString(), cog);
             lblTeachCogValue.Text = cog.ToString();
         }
 
-        private void bntAFOn_Click(object sender, EventArgs e)
+        private void btnCurrentToTeach_Click(object sender, EventArgs e)
+        {
+            
+        }
+
+        private void lblAFOn_Click(object sender, EventArgs e)
         {
             AppsLAFManager.Instance().AutoFocusOnOff(LAFName.Akkon.ToString(), true);
         }
 
-        private void btnAFOff_Click(object sender, EventArgs e)
+        private void bntAFOn_Click(object sender, EventArgs e)
+        {
+            
+        }
+
+        private void lblAFOff_Click(object sender, EventArgs e)
         {
             AppsLAFManager.Instance().AutoFocusOnOff(LAFName.Akkon.ToString(), false);
+        }
+
+        private void btnAFOff_Click(object sender, EventArgs e)
+        {
+            
         }
 
         private double SetLabelDoubleData(object sender)

@@ -132,6 +132,7 @@ namespace Jastech.Framework.Winform.Forms
                     _selectedPagePath = _resultPath;
                     lblProcessCapability.BackColor = _selectedColor;
 
+                    ProcessCapabilityControl.MakeTabListControl(inspModel.TabCount);
                     pnlContents.Controls.Add(ProcessCapabilityControl);
                     break;
 
@@ -403,8 +404,9 @@ namespace Jastech.Framework.Winform.Forms
                     break;
 
                 case PageType.ProcessCapability:
-                    ProcessCapabilityControl.UpdateParameterDataGridView(fullPath);
+                    ProcessCapabilityControl.UpdateAlignDataGridView(fullPath);
                     ProcessCapabilityControl.SetSelectionStartDate(GetSelectionStartDate());
+                    ProcessCapabilityControl.SetTabType(TabType.Tab1);
                     ProcessCapabilityControl.SetAlignResultType(AlignResultType.Lx);
                     break;
 
