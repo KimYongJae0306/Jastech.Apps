@@ -179,11 +179,11 @@
     <Compile Include="UI\Controls\PreAlignControl.Designer.cs">
       <DependentUpon>PreAlignControl.cs</DependentUpon>
     </Compile>
-    <Compile Include="UI\Controls\ProcessCapabilityControl.cs">
+    <Compile Include="UI\Controls\ProcessCapabilityIndexControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="UI\Controls\ProcessCapabilityControl.Designer.cs">
-      <DependentUpon>ProcessCapabilityControl.cs</DependentUpon>
+    <Compile Include="UI\Controls\ProcessCapabilityIndexControl.Designer.cs">
+      <DependentUpon>ProcessCapabilityIndexControl.cs</DependentUpon>
     </Compile>
     <Compile Include="UI\Controls\ResultChartControl.cs">
       <SubType>UserControl</SubType>
@@ -306,8 +306,8 @@
     <EmbeddedResource Include="UI\Controls\PreAlignControl.resx">
       <DependentUpon>PreAlignControl.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="UI\Controls\ProcessCapabilityControl.resx">
-      <DependentUpon>ProcessCapabilityControl.cs</DependentUpon>
+    <EmbeddedResource Include="UI\Controls\ProcessCapabilityIndexControl.resx">
+      <DependentUpon>ProcessCapabilityIndexControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\Controls\ResultChartControl.resx">
       <DependentUpon>ResultChartControl.cs</DependentUpon>

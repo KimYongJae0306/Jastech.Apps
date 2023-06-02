@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Jastech.Apps.Structure.Data
 {
-    public class ProcessCapability
+    public class ProcessCapabilityIndex
     {
         private const double WEIGHT = 2.0;
         private const double d2 = 1.128;

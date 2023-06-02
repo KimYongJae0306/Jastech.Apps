@@ -15,7 +15,7 @@ using System.Windows.Forms;
 
 namespace Jastech.Apps.Winform.UI.Controls
 {
-    public partial class ProcessCapabilityControl : UserControl
+    public partial class ProcessCapabilityIndexControl : UserControl
     {
         #region 필드
         private Color _selectedColor;
@@ -48,10 +48,10 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         private DataTable _resultDataTable = new DataTable();
 
-        private ProcessCapability ProcessCapability { get; set; } = new ProcessCapability();
+        private ProcessCapabilityIndex ProcessCapabilityIndex { get; set; } = new ProcessCapabilityIndex();
 
         #region 생성자
-        public ProcessCapabilityControl()
+        public ProcessCapabilityIndexControl()
         {
             InitializeComponent();
         }
@@ -443,7 +443,7 @@ namespace Jastech.Apps.Winform.UI.Controls
             
             double upperSpecLimit = Convert.ToDouble(lblUpperSpecLimit.Text);
             double lowerSpecLimit = Convert.ToDouble(lblLowerSpecLimit.Text);
-            var result = ProcessCapability.GetResult(valueList, upperSpecLimit, lowerSpecLimit);
+            var result = ProcessCapabilityIndex.GetResult(valueList, upperSpecLimit, lowerSpecLimit);
 
             List<string> dataList = new List<string>();
             dataList.Add(alignResultType.ToString());

@@ -45,7 +45,7 @@ namespace Jastech.Framework.Winform.Forms
 
         private UPHControl UPHControl { get; set; } = new UPHControl() { Dock = DockStyle.Fill };
 
-        private ProcessCapabilityControl ProcessCapabilityControl { get; set; } = new ProcessCapabilityControl() { Dock= DockStyle.Fill };
+        private ProcessCapabilityIndexControl ProcessCapabilityControl { get; set; } = new ProcessCapabilityIndexControl() { Dock= DockStyle.Fill };
 
         #endregion
 

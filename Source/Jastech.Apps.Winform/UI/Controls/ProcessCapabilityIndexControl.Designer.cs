@@ -1,6 +1,6 @@
 ﻿namespace Jastech.Apps.Winform.UI.Controls
 {
-    partial class ProcessCapabilityControl
+    partial class ProcessCapabilityIndexControl
     {
         /// <summary> 
         /// 필수 디자이너 변수입니다.
