@@ -34,8 +34,6 @@ namespace Jastech.Apps.Winform
         private object _lock = new object();
 
         private object _dataLock = new object();
-
-        private int _grabCount { get; set; } = 0;
         #endregion
 
         #region 속성
@@ -148,7 +146,6 @@ namespace Jastech.Apps.Winform
                     TabScanBufferList.Add(scanImage);
             }
             GrabCount = maxEndIndex;
-            _grabCount = 0;
         }
 
         public void StartGrab()
@@ -162,7 +159,6 @@ namespace Jastech.Apps.Winform
             MoveTo(TeachingPosType.Stage1_Scan_Start, out error);
             Thread.Sleep(1000);
 
-            _grabCount = 0;
             Camera.GrabMulti(GrabCount);
      
             MoveTo(TeachingPosType.Stage1_Scan_End, out error);
@@ -238,7 +234,6 @@ namespace Jastech.Apps.Winform
                 TabScanBufferList.Add(buffer);
 
             GrabCount = totalScanSubImageCount;
-            _grabCount = 0;
             // LineScan Page에서 Line 모드 GrabStart 할 때 Height Set 해줘야함
             Camera.GrabMulti(GrabCount);
         }
@@ -288,13 +283,13 @@ namespace Jastech.Apps.Winform
                     _stackTabNo++;
                 }
 
-                if (_grabCount == GrabCount - 1)
+                if (_curGrabCount == GrabCount - 1)
                 {
                     Camera.Stop();
                     GrabDoneEventHanlder?.Invoke(Camera.Name, true);
                 }
 
-                _grabCount++;
+                _curGrabCount++;
             }   
         }
 

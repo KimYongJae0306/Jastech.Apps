@@ -466,7 +466,6 @@ namespace ATT.Core
                     break;
 
                 case SeqStep.SEQ_SCAN_START:
-                    break;
                     IsGrabDone = false;
                     // 조명 코드 작성 요망
                     var appsLineCamera = AppsLineCameraManager.Instance().GetLineCamera(CameraName.LinscanMIL0);

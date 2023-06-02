@@ -4,8 +4,10 @@ using Jastech.Apps.Structure;
 using Jastech.Apps.Structure.Data;
 using Jastech.Apps.Structure.VisionTool;
 using Jastech.Apps.Winform.Core;
+using Jastech.Framework.Imaging;
 using Jastech.Framework.Imaging.Helper;
 using Jastech.Framework.Imaging.Result;
+using Jastech.Framework.Imaging.VisionPro;
 using Jastech.Framework.Util.Helper;
 using System;
 using System.Collections.Generic;
@@ -112,20 +114,32 @@ namespace ATT.Core
                 }
                 if (TabScanBuffer.InspectionDone)
                     Thread.Sleep(1000); // CPU 점유율 낮추려고...
-
-                AddImage();
-
-                if (SubImageList.Count() == TabScanBuffer.TotalGrabCount)
+                else
                 {
-                    TabScanBuffer.MakeMergeImage();
-                    Console.WriteLine("Make Merge Image." + TabScanBuffer.TabNo);
+                    AddImage();
 
-                    //Inspection();
-                    TabScanBuffer.InspectionDone = true;
+                    if (SubImageList.Count() == TabScanBuffer.TotalGrabCount)
+                    {
+                        MakeMergeImage();
+                        Console.WriteLine("Make Merge Image." + TabScanBuffer.TabNo);
+
+                       Inspection();
+
+                        TabScanBuffer.InspectionDone = true;
+                    }
+
+                    if (IsAddStart)
+                        Thread.Sleep(0);
+                    else
+                        Thread.Sleep(50);
                 }
-
-                Thread.Sleep(50);
             }
+        }
+
+        private void MakeMergeImage()
+        {
+            MakeMergeMatImage();
+            MakeMergeCogImage();
         }
 
         private void AddImage()
@@ -142,6 +156,38 @@ namespace ATT.Core
 
             if (GetDataCount() > 0)
                 AddImage();
+        }
+
+        private void MakeMergeCogImage()
+        {
+            if (MergeCogImage == null)
+            {
+                MakeMergeMatImage();
+                if (MergeMatImage != null)
+                    MergeCogImage = ConvertCogGrayImage(MergeMatImage);
+            }
+        }
+
+        private void MakeMergeMatImage()
+        {
+            if (MergeMatImage == null)
+            {
+                if (SubImageList.Count > 0)
+                {
+                    MergeMatImage = new Mat();
+                    CvInvoke.HConcat(SubImageList.ToArray(), MergeMatImage);
+                }
+            }
+        }
+
+        private CogImage8Grey ConvertCogGrayImage(Mat mat)
+        {
+            if (mat == null)
+                return null;
+
+            int size = mat.Width * mat.Height * mat.NumberOfChannels;
+            var cogImage = VisionProImageHelper.CovertImage(mat.DataPointer, mat.Width, mat.Height, ColorFormat.Gray) as CogImage8Grey;
+            return cogImage;
         }
 
         private void Inspection()
@@ -167,6 +213,7 @@ namespace ATT.Core
                 //return;
             }
             #endregion
+
             double fpcTheta = 0.0;
             double panelTheta = 0.0;
 
@@ -185,6 +232,7 @@ namespace ATT.Core
                 panelTheta = MathHelper.GetTheta(point1, point2);
             }
             #endregion
+
             double judgementX = 100.0;
             double judgementY = 100.0;
 
