@@ -1,0 +1,129 @@
+﻿using Cognex.VisionPro;
+using Emgu.CV;
+using Jastech.Framework.Imaging;
+using Jastech.Framework.Imaging.VisionPro;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Jastech.Apps.Winform.Core
+{
+    public class TabScanBuffer
+    {
+        private object _objLock = new object();
+
+        public int TabNo { get; set; }
+
+        public int SubImageWidth { get; set; }
+
+        public int SubImageHeight { get; set; }
+
+        public int StartIndex { get; set; }
+
+        public int EndIndex { get; set; }
+
+        public int TotalGrabCount { get => Math.Abs(EndIndex - StartIndex); }
+
+        public bool InspectionDone { get; set; }
+
+        private List<Mat> SubImageList { get; set; } = new List<Mat>();
+
+        public Mat MergeMatImage { get; set; } = null;
+
+        public CogImage8Grey MergeCogImage { get; set; } = null;
+
+        public TabScanBuffer(int tabNo, int startIndex, int endIndex, int subImageWidth, int subImageHeight)
+        {
+            TabNo = tabNo;
+            StartIndex = startIndex;
+            EndIndex = endIndex;
+            SubImageWidth = subImageWidth;
+            SubImageHeight = subImageHeight;
+        }
+
+        public void AddSubImage(Mat mat)
+        {
+            lock (_objLock)
+                SubImageList.Add(mat);
+        }
+
+        public bool IsAddImageDone()
+        {
+            bool isDone = false;
+
+            lock (_objLock)
+                isDone = TotalGrabCount == SubImageList.Count() ? true : false;
+
+            return isDone;
+        }
+
+        public void Dispose()
+        {
+            lock (_objLock)
+            {
+                for (int i = 0; i < SubImageList.Count(); i++)
+                {
+                    SubImageList[i].Dispose();
+                    SubImageList[i] = null;
+                }
+                SubImageList.Clear();
+            }
+            MergeMatImage?.Dispose();
+            MergeMatImage = null;
+
+            MergeCogImage?.Dispose();
+            MergeCogImage = null;
+        }
+
+        public void MakeMergeImage()
+        {
+            MakeMergeMatImage();
+            MakeMergeCogImage();
+
+           // ExcuteMerge = true;
+        }
+
+        public Mat GetMergeMatImage()
+        {
+            MakeMergeMatImage();
+            return MergeMatImage;
+        }
+
+        private void MakeMergeCogImage()
+        {
+            if(MergeCogImage == null)
+            {
+                MakeMergeMatImage();
+                if(MergeMatImage != null)
+                    MergeCogImage = ConvertCogGrayImage(MergeMatImage);
+            }
+        }
+
+        private void MakeMergeMatImage()
+        {
+            if(MergeMatImage == null)
+            {
+                lock (_objLock)
+                {
+                    if (SubImageList.Count > 0)
+                    {
+                        MergeMatImage = new Mat();
+                        CvInvoke.HConcat(SubImageList.ToArray(), MergeMatImage);
+                    }
+                }
+            }
+        }
+
+        private CogImage8Grey ConvertCogGrayImage(Mat mat)
+        {
+            if (mat == null)
+                return null;
+
+            int size = mat.Width * mat.Height * mat.NumberOfChannels;
+            var cogImage = VisionProImageHelper.CovertImage(mat.DataPointer, mat.Width, mat.Height, ColorFormat.Gray) as CogImage8Grey;
+            return cogImage;
+        }
+    }
+}
