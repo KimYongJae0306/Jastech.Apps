@@ -28,6 +28,8 @@ namespace ATT.Core
 
         public TabScanBuffer TabScanBuffer { get; set; } = null;
 
+        public bool IsAddStart { get; set; }
+
         public void Dispose()
         {
             DataQueue.Clear();
@@ -38,6 +40,12 @@ namespace ATT.Core
         {
             lock (_lock)
                 DataQueue.Enqueue(data);
+        }
+
+        public int GetDataCount()
+        {
+            lock (_lock)
+                return DataQueue.Count();
         }
 
         public byte[] GetData()
@@ -85,13 +93,7 @@ namespace ATT.Core
                 if (TabScanBuffer.InspectionDone)
                     Thread.Sleep(1000); // CPU 점유율 낮추려고...
 
-                if(GetData() is byte[] data)
-                {
-                    Mat mat = MatHelper.ByteArrayToMat(data, TabScanBuffer.SubImageWidth, TabScanBuffer.SubImageHeight, 1);
-                    Mat rotatedMat = MatHelper.Transpose(mat);
-                    TabScanBuffer.AddSubImage(rotatedMat);
-                    mat.Dispose();
-                }
+                AddImage();
 
                 if (TabScanBuffer.IsAddImageDone())
                 {
@@ -102,8 +104,24 @@ namespace ATT.Core
                     TabScanBuffer.InspectionDone = true;
                 }
 
-                Thread.Sleep(0);
+                Thread.Sleep(50);
             }
+        }
+
+        private void AddImage()
+        {
+            if (GetData() is byte[] data)
+            {
+                IsAddStart = true;
+
+                Mat mat = MatHelper.ByteArrayToMat(data, TabScanBuffer.SubImageWidth, TabScanBuffer.SubImageHeight, 1);
+                Mat rotatedMat = MatHelper.Transpose(mat);
+                TabScanBuffer.AddSubImage(rotatedMat);
+                mat.Dispose();
+            }
+
+            if (GetDataCount() > 0)
+                AddImage();
         }
 
         private void Inspection()

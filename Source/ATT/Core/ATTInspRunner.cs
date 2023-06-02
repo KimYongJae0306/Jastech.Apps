@@ -93,6 +93,7 @@ namespace ATT.Core
             {
                 ATTInspTab inspTab = new ATTInspTab();
                 inspTab.TabScanBuffer = buffer;
+                inspTab.StartInspTask();
 
                 InspTabList.Add(inspTab);
             }
@@ -340,7 +341,7 @@ namespace ATT.Core
             var appsLineCamera = AppsLineCameraManager.Instance().GetAppsCamera(CameraName.LinscanMIL0.ToString());
             appsLineCamera.TabImageGrabCompletedEventHandler += ATTSeqRunner_TabImageGrabCompletedEventHandler;
             appsLineCamera.GrabDoneEventHanlder += ATTSeqRunner_GrabDoneEventHanlder;
-            AppsLineCameraManager.Instance().GetLineCamera(CameraName.LinscanMIL0).StartMainGrabTask();
+            //AppsLineCameraManager.Instance().GetLineCamera(CameraName.LinscanMIL0).StartMainGrabTask();
             //AppsLineCameraManager.Instance().GetLineCamera(CameraName.LinscanMIL0).StartMergeTask();
             StartAkkonInspTask();
 
@@ -465,7 +466,7 @@ namespace ATT.Core
                     break;
 
                 case SeqStep.SEQ_SCAN_START:
-
+                    break;
                     IsGrabDone = false;
                     // 조명 코드 작성 요망
                     var appsLineCamera = AppsLineCameraManager.Instance().GetLineCamera(CameraName.LinscanMIL0);
