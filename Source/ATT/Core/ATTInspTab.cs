@@ -44,6 +44,8 @@ namespace ATT.Core
 
         public AkkonAlgorithm AkkonAlgorithm { get; set; } = null;
 
+        public MultiAkkonAlgorithm MultiAkkonAlgorithm { get; set; } = new MultiAkkonAlgorithm();
+
         public void Dispose()
         {
             for (int i = 0; i < SubImageList.Count(); i++)
