@@ -111,14 +111,14 @@ namespace ATT.UI.Forms
             {
                 MotionJogControl.JogMode = JogMode.Jog;
                 MotionJogControl.JogSpeedMode = JogSpeedMode.Slow;
-                MotionJogControl.JogPitch = Convert.ToInt32(lblPitchXYValue.Text);
+                MotionJogControl.JogPitch = Convert.ToDouble(lblPitchXYValue.Text);
             }
 
             if (LAFJogControl != null)
             {
                 LAFJogControl.JogMode = JogMode.Jog;
                 LAFJogControl.JogSpeedMode = JogSpeedMode.Slow;
-                LAFJogControl.MoveAmount = Convert.ToInt32(lblPitchZValue.Text);
+                LAFJogControl.MoveAmount = Convert.ToDouble(lblPitchZValue.Text);
             }
         }
 

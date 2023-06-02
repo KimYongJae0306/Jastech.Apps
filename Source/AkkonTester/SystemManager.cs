@@ -10,6 +10,7 @@ using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace AkkonTester
@@ -98,9 +99,10 @@ namespace AkkonTester
         {
             if (OrginalImage == null)
                 return null;
-
+            
             Stopwatch sw = new Stopwatch();
             sw.Restart();
+
             List<AkkonBlob> result = AkkonAlgorithm.Run(OrginalImage, CurrentAkkonROI, AkkonParameters);
 
             sw.Stop();

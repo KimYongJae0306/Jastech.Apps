@@ -157,11 +157,11 @@ namespace AkkonTester.UI.Pages
                 return;
             }
 
-            Mat resultMat = SystemManager.Instance().GetResultImage(resultList);
-            var cogImage = AppsHelper.ConvertCogColorImage(resultMat);
+            //Mat resultMat = SystemManager.Instance().GetResultImage(resultList);
+            //var cogImage = AppsHelper.ConvertCogColorImage(resultMat);
 
-            cogResultDisplay.SetImage(cogImage);
-            resultMat.Dispose();
+            //cogResultDisplay.SetImage(cogImage);
+            //resultMat.Dispose();
         }
     }
 }

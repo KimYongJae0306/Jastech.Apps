@@ -268,40 +268,40 @@ namespace Jastech.Apps.Winform
             else
             {
 
-                //lock(_dataLock)
-                //    DataQueue.Enqueue(data);
+                lock (_dataLock)
+                    DataQueue.Enqueue(data);
 
-                if (data != null)
-                {
-                    if (_stackTabNo >= TabScanImageList.Count())
-                        return;
+                //if (data != null)
+                //{
+                //    if (_stackTabNo >= TabScanImageList.Count())
+                //        return;
 
-                    TabScanImage tabScanImage = GetTabScanImage(_stackTabNo);
+                //    TabScanImage tabScanImage = GetTabScanImage(_stackTabNo);
 
-                    if (tabScanImage.StartIndex <= _curGrabCount && _curGrabCount <= tabScanImage.EndIndex)
-                    {
-                        Mat mat = MatHelper.ByteArrayToMat(data, tabScanImage.SubImageWidth, tabScanImage.SubImageHeight, 1);
-                        Mat rotatedMat = MatHelper.Transpose(mat);
-                        tabScanImage.AddSubImage(rotatedMat);
-                        mat.Dispose();
-                    }
+                //    if (tabScanImage.StartIndex <= _curGrabCount && _curGrabCount <= tabScanImage.EndIndex)
+                //    {
+                //        //Mat mat = MatHelper.ByteArrayToMat(data, tabScanImage.SubImageWidth, tabScanImage.SubImageHeight, 1);
+                //        //Mat rotatedMat = MatHelper.Transpose(mat);
+                //        //tabScanImage.AddSubImage(rotatedMat);
+                //        //mat.Dispose();
+                //    }
 
-                    if (tabScanImage.IsAddImageDone())
-                    {
-                        //Console.WriteLine("Add Image Done." + _stackTabNo.ToString());
-                        _stackTabNo++;
-                        tabScanImage.ExcuteMerge = true;
+                //    if (tabScanImage.IsAddImageDone())
+                //    {
+                //        //Console.WriteLine("Add Image Done." + _stackTabNo.ToString());
+                //        _stackTabNo++;
+                //        tabScanImage.ExcuteMerge = true;
 
-                        if (_stackTabNo == TabScanImageList.Count())
-                        {
-                            Console.WriteLine("CurrentGrab Count :" + _curGrabCount.ToString() + " StackNo : " + _stackTabNo.ToString() + " GrabCount : " + GrabCount.ToString());
-                            Camera.Stop();
-                            GrabDoneEventHanlder?.Invoke(Camera.Name, true);
-                        }
-                        TabImageGrabCompletedEventHandler?.Invoke(Camera.Name, tabScanImage);
-                    }
-                    _curGrabCount++;
-                }
+                //        if (_stackTabNo == TabScanImageList.Count())
+                //        {
+                //            Console.WriteLine("CurrentGrab Count :" + _curGrabCount.ToString() + " StackNo : " + _stackTabNo.ToString() + " GrabCount : " + GrabCount.ToString());
+                //            Camera.Stop();
+                //            GrabDoneEventHanlder?.Invoke(Camera.Name, true);
+                //        }
+                //        //TabImageGrabCompletedEventHandler?.Invoke(Camera.Name, tabScanImage);
+                //    }
+                //    _curGrabCount++;
+                //}
             }
         }
 
@@ -410,8 +410,16 @@ namespace Jastech.Apps.Winform
                     return null;
                 }
             }
-            
         }
+
+        public int GetDataCount()
+        {
+            lock (_dataLock)
+            {
+                return DataQueue.Count();
+            }
+        }
+
         public void MainGrabManagement()
         {
             while (true)
@@ -421,40 +429,57 @@ namespace Jastech.Apps.Winform
                     ClearTabScanImage();
                     break;
                 }
-                byte[] data = GetData();
-                //byte[] data = null;
-                if (data != null)
-                {
-                    if (_stackTabNo >= TabScanImageList.Count())
-                        continue;
+                ImageProcessing();
+                //if (GetDataCount() > 0)
+                //{
 
-                    TabScanImage tabScanImage = GetTabScanImage(_stackTabNo);
-
-                    if (tabScanImage.StartIndex <= _curGrabCount && _curGrabCount <= tabScanImage.EndIndex)
-                    {
-                        Mat mat = MatHelper.ByteArrayToMat(data, tabScanImage.SubImageWidth, tabScanImage.SubImageHeight, 1);
-                        Mat rotatedMat = MatHelper.Transpose(mat);
-                        tabScanImage.AddSubImage(rotatedMat);
-                        mat.Dispose();
-                    }
-
-                    if (tabScanImage.IsAddImageDone())
-                    {
-                        //Console.WriteLine("Add Image Done." + _stackTabNo.ToString());
-                        _stackTabNo++;
-                        tabScanImage.ExcuteMerge = true;
-
-                        if (_stackTabNo == TabScanImageList.Count())
-                        {
-                            Console.WriteLine("CurrentGrab Count :" + _curGrabCount.ToString() + " StackNo : " + _stackTabNo.ToString() + " GrabCount : " + GrabCount.ToString());
-                            Camera.Stop();
-                            GrabDoneEventHanlder?.Invoke(Camera.Name, true);
-                        }
-                        TabImageGrabCompletedEventHandler?.Invoke(Camera.Name, tabScanImage);
-                    }
-                    _curGrabCount++;
-                }
+                //}
                 Thread.Sleep(10);
+            }
+        }
+
+        private bool ImageProcessing()
+        {
+            byte[] data = GetData();
+            if (data != null)
+            {
+                if (_stackTabNo >= TabScanImageList.Count())
+                    return true;
+
+                TabScanImage tabScanImage = GetTabScanImage(_stackTabNo);
+
+                if (tabScanImage.StartIndex <= _curGrabCount && _curGrabCount <= tabScanImage.EndIndex)
+                {
+                    Mat mat = MatHelper.ByteArrayToMat(data, tabScanImage.SubImageWidth, tabScanImage.SubImageHeight, 1);
+                    Mat rotatedMat = MatHelper.Transpose(mat);
+                    tabScanImage.AddSubImage(rotatedMat);
+                    mat.Dispose();
+                }
+
+                if (tabScanImage.IsAddImageDone())
+                {
+                    //Console.WriteLine("Add Image Done." + _stackTabNo.ToString());
+                    _stackTabNo++;
+                    tabScanImage.ExcuteMerge = true;
+
+                    if (_stackTabNo == TabScanImageList.Count())
+                    {
+                        Console.WriteLine("CurrentGrab Count :" + _curGrabCount.ToString() + " StackNo : " + _stackTabNo.ToString() + " GrabCount : " + GrabCount.ToString());
+                        Camera.Stop();
+                        GrabDoneEventHanlder?.Invoke(Camera.Name, true);
+                    }
+                    TabImageGrabCompletedEventHandler?.Invoke(Camera.Name, tabScanImage);
+                }
+                _curGrabCount++;
+
+                if (GetDataCount() > 0)
+                    ImageProcessing();
+
+                return true;
+            }
+            else
+            {
+                return false;
             }
         }
 

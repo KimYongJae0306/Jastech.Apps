@@ -107,6 +107,7 @@ namespace Jastech.Apps.Winform
                         GetAppsCamera(camera.Name).AddSubImage(data, camera.GrabCount);
                 }
             }
+            Thread.Sleep(0);
         }
        
         public bool IsGrabbing(CameraName name)
