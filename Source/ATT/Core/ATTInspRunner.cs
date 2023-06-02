@@ -80,7 +80,6 @@ namespace ATT.Core
         }
         #endregion
 
-        Stopwatch testSW = new Stopwatch();
         #region 메서드
         private async void ATTSeqRunner_TabImageGrabCompletedEventHandler(string cameraName, TabScanImage tabScanImage)
         {
@@ -91,8 +90,7 @@ namespace ATT.Core
             ICogImage cogImage = tabScanImage.ConvertCogGrayImage(matImage);
 
             Console.WriteLine("Run Inspection. " + tabScanImage.TabNo.ToString());
-            testSW.Restart();
-            await Task.Run(() => Run(tabScanImage, matImage, cogImage));
+            //await Task.Run(() => Run(tabScanImage, matImage, cogImage));
 
             //Task task = new Task(() => Run(tabScanImage, matImage, cogImage));
             //task.Start();
@@ -100,8 +98,6 @@ namespace ATT.Core
 
         public void Run(TabScanImage ScanImage, Mat mergeMat, ICogImage cogMergeImage)
         {
-            testSW.Stop();
-            Console.WriteLine("Run In. " + testSW.ElapsedMilliseconds.ToString());
             AppsInspModel inspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
             Tab tab = inspModel.GetUnit(UnitName.Unit0).GetTab(ScanImage.TabNo);
 
