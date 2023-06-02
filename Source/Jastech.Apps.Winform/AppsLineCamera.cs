@@ -1,4 +1,5 @@
-﻿using Emgu.CV;
+﻿using Cognex.VisionPro;
+using Emgu.CV;
 using Emgu.CV.Reg;
 using Jastech.Apps.Structure;
 using Jastech.Apps.Structure.Data;
@@ -6,7 +7,9 @@ using Jastech.Apps.Winform.Core;
 using Jastech.Apps.Winform.Settings;
 using Jastech.Framework.Device.Cameras;
 using Jastech.Framework.Device.Motions;
+using Jastech.Framework.Imaging;
 using Jastech.Framework.Imaging.Helper;
+using Jastech.Framework.Imaging.VisionPro;
 using Jastech.Framework.Util.Helper;
 using System;
 using System.Collections.Concurrent;
@@ -42,7 +45,8 @@ namespace Jastech.Apps.Winform
 
         public int GrabCount { get; private set; } = 0;
 
-        public List<TabScanImage> TabScanImageList { get; private set; } = new List<TabScanImage>();
+        //public List<TabScanImage> TabScanImageList { get; private set; } = new List<TabScanImage>();
+        public List<TabScanBuffer> TabScanBufferList { get; private set; } = new List<TabScanBuffer>();
 
         public Queue<byte[]> LiveDataQueue = new Queue<byte[]>();
 
@@ -72,7 +76,7 @@ namespace Jastech.Apps.Winform
         #region 델리게이트
         public delegate void TeachingImageGrabbedDelegate(string cameraName, Mat image);
 
-        public delegate void TabImageGrabCompletedDelegate(string cameraName, TabScanImage image);
+        public delegate void TabImageGrabCompletedDelegate(string cameraName, TabScanBuffer image);
 
         public delegate void GrabDoneDelegate(string cameraName, bool isGrabDone);
         #endregion
@@ -85,14 +89,14 @@ namespace Jastech.Apps.Winform
         #endregion
 
         #region 메서드
-        public void ClearTabScanImage()
+        public void ClearTabScanBuffer()
         {
-            lock (TabScanImageList)
+            lock (TabScanBufferList)
             {
-                foreach (var scanImage in TabScanImageList)
-                    scanImage.Dispose();
+                foreach (var buffer in TabScanBufferList)
+                    buffer.Dispose();
 
-                TabScanImageList.Clear();
+                TabScanBufferList.Clear();
             }
             _curGrabCount = 0;
             _stackTabNo = 0;
@@ -107,7 +111,7 @@ namespace Jastech.Apps.Winform
             if (inspModel == null)
                 return;
 
-            ClearTabScanImage();
+            ClearTabScanBuffer();
 
             float resolution_mm = (float)(Camera.PixelResolution_um / Camera.LensScale) / 1000; // ex) 3.5 um / 5 / 1000 = 0.0007mm
             //materialInfo.PanelXSize_mm = 270;
@@ -139,9 +143,9 @@ namespace Jastech.Apps.Winform
 
                 tempPos += materialInfo.GetTabToTabDistance(i);
 
-                TabScanImage scanImage = new TabScanImage(i, startIndex, endIndex, Camera.ImageWidth, Camera.ImageHeight);
-                lock(TabScanImageList)
-                    TabScanImageList.Add(scanImage);
+                TabScanBuffer scanImage = new TabScanBuffer(i, startIndex, endIndex, Camera.ImageWidth, Camera.ImageHeight);
+                lock(TabScanBufferList)
+                    TabScanBufferList.Add(scanImage);
             }
             GrabCount = maxEndIndex;
             _grabCount = 0;
@@ -224,14 +228,14 @@ namespace Jastech.Apps.Winform
             if (Camera.IsGrabbing())
                 Camera.Stop();
 
-            ClearTabScanImage();
+            ClearTabScanBuffer();
 
             float resolution_mm = (float)(Camera.PixelResolution_um / Camera.LensScale) / 1000;
             int totalScanSubImageCount = (int)Math.Ceiling(scanLength_mm / resolution_mm / Camera.ImageHeight) + 2;
-        
-            TabScanImage scanImage = new TabScanImage(0, 0, totalScanSubImageCount, Camera.ImageWidth, Camera.ImageHeight);
-            lock(TabScanImageList)
-                TabScanImageList.Add(scanImage);
+
+            TabScanBuffer buffer = new TabScanBuffer(0, 0, totalScanSubImageCount, Camera.ImageWidth, Camera.ImageHeight);
+            lock(TabScanBufferList)
+                TabScanBufferList.Add(buffer);
 
             GrabCount = totalScanSubImageCount;
             _grabCount = 0;
@@ -289,28 +293,28 @@ namespace Jastech.Apps.Winform
         {
             while(true)
             {
-                if(CancelMergeTask.IsCancellationRequested)
-                {
-                    ClearTabScanImage();
-                    break;
-                }
+                //if(CancelMergeTask.IsCancellationRequested)
+                //{
+                //    ClearTabScanBuffer();
+                //    break;
+                //}
 
-                lock(TabScanImageList)
-                {
-                    foreach (var scanImage in TabScanImageList)
-                    {
-                        if(scanImage.IsInspection == false)
-                        {
-                            if (scanImage.ExcuteMerge)
-                            {
-                                scanImage.IsInspection = true;
-                                scanImage.ExcuteMerge = false;
+                //lock(TabScanImageList)
+                //{
+                //    foreach (var scanImage in TabScanImageList)
+                //    {
+                //        if(scanImage.IsInspection == false)
+                //        {
+                //            if (scanImage.ExcuteMerge)
+                //            {
+                //                scanImage.IsInspection = true;
+                //                scanImage.ExcuteMerge = false;
 
-                                TabImageGrabCompletedEventHandler?.Invoke(Camera.Name, scanImage);
-                            }
-                        }
-                    }
-                }
+                //                TabImageGrabCompletedEventHandler?.Invoke(Camera.Name, scanImage);
+                //            }
+                //        }
+                //    }
+                //}
 
                 Thread.Sleep(50);
             }
@@ -405,62 +409,50 @@ namespace Jastech.Apps.Winform
             {
                 if (CancelMainGrabTask.IsCancellationRequested)
                 {
-                    ClearTabScanImage();
+                    ClearTabScanBuffer();
                     break;
                 }
-                ImageProcessing();
-                //if (GetDataCount() > 0)
-                //{
+                //ImageProcessing();
 
-                //}
                 Thread.Sleep(10);
             }
         }
 
-        private bool ImageProcessing()
-        {
-            byte[] data = GetData();
-            if (data != null)
-            {
-                if (_stackTabNo >= TabScanImageList.Count())
-                    return true;
+        //private bool ImageProcessing()
+        //{
+        //    byte[] data = GetData();
+        //    if (data != null)
+        //    {
+        //        if (_stackTabNo >= TabScanImageList.Count())
+        //            return true;
 
-                TabScanImage tabScanImage = GetTabScanImage(_stackTabNo);
+        //        TabScanImage tabScanImage = GetTabScanImage(_stackTabNo);
 
-                if (tabScanImage.StartIndex <= _curGrabCount && _curGrabCount <= tabScanImage.EndIndex)
-                {
-                    Mat mat = MatHelper.ByteArrayToMat(data, tabScanImage.SubImageWidth, tabScanImage.SubImageHeight, 1);
-                    Mat rotatedMat = MatHelper.Transpose(mat);
-                    tabScanImage.AddSubImage(rotatedMat);
-                    mat.Dispose();
-                }
+        //        if (tabScanImage.StartIndex <= _curGrabCount && _curGrabCount <= tabScanImage.EndIndex)
+        //        {
+        //            Mat mat = MatHelper.ByteArrayToMat(data, tabScanImage.SubImageWidth, tabScanImage.SubImageHeight, 1);
+        //            Mat rotatedMat = MatHelper.Transpose(mat);
+        //            tabScanImage.AddSubImage(rotatedMat);
+        //            mat.Dispose();
+        //        }
 
-                if (tabScanImage.IsAddImageDone())
-                {
-                    //Console.WriteLine("Add Image Done." + _stackTabNo.ToString());
-                    _stackTabNo++;
-                    tabScanImage.ExcuteMerge = true;
+        //        if (tabScanImage.IsAddImageDone())
+        //        {
+        //            tabScanImage.ExcuteMerge = true;
+        //            //tabScanImage.MakeMergeImage();
+        //        }
+        //        _curGrabCount++;
 
-                    if (_stackTabNo == TabScanImageList.Count())
-                    {
-                        Console.WriteLine("CurrentGrab Count :" + _curGrabCount.ToString() + " StackNo : " + _stackTabNo.ToString() + " GrabCount : " + GrabCount.ToString());
-                        Camera.Stop();
-                        GrabDoneEventHanlder?.Invoke(Camera.Name, true);
-                    }
-                    TabImageGrabCompletedEventHandler?.Invoke(Camera.Name, tabScanImage);
-                }
-                _curGrabCount++;
+        //        if (GetDataCount() > 0)
+        //            ImageProcessing();
 
-                if (GetDataCount() > 0)
-                    ImageProcessing();
-
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
+        //        return true;
+        //    }
+        //    else
+        //    {
+        //        return false;
+        //    }
+        //}
 
         public void UpdateLiveImage()
         {
@@ -468,7 +460,7 @@ namespace Jastech.Apps.Winform
             {
                 if (CancelLiveTask.IsCancellationRequested)
                 {
-                    ClearTabScanImage();
+                    ClearTabScanBuffer();
                     break;
                 }
 
@@ -490,14 +482,14 @@ namespace Jastech.Apps.Winform
             }
         }
 
-        private TabScanImage GetTabScanImage(int tabNo)
-        {
-            if (tabNo <= TabScanImageList.Count)
-            {
-                return TabScanImageList[tabNo];
-            }
-            return null;
-        }
+        //private TabScanImage GetTabScanImage(int tabNo)
+        //{
+        //    if (tabNo <= TabScanImageList.Count)
+        //    {
+        //        return TabScanImageList[tabNo];
+        //    }
+        //    return null;
+        //}
 
         public void SetOperationMode(TDIOperationMode operationMode)
         {
@@ -522,6 +514,17 @@ namespace Jastech.Apps.Winform
                 return milCamera.TDIOperationMode;
             }
             return TDIOperationMode.TDI;
+        }
+
+        public ICogImage ConvertCogGrayImage(Mat mat)
+        {
+            if (mat == null)
+                return null;
+
+            int size = mat.Width * mat.Height * mat.NumberOfChannels;
+            ColorFormat format = mat.NumberOfChannels == 1 ? ColorFormat.Gray : ColorFormat.RGB24;
+            var cogImage = VisionProImageHelper.CovertImage(mat.DataPointer, mat.Width, mat.Height, format);
+            return cogImage;
         }
         #endregion
     }

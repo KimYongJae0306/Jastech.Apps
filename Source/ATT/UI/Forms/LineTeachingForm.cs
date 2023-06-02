@@ -4,6 +4,7 @@ using Emgu.CV.CvEnum;
 using Jastech.Apps.Structure;
 using Jastech.Apps.Structure.Data;
 using Jastech.Apps.Winform;
+using Jastech.Apps.Winform.Core;
 using Jastech.Apps.Winform.Settings;
 using Jastech.Apps.Winform.UI.Controls;
 using Jastech.Framework.Imaging;
@@ -149,15 +150,15 @@ namespace ATT.UI.Forms
             _currentTabNo = cbxTabList.SelectedItem as string;
         }
 
-        private void LineTeachingForm_TabImageGrabCompletedEventHandler(string cameraName, TabScanImage tabScanImage)
+        private void LineTeachingForm_TabImageGrabCompletedEventHandler(string cameraName, TabScanBuffer scanBuffer)
         {
-            if (tabScanImage == null)
+            if (scanBuffer == null)
                 return;
 
             var teachingData = SystemManager.Instance().GetTeachingData();
-            Mat mat = tabScanImage.GetMergeImage();
-            Console.WriteLine("Complete : " + tabScanImage.TabNo);
-            teachingData.AddBufferImage(tabScanImage.TabNo, mat);
+            Mat mat = scanBuffer.GetMergeMatImage();
+            Console.WriteLine("Complete : " + scanBuffer.TabNo);
+            teachingData.AddBufferImage(scanBuffer.TabNo, mat);
         }
 
         private void AddControl()

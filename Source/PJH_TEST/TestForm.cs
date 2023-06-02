@@ -14,7 +14,7 @@ namespace PJH_TEST
         {
             InitializeComponent();
 
-            DailyInfoService.Load();
+            //DailyInfoService.Load();
         }
 
         private void button1_Click(object sender, EventArgs e)

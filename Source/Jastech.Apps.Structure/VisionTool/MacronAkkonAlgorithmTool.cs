@@ -99,15 +99,15 @@ namespace Jastech.Apps.Structure.VisionTool
             return result;
         }
 
-        public void PrepareMultiInspection(AppsInspModel inspModel, List<TabScanImage> tabscanImageList, float resizeRatio)
+        public void PrepareMultiInspection(AppsInspModel inspModel, List<MacronPrepareParam> prepareParamList, float resizeRatio)
         {
-            if (tabscanImageList.Count < 0)
+            if (prepareParamList.Count < 0)
                 return;
 
             int stageCount = inspModel.UnitCount;
             int tabCount = inspModel.TabCount;
 
-            int sliceHeight = tabscanImageList[0].SubImageWidth;
+            int sliceHeight = prepareParamList[0].ImageWIdth;
 
             AkkonAlgorithm.CreateDllBuffer(stageCount, tabCount, SliceWidth, sliceHeight, resizeRatio);
 
@@ -126,9 +126,9 @@ namespace Jastech.Apps.Structure.VisionTool
                 {
                     Tab tab = inspModel.GetUnit(UnitName.Unit0).GetTab(tabNo);
 
-                    var tabScanImageBuffer = GetTabScanImage(tabscanImageList, tabNo);
-                    int width = tabScanImageBuffer.TotalGrabCount * tabScanImageBuffer.SubImageHeight;
-                    int height = tabScanImageBuffer.SubImageWidth;
+                    var tabScanImageBuffer = GetParam(prepareParamList, tabNo);
+                    int width = tabScanImageBuffer.TotalCount * tabScanImageBuffer.ImageHeight;
+                    int height = tabScanImageBuffer.ImageWIdth;
 
                     AkkonAlgorithm.CreateImageBuffer(stageNo, tabNo, width, height, resizeRatio);
 
@@ -227,9 +227,20 @@ namespace Jastech.Apps.Structure.VisionTool
             return cogImage;
         }
 
-        private TabScanImage GetTabScanImage(List<TabScanImage> tabscanImageList, int tabNo)
+        private MacronPrepareParam GetParam(List<MacronPrepareParam> paramList, int tabNo)
         {
-            return tabscanImageList.Where(x => x.TabNo == tabNo).First();
+            return paramList.Where(x => x.TabNo == tabNo).First();
         }
+    }
+
+    public class MacronPrepareParam
+    {
+        public int TabNo { get; set; }
+        
+        public int TotalCount { get; set; }
+
+        public int ImageWIdth { get; set; }
+
+        public int ImageHeight { get; set; }
     }
 }

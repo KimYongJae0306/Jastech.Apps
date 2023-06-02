@@ -26,8 +26,6 @@ namespace Jastech.Apps.Winform
         private static AppsLineCameraManager _instance = null;
 
         private object _objLock { get; set; } = new object();
-
-
         #endregion
 
         #region 속성
