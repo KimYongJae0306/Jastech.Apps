@@ -277,15 +277,30 @@ namespace Jastech.Apps.Winform
             }
             else
             {
-                lock (_dataLock)
-                    DataQueue.Enqueue(data);
-            }
-            _grabCount++;
-            if (_grabCount == GrabCount)
-            {
-                Camera.Stop();
-                GrabDoneEventHanlder?.Invoke(Camera.Name, true);
-            }
+                TabScanBuffer tabScanBuffer = GetTabScanBuffer(_stackTabNo);
+                if (tabScanBuffer.StartIndex <= _curGrabCount && _curGrabCount <= tabScanBuffer.EndIndex)
+                {
+                    tabScanBuffer.AddData(data);
+                }
+
+                if (tabScanBuffer.IsAddDataDone())
+                {
+                    _stackTabNo++;
+                }
+
+                if (_grabCount == GrabCount - 1)
+                {
+                    Camera.Stop();
+                    GrabDoneEventHanlder?.Invoke(Camera.Name, true);
+                }
+
+                _grabCount++;
+            }   
+        }
+
+        private TabScanBuffer GetTabScanBuffer(int tabNo)
+        {
+            return TabScanBufferList[tabNo];
         }
 
         int count = 0;

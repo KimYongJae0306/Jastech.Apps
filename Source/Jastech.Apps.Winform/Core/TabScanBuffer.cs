@@ -28,11 +28,13 @@ namespace Jastech.Apps.Winform.Core
 
         public bool InspectionDone { get; set; }
 
-        private List<Mat> SubImageList { get; set; } = new List<Mat>();
+        public int AddCount { get; set; } = 0;
+        //private List<Mat> SubImageList { get; set; } = new List<Mat>();
+        public Queue<byte[]> DataQueue = new Queue<byte[]>();
 
-        public Mat MergeMatImage { get; set; } = null;
+        //public Mat MergeMatImage { get; set; } = null;
 
-        public CogImage8Grey MergeCogImage { get; set; } = null;
+        //public CogImage8Grey MergeCogImage { get; set; } = null;
 
         public TabScanBuffer(int tabNo, int startIndex, int endIndex, int subImageWidth, int subImageHeight)
         {
@@ -43,38 +45,57 @@ namespace Jastech.Apps.Winform.Core
             SubImageHeight = subImageHeight;
         }
 
-        public void AddSubImage(Mat mat)
+        public void AddData(byte[] data)
         {
             lock (_objLock)
-                SubImageList.Add(mat);
+                DataQueue.Enqueue(data);
+
+            AddCount++;
         }
 
-        public bool IsAddImageDone()
+        public byte[] GetData()
+        {
+            lock (_objLock)
+            {
+                if (DataQueue.Count > 0)
+                    return DataQueue.Dequeue();
+                else
+                    return null;
+            }
+        }
+
+        //public void AddSubImage(Mat mat)
+        //{
+        //    lock (_objLock)
+        //        SubImageList.Add(mat);
+        //}
+
+        public bool IsAddDataDone()
         {
             bool isDone = false;
 
             lock (_objLock)
-                isDone = TotalGrabCount == SubImageList.Count() ? true : false;
+                isDone = TotalGrabCount == AddCount ? true : false;
 
             return isDone;
         }
 
         public void Dispose()
         {
-            lock (_objLock)
-            {
-                for (int i = 0; i < SubImageList.Count(); i++)
-                {
-                    SubImageList[i].Dispose();
-                    SubImageList[i] = null;
-                }
-                SubImageList.Clear();
-            }
-            MergeMatImage?.Dispose();
-            MergeMatImage = null;
+            //lock (_objLock)
+            //{
+            //    for (int i = 0; i < SubImageList.Count(); i++)
+            //    {
+            //        SubImageList[i].Dispose();
+            //        SubImageList[i] = null;
+            //    }
+            //    SubImageList.Clear();
+            //}
+            //MergeMatImage?.Dispose();
+            //MergeMatImage = null;
 
-            MergeCogImage?.Dispose();
-            MergeCogImage = null;
+            //MergeCogImage?.Dispose();
+            //MergeCogImage = null;
         }
 
         public void MakeMergeImage()
@@ -88,32 +109,33 @@ namespace Jastech.Apps.Winform.Core
         public Mat GetMergeMatImage()
         {
             MakeMergeMatImage();
-            return MergeMatImage;
+            //return MergeMatImage;
+            return null;
         }
 
         private void MakeMergeCogImage()
         {
-            if(MergeCogImage == null)
-            {
-                MakeMergeMatImage();
-                if(MergeMatImage != null)
-                    MergeCogImage = ConvertCogGrayImage(MergeMatImage);
-            }
+            //if(MergeCogImage == null)
+            //{
+            //    MakeMergeMatImage();
+            //    if(MergeMatImage != null)
+            //        MergeCogImage = ConvertCogGrayImage(MergeMatImage);
+            //}
         }
 
         private void MakeMergeMatImage()
         {
-            if(MergeMatImage == null)
-            {
-                lock (_objLock)
-                {
-                    if (SubImageList.Count > 0)
-                    {
-                        MergeMatImage = new Mat();
-                        CvInvoke.HConcat(SubImageList.ToArray(), MergeMatImage);
-                    }
-                }
-            }
+            //if(MergeMatImage == null)
+            //{
+            //    lock (_objLock)
+            //    {
+            //        if (SubImageList.Count > 0)
+            //        {
+            //            MergeMatImage = new Mat();
+            //            CvInvoke.HConcat(SubImageList.ToArray(), MergeMatImage);
+            //        }
+            //    }
+            //}
         }
 
         private CogImage8Grey ConvertCogGrayImage(Mat mat)

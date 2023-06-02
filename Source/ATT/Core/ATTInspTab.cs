@@ -1,4 +1,5 @@
-﻿using Emgu.CV;
+﻿using Cognex.VisionPro;
+using Emgu.CV;
 using Jastech.Apps.Structure;
 using Jastech.Apps.Structure.Data;
 using Jastech.Apps.Structure.VisionTool;
@@ -28,10 +29,29 @@ namespace ATT.Core
 
         public TabScanBuffer TabScanBuffer { get; set; } = null;
 
+        public List<Mat> SubImageList { get; set; } = new List<Mat>();
+
+        public Mat MergeMatImage { get; set; } = null;
+
+        public CogImage8Grey MergeCogImage { get; set; } = null;
+
         public bool IsAddStart { get; set; }
 
         public void Dispose()
         {
+            for (int i = 0; i < SubImageList.Count(); i++)
+            {
+                SubImageList[i].Dispose();
+                SubImageList[i] = null;
+            }
+            SubImageList.Clear();
+
+            MergeMatImage?.Dispose();
+            MergeMatImage = null;
+
+            MergeCogImage?.Dispose();
+            MergeCogImage = null;
+
             DataQueue.Clear();
             TabScanBuffer?.Dispose();
         }
@@ -95,12 +115,12 @@ namespace ATT.Core
 
                 AddImage();
 
-                if (TabScanBuffer.IsAddImageDone())
+                if (SubImageList.Count() == TabScanBuffer.TotalGrabCount)
                 {
                     TabScanBuffer.MakeMergeImage();
                     Console.WriteLine("Make Merge Image." + TabScanBuffer.TabNo);
 
-                    Inspection();
+                    //Inspection();
                     TabScanBuffer.InspectionDone = true;
                 }
 
@@ -110,13 +130,13 @@ namespace ATT.Core
 
         private void AddImage()
         {
-            if (GetData() is byte[] data)
+            if (TabScanBuffer.GetData() is byte[] data)
             {
                 IsAddStart = true;
 
                 Mat mat = MatHelper.ByteArrayToMat(data, TabScanBuffer.SubImageWidth, TabScanBuffer.SubImageHeight, 1);
                 Mat rotatedMat = MatHelper.Transpose(mat);
-                TabScanBuffer.AddSubImage(rotatedMat);
+                SubImageList.Add(rotatedMat);
                 mat.Dispose();
             }
 
@@ -133,11 +153,11 @@ namespace ATT.Core
 
             TabInspResult inspResult = new TabInspResult();
             inspResult.TabNo = TabScanBuffer.TabNo;
-            inspResult.Image = TabScanBuffer.MergeMatImage;
-            inspResult.CogImage = TabScanBuffer.MergeCogImage;
+            inspResult.Image = MergeMatImage;
+            inspResult.CogImage = MergeCogImage;
 
             #region Mark 검사
-            algorithmTool.MainMarkInspect(TabScanBuffer.MergeCogImage, tab, ref inspResult);
+            algorithmTool.MainMarkInspect(MergeCogImage, tab, ref inspResult);
 
             if (inspResult.IsMarkGood() == false)
             {
@@ -169,7 +189,7 @@ namespace ATT.Core
             double judgementY = 100.0;
 
             #region Left Align
-            inspResult.LeftAlignX = algorithmTool.RunMainLeftAlignX(TabScanBuffer.MergeCogImage, tab, fpcTheta, panelTheta, judgementX);
+            inspResult.LeftAlignX = algorithmTool.RunMainLeftAlignX(MergeCogImage, tab, fpcTheta, panelTheta, judgementX);
             if (inspResult.IsLeftAlignXGood() == false)
             {
                 var leftAlignX = inspResult.LeftAlignX;
@@ -177,7 +197,7 @@ namespace ATT.Core
                 Logger.Debug(LogType.Inspection, message);
             }
 
-            inspResult.LeftAlignY = algorithmTool.RunMainLeftAlignY(TabScanBuffer.MergeCogImage, tab, fpcTheta, panelTheta, judgementY);
+            inspResult.LeftAlignY = algorithmTool.RunMainLeftAlignY(MergeCogImage, tab, fpcTheta, panelTheta, judgementY);
             if (inspResult.IsLeftAlignYGood() == false)
             {
                 var leftAlignY = inspResult.LeftAlignY;
@@ -187,7 +207,7 @@ namespace ATT.Core
             #endregion
 
             #region Right Align
-            inspResult.RightAlignX = algorithmTool.RunMainRightAlignX(TabScanBuffer.MergeCogImage, tab, fpcTheta, panelTheta, judgementX);
+            inspResult.RightAlignX = algorithmTool.RunMainRightAlignX(MergeCogImage, tab, fpcTheta, panelTheta, judgementX);
             if (inspResult.IsRightAlignXGood() == false)
             {
                 var rightAlignX = inspResult.RightAlignX;
@@ -195,7 +215,7 @@ namespace ATT.Core
                 Logger.Debug(LogType.Inspection, message);
             }
 
-            inspResult.RightAlignY = algorithmTool.RunMainRightAlignY(TabScanBuffer.MergeCogImage, tab, fpcTheta, panelTheta, judgementY);
+            inspResult.RightAlignY = algorithmTool.RunMainRightAlignY(MergeCogImage, tab, fpcTheta, panelTheta, judgementY);
             if (inspResult.IsRightAlignYGood() == false)
             {
                 var rightAlignY = inspResult.RightAlignY;
