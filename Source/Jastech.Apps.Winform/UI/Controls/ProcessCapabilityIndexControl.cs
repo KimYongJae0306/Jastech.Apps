@@ -58,7 +58,7 @@ namespace Jastech.Apps.Winform.UI.Controls
         #endregion
 
         #region 메서드
-        private void ProcessCapabilityControl_Load(object sender, EventArgs e)
+        private void ProcessCapabilityIndexControl_Load(object sender, EventArgs e)
         {
             AddControl();
             InitializeUI();
@@ -496,21 +496,6 @@ namespace Jastech.Apps.Winform.UI.Controls
             return query;
         }
 
-        //private void UpdateProcessCapabilityResult(List<Result> processCapabilityResultList)
-        //{
-        //    dgvPCResult.Rows.Clear();
-
-        //    foreach (var item in processCapabilityResultList)
-        //    {
-        //        string name = "tt";
-        //        string cp = item.Cp.ToString();
-        //        string cpk = item.Cpk.ToString();
-        //        string pp = item.Pp.ToString();
-        //        string ppk = item.Ppk.ToString("F2");
-
-        //        string[] row = { name, cp, cpk, pp, ppk };
-        //        dgvPCResult.Rows.Add(row);
-        //    }
-        //}
+        
     }
 }

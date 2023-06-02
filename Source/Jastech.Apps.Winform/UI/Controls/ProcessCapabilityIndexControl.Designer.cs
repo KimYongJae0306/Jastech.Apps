@@ -28,13 +28,18 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
             this.tlpProcessCapability = new System.Windows.Forms.TableLayoutPanel();
             this.tlpData = new System.Windows.Forms.TableLayoutPanel();
+            this.dgvAlignData = new System.Windows.Forms.DataGridView();
+            this.pnlChart = new System.Windows.Forms.Panel();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.tableLayoutPanel4 = new System.Windows.Forms.TableLayoutPanel();
+            this.lblTab = new System.Windows.Forms.Label();
+            this.tlpTab = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
             this.lblDayCounts = new System.Windows.Forms.Label();
             this.lblDayCount = new System.Windows.Forms.Label();
@@ -56,22 +61,17 @@
             this.tlpPCResult = new System.Windows.Forms.TableLayoutPanel();
             this.lblResult = new System.Windows.Forms.Label();
             this.dgvPCResult = new System.Windows.Forms.DataGridView();
-            this.lblTab = new System.Windows.Forms.Label();
-            this.tableLayoutPanel4 = new System.Windows.Forms.TableLayoutPanel();
-            this.tlpTab = new System.Windows.Forms.TableLayoutPanel();
-            this.pnlChart = new System.Windows.Forms.Panel();
-            this.dgvAlignData = new System.Windows.Forms.DataGridView();
             this.tlpProcessCapability.SuspendLayout();
             this.tlpData.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvAlignData)).BeginInit();
             this.panel1.SuspendLayout();
+            this.tableLayoutPanel4.SuspendLayout();
             this.tableLayoutPanel3.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
             this.tlpAlignTypes.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             this.tlpPCResult.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvPCResult)).BeginInit();
-            this.tableLayoutPanel4.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dgvAlignData)).BeginInit();
             this.SuspendLayout();
             // 
             // tlpProcessCapability
@@ -106,6 +106,45 @@
             this.tlpData.Size = new System.Drawing.Size(536, 554);
             this.tlpData.TabIndex = 0;
             // 
+            // dgvAlignData
+            // 
+            this.dgvAlignData.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.dgvAlignData.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("맑은 고딕", 11.25F, System.Drawing.FontStyle.Bold);
+            dataGridViewCellStyle1.ForeColor = System.Drawing.Color.White;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(104)))), ((int)(((byte)(104)))), ((int)(((byte)(104)))));
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvAlignData.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
+            this.dgvAlignData.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("맑은 고딕", 11.25F, System.Drawing.FontStyle.Bold);
+            dataGridViewCellStyle2.ForeColor = System.Drawing.Color.White;
+            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(104)))), ((int)(((byte)(104)))), ((int)(((byte)(104)))));
+            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvAlignData.DefaultCellStyle = dataGridViewCellStyle2;
+            this.dgvAlignData.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dgvAlignData.Location = new System.Drawing.Point(3, 280);
+            this.dgvAlignData.Name = "dgvAlignData";
+            this.dgvAlignData.ReadOnly = true;
+            this.dgvAlignData.RowHeadersVisible = false;
+            this.dgvAlignData.RowTemplate.Height = 23;
+            this.dgvAlignData.Size = new System.Drawing.Size(530, 271);
+            this.dgvAlignData.TabIndex = 3;
+            // 
+            // pnlChart
+            // 
+            this.pnlChart.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pnlChart.Location = new System.Drawing.Point(0, 0);
+            this.pnlChart.Margin = new System.Windows.Forms.Padding(0);
+            this.pnlChart.Name = "pnlChart";
+            this.pnlChart.Size = new System.Drawing.Size(536, 277);
+            this.pnlChart.TabIndex = 2;
+            // 
             // panel1
             // 
             this.panel1.Controls.Add(this.tableLayoutPanel4);
@@ -119,6 +158,52 @@
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(536, 554);
             this.panel1.TabIndex = 1;
+            // 
+            // tableLayoutPanel4
+            // 
+            this.tableLayoutPanel4.ColumnCount = 2;
+            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 20F));
+            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 80F));
+            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel4.Controls.Add(this.lblTab, 0, 0);
+            this.tableLayoutPanel4.Controls.Add(this.tlpTab, 1, 0);
+            this.tableLayoutPanel4.Location = new System.Drawing.Point(19, 134);
+            this.tableLayoutPanel4.Margin = new System.Windows.Forms.Padding(0);
+            this.tableLayoutPanel4.Name = "tableLayoutPanel4";
+            this.tableLayoutPanel4.RowCount = 1;
+            this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel4.Size = new System.Drawing.Size(499, 40);
+            this.tableLayoutPanel4.TabIndex = 9;
+            // 
+            // lblTab
+            // 
+            this.lblTab.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(104)))), ((int)(((byte)(104)))), ((int)(((byte)(104)))));
+            this.lblTab.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblTab.Location = new System.Drawing.Point(0, 0);
+            this.lblTab.Margin = new System.Windows.Forms.Padding(0);
+            this.lblTab.Name = "lblTab";
+            this.lblTab.Size = new System.Drawing.Size(99, 40);
+            this.lblTab.TabIndex = 6;
+            this.lblTab.Text = "Tab";
+            this.lblTab.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // tlpTab
+            // 
+            this.tlpTab.ColumnCount = 4;
+            this.tlpTab.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
+            this.tlpTab.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
+            this.tlpTab.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
+            this.tlpTab.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
+            this.tlpTab.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tlpTab.Location = new System.Drawing.Point(99, 0);
+            this.tlpTab.Margin = new System.Windows.Forms.Padding(0);
+            this.tlpTab.Name = "tlpTab";
+            this.tlpTab.RowCount = 1;
+            this.tlpTab.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tlpTab.Size = new System.Drawing.Size(400, 40);
+            this.tlpTab.TabIndex = 7;
             // 
             // tableLayoutPanel3
             // 
@@ -435,92 +520,7 @@
             this.dgvPCResult.Size = new System.Drawing.Size(500, 200);
             this.dgvPCResult.TabIndex = 6;
             // 
-            // lblTab
-            // 
-            this.lblTab.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(104)))), ((int)(((byte)(104)))), ((int)(((byte)(104)))));
-            this.lblTab.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lblTab.Location = new System.Drawing.Point(0, 0);
-            this.lblTab.Margin = new System.Windows.Forms.Padding(0);
-            this.lblTab.Name = "lblTab";
-            this.lblTab.Size = new System.Drawing.Size(99, 40);
-            this.lblTab.TabIndex = 6;
-            this.lblTab.Text = "Tab";
-            this.lblTab.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // tableLayoutPanel4
-            // 
-            this.tableLayoutPanel4.ColumnCount = 2;
-            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 20F));
-            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 80F));
-            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel4.Controls.Add(this.lblTab, 0, 0);
-            this.tableLayoutPanel4.Controls.Add(this.tlpTab, 1, 0);
-            this.tableLayoutPanel4.Location = new System.Drawing.Point(19, 134);
-            this.tableLayoutPanel4.Margin = new System.Windows.Forms.Padding(0);
-            this.tableLayoutPanel4.Name = "tableLayoutPanel4";
-            this.tableLayoutPanel4.RowCount = 1;
-            this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel4.Size = new System.Drawing.Size(499, 40);
-            this.tableLayoutPanel4.TabIndex = 9;
-            // 
-            // tlpTab
-            // 
-            this.tlpTab.ColumnCount = 4;
-            this.tlpTab.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
-            this.tlpTab.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
-            this.tlpTab.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
-            this.tlpTab.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
-            this.tlpTab.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tlpTab.Location = new System.Drawing.Point(99, 0);
-            this.tlpTab.Margin = new System.Windows.Forms.Padding(0);
-            this.tlpTab.Name = "tlpTab";
-            this.tlpTab.RowCount = 1;
-            this.tlpTab.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tlpTab.Size = new System.Drawing.Size(400, 40);
-            this.tlpTab.TabIndex = 7;
-            // 
-            // pnlChart
-            // 
-            this.pnlChart.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pnlChart.Location = new System.Drawing.Point(0, 0);
-            this.pnlChart.Margin = new System.Windows.Forms.Padding(0);
-            this.pnlChart.Name = "pnlChart";
-            this.pnlChart.Size = new System.Drawing.Size(536, 277);
-            this.pnlChart.TabIndex = 2;
-            // 
-            // dgvAlignData
-            // 
-            this.dgvAlignData.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
-            this.dgvAlignData.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("맑은 고딕", 11.25F, System.Drawing.FontStyle.Bold);
-            dataGridViewCellStyle1.ForeColor = System.Drawing.Color.White;
-            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(104)))), ((int)(((byte)(104)))), ((int)(((byte)(104)))));
-            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgvAlignData.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
-            this.dgvAlignData.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
-            dataGridViewCellStyle2.Font = new System.Drawing.Font("맑은 고딕", 11.25F, System.Drawing.FontStyle.Bold);
-            dataGridViewCellStyle2.ForeColor = System.Drawing.Color.White;
-            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(104)))), ((int)(((byte)(104)))), ((int)(((byte)(104)))));
-            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgvAlignData.DefaultCellStyle = dataGridViewCellStyle2;
-            this.dgvAlignData.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dgvAlignData.Location = new System.Drawing.Point(3, 280);
-            this.dgvAlignData.Name = "dgvAlignData";
-            this.dgvAlignData.ReadOnly = true;
-            this.dgvAlignData.RowHeadersVisible = false;
-            this.dgvAlignData.RowTemplate.Height = 23;
-            this.dgvAlignData.Size = new System.Drawing.Size(530, 271);
-            this.dgvAlignData.TabIndex = 3;
-            // 
-            // ProcessCapabilityControl
+            // ProcessCapabilityIndexControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
@@ -528,20 +528,20 @@
             this.Controls.Add(this.tlpProcessCapability);
             this.Font = new System.Drawing.Font("맑은 고딕", 11.25F, System.Drawing.FontStyle.Bold);
             this.ForeColor = System.Drawing.Color.White;
-            this.Name = "ProcessCapabilityControl";
+            this.Name = "ProcessCapabilityIndexControl";
             this.Size = new System.Drawing.Size(1072, 554);
-            this.Load += new System.EventHandler(this.ProcessCapabilityControl_Load);
+            this.Load += new System.EventHandler(this.ProcessCapabilityIndexControl_Load);
             this.tlpProcessCapability.ResumeLayout(false);
             this.tlpData.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.dgvAlignData)).EndInit();
             this.panel1.ResumeLayout(false);
+            this.tableLayoutPanel4.ResumeLayout(false);
             this.tableLayoutPanel3.ResumeLayout(false);
             this.tableLayoutPanel2.ResumeLayout(false);
             this.tlpAlignTypes.ResumeLayout(false);
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tlpPCResult.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgvPCResult)).EndInit();
-            this.tableLayoutPanel4.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.dgvAlignData)).EndInit();
             this.ResumeLayout(false);
 
         }
