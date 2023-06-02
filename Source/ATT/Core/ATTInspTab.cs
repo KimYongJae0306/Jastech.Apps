@@ -1,13 +1,19 @@
-﻿using Emgu.CV;
+﻿using Cognex.VisionPro;
+using Emgu.CV;
 using Jastech.Apps.Structure;
 using Jastech.Apps.Structure.Data;
 using Jastech.Apps.Structure.VisionTool;
 using Jastech.Apps.Winform.Core;
+using Jastech.Apps.Winform.Settings;
+using Jastech.Framework.Algorithms.Akkon;
+using Jastech.Framework.Imaging;
 using Jastech.Framework.Imaging.Helper;
 using Jastech.Framework.Imaging.Result;
+using Jastech.Framework.Imaging.VisionPro;
 using Jastech.Framework.Util.Helper;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -28,10 +34,33 @@ namespace ATT.Core
 
         public TabScanBuffer TabScanBuffer { get; set; } = null;
 
+        public List<Mat> SubImageList { get; set; } = new List<Mat>();
+
+        public Mat MergeMatImage { get; set; } = null;
+
+        public CogImage8Grey MergeCogImage { get; set; } = null;
+
         public bool IsAddStart { get; set; }
+
+        public AkkonAlgorithm AkkonAlgorithm { get; set; } = new AkkonAlgorithm();
+
+        public MultiAkkonAlgorithm MultiAkkonAlgorithm { get; set; } = new MultiAkkonAlgorithm();
 
         public void Dispose()
         {
+            for (int i = 0; i < SubImageList.Count(); i++)
+            {
+                SubImageList[i].Dispose();
+                SubImageList[i] = null;
+            }
+            SubImageList.Clear();
+
+            MergeMatImage?.Dispose();
+            MergeMatImage = null;
+
+            MergeCogImage?.Dispose();
+            MergeCogImage = null;
+
             DataQueue.Clear();
             TabScanBuffer?.Dispose();
         }
@@ -92,31 +121,43 @@ namespace ATT.Core
                 }
                 if (TabScanBuffer.InspectionDone)
                     Thread.Sleep(1000); // CPU 점유율 낮추려고...
-
-                AddImage();
-
-                if (TabScanBuffer.IsAddImageDone())
+                else
                 {
-                    TabScanBuffer.MakeMergeImage();
-                    Console.WriteLine("Make Merge Image." + TabScanBuffer.TabNo);
+                    AddImage();
 
-                    Inspection();
-                    TabScanBuffer.InspectionDone = true;
+                    if (SubImageList.Count() == TabScanBuffer.TotalGrabCount)
+                    {
+                        MakeMergeImage();
+                        Console.WriteLine("Make Merge Image." + TabScanBuffer.TabNo);
+
+                       Inspection();
+
+                        TabScanBuffer.InspectionDone = true;
+                    }
+
+                    if (IsAddStart)
+                        Thread.Sleep(0);
+                    else
+                        Thread.Sleep(50);
                 }
-
-                Thread.Sleep(50);
             }
+        }
+
+        private void MakeMergeImage()
+        {
+            MakeMergeMatImage();
+            MakeMergeCogImage();
         }
 
         private void AddImage()
         {
-            if (GetData() is byte[] data)
+            if (TabScanBuffer.GetData() is byte[] data)
             {
                 IsAddStart = true;
 
                 Mat mat = MatHelper.ByteArrayToMat(data, TabScanBuffer.SubImageWidth, TabScanBuffer.SubImageHeight, 1);
                 Mat rotatedMat = MatHelper.Transpose(mat);
-                TabScanBuffer.AddSubImage(rotatedMat);
+                SubImageList.Add(rotatedMat);
                 mat.Dispose();
             }
 
@@ -124,8 +165,43 @@ namespace ATT.Core
                 AddImage();
         }
 
+        private void MakeMergeCogImage()
+        {
+            if (MergeCogImage == null)
+            {
+                MakeMergeMatImage();
+                if (MergeMatImage != null)
+                    MergeCogImage = ConvertCogGrayImage(MergeMatImage);
+            }
+        }
+
+        private void MakeMergeMatImage()
+        {
+            if (MergeMatImage == null)
+            {
+                if (SubImageList.Count > 0)
+                {
+                    MergeMatImage = new Mat();
+                    CvInvoke.HConcat(SubImageList.ToArray(), MergeMatImage);
+                }
+            }
+        }
+
+        private CogImage8Grey ConvertCogGrayImage(Mat mat)
+        {
+            if (mat == null)
+                return null;
+
+            int size = mat.Width * mat.Height * mat.NumberOfChannels;
+            var cogImage = VisionProImageHelper.CovertImage(mat.DataPointer, mat.Width, mat.Height, ColorFormat.Gray) as CogImage8Grey;
+            return cogImage;
+        }
+
         private void Inspection()
         {
+            Stopwatch sw = new Stopwatch();
+            sw.Restart();
+
             AppsInspModel inspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
             Tab tab = inspModel.GetUnit(UnitName.Unit0).GetTab(TabScanBuffer.TabNo);
 
@@ -133,11 +209,11 @@ namespace ATT.Core
 
             TabInspResult inspResult = new TabInspResult();
             inspResult.TabNo = TabScanBuffer.TabNo;
-            inspResult.Image = TabScanBuffer.MergeMatImage;
-            inspResult.CogImage = TabScanBuffer.MergeCogImage;
+            inspResult.Image = MergeMatImage;
+            inspResult.CogImage = MergeCogImage;
 
             #region Mark 검사
-            algorithmTool.MainMarkInspect(TabScanBuffer.MergeCogImage, tab, ref inspResult);
+            algorithmTool.MainMarkInspect(MergeCogImage, tab, ref inspResult);
 
             if (inspResult.IsMarkGood() == false)
             {
@@ -147,6 +223,7 @@ namespace ATT.Core
                 //return;
             }
             #endregion
+
             double fpcTheta = 0.0;
             double panelTheta = 0.0;
 
@@ -165,11 +242,12 @@ namespace ATT.Core
                 panelTheta = MathHelper.GetTheta(point1, point2);
             }
             #endregion
+
             double judgementX = 100.0;
             double judgementY = 100.0;
 
             #region Left Align
-            inspResult.LeftAlignX = algorithmTool.RunMainLeftAlignX(TabScanBuffer.MergeCogImage, tab, fpcTheta, panelTheta, judgementX);
+            inspResult.LeftAlignX = algorithmTool.RunMainLeftAlignX(MergeCogImage, tab, fpcTheta, panelTheta, judgementX);
             if (inspResult.IsLeftAlignXGood() == false)
             {
                 var leftAlignX = inspResult.LeftAlignX;
@@ -177,7 +255,7 @@ namespace ATT.Core
                 Logger.Debug(LogType.Inspection, message);
             }
 
-            inspResult.LeftAlignY = algorithmTool.RunMainLeftAlignY(TabScanBuffer.MergeCogImage, tab, fpcTheta, panelTheta, judgementY);
+            inspResult.LeftAlignY = algorithmTool.RunMainLeftAlignY(MergeCogImage, tab, fpcTheta, panelTheta, judgementY);
             if (inspResult.IsLeftAlignYGood() == false)
             {
                 var leftAlignY = inspResult.LeftAlignY;
@@ -187,7 +265,7 @@ namespace ATT.Core
             #endregion
 
             #region Right Align
-            inspResult.RightAlignX = algorithmTool.RunMainRightAlignX(TabScanBuffer.MergeCogImage, tab, fpcTheta, panelTheta, judgementX);
+            inspResult.RightAlignX = algorithmTool.RunMainRightAlignX(MergeCogImage, tab, fpcTheta, panelTheta, judgementX);
             if (inspResult.IsRightAlignXGood() == false)
             {
                 var rightAlignX = inspResult.RightAlignX;
@@ -195,7 +273,7 @@ namespace ATT.Core
                 Logger.Debug(LogType.Inspection, message);
             }
 
-            inspResult.RightAlignY = algorithmTool.RunMainRightAlignY(TabScanBuffer.MergeCogImage, tab, fpcTheta, panelTheta, judgementY);
+            inspResult.RightAlignY = algorithmTool.RunMainRightAlignY(MergeCogImage, tab, fpcTheta, panelTheta, judgementY);
             if (inspResult.IsRightAlignYGood() == false)
             {
                 var rightAlignY = inspResult.RightAlignY;
@@ -209,8 +287,15 @@ namespace ATT.Core
             #endregion
 
 
+            var roiList = tab.AkkonParam.GetAkkonROIList();
+            var akkonResult = AkkonAlgorithm.Run(MergeMatImage, roiList, tab.AkkonParam.AkkonAlgoritmParam);
 
-            Console.WriteLine("Inspection Completed." + TabScanBuffer.TabNo);
+            //result.AkkonResultList.AddRange(akkonResult);
+            //AppsInspResult.TabResultList.Add(result);
+
+            sw.Stop();
+            string resultMessage = string.Format("Inspection Completed. {0}({1}ms)", TabScanBuffer.TabNo, sw.ElapsedMilliseconds);
+            Console.WriteLine(resultMessage);
         }
     }
 }

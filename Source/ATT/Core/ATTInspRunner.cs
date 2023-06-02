@@ -4,6 +4,7 @@ using Emgu.CV.CvEnum;
 using Emgu.CV.Structure;
 using Jastech.Apps.Structure;
 using Jastech.Apps.Structure.Data;
+using Jastech.Apps.Structure.Parameters;
 using Jastech.Apps.Structure.VisionTool;
 using Jastech.Apps.Winform;
 using Jastech.Apps.Winform.Core;
@@ -62,9 +63,11 @@ namespace ATT.Core
 
         public MacronAkkonAlgorithmTool MacronAkkonAlgorithmTool { get; set; } = null;
 
-        public AkkonAlgorithm AkkonAlgorithm { get; set; } = null;
+        //public AkkonAlgorithm AkkonAlgorithm { get; set; } = null;
 
         public List<ATTInspTab> InspTabList { get; set; } = new List<ATTInspTab>();
+
+        public List<MultiAkkonAlgorithm> AkkonAlgorithmList { get; set; } = new List<MultiAkkonAlgorithm>();
         #endregion
 
         #region 이벤트
@@ -76,10 +79,10 @@ namespace ATT.Core
         #region 생성자
         public ATTInspRunner()
         {
-            if(AppsConfig.Instance().AkkonAlgorithmType == AkkonAlgorithmType.Macron)
-                MacronAkkonAlgorithmTool = new MacronAkkonAlgorithmTool();
-            else
-                AkkonAlgorithm = new AkkonAlgorithm();
+            //if(AppsConfig.Instance().AkkonAlgorithmType == AkkonAlgorithmType.Macron)
+            //    MacronAkkonAlgorithmTool = new MacronAkkonAlgorithmTool();
+            //else
+            //    AkkonAlgorithm = new AkkonAlgorithm();
         }
         #endregion
 
@@ -89,6 +92,8 @@ namespace ATT.Core
             DisposeInspTabList();
             var inspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
 
+            MultiAkkonAlgorithm.PrepareInspection();
+
             foreach (var buffer in bufferList)
             {
                 ATTInspTab inspTab = new ATTInspTab();
@@ -96,6 +101,16 @@ namespace ATT.Core
                 inspTab.StartInspTask();
 
                 InspTabList.Add(inspTab);
+
+                // Akkon
+                Tab tab = inspModel.GetUnit(UnitName.Unit0).GetTab(buffer.TabNo);
+                AkkonParam akkonParam = tab.AkkonParam;
+                MultiAkkonAlgorithm algo = new MultiAkkonAlgorithm();
+                int sliceOverlapCount = algo.GetSliceOverlapCount(buffer.SubImageWidth, buffer.SubImageHeight, akkonParam.GetAkkonROIList(), 2048, 
+                                                                                        akkonParam.AkkonAlgoritmParam.ImageFilterParam.ResizeRatio);
+                algo.Initialize(sliceOverlapCount, akkonParam.AkkonAlgoritmParam);
+
+                AkkonAlgorithmList.Add(algo);
             }
         }
 
@@ -103,6 +118,9 @@ namespace ATT.Core
         {
             InspTabList.ForEach(x => x.Dispose());
             InspTabList.Clear();
+
+            AkkonAlgorithmList.ForEach(x => x.Release());
+            AkkonAlgorithmList.Clear();
         }
 
         private async void ATTSeqRunner_TabImageGrabCompletedEventHandler(string cameraName, TabScanBuffer tabScanImage)
@@ -259,10 +277,7 @@ namespace ATT.Core
                     }
                     else
                     {
-                        var roiList = tab.AkkonParam.GetAkkonROIList();
-                        var akkonResult = AkkonAlgorithm.Run(image, roiList, tab.AkkonParam.AkkonAlgoritmParam);
-                        result.AkkonResultList.AddRange(akkonResult);
-                        AppsInspResult.TabResultList.Add(result);
+                        
                     }
                     Console.WriteLine("Add Akkon Result_" + tab.Index);
                 }
@@ -466,7 +481,6 @@ namespace ATT.Core
                     break;
 
                 case SeqStep.SEQ_SCAN_START:
-                    break;
                     IsGrabDone = false;
                     // 조명 코드 작성 요망
                     var appsLineCamera = AppsLineCameraManager.Instance().GetLineCamera(CameraName.LinscanMIL0);
