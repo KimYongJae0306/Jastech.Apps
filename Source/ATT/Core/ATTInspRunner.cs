@@ -259,10 +259,7 @@ namespace ATT.Core
                     }
                     else
                     {
-                        var roiList = tab.AkkonParam.GetAkkonROIList();
-                        var akkonResult = AkkonAlgorithm.Run(image, roiList, tab.AkkonParam.AkkonAlgoritmParam);
-                        result.AkkonResultList.AddRange(akkonResult);
-                        AppsInspResult.TabResultList.Add(result);
+                        
                     }
                     Console.WriteLine("Add Akkon Result_" + tab.Index);
                 }

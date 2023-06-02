@@ -4,6 +4,8 @@ using Jastech.Apps.Structure;
 using Jastech.Apps.Structure.Data;
 using Jastech.Apps.Structure.VisionTool;
 using Jastech.Apps.Winform.Core;
+using Jastech.Apps.Winform.Settings;
+using Jastech.Framework.Algorithms.Akkon;
 using Jastech.Framework.Imaging;
 using Jastech.Framework.Imaging.Helper;
 using Jastech.Framework.Imaging.Result;
@@ -11,6 +13,7 @@ using Jastech.Framework.Imaging.VisionPro;
 using Jastech.Framework.Util.Helper;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -38,6 +41,8 @@ namespace ATT.Core
         public CogImage8Grey MergeCogImage { get; set; } = null;
 
         public bool IsAddStart { get; set; }
+
+        public AkkonAlgorithm AkkonAlgorithm { get; set; } = null;
 
         public void Dispose()
         {
@@ -192,6 +197,9 @@ namespace ATT.Core
 
         private void Inspection()
         {
+            Stopwatch sw = new Stopwatch();
+            sw.Restart();
+
             AppsInspModel inspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
             Tab tab = inspModel.GetUnit(UnitName.Unit0).GetTab(TabScanBuffer.TabNo);
 
@@ -277,8 +285,15 @@ namespace ATT.Core
             #endregion
 
 
+            var roiList = tab.AkkonParam.GetAkkonROIList();
+            var akkonResult = AkkonAlgorithm.Run(MergeMatImage, roiList, tab.AkkonParam.AkkonAlgoritmParam);
 
-            Console.WriteLine("Inspection Completed." + TabScanBuffer.TabNo);
+            //result.AkkonResultList.AddRange(akkonResult);
+            //AppsInspResult.TabResultList.Add(result);
+
+            sw.Stop();
+            string resultMessage = string.Format("Inspection Completed. {0}({1}ms)", TabScanBuffer.TabNo, sw.ElapsedMilliseconds);
+            Console.WriteLine(resultMessage);
         }
     }
 }
