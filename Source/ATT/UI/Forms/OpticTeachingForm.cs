@@ -30,6 +30,7 @@ using Jastech.Apps.Structure.Parameters;
 using static Emgu.CV.XImgproc.SupperpixelSLIC;
 using Emgu.CV.XFeatures2D;
 using System.Threading.Tasks;
+using Jastech.Apps.Winform.Core;
 
 namespace ATT.UI.Forms
 {
@@ -100,9 +101,9 @@ namespace ATT.UI.Forms
             StatusTimer.Start();
         }
 
-        private void OpticTeachingForm_TabImageGrabCompletedEventHandler(string camearaName, TabScanImage image)
+        private void OpticTeachingForm_TabImageGrabCompletedEventHandler(string camearaName, TabScanBuffer buffer)
         {
-            if(image.GetMergeImage() is Mat mat)
+            if(buffer.GetMergeMatImage() is Mat mat)
             {
                 DrawBoxControl.SetImage(mat.ToBitmap());
                 mat.Dispose();

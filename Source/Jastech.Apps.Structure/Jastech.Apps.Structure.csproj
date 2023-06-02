@@ -109,7 +109,6 @@
     <Compile Include="Data\MaterialInfo.cs" />
     <Compile Include="Data\ProcessCapabilityIndex.cs" />
     <Compile Include="Data\SpecInfo.cs" />
-    <Compile Include="Data\TabScanImage.cs" />
     <Compile Include="Parameters\AkkonParam.cs" />
     <Compile Include="Parameters\AlignParam.cs" />
     <Compile Include="AppsInspModel.cs" />

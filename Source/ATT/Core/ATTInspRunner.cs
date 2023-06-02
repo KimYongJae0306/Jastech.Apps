@@ -6,6 +6,7 @@ using Jastech.Apps.Structure;
 using Jastech.Apps.Structure.Data;
 using Jastech.Apps.Structure.VisionTool;
 using Jastech.Apps.Winform;
+using Jastech.Apps.Winform.Core;
 using Jastech.Apps.Winform.Service;
 using Jastech.Apps.Winform.Settings;
 using Jastech.Framework.Algorithms.Akkon;
@@ -62,6 +63,8 @@ namespace ATT.Core
         public MacronAkkonAlgorithmTool MacronAkkonAlgorithmTool { get; set; } = null;
 
         public AkkonAlgorithm AkkonAlgorithm { get; set; } = null;
+
+        public List<ATTInspTab> InspTabList { get; set; } = new List<ATTInspTab>();
         #endregion
 
         #region 이벤트
@@ -81,22 +84,43 @@ namespace ATT.Core
         #endregion
 
         #region 메서드
-        private async void ATTSeqRunner_TabImageGrabCompletedEventHandler(string cameraName, TabScanImage tabScanImage)
+        public void InitalizeInspTab(List<TabScanBuffer> bufferList)
+        {
+            DisposeInspTabList();
+            var inspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
+
+            foreach (var buffer in bufferList)
+            {
+                ATTInspTab inspTab = new ATTInspTab();
+                inspTab.TabScanBuffer = buffer;
+                inspTab.StartInspTask();
+
+                InspTabList.Add(inspTab);
+            }
+        }
+
+        public void DisposeInspTabList()
+        {
+            InspTabList.ForEach(x => x.Dispose());
+            InspTabList.Clear();
+        }
+
+        private async void ATTSeqRunner_TabImageGrabCompletedEventHandler(string cameraName, TabScanBuffer tabScanImage)
         {
             //Console.WriteLine("Run in");
             //AppsInspResult.TabResultList.Add(new TabInspResult());
             //return;
-            Mat matImage = tabScanImage.GetMergeImage();
-            ICogImage cogImage = tabScanImage.ConvertCogGrayImage(matImage);
+            //Mat matImage = tabScanImage.GetMergeImage();
+            //ICogImage cogImage = tabScanImage.ConvertCogGrayImage(matImage);
 
-            Console.WriteLine("Run Inspection. " + tabScanImage.TabNo.ToString());
+            //Console.WriteLine("Run Inspection. " + tabScanImage.TabNo.ToString());
             //await Task.Run(() => Run(tabScanImage, matImage, cogImage));
 
             //Task task = new Task(() => Run(tabScanImage, matImage, cogImage));
             //task.Start();
         }
 
-        public void Run(TabScanImage ScanImage, Mat mergeMat, ICogImage cogMergeImage)
+        public void Run(TabScanBuffer ScanImage, Mat mergeMat, ICogImage cogMergeImage)
         {
             AppsInspModel inspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
             Tab tab = inspModel.GetUnit(UnitName.Unit0).GetTab(ScanImage.TabNo);
@@ -317,7 +341,7 @@ namespace ATT.Core
             var appsLineCamera = AppsLineCameraManager.Instance().GetAppsCamera(CameraName.LinscanMIL0.ToString());
             appsLineCamera.TabImageGrabCompletedEventHandler += ATTSeqRunner_TabImageGrabCompletedEventHandler;
             appsLineCamera.GrabDoneEventHanlder += ATTSeqRunner_GrabDoneEventHanlder;
-            AppsLineCameraManager.Instance().GetLineCamera(CameraName.LinscanMIL0).StartMainGrabTask();
+            //AppsLineCameraManager.Instance().GetLineCamera(CameraName.LinscanMIL0).StartMainGrabTask();
             //AppsLineCameraManager.Instance().GetLineCamera(CameraName.LinscanMIL0).StartMergeTask();
             StartAkkonInspTask();
 
@@ -442,7 +466,7 @@ namespace ATT.Core
                     break;
 
                 case SeqStep.SEQ_SCAN_START:
-
+                    break;
                     IsGrabDone = false;
                     // 조명 코드 작성 요망
                     var appsLineCamera = AppsLineCameraManager.Instance().GetLineCamera(CameraName.LinscanMIL0);
@@ -678,10 +702,24 @@ namespace ATT.Core
         {
             var appsLineCamera = AppsLineCameraManager.Instance().GetLineCamera(CameraName.LinscanMIL0);
             appsLineCamera.InitGrabSettings();
+            InitalizeInspTab(appsLineCamera.TabScanBufferList);
 
             var inspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
             if (AppsConfig.Instance().AkkonAlgorithmType == AkkonAlgorithmType.Macron)
-                MacronAkkonAlgorithmTool.PrepareMultiInspection(inspModel, appsLineCamera.TabScanImageList, AppsConfig.Instance().AkkonResizeRatio);
+            {
+                List<MacronPrepareParam> prepareParamList = new List<MacronPrepareParam>();
+                foreach (var buffer in appsLineCamera.TabScanBufferList)
+                {
+                    MacronPrepareParam prepare = new MacronPrepareParam();
+                    prepare.TabNo = buffer.TabNo;
+                    prepare.TotalCount = buffer.TotalGrabCount;
+                    prepare.ImageWIdth = buffer.SubImageWidth;
+                    prepare.ImageHeight = buffer.SubImageHeight;
+
+                    prepareParamList.Add(prepare);
+                }
+                MacronAkkonAlgorithmTool.PrepareMultiInspection(inspModel, prepareParamList, AppsConfig.Instance().AkkonResizeRatio);
+            }
         }
 
         public void RunVirtual()

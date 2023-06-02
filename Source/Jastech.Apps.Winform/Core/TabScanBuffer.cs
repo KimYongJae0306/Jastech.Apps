@@ -1,47 +1,52 @@
 ﻿using Cognex.VisionPro;
 using Emgu.CV;
 using Jastech.Framework.Imaging;
-using Jastech.Framework.Imaging.Helper;
 using Jastech.Framework.Imaging.VisionPro;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Jastech.Apps.Structure.Data
+namespace Jastech.Apps.Winform.Core
 {
-    public class TabScanImage
+    public class TabScanBuffer
     {
         private object _objLock = new object();
+
         public int TabNo { get; set; }
 
         public int SubImageWidth { get; set; }
 
         public int SubImageHeight { get; set; }
-      
+
         public int StartIndex { get; set; }
 
         public int EndIndex { get; set; }
 
-        public bool ExcuteMerge { get; set; }
-
-        public bool IsInspection { get; set; }
-
         public int TotalGrabCount { get => Math.Abs(EndIndex - StartIndex); }
+
+        public bool InspectionDone { get; set; }
 
         private List<Mat> SubImageList { get; set; } = new List<Mat>();
 
-        public TabScanImage(int tabNo, int startIndex, int endIndex, int subImageWidth, int subImageHeight)
+        public Mat MergeMatImage { get; set; } = null;
+
+        public CogImage8Grey MergeCogImage { get; set; } = null;
+
+        public TabScanBuffer(int tabNo, int startIndex, int endIndex, int subImageWidth, int subImageHeight)
         {
             TabNo = tabNo;
             StartIndex = startIndex;
             EndIndex = endIndex;
             SubImageWidth = subImageWidth;
             SubImageHeight = subImageHeight;
+        }
 
-            Dispose();
+        public void AddSubImage(Mat mat)
+        {
+            lock (_objLock)
+                SubImageList.Add(mat);
         }
 
         public bool IsAddImageDone()
@@ -65,42 +70,59 @@ namespace Jastech.Apps.Structure.Data
                 }
                 SubImageList.Clear();
             }
+            MergeMatImage?.Dispose();
+            MergeMatImage = null;
+
+            MergeCogImage?.Dispose();
+            MergeCogImage = null;
         }
 
-        public void AddSubImage(Mat mat)
+        public void MakeMergeImage()
         {
-            lock (_objLock)
-                SubImageList.Add(mat);
+            MakeMergeMatImage();
+            MakeMergeCogImage();
+
+           // ExcuteMerge = true;
         }
 
-        public int GetSubImageCount()
+        public Mat GetMergeMatImage()
         {
-            return SubImageList.Count();
+            MakeMergeMatImage();
+            return MergeMatImage;
         }
 
-        public Mat GetMergeImage()
+        private void MakeMergeCogImage()
         {
-            Mat mergeImage = null;
-            lock (_objLock)
+            if(MergeCogImage == null)
             {
-                if (SubImageList.Count > 0)
-                {
-                    mergeImage = new Mat();
+                MakeMergeMatImage();
+                if(MergeMatImage != null)
+                    MergeCogImage = ConvertCogGrayImage(MergeMatImage);
+            }
+        }
 
-                    CvInvoke.HConcat(SubImageList.ToArray(), mergeImage);
+        private void MakeMergeMatImage()
+        {
+            if(MergeMatImage == null)
+            {
+                lock (_objLock)
+                {
+                    if (SubImageList.Count > 0)
+                    {
+                        MergeMatImage = new Mat();
+                        CvInvoke.HConcat(SubImageList.ToArray(), MergeMatImage);
+                    }
                 }
             }
-            return mergeImage;
         }
 
-        public ICogImage ConvertCogGrayImage(Mat mat)
+        private CogImage8Grey ConvertCogGrayImage(Mat mat)
         {
             if (mat == null)
                 return null;
 
             int size = mat.Width * mat.Height * mat.NumberOfChannels;
-            ColorFormat format = mat.NumberOfChannels == 1 ? ColorFormat.Gray : ColorFormat.RGB24;
-            var cogImage = VisionProImageHelper.CovertImage(mat.DataPointer, mat.Width, mat.Height, format);
+            var cogImage = VisionProImageHelper.CovertImage(mat.DataPointer, mat.Width, mat.Height, ColorFormat.Gray) as CogImage8Grey;
             return cogImage;
         }
     }
