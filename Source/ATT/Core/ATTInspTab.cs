@@ -42,7 +42,7 @@ namespace ATT.Core
 
         public bool IsAddStart { get; set; }
 
-        public AkkonAlgorithm AkkonAlgorithm { get; set; } = null;
+        public AkkonAlgorithm AkkonAlgorithm { get; set; } = new AkkonAlgorithm();
 
         public void Dispose()
         {
