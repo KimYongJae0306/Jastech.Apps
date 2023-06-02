@@ -63,6 +63,10 @@ namespace ATT.UI.Forms
         private TeachingInfo TeachingPositionInfo { get; set; } = null;
 
         public CameraName CameraName { get; set; }
+
+        private Direction _direction = Direction.CW;
+
+        private Axis SelectedAxis { get; set; } = null;
         #endregion
 
         #region 이벤트
@@ -148,8 +152,8 @@ namespace ATT.UI.Forms
             AutoFocusControl.SetAxisHanlder(axisHandler);
             AutoFocusControl.SetLAFCtrl(lafCtrl);
 
-            MotionRepeatControl.SetAxisHanlder(axisHandler);
-            pnlMotionRepeat.Controls.Add(MotionRepeatControl);
+            //MotionRepeatControl.SetAxisHanlder(axisHandler);
+            //pnlMotionRepeat.Controls.Add(MotionRepeatControl);
 
             pnlMotionJog.Controls.Add(MotionJogControl);
             MotionJogControl.SetAxisHanlder(AxisHandler);
@@ -229,7 +233,7 @@ namespace ATT.UI.Forms
             }
 
             UpdateMotionStatus();
-            MotionRepeatControl.UpdateRepeatCount();
+            UpdateRepeatCount();
             AutoFocusControl.UpdateAxisStatus();
         }
 
@@ -607,6 +611,199 @@ namespace ATT.UI.Forms
         private void StatusTimer_Tick(object sender, EventArgs e)
         {
             UpdateUI();
+        }
+
+        private void lblRepeatVelocityValue_Click(object sender, EventArgs e)
+        {
+            SetLabelDoubleData(sender);
+        }
+
+        private void lblRepeatAccelerationValue_Click(object sender, EventArgs e)
+        {
+            SetLabelDoubleData(sender);
+        }
+
+        private void lblDwellTimeValue_Click(object sender, EventArgs e)
+        {
+            SetLabelIntegerData(sender);
+        }
+
+        private void lblForward_Click(object sender, EventArgs e)
+        {
+            SetScanDirection(Direction.CW);
+        }
+
+        private void lblBackward_Click(object sender, EventArgs e)
+        {
+            SetScanDirection(Direction.CCW);
+        }
+
+        private void SetScanDirection(Direction direction)
+        {
+            if (direction == Direction.CW)
+            {
+                lblForward.BackColor = _selectedColor;
+                lblBackward.BackColor = _nonSelectedColor;
+            }
+            else
+            {
+                lblForward.BackColor = _nonSelectedColor;
+                lblBackward.BackColor = _selectedColor;
+            }
+
+            _direction = direction;
+        }
+
+        private void lblScanXLength_Click(object sender, EventArgs e)
+        {
+            SetLabelDoubleData(sender);
+        }
+
+        private void lblRepeatCount_Click(object sender, EventArgs e)
+        {
+            SetLabelIntegerData(sender);
+        }
+
+        private void lblStart_Click(object sender, EventArgs e)
+        {
+            SetOperationMode(TDIOperationMode.TDI);
+        }
+
+        private void SetLabelDoubleData(object sender)
+        {
+            KeyPadForm keyPadForm = new KeyPadForm();
+            keyPadForm.ShowDialog();
+
+            double inputData = keyPadForm.PadValue;
+
+            Label label = (Label)sender;
+            label.Text = inputData.ToString();
+        }
+
+        private int SetLabelIntegerData(object sender)
+        {
+            KeyPadForm keyPadForm = new KeyPadForm();
+            keyPadForm.ShowDialog();
+
+            int inputData = Convert.ToInt32(keyPadForm.PadValue);
+
+            Label label = (Label)sender;
+            label.Text = inputData.ToString();
+
+            return inputData;
+        }
+
+        public double GetScanLength()
+        {
+            return Convert.ToDouble(lblScanXLength.Text);
+        }
+
+        private void MoveRepeat(bool isRepeat)
+        {
+            if (isRepeat)
+            {
+                double currentPosition = SelectedAxis.GetActualPosition();
+                double distance = Convert.ToDouble(lblScanXLength.Text);
+                double targetPosition = 0.0;
+
+                if (_direction == Direction.CW)
+                    targetPosition = currentPosition + distance;
+                else
+                    targetPosition = currentPosition - distance;
+
+                RepeatParam param = new RepeatParam();
+
+                param.Velocity = Convert.ToDouble(lblRepeatVelocityValue.Text);
+                param.AccDec = Convert.ToDouble(lblRepeatAccelerationValue.Text);
+                param.DwellTime = Convert.ToInt16(lblDwellTimeValue.Text);
+                param.StartPosition = currentPosition;
+                param.EndPosition = targetPosition;
+                param.RepeatCount = Convert.ToInt32(lblRepeatCount.Text);
+
+                if (param.RepeatCount == 0)
+                    _isInfinite = true;
+
+                _isRepeat = true;
+                _repeatThread = new Thread(new ParameterizedThreadStart(this.MoveRepeatThread));
+                _repeatThread.Start(param);
+            }
+            else
+            {
+                _isRepeat = false;
+                _repeatThread.Interrupt();
+                _repeatThread.Abort();
+                lblStart.Text = "Start";
+            }
+        }
+
+        private class RepeatParam
+        {
+            public double Velocity { get; set; } = 0.0;
+
+            public double AccDec { get; set; } = 0.0;
+
+            public int DwellTime { get; set; } = 0;
+
+            public double StartPosition { get; set; } = 0.0;
+
+            public double EndPosition { get; set; } = 0.0;
+
+            public int RepeatCount { get; set; } = 0;
+        }
+
+        private Thread _repeatThread = null;
+        private bool _isRepeat = false;
+        private bool _isInfinite = false;
+        private int _remainCount = 0;
+        private void MoveRepeatThread(object param)
+        {
+            var repeatParam = param as RepeatParam;
+
+            AxisMovingParam movingParam = new AxisMovingParam();
+            movingParam.Velocity = repeatParam.Velocity;
+            movingParam.Acceleration = repeatParam.AccDec;
+            movingParam.AfterWaitTime = repeatParam.DwellTime;
+
+            int repeatCount = repeatParam.RepeatCount;
+            int count = 0;
+
+            if (repeatCount == 0)
+            { }
+            else
+                _remainCount = repeatCount;
+
+            while (_isRepeat)
+            {
+
+                SelectedAxis.MoveTo(repeatParam.EndPosition, movingParam);
+                while (!SelectedAxis.WaitForDone())
+                    Thread.Sleep(Convert.ToInt16(movingParam.AfterWaitTime));
+
+                SelectedAxis.MoveTo(repeatParam.StartPosition, movingParam);
+                while (!SelectedAxis.WaitForDone())
+                    Thread.Sleep(Convert.ToInt16(movingParam.AfterWaitTime));
+
+                count++;
+
+                if (repeatCount == count)
+                    _isRepeat = false;
+
+                if (_isInfinite)
+                    _isRepeat = true;
+
+                _remainCount = repeatCount - count;
+                Console.WriteLine("Set Repeat Count : " + repeatCount.ToString() + " / Complete Count : " + count.ToString() + " / Remain Count : " + _remainCount.ToString());
+            }
+
+            //lblStart.Text = "Stop";
+        }
+
+        public void UpdateRepeatCount()
+        {
+            //if (!_isRepeat)
+            //    return;
+
+            lblRepeatRemain.Text = _remainCount + " / " + lblRepeatCount.Text;
         }
     }
 }
