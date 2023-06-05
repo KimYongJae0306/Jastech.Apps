@@ -50,9 +50,9 @@ namespace ATT.Core
 
         public MultiAkkonAlgorithm MultiAkkonAlgorithm { get; set; } = new MultiAkkonAlgorithm();
 
-        public AddInspectDelegate AddInspectEvent;
+        public InspectionDelegate InspectEvent;
 
-        public delegate void AddInspectDelegate(ATTInspTab inspTab);
+        public delegate void InspectionDelegate(ATTInspTab inspTab);
 
         public void Dispose()
         {
@@ -141,8 +141,37 @@ namespace ATT.Core
                         MakeMergeImage();
                         Console.WriteLine("Make Merge Image." + TabScanBuffer.TabNo);
 
-                       Inspection();
+                        InspectEvent?.Invoke(this);
 
+                        TabScanBuffer.InspectionDone = true;
+                    }
+
+                    if (IsAddStart)
+                        Thread.Sleep(0);
+                    else
+                        Thread.Sleep(50);
+                }
+            }
+        }
+
+        private void TeachingGrabMergeTask()
+        {
+            while (true)
+            {
+                if (CancelTeachingGrabTask.IsCancellationRequested)
+                {
+                    break;
+                }
+                if (TabScanBuffer.InspectionDone)
+                    Thread.Sleep(1000); // CPU 점유율 낮추려고...
+                else
+                {
+                    AddImage();
+
+                    if (SubImageList.Count() == TabScanBuffer.TotalGrabCount)
+                    {
+                        MakeMergeImage();
+                        Console.WriteLine("Make Merge Image." + TabScanBuffer.TabNo);
                         TabScanBuffer.InspectionDone = true;
                     }
 
@@ -163,7 +192,7 @@ namespace ATT.Core
                 return;
 
             CancelTeachingGrabTask = new CancellationTokenSource();
-            TeachingGrabTask = new Task(InspectionTask, CancelTeachingGrabTask.Token);
+            TeachingGrabTask = new Task(TeachingGrabMergeTask, CancelTeachingGrabTask.Token);
             TeachingGrabTask.Start();
         }
 
@@ -229,11 +258,6 @@ namespace ATT.Core
             int size = mat.Width * mat.Height * mat.NumberOfChannels;
             var cogImage = VisionProImageHelper.CovertImage(mat.DataPointer, mat.Width, mat.Height, ColorFormat.Gray) as CogImage8Grey;
             return cogImage;
-        }
-
-        private void Inspection()
-        {
-            AddInspectEvent?.Invoke(this);
         }
 
         //private void Inspection()

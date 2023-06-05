@@ -100,7 +100,7 @@ namespace ATT.Core
             {
                 ATTInspTab inspTab = new ATTInspTab();
                 inspTab.TabScanBuffer = buffer;
-                inspTab.AddInspectEvent += AddInspectEventFuction;
+                inspTab.InspectEvent += AddInspectEventFuction;
                 inspTab.StartInspTask();
                 InspTabList.Add(inspTab);
             }
@@ -116,7 +116,12 @@ namespace ATT.Core
 
         public void DisposeInspTabList()
         {
-            InspTabList.ForEach(x => x.Dispose());
+            foreach (var inspTab in InspTabList)
+            {
+                inspTab.StopInspTask();
+                inspTab.InspectEvent -= AddInspectEventFuction;
+                inspTab.Dispose();
+            }
             InspTabList.Clear();
 
             AkkonAlgorithmList.ForEach(x => x.Release());

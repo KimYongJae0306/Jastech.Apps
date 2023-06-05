@@ -1,4 +1,5 @@
-﻿using Cognex.VisionPro;
+﻿using ATT.Core;
+using Cognex.VisionPro;
 using Emgu.CV;
 using Emgu.CV.CvEnum;
 using Jastech.Apps.Structure;
@@ -46,6 +47,8 @@ namespace ATT.UI.Forms
         public string TitleCameraName { get; set; } = "";
 
         public List<Tab> TeachingTabList { get; private set; } = null;
+
+        public List<ATTInspTab> InspTabList { get; set; } = new List<ATTInspTab>();
 
         public Tab CurrentTab { get; set; } = null;
 
@@ -103,8 +106,6 @@ namespace ATT.UI.Forms
             var appsLineCamera = AppsLineCameraManager.Instance().GetLineCamera(CameraName);
             appsLineCamera.TeachingTabImageGrabCompletedEventHandler += LineTeachingForm_TeachingTabImageGrabCompletedEventHandler;
             appsLineCamera.GrabDoneEventHanlder += LineTeachingForm_GrabDoneEventHanlder;
-            //appsLineCamera.StartMainGrabTask();
-            //appsLineCamera.StartMergeTask();
 
             var image = AppsTeachingUIManager.Instance().GetOriginCogImageBuffer(true);
 
@@ -338,9 +339,33 @@ namespace ATT.UI.Forms
 
             SystemManager.Instance().GetTeachingData().ClearTeachingImageBuffer();
             appsLineCamera.InitGrabSettings();
-            SystemManager.Instance().InitalizeInspTab(appsLineCamera.TabScanBufferList);
+            InitalizeInspTab(appsLineCamera.TabScanBufferList);
 
             appsLineCamera.StartGrab();
+        }
+
+        public void InitalizeInspTab(List<TabScanBuffer> bufferList)
+        {
+            DisposeInspTabList();
+            var inspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
+
+            foreach (var buffer in bufferList)
+            {
+                ATTInspTab inspTab = new ATTInspTab();
+                inspTab.TabScanBuffer = buffer;
+                inspTab.StartTeacingTask();
+                InspTabList.Add(inspTab);
+            }
+        }
+
+        private void DisposeInspTabList()
+        {
+            foreach (var inspTab in InspTabList)
+            {
+                inspTab.StopTeachingTask();
+                inspTab.Dispose();
+            }
+            InspTabList.Clear();
         }
 
         private void btnGrabStop_Click(object sender, EventArgs e)

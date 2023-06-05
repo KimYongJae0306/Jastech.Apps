@@ -125,7 +125,7 @@ namespace Jastech.Apps.Winform.Core
 
         private void MakeMergeMatImage()
         {
-            //if(MergeMatImage == null)
+            //if (MergeMatImage == null)
             //{
             //    lock (_objLock)
             //    {

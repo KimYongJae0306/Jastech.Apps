@@ -280,7 +280,6 @@ namespace Jastech.Apps.Winform
                 if (tabScanBuffer.IsAddDataDone())
                 {
                     _stackTabNo++;
-                    TeachingTabImageGrabCompletedEventHandler?.Invoke(Camera.Name, tabScanBuffer);
                 }
 
                 if (_curGrabCount == GrabCount - 1)
