@@ -96,11 +96,6 @@ namespace ATT.Core
             DisposeInspTabList();
             var inspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
 
-            var camera = AppsLineCameraManager.Instance().GetLineCamera(CameraName.LinscanMIL0).Camera;
-            float resolution_mm = (float)(camera.PixelResolution_um / camera.LensScale) / 1000; // ex) 3.5 um / 5 / 1000 = 0.0007mm
-       
-            MultiAkkonAlgorithm.PrepareInspection();
-
             foreach (var buffer in bufferList)
             {
                 ATTInspTab inspTab = new ATTInspTab();
@@ -108,19 +103,6 @@ namespace ATT.Core
                 inspTab.AddInspectEvent += AddInspectEventFuction;
                 inspTab.StartInspTask();
                 InspTabList.Add(inspTab);
-
-                // Akkon
-                //Tab tab = inspModel.GetUnit(UnitName.Unit0).GetTab(buffer.TabNo);
-                //double width = inspModel.MaterialInfo.GetTabWidth(buffer.TabNo);
-                //int widthCount = (int)(width / resolution_mm / camera.ImageHeight);
-
-                //AkkonParam akkonParam = tab.AkkonParam;
-                //MultiAkkonAlgorithm algo = new MultiAkkonAlgorithm();
-                //int sliceOverlapCount = algo.GetSliceOverlapCount(buffer.SubImageWidth * widthCount, buffer.SubImageHeight, akkonParam.GetAkkonROIList(), 2048, 
-                //                                                                        akkonParam.AkkonAlgoritmParam.ImageFilterParam.ResizeRatio);
-                //algo.Initialize(sliceOverlapCount, akkonParam.AkkonAlgoritmParam);
-
-                //AkkonAlgorithmList.Add(algo);
             }
         }
 
@@ -141,7 +123,7 @@ namespace ATT.Core
             AkkonAlgorithmList.Clear();
         }
 
-        private async void ATTSeqRunner_TabImageGrabCompletedEventHandler(string cameraName, TabScanBuffer tabScanImage)
+        private async void ATTSeqRunner_TeachingTabImageGrabCompletedEventHandler(string cameraName, TabScanBuffer tabScanImage)
         {
             //Console.WriteLine("Run in");
             //AppsInspResult.TabResultList.Add(new TabInspResult());
@@ -393,8 +375,8 @@ namespace ATT.Core
             var roiList = tab.AkkonParam.GetAkkonROIList();
             var akkonResult = AkkonAlgorithm.Run(inspTab.MergeMatImage, roiList, tab.AkkonParam.AkkonAlgoritmParam);
 
-            //result.AkkonResultList.AddRange(akkonResult);
-            //AppsInspResult.TabResultList.Add(result);
+            inspResult.AkkonResultList.AddRange(akkonResult);
+            AppsInspResult.TabResultList.Add(inspResult);
 
             sw.Stop();
             string resultMessage = string.Format("Inspection Completed. {0}({1}ms)", inspTab.TabScanBuffer.TabNo, sw.ElapsedMilliseconds);
@@ -471,7 +453,6 @@ namespace ATT.Core
 
             var appsLineCamera = AppsLineCameraManager.Instance().GetAppsCamera(CameraName.LinscanMIL0.ToString());
 
-            appsLineCamera.TabImageGrabCompletedEventHandler += ATTSeqRunner_TabImageGrabCompletedEventHandler;
             appsLineCamera.GrabDoneEventHanlder += ATTSeqRunner_GrabDoneEventHanlder;
             StartAkkonInspTask();
 
@@ -493,9 +474,7 @@ namespace ATT.Core
             SystemManager.Instance().MachineStatus = MachineStatus.STOP;
 
             var appsLineCamera = AppsLineCameraManager.Instance().GetAppsCamera(CameraName.LinscanMIL0.ToString());
-            appsLineCamera.TabImageGrabCompletedEventHandler -= ATTSeqRunner_TabImageGrabCompletedEventHandler;
             appsLineCamera.GrabDoneEventHanlder -= ATTSeqRunner_GrabDoneEventHanlder;
-            AppsLineCameraManager.Instance().GetLineCamera(CameraName.LinscanMIL0).StopMainGrabTask();
             AppsLineCameraManager.Instance().GetLineCamera(CameraName.LinscanMIL0).StopGrab();
             StopAkkonInspTask();
             Logger.Write(LogType.Seq, "Stop Sequence.");
@@ -647,9 +626,6 @@ namespace ATT.Core
                     AppsInspResult.LastInspTime = LastInspSW.ElapsedMilliseconds.ToString();
                     Console.WriteLine("Total Tact Time : " + LastInspSW.ElapsedMilliseconds.ToString());
 
-                    SeqStep = SeqStep.SEQ_IDLE;
-                    break;
-
                     SeqStep = SeqStep.SEQ_UI_RESULT_UPDATE;
                     break;
 
@@ -763,6 +739,8 @@ namespace ATT.Core
             CvInvoke.CvtColor(resizeMat, colorMat, ColorConversion.Gray2Bgr);
             resizeMat.Dispose();
 
+            DrawParam autoDrawParam = new DrawParam();
+            autoDrawParam.ContainLeadCount = true;
             foreach (var result in resultList)
             {
                 var lead = result.Lead;
@@ -773,7 +751,7 @@ namespace ATT.Core
                 Point rightTop = new Point((int)lead.RightTopX + startPoint.X, (int)lead.RightTopY + startPoint.Y);
                 Point rightBottom = new Point((int)lead.RightBottomX + startPoint.X, (int)lead.RightBottomY + startPoint.Y);
 
-                if (AkkonParameters.DrawOption.ContainLeadROI)
+                if (autoDrawParam.ContainLeadROI)
                 {
                     CvInvoke.Line(colorMat, leftTop, leftBottom, new MCvScalar(50, 230, 50, 255), 1);
                     CvInvoke.Line(colorMat, leftTop, rightTop, new MCvScalar(50, 230, 50, 255), 1);
@@ -807,7 +785,7 @@ namespace ATT.Core
 
                 }
 
-                if (AkkonParameters.DrawOption.ContainLeadCount)
+                if (autoDrawParam.ContainLeadCount)
                 {
                     string leadIndexString = result.LeadIndex.ToString();
                     string blobCountString = string.Format("[{0}]", blobCount);

@@ -66,7 +66,7 @@ namespace Jastech.Apps.Winform
         #region 이벤트
         public event TeachingImageGrabbedDelegate TeachingLiveImageGrabbed;
 
-        public event TabImageGrabCompletedDelegate TabImageGrabCompletedEventHandler;
+        public event TeachingTabImageGrabCompletedDelegate TeachingTabImageGrabCompletedEventHandler;
 
         public event GrabDoneDelegate GrabDoneEventHanlder;
         #endregion
@@ -74,7 +74,7 @@ namespace Jastech.Apps.Winform
         #region 델리게이트
         public delegate void TeachingImageGrabbedDelegate(string cameraName, Mat image);
 
-        public delegate void TabImageGrabCompletedDelegate(string cameraName, TabScanBuffer image);
+        public delegate void TeachingTabImageGrabCompletedDelegate(string cameraName, TabScanBuffer image);
 
         public delegate void GrabDoneDelegate(string cameraName, bool isGrabDone);
         #endregion
@@ -156,7 +156,7 @@ namespace Jastech.Apps.Winform
             Camera.Stop();
 
             string error = "";
-            MoveTo(TeachingPosType.Stage1_Scan_Start, out error);
+            bool ret = MoveTo(TeachingPosType.Stage1_Scan_Start, out error);
             Thread.Sleep(1000);
 
             Camera.GrabMulti(GrabCount);
@@ -204,7 +204,6 @@ namespace Jastech.Apps.Winform
 
                 while (manager.IsAxisInPosition(UnitName.Unit0, teachingPos, axis) == false)
                 {
-
                     if (sw.ElapsedMilliseconds >= movingParam.MovingTimeOut)
                     {
                         return false;
@@ -281,6 +280,7 @@ namespace Jastech.Apps.Winform
                 if (tabScanBuffer.IsAddDataDone())
                 {
                     _stackTabNo++;
+                    TeachingTabImageGrabCompletedEventHandler?.Invoke(Camera.Name, tabScanBuffer);
                 }
 
                 if (_curGrabCount == GrabCount - 1)
@@ -296,58 +296,6 @@ namespace Jastech.Apps.Winform
         private TabScanBuffer GetTabScanBuffer(int tabNo)
         {
             return TabScanBufferList[tabNo];
-        }
-
-        int count = 0;
-        public void UpdateMergeImage()
-        {
-            while(true)
-            {
-                if (CancelMergeTask.IsCancellationRequested)
-                {
-                    ClearTabScanBuffer();
-                    break;
-                }
-
-                //lock(TabScanImageList)
-                //{
-                //    foreach (var scanImage in TabScanImageList)
-                //    {
-                //        if(scanImage.IsInspection == false)
-                //        {
-                //            if (scanImage.ExcuteMerge)
-                //            {
-                //                scanImage.IsInspection = true;
-                //                scanImage.ExcuteMerge = false;
-
-                //                TabImageGrabCompletedEventHandler?.Invoke(Camera.Name, scanImage);
-                //            }
-                //        }
-                //    }
-                //}
-
-                Thread.Sleep(50);
-            }
-        }
-
-        public void StartMergeTask()
-        {
-            if (MergeTask != null)
-                return;
-
-            CancelMergeTask = new CancellationTokenSource();
-            MergeTask = new Task(UpdateMergeImage, CancelMergeTask.Token);
-            MergeTask.Start();
-        }
-       
-        public void StopMergeTask()
-        {
-            if (MergeTask == null)
-                return;
-
-            CancelMergeTask.Cancel();
-            MergeTask.Wait();
-            MergeTask = null;
         }
 
         public void StartLiveTask()
@@ -368,64 +316,6 @@ namespace Jastech.Apps.Winform
             CancelLiveTask.Cancel();
             LiveTask.Wait();
             LiveTask = null;
-        }
-
-        public void StartMainGrabTask()
-        {
-            if (MainGrabTask != null)
-                return;
-
-            CancelMainGrabTask = new CancellationTokenSource();
-            MainGrabTask = new Task(MainGrabManagement, CancelMainGrabTask.Token);
-            MainGrabTask.Start();
-        }
-
-        public void StopMainGrabTask()
-        {
-            if (MainGrabTask == null)
-                return;
-
-            CancelMainGrabTask.Cancel();
-            MainGrabTask.Wait();
-            MainGrabTask = null;
-        }
-
-        public byte[] GetData()
-        {
-            lock(_dataLock)
-            {
-                if (DataQueue.Count > 0)
-                {
-                    return DataQueue.Dequeue();
-                }
-                else
-                {
-                    return null;
-                }
-            }
-        }
-
-        public int GetDataCount()
-        {
-            lock (_dataLock)
-            {
-                return DataQueue.Count();
-            }
-        }
-
-        public void MainGrabManagement()
-        {
-            while (true)
-            {
-                if (CancelMainGrabTask.IsCancellationRequested)
-                {
-                    ClearTabScanBuffer();
-                    break;
-                }
-                //ImageProcessing();
-
-                Thread.Sleep(10);
-            }
         }
 
         public void UpdateLiveImage()

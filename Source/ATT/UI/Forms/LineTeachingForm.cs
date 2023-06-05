@@ -101,10 +101,10 @@ namespace ATT.UI.Forms
             lblStageCam.Text = $"STAGE : {UnitName} / CAM : {TitleCameraName}";
 
             var appsLineCamera = AppsLineCameraManager.Instance().GetLineCamera(CameraName);
-            appsLineCamera.TabImageGrabCompletedEventHandler += LineTeachingForm_TabImageGrabCompletedEventHandler;
+            appsLineCamera.TeachingTabImageGrabCompletedEventHandler += LineTeachingForm_TeachingTabImageGrabCompletedEventHandler;
             appsLineCamera.GrabDoneEventHanlder += LineTeachingForm_GrabDoneEventHanlder;
-            appsLineCamera.StartMainGrabTask();
-            appsLineCamera.StartMergeTask();
+            //appsLineCamera.StartMainGrabTask();
+            //appsLineCamera.StartMergeTask();
 
             var image = AppsTeachingUIManager.Instance().GetOriginCogImageBuffer(true);
 
@@ -112,7 +112,6 @@ namespace ATT.UI.Forms
                 Display.SetImage(image);
 
             SelectPage(DisplayType.Mark);
-
         }
 
         private void LineTeachingForm_GrabDoneEventHanlder(string cameraName, bool isGrabDone)
@@ -150,7 +149,7 @@ namespace ATT.UI.Forms
             _currentTabNo = cbxTabList.SelectedItem as string;
         }
 
-        private void LineTeachingForm_TabImageGrabCompletedEventHandler(string cameraName, TabScanBuffer scanBuffer)
+        private void LineTeachingForm_TeachingTabImageGrabCompletedEventHandler(string cameraName, TabScanBuffer scanBuffer)
         {
             if (scanBuffer == null)
                 return;
@@ -339,6 +338,8 @@ namespace ATT.UI.Forms
 
             SystemManager.Instance().GetTeachingData().ClearTeachingImageBuffer();
             appsLineCamera.InitGrabSettings();
+            SystemManager.Instance().InitalizeInspTab(appsLineCamera.TabScanBufferList);
+
             appsLineCamera.StartGrab();
         }
 
@@ -354,10 +355,8 @@ namespace ATT.UI.Forms
             MarkControl.DisposeImage();
 
             var appsLineCamera = AppsLineCameraManager.Instance().GetLineCamera(CameraName.LinscanMIL0);
-            appsLineCamera.TabImageGrabCompletedEventHandler -= LineTeachingForm_TabImageGrabCompletedEventHandler;
+            appsLineCamera.TeachingTabImageGrabCompletedEventHandler -= LineTeachingForm_TeachingTabImageGrabCompletedEventHandler;
             appsLineCamera.GrabDoneEventHanlder -= LineTeachingForm_GrabDoneEventHanlder;
-            appsLineCamera.StartMainGrabTask();
-            appsLineCamera.StopMergeTask();
         }
 
         private void cbxTabList_DrawItem(object sender, DrawItemEventArgs e)

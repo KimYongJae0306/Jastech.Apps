@@ -91,8 +91,7 @@ namespace ATT.UI.Forms
 
             AppsLineCamera appsLineCamera = AppsLineCameraManager.Instance().GetLineCamera(CameraName);
             appsLineCamera.TeachingLiveImageGrabbed += LiveDisplay;
-            appsLineCamera.TabImageGrabCompletedEventHandler += OpticTeachingForm_TabImageGrabCompletedEventHandler;
-            appsLineCamera.StartMainGrabTask();
+            appsLineCamera.TeachingTabImageGrabCompletedEventHandler += OpticTeachingForm_TeachingTabImageGrabCompletedEventHandler;
 
             UpdateData();
             AddControl();
@@ -101,7 +100,7 @@ namespace ATT.UI.Forms
             StatusTimer.Start();
         }
 
-        private void OpticTeachingForm_TabImageGrabCompletedEventHandler(string camearaName, TabScanBuffer buffer)
+        private void OpticTeachingForm_TeachingTabImageGrabCompletedEventHandler(string camearaName, TabScanBuffer buffer)
         {
             if(buffer.GetMergeMatImage() is Mat mat)
             {
@@ -189,14 +188,12 @@ namespace ATT.UI.Forms
                 {
                     AppsLineCameraManager.Instance().GetLineCamera(CameraName).IsLive = false;
                     AppsLineCameraManager.Instance().GetLineCamera(CameraName).StopLiveTask();
-                    AppsLineCameraManager.Instance().GetLineCamera(CameraName).StartMergeTask();
                     tdiCamera.SetTDIOperationMode(TDIOperationMode.TDI);
                 }
                 else
                 {
                     AppsLineCameraManager.Instance().GetLineCamera(CameraName).IsLive = true;
                     AppsLineCameraManager.Instance().GetLineCamera(CameraName).StartLiveTask();
-                    AppsLineCameraManager.Instance().GetLineCamera(CameraName).StopMergeTask();
                     tdiCamera.SetTDIOperationMode(TDIOperationMode.Area);
                 }
             }
@@ -609,9 +606,8 @@ namespace ATT.UI.Forms
 
             AppsLineCamera appsLineCamera = AppsLineCameraManager.Instance().GetLineCamera(CameraName);
             appsLineCamera.StopLiveTask();
-            appsLineCamera.StopMainGrabTask();
             appsLineCamera.TeachingLiveImageGrabbed -= LiveDisplay;
-            appsLineCamera.TabImageGrabCompletedEventHandler -= OpticTeachingForm_TabImageGrabCompletedEventHandler;
+            appsLineCamera.TeachingTabImageGrabCompletedEventHandler -= OpticTeachingForm_TeachingTabImageGrabCompletedEventHandler;
             appsLineCamera.StopGrab();
 
             appsLineCamera.SetOperationMode(TDIOperationMode.TDI);

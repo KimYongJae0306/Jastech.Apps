@@ -195,6 +195,11 @@ namespace ATT
         {
             _mainForm.InitializeResult(tabCount);
         }
+
+        public void InitalizeInspTab(List<TabScanBuffer> bufferList)
+        {
+            _inspRunner.InitalizeInspTab(bufferList);
+        }
         #endregion
     }
 }

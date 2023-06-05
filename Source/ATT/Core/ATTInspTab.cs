@@ -32,6 +32,10 @@ namespace ATT.Core
 
         public CancellationTokenSource CancelInspTask { get; set; }
 
+        public Task TeachingGrabTask { get; set; }
+
+        public CancellationTokenSource CancelTeachingGrabTask { get; set; }
+
         public TabScanBuffer TabScanBuffer { get; set; } = null;
 
         public List<Mat> SubImageList { get; set; } = new List<Mat>();
@@ -52,6 +56,9 @@ namespace ATT.Core
 
         public void Dispose()
         {
+            StopInspTask();
+            StopTeachingTask();
+
             for (int i = 0; i < SubImageList.Count(); i++)
             {
                 SubImageList[i].Dispose();
@@ -145,6 +152,29 @@ namespace ATT.Core
                         Thread.Sleep(50);
                 }
             }
+        }
+
+        public void StartTeacingTask()
+        {
+            if (TabScanBuffer == null)
+                return;
+
+            if (TeachingGrabTask != null)
+                return;
+
+            CancelTeachingGrabTask = new CancellationTokenSource();
+            TeachingGrabTask = new Task(InspectionTask, CancelTeachingGrabTask.Token);
+            TeachingGrabTask.Start();
+        }
+
+        public void StopTeachingTask()
+        {
+            if (TeachingGrabTask == null)
+                return;
+
+            CancelTeachingGrabTask.Cancel();
+            TeachingGrabTask.Wait();
+            TeachingGrabTask = null;
         }
 
         private void MakeMergeImage()
