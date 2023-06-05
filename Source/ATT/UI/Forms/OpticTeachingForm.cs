@@ -31,6 +31,7 @@ using static Emgu.CV.XImgproc.SupperpixelSLIC;
 using Emgu.CV.XFeatures2D;
 using System.Threading.Tasks;
 using Jastech.Apps.Winform.Core;
+using ATT.Core;
 
 namespace ATT.UI.Forms
 {
@@ -68,6 +69,8 @@ namespace ATT.UI.Forms
         private Direction _direction = Direction.CW;
 
         private Axis SelectedAxis { get; set; } = null;
+
+        public List<ATTInspTab> InspTabList { get; set; } = new List<ATTInspTab>();
         #endregion
 
         #region 이벤트
@@ -99,14 +102,38 @@ namespace ATT.UI.Forms
             StatusTimer.Start();
         }
 
-        //private void OpticTeachingForm_TeachingTabImageGrabCompletedEventHandler(string camearaName, TabScanBuffer buffer)
-        //{
-        //    if(buffer.GetMergeMatImage() is Mat mat)
-        //    {
-        //        DrawBoxControl.SetImage(mat.ToBitmap());
-        //        mat.Dispose();
-        //    }
-        //}
+        private void TeachingEventFunction(ATTInspTab inspTab)
+        {
+            if(inspTab.MergeMatImage != null)
+            {
+                DrawBoxControl.SetImage(inspTab.MergeMatImage.ToBitmap());
+            }
+        }
+        public void InitalizeInspTab(List<TabScanBuffer> bufferList)
+        {
+            DisposeInspTabList();
+            var inspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
+
+            foreach (var buffer in bufferList)
+            {
+                ATTInspTab inspTab = new ATTInspTab();
+                inspTab.TabScanBuffer = buffer;
+                inspTab.TeachingEvent += TeachingEventFunction;
+                inspTab.StartTeacingTask();
+                InspTabList.Add(inspTab);
+            }
+        }
+
+        private void DisposeInspTabList()
+        {
+            foreach (var inspTab in InspTabList)
+            {
+                inspTab.TeachingEvent -= TeachingEventFunction;
+                inspTab.StopTeachingTask();
+                inspTab.Dispose();
+            }
+            InspTabList.Clear();
+        }
 
         private void SetDefaultValue()
         {
@@ -573,18 +600,19 @@ namespace ATT.UI.Forms
 
             if (appsLineCamera.Camera is ICameraTDIavailable tdiCamera)
             {
-                if (tdiCamera.TDIOperationMode == TDIOperationMode.TDI)
-                {
-                    AppsInspModel inspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
-                    double length = MotionRepeatControl.GetScanLength(); // repeat Length
+                appsLineCamera.StartGrabContinous();
+                //if (tdiCamera.TDIOperationMode == TDIOperationMode.TDI)
+                //{
+                //    AppsInspModel inspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
+                //    double length = MotionRepeatControl.GetScanLength(); // repeat Length
 
-                    // Motion 이동 추가
-                    appsLineCamera.StartGrab((float)length);
-                }
-                else
-                {
-                    appsLineCamera.StartGrabContinous();
-                }
+                //    // Motion 이동 추가
+                //    appsLineCamera.StartGrab((float)length);
+                //}
+                //else
+                //{
+                //    appsLineCamera.StartGrabContinous();
+                //}
             }
         }
 
@@ -601,6 +629,7 @@ namespace ATT.UI.Forms
 
         private void OpticTeachingForm_FormClosing(object sender, FormClosingEventArgs e)
         {
+            DisposeInspTabList();
             DrawBoxControl.DisposeImage();
 
             AppsLineCamera appsLineCamera = AppsLineCameraManager.Instance().GetLineCamera(CameraName);
@@ -616,21 +645,6 @@ namespace ATT.UI.Forms
         private void StatusTimer_Tick(object sender, EventArgs e)
         {
             UpdateUI();
-
-            if(lblForward.BackColor == _selectedColor)
-            {
-                for (int i = 0; i < 5; i++)
-                {
-                    StartGrab();
-
-
-                }
-                
-            }
-            else
-            {
-
-            }
         }
 
         private void lblRepeatVelocityValue_Click(object sender, EventArgs e)
