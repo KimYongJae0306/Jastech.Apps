@@ -66,15 +66,11 @@ namespace Jastech.Apps.Winform
         #region 이벤트
         public event TeachingImageGrabbedDelegate TeachingLiveImageGrabbed;
 
-        public event TeachingTabImageGrabCompletedDelegate TeachingTabImageGrabCompletedEventHandler;
-
         public event GrabDoneDelegate GrabDoneEventHanlder;
         #endregion
 
         #region 델리게이트
         public delegate void TeachingImageGrabbedDelegate(string cameraName, Mat image);
-
-        public delegate void TeachingTabImageGrabCompletedDelegate(string cameraName, TabScanBuffer image);
 
         public delegate void GrabDoneDelegate(string cameraName, bool isGrabDone);
         #endregion

@@ -91,7 +91,6 @@ namespace ATT.UI.Forms
 
             AppsLineCamera appsLineCamera = AppsLineCameraManager.Instance().GetLineCamera(CameraName);
             appsLineCamera.TeachingLiveImageGrabbed += LiveDisplay;
-            appsLineCamera.TeachingTabImageGrabCompletedEventHandler += OpticTeachingForm_TeachingTabImageGrabCompletedEventHandler;
 
             UpdateData();
             AddControl();
@@ -100,14 +99,14 @@ namespace ATT.UI.Forms
             StatusTimer.Start();
         }
 
-        private void OpticTeachingForm_TeachingTabImageGrabCompletedEventHandler(string camearaName, TabScanBuffer buffer)
-        {
-            if(buffer.GetMergeMatImage() is Mat mat)
-            {
-                DrawBoxControl.SetImage(mat.ToBitmap());
-                mat.Dispose();
-            }
-        }
+        //private void OpticTeachingForm_TeachingTabImageGrabCompletedEventHandler(string camearaName, TabScanBuffer buffer)
+        //{
+        //    if(buffer.GetMergeMatImage() is Mat mat)
+        //    {
+        //        DrawBoxControl.SetImage(mat.ToBitmap());
+        //        mat.Dispose();
+        //    }
+        //}
 
         private void SetDefaultValue()
         {
@@ -607,7 +606,6 @@ namespace ATT.UI.Forms
             AppsLineCamera appsLineCamera = AppsLineCameraManager.Instance().GetLineCamera(CameraName);
             appsLineCamera.StopLiveTask();
             appsLineCamera.TeachingLiveImageGrabbed -= LiveDisplay;
-            appsLineCamera.TeachingTabImageGrabCompletedEventHandler -= OpticTeachingForm_TeachingTabImageGrabCompletedEventHandler;
             appsLineCamera.StopGrab();
 
             appsLineCamera.SetOperationMode(TDIOperationMode.TDI);

@@ -28,6 +28,8 @@ namespace Jastech.Apps.Winform.Core
 
         public bool InspectionDone { get; set; }
 
+        public bool TeachingGrabDone { get; set; }
+
         public int AddCount { get; set; } = 0;
         //private List<Mat> SubImageList { get; set; } = new List<Mat>();
         public Queue<byte[]> DataQueue = new Queue<byte[]>();

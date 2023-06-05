@@ -50,9 +50,11 @@ namespace ATT.Core
 
         public MultiAkkonAlgorithm MultiAkkonAlgorithm { get; set; } = new MultiAkkonAlgorithm();
 
-        public InspectionDelegate InspectEvent;
+        public SomeThingDelegate InspectEvent;
 
-        public delegate void InspectionDelegate(ATTInspTab inspTab);
+        public SomeThingDelegate TeachingEvent;
+
+        public delegate void SomeThingDelegate(ATTInspTab inspTab);
 
         public void Dispose()
         {
@@ -162,7 +164,7 @@ namespace ATT.Core
                 {
                     break;
                 }
-                if (TabScanBuffer.InspectionDone)
+                if (TabScanBuffer.TeachingGrabDone)
                     Thread.Sleep(1000); // CPU 점유율 낮추려고...
                 else
                 {
@@ -172,7 +174,10 @@ namespace ATT.Core
                     {
                         MakeMergeImage();
                         Console.WriteLine("Make Merge Image." + TabScanBuffer.TabNo);
-                        TabScanBuffer.InspectionDone = true;
+
+                        TeachingEvent?.Invoke(this);
+
+                        TabScanBuffer.TeachingGrabDone = true;
                     }
 
                     if (IsAddStart)

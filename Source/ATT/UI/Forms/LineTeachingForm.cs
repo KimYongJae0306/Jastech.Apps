@@ -104,7 +104,6 @@ namespace ATT.UI.Forms
             lblStageCam.Text = $"STAGE : {UnitName} / CAM : {TitleCameraName}";
 
             var appsLineCamera = AppsLineCameraManager.Instance().GetLineCamera(CameraName);
-            appsLineCamera.TeachingTabImageGrabCompletedEventHandler += LineTeachingForm_TeachingTabImageGrabCompletedEventHandler;
             appsLineCamera.GrabDoneEventHanlder += LineTeachingForm_GrabDoneEventHanlder;
 
             var image = AppsTeachingUIManager.Instance().GetOriginCogImageBuffer(true);
@@ -148,17 +147,6 @@ namespace ATT.UI.Forms
             cbxTabList.SelectedIndex = 0;
             CurrentTab = TeachingTabList[0];
             _currentTabNo = cbxTabList.SelectedItem as string;
-        }
-
-        private void LineTeachingForm_TeachingTabImageGrabCompletedEventHandler(string cameraName, TabScanBuffer scanBuffer)
-        {
-            if (scanBuffer == null)
-                return;
-
-            var teachingData = SystemManager.Instance().GetTeachingData();
-            Mat mat = scanBuffer.GetMergeMatImage();
-            Console.WriteLine("Complete : " + scanBuffer.TabNo);
-            teachingData.AddBufferImage(scanBuffer.TabNo, mat);
         }
 
         private void AddControl()
@@ -353,6 +341,7 @@ namespace ATT.UI.Forms
             {
                 ATTInspTab inspTab = new ATTInspTab();
                 inspTab.TabScanBuffer = buffer;
+                inspTab.TeachingEvent += TeachingEventFunction;
                 inspTab.StartTeacingTask();
                 InspTabList.Add(inspTab);
             }
@@ -362,10 +351,17 @@ namespace ATT.UI.Forms
         {
             foreach (var inspTab in InspTabList)
             {
+                inspTab.TeachingEvent -= TeachingEventFunction;
                 inspTab.StopTeachingTask();
                 inspTab.Dispose();
             }
             InspTabList.Clear();
+        }
+
+        private void TeachingEventFunction(ATTInspTab inspTab)
+        {
+            var teachingData = SystemManager.Instance().GetTeachingData();
+            teachingData.AddBufferImage(inspTab.TabScanBuffer.TabNo, inspTab.MergeMatImage);
         }
 
         private void btnGrabStop_Click(object sender, EventArgs e)
@@ -378,9 +374,8 @@ namespace ATT.UI.Forms
         {
             Display.DisposeImage();
             MarkControl.DisposeImage();
-
+            DisposeInspTabList();
             var appsLineCamera = AppsLineCameraManager.Instance().GetLineCamera(CameraName.LinscanMIL0);
-            appsLineCamera.TeachingTabImageGrabCompletedEventHandler -= LineTeachingForm_TeachingTabImageGrabCompletedEventHandler;
             appsLineCamera.GrabDoneEventHanlder -= LineTeachingForm_GrabDoneEventHanlder;
         }
 
