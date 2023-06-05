@@ -41,6 +41,10 @@ namespace ATT.UI.Forms
         private Color _selectedColor = new Color();
 
         private Color _nonSelectedColor = new Color();
+
+        private int _curRepeat { get; set; } = 0;
+
+        private float _curLength { get; set; } = 0;
         #endregion
 
         #region 속성
@@ -71,6 +75,15 @@ namespace ATT.UI.Forms
         private Axis SelectedAxis { get; set; } = null;
 
         public List<ATTInspTab> InspTabList { get; set; } = new List<ATTInspTab>();
+
+        public Task RepeatTask { get; set; }
+
+        public CancellationTokenSource CancelRepeatTask { get; set; }
+
+        public RepeatStatus RepeatStatus { get; set; } = RepeatStatus.Idle;
+
+
+
         #endregion
 
         #region 이벤트
@@ -100,6 +113,8 @@ namespace ATT.UI.Forms
             InitializeUI();
             SetDefaultValue();
             StatusTimer.Start();
+
+            StartRepeatTask();
         }
 
         private void TeachingEventFunction(ATTInspTab inspTab)
@@ -639,6 +654,8 @@ namespace ATT.UI.Forms
 
             appsLineCamera.SetOperationMode(TDIOperationMode.TDI);
             StatusTimer.Stop();
+            RepeatStatus = RepeatStatus.Idle;
+            StopRepeatTask();
         }
         #endregion
 
@@ -847,7 +864,86 @@ namespace ATT.UI.Forms
 
         private void lblStartRepeat_Click(object sender, EventArgs e)
         {
-
+            _curRepeat = Convert.ToInt32(lblRepeatCount.Text);
+            _curLength = Convert.ToSingle(lblScanXLength.Text);
+            RepeatStatus = RepeatStatus.GrabStart;
         }
+
+        public void StartRepeatTask()
+        {
+            if (RepeatTask != null)
+                return;
+
+            _curRepeat = Convert.ToInt32(lblRepeatCount.Text);
+            CancelRepeatTask = new CancellationTokenSource();
+            RepeatTask = new Task(Repeat, CancelRepeatTask.Token);
+            RepeatTask.Start();
+        }
+
+        public void StopRepeatTask()
+        {
+            if (RepeatTask == null)
+                return;
+
+            CancelRepeatTask.Cancel();
+            RepeatTask.Wait();
+            RepeatTask = null;
+        }
+
+        private void Repeat()
+        {
+           while(true)
+            {
+                if(CancelRepeatTask.IsCancellationRequested)
+                {
+                    break;
+                }
+
+                SeqRepeat();
+                Thread.Sleep(50);
+            }
+        }
+
+        int GrabCount = 0;
+        private void SeqRepeat()
+        {
+            switch (RepeatStatus)
+            {
+                case RepeatStatus.Idle:
+                    break;
+                case RepeatStatus.GrabStart:
+                    var appsLineCamera = AppsLineCameraManager.Instance().GetLineCamera(CameraName);
+                    appsLineCamera.StartGrab((float)_curLength);
+                    RepeatStatus = RepeatStatus.Move;
+                    break;
+                case RepeatStatus.Move:
+
+                    RepeatStatus = RepeatStatus.GrabEnd;
+                    break;
+                case RepeatStatus.GrabEnd:
+                    GrabCount++;
+
+                    if(GrabCount == _curRepeat)
+                        RepeatStatus = RepeatStatus.RepeatEnd;
+                    else
+                        RepeatStatus = RepeatStatus.GrabStart;
+
+                    break;
+                case RepeatStatus.RepeatEnd:
+                    RepeatStatus = RepeatStatus.Idle;
+                    break;
+                default:
+                    break;
+            }
+        }
+    }
+
+    public enum RepeatStatus
+    {
+        Idle,
+        GrabStart,
+        Move,
+        GrabEnd,
+        RepeatEnd,
     }
 }
