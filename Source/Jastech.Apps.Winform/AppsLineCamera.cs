@@ -303,11 +303,11 @@ namespace Jastech.Apps.Winform
         {
             while(true)
             {
-                //if(CancelMergeTask.IsCancellationRequested)
-                //{
-                //    ClearTabScanBuffer();
-                //    break;
-                //}
+                if (CancelMergeTask.IsCancellationRequested)
+                {
+                    ClearTabScanBuffer();
+                    break;
+                }
 
                 //lock(TabScanImageList)
                 //{
@@ -427,42 +427,6 @@ namespace Jastech.Apps.Winform
                 Thread.Sleep(10);
             }
         }
-
-        //private bool ImageProcessing()
-        //{
-        //    byte[] data = GetData();
-        //    if (data != null)
-        //    {
-        //        if (_stackTabNo >= TabScanImageList.Count())
-        //            return true;
-
-        //        TabScanImage tabScanImage = GetTabScanImage(_stackTabNo);
-
-        //        if (tabScanImage.StartIndex <= _curGrabCount && _curGrabCount <= tabScanImage.EndIndex)
-        //        {
-        //            Mat mat = MatHelper.ByteArrayToMat(data, tabScanImage.SubImageWidth, tabScanImage.SubImageHeight, 1);
-        //            Mat rotatedMat = MatHelper.Transpose(mat);
-        //            tabScanImage.AddSubImage(rotatedMat);
-        //            mat.Dispose();
-        //        }
-
-        //        if (tabScanImage.IsAddImageDone())
-        //        {
-        //            tabScanImage.ExcuteMerge = true;
-        //            //tabScanImage.MakeMergeImage();
-        //        }
-        //        _curGrabCount++;
-
-        //        if (GetDataCount() > 0)
-        //            ImageProcessing();
-
-        //        return true;
-        //    }
-        //    else
-        //    {
-        //        return false;
-        //    }
-        //}
 
         public void UpdateLiveImage()
         {

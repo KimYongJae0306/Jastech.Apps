@@ -125,6 +125,7 @@ namespace Jastech.Apps.Winform.UI.Controls
             else
             {
                 AkkonParamControl = new AkkonParamControl();
+                AkkonParamControl.ViewerPath = System.IO.Directory.GetCurrentDirectory();
                 AkkonParamControl.Dock = DockStyle.Fill;
                 AkkonParamControl.UserMaker = UserMaker;
                 pnlParam.Controls.Add(AkkonParamControl);

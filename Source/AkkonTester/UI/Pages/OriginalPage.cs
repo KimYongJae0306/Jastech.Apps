@@ -18,15 +18,30 @@ namespace AkkonTester.UI.Pages
 {
     public partial class OriginalPage : UserControl
     {
+        #region 속성
         private CogTeachingDisplayControl cogOrgDisplay { get; set; } = null;
 
         private CogTeachingDisplayControl cogResultDisplay { get; set; } = null;
 
+        protected override CreateParams CreateParams
+        {
+            get
+            {
+                var cp = base.CreateParams;
+                cp.ExStyle |= 0x02000000;
+                return cp;
+            }
+        }
+        #endregion
+
+        #region 생성자
         public OriginalPage()
         {
             InitializeComponent();
         }
+        #endregion
 
+        #region 메서드
         private void OriginalPage_Load(object sender, EventArgs e)
         {
             AddFullImageControls();
@@ -63,7 +78,7 @@ namespace AkkonTester.UI.Pages
 
                 SetCogImage(cogOrgDisplay, SystemManager.Instance().OrginalImage);
 
-                if(SystemManager.Instance().CurrentAkkonROI.Count() == 0)
+                if (SystemManager.Instance().CurrentAkkonROI.Count() == 0)
                 {
                     string path = Path.GetDirectoryName(dialog.FileName);
                     string roiFileName = Path.GetFileNameWithoutExtension(dialog.FileName) + ".txt";
@@ -82,12 +97,12 @@ namespace AkkonTester.UI.Pages
 
         private void btnMakeSliceImage_Click(object sender, EventArgs e)
         {
-            if(SystemManager.Instance().OrginalImage == null)
+            if (SystemManager.Instance().OrginalImage == null)
             {
                 MessageBox.Show("Image is not exist.");
                 return;
             }
-            if(SystemManager.Instance().CurrentAkkonROI.Count() == 0)
+            if (SystemManager.Instance().CurrentAkkonROI.Count() == 0)
             {
                 MessageBox.Show("ROI data is not exist.");
                 return;
@@ -151,18 +166,19 @@ namespace AkkonTester.UI.Pages
             SystemManager.Instance().UpdateParam();
 
             var resultList = SystemManager.Instance().Run();
-            if(resultList == null)
+            if (resultList == null)
             {
                 MessageBox.Show("Inspection Fail. Image is Null");
                 return;
             }
 
-            //Mat resultMat = SystemManager.Instance().GetResultImage(resultList);
-            //var cogImage = AppsHelper.ConvertCogColorImage(resultMat);
+            Mat resultMat = SystemManager.Instance().GetResultImage(resultList);
+            var cogImage = AppsHelper.ConvertCogColorImage(resultMat);
 
-            //cogResultDisplay.SetImage(cogImage);
-            //resultMat.Dispose();
+            cogResultDisplay.SetImage(cogImage);
+            resultMat.Dispose();
         }
+        #endregion
     }
 }
 

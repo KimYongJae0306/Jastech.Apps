@@ -19,15 +19,30 @@ namespace AkkonTester
 {
     public partial class MainForm : Form
     {
+        #region 속성
         public OriginalPage OriginalPage = null;
 
         public SlicePage SlicePage = null;
 
+        protected override CreateParams CreateParams
+        {
+            get
+            {
+                var cp = base.CreateParams;
+                cp.ExStyle |= 0x02000000;
+                return cp;
+            }
+        }
+        #endregion
+
+        #region 생성자
         public MainForm()
         {
             InitializeComponent();
         }
+        #endregion
 
+        #region 메서드
         private void MainForm_Load(object sender, EventArgs e)
         {
             InitializePage();
@@ -73,7 +88,6 @@ namespace AkkonTester
             pnlPage.Controls.Clear();
             pnlPage.Controls.Add(SlicePage);
         }
-
-
+        #endregion
     }
 }

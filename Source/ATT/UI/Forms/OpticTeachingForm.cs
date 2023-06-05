@@ -566,6 +566,11 @@ namespace ATT.UI.Forms
 
         private void btnGrabStart_Click(object sender, EventArgs e)
         {
+            StartGrab();
+        }
+
+        private void StartGrab()
+        {
             var appsLineCamera = AppsLineCameraManager.Instance().GetLineCamera(CameraName);
             //if (LAFCtrl is NuriOneLAFCtrl nuriOne)
             //    nuriOne.SetAutoFocusOnOFF(true);
@@ -588,6 +593,11 @@ namespace ATT.UI.Forms
         }
 
         private void btnGrabStop_Click(object sender, EventArgs e)
+        {
+            StopGrab();
+        }
+
+        private void StopGrab()
         {
             AppsLineCamera camera = AppsLineCameraManager.Instance().GetLineCamera(CameraName);
             camera.StopGrab();
@@ -612,6 +622,21 @@ namespace ATT.UI.Forms
         private void StatusTimer_Tick(object sender, EventArgs e)
         {
             UpdateUI();
+
+            if(lblForward.BackColor == _selectedColor)
+            {
+                for (int i = 0; i < 5; i++)
+                {
+                    StartGrab();
+
+
+                }
+                
+            }
+            else
+            {
+
+            }
         }
 
         private void lblRepeatVelocityValue_Click(object sender, EventArgs e)
@@ -733,7 +758,7 @@ namespace ATT.UI.Forms
                 _isRepeat = false;
                 _repeatThread.Interrupt();
                 _repeatThread.Abort();
-                lblStart.Text = "Start";
+                lblStartRepeat.Text = "Start";
             }
         }
 
@@ -776,6 +801,8 @@ namespace ATT.UI.Forms
             while (_isRepeat)
             {
 
+                StartGrab();
+
                 SelectedAxis.MoveTo(repeatParam.EndPosition, movingParam);
                 while (!SelectedAxis.WaitForDone())
                     Thread.Sleep(Convert.ToInt16(movingParam.AfterWaitTime));
@@ -793,6 +820,9 @@ namespace ATT.UI.Forms
                     _isRepeat = true;
 
                 _remainCount = repeatCount - count;
+
+                StopGrab();
+
                 Console.WriteLine("Set Repeat Count : " + repeatCount.ToString() + " / Complete Count : " + count.ToString() + " / Remain Count : " + _remainCount.ToString());
             }
 
@@ -805,6 +835,11 @@ namespace ATT.UI.Forms
             //    return;
 
             lblRepeatRemain.Text = _remainCount + " / " + lblRepeatCount.Text;
+        }
+
+        private void lblStartRepeat_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

@@ -10,6 +10,7 @@ using System.Windows.Forms;
 using Jastech.Apps.Winform.UI.Controls;
 using Jastech.Apps.Structure.Data;
 using Jastech.Apps.Winform.Service;
+using Jastech.Apps.Winform.Core;
 
 namespace ATT.UI.Pages
 {
@@ -79,5 +80,44 @@ namespace ATT.UI.Pages
             AlignInspControl.InitalizeResultData(tabCount);
         }
         #endregion
+
+        private void lblStart_Click(object sender, EventArgs e)
+        {
+            SystemManager.Instance().StartRun();
+        }
+
+        private void lblStop_Click(object sender, EventArgs e)
+        {
+            SystemManager.Instance().StopRun();
+        }
+
+        public void UpdateButton()
+        {
+            if (SystemManager.Instance().MachineStatus == MachineStatus.RUN)
+            {
+                lblStartText.ForeColor = Color.Blue;
+                lblStopText.ForeColor = Color.White;
+                //lblStart.Enabled = false;
+                //lblStartText.Enabled = false;
+
+                //lblStop.Enabled = true;
+                //lblStopText.Enabled = true;
+
+              
+            }
+            else
+            {
+                lblStartText.ForeColor = Color.White;
+                lblStopText.ForeColor = Color.Blue;
+
+                //lblStart.Enabled = true;
+                //lblStartText.Enabled = true;
+
+                //lblStop.Enabled = false;
+                //lblStopText.Enabled = false;
+
+                
+            }
+        }
     }
 }

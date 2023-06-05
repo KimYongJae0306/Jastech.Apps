@@ -20,6 +20,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace ATT
 {
@@ -32,7 +33,11 @@ namespace ATT
 
         private ATTInspRunner _inspRunner = new ATTInspRunner();
         #endregion
-        
+
+        #region 속성
+        public MachineStatus MachineStatus { get; set; } = MachineStatus.STOP;
+        #endregion
+
         #region 메서드
         public static SystemManager Instance()
         {
@@ -143,12 +148,42 @@ namespace ATT
 
         public void StartRun()
         {
-            _inspRunner.SeqRun();
+            if(ModelManager.Instance().CurrentModel == null)
+            {
+                MessageConfirmForm form = new MessageConfirmForm();
+                form.Message = "Current Model is null.";
+                return;
+            }
+
+            if(SystemManager.Instance().MachineStatus != MachineStatus.RUN)
+            {
+                MessageYesNoForm form = new MessageYesNoForm();
+                form.Message = "Do you want to Start Auto Mode?";
+                if(form.ShowDialog() == DialogResult.Yes)
+                {
+                    _inspRunner.SeqRun();
+                }
+            }
         }
 
         public void StopRun()
         {
-            _inspRunner.SeqStop();
+            if (ModelManager.Instance().CurrentModel == null)
+            {
+                MessageConfirmForm form = new MessageConfirmForm();
+                form.Message = "Current Model is null.";
+                return;
+            }
+
+            if (SystemManager.Instance().MachineStatus != MachineStatus.STOP)
+            {
+                MessageYesNoForm form = new MessageYesNoForm();
+                form.Message = "Do you want to Stop Auto Mode?";
+                if (form.ShowDialog() == DialogResult.Yes)
+                {
+                    _inspRunner.SeqStop();
+                }
+            }
         }
 
         public void UpdateMainResult(AppsInspResult result)

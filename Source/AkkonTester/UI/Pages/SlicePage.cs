@@ -38,6 +38,16 @@ namespace AkkonTester.UI.Pages
         public CogDisplayControl MaskingDisplay { get; set; } = new CogDisplayControl();
 
         public CogDisplayControl ResultDisplay { get; set; } = new CogDisplayControl();
+
+        protected override CreateParams CreateParams
+        {
+            get
+            {
+                var cp = base.CreateParams;
+                cp.ExStyle |= 0x02000000;
+                return cp;
+            }
+        }
         #endregion
 
         #region 생성자
@@ -48,7 +58,6 @@ namespace AkkonTester.UI.Pages
         #endregion
 
         #region 메서드
-
         private void SlicePage_Load(object sender, EventArgs e)
         {
             _isLoading = true;
@@ -450,7 +459,7 @@ namespace AkkonTester.UI.Pages
 
             foreach (var result in curResultList)
             {
-                if (curParam.DrawOption.ContainLeadROI != true)
+                if (curParam.DrawOption.ContainLeadROI)
                 {
                     var startPoint = new Point((int)result.OffsetToWorldX, (int)result.OffsetToWorldY);
                     TempDrawLead(ref colorMat, result.Lead, new Point(0,0));
@@ -500,6 +509,27 @@ namespace AkkonTester.UI.Pages
                             Point pt = new Point(leftFromSlice + blob.BoundingRect.Width, topFromSlice);
                             CvInvoke.PutText(colorMat, blob.Strength.ToString("F2"), pt, FontFace.HersheyPlain, 0.6, new MCvScalar(255, 255, 255));
                         }
+                    }
+
+                    if (curParam.DrawOption.ContainLeadCount)
+                    {
+                        string leadIndexString = result.LeadIndex.ToString();
+                        string blobCountString = string.Format("[{0}]", result.DetectCount);
+
+                        var leftBottom = result.Lead.GetLeftBottomPoint();
+                        var rightBottom = result.Lead.GetRightBottomPoint();
+                        Point centerPt = new Point((int)((leftBottom.X + rightBottom.X) / 2.0), (int)leftBottom.Y);
+
+                        int baseLine = 0;
+                        Size textSize = CvInvoke.GetTextSize(leadIndexString, FontFace.HersheyComplex, 0.3, 1, ref baseLine);
+                        int textX = centerPt.X - (textSize.Width / 2);
+                        int textY = centerPt.Y + (baseLine / 2);
+                        CvInvoke.PutText(colorMat, leadIndexString, new Point(textX, textY + 10), FontFace.HersheyComplex, 0.3, new MCvScalar(50, 230, 50, 255));
+
+                        textSize = CvInvoke.GetTextSize(blobCountString, FontFace.HersheyComplex, 0.3, 1, ref baseLine);
+                        textX = centerPt.X - (textSize.Width / 2);
+                        textY = centerPt.Y + (baseLine / 2);
+                        CvInvoke.PutText(colorMat, blobCountString, new Point(textX, textY + 20), FontFace.HersheyComplex, 0.3, new MCvScalar(50, 230, 50, 255));
                     }
                 }
             }

@@ -11,6 +11,7 @@ using Jastech.Framework.Config;
 using Jastech.Framework.Macron.Akkon;
 using Jastech.Framework.Matrox;
 using Jastech.Framework.Structure;
+using Jastech.Framework.Users;
 using Jastech.Framework.Winform;
 using Jastech.Framework.Winform.Forms;
 using System;
@@ -77,7 +78,22 @@ namespace ATT
             lblCurrentTime.Text = now.ToString("yyyy-MM-dd HH:mm:ss");
 
             var user = UserManager.Instance().CurrentUser;
-            lblCurrentUser.Text = user.Id.ToString();
+
+            if(user.Type == AuthorityType.None)
+            {
+                lblCurrentUser.Text = "Operator";
+                lblTeachingPage.Enabled = false;
+                lblTeachingPageImage.Enabled = false;
+            }
+            else
+            {
+                lblCurrentUser.Text = user.Id.ToString();
+                lblTeachingPage.Enabled = true;
+                lblTeachingPageImage.Enabled = true;
+            }
+
+            if (MainPageControl.Visible)
+                MainPageControl.UpdateButton();
         }
 
         private void MainForm_CurrentModelChangedEvent(InspModel inspModel)
@@ -231,10 +247,15 @@ namespace ATT
             LoginForm form = new LoginForm();
             form.CurrentUser = UserManager.Instance().CurrentUser;
             form.UserHandler = UserManager.Instance().UserHanlder;
-            
+            form.StopProgramEvent += StopProgramEventFunction;
             form.ShowDialog();
 
             UserManager.Instance().SetCurrentUser(form.CurrentUser.Id);
+        }
+
+        private void StopProgramEventFunction()
+        {
+            this.Close();
         }
     }
 }

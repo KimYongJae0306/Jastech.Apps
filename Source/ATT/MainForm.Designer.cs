@@ -51,7 +51,6 @@
             this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
             this.lblTeachingPageImage = new System.Windows.Forms.Label();
             this.lblTeachingPage = new System.Windows.Forms.Label();
-            this.pnlFunctionButtons = new System.Windows.Forms.Panel();
             this.pnlPage = new System.Windows.Forms.Panel();
             this.pnlMachineStatus = new System.Windows.Forms.Panel();
             this.tlpMachineStatus = new System.Windows.Forms.TableLayoutPanel();
@@ -73,7 +72,6 @@
             this.tableLayoutPanel1.SuspendLayout();
             this.panel1.SuspendLayout();
             this.tableLayoutPanel3.SuspendLayout();
-            this.pnlFunctionButtons.SuspendLayout();
             this.pnlMachineStatus.SuspendLayout();
             this.tlpMachineStatus.SuspendLayout();
             this.tableLayoutPanel5.SuspendLayout();
@@ -85,8 +83,8 @@
             // 
             this.tlpMainForm.ColumnCount = 1;
             this.tlpMainForm.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tlpMainForm.Controls.Add(this.pnlPage, 0, 2);
             this.tlpMainForm.Controls.Add(this.tlpFunctionButtons, 0, 1);
-            this.tlpMainForm.Controls.Add(this.pnlFunctionButtons, 0, 2);
             this.tlpMainForm.Controls.Add(this.pnlMachineStatus, 0, 0);
             this.tlpMainForm.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tlpMainForm.Location = new System.Drawing.Point(0, 0);
@@ -354,20 +352,10 @@
             this.lblTeachingPage.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.lblTeachingPage.Click += new System.EventHandler(this.TeachPage_Click);
             // 
-            // pnlFunctionButtons
-            // 
-            this.pnlFunctionButtons.Controls.Add(this.pnlPage);
-            this.pnlFunctionButtons.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pnlFunctionButtons.Location = new System.Drawing.Point(0, 100);
-            this.pnlFunctionButtons.Margin = new System.Windows.Forms.Padding(0);
-            this.pnlFunctionButtons.Name = "pnlFunctionButtons";
-            this.pnlFunctionButtons.Size = new System.Drawing.Size(1540, 666);
-            this.pnlFunctionButtons.TabIndex = 0;
-            // 
             // pnlPage
             // 
             this.pnlPage.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pnlPage.Location = new System.Drawing.Point(0, 0);
+            this.pnlPage.Location = new System.Drawing.Point(0, 100);
             this.pnlPage.Margin = new System.Windows.Forms.Padding(0);
             this.pnlPage.Name = "pnlPage";
             this.pnlPage.Size = new System.Drawing.Size(1540, 666);
@@ -519,7 +507,6 @@
             this.tableLayoutPanel1.ResumeLayout(false);
             this.panel1.ResumeLayout(false);
             this.tableLayoutPanel3.ResumeLayout(false);
-            this.pnlFunctionButtons.ResumeLayout(false);
             this.pnlMachineStatus.ResumeLayout(false);
             this.tlpMachineStatus.ResumeLayout(false);
             this.tableLayoutPanel5.ResumeLayout(false);
@@ -532,7 +519,6 @@
         #endregion
 
         private System.Windows.Forms.TableLayoutPanel tlpMainForm;
-        private System.Windows.Forms.Panel pnlFunctionButtons;
         private System.Windows.Forms.TableLayoutPanel tlpFunctionButtons;
         private System.Windows.Forms.Panel pnlMachineStatus;
         private System.Windows.Forms.TableLayoutPanel tlpMachineStatus;

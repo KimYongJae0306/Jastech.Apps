@@ -34,7 +34,8 @@ namespace Jastech.Apps.Winform.UI.Controls
         #region 메서드
         private void TabBtnControl_Load(object sender, EventArgs e)
         {
-            btnTab.Text = "TAB " + TabIndex.ToString();
+            // UI 상 Tab 1부터 보여주기 위함
+            btnTab.Text = "TAB " + (TabIndex + 1).ToString();
         }
 
         public void SetTabIndex(int tabIndex)

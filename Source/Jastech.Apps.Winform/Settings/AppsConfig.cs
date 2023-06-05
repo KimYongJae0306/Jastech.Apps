@@ -46,7 +46,6 @@ namespace Jastech.Apps.Winform.Settings
 
         [JsonProperty]
         public float AkkonResizeRatio { get; set; } = 0.5f;
-
         #endregion
 
         #region 메서드

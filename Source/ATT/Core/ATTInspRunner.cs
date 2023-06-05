@@ -96,6 +96,9 @@ namespace ATT.Core
             DisposeInspTabList();
             var inspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
 
+            var camera = AppsLineCameraManager.Instance().GetLineCamera(CameraName.LinscanMIL0).Camera;
+            float resolution_mm = (float)(camera.PixelResolution_um / camera.LensScale) / 1000; // ex) 3.5 um / 5 / 1000 = 0.0007mm
+       
             MultiAkkonAlgorithm.PrepareInspection();
 
             foreach (var buffer in bufferList)
@@ -104,18 +107,20 @@ namespace ATT.Core
                 inspTab.TabScanBuffer = buffer;
                 inspTab.AddInspectEvent += AddInspectEventFuction;
                 inspTab.StartInspTask();
-
                 InspTabList.Add(inspTab);
 
                 // Akkon
-                Tab tab = inspModel.GetUnit(UnitName.Unit0).GetTab(buffer.TabNo);
-                AkkonParam akkonParam = tab.AkkonParam;
-                MultiAkkonAlgorithm algo = new MultiAkkonAlgorithm();
-                int sliceOverlapCount = algo.GetSliceOverlapCount(buffer.SubImageWidth, buffer.SubImageHeight, akkonParam.GetAkkonROIList(), 2048, 
-                                                                                        akkonParam.AkkonAlgoritmParam.ImageFilterParam.ResizeRatio);
-                algo.Initialize(sliceOverlapCount, akkonParam.AkkonAlgoritmParam);
+                //Tab tab = inspModel.GetUnit(UnitName.Unit0).GetTab(buffer.TabNo);
+                //double width = inspModel.MaterialInfo.GetTabWidth(buffer.TabNo);
+                //int widthCount = (int)(width / resolution_mm / camera.ImageHeight);
 
-                AkkonAlgorithmList.Add(algo);
+                //AkkonParam akkonParam = tab.AkkonParam;
+                //MultiAkkonAlgorithm algo = new MultiAkkonAlgorithm();
+                //int sliceOverlapCount = algo.GetSliceOverlapCount(buffer.SubImageWidth * widthCount, buffer.SubImageHeight, akkonParam.GetAkkonROIList(), 2048, 
+                //                                                                        akkonParam.AkkonAlgoritmParam.ImageFilterParam.ResizeRatio);
+                //algo.Initialize(sliceOverlapCount, akkonParam.AkkonAlgoritmParam);
+
+                //AkkonAlgorithmList.Add(algo);
             }
         }
 
@@ -462,12 +467,12 @@ namespace ATT.Core
             if (ModelManager.Instance().CurrentModel == null)
                 return;
             //SeqStop();
+           SystemManager.Instance().MachineStatus = MachineStatus.RUN;
+
             var appsLineCamera = AppsLineCameraManager.Instance().GetAppsCamera(CameraName.LinscanMIL0.ToString());
+
             appsLineCamera.TabImageGrabCompletedEventHandler += ATTSeqRunner_TabImageGrabCompletedEventHandler;
             appsLineCamera.GrabDoneEventHanlder += ATTSeqRunner_GrabDoneEventHanlder;
-
-            //AppsLineCameraManager.Instance().GetLineCamera(CameraName.LinscanMIL0).StartMainGrabTask();
-            //AppsLineCameraManager.Instance().GetLineCamera(CameraName.LinscanMIL0).StartMergeTask();
             StartAkkonInspTask();
 
             Logger.Write(LogType.Seq, "Start Sequence.");
@@ -485,6 +490,8 @@ namespace ATT.Core
 
         public void SeqStop()
         {
+            SystemManager.Instance().MachineStatus = MachineStatus.STOP;
+
             var appsLineCamera = AppsLineCameraManager.Instance().GetAppsCamera(CameraName.LinscanMIL0.ToString());
             appsLineCamera.TabImageGrabCompletedEventHandler -= ATTSeqRunner_TabImageGrabCompletedEventHandler;
             appsLineCamera.GrabDoneEventHanlder -= ATTSeqRunner_GrabDoneEventHanlder;
@@ -852,7 +859,7 @@ namespace ATT.Core
 
             Tab tab = inspModel.GetUnit(UnitName.Unit0).GetTab(0);
 
-            Mat tabMatImage = new Mat(@"D:\Tab1.bmp", Emgu.CV.CvEnum.ImreadModes.Grayscale);
+            //Mat tabMatImage = new Mat(@"D:\Tab1.bmp", Emgu.CV.CvEnum.ImreadModes.Grayscale);
 
             // ICogImage tabCogImage = ConvertCogImage(tabMatImage);
             // MainAlgorithmTool tool = new MainAlgorithmTool();
