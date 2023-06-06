@@ -16,6 +16,8 @@ namespace Jastech.Apps.Winform.UI.Controls
 {
     public partial class MotionRepeatControl : UserControl
     {
+        private bool _isLoading { get; set; } = false;
+
         private Axis SelectedAxis { get; set; } = null;
 
         private AxisHandler AxisHandler { get; set; } = null;
