@@ -271,7 +271,6 @@ namespace Jastech.Apps.Winform
             }
             else
             {
-                Console.WriteLine("Cur : " + _curGrabCount);
                 TabScanBuffer tabScanBuffer = GetTabScanBuffer(_stackTabNo);
                 if (tabScanBuffer.StartIndex <= _curGrabCount && _curGrabCount <= tabScanBuffer.EndIndex)
                 {
