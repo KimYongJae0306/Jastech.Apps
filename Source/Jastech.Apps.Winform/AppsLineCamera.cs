@@ -67,12 +67,16 @@ namespace Jastech.Apps.Winform
         public event TeachingImageGrabbedDelegate TeachingLiveImageGrabbed;
 
         public event GrabDoneDelegate GrabDoneEventHanlder;
+
+        public event GrabOnceDelegate GrabOnceEventHandler;
         #endregion
 
         #region 델리게이트
         public delegate void TeachingImageGrabbedDelegate(string cameraName, Mat image);
 
         public delegate void GrabDoneDelegate(string cameraName, bool isGrabDone);
+
+        public delegate void GrabOnceDelegate(TabScanBuffer tabScanBuffer);
         #endregion
 
         #region 생성자
@@ -222,7 +226,7 @@ namespace Jastech.Apps.Winform
             ClearTabScanBuffer();
 
             float resolution_mm = (float)(Camera.PixelResolution_um / Camera.LensScale) / 1000;
-            int totalScanSubImageCount = (int)Math.Ceiling(scanLength_mm / resolution_mm / Camera.ImageHeight) + 2;
+            int totalScanSubImageCount = (int)Math.Ceiling(scanLength_mm / resolution_mm / Camera.ImageHeight);
 
             TabScanBuffer buffer = new TabScanBuffer(0, 0, totalScanSubImageCount, Camera.ImageWidth, Camera.ImageHeight);
             lock(TabScanBufferList)
@@ -241,8 +245,8 @@ namespace Jastech.Apps.Winform
             if (Camera.IsGrabbing())
                 Camera.Stop();
 
-            if(Camera is ICameraTDIavailable tdiCamera)
-                tdiCamera.SetTDIOperationMode(TDIOperationMode.Area);
+            //if(Camera is ICameraTDIavailable tdiCamera)
+            //    tdiCamera.SetTDIOperationMode(TDIOperationMode.Area);
 
             Camera.GrabContinous();
         }
@@ -267,6 +271,7 @@ namespace Jastech.Apps.Winform
             }
             else
             {
+                Console.WriteLine("Cur : " + _curGrabCount);
                 TabScanBuffer tabScanBuffer = GetTabScanBuffer(_stackTabNo);
                 if (tabScanBuffer.StartIndex <= _curGrabCount && _curGrabCount <= tabScanBuffer.EndIndex)
                 {
@@ -282,6 +287,7 @@ namespace Jastech.Apps.Winform
                 {
                     Camera.Stop();
                     GrabDoneEventHanlder?.Invoke(Camera.Name, true);
+                    GrabOnceEventHandler?.Invoke(tabScanBuffer);
                 }
 
                 _curGrabCount++;

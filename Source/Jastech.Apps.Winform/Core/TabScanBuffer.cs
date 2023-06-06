@@ -31,12 +31,8 @@ namespace Jastech.Apps.Winform.Core
         public bool TeachingGrabDone { get; set; }
 
         public int AddCount { get; set; } = 0;
-        //private List<Mat> SubImageList { get; set; } = new List<Mat>();
+
         public Queue<byte[]> DataQueue = new Queue<byte[]>();
-
-        //public Mat MergeMatImage { get; set; } = null;
-
-        //public CogImage8Grey MergeCogImage { get; set; } = null;
 
         public TabScanBuffer(int tabNo, int startIndex, int endIndex, int subImageWidth, int subImageHeight)
         {
@@ -65,12 +61,6 @@ namespace Jastech.Apps.Winform.Core
                     return null;
             }
         }
-
-        //public void AddSubImage(Mat mat)
-        //{
-        //    lock (_objLock)
-        //        SubImageList.Add(mat);
-        //}
 
         public bool IsAddDataDone()
         {

@@ -31,10 +31,10 @@
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.tlpMainForm = new System.Windows.Forms.TableLayoutPanel();
+            this.pnlPage = new System.Windows.Forms.Panel();
             this.tlpFunctionButtons = new System.Windows.Forms.TableLayoutPanel();
             this.lblCurrentTime = new System.Windows.Forms.Label();
             this.panel2 = new System.Windows.Forms.Panel();
-            this.label1 = new System.Windows.Forms.Label();
             this.panel4 = new System.Windows.Forms.Panel();
             this.tableLayoutPanel4 = new System.Windows.Forms.TableLayoutPanel();
             this.lblLogPageImage = new System.Windows.Forms.Label();
@@ -51,7 +51,6 @@
             this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
             this.lblTeachingPageImage = new System.Windows.Forms.Label();
             this.lblTeachingPage = new System.Windows.Forms.Label();
-            this.pnlPage = new System.Windows.Forms.Panel();
             this.pnlMachineStatus = new System.Windows.Forms.Panel();
             this.tlpMachineStatus = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel5 = new System.Windows.Forms.TableLayoutPanel();
@@ -63,7 +62,6 @@
             this.tmrMainForm = new System.Windows.Forms.Timer(this.components);
             this.tlpMainForm.SuspendLayout();
             this.tlpFunctionButtons.SuspendLayout();
-            this.panel2.SuspendLayout();
             this.panel4.SuspendLayout();
             this.tableLayoutPanel4.SuspendLayout();
             this.panel3.SuspendLayout();
@@ -96,6 +94,15 @@
             this.tlpMainForm.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tlpMainForm.Size = new System.Drawing.Size(1540, 766);
             this.tlpMainForm.TabIndex = 0;
+            // 
+            // pnlPage
+            // 
+            this.pnlPage.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pnlPage.Location = new System.Drawing.Point(0, 100);
+            this.pnlPage.Margin = new System.Windows.Forms.Padding(0);
+            this.pnlPage.Name = "pnlPage";
+            this.pnlPage.Size = new System.Drawing.Size(1540, 666);
+            this.pnlPage.TabIndex = 3;
             // 
             // tlpFunctionButtons
             // 
@@ -141,25 +148,11 @@
             // 
             // panel2
             // 
-            this.panel2.Controls.Add(this.label1);
             this.panel2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel2.Location = new System.Drawing.Point(803, 3);
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(194, 44);
             this.panel2.TabIndex = 19;
-            // 
-            // label1
-            // 
-            this.label1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.label1.Font = new System.Drawing.Font("맑은 고딕", 16F, System.Drawing.FontStyle.Bold);
-            this.label1.ForeColor = System.Drawing.Color.White;
-            this.label1.Location = new System.Drawing.Point(0, 0);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(194, 44);
-            this.label1.TabIndex = 1;
-            this.label1.Text = "Test";
-            this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.label1.Click += new System.EventHandler(this.label1_Click);
             // 
             // panel4
             // 
@@ -352,15 +345,6 @@
             this.lblTeachingPage.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.lblTeachingPage.Click += new System.EventHandler(this.TeachPage_Click);
             // 
-            // pnlPage
-            // 
-            this.pnlPage.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pnlPage.Location = new System.Drawing.Point(0, 100);
-            this.pnlPage.Margin = new System.Windows.Forms.Padding(0);
-            this.pnlPage.Name = "pnlPage";
-            this.pnlPage.Size = new System.Drawing.Size(1540, 666);
-            this.pnlPage.TabIndex = 3;
-            // 
             // pnlMachineStatus
             // 
             this.pnlMachineStatus.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
@@ -498,7 +482,6 @@
             this.Load += new System.EventHandler(this.MainForm_Load);
             this.tlpMainForm.ResumeLayout(false);
             this.tlpFunctionButtons.ResumeLayout(false);
-            this.panel2.ResumeLayout(false);
             this.panel4.ResumeLayout(false);
             this.tableLayoutPanel4.ResumeLayout(false);
             this.panel3.ResumeLayout(false);
@@ -548,7 +531,6 @@
         private System.Windows.Forms.Label lblCurrentModel;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel5;
         private System.Windows.Forms.PictureBox pictureBox2;
-        private System.Windows.Forms.Label label1;
     }
 }
 

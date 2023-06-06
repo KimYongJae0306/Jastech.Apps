@@ -56,8 +56,6 @@ namespace ATT.UI.Forms
 
         private AutoFocusControl AutoFocusControl { get; set; } = new AutoFocusControl() { Dock = DockStyle.Fill };
 
-        private MotionRepeatControl MotionRepeatControl { get; set; } = new MotionRepeatControl() { Dock = DockStyle.Fill };
-
         private MotionJogControl MotionJogControl { get; set; } = new MotionJogControl() { Dock = DockStyle.Fill };
 
         private LAFJogControl LAFJogControl { get; set; } = new LAFJogControl() { Dock = DockStyle.Fill };
@@ -73,17 +71,6 @@ namespace ATT.UI.Forms
         private Direction _direction = Direction.CW;
 
         private Axis SelectedAxis { get; set; } = null;
-
-        public List<ATTInspTab> InspTabList { get; set; } = new List<ATTInspTab>();
-
-        public Task RepeatTask { get; set; }
-
-        public CancellationTokenSource CancelRepeatTask { get; set; }
-
-        public RepeatStatus RepeatStatus { get; set; } = RepeatStatus.Idle;
-
-
-
         #endregion
 
         #region 이벤트
@@ -107,47 +94,33 @@ namespace ATT.UI.Forms
 
             AppsLineCamera appsLineCamera = AppsLineCameraManager.Instance().GetLineCamera(CameraName);
             appsLineCamera.TeachingLiveImageGrabbed += LiveDisplay;
+            appsLineCamera.GrabOnceEventHandler += OpticTeachingForm_GrabOnceEventHandler;
 
             UpdateData();
             AddControl();
             InitializeUI();
             SetDefaultValue();
             StatusTimer.Start();
+        }
 
-            StartRepeatTask();
+        public void SetAxisHanlder(AxisHandler axisHandler)
+        {
+            AxisHandler = axisHandler;
+            SetAxis(AxisHandler);
+            InitializeUI();
+        }
+
+        private void SetAxis(AxisHandler axisHandler)
+        {
+            SelectedAxis = axisHandler.GetAxis(AxisName.X);
         }
 
         private void TeachingEventFunction(ATTInspTab inspTab)
         {
-            if(inspTab.MergeMatImage != null)
+            if (inspTab.MergeMatImage != null)
             {
                 DrawBoxControl.SetImage(inspTab.MergeMatImage.ToBitmap());
             }
-        }
-        public void InitalizeInspTab(List<TabScanBuffer> bufferList)
-        {
-            DisposeInspTabList();
-            var inspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
-
-            foreach (var buffer in bufferList)
-            {
-                ATTInspTab inspTab = new ATTInspTab();
-                inspTab.TabScanBuffer = buffer;
-                inspTab.TeachingEvent += TeachingEventFunction;
-                inspTab.StartTeacingTask();
-                InspTabList.Add(inspTab);
-            }
-        }
-
-        private void DisposeInspTabList()
-        {
-            foreach (var inspTab in InspTabList)
-            {
-                inspTab.TeachingEvent -= TeachingEventFunction;
-                inspTab.StopTeachingTask();
-                inspTab.Dispose();
-            }
-            InspTabList.Clear();
         }
 
         private void SetDefaultValue()
@@ -188,19 +161,18 @@ namespace ATT.UI.Forms
             AxisHandler axisHandler = AppsMotionManager.Instance().GetAxisHandler(AxisHandlerName.Handler0);
             var lafCtrl = AppsLAFManager.Instance().GetLAFCtrl(LAFName.Akkon);
 
-            pnlAutoFocus.Controls.Add(AutoFocusControl);
             AutoFocusControl.UpdateData(posData[(int)TeachingPosType.Stage1_Scan_Start].AxisInfoList[(int)AxisName.Z]);
-            AutoFocusControl.SetAxisHanlder(axisHandler);
+            AutoFocusControl.SetAxisHanlder(AxisHandler);
             AutoFocusControl.SetLAFCtrl(lafCtrl);
-
-            //MotionRepeatControl.SetAxisHanlder(axisHandler);
-            //pnlMotionRepeat.Controls.Add(MotionRepeatControl);
+            pnlAutoFocus.Controls.Add(AutoFocusControl);
 
             pnlMotionJog.Controls.Add(MotionJogControl);
             MotionJogControl.SetAxisHanlder(AxisHandler);
 
             pnlLAFJog.Controls.Add(LAFJogControl);
             LAFJogControl.SetSelectedLafCtrl(LAFCtrl);
+
+            SelectedAxis = axisHandler.GetAxis(AxisName.X);
         }
 
         private void DrawBoxControl_FigureDataDelegateEventHanlder(byte[] data)
@@ -223,18 +195,17 @@ namespace ATT.UI.Forms
             var camera = AppsLineCameraManager.Instance().GetLineCamera(CameraName).Camera;
             //camera.Stop();
 
+            //AppsLineCameraManager.Instance().GetLineCamera(CameraName).IsLive = true;
+            //AppsLineCameraManager.Instance().GetLineCamera(CameraName).StartLiveTask();
+
             if (camera is ICameraTDIavailable tdiCamera)
             {
                 if (operationMode == TDIOperationMode.TDI)
                 {
-                    AppsLineCameraManager.Instance().GetLineCamera(CameraName).IsLive = false;
-                    AppsLineCameraManager.Instance().GetLineCamera(CameraName).StopLiveTask();
                     tdiCamera.SetTDIOperationMode(TDIOperationMode.TDI);
                 }
                 else
                 {
-                    AppsLineCameraManager.Instance().GetLineCamera(CameraName).IsLive = true;
-                    AppsLineCameraManager.Instance().GetLineCamera(CameraName).StartLiveTask();
                     tdiCamera.SetTDIOperationMode(TDIOperationMode.Area);
                 }
             }
@@ -604,35 +575,39 @@ namespace ATT.UI.Forms
 
         private void btnGrabStart_Click(object sender, EventArgs e)
         {
-            StartGrab();
+            AppsLineCameraManager.Instance().GetLineCamera(CameraName).IsLive = true;
+            AppsLineCameraManager.Instance().GetLineCamera(CameraName).StartLiveTask();
+
+            StartGrab(false);
         }
 
-        private void StartGrab()
+        private void StartGrab(bool isRepeat)
         {
+            StopGrab();
             var appsLineCamera = AppsLineCameraManager.Instance().GetLineCamera(CameraName);
             //if (LAFCtrl is NuriOneLAFCtrl nuriOne)
             //    nuriOne.SetAutoFocusOnOFF(true);
 
-            if (appsLineCamera.Camera is ICameraTDIavailable tdiCamera)
+            if(isRepeat)
+            {
+                AppsInspModel inspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
+                double length = Convert.ToDouble(lblScanXLength.Text);
+
+                // Motion 이동 추가
+                appsLineCamera.StartGrab((float)length);
+            }
+            else
             {
                 appsLineCamera.StartGrabContinous();
-                //if (tdiCamera.TDIOperationMode == TDIOperationMode.TDI)
-                //{
-                //    AppsInspModel inspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
-                //    double length = MotionRepeatControl.GetScanLength(); // repeat Length
-
-                //    // Motion 이동 추가
-                //    appsLineCamera.StartGrab((float)length);
-                //}
-                //else
-                //{
-                //    appsLineCamera.StartGrabContinous();
-                //}
             }
+           
         }
 
         private void btnGrabStop_Click(object sender, EventArgs e)
         {
+            AppsLineCameraManager.Instance().GetLineCamera(CameraName).IsLive = false;
+            AppsLineCameraManager.Instance().GetLineCamera(CameraName).StopGrab();
+
             StopGrab();
         }
 
@@ -644,18 +619,16 @@ namespace ATT.UI.Forms
 
         private void OpticTeachingForm_FormClosing(object sender, FormClosingEventArgs e)
         {
-            DisposeInspTabList();
             DrawBoxControl.DisposeImage();
 
             AppsLineCamera appsLineCamera = AppsLineCameraManager.Instance().GetLineCamera(CameraName);
             appsLineCamera.StopLiveTask();
             appsLineCamera.TeachingLiveImageGrabbed -= LiveDisplay;
+            appsLineCamera.GrabOnceEventHandler -= OpticTeachingForm_GrabOnceEventHandler;
             appsLineCamera.StopGrab();
 
             appsLineCamera.SetOperationMode(TDIOperationMode.TDI);
             StatusTimer.Stop();
-            RepeatStatus = RepeatStatus.Idle;
-            StopRepeatTask();
         }
         #endregion
 
@@ -826,7 +799,7 @@ namespace ATT.UI.Forms
             while (_isRepeat)
             {
 
-                StartGrab();
+                StartGrab(true);
 
                 SelectedAxis.MoveTo(repeatParam.EndPosition, movingParam);
                 while (!SelectedAxis.WaitForDone())
@@ -864,86 +837,49 @@ namespace ATT.UI.Forms
 
         private void lblStartRepeat_Click(object sender, EventArgs e)
         {
-            _curRepeat = Convert.ToInt32(lblRepeatCount.Text);
-            _curLength = Convert.ToSingle(lblScanXLength.Text);
-            RepeatStatus = RepeatStatus.GrabStart;
+            MoveRepeat(true);
         }
 
-        public void StartRepeatTask()
+        private void OpticTeachingForm_GrabOnceEventHandler(TabScanBuffer tabScanBuffer)
         {
-            if (RepeatTask != null)
+            if (_isRepeat == false)
                 return;
 
-            _curRepeat = Convert.ToInt32(lblRepeatCount.Text);
-            CancelRepeatTask = new CancellationTokenSource();
-            RepeatTask = new Task(Repeat, CancelRepeatTask.Token);
-            RepeatTask.Start();
-        }
+            List<Mat> subImageList = new List<Mat>();
 
-        public void StopRepeatTask()
-        {
-            if (RepeatTask == null)
-                return;
-
-            CancelRepeatTask.Cancel();
-            RepeatTask.Wait();
-            RepeatTask = null;
-        }
-
-        private void Repeat()
-        {
-           while(true)
+            int count = 0;
+            while (tabScanBuffer.DataQueue.Count > 0)
             {
-                if(CancelRepeatTask.IsCancellationRequested)
+                byte[] data = tabScanBuffer.GetData();
+                if(count ==0)
                 {
-                    break;
+                    //TDI 특성상 첫장 버림
+                    count++;
+                    continue;
                 }
-
-                SeqRepeat();
-                Thread.Sleep(50);
+                Mat mat = MatHelper.ByteArrayToMat(data, tabScanBuffer.SubImageWidth, tabScanBuffer.SubImageHeight, 1);
+                Mat rotatedMat = MatHelper.Transpose(mat);
+                subImageList.Add(rotatedMat);
             }
-        }
 
-        int GrabCount = 0;
-        private void SeqRepeat()
-        {
-            switch (RepeatStatus)
+            if (subImageList.Count > 0)
             {
-                case RepeatStatus.Idle:
-                    break;
-                case RepeatStatus.GrabStart:
-                    var appsLineCamera = AppsLineCameraManager.Instance().GetLineCamera(CameraName);
-                    appsLineCamera.StartGrab((float)_curLength);
-                    RepeatStatus = RepeatStatus.Move;
-                    break;
-                case RepeatStatus.Move:
+                Mat mergeMatImage = new Mat();
+                CvInvoke.HConcat(subImageList.ToArray(), mergeMatImage);
 
-                    RepeatStatus = RepeatStatus.GrabEnd;
-                    break;
-                case RepeatStatus.GrabEnd:
-                    GrabCount++;
+                for (int i = 0; i < subImageList.Count; i++)
+                {
+                    subImageList[i].Dispose();
+                    subImageList[i] = null;
+                }
+                subImageList.Clear();
 
-                    if(GrabCount == _curRepeat)
-                        RepeatStatus = RepeatStatus.RepeatEnd;
-                    else
-                        RepeatStatus = RepeatStatus.GrabStart;
-
-                    break;
-                case RepeatStatus.RepeatEnd:
-                    RepeatStatus = RepeatStatus.Idle;
-                    break;
-                default:
-                    break;
+                Bitmap bmp = mergeMatImage.ToBitmap();
+                DrawBoxControl.SetImage(bmp);
+                mergeMatImage.Dispose();
+                mergeMatImage = null;
             }
+            Console.WriteLine("Update Repeat Display");
         }
-    }
-
-    public enum RepeatStatus
-    {
-        Idle,
-        GrabStart,
-        Move,
-        GrabEnd,
-        RepeatEnd,
     }
 }
