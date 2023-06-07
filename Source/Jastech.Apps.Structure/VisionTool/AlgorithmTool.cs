@@ -53,7 +53,8 @@ namespace Jastech.Apps.Structure.VisionTool
                 return null;
 
             VisionProAlignCaliperResult alignResult = new VisionProAlignCaliperResult();
-            alignResult.AddAlignResult(AlignAlgorithm.RunAlignX(image, param, leadCount));
+            var result = AlignAlgorithm.RunAlignX(image, param, leadCount);
+            alignResult.AddAlignResult(result);
 
             bool isFounded = false;
             foreach (var item in alignResult.CogAlignResult)
@@ -98,7 +99,6 @@ namespace Jastech.Apps.Structure.VisionTool
                 return null;
 
             VisionProPatternMatchingResult matchingResult = PatternAlgorithm.Run(image, param);
-
             if (matchingResult == null)
                 return null;
 

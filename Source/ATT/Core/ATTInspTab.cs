@@ -137,7 +137,6 @@ namespace ATT.Core
                 else
                 {
                     AddImage();
-
                     if (SubImageList.Count() == TabScanBuffer.TotalGrabCount)
                     {
                         MakeMergeImage();

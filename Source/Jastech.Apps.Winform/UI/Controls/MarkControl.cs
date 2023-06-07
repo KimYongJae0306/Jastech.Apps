@@ -342,9 +342,11 @@ namespace Jastech.Apps.Winform.UI.Controls
                 form.ShowDialog();
                 return;
             }
-
+            VisionProPatternMatchingParam inspParam = currentParam.DeepCopy();
             ICogImage cogImage = display.GetImage();
-            VisionProPatternMatchingResult result = Algorithm.RunPatternMatch(cogImage, currentParam);
+            ICogImage copyCogImage = cogImage.CopyBase(CogImageCopyModeConstants.CopyPixels);
+
+            VisionProPatternMatchingResult result = Algorithm.RunPatternMatch(copyCogImage, inspParam);
             //result.DeepCopy();
             //UpdateGridResult(result);
 
@@ -359,6 +361,9 @@ namespace Jastech.Apps.Winform.UI.Controls
                 form.Message = "Pattern is Not Found.";
                 form.ShowDialog();
             }
+            result.Dispose();
+            inspParam.Dispose();
+            VisionProImageHelper.Dispose(ref copyCogImage);
         }
 
         public void ShowROIJog()
@@ -508,39 +513,137 @@ namespace Jastech.Apps.Winform.UI.Controls
             if (_curMarkName != MarkName.Main)
                 return;
 
+
+            /*
+            // 티칭한 Left Fpc
+            MarkParam teachedLeftFpcMarkParam = origin.GetFPCMark(MarkDirection.Left, MarkName.Main);
+            CogTransform2DLinear teachedLeftFpc2D = teachedLeftFpcMarkParam.InspParam.GetOrigin();
+            PointF teachedLeftFpc = new PointF(Convert.ToSingle(teachedLeftFpc2D.TranslationX), Convert.ToSingle(teachedLeftFpc2D.TranslationY));
+
+            // 티칭한 Right FPC 좌표
+            MarkParam teachedRightFpcMarkparam = origin.GetFPCMark(MarkDirection.Right, MarkName.Main);
+            CogTransform2DLinear teachedRightFpc2D = teachedRightFpcMarkparam.InspParam.GetOrigin();
+            PointF teachedRightFpc = new PointF(Convert.ToSingle(teachedRightFpc2D.TranslationX), Convert.ToSingle(teachedRightFpc2D.TranslationY));
+
+            // 티칭한 각도
+            double teachedTheta = Math.Atan2((teachedRightFpc.Y - teachedLeftFpc.Y), (teachedRightFpc.X - teachedLeftFpc.X));
+            if (teachedTheta > 180.0)
+                teachedTheta -= 360.0;
+
+            // 찾은 Left FPC 좌표
+            VisionProPatternMatchingResult leftReferenceMarkResult = Algorithm.RunPatternMatch(cogImage, teachedLeftFpcMarkParam.InspParam);
+            PointF searchedLeftFpcPoint = leftReferenceMarkResult.MaxMatchPos.FoundPos;
+
+            // 찾은 Right FPC 좌표
+            VisionProPatternMatchingResult rightReferenceFpcMarkResult = Algorithm.RunPatternMatch(cogImage, teachedRightFpcMarkparam.InspParam);
+            PointF searchedRightFpcPoint = rightReferenceFpcMarkResult.MaxMatchPos.FoundPos;
+
+            // 찾은 각도
+            double searchedTheta = Math.Atan2((searchedRightFpcPoint.Y - searchedLeftFpcPoint.Y), (searchedRightFpcPoint.X - searchedLeftFpcPoint.X));
+            if (searchedTheta > 180.0)
+                searchedTheta -= 360.0;
+
+            double diffTheta = searchedTheta - teachedTheta;
+
+
+
+
+            // 찾은 센터포인트
+            PointF searchedCenterPoint = new PointF();
+            searchedCenterPoint.X = (searchedLeftFpcPoint.X + searchedRightFpcPoint.X) / 2;
+            searchedCenterPoint.Y = (searchedLeftFpcPoint.Y + searchedRightFpcPoint.Y) / 2;
+
+            // 티칭한 센터포인트
+            PointF teachedCenterPoint = new PointF();
+            teachedCenterPoint.X = (teachedLeftFpc.X + teachedRightFpc.X) / 2;
+            teachedCenterPoint.Y = (teachedLeftFpc.Y + teachedRightFpc.Y) / 2;
+
+            // 센터끼리 틀어진 오프셋 값
+            double offsetX = searchedCenterPoint.X - teachedCenterPoint.X;
+            double offsetY = searchedCenterPoint.Y - teachedCenterPoint.Y;
+            PointF offset = new PointF((float)offsetX, (float)offsetY);
+
+
+            // 보정 전 좌표
+            PointF oldPoint = new PointF();
+
+            oldPoint.X += offset.X;
+            oldPoint.Y += offset.Y;
+
+            // 센터, 옵셋, 각도, 출력
+            var xx = Math.Round(searchedCenterPoint.X + ((Math.Cos(diffTheta * (Math.PI / 180.0)) * (oldPoint.X - searchedCenterPoint.X)) - (Math.Sin(diffTheta * (Math.PI / 180.0)) * (oldPoint.Y - searchedCenterPoint.Y))));
+            var yy = Math.Round(searchedCenterPoint.Y + ((Math.Sin(diffTheta * (Math.PI / 180.0)) * (oldPoint.X - searchedCenterPoint.X)) + (Math.Cos(diffTheta * (Math.PI / 180.0)) * (oldPoint.Y - searchedCenterPoint.Y))));
+            */
+
+
+
+
             // ToDo
             // 1. 자재 위치별 좌, 우 등록된 패턴 위치로 Theta 및 거리 산출
             // 2. 신규로 움직인 좌, 우 등록된 패턴하고 차이값 구하기
 
-            // ToDo 1
-            // 티칭한 Left FPC 좌표
-            MarkParam leftReferenceMarkParam = origin.GetFPCMark(MarkDirection.Left, MarkName.Main);
-            CogTransform2DLinear tlf = leftReferenceMarkParam.InspParam.GetOrigin();
-            PointF tlfp = new PointF(Convert.ToSingle(tlf.TranslationX), Convert.ToSingle(tlf.TranslationY));
+            //// ToDo 1
+            //// 티칭한 Left FPC 좌표
+            //MarkParam leftReferenceFpcMarkParam = origin.GetFPCMark(MarkDirection.Left, MarkName.Main);
+            //CogTransform2DLinear teachedLeftFpc2D = leftReferenceFpcMarkParam.InspParam.GetOrigin();
+            //PointF teachedLeftFpc = new PointF(Convert.ToSingle(teachedLeftFpc2D.TranslationX), Convert.ToSingle(teachedLeftFpc2D.TranslationY));
 
-            // 찾은 Left FPC 좌표
-            VisionProPatternMatchingResult leftReferenceMarkResult = Algorithm.RunPatternMatch(cogImage, leftReferenceMarkParam.InspParam);
-            PointF leftReferencePoint = leftReferenceMarkResult.MaxMatchPos.FoundPos;
+            //// 찾은 Left FPC 좌표
+            //VisionProPatternMatchingResult leftReferenceMarkResult = Algorithm.RunPatternMatch(cogImage, leftReferenceFpcMarkParam.InspParam);
+            //PointF leftFpcReferencePoint = leftReferenceMarkResult.MaxMatchPos.FoundPos;
 
+
+            //// 티칭한 Right FPC 좌표
+            //MarkParam rightReferenceFpcMarkparam = origin.GetFPCMark(MarkDirection.Right, MarkName.Main);
+            //CogTransform2DLinear teachedRightFpc2D = rightReferenceFpcMarkparam.InspParam.GetOrigin();
+            //PointF teachedRightFpc = new PointF(Convert.ToSingle(teachedRightFpc2D.TranslationX), Convert.ToSingle(teachedRightFpc2D.TranslationY));
+
+            //// 찾은 Right FPC 좌표
+            //VisionProPatternMatchingResult rightReferenceFpcMarkResult = Algorithm.RunPatternMatch(cogImage, rightReferenceFpcMarkparam.InspParam);
+            //PointF rightFpcReferencePoint = rightReferenceFpcMarkResult.MaxMatchPos.FoundPos;
+
+            //double teachedFpcDegree = MathHelper.GetTheta(teachedLeftFpc, teachedRightFpc);
+            //double searchedFpcDegree = MathHelper.GetTheta(leftFpcReferencePoint, rightFpcReferencePoint);
+
+
+            //// 티칭한 Left Panel 좌표
+            //MarkParam leftReferencePanelMarkParam = origin.GetPanelMark(MarkDirection.Left, MarkName.Main);
+            //CogTransform2DLinear teachedLeftPanel2D = leftReferencePanelMarkParam.InspParam.GetOrigin();
+            //PointF teachedLeftPanel = new PointF(Convert.ToSingle(teachedLeftPanel2D.TranslationX), Convert.ToSingle(teachedLeftPanel2D.TranslationY));
+
+            //// 찾은 Left Panel 좌표
+            //VisionProPatternMatchingResult leftReferencePanelMarkResult = Algorithm.RunPatternMatch(cogImage, leftReferencePanelMarkParam.InspParam);
+            //PointF leftPanelReferencePoint = leftReferencePanelMarkResult.MaxMatchPos.FoundPos;
+
+            //// 티칭한 Right Panel 좌표
+            //MarkParam rightReferencePanelMarkparam = origin.GetPanelMark(MarkDirection.Right, MarkName.Main);
+            //CogTransform2DLinear teachedRightPanel2D = rightReferencePanelMarkparam.InspParam.GetOrigin();
+            //PointF teachedRightPanel = new PointF(Convert.ToSingle(teachedRightPanel2D.TranslationX), Convert.ToSingle(teachedRightPanel2D.TranslationY));
+
+            //// 찾은 Right Panel 좌표
+            //VisionProPatternMatchingResult rightReferencePanelMarkResult = Algorithm.RunPatternMatch(cogImage, rightReferencePanelMarkparam.InspParam);
+            //PointF rightPanelReferencePoint = rightReferencePanelMarkResult.MaxMatchPos.FoundPos;
+
+            //double teachedPanelDegree = MathHelper.GetTheta(teachedLeftPanel, teachedRightPanel);
+            //double searchedPanelDegree = MathHelper.GetTheta(leftPanelReferencePoint, rightPanelReferencePoint);
+
+            // 티칭한 Left Fpc
+            MarkParam teachedLeftFpcMarkParam = origin.GetFPCMark(MarkDirection.Left, MarkName.Main);
+            CogTransform2DLinear teachedLeftFpc2D = teachedLeftFpcMarkParam.InspParam.GetOrigin();
+            PointF teachedLeftFpc = new PointF(Convert.ToSingle(teachedLeftFpc2D.TranslationX), Convert.ToSingle(teachedLeftFpc2D.TranslationY));
 
             // 티칭한 Right FPC 좌표
-            MarkParam rightReferenceMarkparam = origin.GetFPCMark(MarkDirection.Right, MarkName.Main);
-            CogTransform2DLinear trf = rightReferenceMarkparam.InspParam.GetOrigin();
-            PointF trfp = new PointF(Convert.ToSingle(trf.TranslationX), Convert.ToSingle(trf.TranslationY));
+            MarkParam teachedRightFpcMarkparam = origin.GetFPCMark(MarkDirection.Right, MarkName.Main);
+            CogTransform2DLinear teachedRightFpc2D = teachedRightFpcMarkparam.InspParam.GetOrigin();
+            PointF teachedRightFpc = new PointF(Convert.ToSingle(teachedRightFpc2D.TranslationX), Convert.ToSingle(teachedRightFpc2D.TranslationY));
+
+            // 찾은 Left FPC 좌표
+            VisionProPatternMatchingResult leftReferenceMarkResult = Algorithm.RunPatternMatch(cogImage, teachedLeftFpcMarkParam.InspParam);
+            PointF searchedLeftFpcPoint = leftReferenceMarkResult.MaxMatchPos.FoundPos;
 
             // 찾은 Right FPC 좌표
-            VisionProPatternMatchingResult rightReferenceMarkResult = Algorithm.RunPatternMatch(cogImage, rightReferenceMarkparam.InspParam);
-            PointF rightReferencePoint = rightReferenceMarkResult.MaxMatchPos.FoundPos;
-
-            double tDegree = MathHelper.GetTheta(tlfp, trfp);
-            double sDegree = MathHelper.GetTheta(leftReferencePoint, rightReferencePoint);
-            int gg = 0;
-
-
-            //double theta = MathHelper.GetTheta(leftReferencePoint, rightReferencePoint);
-            //double distance = Math.Sqrt(Math.Pow(leftReferencePoint.X - rightReferencePoint.X, 2) + Math.Pow(leftReferencePoint.Y - rightReferencePoint.Y, 2));
-            PointF centerPoint = new PointF((leftReferencePoint.X + rightReferencePoint.X) / 2, (leftReferencePoint.Y + rightReferencePoint.Y) / 2);
-
+            VisionProPatternMatchingResult rightReferenceFpcMarkResult = Algorithm.RunPatternMatch(cogImage, teachedRightFpcMarkparam.InspParam);
+            PointF searchedRightFpcPoint = rightReferenceFpcMarkResult.MaxMatchPos.FoundPos;
 
             foreach (var item in origin.AlignParamList)
             {
@@ -551,7 +654,11 @@ namespace Jastech.Apps.Winform.UI.Controls
                 //var currentParam = CogCaliperParamControl.GetCurrentParam();
                 CogRectangleAffine roi = new CogRectangleAffine(item.CaliperParams.CaliperTool.Region);
 
-                var newPoint = MathHelper.GetCoordinate(new PointF(Convert.ToSingle(roi.CenterX), Convert.ToSingle(roi.CenterY)), sDegree);
+                PointF oldPoint = new PointF();
+                oldPoint.X = (float)roi.CenterX;
+                oldPoint.Y = (float)roi.CenterY;
+
+                var newPoint = MathHelper.GetCoordi(teachedLeftFpc, teachedRightFpc, searchedLeftFpcPoint, searchedRightFpcPoint, oldPoint);
                 roi.CenterX = newPoint.X;
                 roi.CenterY = newPoint.Y;
 

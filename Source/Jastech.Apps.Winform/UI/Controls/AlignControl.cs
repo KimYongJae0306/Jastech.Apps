@@ -291,13 +291,16 @@ namespace Jastech.Apps.Winform.UI.Controls
             var param = CurrentTab.GetAlignParam(CurrentAlignName);
 
             ICogImage cogImage = display.GetImage();
+            ICogImage copyCogImage = cogImage.CopyBase(CogImageCopyModeConstants.CopyPixels);
 
             VisionProAlignCaliperResult result = new VisionProAlignCaliperResult();
 
+            VisionProCaliperParam inspParam = currentParam.DeepCopy();
+
             if (CurrentAlignName.ToString().Contains("X"))
-                result = Algorithm.RunAlignX(cogImage, currentParam, param.LeadCount);
+                result = Algorithm.RunAlignX(copyCogImage, inspParam, param.LeadCount);
             else
-                result = Algorithm.RunAlignY(cogImage, currentParam);
+                result = Algorithm.RunAlignY(copyCogImage, inspParam);
 
             if (result.Judgement == Judgement.FAIL)
             {
@@ -310,6 +313,10 @@ namespace Jastech.Apps.Winform.UI.Controls
                 display.ClearGraphic();
                 display.UpdateResult(result);
             }
+            result.Dispose();
+            inspParam.Dispose();
+
+            VisionProImageHelper.Dispose(ref copyCogImage);
         }
 
         public void ShowROIJog()

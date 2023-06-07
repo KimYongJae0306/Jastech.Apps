@@ -415,7 +415,12 @@ namespace ATT.Core
         {
             if (AkkonInspTask == null)
                 return;
-
+           
+            while(InspTabQueue.Count>0)
+            {
+                var data = InspTabQueue.Dequeue();
+                data.Dispose();
+            }
             CancelAkkonInspTask.Cancel();
             AkkonInspTask.Wait();
             AkkonInspTask = null;
@@ -479,14 +484,11 @@ namespace ATT.Core
             SystemManager.Instance().MachineStatus = MachineStatus.STOP;
 
             var appsLineCamera = AppsLineCameraManager.Instance().GetAppsCamera(CameraName.LinscanMIL0.ToString());
+            appsLineCamera.StopGrab();
             appsLineCamera.GrabDoneEventHanlder -= ATTSeqRunner_GrabDoneEventHanlder;
             AppsLineCameraManager.Instance().GetLineCamera(CameraName.LinscanMIL0).StopGrab();
             StopAkkonInspTask();
-            Logger.Write(LogType.Seq, "Stop Sequence.");
-
-            if (SeqTask == null)
-                return;
-
+            
             // 조명 off
             AppsLAFManager.Instance().AutoFocusOnOff(LAFName.Akkon.ToString(), false);
             Logger.Write(LogType.Seq, "AutoFocus Off.");
@@ -494,6 +496,14 @@ namespace ATT.Core
             AppsLineCameraManager.Instance().Stop(CameraName.LinscanMIL0);
             Logger.Write(LogType.Seq, "Stop Grab.");
 
+            if (SeqTask == null)
+                return;
+
+            SeqTaskCancellationTokenSource.Cancel();
+            SeqTask.Wait();
+            SeqTask = null;
+
+            Logger.Write(LogType.Seq, "Stop Sequence.");
         }
 
         private void SeqTaskAction()
@@ -510,6 +520,7 @@ namespace ATT.Core
                     SeqStep = SeqStep.SEQ_IDLE;
                     //조명 Off
                     AppsLineCameraManager.Instance().Stop(CameraName.LinscanMIL0);
+                    DisposeInspTabList();
                     break;
                 }
                 SeqTaskLoop();
@@ -565,7 +576,7 @@ namespace ATT.Core
                     break;
 
                 case SeqStep.SEQ_SCAN_READY:
-
+                    AppsLineCameraManager.Instance().GetLineCamera(CameraName.LinscanMIL0).IsLive = false;
                     ClearResult();
                     Logger.Write(LogType.Seq, "Clear Result.");
 

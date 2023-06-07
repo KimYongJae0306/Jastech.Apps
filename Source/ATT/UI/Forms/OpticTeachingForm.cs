@@ -620,8 +620,8 @@ namespace ATT.UI.Forms
         private void OpticTeachingForm_FormClosing(object sender, FormClosingEventArgs e)
         {
             DrawBoxControl.DisposeImage();
-
             AppsLineCamera appsLineCamera = AppsLineCameraManager.Instance().GetLineCamera(CameraName);
+            appsLineCamera.IsLive = false;
             appsLineCamera.StopLiveTask();
             appsLineCamera.TeachingLiveImageGrabbed -= LiveDisplay;
             appsLineCamera.GrabOnceEventHandler -= OpticTeachingForm_GrabOnceEventHandler;
@@ -726,6 +726,9 @@ namespace ATT.UI.Forms
         {
             if (isRepeat)
             {
+                AppsLineCameraManager.Instance().GetLineCamera(CameraName).IsLive = false;
+                AppsLineCameraManager.Instance().GetLineCamera(CameraName).StopGrab();
+
                 double currentPosition = SelectedAxis.GetActualPosition();
                 double distance = Convert.ToDouble(lblScanXLength.Text);
                 double targetPosition = 0.0;

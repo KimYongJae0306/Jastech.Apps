@@ -1558,7 +1558,7 @@ namespace Jastech.Apps.Winform.UI.Controls
                             {
                                 int temp = (int)(radius / 2.0);
                                 Point pt = new Point(center.X + temp, center.Y - temp);
-                                CvInvoke.PutText(colorMat, ((int)blob.Strength).ToString("F2"), pt, FontFace.HersheyScriptSimplex, 0.25, new MCvScalar(255, 255, 255));
+                                CvInvoke.PutText(colorMat, ((int)blob.Strength).ToString(), pt, FontFace.HersheyScriptSimplex, 0.25, new MCvScalar(255, 255, 255));
                             }
                         }
                     }

@@ -79,6 +79,15 @@ namespace Jastech.Apps.Winform
 
         public void SetOrginCogImageBuffer(ICogImage cogImage)
         {
+            if(OrginCogImageBuffer != null)
+                (OrginCogImageBuffer as CogImage8Grey).Dispose();
+
+            if (BinaryCogImageBuffer != null)
+                (BinaryCogImageBuffer as CogImage8Grey).Dispose();
+
+            if (ResultCogImageBuffer != null)
+                (ResultCogImageBuffer as CogImage8Grey).Dispose();
+
             OrginCogImageBuffer = null;
             BinaryCogImageBuffer = null;
             ResultCogImageBuffer = null;
@@ -90,7 +99,7 @@ namespace Jastech.Apps.Winform
                 OriginMatImageBuffer = null;
             }
 
-            TeachingDisplay?.SetImage(cogImage);
+            //TeachingDisplay?.SetImage(OrginCogImageBuffer);
         }
 
         public void SetOriginMatImageBuffer(Mat mat)

@@ -440,44 +440,38 @@ namespace ATT.UI.Forms
 
         private void UpdateDisplayImage(int tabNo)
         {
-            try
+            var teachingData = SystemManager.Instance().GetTeachingData();
+
+            if (teachingData.GetBufferImage(tabNo) is TeachingImageBuffer buffer)
             {
-                var teachingData = SystemManager.Instance().GetTeachingData();
+                if (buffer.TabImage == null)
+                    return;
 
-                if (teachingData.GetBufferImage(tabNo) is TeachingImageBuffer buffer)
-                {
-                    if (buffer.TabImage == null)
-                        return;
+                ICogImage cogImage = teachingData.ConvertCogGrayImage(buffer.TabImage);
 
-                    ICogImage cogImage = teachingData.ConvertCogGrayImage(buffer.TabImage);
+                Display.SetImage(cogImage);
+                AppsTeachingUIManager.Instance().SetOrginCogImageBuffer(cogImage);
+                AppsTeachingUIManager.Instance().SetOriginMatImageBuffer(buffer.TabImage.Clone());
 
-                    Display.SetImage(cogImage);
-                    AppsTeachingUIManager.Instance().SetOrginCogImageBuffer(cogImage);
-                    AppsTeachingUIManager.Instance().SetOriginMatImageBuffer(buffer.TabImage.Clone());
-                }
-
-                if (_displayType == DisplayType.Mark)
-                {
-                    MarkControl.SetParams(CurrentTab);
-                    MarkControl.DrawROI();
-                }
-                else if (_displayType == DisplayType.Align)
-                {
-                    AlignControl.SetParams(CurrentTab);
-                    AlignControl.DrawROI();
-                }
-                else if (_displayType == DisplayType.Akkon)
-                {
-                    AkkonControl.SetParams(CurrentTab);
-                    AkkonControl.DrawROI();
-                }
+                (cogImage as CogImage8Grey).Dispose();
             }
-            catch (Exception err)
+
+            if (_displayType == DisplayType.Mark)
             {
-
-                throw;
+                MarkControl.SetParams(CurrentTab);
+                MarkControl.DrawROI();
             }
-           
+            else if (_displayType == DisplayType.Align)
+            {
+                AlignControl.SetParams(CurrentTab);
+                AlignControl.DrawROI();
+            }
+            else if (_displayType == DisplayType.Akkon)
+            {
+                AkkonControl.SetParams(CurrentTab);
+                AkkonControl.DrawROI();
+            }
+            GC.Collect();
         }
 
         private void lblPrev_Click(object sender, EventArgs e)

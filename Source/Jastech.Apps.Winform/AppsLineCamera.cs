@@ -272,6 +272,9 @@ namespace Jastech.Apps.Winform
             else
             {
                 TabScanBuffer tabScanBuffer = GetTabScanBuffer(_stackTabNo);
+                if (tabScanBuffer == null)
+                    return;
+
                 if (tabScanBuffer.StartIndex <= _curGrabCount && _curGrabCount <= tabScanBuffer.EndIndex)
                 {
                     tabScanBuffer.AddData(data);
@@ -295,7 +298,10 @@ namespace Jastech.Apps.Winform
 
         private TabScanBuffer GetTabScanBuffer(int tabNo)
         {
-            return TabScanBufferList[tabNo];
+            if(tabNo < TabScanBufferList.Count)
+                return TabScanBufferList[tabNo];
+
+            return null;
         }
 
         public void StartLiveTask()
