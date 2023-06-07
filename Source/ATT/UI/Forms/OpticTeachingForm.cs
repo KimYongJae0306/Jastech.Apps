@@ -757,8 +757,8 @@ namespace ATT.UI.Forms
             else
             {
                 _isRepeat = false;
-                _repeatThread.Interrupt();
-                _repeatThread.Abort();
+                //_repeatThread.Interrupt();
+                //_repeatThread.Abort();
                 lblStartRepeat.Text = "Start";
             }
         }
@@ -826,8 +826,7 @@ namespace ATT.UI.Forms
 
                 Console.WriteLine("Set Repeat Count : " + repeatCount.ToString() + " / Complete Count : " + count.ToString() + " / Remain Count : " + _remainCount.ToString());
             }
-
-            //lblStart.Text = "Stop";
+            lblStartRepeat.BeginInvoke(new Action(() => lblStartRepeat.Text = "Start"));
         }
 
         public void UpdateRepeatCount()
@@ -840,7 +839,16 @@ namespace ATT.UI.Forms
 
         private void lblStartRepeat_Click(object sender, EventArgs e)
         {
-            MoveRepeat(true);
+            if (_isRepeat == false)
+            {
+                lblStartRepeat.Text = "Stop";
+                MoveRepeat(true);
+            }
+            else
+            {
+                lblStartRepeat.Text = "Start";
+                MoveRepeat(false);
+            }
         }
 
         private void OpticTeachingForm_GrabOnceEventHandler(TabScanBuffer tabScanBuffer)
