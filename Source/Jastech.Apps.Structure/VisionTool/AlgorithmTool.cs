@@ -97,7 +97,6 @@ namespace Jastech.Apps.Structure.VisionTool
         {
             if (image == null || param == null)
                 return null;
-
             VisionProPatternMatchingResult matchingResult = PatternAlgorithm.Run(image, param);
             if (matchingResult == null)
                 return null;

@@ -24,7 +24,9 @@ namespace Jastech.Apps.Structure.Data
         {
             Dispose();
             foreach (var unit in inspModel.GetUnitList())
+            {
                 UnitList.Add(unit.DeepCopy());
+            }
         }
 
         public void Dispose()

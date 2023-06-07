@@ -128,130 +128,6 @@ namespace ATT.Core
             AkkonAlgorithmList.Clear();
         }
 
-        private async void ATTSeqRunner_TeachingTabImageGrabCompletedEventHandler(string cameraName, TabScanBuffer tabScanImage)
-        {
-            //Console.WriteLine("Run in");
-            //AppsInspResult.TabResultList.Add(new TabInspResult());
-            //return;
-            //Mat matImage = tabScanImage.GetMergeImage();
-            //ICogImage cogImage = tabScanImage.ConvertCogGrayImage(matImage);
-
-            //Console.WriteLine("Run Inspection. " + tabScanImage.TabNo.ToString());
-            //await Task.Run(() => Run(tabScanImage, matImage, cogImage));
-
-            //Task task = new Task(() => Run(tabScanImage, matImage, cogImage));
-            //task.Start();
-        }
-
-        public void Run(TabScanBuffer ScanImage, Mat mergeMat, ICogImage cogMergeImage)
-        {
-            AppsInspModel inspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
-            Tab tab = inspModel.GetUnit(UnitName.Unit0).GetTab(ScanImage.TabNo);
-
-            MainAlgorithmTool algorithmTool = new MainAlgorithmTool();
-
-            TabInspResult inspResult = new TabInspResult();
-            inspResult.TabNo = tab.Index;
-            inspResult.Image = mergeMat;
-            inspResult.CogImage = cogMergeImage;
-
-            #region Mark 검사
-            algorithmTool.MainMarkInspect(cogMergeImage, tab, ref inspResult);
-
-            if (inspResult.IsMarkGood() == false)
-            {
-                // 검사 실패
-                string message = string.Format("Mark Inspection NG !!! Tab_{0} / Fpc_{1}, Panel_{2}", tab.Index, inspResult.FpcMark.Judgement, inspResult.PanelMark.Judgement);
-                Logger.Debug(LogType.Inspection, message);
-                //return;
-            }
-            #endregion
-            double fpcTheta = 0.0;
-            double panelTheta = 0.0;
-
-            #region 보정 값 계산
-            if (inspResult.FpcMark.Judgement == Judgement.OK)
-            {
-                PointF point1 = inspResult.FpcMark.FoundedMark.Left.MaxMatchPos.FoundPos;
-                PointF point2 = inspResult.FpcMark.FoundedMark.Right.MaxMatchPos.FoundPos;
-                fpcTheta = MathHelper.GetTheta(point1, point2);
-            }
-
-            if (inspResult.PanelMark.Judgement == Judgement.OK)
-            {
-                PointF point1 = inspResult.PanelMark.FoundedMark.Left.MaxMatchPos.FoundPos;
-                PointF point2 = inspResult.PanelMark.FoundedMark.Right.MaxMatchPos.FoundPos;
-                panelTheta = MathHelper.GetTheta(point1, point2);
-            }
-            #endregion
-            double judgementX = 100.0;
-            double judgementY = 100.0;
-
-            #region Left Align
-            inspResult.LeftAlignX = algorithmTool.RunMainLeftAlignX(cogMergeImage, tab, fpcTheta, panelTheta, judgementX);
-            if (inspResult.IsLeftAlignXGood() == false)
-            {
-                var leftAlignX = inspResult.LeftAlignX;
-                string message = string.Format("Left AlignX Inspection NG !!! Tab_{0} / Fpc_{1}, Panel_{2}", tab.Index, leftAlignX.Fpc.Judgement, leftAlignX.Panel.Judgement);
-                Logger.Debug(LogType.Inspection, message);
-            }
-
-            inspResult.LeftAlignY = algorithmTool.RunMainLeftAlignY(cogMergeImage, tab, fpcTheta, panelTheta, judgementY);
-            if (inspResult.IsLeftAlignYGood() == false)
-            {
-                var leftAlignY = inspResult.LeftAlignY;
-                string message = string.Format("Left AlignY Inspection NG !!! Tab_{0} / Fpc_{1}, Panel_{2}", tab.Index, leftAlignY.Fpc.Judgement, leftAlignY.Panel.Judgement);
-                Logger.Debug(LogType.Inspection, message);
-            }
-            #endregion
-
-            #region Right Align
-            inspResult.RightAlignX = algorithmTool.RunMainRightAlignX(cogMergeImage, tab, fpcTheta, panelTheta, judgementX);
-            if (inspResult.IsRightAlignXGood() == false)
-            {
-                var rightAlignX = inspResult.RightAlignX;
-                string message = string.Format("Right AlignX Inspection NG !!! Tab_{0} / Fpc_{1}, Panel_{2}", tab.Index, rightAlignX.Fpc.Judgement, rightAlignX.Panel.Judgement);
-                Logger.Debug(LogType.Inspection, message);
-            }
-
-            inspResult.RightAlignY = algorithmTool.RunMainRightAlignY(cogMergeImage, tab, fpcTheta, panelTheta, judgementY);
-            if (inspResult.IsRightAlignYGood() == false)
-            {
-                var rightAlignY = inspResult.RightAlignY;
-                string message = string.Format("Right AlignY Inspection NG !!! Tab_{0} / Fpc_{1}, Panel_{2}", tab.Index, rightAlignY.Fpc.Judgement, rightAlignY.Panel.Judgement);
-                Logger.Debug(LogType.Inspection, message);
-            }
-            #endregion
-
-            #region Center Align
-            inspResult.CenterX = Math.Abs(inspResult.LeftAlignX.ResultValue - inspResult.RightAlignX.ResultValue);
-            #endregion
-
-
-
-            //if (AppsConfig.Instance().AkkonAlgorithmType == AkkonAlgorithmType.Macron)
-            //{
-            //    var akkonResult = MacronAkkonAlgorithmTool.RunMultiAkkon(inspResult.Image, tab.StageIndex, tab.Index);
-            //    inspResult.MacronAkkonResult = akkonResult;
-            //    AppsInspResult.TabResultList.Add(inspResult);
-            //}
-            //else
-            //{
-            //    var roiList = tab.AkkonParam.GetAkkonROIList();
-            //    var akkonResult = AkkonAlgorithm.Run(inspResult.Image, roiList, tab.AkkonParam.AkkonAlgoritmParam);
-            //    inspResult.AkkonResultList.AddRange(akkonResult);
-            //    AppsInspResult.TabResultList.Add(inspResult);
-            //}
-
-            //AppsInspResult.TabResultList.Add(new TabInspResult());
-
-            AkkonThreadParam param = new AkkonThreadParam();
-            param.Tab = tab;
-            param.TabInspResult = inspResult;
-            lock (_akkonLock)
-                AkkonInspQueue.Enqueue(param);
-        }
-
         private void ATTSeqRunner_GrabDoneEventHanlder(string cameraName, bool isGrabDone)
         {
             IsGrabDone = isGrabDone; 
@@ -272,7 +148,6 @@ namespace ATT.Core
                 }
                 
                 Thread.Sleep(50);
-                //AppsInspResult.TabResultList.Add(new TabInspResult());
             }
         }
         
@@ -499,6 +374,11 @@ namespace ATT.Core
             if (SeqTask == null)
                 return;
 
+            //foreach (var item in AppsInspResult.TabResultList)
+            //{
+            //    item.Dispose();
+            //}
+            //AppsInspResult.TabResultList.Clear();
             SeqTaskCancellationTokenSource.Cancel();
             SeqTask.Wait();
             SeqTask = null;
@@ -669,7 +549,7 @@ namespace ATT.Core
 
                 case SeqStep.SEQ_DELETE_DATA:
 
-                    SeqStep = SeqStep.SEQ_IDLE;
+                    SeqStep = SeqStep.SEQ_DELETE_DATA;
                     break;
 
                 case SeqStep.SEQ_CHECK_STANDBY:
