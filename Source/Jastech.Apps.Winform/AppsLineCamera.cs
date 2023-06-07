@@ -334,17 +334,18 @@ namespace Jastech.Apps.Winform
                     break;
                 }
 
-                Mat mat = null;
-                
                 lock (_lock)
                 {
                     if (LiveDataQueue.Count() > 0)
                     {
                        byte[] data = LiveDataQueue.Dequeue();
-                        mat = MatHelper.ByteArrayToMat(data, Camera.ImageWidth, Camera.ImageHeight, 1);
+                        Mat mat = MatHelper.ByteArrayToMat(data, Camera.ImageWidth, Camera.ImageHeight, 1);
+                        Mat rotatedMat = MatHelper.Transpose(mat);
 
                         if (mat != null)
-                            TeachingLiveImageGrabbed?.Invoke(Camera.Name, mat);
+                            TeachingLiveImageGrabbed?.Invoke(Camera.Name, rotatedMat);
+
+                        mat.Dispose();
                     }
                 }
 
