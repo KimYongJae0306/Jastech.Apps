@@ -8,7 +8,6 @@ using Jastech.Framework.Algorithms.Akkon.Parameters;
 using Jastech.Framework.Device.LightCtrls;
 using Jastech.Framework.Device.Motions;
 using Jastech.Framework.Imaging.VisionPro.VisionAlgorithms.Parameters;
-using Jastech.Framework.Macron.Akkon.Parameters;
 using Jastech.Framework.Structure;
 using Jastech.Framework.Util.Helper;
 using System;
@@ -89,16 +88,13 @@ namespace ATT.Core
                     }
 
                     tab.AkkonParam = new AkkonParam();
-
-                    tab.AkkonParam.MacronAkkonParam.SetDefaultParameter();
-
                     tab.AkkonParam.AkkonAlgoritmParam.Initalize();
                     tab.AkkonParam.AkkonAlgoritmParam.ImageFilterParam.AddMacronFilter();
 
                     int cnt = 0;
                     foreach (var item in tab.AkkonParam.GroupList)
                     {
-                        MacronAkkonGroup group = new MacronAkkonGroup();
+                        AkkonGroup group = new AkkonGroup();
                         group.Index = cnt;
                         tab.AkkonParam.SetAkkonGroup(group.Index, group);
                     }

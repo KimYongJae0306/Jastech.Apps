@@ -8,12 +8,9 @@ using Jastech.Apps.Structure.VisionTool;
 using Jastech.Framework.Winform.Controls;
 using System.Linq;
 using System.Drawing;
-using Jastech.Framework.Macron.Akkon.Controls;
 using Jastech.Framework.Winform.Forms;
 using Jastech.Apps.Structure;
 using Jastech.Framework.Imaging.VisionPro;
-using Jastech.Framework.Macron.Akkon.Parameters;
-using Jastech.Framework.Macron.Akkon;
 using Jastech.Framework.Winform;
 using Jastech.Apps.Winform.Settings;
 using Jastech.Framework.Imaging.Helper;
@@ -225,7 +222,7 @@ namespace Jastech.Apps.Winform.UI.Controls
             var akkonParam = CurrentTab.AkkonParam;
 
             lblGroupCountValue.Text = akkonParam.GroupList.Count.ToString();
-            MacronAkkonGroup group = akkonParam.GroupList[groupIndex];
+            AkkonGroup group = akkonParam.GroupList[groupIndex];
 
             // Manual Teaching
             lblLeadCountValue.Text = group.Count.ToString();
@@ -1326,7 +1323,7 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         private void AddAutoTeachingAkkonRoi(List<CogRectangleAffine> roiList)
         {
-            if (GetGroup() is MacronAkkonGroup group)
+            if (GetGroup() is AkkonGroup group)
             {
                 group.AkkonROIList.Clear();
                 foreach (var roi in roiList)
@@ -1351,7 +1348,7 @@ namespace Jastech.Apps.Winform.UI.Controls
             }
         }
 
-        private MacronAkkonGroup GetGroup()
+        private AkkonGroup GetGroup()
         {
             if (cbxGroupNumber.SelectedIndex < 0 || CurrentTab == null)
                 return null;

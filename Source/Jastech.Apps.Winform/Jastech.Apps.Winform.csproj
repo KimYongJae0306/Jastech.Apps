@@ -101,12 +101,6 @@
     <Compile Include="UI\Controls\AkkonControl.designer.cs">
       <DependentUpon>AkkonControl.cs</DependentUpon>
     </Compile>
-    <Compile Include="UI\Controls\AkkonAutoControl.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="UI\Controls\AkkonAutoControl.designer.cs">
-      <DependentUpon>AkkonAutoControl.cs</DependentUpon>
-    </Compile>
     <Compile Include="UI\Controls\AkkonInspResultControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -267,9 +261,6 @@
     <EmbeddedResource Include="UI\Controls\AkkonControl.resx">
       <DependentUpon>AkkonControl.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="UI\Controls\AkkonAutoControl.resx">
-      <DependentUpon>AkkonAutoControl.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="UI\Controls\AkkonInspResultControl.resx">
       <DependentUpon>AkkonInspResultControl.cs</DependentUpon>
     </EmbeddedResource>
@@ -370,10 +361,6 @@
     <ProjectReference Include="..\..\..\Jastech.Core\src\Jastech.Framework.Imaging\Jastech.Framework.Imaging.csproj">
       <Project>{2380da0f-851a-4430-9a43-e7b2deee29f2}</Project>
       <Name>Jastech.Framework.Imaging</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\Jastech.Core\src\Jastech.Framework.Macron.Akkon\Jastech.Framework.Macron.Akkon.csproj">
-      <Project>{8C3EF380-9484-4B6B-B8C9-C4B6D762D858}</Project>
-      <Name>Jastech.Framework.Macron.Akkon</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\..\Jastech.Core\src\Jastech.Framework.Matrox\Jastech.Framework.Matrox.csproj">
       <Project>{8b4b5cef-5b39-423a-a460-a24f7fd8890e}</Project>

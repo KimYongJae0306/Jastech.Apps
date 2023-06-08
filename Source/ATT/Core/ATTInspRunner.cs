@@ -64,8 +64,6 @@ namespace ATT.Core
 
         public Queue<AkkonThreadParam> AkkonInspQueue = new Queue<AkkonThreadParam>();
 
-        public MacronAkkonAlgorithmTool MacronAkkonAlgorithmTool { get; set; } = null;
-
        public Queue<ATTInspTab> InspTabQueue = new Queue<ATTInspTab>();
 
         public AkkonAlgorithm AkkonAlgorithm { get; set; } = new AkkonAlgorithm();

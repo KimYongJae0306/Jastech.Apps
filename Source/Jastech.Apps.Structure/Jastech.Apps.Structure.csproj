@@ -122,7 +122,6 @@
     <Compile Include="Data\Unit.cs" />
     <Compile Include="VisionTool\AlgorithmTool.cs" />
     <Compile Include="VisionTool\IVisionTool.cs" />
-    <Compile Include="VisionTool\MacronAkkonAlgorithmTool.cs" />
     <Compile Include="VisionTool\MainAlgorithmTool.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -141,10 +140,6 @@
     <ProjectReference Include="..\..\..\Jastech.Core\src\Jastech.Framework.Imaging\Jastech.Framework.Imaging.csproj">
       <Project>{2380da0f-851a-4430-9a43-e7b2deee29f2}</Project>
       <Name>Jastech.Framework.Imaging</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\Jastech.Core\src\Jastech.Framework.Macron.Akkon\Jastech.Framework.Macron.Akkon.csproj">
-      <Project>{8C3EF380-9484-4B6B-B8C9-C4B6D762D858}</Project>
-      <Name>Jastech.Framework.Macron.Akkon</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\..\Jastech.Core\src\Jastech.Framework.Structure\Jastech.Framework.Structure.csproj">
       <Project>{DCFF7B48-8DF8-4ED9-9F0F-F11C2CCB7547}</Project>

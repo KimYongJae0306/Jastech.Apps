@@ -10,8 +10,6 @@ using Jastech.Framework.Imaging.VisionPro;
 using Jastech.Framework.Imaging.VisionPro.VisionAlgorithms;
 using Jastech.Framework.Imaging.VisionPro.VisionAlgorithms.Parameters;
 using Jastech.Framework.Imaging.VisionPro.VisionAlgorithms.Results;
-using Jastech.Framework.Macron.Akkon;
-using Jastech.Framework.Macron.Akkon.Parameters;
 using Jastech.Framework.Util.Helper;
 using Newtonsoft.Json;
 using System;

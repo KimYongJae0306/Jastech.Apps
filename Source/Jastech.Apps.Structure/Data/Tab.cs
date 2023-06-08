@@ -1,5 +1,5 @@
 ﻿using Jastech.Apps.Structure.Parameters;
-using Jastech.Framework.Macron.Akkon.Parameters;
+using Jastech.Framework.Algorithms.Akkon.Parameters;
 using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Data;
@@ -92,12 +92,12 @@ namespace Jastech.Apps.Structure.Data
             return PanelMarkParamList.Where(x => x.Name == name && x.Direction == direction).First();
         }
 
-        public MacronAkkonGroup GetAkkonGroup(int index)
+        public AkkonGroup GetAkkonGroup(int index)
         {
             return AkkonParam.GetAkkonGroup(index);
         }
 
-        public void SetAkkonGroup(int index, MacronAkkonGroup newGroup)
+        public void SetAkkonGroup(int index, AkkonGroup newGroup)
         {
             AkkonParam.SetAkkonGroup(index, newGroup);
         }

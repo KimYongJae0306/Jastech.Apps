@@ -1,5 +1,4 @@
 ﻿using Jastech.Framework.Algorithms.Akkon.Parameters;
-using Jastech.Framework.Macron.Akkon.Parameters;
 using Jastech.Framework.Util.Helper;
 using Newtonsoft.Json;
 using System;
@@ -13,10 +12,7 @@ namespace Jastech.Apps.Structure.Parameters
     public class AkkonParam
     {
         [JsonProperty]
-        public List<MacronAkkonGroup> GroupList { get; set; } = new List<MacronAkkonGroup>();
-
-        [JsonProperty]
-        public MacronAkkonParam MacronAkkonParam { get; set; } = new MacronAkkonParam();
+        public List<AkkonGroup> GroupList { get; set; } = new List<AkkonGroup>();
 
         [JsonProperty]
         public AkkonAlgoritmParam AkkonAlgoritmParam { get; set; } = new AkkonAlgoritmParam();
@@ -33,7 +29,7 @@ namespace Jastech.Apps.Structure.Parameters
             }
             else
             {
-                var newGroup = new MacronAkkonGroup();
+                var newGroup = new AkkonGroup();
                 newGroup.Index = 0;
                 GroupList.Add(newGroup);
             }
@@ -84,14 +80,14 @@ namespace Jastech.Apps.Structure.Parameters
                 GroupList.Remove(group);
         }
 
-        public MacronAkkonGroup GetAkkonGroup(int index)
+        public AkkonGroup GetAkkonGroup(int index)
         {
             if (GroupList.Count() <= 0)
                 return null;
             return GroupList.Where(x => x.Index == index).First();
         }
 
-        public void SetAkkonGroup(int index, MacronAkkonGroup newGroupParam)
+        public void SetAkkonGroup(int index, AkkonGroup newGroupParam)
         {
             var group = GetAkkonGroup(index);
             if (group != null)

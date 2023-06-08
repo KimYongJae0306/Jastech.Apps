@@ -3,7 +3,6 @@ using Jastech.Apps.Winform;
 using Jastech.Apps.Winform.Settings;
 using Jastech.Framework.Device.LightCtrls;
 using Jastech.Framework.Imaging.VisionPro.VisionAlgorithms;
-using Jastech.Framework.Macron.Akkon;
 using Jastech.Framework.Matrox;
 using Jastech.Framework.Structure;
 using Jastech.Framework.Util.Helper;

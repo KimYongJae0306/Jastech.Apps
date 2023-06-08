@@ -2,7 +2,6 @@
 using Jastech.Apps.Structure.Parameters;
 using Jastech.Framework.Device.LightCtrls;
 using Jastech.Framework.Imaging.VisionPro.VisionAlgorithms.Parameters;
-using Jastech.Framework.Macron.Akkon.Parameters;
 using Jastech.Framework.Structure;
 using Jastech.Framework.Util.Helper;
 using Newtonsoft.Json;
