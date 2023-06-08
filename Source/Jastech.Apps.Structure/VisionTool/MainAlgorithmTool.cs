@@ -26,62 +26,62 @@ namespace Jastech.Apps.Structure.VisionTool
             tabInspResult.PanelMark = RunPanelMark(cogImage, tab);
         }
 
-        public AlignResult RunMainLeftAlignX(ICogImage cogImage, Tab tab, double fpcTheta, double panelTheta, double judgementX)
+        public AlignResult RunMainLeftAlignX(ICogImage cogImage, Tab tab, Coordinate fpcCoordinate, Coordinate panelCoordinate, double judgementX)
         {
             var fpcParam = tab.GetAlignParam(ATTTabAlignName.LeftFPCX).DeepCopy();
             var panelParam = tab.GetAlignParam(ATTTabAlignName.LeftPanelX).DeepCopy();
 
-            //var calcFpcRegion = CoordinateRectangle(fpcParam.CaliperParams.GetRegion() as CogRectangleAffine, fpcTheta);
-            //var calcPanelRegion = CoordinateRectangle(panelParam.CaliperParams.GetRegion() as CogRectangleAffine, panelTheta);
+            var calcFpcRegion = CoordinateRectangle(fpcParam.CaliperParams.GetRegion() as CogRectangleAffine, fpcCoordinate);
+            var calcPanelRegion = CoordinateRectangle(panelParam.CaliperParams.GetRegion() as CogRectangleAffine, panelCoordinate);
 
-            //fpcParam.CaliperParams.SetRegion(calcFpcRegion);
-            //panelParam.CaliperParams.SetRegion(calcPanelRegion);
+            fpcParam.CaliperParams.SetRegion(calcFpcRegion);
+            panelParam.CaliperParams.SetRegion(calcPanelRegion);
 
             var result = RunMainAlignX(cogImage, fpcParam, panelParam, judgementX);
             return result;
         }
 
-        public AlignResult RunMainLeftAlignY(ICogImage cogImage, Tab tab, double fpcTheta, double panelTheta, double judgementY)
+        public AlignResult RunMainLeftAlignY(ICogImage cogImage, Tab tab, Coordinate fpcCoordinate, Coordinate panelCoordinate, double judgementY)
         {
             var fpcParam = tab.GetAlignParam(ATTTabAlignName.LeftFPCY).DeepCopy();
             var panelParam = tab.GetAlignParam(ATTTabAlignName.LeftPanelY).DeepCopy();
 
-            //var calcFpcRegion = CoordinateRectangle(fpcParam.CaliperParams.GetRegion() as CogRectangleAffine, fpcTheta);
-            //var calcPanelRegion = CoordinateRectangle(panelParam.CaliperParams.GetRegion() as CogRectangleAffine, panelTheta);
+            var calcFpcRegion = CoordinateRectangle(fpcParam.CaliperParams.GetRegion() as CogRectangleAffine, fpcCoordinate);
+            var calcPanelRegion = CoordinateRectangle(panelParam.CaliperParams.GetRegion() as CogRectangleAffine, panelCoordinate);
 
-            //fpcParam.CaliperParams.SetRegion(calcFpcRegion);
-            //panelParam.CaliperParams.SetRegion(calcPanelRegion);
+            fpcParam.CaliperParams.SetRegion(calcFpcRegion);
+            panelParam.CaliperParams.SetRegion(calcPanelRegion);
 
             var result = RunMainAlignY(cogImage, fpcParam, panelParam, judgementY);
             return result;
         }
 
-        public AlignResult RunMainRightAlignX(ICogImage cogImage, Tab tab, double fpcTheta, double panelTheta, double judgementX)
+        public AlignResult RunMainRightAlignX(ICogImage cogImage, Tab tab, Coordinate fpcCoordinate, Coordinate panelCoordinate, double judgementX)
         {
             var fpcParam = tab.GetAlignParam(ATTTabAlignName.RightFPCX);
             var panelParam = tab.GetAlignParam(ATTTabAlignName.RightPanelX);
 
-            //var calcFpcRegion = CoordinateRectangle(fpcParam.CaliperParams.GetRegion() as CogRectangleAffine, fpcTheta);
-            //var calcPanelRegion = CoordinateRectangle(panelParam.CaliperParams.GetRegion() as CogRectangleAffine, panelTheta);
+            var calcFpcRegion = CoordinateRectangle(fpcParam.CaliperParams.GetRegion() as CogRectangleAffine, fpcCoordinate);
+            var calcPanelRegion = CoordinateRectangle(panelParam.CaliperParams.GetRegion() as CogRectangleAffine, panelCoordinate);
 
-            //fpcParam.CaliperParams.SetRegion(calcFpcRegion);
-            //panelParam.CaliperParams.SetRegion(calcPanelRegion);
+            fpcParam.CaliperParams.SetRegion(calcFpcRegion);
+            panelParam.CaliperParams.SetRegion(calcPanelRegion);
 
             var result = RunMainAlignX(cogImage, fpcParam, panelParam, judgementX);
 
             return result;
         }
 
-        public AlignResult RunMainRightAlignY(ICogImage cogImage, Tab tab, double fpcTheta, double panelTheta, double judgementY)
+        public AlignResult RunMainRightAlignY(ICogImage cogImage, Tab tab, Coordinate fpcCoordinate, Coordinate panelCoordinate, double judgementY)
         {
             var fpcParam = tab.GetAlignParam(ATTTabAlignName.RightFPCY).DeepCopy();
             var panelParam = tab.GetAlignParam(ATTTabAlignName.RightPanelY).DeepCopy();
 
-            //var calcFpcRegion = CoordinateRectangle(fpcParam.CaliperParams.GetRegion() as CogRectangleAffine, fpcTheta);
-            //var calcPanelRegion = CoordinateRectangle(panelParam.CaliperParams.GetRegion() as CogRectangleAffine, panelTheta);
+            var calcFpcRegion = CoordinateRectangle(fpcParam.CaliperParams.GetRegion() as CogRectangleAffine, fpcCoordinate);
+            var calcPanelRegion = CoordinateRectangle(panelParam.CaliperParams.GetRegion() as CogRectangleAffine, panelCoordinate);
 
-            //fpcParam.CaliperParams.SetRegion(calcFpcRegion);
-            //panelParam.CaliperParams.SetRegion(calcPanelRegion);
+            fpcParam.CaliperParams.SetRegion(calcFpcRegion);
+            panelParam.CaliperParams.SetRegion(calcPanelRegion);
 
             var result = RunMainAlignY(cogImage, fpcParam, panelParam, judgementY);
             return result;
@@ -263,7 +263,7 @@ namespace Jastech.Apps.Structure.VisionTool
     {
         public Coordinate Coordinate { get; set; } = new Coordinate();
 
-        public CogRectangleAffine CoordinateRectangle(CogRectangleAffine originRegion, PointF referenceLeft, PointF referenceRight, PointF searchedLeft, PointF searchedRight)
+        public CogRectangleAffine CoordinateRectangle(CogRectangleAffine originRegion, Coordinate coordinate)
         {
             CogRectangleAffine roi = new CogRectangleAffine(originRegion);
 
@@ -271,7 +271,7 @@ namespace Jastech.Apps.Structure.VisionTool
             inputPoint.X = (float)roi.CenterX;
             inputPoint.Y = (float)roi.CenterY;
 
-            var newPoint = MathHelper.GetCoordinate(referenceLeft, referenceRight, searchedLeft, searchedRight, inputPoint);
+            var newPoint = coordinate.GetCoordinate(inputPoint);
 
             roi.CenterX = newPoint.X;
             roi.CenterY = newPoint.Y;

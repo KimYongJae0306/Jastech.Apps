@@ -350,7 +350,7 @@ namespace ATT.UI.Forms
             else
                 mPos_um = status.MPosPulse;
 
-            lblCurrentPositionZ.Text = mPos_um.ToString("F3");
+            lblCurrentPositionZ.Text = (mPos_um * 1000).ToString("F3");
 
             if (status.IsNegativeLimit)
                 lblNegativeLimitZ.BackColor = Color.Red;

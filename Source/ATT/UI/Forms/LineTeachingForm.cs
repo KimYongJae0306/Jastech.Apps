@@ -30,7 +30,7 @@ namespace ATT.UI.Forms
         #region 필드
         private Color _selectedColor;
 
-        private Color _noneSelectedColor;
+        private Color _nonSelectedColor;
 
         private bool _isLoading { get; set; } = false;
 
@@ -152,7 +152,7 @@ namespace ATT.UI.Forms
         private void AddControl()
         {
             _selectedColor = Color.FromArgb(104, 104, 104);
-            _noneSelectedColor = Color.FromArgb(52, 52, 52);
+            _nonSelectedColor = Color.FromArgb(52, 52, 52);
 
             // Display Control
             Display = new CogTeachingDisplayControl();
@@ -239,7 +239,7 @@ namespace ATT.UI.Forms
             foreach (Control control in tlpTeachingItem.Controls)
             {
                 if (control is Button)
-                    control.BackColor = _noneSelectedColor;
+                    control.BackColor = _nonSelectedColor;
             }
         }
 

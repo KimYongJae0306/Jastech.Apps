@@ -33,7 +33,7 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         private Color _selectedColor;
 
-        private Color _noneSelectedColor;
+        private Color _nonSelectedColor;
 
         private AppsInspResult _curAppsInspResult = null;
         #endregion
@@ -71,7 +71,7 @@ namespace Jastech.Apps.Winform.UI.Controls
         private void AlignInspDisplayControl_Load(object sender, EventArgs e)
         {
             _selectedColor = Color.FromArgb(104, 104, 104);
-            _noneSelectedColor = Color.FromArgb(52, 52, 52);
+            _nonSelectedColor = Color.FromArgb(52, 52, 52);
 
             AddControls();
 
@@ -140,7 +140,7 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         private void ButtonControl_SetTabEventHandler(int tabNum)
         {
-            TabBtnControlList.ForEach(x => x.BackColor = _noneSelectedColor);
+            TabBtnControlList.ForEach(x => x.BackColor = _nonSelectedColor);
             TabBtnControlList[tabNum].BackColor = _selectedColor;
 
             CurrentTabNo = tabNum;
@@ -358,10 +358,10 @@ namespace Jastech.Apps.Winform.UI.Controls
             float minY = pointList.Select(point => point.Y).Min();
             float maxY = pointList.Select(point => point.Y).Max();
 
-            float width = (maxX - minX) / 2.0f;
-            float height = (maxY - minY) / 2.0f;
+            float centerX = (maxX + minX) / 2.0f;
+            float centerY = (maxY + minY) / 2.0f;
 
-            return new Point((int)(minX + width), (int)(minY + height));
+            return new Point((int)centerX, (int)centerY);
         }
 
         public ICogImage ConvertCogImage(Mat image)

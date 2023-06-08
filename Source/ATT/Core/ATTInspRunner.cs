@@ -189,22 +189,27 @@ namespace ATT.Core
             }
             #endregion
 
-            double fpcTheta = 0.0;
-            double panelTheta = 0.0;
+            #region Add mark data
+            Coordinate fpcCoordinate = new Coordinate();
 
-            #region 보정 값 계산
-            if (inspResult.FpcMark.Judgement == Judgement.OK)
+            if (fpcCoordinate != null)
             {
-                PointF point1 = inspResult.FpcMark.FoundedMark.Left.MaxMatchPos.FoundPos;
-                PointF point2 = inspResult.FpcMark.FoundedMark.Right.MaxMatchPos.FoundPos;
-                fpcTheta = MathHelper.GetRadian(point1, point2);
+                PointF teachedLeftPoint = inspResult.FpcMark.FoundedMark.Left.MaxMatchPos.ReferencePos;
+                PointF teachedRightPoint = inspResult.FpcMark.FoundedMark.Right.MaxMatchPos.ReferencePos;
+                PointF searchedLeftPoint = inspResult.FpcMark.FoundedMark.Left.MaxMatchPos.FoundPos;
+                PointF searchedRightPoint = inspResult.FpcMark.FoundedMark.Right.MaxMatchPos.FoundPos;
+                fpcCoordinate.SetCoordinateParam(teachedLeftPoint, teachedRightPoint, searchedLeftPoint, searchedRightPoint);
             }
 
-            if (inspResult.PanelMark.Judgement == Judgement.OK)
+            Coordinate panelCoordinate = new Coordinate();
+
+            if (panelCoordinate != null)
             {
-                PointF point1 = inspResult.PanelMark.FoundedMark.Left.MaxMatchPos.FoundPos;
-                PointF point2 = inspResult.PanelMark.FoundedMark.Right.MaxMatchPos.FoundPos;
-                panelTheta = MathHelper.GetRadian(point1, point2);
+                PointF teachedLeftPoint = inspResult.PanelMark.FoundedMark.Left.MaxMatchPos.ReferencePos;
+                PointF teachedRightPoint = inspResult.PanelMark.FoundedMark.Right.MaxMatchPos.ReferencePos;
+                PointF searchedLeftPoint = inspResult.PanelMark.FoundedMark.Left.MaxMatchPos.FoundPos;
+                PointF searchedRightPoint = inspResult.PanelMark.FoundedMark.Right.MaxMatchPos.FoundPos;
+                panelCoordinate.SetCoordinateParam(teachedLeftPoint, teachedRightPoint, searchedLeftPoint, searchedRightPoint);
             }
             #endregion
 
@@ -212,7 +217,7 @@ namespace ATT.Core
             double judgementY = 100.0;
 
             #region Left Align
-            inspResult.LeftAlignX = algorithmTool.RunMainLeftAlignX(inspTab.MergeCogImage, tab, fpcTheta, panelTheta, judgementX);
+            inspResult.LeftAlignX = algorithmTool.RunMainLeftAlignX(inspTab.MergeCogImage, tab, fpcCoordinate, panelCoordinate, judgementX);
             if (inspResult.IsLeftAlignXGood() == false)
             {
                 var leftAlignX = inspResult.LeftAlignX;
@@ -220,7 +225,7 @@ namespace ATT.Core
                 Logger.Debug(LogType.Inspection, message);
             }
 
-            inspResult.LeftAlignY = algorithmTool.RunMainLeftAlignY(inspTab.MergeCogImage, tab, fpcTheta, panelTheta, judgementY);
+            inspResult.LeftAlignY = algorithmTool.RunMainLeftAlignY(inspTab.MergeCogImage, tab, fpcCoordinate, panelCoordinate, judgementY);
             if (inspResult.IsLeftAlignYGood() == false)
             {
                 var leftAlignY = inspResult.LeftAlignY;
@@ -230,7 +235,7 @@ namespace ATT.Core
             #endregion
 
             #region Right Align
-            inspResult.RightAlignX = algorithmTool.RunMainRightAlignX(inspTab.MergeCogImage, tab, fpcTheta, panelTheta, judgementX);
+            inspResult.RightAlignX = algorithmTool.RunMainRightAlignX(inspTab.MergeCogImage, tab, fpcCoordinate, panelCoordinate, judgementX);
             if (inspResult.IsRightAlignXGood() == false)
             {
                 var rightAlignX = inspResult.RightAlignX;
@@ -238,7 +243,7 @@ namespace ATT.Core
                 Logger.Debug(LogType.Inspection, message);
             }
 
-            inspResult.RightAlignY = algorithmTool.RunMainRightAlignY(inspTab.MergeCogImage, tab, fpcTheta, panelTheta, judgementY);
+            inspResult.RightAlignY = algorithmTool.RunMainRightAlignY(inspTab.MergeCogImage, tab, fpcCoordinate, panelCoordinate, judgementY);
             if (inspResult.IsRightAlignYGood() == false)
             {
                 var rightAlignY = inspResult.RightAlignY;
@@ -741,6 +746,11 @@ namespace ATT.Core
             //var result = tool.MainRunInspect(tab, tabMatImage, 30.0f, 80.0f);
 
             // AppsInspResult.TabResultList.Add(result);
+        }
+
+        private void SetCoordinateParam(TabInspResult tabInspResult)
+        {
+            
         }
         #endregion
     }
