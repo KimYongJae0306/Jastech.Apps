@@ -651,6 +651,10 @@ namespace Jastech.Apps.Winform.UI.Controls
             VisionProPatternMatchingResult rightReferenceFpcMarkResult = Algorithm.RunPatternMatch(cogImage, teachedRightFpcMarkparam.InspParam);
             PointF searchedRightFpcPoint = rightReferenceFpcMarkResult.MaxMatchPos.FoundPos;
 
+            MainAlgorithmTool algorithmTool = new MainAlgorithmTool();
+            algorithmTool.Coordinate = new Coordinate();
+            algorithmTool.Coordinate.SetCoordinateParam(teachedLeftFpc, teachedRightFpc, searchedLeftFpcPoint, searchedRightFpcPoint);
+
             foreach (var item in origin.AlignParamList)
             {
                 //CogRectangleAffine roi = new CogRectangleAffine();
@@ -664,7 +668,7 @@ namespace Jastech.Apps.Winform.UI.Controls
                 oldPoint.X = (float)roi.CenterX;
                 oldPoint.Y = (float)roi.CenterY;
 
-                var newPoint = MathHelper.GetCoordinate(teachedLeftFpc, teachedRightFpc, searchedLeftFpcPoint, searchedRightFpcPoint, oldPoint);
+                var newPoint = algorithmTool.Coordinate.GetCoordinate(oldPoint);
                 roi.CenterX = newPoint.X;
                 roi.CenterY = newPoint.Y;
 

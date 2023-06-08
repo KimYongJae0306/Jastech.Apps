@@ -261,87 +261,7 @@ namespace Jastech.Apps.Structure.VisionTool
 
     public partial class MainAlgorithmTool : AlgorithmTool
     {
-        public class Coordinate
-        {
-            public PointF TeachedCenterPoint { get; private set; } = new PointF();
-
-            public PointF SearchedCenterPoint { get; private set; } = new PointF();
-
-            public double DiffRadian { get; private set; } = 0.0;
-
-            public PointF OffsetPoint { get; private set; } = new PointF();
-
-            public void SetCoordinateParam(PointF teachedLeftPoint, PointF teachedRightPoint, PointF searchedLeftPoint, PointF searchedRightPoint)
-            {
-                SetTeachedCenterPoint(teachedLeftPoint, teachedRightPoint);
-
-                SetSearchedCenterPoint(searchedLeftPoint, searchedRightPoint);
-
-                SetDiffAngle(teachedLeftPoint, teachedRightPoint, searchedLeftPoint, searchedRightPoint);
-
-                PointF teachedCenterPoint = GetTeachedCenterPoint();
-                PointF searchedCenterPoint = GetSearchedCenterPoint();
-
-                SetOffsetPoint(teachedCenterPoint, searchedCenterPoint);
-            }
-
-            private void SetTeachedCenterPoint(PointF teachedLeftPoint, PointF teachedRightPoint)
-            {
-                TeachedCenterPoint = MathHelper.GetCenterPoint(teachedLeftPoint, teachedRightPoint);
-            }
-
-            public PointF GetTeachedCenterPoint()
-            {
-                return TeachedCenterPoint;
-            }
-
-            private void SetSearchedCenterPoint(PointF searchedLeftPoint, PointF searchedRightPoint)
-            {
-                SearchedCenterPoint = MathHelper.GetCenterPoint(searchedLeftPoint, searchedRightPoint);
-            }
-
-            public PointF GetSearchedCenterPoint()
-            {
-                return SearchedCenterPoint;
-            }
-
-            private void SetDiffAngle(PointF teachedLeftPoint, PointF teachedRightPoint, PointF searchedLeftPoint, PointF searchedRightPoint)
-            {
-                double teachedRadian = MathHelper.GetRadian(teachedLeftPoint, teachedRightPoint);
-                if (teachedRadian > 180.0)
-                    teachedRadian -= 360.0;
-
-                double searchedRadian = MathHelper.GetRadian(searchedLeftPoint, searchedRightPoint);
-                if (searchedRadian > 180.0)
-                    searchedRadian -= 360.0;
-
-                DiffRadian = searchedRadian - teachedRadian;
-            }
-
-            public double GetDiffRadian()
-            {
-                return DiffRadian;
-            }
-
-            private void SetOffsetPoint(PointF teachedCenterPoint, PointF searchedCenterPoint)
-            {
-                OffsetPoint = MathHelper.GetOffset(teachedCenterPoint, searchedCenterPoint);
-            }
-
-            public PointF GetOffsetPoint()
-            {
-                return OffsetPoint;
-            }
-
-            public PointF GetCoordinate(PointF inputPoint)
-            {
-                PointF searchedCenterPoint = GetSearchedCenterPoint();
-                double diffRadian = GetDiffRadian();
-                PointF offsetPoint = GetOffsetPoint();
-
-                return MathHelper.GetCoordinate(searchedCenterPoint, diffRadian, offsetPoint, inputPoint);
-            }
-        }
+        public Coordinate Coordinate { get; set; } = new Coordinate();
 
         public CogRectangleAffine CoordinateRectangle(CogRectangleAffine originRegion, PointF referenceLeft, PointF referenceRight, PointF searchedLeft, PointF searchedRight)
         {
@@ -377,6 +297,88 @@ namespace Jastech.Apps.Structure.VisionTool
             roi.SetOriginCornerXCornerY(originX, originY, cornerXX, cornerXY, cornerYX, cornerYY);
 
             return roi;
+        }
+    }
+
+    public class Coordinate
+    {
+        private PointF TeachedCenterPoint { get; set; } = new PointF();
+
+        private PointF SearchedCenterPoint { get; set; } = new PointF();
+
+        private double DiffRadian { get; set; } = 0.0;
+
+        private PointF OffsetPoint { get; set; } = new PointF();
+
+        public void SetCoordinateParam(PointF teachedLeftPoint, PointF teachedRightPoint, PointF searchedLeftPoint, PointF searchedRightPoint)
+        {
+            SetTeachedCenterPoint(teachedLeftPoint, teachedRightPoint);
+
+            SetSearchedCenterPoint(searchedLeftPoint, searchedRightPoint);
+
+            SetDiffAngle(teachedLeftPoint, teachedRightPoint, searchedLeftPoint, searchedRightPoint);
+
+            PointF teachedCenterPoint = GetTeachedCenterPoint();
+            PointF searchedCenterPoint = GetSearchedCenterPoint();
+
+            SetOffsetPoint(teachedCenterPoint, searchedCenterPoint);
+        }
+
+        private void SetTeachedCenterPoint(PointF teachedLeftPoint, PointF teachedRightPoint)
+        {
+            TeachedCenterPoint = MathHelper.GetCenterPoint(teachedLeftPoint, teachedRightPoint);
+        }
+
+        private PointF GetTeachedCenterPoint()
+        {
+            return TeachedCenterPoint;
+        }
+
+        private void SetSearchedCenterPoint(PointF searchedLeftPoint, PointF searchedRightPoint)
+        {
+            SearchedCenterPoint = MathHelper.GetCenterPoint(searchedLeftPoint, searchedRightPoint);
+        }
+
+        private PointF GetSearchedCenterPoint()
+        {
+            return SearchedCenterPoint;
+        }
+
+        private void SetDiffAngle(PointF teachedLeftPoint, PointF teachedRightPoint, PointF searchedLeftPoint, PointF searchedRightPoint)
+        {
+            double teachedRadian = MathHelper.GetRadian(teachedLeftPoint, teachedRightPoint);
+            if (teachedRadian > 180.0)
+                teachedRadian -= 360.0;
+
+            double searchedRadian = MathHelper.GetRadian(searchedLeftPoint, searchedRightPoint);
+            if (searchedRadian > 180.0)
+                searchedRadian -= 360.0;
+
+            DiffRadian = searchedRadian - teachedRadian;
+        }
+
+        private double GetDiffRadian()
+        {
+            return DiffRadian;
+        }
+
+        private void SetOffsetPoint(PointF teachedCenterPoint, PointF searchedCenterPoint)
+        {
+            OffsetPoint = MathHelper.GetOffset(teachedCenterPoint, searchedCenterPoint);
+        }
+
+        private PointF GetOffsetPoint()
+        {
+            return OffsetPoint;
+        }
+
+        public PointF GetCoordinate(PointF inputPoint)
+        {
+            PointF searchedCenterPoint = GetSearchedCenterPoint();
+            double diffRadian = GetDiffRadian();
+            PointF offsetPoint = GetOffsetPoint();
+
+            return MathHelper.GetCoordinate(searchedCenterPoint, diffRadian, offsetPoint, inputPoint);
         }
     }
 }
