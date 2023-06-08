@@ -98,6 +98,7 @@
             this.lblResultImage = new System.Windows.Forms.Label();
             this.lblOrginalImage = new System.Windows.Forms.Label();
             this.pnlParam = new System.Windows.Forms.Panel();
+            this.ckbDrawIndex = new System.Windows.Forms.CheckBox();
             this.pnlAuto.SuspendLayout();
             this.tlpAkkon.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
@@ -718,6 +719,7 @@
             // 
             // panel4
             // 
+            this.panel4.Controls.Add(this.ckbDrawIndex);
             this.panel4.Controls.Add(this.lblTeachingMode);
             this.panel4.Controls.Add(this.cbxGroupNumber);
             this.panel4.Controls.Add(this.lblGroupCount);
@@ -1027,6 +1029,17 @@
             this.pnlParam.Size = new System.Drawing.Size(965, 330);
             this.pnlParam.TabIndex = 296;
             // 
+            // ckbDrawIndex
+            // 
+            this.ckbDrawIndex.AutoSize = true;
+            this.ckbDrawIndex.Location = new System.Drawing.Point(254, 11);
+            this.ckbDrawIndex.Name = "ckbDrawIndex";
+            this.ckbDrawIndex.Size = new System.Drawing.Size(147, 24);
+            this.ckbDrawIndex.TabIndex = 28;
+            this.ckbDrawIndex.Text = "Draw Lead Index";
+            this.ckbDrawIndex.UseVisualStyleBackColor = true;
+            this.ckbDrawIndex.CheckedChanged += new System.EventHandler(this.ckbDrawIndex_CheckedChanged);
+            // 
             // AkkonControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
@@ -1049,6 +1062,7 @@
             this.pnlTeachingMode.ResumeLayout(false);
             this.pnlManual.ResumeLayout(false);
             this.panel4.ResumeLayout(false);
+            this.panel4.PerformLayout();
             this.pnlROIData.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgvAkkonROI)).EndInit();
             this.tableLayoutPanel3.ResumeLayout(false);
@@ -1120,5 +1134,6 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn2;
         private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn3;
         private System.Windows.Forms.Panel pnlParam;
+        private System.Windows.Forms.CheckBox ckbDrawIndex;
     }
 }

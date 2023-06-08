@@ -153,7 +153,10 @@ namespace AkkonTester
                     int radius = rectRect.Width > rectRect.Height ? rectRect.Width : rectRect.Height;
 
                     int size = blob.BoundingRect.Width * blob.BoundingRect.Height;
-                    if (AkkonParameters.ResultFilterParam.MinArea <= size && size <= AkkonParameters.ResultFilterParam.MaxArea)
+                    double calcMinArea = AkkonParameters.ResultFilterParam.MinArea_um * AkkonParameters.ResultFilterParam.Resolution_um;
+                    double calcMaxArea = AkkonParameters.ResultFilterParam.MaxArea_um * AkkonParameters.ResultFilterParam.Resolution_um;
+
+                    if (calcMinArea <= size && size <= calcMaxArea)
                     {
                         blobCount++;
                         CvInvoke.Circle(colorMat, center, radius / 2, new MCvScalar(255), 1);

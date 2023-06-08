@@ -94,21 +94,31 @@ namespace Jastech.Apps.Structure.VisionTool
             result.Panel = RunAlignX(cogImage, panelParam.CaliperParams, panelParam.LeadCount);
             result.Fpc = RunAlignX(cogImage, fpcParam.CaliperParams, fpcParam.LeadCount);
 
+            List<float> panelCenterXList = new List<float>();
+            List<float> fpcCenterXList = new List<float>();
+
             if (result.Panel.Judgement == Judgement.OK && result.Fpc.Judgement == Judgement.OK)
             {
                 List<float> intervalValueX = new List<float>();
 
                 for (int i = 0; i < panelParam.LeadCount * 2; i += 2)
                 {
+                    if(i >= result.Panel.CogAlignResult.Count || i >= result.Fpc.CogAlignResult.Count)
+                        continue;
+
                     var panelResult1 = result.Panel.CogAlignResult[i];
                     var panelResult2 = result.Panel.CogAlignResult[i + 1];
 
-                    float panelCenterX = panelResult1.CaliperMatchList[0].FoundPos.X - panelResult2.CaliperMatchList[0].FoundPos.X;
+                    float panelInterval = Math.Abs(panelResult1.CaliperMatchList[0].FoundPos.X - panelResult2.CaliperMatchList[0].FoundPos.X);
+                    float panelCenterX = panelResult1.CaliperMatchList[0].FoundPos.X + (panelInterval / 2.0f);
+                    panelCenterXList.Add(panelCenterX);
 
                     var fpcResult1 = result.Fpc.CogAlignResult[i];
                     var fpcResult2 = result.Fpc.CogAlignResult[i + 1];
 
-                    float fpcCenterX = fpcResult1.CaliperMatchList[0].FoundPos.X - fpcResult2.CaliperMatchList[0].FoundPos.X;
+                    float fpcInterval = Math.Abs(fpcResult1.CaliperMatchList[0].FoundPos.X - fpcResult2.CaliperMatchList[0].FoundPos.X);
+                    float fpcCenterX = fpcResult1.CaliperMatchList[0].FoundPos.X + (fpcInterval / 2.0f);
+                    fpcCenterXList.Add(fpcCenterX);
 
                     float interval = Math.Abs(panelCenterX - fpcCenterX);
                     intervalValueX.Add(Math.Abs(interval));
@@ -129,6 +139,7 @@ namespace Jastech.Apps.Structure.VisionTool
                 }
 
                 result.ResultValue = temp / count;
+                result.AvgCenterX = GetCenterX(panelCenterXList);
 
                 if (Math.Abs(result.ResultValue) <= judegementX)
                     result.Judgement = Judgement.OK;
@@ -143,6 +154,25 @@ namespace Jastech.Apps.Structure.VisionTool
             }
 
             return result;
+        }
+
+        private float GetCenterX(List<float> dataList)
+        {
+            float max = dataList.Max();
+            float min = dataList.Min();
+
+            float temp = 0.0f;
+            int count = 0;
+            foreach (var value in dataList)
+            {
+                if (value == max || value == min)
+                    continue;
+
+                temp += value;
+                count++;
+            }
+
+            return temp / count;
         }
 
         private AlignResult RunMainAlignY(ICogImage cogImage, AlignParam fpcParam, AlignParam panelParam, double judgementY)

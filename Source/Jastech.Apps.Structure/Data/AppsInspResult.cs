@@ -282,6 +282,10 @@ namespace Jastech.Apps.Structure.Data
 
         public float ResultValue { get; set; } = 0.0f;
 
+        public float AvgCenterX { get; set; }
+
+        public float AvgCenterY { get; set; }
+
         public VisionProAlignCaliperResult Panel { get; set; } = null;
 
         public VisionProAlignCaliperResult Fpc { get; set; } = null;
