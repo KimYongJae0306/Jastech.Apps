@@ -197,14 +197,14 @@ namespace ATT.Core
             {
                 PointF point1 = inspResult.FpcMark.FoundedMark.Left.MaxMatchPos.FoundPos;
                 PointF point2 = inspResult.FpcMark.FoundedMark.Right.MaxMatchPos.FoundPos;
-                fpcTheta = MathHelper.GetTheta(point1, point2);
+                fpcTheta = MathHelper.GetRadian(point1, point2);
             }
 
             if (inspResult.PanelMark.Judgement == Judgement.OK)
             {
                 PointF point1 = inspResult.PanelMark.FoundedMark.Left.MaxMatchPos.FoundPos;
                 PointF point2 = inspResult.PanelMark.FoundedMark.Right.MaxMatchPos.FoundPos;
-                panelTheta = MathHelper.GetTheta(point1, point2);
+                panelTheta = MathHelper.GetRadian(point1, point2);
             }
             #endregion
 

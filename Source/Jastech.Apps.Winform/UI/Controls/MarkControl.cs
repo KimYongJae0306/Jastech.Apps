@@ -658,7 +658,7 @@ namespace Jastech.Apps.Winform.UI.Controls
                 oldPoint.X = (float)roi.CenterX;
                 oldPoint.Y = (float)roi.CenterY;
 
-                var newPoint = MathHelper.GetCoordi(teachedLeftFpc, teachedRightFpc, searchedLeftFpcPoint, searchedRightFpcPoint, oldPoint);
+                var newPoint = MathHelper.GetCoordinate(teachedLeftFpc, teachedRightFpc, searchedLeftFpcPoint, searchedRightFpcPoint, oldPoint);
                 roi.CenterX = newPoint.X;
                 roi.CenterY = newPoint.Y;
 
