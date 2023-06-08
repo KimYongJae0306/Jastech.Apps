@@ -33,7 +33,7 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         private Color _selectedColor;
 
-        private Color _nonSelectedColor;
+        private Color _noneSelectedColor;
 
         private AppsInspResult _curAppsInspResult = null;
         #endregion
@@ -71,7 +71,7 @@ namespace Jastech.Apps.Winform.UI.Controls
         private void AlignInspDisplayControl_Load(object sender, EventArgs e)
         {
             _selectedColor = Color.FromArgb(104, 104, 104);
-            _nonSelectedColor = Color.FromArgb(52, 52, 52);
+            _noneSelectedColor = Color.FromArgb(52, 52, 52);
 
             AddControls();
 
@@ -358,10 +358,10 @@ namespace Jastech.Apps.Winform.UI.Controls
             float minY = pointList.Select(point => point.Y).Min();
             float maxY = pointList.Select(point => point.Y).Max();
 
-            float centerX = (maxX + minX) / 2.0f;
-            float centerY = (maxY + minY) / 2.0f;
+            float width = (maxX - minX) / 2.0f;
+            float height = (maxY - minY) / 2.0f;
 
-            return new Point((int)centerX, (int)centerY);
+            return new Point((int)(minX + width), (int)(minY + height));
         }
 
         public ICogImage ConvertCogImage(Mat image)

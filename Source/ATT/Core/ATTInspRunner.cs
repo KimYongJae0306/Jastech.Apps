@@ -148,38 +148,54 @@ namespace ATT.Core
             double judgementY = resolution_um* tab.AlignSpec.LeftSpecY_um;
 
             #region Left Align
-            inspResult.LeftAlignX = algorithmTool.RunMainLeftAlignX(inspTab.MergeCogImage, tab, fpcTheta, panelTheta, judgementX);
-            if (inspResult.IsLeftAlignXGood() == false)
+            if(AppsConfig.Instance().Operation.EnableAlign)
             {
-                var leftAlignX = inspResult.LeftAlignX;
-                string message = string.Format("Left AlignX Inspection NG !!! Tab_{0} / Fpc_{1}, Panel_{2}", tab.Index, leftAlignX.Fpc.Judgement, leftAlignX.Panel.Judgement);
-                Logger.Debug(LogType.Inspection, message);
-            }
+                inspResult.LeftAlignX = algorithmTool.RunMainLeftAlignX(inspTab.MergeCogImage, tab, fpcCoordinate, panelCoordinate, judgementX);
+                if (inspResult.IsLeftAlignXGood() == false)
+                {
+                    var leftAlignX = inspResult.LeftAlignX;
+                    string message = string.Format("Left AlignX Inspection NG !!! Tab_{0} / Fpc_{1}, Panel_{2}", tab.Index, leftAlignX.Fpc.Judgement, leftAlignX.Panel.Judgement);
+                    Logger.Debug(LogType.Inspection, message);
+                }
 
-            inspResult.LeftAlignY = algorithmTool.RunMainLeftAlignY(inspTab.MergeCogImage, tab, fpcTheta, panelTheta, judgementY);
-            if (inspResult.IsLeftAlignYGood() == false)
+                inspResult.LeftAlignY = algorithmTool.RunMainLeftAlignY(inspTab.MergeCogImage, tab, fpcCoordinate, panelCoordinate, judgementY);
+                if (inspResult.IsLeftAlignYGood() == false)
+                {
+                    var leftAlignY = inspResult.LeftAlignY;
+                    string message = string.Format("Left AlignY Inspection NG !!! Tab_{0} / Fpc_{1}, Panel_{2}", tab.Index, leftAlignY.Fpc.Judgement, leftAlignY.Panel.Judgement);
+                    Logger.Debug(LogType.Inspection, message);
+                }
+            }
+            else
             {
-                var leftAlignY = inspResult.LeftAlignY;
-                string message = string.Format("Left AlignY Inspection NG !!! Tab_{0} / Fpc_{1}, Panel_{2}", tab.Index, leftAlignY.Fpc.Judgement, leftAlignY.Panel.Judgement);
-                Logger.Debug(LogType.Inspection, message);
+                inspResult.LeftAlignX = new AlignResult();
+                inspResult.LeftAlignY = new AlignResult();
             }
             #endregion
 
             #region Right Align
-            inspResult.RightAlignX = algorithmTool.RunMainRightAlignX(inspTab.MergeCogImage, tab, fpcTheta, panelTheta, judgementX);
-            if (inspResult.IsRightAlignXGood() == false)
+            if (AppsConfig.Instance().Operation.EnableAlign)
             {
-                var rightAlignX = inspResult.RightAlignX;
-                string message = string.Format("Right AlignX Inspection NG !!! Tab_{0} / Fpc_{1}, Panel_{2}", tab.Index, rightAlignX.Fpc.Judgement, rightAlignX.Panel.Judgement);
-                Logger.Debug(LogType.Inspection, message);
-            }
+                inspResult.RightAlignX = algorithmTool.RunMainRightAlignX(inspTab.MergeCogImage, tab, fpcCoordinate, panelCoordinate, judgementX);
+                if (inspResult.IsRightAlignXGood() == false)
+                {
+                    var rightAlignX = inspResult.RightAlignX;
+                    string message = string.Format("Right AlignX Inspection NG !!! Tab_{0} / Fpc_{1}, Panel_{2}", tab.Index, rightAlignX.Fpc.Judgement, rightAlignX.Panel.Judgement);
+                    Logger.Debug(LogType.Inspection, message);
+                }
 
-            inspResult.RightAlignY = algorithmTool.RunMainRightAlignY(inspTab.MergeCogImage, tab, fpcTheta, panelTheta, judgementY);
-            if (inspResult.IsRightAlignYGood() == false)
+                inspResult.RightAlignY = algorithmTool.RunMainRightAlignY(inspTab.MergeCogImage, tab, fpcCoordinate, panelCoordinate, judgementY);
+                if (inspResult.IsRightAlignYGood() == false)
+                {
+                    var rightAlignY = inspResult.RightAlignY;
+                    string message = string.Format("Right AlignY Inspection NG !!! Tab_{0} / Fpc_{1}, Panel_{2}", tab.Index, rightAlignY.Fpc.Judgement, rightAlignY.Panel.Judgement);
+                    Logger.Debug(LogType.Inspection, message);
+                }
+            }
+            else
             {
-                var rightAlignY = inspResult.RightAlignY;
-                string message = string.Format("Right AlignY Inspection NG !!! Tab_{0} / Fpc_{1}, Panel_{2}", tab.Index, rightAlignY.Fpc.Judgement, rightAlignY.Panel.Judgement);
-                Logger.Debug(LogType.Inspection, message);
+                inspResult.RightAlignX = new AlignResult();
+                inspResult.RightAlignY = new AlignResult();
             }
             #endregion
 
@@ -718,11 +734,6 @@ namespace ATT.Core
             //var result = tool.MainRunInspect(tab, tabMatImage, 30.0f, 80.0f);
 
             // AppsInspResult.TabResultList.Add(result);
-        }
-
-        private void SetCoordinateParam(TabInspResult tabInspResult)
-        {
-            
         }
         #endregion
     }

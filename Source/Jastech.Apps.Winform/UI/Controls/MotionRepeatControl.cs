@@ -26,7 +26,7 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         private Color _selectedColor;
 
-        private Color _nonSelectedColor;
+        private Color _noneSelectedColor;
 
         public MotionRepeatControl()
         {
@@ -50,7 +50,7 @@ namespace Jastech.Apps.Winform.UI.Controls
             lblOperationAxis.Text = "Axis " + SelectedAxis.Name;
 
             _selectedColor = Color.FromArgb(104, 104, 104);
-            _nonSelectedColor = Color.FromArgb(52, 52, 52);
+            _noneSelectedColor = Color.FromArgb(52, 52, 52);
 
             SetScanDirection(Direction.CW);
         }
@@ -85,11 +85,11 @@ namespace Jastech.Apps.Winform.UI.Controls
             if (direction == Direction.CW)
             {
                 lblForward.BackColor = _selectedColor;
-                lblBackward.BackColor = _nonSelectedColor;
+                lblBackward.BackColor = _noneSelectedColor;
             }
             else
             {
-                lblForward.BackColor = _nonSelectedColor;
+                lblForward.BackColor = _noneSelectedColor;
                 lblBackward.BackColor = _selectedColor;
             }
 

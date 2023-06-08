@@ -20,7 +20,7 @@ namespace Jastech.Apps.Winform.UI.Controls
         #region 필드
         private Color _selectedColor;
 
-        private Color _nonSelectedColor;
+        private Color _noneSelectedColor;
         #endregion
 
         #region 속성
@@ -52,7 +52,7 @@ namespace Jastech.Apps.Winform.UI.Controls
         private void AutoFocusControl_Load(object sender, EventArgs e)
         {
             _selectedColor = Color.FromArgb(104, 104, 104);
-            _nonSelectedColor = Color.FromArgb(52, 52, 52);
+            _noneSelectedColor = Color.FromArgb(52, 52, 52);
         }
 
         public void UpdateData(TeachingAxisInfo axisInfo)
@@ -99,17 +99,17 @@ namespace Jastech.Apps.Winform.UI.Controls
             else
                 mPos_um = status.MPosPulse;
 
-            lblCuttentPositionValue.Text = (mPos_um * 1000).ToString("F3");
+            lblCuttentPositionValue.Text = mPos_um.ToString();
             lblCurrentCogValue.Text = status.CenterofGravity.ToString();
 
             if (status.IsAutoFocusOn)
             {
                 lblAFOn.BackColor = _selectedColor;
-                lblAFOff.BackColor = _nonSelectedColor;
+                lblAFOff.BackColor = _noneSelectedColor;
             }
             else
             {
-                lblAFOn.BackColor = _nonSelectedColor;
+                lblAFOn.BackColor = _noneSelectedColor;
                 lblAFOff.BackColor = _selectedColor;
             }
         }

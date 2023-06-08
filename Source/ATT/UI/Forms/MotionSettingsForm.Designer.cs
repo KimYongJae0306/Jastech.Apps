@@ -349,7 +349,7 @@
             this.lblPitchZ.Name = "lblPitchZ";
             this.lblPitchZ.Size = new System.Drawing.Size(94, 64);
             this.lblPitchZ.TabIndex = 4;
-            this.lblPitchZ.Text = "PITCH Z\r\n(mm)";
+            this.lblPitchZ.Text = "PITCH Z";
             this.lblPitchZ.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // lblPitchZValue
@@ -364,7 +364,7 @@
             this.lblPitchZValue.Name = "lblPitchZValue";
             this.lblPitchZValue.Size = new System.Drawing.Size(95, 64);
             this.lblPitchZValue.TabIndex = 2;
-            this.lblPitchZValue.Text = "0.001";
+            this.lblPitchZValue.Text = "0.1";
             this.lblPitchZValue.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.lblPitchZValue.Click += new System.EventHandler(this.lblPitchZValue_Click);
             // 
@@ -395,7 +395,7 @@
             this.lblPitchXY.Name = "lblPitchXY";
             this.lblPitchXY.Size = new System.Drawing.Size(94, 64);
             this.lblPitchXY.TabIndex = 4;
-            this.lblPitchXY.Text = "PITCH XY\r\n(mm)";
+            this.lblPitchXY.Text = "PITCH XY";
             this.lblPitchXY.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // lblPitchXYValue
@@ -410,7 +410,7 @@
             this.lblPitchXYValue.Name = "lblPitchXYValue";
             this.lblPitchXYValue.Size = new System.Drawing.Size(95, 64);
             this.lblPitchXYValue.TabIndex = 2;
-            this.lblPitchXYValue.Text = "1.0\r\n";
+            this.lblPitchXYValue.Text = "1.0";
             this.lblPitchXYValue.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.lblPitchXYValue.Click += new System.EventHandler(this.lblPitchXYValue_Click);
             // 

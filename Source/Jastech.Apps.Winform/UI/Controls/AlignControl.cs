@@ -499,7 +499,7 @@ namespace Jastech.Apps.Winform.UI.Controls
         {
             double judgementX = Resolution_um * CurrentTab.AlignSpec.LeftSpecX_um;
 
-            AlignResult alignResultLeftX = AlgorithmTool.RunMainLeftAlignX(cogImage, CurrentTab, 0, 0, judgementX);
+            AlignResult alignResultLeftX = AlgorithmTool.RunMainLeftAlignX(cogImage, CurrentTab, null, null, judgementX);
             double value_um = alignResultLeftX.ResultValue / Resolution_um;
 
             lblLeftX_Judgement.Text = alignResultLeftX.Judgement.ToString();
@@ -520,7 +520,7 @@ namespace Jastech.Apps.Winform.UI.Controls
         {
             double judgementY = Resolution_um * CurrentTab.AlignSpec.LeftSpecY_um;
 
-            AlignResult alignResultLeftY = AlgorithmTool.RunMainLeftAlignY(cogImage, CurrentTab, 0, 0, judgementY);
+            AlignResult alignResultLeftY = AlgorithmTool.RunMainLeftAlignY(cogImage, CurrentTab, null, null, judgementY);
 
             lblLeftY_Judgement.Text = alignResultLeftY.Judgement.ToString();
             double value_um = alignResultLeftY.ResultValue / Resolution_um;
@@ -542,7 +542,7 @@ namespace Jastech.Apps.Winform.UI.Controls
         {
             double judgementX = Resolution_um * CurrentTab.AlignSpec.RightSpecX_um;
 
-            AlignResult alignResultRightX = AlgorithmTool.RunMainRightAlignX(cogImage, CurrentTab, 0, 0, judgementX);
+            AlignResult alignResultRightX = AlgorithmTool.RunMainRightAlignX(cogImage, CurrentTab, null, null, judgementX);
             double value_um = alignResultRightX.ResultValue / Resolution_um;
 
             lblRightX_Judgement.Text = alignResultRightX.Judgement.ToString();
@@ -563,7 +563,7 @@ namespace Jastech.Apps.Winform.UI.Controls
         {
             double judgementY = Resolution_um * CurrentTab.AlignSpec.RightSpecY_um;
 
-            AlignResult alignResultRightY = AlgorithmTool.RunMainRightAlignY(cogImage, CurrentTab, 0, 0, judgementY);
+            AlignResult alignResultRightY = AlgorithmTool.RunMainRightAlignY(cogImage, CurrentTab, null, null, judgementY);
             double value_um = alignResultRightY.ResultValue / Resolution_um;
 
             lblRightY_Judgement.Text = alignResultRightY.Judgement.ToString();

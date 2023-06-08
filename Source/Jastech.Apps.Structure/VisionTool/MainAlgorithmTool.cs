@@ -31,11 +31,14 @@ namespace Jastech.Apps.Structure.VisionTool
             var fpcParam = tab.GetAlignParam(ATTTabAlignName.LeftFPCX).DeepCopy();
             var panelParam = tab.GetAlignParam(ATTTabAlignName.LeftPanelX).DeepCopy();
 
-            var calcFpcRegion = CoordinateRectangle(fpcParam.CaliperParams.GetRegion() as CogRectangleAffine, fpcCoordinate);
-            var calcPanelRegion = CoordinateRectangle(panelParam.CaliperParams.GetRegion() as CogRectangleAffine, panelCoordinate);
+            if (fpcCoordinate != null && panelCoordinate != null)
+            {
+                var calcFpcRegion = CoordinateRectangle(fpcParam.CaliperParams.GetRegion() as CogRectangleAffine, fpcCoordinate);
+                var calcPanelRegion = CoordinateRectangle(panelParam.CaliperParams.GetRegion() as CogRectangleAffine, panelCoordinate);
 
-            fpcParam.CaliperParams.SetRegion(calcFpcRegion);
-            panelParam.CaliperParams.SetRegion(calcPanelRegion);
+                fpcParam.CaliperParams.SetRegion(calcFpcRegion);
+                panelParam.CaliperParams.SetRegion(calcPanelRegion);
+            }
 
             var result = RunMainAlignX(cogImage, fpcParam, panelParam, judgementX);
             return result;
@@ -46,11 +49,14 @@ namespace Jastech.Apps.Structure.VisionTool
             var fpcParam = tab.GetAlignParam(ATTTabAlignName.LeftFPCY).DeepCopy();
             var panelParam = tab.GetAlignParam(ATTTabAlignName.LeftPanelY).DeepCopy();
 
-            var calcFpcRegion = CoordinateRectangle(fpcParam.CaliperParams.GetRegion() as CogRectangleAffine, fpcCoordinate);
-            var calcPanelRegion = CoordinateRectangle(panelParam.CaliperParams.GetRegion() as CogRectangleAffine, panelCoordinate);
+            if (fpcCoordinate != null && panelCoordinate != null)
+            {
+                var calcFpcRegion = CoordinateRectangle(fpcParam.CaliperParams.GetRegion() as CogRectangleAffine, fpcCoordinate);
+                var calcPanelRegion = CoordinateRectangle(panelParam.CaliperParams.GetRegion() as CogRectangleAffine, panelCoordinate);
 
-            fpcParam.CaliperParams.SetRegion(calcFpcRegion);
-            panelParam.CaliperParams.SetRegion(calcPanelRegion);
+                fpcParam.CaliperParams.SetRegion(calcFpcRegion);
+                panelParam.CaliperParams.SetRegion(calcPanelRegion);
+            }
 
             var result = RunMainAlignY(cogImage, fpcParam, panelParam, judgementY);
             return result;
@@ -61,11 +67,14 @@ namespace Jastech.Apps.Structure.VisionTool
             var fpcParam = tab.GetAlignParam(ATTTabAlignName.RightFPCX);
             var panelParam = tab.GetAlignParam(ATTTabAlignName.RightPanelX);
 
-            var calcFpcRegion = CoordinateRectangle(fpcParam.CaliperParams.GetRegion() as CogRectangleAffine, fpcCoordinate);
-            var calcPanelRegion = CoordinateRectangle(panelParam.CaliperParams.GetRegion() as CogRectangleAffine, panelCoordinate);
+            if (fpcCoordinate != null && panelCoordinate != null)
+            {
+                var calcFpcRegion = CoordinateRectangle(fpcParam.CaliperParams.GetRegion() as CogRectangleAffine, fpcCoordinate);
+                var calcPanelRegion = CoordinateRectangle(panelParam.CaliperParams.GetRegion() as CogRectangleAffine, panelCoordinate);
 
-            fpcParam.CaliperParams.SetRegion(calcFpcRegion);
-            panelParam.CaliperParams.SetRegion(calcPanelRegion);
+                fpcParam.CaliperParams.SetRegion(calcFpcRegion);
+                panelParam.CaliperParams.SetRegion(calcPanelRegion);
+            }
 
             var result = RunMainAlignX(cogImage, fpcParam, panelParam, judgementX);
 
@@ -77,11 +86,14 @@ namespace Jastech.Apps.Structure.VisionTool
             var fpcParam = tab.GetAlignParam(ATTTabAlignName.RightFPCY).DeepCopy();
             var panelParam = tab.GetAlignParam(ATTTabAlignName.RightPanelY).DeepCopy();
 
-            var calcFpcRegion = CoordinateRectangle(fpcParam.CaliperParams.GetRegion() as CogRectangleAffine, fpcCoordinate);
-            var calcPanelRegion = CoordinateRectangle(panelParam.CaliperParams.GetRegion() as CogRectangleAffine, panelCoordinate);
+            if (fpcCoordinate != null && panelCoordinate != null)
+            {
+                var calcFpcRegion = CoordinateRectangle(fpcParam.CaliperParams.GetRegion() as CogRectangleAffine, fpcCoordinate);
+                var calcPanelRegion = CoordinateRectangle(panelParam.CaliperParams.GetRegion() as CogRectangleAffine, panelCoordinate);
 
-            fpcParam.CaliperParams.SetRegion(calcFpcRegion);
-            panelParam.CaliperParams.SetRegion(calcPanelRegion);
+                fpcParam.CaliperParams.SetRegion(calcFpcRegion);
+                panelParam.CaliperParams.SetRegion(calcPanelRegion);
+            }
 
             var result = RunMainAlignY(cogImage, fpcParam, panelParam, judgementY);
             return result;
