@@ -28,15 +28,12 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle10 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle11 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle12 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle13 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle14 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle15 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle16 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle17 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle18 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
             this.pnlAuto = new System.Windows.Forms.Panel();
             this.lblAutoLeadPitch = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
@@ -46,17 +43,11 @@
             this.label5 = new System.Windows.Forms.Label();
             this.tlpAkkon = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
-            this.panel2 = new System.Windows.Forms.Panel();
+            this.pnlInfo = new System.Windows.Forms.Panel();
             this.dgvJastechAkkonResult = new System.Windows.Forms.DataGridView();
             this.dataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dataGridViewTextBoxColumn2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dataGridViewTextBoxColumn3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dgvMacronAkkonResult = new System.Windows.Forms.DataGridView();
-            this.colResultNo = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colCount = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colLength = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colStrength = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colJudgement = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tlpnlGroup = new System.Windows.Forms.TableLayoutPanel();
             this.pnlTeachingMode = new System.Windows.Forms.Panel();
             this.pnlManual = new System.Windows.Forms.Panel();
@@ -77,6 +68,7 @@
             this.lblCloneVertical = new System.Windows.Forms.Label();
             this.lblClone = new System.Windows.Forms.Label();
             this.panel4 = new System.Windows.Forms.Panel();
+            this.ckbDrawIndex = new System.Windows.Forms.CheckBox();
             this.lblTeachingMode = new System.Windows.Forms.Label();
             this.cbxGroupNumber = new System.Windows.Forms.ComboBox();
             this.lblGroupCount = new System.Windows.Forms.Label();
@@ -98,15 +90,13 @@
             this.lblResultImage = new System.Windows.Forms.Label();
             this.lblOrginalImage = new System.Windows.Forms.Label();
             this.pnlParam = new System.Windows.Forms.Panel();
-            this.ckbDrawIndex = new System.Windows.Forms.CheckBox();
+            this.lblTest = new System.Windows.Forms.Label();
             this.pnlAuto.SuspendLayout();
             this.tlpAkkon.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
-            this.panel2.SuspendLayout();
+            this.pnlInfo.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvJastechAkkonResult)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dgvMacronAkkonResult)).BeginInit();
             this.tlpnlGroup.SuspendLayout();
-            this.pnlTeachingMode.SuspendLayout();
             this.pnlManual.SuspendLayout();
             this.panel4.SuspendLayout();
             this.pnlROIData.SuspendLayout();
@@ -114,6 +104,7 @@
             this.tableLayoutPanel3.SuspendLayout();
             this.panel1.SuspendLayout();
             this.panel3.SuspendLayout();
+            this.pnlParam.SuspendLayout();
             this.SuspendLayout();
             // 
             // pnlAuto
@@ -124,10 +115,10 @@
             this.pnlAuto.Controls.Add(this.lblAutoTeachingExcute);
             this.pnlAuto.Controls.Add(this.lblAutoThresholdValue);
             this.pnlAuto.Controls.Add(this.label5);
-            this.pnlAuto.Location = new System.Drawing.Point(33, 157);
+            this.pnlAuto.Location = new System.Drawing.Point(478, 10);
             this.pnlAuto.Margin = new System.Windows.Forms.Padding(0);
             this.pnlAuto.Name = "pnlAuto";
-            this.pnlAuto.Size = new System.Drawing.Size(382, 128);
+            this.pnlAuto.Size = new System.Drawing.Size(429, 160);
             this.pnlAuto.TabIndex = 3;
             // 
             // lblAutoLeadPitch
@@ -236,7 +227,7 @@
             this.tlpAkkon.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 340F));
             this.tlpAkkon.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tlpAkkon.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tlpAkkon.Size = new System.Drawing.Size(965, 762);
+            this.tlpAkkon.Size = new System.Drawing.Size(1247, 702);
             this.tlpAkkon.TabIndex = 1;
             // 
             // tableLayoutPanel1
@@ -244,7 +235,7 @@
             this.tableLayoutPanel1.ColumnCount = 2;
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel1.Controls.Add(this.panel2, 0, 1);
+            this.tableLayoutPanel1.Controls.Add(this.pnlInfo, 0, 1);
             this.tableLayoutPanel1.Controls.Add(this.pnlROIData, 1, 1);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 92);
@@ -254,19 +245,17 @@
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 6F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 6F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(965, 340);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(1247, 340);
             this.tableLayoutPanel1.TabIndex = 294;
             // 
-            // panel2
+            // pnlInfo
             // 
-            this.panel2.Controls.Add(this.dgvJastechAkkonResult);
-            this.panel2.Controls.Add(this.dgvMacronAkkonResult);
-            this.panel2.Controls.Add(this.tlpnlGroup);
-            this.panel2.Location = new System.Drawing.Point(0, 6);
-            this.panel2.Margin = new System.Windows.Forms.Padding(0);
-            this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(482, 328);
-            this.panel2.TabIndex = 1;
+            this.pnlInfo.Controls.Add(this.tlpnlGroup);
+            this.pnlInfo.Location = new System.Drawing.Point(0, 6);
+            this.pnlInfo.Margin = new System.Windows.Forms.Padding(0);
+            this.pnlInfo.Name = "pnlInfo";
+            this.pnlInfo.Size = new System.Drawing.Size(575, 328);
+            this.pnlInfo.TabIndex = 1;
             // 
             // dgvJastechAkkonResult
             // 
@@ -275,38 +264,38 @@
             this.dgvJastechAkkonResult.AllowUserToResizeColumns = false;
             this.dgvJastechAkkonResult.AllowUserToResizeRows = false;
             this.dgvJastechAkkonResult.BackgroundColor = System.Drawing.Color.White;
-            dataGridViewCellStyle10.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle10.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle10.Font = new System.Drawing.Font("맑은 고딕", 11.25F, System.Drawing.FontStyle.Bold);
-            dataGridViewCellStyle10.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle10.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle10.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle10.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgvJastechAkkonResult.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle10;
+            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle4.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle4.Font = new System.Drawing.Font("맑은 고딕", 11.25F, System.Drawing.FontStyle.Bold);
+            dataGridViewCellStyle4.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvJastechAkkonResult.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle4;
             this.dgvJastechAkkonResult.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvJastechAkkonResult.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.dataGridViewTextBoxColumn1,
             this.dataGridViewTextBoxColumn2,
             this.dataGridViewTextBoxColumn3});
-            dataGridViewCellStyle11.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle11.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle11.Font = new System.Drawing.Font("맑은 고딕", 11.25F, System.Drawing.FontStyle.Bold);
-            dataGridViewCellStyle11.ForeColor = System.Drawing.Color.White;
-            dataGridViewCellStyle11.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle11.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle11.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgvJastechAkkonResult.DefaultCellStyle = dataGridViewCellStyle11;
-            this.dgvJastechAkkonResult.Location = new System.Drawing.Point(19, 95);
+            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle5.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle5.Font = new System.Drawing.Font("맑은 고딕", 11.25F, System.Drawing.FontStyle.Bold);
+            dataGridViewCellStyle5.ForeColor = System.Drawing.Color.White;
+            dataGridViewCellStyle5.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle5.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle5.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvJastechAkkonResult.DefaultCellStyle = dataGridViewCellStyle5;
+            this.dgvJastechAkkonResult.Location = new System.Drawing.Point(943, 10);
             this.dgvJastechAkkonResult.Margin = new System.Windows.Forms.Padding(0);
             this.dgvJastechAkkonResult.Name = "dgvJastechAkkonResult";
             this.dgvJastechAkkonResult.ReadOnly = true;
             this.dgvJastechAkkonResult.RowHeadersVisible = false;
-            dataGridViewCellStyle12.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
-            dataGridViewCellStyle12.ForeColor = System.Drawing.Color.Black;
-            this.dgvJastechAkkonResult.RowsDefaultCellStyle = dataGridViewCellStyle12;
+            dataGridViewCellStyle6.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
+            dataGridViewCellStyle6.ForeColor = System.Drawing.Color.Black;
+            this.dgvJastechAkkonResult.RowsDefaultCellStyle = dataGridViewCellStyle6;
             this.dgvJastechAkkonResult.RowTemplate.Height = 23;
             this.dgvJastechAkkonResult.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvJastechAkkonResult.Size = new System.Drawing.Size(381, 184);
+            this.dgvJastechAkkonResult.Size = new System.Drawing.Size(283, 245);
             this.dgvJastechAkkonResult.TabIndex = 151;
             this.dgvJastechAkkonResult.Visible = false;
             // 
@@ -340,122 +329,29 @@
             this.dataGridViewTextBoxColumn3.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
             this.dataGridViewTextBoxColumn3.Width = 160;
             // 
-            // dgvMacronAkkonResult
-            // 
-            this.dgvMacronAkkonResult.AllowUserToAddRows = false;
-            this.dgvMacronAkkonResult.AllowUserToDeleteRows = false;
-            this.dgvMacronAkkonResult.AllowUserToResizeColumns = false;
-            this.dgvMacronAkkonResult.AllowUserToResizeRows = false;
-            this.dgvMacronAkkonResult.BackgroundColor = System.Drawing.Color.White;
-            dataGridViewCellStyle13.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle13.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle13.Font = new System.Drawing.Font("맑은 고딕", 11.25F, System.Drawing.FontStyle.Bold);
-            dataGridViewCellStyle13.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle13.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle13.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle13.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgvMacronAkkonResult.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle13;
-            this.dgvMacronAkkonResult.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvMacronAkkonResult.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.colResultNo,
-            this.colCount,
-            this.colLength,
-            this.colStrength,
-            this.colJudgement});
-            dataGridViewCellStyle14.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle14.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle14.Font = new System.Drawing.Font("맑은 고딕", 11.25F, System.Drawing.FontStyle.Bold);
-            dataGridViewCellStyle14.ForeColor = System.Drawing.Color.White;
-            dataGridViewCellStyle14.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle14.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle14.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgvMacronAkkonResult.DefaultCellStyle = dataGridViewCellStyle14;
-            this.dgvMacronAkkonResult.Location = new System.Drawing.Point(19, 11);
-            this.dgvMacronAkkonResult.Margin = new System.Windows.Forms.Padding(0);
-            this.dgvMacronAkkonResult.Name = "dgvMacronAkkonResult";
-            this.dgvMacronAkkonResult.ReadOnly = true;
-            this.dgvMacronAkkonResult.RowHeadersVisible = false;
-            dataGridViewCellStyle15.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
-            dataGridViewCellStyle15.ForeColor = System.Drawing.Color.Black;
-            this.dgvMacronAkkonResult.RowsDefaultCellStyle = dataGridViewCellStyle15;
-            this.dgvMacronAkkonResult.RowTemplate.Height = 23;
-            this.dgvMacronAkkonResult.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvMacronAkkonResult.Size = new System.Drawing.Size(121, 65);
-            this.dgvMacronAkkonResult.TabIndex = 1;
-            // 
-            // colResultNo
-            // 
-            this.colResultNo.HeaderText = "NO";
-            this.colResultNo.MinimumWidth = 70;
-            this.colResultNo.Name = "colResultNo";
-            this.colResultNo.ReadOnly = true;
-            this.colResultNo.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.colResultNo.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            this.colResultNo.Width = 80;
-            // 
-            // colCount
-            // 
-            this.colCount.HeaderText = "COUNT";
-            this.colCount.MinimumWidth = 160;
-            this.colCount.Name = "colCount";
-            this.colCount.ReadOnly = true;
-            this.colCount.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.colCount.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            this.colCount.Width = 160;
-            // 
-            // colLength
-            // 
-            this.colLength.HeaderText = "LENGTH";
-            this.colLength.MinimumWidth = 160;
-            this.colLength.Name = "colLength";
-            this.colLength.ReadOnly = true;
-            this.colLength.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.colLength.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            this.colLength.Width = 160;
-            // 
-            // colStrength
-            // 
-            this.colStrength.HeaderText = "STRENGTH";
-            this.colStrength.MinimumWidth = 160;
-            this.colStrength.Name = "colStrength";
-            this.colStrength.ReadOnly = true;
-            this.colStrength.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.colStrength.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            this.colStrength.Width = 160;
-            // 
-            // colJudgement
-            // 
-            this.colJudgement.HeaderText = "JUDGEMENT";
-            this.colJudgement.MinimumWidth = 160;
-            this.colJudgement.Name = "colJudgement";
-            this.colJudgement.ReadOnly = true;
-            this.colJudgement.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            this.colJudgement.Width = 160;
-            // 
             // tlpnlGroup
             // 
             this.tlpnlGroup.ColumnCount = 1;
             this.tlpnlGroup.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tlpnlGroup.Controls.Add(this.pnlTeachingMode, 0, 1);
             this.tlpnlGroup.Controls.Add(this.panel4, 0, 0);
-            this.tlpnlGroup.Location = new System.Drawing.Point(100, 0);
+            this.tlpnlGroup.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tlpnlGroup.Location = new System.Drawing.Point(0, 0);
             this.tlpnlGroup.Margin = new System.Windows.Forms.Padding(0);
             this.tlpnlGroup.Name = "tlpnlGroup";
             this.tlpnlGroup.RowCount = 2;
             this.tlpnlGroup.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 95F));
             this.tlpnlGroup.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tlpnlGroup.Size = new System.Drawing.Size(500, 368);
+            this.tlpnlGroup.Size = new System.Drawing.Size(575, 328);
             this.tlpnlGroup.TabIndex = 1;
             // 
             // pnlTeachingMode
             // 
-            this.pnlTeachingMode.Controls.Add(this.pnlManual);
-            this.pnlTeachingMode.Controls.Add(this.pnlAuto);
             this.pnlTeachingMode.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pnlTeachingMode.Location = new System.Drawing.Point(0, 95);
             this.pnlTeachingMode.Margin = new System.Windows.Forms.Padding(0);
             this.pnlTeachingMode.Name = "pnlTeachingMode";
-            this.pnlTeachingMode.Size = new System.Drawing.Size(500, 273);
+            this.pnlTeachingMode.Size = new System.Drawing.Size(575, 233);
             this.pnlTeachingMode.TabIndex = 1;
             // 
             // pnlManual
@@ -476,9 +372,9 @@
             this.pnlManual.Controls.Add(this.lblROIHeight);
             this.pnlManual.Controls.Add(this.lblCloneVertical);
             this.pnlManual.Controls.Add(this.lblClone);
-            this.pnlManual.Location = new System.Drawing.Point(0, 0);
+            this.pnlManual.Location = new System.Drawing.Point(16, 10);
             this.pnlManual.Name = "pnlManual";
-            this.pnlManual.Size = new System.Drawing.Size(366, 170);
+            this.pnlManual.Size = new System.Drawing.Size(448, 239);
             this.pnlManual.TabIndex = 4;
             // 
             // lblAdd
@@ -729,8 +625,19 @@
             this.panel4.Location = new System.Drawing.Point(0, 0);
             this.panel4.Margin = new System.Windows.Forms.Padding(0);
             this.panel4.Name = "panel4";
-            this.panel4.Size = new System.Drawing.Size(500, 95);
+            this.panel4.Size = new System.Drawing.Size(575, 95);
             this.panel4.TabIndex = 0;
+            // 
+            // ckbDrawIndex
+            // 
+            this.ckbDrawIndex.AutoSize = true;
+            this.ckbDrawIndex.Location = new System.Drawing.Point(254, 11);
+            this.ckbDrawIndex.Name = "ckbDrawIndex";
+            this.ckbDrawIndex.Size = new System.Drawing.Size(147, 24);
+            this.ckbDrawIndex.TabIndex = 28;
+            this.ckbDrawIndex.Text = "Draw Lead Index";
+            this.ckbDrawIndex.UseVisualStyleBackColor = true;
+            this.ckbDrawIndex.CheckedChanged += new System.EventHandler(this.ckbDrawIndex_CheckedChanged);
             // 
             // lblTeachingMode
             // 
@@ -813,10 +720,10 @@
             // 
             this.pnlROIData.Controls.Add(this.dgvAkkonROI);
             this.pnlROIData.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pnlROIData.Location = new System.Drawing.Point(482, 6);
+            this.pnlROIData.Location = new System.Drawing.Point(623, 6);
             this.pnlROIData.Margin = new System.Windows.Forms.Padding(0);
             this.pnlROIData.Name = "pnlROIData";
-            this.pnlROIData.Size = new System.Drawing.Size(483, 328);
+            this.pnlROIData.Size = new System.Drawing.Size(624, 328);
             this.pnlROIData.TabIndex = 0;
             // 
             // dgvAkkonROI
@@ -826,14 +733,14 @@
             this.dgvAkkonROI.AllowUserToResizeColumns = false;
             this.dgvAkkonROI.AllowUserToResizeRows = false;
             this.dgvAkkonROI.BackgroundColor = System.Drawing.Color.White;
-            dataGridViewCellStyle16.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle16.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle16.Font = new System.Drawing.Font("맑은 고딕", 11.25F, System.Drawing.FontStyle.Bold);
-            dataGridViewCellStyle16.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle16.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle16.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle16.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgvAkkonROI.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle16;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("맑은 고딕", 11.25F, System.Drawing.FontStyle.Bold);
+            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvAkkonROI.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             this.dgvAkkonROI.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvAkkonROI.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.colROINo,
@@ -841,26 +748,26 @@
             this.colRightTop,
             this.colLeftBottom,
             this.colRightBottom});
-            dataGridViewCellStyle17.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle17.BackColor = System.Drawing.Color.White;
-            dataGridViewCellStyle17.Font = new System.Drawing.Font("맑은 고딕", 11.25F, System.Drawing.FontStyle.Bold);
-            dataGridViewCellStyle17.ForeColor = System.Drawing.Color.White;
-            dataGridViewCellStyle17.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle17.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle17.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgvAkkonROI.DefaultCellStyle = dataGridViewCellStyle17;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle2.BackColor = System.Drawing.Color.White;
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("맑은 고딕", 11.25F, System.Drawing.FontStyle.Bold);
+            dataGridViewCellStyle2.ForeColor = System.Drawing.Color.White;
+            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvAkkonROI.DefaultCellStyle = dataGridViewCellStyle2;
             this.dgvAkkonROI.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgvAkkonROI.Location = new System.Drawing.Point(0, 0);
             this.dgvAkkonROI.Margin = new System.Windows.Forms.Padding(0);
             this.dgvAkkonROI.Name = "dgvAkkonROI";
             this.dgvAkkonROI.ReadOnly = true;
             this.dgvAkkonROI.RowHeadersVisible = false;
-            dataGridViewCellStyle18.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
-            dataGridViewCellStyle18.ForeColor = System.Drawing.Color.Black;
-            this.dgvAkkonROI.RowsDefaultCellStyle = dataGridViewCellStyle18;
+            dataGridViewCellStyle3.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
+            dataGridViewCellStyle3.ForeColor = System.Drawing.Color.Black;
+            this.dgvAkkonROI.RowsDefaultCellStyle = dataGridViewCellStyle3;
             this.dgvAkkonROI.RowTemplate.Height = 23;
             this.dgvAkkonROI.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvAkkonROI.Size = new System.Drawing.Size(483, 328);
+            this.dgvAkkonROI.Size = new System.Drawing.Size(624, 328);
             this.dgvAkkonROI.TabIndex = 0;
             this.dgvAkkonROI.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvAkkonROI_CellClick);
             // 
@@ -928,7 +835,7 @@
             this.lblParameter.Location = new System.Drawing.Point(0, 0);
             this.lblParameter.Margin = new System.Windows.Forms.Padding(0);
             this.lblParameter.Name = "lblParameter";
-            this.lblParameter.Size = new System.Drawing.Size(965, 32);
+            this.lblParameter.Size = new System.Drawing.Size(1247, 32);
             this.lblParameter.TabIndex = 1;
             this.lblParameter.Text = "Parameter";
             this.lblParameter.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -936,7 +843,7 @@
             // tableLayoutPanel3
             // 
             this.tableLayoutPanel3.ColumnCount = 3;
-            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 400F));
+            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 409F));
             this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 400F));
             this.tableLayoutPanel3.Controls.Add(this.panel1, 0, 0);
@@ -947,18 +854,19 @@
             this.tableLayoutPanel3.Name = "tableLayoutPanel3";
             this.tableLayoutPanel3.RowCount = 1;
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel3.Size = new System.Drawing.Size(965, 60);
+            this.tableLayoutPanel3.Size = new System.Drawing.Size(1247, 60);
             this.tableLayoutPanel3.TabIndex = 295;
             // 
             // panel1
             // 
+            this.panel1.Controls.Add(this.lblTest);
             this.panel1.Controls.Add(this.lblResult);
             this.panel1.Controls.Add(this.lblGroup);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel1.Location = new System.Drawing.Point(0, 0);
             this.panel1.Margin = new System.Windows.Forms.Padding(0);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(400, 60);
+            this.panel1.Size = new System.Drawing.Size(409, 60);
             this.panel1.TabIndex = 295;
             // 
             // lblResult
@@ -990,7 +898,7 @@
             this.panel3.Controls.Add(this.lblResultImage);
             this.panel3.Controls.Add(this.lblOrginalImage);
             this.panel3.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel3.Location = new System.Drawing.Point(565, 0);
+            this.panel3.Location = new System.Drawing.Point(847, 0);
             this.panel3.Margin = new System.Windows.Forms.Padding(0);
             this.panel3.Name = "panel3";
             this.panel3.Size = new System.Drawing.Size(400, 60);
@@ -1022,23 +930,27 @@
             // 
             // pnlParam
             // 
+            this.pnlParam.Controls.Add(this.dgvJastechAkkonResult);
+            this.pnlParam.Controls.Add(this.pnlManual);
+            this.pnlParam.Controls.Add(this.pnlAuto);
             this.pnlParam.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pnlParam.Location = new System.Drawing.Point(0, 432);
             this.pnlParam.Margin = new System.Windows.Forms.Padding(0);
             this.pnlParam.Name = "pnlParam";
-            this.pnlParam.Size = new System.Drawing.Size(965, 330);
+            this.pnlParam.Size = new System.Drawing.Size(1247, 270);
             this.pnlParam.TabIndex = 296;
             // 
-            // ckbDrawIndex
+            // lblTest
             // 
-            this.ckbDrawIndex.AutoSize = true;
-            this.ckbDrawIndex.Location = new System.Drawing.Point(254, 11);
-            this.ckbDrawIndex.Name = "ckbDrawIndex";
-            this.ckbDrawIndex.Size = new System.Drawing.Size(147, 24);
-            this.ckbDrawIndex.TabIndex = 28;
-            this.ckbDrawIndex.Text = "Draw Lead Index";
-            this.ckbDrawIndex.UseVisualStyleBackColor = true;
-            this.ckbDrawIndex.CheckedChanged += new System.EventHandler(this.ckbDrawIndex_CheckedChanged);
+            this.lblTest.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblTest.Location = new System.Drawing.Point(254, 10);
+            this.lblTest.Margin = new System.Windows.Forms.Padding(0);
+            this.lblTest.Name = "lblTest";
+            this.lblTest.Size = new System.Drawing.Size(140, 40);
+            this.lblTest.TabIndex = 296;
+            this.lblTest.Text = "Test";
+            this.lblTest.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblTest.Click += new System.EventHandler(this.lblTest_Click);
             // 
             // AkkonControl
             // 
@@ -1050,16 +962,14 @@
             this.ForeColor = System.Drawing.Color.White;
             this.Margin = new System.Windows.Forms.Padding(0);
             this.Name = "AkkonControl";
-            this.Size = new System.Drawing.Size(965, 762);
+            this.Size = new System.Drawing.Size(1247, 702);
             this.Load += new System.EventHandler(this.AkkonControl_Load);
             this.pnlAuto.ResumeLayout(false);
             this.tlpAkkon.ResumeLayout(false);
             this.tableLayoutPanel1.ResumeLayout(false);
-            this.panel2.ResumeLayout(false);
+            this.pnlInfo.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgvJastechAkkonResult)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dgvMacronAkkonResult)).EndInit();
             this.tlpnlGroup.ResumeLayout(false);
-            this.pnlTeachingMode.ResumeLayout(false);
             this.pnlManual.ResumeLayout(false);
             this.panel4.ResumeLayout(false);
             this.panel4.PerformLayout();
@@ -1068,6 +978,7 @@
             this.tableLayoutPanel3.ResumeLayout(false);
             this.panel1.ResumeLayout(false);
             this.panel3.ResumeLayout(false);
+            this.pnlParam.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -1076,10 +987,9 @@
         private System.Windows.Forms.TableLayoutPanel tlpAkkon;
         private System.Windows.Forms.Label lblParameter;
         private System.Windows.Forms.DataGridView dgvAkkonROI;
-        private System.Windows.Forms.DataGridView dgvMacronAkkonResult;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
         private System.Windows.Forms.Panel pnlROIData;
-        private System.Windows.Forms.Panel panel2;
+        private System.Windows.Forms.Panel pnlInfo;
         private System.Windows.Forms.TableLayoutPanel tlpnlGroup;
         private System.Windows.Forms.Panel pnlTeachingMode;
         private System.Windows.Forms.Panel panel4;
@@ -1095,11 +1005,6 @@
         private System.Windows.Forms.Label lblAutoLeadPitch;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.Label lblTeachingMode;
-        private System.Windows.Forms.DataGridViewTextBoxColumn colResultNo;
-        private System.Windows.Forms.DataGridViewTextBoxColumn colCount;
-        private System.Windows.Forms.DataGridViewTextBoxColumn colLength;
-        private System.Windows.Forms.DataGridViewTextBoxColumn colStrength;
-        private System.Windows.Forms.DataGridViewTextBoxColumn colJudgement;
         private System.Windows.Forms.DataGridViewTextBoxColumn colROINo;
         private System.Windows.Forms.DataGridViewTextBoxColumn colLeftTop;
         private System.Windows.Forms.DataGridViewTextBoxColumn colRightTop;
@@ -1135,5 +1040,6 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn3;
         private System.Windows.Forms.Panel pnlParam;
         private System.Windows.Forms.CheckBox ckbDrawIndex;
+        private System.Windows.Forms.Label lblTest;
     }
 }

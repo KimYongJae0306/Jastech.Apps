@@ -180,7 +180,12 @@ namespace ATT
         private void TeachPage_Click(object sender, EventArgs e)
         {
             if (ModelManager.Instance().CurrentModel == null)
+            {
+                MessageConfirmForm form = new MessageConfirmForm();
+                form.Message = "Current Model is null.";
+                form.ShowDialog();
                 return;
+            }
 
             SetSelectLabel(sender);
             SetSelectPage(selectedControl: TeachingPageControl);

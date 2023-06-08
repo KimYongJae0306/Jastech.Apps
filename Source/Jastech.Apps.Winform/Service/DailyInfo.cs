@@ -26,7 +26,7 @@ namespace Jastech.Apps.Winform.Service
 
         public void AddDailyDataList(DailyData dailyData)
         {
-            if (DailyDataList.Count >= AppsConfig.Instance().Operation.AlignResultCount)
+            if (DailyDataList.Count >= AppsConfig.Instance().AlignResultCount)
                 DailyDataList.RemoveAt(0);
 
             DailyDataList.Add(dailyData);

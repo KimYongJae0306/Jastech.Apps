@@ -43,6 +43,18 @@ namespace Jastech.Apps.Winform.Settings
 
         [JsonProperty]
         public float AkkonResizeRatio { get; set; } = 0.5f;
+
+        [JsonProperty]
+        public int AlignResultCount { get; set; } = 100;
+
+        [JsonProperty]
+        public int AkkonResultCount { get; set; } = 100;
+
+        [JsonProperty]
+        public bool UseNGDisplay { get; set; } = true;
+
+        [JsonProperty]
+        public int NGSendingCycle { get; set; } = 1;
         #endregion
 
         #region 메서드

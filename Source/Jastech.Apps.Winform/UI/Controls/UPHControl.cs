@@ -163,7 +163,7 @@ namespace Jastech.Apps.Winform.UI.Controls
 
             Tuple<string[], List<string[]>> readData = CSVHelper.ReadData(path);
 
-            if (ParseData(readData.Item1, readData.Item2));
+            if (ParseData(readData.Item1, readData.Item2))
             {
                 UpdateLabelData();
                 UpdateDataGridView();

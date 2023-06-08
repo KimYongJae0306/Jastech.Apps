@@ -501,7 +501,7 @@ namespace ATT.UI.Forms
             else if (_displayType == DisplayType.Align)
                 AlignControl.Run();// Inspection();
             else if (_displayType == DisplayType.Akkon)
-                AkkonControl.Inspection();
+                AkkonControl.Run();
         }
 
         private void lblAddROI_Click(object sender, EventArgs e)
@@ -524,6 +524,11 @@ namespace ATT.UI.Forms
                 AkkonControl.ShowROIJog();
         }
         #endregion
+
+        private void lblAlign_Click(object sender, EventArgs e)
+        {
+           
+        }
     }
 
     public enum DisplayType

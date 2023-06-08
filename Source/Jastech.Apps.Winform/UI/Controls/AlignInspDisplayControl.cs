@@ -114,7 +114,7 @@ namespace Jastech.Apps.Winform.UI.Controls
                 TabBtnControl buttonControl = new TabBtnControl();
                 buttonControl.SetTabIndex(i);
                 buttonControl.SetTabEventHandler += ButtonControl_SetTabEventHandler;
-                buttonControl.Size = new Size(controlWidth, (int)(pnlTabButton.Height * 0.7));
+                buttonControl.Size = new Size(controlWidth, (int)(pnlTabButton.Height));
                 buttonControl.Location = point;
 
                 pnlTabButton.Controls.Add(buttonControl);
@@ -140,8 +140,8 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         private void ButtonControl_SetTabEventHandler(int tabNum)
         {
-            TabBtnControlList.ForEach(x => x.BackColor = _noneSelectedColor);
-            TabBtnControlList[tabNum].BackColor = _selectedColor;
+            TabBtnControlList.ForEach(x => x.SetButtonClickNone());
+            TabBtnControlList[tabNum].SetButtonClick();
 
             CurrentTabNo = tabNum;
 

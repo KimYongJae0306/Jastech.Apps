@@ -14,6 +14,7 @@ using Jastech.Framework.Algorithms.Akkon;
 using Jastech.Framework.Algorithms.Akkon.Parameters;
 using Jastech.Framework.Device.Cameras;
 using Jastech.Framework.Device.Motions;
+using Jastech.Framework.Imaging;
 using Jastech.Framework.Imaging.Helper;
 using Jastech.Framework.Imaging.Result;
 using Jastech.Framework.Imaging.VisionPro;
@@ -136,54 +137,75 @@ namespace ATT.Core
             }
             #endregion
 
-            double judgementX = 100.0;
-            double judgementY = 100.0;
+            var camera = AppsLineCameraManager.Instance().GetLineCamera(CameraName.LinscanMIL0).Camera;
+            double resolution_um = camera.PixelResolution_um / camera.LensScale;
+            double judgementX = resolution_um * tab.AlignSpec.LeftSpecX_um;
+            double judgementY = resolution_um* tab.AlignSpec.LeftSpecY_um;
 
             #region Left Align
-            inspResult.LeftAlignX = algorithmTool.RunMainLeftAlignX(inspTab.MergeCogImage, tab, fpcTheta, panelTheta, judgementX);
-            if (inspResult.IsLeftAlignXGood() == false)
+            if(AppsConfig.Instance().Operation.EnableAlign)
             {
-                var leftAlignX = inspResult.LeftAlignX;
-                string message = string.Format("Left AlignX Inspection NG !!! Tab_{0} / Fpc_{1}, Panel_{2}", tab.Index, leftAlignX.Fpc.Judgement, leftAlignX.Panel.Judgement);
-                Logger.Debug(LogType.Inspection, message);
-            }
+                inspResult.LeftAlignX = algorithmTool.RunMainLeftAlignX(inspTab.MergeCogImage, tab, fpcTheta, panelTheta, judgementX);
+                if (inspResult.IsLeftAlignXGood() == false)
+                {
+                    var leftAlignX = inspResult.LeftAlignX;
+                    string message = string.Format("Left AlignX Inspection NG !!! Tab_{0} / Fpc_{1}, Panel_{2}", tab.Index, leftAlignX.Fpc.Judgement, leftAlignX.Panel.Judgement);
+                    Logger.Debug(LogType.Inspection, message);
+                }
 
-            inspResult.LeftAlignY = algorithmTool.RunMainLeftAlignY(inspTab.MergeCogImage, tab, fpcTheta, panelTheta, judgementY);
-            if (inspResult.IsLeftAlignYGood() == false)
+                inspResult.LeftAlignY = algorithmTool.RunMainLeftAlignY(inspTab.MergeCogImage, tab, fpcTheta, panelTheta, judgementY);
+                if (inspResult.IsLeftAlignYGood() == false)
+                {
+                    var leftAlignY = inspResult.LeftAlignY;
+                    string message = string.Format("Left AlignY Inspection NG !!! Tab_{0} / Fpc_{1}, Panel_{2}", tab.Index, leftAlignY.Fpc.Judgement, leftAlignY.Panel.Judgement);
+                    Logger.Debug(LogType.Inspection, message);
+                }
+            }
+            else
             {
-                var leftAlignY = inspResult.LeftAlignY;
-                string message = string.Format("Left AlignY Inspection NG !!! Tab_{0} / Fpc_{1}, Panel_{2}", tab.Index, leftAlignY.Fpc.Judgement, leftAlignY.Panel.Judgement);
-                Logger.Debug(LogType.Inspection, message);
+                inspResult.LeftAlignX = new AlignResult();
+                inspResult.LeftAlignY = new AlignResult();
             }
             #endregion
 
             #region Right Align
-            inspResult.RightAlignX = algorithmTool.RunMainRightAlignX(inspTab.MergeCogImage, tab, fpcTheta, panelTheta, judgementX);
-            if (inspResult.IsRightAlignXGood() == false)
+            if (AppsConfig.Instance().Operation.EnableAlign)
             {
-                var rightAlignX = inspResult.RightAlignX;
-                string message = string.Format("Right AlignX Inspection NG !!! Tab_{0} / Fpc_{1}, Panel_{2}", tab.Index, rightAlignX.Fpc.Judgement, rightAlignX.Panel.Judgement);
-                Logger.Debug(LogType.Inspection, message);
-            }
+                inspResult.RightAlignX = algorithmTool.RunMainRightAlignX(inspTab.MergeCogImage, tab, fpcTheta, panelTheta, judgementX);
+                if (inspResult.IsRightAlignXGood() == false)
+                {
+                    var rightAlignX = inspResult.RightAlignX;
+                    string message = string.Format("Right AlignX Inspection NG !!! Tab_{0} / Fpc_{1}, Panel_{2}", tab.Index, rightAlignX.Fpc.Judgement, rightAlignX.Panel.Judgement);
+                    Logger.Debug(LogType.Inspection, message);
+                }
 
-            inspResult.RightAlignY = algorithmTool.RunMainRightAlignY(inspTab.MergeCogImage, tab, fpcTheta, panelTheta, judgementY);
-            if (inspResult.IsRightAlignYGood() == false)
+                inspResult.RightAlignY = algorithmTool.RunMainRightAlignY(inspTab.MergeCogImage, tab, fpcTheta, panelTheta, judgementY);
+                if (inspResult.IsRightAlignYGood() == false)
+                {
+                    var rightAlignY = inspResult.RightAlignY;
+                    string message = string.Format("Right AlignY Inspection NG !!! Tab_{0} / Fpc_{1}, Panel_{2}", tab.Index, rightAlignY.Fpc.Judgement, rightAlignY.Panel.Judgement);
+                    Logger.Debug(LogType.Inspection, message);
+                }
+            }
+            else
             {
-                var rightAlignY = inspResult.RightAlignY;
-                string message = string.Format("Right AlignY Inspection NG !!! Tab_{0} / Fpc_{1}, Panel_{2}", tab.Index, rightAlignY.Fpc.Judgement, rightAlignY.Panel.Judgement);
-                Logger.Debug(LogType.Inspection, message);
+                inspResult.RightAlignX = new AlignResult();
+                inspResult.RightAlignY = new AlignResult();
             }
             #endregion
 
             #region Center Align
+            // EnableAlign false 일때 구조 생각
             inspResult.CenterX = Math.Abs(inspResult.LeftAlignX.ResultValue - inspResult.RightAlignX.ResultValue);
             #endregion
 
+            if (AppsConfig.Instance().Operation.EnableAkkon)
+            {
+                var roiList = tab.AkkonParam.GetAkkonROIList();
+                var akkonResult = AkkonAlgorithm.Run(inspTab.MergeMatImage, roiList, tab.AkkonParam.AkkonAlgoritmParam);
 
-            var roiList = tab.AkkonParam.GetAkkonROIList();
-            var akkonResult = AkkonAlgorithm.Run(inspTab.MergeMatImage, roiList, tab.AkkonParam.AkkonAlgoritmParam);
-
-            inspResult.AkkonResultList.AddRange(akkonResult);
+                inspResult.AkkonResultList.AddRange(akkonResult);
+            }
             AppsInspResult.TabResultList.Add(inspResult);
 
             sw.Stop();
@@ -406,9 +428,6 @@ namespace ATT.Core
 
         private void SeqTaskLoop()
         {
-            //ICogImage cogImage = Jastech.Framework.Imaging.VisionPro.CogImageHelper.Load(@"D:\Tab1.bmp");
-
-         
             var inspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
             if (inspModel == null)
                 return;
@@ -522,6 +541,7 @@ namespace ATT.Core
                     break;
 
                 case SeqStep.SEQ_UI_RESULT_UPDATE:
+   
                     GetAkkonResultImage();
                     UpdateDailyInfo(AppsInspResult);
                     SystemManager.Instance().UpdateMainResult(AppsInspResult);
@@ -538,7 +558,7 @@ namespace ATT.Core
 
                 case SeqStep.SEQ_SAVE_IMAGE:
 
-                    //SaveImage(AppsInspResult);
+                    SaveImage(AppsInspResult);
 
                     SeqStep = SeqStep.SEQ_DELETE_DATA;
                     break;
@@ -730,10 +750,10 @@ namespace ATT.Core
             if (Directory.Exists(path) == false)
                 Directory.CreateDirectory(path);
 
-            SaveOrgImage(path, inspResult.TabResultList);
+            SaveResultImage(path, inspResult.TabResultList);
         }
 
-        private void SaveOrgImage(string resultPath, List<TabInspResult> insTabResultList)
+        private void SaveResultImage(string resultPath, List<TabInspResult> insTabResultList)
         {
             if (AppsConfig.Instance().Operation.VirtualMode)
                 return;
@@ -742,11 +762,45 @@ namespace ATT.Core
             if (Directory.Exists(path) == false)
                 Directory.CreateDirectory(path);
 
+            string okExtension = ".bmp";
+
+            if(AppsConfig.Instance().Operation.ExtensionOKImage == ImageExtension.Bmp)
+                okExtension = ".bmp";
+            else if (AppsConfig.Instance().Operation.ExtensionOKImage == ImageExtension.Jpg)
+                okExtension = ".jpg";
+            else if (AppsConfig.Instance().Operation.ExtensionOKImage == ImageExtension.Png)
+                okExtension = ".png";
+
+            string ngExtension = ".bmp";
+
+            if (AppsConfig.Instance().Operation.ExtensionNGImage == ImageExtension.Bmp)
+                ngExtension = ".bmp";
+            else if (AppsConfig.Instance().Operation.ExtensionNGImage == ImageExtension.Jpg)
+                ngExtension = ".jpg";
+            else if (AppsConfig.Instance().Operation.ExtensionNGImage == ImageExtension.Png)
+                ngExtension = ".png";
+
+
             foreach (var result in insTabResultList)
             {
-                string imageName = "Tab_" + result.TabNo.ToString() + ".bmp";
-                string imagePath = Path.Combine(path, imageName);
-                result.Image.Save(imagePath);
+                if (result.Judgement == Judgement.OK)
+                {
+                    if(AppsConfig.Instance().Operation.SaveImageOK)
+                    {
+                        string imageName = "Tab_" + result.TabNo.ToString() +"_OK_" + okExtension;
+                        string imagePath = Path.Combine(path, imageName);
+                        result.Image.Save(imagePath);
+                    }
+                }
+                else
+                {
+                    if (AppsConfig.Instance().Operation.SaveImageNG)
+                    {
+                        string imageName = "Tab_" + result.TabNo.ToString() + "_NG_" + ngExtension;
+                        string imagePath = Path.Combine(path, imageName);
+                        result.Image.Save(imagePath);
+                    }
+                }
             }
         }
 
