@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             this.pnlPosition = new System.Windows.Forms.Panel();
+            this.lblTest = new System.Windows.Forms.Label();
             this.lblRight = new System.Windows.Forms.Label();
             this.label8 = new System.Windows.Forms.Label();
             this.lblRightSub4 = new System.Windows.Forms.Label();
@@ -46,7 +47,6 @@
             this.lblParameter = new System.Windows.Forms.Label();
             this.tlpPattern = new System.Windows.Forms.TableLayoutPanel();
             this.pnlParam = new System.Windows.Forms.Panel();
-            this.lblTest = new System.Windows.Forms.Label();
             this.pnlPosition.SuspendLayout();
             this.tlpPattern.SuspendLayout();
             this.SuspendLayout();
@@ -71,8 +71,21 @@
             this.pnlPosition.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pnlPosition.Location = new System.Drawing.Point(3, 35);
             this.pnlPosition.Name = "pnlPosition";
-            this.pnlPosition.Size = new System.Drawing.Size(679, 294);
+            this.pnlPosition.Size = new System.Drawing.Size(800, 294);
             this.pnlPosition.TabIndex = 7;
+            // 
+            // lblTest
+            // 
+            this.lblTest.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblTest.Font = new System.Drawing.Font("맑은 고딕", 11.25F, System.Drawing.FontStyle.Bold);
+            this.lblTest.Location = new System.Drawing.Point(582, 97);
+            this.lblTest.Margin = new System.Windows.Forms.Padding(0);
+            this.lblTest.Name = "lblTest";
+            this.lblTest.Size = new System.Drawing.Size(87, 40);
+            this.lblTest.TabIndex = 12;
+            this.lblTest.Text = "Test";
+            this.lblTest.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblTest.Click += new System.EventHandler(this.lblTest_Click);
             // 
             // lblRight
             // 
@@ -262,7 +275,7 @@
             this.lblParameter.Location = new System.Drawing.Point(0, 0);
             this.lblParameter.Margin = new System.Windows.Forms.Padding(0);
             this.lblParameter.Name = "lblParameter";
-            this.lblParameter.Size = new System.Drawing.Size(685, 32);
+            this.lblParameter.Size = new System.Drawing.Size(806, 32);
             this.lblParameter.TabIndex = 0;
             this.lblParameter.Text = "Parameter";
             this.lblParameter.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -283,7 +296,7 @@
             this.tlpPattern.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 300F));
             this.tlpPattern.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tlpPattern.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tlpPattern.Size = new System.Drawing.Size(685, 685);
+            this.tlpPattern.Size = new System.Drawing.Size(806, 685);
             this.tlpPattern.TabIndex = 2;
             // 
             // pnlParam
@@ -291,21 +304,8 @@
             this.pnlParam.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pnlParam.Location = new System.Drawing.Point(3, 335);
             this.pnlParam.Name = "pnlParam";
-            this.pnlParam.Size = new System.Drawing.Size(679, 347);
+            this.pnlParam.Size = new System.Drawing.Size(800, 347);
             this.pnlParam.TabIndex = 8;
-            // 
-            // lblTest
-            // 
-            this.lblTest.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lblTest.Font = new System.Drawing.Font("맑은 고딕", 11.25F, System.Drawing.FontStyle.Bold);
-            this.lblTest.Location = new System.Drawing.Point(592, 216);
-            this.lblTest.Margin = new System.Windows.Forms.Padding(0);
-            this.lblTest.Name = "lblTest";
-            this.lblTest.Size = new System.Drawing.Size(87, 40);
-            this.lblTest.TabIndex = 12;
-            this.lblTest.Text = "Test";
-            this.lblTest.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.lblTest.Click += new System.EventHandler(this.lblTest_Click);
             // 
             // MarkControl
             // 
@@ -316,7 +316,7 @@
             this.Font = new System.Drawing.Font("맑은 고딕", 11.25F, System.Drawing.FontStyle.Bold);
             this.ForeColor = System.Drawing.Color.White;
             this.Name = "MarkControl";
-            this.Size = new System.Drawing.Size(685, 685);
+            this.Size = new System.Drawing.Size(806, 685);
             this.Load += new System.EventHandler(this.MarkControl_Load);
             this.pnlPosition.ResumeLayout(false);
             this.tlpPattern.ResumeLayout(false);

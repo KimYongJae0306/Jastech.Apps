@@ -67,7 +67,13 @@ namespace Jastech.Apps.Winform.UI.Controls
         {
             ParamControl.Dock = DockStyle.Fill;
             ParamControl.GetOriginImageHandler += PatternControl_GetOriginImageHandler;
+            ParamControl.TestActionEvent += PatternControl_TestActionEvent;
             pnlParam.Controls.Add(ParamControl);
+        }
+
+        private void PatternControl_TestActionEvent()
+        {
+            Inspection();
         }
 
         private ICogImage PatternControl_GetOriginImageHandler()

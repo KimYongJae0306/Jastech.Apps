@@ -41,17 +41,16 @@
             this.lblLeftFPCY = new System.Windows.Forms.Label();
             this.lblLeftPanelY = new System.Windows.Forms.Label();
             this.lblLeftPanelX = new System.Windows.Forms.Label();
-            this.chkUseTracking = new System.Windows.Forms.CheckBox();
-            this.tlpParams = new System.Windows.Forms.TableLayoutPanel();
-            this.pnlCaliperParam = new System.Windows.Forms.Panel();
             this.pnlLeadParam = new System.Windows.Forms.Panel();
-            this.lblLeadCount = new System.Windows.Forms.Label();
             this.lblLead = new System.Windows.Forms.Label();
+            this.lblLeadCount = new System.Windows.Forms.Label();
             this.lblApply = new System.Windows.Forms.Label();
+            this.pnlCaliperParam = new System.Windows.Forms.Panel();
+            this.tlpParams = new System.Windows.Forms.TableLayoutPanel();
             this.tlpAlign.SuspendLayout();
             this.pnlPosition.SuspendLayout();
-            this.tlpParams.SuspendLayout();
             this.pnlLeadParam.SuspendLayout();
+            this.tlpParams.SuspendLayout();
             this.SuspendLayout();
             // 
             // tlpAlign
@@ -60,19 +59,16 @@
             this.tlpAlign.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tlpAlign.Controls.Add(this.lblParameter, 0, 0);
             this.tlpAlign.Controls.Add(this.pnlPosition, 0, 1);
-            this.tlpAlign.Controls.Add(this.chkUseTracking, 0, 3);
             this.tlpAlign.Controls.Add(this.tlpParams, 0, 2);
             this.tlpAlign.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tlpAlign.Location = new System.Drawing.Point(0, 0);
             this.tlpAlign.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.tlpAlign.Name = "tlpAlign";
-            this.tlpAlign.RowCount = 5;
+            this.tlpAlign.RowCount = 4;
             this.tlpAlign.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 32F));
             this.tlpAlign.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 120F));
-            this.tlpAlign.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 300F));
-            this.tlpAlign.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 100F));
+            this.tlpAlign.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 400F));
             this.tlpAlign.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tlpAlign.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tlpAlign.Size = new System.Drawing.Size(685, 685);
             this.tlpAlign.TabIndex = 1;
             // 
@@ -225,44 +221,6 @@
             this.lblLeftPanelX.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.lblLeftPanelX.Click += new System.EventHandler(this.lblLeftPanelX_Click);
             // 
-            // chkUseTracking
-            // 
-            this.chkUseTracking.Appearance = System.Windows.Forms.Appearance.Button;
-            this.chkUseTracking.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
-            this.chkUseTracking.Location = new System.Drawing.Point(3, 455);
-            this.chkUseTracking.Name = "chkUseTracking";
-            this.chkUseTracking.Size = new System.Drawing.Size(214, 53);
-            this.chkUseTracking.TabIndex = 13;
-            this.chkUseTracking.Text = "ROI Tracking : UNUSE";
-            this.chkUseTracking.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.chkUseTracking.UseVisualStyleBackColor = false;
-            this.chkUseTracking.CheckedChanged += new System.EventHandler(this.chkUseTracking_CheckedChanged);
-            // 
-            // tlpParams
-            // 
-            this.tlpParams.ColumnCount = 1;
-            this.tlpParams.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tlpParams.Controls.Add(this.pnlCaliperParam, 0, 1);
-            this.tlpParams.Controls.Add(this.pnlLeadParam, 0, 0);
-            this.tlpParams.Location = new System.Drawing.Point(0, 152);
-            this.tlpParams.Margin = new System.Windows.Forms.Padding(0);
-            this.tlpParams.Name = "tlpParams";
-            this.tlpParams.RowCount = 2;
-            this.tlpParams.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 60F));
-            this.tlpParams.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tlpParams.Size = new System.Drawing.Size(666, 265);
-            this.tlpParams.TabIndex = 25;
-            // 
-            // pnlCaliperParam
-            // 
-            this.pnlCaliperParam.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pnlCaliperParam.Location = new System.Drawing.Point(0, 60);
-            this.pnlCaliperParam.Margin = new System.Windows.Forms.Padding(0);
-            this.pnlCaliperParam.Name = "pnlCaliperParam";
-            this.pnlCaliperParam.Padding = new System.Windows.Forms.Padding(4);
-            this.pnlCaliperParam.Size = new System.Drawing.Size(666, 205);
-            this.pnlCaliperParam.TabIndex = 15;
-            // 
             // pnlLeadParam
             // 
             this.pnlLeadParam.Controls.Add(this.lblApply);
@@ -272,8 +230,19 @@
             this.pnlLeadParam.Location = new System.Drawing.Point(0, 0);
             this.pnlLeadParam.Margin = new System.Windows.Forms.Padding(0);
             this.pnlLeadParam.Name = "pnlLeadParam";
-            this.pnlLeadParam.Size = new System.Drawing.Size(666, 60);
+            this.pnlLeadParam.Size = new System.Drawing.Size(685, 60);
             this.pnlLeadParam.TabIndex = 16;
+            // 
+            // lblLead
+            // 
+            this.lblLead.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblLead.Location = new System.Drawing.Point(5, 10);
+            this.lblLead.Margin = new System.Windows.Forms.Padding(0);
+            this.lblLead.Name = "lblLead";
+            this.lblLead.Size = new System.Drawing.Size(200, 40);
+            this.lblLead.TabIndex = 1;
+            this.lblLead.Text = "Lead Count";
+            this.lblLead.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // lblLeadCount
             // 
@@ -287,17 +256,6 @@
             this.lblLeadCount.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.lblLeadCount.Click += new System.EventHandler(this.lblLeadCount_Click);
             // 
-            // lblLead
-            // 
-            this.lblLead.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lblLead.Location = new System.Drawing.Point(5, 10);
-            this.lblLead.Margin = new System.Windows.Forms.Padding(0);
-            this.lblLead.Name = "lblLead";
-            this.lblLead.Size = new System.Drawing.Size(200, 40);
-            this.lblLead.TabIndex = 1;
-            this.lblLead.Text = "Lead Count";
-            this.lblLead.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
             // lblApply
             // 
             this.lblApply.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
@@ -309,6 +267,32 @@
             this.lblApply.Text = "Apply";
             this.lblApply.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.lblApply.Click += new System.EventHandler(this.lblApply_Click);
+            // 
+            // pnlCaliperParam
+            // 
+            this.pnlCaliperParam.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pnlCaliperParam.Location = new System.Drawing.Point(0, 60);
+            this.pnlCaliperParam.Margin = new System.Windows.Forms.Padding(0);
+            this.pnlCaliperParam.Name = "pnlCaliperParam";
+            this.pnlCaliperParam.Padding = new System.Windows.Forms.Padding(4);
+            this.pnlCaliperParam.Size = new System.Drawing.Size(685, 340);
+            this.pnlCaliperParam.TabIndex = 15;
+            // 
+            // tlpParams
+            // 
+            this.tlpParams.ColumnCount = 1;
+            this.tlpParams.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tlpParams.Controls.Add(this.pnlCaliperParam, 0, 1);
+            this.tlpParams.Controls.Add(this.pnlLeadParam, 0, 0);
+            this.tlpParams.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tlpParams.Location = new System.Drawing.Point(0, 152);
+            this.tlpParams.Margin = new System.Windows.Forms.Padding(0);
+            this.tlpParams.Name = "tlpParams";
+            this.tlpParams.RowCount = 2;
+            this.tlpParams.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 60F));
+            this.tlpParams.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tlpParams.Size = new System.Drawing.Size(685, 400);
+            this.tlpParams.TabIndex = 25;
             // 
             // AlignControl
             // 
@@ -324,8 +308,8 @@
             this.Load += new System.EventHandler(this.AlignControl_Load);
             this.tlpAlign.ResumeLayout(false);
             this.pnlPosition.ResumeLayout(false);
-            this.tlpParams.ResumeLayout(false);
             this.pnlLeadParam.ResumeLayout(false);
+            this.tlpParams.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -334,7 +318,6 @@
 
         private System.Windows.Forms.TableLayoutPanel tlpAlign;
         private System.Windows.Forms.Label lblParameter;
-        private System.Windows.Forms.CheckBox chkUseTracking;
         private System.Windows.Forms.Label lblLeftFPCX;
         private System.Windows.Forms.Label lblLeftFPCY;
         private System.Windows.Forms.Label lblLeftPanelX;
@@ -346,11 +329,11 @@
         private System.Windows.Forms.Label lblLeft;
         private System.Windows.Forms.Label lblRight;
         private System.Windows.Forms.Panel pnlPosition;
-        private System.Windows.Forms.Panel pnlCaliperParam;
         private System.Windows.Forms.TableLayoutPanel tlpParams;
+        private System.Windows.Forms.Panel pnlCaliperParam;
         private System.Windows.Forms.Panel pnlLeadParam;
+        private System.Windows.Forms.Label lblApply;
         private System.Windows.Forms.Label lblLeadCount;
         private System.Windows.Forms.Label lblLead;
-        private System.Windows.Forms.Label lblApply;
     }
 }

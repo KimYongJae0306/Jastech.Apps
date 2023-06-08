@@ -74,7 +74,13 @@ namespace Jastech.Apps.Winform.UI.Controls
         {
             CogCaliperParamControl.Dock = DockStyle.Fill;
             CogCaliperParamControl.GetOriginImageHandler += AlignControl_GetOriginImageHandler;
+            CogCaliperParamControl.TestActionEvent += AlignControl_TestActionEvent;
             pnlCaliperParam.Controls.Add(CogCaliperParamControl);
+        }
+
+        private void AlignControl_TestActionEvent()
+        {
+            Inspection();
         }
 
         private void InitializeUI()
@@ -118,20 +124,6 @@ namespace Jastech.Apps.Winform.UI.Controls
             lblLeadCount.Text = alignParam.LeadCount.ToString();
 
             DrawROI();
-        }
-
-        private void chkUseTracking_CheckedChanged(object sender, EventArgs e)
-        {
-            if (chkUseTracking.Checked)
-            {
-                chkUseTracking.Text = "ROI Tracking : USE";
-                chkUseTracking.BackColor = Color.DeepSkyBlue;
-            }
-            else
-            {
-                chkUseTracking.Text = "ROI Tracking : UNUSE";
-                chkUseTracking.BackColor = Color.White;
-            }
         }
 
         private void lblLeftFPCX_Click(object sender, EventArgs e)
@@ -286,6 +278,9 @@ namespace Jastech.Apps.Winform.UI.Controls
             var currentParam = CogCaliperParamControl.GetCurrentParam();
 
             if (display == null || currentParam == null || CurrentTab == null)
+                return;
+
+            if (display.GetImage() == null)
                 return;
 
             var param = CurrentTab.GetAlignParam(CurrentAlignName);
