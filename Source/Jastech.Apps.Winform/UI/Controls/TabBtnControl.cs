@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Jastech.Framework.Imaging.Result;
 
 namespace Jastech.Apps.Winform.UI.Controls
 {
@@ -51,6 +52,24 @@ namespace Jastech.Apps.Winform.UI.Controls
         private void btnTab_Click(object sender, EventArgs e)
         {
             UpdateData();
+        }
+
+        public void SetResult(Judgement judgement)
+        {
+            if (judgement == Judgement.OK)
+                btnTab.BackColor = Color.FromArgb(52, 52, 52);
+            else
+                btnTab.BackColor = Color.Red;
+        }
+
+        public void SetButtonClick()
+        {
+            btnTab.Text = "*TAB " + (TabIndex + 1).ToString();
+        }
+
+        public void SetButtonClickNone()
+        {
+            btnTab.Text = "TAB " + (TabIndex + 1).ToString();
         }
         #endregion
     }

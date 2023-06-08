@@ -37,8 +37,9 @@
             this.btnTab.Font = new System.Drawing.Font("맑은 고딕", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.btnTab.ForeColor = System.Drawing.Color.White;
             this.btnTab.Location = new System.Drawing.Point(0, 0);
+            this.btnTab.Margin = new System.Windows.Forms.Padding(0);
             this.btnTab.Name = "btnTab";
-            this.btnTab.Size = new System.Drawing.Size(186, 67);
+            this.btnTab.Size = new System.Drawing.Size(183, 79);
             this.btnTab.TabIndex = 0;
             this.btnTab.Text = "button1";
             this.btnTab.UseVisualStyleBackColor = false;
@@ -46,12 +47,13 @@
             // 
             // TabBtnControl
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
+            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
             this.Controls.Add(this.btnTab);
             this.Margin = new System.Windows.Forms.Padding(0);
             this.Name = "TabBtnControl";
-            this.Size = new System.Drawing.Size(186, 67);
+            this.Size = new System.Drawing.Size(183, 79);
             this.Load += new System.EventHandler(this.TabBtnControl_Load);
             this.ResumeLayout(false);
 

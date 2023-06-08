@@ -213,13 +213,13 @@ namespace AkkonTester.UI.Pages
             txtThresholdWeight.Text = param.ImageFilterParam.Weight.ToString();
 
             // Judgement
-            txtMinArea.Text = param.ResultFilterParam.MinArea.ToString();
-            txtMaxArea.Text = param.ResultFilterParam.MaxArea.ToString();
+            txtMinArea.Text = param.ResultFilterParam.MinArea_um.ToString();
+            txtMaxArea.Text = param.ResultFilterParam.MaxArea_um.ToString();
             txtAkkonStrength.Text = param.ResultFilterParam.AkkonStrength.ToString();
             txtAkkonScaleFactor.Text = param.ResultFilterParam.AkkonStrengthScaleFactor.ToString();
 
-            txtLeadLengthX.Text = param.JudgementParam.LengthX.ToString();
-            txtLeadLengthY.Text = param.JudgementParam.LengthY.ToString();
+            txtLeadLengthX.Text = param.JudgementParam.LengthX_um.ToString();
+            txtLeadLengthY.Text = param.JudgementParam.LengthY_um.ToString();
             txtLeadStdDev.Text = param.JudgementParam.LeadStdDev.ToString();
 
             // Draw Options
@@ -585,13 +585,13 @@ namespace AkkonTester.UI.Pages
             param.ImageFilterParam.Mode = (AkkonThMode)cbxThresholdMode.SelectedIndex;
             param.ImageFilterParam.Weight = Convert.ToDouble(txtThresholdWeight.Text);
 
-            param.ResultFilterParam.MinArea = Convert.ToDouble(txtMinArea.Text);
-            param.ResultFilterParam.MaxArea = Convert.ToDouble(txtMaxArea.Text);
+            param.ResultFilterParam.MinArea_um = Convert.ToDouble(txtMinArea.Text);
+            param.ResultFilterParam.MaxArea_um = Convert.ToDouble(txtMaxArea.Text);
             param.ResultFilterParam.AkkonStrength = Convert.ToDouble(txtAkkonStrength.Text);
             param.ResultFilterParam.AkkonStrengthScaleFactor = Convert.ToDouble(txtAkkonScaleFactor.Text);
 
-            param.JudgementParam.LengthX = Convert.ToDouble(txtLeadLengthX.Text);
-            param.JudgementParam.LengthY = Convert.ToDouble(txtLeadLengthY.Text);
+            param.JudgementParam.LengthX_um = Convert.ToDouble(txtLeadLengthX.Text);
+            param.JudgementParam.LengthY_um = Convert.ToDouble(txtLeadLengthY.Text);
             param.JudgementParam.LeadStdDev = Convert.ToDouble(txtLeadStdDev.Text);
 
             param.DrawOption.ContainLeadCount = ckbContainLeadCount.Checked;

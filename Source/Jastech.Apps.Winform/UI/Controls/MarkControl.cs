@@ -341,6 +341,10 @@ namespace Jastech.Apps.Winform.UI.Controls
             if (display == null || currentParam == null)
                 return;
 
+            ICogImage cogImage = display.GetImage();
+            if (cogImage == null)
+                return;
+
             if (currentParam.IsTrained() == false)
             {
                 MessageConfirmForm form = new MessageConfirmForm();
@@ -349,12 +353,9 @@ namespace Jastech.Apps.Winform.UI.Controls
                 return;
             }
             VisionProPatternMatchingParam inspParam = currentParam.DeepCopy();
-            ICogImage cogImage = display.GetImage();
             ICogImage copyCogImage = cogImage.CopyBase(CogImageCopyModeConstants.CopyPixels);
 
             VisionProPatternMatchingResult result = Algorithm.RunPatternMatch(copyCogImage, inspParam);
-            //result.DeepCopy();
-            //UpdateGridResult(result);
 
             if (result.MatchPosList.Count > 0)
             {

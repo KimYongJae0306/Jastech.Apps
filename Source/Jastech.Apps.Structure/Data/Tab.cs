@@ -19,6 +19,9 @@ namespace Jastech.Apps.Structure.Data
         public int StageIndex { get; set; }
 
         [JsonProperty]
+        public AlignSpec AlignSpec { get; set; } = new AlignSpec();
+
+        [JsonProperty]
         public List<AlignParam> AlignParamList { get; set; } = new List<AlignParam>();
 
         [JsonProperty]
@@ -103,5 +106,20 @@ namespace Jastech.Apps.Structure.Data
         {
             AkkonParam.AdjustGroupCount(newGroupCount);
         }
+    }
+
+    public class AlignSpec
+    {
+        [JsonProperty]
+        public double LeftSpecX_um { get; set; } = 0.5;
+
+        [JsonProperty]
+        public double LeftSpecY_um { get; set; } = 1;
+
+        [JsonProperty]
+        public double RightSpecX_um { get; set; } = 0.5;
+
+        [JsonProperty]
+        public double RightSpecY_um { get; set; } = 1;
     }
 }

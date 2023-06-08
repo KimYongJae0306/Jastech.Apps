@@ -8,7 +8,6 @@ using Jastech.Apps.Winform.Service;
 using Jastech.Apps.Winform.Settings;
 using Jastech.Apps.Winform.UI.Forms;
 using Jastech.Framework.Config;
-using Jastech.Framework.Macron.Akkon;
 using Jastech.Framework.Matrox;
 using Jastech.Framework.Structure;
 using Jastech.Framework.Users;
@@ -181,7 +180,12 @@ namespace ATT
         private void TeachPage_Click(object sender, EventArgs e)
         {
             if (ModelManager.Instance().CurrentModel == null)
+            {
+                MessageConfirmForm form = new MessageConfirmForm();
+                form.Message = "Current Model is null.";
+                form.ShowDialog();
                 return;
+            }
 
             SetSelectLabel(sender);
             SetSelectPage(selectedControl: TeachingPageControl);

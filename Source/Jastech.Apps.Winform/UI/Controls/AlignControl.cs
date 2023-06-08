@@ -24,6 +24,7 @@ using Jastech.Framework.Winform.Helper;
 using Jastech.Framework.Winform.Controls;
 using static Jastech.Framework.Device.Motions.AxisMovingParam;
 using System.Diagnostics;
+using Jastech.Framework.Device.Cameras;
 
 namespace Jastech.Apps.Winform.UI.Controls
 {
@@ -47,7 +48,9 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         private List<VisionProCaliperParam> CaliperList { get; set; } = null;
 
-        private AlgorithmTool Algorithm = new AlgorithmTool();
+        private MainAlgorithmTool AlgorithmTool = new MainAlgorithmTool();
+
+        public double Resolution_um { get; set; } = 1.0;
         #endregion
 
         #region 이벤트
@@ -122,6 +125,12 @@ namespace Jastech.Apps.Winform.UI.Controls
             var alignParam = CurrentTab.GetAlignParam(alignName);
             CogCaliperParamControl.UpdateData(alignParam.CaliperParams);
             lblLeadCount.Text = alignParam.LeadCount.ToString();
+
+            lblLeftAlignSpecX.Text = CurrentTab.AlignSpec.LeftSpecX_um.ToString();
+            lblLeftAlignSpecY.Text = CurrentTab.AlignSpec.LeftSpecY_um.ToString();
+
+            lblRightAlignSpecX.Text = CurrentTab.AlignSpec.RightSpecX_um.ToString();
+            lblRightAlignSpecY.Text = CurrentTab.AlignSpec.RightSpecY_um.ToString();
 
             DrawROI();
         }
@@ -293,9 +302,9 @@ namespace Jastech.Apps.Winform.UI.Controls
             VisionProCaliperParam inspParam = currentParam.DeepCopy();
 
             if (CurrentAlignName.ToString().Contains("X"))
-                result = Algorithm.RunAlignX(copyCogImage, inspParam, param.LeadCount);
+                result = AlgorithmTool.RunAlignX(copyCogImage, inspParam, param.LeadCount);
             else
-                result = Algorithm.RunAlignY(copyCogImage, inspParam);
+                result = AlgorithmTool.RunAlignY(copyCogImage, inspParam);
 
             if (result.Judgement == Judgement.FAIL)
             {
@@ -423,6 +432,152 @@ namespace Jastech.Apps.Winform.UI.Controls
             currentParam.CaliperTool.Region = roi;
             DrawROI();
         }
+
+        private void lblLeftAlignSpecX_Click(object sender, EventArgs e)
+        {
+            double specX = KeyPadHelper.SetLabelDoubleData((Label)sender);
+
+            if (CurrentTab != null)
+                CurrentTab.AlignSpec.LeftSpecX_um = specX;
+        }
+
+        private void lblLeftAlignSpecY_Click(object sender, EventArgs e)
+        {
+            double specY = KeyPadHelper.SetLabelDoubleData((Label)sender);
+
+            if (CurrentTab != null)
+                CurrentTab.AlignSpec.LeftSpecY_um = specY;
+        }
         #endregion
+
+        private void lblRightAlignSpecX_Click(object sender, EventArgs e)
+        {
+            double specX = KeyPadHelper.SetLabelDoubleData((Label)sender);
+
+            if (CurrentTab != null)
+                CurrentTab.AlignSpec.RightSpecX_um = specX;
+        }
+
+        private void lblRightAlignSpecY_Click(object sender, EventArgs e)
+        {
+            double specY = KeyPadHelper.SetLabelDoubleData((Label)sender);
+
+            if (CurrentTab != null)
+                CurrentTab.AlignSpec.RightSpecY_um = specY;
+        }
+
+        public void Run()
+        {
+            var display = AppsTeachingUIManager.Instance().GetDisplay();
+
+            var currentParam = CogCaliperParamControl.GetCurrentParam();
+
+            if (display == null || currentParam == null || CurrentTab == null)
+                return;
+
+            if (display.GetImage() == null)
+                return;
+
+            var param = CurrentTab.GetAlignParam(CurrentAlignName);
+
+            ICogImage cogImage = display.GetImage();
+            double lx = RunLeftX(cogImage);
+            double ly = RunLeftY(cogImage);
+            double rx = RunRightX(cogImage);
+            double ry = RunRightY(cogImage);
+
+            if (lblLeftX_Value.Text == "-" || lblRightX_Value.Text == "-")
+                lblCx_Value.Text = "";
+            else
+            {
+                double cx = (lx + rx) / 2.0;
+                lblCx_Value.Text = cx.ToString("F2");
+            }
+        }
+
+        private double RunLeftX(ICogImage cogImage)
+        {
+            double judgementX = Resolution_um * CurrentTab.AlignSpec.LeftSpecX_um;
+
+            AlignResult alignResultLeftX = AlgorithmTool.RunMainLeftAlignX(cogImage, CurrentTab, 0, 0, judgementX);
+            double value_um = alignResultLeftX.ResultValue / Resolution_um;
+
+            lblLeftX_Judgement.Text = alignResultLeftX.Judgement.ToString();
+            if (alignResultLeftX.Judgement != Judgement.FAIL)
+            {
+                lblLeftX_Value.Text = value_um.ToString("F2");
+            }
+            else
+                lblLeftX_Value.Text = "-";
+
+            lblLeftX_FpcX.Text = alignResultLeftX.Fpc.Judgement.ToString();
+            lblLeftX_PanelX.Text = alignResultLeftX.Panel.Judgement.ToString();
+
+            return value_um;
+        }
+
+        private double RunLeftY(ICogImage cogImage)
+        {
+            double judgementY = Resolution_um * CurrentTab.AlignSpec.LeftSpecY_um;
+
+            AlignResult alignResultLeftY = AlgorithmTool.RunMainLeftAlignY(cogImage, CurrentTab, 0, 0, judgementY);
+
+            lblLeftY_Judgement.Text = alignResultLeftY.Judgement.ToString();
+            double value_um = alignResultLeftY.ResultValue / Resolution_um;
+
+            if (alignResultLeftY.Judgement != Judgement.FAIL)
+            {
+                lblLeftY_Value.Text = value_um.ToString("F2");
+            }
+            else
+                lblLeftY_Value.Text = "-";
+
+            lblLeftY_FpcY.Text = alignResultLeftY.Fpc.Judgement.ToString();
+            lblLeftY_PanelY.Text = alignResultLeftY.Panel.Judgement.ToString();
+
+            return value_um;
+        }
+
+        private double RunRightX(ICogImage cogImage)
+        {
+            double judgementX = Resolution_um * CurrentTab.AlignSpec.RightSpecX_um;
+
+            AlignResult alignResultRightX = AlgorithmTool.RunMainRightAlignX(cogImage, CurrentTab, 0, 0, judgementX);
+            double value_um = alignResultRightX.ResultValue / Resolution_um;
+
+            lblRightX_Judgement.Text = alignResultRightX.Judgement.ToString();
+            if (alignResultRightX.Judgement != Judgement.FAIL)
+            {
+                lblRightX_Value.Text = value_um.ToString("F2");
+            }
+            else
+                lblRightX_Value.Text = "-";
+
+            lblRightX_FpcX.Text = alignResultRightX.Fpc.Judgement.ToString();
+            lblRightX_PanelX.Text = alignResultRightX.Panel.Judgement.ToString();
+
+            return value_um;
+        }
+
+        private double RunRightY(ICogImage cogImage)
+        {
+            double judgementY = Resolution_um * CurrentTab.AlignSpec.RightSpecY_um;
+
+            AlignResult alignResultRightY = AlgorithmTool.RunMainRightAlignY(cogImage, CurrentTab, 0, 0, judgementY);
+            double value_um = alignResultRightY.ResultValue / Resolution_um;
+
+            lblRightY_Judgement.Text = alignResultRightY.Judgement.ToString();
+            if (alignResultRightY.Judgement != Judgement.FAIL)
+            {
+                lblRightY_Value.Text = value_um.ToString("F2");
+            }
+            else
+                lblRightY_Value.Text = "-";
+
+            lblRightY_FpcY.Text = alignResultRightY.Fpc.Judgement.ToString();
+            lblRightY_PanelY.Text = alignResultRightY.Panel.Judgement.ToString();
+
+            return value_um;
+        }
     }
 }

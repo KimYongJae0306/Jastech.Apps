@@ -216,6 +216,10 @@ namespace ATT.UI.Forms
                 case DisplayType.Align:
                     btnAlign.BackColor = _selectedColor;
                     AlignControl.SetParams(CurrentTab);
+
+                    var camera = AppsLineCameraManager.Instance().GetLineCamera(CameraName).Camera;
+                    AlignControl.Resolution_um = camera.PixelResolution_um / camera.LensScale;
+
                     pnlTeach.Controls.Add(AlignControl);
                     break;
 
@@ -495,9 +499,9 @@ namespace ATT.UI.Forms
             if (_displayType == DisplayType.Mark)
                 MarkControl.Inspection();
             else if (_displayType == DisplayType.Align)
-                AlignControl.Inspection();
+                AlignControl.Run();// Inspection();
             else if (_displayType == DisplayType.Akkon)
-                AkkonControl.Inspection();
+                AkkonControl.Run();
         }
 
         private void lblAddROI_Click(object sender, EventArgs e)
@@ -520,6 +524,11 @@ namespace ATT.UI.Forms
                 AkkonControl.ShowROIJog();
         }
         #endregion
+
+        private void lblAlign_Click(object sender, EventArgs e)
+        {
+           
+        }
     }
 
     public enum DisplayType

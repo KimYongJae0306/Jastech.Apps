@@ -63,17 +63,13 @@ namespace Jastech.Apps.Winform.UI.Controls
         #region 속성
         public AlgorithmTool AlgorithmTool = new AlgorithmTool();
 
-        public MacronAkkonParamControl MacronAkkonParamControl { get; private set; } = null;
-
         public AkkonParamControl AkkonParamControl { get; private set; } = null;
 
         public Tab CurrentTab { get; private set; } = null;
 
         public AlgorithmTool Algorithm { get; private set; } = new AlgorithmTool();
 
-        public MacronAkkonAlgorithmTool MacronAkkonAlgorithm { get; set; } = null;
-
-        public AkkonAlgorithm AkkonAlgorithm { get; set; } = null;
+        public AkkonAlgorithm AkkonAlgorithm { get; set; } = new AkkonAlgorithm();
 
         public bool UserMaker { get; set; } = false;
 
@@ -98,38 +94,22 @@ namespace Jastech.Apps.Winform.UI.Controls
         private void AkkonControl_Load(object sender, EventArgs e)
         {
             _isLoading = true;
-
-            if (AppsConfig.Instance().AkkonAlgorithmType == AkkonAlgorithmType.Macron)
-                MacronAkkonAlgorithm = new MacronAkkonAlgorithmTool();
-            else
-                AkkonAlgorithm = new AkkonAlgorithm();
-
             AddControl();
             InitializeUI();
             InitializeGroupInfo(true);
 
             _isLoading = false;
-
           
             UpdateData();
         }
 
         private void AddControl()
         {
-            if(AppsConfig.Instance().AkkonAlgorithmType == AkkonAlgorithmType.Macron)
-            {
-                MacronAkkonParamControl = new MacronAkkonParamControl();
-                MacronAkkonParamControl.Dock = DockStyle.Fill;
-                pnlParam.Controls.Add(MacronAkkonParamControl);
-            }
-            else
-            {
-                AkkonParamControl = new AkkonParamControl();
-                AkkonParamControl.ViewerPath = System.IO.Directory.GetCurrentDirectory();
-                AkkonParamControl.Dock = DockStyle.Fill;
-                AkkonParamControl.UserMaker = UserMaker;
-                pnlParam.Controls.Add(AkkonParamControl);
-            }
+            AkkonParamControl = new AkkonParamControl();
+            AkkonParamControl.ViewerPath = System.IO.Directory.GetCurrentDirectory();
+            AkkonParamControl.Dock = DockStyle.Fill;
+            AkkonParamControl.UserMaker = UserMaker;
+            pnlParam.Controls.Add(AkkonParamControl);
         }
 
         private void InitializeUI()
@@ -137,20 +117,14 @@ namespace Jastech.Apps.Winform.UI.Controls
             _selectedColor = Color.FromArgb(104, 104, 104);
             _nonSelectedColor = Color.FromArgb(52, 52, 52);
 
-            if(AppsConfig.Instance().AkkonAlgorithmType == AkkonAlgorithmType.Macron)
-            {
-                dgvMacronAkkonResult.Dock = DockStyle.Fill;
-                dgvJastechAkkonResult.Visible = false;
-            }
-            else
-            {
-                dgvMacronAkkonResult.Visible = false;
-                dgvJastechAkkonResult.Dock = DockStyle.Fill;
-            }
+            dgvJastechAkkonResult.Dock = DockStyle.Fill;
             tlpnlGroup.Dock = DockStyle.Fill;
             pnlManual.Dock = DockStyle.Fill;
             pnlAuto.Dock = DockStyle.Fill;
 
+            pnlInfo.Controls.Add(dgvJastechAkkonResult);
+            pnlTeachingMode.Controls.Add(pnlManual);
+            pnlTeachingMode.Controls.Add(pnlAuto);
             ShowGroup();
 
             lblOrginalImage.BackColor = _selectedColor;
@@ -232,22 +206,12 @@ namespace Jastech.Apps.Winform.UI.Controls
 
             UpdateROIDataGridView(CurrentTab.GetAkkonGroup(groupNo).AkkonROIList);
 
-            if(AppsConfig.Instance().AkkonAlgorithmType == AkkonAlgorithmType.Macron)
+            if (AkkonParamControl != null)
             {
-                if (MacronAkkonParamControl != null)
-                {
-                    MacronAkkonParamControl.SetParam(akkonParam.MacronAkkonParam);
-                    MacronAkkonParamControl.UpdateData();
-                }
+                AkkonParamControl.SetParam(akkonParam.AkkonAlgoritmParam);
+                AkkonParamControl.UpdateData();
             }
-            else
-            {
-                if (AkkonParamControl != null)
-                {
-                    AkkonParamControl.SetParam(akkonParam.AkkonAlgoritmParam);
-                    AkkonParamControl.UpdateData();
-                }
-            }
+
             DrawROI();
 
         }
@@ -275,21 +239,10 @@ namespace Jastech.Apps.Winform.UI.Controls
 
             UpdateROIDataGridView(groupParam.AkkonROIList);
 
-            if(AppsConfig.Instance().AkkonAlgorithmType == AkkonAlgorithmType.Macron)
+            if (AkkonParamControl != null)
             {
-                if (MacronAkkonParamControl != null)
-                {
-                    MacronAkkonParamControl.SetParam(akkonParam.MacronAkkonParam);
-                    MacronAkkonParamControl.UpdateData();
-                }
-            }
-            else
-            {
-                if (AkkonParamControl != null)
-                {
-                    AkkonParamControl.SetParam(akkonParam.AkkonAlgoritmParam);
-                    AkkonParamControl.UpdateData();
-                }
+                AkkonParamControl.SetParam(akkonParam.AkkonAlgoritmParam);
+                AkkonParamControl.UpdateData();
             }
 
             DrawROI();
@@ -437,7 +390,7 @@ namespace Jastech.Apps.Winform.UI.Controls
                 string rightBottom = item.RightBottomX.ToString("F2") + " , " + item.RightBottomY.ToString("F2");
 
                 dgvAkkonROI.Rows.Add(index.ToString(), leftTop, rightTop, leftBottom, rightBottom);
-
+                dgvAkkonROI.Rows[index].Selected = false;
                 index++;
             }
 
@@ -484,19 +437,25 @@ namespace Jastech.Apps.Winform.UI.Controls
 
             int count = 0;
             _cogRectAffineList.Clear();
+
+            bool isDrawLeadIndex = ckbDrawIndex.Checked;
             foreach (var roi in roiList)
             {
                 CogRectangleAffine rect = ConvertAkkonRoiToCogRectAffine(roi);
                 collect.Add(rect);
                 _cogRectAffineList.Add(rect);
 
-                CogGraphicLabel cogLabel = new CogGraphicLabel();
-                cogLabel.Color = CogColorConstants.Green;
-                cogLabel.Font = new Font("맑은 고딕", 20, FontStyle.Bold);
-                cogLabel.Text = count.ToString();
-                cogLabel.X = (rect.CornerOppositeX + rect.CornerYX) / 2;
-                cogLabel.Y = rect.CornerYY + 40;
-                collect.Add(cogLabel);
+                if(isDrawLeadIndex)
+                {
+                    CogGraphicLabel cogLabel = new CogGraphicLabel();
+                    cogLabel.Color = CogColorConstants.Green;
+                    cogLabel.Font = new Font("맑은 고딕", 20, FontStyle.Bold);
+                    cogLabel.Text = count.ToString();
+                    cogLabel.X = (rect.CornerOppositeX + rect.CornerYX) / 2;
+                    cogLabel.Y = rect.CornerYY + 40;
+                    collect.Add(cogLabel);
+                }
+               
                 count++;
             }
 
@@ -566,51 +525,6 @@ namespace Jastech.Apps.Winform.UI.Controls
             }
         }
 
-        private void UpdateResult(AkkonResult akkonResult)
-        {
-            int no = 0;
-            foreach (var lead in akkonResult.LeadResultList)
-            {
-                string[] row = { no.ToString(), lead.BlobCount.ToString(), lead.Length.ToString(), lead.LeadStdDev.ToString(), lead.IsGood.ToString() };
-                dgvMacronAkkonResult.Rows.Add(row);
-
-                no++;
-            }
-        }
-
-        private ICogImage GetResultImage(Mat mat, AkkonParam akkonParam, int stageNo, int tabNo, float resizeRatio)
-        {
-            double width = Math.Truncate(mat.Width * resizeRatio);
-            double height = Math.Truncate(mat.Height * resizeRatio);
-
-            Mat testMat = new Mat((int)height, (int)width, DepthType.Cv8U, 1);
-            
-            Mat resultMatImage = MacronAkkonAlgorithm.LastAkkonResultImage(testMat, akkonParam, stageNo, tabNo);
-
-            Mat matR = MatHelper.ColorChannelSprate(resultMatImage, MatHelper.ColorChannel.R);
-            Mat matG = MatHelper.ColorChannelSprate(resultMatImage, MatHelper.ColorChannel.G);
-            Mat matB = MatHelper.ColorChannelSprate(resultMatImage, MatHelper.ColorChannel.B);
-
-            byte[] dataR = new byte[matR.Width * matR.Height];
-            Marshal.Copy(matR.DataPointer, dataR, 0, matR.Width * matR.Height);
-
-            byte[] dataG = new byte[matG.Width * matG.Height];
-            Marshal.Copy(matG.DataPointer, dataG, 0, matG.Width * matG.Height);
-
-            byte[] dataB = new byte[matB.Width * matB.Height];
-            Marshal.Copy(matB.DataPointer, dataB, 0, matB.Width * matB.Height);
-
-            var cogImage = VisionProImageHelper.CovertImage(dataR, dataG, dataB, matB.Width, matB.Height);
-
-            testMat.Dispose();
-            resultMatImage.Dispose();
-            matR.Dispose();
-            matG.Dispose();
-            matB.Dispose();
-
-            return cogImage;
-        }
-
         private void lblGroup_Click(object sender, EventArgs e)
         {
             ShowGroup();
@@ -638,7 +552,6 @@ namespace Jastech.Apps.Winform.UI.Controls
             }
 
             lblResult.BackColor = _nonSelectedColor;
-            dgvMacronAkkonResult.Visible = false;
             dgvJastechAkkonResult.Visible = false;
 
             if (_cloneDirection == ROICloneDirection.Horizontal)
@@ -657,10 +570,7 @@ namespace Jastech.Apps.Winform.UI.Controls
         private void ShowResult()
         {
             lblResult.BackColor = _selectedColor;
-            if (AppsConfig.Instance().AkkonAlgorithmType == AkkonAlgorithmType.Macron)
-                dgvMacronAkkonResult.Visible = true;
-            else
-                dgvJastechAkkonResult.Visible = true;
+            dgvJastechAkkonResult.Visible = true;
 
             lblGroup.BackColor = _nonSelectedColor;
             tlpnlGroup.Visible = false;
@@ -871,11 +781,38 @@ namespace Jastech.Apps.Winform.UI.Controls
             
             int groupIndex = cbxGroupNumber.SelectedIndex;
             var group = CurrentTab.AkkonParam.GroupList[groupIndex];
+            _selectedIndexList = new List<int>();
 
-            foreach (DataGridViewRow row in dgvAkkonROI.Rows)
-                _cogRectAffineList[row.Index].Color = CogColorConstants.Blue;
+            for (int i = 0; i < dgvAkkonROI.Rows.Count; i++)
+            {
+                var row = dgvAkkonROI.Rows[i];
+                if(row.Selected)
+                {
+                    _selectedIndexList.Add(i);
+                    _cogRectAffineList[i].Color = CogColorConstants.DarkRed;
+                }
+                else
+                {
+                    _cogRectAffineList[row.Index].Color = CogColorConstants.Blue;
 
-            _cogRectAffineList[index].Color = CogColorConstants.DarkRed;
+                }
+            }
+            //foreach (DataGridViewRow row in dgvAkkonROI.Rows)
+            //{
+            //    if(row.Selected)
+            //    {
+            //        _selectedIndexList.Add(index);
+            //        _cogRectAffineList[index].Color = CogColorConstants.DarkRed;
+            //    }
+            //    else
+            //    {
+            //        _cogRectAffineList[row.Index].Color = CogColorConstants.Blue;
+            //    }
+            //    index++;
+            //}
+               
+
+          
 
             CogGraphicInteractiveCollection collect = new CogGraphicInteractiveCollection();
             foreach (var item in _cogRectAffineList)
@@ -1424,12 +1361,7 @@ namespace Jastech.Apps.Winform.UI.Controls
             return group;
         }
 
-        private void lblTest_Click(object sender, EventArgs e)
-        {
-            CropInspection();
-        }
-
-        public void Inspection()
+        public void Inspection(bool isDebug = true)
         {
             int groupIndex = cbxGroupNumber.SelectedIndex;
             if (groupIndex < 0 || CurrentTab == null)
@@ -1438,58 +1370,39 @@ namespace Jastech.Apps.Winform.UI.Controls
             Mat matImage = AppsTeachingUIManager.Instance().GetOriginMatImageBuffer(false);
             if (matImage == null)
                 return;
+
             AppsInspModel appsInspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
 
             var akkonParam = CurrentTab.AkkonParam;
             int akkonThreadCount = AppsConfig.Instance().AkkonThreadCount;
 
-            if(AppsConfig.Instance().AkkonAlgorithmType == AkkonAlgorithmType.Macron)
-            {
-                MacronAkkonParam macron = MacronAkkonParamControl.GetCurrentParam();
+            AkkonAlgoritmParam akkonAlgorithmParam = AkkonParamControl.GetCurrentParam();
+            var roiList = CurrentTab.AkkonParam.GetAkkonROIList();
+            var tabResult = AkkonAlgorithm.Run(matImage, roiList, akkonAlgorithmParam);
+            AkkonResult akkonResult = new AkkonResult();
 
-                float resizeRatio = AppsConfig.Instance().AkkonResizeRatio;
+            akkonResult.StageNo = CurrentTab.StageIndex;
+            akkonResult.TabNo = CurrentTab.Index;
 
-                macron.DrawOption.DrawResizeRatio = resizeRatio;
-                
-                int tabIndex = CurrentTab.Index;
-                var tabResults = MacronAkkonAlgorithm.RunAkkonForTeachingData(matImage, CurrentTab, appsInspModel.UnitCount, appsInspModel.TabCount, resizeRatio);
+            UpdateResult(tabResult);
 
-                dgvMacronAkkonResult.Rows.Clear();
-                UpdateResult(tabResults);
-
-                var resultImage = GetResultImage(matImage, CurrentTab.AkkonParam, CurrentTab.StageIndex, tabIndex, resizeRatio);
-
-                if (resultImage != null)
-                {
-                    lblOrginalImage.BackColor = _nonSelectedColor;
-                    lblResultImage.BackColor = _selectedColor;
-
-                    AppsTeachingUIManager.Instance().SetResultCogImage(resultImage);
-                    ClearDisplay();
-                }
-            }
+            Mat resultMat = null;
+            if (isDebug)
+                resultMat = GetDebugResultImage(matImage, tabResult, akkonAlgorithmParam);
             else
-            {
-                AkkonAlgoritmParam akkonAlgorithmParam = AkkonParamControl.GetCurrentParam();
-                var roiList = CurrentTab.AkkonParam.GetAkkonROIList();
-                var tabResult = AkkonAlgorithm.Run(matImage, roiList, akkonAlgorithmParam);
-                AkkonResult akkonResult = new AkkonResult();
+                resultMat = GetResultImage(matImage, tabResult, akkonAlgorithmParam);
 
-                akkonResult.StageNo = CurrentTab.StageIndex;
-                akkonResult.TabNo = CurrentTab.Index;
-                dgvMacronAkkonResult.Rows.Clear();
+            var cogImage = ConvertCogColorImage(resultMat);
+            AppsTeachingUIManager.Instance().SetResultCogImage(cogImage);
+            resultMat.Dispose();
+            ClearDisplay();
+            Console.WriteLine("Completed.");
 
-                UpdateResult(tabResult);
-                Mat resultMat = GetResultImage(matImage, tabResult, akkonAlgorithmParam);
-                var cogImage = ConvertCogColorImage(resultMat);
-                AppsTeachingUIManager.Instance().SetResultCogImage(cogImage);
-                resultMat.Dispose();
-                ClearDisplay();
-                Console.WriteLine("Completed.");
-            }
+            lblOrginalImage.BackColor = _nonSelectedColor;
+            lblResultImage.BackColor = _selectedColor;
         }
 
-        public Mat GetResultImage(Mat mat, List<AkkonBlob> resultList, AkkonAlgoritmParam AkkonParameters)
+        public Mat GetDebugResultImage(Mat mat, List<AkkonBlob> resultList, AkkonAlgoritmParam AkkonParameters)
         {
             if (mat == null)
                 return null;
@@ -1511,14 +1424,17 @@ namespace Jastech.Apps.Winform.UI.Controls
                 Point rightTop = new Point((int)lead.RightTopX + startPoint.X, (int)lead.RightTopY + startPoint.Y);
                 Point rightBottom = new Point((int)lead.RightBottomX + startPoint.X, (int)lead.RightBottomY + startPoint.Y);
 
+                MCvScalar redColor = new MCvScalar(50, 50, 230, 255);
+                MCvScalar greenColor = new MCvScalar(50, 230, 50, 255);
+
                 if (AkkonParameters.DrawOption.ContainLeadROI)
                 {
-                    CvInvoke.Line(colorMat, leftTop, leftBottom, new MCvScalar(50, 230, 50, 255), 1);
-                    CvInvoke.Line(colorMat, leftTop, rightTop, new MCvScalar(50, 230, 50, 255), 1);
-                    CvInvoke.Line(colorMat, rightTop, rightBottom, new MCvScalar(50, 230, 50, 255), 1);
-                    CvInvoke.Line(colorMat, rightBottom, leftBottom, new MCvScalar(50, 230, 50, 255), 1);
+                    CvInvoke.Line(colorMat, leftTop, leftBottom, greenColor, 1);
+                    CvInvoke.Line(colorMat, leftTop, rightTop, greenColor, 1);
+                    CvInvoke.Line(colorMat, rightTop, rightBottom, greenColor, 1);
+                    CvInvoke.Line(colorMat, rightBottom, leftBottom, greenColor, 1);
                 }
-
+            
                 foreach (var blob in result.BlobList)
                 {
                     Rectangle rectRect = new Rectangle();
@@ -1533,12 +1449,12 @@ namespace Jastech.Apps.Winform.UI.Controls
                     int size = blob.BoundingRect.Width * blob.BoundingRect.Height;
                     if (blob.IsPass)
                     {
-                        CvInvoke.Circle(colorMat, center, radius / 2, new MCvScalar(255), 1);
+                        CvInvoke.Circle(colorMat, center, radius / 2, greenColor, 1);
                     }
                     else
                     {
                         if (AkkonParameters.DrawOption.ContainNG)
-                            CvInvoke.Circle(colorMat, center, radius / 2, new MCvScalar(0), 1);
+                            CvInvoke.Circle(colorMat, center, radius / 2, redColor, 1);
                     }
 
                     if (AkkonParameters.DrawOption.ContainArea)
@@ -1547,7 +1463,7 @@ namespace Jastech.Apps.Winform.UI.Controls
                         {
                             int temp = (int)(radius / 2.0);
                             Point pt = new Point(center.X + temp, center.Y - temp);
-                            CvInvoke.PutText(colorMat, ((int)blob.Area).ToString(), pt, FontFace.HersheyScriptSimplex, 0.25, new MCvScalar(255, 255, 255));
+                            CvInvoke.PutText(colorMat, ((int)blob.Area).ToString(), pt, FontFace.HersheyScriptSimplex, 0.25, greenColor);
                         }
                     }
                     else
@@ -1558,7 +1474,7 @@ namespace Jastech.Apps.Winform.UI.Controls
                             {
                                 int temp = (int)(radius / 2.0);
                                 Point pt = new Point(center.X + temp, center.Y - temp);
-                                CvInvoke.PutText(colorMat, ((int)blob.Strength).ToString(), pt, FontFace.HersheyScriptSimplex, 0.25, new MCvScalar(255, 255, 255));
+                                CvInvoke.PutText(colorMat, ((int)blob.Strength).ToString(), pt, FontFace.HersheyScriptSimplex, 0.25, greenColor);
                             }
                         }
                     }
@@ -1586,60 +1502,74 @@ namespace Jastech.Apps.Winform.UI.Controls
             return colorMat;
         }
 
-        private void CropInspection()
+        public Mat GetResultImage(Mat mat, List<AkkonBlob> resultList, AkkonAlgoritmParam AkkonParameters)
         {
-            //int groupIndex = cbxGroupNumber.SelectedIndex;
-            //if (groupIndex < 0 || CurrentTab == null)
-            //    return;
+            if (mat == null)
+                return null;
 
-            //var akkonParam = CurrentTab.AkkonParam;
+            Mat resizeMat = new Mat();
+            Size newSize = new Size((int)(mat.Width * AkkonParameters.ImageFilterParam.ResizeRatio), (int)(mat.Height * AkkonParameters.ImageFilterParam.ResizeRatio));
+            CvInvoke.Resize(mat, resizeMat, newSize);
+            Mat colorMat = new Mat();
+            CvInvoke.CvtColor(resizeMat, colorMat, ColorConversion.Gray2Bgr);
+            resizeMat.Dispose();
 
-            //int akkonThreadCount = AppsConfig.Instance().AkkonThreadCount;
-            //akkonParam.MacronAkkonParam = MacronAkkonParamControl.GetCurrentParam();
+            foreach (var result in resultList)
+            {
+                var lead = result.Lead;
+                var startPoint = new Point((int)result.OffsetToWorldX, (int)result.OffsetToWorldY);
 
-            //Mat matImage = AppsTeachingUIManager.Instance().GetOriginMatImageBuffer(false);
-            //if (matImage == null)
-            //    return;
-
-            //MacronAkkonParam macron = CurrentTab.AkkonParam.MacronAkkonParam;
-            //float resizeRatio = 1.0f;
-            //if (macron.InspParam.PanelInfo == (int)TargetType.COG)
-            //    resizeRatio = 1.0f;
-            //else if (macron.InspParam.PanelInfo == (int)TargetType.COF)
-            //    resizeRatio = 0.5f;
-            //else if (macron.InspParam.PanelInfo == (int)TargetType.FOG)
-            //    resizeRatio = 0.6f;
-
-            //akkonParam.MacronAkkonParam.InspOption.InspResizeRatio = resizeRatio;
-            //akkonParam.MacronAkkonParam.DrawOption.DrawResizeRatio = resizeRatio;
-
-            //var roiList = akkonParam.GetAkkonROIList();
-            //var rect = GetContainInROI(roiList);
-
-            //Stopwatch cropSW = new Stopwatch();
-            //cropSW.Restart();
-
-            //Mat cropImage = MatHelper.CropRoi(matImage, rect);
             
-            //macron.SliceHeight = cropImage.Height;
-            //var tabResults = AkkonAlgorithm.RunCropAkkon(cropImage, new PointF(rect.X, rect.Y), akkonParam, CurrentTab.Index);
+                MCvScalar redColor = new MCvScalar(50, 50, 230, 255);
+                MCvScalar greenColor = new MCvScalar(50, 230, 50, 255);
 
-            //cropSW.Stop();
-            //Console.WriteLine("Crop : " + cropSW.ElapsedMilliseconds.ToString());
+            
+                foreach (var blob in result.BlobList)
+                {
+                    Rectangle rectRect = new Rectangle();
+                    rectRect.X = (int)(blob.BoundingRect.X + result.OffsetToWorldX + result.LeadOffsetX);
+                    rectRect.Y = (int)(blob.BoundingRect.Y + result.OffsetToWorldY + result.LeadOffsetY);
+                    rectRect.Width = blob.BoundingRect.Width;
+                    rectRect.Height = blob.BoundingRect.Height;
 
-            //dgvAkkonResult.Rows.Clear();
+                    Point center = new Point(rectRect.X + (rectRect.Width / 2), rectRect.Y + (rectRect.Height / 2));
+                    int radius = rectRect.Width > rectRect.Height ? rectRect.Width : rectRect.Height;
 
-            //UpdateResult(tabResults);
+                    int size = blob.BoundingRect.Width * blob.BoundingRect.Height;
+                    if (blob.IsPass)
+                        CvInvoke.Circle(colorMat, center, radius / 2, greenColor, 1);
+                }
 
-            //var resultImage = GetResultImage(cropImage, CurrentTab.AkkonParam, CurrentTab.StageIndex, CurrentTab.Index);
-            //if (resultImage != null)
-            //{
-            //    lblOrginalImage.BackColor = _nonSelectedColor;
-            //    lblResultImage.BackColor = _selectedColor;
+                string leadIndexString = result.LeadIndex.ToString();
+                string blobCountString = string.Format("[{0}]", result.DetectCount);
 
-            //    AppsTeachingUIManager.Instance().SetResultCogImage(resultImage);
-            //    ClearDisplay();
-            //}
+                Point leftTop = new Point((int)lead.LeftTopX + startPoint.X, (int)lead.LeftTopY + startPoint.Y);
+                Point leftBottom = new Point((int)lead.LeftBottomX + startPoint.X, (int)lead.LeftBottomY + startPoint.Y);
+                Point rightTop = new Point((int)lead.RightTopX + startPoint.X, (int)lead.RightTopY + startPoint.Y);
+                Point rightBottom = new Point((int)lead.RightBottomX + startPoint.X, (int)lead.RightBottomY + startPoint.Y);
+
+                Point centerPt = new Point((int)((leftBottom.X + rightBottom.X) / 2.0), leftBottom.Y);
+
+                int baseLine = 0;
+                Size textSize = CvInvoke.GetTextSize(leadIndexString, FontFace.HersheyComplex, 0.3, 1, ref baseLine);
+                int textX = centerPt.X - (textSize.Width / 2);
+                int textY = centerPt.Y + (baseLine / 2);
+                CvInvoke.PutText(colorMat, leadIndexString, new Point(textX, textY + 30), FontFace.HersheyComplex, 0.25, new MCvScalar(50, 230, 50, 255));
+
+                textSize = CvInvoke.GetTextSize(blobCountString, FontFace.HersheyComplex, 0.3, 1, ref baseLine);
+                textX = centerPt.X - (textSize.Width / 2);
+                textY = centerPt.Y + (baseLine / 2);
+                CvInvoke.PutText(colorMat, blobCountString, new Point(textX, textY + 60), FontFace.HersheyComplex, 0.25, new MCvScalar(50, 230, 50, 255));
+
+                if(result.DetectCount >= AkkonParameters.JudgementParam.AkkonCount)
+                {
+                    CvInvoke.Line(colorMat, leftTop, leftBottom, redColor, 1);
+                    CvInvoke.Line(colorMat, leftTop, rightTop, redColor, 1);
+                    CvInvoke.Line(colorMat, rightTop, rightBottom, redColor, 1);
+                    CvInvoke.Line(colorMat, rightBottom, leftBottom, redColor, 1);
+                }
+            }
+            return colorMat;
         }
 
         private Rectangle GetContainInROI(List<AkkonROI> akkonROIs)
@@ -1678,17 +1608,7 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         private void lblResultImage_Click(object sender, EventArgs e)
         {
-            var group = GetGroup();
-
-            for (int i = 0; i < group.AkkonROIList.Count(); i++)
-            {
-                AkkonROI roi = group.AkkonROIList[i];
-                roi.LeftTopY = roi.LeftTopY + 500;
-                roi.RightTopY = roi.RightTopY + 500;
-                //roi.CornerYY = roi.CornerYY
-            }
-            UpdateROIDataGridView(group.AkkonROIList);
-            //SetResultImageView();
+            SetResultImageView();
         }
 
         private void SetOrginImageView()
@@ -1811,6 +1731,20 @@ namespace Jastech.Apps.Winform.UI.Controls
 
             return cogImage;
         }
-    }
 
+        private void ckbDrawIndex_CheckedChanged(object sender, EventArgs e)
+        {
+            DrawROI();
+        }
+
+        private void lblTest_Click(object sender, EventArgs e)
+        {
+            Inspection(true);
+        }
+
+        public void Run()
+        {
+            Inspection(false);
+        }
+    }
 }

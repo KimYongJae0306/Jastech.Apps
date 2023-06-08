@@ -36,7 +36,7 @@
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.lblNext = new System.Windows.Forms.Label();
             this.lblPrev = new System.Windows.Forms.Label();
-            this.lblTest = new System.Windows.Forms.Label();
+            this.lblAlign = new System.Windows.Forms.Label();
             this.cbxTabList = new System.Windows.Forms.ComboBox();
             this.lblAddROI = new System.Windows.Forms.Label();
             this.lblInspection = new System.Windows.Forms.Label();
@@ -152,7 +152,7 @@
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 100F));
             this.tableLayoutPanel2.Controls.Add(this.lblNext, 0, 0);
             this.tableLayoutPanel2.Controls.Add(this.lblPrev, 0, 0);
-            this.tableLayoutPanel2.Controls.Add(this.lblTest, 7, 0);
+            this.tableLayoutPanel2.Controls.Add(this.lblAlign, 7, 0);
             this.tableLayoutPanel2.Controls.Add(this.cbxTabList, 0, 0);
             this.tableLayoutPanel2.Controls.Add(this.lblAddROI, 4, 0);
             this.tableLayoutPanel2.Controls.Add(this.lblInspection, 3, 0);
@@ -191,17 +191,18 @@
             this.lblPrev.TabIndex = 26;
             this.lblPrev.Click += new System.EventHandler(this.lblPrev_Click);
             // 
-            // lblTest
+            // lblAlign
             // 
-            this.lblTest.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lblTest.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblTest.Location = new System.Drawing.Point(662, 0);
-            this.lblTest.Margin = new System.Windows.Forms.Padding(0);
-            this.lblTest.Name = "lblTest";
-            this.lblTest.Size = new System.Drawing.Size(100, 50);
-            this.lblTest.TabIndex = 296;
-            this.lblTest.Text = "CropTest";
-            this.lblTest.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblAlign.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblAlign.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblAlign.Location = new System.Drawing.Point(662, 0);
+            this.lblAlign.Margin = new System.Windows.Forms.Padding(0);
+            this.lblAlign.Name = "lblAlign";
+            this.lblAlign.Size = new System.Drawing.Size(100, 50);
+            this.lblAlign.TabIndex = 296;
+            this.lblAlign.Text = "Align";
+            this.lblAlign.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblAlign.Click += new System.EventHandler(this.lblAlign_Click);
             // 
             // cbxTabList
             // 
@@ -563,7 +564,7 @@
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
         private System.Windows.Forms.Label lblNext;
         private System.Windows.Forms.Label lblPrev;
-        private System.Windows.Forms.Label lblTest;
+        private System.Windows.Forms.Label lblAlign;
         private System.Windows.Forms.ComboBox cbxTabList;
         private System.Windows.Forms.Label lblAddROI;
         private System.Windows.Forms.Label lblInspection;

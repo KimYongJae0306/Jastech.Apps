@@ -33,9 +33,6 @@ namespace Jastech.Apps.Winform.Settings
 
         #region 속성
         [JsonProperty]
-        public AkkonAlgorithmType AkkonAlgorithmType { get; set; } = AkkonAlgorithmType.Jastech;
-
-        [JsonProperty]
         public bool UseMaterialInfo { get; set; } = true;
 
         [JsonProperty]
@@ -46,6 +43,18 @@ namespace Jastech.Apps.Winform.Settings
 
         [JsonProperty]
         public float AkkonResizeRatio { get; set; } = 0.5f;
+
+        [JsonProperty]
+        public int AlignResultCount { get; set; } = 100;
+
+        [JsonProperty]
+        public int AkkonResultCount { get; set; } = 100;
+
+        [JsonProperty]
+        public bool UseNGDisplay { get; set; } = true;
+
+        [JsonProperty]
+        public int NGSendingCycle { get; set; } = 1;
         #endregion
 
         #region 메서드
@@ -183,11 +192,5 @@ namespace Jastech.Apps.Winform.Settings
     {
         Manual,
         Auto,
-    }
-
-    public enum AkkonAlgorithmType
-    {
-        Macron,
-        Jastech,
     }
 }

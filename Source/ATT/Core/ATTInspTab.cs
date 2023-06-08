@@ -48,8 +48,6 @@ namespace ATT.Core
 
         public AkkonAlgorithm AkkonAlgorithm { get; set; } = new AkkonAlgorithm();
 
-        public MultiAkkonAlgorithm MultiAkkonAlgorithm { get; set; } = new MultiAkkonAlgorithm();
-
         public SomeThingDelegate InspectEvent;
 
         public SomeThingDelegate TeachingEvent;

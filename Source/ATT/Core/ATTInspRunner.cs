@@ -14,6 +14,7 @@ using Jastech.Framework.Algorithms.Akkon;
 using Jastech.Framework.Algorithms.Akkon.Parameters;
 using Jastech.Framework.Device.Cameras;
 using Jastech.Framework.Device.Motions;
+using Jastech.Framework.Imaging;
 using Jastech.Framework.Imaging.Helper;
 using Jastech.Framework.Imaging.Result;
 using Jastech.Framework.Imaging.VisionPro;
@@ -70,8 +71,6 @@ namespace ATT.Core
         public AkkonAlgorithm AkkonAlgorithm { get; set; } = new AkkonAlgorithm();
 
         public List<ATTInspTab> InspTabList { get; set; } = new List<ATTInspTab>();
-
-        public List<MultiAkkonAlgorithm> AkkonAlgorithmList { get; set; } = new List<MultiAkkonAlgorithm>();
         #endregion
 
         #region 이벤트
@@ -91,76 +90,6 @@ namespace ATT.Core
         #endregion
 
         #region 메서드
-        public void InitalizeInspTab(List<TabScanBuffer> bufferList)
-        {
-            DisposeInspTabList();
-            var inspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
-
-            foreach (var buffer in bufferList)
-            {
-                ATTInspTab inspTab = new ATTInspTab();
-                inspTab.TabScanBuffer = buffer;
-                inspTab.InspectEvent += AddInspectEventFuction;
-                inspTab.StartInspTask();
-                InspTabList.Add(inspTab);
-            }
-        }
-
-        private void AddInspectEventFuction(ATTInspTab inspTab)
-        {
-            lock(_inspLock)
-            {
-                InspTabQueue.Enqueue(inspTab);
-            }
-        }
-
-        public void DisposeInspTabList()
-        {
-            foreach (var inspTab in InspTabList)
-            {
-                inspTab.StopInspTask();
-                inspTab.InspectEvent -= AddInspectEventFuction;
-                inspTab.Dispose();
-            }
-            InspTabList.Clear();
-
-            AkkonAlgorithmList.ForEach(x => x.Release());
-            AkkonAlgorithmList.Clear();
-        }
-
-        private void ATTSeqRunner_GrabDoneEventHanlder(string cameraName, bool isGrabDone)
-        {
-            IsGrabDone = isGrabDone; 
-        }
-
-        private void AkkonInspection()
-        {
-            while(true)
-            {
-                if (CancelAkkonInspTask.IsCancellationRequested)
-                {
-                    break;
-                }
-
-                if(GetInspTab() is ATTInspTab inspTab)
-                {
-                    Run(inspTab);
-                }
-                
-                Thread.Sleep(50);
-            }
-        }
-        
-        private ATTInspTab GetInspTab()
-        {
-           lock(_inspLock)
-            {
-                if (InspTabQueue.Count() > 0)
-                    return InspTabQueue.Dequeue();
-                else
-                    return null;
-            }
-        }
 
         private void Run(ATTInspTab inspTab)
         {
@@ -213,11 +142,13 @@ namespace ATT.Core
             }
             #endregion
 
-            double judgementX = 100.0;
-            double judgementY = 100.0;
+            var camera = AppsLineCameraManager.Instance().GetLineCamera(CameraName.LinscanMIL0).Camera;
+            double resolution_um = camera.PixelResolution_um / camera.LensScale;
+            double judgementX = resolution_um * tab.AlignSpec.LeftSpecX_um;
+            double judgementY = resolution_um* tab.AlignSpec.LeftSpecY_um;
 
             #region Left Align
-            inspResult.LeftAlignX = algorithmTool.RunMainLeftAlignX(inspTab.MergeCogImage, tab, fpcCoordinate, panelCoordinate, judgementX);
+            inspResult.LeftAlignX = algorithmTool.RunMainLeftAlignX(inspTab.MergeCogImage, tab, fpcTheta, panelTheta, judgementX);
             if (inspResult.IsLeftAlignXGood() == false)
             {
                 var leftAlignX = inspResult.LeftAlignX;
@@ -225,7 +156,7 @@ namespace ATT.Core
                 Logger.Debug(LogType.Inspection, message);
             }
 
-            inspResult.LeftAlignY = algorithmTool.RunMainLeftAlignY(inspTab.MergeCogImage, tab, fpcCoordinate, panelCoordinate, judgementY);
+            inspResult.LeftAlignY = algorithmTool.RunMainLeftAlignY(inspTab.MergeCogImage, tab, fpcTheta, panelTheta, judgementY);
             if (inspResult.IsLeftAlignYGood() == false)
             {
                 var leftAlignY = inspResult.LeftAlignY;
@@ -235,7 +166,7 @@ namespace ATT.Core
             #endregion
 
             #region Right Align
-            inspResult.RightAlignX = algorithmTool.RunMainRightAlignX(inspTab.MergeCogImage, tab, fpcCoordinate, panelCoordinate, judgementX);
+            inspResult.RightAlignX = algorithmTool.RunMainRightAlignX(inspTab.MergeCogImage, tab, fpcTheta, panelTheta, judgementX);
             if (inspResult.IsRightAlignXGood() == false)
             {
                 var rightAlignX = inspResult.RightAlignX;
@@ -243,7 +174,7 @@ namespace ATT.Core
                 Logger.Debug(LogType.Inspection, message);
             }
 
-            inspResult.RightAlignY = algorithmTool.RunMainRightAlignY(inspTab.MergeCogImage, tab, fpcCoordinate, panelCoordinate, judgementY);
+            inspResult.RightAlignY = algorithmTool.RunMainRightAlignY(inspTab.MergeCogImage, tab, fpcTheta, panelTheta, judgementY);
             if (inspResult.IsRightAlignYGood() == false)
             {
                 var rightAlignY = inspResult.RightAlignY;
@@ -253,19 +184,90 @@ namespace ATT.Core
             #endregion
 
             #region Center Align
+            // EnableAlign false 일때 구조 생각
             inspResult.CenterX = Math.Abs(inspResult.LeftAlignX.ResultValue - inspResult.RightAlignX.ResultValue);
             #endregion
 
+            if (AppsConfig.Instance().Operation.EnableAkkon)
+            {
+                var roiList = tab.AkkonParam.GetAkkonROIList();
+                var akkonResult = AkkonAlgorithm.Run(inspTab.MergeMatImage, roiList, tab.AkkonParam.AkkonAlgoritmParam);
 
-            var roiList = tab.AkkonParam.GetAkkonROIList();
-            var akkonResult = AkkonAlgorithm.Run(inspTab.MergeMatImage, roiList, tab.AkkonParam.AkkonAlgoritmParam);
-
-            inspResult.AkkonResultList.AddRange(akkonResult);
+                inspResult.AkkonResultList.AddRange(akkonResult);
+            }
             AppsInspResult.TabResultList.Add(inspResult);
 
             sw.Stop();
             string resultMessage = string.Format("Inspection Completed. {0}({1}ms)", inspTab.TabScanBuffer.TabNo, sw.ElapsedMilliseconds);
             Console.WriteLine(resultMessage);
+        }
+
+        public void InitalizeInspTab(List<TabScanBuffer> bufferList)
+        {
+            DisposeInspTabList();
+            var inspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
+
+            foreach (var buffer in bufferList)
+            {
+                ATTInspTab inspTab = new ATTInspTab();
+                inspTab.TabScanBuffer = buffer;
+                inspTab.InspectEvent += AddInspectEventFuction;
+                inspTab.StartInspTask();
+                InspTabList.Add(inspTab);
+            }
+        }
+
+        private void AddInspectEventFuction(ATTInspTab inspTab)
+        {
+            lock(_inspLock)
+            {
+                InspTabQueue.Enqueue(inspTab);
+            }
+        }
+
+        public void DisposeInspTabList()
+        {
+            foreach (var inspTab in InspTabList)
+            {
+                inspTab.StopInspTask();
+                inspTab.InspectEvent -= AddInspectEventFuction;
+                inspTab.Dispose();
+            }
+            InspTabList.Clear();
+        }
+
+        private void ATTSeqRunner_GrabDoneEventHanlder(string cameraName, bool isGrabDone)
+        {
+            IsGrabDone = isGrabDone; 
+        }
+
+        private void AkkonInspection()
+        {
+            while(true)
+            {
+                if (CancelAkkonInspTask.IsCancellationRequested)
+                {
+                    break;
+                }
+
+                if(GetInspTab() is ATTInspTab inspTab)
+                {
+                    Run(inspTab);
+                }
+                
+                Thread.Sleep(50);
+            }
+        }
+        
+        private ATTInspTab GetInspTab()
+        {
+           lock(_inspLock)
+            {
+                if (InspTabQueue.Count() > 0)
+                    return InspTabQueue.Dequeue();
+                else
+                    return null;
+            }
         }
 
         private AkkonThreadParam GetAkkonThreadParam()
@@ -415,9 +417,6 @@ namespace ATT.Core
 
         private void SeqTaskLoop()
         {
-            //ICogImage cogImage = Jastech.Framework.Imaging.VisionPro.CogImageHelper.Load(@"D:\Tab1.bmp");
-
-         
             var inspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
             if (inspModel == null)
                 return;
@@ -531,6 +530,7 @@ namespace ATT.Core
                     break;
 
                 case SeqStep.SEQ_UI_RESULT_UPDATE:
+   
                     GetAkkonResultImage();
                     UpdateDailyInfo(AppsInspResult);
                     SystemManager.Instance().UpdateMainResult(AppsInspResult);
@@ -547,7 +547,7 @@ namespace ATT.Core
 
                 case SeqStep.SEQ_SAVE_IMAGE:
 
-                    //SaveImage(AppsInspResult);
+                    SaveImage(AppsInspResult);
 
                     SeqStep = SeqStep.SEQ_DELETE_DATA;
                     break;
@@ -574,32 +574,19 @@ namespace ATT.Core
             Stopwatch sw = new Stopwatch();
             sw.Restart();
 
-            if(AppsConfig.Instance().AkkonAlgorithmType == AkkonAlgorithmType.Macron)
+            AppsInspModel inspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
+            var unit = inspModel.GetUnit(UnitName.Unit0);
+            for (int i = 0; i < AppsInspResult.TabResultList.Count(); i++)
             {
-                AppsInspModel inspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
-                var unit = inspModel.GetUnit(UnitName.Unit0);
-                for (int i = 0; i < AppsInspResult.TabResultList.Count(); i++)
-                {
-                    var tabResult = AppsInspResult.TabResultList[i];
-                    Tab tab = unit.GetTab(tabResult.TabNo);
-                    tabResult.AkkonResultImage = MacronAkkonAlgorithmTool.GetResultImage(tabResult.Image.Width, tabResult.Image.Height, tab, AppsConfig.Instance().AkkonResizeRatio);
-                }
+                var tabResult = AppsInspResult.TabResultList[i];
+                Tab tab = unit.GetTab(tabResult.TabNo);
+
+                Mat resultMat = GetResultImage(tabResult.Image, tabResult.AkkonResultList, tab.AkkonParam.AkkonAlgoritmParam);
+                ICogImage cogImage = ConvertCogColorImage(resultMat);
+                tabResult.AkkonResultImage = cogImage;
+                resultMat.Dispose();
             }
-            else
-            {
-                AppsInspModel inspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
-                var unit = inspModel.GetUnit(UnitName.Unit0);
-                for (int i = 0; i < AppsInspResult.TabResultList.Count(); i++)
-                {
-                    var tabResult = AppsInspResult.TabResultList[i];
-                    Tab tab = unit.GetTab(tabResult.TabNo);
-                   
-                    Mat resultMat = GetResultImage(tabResult.Image, tabResult.AkkonResultList, tab.AkkonParam.AkkonAlgoritmParam);
-                    ICogImage cogImage = ConvertCogColorImage(resultMat);
-                    tabResult.AkkonResultImage = cogImage;
-                    resultMat.Dispose();
-                }
-            }
+
             sw.Stop();
             Console.WriteLine("Get Akkon Result Image : " + sw.ElapsedMilliseconds.ToString() + "ms");
         }
@@ -673,7 +660,9 @@ namespace ATT.Core
                     int radius = rectRect.Width > rectRect.Height ? rectRect.Width : rectRect.Height;
 
                     int size = blob.BoundingRect.Width * blob.BoundingRect.Height;
-                    if (AkkonParameters.ResultFilterParam.MinArea <= size && size <= AkkonParameters.ResultFilterParam.MaxArea)
+                    double calcMinArea = AkkonParameters.ResultFilterParam.MinArea_um * AkkonParameters.ResultFilterParam.Resolution_um;
+                    double calcMaxArea = AkkonParameters.ResultFilterParam.MaxArea_um * AkkonParameters.ResultFilterParam.Resolution_um;
+                    if (calcMinArea <= size && size <= calcMaxArea)
                     {
                         blobCount++;
                         CvInvoke.Circle(colorMat, center, radius / 2, new MCvScalar(255), 1);
@@ -713,23 +702,6 @@ namespace ATT.Core
             var appsLineCamera = AppsLineCameraManager.Instance().GetLineCamera(CameraName.LinscanMIL0);
             appsLineCamera.InitGrabSettings();
             InitalizeInspTab(appsLineCamera.TabScanBufferList);
-
-            var inspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
-            if (AppsConfig.Instance().AkkonAlgorithmType == AkkonAlgorithmType.Macron)
-            {
-                List<MacronPrepareParam> prepareParamList = new List<MacronPrepareParam>();
-                foreach (var buffer in appsLineCamera.TabScanBufferList)
-                {
-                    MacronPrepareParam prepare = new MacronPrepareParam();
-                    prepare.TabNo = buffer.TabNo;
-                    prepare.TotalCount = buffer.TotalGrabCount;
-                    prepare.ImageWIdth = buffer.SubImageWidth;
-                    prepare.ImageHeight = buffer.SubImageHeight;
-
-                    prepareParamList.Add(prepare);
-                }
-                MacronAkkonAlgorithmTool.PrepareMultiInspection(inspModel, prepareParamList, AppsConfig.Instance().AkkonResizeRatio);
-            }
         }
 
         public void RunVirtual()
@@ -772,10 +744,10 @@ namespace ATT.Core
             if (Directory.Exists(path) == false)
                 Directory.CreateDirectory(path);
 
-            SaveOrgImage(path, inspResult.TabResultList);
+            SaveResultImage(path, inspResult.TabResultList);
         }
 
-        private void SaveOrgImage(string resultPath, List<TabInspResult> insTabResultList)
+        private void SaveResultImage(string resultPath, List<TabInspResult> insTabResultList)
         {
             if (AppsConfig.Instance().Operation.VirtualMode)
                 return;
@@ -784,11 +756,45 @@ namespace ATT.Core
             if (Directory.Exists(path) == false)
                 Directory.CreateDirectory(path);
 
+            string okExtension = ".bmp";
+
+            if(AppsConfig.Instance().Operation.ExtensionOKImage == ImageExtension.Bmp)
+                okExtension = ".bmp";
+            else if (AppsConfig.Instance().Operation.ExtensionOKImage == ImageExtension.Jpg)
+                okExtension = ".jpg";
+            else if (AppsConfig.Instance().Operation.ExtensionOKImage == ImageExtension.Png)
+                okExtension = ".png";
+
+            string ngExtension = ".bmp";
+
+            if (AppsConfig.Instance().Operation.ExtensionNGImage == ImageExtension.Bmp)
+                ngExtension = ".bmp";
+            else if (AppsConfig.Instance().Operation.ExtensionNGImage == ImageExtension.Jpg)
+                ngExtension = ".jpg";
+            else if (AppsConfig.Instance().Operation.ExtensionNGImage == ImageExtension.Png)
+                ngExtension = ".png";
+
+
             foreach (var result in insTabResultList)
             {
-                string imageName = "Tab_" + result.TabNo.ToString() + ".bmp";
-                string imagePath = Path.Combine(path, imageName);
-                result.Image.Save(imagePath);
+                if (result.Judgement == Judgement.OK)
+                {
+                    if(AppsConfig.Instance().Operation.SaveImageOK)
+                    {
+                        string imageName = "Tab_" + result.TabNo.ToString() +"_OK_" + okExtension;
+                        string imagePath = Path.Combine(path, imageName);
+                        result.Image.Save(imagePath);
+                    }
+                }
+                else
+                {
+                    if (AppsConfig.Instance().Operation.SaveImageNG)
+                    {
+                        string imageName = "Tab_" + result.TabNo.ToString() + "_NG_" + ngExtension;
+                        string imagePath = Path.Combine(path, imageName);
+                        result.Image.Save(imagePath);
+                    }
+                }
             }
         }
 
