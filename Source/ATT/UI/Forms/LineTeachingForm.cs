@@ -544,8 +544,8 @@ namespace ATT.UI.Forms
         {
             var display = AppsTeachingUIManager.Instance().GetDisplay();
 
-            Tab origin = new Tab();
-            origin = CurrentTab.DeepCopy();
+            Tab tabOriginData = new Tab();
+            tabOriginData = CurrentTab.DeepCopy();
 
             ICogImage cogImage = display.GetImage();
 
@@ -554,31 +554,13 @@ namespace ATT.UI.Forms
 
             // Set Coordinate Params
             Coordinate fpcCoordinate = new Coordinate();
-            fpcCoordinate = SetFpcCoordinateParam(cogImage, origin);
+            fpcCoordinate = SetFpcCoordinateParam(cogImage, tabOriginData);
 
             Coordinate panelCoordinate = new Coordinate();
-            panelCoordinate = SetPanelCoordinateParam(cogImage, origin);
+            panelCoordinate = SetPanelCoordinateParam(cogImage, tabOriginData);
 
-
-            CoordinateAlign(origin, fpcCoordinate, panelCoordinate);
-
-            //foreach (var item in origin.AlignParamList)
-            //{
-            //    CogRectangleAffine roi = new CogRectangleAffine(item.CaliperParams.CaliperTool.Region);
-
-            //    PointF oldPoint = new PointF();
-            //    oldPoint.X = (float)roi.CenterX;
-            //    oldPoint.Y = (float)roi.CenterY;
-
-            //    var newPoint = algorithmTool.Coordinate.GetCoordinate(oldPoint);
-            //    roi.CenterX = newPoint.X;
-            //    roi.CenterY = newPoint.Y;
-
-            //    item.CaliperParams.CaliperTool.Region = roi;
-
-            //    CogCaliperCurrentRecordConstants constants = CogCaliperCurrentRecordConstants.All;
-            //    display.SetInteractiveGraphics("tool", item.CaliperParams.CreateCurrentRecord(constants));
-            //}
+            CoordinateAlign(tabOriginData, fpcCoordinate, panelCoordinate);
+            CoordinateAkkon(tabOriginData, panelCoordinate);
 
             return;
         }
