@@ -104,8 +104,12 @@ namespace ATT.Core
             inspResult.Image = inspTab.MergeMatImage;
             inspResult.CogImage = inspTab.MergeCogImage;
 
+            Coordinate fpcCoordinate = new Coordinate();
+            Coordinate panelCoordinate = new Coordinate();
+
             #region Mark 검사
             algorithmTool.MainMarkInspect(inspTab.MergeCogImage, tab, ref inspResult);
+
 
             if (inspResult.IsMarkGood() == false)
             {
@@ -114,29 +118,15 @@ namespace ATT.Core
                 Logger.Debug(LogType.Inspection, message);
                 //return;
             }
-            #endregion
-
-            #region Add mark data
-            Coordinate fpcCoordinate = new Coordinate();
-
-            if (fpcCoordinate != null)
+            else
             {
-                PointF teachedLeftPoint = inspResult.FpcMark.FoundedMark.Left.MaxMatchPos.ReferencePos;
-                PointF teachedRightPoint = inspResult.FpcMark.FoundedMark.Right.MaxMatchPos.ReferencePos;
-                PointF searchedLeftPoint = inspResult.FpcMark.FoundedMark.Left.MaxMatchPos.FoundPos;
-                PointF searchedRightPoint = inspResult.FpcMark.FoundedMark.Right.MaxMatchPos.FoundPos;
-                fpcCoordinate.SetCoordinateParam(teachedLeftPoint, teachedRightPoint, searchedLeftPoint, searchedRightPoint);
-            }
+                #region Add mark data
+                // fpc
+                SetCoordinateData(fpcCoordinate, inspResult);
 
-            Coordinate panelCoordinate = new Coordinate();
-
-            if (panelCoordinate != null)
-            {
-                PointF teachedLeftPoint = inspResult.PanelMark.FoundedMark.Left.MaxMatchPos.ReferencePos;
-                PointF teachedRightPoint = inspResult.PanelMark.FoundedMark.Right.MaxMatchPos.ReferencePos;
-                PointF searchedLeftPoint = inspResult.PanelMark.FoundedMark.Left.MaxMatchPos.FoundPos;
-                PointF searchedRightPoint = inspResult.PanelMark.FoundedMark.Right.MaxMatchPos.FoundPos;
-                panelCoordinate.SetCoordinateParam(teachedLeftPoint, teachedRightPoint, searchedLeftPoint, searchedRightPoint);
+                // panel
+                SetCoordinateData(panelCoordinate, inspResult);
+                #endregion
             }
             #endregion
 
@@ -732,6 +722,15 @@ namespace ATT.Core
             //var result = tool.MainRunInspect(tab, tabMatImage, 30.0f, 80.0f);
 
             // AppsInspResult.TabResultList.Add(result);
+        }
+
+        private void SetCoordinateData(Coordinate coordinate, TabInspResult tabInspResult)
+        {
+            PointF teachedLeftPoint = tabInspResult.FpcMark.FoundedMark.Left.MaxMatchPos.ReferencePos;
+            PointF teachedRightPoint = tabInspResult.FpcMark.FoundedMark.Right.MaxMatchPos.ReferencePos;
+            PointF searchedLeftPoint = tabInspResult.FpcMark.FoundedMark.Left.MaxMatchPos.FoundPos;
+            PointF searchedRightPoint = tabInspResult.FpcMark.FoundedMark.Right.MaxMatchPos.FoundPos;
+            coordinate.SetCoordinateParam(teachedLeftPoint, teachedRightPoint, searchedLeftPoint, searchedRightPoint);
         }
         #endregion
     }
