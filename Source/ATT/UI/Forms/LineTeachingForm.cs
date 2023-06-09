@@ -11,6 +11,7 @@ using Jastech.Apps.Winform;
 using Jastech.Apps.Winform.Core;
 using Jastech.Apps.Winform.Settings;
 using Jastech.Apps.Winform.UI.Controls;
+using Jastech.Framework.Algorithms.Akkon.Parameters;
 using Jastech.Framework.Config;
 using Jastech.Framework.Imaging;
 using Jastech.Framework.Imaging.VisionPro;
@@ -543,8 +544,8 @@ namespace ATT.UI.Forms
         {
             var display = AppsTeachingUIManager.Instance().GetDisplay();
 
-            Tab origin = new Tab();
-            origin = CurrentTab.DeepCopy();
+            Tab tabOriginData = new Tab();
+            tabOriginData = CurrentTab.DeepCopy();
 
             ICogImage cogImage = display.GetImage();
 
@@ -553,31 +554,13 @@ namespace ATT.UI.Forms
 
             // Set Coordinate Params
             Coordinate fpcCoordinate = new Coordinate();
-            fpcCoordinate = SetFpcCoordinateParam(cogImage, origin);
+            fpcCoordinate = SetFpcCoordinateParam(cogImage, tabOriginData);
 
             Coordinate panelCoordinate = new Coordinate();
-            panelCoordinate = SetPanelCoordinateParam(cogImage, origin);
+            panelCoordinate = SetPanelCoordinateParam(cogImage, tabOriginData);
 
-
-            CoordinateAlign(origin, fpcCoordinate, panelCoordinate);
-
-            //foreach (var item in origin.AlignParamList)
-            //{
-            //    CogRectangleAffine roi = new CogRectangleAffine(item.CaliperParams.CaliperTool.Region);
-
-            //    PointF oldPoint = new PointF();
-            //    oldPoint.X = (float)roi.CenterX;
-            //    oldPoint.Y = (float)roi.CenterY;
-
-            //    var newPoint = algorithmTool.Coordinate.GetCoordinate(oldPoint);
-            //    roi.CenterX = newPoint.X;
-            //    roi.CenterY = newPoint.Y;
-
-            //    item.CaliperParams.CaliperTool.Region = roi;
-
-            //    CogCaliperCurrentRecordConstants constants = CogCaliperCurrentRecordConstants.All;
-            //    display.SetInteractiveGraphics("tool", item.CaliperParams.CreateCurrentRecord(constants));
-            //}
+            CoordinateAlign(tabOriginData, fpcCoordinate, panelCoordinate);
+            CoordinateAkkon(tabOriginData, panelCoordinate);
 
             return;
         }
@@ -660,13 +643,55 @@ namespace ATT.UI.Forms
         {
             MainAlgorithmTool algorithmTool = new MainAlgorithmTool();
 
+            List<AkkonGroup> newAkkonGroup = new List<AkkonGroup>();
+
             foreach (var group in tab.AkkonParam.GroupList)
             {
+                List<AkkonROI> newRoiList = new List<AkkonROI>();
+
                 foreach (var lead in group.AkkonROIList)
                 {
-                    lead.LeftTopX = 0;
+                    var affineRect = ConvertAkkonRoiToCogRectAffine(lead);
+                    var calcPanelRegion = algorithmTool.CoordinateRectangle(affineRect, panelCoordinate);
+                    var roi = ConvertCogRectAffineToAkkonRoi(calcPanelRegion);
+
+                    newRoiList.Add(roi);
                 }
+
+                newAkkonGroup.Add(group);
             }
+
+            tab.AkkonParam.GroupList.Clear();
+            tab.AkkonParam.GroupList.AddRange(newAkkonGroup);
+        }
+
+        private CogRectangleAffine ConvertAkkonRoiToCogRectAffine(AkkonROI akkonRoi)
+        {
+            CogRectangleAffine cogRectAffine = new CogRectangleAffine();
+
+            cogRectAffine.SetOriginCornerXCornerY(akkonRoi.LeftTopX, akkonRoi.LeftTopY,
+                                                    akkonRoi.RightTopX, akkonRoi.RightTopY, akkonRoi.LeftBottomX, akkonRoi.LeftBottomY);
+
+            return cogRectAffine;
+        }
+
+        private AkkonROI ConvertCogRectAffineToAkkonRoi(CogRectangleAffine cogRectAffine)
+        {
+            AkkonROI akkonRoi = new AkkonROI();
+
+            akkonRoi.LeftTopX = cogRectAffine.CornerOriginX;
+            akkonRoi.LeftTopY = cogRectAffine.CornerOriginY;
+
+            akkonRoi.RightTopX = cogRectAffine.CornerXX;
+            akkonRoi.RightTopY = cogRectAffine.CornerXY;
+
+            akkonRoi.LeftBottomX = cogRectAffine.CornerYX;
+            akkonRoi.LeftBottomY = cogRectAffine.CornerYY;
+
+            akkonRoi.RightBottomX = cogRectAffine.CornerOppositeX;
+            akkonRoi.RightBottomY = cogRectAffine.CornerOppositeY;
+
+            return akkonRoi;
         }
     }
 
