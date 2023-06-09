@@ -11,6 +11,7 @@ using Jastech.Apps.Winform;
 using Jastech.Apps.Winform.Core;
 using Jastech.Apps.Winform.Settings;
 using Jastech.Apps.Winform.UI.Controls;
+using Jastech.Framework.Algorithms.Akkon.Parameters;
 using Jastech.Framework.Config;
 using Jastech.Framework.Imaging;
 using Jastech.Framework.Imaging.VisionPro;
@@ -660,13 +661,55 @@ namespace ATT.UI.Forms
         {
             MainAlgorithmTool algorithmTool = new MainAlgorithmTool();
 
+            List<AkkonGroup> newAkkonGroup = new List<AkkonGroup>();
+
             foreach (var group in tab.AkkonParam.GroupList)
             {
+                List<AkkonROI> newRoiList = new List<AkkonROI>();
+
                 foreach (var lead in group.AkkonROIList)
                 {
-                    lead.LeftTopX = 0;
+                    var affineRect = ConvertAkkonRoiToCogRectAffine(lead);
+                    var calcPanelRegion = algorithmTool.CoordinateRectangle(affineRect, panelCoordinate);
+                    var roi = ConvertCogRectAffineToAkkonRoi(calcPanelRegion);
+
+                    newRoiList.Add(roi);
                 }
+
+                newAkkonGroup.Add(group);
             }
+
+            tab.AkkonParam.GroupList.Clear();
+            tab.AkkonParam.GroupList.AddRange(newAkkonGroup);
+        }
+
+        private CogRectangleAffine ConvertAkkonRoiToCogRectAffine(AkkonROI akkonRoi)
+        {
+            CogRectangleAffine cogRectAffine = new CogRectangleAffine();
+
+            cogRectAffine.SetOriginCornerXCornerY(akkonRoi.LeftTopX, akkonRoi.LeftTopY,
+                                                    akkonRoi.RightTopX, akkonRoi.RightTopY, akkonRoi.LeftBottomX, akkonRoi.LeftBottomY);
+
+            return cogRectAffine;
+        }
+
+        private AkkonROI ConvertCogRectAffineToAkkonRoi(CogRectangleAffine cogRectAffine)
+        {
+            AkkonROI akkonRoi = new AkkonROI();
+
+            akkonRoi.LeftTopX = cogRectAffine.CornerOriginX;
+            akkonRoi.LeftTopY = cogRectAffine.CornerOriginY;
+
+            akkonRoi.RightTopX = cogRectAffine.CornerXX;
+            akkonRoi.RightTopY = cogRectAffine.CornerXY;
+
+            akkonRoi.LeftBottomX = cogRectAffine.CornerYX;
+            akkonRoi.LeftBottomY = cogRectAffine.CornerYY;
+
+            akkonRoi.RightBottomX = cogRectAffine.CornerOppositeX;
+            akkonRoi.RightBottomY = cogRectAffine.CornerOppositeY;
+
+            return akkonRoi;
         }
     }
 
