@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -14,13 +15,20 @@ namespace ATT_UT_Remodeling
         [STAThread]
         static void Main()
         {
-            Application.EnableVisualStyles();
-            Application.SetCompatibleTextRenderingDefault(false);
-            //
+            bool isRunning = false;
+            Mutex mutex = new Mutex(true, "ATT", out isRunning);
 
-            
-            //
-            Application.Run(new MainForm());
+            if (isRunning)
+            {
+                Application.EnableVisualStyles();
+                Application.SetCompatibleTextRenderingDefault(false);
+                Application.Run(new MainForm());
+            }
+            else
+            {
+                MessageBox.Show("The program already started.");
+                Application.Exit();
+            }
         }
     }
 }

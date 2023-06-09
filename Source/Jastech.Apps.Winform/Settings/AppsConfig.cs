@@ -86,6 +86,44 @@ namespace Jastech.Apps.Winform.Settings
 
             return _instance;
         }
+        public void Initialize()
+        {
+            string dirPath = ConfigSet.Instance().Path.Config;
+            string fullPath = Path.Combine(ConfigSet.Instance().Path.Config, "AppsConfig.cfg");
+
+            if(!File.Exists(fullPath))
+            {
+                Save();
+                return;
+            }
+            Load();
+        }
+
+        public void Save()
+        {
+            string dirPath = ConfigSet.Instance().Path.Config;
+            string fullPath = Path.Combine(ConfigSet.Instance().Path.Config, "AppsConfig.cfg");
+
+            if (!Directory.Exists(dirPath))
+            {
+                Directory.CreateDirectory(dirPath);
+            }
+            JsonConvertHelper.Save(fullPath, this);
+        }
+
+        public void Load()
+        {
+            string dirPath = ConfigSet.Instance().Path.Config;
+            string fullPath = Path.Combine(ConfigSet.Instance().Path.Config, "AppsConfig.cfg");
+
+            if (!File.Exists(fullPath))
+            {
+                Save();
+                return;
+            }
+
+            JsonConvertHelper.LoadToExistingTarget<AppsConfig>(fullPath, this);
+        }
         #endregion
     }
 
