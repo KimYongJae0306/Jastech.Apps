@@ -46,11 +46,8 @@ namespace ATT
             ConfigSet.Instance().PathConfigCreated += ConfigSet_PathConfigCreated;
             ConfigSet.Instance().OperationConfigCreated += ConfigSet_OperationConfigCreated;
             ConfigSet.Instance().MachineConfigCreated += ConfigSet_MachineConfigCreated;
-            //AppsConfigSet.Instance().Initialize();
-            //AppsConfigSet.Instance().Load();
-
-            //AppsConfig.Instance().Initialize();
-            //AppsConfig.Instance().Load();
+            ConfigSet.Instance().Initialize();
+            AppsConfig.Instance().Initialize();
 
             UserManager.Instance().Initialize();
 

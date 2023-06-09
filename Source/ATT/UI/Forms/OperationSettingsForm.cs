@@ -142,6 +142,7 @@ namespace ATT.UI.Forms
             UpdateCuurentData();
             //AppsConfig.Instance().Operation.Save(AppsConfig.Instance().Path.Config);
             ConfigSet.Instance().Save();
+            AppsConfig.Instance().Save();
 
             MessageConfirmForm form = new MessageConfirmForm();
             form.Message = "Save Completed.";
