@@ -1,6 +1,7 @@
 ﻿using Jastech.Apps.Structure;
 using Jastech.Apps.Structure.Data;
 using Jastech.Apps.Winform.Settings;
+using Jastech.Framework.Config;
 using Jastech.Framework.Device.Motions;
 using Jastech.Framework.Structure;
 using Jastech.Framework.Util.Helper;
@@ -41,7 +42,7 @@ namespace Jastech.Apps.Winform
             if (motion == null)
                 return false;
 
-            string dir = Path.Combine(AppsConfig.Instance().Path.Config, "AxisHanlder");
+            string dir = Path.Combine(ConfigSet.Instance().Path.Config, "AxisHanlder");
 
             if (Directory.Exists(dir) == false)
             {
@@ -78,7 +79,7 @@ namespace Jastech.Apps.Winform
 
         public void Save(AxisHandler axishandler)
         {
-            string dir = Path.Combine(AppsConfig.Instance().Path.Config, "AxisHanlder");
+            string dir = Path.Combine(ConfigSet.Instance().Path.Config, "AxisHanlder");
             string unit0FileName = string.Format("AxisHanlder_{0}.json", axishandler.Name);
             string unit0FilePath = Path.Combine(dir, unit0FileName);
 

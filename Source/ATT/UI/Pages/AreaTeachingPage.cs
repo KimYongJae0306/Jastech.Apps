@@ -20,6 +20,7 @@ using Jastech.Framework.Winform.Forms;
 using Jastech.Apps.Winform.UI.Forms;
 using ATT.UI.Forms;
 using Jastech.Apps.Winform.Core;
+using Jastech.Framework.Config;
 
 namespace ATT.UI.Pages
 {
@@ -141,7 +142,7 @@ namespace ATT.UI.Pages
         {
             model.SetUnitList(SystemManager.Instance().GetTeachingData().UnitList);
 
-            string fileName = System.IO.Path.Combine(AppsConfig.Instance().Path.Model, model.Name, InspModel.FileName);
+            string fileName = System.IO.Path.Combine(ConfigSet.Instance().Path.Model, model.Name, InspModel.FileName);
             SystemManager.Instance().SaveModel(fileName, model);
         }
 

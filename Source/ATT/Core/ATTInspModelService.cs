@@ -5,6 +5,7 @@ using Jastech.Apps.Structure.VisionTool;
 using Jastech.Apps.Winform;
 using Jastech.Apps.Winform.Settings;
 using Jastech.Framework.Algorithms.Akkon.Parameters;
+using Jastech.Framework.Config;
 using Jastech.Framework.Device.LightCtrls;
 using Jastech.Framework.Device.Motions;
 using Jastech.Framework.Imaging.VisionPro.VisionAlgorithms.Parameters;
@@ -223,7 +224,7 @@ namespace ATT.Core
         {
             List<LightParameter> lightParameterList = new List<LightParameter>();
 
-            var lightCtrls = AppsConfig.Instance().Machine.GetDevices<LightCtrl>();
+            var lightCtrls = ConfigSet.Instance().Machine.GetDevices<LightCtrl>();
             if (lightCtrls == null)
                 return lightParameterList;
             

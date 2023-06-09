@@ -124,7 +124,7 @@ namespace ATT
 
         private void ModelPageControl_ApplyModelEventHandler(string modelName)
         {
-            string modelDir = AppsConfig.Instance().Path.Model;
+            string modelDir = ConfigSet.Instance().Path.Model;
             string filePath = Path.Combine(modelDir, modelName, InspModel.FileName);
 
             ModelManager.Instance().CurrentModel = ATTInspModelService.Load(filePath);
@@ -132,9 +132,8 @@ namespace ATT
 
             lblCurrentModel.Text = modelName;
 
-            AppsConfig.Instance().Operation.LastModelName = modelName;
-
-            AppsConfig.Instance().Operation.Save(AppsConfig.Instance().Path.Config);
+            ConfigSet.Instance().Operation.LastModelName = modelName;
+            ConfigSet.Instance().Operation.Save(ConfigSet.Instance().Path.Config);
         }
 
         private void SetSelectLabel(object sender)
@@ -198,9 +197,9 @@ namespace ATT
 
             LogForm logForm = new LogForm();
 
-            string logPath = AppsConfig.Instance().Path.Log;
-            string resultPath = AppsConfig.Instance().Path.Result;
-            string modelName = AppsConfig.Instance().Operation.LastModelName;
+            string logPath = ConfigSet.Instance().Path.Log;
+            string resultPath = ConfigSet.Instance().Path.Result;
+            string modelName = ConfigSet.Instance().Operation.LastModelName;
 
             logForm.SetLogViewPath(logPath, resultPath, modelName);
             logForm.ShowDialog();

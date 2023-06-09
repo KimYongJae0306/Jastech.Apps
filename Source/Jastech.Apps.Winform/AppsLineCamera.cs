@@ -5,6 +5,7 @@ using Jastech.Apps.Structure;
 using Jastech.Apps.Structure.Data;
 using Jastech.Apps.Winform.Core;
 using Jastech.Apps.Winform.Settings;
+using Jastech.Framework.Config;
 using Jastech.Framework.Device.Cameras;
 using Jastech.Framework.Device.Motions;
 using Jastech.Framework.Imaging;
@@ -168,7 +169,7 @@ namespace Jastech.Apps.Winform
         {
             error = "";
 
-            if (AppsConfig.Instance().Operation.VirtualMode)
+            if (ConfigSet.Instance().Operation.VirtualMode)
                 return true;
 
             AppsInspModel inspModel = ModelManager.Instance().CurrentModel as AppsInspModel;

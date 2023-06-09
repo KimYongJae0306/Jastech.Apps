@@ -8,6 +8,7 @@ using Jastech.Apps.Winform;
 using Jastech.Apps.Winform.Core;
 using Jastech.Apps.Winform.Settings;
 using Jastech.Apps.Winform.UI.Controls;
+using Jastech.Framework.Config;
 using Jastech.Framework.Imaging;
 using Jastech.Framework.Imaging.VisionPro;
 using Jastech.Framework.Structure;
@@ -266,7 +267,7 @@ namespace ATT.UI.Forms
             AkkonControl.SaveAkkonParam();
             model.SetUnitList(SystemManager.Instance().GetTeachingData().UnitList);
 
-            string fileName = Path.Combine(AppsConfig.Instance().Path.Model, model.Name, InspModel.FileName);
+            string fileName = Path.Combine(ConfigSet.Instance().Path.Model, model.Name, InspModel.FileName);
             SystemManager.Instance().SaveModel(fileName, model);
         }
 
@@ -325,7 +326,7 @@ namespace ATT.UI.Forms
             var appsLineCamera = AppsLineCameraManager.Instance().GetLineCamera(CameraName);
 
             AppsInspModel inspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
-            TeachingImagePath = Path.Combine(AppsConfig.Instance().Path.Model, inspModel.Name, "TeachingImage", DateTime.Now.ToString("yyyyMMdd_HHmmss"));
+            TeachingImagePath = Path.Combine(ConfigSet.Instance().Path.Model, inspModel.Name, "TeachingImage", DateTime.Now.ToString("yyyyMMdd_HHmmss"));
 
             AppsLAFManager.Instance().AutoFocusOnOff(LAFName.Akkon.ToString(), true);
 

@@ -3,6 +3,7 @@ using Jastech.Apps.Structure;
 using Jastech.Apps.Structure.Data;
 using Jastech.Apps.Winform;
 using Jastech.Apps.Winform.Settings;
+using Jastech.Framework.Config;
 using Jastech.Framework.Device.LAFCtrl;
 using Jastech.Framework.Device.Motions;
 using Jastech.Framework.Structure;
@@ -366,7 +367,7 @@ namespace ATT.UI.Forms
             var model = ModelManager.Instance().CurrentModel as AppsInspModel;
             model.SetUnitList(SystemManager.Instance().GetTeachingData().UnitList);
 
-            string fileName = System.IO.Path.Combine(AppsConfig.Instance().Path.Model, model.Name, InspModel.FileName);
+            string fileName = System.IO.Path.Combine(ConfigSet.Instance().Path.Model, model.Name, InspModel.FileName);
             SystemManager.Instance().SaveModel(fileName, model);
 
             MessageConfirmForm form = new MessageConfirmForm();

@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace CameraTeseter.Properties
+namespace ATT_UT_IPAD.Properties
 {
 
 

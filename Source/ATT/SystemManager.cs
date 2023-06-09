@@ -5,6 +5,7 @@ using Jastech.Apps.Winform;
 using Jastech.Apps.Winform.Core;
 using Jastech.Apps.Winform.Service;
 using Jastech.Apps.Winform.Settings;
+using Jastech.Framework.Config;
 using Jastech.Framework.Device.Cameras;
 using Jastech.Framework.Device.LAFCtrl;
 using Jastech.Framework.Device.LightCtrls;
@@ -58,7 +59,7 @@ namespace ATT
             SplashForm form = new SplashForm();
 
             form.Title = "ATT Inspection";
-            form.Version = AppsConfig.Instance().Operation.SystemVersion;
+            form.Version = ConfigSet.Instance().Operation.SystemVersion;
             form.SetupActionEventHandler = SplashSetupAction;
 
             form.ShowDialog();
@@ -75,7 +76,7 @@ namespace ATT
             int percent = 0;
             DoReportProgress(reportProgress, percent, "Initialize Device");
             DeviceManager.Instance().Initialized += SystemManager_Initialized;
-            DeviceManager.Instance().Initialize(AppsConfig.Instance());
+            DeviceManager.Instance().Initialize(ConfigSet.Instance());
 
             AppsMotionManager.Instance().CreateAxisHanlder();
             AppsLAFManager.Instance().Initialize();
@@ -83,10 +84,10 @@ namespace ATT
 
             percent += 30;
 
-            if (AppsConfig.Instance().Operation.LastModelName != "")
+            if (ConfigSet.Instance().Operation.LastModelName != "")
             {
-                string filePath = Path.Combine(AppsConfig.Instance().Path.Model,
-                                    AppsConfig.Instance().Operation.LastModelName,
+                string filePath = Path.Combine(ConfigSet.Instance().Path.Model,
+                                    ConfigSet.Instance().Operation.LastModelName,
                                     InspModel.FileName);
                 if(File.Exists(filePath))
                 {

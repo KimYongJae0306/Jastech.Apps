@@ -2,6 +2,7 @@
 using Jastech.Apps.Structure;
 using Jastech.Apps.Structure.Data;
 using Jastech.Apps.Winform.Settings;
+using Jastech.Framework.Config;
 using Jastech.Framework.Imaging.Result;
 using Jastech.Framework.Util.Helper;
 using Newtonsoft.Json;
@@ -34,13 +35,13 @@ namespace Jastech.Apps.Winform.Service
 
         public void Save()
         {
-            string filePath = Path.Combine(AppsConfig.Instance().Path.Temp, FileName);
+            string filePath = Path.Combine(ConfigSet.Instance().Path.Temp, FileName);
             JsonConvertHelper.Save(filePath, this);
         }
 
         public void Load()
         {
-            string filePath = Path.Combine(AppsConfig.Instance().Path.Temp, FileName);
+            string filePath = Path.Combine(ConfigSet.Instance().Path.Temp, FileName);
             JsonConvertHelper.LoadToExistingTarget<DailyInfo>(filePath, this);
         }
     }

@@ -12,6 +12,7 @@ using Jastech.Apps.Winform.Service;
 using Jastech.Apps.Winform.Settings;
 using Jastech.Framework.Algorithms.Akkon;
 using Jastech.Framework.Algorithms.Akkon.Parameters;
+using Jastech.Framework.Config;
 using Jastech.Framework.Device.Cameras;
 using Jastech.Framework.Device.Motions;
 using Jastech.Framework.Imaging;
@@ -146,7 +147,7 @@ namespace ATT.Core
             double judgementY = resolution_um* tab.AlignSpec.LeftSpecY_um;
 
             #region Left Align
-            if(AppsConfig.Instance().Operation.EnableAlign)
+            if(AppsConfig.Instance().EnableAlign)
             {
                 inspResult.LeftAlignX = algorithmTool.RunMainLeftAlignX(inspTab.MergeCogImage, tab, fpcCoordinate, panelCoordinate, judgementX);
                 if (inspResult.IsLeftAlignXGood() == false)
@@ -172,7 +173,7 @@ namespace ATT.Core
             #endregion
 
             #region Right Align
-            if (AppsConfig.Instance().Operation.EnableAlign)
+            if (AppsConfig.Instance().EnableAlign)
             {
                 inspResult.RightAlignX = algorithmTool.RunMainRightAlignX(inspTab.MergeCogImage, tab, fpcCoordinate, panelCoordinate, judgementX);
                 if (inspResult.IsRightAlignXGood() == false)
@@ -202,7 +203,7 @@ namespace ATT.Core
             inspResult.CenterX = Math.Abs(inspResult.LeftAlignX.ResultValue - inspResult.RightAlignX.ResultValue);
             #endregion
 
-            if (AppsConfig.Instance().Operation.EnableAkkon)
+            if (AppsConfig.Instance().EnableAkkon)
             {
                 var roiList = tab.AkkonParam.GetAkkonROIList();
                 var akkonResult = AkkonAlgorithm.Run(inspTab.MergeMatImage, roiList, tab.AkkonParam.AkkonAlgoritmParam);
@@ -337,7 +338,7 @@ namespace ATT.Core
         public bool IsInspectionDone()
         {
             AppsInspModel inspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
-            if (AppsConfig.Instance().Operation.VirtualMode)
+            if (ConfigSet.Instance().Operation.VirtualMode)
             {
                 RunVirtual();
                 return true;
@@ -511,7 +512,7 @@ namespace ATT.Core
                     break;
 
                 case SeqStep.SEQ_WAITING_SCAN_COMPLETED:
-                    if (AppsConfig.Instance().Operation.VirtualMode == false)
+                    if (ConfigSet.Instance().Operation.VirtualMode == false)
                     {
                         if (IsGrabDone == false)
                             break;
@@ -748,7 +749,7 @@ namespace ATT.Core
             string day = currentTime.ToString("dd");
             string folderPath = inspResult.Cell_ID;
 
-            string path = Path.Combine(AppsConfig.Instance().Path.Result, inspModel.Name, month, day, folderPath);
+            string path = Path.Combine(ConfigSet.Instance().Path.Result, inspModel.Name, month, day, folderPath);
 
             if (Directory.Exists(path) == false)
                 Directory.CreateDirectory(path);
@@ -758,7 +759,7 @@ namespace ATT.Core
 
         private void SaveResultImage(string resultPath, List<TabInspResult> insTabResultList)
         {
-            if (AppsConfig.Instance().Operation.VirtualMode)
+            if (ConfigSet.Instance().Operation.VirtualMode)
                 return;
 
             string path = Path.Combine(resultPath, "Orgin");
@@ -767,20 +768,20 @@ namespace ATT.Core
 
             string okExtension = ".bmp";
 
-            if(AppsConfig.Instance().Operation.ExtensionOKImage == ImageExtension.Bmp)
+            if(ConfigSet.Instance().Operation.ExtensionOKImage == ImageExtension.Bmp)
                 okExtension = ".bmp";
-            else if (AppsConfig.Instance().Operation.ExtensionOKImage == ImageExtension.Jpg)
+            else if (ConfigSet.Instance().Operation.ExtensionOKImage == ImageExtension.Jpg)
                 okExtension = ".jpg";
-            else if (AppsConfig.Instance().Operation.ExtensionOKImage == ImageExtension.Png)
+            else if (ConfigSet.Instance().Operation.ExtensionOKImage == ImageExtension.Png)
                 okExtension = ".png";
 
             string ngExtension = ".bmp";
 
-            if (AppsConfig.Instance().Operation.ExtensionNGImage == ImageExtension.Bmp)
+            if (ConfigSet.Instance().Operation.ExtensionNGImage == ImageExtension.Bmp)
                 ngExtension = ".bmp";
-            else if (AppsConfig.Instance().Operation.ExtensionNGImage == ImageExtension.Jpg)
+            else if (ConfigSet.Instance().Operation.ExtensionNGImage == ImageExtension.Jpg)
                 ngExtension = ".jpg";
-            else if (AppsConfig.Instance().Operation.ExtensionNGImage == ImageExtension.Png)
+            else if (ConfigSet.Instance().Operation.ExtensionNGImage == ImageExtension.Png)
                 ngExtension = ".png";
 
 
@@ -788,7 +789,7 @@ namespace ATT.Core
             {
                 if (result.Judgement == Judgement.OK)
                 {
-                    if(AppsConfig.Instance().Operation.SaveImageOK)
+                    if(ConfigSet.Instance().Operation.SaveImageOK)
                     {
                         string imageName = "Tab_" + result.TabNo.ToString() +"_OK_" + okExtension;
                         string imagePath = Path.Combine(path, imageName);
@@ -797,7 +798,7 @@ namespace ATT.Core
                 }
                 else
                 {
-                    if (AppsConfig.Instance().Operation.SaveImageNG)
+                    if (ConfigSet.Instance().Operation.SaveImageNG)
                     {
                         string imageName = "Tab_" + result.TabNo.ToString() + "_NG_" + ngExtension;
                         string imagePath = Path.Combine(path, imageName);
@@ -879,7 +880,7 @@ namespace ATT.Core
             string day = currentTime.ToString("dd");
             string folderPath = inspResult.Cell_ID;
 
-            string path = Path.Combine(AppsConfig.Instance().Path.Result, inspModel.Name, month, day);
+            string path = Path.Combine(ConfigSet.Instance().Path.Result, inspModel.Name, month, day);
 
             if (Directory.Exists(path) == false)
                 Directory.CreateDirectory(path);
@@ -1203,12 +1204,12 @@ namespace ATT.Core
 
         private string GetExtensionOKImage()
         {
-            return "." + AppsConfig.Instance().Operation.ExtensionOKImage;
+            return "." + ConfigSet.Instance().Operation.ExtensionOKImage;
         }
 
         private string GetExtensionNGImage()
         {
-            return "." + AppsConfig.Instance().Operation.ExtensionNGImage;
+            return "." + ConfigSet.Instance().Operation.ExtensionNGImage;
         }
 
         private Axis GetAxis(AxisHandlerName axisHandlerName, AxisName axisName)
@@ -1225,7 +1226,7 @@ namespace ATT.Core
         {
             error = "";
 
-            if (AppsConfig.Instance().Operation.VirtualMode)
+            if (ConfigSet.Instance().Operation.VirtualMode)
                 return true;
 
             AppsInspModel inspModel = ModelManager.Instance().CurrentModel as AppsInspModel;

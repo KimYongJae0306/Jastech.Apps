@@ -1,4 +1,5 @@
 ﻿using Jastech.Apps.Winform.Settings;
+using Jastech.Framework.Config;
 using Jastech.Framework.Users;
 using Jastech.Framework.Util.Helper;
 using System;
@@ -30,7 +31,7 @@ namespace Jastech.Apps.Winform
 
         public void Initialize()
         {
-            string filePath = Path.Combine(AppsConfig.Instance().Path.Config, "User.cfg");
+            string filePath = Path.Combine(ConfigSet.Instance().Path.Config, "User.cfg");
             if (File.Exists(filePath) == false)
             {
                 UserHanlder.AddUser(new User(AuthorityType.None, ""));

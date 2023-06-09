@@ -58,17 +58,18 @@ namespace ATT.UI.Forms
 
         private void LoadData()
         {
-            var operation = AppsConfig.Instance().Operation;
+            var operation = ConfigSet.Instance().Operation;
+            var appsConfig = AppsConfig.Instance();
 
-            txtDistanceX.Text = operation.DistanceFromPreAlignToLineScanX.ToString();
-            txtDistanceY.Text = operation.DistanceFromPreAlignToLineScanY.ToString();
+            txtDistanceX.Text = appsConfig.DistanceFromPreAlignToLineScanX.ToString();
+            txtDistanceY.Text = appsConfig.DistanceFromPreAlignToLineScanY.ToString();
 
-            txtPreAlignToleranceX.Text = operation.PreAlignToleranceX.ToString();
-            txtPreAlignToleranceY.Text = operation.PreAlignToleranceY.ToString();
-            txtPreAlignToleranceTheta.Text = operation.PreAlignToleranceTheta.ToString();
+            txtPreAlignToleranceX.Text = appsConfig.PreAlignToleranceX.ToString();
+            txtPreAlignToleranceY.Text = appsConfig.PreAlignToleranceY.ToString();
+            txtPreAlignToleranceTheta.Text = appsConfig.PreAlignToleranceTheta.ToString();
 
-            mtgEnableAlign.Checked = operation.EnableAlign;
-            mtgEnableAkkon.Checked = operation.EnableAkkon;
+            mtgEnableAlign.Checked = appsConfig.EnableAlign;
+            mtgEnableAkkon.Checked = appsConfig.EnableAkkon;
 
             txtDataStoringDays.Text = operation.DataStoringDuration.ToString();
             txtDataStoringCapcity.Text = operation.DataStiringCapcity.ToString();
@@ -99,17 +100,18 @@ namespace ATT.UI.Forms
 
         public void UpdateCuurentData()
         {
-            var operation = AppsConfig.Instance().Operation;
+            var operation = ConfigSet.Instance().Operation;
+            var appsConfig = AppsConfig.Instance();
 
-            operation.DistanceFromPreAlignToLineScanX = Convert.ToSingle(GetValue(txtDistanceX.Text));
-            operation.DistanceFromPreAlignToLineScanY = Convert.ToSingle(GetValue(txtDistanceY.Text));
+            appsConfig.DistanceFromPreAlignToLineScanX = Convert.ToSingle(GetValue(txtDistanceX.Text));
+            appsConfig.DistanceFromPreAlignToLineScanY = Convert.ToSingle(GetValue(txtDistanceY.Text));
 
-            operation.PreAlignToleranceX = Convert.ToSingle(GetValue(txtPreAlignToleranceX.Text));
-            operation.PreAlignToleranceY = Convert.ToSingle(GetValue(txtPreAlignToleranceY.Text));
-            operation.PreAlignToleranceTheta = Convert.ToSingle(GetValue(txtPreAlignToleranceTheta.Text));
+            appsConfig.PreAlignToleranceX = Convert.ToSingle(GetValue(txtPreAlignToleranceX.Text));
+            appsConfig.PreAlignToleranceY = Convert.ToSingle(GetValue(txtPreAlignToleranceY.Text));
+            appsConfig.PreAlignToleranceTheta = Convert.ToSingle(GetValue(txtPreAlignToleranceTheta.Text));
 
-            operation.EnableAlign = mtgEnableAlign.Checked;
-            operation.EnableAkkon = mtgEnableAkkon.Checked;
+            appsConfig.EnableAlign = mtgEnableAlign.Checked;
+            appsConfig.EnableAkkon = mtgEnableAkkon.Checked;
 
             operation.DataStoringDuration = (int)Convert.ToDouble(GetValue(txtDataStoringDays.Text));
             operation.DataStiringCapcity = (int)Convert.ToDouble(GetValue(txtDataStoringCapcity.Text));
@@ -139,7 +141,7 @@ namespace ATT.UI.Forms
         {
             UpdateCuurentData();
             //AppsConfig.Instance().Operation.Save(AppsConfig.Instance().Path.Config);
-            AppsConfig.Instance().Save();
+            ConfigSet.Instance().Save();
 
             MessageConfirmForm form = new MessageConfirmForm();
             form.Message = "Save Completed.";
