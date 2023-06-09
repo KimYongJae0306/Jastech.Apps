@@ -11,6 +11,7 @@ using ATT.UI.Forms;
 using Jastech.Apps.Structure;
 using Jastech.Apps.Winform.UI.Controls;
 using Jastech.Apps.Structure.Data;
+using Jastech.Framework.Winform.Forms;
 
 namespace ATT.UI.Pages
 {
@@ -33,9 +34,17 @@ namespace ATT.UI.Pages
 
         private void btnLinescanSetting_Click(object sender, EventArgs e)
         {
-            OpticTeachingForm form = new OpticTeachingForm();
-            form.CameraName = CameraName.LinscanMIL0;
-            form.ShowDialog();
+            //OpticTeachingForm form = new OpticTeachingForm();
+            //form.CameraName = CameraName.LinscanMIL0;
+            //form.OpenMotionPopupEventHandler += OpenMotionPopupEventHandler;
+            //form.ShowDialog();
+        }
+
+        private void OpenMotionPopupEventHandler()
+        {
+            //MotionPopupForm motionPopupForm = new MotionPopupForm();
+            //motionPopupForm.UnitName = UnitName;
+            //motionPopupForm.Show();
         }
     }
 }

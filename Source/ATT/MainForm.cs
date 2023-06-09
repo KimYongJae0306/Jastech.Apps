@@ -210,22 +210,11 @@ namespace ATT
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
+            tmrMainForm.Stop();
+
             AppsLAFManager.Instance().Release();
-           
             DeviceManager.Instance().Release();
-
             MilHelper.FreeApplication();
-        }
-
-        private void picLogo_Click(object sender, EventArgs e)
-        {
-            ATTInspRunner tt = new ATTInspRunner();
-            tt.SeqRun();
-        }
-
-        private void label1_Click(object sender, EventArgs e)
-        {
-            SystemManager.Instance().StartRun();
         }
 
         public void UpdateMainResult(AppsInspResult result)

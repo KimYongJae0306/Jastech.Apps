@@ -1,6 +1,11 @@
 ﻿using ATT_UT_IPAD.UI.Pages;
 using Jastech.Apps.Structure;
+using Jastech.Apps.Winform;
+using Jastech.Framework.Matrox;
 using Jastech.Framework.Structure;
+using Jastech.Framework.Users;
+using Jastech.Framework.Winform;
+using Jastech.Framework.Winform.Forms;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -15,17 +20,28 @@ namespace ATT_UT_IPAD
 {
     public partial class MainForm : Form
     {
+        #region 속성
         private MainPage MainPageControl { get; set; } = new MainPage();
+
+        private DataPage DataPageControl { get; set; } = new DataPage();
+
+        private LogPage LogPageControl { get; set; } = new LogPage();
+
+        private TeachingPage TeachingPageControl { get; set; } = new TeachingPage();
 
         private List<UserControl> PageControlList = null;
 
         private List<Label> PageLabelList = null;
+        #endregion
 
+        #region 생성자
         public MainForm()
         {
             InitializeComponent();
         }
+        #endregion
 
+        #region 메서드
         private void MainForm_Load(object sender, EventArgs e)
         {
             AddControls();
@@ -38,13 +54,18 @@ namespace ATT_UT_IPAD
                 lblCurrentModel.Text = ModelManager.Instance().CurrentModel.Name;
                 ModelManager.Instance().ApplyChangedEvent();
             }
+
+            tmrMainForm.Start();
         }
 
         private void AddControls()
-        { 
+        {
             // Page Control List
             PageControlList = new List<UserControl>();
             PageControlList.Add(MainPageControl);
+            PageControlList.Add(DataPageControl);
+            PageControlList.Add(LogPageControl);
+            PageControlList.Add(TeachingPageControl);
 
             // Button List
             PageLabelList = new List<Label>();
@@ -87,5 +108,87 @@ namespace ATT_UT_IPAD
 
             //MainPageControl.UpdateTabCount(model.TabCount);
         }
+
+        private void lblMainPage_Click(object sender, EventArgs e)
+        {
+            SetSelectLabel(sender);
+            SetSelectPage(MainPageControl);
+        }
+
+        private void lblTeachingPage_Click(object sender, EventArgs e)
+        {
+            if (ModelManager.Instance().CurrentModel == null)
+            {
+                MessageConfirmForm form = new MessageConfirmForm();
+                form.Message = "Current Model is null.";
+                form.ShowDialog();
+                return;
+            }
+
+            SetSelectLabel(sender);
+            SetSelectPage(TeachingPageControl);
+        }
+
+        private void lblDataPage_Click(object sender, EventArgs e)
+        {
+            SetSelectLabel(sender);
+            SetSelectPage(DataPageControl);
+        }
+
+        private void lblLogPage_Click(object sender, EventArgs e)
+        {
+            SetSelectLabel(sender);
+            SetSelectPage(LogPageControl);
+        }
+
+        private void lblCurrentUser_Click(object sender, EventArgs e)
+        {
+            LoginForm form = new LoginForm();
+            form.CurrentUser = UserManager.Instance().CurrentUser;
+            form.UserHandler = UserManager.Instance().UserHanlder;
+            form.StopProgramEvent += StopProgramEventFunction;
+            form.ShowDialog();
+
+            UserManager.Instance().SetCurrentUser(form.CurrentUser.Id);
+        }
+
+        private void StopProgramEventFunction()
+        {
+            this.Close();
+        }
+
+        private void tmrMainForm_Tick(object sender, EventArgs e)
+        {
+            DateTime now = DateTime.Now;
+            lblCurrentTime.Text = now.ToString("yyyy-MM-dd HH:mm:ss");
+
+            var user = UserManager.Instance().CurrentUser;
+
+            if (user.Type == AuthorityType.None)
+            {
+                lblCurrentUser.Text = "Operator";
+                lblTeachingPage.Enabled = false;
+                lblTeachingPageImage.Enabled = false;
+            }
+            else
+            {
+                lblCurrentUser.Text = user.Id.ToString();
+                lblTeachingPage.Enabled = true;
+                lblTeachingPageImage.Enabled = true;
+            }
+
+            //if (MainPageControl.Visible)
+            //    MainPageControl.UpdateButton();
+        }
+
+        private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            tmrMainForm.Stop();
+
+            AppsLAFManager.Instance().Release();
+            DeviceManager.Instance().Release();
+            MilHelper.FreeApplication();
+        }
+        #endregion
     }
 }

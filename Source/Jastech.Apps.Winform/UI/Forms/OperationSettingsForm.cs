@@ -12,7 +12,7 @@ using Jastech.Framework.Imaging;
 using Jastech.Framework.Config;
 using Jastech.Framework.Winform.Forms;
 
-namespace ATT.UI.Forms
+namespace Jastech.Framework.Winform.Forms
 {
     public partial class OperationSettingsForm : Form
     {

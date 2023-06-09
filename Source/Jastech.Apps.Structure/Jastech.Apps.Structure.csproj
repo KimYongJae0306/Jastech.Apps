@@ -121,7 +121,6 @@
     <Compile Include="Data\AppsEnum.cs" />
     <Compile Include="Data\Unit.cs" />
     <Compile Include="VisionTool\AlgorithmTool.cs" />
-    <Compile Include="VisionTool\IVisionTool.cs" />
     <Compile Include="VisionTool\MainAlgorithmTool.cs" />
   </ItemGroup>
   <ItemGroup>

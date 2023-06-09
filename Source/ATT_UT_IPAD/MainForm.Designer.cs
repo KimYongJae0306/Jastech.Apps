@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.tlpMainForm = new System.Windows.Forms.TableLayoutPanel();
             this.pnlPage = new System.Windows.Forms.Panel();
@@ -44,6 +45,7 @@
             this.lblDataPage = new System.Windows.Forms.Label();
             this.panel8 = new System.Windows.Forms.Panel();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
+            this.lblInspectionPageImage = new System.Windows.Forms.Label();
             this.lblMainPage = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
             this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
@@ -53,11 +55,11 @@
             this.tlpMachineStatus = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel5 = new System.Windows.Forms.TableLayoutPanel();
             this.lblCurrentUser = new System.Windows.Forms.Label();
-            this.lblCurrentModel = new System.Windows.Forms.Label();
-            this.lblSystemName = new System.Windows.Forms.Label();
-            this.lblInspectionPageImage = new System.Windows.Forms.Label();
             this.pictureBox2 = new System.Windows.Forms.PictureBox();
+            this.lblCurrentModel = new System.Windows.Forms.Label();
             this.picLogo = new System.Windows.Forms.PictureBox();
+            this.lblSystemName = new System.Windows.Forms.Label();
+            this.tmrMainForm = new System.Windows.Forms.Timer(this.components);
             this.tlpMainForm.SuspendLayout();
             this.tlpFunctionButtons.SuspendLayout();
             this.panel4.SuspendLayout();
@@ -184,6 +186,7 @@
             this.lblLogPageImage.Name = "lblLogPageImage";
             this.lblLogPageImage.Size = new System.Drawing.Size(44, 44);
             this.lblLogPageImage.TabIndex = 1;
+            this.lblLogPageImage.Click += new System.EventHandler(this.lblLogPage_Click);
             // 
             // lblLogPage
             // 
@@ -196,6 +199,7 @@
             this.lblLogPage.TabIndex = 0;
             this.lblLogPage.Text = "LOG";
             this.lblLogPage.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblLogPage.Click += new System.EventHandler(this.lblLogPage_Click);
             // 
             // panel3
             // 
@@ -230,6 +234,7 @@
             this.lblDataPageImage.Name = "lblDataPageImage";
             this.lblDataPageImage.Size = new System.Drawing.Size(44, 44);
             this.lblDataPageImage.TabIndex = 1;
+            this.lblDataPageImage.Click += new System.EventHandler(this.lblDataPage_Click);
             // 
             // lblDataPage
             // 
@@ -242,6 +247,7 @@
             this.lblDataPage.TabIndex = 0;
             this.lblDataPage.Text = "DATA";
             this.lblDataPage.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblDataPage.Click += new System.EventHandler(this.lblDataPage_Click);
             // 
             // panel8
             // 
@@ -268,6 +274,16 @@
             this.tableLayoutPanel1.Size = new System.Drawing.Size(194, 44);
             this.tableLayoutPanel1.TabIndex = 0;
             // 
+            // lblInspectionPageImage
+            // 
+            this.lblInspectionPageImage.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblInspectionPageImage.Image = ((System.Drawing.Image)(resources.GetObject("lblInspectionPageImage.Image")));
+            this.lblInspectionPageImage.Location = new System.Drawing.Point(3, 0);
+            this.lblInspectionPageImage.Name = "lblInspectionPageImage";
+            this.lblInspectionPageImage.Size = new System.Drawing.Size(44, 44);
+            this.lblInspectionPageImage.TabIndex = 1;
+            this.lblInspectionPageImage.Click += new System.EventHandler(this.lblMainPage_Click);
+            // 
             // lblMainPage
             // 
             this.lblMainPage.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -279,6 +295,7 @@
             this.lblMainPage.TabIndex = 0;
             this.lblMainPage.Text = "MAIN";
             this.lblMainPage.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblMainPage.Click += new System.EventHandler(this.lblMainPage_Click);
             // 
             // panel1
             // 
@@ -313,6 +330,7 @@
             this.lblTeachingPageImage.Name = "lblTeachingPageImage";
             this.lblTeachingPageImage.Size = new System.Drawing.Size(44, 44);
             this.lblTeachingPageImage.TabIndex = 1;
+            this.lblTeachingPageImage.Click += new System.EventHandler(this.lblTeachingPage_Click);
             // 
             // lblTeachingPage
             // 
@@ -325,6 +343,7 @@
             this.lblTeachingPage.TabIndex = 0;
             this.lblTeachingPage.Text = "TEACH";
             this.lblTeachingPage.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblTeachingPage.Click += new System.EventHandler(this.lblTeachingPage_Click);
             // 
             // pnlMachineStatus
             // 
@@ -387,6 +406,20 @@
             this.lblCurrentUser.TabIndex = 2;
             this.lblCurrentUser.Text = "Maker";
             this.lblCurrentUser.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblCurrentUser.Click += new System.EventHandler(this.lblCurrentUser_Click);
+            // 
+            // pictureBox2
+            // 
+            this.pictureBox2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pictureBox2.Image = global::ATT_UT_IPAD.Properties.Resources.People;
+            this.pictureBox2.Location = new System.Drawing.Point(134, 0);
+            this.pictureBox2.Margin = new System.Windows.Forms.Padding(0);
+            this.pictureBox2.Name = "pictureBox2";
+            this.pictureBox2.Padding = new System.Windows.Forms.Padding(6);
+            this.pictureBox2.Size = new System.Drawing.Size(46, 48);
+            this.pictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.pictureBox2.TabIndex = 4;
+            this.pictureBox2.TabStop = false;
             // 
             // lblCurrentModel
             // 
@@ -400,6 +433,17 @@
             this.lblCurrentModel.Size = new System.Drawing.Size(174, 42);
             this.lblCurrentModel.TabIndex = 3;
             this.lblCurrentModel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // picLogo
+            // 
+            this.picLogo.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.picLogo.Image = global::ATT_UT_IPAD.Properties.Resources.JastechLogo;
+            this.picLogo.Location = new System.Drawing.Point(3, 3);
+            this.picLogo.Name = "picLogo";
+            this.picLogo.Size = new System.Drawing.Size(214, 42);
+            this.picLogo.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.picLogo.TabIndex = 0;
+            this.picLogo.TabStop = false;
             // 
             // lblSystemName
             // 
@@ -415,38 +459,9 @@
             this.lblSystemName.Text = "ATT Inspection";
             this.lblSystemName.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // lblInspectionPageImage
+            // tmrMainForm
             // 
-            this.lblInspectionPageImage.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblInspectionPageImage.Image = ((System.Drawing.Image)(resources.GetObject("lblInspectionPageImage.Image")));
-            this.lblInspectionPageImage.Location = new System.Drawing.Point(3, 0);
-            this.lblInspectionPageImage.Name = "lblInspectionPageImage";
-            this.lblInspectionPageImage.Size = new System.Drawing.Size(44, 44);
-            this.lblInspectionPageImage.TabIndex = 1;
-            // 
-            // pictureBox2
-            // 
-            this.pictureBox2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pictureBox2.Image = global::ATT_UT_IPAD.Properties.Resources.People;
-            this.pictureBox2.Location = new System.Drawing.Point(134, 0);
-            this.pictureBox2.Margin = new System.Windows.Forms.Padding(0);
-            this.pictureBox2.Name = "pictureBox2";
-            this.pictureBox2.Padding = new System.Windows.Forms.Padding(6);
-            this.pictureBox2.Size = new System.Drawing.Size(46, 48);
-            this.pictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.pictureBox2.TabIndex = 4;
-            this.pictureBox2.TabStop = false;
-            // 
-            // picLogo
-            // 
-            this.picLogo.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.picLogo.Image = global::ATT_UT_IPAD.Properties.Resources.JastechLogo;
-            this.picLogo.Location = new System.Drawing.Point(3, 3);
-            this.picLogo.Name = "picLogo";
-            this.picLogo.Size = new System.Drawing.Size(214, 42);
-            this.picLogo.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.picLogo.TabIndex = 0;
-            this.picLogo.TabStop = false;
+            this.tmrMainForm.Tick += new System.EventHandler(this.tmrMainForm_Tick);
             // 
             // MainForm
             // 
@@ -457,6 +472,7 @@
             this.Controls.Add(this.tlpMainForm);
             this.Name = "MainForm";
             this.Text = "Form1";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
             this.Load += new System.EventHandler(this.MainForm_Load);
             this.tlpMainForm.ResumeLayout(false);
             this.tlpFunctionButtons.ResumeLayout(false);
@@ -508,6 +524,7 @@
         private System.Windows.Forms.Label lblCurrentModel;
         private System.Windows.Forms.PictureBox picLogo;
         private System.Windows.Forms.Label lblSystemName;
+        private System.Windows.Forms.Timer tmrMainForm;
     }
 }
 
