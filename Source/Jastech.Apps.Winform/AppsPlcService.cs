@@ -29,7 +29,7 @@ namespace Jastech.Apps.Winform
 
             lock(AddressMapList)
             {
-                AddressMapList.Add(new AppsPlcAddressMap(AddressMapType))
+                //AddressMapList.Add(new AppsPlcAddressMap(AddressMapType))
             }
 
             return true;
