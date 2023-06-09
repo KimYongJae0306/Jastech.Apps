@@ -2,7 +2,6 @@
 using System.Drawing;
 using System.Windows.Forms;
 using Jastech.Framework.Device.Motions;
-using AxisName = Jastech.Framework.Device.Motions.AxisName;
 using Jastech.Framework.Device.LAFCtrl;
 using Jastech.Framework.Winform.Forms;
 using static Jastech.Framework.Device.Motions.AxisMovingParam;
@@ -20,10 +19,10 @@ using Emgu.CV;
 using System.Threading;
 using Jastech.Framework.Imaging.Helper;
 using Jastech.Apps.Winform.Core;
-using ATT.Core;
 using Jastech.Framework.Config;
+using Jastech.Framework.Structure.Service;
 
-namespace ATT.UI.Forms
+namespace Jastech.Framework.Winform.Forms
 {
     public partial class OpticTeachingForm : Form
     {
@@ -39,6 +38,8 @@ namespace ATT.UI.Forms
 
         #region 속성
         public UnitName UnitName { get; set; } = UnitName.Unit0;
+
+        public InspModelService InspModelService { get; set; } = null;
 
         private DrawBoxControl DrawBoxControl { get; set; } = new DrawBoxControl() { Dock = DockStyle.Fill };
 
@@ -64,10 +65,13 @@ namespace ATT.UI.Forms
         #endregion
 
         #region 이벤트
+        public OpenMotionPopupDelegate OpenMotionPopupEventHandler;
         #endregion
 
         #region 델리게이트
         private delegate void UpdateUIDelegate();
+
+        public delegate void OpenMotionPopupDelegate(UnitName unitName);
         #endregion
 
         #region 생성자
@@ -80,7 +84,7 @@ namespace ATT.UI.Forms
         #region 메서드
         private void LinescanControl_Load(object sender, EventArgs e)
         {
-            SystemManager.Instance().UpdateTeachingData();
+            TeachingData.Instance().UpdateTeachingData();
 
             AppsLineCamera appsLineCamera = AppsLineCameraManager.Instance().GetLineCamera(CameraName);
             appsLineCamera.TeachingLiveImageGrabbed += LiveDisplay;
@@ -147,7 +151,7 @@ namespace ATT.UI.Forms
             pnlHistogram.Controls.Add(PixelValueGraphControl);
 
             string unitName = UnitName.Unit0.ToString();
-            var posData = SystemManager.Instance().GetTeachingData().GetUnit(unitName).TeachingInfoList;
+            var posData = TeachingData.Instance().GetUnit(unitName).TeachingInfoList;
             AxisHandler axisHandler = AppsMotionManager.Instance().GetAxisHandler(AxisHandlerName.Handler0);
             var lafCtrl = AppsLAFManager.Instance().GetLAFCtrl(LAFName.Akkon);
 
@@ -183,10 +187,6 @@ namespace ATT.UI.Forms
         private void SetOperationMode(TDIOperationMode operationMode)
         {
             var camera = AppsLineCameraManager.Instance().GetLineCamera(CameraName).Camera;
-            //camera.Stop();
-
-            //AppsLineCameraManager.Instance().GetLineCamera(CameraName).IsLive = true;
-            //AppsLineCameraManager.Instance().GetLineCamera(CameraName).StartLiveTask();
 
             if (camera is ICameraTDIavailable tdiCamera)
             {
@@ -235,11 +235,6 @@ namespace ATT.UI.Forms
             UpdateMotionStatus();
             UpdateRepeatCount();
             AutoFocusControl.UpdateAxisStatus();
-        }
-
-        public void SetParams()
-        {
-
         }
 
         private void UpdateData()
@@ -493,7 +488,7 @@ namespace ATT.UI.Forms
         private void UpdateCurrentdata()
         {
             string unitName = UnitName.Unit0.ToString();
-            var unit = SystemManager.Instance().GetTeachingData().GetUnit(unitName);
+            var unit = TeachingData.Instance().GetUnit(unitName);
             var posData = unit.TeachingInfoList[(int)TeachingPosType.Stage1_Scan_Start];
 
             posData.AxisInfoList[(int)AxisName.Z].TargetPosition = AutoFocusControl.GetCurrentData().TargetPosition;
@@ -517,10 +512,10 @@ namespace ATT.UI.Forms
         private void SaveModelData(AppsInspModel model)
         {
             UpdateCurrentdata();
-            model.SetUnitList(SystemManager.Instance().GetTeachingData().UnitList);
+            model.SetUnitList(TeachingData.Instance().UnitList);
 
             string fileName = System.IO.Path.Combine(ConfigSet.Instance().Path.Model, model.Name, InspModel.FileName);
-            SystemManager.Instance().SaveModel(fileName, model);
+            InspModelService?.Save(fileName, model);
         }
 
         private void btnCancel_Click(object sender, EventArgs e)
@@ -530,9 +525,7 @@ namespace ATT.UI.Forms
 
         private void btnMotionPopup_Click(object sender, EventArgs e)
         {
-            MotionPopupForm motionPopupForm = new MotionPopupForm();
-            motionPopupForm.UnitName = UnitName;
-            motionPopupForm.Show();
+            OpenMotionPopupEventHandler?.Invoke(UnitName);
         }
 
         private void LiveDisplay(string cameraName, Mat image)

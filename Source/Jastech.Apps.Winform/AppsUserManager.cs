@@ -11,19 +11,19 @@ using System.Threading.Tasks;
 
 namespace Jastech.Apps.Winform
 {
-    public class UserManager
+    public class AppsUserManager
     {
         public UserHanlder UserHanlder { get; private set; } = new UserHanlder();
 
         public User CurrentUser { get; private set; } = new User();
 
-        private static UserManager _instance = null;
+        private static AppsUserManager _instance = null;
 
-        public static UserManager Instance()
+        public static AppsUserManager Instance()
         {
             if (_instance == null)
             {
-                _instance = new UserManager();
+                _instance = new AppsUserManager();
             }
             
             return _instance;

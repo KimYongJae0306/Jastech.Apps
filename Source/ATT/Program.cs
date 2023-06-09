@@ -53,7 +53,7 @@ namespace ATT
                 ConfigSet.Instance().Initialize();
                 AppsConfig.Instance().Initialize();
 
-                UserManager.Instance().Initialize();
+                AppsUserManager.Instance().Initialize();
 
                 Logger.Initialize(ConfigSet.Instance().Path.Log);
 

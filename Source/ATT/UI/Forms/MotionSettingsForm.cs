@@ -23,6 +23,7 @@ using static Jastech.Framework.Device.Motions.AxisMovingParam;
 using Jastech.Framework.Winform.Forms;
 using Jastech.Framework.Device.LAFCtrl;
 using Jastech.Framework.Config;
+using Jastech.Framework.Structure.Service;
 
 namespace ATT.UI.Forms
 {
@@ -37,6 +38,8 @@ namespace ATT.UI.Forms
         #endregion
 
         #region 속성
+        public InspModelService InspModelService { get; set; } = null;
+
         public UnitName UnitName { get; set; } = UnitName.Unit0;
 
         private TeachingPositionListControl TeachingPositionListControl { get; set; } = new TeachingPositionListControl();
@@ -92,7 +95,7 @@ namespace ATT.UI.Forms
         #region 메서드
         private void MotionSettingsForm_Load(object sender, EventArgs e)
         {
-            SystemManager.Instance().UpdateTeachingData();
+            TeachingData.Instance().UpdateTeachingData();
             UpdateData();
             AddControl();
             StartTimer();
@@ -155,7 +158,7 @@ namespace ATT.UI.Forms
             var axisHandler = AppsMotionManager.Instance().GetAxisHandler(AxisHandlerName.Handler0);
             SetAxisHandler(axisHandler);
 
-            var posData = SystemManager.Instance().GetTeachingData().GetUnit(UnitName.ToString()).TeachingInfoList;
+            var posData = TeachingData.Instance().GetUnit(UnitName.ToString()).TeachingInfoList;
             SetTeachingPosition(posData);
 
             var lafCtrl = AppsLAFManager.Instance().GetLAFCtrl(LAFName.Akkon);
@@ -356,7 +359,7 @@ namespace ATT.UI.Forms
 
         private void GetCurrentVariableParams()
         {
-            var posData = SystemManager.Instance().GetTeachingData().GetUnit(UnitName.ToString()).TeachingInfoList[(int)TeachingPositionType];
+            var posData = TeachingData.Instance().GetUnit(UnitName.ToString()).TeachingInfoList[(int)TeachingPositionType];
 
             posData.SetMovingParams(AxisName.X, XVariableControl.GetCurrentData());
             posData.SetMovingParams(AxisName.Y, YVariableControl.GetCurrentData());
@@ -388,10 +391,10 @@ namespace ATT.UI.Forms
 
             // Save Model
             var model = ModelManager.Instance().CurrentModel as AppsInspModel;
-            model.SetUnitList(SystemManager.Instance().GetTeachingData().UnitList);
+            model.SetUnitList(TeachingData.Instance().UnitList);
 
             string fileName = System.IO.Path.Combine(ConfigSet.Instance().Path.Model, model.Name, InspModel.FileName);
-            SystemManager.Instance().SaveModel(fileName, model);
+            InspModelService?.Save(fileName, model);
 
             MessageConfirmForm form = new MessageConfirmForm();
             form.Message = "Save Motion Data Completed.";

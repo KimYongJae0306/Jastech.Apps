@@ -185,7 +185,6 @@ namespace ATT.Core
             }
         }
 
-
         private void AddTeachingPosition(Unit unit)
         {
             var currentAxisHandler = AppsMotionManager.Instance().GetAxisHandler(AxisHandlerName.Handler0);
@@ -257,7 +256,7 @@ namespace ATT.Core
         }
 
         public override InspModel Load(string filePath)
-        {  
+        {
             var model = new AppsInspModel();
 
             JsonConvertHelper.LoadToExistingTarget<AppsInspModel>(filePath, model);
@@ -293,11 +292,6 @@ namespace ATT.Core
                     string tabAlignDir = tabDir + @"\Align";
                     foreach (var alignParam in tab.AlignParamList)
                         alignParam.CaliperParams.LoadTool(tabAlignDir, alignParam.Name);
-
-                    //Tab Akkon 열기
-                    //string tabAkkonDir = tabDir + @"\Akkon";
-                    //foreach (var akkonParam in tab.AkkonParam.GroupList)
-                    //    akkonParam.MacronAkkonParam.LoadData(tabAkkonDir, akkonParam.Index.ToString());
                 }
 
             }
@@ -338,16 +332,11 @@ namespace ATT.Core
                     string tabAlignDir = tabDir + @"\Align";
                     foreach (var alignParam in tab.AlignParamList)
                         alignParam.CaliperParams.SaveTool(tabAlignDir, alignParam.Name);
-
-                    ////TabAkkon 저장
-                    //string tabAkkonDir = tabDir + @"\Akkon";
-                    //foreach (var akkonParam in tab.AkkonParam.GroupList)
-                    //    akkonParam.MacronAkkonParam.SaveData(tabAlignDir, akkonParam.Index.ToString());
                 }
             }
         }
 
-        public void SaveExceptVpp(string filePath, InspModel model)
+        public override void SaveExceptVpp(string filePath, InspModel model)
         {
             AppsInspModel attInspModel = model as AppsInspModel;
 

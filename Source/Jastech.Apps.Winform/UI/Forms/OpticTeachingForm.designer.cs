@@ -1,4 +1,4 @@
-﻿namespace ATT.UI.Forms
+﻿namespace Jastech.Framework.Winform.Forms
 {
     partial class OpticTeachingForm
     {

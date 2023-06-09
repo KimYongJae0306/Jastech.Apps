@@ -12,11 +12,14 @@ using Jastech.Apps.Structure;
 using Jastech.Apps.Winform.UI.Controls;
 using Jastech.Apps.Structure.Data;
 using Jastech.Framework.Winform.Forms;
+using ATT.Core;
 
 namespace ATT.UI.Pages
 {
     public partial class TeachingPage : UserControl
     {
+        private ATTInspModelService ATTInspModelService { get; set; } = null;
+
         public TeachingPage()
         {
             InitializeComponent();
@@ -28,23 +31,34 @@ namespace ATT.UI.Pages
             form.UnitName = UnitName.Unit0;
             form.TitleCameraName = "LineScan";
             form.CameraName = CameraName.LinscanMIL0;
+            form.InspModelService = ATTInspModelService;
+            form.OpenMotionPopupEventHandler += OpenMotionPopupEventHandler;
             form.ShowDialog();
-            GC.Collect();
+
+            //GC.Collect();
         }
 
         private void btnLinescanSetting_Click(object sender, EventArgs e)
         {
-            //OpticTeachingForm form = new OpticTeachingForm();
-            //form.CameraName = CameraName.LinscanMIL0;
-            //form.OpenMotionPopupEventHandler += OpenMotionPopupEventHandler;
-            //form.ShowDialog();
+            OpticTeachingForm form = new OpticTeachingForm();
+            form.CameraName = CameraName.LinscanMIL0;
+            form.UnitName = UnitName.Unit0;
+            form.InspModelService = ATTInspModelService;
+            form.OpenMotionPopupEventHandler += OpenMotionPopupEventHandler;
+            form.ShowDialog();
         }
 
-        private void OpenMotionPopupEventHandler()
+        private void OpenMotionPopupEventHandler(UnitName unitName)
         {
-            //MotionPopupForm motionPopupForm = new MotionPopupForm();
-            //motionPopupForm.UnitName = UnitName;
-            //motionPopupForm.Show();
+            MotionPopupForm motionPopupForm = new MotionPopupForm();
+            motionPopupForm.UnitName = unitName;
+            motionPopupForm.InspModelService = ATTInspModelService;
+            motionPopupForm.Show();
+        }
+
+        internal void SetInspModelService(ATTInspModelService inspModelService)
+        {
+            ATTInspModelService = inspModelService;
         }
     }
 }

@@ -84,6 +84,7 @@
     <Compile Include="AppsLineCameraManager.cs" />
     <Compile Include="AppsMotionManager.cs" />
     <Compile Include="AppsTeachingUIManager.cs" />
+    <Compile Include="AppsUserManager.cs" />
     <Compile Include="Core\ATTInspTab.cs" />
     <Compile Include="Core\IInspRunner.cs" />
     <Compile Include="Core\TabScanBuffer.cs" />
@@ -98,7 +99,6 @@
     <Compile Include="Service\DailyInfoService.cs" />
     <Compile Include="AppsPlcService.cs" />
     <Compile Include="Settings\AppsConfig.cs" />
-    <Compile Include="AppsSystemManager.cs" />
     <Compile Include="UI\Controls\AkkonControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -243,6 +243,12 @@
     <Compile Include="UI\Forms\ATTModellerForm.Designer.cs">
       <DependentUpon>ATTModellerForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="UI\Forms\LineTeachingForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\Forms\LineTeachingForm.designer.cs">
+      <DependentUpon>LineTeachingForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="UI\Forms\LogForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -254,6 +260,12 @@
     </Compile>
     <Compile Include="UI\Forms\OperationSettingsForm.designer.cs">
       <DependentUpon>OperationSettingsForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Forms\OpticTeachingForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\Forms\OpticTeachingForm.designer.cs">
+      <DependentUpon>OpticTeachingForm.cs</DependentUpon>
     </Compile>
     <Compile Include="UI\Forms\PlcStatusForm.cs">
       <SubType>Form</SubType>
@@ -267,7 +279,6 @@
     <Compile Include="UI\Forms\UnitSelectForm.Designer.cs">
       <DependentUpon>UnitSelectForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="UserManager.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Properties\Resources.resx">
@@ -346,11 +357,17 @@
     <EmbeddedResource Include="UI\Forms\ATTModellerForm.resx">
       <DependentUpon>ATTModellerForm.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="UI\Forms\LineTeachingForm.resx">
+      <DependentUpon>LineTeachingForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="UI\Forms\LogForm.resx">
       <DependentUpon>LogForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\Forms\OperationSettingsForm.resx">
       <DependentUpon>OperationSettingsForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\Forms\OpticTeachingForm.resx">
+      <DependentUpon>OpticTeachingForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\Forms\PlcStatusForm.resx">
       <DependentUpon>PlcStatusForm.cs</DependentUpon>

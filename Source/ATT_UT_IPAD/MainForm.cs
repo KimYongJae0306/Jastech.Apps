@@ -144,12 +144,12 @@ namespace ATT_UT_IPAD
         private void lblCurrentUser_Click(object sender, EventArgs e)
         {
             LoginForm form = new LoginForm();
-            form.CurrentUser = UserManager.Instance().CurrentUser;
-            form.UserHandler = UserManager.Instance().UserHanlder;
+            form.CurrentUser = AppsUserManager.Instance().CurrentUser;
+            form.UserHandler = AppsUserManager.Instance().UserHanlder;
             form.StopProgramEvent += StopProgramEventFunction;
             form.ShowDialog();
 
-            UserManager.Instance().SetCurrentUser(form.CurrentUser.Id);
+            AppsUserManager.Instance().SetCurrentUser(form.CurrentUser.Id);
         }
 
         private void StopProgramEventFunction()
@@ -162,7 +162,7 @@ namespace ATT_UT_IPAD
             DateTime now = DateTime.Now;
             lblCurrentTime.Text = now.ToString("yyyy-MM-dd HH:mm:ss");
 
-            var user = UserManager.Instance().CurrentUser;
+            var user = AppsUserManager.Instance().CurrentUser;
 
             if (user.Type == AuthorityType.None)
             {

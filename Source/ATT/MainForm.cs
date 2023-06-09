@@ -29,8 +29,6 @@ namespace ATT
     public partial class MainForm : Form
     {
         #region 속성
-        public TeachingData TeachingData { get; set; } = new TeachingData();
-        // Page Control
         private MainPage MainPageControl { get; set; } = new MainPage();
 
         private TeachingPage TeachingPageControl { get; set; } = new TeachingPage();
@@ -72,7 +70,7 @@ namespace ATT
             DateTime now = DateTime.Now;
             lblCurrentTime.Text = now.ToString("yyyy-MM-dd HH:mm:ss");
 
-            var user = UserManager.Instance().CurrentUser;
+            var user = AppsUserManager.Instance().CurrentUser;
 
             if(user.Type == AuthorityType.None)
             {
@@ -106,6 +104,8 @@ namespace ATT
             PageControlList.Add(DataPageControl);
             PageControlList.Add(TeachingPageControl);
             PageControlList.Add(LogPageControl);
+
+            TeachingPageControl.SetInspModelService(ATTInspModelService);
 
             DataPageControl.SetInspModelService(ATTInspModelService);
             DataPageControl.ApplyModelEventHandler += ModelPageControl_ApplyModelEventHandler;
@@ -198,16 +198,6 @@ namespace ATT
             logForm.ShowDialog();
         }
 
-        public void UpdateTeachingData()
-        {
-            var currentModel = ModelManager.Instance().CurrentModel as AppsInspModel;
-            if (currentModel != null)
-            {
-                TeachingData.Dispose();
-                TeachingData.Initialize(currentModel);
-            }
-        }
-
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
             tmrMainForm.Stop();
@@ -230,12 +220,12 @@ namespace ATT
         private void lblCurrentUser_Click(object sender, EventArgs e)
         {
             LoginForm form = new LoginForm();
-            form.CurrentUser = UserManager.Instance().CurrentUser;
-            form.UserHandler = UserManager.Instance().UserHanlder;
+            form.CurrentUser = AppsUserManager.Instance().CurrentUser;
+            form.UserHandler = AppsUserManager.Instance().UserHanlder;
             form.StopProgramEvent += StopProgramEventFunction;
             form.ShowDialog();
 
-            UserManager.Instance().SetCurrentUser(form.CurrentUser.Id);
+            AppsUserManager.Instance().SetCurrentUser(form.CurrentUser.Id);
         }
 
         private void StopProgramEventFunction()

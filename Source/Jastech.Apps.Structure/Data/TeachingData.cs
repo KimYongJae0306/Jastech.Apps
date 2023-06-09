@@ -16,9 +16,31 @@ namespace Jastech.Apps.Structure.Data
 {
     public class TeachingData
     {
+        private static TeachingData _instance = null;
+
+        public static TeachingData Instance()
+        {
+            if (_instance == null)
+            {
+                _instance = new TeachingData();
+            }
+
+            return _instance;
+        }
+
         public List<Unit> UnitList { get; set; } = new List<Unit>();
 
         private List<TeachingImageBuffer> ImageBufferList { get; set; } = new List<TeachingImageBuffer>();
+
+        public void UpdateTeachingData()
+        {
+            var inspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
+            if (inspModel != null)
+            {
+                Dispose();
+                Initialize(inspModel);
+            }
+        }
 
         public void Initialize(AppsInspModel inspModel)
         {
@@ -38,7 +60,6 @@ namespace Jastech.Apps.Structure.Data
 
             ClearTeachingImageBuffer();
         }
-
 
         public void ClearTeachingImageBuffer()
         {

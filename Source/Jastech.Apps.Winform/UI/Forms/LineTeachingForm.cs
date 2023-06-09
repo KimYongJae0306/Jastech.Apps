@@ -1,5 +1,4 @@
-﻿using ATT.Core;
-using Cognex.VisionPro;
+﻿using Cognex.VisionPro;
 using Cognex.VisionPro.Caliper;
 using Emgu.CV;
 using Emgu.CV.CvEnum;
@@ -17,6 +16,7 @@ using Jastech.Framework.Imaging;
 using Jastech.Framework.Imaging.VisionPro;
 using Jastech.Framework.Imaging.VisionPro.VisionAlgorithms.Results;
 using Jastech.Framework.Structure;
+using Jastech.Framework.Structure.Service;
 using Jastech.Framework.Users;
 using Jastech.Framework.Winform.Forms;
 using Jastech.Framework.Winform.VisionPro.Controls;
@@ -29,7 +29,7 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
 
-namespace ATT.UI.Forms
+namespace Jastech.Framework.Winform.Forms
 {
     public partial class LineTeachingForm : Form
     {
@@ -48,6 +48,8 @@ namespace ATT.UI.Forms
         #endregion
 
         #region 속성
+        public InspModelService InspModelService { get; set; } = null;
+
         public UnitName UnitName { get; set; } = UnitName.Unit0;
 
         public string TitleCameraName { get; set; } = "";
@@ -82,9 +84,11 @@ namespace ATT.UI.Forms
         #endregion
 
         #region 이벤트
+        public OpenMotionPopupDelegate OpenMotionPopupEventHandler;
         #endregion
 
         #region 델리게이트
+        public delegate void OpenMotionPopupDelegate(UnitName unitName);
         #endregion
 
         #region 생성자
@@ -99,9 +103,9 @@ namespace ATT.UI.Forms
         {
             _isLoading = true;
 
-            SystemManager.Instance().UpdateTeachingData();
+            TeachingData.Instance().UpdateTeachingData();
             
-            TeachingTabList = SystemManager.Instance().GetTeachingData().GetUnit(UnitName.ToString()).GetTabList();
+            TeachingTabList = TeachingData.Instance().GetUnit(UnitName.ToString()).GetTabList();
             AddControl();
             InitializeTabComboBox();
 
@@ -232,7 +236,7 @@ namespace ATT.UI.Forms
                 case DisplayType.Akkon:
                     btnAkkon.BackColor = _selectedColor;
                     AkkonControl.SetParams(CurrentTab);
-                    if (UserManager.Instance().CurrentUser.Type == AuthorityType.Maker)
+                    if (AppsUserManager.Instance().CurrentUser.Type == AuthorityType.Maker)
                         AkkonControl.UserMaker = true;
                     else
                         AkkonControl.UserMaker = false;
@@ -270,10 +274,10 @@ namespace ATT.UI.Forms
         private void SaveModelData(AppsInspModel model)
         {
             AkkonControl.SaveAkkonParam();
-            model.SetUnitList(SystemManager.Instance().GetTeachingData().UnitList);
+            model.SetUnitList(TeachingData.Instance().UnitList);
 
             string fileName = Path.Combine(ConfigSet.Instance().Path.Model, model.Name, InspModel.FileName);
-            SystemManager.Instance().SaveModel(fileName, model);
+            InspModelService?.Save(fileName, model);
         }
 
         private void btnCancel_Click(object sender, EventArgs e)
@@ -313,7 +317,7 @@ namespace ATT.UI.Forms
         {
             for (int i = 0; i < 5; i++)
             {
-                var teacingData = SystemManager.Instance().GetTeachingData().GetBufferImage(i);
+                var teacingData = TeachingData.Instance().GetBufferImage(i);
                 teacingData.TabImage.Save(string.Format(@"D:\tab_{0}.bmp", i));
             }
 
@@ -321,9 +325,7 @@ namespace ATT.UI.Forms
 
         private void btnMotionPopup_Click(object sender, EventArgs e)
         {
-            MotionPopupForm motionPopupForm = new MotionPopupForm();
-            motionPopupForm.UnitName = UnitName;
-            motionPopupForm.Show();
+            OpenMotionPopupEventHandler?.Invoke(UnitName);
         }
 
         private void btnGrabStart_Click(object sender, EventArgs e)
@@ -335,7 +337,7 @@ namespace ATT.UI.Forms
 
             AppsLAFManager.Instance().AutoFocusOnOff(LAFName.Akkon.ToString(), true);
 
-            SystemManager.Instance().GetTeachingData().ClearTeachingImageBuffer();
+            TeachingData.Instance().ClearTeachingImageBuffer();
             appsLineCamera.InitGrabSettings();
             InitalizeInspTab(appsLineCamera.TabScanBufferList);
 
@@ -370,7 +372,7 @@ namespace ATT.UI.Forms
 
         private void TeachingEventFunction(ATTInspTab inspTab)
         {
-            var teachingData = SystemManager.Instance().GetTeachingData();
+            var teachingData = TeachingData.Instance();
             teachingData.AddBufferImage(inspTab.TabScanBuffer.TabNo, inspTab.MergeMatImage);
         }
 
@@ -450,7 +452,7 @@ namespace ATT.UI.Forms
 
         private void UpdateDisplayImage(int tabNo)
         {
-            var teachingData = SystemManager.Instance().GetTeachingData();
+            var teachingData = TeachingData.Instance();
 
             if (teachingData.GetBufferImage(tabNo) is TeachingImageBuffer buffer)
             {

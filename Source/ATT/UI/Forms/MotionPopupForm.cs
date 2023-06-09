@@ -7,6 +7,7 @@ using Jastech.Framework.Config;
 using Jastech.Framework.Device.LAFCtrl;
 using Jastech.Framework.Device.Motions;
 using Jastech.Framework.Structure;
+using Jastech.Framework.Structure.Service;
 using Jastech.Framework.Winform.Controls;
 using Jastech.Framework.Winform.Forms;
 using System;
@@ -30,6 +31,8 @@ namespace ATT.UI.Forms
         #endregion
 
         #region 속성
+        public InspModelService InspModelService { get; set; } = null;
+
         private TeachingPositionListControl TeachingPositionListControl { get; set; } = new TeachingPositionListControl();
 
         private List<TeachingInfo> TeachingPositionList { get; set; } = null;
@@ -149,7 +152,7 @@ namespace ATT.UI.Forms
             SetAxisHandler(axisHandler);
 
             string unitName = UnitName.Unit0.ToString();  // 나중에 변수로...
-            var posData = SystemManager.Instance().GetTeachingData().GetUnit(unitName).TeachingInfoList;
+            var posData = TeachingData.Instance().GetUnit(unitName).TeachingInfoList;
             SetTeachingPosition(posData);
 
             var lafCtrl = AppsLAFManager.Instance().GetLAFCtrl(LAFName.Akkon);
@@ -348,7 +351,7 @@ namespace ATT.UI.Forms
 
         private void GetCurrentVariableParams()
         {
-            var posData = SystemManager.Instance().GetTeachingData().GetUnit(UnitName.ToString()).TeachingInfoList[(int)TeachingPositionType];
+            var posData = TeachingData.Instance().GetUnit(UnitName.ToString()).TeachingInfoList[(int)TeachingPositionType];
 
             posData.SetMovingParams(AxisName.X, XVariableControl.GetCurrentData());
             posData.SetMovingParams(AxisName.Y, YVariableControl.GetCurrentData());
@@ -365,10 +368,11 @@ namespace ATT.UI.Forms
 
             // Save Model
             var model = ModelManager.Instance().CurrentModel as AppsInspModel;
-            model.SetUnitList(SystemManager.Instance().GetTeachingData().UnitList);
+            model.SetUnitList(TeachingData.Instance().UnitList);
 
             string fileName = System.IO.Path.Combine(ConfigSet.Instance().Path.Model, model.Name, InspModel.FileName);
-            SystemManager.Instance().SaveModel(fileName, model);
+
+            InspModelService?.Save(fileName, model);
 
             MessageConfirmForm form = new MessageConfirmForm();
             form.Message = "Save Motion Data Completed.";

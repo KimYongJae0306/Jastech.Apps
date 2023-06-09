@@ -1,4 +1,4 @@
-﻿namespace ATT.UI.Forms
+﻿namespace Jastech.Framework.Winform.Forms
 {
     partial class LineTeachingForm
     {
@@ -171,7 +171,6 @@
             // 
             this.lblNext.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.lblNext.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblNext.Image = global::ATT.Properties.Resources.Next_White;
             this.lblNext.Location = new System.Drawing.Point(250, 0);
             this.lblNext.Margin = new System.Windows.Forms.Padding(0);
             this.lblNext.Name = "lblNext";
@@ -183,7 +182,6 @@
             // 
             this.lblPrev.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.lblPrev.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblPrev.Image = global::ATT.Properties.Resources.Prev_White;
             this.lblPrev.Location = new System.Drawing.Point(200, 0);
             this.lblPrev.Margin = new System.Windows.Forms.Padding(0);
             this.lblPrev.Name = "lblPrev";
