@@ -13,6 +13,7 @@ using Jastech.Apps.Winform.UI.Controls;
 using Jastech.Apps.Structure.Data;
 using Jastech.Framework.Winform.Forms;
 using ATT.Core;
+using Jastech.Apps.Winform;
 
 namespace ATT.UI.Pages
 {
@@ -42,7 +43,9 @@ namespace ATT.UI.Pages
         {
             OpticTeachingForm form = new OpticTeachingForm();
             form.CameraName = CameraName.LinscanMIL0;
+            form.LafName = LAFName.Akkon;
             form.UnitName = UnitName.Unit0;
+            form.AxisHandlerName = AxisHandlerName.Handler0;
             form.InspModelService = ATTInspModelService;
             form.OpenMotionPopupEventHandler += OpenMotionPopupEventHandler;
             form.ShowDialog();

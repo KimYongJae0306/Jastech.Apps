@@ -135,12 +135,11 @@ namespace Jastech.Framework.Winform.Forms
                 value = "0";
             return value;
         }
-        #endregion
 
         private void lblSave_Click(object sender, EventArgs e)
         {
             UpdateCuurentData();
-            //AppsConfig.Instance().Operation.Save(AppsConfig.Instance().Path.Config);
+
             ConfigSet.Instance().Save();
             AppsConfig.Instance().Save();
 
@@ -218,5 +217,6 @@ namespace Jastech.Framework.Winform.Forms
             else
                 textBox.Text = "0";
         }
+        #endregion
     }
 }

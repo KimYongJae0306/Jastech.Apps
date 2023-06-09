@@ -55,9 +55,15 @@ namespace Jastech.Framework.Winform.Forms
 
         private LAFCtrl LAFCtrl { get; set; } = null;
 
+        private AppsLineCamera AppsLineCamera { get; set; } = null;
+
         private TeachingInfo TeachingPositionInfo { get; set; } = null;
 
         public CameraName CameraName { get; set; }
+
+        public LAFName LafName { get; set; }
+
+        public AxisHandlerName AxisHandlerName { get; set; }
 
         private Direction _direction = Direction.CW;
 
@@ -86,27 +92,20 @@ namespace Jastech.Framework.Winform.Forms
         {
             TeachingData.Instance().UpdateTeachingData();
 
-            AppsLineCamera appsLineCamera = AppsLineCameraManager.Instance().GetLineCamera(CameraName);
-            appsLineCamera.TeachingLiveImageGrabbed += LiveDisplay;
-            appsLineCamera.GrabOnceEventHandler += OpticTeachingForm_GrabOnceEventHandler;
+            AppsLineCamera = AppsLineCameraManager.Instance().GetLineCamera(CameraName);
+
+            AppsLineCamera.TeachingLiveImageGrabbed += LiveDisplay;
+            AppsLineCamera.GrabOnceEventHandler += OpticTeachingForm_GrabOnceEventHandler;
+
+            LAFCtrl = AppsLAFManager.Instance().GetLAFCtrl(LafName);
+            AxisHandler = AppsMotionManager.Instance().GetAxisHandler(AxisHandlerName);
+            SelectedAxis = AxisHandler.GetAxis(AxisName.X);
 
             UpdateData();
             AddControl();
             InitializeUI();
             SetDefaultValue();
             StatusTimer.Start();
-        }
-
-        public void SetAxisHanlder(AxisHandler axisHandler)
-        {
-            AxisHandler = axisHandler;
-            SetAxis(AxisHandler);
-            InitializeUI();
-        }
-
-        private void SetAxis(AxisHandler axisHandler)
-        {
-            SelectedAxis = axisHandler.GetAxis(AxisName.X);
         }
 
         private void TeachingEventFunction(ATTInspTab inspTab)
@@ -152,12 +151,10 @@ namespace Jastech.Framework.Winform.Forms
 
             string unitName = UnitName.Unit0.ToString();
             var posData = TeachingData.Instance().GetUnit(unitName).TeachingInfoList;
-            AxisHandler axisHandler = AppsMotionManager.Instance().GetAxisHandler(AxisHandlerName.Handler0);
-            var lafCtrl = AppsLAFManager.Instance().GetLAFCtrl(LAFName.Akkon);
 
             AutoFocusControl.UpdateData(posData[(int)TeachingPosType.Stage1_Scan_Start].AxisInfoList[(int)AxisName.Z]);
             AutoFocusControl.SetAxisHanlder(AxisHandler);
-            AutoFocusControl.SetLAFCtrl(lafCtrl);
+            AutoFocusControl.SetLAFCtrl(LAFCtrl);
             pnlAutoFocus.Controls.Add(AutoFocusControl);
 
             pnlMotionJog.Controls.Add(MotionJogControl);
@@ -165,8 +162,6 @@ namespace Jastech.Framework.Winform.Forms
 
             pnlLAFJog.Controls.Add(LAFJogControl);
             LAFJogControl.SetSelectedLafCtrl(LAFCtrl);
-
-            SelectedAxis = axisHandler.GetAxis(AxisName.X);
         }
 
         private void DrawBoxControl_FigureDataDelegateEventHanlder(byte[] data)
@@ -186,7 +181,7 @@ namespace Jastech.Framework.Winform.Forms
 
         private void SetOperationMode(TDIOperationMode operationMode)
         {
-            var camera = AppsLineCameraManager.Instance().GetLineCamera(CameraName).Camera;
+            var camera = AppsLineCamera.Camera;
 
             if (camera is ICameraTDIavailable tdiCamera)
             {
@@ -240,7 +235,7 @@ namespace Jastech.Framework.Winform.Forms
         private void UpdateData()
         {
             // Camera Exposure, Gain Load
-            var appsLineCamera = AppsLineCameraManager.Instance().GetLineCamera(CameraName).Camera as CameraMil;
+            var appsLineCamera = AppsLineCamera.Camera as CameraMil;
 
             if (appsLineCamera != null)
             {
@@ -251,20 +246,8 @@ namespace Jastech.Framework.Winform.Forms
 
                 lblCameraGainValue.Text = appsLineCamera.GetAnalogGain().ToString();
             }
-            // Camera Exposure, Gain Load
-
-            var axisHandler = AppsMotionManager.Instance().GetAxisHandler(AxisHandlerName.Handler0);
-            SetAxisHandler(axisHandler);
-
-            var lafCtrl = AppsLAFManager.Instance().GetLAFCtrl(LAFName.Akkon);
-            SetLAFCtrl(lafCtrl);
         }
-    
-        private void SetAxisHandler(AxisHandler axisHandler)
-        {
-            AxisHandler = axisHandler;
-        }
-      
+
         private void SetTeachingPosition(TeachingInfo teacingPosition)
         {
             TeachingPositionInfo = teacingPosition.DeepCopy();
@@ -354,18 +337,17 @@ namespace Jastech.Framework.Winform.Forms
             int exposureTime = 0;
             int digitalGain = 0;
 
-            var appsLineCamera = AppsLineCameraManager.Instance().GetLineCamera(CameraName).Camera as CameraMil;
-
-            if (appsLineCamera != null)
+            var tdiCamera = AppsLineCamera.Camera as CameraMil;
+            if (tdiCamera != null)
             {
-                if (appsLineCamera.TDIOperationMode == TDIOperationMode.Area)
+                if (tdiCamera.TDIOperationMode == TDIOperationMode.Area)
                 {
                     exposureTime = KeyPadHelper.SetLabelIntegerData((Label)sender);
                 }
                 else
                 {
                     digitalGain = KeyPadHelper.SetLabelIntegerData((Label)sender);
-                    appsLineCamera.SetDigitalGain(digitalGain);
+                    tdiCamera.SetDigitalGain(digitalGain);
                 }
             }
         }
@@ -374,12 +356,7 @@ namespace Jastech.Framework.Winform.Forms
         {
             int analogGain = KeyPadHelper.SetLabelIntegerData((Label)sender);
 
-            var appsLineCamera = AppsLineCameraManager.Instance().GetLineCamera(CameraName);
-
-            if(appsLineCamera != null)
-            {
-                appsLineCamera.Camera.SetAnalogGain(analogGain);
-            }
+            AppsLineCamera?.Camera.SetAnalogGain(analogGain);
         }
 
         private void trbDimmingLevelValue_Scroll(object sender, EventArgs e)
@@ -487,8 +464,7 @@ namespace Jastech.Framework.Winform.Forms
 
         private void UpdateCurrentdata()
         {
-            string unitName = UnitName.Unit0.ToString();
-            var unit = TeachingData.Instance().GetUnit(unitName);
+            var unit = TeachingData.Instance().GetUnit(UnitName.ToString());
             var posData = unit.TeachingInfoList[(int)TeachingPosType.Stage1_Scan_Start];
 
             posData.AxisInfoList[(int)AxisName.Z].TargetPosition = AutoFocusControl.GetCurrentData().TargetPosition;
@@ -533,7 +509,7 @@ namespace Jastech.Framework.Winform.Forms
             if (image == null)
                 return;
 
-            var camera = AppsLineCameraManager.Instance().GetLineCamera(CameraName).Camera;
+            var camera = AppsLineCamera.Camera;
 
             if(camera is ICameraTDIavailable tdiCamera)
             {
@@ -558,8 +534,8 @@ namespace Jastech.Framework.Winform.Forms
 
         private void btnGrabStart_Click(object sender, EventArgs e)
         {
-            AppsLineCameraManager.Instance().GetLineCamera(CameraName).IsLive = true;
-            AppsLineCameraManager.Instance().GetLineCamera(CameraName).StartLiveTask();
+            AppsLineCamera.IsLive = true;
+            AppsLineCamera.StartLiveTask();
 
             StartGrab(false);
         }
@@ -567,7 +543,7 @@ namespace Jastech.Framework.Winform.Forms
         private void StartGrab(bool isRepeat)
         {
             StopGrab();
-            var appsLineCamera = AppsLineCameraManager.Instance().GetLineCamera(CameraName);
+
             //if (LAFCtrl is NuriOneLAFCtrl nuriOne)
             //    nuriOne.SetAutoFocusOnOFF(true);
 
@@ -577,40 +553,39 @@ namespace Jastech.Framework.Winform.Forms
                 double length = Convert.ToDouble(lblScanXLength.Text);
 
                 // Motion 이동 추가
-                appsLineCamera.StartGrab((float)length);
+                AppsLineCamera.StartGrab((float)length);
             }
             else
             {
-                appsLineCamera.StartGrabContinous();
+                AppsLineCamera.StartGrabContinous();
             }
            
         }
 
         private void btnGrabStop_Click(object sender, EventArgs e)
         {
-            AppsLineCameraManager.Instance().GetLineCamera(CameraName).IsLive = false;
-            AppsLineCameraManager.Instance().GetLineCamera(CameraName).StopGrab();
+            AppsLineCamera.IsLive = false;
+            AppsLineCamera.StopGrab();
 
             StopGrab();
         }
 
         private void StopGrab()
         {
-            AppsLineCamera camera = AppsLineCameraManager.Instance().GetLineCamera(CameraName);
-            camera.StopGrab();
+            AppsLineCamera.StopGrab();
         }
 
         private void OpticTeachingForm_FormClosing(object sender, FormClosingEventArgs e)
         {
             DrawBoxControl.DisposeImage();
-            AppsLineCamera appsLineCamera = AppsLineCameraManager.Instance().GetLineCamera(CameraName);
-            appsLineCamera.IsLive = false;
-            appsLineCamera.StopLiveTask();
-            appsLineCamera.TeachingLiveImageGrabbed -= LiveDisplay;
-            appsLineCamera.GrabOnceEventHandler -= OpticTeachingForm_GrabOnceEventHandler;
-            appsLineCamera.StopGrab();
 
-            appsLineCamera.SetOperationMode(TDIOperationMode.TDI);
+            AppsLineCamera.IsLive = false;
+            AppsLineCamera.StopLiveTask();
+            AppsLineCamera.TeachingLiveImageGrabbed -= LiveDisplay;
+            AppsLineCamera.GrabOnceEventHandler -= OpticTeachingForm_GrabOnceEventHandler;
+            AppsLineCamera.StopGrab();
+
+            AppsLineCamera.SetOperationMode(TDIOperationMode.TDI);
             StatusTimer.Stop();
         }
         #endregion
@@ -709,8 +684,8 @@ namespace Jastech.Framework.Winform.Forms
         {
             if (isRepeat)
             {
-                AppsLineCameraManager.Instance().GetLineCamera(CameraName).IsLive = false;
-                AppsLineCameraManager.Instance().GetLineCamera(CameraName).StopGrab();
+                AppsLineCamera.IsLive = false;
+                AppsLineCamera.StopGrab();
 
                 double currentPosition = SelectedAxis.GetActualPosition();
                 double distance = Convert.ToDouble(lblScanXLength.Text);
@@ -740,8 +715,6 @@ namespace Jastech.Framework.Winform.Forms
             else
             {
                 _isRepeat = false;
-                //_repeatThread.Interrupt();
-                //_repeatThread.Abort();
                 lblStartRepeat.Text = "Start";
             }
         }

@@ -72,6 +72,8 @@ namespace Jastech.Framework.Winform.Forms
 
         private MarkControl MarkControl { get; set; } = new MarkControl() { Dock = DockStyle.Fill };
 
+        private AlgorithmTool Algorithm = new AlgorithmTool();
+
         protected override CreateParams CreateParams
         {
             get
@@ -387,7 +389,7 @@ namespace Jastech.Framework.Winform.Forms
             Display.DisposeImage();
             MarkControl.DisposeImage();
             DisposeInspTabList();
-            var appsLineCamera = AppsLineCameraManager.Instance().GetLineCamera(CameraName.LinscanMIL0);
+            var appsLineCamera = AppsLineCameraManager.Instance().GetLineCamera(CameraName);
             appsLineCamera.GrabDoneEventHanlder -= LineTeachingForm_GrabDoneEventHanlder;
         }
 
@@ -507,7 +509,7 @@ namespace Jastech.Framework.Winform.Forms
             if (_displayType == DisplayType.Mark)
                 MarkControl.Inspection();
             else if (_displayType == DisplayType.Align)
-                AlignControl.Run();// Inspection();
+                AlignControl.Run();
             else if (_displayType == DisplayType.Akkon)
                 AkkonControl.Run();
         }
@@ -536,11 +538,6 @@ namespace Jastech.Framework.Winform.Forms
         {
             ExecuteCoordinate();
         }
-        #endregion
-
-
-
-        private AlgorithmTool Algorithm = new AlgorithmTool();
 
         private void ExecuteCoordinate()
         {
@@ -695,6 +692,7 @@ namespace Jastech.Framework.Winform.Forms
 
             return akkonRoi;
         }
+        #endregion
     }
 
     public enum DisplayType
