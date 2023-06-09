@@ -92,8 +92,10 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="AppsPlcAddressMap.cs" />
     <Compile Include="Service\DailyInfo.cs" />
     <Compile Include="Service\DailyInfoService.cs" />
+    <Compile Include="AppsPlcService.cs" />
     <Compile Include="Settings\AppsConfig.cs" />
     <Compile Include="UI\Controls\AkkonControl.cs">
       <SubType>UserControl</SubType>
@@ -245,6 +247,12 @@
     <Compile Include="UI\Forms\LogForm.Designer.cs">
       <DependentUpon>LogForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="UI\Forms\PlcStatusForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\Forms\PlcStatusForm.Designer.cs">
+      <DependentUpon>PlcStatusForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="UI\Forms\UnitSelectForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -332,6 +340,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UI\Forms\LogForm.resx">
       <DependentUpon>LogForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\Forms\PlcStatusForm.resx">
+      <DependentUpon>PlcStatusForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\Forms\UnitSelectForm.resx">
       <DependentUpon>UnitSelectForm.cs</DependentUpon>

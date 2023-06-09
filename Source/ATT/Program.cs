@@ -45,7 +45,6 @@ namespace ATT
                 AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
 
                 MilHelper.InitApplication();
-                //VisionProHelper.InitMemory();
                 SystemHelper.StartChecker(@"D:\ATT_Memory_Test.txt");
 
                 ConfigSet.Instance().PathConfigCreated += ConfigSet_PathConfigCreated;
@@ -77,9 +76,6 @@ namespace ATT
             {
                 var camera0 = new CameraVirtual(CameraName.LinscanMIL0.ToString(), 4640, 1024, ColorFormat.Gray, SensorType.Area);
                 config.Add(camera0);
-
-                //var camera1 = new CameraVirtual(CameraName.LinscanMIL1.ToString(), 4096, 1024, ColorFormat.Gray, SensorType.Area);
-                //config.Add(camera1);
 
                 var motion = new VirtualMotion("VirtualMotion", 3);
                 config.Add(motion);
@@ -175,7 +171,5 @@ namespace ATT
             System.Diagnostics.Trace.WriteLine(message);
             MessageBox.Show(message);
         }
-
-       
     }
 }
