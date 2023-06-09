@@ -1,15 +1,19 @@
 ﻿using ATT.Core;
 using Cognex.VisionPro;
+using Cognex.VisionPro.Caliper;
 using Emgu.CV;
 using Emgu.CV.CvEnum;
 using Jastech.Apps.Structure;
 using Jastech.Apps.Structure.Data;
+using Jastech.Apps.Structure.Parameters;
+using Jastech.Apps.Structure.VisionTool;
 using Jastech.Apps.Winform;
 using Jastech.Apps.Winform.Core;
 using Jastech.Apps.Winform.Settings;
 using Jastech.Apps.Winform.UI.Controls;
 using Jastech.Framework.Imaging;
 using Jastech.Framework.Imaging.VisionPro;
+using Jastech.Framework.Imaging.VisionPro.VisionAlgorithms.Results;
 using Jastech.Framework.Structure;
 using Jastech.Framework.Users;
 using Jastech.Framework.Winform.Forms;
@@ -523,11 +527,145 @@ namespace ATT.UI.Forms
             else if (_displayType == DisplayType.Akkon)
                 AkkonControl.ShowROIJog();
         }
-        #endregion
 
         private void lblAlign_Click(object sender, EventArgs e)
         {
-           
+            ExecuteCoordinate();
+        }
+        #endregion
+
+
+
+        private AlgorithmTool Algorithm = new AlgorithmTool();
+
+        private void ExecuteCoordinate()
+        {
+            var display = AppsTeachingUIManager.Instance().GetDisplay();
+
+            Tab origin = new Tab();
+            origin = CurrentTab.DeepCopy();
+
+            ICogImage cogImage = display.GetImage();
+
+            if (cogImage == null)
+                return;
+
+            // Set Coordinate Params
+            Coordinate fpcCoordinate = new Coordinate();
+            fpcCoordinate = SetFpcCoordinateParam(cogImage, origin);
+
+            Coordinate panelCoordinate = new Coordinate();
+            panelCoordinate = SetPanelCoordinateParam(cogImage, origin);
+
+
+            CoordinateAlign(origin, fpcCoordinate, panelCoordinate);
+
+            //foreach (var item in origin.AlignParamList)
+            //{
+            //    CogRectangleAffine roi = new CogRectangleAffine(item.CaliperParams.CaliperTool.Region);
+
+            //    PointF oldPoint = new PointF();
+            //    oldPoint.X = (float)roi.CenterX;
+            //    oldPoint.Y = (float)roi.CenterY;
+
+            //    var newPoint = algorithmTool.Coordinate.GetCoordinate(oldPoint);
+            //    roi.CenterX = newPoint.X;
+            //    roi.CenterY = newPoint.Y;
+
+            //    item.CaliperParams.CaliperTool.Region = roi;
+
+            //    CogCaliperCurrentRecordConstants constants = CogCaliperCurrentRecordConstants.All;
+            //    display.SetInteractiveGraphics("tool", item.CaliperParams.CreateCurrentRecord(constants));
+            //}
+
+            return;
+        }
+
+        private Coordinate SetFpcCoordinateParam(ICogImage cogImage, Tab tab)
+        {
+            Coordinate fpcCoordinate = new Coordinate();
+
+            // 티칭한 Left Fpc 좌표
+            MarkParam teachedLeftFpcMarkParam = tab.GetFPCMark(MarkDirection.Left, MarkName.Main);
+            CogTransform2DLinear teachedLeftFpc2D = teachedLeftFpcMarkParam.InspParam.GetOrigin();
+            PointF teachedLeftFpc = new PointF(Convert.ToSingle(teachedLeftFpc2D.TranslationX), Convert.ToSingle(teachedLeftFpc2D.TranslationY));
+
+            // 티칭한 Right FPC 좌표
+            MarkParam teachedRightFpcMarkparam = tab.GetFPCMark(MarkDirection.Right, MarkName.Main);
+            CogTransform2DLinear teachedRightFpc2D = teachedRightFpcMarkparam.InspParam.GetOrigin();
+            PointF teachedRightFpc = new PointF(Convert.ToSingle(teachedRightFpc2D.TranslationX), Convert.ToSingle(teachedRightFpc2D.TranslationY));
+
+            // 찾은 Left FPC 좌표
+            VisionProPatternMatchingResult leftReferenceMarkResult = Algorithm.RunPatternMatch(cogImage, teachedLeftFpcMarkParam.InspParam);
+            PointF searchedLeftFpcPoint = leftReferenceMarkResult.MaxMatchPos.FoundPos;
+
+            // 찾은 Right FPC 좌표
+            VisionProPatternMatchingResult rightReferenceFpcMarkResult = Algorithm.RunPatternMatch(cogImage, teachedRightFpcMarkparam.InspParam);
+            PointF searchedRightFpcPoint = rightReferenceFpcMarkResult.MaxMatchPos.FoundPos;
+
+            fpcCoordinate.SetCoordinateParam(teachedLeftFpc, teachedRightFpc, searchedLeftFpcPoint, searchedRightFpcPoint);
+
+            return fpcCoordinate;
+        }
+
+        private Coordinate SetPanelCoordinateParam(ICogImage cogImage, Tab tab)
+        {
+            Coordinate panelCoordinate = new Coordinate();
+
+            // 티칭한 Left Panel 좌표
+            MarkParam teachedLeftPanelMarkParam = tab.GetPanelMark(MarkDirection.Left, MarkName.Main);
+            CogTransform2DLinear teachedLeftPanel2D = teachedLeftPanelMarkParam.InspParam.GetOrigin();
+            PointF teachedLeftPanel = new PointF(Convert.ToSingle(teachedLeftPanel2D.TranslationX), Convert.ToSingle(teachedLeftPanel2D.TranslationY));
+
+            // 티칭한 Right Panel 좌표
+            MarkParam teachedRightPanelMarkparam = tab.GetPanelMark(MarkDirection.Right, MarkName.Main);
+            CogTransform2DLinear teachedRightPanel2D = teachedRightPanelMarkparam.InspParam.GetOrigin();
+            PointF teachedRightPanel = new PointF(Convert.ToSingle(teachedRightPanel2D.TranslationX), Convert.ToSingle(teachedRightPanel2D.TranslationY));
+
+            // 찾은 Left Panel 좌표
+            VisionProPatternMatchingResult leftReferencePanelMarkResult = Algorithm.RunPatternMatch(cogImage, teachedLeftPanelMarkParam.InspParam);
+            PointF searchedLeftPanelPoint = leftReferencePanelMarkResult.MaxMatchPos.FoundPos;
+
+            // 찾은 Right Panel 좌표
+            VisionProPatternMatchingResult rightReferencePanelMarkResult = Algorithm.RunPatternMatch(cogImage, teachedRightPanelMarkparam.InspParam);
+            PointF searchedRightPanelPoint = rightReferencePanelMarkResult.MaxMatchPos.FoundPos;
+
+            panelCoordinate.SetCoordinateParam(teachedLeftPanel, teachedRightPanel, searchedLeftPanelPoint, searchedRightPanelPoint);
+
+            return panelCoordinate;
+        }
+
+        private void CoordinateAlign(Tab tab, Coordinate fpcCoordinate, Coordinate panelCoordinate)
+        {
+            MainAlgorithmTool algorithmTool = new MainAlgorithmTool();
+
+            foreach (var item in tab.AlignParamList)
+            {
+                if (item.Name.ToLower().Contains("fpc"))
+                {
+                    //var param = tab.GetAlignParam(alignName).DeepCopy();
+                    var calcFpcRegion = algorithmTool.CoordinateRectangle(item.CaliperParams.GetRegion() as CogRectangleAffine, fpcCoordinate);
+                    item.CaliperParams.SetRegion(calcFpcRegion);
+                }
+                else if (item.Name.ToLower().Contains("panel"))
+                {
+                    var calcPanelRegion = algorithmTool.CoordinateRectangle(item.CaliperParams.GetRegion() as CogRectangleAffine, panelCoordinate);
+                    item.CaliperParams.SetRegion(calcPanelRegion);
+                }
+            }
+        }
+
+        private void CoordinateAkkon(Tab tab, Coordinate panelCoordinate)
+        {
+            MainAlgorithmTool algorithmTool = new MainAlgorithmTool();
+
+            foreach (var group in tab.AkkonParam.GroupList)
+            {
+                foreach (var lead in group.AkkonROIList)
+                {
+                    lead.LeftTopX = 0;
+                }
+            }
         }
     }
 

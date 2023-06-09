@@ -321,6 +321,7 @@ namespace Jastech.Apps.Structure.VisionTool
             return roi;
         }
 
+
         public CogRectangleAffine CalcTheta(CogRectangleAffine orginRegion, double theta)
         {
             PointF orginPoint = new PointF((float)orginRegion.CornerOriginX, (float)orginRegion.CornerOriginY);
