@@ -32,32 +32,43 @@ namespace ATT
         [STAThread]
         static void Main()
         {
-            Application.EnableVisualStyles();
-            Application.SetCompatibleTextRenderingDefault(false);
+            bool isRunning = false;
+            Mutex mutex = new Mutex(true, "ATT", out isRunning);
 
-            Application.ThreadException += Application_ThreadException;
-            Application.SetUnhandledExceptionMode(UnhandledExceptionMode.ThrowException);
-            AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
+            if(isRunning)
+            {
+                Application.EnableVisualStyles();
+                Application.SetCompatibleTextRenderingDefault(false);
 
-            MilHelper.InitApplication();
-            //VisionProHelper.InitMemory();
-            SystemHelper.StartChecker(@"D:\ATT_Memory_Test.txt");
+                Application.ThreadException += Application_ThreadException;
+                Application.SetUnhandledExceptionMode(UnhandledExceptionMode.ThrowException);
+                AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
 
-            ConfigSet.Instance().PathConfigCreated += ConfigSet_PathConfigCreated;
-            ConfigSet.Instance().OperationConfigCreated += ConfigSet_OperationConfigCreated;
-            ConfigSet.Instance().MachineConfigCreated += ConfigSet_MachineConfigCreated;
-            ConfigSet.Instance().Initialize();
-            AppsConfig.Instance().Initialize();
+                MilHelper.InitApplication();
+                //VisionProHelper.InitMemory();
+                SystemHelper.StartChecker(@"D:\ATT_Memory_Test.txt");
 
-            UserManager.Instance().Initialize();
+                ConfigSet.Instance().PathConfigCreated += ConfigSet_PathConfigCreated;
+                ConfigSet.Instance().OperationConfigCreated += ConfigSet_OperationConfigCreated;
+                ConfigSet.Instance().MachineConfigCreated += ConfigSet_MachineConfigCreated;
+                ConfigSet.Instance().Initialize();
+                AppsConfig.Instance().Initialize();
 
-            Logger.Initialize(ConfigSet.Instance().Path.Log);
+                UserManager.Instance().Initialize();
 
-            var mainForm = new MainForm();
-           
-            SystemManager.Instance().Initialize(mainForm);
-           
-            Application.Run(mainForm);
+                Logger.Initialize(ConfigSet.Instance().Path.Log);
+
+                var mainForm = new MainForm();
+
+                SystemManager.Instance().Initialize(mainForm);
+
+                Application.Run(mainForm);
+            }
+            else
+            {
+                MessageBox.Show("The program already started.");
+                Application.Exit();
+            }
         }
 
         private static void ConfigSet_MachineConfigCreated(MachineConfig config)
