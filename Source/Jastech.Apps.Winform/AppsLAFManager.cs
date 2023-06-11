@@ -66,7 +66,7 @@ namespace Jastech.Apps.Winform
         {
             _isStop = true;
 
-            Thread.Sleep(300);
+            Thread.Sleep(1000);
 
             var lafCtrlHandler = DeviceManager.Instance().LAFCtrlHandler;
 

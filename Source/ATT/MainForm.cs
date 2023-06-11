@@ -8,6 +8,7 @@ using Jastech.Apps.Winform.Service;
 using Jastech.Apps.Winform.Settings;
 using Jastech.Apps.Winform.UI.Forms;
 using Jastech.Framework.Config;
+using Jastech.Framework.Device.Grabbers;
 using Jastech.Framework.Matrox;
 using Jastech.Framework.Structure;
 using Jastech.Framework.Users;
@@ -204,6 +205,7 @@ namespace ATT
 
             AppsLAFManager.Instance().Release();
             DeviceManager.Instance().Release();
+            GrabberMil.Release();
             MilHelper.FreeApplication();
         }
 
