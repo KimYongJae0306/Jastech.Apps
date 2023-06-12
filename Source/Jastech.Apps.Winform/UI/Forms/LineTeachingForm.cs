@@ -60,9 +60,11 @@ namespace Jastech.Framework.Winform.Forms
 
         public Tab CurrentTab { get; set; } = null;
 
-        public CameraName CameraName { get; set; }
+        public AppsLineCamera AppsLineCamera { get; set; }
 
         public string TeachingImagePath { get; set; }
+
+        public double Resolution { get; set; }
 
         private CogTeachingDisplayControl Display { get; set; } = new CogTeachingDisplayControl();
 
@@ -115,8 +117,7 @@ namespace Jastech.Framework.Winform.Forms
 
             lblStageCam.Text = $"STAGE : {UnitName} / CAM : {TitleCameraName}";
 
-            var appsLineCamera = AppsLineCameraManager.Instance().GetLineCamera(CameraName);
-            appsLineCamera.GrabDoneEventHanlder += LineTeachingForm_GrabDoneEventHanlder;
+            AppsLineCamera.GrabDoneEventHanlder += LineTeachingForm_GrabDoneEventHanlder;
 
             var image = AppsTeachingUIManager.Instance().GetOriginCogImageBuffer(true);
 
@@ -229,7 +230,7 @@ namespace Jastech.Framework.Winform.Forms
                     btnAlign.BackColor = _selectedColor;
                     AlignControl.SetParams(CurrentTab);
 
-                    var camera = AppsLineCameraManager.Instance().GetLineCamera(CameraName).Camera;
+                    var camera = AppsLineCamera.Camera;
                     AlignControl.Resolution_um = camera.PixelResolution_um / camera.LensScale;
 
                     pnlTeach.Controls.Add(AlignControl);
@@ -238,6 +239,8 @@ namespace Jastech.Framework.Winform.Forms
                 case DisplayType.Akkon:
                     btnAkkon.BackColor = _selectedColor;
                     AkkonControl.SetParams(CurrentTab);
+                    AkkonControl.CalcResolution = AppsLineCamera.Camera.PixelResolution_um / AppsLineCamera.Camera.LensScale; ;
+
                     if (AppsUserManager.Instance().CurrentUser.Type == AuthorityType.Maker)
                         AkkonControl.UserMaker = true;
                     else
@@ -332,18 +335,16 @@ namespace Jastech.Framework.Winform.Forms
 
         private void btnGrabStart_Click(object sender, EventArgs e)
         {
-            var appsLineCamera = AppsLineCameraManager.Instance().GetLineCamera(CameraName);
-
             AppsInspModel inspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
             TeachingImagePath = Path.Combine(ConfigSet.Instance().Path.Model, inspModel.Name, "TeachingImage", DateTime.Now.ToString("yyyyMMdd_HHmmss"));
 
-            AppsLAFManager.Instance().AutoFocusOnOff(LAFName.Akkon.ToString(), true);
+            AppsLAFManager.Instance().AutoFocusOnOff("Akkon", true);
 
             TeachingData.Instance().ClearTeachingImageBuffer();
-            appsLineCamera.InitGrabSettings();
-            InitalizeInspTab(appsLineCamera.TabScanBufferList);
+            AppsLineCamera.InitGrabSettings();
+            InitalizeInspTab(AppsLineCamera.TabScanBufferList);
 
-            appsLineCamera.StartGrab();
+            AppsLineCamera.StartGrab();
         }
 
         public void InitalizeInspTab(List<TabScanBuffer> bufferList)
@@ -380,8 +381,7 @@ namespace Jastech.Framework.Winform.Forms
 
         private void btnGrabStop_Click(object sender, EventArgs e)
         {
-            var appsLineCamera = AppsLineCameraManager.Instance().GetLineCamera(CameraName);
-            appsLineCamera.StopGrab();
+            AppsLineCamera.StopGrab();
         }
 
         private void LineTeachingForm_FormClosing(object sender, FormClosingEventArgs e)
@@ -389,8 +389,7 @@ namespace Jastech.Framework.Winform.Forms
             Display.DisposeImage();
             MarkControl.DisposeImage();
             DisposeInspTabList();
-            var appsLineCamera = AppsLineCameraManager.Instance().GetLineCamera(CameraName);
-            appsLineCamera.GrabDoneEventHanlder -= LineTeachingForm_GrabDoneEventHanlder;
+            AppsLineCamera.GrabDoneEventHanlder -= LineTeachingForm_GrabDoneEventHanlder;
         }
 
         private void cbxTabList_DrawItem(object sender, DrawItemEventArgs e)

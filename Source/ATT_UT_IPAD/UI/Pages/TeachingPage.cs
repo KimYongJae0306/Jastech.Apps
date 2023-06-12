@@ -30,7 +30,7 @@ namespace ATT_UT_IPAD.UI.Pages
             LineTeachingForm form = new LineTeachingForm();
             form.UnitName = UnitName.Unit0;
             form.TitleCameraName = "LineScan";
-            form.CameraName = CameraName.LinscanMIL0;
+            form.AppsLineCamera = AppsLineCameraManager.Instance().GetAppsCamera("Camera0");
             form.InspModelService = ATTInspModelService;
             form.OpenMotionPopupEventHandler += OpenMotionPopupEventHandler;
             form.ShowDialog();
@@ -44,10 +44,10 @@ namespace ATT_UT_IPAD.UI.Pages
         private void btnLinescanSetting_Click(object sender, EventArgs e)
         {
             OpticTeachingForm form = new OpticTeachingForm();
-            form.CameraName = CameraName.LinscanMIL0;
-            form.LafName = LAFName.Akkon;
+            form.AppsLineCamera = AppsLineCameraManager.Instance().GetAppsCamera("Camera0");
+            form.LAFCtrl = AppsLAFManager.Instance().GetLAFCtrl("Akkon");
             form.UnitName = UnitName.Unit0;
-            form.AxisHandlerName = AxisHandlerName.Handler0;
+            form.AxisHandler = AppsMotionManager.Instance().GetAxisHandler(AxisHandlerName.Handler0);
             form.InspModelService = ATTInspModelService;
             form.OpenMotionPopupEventHandler += OpenMotionPopupEventHandler;
             form.ShowDialog();

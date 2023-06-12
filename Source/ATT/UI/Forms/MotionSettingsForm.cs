@@ -161,7 +161,7 @@ namespace ATT.UI.Forms
             var posData = TeachingData.Instance().GetUnit(UnitName.ToString()).TeachingInfoList;
             SetTeachingPosition(posData);
 
-            var lafCtrl = AppsLAFManager.Instance().GetLAFCtrl(LAFName.Akkon);
+            var lafCtrl = AppsLAFManager.Instance().GetLAFCtrl("Akkon");
             SetLAFCtrl(lafCtrl);
 
             UpdateCommonParam();
@@ -633,7 +633,7 @@ namespace ATT.UI.Forms
 
         private void lblOriginZ_Click(object sender, EventArgs e)
         {
-            AppsLAFManager.Instance().StartHomeThread(LAFName.Akkon);
+            AppsLAFManager.Instance().StartHomeThread("Akkon");
         }
 
         private void lblOriginX_Click(object sender, EventArgs e)

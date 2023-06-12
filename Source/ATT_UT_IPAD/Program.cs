@@ -70,8 +70,11 @@ namespace ATT_UT_IPAD
         {
             if (ConfigSet.Instance().Operation.VirtualMode)
             {
-                var camera0 = new CameraVirtual(CameraName.LinscanMIL0.ToString(), 4640, 1024, ColorFormat.Gray, SensorType.Area);
+                var camera0 = new CameraVirtual("AlignCamera", 4640, 1024, ColorFormat.Gray, SensorType.Area);
                 config.Add(camera0);
+
+                var camera1 = new CameraVirtual("AkkonCamera", 4640, 1024, ColorFormat.Gray, SensorType.Area);
+                config.Add(camera1);
 
                 var motion = new VirtualMotion("VirtualMotion", 2);
                 config.Add(motion);
@@ -85,7 +88,7 @@ namespace ATT_UT_IPAD
                 light2.ChannelNameMap["Ch.RedRing"] = 0;
                 config.Add(light2);
 
-                var laf = new VirtualLAFCtrl(LAFName.Akkon.ToString());
+                var laf = new VirtualLAFCtrl("Akkon");
                 config.Add(laf);
             }
             else

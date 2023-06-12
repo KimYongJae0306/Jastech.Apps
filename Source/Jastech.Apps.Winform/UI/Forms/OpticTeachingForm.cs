@@ -51,19 +51,13 @@ namespace Jastech.Framework.Winform.Forms
 
         private LAFJogControl LAFJogControl { get; set; } = new LAFJogControl() { Dock = DockStyle.Fill };
 
-        private AxisHandler AxisHandler { get; set; } = null;
+        public AxisHandler AxisHandler { get; set; } = null;
 
-        private LAFCtrl LAFCtrl { get; set; } = null;
+        public LAFCtrl LAFCtrl { get; set; } = null;
 
-        private AppsLineCamera AppsLineCamera { get; set; } = null;
+        public AppsLineCamera AppsLineCamera { get; set; } = null;
 
         private TeachingInfo TeachingPositionInfo { get; set; } = null;
-
-        public CameraName CameraName { get; set; }
-
-        public LAFName LafName { get; set; }
-
-        public AxisHandlerName AxisHandlerName { get; set; }
 
         private Direction _direction = Direction.CW;
 
@@ -92,13 +86,8 @@ namespace Jastech.Framework.Winform.Forms
         {
             TeachingData.Instance().UpdateTeachingData();
 
-            AppsLineCamera = AppsLineCameraManager.Instance().GetLineCamera(CameraName);
-
             AppsLineCamera.TeachingLiveImageGrabbed += LiveDisplay;
             AppsLineCamera.GrabOnceEventHandler += OpticTeachingForm_GrabOnceEventHandler;
-
-            LAFCtrl = AppsLAFManager.Instance().GetLAFCtrl(LafName);
-            AxisHandler = AppsMotionManager.Instance().GetAxisHandler(AxisHandlerName);
             SelectedAxis = AxisHandler.GetAxis(AxisName.X);
 
             UpdateData();

@@ -131,7 +131,7 @@ namespace ATT.Core
             }
             #endregion
 
-            var camera = AppsLineCameraManager.Instance().GetLineCamera(CameraName.LinscanMIL0).Camera;
+            var camera = AppsLineCameraManager.Instance().GetLineCamera("Camera0").Camera;
             double resolution_um = camera.PixelResolution_um / camera.LensScale;
             double judgementX = resolution_um * tab.AlignSpec.LeftSpecX_um;
             double judgementY = resolution_um* tab.AlignSpec.LeftSpecY_um;
@@ -348,7 +348,7 @@ namespace ATT.Core
             //SeqStop();
            SystemManager.Instance().MachineStatus = MachineStatus.RUN;
 
-            var appsLineCamera = AppsLineCameraManager.Instance().GetAppsCamera(CameraName.LinscanMIL0.ToString());
+            var appsLineCamera = AppsLineCameraManager.Instance().GetAppsCamera("Camera0");
 
             appsLineCamera.GrabDoneEventHanlder += ATTSeqRunner_GrabDoneEventHanlder;
             StartAkkonInspTask();
@@ -370,17 +370,17 @@ namespace ATT.Core
         {
             SystemManager.Instance().MachineStatus = MachineStatus.STOP;
 
-            var appsLineCamera = AppsLineCameraManager.Instance().GetAppsCamera(CameraName.LinscanMIL0.ToString());
+            var appsLineCamera = AppsLineCameraManager.Instance().GetAppsCamera("Camera0");
             appsLineCamera.StopGrab();
             appsLineCamera.GrabDoneEventHanlder -= ATTSeqRunner_GrabDoneEventHanlder;
-            AppsLineCameraManager.Instance().GetLineCamera(CameraName.LinscanMIL0).StopGrab();
+            AppsLineCameraManager.Instance().GetLineCamera("Camera0").StopGrab();
             StopAkkonInspTask();
             
             // 조명 off
-            AppsLAFManager.Instance().AutoFocusOnOff(LAFName.Akkon.ToString(), false);
+            AppsLAFManager.Instance().AutoFocusOnOff("Akkon", false);
             Logger.Write(LogType.Seq, "AutoFocus Off.");
 
-            AppsLineCameraManager.Instance().Stop(CameraName.LinscanMIL0);
+            AppsLineCameraManager.Instance().Stop("Camera0");
             Logger.Write(LogType.Seq, "Stop Grab.");
 
             if (SeqTask == null)
@@ -411,7 +411,7 @@ namespace ATT.Core
                 {
                     SeqStep = SeqStep.SEQ_IDLE;
                     //조명 Off
-                    AppsLineCameraManager.Instance().Stop(CameraName.LinscanMIL0);
+                    AppsLineCameraManager.Instance().Stop("Camera0");
                     DisposeInspTabList();
                     break;
                 }
@@ -465,7 +465,7 @@ namespace ATT.Core
                     break;
 
                 case SeqStep.SEQ_SCAN_READY:
-                    AppsLineCameraManager.Instance().GetLineCamera(CameraName.LinscanMIL0).IsLive = false;
+                    AppsLineCameraManager.Instance().GetLineCamera("Camera0").IsLive = false;
                     ClearResult();
                     Logger.Write(LogType.Seq, "Clear Result.");
 
@@ -475,7 +475,7 @@ namespace ATT.Core
                     AppsInspResult.StartInspTime = DateTime.Now;
                     AppsInspResult.Cell_ID = DateTime.Now.ToString("yyyyMMddHHmmss");
 
-                    AppsLAFManager.Instance().AutoFocusOnOff(LAFName.Akkon.ToString(), true);
+                    AppsLAFManager.Instance().AutoFocusOnOff("Akkon", true);
                     Logger.Write(LogType.Seq, "AutoFocus On.");
 
                     SeqStep = SeqStep.SEQ_SCAN_START;
@@ -484,7 +484,7 @@ namespace ATT.Core
                 case SeqStep.SEQ_SCAN_START:
                     IsGrabDone = false;
                     // 조명 코드 작성 요망
-                    var appsLineCamera = AppsLineCameraManager.Instance().GetLineCamera(CameraName.LinscanMIL0);
+                    var appsLineCamera = AppsLineCameraManager.Instance().GetLineCamera("Camera0");
                     appsLineCamera.SetOperationMode(TDIOperationMode.TDI);
                     appsLineCamera.StartGrab();
                     Logger.Write(LogType.Seq, "Start Grab.");
@@ -493,7 +493,7 @@ namespace ATT.Core
                     {
                         // Alarm
                         // 조명 Off
-                        AppsLineCameraManager.Instance().Stop(CameraName.LinscanMIL0);
+                        AppsLineCameraManager.Instance().Stop("Camera0");
                         Logger.Write(LogType.Seq, "Stop Grab.");
                         break;
                     }
@@ -513,7 +513,7 @@ namespace ATT.Core
                     //AppsLAFManager.Instance().AutoFocusOnOff(LAFName.Akkon.ToString(), false);
                     //Logger.Write(LogType.Seq, "AutoFocus Off.");
 
-                    AppsLineCameraManager.Instance().Stop(CameraName.LinscanMIL0);
+                    AppsLineCameraManager.Instance().Stop("Camera0");
                     Logger.Write(LogType.Seq, "Stop Grab.");
 
                     LastInspSW.Restart();
@@ -704,7 +704,7 @@ namespace ATT.Core
 
         private void InitializeBuffer()
         {
-            var appsLineCamera = AppsLineCameraManager.Instance().GetLineCamera(CameraName.LinscanMIL0);
+            var appsLineCamera = AppsLineCameraManager.Instance().GetLineCamera("Camera0");
             appsLineCamera.InitGrabSettings();
             InitalizeInspTab(appsLineCamera.TabScanBufferList);
         }

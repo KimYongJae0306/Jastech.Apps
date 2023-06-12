@@ -78,15 +78,15 @@ namespace Jastech.Apps.Winform
             return CameraList.Where(x => x.Camera.Name == name).First();
         }
 
-        public void Stop(CameraName name)
+        public void Stop(string name)
         {
-            GetAppsCamera(name.ToString()).StopGrab();
+            GetAppsCamera(name).StopGrab();
         }
 
-        private Camera GetCamera(CameraName name)
+        private Camera GetCamera(string name)
         {
             var cameraHandler = DeviceManager.Instance().CameraHandler;
-            Camera camera = cameraHandler.Where(x => x.Name == name.ToString()).First();
+            Camera camera = cameraHandler.Where(x => x.Name == name).First();
 
             return camera;
         }
@@ -108,12 +108,12 @@ namespace Jastech.Apps.Winform
             Thread.Sleep(0);
         }
        
-        public bool IsGrabbing(CameraName name)
+        public bool IsGrabbing(string name)
         {
             return GetCamera(name).IsGrabbing() == false;
         }
 
-        public AppsLineCamera GetLineCamera(CameraName cameraName)
+        public AppsLineCamera GetLineCamera(string cameraName)
         {
             return CameraList.Where(x => x.Camera.Name == cameraName.ToString()).First();
         }

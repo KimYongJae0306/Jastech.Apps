@@ -22,22 +22,6 @@ namespace Jastech.Apps.Structure.Data
         Stage1_Scan_End
     }
 
-    public enum CameraName
-    {
-        Area,
-        LeftArea,
-        RightArea,
-        LinscanMIL0,
-        LinscanMIL1,
-        LinscanVT0,
-    }
-
-    public enum LAFName
-    {
-        Align,
-        Akkon,
-    }
-
     public enum MarkName
     {
         Main,

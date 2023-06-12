@@ -54,7 +54,6 @@ namespace Jastech.Apps.Winform.UI.Controls
         private bool _isLoading { get; set; } = false;
 
         private int _curSelectedGroup { get; set; } = -1;
-
         #endregion
 
         #region 속성
@@ -70,7 +69,7 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         public bool UserMaker { get; set; } = false;
 
-        public double CalcResolution { get; private set; } = 0.0; // ex :  /camera.PixelResolution_mm(0.0035) / camera.LensScale(5) / 1000;
+        public double CalcResolution { get; set; } = 0.0; // ex :  /camera.PixelResolution_mm(0.0035) / camera.LensScale(5) / 1000;
         #endregion
 
         #region 이벤트
@@ -685,11 +684,8 @@ namespace Jastech.Apps.Winform.UI.Controls
             _cogRectAffineList.Clear();
 
             var leadCount = CurrentTab.GetAkkonGroup(groupIndex).Count;
-            var camera = DeviceManager.Instance().CameraHandler.Get(CameraName.LinscanMIL0.ToString());
-
             AkkonROI firstRoi = GetFirstROI();
 
-            CalcResolution = camera.PixelResolution_um / camera.LensScale;//camera.PixelResolution_mm(0.0035) / camera.LensScale(5) / 1000;
             if (CalcResolution == 0)
                 return;
 
@@ -1630,9 +1626,6 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         private double GetCalcumToPixel(double value)
         {
-            var camera = DeviceManager.Instance().CameraHandler.Get(CameraName.LinscanMIL0.ToString());
-            CalcResolution = (camera.PixelResolution_um / camera.LensScale);
-
             return value * CalcResolution;
         }
 

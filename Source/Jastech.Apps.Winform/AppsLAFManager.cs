@@ -204,14 +204,14 @@ namespace Jastech.Apps.Winform
             return "";
         }
 
-        public LAFCtrl GetLAFCtrl(LAFName name)
+        public LAFCtrl GetLAFCtrl(string name)
         {
             var lafCtrlHandler = DeviceManager.Instance().LAFCtrlHandler;
 
             if (lafCtrlHandler == null)
                 return null;
 
-            return lafCtrlHandler.Where(x => x.Name == name.ToString()).First();
+            return lafCtrlHandler.Where(x => x.Name == name).First();
         }
 
         private HomeSequenceStep _homeSequenceStep = HomeSequenceStep.Stop;
@@ -233,7 +233,7 @@ namespace Jastech.Apps.Winform
         private bool _isHomeThreadStop = false;
         private Thread _homeThread = null;
 
-        public void StartHomeThread(LAFName lafName)
+        public void StartHomeThread(string lafName)
         {
             _isHomeThreadStop = false;
             _homeThread = new Thread(new ParameterizedThreadStart(HomeSequenceThread));
@@ -242,7 +242,7 @@ namespace Jastech.Apps.Winform
 
         private void HomeSequenceThread(object obj)
         {
-            LAFName lafName = (LAFName)obj;
+            string lafName = (string)obj;
             _homeSequenceStep = HomeSequenceStep.Start;
 
             while (!_isHomeThreadStop)
@@ -252,7 +252,7 @@ namespace Jastech.Apps.Winform
             }
         }
 
-        private void PrepareHome(LAFName lafName)
+        private void PrepareHome(string lafName)
         {
             var lafCtrl = GetLAFCtrl(lafName);
 
@@ -266,7 +266,7 @@ namespace Jastech.Apps.Winform
         const double HOMING_SEARCH_DISTANCE = 0.100;        // mm
         const double HOMING_DISTANCE_AWAY_FROM_LIMIT = 0.5; // mm
 
-        private void HomeSequence(LAFName lafName)
+        private void HomeSequence(string lafName)
         {
             var lafCtrl = GetLAFCtrl(lafName);
             var status = lafCtrl.Status;
