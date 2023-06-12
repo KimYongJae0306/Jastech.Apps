@@ -18,6 +18,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -78,7 +79,9 @@ namespace ATT
             DeviceManager.Instance().Initialized += SystemManager_Initialized;
             DeviceManager.Instance().Initialize(ConfigSet.Instance());
 
-            AppsMotionManager.Instance().CreateAxisHanlder();
+            //AppsMotionManager.Instance().CreateAxisHanlder();
+            CreateAxisHanlder();
+
             AppsLAFManager.Instance().Initialize();
             AppsLineCameraManager.Instance().Initialize();
 
@@ -182,6 +185,50 @@ namespace ATT
         public void InitalizeInspTab(List<TabScanBuffer> bufferList)
         {
             _inspRunner.InitalizeInspTab(bufferList);
+        }
+
+        public bool CreateAxisHanlder()
+        {
+            var motion = DeviceManager.Instance().MotionHandler.First();
+            if (motion == null)
+                return false;
+
+            string dir = Path.Combine(ConfigSet.Instance().Path.Config, "AxisHanlder");
+
+            if (Directory.Exists(dir) == false)
+            {
+                Directory.CreateDirectory(dir);
+            }
+
+            string unit0FileName = string.Format("AxisHanlder_{0}.json", AxisHandlerName.Handler0);
+            string unit0FilePath = Path.Combine(dir, unit0FileName);
+            if (File.Exists(unit0FilePath) == false)
+            {
+                AxisHandler handler0 = new AxisHandler(AxisHandlerName.Handler0.ToString());
+
+                handler0.AddAxis(AxisName.X, motion, 0, 2);
+                handler0.AddAxis(AxisName.Y, motion, 8, 1);
+                handler0.AddAxis(AxisName.Z, motion, 0, 2);
+
+                //AxisHandlerList.Add(handler0);
+                AppsMotionManager.Instance().AxisHandlerList.Add(handler0);
+
+                JsonConvertHelper.Save(unit0FilePath, handler0);
+            }
+            else
+            {
+                AxisHandler unit0 = new AxisHandler();
+                JsonConvertHelper.LoadToExistingTarget<AxisHandler>(unit0FilePath, unit0);
+
+                foreach (var axis in unit0.AxisList)
+                {
+                    axis.SetMotion(motion);
+                }
+
+                //AxisHandlerList.Add(unit0);
+                AppsMotionManager.Instance().AxisHandlerList.Add(unit0);
+            }
+            return true;
         }
         #endregion
     }

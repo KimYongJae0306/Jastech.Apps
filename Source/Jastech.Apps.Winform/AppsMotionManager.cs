@@ -22,7 +22,7 @@ namespace Jastech.Apps.Winform
         #endregion
 
         #region 속성
-        private List<AxisHandler> AxisHandlerList { get; set; } = new List<AxisHandler>();
+        public List<AxisHandler> AxisHandlerList { get; set; } = new List<AxisHandler>();
         #endregion
 
         #region 메서드
@@ -36,46 +36,46 @@ namespace Jastech.Apps.Winform
             return _instance;
         }
 
-        public bool CreateAxisHanlder()
-        {
-            var motion = DeviceManager.Instance().MotionHandler.First();
-            if (motion == null)
-                return false;
+        //public bool CreateAxisHanlder()
+        //{
+        //    var motion = DeviceManager.Instance().MotionHandler.First();
+        //    if (motion == null)
+        //        return false;
 
-            string dir = Path.Combine(ConfigSet.Instance().Path.Config, "AxisHanlder");
+        //    string dir = Path.Combine(ConfigSet.Instance().Path.Config, "AxisHanlder");
 
-            if (Directory.Exists(dir) == false)
-            {
-                Directory.CreateDirectory(dir);
-            }
+        //    if (Directory.Exists(dir) == false)
+        //    {
+        //        Directory.CreateDirectory(dir);
+        //    }
 
-            string unit0FileName = string.Format("AxisHanlder_{0}.json", AxisHandlerName.Handler0);
-            string unit0FilePath = Path.Combine(dir, unit0FileName);
-            if (File.Exists(unit0FilePath) == false)
-            {
-                AxisHandler handler0 = new AxisHandler(AxisHandlerName.Handler0.ToString());
+        //    string unit0FileName = string.Format("AxisHanlder_{0}.json", AxisHandlerName.Handler0);
+        //    string unit0FilePath = Path.Combine(dir, unit0FileName);
+        //    if (File.Exists(unit0FilePath) == false)
+        //    {
+        //        AxisHandler handler0 = new AxisHandler(AxisHandlerName.Handler0.ToString());
 
-                handler0.AddAxis(AxisName.X, motion, 0, 2);
-                handler0.AddAxis(AxisName.Y, motion, 8, 1);
-                handler0.AddAxis(AxisName.Z, motion, 0, 2);
+        //        handler0.AddAxis(AxisName.X, motion, 0, 2);
+        //        handler0.AddAxis(AxisName.Y, motion, 8, 1);
+        //        handler0.AddAxis(AxisName.Z, motion, 0, 2);
 
-                AxisHandlerList.Add(handler0);
+        //        AxisHandlerList.Add(handler0);
 
-                JsonConvertHelper.Save(unit0FilePath, handler0);
-            }
-            else
-            {
-                AxisHandler unit0 = new AxisHandler();
-                JsonConvertHelper.LoadToExistingTarget<AxisHandler>(unit0FilePath, unit0);
+        //        JsonConvertHelper.Save(unit0FilePath, handler0);
+        //    }
+        //    else
+        //    {
+        //        AxisHandler unit0 = new AxisHandler();
+        //        JsonConvertHelper.LoadToExistingTarget<AxisHandler>(unit0FilePath, unit0);
 
-                foreach (var axis in unit0.AxisList)
-                {
-                    axis.SetMotion(motion);
-                }
-                AxisHandlerList.Add(unit0);
-            }
-            return true;
-        }
+        //        foreach (var axis in unit0.AxisList)
+        //        {
+        //            axis.SetMotion(motion);
+        //        }
+        //        AxisHandlerList.Add(unit0);
+        //    }
+        //    return true;
+        //}
 
         public void Save(AxisHandler axishandler)
         {

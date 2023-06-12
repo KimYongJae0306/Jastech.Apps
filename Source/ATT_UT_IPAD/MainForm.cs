@@ -1,6 +1,8 @@
-﻿using ATT_UT_IPAD.UI.Pages;
+﻿using ATT_UT_IPAD.Core;
+using ATT_UT_IPAD.UI.Pages;
 using Jastech.Apps.Structure;
 using Jastech.Apps.Winform;
+using Jastech.Framework.Config;
 using Jastech.Framework.Matrox;
 using Jastech.Framework.Structure;
 using Jastech.Framework.Users;
@@ -11,6 +13,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -32,6 +35,8 @@ namespace ATT_UT_IPAD
         private List<UserControl> PageControlList = null;
 
         private List<Label> PageLabelList = null;
+
+        public ATTInspModelService ATTInspModelService { get; set; } = new ATTInspModelService();
         #endregion
 
         #region 생성자
@@ -67,12 +72,31 @@ namespace ATT_UT_IPAD
             PageControlList.Add(LogPageControl);
             PageControlList.Add(TeachingPageControl);
 
+            TeachingPageControl.SetInspModelService(ATTInspModelService);
+
+            DataPageControl.SetInspModelService(ATTInspModelService);
+            DataPageControl.ApplyModelEventHandler += ModelPageControl_ApplyModelEventHandler;
+
             // Button List
             PageLabelList = new List<Label>();
             PageLabelList.Add(lblMainPage);
             PageLabelList.Add(lblTeachingPage);
             PageLabelList.Add(lblDataPage);
             PageLabelList.Add(lblLogPage);
+        }
+
+        private void ModelPageControl_ApplyModelEventHandler(string modelName)
+        {
+            string modelDir = ConfigSet.Instance().Path.Model;
+            string filePath = Path.Combine(modelDir, modelName, InspModel.FileName);
+
+            ModelManager.Instance().CurrentModel = ATTInspModelService.Load(filePath);
+            SelectMainPage();
+
+            lblCurrentModel.Text = modelName;
+
+            ConfigSet.Instance().Operation.LastModelName = modelName;
+            ConfigSet.Instance().Operation.Save(ConfigSet.Instance().Path.Config);
         }
 
         private void SelectMainPage()

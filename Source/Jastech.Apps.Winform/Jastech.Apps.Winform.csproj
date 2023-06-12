@@ -79,6 +79,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AppsAreaCamera.cs" />
+    <Compile Include="AppsAreaCameraManager.cs" />
     <Compile Include="AppsLAFManager.cs" />
     <Compile Include="AppsLineCamera.cs" />
     <Compile Include="AppsLineCameraManager.cs" />

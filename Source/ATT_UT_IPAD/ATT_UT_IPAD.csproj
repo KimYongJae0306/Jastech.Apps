@@ -66,6 +66,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Core\ATTInspModelService.cs" />
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -75,6 +76,24 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SystemManager.cs" />
+    <Compile Include="UI\Controls\TeachingPositionListControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UI\Controls\TeachingPositionListControl.Designer.cs">
+      <DependentUpon>TeachingPositionListControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Forms\MotionPopupForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\Forms\MotionPopupForm.Designer.cs">
+      <DependentUpon>MotionPopupForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Forms\MotionSettingsForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\Forms\MotionSettingsForm.Designer.cs">
+      <DependentUpon>MotionSettingsForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="UI\Pages\DataPage.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -112,6 +131,15 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <EmbeddedResource Include="UI\Controls\TeachingPositionListControl.resx">
+      <DependentUpon>TeachingPositionListControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\Forms\MotionPopupForm.resx">
+      <DependentUpon>MotionPopupForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\Forms\MotionSettingsForm.resx">
+      <DependentUpon>MotionSettingsForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="UI\Pages\DataPage.resx">
       <DependentUpon>DataPage.cs</DependentUpon>
     </EmbeddedResource>
@@ -138,6 +166,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\Jastech.Core\src\Jastech.Framework.Algorithms\Jastech.Framework.Algorithms.csproj">
+      <Project>{C9BEB460-E99A-4BFA-8E39-F610B2605499}</Project>
+      <Name>Jastech.Framework.Algorithms</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\..\Jastech.Core\src\Jastech.Framework.Comm\Jastech.Framework.Comm.csproj">
       <Project>{05B26E55-9C49-4078-983A-C6B13F6EE375}</Project>
       <Name>Jastech.Framework.Comm</Name>
@@ -150,6 +182,10 @@
       <Project>{F43DDCCA-E65C-4131-B789-DB4109E91B68}</Project>
       <Name>Jastech.Framework.Device</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\..\Jastech.Core\src\Jastech.Framework.Imaging.VisionPro\Jastech.Framework.Imaging.VisionPro.csproj">
+      <Project>{22EE7B1A-E7B2-4547-94DD-4E85BDB56956}</Project>
+      <Name>Jastech.Framework.Imaging.VisionPro</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\..\Jastech.Core\src\Jastech.Framework.Imaging\Jastech.Framework.Imaging.csproj">
       <Project>{2380DA0F-851A-4430-9A43-E7B2DEEE29F2}</Project>
       <Name>Jastech.Framework.Imaging</Name>
@@ -158,6 +194,10 @@
       <Project>{8B4B5CEF-5B39-423A-A460-A24F7FD8890E}</Project>
       <Name>Jastech.Framework.Matrox</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\..\Jastech.Core\src\Jastech.Framework.Modeller\Jastech.Framework.Modeller.csproj">
+      <Project>{FEB6EA9B-86D3-41B0-A950-C5B2555916CF}</Project>
+      <Name>Jastech.Framework.Modeller</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\..\Jastech.Core\src\Jastech.Framework.Structure\Jastech.Framework.Structure.csproj">
       <Project>{DCFF7B48-8DF8-4ED9-9F0F-F11C2CCB7547}</Project>
       <Name>Jastech.Framework.Structure</Name>
@@ -165,6 +205,10 @@
     <ProjectReference Include="..\..\..\Jastech.Core\src\Jastech.Framework.Util\Jastech.Framework.Util.csproj">
       <Project>{07EF86CC-AC6A-454E-B12B-EB63454A1DCA}</Project>
       <Name>Jastech.Framework.Util</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Jastech.Core\src\Jastech.Framework.Winform.VisionPro\Jastech.Framework.Winform.VisionPro.csproj">
+      <Project>{8558b173-0e81-4c55-82b8-02417220e02c}</Project>
+      <Name>Jastech.Framework.Winform.VisionPro</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\..\Jastech.Core\src\Jastech.Framework.Winform\Jastech.Framework.Winform.csproj">
       <Project>{D46C7263-535A-4BF9-AD14-5183EDE0A984}</Project>
@@ -183,11 +227,7 @@
       <Name>Jastech.Apps.Winform</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Core\" />
-    <Folder Include="UI\Controls\" />
-    <Folder Include="UI\Forms\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <None Include="Resources\Cancel_White.png" />
   </ItemGroup>

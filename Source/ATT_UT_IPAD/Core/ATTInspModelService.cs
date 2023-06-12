@@ -18,7 +18,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ATT.Core
+namespace ATT_UT_IPAD.Core
 {
     public class ATTInspModelService : Jastech.Framework.Structure.Service.InspModelService
     {
@@ -39,6 +39,23 @@ namespace ATT.Core
 
                 // LineScan 조명 Parameter 생성
                 unit.LightParams.AddRange(CreateLightParameter());
+
+                // PreAlign Mark 등록
+                foreach (MarkName type in Enum.GetValues(typeof(MarkName)))
+                {
+                    MarkParam preAlignLeftMark = new MarkParam();
+                    preAlignLeftMark.Name = type;
+                    preAlignLeftMark.InspParam.Name = MarkDirection.Left.ToString() + type.ToString();
+                    preAlignLeftMark.Direction = MarkDirection.Left;
+
+                    MarkParam preAlignRightMark = new MarkParam();
+                    preAlignRightMark.Name = type;
+                    preAlignRightMark.InspParam.Name = MarkDirection.Right.ToString() + type.ToString();
+                    preAlignRightMark.Direction = MarkDirection.Right;
+
+                    //tab.FpcMarkParamList.Add(preAlignLeftMark);
+                    //tab.FpcMarkParamList.Add(preAlignRightMark);
+                }
 
                 for (int tabIndex = 0; tabIndex < appInspModel.TabCount; tabIndex++)
                 {

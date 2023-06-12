@@ -1,9 +1,17 @@
-﻿using Jastech.Apps.Winform.Service;
+﻿using Jastech.Apps.Structure;
+using Jastech.Apps.Winform;
+using Jastech.Apps.Winform.Service;
 using Jastech.Framework.Config;
+using Jastech.Framework.Device.Cameras;
+using Jastech.Framework.Device.LightCtrls;
+using Jastech.Framework.Device.Motions;
+using Jastech.Framework.Structure;
 using Jastech.Framework.Util.Helper;
+using Jastech.Framework.Winform;
 using Jastech.Framework.Winform.Forms;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -50,6 +58,107 @@ namespace ATT_UT_IPAD
 
         private bool SplashSetupAction(IReportProgress reportProgress)
         {
+            Logger.Write(LogType.System, "Initialize Device");
+
+            int percent = 0;
+            DoReportProgress(reportProgress, percent, "Initialize Device");
+            DeviceManager.Instance().Initialized += SystemManager_Initialized;
+            DeviceManager.Instance().Initialize(ConfigSet.Instance());
+
+            //AppsMotionManager.Instance().CreateAxisHanlder();
+            CreateAxisHanlder();
+
+            AppsLAFManager.Instance().Initialize();
+            AppsLineCameraManager.Instance().Initialize();
+
+            percent += 30;
+
+            if (ConfigSet.Instance().Operation.LastModelName != "")
+            {
+                string filePath = Path.Combine(ConfigSet.Instance().Path.Model,
+                                    ConfigSet.Instance().Operation.LastModelName,
+                                    InspModel.FileName);
+                if (File.Exists(filePath))
+                {
+                    DoReportProgress(reportProgress, percent, "Model Loading");
+                    ModelManager.Instance().CurrentModel = _mainForm.ATTInspModelService.Load(filePath);
+                }
+            }
+            return true;
+        }
+
+        private void DoReportProgress(IReportProgress reportProgress, int percentage, string message)
+        {
+            Logger.Write(LogType.System, message);
+
+            reportProgress?.ReportProgress(percentage, message);
+        }
+
+        private void SystemManager_Initialized(Type deviceType, bool success)
+        {
+            if (success)
+                return;
+
+            string message = "";
+            if (deviceType == typeof(Camera))
+            {
+                message = "Camera Initialize Fail";
+            }
+            else if (deviceType == typeof(Motion))
+            {
+                message = "Motion Initialize Fail";
+            }
+            else if (deviceType == typeof(LightCtrl))
+            {
+                message = "LightCtrl Initialize Fail";
+            }
+
+            MessageYesNoForm form = new MessageYesNoForm();
+            form.Message = message;
+            form.ShowDialog();
+        }
+
+        public bool CreateAxisHanlder()
+        {
+            var motion = DeviceManager.Instance().MotionHandler.First();
+            if (motion == null)
+                return false;
+
+            string dir = Path.Combine(ConfigSet.Instance().Path.Config, "AxisHanlder");
+
+            if (Directory.Exists(dir) == false)
+            {
+                Directory.CreateDirectory(dir);
+            }
+
+            string unit0FileName = string.Format("AxisHanlder_{0}.json", AxisHandlerName.Handler0);
+            string unit0FilePath = Path.Combine(dir, unit0FileName);
+            if (File.Exists(unit0FilePath) == false)
+            {
+                AxisHandler handler0 = new AxisHandler(AxisHandlerName.Handler0.ToString());
+
+                handler0.AddAxis(AxisName.X, motion, 0, 2);
+                handler0.AddAxis(AxisName.Y, motion, 8, 1);
+                handler0.AddAxis(AxisName.Z, motion, 0, 2);
+
+                //AxisHandlerList.Add(handler0);
+                AppsMotionManager.Instance().AxisHandlerList.Add(handler0);
+
+                JsonConvertHelper.Save(unit0FilePath, handler0);
+            }
+            else
+            {
+                AxisHandler unit0 = new AxisHandler();
+                JsonConvertHelper.LoadToExistingTarget<AxisHandler>(unit0FilePath, unit0);
+
+                foreach (var axis in unit0.AxisList)
+                {
+                    axis.SetMotion(motion);
+                }
+
+                //AxisHandlerList.Add(unit0);
+                AppsMotionManager.Instance().AxisHandlerList.Add(unit0);
+            }
             return true;
         }
         #endregion
