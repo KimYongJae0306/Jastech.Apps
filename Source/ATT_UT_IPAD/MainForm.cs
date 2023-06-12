@@ -2,6 +2,7 @@
 using ATT_UT_IPAD.UI.Pages;
 using Jastech.Apps.Structure;
 using Jastech.Apps.Winform;
+using Jastech.Framework.Device.Grabbers;
 using Jastech.Framework.Config;
 using Jastech.Framework.Matrox;
 using Jastech.Framework.Structure;
@@ -211,6 +212,7 @@ namespace ATT_UT_IPAD
 
             AppsLAFManager.Instance().Release();
             DeviceManager.Instance().Release();
+            GrabberMil.Release();
             MilHelper.FreeApplication();
         }
         #endregion
