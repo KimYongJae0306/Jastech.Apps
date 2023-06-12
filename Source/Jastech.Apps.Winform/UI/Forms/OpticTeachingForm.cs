@@ -47,7 +47,7 @@ namespace Jastech.Framework.Winform.Forms
 
         private AutoFocusControl AutoFocusControl { get; set; } = new AutoFocusControl() { Dock = DockStyle.Fill };
 
-        private MotionJogControl MotionJogControl { get; set; } = new MotionJogControl() { Dock = DockStyle.Fill };
+        private MotionJogXYControl MotionJogXYControl { get; set; } = new MotionJogXYControl() { Dock = DockStyle.Fill };
 
         private LAFJogControl LAFJogControl { get; set; } = new LAFJogControl() { Dock = DockStyle.Fill };
 
@@ -118,11 +118,11 @@ namespace Jastech.Framework.Winform.Forms
 
         private void SetDefaultValue()
         {
-            if (MotionJogControl != null)
+            if (MotionJogXYControl != null)
             {
-                MotionJogControl.JogMode = JogMode.Jog;
-                MotionJogControl.JogSpeedMode = JogSpeedMode.Slow;
-                MotionJogControl.JogPitch = Convert.ToDouble(lblPitchXYValue.Text);
+                MotionJogXYControl.JogMode = JogMode.Jog;
+                MotionJogXYControl.JogSpeedMode = JogSpeedMode.Slow;
+                MotionJogXYControl.JogPitch = Convert.ToDouble(lblPitchXYValue.Text);
             }
 
             if (LAFJogControl != null)
@@ -157,8 +157,8 @@ namespace Jastech.Framework.Winform.Forms
             AutoFocusControl.SetLAFCtrl(LAFCtrl);
             pnlAutoFocus.Controls.Add(AutoFocusControl);
 
-            pnlMotionJog.Controls.Add(MotionJogControl);
-            MotionJogControl.SetAxisHanlder(AxisHandler);
+            pnlMotionJog.Controls.Add(MotionJogXYControl);
+            MotionJogXYControl.SetAxisHanlder(AxisHandler);
 
             pnlLAFJog.Controls.Add(LAFJogControl);
             LAFJogControl.SetSelectedLafCtrl(LAFCtrl);
@@ -418,7 +418,7 @@ namespace Jastech.Framework.Winform.Forms
 
         private void SetSelectJogSpeedMode(JogSpeedMode jogSpeedMode)
         {
-            MotionJogControl.JogSpeedMode = jogSpeedMode;
+            MotionJogXYControl.JogSpeedMode = jogSpeedMode;
             LAFJogControl.JogSpeedMode = jogSpeedMode;
         }
 
@@ -446,14 +446,14 @@ namespace Jastech.Framework.Winform.Forms
 
         private void SetSelectJogMode(JogMode jogMode)
         {
-            MotionJogControl.JogMode = jogMode;
+            MotionJogXYControl.JogMode = jogMode;
             LAFJogControl.JogMode = jogMode;
         }
 
         private void lblPitchXYValue_Click(object sender, EventArgs e)
         {
             double pitchXY = KeyPadHelper.SetLabelDoubleData((Label)sender);
-            MotionJogControl.JogPitch = pitchXY;
+            MotionJogXYControl.JogPitch = pitchXY;
         }
 
         private void lblPitchZValue_Click(object sender, EventArgs e)

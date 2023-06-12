@@ -156,29 +156,15 @@ namespace Jastech.Apps.Winform.UI.Controls
             lblTeachCogValue.Text = cog.ToString();
         }
 
-        private void btnCurrentToTeach_Click(object sender, EventArgs e)
-        {
-            
-        }
-
         private void lblAFOn_Click(object sender, EventArgs e)
         {
             AppsLAFManager.Instance().AutoFocusOnOff(LAFName.Akkon.ToString(), true);
         }
 
-        private void bntAFOn_Click(object sender, EventArgs e)
-        {
-            
-        }
 
         private void lblAFOff_Click(object sender, EventArgs e)
         {
             AppsLAFManager.Instance().AutoFocusOnOff(LAFName.Akkon.ToString(), false);
-        }
-
-        private void btnAFOff_Click(object sender, EventArgs e)
-        {
-            
         }
 
         private double SetLabelDoubleData(object sender)

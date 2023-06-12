@@ -50,7 +50,7 @@ namespace ATT.UI.Forms
 
         private LAFCtrl LAFCtrl { get; set; } = null;
 
-        private MotionJogControl MotionJogControl { get; set; } = new MotionJogControl() { Dock = DockStyle.Fill };
+        private MotionJogXYControl MotionJogXYControl { get; set; } = new MotionJogXYControl() { Dock = DockStyle.Fill };
 
         private LAFJogControl LAFJogControl { get; set; } = new LAFJogControl() { Dock = DockStyle.Fill };
 
@@ -105,11 +105,11 @@ namespace ATT.UI.Forms
 
         private void SetDefaultValue()
         {
-            if (MotionJogControl != null) 
+            if (MotionJogXYControl != null) 
             {
-                MotionJogControl.JogMode = JogMode.Jog;
-                MotionJogControl.JogSpeedMode = JogSpeedMode.Slow;
-                MotionJogControl.JogPitch = Convert.ToDouble(lblPitchXYValue.Text);
+                MotionJogXYControl.JogMode = JogMode.Jog;
+                MotionJogXYControl.JogSpeedMode = JogSpeedMode.Slow;
+                MotionJogXYControl.JogPitch = Convert.ToDouble(lblPitchXYValue.Text);
             }
 
             if (LAFJogControl != null)
@@ -211,8 +211,8 @@ namespace ATT.UI.Forms
 
         private void AddJogControl()
         {
-            pnlMotionJog.Controls.Add(MotionJogControl);
-            MotionJogControl.SetAxisHanlder(AxisHandler);
+            pnlMotionJog.Controls.Add(MotionJogXYControl);
+            MotionJogXYControl.SetAxisHanlder(AxisHandler);
 
             pnlLAFJog.Controls.Add(LAFJogControl);
             LAFJogControl.SetSelectedLafCtrl(LAFCtrl);
@@ -553,7 +553,7 @@ namespace ATT.UI.Forms
 
         private void SetSelectJogSpeedMode(JogSpeedMode jogSpeedMode)
         {
-            MotionJogControl.JogSpeedMode = jogSpeedMode;
+            MotionJogXYControl.JogSpeedMode = jogSpeedMode;
             LAFJogControl.JogSpeedMode = jogSpeedMode;
         }
 
@@ -581,14 +581,14 @@ namespace ATT.UI.Forms
 
         private void SetSelectJogMode(JogMode jogMode)
         {
-            MotionJogControl.JogMode = jogMode;
+            MotionJogXYControl.JogMode = jogMode;
             LAFJogControl.JogMode = jogMode;
         }
 
         private void lblPitchXYValue_Click(object sender, EventArgs e)
         {
             double pitchXY = SetLabelDoubleData(sender);
-            MotionJogControl.JogPitch = pitchXY;
+            MotionJogXYControl.JogPitch = pitchXY;
         }
 
         private void lblPitchZValue_Click(object sender, EventArgs e)

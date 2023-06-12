@@ -35,13 +35,13 @@
             this.btnExit = new System.Windows.Forms.Button();
             this.tlpContents = new System.Windows.Forms.TableLayoutPanel();
             this.pnlLogType = new System.Windows.Forms.Panel();
+            this.lblProcessCapability = new System.Windows.Forms.Label();
             this.lblUPH = new System.Windows.Forms.Label();
             this.lblAkkonTrend = new System.Windows.Forms.Label();
             this.lblLog = new System.Windows.Forms.Label();
             this.lblImage = new System.Windows.Forms.Label();
             this.lblAlignTrend = new System.Windows.Forms.Label();
             this.pnlContents = new System.Windows.Forms.Panel();
-            this.lblProcessCapability = new System.Windows.Forms.Label();
             this.tlpLog.SuspendLayout();
             this.tlpBasicFunction.SuspendLayout();
             this.tlpContents.SuspendLayout();
@@ -151,6 +151,18 @@
             this.pnlLogType.Size = new System.Drawing.Size(980, 162);
             this.pnlLogType.TabIndex = 8;
             // 
+            // lblProcessCapability
+            // 
+            this.lblProcessCapability.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblProcessCapability.Location = new System.Drawing.Point(820, 40);
+            this.lblProcessCapability.Margin = new System.Windows.Forms.Padding(0);
+            this.lblProcessCapability.Name = "lblProcessCapability";
+            this.lblProcessCapability.Size = new System.Drawing.Size(120, 60);
+            this.lblProcessCapability.TabIndex = 3;
+            this.lblProcessCapability.Text = "Process Capability";
+            this.lblProcessCapability.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblProcessCapability.Click += new System.EventHandler(this.lblProcessCapability_Click);
+            // 
             // lblUPH
             // 
             this.lblUPH.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
@@ -219,18 +231,6 @@
             this.pnlContents.Name = "pnlContents";
             this.pnlContents.Size = new System.Drawing.Size(980, 819);
             this.pnlContents.TabIndex = 9;
-            // 
-            // lblProcessCapability
-            // 
-            this.lblProcessCapability.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lblProcessCapability.Location = new System.Drawing.Point(820, 40);
-            this.lblProcessCapability.Margin = new System.Windows.Forms.Padding(0);
-            this.lblProcessCapability.Name = "lblProcessCapability";
-            this.lblProcessCapability.Size = new System.Drawing.Size(120, 60);
-            this.lblProcessCapability.TabIndex = 3;
-            this.lblProcessCapability.Text = "Process Capability";
-            this.lblProcessCapability.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.lblProcessCapability.Click += new System.EventHandler(this.lblProcessCapability_Click);
             // 
             // LogForm
             // 
