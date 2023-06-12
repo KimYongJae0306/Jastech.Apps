@@ -54,6 +54,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -227,7 +228,17 @@
       <Name>Jastech.Apps.Winform</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <PackageReference Include="Emgu.CV">
+      <Version>4.7.0.5276</Version>
+    </PackageReference>
+    <PackageReference Include="Emgu.CV.Bitmap">
+      <Version>4.7.0.5276</Version>
+    </PackageReference>
+    <PackageReference Include="Emgu.CV.runtime.windows">
+      <Version>4.7.0.5276</Version>
+    </PackageReference>
+  </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Cancel_White.png" />
   </ItemGroup>
