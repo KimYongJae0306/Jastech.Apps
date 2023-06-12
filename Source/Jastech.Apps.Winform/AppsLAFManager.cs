@@ -19,12 +19,12 @@ namespace Jastech.Apps.Winform
     {
         #region 필드
         private static AppsLAFManager _instance = null;
-
-        private bool _isStop { get; set; } = false;
         #endregion
 
         #region 속성
-        public List<Thread> StatusThreadList { get; private set; } = new List<Thread>();
+        public List<Task> StatusTaskList { get; private set; } = new List<Task>();
+
+        public List<CancellationTokenSource> StatusCancelTaskList { get; private set; } = new List<CancellationTokenSource>();
         #endregion
 
         #region 메서드
@@ -45,28 +45,26 @@ namespace Jastech.Apps.Winform
             if (lafCtrlHandler == null)
                 return;
 
-            _isStop = false;
-
             foreach (var laf in lafCtrlHandler)
             {
                 laf.DataReceived += DataReceived;
 
-                Thread statusThread = new Thread(() => RequestStatusData(laf.Name));
+                CancellationTokenSource cancel = new CancellationTokenSource();
+                Task statusTask = new Task(() => RequestStatusData(laf.Name, cancel), cancel.Token);
 
-                LAFStatus status = new LAFStatus();
-                status.Name = laf.Name;
+                statusTask.Start();
 
-                StatusThreadList.Add(statusThread);
-
-                statusThread.Start();
+                StatusTaskList.Add(statusTask);
+                StatusCancelTaskList.Add(cancel);
             }
         }
 
         public void Release()
         {
-            _isStop = true;
-
-            Thread.Sleep(1000);
+            foreach (var cancelTask in StatusCancelTaskList)
+            {
+                cancelTask.Cancel();
+            }
 
             var lafCtrlHandler = DeviceManager.Instance().LAFCtrlHandler;
 
@@ -76,19 +74,24 @@ namespace Jastech.Apps.Winform
                     laf.DataReceived -= DataReceived;
             }
 
-            foreach (var thread in StatusThreadList)
+            for (int i = 0; i < StatusTaskList.Count(); i++)
             {
-                thread.Interrupt();
-                thread.Abort();
+                StatusTaskList[i].Wait();
+                StatusTaskList[i] = null;
             }
-            StatusThreadList.Clear();
+            StatusTaskList.Clear();
         }
 
-        public void RequestStatusData(string name)
+        public void RequestStatusData(string name, CancellationTokenSource cancellationTokenSource)
         {
             int count = 0;
-            while (_isStop == false)
+            while(true)
             {
+                if (cancellationTokenSource.IsCancellationRequested)
+                {
+                    break;
+                }
+
                 if (DeviceManager.Instance().LAFCtrlHandler.Get(name) is NuriOneLAFCtrl laf)
                 {
                     if (count % 3 == 0)
