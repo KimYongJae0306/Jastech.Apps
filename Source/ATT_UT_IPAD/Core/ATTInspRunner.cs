@@ -30,7 +30,7 @@ using System.Runtime.InteropServices;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace ATT.Core
+namespace ATT_UT_IPAD.Core
 {
     public partial class ATTInspRunner
     {
@@ -322,7 +322,6 @@ namespace ATT.Core
                 AppsInspResult.Dispose();
 
             AppsInspModel inspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
-            //SystemManager.Instance().InitializeResult(inspModel.TabCount);
         }
 
         public bool IsInspectionDone()

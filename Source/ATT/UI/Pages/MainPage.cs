@@ -75,10 +75,10 @@ namespace ATT.UI.Pages
             AlignInspControl.UpdateMainResult(result);
         }
 
-        public void InitializeResult(int tabCount)
-        {
-            AlignInspControl.InitalizeResultData(tabCount);
-        }
+        //public void InitializeResult(int tabCount)
+        //{
+        //    AlignInspControl.InitalizeResultData(tabCount);
+        //}
         #endregion
 
         private void lblStart_Click(object sender, EventArgs e)

@@ -74,7 +74,7 @@ namespace ATT
         {
             if (ConfigSet.Instance().Operation.VirtualMode)
             {
-                var camera0 = new CameraVirtual("Camera0", 4640, 1024, ColorFormat.Gray, SensorType.Area);
+                var camera0 = new CameraVirtual("Camera0", 4640, 1024, ColorFormat.Gray, SensorType.Line);
                 config.Add(camera0);
 
                 var motion = new VirtualMotion("VirtualMotion", 3);

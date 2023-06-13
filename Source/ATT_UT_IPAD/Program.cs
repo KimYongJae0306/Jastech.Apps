@@ -70,26 +70,29 @@ namespace ATT_UT_IPAD
         {
             if (ConfigSet.Instance().Operation.VirtualMode)
             {
-                var camera0 = new CameraVirtual("AlignCamera", 4640, 1024, ColorFormat.Gray, SensorType.Area);
-                config.Add(camera0);
+                var alignCamera = new CameraVirtual("AlignCamera", 4640, 1024, ColorFormat.Gray, SensorType.Line);
+                config.Add(alignCamera);
 
-                var camera1 = new CameraVirtual("AkkonCamera", 4640, 1024, ColorFormat.Gray, SensorType.Area);
-                config.Add(camera1);
+                var akkonCamera = new CameraVirtual("AkkonCamera", 4640, 1024, ColorFormat.Gray, SensorType.Line);
+                config.Add(akkonCamera);
 
                 var motion = new VirtualMotion("VirtualMotion", 2);
                 config.Add(motion);
 
-                var light1 = new VirtualLightCtrl("LvsLight12V", 6);
-                light1.ChannelNameMap["Ch.Blue"] = 0;
-                light1.ChannelNameMap["Ch.RedSpot"] = 1;
-                config.Add(light1);
+                var alignLight = new VirtualLightCtrl("LvsLight12V", 6);
+                alignLight.ChannelNameMap["Ch.Blue"] = 0;
+                alignLight.ChannelNameMap["Ch.RedSpot"] = 1;
+                config.Add(alignLight);
 
-                var light2 = new VirtualLightCtrl("LvsLight24V", 6);
-                light2.ChannelNameMap["Ch.RedRing"] = 0;
-                config.Add(light2);
+                var akkonLight = new VirtualLightCtrl("LvsLight24V", 6);
+                akkonLight.ChannelNameMap["Ch.RedRing"] = 0;
+                config.Add(akkonLight);
 
-                var laf = new VirtualLAFCtrl("Akkon");
-                config.Add(laf);
+                var alignLaf = new VirtualLAFCtrl("Align");
+                config.Add(alignLaf);
+
+                var akkonLaf = new VirtualLAFCtrl("Akkon");
+                config.Add(akkonLaf);
             }
             else
             {

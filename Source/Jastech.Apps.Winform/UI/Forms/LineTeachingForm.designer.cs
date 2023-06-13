@@ -50,13 +50,14 @@
             this.btnGrabStop = new System.Windows.Forms.Button();
             this.btnGrabStart = new System.Windows.Forms.Button();
             this.pnlTeach = new System.Windows.Forms.Panel();
-            this.pnlTeachingItem = new System.Windows.Forms.Panel();
-            this.tlpTeachingItem = new System.Windows.Forms.TableLayoutPanel();
+            this.pnlTeachingItems = new System.Windows.Forms.Panel();
+            this.tlpTeachingItems = new System.Windows.Forms.TableLayoutPanel();
             this.btnCancel = new System.Windows.Forms.Button();
             this.btnSave = new System.Windows.Forms.Button();
             this.btnMark = new System.Windows.Forms.Button();
-            this.btnAlign = new System.Windows.Forms.Button();
             this.btnAkkon = new System.Windows.Forms.Button();
+            this.btnAlign = new System.Windows.Forms.Button();
+            this.pnlTeachingItem = new System.Windows.Forms.Panel();
             this.tlpTeachingPage.SuspendLayout();
             this.pnlTeachingPage.SuspendLayout();
             this.tlpTeaching.SuspendLayout();
@@ -65,8 +66,8 @@
             this.tlpCommon.SuspendLayout();
             this.tlpUnit.SuspendLayout();
             this.tlpLoadImage.SuspendLayout();
-            this.pnlTeachingItem.SuspendLayout();
-            this.tlpTeachingItem.SuspendLayout();
+            this.pnlTeachingItems.SuspendLayout();
+            this.tlpTeachingItems.SuspendLayout();
             this.SuspendLayout();
             // 
             // tlpTeachingPage
@@ -75,7 +76,7 @@
             this.tlpTeachingPage.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tlpTeachingPage.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 144F));
             this.tlpTeachingPage.Controls.Add(this.pnlTeachingPage, 0, 0);
-            this.tlpTeachingPage.Controls.Add(this.pnlTeachingItem, 1, 0);
+            this.tlpTeachingPage.Controls.Add(this.pnlTeachingItems, 1, 0);
             this.tlpTeachingPage.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tlpTeachingPage.Location = new System.Drawing.Point(0, 0);
             this.tlpTeachingPage.Margin = new System.Windows.Forms.Padding(0);
@@ -400,40 +401,41 @@
             this.pnlTeach.Size = new System.Drawing.Size(762, 635);
             this.pnlTeach.TabIndex = 0;
             // 
-            // pnlTeachingItem
+            // pnlTeachingItems
             // 
-            this.pnlTeachingItem.Controls.Add(this.tlpTeachingItem);
-            this.pnlTeachingItem.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pnlTeachingItem.Location = new System.Drawing.Point(1531, 0);
-            this.pnlTeachingItem.Margin = new System.Windows.Forms.Padding(0);
-            this.pnlTeachingItem.Name = "pnlTeachingItem";
-            this.pnlTeachingItem.Size = new System.Drawing.Size(144, 779);
-            this.pnlTeachingItem.TabIndex = 1;
+            this.pnlTeachingItems.Controls.Add(this.tlpTeachingItems);
+            this.pnlTeachingItems.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pnlTeachingItems.Location = new System.Drawing.Point(1531, 0);
+            this.pnlTeachingItems.Margin = new System.Windows.Forms.Padding(0);
+            this.pnlTeachingItems.Name = "pnlTeachingItems";
+            this.pnlTeachingItems.Size = new System.Drawing.Size(144, 779);
+            this.pnlTeachingItems.TabIndex = 1;
             // 
-            // tlpTeachingItem
+            // tlpTeachingItems
             // 
-            this.tlpTeachingItem.ColumnCount = 1;
-            this.tlpTeachingItem.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tlpTeachingItem.Controls.Add(this.btnCancel, 0, 7);
-            this.tlpTeachingItem.Controls.Add(this.btnSave, 0, 6);
-            this.tlpTeachingItem.Controls.Add(this.btnMark, 0, 0);
-            this.tlpTeachingItem.Controls.Add(this.btnAlign, 0, 1);
-            this.tlpTeachingItem.Controls.Add(this.btnAkkon, 0, 2);
-            this.tlpTeachingItem.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tlpTeachingItem.Location = new System.Drawing.Point(0, 0);
-            this.tlpTeachingItem.Margin = new System.Windows.Forms.Padding(0);
-            this.tlpTeachingItem.Name = "tlpTeachingItem";
-            this.tlpTeachingItem.RowCount = 8;
-            this.tlpTeachingItem.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 100F));
-            this.tlpTeachingItem.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 100F));
-            this.tlpTeachingItem.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 100F));
-            this.tlpTeachingItem.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 100F));
-            this.tlpTeachingItem.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 100F));
-            this.tlpTeachingItem.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tlpTeachingItem.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 100F));
-            this.tlpTeachingItem.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 100F));
-            this.tlpTeachingItem.Size = new System.Drawing.Size(144, 779);
-            this.tlpTeachingItem.TabIndex = 0;
+            this.tlpTeachingItems.ColumnCount = 1;
+            this.tlpTeachingItems.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tlpTeachingItems.Controls.Add(this.btnCancel, 0, 7);
+            this.tlpTeachingItems.Controls.Add(this.btnSave, 0, 6);
+            this.tlpTeachingItems.Controls.Add(this.btnMark, 0, 0);
+            this.tlpTeachingItems.Controls.Add(this.btnAkkon, 0, 4);
+            this.tlpTeachingItems.Controls.Add(this.btnAlign, 0, 3);
+            this.tlpTeachingItems.Controls.Add(this.pnlTeachingItem, 0, 1);
+            this.tlpTeachingItems.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tlpTeachingItems.Location = new System.Drawing.Point(0, 0);
+            this.tlpTeachingItems.Margin = new System.Windows.Forms.Padding(0);
+            this.tlpTeachingItems.Name = "tlpTeachingItems";
+            this.tlpTeachingItems.RowCount = 8;
+            this.tlpTeachingItems.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 100F));
+            this.tlpTeachingItems.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 100F));
+            this.tlpTeachingItems.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 100F));
+            this.tlpTeachingItems.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 100F));
+            this.tlpTeachingItems.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 100F));
+            this.tlpTeachingItems.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tlpTeachingItems.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 100F));
+            this.tlpTeachingItems.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 100F));
+            this.tlpTeachingItems.Size = new System.Drawing.Size(144, 779);
+            this.tlpTeachingItems.TabIndex = 0;
             // 
             // btnCancel
             // 
@@ -468,7 +470,6 @@
             // btnMark
             // 
             this.btnMark.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(34)))), ((int)(((byte)(34)))), ((int)(((byte)(34)))));
-            this.btnMark.Dock = System.Windows.Forms.DockStyle.Fill;
             this.btnMark.Font = new System.Drawing.Font("맑은 고딕", 20F, System.Drawing.FontStyle.Bold);
             this.btnMark.ForeColor = System.Drawing.Color.White;
             this.btnMark.Location = new System.Drawing.Point(2, 2);
@@ -480,13 +481,26 @@
             this.btnMark.UseVisualStyleBackColor = false;
             this.btnMark.Click += new System.EventHandler(this.btnMark_Click);
             // 
+            // btnAkkon
+            // 
+            this.btnAkkon.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(34)))), ((int)(((byte)(34)))), ((int)(((byte)(34)))));
+            this.btnAkkon.Font = new System.Drawing.Font("맑은 고딕", 20F, System.Drawing.FontStyle.Bold);
+            this.btnAkkon.ForeColor = System.Drawing.Color.White;
+            this.btnAkkon.Location = new System.Drawing.Point(2, 402);
+            this.btnAkkon.Margin = new System.Windows.Forms.Padding(2);
+            this.btnAkkon.Name = "btnAkkon";
+            this.btnAkkon.Size = new System.Drawing.Size(140, 96);
+            this.btnAkkon.TabIndex = 19;
+            this.btnAkkon.Text = "Akkon";
+            this.btnAkkon.UseVisualStyleBackColor = false;
+            this.btnAkkon.Click += new System.EventHandler(this.btnAkkon_Click);
+            // 
             // btnAlign
             // 
             this.btnAlign.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(34)))), ((int)(((byte)(34)))), ((int)(((byte)(34)))));
-            this.btnAlign.Dock = System.Windows.Forms.DockStyle.Fill;
             this.btnAlign.Font = new System.Drawing.Font("맑은 고딕", 20F, System.Drawing.FontStyle.Bold);
             this.btnAlign.ForeColor = System.Drawing.Color.White;
-            this.btnAlign.Location = new System.Drawing.Point(2, 102);
+            this.btnAlign.Location = new System.Drawing.Point(2, 302);
             this.btnAlign.Margin = new System.Windows.Forms.Padding(2);
             this.btnAlign.Name = "btnAlign";
             this.btnAlign.Size = new System.Drawing.Size(140, 96);
@@ -495,20 +509,14 @@
             this.btnAlign.UseVisualStyleBackColor = false;
             this.btnAlign.Click += new System.EventHandler(this.btnAlign_Click);
             // 
-            // btnAkkon
+            // pnlTeachingItem
             // 
-            this.btnAkkon.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(34)))), ((int)(((byte)(34)))), ((int)(((byte)(34)))));
-            this.btnAkkon.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.btnAkkon.Font = new System.Drawing.Font("맑은 고딕", 20F, System.Drawing.FontStyle.Bold);
-            this.btnAkkon.ForeColor = System.Drawing.Color.White;
-            this.btnAkkon.Location = new System.Drawing.Point(2, 202);
-            this.btnAkkon.Margin = new System.Windows.Forms.Padding(2);
-            this.btnAkkon.Name = "btnAkkon";
-            this.btnAkkon.Size = new System.Drawing.Size(140, 96);
-            this.btnAkkon.TabIndex = 19;
-            this.btnAkkon.Text = "Akkon";
-            this.btnAkkon.UseVisualStyleBackColor = false;
-            this.btnAkkon.Click += new System.EventHandler(this.btnAkkon_Click);
+            this.pnlTeachingItem.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pnlTeachingItem.Location = new System.Drawing.Point(0, 100);
+            this.pnlTeachingItem.Margin = new System.Windows.Forms.Padding(0);
+            this.pnlTeachingItem.Name = "pnlTeachingItem";
+            this.pnlTeachingItem.Size = new System.Drawing.Size(144, 100);
+            this.pnlTeachingItem.TabIndex = 21;
             // 
             // LineTeachingForm
             // 
@@ -532,8 +540,8 @@
             this.tlpCommon.ResumeLayout(false);
             this.tlpUnit.ResumeLayout(false);
             this.tlpLoadImage.ResumeLayout(false);
-            this.pnlTeachingItem.ResumeLayout(false);
-            this.tlpTeachingItem.ResumeLayout(false);
+            this.pnlTeachingItems.ResumeLayout(false);
+            this.tlpTeachingItems.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -546,8 +554,8 @@
         private System.Windows.Forms.Panel pnlDisplay;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
         private System.Windows.Forms.Panel pnlTeach;
-        private System.Windows.Forms.Panel pnlTeachingItem;
-        private System.Windows.Forms.TableLayoutPanel tlpTeachingItem;
+        private System.Windows.Forms.Panel pnlTeachingItems;
+        private System.Windows.Forms.TableLayoutPanel tlpTeachingItems;
         private System.Windows.Forms.Button btnSave;
         private System.Windows.Forms.Button btnAlign;
         private System.Windows.Forms.Button btnAkkon;
@@ -569,5 +577,6 @@
         private System.Windows.Forms.Label lblAddROI;
         private System.Windows.Forms.Label lblInspection;
         private System.Windows.Forms.Label lblROIJog;
+        private System.Windows.Forms.Panel pnlTeachingItem;
     }
 }

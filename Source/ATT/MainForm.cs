@@ -214,10 +214,10 @@ namespace ATT
             MainPageControl.UpdateMainResult(result);
         }
 
-        public void InitializeResult(int tabCount)
-        {
-            MainPageControl.InitializeResult(tabCount);
-        }
+        //public void InitializeResult(int tabCount)
+        //{
+        //    MainPageControl.InitializeResult(tabCount);
+        //}
 
         private void lblCurrentUser_Click(object sender, EventArgs e)
         {

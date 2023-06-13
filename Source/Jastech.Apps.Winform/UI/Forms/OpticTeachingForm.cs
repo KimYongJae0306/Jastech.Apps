@@ -49,6 +49,8 @@ namespace Jastech.Framework.Winform.Forms
 
         private MotionJogXYControl MotionJogXYControl { get; set; } = new MotionJogXYControl() { Dock = DockStyle.Fill };
 
+        private MotionJogXControl MotionJogXControl { get; set; } = new MotionJogXControl() { Dock = DockStyle.Fill };
+
         private LAFJogControl LAFJogControl { get; set; } = new LAFJogControl() { Dock = DockStyle.Fill };
 
         public AxisHandler AxisHandler { get; set; } = null;
@@ -112,6 +114,13 @@ namespace Jastech.Framework.Winform.Forms
                 MotionJogXYControl.JogMode = JogMode.Jog;
                 MotionJogXYControl.JogSpeedMode = JogSpeedMode.Slow;
                 MotionJogXYControl.JogPitch = Convert.ToDouble(lblPitchXYValue.Text);
+            }
+
+            if (MotionJogXControl != null)
+            {
+                MotionJogXControl.JogMode = JogMode.Jog;
+                MotionJogXControl.JogSpeedMode = JogSpeedMode.Slow;
+                MotionJogXControl.JogPitch = Convert.ToDouble(lblPitchXYValue.Text);
             }
 
             if (LAFJogControl != null)
@@ -225,6 +234,16 @@ namespace Jastech.Framework.Winform.Forms
         {
             // Camera Exposure, Gain Load
             var appsLineCamera = AppsLineCamera.Camera as CameraMil;
+
+            //if (appsLineCamera.Name == "AlignCamera")
+            //{
+            //    int gg = 90;
+            //}
+            //else if (appsLineCamera.Name == "AkkonCamera")
+            //{
+            //    int gg = 9;
+            //}
+            //else { }
 
             if (appsLineCamera != null)
             {

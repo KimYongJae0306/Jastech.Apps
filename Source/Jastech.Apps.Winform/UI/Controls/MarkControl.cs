@@ -29,13 +29,15 @@ namespace Jastech.Apps.Winform.UI.Controls
     {
         private AlgorithmTool Algorithm = new AlgorithmTool();
 
+        public TeachingItem TeachingItem = TeachingItem.Mark;
+
         private string _curTabNo { get; set; } = "";
 
         private Color _selectedColor = new Color();
 
         private Color _nonSelectedColor = new Color();
 
-        private Material _curMaterial = Material.Fpc;
+        private Material _curMaterial = Material.Panel;
 
         private MarkName _curMarkName = MarkName.Main;
 
@@ -55,7 +57,7 @@ namespace Jastech.Apps.Winform.UI.Controls
             AddControl();
             InitializeUI();
 
-            lblFpc.BackColor = _selectedColor;
+            SelectMaterial(Material.Panel);
             lblLeftMain.BackColor = _selectedColor;
 
             _curDirection = MarkDirection.Left;
@@ -85,6 +87,15 @@ namespace Jastech.Apps.Winform.UI.Controls
         {
             _selectedColor = Color.FromArgb(104, 104, 104);
             _nonSelectedColor = Color.FromArgb(52, 52, 52);
+
+            if (TeachingItem == TeachingItem.Akkon)
+            {
+                lblFpc.Visible = false;
+            }
+            else
+            {
+                lblFpc.Visible = true;
+            }
         }
 
         public void SetParams(Tab tab)
@@ -578,4 +589,10 @@ namespace Jastech.Apps.Winform.UI.Controls
             return null;
         }
     }
+
+    //public enum TeachingItem
+    //{
+    //    Align,
+    //    Akkon,
+    //}
 }

@@ -193,7 +193,7 @@
             // 
             this.lblFpc.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.lblFpc.Font = new System.Drawing.Font("맑은 고딕", 11.25F, System.Drawing.FontStyle.Bold);
-            this.lblFpc.Location = new System.Drawing.Point(7, 12);
+            this.lblFpc.Location = new System.Drawing.Point(217, 12);
             this.lblFpc.Margin = new System.Windows.Forms.Padding(0);
             this.lblFpc.Name = "lblFpc";
             this.lblFpc.Size = new System.Drawing.Size(200, 40);
@@ -206,7 +206,7 @@
             // 
             this.lblPanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.lblPanel.Font = new System.Drawing.Font("맑은 고딕", 11.25F, System.Drawing.FontStyle.Bold);
-            this.lblPanel.Location = new System.Drawing.Point(217, 12);
+            this.lblPanel.Location = new System.Drawing.Point(7, 12);
             this.lblPanel.Margin = new System.Windows.Forms.Padding(0);
             this.lblPanel.Name = "lblPanel";
             this.lblPanel.Size = new System.Drawing.Size(200, 40);

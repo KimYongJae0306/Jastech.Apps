@@ -31,7 +31,9 @@
             this.tlpMotionPopup = new System.Windows.Forms.TableLayoutPanel();
             this.tlpFormFunction = new System.Windows.Forms.TableLayoutPanel();
             this.btnMoveTeachingPosition = new System.Windows.Forms.Button();
+            this.btnExit = new System.Windows.Forms.Button();
             this.btnStopTeachingPosition = new System.Windows.Forms.Button();
+            this.btnSave = new System.Windows.Forms.Button();
             this.btnCommand = new System.Windows.Forms.Button();
             this.btnParameter = new System.Windows.Forms.Button();
             this.pnlFunction = new System.Windows.Forms.Panel();
@@ -50,8 +52,30 @@
             this.label16 = new System.Windows.Forms.Label();
             this.label17 = new System.Windows.Forms.Label();
             this.label18 = new System.Windows.Forms.Label();
+            this.lblTargetPositionZ1 = new System.Windows.Forms.Label();
             this.label19 = new System.Windows.Forms.Label();
+            this.lblAxisZ1 = new System.Windows.Forms.Label();
+            this.lblCurrentPositionZ1 = new System.Windows.Forms.Label();
+            this.lblCurrentToTargetZ1 = new System.Windows.Forms.Label();
+            this.lblCurrentCenterOfGravityZ1 = new System.Windows.Forms.Label();
+            this.lblTeachedCenterOfGravityZ1 = new System.Windows.Forms.Label();
+            this.lblAutoFocusOnZ1 = new System.Windows.Forms.Label();
+            this.lblSensorZ1 = new System.Windows.Forms.Label();
+            this.lblMoveToTargetZ1 = new System.Windows.Forms.Label();
+            this.lblCurrentToTargCetenterOfGravityZ1 = new System.Windows.Forms.Label();
             this.label20 = new System.Windows.Forms.Label();
+            this.lblOriginZ1 = new System.Windows.Forms.Label();
+            this.lblAxisZ2 = new System.Windows.Forms.Label();
+            this.lblTargetPositionZ2 = new System.Windows.Forms.Label();
+            this.lblCurrentPositionZ2 = new System.Windows.Forms.Label();
+            this.lblCurrentToTargetZ2 = new System.Windows.Forms.Label();
+            this.lblTeachedCenterOfGravityZ2 = new System.Windows.Forms.Label();
+            this.lblCurrentCenterOfGravityZ2 = new System.Windows.Forms.Label();
+            this.lblCurrentToTargCetenterOfGravityZ2 = new System.Windows.Forms.Label();
+            this.lblMoveToTargetZ2 = new System.Windows.Forms.Label();
+            this.lblOriginZ2 = new System.Windows.Forms.Label();
+            this.lblSensorZ2 = new System.Windows.Forms.Label();
+            this.lblAutoFocusOnZ2 = new System.Windows.Forms.Label();
             this.tlpMotionStatus = new System.Windows.Forms.TableLayoutPanel();
             this.label9 = new System.Windows.Forms.Label();
             this.label8 = new System.Windows.Forms.Label();
@@ -80,6 +104,7 @@
             this.pnlMotionJog = new System.Windows.Forms.Panel();
             this.tableLayoutPanel5 = new System.Windows.Forms.TableLayoutPanel();
             this.pnlLAFZ1Jog = new System.Windows.Forms.Panel();
+            this.pnlLAFZ2Jog = new System.Windows.Forms.Panel();
             this.tlpJogOption = new System.Windows.Forms.TableLayoutPanel();
             this.tlpPitchZ = new System.Windows.Forms.TableLayoutPanel();
             this.lblPitchZ = new System.Windows.Forms.Label();
@@ -95,31 +120,10 @@
             this.rdoJogSlowMode = new System.Windows.Forms.RadioButton();
             this.lblJog = new System.Windows.Forms.Label();
             this.pnlTeachingPositionList = new System.Windows.Forms.Panel();
-            this.lblOriginZ1 = new System.Windows.Forms.Label();
-            this.lblCurrentToTargCetenterOfGravityZ1 = new System.Windows.Forms.Label();
-            this.lblMoveToTargetZ1 = new System.Windows.Forms.Label();
-            this.lblSensorZ1 = new System.Windows.Forms.Label();
-            this.lblAutoFocusOnOffZ1 = new System.Windows.Forms.Label();
-            this.lblTeachedCenterOfGravityZ1 = new System.Windows.Forms.Label();
-            this.lblCurrentCenterOfGravityZ1 = new System.Windows.Forms.Label();
-            this.lblCurrentToTargetZ1 = new System.Windows.Forms.Label();
-            this.lblCurrentPositionZ1 = new System.Windows.Forms.Label();
-            this.lblAxisZ1 = new System.Windows.Forms.Label();
-            this.lblTargetPositionZ1 = new System.Windows.Forms.Label();
-            this.lblAxisZ2 = new System.Windows.Forms.Label();
-            this.lblTargetPositionZ2 = new System.Windows.Forms.Label();
-            this.lblCurrentPositionZ2 = new System.Windows.Forms.Label();
-            this.lblCurrentToTargetZ2 = new System.Windows.Forms.Label();
-            this.lblTeachedCenterOfGravityZ2 = new System.Windows.Forms.Label();
-            this.lblCurrentCenterOfGravityZ2 = new System.Windows.Forms.Label();
-            this.lblCurrentToTargCetenterOfGravityZ2 = new System.Windows.Forms.Label();
-            this.lblMoveToTargetZ2 = new System.Windows.Forms.Label();
-            this.lblOriginZ2 = new System.Windows.Forms.Label();
-            this.lblSensorZ2 = new System.Windows.Forms.Label();
-            this.lblAutoFocusOnOffZ2 = new System.Windows.Forms.Label();
-            this.btnExit = new System.Windows.Forms.Button();
-            this.btnSave = new System.Windows.Forms.Button();
-            this.pnlLAFZ2Jog = new System.Windows.Forms.Panel();
+            this.tlpAutoFocusOnOffZ1 = new System.Windows.Forms.TableLayoutPanel();
+            this.tlpAutoFocusOnOffZ2 = new System.Windows.Forms.TableLayoutPanel();
+            this.lblAutoFocusOffZ1 = new System.Windows.Forms.Label();
+            this.lblAutoFocusOffZ2 = new System.Windows.Forms.Label();
             this.tlpMotionPopup.SuspendLayout();
             this.tlpFormFunction.SuspendLayout();
             this.pnlFunction.SuspendLayout();
@@ -138,6 +142,8 @@
             this.tlpPitchXY.SuspendLayout();
             this.tlpJogMode.SuspendLayout();
             this.tlpJogSpeedMode.SuspendLayout();
+            this.tlpAutoFocusOnOffZ1.SuspendLayout();
+            this.tlpAutoFocusOnOffZ2.SuspendLayout();
             this.SuspendLayout();
             // 
             // tlpMotionPopup
@@ -198,6 +204,22 @@
             this.btnMoveTeachingPosition.UseVisualStyleBackColor = false;
             this.btnMoveTeachingPosition.Visible = false;
             // 
+            // btnExit
+            // 
+            this.btnExit.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
+            this.btnExit.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.btnExit.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.btnExit.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
+            this.btnExit.Image = global::ATT_UT_IPAD.Properties.Resources.Exit_White;
+            this.btnExit.Location = new System.Drawing.Point(587, 3);
+            this.btnExit.Name = "btnExit";
+            this.btnExit.Size = new System.Drawing.Size(94, 94);
+            this.btnExit.TabIndex = 293;
+            this.btnExit.Text = "EXIT";
+            this.btnExit.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
+            this.btnExit.UseVisualStyleBackColor = false;
+            this.btnExit.Click += new System.EventHandler(this.btnExit_Click);
+            // 
             // btnStopTeachingPosition
             // 
             this.btnStopTeachingPosition.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
@@ -211,6 +233,22 @@
             this.btnStopTeachingPosition.Text = "SET";
             this.btnStopTeachingPosition.UseVisualStyleBackColor = false;
             this.btnStopTeachingPosition.Visible = false;
+            // 
+            // btnSave
+            // 
+            this.btnSave.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
+            this.btnSave.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.btnSave.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.btnSave.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
+            this.btnSave.Image = global::ATT_UT_IPAD.Properties.Resources.Save_White;
+            this.btnSave.Location = new System.Drawing.Point(487, 3);
+            this.btnSave.Name = "btnSave";
+            this.btnSave.Size = new System.Drawing.Size(94, 94);
+            this.btnSave.TabIndex = 292;
+            this.btnSave.Text = "SAVE";
+            this.btnSave.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
+            this.btnSave.UseVisualStyleBackColor = false;
+            this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
             // 
             // btnCommand
             // 
@@ -350,7 +388,6 @@
             this.tlpLAFStatus.Controls.Add(this.lblCurrentToTargetZ1, 1, 3);
             this.tlpLAFStatus.Controls.Add(this.lblCurrentCenterOfGravityZ1, 1, 5);
             this.tlpLAFStatus.Controls.Add(this.lblTeachedCenterOfGravityZ1, 1, 4);
-            this.tlpLAFStatus.Controls.Add(this.lblAutoFocusOnOffZ1, 1, 10);
             this.tlpLAFStatus.Controls.Add(this.lblSensorZ1, 1, 9);
             this.tlpLAFStatus.Controls.Add(this.lblMoveToTargetZ1, 1, 7);
             this.tlpLAFStatus.Controls.Add(this.lblCurrentToTargCetenterOfGravityZ1, 1, 6);
@@ -366,7 +403,8 @@
             this.tlpLAFStatus.Controls.Add(this.lblMoveToTargetZ2, 2, 7);
             this.tlpLAFStatus.Controls.Add(this.lblOriginZ2, 2, 8);
             this.tlpLAFStatus.Controls.Add(this.lblSensorZ2, 2, 9);
-            this.tlpLAFStatus.Controls.Add(this.lblAutoFocusOnOffZ2, 2, 10);
+            this.tlpLAFStatus.Controls.Add(this.tlpAutoFocusOnOffZ1, 1, 10);
+            this.tlpLAFStatus.Controls.Add(this.tlpAutoFocusOnOffZ2, 2, 10);
             this.tlpLAFStatus.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tlpLAFStatus.Location = new System.Drawing.Point(138, 0);
             this.tlpLAFStatus.Margin = new System.Windows.Forms.Padding(0);
@@ -512,6 +550,22 @@
             this.label18.Text = "Target Position";
             this.label18.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
+            // lblTargetPositionZ1
+            // 
+            this.lblTargetPositionZ1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
+            this.lblTargetPositionZ1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblTargetPositionZ1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblTargetPositionZ1.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
+            this.lblTargetPositionZ1.ForeColor = System.Drawing.Color.White;
+            this.lblTargetPositionZ1.Location = new System.Drawing.Point(77, 19);
+            this.lblTargetPositionZ1.Margin = new System.Windows.Forms.Padding(1);
+            this.lblTargetPositionZ1.Name = "lblTargetPositionZ1";
+            this.lblTargetPositionZ1.Size = new System.Drawing.Size(55, 16);
+            this.lblTargetPositionZ1.TabIndex = 4;
+            this.lblTargetPositionZ1.Text = "0.0";
+            this.lblTargetPositionZ1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblTargetPositionZ1.Click += new System.EventHandler(this.lblTargetPositionZ1_Click);
+            // 
             // label19
             // 
             this.label19.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
@@ -526,6 +580,146 @@
             this.label19.Text = "Axis";
             this.label19.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
+            // lblAxisZ1
+            // 
+            this.lblAxisZ1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
+            this.lblAxisZ1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblAxisZ1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblAxisZ1.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
+            this.lblAxisZ1.ForeColor = System.Drawing.Color.White;
+            this.lblAxisZ1.Location = new System.Drawing.Point(77, 1);
+            this.lblAxisZ1.Margin = new System.Windows.Forms.Padding(1);
+            this.lblAxisZ1.Name = "lblAxisZ1";
+            this.lblAxisZ1.Size = new System.Drawing.Size(55, 16);
+            this.lblAxisZ1.TabIndex = 3;
+            this.lblAxisZ1.Text = "Z1";
+            this.lblAxisZ1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // lblCurrentPositionZ1
+            // 
+            this.lblCurrentPositionZ1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
+            this.lblCurrentPositionZ1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblCurrentPositionZ1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblCurrentPositionZ1.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
+            this.lblCurrentPositionZ1.ForeColor = System.Drawing.Color.White;
+            this.lblCurrentPositionZ1.Location = new System.Drawing.Point(77, 37);
+            this.lblCurrentPositionZ1.Margin = new System.Windows.Forms.Padding(1);
+            this.lblCurrentPositionZ1.Name = "lblCurrentPositionZ1";
+            this.lblCurrentPositionZ1.Size = new System.Drawing.Size(55, 16);
+            this.lblCurrentPositionZ1.TabIndex = 6;
+            this.lblCurrentPositionZ1.Text = "0.0";
+            this.lblCurrentPositionZ1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // lblCurrentToTargetZ1
+            // 
+            this.lblCurrentToTargetZ1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
+            this.lblCurrentToTargetZ1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblCurrentToTargetZ1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblCurrentToTargetZ1.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
+            this.lblCurrentToTargetZ1.ForeColor = System.Drawing.Color.White;
+            this.lblCurrentToTargetZ1.Location = new System.Drawing.Point(77, 55);
+            this.lblCurrentToTargetZ1.Margin = new System.Windows.Forms.Padding(1);
+            this.lblCurrentToTargetZ1.Name = "lblCurrentToTargetZ1";
+            this.lblCurrentToTargetZ1.Size = new System.Drawing.Size(55, 16);
+            this.lblCurrentToTargetZ1.TabIndex = 23;
+            this.lblCurrentToTargetZ1.Text = "Set";
+            this.lblCurrentToTargetZ1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblCurrentToTargetZ1.Click += new System.EventHandler(this.lblCurrentToTargetZ1_Click);
+            // 
+            // lblCurrentCenterOfGravityZ1
+            // 
+            this.lblCurrentCenterOfGravityZ1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
+            this.lblCurrentCenterOfGravityZ1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblCurrentCenterOfGravityZ1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblCurrentCenterOfGravityZ1.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
+            this.lblCurrentCenterOfGravityZ1.ForeColor = System.Drawing.Color.White;
+            this.lblCurrentCenterOfGravityZ1.Location = new System.Drawing.Point(77, 91);
+            this.lblCurrentCenterOfGravityZ1.Margin = new System.Windows.Forms.Padding(1);
+            this.lblCurrentCenterOfGravityZ1.Name = "lblCurrentCenterOfGravityZ1";
+            this.lblCurrentCenterOfGravityZ1.Size = new System.Drawing.Size(55, 16);
+            this.lblCurrentCenterOfGravityZ1.TabIndex = 6;
+            this.lblCurrentCenterOfGravityZ1.Text = "0";
+            this.lblCurrentCenterOfGravityZ1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // lblTeachedCenterOfGravityZ1
+            // 
+            this.lblTeachedCenterOfGravityZ1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
+            this.lblTeachedCenterOfGravityZ1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblTeachedCenterOfGravityZ1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblTeachedCenterOfGravityZ1.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
+            this.lblTeachedCenterOfGravityZ1.ForeColor = System.Drawing.Color.White;
+            this.lblTeachedCenterOfGravityZ1.Location = new System.Drawing.Point(77, 73);
+            this.lblTeachedCenterOfGravityZ1.Margin = new System.Windows.Forms.Padding(1);
+            this.lblTeachedCenterOfGravityZ1.Name = "lblTeachedCenterOfGravityZ1";
+            this.lblTeachedCenterOfGravityZ1.Size = new System.Drawing.Size(55, 16);
+            this.lblTeachedCenterOfGravityZ1.TabIndex = 6;
+            this.lblTeachedCenterOfGravityZ1.Text = "0";
+            this.lblTeachedCenterOfGravityZ1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblTeachedCenterOfGravityZ1.Click += new System.EventHandler(this.lblTeachedCenterOfGravityZ1_Click);
+            // 
+            // lblAutoFocusOnZ1
+            // 
+            this.lblAutoFocusOnZ1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
+            this.lblAutoFocusOnZ1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblAutoFocusOnZ1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblAutoFocusOnZ1.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
+            this.lblAutoFocusOnZ1.ForeColor = System.Drawing.Color.White;
+            this.lblAutoFocusOnZ1.Location = new System.Drawing.Point(1, 1);
+            this.lblAutoFocusOnZ1.Margin = new System.Windows.Forms.Padding(1);
+            this.lblAutoFocusOnZ1.Name = "lblAutoFocusOnZ1";
+            this.lblAutoFocusOnZ1.Size = new System.Drawing.Size(26, 27);
+            this.lblAutoFocusOnZ1.TabIndex = 24;
+            this.lblAutoFocusOnZ1.Text = "On";
+            this.lblAutoFocusOnZ1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblAutoFocusOnZ1.Click += new System.EventHandler(this.lblAutoFocusOnZ1_Click);
+            // 
+            // lblSensorZ1
+            // 
+            this.lblSensorZ1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
+            this.lblSensorZ1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblSensorZ1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblSensorZ1.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
+            this.lblSensorZ1.ForeColor = System.Drawing.Color.White;
+            this.lblSensorZ1.Location = new System.Drawing.Point(77, 163);
+            this.lblSensorZ1.Margin = new System.Windows.Forms.Padding(1);
+            this.lblSensorZ1.Name = "lblSensorZ1";
+            this.lblSensorZ1.Size = new System.Drawing.Size(55, 16);
+            this.lblSensorZ1.TabIndex = 8;
+            this.lblSensorZ1.Text = "Done";
+            this.lblSensorZ1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // lblMoveToTargetZ1
+            // 
+            this.lblMoveToTargetZ1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
+            this.lblMoveToTargetZ1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblMoveToTargetZ1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblMoveToTargetZ1.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
+            this.lblMoveToTargetZ1.ForeColor = System.Drawing.Color.White;
+            this.lblMoveToTargetZ1.Location = new System.Drawing.Point(77, 127);
+            this.lblMoveToTargetZ1.Margin = new System.Windows.Forms.Padding(1);
+            this.lblMoveToTargetZ1.Name = "lblMoveToTargetZ1";
+            this.lblMoveToTargetZ1.Size = new System.Drawing.Size(55, 16);
+            this.lblMoveToTargetZ1.TabIndex = 22;
+            this.lblMoveToTargetZ1.Text = "Move To";
+            this.lblMoveToTargetZ1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblMoveToTargetZ1.Click += new System.EventHandler(this.lblMoveToTargetZ1_Click);
+            // 
+            // lblCurrentToTargCetenterOfGravityZ1
+            // 
+            this.lblCurrentToTargCetenterOfGravityZ1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
+            this.lblCurrentToTargCetenterOfGravityZ1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblCurrentToTargCetenterOfGravityZ1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblCurrentToTargCetenterOfGravityZ1.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
+            this.lblCurrentToTargCetenterOfGravityZ1.ForeColor = System.Drawing.Color.White;
+            this.lblCurrentToTargCetenterOfGravityZ1.Location = new System.Drawing.Point(77, 109);
+            this.lblCurrentToTargCetenterOfGravityZ1.Margin = new System.Windows.Forms.Padding(1);
+            this.lblCurrentToTargCetenterOfGravityZ1.Name = "lblCurrentToTargCetenterOfGravityZ1";
+            this.lblCurrentToTargCetenterOfGravityZ1.Size = new System.Drawing.Size(55, 16);
+            this.lblCurrentToTargCetenterOfGravityZ1.TabIndex = 22;
+            this.lblCurrentToTargCetenterOfGravityZ1.Text = "Set";
+            this.lblCurrentToTargCetenterOfGravityZ1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblCurrentToTargCetenterOfGravityZ1.Click += new System.EventHandler(this.lblCurrentToTargetCenterOfGravityZ1_Click);
+            // 
             // label20
             // 
             this.label20.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
@@ -539,6 +733,192 @@
             this.label20.TabIndex = 11;
             this.label20.Text = "Origin";
             this.label20.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // lblOriginZ1
+            // 
+            this.lblOriginZ1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblOriginZ1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblOriginZ1.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
+            this.lblOriginZ1.ForeColor = System.Drawing.Color.White;
+            this.lblOriginZ1.Location = new System.Drawing.Point(77, 145);
+            this.lblOriginZ1.Margin = new System.Windows.Forms.Padding(1);
+            this.lblOriginZ1.Name = "lblOriginZ1";
+            this.lblOriginZ1.Size = new System.Drawing.Size(55, 16);
+            this.lblOriginZ1.TabIndex = 11;
+            this.lblOriginZ1.Text = "Origin";
+            this.lblOriginZ1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblOriginZ1.Click += new System.EventHandler(this.lblOriginZ1_Click);
+            // 
+            // lblAxisZ2
+            // 
+            this.lblAxisZ2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
+            this.lblAxisZ2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblAxisZ2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblAxisZ2.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
+            this.lblAxisZ2.ForeColor = System.Drawing.Color.White;
+            this.lblAxisZ2.Location = new System.Drawing.Point(134, 1);
+            this.lblAxisZ2.Margin = new System.Windows.Forms.Padding(1);
+            this.lblAxisZ2.Name = "lblAxisZ2";
+            this.lblAxisZ2.Size = new System.Drawing.Size(57, 16);
+            this.lblAxisZ2.TabIndex = 3;
+            this.lblAxisZ2.Text = "Z2";
+            this.lblAxisZ2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // lblTargetPositionZ2
+            // 
+            this.lblTargetPositionZ2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
+            this.lblTargetPositionZ2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblTargetPositionZ2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblTargetPositionZ2.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
+            this.lblTargetPositionZ2.ForeColor = System.Drawing.Color.White;
+            this.lblTargetPositionZ2.Location = new System.Drawing.Point(134, 19);
+            this.lblTargetPositionZ2.Margin = new System.Windows.Forms.Padding(1);
+            this.lblTargetPositionZ2.Name = "lblTargetPositionZ2";
+            this.lblTargetPositionZ2.Size = new System.Drawing.Size(57, 16);
+            this.lblTargetPositionZ2.TabIndex = 4;
+            this.lblTargetPositionZ2.Text = "0.0";
+            this.lblTargetPositionZ2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblTargetPositionZ2.Click += new System.EventHandler(this.lblTargetPositionZ2_Click);
+            // 
+            // lblCurrentPositionZ2
+            // 
+            this.lblCurrentPositionZ2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
+            this.lblCurrentPositionZ2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblCurrentPositionZ2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblCurrentPositionZ2.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
+            this.lblCurrentPositionZ2.ForeColor = System.Drawing.Color.White;
+            this.lblCurrentPositionZ2.Location = new System.Drawing.Point(134, 37);
+            this.lblCurrentPositionZ2.Margin = new System.Windows.Forms.Padding(1);
+            this.lblCurrentPositionZ2.Name = "lblCurrentPositionZ2";
+            this.lblCurrentPositionZ2.Size = new System.Drawing.Size(57, 16);
+            this.lblCurrentPositionZ2.TabIndex = 6;
+            this.lblCurrentPositionZ2.Text = "0.0";
+            this.lblCurrentPositionZ2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // lblCurrentToTargetZ2
+            // 
+            this.lblCurrentToTargetZ2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
+            this.lblCurrentToTargetZ2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblCurrentToTargetZ2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblCurrentToTargetZ2.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
+            this.lblCurrentToTargetZ2.ForeColor = System.Drawing.Color.White;
+            this.lblCurrentToTargetZ2.Location = new System.Drawing.Point(134, 55);
+            this.lblCurrentToTargetZ2.Margin = new System.Windows.Forms.Padding(1);
+            this.lblCurrentToTargetZ2.Name = "lblCurrentToTargetZ2";
+            this.lblCurrentToTargetZ2.Size = new System.Drawing.Size(57, 16);
+            this.lblCurrentToTargetZ2.TabIndex = 23;
+            this.lblCurrentToTargetZ2.Text = "Set";
+            this.lblCurrentToTargetZ2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblCurrentToTargetZ2.Click += new System.EventHandler(this.lblCurrentToTargetZ2_Click);
+            // 
+            // lblTeachedCenterOfGravityZ2
+            // 
+            this.lblTeachedCenterOfGravityZ2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
+            this.lblTeachedCenterOfGravityZ2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblTeachedCenterOfGravityZ2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblTeachedCenterOfGravityZ2.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
+            this.lblTeachedCenterOfGravityZ2.ForeColor = System.Drawing.Color.White;
+            this.lblTeachedCenterOfGravityZ2.Location = new System.Drawing.Point(134, 73);
+            this.lblTeachedCenterOfGravityZ2.Margin = new System.Windows.Forms.Padding(1);
+            this.lblTeachedCenterOfGravityZ2.Name = "lblTeachedCenterOfGravityZ2";
+            this.lblTeachedCenterOfGravityZ2.Size = new System.Drawing.Size(57, 16);
+            this.lblTeachedCenterOfGravityZ2.TabIndex = 6;
+            this.lblTeachedCenterOfGravityZ2.Text = "0";
+            this.lblTeachedCenterOfGravityZ2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblTeachedCenterOfGravityZ2.Click += new System.EventHandler(this.lblTeachedCenterOfGravityZ2_Click);
+            // 
+            // lblCurrentCenterOfGravityZ2
+            // 
+            this.lblCurrentCenterOfGravityZ2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
+            this.lblCurrentCenterOfGravityZ2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblCurrentCenterOfGravityZ2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblCurrentCenterOfGravityZ2.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
+            this.lblCurrentCenterOfGravityZ2.ForeColor = System.Drawing.Color.White;
+            this.lblCurrentCenterOfGravityZ2.Location = new System.Drawing.Point(134, 91);
+            this.lblCurrentCenterOfGravityZ2.Margin = new System.Windows.Forms.Padding(1);
+            this.lblCurrentCenterOfGravityZ2.Name = "lblCurrentCenterOfGravityZ2";
+            this.lblCurrentCenterOfGravityZ2.Size = new System.Drawing.Size(57, 16);
+            this.lblCurrentCenterOfGravityZ2.TabIndex = 6;
+            this.lblCurrentCenterOfGravityZ2.Text = "0";
+            this.lblCurrentCenterOfGravityZ2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // lblCurrentToTargCetenterOfGravityZ2
+            // 
+            this.lblCurrentToTargCetenterOfGravityZ2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
+            this.lblCurrentToTargCetenterOfGravityZ2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblCurrentToTargCetenterOfGravityZ2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblCurrentToTargCetenterOfGravityZ2.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
+            this.lblCurrentToTargCetenterOfGravityZ2.ForeColor = System.Drawing.Color.White;
+            this.lblCurrentToTargCetenterOfGravityZ2.Location = new System.Drawing.Point(134, 109);
+            this.lblCurrentToTargCetenterOfGravityZ2.Margin = new System.Windows.Forms.Padding(1);
+            this.lblCurrentToTargCetenterOfGravityZ2.Name = "lblCurrentToTargCetenterOfGravityZ2";
+            this.lblCurrentToTargCetenterOfGravityZ2.Size = new System.Drawing.Size(57, 16);
+            this.lblCurrentToTargCetenterOfGravityZ2.TabIndex = 22;
+            this.lblCurrentToTargCetenterOfGravityZ2.Text = "Set";
+            this.lblCurrentToTargCetenterOfGravityZ2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblCurrentToTargCetenterOfGravityZ2.Click += new System.EventHandler(this.lblCurrentToTargetCenterOfGravityZ2_Click);
+            // 
+            // lblMoveToTargetZ2
+            // 
+            this.lblMoveToTargetZ2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
+            this.lblMoveToTargetZ2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblMoveToTargetZ2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblMoveToTargetZ2.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
+            this.lblMoveToTargetZ2.ForeColor = System.Drawing.Color.White;
+            this.lblMoveToTargetZ2.Location = new System.Drawing.Point(134, 127);
+            this.lblMoveToTargetZ2.Margin = new System.Windows.Forms.Padding(1);
+            this.lblMoveToTargetZ2.Name = "lblMoveToTargetZ2";
+            this.lblMoveToTargetZ2.Size = new System.Drawing.Size(57, 16);
+            this.lblMoveToTargetZ2.TabIndex = 22;
+            this.lblMoveToTargetZ2.Text = "Move To";
+            this.lblMoveToTargetZ2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblMoveToTargetZ2.Click += new System.EventHandler(this.lblMoveToTargetZ2_Click);
+            // 
+            // lblOriginZ2
+            // 
+            this.lblOriginZ2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblOriginZ2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblOriginZ2.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
+            this.lblOriginZ2.ForeColor = System.Drawing.Color.White;
+            this.lblOriginZ2.Location = new System.Drawing.Point(134, 145);
+            this.lblOriginZ2.Margin = new System.Windows.Forms.Padding(1);
+            this.lblOriginZ2.Name = "lblOriginZ2";
+            this.lblOriginZ2.Size = new System.Drawing.Size(57, 16);
+            this.lblOriginZ2.TabIndex = 11;
+            this.lblOriginZ2.Text = "Origin";
+            this.lblOriginZ2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblOriginZ2.Click += new System.EventHandler(this.lblOriginZ2_Click);
+            // 
+            // lblSensorZ2
+            // 
+            this.lblSensorZ2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
+            this.lblSensorZ2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblSensorZ2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblSensorZ2.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
+            this.lblSensorZ2.ForeColor = System.Drawing.Color.White;
+            this.lblSensorZ2.Location = new System.Drawing.Point(134, 163);
+            this.lblSensorZ2.Margin = new System.Windows.Forms.Padding(1);
+            this.lblSensorZ2.Name = "lblSensorZ2";
+            this.lblSensorZ2.Size = new System.Drawing.Size(57, 16);
+            this.lblSensorZ2.TabIndex = 8;
+            this.lblSensorZ2.Text = "Done";
+            this.lblSensorZ2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // lblAutoFocusOnZ2
+            // 
+            this.lblAutoFocusOnZ2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
+            this.lblAutoFocusOnZ2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblAutoFocusOnZ2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblAutoFocusOnZ2.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
+            this.lblAutoFocusOnZ2.ForeColor = System.Drawing.Color.White;
+            this.lblAutoFocusOnZ2.Location = new System.Drawing.Point(1, 1);
+            this.lblAutoFocusOnZ2.Margin = new System.Windows.Forms.Padding(1);
+            this.lblAutoFocusOnZ2.Name = "lblAutoFocusOnZ2";
+            this.lblAutoFocusOnZ2.Size = new System.Drawing.Size(27, 27);
+            this.lblAutoFocusOnZ2.TabIndex = 24;
+            this.lblAutoFocusOnZ2.Text = "On";
+            this.lblAutoFocusOnZ2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblAutoFocusOnZ2.Click += new System.EventHandler(this.lblAutoFocusOnZ2_Click);
             // 
             // tlpMotionStatus
             // 
@@ -971,6 +1351,15 @@
             this.pnlLAFZ1Jog.Size = new System.Drawing.Size(32, 95);
             this.pnlLAFZ1Jog.TabIndex = 0;
             // 
+            // pnlLAFZ2Jog
+            // 
+            this.pnlLAFZ2Jog.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pnlLAFZ2Jog.Location = new System.Drawing.Point(96, 0);
+            this.pnlLAFZ2Jog.Margin = new System.Windows.Forms.Padding(0);
+            this.pnlLAFZ2Jog.Name = "pnlLAFZ2Jog";
+            this.pnlLAFZ2Jog.Size = new System.Drawing.Size(32, 95);
+            this.pnlLAFZ2Jog.TabIndex = 0;
+            // 
             // tlpJogOption
             // 
             this.tlpJogOption.ColumnCount = 2;
@@ -1210,388 +1599,69 @@
             this.pnlTeachingPositionList.Size = new System.Drawing.Size(684, 100);
             this.pnlTeachingPositionList.TabIndex = 3;
             // 
-            // lblOriginZ1
+            // tlpAutoFocusOnOffZ1
             // 
-            this.lblOriginZ1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lblOriginZ1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblOriginZ1.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
-            this.lblOriginZ1.ForeColor = System.Drawing.Color.White;
-            this.lblOriginZ1.Location = new System.Drawing.Point(77, 145);
-            this.lblOriginZ1.Margin = new System.Windows.Forms.Padding(1);
-            this.lblOriginZ1.Name = "lblOriginZ1";
-            this.lblOriginZ1.Size = new System.Drawing.Size(55, 16);
-            this.lblOriginZ1.TabIndex = 11;
-            this.lblOriginZ1.Text = "Origin";
-            this.lblOriginZ1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.lblOriginZ1.Click += new System.EventHandler(this.lblOriginZ1_Click);
+            this.tlpAutoFocusOnOffZ1.ColumnCount = 2;
+            this.tlpAutoFocusOnOffZ1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tlpAutoFocusOnOffZ1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tlpAutoFocusOnOffZ1.Controls.Add(this.lblAutoFocusOnZ1, 0, 0);
+            this.tlpAutoFocusOnOffZ1.Controls.Add(this.lblAutoFocusOffZ1, 1, 0);
+            this.tlpAutoFocusOnOffZ1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tlpAutoFocusOnOffZ1.Location = new System.Drawing.Point(76, 180);
+            this.tlpAutoFocusOnOffZ1.Margin = new System.Windows.Forms.Padding(0);
+            this.tlpAutoFocusOnOffZ1.Name = "tlpAutoFocusOnOffZ1";
+            this.tlpAutoFocusOnOffZ1.RowCount = 1;
+            this.tlpAutoFocusOnOffZ1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tlpAutoFocusOnOffZ1.Size = new System.Drawing.Size(57, 29);
+            this.tlpAutoFocusOnOffZ1.TabIndex = 24;
             // 
-            // lblCurrentToTargCetenterOfGravityZ1
+            // tlpAutoFocusOnOffZ2
             // 
-            this.lblCurrentToTargCetenterOfGravityZ1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
-            this.lblCurrentToTargCetenterOfGravityZ1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lblCurrentToTargCetenterOfGravityZ1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblCurrentToTargCetenterOfGravityZ1.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
-            this.lblCurrentToTargCetenterOfGravityZ1.ForeColor = System.Drawing.Color.White;
-            this.lblCurrentToTargCetenterOfGravityZ1.Location = new System.Drawing.Point(77, 109);
-            this.lblCurrentToTargCetenterOfGravityZ1.Margin = new System.Windows.Forms.Padding(1);
-            this.lblCurrentToTargCetenterOfGravityZ1.Name = "lblCurrentToTargCetenterOfGravityZ1";
-            this.lblCurrentToTargCetenterOfGravityZ1.Size = new System.Drawing.Size(55, 16);
-            this.lblCurrentToTargCetenterOfGravityZ1.TabIndex = 22;
-            this.lblCurrentToTargCetenterOfGravityZ1.Text = "Set";
-            this.lblCurrentToTargCetenterOfGravityZ1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.lblCurrentToTargCetenterOfGravityZ1.Click += new System.EventHandler(this.lblCurrentToTargetCenterOfGravityZ1_Click);
+            this.tlpAutoFocusOnOffZ2.ColumnCount = 2;
+            this.tlpAutoFocusOnOffZ2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tlpAutoFocusOnOffZ2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tlpAutoFocusOnOffZ2.Controls.Add(this.lblAutoFocusOnZ2, 0, 0);
+            this.tlpAutoFocusOnOffZ2.Controls.Add(this.lblAutoFocusOffZ2, 1, 0);
+            this.tlpAutoFocusOnOffZ2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tlpAutoFocusOnOffZ2.Location = new System.Drawing.Point(133, 180);
+            this.tlpAutoFocusOnOffZ2.Margin = new System.Windows.Forms.Padding(0);
+            this.tlpAutoFocusOnOffZ2.Name = "tlpAutoFocusOnOffZ2";
+            this.tlpAutoFocusOnOffZ2.RowCount = 1;
+            this.tlpAutoFocusOnOffZ2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tlpAutoFocusOnOffZ2.Size = new System.Drawing.Size(59, 29);
+            this.tlpAutoFocusOnOffZ2.TabIndex = 24;
             // 
-            // lblMoveToTargetZ1
+            // lblAutoFocusOffZ1
             // 
-            this.lblMoveToTargetZ1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
-            this.lblMoveToTargetZ1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lblMoveToTargetZ1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblMoveToTargetZ1.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
-            this.lblMoveToTargetZ1.ForeColor = System.Drawing.Color.White;
-            this.lblMoveToTargetZ1.Location = new System.Drawing.Point(77, 127);
-            this.lblMoveToTargetZ1.Margin = new System.Windows.Forms.Padding(1);
-            this.lblMoveToTargetZ1.Name = "lblMoveToTargetZ1";
-            this.lblMoveToTargetZ1.Size = new System.Drawing.Size(55, 16);
-            this.lblMoveToTargetZ1.TabIndex = 22;
-            this.lblMoveToTargetZ1.Text = "Move To";
-            this.lblMoveToTargetZ1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.lblMoveToTargetZ1.Click += new System.EventHandler(this.lblMoveToTargetZ1_Click);
+            this.lblAutoFocusOffZ1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
+            this.lblAutoFocusOffZ1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblAutoFocusOffZ1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblAutoFocusOffZ1.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
+            this.lblAutoFocusOffZ1.ForeColor = System.Drawing.Color.White;
+            this.lblAutoFocusOffZ1.Location = new System.Drawing.Point(29, 1);
+            this.lblAutoFocusOffZ1.Margin = new System.Windows.Forms.Padding(1);
+            this.lblAutoFocusOffZ1.Name = "lblAutoFocusOffZ1";
+            this.lblAutoFocusOffZ1.Size = new System.Drawing.Size(27, 27);
+            this.lblAutoFocusOffZ1.TabIndex = 24;
+            this.lblAutoFocusOffZ1.Text = "Off";
+            this.lblAutoFocusOffZ1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblAutoFocusOffZ1.Click += new System.EventHandler(this.lblAutoFocusOffZ1_Click);
             // 
-            // lblSensorZ1
+            // lblAutoFocusOffZ2
             // 
-            this.lblSensorZ1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
-            this.lblSensorZ1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lblSensorZ1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblSensorZ1.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
-            this.lblSensorZ1.ForeColor = System.Drawing.Color.White;
-            this.lblSensorZ1.Location = new System.Drawing.Point(77, 163);
-            this.lblSensorZ1.Margin = new System.Windows.Forms.Padding(1);
-            this.lblSensorZ1.Name = "lblSensorZ1";
-            this.lblSensorZ1.Size = new System.Drawing.Size(55, 16);
-            this.lblSensorZ1.TabIndex = 8;
-            this.lblSensorZ1.Text = "Done";
-            this.lblSensorZ1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // lblAutoFocusOnOffZ1
-            // 
-            this.lblAutoFocusOnOffZ1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
-            this.lblAutoFocusOnOffZ1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lblAutoFocusOnOffZ1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblAutoFocusOnOffZ1.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
-            this.lblAutoFocusOnOffZ1.ForeColor = System.Drawing.Color.White;
-            this.lblAutoFocusOnOffZ1.Location = new System.Drawing.Point(77, 181);
-            this.lblAutoFocusOnOffZ1.Margin = new System.Windows.Forms.Padding(1);
-            this.lblAutoFocusOnOffZ1.Name = "lblAutoFocusOnOffZ1";
-            this.lblAutoFocusOnOffZ1.Size = new System.Drawing.Size(55, 27);
-            this.lblAutoFocusOnOffZ1.TabIndex = 24;
-            this.lblAutoFocusOnOffZ1.Text = "On";
-            this.lblAutoFocusOnOffZ1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.lblAutoFocusOnOffZ1.Click += new System.EventHandler(this.lblAutoFocusOnOffZ1_Click);
-            // 
-            // lblTeachedCenterOfGravityZ1
-            // 
-            this.lblTeachedCenterOfGravityZ1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
-            this.lblTeachedCenterOfGravityZ1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lblTeachedCenterOfGravityZ1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblTeachedCenterOfGravityZ1.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
-            this.lblTeachedCenterOfGravityZ1.ForeColor = System.Drawing.Color.White;
-            this.lblTeachedCenterOfGravityZ1.Location = new System.Drawing.Point(77, 73);
-            this.lblTeachedCenterOfGravityZ1.Margin = new System.Windows.Forms.Padding(1);
-            this.lblTeachedCenterOfGravityZ1.Name = "lblTeachedCenterOfGravityZ1";
-            this.lblTeachedCenterOfGravityZ1.Size = new System.Drawing.Size(55, 16);
-            this.lblTeachedCenterOfGravityZ1.TabIndex = 6;
-            this.lblTeachedCenterOfGravityZ1.Text = "0";
-            this.lblTeachedCenterOfGravityZ1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.lblTeachedCenterOfGravityZ1.Click += new System.EventHandler(this.lblTeachedCenterOfGravityZ1_Click);
-            // 
-            // lblCurrentCenterOfGravityZ1
-            // 
-            this.lblCurrentCenterOfGravityZ1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
-            this.lblCurrentCenterOfGravityZ1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lblCurrentCenterOfGravityZ1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblCurrentCenterOfGravityZ1.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
-            this.lblCurrentCenterOfGravityZ1.ForeColor = System.Drawing.Color.White;
-            this.lblCurrentCenterOfGravityZ1.Location = new System.Drawing.Point(77, 91);
-            this.lblCurrentCenterOfGravityZ1.Margin = new System.Windows.Forms.Padding(1);
-            this.lblCurrentCenterOfGravityZ1.Name = "lblCurrentCenterOfGravityZ1";
-            this.lblCurrentCenterOfGravityZ1.Size = new System.Drawing.Size(55, 16);
-            this.lblCurrentCenterOfGravityZ1.TabIndex = 6;
-            this.lblCurrentCenterOfGravityZ1.Text = "0";
-            this.lblCurrentCenterOfGravityZ1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // lblCurrentToTargetZ1
-            // 
-            this.lblCurrentToTargetZ1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
-            this.lblCurrentToTargetZ1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lblCurrentToTargetZ1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblCurrentToTargetZ1.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
-            this.lblCurrentToTargetZ1.ForeColor = System.Drawing.Color.White;
-            this.lblCurrentToTargetZ1.Location = new System.Drawing.Point(77, 55);
-            this.lblCurrentToTargetZ1.Margin = new System.Windows.Forms.Padding(1);
-            this.lblCurrentToTargetZ1.Name = "lblCurrentToTargetZ1";
-            this.lblCurrentToTargetZ1.Size = new System.Drawing.Size(55, 16);
-            this.lblCurrentToTargetZ1.TabIndex = 23;
-            this.lblCurrentToTargetZ1.Text = "Set";
-            this.lblCurrentToTargetZ1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.lblCurrentToTargetZ1.Click += new System.EventHandler(this.lblCurrentToTargetZ1_Click);
-            // 
-            // lblCurrentPositionZ1
-            // 
-            this.lblCurrentPositionZ1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
-            this.lblCurrentPositionZ1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lblCurrentPositionZ1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblCurrentPositionZ1.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
-            this.lblCurrentPositionZ1.ForeColor = System.Drawing.Color.White;
-            this.lblCurrentPositionZ1.Location = new System.Drawing.Point(77, 37);
-            this.lblCurrentPositionZ1.Margin = new System.Windows.Forms.Padding(1);
-            this.lblCurrentPositionZ1.Name = "lblCurrentPositionZ1";
-            this.lblCurrentPositionZ1.Size = new System.Drawing.Size(55, 16);
-            this.lblCurrentPositionZ1.TabIndex = 6;
-            this.lblCurrentPositionZ1.Text = "0.0";
-            this.lblCurrentPositionZ1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // lblAxisZ1
-            // 
-            this.lblAxisZ1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
-            this.lblAxisZ1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lblAxisZ1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblAxisZ1.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
-            this.lblAxisZ1.ForeColor = System.Drawing.Color.White;
-            this.lblAxisZ1.Location = new System.Drawing.Point(77, 1);
-            this.lblAxisZ1.Margin = new System.Windows.Forms.Padding(1);
-            this.lblAxisZ1.Name = "lblAxisZ1";
-            this.lblAxisZ1.Size = new System.Drawing.Size(55, 16);
-            this.lblAxisZ1.TabIndex = 3;
-            this.lblAxisZ1.Text = "Z1";
-            this.lblAxisZ1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // lblTargetPositionZ1
-            // 
-            this.lblTargetPositionZ1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
-            this.lblTargetPositionZ1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lblTargetPositionZ1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblTargetPositionZ1.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
-            this.lblTargetPositionZ1.ForeColor = System.Drawing.Color.White;
-            this.lblTargetPositionZ1.Location = new System.Drawing.Point(77, 19);
-            this.lblTargetPositionZ1.Margin = new System.Windows.Forms.Padding(1);
-            this.lblTargetPositionZ1.Name = "lblTargetPositionZ1";
-            this.lblTargetPositionZ1.Size = new System.Drawing.Size(55, 16);
-            this.lblTargetPositionZ1.TabIndex = 4;
-            this.lblTargetPositionZ1.Text = "0.0";
-            this.lblTargetPositionZ1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.lblTargetPositionZ1.Click += new System.EventHandler(this.lblTargetPositionZ1_Click);
-            // 
-            // lblAxisZ2
-            // 
-            this.lblAxisZ2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
-            this.lblAxisZ2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lblAxisZ2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblAxisZ2.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
-            this.lblAxisZ2.ForeColor = System.Drawing.Color.White;
-            this.lblAxisZ2.Location = new System.Drawing.Point(134, 1);
-            this.lblAxisZ2.Margin = new System.Windows.Forms.Padding(1);
-            this.lblAxisZ2.Name = "lblAxisZ2";
-            this.lblAxisZ2.Size = new System.Drawing.Size(57, 16);
-            this.lblAxisZ2.TabIndex = 3;
-            this.lblAxisZ2.Text = "Z2";
-            this.lblAxisZ2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // lblTargetPositionZ2
-            // 
-            this.lblTargetPositionZ2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
-            this.lblTargetPositionZ2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lblTargetPositionZ2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblTargetPositionZ2.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
-            this.lblTargetPositionZ2.ForeColor = System.Drawing.Color.White;
-            this.lblTargetPositionZ2.Location = new System.Drawing.Point(134, 19);
-            this.lblTargetPositionZ2.Margin = new System.Windows.Forms.Padding(1);
-            this.lblTargetPositionZ2.Name = "lblTargetPositionZ2";
-            this.lblTargetPositionZ2.Size = new System.Drawing.Size(57, 16);
-            this.lblTargetPositionZ2.TabIndex = 4;
-            this.lblTargetPositionZ2.Text = "0.0";
-            this.lblTargetPositionZ2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.lblTargetPositionZ2.Click += new System.EventHandler(this.lblTargetPositionZ2_Click);
-            // 
-            // lblCurrentPositionZ2
-            // 
-            this.lblCurrentPositionZ2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
-            this.lblCurrentPositionZ2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lblCurrentPositionZ2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblCurrentPositionZ2.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
-            this.lblCurrentPositionZ2.ForeColor = System.Drawing.Color.White;
-            this.lblCurrentPositionZ2.Location = new System.Drawing.Point(134, 37);
-            this.lblCurrentPositionZ2.Margin = new System.Windows.Forms.Padding(1);
-            this.lblCurrentPositionZ2.Name = "lblCurrentPositionZ2";
-            this.lblCurrentPositionZ2.Size = new System.Drawing.Size(57, 16);
-            this.lblCurrentPositionZ2.TabIndex = 6;
-            this.lblCurrentPositionZ2.Text = "0.0";
-            this.lblCurrentPositionZ2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // lblCurrentToTargetZ2
-            // 
-            this.lblCurrentToTargetZ2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
-            this.lblCurrentToTargetZ2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lblCurrentToTargetZ2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblCurrentToTargetZ2.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
-            this.lblCurrentToTargetZ2.ForeColor = System.Drawing.Color.White;
-            this.lblCurrentToTargetZ2.Location = new System.Drawing.Point(134, 55);
-            this.lblCurrentToTargetZ2.Margin = new System.Windows.Forms.Padding(1);
-            this.lblCurrentToTargetZ2.Name = "lblCurrentToTargetZ2";
-            this.lblCurrentToTargetZ2.Size = new System.Drawing.Size(57, 16);
-            this.lblCurrentToTargetZ2.TabIndex = 23;
-            this.lblCurrentToTargetZ2.Text = "Set";
-            this.lblCurrentToTargetZ2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.lblCurrentToTargetZ2.Click += new System.EventHandler(this.lblCurrentToTargetZ2_Click);
-            // 
-            // lblTeachedCenterOfGravityZ2
-            // 
-            this.lblTeachedCenterOfGravityZ2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
-            this.lblTeachedCenterOfGravityZ2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lblTeachedCenterOfGravityZ2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblTeachedCenterOfGravityZ2.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
-            this.lblTeachedCenterOfGravityZ2.ForeColor = System.Drawing.Color.White;
-            this.lblTeachedCenterOfGravityZ2.Location = new System.Drawing.Point(134, 73);
-            this.lblTeachedCenterOfGravityZ2.Margin = new System.Windows.Forms.Padding(1);
-            this.lblTeachedCenterOfGravityZ2.Name = "lblTeachedCenterOfGravityZ2";
-            this.lblTeachedCenterOfGravityZ2.Size = new System.Drawing.Size(57, 16);
-            this.lblTeachedCenterOfGravityZ2.TabIndex = 6;
-            this.lblTeachedCenterOfGravityZ2.Text = "0";
-            this.lblTeachedCenterOfGravityZ2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.lblTeachedCenterOfGravityZ2.Click += new System.EventHandler(this.lblTeachedCenterOfGravityZ2_Click);
-            // 
-            // lblCurrentCenterOfGravityZ2
-            // 
-            this.lblCurrentCenterOfGravityZ2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
-            this.lblCurrentCenterOfGravityZ2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lblCurrentCenterOfGravityZ2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblCurrentCenterOfGravityZ2.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
-            this.lblCurrentCenterOfGravityZ2.ForeColor = System.Drawing.Color.White;
-            this.lblCurrentCenterOfGravityZ2.Location = new System.Drawing.Point(134, 91);
-            this.lblCurrentCenterOfGravityZ2.Margin = new System.Windows.Forms.Padding(1);
-            this.lblCurrentCenterOfGravityZ2.Name = "lblCurrentCenterOfGravityZ2";
-            this.lblCurrentCenterOfGravityZ2.Size = new System.Drawing.Size(57, 16);
-            this.lblCurrentCenterOfGravityZ2.TabIndex = 6;
-            this.lblCurrentCenterOfGravityZ2.Text = "0";
-            this.lblCurrentCenterOfGravityZ2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // lblCurrentToTargCetenterOfGravityZ2
-            // 
-            this.lblCurrentToTargCetenterOfGravityZ2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
-            this.lblCurrentToTargCetenterOfGravityZ2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lblCurrentToTargCetenterOfGravityZ2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblCurrentToTargCetenterOfGravityZ2.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
-            this.lblCurrentToTargCetenterOfGravityZ2.ForeColor = System.Drawing.Color.White;
-            this.lblCurrentToTargCetenterOfGravityZ2.Location = new System.Drawing.Point(134, 109);
-            this.lblCurrentToTargCetenterOfGravityZ2.Margin = new System.Windows.Forms.Padding(1);
-            this.lblCurrentToTargCetenterOfGravityZ2.Name = "lblCurrentToTargCetenterOfGravityZ2";
-            this.lblCurrentToTargCetenterOfGravityZ2.Size = new System.Drawing.Size(57, 16);
-            this.lblCurrentToTargCetenterOfGravityZ2.TabIndex = 22;
-            this.lblCurrentToTargCetenterOfGravityZ2.Text = "Set";
-            this.lblCurrentToTargCetenterOfGravityZ2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.lblCurrentToTargCetenterOfGravityZ2.Click += new System.EventHandler(this.lblCurrentToTargetCenterOfGravityZ2_Click);
-            // 
-            // lblMoveToTargetZ2
-            // 
-            this.lblMoveToTargetZ2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
-            this.lblMoveToTargetZ2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lblMoveToTargetZ2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblMoveToTargetZ2.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
-            this.lblMoveToTargetZ2.ForeColor = System.Drawing.Color.White;
-            this.lblMoveToTargetZ2.Location = new System.Drawing.Point(134, 127);
-            this.lblMoveToTargetZ2.Margin = new System.Windows.Forms.Padding(1);
-            this.lblMoveToTargetZ2.Name = "lblMoveToTargetZ2";
-            this.lblMoveToTargetZ2.Size = new System.Drawing.Size(57, 16);
-            this.lblMoveToTargetZ2.TabIndex = 22;
-            this.lblMoveToTargetZ2.Text = "Move To";
-            this.lblMoveToTargetZ2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.lblMoveToTargetZ2.Click += new System.EventHandler(this.lblMoveToTargetZ2_Click);
-            // 
-            // lblOriginZ2
-            // 
-            this.lblOriginZ2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lblOriginZ2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblOriginZ2.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
-            this.lblOriginZ2.ForeColor = System.Drawing.Color.White;
-            this.lblOriginZ2.Location = new System.Drawing.Point(134, 145);
-            this.lblOriginZ2.Margin = new System.Windows.Forms.Padding(1);
-            this.lblOriginZ2.Name = "lblOriginZ2";
-            this.lblOriginZ2.Size = new System.Drawing.Size(57, 16);
-            this.lblOriginZ2.TabIndex = 11;
-            this.lblOriginZ2.Text = "Origin";
-            this.lblOriginZ2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.lblOriginZ2.Click += new System.EventHandler(this.lblOriginZ2_Click);
-            // 
-            // lblSensorZ2
-            // 
-            this.lblSensorZ2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
-            this.lblSensorZ2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lblSensorZ2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblSensorZ2.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
-            this.lblSensorZ2.ForeColor = System.Drawing.Color.White;
-            this.lblSensorZ2.Location = new System.Drawing.Point(134, 163);
-            this.lblSensorZ2.Margin = new System.Windows.Forms.Padding(1);
-            this.lblSensorZ2.Name = "lblSensorZ2";
-            this.lblSensorZ2.Size = new System.Drawing.Size(57, 16);
-            this.lblSensorZ2.TabIndex = 8;
-            this.lblSensorZ2.Text = "Done";
-            this.lblSensorZ2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // lblAutoFocusOnOffZ2
-            // 
-            this.lblAutoFocusOnOffZ2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
-            this.lblAutoFocusOnOffZ2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lblAutoFocusOnOffZ2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblAutoFocusOnOffZ2.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
-            this.lblAutoFocusOnOffZ2.ForeColor = System.Drawing.Color.White;
-            this.lblAutoFocusOnOffZ2.Location = new System.Drawing.Point(134, 181);
-            this.lblAutoFocusOnOffZ2.Margin = new System.Windows.Forms.Padding(1);
-            this.lblAutoFocusOnOffZ2.Name = "lblAutoFocusOnOffZ2";
-            this.lblAutoFocusOnOffZ2.Size = new System.Drawing.Size(57, 27);
-            this.lblAutoFocusOnOffZ2.TabIndex = 24;
-            this.lblAutoFocusOnOffZ2.Text = "On";
-            this.lblAutoFocusOnOffZ2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.lblAutoFocusOnOffZ2.Click += new System.EventHandler(this.lblAutoFocusOnOffZ2_Click);
-            // 
-            // btnExit
-            // 
-            this.btnExit.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
-            this.btnExit.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.btnExit.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.btnExit.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
-            this.btnExit.Image = global::ATT_UT_IPAD.Properties.Resources.Exit_White;
-            this.btnExit.Location = new System.Drawing.Point(587, 3);
-            this.btnExit.Name = "btnExit";
-            this.btnExit.Size = new System.Drawing.Size(94, 94);
-            this.btnExit.TabIndex = 293;
-            this.btnExit.Text = "EXIT";
-            this.btnExit.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
-            this.btnExit.UseVisualStyleBackColor = false;
-            this.btnExit.Click += new System.EventHandler(this.btnExit_Click);
-            // 
-            // btnSave
-            // 
-            this.btnSave.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
-            this.btnSave.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.btnSave.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.btnSave.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
-            this.btnSave.Image = global::ATT_UT_IPAD.Properties.Resources.Save_White;
-            this.btnSave.Location = new System.Drawing.Point(487, 3);
-            this.btnSave.Name = "btnSave";
-            this.btnSave.Size = new System.Drawing.Size(94, 94);
-            this.btnSave.TabIndex = 292;
-            this.btnSave.Text = "SAVE";
-            this.btnSave.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
-            this.btnSave.UseVisualStyleBackColor = false;
-            this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
-            // 
-            // pnlLAFZ2Jog
-            // 
-            this.pnlLAFZ2Jog.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pnlLAFZ2Jog.Location = new System.Drawing.Point(96, 0);
-            this.pnlLAFZ2Jog.Margin = new System.Windows.Forms.Padding(0);
-            this.pnlLAFZ2Jog.Name = "pnlLAFZ2Jog";
-            this.pnlLAFZ2Jog.Size = new System.Drawing.Size(32, 95);
-            this.pnlLAFZ2Jog.TabIndex = 0;
+            this.lblAutoFocusOffZ2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
+            this.lblAutoFocusOffZ2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblAutoFocusOffZ2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblAutoFocusOffZ2.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
+            this.lblAutoFocusOffZ2.ForeColor = System.Drawing.Color.White;
+            this.lblAutoFocusOffZ2.Location = new System.Drawing.Point(30, 1);
+            this.lblAutoFocusOffZ2.Margin = new System.Windows.Forms.Padding(1);
+            this.lblAutoFocusOffZ2.Name = "lblAutoFocusOffZ2";
+            this.lblAutoFocusOffZ2.Size = new System.Drawing.Size(28, 27);
+            this.lblAutoFocusOffZ2.TabIndex = 24;
+            this.lblAutoFocusOffZ2.Text = "Off";
+            this.lblAutoFocusOffZ2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblAutoFocusOffZ2.Click += new System.EventHandler(this.lblAutoFocusOffZ2_Click);
             // 
             // MotionPopupForm
             // 
@@ -1627,6 +1697,8 @@
             this.tlpPitchXY.ResumeLayout(false);
             this.tlpJogMode.ResumeLayout(false);
             this.tlpJogSpeedMode.ResumeLayout(false);
+            this.tlpAutoFocusOnOffZ1.ResumeLayout(false);
+            this.tlpAutoFocusOnOffZ2.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -1708,7 +1780,7 @@
         private System.Windows.Forms.Label lblCurrentToTargetZ1;
         private System.Windows.Forms.Label lblCurrentCenterOfGravityZ1;
         private System.Windows.Forms.Label lblTeachedCenterOfGravityZ1;
-        private System.Windows.Forms.Label lblAutoFocusOnOffZ1;
+        private System.Windows.Forms.Label lblAutoFocusOnZ1;
         private System.Windows.Forms.Label lblSensorZ1;
         private System.Windows.Forms.Label lblMoveToTargetZ1;
         private System.Windows.Forms.Label lblCurrentToTargCetenterOfGravityZ1;
@@ -1723,7 +1795,11 @@
         private System.Windows.Forms.Label lblMoveToTargetZ2;
         private System.Windows.Forms.Label lblOriginZ2;
         private System.Windows.Forms.Label lblSensorZ2;
-        private System.Windows.Forms.Label lblAutoFocusOnOffZ2;
+        private System.Windows.Forms.Label lblAutoFocusOnZ2;
         private System.Windows.Forms.Panel pnlLAFZ2Jog;
+        private System.Windows.Forms.TableLayoutPanel tlpAutoFocusOnOffZ1;
+        private System.Windows.Forms.Label lblAutoFocusOffZ1;
+        private System.Windows.Forms.TableLayoutPanel tlpAutoFocusOnOffZ2;
+        private System.Windows.Forms.Label lblAutoFocusOffZ2;
     }
 }

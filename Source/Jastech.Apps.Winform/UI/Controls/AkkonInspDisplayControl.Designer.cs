@@ -32,13 +32,13 @@
             this.lblAkkonViewer = new System.Windows.Forms.Label();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.tlpAkkonHistory = new System.Windows.Forms.TableLayoutPanel();
+            this.label1 = new System.Windows.Forms.Label();
             this.lblAkkonHistory = new System.Windows.Forms.Label();
             this.pnlAkkonResult = new System.Windows.Forms.Panel();
             this.pnlAkkonGraph = new System.Windows.Forms.Panel();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.pnlTabButton = new System.Windows.Forms.Panel();
             this.pnlInspDisplay = new System.Windows.Forms.Panel();
-            this.label1 = new System.Windows.Forms.Label();
             this.tlpAkkonViewer.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
             this.tlpAkkonHistory.SuspendLayout();
@@ -112,6 +112,20 @@
             this.tlpAkkonHistory.Size = new System.Drawing.Size(420, 347);
             this.tlpAkkonHistory.TabIndex = 2;
             // 
+            // label1
+            // 
+            this.label1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(104)))), ((int)(((byte)(104)))), ((int)(((byte)(104)))));
+            this.label1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.label1.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
+            this.label1.ForeColor = System.Drawing.Color.White;
+            this.label1.Location = new System.Drawing.Point(1, 174);
+            this.label1.Margin = new System.Windows.Forms.Padding(1);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(418, 38);
+            this.label1.TabIndex = 3;
+            this.label1.Text = "TREND";
+            this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
             // lblAkkonHistory
             // 
             this.lblAkkonHistory.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(104)))), ((int)(((byte)(104)))), ((int)(((byte)(104)))));
@@ -177,20 +191,6 @@
             this.pnlInspDisplay.Name = "pnlInspDisplay";
             this.pnlInspDisplay.Size = new System.Drawing.Size(372, 307);
             this.pnlInspDisplay.TabIndex = 2;
-            // 
-            // label1
-            // 
-            this.label1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(104)))), ((int)(((byte)(104)))), ((int)(((byte)(104)))));
-            this.label1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.label1.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
-            this.label1.ForeColor = System.Drawing.Color.White;
-            this.label1.Location = new System.Drawing.Point(1, 174);
-            this.label1.Margin = new System.Windows.Forms.Padding(1);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(418, 38);
-            this.label1.TabIndex = 3;
-            this.label1.Text = "TREND";
-            this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // AkkonInspDisplayControl
             // 

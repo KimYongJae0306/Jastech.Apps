@@ -30,16 +30,20 @@
         {
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.label2 = new System.Windows.Forms.Label();
-            this.btnLinescanSetting = new System.Windows.Forms.Button();
+            this.btnAlignCameraSetting = new System.Windows.Forms.Button();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.label1 = new System.Windows.Forms.Label();
-            this.btnAlgorithmPage = new System.Windows.Forms.Button();
-            this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
-            this.label3 = new System.Windows.Forms.Label();
-            this.btnAreascanSetting = new System.Windows.Forms.Button();
+            this.btnAkkonPage = new System.Windows.Forms.Button();
+            this.tableLayoutPanel4 = new System.Windows.Forms.TableLayoutPanel();
+            this.label4 = new System.Windows.Forms.Label();
+            this.btnAlignPage = new System.Windows.Forms.Button();
+            this.tableLayoutPanel6 = new System.Windows.Forms.TableLayoutPanel();
+            this.label6 = new System.Windows.Forms.Label();
+            this.btnAkkonCameraSetting = new System.Windows.Forms.Button();
             this.tableLayoutPanel2.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
-            this.tableLayoutPanel3.SuspendLayout();
+            this.tableLayoutPanel4.SuspendLayout();
+            this.tableLayoutPanel6.SuspendLayout();
             this.SuspendLayout();
             // 
             // tableLayoutPanel2
@@ -47,8 +51,8 @@
             this.tableLayoutPanel2.ColumnCount = 1;
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel2.Controls.Add(this.label2, 0, 0);
-            this.tableLayoutPanel2.Controls.Add(this.btnLinescanSetting, 0, 1);
-            this.tableLayoutPanel2.Location = new System.Drawing.Point(672, 29);
+            this.tableLayoutPanel2.Controls.Add(this.btnAlignCameraSetting, 0, 1);
+            this.tableLayoutPanel2.Location = new System.Drawing.Point(36, 36);
             this.tableLayoutPanel2.Name = "tableLayoutPanel2";
             this.tableLayoutPanel2.RowCount = 2;
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
@@ -70,31 +74,32 @@
             this.label2.Text = "Optic";
             this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // btnLinescanSetting
+            // btnAlignCameraSetting
             // 
-            this.btnLinescanSetting.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(34)))), ((int)(((byte)(34)))), ((int)(((byte)(34)))));
-            this.btnLinescanSetting.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.btnLinescanSetting.Font = new System.Drawing.Font("맑은 고딕", 13F, System.Drawing.FontStyle.Bold);
-            this.btnLinescanSetting.ForeColor = System.Drawing.Color.White;
-            this.btnLinescanSetting.Location = new System.Drawing.Point(3, 33);
-            this.btnLinescanSetting.Name = "btnLinescanSetting";
-            this.btnLinescanSetting.Size = new System.Drawing.Size(235, 65);
-            this.btnLinescanSetting.TabIndex = 1;
-            this.btnLinescanSetting.Text = "Linescan Set";
-            this.btnLinescanSetting.UseVisualStyleBackColor = false;
-            this.btnLinescanSetting.Click += new System.EventHandler(this.btnLinescanSetting_Click);
+            this.btnAlignCameraSetting.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(34)))), ((int)(((byte)(34)))), ((int)(((byte)(34)))));
+            this.btnAlignCameraSetting.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.btnAlignCameraSetting.Font = new System.Drawing.Font("맑은 고딕", 13F, System.Drawing.FontStyle.Bold);
+            this.btnAlignCameraSetting.ForeColor = System.Drawing.Color.White;
+            this.btnAlignCameraSetting.Location = new System.Drawing.Point(3, 33);
+            this.btnAlignCameraSetting.Name = "btnAlignCameraSetting";
+            this.btnAlignCameraSetting.Size = new System.Drawing.Size(235, 65);
+            this.btnAlignCameraSetting.TabIndex = 1;
+            this.btnAlignCameraSetting.Text = "Align Camera";
+            this.btnAlignCameraSetting.UseVisualStyleBackColor = false;
+            this.btnAlignCameraSetting.Click += new System.EventHandler(this.btnAlignCameraSetting_Click);
             // 
             // tableLayoutPanel1
             // 
             this.tableLayoutPanel1.ColumnCount = 1;
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel1.Controls.Add(this.label1, 0, 0);
-            this.tableLayoutPanel1.Controls.Add(this.btnAlgorithmPage, 0, 1);
-            this.tableLayoutPanel1.Location = new System.Drawing.Point(21, 29);
+            this.tableLayoutPanel1.Controls.Add(this.btnAkkonPage, 0, 1);
+            this.tableLayoutPanel1.Location = new System.Drawing.Point(332, 175);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 2;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tableLayoutPanel1.Size = new System.Drawing.Size(241, 101);
             this.tableLayoutPanel1.TabIndex = 4;
             // 
@@ -111,75 +116,119 @@
             this.label1.Text = "ATT Inspection";
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // btnAlgorithmPage
+            // btnAkkonPage
             // 
-            this.btnAlgorithmPage.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(34)))), ((int)(((byte)(34)))), ((int)(((byte)(34)))));
-            this.btnAlgorithmPage.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.btnAlgorithmPage.Font = new System.Drawing.Font("맑은 고딕", 13F, System.Drawing.FontStyle.Bold);
-            this.btnAlgorithmPage.ForeColor = System.Drawing.Color.White;
-            this.btnAlgorithmPage.Location = new System.Drawing.Point(3, 33);
-            this.btnAlgorithmPage.Name = "btnAlgorithmPage";
-            this.btnAlgorithmPage.Size = new System.Drawing.Size(235, 65);
-            this.btnAlgorithmPage.TabIndex = 1;
-            this.btnAlgorithmPage.Text = "Algorithm";
-            this.btnAlgorithmPage.UseVisualStyleBackColor = false;
-            this.btnAlgorithmPage.Click += new System.EventHandler(this.btnAlgorithmPage_Click);
+            this.btnAkkonPage.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(34)))), ((int)(((byte)(34)))), ((int)(((byte)(34)))));
+            this.btnAkkonPage.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.btnAkkonPage.Font = new System.Drawing.Font("맑은 고딕", 13F, System.Drawing.FontStyle.Bold);
+            this.btnAkkonPage.ForeColor = System.Drawing.Color.White;
+            this.btnAkkonPage.Location = new System.Drawing.Point(3, 33);
+            this.btnAkkonPage.Name = "btnAkkonPage";
+            this.btnAkkonPage.Size = new System.Drawing.Size(235, 65);
+            this.btnAkkonPage.TabIndex = 1;
+            this.btnAkkonPage.Text = "Algorithm";
+            this.btnAkkonPage.UseVisualStyleBackColor = false;
+            this.btnAkkonPage.Click += new System.EventHandler(this.btnAkkonPage_Click);
             // 
-            // tableLayoutPanel3
+            // tableLayoutPanel4
             // 
-            this.tableLayoutPanel3.ColumnCount = 1;
-            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel3.Controls.Add(this.label3, 0, 0);
-            this.tableLayoutPanel3.Controls.Add(this.btnAreascanSetting, 0, 1);
-            this.tableLayoutPanel3.Location = new System.Drawing.Point(341, 29);
-            this.tableLayoutPanel3.Name = "tableLayoutPanel3";
-            this.tableLayoutPanel3.RowCount = 2;
-            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
-            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel3.Size = new System.Drawing.Size(241, 101);
-            this.tableLayoutPanel3.TabIndex = 5;
+            this.tableLayoutPanel4.ColumnCount = 1;
+            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel4.Controls.Add(this.label4, 0, 0);
+            this.tableLayoutPanel4.Controls.Add(this.btnAlignPage, 0, 1);
+            this.tableLayoutPanel4.Location = new System.Drawing.Point(332, 36);
+            this.tableLayoutPanel4.Name = "tableLayoutPanel4";
+            this.tableLayoutPanel4.RowCount = 2;
+            this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
+            this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel4.Size = new System.Drawing.Size(241, 101);
+            this.tableLayoutPanel4.TabIndex = 4;
             // 
-            // label3
+            // label4
             // 
-            this.label3.BackColor = System.Drawing.Color.DarkSlateGray;
-            this.label3.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.label3.Font = new System.Drawing.Font("맑은 고딕", 14F, System.Drawing.FontStyle.Bold);
-            this.label3.ForeColor = System.Drawing.Color.White;
-            this.label3.Location = new System.Drawing.Point(3, 0);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(235, 30);
-            this.label3.TabIndex = 0;
-            this.label3.Text = "Optic";
-            this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.label4.BackColor = System.Drawing.Color.DarkSlateGray;
+            this.label4.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.label4.Font = new System.Drawing.Font("맑은 고딕", 14F, System.Drawing.FontStyle.Bold);
+            this.label4.ForeColor = System.Drawing.Color.White;
+            this.label4.Location = new System.Drawing.Point(3, 0);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(235, 30);
+            this.label4.TabIndex = 0;
+            this.label4.Text = "Align Inspection";
+            this.label4.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // btnAreascanSetting
+            // btnAlignPage
             // 
-            this.btnAreascanSetting.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(34)))), ((int)(((byte)(34)))), ((int)(((byte)(34)))));
-            this.btnAreascanSetting.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.btnAreascanSetting.Font = new System.Drawing.Font("맑은 고딕", 13F, System.Drawing.FontStyle.Bold);
-            this.btnAreascanSetting.ForeColor = System.Drawing.Color.White;
-            this.btnAreascanSetting.Location = new System.Drawing.Point(3, 33);
-            this.btnAreascanSetting.Name = "btnAreascanSetting";
-            this.btnAreascanSetting.Size = new System.Drawing.Size(235, 65);
-            this.btnAreascanSetting.TabIndex = 1;
-            this.btnAreascanSetting.Text = "Areascan Set";
-            this.btnAreascanSetting.UseVisualStyleBackColor = false;
-            this.btnAreascanSetting.Click += new System.EventHandler(this.btnAreascanSetting_Click);
+            this.btnAlignPage.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(34)))), ((int)(((byte)(34)))), ((int)(((byte)(34)))));
+            this.btnAlignPage.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.btnAlignPage.Font = new System.Drawing.Font("맑은 고딕", 13F, System.Drawing.FontStyle.Bold);
+            this.btnAlignPage.ForeColor = System.Drawing.Color.White;
+            this.btnAlignPage.Location = new System.Drawing.Point(3, 33);
+            this.btnAlignPage.Name = "btnAlignPage";
+            this.btnAlignPage.Size = new System.Drawing.Size(235, 65);
+            this.btnAlignPage.TabIndex = 1;
+            this.btnAlignPage.Text = "Algorithm";
+            this.btnAlignPage.UseVisualStyleBackColor = false;
+            this.btnAlignPage.Click += new System.EventHandler(this.btnAlignPage_Click);
+            // 
+            // tableLayoutPanel6
+            // 
+            this.tableLayoutPanel6.ColumnCount = 1;
+            this.tableLayoutPanel6.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel6.Controls.Add(this.label6, 0, 0);
+            this.tableLayoutPanel6.Controls.Add(this.btnAkkonCameraSetting, 0, 1);
+            this.tableLayoutPanel6.Location = new System.Drawing.Point(36, 175);
+            this.tableLayoutPanel6.Name = "tableLayoutPanel6";
+            this.tableLayoutPanel6.RowCount = 2;
+            this.tableLayoutPanel6.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
+            this.tableLayoutPanel6.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel6.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel6.Size = new System.Drawing.Size(241, 101);
+            this.tableLayoutPanel6.TabIndex = 3;
+            // 
+            // label6
+            // 
+            this.label6.BackColor = System.Drawing.Color.DarkSlateGray;
+            this.label6.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.label6.Font = new System.Drawing.Font("맑은 고딕", 14F, System.Drawing.FontStyle.Bold);
+            this.label6.ForeColor = System.Drawing.Color.White;
+            this.label6.Location = new System.Drawing.Point(3, 0);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(235, 30);
+            this.label6.TabIndex = 0;
+            this.label6.Text = "Optic";
+            this.label6.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // btnAkkonCameraSetting
+            // 
+            this.btnAkkonCameraSetting.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(34)))), ((int)(((byte)(34)))), ((int)(((byte)(34)))));
+            this.btnAkkonCameraSetting.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.btnAkkonCameraSetting.Font = new System.Drawing.Font("맑은 고딕", 13F, System.Drawing.FontStyle.Bold);
+            this.btnAkkonCameraSetting.ForeColor = System.Drawing.Color.White;
+            this.btnAkkonCameraSetting.Location = new System.Drawing.Point(3, 33);
+            this.btnAkkonCameraSetting.Name = "btnAkkonCameraSetting";
+            this.btnAkkonCameraSetting.Size = new System.Drawing.Size(235, 65);
+            this.btnAkkonCameraSetting.TabIndex = 1;
+            this.btnAkkonCameraSetting.Text = "Akkon Camera";
+            this.btnAkkonCameraSetting.UseVisualStyleBackColor = false;
+            this.btnAkkonCameraSetting.Click += new System.EventHandler(this.btnAkkonCameraSetting_Click);
             // 
             // TeachingPage
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
-            this.Controls.Add(this.tableLayoutPanel3);
+            this.Controls.Add(this.tableLayoutPanel6);
             this.Controls.Add(this.tableLayoutPanel2);
+            this.Controls.Add(this.tableLayoutPanel4);
             this.Controls.Add(this.tableLayoutPanel1);
             this.Name = "TeachingPage";
             this.Size = new System.Drawing.Size(970, 486);
             this.tableLayoutPanel2.ResumeLayout(false);
             this.tableLayoutPanel1.ResumeLayout(false);
-            this.tableLayoutPanel3.ResumeLayout(false);
+            this.tableLayoutPanel4.ResumeLayout(false);
+            this.tableLayoutPanel6.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -188,12 +237,15 @@
 
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Button btnLinescanSetting;
+        private System.Windows.Forms.Button btnAlignCameraSetting;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Button btnAlgorithmPage;
-        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel3;
-        private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.Button btnAreascanSetting;
+        private System.Windows.Forms.Button btnAkkonPage;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel4;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Button btnAlignPage;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel6;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.Button btnAkkonCameraSetting;
     }
 }

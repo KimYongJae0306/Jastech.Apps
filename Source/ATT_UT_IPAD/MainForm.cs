@@ -19,6 +19,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Jastech.Apps.Structure.Data;
 
 namespace ATT_UT_IPAD
 {
@@ -162,8 +163,14 @@ namespace ATT_UT_IPAD
 
         private void lblLogPage_Click(object sender, EventArgs e)
         {
-            SetSelectLabel(sender);
-            SetSelectPage(LogPageControl);
+            LogForm logForm = new LogForm();
+
+            string logPath = ConfigSet.Instance().Path.Log;
+            string resultPath = ConfigSet.Instance().Path.Result;
+            string modelName = ConfigSet.Instance().Operation.LastModelName;
+
+            logForm.SetLogViewPath(logPath, resultPath, modelName);
+            logForm.ShowDialog();
         }
 
         private void lblCurrentUser_Click(object sender, EventArgs e)
@@ -214,6 +221,11 @@ namespace ATT_UT_IPAD
             DeviceManager.Instance().Release();
             GrabberMil.Release();
             MilHelper.FreeApplication();
+        }
+
+        public void UpdateMainResult(AppsInspResult result)
+        {
+            MainPageControl.UpdateMainResult(result);
         }
         #endregion
     }

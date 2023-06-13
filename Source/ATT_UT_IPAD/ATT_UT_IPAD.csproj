@@ -53,6 +53,8 @@
     <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Cognex.VisionPro, Version=71.2.0.0, Culture=neutral, PublicKeyToken=ef0f902af9dee505" />
+    <Reference Include="Cognex.VisionPro.Core, Version=71.2.0.0, Culture=neutral, PublicKeyToken=ef0f902af9dee505, processorArchitecture=AMD64" />
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Core" />
@@ -68,6 +70,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Core\ATTInspModelService.cs" />
+    <Compile Include="Core\ATTInspRunner.cs" />
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -77,6 +80,30 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SystemManager.cs" />
+    <Compile Include="UI\Controls\AkkonResultControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UI\Controls\AkkonResultControl.Designer.cs">
+      <DependentUpon>AkkonResultControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Controls\AkkonViewerControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UI\Controls\AkkonViewerControl.Designer.cs">
+      <DependentUpon>AkkonViewerControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Controls\AlignResultControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UI\Controls\AlignResultControl.Designer.cs">
+      <DependentUpon>AlignResultControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Controls\AlignViewerControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UI\Controls\AlignViewerControl.Designer.cs">
+      <DependentUpon>AlignViewerControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="UI\Controls\TeachingPositionListControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -132,6 +159,18 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <EmbeddedResource Include="UI\Controls\AkkonResultControl.resx">
+      <DependentUpon>AkkonResultControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\Controls\AkkonViewerControl.resx">
+      <DependentUpon>AkkonViewerControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\Controls\AlignResultControl.resx">
+      <DependentUpon>AlignResultControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\Controls\AlignViewerControl.resx">
+      <DependentUpon>AlignViewerControl.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="UI\Controls\TeachingPositionListControl.resx">
       <DependentUpon>TeachingPositionListControl.cs</DependentUpon>
     </EmbeddedResource>

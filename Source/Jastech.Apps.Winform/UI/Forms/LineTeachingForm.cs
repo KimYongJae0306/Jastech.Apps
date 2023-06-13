@@ -18,6 +18,7 @@ using Jastech.Framework.Imaging.VisionPro.VisionAlgorithms.Results;
 using Jastech.Framework.Structure;
 using Jastech.Framework.Structure.Service;
 using Jastech.Framework.Users;
+using Jastech.Framework.Winform.Controls;
 using Jastech.Framework.Winform.Forms;
 using Jastech.Framework.Winform.VisionPro.Controls;
 using System;
@@ -177,6 +178,22 @@ namespace Jastech.Framework.Winform.Forms
 
             // TeachingUIManager 참조
             AppsTeachingUIManager.Instance().SetDisplay(Display.GetDisplay());
+
+            // Teaching Item
+            if (AppsLineCamera.Camera.Name == "AlignCamera")
+            {
+                tlpTeachingItems.Controls.Add(btnAlign, 2, 0);
+                btnAlign.Visible = true;
+                btnAkkon.Visible = false;
+            }
+            else if (AppsLineCamera.Camera.Name == "AkkonCamera")
+            {
+                tlpTeachingItems.Controls.Add(btnAkkon, 2, 0);
+                btnAlign.Visible = false;
+                btnAkkon.Visible = true;
+                MarkControl.TeachingItem = TeachingItem.Akkon;
+            }
+            else { }
         }
 
         private void Display_DeleteEventHandler(object sender, EventArgs e)
@@ -255,7 +272,7 @@ namespace Jastech.Framework.Winform.Forms
 
         private void ClearSelectedButton()
         {
-            foreach (Control control in tlpTeachingItem.Controls)
+            foreach (Control control in tlpTeachingItems.Controls)
             {
                 if (control is Button)
                     control.BackColor = _noneSelectedColor;

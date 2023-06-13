@@ -193,7 +193,8 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         private void UpdateDailyDataGridView(DailyInfo dailyInfo)
         {
-            AlignInspResultControl.UpdateAlignDaily(dailyInfo);
+            //AlignInspResultControl.UpdateAlignDaily(dailyInfo);
+            AlignInspResultControl.UpdateAlignDaily();
         }
 
         private void UpdateDailyChart(DailyInfo dailyInfo, int tabNo)
@@ -210,22 +211,22 @@ namespace Jastech.Apps.Winform.UI.Controls
             ResultChartControl.ClearChart();
         }
 
-        public void InitalizeResultData(int tabCount)
-        {
-            if (InspResultDic.Count() > 0)
-            {
-                for (int i = 0; i < InspResultDic.Count(); i++)
-                {
-                    if(InspResultDic.ContainsKey(i))
-                    {
-                        
-                        InspResultDic[i]?.Dispose();
-                        InspResultDic[i] = null;
-                    }
-                }
-            }
-            InspResultDic.Clear();
-        }
+        //public void InitalizeResultData(int tabCount)
+        //{
+        //    if (InspResultDic.Count() > 0)
+        //    {
+        //        for (int i = 0; i < InspResultDic.Count(); i++)
+        //        {
+        //            if(InspResultDic.ContainsKey(i))
+        //            {
+        //                InspResultDic[i]?.Dispose();
+        //                InspResultDic[i] = null;
+        //            }
+        //        }
+        //    }
+
+        //    InspResultDic.Clear();
+        //}
 
         private void UpdateLeftAlignResult(TabInspResult result)
         {

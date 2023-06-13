@@ -186,7 +186,8 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         private void UpdateDailyDataGridView(DailyInfo dailyInfo)
         {
-            AkkonInspResultControl.UpdateAkkonDaily(dailyInfo);
+            //AkkonInspResultControl.UpdateAkkonDaily(dailyInfo);
+            AkkonInspResultControl.UpdateAkkonDaily();
         }
 
         private void UpdateDailyChart(DailyInfo dailyInfo, int tabNo)

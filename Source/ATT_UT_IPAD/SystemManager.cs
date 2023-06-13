@@ -1,5 +1,8 @@
-﻿using Jastech.Apps.Structure;
+﻿using ATT_UT_IPAD.Core;
+using Jastech.Apps.Structure;
+using Jastech.Apps.Structure.Data;
 using Jastech.Apps.Winform;
+using Jastech.Apps.Winform.Core;
 using Jastech.Apps.Winform.Service;
 using Jastech.Framework.Config;
 using Jastech.Framework.Device.Cameras;
@@ -15,6 +18,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace ATT_UT_IPAD
 {
@@ -24,6 +28,12 @@ namespace ATT_UT_IPAD
         private static SystemManager _instance = null;
 
         private MainForm _mainForm = null;
+
+        private ATTInspRunner _inspRunner = new ATTInspRunner();
+        #endregion
+
+        #region 속성
+        public MachineStatus MachineStatus { get; set; } = MachineStatus.STOP;
         #endregion
 
         #region 메서드
@@ -137,9 +147,9 @@ namespace ATT_UT_IPAD
             {
                 AxisHandler handler0 = new AxisHandler(AxisHandlerName.Handler0.ToString());
 
-                handler0.AddAxis(AxisName.X, motion, 0, 2);
-                handler0.AddAxis(AxisName.Y, motion, 8, 1);
-                handler0.AddAxis(AxisName.Z, motion, 0, 2);
+                handler0.AddAxis(AxisName.X, motion, axisNo: 0, homeOrder: 3);
+                handler0.AddAxis(AxisName.Z1, motion, axisNo: 0, homeOrder: 1);
+                handler0.AddAxis(AxisName.Z2, motion, axisNo: 1, homeOrder: 2);
 
                 //AxisHandlerList.Add(handler0);
                 AppsMotionManager.Instance().AxisHandlerList.Add(handler0);
@@ -160,6 +170,51 @@ namespace ATT_UT_IPAD
                 AppsMotionManager.Instance().AxisHandlerList.Add(unit0);
             }
             return true;
+        }
+
+        public void UpdateMainResult(AppsInspResult result)
+        {
+            _mainForm.UpdateMainResult(result);
+        }
+
+        public void StartRun()
+        {
+            if (ModelManager.Instance().CurrentModel == null)
+            {
+                MessageConfirmForm form = new MessageConfirmForm();
+                form.Message = "Current Model is null.";
+                return;
+            }
+
+            if (SystemManager.Instance().MachineStatus != MachineStatus.RUN)
+            {
+                MessageYesNoForm form = new MessageYesNoForm();
+                form.Message = "Do you want to Start Auto Mode?";
+                if (form.ShowDialog() == DialogResult.Yes)
+                {
+                    _inspRunner.SeqRun();
+                }
+            }
+        }
+
+        public void StopRun()
+        {
+            if (ModelManager.Instance().CurrentModel == null)
+            {
+                MessageConfirmForm form = new MessageConfirmForm();
+                form.Message = "Current Model is null.";
+                return;
+            }
+
+            if (SystemManager.Instance().MachineStatus != MachineStatus.STOP)
+            {
+                MessageYesNoForm form = new MessageYesNoForm();
+                form.Message = "Do you want to Stop Auto Mode?";
+                if (form.ShowDialog() == DialogResult.Yes)
+                {
+                    _inspRunner.SeqStop();
+                }
+            }
         }
         #endregion
     }

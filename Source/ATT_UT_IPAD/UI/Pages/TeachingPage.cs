@@ -25,26 +25,32 @@ namespace ATT_UT_IPAD.UI.Pages
             InitializeComponent();
         }
 
-        private void btnAlgorithmPage_Click(object sender, EventArgs e)
+        private void btnAlignCameraSetting_Click(object sender, EventArgs e)
         {
-            LineTeachingForm form = new LineTeachingForm();
+            AlignCameraSetting();
+        }
+
+        private void AlignCameraSetting()
+        {
+            OpticTeachingForm form = new OpticTeachingForm();
+            form.AppsLineCamera = AppsLineCameraManager.Instance().GetAppsCamera("AlignCamera");
+            form.LAFCtrl = AppsLAFManager.Instance().GetLAFCtrl("Align");
             form.UnitName = UnitName.Unit0;
-            form.TitleCameraName = "LineScan";
-            form.AppsLineCamera = AppsLineCameraManager.Instance().GetAppsCamera("Camera0");
+            form.AxisHandler = AppsMotionManager.Instance().GetAxisHandler(AxisHandlerName.Handler0);
             form.InspModelService = ATTInspModelService;
             form.OpenMotionPopupEventHandler += OpenMotionPopupEventHandler;
             form.ShowDialog();
         }
 
-        private void btnAreascanSetting_Click(object sender, EventArgs e)
+        private void btnAkkonCameraSetting_Click(object sender, EventArgs e)
         {
-
+            AkkonCameraSetting();
         }
 
-        private void btnLinescanSetting_Click(object sender, EventArgs e)
+        private void AkkonCameraSetting()
         {
             OpticTeachingForm form = new OpticTeachingForm();
-            form.AppsLineCamera = AppsLineCameraManager.Instance().GetAppsCamera("Camera0");
+            form.AppsLineCamera = AppsLineCameraManager.Instance().GetAppsCamera("AkkonCamera");
             form.LAFCtrl = AppsLAFManager.Instance().GetLAFCtrl("Akkon");
             form.UnitName = UnitName.Unit0;
             form.AxisHandler = AppsMotionManager.Instance().GetAxisHandler(AxisHandlerName.Handler0);
@@ -52,6 +58,56 @@ namespace ATT_UT_IPAD.UI.Pages
             form.OpenMotionPopupEventHandler += OpenMotionPopupEventHandler;
             form.ShowDialog();
         }
+
+        //private void btnAlgorithmPage_Click(object sender, EventArgs e)
+        //{
+        //    LineTeachingForm form = new LineTeachingForm();
+        //    form.UnitName = UnitName.Unit0;
+        //    form.TitleCameraName = "LineScan";
+        //    form.AppsLineCamera = AppsLineCameraManager.Instance().GetAppsCamera("AkkonCamera");
+        //    form.InspModelService = ATTInspModelService;
+        //    form.OpenMotionPopupEventHandler += OpenMotionPopupEventHandler;
+        //    form.ShowDialog();
+        //}
+
+        private void btnAlignPage_Click(object sender, EventArgs e)
+        {
+            UpdateAlignPage();
+        }
+
+        private void UpdateAlignPage()
+        {
+            LineTeachingForm form = new LineTeachingForm();
+            form.UnitName = UnitName.Unit0;
+            form.TitleCameraName = "LineScan";
+            form.AppsLineCamera = AppsLineCameraManager.Instance().GetAppsCamera("AlignCamera");
+            form.InspModelService = ATTInspModelService;
+            form.OpenMotionPopupEventHandler += OpenMotionPopupEventHandler;
+            form.ShowDialog();
+        }
+
+        private void btnAkkonPage_Click(object sender, EventArgs e)
+        {
+            UpdateAkkonPage();
+        }
+
+        private void UpdateAkkonPage()
+        {
+            LineTeachingForm form = new LineTeachingForm();
+            form.UnitName = UnitName.Unit0;
+            form.TitleCameraName = "LineScan";
+            form.AppsLineCamera = AppsLineCameraManager.Instance().GetAppsCamera("AkkonCamera");
+            form.InspModelService = ATTInspModelService;
+            form.OpenMotionPopupEventHandler += OpenMotionPopupEventHandler;
+            form.ShowDialog();
+        }
+
+        private void btnLinescanSetting_Click(object sender, EventArgs e)
+        {
+            
+        }
+
+        
 
         private void OpenMotionPopupEventHandler(UnitName unitName)
         {
@@ -65,5 +121,7 @@ namespace ATT_UT_IPAD.UI.Pages
         {
             ATTInspModelService = inspModelService;
         }
+
+        
     }
 }
