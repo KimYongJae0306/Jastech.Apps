@@ -15,10 +15,10 @@ using System.Threading.Tasks;
 
 namespace Jastech.Apps.Winform
 {
-    public class AppsMotionManager
+    public class MotionManager
     {
         #region 필드
-        private static AppsMotionManager _instance = null;
+        private static MotionManager _instance = null;
         #endregion
 
         #region 속성
@@ -26,11 +26,11 @@ namespace Jastech.Apps.Winform
         #endregion
 
         #region 메서드
-        public static AppsMotionManager Instance()
+        public static MotionManager Instance()
         {
             if (_instance == null)
             {
-                _instance = new AppsMotionManager();
+                _instance = new MotionManager();
             }
 
             return _instance;

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Jastech.Apps.Winform
 {
-    public class AppsAreaCameraManager
+    public class AreaCameraManager
     {
     }
 }

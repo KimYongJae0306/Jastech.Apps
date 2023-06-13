@@ -61,7 +61,7 @@ namespace Jastech.Framework.Winform.Forms
 
         public Tab CurrentTab { get; set; } = null;
 
-        public AppsLineCamera AppsLineCamera { get; set; }
+        public LineCamera LineCamera { get; set; }
 
         public string TeachingImagePath { get; set; }
 
@@ -118,9 +118,9 @@ namespace Jastech.Framework.Winform.Forms
 
             lblStageCam.Text = $"STAGE : {UnitName} / CAM : {TitleCameraName}";
 
-            AppsLineCamera.GrabDoneEventHanlder += LineTeachingForm_GrabDoneEventHanlder;
+            LineCamera.GrabDoneEventHanlder += LineTeachingForm_GrabDoneEventHanlder;
 
-            var image = AppsTeachingUIManager.Instance().GetOriginCogImageBuffer(true);
+            var image = TeachingUIManager.Instance().GetOriginCogImageBuffer(true);
 
             if (image != null)
                 Display.SetImage(image);
@@ -177,16 +177,16 @@ namespace Jastech.Framework.Winform.Forms
             pnlDisplay.Controls.Add(Display);
 
             // TeachingUIManager 참조
-            AppsTeachingUIManager.Instance().SetDisplay(Display.GetDisplay());
+            TeachingUIManager.Instance().SetDisplay(Display.GetDisplay());
 
             // Teaching Item
-            if (AppsLineCamera.Camera.Name == "AlignCamera")
+            if (LineCamera.Camera.Name == "AlignCamera")
             {
                 tlpTeachingItems.Controls.Add(btnAlign, 2, 0);
                 btnAlign.Visible = true;
                 btnAkkon.Visible = false;
             }
-            else if (AppsLineCamera.Camera.Name == "AkkonCamera")
+            else if (LineCamera.Camera.Name == "AkkonCamera")
             {
                 tlpTeachingItems.Controls.Add(btnAkkon, 2, 0);
                 btnAlign.Visible = false;
@@ -247,7 +247,7 @@ namespace Jastech.Framework.Winform.Forms
                     btnAlign.BackColor = _selectedColor;
                     AlignControl.SetParams(CurrentTab);
 
-                    var camera = AppsLineCamera.Camera;
+                    var camera = LineCamera.Camera;
                     AlignControl.Resolution_um = camera.PixelResolution_um / camera.LensScale;
 
                     pnlTeach.Controls.Add(AlignControl);
@@ -256,9 +256,9 @@ namespace Jastech.Framework.Winform.Forms
                 case DisplayType.Akkon:
                     btnAkkon.BackColor = _selectedColor;
                     AkkonControl.SetParams(CurrentTab);
-                    AkkonControl.CalcResolution = AppsLineCamera.Camera.PixelResolution_um / AppsLineCamera.Camera.LensScale; ;
+                    AkkonControl.CalcResolution = LineCamera.Camera.PixelResolution_um / LineCamera.Camera.LensScale; ;
 
-                    if (AppsUserManager.Instance().CurrentUser.Type == AuthorityType.Maker)
+                    if (UserManager.Instance().CurrentUser.Type == AuthorityType.Maker)
                         AkkonControl.UserMaker = true;
                     else
                         AkkonControl.UserMaker = false;
@@ -328,10 +328,10 @@ namespace Jastech.Framework.Winform.Forms
 
                 var cogImage = VisionProImageHelper.CovertImage(dataArray, image.Width, image.Height, format);
 
-               
-                AppsTeachingUIManager.Instance().SetOrginCogImageBuffer(cogImage);
-                AppsTeachingUIManager.Instance().SetOriginMatImageBuffer(new Mat(dlg.FileName, ImreadModes.Grayscale));
-                Display.SetImage(AppsTeachingUIManager.Instance().GetOriginCogImageBuffer(false));
+
+                TeachingUIManager.Instance().SetOrginCogImageBuffer(cogImage);
+                TeachingUIManager.Instance().SetOriginMatImageBuffer(new Mat(dlg.FileName, ImreadModes.Grayscale));
+                Display.SetImage(TeachingUIManager.Instance().GetOriginCogImageBuffer(false));
             }
         }
 
@@ -355,13 +355,13 @@ namespace Jastech.Framework.Winform.Forms
             AppsInspModel inspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
             TeachingImagePath = Path.Combine(ConfigSet.Instance().Path.Model, inspModel.Name, "TeachingImage", DateTime.Now.ToString("yyyyMMdd_HHmmss"));
 
-            AppsLAFManager.Instance().AutoFocusOnOff("Akkon", true);
+            LAFManager.Instance().AutoFocusOnOff("Akkon", true);
 
             TeachingData.Instance().ClearTeachingImageBuffer();
-            AppsLineCamera.InitGrabSettings();
-            InitalizeInspTab(AppsLineCamera.TabScanBufferList);
+            LineCamera.InitGrabSettings();
+            InitalizeInspTab(LineCamera.TabScanBufferList);
 
-            AppsLineCamera.StartGrab();
+            LineCamera.StartGrab();
         }
 
         public void InitalizeInspTab(List<TabScanBuffer> bufferList)
@@ -398,7 +398,7 @@ namespace Jastech.Framework.Winform.Forms
 
         private void btnGrabStop_Click(object sender, EventArgs e)
         {
-            AppsLineCamera.StopGrab();
+            LineCamera.StopGrab();
         }
 
         private void LineTeachingForm_FormClosing(object sender, FormClosingEventArgs e)
@@ -406,7 +406,7 @@ namespace Jastech.Framework.Winform.Forms
             Display.DisposeImage();
             MarkControl.DisposeImage();
             DisposeInspTabList();
-            AppsLineCamera.GrabDoneEventHanlder -= LineTeachingForm_GrabDoneEventHanlder;
+            LineCamera.GrabDoneEventHanlder -= LineTeachingForm_GrabDoneEventHanlder;
         }
 
         private void cbxTabList_DrawItem(object sender, DrawItemEventArgs e)
@@ -480,8 +480,8 @@ namespace Jastech.Framework.Winform.Forms
                 ICogImage cogImage = teachingData.ConvertCogGrayImage(buffer.TabImage);
 
                 Display.SetImage(cogImage);
-                AppsTeachingUIManager.Instance().SetOrginCogImageBuffer(cogImage);
-                AppsTeachingUIManager.Instance().SetOriginMatImageBuffer(buffer.TabImage.Clone());
+                TeachingUIManager.Instance().SetOrginCogImageBuffer(cogImage);
+                TeachingUIManager.Instance().SetOriginMatImageBuffer(buffer.TabImage.Clone());
 
                 (cogImage as CogImage8Grey).Dispose();
             }
@@ -557,7 +557,7 @@ namespace Jastech.Framework.Winform.Forms
 
         private void ExecuteCoordinate()
         {
-            var display = AppsTeachingUIManager.Instance().GetDisplay();
+            var display = TeachingUIManager.Instance().GetDisplay();
 
             Tab tabOriginData = new Tab();
             tabOriginData = CurrentTab.DeepCopy();

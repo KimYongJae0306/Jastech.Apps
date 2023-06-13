@@ -6,12 +6,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Jastech.Apps.Winform
+namespace Jastech.Apps.Winform.Service
 {
     public class AppsPlcService
     {
-        public List<AppsPlcAddressMap> AddressMapList { get; private set; } = new List<AppsPlcAddressMap>();
-
+        public List<AppsPlcAddressMap> CommonMapList { get; private set; } = new List<AppsPlcAddressMap>();
         private Plc Plc { get; set; } = null;
 
         private int MinAddressNumber { get; set; }
@@ -20,34 +19,19 @@ namespace Jastech.Apps.Winform
 
         private int AddressLength { get; set; }
 
-        public bool Initialize()
-        {
-            if (DeviceManager.Instance().PlcHandler == null)
-                return false;
-
-            Plc = DeviceManager.Instance().PlcHandler.First();
-
-            lock(AddressMapList)
-            {
-                //AddressMapList.Add(new AppsPlcAddressMap(AddressMapType))
-            }
-
-            return true;
-        }
-
-        private void CalcSettingAddress()
+        public void CalcSettingAddress()
         {
             int min = int.MaxValue;
             int max = int.MinValue;
-            foreach (var addressMap in AddressMapList)
+            foreach (var map in CommonMapList)
             {
-                int addressNum = (int)addressMap.AddressNum;
+                int addressNum = (int)map.AddressNum;
 
                 if (min > addressNum)
                     min = addressNum;
 
                 if (max < addressNum)
-                    max = addressNum + addressMap.WordSize;
+                    max = addressNum + map.WordSize;
             }
 
             MaxAddressNumber = max;

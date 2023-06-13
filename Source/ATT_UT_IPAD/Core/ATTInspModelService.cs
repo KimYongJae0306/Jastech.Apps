@@ -128,7 +128,7 @@ namespace ATT_UT_IPAD.Core
 
         private void AddTeachingPosition(Unit unit)
         {
-            var currentAxisHandler = AppsMotionManager.Instance().GetAxisHandler(AxisHandlerName.Handler0);
+            var currentAxisHandler = MotionManager.Instance().GetAxisHandler(AxisHandlerName.Handler0);
 
             TeachingInfo t1 = new TeachingInfo();
             t1.CreateTeachingInfo(TeachingPosType.Standby.ToString(), "Standby", currentAxisHandler);

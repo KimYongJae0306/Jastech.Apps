@@ -80,7 +80,7 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         private ICogImage PatternControl_GetOriginImageHandler()
         {
-            return AppsTeachingUIManager.Instance().GetDisplay().GetImage();
+            return TeachingUIManager.Instance().GetDisplay().GetImage();
         }
 
         private void InitializeUI()
@@ -295,7 +295,7 @@ namespace Jastech.Apps.Winform.UI.Controls
      
         public void AddROI()
         {
-            var display = AppsTeachingUIManager.Instance().GetDisplay();
+            var display = TeachingUIManager.Instance().GetDisplay();
             if (display.GetImage() == null)
                 return;
 
@@ -327,7 +327,7 @@ namespace Jastech.Apps.Winform.UI.Controls
             if (Enabled == false)
                 return;
             
-            var display = AppsTeachingUIManager.Instance().GetDisplay();
+            var display = TeachingUIManager.Instance().GetDisplay();
             if (display.GetImage() == null)
                 return;
             display.ClearGraphic();
@@ -346,7 +346,7 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         public void Inspection()
         {
-            var display = AppsTeachingUIManager.Instance().GetDisplay();
+            var display = TeachingUIManager.Instance().GetDisplay();
             var currentParam = ParamControl.GetCurrentParam();
 
             if (display == null || currentParam == null)
@@ -513,7 +513,7 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         private void lblTest_Click(object sender, EventArgs e)
         {
-            var display = AppsTeachingUIManager.Instance().GetDisplay();
+            var display = TeachingUIManager.Instance().GetDisplay();
             var currentParam = ParamControl.GetCurrentParam();
 
             Tab origin = new Tab();

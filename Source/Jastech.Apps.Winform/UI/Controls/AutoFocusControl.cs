@@ -152,19 +152,19 @@ namespace Jastech.Apps.Winform.UI.Controls
         private void lblCurrentToTeach_Click(object sender, EventArgs e)
         {
             int cog = Convert.ToInt32(lblCurrentCogValue.Text);
-            AppsLAFManager.Instance().SetCenterOfGravity(LAFCtrl.Name, cog);
+            LAFManager.Instance().SetCenterOfGravity(LAFCtrl.Name, cog);
             lblTeachCogValue.Text = cog.ToString();
         }
 
         private void lblAFOn_Click(object sender, EventArgs e)
         {
-            AppsLAFManager.Instance().AutoFocusOnOff(LAFCtrl.Name, true);
+            LAFManager.Instance().AutoFocusOnOff(LAFCtrl.Name, true);
         }
 
 
         private void lblAFOff_Click(object sender, EventArgs e)
         {
-            AppsLAFManager.Instance().AutoFocusOnOff(LAFCtrl.Name, false);
+            LAFManager.Instance().AutoFocusOnOff(LAFCtrl.Name, false);
         }
 
         private double SetLabelDoubleData(object sender)

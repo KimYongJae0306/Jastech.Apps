@@ -246,7 +246,7 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         public void AddROI()
         {
-            var display = AppsTeachingUIManager.Instance().GetDisplay();
+            var display = TeachingUIManager.Instance().GetDisplay();
             if (display.GetImage() == null)
                 return;
 
@@ -279,7 +279,7 @@ namespace Jastech.Apps.Winform.UI.Controls
             CogRectangleAffineDOFConstants constants = CogRectangleAffineDOFConstants.Position | CogRectangleAffineDOFConstants.Size | CogRectangleAffineDOFConstants.Skew;
             _firstCogRectAffine = VisionProImageHelper.CreateRectangleAffine(centerX, centerY, GetCalcumToPixel(roiwidth), GetCalcumToPixel(roiheight), constants: constants);
 
-            var teachingDisplay = AppsTeachingUIManager.Instance().GetDisplay();
+            var teachingDisplay = TeachingUIManager.Instance().GetDisplay();
             if (teachingDisplay.GetImage() == null)
                 return;
 
@@ -301,7 +301,7 @@ namespace Jastech.Apps.Winform.UI.Controls
             //_autoTeachingRect = CogImageHelper.CreateRectangle(centerX, centerY, 100, 100);
             _autoTeachingRect.DraggingStopped += AutoTeachingRect_DraggingStopped;
 
-            var teachingDisplay = AppsTeachingUIManager.Instance().GetDisplay();
+            var teachingDisplay = TeachingUIManager.Instance().GetDisplay();
             if (teachingDisplay.GetImage() == null)
                 return;
 
@@ -313,11 +313,11 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         private void AutoTeachingRect_DraggingStopped(object sender, CogDraggingEventArgs e)
         {
-            var display = AppsTeachingUIManager.Instance().GetDisplay();
+            var display = TeachingUIManager.Instance().GetDisplay();
             if (display.GetImage() == null)
                 return;
 
-            display.SetImage(AppsTeachingUIManager.Instance().GetOriginCogImageBuffer(true));
+            display.SetImage(TeachingUIManager.Instance().GetOriginCogImageBuffer(true));
         }
 
         private void SetFirstROI(AkkonROI roi)
@@ -332,7 +332,7 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         public void RegisterROI()
         {
-            var display = AppsTeachingUIManager.Instance().GetDisplay();
+            var display = TeachingUIManager.Instance().GetDisplay();
             if (display == null)
                 return;
 
@@ -413,7 +413,7 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         public void DrawROI()
         {
-            var display = AppsTeachingUIManager.Instance().GetDisplay();
+            var display = TeachingUIManager.Instance().GetDisplay();
 
             display.ClearGraphic();
 
@@ -455,7 +455,7 @@ namespace Jastech.Apps.Winform.UI.Controls
                 count++;
             }
 
-            var teachingDisplay = AppsTeachingUIManager.Instance().GetDisplay();
+            var teachingDisplay = TeachingUIManager.Instance().GetDisplay();
             if (teachingDisplay.GetImage() == null)
                 return;
             teachingDisplay.SetInteractiveGraphics("tool", collect);
@@ -463,7 +463,7 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         public void ClearDisplay()
         {
-            var display = AppsTeachingUIManager.Instance().GetDisplay();
+            var display = TeachingUIManager.Instance().GetDisplay();
 
             display.ClearGraphic();
         }
@@ -811,7 +811,7 @@ namespace Jastech.Apps.Winform.UI.Controls
             foreach (var item in _cogRectAffineList)
                 collect.Add(item);
 
-            var display = AppsTeachingUIManager.Instance().GetDisplay();
+            var display = TeachingUIManager.Instance().GetDisplay();
 
             if(lblResultImage.BackColor == _selectedColor)
                 SetOrginImageView();
@@ -841,7 +841,7 @@ namespace Jastech.Apps.Winform.UI.Controls
             if (_cogRectAffineList.Count <= 0 || CurrentTab == null)
                 return;
 
-            var display = AppsTeachingUIManager.Instance().GetDisplay();
+            var display = TeachingUIManager.Instance().GetDisplay();
 
             int groupIndex = cbxGroupNumber.SelectedIndex;
             var group = CurrentTab.AkkonParam.GroupList[groupIndex];
@@ -911,7 +911,7 @@ namespace Jastech.Apps.Winform.UI.Controls
             if (CurrentTab == null)
                 return;
 
-            var display = AppsTeachingUIManager.Instance().GetDisplay();
+            var display = TeachingUIManager.Instance().GetDisplay();
 
             double skewUnit = (double)jogScale / 1000;
             double zoom = display.GetZoomValue();
@@ -1191,7 +1191,7 @@ namespace Jastech.Apps.Winform.UI.Controls
         {
             if (lblThresholdPreview.BackColor == _selectedColor)
             {
-                var teachingDisplay = AppsTeachingUIManager.Instance().GetDisplay();
+                var teachingDisplay = TeachingUIManager.Instance().GetDisplay();
                 if (teachingDisplay.GetImage() == null)
                     return;
 
@@ -1200,7 +1200,7 @@ namespace Jastech.Apps.Winform.UI.Controls
                 _autoTeachingCollect.Clear();
                 _autoTeachingCollect.Add(_autoTeachingRect);
 
-                teachingDisplay.SetImage(AppsTeachingUIManager.Instance().GetOriginCogImageBuffer(true));
+                teachingDisplay.SetImage(TeachingUIManager.Instance().GetOriginCogImageBuffer(true));
 
                 teachingDisplay.DeleteInInteractiveGraphics("tool");
                 teachingDisplay.SetInteractiveGraphics("tool", _autoTeachingCollect);
@@ -1212,7 +1212,7 @@ namespace Jastech.Apps.Winform.UI.Controls
 
                 if (_autoTeachingCollect.Count > 0)
                 {
-                    var display = AppsTeachingUIManager.Instance().GetDisplay();
+                    var display = TeachingUIManager.Instance().GetDisplay();
                     if (display.GetImage() == null)
                         return;
 
@@ -1222,7 +1222,7 @@ namespace Jastech.Apps.Winform.UI.Controls
                     var cropImage = VisionProImageHelper.CropImage(cogImage, roi);
                     var binaryImage = VisionProImageHelper.Threshold(cropImage as CogImage8Grey, threshold, 255);
                     var convertImage = VisionProImageHelper.CogCopyRegionTool(cogImage, binaryImage, roi, true);
-                    AppsTeachingUIManager.Instance().SetBinaryCogImageBuffer(convertImage as CogImage8Grey);
+                    TeachingUIManager.Instance().SetBinaryCogImageBuffer(convertImage as CogImage8Grey);
                 }
             }
         }
@@ -1247,11 +1247,11 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         private void lblAutoTeachingExcute_Click(object sender, EventArgs e)
         {
-            var image = AppsTeachingUIManager.Instance().GetOriginCogImageBuffer(true);
+            var image = TeachingUIManager.Instance().GetOriginCogImageBuffer(true);
             if (image == null)
                 return;
 
-            var teachingDisplay = AppsTeachingUIManager.Instance().GetDisplay();
+            var teachingDisplay = TeachingUIManager.Instance().GetDisplay();
             teachingDisplay.SetImage(image);
 
             if (ModelManager.Instance().CurrentModel == null)
@@ -1360,7 +1360,7 @@ namespace Jastech.Apps.Winform.UI.Controls
             if (groupIndex < 0 || CurrentTab == null)
                 return;
      
-            Mat matImage = AppsTeachingUIManager.Instance().GetOriginMatImageBuffer(false);
+            Mat matImage = TeachingUIManager.Instance().GetOriginMatImageBuffer(false);
             if (matImage == null)
                 return;
 
@@ -1386,7 +1386,7 @@ namespace Jastech.Apps.Winform.UI.Controls
                 resultMat = GetResultImage(matImage, tabResult, akkonAlgorithmParam);
 
             var cogImage = ConvertCogColorImage(resultMat);
-            AppsTeachingUIManager.Instance().SetResultCogImage(cogImage);
+            TeachingUIManager.Instance().SetResultCogImage(cogImage);
             resultMat.Dispose();
             ClearDisplay();
             Console.WriteLine("Completed.");
@@ -1609,9 +1609,9 @@ namespace Jastech.Apps.Winform.UI.Controls
             lblOrginalImage.BackColor = _selectedColor;
             lblResultImage.BackColor = _nonSelectedColor;
 
-            var orgImage = AppsTeachingUIManager.Instance().GetOriginCogImageBuffer(true);
+            var orgImage = TeachingUIManager.Instance().GetOriginCogImageBuffer(true);
             if(orgImage != null)
-                AppsTeachingUIManager.Instance().GetDisplay().SetImage(orgImage);
+                TeachingUIManager.Instance().GetDisplay().SetImage(orgImage);
         }
 
         private void SetResultImageView()
@@ -1619,9 +1619,9 @@ namespace Jastech.Apps.Winform.UI.Controls
             lblOrginalImage.BackColor = _nonSelectedColor;
             lblResultImage.BackColor = _selectedColor;
 
-            var orgImage = AppsTeachingUIManager.Instance().GetResultCogImage(false);
+            var orgImage = TeachingUIManager.Instance().GetResultCogImage(false);
             if(orgImage != null)
-                AppsTeachingUIManager.Instance().GetDisplay().SetImage(orgImage);
+                TeachingUIManager.Instance().GetDisplay().SetImage(orgImage);
         }
 
         private double GetCalcumToPixel(double value)

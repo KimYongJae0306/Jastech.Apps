@@ -15,10 +15,10 @@ using static Jastech.Framework.Device.Motions.AxisMovingParam;
 
 namespace Jastech.Apps.Winform
 {
-    public class AppsLAFManager
+    public class LAFManager
     {
         #region 필드
-        private static AppsLAFManager _instance = null;
+        private static LAFManager _instance = null;
         #endregion
 
         #region 속성
@@ -28,11 +28,11 @@ namespace Jastech.Apps.Winform
         #endregion
 
         #region 메서드
-        public static AppsLAFManager Instance()
+        public static LAFManager Instance()
         {
             if (_instance == null)
             {
-                _instance = new AppsLAFManager();
+                _instance = new LAFManager();
             }
 
             return _instance;

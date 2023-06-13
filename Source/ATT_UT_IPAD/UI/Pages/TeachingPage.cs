@@ -33,10 +33,10 @@ namespace ATT_UT_IPAD.UI.Pages
         private void AlignCameraSetting()
         {
             OpticTeachingForm form = new OpticTeachingForm();
-            form.AppsLineCamera = AppsLineCameraManager.Instance().GetAppsCamera("AlignCamera");
-            form.LAFCtrl = AppsLAFManager.Instance().GetLAFCtrl("Align");
+            form.LineCamera = LineCameraManager.Instance().GetAppsCamera("AlignCamera");
+            form.LAFCtrl = LAFManager.Instance().GetLAFCtrl("Align");
             form.UnitName = UnitName.Unit0;
-            form.AxisHandler = AppsMotionManager.Instance().GetAxisHandler(AxisHandlerName.Handler0);
+            form.AxisHandler = MotionManager.Instance().GetAxisHandler(AxisHandlerName.Handler0);
             form.InspModelService = ATTInspModelService;
             form.OpenMotionPopupEventHandler += OpenMotionPopupEventHandler;
             form.ShowDialog();
@@ -50,10 +50,10 @@ namespace ATT_UT_IPAD.UI.Pages
         private void AkkonCameraSetting()
         {
             OpticTeachingForm form = new OpticTeachingForm();
-            form.AppsLineCamera = AppsLineCameraManager.Instance().GetAppsCamera("AkkonCamera");
-            form.LAFCtrl = AppsLAFManager.Instance().GetLAFCtrl("Akkon");
+            form.LineCamera = LineCameraManager.Instance().GetAppsCamera("AkkonCamera");
+            form.LAFCtrl = LAFManager.Instance().GetLAFCtrl("Akkon");
             form.UnitName = UnitName.Unit0;
-            form.AxisHandler = AppsMotionManager.Instance().GetAxisHandler(AxisHandlerName.Handler0);
+            form.AxisHandler = MotionManager.Instance().GetAxisHandler(AxisHandlerName.Handler0);
             form.InspModelService = ATTInspModelService;
             form.OpenMotionPopupEventHandler += OpenMotionPopupEventHandler;
             form.ShowDialog();
@@ -80,7 +80,7 @@ namespace ATT_UT_IPAD.UI.Pages
             LineTeachingForm form = new LineTeachingForm();
             form.UnitName = UnitName.Unit0;
             form.TitleCameraName = "LineScan";
-            form.AppsLineCamera = AppsLineCameraManager.Instance().GetAppsCamera("AlignCamera");
+            form.LineCamera = LineCameraManager.Instance().GetAppsCamera("AlignCamera");
             form.InspModelService = ATTInspModelService;
             form.OpenMotionPopupEventHandler += OpenMotionPopupEventHandler;
             form.ShowDialog();
@@ -96,7 +96,7 @@ namespace ATT_UT_IPAD.UI.Pages
             LineTeachingForm form = new LineTeachingForm();
             form.UnitName = UnitName.Unit0;
             form.TitleCameraName = "LineScan";
-            form.AppsLineCamera = AppsLineCameraManager.Instance().GetAppsCamera("AkkonCamera");
+            form.LineCamera = LineCameraManager.Instance().GetAppsCamera("AkkonCamera");
             form.InspModelService = ATTInspModelService;
             form.OpenMotionPopupEventHandler += OpenMotionPopupEventHandler;
             form.ShowDialog();

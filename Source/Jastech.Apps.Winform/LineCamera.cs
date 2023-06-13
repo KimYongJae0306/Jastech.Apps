@@ -25,7 +25,7 @@ using static Jastech.Framework.Device.Cameras.Camera;
 
 namespace Jastech.Apps.Winform
 {
-    public class AppsLineCamera
+    public class LineCamera
     {
         #region 필드
         private int _curGrabCount { get; set; } = 0;
@@ -81,7 +81,7 @@ namespace Jastech.Apps.Winform
         #endregion
 
         #region 생성자
-        public AppsLineCamera(Camera camera)
+        public LineCamera(Camera camera)
         {
             Camera = camera;
         }
@@ -176,7 +176,7 @@ namespace Jastech.Apps.Winform
 
             var teachingInfo = inspModel.GetUnit(UnitName.Unit0).GetTeachingInfo(teachingPos);
 
-            Axis axisX = AppsMotionManager.Instance().GetAxis(AxisHandlerName.Handler0, AxisName.X);
+            Axis axisX = MotionManager.Instance().GetAxis(AxisHandlerName.Handler0, AxisName.X);
 
             var movingParamX = teachingInfo.GetMovingParam(AxisName.X.ToString());
 
@@ -195,7 +195,7 @@ namespace Jastech.Apps.Winform
 
         private bool MoveAxis(TeachingPosType teachingPos, Axis axis, AxisMovingParam movingParam)
         {
-            AppsMotionManager manager = AppsMotionManager.Instance();
+            MotionManager manager = MotionManager.Instance();
             if (manager.IsAxisInPosition(UnitName.Unit0, teachingPos, axis) == false)
             {
                 Stopwatch sw = new Stopwatch();

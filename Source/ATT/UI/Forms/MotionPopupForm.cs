@@ -148,14 +148,14 @@ namespace ATT.UI.Forms
 
         private void UpdateData()
         {
-            var axisHandler = AppsMotionManager.Instance().GetAxisHandler(AxisHandlerName.Handler0);
+            var axisHandler = MotionManager.Instance().GetAxisHandler(AxisHandlerName.Handler0);
             SetAxisHandler(axisHandler);
 
             string unitName = UnitName.Unit0.ToString();  // 나중에 변수로...
             var posData = TeachingData.Instance().GetUnit(unitName).TeachingInfoList;
             SetTeachingPosition(posData);
 
-            var lafCtrl = AppsLAFManager.Instance().GetLAFCtrl("Akkon");
+            var lafCtrl = LAFManager.Instance().GetLAFCtrl("Akkon");
             SetLAFCtrl(lafCtrl);
 
             UpdateParam();
@@ -363,8 +363,8 @@ namespace ATT.UI.Forms
             UpdateCurrentData();
 
             // Save AxisHandler
-            var axisHandler = AppsMotionManager.Instance().GetAxisHandler(AxisHandlerName.Handler0);
-            AppsMotionManager.Instance().Save(axisHandler);
+            var axisHandler = MotionManager.Instance().GetAxisHandler(AxisHandlerName.Handler0);
+            MotionManager.Instance().Save(axisHandler);
 
             // Save Model
             var model = ModelManager.Instance().CurrentModel as AppsInspModel;
@@ -519,7 +519,7 @@ namespace ATT.UI.Forms
 
         private void lblOriginZ_Click(object sender, EventArgs e)
         {
-            AppsLAFManager.Instance().StartHomeThread("Akkon");
+            LAFManager.Instance().StartHomeThread("Akkon");
         }
 
         private void lblCurrentToTargetX_Click(object sender, EventArgs e)

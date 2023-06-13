@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace Jastech.Apps.Winform
 {
-    public class AppsPlcAddressMap
+    public class PlcAddressMap
     {
-        public AddressMapType AddressType { get; private set; }
+        public string Name { get; private set; }
 
         public WordType WordType { get; private set; }
 
@@ -16,14 +16,15 @@ namespace Jastech.Apps.Winform
 
         public int WordSize { get; set; }
 
-        public AppsPlcAddressMap(AddressMapType type, WordType wordType, int addressNum, int wordSize)
+        public PlcAddressMap(string name, WordType wordType, int addressNum, int wordSize)
         {
-            AddressType = type;
+            Name = name;
             WordType = wordType;
             AddressNum = addressNum;
             WordSize = wordSize;
         }
     }
+
     public enum AddressMapType
     {
         // Read
@@ -58,6 +59,11 @@ namespace Jastech.Apps.Winform
         PreAlignComplete,              // 1 : PreAlign Complete
         Inspection_Start_Complete,
 
+
+    }
+
+    public enum AppsResultMapType
+    {
 
     }
 

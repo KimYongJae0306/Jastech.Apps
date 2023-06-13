@@ -172,16 +172,16 @@ namespace ATT_UT_IPAD.UI.Forms
 
         private void UpdateData(TeachingPosType teachingPositionType = TeachingPosType.Standby)
         {
-            var axisHandler = AppsMotionManager.Instance().GetAxisHandler(AxisHandlerName.Handler0);
+            var axisHandler = MotionManager.Instance().GetAxisHandler(AxisHandlerName.Handler0);
             SetAxisHandler(axisHandler);
 
             var posData = TeachingData.Instance().GetUnit(UnitName.ToString()).TeachingInfoList;
             SetTeachingPosition(posData);
 
-            var alignLafCtrl = AppsLAFManager.Instance().GetLAFCtrl("Align");
+            var alignLafCtrl = LAFManager.Instance().GetLAFCtrl("Align");
             SetAlignLAFCtrl(alignLafCtrl);
 
-            var akkonLafCtrl = AppsLAFManager.Instance().GetLAFCtrl("Akkon");
+            var akkonLafCtrl = LAFManager.Instance().GetLAFCtrl("Akkon");
             SetAkkonLafCtrl(akkonLafCtrl);
 
             UpdateCommonParam();
@@ -400,7 +400,7 @@ namespace ATT_UT_IPAD.UI.Forms
 
         private void GetCurrentCommonParams()
         {
-            var axisHandler = AppsMotionManager.Instance().GetAxisHandler(AxisHandlerName.Handler0);
+            var axisHandler = MotionManager.Instance().GetAxisHandler(AxisHandlerName.Handler0);
 
             axisHandler.GetAxis(AxisName.X).AxisCommonParams.SetCommonParams(XCommonControl.GetCurrentData());
             axisHandler.GetAxis(AxisName.Z1).AxisCommonParams.SetCommonParams(Z1CommonControl.GetCurrentData());
@@ -436,8 +436,8 @@ namespace ATT_UT_IPAD.UI.Forms
             UpdateCurrentData();
 
             // Save AxisHandler
-            var axisHandler = AppsMotionManager.Instance().GetAxisHandler(AxisHandlerName.Handler0);
-            AppsMotionManager.Instance().Save(axisHandler);
+            var axisHandler = MotionManager.Instance().GetAxisHandler(AxisHandlerName.Handler0);
+            MotionManager.Instance().Save(axisHandler);
 
             // Save Model
             var model = ModelManager.Instance().CurrentModel as AppsInspModel;
@@ -545,7 +545,7 @@ namespace ATT_UT_IPAD.UI.Forms
 
         private void lblOriginZ1_Click(object sender, EventArgs e)
         {
-            AppsLAFManager.Instance().StartHomeThread("Align");
+            LAFManager.Instance().StartHomeThread("Align");
         }
 
         private void lblAutoFocusOnZ1_Click(object sender, EventArgs e)
@@ -553,7 +553,7 @@ namespace ATT_UT_IPAD.UI.Forms
             var status = AlignLafCtrl.Status;
 
             if (!status.IsAutoFocusOn)
-                AppsLAFManager.Instance().AutoFocusOnOff("Align", true);
+                LAFManager.Instance().AutoFocusOnOff("Align", true);
         }
 
         private void lblAutoFocusOffZ1_Click(object sender, EventArgs e)
@@ -561,7 +561,7 @@ namespace ATT_UT_IPAD.UI.Forms
             var status = AlignLafCtrl.Status;
 
             if (status.IsAutoFocusOn)
-                AppsLAFManager.Instance().AutoFocusOnOff("Align", false);
+                LAFManager.Instance().AutoFocusOnOff("Align", false);
         }
 
         private void lblTargetPositionZ2_Click(object sender, EventArgs e)
@@ -616,7 +616,7 @@ namespace ATT_UT_IPAD.UI.Forms
 
         private void lblOriginZ2_Click(object sender, EventArgs e)
         {
-            AppsLAFManager.Instance().StartHomeThread("Akkon");
+            LAFManager.Instance().StartHomeThread("Akkon");
         }
 
         private void lblAutoFocusOnZ2_Click(object sender, EventArgs e)
@@ -624,7 +624,7 @@ namespace ATT_UT_IPAD.UI.Forms
             var status = AkkonLafCtrl.Status;
 
             if (!status.IsAutoFocusOn)
-                AppsLAFManager.Instance().AutoFocusOnOff("Align", true);
+                LAFManager.Instance().AutoFocusOnOff("Align", true);
         }
 
         private void lblAutoFocusOffZ2_Click(object sender, EventArgs e)
@@ -632,7 +632,7 @@ namespace ATT_UT_IPAD.UI.Forms
             var status = AkkonLafCtrl.Status;
 
             if (status.IsAutoFocusOn)
-                AppsLAFManager.Instance().AutoFocusOnOff("Align", false);
+                LAFManager.Instance().AutoFocusOnOff("Align", false);
         }
 
         private void rdoJogSlowMode_CheckedChanged(object sender, EventArgs e)

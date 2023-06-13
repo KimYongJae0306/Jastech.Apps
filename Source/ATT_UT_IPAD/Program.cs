@@ -49,7 +49,7 @@ namespace ATT_UT_IPAD
                 ConfigSet.Instance().Initialize();
                 AppsConfig.Instance().Initialize();
 
-                AppsUserManager.Instance().Initialize();
+                UserManager.Instance().Initialize();
 
                 Logger.Initialize(ConfigSet.Instance().Path.Log);
 

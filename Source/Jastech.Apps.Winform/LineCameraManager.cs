@@ -20,16 +20,16 @@ using System.Threading.Tasks;
 
 namespace Jastech.Apps.Winform
 {
-    public class AppsLineCameraManager
+    public class LineCameraManager
     {
         #region 필드
-        private static AppsLineCameraManager _instance = null;
+        private static LineCameraManager _instance = null;
 
         private object _objLock { get; set; } = new object();
         #endregion
 
         #region 속성
-        public List<AppsLineCamera> CameraList = new List<AppsLineCamera>();
+        public List<LineCamera> CameraList = new List<LineCamera>();
 
         public bool IsLive { get; set; } = false;
         #endregion
@@ -43,11 +43,11 @@ namespace Jastech.Apps.Winform
         #endregion
 
         #region 생성자
-        public static AppsLineCameraManager Instance()
+        public static LineCameraManager Instance()
         {
             if (_instance == null)
             {
-                _instance = new AppsLineCameraManager();
+                _instance = new LineCameraManager();
             }
 
             return _instance;
@@ -69,11 +69,11 @@ namespace Jastech.Apps.Winform
             foreach (var camera in cameraCtrlHandler)
             {
                 camera.ImageGrabbed += LinscanImageGrabbed;
-                CameraList.Add(new AppsLineCamera(camera));
+                CameraList.Add(new LineCamera(camera));
             }
         }
 
-        public AppsLineCamera GetAppsCamera(string name)
+        public LineCamera GetAppsCamera(string name)
         {
             return CameraList.Where(x => x.Camera.Name == name).First();
         }
@@ -101,7 +101,7 @@ namespace Jastech.Apps.Winform
                 byte[] data = camera.GetGrabbedImage();
                 if (data != null)
                 {
-                    if (GetAppsCamera(camera.Name) is AppsLineCamera lineCamera)
+                    if (GetAppsCamera(camera.Name) is LineCamera lineCamera)
                         GetAppsCamera(camera.Name).AddSubImage(data, camera.GrabCount);
                 }
             }
@@ -113,7 +113,7 @@ namespace Jastech.Apps.Winform
             return GetCamera(name).IsGrabbing() == false;
         }
 
-        public AppsLineCamera GetLineCamera(string cameraName)
+        public LineCamera GetLineCamera(string cameraName)
         {
             return CameraList.Where(x => x.Camera.Name == cameraName.ToString()).First();
         }

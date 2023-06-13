@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Jastech.Apps.Winform
 {
-    public class AppsAreaCamera
+    public class AreaCamera
     {
         #region 필드
         #endregion

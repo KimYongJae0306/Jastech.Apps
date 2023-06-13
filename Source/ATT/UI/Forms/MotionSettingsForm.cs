@@ -155,13 +155,13 @@ namespace ATT.UI.Forms
 
         private void UpdateData(TeachingPosType teachingPositionType = TeachingPosType.Standby)
         {
-            var axisHandler = AppsMotionManager.Instance().GetAxisHandler(AxisHandlerName.Handler0);
+            var axisHandler = MotionManager.Instance().GetAxisHandler(AxisHandlerName.Handler0);
             SetAxisHandler(axisHandler);
 
             var posData = TeachingData.Instance().GetUnit(UnitName.ToString()).TeachingInfoList;
             SetTeachingPosition(posData);
 
-            var lafCtrl = AppsLAFManager.Instance().GetLAFCtrl("Akkon");
+            var lafCtrl = LAFManager.Instance().GetLAFCtrl("Akkon");
             SetLAFCtrl(lafCtrl);
 
             UpdateCommonParam();
@@ -350,7 +350,7 @@ namespace ATT.UI.Forms
 
         private void GetCurrentCommonParams()
         {
-            var axisHandler = AppsMotionManager.Instance().GetAxisHandler(AxisHandlerName.Handler0);
+            var axisHandler = MotionManager.Instance().GetAxisHandler(AxisHandlerName.Handler0);
 
             axisHandler.GetAxis(AxisName.X).AxisCommonParams.SetCommonParams(XCommonControl.GetCurrentData());
             axisHandler.GetAxis(AxisName.Y).AxisCommonParams.SetCommonParams(YCommonControl.GetCurrentData());
@@ -386,8 +386,8 @@ namespace ATT.UI.Forms
             UpdateCurrentData();
 
             // Save AxisHandler
-            var axisHandler = AppsMotionManager.Instance().GetAxisHandler(AxisHandlerName.Handler0);
-            AppsMotionManager.Instance().Save(axisHandler);
+            var axisHandler = MotionManager.Instance().GetAxisHandler(AxisHandlerName.Handler0);
+            MotionManager.Instance().Save(axisHandler);
 
             // Save Model
             var model = ModelManager.Instance().CurrentModel as AppsInspModel;
@@ -633,7 +633,7 @@ namespace ATT.UI.Forms
 
         private void lblOriginZ_Click(object sender, EventArgs e)
         {
-            AppsLAFManager.Instance().StartHomeThread("Akkon");
+            LAFManager.Instance().StartHomeThread("Akkon");
         }
 
         private void lblOriginX_Click(object sender, EventArgs e)

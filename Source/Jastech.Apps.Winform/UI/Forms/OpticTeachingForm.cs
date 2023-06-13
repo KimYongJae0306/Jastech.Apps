@@ -57,7 +57,7 @@ namespace Jastech.Framework.Winform.Forms
 
         public LAFCtrl LAFCtrl { get; set; } = null;
 
-        public AppsLineCamera AppsLineCamera { get; set; } = null;
+        public LineCamera LineCamera { get; set; } = null;
 
         private TeachingInfo TeachingPositionInfo { get; set; } = null;
 
@@ -88,8 +88,8 @@ namespace Jastech.Framework.Winform.Forms
         {
             TeachingData.Instance().UpdateTeachingData();
 
-            AppsLineCamera.TeachingLiveImageGrabbed += LiveDisplay;
-            AppsLineCamera.GrabOnceEventHandler += OpticTeachingForm_GrabOnceEventHandler;
+            LineCamera.TeachingLiveImageGrabbed += LiveDisplay;
+            LineCamera.GrabOnceEventHandler += OpticTeachingForm_GrabOnceEventHandler;
             SelectedAxis = AxisHandler.GetAxis(AxisName.X);
 
             UpdateData();
@@ -179,7 +179,7 @@ namespace Jastech.Framework.Winform.Forms
 
         private void SetOperationMode(TDIOperationMode operationMode)
         {
-            var camera = AppsLineCamera.Camera;
+            var camera = LineCamera.Camera;
 
             if (camera is ICameraTDIavailable tdiCamera)
             {
@@ -233,7 +233,7 @@ namespace Jastech.Framework.Winform.Forms
         private void UpdateData()
         {
             // Camera Exposure, Gain Load
-            var appsLineCamera = AppsLineCamera.Camera as CameraMil;
+            var lineCamera = LineCamera.Camera as CameraMil;
 
             //if (appsLineCamera.Name == "AlignCamera")
             //{
@@ -245,14 +245,14 @@ namespace Jastech.Framework.Winform.Forms
             //}
             //else { }
 
-            if (appsLineCamera != null)
+            if (lineCamera != null)
             {
-                if (appsLineCamera.TDIOperationMode == TDIOperationMode.Area)
-                    lblCameraExposureValue.Text = Convert.ToInt32(appsLineCamera.GetExposureTime()).ToString();
+                if (lineCamera.TDIOperationMode == TDIOperationMode.Area)
+                    lblCameraExposureValue.Text = Convert.ToInt32(lineCamera.GetExposureTime()).ToString();
                 else
-                    lblCameraExposureValue.Text = appsLineCamera.GetDigitalGain().ToString("F3");
+                    lblCameraExposureValue.Text = lineCamera.GetDigitalGain().ToString("F3");
 
-                lblCameraGainValue.Text = appsLineCamera.GetAnalogGain().ToString();
+                lblCameraGainValue.Text = lineCamera.GetAnalogGain().ToString();
             }
         }
 
@@ -345,7 +345,7 @@ namespace Jastech.Framework.Winform.Forms
             int exposureTime = 0;
             int digitalGain = 0;
 
-            var tdiCamera = AppsLineCamera.Camera as CameraMil;
+            var tdiCamera = LineCamera.Camera as CameraMil;
             if (tdiCamera != null)
             {
                 if (tdiCamera.TDIOperationMode == TDIOperationMode.Area)
@@ -364,7 +364,7 @@ namespace Jastech.Framework.Winform.Forms
         {
             int analogGain = KeyPadHelper.SetLabelIntegerData((Label)sender);
 
-            AppsLineCamera?.Camera.SetAnalogGain(analogGain);
+            LineCamera?.Camera.SetAnalogGain(analogGain);
         }
 
         private void trbDimmingLevelValue_Scroll(object sender, EventArgs e)
@@ -517,7 +517,7 @@ namespace Jastech.Framework.Winform.Forms
             if (image == null)
                 return;
 
-            var camera = AppsLineCamera.Camera;
+            var camera = LineCamera.Camera;
 
             if(camera is ICameraTDIavailable tdiCamera)
             {
@@ -542,8 +542,8 @@ namespace Jastech.Framework.Winform.Forms
 
         private void btnGrabStart_Click(object sender, EventArgs e)
         {
-            AppsLineCamera.IsLive = true;
-            AppsLineCamera.StartLiveTask();
+            LineCamera.IsLive = true;
+            LineCamera.StartLiveTask();
 
             StartGrab(false);
         }
@@ -561,39 +561,39 @@ namespace Jastech.Framework.Winform.Forms
                 double length = Convert.ToDouble(lblScanXLength.Text);
 
                 // Motion 이동 추가
-                AppsLineCamera.StartGrab((float)length);
+                LineCamera.StartGrab((float)length);
             }
             else
             {
-                AppsLineCamera.StartGrabContinous();
+                LineCamera.StartGrabContinous();
             }
            
         }
 
         private void btnGrabStop_Click(object sender, EventArgs e)
         {
-            AppsLineCamera.IsLive = false;
-            AppsLineCamera.StopGrab();
+            LineCamera.IsLive = false;
+            LineCamera.StopGrab();
 
             StopGrab();
         }
 
         private void StopGrab()
         {
-            AppsLineCamera.StopGrab();
+            LineCamera.StopGrab();
         }
 
         private void OpticTeachingForm_FormClosing(object sender, FormClosingEventArgs e)
         {
             DrawBoxControl.DisposeImage();
 
-            AppsLineCamera.IsLive = false;
-            AppsLineCamera.StopLiveTask();
-            AppsLineCamera.TeachingLiveImageGrabbed -= LiveDisplay;
-            AppsLineCamera.GrabOnceEventHandler -= OpticTeachingForm_GrabOnceEventHandler;
-            AppsLineCamera.StopGrab();
+            LineCamera.IsLive = false;
+            LineCamera.StopLiveTask();
+            LineCamera.TeachingLiveImageGrabbed -= LiveDisplay;
+            LineCamera.GrabOnceEventHandler -= OpticTeachingForm_GrabOnceEventHandler;
+            LineCamera.StopGrab();
 
-            AppsLineCamera.SetOperationMode(TDIOperationMode.TDI);
+            LineCamera.SetOperationMode(TDIOperationMode.TDI);
             StatusTimer.Stop();
         }
         #endregion
@@ -692,8 +692,8 @@ namespace Jastech.Framework.Winform.Forms
         {
             if (isRepeat)
             {
-                AppsLineCamera.IsLive = false;
-                AppsLineCamera.StopGrab();
+                LineCamera.IsLive = false;
+                LineCamera.StopGrab();
 
                 double currentPosition = SelectedAxis.GetActualPosition();
                 double distance = Convert.ToDouble(lblScanXLength.Text);

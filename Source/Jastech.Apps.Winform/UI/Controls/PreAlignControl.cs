@@ -51,7 +51,7 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         private ICogImage PreAlignControl_GetOriginImageHandler()
         {
-            return AppsTeachingUIManager.Instance().GetDisplay().GetImage();
+            return TeachingUIManager.Instance().GetDisplay().GetImage();
         }
 
         public void SetParams(List<PreAlignParam> preAligns)
@@ -85,7 +85,7 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         private void lblAddROI_Click(object sender, EventArgs e)
         {
-            var display = AppsTeachingUIManager.Instance().GetDisplay();
+            var display = TeachingUIManager.Instance().GetDisplay();
             if (display.GetImage() == null)
                 return;
 
@@ -98,7 +98,7 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         public void DrawROI()
         {
-            var display = AppsTeachingUIManager.Instance().GetDisplay();
+            var display = TeachingUIManager.Instance().GetDisplay();
             if (display.GetImage() == null)
                 return;
 
@@ -133,7 +133,7 @@ namespace Jastech.Apps.Winform.UI.Controls
             if (_prevName == name)
                 return;
 
-            var display = AppsTeachingUIManager.Instance().GetDisplay();
+            var display = TeachingUIManager.Instance().GetDisplay();
             if (display == null)
                 return;
             UpdateParam(name);
@@ -197,7 +197,7 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         private void lblInspection_Click(object sender, EventArgs e)
         {
-            var display = AppsTeachingUIManager.Instance().GetDisplay();
+            var display = TeachingUIManager.Instance().GetDisplay();
             var currentParam = ParamControl.GetCurrentParam();
 
             if (display == null || currentParam == null)

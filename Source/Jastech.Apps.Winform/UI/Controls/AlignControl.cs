@@ -94,7 +94,7 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         private ICogImage AlignControl_GetOriginImageHandler()
         {
-            return AppsTeachingUIManager.Instance().GetOriginCogImageBuffer(true);
+            return TeachingUIManager.Instance().GetOriginCogImageBuffer(true);
         }
 
         public void SetParams(Tab tab)
@@ -223,7 +223,7 @@ namespace Jastech.Apps.Winform.UI.Controls
 
             List<CogRectangleAffine> cropRectList = VisionProImageHelper.DivideRegion(rect, leadCount);
 
-            var display = AppsTeachingUIManager.Instance().GetDisplay();
+            var display = TeachingUIManager.Instance().GetDisplay();
 
             display.ClearGraphic();
 
@@ -236,7 +236,7 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         public void AddROI()
         {
-            var display = AppsTeachingUIManager.Instance().GetDisplay();
+            var display = TeachingUIManager.Instance().GetDisplay();
             if (display.GetImage() == null)
                 return;
 
@@ -263,7 +263,7 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         public void DrawROI()
         {
-            var display = AppsTeachingUIManager.Instance().GetDisplay();
+            var display = TeachingUIManager.Instance().GetDisplay();
 
             display.ClearGraphic();
 
@@ -282,7 +282,7 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         public void Inspection()
         {
-            var display = AppsTeachingUIManager.Instance().GetDisplay();
+            var display = TeachingUIManager.Instance().GetDisplay();
 
             var currentParam = CogCaliperParamControl.GetCurrentParam();
 
@@ -347,7 +347,7 @@ namespace Jastech.Apps.Winform.UI.Controls
             if (CurrentTab == null)
                 return;
 
-            var display = AppsTeachingUIManager.Instance().GetDisplay();
+            var display = TeachingUIManager.Instance().GetDisplay();
 
             double skewUnit = (double)jogScale / 1000;
             double zoom = display.GetZoomValue();
@@ -468,7 +468,7 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         public void Run()
         {
-            var display = AppsTeachingUIManager.Instance().GetDisplay();
+            var display = TeachingUIManager.Instance().GetDisplay();
 
             var currentParam = CogCaliperParamControl.GetCurrentParam();
 

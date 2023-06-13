@@ -78,8 +78,8 @@ namespace ATT_UT_IPAD
             //AppsMotionManager.Instance().CreateAxisHanlder();
             CreateAxisHanlder();
 
-            AppsLAFManager.Instance().Initialize();
-            AppsLineCameraManager.Instance().Initialize();
+            LAFManager.Instance().Initialize();
+            LineCameraManager.Instance().Initialize();
 
             percent += 30;
 
@@ -152,7 +152,7 @@ namespace ATT_UT_IPAD
                 handler0.AddAxis(AxisName.Z2, motion, axisNo: 1, homeOrder: 2);
 
                 //AxisHandlerList.Add(handler0);
-                AppsMotionManager.Instance().AxisHandlerList.Add(handler0);
+                MotionManager.Instance().AxisHandlerList.Add(handler0);
 
                 JsonConvertHelper.Save(unit0FilePath, handler0);
             }
@@ -167,7 +167,7 @@ namespace ATT_UT_IPAD
                 }
 
                 //AxisHandlerList.Add(unit0);
-                AppsMotionManager.Instance().AxisHandlerList.Add(unit0);
+                MotionManager.Instance().AxisHandlerList.Add(unit0);
             }
             return true;
         }
