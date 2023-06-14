@@ -85,6 +85,11 @@
     <Compile Include="LineCamera.cs" />
     <Compile Include="LineCameraManager.cs" />
     <Compile Include="MotionManager.cs" />
+    <Compile Include="PlcControlManager.cs" />
+    <Compile Include="Service\Plc\Maps\PlcCommonMap.cs" />
+    <Compile Include="Service\Plc\Maps\PlcResultMap.cs" />
+    <Compile Include="Service\Plc\PlcAddressMap.cs" />
+    <Compile Include="Service\Plc\PlcAddressService.cs" />
     <Compile Include="TeachingUIManager.cs" />
     <Compile Include="UserManager.cs" />
     <Compile Include="Core\ATTInspTab.cs" />
@@ -96,7 +101,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="PlcAddressMap.cs" />
     <Compile Include="Service\DailyInfo.cs" />
     <Compile Include="Service\DailyInfoService.cs" />
     <Compile Include="Settings\AppsConfig.cs" />

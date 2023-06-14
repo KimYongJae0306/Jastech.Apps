@@ -44,24 +44,15 @@ namespace Jastech.Apps.Winform
 
         public int GrabCount { get; private set; } = 0;
 
-        //public List<TabScanImage> TabScanImageList { get; private set; } = new List<TabScanImage>();
         public List<TabScanBuffer> TabScanBufferList { get; private set; } = new List<TabScanBuffer>();
 
         public Queue<byte[]> LiveDataQueue = new Queue<byte[]>();
 
         public Queue<byte[]> DataQueue = new Queue<byte[]>();
 
-        public Task MergeTask { get; set; }
-
         public Task LiveTask { get; set; }
 
-        public Task MainGrabTask { get; set; }
-
-        public CancellationTokenSource CancelMergeTask { get; set; }
-
         public CancellationTokenSource CancelLiveTask { get; set; }
-
-        public CancellationTokenSource CancelMainGrabTask { get; set; }
         #endregion
 
         #region 이벤트
