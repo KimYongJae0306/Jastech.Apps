@@ -1,6 +1,6 @@
 ﻿namespace Jastech.Framework.Winform.Forms
 {
-    partial class LineTeachingForm
+    partial class InspectionTeachingForm
     {
         /// <summary> 
         /// 필수 디자이너 변수입니다.
@@ -518,7 +518,7 @@
             this.pnlTeachingItem.Size = new System.Drawing.Size(144, 100);
             this.pnlTeachingItem.TabIndex = 21;
             // 
-            // LineTeachingForm
+            // InspectionTeachingForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
@@ -527,11 +527,11 @@
             this.Controls.Add(this.tlpTeachingPage);
             this.Font = new System.Drawing.Font("맑은 고딕", 11.25F, System.Drawing.FontStyle.Bold);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D;
-            this.Name = "LineTeachingForm";
+            this.Name = "InspectionTeachingForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
-            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.LineTeachingForm_FormClosing);
-            this.Load += new System.EventHandler(this.LineTeachingForm_Load);
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.InspectionTeachingForm_FormClosing);
+            this.Load += new System.EventHandler(this.InspectionTeachingForm_Load);
             this.tlpTeachingPage.ResumeLayout(false);
             this.pnlTeachingPage.ResumeLayout(false);
             this.tlpTeaching.ResumeLayout(false);

@@ -19,7 +19,7 @@ namespace Jastech.Apps.Structure.Data
         public string Name { get; set; } = "";
 
         [JsonProperty]
-        public List<PreAlignParam> PreAligns { get; set; } = new List<PreAlignParam>();
+        public List<PreAlignParam> PreAlignParamList { get; set; } = new List<PreAlignParam>();
 
         [JsonProperty]
         public List<LightParameter> LightParams { get; set; } = new List<LightParameter>();   // LineScan 용 조명 파라메터
@@ -35,7 +35,7 @@ namespace Jastech.Apps.Structure.Data
             // Cognex Tool 때문에 개별 DeepCopy 호출 해줘야함(Json DeepCopy 안됨)
             Unit unit = new Unit();
             unit.Name = Name;
-            unit.PreAligns = PreAligns.Select(x => x.DeepCopy()).ToList();
+            unit.PreAlignParamList = PreAlignParamList.Select(x => x.DeepCopy()).ToList();
             unit.LightParams = LightParams.Select(x => x.DeepCopy()).ToList();
             unit.TabList = TabList.Select(x => x.DeepCopy()).ToList();
             unit.TeachingInfoList = TeachingInfoList.Select(x => x.DeepCopy()).ToList();
@@ -44,13 +44,13 @@ namespace Jastech.Apps.Structure.Data
 
         public void Dispose()
         {
-            foreach (var preAlign in PreAligns)
-                preAlign.Dispose();
+            foreach (var preAlignParam in PreAlignParamList)
+                preAlignParam.Dispose();
 
             foreach (var tab in TabList)
                 tab.Dispose();
 
-            PreAligns.Clear();
+            PreAlignParamList.Clear();
             TabList.Clear();
         }
 
@@ -87,6 +87,16 @@ namespace Jastech.Apps.Structure.Data
         public List<Tab> GetTabList()
         {
             return TabList;
+        }
+
+        public void AddPreAlignParam(PreAlignParam preAlignParam)
+        {
+            PreAlignParamList.Add(preAlignParam);
+        }
+
+        public PreAlignParam GetPreAlignMark(MarkDirection direction, MarkName markName)
+        {
+            return PreAlignParamList.Where(x => x.Direction == direction && x.Name == markName).First();
         }
     }
 }

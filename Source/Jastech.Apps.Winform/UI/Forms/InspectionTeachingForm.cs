@@ -32,7 +32,7 @@ using System.Windows.Forms;
 
 namespace Jastech.Framework.Winform.Forms
 {
-    public partial class LineTeachingForm : Form
+    public partial class InspectionTeachingForm : Form
     {
         #region 필드
         private Color _selectedColor;
@@ -97,19 +97,19 @@ namespace Jastech.Framework.Winform.Forms
         #endregion
 
         #region 생성자
-        public LineTeachingForm()
+        public InspectionTeachingForm()
         {
             InitializeComponent();
         }
         #endregion
 
         #region 메서드
-        private void LineTeachingForm_Load(object sender, EventArgs e)
+        private void InspectionTeachingForm_Load(object sender, EventArgs e)
         {
             _isLoading = true;
 
             TeachingData.Instance().UpdateTeachingData();
-            
+
             TeachingTabList = TeachingData.Instance().GetUnit(UnitName.ToString()).GetTabList();
             AddControl();
             InitializeTabComboBox();
@@ -118,7 +118,7 @@ namespace Jastech.Framework.Winform.Forms
 
             lblStageCam.Text = $"STAGE : {UnitName} / CAM : {TitleCameraName}";
 
-            LineCamera.GrabDoneEventHanlder += LineTeachingForm_GrabDoneEventHanlder;
+            LineCamera.GrabDoneEventHanlder += InspectionTeachingForm_GrabDoneEventHanlder;
 
             var image = TeachingUIManager.Instance().GetOriginCogImageBuffer(true);
 
@@ -128,7 +128,7 @@ namespace Jastech.Framework.Winform.Forms
             SelectPage(DisplayType.Mark);
         }
 
-        private void LineTeachingForm_GrabDoneEventHanlder(string cameraName, bool isGrabDone)
+        private void InspectionTeachingForm_GrabDoneEventHanlder(string cameraName, bool isGrabDone)
         {
             int tabNo = Convert.ToInt32(_currentTabNo);
             UpdateDisplayImage(tabNo);
@@ -148,7 +148,7 @@ namespace Jastech.Framework.Winform.Forms
                 return;
 
             Display.SetImage(cogImage);
-            Console.WriteLine("LineTeachingForm 이미지 업데이트.");
+            Console.WriteLine("InspectionTeachingForm 이미지 업데이트.");
         }
 
         private void InitializeTabComboBox()
@@ -401,12 +401,12 @@ namespace Jastech.Framework.Winform.Forms
             LineCamera.StopGrab();
         }
 
-        private void LineTeachingForm_FormClosing(object sender, FormClosingEventArgs e)
+        private void InspectionTeachingForm_FormClosing(object sender, FormClosingEventArgs e)
         {
             Display.DisposeImage();
             MarkControl.DisposeImage();
             DisposeInspTabList();
-            LineCamera.GrabDoneEventHanlder -= LineTeachingForm_GrabDoneEventHanlder;
+            LineCamera.GrabDoneEventHanlder -= InspectionTeachingForm_GrabDoneEventHanlder;
         }
 
         private void cbxTabList_DrawItem(object sender, DrawItemEventArgs e)
@@ -708,7 +708,10 @@ namespace Jastech.Framework.Winform.Forms
 
             return akkonRoi;
         }
+
         #endregion
+
+        
     }
 
     public enum DisplayType

@@ -192,11 +192,11 @@ namespace ATT.Core
             {
                 string unitDir = rootDir + @"\Unit_" + unit.Name;
 
-                string preAlignPath = unitDir + @"\PreAlign";
+                //string preAlignPath = unitDir + @"\PreAlign";
 
-                //PreAlign Load
-                foreach (var item in unit.PreAligns)
-                    item.InspParam.LoadTool(preAlignPath);
+                ////PreAlign Load
+                //foreach (var item in unit.PreAligns)
+                //    item.InspParam.LoadTool(preAlignPath);
 
                 foreach (var tab in unit.GetTabList())
                 {
@@ -234,9 +234,9 @@ namespace ATT.Core
                 string unitDir = Path.GetDirectoryName(filePath) + @"\Unit_" + unit.Name;
                 string preAlignPath = unitDir + @"\PreAlign";
 
-                //PreAlign 저장
-                foreach (var item in unit.PreAligns)
-                    item.InspParam.SaveTool(preAlignPath);
+                ////PreAlign 저장
+                //foreach (var item in unit.PreAligns)
+                //    item.InspParam.SaveTool(preAlignPath);
 
                 foreach (var tab in unit.GetTabList())
                 {

@@ -114,18 +114,18 @@ namespace Jastech.Apps.Structure.Data
             return UnitList.Where(x => x.Name == name).FirstOrDefault();
         }
 
-        public List<PreAlignParam> GetPreAlign(string unitName)
-        {
-            Unit unit = GetUnit(unitName);
+        //public List<PreAlignParam> GetPreAlign(string unitName)
+        //{
+        //    Unit unit = GetUnit(unitName);
 
-            return unit.PreAligns;
-        }
+        //    return unit.PreAligns;
+        //}
 
-        public VisionProPatternMatchingParam GetPreAlignParameters(string unitName, string preAlignName)
-        {
-            Unit unit = GetUnit(unitName);
-            return unit.PreAligns.Where(x => x.Name == preAlignName).First().InspParam as VisionProPatternMatchingParam;
-        }
+        //public VisionProPatternMatchingParam GetPreAlignParameters(string unitName, string preAlignName)
+        //{
+        //    Unit unit = GetUnit(unitName);
+        //    return unit.PreAligns.Where(x => x.Name == preAlignName).First().InspParam as VisionProPatternMatchingParam;
+        //}
 
         public List<Tab> GetTabList(string unitName)
         {

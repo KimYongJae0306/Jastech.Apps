@@ -18,17 +18,30 @@ using Cognex.VisionPro.PMAlign;
 using Jastech.Framework.Imaging.VisionPro.VisionAlgorithms.Results;
 using Jastech.Framework.Winform.Forms;
 using Jastech.Apps.Structure.Parameters;
+using Jastech.Apps.Structure.Data;
+using Jastech.Framework.Structure;
 
 namespace Jastech.Apps.Winform.UI.Controls
 {
     public partial class PreAlignControl : UserControl
     {
         #region 필드
+        private Color _selectedColor = new Color();
+
+        private Color _nonSelectedColor = new Color();
+
         private string _prevName { get; set; } = "";
+
+        private MarkName _curMarkName = MarkName.Main;
+
+        private MarkDirection _curDirection = MarkDirection.Left;
         #endregion
+
         private CogPatternMatchingParamControl ParamControl { get; set; } = new CogPatternMatchingParamControl();
 
-        private List<PreAlignParam> PreAlignList { get; set; } = null;
+        //private List<PreAlignParam> PreAlignList { get; set; } = null;
+
+        private Unit CurrentUnit { get; set; } = null;
 
         private AlgorithmTool Algorithm = new AlgorithmTool();
 
@@ -40,6 +53,12 @@ namespace Jastech.Apps.Winform.UI.Controls
         private void PreAlignControl_Load(object sender, EventArgs e)
         {
             AddControl();
+            InitializeUI();
+
+            lblLeftMain.BackColor = _selectedColor;
+            _curDirection = MarkDirection.Left;
+            _curMarkName = MarkName.Main;
+            UpdateParam();
         }
 
         private void AddControl()
@@ -49,38 +68,37 @@ namespace Jastech.Apps.Winform.UI.Controls
             pnlParam.Controls.Add(ParamControl);
         }
 
+        private void InitializeUI()
+        {
+            _selectedColor = Color.FromArgb(104, 104, 104);
+            _nonSelectedColor = Color.FromArgb(52, 52, 52);
+        }
+
         private ICogImage PreAlignControl_GetOriginImageHandler()
         {
             return TeachingUIManager.Instance().GetDisplay().GetImage();
         }
 
-        public void SetParams(List<PreAlignParam> preAligns)
+        public void SetParams(Unit unit)
         {
-            if (preAligns.Count <= 0)
+            if (unit == null)
                 return;
 
-            PreAlignList = preAligns;
-            InitializeComboBox();
-
-            string name = cbxPreAlignList.SelectedItem as string;
-            UpdateParam(name);
+            CurrentUnit = unit;
+            UpdateParam();
         }
 
-        private void InitializeComboBox()
+        private void UpdateParam()
         {
-            cbxPreAlignList.Items.Clear();
+            if (CurrentUnit == null)
+                return;
 
-            foreach (var item in PreAlignList)
-            {
-                cbxPreAlignList.Items.Add(item.Name);
-            }
-            cbxPreAlignList.SelectedIndex = 0;
-        }
+            var param = CurrentUnit.GetPreAlignMark(_curDirection, _curMarkName);
 
-        private void UpdateParam(string name)
-        {
-            var param = PreAlignList.Where(x => x.Name == name).First().InspParam;
-            ParamControl.UpdateData(param);
+            if (param != null)
+                ParamControl.UpdateData(param.InspParam);
+
+            DrawROI();
         }
 
         private void lblAddROI_Click(object sender, EventArgs e)
@@ -102,12 +120,18 @@ namespace Jastech.Apps.Winform.UI.Controls
             if (display.GetImage() == null)
                 return;
 
+            display.ClearGraphic();
+
             CogPMAlignCurrentRecordConstants constants = CogPMAlignCurrentRecordConstants.InputImage | CogPMAlignCurrentRecordConstants.SearchRegion
                 | CogPMAlignCurrentRecordConstants.TrainImage | CogPMAlignCurrentRecordConstants.TrainRegion | CogPMAlignCurrentRecordConstants.PatternOrigin;
 
             var currentParam = ParamControl.GetCurrentParam();
         
             display.SetInteractiveGraphics("tool", currentParam.CreateCurrentRecord(constants));
+
+            var rect = currentParam.GetTrainRegion() as CogRectangle;
+            if (rect != null)
+                display.SetDisplayToCenter(new Point((int)rect.CenterX, (int)rect.CenterY));
         }
 
         private void SetNewROI(CogDisplayControl display)
@@ -126,74 +150,10 @@ namespace Jastech.Apps.Winform.UI.Controls
             currentParam.SetSearchRegion(searchRoi);
         }
 
-        private void cbxPreAlignList_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            string name = cbxPreAlignList.SelectedItem as string;
-
-            if (_prevName == name)
-                return;
-
-            var display = TeachingUIManager.Instance().GetDisplay();
-            if (display == null)
-                return;
-            UpdateParam(name);
-            display.ClearGraphic();
-
-            DrawROI();
-            _prevName = name;
-        }
-
-        private void lblPrev_Click(object sender, EventArgs e)
-        {
-            if (cbxPreAlignList.SelectedIndex <= 0)
-                return;
-
-            cbxPreAlignList.SelectedIndex -= 1;
-        }
-
-        private void lblNext_Click(object sender, EventArgs e)
-        {
-            int nextIndex = cbxPreAlignList.SelectedIndex + 1;
-            if (cbxPreAlignList.Items.Count > nextIndex)
-            {
-                cbxPreAlignList.SelectedIndex = nextIndex;
-            }
-        }
-
-        public List<PreAlignParam> GetTeachingData()
-        {
-            return PreAlignList;
-        }
-
-        private void cbxPreAlignList_DrawItem(object sender, DrawItemEventArgs e)
-        {
-            DrawComboboxCenterAlign(sender, e);
-        }
-
-        private void DrawComboboxCenterAlign(object sender, DrawItemEventArgs e)
-        {
-            ComboBox cmb = sender as ComboBox;
-
-            if (cmb != null)
-            {
-                e.DrawBackground();
-                cmb.ItemHeight = lblPrev.Height - 6;
-
-                if (e.Index >= 0)
-                {
-                    StringFormat sf = new StringFormat();
-                    sf.LineAlignment = StringAlignment.Center;
-                    sf.Alignment = StringAlignment.Center;
-
-                    Brush brush = new SolidBrush(cmb.ForeColor);
-
-                    if ((e.State & DrawItemState.Selected) == DrawItemState.Selected)
-                        brush = SystemBrushes.HighlightText;
-
-                    e.Graphics.DrawString(cmb.Items[e.Index].ToString(), cmb.Font, brush, e.Bounds, sf);
-                }
-            }
-        }
+        //public List<PreAlignParam> GetTeachingData()
+        //{
+        //    return PreAlignList;
+        //}
 
         private void lblInspection_Click(object sender, EventArgs e)
         {
@@ -214,7 +174,7 @@ namespace Jastech.Apps.Winform.UI.Controls
             ICogImage cogImage = display.GetImage();
             VisionProPatternMatchingResult result = Algorithm.RunPatternMatch(cogImage, currentParam);
 
-            UpdateGridResult(result);
+            //UpdateGridResult(result);
 
             if(result.MatchPosList.Count > 0)
             {
@@ -229,22 +189,137 @@ namespace Jastech.Apps.Winform.UI.Controls
             }
         }
 
-        private void UpdateGridResult(VisionProPatternMatchingResult result)
+        public void DisposeImage()
         {
-            gvResult.Rows.Clear();
+            ParamControl?.DisposeImage();
+        }
 
-            int count = 1;
-            foreach (var matchPos in result.MatchPosList)
-            {
-                string no = count.ToString();
-                string score = string.Format("{0:0.000}", (matchPos.Score * 100));
-                string x = string.Format("{0:0.000}", matchPos.FoundPos.X);
-                string y = string.Format("{0:0.000}", matchPos.FoundPos.Y);
-                string angle = string.Format("{0:0.000}", matchPos.Angle);
+        //private void UpdateGridResult(VisionProPatternMatchingResult result)
+        //{
+        //    gvResult.Rows.Clear();
 
-                gvResult.Rows.Add(no, score, x, y, angle);
-                count++;
-            }
+        //    int count = 1;
+        //    foreach (var matchPos in result.MatchPosList)
+        //    {
+        //        string no = count.ToString();
+        //        string score = string.Format("{0:0.000}", (matchPos.Score * 100));
+        //        string x = string.Format("{0:0.000}", matchPos.FoundPos.X);
+        //        string y = string.Format("{0:0.000}", matchPos.FoundPos.Y);
+        //        string angle = string.Format("{0:0.000}", matchPos.Angle);
+
+        //        gvResult.Rows.Add(no, score, x, y, angle);
+        //        count++;
+        //    }
+        //}
+
+
+
+        private void lblLeftMain_Click(object sender, EventArgs e)
+        {
+            UpdateBtnBackColor(sender);
+
+            _curDirection = MarkDirection.Left;
+            _curMarkName = MarkName.Main;
+            UpdateParam();
+        }
+
+        private void lblLeftSub1_Click(object sender, EventArgs e)
+        {
+            UpdateBtnBackColor(sender);
+
+            _curDirection = MarkDirection.Left;
+            _curMarkName = MarkName.Sub1;
+            UpdateParam();
+        }
+
+        private void lblLeftSub2_Click(object sender, EventArgs e)
+        {
+            UpdateBtnBackColor(sender);
+
+            _curDirection = MarkDirection.Left;
+            _curMarkName = MarkName.Sub2;
+            UpdateParam();
+        }
+
+        private void lblLeftSub3_Click(object sender, EventArgs e)
+        {
+            UpdateBtnBackColor(sender);
+
+            _curDirection = MarkDirection.Left;
+            _curMarkName = MarkName.Sub3;
+            UpdateParam();
+        }
+
+        private void lblLeftSub4_Click(object sender, EventArgs e)
+        {
+            UpdateBtnBackColor(sender);
+
+            _curDirection = MarkDirection.Left;
+            _curMarkName = MarkName.Sub4;
+            UpdateParam();
+        }
+
+        private void lblRightMain_Click(object sender, EventArgs e)
+        {
+            UpdateBtnBackColor(sender);
+
+            _curDirection = MarkDirection.Right;
+            _curMarkName = MarkName.Main;
+            UpdateParam();
+        }
+
+        private void lblRightSub1_Click(object sender, EventArgs e)
+        {
+            UpdateBtnBackColor(sender);
+
+            _curDirection = MarkDirection.Right;
+            _curMarkName = MarkName.Sub1;
+            UpdateParam();
+        }
+
+        private void lblRightSub2_Click(object sender, EventArgs e)
+        {
+            UpdateBtnBackColor(sender);
+
+            _curDirection = MarkDirection.Right;
+            _curMarkName = MarkName.Sub2;
+            UpdateParam();
+        }
+
+        private void lblRightSub3_Click(object sender, EventArgs e)
+        {
+            UpdateBtnBackColor(sender);
+
+            _curDirection = MarkDirection.Right;
+            _curMarkName = MarkName.Sub3;
+            UpdateParam();
+        }
+
+        private void lblRightSub4_Click(object sender, EventArgs e)
+        {
+            UpdateBtnBackColor(sender);
+
+            _curDirection = MarkDirection.Right;
+            _curMarkName = MarkName.Main;
+            UpdateParam();
+        }
+
+        private void UpdateBtnBackColor(object sender)
+        {
+            lblLeftMain.BackColor = _nonSelectedColor;
+            lblLeftSub1.BackColor = _nonSelectedColor;
+            lblLeftSub2.BackColor = _nonSelectedColor;
+            lblLeftSub3.BackColor = _nonSelectedColor;
+            lblLeftSub4.BackColor = _nonSelectedColor;
+
+            lblRightMain.BackColor = _nonSelectedColor;
+            lblRightSub1.BackColor = _nonSelectedColor;
+            lblRightSub2.BackColor = _nonSelectedColor;
+            lblRightSub3.BackColor = _nonSelectedColor;
+            lblRightSub4.BackColor = _nonSelectedColor;
+
+            Label lbl = sender as Label;
+            lbl.BackColor = _selectedColor;
         }
     }
 }

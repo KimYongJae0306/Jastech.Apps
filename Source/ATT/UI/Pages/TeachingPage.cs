@@ -29,7 +29,7 @@ namespace ATT.UI.Pages
 
         private void btnModelPage_Click(object sender, EventArgs e)
         {
-            LineTeachingForm form = new LineTeachingForm();
+            InspectionTeachingForm form = new InspectionTeachingForm();
             form.UnitName = UnitName.Unit0;
             form.TitleCameraName = "LineScan";
             form.LineCamera = LineCameraManager.Instance().GetAppsCamera("Camera0");
