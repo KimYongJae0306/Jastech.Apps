@@ -34,6 +34,12 @@ namespace Jastech.Apps.Winform.Settings
 
         #region 속성
         [JsonProperty]
+        public int TabMaxCount { get; set; } = 10;
+
+        [JsonProperty]
+        public PlcAddressInfo PlcAddressInfo { get; set; } = new PlcAddressInfo();
+
+        [JsonProperty]
         public float DistanceFromPreAlignToLineScanX { get; set; } = 1.0F;  //um
 
         [JsonProperty]
@@ -125,6 +131,27 @@ namespace Jastech.Apps.Winform.Settings
             JsonConvertHelper.LoadToExistingTarget<AppsConfig>(fullPath, this);
         }
         #endregion
+    }
+
+    public class PlcAddressInfo
+    {
+        [JsonProperty]
+        public int CommonStart { get; set; }
+
+        [JsonProperty]
+        public int ResultStart { get; set; }
+
+        [JsonProperty]
+        public int ResultAlignStart { get; set; }
+
+        [JsonProperty]
+        public int ResultAkkonStart { get; set; }
+
+        [JsonProperty]
+        public int ResultPreAlignStart { get; set; }
+
+        [JsonProperty]
+        public int ResultTabToTabInterval { get; set; }
     }
 
     public enum AkkonTeachingMode
