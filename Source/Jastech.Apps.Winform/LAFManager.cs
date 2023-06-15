@@ -211,7 +211,7 @@ namespace Jastech.Apps.Winform
             if (lafCtrlHandler == null)
                 return null;
 
-            return lafCtrlHandler.Where(x => x.Name == name).First();
+            return lafCtrlHandler.Where(x => x.Name == name).FirstOrDefault();
         }
 
         private HomeSequenceStep _homeSequenceStep = HomeSequenceStep.Stop;

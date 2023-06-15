@@ -26,6 +26,8 @@ namespace Jastech.Apps.Winform.Service.Plc.Maps
         PLC_Time_Minute,
         PLC_Time_Second,
 
+        PC_ErrorCode,
+
         #region RecipeData
 
         PLC_PanelX_Size_L,
@@ -35,6 +37,7 @@ namespace Jastech.Apps.Winform.Service.Plc.Maps
         PLC_PanelLeftEdgeToTab1LeftEdgeDistance_L,
         PLC_PanelLeftEdgeToTab1LeftEdgeDistance_H,
         PLC_TabCount, 
+        PLC_Axis_X_Speed,
   
         PLC_Tab0_Offset_Left,
         PLC_Tab1_Offset_Left,
@@ -91,36 +94,23 @@ namespace Jastech.Apps.Winform.Service.Plc.Maps
         PLC_TabtoTab_Distance9_H,
         #endregion
 
-        #region AddresMap Align 검사#1
-
-        PC_Command_Align,
-        PC_Status_Align,
-        PC_Move_REQ_Align,
+        PC_Command,
+        PC_Status,
+        PC_Move_REQ,
 
         PLC_AlignZ_ServoOnOff,
         PLC_AlignZ_Status,
-        PLC_Status_Align,
-        PLC_Command_Align,
-        PLC_Move_END_Align,
 
-        PLC_ManualMatch_Align,
+        PLC_Status,
+        PLC_Command,
+        PLC_Move_END,
 
-        PLC_Cell_Id_0,
-        PLC_Cell_Id_1,
-        PLC_Cell_Id_2,
-        PLC_Cell_Id_3,
+        PLC_ManualMatch,
 
-        #endregion
-
-        #region AddressMap Akkon 검사#1
-        PC_Command_Akkon,
-        PC_Move_REQ_Akkon,
+        PLC_Cell_Id,
 
         PLC_AkkonZ_ServoOnOff,
         PLC_AkkonZ_Status,
-        PLC_Status_Akkon,
-        PLC_Move_END_Akkon,
-        #endregion
 
         PC_AlignDataX_L,
         PC_AlignDataX_H,
@@ -129,20 +119,16 @@ namespace Jastech.Apps.Winform.Service.Plc.Maps
         PC_AlignDataT_L,
         PC_AlignDataT_H,
 
-        PC_Status_PreAlign,
-        PC_Move_REQ_PreAlign,
-
         PLC_Position_AxisY_L,
         PLC_Position_AxisY_H,
         PLC_Position_AxisT_L,
         PLC_Position_AxisT_H,
 
-        PLC_Command_PreAlign,
-        PLC_Move_END_PreAlign,
+        PLC_AlignDataX_L,
+        PLC_AlignDataX_H,
 
         PLC_OffsetDataX,
         PLC_OffsetDataY,
         PLC_OffsetDataT,
-        PLC_ManualMatch_PreAlign,
     }
 }

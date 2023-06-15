@@ -189,7 +189,7 @@ namespace ATT
 
         public bool CreateAxisHanlder()
         {
-            var motion = DeviceManager.Instance().MotionHandler.First();
+            var motion = DeviceManager.Instance().MotionHandler.FirstOrDefault();
             if (motion == null)
                 return false;
 

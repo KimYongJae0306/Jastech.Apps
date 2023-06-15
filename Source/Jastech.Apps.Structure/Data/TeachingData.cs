@@ -111,7 +111,7 @@ namespace Jastech.Apps.Structure.Data
         
         public Unit GetUnit(string name)
         {
-            return UnitList.Where(x => x.Name == name).First();
+            return UnitList.Where(x => x.Name == name).FirstOrDefault();
         }
 
         public List<PreAlignParam> GetPreAlign(string unitName)
