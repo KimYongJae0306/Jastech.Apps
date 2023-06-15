@@ -40,23 +40,6 @@ namespace ATT_UT_IPAD.Core
                 // LineScan 조명 Parameter 생성
                 unit.LightParams.AddRange(CreateLightParameter());
 
-                // PreAlign Mark 등록
-                foreach (MarkName type in Enum.GetValues(typeof(MarkName)))
-                {
-                    MarkParam preAlignLeftMark = new MarkParam();
-                    preAlignLeftMark.Name = type;
-                    preAlignLeftMark.InspParam.Name = MarkDirection.Left.ToString() + type.ToString();
-                    preAlignLeftMark.Direction = MarkDirection.Left;
-
-                    MarkParam preAlignRightMark = new MarkParam();
-                    preAlignRightMark.Name = type;
-                    preAlignRightMark.InspParam.Name = MarkDirection.Right.ToString() + type.ToString();
-                    preAlignRightMark.Direction = MarkDirection.Right;
-
-                    //tab.FpcMarkParamList.Add(preAlignLeftMark);
-                    //tab.FpcMarkParamList.Add(preAlignRightMark);
-                }
-
                 for (int tabIndex = 0; tabIndex < appInspModel.TabCount; tabIndex++)
                 {
                     Tab tab = new Tab();
@@ -211,10 +194,6 @@ namespace ATT_UT_IPAD.Core
 
                 string preAlignPath = unitDir + @"\PreAlign";
 
-                //PreAlign Load
-                foreach (var item in unit.PreAligns)
-                    item.InspParam.LoadTool(preAlignPath);
-
                 foreach (var tab in unit.GetTabList())
                 {
                     string tabDir = unitDir + @"\" + "Tab_" + tab.Name;
@@ -250,10 +229,6 @@ namespace ATT_UT_IPAD.Core
             {
                 string unitDir = Path.GetDirectoryName(filePath) + @"\Unit_" + unit.Name;
                 string preAlignPath = unitDir + @"\PreAlign";
-
-                //PreAlign 저장
-                foreach (var item in unit.PreAligns)
-                    item.InspParam.SaveTool(preAlignPath);
 
                 foreach (var tab in unit.GetTabList())
                 {

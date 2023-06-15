@@ -131,10 +131,12 @@ namespace ATT_UT_IPAD.Core
             }
             #endregion
 
-            var camera = LineCameraManager.Instance().GetLineCamera("Camera0").Camera;
-            double resolution_um = camera.PixelResolution_um / camera.LensScale;
+            var alignCamera = LineCameraManager.Instance().GetLineCamera("AlignCamera").Camera;
+            double resolution_um = alignCamera.PixelResolution_um / alignCamera.LensScale;
             double judgementX = resolution_um * tab.AlignSpec.LeftSpecX_um;
             double judgementY = resolution_um* tab.AlignSpec.LeftSpecY_um;
+
+            var akkonCamera = LineCameraManager.Instance().GetLineCamera("AkkonCamera").Camera;
 
             #region Left Align
             if(AppsConfig.Instance().EnableAlign)
@@ -347,9 +349,12 @@ namespace ATT_UT_IPAD.Core
             //SeqStop();
            SystemManager.Instance().MachineStatus = MachineStatus.RUN;
 
-            var lineCamera = LineCameraManager.Instance().GetAppsCamera("Camera0");
+            var alignCamera = LineCameraManager.Instance().GetAppsCamera("AlignCamera");
+            alignCamera.GrabDoneEventHanlder += ATTSeqRunner_GrabDoneEventHanlder;
 
-            lineCamera.GrabDoneEventHanlder += ATTSeqRunner_GrabDoneEventHanlder;
+            var akkonCamera = LineCameraManager.Instance().GetAppsCamera("AkkonCamera");
+            akkonCamera.GrabDoneEventHanlder += ATTSeqRunner_GrabDoneEventHanlder;
+
             StartAkkonInspTask();
 
             Logger.Write(LogType.Seq, "Start Sequence.");
@@ -369,17 +374,26 @@ namespace ATT_UT_IPAD.Core
         {
             SystemManager.Instance().MachineStatus = MachineStatus.STOP;
 
-            var lineCamera = LineCameraManager.Instance().GetAppsCamera("Camera0");
-            lineCamera.StopGrab();
-            lineCamera.GrabDoneEventHanlder -= ATTSeqRunner_GrabDoneEventHanlder;
-            LineCameraManager.Instance().GetLineCamera("Camera0").StopGrab();
+            var alignCamera = LineCameraManager.Instance().GetAppsCamera("AlignCamera");
+            alignCamera.StopGrab();
+            alignCamera.GrabDoneEventHanlder -= ATTSeqRunner_GrabDoneEventHanlder;
+            LineCameraManager.Instance().GetLineCamera("AlignCamera").StopGrab();
+
+            var akkonCamera = LineCameraManager.Instance().GetAppsCamera("AkkonCamera");
+            akkonCamera.StopGrab();
+            akkonCamera.GrabDoneEventHanlder -= ATTSeqRunner_GrabDoneEventHanlder;
+            LineCameraManager.Instance().GetLineCamera("AkkonCamera").StopGrab();
+
+
             StopAkkonInspTask();
-            
+
             // 조명 off
+            LAFManager.Instance().AutoFocusOnOff("Align", false);
             LAFManager.Instance().AutoFocusOnOff("Akkon", false);
             Logger.Write(LogType.Seq, "AutoFocus Off.");
 
-            LineCameraManager.Instance().Stop("Camera0");
+            LineCameraManager.Instance().Stop("AlignCamera");
+            LineCameraManager.Instance().Stop("AkkonCamera");
             Logger.Write(LogType.Seq, "Stop Grab.");
 
             if (SeqTask == null)
@@ -410,7 +424,8 @@ namespace ATT_UT_IPAD.Core
                 {
                     SeqStep = SeqStep.SEQ_IDLE;
                     //조명 Off
-                    LineCameraManager.Instance().Stop("Camera0");
+                    LineCameraManager.Instance().Stop("AlignCamera");
+                    LineCameraManager.Instance().Stop("AkkonCamera");
                     DisposeInspTabList();
                     break;
                 }
@@ -464,7 +479,9 @@ namespace ATT_UT_IPAD.Core
                     break;
 
                 case SeqStep.SEQ_SCAN_READY:
-                    LineCameraManager.Instance().GetLineCamera("Camera0").IsLive = false;
+                    LineCameraManager.Instance().GetLineCamera("AlignCamera").IsLive = false;
+                    LineCameraManager.Instance().GetLineCamera("AkkonCamera").IsLive = false;
+
                     ClearResult();
                     Logger.Write(LogType.Seq, "Clear Result.");
 
@@ -474,7 +491,9 @@ namespace ATT_UT_IPAD.Core
                     AppsInspResult.StartInspTime = DateTime.Now;
                     AppsInspResult.Cell_ID = DateTime.Now.ToString("yyyyMMddHHmmss");
 
+                    LAFManager.Instance().AutoFocusOnOff("Align", true);
                     LAFManager.Instance().AutoFocusOnOff("Akkon", true);
+
                     Logger.Write(LogType.Seq, "AutoFocus On.");
 
                     SeqStep = SeqStep.SEQ_SCAN_START;
@@ -483,16 +502,23 @@ namespace ATT_UT_IPAD.Core
                 case SeqStep.SEQ_SCAN_START:
                     IsGrabDone = false;
                     // 조명 코드 작성 요망
-                    var lineCamera = LineCameraManager.Instance().GetLineCamera("Camera0");
-                    lineCamera.SetOperationMode(TDIOperationMode.TDI);
-                    lineCamera.StartGrab();
+
+                    var alignCamera = LineCameraManager.Instance().GetLineCamera("AlignCamera");
+                    alignCamera.SetOperationMode(TDIOperationMode.TDI);
+                    alignCamera.StartGrab();
+
+                    var akkonCamera = LineCameraManager.Instance().GetLineCamera("AkkonCamera");
+                    akkonCamera.SetOperationMode(TDIOperationMode.TDI);
+                    akkonCamera.StartGrab();
+
                     Logger.Write(LogType.Seq, "Start Grab.");
 
                     if (MoveTo(TeachingPosType.Stage1_Scan_End, out string error2) == false)
                     {
                         // Alarm
                         // 조명 Off
-                        LineCameraManager.Instance().Stop("Camera0");
+                        LineCameraManager.Instance().Stop("AlignCamera");
+                        LineCameraManager.Instance().Stop("AkkonCamera");
                         Logger.Write(LogType.Seq, "Stop Grab.");
                         break;
                     }
@@ -512,7 +538,8 @@ namespace ATT_UT_IPAD.Core
                     //AppsLAFManager.Instance().AutoFocusOnOff(LAFName.Akkon.ToString(), false);
                     //Logger.Write(LogType.Seq, "AutoFocus Off.");
 
-                    LineCameraManager.Instance().Stop("Camera0");
+                    LineCameraManager.Instance().Stop("AlignCamera");
+                    LineCameraManager.Instance().Stop("AkkonCamera");
                     Logger.Write(LogType.Seq, "Stop Grab.");
 
                     LastInspSW.Restart();
@@ -703,9 +730,13 @@ namespace ATT_UT_IPAD.Core
 
         private void InitializeBuffer()
         {
-            var lineCamera = LineCameraManager.Instance().GetLineCamera("Camera0");
-            lineCamera.InitGrabSettings();
-            InitalizeInspTab(lineCamera.TabScanBufferList);
+            var alignCamera = LineCameraManager.Instance().GetLineCamera("AlignCamera");
+            alignCamera.InitGrabSettings();
+            InitalizeInspTab(alignCamera.TabScanBufferList);
+
+            var akkonCamera = LineCameraManager.Instance().GetLineCamera("AkkonCamera");
+            akkonCamera.InitGrabSettings();
+            InitalizeInspTab(akkonCamera.TabScanBufferList);
         }
 
         public void RunVirtual()

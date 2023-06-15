@@ -1,4 +1,5 @@
-﻿using Jastech.Framework.Device.LightCtrls;
+﻿using Jastech.Apps.Structure.Data;
+using Jastech.Framework.Device.LightCtrls;
 using Jastech.Framework.Imaging.VisionPro.VisionAlgorithms.Parameters;
 using Newtonsoft.Json;
 using System;
@@ -12,10 +13,13 @@ namespace Jastech.Apps.Structure.Parameters
     public class PreAlignParam
     {
         [JsonProperty]
-        public string Name { get; set; } = "";
+        public MarkDirection Direction { get; set; } = MarkDirection.Left;
 
         [JsonProperty]
-        public VisionProPatternMatchingParam InspParam { get; set; } = null;
+        public MarkName Name { get; set; } = MarkName.Main;
+
+        [JsonProperty]
+        public VisionProPatternMatchingParam InspParam { get; set; } = new VisionProPatternMatchingParam();
 
         [JsonProperty]
         public List<LightParameter> LightParams { get; set; } = null;
@@ -24,7 +28,10 @@ namespace Jastech.Apps.Structure.Parameters
         {
             PreAlignParam preAlign = new PreAlignParam();
 
-            if(InspParam != null)
+            preAlign.Name = Name;
+            preAlign.Direction = Direction;
+
+            if (InspParam != null)
                 preAlign.InspParam = InspParam.DeepCopy();
 
             if (preAlign.LightParams != null)

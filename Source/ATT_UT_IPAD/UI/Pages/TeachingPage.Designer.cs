@@ -33,10 +33,10 @@
             this.btnAlignCameraSetting = new System.Windows.Forms.Button();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.label1 = new System.Windows.Forms.Label();
-            this.btnAkkonPage = new System.Windows.Forms.Button();
+            this.btnAkkonInspectionPage = new System.Windows.Forms.Button();
             this.tableLayoutPanel4 = new System.Windows.Forms.TableLayoutPanel();
             this.label4 = new System.Windows.Forms.Label();
-            this.btnAlignPage = new System.Windows.Forms.Button();
+            this.btnAlignInspectionPage = new System.Windows.Forms.Button();
             this.tableLayoutPanel6 = new System.Windows.Forms.TableLayoutPanel();
             this.label6 = new System.Windows.Forms.Label();
             this.btnAkkonCameraSetting = new System.Windows.Forms.Button();
@@ -93,7 +93,7 @@
             this.tableLayoutPanel1.ColumnCount = 1;
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel1.Controls.Add(this.label1, 0, 0);
-            this.tableLayoutPanel1.Controls.Add(this.btnAkkonPage, 0, 1);
+            this.tableLayoutPanel1.Controls.Add(this.btnAkkonInspectionPage, 0, 1);
             this.tableLayoutPanel1.Location = new System.Drawing.Point(332, 175);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 2;
@@ -113,29 +113,29 @@
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(235, 30);
             this.label1.TabIndex = 0;
-            this.label1.Text = "ATT Inspection";
+            this.label1.Text = "Inspection";
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // btnAkkonPage
+            // btnAkkonInspectionPage
             // 
-            this.btnAkkonPage.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(34)))), ((int)(((byte)(34)))), ((int)(((byte)(34)))));
-            this.btnAkkonPage.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.btnAkkonPage.Font = new System.Drawing.Font("맑은 고딕", 13F, System.Drawing.FontStyle.Bold);
-            this.btnAkkonPage.ForeColor = System.Drawing.Color.White;
-            this.btnAkkonPage.Location = new System.Drawing.Point(3, 33);
-            this.btnAkkonPage.Name = "btnAkkonPage";
-            this.btnAkkonPage.Size = new System.Drawing.Size(235, 65);
-            this.btnAkkonPage.TabIndex = 1;
-            this.btnAkkonPage.Text = "Algorithm";
-            this.btnAkkonPage.UseVisualStyleBackColor = false;
-            this.btnAkkonPage.Click += new System.EventHandler(this.btnAkkonPage_Click);
+            this.btnAkkonInspectionPage.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(34)))), ((int)(((byte)(34)))), ((int)(((byte)(34)))));
+            this.btnAkkonInspectionPage.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.btnAkkonInspectionPage.Font = new System.Drawing.Font("맑은 고딕", 13F, System.Drawing.FontStyle.Bold);
+            this.btnAkkonInspectionPage.ForeColor = System.Drawing.Color.White;
+            this.btnAkkonInspectionPage.Location = new System.Drawing.Point(3, 33);
+            this.btnAkkonInspectionPage.Name = "btnAkkonInspectionPage";
+            this.btnAkkonInspectionPage.Size = new System.Drawing.Size(235, 65);
+            this.btnAkkonInspectionPage.TabIndex = 1;
+            this.btnAkkonInspectionPage.Text = "Akkon Inspection";
+            this.btnAkkonInspectionPage.UseVisualStyleBackColor = false;
+            this.btnAkkonInspectionPage.Click += new System.EventHandler(this.btnAkkonInspectionPage_Click);
             // 
             // tableLayoutPanel4
             // 
             this.tableLayoutPanel4.ColumnCount = 1;
             this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel4.Controls.Add(this.label4, 0, 0);
-            this.tableLayoutPanel4.Controls.Add(this.btnAlignPage, 0, 1);
+            this.tableLayoutPanel4.Controls.Add(this.btnAlignInspectionPage, 0, 1);
             this.tableLayoutPanel4.Location = new System.Drawing.Point(332, 36);
             this.tableLayoutPanel4.Name = "tableLayoutPanel4";
             this.tableLayoutPanel4.RowCount = 2;
@@ -155,22 +155,22 @@
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(235, 30);
             this.label4.TabIndex = 0;
-            this.label4.Text = "Align Inspection";
+            this.label4.Text = "Inspection";
             this.label4.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // btnAlignPage
+            // btnAlignInspectionPage
             // 
-            this.btnAlignPage.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(34)))), ((int)(((byte)(34)))), ((int)(((byte)(34)))));
-            this.btnAlignPage.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.btnAlignPage.Font = new System.Drawing.Font("맑은 고딕", 13F, System.Drawing.FontStyle.Bold);
-            this.btnAlignPage.ForeColor = System.Drawing.Color.White;
-            this.btnAlignPage.Location = new System.Drawing.Point(3, 33);
-            this.btnAlignPage.Name = "btnAlignPage";
-            this.btnAlignPage.Size = new System.Drawing.Size(235, 65);
-            this.btnAlignPage.TabIndex = 1;
-            this.btnAlignPage.Text = "Algorithm";
-            this.btnAlignPage.UseVisualStyleBackColor = false;
-            this.btnAlignPage.Click += new System.EventHandler(this.btnAlignPage_Click);
+            this.btnAlignInspectionPage.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(34)))), ((int)(((byte)(34)))), ((int)(((byte)(34)))));
+            this.btnAlignInspectionPage.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.btnAlignInspectionPage.Font = new System.Drawing.Font("맑은 고딕", 13F, System.Drawing.FontStyle.Bold);
+            this.btnAlignInspectionPage.ForeColor = System.Drawing.Color.White;
+            this.btnAlignInspectionPage.Location = new System.Drawing.Point(3, 33);
+            this.btnAlignInspectionPage.Name = "btnAlignInspectionPage";
+            this.btnAlignInspectionPage.Size = new System.Drawing.Size(235, 65);
+            this.btnAlignInspectionPage.TabIndex = 1;
+            this.btnAlignInspectionPage.Text = "Align Inspection";
+            this.btnAlignInspectionPage.UseVisualStyleBackColor = false;
+            this.btnAlignInspectionPage.Click += new System.EventHandler(this.btnAlignInspectionPage_Click);
             // 
             // tableLayoutPanel6
             // 
@@ -240,10 +240,10 @@
         private System.Windows.Forms.Button btnAlignCameraSetting;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Button btnAkkonPage;
+        private System.Windows.Forms.Button btnAkkonInspectionPage;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel4;
         private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.Button btnAlignPage;
+        private System.Windows.Forms.Button btnAlignInspectionPage;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel6;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Button btnAkkonCameraSetting;

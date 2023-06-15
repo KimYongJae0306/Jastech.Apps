@@ -86,6 +86,18 @@
     <Compile Include="LineCameraManager.cs" />
     <Compile Include="MotionManager.cs" />
     <Compile Include="TeachingUIManager.cs" />
+    <Compile Include="UI\Forms\InspectionTeachingForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\Forms\InspectionTeachingForm.designer.cs">
+      <DependentUpon>InspectionTeachingForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Forms\PreAlignTeachingForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\Forms\PreAlignTeachingForm.Designer.cs">
+      <DependentUpon>PreAlignTeachingForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="UserManager.cs" />
     <Compile Include="Core\ATTInspTab.cs" />
     <Compile Include="Core\IInspRunner.cs" />
@@ -280,12 +292,6 @@
     <Compile Include="UI\Forms\ATTModellerForm.Designer.cs">
       <DependentUpon>ATTModellerForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="UI\Forms\LineTeachingForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="UI\Forms\LineTeachingForm.designer.cs">
-      <DependentUpon>LineTeachingForm.cs</DependentUpon>
-    </Compile>
     <Compile Include="UI\Forms\LogForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -412,8 +418,8 @@
     <EmbeddedResource Include="UI\Forms\ATTModellerForm.resx">
       <DependentUpon>ATTModellerForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="UI\Forms\LineTeachingForm.resx">
-      <DependentUpon>LineTeachingForm.cs</DependentUpon>
+    <EmbeddedResource Include="UI\Forms\InspectionTeachingForm.resx">
+      <DependentUpon>InspectionTeachingForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\Forms\LogForm.resx">
       <DependentUpon>LogForm.cs</DependentUpon>
@@ -426,6 +432,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UI\Forms\PlcStatusForm.resx">
       <DependentUpon>PlcStatusForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\Forms\PreAlignTeachingForm.resx">
+      <DependentUpon>PreAlignTeachingForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\Forms\UnitSelectForm.resx">
       <DependentUpon>UnitSelectForm.cs</DependentUpon>

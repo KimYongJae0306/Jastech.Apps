@@ -1,6 +1,11 @@
 ﻿using Jastech.Apps.Winform;
 using Jastech.Apps.Winform.Settings;
 using Jastech.Framework.Config;
+using Jastech.Framework.Device.Cameras;
+using Jastech.Framework.Device.LAFCtrl;
+using Jastech.Framework.Device.LightCtrls;
+using Jastech.Framework.Device.Motions;
+using Jastech.Framework.Imaging;
 using Jastech.Framework.Matrox;
 using Jastech.Framework.Util.Helper;
 using System;
@@ -62,7 +67,22 @@ namespace ATT_UT_Remodeling
         {
             if (ConfigSet.Instance().Operation.VirtualMode)
             {
-                
+                var areaScan = new CameraVirtual("AraeCamera", 1280, 1024, ColorFormat.Gray, SensorType.Area);
+                config.Add(areaScan);
+
+                var lineScan = new CameraVirtual("LineCamera", 4640, 1024, ColorFormat.Gray, SensorType.Line);
+                config.Add(lineScan);
+
+                config.Add(lineScan);
+                var motion = new VirtualMotion("VirtualMotion", 2);
+                config.Add(motion);
+
+                var inpectionLight = new VirtualLightCtrl("LvsLight24V", 6);
+                inpectionLight.ChannelNameMap["Ch.RedRing"] = 0;
+                config.Add(inpectionLight);
+
+                var laf = new VirtualLAFCtrl("Laf");
+                config.Add(laf);
             }
             else
             {

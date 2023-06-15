@@ -59,43 +59,32 @@ namespace ATT_UT_IPAD.UI.Pages
             form.ShowDialog();
         }
 
-        //private void btnAlgorithmPage_Click(object sender, EventArgs e)
-        //{
-        //    LineTeachingForm form = new LineTeachingForm();
-        //    form.UnitName = UnitName.Unit0;
-        //    form.TitleCameraName = "LineScan";
-        //    form.AppsLineCamera = AppsLineCameraManager.Instance().GetAppsCamera("AkkonCamera");
-        //    form.InspModelService = ATTInspModelService;
-        //    form.OpenMotionPopupEventHandler += OpenMotionPopupEventHandler;
-        //    form.ShowDialog();
-        //}
-
-        private void btnAlignPage_Click(object sender, EventArgs e)
+        private void btnAlignInspectionPage_Click(object sender, EventArgs e)
         {
-            UpdateAlignPage();
+            ShowAlignInspectionSettingPage();
         }
 
-        private void UpdateAlignPage()
+        private void ShowAlignInspectionSettingPage()
         {
-            LineTeachingForm form = new LineTeachingForm();
+            InspectionTeachingForm form = new InspectionTeachingForm();
             form.UnitName = UnitName.Unit0;
-            form.TitleCameraName = "LineScan";
+            form.TitleCameraName = "AlignCamera";
             form.LineCamera = LineCameraManager.Instance().GetAppsCamera("AlignCamera");
             form.InspModelService = ATTInspModelService;
             form.OpenMotionPopupEventHandler += OpenMotionPopupEventHandler;
             form.ShowDialog();
         }
 
-        private void btnAkkonPage_Click(object sender, EventArgs e)
+        private void btnAkkonInspectionPage_Click(object sender, EventArgs e)
         {
-            UpdateAkkonPage();
+            ShowAkkonInspectionSettingPage();
         }
 
-        private void UpdateAkkonPage()
+        private void ShowAkkonInspectionSettingPage()
         {
-            LineTeachingForm form = new LineTeachingForm();
+            InspectionTeachingForm form = new InspectionTeachingForm();
             form.UnitName = UnitName.Unit0;
-            form.TitleCameraName = "LineScan";
+            form.TitleCameraName = "AkkonCamera";
             form.LineCamera = LineCameraManager.Instance().GetAppsCamera("AkkonCamera");
             form.InspModelService = ATTInspModelService;
             form.OpenMotionPopupEventHandler += OpenMotionPopupEventHandler;
