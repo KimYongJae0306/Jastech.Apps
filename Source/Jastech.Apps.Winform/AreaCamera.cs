@@ -1,4 +1,5 @@
-﻿using Jastech.Framework.Device.Cameras;
+﻿using Emgu.CV;
+using Jastech.Framework.Device.Cameras;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,15 +18,23 @@ namespace Jastech.Apps.Winform
         #endregion
 
         #region 이벤트
+        public event OnImageGrabbedDelegate OnImageGrabbed;
         #endregion
 
         #region 델리게이트
+        public delegate void OnImageGrabbedDelegate(Camera camera);
         #endregion
 
         #region 생성자
         public AreaCamera(Camera camera)
         {
             Camera = camera;
+            Camera.ImageGrabbed += Camera_ImageGrabbed;
+        }
+
+        private void Camera_ImageGrabbed(Camera camera)
+        {
+            OnImageGrabbed?.Invoke(camera);
         }
         #endregion
 

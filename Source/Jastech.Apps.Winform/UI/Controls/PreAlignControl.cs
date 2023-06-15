@@ -65,7 +65,53 @@ namespace Jastech.Apps.Winform.UI.Controls
         {
             ParamControl.Dock = DockStyle.Fill;
             ParamControl.GetOriginImageHandler += PreAlignControl_GetOriginImageHandler;
+            ParamControl.TestActionEvent += PatternControl_TestActionEvent;
             pnlParam.Controls.Add(ParamControl);
+        }
+
+        private void PatternControl_TestActionEvent()
+        {
+            Inspection();
+        }
+
+        private void Inspection()
+        {
+            var display = TeachingUIManager.Instance().GetDisplay();
+            var currentParam = ParamControl.GetCurrentParam();
+
+            if (display == null || currentParam == null)
+                return;
+
+            ICogImage cogImage = display.GetImage();
+            if (cogImage == null)
+                return;
+
+            if (currentParam.IsTrained() == false)
+            {
+                MessageConfirmForm form = new MessageConfirmForm();
+                form.Message = "Pattern is not trained.";
+                form.ShowDialog();
+                return;
+            }
+            VisionProPatternMatchingParam inspParam = currentParam.DeepCopy();
+            ICogImage copyCogImage = cogImage.CopyBase(CogImageCopyModeConstants.CopyPixels);
+
+            VisionProPatternMatchingResult result = Algorithm.RunPatternMatch(copyCogImage, inspParam);
+
+            if (result.MatchPosList.Count > 0)
+            {
+                display.ClearGraphic();
+                display.UpdateResult(result);
+            }
+            else
+            {
+                MessageConfirmForm form = new MessageConfirmForm();
+                form.Message = "Pattern is Not Found.";
+                form.ShowDialog();
+            }
+            result.Dispose();
+            inspParam.Dispose();
+            VisionProImageHelper.Dispose(ref copyCogImage);
         }
 
         private void InitializeUI()
