@@ -23,12 +23,16 @@ using System.Windows.Forms;
 using Jastech.Framework.Imaging;
 using Cognex.VisionPro;
 using Jastech.Framework.Winform.Helper;
+using Jastech.Framework.Device.Cameras;
 
 namespace Jastech.Apps.Winform.UI.Forms
 {
     public partial class PreAlignTeachingForm : Form
     {
         #region 필드
+        private Color _selectedColor = new Color();
+
+        private Color _nonSelectedColor = new Color();
         #endregion
 
         #region 속성
@@ -75,6 +79,7 @@ namespace Jastech.Apps.Winform.UI.Forms
 
             AddControl();
             InitializeUI();
+            StatusTimer.Start();
         }
 
         private void AddControl()
@@ -92,6 +97,19 @@ namespace Jastech.Apps.Winform.UI.Forms
 
             PreAlignControl.SetParams(CurrentUnit);
             pnlTeach.Controls.Add(PreAlignControl);
+
+            AreaCamera.OnImageGrabbed += AreaCamera_OnImageGrabbed;
+        }
+
+        private void AreaCamera_OnImageGrabbed(Camera camera)
+        {
+            byte[] byteData = camera.GetGrabbedImage();
+            if (byteData == null)
+                return;
+
+            var image = VisionProImageHelper.ConvertImage(byteData, camera.ImageWidth, camera.ImageHeight, camera.ColorFormat);
+
+            Display.SetImage(image);
         }
 
         private void Display_DeleteEventHandler(object sender, EventArgs e)
@@ -101,6 +119,16 @@ namespace Jastech.Apps.Winform.UI.Forms
                 if (pnlTeach.Controls[0] as MarkControl != null)
                     PreAlignControl.DrawROI();
             }
+        }
+
+        public void UpdateParam()
+        {
+            var camera = AreaCamera.Camera;
+            if (camera == null)
+                return;
+
+            lblCameraExposureValue.Text = camera.GetExposureTime().ToString();
+            lblCameraGainValue.Text = camera.GetAnalogGain().ToString();
         }
 
         private void InitializeUI()
@@ -149,6 +177,10 @@ namespace Jastech.Apps.Winform.UI.Forms
 
         private void btnLoadImage_Click(object sender, EventArgs e)
         {
+            var camera = AreaCamera.Camera;
+            if (camera.IsGrabbing())
+                camera.Stop();
+
             OpenFileDialog dlg = new OpenFileDialog();
             dlg.ReadOnlyChecked = true;
             dlg.Filter = "BMP Files (*.bmp)|*.bmp";
@@ -164,7 +196,7 @@ namespace Jastech.Apps.Winform.UI.Forms
 
                 ColorFormat format = image.NumberOfChannels == 1 ? ColorFormat.Gray : ColorFormat.RGB24;
 
-                var cogImage = VisionProImageHelper.CovertImage(dataArray, image.Width, image.Height, format);
+                var cogImage = VisionProImageHelper.ConvertImage(dataArray, image.Width, image.Height, format);
 
                 TeachingUIManager.Instance().SetOrginCogImageBuffer(cogImage);
                 TeachingUIManager.Instance().SetOriginMatImageBuffer(new Mat(dlg.FileName, ImreadModes.Grayscale));
@@ -203,6 +235,8 @@ namespace Jastech.Apps.Winform.UI.Forms
         {
             Display.DisposeImage();
             PreAlignControl.DisposeImage();
+            StatusTimer.Stop();
+            AreaCamera.OnImageGrabbed -= AreaCamera_OnImageGrabbed;
         }
 
         private void lblCameraExposureValue_Click(object sender, EventArgs e)
@@ -210,23 +244,42 @@ namespace Jastech.Apps.Winform.UI.Forms
             int exposureTime = 0;
 
             exposureTime = KeyPadHelper.SetLabelIntegerData((Label)sender);
+
+            var camera = AreaCamera.Camera;
+            camera.SetExposureTime(exposureTime);
         }
 
         private void lblCameraGainValue_Click(object sender, EventArgs e)
         {
             int gain = KeyPadHelper.SetLabelIntegerData((Label)sender);
+
+            var camera = AreaCamera.Camera;
+
+            // 하이크는 둘 중 무엇
+            //camera.SetAnalogGain(gain);
+            //camera.SetDigitalGain(gain);
         }
 
         private void trbDimmingLevelValue_Scroll(object sender, EventArgs e)
         {
-            int level = trbDimmingLevelValue.Value;
-            nudLightDimmingLevel.Text = level.ToString();
+            SetLightDimmingLevel(sender);
         }
 
         private void nudLightDimmingLevel_ValueChanged(object sender, EventArgs e)
         {
-            int level = Convert.ToInt32(nudLightDimmingLevel.Text);
-            trbDimmingLevelValue.Value = level;
+            SetLightDimmingLevel(sender);
+        }
+
+        private void SetLightDimmingLevel(object sender)
+        {
+            Control control = sender as Control;
+
+            if (control.GetType().Name.ToLower() == "trackbar")
+                nudLightDimmingLevel.Text = trbDimmingLevelValue.Value.ToString();
+            else if (control.GetType().Name.ToLower() == "numericupdown")
+                trbDimmingLevelValue.Value = Convert.ToInt32(nudLightDimmingLevel.Text);
+
+            // 조명값 넣기
         }
 
         private void lblLightOn_Click(object sender, EventArgs e)
@@ -244,12 +297,47 @@ namespace Jastech.Apps.Winform.UI.Forms
             // 조명 추가
             if (isOn)
             {
-
+                
             }
             else
             {
 
             }
         }
+
+        private void StatusTimer_Tick(object sender, EventArgs e)
+        {
+            //UpdateUI();
+        }
+
+        //private void UpdateUI()
+        //{
+        //    //UpdateLightStatus();
+        //    //UpdateCameraStatus();
+        //}
+
+        //private void UpdateLightStatus()
+        //{
+        //    if (true) // 조명 온 상태
+        //    {
+        //        lblLightOn.BackColor = _selectedColor;
+        //        lblLightOff.BackColor = _nonSelectedColor;
+        //    }
+        //    else
+        //    {
+        //        lblLightOn.BackColor = _nonSelectedColor;
+        //        lblLightOff.BackColor = _selectedColor;
+        //    }
+        //}
+        
+        //private void UpdateCameraStatus()
+        //{
+        //    var camera = AreaCamera.Camera;
+
+        //    int gg = 0;
+        //    lblCameraExposureValue.Text = camera.GetExposureTime().ToString();
+        //    lblCameraGainValue.Text = camera.GetAnalogGain().ToString();
+        //    //lblCameraGainValue.Text = camera.GetDigitalGain().ToString();
+        //}
     }
 }

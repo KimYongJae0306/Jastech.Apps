@@ -29,6 +29,12 @@ namespace Jastech.Apps.Structure
         [JsonProperty]
         public List<Unit> UnitList { get; private set; } = new List<Unit>();
 
+        [JsonProperty]
+        public double AnalogGain { get; set; } = 0;         // 공통
+
+        [JsonProperty]
+        public double DigitalGain { get; set; } = 0;        // TDI Mode
+
         public Unit GetUnit(string name)
         {
             return UnitList.Where(x => x.Name == name).FirstOrDefault();

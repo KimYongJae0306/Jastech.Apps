@@ -97,7 +97,8 @@ namespace ATT
                     DoReportProgress(reportProgress, percent, "Model Loading");
                     ModelManager.Instance().CurrentModel =  _mainForm.ATTInspModelService.Load(filePath);
                 }
-            }   
+            }
+
             return true;
         }
 
@@ -228,6 +229,7 @@ namespace ATT
                 //AxisHandlerList.Add(unit0);
                 MotionManager.Instance().AxisHandlerList.Add(unit0);
             }
+
             return true;
         }
         #endregion

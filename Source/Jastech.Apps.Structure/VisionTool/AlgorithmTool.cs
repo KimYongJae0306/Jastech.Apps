@@ -40,7 +40,7 @@ namespace Jastech.Apps.Structure.VisionTool
             byte[] dataArray = new byte[size];
             Marshal.Copy(image.DataPointer, dataArray, 0, size);
             ColorFormat format = image.NumberOfChannels == 1 ? ColorFormat.Gray : ColorFormat.RGB24;
-            var cogImage = VisionProImageHelper.CovertImage(dataArray, image.Width, image.Height, format);
+            var cogImage = VisionProImageHelper.ConvertImage(dataArray, image.Width, image.Height, format);
 
             return cogImage;
         }

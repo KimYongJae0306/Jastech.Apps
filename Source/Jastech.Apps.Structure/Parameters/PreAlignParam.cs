@@ -24,6 +24,12 @@ namespace Jastech.Apps.Structure.Parameters
         [JsonProperty]
         public List<LightParameter> LightParams { get; set; } = null;
 
+        [JsonProperty]
+        public int ExposureTime_us { get; set; } = 5000;
+
+        [JsonProperty]
+        public double AnalogGain_dB { get; set; } = 0;
+
         public PreAlignParam DeepCopy()
         {
             PreAlignParam preAlign = new PreAlignParam();
@@ -36,6 +42,9 @@ namespace Jastech.Apps.Structure.Parameters
 
             if (preAlign.LightParams != null)
                 preAlign.LightParams = LightParams.Select(x => x.DeepCopy()).ToList();
+
+            preAlign.ExposureTime_us = ExposureTime_us;
+            preAlign.AnalogGain_dB = AnalogGain_dB;
 
             return preAlign;
         }

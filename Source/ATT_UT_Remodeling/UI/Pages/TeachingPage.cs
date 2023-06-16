@@ -34,7 +34,7 @@ namespace ATT_UT_Remodeling.UI.Pages
         private void PreAlignSetting()
         {
             PreAlignTeachingForm form = new PreAlignTeachingForm();
-            //form.LineCamera = LineCameraManager.Instance().GetAppsCamera("AlignCamera");
+            form.AreaCamera = AreaCameraManager.Instance().GetAppsCamera("PreAlign");
             //form.LAFCtrl = LAFManager.Instance().GetLAFCtrl("Laf");
             form.UnitName = UnitName.Unit0;
             //form.AxisHandler = MotionManager.Instance().GetAxisHandler(AxisHandlerName.Handler0);

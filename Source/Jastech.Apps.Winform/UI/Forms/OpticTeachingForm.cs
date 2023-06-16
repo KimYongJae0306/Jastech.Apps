@@ -64,6 +64,9 @@ namespace Jastech.Framework.Winform.Forms
         private Direction _direction = Direction.CW;
 
         private Axis SelectedAxis { get; set; } = null;
+
+        private double _prevAnalogGain { get; set; } = 0;
+        private double _prevDigitalGain { get; set; } = 0;
         #endregion
 
         #region 이벤트
@@ -88,6 +91,8 @@ namespace Jastech.Framework.Winform.Forms
         {
             TeachingData.Instance().UpdateTeachingData();
 
+            SetPrevData();
+
             LineCamera.TeachingLiveImageGrabbed += LiveDisplay;
             LineCamera.GrabOnceEventHandler += OpticTeachingForm_GrabOnceEventHandler;
             SelectedAxis = AxisHandler.GetAxis(AxisName.X);
@@ -97,6 +102,24 @@ namespace Jastech.Framework.Winform.Forms
             InitializeUI();
             SetDefaultValue();
             StatusTimer.Start();
+        }
+
+        private void SetPrevData()
+        {
+            var inspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
+            _prevAnalogGain = inspModel.AnalogGain;
+            _prevDigitalGain = inspModel.DigitalGain;
+        }
+
+        private void RollbackPrevData()
+        {
+            var camera = LineCamera.Camera;
+
+            camera.SetDigitalGain(_prevDigitalGain);
+
+            Thread.Sleep(50);
+
+            camera.SetAnalogGain((int)_prevAnalogGain);
         }
 
         private void TeachingEventFunction(ATTInspTab inspTab)
@@ -235,15 +258,6 @@ namespace Jastech.Framework.Winform.Forms
             // Camera Exposure, Gain Load
             var lineCamera = LineCamera.Camera as CameraMil;
 
-            //if (appsLineCamera.Name == "AlignCamera")
-            //{
-            //    int gg = 90;
-            //}
-            //else if (appsLineCamera.Name == "AkkonCamera")
-            //{
-            //    int gg = 9;
-            //}
-            //else { }
 
             if (lineCamera != null)
             {
@@ -477,6 +491,10 @@ namespace Jastech.Framework.Winform.Forms
 
             posData.AxisInfoList[(int)AxisName.Z].TargetPosition = AutoFocusControl.GetCurrentData().TargetPosition;
             posData.AxisInfoList[(int)AxisName.Z].CenterOfGravity = AutoFocusControl.GetCurrentData().CenterOfGravity;
+
+            var inspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
+            inspModel.DigitalGain = Convert.ToDouble(lblCameraExposureValue.Text);
+            inspModel.AnalogGain = Convert.ToDouble(lblCameraGainValue.Text);
         }
 
         private void btnSave_Click(object sender, EventArgs e)
@@ -504,6 +522,7 @@ namespace Jastech.Framework.Winform.Forms
 
         private void btnCancel_Click(object sender, EventArgs e)
         {
+            RollbackPrevData();
             this.Close();
         }
 
