@@ -67,14 +67,16 @@ namespace ATT_UT_Remodeling
         {
             if (ConfigSet.Instance().Operation.VirtualMode)
             {
-                var areaScan = new CameraHIK("PreAlign", 1280, 1024, ColorFormat.Gray, SensorType.Area);
-                areaScan.SerialNo = "02750170835";
-                config.Add(areaScan);
+                //var areaScan = new CameraHIK("PreAlign", 1280, 1024, ColorFormat.Gray, SensorType.Area);
+                //areaScan.SerialNo = "02750170835";
+                //config.Add(areaScan);
 
-                var lineScan = new CameraVirtual("LineCamera", 4640, 1024, ColorFormat.Gray, SensorType.Line);
-                config.Add(lineScan);
+                var areaCamera = new CameraVirtual("AreaCamera", 1280, 1024, ColorFormat.Gray, SensorType.Area);
+                config.Add(areaCamera);
 
-                config.Add(lineScan);
+                var lineCamera = new CameraVirtual("LineCamera", 4640, 1024, ColorFormat.Gray, SensorType.Line);
+                config.Add(lineCamera);
+
                 var motion = new VirtualMotion("VirtualMotion", 2);
                 config.Add(motion);
 

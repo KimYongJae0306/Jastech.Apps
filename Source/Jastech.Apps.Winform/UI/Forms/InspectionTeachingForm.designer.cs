@@ -470,6 +470,7 @@
             // btnMark
             // 
             this.btnMark.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(34)))), ((int)(((byte)(34)))), ((int)(((byte)(34)))));
+            this.btnMark.Dock = System.Windows.Forms.DockStyle.Fill;
             this.btnMark.Font = new System.Drawing.Font("맑은 고딕", 20F, System.Drawing.FontStyle.Bold);
             this.btnMark.ForeColor = System.Drawing.Color.White;
             this.btnMark.Location = new System.Drawing.Point(2, 2);

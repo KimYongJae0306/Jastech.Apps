@@ -30,6 +30,7 @@
         {
             this.tlpPreAlign = new System.Windows.Forms.TableLayoutPanel();
             this.pnlPosition = new System.Windows.Forms.Panel();
+            this.lblAddROI = new System.Windows.Forms.Label();
             this.lblRight = new System.Windows.Forms.Label();
             this.label8 = new System.Windows.Forms.Label();
             this.lblRightSub4 = new System.Windows.Forms.Label();
@@ -44,7 +45,6 @@
             this.lblLeftSub2 = new System.Windows.Forms.Label();
             this.lblParameter = new System.Windows.Forms.Label();
             this.pnlParam = new System.Windows.Forms.Panel();
-            this.lblAddROI = new System.Windows.Forms.Label();
             this.tlpPreAlign.SuspendLayout();
             this.pnlPosition.SuspendLayout();
             this.SuspendLayout();
@@ -87,6 +87,19 @@
             this.pnlPosition.Name = "pnlPosition";
             this.pnlPosition.Size = new System.Drawing.Size(905, 294);
             this.pnlPosition.TabIndex = 8;
+            // 
+            // lblAddROI
+            // 
+            this.lblAddROI.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblAddROI.Font = new System.Drawing.Font("맑은 고딕", 11.25F, System.Drawing.FontStyle.Bold);
+            this.lblAddROI.Location = new System.Drawing.Point(11, 11);
+            this.lblAddROI.Margin = new System.Windows.Forms.Padding(0);
+            this.lblAddROI.Name = "lblAddROI";
+            this.lblAddROI.Size = new System.Drawing.Size(100, 40);
+            this.lblAddROI.TabIndex = 12;
+            this.lblAddROI.Text = "Add ROI";
+            this.lblAddROI.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblAddROI.Click += new System.EventHandler(this.lblAddROI_Click);
             // 
             // lblRight
             // 
@@ -263,19 +276,6 @@
             this.pnlParam.Name = "pnlParam";
             this.pnlParam.Size = new System.Drawing.Size(905, 348);
             this.pnlParam.TabIndex = 1;
-            // 
-            // lblAddROI
-            // 
-            this.lblAddROI.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lblAddROI.Font = new System.Drawing.Font("맑은 고딕", 11.25F, System.Drawing.FontStyle.Bold);
-            this.lblAddROI.Location = new System.Drawing.Point(11, 11);
-            this.lblAddROI.Margin = new System.Windows.Forms.Padding(0);
-            this.lblAddROI.Name = "lblAddROI";
-            this.lblAddROI.Size = new System.Drawing.Size(100, 40);
-            this.lblAddROI.TabIndex = 12;
-            this.lblAddROI.Text = "Add ROI";
-            this.lblAddROI.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.lblAddROI.Click += new System.EventHandler(this.lblAddROI_Click);
             // 
             // PreAlignControl
             // 

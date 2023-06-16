@@ -24,6 +24,7 @@ using Jastech.Framework.Imaging;
 using Cognex.VisionPro;
 using Jastech.Framework.Winform.Helper;
 using Jastech.Framework.Device.Cameras;
+using Jastech.Framework.Device.Motions;
 
 namespace Jastech.Apps.Winform.UI.Forms
 {
@@ -33,6 +34,8 @@ namespace Jastech.Apps.Winform.UI.Forms
         private Color _selectedColor = new Color();
 
         private Color _nonSelectedColor = new Color();
+
+        private DisplayType _displayType { get; set; } = DisplayType.PreAlign;
         #endregion
 
         #region 속성
@@ -48,7 +51,11 @@ namespace Jastech.Apps.Winform.UI.Forms
 
         private PreAlignControl PreAlignControl { get; set; } = new PreAlignControl() { Dock = DockStyle.Fill };
 
+        private VisionCalibrationControl VisionCalibrationControl { get; set; } = new VisionCalibrationControl() { Dock = DockStyle.Fill };
+
         public string TeachingImagePath { get; set; }
+
+        public AxisHandler AxisHandler { get; set; } = null;
 
         public AreaCamera AreaCamera { get; set; } = null;
         #endregion
@@ -79,7 +86,7 @@ namespace Jastech.Apps.Winform.UI.Forms
 
             AddControl();
             InitializeUI();
-            StatusTimer.Start();
+            SelectPage(DisplayType.PreAlign);
         }
 
         private void AddControl()
@@ -95,10 +102,8 @@ namespace Jastech.Apps.Winform.UI.Forms
             // TeachingUIManager 참조
             TeachingUIManager.Instance().SetDisplay(Display.GetDisplay());
 
-            PreAlignControl.SetParams(CurrentUnit);
-            pnlTeach.Controls.Add(PreAlignControl);
-
-            AreaCamera.OnImageGrabbed += AreaCamera_OnImageGrabbed;
+            if (AreaCamera != null)
+                AreaCamera.OnImageGrabbed += AreaCamera_OnImageGrabbed;
         }
 
         private void AreaCamera_OnImageGrabbed(Camera camera)
@@ -121,6 +126,43 @@ namespace Jastech.Apps.Winform.UI.Forms
             }
         }
 
+        private void SelectPage(DisplayType type)
+        {
+            if (ModelManager.Instance().CurrentModel == null || UnitName.ToString() == "")
+                return;
+
+            ClearSelectedButton();
+
+            _displayType = type;
+
+            pnlTeach.Controls.Clear();
+
+            switch (type)
+            {
+                case DisplayType.PreAlign:
+                    btnPreAlign.BackColor = _selectedColor;
+                    PreAlignControl.SetParams(CurrentUnit);
+                    pnlTeach.Controls.Add(PreAlignControl);
+                    break;
+
+                case DisplayType.Calibration:
+                    btnCalibration.BackColor = _selectedColor;
+                    VisionCalibrationControl.SetAxisHandler(AxisHandler);
+                    VisionCalibrationControl.SetAreaCamera(AreaCamera);
+                    pnlTeach.Controls.Add(VisionCalibrationControl);
+                    break;
+            }
+        }
+
+        private void ClearSelectedButton()
+        {
+            foreach (Control control in tlpTeachingItems.Controls)
+            {
+                if (control is Button)
+                    control.BackColor = _nonSelectedColor;
+            }
+        }
+
         public void UpdateParam()
         {
             var camera = AreaCamera.Camera;
@@ -133,31 +175,10 @@ namespace Jastech.Apps.Winform.UI.Forms
 
         private void InitializeUI()
         {
+            _selectedColor = Color.FromArgb(104, 104, 104);
+            _nonSelectedColor = Color.FromArgb(52, 52, 52);
+
             lblStageCam.Text = $"STAGE : {UnitName} / CAM : {TitleCameraName}";
-        }
-
-        private void UpdateDisplayImage(int tabNo)
-        {
-            var teachingData = TeachingData.Instance();
-
-            if (teachingData.GetBufferImage(tabNo) is TeachingImageBuffer buffer)
-            {
-                if (buffer.TabImage == null)
-                    return;
-
-                ICogImage cogImage = teachingData.ConvertCogGrayImage(buffer.TabImage);
-
-                Display.SetImage(cogImage);
-                TeachingUIManager.Instance().SetOrginCogImageBuffer(cogImage);
-                TeachingUIManager.Instance().SetOriginMatImageBuffer(buffer.TabImage.Clone());
-
-                (cogImage as CogImage8Grey).Dispose();
-            }
-
-            PreAlignControl.SetParams(CurrentUnit);
-            PreAlignControl.DrawROI();
-
-            GC.Collect();
         }
 
         private void btnMotionPopup_Click(object sender, EventArgs e)
@@ -235,7 +256,6 @@ namespace Jastech.Apps.Winform.UI.Forms
         {
             Display.DisposeImage();
             PreAlignControl.DisposeImage();
-            StatusTimer.Stop();
             AreaCamera.OnImageGrabbed -= AreaCamera_OnImageGrabbed;
         }
 
@@ -305,9 +325,14 @@ namespace Jastech.Apps.Winform.UI.Forms
             }
         }
 
-        private void StatusTimer_Tick(object sender, EventArgs e)
+        private void btnPreAlign_Click(object sender, EventArgs e)
         {
-            //UpdateUI();
+            SelectPage(DisplayType.PreAlign);
+        }
+
+        private void btnCalibration_Click(object sender, EventArgs e)
+        {
+            SelectPage(DisplayType.Calibration);
         }
 
         //private void UpdateUI()
@@ -329,7 +354,7 @@ namespace Jastech.Apps.Winform.UI.Forms
         //        lblLightOff.BackColor = _selectedColor;
         //    }
         //}
-        
+
         //private void UpdateCameraStatus()
         //{
         //    var camera = AreaCamera.Camera;

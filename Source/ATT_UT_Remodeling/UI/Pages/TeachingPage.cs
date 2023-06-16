@@ -37,7 +37,7 @@ namespace ATT_UT_Remodeling.UI.Pages
             form.AreaCamera = AreaCameraManager.Instance().GetAppsCamera("PreAlign");
             //form.LAFCtrl = LAFManager.Instance().GetLAFCtrl("Laf");
             form.UnitName = UnitName.Unit0;
-            //form.AxisHandler = MotionManager.Instance().GetAxisHandler(AxisHandlerName.Handler0);
+            form.AxisHandler = MotionManager.Instance().GetAxisHandler(AxisHandlerName.Handler0);
             form.TitleCameraName = "PreAlign";
             form.InspModelService = ATTInspModelService;
             form.OpenMotionPopupEventHandler += OpenMotionPopupEventHandler;

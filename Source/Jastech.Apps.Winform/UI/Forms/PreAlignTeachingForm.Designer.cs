@@ -28,7 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
             this.tlpPreAlignTeaching = new System.Windows.Forms.TableLayoutPanel();
             this.pnlTeachingPage = new System.Windows.Forms.Panel();
             this.tlpTeaching = new System.Windows.Forms.TableLayoutPanel();
@@ -67,8 +66,8 @@
             this.tlpTeachingItems = new System.Windows.Forms.TableLayoutPanel();
             this.btnCancel = new System.Windows.Forms.Button();
             this.btnSave = new System.Windows.Forms.Button();
-            this.pnlTeachingItem = new System.Windows.Forms.Panel();
-            this.StatusTimer = new System.Windows.Forms.Timer(this.components);
+            this.btnPreAlign = new System.Windows.Forms.Button();
+            this.btnCalibration = new System.Windows.Forms.Button();
             this.tlpPreAlignTeaching.SuspendLayout();
             this.pnlTeachingPage.SuspendLayout();
             this.tlpTeaching.SuspendLayout();
@@ -623,7 +622,8 @@
             this.tlpTeachingItems.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tlpTeachingItems.Controls.Add(this.btnCancel, 0, 7);
             this.tlpTeachingItems.Controls.Add(this.btnSave, 0, 6);
-            this.tlpTeachingItems.Controls.Add(this.pnlTeachingItem, 0, 1);
+            this.tlpTeachingItems.Controls.Add(this.btnPreAlign, 0, 0);
+            this.tlpTeachingItems.Controls.Add(this.btnCalibration, 0, 1);
             this.tlpTeachingItems.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tlpTeachingItems.Location = new System.Drawing.Point(0, 0);
             this.tlpTeachingItems.Margin = new System.Windows.Forms.Padding(0);
@@ -637,6 +637,7 @@
             this.tlpTeachingItems.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tlpTeachingItems.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 100F));
             this.tlpTeachingItems.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 100F));
+            this.tlpTeachingItems.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tlpTeachingItems.Size = new System.Drawing.Size(144, 783);
             this.tlpTeachingItems.TabIndex = 0;
             // 
@@ -670,18 +671,35 @@
             this.btnSave.UseVisualStyleBackColor = false;
             this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
             // 
-            // pnlTeachingItem
+            // btnPreAlign
             // 
-            this.pnlTeachingItem.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pnlTeachingItem.Location = new System.Drawing.Point(0, 100);
-            this.pnlTeachingItem.Margin = new System.Windows.Forms.Padding(0);
-            this.pnlTeachingItem.Name = "pnlTeachingItem";
-            this.pnlTeachingItem.Size = new System.Drawing.Size(144, 100);
-            this.pnlTeachingItem.TabIndex = 21;
+            this.btnPreAlign.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(34)))), ((int)(((byte)(34)))), ((int)(((byte)(34)))));
+            this.btnPreAlign.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.btnPreAlign.Font = new System.Drawing.Font("맑은 고딕", 20F, System.Drawing.FontStyle.Bold);
+            this.btnPreAlign.ForeColor = System.Drawing.Color.White;
+            this.btnPreAlign.Location = new System.Drawing.Point(2, 2);
+            this.btnPreAlign.Margin = new System.Windows.Forms.Padding(2);
+            this.btnPreAlign.Name = "btnPreAlign";
+            this.btnPreAlign.Size = new System.Drawing.Size(140, 96);
+            this.btnPreAlign.TabIndex = 19;
+            this.btnPreAlign.Text = "PreAlign";
+            this.btnPreAlign.UseVisualStyleBackColor = false;
+            this.btnPreAlign.Click += new System.EventHandler(this.btnPreAlign_Click);
             // 
-            // StatusTimer
+            // btnCalibration
             // 
-            this.StatusTimer.Tick += new System.EventHandler(this.StatusTimer_Tick);
+            this.btnCalibration.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(34)))), ((int)(((byte)(34)))), ((int)(((byte)(34)))));
+            this.btnCalibration.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.btnCalibration.Font = new System.Drawing.Font("맑은 고딕", 20F, System.Drawing.FontStyle.Bold);
+            this.btnCalibration.ForeColor = System.Drawing.Color.White;
+            this.btnCalibration.Location = new System.Drawing.Point(2, 102);
+            this.btnCalibration.Margin = new System.Windows.Forms.Padding(2);
+            this.btnCalibration.Name = "btnCalibration";
+            this.btnCalibration.Size = new System.Drawing.Size(140, 96);
+            this.btnCalibration.TabIndex = 19;
+            this.btnCalibration.Text = "CAL.";
+            this.btnCalibration.UseVisualStyleBackColor = false;
+            this.btnCalibration.Click += new System.EventHandler(this.btnCalibration_Click);
             // 
             // PreAlignTeachingForm
             // 
@@ -741,7 +759,6 @@
         private System.Windows.Forms.TableLayoutPanel tlpTeachingItems;
         private System.Windows.Forms.Button btnCancel;
         private System.Windows.Forms.Button btnSave;
-        private System.Windows.Forms.Panel pnlTeachingItem;
         private System.Windows.Forms.Panel pnlOptic;
         private System.Windows.Forms.TableLayoutPanel tlpCamera;
         private System.Windows.Forms.TableLayoutPanel tlpCamera_;
@@ -762,6 +779,7 @@
         private System.Windows.Forms.Label lblLightOff;
         private System.Windows.Forms.Label lblLightOn;
         private System.Windows.Forms.Label lblLight;
-        private System.Windows.Forms.Timer StatusTimer;
+        private System.Windows.Forms.Button btnCalibration;
+        private System.Windows.Forms.Button btnPreAlign;
     }
 }
