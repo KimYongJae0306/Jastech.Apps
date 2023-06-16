@@ -248,12 +248,12 @@ namespace ATT.Core
             }
 
             akkonResult.AkkonCountJudgement = (leftCountNG || rightCountNG) == true ? AkkonJudgement.NG_Akkon : AkkonJudgement.OK;
-            akkonResult.AkkonCount_Left_Avg = (int)leftCountList.Average();
-            akkonResult.AkkonCount_Left_Min = (int)leftCountList.Min();
-            akkonResult.AkkonCount_Left_Max = (int)leftCountList.Max();
-            akkonResult.AkkonCount_Right_Avg = (int)rightCountList.Average();
-            akkonResult.AkkonCount_Right_Min = (int)rightCountList.Min();
-            akkonResult.AkkonCount_Right_Max = (int)rightCountList.Max();
+            akkonResult.LeftCount_Avg = (int)leftCountList.Average();
+            akkonResult.LeftCount_Min = (int)leftCountList.Min();
+            akkonResult.LeftCount_Max = (int)leftCountList.Max();
+            akkonResult.RightCount_Avg = (int)rightCountList.Average();
+            akkonResult.RightCount_Min = (int)rightCountList.Min();
+            akkonResult.RightCount_Max = (int)rightCountList.Max();
 
             akkonResult.LengthJudgement = (leftLengthNG || rightLengthNG) == true ? Judgement.NG : Judgement.OK;
             akkonResult.Length_Left_Avg = (float)leftLengthList.Average();

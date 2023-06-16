@@ -1,4 +1,5 @@
-﻿using Jastech.Apps.Winform.Core;
+﻿using Jastech.Apps.Structure.Data;
+using Jastech.Apps.Winform.Core;
 using Jastech.Apps.Winform.Service.Plc;
 using Jastech.Apps.Winform.Service.Plc.Maps;
 using Jastech.Framework.Algorithms.Akkon.Results;
@@ -28,6 +29,12 @@ namespace Jastech.Apps.Winform
         public Task PlcReadTask { get; set; }
 
         public CancellationTokenSource CancelPlcReadTask { get; set; }
+
+        public CommandEventDelegate OnPlcCommonCommandReceived;
+
+        public CommandEventDelegate OnPlcCommandReceived;
+
+        public delegate void CommandEventDelegate(int numbber);
 
         public static PlcControlManager Instance()
         {
@@ -65,7 +72,7 @@ namespace Jastech.Apps.Winform
                 lock(PlcAddressService.AddressMapList)
                 {
                     int minAddressNum = PlcAddressService.MinAddressNumber;
-
+                    // 무조건 읽으면 다 지워야하나 ???? 안지워도 되나 확인 필요
                     foreach (var map in PlcAddressService.AddressMapList)
                     {
                         byte[] buffer = SplitData(data, map.AddressNum, map.WordSize, minAddressNum);
@@ -74,6 +81,17 @@ namespace Jastech.Apps.Winform
                             map.Value = ConvertBinary(buffer, map.WordType);
                         else
                             map.Value = ConvertAscll(buffer, map.WordType);
+
+                        if(map.Name == PlcCommonMap.PLC_Command_Common.ToString())
+                        {
+                            int command = Convert.ToInt32(map.Value);
+                            OnPlcCommonCommandReceived?.Invoke(command);
+                        }
+                        else if(map.Name == PlcCommonMap.PLC_Command.ToString())
+                        {
+                            int command = Convert.ToInt32(map.Value);
+                            OnPlcCommandReceived?.Invoke(command);
+                        }
                     }
                 }
             }
@@ -95,7 +113,7 @@ namespace Jastech.Apps.Winform
                 return;
 
             CancelPlcReadTask = new CancellationTokenSource();
-            PlcReadTask = new Task(PlcReadFunction, CancelPlcReadTask.Token);
+            PlcReadTask = new Task(PlcReadAction, CancelPlcReadTask.Token);
             PlcReadTask.Start();
         }
 
@@ -109,7 +127,7 @@ namespace Jastech.Apps.Winform
             PlcReadTask = null;
         }
 
-        private void PlcReadFunction()
+        private void PlcReadAction()
         {
             while (true)
             {
@@ -126,6 +144,7 @@ namespace Jastech.Apps.Winform
                 Thread.Sleep(50);
             }
         }
+
         public string GetValue(PlcCommonMap map)
         {
             string value = "";
@@ -375,9 +394,9 @@ namespace Jastech.Apps.Winform
         {
             ClearAlignData();
 
-            SplitDoulbe(alignDataX, out int alignDataX_H, out int alignDataX_L);
-            SplitDoulbe(alignDataY, out int alignDataY_H, out int alignDataY_L);
-            SplitDoulbe(alignDataT, out int alignDataT_H, out int alignDataT_L);
+            SplitDouble(alignDataX, out int alignDataX_H, out int alignDataX_L);
+            SplitDouble(alignDataY, out int alignDataY_H, out int alignDataY_L);
+            SplitDouble(alignDataT, out int alignDataT_H, out int alignDataT_L);
 
             var map = PlcControlManager.Instance().GetAddressMap(PlcCommonMap.PC_AlignDataX_L);
             if (DeviceManager.Instance().PlcHandler.Count > 0)
@@ -414,12 +433,16 @@ namespace Jastech.Apps.Winform
             // BA DC FE
         }
 
-        public void WriteTabAlignResult(int tabNo)
+        public void WriteTabAlignResult(int tabNo, AlignResult leftAlignResult, AlignResult rightAlignResult)
         {
             string alignJudegmentName = string.Format("Tab{0}_Align_Judgement", tabNo);
             PlcResultMap plcResultMap = (PlcResultMap)Enum.Parse(typeof(PlcResultMap), alignJudegmentName);
 
             var map = PlcControlManager.Instance().GetResultMap(plcResultMap);
+
+            int judgement = 1; // 1 : OK, 2: NG
+            if (leftAlignResult.Judgement != Judgement.OK || rightAlignResult.Judgement != Judgement.OK)
+                judgement = 2;
 
             if (DeviceManager.Instance().PlcHandler.Count > 0)
             {
@@ -427,17 +450,25 @@ namespace Jastech.Apps.Winform
                 PlcDataStream stream = new PlcDataStream();
                 if (plc.MelsecParser.ParserType == ParserType.Binary)
                 {
-                  
+                    stream.AddSwap32BitData(judgement);
+                    //  L_AlignX(mm)
+                    //  L_AlignY(mm)
+                    //  R_AlignX(mm)
+                    //  R_AlignY(mm)
                 }
                 else
                 {
-                  
+                    stream.Add32BitData(judgement);
+                    //  L_AlignX(mm)
+                    //  L_AlignY(mm)
+                    //  R_AlignX(mm)
+                    //  R_AlignY(mm)
                 }
                 plc.Write("D" + map.AddressNum, stream.Data);
             }
         }
 
-        public void WriteTabAkkonCountResult(int tabNo, AkkonJudgement judgement, int leftAvg, int leftMin, int leftMax, int rightAvg, int rightMin, int rightMax)
+        public void WriteTabAkkonResult(int tabNo, AkkonJudgement judgement, AkkonResult akkonResult)
         {
             string akkonJudegmentName = string.Format("Tab{0}_Akkon_Count_Judgement", tabNo);
             PlcResultMap plcResultMap = (PlcResultMap)Enum.Parse(typeof(PlcResultMap), akkonJudegmentName);
@@ -451,22 +482,49 @@ namespace Jastech.Apps.Winform
                 if (plc.MelsecParser.ParserType == ParserType.Binary)
                 {
                     stream.AddSwap32BitData((int)judgement);
-                    stream.AddSwap32BitData(leftAvg);
-                    stream.AddSwap32BitData(leftMin);
-                    stream.AddSwap32BitData(leftMax);
-                    stream.AddSwap32BitData(rightAvg);
-                    stream.AddSwap32BitData(rightMin);
-                    stream.AddSwap32BitData(rightMax);
+                    stream.AddSwap32BitData(akkonResult.LeftCount_Avg);
+                    stream.AddSwap32BitData(akkonResult.LeftCount_Min);
+                    stream.AddSwap32BitData(akkonResult.LeftCount_Max);
+                    stream.AddSwap32BitData(akkonResult.RightCount_Avg);
+                    stream.AddSwap32BitData(akkonResult.RightCount_Min);
+                    stream.AddSwap32BitData(akkonResult.RightCount_Max);
+
+                    // Empty 넣어주기(237~239)
+                    stream.AddSwap32BitData(0);
+                    stream.AddSwap32BitData(0);
+                    stream.AddSwap32BitData(0);
+
+                    stream.AddSwap32BitData(akkonResult.LengthJudgement == Judgement.OK ? 1 : 2);
+                    stream.AddSwap32BitData((int)(akkonResult.Length_Left_Avg * 1000));
+                    stream.AddSwap32BitData((int)(akkonResult.Length_Left_Min * 1000));
+                    stream.AddSwap32BitData((int)(akkonResult.Length_Left_Max * 1000));
+                    stream.AddSwap32BitData((int)(akkonResult.Length_Right_Avg * 1000));
+                    stream.AddSwap32BitData((int)(akkonResult.Length_Right_Min * 1000));
+                    stream.AddSwap32BitData((int)(akkonResult.Length_Right_Max * 1000));
+
                 }
                 else
                 {
                     stream.Add32BitData((int)judgement);
-                    stream.Add32BitData(leftAvg);
-                    stream.Add32BitData(leftMin);
-                    stream.Add32BitData(leftMax);
-                    stream.Add32BitData(rightAvg);
-                    stream.Add32BitData(rightMin);
-                    stream.Add32BitData(rightMax);
+                    stream.Add32BitData(akkonResult.LeftCount_Avg);
+                    stream.Add32BitData(akkonResult.LeftCount_Min);
+                    stream.Add32BitData(akkonResult.LeftCount_Max);
+                    stream.Add32BitData(akkonResult.RightCount_Avg);
+                    stream.Add32BitData(akkonResult.RightCount_Min);
+                    stream.Add32BitData(akkonResult.RightCount_Max);
+
+                    // Empty 넣어주기(237~239)
+                    stream.Add32BitData(0);
+                    stream.Add32BitData(0);
+                    stream.Add32BitData(0);
+
+                    stream.Add32BitData(akkonResult.LengthJudgement == Judgement.OK ? 1 : 2);
+                    stream.Add32BitData((int)(akkonResult.Length_Left_Avg * 1000));
+                    stream.Add32BitData((int)(akkonResult.Length_Left_Min * 1000));
+                    stream.Add32BitData((int)(akkonResult.Length_Left_Max * 1000));
+                    stream.Add32BitData((int)(akkonResult.Length_Right_Avg * 1000));
+                    stream.Add32BitData((int)(akkonResult.Length_Right_Min * 1000));
+                    stream.Add32BitData((int)(akkonResult.Length_Right_Max * 1000));
                 }
                 plc.Write("D" + map.AddressNum, stream.Data);
             }
@@ -500,7 +558,7 @@ namespace Jastech.Apps.Winform
 
     public partial class PlcControlManager
     {
-        public void SplitDoulbe(double value, out int high, out int low)
+        public void SplitDouble(double value, out int high, out int low)
         {
             high = 0;
             low = 0;
