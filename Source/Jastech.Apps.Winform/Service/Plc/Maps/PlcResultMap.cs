@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Jastech.Apps.Winform.Service.Plc.Maps
 {
-    // Tab 결과 관련 이름 변경 시 다른 부분에서 에러나므로 바꾸지 마세요. (CreateResultMap 와 연관 있음)
+    // Tab 결과 관련 이름 변경 시 다른 부분에서 에러나므로 바꾸지 마세요. (CreateResultMap 와 결과 전송할 때 연관 있음)
     public enum PlcResultMap
     {
         Current_ModelName,

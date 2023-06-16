@@ -108,6 +108,7 @@ namespace AkkonTester.UI.Pages
                 return;
             }
             SystemManager.Instance().AkkonParameters.ImageFilterParam.ResizeRatio = Convert.ToDouble(txtResizeRatio.Text);
+            SystemManager.Instance().Resolustion = Convert.ToDouble(txtResolution.Text);
 
             SystemManager.Instance().CalcSliceImage();
             SystemManager.Instance().UpdateSliceData();
@@ -131,9 +132,7 @@ namespace AkkonTester.UI.Pages
 
             if (dialog.ShowDialog() == DialogResult.OK)
             {
-                string roiPath = Path.GetFileNameWithoutExtension(dialog.FileName) + ".txt";
-
-                LoadROI(roiPath);
+                LoadROI(dialog.FileName);
             }
         }
 

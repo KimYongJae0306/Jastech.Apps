@@ -12,6 +12,7 @@ using Jastech.Apps.Winform.Service;
 using Jastech.Apps.Winform.Settings;
 using Jastech.Framework.Algorithms.Akkon;
 using Jastech.Framework.Algorithms.Akkon.Parameters;
+using Jastech.Framework.Algorithms.Akkon.Results;
 using Jastech.Framework.Config;
 using Jastech.Framework.Device.Cameras;
 using Jastech.Framework.Device.Motions;
@@ -94,9 +95,10 @@ namespace ATT.Core
         {
             Stopwatch sw = new Stopwatch();
             sw.Restart();
+            string unitName = UnitName.Unit0.ToString();
 
             AppsInspModel inspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
-            Tab tab = inspModel.GetUnit(UnitName.Unit0).GetTab(inspTab.TabScanBuffer.TabNo);
+            Tab tab = inspModel.GetUnit(unitName).GetTab(inspTab.TabScanBuffer.TabNo);
 
             MainAlgorithmTool algorithmTool = new MainAlgorithmTool();
 
@@ -196,15 +198,74 @@ namespace ATT.Core
             if (AppsConfig.Instance().EnableAkkon)
             {
                 var roiList = tab.AkkonParam.GetAkkonROIList();
-                var akkonResult = AkkonAlgorithm.Run(inspTab.MergeMatImage, roiList, tab.AkkonParam.AkkonAlgoritmParam);
+                var leadResultList = AkkonAlgorithm.Run(inspTab.MergeMatImage, roiList, tab.AkkonParam.AkkonAlgoritmParam, resolution_um);
 
-                inspResult.AkkonResultList.AddRange(akkonResult);
+                inspResult.AkkonResult = CreateAkkonResult(unitName, tab.Index, leadResultList);
             }
             AppsInspResult.TabResultList.Add(inspResult);
 
             sw.Stop();
             string resultMessage = string.Format("Inspection Completed. {0}({1}ms)", inspTab.TabScanBuffer.TabNo, sw.ElapsedMilliseconds);
             Console.WriteLine(resultMessage);
+        }
+
+        private AkkonResult CreateAkkonResult(string unitName, int tabNo, List<AkkonLeadResult> leadResultList)
+        {
+            AkkonResult akkonResult = new AkkonResult();
+            akkonResult.UnitName = unitName;
+            akkonResult.TabNo = tabNo;
+            akkonResult.LeadResultList = leadResultList;
+
+            List<int> leftCountList = new List<int>();
+            List<int> rightCountList = new List<int>();
+
+            List<double> leftLengthList = new List<double>();
+            List<double> rightLengthList = new List<double>();
+
+            bool leftCountNG = false;
+            bool leftLengthNG = false;
+            bool rightCountNG = false;
+            bool rightLengthNG = false;
+
+            foreach (var leadResult in leadResultList)
+            {
+                if (leadResult.ContainPos == LeadContainPos.Left)
+                {
+                    leftCountNG |= leadResult.CountJudgement == Judgement.NG ? true : false;
+                    leftCountList.Add(leadResult.DetectCount);
+
+                    leftLengthNG |= leadResult.LengthJudgement == Judgement.NG ? true : false;
+                    leftLengthList.Add(leadResult.LengthY);
+                }
+                else
+                {
+                    rightCountNG |= leadResult.CountJudgement == Judgement.NG ? true : false;
+                    rightCountList.Add(leadResult.DetectCount);
+
+                    rightLengthNG |= leadResult.LengthJudgement == Judgement.NG ? true : false;
+                    rightLengthList.Add(leadResult.LengthY);
+                }
+            }
+
+            akkonResult.AkkonCountJudgement = (leftCountNG || rightCountNG) == true ? AkkonJudgement.NG_Akkon : AkkonJudgement.OK;
+            akkonResult.AkkonCount_Left_Avg = (int)leftCountList.Average();
+            akkonResult.AkkonCount_Left_Min = (int)leftCountList.Min();
+            akkonResult.AkkonCount_Left_Max = (int)leftCountList.Max();
+            akkonResult.AkkonCount_Right_Avg = (int)rightCountList.Average();
+            akkonResult.AkkonCount_Right_Min = (int)rightCountList.Min();
+            akkonResult.AkkonCount_Right_Max = (int)rightCountList.Max();
+
+            akkonResult.LengthJudgement = (leftLengthNG || rightLengthNG) == true ? Judgement.NG : Judgement.OK;
+            akkonResult.Length_Left_Avg = (float)leftLengthList.Average();
+            akkonResult.Length_Left_Min = (float)leftLengthList.Min();
+            akkonResult.Length_Left_Max = (float)leftLengthList.Max();
+            akkonResult.Length_Right_Avg = (float)rightLengthList.Average();
+            akkonResult.Length_Right_Min = (float)rightLengthList.Min();
+            akkonResult.Length_Right_Max = (float)rightLengthList.Max();
+
+            akkonResult.LeadResultList = leadResultList;
+
+            return akkonResult;
         }
 
         public void InitalizeInspTab(List<TabScanBuffer> bufferList)
@@ -586,7 +647,7 @@ namespace ATT.Core
                 var tabResult = AppsInspResult.TabResultList[i];
                 Tab tab = unit.GetTab(tabResult.TabNo);
 
-                Mat resultMat = GetResultImage(tabResult.Image, tabResult.AkkonResultList, tab.AkkonParam.AkkonAlgoritmParam);
+                Mat resultMat = GetResultImage(tabResult.Image, tabResult.AkkonResult.LeadResultList, tab.AkkonParam.AkkonAlgoritmParam);
                 ICogImage cogImage = ConvertCogColorImage(resultMat);
                 tabResult.AkkonResultImage = cogImage;
                 resultMat.Dispose();
@@ -620,7 +681,7 @@ namespace ATT.Core
             return cogImage;
         }
 
-        public Mat GetResultImage(Mat mat, List<AkkonBlob> resultList, AkkonAlgoritmParam AkkonParameters)
+        public Mat GetResultImage(Mat mat, List<AkkonLeadResult> resultList, AkkonAlgoritmParam AkkonParameters)
         {
             if (mat == null)
                 return null;
@@ -656,8 +717,8 @@ namespace ATT.Core
                 foreach (var blob in result.BlobList)
                 {
                     Rectangle rectRect = new Rectangle();
-                    rectRect.X = (int)(blob.BoundingRect.X + result.OffsetToWorldX + result.LeadOffsetX);
-                    rectRect.Y = (int)(blob.BoundingRect.Y + result.OffsetToWorldY + result.LeadOffsetY);
+                    rectRect.X = (int)(blob.BoundingRect.X + result.OffsetToWorldX + result.OffsetX);
+                    rectRect.Y = (int)(blob.BoundingRect.Y + result.OffsetToWorldY + result.OffsetY);
                     rectRect.Width = blob.BoundingRect.Width;
                     rectRect.Height = blob.BoundingRect.Height;
 
@@ -682,7 +743,7 @@ namespace ATT.Core
 
                 if (autoDrawParam.ContainLeadCount)
                 {
-                    string leadIndexString = result.LeadIndex.ToString();
+                    string leadIndexString = result.Index.ToString();
                     string blobCountString = string.Format("[{0}]", blobCount);
 
                     Point centerPt = new Point((int)((leftBottom.X + rightBottom.X) / 2.0), leftBottom.Y);

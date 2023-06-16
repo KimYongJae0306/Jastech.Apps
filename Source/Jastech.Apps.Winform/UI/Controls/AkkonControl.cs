@@ -498,12 +498,12 @@ namespace Jastech.Apps.Winform.UI.Controls
             }
         }
 
-        private void UpdateResult(List<AkkonBlob> blobList)
+        private void UpdateResult(List<AkkonLeadResult> leadResultList)
         {
             int no = 0;
             dgvJastechAkkonResult.Rows.Clear();
        
-            foreach (var lead in blobList)
+            foreach (var lead in leadResultList)
             {
                 string noString = no.ToString();
                 int blobCount = lead.BlobList.Count();
@@ -1371,11 +1371,9 @@ namespace Jastech.Apps.Winform.UI.Controls
 
             AkkonAlgoritmParam akkonAlgorithmParam = AkkonParamControl.GetCurrentParam();
             var roiList = CurrentTab.AkkonParam.GetAkkonROIList();
-            var tabResult = AkkonAlgorithm.Run(matImage, roiList, akkonAlgorithmParam);
-            AkkonResult akkonResult = new AkkonResult();
 
-            akkonResult.StageNo = CurrentTab.StageIndex;
-            akkonResult.TabNo = CurrentTab.Index;
+            
+            var tabResult = AkkonAlgorithm.Run(matImage, roiList, akkonAlgorithmParam, CalcResolution);
 
             UpdateResult(tabResult);
 
@@ -1395,7 +1393,7 @@ namespace Jastech.Apps.Winform.UI.Controls
             lblResultImage.BackColor = _selectedColor;
         }
 
-        public Mat GetDebugResultImage(Mat mat, List<AkkonBlob> resultList, AkkonAlgoritmParam AkkonParameters)
+        public Mat GetDebugResultImage(Mat mat, List<AkkonLeadResult> leadResultList, AkkonAlgoritmParam AkkonParameters)
         {
             if (mat == null)
                 return null;
@@ -1407,7 +1405,7 @@ namespace Jastech.Apps.Winform.UI.Controls
             CvInvoke.CvtColor(resizeMat, colorMat, ColorConversion.Gray2Bgr);
             resizeMat.Dispose();
 
-            foreach (var result in resultList)
+            foreach (var result in leadResultList)
             {
                 var lead = result.Lead;
                 var startPoint = new Point((int)result.OffsetToWorldX, (int)result.OffsetToWorldY);
@@ -1431,8 +1429,8 @@ namespace Jastech.Apps.Winform.UI.Controls
                 foreach (var blob in result.BlobList)
                 {
                     Rectangle rectRect = new Rectangle();
-                    rectRect.X = (int)(blob.BoundingRect.X + result.OffsetToWorldX + result.LeadOffsetX);
-                    rectRect.Y = (int)(blob.BoundingRect.Y + result.OffsetToWorldY + result.LeadOffsetY);
+                    rectRect.X = (int)(blob.BoundingRect.X + result.OffsetToWorldX + result.OffsetX);
+                    rectRect.Y = (int)(blob.BoundingRect.Y + result.OffsetToWorldY + result.OffsetY);
                     rectRect.Width = blob.BoundingRect.Width;
                     rectRect.Height = blob.BoundingRect.Height;
 
@@ -1475,7 +1473,7 @@ namespace Jastech.Apps.Winform.UI.Controls
 
                 if (AkkonParameters.DrawOption.ContainLeadCount)
                 {
-                    string leadIndexString = result.LeadIndex.ToString();
+                    string leadIndexString = result.Index.ToString();
                     string blobCountString = string.Format("[{0}]", result.DetectCount);
 
                     Point centerPt = new Point((int)((leftBottom.X + rightBottom.X) / 2.0), leftBottom.Y);
@@ -1495,7 +1493,7 @@ namespace Jastech.Apps.Winform.UI.Controls
             return colorMat;
         }
 
-        public Mat GetResultImage(Mat mat, List<AkkonBlob> resultList, AkkonAlgoritmParam AkkonParameters)
+        public Mat GetResultImage(Mat mat, List<AkkonLeadResult> leadResultList, AkkonAlgoritmParam AkkonParameters)
         {
             if (mat == null)
                 return null;
@@ -1507,7 +1505,7 @@ namespace Jastech.Apps.Winform.UI.Controls
             CvInvoke.CvtColor(resizeMat, colorMat, ColorConversion.Gray2Bgr);
             resizeMat.Dispose();
 
-            foreach (var result in resultList)
+            foreach (var result in leadResultList)
             {
                 var lead = result.Lead;
                 var startPoint = new Point((int)result.OffsetToWorldX, (int)result.OffsetToWorldY);
@@ -1520,8 +1518,8 @@ namespace Jastech.Apps.Winform.UI.Controls
                 foreach (var blob in result.BlobList)
                 {
                     Rectangle rectRect = new Rectangle();
-                    rectRect.X = (int)(blob.BoundingRect.X + result.OffsetToWorldX + result.LeadOffsetX);
-                    rectRect.Y = (int)(blob.BoundingRect.Y + result.OffsetToWorldY + result.LeadOffsetY);
+                    rectRect.X = (int)(blob.BoundingRect.X + result.OffsetToWorldX + result.OffsetX);
+                    rectRect.Y = (int)(blob.BoundingRect.Y + result.OffsetToWorldY + result.OffsetY);
                     rectRect.Width = blob.BoundingRect.Width;
                     rectRect.Height = blob.BoundingRect.Height;
 
@@ -1533,7 +1531,7 @@ namespace Jastech.Apps.Winform.UI.Controls
                         CvInvoke.Circle(colorMat, center, radius / 2, greenColor, 1);
                 }
 
-                string leadIndexString = result.LeadIndex.ToString();
+                string leadIndexString = result.Index.ToString();
                 string blobCountString = string.Format("[{0}]", result.DetectCount);
 
                 Point leftTop = new Point((int)lead.LeftTopX + startPoint.X, (int)lead.LeftTopY + startPoint.Y);

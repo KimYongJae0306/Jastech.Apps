@@ -33,6 +33,7 @@
             this.pnlResultImage = new System.Windows.Forms.Panel();
             this.pnlOriginalImage = new System.Windows.Forms.Panel();
             this.panel2 = new System.Windows.Forms.Panel();
+            this.btnInspection = new System.Windows.Forms.Button();
             this.label6 = new System.Windows.Forms.Label();
             this.txtResizeRatio = new System.Windows.Forms.TextBox();
             this.panel4 = new System.Windows.Forms.Panel();
@@ -53,7 +54,8 @@
             this.btnLoadImage = new System.Windows.Forms.Button();
             this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
             this.lblAkkonViewer = new System.Windows.Forms.Label();
-            this.btnInspection = new System.Windows.Forms.Button();
+            this.label7 = new System.Windows.Forms.Label();
+            this.txtResolution = new System.Windows.Forms.TextBox();
             this.tableLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
             this.panel2.SuspendLayout();
@@ -113,6 +115,8 @@
             // 
             // panel2
             // 
+            this.panel2.Controls.Add(this.label7);
+            this.panel2.Controls.Add(this.txtResolution);
             this.panel2.Controls.Add(this.btnInspection);
             this.panel2.Controls.Add(this.label6);
             this.panel2.Controls.Add(this.txtResizeRatio);
@@ -138,6 +142,19 @@
             this.panel2.Size = new System.Drawing.Size(394, 817);
             this.panel2.TabIndex = 1;
             // 
+            // btnInspection
+            // 
+            this.btnInspection.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
+            this.btnInspection.Font = new System.Drawing.Font("맑은 고딕", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.btnInspection.ForeColor = System.Drawing.Color.White;
+            this.btnInspection.Location = new System.Drawing.Point(19, 12);
+            this.btnInspection.Name = "btnInspection";
+            this.btnInspection.Size = new System.Drawing.Size(134, 43);
+            this.btnInspection.TabIndex = 19;
+            this.btnInspection.Text = "Inspection";
+            this.btnInspection.UseVisualStyleBackColor = false;
+            this.btnInspection.Click += new System.EventHandler(this.btnInspection_Click);
+            // 
             // label6
             // 
             this.label6.Font = new System.Drawing.Font("맑은 고딕", 10F, System.Drawing.FontStyle.Bold);
@@ -156,7 +173,7 @@
             this.txtResizeRatio.Name = "txtResizeRatio";
             this.txtResizeRatio.Size = new System.Drawing.Size(100, 25);
             this.txtResizeRatio.TabIndex = 17;
-            this.txtResizeRatio.Text = "1";
+            this.txtResizeRatio.Text = "0.5";
             this.txtResizeRatio.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.txtResizeRatio.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtResizeRatio_KeyPress);
             // 
@@ -365,18 +382,26 @@
             this.lblAkkonViewer.Text = "Original Akkon Inspection";
             this.lblAkkonViewer.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // btnInspection
+            // label7
             // 
-            this.btnInspection.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
-            this.btnInspection.Font = new System.Drawing.Font("맑은 고딕", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.btnInspection.ForeColor = System.Drawing.Color.White;
-            this.btnInspection.Location = new System.Drawing.Point(19, 12);
-            this.btnInspection.Name = "btnInspection";
-            this.btnInspection.Size = new System.Drawing.Size(134, 43);
-            this.btnInspection.TabIndex = 19;
-            this.btnInspection.Text = "Inspection";
-            this.btnInspection.UseVisualStyleBackColor = false;
-            this.btnInspection.Click += new System.EventHandler(this.btnInspection_Click);
+            this.label7.Font = new System.Drawing.Font("맑은 고딕", 10F, System.Drawing.FontStyle.Bold);
+            this.label7.ForeColor = System.Drawing.Color.White;
+            this.label7.Location = new System.Drawing.Point(9, 553);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(100, 33);
+            this.label7.TabIndex = 21;
+            this.label7.Text = "Resolution";
+            this.label7.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // txtResolution
+            // 
+            this.txtResolution.Font = new System.Drawing.Font("맑은 고딕", 9.75F, System.Drawing.FontStyle.Bold);
+            this.txtResolution.Location = new System.Drawing.Point(115, 558);
+            this.txtResolution.Name = "txtResolution";
+            this.txtResolution.Size = new System.Drawing.Size(100, 25);
+            this.txtResolution.TabIndex = 20;
+            this.txtResolution.Text = "0.0005";
+            this.txtResolution.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // OriginalPage
             // 
@@ -425,5 +450,7 @@
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.TextBox txtResizeRatio;
         private System.Windows.Forms.Button btnInspection;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.TextBox txtResolution;
     }
 }

@@ -1,9 +1,11 @@
 ﻿using Jastech.Apps.Winform.Core;
 using Jastech.Apps.Winform.Service.Plc;
 using Jastech.Apps.Winform.Service.Plc.Maps;
+using Jastech.Framework.Algorithms.Akkon.Results;
 using Jastech.Framework.Device.Plcs;
 using Jastech.Framework.Device.Plcs.Melsec;
 using Jastech.Framework.Device.Plcs.Melsec.Parsers;
+using Jastech.Framework.Imaging.Result;
 using Jastech.Framework.Winform;
 using System;
 using System.Collections.Generic;
@@ -140,6 +142,14 @@ namespace Jastech.Apps.Winform
             lock (PlcAddressService.AddressMapList)
             {
                 return PlcAddressService.AddressMapList.Where(x => x.Name == map.ToString()).First();
+            }
+        }
+
+        public PlcAddressMap GetResultMap(PlcResultMap map)
+        {
+            lock (PlcAddressService.AddressMapList)
+            {
+                return PlcAddressService.ResultMapList.Where(x => x.Name == map.ToString()).First();
             }
         }
 
@@ -330,8 +340,40 @@ namespace Jastech.Apps.Winform
             }
         }
 
+        public void ClearAlignData()
+        {
+            var map = PlcControlManager.Instance().GetAddressMap(PlcCommonMap.PC_AlignDataX_L);
+            if (DeviceManager.Instance().PlcHandler.Count > 0)
+            {
+                var plc = DeviceManager.Instance().PlcHandler.First() as MelsecPlc;
+                PlcDataStream stream = new PlcDataStream();
+
+                if (plc.MelsecParser.ParserType == ParserType.Binary)
+                {
+                    stream.AddSwap32BitData(0);
+                    stream.AddSwap32BitData(0);
+                    stream.AddSwap32BitData(0);
+                    stream.AddSwap32BitData(0);
+                    stream.AddSwap32BitData(0);
+                    stream.AddSwap32BitData(0);
+                }
+                else
+                {
+                    stream.Add32BitData(0);
+                    stream.Add32BitData(0);
+                    stream.Add32BitData(0);
+                    stream.Add32BitData(0);
+                    stream.Add32BitData(0);
+                    stream.Add32BitData(0);
+                }
+                plc.Write("D" + map.AddressNum, stream.Data);
+            }
+        }
+
         public void WriteAlignData(double alignDataX, double alignDataY, double alignDataT)
         {
+            ClearAlignData();
+
             SplitDoulbe(alignDataX, out int alignDataX_H, out int alignDataX_L);
             SplitDoulbe(alignDataY, out int alignDataY_H, out int alignDataY_L);
             SplitDoulbe(alignDataT, out int alignDataT_H, out int alignDataT_L);
@@ -363,6 +405,71 @@ namespace Jastech.Apps.Winform
                 plc.Write("D" + map.AddressNum, stream.Data);
             }
         }
+
+        public void WriteCurrentModelName(string modelName)
+        {
+            var map = PlcControlManager.Instance().GetResultMap(PlcResultMap.Current_ModelName);
+            // AB CD EF
+            // BA DC FE
+        }
+
+        public void WriteTabAlignResult(int tabNo)
+        {
+            string alignJudegmentName = string.Format("Tab{0}_Align_Judgement", tabNo);
+            PlcResultMap plcResultMap = (PlcResultMap)Enum.Parse(typeof(PlcResultMap), alignJudegmentName);
+
+            var map = PlcControlManager.Instance().GetResultMap(plcResultMap);
+
+            if (DeviceManager.Instance().PlcHandler.Count > 0)
+            {
+                var plc = DeviceManager.Instance().PlcHandler.First() as MelsecPlc;
+                PlcDataStream stream = new PlcDataStream();
+                if (plc.MelsecParser.ParserType == ParserType.Binary)
+                {
+                  
+                }
+                else
+                {
+                  
+                }
+                plc.Write("D" + map.AddressNum, stream.Data);
+            }
+        }
+
+        public void WriteTabAkkonCountResult(int tabNo, AkkonJudgement judgement, int leftAvg, int leftMin, int leftMax, int rightAvg, int rightMin, int rightMax)
+        {
+            string akkonJudegmentName = string.Format("Tab{0}_Akkon_Count_Judgement", tabNo);
+            PlcResultMap plcResultMap = (PlcResultMap)Enum.Parse(typeof(PlcResultMap), akkonJudegmentName);
+
+            var map = PlcControlManager.Instance().GetResultMap(plcResultMap);
+
+            if (DeviceManager.Instance().PlcHandler.Count > 0)
+            {
+                var plc = DeviceManager.Instance().PlcHandler.First() as MelsecPlc;
+                PlcDataStream stream = new PlcDataStream();
+                if (plc.MelsecParser.ParserType == ParserType.Binary)
+                {
+                    stream.AddSwap32BitData((int)judgement);
+                    stream.AddSwap32BitData(leftAvg);
+                    stream.AddSwap32BitData(leftMin);
+                    stream.AddSwap32BitData(leftMax);
+                    stream.AddSwap32BitData(rightAvg);
+                    stream.AddSwap32BitData(rightMin);
+                    stream.AddSwap32BitData(rightMax);
+                }
+                else
+                {
+                    stream.Add32BitData((int)judgement);
+                    stream.Add32BitData(leftAvg);
+                    stream.Add32BitData(leftMin);
+                    stream.Add32BitData(leftMax);
+                    stream.Add32BitData(rightAvg);
+                    stream.Add32BitData(rightMin);
+                    stream.Add32BitData(rightMax);
+                }
+                plc.Write("D" + map.AddressNum, stream.Data);
+            }
+        }
     }
 
     public partial class PlcControlManager
@@ -371,7 +478,7 @@ namespace Jastech.Apps.Winform
         {
             high = 0;
             low = 0;
-            string valueString = value.ToString("0.000");
+            string valueString = value.ToString("0.0000");
             int index = valueString.IndexOf('.');
 
             if (index > 0)
@@ -384,6 +491,7 @@ namespace Jastech.Apps.Winform
             else
             {
                 high = Convert.ToInt32(valueString);
+                low = 0;
             }
         }
 

@@ -22,6 +22,8 @@ namespace ATT.Core
 {
     public class ATTInspModelService : Jastech.Framework.Structure.Service.InspModelService
     {
+        private object _lock { get; set; } = new object();
+
         public override InspModel New()
         {
             return new AppsInspModel();
@@ -227,6 +229,7 @@ namespace ATT.Core
             AppsInspModel attInspModel = model as AppsInspModel;
 
             JsonConvertHelper.Save(filePath, attInspModel);
+            SaveAkkonROI(filePath, attInspModel);
 
             // Vpp 저장
             foreach (var unit in attInspModel.GetUnitList())
@@ -265,6 +268,88 @@ namespace ATT.Core
             AppsInspModel attInspModel = model as AppsInspModel;
 
             JsonConvertHelper.Save(filePath, attInspModel);
+            SaveAkkonROI(filePath, attInspModel);
+        }
+
+        private void SaveAkkonROI(string filePath, AppsInspModel inspModel)
+        {
+            string path = Path.GetDirectoryName(filePath);
+            string modelName = inspModel.Name;
+
+            lock(_lock)
+            {
+                for (int unitIndex = 0; unitIndex < inspModel.UnitList.Count(); unitIndex++)
+                {
+                    Unit unit = inspModel.UnitList[unitIndex];
+                    for (int tabNo = 0; tabNo < unit.GetTabList().Count; tabNo++)
+                    {
+                        string fileName = string.Format("{0}_Unit{1}_Tab{2}_AkkonROI.txt", modelName, unitIndex, tabNo);
+                        string savePath = Path.Combine(path, fileName);
+
+                        Tab tab = unit.GetTab(tabNo);
+                        var akkonROIList = tab.AkkonParam.GetAkkonROIList();
+
+                        using (StreamWriter streamWriter = new StreamWriter(savePath, true))
+                        {
+                            foreach (var roi in akkonROIList)
+                            {
+                                string message = string.Format("{0} {1} {2} {3} {4} {5} {6} {7}",
+                                                            (int)roi.LeftTopX, (int)roi.LeftTopY,
+                                                            (int)roi.RightTopX, (int)roi.RightTopY,
+                                                            (int)roi.RightBottomX, (int)roi.RightBottomY,
+                                                            (int)roi.LeftBottomX, (int)roi.LeftBottomY);
+
+                                streamWriter.WriteLine(message);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        private void LoadROI(string filePath,ref AppsInspModel inspModel)
+        {
+            string path = Path.GetDirectoryName(filePath);
+            string modelName = inspModel.Name;
+
+            lock (_lock)
+            {
+                for (int unitIndex = 0; unitIndex < inspModel.UnitList.Count(); unitIndex++)
+                {
+                    Unit unit = inspModel.UnitList[unitIndex];
+                    for (int tabNo = 0; tabNo < unit.GetTabList().Count; tabNo++)
+                    {
+                        string fileName = string.Format("{0}_Unit{1}_Tab{2}_AkkonROI.txt", modelName, unitIndex, tabNo);
+                        string loadPath = Path.Combine(path, fileName);
+
+                        if (File.Exists(loadPath) == false)
+                            continue;
+
+                        Tab tab = unit.GetTab(tabNo);
+                        var akkonROIList = tab.AkkonParam.GetAkkonROIList();
+                     
+                        using (StreamReader streamReader = new StreamReader(loadPath, true))
+                        {
+                            string line;
+                            while((line = streamReader.ReadLine()) != null)
+                            {
+                                string[] parts = line.Split(' ');
+
+                                AkkonROI roi = new AkkonROI();
+                                roi.LeftTopX = Convert.ToInt32(parts[0]);
+                                roi.LeftTopY = Convert.ToInt32(parts[1]);
+                                roi.RightTopX = Convert.ToInt32(parts[2]);
+                                roi.RightTopY = Convert.ToInt32(parts[3]);
+                                roi.RightBottomX = Convert.ToInt32(parts[4]);
+                                roi.RightBottomY = Convert.ToInt32(parts[5]);
+                                roi.LeftBottomX = Convert.ToInt32(parts[6]);
+                                roi.LeftBottomY = Convert.ToInt32(parts[7]);
+
+                            }
+                        }
+                    }
+                }
+            }
         }
     }
 }

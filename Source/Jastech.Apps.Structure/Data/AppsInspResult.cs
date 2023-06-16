@@ -77,9 +77,8 @@ namespace Jastech.Apps.Structure.Data
 
         public float CenterX { get; set; }
 
-        public AkkonResult MacronAkkonResult { get; set; } = null;
-
-        public List<AkkonBlob> AkkonResultList { get; set; } = new List<AkkonBlob>();
+        //public List<AkkonLeadResult> AkkonLeadResultList { get; set; } = new List<AkkonLeadResult>();
+        public AkkonResult AkkonResult { get; set; } = null;
 
         public bool IsMarkGood()
         {
@@ -184,7 +183,6 @@ namespace Jastech.Apps.Structure.Data
             LeftAlignY?.Dispose();
             RightAlignX?.Dispose();
             RightAlignY?.Dispose();
-            MacronAkkonResult?.Dispose();
         }
 
         public TabInspResult DeepCopy()
@@ -203,7 +201,6 @@ namespace Jastech.Apps.Structure.Data
             result.RightAlignX = RightAlignX?.DeepCopy();
             result.RightAlignY = RightAlignY?.DeepCopy();
             result.CenterX = CenterX;
-            result.MacronAkkonResult = MacronAkkonResult?.DeepCopy();
 
             return result;
 

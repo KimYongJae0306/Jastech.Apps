@@ -414,15 +414,15 @@ namespace AkkonTester.UI.Pages
 
         private void UpdateResultValue()
         {
-            var curResultList = SystemManager.Instance().CurrentResult;
+            var curResultList = SystemManager.Instance().CurrentLeadResult;
             dgvResult.Rows.Clear();
 
             foreach (var result in curResultList)
             {
-                string index = result.LeadIndex.ToString();
+                string index = result.Index.ToString();
                 string count = result.DetectCount.ToString();
-                string lengthX = result.LeadLengthX.ToString("F2");
-                string lengthY = result.LeadLengthY.ToString("F2");
+                string lengthX = result.LengthX.ToString("F2");
+                string lengthY = result.LengthY.ToString("F2");
                 string stdDev = result.StdDev.ToString("F2");
 
                 string message = string.Format("Count : {0} LengthX : {1}, LengthY : {2}, StdDev : {3}",count, lengthX, lengthY, stdDev);
@@ -435,7 +435,7 @@ namespace AkkonTester.UI.Pages
         private void UpdateProcessingImage(int index)
         {
             var curSlice = SystemManager.Instance().SliceList[index];
-            var curResultList = SystemManager.Instance().CurrentResult;
+            var curResultList = SystemManager.Instance().CurrentLeadResult;
             var curParam = SystemManager.Instance().AkkonParameters;
 
             ICogImage cogEnhanceImage = AppsHelper.ConvertCogGrayImage(curSlice.EnhanceMat);
@@ -451,7 +451,7 @@ namespace AkkonTester.UI.Pages
         private void UpdateResultImage(int index)
         {
             var curSlice = SystemManager.Instance().SliceList[index];
-            var curResultList = SystemManager.Instance().CurrentResult;
+            var curResultList = SystemManager.Instance().CurrentLeadResult;
             var curParam = SystemManager.Instance().AkkonParameters;
 
             Mat colorMat = new Mat();
@@ -467,8 +467,8 @@ namespace AkkonTester.UI.Pages
                 foreach (var blob in result.BlobList)
                 {
                     
-                    int leftFromSlice = (int)(blob.BoundingRect.X + result.LeadOffsetX);
-                    int topFromSlice = (int)(blob.BoundingRect.Y + result.LeadOffsetY);
+                    int leftFromSlice = (int)(blob.BoundingRect.X + result.OffsetX);
+                    int topFromSlice = (int)(blob.BoundingRect.Y + result.OffsetY);
 
                     Point center = new Point(leftFromSlice + (blob.BoundingRect.Width / 2), topFromSlice + (blob.BoundingRect.Height / 2));
                     int radius = blob.BoundingRect.Width > blob.BoundingRect.Height ? blob.BoundingRect.Width : blob.BoundingRect.Height;
@@ -513,7 +513,7 @@ namespace AkkonTester.UI.Pages
 
                     if (curParam.DrawOption.ContainLeadCount)
                     {
-                        string leadIndexString = result.LeadIndex.ToString();
+                        string leadIndexString = result.Index.ToString();
                         string blobCountString = string.Format("[{0}]", result.DetectCount);
 
                         var leftBottom = result.Lead.GetLeftBottomPoint();

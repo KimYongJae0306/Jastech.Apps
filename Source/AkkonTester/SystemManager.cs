@@ -29,7 +29,9 @@ namespace AkkonTester
 
         public List<AkkonSlice> SliceList { get; set; } = new List<AkkonSlice>();
 
-        public List<AkkonBlob> CurrentResult { get; set; } = new List<AkkonBlob>();
+        public List<AkkonLeadResult> CurrentLeadResult { get; set; } = new List<AkkonLeadResult>();
+
+        public double Resolustion { get; set; } = 0.0005;
 
         private static SystemManager _instance = null;
 
@@ -86,16 +88,16 @@ namespace AkkonTester
             sw.Restart();
 
 
-            List<AkkonBlob> result = AkkonAlgorithm.RunForDebug(ref slice, AkkonParameters);
+            List<AkkonLeadResult> result = AkkonAlgorithm.RunForDebug(ref slice, AkkonParameters, Resolustion);
 
             sw.Stop();
             Console.WriteLine(" RunForDebug TactTime : " + sw.ElapsedMilliseconds);
 
-            CurrentResult.Clear();
-            CurrentResult.AddRange(result);
+            CurrentLeadResult.Clear();
+            CurrentLeadResult.AddRange(result);
         }
 
-        public List<AkkonBlob> Run()
+        public List<AkkonLeadResult> Run()
         {
             if (OrginalImage == null)
                 return null;
@@ -103,14 +105,14 @@ namespace AkkonTester
             Stopwatch sw = new Stopwatch();
             sw.Restart();
 
-            List<AkkonBlob> result = AkkonAlgorithm.Run(OrginalImage, CurrentAkkonROI, AkkonParameters);
+            List<AkkonLeadResult> result = AkkonAlgorithm.Run(OrginalImage, CurrentAkkonROI, AkkonParameters, Resolustion);
 
             sw.Stop();
             Console.WriteLine("Run : " + sw.ElapsedMilliseconds);
             return result;
         }
 
-        public Mat GetResultImage(List<AkkonBlob> resultList)
+        public Mat GetResultImage(List<AkkonLeadResult> leadResultList)
         {
             if (OrginalImage == null)
                 return null;
@@ -122,7 +124,7 @@ namespace AkkonTester
             CvInvoke.CvtColor(resizeMat, colorMat, ColorConversion.Gray2Bgr);
             resizeMat.Dispose();
 
-            foreach (var result in resultList)
+            foreach (var result in leadResultList)
             {
                 var lead = result.Lead;
                 var startPoint = new Point((int)result.OffsetToWorldX, (int)result.OffsetToWorldY);
@@ -132,7 +134,7 @@ namespace AkkonTester
                 Point rightTop = new Point((int)lead.RightTopX + startPoint.X, (int)lead.RightTopY + startPoint.Y);
                 Point rightBottom = new Point((int)lead.RightBottomX + startPoint.X, (int)lead.RightBottomY + startPoint.Y);
 
-                if(AkkonParameters.DrawOption.ContainLeadROI)
+                if (AkkonParameters.DrawOption.ContainLeadROI)
                 {
                     CvInvoke.Line(colorMat, leftTop, leftBottom, new MCvScalar(50, 230, 50, 255), 1);
                     CvInvoke.Line(colorMat, leftTop, rightTop, new MCvScalar(50, 230, 50, 255), 1);
@@ -144,8 +146,8 @@ namespace AkkonTester
                 foreach (var blob in result.BlobList)
                 {
                     Rectangle rectRect = new Rectangle();
-                    rectRect.X = (int)(blob.BoundingRect.X + result.OffsetToWorldX + result.LeadOffsetX);
-                    rectRect.Y = (int)(blob.BoundingRect.Y + result.OffsetToWorldY + result.LeadOffsetY);
+                    rectRect.X = (int)(blob.BoundingRect.X + result.OffsetToWorldX + result.OffsetX);
+                    rectRect.Y = (int)(blob.BoundingRect.Y + result.OffsetToWorldY + result.OffsetY);
                     rectRect.Width = blob.BoundingRect.Width;
                     rectRect.Height = blob.BoundingRect.Height;
 
@@ -171,7 +173,7 @@ namespace AkkonTester
 
                 if(AkkonParameters.DrawOption.ContainLeadCount)
                 {
-                    string leadIndexString = result.LeadIndex.ToString();
+                    string leadIndexString = result.Index.ToString();
                     string blobCountString = string.Format("[{0}]", blobCount);
 
                     Point centerPt = new Point((int)((leftBottom.X + rightBottom.X) / 2.0), leftBottom.Y);
