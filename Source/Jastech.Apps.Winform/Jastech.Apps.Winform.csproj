@@ -81,6 +81,7 @@
   <ItemGroup>
     <Compile Include="AreaCamera.cs" />
     <Compile Include="AreaCameraManager.cs" />
+    <Compile Include="Core\Calibrations\VisionXCalibration.cs" />
     <Compile Include="LAFManager.cs" />
     <Compile Include="LineCamera.cs" />
     <Compile Include="LineCameraManager.cs" />

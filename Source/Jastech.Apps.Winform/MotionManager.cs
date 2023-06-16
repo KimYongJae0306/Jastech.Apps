@@ -110,7 +110,7 @@ namespace Jastech.Apps.Winform
             return AxisHandlerList.Where(x => x.Name == axisHandlerName.ToString()).First();
         }
 
-        public void MoveTo(UnitName unitName, TeachingPosType teachingPosType, Axis axis)
+        public void StartAbsoluteMove(UnitName unitName, TeachingPosType teachingPosType, Axis axis)
         {
             AppsInspModel inspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
             var unit = inspModel.GetUnit(unitName);
@@ -119,7 +119,7 @@ namespace Jastech.Apps.Winform
             var targetPosition = posData.GetTargetPosition(axis.Name);
             var movingParam = posData.GetMovingParams(axis.Name);
 
-            axis.MoveTo(targetPosition, movingParam);
+            axis.StartAbsoluteMove(targetPosition, movingParam);
         }
 
         public bool IsAxisInPosition(UnitName unitName, TeachingPosType teachingPosition, Axis axis)

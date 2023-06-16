@@ -787,11 +787,11 @@ namespace Jastech.Framework.Winform.Forms
 
                 StartGrab(true);
 
-                SelectedAxis.MoveTo(repeatParam.EndPosition, movingParam);
+                SelectedAxis.StartAbsoluteMove(repeatParam.EndPosition, movingParam);
                 while (!SelectedAxis.WaitForDone())
                     Thread.Sleep(Convert.ToInt16(movingParam.AfterWaitTime));
 
-                SelectedAxis.MoveTo(repeatParam.StartPosition, movingParam);
+                SelectedAxis.StartAbsoluteMove(repeatParam.StartPosition, movingParam);
                 while (!SelectedAxis.WaitForDone())
                     Thread.Sleep(Convert.ToInt16(movingParam.AfterWaitTime));
 
