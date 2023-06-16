@@ -462,7 +462,7 @@ namespace Jastech.Framework.Winform.Forms
 
             if (_currentTabNo == tabIndex)
                 return;
-            CurrentTab = TeachingTabList.Where(x => x.Index == tabNo).First();
+            CurrentTab = TeachingTabList.Where(x => x.Index == tabNo).FirstOrDefault();
             _currentTabNo = tabIndex;
 
             UpdateDisplayImage(tabNo);

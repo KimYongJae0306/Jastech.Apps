@@ -170,7 +170,7 @@ namespace ATT.UI.Forms
 
         private void UpdateVariableParam(TeachingPosType teachingPositionType = TeachingPosType.Standby)
         {
-            var param = TeachingPositionList.Where(x => x.Name == teachingPositionType.ToString()).First();
+            var param = TeachingPositionList.Where(x => x.Name == teachingPositionType.ToString()).FirstOrDefault();
             if (param == null)
                 return;
 

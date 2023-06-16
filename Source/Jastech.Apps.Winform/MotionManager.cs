@@ -107,7 +107,7 @@ namespace Jastech.Apps.Winform
 
         public AxisHandler GetAxisHandler(AxisHandlerName axisHandlerName)
          {
-            return AxisHandlerList.Where(x => x.Name == axisHandlerName.ToString()).First();
+            return AxisHandlerList.Where(x => x.Name == axisHandlerName.ToString()).FirstOrDefault();
         }
 
         public void StartAbsoluteMove(UnitName unitName, TeachingPosType teachingPosType, Axis axis)

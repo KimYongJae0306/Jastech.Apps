@@ -75,7 +75,7 @@ namespace Jastech.Apps.Winform
 
         public LineCamera GetAppsCamera(string name)
         {
-            return CameraList.Where(x => x.Camera.Name == name).First();
+            return CameraList.Where(x => x.Camera.Name == name).FirstOrDefault();
         }
 
         public void Stop(string name)
@@ -86,7 +86,7 @@ namespace Jastech.Apps.Winform
         private Camera GetCamera(string name)
         {
             var cameraHandler = DeviceManager.Instance().CameraHandler;
-            Camera camera = cameraHandler.Where(x => x.Name == name).First();
+            Camera camera = cameraHandler.Where(x => x.Name == name).FirstOrDefault();
 
             return camera;
         }
@@ -115,7 +115,7 @@ namespace Jastech.Apps.Winform
 
         public LineCamera GetLineCamera(string cameraName)
         {
-            return CameraList.Where(x => x.Camera.Name == cameraName.ToString()).First();
+            return CameraList.Where(x => x.Camera.Name == cameraName.ToString()).FirstOrDefault();
         }
 
         public void Dispose()

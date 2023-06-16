@@ -523,7 +523,9 @@
   <ItemGroup>
     <None Include="Resources\Next.png" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <None Include="Resources\Exit_White.png" />
+  </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Cancel.png" />
   </ItemGroup>

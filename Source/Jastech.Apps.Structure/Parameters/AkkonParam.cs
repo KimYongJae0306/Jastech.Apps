@@ -75,7 +75,7 @@ namespace Jastech.Apps.Structure.Parameters
 
         public void DeleteGroup(string name)
         {
-            var group = GroupList.Where(x => x.Index == Convert.ToInt32(name)).First();
+            var group = GroupList.Where(x => x.Index == Convert.ToInt32(name)).FirstOrDefault();
             if (group != null)
                 GroupList.Remove(group);
         }
@@ -84,7 +84,7 @@ namespace Jastech.Apps.Structure.Parameters
         {
             if (GroupList.Count() <= 0)
                 return null;
-            return GroupList.Where(x => x.Index == index).First();
+            return GroupList.Where(x => x.Index == index).FirstOrDefault();
         }
 
         public void SetAkkonGroup(int index, AkkonGroup newGroupParam)

@@ -14,6 +14,7 @@ using Jastech.Apps.Structure.Data;
 using Jastech.Framework.Winform.Forms;
 using ATT.Core;
 using Jastech.Apps.Winform;
+using Jastech.Framework.Config;
 
 namespace ATT.UI.Pages
 {
@@ -42,8 +43,17 @@ namespace ATT.UI.Pages
         private void btnLinescanSetting_Click(object sender, EventArgs e)
         {
             OpticTeachingForm form = new OpticTeachingForm();
-            form.LineCamera = LineCameraManager.Instance().GetAppsCamera("Camera0");
-            form.LAFCtrl = LAFManager.Instance().GetLAFCtrl("Akkon");
+
+            if(ConfigSet.Instance().Operation.VirtualMode)
+            {
+                form.LineCamera = LineCameraManager.Instance().GetAppsCamera("Camera0");
+                form.LAFCtrl = LAFManager.Instance().GetLAFCtrl("Akkon");
+            }
+            else
+            {
+                form.LineCamera = LineCameraManager.Instance().GetAppsCamera("Camera0");
+                form.LAFCtrl = LAFManager.Instance().GetLAFCtrl("Akkon");
+            }
             form.UnitName = UnitName.Unit0;
             form.AxisHandler = MotionManager.Instance().GetAxisHandler(AxisHandlerName.Handler0);
             form.InspModelService = ATTInspModelService;

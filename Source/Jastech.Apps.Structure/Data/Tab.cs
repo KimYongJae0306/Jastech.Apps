@@ -67,7 +67,7 @@ namespace Jastech.Apps.Structure.Data
 
         public AlignParam GetAlignParam(ATTTabAlignName alignName)
         {
-            return AlignParamList.Where(x => x.Name == alignName.ToString()).First();
+            return AlignParamList.Where(x => x.Name == alignName.ToString()).FirstOrDefault();
         }
 
         public void SetAlignParam(ATTTabAlignName alignName, AlignParam alignParam)
@@ -84,12 +84,12 @@ namespace Jastech.Apps.Structure.Data
             //if (FpcMarkParamList.Count <= 0)
             //    return null;
             
-            return FpcMarkParamList.Where(x => x.Name == name && x.Direction == direction).First();
+            return FpcMarkParamList.Where(x => x.Name == name && x.Direction == direction).FirstOrDefault();
         }
 
         public MarkParam GetPanelMark(MarkDirection direction, MarkName name)
         {
-            return PanelMarkParamList.Where(x => x.Name == name && x.Direction == direction).First();
+            return PanelMarkParamList.Where(x => x.Name == name && x.Direction == direction).FirstOrDefault();
         }
 
         public AkkonGroup GetAkkonGroup(int index)

@@ -56,7 +56,7 @@ namespace Jastech.Apps.Structure.Data
 
         public TeachingInfo GetTeachingInfo(TeachingPosType type)
         {
-            return TeachingInfoList.Where(x => x.Name == type.ToString()).First();
+            return TeachingInfoList.Where(x => x.Name == type.ToString()).FirstOrDefault();
         }
 
         public void AddTeachingInfo(TeachingInfo position)
@@ -71,12 +71,12 @@ namespace Jastech.Apps.Structure.Data
 
         public Tab GetTab(int index)
         {
-            return TabList.Where(x => x.Index == index).First();
+            return TabList.Where(x => x.Index == index).FirstOrDefault();
         }
 
         public Tab GetTab(string tabName)
         {
-            return TabList.Where(x => x.Name == tabName).First();
+            return TabList.Where(x => x.Name == tabName).FirstOrDefault();
         }
 
         public void AddTab(Tab tab)
