@@ -37,7 +37,7 @@ namespace Jastech.Framework.Winform.Forms
         #region 필드
         private Color _selectedColor;
 
-        private Color _noneSelectedColor;
+        private Color _nonSelectedColor;
 
         private bool _isLoading { get; set; } = false;
 
@@ -112,6 +112,7 @@ namespace Jastech.Framework.Winform.Forms
 
             TeachingTabList = TeachingData.Instance().GetUnit(UnitName.ToString()).GetTabList();
             AddControl();
+            InitailizeUI();
             InitializeTabComboBox();
 
             _isLoading = false;
@@ -163,11 +164,14 @@ namespace Jastech.Framework.Winform.Forms
             _currentTabNo = cbxTabList.SelectedItem as string;
         }
 
-        private void AddControl()
+        private void InitailizeUI()
         {
             _selectedColor = Color.FromArgb(104, 104, 104);
-            _noneSelectedColor = Color.FromArgb(52, 52, 52);
+            _nonSelectedColor = Color.FromArgb(52, 52, 52);
+        }
 
+        private void AddControl()
+        {
             // Display Control
             Display = new CogTeachingDisplayControl();
             Display.Dock = DockStyle.Fill;
@@ -275,7 +279,7 @@ namespace Jastech.Framework.Winform.Forms
             foreach (Control control in tlpTeachingItems.Controls)
             {
                 if (control is Button)
-                    control.BackColor = _noneSelectedColor;
+                    control.BackColor = _nonSelectedColor;
             }
         }
 
@@ -710,8 +714,6 @@ namespace Jastech.Framework.Winform.Forms
         }
 
         #endregion
-
-        
     }
 
     public enum DisplayType
@@ -719,5 +721,8 @@ namespace Jastech.Framework.Winform.Forms
         Mark,
         Align,
         Akkon,
+
+        PreAlign,
+        Calibration,
     }
 }

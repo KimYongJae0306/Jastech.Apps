@@ -2,6 +2,7 @@
 using Jastech.Apps.Winform.Service.Plc;
 using Jastech.Apps.Winform.Service.Plc.Maps;
 using Jastech.Framework.Algorithms.Akkon.Results;
+using Jastech.Framework.Device.Motions;
 using Jastech.Framework.Device.Plcs;
 using Jastech.Framework.Device.Plcs.Melsec;
 using Jastech.Framework.Device.Plcs.Melsec.Parsers;
@@ -469,6 +470,31 @@ namespace Jastech.Apps.Winform
                 }
                 plc.Write("D" + map.AddressNum, stream.Data);
             }
+        }
+
+        public double GetReadPosition(AxisName axisName)
+        {
+            double position = 0.0;
+
+            lock (PlcAddressService.AddressMapList)
+            {
+                if (axisName == AxisName.Y)
+                {
+                    string high = GetAddressMap(PlcCommonMap.PLC_Position_AxisY_H).Value;
+                    string low = GetAddressMap(PlcCommonMap.PLC_Position_AxisY_L).Value;
+
+                    position = Convert.ToDouble(high + "." + low);
+                }
+                else if (axisName == AxisName.T)
+                {
+                    string high = GetAddressMap(PlcCommonMap.PLC_Position_AxisT_H).Value;
+                    string low = GetAddressMap(PlcCommonMap.PLC_Position_AxisT_L).Value;
+
+                    position = Convert.ToDouble(high + "." + low);
+                }
+            }
+
+            return position;
         }
     }
 

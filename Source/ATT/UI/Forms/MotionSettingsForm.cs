@@ -427,7 +427,7 @@ namespace ATT.UI.Forms
             double targetPosition = TeachingPositionList.Where(x => x.Name == TeachingPositionType.ToString()).First().GetTargetPosition(AxisName.X);
             var movingParam = TeachingPositionList.Where(x => x.Name == TeachingPositionType.ToString()).First().GetMovingParams(AxisName.X);
 
-            AxisHandler.AxisList[(int)AxisName.X].MoveTo(targetPosition, movingParam);
+            AxisHandler.AxisList[(int)AxisName.X].StartAbsoluteMove(targetPosition, movingParam);
         }
 
         private void lblServoOnOffX_Click(object sender, EventArgs e)
@@ -463,7 +463,7 @@ namespace ATT.UI.Forms
             double targetPosition = TeachingPositionList.Where(x => x.Name == TeachingPositionType.ToString()).First().GetTargetPosition(AxisName.Y);
             var movingParam = TeachingPositionList.Where(x => x.Name == TeachingPositionType.ToString()).First().GetMovingParams(AxisName.Y);
 
-            AxisHandler.AxisList[(int)AxisName.Y].MoveTo(targetPosition, movingParam);
+            AxisHandler.AxisList[(int)AxisName.Y].StartAbsoluteMove(targetPosition, movingParam);
         }
 
         private void lblServoOnOffY_Click(object sender, EventArgs e)

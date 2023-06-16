@@ -212,11 +212,11 @@ namespace Jastech.Apps.Winform.UI.Controls
             while (_isRepeat)
             {
 
-                SelectedAxis.MoveTo(repeatParam.EndPosition, movingParam);
+                SelectedAxis.StartAbsoluteMove(repeatParam.EndPosition, movingParam);
                 while (!SelectedAxis.WaitForDone())
                     System.Threading.Thread.Sleep(Convert.ToInt16(movingParam.AfterWaitTime));
 
-                SelectedAxis.MoveTo(repeatParam.StartPosition, movingParam);
+                SelectedAxis.StartAbsoluteMove(repeatParam.StartPosition, movingParam);
                 while (!SelectedAxis.WaitForDone())
                     System.Threading.Thread.Sleep(Convert.ToInt16(movingParam.AfterWaitTime));
 

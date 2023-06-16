@@ -37,9 +37,7 @@ namespace Jastech.Apps.Winform.UI.Controls
         private MarkDirection _curDirection = MarkDirection.Left;
         #endregion
 
-        private CogPatternMatchingParamControl ParamControl { get; set; } = new CogPatternMatchingParamControl();
-
-        //private List<PreAlignParam> PreAlignList { get; set; } = null;
+        private CogPatternMatchingParamControl ParamControl { get; set; } = new CogPatternMatchingParamControl() { Dock = DockStyle.Fill };
 
         private Unit CurrentUnit { get; set; } = null;
 
@@ -63,13 +61,12 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         private void AddControl()
         {
-            ParamControl.Dock = DockStyle.Fill;
             ParamControl.GetOriginImageHandler += PreAlignControl_GetOriginImageHandler;
-            ParamControl.TestActionEvent += PatternControl_TestActionEvent;
+            ParamControl.TestActionEvent += PreAlignControl_TestActionEvent;
             pnlParam.Controls.Add(ParamControl);
         }
 
-        private void PatternControl_TestActionEvent()
+        private void PreAlignControl_TestActionEvent()
         {
             Inspection();
         }
@@ -93,6 +90,7 @@ namespace Jastech.Apps.Winform.UI.Controls
                 form.ShowDialog();
                 return;
             }
+
             VisionProPatternMatchingParam inspParam = currentParam.DeepCopy();
             ICogImage copyCogImage = cogImage.CopyBase(CogImageCopyModeConstants.CopyPixels);
 

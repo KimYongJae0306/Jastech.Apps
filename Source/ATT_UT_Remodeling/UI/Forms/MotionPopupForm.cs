@@ -390,7 +390,7 @@ namespace ATT_UT_Remodeling.UI.Forms
             double targetPosition = TeachingPositionList.Where(x => x.Name == TeachingPositionType.ToString()).First().GetTargetPosition(AxisName.X);
             var movingParam = TeachingPositionList.Where(x => x.Name == TeachingPositionType.ToString()).First().GetMovingParams(AxisName.X);
 
-            AxisHandler.AxisList[(int)AxisName.X].MoveTo(targetPosition, movingParam);
+            AxisHandler.AxisList[(int)AxisName.X].StartAbsoluteMove(targetPosition, movingParam);
         }
 
         private void lblTargetPositionZ_Click(object sender, EventArgs e)

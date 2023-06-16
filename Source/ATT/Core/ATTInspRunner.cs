@@ -1335,7 +1335,7 @@ namespace ATT.Core
                 Stopwatch sw = new Stopwatch();
                 sw.Restart();
 
-                manager.MoveTo(UnitName.Unit0, teachingPos, axis);
+                manager.StartAbsoluteMove(UnitName.Unit0, teachingPos, axis);
 
                 while (manager.IsAxisInPosition(UnitName.Unit0, teachingPos, axis) == false)
                 {

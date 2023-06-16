@@ -81,6 +81,7 @@
   <ItemGroup>
     <Compile Include="AreaCamera.cs" />
     <Compile Include="AreaCameraManager.cs" />
+    <Compile Include="Core\Calibrations\VisionXCalibration.cs" />
     <Compile Include="LAFManager.cs" />
     <Compile Include="LineCamera.cs" />
     <Compile Include="LineCameraManager.cs" />
@@ -91,6 +92,12 @@
     <Compile Include="Service\Plc\PlcAddressMap.cs" />
     <Compile Include="Service\Plc\PlcAddressService.cs" />
     <Compile Include="TeachingUIManager.cs" />
+    <Compile Include="UI\Controls\VisionCalibrationControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UI\Controls\VisionCalibrationControl.Designer.cs">
+      <DependentUpon>VisionCalibrationControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="UI\Forms\InspectionTeachingForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -376,6 +383,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UI\Controls\AutoFocusControl.resx">
       <DependentUpon>AutoFocusControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\Controls\VisionCalibrationControl.resx">
+      <DependentUpon>VisionCalibrationControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\Controls\LogControl.resx">
       <DependentUpon>LogControl.cs</DependentUpon>
