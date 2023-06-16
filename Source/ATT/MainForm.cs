@@ -52,6 +52,8 @@ namespace ATT
 
         private void MainForm_Load(object sender, EventArgs e)
         {
+            PlcStatusForm fro = new PlcStatusForm();
+            fro.ShowDialog();
             AddControls();
             SelectMainPage();
 

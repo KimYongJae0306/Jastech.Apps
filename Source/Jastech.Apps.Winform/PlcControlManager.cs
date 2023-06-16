@@ -1,4 +1,5 @@
-﻿using Jastech.Apps.Winform.Service.Plc;
+﻿using Jastech.Apps.Winform.Core;
+using Jastech.Apps.Winform.Service.Plc;
 using Jastech.Apps.Winform.Service.Plc.Maps;
 using Jastech.Framework.Device.Plcs;
 using Jastech.Framework.Device.Plcs.Melsec;
@@ -15,8 +16,6 @@ namespace Jastech.Apps.Winform
 {
     public partial class PlcControlManager
     {
-        private PlcAddressStatus Status { get; set; } = new PlcAddressStatus();
-
         private ParserType ParserType { get; set; } = ParserType.Binary;
 
         private PlcAddressService PlcAddressService { get; set; } = new PlcAddressService();
@@ -128,9 +127,20 @@ namespace Jastech.Apps.Winform
         {
             string value = "";
             lock (PlcAddressService.AddressMapList)
-                value = PlcAddressService.AddressMapList.Where(x => x.Name == map.ToString()).First().Value;
+            {
+                if(PlcAddressService.AddressMapList.Count() > 0)
+                    value = PlcAddressService.AddressMapList.Where(x => x.Name == map.ToString()).First().Value;
+            }
 
             return value;
+        }
+
+        public PlcAddressMap GetAddressMap(PlcCommonMap map)
+        {
+            lock (PlcAddressService.AddressMapList)
+            {
+                return PlcAddressService.AddressMapList.Where(x => x.Name == map.ToString()).First();
+            }
         }
 
         private void ReadCommand()
@@ -142,7 +152,35 @@ namespace Jastech.Apps.Winform
             }
         }
 
-        private void WriteAlive()
+        public void ClearAddress(PlcCommonMap commonMap, int length = 1)
+        {
+            var map = PlcControlManager.Instance().GetAddressMap(commonMap);
+            if (DeviceManager.Instance().PlcHandler.Count > 0)
+            {
+                var plc = DeviceManager.Instance().PlcHandler.First() as MelsecPlc;
+
+                PlcDataStream stream = new PlcDataStream();
+
+                if (plc.MelsecParser.ParserType == ParserType.Binary)
+                {
+                    for (int i = 0; i < length; i++)
+                    {
+                        stream.AddSwap32BitData(0);
+                    }
+                }
+                else
+                {
+                    for (int i = 0; i < length; i++)
+                    {
+                        stream.Add32BitData(0);
+                    }
+                }
+
+                plc.Write("D" + map.AddressNum, stream.Data);
+            }
+        }
+
+        private void WritePcAlive()
         {
             if (DeviceManager.Instance().PlcHandler.Count > 0)
             {
@@ -161,10 +199,194 @@ namespace Jastech.Apps.Winform
             }
             // plc.Write("D" + PlcCommonMap.PC_Alive, );
         }
+
+        public void WritePcReady(MachineStatus machineStatus)
+        {
+            int value = machineStatus == MachineStatus.RUN ? 9000 : 0;
+            var map = PlcControlManager.Instance().GetAddressMap(PlcCommonMap.PC_Ready);
+
+            if (DeviceManager.Instance().PlcHandler.Count > 0)
+            {
+                var plc = DeviceManager.Instance().PlcHandler.First() as MelsecPlc;
+
+                PlcDataStream stream = new PlcDataStream();
+
+                if (plc.MelsecParser.ParserType == ParserType.Binary)
+                    stream.AddSwap32BitData(value);
+                else
+                    stream.Add32BitData(value);
+
+                plc.Write("D" + map.AddressNum, stream.Data);
+            }
+        }
+
+        public void WritePcStatusCommon(StatusCommon status)
+        {
+            var map = PlcControlManager.Instance().GetAddressMap(PlcCommonMap.PC_Status_Common);
+            if (DeviceManager.Instance().PlcHandler.Count > 0)
+            {
+                var plc = DeviceManager.Instance().PlcHandler.First() as MelsecPlc;
+
+                PlcDataStream stream = new PlcDataStream();
+
+                if (plc.MelsecParser.ParserType == ParserType.Binary)
+                    stream.AddSwap32BitData((int)status);
+                else
+                    stream.Add32BitData((int)status);
+
+                plc.Write("D" + map.AddressNum, stream.Data);
+            }
+        }
+
+        public void WritePcErrorCode()
+        {
+            var map = PlcControlManager.Instance().GetAddressMap(PlcCommonMap.PC_ErrorCode);
+            if (DeviceManager.Instance().PlcHandler.Count > 0)
+            {
+                var plc = DeviceManager.Instance().PlcHandler.First() as MelsecPlc;
+                int errorCode = 0; // error 기준 성립 후 함수화 진행해야함
+
+                PlcDataStream stream = new PlcDataStream();
+
+                if (plc.MelsecParser.ParserType == ParserType.Binary)
+                    stream.AddSwap32BitData(errorCode);
+                else
+                    stream.Add32BitData(errorCode);
+
+                plc.Write("D" + map.AddressNum, stream.Data);
+            }
+        }
+
+        public void WritePcCommand(PcCommand command)
+        {
+            var map = PlcControlManager.Instance().GetAddressMap(PlcCommonMap.PC_Command);
+            if (DeviceManager.Instance().PlcHandler.Count > 0)
+            {
+                var plc = DeviceManager.Instance().PlcHandler.First() as MelsecPlc;
+
+                PlcDataStream stream = new PlcDataStream();
+
+                if (plc.MelsecParser.ParserType == ParserType.Binary)
+                    stream.AddSwap32BitData((int)command);
+                else
+                    stream.Add32BitData((int)command);
+
+                plc.Write("D" + map.AddressNum, stream.Data);
+            }
+        }
+
+        public void WritePcCommand(PlcCommand command)
+        {
+            var map = PlcControlManager.Instance().GetAddressMap(PlcCommonMap.PC_Command);
+            if (DeviceManager.Instance().PlcHandler.Count > 0)
+            {
+                var plc = DeviceManager.Instance().PlcHandler.First() as MelsecPlc;
+
+                PlcDataStream stream = new PlcDataStream();
+
+                if (plc.MelsecParser.ParserType == ParserType.Binary)
+                    stream.AddSwap32BitData((int)command);
+                else
+                    stream.Add32BitData((int)command);
+
+                plc.Write("D" + map.AddressNum, stream.Data);
+            }
+        }
+
+        public void WritePcStatus(PlcCommand command)
+        {
+            var map = PlcControlManager.Instance().GetAddressMap(PlcCommonMap.PC_Status);
+            if (DeviceManager.Instance().PlcHandler.Count > 0)
+            {
+                var plc = DeviceManager.Instance().PlcHandler.First() as MelsecPlc;
+
+                PlcDataStream stream = new PlcDataStream();
+
+                if (plc.MelsecParser.ParserType == ParserType.Binary)
+                    stream.AddSwap32BitData((int)command);
+                else
+                    stream.Add32BitData((int)command);
+
+                plc.Write("D" + map.AddressNum, stream.Data);
+            }
+        }
+
+        public void WriteMoveRequest()
+        {
+            var map = PlcControlManager.Instance().GetAddressMap(PlcCommonMap.PC_Move_REQ);
+            if (DeviceManager.Instance().PlcHandler.Count > 0)
+            {
+                var plc = DeviceManager.Instance().PlcHandler.First() as MelsecPlc;
+
+                int value = 5;
+                PlcDataStream stream = new PlcDataStream();
+
+                if (plc.MelsecParser.ParserType == ParserType.Binary)
+                    stream.AddSwap32BitData((int)value);
+                else
+                    stream.Add32BitData((int)value);
+
+                plc.Write("D" + map.AddressNum, stream.Data);
+            }
+        }
+
+        public void WriteAlignData(double alignDataX, double alignDataY, double alignDataT)
+        {
+            SplitDoulbe(alignDataX, out int alignDataX_H, out int alignDataX_L);
+            SplitDoulbe(alignDataY, out int alignDataY_H, out int alignDataY_L);
+            SplitDoulbe(alignDataT, out int alignDataT_H, out int alignDataT_L);
+
+            var map = PlcControlManager.Instance().GetAddressMap(PlcCommonMap.PC_AlignDataX_L);
+            if (DeviceManager.Instance().PlcHandler.Count > 0)
+            {
+                var plc = DeviceManager.Instance().PlcHandler.First() as MelsecPlc;
+                PlcDataStream stream = new PlcDataStream();
+
+                if (plc.MelsecParser.ParserType == ParserType.Binary)
+                {
+                    stream.AddSwap32BitData(alignDataX_L);
+                    stream.AddSwap32BitData(alignDataX_H);
+                    stream.AddSwap32BitData(alignDataY_L);
+                    stream.AddSwap32BitData(alignDataY_H);
+                    stream.AddSwap32BitData(alignDataT_L);
+                    stream.AddSwap32BitData(alignDataT_H);
+                }
+                else
+                {
+                    stream.Add32BitData(alignDataX_L);
+                    stream.Add32BitData(alignDataX_H);
+                    stream.Add32BitData(alignDataY_L);
+                    stream.Add32BitData(alignDataY_H);
+                    stream.Add32BitData(alignDataT_L);
+                    stream.Add32BitData(alignDataT_H);
+                }
+                plc.Write("D" + map.AddressNum, stream.Data);
+            }
+        }
     }
 
     public partial class PlcControlManager
     {
+        public void SplitDoulbe(double value, out int high, out int low)
+        {
+            high = 0;
+            low = 0;
+            string valueString = value.ToString("0.000");
+            int index = valueString.IndexOf('.');
+
+            if (index > 0)
+            {
+                string highString = valueString.Substring(0, index);
+                string lowString = valueString.Substring(index + 1, valueString.Length - index - 1);
+                high = Convert.ToInt32(highString);
+                low = Convert.ToInt32(lowString);
+            }
+            else
+            {
+                high = Convert.ToInt32(valueString);
+            }
+        }
+
         private byte[] SplitData(byte[] dataBuffer, int addressNumber, int wordSize, int minAddressNumber)
         {
             byte[] resultByte = null;

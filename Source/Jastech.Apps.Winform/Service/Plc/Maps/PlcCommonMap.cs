@@ -131,4 +131,36 @@ namespace Jastech.Apps.Winform.Service.Plc.Maps
         PLC_OffsetDataY,
         PLC_OffsetDataT,
     }
+
+    public enum StatusCommon
+    {
+        Time_Change = 6000,
+        Model_Change = 8000,
+        Model_Create = 8200,
+        Model_Edit = 8400,
+        Command_Clear = 9000,
+        Light_Off = 9100,
+    }
+
+    public enum PcCommand
+    {
+        ServoOn_1 = 1000,           // Z축#1 Servo On
+        ServoReset_1 = 1001,        // Z축#1 Servo Reset
+        ServoOn_2 = 1010,           // Z축#1 Servo On
+        ServoReset_2 = 1011,        // Z축#1 Servo Reset
+    }
+
+    public enum PlcCommand
+    {
+        StartInspection = 1100,     // 검사 시작 신호
+        Origin_All = 1400,          // 모든 축 Homming
+        Origin_X = 1401,            // X 축 Homming
+        Origin_Z1 = 1402,           // Z1 축 Homming
+        Origin_Z2 = 1403,           // Z2 축 Homming
+        Move_StandbyPos = 1500,     // X축을 Standby 위치로 이동
+        Move_Left_AlignPos = 1501,  // X축을 Left Align 위치로 이동
+        Move_Right_AlignPos = 1502, // X축을 Right Align 위치로 이동
+        Move_ScanStartPos = 1503,   // X축을 ScanStart 위치로 이동
+        Move_AlignDataX = 1504,     // X축 Align 보정량 이동
+    }
 }

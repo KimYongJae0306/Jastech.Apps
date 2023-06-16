@@ -90,7 +90,6 @@
     <Compile Include="Service\Plc\Maps\PlcResultMap.cs" />
     <Compile Include="Service\Plc\PlcAddressMap.cs" />
     <Compile Include="Service\Plc\PlcAddressService.cs" />
-    <Compile Include="Service\Plc\PlcAddressStatus.cs" />
     <Compile Include="TeachingUIManager.cs" />
     <Compile Include="UI\Forms\InspectionTeachingForm.cs">
       <SubType>Form</SubType>
@@ -523,7 +522,9 @@
   <ItemGroup>
     <None Include="Resources\Next.png" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <None Include="Resources\Exit_White.png" />
+  </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Cancel.png" />
   </ItemGroup>
