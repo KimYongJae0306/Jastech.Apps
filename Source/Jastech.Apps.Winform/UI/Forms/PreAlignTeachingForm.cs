@@ -147,6 +147,7 @@ namespace Jastech.Apps.Winform.UI.Forms
 
                 case DisplayType.Calibration:
                     btnCalibration.BackColor = _selectedColor;
+                    VisionCalibrationControl.SetParams(CurrentUnit);
                     VisionCalibrationControl.SetAxisHandler(AxisHandler);
                     VisionCalibrationControl.SetAreaCamera(AreaCamera);
                     pnlTeach.Controls.Add(VisionCalibrationControl);

@@ -625,7 +625,7 @@ namespace ATT_UT_Remodeling.Core
 
                 case SeqStep.SEQ_DELETE_DATA:
 
-                    SeqStep = SeqStep.SEQ_DELETE_DATA;
+                    SeqStep = SeqStep.SEQ_CHECK_STANDBY;
                     break;
 
                 case SeqStep.SEQ_CHECK_STANDBY:

@@ -7,18 +7,12 @@ using Jastech.Framework.Imaging.VisionPro;
 using Jastech.Framework.Winform.Forms;
 using Jastech.Framework.Winform.VisionPro.Controls;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using Jastech.Apps.Structure;
 using Cognex.VisionPro.PMAlign;
-using Jastech.Apps.Winform.Core.Calibrations;
 using Jastech.Framework.Device.Motions;
+using Jastech.Apps.Winform.Core.Calibrations;
 
 namespace Jastech.Apps.Winform.UI.Controls
 {
@@ -32,6 +26,8 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         #region 속성
         private CogPatternMatchingParamControl ParamControl { get; set; } = new CogPatternMatchingParamControl() { Dock = DockStyle.Fill };
+
+        private Unit CurrentUnit { get; set; } = null;
 
         private AlgorithmTool Algorithm = new AlgorithmTool();
 
@@ -56,6 +52,7 @@ namespace Jastech.Apps.Winform.UI.Controls
         {
             AddControl();
             InitializeUI();
+            UpdateParam();
             SelectCalibrationMode(CalibrationMode.XYT);
         }
 
@@ -80,6 +77,28 @@ namespace Jastech.Apps.Winform.UI.Controls
         private void VisionCalibrationControl_TestActionEvent()
         {
             Inspection();
+        }
+
+        public void SetParams(Unit unit)
+        {
+            if (unit == null)
+                return;
+
+            CurrentUnit = unit;
+            UpdateParam();
+        }
+
+        private void UpdateParam()
+        {
+            if (CurrentUnit == null)
+                return;
+
+            var param = CurrentUnit.GetCalibrationMark();
+
+            if (param != null)
+                ParamControl.UpdateData(param.InspParam);
+
+            DrawROI();
         }
 
         private void Inspection()
@@ -178,9 +197,9 @@ namespace Jastech.Apps.Winform.UI.Controls
             if (VisionXCalibration == null)
                 return;
 
-            VisionXCalibration.CalSeqRun();
+            VisionXCalibration.StartCalSeqRun();
             VisionXCalibration.SetParam(ParamControl.GetCurrentParam());
-            VisionXCalibration.SetCalibrationMode(CalibrationMode.XY);
+            VisionXCalibration.SetCalibrationMode(CalibrationMode.XYT);
         }
 
         private void lblStop_Click(object sender, EventArgs e)

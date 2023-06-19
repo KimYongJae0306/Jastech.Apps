@@ -3,6 +3,7 @@ using Jastech.Apps.Structure.Data;
 using Jastech.Apps.Structure.Parameters;
 using Jastech.Apps.Structure.VisionTool;
 using Jastech.Apps.Winform;
+using Jastech.Apps.Winform.Core.Calibrations;
 using Jastech.Apps.Winform.Settings;
 using Jastech.Framework.Algorithms.Akkon.Parameters;
 using Jastech.Framework.Config;
@@ -37,6 +38,12 @@ namespace ATT_UT_Remodeling.Core
 
                 unit.Name = unitName.ToString(); // 임시 -> Apps에서 변경
 
+                // Calibration Mark 등록
+                CalibrationParam calibrationParam = new CalibrationParam();
+                calibrationParam.MarkName = "Calibration";
+                calibrationParam.InspParam.Name = "Calibration";
+                unit.SetCalibraionPram(calibrationParam);
+
                 // LineScan 조명 Parameter 생성
                 unit.LightParams.AddRange(CreateLightParameter());
 
@@ -53,8 +60,6 @@ namespace ATT_UT_Remodeling.Core
                     preAlignRightMark.InspParam.Name = MarkDirection.Right.ToString() + type.ToString();
                     preAlignRightMark.Direction = MarkDirection.Right;
 
-                    //unit.PreAlignParamList.Add(preAlignLeftMark);
-                    //unit.PreAlignParamList.Add(preAlignRightMark);
                     unit.AddPreAlignParam(preAlignLeftMark);
                     unit.AddPreAlignParam(preAlignRightMark);
                 }
@@ -211,6 +216,10 @@ namespace ATT_UT_Remodeling.Core
             {
                 string unitDir = rootDir + @"\Unit_" + unit.Name;
 
+                // Calibration Mark Load
+                string calibrationPath = unitDir + @"\Calibration";
+                unit.CalibrationParam.InspParam.LoadTool(calibrationPath);
+
                 string preAlignPath = unitDir + @"\PreAlign";
 
                 //PreAlign Load
@@ -236,8 +245,8 @@ namespace ATT_UT_Remodeling.Core
                     foreach (var alignParam in tab.AlignParamList)
                         alignParam.CaliperParams.LoadTool(tabAlignDir, alignParam.Name);
                 }
-
             }
+
             return model;
         }
 
@@ -251,9 +260,13 @@ namespace ATT_UT_Remodeling.Core
             foreach (var unit in attInspModel.GetUnitList())
             {
                 string unitDir = Path.GetDirectoryName(filePath) + @"\Unit_" + unit.Name;
-                string preAlignPath = unitDir + @"\PreAlign";
+
+                // Calibration Mark 저장
+                string calibrationPath = unitDir + @"\Calibration";
+                unit.CalibrationParam.InspParam.SaveTool(calibrationPath);
 
                 //PreAlign 저장
+                string preAlignPath = unitDir + @"\PreAlign";
                 foreach (var item in unit.PreAlignParamList)
                     item.InspParam.SaveTool(preAlignPath);
 

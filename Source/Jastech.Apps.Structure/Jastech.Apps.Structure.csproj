@@ -113,6 +113,7 @@
     <Compile Include="Parameters\AlignParam.cs" />
     <Compile Include="AppsInspModel.cs" />
     <Compile Include="Data\TeachingData.cs" />
+    <Compile Include="Parameters\CalibrationParam.cs" />
     <Compile Include="Parameters\MarkParam.cs" />
     <Compile Include="ModelManager.cs" />
     <Compile Include="Parameters\PreAlignParam.cs" />
@@ -167,5 +168,6 @@
       <Version>13.0.3</Version>
     </PackageReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

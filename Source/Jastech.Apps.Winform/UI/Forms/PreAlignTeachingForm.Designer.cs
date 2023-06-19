@@ -712,6 +712,8 @@
             this.ForeColor = System.Drawing.Color.White;
             this.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.Name = "PreAlignTeachingForm";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+            this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.PreAlignTeachingForm_FormClosing);
             this.Load += new System.EventHandler(this.PreAlignTeachingForm_Load);
             this.tlpPreAlignTeaching.ResumeLayout(false);

@@ -1,15 +1,10 @@
-﻿using Emgu.CV.Flann;
-using Jastech.Apps.Structure.Parameters;
+﻿using Jastech.Apps.Structure.Parameters;
+using Jastech.Apps.Winform.Core.Calibrations;
 using Jastech.Framework.Device.LightCtrls;
-using Jastech.Framework.Imaging.VisionPro.VisionAlgorithms.Parameters;
 using Jastech.Framework.Structure;
-using Jastech.Framework.Util.Helper;
 using Newtonsoft.Json;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Jastech.Apps.Structure.Data
 {
@@ -20,6 +15,9 @@ namespace Jastech.Apps.Structure.Data
 
         [JsonProperty]
         public List<PreAlignParam> PreAlignParamList { get; set; } = new List<PreAlignParam>();
+
+        [JsonProperty]
+        public CalibrationParam CalibrationParam { get; set; } = new CalibrationParam();
 
         [JsonProperty]
         public List<LightParameter> LightParams { get; set; } = new List<LightParameter>();   // LineScan 용 조명 파라메터
@@ -36,6 +34,7 @@ namespace Jastech.Apps.Structure.Data
             Unit unit = new Unit();
             unit.Name = Name;
             unit.PreAlignParamList = PreAlignParamList.Select(x => x.DeepCopy()).ToList();
+            unit.CalibrationParam = CalibrationParam.DeepCopy();
             unit.LightParams = LightParams.Select(x => x.DeepCopy()).ToList();
             unit.TabList = TabList.Select(x => x.DeepCopy()).ToList();
             unit.TeachingInfoList = TeachingInfoList.Select(x => x.DeepCopy()).ToList();
@@ -51,6 +50,7 @@ namespace Jastech.Apps.Structure.Data
                 tab.Dispose();
 
             PreAlignParamList.Clear();
+            CalibrationParam.Dispose();
             TabList.Clear();
         }
 
@@ -97,6 +97,17 @@ namespace Jastech.Apps.Structure.Data
         public PreAlignParam GetPreAlignMark(MarkDirection direction, MarkName markName)
         {
             return PreAlignParamList.Where(x => x.Direction == direction && x.Name == markName).First();
+        }
+
+        public void SetCalibraionPram(CalibrationParam calibrationParam)
+        {
+            if (calibrationParam != null)
+                CalibrationParam = calibrationParam;
+        }
+
+        public CalibrationParam GetCalibrationMark()
+        {
+            return CalibrationParam;
         }
     }
 }
