@@ -37,9 +37,13 @@
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.label1 = new System.Windows.Forms.Label();
             this.btnModelPage = new System.Windows.Forms.Button();
+            this.tableLayoutPanel4 = new System.Windows.Forms.TableLayoutPanel();
+            this.label4 = new System.Windows.Forms.Label();
+            this.btnOpenPLCViewer = new System.Windows.Forms.Button();
             this.tableLayoutPanel3.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
+            this.tableLayoutPanel4.SuspendLayout();
             this.SuspendLayout();
             // 
             // tableLayoutPanel3
@@ -165,19 +169,62 @@
             this.btnModelPage.UseVisualStyleBackColor = false;
             this.btnModelPage.Click += new System.EventHandler(this.btnModelPage_Click);
             // 
+            // tableLayoutPanel4
+            // 
+            this.tableLayoutPanel4.ColumnCount = 1;
+            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel4.Controls.Add(this.label4, 0, 0);
+            this.tableLayoutPanel4.Controls.Add(this.btnOpenPLCViewer, 0, 1);
+            this.tableLayoutPanel4.Location = new System.Drawing.Point(701, 29);
+            this.tableLayoutPanel4.Name = "tableLayoutPanel4";
+            this.tableLayoutPanel4.RowCount = 2;
+            this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
+            this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel4.Size = new System.Drawing.Size(200, 101);
+            this.tableLayoutPanel4.TabIndex = 7;
+            // 
+            // label4
+            // 
+            this.label4.BackColor = System.Drawing.Color.DarkSlateGray;
+            this.label4.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.label4.Font = new System.Drawing.Font("맑은 고딕", 14F, System.Drawing.FontStyle.Bold);
+            this.label4.ForeColor = System.Drawing.Color.White;
+            this.label4.Location = new System.Drawing.Point(3, 0);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(194, 30);
+            this.label4.TabIndex = 0;
+            this.label4.Text = "PLC";
+            this.label4.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // btnOpenPLCViewer
+            // 
+            this.btnOpenPLCViewer.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(34)))), ((int)(((byte)(34)))), ((int)(((byte)(34)))));
+            this.btnOpenPLCViewer.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.btnOpenPLCViewer.Font = new System.Drawing.Font("맑은 고딕", 13F, System.Drawing.FontStyle.Bold);
+            this.btnOpenPLCViewer.ForeColor = System.Drawing.Color.White;
+            this.btnOpenPLCViewer.Location = new System.Drawing.Point(3, 33);
+            this.btnOpenPLCViewer.Name = "btnOpenPLCViewer";
+            this.btnOpenPLCViewer.Size = new System.Drawing.Size(194, 65);
+            this.btnOpenPLCViewer.TabIndex = 1;
+            this.btnOpenPLCViewer.Text = "Viewer";
+            this.btnOpenPLCViewer.UseVisualStyleBackColor = false;
+            this.btnOpenPLCViewer.Click += new System.EventHandler(this.btnOpenPLCViewer_Click);
+            // 
             // DataPage
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
+            this.Controls.Add(this.tableLayoutPanel4);
             this.Controls.Add(this.tableLayoutPanel3);
             this.Controls.Add(this.tableLayoutPanel2);
             this.Controls.Add(this.tableLayoutPanel1);
             this.Name = "DataPage";
-            this.Size = new System.Drawing.Size(702, 461);
+            this.Size = new System.Drawing.Size(1061, 461);
             this.tableLayoutPanel3.ResumeLayout(false);
             this.tableLayoutPanel2.ResumeLayout(false);
             this.tableLayoutPanel1.ResumeLayout(false);
+            this.tableLayoutPanel4.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -193,5 +240,8 @@
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Button btnModelPage;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel4;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Button btnOpenPLCViewer;
     }
 }

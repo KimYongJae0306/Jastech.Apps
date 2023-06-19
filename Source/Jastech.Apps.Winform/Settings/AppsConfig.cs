@@ -142,13 +142,13 @@ namespace Jastech.Apps.Winform.Settings
         public int ResultStart { get; set; }
 
         [JsonProperty]
-        public int ResultAlignStart { get; set; }
+        public int ResultStart_Align { get; set; }
 
         [JsonProperty]
-        public int ResultAkkonStart { get; set; }
+        public int ResultStart_Akkon { get; set; }
 
         [JsonProperty]
-        public int ResultPreAlignStart { get; set; }
+        public int ResultStart_PreAlign { get; set; }
 
         [JsonProperty]
         public int ResultTabToTabInterval { get; set; }

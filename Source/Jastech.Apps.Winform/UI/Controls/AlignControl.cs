@@ -500,7 +500,7 @@ namespace Jastech.Apps.Winform.UI.Controls
             double judgementX = Resolution_um * CurrentTab.AlignSpec.LeftSpecX_um;
 
             AlignResult alignResultLeftX = AlgorithmTool.RunMainLeftAlignX(cogImage, CurrentTab, null, null, judgementX);
-            double value_um = alignResultLeftX.ResultValue / Resolution_um;
+            double value_um = alignResultLeftX.ResultValue_pixel / Resolution_um;
 
             lblLeftX_Judgement.Text = alignResultLeftX.Judgement.ToString();
             if (alignResultLeftX.Judgement != Judgement.FAIL)
@@ -523,7 +523,7 @@ namespace Jastech.Apps.Winform.UI.Controls
             AlignResult alignResultLeftY = AlgorithmTool.RunMainLeftAlignY(cogImage, CurrentTab, null, null, judgementY);
 
             lblLeftY_Judgement.Text = alignResultLeftY.Judgement.ToString();
-            double value_um = alignResultLeftY.ResultValue / Resolution_um;
+            double value_um = alignResultLeftY.ResultValue_pixel / Resolution_um;
 
             if (alignResultLeftY.Judgement != Judgement.FAIL)
             {
@@ -543,7 +543,7 @@ namespace Jastech.Apps.Winform.UI.Controls
             double judgementX = Resolution_um * CurrentTab.AlignSpec.RightSpecX_um;
 
             AlignResult alignResultRightX = AlgorithmTool.RunMainRightAlignX(cogImage, CurrentTab, null, null, judgementX);
-            double value_um = alignResultRightX.ResultValue / Resolution_um;
+            double value_um = alignResultRightX.ResultValue_pixel / Resolution_um;
 
             lblRightX_Judgement.Text = alignResultRightX.Judgement.ToString();
             if (alignResultRightX.Judgement != Judgement.FAIL)
@@ -564,7 +564,7 @@ namespace Jastech.Apps.Winform.UI.Controls
             double judgementY = Resolution_um * CurrentTab.AlignSpec.RightSpecY_um;
 
             AlignResult alignResultRightY = AlgorithmTool.RunMainRightAlignY(cogImage, CurrentTab, null, null, judgementY);
-            double value_um = alignResultRightY.ResultValue / Resolution_um;
+            double value_um = alignResultRightY.ResultValue_pixel / Resolution_um;
 
             lblRightY_Judgement.Text = alignResultRightY.Judgement.ToString();
             if (alignResultRightY.Judgement != Judgement.FAIL)
