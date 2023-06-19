@@ -672,7 +672,7 @@ namespace Jastech.Apps.Winform.Core.Calibrations
 
                 case CalSeqStep.CAL_SEQ_STOP:
 
-                    CalSeqStep = CalSeqStep.IDle;
+                    CalSeqStep = CalSeqStep.CAL_SEQ_STOP;
                     break;
 
                 default:
