@@ -192,7 +192,7 @@ namespace ATT.Core
 
             #region Center Align
             // EnableAlign false 일때 구조 생각
-            inspResult.CenterX = Math.Abs(inspResult.LeftAlignX.ResultValue - inspResult.RightAlignX.ResultValue);
+            inspResult.CenterX = Math.Abs(inspResult.LeftAlignX.ResultValue_pixel - inspResult.RightAlignX.ResultValue_pixel);
             #endregion
 
             if (AppsConfig.Instance().EnableAkkon)
@@ -256,12 +256,12 @@ namespace ATT.Core
             akkonResult.RightCount_Max = (int)rightCountList.Max();
 
             akkonResult.LengthJudgement = (leftLengthNG || rightLengthNG) == true ? Judgement.NG : Judgement.OK;
-            akkonResult.Length_Left_Avg = (float)leftLengthList.Average();
-            akkonResult.Length_Left_Min = (float)leftLengthList.Min();
-            akkonResult.Length_Left_Max = (float)leftLengthList.Max();
-            akkonResult.Length_Right_Avg = (float)rightLengthList.Average();
-            akkonResult.Length_Right_Min = (float)rightLengthList.Min();
-            akkonResult.Length_Right_Max = (float)rightLengthList.Max();
+            akkonResult.Length_Left_Avg_um = (float)leftLengthList.Average();
+            akkonResult.Length_Left_Min_um = (float)leftLengthList.Min();
+            akkonResult.Length_Left_Max_um = (float)leftLengthList.Max();
+            akkonResult.Length_Right_Avg_um = (float)rightLengthList.Average();
+            akkonResult.Length_Right_Min_um = (float)rightLengthList.Min();
+            akkonResult.Length_Right_Max_um = (float)rightLengthList.Max();
 
             akkonResult.LeadResultList = leadResultList;
 
@@ -887,10 +887,10 @@ namespace ATT.Core
                 alignInfo.PanelID = inspResult.Cell_ID;
                 alignInfo.TabNo = item.TabNo;
                 alignInfo.Judgement = item.Judgement;
-                alignInfo.LX = item.LeftAlignX.ResultValue;
-                alignInfo.LY = item.LeftAlignY.ResultValue;
-                alignInfo.RX = item.RightAlignX.ResultValue;
-                alignInfo.RY = item.RightAlignY.ResultValue;
+                alignInfo.LX = item.LeftAlignX.ResultValue_pixel;
+                alignInfo.LY = item.LeftAlignY.ResultValue_pixel;
+                alignInfo.RX = item.RightAlignX.ResultValue_pixel;
+                alignInfo.RY = item.RightAlignY.ResultValue_pixel;
                 alignInfo.CX = item.CenterX;
 
                 dailyData.AddAlignInfo(alignInfo);
@@ -981,11 +981,11 @@ namespace ATT.Core
                     inspResult.Cell_ID,                                                             // Panel ID
                     tabNo.ToString(),                                                               // Tab
                     inspResult.TabResultList[tabNo].AlignJudgment.ToString(),                       // Judge
-                    inspResult.TabResultList[tabNo].LeftAlignX.ResultValue.ToString("F3"),          // Left Align X
-                    inspResult.TabResultList[tabNo].LeftAlignY.ResultValue.ToString("F3"),          // Left Align Y
+                    inspResult.TabResultList[tabNo].LeftAlignX.ResultValue_pixel.ToString("F3"),          // Left Align X
+                    inspResult.TabResultList[tabNo].LeftAlignY.ResultValue_pixel.ToString("F3"),          // Left Align Y
                     inspResult.TabResultList[tabNo].CenterX.ToString("F3"),                         // Center Align X
-                    inspResult.TabResultList[tabNo].RightAlignX.ResultValue.ToString("F3"),         // Right Align X
-                    inspResult.TabResultList[tabNo].RightAlignY.ResultValue.ToString("F3"),         // Right Align Y
+                    inspResult.TabResultList[tabNo].RightAlignX.ResultValue_pixel.ToString("F3"),         // Right Align X
+                    inspResult.TabResultList[tabNo].RightAlignY.ResultValue_pixel.ToString("F3"),         // Right Align Y
                 };
 
                 dataList.Add(tabData);
@@ -1078,11 +1078,11 @@ namespace ATT.Core
                     inspResult.Cell_ID,                                                             // Panel ID
                     tabNo.ToString(),                                                               // Tab
                     inspResult.TabResultList[tabNo].AlignJudgment.ToString(),                       // Judge
-                    inspResult.TabResultList[tabNo].LeftAlignX.ResultValue.ToString("F3"),          // Left Align X
-                    inspResult.TabResultList[tabNo].LeftAlignY.ResultValue.ToString("F3"),          // Left Align Y
+                    inspResult.TabResultList[tabNo].LeftAlignX.ResultValue_pixel.ToString("F3"),          // Left Align X
+                    inspResult.TabResultList[tabNo].LeftAlignY.ResultValue_pixel.ToString("F3"),          // Left Align Y
                     inspResult.TabResultList[tabNo].CenterX.ToString("F3"),                         // Center Align X
-                    inspResult.TabResultList[tabNo].RightAlignX.ResultValue.ToString("F3"),         // Right Align X
-                    inspResult.TabResultList[tabNo].RightAlignY.ResultValue.ToString("F3"),         // Right Align Y
+                    inspResult.TabResultList[tabNo].RightAlignX.ResultValue_pixel.ToString("F3"),         // Right Align X
+                    inspResult.TabResultList[tabNo].RightAlignY.ResultValue_pixel.ToString("F3"),         // Right Align Y
                 };
 
                 dataList.Add(tabData);
@@ -1241,11 +1241,11 @@ namespace ATT.Core
                     (tabNo + 5).ToString(),                                                         // Strength Min
                     (tabNo + 6).ToString("F3"),                                                     // Strength Avg
 
-                    inspResult.TabResultList[tabNo].LeftAlignX.ResultValue.ToString("F3"),          // Left Align X
-                    inspResult.TabResultList[tabNo].LeftAlignY.ResultValue.ToString("F3"),          // Left Align Y
+                    inspResult.TabResultList[tabNo].LeftAlignX.ResultValue_pixel.ToString("F3"),          // Left Align X
+                    inspResult.TabResultList[tabNo].LeftAlignY.ResultValue_pixel.ToString("F3"),          // Left Align Y
                     inspResult.TabResultList[tabNo].CenterX.ToString("F3"),                         // Center Align X
-                    inspResult.TabResultList[tabNo].RightAlignX.ResultValue.ToString("F3"),         // Right Align X
-                    inspResult.TabResultList[tabNo].RightAlignY.ResultValue.ToString("F3"),         // Right Align Y
+                    inspResult.TabResultList[tabNo].RightAlignX.ResultValue_pixel.ToString("F3"),         // Right Align X
+                    inspResult.TabResultList[tabNo].RightAlignY.ResultValue_pixel.ToString("F3"),         // Right Align Y
 
                     (tabNo + 7).ToString(),                                                         // ACF Head
                     (tabNo + 8).ToString(),                                                         // Pre Head

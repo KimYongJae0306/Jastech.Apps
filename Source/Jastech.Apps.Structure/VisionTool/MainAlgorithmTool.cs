@@ -150,10 +150,10 @@ namespace Jastech.Apps.Structure.VisionTool
                     count++;
                 }
 
-                result.ResultValue = temp / count;
+                result.ResultValue_pixel = temp / count;
                 result.AvgCenterX = GetCenterX(panelCenterXList);
 
-                if (Math.Abs(result.ResultValue) <= judegementX)
+                if (Math.Abs(result.ResultValue_pixel) <= judegementX)
                     result.Judgement = Judgement.OK;
                 else
                     result.Judgement = Judgement.NG;
@@ -201,9 +201,9 @@ namespace Jastech.Apps.Structure.VisionTool
 
                 float newY = panelY - fpcY;
 
-                result.ResultValue = newY;
+                result.ResultValue_pixel = newY;
 
-                if (Math.Abs(result.ResultValue) <= judgementY)
+                if (Math.Abs(result.ResultValue_pixel) <= judgementY)
                     result.Judgement = Judgement.OK;
                 else
                     result.Judgement = Judgement.NG;

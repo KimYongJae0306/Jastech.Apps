@@ -12,6 +12,8 @@ namespace Jastech.Apps.Winform.Service.Plc
 {
     public partial class PlcAddressService
     {
+        public byte[] OrgData { get; set; }
+
         public List<PlcAddressMap> ResultMapList { get; set; } = new List<PlcAddressMap>();
 
         public List<PlcAddressMap> AddressMapList { get; set; } = new List<PlcAddressMap>();
@@ -59,10 +61,12 @@ namespace Jastech.Apps.Winform.Service.Plc
             int tabTotabInterval = AppsConfig.Instance().PlcAddressInfo.ResultTabToTabInterval; // AddressMap 참고 
 
             // Align Results
-            CreateAlignResult(AppsConfig.Instance().PlcAddressInfo.ResultAlignStart, tabTotabInterval);
+            CreateAlignResult(AppsConfig.Instance().PlcAddressInfo.ResultStart_Align, tabTotabInterval);
 
             // Akkon Results
-            CreateAkkonResult(AppsConfig.Instance().PlcAddressInfo.ResultAkkonStart, tabTotabInterval);
+            CreateAkkonResult(AppsConfig.Instance().PlcAddressInfo.ResultStart_Akkon, tabTotabInterval);
+
+            CreatePreAlign(AppsConfig.Instance().PlcAddressInfo.ResultStart_PreAlign);
         }
 
         private void CreateAlignResult(int alignStartIndex, int tabTotabInterval)
@@ -129,6 +133,14 @@ namespace Jastech.Apps.Winform.Service.Plc
                 ResultMapList.Add(new PlcAddressMap((PlcResultMap)Enum.Parse(typeof(PlcResultMap), akkonLengthRightMin), WordType.DEC, addressIndex + 5, 1));
                 ResultMapList.Add(new PlcAddressMap((PlcResultMap)Enum.Parse(typeof(PlcResultMap), akkonLengthRightMax), WordType.DEC, addressIndex + 6, 1));
             }
+        }
+
+        private void CreatePreAlign(int preAlignStartIndex)
+        {
+            ResultMapList.Add(new PlcAddressMap(PlcResultMap.PreAlign0_Left_L, WordType.DEC, preAlignStartIndex, 1));
+            ResultMapList.Add(new PlcAddressMap(PlcResultMap.PreAlign0_Left_H, WordType.DEC, preAlignStartIndex, 1));
+            ResultMapList.Add(new PlcAddressMap(PlcResultMap.PreAlign0_Right_L, WordType.DEC, preAlignStartIndex, 1));
+            ResultMapList.Add(new PlcAddressMap(PlcResultMap.PreAlign0_Right_H, WordType.DEC, preAlignStartIndex, 1));
         }
 
         private void CreateAddressMap()

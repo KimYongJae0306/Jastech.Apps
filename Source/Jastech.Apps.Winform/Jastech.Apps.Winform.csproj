@@ -92,6 +92,18 @@
     <Compile Include="Service\Plc\PlcAddressMap.cs" />
     <Compile Include="Service\Plc\PlcAddressService.cs" />
     <Compile Include="TeachingUIManager.cs" />
+    <Compile Include="UI\Controls\PlcCommandControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UI\Controls\PlcCommandControl.Designer.cs">
+      <DependentUpon>PlcCommandControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Controls\PlcModelInfoControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UI\Controls\PlcModelInfoControl.Designer.cs">
+      <DependentUpon>PlcModelInfoControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="UI\Controls\VisionCalibrationControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -383,6 +395,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UI\Controls\AutoFocusControl.resx">
       <DependentUpon>AutoFocusControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\Controls\PlcCommandControl.resx">
+      <DependentUpon>PlcCommandControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\Controls\PlcModelInfoControl.resx">
+      <DependentUpon>PlcModelInfoControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\Controls\VisionCalibrationControl.resx">
       <DependentUpon>VisionCalibrationControl.cs</DependentUpon>

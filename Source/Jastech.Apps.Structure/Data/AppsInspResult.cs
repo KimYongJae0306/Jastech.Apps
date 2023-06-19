@@ -277,7 +277,7 @@ namespace Jastech.Apps.Structure.Data
         #region 속성
         public Judgement Judgement { get; set; }
 
-        public float ResultValue { get; set; } = 0.0f;
+        public float ResultValue_pixel { get; set; } = 0.0f;
 
         public float AvgCenterX { get; set; }
 
@@ -313,7 +313,7 @@ namespace Jastech.Apps.Structure.Data
         public AlignResult DeepCopy()
         {
             AlignResult result = new AlignResult();
-            result.ResultValue = ResultValue;
+            result.ResultValue_pixel = ResultValue_pixel;
             result.Panel = Panel.DeepCopy();
             result.Fpc = Fpc.DeepCopy();
 

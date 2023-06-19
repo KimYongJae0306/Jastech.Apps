@@ -22,6 +22,8 @@ namespace ATT_UT_IPAD.UI.Pages
 
         public event ApplyModelDelegate ApplyModelEventHandler;
 
+        private PlcStatusForm _plcStatusForm { get; set; } = null;
+
         public DataPage()
         {
             InitializeComponent();
@@ -64,6 +66,18 @@ namespace ATT_UT_IPAD.UI.Pages
         public void SetInspModelService(ATTInspModelService inspModelService)
         {
             ATTInspModelService = inspModelService;
+        }
+
+        private void btnOpenPLCViewer_Click(object sender, EventArgs e)
+        {
+            if (_plcStatusForm == null)
+            {
+                _plcStatusForm = new PlcStatusForm();
+                _plcStatusForm.CloseEventDelegate = () => this._plcStatusForm = null;
+                _plcStatusForm.Show();
+            }
+            else
+                _plcStatusForm.Focus();
         }
     }
 }
