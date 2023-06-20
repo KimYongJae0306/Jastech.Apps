@@ -421,8 +421,8 @@ namespace AkkonTester.UI.Pages
             {
                 string index = result.Index.ToString();
                 string count = result.DetectCount.ToString();
-                string lengthX = result.LengthX.ToString("F2");
-                string lengthY = result.LengthY.ToString("F2");
+                string lengthX = result.LengthX_um.ToString("F2");
+                string lengthY = result.LengthY_um.ToString("F2");
                 string stdDev = result.StdDev.ToString("F2");
 
                 string message = string.Format("Count : {0} LengthX : {1}, LengthY : {2}, StdDev : {3}",count, lengthX, lengthY, stdDev);
