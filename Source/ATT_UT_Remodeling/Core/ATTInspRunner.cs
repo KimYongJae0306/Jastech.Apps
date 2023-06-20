@@ -9,6 +9,7 @@ using Jastech.Apps.Structure.VisionTool;
 using Jastech.Apps.Winform;
 using Jastech.Apps.Winform.Core;
 using Jastech.Apps.Winform.Service;
+using Jastech.Apps.Winform.Service.Plc.Maps;
 using Jastech.Apps.Winform.Settings;
 using Jastech.Framework.Algorithms.Akkon;
 using Jastech.Framework.Algorithms.Akkon.Parameters;
@@ -20,6 +21,7 @@ using Jastech.Framework.Imaging;
 using Jastech.Framework.Imaging.Helper;
 using Jastech.Framework.Imaging.Result;
 using Jastech.Framework.Imaging.VisionPro;
+using Jastech.Framework.Imaging.VisionPro.VisionAlgorithms.Results;
 using Jastech.Framework.Util.Helper;
 using System;
 using System.Collections.Generic;
@@ -90,6 +92,27 @@ namespace ATT_UT_Remodeling.Core
         #endregion
 
         #region 메서드
+        private void RunPreAlign(AppsInspResult inspResult)
+        {
+            MainAlgorithmTool algorithmTool = new MainAlgorithmTool();
+            algorithmTool.RunPreAlign(ref inspResult);
+
+            //if (inspResult.PreAlignResult.FoundedMark.Left.Judgement == Judgement.OK && inspResult.PreAlignResult.FoundedMark.Right.Judgement == Judgement.OK)
+            //    inspResult.PreAlignResult.Judgement = Judgement.OK;
+            //else
+            //    inspResult.PreAlignResult.Judgement = Judgement.NG;
+        }
+
+        private VisionProPatternMatchingResult RunPreAlignMark(Unit unit, ICogImage cogImage, MarkDirection markDirection)
+        {
+            var preAlignParam = unit.PreAlignParamList.Where(x => x.Direction == markDirection).FirstOrDefault();
+
+            AlgorithmTool algorithmTool = new AlgorithmTool();
+
+            VisionProPatternMatchingResult result = algorithmTool.RunPatternMatch(cogImage, preAlignParam.InspParam);
+
+            return result;
+        }
 
         private void Run(ATTInspTab inspTab)
         {
@@ -111,7 +134,6 @@ namespace ATT_UT_Remodeling.Core
 
             #region Mark 검사
             algorithmTool.MainMarkInspect(inspTab.MergeCogImage, tab, ref inspResult);
-
 
             if (inspResult.IsMarkGood() == false)
             {
@@ -500,31 +522,104 @@ namespace ATT_UT_Remodeling.Core
             if (tab == null)
                 return;
 
+            var areaCamera = AreaCameraManager.Instance().GetAreaCamera("PreAlign");
+            if (areaCamera == null)
+                return;
+
+            var lineCamera = LineCameraManager.Instance().GetLineCamera("LineCamera");
+            var laf = LAFManager.Instance().GetLAFCtrl("Laf");
+            if (laf == null)
+                return;
+
             string message = string.Empty;
 
             switch (SeqStep)
             {
                 case SeqStep.SEQ_IDLE:
 
-                    SeqStep = SeqStep.SEQ_START;
-                    break;
-
-                case SeqStep.SEQ_START:
-
-                    // break;
                     SeqStep = SeqStep.SEQ_READY;
                     break;
 
                 case SeqStep.SEQ_READY:
-                    if (MoveTo(TeachingPosType.Stage1_Scan_Start, out string error1) == false)
+                    // 조명
+
+                    //PlcControlManager.Instance().ClearAlignData();
+
+                    // LAF
+                    LAFManager.Instance().AutoFocusOnOff("Laf", false);
+                    laf.SetMotionAbsoluteMove(0);
+
+                    SeqStep = SeqStep.SEQ_START;
+                    break;
+
+                case SeqStep.SEQ_START:
+                    // 프리얼라인 시작 신호 대기
+                    string preAlignStart = PlcControlManager.Instance().GetAddressMap(PlcCommonMap.PLC_Command_Common).Value;
+                    if (Convert.ToInt32(preAlignStart) == (int)PlcCommand.StartPreAlign_AutoRun)
+                        break;
+
+                    SeqStep = SeqStep.SEQ_PREALIGN_R;
+                    break;
+
+                case SeqStep.SEQ_PREALIGN_R:
+                    if (MoveTo(TeachingPosType.Stage1_PreAlign_Right, out string preAlignRight) == false)
                     {
                         // Alarm
                         break;
                     }
+
+                    // 카메라
+                    areaCamera.Camera.SetExposureTime(0);
+                    areaCamera.Camera.SetAnalogGain(0);
+
+                    // 조명
+                    //preAlignParam.LightParams.Where(x => x.Map == )
+
+                    // Grab
+                    var preAlignLeftImage = GetAreaCameraImage(areaCamera.Camera);
+                    AppsInspResult.PreAlignResult.FoundedMark.Right = RunPreAlignMark(unit, preAlignLeftImage, MarkDirection.Right);
+
+                    SeqStep = SeqStep.SEQ_PREALIGN_L;
+                    break;
+
+                case SeqStep.SEQ_PREALIGN_L:
+                    if (MoveTo(TeachingPosType.Stage1_PreAlign_Left, out string preAlignLeft) == false)
+                    {
+                        // Alarm
+                        break;
+                    }
+
+                    // Grab
+                    var preAlignRightImage = GetAreaCameraImage(areaCamera.Camera);
+                    AppsInspResult.PreAlignResult.FoundedMark.Left = RunPreAlignMark(unit, preAlignRightImage, MarkDirection.Right);
+
+                    SeqStep = SeqStep.SEQ_SEND_PREALIGN_DATA;
+                    break;
+
+                case SeqStep.SEQ_SEND_PREALIGN_DATA:
+                    // 프리얼라인 데이터 전송
+                    //if (AppsInspResult.PreAlignResult.FoundedMark.Left.Judgement == Judgement.OK && AppsInspResult.PreAlignResult.FoundedMark.Right.Judgement == Judgement.OK)
+                    //    AppsInspResult.PreAlignResult.Judgement = Judgement.OK;
+                    //else
+                    //    AppsInspResult.PreAlignResult.Judgement = Judgement.NG;
+                    RunPreAlign(AppsInspResult);
+
+                    PlcControlManager.Instance().WritePreAlignResult(0, 0);
+
                     SeqStep = SeqStep.SEQ_WAITING;
                     break;
 
                 case SeqStep.SEQ_WAITING:
+                    // 스캔 시작 커맨드 수신 대기
+                    PlcControlManager.Instance().GetAddressMap(PlcCommonMap.PLC_Command);
+                    
+
+                    if (MoveTo(TeachingPosType.Stage1_Scan_Start, out string scanStart) == false)
+                    {
+                        // Alarm
+                        break;
+                    }
+
                     //if (IsPanelIn == false)
                     //    break;
                     SeqStep = SeqStep.SEQ_SCAN_READY;
@@ -550,7 +645,6 @@ namespace ATT_UT_Remodeling.Core
                 case SeqStep.SEQ_SCAN_START:
                     IsGrabDone = false;
                     // 조명 코드 작성 요망
-                    var lineCamera = LineCameraManager.Instance().GetLineCamera("LineCamera");
                     lineCamera.SetOperationMode(TDIOperationMode.TDI);
                     lineCamera.StartGrab();
                     Logger.Write(LogType.Seq, "Start Grab.");
@@ -1355,14 +1449,29 @@ namespace ATT_UT_Remodeling.Core
 
             return true;
         }
+
+        private ICogImage GetAreaCameraImage(Camera camera)
+        {
+            camera.GrabOnce();
+            byte[] dataArrayRight = camera.GetGrabbedImage();
+            Thread.Sleep(50);
+
+            // Right PreAlign Pattern Matching
+            var cogImage = VisionProImageHelper.ConvertImage(dataArrayRight, camera.ImageWidth, camera.ImageHeight, camera.ColorFormat);
+
+            return cogImage;
+        }
         #endregion
     }
 
     public enum SeqStep
     {
         SEQ_IDLE,
-        SEQ_START,
         SEQ_READY,
+        SEQ_START,
+        SEQ_PREALIGN_R,
+        SEQ_PREALIGN_L,
+        SEQ_SEND_PREALIGN_DATA,
         SEQ_WAITING,
         SEQ_SCAN_READY,
         SEQ_SCAN_START,

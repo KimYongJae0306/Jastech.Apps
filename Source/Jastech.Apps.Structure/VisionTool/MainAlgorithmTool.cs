@@ -3,10 +3,12 @@ using Emgu.CV;
 using Emgu.CV.CvEnum;
 using Jastech.Apps.Structure.Data;
 using Jastech.Apps.Structure.Parameters;
+using Jastech.Framework.Algorithms.Akkon.Results;
 using Jastech.Framework.Imaging.Helper;
 using Jastech.Framework.Imaging.Result;
 using Jastech.Framework.Imaging.VisionPro;
 using Jastech.Framework.Imaging.VisionPro.VisionAlgorithms.Parameters;
+using Jastech.Framework.Imaging.VisionPro.VisionAlgorithms.Results;
 using Jastech.Framework.Util.Helper;
 using System;
 using System.Collections.Generic;
@@ -20,6 +22,14 @@ namespace Jastech.Apps.Structure.VisionTool
 {
     public partial class MainAlgorithmTool : AlgorithmTool
     {
+        public void RunPreAlign(ref AppsInspResult inspResult)
+        {
+            if (inspResult.PreAlignResult.FoundedMark.Left.Judgement == Judgement.OK && inspResult.PreAlignResult.FoundedMark.Right.Judgement == Judgement.OK)
+                inspResult.PreAlignResult.Judgement = Judgement.OK;
+            else
+                inspResult.PreAlignResult.Judgement = Judgement.NG;
+        }
+
         public void MainMarkInspect(ICogImage cogImage, Tab tab, ref TabInspResult tabInspResult)
         {
             tabInspResult.FpcMark = RunFpcMark(cogImage, tab);
@@ -298,7 +308,6 @@ namespace Jastech.Apps.Structure.VisionTool
             }
             return result;
         }
-
     }
 
     public partial class MainAlgorithmTool : AlgorithmTool
