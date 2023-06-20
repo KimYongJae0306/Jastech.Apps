@@ -23,6 +23,8 @@ namespace Jastech.Apps.Structure.Data
 
         public string Cell_ID { get; set; } = "";
 
+        public MarkResult PreAlignResult { get; set; } = new MarkResult();
+
         public List<TabInspResult> TabResultList { get; set; } = new List<TabInspResult>();
 
         public void Dispose()
@@ -203,19 +205,13 @@ namespace Jastech.Apps.Structure.Data
             result.CenterX = CenterX;
 
             return result;
-
         }
     }
+
     public class MarkResult
     {
         #region 속성
         public Judgement Judgement { get; set; } = Judgement.OK;
-
-        public double TranslateX { get; set; } = 0;
-
-        public double TranslateY { get; set; } = 0;
-
-        public double TranslateRotion { get; set; } = 0;
 
         public MarkMatchingResult FoundedMark { get; set; } = null;
 
@@ -234,9 +230,6 @@ namespace Jastech.Apps.Structure.Data
         {
             MarkResult result = new MarkResult();
             result.Judgement = Judgement;
-            result.TranslateX = TranslateX;
-            result.TranslateY = TranslateY;
-            result.TranslateRotion = TranslateRotion;
             result.FoundedMark = FoundedMark?.DeepCopy();
             result.FailMarks = FailMarks?.Select(x => x.DeepCopy()).ToList();
 
