@@ -266,7 +266,7 @@ namespace ATT_UT_Remodeling.Core
                     leftCountList.Add(leadResult.DetectCount);
 
                     leftLengthNG |= leadResult.LengthJudgement == Judgement.NG ? true : false;
-                    leftLengthList.Add(leadResult.LengthY);
+                    leftLengthList.Add(leadResult.LengthY_um);
                 }
                 else
                 {
@@ -274,7 +274,7 @@ namespace ATT_UT_Remodeling.Core
                     rightCountList.Add(leadResult.DetectCount);
 
                     rightLengthNG |= leadResult.LengthJudgement == Judgement.NG ? true : false;
-                    rightLengthList.Add(leadResult.LengthY);
+                    rightLengthList.Add(leadResult.LengthY_um);
                 }
             }
 

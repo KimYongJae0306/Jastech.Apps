@@ -8,6 +8,8 @@ using Jastech.Framework.Device.Grabbers;
 using Jastech.Framework.Device.LAFCtrl;
 using Jastech.Framework.Device.LightCtrls;
 using Jastech.Framework.Device.Motions;
+using Jastech.Framework.Device.Plcs.Melsec;
+using Jastech.Framework.Device.Plcs.Melsec.Parsers;
 using Jastech.Framework.Imaging;
 using Jastech.Framework.Matrox;
 using Jastech.Framework.Util.Helper;
@@ -95,6 +97,11 @@ namespace ATT_UT_IPAD
 
                 var akkonLaf = new VirtualLAFCtrl("Akkon");
                 config.Add(akkonLaf);
+
+                //Test 코드
+                AppsConfig.Instance().PlcAddressInfo.CommonStart = 1000;
+                var plc = new MelsecPlc("PLC", new SocketComm("192.168.125.1", 9011, SocketCommType.Udp), new MelsecBinaryParser());
+                config.Add(plc);
             }
             else
             {
@@ -137,6 +144,7 @@ namespace ATT_UT_IPAD
                 ////    BaudRate = 9600,
                 ////};
                 ////config.Add(laf2);
+                ///
             }
         }
 

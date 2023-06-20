@@ -391,5 +391,39 @@ namespace Jastech.Apps.Winform.UI.Controls
 
             PlcControlManager.Instance().WritePreAlignResult(leftScore, rightScore);
         }
+
+        private void btnCommand_Common_Click(object sender, EventArgs e)
+        {
+            PlcControlManager.Instance().ClearAddress(PlcCommonMap.PLC_Command_Common);
+        }
+
+        private void btnClearPlcStatus_Click(object sender, EventArgs e)
+        {
+            PlcControlManager.Instance().ClearAddress(PlcCommonMap.PLC_Status);
+        }
+
+        private void btnClearPlcCommand_Click(object sender, EventArgs e)
+        {
+            PlcControlManager.Instance().ClearAddress(PlcCommonMap.PLC_Command);
+        }
+
+        private void btnClearPlcMoveEnd_Click(object sender, EventArgs e)
+        {
+            PlcControlManager.Instance().ClearAddress(PlcCommonMap.PLC_Move_END);
+        }
+
+        private void btnClearPcData_Click(object sender, EventArgs e)
+        {
+            var startAddress = PlcControlManager.Instance().GetAddressMap(PlcCommonMap.PC_Alive);
+            var endAddress = PlcControlManager.Instance().GetAddressMap(PlcCommonMap.PC_AlignDataT_H);
+            int length = endAddress.AddressNum + endAddress.WordSize - startAddress.AddressNum;
+
+            PlcControlManager.Instance().ClearAddress(PlcCommonMap.PC_Alive, length);
+        }
+
+        private void btnWriteCurrentModel_Click(object sender, EventArgs e)
+        {
+            PlcControlManager.Instance().WriteCurrentModelName(lblCurrentModel.Text);
+        }
     }
 }
