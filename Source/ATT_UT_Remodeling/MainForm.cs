@@ -2,6 +2,7 @@
 using ATT_UT_Remodeling.UI.Pages;
 using Jastech.Apps.Structure;
 using Jastech.Apps.Structure.Data;
+using Jastech.Apps.Structure.Parameters;
 using Jastech.Apps.Winform;
 using Jastech.Framework.Config;
 using Jastech.Framework.Device.Grabbers;
@@ -222,6 +223,13 @@ namespace ATT_UT_Remodeling
         public void UpdateMainResult(AppsInspResult result)
         {
             MainPageControl.UpdateMainResult(result);
+        }
+
+        private void lblSystemName_Click(object sender, EventArgs e)
+        {
+            CalibrationResult calibrationResult = new CalibrationResult();
+
+            var matrix = calibrationResult.GetCalibrationResultMatrix();
         }
     }
 }

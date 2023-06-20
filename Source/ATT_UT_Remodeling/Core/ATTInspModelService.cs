@@ -137,25 +137,25 @@ namespace ATT_UT_Remodeling.Core
         {
             var currentAxisHandler = MotionManager.Instance().GetAxisHandler(AxisHandlerName.Handler0);
 
-            TeachingInfo t1 = new TeachingInfo();
-            t1.CreateTeachingInfo(TeachingPosType.Standby.ToString(), "Standby", currentAxisHandler);
-            unit.AddTeachingInfo(t1);
+            TeachingInfo standbyPosition = new TeachingInfo();
+            standbyPosition.CreateTeachingInfo(TeachingPosType.Standby.ToString(), "Standby", currentAxisHandler);
+            unit.AddTeachingInfo(standbyPosition);
 
-            TeachingInfo t2 = new TeachingInfo();
-            t2.CreateTeachingInfo(TeachingPosType.Stage1_PreAlign_Left.ToString(), "Stage#1 PreAlign Left Position", currentAxisHandler);
-            unit.AddTeachingInfo(t2);
+            TeachingInfo prealignLeftPosition = new TeachingInfo();
+            prealignLeftPosition.CreateTeachingInfo(TeachingPosType.Stage1_PreAlign_Left.ToString(), "Stage#1 PreAlign Left Position", currentAxisHandler);
+            unit.AddTeachingInfo(prealignLeftPosition);
 
-            TeachingInfo t3 = new TeachingInfo();
-            t3.CreateTeachingInfo(TeachingPosType.Stage1_PreAlign_Right.ToString(), "Stage#1 PreAlign Right Position", currentAxisHandler);
-            unit.AddTeachingInfo(t3);
+            TeachingInfo prealignRightPosition = new TeachingInfo();
+            prealignRightPosition.CreateTeachingInfo(TeachingPosType.Stage1_PreAlign_Right.ToString(), "Stage#1 PreAlign Right Position", currentAxisHandler);
+            unit.AddTeachingInfo(prealignRightPosition);
 
-            TeachingInfo t4 = new TeachingInfo();
-            t4.CreateTeachingInfo(TeachingPosType.Stage1_Scan_Start.ToString(), "Stage#1 ScanStart", currentAxisHandler);
-            unit.AddTeachingInfo(t4);
+            TeachingInfo scanStartPosition = new TeachingInfo();
+            scanStartPosition.CreateTeachingInfo(TeachingPosType.Stage1_Scan_Start.ToString(), "Stage#1 ScanStart", currentAxisHandler);
+            unit.AddTeachingInfo(scanStartPosition);
 
-            TeachingInfo t5 = new TeachingInfo();
-            t5.CreateTeachingInfo(TeachingPosType.Stage1_Scan_End.ToString(), "Stage#1 ScanEnd", currentAxisHandler);
-            unit.AddTeachingInfo(t5);
+            TeachingInfo scanEndPotisition = new TeachingInfo();
+            scanEndPotisition.CreateTeachingInfo(TeachingPosType.Stage1_Scan_End.ToString(), "Stage#1 ScanEnd", currentAxisHandler);
+            unit.AddTeachingInfo(scanEndPotisition);
         }
 
         // PreAlign 검사 시

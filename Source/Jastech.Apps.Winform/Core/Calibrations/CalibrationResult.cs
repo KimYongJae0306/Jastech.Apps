@@ -1,4 +1,5 @@
-﻿using Jastech.Framework.Config;
+﻿using Jastech.Apps.Winform.Service;
+using Jastech.Framework.Config;
 using Jastech.Framework.Util.Helper;
 using Newtonsoft.Json;
 using System;
@@ -138,7 +139,16 @@ namespace Jastech.Apps.Structure.Parameters
 
         public void LoadCalibrationData()
         {
+            string filePath = Path.Combine(ConfigSet.Instance().Path.Temp, FileName);
+            JsonConvertHelper.LoadToExistingTarget<CalibrationResult>(filePath, this);
+        }
 
+        public List<double> GetCalibrationResultMatrix()
+        {
+            if (CalibrationResultMatrix.Count > 0)
+                return CalibrationResultMatrix;
+
+            return null;
         }
 
         public PointF ConvertVisionToReal(PointF visionCooridnates)

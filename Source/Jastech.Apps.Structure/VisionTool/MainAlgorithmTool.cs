@@ -22,6 +22,14 @@ namespace Jastech.Apps.Structure.VisionTool
 {
     public partial class MainAlgorithmTool : AlgorithmTool
     {
+        public void ExecuteAlignment(ref AppsInspResult inspResult)
+        {
+            PointF leftMark = inspResult.PreAlignResult.FoundedMark.Left.MaxMatchPos.FoundPos;
+            PointF rightMark = inspResult.PreAlignResult.FoundedMark.Right.MaxMatchPos.FoundPos;
+
+            //double dx = 
+        }
+
         public void RunPreAlign(ref AppsInspResult inspResult)
         {
             if (inspResult.PreAlignResult.FoundedMark.Left.Judgement == Judgement.OK && inspResult.PreAlignResult.FoundedMark.Right.Judgement == Judgement.OK)

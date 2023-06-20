@@ -1,6 +1,7 @@
 ﻿using ATT_UT_Remodeling.Core;
 using Jastech.Apps.Structure;
 using Jastech.Apps.Structure.Data;
+using Jastech.Apps.Structure.Parameters;
 using Jastech.Apps.Winform;
 using Jastech.Apps.Winform.Core;
 using Jastech.Apps.Winform.Service;
@@ -77,6 +78,7 @@ namespace ATT_UT_Remodeling
 
             //AppsMotionManager.Instance().CreateAxisHanlder();
             CreateAxisHanlder();
+            LoadCalibrationData();
 
             LAFManager.Instance().Initialize();
             LineCameraManager.Instance().Initialize();
@@ -216,6 +218,12 @@ namespace ATT_UT_Remodeling
                     _inspRunner.SeqStop();
                 }
             }
+        }
+
+        public void LoadCalibrationData()
+        {
+            CalibrationResult calibrationResult = new CalibrationResult();
+            calibrationResult.LoadCalibrationData();
         }
         #endregion
     }
