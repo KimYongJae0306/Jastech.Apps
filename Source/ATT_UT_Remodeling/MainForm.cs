@@ -224,12 +224,5 @@ namespace ATT_UT_Remodeling
         {
             MainPageControl.UpdateMainResult(result);
         }
-
-        private void lblSystemName_Click(object sender, EventArgs e)
-        {
-            CalibrationResult calibrationResult = new CalibrationResult();
-
-            var matrix = calibrationResult.GetCalibrationResultMatrix();
-        }
     }
 }

@@ -13,8 +13,6 @@ namespace Jastech.Apps.Winform.Service
     {
         private static DailyInfo DailyInfo { get; set; } = new DailyInfo();
 
-        private static DailyData DailyData { get; set; } = new DailyData();
-
         public static void Save()
         {
             DailyInfo.Save();

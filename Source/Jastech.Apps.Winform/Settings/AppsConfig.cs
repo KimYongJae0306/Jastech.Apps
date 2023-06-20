@@ -1,6 +1,8 @@
 ﻿using Cognex.VisionPro;
 using Jastech.Apps.Structure;
 using Jastech.Apps.Structure.Data;
+using Jastech.Apps.Structure.Parameters;
+using Jastech.Apps.Winform.Core.Calibrations;
 using Jastech.Framework.Comm;
 using Jastech.Framework.Comm.Protocol;
 using Jastech.Framework.Config;
@@ -92,6 +94,7 @@ namespace Jastech.Apps.Winform.Settings
 
             return _instance;
         }
+
         public void Initialize()
         {
             string dirPath = ConfigSet.Instance().Path.Config;

@@ -452,7 +452,6 @@
             this.lblSystemName.TabIndex = 1;
             this.lblSystemName.Text = "ATT Inspection";
             this.lblSystemName.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.lblSystemName.Click += new System.EventHandler(this.lblSystemName_Click);
             // 
             // tmrMainForm
             // 

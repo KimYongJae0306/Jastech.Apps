@@ -1,5 +1,6 @@
 ﻿using Jastech.Apps.Structure.Data;
 using Jastech.Apps.Winform;
+using Jastech.Apps.Winform.Core.Calibrations;
 using Jastech.Apps.Winform.Settings;
 using Jastech.Framework.Comm;
 using Jastech.Framework.Config;
@@ -51,6 +52,8 @@ namespace ATT_UT_IPAD
                 ConfigSet.Instance().MachineConfigCreated += ConfigSet_MachineConfigCreated;
                 ConfigSet.Instance().Initialize();
                 AppsConfig.Instance().Initialize();
+                CalibrationData.Instance().LoadCalibrationData();
+                
 
                 UserManager.Instance().Initialize();
 

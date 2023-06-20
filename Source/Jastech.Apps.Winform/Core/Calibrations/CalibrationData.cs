@@ -1,4 +1,4 @@
-﻿using Jastech.Apps.Winform.Service;
+﻿using Jastech.Apps.Winform.Settings;
 using Jastech.Framework.Config;
 using Jastech.Framework.Util.Helper;
 using Newtonsoft.Json;
@@ -9,30 +9,41 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Windows.Forms;
 
-namespace Jastech.Apps.Structure.Parameters
+namespace Jastech.Apps.Winform.Core.Calibrations
 {
-    public class CalibrationResult
+    public class CalibrationData
     {
+        private static CalibrationData _instance = null;
+
         public string FileName { get; private set; } = "Calibration.cfg";
 
-        public List<MatrixPointResult> MatrixPointResultList { get; set; } = new List<MatrixPointResult>();
+        public List<MatrixPointResult> MatrixPointDataList { get; private set; } = new List<MatrixPointResult>();
 
         [JsonProperty]
-        public List<double> CalibrationResultMatrix { get; set; } = new List<double>();
+        public List<double> CalibrationMatrix { get; private set; } = new List<double>();
 
         [JsonProperty]
-        public double RotationCenterX { get; set; } = 0.0;
+        public double RotationCenterX { get; private set; } = 0.0;
 
         [JsonProperty]
-        public double RotationCenterY { get; set; } = 0.0;
+        public double RotationCenterY { get; private set; } = 0.0;
 
         [JsonProperty]
-        public double CalibrationStartPositionX { get; set; } = 0.0;
+        public double CalibrationStartPositionX { get; private set; } = 0.0;
 
         [JsonProperty]
-        public double CalibrationStartPositionY { get; set; } = 0.0;
+        public double CalibrationStartPositionY { get; private set; } = 0.0;
+
+        public static CalibrationData Instance()
+        {
+            if (_instance == null)
+            {
+                _instance = new CalibrationData();
+            }
+
+            return _instance;
+        }
 
         public void SetRotationCenter(double x, double y)
         {
@@ -68,10 +79,10 @@ namespace Jastech.Apps.Structure.Parameters
 
         public void SetCalibrationData(List<double> calibrationMatrix)
         {
-            if (CalibrationResultMatrix.Count > 0)
-                CalibrationResultMatrix.Clear();
+            if (CalibrationMatrix.Count > 0)
+                CalibrationMatrix.Clear();
 
-            CalibrationResultMatrix.AddRange(calibrationMatrix);
+            CalibrationMatrix.AddRange(calibrationMatrix);
         }
 
         public void SaveCalibrationResultData()
@@ -79,18 +90,18 @@ namespace Jastech.Apps.Structure.Parameters
             string filePath = Path.Combine(ConfigSet.Instance().Path.Temp, FileName);
             JsonConvertHelper.Save(filePath, this);
         }
-        
+
         public void SetCalibrationLogData(List<MatrixPointResult> matrixPointList)
         {
-            if (MatrixPointResultList.Count > 0)
-                MatrixPointResultList.Clear();
+            if (MatrixPointDataList.Count > 0)
+                MatrixPointDataList.Clear();
 
-            MatrixPointResultList.AddRange(matrixPointList);
+            MatrixPointDataList.AddRange(matrixPointList);
         }
 
         public void SaveCalibrationLogData(List<MatrixPointResult> matrixPointList)
         {
-            string filename = string.Format("Calibration_{0}.csv", DateTime.Now.ToShortDateString());
+            string filename = string.Format("Calibration_{0}.csv", DateTime.Now.ToString("yyyyMMdd_hhmmss"));
             string csvFile = Path.Combine(ConfigSet.Instance().Path.Temp, filename);
             if (File.Exists(csvFile) == false)
             {
@@ -102,6 +113,7 @@ namespace Jastech.Apps.Structure.Parameters
                     "Robot X",
                     "Robot Y",
                     "Robot T",
+                    "Score",
                     "Matrix",
                 };
 
@@ -112,17 +124,6 @@ namespace Jastech.Apps.Structure.Parameters
 
             for (int index = 0; index < matrixPointList.Count; index++)
             {
-                //List<string> datas = new List<string>
-                //{
-                //    index.ToString(),
-                //    matrixPointList[index].PixelX.ToString("F1"),
-                //    matrixPointList[index].PixelY.ToString("F1"),
-                //    matrixPointList[index].MotionX.ToString("F3"),
-                //    matrixPointList[index].MotionY.ToString("F3"),
-                //    matrixPointList[index].MotionT.ToString("F3"),
-                //    CalibrationResultMatrix[index].ToString("F6")
-                //};
-
                 List<string> datas = new List<string>();
 
                 datas.Add(index.ToString());
@@ -131,7 +132,10 @@ namespace Jastech.Apps.Structure.Parameters
                 datas.Add(matrixPointList[index].MotionX.ToString("F3"));
                 datas.Add(matrixPointList[index].MotionY.ToString("F3"));
                 datas.Add(matrixPointList[index].MotionT.ToString("F3"));
-                datas.Add(CalibrationResultMatrix[index].ToString("F6"));
+                datas.Add(matrixPointList[index].Score.ToString("F3"));
+                datas.Add(CalibrationMatrix[index].ToString("F6"));
+
+                dataList.Add(datas);
             }
 
             CSVHelper.WriteData(csvFile, dataList);
@@ -140,20 +144,20 @@ namespace Jastech.Apps.Structure.Parameters
         public void LoadCalibrationData()
         {
             string filePath = Path.Combine(ConfigSet.Instance().Path.Temp, FileName);
-            JsonConvertHelper.LoadToExistingTarget<CalibrationResult>(filePath, this);
+            JsonConvertHelper.LoadToExistingTarget<CalibrationData>(filePath, this);
         }
 
         public List<double> GetCalibrationResultMatrix()
         {
-            if (CalibrationResultMatrix.Count > 0)
-                return CalibrationResultMatrix;
+            if (CalibrationMatrix.Count > 0)
+                return CalibrationMatrix;
 
             return null;
         }
 
         public PointF ConvertVisionToReal(PointF visionCooridnates)
         {
-            if (CalibrationResultMatrix.Count <= 0)
+            if (CalibrationMatrix.Count <= 0)
                 return new PointF();
 
             PointF realCoordinates = new PointF();
@@ -161,8 +165,8 @@ namespace Jastech.Apps.Structure.Parameters
             double pX = visionCooridnates.X;
             double pY = visionCooridnates.Y;
 
-            realCoordinates.X = Convert.ToSingle((pX * CalibrationResultMatrix[0]) + (pY * CalibrationResultMatrix[1]) + CalibrationResultMatrix[2]);
-            realCoordinates.Y = Convert.ToSingle((pX * CalibrationResultMatrix[3]) + (pY * CalibrationResultMatrix[4]) + CalibrationResultMatrix[5]);
+            realCoordinates.X = Convert.ToSingle((pX * CalibrationMatrix[0]) + (pY * CalibrationMatrix[1]) + CalibrationMatrix[2]);
+            realCoordinates.Y = Convert.ToSingle((pX * CalibrationMatrix[3]) + (pY * CalibrationMatrix[4]) + CalibrationMatrix[5]);
 
             return realCoordinates;
         }

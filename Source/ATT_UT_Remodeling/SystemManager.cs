@@ -76,9 +76,7 @@ namespace ATT_UT_Remodeling
             DeviceManager.Instance().Initialized += SystemManager_Initialized;
             DeviceManager.Instance().Initialize(ConfigSet.Instance());
 
-            //AppsMotionManager.Instance().CreateAxisHanlder();
             CreateAxisHanlder();
-            LoadCalibrationData();
 
             LAFManager.Instance().Initialize();
             LineCameraManager.Instance().Initialize();
@@ -97,6 +95,7 @@ namespace ATT_UT_Remodeling
                     ModelManager.Instance().CurrentModel = _mainForm.ATTInspModelService.Load(filePath);
                 }
             }
+
             return true;
         }
 
@@ -140,9 +139,7 @@ namespace ATT_UT_Remodeling
             string dir = Path.Combine(ConfigSet.Instance().Path.Config, "AxisHanlder");
 
             if (Directory.Exists(dir) == false)
-            {
                 Directory.CreateDirectory(dir);
-            }
 
             string unit0FileName = string.Format("AxisHanlder_{0}.json", AxisHandlerName.Handler0);
             string unit0FilePath = Path.Combine(dir, unit0FileName);
@@ -165,13 +162,12 @@ namespace ATT_UT_Remodeling
                 JsonConvertHelper.LoadToExistingTarget<AxisHandler>(unit0FilePath, unit0);
 
                 foreach (var axis in unit0.AxisList)
-                {
                     axis.SetMotion(motion);
-                }
 
                 //AxisHandlerList.Add(unit0);
                 MotionManager.Instance().AxisHandlerList.Add(unit0);
             }
+
             return true;
         }
 
@@ -213,17 +209,10 @@ namespace ATT_UT_Remodeling
             {
                 MessageYesNoForm form = new MessageYesNoForm();
                 form.Message = "Do you want to Stop Auto Mode?";
-                if (form.ShowDialog() == DialogResult.Yes)
-                {
-                    _inspRunner.SeqStop();
-                }
-            }
-        }
 
-        public void LoadCalibrationData()
-        {
-            CalibrationResult calibrationResult = new CalibrationResult();
-            calibrationResult.LoadCalibrationData();
+                if (form.ShowDialog() == DialogResult.Yes)
+                    _inspRunner.SeqStop();
+            }
         }
         #endregion
     }

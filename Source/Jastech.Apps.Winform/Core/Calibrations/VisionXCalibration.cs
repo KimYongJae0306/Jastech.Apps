@@ -63,7 +63,7 @@ namespace Jastech.Apps.Winform.Core.Calibrations
 
         private double[] _calibrationResult = new double[MATRIX_DIMENSION];
 
-        public CalibrationResult CalibraionResult = new CalibrationResult();
+        public CalibrationData CalibrationData = new CalibrationData();
 
         private int _matrixStepPoint = 0;
         private List<MatrixPointResult> _matrixPointResultList = new List<MatrixPointResult>();
@@ -423,7 +423,7 @@ namespace Jastech.Apps.Winform.Core.Calibrations
                 case CalSeqStep.CAL_SEQ_T_INIT:
                     Logger.Write(LogType.Calibration, "Initialize calibration T.");
 
-                    CalibraionResult.SetCalibrationStartPosition(GetCurrentX(), GetCurrentY());
+                    CalibrationData.Instance().SetCalibrationStartPosition(GetCurrentX(), GetCurrentY());
 
                     if (MovePitchT == 0.0)
                     {
@@ -715,23 +715,24 @@ namespace Jastech.Apps.Winform.Core.Calibrations
                     // 조명 끄기
                     Logger.Write(LogType.Calibration, "Light off.");
 
-                    var matrixPointResultList = GetMatrixPointResutlList();
-
                     // 캘 데이터 셋
-                    CalibraionResult.SetCalibrationData(_calibrationResult.ToList());
-                    CalibraionResult.SetRotationCenter(_robotCenterX, _robotCenterY);
-                    CalibraionResult.SaveCalibrationResultData();
+                    CalibrationData.Instance().SetCalibrationData(_calibrationResult.ToList());
+                    CalibrationData.Instance().SetRotationCenter(_robotCenterX, _robotCenterY);
+                    
                     Logger.Write(LogType.Calibration, "Set calibration data.");
 
+                    var matrixPointResultList = GetMatrixPointResutlList();
+
                     // 캘 로그데이터 셋
-                    CalibraionResult.SetCalibrationLogData(matrixPointResultList);
+                    CalibrationData.Instance().SetCalibrationLogData(matrixPointResultList);
                     Logger.Write(LogType.Calibration, "Set calibration log.");
 
                     // 캘 데이터 세이브
+                    CalibrationData.Instance().SaveCalibrationResultData();
                     Logger.Write(LogType.Calibration, "Save calibration data.");
 
                     // 캘 로그데이터 세이브
-                    CalibraionResult.SaveCalibrationLogData(matrixPointResultList);
+                    CalibrationData.Instance().SaveCalibrationLogData(matrixPointResultList);
                     Logger.Write(LogType.Calibration, "Save calibration log.");
 
                     CalSeqStep = CalSeqStep.CAL_SEQ_STOP;

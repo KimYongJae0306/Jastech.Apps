@@ -22,21 +22,56 @@ namespace Jastech.Apps.Structure.VisionTool
 {
     public partial class MainAlgorithmTool : AlgorithmTool
     {
-        public void ExecuteAlignment(ref AppsInspResult inspResult)
+        public bool ExecuteAlignment(List<PointF> visionCoordinateList, List<PointF> realCoordinateList, out double offset)
         {
-            PointF leftMark = inspResult.PreAlignResult.FoundedMark.Left.MaxMatchPos.FoundPos;
-            PointF rightMark = inspResult.PreAlignResult.FoundedMark.Right.MaxMatchPos.FoundPos;
+            double t1, t2, dt = 0.0;
+            double cX = 0, cY = 0, pX = 0, pY = 0;
+            double imagePosX = 0, imagePosY = 0;
 
-            //double dx = 
-        }
+            double markLeftX = visionCoordinateList[0].X;
+            double markLeftY = visionCoordinateList[0].Y;
 
-        public void RunPreAlign(ref AppsInspResult inspResult)
-        {
-            if (inspResult.PreAlignResult.FoundedMark.Left.Judgement == Judgement.OK && inspResult.PreAlignResult.FoundedMark.Right.Judgement == Judgement.OK)
-                inspResult.PreAlignResult.Judgement = Judgement.OK;
+            double markRightX = visionCoordinateList[1].X;
+            double markRightY = visionCoordinateList[1].Y;
+
+            double centerOffsetX = 0, centerOffsetY = 0;
+
+            // 1. 보정각 Theta 구하기
+            double dX = (0 + markRightX) - (0 + markLeftX); // (m_dMotionPosX[ALIGN_OBJ_RIGHT] + dMarkRightX) - (m_dMotionPosX[ALIGN_OBJ_LEFT] + dMarkLeftX) + m_dLRDistCamera;
+            double dY = (0 + markRightY) - (0 + markLeftY); // (m_dMotionPosY[ALIGN_OBJ_RIGHT] + dMarkRightY) - (m_dMotionPosY[ALIGN_OBJ_LEFT] + dMarkLeftY);
+
+            if (dX != 0)
+                t1 = Math.Atan2(dY, dX);
             else
-                inspResult.PreAlignResult.Judgement = Judgement.NG;
+                t1 = 0.0;
+
+            t2 = 0;
+
+            dt = t2 - t1;
+
+            // 2. 회전 대상 지정 ( Left 기준 )
+            pX = 0; // m_dMotionPosX[ALIGN_OBJ_LEFT]
+            pY = 0; // m_dMotionPosY[ALIGN_OBJ_LEFT]
+            imagePosX = markLeftX;
+            imagePosY = markLeftY;
+
+            // 3. 회전 중심 보정
+            centerOffsetX = (0 - 0); // m_dMotionPosX[ALIGN_OBJ_LEFT] - g_DataCalibration.GetCalStartPosX(m_nCurrentCamIndex, nStageNo);
+            centerOffsetY = (0 - 0); // m_dMotionPosY[ALIGN_OBJ_LEFT] - g_DataCalibration.GetCalStartPosY(m_nCurrentCamIndex, nStageNo);
+
+            cX = centerOffsetX; // g_DataCalibration.GetRotCenterX(m_nCurrentCamIndex, nStageNo) + dCenterOffsetX;
+            cY = centerOffsetY; // g_DataCalibration.GetRotCenterY(m_nCurrentCamIndex, nStageNo) + dCenterOffsetY;
+            offset = 0;
+            return false;
         }
+
+        //public void RunPreAlign(ref AppsInspResult inspResult)
+        //{
+        //    if (inspResult.PreAlignResult.FoundedMark.Left.Judgement == Judgement.OK && inspResult.PreAlignResult.FoundedMark.Right.Judgement == Judgement.OK)
+        //        inspResult.PreAlignResult.Judgement = Judgement.OK;
+        //    else
+        //        inspResult.PreAlignResult.Judgement = Judgement.NG;
+        //}
 
         public void MainMarkInspect(ICogImage cogImage, Tab tab, ref TabInspResult tabInspResult)
         {
@@ -337,7 +372,6 @@ namespace Jastech.Apps.Structure.VisionTool
 
             return roi;
         }
-
 
         public CogRectangleAffine CalcTheta(CogRectangleAffine orginRegion, double theta)
         {

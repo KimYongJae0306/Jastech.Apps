@@ -8,6 +8,7 @@ using Jastech.Apps.Structure.Parameters;
 using Jastech.Apps.Structure.VisionTool;
 using Jastech.Apps.Winform;
 using Jastech.Apps.Winform.Core;
+using Jastech.Apps.Winform.Core.Calibrations;
 using Jastech.Apps.Winform.Service;
 using Jastech.Apps.Winform.Service.Plc.Maps;
 using Jastech.Apps.Winform.Settings;
@@ -95,21 +96,32 @@ namespace ATT_UT_Remodeling.Core
         private void RunPreAlign(AppsInspResult inspResult)
         {
             MainAlgorithmTool algorithmTool = new MainAlgorithmTool();
-            algorithmTool.RunPreAlign(ref inspResult);
+            //algorithmTool.RunPreAlign(ref inspResult);
 
-            CalibrationResult calibrationResult = new CalibrationResult();
+            double offset = 0.0;
 
-            var matrix = calibrationResult.GetCalibrationResultMatrix();
+            if (inspResult.PreAlignResult.FoundedMark.Left.Judgement == Judgement.OK && inspResult.PreAlignResult.FoundedMark.Right.Judgement == Judgement.OK)
+            {
+                List<PointF> visionCoordinateList = new List<PointF>();
 
-            if (inspResult.PreAlignResult.Judgement == Judgement.OK)
-                algorithmTool.ExecuteAlignment(ref inspResult);
-            //if (inspResult.PreAlignResult.FoundedMark.Left.Judgement == Judgement.OK && inspResult.PreAlignResult.FoundedMark.Right.Judgement == Judgement.OK)
-            //    inspResult.PreAlignResult.Judgement = Judgement.OK;
-            //else
-            //    inspResult.PreAlignResult.Judgement = Judgement.NG;
+                PointF leftVisionCoordinates = inspResult.PreAlignResult.FoundedMark.Left.MaxMatchPos.FoundPos;
+                PointF rightVisionCoordinates = inspResult.PreAlignResult.FoundedMark.Right.MaxMatchPos.FoundPos;
+                
+                visionCoordinateList.Add(leftVisionCoordinates);
+                visionCoordinateList.Add(rightVisionCoordinates);
+
+                List<PointF> realCoordinateList = new List<PointF>();
+
+                PointF leftRealCoordinates = CalibrationData.Instance().ConvertVisionToReal(leftVisionCoordinates);
+                PointF righttRealCoordinates = CalibrationData.Instance().ConvertVisionToReal(rightVisionCoordinates);
+
+                realCoordinateList.Add(leftRealCoordinates);
+                realCoordinateList.Add(righttRealCoordinates);
+
+                if (algorithmTool.ExecuteAlignment(visionCoordinateList, realCoordinateList, out offset))
+                { }
+            }
         }
-
-        
 
         private VisionProPatternMatchingResult RunPreAlignMark(Unit unit, ICogImage cogImage, MarkDirection markDirection)
         {
