@@ -98,7 +98,7 @@ namespace Jastech.Apps.Winform.Service.Plc
 
             for (int i = 0; i < maxCount; i++)
             {
-                string akkonCountJudgement = string.Format("Tab{0}_Akkon_Count_Judgement", i);
+                string akkonCountJudgement = string.Format("Tab{0}_Akkon_Judgement", i);
                 string akkonCountLeftAvg = string.Format("Tab{0}_Akkon_Count_Left_Avg", i);
                 string akkonCountLeftMin = string.Format("Tab{0}_Akkon_Count_Left_Min", i);
                 string akkonCountLeftMax = string.Format("Tab{0}_Akkon_Count_Left_Max", i);

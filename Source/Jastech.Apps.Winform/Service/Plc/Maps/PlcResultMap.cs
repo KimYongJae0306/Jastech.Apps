@@ -18,7 +18,7 @@ namespace Jastech.Apps.Winform.Service.Plc.Maps
         Tab0_Align_Right_X,
         Tab0_Align_Right_Y,
 
-        Tab0_Akkon_Count_Judgement,
+        Tab0_Akkon_Judgement,
         Tab0_Akkon_Count_Left_Avg,
         Tab0_Akkon_Count_Left_Min,
         Tab0_Akkon_Count_Left_Max,
@@ -26,7 +26,7 @@ namespace Jastech.Apps.Winform.Service.Plc.Maps
         Tab0_Akkon_Count_Right_Min,
         Tab0_Akkon_Count_Right_Max,
 
-        Tab0_Akkon_Length_Judement,
+        Tab0_Akkon_Length_Judgement,
         Tab0_Akkon_Length_Left_Avg,
         Tab0_Akkon_Length_Left_Min,
         Tab0_Akkon_Length_Left_Max,
@@ -51,7 +51,7 @@ namespace Jastech.Apps.Winform.Service.Plc.Maps
         Tab1_Akkon_Count_Right_Min,
         Tab1_Akkon_Count_Right_Max,
 
-        Tab1_Akkon_Length_Judement,
+        Tab1_Akkon_Length_Judgement,
         Tab1_Akkon_Length_Left_Avg,
         Tab1_Akkon_Length_Left_Min,
         Tab1_Akkon_Length_Left_Max,
@@ -76,7 +76,7 @@ namespace Jastech.Apps.Winform.Service.Plc.Maps
         Tab2_Akkon_Count_Right_Min,
         Tab2_Akkon_Count_Right_Max,
 
-        Tab2_Akkon_Length_Judement,
+        Tab2_Akkon_Length_Judgement,
         Tab2_Akkon_Length_Left_Avg,
         Tab2_Akkon_Length_Left_Min,
         Tab2_Akkon_Length_Left_Max,
@@ -101,7 +101,7 @@ namespace Jastech.Apps.Winform.Service.Plc.Maps
         Tab3_Akkon_Count_Right_Min,
         Tab3_Akkon_Count_Right_Max,
 
-        Tab3_Akkon_Length_Judement,
+        Tab3_Akkon_Length_Judgement,
         Tab3_Akkon_Length_Left_Avg,
         Tab3_Akkon_Length_Left_Min,
         Tab3_Akkon_Length_Left_Max,
@@ -126,7 +126,7 @@ namespace Jastech.Apps.Winform.Service.Plc.Maps
         Tab4_Akkon_Count_Right_Min,
         Tab4_Akkon_Count_Right_Max,
 
-        Tab4_Akkon_Length_Judement,
+        Tab4_Akkon_Length_Judgement,
         Tab4_Akkon_Length_Left_Avg,
         Tab4_Akkon_Length_Left_Min,
         Tab4_Akkon_Length_Left_Max,
@@ -151,7 +151,7 @@ namespace Jastech.Apps.Winform.Service.Plc.Maps
         Tab5_Akkon_Count_Right_Min,
         Tab5_Akkon_Count_Right_Max,
 
-        Tab5_Akkon_Length_Judement,
+        Tab5_Akkon_Length_Judgement,
         Tab5_Akkon_Length_Left_Avg,
         Tab5_Akkon_Length_Left_Min,
         Tab5_Akkon_Length_Left_Max,
@@ -176,7 +176,7 @@ namespace Jastech.Apps.Winform.Service.Plc.Maps
         Tab6_Akkon_Count_Right_Min,
         Tab6_Akkon_Count_Right_Max,
 
-        Tab6_Akkon_Length_Judement,
+        Tab6_Akkon_Length_Judgement,
         Tab6_Akkon_Length_Left_Avg,
         Tab6_Akkon_Length_Left_Min,
         Tab6_Akkon_Length_Left_Max,
@@ -201,7 +201,7 @@ namespace Jastech.Apps.Winform.Service.Plc.Maps
         Tab7_Akkon_Count_Right_Min,
         Tab7_Akkon_Count_Right_Max,
 
-        Tab7_Akkon_Length_Judement,
+        Tab7_Akkon_Length_Judgement,
         Tab7_Akkon_Length_Left_Avg,
         Tab7_Akkon_Length_Left_Min,
         Tab7_Akkon_Length_Left_Max,
@@ -226,7 +226,7 @@ namespace Jastech.Apps.Winform.Service.Plc.Maps
         Tab8_Akkon_Count_Right_Min,
         Tab8_Akkon_Count_Right_Max,
 
-        Tab8_Akkon_Length_Judement,
+        Tab8_Akkon_Length_Judgement,
         Tab8_Akkon_Length_Left_Avg,
         Tab8_Akkon_Length_Left_Min,
         Tab8_Akkon_Length_Left_Max,
@@ -251,7 +251,7 @@ namespace Jastech.Apps.Winform.Service.Plc.Maps
         Tab9_Akkon_Count_Right_Min,
         Tab9_Akkon_Count_Right_Max,
 
-        Tab9_Akkon_Length_Judement,
+        Tab9_Akkon_Length_Judgement,
         Tab9_Akkon_Length_Left_Avg,
         Tab9_Akkon_Length_Left_Min,
         Tab9_Akkon_Length_Left_Max,

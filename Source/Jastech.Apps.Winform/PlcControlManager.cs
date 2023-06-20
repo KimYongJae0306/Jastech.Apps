@@ -69,12 +69,12 @@ namespace Jastech.Apps.Winform
                 return;
             if (data.Length > 0)
             {
-                lock(PlcAddressService.AddressMapList)
+                lock (PlcAddressService.AddressMapList)
                 {
                     PlcAddressService.OrgData = data;
 
                     int minAddressNum = PlcAddressService.MinAddressNumber;
-                    // 무조건 읽으면 다 지워야하나 ???? 안지워도 되나 확인 필요
+
                     foreach (var map in PlcAddressService.AddressMapList)
                     {
                         byte[] buffer = SplitData(data, map.AddressNum, map.WordSize, minAddressNum);
@@ -84,12 +84,12 @@ namespace Jastech.Apps.Winform
                         else
                             map.Value = ConvertAscll(buffer, map.WordType);
 
-                        if(map.Name == PlcCommonMap.PLC_Command_Common.ToString())
+                        if (map.Name == PlcCommonMap.PLC_Command_Common.ToString())
                         {
                             int command = Convert.ToInt32(map.Value);
                             OnPlcCommonCommandReceived?.Invoke(command);
                         }
-                        else if(map.Name == PlcCommonMap.PLC_Command.ToString())
+                        else if (map.Name == PlcCommonMap.PLC_Command.ToString())
                         {
                             int command = Convert.ToInt32(map.Value);
                             OnPlcCommandReceived?.Invoke(command);
@@ -152,7 +152,7 @@ namespace Jastech.Apps.Winform
             string value = "";
             lock (PlcAddressService.AddressMapList)
             {
-                if(PlcAddressService.AddressMapList.Count() > 0)
+                if (PlcAddressService.AddressMapList.Count() > 0)
                     value = PlcAddressService.AddressMapList.Where(x => x.Name == map.ToString()).First().Value;
             }
 
@@ -197,14 +197,14 @@ namespace Jastech.Apps.Winform
                 {
                     for (int i = 0; i < length; i++)
                     {
-                        stream.AddSwap32BitData(0);
+                        stream.AddSwap16BitData(0);
                     }
                 }
                 else
                 {
                     for (int i = 0; i < length; i++)
                     {
-                        stream.Add32BitData(0);
+                        stream.Add16BitData(0);
                     }
                 }
 
@@ -244,9 +244,9 @@ namespace Jastech.Apps.Winform
                 PlcDataStream stream = new PlcDataStream();
 
                 if (plc.MelsecParser.ParserType == ParserType.Binary)
-                    stream.AddSwap32BitData(value);
+                    stream.AddSwap16BitData(Convert.ToInt16(value));
                 else
-                    stream.Add32BitData(value);
+                    stream.Add16BitData(Convert.ToInt16(value));
 
                 plc.Write("D" + map.AddressNum, stream.Data);
             }
@@ -262,9 +262,9 @@ namespace Jastech.Apps.Winform
                 PlcDataStream stream = new PlcDataStream();
 
                 if (plc.MelsecParser.ParserType == ParserType.Binary)
-                    stream.AddSwap32BitData((int)status);
+                    stream.AddSwap16BitData(Convert.ToInt16(status));
                 else
-                    stream.Add32BitData((int)status);
+                    stream.Add16BitData(Convert.ToInt16(status));
 
                 plc.Write("D" + map.AddressNum, stream.Data);
             }
@@ -281,9 +281,9 @@ namespace Jastech.Apps.Winform
                 PlcDataStream stream = new PlcDataStream();
 
                 if (plc.MelsecParser.ParserType == ParserType.Binary)
-                    stream.AddSwap32BitData(errorCode);
+                    stream.AddSwap16BitData(Convert.ToInt16(errorCode));
                 else
-                    stream.Add32BitData(errorCode);
+                    stream.Add16BitData(Convert.ToInt16(errorCode));
 
                 plc.Write("D" + map.AddressNum, stream.Data);
             }
@@ -299,9 +299,9 @@ namespace Jastech.Apps.Winform
                 PlcDataStream stream = new PlcDataStream();
 
                 if (plc.MelsecParser.ParserType == ParserType.Binary)
-                    stream.AddSwap32BitData((int)command);
+                    stream.AddSwap16BitData(Convert.ToInt16(command));
                 else
-                    stream.Add32BitData((int)command);
+                    stream.Add16BitData(Convert.ToInt16(command));
 
                 plc.Write("D" + map.AddressNum, stream.Data);
             }
@@ -317,9 +317,9 @@ namespace Jastech.Apps.Winform
                 PlcDataStream stream = new PlcDataStream();
 
                 if (plc.MelsecParser.ParserType == ParserType.Binary)
-                    stream.AddSwap32BitData((int)command);
+                    stream.AddSwap16BitData(Convert.ToInt16(command));
                 else
-                    stream.Add32BitData((int)command);
+                    stream.Add16BitData(Convert.ToInt16(command));
 
                 plc.Write("D" + map.AddressNum, stream.Data);
             }
@@ -335,9 +335,9 @@ namespace Jastech.Apps.Winform
                 PlcDataStream stream = new PlcDataStream();
 
                 if (plc.MelsecParser.ParserType == ParserType.Binary)
-                    stream.AddSwap32BitData((int)command);
+                    stream.AddSwap16BitData(Convert.ToInt16(command));
                 else
-                    stream.Add32BitData((int)command);
+                    stream.Add16BitData(Convert.ToInt16(command));
 
                 plc.Write("D" + map.AddressNum, stream.Data);
             }
@@ -354,9 +354,9 @@ namespace Jastech.Apps.Winform
                 PlcDataStream stream = new PlcDataStream();
 
                 if (plc.MelsecParser.ParserType == ParserType.Binary)
-                    stream.AddSwap32BitData((int)value);
+                    stream.AddSwap16BitData(Convert.ToInt16(value));
                 else
-                    stream.Add32BitData((int)value);
+                    stream.Add16BitData(Convert.ToInt16(value));
 
                 plc.Write("D" + map.AddressNum, stream.Data);
             }
@@ -372,23 +372,23 @@ namespace Jastech.Apps.Winform
 
                 if (plc.MelsecParser.ParserType == ParserType.Binary)
                 {
-                    stream.AddSwap32BitData(0);
-                    stream.AddSwap32BitData(0);
-                    stream.AddSwap32BitData(0);
-                    stream.AddSwap32BitData(0);
-                    stream.AddSwap32BitData(0);
-                    stream.AddSwap32BitData(0);
+                    stream.AddSwap16BitData(0);
+                    stream.AddSwap16BitData(0);
+                    stream.AddSwap16BitData(0);
+                    stream.AddSwap16BitData(0);
+                    stream.AddSwap16BitData(0);
+                    stream.AddSwap16BitData(0);
                 }
                 else
                 {
-                    stream.Add32BitData(0);
-                    stream.Add32BitData(0);
-                    stream.Add32BitData(0);
-                    stream.Add32BitData(0);
-                    stream.Add32BitData(0);
-                    stream.Add32BitData(0);
+                    stream.Add16BitData(0);
+                    stream.Add16BitData(0);
+                    stream.Add16BitData(0);
+                    stream.Add16BitData(0);
+                    stream.Add16BitData(0);
+                    stream.Add16BitData(0);
+                    plc.Write("D" + map.AddressNum, stream.Data);
                 }
-                plc.Write("D" + map.AddressNum, stream.Data);
             }
         }
 
@@ -408,21 +408,21 @@ namespace Jastech.Apps.Winform
 
                 if (plc.MelsecParser.ParserType == ParserType.Binary)
                 {
-                    stream.AddSwap32BitData(alignDataX_L);
-                    stream.AddSwap32BitData(alignDataX_H);
-                    stream.AddSwap32BitData(alignDataY_L);
-                    stream.AddSwap32BitData(alignDataY_H);
-                    stream.AddSwap32BitData(alignDataT_L);
-                    stream.AddSwap32BitData(alignDataT_H);
+                    stream.AddSwap16BitData(Convert.ToInt16(alignDataX_L));
+                    stream.AddSwap16BitData(Convert.ToInt16(alignDataX_H));
+                    stream.AddSwap16BitData(Convert.ToInt16(alignDataY_L));
+                    stream.AddSwap16BitData(Convert.ToInt16(alignDataY_H));
+                    stream.AddSwap16BitData(Convert.ToInt16(alignDataT_L));
+                    stream.AddSwap16BitData(Convert.ToInt16(alignDataT_H));
                 }
                 else
                 {
-                    stream.Add32BitData(alignDataX_L);
-                    stream.Add32BitData(alignDataX_H);
-                    stream.Add32BitData(alignDataY_L);
-                    stream.Add32BitData(alignDataY_H);
-                    stream.Add32BitData(alignDataT_L);
-                    stream.Add32BitData(alignDataT_H);
+                    stream.Add16BitData(Convert.ToInt16(alignDataX_L));
+                    stream.Add16BitData(Convert.ToInt16(alignDataX_H));
+                    stream.Add16BitData(Convert.ToInt16(alignDataY_L));
+                    stream.Add16BitData(Convert.ToInt16(alignDataY_H));
+                    stream.Add16BitData(Convert.ToInt16(alignDataT_L));
+                    stream.Add16BitData(Convert.ToInt16(alignDataT_H));
                 }
                 plc.Write("D" + map.AddressNum, stream.Data);
             }
@@ -430,15 +430,39 @@ namespace Jastech.Apps.Winform
 
         public void WriteCurrentModelName(string modelName)
         {
+            modelName = modelName.PadRight(20, Convert.ToChar("\0"));
+            byte[] modelNameByte = Encoding.Default.GetBytes(modelName);
             var map = PlcControlManager.Instance().GetResultMap(PlcResultMap.Current_ModelName);
-            // AB CD EF
-            // BA DC FE
+            if (DeviceManager.Instance().PlcHandler.Count > 0 && map != null)
+            {
+                var plc = DeviceManager.Instance().PlcHandler.First() as MelsecPlc;
+                PlcDataStream stream = new PlcDataStream();
+                if (plc.MelsecParser.ParserType == ParserType.Binary)
+                {
+                    for (int i = 0; i < map.WordSize; i++)
+                    {
+                        int num = i * 2;
+                        int value = BitConverter.ToUInt16(modelNameByte, num);
+                        stream.Add16BitData(Convert.ToInt16(value));
+                    }
+                }
+                else
+                {
+                    for (int i = 0; i < map.WordSize; i++)
+                    {
+                        int num = i * 2;
+                        int value = BitConverter.ToUInt16(modelNameByte, num);
+                        stream.Add16BitData(Convert.ToInt16(value));
+                    }
+                }
+                plc.Write("D" + map.AddressNum, stream.Data);
+            }
         }
 
         public void WriteTabAlignResult(int tabNo, AlignResult leftAlignResultX, AlignResult leftAlignResultY, AlignResult rightAlignResultX, AlignResult rightAlignResultY, double resolution)
         {
             int judgement = 1; // 1 : OK, 2: NG
-            if (leftAlignResultX.Judgement != Judgement.OK || leftAlignResultY.Judgement != Judgement.OK 
+            if (leftAlignResultX.Judgement != Judgement.OK || leftAlignResultY.Judgement != Judgement.OK
                 || rightAlignResultX.Judgement != Judgement.OK || rightAlignResultY.Judgement != Judgement.OK)
                 judgement = 2;
 
@@ -462,19 +486,19 @@ namespace Jastech.Apps.Winform
                 PlcDataStream stream = new PlcDataStream();
                 if (plc.MelsecParser.ParserType == ParserType.Binary)
                 {
-                    stream.AddSwap32BitData(judgement);
-                    stream.AddSwap32BitData((int)leftAlignX_mm);
-                    stream.AddSwap32BitData((int)leftAlignY_mm);
-                    stream.AddSwap32BitData((int)rightAlignX_mm);
-                    stream.AddSwap32BitData((int)rightAlignY_mm);
+                    stream.AddSwap16BitData(Convert.ToInt16(judgement));
+                    stream.AddSwap16BitData(Convert.ToInt16((int)leftAlignX_mm));
+                    stream.AddSwap16BitData(Convert.ToInt16((int)leftAlignY_mm));
+                    stream.AddSwap16BitData(Convert.ToInt16((int)rightAlignX_mm));
+                    stream.AddSwap16BitData(Convert.ToInt16((int)rightAlignY_mm));
                 }
                 else
                 {
-                    stream.Add32BitData(judgement);
-                    stream.Add32BitData((int)leftAlignX_mm);
-                    stream.Add32BitData((int)leftAlignY_mm);
-                    stream.Add32BitData((int)rightAlignX_mm);
-                    stream.Add32BitData((int)rightAlignY_mm);
+                    stream.Add16BitData(Convert.ToInt16(judgement));
+                    stream.Add16BitData(Convert.ToInt16((int)leftAlignX_mm));
+                    stream.Add16BitData(Convert.ToInt16((int)leftAlignY_mm));
+                    stream.Add16BitData(Convert.ToInt16((int)rightAlignX_mm));
+                    stream.Add16BitData(Convert.ToInt16((int)rightAlignY_mm));
                 }
                 plc.Write("D" + map.AddressNum, stream.Data);
             }
@@ -493,50 +517,50 @@ namespace Jastech.Apps.Winform
                 PlcDataStream stream = new PlcDataStream();
                 if (plc.MelsecParser.ParserType == ParserType.Binary)
                 {
-                    stream.AddSwap32BitData((int)judgement);
-                    stream.AddSwap32BitData(akkonResult.LeftCount_Avg);
-                    stream.AddSwap32BitData(akkonResult.LeftCount_Min);
-                    stream.AddSwap32BitData(akkonResult.LeftCount_Max);
-                    stream.AddSwap32BitData(akkonResult.RightCount_Avg);
-                    stream.AddSwap32BitData(akkonResult.RightCount_Min);
-                    stream.AddSwap32BitData(akkonResult.RightCount_Max);
+                    stream.AddSwap16BitData(Convert.ToInt16((int)judgement));
+                    stream.AddSwap16BitData(Convert.ToInt16(akkonResult.LeftCount_Avg));
+                    stream.AddSwap16BitData(Convert.ToInt16(akkonResult.LeftCount_Min));
+                    stream.AddSwap16BitData(Convert.ToInt16(akkonResult.LeftCount_Max));
+                    stream.AddSwap16BitData(Convert.ToInt16(akkonResult.RightCount_Avg));
+                    stream.AddSwap16BitData(Convert.ToInt16(akkonResult.RightCount_Min));
+                    stream.AddSwap16BitData(Convert.ToInt16(akkonResult.RightCount_Max));
 
                     // Empty 넣어주기(237~239)
-                    stream.AddSwap32BitData(0);
-                    stream.AddSwap32BitData(0);
-                    stream.AddSwap32BitData(0);
+                    stream.AddSwap16BitData(0);
+                    stream.AddSwap16BitData(0);
+                    stream.AddSwap16BitData(0);
 
-                    stream.AddSwap32BitData(akkonResult.LengthJudgement == Judgement.OK ? 1 : 2);
-                    stream.AddSwap32BitData((int)akkonResult.Length_Left_Avg_um);
-                    stream.AddSwap32BitData((int)akkonResult.Length_Left_Min_um);
-                    stream.AddSwap32BitData((int)akkonResult.Length_Left_Max_um);
-                    stream.AddSwap32BitData((int)akkonResult.Length_Right_Avg_um);
-                    stream.AddSwap32BitData((int)akkonResult.Length_Right_Min_um);
-                    stream.AddSwap32BitData((int)akkonResult.Length_Right_Max_um);
+                    stream.AddSwap16BitData(Convert.ToInt16(akkonResult.LengthJudgement == Judgement.OK ? 1 : 2));
+                    stream.AddSwap16BitData(Convert.ToInt16((int)akkonResult.Length_Left_Avg_um));
+                    stream.AddSwap16BitData(Convert.ToInt16((int)akkonResult.Length_Left_Min_um));
+                    stream.AddSwap16BitData(Convert.ToInt16((int)akkonResult.Length_Left_Max_um));
+                    stream.AddSwap16BitData(Convert.ToInt16((int)akkonResult.Length_Right_Avg_um));
+                    stream.AddSwap16BitData(Convert.ToInt16((int)akkonResult.Length_Right_Min_um));
+                    stream.AddSwap16BitData(Convert.ToInt16((int)akkonResult.Length_Right_Max_um));
 
                 }
                 else
                 {
-                    stream.Add32BitData((int)judgement);
-                    stream.Add32BitData(akkonResult.LeftCount_Avg);
-                    stream.Add32BitData(akkonResult.LeftCount_Min);
-                    stream.Add32BitData(akkonResult.LeftCount_Max);
-                    stream.Add32BitData(akkonResult.RightCount_Avg);
-                    stream.Add32BitData(akkonResult.RightCount_Min);
-                    stream.Add32BitData(akkonResult.RightCount_Max);
+                    stream.Add16BitData(Convert.ToInt16((int)judgement));
+                    stream.Add16BitData(Convert.ToInt16(akkonResult.LeftCount_Avg));
+                    stream.Add16BitData(Convert.ToInt16(akkonResult.LeftCount_Min));
+                    stream.Add16BitData(Convert.ToInt16(akkonResult.LeftCount_Max));
+                    stream.Add16BitData(Convert.ToInt16(akkonResult.RightCount_Avg));
+                    stream.Add16BitData(Convert.ToInt16(akkonResult.RightCount_Min));
+                    stream.Add16BitData(Convert.ToInt16(akkonResult.RightCount_Max));
 
                     // Empty 넣어주기(237~239)
-                    stream.Add32BitData(0);
-                    stream.Add32BitData(0);
-                    stream.Add32BitData(0);
+                    stream.Add16BitData(0);
+                    stream.Add16BitData(0);
+                    stream.Add16BitData(0);
 
-                    stream.Add32BitData(akkonResult.LengthJudgement == Judgement.OK ? 1 : 2);
-                    stream.Add32BitData((int)akkonResult.Length_Left_Avg_um);
-                    stream.Add32BitData((int)akkonResult.Length_Left_Min_um);
-                    stream.Add32BitData((int)akkonResult.Length_Left_Max_um);
-                    stream.Add32BitData((int)akkonResult.Length_Right_Avg_um);
-                    stream.Add32BitData((int)akkonResult.Length_Right_Min_um);
-                    stream.Add32BitData((int)akkonResult.Length_Right_Max_um);
+                    stream.Add16BitData(Convert.ToInt16(akkonResult.LengthJudgement == Judgement.OK ? 1 : 2));
+                    stream.Add16BitData(Convert.ToInt16((int)akkonResult.Length_Left_Avg_um));
+                    stream.Add16BitData(Convert.ToInt16((int)akkonResult.Length_Left_Min_um));
+                    stream.Add16BitData(Convert.ToInt16((int)akkonResult.Length_Left_Max_um));
+                    stream.Add16BitData(Convert.ToInt16((int)akkonResult.Length_Right_Avg_um));
+                    stream.Add16BitData(Convert.ToInt16((int)akkonResult.Length_Right_Min_um));
+                    stream.Add16BitData(Convert.ToInt16((int)akkonResult.Length_Right_Max_um));
                 }
                 plc.Write("D" + map.AddressNum, stream.Data);
             }
@@ -580,17 +604,17 @@ namespace Jastech.Apps.Winform
                 PlcDataStream stream = new PlcDataStream();
                 if (plc.MelsecParser.ParserType == ParserType.Binary)
                 {
-                    stream.AddSwap32BitData(leftLow);
-                    stream.AddSwap32BitData(leftHight);
-                    stream.AddSwap32BitData(rightLow);
-                    stream.AddSwap32BitData(rightHight);
+                    stream.AddSwap16BitData(Convert.ToInt16(leftLow));
+                    stream.AddSwap16BitData(Convert.ToInt16(leftHight));
+                    stream.AddSwap16BitData(Convert.ToInt16(rightLow));
+                    stream.AddSwap16BitData(Convert.ToInt16(rightHight));
                 }
                 else
                 {
-                    stream.Add32BitData(leftLow);
-                    stream.Add32BitData(leftHight);
-                    stream.Add32BitData(rightLow);
-                    stream.Add32BitData(rightHight);
+                    stream.Add16BitData(Convert.ToInt16(leftLow));
+                    stream.Add16BitData(Convert.ToInt16(leftHight));
+                    stream.Add16BitData(Convert.ToInt16(rightLow));
+                    stream.Add16BitData(Convert.ToInt16(rightHight));
                 }
                 plc.Write("D" + map.AddressNum, stream.Data);
             }
