@@ -36,6 +36,8 @@ namespace Jastech.Apps.Structure.VisionTool
 
             double centerOffsetX = 0, centerOffsetY = 0;
 
+            double alignX = 0, alignY = 0;
+
             // 1. 보정각 Theta 구하기
             double dX = (0 + markRightX) - (0 + markLeftX); // (m_dMotionPosX[ALIGN_OBJ_RIGHT] + dMarkRightX) - (m_dMotionPosX[ALIGN_OBJ_LEFT] + dMarkLeftX) + m_dLRDistCamera;
             double dY = (0 + markRightY) - (0 + markLeftY); // (m_dMotionPosY[ALIGN_OBJ_RIGHT] + dMarkRightY) - (m_dMotionPosY[ALIGN_OBJ_LEFT] + dMarkLeftY);
@@ -61,6 +63,21 @@ namespace Jastech.Apps.Structure.VisionTool
 
             cX = centerOffsetX; // g_DataCalibration.GetRotCenterX(m_nCurrentCamIndex, nStageNo) + dCenterOffsetX;
             cY = centerOffsetY; // g_DataCalibration.GetRotCenterY(m_nCurrentCamIndex, nStageNo) + dCenterOffsetY;
+
+            // 4. 회전 후 보정 위치 계산
+            alignX = (pX - cX) * Math.Cos(dt) - (pY - cY) * Math.Sin(dt) + cX;
+            alignY = (pY - cY) * Math.Cos(dt) - (pX - cX) * Math.Sin(dt) + cY;
+
+            // 5. 현재 위치 기준 보정 offset 계산
+            //refAlignOffset.s_fOffsetX = (m_dAxisX1 - dAlignX);
+            //refAlignOffset.s_fOffsetY = (m_dAxisY1 - dAlignY);
+
+            // 6. mark를 화면 중심으로 보내기 위한 mark offset 적용
+            //refAlignOffset.s_fOffsetX -= dImagePosX;
+            //refAlignOffset.s_fOffsetY -= dImagePosY;
+
+            //refAlignOffset.s_fOffsetT = (dt * 180.0 / M_PI);
+
             offset = 0;
             return false;
         }
