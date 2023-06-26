@@ -23,7 +23,7 @@ namespace Jastech.Apps.Structure.Data
 
         public string Cell_ID { get; set; } = "";
 
-        public MarkResult PreAlignResult { get; set; } = new MarkResult();
+        public PreAlignResult PreAlignResult { get; set; } = new PreAlignResult();
 
         public List<TabInspResult> TabResultList { get; set; } = new List<TabInspResult>();
 
@@ -205,6 +205,26 @@ namespace Jastech.Apps.Structure.Data
             result.CenterX = CenterX;
 
             return result;
+        }
+    }
+
+    public class PreAlignResult
+    {
+        public MarkResult PreAlignMark { get; set; } = new MarkResult();
+
+        public double OffsetX { get; private set; } = 0.0;
+
+        public double OffsetY { get; private set; } = 0.0;
+
+        public double OffsetT { get; private set; } = 0.0;
+
+        public Judgement Judgement { get; set; } = Judgement.OK;
+
+        public void SetPreAlignResult(double offsetX, double offsetY, double offsetT)
+        {
+            OffsetX = offsetX;
+            OffsetY = offsetY;
+            OffsetT = offsetT;
         }
     }
 

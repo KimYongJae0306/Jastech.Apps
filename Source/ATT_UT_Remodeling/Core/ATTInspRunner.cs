@@ -12,6 +12,7 @@ using Jastech.Apps.Winform.Core.Calibrations;
 using Jastech.Apps.Winform.Service;
 using Jastech.Apps.Winform.Service.Plc.Maps;
 using Jastech.Apps.Winform.Settings;
+using Jastech.Apps.Winform.UI.Controls;
 using Jastech.Framework.Algorithms.Akkon;
 using Jastech.Framework.Algorithms.Akkon.Parameters;
 using Jastech.Framework.Algorithms.Akkon.Results;
@@ -30,6 +31,7 @@ using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Runtime.InteropServices;
 using System.Threading;
 using System.Threading.Tasks;
@@ -96,30 +98,23 @@ namespace ATT_UT_Remodeling.Core
         private void RunPreAlign(AppsInspResult inspResult)
         {
             MainAlgorithmTool algorithmTool = new MainAlgorithmTool();
-            //algorithmTool.RunPreAlign(ref inspResult);
 
-            double offset = 0.0;
-
-            if (inspResult.PreAlignResult.FoundedMark.Left.Judgement == Judgement.OK && inspResult.PreAlignResult.FoundedMark.Right.Judgement == Judgement.OK)
+            if (inspResult.PreAlignResult.PreAlignMark.FoundedMark.Left.Judgement == Judgement.OK && inspResult.PreAlignResult.PreAlignMark.FoundedMark.Right.Judgement == Judgement.OK)
             {
-                List<PointF> visionCoordinateList = new List<PointF>();
-
-                PointF leftVisionCoordinates = inspResult.PreAlignResult.FoundedMark.Left.MaxMatchPos.FoundPos;
-                PointF rightVisionCoordinates = inspResult.PreAlignResult.FoundedMark.Right.MaxMatchPos.FoundPos;
-                
-                visionCoordinateList.Add(leftVisionCoordinates);
-                visionCoordinateList.Add(rightVisionCoordinates);
+                PointF leftVisionCoordinates = inspResult.PreAlignResult.PreAlignMark.FoundedMark.Left.MaxMatchPos.FoundPos;
+                PointF rightVisionCoordinates = inspResult.PreAlignResult.PreAlignMark.FoundedMark.Right.MaxMatchPos.FoundPos;
 
                 List<PointF> realCoordinateList = new List<PointF>();
-
                 PointF leftRealCoordinates = CalibrationData.Instance().ConvertVisionToReal(leftVisionCoordinates);
                 PointF righttRealCoordinates = CalibrationData.Instance().ConvertVisionToReal(rightVisionCoordinates);
 
                 realCoordinateList.Add(leftRealCoordinates);
                 realCoordinateList.Add(righttRealCoordinates);
 
-                if (algorithmTool.ExecuteAlignment(visionCoordinateList, realCoordinateList, out offset))
-                { }
+                var unit = TeachingData.Instance().GetUnit("Unit0");
+                PointF calibrationStartPosition = CalibrationData.Instance().GetCalibrationStartPosition();
+
+                inspResult.PreAlignResult = algorithmTool.ExecuteAlignment(unit, realCoordinateList, calibrationStartPosition);
             }
         }
 
@@ -551,11 +546,18 @@ namespace ATT_UT_Remodeling.Core
             if (laf == null)
                 return;
 
-            string message = string.Empty;
+            string errorMessage = string.Empty;
 
             switch (SeqStep)
             {
                 case SeqStep.SEQ_IDLE:
+                    // Check model changed
+                    var receivedModelName = PlcControlManager.Instance().GetAddressMap(PlcCommonMap.PLC_PPID_ModelName).Value;
+                    if (inspModel.Name != receivedModelName)
+                    {
+                        // Change model
+                        break;
+                    }
 
                     SeqStep = SeqStep.SEQ_READY;
                     break;
@@ -576,7 +578,7 @@ namespace ATT_UT_Remodeling.Core
                     break;
 
                 case SeqStep.SEQ_START:
-                    // 프리얼라인 시작 신호 대기
+                    // Wait for prealign start signal
                     string preAlignStart = PlcControlManager.Instance().GetAddressMap(PlcCommonMap.PLC_Command_Common).Value;
                     if (Convert.ToInt32(preAlignStart) == (int)PlcCommand.StartPreAlign_AutoRun)
                         break;
@@ -587,40 +589,48 @@ namespace ATT_UT_Remodeling.Core
                     break;
 
                 case SeqStep.SEQ_PREALIGN_R:
-                    if (MoveTo(TeachingPosType.Stage1_PreAlign_Right, out string preAlignRight) == false)
+                    if (MoveTo(TeachingPosType.Stage1_PreAlign_Right, out errorMessage) == false)
                     {
                         // Alarm
                         break;
                     }
 
-                    // 카메라
+                    // Set camera property
                     areaCamera.Camera.SetExposureTime(0);
                     areaCamera.Camera.SetAnalogGain(0);
                     Logger.Write(LogType.Seq, "Set camera property.");
 
-                    // 조명
+                    // Light on
                     //preAlignParam.LightParams.Where(x => x.Map == )
                     Logger.Write(LogType.Seq, "Prealign Light on.");
 
                     // Grab
                     var preAlignLeftImage = GetAreaCameraImage(areaCamera.Camera);
-                    AppsInspResult.PreAlignResult.FoundedMark.Right = RunPreAlignMark(unit, preAlignLeftImage, MarkDirection.Right);
+                    AppsInspResult.PreAlignResult.PreAlignMark.FoundedMark.Right = RunPreAlignMark(unit, preAlignLeftImage, MarkDirection.Right);
                     Logger.Write(LogType.Seq, "Complete prealign right mark search.");
+
+                    // Set prealign motion position
+                    SetMarkMotionPosition(unit, MarkDirection.Right);
+                    Logger.Write(LogType.Seq, "Set axis information for prealign right mark position.");
 
                     SeqStep = SeqStep.SEQ_PREALIGN_L;
                     break;
 
                 case SeqStep.SEQ_PREALIGN_L:
-                    if (MoveTo(TeachingPosType.Stage1_PreAlign_Left, out string preAlignLeft) == false)
+                    if (MoveTo(TeachingPosType.Stage1_PreAlign_Left, out errorMessage) == false)
                     {
                         // Alarm
                         break;
                     }
 
-                    // Grab
+                    // Grab start
                     var preAlignRightImage = GetAreaCameraImage(areaCamera.Camera);
-                    AppsInspResult.PreAlignResult.FoundedMark.Left = RunPreAlignMark(unit, preAlignRightImage, MarkDirection.Right);
+                    AppsInspResult.PreAlignResult.PreAlignMark.FoundedMark.Left = RunPreAlignMark(unit, preAlignRightImage, MarkDirection.Right);
                     Logger.Write(LogType.Seq, "Complete prealign left mark search.");
+
+                    // Set prealign motion position
+                    SetMarkMotionPosition(unit, MarkDirection.Left);
+                    Logger.Write(LogType.Seq, "Set axis information for prealign left mark position.");
 
                     SeqStep = SeqStep.SEQ_SEND_PREALIGN_DATA;
                     break;
@@ -628,22 +638,41 @@ namespace ATT_UT_Remodeling.Core
                 case SeqStep.SEQ_SEND_PREALIGN_DATA:
                     Logger.Write(LogType.Seq, "Prealign Light off.");
 
+                    // Execute prealign
                     RunPreAlign(AppsInspResult);
                     Logger.Write(LogType.Seq, "Complete prealign.");
 
-                    // 프리얼라인 데이터 전송
-                    PlcControlManager.Instance().WritePreAlignResult(0, 0);
-                    Logger.Write(LogType.Seq, "Send prealign result.");
+                    var offsetX = AppsInspResult.PreAlignResult.OffsetX;
+                    var offsetY = AppsInspResult.PreAlignResult.OffsetY;
+                    var offsetT = AppsInspResult.PreAlignResult.OffsetT;
+
+                    // Check Tolerance
+                    if (Math.Abs(offsetX) <= AppsConfig.Instance().PreAlignToleranceX 
+                        || Math.Abs(offsetX) <= AppsConfig.Instance().PreAlignToleranceY
+                        || Math.Abs(offsetX) <= AppsConfig.Instance().PreAlignToleranceTheta)
+                    {
+                        Logger.Write(LogType.Seq, "Prealign results are spec-in.");
+                    }
+                    else
+                        Logger.Write(LogType.Seq, "Prealign results are spec-out.");
+
+                    // Send prealign results
+                    PlcControlManager.Instance().WriteAlignData(offsetX, offsetY, offsetT);
+                    Logger.Write(LogType.Seq, "Write prealign results.");
+
+                    var leftScore = AppsInspResult.PreAlignResult.PreAlignMark.FoundedMark.Left.MaxMatchPos.Score;
+                    var rightScore = AppsInspResult.PreAlignResult.PreAlignMark.FoundedMark.Right.MaxMatchPos.Score;
+                    PlcControlManager.Instance().WritePreAlignResult(leftScore, rightScore);
+                    Logger.Write(LogType.Seq, "Send prealign results.");
 
                     SeqStep = SeqStep.SEQ_WAITING;
                     break;
 
                 case SeqStep.SEQ_WAITING:
-                    // 스캔 시작 커맨드 수신 대기
+                    // Wait for scan start signal command
                     PlcControlManager.Instance().GetAddressMap(PlcCommonMap.PLC_Command);
-                    
 
-                    if (MoveTo(TeachingPosType.Stage1_Scan_Start, out string scanStart) == false)
+                    if (MoveTo(TeachingPosType.Stage1_Scan_Start, out errorMessage) == false)
                     {
                         // Alarm
                         break;
@@ -656,15 +685,20 @@ namespace ATT_UT_Remodeling.Core
 
                 case SeqStep.SEQ_SCAN_READY:
                     LineCameraManager.Instance().GetLineCamera("LineCamera").IsLive = false;
+
+                    // Clear results
                     ClearResult();
                     Logger.Write(LogType.Seq, "Clear result.");
 
+                    // Init camera buffer
                     InitializeBuffer();
                     Logger.Write(LogType.Seq, "Initialize buffer.");
 
+                    // Write panel information
                     AppsInspResult.StartInspTime = DateTime.Now;
                     AppsInspResult.Cell_ID = DateTime.Now.ToString("yyyyMMddHHmmss");
 
+                    // LAF on
                     LAFManager.Instance().AutoFocusOnOff("Akkon", true);
                     Logger.Write(LogType.Seq, "Laf On.");
 
@@ -673,12 +707,16 @@ namespace ATT_UT_Remodeling.Core
 
                 case SeqStep.SEQ_SCAN_START:
                     IsGrabDone = false;
+
                     // 조명 코드 작성 요망
+
+                    // Grab
                     lineCamera.SetOperationMode(TDIOperationMode.TDI);
                     lineCamera.StartGrab();
                     Logger.Write(LogType.Seq, "Start grab.");
 
-                    if (MoveTo(TeachingPosType.Stage1_Scan_End, out string error2) == false)
+                    // Move
+                    if (MoveTo(TeachingPosType.Stage1_Scan_End, out errorMessage) == false)
                     {
                         // Alarm
                         // 조명 Off
@@ -702,6 +740,7 @@ namespace ATT_UT_Remodeling.Core
                     //AppsLAFManager.Instance().AutoFocusOnOff(LAFName.Akkon.ToString(), false);
                     //Logger.Write(LogType.Seq, "AutoFocus Off.");
 
+                    // Grab stop
                     LineCameraManager.Instance().Stop("LineCamera");
                     Logger.Write(LogType.Seq, "Stop grab.");
 
@@ -724,7 +763,7 @@ namespace ATT_UT_Remodeling.Core
                     break;
 
                 case SeqStep.SEQ_UI_RESULT_UPDATE:
-   
+                    // Update result data
                     GetAkkonResultImage();
                     UpdateDailyInfo(AppsInspResult);
                     Logger.Write(LogType.Seq, "Update inspectinon result.");
@@ -735,17 +774,17 @@ namespace ATT_UT_Remodeling.Core
                     break;
 
                 case SeqStep.SEQ_SAVE_RESULT_DATA:
+                    // Save result datas
                     DailyInfoService.Save();
 
                     SaveInspectionResult(AppsInspResult);
-
                     Logger.Write(LogType.Seq, "Save inspection result.");
 
                     SeqStep = SeqStep.SEQ_SAVE_IMAGE;
                     break;
 
                 case SeqStep.SEQ_SAVE_IMAGE:
-
+                    // Save reuslt images
                     SaveImage(AppsInspResult);
                     Logger.Write(LogType.Seq, "Save inspection images.");
 
@@ -753,7 +792,7 @@ namespace ATT_UT_Remodeling.Core
                     break;
 
                 case SeqStep.SEQ_DELETE_DATA:
-
+                    // Delete result datas
                     Logger.Write(LogType.Seq, "Delete the old data");
                     SeqStep = SeqStep.SEQ_CHECK_STANDBY;
                     break;
@@ -1417,9 +1456,9 @@ namespace ATT_UT_Remodeling.Core
             return MotionManager.Instance().IsAxisInPosition(unitName, teachingPos, axis);
         }
 
-        public bool MoveTo(TeachingPosType teachingPos, out string error)
+        public bool MoveTo(TeachingPosType teachingPos, out string errorMessage)
         {
-            error = "";
+            errorMessage = string.Empty;
 
             if (ConfigSet.Instance().Operation.VirtualMode)
                 return true;
@@ -1445,14 +1484,14 @@ namespace ATT_UT_Remodeling.Core
             //}
             if (MoveAxis(teachingPos, axisX, movingParamX) == false)
             {
-                error = string.Format("Move To Axis X TimeOut!({0})", movingParamX.MovingTimeOut.ToString());
-                Logger.Write(LogType.Seq, error);
+                errorMessage = string.Format("Move To Axis X TimeOut!({0})", movingParamX.MovingTimeOut.ToString());
+                Logger.Write(LogType.Seq, errorMessage);
                 return false;
             }
             if (MoveAxis(teachingPos, axisY, movingParamY) == false)
             {
-                error = string.Format("Move To Axis Y TimeOut!({0})", movingParamY.MovingTimeOut.ToString());
-                Logger.Write(LogType.Seq, error);
+                errorMessage = string.Format("Move To Axis Y TimeOut!({0})", movingParamY.MovingTimeOut.ToString());
+                Logger.Write(LogType.Seq, errorMessage);
                 return false;
             }
 
@@ -1496,6 +1535,17 @@ namespace ATT_UT_Remodeling.Core
             var cogImage = VisionProImageHelper.ConvertImage(dataArrayRight, camera.ImageWidth, camera.ImageHeight, camera.ColorFormat);
 
             return cogImage;
+        }
+
+        private void SetMarkMotionPosition(Unit unit, MarkDirection markDirection)
+        {
+            var preAlignParam = unit.PreAlignParamList.Where(x => x.Direction == markDirection).FirstOrDefault();
+
+            var motionX = MotionManager.Instance().GetAxis(AxisHandlerName.Handler0, AxisName.X).GetActualPosition();
+            var motionY = PlcControlManager.Instance().GetReadPosition(AxisName.Y) / 1000;
+            var motionT = PlcControlManager.Instance().GetReadPosition(AxisName.T) / 1000;
+
+            preAlignParam.SetMotionData(motionX, motionY, motionT);
         }
         #endregion
     }

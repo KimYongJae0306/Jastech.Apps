@@ -1,9 +1,11 @@
 ﻿using Jastech.Apps.Structure.Data;
 using Jastech.Framework.Device.LightCtrls;
+using Jastech.Framework.Device.Motions;
 using Jastech.Framework.Imaging.VisionPro.VisionAlgorithms.Parameters;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -30,6 +32,18 @@ namespace Jastech.Apps.Structure.Parameters
         [JsonProperty]
         public double AnalogGain_dB { get; set; } = 0;
 
+        public double MotionX { get; set; } = 0.0;
+
+        public double MotionY { get; set; } = 0.0;
+
+        public double MotionT { get; set; } = 0.0;
+
+        public double OffsetX { get; set; } = 0.0;
+
+        public double OffsetY { get; set; } = 0.0;
+
+        public double OffsetT { get; set; } = 0.0;
+
         public PreAlignParam DeepCopy()
         {
             PreAlignParam preAlign = new PreAlignParam();
@@ -52,6 +66,76 @@ namespace Jastech.Apps.Structure.Parameters
         public void Dispose()
         {
             InspParam.Dispose();
+        }
+
+        public void SetMotionData(double motionX, double motionY, double motionT)
+        {
+            MotionX = motionX;
+            MotionY = motionY;
+            MotionT = motionT;
+        }
+
+        public double GetMotionData(AxisName axisName)
+        {
+            double position = 0.0;
+
+            switch (axisName)
+            {
+                case AxisName.X:
+                    position = MotionX;
+                    break;
+                case AxisName.Y:
+                    position = MotionY;
+                    break;
+                case AxisName.Z:
+                    break;
+                case AxisName.Z1:
+                    break;
+                case AxisName.Z2:
+                    break;
+                case AxisName.T:
+                    position = MotionT;
+                    break;
+                default:
+                    break;
+            }
+
+            return position;
+        }
+
+        public void SetPreAlignOffset(double offsetX, double offsetY, double offsetT)
+        {
+            OffsetX = offsetX;
+            OffsetY = offsetY;
+            OffsetT = offsetT;
+        }
+
+        public double GetPreAlignOffset(AxisName axisName)
+        {
+            double offset = 0.0;
+
+            switch (axisName)
+            {
+                case AxisName.X:
+                    offset = OffsetX;
+                    break;
+                case AxisName.Y:
+                    offset = OffsetY;
+                    break;
+                case AxisName.Z:
+                    break;
+                case AxisName.Z1:
+                    break;
+                case AxisName.Z2:
+                    break;
+                case AxisName.T:
+                    offset = OffsetT;
+                    break;
+                default:
+                    break;
+            }
+
+            return offset;
         }
     }
 }

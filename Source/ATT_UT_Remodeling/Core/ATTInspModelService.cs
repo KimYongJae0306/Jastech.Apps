@@ -54,7 +54,7 @@ namespace ATT_UT_Remodeling.Core
                     preAlignLeftMark.Name = type;
                     preAlignLeftMark.InspParam.Name = MarkDirection.Left.ToString() + type.ToString();
                     preAlignLeftMark.Direction = MarkDirection.Left;
-
+                    
                     PreAlignParam preAlignRightMark = new PreAlignParam();
                     preAlignRightMark.Name = type;
                     preAlignRightMark.InspParam.Name = MarkDirection.Right.ToString() + type.ToString();

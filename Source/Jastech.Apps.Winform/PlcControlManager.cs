@@ -619,6 +619,20 @@ namespace Jastech.Apps.Winform
                 plc.Write("D" + map.AddressNum, stream.Data);
             }
         }
+
+
+        public void CheckPlcStatus()
+        {
+            while (true)
+            {
+                if (true /*model changed request*/)
+                {
+                    //WritePcStatusCommon(StatusCommon.)
+                    //PlcCommonMap.PLC_Command_Common
+                      //writepl
+                }
+            }
+        }
     }
 
     public partial class PlcControlManager
@@ -731,6 +745,7 @@ namespace Jastech.Apps.Winform
                 default:
                     break;
             }
+
             return resultStr;
         }
     }

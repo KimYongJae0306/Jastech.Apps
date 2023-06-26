@@ -4,6 +4,7 @@ using Emgu.CV.CvEnum;
 using Jastech.Apps.Structure.Data;
 using Jastech.Apps.Structure.Parameters;
 using Jastech.Framework.Algorithms.Akkon.Results;
+using Jastech.Framework.Device.Motions;
 using Jastech.Framework.Imaging.Helper;
 using Jastech.Framework.Imaging.Result;
 using Jastech.Framework.Imaging.VisionPro;
@@ -22,25 +23,36 @@ namespace Jastech.Apps.Structure.VisionTool
 {
     public partial class MainAlgorithmTool : AlgorithmTool
     {
-        public bool ExecuteAlignment(List<PointF> visionCoordinateList, List<PointF> realCoordinateList, out double offset)
+        //public void ExecuteAlignment(Unit unit, List<PointF> realCoordinateList, PointF calibrationStartPosition, ref AppsInspResult inspResult)
+        public PreAlignResult ExecuteAlignment(Unit unit, List<PointF> realCoordinateList, PointF calibrationStartPosition)
         {
             double t1, t2, dt = 0.0;
             double cX = 0, cY = 0, pX = 0, pY = 0;
             double imagePosX = 0, imagePosY = 0;
 
-            double markLeftX = visionCoordinateList[0].X;
-            double markLeftY = visionCoordinateList[0].Y;
+            double leftRealMarkX = realCoordinateList[0].X;
+            double leftRealMarkY = realCoordinateList[0].Y;
 
-            double markRightX = visionCoordinateList[1].X;
-            double markRightY = visionCoordinateList[1].Y;
+            double rightRealMarkX = realCoordinateList[1].X;
+            double rightRealMarkY = realCoordinateList[1].Y;
+
+            var preAlignLeftData = unit.PreAlignParamList.Where(x => x.Direction == MarkDirection.Left).FirstOrDefault();
+            double leftMotionX = preAlignLeftData.GetMotionData(AxisName.X);
+            double leftMotionY = preAlignLeftData.GetMotionData(AxisName.Y);
+            double leftMotionT = preAlignLeftData.GetMotionData(AxisName.T);
+
+            var preAlignRightData = unit.PreAlignParamList.Where(x => x.Direction == MarkDirection.Left).FirstOrDefault();
+            double rightMotionX = preAlignRightData.GetMotionData(AxisName.X);
+            double rightMotionY = preAlignRightData.GetMotionData(AxisName.Y);
+            double rightMotionT = preAlignRightData.GetMotionData(AxisName.T);
 
             double centerOffsetX = 0, centerOffsetY = 0;
 
             double alignX = 0, alignY = 0;
 
             // 1. 보정각 Theta 구하기
-            double dX = (0 + markRightX) - (0 + markLeftX); // (m_dMotionPosX[ALIGN_OBJ_RIGHT] + dMarkRightX) - (m_dMotionPosX[ALIGN_OBJ_LEFT] + dMarkLeftX) + m_dLRDistCamera;
-            double dY = (0 + markRightY) - (0 + markLeftY); // (m_dMotionPosY[ALIGN_OBJ_RIGHT] + dMarkRightY) - (m_dMotionPosY[ALIGN_OBJ_LEFT] + dMarkLeftY);
+            double dX = (rightMotionX + rightRealMarkX) - (leftMotionX + leftRealMarkX) + 0;    // (m_dMotionPosX[ALIGN_OBJ_RIGHT] + dMarkRightX) - (m_dMotionPosX[ALIGN_OBJ_LEFT] + dMarkLeftX) + m_dLRDistCamera;
+            double dY = (rightMotionY + rightRealMarkY) - (leftMotionY + leftRealMarkY);        // (m_dMotionPosY[ALIGN_OBJ_RIGHT] + dMarkRightY) - (m_dMotionPosY[ALIGN_OBJ_LEFT] + dMarkLeftY);
 
             if (dX != 0)
                 t1 = Math.Atan2(dY, dX);
@@ -52,14 +64,14 @@ namespace Jastech.Apps.Structure.VisionTool
             dt = t2 - t1;
 
             // 2. 회전 대상 지정 ( Left 기준 )
-            pX = 0; // m_dMotionPosX[ALIGN_OBJ_LEFT]
-            pY = 0; // m_dMotionPosY[ALIGN_OBJ_LEFT]
-            imagePosX = markLeftX;
-            imagePosY = markLeftY;
+            pX = leftMotionX; // m_dMotionPosX[ALIGN_OBJ_LEFT]
+            pY = leftMotionY; // m_dMotionPosY[ALIGN_OBJ_LEFT]
+            imagePosX = leftRealMarkX;
+            imagePosY = leftRealMarkY;
 
             // 3. 회전 중심 보정
-            centerOffsetX = (0 - 0); // m_dMotionPosX[ALIGN_OBJ_LEFT] - g_DataCalibration.GetCalStartPosX(m_nCurrentCamIndex, nStageNo);
-            centerOffsetY = (0 - 0); // m_dMotionPosY[ALIGN_OBJ_LEFT] - g_DataCalibration.GetCalStartPosY(m_nCurrentCamIndex, nStageNo);
+            centerOffsetX = (leftMotionX - calibrationStartPosition.X); // m_dMotionPosX[ALIGN_OBJ_LEFT] - g_DataCalibration.GetCalStartPosX(m_nCurrentCamIndex, nStageNo);
+            centerOffsetY = (leftMotionY - calibrationStartPosition.Y); // m_dMotionPosY[ALIGN_OBJ_LEFT] - g_DataCalibration.GetCalStartPosY(m_nCurrentCamIndex, nStageNo);
 
             cX = centerOffsetX; // g_DataCalibration.GetRotCenterX(m_nCurrentCamIndex, nStageNo) + dCenterOffsetX;
             cY = centerOffsetY; // g_DataCalibration.GetRotCenterY(m_nCurrentCamIndex, nStageNo) + dCenterOffsetY;
@@ -69,17 +81,27 @@ namespace Jastech.Apps.Structure.VisionTool
             alignY = (pY - cY) * Math.Cos(dt) - (pX - cX) * Math.Sin(dt) + cY;
 
             // 5. 현재 위치 기준 보정 offset 계산
+            double offsetX = leftMotionX - alignX;
+            double offsetY = leftMotionY - alignY;
             //refAlignOffset.s_fOffsetX = (m_dAxisX1 - dAlignX);
             //refAlignOffset.s_fOffsetY = (m_dAxisY1 - dAlignY);
+
 
             // 6. mark를 화면 중심으로 보내기 위한 mark offset 적용
             //refAlignOffset.s_fOffsetX -= dImagePosX;
             //refAlignOffset.s_fOffsetY -= dImagePosY;
-
             //refAlignOffset.s_fOffsetT = (dt * 180.0 / M_PI);
 
-            offset = 0;
-            return false;
+            offsetX -= imagePosX;
+            offsetY -= imagePosY;
+            double offsetT = (dt * 180.0 / Math.PI);
+
+            //return false;
+            //inspResult.PreAlignResult.SetPreAlignResult(offsetX, offsetY, offsetT);
+
+            PreAlignResult result = new PreAlignResult();
+            result.SetPreAlignResult(offsetX, offsetY, offsetT);
+            return result;
         }
 
         //public void RunPreAlign(ref AppsInspResult inspResult)
