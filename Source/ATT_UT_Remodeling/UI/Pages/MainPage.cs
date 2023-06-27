@@ -25,6 +25,8 @@ namespace ATT_UT_Remodeling.UI.Pages
 
         public PreAlignDisplayControl PreAlignDisplayControl { get; set; } = new PreAlignDisplayControl() { Dock = DockStyle.Fill };
 
+        public SystemLogControl SystemLogControl { get; set; } = new SystemLogControl() { Dock = DockStyle.Fill };
+
         protected override CreateParams CreateParams
         {
             get
@@ -60,6 +62,7 @@ namespace ATT_UT_Remodeling.UI.Pages
             pnlAkkon.Controls.Add(AkkonViewerControl);
             pnlAlign.Controls.Add(AlignViewerControl);
             pnlPreAlign.Controls.Add(PreAlignDisplayControl);
+            pnlSystemLog.Controls.Add(SystemLogControl);
         }
 
         public void UpdateTabCount(int tabCount)
@@ -72,6 +75,11 @@ namespace ATT_UT_Remodeling.UI.Pages
         {
             AkkonViewerControl.UpdateMainResult(result);
             AlignViewerControl.UpdateMainResult(result);
+        }
+
+        public void AddSystemLogMessage(string logMessage)
+        {
+            SystemLogControl.AddLogMessage(logMessage);
         }
         #endregion
     }

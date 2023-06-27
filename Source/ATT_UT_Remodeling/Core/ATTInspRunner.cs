@@ -172,12 +172,12 @@ namespace ATT_UT_Remodeling.Core
             var lineCamera = LineCameraManager.Instance().GetLineCamera("LineCamera").Camera;
             double resolution_um = lineCamera.PixelResolution_um / lineCamera.LensScale;
             double judgementX = resolution_um * tab.AlignSpec.LeftSpecX_um;
-            double judgementY = resolution_um* tab.AlignSpec.LeftSpecY_um;
+            double judgementY = resolution_um * tab.AlignSpec.LeftSpecY_um;
 
             var areaCamera = AreaCameraManager.Instance().GetAreaCamera("PreAlign").Camera;
 
             #region Left Align
-            if(AppsConfig.Instance().EnableAlign)
+            if (AppsConfig.Instance().EnableAlign)
             {
                 inspResult.LeftAlignX = algorithmTool.RunMainLeftAlignX(inspTab.MergeCogImage, tab, fpcCoordinate, panelCoordinate, judgementX);
                 if (inspResult.IsLeftAlignXGood() == false)
@@ -323,7 +323,7 @@ namespace ATT_UT_Remodeling.Core
 
         private void AddInspectEventFuction(ATTInspTab inspTab)
         {
-            lock(_inspLock)
+            lock (_inspLock)
             {
                 InspTabQueue.Enqueue(inspTab);
             }
@@ -342,30 +342,30 @@ namespace ATT_UT_Remodeling.Core
 
         private void ATTSeqRunner_GrabDoneEventHanlder(string cameraName, bool isGrabDone)
         {
-            IsGrabDone = isGrabDone; 
+            IsGrabDone = isGrabDone;
         }
 
         private void AkkonInspection()
         {
-            while(true)
+            while (true)
             {
                 if (CancelAkkonInspTask.IsCancellationRequested)
                 {
                     break;
                 }
 
-                if(GetInspTab() is ATTInspTab inspTab)
+                if (GetInspTab() is ATTInspTab inspTab)
                 {
                     Run(inspTab);
                 }
-                
+
                 Thread.Sleep(50);
             }
         }
-        
+
         private ATTInspTab GetInspTab()
         {
-           lock(_inspLock)
+            lock (_inspLock)
             {
                 if (InspTabQueue.Count() > 0)
                     return InspTabQueue.Dequeue();
@@ -401,8 +401,8 @@ namespace ATT_UT_Remodeling.Core
         {
             if (AkkonInspTask == null)
                 return;
-           
-            while(InspTabQueue.Count>0)
+
+            while (InspTabQueue.Count > 0)
             {
                 var data = InspTabQueue.Dequeue();
                 data.Dispose();
@@ -444,14 +444,14 @@ namespace ATT_UT_Remodeling.Core
             if (ModelManager.Instance().CurrentModel == null)
                 return;
             //SeqStop();
-           SystemManager.Instance().MachineStatus = MachineStatus.RUN;
+            SystemManager.Instance().MachineStatus = MachineStatus.RUN;
 
             var lineCamera = LineCameraManager.Instance().GetAppsCamera("LineCamera");
 
             lineCamera.GrabDoneEventHanlder += ATTSeqRunner_GrabDoneEventHanlder;
             StartAkkonInspTask();
 
-            Logger.Write(LogType.Seq, "Start Sequence.");
+            WriteLog("Start Sequence.", true);
 
             if (SeqTask != null)
             {
@@ -478,13 +478,13 @@ namespace ATT_UT_Remodeling.Core
             AreaCameraManager.Instance().GetAreaCamera("PreAlign").StopGrab();
 
             StopAkkonInspTask();
-            
+
             // 조명 off
             LAFManager.Instance().AutoFocusOnOff("Laf", false);
-            Logger.Write(LogType.Seq, "AutoFocus Off.");
+            WriteLog("AutoFocus Off.");
 
             LineCameraManager.Instance().Stop("LineCamera");
-            Logger.Write(LogType.Seq, "Stop Grab.");
+            WriteLog("Stop Grab.");
 
             if (SeqTask == null)
                 return;
@@ -498,7 +498,7 @@ namespace ATT_UT_Remodeling.Core
             SeqTask.Wait();
             SeqTask = null;
 
-            Logger.Write(LogType.Seq, "Stop Sequence.");
+            WriteLog("Stop Sequence.", true);
         }
 
         private void SeqTaskAction()
@@ -546,6 +546,7 @@ namespace ATT_UT_Remodeling.Core
             if (laf == null)
                 return;
 
+            string systemLogMessage = string.Empty;
             string errorMessage = string.Empty;
 
             switch (SeqStep)
@@ -564,15 +565,15 @@ namespace ATT_UT_Remodeling.Core
 
                 case SeqStep.SEQ_READY:
                     // 조명
-                    Logger.Write(LogType.Seq, "Light off.");
+                    WriteLog("Light off.");
 
                     //PlcControlManager.Instance().ClearAlignData();
-                    Logger.Write(LogType.Seq, "Clear plc data.");
+                    WriteLog("Clear plc data.");
 
                     // LAF
                     LAFManager.Instance().AutoFocusOnOff("Laf", false);
                     laf.SetMotionAbsoluteMove(0);
-                    Logger.Write(LogType.Seq, "Laf off.");
+                    WriteLog("Laf off.");
 
                     SeqStep = SeqStep.SEQ_START;
                     break;
@@ -583,7 +584,7 @@ namespace ATT_UT_Remodeling.Core
                     if (Convert.ToInt32(preAlignStart) == (int)PlcCommand.StartPreAlign_AutoRun)
                         break;
 
-                    Logger.Write(LogType.Seq, "Receive prealign start signal from PLC.");
+                    WriteLog("Receive prealign start signal from PLC.");
 
                     SeqStep = SeqStep.SEQ_PREALIGN_R;
                     break;
@@ -598,20 +599,20 @@ namespace ATT_UT_Remodeling.Core
                     // Set camera property
                     areaCamera.Camera.SetExposureTime(0);
                     areaCamera.Camera.SetAnalogGain(0);
-                    Logger.Write(LogType.Seq, "Set camera property.");
+                    WriteLog("Set camera property.");
 
                     // Light on
                     //preAlignParam.LightParams.Where(x => x.Map == )
-                    Logger.Write(LogType.Seq, "Prealign Light on.");
+                    WriteLog("Prealign Light on.");
 
                     // Grab
                     var preAlignLeftImage = GetAreaCameraImage(areaCamera.Camera);
                     AppsInspResult.PreAlignResult.PreAlignMark.FoundedMark.Right = RunPreAlignMark(unit, preAlignLeftImage, MarkDirection.Right);
-                    Logger.Write(LogType.Seq, "Complete prealign right mark search.");
+                    WriteLog("Complete prealign right mark search.");
 
                     // Set prealign motion position
                     SetMarkMotionPosition(unit, MarkDirection.Right);
-                    Logger.Write(LogType.Seq, "Set axis information for prealign right mark position.");
+                    WriteLog("Set axis information for prealign right mark position.");
 
                     SeqStep = SeqStep.SEQ_PREALIGN_L;
                     break;
@@ -626,44 +627,44 @@ namespace ATT_UT_Remodeling.Core
                     // Grab start
                     var preAlignRightImage = GetAreaCameraImage(areaCamera.Camera);
                     AppsInspResult.PreAlignResult.PreAlignMark.FoundedMark.Left = RunPreAlignMark(unit, preAlignRightImage, MarkDirection.Right);
-                    Logger.Write(LogType.Seq, "Complete prealign left mark search.");
+                    WriteLog("Complete prealign left mark search.");
 
                     // Set prealign motion position
                     SetMarkMotionPosition(unit, MarkDirection.Left);
-                    Logger.Write(LogType.Seq, "Set axis information for prealign left mark position.");
+                    WriteLog("Set axis information for prealign left mark position.");
 
                     SeqStep = SeqStep.SEQ_SEND_PREALIGN_DATA;
                     break;
 
                 case SeqStep.SEQ_SEND_PREALIGN_DATA:
-                    Logger.Write(LogType.Seq, "Prealign Light off.");
+                    WriteLog("Prealign Light off.");
 
                     // Execute prealign
                     RunPreAlign(AppsInspResult);
-                    Logger.Write(LogType.Seq, "Complete prealign.");
+                    WriteLog("Complete prealign.");
 
                     var offsetX = AppsInspResult.PreAlignResult.OffsetX;
                     var offsetY = AppsInspResult.PreAlignResult.OffsetY;
                     var offsetT = AppsInspResult.PreAlignResult.OffsetT;
 
                     // Check Tolerance
-                    if (Math.Abs(offsetX) <= AppsConfig.Instance().PreAlignToleranceX 
+                    if (Math.Abs(offsetX) <= AppsConfig.Instance().PreAlignToleranceX
                         || Math.Abs(offsetX) <= AppsConfig.Instance().PreAlignToleranceY
                         || Math.Abs(offsetX) <= AppsConfig.Instance().PreAlignToleranceTheta)
                     {
-                        Logger.Write(LogType.Seq, "Prealign results are spec-in.");
+                        WriteLog("Prealign results are spec-in.");
                     }
                     else
-                        Logger.Write(LogType.Seq, "Prealign results are spec-out.");
+                        WriteLog("Prealign results are spec-out.");
 
                     // Send prealign results
                     PlcControlManager.Instance().WriteAlignData(offsetX, offsetY, offsetT);
-                    Logger.Write(LogType.Seq, "Write prealign results.");
+                    WriteLog("Write prealign results.");
 
                     var leftScore = AppsInspResult.PreAlignResult.PreAlignMark.FoundedMark.Left.MaxMatchPos.Score;
                     var rightScore = AppsInspResult.PreAlignResult.PreAlignMark.FoundedMark.Right.MaxMatchPos.Score;
                     PlcControlManager.Instance().WritePreAlignResult(leftScore, rightScore);
-                    Logger.Write(LogType.Seq, "Send prealign results.");
+                    WriteLog("Send prealign results.");
 
                     SeqStep = SeqStep.SEQ_WAITING;
                     break;
@@ -688,11 +689,11 @@ namespace ATT_UT_Remodeling.Core
 
                     // Clear results
                     ClearResult();
-                    Logger.Write(LogType.Seq, "Clear result.");
+                    WriteLog("Clear result.");
 
                     // Init camera buffer
                     InitializeBuffer();
-                    Logger.Write(LogType.Seq, "Initialize buffer.");
+                    WriteLog("Initialize buffer.");
 
                     // Write panel information
                     AppsInspResult.StartInspTime = DateTime.Now;
@@ -700,7 +701,7 @@ namespace ATT_UT_Remodeling.Core
 
                     // LAF on
                     LAFManager.Instance().AutoFocusOnOff("Akkon", true);
-                    Logger.Write(LogType.Seq, "Laf On.");
+                    WriteLog("Laf On.");
 
                     SeqStep = SeqStep.SEQ_SCAN_START;
                     break;
@@ -713,7 +714,7 @@ namespace ATT_UT_Remodeling.Core
                     // Grab
                     lineCamera.SetOperationMode(TDIOperationMode.TDI);
                     lineCamera.StartGrab();
-                    Logger.Write(LogType.Seq, "Start grab.");
+                    WriteLog("Start grab.");
 
                     // Move
                     if (MoveTo(TeachingPosType.Stage1_Scan_End, out errorMessage) == false)
@@ -721,7 +722,7 @@ namespace ATT_UT_Remodeling.Core
                         // Alarm
                         // 조명 Off
                         LineCameraManager.Instance().Stop("LineCamera");
-                        Logger.Write(LogType.Seq, "Stop grab.");
+                        WriteLog("Stop grab.");
                         break;
                     }
 
@@ -735,14 +736,14 @@ namespace ATT_UT_Remodeling.Core
                             break;
                     }
 
-                    Logger.Write(LogType.Seq, "Complete linescanner grab.");
+                    WriteLog("Complete linescanner grab.");
 
                     //AppsLAFManager.Instance().AutoFocusOnOff(LAFName.Akkon.ToString(), false);
                     //Logger.Write(LogType.Seq, "AutoFocus Off.");
 
                     // Grab stop
                     LineCameraManager.Instance().Stop("LineCamera");
-                    Logger.Write(LogType.Seq, "Stop grab.");
+                    WriteLog("Stop grab.");
 
                     LastInspSW.Restart();
 
@@ -766,7 +767,9 @@ namespace ATT_UT_Remodeling.Core
                     // Update result data
                     GetAkkonResultImage();
                     UpdateDailyInfo(AppsInspResult);
-                    Logger.Write(LogType.Seq, "Update inspectinon result.");
+
+                    WriteLog("Update inspectinon result.", false);
+                    
 
                     SystemManager.Instance().UpdateMainResult(AppsInspResult);
                     Console.WriteLine("Scan End to Insp Complete : " + LastInspSW.ElapsedMilliseconds.ToString());
@@ -778,7 +781,7 @@ namespace ATT_UT_Remodeling.Core
                     DailyInfoService.Save();
 
                     SaveInspectionResult(AppsInspResult);
-                    Logger.Write(LogType.Seq, "Save inspection result.");
+                    WriteLog("Save inspection result.");
 
                     SeqStep = SeqStep.SEQ_SAVE_IMAGE;
                     break;
@@ -786,14 +789,14 @@ namespace ATT_UT_Remodeling.Core
                 case SeqStep.SEQ_SAVE_IMAGE:
                     // Save reuslt images
                     SaveImage(AppsInspResult);
-                    Logger.Write(LogType.Seq, "Save inspection images.");
+                    WriteLog("Save inspection images.");
 
                     SeqStep = SeqStep.SEQ_DELETE_DATA;
                     break;
 
                 case SeqStep.SEQ_DELETE_DATA:
                     // Delete result datas
-                    Logger.Write(LogType.Seq, "Delete the old data");
+                    WriteLog("Delete the old data");
                     SeqStep = SeqStep.SEQ_CHECK_STANDBY;
                     break;
 
@@ -807,6 +810,14 @@ namespace ATT_UT_Remodeling.Core
                 default:
                     break;
             }
+        }
+
+        private void WriteLog(string logMessage, bool isSystemLog = false)
+        {
+            if (isSystemLog)
+                SystemManager.Instance().AddSystemLogMessage(logMessage);
+
+            Logger.Write(LogType.Seq, logMessage);
         }
 
         private void GetAkkonResultImage()
@@ -1485,18 +1496,18 @@ namespace ATT_UT_Remodeling.Core
             if (MoveAxis(teachingPos, axisX, movingParamX) == false)
             {
                 errorMessage = string.Format("Move To Axis X TimeOut!({0})", movingParamX.MovingTimeOut.ToString());
-                Logger.Write(LogType.Seq, errorMessage);
+                WriteLog(errorMessage);
                 return false;
             }
             if (MoveAxis(teachingPos, axisY, movingParamY) == false)
             {
                 errorMessage = string.Format("Move To Axis Y TimeOut!({0})", movingParamY.MovingTimeOut.ToString());
-                Logger.Write(LogType.Seq, errorMessage);
+                WriteLog(errorMessage);
                 return false;
             }
 
             string message = string.Format("Move Completed.(Teaching Pos : {0})", teachingPos.ToString());
-            Logger.Write(LogType.Seq, message);
+            WriteLog(message);
 
             return true;
         }

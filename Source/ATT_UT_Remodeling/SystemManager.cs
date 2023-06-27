@@ -176,6 +176,11 @@ namespace ATT_UT_Remodeling
             _mainForm.UpdateMainResult(result);
         }
 
+        public void AddSystemLogMessage(string logMessage)
+        {
+            _mainForm.AddSystemLogMessage(logMessage);
+        }
+
         public void StartRun()
         {
             if (ModelManager.Instance().CurrentModel == null)

@@ -1,10 +1,13 @@
 ﻿using Jastech.Apps.Winform;
 using Jastech.Apps.Winform.Settings;
+using Jastech.Framework.Comm;
 using Jastech.Framework.Config;
 using Jastech.Framework.Device.Cameras;
 using Jastech.Framework.Device.LAFCtrl;
 using Jastech.Framework.Device.LightCtrls;
 using Jastech.Framework.Device.Motions;
+using Jastech.Framework.Device.Plcs.Melsec.Parsers;
+using Jastech.Framework.Device.Plcs.Melsec;
 using Jastech.Framework.Imaging;
 using Jastech.Framework.Matrox;
 using Jastech.Framework.Util.Helper;
@@ -88,6 +91,11 @@ namespace ATT_UT_Remodeling
 
                 var laf = new VirtualLAFCtrl("Laf");
                 config.Add(laf);
+
+                //Test 코드
+                AppsConfig.Instance().PlcAddressInfo.CommonStart = 1000;
+                var plc = new MelsecPlc("PLC", new SocketComm("192.168.125.1", 9011, SocketCommType.Udp), new MelsecBinaryParser());
+                config.Add(plc);
             }
             else
             {

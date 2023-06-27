@@ -209,6 +209,9 @@ namespace Jastech.Apps.Winform.UI.Controls
                 {
                     var tabData = item.AlignDailyInfoList.Where(x => x.TabNo == tabNo).First();
 
+                    if (tabData == null)
+                        continue;
+
                     AlignSeriesLx.Points.Add(tabData.LX);
                     AlignSeriesLy.Points.Add(tabData.LY);
                     AlignSeriesRx.Points.Add(tabData.RX);
@@ -263,7 +266,7 @@ namespace Jastech.Apps.Winform.UI.Controls
             ClearChartData();
 
             var dailyInfo = DailyInfoService.GetDailyInfo();
-
+            
             foreach (var item in dailyInfo.DailyDataList)
             {
                 if (item.AkkonDailyInfoList.Count > 0)
@@ -292,22 +295,11 @@ namespace Jastech.Apps.Winform.UI.Controls
         {
             if (ChartType == InspChartType.Align)
             {
-                //AlignSeriesLx.Points.Clear();
-                //AlignSeriesLy.Points.Clear();
-                //AlignSeriesRx.Points.Clear();
-                //AlignSeriesRy.Points.Clear();
-                //AlignSeriesCx.Points.Clear();
-
                 foreach (var alignSeries in AlignSeriesList)
                     alignSeries.Points.Clear();
             }
             else
             {
-                //AkkonSeriesCount.Points.Clear();
-                //AkkonSeriesLength.Points.Clear();
-                //AkkonSeriesStrength.Points.Clear();
-                //AkkonSeriesStd.Points.Clear();
-
                 foreach (var akkonSeries in AkkonSeriesList)
                     akkonSeries.Points.Clear();
             }

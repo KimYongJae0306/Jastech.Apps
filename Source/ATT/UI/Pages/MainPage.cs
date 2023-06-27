@@ -11,6 +11,7 @@ using Jastech.Apps.Winform.UI.Controls;
 using Jastech.Apps.Structure.Data;
 using Jastech.Apps.Winform.Service;
 using Jastech.Apps.Winform.Core;
+using ATT.UI.Controls;
 
 namespace ATT.UI.Pages
 {
@@ -23,6 +24,9 @@ namespace ATT.UI.Pages
         //public AkkonInspDisplayControl AkkonInspControl { get; private set; } = new AkkonInspDisplayControl();
 
         //public AlignInspDisplayControl AlignInspControl { get; private set; } = new AlignInspDisplayControl();
+
+        public AkkonViewerControl AkkonViewerControl { get; set; } = new AkkonViewerControl() { Dock = DockStyle.Fill };
+        public AlignViewerControl AlignViewerControl { get; set; } = new AlignViewerControl() { Dock = DockStyle.Fill };
 
         protected override CreateParams CreateParams
         {
@@ -61,18 +65,27 @@ namespace ATT.UI.Pages
 
             //AlignInspControl.Dock = DockStyle.Fill;
             //pnlAlign.Controls.Add(AlignInspControl);
+
+            pnlAkkon.Controls.Add(AkkonViewerControl);
+            pnlAlign.Controls.Add(AlignViewerControl);
         }
 
         public void UpdateTabCount(int tabCount)
         {
             //AkkonInspControl.UpdateTabCount(tabCount);
             //AlignInspControl.UpdateTabCount(tabCount);
+
+            AkkonViewerControl.UpdateTabCount(tabCount);
+            AlignViewerControl.UpdateTabCount(tabCount);
         }
 
         public void UpdateMainResult(AppsInspResult result)
         {
             //AkkonInspControl.UpdateMainResult(result);
             //AlignInspControl.UpdateMainResult(result);
+
+            AkkonViewerControl.UpdateMainResult(result);
+            AlignViewerControl.UpdateMainResult(result);
         }
 
         //public void InitializeResult(int tabCount)

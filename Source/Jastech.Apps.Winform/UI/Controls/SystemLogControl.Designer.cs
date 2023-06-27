@@ -30,6 +30,7 @@
         {
             this.tlpSystemLog = new System.Windows.Forms.TableLayoutPanel();
             this.lblAkkonViewer = new System.Windows.Forms.Label();
+            this.lstLogMessage = new System.Windows.Forms.ListBox();
             this.tlpSystemLog.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -38,6 +39,7 @@
             this.tlpSystemLog.ColumnCount = 1;
             this.tlpSystemLog.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tlpSystemLog.Controls.Add(this.lblAkkonViewer, 0, 0);
+            this.tlpSystemLog.Controls.Add(this.lstLogMessage, 0, 1);
             this.tlpSystemLog.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tlpSystemLog.Location = new System.Drawing.Point(0, 0);
             this.tlpSystemLog.Margin = new System.Windows.Forms.Padding(0);
@@ -62,6 +64,19 @@
             this.lblAkkonViewer.Text = "System Log";
             this.lblAkkonViewer.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
+            // lstLogMessage
+            // 
+            this.lstLogMessage.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
+            this.lstLogMessage.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lstLogMessage.ForeColor = System.Drawing.Color.White;
+            this.lstLogMessage.FormattingEnabled = true;
+            this.lstLogMessage.ItemHeight = 20;
+            this.lstLogMessage.Location = new System.Drawing.Point(0, 40);
+            this.lstLogMessage.Margin = new System.Windows.Forms.Padding(0);
+            this.lstLogMessage.Name = "lstLogMessage";
+            this.lstLogMessage.Size = new System.Drawing.Size(300, 260);
+            this.lstLogMessage.TabIndex = 4;
+            // 
             // SystemLogControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
@@ -81,5 +96,6 @@
 
         private System.Windows.Forms.TableLayoutPanel tlpSystemLog;
         private System.Windows.Forms.Label lblAkkonViewer;
+        private System.Windows.Forms.ListBox lstLogMessage;
     }
 }
