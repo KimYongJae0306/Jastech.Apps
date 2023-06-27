@@ -14,7 +14,7 @@ using Emgu.CV.Structure;
 
 namespace Jastech.Apps.Winform.UI.Controls
 {
-    public partial class AlignInspResultControl : UserControl
+    public partial class AlignResultDataControl : UserControl
     {
         #region 필드
         #endregion
@@ -37,7 +37,7 @@ namespace Jastech.Apps.Winform.UI.Controls
         #region 메서드
         #endregion
 
-        public AlignInspResultControl()
+        public AlignResultDataControl()
         {
             InitializeComponent();
         }

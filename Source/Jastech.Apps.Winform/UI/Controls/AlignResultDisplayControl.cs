@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using Jastech.Framework.Winform.VisionPro.Controls;
 using Cognex.VisionPro;
+using static ATT_UT_IPAD.UI.Controls.AkkonResultDisplayControl;
 
 namespace ATT_UT_IPAD.UI.Controls
 {
@@ -36,9 +37,11 @@ namespace ATT_UT_IPAD.UI.Controls
         #endregion
 
         #region 이벤트
+        public event SendTabNumberDelegate SendTabNumber;
         #endregion
 
         #region 델리게이트
+        public delegate void SendTabNumberDelegate(int tabNumber);
         #endregion
 
         #region 생성자
@@ -117,6 +120,7 @@ namespace ATT_UT_IPAD.UI.Controls
             TabBtnControlList[tabNum].SetButtonClick();
 
             CurrentTabNo = tabNum;
+            SendTabNumber(tabNum);
 
             if (InspResultDic.ContainsKey(tabNum))
             {

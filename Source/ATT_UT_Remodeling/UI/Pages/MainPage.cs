@@ -47,19 +47,9 @@ namespace ATT_UT_Remodeling.UI.Pages
         {
             InitializeComponent();
         }
-
         #endregion
 
         #region 메서드
-        #endregion
-
-
-
-        //public AkkonViewerControl AkkonResultViewer { get; set; } = new AkkonViewerControl() { Dock = DockStyle.Fill };
-
-        //public AlignViewerControl AlignResultViewer { get; set; } = new AlignViewerControl() { Dock = DockStyle.Fill };
-
-
         private void MainPage_Load(object sender, EventArgs e)
         {
             AddControls();
@@ -83,5 +73,6 @@ namespace ATT_UT_Remodeling.UI.Pages
             AkkonViewerControl.UpdateMainResult(result);
             AlignViewerControl.UpdateMainResult(result);
         }
+        #endregion
     }
 }

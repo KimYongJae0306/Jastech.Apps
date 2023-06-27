@@ -12,7 +12,7 @@ using Jastech.Apps.Winform.Service;
 
 namespace Jastech.Apps.Winform.UI.Controls
 {
-    public partial class AkkonInspResultControl : UserControl
+    public partial class AkkonResultDataControl : UserControl
     {
         #region 필드
         #endregion
@@ -29,7 +29,7 @@ namespace Jastech.Apps.Winform.UI.Controls
         #endregion
 
         #region 생성자
-        public AkkonInspResultControl()
+        public AkkonResultDataControl()
         {
             InitializeComponent();
         }

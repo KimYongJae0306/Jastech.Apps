@@ -20,9 +20,9 @@ namespace ATT.UI.Pages
         #endregion
 
         #region 속성
-        public AkkonInspDisplayControl AkkonInspControl { get; private set; } = new AkkonInspDisplayControl();
+        //public AkkonInspDisplayControl AkkonInspControl { get; private set; } = new AkkonInspDisplayControl();
 
-        public AlignInspDisplayControl AlignInspControl { get; private set; } = new AlignInspDisplayControl();
+        //public AlignInspDisplayControl AlignInspControl { get; private set; } = new AlignInspDisplayControl();
 
         protected override CreateParams CreateParams
         {
@@ -56,23 +56,23 @@ namespace ATT.UI.Pages
 
         private void AddControls()
         {
-            AkkonInspControl.Dock = DockStyle.Fill;
-            pnlAkkon.Controls.Add(AkkonInspControl);
+            //AkkonInspControl.Dock = DockStyle.Fill;
+            //pnlAkkon.Controls.Add(AkkonInspControl);
 
-            AlignInspControl.Dock = DockStyle.Fill;
-            pnlAlign.Controls.Add(AlignInspControl);
+            //AlignInspControl.Dock = DockStyle.Fill;
+            //pnlAlign.Controls.Add(AlignInspControl);
         }
 
         public void UpdateTabCount(int tabCount)
         {
-            AkkonInspControl.UpdateTabCount(tabCount);
-            AlignInspControl.UpdateTabCount(tabCount);
+            //AkkonInspControl.UpdateTabCount(tabCount);
+            //AlignInspControl.UpdateTabCount(tabCount);
         }
 
         public void UpdateMainResult(AppsInspResult result)
         {
-            AkkonInspControl.UpdateMainResult(result);
-            AlignInspControl.UpdateMainResult(result);
+            //AkkonInspControl.UpdateMainResult(result);
+            //AlignInspControl.UpdateMainResult(result);
         }
 
         //public void InitializeResult(int tabCount)

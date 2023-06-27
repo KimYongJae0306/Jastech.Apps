@@ -93,6 +93,18 @@
     <Compile Include="Service\Plc\PlcAddressMap.cs" />
     <Compile Include="Service\Plc\PlcAddressService.cs" />
     <Compile Include="TeachingUIManager.cs" />
+    <Compile Include="UI\Controls\AkkonResultDataControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UI\Controls\AkkonResultDataControl.Designer.cs">
+      <DependentUpon>AkkonResultDataControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Controls\AlignResultDataControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UI\Controls\AlignResultDataControl.Designer.cs">
+      <DependentUpon>AlignResultDataControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="UI\Controls\PlcCommandControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -110,6 +122,12 @@
     </Compile>
     <Compile Include="UI\Controls\PreAlignDisplayControl.Designer.cs">
       <DependentUpon>PreAlignDisplayControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Controls\SystemLogControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UI\Controls\SystemLogControl.Designer.cs">
+      <DependentUpon>SystemLogControl.cs</DependentUpon>
     </Compile>
     <Compile Include="UI\Controls\VisionCalibrationControl.cs">
       <SubType>UserControl</SubType>
@@ -148,12 +166,6 @@
     <Compile Include="UI\Controls\AkkonControl.designer.cs">
       <DependentUpon>AkkonControl.cs</DependentUpon>
     </Compile>
-    <Compile Include="UI\Controls\AkkonInspResultControl.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="UI\Controls\AkkonInspResultControl.Designer.cs">
-      <DependentUpon>AkkonInspResultControl.cs</DependentUpon>
-    </Compile>
     <Compile Include="UI\Controls\AkkonResultDisplayControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -171,24 +183,6 @@
     </Compile>
     <Compile Include="UI\Controls\AlignControl.designer.cs">
       <DependentUpon>AlignControl.cs</DependentUpon>
-    </Compile>
-    <Compile Include="UI\Controls\AkkonInspDisplayControl.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="UI\Controls\AkkonInspDisplayControl.Designer.cs">
-      <DependentUpon>AkkonInspDisplayControl.cs</DependentUpon>
-    </Compile>
-    <Compile Include="UI\Controls\AlignInspDisplayControl.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="UI\Controls\AlignInspDisplayControl.Designer.cs">
-      <DependentUpon>AlignInspDisplayControl.cs</DependentUpon>
-    </Compile>
-    <Compile Include="UI\Controls\AlignInspResultControl.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="UI\Controls\AlignInspResultControl.Designer.cs">
-      <DependentUpon>AlignInspResultControl.cs</DependentUpon>
     </Compile>
     <Compile Include="UI\Controls\AlignResultDisplayControl.cs">
       <SubType>UserControl</SubType>
@@ -331,8 +325,8 @@
     <EmbeddedResource Include="UI\Controls\AkkonControl.resx">
       <DependentUpon>AkkonControl.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="UI\Controls\AkkonInspResultControl.resx">
-      <DependentUpon>AkkonInspResultControl.cs</DependentUpon>
+    <EmbeddedResource Include="UI\Controls\AkkonResultDataControl.resx">
+      <DependentUpon>AkkonResultDataControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\Controls\AkkonResultDisplayControl.resx">
       <DependentUpon>AkkonResultDisplayControl.cs</DependentUpon>
@@ -343,14 +337,8 @@
     <EmbeddedResource Include="UI\Controls\AlignControl.resx">
       <DependentUpon>AlignControl.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="UI\Controls\AkkonInspDisplayControl.resx">
-      <DependentUpon>AkkonInspDisplayControl.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="UI\Controls\AlignInspDisplayControl.resx">
-      <DependentUpon>AlignInspDisplayControl.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="UI\Controls\AlignInspResultControl.resx">
-      <DependentUpon>AlignInspResultControl.cs</DependentUpon>
+    <EmbeddedResource Include="UI\Controls\AlignResultDataControl.resx">
+      <DependentUpon>AlignResultDataControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\Controls\AlignResultDisplayControl.resx">
       <DependentUpon>AlignResultDisplayControl.cs</DependentUpon>
@@ -369,6 +357,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UI\Controls\PreAlignDisplayControl.resx">
       <DependentUpon>PreAlignDisplayControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\Controls\SystemLogControl.resx">
+      <DependentUpon>SystemLogControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\Controls\VisionCalibrationControl.resx">
       <DependentUpon>VisionCalibrationControl.cs</DependentUpon>
