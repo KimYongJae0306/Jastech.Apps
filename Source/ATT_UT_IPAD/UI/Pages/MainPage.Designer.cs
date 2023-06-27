@@ -172,6 +172,7 @@
             // lblStart
             // 
             this.lblStart.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblStart.Image = global::ATT_UT_IPAD.Properties.Resources.Start_White;
             this.lblStart.Location = new System.Drawing.Point(0, 0);
             this.lblStart.Margin = new System.Windows.Forms.Padding(0);
             this.lblStart.Name = "lblStart";

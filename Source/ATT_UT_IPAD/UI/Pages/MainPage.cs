@@ -15,9 +15,9 @@ namespace ATT_UT_IPAD.UI.Pages
 {
     public partial class MainPage : UserControl
     {
-        public AkkonViewerControl AkkonResultViewer { get; set; } = new AkkonViewerControl() { Dock = DockStyle.Fill };
+        //public AkkonViewerControl AkkonResultViewer { get; set; } = new AkkonViewerControl() { Dock = DockStyle.Fill };
 
-        public AlignViewerControl AlignResultViewer { get; set; } = new AlignViewerControl() { Dock = DockStyle.Fill };
+        //public AlignViewerControl AlignResultViewer { get; set; } = new AlignViewerControl() { Dock = DockStyle.Fill };
 
         public MainPage()
         {
@@ -31,20 +31,20 @@ namespace ATT_UT_IPAD.UI.Pages
 
         private void AddControls()
         {
-            pnlAkkon.Controls.Add(AkkonResultViewer);
-            pnlAlign.Controls.Add(AlignResultViewer);
+            //pnlAkkon.Controls.Add(AkkonResultViewer);
+            //pnlAlign.Controls.Add(AlignResultViewer);
         }
 
         public void UpdateTabCount(int tabCount)
         {
-            AkkonResultViewer.UpdateTabCount(tabCount);
-            AlignResultViewer.UpdateTabCount(tabCount);
+            //AkkonResultViewer.UpdateTabCount(tabCount);
+            //AlignResultViewer.UpdateTabCount(tabCount);
         }
 
         public void UpdateMainResult(AppsInspResult result)
         {
-            AkkonResultViewer.UpdateMainResult(result);
-            AlignResultViewer.UpdateMainResult(result);
+            //AkkonResultViewer.UpdateMainResult(result);
+            //AlignResultViewer.UpdateMainResult(result);
         }
     }
 

@@ -14,7 +14,6 @@ namespace Jastech.Apps.Winform.UI.Controls
 {
     public partial class AkkonInspResultControl : UserControl
     {
-
         #region 필드
         #endregion
 

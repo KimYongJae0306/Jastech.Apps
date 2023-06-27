@@ -154,18 +154,6 @@
     <Compile Include="UI\Controls\AkkonInspResultControl.Designer.cs">
       <DependentUpon>AkkonInspResultControl.cs</DependentUpon>
     </Compile>
-    <Compile Include="UI\Controls\AkkonResultChartControl.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="UI\Controls\AkkonResultChartControl.Designer.cs">
-      <DependentUpon>AkkonResultChartControl.cs</DependentUpon>
-    </Compile>
-    <Compile Include="UI\Controls\AkkonResultDataControl.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="UI\Controls\AkkonResultDataControl.Designer.cs">
-      <DependentUpon>AkkonResultDataControl.cs</DependentUpon>
-    </Compile>
     <Compile Include="UI\Controls\AkkonResultDisplayControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -201,18 +189,6 @@
     </Compile>
     <Compile Include="UI\Controls\AlignInspResultControl.Designer.cs">
       <DependentUpon>AlignInspResultControl.cs</DependentUpon>
-    </Compile>
-    <Compile Include="UI\Controls\AlignResultChartControl.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="UI\Controls\AlignResultChartControl.Designer.cs">
-      <DependentUpon>AlignResultChartControl.cs</DependentUpon>
-    </Compile>
-    <Compile Include="UI\Controls\AlignResultDataControl.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="UI\Controls\AlignResultDataControl.Designer.cs">
-      <DependentUpon>AlignResultDataControl.cs</DependentUpon>
     </Compile>
     <Compile Include="UI\Controls\AlignResultDisplayControl.cs">
       <SubType>UserControl</SubType>
@@ -358,12 +334,6 @@
     <EmbeddedResource Include="UI\Controls\AkkonInspResultControl.resx">
       <DependentUpon>AkkonInspResultControl.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="UI\Controls\AkkonResultChartControl.resx">
-      <DependentUpon>AkkonResultChartControl.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="UI\Controls\AkkonResultDataControl.resx">
-      <DependentUpon>AkkonResultDataControl.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="UI\Controls\AkkonResultDisplayControl.resx">
       <DependentUpon>AkkonResultDisplayControl.cs</DependentUpon>
     </EmbeddedResource>
@@ -381,12 +351,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UI\Controls\AlignInspResultControl.resx">
       <DependentUpon>AlignInspResultControl.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="UI\Controls\AlignResultChartControl.resx">
-      <DependentUpon>AlignResultChartControl.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="UI\Controls\AlignResultDataControl.resx">
-      <DependentUpon>AlignResultDataControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\Controls\AlignResultDisplayControl.resx">
       <DependentUpon>AlignResultDisplayControl.cs</DependentUpon>

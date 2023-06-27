@@ -17,29 +17,114 @@ namespace ATT_UT_IPAD.UI.Controls
 {
     public partial class AlignResultDisplayControl : UserControl
     {
+        #region 필드
+        private int _prevTabCount { get; set; } = -1;
+
+        private Color _selectedColor;
+
+        private Color _nonSelectedColor;
+        #endregion
+
+        #region 속성
         public Dictionary<int, TabInspResult> InspResultDic { get; set; } = new Dictionary<int, TabInspResult>();
 
         public List<TabBtnControl> TabBtnControlList { get; private set; } = new List<TabBtnControl>();
 
         public CogInspAlignDisplayControl InspAlignDisplay { get; private set; } = new CogInspAlignDisplayControl() { Dock = DockStyle.Fill };
 
-        private int _prevTabCount { get; set; } = -1;
-
         public int CurrentTabNo { get; set; } = -1;
+        #endregion
 
+        #region 이벤트
+        #endregion
+
+        #region 델리게이트
+        #endregion
+
+        #region 생성자
         public AlignResultDisplayControl()
         {
             InitializeComponent();
         }
+        #endregion
 
+        #region 메서드
         private void AlignResultDisplayControl_Load(object sender, EventArgs e)
         {
             AddControl();
+            InitializeUI();
         }
 
         private void AddControl()
         {
             pnlInspDisplay.Controls.Add(InspAlignDisplay);
+        }
+
+        private void InitializeUI()
+        {
+            _selectedColor = Color.FromArgb(104, 104, 104);
+            _nonSelectedColor = Color.FromArgb(52, 52, 52);
+
+            AppsInspModel inspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
+            if (inspModel == null)
+                UpdateTabCount(1);
+            else
+                UpdateTabCount(inspModel.TabCount);
+        }
+
+        public void UpdateTabCount(int tabCount)
+        {
+            if (_prevTabCount == tabCount)
+                return;
+
+            ClearTabBtnList();
+
+            int controlWidth = 100;
+            Point point = new Point(0, 0);
+
+            for (int i = 0; i < tabCount; i++)
+            {
+                TabBtnControl buttonControl = new TabBtnControl();
+                buttonControl.SetTabIndex(i);
+                buttonControl.SetTabEventHandler += ButtonControl_SetTabEventHandler;
+                buttonControl.Size = new Size(controlWidth, (int)(pnlTabButton.Height));
+                buttonControl.Location = point;
+
+                pnlTabButton.Controls.Add(buttonControl);
+                point.X += controlWidth;
+                TabBtnControlList.Add(buttonControl);
+            }
+
+            if (TabBtnControlList.Count > 0)
+                TabBtnControlList[0].UpdateData();
+
+            _prevTabCount = tabCount;
+        }
+
+        private void ClearTabBtnList()
+        {
+            foreach (var btn in TabBtnControlList)
+            {
+                btn.SetTabEventHandler -= ButtonControl_SetTabEventHandler;
+            }
+            TabBtnControlList.Clear();
+            pnlTabButton.Controls.Clear();
+        }
+
+        private void ButtonControl_SetTabEventHandler(int tabNum)
+        {
+            TabBtnControlList.ForEach(x => x.SetButtonClickNone());
+            TabBtnControlList[tabNum].SetButtonClick();
+
+            CurrentTabNo = tabNum;
+
+            if (InspResultDic.ContainsKey(tabNum))
+            {
+                UpdateLeftAlignResult(InspResultDic[tabNum]);
+                UpdateRightAlignResult(InspResultDic[tabNum]);
+            }
+            else
+                InspAlignDisplay.ClearImage();
         }
 
         public void UpdateResultDisplay(AppsInspResult inspResult)
@@ -64,29 +149,6 @@ namespace ATT_UT_IPAD.UI.Controls
                     UpdateRightAlignResult(inspResult.TabResultList[i]);
                 }
             }
-        }
-
-        public void InitalizeResultData(int tabCount)
-        {
-            if (InspResultDic.Count() > 0)
-            {
-                for (int i = 0; i < InspResultDic.Count(); i++)
-                {
-                    if (InspResultDic.ContainsKey(i))
-                    {
-                        InspResultDic[i]?.Dispose();
-                        InspResultDic[i] = null;
-                    }
-                }
-            }
-
-            InspResultDic.Clear();
-        }
-
-        public void UpdateResultDisplay(TabInspResult tabInspResult)
-        {
-            UpdateLeftAlignResult(tabInspResult);
-            UpdateRightAlignResult(tabInspResult);
         }
 
         private void UpdateLeftAlignResult(TabInspResult result)
@@ -225,5 +287,6 @@ namespace ATT_UT_IPAD.UI.Controls
 
             return new Point((int)(minX + width), (int)(minY + height));
         }
+        #endregion
     }
 }

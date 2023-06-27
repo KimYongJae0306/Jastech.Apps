@@ -30,6 +30,7 @@
         {
             this.tlpAlignResultDisplay = new System.Windows.Forms.TableLayoutPanel();
             this.pnlInspDisplay = new System.Windows.Forms.Panel();
+            this.pnlTabButton = new System.Windows.Forms.Panel();
             this.tlpAlignResultDisplay.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -37,12 +38,14 @@
             // 
             this.tlpAlignResultDisplay.ColumnCount = 1;
             this.tlpAlignResultDisplay.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tlpAlignResultDisplay.Controls.Add(this.pnlInspDisplay, 0, 0);
+            this.tlpAlignResultDisplay.Controls.Add(this.pnlTabButton, 0, 0);
+            this.tlpAlignResultDisplay.Controls.Add(this.pnlInspDisplay, 0, 1);
             this.tlpAlignResultDisplay.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tlpAlignResultDisplay.Location = new System.Drawing.Point(0, 0);
             this.tlpAlignResultDisplay.Margin = new System.Windows.Forms.Padding(0);
             this.tlpAlignResultDisplay.Name = "tlpAlignResultDisplay";
-            this.tlpAlignResultDisplay.RowCount = 1;
+            this.tlpAlignResultDisplay.RowCount = 2;
+            this.tlpAlignResultDisplay.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
             this.tlpAlignResultDisplay.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tlpAlignResultDisplay.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tlpAlignResultDisplay.Size = new System.Drawing.Size(600, 300);
@@ -51,11 +54,20 @@
             // pnlInspDisplay
             // 
             this.pnlInspDisplay.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pnlInspDisplay.Location = new System.Drawing.Point(0, 0);
+            this.pnlInspDisplay.Location = new System.Drawing.Point(0, 40);
             this.pnlInspDisplay.Margin = new System.Windows.Forms.Padding(0);
             this.pnlInspDisplay.Name = "pnlInspDisplay";
-            this.pnlInspDisplay.Size = new System.Drawing.Size(600, 300);
+            this.pnlInspDisplay.Size = new System.Drawing.Size(600, 260);
             this.pnlInspDisplay.TabIndex = 2;
+            // 
+            // pnlTabButton
+            // 
+            this.pnlTabButton.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pnlTabButton.Location = new System.Drawing.Point(0, 0);
+            this.pnlTabButton.Margin = new System.Windows.Forms.Padding(0);
+            this.pnlTabButton.Name = "pnlTabButton";
+            this.pnlTabButton.Size = new System.Drawing.Size(600, 40);
+            this.pnlTabButton.TabIndex = 4;
             // 
             // AlignResultDisplayControl
             // 
@@ -77,5 +89,6 @@
 
         private System.Windows.Forms.TableLayoutPanel tlpAlignResultDisplay;
         private System.Windows.Forms.Panel pnlInspDisplay;
+        private System.Windows.Forms.Panel pnlTabButton;
     }
 }

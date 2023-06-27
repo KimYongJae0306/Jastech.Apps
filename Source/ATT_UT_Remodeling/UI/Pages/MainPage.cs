@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using Jastech.Apps.Structure.Data;
 using Jastech.Apps.Winform.UI.Controls;
+using ATT_UT_Remodeling.UI.Controls;
 
 namespace ATT_UT_Remodeling.UI.Pages
 {
@@ -18,9 +19,11 @@ namespace ATT_UT_Remodeling.UI.Pages
         #endregion
 
         #region 속성
-        //public AkkonViewerControl AkkonResultViewer { get; set; } = new AkkonViewerControl() { Dock = DockStyle.Fill };
+        public AkkonViewerControl AkkonViewerControl { get; set; } = new AkkonViewerControl() { Dock = DockStyle.Fill };
 
-        //public AlignViewerControl AlignResultViewer { get; set; } = new AlignViewerControl() { Dock = DockStyle.Fill };
+        public AlignViewerControl AlignViewerControl { get; set; } = new AlignViewerControl() { Dock = DockStyle.Fill };
+
+        public PreAlignDisplayControl PreAlignDisplayControl { get; set; } = new PreAlignDisplayControl() { Dock = DockStyle.Fill };
 
         protected override CreateParams CreateParams
         {
@@ -64,26 +67,21 @@ namespace ATT_UT_Remodeling.UI.Pages
 
         private void AddControls()
         {
-            //pnlAkkon.Controls.Add(AkkonResultViewer);
-            //pnlAlign.Controls.Add(AlignResultViewer);
+            pnlAkkon.Controls.Add(AkkonViewerControl);
+            pnlAlign.Controls.Add(AlignViewerControl);
+            pnlPreAlign.Controls.Add(PreAlignDisplayControl);
         }
 
         public void UpdateTabCount(int tabCount)
         {
-            //AkkonResultViewer.UpdateTabCount(tabCount);
-            //AlignResultViewer.UpdateTabCount(tabCount);
+            AkkonViewerControl.UpdateTabCount(tabCount);
+            AlignViewerControl.UpdateTabCount(tabCount);
         }
 
         public void UpdateMainResult(AppsInspResult result)
         {
-            //AkkonResultViewer.UpdateMainResult(result);
-            //AlignResultViewer.UpdateMainResult(result);
+            AkkonViewerControl.UpdateMainResult(result);
+            AlignViewerControl.UpdateMainResult(result);
         }
-    }
-
-    public enum PageType
-    {
-        Result,
-        Log,
     }
 }

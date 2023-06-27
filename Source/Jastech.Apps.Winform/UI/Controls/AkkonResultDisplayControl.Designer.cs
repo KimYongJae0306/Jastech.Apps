@@ -30,6 +30,7 @@
         {
             this.tlpAkkonResultDisplay = new System.Windows.Forms.TableLayoutPanel();
             this.pnlInspDisplay = new System.Windows.Forms.Panel();
+            this.pnlTabButton = new System.Windows.Forms.Panel();
             this.tlpAkkonResultDisplay.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -37,12 +38,14 @@
             // 
             this.tlpAkkonResultDisplay.ColumnCount = 1;
             this.tlpAkkonResultDisplay.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tlpAkkonResultDisplay.Controls.Add(this.pnlInspDisplay, 0, 0);
+            this.tlpAkkonResultDisplay.Controls.Add(this.pnlTabButton, 0, 0);
+            this.tlpAkkonResultDisplay.Controls.Add(this.pnlInspDisplay, 0, 1);
             this.tlpAkkonResultDisplay.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tlpAkkonResultDisplay.Location = new System.Drawing.Point(0, 0);
             this.tlpAkkonResultDisplay.Margin = new System.Windows.Forms.Padding(0);
             this.tlpAkkonResultDisplay.Name = "tlpAkkonResultDisplay";
-            this.tlpAkkonResultDisplay.RowCount = 1;
+            this.tlpAkkonResultDisplay.RowCount = 2;
+            this.tlpAkkonResultDisplay.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
             this.tlpAkkonResultDisplay.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tlpAkkonResultDisplay.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tlpAkkonResultDisplay.Size = new System.Drawing.Size(600, 300);
@@ -51,11 +54,20 @@
             // pnlInspDisplay
             // 
             this.pnlInspDisplay.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pnlInspDisplay.Location = new System.Drawing.Point(0, 0);
+            this.pnlInspDisplay.Location = new System.Drawing.Point(0, 40);
             this.pnlInspDisplay.Margin = new System.Windows.Forms.Padding(0);
             this.pnlInspDisplay.Name = "pnlInspDisplay";
-            this.pnlInspDisplay.Size = new System.Drawing.Size(600, 300);
+            this.pnlInspDisplay.Size = new System.Drawing.Size(600, 260);
             this.pnlInspDisplay.TabIndex = 2;
+            // 
+            // pnlTabButton
+            // 
+            this.pnlTabButton.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pnlTabButton.Location = new System.Drawing.Point(0, 0);
+            this.pnlTabButton.Margin = new System.Windows.Forms.Padding(0);
+            this.pnlTabButton.Name = "pnlTabButton";
+            this.pnlTabButton.Size = new System.Drawing.Size(600, 40);
+            this.pnlTabButton.TabIndex = 3;
             // 
             // AkkonResultDisplayControl
             // 
@@ -77,5 +89,6 @@
 
         private System.Windows.Forms.TableLayoutPanel tlpAkkonResultDisplay;
         private System.Windows.Forms.Panel pnlInspDisplay;
+        private System.Windows.Forms.Panel pnlTabButton;
     }
 }
