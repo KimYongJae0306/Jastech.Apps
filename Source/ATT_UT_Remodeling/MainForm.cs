@@ -145,7 +145,7 @@ namespace ATT_UT_Remodeling
         {
             AppsInspModel model = inspModel as AppsInspModel;
 
-            //MainPageControl.UpdateTabCount(model.TabCount);
+            MainPageControl.UpdateTabCount(model.TabCount);
         }
 
         private void lblMainPage_Click(object sender, EventArgs e)
@@ -206,8 +206,8 @@ namespace ATT_UT_Remodeling
                 lblTeachingPageImage.Enabled = true;
             }
 
-            //if (MainPageControl.Visible)
-            //    MainPageControl.UpdateButton();
+            if (MainPageControl.Visible)
+            { }//MainPageControl.UpdateButton();
         }
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)

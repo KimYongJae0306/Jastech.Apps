@@ -620,16 +620,30 @@ namespace Jastech.Apps.Winform
             }
         }
 
+        private StatusCommon _status;
+
+        private Task StatusTask { get; set; }
+
+        private CancellationTokenSource CancelCheckPlcStatus { get; set; }
 
         public void CheckPlcStatus()
         {
+            if (StatusTask != null)
+                return;
+
+            CancelCheckPlcStatus = new CancellationTokenSource();
+            StatusTask = new Task(StatusTaskAction, CancelCheckPlcStatus.Token);
+            StatusTask.Start();
+        }
+
+        private void StatusTaskAction()
+        {
             while (true)
             {
-                if (true /*model changed request*/)
+                if (_status == StatusCommon.Model_Change)
                 {
-                    //WritePcStatusCommon(StatusCommon.)
-                    //PlcCommonMap.PLC_Command_Common
-                      //writepl
+                    ClearAddress(PlcCommonMap.PLC_Command_Common);
+                    OnPlcCommandReceived?.Invoke((int)_status);
                 }
             }
         }

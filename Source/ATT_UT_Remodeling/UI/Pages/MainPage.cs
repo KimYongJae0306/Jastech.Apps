@@ -14,18 +14,52 @@ namespace ATT_UT_Remodeling.UI.Pages
 {
     public partial class MainPage : UserControl
     {
+        #region 필드
+        #endregion
+
+        #region 속성
         //public AkkonViewerControl AkkonResultViewer { get; set; } = new AkkonViewerControl() { Dock = DockStyle.Fill };
 
         //public AlignViewerControl AlignResultViewer { get; set; } = new AlignViewerControl() { Dock = DockStyle.Fill };
 
+        protected override CreateParams CreateParams
+        {
+            get
+            {
+                var cp = base.CreateParams;
+                cp.ExStyle |= 0x02000000;
+                return cp;
+            }
+        }
+        #endregion
+
+        #region 이벤트
+        #endregion
+
+        #region 델리게이트
+        #endregion
+
+        #region 생성자
         public MainPage()
         {
             InitializeComponent();
         }
 
+        #endregion
+
+        #region 메서드
+        #endregion
+
+
+
+        //public AkkonViewerControl AkkonResultViewer { get; set; } = new AkkonViewerControl() { Dock = DockStyle.Fill };
+
+        //public AlignViewerControl AlignResultViewer { get; set; } = new AlignViewerControl() { Dock = DockStyle.Fill };
+
+
         private void MainPage_Load(object sender, EventArgs e)
         {
-            //AddControls();
+            AddControls();
         }
 
         private void AddControls()

@@ -19,7 +19,7 @@ namespace ATT.UI.Pages
 
         private Color _nonSelectedColor;
 
-        private UPHControl_old UPHControl { get; set; } = new UPHControl_old() { Dock = DockStyle.Fill };
+        private UPHControl UPHControl { get; set; } = new UPHControl() { Dock = DockStyle.Fill };
 
         private TrendViewControl TrendControl { get; set; } = new TrendViewControl() { Dock = DockStyle.Fill };
 

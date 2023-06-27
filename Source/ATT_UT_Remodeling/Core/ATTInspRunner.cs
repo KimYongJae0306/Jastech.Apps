@@ -71,7 +71,7 @@ namespace ATT_UT_Remodeling.Core
 
         public Queue<AkkonThreadParam> AkkonInspQueue = new Queue<AkkonThreadParam>();
 
-       public Queue<ATTInspTab> InspTabQueue = new Queue<ATTInspTab>();
+        public Queue<ATTInspTab> InspTabQueue = new Queue<ATTInspTab>();
 
         public AkkonAlgorithm AkkonAlgorithm { get; set; } = new AkkonAlgorithm();
 

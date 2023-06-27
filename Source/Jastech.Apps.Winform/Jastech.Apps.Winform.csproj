@@ -105,6 +105,12 @@
     <Compile Include="UI\Controls\PlcModelInfoControl.Designer.cs">
       <DependentUpon>PlcModelInfoControl.cs</DependentUpon>
     </Compile>
+    <Compile Include="UI\Controls\PreAlignDisplayControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UI\Controls\PreAlignDisplayControl.Designer.cs">
+      <DependentUpon>PreAlignDisplayControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="UI\Controls\VisionCalibrationControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -402,6 +408,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UI\Controls\PlcModelInfoControl.resx">
       <DependentUpon>PlcModelInfoControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\Controls\PreAlignDisplayControl.resx">
+      <DependentUpon>PreAlignDisplayControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\Controls\VisionCalibrationControl.resx">
       <DependentUpon>VisionCalibrationControl.cs</DependentUpon>
