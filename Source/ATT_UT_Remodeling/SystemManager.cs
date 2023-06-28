@@ -197,6 +197,7 @@ namespace ATT_UT_Remodeling
                 if (form.ShowDialog() == DialogResult.Yes)
                 {
                     _inspRunner.SeqRun();
+                    AddSystemLogMessage("Start auto mode.");
                 }
             }
         }
@@ -216,7 +217,10 @@ namespace ATT_UT_Remodeling
                 form.Message = "Do you want to Stop Auto Mode?";
 
                 if (form.ShowDialog() == DialogResult.Yes)
+                {
                     _inspRunner.SeqStop();
+                    AddSystemLogMessage("Stop auto mode.");
+                }
             }
         }
         #endregion

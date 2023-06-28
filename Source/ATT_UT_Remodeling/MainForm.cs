@@ -207,7 +207,7 @@ namespace ATT_UT_Remodeling
             }
 
             if (MainPageControl.Visible)
-            { }//MainPageControl.UpdateButton();
+                MainPageControl.UpdateButton();
         }
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)

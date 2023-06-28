@@ -147,6 +147,7 @@
             this.lblStop.Name = "lblStop";
             this.lblStop.Size = new System.Drawing.Size(70, 50);
             this.lblStop.TabIndex = 3;
+            this.lblStop.Click += new System.EventHandler(this.lblStop_Click);
             // 
             // lblStopText
             // 
@@ -186,6 +187,7 @@
             this.lblStart.Name = "lblStart";
             this.lblStart.Size = new System.Drawing.Size(70, 50);
             this.lblStart.TabIndex = 3;
+            this.lblStart.Click += new System.EventHandler(this.lblStart_Click);
             // 
             // lblStartText
             // 

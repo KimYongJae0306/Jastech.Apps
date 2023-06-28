@@ -451,8 +451,6 @@ namespace ATT_UT_Remodeling.Core
             lineCamera.GrabDoneEventHanlder += ATTSeqRunner_GrabDoneEventHanlder;
             StartAkkonInspTask();
 
-            WriteLog("Start Sequence.", true);
-
             if (SeqTask != null)
             {
                 SeqStep = SeqStep.SEQ_START;
@@ -462,6 +460,8 @@ namespace ATT_UT_Remodeling.Core
             SeqTaskCancellationTokenSource = new CancellationTokenSource();
             SeqTask = new Task(SeqTaskAction, SeqTaskCancellationTokenSource.Token);
             SeqTask.Start();
+
+            WriteLog("Start Sequence.", true);
         }
 
         public void SeqStop()
@@ -498,7 +498,7 @@ namespace ATT_UT_Remodeling.Core
             SeqTask.Wait();
             SeqTask = null;
 
-            WriteLog("Stop Sequence.", true);
+            WriteLog("Stop Sequence.");
         }
 
         private void SeqTaskAction()

@@ -59,6 +59,7 @@ namespace ATT_UT_Remodeling
                 SystemManager.Instance().Initialize(mainForm);
                 PlcControlManager.Instance().Initialize();
 
+                SystemManager.Instance().AddSystemLogMessage("Start program.");
                 Application.Run(mainForm);
             }
             else

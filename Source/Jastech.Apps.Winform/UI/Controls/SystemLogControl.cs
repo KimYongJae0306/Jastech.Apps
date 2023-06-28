@@ -41,7 +41,7 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         private void WriteLogMessage(string logMessage)
         {
-            string content = "[" + Logger.GetTimeString(DateTime.Now) + "]";
+            string content = "[" + Logger.GetTimeString(DateTime.Now) + "] ";
 
             content += logMessage;
 
