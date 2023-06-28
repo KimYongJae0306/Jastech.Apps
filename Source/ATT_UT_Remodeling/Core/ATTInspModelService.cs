@@ -39,10 +39,13 @@ namespace ATT_UT_Remodeling.Core
                 unit.Name = unitName.ToString(); // 임시 -> Apps에서 변경
 
                 // Calibration Mark 등록
-                CalibrationParam calibrationParam = new CalibrationParam();
-                calibrationParam.MarkName = "Calibration";
-                calibrationParam.InspParam.Name = "Calibration";
-                unit.SetCalibraionPram(calibrationParam);
+                foreach (CalibrationMarkName type in Enum.GetValues(typeof(CalibrationMarkName)))
+                {
+                    CalibrationParam calibrationMark = new CalibrationParam();
+                    calibrationMark.MarkName = type;
+                    calibrationMark.InspParam.Name = type.ToString();
+                    unit.AddCalibrationParam(calibrationMark);
+                }
 
                 // LineScan 조명 Parameter 생성
                 unit.LightParams.AddRange(CreateLightParameter());
@@ -218,11 +221,11 @@ namespace ATT_UT_Remodeling.Core
 
                 // Calibration Mark Load
                 string calibrationPath = unitDir + @"\Calibration";
-                unit.CalibrationParam.InspParam.LoadTool(calibrationPath);
-
-                string preAlignPath = unitDir + @"\PreAlign";
+                foreach (var item in unit.CalibrationParamList)
+                    item.InspParam.LoadTool(calibrationPath);
 
                 //PreAlign Load
+                string preAlignPath = unitDir + @"\PreAlign";
                 foreach (var item in unit.PreAlignParamList)
                     item.InspParam.LoadTool(preAlignPath);
 
@@ -263,7 +266,8 @@ namespace ATT_UT_Remodeling.Core
 
                 // Calibration Mark 저장
                 string calibrationPath = unitDir + @"\Calibration";
-                unit.CalibrationParam.InspParam.SaveTool(calibrationPath);
+                foreach (var item in unit.CalibrationParamList)
+                    item.InspParam.SaveTool(calibrationPath);
 
                 //PreAlign 저장
                 string preAlignPath = unitDir + @"\PreAlign";

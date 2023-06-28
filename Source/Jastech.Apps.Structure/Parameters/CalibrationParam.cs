@@ -15,7 +15,7 @@ namespace Jastech.Apps.Winform.Core.Calibrations
     public class CalibrationParam
     {
         [JsonProperty]
-        public string MarkName { get; set; } = "Calibration";
+        public CalibrationMarkName MarkName { get; set; } = CalibrationMarkName.Calibraion_1;
 
         [JsonProperty]
         public VisionProPatternMatchingParam InspParam { get; set; } = new VisionProPatternMatchingParam();
