@@ -37,6 +37,19 @@ namespace Jastech.Apps.Structure.Data
         Right,
     }
 
+    public enum CalibrationMarkName
+    {
+        Calibraion_1,
+        Calibraion_2,
+        Calibraion_3,
+        Calibraion_4,
+        Calibraion_5,
+        Calibraion_6,
+        Calibraion_7,
+        Calibraion_8,
+        Calibraion_9,
+    }
+
     public enum ATTTabAlignName
     {
         LeftFPCX,
