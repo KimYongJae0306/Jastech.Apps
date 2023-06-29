@@ -34,6 +34,13 @@ namespace Jastech.Framework.Winform.Forms
         private int _curRepeat { get; set; } = 0;
 
         private float _curLength { get; set; } = 0;
+
+        #region repeat
+        private Thread _repeatThread = null;
+        private bool _isRepeat = false;
+        private bool _isInfinite = false;
+        private int _remainCount = 0;
+        #endregion
         #endregion
 
         #region 속성
@@ -66,6 +73,7 @@ namespace Jastech.Framework.Winform.Forms
         private Axis SelectedAxis { get; set; } = null;
 
         private double _prevAnalogGain { get; set; } = 0;
+
         private double _prevDigitalGain { get; set; } = 0;
         #endregion
 
@@ -615,7 +623,6 @@ namespace Jastech.Framework.Winform.Forms
             LineCamera.SetOperationMode(TDIOperationMode.TDI);
             StatusTimer.Stop();
         }
-        #endregion
 
         private void StatusTimer_Tick(object sender, EventArgs e)
         {
@@ -624,17 +631,17 @@ namespace Jastech.Framework.Winform.Forms
 
         private void lblRepeatVelocityValue_Click(object sender, EventArgs e)
         {
-            SetLabelDoubleData(sender);
+            KeyPadHelper.SetLabelDoubleData((Label)sender);
         }
 
         private void lblRepeatAccelerationValue_Click(object sender, EventArgs e)
         {
-            SetLabelDoubleData(sender);
+            KeyPadHelper.SetLabelDoubleData((Label)sender);
         }
 
         private void lblDwellTimeValue_Click(object sender, EventArgs e)
         {
-            SetLabelIntegerData(sender);
+            KeyPadHelper.SetLabelIntegerData((Label)sender);
         }
 
         private void lblForward_Click(object sender, EventArgs e)
@@ -665,41 +672,17 @@ namespace Jastech.Framework.Winform.Forms
 
         private void lblScanXLength_Click(object sender, EventArgs e)
         {
-            SetLabelDoubleData(sender);
+            KeyPadHelper.SetLabelDoubleData((Label)sender);
         }
 
         private void lblRepeatCount_Click(object sender, EventArgs e)
         {
-            SetLabelIntegerData(sender);
+            KeyPadHelper.SetLabelIntegerData((Label)sender);
         }
 
         private void lblStart_Click(object sender, EventArgs e)
         {
             SetOperationMode(TDIOperationMode.TDI);
-        }
-
-        private void SetLabelDoubleData(object sender)
-        {
-            KeyPadForm keyPadForm = new KeyPadForm();
-            keyPadForm.ShowDialog();
-
-            double inputData = keyPadForm.PadValue;
-
-            Label label = (Label)sender;
-            label.Text = inputData.ToString();
-        }
-
-        private int SetLabelIntegerData(object sender)
-        {
-            KeyPadForm keyPadForm = new KeyPadForm();
-            keyPadForm.ShowDialog();
-
-            int inputData = Convert.ToInt32(keyPadForm.PadValue);
-
-            Label label = (Label)sender;
-            label.Text = inputData.ToString();
-
-            return inputData;
         }
 
         public double GetScanLength()
@@ -746,25 +729,6 @@ namespace Jastech.Framework.Winform.Forms
             }
         }
 
-        private class RepeatParam
-        {
-            public double Velocity { get; set; } = 0.0;
-
-            public double AccDec { get; set; } = 0.0;
-
-            public int DwellTime { get; set; } = 0;
-
-            public double StartPosition { get; set; } = 0.0;
-
-            public double EndPosition { get; set; } = 0.0;
-
-            public int RepeatCount { get; set; } = 0;
-        }
-
-        private Thread _repeatThread = null;
-        private bool _isRepeat = false;
-        private bool _isInfinite = false;
-        private int _remainCount = 0;
         private void MoveRepeatThread(object param)
         {
             var repeatParam = param as RepeatParam;
@@ -875,5 +839,21 @@ namespace Jastech.Framework.Winform.Forms
             }
             Console.WriteLine("Update Repeat Display");
         }
+        #endregion
+    }
+
+    public class RepeatParam
+    {
+        public double Velocity { get; set; } = 0.0;
+
+        public double AccDec { get; set; } = 0.0;
+
+        public int DwellTime { get; set; } = 0;
+
+        public double StartPosition { get; set; } = 0.0;
+
+        public double EndPosition { get; set; } = 0.0;
+
+        public int RepeatCount { get; set; } = 0;
     }
 }

@@ -39,13 +39,18 @@ namespace ATT_UT_Remodeling.Core
                 unit.Name = unitName.ToString(); // 임시 -> Apps에서 변경
 
                 // Calibration Mark 등록
-                foreach (CalibrationMarkName type in Enum.GetValues(typeof(CalibrationMarkName)))
-                {
-                    CalibrationParam calibrationMark = new CalibrationParam();
-                    calibrationMark.MarkName = type;
-                    calibrationMark.InspParam.Name = type.ToString();
-                    unit.AddCalibrationParam(calibrationMark);
-                }
+                //foreach (CalibrationMarkName type in Enum.GetValues(typeof(CalibrationMarkName)))
+                //{
+                //    CalibrationParam calibrationMark = new CalibrationParam();
+                //    calibrationMark.MarkName = type;
+                //    calibrationMark.InspParam.Name = type.ToString();
+                //    unit.AddCalibrationParam(calibrationMark);
+                //}
+                CalibrationParam calibrationMark = new CalibrationParam();
+                calibrationMark.MarkName = "Calibration";
+                calibrationMark.InspParam.Name = "Calibration";
+                unit.SetCalibraionPram(calibrationMark);
+                
 
                 // LineScan 조명 Parameter 생성
                 unit.LightParams.AddRange(CreateLightParameter());
@@ -221,8 +226,11 @@ namespace ATT_UT_Remodeling.Core
 
                 // Calibration Mark Load
                 string calibrationPath = unitDir + @"\Calibration";
-                foreach (var item in unit.CalibrationParamList)
-                    item.InspParam.LoadTool(calibrationPath);
+                unit.GetCalibrationMark().InspParam.LoadTool(calibrationPath);
+                //unit.CalibrationParam.InspParam.LoadTool(calibrationPath);
+
+                //foreach (var item in unit.CalibrationParamList)
+                //    item.InspParam.LoadTool(calibrationPath);
 
                 //PreAlign Load
                 string preAlignPath = unitDir + @"\PreAlign";
@@ -266,8 +274,11 @@ namespace ATT_UT_Remodeling.Core
 
                 // Calibration Mark 저장
                 string calibrationPath = unitDir + @"\Calibration";
-                foreach (var item in unit.CalibrationParamList)
-                    item.InspParam.SaveTool(calibrationPath);
+                unit.GetCalibrationMark().InspParam.SaveTool(calibrationPath);
+                //unit.CalibrationParam.InspParam.SaveTool(calibrationPath);
+
+                //foreach (var item in unit.CalibrationParamList)
+                //    item.InspParam.SaveTool(calibrationPath);
 
                 //PreAlign 저장
                 string preAlignPath = unitDir + @"\PreAlign";

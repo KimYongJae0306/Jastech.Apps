@@ -59,7 +59,6 @@
             this.lblCurrentToTargetZ1 = new System.Windows.Forms.Label();
             this.lblCurrentCenterOfGravityZ1 = new System.Windows.Forms.Label();
             this.lblTeachedCenterOfGravityZ1 = new System.Windows.Forms.Label();
-            this.lblAutoFocusOnZ1 = new System.Windows.Forms.Label();
             this.lblSensorZ1 = new System.Windows.Forms.Label();
             this.lblMoveToTargetZ1 = new System.Windows.Forms.Label();
             this.lblCurrentToTargCetenterOfGravityZ1 = new System.Windows.Forms.Label();
@@ -75,7 +74,12 @@
             this.lblMoveToTargetZ2 = new System.Windows.Forms.Label();
             this.lblOriginZ2 = new System.Windows.Forms.Label();
             this.lblSensorZ2 = new System.Windows.Forms.Label();
+            this.tlpAutoFocusOnOffZ1 = new System.Windows.Forms.TableLayoutPanel();
+            this.lblAutoFocusOnZ1 = new System.Windows.Forms.Label();
+            this.lblAutoFocusOffZ1 = new System.Windows.Forms.Label();
+            this.tlpAutoFocusOnOffZ2 = new System.Windows.Forms.TableLayoutPanel();
             this.lblAutoFocusOnZ2 = new System.Windows.Forms.Label();
+            this.lblAutoFocusOffZ2 = new System.Windows.Forms.Label();
             this.tlpMotionStatus = new System.Windows.Forms.TableLayoutPanel();
             this.label9 = new System.Windows.Forms.Label();
             this.label8 = new System.Windows.Forms.Label();
@@ -120,10 +124,6 @@
             this.rdoJogSlowMode = new System.Windows.Forms.RadioButton();
             this.lblJog = new System.Windows.Forms.Label();
             this.pnlTeachingPositionList = new System.Windows.Forms.Panel();
-            this.tlpAutoFocusOnOffZ1 = new System.Windows.Forms.TableLayoutPanel();
-            this.tlpAutoFocusOnOffZ2 = new System.Windows.Forms.TableLayoutPanel();
-            this.lblAutoFocusOffZ1 = new System.Windows.Forms.Label();
-            this.lblAutoFocusOffZ2 = new System.Windows.Forms.Label();
             this.tlpMotionPopup.SuspendLayout();
             this.tlpFormFunction.SuspendLayout();
             this.pnlFunction.SuspendLayout();
@@ -131,6 +131,8 @@
             this.tlpMotionFunction.SuspendLayout();
             this.tlpStatus.SuspendLayout();
             this.tlpLAFStatus.SuspendLayout();
+            this.tlpAutoFocusOnOffZ1.SuspendLayout();
+            this.tlpAutoFocusOnOffZ2.SuspendLayout();
             this.tlpMotionStatus.SuspendLayout();
             this.tlpJogControl.SuspendLayout();
             this.tlpJogFunction.SuspendLayout();
@@ -142,8 +144,6 @@
             this.tlpPitchXY.SuspendLayout();
             this.tlpJogMode.SuspendLayout();
             this.tlpJogSpeedMode.SuspendLayout();
-            this.tlpAutoFocusOnOffZ1.SuspendLayout();
-            this.tlpAutoFocusOnOffZ2.SuspendLayout();
             this.SuspendLayout();
             // 
             // tlpMotionPopup
@@ -657,22 +657,6 @@
             this.lblTeachedCenterOfGravityZ1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.lblTeachedCenterOfGravityZ1.Click += new System.EventHandler(this.lblTeachedCenterOfGravityZ1_Click);
             // 
-            // lblAutoFocusOnZ1
-            // 
-            this.lblAutoFocusOnZ1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
-            this.lblAutoFocusOnZ1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lblAutoFocusOnZ1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblAutoFocusOnZ1.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
-            this.lblAutoFocusOnZ1.ForeColor = System.Drawing.Color.White;
-            this.lblAutoFocusOnZ1.Location = new System.Drawing.Point(1, 1);
-            this.lblAutoFocusOnZ1.Margin = new System.Windows.Forms.Padding(1);
-            this.lblAutoFocusOnZ1.Name = "lblAutoFocusOnZ1";
-            this.lblAutoFocusOnZ1.Size = new System.Drawing.Size(26, 27);
-            this.lblAutoFocusOnZ1.TabIndex = 24;
-            this.lblAutoFocusOnZ1.Text = "On";
-            this.lblAutoFocusOnZ1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.lblAutoFocusOnZ1.Click += new System.EventHandler(this.lblAutoFocusOnZ1_Click);
-            // 
             // lblSensorZ1
             // 
             this.lblSensorZ1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
@@ -904,6 +888,70 @@
             this.lblSensorZ2.Text = "Done";
             this.lblSensorZ2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
+            // tlpAutoFocusOnOffZ1
+            // 
+            this.tlpAutoFocusOnOffZ1.ColumnCount = 2;
+            this.tlpAutoFocusOnOffZ1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tlpAutoFocusOnOffZ1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tlpAutoFocusOnOffZ1.Controls.Add(this.lblAutoFocusOnZ1, 0, 0);
+            this.tlpAutoFocusOnOffZ1.Controls.Add(this.lblAutoFocusOffZ1, 1, 0);
+            this.tlpAutoFocusOnOffZ1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tlpAutoFocusOnOffZ1.Location = new System.Drawing.Point(76, 180);
+            this.tlpAutoFocusOnOffZ1.Margin = new System.Windows.Forms.Padding(0);
+            this.tlpAutoFocusOnOffZ1.Name = "tlpAutoFocusOnOffZ1";
+            this.tlpAutoFocusOnOffZ1.RowCount = 1;
+            this.tlpAutoFocusOnOffZ1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tlpAutoFocusOnOffZ1.Size = new System.Drawing.Size(57, 29);
+            this.tlpAutoFocusOnOffZ1.TabIndex = 24;
+            // 
+            // lblAutoFocusOnZ1
+            // 
+            this.lblAutoFocusOnZ1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
+            this.lblAutoFocusOnZ1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblAutoFocusOnZ1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblAutoFocusOnZ1.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
+            this.lblAutoFocusOnZ1.ForeColor = System.Drawing.Color.White;
+            this.lblAutoFocusOnZ1.Location = new System.Drawing.Point(1, 1);
+            this.lblAutoFocusOnZ1.Margin = new System.Windows.Forms.Padding(1);
+            this.lblAutoFocusOnZ1.Name = "lblAutoFocusOnZ1";
+            this.lblAutoFocusOnZ1.Size = new System.Drawing.Size(26, 27);
+            this.lblAutoFocusOnZ1.TabIndex = 24;
+            this.lblAutoFocusOnZ1.Text = "On";
+            this.lblAutoFocusOnZ1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblAutoFocusOnZ1.Click += new System.EventHandler(this.lblAutoFocusOnZ1_Click);
+            // 
+            // lblAutoFocusOffZ1
+            // 
+            this.lblAutoFocusOffZ1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
+            this.lblAutoFocusOffZ1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblAutoFocusOffZ1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblAutoFocusOffZ1.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
+            this.lblAutoFocusOffZ1.ForeColor = System.Drawing.Color.White;
+            this.lblAutoFocusOffZ1.Location = new System.Drawing.Point(29, 1);
+            this.lblAutoFocusOffZ1.Margin = new System.Windows.Forms.Padding(1);
+            this.lblAutoFocusOffZ1.Name = "lblAutoFocusOffZ1";
+            this.lblAutoFocusOffZ1.Size = new System.Drawing.Size(27, 27);
+            this.lblAutoFocusOffZ1.TabIndex = 24;
+            this.lblAutoFocusOffZ1.Text = "Off";
+            this.lblAutoFocusOffZ1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblAutoFocusOffZ1.Click += new System.EventHandler(this.lblAutoFocusOffZ1_Click);
+            // 
+            // tlpAutoFocusOnOffZ2
+            // 
+            this.tlpAutoFocusOnOffZ2.ColumnCount = 2;
+            this.tlpAutoFocusOnOffZ2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tlpAutoFocusOnOffZ2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tlpAutoFocusOnOffZ2.Controls.Add(this.lblAutoFocusOnZ2, 0, 0);
+            this.tlpAutoFocusOnOffZ2.Controls.Add(this.lblAutoFocusOffZ2, 1, 0);
+            this.tlpAutoFocusOnOffZ2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tlpAutoFocusOnOffZ2.Location = new System.Drawing.Point(133, 180);
+            this.tlpAutoFocusOnOffZ2.Margin = new System.Windows.Forms.Padding(0);
+            this.tlpAutoFocusOnOffZ2.Name = "tlpAutoFocusOnOffZ2";
+            this.tlpAutoFocusOnOffZ2.RowCount = 1;
+            this.tlpAutoFocusOnOffZ2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tlpAutoFocusOnOffZ2.Size = new System.Drawing.Size(59, 29);
+            this.tlpAutoFocusOnOffZ2.TabIndex = 24;
+            // 
             // lblAutoFocusOnZ2
             // 
             this.lblAutoFocusOnZ2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
@@ -919,6 +967,22 @@
             this.lblAutoFocusOnZ2.Text = "On";
             this.lblAutoFocusOnZ2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.lblAutoFocusOnZ2.Click += new System.EventHandler(this.lblAutoFocusOnZ2_Click);
+            // 
+            // lblAutoFocusOffZ2
+            // 
+            this.lblAutoFocusOffZ2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
+            this.lblAutoFocusOffZ2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblAutoFocusOffZ2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblAutoFocusOffZ2.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
+            this.lblAutoFocusOffZ2.ForeColor = System.Drawing.Color.White;
+            this.lblAutoFocusOffZ2.Location = new System.Drawing.Point(30, 1);
+            this.lblAutoFocusOffZ2.Margin = new System.Windows.Forms.Padding(1);
+            this.lblAutoFocusOffZ2.Name = "lblAutoFocusOffZ2";
+            this.lblAutoFocusOffZ2.Size = new System.Drawing.Size(28, 27);
+            this.lblAutoFocusOffZ2.TabIndex = 24;
+            this.lblAutoFocusOffZ2.Text = "Off";
+            this.lblAutoFocusOffZ2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblAutoFocusOffZ2.Click += new System.EventHandler(this.lblAutoFocusOffZ2_Click);
             // 
             // tlpMotionStatus
             // 
@@ -1599,70 +1663,6 @@
             this.pnlTeachingPositionList.Size = new System.Drawing.Size(684, 100);
             this.pnlTeachingPositionList.TabIndex = 3;
             // 
-            // tlpAutoFocusOnOffZ1
-            // 
-            this.tlpAutoFocusOnOffZ1.ColumnCount = 2;
-            this.tlpAutoFocusOnOffZ1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tlpAutoFocusOnOffZ1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tlpAutoFocusOnOffZ1.Controls.Add(this.lblAutoFocusOnZ1, 0, 0);
-            this.tlpAutoFocusOnOffZ1.Controls.Add(this.lblAutoFocusOffZ1, 1, 0);
-            this.tlpAutoFocusOnOffZ1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tlpAutoFocusOnOffZ1.Location = new System.Drawing.Point(76, 180);
-            this.tlpAutoFocusOnOffZ1.Margin = new System.Windows.Forms.Padding(0);
-            this.tlpAutoFocusOnOffZ1.Name = "tlpAutoFocusOnOffZ1";
-            this.tlpAutoFocusOnOffZ1.RowCount = 1;
-            this.tlpAutoFocusOnOffZ1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tlpAutoFocusOnOffZ1.Size = new System.Drawing.Size(57, 29);
-            this.tlpAutoFocusOnOffZ1.TabIndex = 24;
-            // 
-            // tlpAutoFocusOnOffZ2
-            // 
-            this.tlpAutoFocusOnOffZ2.ColumnCount = 2;
-            this.tlpAutoFocusOnOffZ2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tlpAutoFocusOnOffZ2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tlpAutoFocusOnOffZ2.Controls.Add(this.lblAutoFocusOnZ2, 0, 0);
-            this.tlpAutoFocusOnOffZ2.Controls.Add(this.lblAutoFocusOffZ2, 1, 0);
-            this.tlpAutoFocusOnOffZ2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tlpAutoFocusOnOffZ2.Location = new System.Drawing.Point(133, 180);
-            this.tlpAutoFocusOnOffZ2.Margin = new System.Windows.Forms.Padding(0);
-            this.tlpAutoFocusOnOffZ2.Name = "tlpAutoFocusOnOffZ2";
-            this.tlpAutoFocusOnOffZ2.RowCount = 1;
-            this.tlpAutoFocusOnOffZ2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tlpAutoFocusOnOffZ2.Size = new System.Drawing.Size(59, 29);
-            this.tlpAutoFocusOnOffZ2.TabIndex = 24;
-            // 
-            // lblAutoFocusOffZ1
-            // 
-            this.lblAutoFocusOffZ1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
-            this.lblAutoFocusOffZ1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lblAutoFocusOffZ1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblAutoFocusOffZ1.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
-            this.lblAutoFocusOffZ1.ForeColor = System.Drawing.Color.White;
-            this.lblAutoFocusOffZ1.Location = new System.Drawing.Point(29, 1);
-            this.lblAutoFocusOffZ1.Margin = new System.Windows.Forms.Padding(1);
-            this.lblAutoFocusOffZ1.Name = "lblAutoFocusOffZ1";
-            this.lblAutoFocusOffZ1.Size = new System.Drawing.Size(27, 27);
-            this.lblAutoFocusOffZ1.TabIndex = 24;
-            this.lblAutoFocusOffZ1.Text = "Off";
-            this.lblAutoFocusOffZ1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.lblAutoFocusOffZ1.Click += new System.EventHandler(this.lblAutoFocusOffZ1_Click);
-            // 
-            // lblAutoFocusOffZ2
-            // 
-            this.lblAutoFocusOffZ2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
-            this.lblAutoFocusOffZ2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lblAutoFocusOffZ2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblAutoFocusOffZ2.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
-            this.lblAutoFocusOffZ2.ForeColor = System.Drawing.Color.White;
-            this.lblAutoFocusOffZ2.Location = new System.Drawing.Point(30, 1);
-            this.lblAutoFocusOffZ2.Margin = new System.Windows.Forms.Padding(1);
-            this.lblAutoFocusOffZ2.Name = "lblAutoFocusOffZ2";
-            this.lblAutoFocusOffZ2.Size = new System.Drawing.Size(28, 27);
-            this.lblAutoFocusOffZ2.TabIndex = 24;
-            this.lblAutoFocusOffZ2.Text = "Off";
-            this.lblAutoFocusOffZ2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.lblAutoFocusOffZ2.Click += new System.EventHandler(this.lblAutoFocusOffZ2_Click);
-            // 
             // MotionPopupForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(11F, 25F);
@@ -1678,6 +1678,8 @@
             this.Name = "MotionPopupForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
             this.Text = " ";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MotionPopupForm_FormClosing);
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.MotionPopupForm_FormClosed);
             this.Load += new System.EventHandler(this.MotionPopupForm_Load);
             this.tlpMotionPopup.ResumeLayout(false);
             this.tlpFormFunction.ResumeLayout(false);
@@ -1686,6 +1688,8 @@
             this.tlpMotionFunction.ResumeLayout(false);
             this.tlpStatus.ResumeLayout(false);
             this.tlpLAFStatus.ResumeLayout(false);
+            this.tlpAutoFocusOnOffZ1.ResumeLayout(false);
+            this.tlpAutoFocusOnOffZ2.ResumeLayout(false);
             this.tlpMotionStatus.ResumeLayout(false);
             this.tlpJogControl.ResumeLayout(false);
             this.tlpJogFunction.ResumeLayout(false);
@@ -1697,8 +1701,6 @@
             this.tlpPitchXY.ResumeLayout(false);
             this.tlpJogMode.ResumeLayout(false);
             this.tlpJogSpeedMode.ResumeLayout(false);
-            this.tlpAutoFocusOnOffZ1.ResumeLayout(false);
-            this.tlpAutoFocusOnOffZ2.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }

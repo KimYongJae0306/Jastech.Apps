@@ -27,9 +27,8 @@ namespace Jastech.Apps.Winform.UI.Controls
 {
     public partial class MarkControl : UserControl
     {
+        #region 필드
         private AlgorithmTool Algorithm = new AlgorithmTool();
-
-        public TeachingItem TeachingItem = TeachingItem.Mark;
 
         private string _curTabNo { get; set; } = "";
 
@@ -47,10 +46,36 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         private CogPatternMatchingParamControl ParamControl { get; set; } = new CogPatternMatchingParamControl();
 
+        private ROIJogForm _roiJogForm { get; set; } = null;
+        #endregion
+
+        #region 속성
+        public TeachingItem TeachingItem = TeachingItem.Mark;
+        #endregion
+
+        #region 이벤트
+        #endregion
+
+        #region 델리게이트
+        #endregion
+
+        #region 생성자
         public MarkControl()
         {
             InitializeComponent();
         }
+        #endregion
+
+        #region 메서드
+        
+
+
+
+
+
+
+
+
 
         private void MarkControl_Load(object sender, EventArgs e)
         {
@@ -386,10 +411,20 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         public void ShowROIJog()
         {
-            ROIJogControl roiJogForm = new ROIJogControl();
-            roiJogForm.SetTeachingItem(TeachingItem.Mark);
-            roiJogForm.SendEventHandler += new ROIJogControl.SendClickEventDelegate(ReceiveClickEvent);
-            roiJogForm.ShowDialog();
+            //ROIJogControl roiJogForm = new ROIJogControl();
+            //roiJogForm.SetTeachingItem(TeachingItem.Mark);
+            //roiJogForm.SendEventHandler += new ROIJogControl.SendClickEventDelegate(ReceiveClickEvent);
+            //roiJogForm.ShowDialog();
+            if (_roiJogForm == null)
+            {
+                _roiJogForm = new ROIJogForm();
+                _roiJogForm.SetTeachingItem(TeachingItem.Akkon);
+                _roiJogForm.SendEventHandler += new ROIJogForm.SendClickEventDelegate(ReceiveClickEvent);
+                _roiJogForm.CloseEventDelegate = () => _roiJogForm = null;
+                _roiJogForm.Show();
+            }
+            else
+                _roiJogForm.Focus();
         }
 
         private void ReceiveClickEvent(string jogType, int jogScale, ROIType roiType)
@@ -588,6 +623,7 @@ namespace Jastech.Apps.Winform.UI.Controls
         {
             return null;
         }
+        #endregion
     }
 
     //public enum TeachingItem

@@ -24,6 +24,7 @@ using Jastech.Framework.Winform.Forms;
 using Jastech.Framework.Device.LAFCtrl;
 using Jastech.Framework.Config;
 using Jastech.Framework.Structure.Service;
+using Jastech.Framework.Winform.Helper;
 
 namespace ATT.UI.Forms
 {
@@ -35,12 +36,16 @@ namespace ATT.UI.Forms
         private Color _selectedColor;
 
         private Color _nonSelectedColor;
-        #endregion
 
-        #region 속성
-        public InspModelService InspModelService { get; set; } = null;
-
-        public UnitName UnitName { get; set; } = UnitName.Unit0;
+        protected override CreateParams CreateParams
+        {
+            get
+            {
+                var cp = base.CreateParams;
+                cp.ExStyle |= 0x02000000;
+                return cp;
+            }
+        }
 
         private TeachingPositionListControl TeachingPositionListControl { get; set; } = new TeachingPositionListControl();
 
@@ -65,24 +70,21 @@ namespace ATT.UI.Forms
         private MotionParameterVariableControl YVariableControl = new MotionParameterVariableControl();
 
         private MotionParameterVariableControl ZVariableControl = new MotionParameterVariableControl();
+        #endregion
+
+        #region 속성
+        public InspModelService InspModelService { get; set; } = null;
+
+        public UnitName UnitName { get; set; } = UnitName.Unit0;
 
         public TeachingPosType TeachingPositionType = TeachingPosType.Standby;
-
-        protected override CreateParams CreateParams
-        {
-            get
-            {
-                var cp = base.CreateParams;
-                cp.ExStyle |= 0x02000000;
-                return cp;
-            }
-        }
         #endregion
 
         #region 이벤트
         #endregion
 
         #region 델리게이트
+        public Action CloseEventDelegate;
         #endregion
 
         #region 생성자
@@ -400,17 +402,16 @@ namespace ATT.UI.Forms
             form.Message = "Save Motion Data Completed.";
             form.ShowDialog();
         }
-        #endregion
 
         private void lblTargetPositionX_Click(object sender, EventArgs e)
         {
-            double targetPosition = SetLabelDoubleData(sender);
+            double targetPosition = KeyPadHelper.SetLabelDoubleData((Label)sender);
             TeachingPositionList.Where(x => x.Name == TeachingPositionType.ToString()).First().SetTargetPosition(AxisName.X, targetPosition);
         }
 
         private void lblOffsetX_Click(object sender, EventArgs e)
         {
-            double offset = SetLabelDoubleData(sender);
+            double offset = KeyPadHelper.SetLabelDoubleData((Label)sender);
             TeachingPositionList.Where(x => x.Name == TeachingPositionType.ToString()).First().SetOffset(AxisName.X, offset);
         }
 
@@ -440,13 +441,13 @@ namespace ATT.UI.Forms
 
         private void lblTargetPositionY_Click(object sender, EventArgs e)
         {
-            double targetPosition = SetLabelDoubleData(sender);
+            double targetPosition = KeyPadHelper.SetLabelDoubleData((Label)sender);
             TeachingPositionList.Where(x => x.Name == TeachingPositionType.ToString()).First().SetTargetPosition(AxisName.Y, targetPosition);
         }
 
         private void lblOffsetY_Click(object sender, EventArgs e)
         {
-            double offset = SetLabelDoubleData(sender);
+            double offset = KeyPadHelper.SetLabelDoubleData((Label)sender);
             TeachingPositionList.Where(x => x.Name == TeachingPositionType.ToString()).First().SetOffset(AxisName.Y, offset);
         }
 
@@ -476,7 +477,7 @@ namespace ATT.UI.Forms
 
         private void lblTargetPositionZ_Click(object sender, EventArgs e)
         {
-            double targetPosition = SetLabelDoubleData(sender);
+            double targetPosition = KeyPadHelper.SetLabelDoubleData((Label)sender);
             TeachingPositionList.Where(x => x.Name == TeachingPositionType.ToString()).First().SetTargetPosition(AxisName.Z, targetPosition);
         }
 
@@ -490,7 +491,7 @@ namespace ATT.UI.Forms
 
         private void lblTeachedCenterOfGravityZ_Click(object sender, EventArgs e)
         {
-            int targetCenterOfGravity = SetLabelIntegerData(sender);
+            int targetCenterOfGravity = KeyPadHelper.SetLabelIntegerData((Label)sender);
             TeachingPositionList.Where(x => x.Name == TeachingPositionType.ToString()).First().SetCenterOfGravity(AxisName.Z, targetCenterOfGravity);
         }
 
@@ -587,48 +588,14 @@ namespace ATT.UI.Forms
 
         private void lblPitchXYValue_Click(object sender, EventArgs e)
         {
-            double pitchXY = SetLabelDoubleData(sender);
+            double pitchXY = KeyPadHelper.SetLabelDoubleData((Label)sender);
             MotionJogXYControl.JogPitch = pitchXY;
         }
 
         private void lblPitchZValue_Click(object sender, EventArgs e)
         {
-            double pitchZ = SetLabelDoubleData(sender);
+            double pitchZ = KeyPadHelper.SetLabelDoubleData((Label)sender);
             LAFJogControl.MoveAmount = pitchZ;
-        }
-
-        private double SetLabelDoubleData(object sender)
-        {
-            Label lbl = sender as Label;
-            double prevData = Convert.ToDouble(lbl.Text);
-
-            KeyPadForm keyPadForm = new KeyPadForm();
-            keyPadForm.PreviousValue = prevData;
-            keyPadForm.ShowDialog();
-
-            double inputData = keyPadForm.PadValue;
-
-            Label label = (Label)sender;
-            label.Text = inputData.ToString();
-
-            return inputData;
-        }
-
-        private int SetLabelIntegerData(object sender)
-        {
-            Label lbl = sender as Label;
-            int prevData = Convert.ToInt32(lbl.Text);
-
-            KeyPadForm keyPadForm = new KeyPadForm();
-            keyPadForm.PreviousValue = (double)prevData;
-            keyPadForm.ShowDialog();
-
-            int inputData = Convert.ToInt16(keyPadForm.PadValue);
-
-            Label label = (Label)sender;
-            label.Text = inputData.ToString();
-
-            return inputData;
         }
 
         private void lblOriginZ_Click(object sender, EventArgs e)
@@ -645,5 +612,23 @@ namespace ATT.UI.Forms
         {
             AxisHandler.AxisList[(int)AxisName.Y].StartHome();
         }
+
+        private void MotionSettingsForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            _formTimer.Change(System.Threading.Timeout.Infinite, System.Threading.Timeout.Infinite);
+
+            if (_formTimer != null)
+            {
+                _formTimer.Dispose();
+                _formTimer = null;
+            }
+        }
+
+        private void MotionSettingsForm_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            if (CloseEventDelegate != null)
+                CloseEventDelegate();
+        }
+        #endregion
     }
 }

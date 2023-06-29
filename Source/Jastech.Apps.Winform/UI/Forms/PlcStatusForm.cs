@@ -15,6 +15,16 @@ namespace Jastech.Apps.Winform.UI.Forms
 {
     public partial class PlcStatusForm : Form
     {
+        protected override CreateParams CreateParams
+        {
+            get
+            {
+                var cp = base.CreateParams;
+                cp.ExStyle |= 0x02000000;
+                return cp;
+            }
+        }
+
         private bool _isLoading { get; set; } = false;
 
         public PlcCommandControl PlcCommandControl { get; set; } = null;
@@ -51,7 +61,7 @@ namespace Jastech.Apps.Winform.UI.Forms
 
         private void btnExit_Click(object sender, EventArgs e)
         {
-            UpdateTimer.Stop();
+            
             this.Close();
         }
 
@@ -96,6 +106,23 @@ namespace Jastech.Apps.Winform.UI.Forms
         private void btnModelPage_Click(object sender, EventArgs e)
         {
             SelectModelPage();
+        }
+
+        private void PlcStatusForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            UpdateTimer.Stop();
+
+            if (UpdateTimer != null)
+            {
+                UpdateTimer.Dispose();
+                UpdateTimer = null;
+            }
+        }
+
+        private void PlcStatusForm_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            if (CloseEventDelegate != null)
+                CloseEventDelegate();
         }
     }
 }

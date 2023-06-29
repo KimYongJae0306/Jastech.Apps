@@ -1,6 +1,7 @@
 ﻿using Jastech.Apps.Structure;
 using Jastech.Apps.Structure.Data;
 using Jastech.Framework.Winform.Forms;
+using Jastech.Framework.Winform.Helper;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -168,7 +169,7 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         private void lblDayCount_Click(object sender, EventArgs e)
         {
-            int dayCount = SetLabelIntegerData(sender);
+            int dayCount = KeyPadHelper.SetLabelIntegerData((Label)sender);
         }
 
         public void SetSelectionStartDate(DateTime date)
@@ -194,29 +195,12 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         private void lblDataCount_Click(object sender, EventArgs e)
         {
-            int dataCount = SetLabelIntegerData(sender);
-        }
-
-        private int SetLabelIntegerData(object sender)
-        {
-            Label lbl = sender as Label;
-            int prevData = Convert.ToInt32(lbl.Text);
-
-            KeyPadForm keyPadForm = new KeyPadForm();
-            keyPadForm.PreviousValue = (double)prevData;
-            keyPadForm.ShowDialog();
-
-            int inputData = Convert.ToInt16(keyPadForm.PadValue);
-
-            Label label = (Label)sender;
-            label.Text = inputData.ToString();
-
-            return inputData;
+            int dataCount = KeyPadHelper.SetLabelIntegerData((Label)sender);
         }
 
         private void lblUpperSpecLimit_Click(object sender, EventArgs e)
         {
-            double usl = SetLabelDoubleData(sender);
+            double usl = KeyPadHelper.SetLabelDoubleData((Label)sender);
             SetUpperSpecLimit(usl);
         }
 
@@ -227,30 +211,13 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         private void lblLowerSpecLimit_Click(object sender, EventArgs e)
         {
-            double lsl = SetLabelDoubleData(sender);
+            double lsl = KeyPadHelper.SetLabelDoubleData((Label)sender);
             SetLowerSpecLimit(lsl);
         }
 
         private void SetLowerSpecLimit(double lowerSpecLimit)
         {
             _lowerSpecLimit = lowerSpecLimit;
-        }
-
-        private double SetLabelDoubleData(object sender)
-        {
-            Label lbl = sender as Label;
-            double prevData = Convert.ToDouble(lbl.Text);
-
-            KeyPadForm keyPadForm = new KeyPadForm();
-            keyPadForm.PreviousValue = prevData;
-            keyPadForm.ShowDialog();
-
-            double inputData = keyPadForm.PadValue;
-
-            Label label = (Label)sender;
-            label.Text = inputData.ToString();
-
-            return inputData;
         }
         #endregion
 

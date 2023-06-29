@@ -33,9 +33,9 @@
             this.tableLayoutPanel74 = new System.Windows.Forms.TableLayoutPanel();
             this.pnlDisplay = new System.Windows.Forms.Panel();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
-            this.btnDataPage = new System.Windows.Forms.Button();
-            this.btnExit = new System.Windows.Forms.Button();
             this.btnModelPage = new System.Windows.Forms.Button();
+            this.btnExit = new System.Windows.Forms.Button();
+            this.btnDataPage = new System.Windows.Forms.Button();
             this.tableLayoutPanel74.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             this.SuspendLayout();
@@ -87,20 +87,20 @@
             this.tableLayoutPanel1.Size = new System.Drawing.Size(1578, 94);
             this.tableLayoutPanel1.TabIndex = 316;
             // 
-            // btnDataPage
+            // btnModelPage
             // 
-            this.btnDataPage.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
-            this.btnDataPage.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.btnDataPage.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.btnDataPage.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
-            this.btnDataPage.ForeColor = System.Drawing.Color.White;
-            this.btnDataPage.Location = new System.Drawing.Point(3, 3);
-            this.btnDataPage.Name = "btnDataPage";
-            this.btnDataPage.Size = new System.Drawing.Size(94, 88);
-            this.btnDataPage.TabIndex = 316;
-            this.btnDataPage.Text = "DATA";
-            this.btnDataPage.UseVisualStyleBackColor = false;
-            this.btnDataPage.Click += new System.EventHandler(this.btnDataPage_Click);
+            this.btnModelPage.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
+            this.btnModelPage.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.btnModelPage.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.btnModelPage.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
+            this.btnModelPage.ForeColor = System.Drawing.Color.White;
+            this.btnModelPage.Location = new System.Drawing.Point(103, 3);
+            this.btnModelPage.Name = "btnModelPage";
+            this.btnModelPage.Size = new System.Drawing.Size(94, 88);
+            this.btnModelPage.TabIndex = 317;
+            this.btnModelPage.Text = "MODEL";
+            this.btnModelPage.UseVisualStyleBackColor = false;
+            this.btnModelPage.Click += new System.EventHandler(this.btnModelPage_Click);
             // 
             // btnExit
             // 
@@ -119,20 +119,20 @@
             this.btnExit.UseVisualStyleBackColor = false;
             this.btnExit.Click += new System.EventHandler(this.btnExit_Click);
             // 
-            // btnModelPage
+            // btnDataPage
             // 
-            this.btnModelPage.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
-            this.btnModelPage.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.btnModelPage.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.btnModelPage.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
-            this.btnModelPage.ForeColor = System.Drawing.Color.White;
-            this.btnModelPage.Location = new System.Drawing.Point(103, 3);
-            this.btnModelPage.Name = "btnModelPage";
-            this.btnModelPage.Size = new System.Drawing.Size(94, 88);
-            this.btnModelPage.TabIndex = 317;
-            this.btnModelPage.Text = "MODEL";
-            this.btnModelPage.UseVisualStyleBackColor = false;
-            this.btnModelPage.Click += new System.EventHandler(this.btnModelPage_Click);
+            this.btnDataPage.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
+            this.btnDataPage.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.btnDataPage.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.btnDataPage.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
+            this.btnDataPage.ForeColor = System.Drawing.Color.White;
+            this.btnDataPage.Location = new System.Drawing.Point(3, 3);
+            this.btnDataPage.Name = "btnDataPage";
+            this.btnDataPage.Size = new System.Drawing.Size(94, 88);
+            this.btnDataPage.TabIndex = 316;
+            this.btnDataPage.Text = "DATA";
+            this.btnDataPage.UseVisualStyleBackColor = false;
+            this.btnDataPage.Click += new System.EventHandler(this.btnDataPage_Click);
             // 
             // PlcStatusForm
             // 
@@ -148,6 +148,9 @@
             this.Name = "PlcStatusForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = " ";
+            this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.PlcStatusForm_FormClosing);
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.PlcStatusForm_FormClosed);
             this.Load += new System.EventHandler(this.PlcStatusForm_Load);
             this.tableLayoutPanel74.ResumeLayout(false);
             this.tableLayoutPanel1.ResumeLayout(false);

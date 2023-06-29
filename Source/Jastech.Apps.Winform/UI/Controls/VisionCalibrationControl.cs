@@ -22,8 +22,6 @@ namespace Jastech.Apps.Winform.UI.Controls
         private Color _selectedColor = new Color();
 
         private Color _nonSelectedColor = new Color();
-
-        private CalibrationMarkName _curMarkName = CalibrationMarkName.Calibraion_1;
         #endregion
 
         #region 속성
@@ -95,7 +93,7 @@ namespace Jastech.Apps.Winform.UI.Controls
             if (CurrentUnit == null)
                 return;
 
-            var param = CurrentUnit.GetCalibrationMark(_curMarkName);
+            var param = CurrentUnit.GetCalibrationMark();
 
             if (param != null)
                 ParamControl.UpdateData(param.InspParam);

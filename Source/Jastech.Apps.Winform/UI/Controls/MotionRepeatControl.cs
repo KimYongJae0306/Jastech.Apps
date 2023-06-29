@@ -11,6 +11,7 @@ using Jastech.Framework.Device.Motions;
 using Jastech.Framework.Structure;
 using Jastech.Framework.Winform.Forms;
 using static Jastech.Framework.Device.Motions.AxisMovingParam;
+using Jastech.Framework.Winform.Helper;
 
 namespace Jastech.Apps.Winform.UI.Controls
 {
@@ -57,17 +58,17 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         private void lblRepeatVelocityValue_Click(object sender, EventArgs e)
         {
-            SetLabelDoubleData(sender);
+            KeyPadHelper.SetLabelDoubleData((Label)sender);
         }
 
         private void lblRepeatAccelerationValue_Click(object sender, EventArgs e)
         {
-            SetLabelDoubleData(sender);
+            KeyPadHelper.SetLabelDoubleData((Label)sender);
         }
 
         private void lblDwellTimeValue_Click(object sender, EventArgs e)
         {
-            SetLabelIntegerData(sender);
+            KeyPadHelper.SetLabelIntegerData((Label)sender);
         }
 
         private void lblFoward_Click(object sender, EventArgs e)
@@ -98,36 +99,13 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         private void lblScanXLength_Click(object sender, EventArgs e)
         {
-            SetLabelDoubleData(sender);
+            KeyPadHelper.SetLabelDoubleData((Label)sender);
         }
 
-        private void SetLabelDoubleData(object sender)
-        {
-            KeyPadForm keyPadForm = new KeyPadForm();
-            keyPadForm.ShowDialog();
-
-            double inputData = keyPadForm.PadValue;
-
-            Label label = (Label)sender;
-            label.Text = inputData.ToString();
-        }
 
         private void lblRepeatCount_Click(object sender, EventArgs e)
         {
-            SetLabelIntegerData(sender);
-        }
-
-        private int SetLabelIntegerData(object sender)
-        {
-            KeyPadForm keyPadForm = new KeyPadForm();
-            keyPadForm.ShowDialog();
-
-            int inputData = Convert.ToInt32(keyPadForm.PadValue);
-
-            Label label = (Label)sender;
-            label.Text = inputData.ToString();
-
-            return inputData;
+            KeyPadHelper.SetLabelIntegerData((Label)sender);
         }
 
         public double GetScanLength()

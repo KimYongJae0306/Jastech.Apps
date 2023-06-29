@@ -43,6 +43,8 @@ namespace ATT_UT_IPAD
                 Application.SetUnhandledExceptionMode(UnhandledExceptionMode.ThrowException);
                 AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
 
+                Logger.Initialize(ConfigSet.Instance().Path.Log);
+
                 MilHelper.InitApplication();
                 CameraMil.BufferPoolCount = 200;
                 SystemHelper.StartChecker(@"D:\ATT_Memory_Test.txt");
@@ -52,12 +54,8 @@ namespace ATT_UT_IPAD
                 ConfigSet.Instance().MachineConfigCreated += ConfigSet_MachineConfigCreated;
                 ConfigSet.Instance().Initialize();
                 AppsConfig.Instance().Initialize();
-                CalibrationData.Instance().LoadCalibrationData();
-                
 
                 UserManager.Instance().Initialize();
-
-                Logger.Initialize(ConfigSet.Instance().Path.Log);
 
                 var mainForm = new MainForm();
 

@@ -12,6 +12,7 @@ using Jastech.Framework.Structure;
 using Jastech.Framework.Device.Motions;
 using Jastech.Framework.Device.LAFCtrl;
 using Jastech.Apps.Structure.Data;
+using Jastech.Framework.Winform.Helper;
 
 namespace Jastech.Apps.Winform.UI.Controls
 {
@@ -132,7 +133,7 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         private void lblTargetPositionZValue_Click(object sender, EventArgs e)
         {
-            double targetPosition = SetLabelDoubleData(sender);
+            double targetPosition = KeyPadHelper.SetLabelDoubleData((Label)sender);
             //TeachingPositionList.Where(x => x.Name == TeachingPositionType.ToString()).First().SetTargetPosition(AxisName.Z, targetPosition);
             AxisInfo.TargetPosition = targetPosition;
         }
@@ -144,7 +145,7 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         private void lblTeachCogValue_Click(object sender, EventArgs e)
         {
-            int centerOfGravity = SetLabelIntegerData(sender);
+            int centerOfGravity = KeyPadHelper.SetLabelIntegerData((Label)sender);
             //TeachingPositionList.Where(x => x.Name == TeachingPositionType.ToString()).First().SetCenterOfGravity(AxisName.Z, centerOfGravity);
             AxisInfo.CenterOfGravity = centerOfGravity;
         }
@@ -165,40 +166,6 @@ namespace Jastech.Apps.Winform.UI.Controls
         private void lblAFOff_Click(object sender, EventArgs e)
         {
             LAFManager.Instance().AutoFocusOnOff(LAFCtrl.Name, false);
-        }
-
-        private double SetLabelDoubleData(object sender)
-        {
-            Label lbl = sender as Label;
-            double prevData = Convert.ToDouble(lbl.Text);
-
-            KeyPadForm keyPadForm = new KeyPadForm();
-            keyPadForm.PreviousValue = prevData;
-            keyPadForm.ShowDialog();
-
-            double inputData = keyPadForm.PadValue;
-
-            Label label = (Label)sender;
-            label.Text = inputData.ToString();
-
-            return inputData;
-        }
-
-        private int SetLabelIntegerData(object sender)
-        {
-            Label lbl = sender as Label;
-            int prevData = Convert.ToInt32(lbl.Text);
-
-            KeyPadForm keyPadForm = new KeyPadForm();
-            keyPadForm.PreviousValue = (double)prevData;
-            keyPadForm.ShowDialog();
-
-            int inputData = Convert.ToInt16(keyPadForm.PadValue);
-
-            Label label = (Label)sender;
-            label.Text = inputData.ToString();
-
-            return inputData;
         }
 
         public TeachingAxisInfo GetCurrentData()

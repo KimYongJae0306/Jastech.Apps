@@ -1728,6 +1728,8 @@
             this.Name = "MotionSettingsForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MotionSettingsForm_FormClosing);
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.MotionSettingsForm_FormClosed);
             this.Load += new System.EventHandler(this.MotionSettingsForm_Load);
             this.tlpMotionSettings.ResumeLayout(false);
             this.tableLayoutPanel1.ResumeLayout(false);

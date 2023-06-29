@@ -11,6 +11,7 @@ using Jastech.Framework.Structure;
 using Jastech.Framework.Structure.Service;
 using Jastech.Framework.Winform.Controls;
 using Jastech.Framework.Winform.Forms;
+using Jastech.Framework.Winform.Helper;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -29,6 +30,16 @@ namespace ATT_UT_IPAD.UI.Forms
         private Color _selectedColor;
 
         private Color _nonSelectedColor;
+
+        protected override CreateParams CreateParams
+        {
+            get
+            {
+                var cp = base.CreateParams;
+                cp.ExStyle |= 0x02000000;
+                return cp;
+            }
+        }
         #endregion
 
         #region 속성
@@ -62,31 +73,21 @@ namespace ATT_UT_IPAD.UI.Forms
         public UnitName UnitName { get; set; } = UnitName.Unit0;
         #endregion
 
-        protected override CreateParams CreateParams
-        {
-            get
-            {
-                var cp = base.CreateParams;
-                cp.ExStyle |= 0x02000000;
-                return cp;
-            }
-        }
-
         #region 이벤트
         #endregion
 
         #region 델리게이트
+        public Action CloseEventDelegate;
         #endregion
 
         #region 생성자
-        #endregion
-
-        #region 메서드
         public MotionPopupForm()
         {
             InitializeComponent();
         }
+        #endregion
 
+        #region 메서드
         private void MotionPopupForm_Load(object sender, EventArgs e)
         {
             UpdateData();
@@ -427,13 +428,13 @@ namespace ATT_UT_IPAD.UI.Forms
 
         private void lblTargetPositionX_Click(object sender, EventArgs e)
         {
-            double targetPosition = SetLabelDoubleData(sender);
+            double targetPosition = KeyPadHelper.SetLabelDoubleData((Label)sender);
             TeachingPositionList.Where(x => x.Name == TeachingPositionType.ToString()).First().SetTargetPosition(AxisName.X, targetPosition);
         }
 
         private void lblOffsetX_Click(object sender, EventArgs e)
         {
-            double offset = SetLabelDoubleData(sender);
+            double offset = KeyPadHelper.SetLabelDoubleData((Label)sender);
             TeachingPositionList.Where(x => x.Name == TeachingPositionType.ToString()).First().SetOffset(AxisName.X, offset);
         }
 
@@ -455,7 +456,7 @@ namespace ATT_UT_IPAD.UI.Forms
 
         private void lblTargetPositionZ1_Click(object sender, EventArgs e)
         {
-            double targetPosition = SetLabelDoubleData(sender);
+            double targetPosition = KeyPadHelper.SetLabelDoubleData((Label)sender);
             TeachingPositionList.Where(x => x.Name == TeachingPositionType.ToString()).First().SetTargetPosition(AxisName.Z1, targetPosition);
         }
 
@@ -470,13 +471,13 @@ namespace ATT_UT_IPAD.UI.Forms
 
         private void lblTeachedCenterOfGravityZ1_Click(object sender, EventArgs e)
         {
-            int centerOfGravity = SetLabelIntegerData(sender);
+            int centerOfGravity = KeyPadHelper.SetLabelIntegerData((Label)sender);
             TeachingPositionList.Where(x => x.Name == TeachingPositionType.ToString()).First().SetCenterOfGravity(AxisName.Z1, centerOfGravity);
         }
 
         private void lblTargetPositionZ2_Click(object sender, EventArgs e)
         {
-            double targetPosition = SetLabelDoubleData(sender);
+            double targetPosition = KeyPadHelper.SetLabelDoubleData((Label)sender);
             TeachingPositionList.Where(x => x.Name == TeachingPositionType.ToString()).First().SetTargetPosition(AxisName.Z2, targetPosition);
         }
         private void lblCurrentToTargetZ2_Click(object sender, EventArgs e)
@@ -540,7 +541,7 @@ namespace ATT_UT_IPAD.UI.Forms
 
         private void lblTeachedCenterOfGravityZ2_Click(object sender, EventArgs e)
         {
-            int centerOfGravity = SetLabelIntegerData(sender);
+            int centerOfGravity = KeyPadHelper.SetLabelIntegerData((Label)sender);
             TeachingPositionList.Where(x => x.Name == TeachingPositionType.ToString()).First().SetCenterOfGravity(AxisName.Z2, centerOfGravity);
         }
 
@@ -653,51 +654,32 @@ namespace ATT_UT_IPAD.UI.Forms
 
         private void lblPitchXYValue_Click(object sender, EventArgs e)
         {
-            double pitchXY = SetLabelDoubleData(sender);
+            double pitchXY = KeyPadHelper.SetLabelDoubleData((Label)sender);
             MotionJogXControl.JogPitch = pitchXY;
         }
 
         private void lblPitchZValue_Click(object sender, EventArgs e)
         {
-            double pitchZ = SetLabelDoubleData(sender);
+            double pitchZ = KeyPadHelper.SetLabelDoubleData((Label)sender);
             LAFJogZ1Control.MoveAmount = pitchZ;
         }
 
-        private double SetLabelDoubleData(object sender)
+        private void MotionPopupForm_FormClosing(object sender, FormClosingEventArgs e)
         {
-            Label lbl = sender as Label;
-            double prevData = Convert.ToDouble(lbl.Text);
+            _formTimer.Change(System.Threading.Timeout.Infinite, System.Threading.Timeout.Infinite);
 
-            KeyPadForm keyPadForm = new KeyPadForm();
-            keyPadForm.PreviousValue = prevData;
-            keyPadForm.ShowDialog();
-
-            double inputData = keyPadForm.PadValue;
-
-            Label label = (Label)sender;
-            label.Text = inputData.ToString();
-
-            return inputData;
+            if (_formTimer != null)
+            {
+                _formTimer.Dispose();
+                _formTimer = null;
+            }
         }
 
-        private int SetLabelIntegerData(object sender)
+        private void MotionPopupForm_FormClosed(object sender, FormClosedEventArgs e)
         {
-            Label lbl = sender as Label;
-            int prevData = Convert.ToInt32(lbl.Text);
-
-            KeyPadForm keyPadForm = new KeyPadForm();
-            keyPadForm.PreviousValue = (double)prevData;
-            keyPadForm.ShowDialog();
-
-            int inputData = Convert.ToInt16(keyPadForm.PadValue);
-
-            Label label = (Label)sender;
-            label.Text = inputData.ToString();
-
-            return inputData;
+            if (CloseEventDelegate != null)
+                CloseEventDelegate();
         }
-
-        
     }
     #endregion
 }

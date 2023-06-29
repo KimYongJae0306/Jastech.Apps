@@ -1575,6 +1575,8 @@
             this.Name = "MotionPopupForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
             this.Text = " ";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MotionPopupForm_FormClosing);
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.MotionPopupForm_FormClosed);
             this.Load += new System.EventHandler(this.MotionPopupForm_Load);
             this.tlpMotionPopup.ResumeLayout(false);
             this.tlpFormFunction.ResumeLayout(false);

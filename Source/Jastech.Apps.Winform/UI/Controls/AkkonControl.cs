@@ -54,6 +54,8 @@ namespace Jastech.Apps.Winform.UI.Controls
         private bool _isLoading { get; set; } = false;
 
         private int _curSelectedGroup { get; set; } = -1;
+
+        private ROIJogForm _roiJogForm = new ROIJogForm();
         #endregion
 
         #region 속성
@@ -888,10 +890,20 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         public void ShowROIJog()
         {
-            ROIJogControl roiJogForm = new ROIJogControl();
-            roiJogForm.SetTeachingItem(TeachingItem.Akkon);
-            roiJogForm.SendEventHandler += new ROIJogControl.SendClickEventDelegate(ReceiveClickEvent);
-            roiJogForm.Show();
+            //ROIJogControl roiJogForm = new ROIJogControl();
+            //roiJogForm.SetTeachingItem(TeachingItem.Akkon);
+            //roiJogForm.SendEventHandler += new ROIJogControl.SendClickEventDelegate(ReceiveClickEvent);
+            //roiJogForm.Show();\
+            if (_roiJogForm == null)
+            {
+                _roiJogForm = new ROIJogForm();
+                _roiJogForm.SetTeachingItem(TeachingItem.Akkon);
+                _roiJogForm.SendEventHandler += new ROIJogForm.SendClickEventDelegate(ReceiveClickEvent);
+                _roiJogForm.CloseEventDelegate = () => _roiJogForm = null;
+                _roiJogForm.Show();
+            }
+            else
+                _roiJogForm.Focus();
         }
 
         private void ReceiveClickEvent(string jogType, int jogScale, ROIType roiType)
