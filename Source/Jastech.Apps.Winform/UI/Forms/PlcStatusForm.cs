@@ -15,6 +15,13 @@ namespace Jastech.Apps.Winform.UI.Forms
 {
     public partial class PlcStatusForm : Form
     {
+        #region 필드
+        private Color _selectedColor = new Color();
+
+        private Color _nonSelectedColor = new Color();
+
+        private bool _isLoading { get; set; } = false;
+
         protected override CreateParams CreateParams
         {
             get
@@ -24,25 +31,34 @@ namespace Jastech.Apps.Winform.UI.Forms
                 return cp;
             }
         }
+        #endregion
 
-        private bool _isLoading { get; set; } = false;
-
+        #region 속성
         public PlcCommandControl PlcCommandControl { get; set; } = null;
 
         public PlcModelInfoControl PlcModelInfoControl { get; set; } = null;
+        #endregion
 
+        #region 이벤트
+        #endregion
+
+        #region 델리게이트
         public Action CloseEventDelegate;
+        #endregion
 
+        #region 생성자
         public PlcStatusForm()
         {
             InitializeComponent();
         }
-        
+        #endregion
+
+        #region 메서드
         private void PlcStatusForm_Load(object sender, EventArgs e)
         {
             _isLoading = true;
             AddControls();
-
+            InitializeUI();
             UpdateTimer.Start();
 
             _isLoading = false;
@@ -55,13 +71,18 @@ namespace Jastech.Apps.Winform.UI.Forms
 
             PlcModelInfoControl = new PlcModelInfoControl();
             PlcModelInfoControl.Dock = DockStyle.Fill;
+        }
+
+        private void InitializeUI()
+        {
+            _selectedColor = Color.FromArgb(104, 104, 104);
+            _nonSelectedColor = Color.FromArgb(52, 52, 52);
 
             SelectDataPage();
         }
 
         private void btnExit_Click(object sender, EventArgs e)
         {
-            
             this.Close();
         }
 
@@ -90,6 +111,9 @@ namespace Jastech.Apps.Winform.UI.Forms
             PlcCommandControl.Visible = true;
             PlcModelInfoControl.Visible = false;
 
+            btnDataPage.BackColor = _selectedColor;
+            btnModelPage.BackColor = _nonSelectedColor;
+
             pnlDisplay.Controls.Clear();
             pnlDisplay.Controls.Add(PlcCommandControl);
         }
@@ -98,6 +122,9 @@ namespace Jastech.Apps.Winform.UI.Forms
         {
             PlcCommandControl.Visible = false;
             PlcModelInfoControl.Visible = true;
+
+            btnDataPage.BackColor = _nonSelectedColor; 
+            btnModelPage.BackColor = _selectedColor;
 
             pnlDisplay.Controls.Clear();
             pnlDisplay.Controls.Add(PlcModelInfoControl);
@@ -124,5 +151,6 @@ namespace Jastech.Apps.Winform.UI.Forms
             if (CloseEventDelegate != null)
                 CloseEventDelegate();
         }
+        #endregion
     }
 }
