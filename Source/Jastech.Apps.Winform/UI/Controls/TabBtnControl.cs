@@ -14,7 +14,7 @@ namespace Jastech.Apps.Winform.UI.Controls
     public partial class TabBtnControl : UserControl
     {
         #region 속성
-        public int TabIndex { get; protected set; } = -1;
+        public int _tabIndex { get; protected set; } = -1;
         #endregion
 
         #region 이벤트
@@ -36,17 +36,17 @@ namespace Jastech.Apps.Winform.UI.Controls
         private void TabBtnControl_Load(object sender, EventArgs e)
         {
             // UI 상 Tab 1부터 보여주기 위함
-            btnTab.Text = "TAB " + (TabIndex + 1).ToString();
+            btnTab.Text = "TAB " + (_tabIndex + 1).ToString();
         }
 
         public void SetTabIndex(int tabIndex)
         {
-            TabIndex = tabIndex;
+            _tabIndex = tabIndex;
         }
 
         public void UpdateData()
         {
-            SetTabEventHandler?.Invoke(TabIndex);
+            SetTabEventHandler?.Invoke(_tabIndex);
         }
 
         private void btnTab_Click(object sender, EventArgs e)
@@ -64,12 +64,12 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         public void SetButtonClick()
         {
-            btnTab.Text = "*TAB " + (TabIndex + 1).ToString();
+            btnTab.Text = "*TAB " + (_tabIndex + 1).ToString();
         }
 
         public void SetButtonClickNone()
         {
-            btnTab.Text = "TAB " + (TabIndex + 1).ToString();
+            btnTab.Text = "TAB " + (_tabIndex + 1).ToString();
         }
         #endregion
     }

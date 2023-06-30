@@ -49,6 +49,9 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         private void InitializeUI()
         {
+            _selectedColor = Color.FromArgb(104, 104, 104);
+            _nonSelectedColor = Color.FromArgb(52, 52, 52);
+
             InitializeLabel();
             InitializeDataGridView();
         }
@@ -141,6 +144,12 @@ namespace Jastech.Apps.Winform.UI.Controls
         private void lblTotalFail_Click(object sender, EventArgs e)
         {
             UpdateBarChart(BarChartContentsType.FailCount);
+        }
+
+        private void ClearLabelColor()
+        {
+            foreach (Label lbl in pnlBasicFunction.Controls)
+                lbl.BackColor = _nonSelectedColor;
         }
 
         private void lblExport_Click(object sender, EventArgs e)
@@ -287,6 +296,8 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         private void UpdateBarChart(BarChartContentsType type)
         {
+            ClearLabelColor();
+
             chtBar.Series.Clear();
             chtBar.ChartAreas[0].AxisX.Interval = 1;
             chtBar.ChartAreas[0].AxisX.IntervalOffset = 0;
@@ -303,6 +314,7 @@ namespace Jastech.Apps.Winform.UI.Controls
             switch (type)
             {
                 case BarChartContentsType.TotalCount:
+                    lblTotal.BackColor = _selectedColor;
                     for (int hour = 0; hour < UPHData.HOUR; hour++)
                     {
                         time = string.Format("{0:00}H ~ {1:00}H", hour, (hour + 1 != UPHData.HOUR) ? hour + 1 : 0);
@@ -310,6 +322,7 @@ namespace Jastech.Apps.Winform.UI.Controls
                     }
                     break;
                 case BarChartContentsType.OkCount:
+                    lblTotalOK.BackColor = _selectedColor;
                     for (int hour = 0; hour < UPHData.HOUR; hour++)
                     {
                         time = string.Format("{0:00}H ~ {1:00}H", hour, (hour + 1 != UPHData.HOUR) ? hour + 1 : 0);
@@ -317,6 +330,7 @@ namespace Jastech.Apps.Winform.UI.Controls
                     }
                     break;
                 case BarChartContentsType.NgCount:
+                    lblTotalNG.BackColor = _selectedColor;
                     for (int hour = 0; hour < UPHData.HOUR; hour++)
                     {
                         time = string.Format("{0:00}H ~ {1:00}H", hour, (hour + 1 != UPHData.HOUR) ? hour + 1 : 0);
@@ -324,6 +338,7 @@ namespace Jastech.Apps.Winform.UI.Controls
                     }
                     break;
                 case BarChartContentsType.FailCount:
+                    lblTotalFail.BackColor = _selectedColor;
                     for (int hour = 0; hour < UPHData.HOUR; hour++)
                     {
                         time = string.Format("{0:00}H ~ {1:00}H", hour, (hour + 1 != UPHData.HOUR) ? hour + 1 : 0);

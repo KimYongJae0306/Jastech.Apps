@@ -17,12 +17,27 @@ namespace Jastech.Apps.Winform.UI.Controls
 {
     public partial class PlcCommandControl : UserControl
     {
+        #region 필드
         private bool _isLoading { get; set; } = false;
+        #endregion
+
+        #region 속성
+        #endregion
+
+        #region 이벤트
+        #endregion
+
+        #region 델리게이트
+        #endregion
+
+        #region 생성자
         public PlcCommandControl()
         {
             InitializeComponent();
         }
+        #endregion
 
+        #region 메서드
         private void PlcCommandControl_Load(object sender, EventArgs e)
         {
             _isLoading = true;
@@ -133,7 +148,7 @@ namespace Jastech.Apps.Winform.UI.Controls
             }
             catch (Exception err)
             {
-
+                Console.WriteLine(err.ToString());
                 throw;
             }
 
@@ -425,5 +440,6 @@ namespace Jastech.Apps.Winform.UI.Controls
         {
             PlcControlManager.Instance().WriteCurrentModelName(lblCurrentModel.Text);
         }
+        #endregion
     }
 }

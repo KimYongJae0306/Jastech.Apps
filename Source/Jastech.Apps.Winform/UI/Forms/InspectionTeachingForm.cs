@@ -450,7 +450,7 @@ namespace Jastech.Framework.Winform.Forms
             }
             catch (Exception err)
             {
-
+                Console.WriteLine(err.ToString());
                 throw;
             }
          

@@ -391,7 +391,7 @@ namespace AkkonTester.UI.Pages
             }
             catch (Exception err)
             {
-
+                Console.WriteLine(err.ToString());
                 throw;
             }
 
