@@ -19,7 +19,7 @@ namespace ATT_UT_Remodeling.UI.Controls
         #region 필드
         private Color _selectedColor;
 
-        private Color _noneSelectedColor;
+        private Color _nonSelectedColor;
         #endregion
 
         #region 속성
@@ -57,7 +57,7 @@ namespace ATT_UT_Remodeling.UI.Controls
         private void InitializeUI()
         {
             _selectedColor = Color.FromArgb(104,104,104);
-            _noneSelectedColor = Color.FromArgb(52, 52, 52);
+            _nonSelectedColor = Color.FromArgb(52, 52, 52);
             lblUnit.Text = UnitName.ToString();
             SetButtonStatus(btnStandby);
         }
@@ -106,11 +106,8 @@ namespace ATT_UT_Remodeling.UI.Controls
         {
             Button btn = sender as Button;
 
-            btnStandby.BackColor = _noneSelectedColor;
-            btnPreAlignLeft.BackColor = _noneSelectedColor;
-            btnPreAlignRight.BackColor = _noneSelectedColor;
-            btnScanStart.BackColor = _noneSelectedColor;
-            btnScanEnd.BackColor = _noneSelectedColor;
+            foreach (Button button in tlpTeachingPosition.Controls)
+                button.BackColor = _nonSelectedColor;
 
             btn.BackColor = _selectedColor;
         }

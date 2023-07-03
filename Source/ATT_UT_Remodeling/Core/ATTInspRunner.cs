@@ -518,6 +518,7 @@ namespace ATT_UT_Remodeling.Core
                     DisposeInspTabList();
                     break;
                 }
+
                 SeqTaskLoop();
                 Thread.Sleep(50);
             }
@@ -542,6 +543,9 @@ namespace ATT_UT_Remodeling.Core
                 return;
 
             var lineCamera = LineCameraManager.Instance().GetLineCamera("LineCamera");
+            if (lineCamera == null)
+                return;
+
             var laf = LAFManager.Instance().GetLAFCtrl("Laf");
             if (laf == null)
                 return;
@@ -568,7 +572,7 @@ namespace ATT_UT_Remodeling.Core
                     WriteLog("Light off.");
 
                     //PlcControlManager.Instance().ClearAlignData();
-                    WriteLog("Clear plc data.");
+                    WriteLog("Clear PLC data.");
 
                     // LAF
                     LAFManager.Instance().AutoFocusOnOff("Laf", false);
@@ -603,7 +607,7 @@ namespace ATT_UT_Remodeling.Core
 
                     // Light on
                     //preAlignParam.LightParams.Where(x => x.Map == )
-                    WriteLog("Prealign Light on.");
+                    WriteLog("Prealign light on.");
 
                     // Grab
                     var preAlignLeftImage = GetAreaCameraImage(areaCamera.Camera);
@@ -637,7 +641,7 @@ namespace ATT_UT_Remodeling.Core
                     break;
 
                 case SeqStep.SEQ_SEND_PREALIGN_DATA:
-                    WriteLog("Prealign Light off.");
+                    WriteLog("Prealign light off.");
 
                     // Execute prealign
                     RunPreAlign(AppsInspResult);
@@ -747,7 +751,6 @@ namespace ATT_UT_Remodeling.Core
 
                     LastInspSW.Restart();
 
-
                     SeqStep = SeqStep.SEQ_WAITING_INSPECTION_DONE;
                     break;
 
@@ -768,11 +771,12 @@ namespace ATT_UT_Remodeling.Core
                     GetAkkonResultImage();
                     UpdateDailyInfo(AppsInspResult);
 
-                    WriteLog("Update inspectinon result.", false);
+                    WriteLog("Update inspectinon result.");
                     
 
                     SystemManager.Instance().UpdateMainResult(AppsInspResult);
                     Console.WriteLine("Scan End to Insp Complete : " + LastInspSW.ElapsedMilliseconds.ToString());
+
                     SeqStep = SeqStep.SEQ_SAVE_RESULT_DATA;
                     break;
 
@@ -797,6 +801,7 @@ namespace ATT_UT_Remodeling.Core
                 case SeqStep.SEQ_DELETE_DATA:
                     // Delete result datas
                     WriteLog("Delete the old data");
+
                     SeqStep = SeqStep.SEQ_CHECK_STANDBY;
                     break;
 
@@ -807,6 +812,7 @@ namespace ATT_UT_Remodeling.Core
 
                     SeqStep = SeqStep.SEQ_IDLE;
                     break;
+
                 default:
                     break;
             }
@@ -827,6 +833,7 @@ namespace ATT_UT_Remodeling.Core
 
             AppsInspModel inspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
             var unit = inspModel.GetUnit(UnitName.Unit0);
+
             for (int i = 0; i < AppsInspResult.TabResultList.Count(); i++)
             {
                 var tabResult = AppsInspResult.TabResultList[i];
@@ -880,6 +887,7 @@ namespace ATT_UT_Remodeling.Core
 
             DrawParam autoDrawParam = new DrawParam();
             autoDrawParam.ContainLeadCount = true;
+
             foreach (var result in leadResultList)
             {
                 var lead = result.Lead;
@@ -913,6 +921,7 @@ namespace ATT_UT_Remodeling.Core
                     int size = blob.BoundingRect.Width * blob.BoundingRect.Height;
                     double calcMinArea = AkkonParameters.ResultFilterParam.MinArea_um * AkkonParameters.ResultFilterParam.Resolution_um;
                     double calcMaxArea = AkkonParameters.ResultFilterParam.MaxArea_um * AkkonParameters.ResultFilterParam.Resolution_um;
+
                     if (calcMinArea <= size && size <= calcMaxArea)
                     {
                         blobCount++;
@@ -945,6 +954,7 @@ namespace ATT_UT_Remodeling.Core
                     CvInvoke.PutText(colorMat, blobCountString, new Point(textX, textY + 60), FontFace.HersheyComplex, 0.3, new MCvScalar(50, 230, 50, 255));
                 }
             }
+
             return colorMat;
         }
 

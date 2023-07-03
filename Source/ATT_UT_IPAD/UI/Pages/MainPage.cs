@@ -19,6 +19,8 @@ namespace ATT_UT_IPAD.UI.Pages
 
         //public AlignViewerControl AlignResultViewer { get; set; } = new AlignViewerControl() { Dock = DockStyle.Fill };
 
+        public SystemLogControl SystemLogControl { get; set; } = new SystemLogControl() { Dock = DockStyle.Fill };
+
         public MainPage()
         {
             InitializeComponent();
@@ -45,6 +47,11 @@ namespace ATT_UT_IPAD.UI.Pages
         {
             //AkkonResultViewer.UpdateMainResult(result);
             //AlignResultViewer.UpdateMainResult(result);
+        }
+
+        public void AddSystemLogMessage(string logMessage)
+        {
+            SystemLogControl.AddLogMessage(logMessage);
         }
     }
 

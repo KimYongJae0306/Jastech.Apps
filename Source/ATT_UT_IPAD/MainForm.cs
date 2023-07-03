@@ -227,6 +227,11 @@ namespace ATT_UT_IPAD
         {
             MainPageControl.UpdateMainResult(result);
         }
+
+        public void AddSystemLogMessage(string logMessage)
+        {
+            MainPageControl.AddSystemLogMessage(logMessage);
+        }
         #endregion
     }
 }
