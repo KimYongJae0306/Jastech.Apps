@@ -403,10 +403,12 @@
             this.lblCurrentUser.TabIndex = 2;
             this.lblCurrentUser.Text = "Maker";
             this.lblCurrentUser.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblCurrentUser.Click += new System.EventHandler(this.lblCurrentUser_Click);
             // 
             // pictureBox2
             // 
             this.pictureBox2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pictureBox2.Image = global::ATT_UT_Remodeling.Properties.Resources.People;
             this.pictureBox2.Location = new System.Drawing.Point(134, 0);
             this.pictureBox2.Margin = new System.Windows.Forms.Padding(0);
             this.pictureBox2.Name = "pictureBox2";
@@ -415,6 +417,7 @@
             this.pictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.pictureBox2.TabIndex = 4;
             this.pictureBox2.TabStop = false;
+            this.pictureBox2.Click += new System.EventHandler(this.lblCurrentUser_Click);
             // 
             // lblCurrentModel
             // 

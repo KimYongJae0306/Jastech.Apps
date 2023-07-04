@@ -78,18 +78,6 @@ namespace ATT.UI.Controls
             SendEventHandler(TeachingPosType.Standby);
         }
 
-        private void btnPreAlignLeft_Click(object sender, EventArgs e)
-        {
-            SetButtonStatus(sender);
-            SendEventHandler(TeachingPosType.Stage1_PreAlign_Left);
-        }
-
-        private void btnPreAlignRight_Click(object sender, EventArgs e)
-        {
-            SetButtonStatus(sender);
-            SendEventHandler(TeachingPosType.Stage1_PreAlign_Right);
-        }
-
         private void btnScanStart_Click(object sender, EventArgs e)
         {
             SetButtonStatus(sender);

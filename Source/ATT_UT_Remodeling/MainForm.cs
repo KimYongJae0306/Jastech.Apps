@@ -229,5 +229,21 @@ namespace ATT_UT_Remodeling
         {
             MainPageControl.AddSystemLogMessage(logMessage);
         }
+
+        private void lblCurrentUser_Click(object sender, EventArgs e)
+        {
+            LoginForm form = new LoginForm();
+            form.CurrentUser = UserManager.Instance().CurrentUser;
+            form.UserHandler = UserManager.Instance().UserHanlder;
+            form.StopProgramEvent += StopProgramEventFunction;
+            form.ShowDialog();
+
+            UserManager.Instance().SetCurrentUser(form.CurrentUser.Id);
+        }
+
+        private void StopProgramEventFunction()
+        {
+            this.Close();
+        }
     }
 }

@@ -77,14 +77,14 @@ namespace Jastech.Apps.Winform.UI.Controls
             lblRightOffset_9.Text = manager.GetValue(PlcCommonMap.PLC_Tab9_Offset_Right);
 
             lblEdgeToEdgeDistance_0.Text = manager.GetValue(PlcCommonMap.PLC_TabtoTab_Distance0_H) + "." + manager.GetValue(PlcCommonMap.PLC_TabtoTab_Distance0_L);
-            lblEdgeToEdgeDistance_1.Text = manager.GetValue(PlcCommonMap.PLC_TabtoTab_Distance1_H) + "." + manager.GetValue(PlcCommonMap.PLC_TabtoTab_Distance0_L);
-            lblEdgeToEdgeDistance_2.Text = manager.GetValue(PlcCommonMap.PLC_TabtoTab_Distance2_H) + "." + manager.GetValue(PlcCommonMap.PLC_TabtoTab_Distance0_L);
-            lblEdgeToEdgeDistance_3.Text = manager.GetValue(PlcCommonMap.PLC_TabtoTab_Distance3_H) + "." + manager.GetValue(PlcCommonMap.PLC_TabtoTab_Distance0_L);
-            lblEdgeToEdgeDistance_4.Text = manager.GetValue(PlcCommonMap.PLC_TabtoTab_Distance4_H) + "." + manager.GetValue(PlcCommonMap.PLC_TabtoTab_Distance0_L);
-            lblEdgeToEdgeDistance_5.Text = manager.GetValue(PlcCommonMap.PLC_TabtoTab_Distance5_H) + "." + manager.GetValue(PlcCommonMap.PLC_TabtoTab_Distance0_L);
-            lblEdgeToEdgeDistance_6.Text = manager.GetValue(PlcCommonMap.PLC_TabtoTab_Distance6_H) + "." + manager.GetValue(PlcCommonMap.PLC_TabtoTab_Distance0_L);
-            lblEdgeToEdgeDistance_7.Text = manager.GetValue(PlcCommonMap.PLC_TabtoTab_Distance7_H) + "." + manager.GetValue(PlcCommonMap.PLC_TabtoTab_Distance0_L);
-            lblEdgeToEdgeDistance_8.Text = manager.GetValue(PlcCommonMap.PLC_TabtoTab_Distance8_H) + "." + manager.GetValue(PlcCommonMap.PLC_TabtoTab_Distance0_L);
+            lblEdgeToEdgeDistance_1.Text = manager.GetValue(PlcCommonMap.PLC_TabtoTab_Distance1_H) + "." + manager.GetValue(PlcCommonMap.PLC_TabtoTab_Distance1_L);
+            lblEdgeToEdgeDistance_2.Text = manager.GetValue(PlcCommonMap.PLC_TabtoTab_Distance2_H) + "." + manager.GetValue(PlcCommonMap.PLC_TabtoTab_Distance2_L);
+            lblEdgeToEdgeDistance_3.Text = manager.GetValue(PlcCommonMap.PLC_TabtoTab_Distance3_H) + "." + manager.GetValue(PlcCommonMap.PLC_TabtoTab_Distance3_L);
+            lblEdgeToEdgeDistance_4.Text = manager.GetValue(PlcCommonMap.PLC_TabtoTab_Distance4_H) + "." + manager.GetValue(PlcCommonMap.PLC_TabtoTab_Distance4_L);
+            lblEdgeToEdgeDistance_5.Text = manager.GetValue(PlcCommonMap.PLC_TabtoTab_Distance5_H) + "." + manager.GetValue(PlcCommonMap.PLC_TabtoTab_Distance5_L);
+            lblEdgeToEdgeDistance_6.Text = manager.GetValue(PlcCommonMap.PLC_TabtoTab_Distance6_H) + "." + manager.GetValue(PlcCommonMap.PLC_TabtoTab_Distance6_L);
+            lblEdgeToEdgeDistance_7.Text = manager.GetValue(PlcCommonMap.PLC_TabtoTab_Distance7_H) + "." + manager.GetValue(PlcCommonMap.PLC_TabtoTab_Distance7_L);
+            lblEdgeToEdgeDistance_8.Text = manager.GetValue(PlcCommonMap.PLC_TabtoTab_Distance8_H) + "." + manager.GetValue(PlcCommonMap.PLC_TabtoTab_Distance8_L);
         }
     }
 }

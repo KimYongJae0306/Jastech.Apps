@@ -35,6 +35,7 @@ using System.Net;
 using System.Runtime.InteropServices;
 using System.Threading;
 using System.Threading.Tasks;
+using static Jastech.Framework.Modeller.Controls.ModelControl;
 
 namespace ATT_UT_Remodeling.Core
 {
@@ -46,6 +47,10 @@ namespace ATT_UT_Remodeling.Core
         private object _akkonLock = new object();
 
         private object _inspLock = new object();
+
+        private Task _changedModelTask { get; set; } = null;
+
+        private CancellationTokenSource _changedModelTaskCancellationTokenSource { get; set; }
         #endregion
 
         #region 속성
@@ -54,8 +59,6 @@ namespace ATT_UT_Remodeling.Core
         private CancellationTokenSource SeqTaskCancellationTokenSource { get; set; }
 
         private SeqStep SeqStep { get; set; } = SeqStep.SEQ_IDLE;
-
-        private Task _movingTask { get; set; } = null;
 
         public bool IsPanelIn { get; set; } = false;
 
@@ -173,8 +176,6 @@ namespace ATT_UT_Remodeling.Core
             double resolution_um = lineCamera.PixelResolution_um / lineCamera.LensScale;
             double judgementX = resolution_um * tab.AlignSpec.LeftSpecX_um;
             double judgementY = resolution_um * tab.AlignSpec.LeftSpecY_um;
-
-            var areaCamera = AreaCameraManager.Instance().GetAreaCamera("PreAlign").Camera;
 
             #region Left Align
             if (AppsConfig.Instance().EnableAlign)
@@ -379,9 +380,7 @@ namespace ATT_UT_Remodeling.Core
             lock (_akkonLock)
             {
                 if (AkkonInspQueue.Count > 0)
-                {
                     return AkkonInspQueue.Dequeue();
-                }
                 else
                     return null;
             }
@@ -407,6 +406,7 @@ namespace ATT_UT_Remodeling.Core
                 var data = InspTabQueue.Dequeue();
                 data.Dispose();
             }
+
             CancelAkkonInspTask.Cancel();
             AkkonInspTask.Wait();
             AkkonInspTask = null;
@@ -594,6 +594,7 @@ namespace ATT_UT_Remodeling.Core
                     break;
 
                 case SeqStep.SEQ_PREALIGN_R:
+                    // Move to prealign right position
                     if (MoveTo(TeachingPosType.Stage1_PreAlign_Right, out errorMessage) == false)
                     {
                         // Alarm
@@ -622,6 +623,7 @@ namespace ATT_UT_Remodeling.Core
                     break;
 
                 case SeqStep.SEQ_PREALIGN_L:
+                    // Move to prealign left position
                     if (MoveTo(TeachingPosType.Stage1_PreAlign_Left, out errorMessage) == false)
                     {
                         // Alarm
@@ -647,6 +649,7 @@ namespace ATT_UT_Remodeling.Core
                     RunPreAlign(AppsInspResult);
                     WriteLog("Complete prealign.");
 
+                    // Set prealign result
                     var offsetX = AppsInspResult.PreAlignResult.OffsetX;
                     var offsetY = AppsInspResult.PreAlignResult.OffsetY;
                     var offsetT = AppsInspResult.PreAlignResult.OffsetT;
@@ -661,10 +664,11 @@ namespace ATT_UT_Remodeling.Core
                     else
                         WriteLog("Prealign results are spec-out.");
 
-                    // Send prealign results
+                    // Send prealign offset results
                     PlcControlManager.Instance().WriteAlignData(offsetX, offsetY, offsetT);
                     WriteLog("Write prealign results.");
 
+                    // Send prealign score results
                     var leftScore = AppsInspResult.PreAlignResult.PreAlignMark.FoundedMark.Left.MaxMatchPos.Score;
                     var rightScore = AppsInspResult.PreAlignResult.PreAlignMark.FoundedMark.Right.MaxMatchPos.Score;
                     PlcControlManager.Instance().WritePreAlignResult(leftScore, rightScore);
@@ -677,6 +681,7 @@ namespace ATT_UT_Remodeling.Core
                     // Wait for scan start signal command
                     PlcControlManager.Instance().GetAddressMap(PlcCommonMap.PLC_Command);
 
+                    // Move to scan start position
                     if (MoveTo(TeachingPosType.Stage1_Scan_Start, out errorMessage) == false)
                     {
                         // Alarm
@@ -720,7 +725,7 @@ namespace ATT_UT_Remodeling.Core
                     lineCamera.StartGrab();
                     WriteLog("Start grab.");
 
-                    // Move
+                    // Move to scan end position
                     if (MoveTo(TeachingPosType.Stage1_Scan_End, out errorMessage) == false)
                     {
                         // Alarm
@@ -755,6 +760,7 @@ namespace ATT_UT_Remodeling.Core
                     break;
 
                 case SeqStep.SEQ_WAITING_INSPECTION_DONE:
+                    // Wait for inspection
                     if (IsInspectionDone() == false)
                         break;
 
@@ -770,10 +776,9 @@ namespace ATT_UT_Remodeling.Core
                     // Update result data
                     GetAkkonResultImage();
                     UpdateDailyInfo(AppsInspResult);
-
                     WriteLog("Update inspectinon result.");
                     
-
+                    // Update main viewer
                     SystemManager.Instance().UpdateMainResult(AppsInspResult);
                     Console.WriteLine("Scan End to Insp Complete : " + LastInspSW.ElapsedMilliseconds.ToString());
 
@@ -784,6 +789,7 @@ namespace ATT_UT_Remodeling.Core
                     // Save result datas
                     DailyInfoService.Save();
 
+                    // Send result datas
                     SaveInspectionResult(AppsInspResult);
                     WriteLog("Save inspection result.");
 
@@ -940,17 +946,17 @@ namespace ATT_UT_Remodeling.Core
                     string leadIndexString = result.Index.ToString();
                     string blobCountString = string.Format("[{0}]", blobCount);
 
-                    Point centerPt = new Point((int)((leftBottom.X + rightBottom.X) / 2.0), leftBottom.Y);
+                    Point centerPoint = new Point((int)((leftBottom.X + rightBottom.X) / 2.0), leftBottom.Y);
 
                     int baseLine = 0;
                     Size textSize = CvInvoke.GetTextSize(leadIndexString, FontFace.HersheyComplex, 0.3, 1, ref baseLine);
-                    int textX = centerPt.X - (textSize.Width / 2);
-                    int textY = centerPt.Y + (baseLine / 2);
+                    int textX = centerPoint.X - (textSize.Width / 2);
+                    int textY = centerPoint.Y + (baseLine / 2);
                     CvInvoke.PutText(colorMat, leadIndexString, new Point(textX, textY + 30), FontFace.HersheyComplex, 0.3, new MCvScalar(50, 230, 50, 255));
 
                     textSize = CvInvoke.GetTextSize(blobCountString, FontFace.HersheyComplex, 0.3, 1, ref baseLine);
-                    textX = centerPt.X - (textSize.Width / 2);
-                    textY = centerPt.Y + (baseLine / 2);
+                    textX = centerPoint.X - (textSize.Width / 2);
+                    textY = centerPoint.Y + (baseLine / 2);
                     CvInvoke.PutText(colorMat, blobCountString, new Point(textX, textY + 60), FontFace.HersheyComplex, 0.3, new MCvScalar(50, 230, 50, 255));
                 }
             }
@@ -988,6 +994,171 @@ namespace ATT_UT_Remodeling.Core
             PointF searchedLeftPoint = tabInspResult.FpcMark.FoundedMark.Left.MaxMatchPos.FoundPos;
             PointF searchedRightPoint = tabInspResult.FpcMark.FoundedMark.Right.MaxMatchPos.FoundPos;
             coordinate.SetCoordinateParam(teachedLeftPoint, teachedRightPoint, searchedLeftPoint, searchedRightPoint);
+        }
+
+        private void UpdateModelTask()
+        {
+            if (_changedModelTask != null)
+                return;
+
+            _changedModelTaskCancellationTokenSource = new CancellationTokenSource();
+            _changedModelTask = new Task(CheckChangedModel, _changedModelTaskCancellationTokenSource.Token);
+            _changedModelTask.Start();
+        }
+
+        private void CheckChangedModel()
+        {
+            var cancellationToken = _changedModelTaskCancellationTokenSource.Token;
+            cancellationToken.ThrowIfCancellationRequested();
+
+            while (true)
+            {
+                if (cancellationToken.IsCancellationRequested)
+                    break;
+
+                if (IsChangedModel())
+                {
+                    WriteLog("Occur request model change.", true);
+                    SetModelData();
+                }
+
+                Thread.Sleep(50);
+            }
+        }
+
+        private bool IsChangedModel()
+        {
+            var currentModel = ModelManager.Instance().CurrentModel as AppsInspModel;
+            var requestModelName = PlcControlManager.Instance().GetAddressMap(PlcCommonMap.PLC_PPID_ModelName).Value;
+
+            return currentModel.Name != requestModelName;
+        }
+
+        public event ApplyModelDelegate ApplyModelEventHandler;
+
+        private void SetModelData()
+        {
+            AppsInspModel beforeModel = ModelManager.Instance().CurrentModel as AppsInspModel;
+
+            var manager = PlcControlManager.Instance();
+            if (manager == null)
+                return;
+
+            var requestModelName = manager.GetValue(PlcCommonMap.PLC_PPID_ModelName);
+            if (requestModelName == string.Empty)
+                return;
+
+            ApplyModelEventHandler?.Invoke(requestModelName);
+            Thread.Sleep(500);
+            
+            AppsInspModel requestModel = ModelManager.Instance().CurrentModel as AppsInspModel;
+
+            string message = string.Format("Model change : {0} -> {1}", beforeModel.Name, requestModel.Name);
+            WriteLog(message, true);
+
+
+            MaterialInfo materialInfo = requestModel.MaterialInfo;
+
+            // Model information
+            var modelName = requestModelName;
+
+            var tabCount = manager.GetValue(PlcCommonMap.PLC_TabCount);
+            requestModel.TabCount = Convert.ToInt32(tabCount);
+
+            var panelSizeX = manager.GetValue(PlcCommonMap.PLC_PanelX_Size_H) + "." + manager.GetValue(PlcCommonMap.PLC_PanelX_Size_L);
+            materialInfo.PanelXSize_mm = Convert.ToDouble(panelSizeX);
+
+            var markToMarkDistance = manager.GetValue(PlcCommonMap.PLC_MarkToMarkDistance_H) + "." + manager.GetValue(PlcCommonMap.PLC_MarkToMarkDistance_L);
+            materialInfo.MarkToMark_mm = Convert.ToDouble(markToMarkDistance);
+
+            var edgeDistance = manager.GetValue(PlcCommonMap.PLC_PanelLeftEdgeToTab1LeftEdgeDistance_H) + "." + manager.GetValue(PlcCommonMap.PLC_PanelLeftEdgeToTab1LeftEdgeDistance_L);
+            materialInfo.PanelEdgeToFirst_mm = Convert.ToDouble(edgeDistance);
+
+            var axisSpeed = manager.GetValue(PlcCommonMap.PLC_Axis_X_Speed);
+            var teachingInfo = requestModel.GetUnit(UnitName.Unit0).GetTeachingInfo(TeachingPosType.Stage1_Scan_Start);
+            var movingParamX = teachingInfo.GetMovingParam(AxisName.X.ToString());
+            movingParamX.Velocity = Convert.ToDouble(axisSpeed);
+            teachingInfo.SetMovingParams(AxisName.X, movingParamX);
+
+            // Recipe data
+            var tabWidth_0 = manager.GetValue(PlcCommonMap.PLC_Tab0_Width);
+            materialInfo.Tab0Width_mm = Convert.ToDouble(tabWidth_0);
+
+            var tabWidth_1 = manager.GetValue(PlcCommonMap.PLC_Tab1_Width);
+            materialInfo.Tab1Width_mm = Convert.ToDouble(tabWidth_1);
+
+            var tabWidth_2 = manager.GetValue(PlcCommonMap.PLC_Tab2_Width);
+            materialInfo.Tab2Width_mm = Convert.ToDouble(tabWidth_2);
+
+            var tabWidth_3 = manager.GetValue(PlcCommonMap.PLC_Tab3_Width);
+            materialInfo.Tab3Width_mm = Convert.ToDouble(tabWidth_3);
+
+            var tabWidth_4 = manager.GetValue(PlcCommonMap.PLC_Tab4_Width);
+            materialInfo.Tab4Width_mm = Convert.ToDouble(tabWidth_4);
+
+            var tabWidth_5 = manager.GetValue(PlcCommonMap.PLC_Tab5_Width);
+            materialInfo.Tab5Width_mm = Convert.ToDouble(tabWidth_5);
+
+            var tabWidth_6 = manager.GetValue(PlcCommonMap.PLC_Tab6_Width);
+            materialInfo.Tab6Width_mm = Convert.ToDouble(tabWidth_6);
+
+            var tabWidth_7 = manager.GetValue(PlcCommonMap.PLC_Tab7_Width);
+            materialInfo.Tab7Width_mm = Convert.ToDouble(tabWidth_7);
+
+            var tabWidth_8 = manager.GetValue(PlcCommonMap.PLC_Tab8_Width);
+            materialInfo.Tab8Width_mm = Convert.ToDouble(tabWidth_8);
+
+            var tabWidth_9 = manager.GetValue(PlcCommonMap.PLC_Tab9_Width);
+            materialInfo.Tab9Width_mm = Convert.ToDouble(tabWidth_9);
+
+            var leftOffset_0 = manager.GetValue(PlcCommonMap.PLC_Tab0_Offset_Left);
+            var leftOffset_1 = manager.GetValue(PlcCommonMap.PLC_Tab1_Offset_Left);
+            var leftOffset_2 = manager.GetValue(PlcCommonMap.PLC_Tab2_Offset_Left);
+            var leftOffset_3 = manager.GetValue(PlcCommonMap.PLC_Tab3_Offset_Left);
+            var leftOffset_4 = manager.GetValue(PlcCommonMap.PLC_Tab4_Offset_Left);
+            var leftOffset_5 = manager.GetValue(PlcCommonMap.PLC_Tab5_Offset_Left);
+            var leftOffset_6 = manager.GetValue(PlcCommonMap.PLC_Tab6_Offset_Left);
+            var leftOffset_7 = manager.GetValue(PlcCommonMap.PLC_Tab7_Offset_Left);
+            var leftOffset_8 = manager.GetValue(PlcCommonMap.PLC_Tab8_Offset_Left);
+            var leftOffset_9 = manager.GetValue(PlcCommonMap.PLC_Tab9_Offset_Left);
+
+            var rightOffset_0  = manager.GetValue(PlcCommonMap.PLC_Tab0_Offset_Right);
+            var rightOffset_1  = manager.GetValue(PlcCommonMap.PLC_Tab1_Offset_Right);
+            var rightOffset_2  = manager.GetValue(PlcCommonMap.PLC_Tab2_Offset_Right);
+            var rightOffset_3  = manager.GetValue(PlcCommonMap.PLC_Tab3_Offset_Right);
+            var rightOffset_4  = manager.GetValue(PlcCommonMap.PLC_Tab4_Offset_Right);
+            var rightOffset_5  = manager.GetValue(PlcCommonMap.PLC_Tab5_Offset_Right);
+            var rightOffset_6  = manager.GetValue(PlcCommonMap.PLC_Tab6_Offset_Right);
+            var rightOffset_7  = manager.GetValue(PlcCommonMap.PLC_Tab7_Offset_Right);
+            var rightOffset_8  = manager.GetValue(PlcCommonMap.PLC_Tab8_Offset_Right);
+            var rightOffset_9 = manager.GetValue(PlcCommonMap.PLC_Tab9_Offset_Right);
+
+            var EdgeToEdgeDistance_0 = manager.GetValue(PlcCommonMap.PLC_TabtoTab_Distance0_H) + "." + manager.GetValue(PlcCommonMap.PLC_TabtoTab_Distance0_L);
+            materialInfo.TabToTabDistance0_mm = Convert.ToDouble(EdgeToEdgeDistance_0);
+
+            var EdgeToEdgeDistance_1 = manager.GetValue(PlcCommonMap.PLC_TabtoTab_Distance1_H) + "." + manager.GetValue(PlcCommonMap.PLC_TabtoTab_Distance1_L);
+            materialInfo.TabToTabDistance1_mm = Convert.ToDouble(EdgeToEdgeDistance_1);
+
+            var EdgeToEdgeDistance_2 = manager.GetValue(PlcCommonMap.PLC_TabtoTab_Distance2_H) + "." + manager.GetValue(PlcCommonMap.PLC_TabtoTab_Distance2_L);
+            materialInfo.TabToTabDistance2_mm = Convert.ToDouble(EdgeToEdgeDistance_2);
+
+            var EdgeToEdgeDistance_3 = manager.GetValue(PlcCommonMap.PLC_TabtoTab_Distance3_H) + "." + manager.GetValue(PlcCommonMap.PLC_TabtoTab_Distance3_L);
+            materialInfo.TabToTabDistance3_mm = Convert.ToDouble(EdgeToEdgeDistance_3);
+
+            var EdgeToEdgeDistance_4 = manager.GetValue(PlcCommonMap.PLC_TabtoTab_Distance4_H) + "." + manager.GetValue(PlcCommonMap.PLC_TabtoTab_Distance4_L);
+            materialInfo.TabToTabDistance4_mm = Convert.ToDouble(EdgeToEdgeDistance_4);
+
+            var EdgeToEdgeDistance_5 = manager.GetValue(PlcCommonMap.PLC_TabtoTab_Distance5_H) + "." + manager.GetValue(PlcCommonMap.PLC_TabtoTab_Distance5_L);
+            materialInfo.TabToTabDistance5_mm = Convert.ToDouble(EdgeToEdgeDistance_5);
+
+            var EdgeToEdgeDistance_6 = manager.GetValue(PlcCommonMap.PLC_TabtoTab_Distance6_H) + "." + manager.GetValue(PlcCommonMap.PLC_TabtoTab_Distance6_L);
+            materialInfo.TabToTabDistance6_mm = Convert.ToDouble(EdgeToEdgeDistance_6);
+
+            var EdgeToEdgeDistance_7 = manager.GetValue(PlcCommonMap.PLC_TabtoTab_Distance7_H) + "." + manager.GetValue(PlcCommonMap.PLC_TabtoTab_Distance7_L);
+            materialInfo.TabToTabDistance7_mm = Convert.ToDouble(EdgeToEdgeDistance_7);
+
+            var EdgeToEdgeDistance_8 = manager.GetValue(PlcCommonMap.PLC_TabtoTab_Distance8_H) + "." + manager.GetValue(PlcCommonMap.PLC_TabtoTab_Distance8_L);
+            materialInfo.TabToTabDistance8_mm = Convert.ToDouble(EdgeToEdgeDistance_8);
         }
         #endregion
     }
@@ -1436,11 +1607,11 @@ namespace ATT_UT_Remodeling.Core
                     (tabNo + 5).ToString(),                                                         // Strength Min
                     (tabNo + 6).ToString("F3"),                                                     // Strength Avg
 
-                    inspResult.TabResultList[tabNo].LeftAlignX.ResultValue_pixel.ToString("F3"),          // Left Align X
-                    inspResult.TabResultList[tabNo].LeftAlignY.ResultValue_pixel.ToString("F3"),          // Left Align Y
+                    inspResult.TabResultList[tabNo].LeftAlignX.ResultValue_pixel.ToString("F3"),    // Left Align X
+                    inspResult.TabResultList[tabNo].LeftAlignY.ResultValue_pixel.ToString("F3"),    // Left Align Y
                     inspResult.TabResultList[tabNo].CenterX.ToString("F3"),                         // Center Align X
-                    inspResult.TabResultList[tabNo].RightAlignX.ResultValue_pixel.ToString("F3"),         // Right Align X
-                    inspResult.TabResultList[tabNo].RightAlignY.ResultValue_pixel.ToString("F3"),         // Right Align Y
+                    inspResult.TabResultList[tabNo].RightAlignX.ResultValue_pixel.ToString("F3"),   // Right Align X
+                    inspResult.TabResultList[tabNo].RightAlignY.ResultValue_pixel.ToString("F3"),   // Right Align Y
 
                     (tabNo + 7).ToString(),                                                         // ACF Head
                     (tabNo + 8).ToString(),                                                         // Pre Head
@@ -1534,11 +1705,9 @@ namespace ATT_UT_Remodeling.Core
 
                 while (manager.IsAxisInPosition(UnitName.Unit0, teachingPos, axis) == false)
                 {
-
                     if (sw.ElapsedMilliseconds >= movingParam.MovingTimeOut)
-                    {
                         return false;
-                    }
+
                     Thread.Sleep(10);
                 }
             }

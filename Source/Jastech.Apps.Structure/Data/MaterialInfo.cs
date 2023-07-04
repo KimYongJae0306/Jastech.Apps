@@ -43,6 +43,12 @@ namespace Jastech.Apps.Structure.Data
         public double Tab7Width_mm { get; set; }
 
         [JsonProperty]
+        public double Tab8Width_mm { get; set; }
+
+        [JsonProperty]
+        public double Tab9Width_mm { get; set; }
+
+        [JsonProperty]
         public double TabToTabDistance0_mm { get; set; }
 
         [JsonProperty]
@@ -65,6 +71,9 @@ namespace Jastech.Apps.Structure.Data
 
         [JsonProperty]
         public double TabToTabDistance7_mm { get; set; }
+
+        [JsonProperty]
+        public double TabToTabDistance8_mm { get; set; }
 
         public double GetTabToTabDistance(int tabNo)
         {

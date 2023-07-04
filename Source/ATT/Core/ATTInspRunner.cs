@@ -50,8 +50,6 @@ namespace ATT.Core
 
         private SeqStep SeqStep { get; set; } = SeqStep.SEQ_IDLE;
 
-        private Task _movingTask { get; set; } = null;
-
         public bool IsPanelIn { get; set; } = false;
 
         private bool IsGrabDone { get; set; } = false;
