@@ -325,12 +325,12 @@ namespace ATT.Core
         private ATTInspTab GetInspTab()
         {
            lock(_inspLock)
-            {
+           {
                 if (InspTabQueue.Count() > 0)
                     return InspTabQueue.Dequeue();
                 else
                     return null;
-            }
+           }
         }
 
         private AkkonThreadParam GetAkkonThreadParam()
