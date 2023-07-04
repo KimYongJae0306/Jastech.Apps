@@ -1,14 +1,10 @@
-﻿using Jastech.Apps.Winform.Settings;
-using Jastech.Framework.Config;
+﻿using Jastech.Framework.Config;
 using Jastech.Framework.Util.Helper;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Jastech.Apps.Winform.Core.Calibrations
 {

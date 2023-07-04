@@ -1,20 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
-using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
+﻿using ATT.Core;
 using ATT.UI.Forms;
 using Jastech.Apps.Structure;
-using Jastech.Apps.Winform.UI.Controls;
-using Jastech.Apps.Structure.Data;
-using Jastech.Framework.Winform.Forms;
-using ATT.Core;
 using Jastech.Apps.Winform;
 using Jastech.Framework.Config;
+using Jastech.Framework.Winform.Forms;
+using System;
+using System.Windows.Forms;
 
 namespace ATT.UI.Pages
 {

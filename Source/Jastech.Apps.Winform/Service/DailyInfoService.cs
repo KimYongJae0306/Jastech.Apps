@@ -1,13 +1,4 @@
-﻿using Jastech.Apps.Winform.Settings;
-using Jastech.Framework.Util.Helper;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Jastech.Apps.Winform.Service
+﻿namespace Jastech.Apps.Winform.Service
 {
     public static class DailyInfoService
     {

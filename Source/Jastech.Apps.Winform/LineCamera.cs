@@ -1,10 +1,8 @@
 ﻿using Cognex.VisionPro;
 using Emgu.CV;
-using Emgu.CV.Reg;
 using Jastech.Apps.Structure;
 using Jastech.Apps.Structure.Data;
 using Jastech.Apps.Winform.Core;
-using Jastech.Apps.Winform.Settings;
 using Jastech.Framework.Config;
 using Jastech.Framework.Device.Cameras;
 using Jastech.Framework.Device.Motions;
@@ -13,15 +11,11 @@ using Jastech.Framework.Imaging.Helper;
 using Jastech.Framework.Imaging.VisionPro;
 using Jastech.Framework.Util.Helper;
 using System;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using static Jastech.Framework.Device.Cameras.Camera;
 
 namespace Jastech.Apps.Winform
 {

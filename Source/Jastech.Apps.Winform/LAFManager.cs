@@ -1,16 +1,12 @@
-﻿using Jastech.Apps.Structure.Data;
-using Jastech.Framework.Device.LAFCtrl;
-using Jastech.Framework.Util.Helper;
+﻿using Jastech.Framework.Device.LAFCtrl;
 using Jastech.Framework.Winform;
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Xml.Linq;
 using static Jastech.Framework.Device.Motions.AxisMovingParam;
 
 namespace Jastech.Apps.Winform

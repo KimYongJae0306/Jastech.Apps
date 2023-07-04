@@ -1,12 +1,7 @@
-﻿using Jastech.Apps.Winform;
-using Jastech.Apps.Winform.Service;
-using Jastech.Apps.Winform.Service.Plc.Maps;
+﻿using Jastech.Apps.Winform.Service.Plc.Maps;
 using Jastech.Apps.Winform.Settings;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Jastech.Apps.Winform.Service.Plc
 {

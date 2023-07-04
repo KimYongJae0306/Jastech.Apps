@@ -1,9 +1,10 @@
 ﻿using ATT_UT_IPAD.Core;
 using ATT_UT_IPAD.UI.Pages;
 using Jastech.Apps.Structure;
+using Jastech.Apps.Structure.Data;
 using Jastech.Apps.Winform;
-using Jastech.Framework.Device.Grabbers;
 using Jastech.Framework.Config;
+using Jastech.Framework.Device.Grabbers;
 using Jastech.Framework.Matrox;
 using Jastech.Framework.Structure;
 using Jastech.Framework.Users;
@@ -11,15 +12,9 @@ using Jastech.Framework.Winform;
 using Jastech.Framework.Winform.Forms;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using Jastech.Apps.Structure.Data;
 
 namespace ATT_UT_IPAD
 {

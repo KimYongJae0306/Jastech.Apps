@@ -1,5 +1,4 @@
-﻿using AkkonTester.Core;
-using Emgu.CV;
+﻿using Emgu.CV;
 using Emgu.CV.CvEnum;
 using Emgu.CV.Structure;
 using Jastech.Framework.Algorithms.Akkon;
@@ -9,9 +8,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace AkkonTester
 {

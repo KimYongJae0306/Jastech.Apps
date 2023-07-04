@@ -1,22 +1,9 @@
-﻿using Cognex.VisionPro;
-using Emgu.CV;
-using Jastech.Apps.Structure;
-using Jastech.Apps.Structure.Data;
-using Jastech.Apps.Winform.Core;
-using Jastech.Apps.Winform.Settings;
+﻿using Emgu.CV;
 using Jastech.Framework.Device.Cameras;
-using Jastech.Framework.Device.LAFCtrl;
-using Jastech.Framework.Imaging.Helper;
-using Jastech.Framework.Imaging.VisionPro;
 using Jastech.Framework.Winform;
-using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Drawing;
 using System.Linq;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 
 namespace Jastech.Apps.Winform
 {

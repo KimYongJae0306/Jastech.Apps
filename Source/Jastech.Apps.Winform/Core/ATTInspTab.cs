@@ -1,13 +1,11 @@
 ﻿using Cognex.VisionPro;
 using Emgu.CV;
-using Jastech.Framework.Algorithms.Akkon;
 using Jastech.Framework.Imaging;
 using Jastech.Framework.Imaging.Helper;
 using Jastech.Framework.Imaging.VisionPro;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 

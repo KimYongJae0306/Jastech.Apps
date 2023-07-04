@@ -1,16 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
-using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using Jastech.Apps.Winform.Settings;
-using Jastech.Framework.Imaging;
+﻿using Jastech.Apps.Winform.Settings;
 using Jastech.Framework.Config;
-using Jastech.Framework.Winform.Forms;
+using Jastech.Framework.Imaging;
+using System;
+using System.Windows.Forms;
 
 namespace Jastech.Framework.Winform.Forms
 {

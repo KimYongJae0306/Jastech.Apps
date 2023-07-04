@@ -1,17 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
-using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using Jastech.Framework.Device.Motions;
-using Jastech.Framework.Structure;
-using Jastech.Framework.Winform.Forms;
-using static Jastech.Framework.Device.Motions.AxisMovingParam;
+﻿using Jastech.Framework.Device.Motions;
 using Jastech.Framework.Winform.Helper;
+using System;
+using System.Drawing;
+using System.Windows.Forms;
+using static Jastech.Framework.Device.Motions.AxisMovingParam;
 
 namespace Jastech.Apps.Winform.UI.Controls
 {

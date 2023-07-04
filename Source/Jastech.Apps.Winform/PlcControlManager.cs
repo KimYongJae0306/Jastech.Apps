@@ -10,7 +10,6 @@ using Jastech.Framework.Device.Plcs.Melsec.Parsers;
 using Jastech.Framework.Imaging.Result;
 using Jastech.Framework.Winform;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading;

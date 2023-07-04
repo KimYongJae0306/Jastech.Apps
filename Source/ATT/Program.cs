@@ -1,6 +1,4 @@
-﻿using Jastech.Apps.Structure;
-using Jastech.Apps.Structure.Data;
-using Jastech.Apps.Winform;
+﻿using Jastech.Apps.Winform;
 using Jastech.Apps.Winform.Settings;
 using Jastech.Framework.Comm;
 using Jastech.Framework.Config;
@@ -10,16 +8,10 @@ using Jastech.Framework.Device.LAFCtrl;
 using Jastech.Framework.Device.LightCtrls;
 using Jastech.Framework.Device.Motions;
 using Jastech.Framework.Imaging;
-using Jastech.Framework.Imaging.VisionPro.VisionAlgorithms;
 using Jastech.Framework.Matrox;
-using Jastech.Framework.Structure;
 using Jastech.Framework.Util.Helper;
 using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace ATT

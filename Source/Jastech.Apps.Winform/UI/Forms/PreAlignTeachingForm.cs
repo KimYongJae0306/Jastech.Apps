@@ -1,30 +1,23 @@
-﻿using Emgu.CV.CvEnum;
-using Emgu.CV;
+﻿using Emgu.CV;
+using Emgu.CV.CvEnum;
 using Jastech.Apps.Structure;
 using Jastech.Apps.Structure.Data;
 using Jastech.Apps.Winform.UI.Controls;
 using Jastech.Framework.Config;
+using Jastech.Framework.Device.Cameras;
+using Jastech.Framework.Device.Motions;
+using Jastech.Framework.Imaging;
 using Jastech.Framework.Imaging.VisionPro;
 using Jastech.Framework.Structure;
 using Jastech.Framework.Structure.Service;
 using Jastech.Framework.Winform.Forms;
+using Jastech.Framework.Winform.Helper;
 using Jastech.Framework.Winform.VisionPro.Controls;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
 using System.IO;
-using System.Linq;
 using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using Jastech.Framework.Imaging;
-using Cognex.VisionPro;
-using Jastech.Framework.Winform.Helper;
-using Jastech.Framework.Device.Cameras;
-using Jastech.Framework.Device.Motions;
 
 namespace Jastech.Apps.Winform.UI.Forms
 {

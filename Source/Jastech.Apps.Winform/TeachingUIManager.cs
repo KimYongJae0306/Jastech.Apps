@@ -1,14 +1,7 @@
 ﻿using Cognex.VisionPro;
 using Emgu.CV;
 using Jastech.Framework.Imaging.Helper;
-using Jastech.Framework.Imaging.VisionPro;
 using Jastech.Framework.Winform.VisionPro.Controls;
-using Jastech.Framework.Winform.VisionPro.Helper;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Jastech.Apps.Winform
 {

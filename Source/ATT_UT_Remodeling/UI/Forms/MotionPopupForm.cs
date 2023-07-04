@@ -1,10 +1,7 @@
-﻿using ATT.UI.Controls;
-using ATT_UT_IPAD.UI.Controls;
-using ATT_UT_Remodeling.UI.Controls;
+﻿using ATT_UT_Remodeling.UI.Controls;
 using Jastech.Apps.Structure;
 using Jastech.Apps.Structure.Data;
 using Jastech.Apps.Winform;
-using Jastech.Apps.Winform.Settings;
 using Jastech.Framework.Config;
 using Jastech.Framework.Device.LAFCtrl;
 using Jastech.Framework.Device.Motions;

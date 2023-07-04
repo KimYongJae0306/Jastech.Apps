@@ -1,18 +1,14 @@
-﻿using Jastech.Apps.Structure.Data;
+﻿using Cognex.VisionPro;
 using Jastech.Apps.Structure;
+using Jastech.Apps.Structure.Data;
 using Jastech.Apps.Winform.UI.Controls;
+using Jastech.Framework.Winform.VisionPro.Controls;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using Jastech.Framework.Winform.VisionPro.Controls;
-using Cognex.VisionPro;
-using static ATT_UT_IPAD.UI.Controls.AkkonResultDisplayControl;
 
 namespace ATT_UT_IPAD.UI.Controls
 {

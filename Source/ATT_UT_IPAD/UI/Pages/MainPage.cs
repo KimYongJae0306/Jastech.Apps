@@ -1,15 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
-using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using Jastech.Apps.Structure.Data;
+﻿using Jastech.Apps.Structure.Data;
 using Jastech.Apps.Winform.UI.Controls;
-using ATT_UT_IPAD.UI.Controls;
+using System;
+using System.Windows.Forms;
 
 namespace ATT_UT_IPAD.UI.Pages
 {

@@ -1,19 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
-using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using Jastech.Apps.Structure.Data;
-using Jastech.Apps.Structure;
-using Jastech.Framework.Winform.Forms;
-using Jastech.Apps.Winform;
-using ATT_UT_Remodeling.Core;
+﻿using ATT_UT_Remodeling.Core;
 using ATT_UT_Remodeling.UI.Forms;
+using Jastech.Apps.Structure;
+using Jastech.Apps.Winform;
 using Jastech.Apps.Winform.UI.Forms;
+using Jastech.Framework.Winform.Forms;
+using System;
+using System.Windows.Forms;
 
 namespace ATT_UT_Remodeling.UI.Pages
 {

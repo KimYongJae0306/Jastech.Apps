@@ -1,30 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
-using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using Jastech.Framework.Winform.VisionPro.Controls;
-using Jastech.Framework.Imaging.VisionPro.VisionAlgorithms.Parameters;
-using Jastech.Framework.Imaging.VisionPro.VisionAlgorithms;
-using Cognex.VisionPro;
-using Jastech.Apps.Structure;
-using Jastech.Framework.Imaging.VisionPro.VisionAlgorithms.Results;
-using Jastech.Apps.Structure.VisionTool;
-using Jastech.Framework.Imaging.VisionPro;
+﻿using Cognex.VisionPro;
 using Cognex.VisionPro.Caliper;
-using Jastech.Framework.Winform.Forms;
+using Jastech.Apps.Structure;
 using Jastech.Apps.Structure.Data;
-using Jastech.Apps.Structure.Parameters;
+using Jastech.Apps.Structure.VisionTool;
 using Jastech.Framework.Imaging.Result;
+using Jastech.Framework.Imaging.VisionPro;
+using Jastech.Framework.Imaging.VisionPro.VisionAlgorithms.Parameters;
+using Jastech.Framework.Imaging.VisionPro.VisionAlgorithms.Results;
+using Jastech.Framework.Winform.Forms;
 using Jastech.Framework.Winform.Helper;
-using Jastech.Framework.Winform.Controls;
-using static Jastech.Framework.Device.Motions.AxisMovingParam;
-using System.Diagnostics;
-using Jastech.Framework.Device.Cameras;
+using Jastech.Framework.Winform.VisionPro.Controls;
+using System;
+using System.Collections.Generic;
+using System.Drawing;
+using System.Windows.Forms;
 
 namespace Jastech.Apps.Winform.UI.Controls
 {

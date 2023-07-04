@@ -1,30 +1,7 @@
-﻿using Cognex.VisionPro;
-using Jastech.Apps.Structure;
-using Jastech.Apps.Structure.Data;
-using Jastech.Apps.Structure.Parameters;
-using Jastech.Apps.Winform.Core.Calibrations;
-using Jastech.Framework.Comm;
-using Jastech.Framework.Comm.Protocol;
-using Jastech.Framework.Config;
-using Jastech.Framework.Device.Cameras;
-using Jastech.Framework.Device.LAF;
-using Jastech.Framework.Device.LAFCtrl;
-using Jastech.Framework.Device.LightCtrls;
-using Jastech.Framework.Device.LightCtrls.Lvs;
-using Jastech.Framework.Device.LightCtrls.Lvs.Parser;
-using Jastech.Framework.Device.Motions;
-using Jastech.Framework.Imaging;
-using Jastech.Framework.Users;
+﻿using Jastech.Framework.Config;
 using Jastech.Framework.Util.Helper;
 using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Forms;
 
 namespace Jastech.Apps.Winform.Settings
 {

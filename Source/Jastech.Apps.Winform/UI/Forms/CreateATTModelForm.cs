@@ -1,18 +1,9 @@
 ﻿using Jastech.Apps.Structure;
 using Jastech.Apps.Winform.Settings;
 using Jastech.Framework.Config;
-using Jastech.Framework.Structure;
 using Jastech.Framework.Structure.Helper;
-using Jastech.Framework.Structure.Service;
 using Jastech.Framework.Winform.Forms;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using static Jastech.Framework.Modeller.Controls.ModelControl;
 

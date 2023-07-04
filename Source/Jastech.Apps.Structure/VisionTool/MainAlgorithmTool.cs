@@ -1,23 +1,13 @@
 ﻿using Cognex.VisionPro;
-using Emgu.CV;
-using Emgu.CV.CvEnum;
 using Jastech.Apps.Structure.Data;
 using Jastech.Apps.Structure.Parameters;
-using Jastech.Framework.Algorithms.Akkon.Results;
 using Jastech.Framework.Device.Motions;
-using Jastech.Framework.Imaging.Helper;
 using Jastech.Framework.Imaging.Result;
-using Jastech.Framework.Imaging.VisionPro;
-using Jastech.Framework.Imaging.VisionPro.VisionAlgorithms.Parameters;
-using Jastech.Framework.Imaging.VisionPro.VisionAlgorithms.Results;
 using Jastech.Framework.Util.Helper;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
-using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Jastech.Apps.Structure.VisionTool
 {

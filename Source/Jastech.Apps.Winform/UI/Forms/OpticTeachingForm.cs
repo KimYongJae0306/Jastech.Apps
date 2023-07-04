@@ -1,26 +1,24 @@
-﻿using System;
-using System.Drawing;
-using System.Windows.Forms;
-using Jastech.Framework.Device.Motions;
-using Jastech.Framework.Device.LAFCtrl;
-using Jastech.Framework.Winform.Forms;
-using static Jastech.Framework.Device.Motions.AxisMovingParam;
-using Jastech.Framework.Winform.Controls;
-using Jastech.Apps.Structure.Data;
-using Jastech.Framework.Structure;
-using Jastech.Framework.Device.Cameras;
+﻿using Emgu.CV;
 using Jastech.Apps.Structure;
-using Jastech.Apps.Winform.Settings;
-using System.Collections.Generic;
-using Jastech.Apps.Winform.UI.Controls;
+using Jastech.Apps.Structure.Data;
 using Jastech.Apps.Winform;
-using Jastech.Framework.Winform.Helper;
-using Emgu.CV;
-using System.Threading;
-using Jastech.Framework.Imaging.Helper;
 using Jastech.Apps.Winform.Core;
+using Jastech.Apps.Winform.UI.Controls;
 using Jastech.Framework.Config;
+using Jastech.Framework.Device.Cameras;
+using Jastech.Framework.Device.LAFCtrl;
+using Jastech.Framework.Device.Motions;
+using Jastech.Framework.Imaging.Helper;
+using Jastech.Framework.Structure;
 using Jastech.Framework.Structure.Service;
+using Jastech.Framework.Winform.Controls;
+using Jastech.Framework.Winform.Helper;
+using System;
+using System.Collections.Generic;
+using System.Drawing;
+using System.Threading;
+using System.Windows.Forms;
+using static Jastech.Framework.Device.Motions.AxisMovingParam;
 
 namespace Jastech.Framework.Winform.Forms
 {

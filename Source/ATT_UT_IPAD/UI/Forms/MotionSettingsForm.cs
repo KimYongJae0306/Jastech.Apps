@@ -1,31 +1,22 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
-using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using Jastech.Framework.Winform.Controls;
-using Jastech.Framework.Device.Motions;
-using Jastech.Apps.Winform;
+﻿using ATT_UT_IPAD.UI.Controls;
 using Jastech.Apps.Structure;
-using System.Reflection;
-using ATT.UI.Controls;
-using Jastech.Apps.Winform.Settings;
-using Jastech.Framework.Structure;
-using Jastech.Apps.Winform.Core;
 using Jastech.Apps.Structure.Data;
-using Jastech.Apps.Winform.UI.Controls;
-using Jastech.Framework.Winform;
-using static Jastech.Framework.Device.Motions.AxisMovingParam;
-using Jastech.Framework.Winform.Forms;
-using Jastech.Framework.Device.LAFCtrl;
+using Jastech.Apps.Winform;
 using Jastech.Framework.Config;
+using Jastech.Framework.Device.LAFCtrl;
+using Jastech.Framework.Device.Motions;
+using Jastech.Framework.Structure;
 using Jastech.Framework.Structure.Service;
-using ATT_UT_IPAD.UI.Controls;
+using Jastech.Framework.Winform.Controls;
+using Jastech.Framework.Winform.Forms;
 using Jastech.Framework.Winform.Helper;
+using System;
+using System.Collections.Generic;
+using System.Data;
+using System.Drawing;
+using System.Linq;
+using System.Windows.Forms;
+using static Jastech.Framework.Device.Motions.AxisMovingParam;
 
 namespace ATT_UT_IPAD.UI.Forms
 {

@@ -1,22 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
-using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
+﻿using AkkonTester.Helpers;
 using Cognex.VisionPro;
-using Jastech.Framework.Winform.VisionPro.Controls;
-using AkkonTester.Helpers;
-using Jastech.Framework.Algorithms.Akkon.Parameters;
-using Jastech.Framework.Algorithms.Akkon;
-using Emgu.CV;
-using Emgu.CV.Structure;
-using Emgu.CV.CvEnum;
 using Cognex.VisionPro.Display;
-using System.Diagnostics;
+using Emgu.CV;
+using Emgu.CV.CvEnum;
+using Emgu.CV.Structure;
+using Jastech.Framework.Algorithms.Akkon;
+using Jastech.Framework.Algorithms.Akkon.Parameters;
+using Jastech.Framework.Winform.VisionPro.Controls;
+using System;
+using System.Drawing;
+using System.Linq;
+using System.Windows.Forms;
 
 namespace AkkonTester.UI.Pages
 {

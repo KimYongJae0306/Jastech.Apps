@@ -1,26 +1,17 @@
 ﻿using Cognex.VisionPro;
-using Jastech.Apps.Structure.Parameters;
 using Jastech.Apps.Structure.VisionTool;
-using Jastech.Framework.Device.Cameras;
 using Jastech.Framework.Device.Motions;
-using Jastech.Framework.Imaging.Result;
 using Jastech.Framework.Imaging.VisionPro.VisionAlgorithms.Parameters;
 using Jastech.Framework.Imaging.VisionPro.VisionAlgorithms.Results;
 using Jastech.Framework.Util.Helper;
-using Jastech.Framework.Winform;
-using Jastech.Framework.Winform.Controls;
 using Jastech.Framework.Winform.Forms;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Drawing;
 using System.Linq;
-using System.Security.Principal;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using static Emgu.CV.Structure.MCvMatND;
 
 namespace Jastech.Apps.Winform.Core.Calibrations
 {

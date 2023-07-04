@@ -1,18 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
-using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using Jastech.Framework.Winform.VisionPro.Controls;
-using Emgu.CV.CvEnum;
-using Emgu.CV;
-using AkkonTester.Helpers;
+﻿using AkkonTester.Helpers;
 using Cognex.VisionPro;
+using Emgu.CV;
+using Emgu.CV.CvEnum;
+using Jastech.Framework.Winform.VisionPro.Controls;
+using System;
 using System.IO;
+using System.Linq;
+using System.Windows.Forms;
 
 namespace AkkonTester.UI.Pages
 {

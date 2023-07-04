@@ -1,11 +1,8 @@
-﻿using Jastech.Apps.Structure.Data;
-using Jastech.Apps.Winform;
-using Jastech.Apps.Winform.Core.Calibrations;
+﻿using Jastech.Apps.Winform;
 using Jastech.Apps.Winform.Settings;
 using Jastech.Framework.Comm;
 using Jastech.Framework.Config;
 using Jastech.Framework.Device.Cameras;
-using Jastech.Framework.Device.Grabbers;
 using Jastech.Framework.Device.LAFCtrl;
 using Jastech.Framework.Device.LightCtrls;
 using Jastech.Framework.Device.Motions;
@@ -15,10 +12,7 @@ using Jastech.Framework.Imaging;
 using Jastech.Framework.Matrox;
 using Jastech.Framework.Util.Helper;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace ATT_UT_IPAD

@@ -1,14 +1,7 @@
-﻿using System;
+﻿using Jastech.Apps.Winform.Service;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
-using System.Data;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using Jastech.Apps.Structure.Data;
-using Jastech.Apps.Winform.Service;
 
 namespace Jastech.Apps.Winform.UI.Controls
 {

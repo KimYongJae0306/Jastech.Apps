@@ -1,18 +1,18 @@
 ﻿using Cognex.VisionPro;
+using Cognex.VisionPro.PMAlign;
+using Jastech.Apps.Structure;
 using Jastech.Apps.Structure.Data;
 using Jastech.Apps.Structure.VisionTool;
+using Jastech.Apps.Winform.Core.Calibrations;
+using Jastech.Framework.Device.Motions;
+using Jastech.Framework.Imaging.VisionPro;
 using Jastech.Framework.Imaging.VisionPro.VisionAlgorithms.Parameters;
 using Jastech.Framework.Imaging.VisionPro.VisionAlgorithms.Results;
-using Jastech.Framework.Imaging.VisionPro;
 using Jastech.Framework.Winform.Forms;
 using Jastech.Framework.Winform.VisionPro.Controls;
 using System;
 using System.Drawing;
 using System.Windows.Forms;
-using Jastech.Apps.Structure;
-using Cognex.VisionPro.PMAlign;
-using Jastech.Framework.Device.Motions;
-using Jastech.Apps.Winform.Core.Calibrations;
 
 namespace Jastech.Apps.Winform.UI.Controls
 {

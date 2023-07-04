@@ -1,13 +1,6 @@
-﻿using Jastech.Apps.Winform.Settings;
-using Jastech.Framework.Config;
+﻿using Jastech.Framework.Config;
 using Jastech.Framework.Users;
-using Jastech.Framework.Util.Helper;
-using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Jastech.Apps.Winform
 {

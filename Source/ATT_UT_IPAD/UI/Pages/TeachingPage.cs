@@ -1,18 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
-using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using Jastech.Apps.Structure.Data;
-using Jastech.Apps.Structure;
-using Jastech.Framework.Winform.Forms;
-using Jastech.Apps.Winform;
+﻿using ATT_UT_IPAD.Core;
 using ATT_UT_IPAD.UI.Forms;
-using ATT_UT_IPAD.Core;
+using Jastech.Apps.Structure;
+using Jastech.Apps.Winform;
+using Jastech.Framework.Winform.Forms;
+using System;
+using System.Windows.Forms;
 
 namespace ATT_UT_IPAD.UI.Pages
 {

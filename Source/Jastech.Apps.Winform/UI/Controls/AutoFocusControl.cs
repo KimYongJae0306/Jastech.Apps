@@ -1,18 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
-using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using Jastech.Framework.Winform.Forms;
-using Jastech.Framework.Structure;
-using Jastech.Framework.Device.Motions;
+﻿using Jastech.Apps.Structure.Data;
 using Jastech.Framework.Device.LAFCtrl;
-using Jastech.Apps.Structure.Data;
+using Jastech.Framework.Device.Motions;
+using Jastech.Framework.Structure;
 using Jastech.Framework.Winform.Helper;
+using System;
+using System.Collections.Generic;
+using System.Drawing;
+using System.Windows.Forms;
 
 namespace Jastech.Apps.Winform.UI.Controls
 {

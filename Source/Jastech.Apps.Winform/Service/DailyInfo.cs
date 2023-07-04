@@ -1,20 +1,10 @@
-﻿using Emgu.CV.Dnn;
-using Jastech.Apps.Structure;
-using Jastech.Apps.Structure.Data;
-using Jastech.Apps.Winform.Settings;
+﻿using Jastech.Apps.Winform.Settings;
 using Jastech.Framework.Config;
 using Jastech.Framework.Imaging.Result;
 using Jastech.Framework.Util.Helper;
 using Newtonsoft.Json;
-using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.IO;
-using System.Linq;
-using System.Security.Cryptography.X509Certificates;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 
 namespace Jastech.Apps.Winform.Service
 {
