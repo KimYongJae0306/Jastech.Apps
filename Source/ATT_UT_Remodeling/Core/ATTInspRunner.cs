@@ -1037,11 +1037,11 @@ namespace ATT_UT_Remodeling.Core
         {
             AppsInspModel beforeModel = ModelManager.Instance().CurrentModel as AppsInspModel;
 
-            var manager = PlcControlManager.Instance();
-            if (manager == null)
+            var plcControlManager = PlcControlManager.Instance();
+            if (plcControlManager == null)
                 return;
 
-            var requestModelName = manager.GetValue(PlcCommonMap.PLC_PPID_ModelName);
+            var requestModelName = plcControlManager.GetValue(PlcCommonMap.PLC_PPID_ModelName);
             if (requestModelName == string.Empty)
                 return;
 
@@ -1059,102 +1059,102 @@ namespace ATT_UT_Remodeling.Core
             // Model information
             var modelName = requestModelName;
 
-            var tabCount = manager.GetValue(PlcCommonMap.PLC_TabCount);
+            var tabCount = plcControlManager.GetValue(PlcCommonMap.PLC_TabCount);
             requestModel.TabCount = Convert.ToInt32(tabCount);
 
-            var panelSizeX = manager.GetValue(PlcCommonMap.PLC_PanelX_Size_H) + "." + manager.GetValue(PlcCommonMap.PLC_PanelX_Size_L);
+            var panelSizeX = plcControlManager.GetValue(PlcCommonMap.PLC_PanelX_Size_H) + "." + plcControlManager.GetValue(PlcCommonMap.PLC_PanelX_Size_L);
             materialInfo.PanelXSize_mm = Convert.ToDouble(panelSizeX);
 
-            var markToMarkDistance = manager.GetValue(PlcCommonMap.PLC_MarkToMarkDistance_H) + "." + manager.GetValue(PlcCommonMap.PLC_MarkToMarkDistance_L);
+            var markToMarkDistance = plcControlManager.GetValue(PlcCommonMap.PLC_MarkToMarkDistance_H) + "." + plcControlManager.GetValue(PlcCommonMap.PLC_MarkToMarkDistance_L);
             materialInfo.MarkToMark_mm = Convert.ToDouble(markToMarkDistance);
 
-            var edgeDistance = manager.GetValue(PlcCommonMap.PLC_PanelLeftEdgeToTab1LeftEdgeDistance_H) + "." + manager.GetValue(PlcCommonMap.PLC_PanelLeftEdgeToTab1LeftEdgeDistance_L);
+            var edgeDistance = plcControlManager.GetValue(PlcCommonMap.PLC_PanelLeftEdgeToTab1LeftEdgeDistance_H) + "." + plcControlManager.GetValue(PlcCommonMap.PLC_PanelLeftEdgeToTab1LeftEdgeDistance_L);
             materialInfo.PanelEdgeToFirst_mm = Convert.ToDouble(edgeDistance);
 
-            var axisSpeed = manager.GetValue(PlcCommonMap.PLC_Axis_X_Speed);
+            var axisSpeed = plcControlManager.GetValue(PlcCommonMap.PLC_Axis_X_Speed);
             var teachingInfo = requestModel.GetUnit(UnitName.Unit0).GetTeachingInfo(TeachingPosType.Stage1_Scan_Start);
             var movingParamX = teachingInfo.GetMovingParam(AxisName.X.ToString());
             movingParamX.Velocity = Convert.ToDouble(axisSpeed);
             teachingInfo.SetMovingParams(AxisName.X, movingParamX);
 
             // Recipe data
-            var tabWidth_0 = manager.GetValue(PlcCommonMap.PLC_Tab0_Width);
+            var tabWidth_0 = plcControlManager.GetValue(PlcCommonMap.PLC_Tab0_Width);
             materialInfo.Tab0Width_mm = Convert.ToDouble(tabWidth_0);
 
-            var tabWidth_1 = manager.GetValue(PlcCommonMap.PLC_Tab1_Width);
+            var tabWidth_1 = plcControlManager.GetValue(PlcCommonMap.PLC_Tab1_Width);
             materialInfo.Tab1Width_mm = Convert.ToDouble(tabWidth_1);
 
-            var tabWidth_2 = manager.GetValue(PlcCommonMap.PLC_Tab2_Width);
+            var tabWidth_2 = plcControlManager.GetValue(PlcCommonMap.PLC_Tab2_Width);
             materialInfo.Tab2Width_mm = Convert.ToDouble(tabWidth_2);
 
-            var tabWidth_3 = manager.GetValue(PlcCommonMap.PLC_Tab3_Width);
+            var tabWidth_3 = plcControlManager.GetValue(PlcCommonMap.PLC_Tab3_Width);
             materialInfo.Tab3Width_mm = Convert.ToDouble(tabWidth_3);
 
-            var tabWidth_4 = manager.GetValue(PlcCommonMap.PLC_Tab4_Width);
+            var tabWidth_4 = plcControlManager.GetValue(PlcCommonMap.PLC_Tab4_Width);
             materialInfo.Tab4Width_mm = Convert.ToDouble(tabWidth_4);
 
-            var tabWidth_5 = manager.GetValue(PlcCommonMap.PLC_Tab5_Width);
+            var tabWidth_5 = plcControlManager.GetValue(PlcCommonMap.PLC_Tab5_Width);
             materialInfo.Tab5Width_mm = Convert.ToDouble(tabWidth_5);
 
-            var tabWidth_6 = manager.GetValue(PlcCommonMap.PLC_Tab6_Width);
+            var tabWidth_6 = plcControlManager.GetValue(PlcCommonMap.PLC_Tab6_Width);
             materialInfo.Tab6Width_mm = Convert.ToDouble(tabWidth_6);
 
-            var tabWidth_7 = manager.GetValue(PlcCommonMap.PLC_Tab7_Width);
+            var tabWidth_7 = plcControlManager.GetValue(PlcCommonMap.PLC_Tab7_Width);
             materialInfo.Tab7Width_mm = Convert.ToDouble(tabWidth_7);
 
-            var tabWidth_8 = manager.GetValue(PlcCommonMap.PLC_Tab8_Width);
+            var tabWidth_8 = plcControlManager.GetValue(PlcCommonMap.PLC_Tab8_Width);
             materialInfo.Tab8Width_mm = Convert.ToDouble(tabWidth_8);
 
-            var tabWidth_9 = manager.GetValue(PlcCommonMap.PLC_Tab9_Width);
+            var tabWidth_9 = plcControlManager.GetValue(PlcCommonMap.PLC_Tab9_Width);
             materialInfo.Tab9Width_mm = Convert.ToDouble(tabWidth_9);
 
-            var leftOffset_0 = manager.GetValue(PlcCommonMap.PLC_Tab0_Offset_Left);
-            var leftOffset_1 = manager.GetValue(PlcCommonMap.PLC_Tab1_Offset_Left);
-            var leftOffset_2 = manager.GetValue(PlcCommonMap.PLC_Tab2_Offset_Left);
-            var leftOffset_3 = manager.GetValue(PlcCommonMap.PLC_Tab3_Offset_Left);
-            var leftOffset_4 = manager.GetValue(PlcCommonMap.PLC_Tab4_Offset_Left);
-            var leftOffset_5 = manager.GetValue(PlcCommonMap.PLC_Tab5_Offset_Left);
-            var leftOffset_6 = manager.GetValue(PlcCommonMap.PLC_Tab6_Offset_Left);
-            var leftOffset_7 = manager.GetValue(PlcCommonMap.PLC_Tab7_Offset_Left);
-            var leftOffset_8 = manager.GetValue(PlcCommonMap.PLC_Tab8_Offset_Left);
-            var leftOffset_9 = manager.GetValue(PlcCommonMap.PLC_Tab9_Offset_Left);
+            var leftOffset_0 = plcControlManager.GetValue(PlcCommonMap.PLC_Tab0_Offset_Left);
+            var leftOffset_1 = plcControlManager.GetValue(PlcCommonMap.PLC_Tab1_Offset_Left);
+            var leftOffset_2 = plcControlManager.GetValue(PlcCommonMap.PLC_Tab2_Offset_Left);
+            var leftOffset_3 = plcControlManager.GetValue(PlcCommonMap.PLC_Tab3_Offset_Left);
+            var leftOffset_4 = plcControlManager.GetValue(PlcCommonMap.PLC_Tab4_Offset_Left);
+            var leftOffset_5 = plcControlManager.GetValue(PlcCommonMap.PLC_Tab5_Offset_Left);
+            var leftOffset_6 = plcControlManager.GetValue(PlcCommonMap.PLC_Tab6_Offset_Left);
+            var leftOffset_7 = plcControlManager.GetValue(PlcCommonMap.PLC_Tab7_Offset_Left);
+            var leftOffset_8 = plcControlManager.GetValue(PlcCommonMap.PLC_Tab8_Offset_Left);
+            var leftOffset_9 = plcControlManager.GetValue(PlcCommonMap.PLC_Tab9_Offset_Left);
 
-            var rightOffset_0  = manager.GetValue(PlcCommonMap.PLC_Tab0_Offset_Right);
-            var rightOffset_1  = manager.GetValue(PlcCommonMap.PLC_Tab1_Offset_Right);
-            var rightOffset_2  = manager.GetValue(PlcCommonMap.PLC_Tab2_Offset_Right);
-            var rightOffset_3  = manager.GetValue(PlcCommonMap.PLC_Tab3_Offset_Right);
-            var rightOffset_4  = manager.GetValue(PlcCommonMap.PLC_Tab4_Offset_Right);
-            var rightOffset_5  = manager.GetValue(PlcCommonMap.PLC_Tab5_Offset_Right);
-            var rightOffset_6  = manager.GetValue(PlcCommonMap.PLC_Tab6_Offset_Right);
-            var rightOffset_7  = manager.GetValue(PlcCommonMap.PLC_Tab7_Offset_Right);
-            var rightOffset_8  = manager.GetValue(PlcCommonMap.PLC_Tab8_Offset_Right);
-            var rightOffset_9 = manager.GetValue(PlcCommonMap.PLC_Tab9_Offset_Right);
+            var rightOffset_0 = plcControlManager.GetValue(PlcCommonMap.PLC_Tab0_Offset_Right);
+            var rightOffset_1 = plcControlManager.GetValue(PlcCommonMap.PLC_Tab1_Offset_Right);
+            var rightOffset_2 = plcControlManager.GetValue(PlcCommonMap.PLC_Tab2_Offset_Right);
+            var rightOffset_3 = plcControlManager.GetValue(PlcCommonMap.PLC_Tab3_Offset_Right);
+            var rightOffset_4 = plcControlManager.GetValue(PlcCommonMap.PLC_Tab4_Offset_Right);
+            var rightOffset_5 = plcControlManager.GetValue(PlcCommonMap.PLC_Tab5_Offset_Right);
+            var rightOffset_6 = plcControlManager.GetValue(PlcCommonMap.PLC_Tab6_Offset_Right);
+            var rightOffset_7 = plcControlManager.GetValue(PlcCommonMap.PLC_Tab7_Offset_Right);
+            var rightOffset_8 = plcControlManager.GetValue(PlcCommonMap.PLC_Tab8_Offset_Right);
+            var rightOffset_9 = plcControlManager.GetValue(PlcCommonMap.PLC_Tab9_Offset_Right);
 
-            var EdgeToEdgeDistance_0 = manager.GetValue(PlcCommonMap.PLC_TabtoTab_Distance0_H) + "." + manager.GetValue(PlcCommonMap.PLC_TabtoTab_Distance0_L);
+            var EdgeToEdgeDistance_0 = plcControlManager.GetValue(PlcCommonMap.PLC_TabtoTab_Distance0_H) + "." + plcControlManager.GetValue(PlcCommonMap.PLC_TabtoTab_Distance0_L);
             materialInfo.TabToTabDistance0_mm = Convert.ToDouble(EdgeToEdgeDistance_0);
 
-            var EdgeToEdgeDistance_1 = manager.GetValue(PlcCommonMap.PLC_TabtoTab_Distance1_H) + "." + manager.GetValue(PlcCommonMap.PLC_TabtoTab_Distance1_L);
+            var EdgeToEdgeDistance_1 = plcControlManager.GetValue(PlcCommonMap.PLC_TabtoTab_Distance1_H) + "." + plcControlManager.GetValue(PlcCommonMap.PLC_TabtoTab_Distance1_L);
             materialInfo.TabToTabDistance1_mm = Convert.ToDouble(EdgeToEdgeDistance_1);
 
-            var EdgeToEdgeDistance_2 = manager.GetValue(PlcCommonMap.PLC_TabtoTab_Distance2_H) + "." + manager.GetValue(PlcCommonMap.PLC_TabtoTab_Distance2_L);
+            var EdgeToEdgeDistance_2 = plcControlManager.GetValue(PlcCommonMap.PLC_TabtoTab_Distance2_H) + "." + plcControlManager.GetValue(PlcCommonMap.PLC_TabtoTab_Distance2_L);
             materialInfo.TabToTabDistance2_mm = Convert.ToDouble(EdgeToEdgeDistance_2);
 
-            var EdgeToEdgeDistance_3 = manager.GetValue(PlcCommonMap.PLC_TabtoTab_Distance3_H) + "." + manager.GetValue(PlcCommonMap.PLC_TabtoTab_Distance3_L);
+            var EdgeToEdgeDistance_3 = plcControlManager.GetValue(PlcCommonMap.PLC_TabtoTab_Distance3_H) + "." + plcControlManager.GetValue(PlcCommonMap.PLC_TabtoTab_Distance3_L);
             materialInfo.TabToTabDistance3_mm = Convert.ToDouble(EdgeToEdgeDistance_3);
 
-            var EdgeToEdgeDistance_4 = manager.GetValue(PlcCommonMap.PLC_TabtoTab_Distance4_H) + "." + manager.GetValue(PlcCommonMap.PLC_TabtoTab_Distance4_L);
+            var EdgeToEdgeDistance_4 = plcControlManager.GetValue(PlcCommonMap.PLC_TabtoTab_Distance4_H) + "." + plcControlManager.GetValue(PlcCommonMap.PLC_TabtoTab_Distance4_L);
             materialInfo.TabToTabDistance4_mm = Convert.ToDouble(EdgeToEdgeDistance_4);
 
-            var EdgeToEdgeDistance_5 = manager.GetValue(PlcCommonMap.PLC_TabtoTab_Distance5_H) + "." + manager.GetValue(PlcCommonMap.PLC_TabtoTab_Distance5_L);
+            var EdgeToEdgeDistance_5 = plcControlManager.GetValue(PlcCommonMap.PLC_TabtoTab_Distance5_H) + "." + plcControlManager.GetValue(PlcCommonMap.PLC_TabtoTab_Distance5_L);
             materialInfo.TabToTabDistance5_mm = Convert.ToDouble(EdgeToEdgeDistance_5);
 
-            var EdgeToEdgeDistance_6 = manager.GetValue(PlcCommonMap.PLC_TabtoTab_Distance6_H) + "." + manager.GetValue(PlcCommonMap.PLC_TabtoTab_Distance6_L);
+            var EdgeToEdgeDistance_6 = plcControlManager.GetValue(PlcCommonMap.PLC_TabtoTab_Distance6_H) + "." + plcControlManager.GetValue(PlcCommonMap.PLC_TabtoTab_Distance6_L);
             materialInfo.TabToTabDistance6_mm = Convert.ToDouble(EdgeToEdgeDistance_6);
 
-            var EdgeToEdgeDistance_7 = manager.GetValue(PlcCommonMap.PLC_TabtoTab_Distance7_H) + "." + manager.GetValue(PlcCommonMap.PLC_TabtoTab_Distance7_L);
+            var EdgeToEdgeDistance_7 = plcControlManager.GetValue(PlcCommonMap.PLC_TabtoTab_Distance7_H) + "." + plcControlManager.GetValue(PlcCommonMap.PLC_TabtoTab_Distance7_L);
             materialInfo.TabToTabDistance7_mm = Convert.ToDouble(EdgeToEdgeDistance_7);
 
-            var EdgeToEdgeDistance_8 = manager.GetValue(PlcCommonMap.PLC_TabtoTab_Distance8_H) + "." + manager.GetValue(PlcCommonMap.PLC_TabtoTab_Distance8_L);
+            var EdgeToEdgeDistance_8 = plcControlManager.GetValue(PlcCommonMap.PLC_TabtoTab_Distance8_H) + "." + plcControlManager.GetValue(PlcCommonMap.PLC_TabtoTab_Distance8_L);
             materialInfo.TabToTabDistance8_mm = Convert.ToDouble(EdgeToEdgeDistance_8);
         }
         #endregion
