@@ -9,6 +9,7 @@ using Jastech.Framework.Device.Plcs.Melsec;
 using Jastech.Framework.Device.Plcs.Melsec.Parsers;
 using Jastech.Framework.Imaging.Result;
 using Jastech.Framework.Winform;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Linq;
 using System.Text;
@@ -77,6 +78,23 @@ namespace Jastech.Apps.Winform
                     foreach (var map in PlcAddressService.AddressMapList)
                     {
                         byte[] buffer = SplitData(data, map.AddressNum, map.WordSize, minAddressNum);
+
+                        if(map.AddressNum == 104110)
+                        {
+                            int g = 1;
+                        }
+                        if (map.AddressNum == 104111)
+                        {
+                            int g1 = 1;
+                        }
+                        if (map.AddressNum == 104152) //L
+                        {
+                            int g3 = 1;
+                        }
+                        if (map.AddressNum == 104153) //H
+                        {
+                            int g4 = 1;
+                        }
 
                         if (ParserType == ParserType.Binary)
                             map.Value = ConvertBinary(buffer, map.WordType);
@@ -363,7 +381,7 @@ namespace Jastech.Apps.Winform
 
         public void ClearAlignData()
         {
-            var map = PlcControlManager.Instance().GetAddressMap(PlcCommonMap.PC_AlignDataX_L);
+            var map = PlcControlManager.Instance().GetAddressMap(PlcCommonMap.PC_AlignDataX);
             if (DeviceManager.Instance().PlcHandler.Count > 0 && map != null)
             {
                 var plc = DeviceManager.Instance().PlcHandler.First() as MelsecPlc;
@@ -399,7 +417,7 @@ namespace Jastech.Apps.Winform
             SplitDouble(alignDataY_mm, out int alignDataY_H, out int alignDataY_L);
             SplitDouble(alignDataT_mm, out int alignDataT_H, out int alignDataT_L);
 
-            var map = PlcControlManager.Instance().GetAddressMap(PlcCommonMap.PC_AlignDataX_L);
+            var map = PlcControlManager.Instance().GetAddressMap(PlcCommonMap.PC_AlignDataX);
             if (DeviceManager.Instance().PlcHandler.Count > 0 && map != null)
             {
                 var plc = DeviceManager.Instance().PlcHandler.First() as MelsecPlc;
@@ -573,17 +591,19 @@ namespace Jastech.Apps.Winform
             {
                 if (axisName == AxisName.Y)
                 {
-                    string high = GetAddressMap(PlcCommonMap.PLC_Position_AxisY_H).Value;
-                    string low = GetAddressMap(PlcCommonMap.PLC_Position_AxisY_L).Value;
+                    //string high = GetAddressMap(PlcCommonMap.PLC_Position_AxisY_H).Value;
+                    //string low = GetAddressMap(PlcCommonMap.PLC_Position_AxisY).Value;
 
-                    position = Convert.ToDouble(high + "." + low);
+                    var value = ConvertDoubleWord_mm(PlcCommonMap.PLC_Position_AxisY);
+                    position = Convert.ToDouble(value);
                 }
                 else if (axisName == AxisName.T)
                 {
-                    string high = GetAddressMap(PlcCommonMap.PLC_Position_AxisT_H).Value;
-                    string low = GetAddressMap(PlcCommonMap.PLC_Position_AxisT_L).Value;
+                    //string high = GetAddressMap(PlcCommonMap.PLC_Position_AxisT_H).Value;
+                    //string low = GetAddressMap(PlcCommonMap.PLC_Position_AxisT).Value;
 
-                    position = Convert.ToDouble(high + "." + low);
+                    var value = ConvertDoubleWord_mm(PlcCommonMap.PLC_Position_AxisT);
+                    position = Convert.ToDouble(value);
                 }
             }
 
@@ -692,15 +712,25 @@ namespace Jastech.Apps.Winform
         private string ConvertBinary(byte[] hexBuffer, WordType wordType)
         {
             string resultStr = "";
-
+            byte[] dataArray;
+            int value;
             switch (wordType)
             {
+                case WordType.DoubleWord:
+                    dataArray = new byte[4];
+                    Array.Copy(hexBuffer, 0, dataArray, 0, 2); // low
+                    Array.Copy(hexBuffer, 2, dataArray, 2, 2); // high
+
+                    value = BitConverter.ToInt32(dataArray, 0);
+                    resultStr = value.ToString();
+                    break;
+
                 case WordType.DEC:
                     for (int i = 0; i < hexBuffer.Length; i += 2)
                     {
-                        byte[] dataArray = new byte[2];
+                        dataArray = new byte[2];
                         Array.Copy(hexBuffer, i, dataArray, 0, 2);
-                        int value = BitConverter.ToInt16(dataArray, 0);
+                        value = BitConverter.ToInt16(dataArray, 0);
 
                         resultStr += value.ToString();
                     }
@@ -761,5 +791,21 @@ namespace Jastech.Apps.Winform
 
             return resultStr;
         }
+
+        public string ConvertDoubleWord_mm(PlcCommonMap plcCommonMap)
+        {
+            int inputValue = Convert.ToInt32(GetValue(plcCommonMap));
+            string outputValue = (inputValue / 10000.0).ToString("F4");
+
+            return outputValue;
+        }
+
+        //public string Convert()
+        //{
+        //    int intputValue = 0;
+
+        //    string outputValue;
+        //    return outputValue;
+        //}
     }
 }

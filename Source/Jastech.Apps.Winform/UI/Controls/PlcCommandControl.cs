@@ -78,9 +78,15 @@ namespace Jastech.Apps.Winform.UI.Controls
             lblPcCommand.Text = manager.GetValue(PlcCommonMap.PC_Command);
             lblPcStatus.Text = manager.GetValue(PlcCommonMap.PC_Status);
             lblPcMoveReq.Text = manager.GetValue(PlcCommonMap.PC_Move_REQ);
-            lblPcAlignDataX.Text = manager.GetValue(PlcCommonMap.PC_AlignDataX_H) + "." + manager.GetValue(PlcCommonMap.PC_AlignDataX_L);
-            lblPcAlignDataY.Text = manager.GetValue(PlcCommonMap.PC_AlignDataY_H) + "." + manager.GetValue(PlcCommonMap.PC_AlignDataY_L);
-            lblPcAlignDataT.Text = manager.GetValue(PlcCommonMap.PC_AlignDataT_H) + "." + manager.GetValue(PlcCommonMap.PC_AlignDataT_L);
+
+            //lblPcAlignDataX.Text = manager.GetValue(PlcCommonMap.PC_AlignDataX_H) + "." + manager.GetValue(PlcCommonMap.PC_AlignDataX);
+            lblPcAlignDataX.Text = manager.ConvertDoubleWord_mm(PlcCommonMap.PC_AlignDataX);
+
+            //lblPcAlignDataY.Text = manager.GetValue(PlcCommonMap.PC_AlignDataY_H) + "." + manager.GetValue(PlcCommonMap.PC_AlignDataY);
+            lblPcAlignDataY.Text = manager.ConvertDoubleWord_mm(PlcCommonMap.PC_AlignDataY);
+
+            //lblPcAlignDataT.Text = manager.GetValue(PlcCommonMap.PC_AlignDataT_H) + "." + manager.GetValue(PlcCommonMap.PC_AlignDataT);
+            lblPcAlignDataT.Text = manager.ConvertDoubleWord_mm(PlcCommonMap.PC_AlignDataT);
 
             // PLC
             lblPlcAlive.Text = manager.GetValue(PlcCommonMap.PLC_Alive);
@@ -94,9 +100,9 @@ namespace Jastech.Apps.Winform.UI.Controls
             lblPlcAkkonAxisZServoOnOff.Text = manager.GetValue(PlcCommonMap.PLC_AkkonZ_ServoOnOff);
             lblPlcAkkonAxisZStatus.Text = manager.GetValue(PlcCommonMap.PLC_AkkonZ_Status);
             lblPlcManualMatch.Text = manager.GetValue(PlcCommonMap.PLC_ManualMatch);
-            lblPlcCurAxisY.Text = manager.GetValue(PlcCommonMap.PLC_Position_AxisY_H) + "." + manager.GetValue(PlcCommonMap.PLC_Position_AxisY_L);
-            lblPlcCurAxisT.Text = manager.GetValue(PlcCommonMap.PLC_Position_AxisT_H) + "." + manager.GetValue(PlcCommonMap.PLC_Position_AxisT_L);
-            lblPlcAlignDataX.Text = manager.GetValue(PlcCommonMap.PLC_AlignDataX_H) + "." + manager.GetValue(PlcCommonMap.PLC_AlignDataX_L);
+            lblPlcCurAxisY.Text = manager.ConvertDoubleWord_mm(PlcCommonMap.PLC_Position_AxisY);
+            lblPlcCurAxisT.Text = manager.ConvertDoubleWord_mm(PlcCommonMap.PLC_Position_AxisT);
+            lblPlcAlignDataX.Text = manager.ConvertDoubleWord_mm(PlcCommonMap.PLC_AlignDataX);
             lblPlcOffsetDataX.Text = manager.GetValue(PlcCommonMap.PLC_OffsetDataX);
             lblPlcOffsetDataY.Text = manager.GetValue(PlcCommonMap.PLC_OffsetDataY);
             lblPlcOffsetDataT.Text = manager.GetValue(PlcCommonMap.PLC_OffsetDataT);
@@ -424,7 +430,7 @@ namespace Jastech.Apps.Winform.UI.Controls
         private void btnClearPcData_Click(object sender, EventArgs e)
         {
             var startAddress = PlcControlManager.Instance().GetAddressMap(PlcCommonMap.PC_Alive);
-            var endAddress = PlcControlManager.Instance().GetAddressMap(PlcCommonMap.PC_AlignDataT_H);
+            var endAddress = PlcControlManager.Instance().GetAddressMap(PlcCommonMap.PC_AlignDataT);
             int length = endAddress.AddressNum + endAddress.WordSize - startAddress.AddressNum;
 
             PlcControlManager.Instance().ClearAddress(PlcCommonMap.PC_Alive, length);

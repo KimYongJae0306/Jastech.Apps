@@ -21,7 +21,13 @@ namespace Jastech.Apps.Structure.Data
         //public List<CalibrationParam> CalibrationParamList { get; set; } = new List<CalibrationParam>();
 
         [JsonProperty]
-        public List<LightParameter> LightParams { get; set; } = new List<LightParameter>();   // LineScan 용 조명 파라메터
+        public LightParameter LineScanLightParam { get; set; } = null;   // LineScan 용 조명 파라메터
+
+        [JsonProperty]
+        public LightParameter LeftPreAlignLightParam { get; set; } = null;
+
+        [JsonProperty]
+        public LightParameter RightPreAlignLightParam { get; set; } = null;
 
         [JsonProperty]
         private List<Tab> TabList { get; set; } = new List<Tab>();
@@ -36,8 +42,6 @@ namespace Jastech.Apps.Structure.Data
             unit.Name = Name;
             unit.PreAlignParamList = PreAlignParamList.Select(x => x.DeepCopy()).ToList();
             unit.CalibrationParam = CalibrationParam.DeepCopy();
-            //unit.CalibrationParamList = CalibrationParamList.Select(x => x.DeepCopy()).ToList();
-            unit.LightParams = LightParams.Select(x => x.DeepCopy()).ToList();
             unit.TabList = TabList.Select(x => x.DeepCopy()).ToList();
             unit.TeachingInfoList = TeachingInfoList.Select(x => x.DeepCopy()).ToList();
             return unit;
@@ -48,15 +52,11 @@ namespace Jastech.Apps.Structure.Data
             foreach (var preAlignParam in PreAlignParamList)
                 preAlignParam.Dispose();
 
-            //foreach (var calibrationParam in CalibrationParamList)
-            //    calibrationParam.Dispose();
-
             foreach (var tab in TabList)
                 tab.Dispose();
 
             PreAlignParamList.Clear();
             CalibrationParam.Dispose();
-            //CalibrationParamList.Clear();
             TabList.Clear();
         }
 

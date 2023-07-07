@@ -34,7 +34,7 @@ namespace ATT.Core
                 unit.Name = unitName.ToString(); // 임시 -> Apps에서 변경
 
                 // LineScan 조명 Parameter 생성
-                unit.LightParams.AddRange(CreateLightParameter());
+                //unit.LineScanLightParamList.AddRange(CreateLightParameter());
 
                 for (int tabIndex = 0; tabIndex < appInspModel.TabCount; tabIndex++)
                 {
@@ -146,32 +146,7 @@ namespace ATT.Core
             var lightCtrls = ConfigSet.Instance().Machine.GetDevices<LightCtrl>();
             if (lightCtrls == null)
                 return lightParameterList;
-            
-            foreach (var light in lightCtrls)
-            {
-                if(light.Name == "LvsLight12V")
-                {
-                    LightParameter lightParameter = new LightParameter(light.Name);
-                    LightValue lightValue = new LightValue(light.TotalChannelCount);
-                    lightValue.LightLevels[light.ChannelNameMap["Ch.Blue"]] = 100;
-                    lightValue.LightLevels[light.ChannelNameMap["Ch.RedSpot"]] = 100;
-
-                    lightParameter.Add(light, lightValue);
-
-                    lightParameterList.Add(lightParameter);
-                }
-                else if(light.Name == "LvsLight24V")
-                {
-                    LightParameter lightParameter = new LightParameter(light.Name);
-                    LightValue lightValue = new LightValue(light.TotalChannelCount);
-                    lightValue.LightLevels[light.ChannelNameMap["Ch.RedRing"]] = 100;
-
-                    lightParameter.Add(light, lightValue);
-
-                    lightParameterList.Add(lightParameter);
-                }
-            }
-
+           
             return lightParameterList;
         }
 

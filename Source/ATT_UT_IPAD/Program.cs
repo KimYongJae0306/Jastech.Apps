@@ -78,14 +78,15 @@ namespace ATT_UT_IPAD
                 var motion = new VirtualMotion("VirtualMotion", 2);
                 config.Add(motion);
 
-                var alignLight = new VirtualLightCtrl("LvsLight12V", 6);
-                alignLight.ChannelNameMap["Ch.Blue"] = 0;
-                alignLight.ChannelNameMap["Ch.RedSpot"] = 1;
-                config.Add(alignLight);
+                var spotLight = new VirtualLightCtrl("Spot12V", 6);
+                spotLight.ChannelNameMap["Ch.Blue"] = 0;
+                spotLight.ChannelNameMap["Ch.RedSpot"] = 1;
+                spotLight.ChannelNameMap["Ch.White"] = 2;
+                config.Add(spotLight);
 
-                var akkonLight = new VirtualLightCtrl("LvsLight24V", 6);
-                akkonLight.ChannelNameMap["Ch.RedRing"] = 0;
-                config.Add(akkonLight);
+                var rightLight = new VirtualLightCtrl("Ring24V", 6);
+                rightLight.ChannelNameMap["Ch.RedRing"] = 0;
+                config.Add(rightLight);
 
                 var alignLaf = new VirtualLAFCtrl("Align");
                 config.Add(alignLaf);

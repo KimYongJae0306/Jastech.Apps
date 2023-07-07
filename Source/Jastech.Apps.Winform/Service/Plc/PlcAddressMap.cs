@@ -19,7 +19,10 @@ namespace Jastech.Apps.Winform.Service.Plc
             Name = name.ToString();
             WordType = wordType;
             AddressNum = addressNum;
-            WordSize = wordSize;
+            if (wordType == WordType.DoubleWord)
+                WordSize = 2;
+            else
+                WordSize = wordSize;
         }
 
         public PlcAddressMap(PlcCommonMap name, WordType wordType, int addressNum, int wordSize)
@@ -27,12 +30,17 @@ namespace Jastech.Apps.Winform.Service.Plc
             Name = name.ToString();
             WordType = wordType;
             AddressNum = addressNum;
-            WordSize = wordSize;
+
+            if (wordType == WordType.DoubleWord)
+                WordSize = 2;
+            else
+                WordSize = wordSize;
         }
     }
 
     public enum WordType
     {
+        DoubleWord,
         HEX,
         DEC,
     }

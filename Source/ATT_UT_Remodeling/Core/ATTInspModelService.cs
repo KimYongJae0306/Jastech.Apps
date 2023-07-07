@@ -8,6 +8,7 @@ using Jastech.Framework.Config;
 using Jastech.Framework.Device.LightCtrls;
 using Jastech.Framework.Structure;
 using Jastech.Framework.Util.Helper;
+using Jastech.Framework.Winform;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -43,10 +44,15 @@ namespace ATT_UT_Remodeling.Core
                 calibrationMark.MarkName = "Calibration";
                 calibrationMark.InspParam.Name = "Calibration";
                 unit.SetCalibraionPram(calibrationMark);
-                
+
 
                 // LineScan 조명 Parameter 생성
-                unit.LightParams.AddRange(CreateLightParameter());
+                //unit.LineScanLightParamList.AddRange(CreateLightParameter());
+                unit.LineScanLightParam = CreateLightParameter();
+
+                // PreAlign 조명
+                unit.LeftPreAlignLightParam = CreatePreAlignLightParameter();
+                unit.RightPreAlignLightParam = CreatePreAlignLightParameter();
 
                 // PreAlign Mark 등록
                 foreach (MarkName type in Enum.GetValues(typeof(MarkName)))
@@ -160,48 +166,31 @@ namespace ATT_UT_Remodeling.Core
         }
 
         // PreAlign 검사 시
-        private List<LightParameter> CreatePreAlignLightParameter()
+        private LightParameter CreatePreAlignLightParameter()
         {
             // PreAlign 사용할 경우 작성
-            List<LightParameter> lightParamList = new List<LightParameter>();
+            LightParameter preAlignLightParameter = new LightParameter("PreAlign");
 
-            return lightParamList;
+            var lightCtrlHandler = DeviceManager.Instance().LightCtrlHandler;
+            var spotLightCtrl = lightCtrlHandler.Get("Spot");
+
+            preAlignLightParameter.Add(spotLightCtrl, new LightValue(spotLightCtrl.TotalChannelCount));
+
+            return preAlignLightParameter;
         }
 
-        private List<LightParameter> CreateLightParameter()
+        private LightParameter CreateLightParameter()
         {
-            List<LightParameter> lightParameterList = new List<LightParameter>();
+            LightParameter lightParameter = new LightParameter("Akkon");
 
-            var lightCtrls = ConfigSet.Instance().Machine.GetDevices<LightCtrl>();
-            if (lightCtrls == null)
-                return lightParameterList;
-            
-            foreach (var light in lightCtrls)
-            {
-                if(light.Name == "LvsLight12V")
-                {
-                    LightParameter lightParameter = new LightParameter(light.Name);
-                    LightValue lightValue = new LightValue(light.TotalChannelCount);
-                    lightValue.LightLevels[light.ChannelNameMap["Ch.Blue"]] = 100;
-                    lightValue.LightLevels[light.ChannelNameMap["Ch.RedSpot"]] = 100;
+            var lightCtrlHandler = DeviceManager.Instance().LightCtrlHandler;
+            var spotLightCtrl = lightCtrlHandler.Get("Spot");
+            var ringLightCtrl = lightCtrlHandler.Get("Ring");
 
-                    lightParameter.Add(light, lightValue);
+            lightParameter.Add(spotLightCtrl, new LightValue(spotLightCtrl.TotalChannelCount));
+            lightParameter.Add(ringLightCtrl, new LightValue(ringLightCtrl.TotalChannelCount));
 
-                    lightParameterList.Add(lightParameter);
-                }
-                else if(light.Name == "LvsLight24V")
-                {
-                    LightParameter lightParameter = new LightParameter(light.Name);
-                    LightValue lightValue = new LightValue(light.TotalChannelCount);
-                    lightValue.LightLevels[light.ChannelNameMap["Ch.RedRing"]] = 100;
-
-                    lightParameter.Add(light, lightValue);
-
-                    lightParameterList.Add(lightParameter);
-                }
-            }
-
-            return lightParameterList;
+            return lightParameter;
         }
 
         public override InspModel Load(string filePath)

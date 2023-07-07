@@ -20,9 +20,6 @@ namespace Jastech.Apps.Structure.Parameters
         public VisionProPatternMatchingParam InspParam { get; set; } = new VisionProPatternMatchingParam();
 
         [JsonProperty]
-        public List<LightParameter> LightParams { get; set; } = null;
-
-        [JsonProperty]
         public int ExposureTime_us { get; set; } = 5000;
 
         [JsonProperty]
@@ -49,9 +46,6 @@ namespace Jastech.Apps.Structure.Parameters
 
             if (InspParam != null)
                 preAlign.InspParam = InspParam.DeepCopy();
-
-            if (preAlign.LightParams != null)
-                preAlign.LightParams = LightParams.Select(x => x.DeepCopy()).ToList();
 
             preAlign.ExposureTime_us = ExposureTime_us;
             preAlign.AnalogGain_dB = AnalogGain_dB;

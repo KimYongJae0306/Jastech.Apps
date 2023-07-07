@@ -6,6 +6,8 @@ using Jastech.Framework.Config;
 using Jastech.Framework.Device.Cameras;
 using Jastech.Framework.Device.LAFCtrl;
 using Jastech.Framework.Device.LightCtrls;
+using Jastech.Framework.Device.LightCtrls.Lvs;
+using Jastech.Framework.Device.LightCtrls.Lvs.Parser;
 using Jastech.Framework.Device.Motions;
 using Jastech.Framework.Device.Plcs.Melsec;
 using Jastech.Framework.Device.Plcs.Melsec.Parsers;
@@ -85,21 +87,55 @@ namespace ATT_UT_Remodeling
                 var motion = new VirtualMotion("VirtualMotion", 2);
                 config.Add(motion);
 
-                var inpectionLight = new VirtualLightCtrl("LvsLight24V", 6);
-                inpectionLight.ChannelNameMap["Ch.RedRing"] = 0;
-                config.Add(inpectionLight);
+                var spotLight = new VirtualLightCtrl("Spot", 6); // 12V
+                spotLight.ChannelNameMap["Ch.Blue"] = 0;
+                spotLight.ChannelNameMap["Ch.RedSpot"] = 1;
+                spotLight.ChannelNameMap["Ch.White"] = 2;
+                config.Add(spotLight);
+
+                var ringLight = new VirtualLightCtrl("Ring", 6); // 24V
+                ringLight.ChannelNameMap["Ch.RedRing"] = 0;
+                config.Add(ringLight);
 
                 var laf = new VirtualLAFCtrl("Laf");
                 config.Add(laf);
 
-                //Test 코드
-                AppsConfig.Instance().PlcAddressInfo.CommonStart = 1000;
-                var plc = new MelsecPlc("PLC", new SocketComm("192.168.125.1", 9011, SocketCommType.Udp), new MelsecBinaryParser());
-                config.Add(plc);
+                //AppsConfig.Instance().PlcAddressInfo.CommonStart = 104000;
+                //AppsConfig.Instance().PlcAddressInfo.ResultStart = 105000;
+                //AppsConfig.Instance().PlcAddressInfo.ResultStart_Align = 105220;
+                //AppsConfig.Instance().PlcAddressInfo.ResultTabToTabInterval = 200;
+                //AppsConfig.Instance().PlcAddressInfo.ResultStart_Akkon = 105230;
+                //AppsConfig.Instance().PlcAddressInfo.ResultStart_PreAlign = 105250;
+
+                //var plc = new MelsecPlc("PLC", new SocketComm("192.168.125.1", 9011, SocketCommType.Udp), new MelsecBinaryParser());
+                //config.Add(plc);
             }
             else
             {
-               
+                //// Light1
+                //var spotLight = new LvsLightCtrl("Spot", 6, new SerialPortComm("COM3", 9600), new LvsSerialParser()); // 12V
+                //spotLight.ChannelNameMap["Ch.Blue"] = 0; // channel 지정
+                //spotLight.ChannelNameMap["Ch.RedSpot"] = 1; // channel 지정
+                //spotLight.ChannelNameMap["Ch.White"] = 2; // channel 지정
+                //config.Add(spotLight);
+
+                //// Light2
+                //var ringLight = new LvsLightCtrl("Ring", 6, new SerialPortComm("COM3", 9600), new LvsSerialParser());  // 24V
+                //ringLight.ChannelNameMap["Ch.RedRing"] = 0; // channel 지정
+                //config.Add(ringLight);
+
+                AppsConfig.Instance().PlcAddressInfo.CommonStart = 104000;
+                AppsConfig.Instance().PlcAddressInfo.ResultStart = 105000;
+                AppsConfig.Instance().PlcAddressInfo.ResultStart_Align = 105220;
+                AppsConfig.Instance().PlcAddressInfo.ResultTabToTabInterval = 200;
+                AppsConfig.Instance().PlcAddressInfo.ResultStart_Akkon = 105230;
+                AppsConfig.Instance().PlcAddressInfo.ResultStart_PreAlign = 105250;
+
+                var plc = new MelsecPlc("PLC", new SocketComm("192.168.130.2", 9021, SocketCommType.Udp, 9031), new MelsecBinaryParser());
+                config.Add(plc);
+                //   var plc = new MelsecPlc("PLC", new SocketComm("192.168.130.2", 9022, SocketCommType.Udp), );
+                //    plc.NE
+                //    config.Add(plc);
             }
         }
 

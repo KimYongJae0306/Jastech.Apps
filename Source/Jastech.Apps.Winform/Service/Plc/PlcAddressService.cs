@@ -168,74 +168,60 @@ namespace Jastech.Apps.Winform.Service.Plc
 
             #region Model 정보
             // 110~19
-            AddressMapList.Add(new PlcAddressMap(PlcCommonMap.PLC_PanelX_Size_L, WordType.HEX, index + 110, 1));
-            AddressMapList.Add(new PlcAddressMap(PlcCommonMap.PLC_PanelX_Size_H, WordType.HEX, index + 111, 1));
-            AddressMapList.Add(new PlcAddressMap(PlcCommonMap.PLC_MarkToMarkDistance_L, WordType.HEX, index + 112, 1));
-            AddressMapList.Add(new PlcAddressMap(PlcCommonMap.PLC_MarkToMarkDistance_H, WordType.HEX, index + 113, 1));
-            AddressMapList.Add(new PlcAddressMap(PlcCommonMap.PLC_PanelLeftEdgeToTab1LeftEdgeDistance_L, WordType.HEX, index + 114, 1));
-            AddressMapList.Add(new PlcAddressMap(PlcCommonMap.PLC_PanelLeftEdgeToTab1LeftEdgeDistance_H, WordType.HEX, index + 115, 1));
-            AddressMapList.Add(new PlcAddressMap(PlcCommonMap.PLC_TabCount, WordType.HEX, index + 116, 1));
-            AddressMapList.Add(new PlcAddressMap(PlcCommonMap.PLC_Axis_X_Speed, WordType.HEX, index + 117, 1));
+            AddressMapList.Add(new PlcAddressMap(PlcCommonMap.PLC_PanelX_Size, WordType.DoubleWord, index + 110, 1));
+            AddressMapList.Add(new PlcAddressMap(PlcCommonMap.PLC_MarkToMarkDistance, WordType.DoubleWord, index + 112, 1));
+            AddressMapList.Add(new PlcAddressMap(PlcCommonMap.PLC_PanelLeftEdgeToTab1LeftEdgeDistance, WordType.DoubleWord, index + 114, 1));
+            AddressMapList.Add(new PlcAddressMap(PlcCommonMap.PLC_TabCount, WordType.DEC, index + 116, 1));
+            AddressMapList.Add(new PlcAddressMap(PlcCommonMap.PLC_Axis_X_Speed, WordType.DEC, index + 117, 1));
 
             // 210~219
-            AddressMapList.Add(new PlcAddressMap(PlcCommonMap.PLC_Tab0_Offset_Left, WordType.HEX, index + 210, 1));
-            AddressMapList.Add(new PlcAddressMap(PlcCommonMap.PLC_Tab1_Offset_Left, WordType.HEX, index + 211, 1));
-            AddressMapList.Add(new PlcAddressMap(PlcCommonMap.PLC_Tab2_Offset_Left, WordType.HEX, index + 212, 1));
-            AddressMapList.Add(new PlcAddressMap(PlcCommonMap.PLC_Tab3_Offset_Left, WordType.HEX, index + 213, 1));
-            AddressMapList.Add(new PlcAddressMap(PlcCommonMap.PLC_Tab4_Offset_Left, WordType.HEX, index + 214, 1));
-            AddressMapList.Add(new PlcAddressMap(PlcCommonMap.PLC_Tab5_Offset_Left, WordType.HEX, index + 215, 1));
-            AddressMapList.Add(new PlcAddressMap(PlcCommonMap.PLC_Tab6_Offset_Left, WordType.HEX, index + 216, 1));
-            AddressMapList.Add(new PlcAddressMap(PlcCommonMap.PLC_Tab7_Offset_Left, WordType.HEX, index + 217, 1));
-            AddressMapList.Add(new PlcAddressMap(PlcCommonMap.PLC_Tab8_Offset_Left, WordType.HEX, index + 218, 1));
-            AddressMapList.Add(new PlcAddressMap(PlcCommonMap.PLC_Tab9_Offset_Left, WordType.HEX, index + 219, 1));
+            AddressMapList.Add(new PlcAddressMap(PlcCommonMap.PLC_Tab0_Offset_Left, WordType.DEC, index + 210, 1));
+            AddressMapList.Add(new PlcAddressMap(PlcCommonMap.PLC_Tab1_Offset_Left, WordType.DEC, index + 211, 1));
+            AddressMapList.Add(new PlcAddressMap(PlcCommonMap.PLC_Tab2_Offset_Left, WordType.DEC, index + 212, 1));
+            AddressMapList.Add(new PlcAddressMap(PlcCommonMap.PLC_Tab3_Offset_Left, WordType.DEC, index + 213, 1));
+            AddressMapList.Add(new PlcAddressMap(PlcCommonMap.PLC_Tab4_Offset_Left, WordType.DEC, index + 214, 1));
+            AddressMapList.Add(new PlcAddressMap(PlcCommonMap.PLC_Tab5_Offset_Left, WordType.DEC, index + 215, 1));
+            AddressMapList.Add(new PlcAddressMap(PlcCommonMap.PLC_Tab6_Offset_Left, WordType.DEC, index + 216, 1));
+            AddressMapList.Add(new PlcAddressMap(PlcCommonMap.PLC_Tab7_Offset_Left, WordType.DEC, index + 217, 1));
+            AddressMapList.Add(new PlcAddressMap(PlcCommonMap.PLC_Tab8_Offset_Left, WordType.DEC, index + 218, 1));
+            AddressMapList.Add(new PlcAddressMap(PlcCommonMap.PLC_Tab9_Offset_Left, WordType.DEC, index + 219, 1));
 
             // 310~319
-            AddressMapList.Add(new PlcAddressMap(PlcCommonMap.PLC_Tab0_Offset_Right, WordType.HEX, index + 310, 1));
-            AddressMapList.Add(new PlcAddressMap(PlcCommonMap.PLC_Tab1_Offset_Right, WordType.HEX, index + 311, 1));
-            AddressMapList.Add(new PlcAddressMap(PlcCommonMap.PLC_Tab2_Offset_Right, WordType.HEX, index + 312, 1));
-            AddressMapList.Add(new PlcAddressMap(PlcCommonMap.PLC_Tab3_Offset_Right, WordType.HEX, index + 313, 1));
-            AddressMapList.Add(new PlcAddressMap(PlcCommonMap.PLC_Tab4_Offset_Right, WordType.HEX, index + 314, 1));
-            AddressMapList.Add(new PlcAddressMap(PlcCommonMap.PLC_Tab5_Offset_Right, WordType.HEX, index + 315, 1));
-            AddressMapList.Add(new PlcAddressMap(PlcCommonMap.PLC_Tab6_Offset_Right, WordType.HEX, index + 316, 1));
-            AddressMapList.Add(new PlcAddressMap(PlcCommonMap.PLC_Tab7_Offset_Right, WordType.HEX, index + 317, 1));
-            AddressMapList.Add(new PlcAddressMap(PlcCommonMap.PLC_Tab8_Offset_Right, WordType.HEX, index + 318, 1));
-            AddressMapList.Add(new PlcAddressMap(PlcCommonMap.PLC_Tab9_Offset_Right, WordType.HEX, index + 319, 1));
+            AddressMapList.Add(new PlcAddressMap(PlcCommonMap.PLC_Tab0_Offset_Right, WordType.DEC, index + 310, 1));
+            AddressMapList.Add(new PlcAddressMap(PlcCommonMap.PLC_Tab1_Offset_Right, WordType.DEC, index + 311, 1));
+            AddressMapList.Add(new PlcAddressMap(PlcCommonMap.PLC_Tab2_Offset_Right, WordType.DEC, index + 312, 1));
+            AddressMapList.Add(new PlcAddressMap(PlcCommonMap.PLC_Tab3_Offset_Right, WordType.DEC, index + 313, 1));
+            AddressMapList.Add(new PlcAddressMap(PlcCommonMap.PLC_Tab4_Offset_Right, WordType.DEC, index + 314, 1));
+            AddressMapList.Add(new PlcAddressMap(PlcCommonMap.PLC_Tab5_Offset_Right, WordType.DEC, index + 315, 1));
+            AddressMapList.Add(new PlcAddressMap(PlcCommonMap.PLC_Tab6_Offset_Right, WordType.DEC, index + 316, 1));
+            AddressMapList.Add(new PlcAddressMap(PlcCommonMap.PLC_Tab7_Offset_Right, WordType.DEC, index + 317, 1));
+            AddressMapList.Add(new PlcAddressMap(PlcCommonMap.PLC_Tab8_Offset_Right, WordType.DEC, index + 318, 1));
+            AddressMapList.Add(new PlcAddressMap(PlcCommonMap.PLC_Tab9_Offset_Right, WordType.DEC, index + 319, 1));
 
             // 410~419
-            AddressMapList.Add(new PlcAddressMap(PlcCommonMap.PLC_Tab0_Width, WordType.HEX, index + 410, 1));
-            AddressMapList.Add(new PlcAddressMap(PlcCommonMap.PLC_Tab1_Width, WordType.HEX, index + 411, 1));
-            AddressMapList.Add(new PlcAddressMap(PlcCommonMap.PLC_Tab2_Width, WordType.HEX, index + 412, 1));
-            AddressMapList.Add(new PlcAddressMap(PlcCommonMap.PLC_Tab3_Width, WordType.HEX, index + 413, 1));
-            AddressMapList.Add(new PlcAddressMap(PlcCommonMap.PLC_Tab4_Width, WordType.HEX, index + 414, 1));
-            AddressMapList.Add(new PlcAddressMap(PlcCommonMap.PLC_Tab5_Width, WordType.HEX, index + 415, 1));
-            AddressMapList.Add(new PlcAddressMap(PlcCommonMap.PLC_Tab6_Width, WordType.HEX, index + 416, 1));
-            AddressMapList.Add(new PlcAddressMap(PlcCommonMap.PLC_Tab7_Width, WordType.HEX, index + 417, 1));
-            AddressMapList.Add(new PlcAddressMap(PlcCommonMap.PLC_Tab8_Width, WordType.HEX, index + 418, 1));
-            AddressMapList.Add(new PlcAddressMap(PlcCommonMap.PLC_Tab9_Width, WordType.HEX, index + 419, 1));
+            AddressMapList.Add(new PlcAddressMap(PlcCommonMap.PLC_Tab0_Width, WordType.DEC, index + 410, 1));
+            AddressMapList.Add(new PlcAddressMap(PlcCommonMap.PLC_Tab1_Width, WordType.DEC, index + 411, 1));
+            AddressMapList.Add(new PlcAddressMap(PlcCommonMap.PLC_Tab2_Width, WordType.DEC, index + 412, 1));
+            AddressMapList.Add(new PlcAddressMap(PlcCommonMap.PLC_Tab3_Width, WordType.DEC, index + 413, 1));
+            AddressMapList.Add(new PlcAddressMap(PlcCommonMap.PLC_Tab4_Width, WordType.DEC, index + 414, 1));
+            AddressMapList.Add(new PlcAddressMap(PlcCommonMap.PLC_Tab5_Width, WordType.DEC, index + 415, 1));
+            AddressMapList.Add(new PlcAddressMap(PlcCommonMap.PLC_Tab6_Width, WordType.DEC, index + 416, 1));
+            AddressMapList.Add(new PlcAddressMap(PlcCommonMap.PLC_Tab7_Width, WordType.DEC, index + 417, 1));
+            AddressMapList.Add(new PlcAddressMap(PlcCommonMap.PLC_Tab8_Width, WordType.DEC, index + 418, 1));
+            AddressMapList.Add(new PlcAddressMap(PlcCommonMap.PLC_Tab9_Width, WordType.DEC, index + 419, 1));
 
             // 510~519
-            AddressMapList.Add(new PlcAddressMap(PlcCommonMap.PLC_TabtoTab_Distance0_L, WordType.HEX, index + 510, 1));
-            AddressMapList.Add(new PlcAddressMap(PlcCommonMap.PLC_TabtoTab_Distance0_H, WordType.HEX, index + 511, 1));
-            AddressMapList.Add(new PlcAddressMap(PlcCommonMap.PLC_TabtoTab_Distance1_L, WordType.HEX, index + 512, 1));
-            AddressMapList.Add(new PlcAddressMap(PlcCommonMap.PLC_TabtoTab_Distance1_H, WordType.HEX, index + 513, 1));
-            AddressMapList.Add(new PlcAddressMap(PlcCommonMap.PLC_TabtoTab_Distance2_L, WordType.HEX, index + 514, 1));
-            AddressMapList.Add(new PlcAddressMap(PlcCommonMap.PLC_TabtoTab_Distance2_H, WordType.HEX, index + 515, 1));
-            AddressMapList.Add(new PlcAddressMap(PlcCommonMap.PLC_TabtoTab_Distance3_L, WordType.HEX, index + 516, 1));
-            AddressMapList.Add(new PlcAddressMap(PlcCommonMap.PLC_TabtoTab_Distance3_H, WordType.HEX, index + 517, 1));
-            AddressMapList.Add(new PlcAddressMap(PlcCommonMap.PLC_TabtoTab_Distance4_L, WordType.HEX, index + 518, 1));
-            AddressMapList.Add(new PlcAddressMap(PlcCommonMap.PLC_TabtoTab_Distance4_H, WordType.HEX, index + 519, 1));
+            AddressMapList.Add(new PlcAddressMap(PlcCommonMap.PLC_TabtoTab_Distance0, WordType.DoubleWord, index + 510, 1));
+            AddressMapList.Add(new PlcAddressMap(PlcCommonMap.PLC_TabtoTab_Distance1, WordType.DoubleWord, index + 512, 1));
+            AddressMapList.Add(new PlcAddressMap(PlcCommonMap.PLC_TabtoTab_Distance2, WordType.DoubleWord, index + 514, 1));
+            AddressMapList.Add(new PlcAddressMap(PlcCommonMap.PLC_TabtoTab_Distance3, WordType.DoubleWord, index + 516, 1));
+            AddressMapList.Add(new PlcAddressMap(PlcCommonMap.PLC_TabtoTab_Distance4, WordType.DoubleWord, index + 518, 1));
 
             // 610~619
-            AddressMapList.Add(new PlcAddressMap(PlcCommonMap.PLC_TabtoTab_Distance5_L, WordType.HEX, index + 610, 1));
-            AddressMapList.Add(new PlcAddressMap(PlcCommonMap.PLC_TabtoTab_Distance5_H, WordType.HEX, index + 611, 1));
-            AddressMapList.Add(new PlcAddressMap(PlcCommonMap.PLC_TabtoTab_Distance6_L, WordType.HEX, index + 612, 1));
-            AddressMapList.Add(new PlcAddressMap(PlcCommonMap.PLC_TabtoTab_Distance6_H, WordType.HEX, index + 613, 1));
-            AddressMapList.Add(new PlcAddressMap(PlcCommonMap.PLC_TabtoTab_Distance7_L, WordType.HEX, index + 614, 1));
-            AddressMapList.Add(new PlcAddressMap(PlcCommonMap.PLC_TabtoTab_Distance7_H, WordType.HEX, index + 615, 1));
-            AddressMapList.Add(new PlcAddressMap(PlcCommonMap.PLC_TabtoTab_Distance8_L, WordType.HEX, index + 616, 1));
-            AddressMapList.Add(new PlcAddressMap(PlcCommonMap.PLC_TabtoTab_Distance8_H, WordType.HEX, index + 617, 1));
-            AddressMapList.Add(new PlcAddressMap(PlcCommonMap.PLC_TabtoTab_Distance9_L, WordType.HEX, index + 618, 1));
-            AddressMapList.Add(new PlcAddressMap(PlcCommonMap.PLC_TabtoTab_Distance9_H, WordType.HEX, index + 619, 1));
+            AddressMapList.Add(new PlcAddressMap(PlcCommonMap.PLC_TabtoTab_Distance5, WordType.DoubleWord, index + 610, 1));
+            AddressMapList.Add(new PlcAddressMap(PlcCommonMap.PLC_TabtoTab_Distance6, WordType.DoubleWord, index + 612, 1));
+            AddressMapList.Add(new PlcAddressMap(PlcCommonMap.PLC_TabtoTab_Distance7, WordType.DoubleWord, index + 614, 1));
+            AddressMapList.Add(new PlcAddressMap(PlcCommonMap.PLC_TabtoTab_Distance8, WordType.DoubleWord, index + 616, 1));
             #endregion
 
             // 20~29
@@ -261,22 +247,22 @@ namespace Jastech.Apps.Winform.Service.Plc
             AddressMapList.Add(new PlcAddressMap(PlcCommonMap.PLC_AkkonZ_Status, WordType.DEC, index + 131, 1));
 
             // 50~59
-            AddressMapList.Add(new PlcAddressMap(PlcCommonMap.PC_AlignDataX_L, WordType.DEC, index + 50, 1));
-            AddressMapList.Add(new PlcAddressMap(PlcCommonMap.PC_AlignDataX_H, WordType.DEC, index + 51, 1));
-            AddressMapList.Add(new PlcAddressMap(PlcCommonMap.PC_AlignDataY_L, WordType.DEC, index + 52, 1));
-            AddressMapList.Add(new PlcAddressMap(PlcCommonMap.PC_AlignDataY_H, WordType.DEC, index + 53, 1));
-            AddressMapList.Add(new PlcAddressMap(PlcCommonMap.PC_AlignDataT_L, WordType.DEC, index + 54, 1));
-            AddressMapList.Add(new PlcAddressMap(PlcCommonMap.PC_AlignDataT_H, WordType.DEC, index + 55, 1));
+            AddressMapList.Add(new PlcAddressMap(PlcCommonMap.PC_AlignDataX, WordType.DoubleWord, index + 50, 1));
+            //AddressMapList.Add(new PlcAddressMap(PlcCommonMap.PC_AlignDataX_H, WordType.HEX, index + 51, 1));
+            AddressMapList.Add(new PlcAddressMap(PlcCommonMap.PC_AlignDataY, WordType.DoubleWord, index + 52, 1));
+            //AddressMapList.Add(new PlcAddressMap(PlcCommonMap.PC_AlignDataY_H, WordType.HEX, index + 53, 1));
+            AddressMapList.Add(new PlcAddressMap(PlcCommonMap.PC_AlignDataT, WordType.DoubleWord, index + 54, 1));
+            //AddressMapList.Add(new PlcAddressMap(PlcCommonMap.PC_AlignDataT_H, WordType.HEX, index + 55, 1));
 
             // 150~159
-            AddressMapList.Add(new PlcAddressMap(PlcCommonMap.PLC_Position_AxisY_L, WordType.DEC, index + 152, 1));
-            AddressMapList.Add(new PlcAddressMap(PlcCommonMap.PLC_Position_AxisY_H, WordType.DEC, index + 153, 1));
-            AddressMapList.Add(new PlcAddressMap(PlcCommonMap.PLC_Position_AxisT_L, WordType.DEC, index + 154, 1));
-            AddressMapList.Add(new PlcAddressMap(PlcCommonMap.PLC_Position_AxisT_H, WordType.DEC, index + 155, 1));
+            AddressMapList.Add(new PlcAddressMap(PlcCommonMap.PLC_Position_AxisY, WordType.DoubleWord, index + 152, 1));
+            //AddressMapList.Add(new PlcAddressMap(PlcCommonMap.PLC_Position_AxisY_H, WordType.DEC, index + 153, 1));
+            AddressMapList.Add(new PlcAddressMap(PlcCommonMap.PLC_Position_AxisT, WordType.DoubleWord, index + 154, 1));
+            //AddressMapList.Add(new PlcAddressMap(PlcCommonMap.PLC_Position_AxisT_H, WordType.DEC, index + 155, 1));
 
             // 250~259
-            AddressMapList.Add(new PlcAddressMap(PlcCommonMap.PLC_AlignDataX_L, WordType.DEC, index + 250, 1));
-            AddressMapList.Add(new PlcAddressMap(PlcCommonMap.PLC_AlignDataX_H, WordType.DEC, index + 251, 1));
+            AddressMapList.Add(new PlcAddressMap(PlcCommonMap.PLC_AlignDataX, WordType.DoubleWord, index + 250, 1));
+            //AddressMapList.Add(new PlcAddressMap(PlcCommonMap.PLC_AlignDataX_H, WordType.HEX, index + 251, 1));
             AddressMapList.Add(new PlcAddressMap(PlcCommonMap.PLC_OffsetDataX, WordType.DEC, index + 256, 1));
             AddressMapList.Add(new PlcAddressMap(PlcCommonMap.PLC_OffsetDataY, WordType.DEC, index + 257, 1));
             AddressMapList.Add(new PlcAddressMap(PlcCommonMap.PLC_OffsetDataT, WordType.DEC, index + 258, 1));
