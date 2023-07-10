@@ -30,6 +30,12 @@
         PLC_TabCount, 
         PLC_Axis_X_Speed,
   
+        PLC_Akkon_Count,
+        PLC_Akkon_Length,
+        PLC_Akkon_Strength,
+        PLC_Akkon_Min_Size,
+        PLC_Akkon_Max_Size,
+
         PLC_Tab0_Offset_Left,
         PLC_Tab1_Offset_Left,
         PLC_Tab2_Offset_Left,

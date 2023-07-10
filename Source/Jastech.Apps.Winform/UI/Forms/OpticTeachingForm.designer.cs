@@ -79,18 +79,6 @@
             this.lblCameraGain = new System.Windows.Forms.Label();
             this.lblCameraExposure = new System.Windows.Forms.Label();
             this.lblCamera = new System.Windows.Forms.Label();
-            this.tlpLight = new System.Windows.Forms.TableLayoutPanel();
-            this.tlpLight_ = new System.Windows.Forms.TableLayoutPanel();
-            this.lblLightOnOff = new System.Windows.Forms.Label();
-            this.lblLightDimmingLevel = new System.Windows.Forms.Label();
-            this.tlpLightDimmingLevel = new System.Windows.Forms.TableLayoutPanel();
-            this.pnlTrbDimmingLevelValue = new System.Windows.Forms.Panel();
-            this.trbDimmingLevelValue = new System.Windows.Forms.TrackBar();
-            this.nudLightDimmingLevel = new System.Windows.Forms.NumericUpDown();
-            this.tlpLightOnOff = new System.Windows.Forms.TableLayoutPanel();
-            this.lblLightOff = new System.Windows.Forms.Label();
-            this.lblLightOn = new System.Windows.Forms.Label();
-            this.lblLight = new System.Windows.Forms.Label();
             this.lblGrabMode = new System.Windows.Forms.Label();
             this.tlpGrabModeSelect = new System.Windows.Forms.TableLayoutPanel();
             this.lblAreaMode = new System.Windows.Forms.Label();
@@ -135,6 +123,7 @@
             this.btnGrabStop = new System.Windows.Forms.Button();
             this.btnGrabStart = new System.Windows.Forms.Button();
             this.pnlTeach = new System.Windows.Forms.Panel();
+            this.pnlLight = new System.Windows.Forms.Panel();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.pnlDisplay = new System.Windows.Forms.Panel();
             this.pnlHistogram = new System.Windows.Forms.Panel();
@@ -155,13 +144,6 @@
             this.tlpRepeatCount.SuspendLayout();
             this.tlpCamera.SuspendLayout();
             this.tlpCamera_.SuspendLayout();
-            this.tlpLight.SuspendLayout();
-            this.tlpLight_.SuspendLayout();
-            this.tlpLightDimmingLevel.SuspendLayout();
-            this.pnlTrbDimmingLevelValue.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.trbDimmingLevelValue)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.nudLightDimmingLevel)).BeginInit();
-            this.tlpLightOnOff.SuspendLayout();
             this.tlpGrabModeSelect.SuspendLayout();
             this.tlpMotionStatus.SuspendLayout();
             this.tlpMotionStatus_.SuspendLayout();
@@ -516,14 +498,14 @@
             this.tlpRepeatOption.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tlpRepeatOption.Controls.Add(this.tlpRepeatOption_, 0, 1);
             this.tlpRepeatOption.Controls.Add(this.lblRepeatOption, 0, 0);
-            this.tlpRepeatOption.Location = new System.Drawing.Point(504, 203);
+            this.tlpRepeatOption.Location = new System.Drawing.Point(492, 403);
             this.tlpRepeatOption.Margin = new System.Windows.Forms.Padding(0);
             this.tlpRepeatOption.Name = "tlpRepeatOption";
             this.tlpRepeatOption.RowCount = 3;
             this.tlpRepeatOption.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
             this.tlpRepeatOption.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 320F));
             this.tlpRepeatOption.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tlpRepeatOption.Size = new System.Drawing.Size(320, 350);
+            this.tlpRepeatOption.Size = new System.Drawing.Size(325, 350);
             this.tlpRepeatOption.TabIndex = 6;
             // 
             // tlpRepeatOption_
@@ -986,192 +968,6 @@
             this.lblCamera.TabIndex = 298;
             this.lblCamera.Text = "CAMERA";
             this.lblCamera.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // tlpLight
-            // 
-            this.tlpLight.ColumnCount = 2;
-            this.tlpLight.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 320F));
-            this.tlpLight.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tlpLight.Controls.Add(this.tlpLight_, 0, 1);
-            this.tlpLight.Controls.Add(this.lblLight, 0, 0);
-            this.tlpLight.Location = new System.Drawing.Point(504, 53);
-            this.tlpLight.Margin = new System.Windows.Forms.Padding(0);
-            this.tlpLight.Name = "tlpLight";
-            this.tlpLight.RowCount = 3;
-            this.tlpLight.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
-            this.tlpLight.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 80F));
-            this.tlpLight.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tlpLight.Size = new System.Drawing.Size(320, 110);
-            this.tlpLight.TabIndex = 295;
-            // 
-            // tlpLight_
-            // 
-            this.tlpLight_.ColumnCount = 2;
-            this.tlpLight_.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tlpLight_.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tlpLight_.Controls.Add(this.lblLightOnOff, 0, 1);
-            this.tlpLight_.Controls.Add(this.lblLightDimmingLevel, 0, 0);
-            this.tlpLight_.Controls.Add(this.tlpLightDimmingLevel, 1, 0);
-            this.tlpLight_.Controls.Add(this.tlpLightOnOff, 1, 1);
-            this.tlpLight_.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tlpLight_.Location = new System.Drawing.Point(0, 30);
-            this.tlpLight_.Margin = new System.Windows.Forms.Padding(0);
-            this.tlpLight_.Name = "tlpLight_";
-            this.tlpLight_.RowCount = 2;
-            this.tlpLight_.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
-            this.tlpLight_.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
-            this.tlpLight_.Size = new System.Drawing.Size(320, 80);
-            this.tlpLight_.TabIndex = 300;
-            // 
-            // lblLightOnOff
-            // 
-            this.lblLightOnOff.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
-            this.lblLightOnOff.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lblLightOnOff.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblLightOnOff.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
-            this.lblLightOnOff.Location = new System.Drawing.Point(0, 40);
-            this.lblLightOnOff.Margin = new System.Windows.Forms.Padding(0);
-            this.lblLightOnOff.Name = "lblLightOnOff";
-            this.lblLightOnOff.Size = new System.Drawing.Size(160, 40);
-            this.lblLightOnOff.TabIndex = 150;
-            this.lblLightOnOff.Text = "ON / OFF";
-            this.lblLightOnOff.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // lblLightDimmingLevel
-            // 
-            this.lblLightDimmingLevel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
-            this.lblLightDimmingLevel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lblLightDimmingLevel.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblLightDimmingLevel.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
-            this.lblLightDimmingLevel.Location = new System.Drawing.Point(0, 0);
-            this.lblLightDimmingLevel.Margin = new System.Windows.Forms.Padding(0);
-            this.lblLightDimmingLevel.Name = "lblLightDimmingLevel";
-            this.lblLightDimmingLevel.Size = new System.Drawing.Size(160, 40);
-            this.lblLightDimmingLevel.TabIndex = 146;
-            this.lblLightDimmingLevel.Text = "LIGHT [0~255]";
-            this.lblLightDimmingLevel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // tlpLightDimmingLevel
-            // 
-            this.tlpLightDimmingLevel.ColumnCount = 2;
-            this.tlpLightDimmingLevel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 70F));
-            this.tlpLightDimmingLevel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 30F));
-            this.tlpLightDimmingLevel.Controls.Add(this.pnlTrbDimmingLevelValue, 0, 0);
-            this.tlpLightDimmingLevel.Controls.Add(this.nudLightDimmingLevel, 1, 0);
-            this.tlpLightDimmingLevel.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tlpLightDimmingLevel.Location = new System.Drawing.Point(160, 0);
-            this.tlpLightDimmingLevel.Margin = new System.Windows.Forms.Padding(0);
-            this.tlpLightDimmingLevel.Name = "tlpLightDimmingLevel";
-            this.tlpLightDimmingLevel.RowCount = 1;
-            this.tlpLightDimmingLevel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tlpLightDimmingLevel.Size = new System.Drawing.Size(160, 40);
-            this.tlpLightDimmingLevel.TabIndex = 5;
-            // 
-            // pnlTrbDimmingLevelValue
-            // 
-            this.pnlTrbDimmingLevelValue.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.pnlTrbDimmingLevelValue.Controls.Add(this.trbDimmingLevelValue);
-            this.pnlTrbDimmingLevelValue.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pnlTrbDimmingLevelValue.Location = new System.Drawing.Point(9, 3);
-            this.pnlTrbDimmingLevelValue.Margin = new System.Windows.Forms.Padding(9, 3, 3, 3);
-            this.pnlTrbDimmingLevelValue.Name = "pnlTrbDimmingLevelValue";
-            this.pnlTrbDimmingLevelValue.Padding = new System.Windows.Forms.Padding(0, 9, 0, 0);
-            this.pnlTrbDimmingLevelValue.Size = new System.Drawing.Size(100, 34);
-            this.pnlTrbDimmingLevelValue.TabIndex = 209;
-            // 
-            // trbDimmingLevelValue
-            // 
-            this.trbDimmingLevelValue.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
-            this.trbDimmingLevelValue.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.trbDimmingLevelValue.Location = new System.Drawing.Point(0, 9);
-            this.trbDimmingLevelValue.Margin = new System.Windows.Forms.Padding(0);
-            this.trbDimmingLevelValue.Maximum = 255;
-            this.trbDimmingLevelValue.Name = "trbDimmingLevelValue";
-            this.trbDimmingLevelValue.Size = new System.Drawing.Size(98, 23);
-            this.trbDimmingLevelValue.TabIndex = 208;
-            this.trbDimmingLevelValue.TickStyle = System.Windows.Forms.TickStyle.None;
-            this.trbDimmingLevelValue.Scroll += new System.EventHandler(this.trbDimmingLevelValue_Scroll);
-            // 
-            // nudLightDimmingLevel
-            // 
-            this.nudLightDimmingLevel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
-            this.nudLightDimmingLevel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.nudLightDimmingLevel.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
-            this.nudLightDimmingLevel.ForeColor = System.Drawing.Color.White;
-            this.nudLightDimmingLevel.Location = new System.Drawing.Point(112, 0);
-            this.nudLightDimmingLevel.Margin = new System.Windows.Forms.Padding(0);
-            this.nudLightDimmingLevel.Maximum = new decimal(new int[] {
-            255,
-            0,
-            0,
-            0});
-            this.nudLightDimmingLevel.Name = "nudLightDimmingLevel";
-            this.nudLightDimmingLevel.ReadOnly = true;
-            this.nudLightDimmingLevel.Size = new System.Drawing.Size(48, 27);
-            this.nudLightDimmingLevel.TabIndex = 210;
-            this.nudLightDimmingLevel.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.nudLightDimmingLevel.ValueChanged += new System.EventHandler(this.nudLightDimmingLevel_ValueChanged);
-            // 
-            // tlpLightOnOff
-            // 
-            this.tlpLightOnOff.ColumnCount = 2;
-            this.tlpLightOnOff.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tlpLightOnOff.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tlpLightOnOff.Controls.Add(this.lblLightOff, 0, 0);
-            this.tlpLightOnOff.Controls.Add(this.lblLightOn, 0, 0);
-            this.tlpLightOnOff.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tlpLightOnOff.Location = new System.Drawing.Point(160, 40);
-            this.tlpLightOnOff.Margin = new System.Windows.Forms.Padding(0);
-            this.tlpLightOnOff.Name = "tlpLightOnOff";
-            this.tlpLightOnOff.RowCount = 1;
-            this.tlpLightOnOff.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tlpLightOnOff.Size = new System.Drawing.Size(160, 40);
-            this.tlpLightOnOff.TabIndex = 149;
-            // 
-            // lblLightOff
-            // 
-            this.lblLightOff.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
-            this.lblLightOff.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lblLightOff.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblLightOff.Font = new System.Drawing.Font("맑은 고딕", 12F, System.Drawing.FontStyle.Bold);
-            this.lblLightOff.Location = new System.Drawing.Point(80, 0);
-            this.lblLightOff.Margin = new System.Windows.Forms.Padding(0);
-            this.lblLightOff.Name = "lblLightOff";
-            this.lblLightOff.Size = new System.Drawing.Size(80, 40);
-            this.lblLightOff.TabIndex = 2;
-            this.lblLightOff.Text = "Off";
-            this.lblLightOff.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.lblLightOff.Click += new System.EventHandler(this.lblLightOff_Click);
-            // 
-            // lblLightOn
-            // 
-            this.lblLightOn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
-            this.lblLightOn.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lblLightOn.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblLightOn.Font = new System.Drawing.Font("맑은 고딕", 12F, System.Drawing.FontStyle.Bold);
-            this.lblLightOn.Location = new System.Drawing.Point(0, 0);
-            this.lblLightOn.Margin = new System.Windows.Forms.Padding(0);
-            this.lblLightOn.Name = "lblLightOn";
-            this.lblLightOn.Size = new System.Drawing.Size(80, 40);
-            this.lblLightOn.TabIndex = 1;
-            this.lblLightOn.Text = "On";
-            this.lblLightOn.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.lblLightOn.Click += new System.EventHandler(this.lblLightOn_Click);
-            // 
-            // lblLight
-            // 
-            this.lblLight.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(104)))), ((int)(((byte)(104)))), ((int)(((byte)(104)))));
-            this.lblLight.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lblLight.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblLight.Font = new System.Drawing.Font("맑은 고딕", 14F, System.Drawing.FontStyle.Bold);
-            this.lblLight.ForeColor = System.Drawing.Color.White;
-            this.lblLight.Location = new System.Drawing.Point(0, 0);
-            this.lblLight.Margin = new System.Windows.Forms.Padding(0);
-            this.lblLight.Name = "lblLight";
-            this.lblLight.Size = new System.Drawing.Size(320, 30);
-            this.lblLight.TabIndex = 299;
-            this.lblLight.Text = "LIGHT";
-            this.lblLight.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // lblGrabMode
             // 
@@ -1840,11 +1636,11 @@
             // 
             // pnlTeach
             // 
+            this.pnlTeach.Controls.Add(this.pnlLight);
             this.pnlTeach.Controls.Add(this.tlpGrabMode);
             this.pnlTeach.Controls.Add(this.tlpCamera);
             this.pnlTeach.Controls.Add(this.tlpJog);
             this.pnlTeach.Controls.Add(this.tlpMotionStatus);
-            this.pnlTeach.Controls.Add(this.tlpLight);
             this.pnlTeach.Controls.Add(this.tlpRepeatOption);
             this.pnlTeach.Controls.Add(this.tlpAutoFocus);
             this.pnlTeach.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -1853,6 +1649,13 @@
             this.pnlTeach.Name = "pnlTeach";
             this.pnlTeach.Size = new System.Drawing.Size(851, 781);
             this.pnlTeach.TabIndex = 0;
+            // 
+            // pnlLight
+            // 
+            this.pnlLight.Location = new System.Drawing.Point(492, 53);
+            this.pnlLight.Name = "pnlLight";
+            this.pnlLight.Size = new System.Drawing.Size(356, 300);
+            this.pnlLight.TabIndex = 298;
             // 
             // tableLayoutPanel1
             // 
@@ -1926,14 +1729,6 @@
             this.tlpCamera.ResumeLayout(false);
             this.tlpCamera_.ResumeLayout(false);
             this.tlpCamera_.PerformLayout();
-            this.tlpLight.ResumeLayout(false);
-            this.tlpLight_.ResumeLayout(false);
-            this.tlpLightDimmingLevel.ResumeLayout(false);
-            this.pnlTrbDimmingLevelValue.ResumeLayout(false);
-            this.pnlTrbDimmingLevelValue.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.trbDimmingLevelValue)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.nudLightDimmingLevel)).EndInit();
-            this.tlpLightOnOff.ResumeLayout(false);
             this.tlpGrabModeSelect.ResumeLayout(false);
             this.tlpMotionStatus.ResumeLayout(false);
             this.tlpMotionStatus_.ResumeLayout(false);
@@ -1993,16 +1788,6 @@
         private System.Windows.Forms.Label lblCameraGain;
         private System.Windows.Forms.Label lblCameraExposure;
         private System.Windows.Forms.Label lblCamera;
-        private System.Windows.Forms.TableLayoutPanel tlpLight;
-        private System.Windows.Forms.TableLayoutPanel tlpLight_;
-        private System.Windows.Forms.Label lblLightOnOff;
-        private System.Windows.Forms.Label lblLightDimmingLevel;
-        private System.Windows.Forms.TableLayoutPanel tlpLightDimmingLevel;
-        private System.Windows.Forms.NumericUpDown nudLightDimmingLevel;
-        private System.Windows.Forms.Panel pnlTrbDimmingLevelValue;
-        private System.Windows.Forms.TrackBar trbDimmingLevelValue;
-        private System.Windows.Forms.TableLayoutPanel tlpLightOnOff;
-        private System.Windows.Forms.Label lblLight;
         private System.Windows.Forms.TableLayoutPanel tlpJogFunction;
         private System.Windows.Forms.TableLayoutPanel tlpJogOption;
         private System.Windows.Forms.TableLayoutPanel tlpPitchZ;
@@ -2021,8 +1806,6 @@
         private System.Windows.Forms.Panel pnlMotionJog;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel5;
         private System.Windows.Forms.Panel pnlLAFJog;
-        private System.Windows.Forms.Label lblLightOff;
-        private System.Windows.Forms.Label lblLightOn;
         private System.Windows.Forms.TableLayoutPanel tlpGrabMode;
         private System.Windows.Forms.Label lblAreaMode;
         private System.Windows.Forms.Label lblLineMode;
@@ -2066,5 +1849,6 @@
         private System.Windows.Forms.TableLayoutPanel tlpRepeatCount;
         private System.Windows.Forms.Label lblRepeatRemain;
         private System.Windows.Forms.Label lblRepeatCount;
+        private System.Windows.Forms.Panel pnlLight;
     }
 }

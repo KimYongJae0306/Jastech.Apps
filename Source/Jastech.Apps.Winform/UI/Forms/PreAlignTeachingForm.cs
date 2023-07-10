@@ -10,6 +10,7 @@ using Jastech.Framework.Imaging;
 using Jastech.Framework.Imaging.VisionPro;
 using Jastech.Framework.Structure;
 using Jastech.Framework.Structure.Service;
+using Jastech.Framework.Winform;
 using Jastech.Framework.Winform.Forms;
 using Jastech.Framework.Winform.Helper;
 using Jastech.Framework.Winform.VisionPro.Controls;
@@ -29,6 +30,8 @@ namespace Jastech.Apps.Winform.UI.Forms
         private Color _nonSelectedColor = new Color();
 
         private DisplayType _displayType { get; set; } = DisplayType.PreAlign;
+
+        private MarkDirection _curMark { get; set; }
         #endregion
 
         #region 속성
@@ -45,6 +48,8 @@ namespace Jastech.Apps.Winform.UI.Forms
         private PreAlignControl PreAlignControl { get; set; } = new PreAlignControl() { Dock = DockStyle.Fill };
 
         private VisionCalibrationControl VisionCalibrationControl { get; set; } = new VisionCalibrationControl() { Dock = DockStyle.Fill };
+
+        private LightControl LightControl { get; set; } = new LightControl() { Dock = DockStyle.Fill };
 
         public string TeachingImagePath { get; set; }
 
@@ -69,14 +74,13 @@ namespace Jastech.Apps.Winform.UI.Forms
         #endregion
 
         #region 메서드
-        #endregion
-
         private void PreAlignTeachingForm_Load(object sender, EventArgs e)
         {
             TeachingData.Instance().UpdateTeachingData();
 
             CurrentUnit = TeachingData.Instance().GetUnit(UnitName.ToString());
 
+            
             AddControl();
             InitializeUI();
             SelectPage(DisplayType.PreAlign);
@@ -91,6 +95,9 @@ namespace Jastech.Apps.Winform.UI.Forms
             //Event 연결
             Display.DeleteEventHandler += Display_DeleteEventHandler;
             pnlDisplay.Controls.Add(Display);
+
+            PreAlignControl.MarkDirectionChanged += MarkDirectionChangedEvent;
+            pnlLight.Controls.Add(LightControl);
 
             // TeachingUIManager 참조
             TeachingUIManager.Instance().SetDisplay(Display.GetDisplay());
@@ -135,6 +142,7 @@ namespace Jastech.Apps.Winform.UI.Forms
                 case DisplayType.PreAlign:
                     btnPreAlign.BackColor = _selectedColor;
                     PreAlignControl.SetParams(CurrentUnit);
+                    
                     pnlTeach.Controls.Add(PreAlignControl);
                     break;
 
@@ -146,6 +154,14 @@ namespace Jastech.Apps.Winform.UI.Forms
                     pnlTeach.Controls.Add(VisionCalibrationControl);
                     break;
             }
+        }
+
+        private void MarkDirectionChangedEvent(MarkDirection direction)
+        {
+            if (_curMark == direction)
+                return;
+
+            _curMark = direction;
         }
 
         private void ClearSelectedButton()
@@ -274,51 +290,6 @@ namespace Jastech.Apps.Winform.UI.Forms
             //camera.SetDigitalGain(gain);
         }
 
-        private void trbDimmingLevelValue_Scroll(object sender, EventArgs e)
-        {
-            SetLightDimmingLevel(sender);
-        }
-
-        private void nudLightDimmingLevel_ValueChanged(object sender, EventArgs e)
-        {
-            SetLightDimmingLevel(sender);
-        }
-
-        private void SetLightDimmingLevel(object sender)
-        {
-            Control control = sender as Control;
-
-            if (control.GetType().Name.ToLower() == "trackbar")
-                nudLightDimmingLevel.Text = trbDimmingLevelValue.Value.ToString();
-            else if (control.GetType().Name.ToLower() == "numericupdown")
-                trbDimmingLevelValue.Value = Convert.ToInt32(nudLightDimmingLevel.Text);
-
-            // 조명값 넣기
-        }
-
-        private void lblLightOn_Click(object sender, EventArgs e)
-        {
-            LightOnOff(true);
-        }
-
-        private void lblLightOff_Click(object sender, EventArgs e)
-        {
-            LightOnOff(false);
-        }
-
-        private void LightOnOff(bool isOn)
-        {
-            // 조명 추가
-            if (isOn)
-            {
-                
-            }
-            else
-            {
-
-            }
-        }
-
         private void btnPreAlign_Click(object sender, EventArgs e)
         {
             SelectPage(DisplayType.PreAlign);
@@ -328,35 +299,6 @@ namespace Jastech.Apps.Winform.UI.Forms
         {
             SelectPage(DisplayType.Calibration);
         }
-
-        //private void UpdateUI()
-        //{
-        //    //UpdateLightStatus();
-        //    //UpdateCameraStatus();
-        //}
-
-        //private void UpdateLightStatus()
-        //{
-        //    if (true) // 조명 온 상태
-        //    {
-        //        lblLightOn.BackColor = _selectedColor;
-        //        lblLightOff.BackColor = _nonSelectedColor;
-        //    }
-        //    else
-        //    {
-        //        lblLightOn.BackColor = _nonSelectedColor;
-        //        lblLightOff.BackColor = _selectedColor;
-        //    }
-        //}
-
-        //private void UpdateCameraStatus()
-        //{
-        //    var camera = AreaCamera.Camera;
-
-        //    int gg = 0;
-        //    lblCameraExposureValue.Text = camera.GetExposureTime().ToString();
-        //    lblCameraGainValue.Text = camera.GetAnalogGain().ToString();
-        //    //lblCameraGainValue.Text = camera.GetDigitalGain().ToString();
-        //}
+        #endregion
     }
 }

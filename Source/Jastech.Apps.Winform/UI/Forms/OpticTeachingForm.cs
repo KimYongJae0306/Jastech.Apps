@@ -58,6 +58,8 @@ namespace Jastech.Framework.Winform.Forms
 
         private LAFJogControl LAFJogControl { get; set; } = new LAFJogControl() { Dock = DockStyle.Fill };
 
+        private LightControl LightControl { get; set; } = new LightControl() { Dock = DockStyle.Fill };
+
         public AxisHandler AxisHandler { get; set; } = null;
 
         public LAFCtrl LAFCtrl { get; set; } = null;
@@ -177,7 +179,8 @@ namespace Jastech.Framework.Winform.Forms
             pnlHistogram.Controls.Add(PixelValueGraphControl);
 
             string unitName = UnitName.Unit0.ToString();
-            var posData = TeachingData.Instance().GetUnit(unitName).TeachingInfoList;
+            var unit = TeachingData.Instance().GetUnit(unitName);
+            var posData = unit.TeachingInfoList;
 
             AutoFocusControl.UpdateData(posData[(int)TeachingPosType.Stage1_Scan_Start].AxisInfoList[(int)AxisName.Z]);
             AutoFocusControl.SetAxisHanlder(AxisHandler);
@@ -189,6 +192,9 @@ namespace Jastech.Framework.Winform.Forms
 
             pnlLAFJog.Controls.Add(LAFJogControl);
             LAFJogControl.SetSelectedLafCtrl(LAFCtrl);
+
+            LightControl.SetParam(DeviceManager.Instance().LightCtrlHandler, unit.LineScanLightParam);
+            pnlLight.Controls.Add(LightControl);
         }
 
         private void DrawBoxControl_FigureDataDelegateEventHanlder(byte[] data)
@@ -385,41 +391,6 @@ namespace Jastech.Framework.Winform.Forms
             int analogGain = KeyPadHelper.SetLabelIntegerData((Label)sender);
 
             LineCamera?.Camera.SetAnalogGain(analogGain);
-        }
-
-        private void trbDimmingLevelValue_Scroll(object sender, EventArgs e)
-        {
-            int level = trbDimmingLevelValue.Value;
-            nudLightDimmingLevel.Text = level.ToString();
-        }
-
-        private void nudLightDimmingLevel_ValueChanged(object sender, EventArgs e)
-        {
-            int level = Convert.ToInt32(nudLightDimmingLevel.Text);
-            trbDimmingLevelValue.Value = level;
-        }
-
-        private void lblLightOn_Click(object sender, EventArgs e)
-        {
-            LightOnOff(true);
-        }
-
-        private void lblLightOff_Click(object sender, EventArgs e)
-        {
-            LightOnOff(false);
-        }
-
-        private void LightOnOff(bool isOn)
-        {
-            // 조명 추가
-            if (isOn)
-            {
-
-            }
-            else
-            {
-
-            }
         }
 
         private void rdoJogSlowMode_CheckedChanged(object sender, EventArgs e)

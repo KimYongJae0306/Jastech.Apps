@@ -1,7 +1,7 @@
 ﻿using System.IO;
 using System.Windows.Forms;
 
-namespace Jastech.Framework.Winform.Controls
+namespace Jastech.Apps.Winform.UI.Controls
 {
     public partial class LogControl : UserControl
     {

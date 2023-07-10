@@ -42,6 +42,9 @@ namespace Jastech.Apps.Structure.Data
             unit.Name = Name;
             unit.PreAlignParamList = PreAlignParamList.Select(x => x.DeepCopy()).ToList();
             unit.CalibrationParam = CalibrationParam.DeepCopy();
+            unit.LineScanLightParam = LineScanLightParam.DeepCopy();
+            unit.LeftPreAlignLightParam = LeftPreAlignLightParam.DeepCopy();
+            unit.RightPreAlignLightParam = RightPreAlignLightParam.DeepCopy();
             unit.TabList = TabList.Select(x => x.DeepCopy()).ToList();
             unit.TeachingInfoList = TeachingInfoList.Select(x => x.DeepCopy()).ToList();
             return unit;

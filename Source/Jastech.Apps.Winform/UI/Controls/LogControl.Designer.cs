@@ -1,4 +1,4 @@
-﻿namespace Jastech.Framework.Winform.Controls
+﻿namespace Jastech.Apps.Winform.UI.Controls
 {
     partial class LogControl
     {

@@ -28,17 +28,30 @@ namespace Jastech.Apps.Winform.UI.Controls
         private MarkDirection _curDirection = MarkDirection.Left;
         #endregion
 
+        #region 속성
         private CogPatternMatchingParamControl ParamControl { get; set; } = new CogPatternMatchingParamControl() { Dock = DockStyle.Fill };
 
         private Unit CurrentUnit { get; set; } = null;
 
         private AlgorithmTool Algorithm = new AlgorithmTool();
+        #endregion
 
+        #region 이벤트
+        public ChangeDirectionDelegate MarkDirectionChanged { get; set; }
+        #endregion
+
+        #region 델리게이트
+        public delegate void ChangeDirectionDelegate(MarkDirection direction);
+        #endregion
+
+        #region 생성자
         public PreAlignControl()
         {
             InitializeComponent();
         }
+        #endregion
 
+        #region 메서드
         private void PreAlignControl_Load(object sender, EventArgs e)
         {
             AddControl();
@@ -134,6 +147,8 @@ namespace Jastech.Apps.Winform.UI.Controls
                 ParamControl.UpdateData(param.InspParam);
 
             DrawROI();
+
+            MarkDirectionChanged?.Invoke(_curDirection);
         }
 
         private void lblAddROI_Click(object sender, EventArgs e)
@@ -161,7 +176,7 @@ namespace Jastech.Apps.Winform.UI.Controls
                 | CogPMAlignCurrentRecordConstants.TrainImage | CogPMAlignCurrentRecordConstants.TrainRegion | CogPMAlignCurrentRecordConstants.PatternOrigin;
 
             var currentParam = ParamControl.GetCurrentParam();
-        
+
             display.SetInteractiveGraphics("tool", currentParam.CreateCurrentRecord(constants));
 
             var rect = currentParam.GetTrainRegion() as CogRectangle;
@@ -198,7 +213,7 @@ namespace Jastech.Apps.Winform.UI.Controls
             if (display == null || currentParam == null)
                 return;
 
-            if(currentParam.IsTrained() == false)
+            if (currentParam.IsTrained() == false)
             {
                 MessageConfirmForm form = new MessageConfirmForm();
                 form.Message = "Pattern is not trained.";
@@ -211,7 +226,7 @@ namespace Jastech.Apps.Winform.UI.Controls
 
             //UpdateGridResult(result);
 
-            if(result.MatchPosList.Count > 0)
+            if (result.MatchPosList.Count > 0)
             {
                 display.ClearGraphic();
                 display.UpdateResult(result);
@@ -246,8 +261,6 @@ namespace Jastech.Apps.Winform.UI.Controls
         //        count++;
         //    }
         //}
-
-
 
         private void lblLeftMain_Click(object sender, EventArgs e)
         {
@@ -356,5 +369,6 @@ namespace Jastech.Apps.Winform.UI.Controls
             Label lbl = sender as Label;
             lbl.BackColor = _selectedColor;
         }
+        #endregion
     }
 }

@@ -105,6 +105,12 @@
     <Compile Include="UI\Controls\AlignResultDataControl.Designer.cs">
       <DependentUpon>AlignResultDataControl.cs</DependentUpon>
     </Compile>
+    <Compile Include="UI\Controls\LightControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UI\Controls\LightControl.Designer.cs">
+      <DependentUpon>LightControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="UI\Controls\PlcCommandControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -348,6 +354,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UI\Controls\AutoFocusControl.resx">
       <DependentUpon>AutoFocusControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\Controls\LightControl.resx">
+      <DependentUpon>LightControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\Controls\PlcCommandControl.resx">
       <DependentUpon>PlcCommandControl.cs</DependentUpon>
