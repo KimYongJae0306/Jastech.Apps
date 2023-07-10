@@ -78,6 +78,18 @@ namespace Jastech.Apps.Winform.UI.Controls
             var channelNum = lightControl.ChannelNameMap[channel];
 
             var lightValue = LightParam.Map[ctrlName].LightLevels[channelNum];
+            UpdateNupdn(lightValue);
+        }
+
+        public delegate void UpdateNupdnDele(decimal lightValue);
+        private void UpdateNupdn(decimal lightValue)
+        {
+            if(this.InvokeRequired)
+            {
+                UpdateNupdnDele callback = UpdateNupdn;
+                this.Invoke(callback, lightValue);
+                return;
+            }
             nupdnLightLevel.Value = lightValue;
         }
 

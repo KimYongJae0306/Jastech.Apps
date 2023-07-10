@@ -220,20 +220,24 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         private void btnSetPCAlignData_Click(object sender, EventArgs e)
         {
-            double alignDataX = 0;
-            double alignDataY = 0;
-            double alignDataT = 0;
 
-            if (lblWriteAlignDataX.Text != "")
-                alignDataX = Convert.ToDouble(lblWriteAlignDataX.Text);
+            double alignDataX = 1.6546;
+            double alignDataY = -1.23456;
+            double alignDataT = 2.12345;
 
-            if (lblWriteAlignDataY.Text != "")
-                alignDataY = Convert.ToDouble(lblWriteAlignDataY.Text);
-
-            if (lblWriteAlignDataT.Text != "")
-                alignDataT = Convert.ToDouble(lblWriteAlignDataT.Text);
 
             PlcControlManager.Instance().WriteAlignData(alignDataX, alignDataY, alignDataT);
+
+            //if (lblWriteAlignDataX.Text != "")
+            //    alignDataX = Convert.ToDouble(lblWriteAlignDataX.Text);
+
+            //if (lblWriteAlignDataY.Text != "")
+            //    alignDataY = Convert.ToDouble(lblWriteAlignDataY.Text);
+
+            //if (lblWriteAlignDataT.Text != "")
+            //    alignDataT = Convert.ToDouble(lblWriteAlignDataT.Text);
+
+            //PlcControlManager.Instance().WriteAlignData(alignDataX, alignDataY, alignDataT);
         }
 
         private void btnWriteInspAlignResult_Click(object sender, EventArgs e)

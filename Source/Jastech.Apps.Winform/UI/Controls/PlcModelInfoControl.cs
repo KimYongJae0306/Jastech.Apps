@@ -37,16 +37,16 @@ namespace Jastech.Apps.Winform.UI.Controls
             lblAxisXSpeed.Text = manager.GetValue(PlcCommonMap.PLC_Axis_X_Speed);
 
             // Recipe Data
-            lblTabWidth_0.Text = manager.GetValue(PlcCommonMap.PLC_Tab0_Width);
-            lblTabWidth_1.Text = manager.GetValue(PlcCommonMap.PLC_Tab1_Width);
-            lblTabWidth_2.Text = manager.GetValue(PlcCommonMap.PLC_Tab2_Width);
-            lblTabWidth_3.Text = manager.GetValue(PlcCommonMap.PLC_Tab3_Width);
-            lblTabWidth_4.Text = manager.GetValue(PlcCommonMap.PLC_Tab4_Width);
-            lblTabWidth_5.Text = manager.GetValue(PlcCommonMap.PLC_Tab5_Width);
-            lblTabWidth_6.Text = manager.GetValue(PlcCommonMap.PLC_Tab6_Width);
-            lblTabWidth_7.Text = manager.GetValue(PlcCommonMap.PLC_Tab7_Width);
-            lblTabWidth_8.Text = manager.GetValue(PlcCommonMap.PLC_Tab8_Width);
-            lblTabWidth_9.Text = manager.GetValue(PlcCommonMap.PLC_Tab9_Width);
+            lblTabWidth_0.Text = manager.ConvertDoubleWord_mm(PlcCommonMap.PLC_Tab0_Width);
+            lblTabWidth_1.Text = manager.ConvertDoubleWord_mm(PlcCommonMap.PLC_Tab1_Width);
+            lblTabWidth_2.Text = manager.ConvertDoubleWord_mm(PlcCommonMap.PLC_Tab2_Width);
+            lblTabWidth_3.Text = manager.ConvertDoubleWord_mm(PlcCommonMap.PLC_Tab3_Width);
+            lblTabWidth_4.Text = manager.ConvertDoubleWord_mm(PlcCommonMap.PLC_Tab4_Width);
+            lblTabWidth_5.Text = manager.ConvertDoubleWord_mm(PlcCommonMap.PLC_Tab5_Width);
+            lblTabWidth_6.Text = manager.ConvertDoubleWord_mm(PlcCommonMap.PLC_Tab6_Width);
+            lblTabWidth_7.Text = manager.ConvertDoubleWord_mm(PlcCommonMap.PLC_Tab7_Width);
+            lblTabWidth_8.Text = manager.ConvertDoubleWord_mm(PlcCommonMap.PLC_Tab8_Width);
+            lblTabWidth_9.Text = manager.ConvertDoubleWord_mm(PlcCommonMap.PLC_Tab9_Width);
 
             lblLeftOffset_0.Text = manager.ConvertDoubleWord_mm(PlcCommonMap.PLC_Tab0_Offset_Left);
             lblLeftOffset_1.Text = manager.ConvertDoubleWord_mm(PlcCommonMap.PLC_Tab1_Offset_Left);
@@ -69,17 +69,6 @@ namespace Jastech.Apps.Winform.UI.Controls
             lblRightOffset_7.Text = manager.ConvertDoubleWord_mm(PlcCommonMap.PLC_Tab7_Offset_Right);
             lblRightOffset_8.Text = manager.ConvertDoubleWord_mm(PlcCommonMap.PLC_Tab8_Offset_Right);
             lblRightOffset_9.Text = manager.ConvertDoubleWord_mm(PlcCommonMap.PLC_Tab9_Offset_Right);
-
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
 
             lblEdgeToEdgeDistance_0.Text = manager.ConvertDoubleWord_mm(PlcCommonMap.PLC_TabtoTab_Distance0);
             lblEdgeToEdgeDistance_1.Text = manager.ConvertDoubleWord_mm(PlcCommonMap.PLC_TabtoTab_Distance1);

@@ -79,13 +79,13 @@ namespace ATT_UT_IPAD
                 config.Add(motion);
 
                 var spotLight = new VirtualLightCtrl("Spot12V", 6);
-                spotLight.ChannelNameMap["Ch.Blue"] = 0;
-                spotLight.ChannelNameMap["Ch.RedSpot"] = 1;
-                spotLight.ChannelNameMap["Ch.White"] = 2;
+                //spotLight.ChannelNameMap["Ch.Blue"] = 0;
+                //spotLight.ChannelNameMap["Ch.RedSpot"] = 1;
+                //spotLight.ChannelNameMap["Ch.White"] = 2;
                 config.Add(spotLight);
 
                 var rightLight = new VirtualLightCtrl("Ring24V", 6);
-                rightLight.ChannelNameMap["Ch.RedRing"] = 0;
+                //rightLight.ChannelNameMap["Ch.RedRing"] = 0;
                 config.Add(rightLight);
 
                 var alignLaf = new VirtualLAFCtrl("Align");
