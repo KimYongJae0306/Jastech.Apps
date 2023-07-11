@@ -144,6 +144,8 @@ namespace Jastech.Apps.Winform.Service.Plc
 
             // 0~9
             AddressMapList.Add(new PlcAddressMap(PlcCommonMap.PC_Alive, WordType.DEC, index, 1));
+            AddressMapList.Add(new PlcAddressMap(PlcCommonMap.PC_AxisX_Busy, WordType.DEC, index + 1, 1));
+            AddressMapList.Add(new PlcAddressMap(PlcCommonMap.PC_AxisX_CurPos, WordType.DEC, index + 2, 1));
             AddressMapList.Add(new PlcAddressMap(PlcCommonMap.PC_Ready, WordType.DEC, index + 4, 1));
             AddressMapList.Add(new PlcAddressMap(PlcCommonMap.PC_Status_Common, WordType.DEC, index + 6, 1));
 
@@ -236,7 +238,7 @@ namespace Jastech.Apps.Winform.Service.Plc
 
             // 120~129
             AddressMapList.Add(new PlcAddressMap(PlcCommonMap.PLC_AlignZ_ServoOnOff, WordType.DEC, index + 120, 1));
-            AddressMapList.Add(new PlcAddressMap(PlcCommonMap.PLC_AlignZ_Status, WordType.DEC, index + 121, 1));
+            AddressMapList.Add(new PlcAddressMap(PlcCommonMap.PLC_AlignZ_Alarm, WordType.DEC, index + 121, 1));
             AddressMapList.Add(new PlcAddressMap(PlcCommonMap.PLC_Status, WordType.DEC, index + 126, 1));
             AddressMapList.Add(new PlcAddressMap(PlcCommonMap.PLC_Command, WordType.DEC, index + 127, 1));
             AddressMapList.Add(new PlcAddressMap(PlcCommonMap.PLC_Move_END, WordType.DEC, index + 128, 1));
@@ -249,7 +251,7 @@ namespace Jastech.Apps.Winform.Service.Plc
 
             // 130~139
             AddressMapList.Add(new PlcAddressMap(PlcCommonMap.PLC_AkkonZ_ServoOnOff, WordType.DEC, index + 130, 1));
-            AddressMapList.Add(new PlcAddressMap(PlcCommonMap.PLC_AkkonZ_Status, WordType.DEC, index + 131, 1));
+            AddressMapList.Add(new PlcAddressMap(PlcCommonMap.PLC_AkkonZ_Alarm, WordType.DEC, index + 131, 1));
 
             // 50~59
             AddressMapList.Add(new PlcAddressMap(PlcCommonMap.PC_AlignDataX, WordType.DoubleWord, index + 50, 1));

@@ -4,6 +4,7 @@ using Jastech.Apps.Winform.Settings;
 using Jastech.Framework.Comm;
 using Jastech.Framework.Config;
 using Jastech.Framework.Device.Cameras;
+using Jastech.Framework.Device.Grabbers;
 using Jastech.Framework.Device.LAFCtrl;
 using Jastech.Framework.Device.LightCtrls;
 using Jastech.Framework.Device.LightCtrls.Lvs;
@@ -103,11 +104,25 @@ namespace ATT_UT_Remodeling
             }
             else
             {
-                var lineCamera = new CameraVirtual("LineCamera", 4640, 1024, ColorFormat.Gray, SensorType.Line);
+                var areaScan = new CameraHIK("PreAlign", 1280, 1024, ColorFormat.Gray, SensorType.Area);
+                areaScan.SerialNo = "DA0228166";
+                config.Add(areaScan);
+
+                var lineCamera = new CameraMil("LineCamera", 6560, 1024, ColorFormat.Gray, SensorType.Line);
+                lineCamera.MilSystemType = MilSystemType.Rapixo;
+                lineCamera.TriggerMode = TriggerMode.Hardware;
+                lineCamera.TriggerSource = (int)MilCxpTriggerSource.Cxp;
+                lineCamera.TriggerSignalType = MilTriggerSignalType.TL_Trigger;
+                lineCamera.TriggerIoSourceType = MILIoSourceType.AUX_IO0;
+                lineCamera.DigitizerNum = 0;
+
+                lineCamera.DcfFile = CameraMil.GetDcfFile(CameraType.VT_6k35c_trigger);
                 config.Add(lineCamera);
 
-                var motion = new VirtualMotion("VirtualMotion", 2);
+                var motion = new ACSMotion("Motion", 2, ACSConnectType.Ethernet);
+                motion.IpAddress = "10.0.0.100";
                 config.Add(motion);
+
 
                 var laf = new VirtualLAFCtrl("Laf");
                 config.Add(laf);

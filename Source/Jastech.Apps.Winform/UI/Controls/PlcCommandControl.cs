@@ -72,6 +72,8 @@ namespace Jastech.Apps.Winform.UI.Controls
 
             // PC
             lblPcAlive.Text = manager.GetValue(PlcCommonMap.PC_Alive);
+            lblPcAxisXBusy.Text = manager.GetValue(PlcCommonMap.PC_AxisX_Busy);
+            lblPcAxisXCurPos.Text = manager.GetValue(PlcCommonMap.PC_AxisX_CurPos);
             lblPcReady.Text = manager.GetValue(PlcCommonMap.PC_Ready);
             lblPcStatusCommon.Text = manager.GetValue(PlcCommonMap.PC_Status_Common);
             lblPcErrorCode.Text = manager.GetValue(PlcCommonMap.PC_ErrorCode);
@@ -93,12 +95,12 @@ namespace Jastech.Apps.Winform.UI.Controls
             lblPlcReady.Text = manager.GetValue(PlcCommonMap.PLC_Ready);
             lblPlcCommandCommon.Text = manager.GetValue(PlcCommonMap.PLC_Command_Common);
             lblPlcAlignAxisZServoOnOff.Text = manager.GetValue(PlcCommonMap.PLC_AlignZ_ServoOnOff);
-            lblPlcAlignAxisStatus.Text = manager.GetValue(PlcCommonMap.PLC_AkkonZ_Status);
+            lblPlcAlignAxisAlarm.Text = manager.GetValue(PlcCommonMap.PLC_AlignZ_Alarm);
             lblPlcStatus.Text = manager.GetValue(PlcCommonMap.PLC_Status);
             lblPlcCommand.Text = manager.GetValue(PlcCommonMap.PLC_Command);
             lblPlcMoveEnd.Text = manager.GetValue(PlcCommonMap.PLC_Move_END);
             lblPlcAkkonAxisZServoOnOff.Text = manager.GetValue(PlcCommonMap.PLC_AkkonZ_ServoOnOff);
-            lblPlcAkkonAxisZStatus.Text = manager.GetValue(PlcCommonMap.PLC_AkkonZ_Status);
+            lblPlcAkkonAxisZAlarm.Text = manager.GetValue(PlcCommonMap.PLC_AkkonZ_Alarm);
             lblPlcManualMatch.Text = manager.GetValue(PlcCommonMap.PLC_ManualMatch);
             lblPlcCurAxisY.Text = manager.ConvertDoubleWord_mm(PlcCommonMap.PLC_Position_AxisY);
             lblPlcCurAxisT.Text = manager.ConvertDoubleWord_mm(PlcCommonMap.PLC_Position_AxisT);
@@ -220,24 +222,20 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         private void btnSetPCAlignData_Click(object sender, EventArgs e)
         {
+            double alignDataX = 0.0;
+            double alignDataY = 0.0;
+            double alignDataT = 0.0;
 
-            double alignDataX = 1.6546;
-            double alignDataY = -1.23456;
-            double alignDataT = 2.12345;
+            if (lblWriteAlignDataX.Text != "")
+                alignDataX = Convert.ToDouble(lblWriteAlignDataX.Text);
 
+            if (lblWriteAlignDataY.Text != "")
+                alignDataY = Convert.ToDouble(lblWriteAlignDataY.Text);
+
+            if (lblWriteAlignDataT.Text != "")
+                alignDataT = Convert.ToDouble(lblWriteAlignDataT.Text);
 
             PlcControlManager.Instance().WriteAlignData(alignDataX, alignDataY, alignDataT);
-
-            //if (lblWriteAlignDataX.Text != "")
-            //    alignDataX = Convert.ToDouble(lblWriteAlignDataX.Text);
-
-            //if (lblWriteAlignDataY.Text != "")
-            //    alignDataY = Convert.ToDouble(lblWriteAlignDataY.Text);
-
-            //if (lblWriteAlignDataT.Text != "")
-            //    alignDataT = Convert.ToDouble(lblWriteAlignDataT.Text);
-
-            //PlcControlManager.Instance().WriteAlignData(alignDataX, alignDataY, alignDataT);
         }
 
         private void btnWriteInspAlignResult_Click(object sender, EventArgs e)

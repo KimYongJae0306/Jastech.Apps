@@ -3,6 +3,8 @@
     public enum PlcCommonMap
     {
         PC_Alive,
+        PC_AxisX_Busy,
+        PC_AxisX_CurPos,
         PLC_Alive,
 
         PC_Ready,
@@ -85,7 +87,7 @@
         PC_Move_REQ,
 
         PLC_AlignZ_ServoOnOff,
-        PLC_AlignZ_Status,
+        PLC_AlignZ_Alarm,
 
         PLC_Status,
         PLC_Command,
@@ -96,7 +98,7 @@
         PLC_Cell_Id,
 
         PLC_AkkonZ_ServoOnOff,
-        PLC_AkkonZ_Status,
+        PLC_AkkonZ_Alarm,
 
         PC_AlignDataX,
         PC_AlignDataY,
@@ -125,9 +127,11 @@
     public enum PcCommand
     {
         ServoOn_1 = 1000,               // Z축#1 Servo On
-        ServoReset_1 = 1001,            // Z축#1 Servo Reset
-        ServoOn_2 = 1010,               // Z축#1 Servo On
-        ServoReset_2 = 1011,            // Z축#1 Servo Reset
+        ServoOff_1 = 1001,            // Z축#1 Servo Off
+        ServoReset_1 = 1002,            // Z축#1 Servo Reset
+        ServoOn_2 = 1010,               // Z축#2 Servo On
+        ServoOff_2 = 1011,            // Z축#2 Servo Off
+        ServoReset_2 = 1012,            // Z축#2 Servo Reset
     }
 
     public enum PlcCommand

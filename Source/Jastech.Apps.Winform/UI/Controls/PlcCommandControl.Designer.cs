@@ -34,13 +34,13 @@
             this.lblPlcManualMatch = new System.Windows.Forms.Label();
             this.label9 = new System.Windows.Forms.Label();
             this.tableLayoutPanel71 = new System.Windows.Forms.TableLayoutPanel();
-            this.lblPlcAkkonAxisZStatus = new System.Windows.Forms.Label();
+            this.lblPlcAkkonAxisZAlarm = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
             this.tableLayoutPanel72 = new System.Windows.Forms.TableLayoutPanel();
             this.lblPlcAkkonAxisZServoOnOff = new System.Windows.Forms.Label();
             this.label11 = new System.Windows.Forms.Label();
             this.tableLayoutPanel70 = new System.Windows.Forms.TableLayoutPanel();
-            this.lblPlcAlignAxisStatus = new System.Windows.Forms.Label();
+            this.lblPlcAlignAxisAlarm = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
             this.tableLayoutPanel69 = new System.Windows.Forms.TableLayoutPanel();
             this.lblPlcAlignAxisZServoOnOff = new System.Windows.Forms.Label();
@@ -221,6 +221,12 @@
             this.lblCurrentModel = new System.Windows.Forms.Label();
             this.label50 = new System.Windows.Forms.Label();
             this.btnWriteCurrentModel = new System.Windows.Forms.Button();
+            this.tableLayoutPanel52 = new System.Windows.Forms.TableLayoutPanel();
+            this.lblPcAxisXCurPos = new System.Windows.Forms.Label();
+            this.label62 = new System.Windows.Forms.Label();
+            this.tableLayoutPanel53 = new System.Windows.Forms.TableLayoutPanel();
+            this.lblPcAxisXBusy = new System.Windows.Forms.Label();
+            this.label64 = new System.Windows.Forms.Label();
             this.tableLayoutPanel73.SuspendLayout();
             this.tableLayoutPanel71.SuspendLayout();
             this.tableLayoutPanel72.SuspendLayout();
@@ -277,6 +283,8 @@
             this.tableLayoutPanel49.SuspendLayout();
             this.tableLayoutPanel50.SuspendLayout();
             this.tableLayoutPanel51.SuspendLayout();
+            this.tableLayoutPanel52.SuspendLayout();
+            this.tableLayoutPanel53.SuspendLayout();
             this.SuspendLayout();
             // 
             // btnPcStatus
@@ -312,7 +320,7 @@
             this.tableLayoutPanel73.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel73.Controls.Add(this.lblPlcManualMatch, 0, 0);
             this.tableLayoutPanel73.Controls.Add(this.label9, 0, 0);
-            this.tableLayoutPanel73.Location = new System.Drawing.Point(296, 375);
+            this.tableLayoutPanel73.Location = new System.Drawing.Point(296, 441);
             this.tableLayoutPanel73.Margin = new System.Windows.Forms.Padding(0);
             this.tableLayoutPanel73.Name = "tableLayoutPanel73";
             this.tableLayoutPanel73.RowCount = 1;
@@ -353,9 +361,9 @@
             this.tableLayoutPanel71.ColumnCount = 2;
             this.tableLayoutPanel71.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 180F));
             this.tableLayoutPanel71.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel71.Controls.Add(this.lblPlcAkkonAxisZStatus, 0, 0);
+            this.tableLayoutPanel71.Controls.Add(this.lblPlcAkkonAxisZAlarm, 0, 0);
             this.tableLayoutPanel71.Controls.Add(this.label5, 0, 0);
-            this.tableLayoutPanel71.Location = new System.Drawing.Point(296, 342);
+            this.tableLayoutPanel71.Location = new System.Drawing.Point(296, 408);
             this.tableLayoutPanel71.Margin = new System.Windows.Forms.Padding(0);
             this.tableLayoutPanel71.Name = "tableLayoutPanel71";
             this.tableLayoutPanel71.RowCount = 1;
@@ -363,18 +371,18 @@
             this.tableLayoutPanel71.Size = new System.Drawing.Size(282, 33);
             this.tableLayoutPanel71.TabIndex = 350;
             // 
-            // lblPlcAkkonAxisZStatus
+            // lblPlcAkkonAxisZAlarm
             // 
-            this.lblPlcAkkonAxisZStatus.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lblPlcAkkonAxisZStatus.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblPlcAkkonAxisZStatus.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
-            this.lblPlcAkkonAxisZStatus.ForeColor = System.Drawing.Color.White;
-            this.lblPlcAkkonAxisZStatus.Location = new System.Drawing.Point(180, 0);
-            this.lblPlcAkkonAxisZStatus.Margin = new System.Windows.Forms.Padding(0);
-            this.lblPlcAkkonAxisZStatus.Name = "lblPlcAkkonAxisZStatus";
-            this.lblPlcAkkonAxisZStatus.Size = new System.Drawing.Size(102, 33);
-            this.lblPlcAkkonAxisZStatus.TabIndex = 4;
-            this.lblPlcAkkonAxisZStatus.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblPlcAkkonAxisZAlarm.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblPlcAkkonAxisZAlarm.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblPlcAkkonAxisZAlarm.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
+            this.lblPlcAkkonAxisZAlarm.ForeColor = System.Drawing.Color.White;
+            this.lblPlcAkkonAxisZAlarm.Location = new System.Drawing.Point(180, 0);
+            this.lblPlcAkkonAxisZAlarm.Margin = new System.Windows.Forms.Padding(0);
+            this.lblPlcAkkonAxisZAlarm.Name = "lblPlcAkkonAxisZAlarm";
+            this.lblPlcAkkonAxisZAlarm.Size = new System.Drawing.Size(102, 33);
+            this.lblPlcAkkonAxisZAlarm.TabIndex = 4;
+            this.lblPlcAkkonAxisZAlarm.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // label5
             // 
@@ -388,7 +396,7 @@
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(180, 33);
             this.label5.TabIndex = 2;
-            this.label5.Text = "Akkon AxisZ Status";
+            this.label5.Text = "Akkon AxisZ Alarm";
             this.label5.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // tableLayoutPanel72
@@ -398,7 +406,7 @@
             this.tableLayoutPanel72.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel72.Controls.Add(this.lblPlcAkkonAxisZServoOnOff, 0, 0);
             this.tableLayoutPanel72.Controls.Add(this.label11, 0, 0);
-            this.tableLayoutPanel72.Location = new System.Drawing.Point(296, 309);
+            this.tableLayoutPanel72.Location = new System.Drawing.Point(296, 375);
             this.tableLayoutPanel72.Margin = new System.Windows.Forms.Padding(0);
             this.tableLayoutPanel72.Name = "tableLayoutPanel72";
             this.tableLayoutPanel72.RowCount = 1;
@@ -431,7 +439,7 @@
             this.label11.Name = "label11";
             this.label11.Size = new System.Drawing.Size(180, 33);
             this.label11.TabIndex = 2;
-            this.label11.Text = "Akkon AxisZ Servo";
+            this.label11.Text = "Akkon AxisZ ServoOn";
             this.label11.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // tableLayoutPanel70
@@ -439,9 +447,9 @@
             this.tableLayoutPanel70.ColumnCount = 2;
             this.tableLayoutPanel70.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 180F));
             this.tableLayoutPanel70.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel70.Controls.Add(this.lblPlcAlignAxisStatus, 0, 0);
+            this.tableLayoutPanel70.Controls.Add(this.lblPlcAlignAxisAlarm, 0, 0);
             this.tableLayoutPanel70.Controls.Add(this.label7, 0, 0);
-            this.tableLayoutPanel70.Location = new System.Drawing.Point(296, 177);
+            this.tableLayoutPanel70.Location = new System.Drawing.Point(296, 243);
             this.tableLayoutPanel70.Margin = new System.Windows.Forms.Padding(0);
             this.tableLayoutPanel70.Name = "tableLayoutPanel70";
             this.tableLayoutPanel70.RowCount = 1;
@@ -449,18 +457,18 @@
             this.tableLayoutPanel70.Size = new System.Drawing.Size(282, 33);
             this.tableLayoutPanel70.TabIndex = 348;
             // 
-            // lblPlcAlignAxisStatus
+            // lblPlcAlignAxisAlarm
             // 
-            this.lblPlcAlignAxisStatus.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lblPlcAlignAxisStatus.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblPlcAlignAxisStatus.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
-            this.lblPlcAlignAxisStatus.ForeColor = System.Drawing.Color.White;
-            this.lblPlcAlignAxisStatus.Location = new System.Drawing.Point(180, 0);
-            this.lblPlcAlignAxisStatus.Margin = new System.Windows.Forms.Padding(0);
-            this.lblPlcAlignAxisStatus.Name = "lblPlcAlignAxisStatus";
-            this.lblPlcAlignAxisStatus.Size = new System.Drawing.Size(102, 33);
-            this.lblPlcAlignAxisStatus.TabIndex = 4;
-            this.lblPlcAlignAxisStatus.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblPlcAlignAxisAlarm.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblPlcAlignAxisAlarm.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblPlcAlignAxisAlarm.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
+            this.lblPlcAlignAxisAlarm.ForeColor = System.Drawing.Color.White;
+            this.lblPlcAlignAxisAlarm.Location = new System.Drawing.Point(180, 0);
+            this.lblPlcAlignAxisAlarm.Margin = new System.Windows.Forms.Padding(0);
+            this.lblPlcAlignAxisAlarm.Name = "lblPlcAlignAxisAlarm";
+            this.lblPlcAlignAxisAlarm.Size = new System.Drawing.Size(102, 33);
+            this.lblPlcAlignAxisAlarm.TabIndex = 4;
+            this.lblPlcAlignAxisAlarm.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // label7
             // 
@@ -474,7 +482,7 @@
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(180, 33);
             this.label7.TabIndex = 2;
-            this.label7.Text = "Align AxisZ Status";
+            this.label7.Text = "Align AxisZ Alarm";
             this.label7.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // tableLayoutPanel69
@@ -484,7 +492,7 @@
             this.tableLayoutPanel69.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel69.Controls.Add(this.lblPlcAlignAxisZServoOnOff, 0, 0);
             this.tableLayoutPanel69.Controls.Add(this.label3, 0, 0);
-            this.tableLayoutPanel69.Location = new System.Drawing.Point(296, 144);
+            this.tableLayoutPanel69.Location = new System.Drawing.Point(296, 210);
             this.tableLayoutPanel69.Margin = new System.Windows.Forms.Padding(0);
             this.tableLayoutPanel69.Name = "tableLayoutPanel69";
             this.tableLayoutPanel69.RowCount = 1;
@@ -517,7 +525,7 @@
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(180, 33);
             this.label3.TabIndex = 2;
-            this.label3.Text = "Align AxisZ Servo";
+            this.label3.Text = "Align AxisZ ServoOn";
             this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // btnPcMoveReq
@@ -538,7 +546,7 @@
             this.btnClearPlcMoveEnd.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(104)))), ((int)(((byte)(104)))), ((int)(((byte)(104)))));
             this.btnClearPlcMoveEnd.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
             this.btnClearPlcMoveEnd.ForeColor = System.Drawing.Color.White;
-            this.btnClearPlcMoveEnd.Location = new System.Drawing.Point(581, 276);
+            this.btnClearPlcMoveEnd.Location = new System.Drawing.Point(581, 342);
             this.btnClearPlcMoveEnd.Name = "btnClearPlcMoveEnd";
             this.btnClearPlcMoveEnd.Size = new System.Drawing.Size(62, 33);
             this.btnClearPlcMoveEnd.TabIndex = 345;
@@ -551,7 +559,7 @@
             this.btnClearPlcCommand.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(104)))), ((int)(((byte)(104)))), ((int)(((byte)(104)))));
             this.btnClearPlcCommand.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
             this.btnClearPlcCommand.ForeColor = System.Drawing.Color.White;
-            this.btnClearPlcCommand.Location = new System.Drawing.Point(581, 243);
+            this.btnClearPlcCommand.Location = new System.Drawing.Point(581, 309);
             this.btnClearPlcCommand.Name = "btnClearPlcCommand";
             this.btnClearPlcCommand.Size = new System.Drawing.Size(62, 33);
             this.btnClearPlcCommand.TabIndex = 344;
@@ -564,7 +572,7 @@
             this.btnClearPlcStatus.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(104)))), ((int)(((byte)(104)))), ((int)(((byte)(104)))));
             this.btnClearPlcStatus.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
             this.btnClearPlcStatus.ForeColor = System.Drawing.Color.White;
-            this.btnClearPlcStatus.Location = new System.Drawing.Point(581, 210);
+            this.btnClearPlcStatus.Location = new System.Drawing.Point(581, 276);
             this.btnClearPlcStatus.Name = "btnClearPlcStatus";
             this.btnClearPlcStatus.Size = new System.Drawing.Size(62, 33);
             this.btnClearPlcStatus.TabIndex = 343;
@@ -577,7 +585,7 @@
             this.btnCommand_Common.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(104)))), ((int)(((byte)(104)))), ((int)(((byte)(104)))));
             this.btnCommand_Common.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
             this.btnCommand_Common.ForeColor = System.Drawing.Color.White;
-            this.btnCommand_Common.Location = new System.Drawing.Point(581, 111);
+            this.btnCommand_Common.Location = new System.Drawing.Point(581, 177);
             this.btnCommand_Common.Name = "btnCommand_Common";
             this.btnCommand_Common.Size = new System.Drawing.Size(62, 33);
             this.btnCommand_Common.TabIndex = 341;
@@ -646,7 +654,7 @@
             this.tableLayoutPanel25.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel25.Controls.Add(this.lblPlcAlignDataX, 0, 0);
             this.tableLayoutPanel25.Controls.Add(this.label48, 0, 0);
-            this.tableLayoutPanel25.Location = new System.Drawing.Point(296, 474);
+            this.tableLayoutPanel25.Location = new System.Drawing.Point(296, 540);
             this.tableLayoutPanel25.Margin = new System.Windows.Forms.Padding(0);
             this.tableLayoutPanel25.Name = "tableLayoutPanel25";
             this.tableLayoutPanel25.RowCount = 1;
@@ -689,7 +697,7 @@
             this.tableLayoutPanel21.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel21.Controls.Add(this.lblPlcOffsetDataT, 0, 0);
             this.tableLayoutPanel21.Controls.Add(this.label40, 0, 0);
-            this.tableLayoutPanel21.Location = new System.Drawing.Point(296, 573);
+            this.tableLayoutPanel21.Location = new System.Drawing.Point(296, 639);
             this.tableLayoutPanel21.Margin = new System.Windows.Forms.Padding(0);
             this.tableLayoutPanel21.Name = "tableLayoutPanel21";
             this.tableLayoutPanel21.RowCount = 1;
@@ -732,7 +740,7 @@
             this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel3.Controls.Add(this.lblPlcOffsetDataY, 0, 0);
             this.tableLayoutPanel3.Controls.Add(this.label4, 0, 0);
-            this.tableLayoutPanel3.Location = new System.Drawing.Point(296, 540);
+            this.tableLayoutPanel3.Location = new System.Drawing.Point(296, 606);
             this.tableLayoutPanel3.Margin = new System.Windows.Forms.Padding(0);
             this.tableLayoutPanel3.Name = "tableLayoutPanel3";
             this.tableLayoutPanel3.RowCount = 1;
@@ -775,7 +783,7 @@
             this.tableLayoutPanel12.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel12.Controls.Add(this.lblPlcCurAxisT, 0, 0);
             this.tableLayoutPanel12.Controls.Add(this.label22, 0, 0);
-            this.tableLayoutPanel12.Location = new System.Drawing.Point(296, 441);
+            this.tableLayoutPanel12.Location = new System.Drawing.Point(296, 507);
             this.tableLayoutPanel12.Margin = new System.Windows.Forms.Padding(0);
             this.tableLayoutPanel12.Name = "tableLayoutPanel12";
             this.tableLayoutPanel12.RowCount = 1;
@@ -818,7 +826,7 @@
             this.tableLayoutPanel13.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel13.Controls.Add(this.lblPlcOffsetDataX, 0, 0);
             this.tableLayoutPanel13.Controls.Add(this.label24, 0, 0);
-            this.tableLayoutPanel13.Location = new System.Drawing.Point(296, 507);
+            this.tableLayoutPanel13.Location = new System.Drawing.Point(296, 573);
             this.tableLayoutPanel13.Margin = new System.Windows.Forms.Padding(0);
             this.tableLayoutPanel13.Name = "tableLayoutPanel13";
             this.tableLayoutPanel13.RowCount = 1;
@@ -861,7 +869,7 @@
             this.tableLayoutPanel14.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel14.Controls.Add(this.lblPlcStatus, 0, 0);
             this.tableLayoutPanel14.Controls.Add(this.label26, 0, 0);
-            this.tableLayoutPanel14.Location = new System.Drawing.Point(296, 210);
+            this.tableLayoutPanel14.Location = new System.Drawing.Point(296, 276);
             this.tableLayoutPanel14.Margin = new System.Windows.Forms.Padding(0);
             this.tableLayoutPanel14.Name = "tableLayoutPanel14";
             this.tableLayoutPanel14.RowCount = 1;
@@ -904,7 +912,7 @@
             this.tableLayoutPanel15.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel15.Controls.Add(this.lblPlcCommand, 0, 0);
             this.tableLayoutPanel15.Controls.Add(this.label28, 0, 0);
-            this.tableLayoutPanel15.Location = new System.Drawing.Point(296, 243);
+            this.tableLayoutPanel15.Location = new System.Drawing.Point(296, 309);
             this.tableLayoutPanel15.Margin = new System.Windows.Forms.Padding(0);
             this.tableLayoutPanel15.Name = "tableLayoutPanel15";
             this.tableLayoutPanel15.RowCount = 1;
@@ -947,7 +955,7 @@
             this.tableLayoutPanel16.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel16.Controls.Add(this.lblPlcMoveEnd, 0, 0);
             this.tableLayoutPanel16.Controls.Add(this.label30, 0, 0);
-            this.tableLayoutPanel16.Location = new System.Drawing.Point(296, 276);
+            this.tableLayoutPanel16.Location = new System.Drawing.Point(296, 342);
             this.tableLayoutPanel16.Margin = new System.Windows.Forms.Padding(0);
             this.tableLayoutPanel16.Name = "tableLayoutPanel16";
             this.tableLayoutPanel16.RowCount = 1;
@@ -990,7 +998,7 @@
             this.tableLayoutPanel17.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel17.Controls.Add(this.lblPlcCurAxisY, 0, 0);
             this.tableLayoutPanel17.Controls.Add(this.label32, 0, 0);
-            this.tableLayoutPanel17.Location = new System.Drawing.Point(296, 408);
+            this.tableLayoutPanel17.Location = new System.Drawing.Point(296, 474);
             this.tableLayoutPanel17.Margin = new System.Windows.Forms.Padding(0);
             this.tableLayoutPanel17.Name = "tableLayoutPanel17";
             this.tableLayoutPanel17.RowCount = 1;
@@ -1033,7 +1041,7 @@
             this.tableLayoutPanel18.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel18.Controls.Add(this.lblPlcCommandCommon, 0, 0);
             this.tableLayoutPanel18.Controls.Add(this.label34, 0, 0);
-            this.tableLayoutPanel18.Location = new System.Drawing.Point(296, 111);
+            this.tableLayoutPanel18.Location = new System.Drawing.Point(296, 177);
             this.tableLayoutPanel18.Margin = new System.Windows.Forms.Padding(0);
             this.tableLayoutPanel18.Name = "tableLayoutPanel18";
             this.tableLayoutPanel18.RowCount = 1;
@@ -1076,7 +1084,7 @@
             this.tableLayoutPanel19.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel19.Controls.Add(this.lblPlcReady, 0, 0);
             this.tableLayoutPanel19.Controls.Add(this.label36, 0, 0);
-            this.tableLayoutPanel19.Location = new System.Drawing.Point(296, 78);
+            this.tableLayoutPanel19.Location = new System.Drawing.Point(296, 144);
             this.tableLayoutPanel19.Margin = new System.Windows.Forms.Padding(0);
             this.tableLayoutPanel19.Name = "tableLayoutPanel19";
             this.tableLayoutPanel19.RowCount = 1;
@@ -1162,7 +1170,7 @@
             this.tableLayoutPanel11.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel11.Controls.Add(this.lblPcAlignDataT, 0, 0);
             this.tableLayoutPanel11.Controls.Add(this.label20, 0, 0);
-            this.tableLayoutPanel11.Location = new System.Drawing.Point(14, 375);
+            this.tableLayoutPanel11.Location = new System.Drawing.Point(14, 441);
             this.tableLayoutPanel11.Margin = new System.Windows.Forms.Padding(0);
             this.tableLayoutPanel11.Name = "tableLayoutPanel11";
             this.tableLayoutPanel11.RowCount = 1;
@@ -1205,7 +1213,7 @@
             this.tableLayoutPanel10.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel10.Controls.Add(this.lblPcAlignDataY, 0, 0);
             this.tableLayoutPanel10.Controls.Add(this.label18, 0, 0);
-            this.tableLayoutPanel10.Location = new System.Drawing.Point(14, 342);
+            this.tableLayoutPanel10.Location = new System.Drawing.Point(14, 408);
             this.tableLayoutPanel10.Margin = new System.Windows.Forms.Padding(0);
             this.tableLayoutPanel10.Name = "tableLayoutPanel10";
             this.tableLayoutPanel10.RowCount = 1;
@@ -1248,7 +1256,7 @@
             this.tableLayoutPanel9.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel9.Controls.Add(this.lblPcErrorCode, 0, 0);
             this.tableLayoutPanel9.Controls.Add(this.label16, 0, 0);
-            this.tableLayoutPanel9.Location = new System.Drawing.Point(14, 144);
+            this.tableLayoutPanel9.Location = new System.Drawing.Point(14, 210);
             this.tableLayoutPanel9.Margin = new System.Windows.Forms.Padding(0);
             this.tableLayoutPanel9.Name = "tableLayoutPanel9";
             this.tableLayoutPanel9.RowCount = 1;
@@ -1291,7 +1299,7 @@
             this.tableLayoutPanel8.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel8.Controls.Add(this.lblPcCommand, 0, 0);
             this.tableLayoutPanel8.Controls.Add(this.label14, 0, 0);
-            this.tableLayoutPanel8.Location = new System.Drawing.Point(14, 210);
+            this.tableLayoutPanel8.Location = new System.Drawing.Point(14, 276);
             this.tableLayoutPanel8.Margin = new System.Windows.Forms.Padding(0);
             this.tableLayoutPanel8.Name = "tableLayoutPanel8";
             this.tableLayoutPanel8.RowCount = 1;
@@ -1334,7 +1342,7 @@
             this.tableLayoutPanel7.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel7.Controls.Add(this.lblPcStatus, 0, 0);
             this.tableLayoutPanel7.Controls.Add(this.label12, 0, 0);
-            this.tableLayoutPanel7.Location = new System.Drawing.Point(14, 243);
+            this.tableLayoutPanel7.Location = new System.Drawing.Point(14, 309);
             this.tableLayoutPanel7.Margin = new System.Windows.Forms.Padding(0);
             this.tableLayoutPanel7.Name = "tableLayoutPanel7";
             this.tableLayoutPanel7.RowCount = 1;
@@ -1377,7 +1385,7 @@
             this.tableLayoutPanel6.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel6.Controls.Add(this.lblPcMoveReq, 0, 0);
             this.tableLayoutPanel6.Controls.Add(this.label10, 0, 0);
-            this.tableLayoutPanel6.Location = new System.Drawing.Point(14, 276);
+            this.tableLayoutPanel6.Location = new System.Drawing.Point(14, 342);
             this.tableLayoutPanel6.Margin = new System.Windows.Forms.Padding(0);
             this.tableLayoutPanel6.Name = "tableLayoutPanel6";
             this.tableLayoutPanel6.RowCount = 1;
@@ -1420,7 +1428,7 @@
             this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel5.Controls.Add(this.lblPcAlignDataX, 0, 0);
             this.tableLayoutPanel5.Controls.Add(this.label8, 0, 0);
-            this.tableLayoutPanel5.Location = new System.Drawing.Point(14, 309);
+            this.tableLayoutPanel5.Location = new System.Drawing.Point(14, 375);
             this.tableLayoutPanel5.Margin = new System.Windows.Forms.Padding(0);
             this.tableLayoutPanel5.Name = "tableLayoutPanel5";
             this.tableLayoutPanel5.RowCount = 1;
@@ -1463,7 +1471,7 @@
             this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel4.Controls.Add(this.lblPcStatusCommon, 0, 0);
             this.tableLayoutPanel4.Controls.Add(this.label6, 0, 0);
-            this.tableLayoutPanel4.Location = new System.Drawing.Point(14, 111);
+            this.tableLayoutPanel4.Location = new System.Drawing.Point(14, 177);
             this.tableLayoutPanel4.Margin = new System.Windows.Forms.Padding(0);
             this.tableLayoutPanel4.Name = "tableLayoutPanel4";
             this.tableLayoutPanel4.RowCount = 1;
@@ -1506,7 +1514,7 @@
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel2.Controls.Add(this.lblPcReady, 0, 0);
             this.tableLayoutPanel2.Controls.Add(this.label2, 0, 0);
-            this.tableLayoutPanel2.Location = new System.Drawing.Point(14, 78);
+            this.tableLayoutPanel2.Location = new System.Drawing.Point(14, 144);
             this.tableLayoutPanel2.Margin = new System.Windows.Forms.Padding(0);
             this.tableLayoutPanel2.Name = "tableLayoutPanel2";
             this.tableLayoutPanel2.RowCount = 1;
@@ -2993,7 +3001,7 @@
             this.btnClearPcData.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(104)))), ((int)(((byte)(104)))), ((int)(((byte)(104)))));
             this.btnClearPcData.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
             this.btnClearPcData.ForeColor = System.Drawing.Color.White;
-            this.btnClearPcData.Location = new System.Drawing.Point(14, 411);
+            this.btnClearPcData.Location = new System.Drawing.Point(14, 477);
             this.btnClearPcData.Name = "btnClearPcData";
             this.btnClearPcData.Size = new System.Drawing.Size(282, 33);
             this.btnClearPcData.TabIndex = 393;
@@ -3058,11 +3066,99 @@
             this.btnWriteCurrentModel.UseVisualStyleBackColor = false;
             this.btnWriteCurrentModel.Click += new System.EventHandler(this.btnWriteCurrentModel_Click);
             // 
+            // tableLayoutPanel52
+            // 
+            this.tableLayoutPanel52.ColumnCount = 2;
+            this.tableLayoutPanel52.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 180F));
+            this.tableLayoutPanel52.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel52.Controls.Add(this.lblPcAxisXCurPos, 0, 0);
+            this.tableLayoutPanel52.Controls.Add(this.label62, 0, 0);
+            this.tableLayoutPanel52.Location = new System.Drawing.Point(14, 111);
+            this.tableLayoutPanel52.Margin = new System.Windows.Forms.Padding(0);
+            this.tableLayoutPanel52.Name = "tableLayoutPanel52";
+            this.tableLayoutPanel52.RowCount = 1;
+            this.tableLayoutPanel52.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel52.Size = new System.Drawing.Size(282, 33);
+            this.tableLayoutPanel52.TabIndex = 397;
+            // 
+            // lblPcAxisXCurPos
+            // 
+            this.lblPcAxisXCurPos.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblPcAxisXCurPos.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblPcAxisXCurPos.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
+            this.lblPcAxisXCurPos.ForeColor = System.Drawing.Color.White;
+            this.lblPcAxisXCurPos.Location = new System.Drawing.Point(180, 0);
+            this.lblPcAxisXCurPos.Margin = new System.Windows.Forms.Padding(0);
+            this.lblPcAxisXCurPos.Name = "lblPcAxisXCurPos";
+            this.lblPcAxisXCurPos.Size = new System.Drawing.Size(102, 33);
+            this.lblPcAxisXCurPos.TabIndex = 4;
+            this.lblPcAxisXCurPos.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // label62
+            // 
+            this.label62.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(104)))), ((int)(((byte)(104)))), ((int)(((byte)(104)))));
+            this.label62.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.label62.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.label62.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
+            this.label62.ForeColor = System.Drawing.Color.White;
+            this.label62.Location = new System.Drawing.Point(0, 0);
+            this.label62.Margin = new System.Windows.Forms.Padding(0);
+            this.label62.Name = "label62";
+            this.label62.Size = new System.Drawing.Size(180, 33);
+            this.label62.TabIndex = 2;
+            this.label62.Text = "AxisX CurPos";
+            this.label62.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // tableLayoutPanel53
+            // 
+            this.tableLayoutPanel53.ColumnCount = 2;
+            this.tableLayoutPanel53.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 180F));
+            this.tableLayoutPanel53.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel53.Controls.Add(this.lblPcAxisXBusy, 0, 0);
+            this.tableLayoutPanel53.Controls.Add(this.label64, 0, 0);
+            this.tableLayoutPanel53.Location = new System.Drawing.Point(14, 78);
+            this.tableLayoutPanel53.Margin = new System.Windows.Forms.Padding(0);
+            this.tableLayoutPanel53.Name = "tableLayoutPanel53";
+            this.tableLayoutPanel53.RowCount = 1;
+            this.tableLayoutPanel53.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel53.Size = new System.Drawing.Size(282, 33);
+            this.tableLayoutPanel53.TabIndex = 396;
+            // 
+            // lblPcAxisXBusy
+            // 
+            this.lblPcAxisXBusy.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblPcAxisXBusy.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblPcAxisXBusy.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
+            this.lblPcAxisXBusy.ForeColor = System.Drawing.Color.White;
+            this.lblPcAxisXBusy.Location = new System.Drawing.Point(180, 0);
+            this.lblPcAxisXBusy.Margin = new System.Windows.Forms.Padding(0);
+            this.lblPcAxisXBusy.Name = "lblPcAxisXBusy";
+            this.lblPcAxisXBusy.Size = new System.Drawing.Size(102, 33);
+            this.lblPcAxisXBusy.TabIndex = 4;
+            this.lblPcAxisXBusy.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // label64
+            // 
+            this.label64.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(104)))), ((int)(((byte)(104)))), ((int)(((byte)(104)))));
+            this.label64.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.label64.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.label64.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
+            this.label64.ForeColor = System.Drawing.Color.White;
+            this.label64.Location = new System.Drawing.Point(0, 0);
+            this.label64.Margin = new System.Windows.Forms.Padding(0);
+            this.label64.Name = "label64";
+            this.label64.Size = new System.Drawing.Size(180, 33);
+            this.label64.TabIndex = 2;
+            this.label64.Text = "AxisX Busy";
+            this.label64.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
             // PlcCommandControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
+            this.Controls.Add(this.tableLayoutPanel52);
+            this.Controls.Add(this.tableLayoutPanel53);
             this.Controls.Add(this.btnWriteCurrentModel);
             this.Controls.Add(this.tableLayoutPanel51);
             this.Controls.Add(this.btnClearPcData);
@@ -3200,6 +3296,8 @@
             this.tableLayoutPanel49.ResumeLayout(false);
             this.tableLayoutPanel50.ResumeLayout(false);
             this.tableLayoutPanel51.ResumeLayout(false);
+            this.tableLayoutPanel52.ResumeLayout(false);
+            this.tableLayoutPanel53.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -3211,13 +3309,13 @@
         private System.Windows.Forms.Label lblPlcManualMatch;
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel71;
-        private System.Windows.Forms.Label lblPlcAkkonAxisZStatus;
+        private System.Windows.Forms.Label lblPlcAkkonAxisZAlarm;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel72;
         private System.Windows.Forms.Label lblPlcAkkonAxisZServoOnOff;
         private System.Windows.Forms.Label label11;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel70;
-        private System.Windows.Forms.Label lblPlcAlignAxisStatus;
+        private System.Windows.Forms.Label lblPlcAlignAxisAlarm;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel69;
         private System.Windows.Forms.Label lblPlcAlignAxisZServoOnOff;
@@ -3398,5 +3496,11 @@
         private System.Windows.Forms.Label lblCurrentModel;
         private System.Windows.Forms.Label label50;
         private System.Windows.Forms.Button btnWriteCurrentModel;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel52;
+        private System.Windows.Forms.Label lblPcAxisXCurPos;
+        private System.Windows.Forms.Label label62;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel53;
+        private System.Windows.Forms.Label lblPcAxisXBusy;
+        private System.Windows.Forms.Label label64;
     }
 }
