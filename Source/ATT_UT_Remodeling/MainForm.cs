@@ -204,16 +204,6 @@ namespace ATT_UT_Remodeling
                 MainPageControl.UpdateButton();
         }
 
-        private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
-        {
-            tmrMainForm.Stop();
-
-            LAFManager.Instance().Release();
-            DeviceManager.Instance().Release();
-            GrabberMil.Release();
-            MilHelper.FreeApplication();
-        }
-
         public void UpdateMainResult(AppsInspResult result)
         {
             MainPageControl.UpdateMainResult(result);
@@ -238,6 +228,23 @@ namespace ATT_UT_Remodeling
         private void StopProgramEventFunction()
         {
             this.Close();
+        }
+
+        private void MainForm_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            DeviceManager.Instance().Release();
+            GrabberMil.Release();
+            MilHelper.FreeApplication();
+            Application.ExitThread();
+        }
+
+
+        private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            tmrMainForm.Stop();
+
+            LAFManager.Instance().Release();
+            PlcControlManager.Instance().Release();
         }
     }
 }

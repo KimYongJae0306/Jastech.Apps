@@ -34,12 +34,12 @@ namespace ATT_UT_Remodeling
 
             if (isRunning)
             {
-                Application.EnableVisualStyles();
-                Application.SetCompatibleTextRenderingDefault(false);
-
                 Application.ThreadException += Application_ThreadException;
                 Application.SetUnhandledExceptionMode(UnhandledExceptionMode.ThrowException);
                 AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
+
+                Application.EnableVisualStyles();
+                Application.SetCompatibleTextRenderingDefault(false);
 
                 Logger.Initialize(ConfigSet.Instance().Path.Log);
 
@@ -54,10 +54,9 @@ namespace ATT_UT_Remodeling
                 AppsConfig.Instance().Initialize();
                 CalibrationData.Instance().LoadCalibrationData();
 
-                UserManager.Instance().Initialize();
 
                 var mainForm = new MainForm();
-
+                UserManager.Instance().Initialize();
                 SystemManager.Instance().Initialize(mainForm);
                 PlcControlManager.Instance().Initialize();
 
@@ -79,28 +78,40 @@ namespace ATT_UT_Remodeling
                 //areaScan.SerialNo = "02750170835";
                 //config.Add(areaScan);
 
-                var areaCamera = new CameraVirtual("PreAlign", 1280, 1024, ColorFormat.Gray, SensorType.Area);
-                config.Add(areaCamera);
+                //var areaCamera = new CameraVirtual("PreAlign", 1280, 1024, ColorFormat.Gray, SensorType.Area);
+                //config.Add(areaCamera);
 
-                var lineCamera = new CameraVirtual("LineCamera", 4640, 1024, ColorFormat.Gray, SensorType.Line);
-                config.Add(lineCamera);
+                //var lineCamera = new CameraVirtual("LineCamera", 4640, 1024, ColorFormat.Gray, SensorType.Line);
+                //config.Add(lineCamera);
 
-                var motion = new VirtualMotion("VirtualMotion", 3);
-                config.Add(motion);
+                //var motion = new VirtualMotion("VirtualMotion", 3);
+                //config.Add(motion);
 
-                var spotLight = new VirtualLightCtrl("Spot", 6); // 12V
+                //var spotLight = new VirtualLightCtrl("Spot", 6); // 12V
+                //spotLight.ChannelNameMap["Ch.White"] = 1; // channel 지정
+                //spotLight.ChannelNameMap["Ch.RedSpot"] = 2; // channel 지정
+                //spotLight.ChannelNameMap["Ch.Blue"] = 3; // channel 지정
+                //config.Add(spotLight);
+
+                //var ringLight = new VirtualLightCtrl("Ring", 6); // 24V
+                //ringLight.ChannelNameMap["Ch.RedRing1"] = 1; // channel 지정
+                //ringLight.ChannelNameMap["Ch.RedRing2"] = 2; // channel 지정
+                //config.Add(ringLight);
+
+                //var laf = new VirtualLAFCtrl("Laf");
+                //config.Add(laf);
+                // Light1
+                var spotLight = new LvsLightCtrl("Spot", 6, new SerialPortComm("COM2", 19200), new LvsSerialParser()); // 12V
                 spotLight.ChannelNameMap["Ch.White"] = 1; // channel 지정
                 spotLight.ChannelNameMap["Ch.RedSpot"] = 2; // channel 지정
                 spotLight.ChannelNameMap["Ch.Blue"] = 3; // channel 지정
                 config.Add(spotLight);
 
-                var ringLight = new VirtualLightCtrl("Ring", 6); // 24V
+                // Light2
+                var ringLight = new LvsLightCtrl("Ring", 6, new SerialPortComm("COM3", 19200), new LvsSerialParser());  // 24V
                 ringLight.ChannelNameMap["Ch.RedRing1"] = 1; // channel 지정
                 ringLight.ChannelNameMap["Ch.RedRing2"] = 2; // channel 지정
                 config.Add(ringLight);
-
-                var laf = new VirtualLAFCtrl("Laf");
-                config.Add(laf);
             }
             else
             {
