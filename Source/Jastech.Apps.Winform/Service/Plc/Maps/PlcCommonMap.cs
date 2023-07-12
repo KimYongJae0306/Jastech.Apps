@@ -114,7 +114,7 @@
         PLC_OffsetDataT,
     }
 
-    public enum StatusCommon
+    public enum PlcCommonCommand
     {
         Time_Change = 6000,
         Model_Change = 8000,
@@ -140,9 +140,6 @@
         StartPreAlign_AutoRun = 1200,   // PreAlign 검사 시작 신호(AutoRun)
         StartPreAlign_Manual = 1201,    // PreAlign 검사 시작 신호(Manual) 
         Origin_All = 1400,              // 모든 축 Homming
-        Origin_X = 1401,                // X 축 Homming
-        Origin_Z1 = 1402,               // Z1 축 Homming
-        Origin_Z2 = 1403,               // Z2 축 Homming
         Move_StandbyPos = 1500,         // X축을 Standby 위치로 이동
         Move_Left_AlignPos = 1501,      // X축을 Left Align 위치로 이동
         Move_Right_AlignPos = 1502,     // X축을 Right Align 위치로 이동

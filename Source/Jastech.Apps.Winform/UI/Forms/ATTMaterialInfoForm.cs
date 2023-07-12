@@ -25,24 +25,24 @@ namespace Jastech.Apps.Winform.UI.Forms
                 txtPanelEdgeToFirst.Text = PrevMaterialInfo.PanelEdgeToFirst_mm.ToString();
 
                 // Tab Width
-                txtTab1Width.Text = PrevMaterialInfo.Tab0Width_mm.ToString();
-                txtTab2Width.Text = PrevMaterialInfo.Tab1Width_mm.ToString();
-                txtTab3Width.Text = PrevMaterialInfo.Tab2Width_mm.ToString();
-                txtTab4Width.Text = PrevMaterialInfo.Tab3Width_mm.ToString();
-                txtTab5Width.Text = PrevMaterialInfo.Tab4Width_mm.ToString();
-                txtTab6Width.Text = PrevMaterialInfo.Tab5Width_mm.ToString();
-                txtTab7Width.Text = PrevMaterialInfo.Tab6Width_mm.ToString();
-                txtTab8Width.Text = PrevMaterialInfo.Tab7Width_mm.ToString();
+                txtTab1Width.Text = PrevMaterialInfo.TabWidth_mm.Tab0.ToString();
+                txtTab2Width.Text = PrevMaterialInfo.TabWidth_mm.Tab1.ToString();
+                txtTab3Width.Text = PrevMaterialInfo.TabWidth_mm.Tab2.ToString();
+                txtTab4Width.Text = PrevMaterialInfo.TabWidth_mm.Tab3.ToString();
+                txtTab5Width.Text = PrevMaterialInfo.TabWidth_mm.Tab4.ToString();
+                txtTab6Width.Text = PrevMaterialInfo.TabWidth_mm.Tab5.ToString();
+                txtTab7Width.Text = PrevMaterialInfo.TabWidth_mm.Tab6.ToString();
+                txtTab8Width.Text = PrevMaterialInfo.TabWidth_mm.Tab7.ToString();
 
                 // Tab To Tab Distance
-                txtDistance1.Text = PrevMaterialInfo.TabToTabDistance0_mm.ToString();
-                txtDistance2.Text = PrevMaterialInfo.TabToTabDistance1_mm.ToString();
-                txtDistance3.Text = PrevMaterialInfo.TabToTabDistance2_mm.ToString();
-                txtDistance4.Text = PrevMaterialInfo.TabToTabDistance3_mm.ToString();
-                txtDistance5.Text = PrevMaterialInfo.TabToTabDistance4_mm.ToString();
-                txtDistance6.Text = PrevMaterialInfo.TabToTabDistance5_mm.ToString();
-                txtDistance7.Text = PrevMaterialInfo.TabToTabDistance6_mm.ToString();
-                txtDistance8.Text = PrevMaterialInfo.TabToTabDistance7_mm.ToString();
+                txtDistance1.Text = PrevMaterialInfo.TabToTabDistance_mm.Tab0ToTab1.ToString();
+                txtDistance2.Text = PrevMaterialInfo.TabToTabDistance_mm.Tab1ToTab2.ToString();
+                txtDistance3.Text = PrevMaterialInfo.TabToTabDistance_mm.Tab2ToTab3.ToString();
+                txtDistance4.Text = PrevMaterialInfo.TabToTabDistance_mm.Tab3ToTab4.ToString();
+                txtDistance5.Text = PrevMaterialInfo.TabToTabDistance_mm.Tab4ToTab5.ToString();
+                txtDistance6.Text = PrevMaterialInfo.TabToTabDistance_mm.Tab5ToTab6.ToString();
+                txtDistance7.Text = PrevMaterialInfo.TabToTabDistance_mm.Tab6ToTab7.ToString();
+                txtDistance8.Text = PrevMaterialInfo.TabToTabDistance_mm.Tab7ToTab8.ToString();
             }
         }
 
@@ -80,30 +80,28 @@ namespace Jastech.Apps.Winform.UI.Forms
 
         private void lblApply_Click(object sender, EventArgs e)
         {
-            NewMaterialInfo = new MaterialInfo
-            {
-                PanelXSize_mm = Convert.ToDouble(txtPanelXSize.Text),
-                MarkToMark_mm = Convert.ToDouble(txtMarkToMark.Text),
-                PanelEdgeToFirst_mm = Convert.ToDouble(txtPanelEdgeToFirst.Text),
+            NewMaterialInfo = new MaterialInfo();
+            NewMaterialInfo.PanelXSize_mm = Convert.ToDouble(txtPanelXSize.Text);
+            NewMaterialInfo.MarkToMark_mm = Convert.ToDouble(txtMarkToMark.Text);
+            NewMaterialInfo.PanelEdgeToFirst_mm = Convert.ToDouble(txtPanelEdgeToFirst.Text);
 
-                Tab0Width_mm = Convert.ToDouble(txtTab1Width.Text),
-                Tab1Width_mm = Convert.ToDouble(txtTab2Width.Text),
-                Tab2Width_mm = Convert.ToDouble(txtTab3Width.Text),
-                Tab3Width_mm = Convert.ToDouble(txtTab4Width.Text),
-                Tab4Width_mm = Convert.ToDouble(txtTab5Width.Text),
-                Tab5Width_mm = Convert.ToDouble(txtTab6Width.Text),
-                Tab6Width_mm = Convert.ToDouble(txtTab7Width.Text),
-                Tab7Width_mm = Convert.ToDouble(txtTab8Width.Text),
+            NewMaterialInfo.TabWidth_mm.Tab0 = Convert.ToDouble(txtTab1Width.Text);
+            NewMaterialInfo.TabWidth_mm.Tab1 = Convert.ToDouble(txtTab2Width.Text);
+            NewMaterialInfo.TabWidth_mm.Tab2 = Convert.ToDouble(txtTab3Width.Text);
+            NewMaterialInfo.TabWidth_mm.Tab3 = Convert.ToDouble(txtTab4Width.Text);
+            NewMaterialInfo.TabWidth_mm.Tab4 = Convert.ToDouble(txtTab5Width.Text);
+            NewMaterialInfo.TabWidth_mm.Tab5 = Convert.ToDouble(txtTab6Width.Text);
+            NewMaterialInfo.TabWidth_mm.Tab6 = Convert.ToDouble(txtTab7Width.Text);
+            NewMaterialInfo.TabWidth_mm.Tab7 = Convert.ToDouble(txtTab8Width.Text);
 
-                TabToTabDistance0_mm = Convert.ToDouble(txtDistance1.Text),
-                TabToTabDistance1_mm = Convert.ToDouble(txtDistance2.Text),
-                TabToTabDistance2_mm = Convert.ToDouble(txtDistance3.Text),
-                TabToTabDistance3_mm = Convert.ToDouble(txtDistance4.Text),
-                TabToTabDistance4_mm = Convert.ToDouble(txtDistance5.Text),
-                TabToTabDistance5_mm = Convert.ToDouble(txtDistance6.Text),
-                TabToTabDistance6_mm = Convert.ToDouble(txtDistance7.Text),
-                TabToTabDistance7_mm = Convert.ToDouble(txtDistance8.Text),
-            };
+            NewMaterialInfo.TabToTabDistance_mm.Tab0ToTab1 = Convert.ToDouble(txtDistance1.Text);
+            NewMaterialInfo.TabToTabDistance_mm.Tab1ToTab2 = Convert.ToDouble(txtDistance2.Text);
+            NewMaterialInfo.TabToTabDistance_mm.Tab2ToTab3 = Convert.ToDouble(txtDistance3.Text);
+            NewMaterialInfo.TabToTabDistance_mm.Tab3ToTab4 = Convert.ToDouble(txtDistance4.Text);
+            NewMaterialInfo.TabToTabDistance_mm.Tab4ToTab5 = Convert.ToDouble(txtDistance5.Text);
+            NewMaterialInfo.TabToTabDistance_mm.Tab5ToTab6 = Convert.ToDouble(txtDistance6.Text);
+            NewMaterialInfo.TabToTabDistance_mm.Tab6ToTab7 = Convert.ToDouble(txtDistance7.Text);
+            NewMaterialInfo.TabToTabDistance_mm.Tab7ToTab8 = Convert.ToDouble(txtDistance8.Text);
 
             DialogResult = DialogResult.OK;
             Close();

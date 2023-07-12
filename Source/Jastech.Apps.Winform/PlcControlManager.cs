@@ -30,12 +30,6 @@ namespace Jastech.Apps.Winform
 
         public CancellationTokenSource CancelPlcReadTask { get; set; }
 
-        public CommandEventDelegate OnPlcCommonCommandReceived;
-
-        public CommandEventDelegate OnPlcCommandReceived;
-
-        public delegate void CommandEventDelegate(int numbber);
-
         public static PlcControlManager Instance()
         {
             if (_instance == null)
@@ -79,27 +73,6 @@ namespace Jastech.Apps.Winform
                     {
                         byte[] buffer = SplitData(data, map.AddressNum, map.WordSize, minAddressNum);
 
-                        if(map.Name == PlcCommonMap.PC_AlignDataY.ToString())
-                        {
-                            int g1222 =1;
-                        }
-                        if(map.AddressNum == 104700)
-                        {
-                            int g = 1;
-                        }
-                        if (map.AddressNum == 104111)
-                        {
-                            int g1 = 1;
-                        }
-                        if (map.AddressNum == 104152) //L
-                        {
-                            int g3 = 1;
-                        }
-                        if (map.AddressNum == 104153) //H
-                        {
-                            int g4 = 1;
-                        }
-
                         if (ParserType == ParserType.Binary)
                             map.Value = ConvertBinary(buffer, map.WordType);
                         else
@@ -107,17 +80,22 @@ namespace Jastech.Apps.Winform
 
                         if (map.Name == PlcCommonMap.PLC_Command_Common.ToString())
                         {
-                            int command = Convert.ToInt32(map.Value);
-                            OnPlcCommonCommandReceived?.Invoke(command);
+                            PlcCommonCommand command = (PlcCommonCommand)Convert.ToInt32(map.Value);
+                            PlcScenarioManager.Instance().CommonCommandReceived(command);
                         }
                         else if (map.Name == PlcCommonMap.PLC_Command.ToString())
                         {
                             int command = Convert.ToInt32(map.Value);
-                            OnPlcCommandReceived?.Invoke(command);
+                            OnPlcCommandReceived(command);
                         }
                     }
                 }
             }
+        }
+
+        private void OnPlcCommandReceived(int command)
+        {
+            PlcCommand plcCommand = (PlcCommand)command;
         }
 
         public void Release()
@@ -273,7 +251,7 @@ namespace Jastech.Apps.Winform
             }
         }
 
-        public void WritePcStatusCommon(StatusCommon status)
+        public void WritePcStatusCommon(PlcCommonCommand status, bool isError = false)
         {
             var map = PlcControlManager.Instance().GetAddressMap(PlcCommonMap.PC_Status_Common);
             if (DeviceManager.Instance().PlcHandler.Count > 0 && map != null)
@@ -282,10 +260,14 @@ namespace Jastech.Apps.Winform
 
                 PlcDataStream stream = new PlcDataStream();
 
+                short value = Convert.ToInt16(status);
+                if (isError)
+                    value *= -1;
+
                 if (plc.MelsecParser.ParserType == ParserType.Binary)
-                    stream.AddSwap16BitData(Convert.ToInt16(status));
+                    stream.AddSwap16BitData(value);
                 else
-                    stream.Add16BitData(Convert.ToInt16(status));
+                    stream.Add16BitData(value);
 
                 plc.Write("D" + map.AddressNum, stream.Data);
             }
@@ -346,7 +328,7 @@ namespace Jastech.Apps.Winform
             }
         }
 
-        public void WritePcStatus(PlcCommand command)
+        public void WritePcStatus(PlcCommand command, bool isError = false)
         {
             var map = PlcControlManager.Instance().GetAddressMap(PlcCommonMap.PC_Status);
             if (DeviceManager.Instance().PlcHandler.Count > 0 && map != null)
@@ -355,10 +337,14 @@ namespace Jastech.Apps.Winform
 
                 PlcDataStream stream = new PlcDataStream();
 
+                short value = Convert.ToInt16(command);
+                if (isError)
+                    value *= -1;
+
                 if (plc.MelsecParser.ParserType == ParserType.Binary)
-                    stream.AddSwap16BitData(Convert.ToInt16(command));
+                    stream.AddSwap16BitData(value);
                 else
-                    stream.Add16BitData(Convert.ToInt16(command));
+                    stream.Add16BitData(value);
 
                 plc.Write("D" + map.AddressNum, stream.Data);
             }
@@ -590,7 +576,7 @@ namespace Jastech.Apps.Winform
                     //string high = GetAddressMap(PlcCommonMap.PLC_Position_AxisY_H).Value;
                     //string low = GetAddressMap(PlcCommonMap.PLC_Position_AxisY).Value;
 
-                    var value = ConvertDoubleWord_mm(PlcCommonMap.PLC_Position_AxisY);
+                    var value = ConvertDoubleWordStringFormat_mm(PlcCommonMap.PLC_Position_AxisY);
                     position = Convert.ToDouble(value);
                 }
                 else if (axisName == AxisName.T)
@@ -598,7 +584,7 @@ namespace Jastech.Apps.Winform
                     //string high = GetAddressMap(PlcCommonMap.PLC_Position_AxisT_H).Value;
                     //string low = GetAddressMap(PlcCommonMap.PLC_Position_AxisT).Value;
 
-                    var value = ConvertDoubleWord_mm(PlcCommonMap.PLC_Position_AxisT);
+                    var value = ConvertDoubleWordStringFormat_mm(PlcCommonMap.PLC_Position_AxisT);
                     position = Convert.ToDouble(value);
                 }
             }
@@ -631,7 +617,7 @@ namespace Jastech.Apps.Winform
             }
         }
 
-        private StatusCommon _status;
+        private PlcCommonCommand _status;
 
         private Task StatusTask { get; set; }
 
@@ -651,10 +637,10 @@ namespace Jastech.Apps.Winform
         {
             while (true)
             {
-                if (_status == StatusCommon.Model_Change)
+                if (_status == PlcCommonCommand.Model_Change)
                 {
                     ClearAddress(PlcCommonMap.PLC_Command_Common);
-                    OnPlcCommandReceived?.Invoke((int)_status);
+                    //OnPlcCommandReceived?.Invoke((int)_status);
                 }
             }
         }
@@ -801,7 +787,7 @@ namespace Jastech.Apps.Winform
             return resultStr;
         }
 
-        public string ConvertDoubleWord_mm(PlcCommonMap plcCommonMap)
+        public string ConvertDoubleWordStringFormat_mm(PlcCommonMap plcCommonMap)
         {
             int inputValue = Convert.ToInt32(GetValue(plcCommonMap));
             string outputValue = (inputValue / 10000.0).ToString("F4");
@@ -809,12 +795,9 @@ namespace Jastech.Apps.Winform
             return outputValue;
         }
 
-        //public string Convert()
-        //{
-        //    int intputValue = 0;
-
-        //    string outputValue;
-        //    return outputValue;
-        //}
+        public double ConvertDoubleWordDoubleFormat_mm(PlcCommonMap plcCommonMap)
+        {
+            return Convert.ToDouble(ConvertDoubleWordStringFormat_mm(plcCommonMap));
+        }
     }
 }

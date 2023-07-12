@@ -3,6 +3,8 @@ using ATT_UT_Remodeling.UI.Pages;
 using Jastech.Apps.Structure;
 using Jastech.Apps.Structure.Data;
 using Jastech.Apps.Winform;
+using Jastech.Apps.Winform.Service.Plc.Maps;
+using Jastech.Apps.Winform.Settings;
 using Jastech.Framework.Config;
 using Jastech.Framework.Device.Grabbers;
 using Jastech.Framework.Matrox;
@@ -140,6 +142,11 @@ namespace ATT_UT_Remodeling
             AppsInspModel model = inspModel as AppsInspModel;
 
             MainPageControl.UpdateTabCount(model.TabCount);
+
+            lblCurrentModel.Text = model.Name;
+
+            ConfigSet.Instance().Operation.LastModelName = model.Name;
+            ConfigSet.Instance().Operation.Save(ConfigSet.Instance().Path.Config);
         }
 
         private void lblMainPage_Click(object sender, EventArgs e)
@@ -182,8 +189,27 @@ namespace ATT_UT_Remodeling
 
         private void tmrMainForm_Tick(object sender, EventArgs e)
         {
-            DateTime now = DateTime.Now;
-            lblCurrentTime.Text = now.ToString("yyyy-MM-dd HH:mm:ss");
+            if(AppsConfig.Instance().EnablePlcTime)
+            {
+                // Model Info
+                var manager = PlcControlManager.Instance();
+
+                string yyyy = manager.GetValue(PlcCommonMap.PLC_Time_Year);
+                string MM = manager.GetValue(PlcCommonMap.PLC_Time_Month);
+                string dd = manager.GetValue(PlcCommonMap.PLC_Time_Day);
+                string hh = manager.GetValue(PlcCommonMap.PLC_Time_Hour);
+                string mm = manager.GetValue(PlcCommonMap.PLC_Time_Minute);
+                string ss = manager.GetValue(PlcCommonMap.PLC_Time_Second);
+                lblCurrentTime.Text = string.Format("{0}-{1}-{2} {3}:{4}:{5}", yyyy, MM, dd, hh, mm, ss);
+            }
+            else
+            {
+                DateTime now = DateTime.Now;
+                lblCurrentTime.Text = now.ToString("yyyy-MM-dd HH:mm:ss");
+            }
+
+            if(lblCurrentTime.Text != "")
+                AppsStatus.Instance().CurrentTime = Convert.ToDateTime(lblCurrentTime.Text);
 
             var user = UserManager.Instance().CurrentUser;
 

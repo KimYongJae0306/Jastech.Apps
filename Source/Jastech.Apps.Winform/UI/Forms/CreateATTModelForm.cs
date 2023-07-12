@@ -54,9 +54,9 @@ namespace Jastech.Apps.Winform.UI.Forms
                 return;
             }
 
-            if(Convert.ToInt16(tabCount) > 8)
+            if(Convert.ToInt16(tabCount) > AppsConfig.Instance().TabMaxCount)
             {
-                ShowMessageBox("TabCount Max is 8.");
+                ShowMessageBox("TabCount Max is 10.");
                 return;
             }
 

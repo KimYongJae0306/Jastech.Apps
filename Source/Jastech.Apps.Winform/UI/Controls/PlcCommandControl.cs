@@ -41,7 +41,7 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         private void InitializeControls()
         {
-            foreach (StatusCommon type in Enum.GetValues(typeof(StatusCommon)))
+            foreach (PlcCommonCommand type in Enum.GetValues(typeof(PlcCommonCommand)))
                 cbxPcStatusCommon.Items.Add(type.ToString());
             cbxPcStatusCommon.SelectedIndex = 0;
 
@@ -82,13 +82,13 @@ namespace Jastech.Apps.Winform.UI.Controls
             lblPcMoveReq.Text = manager.GetValue(PlcCommonMap.PC_Move_REQ);
 
             //lblPcAlignDataX.Text = manager.GetValue(PlcCommonMap.PC_AlignDataX_H) + "." + manager.GetValue(PlcCommonMap.PC_AlignDataX);
-            lblPcAlignDataX.Text = manager.ConvertDoubleWord_mm(PlcCommonMap.PC_AlignDataX);
+            lblPcAlignDataX.Text = manager.ConvertDoubleWordStringFormat_mm(PlcCommonMap.PC_AlignDataX);
 
             //lblPcAlignDataY.Text = manager.GetValue(PlcCommonMap.PC_AlignDataY_H) + "." + manager.GetValue(PlcCommonMap.PC_AlignDataY);
-            lblPcAlignDataY.Text = manager.ConvertDoubleWord_mm(PlcCommonMap.PC_AlignDataY);
+            lblPcAlignDataY.Text = manager.ConvertDoubleWordStringFormat_mm(PlcCommonMap.PC_AlignDataY);
 
             //lblPcAlignDataT.Text = manager.GetValue(PlcCommonMap.PC_AlignDataT_H) + "." + manager.GetValue(PlcCommonMap.PC_AlignDataT);
-            lblPcAlignDataT.Text = manager.ConvertDoubleWord_mm(PlcCommonMap.PC_AlignDataT);
+            lblPcAlignDataT.Text = manager.ConvertDoubleWordStringFormat_mm(PlcCommonMap.PC_AlignDataT);
 
             // PLC
             lblPlcAlive.Text = manager.GetValue(PlcCommonMap.PLC_Alive);
@@ -102,9 +102,9 @@ namespace Jastech.Apps.Winform.UI.Controls
             lblPlcAkkonAxisZServoOnOff.Text = manager.GetValue(PlcCommonMap.PLC_AkkonZ_ServoOnOff);
             lblPlcAkkonAxisZAlarm.Text = manager.GetValue(PlcCommonMap.PLC_AkkonZ_Alarm);
             lblPlcManualMatch.Text = manager.GetValue(PlcCommonMap.PLC_ManualMatch);
-            lblPlcCurAxisY.Text = manager.ConvertDoubleWord_mm(PlcCommonMap.PLC_Position_AxisY);
-            lblPlcCurAxisT.Text = manager.ConvertDoubleWord_mm(PlcCommonMap.PLC_Position_AxisT);
-            lblPlcAlignDataX.Text = manager.ConvertDoubleWord_mm(PlcCommonMap.PLC_AlignDataX);
+            lblPlcCurAxisY.Text = manager.ConvertDoubleWordStringFormat_mm(PlcCommonMap.PLC_Position_AxisY);
+            lblPlcCurAxisT.Text = manager.ConvertDoubleWordStringFormat_mm(PlcCommonMap.PLC_Position_AxisT);
+            lblPlcAlignDataX.Text = manager.ConvertDoubleWordStringFormat_mm(PlcCommonMap.PLC_AlignDataX);
             lblPlcOffsetDataX.Text = manager.GetValue(PlcCommonMap.PLC_OffsetDataX);
             lblPlcOffsetDataY.Text = manager.GetValue(PlcCommonMap.PLC_OffsetDataY);
             lblPlcOffsetDataT.Text = manager.GetValue(PlcCommonMap.PLC_OffsetDataT);
@@ -163,7 +163,7 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         private void cbxPcStatusCommon_SelectedIndexChanged(object sender, EventArgs e)
         {
-            StatusCommon status = (StatusCommon)Enum.Parse(typeof(StatusCommon), cbxPcStatusCommon.SelectedItem as string);
+            PlcCommonCommand status = (PlcCommonCommand)Enum.Parse(typeof(PlcCommonCommand), cbxPcStatusCommon.SelectedItem as string);
             lblPcWriteStatusCommon.Text = ((int)status).ToString();
         }
 
@@ -186,7 +186,7 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         private void btnStatusCommon_Click(object sender, EventArgs e)
         {
-            StatusCommon status = (StatusCommon)Enum.Parse(typeof(StatusCommon), cbxPcStatusCommon.SelectedItem as string);
+            PlcCommonCommand status = (PlcCommonCommand)Enum.Parse(typeof(PlcCommonCommand), cbxPcStatusCommon.SelectedItem as string);
             PlcControlManager.Instance().WritePcStatusCommon(status);
         }
 

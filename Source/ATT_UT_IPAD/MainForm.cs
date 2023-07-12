@@ -127,7 +127,12 @@ namespace ATT_UT_IPAD
         {
             AppsInspModel model = inspModel as AppsInspModel;
 
-            //MainPageControl.UpdateTabCount(model.TabCount);
+            MainPageControl.UpdateTabCount(model.TabCount);
+
+            lblCurrentModel.Text = model.Name;
+
+            ConfigSet.Instance().Operation.LastModelName = model.Name;
+            ConfigSet.Instance().Operation.Save(ConfigSet.Instance().Path.Config);
         }
 
         private void lblMainPage_Click(object sender, EventArgs e)
