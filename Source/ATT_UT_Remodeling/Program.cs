@@ -115,7 +115,7 @@ namespace ATT_UT_Remodeling
             }
             else
             {
-                var areaScan = new CameraHIK("PreAlign", 1280, 1024, ColorFormat.Gray, SensorType.Area);
+                var areaScan = new CameraHIK("PreAlign", 2592, 1944, ColorFormat.Gray, SensorType.Area);
                 areaScan.SerialNo = "DA0228166";
                 config.Add(areaScan);
 
