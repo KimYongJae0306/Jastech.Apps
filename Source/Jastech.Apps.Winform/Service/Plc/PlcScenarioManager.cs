@@ -260,7 +260,8 @@ namespace Jastech.Apps.Winform.Service.Plc
             if(currentModel.TabCount != Convert.ToInt32(manager.GetValue(PlcCommonMap.PLC_TabCount)))
             {
                 // Tab Count는 변경 불가
-                manager.WritePcStatusCommon(PlcCommonCommand.Model_Edit, true);
+                command = manager.WritePcStatusCommon(PlcCommonCommand.Model_Edit, true);
+                Logger.Debug(LogType.Device, $"Write Fail EditModelData[{command}] : Tab Count not Changed.", AppsStatus.Instance().CurrentTime);
                 return;
             }
             currentModel.Name = manager.GetValue(PlcCommonMap.PLC_PPID_ModelName);
@@ -418,7 +419,7 @@ namespace Jastech.Apps.Winform.Service.Plc
             if(ModelManager.Instance().CurrentModel == null)
             {
                 short command = PlcControlManager.Instance().WritePcStatus(PlcCommand.StartInspection, true);
-                Logger.Debug(LogType.Device, $"Write StartInspection.[{command}]", AppsStatus.Instance().CurrentTime);
+                Logger.Debug(LogType.Device, $"Write Fail StartInspection.[{command}]", AppsStatus.Instance().CurrentTime);
                 return;
             }
 
@@ -431,7 +432,7 @@ namespace Jastech.Apps.Winform.Service.Plc
             if (inspModel == null)
             {
                 short command = PlcControlManager.Instance().WritePcStatus(PlcCommand.Calibration, true);
-                Logger.Debug(LogType.Device, $"Write StartPreAlign.[{command}]", AppsStatus.Instance().CurrentTime);
+                Logger.Debug(LogType.Device, $"Write Fail StartPreAlign[{command}] : Current Model is null.", AppsStatus.Instance().CurrentTime);
                 return;
             }
 
@@ -439,7 +440,7 @@ namespace Jastech.Apps.Winform.Service.Plc
             if (unit == null)
             {
                 short command = PlcControlManager.Instance().WritePcStatus(PlcCommand.StartPreAlign, true);
-                Logger.Debug(LogType.Device, $"Write StartPreAlign.[{command}]", AppsStatus.Instance().CurrentTime);
+                Logger.Debug(LogType.Device, $"Write Fail StartPreAlign[{command}] : Unit is null.", AppsStatus.Instance().CurrentTime);
                 return;
             }
 
@@ -447,18 +448,12 @@ namespace Jastech.Apps.Winform.Service.Plc
             if (param == null)
             {
                 short command = PlcControlManager.Instance().WritePcStatus(PlcCommand.StartPreAlign, true);
-                Logger.Debug(LogType.Device, $"Write StartPreAlign.[{command}]", AppsStatus.Instance().CurrentTime);
+                Logger.Debug(LogType.Device, $"Write Fail StartPreAlign[{command}] : Calibration Param is null.", AppsStatus.Instance().CurrentTime);
                 return;
             }
 
 
             VisionXCalibration VisionXCalibration = new VisionXCalibration();
-            if (VisionXCalibration == null)
-            {
-                short command = PlcControlManager.Instance().WritePcStatus(PlcCommand.StartPreAlign, true);
-                return;
-            }
-
             VisionXCalibration.SetParam(param);
             VisionXCalibration.SetCalibrationMode(CalibrationMode.XYT);
             VisionXCalibration.StartCalSeqRun();
@@ -469,7 +464,7 @@ namespace Jastech.Apps.Winform.Service.Plc
             if (ModelManager.Instance().CurrentModel == null)
             {
                 short command = PlcControlManager.Instance().WritePcStatus(PlcCommand.StartPreAlign, true);
-                Logger.Debug(LogType.Device, $"Write StartPreAlign.[{command}]", AppsStatus.Instance().CurrentTime);
+                Logger.Debug(LogType.Device, $"Write Fail StartPreAlign[{command}] : Current Model is null.", AppsStatus.Instance().CurrentTime);
                 return;
             }
 
