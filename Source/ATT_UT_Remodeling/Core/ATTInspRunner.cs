@@ -1653,34 +1653,26 @@ namespace ATT_UT_Remodeling.Core
                 return true;
 
             AppsInspModel inspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
-            MotionManager manager = MotionManager.Instance();
 
             var teachingInfo = inspModel.GetUnit(UnitName.Unit0).GetTeachingInfo(teachingPos);
 
             Axis axisX = GetAxis(AxisHandlerName.Handler0, AxisName.X);
-            Axis axisY = GetAxis(AxisHandlerName.Handler0, AxisName.Y);
-            //Axis axisZ = GetAxis(AxisHandlerName.Handler0, AxisName.Z);
+            Axis axisZ = GetAxis(AxisHandlerName.Handler0, AxisName.Z);
 
             var movingParamX = teachingInfo.GetMovingParam(AxisName.X.ToString());
-            var movingParamY = teachingInfo.GetMovingParam(AxisName.Y.ToString());
             var movingParamZ = teachingInfo.GetMovingParam(AxisName.Z.ToString());
-
-            //if (MoveAxis(teachingPos, axisZ, movingParamZ) == false)
-            //{
-            //    error = string.Format("Move To Axis Z TimeOut!({0})", movingParamZ.MovingTimeOut.ToString());
-            //    Logger.Write(LogType.Seq, error);
-            //    return false;
-            //}
+            
             if (MoveAxis(teachingPos, axisX, movingParamX) == false)
             {
                 errorMessage = string.Format("Move To Axis X TimeOut!({0})", movingParamX.MovingTimeOut.ToString());
                 WriteLog(errorMessage);
                 return false;
             }
-            if (MoveAxis(teachingPos, axisY, movingParamY) == false)
+
+            if (MoveAxis(teachingPos, axisZ, movingParamZ) == false)
             {
-                errorMessage = string.Format("Move To Axis Y TimeOut!({0})", movingParamY.MovingTimeOut.ToString());
-                WriteLog(errorMessage);
+                errorMessage = string.Format("Move To Axis Z TimeOut!({0})", movingParamZ.MovingTimeOut.ToString());
+                Logger.Write(LogType.Seq, errorMessage);
                 return false;
             }
 

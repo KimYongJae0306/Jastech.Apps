@@ -358,14 +358,19 @@ namespace Jastech.Apps.Winform
             return value;
         }
 
-        public void WriteMoveRequest()
+        public void WriteMoveRequest(bool isOff = false)
         {
             var map = PlcControlManager.Instance().GetAddressMap(PlcCommonMap.PC_Move_REQ);
             if (DeviceManager.Instance().PlcHandler.Count > 0 && map != null)
             {
                 var plc = DeviceManager.Instance().PlcHandler.First() as MelsecPlc;
 
-                int value = 5;
+                int value;
+                if (isOff)
+                    value = 0;
+                else
+                    value = 5;
+
                 PlcDataStream stream = new PlcDataStream();
 
                 if (plc.MelsecParser.ParserType == ParserType.Binary)

@@ -197,9 +197,9 @@ namespace Jastech.Apps.Winform.UI.Controls
             if (VisionXCalibration == null)
                 return;
 
-            VisionXCalibration.StartCalSeqRun();
             VisionXCalibration.SetParam(ParamControl.GetCurrentParam());
             VisionXCalibration.SetCalibrationMode(CalibrationMode.XYT);
+            VisionXCalibration.StartCalSeqRun();
         }
 
         private void lblStop_Click(object sender, EventArgs e)

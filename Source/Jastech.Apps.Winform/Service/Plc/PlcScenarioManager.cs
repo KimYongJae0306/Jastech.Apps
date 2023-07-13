@@ -1,5 +1,6 @@
 ﻿using Jastech.Apps.Structure;
 using Jastech.Apps.Structure.Data;
+using Jastech.Apps.Winform.Core.Calibrations;
 using Jastech.Apps.Winform.Service.Plc.Maps;
 using Jastech.Apps.Winform.Settings;
 using Jastech.Framework.Config;
@@ -11,6 +12,7 @@ using Jastech.Framework.Util.Helper;
 using Jastech.Framework.Winform;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -375,25 +377,37 @@ namespace Jastech.Apps.Winform.Service.Plc
                 case PlcCommand.StartInspection:
                     StartInspection();
                     break;
-                case PlcCommand.StartPreAlign:
-                    
-                    break;
-                case PlcCommand.Calibration:
 
+                case PlcCommand.StartPreAlign:
+                    StartPreAlign();
                     break;
+
+                case PlcCommand.Calibration:
+                    Calibration();
+                    break;
+
                 case PlcCommand.Origin_All:
                     break;
+
                 case PlcCommand.Move_StandbyPos:
-                    
+                    MoveTo(TeachingPosType.Standby);
                     break;
+
                 case PlcCommand.Move_Left_AlignPos:
+                    MoveTo(TeachingPosType.Stage1_PreAlign_Left);
                     break;
+
                 case PlcCommand.Move_Right_AlignPos:
+                    MoveTo(TeachingPosType.Stage1_PreAlign_Right);
                     break;
+
                 case PlcCommand.Move_ScanStartPos:
+                    MoveTo(TeachingPosType.Stage1_Scan_Start);
                     break;
+
                 case PlcCommand.Move_AlignDataX:
                     break;
+
                 default:
                     break;
             }
@@ -404,16 +418,118 @@ namespace Jastech.Apps.Winform.Service.Plc
             if(ModelManager.Instance().CurrentModel == null)
             {
                 short command = PlcControlManager.Instance().WritePcStatus(PlcCommand.StartInspection, true);
-                Logger.Debug(LogType.Device, $"Write LightOff.[{command}]", AppsStatus.Instance().CurrentTime);
+                Logger.Debug(LogType.Device, $"Write StartInspection.[{command}]", AppsStatus.Instance().CurrentTime);
                 return;
             }
 
             // 검사 시작 InspRunner
         }
 
-        private void MovePosition(PlcCommand command)
+        private void Calibration()
         {
+            var inspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
+            if (inspModel == null)
+            {
+                short command = PlcControlManager.Instance().WritePcStatus(PlcCommand.Calibration, true);
+                return;
+            }
 
+            var unit = inspModel.GetUnit(UnitName.Unit0);
+            if (unit == null)
+            {
+                short command = PlcControlManager.Instance().WritePcStatus(PlcCommand.StartPreAlign, true);
+                return;
+            }
+
+            var param = unit.CalibrationParam.InspParam;
+            if (param == null)
+            {
+                short command = PlcControlManager.Instance().WritePcStatus(PlcCommand.StartPreAlign, true);
+                return;
+            }
+
+
+            VisionXCalibration VisionXCalibration = new VisionXCalibration();
+            if (VisionXCalibration == null)
+            {
+                short command = PlcControlManager.Instance().WritePcStatus(PlcCommand.StartPreAlign, true);
+                return;
+            }
+
+            VisionXCalibration.SetParam(param);
+            VisionXCalibration.SetCalibrationMode(CalibrationMode.XYT);
+            VisionXCalibration.StartCalSeqRun();
+        }
+
+        private void StartPreAlign()
+        {
+            if (ModelManager.Instance().CurrentModel == null)
+            {
+                short command = PlcControlManager.Instance().WritePcStatus(PlcCommand.StartPreAlign, true);
+                Logger.Debug(LogType.Device, $"Write StartPreAlign.[{command}]", AppsStatus.Instance().CurrentTime);
+                return;
+            }
+
+            // prealign 검사 시작 InspRunner
+        }
+
+        private bool MoveTo(TeachingPosType teachingPos)
+        {
+            string errorMessage = string.Empty;
+
+            if (ConfigSet.Instance().Operation.VirtualMode)
+                return true;
+
+            AppsInspModel inspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
+
+            var teachingInfo = inspModel.GetUnit(UnitName.Unit0).GetTeachingInfo(teachingPos);
+
+            Axis axisX = MotionManager.Instance().GetAxis(AxisHandlerName.Handler0, AxisName.X);
+            Axis axisZ = MotionManager.Instance().GetAxis(AxisHandlerName.Handler0, AxisName.Z);
+
+            var movingParamX = teachingInfo.GetMovingParam(AxisName.X.ToString());
+            var movingParamZ = teachingInfo.GetMovingParam(AxisName.Z.ToString());
+
+            if (MoveAxis(teachingPos, axisX, movingParamX) == false)
+            {
+                errorMessage = string.Format("Move To Axis X TimeOut!({0})", movingParamX.MovingTimeOut.ToString());
+                Logger.Write(LogType.Device, errorMessage);
+                return false;
+            }
+
+            if (MoveAxis(teachingPos, axisZ, movingParamZ) == false)
+            {
+                errorMessage = string.Format("Move To Axis Z TimeOut!({0})", movingParamZ.MovingTimeOut.ToString());
+                Logger.Write(LogType.Device, errorMessage);
+                return false;
+            }
+
+            errorMessage = string.Format("Move Completed.(Teaching Pos : {0})", teachingPos.ToString());
+            Logger.Write(LogType.Device, errorMessage);
+
+            return true;
+        }
+
+        private bool MoveAxis(TeachingPosType teachingPos, Axis axis, AxisMovingParam movingParam)
+        {
+            MotionManager manager = MotionManager.Instance();
+            if (manager.IsAxisInPosition(UnitName.Unit0, teachingPos, axis) == false)
+            {
+                Stopwatch sw = new Stopwatch();
+                sw.Restart();
+
+                manager.StartAbsoluteMove(UnitName.Unit0, teachingPos, axis);
+
+                while (manager.IsAxisInPosition(UnitName.Unit0, teachingPos, axis) == false)
+                {
+                    if (sw.ElapsedMilliseconds >= movingParam.MovingTimeOut)
+                        return false;
+
+                    Thread.Sleep(10);
+                }
+            }
+
+            return true;
         }
 
         private void StartOriginAll()
