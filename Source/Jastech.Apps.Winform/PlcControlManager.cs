@@ -332,7 +332,7 @@ namespace Jastech.Apps.Winform
             }
         }
 
-        public bool WritePcStatus(PlcCommand command, bool isFailed = false)
+        public short WritePcStatus(PlcCommand command, bool isFailed = false)
         {
             var map = PlcControlManager.Instance().GetAddressMap(PlcCommonMap.PC_Status);
             short value = -1;

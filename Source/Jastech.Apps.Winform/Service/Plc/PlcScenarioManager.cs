@@ -408,6 +408,11 @@ namespace Jastech.Apps.Winform.Service.Plc
             // 검사 시작 InspRunner
         }
 
+        private void MovePosition(PlcCommand command)
+        {
+
+        }
+
         private void StartOriginAll()
         {
             AxisHandler allAxisHanlder = new AxisHandler("All");
