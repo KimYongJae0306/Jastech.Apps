@@ -431,6 +431,7 @@ namespace Jastech.Apps.Winform.Service.Plc
             if (inspModel == null)
             {
                 short command = PlcControlManager.Instance().WritePcStatus(PlcCommand.Calibration, true);
+                Logger.Debug(LogType.Device, $"Write StartPreAlign.[{command}]", AppsStatus.Instance().CurrentTime);
                 return;
             }
 
@@ -438,6 +439,7 @@ namespace Jastech.Apps.Winform.Service.Plc
             if (unit == null)
             {
                 short command = PlcControlManager.Instance().WritePcStatus(PlcCommand.StartPreAlign, true);
+                Logger.Debug(LogType.Device, $"Write StartPreAlign.[{command}]", AppsStatus.Instance().CurrentTime);
                 return;
             }
 
@@ -445,6 +447,7 @@ namespace Jastech.Apps.Winform.Service.Plc
             if (param == null)
             {
                 short command = PlcControlManager.Instance().WritePcStatus(PlcCommand.StartPreAlign, true);
+                Logger.Debug(LogType.Device, $"Write StartPreAlign.[{command}]", AppsStatus.Instance().CurrentTime);
                 return;
             }
 
