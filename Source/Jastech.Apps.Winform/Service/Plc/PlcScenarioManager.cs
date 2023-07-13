@@ -7,6 +7,7 @@ using Jastech.Framework.Device.Motions;
 using Jastech.Framework.Structure;
 using Jastech.Framework.Structure.Helper;
 using Jastech.Framework.Structure.Service;
+using Jastech.Framework.Util.Helper;
 using Jastech.Framework.Winform;
 using System;
 using System.Collections.Generic;
@@ -20,7 +21,21 @@ namespace Jastech.Apps.Winform.Service.Plc
 {
     public class PlcScenarioManager
     {
+        private bool EnableActive { get; set; } = false;
+
         private static PlcScenarioManager _instance = null;
+
+        private int _prevCommonCommand { get; set; } = 0;
+
+        private int _prevCommand { get; set; } = 0;
+
+        private Queue<int> PlcCommonCommandQueue { get; set; } = new Queue<int>();
+
+        private Queue<int> PlcCommandQueue { get; set; } = new Queue<int>();
+
+        private Task CommandTask { get; set; }
+
+        private CancellationTokenSource CommandTaskCancellationTokenSource { get; set; }
 
         public OriginAllDelegate OriginAllEvent;
 
@@ -40,6 +55,102 @@ namespace Jastech.Apps.Winform.Service.Plc
         public void Initialize(InspModelService inspModelService)
         {
             InspModelService = inspModelService;
+            StartScenarioTask();
+        }
+
+        private void StartScenarioTask()
+        {
+            if (CommandTask != null)
+                return;
+            CommandTaskCancellationTokenSource = new CancellationTokenSource();
+            CommandTask = new Task(ScenarioTask, CommandTaskCancellationTokenSource.Token);
+            CommandTask.Start();
+        }
+
+        public void Release()
+        {
+            StopScenarioTask();
+            PlcCommonCommandQueue.Clear();
+            PlcCommandQueue.Clear();
+        }
+
+        private void StopScenarioTask()
+        {
+            if (CommandTask == null)
+                return;
+            CommandTaskCancellationTokenSource.Cancel();
+            CommandTask.Wait();
+            CommandTask = null;
+        }
+
+        public void AddCommonCommand(int command)
+        {
+            if (_prevCommonCommand == command)
+                return;
+
+            if(command != 0 && EnableActive == false)
+            {
+                lock (PlcCommonCommandQueue)
+                    PlcCommonCommandQueue.Enqueue(command);
+            }
+
+            _prevCommonCommand = command;
+        }
+
+        public void AddCommand(int command)
+        {
+            if (_prevCommand == command)
+                return;
+
+            if (command != 0 && EnableActive == false)
+            {
+                lock (PlcCommandQueue)
+                    PlcCommandQueue.Enqueue(command);
+            }
+            _prevCommand = command;
+        }
+
+        public int GetCommonCommand()
+        {
+            lock(PlcCommonCommandQueue)
+            {
+                if (PlcCommonCommandQueue.Count() > 0)
+                    return PlcCommonCommandQueue.Dequeue();
+                else
+                    return 0;
+            }
+        }
+
+        public int GetCommand()
+        {
+            lock (PlcCommandQueue)
+            {
+                if (PlcCommandQueue.Count() > 0)
+                    return PlcCommandQueue.Dequeue();
+                else
+                    return 0;
+            }
+        }
+
+        private void ScenarioTask()
+        {
+            while(true)
+            {
+                if(GetCommonCommand() is int commonCommand)
+                {
+                    EnableActive = true;
+                    CommonCommandReceived((PlcCommonCommand)commonCommand);
+                    EnableActive = false;
+                }
+                else if(GetCommand() is int command)
+                {
+                    EnableActive = true;
+                    PlcCommandReceived((PlcCommand)command);
+                    EnableActive = false;
+                }
+
+                Thread.Sleep(100);
+            }
         }
 
         public void CommonCommandReceived(PlcCommonCommand command)
@@ -53,10 +164,10 @@ namespace Jastech.Apps.Winform.Service.Plc
                     ChangeModelData();
                     break;
                 case PlcCommonCommand.Model_Create:
-                    CreateModelData(); // 질문 : Cretae 명령어 내려주면 자동으로 모델 변경해야하나? 아님 Change 명령어 더 보내주나?
+                    CreateModelData();
                     break;
                 case PlcCommonCommand.Model_Edit:
-                    EditModelData(); // 질문 : 현재 선택된 모델만 수정???
+                    EditModelData();
                     break;
                 case PlcCommonCommand.Command_Clear:
                     ReceivedCommandClear();
@@ -72,15 +183,23 @@ namespace Jastech.Apps.Winform.Service.Plc
         private void CreateModelData()
         {
             var manager = PlcControlManager.Instance();
-            if (AppsStatus.Instance().IsRunning)
+
+            string modelName = manager.GetValue(PlcCommonMap.PLC_PPID_ModelName);
+            string modelDir = ConfigSet.Instance().Path.Model;
+            string filePath = Path.Combine(modelDir, modelName, InspModel.FileName);
+            short command = -1;
+
+            if (File.Exists(modelName) ||AppsStatus.Instance().IsRunning)
             {
-                manager.WritePcStatusCommon(PlcCommonCommand.Model_Create, true);
+                // 모델이 존재O, 검사 중일 때
+                command = manager.WritePcStatusCommon(PlcCommonCommand.Model_Create, true);
+                Logger.Debug(LogType.Device, $"Write Fail CreateModelData.[{command}]", AppsStatus.Instance().CurrentTime);
                 return;
             }
         
             AppsInspModel inspModel = InspModelService.New() as AppsInspModel;
 
-            inspModel.Name = manager.GetValue(PlcCommonMap.PLC_PPID_ModelName);
+            inspModel.Name = modelName;
             inspModel.CreateDate = AppsStatus.Instance().CurrentTime;
             inspModel.ModifiedDate = inspModel.CreateDate;
             inspModel.TabCount = Convert.ToInt32(manager.GetValue(PlcCommonMap.PLC_TabCount));
@@ -91,7 +210,8 @@ namespace Jastech.Apps.Winform.Service.Plc
 
             ModelFileHelper.Save(ConfigSet.Instance().Path.Model, inspModel);
 
-            manager.WritePcStatusCommon(PlcCommonCommand.Model_Create);
+            command = manager.WritePcStatusCommon(PlcCommonCommand.Model_Create);
+            Logger.Debug(LogType.Device, $"Write CreateModelData.[{command}]", AppsStatus.Instance().CurrentTime);
         }
 
         private void ChangeModelData()
@@ -101,16 +221,20 @@ namespace Jastech.Apps.Winform.Service.Plc
 
             string modelDir = ConfigSet.Instance().Path.Model;
             string filePath = Path.Combine(modelDir, modelName, InspModel.FileName);
+            short command = -1;
 
-            if(File.Exists(filePath) == false || AppsStatus.Instance().IsRunning)
+            if (File.Exists(filePath) == false || AppsStatus.Instance().IsRunning)
             {
-                manager.WritePcStatusCommon(PlcCommonCommand.Model_Change, true);
+                // 모델 존재X, 검사 중일 때
+                command = manager.WritePcStatusCommon(PlcCommonCommand.Model_Change, true);
+                Logger.Debug(LogType.Device, $"Write Fail ChangeModelData.[{command}]", AppsStatus.Instance().CurrentTime);
                 return;
             }
 
             ModelManager.Instance().CurrentModel = InspModelService.Load(filePath);
 
-            manager.WritePcStatusCommon(PlcCommonCommand.Model_Change);
+            command = manager.WritePcStatusCommon(PlcCommonCommand.Model_Change);
+            Logger.Debug(LogType.Device, $"Write ChangeModelData.[{command}]", AppsStatus.Instance().CurrentTime);
         }
 
         private void EditModelData()
@@ -121,10 +245,13 @@ namespace Jastech.Apps.Winform.Service.Plc
             string modelName = manager.GetValue(PlcCommonMap.PLC_PPID_ModelName);
             string modelDir = ConfigSet.Instance().Path.Model;
             string filePath = Path.Combine(modelDir, modelName, InspModel.FileName);
+            short command = -1;
 
             if (File.Exists(filePath) == false || AppsStatus.Instance().IsRunning || currentModel == null)
             {
-                manager.WritePcStatusCommon(PlcCommonCommand.Model_Edit, true);
+                // 모델 존재 X, 검사 중, 현재 모델이 없을 때
+                command = manager.WritePcStatusCommon(PlcCommonCommand.Model_Edit, true);
+                Logger.Debug(LogType.Device, $"Write Fail EditModelData.[{command}]", AppsStatus.Instance().CurrentTime);
                 return;
             }
 
@@ -141,7 +268,8 @@ namespace Jastech.Apps.Winform.Service.Plc
 
             ModelFileHelper.Save(ConfigSet.Instance().Path.Model, currentModel);
 
-            manager.WritePcStatusCommon(PlcCommonCommand.Model_Edit);
+            command = manager.WritePcStatusCommon(PlcCommonCommand.Model_Edit);
+            Logger.Debug(LogType.Device, $"Write EditModelData.[{command}]", AppsStatus.Instance().CurrentTime);
         }
 
         private MaterialInfo GetModelMaterialInfo()
@@ -213,7 +341,8 @@ namespace Jastech.Apps.Winform.Service.Plc
             AppsConfig.Instance().EnablePlcTime = true;
             AppsConfig.Instance().Save();
 
-            PlcControlManager.Instance().WritePcStatusCommon(PlcCommonCommand.Time_Change);
+            short command = PlcControlManager.Instance().WritePcStatusCommon(PlcCommonCommand.Time_Change);
+            Logger.Debug(LogType.Device, $"Write TimeChanged.[{command}]", AppsStatus.Instance().CurrentTime);
         }
 
         private void ReceivedCommandClear()
@@ -223,10 +352,10 @@ namespace Jastech.Apps.Winform.Service.Plc
             int length = endAddress.AddressNum + endAddress.WordSize - startAddress.AddressNum;
 
             PlcControlManager.Instance().ClearAddress(PlcCommonMap.PC_Alive, length);
-
             Thread.Sleep(50);
 
-            PlcControlManager.Instance().WritePcStatusCommon(PlcCommonCommand.Command_Clear);
+            short command = PlcControlManager.Instance().WritePcStatusCommon(PlcCommonCommand.Command_Clear);
+            Logger.Debug(LogType.Device, $"Write ClearCommand.[{command}]", AppsStatus.Instance().CurrentTime);
         }
 
         private void ReceivedLightOff()
@@ -235,7 +364,8 @@ namespace Jastech.Apps.Winform.Service.Plc
             foreach (var light in lightHanlder)
                 light.TurnOff();
 
-            PlcControlManager.Instance().WritePcStatusCommon(PlcCommonCommand.Light_Off);
+            short command = PlcControlManager.Instance().WritePcStatusCommon(PlcCommonCommand.Light_Off);
+            Logger.Debug(LogType.Device, $"Write LightOff.[{command}]", AppsStatus.Instance().CurrentTime);
         }
 
         public void PlcCommandReceived(PlcCommand command)
@@ -245,13 +375,13 @@ namespace Jastech.Apps.Winform.Service.Plc
                 case PlcCommand.StartInspection:
                     StartInspection();
                     break;
-                case PlcCommand.StartPreAlign_AutoRun:
-                    break;
-                case PlcCommand.StartPreAlign_Manual:
+                case PlcCommand.StartPreAlign:
+                    
                     break;
                 case PlcCommand.Origin_All:
                     break;
                 case PlcCommand.Move_StandbyPos:
+                    
                     break;
                 case PlcCommand.Move_Left_AlignPos:
                     break;
@@ -270,7 +400,8 @@ namespace Jastech.Apps.Winform.Service.Plc
         {
             if(ModelManager.Instance().CurrentModel == null)
             {
-                PlcControlManager.Instance().WritePcStatus(PlcCommand.StartInspection, true);
+                short command = PlcControlManager.Instance().WritePcStatus(PlcCommand.StartInspection, true);
+                Logger.Debug(LogType.Device, $"Write LightOff.[{command}]", AppsStatus.Instance().CurrentTime);
                 return;
             }
 

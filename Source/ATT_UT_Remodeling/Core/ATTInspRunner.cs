@@ -582,7 +582,7 @@ namespace ATT_UT_Remodeling.Core
                 case SeqStep.SEQ_START:
                     // Wait for prealign start signal
                     string preAlignStart = PlcControlManager.Instance().GetAddressMap(PlcCommonMap.PLC_Command_Common).Value;
-                    if (Convert.ToInt32(preAlignStart) == (int)PlcCommand.StartPreAlign_AutoRun)
+                    if (Convert.ToInt32(preAlignStart) == (int)PlcCommand.StartPreAlign)
                         break;
 
                     WriteLog("Receive prealign start signal from PLC.");

@@ -55,7 +55,7 @@ namespace ATT_UT_IPAD
 
                 SystemManager.Instance().Initialize(mainForm);
                 PlcControlManager.Instance().Initialize();
-
+               
                 Application.Run(mainForm);
             }
             else
@@ -164,7 +164,7 @@ namespace ATT_UT_IPAD
         private static void Application_ThreadException(object sender, ThreadExceptionEventArgs e)
         {
             string message = "Application_ThreadException " + e.Exception.Message;
-            Logger.Error(ErrorType.Apps, message);
+            Logger.Error(ErrorType.Apps, message, AppsStatus.Instance().CurrentTime);
             System.Diagnostics.Trace.WriteLine(message);
             MessageBox.Show(message);
             Application.Exit(new System.ComponentModel.CancelEventArgs(false));
@@ -174,7 +174,7 @@ namespace ATT_UT_IPAD
         {
             var exception = (Exception)e.ExceptionObject;
             string message = "CurrentDomain_UnhandledException " + exception.Message + " Source: " + exception.Source.ToString() + "StackTrack :" + exception.StackTrace.ToString();
-            Logger.Error(ErrorType.Apps, message);
+            Logger.Error(ErrorType.Apps, message, AppsStatus.Instance().CurrentTime);
 
             System.Diagnostics.Trace.WriteLine(message);
             MessageBox.Show(message);

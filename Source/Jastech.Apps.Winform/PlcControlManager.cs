@@ -77,18 +77,19 @@ namespace Jastech.Apps.Winform
                             map.Value = ConvertBinary(buffer, map.WordType);
                         else
                             map.Value = ConvertAscll(buffer, map.WordType);
-
-                        if (map.Name == PlcCommonMap.PLC_Command_Common.ToString())
-                        {
-                            PlcCommonCommand command = (PlcCommonCommand)Convert.ToInt32(map.Value);
-                            PlcScenarioManager.Instance().CommonCommandReceived(command);
-                        }
-                        else if (map.Name == PlcCommonMap.PLC_Command.ToString())
-                        {
-                            int command = Convert.ToInt32(map.Value);
-                            OnPlcCommandReceived(command);
-                        }
                     }
+                }
+
+                if (GetAddressMap(PlcCommonMap.PC_Status_Common).Value == "0")
+                {
+                    int command = Convert.ToInt32(GetAddressMap(PlcCommonMap.PLC_Command_Common));
+                    PlcScenarioManager.Instance().AddCommonCommand(command);
+                }
+                if (GetAddressMap(PlcCommonMap.PC_Status).Value == "0")
+                {
+                    var commandMap = GetAddressMap(PlcCommonMap.PLC_Command);
+                    int command = Convert.ToInt32(commandMap.Value);
+                    OnPlcCommandReceived(command);
                 }
             }
         }
@@ -251,7 +252,7 @@ namespace Jastech.Apps.Winform
             }
         }
 
-        public void WritePcStatusCommon(PlcCommonCommand status, bool isError = false)
+        public short WritePcStatusCommon(PlcCommonCommand status, bool isFailed = false)
         {
             var map = PlcControlManager.Instance().GetAddressMap(PlcCommonMap.PC_Status_Common);
             if (DeviceManager.Instance().PlcHandler.Count > 0 && map != null)
@@ -261,7 +262,7 @@ namespace Jastech.Apps.Winform
                 PlcDataStream stream = new PlcDataStream();
 
                 short value = Convert.ToInt16(status);
-                if (isError)
+                if (isFailed)
                     value *= -1;
 
                 if (plc.MelsecParser.ParserType == ParserType.Binary)
@@ -270,7 +271,10 @@ namespace Jastech.Apps.Winform
                     stream.Add16BitData(value);
 
                 plc.Write("D" + map.AddressNum, stream.Data);
+
+                return value;
             }
+            return 0;
         }
 
         public void WritePcErrorCode()
@@ -328,17 +332,19 @@ namespace Jastech.Apps.Winform
             }
         }
 
-        public void WritePcStatus(PlcCommand command, bool isError = false)
+        public bool WritePcStatus(PlcCommand command, bool isFailed = false)
         {
             var map = PlcControlManager.Instance().GetAddressMap(PlcCommonMap.PC_Status);
+            short value = -1;
+
             if (DeviceManager.Instance().PlcHandler.Count > 0 && map != null)
             {
                 var plc = DeviceManager.Instance().PlcHandler.First() as MelsecPlc;
 
                 PlcDataStream stream = new PlcDataStream();
 
-                short value = Convert.ToInt16(command);
-                if (isError)
+                value = Convert.ToInt16(command);
+                if (isFailed)
                     value *= -1;
 
                 if (plc.MelsecParser.ParserType == ParserType.Binary)
@@ -348,6 +354,8 @@ namespace Jastech.Apps.Winform
 
                 plc.Write("D" + map.AddressNum, stream.Data);
             }
+
+            return value;
         }
 
         public void WriteMoveRequest()

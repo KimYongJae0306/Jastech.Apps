@@ -137,8 +137,7 @@
     public enum PlcCommand
     {
         StartInspection = 1100,         // 검사 시작 신호(Align+Akkon)
-        StartPreAlign_AutoRun = 1200,   // PreAlign 검사 시작 신호(AutoRun)
-        StartPreAlign_Manual = 1201,    // PreAlign 검사 시작 신호(Manual) 
+        StartPreAlign = 1200,   // PreAlign 검사 시작 신호
         Origin_All = 1400,              // 모든 축 Homming
         Move_StandbyPos = 1500,         // X축을 Standby 위치로 이동
         Move_Left_AlignPos = 1501,      // X축을 Left Align 위치로 이동
