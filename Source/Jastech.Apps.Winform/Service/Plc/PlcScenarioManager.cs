@@ -378,6 +378,9 @@ namespace Jastech.Apps.Winform.Service.Plc
                 case PlcCommand.StartPreAlign:
                     
                     break;
+                case PlcCommand.Calibration:
+
+                    break;
                 case PlcCommand.Origin_All:
                     break;
                 case PlcCommand.Move_StandbyPos:

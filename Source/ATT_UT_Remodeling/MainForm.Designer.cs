@@ -92,7 +92,7 @@
             this.tlpMainForm.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 50F));
             this.tlpMainForm.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 50F));
             this.tlpMainForm.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tlpMainForm.Size = new System.Drawing.Size(1540, 637);
+            this.tlpMainForm.Size = new System.Drawing.Size(310, 199);
             this.tlpMainForm.TabIndex = 2;
             // 
             // pnlPage
@@ -101,7 +101,7 @@
             this.pnlPage.Location = new System.Drawing.Point(0, 100);
             this.pnlPage.Margin = new System.Windows.Forms.Padding(0);
             this.pnlPage.Name = "pnlPage";
-            this.pnlPage.Size = new System.Drawing.Size(1540, 537);
+            this.pnlPage.Size = new System.Drawing.Size(310, 99);
             this.pnlPage.TabIndex = 3;
             // 
             // tlpFunctionButtons
@@ -129,7 +129,7 @@
             this.tlpFunctionButtons.Name = "tlpFunctionButtons";
             this.tlpFunctionButtons.RowCount = 1;
             this.tlpFunctionButtons.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tlpFunctionButtons.Size = new System.Drawing.Size(1540, 50);
+            this.tlpFunctionButtons.Size = new System.Drawing.Size(310, 50);
             this.tlpFunctionButtons.TabIndex = 0;
             // 
             // lblCurrentTime
@@ -350,7 +350,7 @@
             this.pnlMachineStatus.Location = new System.Drawing.Point(0, 0);
             this.pnlMachineStatus.Margin = new System.Windows.Forms.Padding(0);
             this.pnlMachineStatus.Name = "pnlMachineStatus";
-            this.pnlMachineStatus.Size = new System.Drawing.Size(1540, 50);
+            this.pnlMachineStatus.Size = new System.Drawing.Size(310, 50);
             this.pnlMachineStatus.TabIndex = 2;
             // 
             // tlpMachineStatus
@@ -371,7 +371,7 @@
             this.tlpMachineStatus.Name = "tlpMachineStatus";
             this.tlpMachineStatus.RowCount = 1;
             this.tlpMachineStatus.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tlpMachineStatus.Size = new System.Drawing.Size(1538, 48);
+            this.tlpMachineStatus.Size = new System.Drawing.Size(308, 48);
             this.tlpMachineStatus.TabIndex = 1;
             // 
             // tableLayoutPanel5
@@ -382,7 +382,7 @@
             this.tableLayoutPanel5.Controls.Add(this.lblCurrentUser, 0, 0);
             this.tableLayoutPanel5.Controls.Add(this.pictureBox2, 1, 0);
             this.tableLayoutPanel5.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel5.Location = new System.Drawing.Point(1358, 0);
+            this.tableLayoutPanel5.Location = new System.Drawing.Point(128, 0);
             this.tableLayoutPanel5.Margin = new System.Windows.Forms.Padding(0);
             this.tableLayoutPanel5.Name = "tableLayoutPanel5";
             this.tableLayoutPanel5.RowCount = 1;
@@ -425,7 +425,7 @@
             this.lblCurrentModel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lblCurrentModel.Font = new System.Drawing.Font("맑은 고딕", 15F, System.Drawing.FontStyle.Bold);
             this.lblCurrentModel.ForeColor = System.Drawing.Color.White;
-            this.lblCurrentModel.Location = new System.Drawing.Point(1181, 3);
+            this.lblCurrentModel.Location = new System.Drawing.Point(-49, 3);
             this.lblCurrentModel.Margin = new System.Windows.Forms.Padding(3);
             this.lblCurrentModel.Name = "lblCurrentModel";
             this.lblCurrentModel.Size = new System.Drawing.Size(174, 42);
@@ -451,7 +451,7 @@
             this.lblSystemName.Location = new System.Drawing.Point(223, 3);
             this.lblSystemName.Margin = new System.Windows.Forms.Padding(3);
             this.lblSystemName.Name = "lblSystemName";
-            this.lblSystemName.Size = new System.Drawing.Size(952, 42);
+            this.lblSystemName.Size = new System.Drawing.Size(1, 42);
             this.lblSystemName.TabIndex = 1;
             this.lblSystemName.Text = "ATT Inspection";
             this.lblSystemName.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -465,14 +465,13 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
-            this.ClientSize = new System.Drawing.Size(1540, 637);
+            this.ClientSize = new System.Drawing.Size(310, 199);
             this.Controls.Add(this.tlpMainForm);
             this.Font = new System.Drawing.Font("맑은 고딕", 11.25F, System.Drawing.FontStyle.Bold);
             this.ForeColor = System.Drawing.Color.White;
             this.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.Name = "MainForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.MainForm_FormClosed);
             this.Load += new System.EventHandler(this.MainForm_Load);

@@ -98,8 +98,14 @@ namespace ATT_UT_Remodeling
                 //ringLight.ChannelNameMap["Ch.RedRing2"] = 2; // channel 지정
                 //config.Add(ringLight);
 
-                //var laf = new VirtualLAFCtrl("Laf");
-                //config.Add(laf);
+                var laf1 = new NuriOneLAFCtrl("Laf");
+                laf1.SerialPortComm = new SerialPortComm
+                {
+                    PortName = "COM1",
+                    BaudRate = 115200,
+                };
+                config.Add(laf1);
+
                 // Light1
                 var spotLight = new LvsLightCtrl("Spot", 6, new SerialPortComm("COM2", 19200), new LvsSerialParser()); // 12V
                 spotLight.ChannelNameMap["Ch.White"] = 1; // channel 지정
@@ -135,8 +141,14 @@ namespace ATT_UT_Remodeling
                 config.Add(motion);
 
 
-                var laf = new VirtualLAFCtrl("Laf");
-                config.Add(laf);
+                var laf1 = new NuriOneLAFCtrl("Laf");
+                laf1.SerialPortComm = new SerialPortComm
+                {
+                    PortName = "COM1",
+                    BaudRate = 115200,
+                };
+                config.Add(laf1);
+
                 // Light1
                 var spotLight = new LvsLightCtrl("Spot", 6, new SerialPortComm("COM2", 19200), new LvsSerialParser()); // 12V
                 spotLight.ChannelNameMap["Ch.White"] = 1; // channel 지정

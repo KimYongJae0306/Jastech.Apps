@@ -569,8 +569,6 @@ namespace Jastech.Framework.Winform.Forms
         private void btnGrabStop_Click(object sender, EventArgs e)
         {
             LineCamera.IsLive = false;
-            LineCamera.StopGrab();
-
             StopGrab();
         }
 
@@ -581,6 +579,8 @@ namespace Jastech.Framework.Winform.Forms
 
         private void OpticTeachingForm_FormClosing(object sender, FormClosingEventArgs e)
         {
+            StopGrab();
+
             DrawBoxControl.DisposeImage();
 
             LineCamera.IsLive = false;

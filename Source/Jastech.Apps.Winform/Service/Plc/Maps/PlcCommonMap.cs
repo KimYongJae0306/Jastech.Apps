@@ -138,6 +138,7 @@
     {
         StartInspection = 1100,         // 검사 시작 신호(Align+Akkon)
         StartPreAlign = 1200,   // PreAlign 검사 시작 신호
+        Calibration = 1300,
         Origin_All = 1400,              // 모든 축 Homming
         Move_StandbyPos = 1500,         // X축을 Standby 위치로 이동
         Move_Left_AlignPos = 1501,      // X축을 Left Align 위치로 이동
