@@ -64,17 +64,19 @@ namespace ATT_UT_Remodeling
             AddControls();
             SelectMainPage();
 
+
             ModelManager.Instance().CurrentModelChangedEvent += MainForm_CurrentModelChangedEvent;
-            PlcScenarioManager.Instance().Initialize(ATTInspModelService);
-            PlcScenarioManager.Instance().InspRunnerHandler += MainForm_InspRunnerHandler;
-            PlcScenarioManager.Instance().PreAlignRunnerHandler += MainForm_PreAlignRunnerHandler;
+            //PlcScenarioManager.Instance().Initialize(ATTInspModelService);
+            //PlcScenarioManager.Instance().InspRunnerHandler += MainForm_InspRunnerHandler;
+            //PlcScenarioManager.Instance().PreAlignRunnerHandler += MainForm_PreAlignRunnerHandler;
             if (ModelManager.Instance().CurrentModel != null)
             {
                 lblCurrentModel.Text = ModelManager.Instance().CurrentModel.Name;
                 ModelManager.Instance().ApplyChangedEvent();
             }
 
-            tmrMainForm.Start();
+            //tmrMainForm.Start();
+            SystemManager.Instance().AddSystemLogMessage("Start program.");
         }
 
         private void MainForm_PreAlignRunnerHandler(bool tt)

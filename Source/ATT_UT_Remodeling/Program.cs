@@ -45,7 +45,7 @@ namespace ATT_UT_Remodeling
 
                 MilHelper.InitApplication();
                 CameraMil.BufferPoolCount = 200;
-                SystemHelper.StartChecker(@"D:\ATT_Memory_Test.txt");
+                //SystemHelper.StartChecker(@"D:\ATT_Memory_Test.txt");
 
                 ConfigSet.Instance().PathConfigCreated += ConfigSet_PathConfigCreated;
                 ConfigSet.Instance().OperationConfigCreated += ConfigSet_OperationConfigCreated;
@@ -53,14 +53,11 @@ namespace ATT_UT_Remodeling
                 ConfigSet.Instance().Initialize();
                 AppsConfig.Instance().Initialize();
                 CalibrationData.Instance().LoadCalibrationData();
-
+                UserManager.Instance().Initialize();
 
                 var mainForm = new MainForm();
-                UserManager.Instance().Initialize();
                 SystemManager.Instance().Initialize(mainForm);
                 PlcControlManager.Instance().Initialize();
-
-                SystemManager.Instance().AddSystemLogMessage("Start program.");
                 Application.Run(mainForm);
             }
             else
@@ -120,60 +117,60 @@ namespace ATT_UT_Remodeling
             }
             else
             {
-                // AreaCamera
-                var areaScan = new CameraHIK("PreAlign", 2592, 1944, ColorFormat.Gray, SensorType.Area);
-                areaScan.SerialNo = "DA0228166";
-                config.Add(areaScan);
+                //// AreaCamera
+                //var areaScan = new CameraHIK("PreAlign", 2592, 1944, ColorFormat.Gray, SensorType.Area);
+                //areaScan.SerialNo = "DA0228166";
+                //config.Add(areaScan);
 
-                // LineScanCamera
-                var lineCamera = new CameraMil("LineCamera", 6560, 1024, ColorFormat.Gray, SensorType.Line);
-                lineCamera.MilSystemType = MilSystemType.Rapixo;
-                lineCamera.TriggerMode = TriggerMode.Hardware;
-                lineCamera.TriggerSource = (int)MilCxpTriggerSource.Cxp;
-                lineCamera.TriggerSignalType = MilTriggerSignalType.TL_Trigger;
-                lineCamera.TriggerIoSourceType = MILIoSourceType.AUX_IO0;
-                lineCamera.DigitizerNum = 0;
+                //// LineScanCamera
+                //var lineCamera = new CameraMil("LineCamera", 6560, 1024, ColorFormat.Gray, SensorType.Line);
+                //lineCamera.MilSystemType = MilSystemType.Rapixo;
+                //lineCamera.TriggerMode = TriggerMode.Hardware;
+                //lineCamera.TriggerSource = (int)MilCxpTriggerSource.Cxp;
+                //lineCamera.TriggerSignalType = MilTriggerSignalType.TL_Trigger;
+                //lineCamera.TriggerIoSourceType = MILIoSourceType.AUX_IO0;
+                //lineCamera.DigitizerNum = 0;
 
-                lineCamera.DcfFile = CameraMil.GetDcfFile(CameraType.VT_6k35c_trigger);
-                config.Add(lineCamera);
+                //lineCamera.DcfFile = CameraMil.GetDcfFile(CameraType.VT_6k35c_trigger);
+                //config.Add(lineCamera);
 
-                // Motion
-                var motion = new ACSMotion("Motion", 2, ACSConnectType.Ethernet);
-                motion.IpAddress = "10.0.0.100";
-                config.Add(motion);
+                //// Motion
+                //var motion = new ACSMotion("Motion", 2, ACSConnectType.Ethernet);
+                //motion.IpAddress = "10.0.0.100";
+                //config.Add(motion);
 
                 // LAF
                 var laf1 = new NuriOneLAFCtrl("Laf");
                 laf1.SerialPortComm = new SerialPortComm
                 {
-                    PortName = "COM1",
+                    PortName = "COM2",
                     BaudRate = 115200,
                 };
                 config.Add(laf1);
 
                 // Light1
-                var spotLight = new LvsLightCtrl("Spot", 6, new SerialPortComm("COM2", 19200), new LvsSerialParser()); // 12V
+                var spotLight = new LvsLightCtrl("Spot", 6, new SerialPortComm("COM4", 19200), new LvsSerialParser()); // 12V
                 spotLight.ChannelNameMap["Ch.White"] = 1; // channel 지정
                 spotLight.ChannelNameMap["Ch.RedSpot"] = 2; // channel 지정
                 spotLight.ChannelNameMap["Ch.Blue"] = 3; // channel 지정
                 config.Add(spotLight);
 
                 // Light2
-                var ringLight = new LvsLightCtrl("Ring", 6, new SerialPortComm("COM3", 19200), new LvsSerialParser());  // 24V
+                var ringLight = new LvsLightCtrl("Ring", 6, new SerialPortComm("COM5", 19200), new LvsSerialParser());  // 24V
                 ringLight.ChannelNameMap["Ch.RedRing1"] = 1; // channel 지정
                 ringLight.ChannelNameMap["Ch.RedRing2"] = 2; // channel 지정
                 config.Add(ringLight);
 
                 // PLC
-                AppsConfig.Instance().PlcAddressInfo.CommonStart = 104000;
-                AppsConfig.Instance().PlcAddressInfo.ResultStart = 105000;
-                AppsConfig.Instance().PlcAddressInfo.ResultStart_Align = 105220;
-                AppsConfig.Instance().PlcAddressInfo.ResultTabToTabInterval = 200;
-                AppsConfig.Instance().PlcAddressInfo.ResultStart_Akkon = 105230;
-                AppsConfig.Instance().PlcAddressInfo.ResultStart_PreAlign = 105250;
+                //AppsConfig.Instance().PlcAddressInfo.CommonStart = 104000;
+                //AppsConfig.Instance().PlcAddressInfo.ResultStart = 105000;
+                //AppsConfig.Instance().PlcAddressInfo.ResultStart_Align = 105220;
+                //AppsConfig.Instance().PlcAddressInfo.ResultTabToTabInterval = 200;
+                //AppsConfig.Instance().PlcAddressInfo.ResultStart_Akkon = 105230;
+                //AppsConfig.Instance().PlcAddressInfo.ResultStart_PreAlign = 105250;
 
-                var plc = new MelsecPlc("PLC", new SocketComm("192.168.130.2", 9021, SocketCommType.Udp, 9031), new MelsecBinaryParser());
-                config.Add(plc);
+                //var plc = new MelsecPlc("PLC", new SocketComm("192.168.130.2", 9021, SocketCommType.Udp, 9031), new MelsecBinaryParser());
+                //config.Add(plc);
             }
         }
 

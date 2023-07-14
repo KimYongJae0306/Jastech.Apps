@@ -92,7 +92,7 @@
             this.tlpMainForm.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 50F));
             this.tlpMainForm.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 50F));
             this.tlpMainForm.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tlpMainForm.Size = new System.Drawing.Size(1947, 806);
+            this.tlpMainForm.Size = new System.Drawing.Size(1924, 806);
             this.tlpMainForm.TabIndex = 2;
             // 
             // pnlPage
@@ -101,7 +101,7 @@
             this.pnlPage.Location = new System.Drawing.Point(0, 100);
             this.pnlPage.Margin = new System.Windows.Forms.Padding(0);
             this.pnlPage.Name = "pnlPage";
-            this.pnlPage.Size = new System.Drawing.Size(1947, 706);
+            this.pnlPage.Size = new System.Drawing.Size(1924, 706);
             this.pnlPage.TabIndex = 3;
             // 
             // tlpFunctionButtons
@@ -129,7 +129,7 @@
             this.tlpFunctionButtons.Name = "tlpFunctionButtons";
             this.tlpFunctionButtons.RowCount = 1;
             this.tlpFunctionButtons.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tlpFunctionButtons.Size = new System.Drawing.Size(1947, 50);
+            this.tlpFunctionButtons.Size = new System.Drawing.Size(1924, 50);
             this.tlpFunctionButtons.TabIndex = 0;
             // 
             // lblCurrentTime
@@ -141,7 +141,7 @@
             this.lblCurrentTime.Location = new System.Drawing.Point(1603, 3);
             this.lblCurrentTime.Margin = new System.Windows.Forms.Padding(3);
             this.lblCurrentTime.Name = "lblCurrentTime";
-            this.lblCurrentTime.Size = new System.Drawing.Size(341, 44);
+            this.lblCurrentTime.Size = new System.Drawing.Size(318, 44);
             this.lblCurrentTime.TabIndex = 3;
             this.lblCurrentTime.Text = "DateTime";
             this.lblCurrentTime.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -350,7 +350,7 @@
             this.pnlMachineStatus.Location = new System.Drawing.Point(0, 0);
             this.pnlMachineStatus.Margin = new System.Windows.Forms.Padding(0);
             this.pnlMachineStatus.Name = "pnlMachineStatus";
-            this.pnlMachineStatus.Size = new System.Drawing.Size(1947, 50);
+            this.pnlMachineStatus.Size = new System.Drawing.Size(1924, 50);
             this.pnlMachineStatus.TabIndex = 2;
             // 
             // tlpMachineStatus
@@ -371,7 +371,7 @@
             this.tlpMachineStatus.Name = "tlpMachineStatus";
             this.tlpMachineStatus.RowCount = 1;
             this.tlpMachineStatus.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tlpMachineStatus.Size = new System.Drawing.Size(1945, 48);
+            this.tlpMachineStatus.Size = new System.Drawing.Size(1922, 48);
             this.tlpMachineStatus.TabIndex = 1;
             // 
             // tableLayoutPanel5
@@ -382,7 +382,7 @@
             this.tableLayoutPanel5.Controls.Add(this.lblCurrentUser, 0, 0);
             this.tableLayoutPanel5.Controls.Add(this.pictureBox2, 1, 0);
             this.tableLayoutPanel5.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel5.Location = new System.Drawing.Point(1765, 0);
+            this.tableLayoutPanel5.Location = new System.Drawing.Point(1742, 0);
             this.tableLayoutPanel5.Margin = new System.Windows.Forms.Padding(0);
             this.tableLayoutPanel5.Name = "tableLayoutPanel5";
             this.tableLayoutPanel5.RowCount = 1;
@@ -425,7 +425,7 @@
             this.lblCurrentModel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lblCurrentModel.Font = new System.Drawing.Font("맑은 고딕", 15F, System.Drawing.FontStyle.Bold);
             this.lblCurrentModel.ForeColor = System.Drawing.Color.White;
-            this.lblCurrentModel.Location = new System.Drawing.Point(1588, 3);
+            this.lblCurrentModel.Location = new System.Drawing.Point(1565, 3);
             this.lblCurrentModel.Margin = new System.Windows.Forms.Padding(3);
             this.lblCurrentModel.Name = "lblCurrentModel";
             this.lblCurrentModel.Size = new System.Drawing.Size(174, 42);
@@ -451,13 +451,14 @@
             this.lblSystemName.Location = new System.Drawing.Point(223, 3);
             this.lblSystemName.Margin = new System.Windows.Forms.Padding(3);
             this.lblSystemName.Name = "lblSystemName";
-            this.lblSystemName.Size = new System.Drawing.Size(1359, 42);
+            this.lblSystemName.Size = new System.Drawing.Size(1336, 42);
             this.lblSystemName.TabIndex = 1;
             this.lblSystemName.Text = "ATT Inspection";
             this.lblSystemName.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // tmrMainForm
             // 
+            this.tmrMainForm.Interval = 300;
             this.tmrMainForm.Tick += new System.EventHandler(this.tmrMainForm_Tick);
             // 
             // MainForm
@@ -465,7 +466,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
-            this.ClientSize = new System.Drawing.Size(1947, 806);
+            this.ClientSize = new System.Drawing.Size(1924, 806);
             this.Controls.Add(this.tlpMainForm);
             this.Font = new System.Drawing.Font("맑은 고딕", 11.25F, System.Drawing.FontStyle.Bold);
             this.ForeColor = System.Drawing.Color.White;
