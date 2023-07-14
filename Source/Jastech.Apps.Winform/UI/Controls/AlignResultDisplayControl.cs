@@ -27,7 +27,7 @@ namespace ATT_UT_IPAD.UI.Controls
 
         public List<TabBtnControl> TabBtnControlList { get; private set; } = new List<TabBtnControl>();
 
-        public CogInspAlignDisplayControl InspAlignDisplay { get; private set; } = new CogInspAlignDisplayControl() { Dock = DockStyle.Fill };
+        public CogInspAlignDisplayControl InspAlignDisplay { get; private set; } = null;
 
         public int CurrentTabNo { get; set; } = -1;
         #endregion
@@ -56,6 +56,8 @@ namespace ATT_UT_IPAD.UI.Controls
 
         private void AddControl()
         {
+            InspAlignDisplay = new CogInspAlignDisplayControl();
+            InspAlignDisplay.Dock = DockStyle.Fill;
             pnlInspDisplay.Controls.Add(InspAlignDisplay);
         }
 

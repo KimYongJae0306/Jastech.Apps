@@ -6,14 +6,16 @@ namespace Jastech.Apps.Winform.UI.Controls
 {
     public partial class PlcModelInfoControl : UserControl
     {
+        #region 생성자
         public PlcModelInfoControl()
         {
             InitializeComponent();
         }
+        #endregion
 
+        #region 메서드
         private void PlcModelInfoControl_Load(object sender, EventArgs e)
         {
-
         }
 
         public void UpdateData()
@@ -79,6 +81,7 @@ namespace Jastech.Apps.Winform.UI.Controls
             lblEdgeToEdgeDistance_6.Text = manager.ConvertDoubleWordStringFormat_mm(PlcCommonMap.PLC_TabtoTab_Distance6);
             lblEdgeToEdgeDistance_7.Text = manager.ConvertDoubleWordStringFormat_mm(PlcCommonMap.PLC_TabtoTab_Distance7);
             lblEdgeToEdgeDistance_8.Text = manager.ConvertDoubleWordStringFormat_mm(PlcCommonMap.PLC_TabtoTab_Distance8);
-        }                                  
+        }
+        #endregion
     }
 }

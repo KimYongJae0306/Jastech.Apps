@@ -15,10 +15,6 @@ namespace Jastech.Apps.Winform.UI.Forms
 {
     public partial class EditATTModelForm : Form
     {
-        #region 필드
-        //InspModelFileService _inspModelFileService = new InspModelFileService();
-        #endregion
-
         #region 속성
         private AppsInspModel PrevModel { get; set; } = new AppsInspModel();
 
@@ -36,7 +32,9 @@ namespace Jastech.Apps.Winform.UI.Forms
         {
             InitializeComponent();
         }
+        #endregion
 
+        #region 메서드
         private void EditATTModelForm_Load(object sender, EventArgs e)
         {
             txtModelName.Text = PrevModelName;
@@ -44,7 +42,7 @@ namespace Jastech.Apps.Winform.UI.Forms
             string filePath = Path.Combine(ModelPath, PrevModelName, InspModel.FileName);
 
             JsonConvertHelper.LoadToExistingTarget<AppsInspModel>(filePath, PrevModel);
-            
+
 
             txtDescription.Text = PrevModel.Description;
             txtTabCount.Text = PrevModel.TabCount.ToString();
@@ -53,9 +51,7 @@ namespace Jastech.Apps.Winform.UI.Forms
             txtSpecInfoCx.Text = PrevModel.SpecInfo.AlignToleranceCx_um.ToString();
             txtSpecInfoStandardValue.Text = PrevModel.SpecInfo.AlignStandard_um.ToString();
         }
-        #endregion
 
-        #region 메서드
         private void lblOK_Click(object sender, EventArgs e)
         {
             if (PrevModelName != txtModelName.Text)
@@ -155,7 +151,6 @@ namespace Jastech.Apps.Winform.UI.Forms
                 textBox.Text = keyPadForm.PadValue.ToString();
             }
         }
-        #endregion
 
         private void txtKeyPad_KeyPress(object sender, KeyPressEventArgs e)
         {
@@ -175,5 +170,6 @@ namespace Jastech.Apps.Winform.UI.Forms
             else
                 textBox.Text = "0.000";
         }
+        #endregion
     }
 }

@@ -23,14 +23,14 @@ namespace ATT_UT_Remodeling
 {
     public partial class MainForm : Form
     {
-        #region 필드
-        private MainPage MainPageControl { get; set; } = new MainPage();
+        #region 속성
+        private MainPage MainPageControl { get; set; } = null;
 
-        private DataPage DataPageControl { get; set; } = new DataPage();
+        private DataPage DataPageControl { get; set; } = null;
 
-        private LogPage LogPageControl { get; set; } = new LogPage();
+        private LogPage LogPageControl { get; set; } = null;
 
-        private TeachingPage TeachingPageControl { get; set; } = new TeachingPage();
+        private TeachingPage TeachingPageControl { get; set; } = null;
 
         private List<UserControl> PageControlList = null;
 
@@ -39,31 +39,16 @@ namespace ATT_UT_Remodeling
         public ATTInspModelService ATTInspModelService { get; set; } = new ATTInspModelService();
         #endregion
 
-        #region 속성
-        #endregion
-
-        #region 이벤트
-        #endregion
-
-        #region 델리게이트
-        #endregion
-
         #region 생성자
-        #endregion
-
-        #region 메서드
-        #endregion
-
         public MainForm()
         {
             InitializeComponent();
         }
+        #endregion
 
+        #region 메서드
         private void MainForm_Load(object sender, EventArgs e)
         {
-            AddControls();
-            SelectMainPage();
-
             ModelManager.Instance().CurrentModelChangedEvent += MainForm_CurrentModelChangedEvent;
             PlcScenarioManager.Instance().Initialize(ATTInspModelService);
             PlcScenarioManager.Instance().InspRunnerHandler += MainForm_InspRunnerHandler;
@@ -73,6 +58,9 @@ namespace ATT_UT_Remodeling
                 lblCurrentModel.Text = ModelManager.Instance().CurrentModel.Name;
                 ModelManager.Instance().ApplyChangedEvent();
             }
+
+            AddControls();
+            SelectMainPage();
 
             tmrMainForm.Start();
         }
@@ -91,9 +79,21 @@ namespace ATT_UT_Remodeling
         {
             // Page Control List
             PageControlList = new List<UserControl>();
+
+            MainPageControl = new MainPage();
+            MainPageControl.Dock = DockStyle.Fill;
             PageControlList.Add(MainPageControl);
+
+            DataPageControl = new DataPage();
+            DataPageControl.Dock = DockStyle.Fill;
             PageControlList.Add(DataPageControl);
+
+            LogPageControl = new LogPage();
+            LogPageControl.Dock = DockStyle.Fill;
             PageControlList.Add(LogPageControl);
+
+            TeachingPageControl = new TeachingPage();
+            TeachingPageControl.Dock = DockStyle.Fill;
             PageControlList.Add(TeachingPageControl);
 
             TeachingPageControl.SetInspModelService(ATTInspModelService);
@@ -202,7 +202,7 @@ namespace ATT_UT_Remodeling
 
         private void tmrMainForm_Tick(object sender, EventArgs e)
         {
-            if(AppsConfig.Instance().EnablePlcTime)
+            if (AppsConfig.Instance().EnablePlcTime)
             {
                 // Model Info
                 var manager = PlcControlManager.Instance();
@@ -221,7 +221,7 @@ namespace ATT_UT_Remodeling
                 lblCurrentTime.Text = now.ToString("yyyy-MM-dd HH:mm:ss");
             }
 
-            if(lblCurrentTime.Text != "")
+            if (lblCurrentTime.Text != "")
                 AppsStatus.Instance().CurrentTime = Convert.ToDateTime(lblCurrentTime.Text);
 
             var user = UserManager.Instance().CurrentUser;
@@ -285,5 +285,6 @@ namespace ATT_UT_Remodeling
             LAFManager.Instance().Release();
             PlcControlManager.Instance().Release();
         }
+        #endregion
     }
 }

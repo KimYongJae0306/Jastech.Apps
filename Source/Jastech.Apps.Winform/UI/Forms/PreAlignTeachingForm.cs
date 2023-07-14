@@ -43,13 +43,13 @@ namespace Jastech.Apps.Winform.UI.Forms
 
         public string TitleCameraName { get; set; } = "";
 
-        private CogTeachingDisplayControl Display { get; set; } = new CogTeachingDisplayControl();
+        private CogTeachingDisplayControl Display { get; set; } = null;
 
-        private PreAlignControl PreAlignControl { get; set; } = new PreAlignControl() { Dock = DockStyle.Fill };
+        private PreAlignControl PreAlignControl { get; set; } = null;
 
-        private VisionCalibrationControl VisionCalibrationControl { get; set; } = new VisionCalibrationControl() { Dock = DockStyle.Fill };
+        private VisionCalibrationControl VisionCalibrationControl { get; set; } = null;
 
-        private LightControl LightControl { get; set; } = new LightControl() { Dock = DockStyle.Fill };
+        private LightControl LightControl { get; set; } = null;
 
         public string TeachingImagePath { get; set; }
 
@@ -96,8 +96,18 @@ namespace Jastech.Apps.Winform.UI.Forms
             Display.DeleteEventHandler += Display_DeleteEventHandler;
             pnlDisplay.Controls.Add(Display);
 
-            PreAlignControl.MarkDirectionChanged += MarkDirectionChangedEvent;
+            LightControl = new LightControl();
+            LightControl.Dock = DockStyle.Fill;
             pnlLight.Controls.Add(LightControl);
+
+            PreAlignControl = new PreAlignControl();
+            PreAlignControl.Dock = DockStyle.Fill;
+            PreAlignControl.MarkDirectionChanged += MarkDirectionChangedEvent;
+            pnlTeach.Controls.Add(PreAlignControl);
+
+            VisionCalibrationControl = new VisionCalibrationControl();
+            VisionCalibrationControl.Dock = DockStyle.Fill;
+            pnlTeach.Controls.Add(VisionCalibrationControl);
 
             // TeachingUIManager 참조
             TeachingUIManager.Instance().SetDisplay(Display.GetDisplay());

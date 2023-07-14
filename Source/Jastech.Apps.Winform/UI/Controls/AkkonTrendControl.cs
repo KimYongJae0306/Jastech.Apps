@@ -21,16 +21,11 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         private AkkonResultType _akkonResultType { get; set; } = AkkonResultType.All;
 
-        private ResultChartControl ChartControl = new ResultChartControl() { Dock = DockStyle.Fill };
+        private DataTable _bindingDataTable = new DataTable();
         #endregion
 
         #region 속성
-        #endregion
-
-        #region 이벤트
-        #endregion
-
-        #region 델리게이트
+        private ResultChartControl ChartControl = null;
         #endregion
 
         #region 생성자
@@ -49,6 +44,8 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         private void AddControl()
         {
+            ChartControl = new ResultChartControl();
+            ChartControl.Dock = DockStyle.Fill;
             ChartControl.ChartType = ResultChartControl.InspChartType.Akkon;
             pnlChart.Controls.Add(ChartControl);
         }
@@ -197,7 +194,8 @@ namespace Jastech.Apps.Winform.UI.Controls
             ChartControl.UpdateAkkonChart(_bindingDataTable, tabType, akkonResultType);
         }
 
-        private DataTable _bindingDataTable = new DataTable();
+     
+
         private void SetDataTable(DataTable dt)
         {
             _bindingDataTable = dt.Copy();

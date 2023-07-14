@@ -8,16 +8,23 @@ namespace Jastech.Apps.Winform.UI.Forms
 {
     public partial class ATTMaterialInfoForm : Form
     {
+        #region 속성
         public MaterialInfo PrevMaterialInfo { get; set; } = null;
+
         public MaterialInfo NewMaterialInfo { get; set; } = null;
+        #endregion
+
+        #region 생성자
         public ATTMaterialInfoForm()
         {
             InitializeComponent();
         }
+        #endregion
 
+        #region 메서드
         private void ATTMaterialInfoForm_Load(object sender, EventArgs e)
         {
-            if(PrevMaterialInfo != null)
+            if (PrevMaterialInfo != null)
             {
                 // Data
                 txtPanelXSize.Text = PrevMaterialInfo.PanelXSize_mm.ToString();
@@ -58,7 +65,7 @@ namespace Jastech.Apps.Winform.UI.Forms
                 KeyPadForm keyPadForm = new KeyPadForm();
                 keyPadForm.PreviousValue = Convert.ToDouble(textBox.Text);
                 keyPadForm.ShowDialog();
-                
+
                 textBox.Text = keyPadForm.PadValue.ToString();
             }
         }
@@ -112,17 +119,6 @@ namespace Jastech.Apps.Winform.UI.Forms
             DialogResult = DialogResult.Cancel;
             Close();
         }
-
-        private void txtKeyPad_Leave(object sender, EventArgs e)
-        {
-            return;
-            var textBox = (TextBox)sender;
-            if (textBox == null)
-                return;
-            if (double.TryParse(textBox.Text, out double value))
-                textBox.Text = string.Format("{0:0.000}", value);
-            else
-                textBox.Text = "0.000";
-        }
+        #endregion
     }
 }

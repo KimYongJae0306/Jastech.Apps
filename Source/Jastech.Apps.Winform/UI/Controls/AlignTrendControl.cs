@@ -20,11 +20,10 @@ namespace Jastech.Apps.Winform.UI.Controls
         private TabType _tabType { get; set; } = TabType.Tab1;
 
         private AlignResultType _alignResultType { get; set; } = AlignResultType.All;
-
-        private ResultChartControl ChartControl = new ResultChartControl() { Dock = DockStyle.Fill };
         #endregion
 
         #region 속성
+        private ResultChartControl ChartControl = null;
         #endregion
 
         #region 이벤트
@@ -49,6 +48,8 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         private void AddControl()
         {
+            ChartControl = new ResultChartControl();
+            ChartControl.Dock = DockStyle.Fill;
             ChartControl.ChartType = ResultChartControl.InspChartType.Align;
             pnlChart.Controls.Add(ChartControl);
         }

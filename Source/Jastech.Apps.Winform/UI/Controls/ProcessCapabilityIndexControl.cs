@@ -31,20 +31,13 @@ namespace Jastech.Apps.Winform.UI.Controls
         private ResultChartControl ChartControl = new ResultChartControl() { Dock = DockStyle.Fill };
 
         private List<Label> _tabLabelList = new List<Label>();
+
+        private DataTable _resultDataTable = new DataTable();
         #endregion
 
         #region 속성
-        #endregion
-
-        #region 이벤트
-        #endregion
-
-        #region 델리게이트
-        #endregion
-
-        private DataTable _resultDataTable = new DataTable();
-
         private ProcessCapabilityIndex ProcessCapabilityIndex { get; set; } = new ProcessCapabilityIndex();
+        #endregion
 
         #region 생성자
         public ProcessCapabilityIndexControl()
@@ -58,6 +51,7 @@ namespace Jastech.Apps.Winform.UI.Controls
         {
             AddControl();
             InitializeUI();
+            InitializeResultDataTable();
         }
 
         private void AddControl()
@@ -70,8 +64,6 @@ namespace Jastech.Apps.Winform.UI.Controls
         {
             _selectedColor = Color.FromArgb(104, 104, 104);
             _nonSelectedColor = Color.FromArgb(52, 52, 52);
-
-            InitializeResultDataTable();
         }
 
         public void MakeTabListControl(int tabCount)
@@ -214,7 +206,6 @@ namespace Jastech.Apps.Winform.UI.Controls
         {
             _lowerSpecLimit = lowerSpecLimit;
         }
-        #endregion
 
         private void dgvCPK_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
@@ -402,7 +393,7 @@ namespace Jastech.Apps.Winform.UI.Controls
                 var value = Convert.ToDouble(item.ItemArray[columnIndex]);
                 valueList.Add(value);
             }
-            
+
             double upperSpecLimit = Convert.ToDouble(lblUpperSpecLimit.Text);
             double lowerSpecLimit = Convert.ToDouble(lblLowerSpecLimit.Text);
             var result = ProcessCapabilityIndex.GetResult(valueList, upperSpecLimit, lowerSpecLimit);
@@ -457,7 +448,6 @@ namespace Jastech.Apps.Winform.UI.Controls
 
             return query;
         }
-
-        
+        #endregion
     }
 }

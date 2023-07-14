@@ -15,16 +15,10 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         private Color _nonSelectedColor;
 
-        private UPHData UPHData { get; set; } = new UPHData();
         #endregion
 
         #region 속성
-        #endregion
-
-        #region 이벤트
-        #endregion
-
-        #region 델리게이트
+        private UPHData UPHData { get; set; } = new UPHData();
         #endregion
 
         #region 생성자
@@ -38,15 +32,14 @@ namespace Jastech.Apps.Winform.UI.Controls
         private void UPHControl_Load(object sender, EventArgs e)
         {
             InitializeUI();
+            InitializeLabel();
+            InitializeDataGridView();
         }
 
         private void InitializeUI()
         {
             _selectedColor = Color.FromArgb(104, 104, 104);
             _nonSelectedColor = Color.FromArgb(52, 52, 52);
-
-            InitializeLabel();
-            InitializeDataGridView();
         }
 
         private void InitializeLabel()

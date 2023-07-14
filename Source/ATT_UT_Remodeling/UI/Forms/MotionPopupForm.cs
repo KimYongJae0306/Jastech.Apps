@@ -54,9 +54,9 @@ namespace ATT_UT_Remodeling.UI.Forms
         private LAFCtrl AkkonnLafCtrl { get; set; } = null;
 
         //private LAFCtrl 
-        private MotionJogXControl MotionJogXControl { get; set; } = new MotionJogXControl() { Dock = DockStyle.Fill };
+        private MotionJogXControl MotionJogXControl { get; set; } = null;
 
-        private LAFJogControl LAFJogZControl { get; set; } = new LAFJogControl() { Dock = DockStyle.Fill };
+        private LAFJogControl LAFJogZControl { get; set; } = null;
 
         private MotionParameterVariableControl XVariableControl = new MotionParameterVariableControl();
 
@@ -73,6 +73,8 @@ namespace ATT_UT_Remodeling.UI.Forms
 
         #region 델리게이트
         public Action CloseEventDelegate;
+
+        private delegate void UpdateStatusDelegate(object obj);
         #endregion
 
         #region 생성자
@@ -83,31 +85,26 @@ namespace ATT_UT_Remodeling.UI.Forms
         #endregion
 
         #region 메서드
-
         private void MotionPopupForm_Load(object sender, EventArgs e)
         {
-            UpdateData();
             AddControl();
-            StartTimer();
             InitializeUI();
+        
+            UpdateData();
             SetDefaultValue();
+            ShowCommandPage();
+            StartTimer();
         }
 
         private void SetDefaultValue()
         {
-            if (MotionJogXControl != null)
-            {
-                MotionJogXControl.JogMode = JogMode.Jog;
-                MotionJogXControl.JogSpeedMode = JogSpeedMode.Slow;
-                MotionJogXControl.JogPitch = Convert.ToDouble(lblPitchXYValue.Text);
-            }
+            MotionJogXControl.JogMode = JogMode.Jog;
+            MotionJogXControl.JogSpeedMode = JogSpeedMode.Slow;
+            MotionJogXControl.JogPitch = Convert.ToDouble(lblPitchXYValue.Text);
 
-            if (LAFJogZControl != null)
-            {
-                LAFJogZControl.JogMode = JogMode.Jog;
-                LAFJogZControl.JogSpeedMode = JogSpeedMode.Slow;
-                LAFJogZControl.MoveAmount = Convert.ToDouble(lblPitchZValue.Text);
-            }
+            LAFJogZControl.JogMode = JogMode.Jog;
+            LAFJogZControl.JogSpeedMode = JogSpeedMode.Slow;
+            LAFJogZControl.MoveAmount = Convert.ToDouble(lblPitchZValue.Text);
         }
 
         private void InitializeUI()
@@ -123,7 +120,6 @@ namespace ATT_UT_Remodeling.UI.Forms
 
             rdoJogSlowMode.Checked = true;
             rdoJogMode.Checked = true;
-            ShowCommandPage();
         }
 
         private void AddControl()
@@ -152,14 +148,17 @@ namespace ATT_UT_Remodeling.UI.Forms
         private void UpdateData()
         {
             var axisHandler = MotionManager.Instance().GetAxisHandler(AxisHandlerName.Handler0);
-            SetAxisHandler(axisHandler);
+            AxisHandler = axisHandler;
+            MotionJogXControl.SetAxisHanlder(AxisHandler);
+
 
             string unitName = UnitName.Unit0.ToString();  // 나중에 변수로...
             var posData = TeachingData.Instance().GetUnit(unitName).TeachingInfoList;
             SetTeachingPosition(posData);
 
             var laf = LAFManager.Instance().GetLAFCtrl("Laf");
-            SetAlignLAFCtrl(laf);
+            AlignLafCtrl = laf;
+            LAFJogZControl.SetSelectedLafCtrl(AlignLafCtrl);
 
             UpdateParam();
         }
@@ -179,45 +178,31 @@ namespace ATT_UT_Remodeling.UI.Forms
             ZVariableControl.UpdateData(param.GetMovingParams(AxisName.Z1));
         }
 
-        public void SetAxisHandler(AxisHandler axisHandler)
-        {
-            AxisHandler = axisHandler;
-        }
-
         public void SetTeachingPosition(List<TeachingInfo> teacingPositionList)
         {
             TeachingPositionList = teacingPositionList;
-        }
-
-        public void SetAlignLAFCtrl(LAFCtrl alignLafCtrl)
-        {
-            AlignLafCtrl = alignLafCtrl;
-        }
-
-        public void SetAkkonLafCtrl(LAFCtrl akkonLafCtrl)
-        {
-            AkkonnLafCtrl = akkonLafCtrl;
         }
 
         private void AddVariableControl()
         {
             XVariableControl.Dock = DockStyle.Fill;
             XVariableControl.SetAxis(AxisHandler.GetAxis(AxisName.X));
+            tlpVariableParameter.Controls.Add(XVariableControl);
 
             ZVariableControl.Dock = DockStyle.Fill;
             ZVariableControl.SetAxis(AxisHandler.GetAxis(AxisName.Z1));
-
-            tlpVariableParameter.Controls.Add(XVariableControl);
             tlpVariableParameter.Controls.Add(ZVariableControl);
         }
 
         private void AddJogControl()
         {
+            MotionJogXControl = new MotionJogXControl();
+            MotionJogXControl.Dock = DockStyle.Fill;
             pnlMotionJog.Controls.Add(MotionJogXControl);
-            MotionJogXControl.SetAxisHanlder(AxisHandler);
 
+            LAFJogZControl = new LAFJogControl();
+            LAFJogZControl.Dock = DockStyle.Fill;
             pnlLAFZ1Jog.Controls.Add(LAFJogZControl);
-            LAFJogZControl.SetSelectedLafCtrl(AlignLafCtrl);
         }
 
         private void StartTimer()
@@ -225,7 +210,6 @@ namespace ATT_UT_Remodeling.UI.Forms
             _formTimer = new System.Threading.Timer(UpdateStatus, null, 1000, 1000);
         }
 
-        private delegate void UpdateStatusDelegate(object obj);
         private void UpdateStatus(object obj)
         {
             if (this.InvokeRequired)
@@ -548,6 +532,6 @@ namespace ATT_UT_Remodeling.UI.Forms
             if (CloseEventDelegate != null)
                 CloseEventDelegate();
         }
+        #endregion
     }
-    #endregion
 }

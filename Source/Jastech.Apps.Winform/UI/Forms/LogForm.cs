@@ -31,22 +31,21 @@ namespace Jastech.Framework.Winform.Forms
         private string _selectedPagePath { get; set; } = string.Empty;
 
         private string _selectedDirectoryFullPath { get; set; } = string.Empty;
-
-        private LogControl LogControl { get; set; } = new LogControl() { Dock = DockStyle.Fill };
-
-        private CogDisplayControl CogDisplayControl { get; set; } = new CogDisplayControl() { Dock = DockStyle.Fill };
-
-        private AlignTrendControl AlignTrendControl { get; set; } = new AlignTrendControl() { Dock= DockStyle.Fill };
-
-        private AkkonTrendControl AkkonTrendControl { get; set; } = new AkkonTrendControl() { Dock= DockStyle.Fill };
-
-        private UPHControl UPHControl { get; set; } = new UPHControl() { Dock = DockStyle.Fill };
-
-        private ProcessCapabilityIndexControl ProcessCapabilityControl { get; set; } = new ProcessCapabilityIndexControl() { Dock= DockStyle.Fill };
-
         #endregion
 
         #region 속성
+        private LogControl LogControl { get; set; } = null;
+
+        private CogDisplayControl CogDisplayControl { get; set; } = null;
+
+        private AlignTrendControl AlignTrendControl { get; set; } = null;
+
+        private AkkonTrendControl AkkonTrendControl { get; set; } = null;
+
+        private UPHControl UPHControl { get; set; } = null;
+
+        private ProcessCapabilityIndexControl ProcessCapabilityControl { get; set; } = null;
+
         #endregion
 
         #region 이벤트
@@ -65,16 +64,38 @@ namespace Jastech.Framework.Winform.Forms
         #region 메서드
         private void LogForm_Load(object sender, EventArgs e)
         {
+            AddControls();
             InitializeUI();
+
+            SetPageType(PageType.Log);
+            cdrMonthCalendar.SelectionStart = DateTime.Now;
         }
 
         private void InitializeUI()
         {
             _selectedColor = Color.FromArgb(104, 104, 104);
             _nonSelectedColor = Color.FromArgb(52, 52, 52);
+        }
 
-            SetPageType(PageType.Log);
-            cdrMonthCalendar.SelectionStart = DateTime.Now;
+        private void AddControls()
+        {
+            LogControl = new LogControl();
+            LogControl.Dock = DockStyle.Fill;
+
+            CogDisplayControl = new CogDisplayControl();
+            CogDisplayControl.Dock = DockStyle.Fill;
+
+            AlignTrendControl = new AlignTrendControl();
+            AlignTrendControl.Dock = DockStyle.Fill;
+
+            AkkonTrendControl = new AkkonTrendControl();
+            AkkonTrendControl.Dock = DockStyle.Fill;
+
+            UPHControl = new UPHControl();
+            UPHControl.Dock = DockStyle.Fill;
+
+            ProcessCapabilityControl = new ProcessCapabilityIndexControl();
+            ProcessCapabilityControl.Dock = DockStyle.Fill;
         }
 
         private void SetPageType(PageType pageType)
