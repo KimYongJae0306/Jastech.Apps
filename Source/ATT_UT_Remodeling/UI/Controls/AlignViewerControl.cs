@@ -13,11 +13,11 @@ namespace ATT_UT_Remodeling.UI.Controls
         #endregion
 
         #region 속성
-        public AlignResultDisplayControl AlignResultDisplayControl { get; set; } = null;
+        public AlignResultDisplayControl AlignResultDisplayControl { get; set; } = new AlignResultDisplayControl() { Dock = DockStyle.Fill };
 
-        public AlignResultDataControl AlignResultDataControl { get; set; } = null;
+        public AlignResultDataControl AlignResultDataControl { get; set; } = new AlignResultDataControl() { Dock = DockStyle.Fill };
 
-        public ResultChartControl AlignResultChartControl { get; set; } = null;
+        public ResultChartControl AlignResultChartControl { get; set; } = new ResultChartControl() { Dock = DockStyle.Fill };
         #endregion
 
         #region 이벤트
@@ -41,18 +41,12 @@ namespace ATT_UT_Remodeling.UI.Controls
 
         private void AddControls()
         {
-            AlignResultChartControl = new ResultChartControl();
-            AlignResultChartControl.Dock = DockStyle.Fill;
             AlignResultChartControl.SetInspChartType(InspChartType.Align);
             pnlResultChart.Controls.Add(AlignResultChartControl);
 
-            AlignResultDataControl = new AlignResultDataControl();
-            AlignResultDataControl.Dock = DockStyle.Fill;
             AlignResultDataControl.UpdateAlignDaily();
             pnlResultData.Controls.Add(AlignResultDataControl);
 
-            AlignResultDisplayControl = new AlignResultDisplayControl();
-            AlignResultDisplayControl.Dock = DockStyle.Fill;
             AlignResultDisplayControl.SendTabNumber += UpdateResultChart;
             pnlResultDisplay.Controls.Add(AlignResultDisplayControl);
         }

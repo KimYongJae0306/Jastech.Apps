@@ -22,6 +22,7 @@ namespace Jastech.Apps.Winform.UI.Controls
         #region 필드
         private string _prevTabName { get; set; } = string.Empty;
 
+
         private Color _selectedColor = new Color();
 
         private Color _nonSelectedColor = new Color();
@@ -30,7 +31,7 @@ namespace Jastech.Apps.Winform.UI.Controls
         #endregion
 
         #region 속성
-        private CogCaliperParamControl CogCaliperParamControl { get; set; } = null;
+        private CogCaliperParamControl CogCaliperParamControl { get; set; } = new CogCaliperParamControl();
 
         private Tab CurrentTab { get; set; } = null;
 
@@ -65,7 +66,6 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         private void AddControl()
         {
-            CogCaliperParamControl = new CogCaliperParamControl();
             CogCaliperParamControl.Dock = DockStyle.Fill;
             CogCaliperParamControl.GetOriginImageHandler += AlignControl_GetOriginImageHandler;
             CogCaliperParamControl.TestActionEvent += AlignControl_TestActionEvent;
@@ -450,6 +450,7 @@ namespace Jastech.Apps.Winform.UI.Controls
             if (CurrentTab != null)
                 CurrentTab.AlignSpec.LeftSpecY_um = specY;
         }
+        #endregion
 
         private void lblRightAlignSpecX_Click(object sender, EventArgs e)
         {
@@ -580,6 +581,5 @@ namespace Jastech.Apps.Winform.UI.Controls
 
             return value_um;
         }
-        #endregion
     }
 }

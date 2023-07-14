@@ -65,11 +65,11 @@ namespace Jastech.Framework.Winform.Forms
 
         private CogTeachingDisplayControl Display { get; set; } = new CogTeachingDisplayControl();
 
-        private AlignControl AlignControl { get; set; } = null;
+        private AlignControl AlignControl { get; set; } = new AlignControl() { Dock = DockStyle.Fill };
 
-        private AkkonControl AkkonControl { get; set; } = null;
+        private AkkonControl AkkonControl { get; set; } = new AkkonControl() { Dock = DockStyle.Fill };
 
-        private MarkControl MarkControl { get; set; } = null;
+        private MarkControl MarkControl { get; set; } = new MarkControl() { Dock = DockStyle.Fill };
 
         private AlgorithmTool Algorithm = new AlgorithmTool();
 
@@ -178,15 +178,6 @@ namespace Jastech.Framework.Winform.Forms
 
             // TeachingUIManager 참조
             TeachingUIManager.Instance().SetDisplay(Display.GetDisplay());
-
-            AlignControl = new AlignControl();
-            AlignControl.Dock = DockStyle.Fill;
-
-            AkkonControl = new AkkonControl();
-            AkkonControl.Dock = DockStyle.Fill;
-
-            MarkControl = new MarkControl();
-            MarkControl.Dock = DockStyle.Fill;
 
             // Teaching Item
             if (LineCamera.Camera.Name == "AlignCamera")

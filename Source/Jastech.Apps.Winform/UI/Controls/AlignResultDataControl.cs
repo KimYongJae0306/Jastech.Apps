@@ -16,6 +16,9 @@ namespace Jastech.Apps.Winform.UI.Controls
 {
     public partial class AlignResultDataControl : UserControl
     {
+        #region 필드
+        #endregion
+
         #region 속성
         public List<AppsInspResult> resultList = new List<AppsInspResult>();
         #endregion
@@ -24,17 +27,22 @@ namespace Jastech.Apps.Winform.UI.Controls
         #endregion
 
         #region 델리게이트
+        //private delegate void UpdateAlignResultDelegate(DailyInfo dailyInfo);
         private delegate void UpdateAlignResultDelegate();
         #endregion
 
         #region 생성자
+        #endregion
+
+        #region 메서드
+        #endregion
+
         public AlignResultDataControl()
         {
             InitializeComponent();
         }
-        #endregion
 
-        #region 메서드
+        //public void UpdateAlignDaily(DailyInfo dailyInfo)
         public void UpdateAlignDaily()
         {
             try
@@ -42,6 +50,7 @@ namespace Jastech.Apps.Winform.UI.Controls
                 if (this.InvokeRequired)
                 {
                     UpdateAlignResultDelegate callback = UpdateAlignDaily;
+                    //BeginInvoke(callback, dailyInfo);
                     BeginInvoke(callback);
                     return;
                 }
@@ -82,6 +91,32 @@ namespace Jastech.Apps.Winform.UI.Controls
                 }
             }
         }
-        #endregion
+
+        //private void UpdateDataGridView(DailyInfo dailyInfo)
+        //{
+        //    dgvAlignHistory.Rows.Clear();
+
+        //    List<DailyData> reverseList = new List<DailyData>();
+        //    reverseList = Enumerable.Reverse(dailyInfo.DailyDataList).ToList();
+
+        //    foreach (var dailyDataList in reverseList)
+        //    {
+        //        foreach (var item in dailyDataList.AlignDailyInfoList)
+        //        {
+        //            string inspectionTime = item.InspectionTime;
+        //            string panelID = item.PanelID;
+        //            string tabNumber = item.TabNo.ToString();
+        //            string judge = item.Judgement.ToString();
+        //            string leftAlignX = item.LX.ToString("F2");
+        //            string leftAlignY = item.LY.ToString("F2");
+        //            string rightAlignX = item.RX.ToString("F2");
+        //            string rightAlignY = item.RY.ToString("F2");
+        //            string centerAlignX = item.CX.ToString("F2");
+
+        //            string[] row = { inspectionTime, panelID, tabNumber, judge, leftAlignX, leftAlignY, rightAlignX, rightAlignY, centerAlignX };
+        //            dgvAlignHistory.Rows.Add(row);
+        //        }
+        //    }
+        //}
     }
 }

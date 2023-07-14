@@ -13,11 +13,11 @@ namespace ATT_UT_Remodeling.UI.Controls
         #endregion
 
         #region 속성
-        public AkkonResultDisplayControl AkkonResultDisplayControl { get; set; } = null;
+        public AkkonResultDisplayControl AkkonResultDisplayControl { get; set; } = new AkkonResultDisplayControl() { Dock = DockStyle.Fill };
 
-        public AkkonResultDataControl AkkonResultDataControl { get; set; } = null;
+        public AkkonResultDataControl AkkonResultDataControl { get; set; } = new AkkonResultDataControl() { Dock = DockStyle.Fill };
 
-        public ResultChartControl AkkonResultChartControl { get; set; } = null;
+        public ResultChartControl AkkonResultChartControl { get; set; } =  new ResultChartControl() { Dock = DockStyle.Fill };
         #endregion
 
         #region 이벤트
@@ -41,18 +41,12 @@ namespace ATT_UT_Remodeling.UI.Controls
 
         private void AddControls()
         {
-            AkkonResultChartControl = new ResultChartControl();
-            AkkonResultChartControl.Dock = DockStyle.Fill;
             AkkonResultChartControl.SetInspChartType(InspChartType.Akkon);
             pnlResultChart.Controls.Add(AkkonResultChartControl);
 
-            AkkonResultDataControl = new AkkonResultDataControl();
-            AkkonResultDataControl.Dock = DockStyle.Fill;
             AkkonResultDataControl.UpdateAkkonDaily();
             pnlResultData.Controls.Add(AkkonResultDataControl);
 
-            AkkonResultDisplayControl = new AkkonResultDisplayControl();
-            AkkonResultDisplayControl.Dock = DockStyle.Fill;
             AkkonResultDisplayControl.SendTabNumber += UpdateResultChart;
             pnlResultDisplay.Controls.Add(AkkonResultDisplayControl);
         }

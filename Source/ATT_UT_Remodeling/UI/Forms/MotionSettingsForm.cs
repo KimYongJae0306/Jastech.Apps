@@ -45,7 +45,7 @@ namespace ATT_UT_Remodeling.UI.Forms
 
         public UnitName UnitName { get; set; } = UnitName.Unit0;
 
-        private TeachingPositionListControl TeachingPositionListControl { get; set; } = null;
+        private TeachingPositionListControl TeachingPositionListControl { get; set; } = new TeachingPositionListControl();
 
         private List<TeachingInfo> TeachingPositionList { get; set; } = null;
 
@@ -55,19 +55,23 @@ namespace ATT_UT_Remodeling.UI.Forms
 
         private LAFCtrl AkkonLafCtrl { get; set; } = null;
 
-        private MotionJogXControl MotionJogXControl { get; set; } = null;
+        private MotionJogXControl MotionJogXControl { get; set; } = new MotionJogXControl() { Dock = DockStyle.Fill };
 
-        private LAFJogControl LAFJogZControl { get; set; } = null;
+        private LAFJogControl LAFJogZControl { get; set; } = new LAFJogControl() { Dock = DockStyle.Fill };
 
-        private MotionParameterCommonControl XCommonControl = null;
+        private MotionParameterCommonControl XCommonControl = new MotionParameterCommonControl();
 
-        private MotionParameterCommonControl ZCommonControl = null;
+        //private MotionParameterCommonControl YCommonControl = new MotionParameterCommonControl();
 
-        private MotionParameterVariableControl XVariableControl = null;
+        private MotionParameterCommonControl ZCommonControl = new MotionParameterCommonControl();
 
-        private MotionParameterVariableControl Z1VariableControl = null;
+        private MotionParameterVariableControl XVariableControl = new MotionParameterVariableControl();
 
-        private MotionParameterVariableControl Z2VariableControl = null;
+        //private MotionParameterVariableControl YVariableControl = new MotionParameterVariableControl();
+
+        private MotionParameterVariableControl Z1VariableControl = new MotionParameterVariableControl();
+
+        private MotionParameterVariableControl Z2VariableControl = new MotionParameterVariableControl();
 
         public TeachingPosType TeachingPositionType = TeachingPosType.Standby;
         #endregion
@@ -90,24 +94,28 @@ namespace ATT_UT_Remodeling.UI.Forms
         private void MotionSettingsForm_Load(object sender, EventArgs e)
         {
             TeachingData.Instance().UpdateTeachingData();
-            AddControl();
-            InitializeUI();
-         
             UpdateData();
-            SetDefaultValue();
-
+            AddControl();
             StartTimer();
+            InitializeUI();
+            SetDefaultValue();
         }
 
         private void SetDefaultValue()
         {
-            MotionJogXControl.JogMode = JogMode.Jog;
-            MotionJogXControl.JogSpeedMode = JogSpeedMode.Slow;
-            MotionJogXControl.JogPitch = Convert.ToDouble(lblPitchXYValue.Text);
+            if (MotionJogXControl != null) 
+            {
+                MotionJogXControl.JogMode = JogMode.Jog;
+                MotionJogXControl.JogSpeedMode = JogSpeedMode.Slow;
+                MotionJogXControl.JogPitch = Convert.ToDouble(lblPitchXYValue.Text);
+            }
 
-            LAFJogZControl.JogMode = JogMode.Jog;
-            LAFJogZControl.JogSpeedMode = JogSpeedMode.Slow;
-            LAFJogZControl.MoveAmount = Convert.ToDouble(lblPitchZValue.Text);
+            if (LAFJogZControl != null)
+            {
+                LAFJogZControl.JogMode = JogMode.Jog;
+                LAFJogZControl.JogSpeedMode = JogSpeedMode.Slow;
+                LAFJogZControl.MoveAmount = Convert.ToDouble(lblPitchZValue.Text);
+            }
         }
 
         private void InitializeUI()
@@ -129,7 +137,6 @@ namespace ATT_UT_Remodeling.UI.Forms
 
         private void AddTeachingPositionListControl()
         {
-            TeachingPositionListControl = new TeachingPositionListControl();
             TeachingPositionListControl.Dock = DockStyle.Fill;
             TeachingPositionListControl.UnitName = UnitName;
             TeachingPositionListControl.SendEventHandler += new TeachingPositionListControl.SetTeachingPositionListDelegate(ReceiveTeachingPosition);
@@ -146,19 +153,14 @@ namespace ATT_UT_Remodeling.UI.Forms
 
         private void UpdateData(TeachingPosType teachingPositionType = TeachingPosType.Standby)
         {
-            TeachingPositionList = TeachingData.Instance().GetUnit(UnitName.ToString()).TeachingInfoList.ToList();
+            var axisHandler = MotionManager.Instance().GetAxisHandler(AxisHandlerName.Handler0);
+            SetAxisHandler(axisHandler);
 
-            AxisHandler = MotionManager.Instance().GetAxisHandler(AxisHandlerName.Handler0);
-            MotionJogXControl.SetAxisHanlder(AxisHandler);
+            var posData = TeachingData.Instance().GetUnit(UnitName.ToString()).TeachingInfoList;
+            SetTeachingPosition(posData);
 
-            AlignLafCtrl = LAFManager.Instance().GetLAFCtrl("Laf");
-            LAFJogZControl.SetSelectedLafCtrl(AlignLafCtrl);
-
-            XCommonControl.SetAxis(AxisHandler.GetAxis(AxisName.X));
-            ZCommonControl.SetAxis(AxisHandler.GetAxis(AxisName.Z1));
-            XVariableControl.SetAxis(AxisHandler.GetAxis(AxisName.X));
-            Z1VariableControl.SetAxis(AxisHandler.GetAxis(AxisName.Z1));
-            Z2VariableControl.SetAxis(AxisHandler.GetAxis(AxisName.Z2));
+            var laf = LAFManager.Instance().GetLAFCtrl("Laf");
+            SetAlignLAFCtrl(laf);
 
             UpdateCommonParam();
             UpdateVariableParam();
@@ -185,26 +187,42 @@ namespace ATT_UT_Remodeling.UI.Forms
             ZCommonControl.UpdateData(AxisHandler.GetAxis(AxisName.Z1).AxisCommonParams.DeepCopy());
         }
 
+        private void SetAxisHandler(AxisHandler axisHandler)
+        {
+            AxisHandler = axisHandler;
+        }
+
+        private void SetTeachingPosition(List<TeachingInfo> teacingPositionList)
+        {
+            TeachingPositionList = teacingPositionList.ToList();
+        }
+
+        private void SetAlignLAFCtrl(LAFCtrl lafCtrl)
+        {
+            AlignLafCtrl = lafCtrl;
+        }
+
+        private void SetAkkonLafCtrl(LAFCtrl lafCtrl)
+        {
+            AkkonLafCtrl = lafCtrl;
+        }
+
         private void AddJogControl()
         {
-            MotionJogXControl = new MotionJogXControl();
-            MotionJogXControl.Dock = DockStyle.Fill;
             pnlMotionJog.Controls.Add(MotionJogXControl);
-        
-            LAFJogZControl = new LAFJogControl();
-            LAFJogZControl.Dock = DockStyle.Fill;
+            MotionJogXControl.SetAxisHanlder(AxisHandler);
+
             pnlLAFZ1Jog.Controls.Add(LAFJogZControl);
+            LAFJogZControl.SetSelectedLafCtrl(AlignLafCtrl);
         }
 
         private void AddCommonControl()
         {
-            XCommonControl = new MotionParameterCommonControl();
             XCommonControl.Dock = DockStyle.Fill;
-         
+            XCommonControl.SetAxis(AxisHandler.GetAxis(AxisName.X));
 
-            ZCommonControl = new MotionParameterCommonControl();
             ZCommonControl.Dock = DockStyle.Fill;
-            
+            ZCommonControl.SetAxis(AxisHandler.GetAxis(AxisName.Z1));
 
             tlpCommonParameter.Controls.Add(XCommonControl);
             tlpCommonParameter.Controls.Add(ZCommonControl);
@@ -212,16 +230,17 @@ namespace ATT_UT_Remodeling.UI.Forms
 
         private void AddVariableControl()
         {
-            XVariableControl = new MotionParameterVariableControl();
             XVariableControl.Dock = DockStyle.Fill;
-            tlpVariableParameter.Controls.Add(XVariableControl);
+            XVariableControl.SetAxis(AxisHandler.GetAxis(AxisName.X));
 
-            Z1VariableControl = new MotionParameterVariableControl();
             Z1VariableControl.Dock = DockStyle.Fill;
-            tlpVariableParameter.Controls.Add(Z1VariableControl);
+            Z1VariableControl.SetAxis(AxisHandler.GetAxis(AxisName.Z1));
 
-            Z2VariableControl = new MotionParameterVariableControl();
             Z2VariableControl.Dock = DockStyle.Fill;
+            Z2VariableControl.SetAxis(AxisHandler.GetAxis(AxisName.Z2));
+
+            tlpVariableParameter.Controls.Add(XVariableControl);
+            tlpVariableParameter.Controls.Add(Z1VariableControl);
             tlpVariableParameter.Controls.Add(Z2VariableControl);
         }
 

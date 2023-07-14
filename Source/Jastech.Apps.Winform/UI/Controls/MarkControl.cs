@@ -19,6 +19,8 @@ namespace Jastech.Apps.Winform.UI.Controls
     public partial class MarkControl : UserControl
     {
         #region 필드
+        private AlgorithmTool Algorithm = new AlgorithmTool();
+
         private string _curTabNo { get; set; } = "";
 
         private Color _selectedColor = new Color();
@@ -31,16 +33,14 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         private MarkDirection _curDirection = MarkDirection.Left;
 
+        private Tab CurrentTab { get; set; } = null;
+
+        private CogPatternMatchingParamControl ParamControl { get; set; } = new CogPatternMatchingParamControl();
+
         private ROIJogForm _roiJogForm { get; set; } = null;
         #endregion
 
         #region 속성
-        private AlgorithmTool Algorithm = new AlgorithmTool();
-
-        private Tab CurrentTab { get; set; } = null;
-
-        private CogPatternMatchingParamControl ParamControl { get; set; } = null;
-
         public TeachingItem TeachingItem = TeachingItem.Mark;
         #endregion
 
@@ -58,6 +58,16 @@ namespace Jastech.Apps.Winform.UI.Controls
         #endregion
 
         #region 메서드
+        
+
+
+
+
+
+
+
+
+
         private void MarkControl_Load(object sender, EventArgs e)
         {
             AddControl();
@@ -73,7 +83,6 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         private void AddControl()
         {
-            ParamControl = new CogPatternMatchingParamControl();
             ParamControl.Dock = DockStyle.Fill;
             ParamControl.GetOriginImageHandler += PatternControl_GetOriginImageHandler;
             ParamControl.TestActionEvent += PatternControl_TestActionEvent;
@@ -607,4 +616,10 @@ namespace Jastech.Apps.Winform.UI.Controls
         }
         #endregion
     }
+
+    //public enum TeachingItem
+    //{
+    //    Align,
+    //    Akkon,
+    //}
 }

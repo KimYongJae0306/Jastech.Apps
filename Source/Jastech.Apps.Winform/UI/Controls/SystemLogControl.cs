@@ -6,6 +6,15 @@ namespace Jastech.Apps.Winform.UI.Controls
 {
     public partial class SystemLogControl : UserControl
     {
+        #region 필드
+        #endregion
+
+        #region 속성
+        #endregion
+
+        #region 이벤트
+        #endregion
+
         #region 델리게이트
         private delegate void AddLogMessageDelegate(string logMessage);
         #endregion

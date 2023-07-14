@@ -11,12 +11,18 @@ namespace Jastech.Apps.Winform.UI.Forms
 {
     public partial class CreateATTModelForm : Form
     {
+        #region 필드
+        #endregion
+
         #region 속성
         public string ModelPath { get; set; } = "";
         #endregion
 
         #region 이벤트
         public event ModelDelegate CreateModelEvent;
+        #endregion
+
+        #region 델리게이트
         #endregion
 
         #region 생성자
@@ -27,6 +33,7 @@ namespace Jastech.Apps.Winform.UI.Forms
         #endregion
 
         #region 메서드
+
         private void lblOK_Click(object sender, EventArgs e)
         {
             string modelName = txtModelName.Text;
@@ -114,6 +121,7 @@ namespace Jastech.Apps.Winform.UI.Forms
             form.Message = message;
             form.ShowDialog();
         }
+        #endregion
 
         private void txtTabCount_KeyPress(object sender, KeyPressEventArgs e)
         {
@@ -152,7 +160,7 @@ namespace Jastech.Apps.Winform.UI.Forms
             {
                 KeyBoardForm form = new KeyBoardForm();
 
-                if (form.ShowDialog() == DialogResult.OK)
+                if(form.ShowDialog() == DialogResult.OK)
                 {
                     var textBox = (TextBox)sender;
                     textBox.Text = form.KeyValue;
@@ -178,6 +186,5 @@ namespace Jastech.Apps.Winform.UI.Forms
             else
                 textBox.Text = "0.000";
         }
-        #endregion
     }
 }

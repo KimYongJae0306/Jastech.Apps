@@ -31,6 +31,9 @@ namespace Jastech.Apps.Winform.UI.Forms
         public PlcModelInfoControl PlcModelInfoControl { get; set; } = null;
         #endregion
 
+        #region 이벤트
+        #endregion
+
         #region 델리게이트
         public Action CloseEventDelegate;
         #endregion

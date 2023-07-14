@@ -35,11 +35,8 @@ namespace Jastech.Framework.Winform.Forms
 
         #region repeat
         private Thread _repeatThread = null;
-
         private bool _isRepeat = false;
-
         private bool _isInfinite = false;
-
         private int _remainCount = 0;
         #endregion
         #endregion
@@ -49,13 +46,15 @@ namespace Jastech.Framework.Winform.Forms
 
         public InspModelService InspModelService { get; set; } = null;
 
-        private DrawBoxControl DrawBoxControl { get; set; } = null;
+        private DrawBoxControl DrawBoxControl { get; set; } = new DrawBoxControl() { Dock = DockStyle.Fill };
 
-        private PixelValueGraphControl PixelValueGraphControl { get; set; } = null;
+        private PixelValueGraphControl PixelValueGraphControl { get; set; } = new PixelValueGraphControl() { Dock = DockStyle.Fill };
 
-        private AutoFocusControl AutoFocusControl { get; set; } = null;
+        private AutoFocusControl AutoFocusControl { get; set; } = new AutoFocusControl() { Dock = DockStyle.Fill };
 
-        private MotionJogXControl MotionJogXControl { get; set; } = null;
+        private MotionJogXYControl MotionJogXYControl { get; set; } = new MotionJogXYControl() { Dock = DockStyle.Fill };
+
+        private MotionJogXControl MotionJogXControl { get; set; } = new MotionJogXControl() { Dock = DockStyle.Fill };
 
         private LAFJogControl LAFJogControl { get; set; } = new LAFJogControl() { Dock = DockStyle.Fill };
 
@@ -141,13 +140,26 @@ namespace Jastech.Framework.Winform.Forms
 
         private void SetDefaultValue()
         {
-            MotionJogXControl.JogMode = JogMode.Jog;
-            MotionJogXControl.JogSpeedMode = JogSpeedMode.Slow;
-            MotionJogXControl.JogPitch = Convert.ToDouble(lblPitchXYValue.Text);
+            if (MotionJogXYControl != null)
+            {
+                MotionJogXYControl.JogMode = JogMode.Jog;
+                MotionJogXYControl.JogSpeedMode = JogSpeedMode.Slow;
+                MotionJogXYControl.JogPitch = Convert.ToDouble(lblPitchXYValue.Text);
+            }
 
-            LAFJogControl.JogMode = JogMode.Jog;
-            LAFJogControl.JogSpeedMode = JogSpeedMode.Slow;
-            LAFJogControl.MoveAmount = Convert.ToDouble(lblPitchZValue.Text);
+            if (MotionJogXControl != null)
+            {
+                MotionJogXControl.JogMode = JogMode.Jog;
+                MotionJogXControl.JogSpeedMode = JogSpeedMode.Slow;
+                MotionJogXControl.JogPitch = Convert.ToDouble(lblPitchXYValue.Text);
+            }
+
+            if (LAFJogControl != null)
+            {
+                LAFJogControl.JogMode = JogMode.Jog;
+                LAFJogControl.JogSpeedMode = JogSpeedMode.Slow;
+                LAFJogControl.MoveAmount = Convert.ToDouble(lblPitchZValue.Text);
+            }
         }
 
         private void InitializeUI()
@@ -162,30 +174,21 @@ namespace Jastech.Framework.Winform.Forms
 
         private void AddControl()
         {
-            DrawBoxControl = new DrawBoxControl();
-            DrawBoxControl.Dock = DockStyle.Fill;
             DrawBoxControl.FigureDataDelegateEventHanlder += DrawBoxControl_FigureDataDelegateEventHanlder;
             pnlDisplay.Controls.Add(DrawBoxControl);
-
-            PixelValueGraphControl = new PixelValueGraphControl();
-            PixelValueGraphControl.Dock = DockStyle.Fill;
             pnlHistogram.Controls.Add(PixelValueGraphControl);
 
             string unitName = UnitName.Unit0.ToString();
             var unit = TeachingData.Instance().GetUnit(unitName);
             var posData = unit.TeachingInfoList;
 
-            AutoFocusControl = new AutoFocusControl();
-            AutoFocusControl.Dock = DockStyle.Fill;
             AutoFocusControl.UpdateData(posData[(int)TeachingPosType.Stage1_Scan_Start].AxisInfoList[(int)AxisName.Z]);
             AutoFocusControl.SetAxisHanlder(AxisHandler);
             AutoFocusControl.SetLAFCtrl(LAFCtrl);
             pnlAutoFocus.Controls.Add(AutoFocusControl);
 
-            MotionJogXControl = new MotionJogXControl();
-            MotionJogXControl.Dock = DockStyle.Fill;
-            MotionJogXControl.SetAxisHanlder(AxisHandler);
-            pnlMotionJog.Controls.Add(MotionJogXControl);
+            pnlMotionJog.Controls.Add(MotionJogXYControl);
+            MotionJogXYControl.SetAxisHanlder(AxisHandler);
 
             pnlLAFJog.Controls.Add(LAFJogControl);
             LAFJogControl.SetSelectedLafCtrl(LAFCtrl);
@@ -414,7 +417,7 @@ namespace Jastech.Framework.Winform.Forms
 
         private void SetSelectJogSpeedMode(JogSpeedMode jogSpeedMode)
         {
-            MotionJogXControl.JogSpeedMode = jogSpeedMode;
+            MotionJogXYControl.JogSpeedMode = jogSpeedMode;
             LAFJogControl.JogSpeedMode = jogSpeedMode;
         }
 
@@ -442,14 +445,14 @@ namespace Jastech.Framework.Winform.Forms
 
         private void SetSelectJogMode(JogMode jogMode)
         {
-            MotionJogXControl.JogMode = jogMode;
+            MotionJogXYControl.JogMode = jogMode;
             LAFJogControl.JogMode = jogMode;
         }
 
         private void lblPitchXYValue_Click(object sender, EventArgs e)
         {
             double pitchXY = KeyPadHelper.SetLabelDoubleData((Label)sender);
-            MotionJogXControl.JogPitch = pitchXY;
+            MotionJogXYControl.JogPitch = pitchXY;
         }
 
         private void lblPitchZValue_Click(object sender, EventArgs e)

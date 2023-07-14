@@ -14,13 +14,13 @@ namespace ATT_UT_Remodeling.UI.Pages
         #endregion
 
         #region 속성
-        public AkkonViewerControl AkkonViewerControl { get; set; } = null;
+        public AkkonViewerControl AkkonViewerControl { get; set; } = new AkkonViewerControl() { Dock = DockStyle.Fill };
 
-        public AlignViewerControl AlignViewerControl { get; set; } = null;
+        public AlignViewerControl AlignViewerControl { get; set; } = new AlignViewerControl() { Dock = DockStyle.Fill };
 
-        public PreAlignDisplayControl PreAlignDisplayControl { get; set; } = null;
+        public PreAlignDisplayControl PreAlignDisplayControl { get; set; } = new PreAlignDisplayControl() { Dock = DockStyle.Fill };
 
-        public SystemLogControl SystemLogControl { get; set; } = null;
+        public SystemLogControl SystemLogControl { get; set; } = new SystemLogControl() { Dock = DockStyle.Fill };
 
         protected override CreateParams CreateParams
         {
@@ -54,20 +54,9 @@ namespace ATT_UT_Remodeling.UI.Pages
 
         private void AddControls()
         {
-            AkkonViewerControl = new AkkonViewerControl();
-            AkkonViewerControl.Dock = DockStyle.Fill;
             pnlAkkon.Controls.Add(AkkonViewerControl);
-
-            AlignViewerControl = new AlignViewerControl();
-            AlignViewerControl.Dock = DockStyle.Fill;
             pnlAlign.Controls.Add(AlignViewerControl);
-
-            PreAlignDisplayControl = new PreAlignDisplayControl();
-            PreAlignDisplayControl.Dock = DockStyle.Fill;
             pnlPreAlign.Controls.Add(PreAlignDisplayControl);
-
-            SystemLogControl = new SystemLogControl();
-            SystemLogControl.Dock = DockStyle.Fill;
             pnlSystemLog.Controls.Add(SystemLogControl);
         }
 

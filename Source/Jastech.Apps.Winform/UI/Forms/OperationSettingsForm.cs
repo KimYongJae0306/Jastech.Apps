@@ -8,6 +8,9 @@ namespace Jastech.Framework.Winform.Forms
 {
     public partial class OperationSettingsForm : Form
     {
+        #region 필드
+        #endregion
+
         #region 속성
         protected override CreateParams CreateParams
         {
@@ -18,6 +21,12 @@ namespace Jastech.Framework.Winform.Forms
                 return cp;
             }
         }
+        #endregion
+
+        #region 이벤트
+        #endregion
+
+        #region 델리게이트
         #endregion
 
         #region 생성자

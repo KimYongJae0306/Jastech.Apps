@@ -25,13 +25,19 @@ namespace Jastech.Apps.Winform.UI.Controls
         #endregion
 
         #region 속성
-        private CogPatternMatchingParamControl ParamControl { get; set; } = null;
+        private CogPatternMatchingParamControl ParamControl { get; set; } = new CogPatternMatchingParamControl() { Dock = DockStyle.Fill };
 
         private Unit CurrentUnit { get; set; } = null;
 
         private AlgorithmTool Algorithm = new AlgorithmTool();
 
         private VisionXCalibration VisionXCalibration { get; set; } = new VisionXCalibration();
+        #endregion
+
+        #region 이벤트
+        #endregion
+
+        #region 델리게이트
         #endregion
 
         #region 생성자
@@ -52,8 +58,6 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         private void AddControl()
         {
-            ParamControl = new CogPatternMatchingParamControl();
-            ParamControl.Dock = DockStyle.Fill;
             ParamControl.GetOriginImageHandler += VisionCalibrationControl_GetOriginImageHandler;
             ParamControl.TestActionEvent += VisionCalibrationControl_TestActionEvent;
             pnlParam.Controls.Add(ParamControl);
@@ -137,6 +141,7 @@ namespace Jastech.Apps.Winform.UI.Controls
             inspParam.Dispose();
             VisionProImageHelper.Dispose(ref copyCogImage);
         }
+        #endregion
 
         private void lblAddROI_Click(object sender, EventArgs e)
         {
@@ -256,6 +261,5 @@ namespace Jastech.Apps.Winform.UI.Controls
             foreach (Label label in tlpCalibrationMode.Controls)
                 label.BackColor = _nonSelectedColor;
         }
-        #endregion
     }
 }

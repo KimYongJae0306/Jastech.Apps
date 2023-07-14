@@ -15,6 +15,15 @@ namespace Jastech.Apps.Winform.UI.Controls
         private bool _isLoading { get; set; } = false;
         #endregion
 
+        #region 속성
+        #endregion
+
+        #region 이벤트
+        #endregion
+
+        #region 델리게이트
+        #endregion
+
         #region 생성자
         public PlcCommandControl()
         {
@@ -72,8 +81,13 @@ namespace Jastech.Apps.Winform.UI.Controls
             lblPcStatus.Text = manager.GetValue(PlcCommonMap.PC_Status);
             lblPcMoveReq.Text = manager.GetValue(PlcCommonMap.PC_Move_REQ);
 
+            //lblPcAlignDataX.Text = manager.GetValue(PlcCommonMap.PC_AlignDataX_H) + "." + manager.GetValue(PlcCommonMap.PC_AlignDataX);
             lblPcAlignDataX.Text = manager.ConvertDoubleWordStringFormat_mm(PlcCommonMap.PC_AlignDataX);
+
+            //lblPcAlignDataY.Text = manager.GetValue(PlcCommonMap.PC_AlignDataY_H) + "." + manager.GetValue(PlcCommonMap.PC_AlignDataY);
             lblPcAlignDataY.Text = manager.ConvertDoubleWordStringFormat_mm(PlcCommonMap.PC_AlignDataY);
+
+            //lblPcAlignDataT.Text = manager.GetValue(PlcCommonMap.PC_AlignDataT_H) + "." + manager.GetValue(PlcCommonMap.PC_AlignDataT);
             lblPcAlignDataT.Text = manager.ConvertDoubleWordStringFormat_mm(PlcCommonMap.PC_AlignDataT);
 
             // PLC

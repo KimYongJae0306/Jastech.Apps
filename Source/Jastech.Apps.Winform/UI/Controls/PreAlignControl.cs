@@ -29,7 +29,7 @@ namespace Jastech.Apps.Winform.UI.Controls
         #endregion
 
         #region 속성
-        private CogPatternMatchingParamControl ParamControl { get; set; } = null;
+        private CogPatternMatchingParamControl ParamControl { get; set; } = new CogPatternMatchingParamControl() { Dock = DockStyle.Fill };
 
         private Unit CurrentUnit { get; set; } = null;
 
@@ -65,8 +65,6 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         private void AddControl()
         {
-            ParamControl = new CogPatternMatchingParamControl();
-            ParamControl.Dock = DockStyle.Fill;
             ParamControl.GetOriginImageHandler += PreAlignControl_GetOriginImageHandler;
             ParamControl.TestActionEvent += PreAlignControl_TestActionEvent;
             pnlParam.Controls.Add(ParamControl);

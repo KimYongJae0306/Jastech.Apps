@@ -25,6 +25,9 @@ namespace Jastech.Apps.Winform.UI.Forms
         public event ApplyModelDelegate ApplyModelEventHandler;
         #endregion
 
+        #region 델리게이트
+        #endregion
+
         #region 생성자
         public ATTModellerForm()
         {
@@ -243,6 +246,7 @@ namespace Jastech.Apps.Winform.UI.Forms
 
             return modelList;
         }
+        #endregion
 
         private void gvModelList_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
         {
@@ -258,6 +262,5 @@ namespace Jastech.Apps.Winform.UI.Forms
         {
             this.Close();
         }
-        #endregion
     }
 }

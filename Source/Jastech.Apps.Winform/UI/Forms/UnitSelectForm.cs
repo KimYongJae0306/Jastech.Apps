@@ -8,12 +8,19 @@ namespace Jastech.Apps.Winform.UI.Forms
 {
     public partial class UnitSelectForm : Form
     {
+        #region 필드
+        #endregion
+
         #region 속성
         public string UnitName { get; private set; } = "";
-
         public SensorType SensorType { get; private set; } = SensorType.Area;
-
         private UnitSelectControl UnitSelectControl { get; set; } = new UnitSelectControl();
+        #endregion
+
+        #region 이벤트
+        #endregion
+
+        #region 델리게이트
         #endregion
 
         #region 생성자
