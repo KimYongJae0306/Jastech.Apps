@@ -5,6 +5,8 @@ using Jastech.Framework.Config;
 using Jastech.Framework.Device.Cameras;
 using Jastech.Framework.Device.LAFCtrl;
 using Jastech.Framework.Device.LightCtrls;
+using Jastech.Framework.Device.LightCtrls.Lvs;
+using Jastech.Framework.Device.LightCtrls.Lvs.Parser;
 using Jastech.Framework.Device.Motions;
 using Jastech.Framework.Device.Plcs.Melsec;
 using Jastech.Framework.Device.Plcs.Melsec.Parsers;
@@ -101,46 +103,23 @@ namespace ATT_UT_IPAD
             }
             else
             {
-                //var camera1 = new CameraMil(CameraName.LinscanMIL0.ToString(), 4640, 1024, ColorFormat.Gray, SensorType.Line);
-                //camera1.MilSystemType = MilSystemType.Rapixo;
-                //camera1.TriggerMode = TriggerMode.Hardware;
-                //camera1.TriggerSource = (int)MilCxpTriggerSource.Cxp;
-                //camera1.TriggerSignalType = MilTriggerSignalType.TL_Trigger;
-                //camera1.TriggerIoSourceType = MILIoSourceType.AUX_IO0;
-                //camera1.DigitizerNum = 0;
+                // Motion
+                var motion = new VirtualMotion("VirtualMotion", 2);
+                config.Add(motion);
 
-                //camera1.DcfFile = CameraMil.GetDcfFile(CameraType.VT_6k35c_trigger);
-                //config.Add(camera1);
 
-                //var motion = new ACSMotion("Motion", 2, ACSConnectType.Ethernet);
-                //motion.IpAddress = "10.0.0.100";
-                //config.Add(motion);
+                // Light1
+                var spotLight = new LvsLightCtrl("Spot", 6, new SerialPortComm("COM5", 19200), new LvsSerialParser()); // 12V
+                spotLight.ChannelNameMap["Ch.White"] = 1; // channel 지정
+                spotLight.ChannelNameMap["Ch.RedSpot"] = 2; // channel 지정
+                spotLight.ChannelNameMap["Ch.Blue"] = 3; // channel 지정
+                config.Add(spotLight);
 
-                ////var light1 = new LvsLightCtrl("LvsLight12V", 6, new SerialPortComm("COM2", 9600), new LvsSerialParser());
-                ////light1.ChannelNameMap["Ch.Blue"] = 0;
-                ////light1.ChannelNameMap["Ch.RedSpot"] = 1;
-                ////config.Add(light1);
-
-                ////var light2 = new LvsLightCtrl("LvsLight24V", 6, new SerialPortComm("COM3", 9600), new LvsSerialParser());
-                ////light2.ChannelNameMap["Ch.RedRing"] = 0;
-                ////config.Add(light2);
-
-                //var laf1 = new NuriOneLAFCtrl(LAFName.Akkon.ToString());
-                //laf1.SerialPortComm = new SerialPortComm
-                //{
-                //    PortName = "COM4",
-                //    BaudRate = 9600,
-                //};
-                //config.Add(laf1);
-
-                ////var laf2 = new NuriOneLAFCtrl(LAFName.Akkon.ToString());
-                ////laf2.SerialPortComm = new SerialPortComm
-                ////{
-                ////    PortName = "COM3",
-                ////    BaudRate = 9600,
-                ////};
-                ////config.Add(laf2);
-                ///
+                // Light2
+                var ringLight = new LvsLightCtrl("Ring", 6, new SerialPortComm("COM4", 19200), new LvsSerialParser());  // 24V
+                ringLight.ChannelNameMap["Ch.RedRing1"] = 1; // channel 지정
+                ringLight.ChannelNameMap["Ch.RedRing2"] = 2; // channel 지정
+                config.Add(ringLight);
             }
         }
 

@@ -47,7 +47,6 @@ namespace ATT_UT_Remodeling.Core
 
 
                 // LineScan 조명 Parameter 생성
-                //unit.LineScanLightParamList.AddRange(CreateLightParameter());
                 unit.LineScanLightParam = CreateLightParameter();
 
                 // PreAlign 조명

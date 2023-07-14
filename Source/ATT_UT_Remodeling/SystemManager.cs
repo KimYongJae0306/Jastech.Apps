@@ -6,8 +6,10 @@ using Jastech.Apps.Winform.Core;
 using Jastech.Apps.Winform.Service;
 using Jastech.Framework.Config;
 using Jastech.Framework.Device.Cameras;
+using Jastech.Framework.Device.LAFCtrl;
 using Jastech.Framework.Device.LightCtrls;
 using Jastech.Framework.Device.Motions;
+using Jastech.Framework.Device.Plcs;
 using Jastech.Framework.Structure;
 using Jastech.Framework.Util.Helper;
 using Jastech.Framework.Winform;
@@ -119,10 +121,21 @@ namespace ATT_UT_Remodeling
             {
                 message = "LightCtrl Initialize Fail";
             }
+            else if (deviceType == typeof(LAFCtrl))
+            {
+                message = "LAF Initialize Fail";
+            }
+            else if (deviceType == typeof(Plc))
+            {
+                message = "Plc Initialize Fail";
+            }
 
-            MessageYesNoForm form = new MessageYesNoForm();
-            form.Message = message;
-            form.ShowDialog();
+            if(message != "")
+            {
+                MessageYesNoForm form = new MessageYesNoForm();
+                form.Message = message;
+                form.ShowDialog();
+            }
         }
 
         public bool CreateAxisHanlder()

@@ -7,6 +7,7 @@ using Jastech.Framework.Config;
 using Jastech.Framework.Device.LightCtrls;
 using Jastech.Framework.Structure;
 using Jastech.Framework.Util.Helper;
+using Jastech.Framework.Winform;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -31,7 +32,7 @@ namespace ATT_UT_IPAD.Core
                 unit.Name = unitName.ToString(); // 임시 -> Apps에서 변경
 
                 // LineScan 조명 Parameter 생성
-                //unit.LineScanLightParamList.AddRange(CreateLightParameter());
+                unit.LineScanLightParam = CreateLightParameter();
 
                 for (int tabIndex = 0; tabIndex < appInspModel.TabCount; tabIndex++)
                 {
@@ -136,42 +137,18 @@ namespace ATT_UT_IPAD.Core
             return lightParamList;
         }
 
-        private List<LightParameter> CreateLightParameter()
+        private LightParameter CreateLightParameter()
         {
-            List<LightParameter> lightParameterList = new List<LightParameter>();
+            LightParameter lightParameter = new LightParameter("Akkon");
 
-            var lightCtrls = ConfigSet.Instance().Machine.GetDevices<LightCtrl>();
-            if (lightCtrls == null)
-                return lightParameterList;
+            var lightCtrlHandler = DeviceManager.Instance().LightCtrlHandler;
+            var spotLightCtrl = lightCtrlHandler.Get("Spot");
+            var ringLightCtrl = lightCtrlHandler.Get("Ring");
 
-            LightParameter lightParameter = new LightParameter("");
+            lightParameter.Add(spotLightCtrl, new LightValue(spotLightCtrl.TotalChannelCount));
+            lightParameter.Add(ringLightCtrl, new LightValue(ringLightCtrl.TotalChannelCount));
 
-            //foreach (var light in lightCtrls)
-            //{
-            //    if(light.Name == "LvsLight12V")
-            //    {
-            //        LightParameter lightParameter = new LightParameter(light.Name);
-            //        LightValue lightValue = new LightValue(light.TotalChannelCount);
-            //        lightValue.LightLevels[light.ChannelNameMap["Ch.Blue"]] = 100;
-            //        lightValue.LightLevels[light.ChannelNameMap["Ch.RedSpot"]] = 100;
-
-            //        lightParameter.Add(light, lightValue);
-
-            //        lightParameterList.Add(lightParameter);
-            //    }
-            //    else if(light.Name == "LvsLight24V")
-            //    {
-            //        LightParameter lightParameter = new LightParameter(light.Name);
-            //        LightValue lightValue = new LightValue(light.TotalChannelCount);
-            //        lightValue.LightLevels[light.ChannelNameMap["Ch.RedRing"]] = 100;
-
-            //        lightParameter.Add(light, lightValue);
-
-            //        lightParameterList.Add(lightParameter);
-            //    }
-            //}
-
-            return lightParameterList;
+            return lightParameter;
         }
 
         public override InspModel Load(string filePath)
