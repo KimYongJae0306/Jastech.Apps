@@ -1,9 +1,14 @@
 ﻿using Cognex.VisionPro;
+using Jastech.Apps.Structure;
+using Jastech.Apps.Structure.Data;
 using Jastech.Apps.Structure.VisionTool;
+using Jastech.Apps.Winform.Service.Plc.Maps;
 using Jastech.Framework.Device.Motions;
 using Jastech.Framework.Imaging.VisionPro.VisionAlgorithms.Parameters;
 using Jastech.Framework.Imaging.VisionPro.VisionAlgorithms.Results;
+using Jastech.Framework.Structure;
 using Jastech.Framework.Util.Helper;
+using Jastech.Framework.Winform;
 using Jastech.Framework.Winform.Forms;
 using System;
 using System.Collections.Generic;
@@ -188,6 +193,16 @@ namespace Jastech.Apps.Winform.Core.Calibrations
 
         private void CalibrationSequence()
         {
+            var inspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
+            if (inspModel == null)
+                return;
+
+            var unit = inspModel.GetUnit(UnitName.Unit0);
+            if (unit == null)
+                return;
+
+            var light = DeviceManager.Instance().LightCtrlHandler;
+
             string logMessage = string.Empty;
 
             double intervalX = 0.1;
@@ -195,7 +210,7 @@ namespace Jastech.Apps.Winform.Core.Calibrations
             double intervalT = 0.1;
 
             int directionT = 1;
-            
+
             Stopwatch sw = new Stopwatch();
 
             var display = TeachingUIManager.Instance().GetDisplay();
@@ -219,11 +234,13 @@ namespace Jastech.Apps.Winform.Core.Calibrations
                 case CalSeqStep.CAL_SEQ_INIT:
                     Logger.Write(LogType.Device, "Initialize calibration.");
 
-                    PlcControlManager.Instance().ClearAddress(Service.Plc.Maps.PlcCommonMap.PLC_Command);
+                    PlcControlManager.Instance().ClearAddress(PlcCommonMap.PLC_Command);
 
                     ClearMatrixPointResultList();
 
                     // 조명 켜기
+                    light.TurnOn(unit.RightPreAlignLightParam);
+
                     Logger.Write(LogType.Device, "Light on.");
 
                     InitailizeOpticSetting();
@@ -401,7 +418,7 @@ namespace Jastech.Apps.Winform.Core.Calibrations
                     if (CalibrationMode == CalibrationMode.XY)
                     {
                         Logger.Write(LogType.Device, "Complete XY calibration.");
-                        CalSeqStep = CalSeqStep.CAL_SEQ_COMPLETED;
+                        CalSeqStep = CalSeqStep.CAL_SEQ_SAVE_RESULT_DATA;
                     }
                     else
                     {
@@ -616,7 +633,7 @@ namespace Jastech.Apps.Winform.Core.Calibrations
                 case CalSeqStep.CAL_SEQ_T_COMPLETED:
                     Logger.Write(LogType.Device, "Complete T calibration.");
 
-                    CalSeqStep = CalSeqStep.CAL_SEQ_COMPLETED;
+                    CalSeqStep = CalSeqStep.CAL_SEQ_SAVE_RESULT_DATA;
                     break;
 
                 case CalSeqStep.CAL_SEQ_T_ADV_INIT:
@@ -658,8 +675,8 @@ namespace Jastech.Apps.Winform.Core.Calibrations
                         Logger.Write(LogType.Error, "Run return to origin.");
                         CalSeqStep = CalSeqStep.CAL_SEQ_ERROR_MOVE_REF;
                     }
-
-                    CalSeqStep = CalSeqStep.CAL_SEQ_COMPLETED;
+                    else
+                        CalSeqStep = CalSeqStep.CAL_SEQ_ERROR_SEND;
                     break;
 
                 case CalSeqStep.CAL_SEQ_ERROR_MOVE_REF:
@@ -676,23 +693,64 @@ namespace Jastech.Apps.Winform.Core.Calibrations
                     if (sw.ElapsedMilliseconds > CAL_TIME_OUT)
                     {
                         Logger.Write(LogType.Error, "Failed to move request. - Timeout error");
-                        CalSeqStep = CalSeqStep.CAL_SEQ_ERROR;
                         break;
                     }
 
                     if (RequestMoveDone() == false)
                         break;
-                    else
-                    {
-                        RequestMoveOff();
 
-                        if (IsInPosition() == false)
-                        {
-                            Logger.Write(LogType.Error, "Failed to move request. - In-Position error");
-                            CalSeqStep = CalSeqStep.CAL_SEQ_ERROR;
-                            break;
-                        }
+                    RequestMoveOff();
+
+                    if (IsInPosition() == false)
+                    {
+                        Logger.Write(LogType.Error, "Failed to move request. - In-Position error");
+                        break;
                     }
+
+                    CalSeqStep = CalSeqStep.CAL_SEQ_ERROR_SEND;
+                    break;
+
+                case CalSeqStep.CAL_SEQ_ERROR_SEND:
+                    Logger.Write(LogType.Device, "Failed calibration.");
+
+                    PlcControlManager.Instance().WritePcStatus(PlcCommand.Calibration, false);
+                    Logger.Write(LogType.Device, "Send calibration abnormal complete signal.");
+
+                    CalSeqStep = CalSeqStep.CAL_SEQ_COMPLETED;
+                    break;
+
+                case CalSeqStep.CAL_SEQ_SAVE_RESULT_DATA:
+                    // Set calibration data
+                    CalibrationData.Instance().SetCalibrationData(_calibrationResult.ToList());
+                    CalibrationData.Instance().SetRotationCenter(_robotCenterX, _robotCenterY);
+
+                    Logger.Write(LogType.Device, "Set calibration data.");
+
+                    var matrixPointResultList = GetMatrixPointResutlList();
+
+                    // Set calibration log
+                    CalibrationData.Instance().SetCalibrationLogData(matrixPointResultList);
+                    Logger.Write(LogType.Device, "Set calibration log.");
+
+                    // Save calibration data
+                    CalibrationData.Instance().SaveCalibrationResultData();
+                    Logger.Write(LogType.Device, "Save calibration data.");
+
+                    // Save calibration log
+                    CalibrationData.Instance().SaveCalibrationLogData(matrixPointResultList);
+                    Logger.Write(LogType.Device, "Save calibration log.");
+
+                    CalSeqStep = CalSeqStep.CAL_SEQ_SEND_RESULT_DATA;
+                    break;
+
+                case CalSeqStep.CAL_SEQ_SEND_RESULT_DATA:
+                    
+                    PlcControlManager.Instance().ClearAddress(PlcCommonMap.PLC_Command);
+                    Logger.Write(LogType.Device, "Send calibration data.");
+
+                    // Send calibration abnormal complete signal
+                    PlcControlManager.Instance().WritePcStatus(PlcCommand.Calibration);
+                    Logger.Write(LogType.Device, "Send calibration abnormal complete signal.");
 
                     CalSeqStep = CalSeqStep.CAL_SEQ_COMPLETED;
                     break;
@@ -700,37 +758,17 @@ namespace Jastech.Apps.Winform.Core.Calibrations
                 case CalSeqStep.CAL_SEQ_COMPLETED:
                     Logger.Write(LogType.Device, "Complete calibration.");
 
-                    // 캘 종료 신호 보내기
-                    PlcControlManager.Instance().ClearAddress(Service.Plc.Maps.PlcCommonMap.PLC_Command);
-                    Logger.Write(LogType.Device, "Send calibration data.");
-
-                    // 조명 끄기
+                    // Light off
+                    light.TurnOff();
                     Logger.Write(LogType.Device, "Light off.");
-
-                    // 캘 데이터 셋
-                    CalibrationData.Instance().SetCalibrationData(_calibrationResult.ToList());
-                    CalibrationData.Instance().SetRotationCenter(_robotCenterX, _robotCenterY);
-                    
-                    Logger.Write(LogType.Device, "Set calibration data.");
-
-                    var matrixPointResultList = GetMatrixPointResutlList();
-
-                    // 캘 로그데이터 셋
-                    CalibrationData.Instance().SetCalibrationLogData(matrixPointResultList);
-                    Logger.Write(LogType.Device, "Set calibration log.");
-
-                    // 캘 데이터 세이브
-                    CalibrationData.Instance().SaveCalibrationResultData();
-                    Logger.Write(LogType.Device, "Save calibration data.");
-
-                    // 캘 로그데이터 세이브
-                    CalibrationData.Instance().SaveCalibrationLogData(matrixPointResultList);
-                    Logger.Write(LogType.Device, "Save calibration log.");
 
                     CalSeqStep = CalSeqStep.CAL_SEQ_STOP;
                     break;
 
                 case CalSeqStep.CAL_SEQ_STOP:
+                    // Light off
+                    light.TurnOff();
+                    Logger.Write(LogType.Device, "Light off.");
 
                     CalSeqStep = CalSeqStep.CAL_SEQ_STOP;
                     break;
@@ -935,7 +973,7 @@ namespace Jastech.Apps.Winform.Core.Calibrations
             bool doneY = false;
             bool done = false;
 
-            while (!done)
+            do
             {
                 switch (step)
                 {
@@ -963,7 +1001,7 @@ namespace Jastech.Apps.Winform.Core.Calibrations
                     default:
                         break;
                 }
-            }
+            } while (!done);
 
             return done;
         }
@@ -1250,7 +1288,10 @@ namespace Jastech.Apps.Winform.Core.Calibrations
         CAL_SEQ_ERROR,                              // 원점 복귀 할래?
         CAL_SEQ_ERROR_MOVE_REF,                           // OK : 원점 ㄱ
         CAL_SEQ_ERROR_MOVE_REF_TIMEOUT,                       // NO : 타임아웃 + PLC한테 통보
+        CAL_SEQ_ERROR_SEND,
 
+        CAL_SEQ_SAVE_RESULT_DATA,
+        CAL_SEQ_SEND_RESULT_DATA,
         CAL_SEQ_COMPLETED,                          // CAL 종료
 
         CAL_SEQ_STOP,

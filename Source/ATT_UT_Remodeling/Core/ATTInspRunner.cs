@@ -535,10 +535,6 @@ namespace ATT_UT_Remodeling.Core
             if (tab == null)
                 return;
 
-            var areaCamera = AreaCameraManager.Instance().GetAreaCamera("PreAlign");
-            if (areaCamera == null)
-                return;
-
             var lineCamera = LineCameraManager.Instance().GetLineCamera("LineCamera");
             if (lineCamera == null)
                 return;
@@ -561,21 +557,6 @@ namespace ATT_UT_Remodeling.Core
                         break;
                     }
 
-                    SeqStep = SeqStep.SEQ_READY;
-                    break;
-
-                case SeqStep.SEQ_READY:
-                    // 조명
-                    WriteLog("Light off.");
-
-                    //PlcControlManager.Instance().ClearAlignData();
-                    WriteLog("Clear PLC data.");
-
-                    // LAF
-                    LAFManager.Instance().AutoFocusOnOff("Laf", false);
-                    laf.SetMotionAbsoluteMove(0);
-                    WriteLog("Laf off.");
-
                     SeqStep = SeqStep.SEQ_START;
                     break;
 
@@ -587,92 +568,24 @@ namespace ATT_UT_Remodeling.Core
 
                     WriteLog("Receive prealign start signal from PLC.");
 
-                    SeqStep = SeqStep.SEQ_PREALIGN_R;
+                    SeqStep = SeqStep.SEQ_READY;
                     break;
 
-                case SeqStep.SEQ_PREALIGN_R:
-                    // Move to prealign right position
-                    if (MoveTo(TeachingPosType.Stage1_PreAlign_Right, out errorMessage) == false)
-                    {
-                        // Alarm
-                        break;
-                    }
+                case SeqStep.SEQ_READY:
+                    // 조명
+                    WriteLog("Light off.");
 
-                    // Set camera property
-                    areaCamera.Camera.SetExposureTime(0);
-                    areaCamera.Camera.SetAnalogGain(0);
-                    WriteLog("Set camera property.");
+                    PlcControlManager.Instance().ClearAlignData();
+                    WriteLog("Clear PLC data.");
 
-                    // Light on
-                    //preAlignParam.LightParams.Where(x => x.Map == )
-                    WriteLog("Prealign light on.");
+                    // LAF
+                    LAFManager.Instance().AutoFocusOnOff("Laf", false);
+                    laf.SetMotionAbsoluteMove(0);
+                    WriteLog("Laf off.");
 
-                    // Grab
-                    var preAlignLeftImage = GetAreaCameraImage(areaCamera.Camera);
-                    AppsInspResult.PreAlignResult.PreAlignMark.FoundedMark.Right = RunPreAlignMark(unit, preAlignLeftImage, MarkDirection.Right);
-                    WriteLog("Complete prealign right mark search.");
-
-                    // Set prealign motion position
-                    SetMarkMotionPosition(unit, MarkDirection.Right);
-                    WriteLog("Set axis information for prealign right mark position.");
-
-                    SeqStep = SeqStep.SEQ_PREALIGN_L;
+                    SeqStep = SeqStep.SEQ_START;
                     break;
-
-                case SeqStep.SEQ_PREALIGN_L:
-                    // Move to prealign left position
-                    if (MoveTo(TeachingPosType.Stage1_PreAlign_Left, out errorMessage) == false)
-                    {
-                        // Alarm
-                        break;
-                    }
-
-                    // Grab start
-                    var preAlignRightImage = GetAreaCameraImage(areaCamera.Camera);
-                    AppsInspResult.PreAlignResult.PreAlignMark.FoundedMark.Left = RunPreAlignMark(unit, preAlignRightImage, MarkDirection.Right);
-                    WriteLog("Complete prealign left mark search.");
-
-                    // Set prealign motion position
-                    SetMarkMotionPosition(unit, MarkDirection.Left);
-                    WriteLog("Set axis information for prealign left mark position.");
-
-                    SeqStep = SeqStep.SEQ_SEND_PREALIGN_DATA;
-                    break;
-
-                case SeqStep.SEQ_SEND_PREALIGN_DATA:
-                    WriteLog("Prealign light off.");
-
-                    // Execute prealign
-                    RunPreAlign(AppsInspResult);
-                    WriteLog("Complete prealign.");
-
-                    // Set prealign result
-                    var offsetX = AppsInspResult.PreAlignResult.OffsetX;
-                    var offsetY = AppsInspResult.PreAlignResult.OffsetY;
-                    var offsetT = AppsInspResult.PreAlignResult.OffsetT;
-
-                    // Check Tolerance
-                    if (Math.Abs(offsetX) <= AppsConfig.Instance().PreAlignToleranceX
-                        || Math.Abs(offsetX) <= AppsConfig.Instance().PreAlignToleranceY
-                        || Math.Abs(offsetX) <= AppsConfig.Instance().PreAlignToleranceTheta)
-                    {
-                        WriteLog("Prealign results are spec-in.");
-                    }
-                    else
-                        WriteLog("Prealign results are spec-out.");
-
-                    // Send prealign offset results
-                    PlcControlManager.Instance().WriteAlignData(offsetX, offsetY, offsetT);
-                    WriteLog("Write prealign results.");
-
-                    // Send prealign score results
-                    var leftScore = AppsInspResult.PreAlignResult.PreAlignMark.FoundedMark.Left.MaxMatchPos.Score;
-                    var rightScore = AppsInspResult.PreAlignResult.PreAlignMark.FoundedMark.Right.MaxMatchPos.Score;
-                    PlcControlManager.Instance().WritePreAlignResult(leftScore, rightScore);
-                    WriteLog("Send prealign results.");
-
-                    SeqStep = SeqStep.SEQ_WAITING;
-                    break;
+                
 
                 case SeqStep.SEQ_WAITING:
                     // Wait for scan start signal command
@@ -691,7 +604,7 @@ namespace ATT_UT_Remodeling.Core
                     break;
 
                 case SeqStep.SEQ_SCAN_READY:
-                    LineCameraManager.Instance().GetLineCamera("LineCamera").IsLive = false;
+                    lineCamera.IsLive = false;
 
                     // Clear results
                     ClearResult();
@@ -819,14 +732,6 @@ namespace ATT_UT_Remodeling.Core
                 default:
                     break;
             }
-        }
-
-        private void WriteLog(string logMessage, bool isSystemLog = false)
-        {
-            if (isSystemLog)
-                SystemManager.Instance().AddSystemLogMessage(logMessage);
-
-            Logger.Write(LogType.Seq, logMessage);
         }
 
         private void GetAkkonResultImage()
@@ -1726,17 +1631,22 @@ namespace ATT_UT_Remodeling.Core
 
             preAlignParam.SetMotionData(motionX, motionY, motionT);
         }
+
+        private void WriteLog(string logMessage, bool isSystemLog = false)
+        {
+            if (isSystemLog)
+                SystemManager.Instance().AddSystemLogMessage(logMessage);
+
+            Logger.Write(LogType.Seq, logMessage);
+        }
         #endregion
     }
 
     public enum SeqStep
     {
         SEQ_IDLE,
-        SEQ_READY,
         SEQ_START,
-        SEQ_PREALIGN_R,
-        SEQ_PREALIGN_L,
-        SEQ_SEND_PREALIGN_DATA,
+        SEQ_READY,
         SEQ_WAITING,
         SEQ_SCAN_READY,
         SEQ_SCAN_START,

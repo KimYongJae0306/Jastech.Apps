@@ -23,6 +23,26 @@ namespace Jastech.Apps.Winform.Service.Plc
 {
     public class PlcScenarioManager
     {
+        #region 필드
+        #endregion
+
+        #region 속성
+        #endregion
+
+        #region 이벤트
+        public event InspRunnerEventHandler InspRunnerHandler;
+        #endregion
+
+        #region 델리게이트
+        public delegate void InspRunnerEventHandler(bool tt);
+        #endregion
+
+        #region 생성자
+        #endregion
+
+        #region 메서드
+        #endregion
+
         private bool EnableActive { get; set; } = false;
 
         private static PlcScenarioManager _instance = null;
@@ -424,6 +444,7 @@ namespace Jastech.Apps.Winform.Service.Plc
             }
 
             // 검사 시작 InspRunner
+            
         }
 
         private void Calibration()
@@ -451,7 +472,6 @@ namespace Jastech.Apps.Winform.Service.Plc
                 Logger.Debug(LogType.Device, $"Write Fail StartPreAlign[{command}] : Calibration Param is null.", AppsStatus.Instance().CurrentTime);
                 return;
             }
-
 
             VisionXCalibration VisionXCalibration = new VisionXCalibration();
             VisionXCalibration.SetParam(param);

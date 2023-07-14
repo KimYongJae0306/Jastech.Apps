@@ -4,6 +4,7 @@ using Jastech.Apps.Structure.Data;
 using Jastech.Apps.Winform;
 using Jastech.Apps.Winform.Core;
 using Jastech.Apps.Winform.Service;
+using Jastech.Apps.Winform.Service.Plc.Maps;
 using Jastech.Framework.Config;
 using Jastech.Framework.Device.Cameras;
 using Jastech.Framework.Device.LightCtrls;
@@ -26,6 +27,8 @@ namespace ATT_UT_Remodeling
         private MainForm _mainForm = null;
 
         private ATTInspRunner _inspRunner = new ATTInspRunner();
+
+        private PreAlignRunner _preAlignRunner = new PreAlignRunner();
         #endregion
 
         #region 속성
@@ -191,6 +194,7 @@ namespace ATT_UT_Remodeling
                 form.Message = "Do you want to Start Auto Mode?";
                 if (form.ShowDialog() == DialogResult.Yes)
                 {
+                    _preAlignRunner.SeqRun();
                     _inspRunner.SeqRun();
                     AddSystemLogMessage("Start auto mode.");
                 }
@@ -213,6 +217,7 @@ namespace ATT_UT_Remodeling
 
                 if (form.ShowDialog() == DialogResult.Yes)
                 {
+                    _preAlignRunner.SeqStop();
                     _inspRunner.SeqStop();
                     AddSystemLogMessage("Stop auto mode.");
                 }

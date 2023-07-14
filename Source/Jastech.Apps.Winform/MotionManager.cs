@@ -112,7 +112,7 @@ namespace Jastech.Apps.Winform
             var posData = unit.GetTeachingInfo(teachingPosType);
 
             var targetPosition = posData.GetTargetPosition(axis.Name);
-            var movingParam = posData.GetMovingParams(axis.Name);
+            var movingParam = posData.GetMovingParam(axis.Name);
 
             axis.StartAbsoluteMove(targetPosition, movingParam);
         }
