@@ -3,6 +3,7 @@ using ATT_UT_Remodeling.UI.Pages;
 using Jastech.Apps.Structure;
 using Jastech.Apps.Structure.Data;
 using Jastech.Apps.Winform;
+using Jastech.Apps.Winform.Service.Plc;
 using Jastech.Apps.Winform.Service.Plc.Maps;
 using Jastech.Apps.Winform.Settings;
 using Jastech.Framework.Config;
@@ -64,7 +65,9 @@ namespace ATT_UT_Remodeling
             SelectMainPage();
 
             ModelManager.Instance().CurrentModelChangedEvent += MainForm_CurrentModelChangedEvent;
-
+            PlcScenarioManager.Instance().Initialize(ATTInspModelService);
+            PlcScenarioManager.Instance().InspRunnerHandler += MainForm_InspRunnerHandler;
+            PlcScenarioManager.Instance().PreAlignRunnerHandler += MainForm_PreAlignRunnerHandler;
             if (ModelManager.Instance().CurrentModel != null)
             {
                 lblCurrentModel.Text = ModelManager.Instance().CurrentModel.Name;
@@ -72,6 +75,16 @@ namespace ATT_UT_Remodeling
             }
 
             tmrMainForm.Start();
+        }
+
+        private void MainForm_PreAlignRunnerHandler(bool tt)
+        {
+            AppsStatus.Instance().IsPreAlignRunnerFlagFromPlc = tt;
+        }
+
+        private void MainForm_InspRunnerHandler(bool tt)
+        {
+            AppsStatus.Instance().IsInspRunnerFlagFromPlc = tt;
         }
 
         private void AddControls()

@@ -1,4 +1,5 @@
-﻿using Jastech.Apps.Structure;
+﻿using Cognex.VisionPro;
+using Jastech.Apps.Structure;
 using Jastech.Apps.Structure.Data;
 using Jastech.Apps.Winform.Core.Calibrations;
 using Jastech.Apps.Winform.Service.Plc.Maps;
@@ -31,10 +32,12 @@ namespace Jastech.Apps.Winform.Service.Plc
 
         #region 이벤트
         public event InspRunnerEventHandler InspRunnerHandler;
+        public event PreAlignRunnerEventHandler PreAlignRunnerHandler;
         #endregion
 
         #region 델리게이트
         public delegate void InspRunnerEventHandler(bool tt);
+        public delegate void PreAlignRunnerEventHandler(bool tt);
         #endregion
 
         #region 생성자

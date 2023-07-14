@@ -14,6 +14,10 @@ namespace Jastech.Apps.Winform
 
         private static AppsStatus _instance = null;
 
+        public bool IsInspRunnerFlagFromPlc { get; set; } = false;
+
+        public bool IsPreAlignRunnerFlagFromPlc { get; set; } = false;
+
         public static AppsStatus Instance()
         {
             if (_instance == null)
