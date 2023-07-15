@@ -122,22 +122,22 @@ namespace ATT_UT_Remodeling
                 //areaScan.SerialNo = "DA0228166";
                 //config.Add(areaScan);
 
-                //// LineScanCamera
-                //var lineCamera = new CameraMil("LineCamera", 6560, 1024, ColorFormat.Gray, SensorType.Line);
-                //lineCamera.MilSystemType = MilSystemType.Rapixo;
-                //lineCamera.TriggerMode = TriggerMode.Hardware;
-                //lineCamera.TriggerSource = (int)MilCxpTriggerSource.Cxp;
-                //lineCamera.TriggerSignalType = MilTriggerSignalType.TL_Trigger;
-                //lineCamera.TriggerIoSourceType = MILIoSourceType.AUX_IO0;
-                //lineCamera.DigitizerNum = 0;
+                // LineScanCamera
+                var lineCamera = new CameraMil("LineCamera", 4640, 1024, ColorFormat.Gray, SensorType.Line);
+                lineCamera.MilSystemType = MilSystemType.Rapixo;
+                lineCamera.TriggerMode = TriggerMode.Hardware;
+                lineCamera.TriggerSource = (int)MilCxpTriggerSource.Cxp;
+                lineCamera.TriggerSignalType = MilTriggerSignalType.TL_Trigger;
+                lineCamera.TriggerIoSourceType = MILIoSourceType.AUX_IO0;
+                lineCamera.DigitizerNum = 0;
 
-                //lineCamera.DcfFile = CameraMil.GetDcfFile(CameraType.VT_6k35c_trigger);
-                //config.Add(lineCamera);
+                lineCamera.DcfFile = CameraMil.GetDcfFile(CameraType.VT_6K3_5X_H160);
+                config.Add(lineCamera);
 
-                //// Motion
-                //var motion = new ACSMotion("Motion", 2, ACSConnectType.Ethernet);
-                //motion.IpAddress = "10.0.0.100";
-                //config.Add(motion);
+                // Motion
+                var motion = new ACSMotion("Motion", 2, ACSConnectType.Ethernet);
+                motion.IpAddress = "10.0.0.100";
+                config.Add(motion);
 
                 // LAF
                 var laf1 = new NuriOneLAFCtrl("Laf");
@@ -162,15 +162,15 @@ namespace ATT_UT_Remodeling
                 config.Add(ringLight);
 
                 // PLC
-                //AppsConfig.Instance().PlcAddressInfo.CommonStart = 104000;
-                //AppsConfig.Instance().PlcAddressInfo.ResultStart = 105000;
-                //AppsConfig.Instance().PlcAddressInfo.ResultStart_Align = 105220;
-                //AppsConfig.Instance().PlcAddressInfo.ResultTabToTabInterval = 200;
-                //AppsConfig.Instance().PlcAddressInfo.ResultStart_Akkon = 105230;
-                //AppsConfig.Instance().PlcAddressInfo.ResultStart_PreAlign = 105250;
+                AppsConfig.Instance().PlcAddressInfo.CommonStart = 104000;
+                AppsConfig.Instance().PlcAddressInfo.ResultStart = 105000;
+                AppsConfig.Instance().PlcAddressInfo.ResultStart_Align = 105220;
+                AppsConfig.Instance().PlcAddressInfo.ResultTabToTabInterval = 200;
+                AppsConfig.Instance().PlcAddressInfo.ResultStart_Akkon = 105230;
+                AppsConfig.Instance().PlcAddressInfo.ResultStart_PreAlign = 105250;
 
-                //var plc = new MelsecPlc("PLC", new SocketComm("192.168.130.2", 9021, SocketCommType.Udp, 9031), new MelsecBinaryParser());
-                //config.Add(plc);
+                var plc = new MelsecPlc("PLC", new SocketComm("192.168.130.2", 9021, SocketCommType.Udp, 9031), new MelsecBinaryParser());
+                config.Add(plc);
             }
         }
 

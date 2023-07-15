@@ -95,7 +95,7 @@ namespace ATT
                 camera1.TriggerIoSourceType = MILIoSourceType.AUX_IO0;
                 camera1.DigitizerNum = 0;
 
-                camera1.DcfFile = CameraMil.GetDcfFile(CameraType.VT_6k35c_trigger);
+                camera1.DcfFile = CameraMil.GetDcfFile(CameraType.VT_4K5X_H200);
                 config.Add(camera1);
 
                 var motion = new ACSMotion("Motion", 2, ACSConnectType.Ethernet);
