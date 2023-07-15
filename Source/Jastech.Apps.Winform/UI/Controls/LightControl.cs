@@ -75,6 +75,9 @@ namespace Jastech.Apps.Winform.UI.Controls
             string channel = cbxChannelNameList.SelectedItem as string;
 
             var lightControl = LightCtrlHandler.Get(ctrlName);
+            if (lightControl == null)
+                return;
+
             var channelNum = lightControl.ChannelNameMap[channel];
 
             var lightValue = LightParam.Map[ctrlName].LightLevels[channelNum];
@@ -140,6 +143,9 @@ namespace Jastech.Apps.Winform.UI.Controls
         {
             string ctrlName = cbxControlNameList.SelectedItem as string;
             var lightControl = LightCtrlHandler.Get(ctrlName);
+
+            if (lightControl == null)
+                return;
 
             cbxChannelNameList.Items.Clear();
 

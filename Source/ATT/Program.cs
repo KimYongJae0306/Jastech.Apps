@@ -102,14 +102,14 @@ namespace ATT
                 motion.IpAddress = "10.0.0.100";
                 config.Add(motion);
 
-                //var light1 = new LvsLightCtrl("LvsLight12V", 6, new SerialPortComm("COM2", 9600), new LvsSerialParser());
-                //light1.ChannelNameMap["Ch.Blue"] = 0;
-                //light1.ChannelNameMap["Ch.RedSpot"] = 1;
-                //config.Add(light1);
+                var light1 = new LvsLightCtrl("LvsLight12V", 6, new SerialPortComm("COM2", 9600), new LvsSerialParser());
+                light1.ChannelNameMap["Ch.Blue"] = 0;
+                light1.ChannelNameMap["Ch.RedSpot"] = 1;
+                config.Add(light1);
 
-                //var light2 = new LvsLightCtrl("LvsLight24V", 6, new SerialPortComm("COM3", 9600), new LvsSerialParser());
-                //light2.ChannelNameMap["Ch.RedRing"] = 0;
-                //config.Add(light2);
+                var light2 = new LvsLightCtrl("LvsLight24V", 6, new SerialPortComm("COM3", 9600), new LvsSerialParser());
+                light2.ChannelNameMap["Ch.RedRing"] = 0;
+                config.Add(light2);
 
                 var laf1 = new NuriOneLAFCtrl("Akkon");
                 laf1.SerialPortComm = new SerialPortComm

@@ -143,23 +143,23 @@ namespace ATT_UT_Remodeling
                 var laf1 = new NuriOneLAFCtrl("Laf");
                 laf1.SerialPortComm = new SerialPortComm
                 {
-                    PortName = "COM2",
-                    BaudRate = 115200,
+                    PortName = "COM1",
+                    BaudRate = 9600,
                 };
                 config.Add(laf1);
 
                 // Light1
-                var spotLight = new LvsLightCtrl("Spot", 6, new SerialPortComm("COM4", 19200), new LvsSerialParser()); // 12V
-                spotLight.ChannelNameMap["Ch.White"] = 1; // channel 지정
-                spotLight.ChannelNameMap["Ch.RedSpot"] = 2; // channel 지정
-                spotLight.ChannelNameMap["Ch.Blue"] = 3; // channel 지정
-                config.Add(spotLight);
+                //var spotLight = new LvsLightCtrl("Spot", 6, new SerialPortComm("COM2", 19200), new LvsSerialParser()); // 12V
+                //spotLight.ChannelNameMap["Ch.White"] = 1; // channel 지정
+                //spotLight.ChannelNameMap["Ch.RedSpot"] = 2; // channel 지정
+                //spotLight.ChannelNameMap["Ch.Blue"] = 3; // channel 지정
+                //config.Add(spotLight);
 
-                // Light2
-                var ringLight = new LvsLightCtrl("Ring", 6, new SerialPortComm("COM5", 19200), new LvsSerialParser());  // 24V
-                ringLight.ChannelNameMap["Ch.RedRing1"] = 1; // channel 지정
-                ringLight.ChannelNameMap["Ch.RedRing2"] = 2; // channel 지정
-                config.Add(ringLight);
+                //// Light2
+                //var ringLight = new LvsLightCtrl("Ring", 6, new SerialPortComm("COM3", 19200), new LvsSerialParser());  // 24V
+                //ringLight.ChannelNameMap["Ch.RedRing1"] = 1; // channel 지정
+                //ringLight.ChannelNameMap["Ch.RedRing2"] = 2; // channel 지정
+                //config.Add(ringLight);
 
                 // PLC
                 AppsConfig.Instance().PlcAddressInfo.CommonStart = 104000;
