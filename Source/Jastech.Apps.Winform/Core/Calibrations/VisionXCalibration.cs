@@ -4,6 +4,7 @@ using Jastech.Apps.Structure.Data;
 using Jastech.Apps.Structure.VisionTool;
 using Jastech.Apps.Winform.Service.Plc.Maps;
 using Jastech.Framework.Device.Motions;
+using Jastech.Framework.Imaging.VisionPro;
 using Jastech.Framework.Imaging.VisionPro.VisionAlgorithms.Parameters;
 using Jastech.Framework.Imaging.VisionPro.VisionAlgorithms.Results;
 using Jastech.Framework.Structure;
@@ -213,13 +214,14 @@ namespace Jastech.Apps.Winform.Core.Calibrations
 
             Stopwatch sw = new Stopwatch();
 
-            var display = TeachingUIManager.Instance().GetDisplay();
-            ICogImage cogImage = display.GetImage();
-            if (cogImage == null)
-                return;
+            //var display = TeachingUIManager.Instance().GetDisplay();
+            //ICogImage cogImage = display.GetImage();
+            //if (cogImage == null)
+            //    return;
 
+            var camera = AreaCamera.Camera;
             VisionProPatternMatchingParam inspParam = VisionProPatternMatchingParam;
-            ICogImage copyCogImage = cogImage.CopyBase(CogImageCopyModeConstants.CopyPixels);
+            ICogImage cogImage = null;
 
             // T Calibration
             double x1 = 0.0, x2 = 0.0, y1 = 0.0, y2 = 0.0, theta = 0.0;
@@ -311,14 +313,15 @@ namespace Jastech.Apps.Winform.Core.Calibrations
                     logMessage = string.Format("Start grab. - position step : {0}", _matrixStepPoint);
                     Logger.Write(LogType.Device, logMessage);
 
-                    AreaCamera.Camera.GrabOnce();
-                    imageData = AreaCamera.Camera.GetGrabbedImage();
+                    camera.GrabOnce();
+                    imageData = camera.GetGrabbedImage();
+                    cogImage = VisionProImageHelper.ConvertImage(imageData, camera.ImageWidth, camera.ImageHeight, Framework.Imaging.ColorFormat.Gray);
                     Thread.Sleep(50);
 
                     // 패턴 매칭
                     Logger.Write(LogType.Device, "Start pattern matching.");
                     MatrixPointResult matrixPointResult = new MatrixPointResult();
-                    matrixPointResult = GetMatrixPoint(copyCogImage, inspParam);
+                    matrixPointResult = GetMatrixPoint(cogImage, inspParam);
 
                     AddMatrixPointResultList(matrixPointResult);
 
@@ -338,8 +341,8 @@ namespace Jastech.Apps.Winform.Core.Calibrations
 
                     // offset = 카메라 중심 - 9캘 중심
                     Logger.Write(LogType.Device, "Calculate offset.");
-                    double offsetX = (AreaCamera.Camera.ImageWidth / 2) - resultList[4].PixelX;
-                    double offsetY = (AreaCamera.Camera.ImageHeight / 2) - resultList[4].PixelY;
+                    double offsetX = (camera.ImageWidth / 2) - resultList[4].PixelX;
+                    double offsetY = (camera.ImageHeight / 2) - resultList[4].PixelY;
 
                     foreach (var item in GetMatrixPointResutlList())
                     {
@@ -400,8 +403,8 @@ namespace Jastech.Apps.Winform.Core.Calibrations
 
                     // 그랩
                     Logger.Write(LogType.Device, "Start grab. - init position");
-                    AreaCamera.Camera.GrabOnce();
-                    imageData = AreaCamera.Camera.GetGrabbedImage();
+                    camera.GrabOnce();
+                    imageData = camera.GetGrabbedImage();
                     Thread.Sleep(50);
 
                     // 마지막 포인트는 패턴 매칭 안해도 될 듯
@@ -516,13 +519,13 @@ namespace Jastech.Apps.Winform.Core.Calibrations
                 case CalSeqStep.CAL_SEQ_T_GRAB:
                     // 그랩
                     Logger.Write(LogType.Device, "Start grab.");
-                    AreaCamera.Camera.GrabOnce();
-                    imageData = AreaCamera.Camera.GetGrabbedImage();
+                    camera.GrabOnce();
+                    imageData = camera.GetGrabbedImage();
                     Thread.Sleep(50);
 
                     // 패턴 매칭
                     Logger.Write(LogType.Device, "Start pattern matching.");
-                    var t1 = GetMatrixPoint(copyCogImage, inspParam);
+                    var t1 = GetMatrixPoint(cogImage, inspParam);
 
                     x1 = GetCurrentX() + t1.PixelX;
                     y1 = GetCurrentY() + t1.PixelY;
@@ -570,13 +573,13 @@ namespace Jastech.Apps.Winform.Core.Calibrations
                 case CalSeqStep.CAL_SEQ_T_GRAB_X2:
                     // 그랩
                     Logger.Write(LogType.Device, "Start grab.");
-                    AreaCamera.Camera.GrabOnce();
-                    imageData = AreaCamera.Camera.GetGrabbedImage();
+                    camera.GrabOnce();
+                    imageData = camera.GetGrabbedImage();
                     Thread.Sleep(50);
 
                     // 패턴 매칭
                     Logger.Write(LogType.Device, "Start pattern matching.");
-                    var t2 = GetMatrixPoint(copyCogImage, inspParam);
+                    var t2 = GetMatrixPoint(cogImage, inspParam);
 
                     x2 = GetCurrentX() + t2.PixelX;
                     y2 = GetCurrentY() + t2.PixelY;

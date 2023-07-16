@@ -14,6 +14,12 @@ namespace Jastech.Apps.Structure.Data
         public string Name { get; set; } = "";
 
         [JsonProperty]
+        public int AnalogGain { get; set; } = 4;         // 공통
+
+        [JsonProperty]
+        public double DigitalGain { get; set; } = 8.0;        // TDI Mode
+
+        [JsonProperty]
         public List<PreAlignParam> PreAlignParamList { get; set; } = new List<PreAlignParam>();
 
         [JsonProperty]

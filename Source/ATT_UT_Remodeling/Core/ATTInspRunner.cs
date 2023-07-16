@@ -619,7 +619,7 @@ namespace ATT_UT_Remodeling.Core
                     AppsInspResult.Cell_ID = DateTime.Now.ToString("yyyyMMddHHmmss");
 
                     // LAF on
-                    LAFManager.Instance().AutoFocusOnOff("Akkon", true);
+                    LAFManager.Instance().AutoFocusOnOff("Laf", true);
                     WriteLog("Laf On.");
 
                     SeqStep = SeqStep.SEQ_SCAN_START;

@@ -73,11 +73,9 @@
             this.lblRepeatCount = new System.Windows.Forms.Label();
             this.lblRepeatOption = new System.Windows.Forms.Label();
             this.tlpCamera = new System.Windows.Forms.TableLayoutPanel();
-            this.tlpCamera_ = new System.Windows.Forms.TableLayoutPanel();
-            this.lblCameraGainValue = new System.Windows.Forms.Label();
-            this.lblCameraExposureValue = new System.Windows.Forms.Label();
-            this.lblCameraGain = new System.Windows.Forms.Label();
-            this.lblCameraExposure = new System.Windows.Forms.Label();
+            this.lblAnalogGainValue = new System.Windows.Forms.Label();
+            this.lbExposureValue = new System.Windows.Forms.Label();
+            this.lblAnalogGain = new System.Windows.Forms.Label();
             this.lblCamera = new System.Windows.Forms.Label();
             this.lblGrabMode = new System.Windows.Forms.Label();
             this.tlpGrabModeSelect = new System.Windows.Forms.TableLayoutPanel();
@@ -113,7 +111,7 @@
             this.btnCancel = new System.Windows.Forms.Button();
             this.btnSave = new System.Windows.Forms.Button();
             this.pnlLinescanTeach = new System.Windows.Forms.Panel();
-            this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
+            this.tlpTeach = new System.Windows.Forms.TableLayoutPanel();
             this.tlpCommon = new System.Windows.Forms.TableLayoutPanel();
             this.tlpUnit = new System.Windows.Forms.TableLayoutPanel();
             this.btnMotionPopup = new System.Windows.Forms.Button();
@@ -128,6 +126,14 @@
             this.pnlDisplay = new System.Windows.Forms.Panel();
             this.pnlHistogram = new System.Windows.Forms.Panel();
             this.StatusTimer = new System.Windows.Forms.Timer(this.components);
+            this.tlpDigitalGain = new System.Windows.Forms.TableLayoutPanel();
+            this.lblDigitalGainValue = new System.Windows.Forms.Label();
+            this.lblDigitalGain = new System.Windows.Forms.Label();
+            this.lblExposure = new System.Windows.Forms.Label();
+            this.tlpCamera_ = new System.Windows.Forms.TableLayoutPanel();
+            this.tableLayoutPanel4 = new System.Windows.Forms.TableLayoutPanel();
+            this.tlpExposure = new System.Windows.Forms.TableLayoutPanel();
+            this.pnlCameraMode = new System.Windows.Forms.Panel();
             this.tlpJog.SuspendLayout();
             this.tlpJogFunction.SuspendLayout();
             this.pnlJog.SuspendLayout();
@@ -143,7 +149,6 @@
             this.tlpScanDirection.SuspendLayout();
             this.tlpRepeatCount.SuspendLayout();
             this.tlpCamera.SuspendLayout();
-            this.tlpCamera_.SuspendLayout();
             this.tlpGrabModeSelect.SuspendLayout();
             this.tlpMotionStatus.SuspendLayout();
             this.tlpMotionStatus_.SuspendLayout();
@@ -155,12 +160,17 @@
             this.tlpLinescanTeach.SuspendLayout();
             this.tlpTeachingItem.SuspendLayout();
             this.pnlLinescanTeach.SuspendLayout();
-            this.tableLayoutPanel2.SuspendLayout();
+            this.tlpTeach.SuspendLayout();
             this.tlpCommon.SuspendLayout();
             this.tlpUnit.SuspendLayout();
             this.tlpLoadImage.SuspendLayout();
             this.pnlTeach.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
+            this.tlpDigitalGain.SuspendLayout();
+            this.tlpCamera_.SuspendLayout();
+            this.tableLayoutPanel4.SuspendLayout();
+            this.tlpExposure.SuspendLayout();
+            this.pnlCameraMode.SuspendLayout();
             this.SuspendLayout();
             // 
             // tlpJog
@@ -296,7 +306,7 @@
             this.lblPitchZ.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
             this.lblPitchZ.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.lblPitchZ.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblPitchZ.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
+            this.lblPitchZ.Font = new System.Drawing.Font("Malgun Gothic", 11F, System.Drawing.FontStyle.Bold);
             this.lblPitchZ.ForeColor = System.Drawing.Color.White;
             this.lblPitchZ.Location = new System.Drawing.Point(0, 0);
             this.lblPitchZ.Margin = new System.Windows.Forms.Padding(0);
@@ -311,7 +321,7 @@
             this.lblPitchZValue.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
             this.lblPitchZValue.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.lblPitchZValue.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblPitchZValue.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
+            this.lblPitchZValue.Font = new System.Drawing.Font("Malgun Gothic", 11F, System.Drawing.FontStyle.Bold);
             this.lblPitchZValue.ForeColor = System.Drawing.Color.White;
             this.lblPitchZValue.Location = new System.Drawing.Point(100, 0);
             this.lblPitchZValue.Margin = new System.Windows.Forms.Padding(0);
@@ -343,7 +353,7 @@
             this.lblPitchXY.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
             this.lblPitchXY.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.lblPitchXY.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblPitchXY.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
+            this.lblPitchXY.Font = new System.Drawing.Font("Malgun Gothic", 11F, System.Drawing.FontStyle.Bold);
             this.lblPitchXY.ForeColor = System.Drawing.Color.White;
             this.lblPitchXY.Location = new System.Drawing.Point(0, 0);
             this.lblPitchXY.Margin = new System.Windows.Forms.Padding(0);
@@ -358,7 +368,7 @@
             this.lblPitchXYValue.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
             this.lblPitchXYValue.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.lblPitchXYValue.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblPitchXYValue.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
+            this.lblPitchXYValue.Font = new System.Drawing.Font("Malgun Gothic", 11F, System.Drawing.FontStyle.Bold);
             this.lblPitchXYValue.ForeColor = System.Drawing.Color.White;
             this.lblPitchXYValue.Location = new System.Drawing.Point(100, 0);
             this.lblPitchXYValue.Margin = new System.Windows.Forms.Padding(0);
@@ -391,7 +401,7 @@
             this.rdoIncreaseMode.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
             this.rdoIncreaseMode.Dock = System.Windows.Forms.DockStyle.Fill;
             this.rdoIncreaseMode.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.rdoIncreaseMode.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
+            this.rdoIncreaseMode.Font = new System.Drawing.Font("Malgun Gothic", 11F, System.Drawing.FontStyle.Bold);
             this.rdoIncreaseMode.ForeColor = System.Drawing.Color.White;
             this.rdoIncreaseMode.Location = new System.Drawing.Point(100, 0);
             this.rdoIncreaseMode.Margin = new System.Windows.Forms.Padding(0);
@@ -410,7 +420,7 @@
             this.rdoJogMode.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
             this.rdoJogMode.Dock = System.Windows.Forms.DockStyle.Fill;
             this.rdoJogMode.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.rdoJogMode.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
+            this.rdoJogMode.Font = new System.Drawing.Font("Malgun Gothic", 11F, System.Drawing.FontStyle.Bold);
             this.rdoJogMode.ForeColor = System.Drawing.Color.White;
             this.rdoJogMode.Location = new System.Drawing.Point(0, 0);
             this.rdoJogMode.Margin = new System.Windows.Forms.Padding(0);
@@ -445,7 +455,7 @@
             this.rdoJogFastMode.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
             this.rdoJogFastMode.Dock = System.Windows.Forms.DockStyle.Fill;
             this.rdoJogFastMode.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.rdoJogFastMode.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
+            this.rdoJogFastMode.Font = new System.Drawing.Font("Malgun Gothic", 11F, System.Drawing.FontStyle.Bold);
             this.rdoJogFastMode.ForeColor = System.Drawing.Color.White;
             this.rdoJogFastMode.Location = new System.Drawing.Point(100, 0);
             this.rdoJogFastMode.Margin = new System.Windows.Forms.Padding(0);
@@ -464,7 +474,7 @@
             this.rdoJogSlowMode.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
             this.rdoJogSlowMode.Dock = System.Windows.Forms.DockStyle.Fill;
             this.rdoJogSlowMode.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.rdoJogSlowMode.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
+            this.rdoJogSlowMode.Font = new System.Drawing.Font("Malgun Gothic", 11F, System.Drawing.FontStyle.Bold);
             this.rdoJogSlowMode.ForeColor = System.Drawing.Color.White;
             this.rdoJogSlowMode.Location = new System.Drawing.Point(0, 0);
             this.rdoJogSlowMode.Margin = new System.Windows.Forms.Padding(0);
@@ -482,7 +492,7 @@
             this.lblJog.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(104)))), ((int)(((byte)(104)))), ((int)(((byte)(104)))));
             this.lblJog.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.lblJog.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblJog.Font = new System.Drawing.Font("맑은 고딕", 14F, System.Drawing.FontStyle.Bold);
+            this.lblJog.Font = new System.Drawing.Font("Malgun Gothic", 14F, System.Drawing.FontStyle.Bold);
             this.lblJog.Location = new System.Drawing.Point(0, 0);
             this.lblJog.Margin = new System.Windows.Forms.Padding(0);
             this.lblJog.Name = "lblJog";
@@ -551,7 +561,7 @@
             this.lblRepeatVelocityValue.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
             this.lblRepeatVelocityValue.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.lblRepeatVelocityValue.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblRepeatVelocityValue.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
+            this.lblRepeatVelocityValue.Font = new System.Drawing.Font("Malgun Gothic", 11F, System.Drawing.FontStyle.Bold);
             this.lblRepeatVelocityValue.ForeColor = System.Drawing.Color.White;
             this.lblRepeatVelocityValue.Location = new System.Drawing.Point(160, 40);
             this.lblRepeatVelocityValue.Margin = new System.Windows.Forms.Padding(0);
@@ -567,7 +577,7 @@
             this.lblRepeatVelocity.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
             this.lblRepeatVelocity.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.lblRepeatVelocity.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblRepeatVelocity.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
+            this.lblRepeatVelocity.Font = new System.Drawing.Font("Malgun Gothic", 11F, System.Drawing.FontStyle.Bold);
             this.lblRepeatVelocity.ForeColor = System.Drawing.Color.White;
             this.lblRepeatVelocity.Location = new System.Drawing.Point(0, 40);
             this.lblRepeatVelocity.Margin = new System.Windows.Forms.Padding(0);
@@ -582,7 +592,7 @@
             this.lblRepeatAccelerationValue.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
             this.lblRepeatAccelerationValue.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.lblRepeatAccelerationValue.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblRepeatAccelerationValue.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
+            this.lblRepeatAccelerationValue.Font = new System.Drawing.Font("Malgun Gothic", 11F, System.Drawing.FontStyle.Bold);
             this.lblRepeatAccelerationValue.ForeColor = System.Drawing.Color.White;
             this.lblRepeatAccelerationValue.Location = new System.Drawing.Point(160, 80);
             this.lblRepeatAccelerationValue.Margin = new System.Windows.Forms.Padding(0);
@@ -598,7 +608,7 @@
             this.lblAxisName.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
             this.lblAxisName.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.lblAxisName.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblAxisName.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
+            this.lblAxisName.Font = new System.Drawing.Font("Malgun Gothic", 11F, System.Drawing.FontStyle.Bold);
             this.lblAxisName.ForeColor = System.Drawing.Color.White;
             this.lblAxisName.Location = new System.Drawing.Point(0, 0);
             this.lblAxisName.Margin = new System.Windows.Forms.Padding(0);
@@ -613,7 +623,7 @@
             this.lblRepeat.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
             this.lblRepeat.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.lblRepeat.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblRepeat.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
+            this.lblRepeat.Font = new System.Drawing.Font("Malgun Gothic", 11F, System.Drawing.FontStyle.Bold);
             this.lblRepeat.ForeColor = System.Drawing.Color.White;
             this.lblRepeat.Location = new System.Drawing.Point(0, 240);
             this.lblRepeat.Margin = new System.Windows.Forms.Padding(0);
@@ -628,7 +638,7 @@
             this.lblRepeatAcceleration.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
             this.lblRepeatAcceleration.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.lblRepeatAcceleration.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblRepeatAcceleration.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
+            this.lblRepeatAcceleration.Font = new System.Drawing.Font("Malgun Gothic", 11F, System.Drawing.FontStyle.Bold);
             this.lblRepeatAcceleration.ForeColor = System.Drawing.Color.White;
             this.lblRepeatAcceleration.Location = new System.Drawing.Point(0, 80);
             this.lblRepeatAcceleration.Margin = new System.Windows.Forms.Padding(0);
@@ -643,7 +653,7 @@
             this.lblScanLength.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
             this.lblScanLength.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.lblScanLength.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblScanLength.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
+            this.lblScanLength.Font = new System.Drawing.Font("Malgun Gothic", 11F, System.Drawing.FontStyle.Bold);
             this.lblScanLength.ForeColor = System.Drawing.Color.White;
             this.lblScanLength.Location = new System.Drawing.Point(0, 200);
             this.lblScanLength.Margin = new System.Windows.Forms.Padding(0);
@@ -658,7 +668,7 @@
             this.lblScanDirection.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
             this.lblScanDirection.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.lblScanDirection.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblScanDirection.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
+            this.lblScanDirection.Font = new System.Drawing.Font("Malgun Gothic", 11F, System.Drawing.FontStyle.Bold);
             this.lblScanDirection.ForeColor = System.Drawing.Color.White;
             this.lblScanDirection.Location = new System.Drawing.Point(0, 160);
             this.lblScanDirection.Margin = new System.Windows.Forms.Padding(0);
@@ -674,7 +684,7 @@
             this.lblScanXLength.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
             this.lblScanXLength.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.lblScanXLength.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblScanXLength.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
+            this.lblScanXLength.Font = new System.Drawing.Font("Malgun Gothic", 11F, System.Drawing.FontStyle.Bold);
             this.lblScanXLength.ForeColor = System.Drawing.Color.White;
             this.lblScanXLength.Location = new System.Drawing.Point(160, 200);
             this.lblScanXLength.Margin = new System.Windows.Forms.Padding(0);
@@ -690,7 +700,7 @@
             this.lblOperationAxis.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
             this.lblOperationAxis.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.lblOperationAxis.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblOperationAxis.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
+            this.lblOperationAxis.Font = new System.Drawing.Font("Malgun Gothic", 11F, System.Drawing.FontStyle.Bold);
             this.lblOperationAxis.ForeColor = System.Drawing.Color.White;
             this.lblOperationAxis.Location = new System.Drawing.Point(160, 0);
             this.lblOperationAxis.Margin = new System.Windows.Forms.Padding(0);
@@ -705,7 +715,7 @@
             this.lblDwellTime.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
             this.lblDwellTime.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.lblDwellTime.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblDwellTime.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
+            this.lblDwellTime.Font = new System.Drawing.Font("Malgun Gothic", 11F, System.Drawing.FontStyle.Bold);
             this.lblDwellTime.ForeColor = System.Drawing.Color.White;
             this.lblDwellTime.Location = new System.Drawing.Point(0, 120);
             this.lblDwellTime.Margin = new System.Windows.Forms.Padding(0);
@@ -720,7 +730,7 @@
             this.lblDwellTimeValue.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
             this.lblDwellTimeValue.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.lblDwellTimeValue.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblDwellTimeValue.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
+            this.lblDwellTimeValue.Font = new System.Drawing.Font("Malgun Gothic", 11F, System.Drawing.FontStyle.Bold);
             this.lblDwellTimeValue.ForeColor = System.Drawing.Color.White;
             this.lblDwellTimeValue.Location = new System.Drawing.Point(160, 120);
             this.lblDwellTimeValue.Margin = new System.Windows.Forms.Padding(0);
@@ -736,7 +746,7 @@
             this.lblStartRepeat.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
             this.lblStartRepeat.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.lblStartRepeat.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblStartRepeat.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
+            this.lblStartRepeat.Font = new System.Drawing.Font("Malgun Gothic", 11F, System.Drawing.FontStyle.Bold);
             this.lblStartRepeat.ForeColor = System.Drawing.Color.White;
             this.lblStartRepeat.Location = new System.Drawing.Point(160, 280);
             this.lblStartRepeat.Margin = new System.Windows.Forms.Padding(0);
@@ -769,7 +779,7 @@
             this.lblBackward.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
             this.lblBackward.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.lblBackward.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblBackward.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
+            this.lblBackward.Font = new System.Drawing.Font("Malgun Gothic", 11F, System.Drawing.FontStyle.Bold);
             this.lblBackward.ForeColor = System.Drawing.Color.White;
             this.lblBackward.Location = new System.Drawing.Point(80, 0);
             this.lblBackward.Margin = new System.Windows.Forms.Padding(0);
@@ -786,7 +796,7 @@
             this.lblForward.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
             this.lblForward.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.lblForward.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblForward.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
+            this.lblForward.Font = new System.Drawing.Font("Malgun Gothic", 11F, System.Drawing.FontStyle.Bold);
             this.lblForward.ForeColor = System.Drawing.Color.White;
             this.lblForward.Location = new System.Drawing.Point(0, 0);
             this.lblForward.Margin = new System.Windows.Forms.Padding(0);
@@ -818,7 +828,7 @@
             this.lblRepeatRemain.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
             this.lblRepeatRemain.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.lblRepeatRemain.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblRepeatRemain.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
+            this.lblRepeatRemain.Font = new System.Drawing.Font("Malgun Gothic", 11F, System.Drawing.FontStyle.Bold);
             this.lblRepeatRemain.ForeColor = System.Drawing.Color.White;
             this.lblRepeatRemain.Location = new System.Drawing.Point(80, 0);
             this.lblRepeatRemain.Margin = new System.Windows.Forms.Padding(0);
@@ -833,7 +843,7 @@
             this.lblRepeatCount.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
             this.lblRepeatCount.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.lblRepeatCount.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblRepeatCount.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
+            this.lblRepeatCount.Font = new System.Drawing.Font("Malgun Gothic", 11F, System.Drawing.FontStyle.Bold);
             this.lblRepeatCount.ForeColor = System.Drawing.Color.White;
             this.lblRepeatCount.Location = new System.Drawing.Point(0, 0);
             this.lblRepeatCount.Margin = new System.Windows.Forms.Padding(0);
@@ -849,7 +859,7 @@
             this.lblRepeatOption.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(104)))), ((int)(((byte)(104)))), ((int)(((byte)(104)))));
             this.lblRepeatOption.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.lblRepeatOption.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblRepeatOption.Font = new System.Drawing.Font("맑은 고딕", 14F, System.Drawing.FontStyle.Bold);
+            this.lblRepeatOption.Font = new System.Drawing.Font("Malgun Gothic", 14F, System.Drawing.FontStyle.Bold);
             this.lblRepeatOption.Location = new System.Drawing.Point(0, 0);
             this.lblRepeatOption.Margin = new System.Windows.Forms.Padding(0);
             this.lblRepeatOption.Name = "lblRepeatOption";
@@ -875,91 +885,58 @@
             this.tlpCamera.Size = new System.Drawing.Size(240, 110);
             this.tlpCamera.TabIndex = 294;
             // 
-            // tlpCamera_
+            // lblAnalogGainValue
             // 
-            this.tlpCamera_.ColumnCount = 2;
-            this.tlpCamera_.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 160F));
-            this.tlpCamera_.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 80F));
-            this.tlpCamera_.Controls.Add(this.lblCameraGainValue, 1, 1);
-            this.tlpCamera_.Controls.Add(this.lblCameraExposureValue, 1, 0);
-            this.tlpCamera_.Controls.Add(this.lblCameraGain, 0, 1);
-            this.tlpCamera_.Controls.Add(this.lblCameraExposure, 0, 0);
-            this.tlpCamera_.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tlpCamera_.Location = new System.Drawing.Point(0, 30);
-            this.tlpCamera_.Margin = new System.Windows.Forms.Padding(0);
-            this.tlpCamera_.Name = "tlpCamera_";
-            this.tlpCamera_.RowCount = 2;
-            this.tlpCamera_.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tlpCamera_.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tlpCamera_.Size = new System.Drawing.Size(240, 80);
-            this.tlpCamera_.TabIndex = 300;
+            this.lblAnalogGainValue.AutoSize = true;
+            this.lblAnalogGainValue.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
+            this.lblAnalogGainValue.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblAnalogGainValue.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblAnalogGainValue.Font = new System.Drawing.Font("Malgun Gothic", 11F, System.Drawing.FontStyle.Bold);
+            this.lblAnalogGainValue.Location = new System.Drawing.Point(160, 0);
+            this.lblAnalogGainValue.Margin = new System.Windows.Forms.Padding(0);
+            this.lblAnalogGainValue.Name = "lblAnalogGainValue";
+            this.lblAnalogGainValue.Size = new System.Drawing.Size(80, 40);
+            this.lblAnalogGainValue.TabIndex = 209;
+            this.lblAnalogGainValue.Text = "0";
+            this.lblAnalogGainValue.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblAnalogGainValue.Click += new System.EventHandler(this.lblCameraGainValue_Click);
             // 
-            // lblCameraGainValue
+            // lbExposureValue
             // 
-            this.lblCameraGainValue.AutoSize = true;
-            this.lblCameraGainValue.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
-            this.lblCameraGainValue.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lblCameraGainValue.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblCameraGainValue.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
-            this.lblCameraGainValue.Location = new System.Drawing.Point(160, 40);
-            this.lblCameraGainValue.Margin = new System.Windows.Forms.Padding(0);
-            this.lblCameraGainValue.Name = "lblCameraGainValue";
-            this.lblCameraGainValue.Size = new System.Drawing.Size(80, 40);
-            this.lblCameraGainValue.TabIndex = 209;
-            this.lblCameraGainValue.Text = "0";
-            this.lblCameraGainValue.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.lblCameraGainValue.Click += new System.EventHandler(this.lblCameraGainValue_Click);
+            this.lbExposureValue.AutoSize = true;
+            this.lbExposureValue.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
+            this.lbExposureValue.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lbExposureValue.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lbExposureValue.Font = new System.Drawing.Font("Malgun Gothic", 11F, System.Drawing.FontStyle.Bold);
+            this.lbExposureValue.Location = new System.Drawing.Point(160, 0);
+            this.lbExposureValue.Margin = new System.Windows.Forms.Padding(0);
+            this.lbExposureValue.Name = "lbExposureValue";
+            this.lbExposureValue.Size = new System.Drawing.Size(80, 27);
+            this.lbExposureValue.TabIndex = 208;
+            this.lbExposureValue.Text = "0";
+            this.lbExposureValue.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lbExposureValue.Click += new System.EventHandler(this.lblCameraExposureValue_Click);
             // 
-            // lblCameraExposureValue
+            // lblAnalogGain
             // 
-            this.lblCameraExposureValue.AutoSize = true;
-            this.lblCameraExposureValue.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
-            this.lblCameraExposureValue.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lblCameraExposureValue.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblCameraExposureValue.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
-            this.lblCameraExposureValue.Location = new System.Drawing.Point(160, 0);
-            this.lblCameraExposureValue.Margin = new System.Windows.Forms.Padding(0);
-            this.lblCameraExposureValue.Name = "lblCameraExposureValue";
-            this.lblCameraExposureValue.Size = new System.Drawing.Size(80, 40);
-            this.lblCameraExposureValue.TabIndex = 208;
-            this.lblCameraExposureValue.Text = "0";
-            this.lblCameraExposureValue.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.lblCameraExposureValue.Click += new System.EventHandler(this.lblCameraExposureValue_Click);
-            // 
-            // lblCameraGain
-            // 
-            this.lblCameraGain.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
-            this.lblCameraGain.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lblCameraGain.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblCameraGain.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
-            this.lblCameraGain.Location = new System.Drawing.Point(0, 40);
-            this.lblCameraGain.Margin = new System.Windows.Forms.Padding(0);
-            this.lblCameraGain.Name = "lblCameraGain";
-            this.lblCameraGain.Size = new System.Drawing.Size(160, 40);
-            this.lblCameraGain.TabIndex = 146;
-            this.lblCameraGain.Text = "GAIN [dB]";
-            this.lblCameraGain.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // lblCameraExposure
-            // 
-            this.lblCameraExposure.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
-            this.lblCameraExposure.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lblCameraExposure.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblCameraExposure.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
-            this.lblCameraExposure.Location = new System.Drawing.Point(0, 0);
-            this.lblCameraExposure.Margin = new System.Windows.Forms.Padding(0);
-            this.lblCameraExposure.Name = "lblCameraExposure";
-            this.lblCameraExposure.Size = new System.Drawing.Size(160, 40);
-            this.lblCameraExposure.TabIndex = 145;
-            this.lblCameraExposure.Text = "EXPOSURE [us]";
-            this.lblCameraExposure.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblAnalogGain.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
+            this.lblAnalogGain.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblAnalogGain.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblAnalogGain.Font = new System.Drawing.Font("Malgun Gothic", 11F, System.Drawing.FontStyle.Bold);
+            this.lblAnalogGain.Location = new System.Drawing.Point(0, 0);
+            this.lblAnalogGain.Margin = new System.Windows.Forms.Padding(0);
+            this.lblAnalogGain.Name = "lblAnalogGain";
+            this.lblAnalogGain.Size = new System.Drawing.Size(160, 40);
+            this.lblAnalogGain.TabIndex = 146;
+            this.lblAnalogGain.Text = "A GAIN [dB]\r\n(1 ~ 4)\r\n";
+            this.lblAnalogGain.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // lblCamera
             // 
             this.lblCamera.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(104)))), ((int)(((byte)(104)))), ((int)(((byte)(104)))));
             this.lblCamera.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.lblCamera.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblCamera.Font = new System.Drawing.Font("맑은 고딕", 14F, System.Drawing.FontStyle.Bold);
+            this.lblCamera.Font = new System.Drawing.Font("Malgun Gothic", 14F, System.Drawing.FontStyle.Bold);
             this.lblCamera.ForeColor = System.Drawing.Color.White;
             this.lblCamera.Location = new System.Drawing.Point(0, 0);
             this.lblCamera.Margin = new System.Windows.Forms.Padding(0);
@@ -974,7 +951,7 @@
             this.lblGrabMode.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(104)))), ((int)(((byte)(104)))), ((int)(((byte)(104)))));
             this.lblGrabMode.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.lblGrabMode.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblGrabMode.Font = new System.Drawing.Font("맑은 고딕", 14F, System.Drawing.FontStyle.Bold);
+            this.lblGrabMode.Font = new System.Drawing.Font("Malgun Gothic", 14F, System.Drawing.FontStyle.Bold);
             this.lblGrabMode.Location = new System.Drawing.Point(0, 0);
             this.lblGrabMode.Margin = new System.Windows.Forms.Padding(0);
             this.lblGrabMode.Name = "lblGrabMode";
@@ -1004,7 +981,7 @@
             this.lblAreaMode.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
             this.lblAreaMode.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.lblAreaMode.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblAreaMode.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
+            this.lblAreaMode.Font = new System.Drawing.Font("Malgun Gothic", 11F, System.Drawing.FontStyle.Bold);
             this.lblAreaMode.Location = new System.Drawing.Point(0, 0);
             this.lblAreaMode.Margin = new System.Windows.Forms.Padding(0);
             this.lblAreaMode.Name = "lblAreaMode";
@@ -1019,7 +996,7 @@
             this.lblLineMode.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
             this.lblLineMode.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.lblLineMode.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblLineMode.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
+            this.lblLineMode.Font = new System.Drawing.Font("Malgun Gothic", 11F, System.Drawing.FontStyle.Bold);
             this.lblLineMode.Location = new System.Drawing.Point(0, 40);
             this.lblLineMode.Margin = new System.Windows.Forms.Padding(0);
             this.lblLineMode.Name = "lblLineMode";
@@ -1051,7 +1028,7 @@
             this.lblMotionStatus.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(104)))), ((int)(((byte)(104)))), ((int)(((byte)(104)))));
             this.lblMotionStatus.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.lblMotionStatus.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblMotionStatus.Font = new System.Drawing.Font("맑은 고딕", 14F, System.Drawing.FontStyle.Bold);
+            this.lblMotionStatus.Font = new System.Drawing.Font("Malgun Gothic", 14F, System.Drawing.FontStyle.Bold);
             this.lblMotionStatus.Location = new System.Drawing.Point(0, 0);
             this.lblMotionStatus.Margin = new System.Windows.Forms.Padding(0);
             this.lblMotionStatus.Name = "lblMotionStatus";
@@ -1096,7 +1073,7 @@
             this.lblAxisZ.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
             this.lblAxisZ.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.lblAxisZ.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblAxisZ.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
+            this.lblAxisZ.Font = new System.Drawing.Font("Malgun Gothic", 11F, System.Drawing.FontStyle.Bold);
             this.lblAxisZ.Location = new System.Drawing.Point(300, 0);
             this.lblAxisZ.Margin = new System.Windows.Forms.Padding(0);
             this.lblAxisZ.Name = "lblAxisZ";
@@ -1110,7 +1087,7 @@
             this.lblAxisY.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
             this.lblAxisY.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.lblAxisY.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblAxisY.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
+            this.lblAxisY.Font = new System.Drawing.Font("Malgun Gothic", 11F, System.Drawing.FontStyle.Bold);
             this.lblAxisY.Location = new System.Drawing.Point(200, 0);
             this.lblAxisY.Margin = new System.Windows.Forms.Padding(0);
             this.lblAxisY.Name = "lblAxisY";
@@ -1124,7 +1101,7 @@
             this.lblAxisX.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
             this.lblAxisX.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.lblAxisX.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblAxisX.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
+            this.lblAxisX.Font = new System.Drawing.Font("Malgun Gothic", 11F, System.Drawing.FontStyle.Bold);
             this.lblAxisX.Location = new System.Drawing.Point(100, 0);
             this.lblAxisX.Margin = new System.Windows.Forms.Padding(0);
             this.lblAxisX.Name = "lblAxisX";
@@ -1155,7 +1132,7 @@
             this.lblNegativeLimitZ.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
             this.lblNegativeLimitZ.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.lblNegativeLimitZ.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblNegativeLimitZ.Font = new System.Drawing.Font("맑은 고딕", 12F, System.Drawing.FontStyle.Bold);
+            this.lblNegativeLimitZ.Font = new System.Drawing.Font("Malgun Gothic", 12F, System.Drawing.FontStyle.Bold);
             this.lblNegativeLimitZ.Location = new System.Drawing.Point(0, 0);
             this.lblNegativeLimitZ.Margin = new System.Windows.Forms.Padding(0);
             this.lblNegativeLimitZ.Name = "lblNegativeLimitZ";
@@ -1169,7 +1146,7 @@
             this.lblPositiveLimitZ.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
             this.lblPositiveLimitZ.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.lblPositiveLimitZ.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblPositiveLimitZ.Font = new System.Drawing.Font("맑은 고딕", 12F, System.Drawing.FontStyle.Bold);
+            this.lblPositiveLimitZ.Font = new System.Drawing.Font("Malgun Gothic", 12F, System.Drawing.FontStyle.Bold);
             this.lblPositiveLimitZ.Location = new System.Drawing.Point(55, 0);
             this.lblPositiveLimitZ.Margin = new System.Windows.Forms.Padding(0);
             this.lblPositiveLimitZ.Name = "lblPositiveLimitZ";
@@ -1183,7 +1160,7 @@
             this.lblAxis.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
             this.lblAxis.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.lblAxis.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblAxis.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
+            this.lblAxis.Font = new System.Drawing.Font("Malgun Gothic", 11F, System.Drawing.FontStyle.Bold);
             this.lblAxis.Location = new System.Drawing.Point(0, 0);
             this.lblAxis.Margin = new System.Windows.Forms.Padding(0);
             this.lblAxis.Name = "lblAxis";
@@ -1197,7 +1174,7 @@
             this.lblLimitSensorXY.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
             this.lblLimitSensorXY.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.lblLimitSensorXY.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblLimitSensorXY.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
+            this.lblLimitSensorXY.Font = new System.Drawing.Font("Malgun Gothic", 11F, System.Drawing.FontStyle.Bold);
             this.lblLimitSensorXY.Location = new System.Drawing.Point(0, 80);
             this.lblLimitSensorXY.Margin = new System.Windows.Forms.Padding(0);
             this.lblLimitSensorXY.Name = "lblLimitSensorXY";
@@ -1228,7 +1205,7 @@
             this.lblNegativeLimitX.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
             this.lblNegativeLimitX.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.lblNegativeLimitX.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblNegativeLimitX.Font = new System.Drawing.Font("맑은 고딕", 12F, System.Drawing.FontStyle.Bold);
+            this.lblNegativeLimitX.Font = new System.Drawing.Font("Malgun Gothic", 12F, System.Drawing.FontStyle.Bold);
             this.lblNegativeLimitX.Location = new System.Drawing.Point(0, 0);
             this.lblNegativeLimitX.Margin = new System.Windows.Forms.Padding(0);
             this.lblNegativeLimitX.Name = "lblNegativeLimitX";
@@ -1242,7 +1219,7 @@
             this.lblPositiveLimitX.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
             this.lblPositiveLimitX.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.lblPositiveLimitX.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblPositiveLimitX.Font = new System.Drawing.Font("맑은 고딕", 12F, System.Drawing.FontStyle.Bold);
+            this.lblPositiveLimitX.Font = new System.Drawing.Font("Malgun Gothic", 12F, System.Drawing.FontStyle.Bold);
             this.lblPositiveLimitX.Location = new System.Drawing.Point(55, 0);
             this.lblPositiveLimitX.Margin = new System.Windows.Forms.Padding(0);
             this.lblPositiveLimitX.Name = "lblPositiveLimitX";
@@ -1273,7 +1250,7 @@
             this.lblNegativeLimitY.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
             this.lblNegativeLimitY.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.lblNegativeLimitY.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblNegativeLimitY.Font = new System.Drawing.Font("맑은 고딕", 12F, System.Drawing.FontStyle.Bold);
+            this.lblNegativeLimitY.Font = new System.Drawing.Font("Malgun Gothic", 12F, System.Drawing.FontStyle.Bold);
             this.lblNegativeLimitY.Location = new System.Drawing.Point(0, 0);
             this.lblNegativeLimitY.Margin = new System.Windows.Forms.Padding(0);
             this.lblNegativeLimitY.Name = "lblNegativeLimitY";
@@ -1287,7 +1264,7 @@
             this.lblPositiveLimitY.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
             this.lblPositiveLimitY.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.lblPositiveLimitY.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblPositiveLimitY.Font = new System.Drawing.Font("맑은 고딕", 12F, System.Drawing.FontStyle.Bold);
+            this.lblPositiveLimitY.Font = new System.Drawing.Font("Malgun Gothic", 12F, System.Drawing.FontStyle.Bold);
             this.lblPositiveLimitY.Location = new System.Drawing.Point(55, 0);
             this.lblPositiveLimitY.Margin = new System.Windows.Forms.Padding(0);
             this.lblPositiveLimitY.Name = "lblPositiveLimitY";
@@ -1301,7 +1278,7 @@
             this.lblCurrentPositionZ.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
             this.lblCurrentPositionZ.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.lblCurrentPositionZ.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblCurrentPositionZ.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
+            this.lblCurrentPositionZ.Font = new System.Drawing.Font("Malgun Gothic", 11F, System.Drawing.FontStyle.Bold);
             this.lblCurrentPositionZ.Location = new System.Drawing.Point(300, 40);
             this.lblCurrentPositionZ.Margin = new System.Windows.Forms.Padding(0);
             this.lblCurrentPositionZ.Name = "lblCurrentPositionZ";
@@ -1315,7 +1292,7 @@
             this.lblCurrentPositionX.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
             this.lblCurrentPositionX.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.lblCurrentPositionX.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblCurrentPositionX.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
+            this.lblCurrentPositionX.Font = new System.Drawing.Font("Malgun Gothic", 11F, System.Drawing.FontStyle.Bold);
             this.lblCurrentPositionX.Location = new System.Drawing.Point(100, 40);
             this.lblCurrentPositionX.Margin = new System.Windows.Forms.Padding(0);
             this.lblCurrentPositionX.Name = "lblCurrentPositionX";
@@ -1329,7 +1306,7 @@
             this.lblCurrentPositionY.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
             this.lblCurrentPositionY.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.lblCurrentPositionY.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblCurrentPositionY.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
+            this.lblCurrentPositionY.Font = new System.Drawing.Font("Malgun Gothic", 11F, System.Drawing.FontStyle.Bold);
             this.lblCurrentPositionY.Location = new System.Drawing.Point(200, 40);
             this.lblCurrentPositionY.Margin = new System.Windows.Forms.Padding(0);
             this.lblCurrentPositionY.Name = "lblCurrentPositionY";
@@ -1343,7 +1320,7 @@
             this.lblCurrentPositionXY.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
             this.lblCurrentPositionXY.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.lblCurrentPositionXY.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblCurrentPositionXY.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
+            this.lblCurrentPositionXY.Font = new System.Drawing.Font("Malgun Gothic", 11F, System.Drawing.FontStyle.Bold);
             this.lblCurrentPositionXY.Location = new System.Drawing.Point(0, 40);
             this.lblCurrentPositionXY.Margin = new System.Windows.Forms.Padding(0);
             this.lblCurrentPositionXY.Name = "lblCurrentPositionXY";
@@ -1383,7 +1360,7 @@
             this.lblAutoFocus.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(104)))), ((int)(((byte)(104)))), ((int)(((byte)(104)))));
             this.lblAutoFocus.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.lblAutoFocus.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblAutoFocus.Font = new System.Drawing.Font("맑은 고딕", 14F, System.Drawing.FontStyle.Bold);
+            this.lblAutoFocus.Font = new System.Drawing.Font("Malgun Gothic", 14F, System.Drawing.FontStyle.Bold);
             this.lblAutoFocus.Location = new System.Drawing.Point(0, 0);
             this.lblAutoFocus.Margin = new System.Windows.Forms.Padding(0);
             this.lblAutoFocus.Name = "lblAutoFocus";
@@ -1453,7 +1430,7 @@
             // 
             this.btnCancel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(34)))), ((int)(((byte)(34)))), ((int)(((byte)(34)))));
             this.btnCancel.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.btnCancel.Font = new System.Drawing.Font("맑은 고딕", 20F, System.Drawing.FontStyle.Bold);
+            this.btnCancel.Font = new System.Drawing.Font("Malgun Gothic", 20F, System.Drawing.FontStyle.Bold);
             this.btnCancel.ForeColor = System.Drawing.Color.White;
             this.btnCancel.Location = new System.Drawing.Point(2, 763);
             this.btnCancel.Margin = new System.Windows.Forms.Padding(2);
@@ -1468,7 +1445,7 @@
             // 
             this.btnSave.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(34)))), ((int)(((byte)(34)))), ((int)(((byte)(34)))));
             this.btnSave.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.btnSave.Font = new System.Drawing.Font("맑은 고딕", 20F, System.Drawing.FontStyle.Bold);
+            this.btnSave.Font = new System.Drawing.Font("Malgun Gothic", 20F, System.Drawing.FontStyle.Bold);
             this.btnSave.ForeColor = System.Drawing.Color.White;
             this.btnSave.Location = new System.Drawing.Point(2, 663);
             this.btnSave.Margin = new System.Windows.Forms.Padding(2);
@@ -1481,7 +1458,7 @@
             // 
             // pnlLinescanTeach
             // 
-            this.pnlLinescanTeach.Controls.Add(this.tableLayoutPanel2);
+            this.pnlLinescanTeach.Controls.Add(this.tlpTeach);
             this.pnlLinescanTeach.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pnlLinescanTeach.Location = new System.Drawing.Point(851, 0);
             this.pnlLinescanTeach.Margin = new System.Windows.Forms.Padding(0);
@@ -1489,21 +1466,21 @@
             this.pnlLinescanTeach.Size = new System.Drawing.Size(851, 861);
             this.pnlLinescanTeach.TabIndex = 0;
             // 
-            // tableLayoutPanel2
+            // tlpTeach
             // 
-            this.tableLayoutPanel2.ColumnCount = 1;
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel2.Controls.Add(this.tlpCommon, 0, 0);
-            this.tableLayoutPanel2.Controls.Add(this.pnlTeach, 0, 1);
-            this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel2.Location = new System.Drawing.Point(0, 0);
-            this.tableLayoutPanel2.Margin = new System.Windows.Forms.Padding(2);
-            this.tableLayoutPanel2.Name = "tableLayoutPanel2";
-            this.tableLayoutPanel2.RowCount = 2;
-            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 80F));
-            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel2.Size = new System.Drawing.Size(851, 861);
-            this.tableLayoutPanel2.TabIndex = 2;
+            this.tlpTeach.ColumnCount = 1;
+            this.tlpTeach.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tlpTeach.Controls.Add(this.tlpCommon, 0, 0);
+            this.tlpTeach.Controls.Add(this.pnlTeach, 0, 1);
+            this.tlpTeach.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tlpTeach.Location = new System.Drawing.Point(0, 0);
+            this.tlpTeach.Margin = new System.Windows.Forms.Padding(2);
+            this.tlpTeach.Name = "tlpTeach";
+            this.tlpTeach.RowCount = 2;
+            this.tlpTeach.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 80F));
+            this.tlpTeach.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tlpTeach.Size = new System.Drawing.Size(851, 861);
+            this.tlpTeach.TabIndex = 2;
             // 
             // tlpCommon
             // 
@@ -1542,7 +1519,7 @@
             this.btnMotionPopup.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
             this.btnMotionPopup.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.btnMotionPopup.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.btnMotionPopup.Font = new System.Drawing.Font("맑은 고딕", 14F, System.Drawing.FontStyle.Bold);
+            this.btnMotionPopup.Font = new System.Drawing.Font("Malgun Gothic", 14F, System.Drawing.FontStyle.Bold);
             this.btnMotionPopup.ForeColor = System.Drawing.Color.White;
             this.btnMotionPopup.Location = new System.Drawing.Point(567, 0);
             this.btnMotionPopup.Margin = new System.Windows.Forms.Padding(0);
@@ -1558,7 +1535,7 @@
             this.lblStageCam.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(104)))), ((int)(((byte)(104)))), ((int)(((byte)(104)))));
             this.lblStageCam.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.lblStageCam.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblStageCam.Font = new System.Drawing.Font("맑은 고딕", 14F, System.Drawing.FontStyle.Bold);
+            this.lblStageCam.Font = new System.Drawing.Font("Malgun Gothic", 14F, System.Drawing.FontStyle.Bold);
             this.lblStageCam.ForeColor = System.Drawing.Color.White;
             this.lblStageCam.Location = new System.Drawing.Point(0, 0);
             this.lblStageCam.Margin = new System.Windows.Forms.Padding(0);
@@ -1592,7 +1569,7 @@
             this.btnLoadImage.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
             this.btnLoadImage.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.btnLoadImage.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.btnLoadImage.Font = new System.Drawing.Font("맑은 고딕", 14F, System.Drawing.FontStyle.Bold);
+            this.btnLoadImage.Font = new System.Drawing.Font("Malgun Gothic", 14F, System.Drawing.FontStyle.Bold);
             this.btnLoadImage.ForeColor = System.Drawing.Color.White;
             this.btnLoadImage.Location = new System.Drawing.Point(566, 0);
             this.btnLoadImage.Margin = new System.Windows.Forms.Padding(0);
@@ -1607,7 +1584,7 @@
             this.btnGrabStop.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
             this.btnGrabStop.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.btnGrabStop.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.btnGrabStop.Font = new System.Drawing.Font("맑은 고딕", 14F, System.Drawing.FontStyle.Bold);
+            this.btnGrabStop.Font = new System.Drawing.Font("Malgun Gothic", 14F, System.Drawing.FontStyle.Bold);
             this.btnGrabStop.ForeColor = System.Drawing.Color.White;
             this.btnGrabStop.Location = new System.Drawing.Point(283, 0);
             this.btnGrabStop.Margin = new System.Windows.Forms.Padding(0);
@@ -1623,7 +1600,7 @@
             this.btnGrabStart.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
             this.btnGrabStart.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.btnGrabStart.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.btnGrabStart.Font = new System.Drawing.Font("맑은 고딕", 14F, System.Drawing.FontStyle.Bold);
+            this.btnGrabStart.Font = new System.Drawing.Font("Malgun Gothic", 14F, System.Drawing.FontStyle.Bold);
             this.btnGrabStart.ForeColor = System.Drawing.Color.White;
             this.btnGrabStart.Location = new System.Drawing.Point(0, 0);
             this.btnGrabStart.Margin = new System.Windows.Forms.Padding(0);
@@ -1696,6 +1673,124 @@
             this.StatusTimer.Interval = 300;
             this.StatusTimer.Tick += new System.EventHandler(this.StatusTimer_Tick);
             // 
+            // tlpDigitalGain
+            // 
+            this.tlpDigitalGain.ColumnCount = 2;
+            this.tlpDigitalGain.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 160F));
+            this.tlpDigitalGain.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 80F));
+            this.tlpDigitalGain.Controls.Add(this.lblDigitalGainValue, 1, 0);
+            this.tlpDigitalGain.Controls.Add(this.lblDigitalGain, 0, 0);
+            this.tlpDigitalGain.Location = new System.Drawing.Point(13, 27);
+            this.tlpDigitalGain.Margin = new System.Windows.Forms.Padding(0);
+            this.tlpDigitalGain.Name = "tlpDigitalGain";
+            this.tlpDigitalGain.RowCount = 1;
+            this.tlpDigitalGain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tlpDigitalGain.Size = new System.Drawing.Size(240, 33);
+            this.tlpDigitalGain.TabIndex = 301;
+            // 
+            // lblDigitalGainValue
+            // 
+            this.lblDigitalGainValue.AutoSize = true;
+            this.lblDigitalGainValue.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
+            this.lblDigitalGainValue.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblDigitalGainValue.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblDigitalGainValue.Font = new System.Drawing.Font("Malgun Gothic", 11F, System.Drawing.FontStyle.Bold);
+            this.lblDigitalGainValue.Location = new System.Drawing.Point(160, 0);
+            this.lblDigitalGainValue.Margin = new System.Windows.Forms.Padding(0);
+            this.lblDigitalGainValue.Name = "lblDigitalGainValue";
+            this.lblDigitalGainValue.Size = new System.Drawing.Size(80, 33);
+            this.lblDigitalGainValue.TabIndex = 208;
+            this.lblDigitalGainValue.Text = "0";
+            this.lblDigitalGainValue.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblDigitalGainValue.Click += new System.EventHandler(this.lblCameraDigitalGainValue_Click);
+            // 
+            // lblDigitalGain
+            // 
+            this.lblDigitalGain.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
+            this.lblDigitalGain.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblDigitalGain.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblDigitalGain.Font = new System.Drawing.Font("Malgun Gothic", 11F, System.Drawing.FontStyle.Bold);
+            this.lblDigitalGain.Location = new System.Drawing.Point(0, 0);
+            this.lblDigitalGain.Margin = new System.Windows.Forms.Padding(0);
+            this.lblDigitalGain.Name = "lblDigitalGain";
+            this.lblDigitalGain.Size = new System.Drawing.Size(160, 33);
+            this.lblDigitalGain.TabIndex = 145;
+            this.lblDigitalGain.Text = "D GAIN [dB]\r\n(0.5 ~ 8)";
+            this.lblDigitalGain.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // lblExposure
+            // 
+            this.lblExposure.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
+            this.lblExposure.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblExposure.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblExposure.Font = new System.Drawing.Font("Malgun Gothic", 11F, System.Drawing.FontStyle.Bold);
+            this.lblExposure.Location = new System.Drawing.Point(0, 0);
+            this.lblExposure.Margin = new System.Windows.Forms.Padding(0);
+            this.lblExposure.Name = "lblExposure";
+            this.lblExposure.Size = new System.Drawing.Size(160, 27);
+            this.lblExposure.TabIndex = 145;
+            this.lblExposure.Text = "EXPOSURE [us]\r\n(1 ~ 200000)";
+            this.lblExposure.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // tlpCamera_
+            // 
+            this.tlpCamera_.ColumnCount = 1;
+            this.tlpCamera_.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 160F));
+            this.tlpCamera_.Controls.Add(this.tableLayoutPanel4, 0, 1);
+            this.tlpCamera_.Controls.Add(this.pnlCameraMode, 0, 0);
+            this.tlpCamera_.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tlpCamera_.Location = new System.Drawing.Point(0, 30);
+            this.tlpCamera_.Margin = new System.Windows.Forms.Padding(0);
+            this.tlpCamera_.Name = "tlpCamera_";
+            this.tlpCamera_.RowCount = 2;
+            this.tlpCamera_.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tlpCamera_.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tlpCamera_.Size = new System.Drawing.Size(240, 80);
+            this.tlpCamera_.TabIndex = 300;
+            // 
+            // tableLayoutPanel4
+            // 
+            this.tableLayoutPanel4.ColumnCount = 2;
+            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 160F));
+            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 80F));
+            this.tableLayoutPanel4.Controls.Add(this.lblAnalogGainValue, 1, 0);
+            this.tableLayoutPanel4.Controls.Add(this.lblAnalogGain, 0, 0);
+            this.tableLayoutPanel4.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel4.Location = new System.Drawing.Point(0, 40);
+            this.tableLayoutPanel4.Margin = new System.Windows.Forms.Padding(0);
+            this.tableLayoutPanel4.Name = "tableLayoutPanel4";
+            this.tableLayoutPanel4.RowCount = 1;
+            this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel4.Size = new System.Drawing.Size(240, 40);
+            this.tableLayoutPanel4.TabIndex = 300;
+            // 
+            // tlpExposure
+            // 
+            this.tlpExposure.ColumnCount = 2;
+            this.tlpExposure.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 160F));
+            this.tlpExposure.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 80F));
+            this.tlpExposure.Controls.Add(this.lblExposure, 0, 0);
+            this.tlpExposure.Controls.Add(this.lbExposureValue, 1, 0);
+            this.tlpExposure.Location = new System.Drawing.Point(5, 0);
+            this.tlpExposure.Margin = new System.Windows.Forms.Padding(0);
+            this.tlpExposure.Name = "tlpExposure";
+            this.tlpExposure.RowCount = 1;
+            this.tlpExposure.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tlpExposure.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tlpExposure.Size = new System.Drawing.Size(208, 27);
+            this.tlpExposure.TabIndex = 300;
+            // 
+            // pnlCameraMode
+            // 
+            this.pnlCameraMode.Controls.Add(this.tlpDigitalGain);
+            this.pnlCameraMode.Controls.Add(this.tlpExposure);
+            this.pnlCameraMode.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pnlCameraMode.Location = new System.Drawing.Point(0, 0);
+            this.pnlCameraMode.Margin = new System.Windows.Forms.Padding(0);
+            this.pnlCameraMode.Name = "pnlCameraMode";
+            this.pnlCameraMode.Size = new System.Drawing.Size(240, 40);
+            this.pnlCameraMode.TabIndex = 301;
+            // 
             // OpticTeachingForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
@@ -1703,7 +1798,7 @@
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
             this.ClientSize = new System.Drawing.Size(1847, 861);
             this.Controls.Add(this.tlpLinescanTeach);
-            this.Font = new System.Drawing.Font("맑은 고딕", 11.25F, System.Drawing.FontStyle.Bold);
+            this.Font = new System.Drawing.Font("Malgun Gothic", 11.25F, System.Drawing.FontStyle.Bold);
             this.ForeColor = System.Drawing.Color.White;
             this.Name = "OpticTeachingForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
@@ -1727,8 +1822,6 @@
             this.tlpScanDirection.PerformLayout();
             this.tlpRepeatCount.ResumeLayout(false);
             this.tlpCamera.ResumeLayout(false);
-            this.tlpCamera_.ResumeLayout(false);
-            this.tlpCamera_.PerformLayout();
             this.tlpGrabModeSelect.ResumeLayout(false);
             this.tlpMotionStatus.ResumeLayout(false);
             this.tlpMotionStatus_.ResumeLayout(false);
@@ -1740,12 +1833,20 @@
             this.tlpLinescanTeach.ResumeLayout(false);
             this.tlpTeachingItem.ResumeLayout(false);
             this.pnlLinescanTeach.ResumeLayout(false);
-            this.tableLayoutPanel2.ResumeLayout(false);
+            this.tlpTeach.ResumeLayout(false);
             this.tlpCommon.ResumeLayout(false);
             this.tlpUnit.ResumeLayout(false);
             this.tlpLoadImage.ResumeLayout(false);
             this.pnlTeach.ResumeLayout(false);
             this.tableLayoutPanel1.ResumeLayout(false);
+            this.tlpDigitalGain.ResumeLayout(false);
+            this.tlpDigitalGain.PerformLayout();
+            this.tlpCamera_.ResumeLayout(false);
+            this.tableLayoutPanel4.ResumeLayout(false);
+            this.tableLayoutPanel4.PerformLayout();
+            this.tlpExposure.ResumeLayout(false);
+            this.tlpExposure.PerformLayout();
+            this.pnlCameraMode.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -1782,11 +1883,9 @@
         private System.Windows.Forms.Label lblGrabMode;
         private System.Windows.Forms.TableLayoutPanel tlpGrabModeSelect;
         private System.Windows.Forms.TableLayoutPanel tlpCamera;
-        private System.Windows.Forms.TableLayoutPanel tlpCamera_;
-        private System.Windows.Forms.Label lblCameraGainValue;
-        private System.Windows.Forms.Label lblCameraExposureValue;
-        private System.Windows.Forms.Label lblCameraGain;
-        private System.Windows.Forms.Label lblCameraExposure;
+        private System.Windows.Forms.Label lblAnalogGainValue;
+        private System.Windows.Forms.Label lbExposureValue;
+        private System.Windows.Forms.Label lblAnalogGain;
         private System.Windows.Forms.Label lblCamera;
         private System.Windows.Forms.TableLayoutPanel tlpJogFunction;
         private System.Windows.Forms.TableLayoutPanel tlpJogOption;
@@ -1817,7 +1916,7 @@
         private System.Windows.Forms.TableLayoutPanel tlpTeachingItem;
         private System.Windows.Forms.Button btnCancel;
         private System.Windows.Forms.Button btnSave;
-        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
+        private System.Windows.Forms.TableLayoutPanel tlpTeach;
         private System.Windows.Forms.TableLayoutPanel tlpCommon;
         private System.Windows.Forms.TableLayoutPanel tlpUnit;
         private System.Windows.Forms.Button btnMotionPopup;
@@ -1850,5 +1949,13 @@
         private System.Windows.Forms.Label lblRepeatRemain;
         private System.Windows.Forms.Label lblRepeatCount;
         private System.Windows.Forms.Panel pnlLight;
+        private System.Windows.Forms.TableLayoutPanel tlpCamera_;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel4;
+        private System.Windows.Forms.TableLayoutPanel tlpExposure;
+        private System.Windows.Forms.Label lblExposure;
+        private System.Windows.Forms.TableLayoutPanel tlpDigitalGain;
+        private System.Windows.Forms.Label lblDigitalGainValue;
+        private System.Windows.Forms.Label lblDigitalGain;
+        private System.Windows.Forms.Panel pnlCameraMode;
     }
 }

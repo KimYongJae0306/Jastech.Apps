@@ -106,17 +106,32 @@ namespace Jastech.Framework.Winform.Forms
             SelectedAxis = AxisHandler.GetAxis(AxisName.X);
 
             UpdateData();
+            SetCameraProperty();
             AddControl();
             InitializeUI();
             SetDefaultValue();
             StatusTimer.Start();
         }
 
+        private void SetCameraProperty()
+        {
+            var inspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
+
+            var analogGain = inspModel.GetUnit(UnitName).AnalogGain;
+            var digitalGain = inspModel.GetUnit(UnitName).DigitalGain;
+
+            var camera = LineCamera.Camera;
+
+            camera.SetAnalogGain(analogGain);
+            camera.SetDigitalGain(digitalGain);
+        }
+
         private void SetPrevData()
         {
             var inspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
-            _prevAnalogGain = inspModel.AnalogGain;
-            _prevDigitalGain = inspModel.DigitalGain;
+
+            _prevAnalogGain = inspModel.GetUnit(UnitName).AnalogGain;
+            _prevDigitalGain = inspModel.GetUnit(UnitName).DigitalGain;
         }
 
         private void RollbackPrevData()
@@ -170,6 +185,9 @@ namespace Jastech.Framework.Winform.Forms
             SetOperationMode(TDIOperationMode.TDI);
             rdoJogSlowMode.Checked = true;
             rdoJogMode.Checked = true;
+
+            tlpExposure.Dock = DockStyle.Fill;
+            tlpDigitalGain.Dock = DockStyle.Fill;
         }
 
         private void AddControl()
@@ -178,8 +196,7 @@ namespace Jastech.Framework.Winform.Forms
             pnlDisplay.Controls.Add(DrawBoxControl);
             pnlHistogram.Controls.Add(PixelValueGraphControl);
 
-            string unitName = UnitName.Unit0.ToString();
-            var unit = TeachingData.Instance().GetUnit(unitName);
+            var unit = TeachingData.Instance().GetUnit(UnitName.ToString());
             var posData = unit.TeachingInfoList;
 
             AutoFocusControl.UpdateData(posData[(int)TeachingPosType.Stage1_Scan_Start].AxisInfoList[(int)AxisName.Z]);
@@ -219,13 +236,9 @@ namespace Jastech.Framework.Winform.Forms
             if (camera is ICameraTDIavailable tdiCamera)
             {
                 if (operationMode == TDIOperationMode.TDI)
-                {
                     tdiCamera.SetTDIOperationMode(TDIOperationMode.TDI);
-                }
                 else
-                {
                     tdiCamera.SetTDIOperationMode(TDIOperationMode.Area);
-                }
             }
 
             switch (operationMode)
@@ -233,22 +246,22 @@ namespace Jastech.Framework.Winform.Forms
                 case TDIOperationMode.TDI:
                     lblLineMode.BackColor = _selectedColor;
                     lblAreaMode.BackColor = _nonSelectedColor;
-                    lblCameraExposure.Text = "D GAIN (0 ~ 8[dB])";
-                  
+                    tlpExposure.Visible = false;
+                    tlpDigitalGain.Visible = true;
                     break;
 
                 case TDIOperationMode.Area:
                     lblLineMode.BackColor = _nonSelectedColor;
                     lblAreaMode.BackColor = _selectedColor;
-                    lblCameraExposure.Text = "EXPOSURE [us]";
-                 
+                    tlpExposure.Visible = true;
+                    tlpDigitalGain.Visible = false;
                     break;
 
                 default:
                     break;
             }
 
-            UpdateData();
+            //UpdateData();
         }
 
         public void UpdateUI()
@@ -269,27 +282,12 @@ namespace Jastech.Framework.Winform.Forms
         {
             // Camera Exposure, Gain Load
             var lineCamera = LineCamera.Camera as CameraMil;
+            var inspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
+            //UnitName
 
-
-            if (lineCamera != null)
-            {
-                if (lineCamera.TDIOperationMode == TDIOperationMode.Area)
-                    lblCameraExposureValue.Text = Convert.ToInt32(lineCamera.GetExposureTime()).ToString();
-                else
-                    lblCameraExposureValue.Text = lineCamera.GetDigitalGain().ToString("F3");
-
-                lblCameraGainValue.Text = lineCamera.GetAnalogGain().ToString();
-            }
-        }
-
-        private void SetTeachingPosition(TeachingInfo teacingPosition)
-        {
-            TeachingPositionInfo = teacingPosition.DeepCopy();
-        }
-     
-        private void SetLAFCtrl(LAFCtrl lafCtrl)
-        {
-            LAFCtrl = lafCtrl;
+            lbExposureValue.Text = lineCamera?.GetExposureTime().ToString("F4");
+            lblDigitalGainValue.Text = inspModel.GetUnit(UnitName).DigitalGain.ToString("F4");
+            lblAnalogGainValue.Text = inspModel.GetUnit(UnitName).AnalogGain.ToString();
         }
 
         private void UpdateMotionStatus()
@@ -359,7 +357,7 @@ namespace Jastech.Framework.Winform.Forms
             else
                 lblNegativeLimitZ.BackColor = _nonSelectedColor;
 
-            if (status.IsNegativeLimit)
+            if (status.IsPositiveLimit)
                 lblPositiveLimitZ.BackColor = Color.Red;
             else
                 lblPositiveLimitZ.BackColor = _nonSelectedColor;
@@ -368,28 +366,94 @@ namespace Jastech.Framework.Winform.Forms
 
         private void lblCameraExposureValue_Click(object sender, EventArgs e)
         {
-            int exposureTime = 0;
-            int digitalGain = 0;
+            double exposureTime = 0;
+            bool isOutOfRange = false;
 
             var tdiCamera = LineCamera.Camera as CameraMil;
             if (tdiCamera != null)
             {
-                if (tdiCamera.TDIOperationMode == TDIOperationMode.Area)
+                exposureTime = KeyPadHelper.SetLabelIntegerData((Label)sender);
+
+                if (exposureTime > 200000.0)
                 {
-                    exposureTime = KeyPadHelper.SetLabelIntegerData((Label)sender);
+                    isOutOfRange = true;
+                    exposureTime = 200000.0;
                 }
-                else
+
+                if (exposureTime < 1.0)
                 {
-                    digitalGain = KeyPadHelper.SetLabelIntegerData((Label)sender);
-                    tdiCamera.SetDigitalGain(digitalGain);
+                    isOutOfRange = true;
+                    exposureTime = 1.0;
                 }
+
+                if (isOutOfRange)
+                    ShowConfirmDataRange(minValue: "1.0", maxValue: "200000.0");
+
+                lbExposureValue.Text = exposureTime.ToString();
+                tdiCamera.SetExposureTime(exposureTime);
+       
             }
+        }
+
+        private void lblCameraDigitalGainValue_Click(object sender, EventArgs e)
+        {
+            double digitalGain = 0;
+            bool isOutOfRange = false;
+
+            var tdiCamera = LineCamera.Camera as CameraMil;
+            if (tdiCamera != null)
+            {
+                digitalGain = KeyPadHelper.SetLabelIntegerData((Label)sender);
+
+                if (digitalGain > 8.0)
+                {
+                    isOutOfRange = true;
+                    digitalGain = 8.0;
+                }
+
+                if (digitalGain < 0.5)
+                {
+                    isOutOfRange = true;
+                    digitalGain = 0.5;
+                }
+
+                if (isOutOfRange)
+                    ShowConfirmDataRange(minValue: "0.5", maxValue: "8.0");
+
+                lblDigitalGainValue.Text = digitalGain.ToString();
+                tdiCamera.SetDigitalGain(digitalGain);
+            }
+        }
+
+        private void ShowConfirmDataRange(string minValue, string maxValue)
+        {
+            MessageConfirmForm form = new MessageConfirmForm();
+            form.Message = "Out of Range. Min : " + minValue + " ~ Max : " + maxValue;
+            form.ShowDialog();
         }
 
         private void lblCameraGainValue_Click(object sender, EventArgs e)
         {
             int analogGain = KeyPadHelper.SetLabelIntegerData((Label)sender);
 
+            bool isOutOfRange = false;
+
+            if (analogGain > 4.0)
+            {
+                isOutOfRange = true;
+                analogGain = 4;
+            }
+
+            if (analogGain < 1)
+            {
+                isOutOfRange = true;
+                analogGain = 1;
+            }
+
+            if (isOutOfRange)
+                ShowConfirmDataRange(minValue: "1", maxValue: "4");
+
+            lblAnalogGainValue.Text = analogGain.ToString();
             LineCamera?.Camera.SetAnalogGain(analogGain);
         }
 
@@ -469,9 +533,12 @@ namespace Jastech.Framework.Winform.Forms
             posData.AxisInfoList[(int)AxisName.Z].TargetPosition = AutoFocusControl.GetCurrentData().TargetPosition;
             posData.AxisInfoList[(int)AxisName.Z].CenterOfGravity = AutoFocusControl.GetCurrentData().CenterOfGravity;
 
-            var inspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
-            inspModel.DigitalGain = Convert.ToDouble(lblCameraExposureValue.Text);
-            inspModel.AnalogGain = Convert.ToDouble(lblCameraGainValue.Text);
+            AppsInspModel model = ModelManager.Instance().CurrentModel as AppsInspModel;
+            if (model != null)
+            {
+                model.GetUnit(UnitName).DigitalGain = Convert.ToDouble(lblDigitalGainValue.Text);
+                model.GetUnit(UnitName).AnalogGain = Convert.ToInt16(lblAnalogGainValue.Text);
+            }
         }
 
         private void btnSave_Click(object sender, EventArgs e)
@@ -521,8 +588,9 @@ namespace Jastech.Framework.Winform.Forms
                 {
                     int tdiStage = tdiCamera.TDIStages;
                     tdiStage = 256;
-                    Mat cropImage = MatHelper.CropRoi(image, new Rectangle(0, 0, camera.ImageWidth, tdiStage));
-
+                    // Orginal Data를 Transpose해 Queue에 쌓아 Crop 시 Width, Height가 반대임
+                    Mat cropImage = MatHelper.CropRoi(image, new Rectangle(0, 0, tdiStage, camera.ImageWidth));
+           
                     Bitmap bmp = cropImage.ToBitmap();
                     DrawBoxControl.SetImage(bmp);
 
@@ -809,6 +877,8 @@ namespace Jastech.Framework.Winform.Forms
             Console.WriteLine("Update Repeat Display");
         }
         #endregion
+
+        
     }
 
     public class RepeatParam

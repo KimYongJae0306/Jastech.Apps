@@ -78,6 +78,7 @@ namespace ATT_UT_IPAD.UI.Pages
             form.UnitName = UnitName.Unit0;
             form.TitleCameraName = "AlignCamera";
             form.LineCamera = LineCameraManager.Instance().GetAppsCamera("AlignCamera");
+            form.LAFCtrl = LAFManager.Instance().GetLAFCtrl("Align");
             form.InspModelService = ATTInspModelService;
             form.OpenMotionPopupEventHandler += OpenMotionPopupEventHandler;
             form.ShowDialog();
@@ -94,6 +95,7 @@ namespace ATT_UT_IPAD.UI.Pages
             form.UnitName = UnitName.Unit0;
             form.TitleCameraName = "AkkonCamera";
             form.LineCamera = LineCameraManager.Instance().GetAppsCamera("AkkonCamera");
+            form.LAFCtrl = LAFManager.Instance().GetLAFCtrl("Akkon");
             form.InspModelService = ATTInspModelService;
             form.OpenMotionPopupEventHandler += OpenMotionPopupEventHandler;
             form.ShowDialog();

@@ -28,6 +28,7 @@ namespace Jastech.Apps.Winform.Service.Plc
         #endregion
 
         #region 속성
+        public VisionXCalibration VisionXCalibration { get; set; } = new VisionXCalibration();
         #endregion
 
         #region 이벤트
@@ -161,13 +162,17 @@ namespace Jastech.Apps.Winform.Service.Plc
         {
             while(true)
             {
+                if (CommandTaskCancellationTokenSource.IsCancellationRequested)
+                    break;
+
                 if(GetCommonCommand() is int commonCommand)
                 {
                     EnableActive = true;
                     CommonCommandReceived((PlcCommonCommand)commonCommand);
                     EnableActive = false;
                 }
-                else if(GetCommand() is int command)
+                
+                if(GetCommand() is int command)
                 {
                     EnableActive = true;
                     PlcCommandReceived((PlcCommand)command);
@@ -476,7 +481,6 @@ namespace Jastech.Apps.Winform.Service.Plc
                 return;
             }
 
-            VisionXCalibration VisionXCalibration = new VisionXCalibration();
             VisionXCalibration.SetParam(param);
             VisionXCalibration.SetCalibrationMode(CalibrationMode.XYT);
             VisionXCalibration.StartCalSeqRun();

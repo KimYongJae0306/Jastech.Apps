@@ -174,9 +174,9 @@ namespace ATT_UT_Remodeling.UI.Forms
             lblOffsetX.Text = param.GetOffset(AxisName.X).ToString();
             XVariableControl.UpdateData(param.GetMovingParams(AxisName.X));
 
-            lblTargetPositionZ.Text = param.GetTargetPosition(AxisName.Z1).ToString();
-            lblTeachedCenterOfGravityZ.Text = param.GetCenterOfGravity(AxisName.Z1).ToString();
-            ZVariableControl.UpdateData(param.GetMovingParams(AxisName.Z1));
+            lblTargetPositionZ.Text = param.GetTargetPosition(AxisName.Z).ToString();
+            lblTeachedCenterOfGravityZ.Text = param.GetCenterOfGravity(AxisName.Z).ToString();
+            ZVariableControl.UpdateData(param.GetMovingParams(AxisName.Z));
         }
 
         public void SetAxisHandler(AxisHandler axisHandler)
@@ -205,7 +205,7 @@ namespace ATT_UT_Remodeling.UI.Forms
             XVariableControl.SetAxis(AxisHandler.GetAxis(AxisName.X));
 
             ZVariableControl.Dock = DockStyle.Fill;
-            ZVariableControl.SetAxis(AxisHandler.GetAxis(AxisName.Z1));
+            ZVariableControl.SetAxis(AxisHandler.GetAxis(AxisName.Z));
 
             tlpVariableParameter.Controls.Add(XVariableControl);
             tlpVariableParameter.Controls.Add(ZVariableControl);

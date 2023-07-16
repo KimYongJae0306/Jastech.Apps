@@ -10,6 +10,7 @@ using Jastech.Apps.Winform.Core;
 using Jastech.Apps.Winform.UI.Controls;
 using Jastech.Framework.Algorithms.Akkon.Parameters;
 using Jastech.Framework.Config;
+using Jastech.Framework.Device.LAFCtrl;
 using Jastech.Framework.Imaging;
 using Jastech.Framework.Imaging.VisionPro;
 using Jastech.Framework.Imaging.VisionPro.VisionAlgorithms.Results;
@@ -72,6 +73,8 @@ namespace Jastech.Framework.Winform.Forms
         private MarkControl MarkControl { get; set; } = new MarkControl() { Dock = DockStyle.Fill };
 
         private AlgorithmTool Algorithm = new AlgorithmTool();
+
+        public LAFCtrl LAFCtrl { get; set; } = null;
 
         protected override CreateParams CreateParams
         {
@@ -355,7 +358,7 @@ namespace Jastech.Framework.Winform.Forms
             AppsInspModel inspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
             TeachingImagePath = Path.Combine(ConfigSet.Instance().Path.Model, inspModel.Name, "TeachingImage", DateTime.Now.ToString("yyyyMMdd_HHmmss"));
 
-            LAFManager.Instance().AutoFocusOnOff("Akkon", true);
+            LAFManager.Instance().AutoFocusOnOff(LAFCtrl.Name, true);
 
             TeachingData.Instance().ClearTeachingImageBuffer();
             LineCamera.InitGrabSettings();

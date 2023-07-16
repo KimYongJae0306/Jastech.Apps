@@ -3,10 +3,12 @@ using ATT_UT_Remodeling.UI.Pages;
 using Jastech.Apps.Structure;
 using Jastech.Apps.Structure.Data;
 using Jastech.Apps.Winform;
+using Jastech.Apps.Winform.Core.Calibrations;
 using Jastech.Apps.Winform.Service.Plc;
 using Jastech.Apps.Winform.Service.Plc.Maps;
 using Jastech.Apps.Winform.Settings;
 using Jastech.Framework.Config;
+using Jastech.Framework.Device.Cameras;
 using Jastech.Framework.Device.Grabbers;
 using Jastech.Framework.Matrox;
 using Jastech.Framework.Structure;
@@ -17,6 +19,7 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
+using System.Linq;
 using System.Windows.Forms;
 
 namespace ATT_UT_Remodeling
@@ -64,11 +67,23 @@ namespace ATT_UT_Remodeling
             AddControls();
             SelectMainPage();
 
-
             ModelManager.Instance().CurrentModelChangedEvent += MainForm_CurrentModelChangedEvent;
-            //PlcScenarioManager.Instance().Initialize(ATTInspModelService);
-            //PlcScenarioManager.Instance().InspRunnerHandler += MainForm_InspRunnerHandler;
-            //PlcScenarioManager.Instance().PreAlignRunnerHandler += MainForm_PreAlignRunnerHandler;
+            PlcScenarioManager.Instance().Initialize(ATTInspModelService);
+            PlcScenarioManager.Instance().InspRunnerHandler += MainForm_InspRunnerHandler;
+            PlcScenarioManager.Instance().PreAlignRunnerHandler += MainForm_PreAlignRunnerHandler;
+
+            var areaCamera = AreaCameraManager.Instance().GetAppsCamera("PreAlign");
+            if (areaCamera != null)
+            {
+                PlcScenarioManager.Instance().VisionXCalibration.SetCamera(areaCamera);
+            }
+
+            var axisHandler = MotionManager.Instance().GetAxisHandler(AxisHandlerName.Handler0);
+            if ( axisHandler != null)
+            {
+                PlcScenarioManager.Instance().VisionXCalibration.SetAxisHandler(axisHandler);
+            }
+
             if (ModelManager.Instance().CurrentModel != null)
             {
                 lblCurrentModel.Text = ModelManager.Instance().CurrentModel.Name;
@@ -286,6 +301,7 @@ namespace ATT_UT_Remodeling
 
             LAFManager.Instance().Release();
             PlcControlManager.Instance().Release();
+            PlcScenarioManager.Instance().Release();
         }
     }
 }

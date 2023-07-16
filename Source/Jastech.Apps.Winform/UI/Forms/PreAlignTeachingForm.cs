@@ -5,6 +5,7 @@ using Jastech.Apps.Structure.Data;
 using Jastech.Apps.Winform.UI.Controls;
 using Jastech.Framework.Config;
 using Jastech.Framework.Device.Cameras;
+using Jastech.Framework.Device.LAFCtrl;
 using Jastech.Framework.Device.Motions;
 using Jastech.Framework.Imaging;
 using Jastech.Framework.Imaging.VisionPro;
@@ -56,6 +57,8 @@ namespace Jastech.Apps.Winform.UI.Forms
         public AxisHandler AxisHandler { get; set; } = null;
 
         public AreaCamera AreaCamera { get; set; } = null;
+
+        public LAFCtrl LAFCtrl { get; set; } = null;
         #endregion
 
         #region 이벤트
@@ -97,6 +100,9 @@ namespace Jastech.Apps.Winform.UI.Forms
             pnlDisplay.Controls.Add(Display);
 
             PreAlignControl.MarkDirectionChanged += MarkDirectionChangedEvent;
+
+            var unit = TeachingData.Instance().GetUnit(UnitName.ToString());
+            LightControl.SetParam(DeviceManager.Instance().LightCtrlHandler, unit.LineScanLightParam);
             pnlLight.Controls.Add(LightControl);
 
             // TeachingUIManager 참조
@@ -264,9 +270,11 @@ namespace Jastech.Apps.Winform.UI.Forms
 
         private void PreAlignTeachingForm_FormClosing(object sender, FormClosingEventArgs e)
         {
+            AreaCamera.StopGrab();
+            AreaCamera.OnImageGrabbed -= AreaCamera_OnImageGrabbed;
+
             Display.DisposeImage();
             PreAlignControl.DisposeImage();
-            AreaCamera.OnImageGrabbed -= AreaCamera_OnImageGrabbed;
         }
 
         private void lblCameraExposureValue_Click(object sender, EventArgs e)

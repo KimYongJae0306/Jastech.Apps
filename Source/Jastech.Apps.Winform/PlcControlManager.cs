@@ -80,18 +80,17 @@ namespace Jastech.Apps.Winform
                     }
                 }
 
-                //if (GetAddressMap(PlcCommonMap.PC_Status_Common).Value == "0")
-                //{
-                   
-                //    int command = Convert.ToInt32(GetAddressMap(PlcCommonMap.PLC_Command_Common));
-                //    PlcScenarioManager.Instance().AddCommonCommand(command);
-                //}
-                //if (GetAddressMap(PlcCommonMap.PC_Status).Value == "0")
-                //{
-                //    var commandMap = GetAddressMap(PlcCommonMap.PLC_Command);
-                //    int command = Convert.ToInt32(commandMap.Value);
-                //    OnPlcCommandReceived(command);
-                //}
+                if (GetAddressMap(PlcCommonMap.PC_Status_Common).Value == "0")
+                {
+                    int command = Convert.ToInt32(GetAddressMap(PlcCommonMap.PLC_Command_Common).Value);
+                    PlcScenarioManager.Instance().AddCommonCommand(command);
+                }
+                if (GetAddressMap(PlcCommonMap.PC_Status).Value == "0")
+                {
+                    var commandMap = GetAddressMap(PlcCommonMap.PLC_Command);
+                    int command = Convert.ToInt32(commandMap.Value);
+                    PlcScenarioManager.Instance().AddCommand(command);
+                }
             }
         }
 

@@ -6,6 +6,8 @@ using Jastech.Framework.Device.Cameras;
 using Jastech.Framework.Device.Grabbers;
 using Jastech.Framework.Device.LAFCtrl;
 using Jastech.Framework.Device.LightCtrls;
+using Jastech.Framework.Device.LightCtrls.Lvs;
+using Jastech.Framework.Device.LightCtrls.Lvs.Parser;
 using Jastech.Framework.Device.Motions;
 using Jastech.Framework.Imaging;
 using Jastech.Framework.Matrox;

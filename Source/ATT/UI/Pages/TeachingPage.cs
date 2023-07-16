@@ -3,6 +3,7 @@ using ATT.UI.Forms;
 using Jastech.Apps.Structure;
 using Jastech.Apps.Winform;
 using Jastech.Framework.Config;
+using Jastech.Framework.Device.LAFCtrl;
 using Jastech.Framework.Winform.Forms;
 using System;
 using System.Windows.Forms;
@@ -40,6 +41,7 @@ namespace ATT.UI.Pages
             form.UnitName = UnitName.Unit0;
             form.TitleCameraName = "LineScan";
             form.LineCamera = LineCameraManager.Instance().GetAppsCamera("Camera0");
+            form.LAFCtrl = LAFManager.Instance().GetLAFCtrl("Laf");
             form.InspModelService = ATTInspModelService;
             form.OpenMotionPopupEventHandler += OpenMotionPopupEventHandler;
             form.ShowDialog();

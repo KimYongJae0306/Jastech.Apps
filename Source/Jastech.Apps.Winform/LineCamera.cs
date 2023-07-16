@@ -326,8 +326,9 @@ namespace Jastech.Apps.Winform
                     {
                        byte[] data = LiveDataQueue.Dequeue();
                         Mat mat = MatHelper.ByteArrayToMat(data, Camera.ImageWidth, Camera.ImageHeight, 1);
-                        Mat rotatedMat = MatHelper.Transpose(mat);
 
+                        Mat rotatedMat = MatHelper.Transpose(mat);
+  
                         if (mat != null)
                             TeachingLiveImageGrabbed?.Invoke(Camera.Name, rotatedMat);
 
