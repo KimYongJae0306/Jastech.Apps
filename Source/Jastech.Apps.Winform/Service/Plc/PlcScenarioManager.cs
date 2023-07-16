@@ -416,6 +416,7 @@ namespace Jastech.Apps.Winform.Service.Plc
                     break;
 
                 case PlcCommand.Origin_All:
+                    StartOriginAll();
                     break;
 
                 case PlcCommand.Move_StandbyPos:
@@ -482,7 +483,7 @@ namespace Jastech.Apps.Winform.Service.Plc
             }
 
             VisionXCalibration.SetParam(param);
-            VisionXCalibration.SetCalibrationMode(CalibrationMode.XYT);
+            VisionXCalibration.SetCalibrationMode(CalibrationMode.XY);
             VisionXCalibration.StartCalSeqRun();
         }
 
@@ -532,6 +533,7 @@ namespace Jastech.Apps.Winform.Service.Plc
             errorMessage = string.Format("Move Completed.(Teaching Pos : {0})", teachingPos.ToString());
             Logger.Write(LogType.Device, errorMessage);
 
+            PlcControlManager.Instance().WritePcStatus(PlcCommand.Move_StandbyPos);
             return true;
         }
 
@@ -563,6 +565,9 @@ namespace Jastech.Apps.Winform.Service.Plc
 
             foreach (var axisHandler in MotionManager.Instance().AxisHandlerList)
             {
+                if (axisHandler.Name == AxisName.Z.ToString())
+                    continue;
+
                 allAxisHanlder.AddAxis(axisHandler.AxisList);
             }
             allAxisHanlder.StopMove();
@@ -581,6 +586,8 @@ namespace Jastech.Apps.Winform.Service.Plc
                 // LAF Homming
             }
             allAxisHanlder.StartHomeMove();
+
+            PlcControlManager.Instance().WritePcStatus(PlcCommand.Origin_All);
         }
     }
 }

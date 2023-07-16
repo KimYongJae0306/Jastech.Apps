@@ -4,6 +4,7 @@ using Jastech.Apps.Structure.Data;
 using Jastech.Apps.Structure.VisionTool;
 using Jastech.Apps.Winform.Service.Plc.Maps;
 using Jastech.Framework.Device.Motions;
+using Jastech.Framework.Imaging.Helper;
 using Jastech.Framework.Imaging.VisionPro;
 using Jastech.Framework.Imaging.VisionPro.VisionAlgorithms.Parameters;
 using Jastech.Framework.Imaging.VisionPro.VisionAlgorithms.Results;
@@ -76,9 +77,11 @@ namespace Jastech.Apps.Winform.Core.Calibrations
         private AreaCamera AreaCamera { get; set; } = null;
         private byte[] imageData = null;
 
-        private Task CalSeqTask { get; set; }
+        //private Task CalSeqTask { get; set; }
 
-        private CancellationTokenSource SeqTaskCancellationTokenSource { get; set; }
+        private Thread _workingThread = null;
+        private bool _isWorking = false;
+        //private CancellationTokenSource SeqTaskCancellationTokenSource { get; set; }
 
         private VisionProPatternMatchingParam VisionProPatternMatchingParam { get; set; } = null;
 
@@ -148,15 +151,19 @@ namespace Jastech.Apps.Winform.Core.Calibrations
 
         public void StartCalSeqRun()
         {
-            if (CalSeqTask != null)
+            _isWorking = true;
+
+            if (_workingThread != null)
             {
-                CalSeqStep = CalSeqStep.CAL_SEQ_INIT;
+                CalSeqStep = CalSeqStep.CAL_SEQ_IDLE;
                 return;
             }
 
-            SeqTaskCancellationTokenSource = new CancellationTokenSource();
-            CalSeqTask = new Task(CalibrationTaskAction, SeqTaskCancellationTokenSource.Token);
-            CalSeqTask.Start();
+            //SeqTaskCancellationTokenSource = new CancellationTokenSource();
+            //CalSeqTask = new Task(CalibrationTaskAction, SeqTaskCancellationTokenSource.Token);
+            //CalSeqTask.Start();
+            _workingThread = new Thread(new ThreadStart(CalibrationThread));
+            _workingThread.Start();
         }
 
         public void CalSeqStop()
@@ -165,28 +172,23 @@ namespace Jastech.Apps.Winform.Core.Calibrations
             areaCamera.StopGrab();
             AreaCameraManager.Instance().GetAreaCamera("PreAlign").StopGrab();
 
-            if (CalSeqTask == null)
+            if (_workingThread == null)
                 return;
 
-            SeqTaskCancellationTokenSource.Cancel();
-            CalSeqTask.Wait();
-            CalSeqTask = null;
+            //SeqTaskCancellationTokenSource.Cancel();
+            //CalSeqTask.Wait();
+            //CalSeqTask = null;
+            _workingThread = null;
         }
 
-        private void CalibrationTaskAction()
+        private void CalibrationThread()
         {
-            var cancellationToken = SeqTaskCancellationTokenSource.Token;
-            cancellationToken.ThrowIfCancellationRequested();
-            CalSeqStep = CalSeqStep.CAL_SEQ_INIT;
+            //var cancellationToken = SeqTaskCancellationTokenSource.Token;
+            //cancellationToken.ThrowIfCancellationRequested();
+            CalSeqStep = CalSeqStep.CAL_SEQ_IDLE;
 
-            while (true)
+            while (_isWorking)
             {
-                if (cancellationToken.IsCancellationRequested)
-                {
-                    CalSeqStep = CalSeqStep.CAL_SEQ_IDLE;
-                    break;
-                }
-
                 CalibrationSequence();
                 Thread.Sleep(50);
             }
@@ -206,18 +208,15 @@ namespace Jastech.Apps.Winform.Core.Calibrations
 
             string logMessage = string.Empty;
 
-            double intervalX = 0.1;
-            double intervalY = 0.1;
+            double intervalX = 10.0;
+            double intervalY = 10.0;
             double intervalT = 0.1;
 
             int directionT = 1;
 
-            Stopwatch sw = new Stopwatch();
+            string savePath = string.Empty;
 
-            //var display = TeachingUIManager.Instance().GetDisplay();
-            //ICogImage cogImage = display.GetImage();
-            //if (cogImage == null)
-            //    return;
+            Stopwatch sw = new Stopwatch();
 
             var camera = AreaCamera.Camera;
             VisionProPatternMatchingParam inspParam = VisionProPatternMatchingParam;
@@ -315,7 +314,11 @@ namespace Jastech.Apps.Winform.Core.Calibrations
 
                     camera.GrabOnce();
                     imageData = camera.GetGrabbedImage();
+                    Thread.Sleep(50);
                     cogImage = VisionProImageHelper.ConvertImage(imageData, camera.ImageWidth, camera.ImageHeight, Framework.Imaging.ColorFormat.Gray);
+
+                    savePath = string.Format(@"D:\PositionStep_{0}.bmp", _matrixStepPoint);
+                    VisionProImageHelper.Save(cogImage, savePath);
                     Thread.Sleep(50);
 
                     // 패턴 매칭
@@ -405,6 +408,12 @@ namespace Jastech.Apps.Winform.Core.Calibrations
                     Logger.Write(LogType.Device, "Start grab. - init position");
                     camera.GrabOnce();
                     imageData = camera.GetGrabbedImage();
+
+                    Thread.Sleep(50);
+                    cogImage = VisionProImageHelper.ConvertImage(imageData, camera.ImageWidth, camera.ImageHeight, Framework.Imaging.ColorFormat.Gray);
+
+                    savePath = string.Format(@"D:\CAL_SEQ_XY_REF_GRAB.bmp", _matrixStepPoint);
+                    VisionProImageHelper.Save(cogImage, savePath);
                     Thread.Sleep(50);
 
                     // 마지막 포인트는 패턴 매칭 안해도 될 듯
@@ -772,8 +781,8 @@ namespace Jastech.Apps.Winform.Core.Calibrations
                     // Light off
                     light.TurnOff();
                     Logger.Write(LogType.Device, "Light off.");
+                    _isWorking = false;
 
-                    CalSeqStep = CalSeqStep.CAL_SEQ_STOP;
                     break;
 
                 default:
@@ -981,7 +990,7 @@ namespace Jastech.Apps.Winform.Core.Calibrations
                 switch (step)
                 {
                     case 0:
-                        doneX = AxisHandler.AxisList[(int)AxisName.X].GetCurrentMotionStatus() == "STOP" ? true : false;
+                        doneX = AxisHandler.AxisList[(int)AxisName.X].GetCurrentMotionStatus() == "NORMAL" ? true : false;
                         if (doneX)
                             step++;
 
@@ -989,7 +998,7 @@ namespace Jastech.Apps.Winform.Core.Calibrations
 
                     case 1:
                         doneY = false;
-                        doneY = PlcControlManager.Instance().GetAddressMap(Service.Plc.Maps.PlcCommonMap.PLC_Move_END).Value == "0" ? true : false;
+                        doneY = PlcControlManager.Instance().GetAddressMap(PlcCommonMap.PLC_Move_END).Value == "0" ? true : false;
                         if (doneY)
                             count++;
 
@@ -1211,10 +1220,13 @@ namespace Jastech.Apps.Winform.Core.Calibrations
             return true;
         }
 
-        private MatrixPointResult GetMatrixPoint(ICogImage copyCogImage, VisionProPatternMatchingParam inspParam)
+        private MatrixPointResult GetMatrixPoint(ICogImage cogImage, VisionProPatternMatchingParam inspParam)
         {
             // 패턴 매칭
-            VisionProPatternMatchingResult patternMatchResult = Algorithm.RunPatternMatch(copyCogImage, inspParam);
+            if (cogImage == null)
+                return null;
+
+            VisionProPatternMatchingResult patternMatchResult = Algorithm.RunPatternMatch(cogImage, inspParam);
             MatrixPointResult matrixPointResult = new MatrixPointResult();
 
             matrixPointResult.PixelX = patternMatchResult.MaxMatchPos.FoundPos.X;

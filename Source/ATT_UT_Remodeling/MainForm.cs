@@ -72,6 +72,8 @@ namespace ATT_UT_Remodeling
             PlcScenarioManager.Instance().InspRunnerHandler += MainForm_InspRunnerHandler;
             PlcScenarioManager.Instance().PreAlignRunnerHandler += MainForm_PreAlignRunnerHandler;
 
+            PlcControlManager.Instance().WritePcCommand(PcCommand.ServoOn_1);
+
             var areaCamera = AreaCameraManager.Instance().GetAppsCamera("PreAlign");
             if (areaCamera != null)
             {

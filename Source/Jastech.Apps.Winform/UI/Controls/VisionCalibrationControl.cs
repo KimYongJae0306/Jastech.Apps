@@ -198,7 +198,7 @@ namespace Jastech.Apps.Winform.UI.Controls
                 return;
 
             VisionXCalibration.SetParam(ParamControl.GetCurrentParam());
-            VisionXCalibration.SetCalibrationMode(CalibrationMode.XYT);
+            VisionXCalibration.SetCalibrationMode(CalibrationMode.XY);
             VisionXCalibration.StartCalSeqRun();
         }
 

@@ -119,13 +119,16 @@ namespace Jastech.Apps.Winform
 
         public bool IsAxisInPosition(UnitName unitName, TeachingPosType teachingPosition, Axis axis)
         {
+            if (axis.Name == AxisName.Z.ToString())
+                return true;
+
             var inspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
 
             var posData = inspModel.GetUnit(unitName).TeachingInfoList[(int)teachingPosition];
             var targetPosition = posData.GetTargetPosition(axis.Name);
             var actualPosition = axis.GetActualPosition();
 
-            if (Math.Abs(targetPosition - actualPosition) <= 0.1)
+            if (Math.Abs(targetPosition - actualPosition) <= double.Epsilon)
                 return true;
 
             return false;
