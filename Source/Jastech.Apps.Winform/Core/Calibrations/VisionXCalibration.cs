@@ -228,7 +228,7 @@ namespace Jastech.Apps.Winform.Core.Calibrations
             switch (CalSeqStep)
             {
                 case CalSeqStep.CAL_SEQ_IDLE:
-
+                    Console.WriteLine("CalSeqStep : CAL_SEQ_IDLE");
                     CalSeqStep = CalSeqStep.CAL_SEQ_INIT;
                     break;
 
@@ -705,6 +705,7 @@ namespace Jastech.Apps.Winform.Core.Calibrations
                     if (sw.ElapsedMilliseconds > CAL_TIME_OUT)
                     {
                         Logger.Write(LogType.Error, "Failed to move request. - Timeout error");
+                        CalSeqStep = CalSeqStep.CAL_SEQ_ERROR;
                         break;
                     }
 
@@ -715,6 +716,7 @@ namespace Jastech.Apps.Winform.Core.Calibrations
 
                     if (IsInPosition() == false)
                     {
+                        CalSeqStep = CalSeqStep.CAL_SEQ_ERROR;
                         Logger.Write(LogType.Error, "Failed to move request. - In-Position error");
                         break;
                     }
@@ -723,6 +725,7 @@ namespace Jastech.Apps.Winform.Core.Calibrations
                     break;
 
                 case CalSeqStep.CAL_SEQ_ERROR_SEND:
+                    Console.WriteLine("tlqkf");
                     Logger.Write(LogType.Device, "Failed calibration.");
 
                     PlcControlManager.Instance().WritePcStatus(PlcCommand.Calibration, false);
@@ -762,7 +765,7 @@ namespace Jastech.Apps.Winform.Core.Calibrations
 
                     // Send calibration abnormal complete signal
                     PlcControlManager.Instance().WritePcStatus(PlcCommand.Calibration);
-                    Logger.Write(LogType.Device, "Send calibration abnormal complete signal.");
+                    Logger.Write(LogType.Device, "Send calibration normal complete signal.");
 
                     CalSeqStep = CalSeqStep.CAL_SEQ_COMPLETED;
                     break;
@@ -782,7 +785,7 @@ namespace Jastech.Apps.Winform.Core.Calibrations
                     light.TurnOff();
                     Logger.Write(LogType.Device, "Light off.");
                     _isWorking = false;
-
+                    Console.WriteLine("CalSeqStep : CAL_SEQ_STOP");
                     break;
 
                 default:

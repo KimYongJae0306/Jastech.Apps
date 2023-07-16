@@ -253,7 +253,7 @@ namespace Jastech.Apps.Winform
             var lafCtrl = GetLAFCtrl(lafName);
 
             lafCtrl.SetMotionNegativeLimit(0);
-            lafCtrl.SetMotionPositiveLimit(0);
+            lafCtrl.SetMotionPositiveLimit(16000);
             lafCtrl.SetMotionMaxSpeed(1);
             lafCtrl.SetMotionZeroSet();
             Thread.Sleep(50);
