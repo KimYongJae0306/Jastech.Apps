@@ -501,7 +501,7 @@ namespace ATT_UT_Remodeling.UI.Forms
 
         private void lblOriginZ_Click(object sender, EventArgs e)
         {
-            LAFManager.Instance().StartHomeThread("Align");
+            LAFManager.Instance().StartHomeThread("Laf");
         }
 
         private void lblAutoFocusOnZ_Click(object sender, EventArgs e)
@@ -509,7 +509,7 @@ namespace ATT_UT_Remodeling.UI.Forms
             var status = AlignLafCtrl.Status;
 
             if (!status.IsAutoFocusOn)
-                LAFManager.Instance().AutoFocusOnOff("Align", true);
+                LAFManager.Instance().AutoFocusOnOff("Laf", true);
         }
 
         private void lblAutoFocusOffZ_Click(object sender, EventArgs e)
@@ -517,7 +517,7 @@ namespace ATT_UT_Remodeling.UI.Forms
             var status = AlignLafCtrl.Status;
 
             if (status.IsAutoFocusOn)
-                LAFManager.Instance().AutoFocusOnOff("Align", false);
+                LAFManager.Instance().AutoFocusOnOff("Laf", false);
         }
 
         private void rdoJogSlowMode_CheckedChanged(object sender, EventArgs e)
