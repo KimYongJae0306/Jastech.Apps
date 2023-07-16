@@ -783,8 +783,8 @@ namespace Jastech.Apps.Winform.Core.Calibrations
 
         private void InitailizeOpticSetting()
         {
-            AreaCamera.Camera.SetExposureTime(0);
-            AreaCamera.Camera.SetAnalogGain(0);
+            AreaCamera.Camera.SetExposureTime(5000);
+            AreaCamera.Camera.SetAnalogGain(1);
             Thread.Sleep(50);
         }
 
