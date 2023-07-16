@@ -197,9 +197,9 @@ namespace Jastech.Framework.Winform.Forms
             pnlHistogram.Controls.Add(PixelValueGraphControl);
 
             var unit = TeachingData.Instance().GetUnit(UnitName.ToString());
-            var posData = unit.TeachingInfoList;
+            var posData = unit.GetTeachingInfo(TeachingPosType.Stage1_Scan_Start);
 
-            AutoFocusControl.UpdateData(posData[(int)TeachingPosType.Stage1_Scan_Start].AxisInfoList[(int)AxisName.Z]);
+            AutoFocusControl.UpdateData(posData.GetAxisInfo(AxisName.Z));
             AutoFocusControl.SetAxisHanlder(AxisHandler);
             AutoFocusControl.SetLAFCtrl(LAFCtrl);
             pnlAutoFocus.Controls.Add(AutoFocusControl);
@@ -299,7 +299,7 @@ namespace Jastech.Framework.Winform.Forms
 
         private void UpdateStatusMotionX()
         {
-            var axis = AxisHandler.AxisList[(int)AxisName.X];
+            var axis = AxisHandler.GetAxis(AxisName.X);
 
             if (axis == null || !axis.IsConnected())
                 return;
@@ -319,7 +319,7 @@ namespace Jastech.Framework.Winform.Forms
 
         private void UpdateStatusMotionY()
         {
-            var axis = AxisHandler.AxisList[(int)AxisName.Y];
+            var axis = AxisHandler.GetAxis(AxisName.Y);
 
             if (axis == null || !axis.IsConnected())
                 return;
@@ -528,10 +528,10 @@ namespace Jastech.Framework.Winform.Forms
         private void UpdateCurrentdata()
         {
             var unit = TeachingData.Instance().GetUnit(UnitName.ToString());
-            var posData = unit.TeachingInfoList[(int)TeachingPosType.Stage1_Scan_Start];
+            var posData = unit.GetTeachingInfo(TeachingPosType.Stage1_Scan_Start);
 
-            posData.AxisInfoList[(int)AxisName.Z].TargetPosition = AutoFocusControl.GetCurrentData().TargetPosition;
-            posData.AxisInfoList[(int)AxisName.Z].CenterOfGravity = AutoFocusControl.GetCurrentData().CenterOfGravity;
+            posData.GetAxisInfo(AxisName.Z).TargetPosition = AutoFocusControl.GetCurrentData().TargetPosition;
+            posData.GetAxisInfo(AxisName.Z).CenterOfGravity = AutoFocusControl.GetCurrentData().CenterOfGravity;
 
             AppsInspModel model = ModelManager.Instance().CurrentModel as AppsInspModel;
             if (model != null)

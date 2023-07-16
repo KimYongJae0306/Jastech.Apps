@@ -740,7 +740,6 @@ namespace Jastech.Apps.Winform.UI.Controls
 
             if (dgvAkkonROI.SelectedRows.Count > 1)
             {
-                int gg = 0;
             }
             else
             {

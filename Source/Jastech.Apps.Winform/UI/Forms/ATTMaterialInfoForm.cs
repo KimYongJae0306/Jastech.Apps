@@ -116,13 +116,6 @@ namespace Jastech.Apps.Winform.UI.Forms
         private void txtKeyPad_Leave(object sender, EventArgs e)
         {
             return;
-            var textBox = (TextBox)sender;
-            if (textBox == null)
-                return;
-            if (double.TryParse(textBox.Text, out double value))
-                textBox.Text = string.Format("{0:0.000}", value);
-            else
-                textBox.Text = "0.000";
         }
     }
 }

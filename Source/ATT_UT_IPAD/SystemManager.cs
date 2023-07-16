@@ -160,7 +160,6 @@ namespace ATT_UT_IPAD
                 handler0.AddAxis(AxisName.Z1, motion, axisNo: 0, homeOrder: 1);
                 handler0.AddAxis(AxisName.Z2, motion, axisNo: 1, homeOrder: 2);
 
-                //AxisHandlerList.Add(handler0);
                 MotionManager.Instance().AxisHandlerList.Add(handler0);
 
                 JsonConvertHelper.Save(unit0FilePath, handler0);
@@ -170,12 +169,11 @@ namespace ATT_UT_IPAD
                 AxisHandler unit0 = new AxisHandler();
                 JsonConvertHelper.LoadToExistingTarget<AxisHandler>(unit0FilePath, unit0);
 
-                foreach (var axis in unit0.AxisList)
+                foreach (var axis in unit0.GetAxisList())
                 {
                     axis.SetMotion(motion);
                 }
 
-                //AxisHandlerList.Add(unit0);
                 MotionManager.Instance().AxisHandlerList.Add(unit0);
             }
             return true;

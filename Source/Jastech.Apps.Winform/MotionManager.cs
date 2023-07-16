@@ -90,7 +90,7 @@ namespace Jastech.Apps.Winform
             {
                 if (axisHandler.Name == axisHandlerName.ToString())
                 {
-                    foreach (var axis in axisHandler.AxisList)
+                    foreach (var axis in axisHandler.GetAxisList())
                     {
                         if (axis.Name == axisName.ToString())
                             return axis;
@@ -124,7 +124,7 @@ namespace Jastech.Apps.Winform
 
             var inspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
 
-            var posData = inspModel.GetUnit(unitName).TeachingInfoList[(int)teachingPosition];
+            var posData = inspModel.GetUnit(unitName).GetTeachingInfo(teachingPosition);
             var targetPosition = posData.GetTargetPosition(axis.Name);
             var actualPosition = axis.GetActualPosition();
 

@@ -630,7 +630,7 @@ namespace Jastech.Apps.Winform
             }
         }
 
-        private PlcCommonCommand _status;
+        private PlcCommonCommand _status = PlcCommonCommand.None;
 
         private Task StatusTask { get; set; }
 
