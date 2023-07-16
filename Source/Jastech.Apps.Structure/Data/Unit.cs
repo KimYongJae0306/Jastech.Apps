@@ -39,7 +39,7 @@ namespace Jastech.Apps.Structure.Data
         private List<Tab> TabList { get; set; } = new List<Tab>();
 
         [JsonProperty]
-        public List<TeachingInfo> TeachingInfoList { get; set; } = new List<TeachingInfo>();
+        private List<TeachingInfo> TeachingInfoList { get; set; } = new List<TeachingInfo>();
 
         public Unit DeepCopy()
         {

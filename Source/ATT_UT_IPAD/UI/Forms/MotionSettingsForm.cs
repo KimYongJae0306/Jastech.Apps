@@ -168,7 +168,7 @@ namespace ATT_UT_IPAD.UI.Forms
             var axisHandler = MotionManager.Instance().GetAxisHandler(AxisHandlerName.Handler0);
             SetAxisHandler(axisHandler);
 
-            var posData = TeachingData.Instance().GetUnit(UnitName.ToString()).TeachingInfoList;
+            var posData = TeachingData.Instance().GetUnit(UnitName.ToString()).GetTeachingInfoList();
             SetTeachingPosition(posData);
 
             var alignLafCtrl = LAFManager.Instance().GetLAFCtrl("Align");
@@ -293,7 +293,7 @@ namespace ATT_UT_IPAD.UI.Forms
 
         private void UpdateStatusMotionX()
         {
-            var axis = AxisHandler.AxisList[(int)AxisName.X];
+            var axis = AxisHandler.GetAxis(AxisName.X);
 
             if (axis == null || !axis.IsConnected())
                 return;
@@ -402,7 +402,7 @@ namespace ATT_UT_IPAD.UI.Forms
 
         private void GetCurrentVariableParams()
         {
-            var posData = TeachingData.Instance().GetUnit(UnitName.ToString()).TeachingInfoList[(int)TeachingPositionType];
+            var posData = TeachingData.Instance().GetUnit(UnitName.ToString()).GetTeachingInfo(TeachingPositionType);
 
             posData.SetMovingParams(AxisName.X, XVariableControl.GetCurrentData());
             posData.SetMovingParams(AxisName.Z1, Z1VariableControl.GetCurrentData());
@@ -469,20 +469,20 @@ namespace ATT_UT_IPAD.UI.Forms
             double targetPosition = TeachingPositionList.Where(x => x.Name == TeachingPositionType.ToString()).First().GetTargetPosition(AxisName.X);
             var movingParam = TeachingPositionList.Where(x => x.Name == TeachingPositionType.ToString()).First().GetMovingParams(AxisName.X);
 
-            AxisHandler.AxisList[(int)AxisName.X].StartAbsoluteMove(targetPosition, movingParam);
+            AxisHandler.GetAxis(AxisName.X).StartAbsoluteMove(targetPosition, movingParam);
         }
 
         private void lblOriginX_Click(object sender, EventArgs e)
         {
-            AxisHandler.AxisList[(int)AxisName.X].StartHome();
+            AxisHandler.GetAxis(AxisName.X).StartHome();
         }
 
         private void lblServoOnOffX_Click(object sender, EventArgs e)
         {
-            if (AxisHandler.AxisList[(int)AxisName.X].IsEnable())
-                AxisHandler.AxisList[(int)AxisName.X].TurnOffServo();
+            if (AxisHandler.GetAxis(AxisName.X).IsEnable())
+                AxisHandler.GetAxis(AxisName.X).TurnOffServo();
             else
-                AxisHandler.AxisList[(int)AxisName.X].TurnOnServo();
+                AxisHandler.GetAxis(AxisName.X).TurnOnServo();
         }
 
         private void lblTargetPositionZ1_Click(object sender, EventArgs e)

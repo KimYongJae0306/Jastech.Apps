@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.tlpMainForm = new System.Windows.Forms.TableLayoutPanel();
             this.pnlPage = new System.Windows.Forms.Panel();
@@ -58,7 +59,7 @@
             this.lblCurrentModel = new System.Windows.Forms.Label();
             this.picLogo = new System.Windows.Forms.PictureBox();
             this.lblSystemName = new System.Windows.Forms.Label();
-            this.tmrMainForm = new System.Windows.Forms.Timer();
+            this.tmrMainForm = new System.Windows.Forms.Timer(this.components);
             this.tlpMainForm.SuspendLayout();
             this.tlpFunctionButtons.SuspendLayout();
             this.panel4.SuspendLayout();
@@ -138,7 +139,7 @@
             this.lblCurrentTime.Font = new System.Drawing.Font("맑은 고딕", 12.2F, System.Drawing.FontStyle.Bold);
             this.lblCurrentTime.ForeColor = System.Drawing.Color.White;
             this.lblCurrentTime.Location = new System.Drawing.Point(1603, 3);
-            this.lblCurrentTime.Margin = new System.Windows.Forms.Padding(3, 3, 3, 3);
+            this.lblCurrentTime.Margin = new System.Windows.Forms.Padding(3);
             this.lblCurrentTime.Name = "lblCurrentTime";
             this.lblCurrentTime.Size = new System.Drawing.Size(1, 44);
             this.lblCurrentTime.TabIndex = 3;
@@ -399,7 +400,7 @@
             this.lblCurrentUser.Font = new System.Drawing.Font("맑은 고딕", 12.2F, System.Drawing.FontStyle.Bold);
             this.lblCurrentUser.ForeColor = System.Drawing.Color.White;
             this.lblCurrentUser.Location = new System.Drawing.Point(3, 3);
-            this.lblCurrentUser.Margin = new System.Windows.Forms.Padding(3, 3, 3, 3);
+            this.lblCurrentUser.Margin = new System.Windows.Forms.Padding(3);
             this.lblCurrentUser.Name = "lblCurrentUser";
             this.lblCurrentUser.Size = new System.Drawing.Size(128, 42);
             this.lblCurrentUser.TabIndex = 2;
@@ -414,7 +415,7 @@
             this.pictureBox2.Location = new System.Drawing.Point(134, 0);
             this.pictureBox2.Margin = new System.Windows.Forms.Padding(0);
             this.pictureBox2.Name = "pictureBox2";
-            this.pictureBox2.Padding = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.pictureBox2.Padding = new System.Windows.Forms.Padding(6);
             this.pictureBox2.Size = new System.Drawing.Size(46, 48);
             this.pictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.pictureBox2.TabIndex = 4;
@@ -427,7 +428,7 @@
             this.lblCurrentModel.Font = new System.Drawing.Font("맑은 고딕", 15F, System.Drawing.FontStyle.Bold);
             this.lblCurrentModel.ForeColor = System.Drawing.Color.White;
             this.lblCurrentModel.Location = new System.Drawing.Point(1181, 3);
-            this.lblCurrentModel.Margin = new System.Windows.Forms.Padding(3, 3, 3, 3);
+            this.lblCurrentModel.Margin = new System.Windows.Forms.Padding(3);
             this.lblCurrentModel.Name = "lblCurrentModel";
             this.lblCurrentModel.Size = new System.Drawing.Size(174, 42);
             this.lblCurrentModel.TabIndex = 3;
@@ -451,7 +452,7 @@
             this.lblSystemName.Font = new System.Drawing.Font("맑은 고딕", 20.2F, System.Drawing.FontStyle.Bold);
             this.lblSystemName.ForeColor = System.Drawing.Color.White;
             this.lblSystemName.Location = new System.Drawing.Point(223, 3);
-            this.lblSystemName.Margin = new System.Windows.Forms.Padding(3, 3, 3, 3);
+            this.lblSystemName.Margin = new System.Windows.Forms.Padding(3);
             this.lblSystemName.Name = "lblSystemName";
             this.lblSystemName.Size = new System.Drawing.Size(952, 42);
             this.lblSystemName.TabIndex = 1;
@@ -472,6 +473,7 @@
             this.Name = "MainForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.MainForm_FormClosed);
             this.Load += new System.EventHandler(this.MainForm_Load);
             this.tlpMainForm.ResumeLayout(false);
             this.tlpFunctionButtons.ResumeLayout(false);

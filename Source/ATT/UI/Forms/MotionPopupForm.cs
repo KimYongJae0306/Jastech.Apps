@@ -154,7 +154,7 @@ namespace ATT.UI.Forms
             SetAxisHandler(axisHandler);
 
             string unitName = UnitName.Unit0.ToString();  // 나중에 변수로...
-            var posData = TeachingData.Instance().GetUnit(unitName).TeachingInfoList;
+            var posData = TeachingData.Instance().GetUnit(unitName).GetTeachingInfoList();
             SetTeachingPosition(posData);
 
             var lafCtrl = LAFManager.Instance().GetLAFCtrl("Akkon");
@@ -244,7 +244,7 @@ namespace ATT.UI.Forms
 
         private void UpdateStatusMotionX()
         {
-            var axis = AxisHandler.AxisList[(int)AxisName.X];
+            var axis = AxisHandler.GetAxis(AxisName.X);
 
             if (axis == null || !axis.IsConnected())
                 return;
@@ -268,7 +268,7 @@ namespace ATT.UI.Forms
 
         private void UpdateStatusMotionY()
         {
-            var axis = AxisHandler.AxisList[(int)AxisName.Y];
+            var axis = AxisHandler.GetAxis(AxisName.Y);
 
             if (axis == null || !axis.IsConnected())
                 return;
@@ -353,7 +353,7 @@ namespace ATT.UI.Forms
 
         private void GetCurrentVariableParams()
         {
-            var posData = TeachingData.Instance().GetUnit(UnitName.ToString()).TeachingInfoList[(int)TeachingPositionType];
+            var posData = TeachingData.Instance().GetUnit(UnitName.ToString()).GetTeachingInfo(TeachingPositionType);
 
             posData.SetMovingParams(AxisName.X, XVariableControl.GetCurrentData());
             posData.SetMovingParams(AxisName.Y, YVariableControl.GetCurrentData());
@@ -527,7 +527,7 @@ namespace ATT.UI.Forms
             double targetPosition = TeachingPositionList.Where(x => x.Name == TeachingPositionType.ToString()).First().GetTargetPosition(AxisName.X);
             var movingParam = TeachingPositionList.Where(x => x.Name == TeachingPositionType.ToString()).First().GetMovingParams(AxisName.X);
 
-            AxisHandler.AxisList[(int)AxisName.X].StartAbsoluteMove(targetPosition, movingParam);
+            AxisHandler.GetAxis(AxisName.X).StartAbsoluteMove(targetPosition, movingParam);
         }
 
         private void lblMoveToTargetY_Click(object sender, EventArgs e)
@@ -535,7 +535,7 @@ namespace ATT.UI.Forms
             double targetPosition = TeachingPositionList.Where(x => x.Name == TeachingPositionType.ToString()).First().GetTargetPosition(AxisName.Y);
             var movingParam = TeachingPositionList.Where(x => x.Name == TeachingPositionType.ToString()).First().GetMovingParams(AxisName.Y);
 
-            AxisHandler.AxisList[(int)AxisName.Y].StartAbsoluteMove(targetPosition, movingParam);
+            AxisHandler.GetAxis(AxisName.Y).StartAbsoluteMove(targetPosition, movingParam);
         }
 
         private void lblMoveToTargetZ_Click(object sender, EventArgs e)

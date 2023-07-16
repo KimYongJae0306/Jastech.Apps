@@ -228,7 +228,7 @@ namespace ATT
                 AxisHandler unit0 = new AxisHandler();
                 JsonConvertHelper.LoadToExistingTarget<AxisHandler>(unit0FilePath, unit0);
 
-                foreach (var axis in unit0.AxisList)
+                foreach (var axis in unit0.GetAxisList())
                 {
                     axis.SetMotion(motion);
                 }

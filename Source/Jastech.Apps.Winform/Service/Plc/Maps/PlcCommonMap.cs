@@ -116,6 +116,7 @@
 
     public enum PlcCommonCommand
     {
+        None = -1,
         Time_Change = 6000,
         Model_Change = 8000,
         Model_Create = 8200,

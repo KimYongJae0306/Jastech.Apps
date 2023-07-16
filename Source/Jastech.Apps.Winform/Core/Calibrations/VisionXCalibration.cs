@@ -950,7 +950,7 @@ namespace Jastech.Apps.Winform.Core.Calibrations
             SetCurrentPosition();
 
             // Move X (PC)
-            AxisHandler.AxisList[(int)AxisName.X].StartRelativeMove(amountX, AxisMovingParam);
+            AxisHandler.GetAxis(AxisName.X).StartRelativeMove(amountX, AxisMovingParam);
 
             // Move Y (PLC)
             PlcControlManager.Instance().WriteAlignData(0, amountY, amountT);     // Relative Move
@@ -993,7 +993,7 @@ namespace Jastech.Apps.Winform.Core.Calibrations
                 switch (step)
                 {
                     case 0:
-                        doneX = AxisHandler.AxisList[(int)AxisName.X].GetCurrentMotionStatus() == "NORMAL" ? true : false;
+                        doneX = AxisHandler.GetAxis(AxisName.X).GetCurrentMotionStatus() == "NORMAL" ? true : false;
                         if (doneX)
                             step++;
 

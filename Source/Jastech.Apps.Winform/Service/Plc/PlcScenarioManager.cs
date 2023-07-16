@@ -568,7 +568,7 @@ namespace Jastech.Apps.Winform.Service.Plc
                 if (axisHandler.Name == AxisName.Z.ToString())
                     continue;
 
-                allAxisHanlder.AddAxis(axisHandler.AxisList);
+                allAxisHanlder.AddAxis(axisHandler.GetAxisList());
             }
             allAxisHanlder.StopMove();
             Thread.Sleep(100);
