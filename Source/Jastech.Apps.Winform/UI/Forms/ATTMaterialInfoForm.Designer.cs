@@ -623,6 +623,8 @@
             this.txtLeftOffset9.TabIndex = 15;
             this.txtLeftOffset9.Text = "1.000";
             this.txtLeftOffset9.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.txtLeftOffset9.Click += new System.EventHandler(this.textbox_KeyPad_Click);
+            this.txtLeftOffset9.TextChanged += new System.EventHandler(this.txtKeyPad_TextChanged);
             // 
             // label61
             // 
@@ -686,6 +688,8 @@
             this.txtDistance9.TabIndex = 15;
             this.txtDistance9.Text = "1.000";
             this.txtDistance9.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.txtDistance9.Click += new System.EventHandler(this.textbox_KeyPad_Click);
+            this.txtDistance9.TextChanged += new System.EventHandler(this.txtKeyPad_TextChanged);
             // 
             // label59
             // 
@@ -769,6 +773,8 @@
             this.txtLeftOffset8.TabIndex = 15;
             this.txtLeftOffset8.Text = "1.000";
             this.txtLeftOffset8.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.txtLeftOffset8.Click += new System.EventHandler(this.textbox_KeyPad_Click);
+            this.txtLeftOffset8.TextChanged += new System.EventHandler(this.txtKeyPad_TextChanged);
             // 
             // label43
             // 
@@ -832,6 +838,8 @@
             this.txtLeftOffset7.TabIndex = 15;
             this.txtLeftOffset7.Text = "1.000";
             this.txtLeftOffset7.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.txtLeftOffset7.Click += new System.EventHandler(this.textbox_KeyPad_Click);
+            this.txtLeftOffset7.TextChanged += new System.EventHandler(this.txtKeyPad_TextChanged);
             // 
             // label45
             // 
@@ -895,6 +903,8 @@
             this.txtLeftOffset6.TabIndex = 15;
             this.txtLeftOffset6.Text = "1.000";
             this.txtLeftOffset6.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.txtLeftOffset6.Click += new System.EventHandler(this.textbox_KeyPad_Click);
+            this.txtLeftOffset6.TextChanged += new System.EventHandler(this.txtKeyPad_TextChanged);
             // 
             // label47
             // 
@@ -958,6 +968,8 @@
             this.txtLeftOffset5.TabIndex = 15;
             this.txtLeftOffset5.Text = "1.000";
             this.txtLeftOffset5.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.txtLeftOffset5.Click += new System.EventHandler(this.textbox_KeyPad_Click);
+            this.txtLeftOffset5.TextChanged += new System.EventHandler(this.txtKeyPad_TextChanged);
             // 
             // label49
             // 
@@ -1021,6 +1033,8 @@
             this.txtLeftOffset4.TabIndex = 15;
             this.txtLeftOffset4.Text = "1.000";
             this.txtLeftOffset4.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.txtLeftOffset4.Click += new System.EventHandler(this.textbox_KeyPad_Click);
+            this.txtLeftOffset4.TextChanged += new System.EventHandler(this.txtKeyPad_TextChanged);
             // 
             // label51
             // 
@@ -1084,6 +1098,8 @@
             this.txtLeftOffset3.TabIndex = 15;
             this.txtLeftOffset3.Text = "1.000";
             this.txtLeftOffset3.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.txtLeftOffset3.Click += new System.EventHandler(this.textbox_KeyPad_Click);
+            this.txtLeftOffset3.TextChanged += new System.EventHandler(this.txtKeyPad_TextChanged);
             // 
             // label53
             // 
@@ -1147,6 +1163,8 @@
             this.txtLeftOffset2.TabIndex = 15;
             this.txtLeftOffset2.Text = "1.000";
             this.txtLeftOffset2.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.txtLeftOffset2.Click += new System.EventHandler(this.textbox_KeyPad_Click);
+            this.txtLeftOffset2.TextChanged += new System.EventHandler(this.txtKeyPad_TextChanged);
             // 
             // label55
             // 
@@ -1210,6 +1228,8 @@
             this.txtLeftOffset1.TabIndex = 15;
             this.txtLeftOffset1.Text = "1.000";
             this.txtLeftOffset1.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.txtLeftOffset1.Click += new System.EventHandler(this.textbox_KeyPad_Click);
+            this.txtLeftOffset1.TextChanged += new System.EventHandler(this.txtKeyPad_TextChanged);
             // 
             // label57
             // 
@@ -1274,6 +1294,7 @@
             this.txtTab8Width.TabIndex = 15;
             this.txtTab8Width.Text = "1.000";
             this.txtTab8Width.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.txtTab8Width.Click += new System.EventHandler(this.textbox_KeyPad_Click);
             this.txtTab8Width.TextChanged += new System.EventHandler(this.txtKeyPad_TextChanged);
             this.txtTab8Width.Leave += new System.EventHandler(this.txtKeyPad_Leave);
             // 
@@ -1360,6 +1381,7 @@
             this.txtTab7Width.TabIndex = 15;
             this.txtTab7Width.Text = "1.000";
             this.txtTab7Width.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.txtTab7Width.Click += new System.EventHandler(this.textbox_KeyPad_Click);
             this.txtTab7Width.TextChanged += new System.EventHandler(this.txtKeyPad_TextChanged);
             this.txtTab7Width.Leave += new System.EventHandler(this.txtKeyPad_Leave);
             // 
@@ -1426,6 +1448,7 @@
             this.txtTab6Width.TabIndex = 15;
             this.txtTab6Width.Text = "1.000";
             this.txtTab6Width.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.txtTab6Width.Click += new System.EventHandler(this.textbox_KeyPad_Click);
             this.txtTab6Width.TextChanged += new System.EventHandler(this.txtKeyPad_TextChanged);
             this.txtTab6Width.Leave += new System.EventHandler(this.txtKeyPad_Leave);
             // 
@@ -1492,6 +1515,7 @@
             this.txtTab5Width.TabIndex = 15;
             this.txtTab5Width.Text = "1.000";
             this.txtTab5Width.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.txtTab5Width.Click += new System.EventHandler(this.textbox_KeyPad_Click);
             this.txtTab5Width.TextChanged += new System.EventHandler(this.txtKeyPad_TextChanged);
             this.txtTab5Width.Leave += new System.EventHandler(this.txtKeyPad_Leave);
             // 
@@ -1558,6 +1582,7 @@
             this.txtTab4Width.TabIndex = 15;
             this.txtTab4Width.Text = "1.000";
             this.txtTab4Width.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.txtTab4Width.Click += new System.EventHandler(this.textbox_KeyPad_Click);
             this.txtTab4Width.TextChanged += new System.EventHandler(this.txtKeyPad_TextChanged);
             this.txtTab4Width.Leave += new System.EventHandler(this.txtKeyPad_Leave);
             // 
@@ -1625,6 +1650,7 @@
             this.txtTab3Width.TabIndex = 15;
             this.txtTab3Width.Text = "1.000";
             this.txtTab3Width.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.txtTab3Width.Click += new System.EventHandler(this.textbox_KeyPad_Click);
             this.txtTab3Width.TextChanged += new System.EventHandler(this.txtKeyPad_TextChanged);
             this.txtTab3Width.Leave += new System.EventHandler(this.txtKeyPad_Leave);
             // 
@@ -1691,6 +1717,7 @@
             this.txtTab2Width.TabIndex = 15;
             this.txtTab2Width.Text = "1.000";
             this.txtTab2Width.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.txtTab2Width.Click += new System.EventHandler(this.textbox_KeyPad_Click);
             this.txtTab2Width.TextChanged += new System.EventHandler(this.txtKeyPad_TextChanged);
             this.txtTab2Width.Leave += new System.EventHandler(this.txtKeyPad_Leave);
             // 
@@ -2632,6 +2659,8 @@
             this.txtLeftOffset10.TabIndex = 15;
             this.txtLeftOffset10.Text = "1.000";
             this.txtLeftOffset10.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.txtLeftOffset10.Click += new System.EventHandler(this.textbox_KeyPad_Click);
+            this.txtLeftOffset10.TextChanged += new System.EventHandler(this.txtKeyPad_TextChanged);
             // 
             // label63
             // 
@@ -2695,6 +2724,8 @@
             this.txtRightOffset10.TabIndex = 15;
             this.txtRightOffset10.Text = "1.000";
             this.txtRightOffset10.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.txtRightOffset10.Click += new System.EventHandler(this.textbox_KeyPad_Click);
+            this.txtRightOffset10.TextChanged += new System.EventHandler(this.txtKeyPad_TextChanged);
             // 
             // label65
             // 
@@ -2758,6 +2789,8 @@
             this.txtRightOffset9.TabIndex = 15;
             this.txtRightOffset9.Text = "1.000";
             this.txtRightOffset9.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.txtRightOffset9.Click += new System.EventHandler(this.textbox_KeyPad_Click);
+            this.txtRightOffset9.TextChanged += new System.EventHandler(this.txtKeyPad_TextChanged);
             // 
             // label67
             // 
@@ -2841,6 +2874,8 @@
             this.txtRightOffset8.TabIndex = 15;
             this.txtRightOffset8.Text = "1.000";
             this.txtRightOffset8.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.txtRightOffset8.Click += new System.EventHandler(this.textbox_KeyPad_Click);
+            this.txtRightOffset8.TextChanged += new System.EventHandler(this.txtKeyPad_TextChanged);
             // 
             // label70
             // 
@@ -2904,6 +2939,8 @@
             this.txtRightOffset7.TabIndex = 15;
             this.txtRightOffset7.Text = "1.000";
             this.txtRightOffset7.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.txtRightOffset7.Click += new System.EventHandler(this.textbox_KeyPad_Click);
+            this.txtRightOffset7.TextChanged += new System.EventHandler(this.txtKeyPad_TextChanged);
             // 
             // label72
             // 
@@ -2967,6 +3004,8 @@
             this.txtRightOffset6.TabIndex = 15;
             this.txtRightOffset6.Text = "1.000";
             this.txtRightOffset6.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.txtRightOffset6.Click += new System.EventHandler(this.textbox_KeyPad_Click);
+            this.txtRightOffset6.TextChanged += new System.EventHandler(this.txtKeyPad_TextChanged);
             // 
             // label74
             // 
@@ -3030,6 +3069,8 @@
             this.txtRightOffset5.TabIndex = 15;
             this.txtRightOffset5.Text = "1.000";
             this.txtRightOffset5.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.txtRightOffset5.Click += new System.EventHandler(this.textbox_KeyPad_Click);
+            this.txtRightOffset5.TextChanged += new System.EventHandler(this.txtKeyPad_TextChanged);
             // 
             // label76
             // 
@@ -3093,6 +3134,8 @@
             this.txtRightOffset4.TabIndex = 15;
             this.txtRightOffset4.Text = "1.000";
             this.txtRightOffset4.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.txtRightOffset4.Click += new System.EventHandler(this.textbox_KeyPad_Click);
+            this.txtRightOffset4.TextChanged += new System.EventHandler(this.txtKeyPad_TextChanged);
             // 
             // label78
             // 
@@ -3156,6 +3199,8 @@
             this.txtRightOffset3.TabIndex = 15;
             this.txtRightOffset3.Text = "1.000";
             this.txtRightOffset3.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.txtRightOffset3.Click += new System.EventHandler(this.textbox_KeyPad_Click);
+            this.txtRightOffset3.TextChanged += new System.EventHandler(this.txtKeyPad_TextChanged);
             // 
             // label80
             // 
@@ -3219,6 +3264,8 @@
             this.txtRightOffset2.TabIndex = 15;
             this.txtRightOffset2.Text = "1.000";
             this.txtRightOffset2.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.txtRightOffset2.Click += new System.EventHandler(this.textbox_KeyPad_Click);
+            this.txtRightOffset2.TextChanged += new System.EventHandler(this.txtKeyPad_TextChanged);
             // 
             // label82
             // 
@@ -3282,6 +3329,8 @@
             this.txtRightOffset1.TabIndex = 15;
             this.txtRightOffset1.Text = "1.000";
             this.txtRightOffset1.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.txtRightOffset1.Click += new System.EventHandler(this.textbox_KeyPad_Click);
+            this.txtRightOffset1.TextChanged += new System.EventHandler(this.txtKeyPad_TextChanged);
             // 
             // label84
             // 
@@ -3346,6 +3395,8 @@
             this.txtTab9Width.TabIndex = 15;
             this.txtTab9Width.Text = "1.000";
             this.txtTab9Width.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.txtTab9Width.Click += new System.EventHandler(this.textbox_KeyPad_Click);
+            this.txtTab9Width.TextChanged += new System.EventHandler(this.txtKeyPad_TextChanged);
             // 
             // label86
             // 
@@ -3410,6 +3461,8 @@
             this.txtTab10Width.TabIndex = 15;
             this.txtTab10Width.Text = "1.000";
             this.txtTab10Width.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.txtTab10Width.Click += new System.EventHandler(this.textbox_KeyPad_Click);
+            this.txtTab10Width.TextChanged += new System.EventHandler(this.txtKeyPad_TextChanged);
             // 
             // label88
             // 
