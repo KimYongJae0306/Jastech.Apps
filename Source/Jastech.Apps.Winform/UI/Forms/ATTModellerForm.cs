@@ -3,6 +3,7 @@ using Jastech.Framework.Config;
 using Jastech.Framework.Structure;
 using Jastech.Framework.Structure.Helper;
 using Jastech.Framework.Structure.Service;
+using Jastech.Framework.Users;
 using Jastech.Framework.Util.Helper;
 using Jastech.Framework.Winform.Forms;
 using System;
@@ -40,7 +41,16 @@ namespace Jastech.Apps.Winform.UI.Forms
         {
             ModelPath = ConfigSet.Instance().Path.Model;
 
+            ButtonEnable();
             UpdateModelList();
+        }
+
+        private void ButtonEnable()
+        {
+            if (UserManager.Instance().CurrentUser.Type == AuthorityType.Maker)
+                tlpnlMenu.Visible = true;
+            else
+                tlpnlMenu.Visible = false;
         }
 
         private void UpdateModelList()

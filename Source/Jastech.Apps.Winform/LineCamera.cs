@@ -112,14 +112,21 @@ namespace Jastech.Apps.Winform
                 if (i == 0)
                 {
                     tempPos += inspModel.MaterialInfo.PanelEdgeToFirst_mm;
-                    //tempPos += 10;
                 }
 
                 int startIndex = (int)(tempPos / resolution_mm / Camera.ImageHeight);
 
                 double tabWidth = materialInfo.GetTabWidth(i);
+                double tabLeftOffset = materialInfo.GetLeftOffset(i);
+                double tabRightOffset = materialInfo.GetRightOffset(i);
+
                 tempPos += tabWidth;
-                int endIndex = (int)(tempPos / resolution_mm / Camera.ImageHeight);
+
+                double calcPos = tempPos;
+                calcPos += tabLeftOffset;
+                calcPos += tabRightOffset;
+
+                int endIndex = (int)(calcPos / resolution_mm / Camera.ImageHeight);
                 if(maxEndIndex <= endIndex)
                     maxEndIndex = endIndex;
 

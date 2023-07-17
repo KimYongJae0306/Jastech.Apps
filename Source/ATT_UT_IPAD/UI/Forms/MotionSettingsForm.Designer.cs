@@ -796,7 +796,7 @@
             this.lblAxisZ1.Name = "lblAxisZ1";
             this.lblAxisZ1.Size = new System.Drawing.Size(84, 29);
             this.lblAxisZ1.TabIndex = 3;
-            this.lblAxisZ1.Text = "Z1";
+            this.lblAxisZ1.Text = "Z0";
             this.lblAxisZ1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // lblCurrentPositionZ1
@@ -949,7 +949,7 @@
             this.lblAxisZ2.Name = "lblAxisZ2";
             this.lblAxisZ2.Size = new System.Drawing.Size(85, 29);
             this.lblAxisZ2.TabIndex = 3;
-            this.lblAxisZ2.Text = "Z2";
+            this.lblAxisZ2.Text = "Z1";
             this.lblAxisZ2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // lblTargetPositionZ2

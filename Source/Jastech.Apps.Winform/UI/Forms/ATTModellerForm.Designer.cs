@@ -36,7 +36,7 @@
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
-            this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
+            this.tlpnlMenu = new System.Windows.Forms.TableLayoutPanel();
             this.panel5 = new System.Windows.Forms.Panel();
             this.tableLayoutPanel6 = new System.Windows.Forms.TableLayoutPanel();
             this.label5 = new System.Windows.Forms.Label();
@@ -46,11 +46,11 @@
             this.label3 = new System.Windows.Forms.Label();
             this.lblDeleteModel = new System.Windows.Forms.Label();
             this.panel3 = new System.Windows.Forms.Panel();
-            this.tableLayoutPanel4 = new System.Windows.Forms.TableLayoutPanel();
+            this.tlpnlEditModel = new System.Windows.Forms.TableLayoutPanel();
             this.label1 = new System.Windows.Forms.Label();
             this.lblEditModel = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
+            this.tlpnlCreateModel = new System.Windows.Forms.TableLayoutPanel();
             this.lblCreateModelImage = new System.Windows.Forms.Label();
             this.lblCreateModel = new System.Windows.Forms.Label();
             this.panel2 = new System.Windows.Forms.Panel();
@@ -90,15 +90,15 @@
             this.panel12 = new System.Windows.Forms.Panel();
             this.label15 = new System.Windows.Forms.Label();
             this.tableLayoutPanel1.SuspendLayout();
-            this.tableLayoutPanel2.SuspendLayout();
+            this.tlpnlMenu.SuspendLayout();
             this.panel5.SuspendLayout();
             this.tableLayoutPanel6.SuspendLayout();
             this.panel4.SuspendLayout();
             this.tableLayoutPanel5.SuspendLayout();
             this.panel3.SuspendLayout();
-            this.tableLayoutPanel4.SuspendLayout();
+            this.tlpnlEditModel.SuspendLayout();
             this.panel1.SuspendLayout();
-            this.tableLayoutPanel3.SuspendLayout();
+            this.tlpnlCreateModel.SuspendLayout();
             this.panel2.SuspendLayout();
             this.tableLayoutPanel8.SuspendLayout();
             this.panel10.SuspendLayout();
@@ -116,7 +116,7 @@
             // 
             this.tableLayoutPanel1.ColumnCount = 1;
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel1.Controls.Add(this.tableLayoutPanel2, 0, 0);
+            this.tableLayoutPanel1.Controls.Add(this.tlpnlMenu, 0, 0);
             this.tableLayoutPanel1.Controls.Add(this.panel2, 0, 2);
             this.tableLayoutPanel1.Controls.Add(this.tableLayoutPanel7, 0, 1);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -129,26 +129,26 @@
             this.tableLayoutPanel1.Size = new System.Drawing.Size(1393, 1061);
             this.tableLayoutPanel1.TabIndex = 1;
             // 
-            // tableLayoutPanel2
+            // tlpnlMenu
             // 
-            this.tableLayoutPanel2.ColumnCount = 5;
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 200F));
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 200F));
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 200F));
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 200F));
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel2.Controls.Add(this.panel5, 3, 0);
-            this.tableLayoutPanel2.Controls.Add(this.panel4, 2, 0);
-            this.tableLayoutPanel2.Controls.Add(this.panel3, 1, 0);
-            this.tableLayoutPanel2.Controls.Add(this.panel1, 0, 0);
-            this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel2.Location = new System.Drawing.Point(0, 0);
-            this.tableLayoutPanel2.Margin = new System.Windows.Forms.Padding(0);
-            this.tableLayoutPanel2.Name = "tableLayoutPanel2";
-            this.tableLayoutPanel2.RowCount = 1;
-            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel2.Size = new System.Drawing.Size(1393, 70);
-            this.tableLayoutPanel2.TabIndex = 2;
+            this.tlpnlMenu.ColumnCount = 5;
+            this.tlpnlMenu.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 200F));
+            this.tlpnlMenu.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 200F));
+            this.tlpnlMenu.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 200F));
+            this.tlpnlMenu.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 200F));
+            this.tlpnlMenu.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tlpnlMenu.Controls.Add(this.panel5, 3, 0);
+            this.tlpnlMenu.Controls.Add(this.panel4, 2, 0);
+            this.tlpnlMenu.Controls.Add(this.panel3, 1, 0);
+            this.tlpnlMenu.Controls.Add(this.panel1, 0, 0);
+            this.tlpnlMenu.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tlpnlMenu.Location = new System.Drawing.Point(0, 0);
+            this.tlpnlMenu.Margin = new System.Windows.Forms.Padding(0);
+            this.tlpnlMenu.Name = "tlpnlMenu";
+            this.tlpnlMenu.RowCount = 1;
+            this.tlpnlMenu.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tlpnlMenu.Size = new System.Drawing.Size(1393, 70);
+            this.tlpnlMenu.TabIndex = 2;
             // 
             // panel5
             // 
@@ -251,28 +251,28 @@
             // panel3
             // 
             this.panel3.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panel3.Controls.Add(this.tableLayoutPanel4);
+            this.panel3.Controls.Add(this.tlpnlEditModel);
             this.panel3.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel3.Location = new System.Drawing.Point(203, 3);
             this.panel3.Name = "panel3";
             this.panel3.Size = new System.Drawing.Size(194, 64);
             this.panel3.TabIndex = 4;
             // 
-            // tableLayoutPanel4
+            // tlpnlEditModel
             // 
-            this.tableLayoutPanel4.ColumnCount = 2;
-            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 50F));
-            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel4.Controls.Add(this.label1, 0, 0);
-            this.tableLayoutPanel4.Controls.Add(this.lblEditModel, 1, 0);
-            this.tableLayoutPanel4.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel4.Location = new System.Drawing.Point(0, 0);
-            this.tableLayoutPanel4.Margin = new System.Windows.Forms.Padding(0);
-            this.tableLayoutPanel4.Name = "tableLayoutPanel4";
-            this.tableLayoutPanel4.RowCount = 1;
-            this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel4.Size = new System.Drawing.Size(192, 62);
-            this.tableLayoutPanel4.TabIndex = 0;
+            this.tlpnlEditModel.ColumnCount = 2;
+            this.tlpnlEditModel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 50F));
+            this.tlpnlEditModel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tlpnlEditModel.Controls.Add(this.label1, 0, 0);
+            this.tlpnlEditModel.Controls.Add(this.lblEditModel, 1, 0);
+            this.tlpnlEditModel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tlpnlEditModel.Location = new System.Drawing.Point(0, 0);
+            this.tlpnlEditModel.Margin = new System.Windows.Forms.Padding(0);
+            this.tlpnlEditModel.Name = "tlpnlEditModel";
+            this.tlpnlEditModel.RowCount = 1;
+            this.tlpnlEditModel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tlpnlEditModel.Size = new System.Drawing.Size(192, 62);
+            this.tlpnlEditModel.TabIndex = 0;
             // 
             // label1
             // 
@@ -300,28 +300,28 @@
             // panel1
             // 
             this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panel1.Controls.Add(this.tableLayoutPanel3);
+            this.panel1.Controls.Add(this.tlpnlCreateModel);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel1.Location = new System.Drawing.Point(3, 3);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(194, 64);
             this.panel1.TabIndex = 3;
             // 
-            // tableLayoutPanel3
+            // tlpnlCreateModel
             // 
-            this.tableLayoutPanel3.ColumnCount = 2;
-            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 50F));
-            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel3.Controls.Add(this.lblCreateModelImage, 0, 0);
-            this.tableLayoutPanel3.Controls.Add(this.lblCreateModel, 1, 0);
-            this.tableLayoutPanel3.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel3.Location = new System.Drawing.Point(0, 0);
-            this.tableLayoutPanel3.Margin = new System.Windows.Forms.Padding(0);
-            this.tableLayoutPanel3.Name = "tableLayoutPanel3";
-            this.tableLayoutPanel3.RowCount = 1;
-            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel3.Size = new System.Drawing.Size(192, 62);
-            this.tableLayoutPanel3.TabIndex = 0;
+            this.tlpnlCreateModel.ColumnCount = 2;
+            this.tlpnlCreateModel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 50F));
+            this.tlpnlCreateModel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tlpnlCreateModel.Controls.Add(this.lblCreateModelImage, 0, 0);
+            this.tlpnlCreateModel.Controls.Add(this.lblCreateModel, 1, 0);
+            this.tlpnlCreateModel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tlpnlCreateModel.Location = new System.Drawing.Point(0, 0);
+            this.tlpnlCreateModel.Margin = new System.Windows.Forms.Padding(0);
+            this.tlpnlCreateModel.Name = "tlpnlCreateModel";
+            this.tlpnlCreateModel.RowCount = 1;
+            this.tlpnlCreateModel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tlpnlCreateModel.Size = new System.Drawing.Size(192, 62);
+            this.tlpnlCreateModel.TabIndex = 0;
             // 
             // lblCreateModelImage
             // 
@@ -826,15 +826,15 @@
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.Load += new System.EventHandler(this.ATTModellerForm_Load);
             this.tableLayoutPanel1.ResumeLayout(false);
-            this.tableLayoutPanel2.ResumeLayout(false);
+            this.tlpnlMenu.ResumeLayout(false);
             this.panel5.ResumeLayout(false);
             this.tableLayoutPanel6.ResumeLayout(false);
             this.panel4.ResumeLayout(false);
             this.tableLayoutPanel5.ResumeLayout(false);
             this.panel3.ResumeLayout(false);
-            this.tableLayoutPanel4.ResumeLayout(false);
+            this.tlpnlEditModel.ResumeLayout(false);
             this.panel1.ResumeLayout(false);
-            this.tableLayoutPanel3.ResumeLayout(false);
+            this.tlpnlCreateModel.ResumeLayout(false);
             this.panel2.ResumeLayout(false);
             this.tableLayoutPanel8.ResumeLayout(false);
             this.panel10.ResumeLayout(false);
@@ -853,7 +853,7 @@
         #endregion
 
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
-        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
+        private System.Windows.Forms.TableLayoutPanel tlpnlMenu;
         private System.Windows.Forms.Panel panel5;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel6;
         private System.Windows.Forms.Label label5;
@@ -863,11 +863,11 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label lblDeleteModel;
         private System.Windows.Forms.Panel panel3;
-        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel4;
+        private System.Windows.Forms.TableLayoutPanel tlpnlEditModel;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label lblEditModel;
         private System.Windows.Forms.Panel panel1;
-        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel3;
+        private System.Windows.Forms.TableLayoutPanel tlpnlCreateModel;
         private System.Windows.Forms.Label lblCreateModelImage;
         private System.Windows.Forms.Label lblCreateModel;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel7;
