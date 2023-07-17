@@ -14,26 +14,13 @@ namespace Jastech.Apps.Structure.Data
         public string Name { get; set; } = "";
 
         [JsonProperty]
-        public int AnalogGain { get; set; } = 4;         // 공통
+        public PreAlignData PreAlign { get; set; } = null;
 
         [JsonProperty]
-        public double DigitalGain { get; set; } = 8.0;        // TDI Mode
+        public LineCameraData AkkonCamera { get; set; } = null;
 
         [JsonProperty]
-        public List<PreAlignParam> PreAlignParamList { get; set; } = new List<PreAlignParam>();
-
-        [JsonProperty]
-        public CalibrationParam CalibrationParam { get; set; } = new CalibrationParam();
-        //public List<CalibrationParam> CalibrationParamList { get; set; } = new List<CalibrationParam>();
-
-        [JsonProperty]
-        public LightParameter LineScanLightParam { get; set; } = null;   // LineScan 용 조명 파라메터
-
-        [JsonProperty]
-        public LightParameter LeftPreAlignLightParam { get; set; } = null;
-
-        [JsonProperty]
-        public LightParameter RightPreAlignLightParam { get; set; } = null;
+        public LineCameraData AlignCamera { get; set; } = null;
 
         [JsonProperty]
         private List<Tab> TabList { get; set; } = new List<Tab>();
@@ -46,11 +33,9 @@ namespace Jastech.Apps.Structure.Data
             // Cognex Tool 때문에 개별 DeepCopy 호출 해줘야함(Json DeepCopy 안됨)
             Unit unit = new Unit();
             unit.Name = Name;
-            unit.PreAlignParamList = PreAlignParamList.Select(x => x.DeepCopy()).ToList();
-            unit.CalibrationParam = CalibrationParam.DeepCopy();
-            unit.LineScanLightParam = LineScanLightParam.DeepCopy();
-            unit.LeftPreAlignLightParam = LeftPreAlignLightParam.DeepCopy();
-            unit.RightPreAlignLightParam = RightPreAlignLightParam.DeepCopy();
+            unit.PreAlign = PreAlign?.DeepCopy();
+            unit.AkkonCamera = AkkonCamera?.DeepCopy();
+            unit.AlignCamera = AlignCamera?.DeepCopy();
             unit.TabList = TabList.Select(x => x.DeepCopy()).ToList();
             unit.TeachingInfoList = TeachingInfoList.Select(x => x.DeepCopy()).ToList();
             return unit;
@@ -58,14 +43,9 @@ namespace Jastech.Apps.Structure.Data
 
         public void Dispose()
         {
-            foreach (var preAlignParam in PreAlignParamList)
-                preAlignParam.Dispose();
-
+            PreAlign?.Dispose();
             foreach (var tab in TabList)
                 tab.Dispose();
-
-            PreAlignParamList.Clear();
-            CalibrationParam.Dispose();
             TabList.Clear();
         }
 
@@ -106,33 +86,43 @@ namespace Jastech.Apps.Structure.Data
 
         public void AddPreAlignParam(PreAlignParam preAlignParam)
         {
-            PreAlignParamList.Add(preAlignParam);
+            if (PreAlign == null)
+                PreAlign = new PreAlignData();
+
+            PreAlign.AlignParamList.Add(preAlignParam);
         }
 
         public PreAlignParam GetPreAlignMark(MarkDirection direction, MarkName markName)
         {
-            return PreAlignParamList.Where(x => x.Direction == direction && x.Name == markName).First();
+            return PreAlign.AlignParamList.Where(x => x.Direction == direction && x.Name == markName).First();
         }
 
         public void SetCalibraionPram(CalibrationParam calibrationParam)
         {
-            if (calibrationParam != null)
-                CalibrationParam = calibrationParam;
+            if (PreAlign == null)
+                PreAlign = new PreAlignData();
+
+            PreAlign.CalibrationParam = calibrationParam;
         }
 
         public CalibrationParam GetCalibrationMark()
         {
-            return CalibrationParam;
+            return PreAlign.CalibrationParam;
         }
 
-        //public void AddCalibrationParam(CalibrationParam calibrationParam)
-        //{
-        //    CalibrationParamList.Add(calibrationParam);
-        //}
-
-        //public CalibrationParam GetCalibrationMark(CalibrationMarkName markName)
-        //{
-        //    return CalibrationParamList.Where(x => x.MarkName == markName).First();
-        //}
+        public LineCameraData GetLineCameraData(string name)
+        {
+            if(AkkonCamera != null)
+            {
+                if (AkkonCamera.Name == name)
+                    return AkkonCamera;
+            }
+            if(AlignCamera != null)
+            {
+                if (AlignCamera.Name == name)
+                    return AlignCamera;
+            }
+            return null;
+        }
     }
 }

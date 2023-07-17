@@ -43,20 +43,13 @@
             this.btnGrabStart = new System.Windows.Forms.Button();
             this.pnlTeach = new System.Windows.Forms.Panel();
             this.pnlOptic = new System.Windows.Forms.Panel();
-            this.tlpCamera = new System.Windows.Forms.TableLayoutPanel();
-            this.tlpCamera_ = new System.Windows.Forms.TableLayoutPanel();
-            this.lblCameraGainValue = new System.Windows.Forms.Label();
-            this.lblCameraExposureValue = new System.Windows.Forms.Label();
-            this.lblCameraGain = new System.Windows.Forms.Label();
-            this.lblCameraExposure = new System.Windows.Forms.Label();
-            this.lblCamera = new System.Windows.Forms.Label();
+            this.pnlLight = new System.Windows.Forms.Panel();
             this.pnlTeachingItems = new System.Windows.Forms.Panel();
             this.tlpTeachingItems = new System.Windows.Forms.TableLayoutPanel();
             this.btnCancel = new System.Windows.Forms.Button();
             this.btnSave = new System.Windows.Forms.Button();
             this.btnPreAlign = new System.Windows.Forms.Button();
             this.btnCalibration = new System.Windows.Forms.Button();
-            this.pnlLight = new System.Windows.Forms.Panel();
             this.tlpPreAlignTeaching.SuspendLayout();
             this.pnlTeachingPage.SuspendLayout();
             this.tlpTeaching.SuspendLayout();
@@ -65,8 +58,6 @@
             this.tlpUnit.SuspendLayout();
             this.tlpLoadImage.SuspendLayout();
             this.pnlOptic.SuspendLayout();
-            this.tlpCamera.SuspendLayout();
-            this.tlpCamera_.SuspendLayout();
             this.pnlTeachingItems.SuspendLayout();
             this.tlpTeachingItems.SuspendLayout();
             this.SuspendLayout();
@@ -283,7 +274,6 @@
             // pnlOptic
             // 
             this.pnlOptic.Controls.Add(this.pnlLight);
-            this.pnlOptic.Controls.Add(this.tlpCamera);
             this.pnlOptic.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pnlOptic.Location = new System.Drawing.Point(0, 579);
             this.pnlOptic.Margin = new System.Windows.Forms.Padding(0);
@@ -291,116 +281,13 @@
             this.pnlOptic.Size = new System.Drawing.Size(764, 200);
             this.pnlOptic.TabIndex = 4;
             // 
-            // tlpCamera
+            // pnlLight
             // 
-            this.tlpCamera.ColumnCount = 2;
-            this.tlpCamera.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 240F));
-            this.tlpCamera.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tlpCamera.Controls.Add(this.tlpCamera_, 0, 1);
-            this.tlpCamera.Controls.Add(this.lblCamera, 0, 0);
-            this.tlpCamera.Location = new System.Drawing.Point(14, 4);
-            this.tlpCamera.Margin = new System.Windows.Forms.Padding(0);
-            this.tlpCamera.Name = "tlpCamera";
-            this.tlpCamera.RowCount = 3;
-            this.tlpCamera.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
-            this.tlpCamera.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 80F));
-            this.tlpCamera.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tlpCamera.Size = new System.Drawing.Size(240, 110);
-            this.tlpCamera.TabIndex = 295;
-            // 
-            // tlpCamera_
-            // 
-            this.tlpCamera_.ColumnCount = 2;
-            this.tlpCamera_.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 160F));
-            this.tlpCamera_.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 80F));
-            this.tlpCamera_.Controls.Add(this.lblCameraGainValue, 1, 1);
-            this.tlpCamera_.Controls.Add(this.lblCameraExposureValue, 1, 0);
-            this.tlpCamera_.Controls.Add(this.lblCameraGain, 0, 1);
-            this.tlpCamera_.Controls.Add(this.lblCameraExposure, 0, 0);
-            this.tlpCamera_.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tlpCamera_.Location = new System.Drawing.Point(0, 30);
-            this.tlpCamera_.Margin = new System.Windows.Forms.Padding(0);
-            this.tlpCamera_.Name = "tlpCamera_";
-            this.tlpCamera_.RowCount = 2;
-            this.tlpCamera_.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tlpCamera_.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tlpCamera_.Size = new System.Drawing.Size(240, 80);
-            this.tlpCamera_.TabIndex = 300;
-            // 
-            // lblCameraGainValue
-            // 
-            this.lblCameraGainValue.AutoSize = true;
-            this.lblCameraGainValue.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
-            this.lblCameraGainValue.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lblCameraGainValue.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblCameraGainValue.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
-            this.lblCameraGainValue.Location = new System.Drawing.Point(160, 40);
-            this.lblCameraGainValue.Margin = new System.Windows.Forms.Padding(0);
-            this.lblCameraGainValue.Name = "lblCameraGainValue";
-            this.lblCameraGainValue.Size = new System.Drawing.Size(80, 40);
-            this.lblCameraGainValue.TabIndex = 209;
-            this.lblCameraGainValue.Text = "0";
-            this.lblCameraGainValue.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.lblCameraGainValue.Click += new System.EventHandler(this.lblCameraGainValue_Click);
-            // 
-            // lblCameraExposureValue
-            // 
-            this.lblCameraExposureValue.AutoSize = true;
-            this.lblCameraExposureValue.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
-            this.lblCameraExposureValue.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lblCameraExposureValue.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblCameraExposureValue.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
-            this.lblCameraExposureValue.Location = new System.Drawing.Point(160, 0);
-            this.lblCameraExposureValue.Margin = new System.Windows.Forms.Padding(0);
-            this.lblCameraExposureValue.Name = "lblCameraExposureValue";
-            this.lblCameraExposureValue.Size = new System.Drawing.Size(80, 40);
-            this.lblCameraExposureValue.TabIndex = 208;
-            this.lblCameraExposureValue.Text = "0";
-            this.lblCameraExposureValue.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.lblCameraExposureValue.Click += new System.EventHandler(this.lblCameraExposureValue_Click);
-            // 
-            // lblCameraGain
-            // 
-            this.lblCameraGain.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
-            this.lblCameraGain.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lblCameraGain.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblCameraGain.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
-            this.lblCameraGain.Location = new System.Drawing.Point(0, 40);
-            this.lblCameraGain.Margin = new System.Windows.Forms.Padding(0);
-            this.lblCameraGain.Name = "lblCameraGain";
-            this.lblCameraGain.Size = new System.Drawing.Size(160, 40);
-            this.lblCameraGain.TabIndex = 146;
-            this.lblCameraGain.Text = "GAIN [dB]";
-            this.lblCameraGain.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // lblCameraExposure
-            // 
-            this.lblCameraExposure.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
-            this.lblCameraExposure.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lblCameraExposure.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblCameraExposure.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
-            this.lblCameraExposure.Location = new System.Drawing.Point(0, 0);
-            this.lblCameraExposure.Margin = new System.Windows.Forms.Padding(0);
-            this.lblCameraExposure.Name = "lblCameraExposure";
-            this.lblCameraExposure.Size = new System.Drawing.Size(160, 40);
-            this.lblCameraExposure.TabIndex = 145;
-            this.lblCameraExposure.Text = "EXPOSURE [us]";
-            this.lblCameraExposure.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // lblCamera
-            // 
-            this.lblCamera.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(104)))), ((int)(((byte)(104)))), ((int)(((byte)(104)))));
-            this.lblCamera.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lblCamera.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblCamera.Font = new System.Drawing.Font("맑은 고딕", 14F, System.Drawing.FontStyle.Bold);
-            this.lblCamera.ForeColor = System.Drawing.Color.White;
-            this.lblCamera.Location = new System.Drawing.Point(0, 0);
-            this.lblCamera.Margin = new System.Windows.Forms.Padding(0);
-            this.lblCamera.Name = "lblCamera";
-            this.lblCamera.Size = new System.Drawing.Size(240, 30);
-            this.lblCamera.TabIndex = 298;
-            this.lblCamera.Text = "CAMERA";
-            this.lblCamera.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.pnlLight.Location = new System.Drawing.Point(13, 0);
+            this.pnlLight.Margin = new System.Windows.Forms.Padding(0);
+            this.pnlLight.Name = "pnlLight";
+            this.pnlLight.Size = new System.Drawing.Size(378, 194);
+            this.pnlLight.TabIndex = 299;
             // 
             // pnlTeachingItems
             // 
@@ -497,14 +384,6 @@
             this.btnCalibration.UseVisualStyleBackColor = false;
             this.btnCalibration.Click += new System.EventHandler(this.btnCalibration_Click);
             // 
-            // pnlLight
-            // 
-            this.pnlLight.Location = new System.Drawing.Point(276, 4);
-            this.pnlLight.Margin = new System.Windows.Forms.Padding(0);
-            this.pnlLight.Name = "pnlLight";
-            this.pnlLight.Size = new System.Drawing.Size(378, 194);
-            this.pnlLight.TabIndex = 299;
-            // 
             // PreAlignTeachingForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
@@ -528,9 +407,6 @@
             this.tlpUnit.ResumeLayout(false);
             this.tlpLoadImage.ResumeLayout(false);
             this.pnlOptic.ResumeLayout(false);
-            this.tlpCamera.ResumeLayout(false);
-            this.tlpCamera_.ResumeLayout(false);
-            this.tlpCamera_.PerformLayout();
             this.pnlTeachingItems.ResumeLayout(false);
             this.tlpTeachingItems.ResumeLayout(false);
             this.ResumeLayout(false);
@@ -558,13 +434,6 @@
         private System.Windows.Forms.Button btnCancel;
         private System.Windows.Forms.Button btnSave;
         private System.Windows.Forms.Panel pnlOptic;
-        private System.Windows.Forms.TableLayoutPanel tlpCamera;
-        private System.Windows.Forms.TableLayoutPanel tlpCamera_;
-        private System.Windows.Forms.Label lblCameraGainValue;
-        private System.Windows.Forms.Label lblCameraExposureValue;
-        private System.Windows.Forms.Label lblCameraGain;
-        private System.Windows.Forms.Label lblCameraExposure;
-        private System.Windows.Forms.Label lblCamera;
         private System.Windows.Forms.Button btnCalibration;
         private System.Windows.Forms.Button btnPreAlign;
         private System.Windows.Forms.Panel pnlLight;

@@ -6,6 +6,7 @@ using Jastech.Apps.Winform.UI.Controls;
 using Jastech.Framework.Config;
 using Jastech.Framework.Device.Cameras;
 using Jastech.Framework.Device.LAFCtrl;
+using Jastech.Framework.Device.LightCtrls;
 using Jastech.Framework.Device.Motions;
 using Jastech.Framework.Imaging;
 using Jastech.Framework.Imaging.VisionPro;
@@ -59,6 +60,8 @@ namespace Jastech.Apps.Winform.UI.Forms
         public AreaCamera AreaCamera { get; set; } = null;
 
         public LAFCtrl LAFCtrl { get; set; } = null;
+
+        public LightParameter CalibLightParameter { get; set; } = null;
         #endregion
 
         #region 이벤트
@@ -83,7 +86,6 @@ namespace Jastech.Apps.Winform.UI.Forms
 
             CurrentUnit = TeachingData.Instance().GetUnit(UnitName.ToString());
 
-            
             AddControl();
             InitializeUI();
             SelectPage(DisplayType.PreAlign);
@@ -99,10 +101,9 @@ namespace Jastech.Apps.Winform.UI.Forms
             Display.DeleteEventHandler += Display_DeleteEventHandler;
             pnlDisplay.Controls.Add(Display);
 
-            PreAlignControl.MarkDirectionChanged += MarkDirectionChangedEvent;
-
+            // 조명
             var unit = TeachingData.Instance().GetUnit(UnitName.ToString());
-            LightControl.SetParam(DeviceManager.Instance().LightCtrlHandler, unit.LineScanLightParam);
+            LightControl.SetParam(DeviceManager.Instance().LightCtrlHandler, unit.PreAlign.LeftLightParam);
             pnlLight.Controls.Add(LightControl);
 
             // TeachingUIManager 참조
@@ -110,6 +111,8 @@ namespace Jastech.Apps.Winform.UI.Forms
 
             if (AreaCamera != null)
                 AreaCamera.OnImageGrabbed += AreaCamera_OnImageGrabbed;
+
+            PreAlignControl.MarkDirectionChanged += MarkDirectionChangedEvent;
         }
 
         private void AreaCamera_OnImageGrabbed(Camera camera)
@@ -160,6 +163,7 @@ namespace Jastech.Apps.Winform.UI.Forms
                     pnlTeach.Controls.Add(VisionCalibrationControl);
                     break;
             }
+            UpdateLightParam();
         }
 
         private void MarkDirectionChangedEvent(MarkDirection direction)
@@ -168,8 +172,24 @@ namespace Jastech.Apps.Winform.UI.Forms
                 return;
 
             _curMark = direction;
+            UpdateLightParam();
         }
 
+        private void UpdateLightParam()
+        {
+            var unit = TeachingData.Instance().GetUnit(UnitName.ToString());
+            if (btnPreAlign.BackColor == _selectedColor)
+            {
+                if (_curMark == MarkDirection.Left)
+                    LightControl.UpdateSetParam(unit.PreAlign.LeftLightParam);
+                else if (_curMark == MarkDirection.Right)
+                    LightControl.UpdateSetParam(unit.PreAlign.RightLightParam);
+            }
+            if(btnCalibration.BackColor == _selectedColor)
+            {
+                LightControl.UpdateSetParam(CalibLightParameter);
+            }
+        }
         private void ClearSelectedButton()
         {
             foreach (Control control in tlpTeachingItems.Controls)
@@ -177,16 +197,6 @@ namespace Jastech.Apps.Winform.UI.Forms
                 if (control is Button)
                     control.BackColor = _nonSelectedColor;
             }
-        }
-
-        public void UpdateParam()
-        {
-            var camera = AreaCamera.Camera;
-            if (camera == null)
-                return;
-
-            lblCameraExposureValue.Text = camera.GetExposureTime().ToString();
-            lblCameraGainValue.Text = camera.GetAnalogGain().ToString();
         }
 
         private void InitializeUI()

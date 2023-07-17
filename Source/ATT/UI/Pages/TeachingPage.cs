@@ -64,6 +64,7 @@ namespace ATT.UI.Pages
                 form.LAFCtrl = LAFManager.Instance().GetLAFCtrl("Akkon");
             }
             form.UnitName = UnitName.Unit0;
+            form.AxisNameZ = Jastech.Framework.Device.Motions.AxisName.Z0;
             form.AxisHandler = MotionManager.Instance().GetAxisHandler(AxisHandlerName.Handler0);
             form.InspModelService = ATTInspModelService;
             form.OpenMotionPopupEventHandler += OpenMotionPopupEventHandler;

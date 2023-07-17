@@ -157,8 +157,8 @@ namespace ATT_UT_IPAD
                 AxisHandler handler0 = new AxisHandler(AxisHandlerName.Handler0.ToString());
 
                 handler0.AddAxis(AxisName.X, motion, axisNo: 0, homeOrder: 3);
-                handler0.AddAxis(AxisName.Z1, motion, axisNo: 0, homeOrder: 1);
-                handler0.AddAxis(AxisName.Z2, motion, axisNo: 1, homeOrder: 2);
+                handler0.AddAxis(AxisName.Z0, motion, axisNo: 1, homeOrder: 1);
+                handler0.AddAxis(AxisName.Z1, motion, axisNo: 2, homeOrder: 2);
 
                 MotionManager.Instance().AxisHandlerList.Add(handler0);
 

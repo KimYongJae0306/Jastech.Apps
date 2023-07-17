@@ -474,7 +474,7 @@ namespace Jastech.Apps.Winform.Service.Plc
                 return;
             }
 
-            var param = unit.CalibrationParam.InspParam;
+            var param = unit.PreAlign.CalibrationParam.InspParam;
             if (param == null)
             {
                 short command = PlcControlManager.Instance().WritePcStatus(PlcCommand.StartPreAlign, true);
@@ -511,10 +511,10 @@ namespace Jastech.Apps.Winform.Service.Plc
             var teachingInfo = inspModel.GetUnit(UnitName.Unit0).GetTeachingInfo(teachingPos);
 
             Axis axisX = MotionManager.Instance().GetAxis(AxisHandlerName.Handler0, AxisName.X);
-            Axis axisZ = MotionManager.Instance().GetAxis(AxisHandlerName.Handler0, AxisName.Z);
+            Axis axisZ = MotionManager.Instance().GetAxis(AxisHandlerName.Handler0, AxisName.Z0);
 
             var movingParamX = teachingInfo.GetMovingParam(AxisName.X.ToString());
-            var movingParamZ = teachingInfo.GetMovingParam(AxisName.Z.ToString());
+            var movingParamZ = teachingInfo.GetMovingParam(AxisName.Z0.ToString());
 
             if (MoveAxis(teachingPos, axisX, movingParamX) == false)
             {
@@ -565,7 +565,7 @@ namespace Jastech.Apps.Winform.Service.Plc
 
             foreach (var axisHandler in MotionManager.Instance().AxisHandlerList)
             {
-                if (axisHandler.Name == AxisName.Z.ToString())
+                if (axisHandler.Name == AxisName.Z0.ToString())
                     continue;
 
                 allAxisHanlder.AddAxis(axisHandler.GetAxisList());

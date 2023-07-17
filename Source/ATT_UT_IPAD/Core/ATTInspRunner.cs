@@ -1368,7 +1368,7 @@ namespace ATT_UT_IPAD.Core
 
             var movingParamX = teachingInfo.GetMovingParam(AxisName.X.ToString());
             var movingParamY = teachingInfo.GetMovingParam(AxisName.Y.ToString());
-            var movingParamZ = teachingInfo.GetMovingParam(AxisName.Z.ToString());
+            var movingParamZ = teachingInfo.GetMovingParam(AxisName.Z0.ToString());
 
             //if (MoveAxis(teachingPos, axisZ, movingParamZ) == false)
             //{

@@ -240,7 +240,7 @@ namespace Jastech.Apps.Winform.Core.Calibrations
                     ClearMatrixPointResultList();
 
                     // 조명 켜기
-                    light.TurnOn(unit.RightPreAlignLightParam);
+                    light.TurnOn(unit.PreAlign.RightLightParam);
 
                     Logger.Write(LogType.Device, "Light on.");
 

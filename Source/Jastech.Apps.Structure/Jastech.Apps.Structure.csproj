@@ -106,7 +106,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Data\AppsInspResult.cs" />
+    <Compile Include="Data\LineCameraData.cs" />
     <Compile Include="Data\MaterialInfo.cs" />
+    <Compile Include="Data\PreAlignData.cs" />
     <Compile Include="Data\ProcessCapabilityIndex.cs" />
     <Compile Include="Data\SpecInfo.cs" />
     <Compile Include="Parameters\AkkonParam.cs" />

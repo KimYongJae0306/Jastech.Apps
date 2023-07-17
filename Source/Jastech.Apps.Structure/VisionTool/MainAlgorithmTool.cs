@@ -26,12 +26,12 @@ namespace Jastech.Apps.Structure.VisionTool
             double rightRealMarkX = realCoordinateList[1].X;
             double rightRealMarkY = realCoordinateList[1].Y;
 
-            var preAlignLeftData = unit.PreAlignParamList.Where(x => x.Direction == MarkDirection.Left).FirstOrDefault();
+            var preAlignLeftData = unit.PreAlign.AlignParamList.Where(x => x.Direction == MarkDirection.Left).FirstOrDefault();
             double leftMotionX = preAlignLeftData.GetMotionData(AxisName.X);
             double leftMotionY = preAlignLeftData.GetMotionData(AxisName.Y);
             double leftMotionT = preAlignLeftData.GetMotionData(AxisName.T);
 
-            var preAlignRightData = unit.PreAlignParamList.Where(x => x.Direction == MarkDirection.Left).FirstOrDefault();
+            var preAlignRightData = unit.PreAlign.AlignParamList.Where(x => x.Direction == MarkDirection.Left).FirstOrDefault();
             double rightMotionX = preAlignRightData.GetMotionData(AxisName.X);
             double rightMotionY = preAlignRightData.GetMotionData(AxisName.Y);
             double rightMotionT = preAlignRightData.GetMotionData(AxisName.T);

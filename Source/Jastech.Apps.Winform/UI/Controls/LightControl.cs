@@ -42,6 +42,12 @@ namespace Jastech.Apps.Winform.UI.Controls
             LightParam = lightParam;
         }
 
+        public void UpdateSetParam(LightParameter lightParam)
+        {
+            LightParam = lightParam;
+            InitializeData();
+        }
+
         public void InitializeData()
         {
             if (LightCtrlHandler == null || LightParam == null)
@@ -51,6 +57,7 @@ namespace Jastech.Apps.Winform.UI.Controls
 
             var keys = LightParam.Map.Keys.ToArray();
 
+            cbxControlNameList.Items.Clear();
             foreach (var key in keys)
                 cbxControlNameList.Items.Add(key.ToString());
 

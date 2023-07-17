@@ -176,16 +176,16 @@ namespace ATT.UI.Forms
             lblOffsetY.Text = param.GetOffset(AxisName.Y).ToString();
             YVariableControl.UpdateData(param.GetMovingParams(AxisName.Y));
 
-            lblTargetPositionZ.Text = param.GetTargetPosition(AxisName.Z).ToString();
-            lblTeachedCenterOfGravityZ.Text = param.GetCenterOfGravity(AxisName.Z).ToString();
-            ZVariableControl.UpdateData(param.GetMovingParams(AxisName.Z));
+            lblTargetPositionZ.Text = param.GetTargetPosition(AxisName.Z0).ToString();
+            lblTeachedCenterOfGravityZ.Text = param.GetCenterOfGravity(AxisName.Z0).ToString();
+            ZVariableControl.UpdateData(param.GetMovingParams(AxisName.Z0));
         }
 
         private void UpdateCommonParam()
         {
             XCommonControl.UpdateData(AxisHandler.GetAxis(AxisName.X).AxisCommonParams.DeepCopy());
             YCommonControl.UpdateData(AxisHandler.GetAxis(AxisName.Y).AxisCommonParams.DeepCopy());
-            ZCommonControl.UpdateData(AxisHandler.GetAxis(AxisName.Z).AxisCommonParams.DeepCopy());
+            ZCommonControl.UpdateData(AxisHandler.GetAxis(AxisName.Z0).AxisCommonParams.DeepCopy());
         }
 
         private void SetAxisHandler(AxisHandler axisHandler)
@@ -221,7 +221,7 @@ namespace ATT.UI.Forms
             YCommonControl.SetAxis(AxisHandler.GetAxis(AxisName.Y));
 
             ZCommonControl.Dock = DockStyle.Fill;
-            ZCommonControl.SetAxis(AxisHandler.GetAxis(AxisName.Z));
+            ZCommonControl.SetAxis(AxisHandler.GetAxis(AxisName.Z0));
 
             tlpCommonParameter.Controls.Add(XCommonControl);
             tlpCommonParameter.Controls.Add(YCommonControl);
@@ -237,7 +237,7 @@ namespace ATT.UI.Forms
             YVariableControl.SetAxis(AxisHandler.GetAxis(AxisName.Y));
 
             ZVariableControl.Dock = DockStyle.Fill;
-            ZVariableControl.SetAxis(AxisHandler.GetAxis(AxisName.Z));
+            ZVariableControl.SetAxis(AxisHandler.GetAxis(AxisName.Z0));
 
             tlpVariableParameter.Controls.Add(XVariableControl);
             tlpVariableParameter.Controls.Add(YVariableControl);
@@ -348,7 +348,7 @@ namespace ATT.UI.Forms
 
             axisHandler.GetAxis(AxisName.X).AxisCommonParams.SetCommonParams(XCommonControl.GetCurrentData());
             axisHandler.GetAxis(AxisName.Y).AxisCommonParams.SetCommonParams(YCommonControl.GetCurrentData());
-            axisHandler.GetAxis(AxisName.Z).AxisCommonParams.SetCommonParams(ZCommonControl.GetCurrentData());
+            axisHandler.GetAxis(AxisName.Z0).AxisCommonParams.SetCommonParams(ZCommonControl.GetCurrentData());
         }
 
         private void GetCurrentVariableParams()
@@ -357,7 +357,7 @@ namespace ATT.UI.Forms
 
             posData.SetMovingParams(AxisName.X, XVariableControl.GetCurrentData());
             posData.SetMovingParams(AxisName.Y, YVariableControl.GetCurrentData());
-            posData.SetMovingParams(AxisName.Z, ZVariableControl.GetCurrentData());
+            posData.SetMovingParams(AxisName.Z0, ZVariableControl.GetCurrentData());
         }
 
         private void btnMoveToTeachingPosition_Click(object sender, EventArgs e)
@@ -470,13 +470,13 @@ namespace ATT.UI.Forms
         private void lblTargetPositionZ_Click(object sender, EventArgs e)
         {
             double targetPosition = KeyPadHelper.SetLabelDoubleData((Label)sender);
-            TeachingPositionList.Where(x => x.Name == TeachingPositionType.ToString()).First().SetTargetPosition(AxisName.Z, targetPosition);
+            TeachingPositionList.Where(x => x.Name == TeachingPositionType.ToString()).First().SetTargetPosition(AxisName.Z0, targetPosition);
         }
 
         private void lblCurrentToTargetZ_Click(object sender, EventArgs e)
         {
             double currentPosition = Convert.ToDouble(lblCurrentPositionZ.Text);
-            TeachingPositionList.Where(x => x.Name == TeachingPositionType.ToString()).First().SetTargetPosition(AxisName.Z, currentPosition);
+            TeachingPositionList.Where(x => x.Name == TeachingPositionType.ToString()).First().SetTargetPosition(AxisName.Z0, currentPosition);
 
             lblTargetPositionZ.Text = currentPosition.ToString("F3");
         }
@@ -484,20 +484,20 @@ namespace ATT.UI.Forms
         private void lblTeachedCenterOfGravityZ_Click(object sender, EventArgs e)
         {
             int targetCenterOfGravity = KeyPadHelper.SetLabelIntegerData((Label)sender);
-            TeachingPositionList.Where(x => x.Name == TeachingPositionType.ToString()).First().SetCenterOfGravity(AxisName.Z, targetCenterOfGravity);
+            TeachingPositionList.Where(x => x.Name == TeachingPositionType.ToString()).First().SetCenterOfGravity(AxisName.Z0, targetCenterOfGravity);
         }
 
         private void lblCurrentToTargetCenterOfGravityZ_Click(object sender, EventArgs e)
         {
             int targetCenterOfGravity = Convert.ToInt32(lblCurrentCenterOfGravityZ.Text);
-            TeachingPositionList.Where(x => x.Name == TeachingPositionType.ToString()).First().SetCenterOfGravity(AxisName.Z, targetCenterOfGravity);
+            TeachingPositionList.Where(x => x.Name == TeachingPositionType.ToString()).First().SetCenterOfGravity(AxisName.Z0, targetCenterOfGravity);
 
             lblTeachedCenterOfGravityZ.Text = targetCenterOfGravity.ToString();
         }
 
         private void lblMoveToTargetZ_Click(object sender, EventArgs e)
         {
-            double targetPosition = TeachingPositionList.Where(x => x.Name == TeachingPositionType.ToString()).First().GetTargetPosition(AxisName.Z);
+            double targetPosition = TeachingPositionList.Where(x => x.Name == TeachingPositionType.ToString()).First().GetTargetPosition(AxisName.Z0);
 
             double mPos_um = 0.0;
             if (LAFCtrl is NuriOneLAFCtrl nuriOne)

@@ -2,6 +2,7 @@
 using Jastech.Apps.Structure.Data;
 using Jastech.Apps.Structure.Parameters;
 using Jastech.Apps.Winform;
+using Jastech.Apps.Winform.Settings;
 using Jastech.Framework.Algorithms.Akkon.Parameters;
 using Jastech.Framework.Config;
 using Jastech.Framework.Device.LightCtrls;
@@ -27,8 +28,12 @@ namespace ATT.Core
         {
             AppsInspModel appInspModel = inspModel as AppsInspModel;
 
+            int count = 0;
             foreach (UnitName unitName in Enum.GetValues(typeof(UnitName)))
             {
+                if (count >= AppsConfig.Instance().UnitCount)
+                    break;
+
                 Unit unit = new Unit();
 
                 unit.Name = unitName.ToString(); // 임시 -> Apps에서 변경

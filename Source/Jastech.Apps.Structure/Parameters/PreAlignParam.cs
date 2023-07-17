@@ -77,7 +77,7 @@ namespace Jastech.Apps.Structure.Parameters
                 case AxisName.Y:
                     position = MotionY;
                     break;
-                case AxisName.Z:
+                case AxisName.Z0:
                     break;
                 case AxisName.Z1:
                     break;
@@ -112,7 +112,7 @@ namespace Jastech.Apps.Structure.Parameters
                 case AxisName.Y:
                     offset = OffsetY;
                     break;
-                case AxisName.Z:
+                case AxisName.Z0:
                     break;
                 case AxisName.Z1:
                     break;

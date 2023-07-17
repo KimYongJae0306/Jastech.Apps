@@ -33,6 +33,11 @@ namespace Jastech.Framework.Winform.Forms
 
         private float _curLength { get; set; } = 0;
 
+        private Direction _direction = Direction.CW;
+
+        public double _prevAnalogGain { get; set; } = 0;
+
+        public double _prevDigitalGain { get; set; } = 0;
         #region repeat
         private Thread _repeatThread = null;
         private bool _isRepeat = false;
@@ -43,6 +48,8 @@ namespace Jastech.Framework.Winform.Forms
 
         #region 속성
         public UnitName UnitName { get; set; } = UnitName.Unit0;
+
+        public AxisName AxisNameZ { get; set; } = AxisName.Z0;
 
         public InspModelService InspModelService { get; set; } = null;
 
@@ -66,15 +73,10 @@ namespace Jastech.Framework.Winform.Forms
 
         public LineCamera LineCamera { get; set; } = null;
 
-        private TeachingInfo TeachingPositionInfo { get; set; } = null;
-
-        private Direction _direction = Direction.CW;
+        public string LineCameraDataName { get; set; } = "";
+        //public LineCameraData LineCameraData { get; set; } = null;
 
         private Axis SelectedAxis { get; set; } = null;
-
-        private double _prevAnalogGain { get; set; } = 0;
-
-        private double _prevDigitalGain { get; set; } = 0;
         #endregion
 
         #region 이벤트
@@ -115,23 +117,22 @@ namespace Jastech.Framework.Winform.Forms
 
         private void SetCameraProperty()
         {
-            var inspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
-
-            var analogGain = inspModel.GetUnit(UnitName).AnalogGain;
-            var digitalGain = inspModel.GetUnit(UnitName).DigitalGain;
+            var unit = TeachingData.Instance().GetUnit(UnitName.ToString());
+            var lineCameraData = unit.GetLineCameraData(LineCameraDataName);
 
             var camera = LineCamera.Camera;
 
-            camera.SetAnalogGain(analogGain);
-            camera.SetDigitalGain(digitalGain);
+            camera.SetAnalogGain(lineCameraData.AnalogGain);
+            camera.SetDigitalGain(lineCameraData.DigitalGain);
         }
 
         private void SetPrevData()
         {
-            var inspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
+            var unit = TeachingData.Instance().GetUnit(UnitName.ToString());
+            var lineCameraData = unit.GetLineCameraData(LineCameraDataName);
 
-            _prevAnalogGain = inspModel.GetUnit(UnitName).AnalogGain;
-            _prevDigitalGain = inspModel.GetUnit(UnitName).DigitalGain;
+            _prevAnalogGain = lineCameraData.AnalogGain;
+            _prevDigitalGain = lineCameraData.DigitalGain;
         }
 
         private void RollbackPrevData()
@@ -199,7 +200,8 @@ namespace Jastech.Framework.Winform.Forms
             var unit = TeachingData.Instance().GetUnit(UnitName.ToString());
             var posData = unit.GetTeachingInfo(TeachingPosType.Stage1_Scan_Start);
 
-            AutoFocusControl.UpdateData(posData.GetAxisInfo(AxisName.Z));
+            AutoFocusControl.UpdateData(posData.GetAxisInfo(AxisNameZ));
+
             AutoFocusControl.SetAxisHanlder(AxisHandler);
             AutoFocusControl.SetLAFCtrl(LAFCtrl);
             pnlAutoFocus.Controls.Add(AutoFocusControl);
@@ -210,7 +212,8 @@ namespace Jastech.Framework.Winform.Forms
             pnlLAFJog.Controls.Add(LAFJogControl);
             LAFJogControl.SetSelectedLafCtrl(LAFCtrl);
 
-            LightControl.SetParam(DeviceManager.Instance().LightCtrlHandler, unit.LineScanLightParam);
+            var lineCameraData = unit.GetLineCameraData(LineCameraDataName);
+            LightControl.SetParam(DeviceManager.Instance().LightCtrlHandler, lineCameraData.LightParam);
             pnlLight.Controls.Add(LightControl);
         }
 
@@ -282,12 +285,13 @@ namespace Jastech.Framework.Winform.Forms
         {
             // Camera Exposure, Gain Load
             var lineCamera = LineCamera.Camera as CameraMil;
-            var inspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
-            //UnitName
-
             lbExposureValue.Text = lineCamera?.GetExposureTime().ToString("F4");
-            lblDigitalGainValue.Text = inspModel.GetUnit(UnitName).DigitalGain.ToString("F4");
-            lblAnalogGainValue.Text = inspModel.GetUnit(UnitName).AnalogGain.ToString();
+
+            var unit = TeachingData.Instance().GetUnit(UnitName.ToString());
+            var lineCameraData = unit.GetLineCameraData(LineCameraDataName);
+
+            lblDigitalGainValue.Text = lineCameraData.DigitalGain.ToString("F4");
+            lblAnalogGainValue.Text = lineCameraData.AnalogGain.ToString();
         }
 
         private void UpdateMotionStatus()
@@ -530,15 +534,12 @@ namespace Jastech.Framework.Winform.Forms
             var unit = TeachingData.Instance().GetUnit(UnitName.ToString());
             var posData = unit.GetTeachingInfo(TeachingPosType.Stage1_Scan_Start);
 
-            posData.GetAxisInfo(AxisName.Z).TargetPosition = AutoFocusControl.GetCurrentData().TargetPosition;
-            posData.GetAxisInfo(AxisName.Z).CenterOfGravity = AutoFocusControl.GetCurrentData().CenterOfGravity;
+            posData.GetAxisInfo(AxisNameZ).TargetPosition = AutoFocusControl.GetCurrentData().TargetPosition;
+            posData.GetAxisInfo(AxisNameZ).CenterOfGravity = AutoFocusControl.GetCurrentData().CenterOfGravity;
 
-            AppsInspModel model = ModelManager.Instance().CurrentModel as AppsInspModel;
-            if (model != null)
-            {
-                model.GetUnit(UnitName).DigitalGain = Convert.ToDouble(lblDigitalGainValue.Text);
-                model.GetUnit(UnitName).AnalogGain = Convert.ToInt16(lblAnalogGainValue.Text);
-            }
+            var lineCameraData = unit.GetLineCameraData(LineCameraDataName);
+            lineCameraData.DigitalGain = Convert.ToDouble(lblDigitalGainValue.Text);
+            lineCameraData.AnalogGain = Convert.ToInt16(lblAnalogGainValue.Text);
         }
 
         private void btnSave_Click(object sender, EventArgs e)

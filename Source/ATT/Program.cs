@@ -43,11 +43,13 @@ namespace ATT
                 MilHelper.InitApplication();
                 CameraMil.BufferPoolCount = 200;
                 SystemHelper.StartChecker(@"D:\ATT_Memory_Test.txt");
+                AppsConfig.Instance().UnitCount = 1;
 
                 ConfigSet.Instance().PathConfigCreated += ConfigSet_PathConfigCreated;
                 ConfigSet.Instance().OperationConfigCreated += ConfigSet_OperationConfigCreated;
                 ConfigSet.Instance().MachineConfigCreated += ConfigSet_MachineConfigCreated;
                 ConfigSet.Instance().Initialize();
+
                 AppsConfig.Instance().Initialize();
 
                 UserManager.Instance().Initialize();

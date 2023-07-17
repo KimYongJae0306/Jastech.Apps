@@ -45,11 +45,13 @@ namespace ATT_UT_Remodeling
 
                 Logger.Initialize(ConfigSet.Instance().Path.Log);
                 SystemHelper.StartChecker(@"D:\ATT_Memory_Test.txt");
+                AppsConfig.Instance().UnitCount = 1;
 
                 ConfigSet.Instance().PathConfigCreated += ConfigSet_PathConfigCreated;
                 ConfigSet.Instance().OperationConfigCreated += ConfigSet_OperationConfigCreated;
                 ConfigSet.Instance().MachineConfigCreated += ConfigSet_MachineConfigCreated;
                 ConfigSet.Instance().Initialize();
+
                 AppsConfig.Instance().Initialize();
                 CalibrationData.Instance().LoadCalibrationData();
                 UserManager.Instance().Initialize();
@@ -70,55 +72,41 @@ namespace ATT_UT_Remodeling
         {
             if (ConfigSet.Instance().Operation.VirtualMode)
             {
-                var areaScan = new VirtualLAFCtrl("PreAlign");
-                config.Add(areaScan);
-
+                // AreaCamera
                 var areaCamera = new CameraVirtual("PreAlign", 1280, 1024, ColorFormat.Gray, SensorType.Area);
                 config.Add(areaCamera);
 
+                // LineScanCamera
                 var lineCamera = new CameraVirtual("LineCamera", 4640, 1024, ColorFormat.Gray, SensorType.Line);
                 config.Add(lineCamera);
 
+                // Motion
                 var motion = new VirtualMotion("VirtualMotion", 3);
                 config.Add(motion);
 
+                // LAF
+                var laf1 = new VirtualLAFCtrl("Laf");
+                config.Add(laf1);
+
+                // Light1
                 var spotLight = new VirtualLightCtrl("Spot", 6); // 12V
                 spotLight.ChannelNameMap["Ch.White"] = 1; // channel 지정
                 spotLight.ChannelNameMap["Ch.RedSpot"] = 2; // channel 지정
                 spotLight.ChannelNameMap["Ch.Blue"] = 3; // channel 지정
                 config.Add(spotLight);
 
+                // Light2
                 var ringLight = new VirtualLightCtrl("Ring", 6); // 24V
                 ringLight.ChannelNameMap["Ch.RedRing1"] = 1; // channel 지정
                 ringLight.ChannelNameMap["Ch.RedRing2"] = 2; // channel 지정
                 config.Add(ringLight);
-
-                //var laf1 = new NuriOneLAFCtrl("Laf");
-                //laf1.SerialPortComm = new SerialPortComm
-                //{
-                //    PortName = "COM1",
-                //    BaudRate = 115200,
-                //};
-                //config.Add(laf1);
-
-                //// Light1
-                //var spotLight = new LvsLightCtrl("Spot", 6, new SerialPortComm("COM2", 19200), new LvsSerialParser()); // 12V
-                //spotLight.ChannelNameMap["Ch.White"] = 1; // channel 지정
-                //spotLight.ChannelNameMap["Ch.RedSpot"] = 2; // channel 지정
-                //spotLight.ChannelNameMap["Ch.Blue"] = 3; // channel 지정
-                //config.Add(spotLight);
-
-                //// Light2
-                //var ringLight = new LvsLightCtrl("Ring", 6, new SerialPortComm("COM3", 19200), new LvsSerialParser());  // 24V
-                //ringLight.ChannelNameMap["Ch.RedRing1"] = 1; // channel 지정
-                //ringLight.ChannelNameMap["Ch.RedRing2"] = 2; // channel 지정
-                //config.Add(ringLight);
             }
             else
             {
                 // AreaCamera
                 var areaScan = new CameraHIK("PreAlign", 2592, 1944, ColorFormat.Gray, SensorType.Area);
                 areaScan.SerialNo = "DA0228166";
+                areaScan.Exposure = 5000;
                 areaScan.IsReverseX = true;
                 config.Add(areaScan);
 

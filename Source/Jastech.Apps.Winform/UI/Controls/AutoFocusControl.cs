@@ -117,7 +117,7 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         private void SetAxis(AxisHandler axisHandler)
         {
-            SelectedAxis = axisHandler.GetAxis(AxisName.Z);
+            SelectedAxis = axisHandler.GetAxis(AxisName.Z0);
         }
 
         public void SetLAFCtrl(LAFCtrl lafCtrl)

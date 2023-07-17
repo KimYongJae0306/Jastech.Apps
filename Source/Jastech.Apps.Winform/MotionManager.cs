@@ -119,7 +119,7 @@ namespace Jastech.Apps.Winform
 
         public bool IsAxisInPosition(UnitName unitName, TeachingPosType teachingPosition, Axis axis)
         {
-            if (axis.Name == AxisName.Z.ToString())
+            if (axis.Name == AxisName.Z0.ToString())
                 return true;
 
             var inspModel = ModelManager.Instance().CurrentModel as AppsInspModel;

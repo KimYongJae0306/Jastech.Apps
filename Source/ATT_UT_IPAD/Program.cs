@@ -3,6 +3,7 @@ using Jastech.Apps.Winform.Settings;
 using Jastech.Framework.Comm;
 using Jastech.Framework.Config;
 using Jastech.Framework.Device.Cameras;
+using Jastech.Framework.Device.Grabbers;
 using Jastech.Framework.Device.LAFCtrl;
 using Jastech.Framework.Device.LightCtrls;
 using Jastech.Framework.Device.LightCtrls.Lvs;
@@ -44,11 +45,13 @@ namespace ATT_UT_IPAD
                 MilHelper.InitApplication();
                 CameraMil.BufferPoolCount = 200;
                 SystemHelper.StartChecker(@"D:\ATT_Memory_Test.txt");
+                AppsConfig.Instance().UnitCount = 1;
 
                 ConfigSet.Instance().PathConfigCreated += ConfigSet_PathConfigCreated;
                 ConfigSet.Instance().OperationConfigCreated += ConfigSet_OperationConfigCreated;
                 ConfigSet.Instance().MachineConfigCreated += ConfigSet_MachineConfigCreated;
                 ConfigSet.Instance().Initialize();
+
                 AppsConfig.Instance().Initialize();
 
                 UserManager.Instance().Initialize();
@@ -68,42 +71,87 @@ namespace ATT_UT_IPAD
         {
             if (ConfigSet.Instance().Operation.VirtualMode)
             {
-                var alignCamera = new CameraVirtual("AlignCamera", 4640, 1024, ColorFormat.Gray, SensorType.Line);
+                // Akkon LineScanCamera
+                var alignCamera = new CameraVirtual("AkkonCamera", 4640, 1024, ColorFormat.Gray, SensorType.Line);
                 config.Add(alignCamera);
 
-                var akkonCamera = new CameraVirtual("AkkonCamera", 4640, 1024, ColorFormat.Gray, SensorType.Line);
+                // Align LineScanCamera
+                var akkonCamera = new CameraVirtual("AlignCamera", 4640, 1024, ColorFormat.Gray, SensorType.Line);
                 config.Add(akkonCamera);
 
-                var motion = new VirtualMotion("VirtualMotion", 2);
-                config.Add(motion);
-
-                var spotLight = new VirtualLightCtrl("Spot12V", 6);
-                //spotLight.ChannelNameMap["Ch.Blue"] = 0;
-                //spotLight.ChannelNameMap["Ch.RedSpot"] = 1;
-                //spotLight.ChannelNameMap["Ch.White"] = 2;
-                config.Add(spotLight);
-
-                var rightLight = new VirtualLightCtrl("Ring24V", 6);
-                //rightLight.ChannelNameMap["Ch.RedRing"] = 0;
-                config.Add(rightLight);
-
-                var alignLaf = new VirtualLAFCtrl("Align");
-                config.Add(alignLaf);
-
-                var akkonLaf = new VirtualLAFCtrl("Akkon");
-                config.Add(akkonLaf);
-
-                //Test 코드
-                AppsConfig.Instance().PlcAddressInfo.CommonStart = 1000;
-                var plc = new MelsecPlc("PLC", new SocketComm("192.168.125.1", 9011, SocketCommType.Udp), new MelsecBinaryParser());
-                config.Add(plc);
-            }
-            else
-            {
                 // Motion
                 var motion = new VirtualMotion("VirtualMotion", 2);
                 config.Add(motion);
 
+                // Akkon LAF
+                var akkonLaf = new VirtualLAFCtrl("Akkon");
+                config.Add(akkonLaf);
+
+                // Akkon LAF
+                var alignLaf = new VirtualLAFCtrl("Align");
+                config.Add(alignLaf);
+
+                // Light1
+                var spotLight = new VirtualLightCtrl("Spot", 6); // 12V
+                spotLight.ChannelNameMap["Ch.White"] = 1; // channel 지정
+                spotLight.ChannelNameMap["Ch.RedSpot"] = 2; // channel 지정
+                spotLight.ChannelNameMap["Ch.Blue"] = 3; // channel 지정
+                config.Add(spotLight);
+
+                // Light2
+                var ringLight = new VirtualLightCtrl("Ring", 6);  // 24V
+                ringLight.ChannelNameMap["Ch.RedRing1"] = 1; // channel 지정
+                ringLight.ChannelNameMap["Ch.RedRing2"] = 2; // channel 지정
+                config.Add(ringLight);
+            }
+            else
+            {
+                // Akkon LineScanCamera
+                var akkonCamera = new CameraMil("AkkonCamera", 4640, 1024, ColorFormat.Gray, SensorType.Line);
+                akkonCamera.MilSystemType = MilSystemType.Rapixo;
+                akkonCamera.TriggerMode = TriggerMode.Hardware;
+                akkonCamera.TriggerSource = (int)MilCxpTriggerSource.Cxp;
+                akkonCamera.TriggerSignalType = MilTriggerSignalType.TL_Trigger;
+                akkonCamera.TriggerIoSourceType = MILIoSourceType.AUX_IO0;
+                akkonCamera.DigitizerNum = 0;
+
+                akkonCamera.DcfFile = CameraMil.GetDcfFile(CameraType.VT_6K3_5X_H160);
+                config.Add(akkonCamera);
+
+                // Align LineScanCamera
+                var alignCamera = new CameraMil("AlignCamera", 4640, 1024, ColorFormat.Gray, SensorType.Line);
+                alignCamera.MilSystemType = MilSystemType.Rapixo;
+                alignCamera.TriggerMode = TriggerMode.Hardware;
+                alignCamera.TriggerSource = (int)MilCxpTriggerSource.Cxp;
+                alignCamera.TriggerSignalType = MilTriggerSignalType.TL_Trigger;
+                alignCamera.TriggerIoSourceType = MILIoSourceType.AUX_IO0;
+                alignCamera.DigitizerNum = 2;
+
+                alignCamera.DcfFile = CameraMil.GetDcfFile(CameraType.VT_6K3_5X_H160);
+                config.Add(alignCamera);
+
+                // Motion
+                var motion = new ACSMotion("Motion", 2, ACSConnectType.Ethernet);
+                motion.IpAddress = "10.0.0.100";
+                config.Add(motion);
+
+                // Akkon LAF
+                var akkonLaf = new NuriOneLAFCtrl("AkkonLaf");
+                akkonLaf.SerialPortComm = new SerialPortComm
+                {
+                    PortName = "COM1",
+                    BaudRate = 9600,
+                };
+                config.Add(akkonLaf);
+
+                // Align LAF
+                var alignLaf = new NuriOneLAFCtrl("AlignLaf");
+                alignLaf.SerialPortComm = new SerialPortComm
+                {
+                    PortName = "COM2",
+                    BaudRate = 9600,
+                };
+                config.Add(alignLaf);
 
                 // Light1
                 var spotLight = new LvsLightCtrl("Spot", 6, new SerialPortComm("COM5", 19200), new LvsSerialParser()); // 12V

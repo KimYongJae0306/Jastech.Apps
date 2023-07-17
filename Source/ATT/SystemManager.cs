@@ -216,7 +216,7 @@ namespace ATT
 
                 handler0.AddAxis(AxisName.X, motion, 0, 2);
                 handler0.AddAxis(AxisName.Y, motion, 8, 1);
-                handler0.AddAxis(AxisName.Z, motion, 0, 2);
+                handler0.AddAxis(AxisName.Z0, motion, 0, 2);
 
                 //AxisHandlerList.Add(handler0);
                 MotionManager.Instance().AxisHandlerList.Add(handler0);

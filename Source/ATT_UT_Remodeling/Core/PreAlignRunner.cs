@@ -203,7 +203,7 @@ namespace ATT_UT_Remodeling
                     else
                     {
                         // Light on
-                        light.TurnOn(unit.RightPreAlignLightParam);
+                        light.TurnOn(unit.PreAlign.RightLightParam);
                         WriteLog("Left prealign light on.");
 
                         // Grab
@@ -226,7 +226,7 @@ namespace ATT_UT_Remodeling
                     else
                     {
                         // Light on
-                        light.TurnOn(unit.RightPreAlignLightParam);
+                        light.TurnOn(unit.PreAlign.RightLightParam);
                         WriteLog("Right prealign light on.");
 
                         // Grab start
@@ -333,7 +333,7 @@ namespace ATT_UT_Remodeling
 
         private VisionProPatternMatchingResult RunPreAlignMark(Unit unit, ICogImage cogImage, MarkDirection markDirection)
         {
-            var preAlignParam = unit.PreAlignParamList.Where(x => x.Direction == markDirection).FirstOrDefault();
+            var preAlignParam = unit.PreAlign.AlignParamList.Where(x => x.Direction == markDirection).FirstOrDefault();
 
             AlgorithmTool algorithmTool = new AlgorithmTool();
 
@@ -479,10 +479,10 @@ namespace ATT_UT_Remodeling
             var teachingInfo = inspModel.GetUnit(UnitName.Unit0).GetTeachingInfo(teachingPos);
 
             Axis axisX = GetAxis(AxisHandlerName.Handler0, AxisName.X);
-            Axis axisZ = GetAxis(AxisHandlerName.Handler0, AxisName.Z);
+            Axis axisZ = GetAxis(AxisHandlerName.Handler0, AxisName.Z0);
 
             var movingParamX = teachingInfo.GetMovingParam(AxisName.X.ToString());
-            var movingParamZ = teachingInfo.GetMovingParam(AxisName.Z.ToString());
+            var movingParamZ = teachingInfo.GetMovingParam(AxisName.Z0.ToString());
 
             if (MoveAxis(teachingPos, axisX, movingParamX) == false)
             {
@@ -540,7 +540,7 @@ namespace ATT_UT_Remodeling
 
         private void SetMarkMotionPosition(Unit unit, MarkDirection markDirection)
         {
-            var preAlignParam = unit.PreAlignParamList.Where(x => x.Direction == markDirection).FirstOrDefault();
+            var preAlignParam = unit.PreAlign.AlignParamList.Where(x => x.Direction == markDirection).FirstOrDefault();
 
             var motionX = MotionManager.Instance().GetAxis(AxisHandlerName.Handler0, AxisName.X).GetActualPosition();
             var motionY = PlcControlManager.Instance().GetReadPosition(AxisName.Y) / 1000;

@@ -3,6 +3,7 @@ using Jastech.Apps.Structure.Data;
 using Jastech.Apps.Structure.Parameters;
 using Jastech.Apps.Winform;
 using Jastech.Apps.Winform.Core.Calibrations;
+using Jastech.Apps.Winform.Settings;
 using Jastech.Framework.Algorithms.Akkon.Parameters;
 using Jastech.Framework.Config;
 using Jastech.Framework.Device.LightCtrls;
@@ -26,32 +27,29 @@ namespace ATT_UT_Remodeling.Core
         {
             AppsInspModel appInspModel = inspModel as AppsInspModel;
 
+            int count = 0;
             foreach (UnitName unitName in Enum.GetValues(typeof(UnitName)))
             {
+                if (count >= AppsConfig.Instance().UnitCount)
+                    break;
+
                 Unit unit = new Unit();
 
                 unit.Name = unitName.ToString(); // 임시 -> Apps에서 변경
 
-                // Calibration Mark 등록
-                //foreach (CalibrationMarkName type in Enum.GetValues(typeof(CalibrationMarkName)))
-                //{
-                //    CalibrationParam calibrationMark = new CalibrationParam();
-                //    calibrationMark.MarkName = type;
-                //    calibrationMark.InspParam.Name = type.ToString();
-                //    unit.AddCalibrationParam(calibrationMark);
-                //}
+                // LineScan 조명 Parameter 생성
+                unit.AkkonCamera = new LineCameraData();
+                unit.AkkonCamera.Name = "Akkon";
+                unit.AkkonCamera.LightParam = CreateLightParameter();
+
                 CalibrationParam calibrationMark = new CalibrationParam();
                 calibrationMark.MarkName = "Calibration";
                 calibrationMark.InspParam.Name = "Calibration";
                 unit.SetCalibraionPram(calibrationMark);
 
-
-                // LineScan 조명 Parameter 생성
-                unit.LineScanLightParam = CreateLightParameter();
-
                 // PreAlign 조명
-                unit.LeftPreAlignLightParam = CreatePreAlignLightParameter();
-                unit.RightPreAlignLightParam = CreatePreAlignLightParameter();
+                unit.PreAlign.LeftLightParam = CreatePreAlignLightParameter();
+                unit.PreAlign.RightLightParam = CreatePreAlignLightParameter();
 
                 // PreAlign Mark 등록
                 foreach (MarkName type in Enum.GetValues(typeof(MarkName)))
@@ -215,7 +213,7 @@ namespace ATT_UT_Remodeling.Core
 
                 //PreAlign Load
                 string preAlignPath = unitDir + @"\PreAlign";
-                foreach (var item in unit.PreAlignParamList)
+                foreach (var item in unit.PreAlign.AlignParamList)
                     item.InspParam.LoadTool(preAlignPath);
 
                 foreach (var tab in unit.GetTabList())
@@ -263,7 +261,7 @@ namespace ATT_UT_Remodeling.Core
 
                 //PreAlign 저장
                 string preAlignPath = unitDir + @"\PreAlign";
-                foreach (var item in unit.PreAlignParamList)
+                foreach (var item in unit.PreAlign.AlignParamList)
                     item.InspParam.SaveTool(preAlignPath);
 
                 foreach (var tab in unit.GetTabList())
