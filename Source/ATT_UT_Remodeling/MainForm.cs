@@ -81,7 +81,7 @@ namespace ATT_UT_Remodeling
             }
 
             var axisHandler = MotionManager.Instance().GetAxisHandler(AxisHandlerName.Handler0);
-            if ( axisHandler != null)
+            if (axisHandler != null)
             {
                 PlcScenarioManager.Instance().VisionXCalibration.SetAxisHandler(axisHandler);
             }
@@ -108,7 +108,7 @@ namespace ATT_UT_Remodeling
 
         private void AddControls()
         {
-            // Page Control List
+            //// Page Control List
             PageControlList = new List<UserControl>();
             PageControlList.Add(MainPageControl);
             PageControlList.Add(DataPageControl);
@@ -221,7 +221,7 @@ namespace ATT_UT_Remodeling
 
         private void tmrMainForm_Tick(object sender, EventArgs e)
         {
-            if(AppsConfig.Instance().EnablePlcTime)
+            if (AppsConfig.Instance().EnablePlcTime)
             {
                 // Model Info
                 var manager = PlcControlManager.Instance();
@@ -240,7 +240,7 @@ namespace ATT_UT_Remodeling
                 lblCurrentTime.Text = now.ToString("yyyy-MM-dd HH:mm:ss");
             }
 
-            if(lblCurrentTime.Text != "")
+            if (lblCurrentTime.Text != "")
                 AppsStatus.Instance().CurrentTime = Convert.ToDateTime(lblCurrentTime.Text);
 
             var user = UserManager.Instance().CurrentUser;
@@ -258,8 +258,8 @@ namespace ATT_UT_Remodeling
                 lblTeachingPageImage.Enabled = true;
             }
 
-            if (MainPageControl.Visible)
-                MainPageControl.UpdateButton();
+            //if (MainPageControl.Visible)
+            //    MainPageControl.UpdateButton();
         }
 
         public void UpdateMainResult(AppsInspResult result)

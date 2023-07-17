@@ -92,7 +92,7 @@ namespace ATT_UT_Remodeling
                 if (File.Exists(filePath))
                 {
                     DoReportProgress(reportProgress, percent, "Model Loading");
-                    ModelManager.Instance().CurrentModel = _mainForm.ATTInspModelService.Load(filePath);
+                    //ModelManager.Instance().CurrentModel = _mainForm.ATTInspModelService.Load(filePath);
                 }
             }
 

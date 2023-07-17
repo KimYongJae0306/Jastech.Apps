@@ -94,24 +94,11 @@ namespace ATT_UT_Remodeling.UI.Pages
             {
                 lblStartText.ForeColor = Color.Blue;
                 lblStopText.ForeColor = Color.White;
-                //lblStart.Enabled = false;
-                //lblStartText.Enabled = false;
-
-                //lblStop.Enabled = true;
-                //lblStopText.Enabled = true;
-
-
             }
             else
             {
                 lblStartText.ForeColor = Color.White;
                 lblStopText.ForeColor = Color.Blue;
-
-                //lblStart.Enabled = true;
-                //lblStartText.Enabled = true;
-
-                //lblStop.Enabled = false;
-                //lblStopText.Enabled = false;
             }
         }
     }

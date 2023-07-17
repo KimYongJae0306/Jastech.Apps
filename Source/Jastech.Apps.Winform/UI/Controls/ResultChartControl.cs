@@ -52,8 +52,6 @@ namespace Jastech.Apps.Winform.UI.Controls
         #endregion
 
         #region 델리게이트
-        //private delegate void UpdateAlignChartDelegate(DailyInfo dailyInfo, int tabNo);
-        //private delegate void UpdateAkkonChartDelegate(DailyInfo dailyInfo, int tabNo);
         private delegate void UpdateAlignChartDelegate(int tabNo);
         private delegate void UpdateAkkonChartDelegate(int tabNo);
         private delegate void ClearChartDelegate();
@@ -74,14 +72,14 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         private void Initialize()
         {
-            if(ChartType == InspChartType.Akkon)
+            if (ChartType == InspChartType.Akkon)
             {
                 AkkonSeriesCount = new Series();
                 AkkonSeriesCount = chtData.Series.Add("Count");
                 AkkonSeriesCount.ChartType = SeriesChartType.Line;
                 AkkonSeriesCount.Color = Color.Blue;
                 AkkonSeriesCount.Name = "Count";
-                    
+
                 AkkonSeriesLength = new Series();
                 AkkonSeriesLength = chtData.Series.Add("Length");
                 AkkonSeriesLength.ChartType = SeriesChartType.Line;
@@ -150,18 +148,6 @@ namespace Jastech.Apps.Winform.UI.Controls
             ChartType = chartType;
         }
 
-        //public void UpdateAlignDaily(DailyInfo dailyInfo, int tabNo)
-        //{
-        //    if (this.InvokeRequired)
-        //    {
-        //        UpdateAlignChartDelegate callback = UpdateAlignDaily;
-        //        BeginInvoke(callback, dailyInfo, tabNo);
-        //        return;
-        //    }
-
-        //    UpdateAlignChart(dailyInfo, tabNo);
-        //}
-
         public void UpdateAlignDaily(int tabNo)
         {
             if (this.InvokeRequired)
@@ -173,25 +159,6 @@ namespace Jastech.Apps.Winform.UI.Controls
 
             UpdateAlignChart(tabNo);
         }
-
-        //private void UpdateAlignChart(DailyInfo dailyInfo, int tabNo)
-        //{
-        //    ClearChartData();
-
-        //    foreach (var item in dailyInfo.DailyDataList)
-        //    {
-        //        if (item.AlignDailyInfoList.Count > 0)
-        //        {
-        //            var tabData = item.AlignDailyInfoList.Where(x => x.TabNo == tabNo).First();
-
-        //            AlignSeriesLx.Points.Add(tabData.LX);
-        //            AlignSeriesLy.Points.Add(tabData.LY);
-        //            AlignSeriesRx.Points.Add(tabData.RX);
-        //            AlignSeriesRy.Points.Add(tabData.RY);
-        //            AlignSeriesCx.Points.Add(tabData.CX);
-        //        }
-        //    }
-        //}
 
         private void UpdateAlignChart(int tabNo)
         {
@@ -217,18 +184,6 @@ namespace Jastech.Apps.Winform.UI.Controls
             }
         }
 
-        //public void UpdateAkkonDaily(DailyInfo dailyInfo, int tabNo)
-        //{
-        //    if (this.InvokeRequired)
-        //    {
-        //        UpdateAkkonChartDelegate callback = UpdateAkkonDaily;
-        //        BeginInvoke(callback, dailyInfo, tabNo);
-        //        return;
-        //    }
-
-        //    UpdateAkkonChart(dailyInfo, tabNo);
-        //}
-
         public void UpdateAkkonDaily(int tabNo)
         {
             if (this.InvokeRequired)
@@ -241,28 +196,12 @@ namespace Jastech.Apps.Winform.UI.Controls
             UpdateAkkonChart(tabNo);
         }
 
-        //private void UpdateAkkonChart(DailyInfo dailyInfo, int tabNo)
-        //{
-        //    ClearChartData();
-
-        //    foreach (var item in dailyInfo.DailyDataList)
-        //    {
-        //        if (item.AkkonDailyInfoList.Count > 0)
-        //        {
-        //            var tabData = item.AkkonDailyInfoList.Where(x => x.TabNo == tabNo).First();
-
-        //            AkkonSeriesCount.Points.Add(tabData.AvgBlobCount);
-        //            AkkonSeriesLength.Points.Add(tabData.AvgLength);
-        //        }
-        //    }
-        //}
-
         private void UpdateAkkonChart(int tabNo)
         {
             ClearChartData();
 
             var dailyInfo = DailyInfoService.GetDailyInfo();
-            
+
             foreach (var item in dailyInfo.DailyDataList)
             {
                 if (item.AkkonDailyInfoList.Count > 0)

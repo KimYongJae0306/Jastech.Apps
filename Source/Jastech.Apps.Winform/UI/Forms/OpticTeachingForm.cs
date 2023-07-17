@@ -102,7 +102,7 @@ namespace Jastech.Framework.Winform.Forms
             TeachingData.Instance().UpdateTeachingData();
 
             SetPrevData();
-
+            
             LineCamera.TeachingLiveImageGrabbed += LiveDisplay;
             LineCamera.GrabOnceEventHandler += OpticTeachingForm_GrabOnceEventHandler;
             SelectedAxis = AxisHandler.GetAxis(AxisName.X);
