@@ -1,7 +1,9 @@
 ﻿using Jastech.Framework.Device.LAFCtrl;
+using Jastech.Framework.Util.Helper;
 using Jastech.Framework.Winform;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -216,15 +218,25 @@ namespace Jastech.Apps.Winform
             Stop,
             Start,
 
-            MoveToNegativeLimit,
-            MoveToStep,
-            ReleaseNegativeLimitDetection,
-            MoveAfterDeceleration1,
-            MoveAfterDeceleration2,
+            UnitOperation,
+            CheckZeroConvergence,
             ZeroSet,
+            Error,
 
             End,
         }
+
+        private enum UnitOperation
+        {
+            MoveToNegativeLimit,
+            WaitingForLimitDetection,
+            MoveToPositive,
+            ReleaseNegativeLimitDetection,
+            Complete,
+            Error,
+        }
+
+        
 
         private bool _isHomeThreadStop = false;
         private Thread _homeThread = null;
@@ -248,17 +260,19 @@ namespace Jastech.Apps.Winform
             }
         }
 
-        private void PrepareHome(string lafName)
+        private void PrepareHomeSequence(string lafName)
         {
             var lafCtrl = GetLAFCtrl(lafName);
 
             lafCtrl.SetMotionNegativeLimit(0);
-            lafCtrl.SetMotionPositiveLimit(16000);
+            lafCtrl.SetMotionPositiveLimit(0);
             lafCtrl.SetMotionMaxSpeed(1);
             lafCtrl.SetMotionZeroSet();
             Thread.Sleep(50);
         }
 
+        const double HOMING_FIRST_TARGET = 999999.0;
+        const int HOMING_TIME_OUT = 10000;
         const double HOMING_SEARCH_DISTANCE = 0.100;        // mm
         const double HOMING_DISTANCE_AWAY_FROM_LIMIT = 0.5; // mm
 
@@ -266,38 +280,114 @@ namespace Jastech.Apps.Winform
         {
             var lafCtrl = GetLAFCtrl(lafName);
             var status = lafCtrl.Status;
-            try
+            double scale = 1.0;
+
+            Stopwatch sw = new Stopwatch();
+
+            switch (_homeSequenceStep)
             {
-                switch (_homeSequenceStep)
+                case HomeSequenceStep.Stop:
+                    break;
+
+                case HomeSequenceStep.Start:
+                    PrepareHomeSequence(lafName);
+                    lafCtrl.SetMotionRelativeMove(Direction.CW, HOMING_FIRST_TARGET);      // -Limit 감지까지 이동
+                    sw.Restart();
+
+                    _homeSequenceStep = HomeSequenceStep.UnitOperation;
+                    break;
+
+                case HomeSequenceStep.UnitOperation:
+                    bool isUnitOperation = ExecuteUnit(lafCtrl, HOMING_SEARCH_DISTANCE * scale);
+
+                    if (isUnitOperation == true)
+                        _homeSequenceStep = HomeSequenceStep.CheckZeroConvergence;
+                    else
+                        _homeSequenceStep = HomeSequenceStep.Error;
+                    break;
+
+                case HomeSequenceStep.CheckZeroConvergence:
+                    if (Math.Abs(status.MPosPulse - HOMING_DISTANCE_AWAY_FROM_LIMIT) <= float.Epsilon)
+                    {
+                        Logger.Write(LogType.Device, "Complete zero convergence.");
+                        _homeSequenceStep = HomeSequenceStep.ZeroSet;
+                    }
+                    else
+                    {
+                        Logger.Write(LogType.Device, "Retry after scailing.");
+                        scale *= 0.1;
+                        _homeSequenceStep = HomeSequenceStep.UnitOperation;
+                    }
+                    break;
+
+                case HomeSequenceStep.ZeroSet:
+                    lafCtrl.SetMotionStop();
+                    Thread.Sleep(500);
+
+                    lafCtrl.SetMotionZeroSet();
+                    Thread.Sleep(100);
+
+                    lafCtrl.SetMotionMaxSpeed(15);
+                    Thread.Sleep(100);
+
+                    Logger.Write(LogType.Device, "Complete zeroset.");
+
+                    // 대기 위치로 이동 - 포지션 필요함
+                    Logger.Write(LogType.Device, "Move to home position.");
+                    lafCtrl.SetMotionAbsoluteMove(0);
+                    Thread.Sleep(3000);
+
+                    Logger.Write(LogType.Device, "Complete LAF home.");
+
+                    _homeSequenceStep = HomeSequenceStep.End;
+                    break;
+
+                case HomeSequenceStep.Error:
+                    Logger.Write(LogType.Device, "Failed LAF home.");
+                    _homeSequenceStep = HomeSequenceStep.End;
+                    break;
+
+                case HomeSequenceStep.End:
+                    Logger.Write(LogType.Device, "End of LAF home sequence.");
+                    _isHomeThreadStop = true;
+                    _homeSequenceStep = HomeSequenceStep.Stop;
+                    break;
+               
+                default:
+                    break;
+            }
+        }
+
+        private bool ExecuteUnit(LAFCtrl lafCtrl, double distance)
+        {
+            var status = lafCtrl.Status;
+            Stopwatch sw = new Stopwatch();
+
+            bool isComplete = false;
+            bool result = false;
+            UnitOperation step = UnitOperation.MoveToNegativeLimit;
+            while (isComplete == false)
+            {
+                switch (step)
                 {
-                    case HomeSequenceStep.Stop:
+                    case UnitOperation.MoveToNegativeLimit:
+                        lafCtrl.SetMotionRelativeMove(Direction.CW, distance);      // -Limit 감지까지 이동
+                        sw.Restart();
+
+                        step = UnitOperation.WaitingForLimitDetection;
                         break;
 
-                    case HomeSequenceStep.Start:
-                        PrepareHome(lafName);
-                        _homeSequenceStep = HomeSequenceStep.MoveToNegativeLimit;
-                        break;
-
-                    case HomeSequenceStep.MoveToNegativeLimit:
-                        if (status.IsNegativeLimit)
+                    case UnitOperation.WaitingForLimitDetection:
+                        if (sw.ElapsedMilliseconds > HOMING_TIME_OUT)
                         {
-                            lafCtrl.SetMotionStop();
-                            Thread.Sleep(1000);
-
-                            lafCtrl.SetMotionZeroSet();
-                            Thread.Sleep(500);
-
-                            _homeSequenceStep = HomeSequenceStep.MoveToStep;
+                            Logger.Write(LogType.Device, "Failed to move time out.");
+                            step = UnitOperation.Error;
+                            break;
                         }
-                        break;
 
-                    case HomeSequenceStep.MoveToStep:
-                        lafCtrl.SetMotionRelativeMove(Direction.CCW, HOMING_SEARCH_DISTANCE);
-                        _homeSequenceStep = HomeSequenceStep.ReleaseNegativeLimitDetection;
-                        break;
-
-                    case HomeSequenceStep.ReleaseNegativeLimitDetection:
-                        if (!status.IsNegativeLimit)
+                        if (status.IsNegativeLimit == false)                                    // Check -Limit
+                            break;
+                        else
                         {
                             lafCtrl.SetMotionStop();
                             Thread.Sleep(100);
@@ -305,77 +395,57 @@ namespace Jastech.Apps.Winform
                             lafCtrl.SetMotionZeroSet();
                             Thread.Sleep(500);
 
-                            _homeSequenceStep = HomeSequenceStep.MoveAfterDeceleration1;
+                            step = UnitOperation.MoveToPositive;
+                        }
+                        break;
+
+                    case UnitOperation.MoveToPositive:
+                        lafCtrl.SetMotionRelativeMove(Direction.CCW, distance);                 // +방향으로 이동
+                        sw.Restart();
+
+                        step = UnitOperation.ReleaseNegativeLimitDetection;
+                        break;
+
+                    case UnitOperation.ReleaseNegativeLimitDetection:
+                        if (sw.ElapsedMilliseconds > HOMING_TIME_OUT)
+                        {
+                            Logger.Write(LogType.Device, "Failed to move time out.");
+                            step = UnitOperation.Error;
+                            break;
+                        }
+
+                        if (status.IsNegativeLimit == true)                                    // -Limit 감지 해제
+                        {
+                            lafCtrl.SetMotionStop();
+                            Thread.Sleep(100);
+
+                            lafCtrl.SetMotionZeroSet();
+                            Thread.Sleep(500);
+
+                            step = UnitOperation.Complete;
                         }
                         else
-                            _homeSequenceStep = HomeSequenceStep.MoveToStep;
+                            step = UnitOperation.MoveToPositive;
                         break;
 
-                    case HomeSequenceStep.MoveAfterDeceleration1:
-                        if (status.IsNegativeLimit)
-                        {
-                            lafCtrl.SetMotionStop();
-                            Thread.Sleep(100);
-
-                            lafCtrl.SetMotionZeroSet();
-                            Thread.Sleep(500);
-
-                            _homeSequenceStep = HomeSequenceStep.MoveAfterDeceleration2;
-                        }
-                        else
-                            lafCtrl.SetMotionRelativeMove(Direction.CW, HOMING_SEARCH_DISTANCE / 10);
+                    case UnitOperation.Complete:
+                        isComplete = true;
+                        Logger.Write(LogType.Device, "Completed to unit operation.");
+                        result = true;
                         break;
 
-                    case HomeSequenceStep.MoveAfterDeceleration2:
-                        if (status.IsNegativeLimit)
-                        {
-                            lafCtrl.SetMotionStop();
-                            Thread.Sleep(500);
-
-                            lafCtrl.SetMotionZeroSet();
-                            Thread.Sleep(500);
-
-                            lafCtrl.SetMotionRelativeMove(Direction.CW, HOMING_DISTANCE_AWAY_FROM_LIMIT);
-
-                            _homeSequenceStep = HomeSequenceStep.MoveAfterDeceleration2;
-                        }
-                        else
-                            lafCtrl.SetMotionRelativeMove(Direction.CW, HOMING_SEARCH_DISTANCE / 10);
-                        break;
-
-                    case HomeSequenceStep.ZeroSet:
-                        if (Math.Abs(status.MPosPulse - HOMING_DISTANCE_AWAY_FROM_LIMIT) <= float.Epsilon)
-                        {
-                            lafCtrl.SetMotionStop();
-                            Thread.Sleep(500);
-
-                            lafCtrl.SetMotionZeroSet();
-                            Thread.Sleep(100);
-
-                            lafCtrl.SetMotionMaxSpeed(15);
-                            Thread.Sleep(100);
-
-                            // 대기 위치로 이동 - 포지션 필요함
-                            lafCtrl.SetMotionAbsoluteMove(0);
-                            Thread.Sleep(1000);
-                        }
-                        _homeSequenceStep = HomeSequenceStep.End;
-                        break;
-
-                    case HomeSequenceStep.End:
-                        _isHomeThreadStop = true;
-                        _homeSequenceStep = HomeSequenceStep.Stop;
+                    case UnitOperation.Error:
+                        Logger.Write(LogType.Device, "Failed to unit operation.");
+                        isComplete = true;
+                        result = false;
                         break;
 
                     default:
                         break;
                 }
             }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.ToString());
-                _isHomeThreadStop = true;
-            }
+
+            return result;
         }
         #endregion
     }
