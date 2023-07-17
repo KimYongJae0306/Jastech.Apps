@@ -137,20 +137,12 @@ namespace ATT_UT_IPAD
 
                 // Akkon LAF
                 var akkonLaf = new NuriOneLAFCtrl("AkkonLaf");
-                akkonLaf.SerialPortComm = new SerialPortComm
-                {
-                    PortName = "COM1",
-                    BaudRate = 9600,
-                };
+                akkonLaf.SerialPortComm = new SerialPortComm("COM1", 9600);
                 config.Add(akkonLaf);
 
                 // Align LAF
                 var alignLaf = new NuriOneLAFCtrl("AlignLaf");
-                alignLaf.SerialPortComm = new SerialPortComm
-                {
-                    PortName = "COM2",
-                    BaudRate = 9600,
-                };
+                alignLaf.SerialPortComm = new SerialPortComm("COM2", 9600);
                 config.Add(alignLaf);
 
                 // Light1

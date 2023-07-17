@@ -129,11 +129,8 @@ namespace ATT_UT_Remodeling
 
                 // LAF
                 var laf = new NuriOneLAFCtrl("Laf");
-                laf.SerialPortComm = new SerialPortComm
-                {
-                    PortName = "COM1",
-                    BaudRate = 9600,
-                };
+                laf.SerialPortComm = new SerialPortComm("COM1", 9600);
+
                 config.Add(laf);
 
                 // Light1

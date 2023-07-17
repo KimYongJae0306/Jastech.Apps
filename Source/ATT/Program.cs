@@ -114,11 +114,7 @@ namespace ATT
                 config.Add(light2);
 
                 var laf1 = new NuriOneLAFCtrl("Akkon");
-                laf1.SerialPortComm = new SerialPortComm
-                {
-                    PortName = "COM4",
-                    BaudRate = 9600,
-                };
+                laf1.SerialPortComm = new SerialPortComm("COM4", 9600);
                 config.Add(laf1);
 
                 //var laf2 = new NuriOneLAFCtrl(LAFName.Akkon.ToString());
