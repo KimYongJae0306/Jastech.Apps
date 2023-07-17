@@ -154,7 +154,7 @@ namespace ATT_UT_Remodeling.UI.Forms
             var axisHandler = MotionManager.Instance().GetAxisHandler(AxisHandlerName.Handler0);
             SetAxisHandler(axisHandler);
 
-            string unitName = UnitName.Unit0.ToString();  // 나중에 변수로...
+            string unitName = UnitName.ToString();  // 나중에 변수로...
             var posData = TeachingData.Instance().GetUnit(unitName).GetTeachingInfoList();
             SetTeachingPosition(posData);
 
@@ -280,11 +280,20 @@ namespace ATT_UT_Remodeling.UI.Forms
             lblCurrentCenterOfGravityZ.Text = status.CenterofGravity.ToString();
 
             if (status.IsNegativeLimit)
+            {
                 lblSensorZ.Text = "-";
+                lblSensorZ.BackColor = Color.Red;
+            }
             else if (status.IsPositiveLimit)
+            {
                 lblSensorZ.Text = "+";
+                lblSensorZ.BackColor = Color.Red;
+            }
             else
+            {
                 lblSensorZ.Text = "Done";
+                lblSensorZ.BackColor = _nonSelectedColor;
+            }
 
             if (status.IsAutoFocusOn)
             {

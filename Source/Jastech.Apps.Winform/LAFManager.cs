@@ -217,6 +217,7 @@ namespace Jastech.Apps.Winform
         {
             Stop,
             Start,
+            CheckFirstLimit,
 
             UnitOperation,
             CheckZeroConvergence,
@@ -256,7 +257,7 @@ namespace Jastech.Apps.Winform
             while (!_isHomeThreadStop)
             {
                 HomeSequence(lafName);
-                Thread.Sleep(100);
+                Thread.Sleep(50);
             }
         }
 
@@ -266,21 +267,22 @@ namespace Jastech.Apps.Winform
 
             lafCtrl.SetMotionNegativeLimit(0);
             lafCtrl.SetMotionPositiveLimit(0);
-            lafCtrl.SetMotionMaxSpeed(1);
+            lafCtrl.SetMotionMaxSpeed(HOMING_SEARCH_VELOCITY);
             lafCtrl.SetMotionZeroSet();
             Thread.Sleep(50);
         }
 
         const double HOMING_FIRST_TARGET = 999999.0;
-        const int HOMING_TIME_OUT = 10000;
+        const int HOMING_TIME_OUT = 60000;
         const double HOMING_SEARCH_DISTANCE = 0.100;        // mm
+        const double HOMING_SEARCH_VELOCITY = 1.0;
         const double HOMING_DISTANCE_AWAY_FROM_LIMIT = 0.5; // mm
+        private double _scale = 1.0;
 
         private void HomeSequence(string lafName)
         {
             var lafCtrl = GetLAFCtrl(lafName);
             var status = lafCtrl.Status;
-            double scale = 1.0;
 
             Stopwatch sw = new Stopwatch();
 
@@ -290,16 +292,33 @@ namespace Jastech.Apps.Winform
                     break;
 
                 case HomeSequenceStep.Start:
+                    _scale = 1.0;
                     PrepareHomeSequence(lafName);
+                    Logger.Write(LogType.Device, "Prepare to laf home sequence.");
+
                     lafCtrl.SetMotionRelativeMove(Direction.CW, HOMING_FIRST_TARGET);      // -Limit 감지까지 이동
+                    Logger.Write(LogType.Device, "Move to first minus limit detection.");
+
                     sw.Restart();
 
+                    _homeSequenceStep = HomeSequenceStep.CheckFirstLimit;
+                    break;
+
+                case HomeSequenceStep.CheckFirstLimit:
+                    if (status.IsNegativeLimit == false)
+                        break;
+                    if (sw.ElapsedMilliseconds > HOMING_TIME_OUT)
+                    {
+                        Logger.Write(LogType.Device, "Time over check first limit.");
+                        _homeSequenceStep = HomeSequenceStep.Error;
+                        break;
+                    }
                     _homeSequenceStep = HomeSequenceStep.UnitOperation;
                     break;
 
                 case HomeSequenceStep.UnitOperation:
-                    bool isUnitOperation = ExecuteUnit(lafCtrl, HOMING_SEARCH_DISTANCE * scale);
-
+                    bool isUnitOperation = ExecuteUnit(lafCtrl, HOMING_SEARCH_VELOCITY * _scale);
+                    Logger.Write(LogType.Device, "Execute unit operation.");
                     if (isUnitOperation == true)
                         _homeSequenceStep = HomeSequenceStep.CheckZeroConvergence;
                     else
@@ -307,7 +326,7 @@ namespace Jastech.Apps.Winform
                     break;
 
                 case HomeSequenceStep.CheckZeroConvergence:
-                    if (Math.Abs(status.MPosPulse - HOMING_DISTANCE_AWAY_FROM_LIMIT) <= float.Epsilon)
+                    if (Math.Abs(status.MPosPulse - /*HOMING_DISTANCE_AWAY_FROM_LIMIT*/0.0002) <= 0.0002/*float.Epsilon*/)
                     {
                         Logger.Write(LogType.Device, "Complete zero convergence.");
                         _homeSequenceStep = HomeSequenceStep.ZeroSet;
@@ -315,7 +334,7 @@ namespace Jastech.Apps.Winform
                     else
                     {
                         Logger.Write(LogType.Device, "Retry after scailing.");
-                        scale *= 0.1;
+                        _scale *= 0.5;
                         _homeSequenceStep = HomeSequenceStep.UnitOperation;
                     }
                     break;
@@ -327,7 +346,7 @@ namespace Jastech.Apps.Winform
                     lafCtrl.SetMotionZeroSet();
                     Thread.Sleep(100);
 
-                    lafCtrl.SetMotionMaxSpeed(15);
+                    lafCtrl.SetMotionMaxSpeed(30);
                     Thread.Sleep(100);
 
                     Logger.Write(LogType.Device, "Complete zeroset.");
@@ -349,6 +368,7 @@ namespace Jastech.Apps.Winform
 
                 case HomeSequenceStep.End:
                     Logger.Write(LogType.Device, "End of LAF home sequence.");
+                    _scale = 1.0;
                     _isHomeThreadStop = true;
                     _homeSequenceStep = HomeSequenceStep.Stop;
                     break;
@@ -358,9 +378,10 @@ namespace Jastech.Apps.Winform
             }
         }
 
-        private bool ExecuteUnit(LAFCtrl lafCtrl, double distance)
+        private bool ExecuteUnit(LAFCtrl lafCtrl, double velocity)
         {
             var status = lafCtrl.Status;
+            NuriOneLAFCtrl nuriOneLAFCtrl = lafCtrl as NuriOneLAFCtrl;
             Stopwatch sw = new Stopwatch();
 
             bool isComplete = false;
@@ -371,7 +392,11 @@ namespace Jastech.Apps.Winform
                 switch (step)
                 {
                     case UnitOperation.MoveToNegativeLimit:
-                        lafCtrl.SetMotionRelativeMove(Direction.CW, distance);      // -Limit 감지까지 이동
+                        lafCtrl.SetMotionMaxSpeed(velocity);
+                        Thread.Sleep(100);
+
+                        lafCtrl.SetMotionRelativeMove(Direction.CW, HOMING_SEARCH_DISTANCE);      // -Limit 감지까지 이동
+                        Thread.Sleep(1000);
                         sw.Restart();
 
                         step = UnitOperation.WaitingForLimitDetection;
@@ -400,7 +425,10 @@ namespace Jastech.Apps.Winform
                         break;
 
                     case UnitOperation.MoveToPositive:
-                        lafCtrl.SetMotionRelativeMove(Direction.CCW, distance);                 // +방향으로 이동
+                        lafCtrl.SetMotionMaxSpeed(velocity);
+                        Thread.Sleep(100);
+
+                        lafCtrl.SetMotionRelativeMove(Direction.CCW, HOMING_SEARCH_DISTANCE);                 // +방향으로 이동
                         sw.Restart();
 
                         step = UnitOperation.ReleaseNegativeLimitDetection;
@@ -436,6 +464,9 @@ namespace Jastech.Apps.Winform
 
                     case UnitOperation.Error:
                         Logger.Write(LogType.Device, "Failed to unit operation.");
+                        lafCtrl.SetMotionStop();
+                        lafCtrl.SetDefaultParameter();
+                        Logger.Write(LogType.Device, "Stop.");
                         isComplete = true;
                         result = false;
                         break;

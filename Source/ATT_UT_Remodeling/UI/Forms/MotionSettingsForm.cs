@@ -298,11 +298,20 @@ namespace ATT_UT_Remodeling.UI.Forms
             lblCurrentCenterOfGravityZ.Text = status.CenterofGravity.ToString();
 
             if (status.IsNegativeLimit)
+            {
                 lblSensorZ.Text = "-";
+                lblSensorZ.BackColor = Color.Red;
+            }
             else if (status.IsPositiveLimit)
+            {
                 lblSensorZ.Text = "+";
+                lblSensorZ.BackColor = Color.Red;
+            }
             else
+            {
                 lblSensorZ.Text = "Done";
+                lblSensorZ.BackColor = _nonSelectedColor;
+            }
 
             if (status.IsAutoFocusOn)
             {

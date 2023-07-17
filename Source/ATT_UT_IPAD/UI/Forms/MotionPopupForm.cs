@@ -163,7 +163,7 @@ namespace ATT_UT_IPAD.UI.Forms
             var axisHandler = MotionManager.Instance().GetAxisHandler(AxisHandlerName.Handler0);
             SetAxisHandler(axisHandler);
 
-            string unitName = UnitName.Unit0.ToString();  // 나중에 변수로...
+            string unitName = UnitName.ToString();  // 나중에 변수로...
             var posData = TeachingData.Instance().GetUnit(unitName).GetTeachingInfoList();
             SetTeachingPosition(posData);
 
