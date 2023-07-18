@@ -224,14 +224,14 @@ namespace Jastech.Apps.Winform.Service.Plc
             {
                 // 모델이 존재O, 검사 중일 때
                 command = manager.WritePcStatusCommon(PlcCommonCommand.Model_Create, true);
-                Logger.Debug(LogType.Device, $"Write Fail CreateModelData.[{command}]", AppsStatus.Instance().CurrentTime);
+                Logger.Debug(LogType.Device, $"Write Fail CreateModelData.[{command}]");
                 return;
             }
         
             AppsInspModel inspModel = InspModelService.New() as AppsInspModel;
 
             inspModel.Name = modelName;
-            inspModel.CreateDate = AppsStatus.Instance().CurrentTime;
+            inspModel.CreateDate = DateTime.Now;
             inspModel.ModifiedDate = inspModel.CreateDate;
             inspModel.TabCount = Convert.ToInt32(manager.GetValue(PlcCommonMap.PLC_TabCount));
             inspModel.AxisSpeed = Convert.ToInt32(manager.GetValue(PlcCommonMap.PLC_Axis_X_Speed));
@@ -242,7 +242,7 @@ namespace Jastech.Apps.Winform.Service.Plc
             ModelFileHelper.Save(ConfigSet.Instance().Path.Model, inspModel);
 
             command = manager.WritePcStatusCommon(PlcCommonCommand.Model_Create);
-            Logger.Debug(LogType.Device, $"Write CreateModelData.[{command}]", AppsStatus.Instance().CurrentTime);
+            Logger.Debug(LogType.Device, $"Write CreateModelData.[{command}]");
         }
 
         private void ChangeModelData()
@@ -258,14 +258,14 @@ namespace Jastech.Apps.Winform.Service.Plc
             {
                 // 모델 존재X, 검사 중일 때
                 command = manager.WritePcStatusCommon(PlcCommonCommand.Model_Change, true);
-                Logger.Debug(LogType.Device, $"Write Fail ChangeModelData.[{command}]", AppsStatus.Instance().CurrentTime);
+                Logger.Debug(LogType.Device, $"Write Fail ChangeModelData.[{command}]");
                 return;
             }
 
             ModelManager.Instance().CurrentModel = InspModelService.Load(filePath);
 
             command = manager.WritePcStatusCommon(PlcCommonCommand.Model_Change);
-            Logger.Debug(LogType.Device, $"Write ChangeModelData.[{command}]", AppsStatus.Instance().CurrentTime);
+            Logger.Debug(LogType.Device, $"Write ChangeModelData.[{command}]");
         }
 
         private void EditModelData()
@@ -282,7 +282,7 @@ namespace Jastech.Apps.Winform.Service.Plc
             {
                 // 모델 존재 X, 검사 중, 현재 모델이 없을 때
                 command = manager.WritePcStatusCommon(PlcCommonCommand.Model_Edit, true);
-                Logger.Debug(LogType.Device, $"Write Fail EditModelData.[{command}]", AppsStatus.Instance().CurrentTime);
+                Logger.Debug(LogType.Device, $"Write Fail EditModelData.[{command}]");
                 return;
             }
 
@@ -290,18 +290,18 @@ namespace Jastech.Apps.Winform.Service.Plc
             {
                 // Tab Count는 변경 불가
                 command = manager.WritePcStatusCommon(PlcCommonCommand.Model_Edit, true);
-                Logger.Debug(LogType.Device, $"Write Fail EditModelData[{command}] : Tab Count not Changed.", AppsStatus.Instance().CurrentTime);
+                Logger.Debug(LogType.Device, $"Write Fail EditModelData[{command}] : Tab Count not Changed.");
                 return;
             }
             currentModel.Name = manager.GetValue(PlcCommonMap.PLC_PPID_ModelName);
-            currentModel.ModifiedDate = AppsStatus.Instance().CurrentTime;
+            currentModel.ModifiedDate = DateTime.Now;
             currentModel.AxisSpeed = Convert.ToInt32(manager.GetValue(PlcCommonMap.PLC_Axis_X_Speed));
             currentModel.MaterialInfo = GetModelMaterialInfo();
 
             ModelFileHelper.Save(ConfigSet.Instance().Path.Model, currentModel);
 
             command = manager.WritePcStatusCommon(PlcCommonCommand.Model_Edit);
-            Logger.Debug(LogType.Device, $"Write EditModelData.[{command}]", AppsStatus.Instance().CurrentTime);
+            Logger.Debug(LogType.Device, $"Write EditModelData.[{command}]");
         }
 
         private MaterialInfo GetModelMaterialInfo()
@@ -370,11 +370,31 @@ namespace Jastech.Apps.Winform.Service.Plc
 
         private void ReceivedTimeChange()
         {
-            AppsConfig.Instance().EnablePlcTime = true;
-            AppsConfig.Instance().Save();
+            var manager = PlcControlManager.Instance();
 
-            short command = PlcControlManager.Instance().WritePcStatusCommon(PlcCommonCommand.Time_Change);
-            Logger.Debug(LogType.Device, $"Write TimeChanged.[{command}]", AppsStatus.Instance().CurrentTime);
+            string yyyy = manager.GetValue(PlcCommonMap.PLC_Time_Year);
+            string MM = manager.GetValue(PlcCommonMap.PLC_Time_Month);
+            string dd = manager.GetValue(PlcCommonMap.PLC_Time_Day);
+            string hh = manager.GetValue(PlcCommonMap.PLC_Time_Hour);
+            string mm = manager.GetValue(PlcCommonMap.PLC_Time_Minute);
+            string ss = manager.GetValue(PlcCommonMap.PLC_Time_Second);
+            string time = string.Format("{0}-{1}-{2} {3}:{4}:{5}", yyyy, MM, dd, hh, mm, ss);
+
+            try
+            {
+                DateTime changeTime = Convert.ToDateTime(time);
+                SystemHelper.SetSystemTime(changeTime);
+
+                short command = PlcControlManager.Instance().WritePcStatusCommon(PlcCommonCommand.Time_Change);
+                Logger.Debug(LogType.Device, $"Write TimeChanged.[{command}]");
+
+            }
+            catch (Exception err)
+            {
+                PlcControlManager.Instance().WritePcStatusCommon(PlcCommonCommand.Time_Change, true);
+                Logger.Debug(LogType.Device, $"Fail Write TimeChanged.[{err}]");
+            }
+
         }
 
         private void ReceivedCommandClear()
@@ -387,7 +407,7 @@ namespace Jastech.Apps.Winform.Service.Plc
             Thread.Sleep(50);
 
             short command = PlcControlManager.Instance().WritePcStatusCommon(PlcCommonCommand.Command_Clear);
-            Logger.Debug(LogType.Device, $"Write ClearCommand.[{command}]", AppsStatus.Instance().CurrentTime);
+            Logger.Debug(LogType.Device, $"Write ClearCommand.[{command}]");
         }
 
         private void ReceivedLightOff()
@@ -397,7 +417,7 @@ namespace Jastech.Apps.Winform.Service.Plc
                 light.TurnOff();
 
             short command = PlcControlManager.Instance().WritePcStatusCommon(PlcCommonCommand.Light_Off);
-            Logger.Debug(LogType.Device, $"Write LightOff.[{command}]", AppsStatus.Instance().CurrentTime);
+            Logger.Debug(LogType.Device, $"Write LightOff.[{command}]");
         }
 
         public void PlcCommandReceived(PlcCommand command)
@@ -449,7 +469,7 @@ namespace Jastech.Apps.Winform.Service.Plc
             if(ModelManager.Instance().CurrentModel == null)
             {
                 short command = PlcControlManager.Instance().WritePcStatus(PlcCommand.StartInspection, true);
-                Logger.Debug(LogType.Device, $"Write Fail StartInspection.[{command}]", AppsStatus.Instance().CurrentTime);
+                Logger.Debug(LogType.Device, $"Write Fail StartInspection.[{command}]");
                 return;
             }
 
@@ -463,7 +483,7 @@ namespace Jastech.Apps.Winform.Service.Plc
             if (inspModel == null)
             {
                 short command = PlcControlManager.Instance().WritePcStatus(PlcCommand.Calibration, true);
-                Logger.Debug(LogType.Device, $"Write Fail StartPreAlign[{command}] : Current Model is null.", AppsStatus.Instance().CurrentTime);
+                Logger.Debug(LogType.Device, $"Write Fail StartPreAlign[{command}] : Current Model is null.");
                 return;
             }
 
@@ -471,7 +491,7 @@ namespace Jastech.Apps.Winform.Service.Plc
             if (unit == null)
             {
                 short command = PlcControlManager.Instance().WritePcStatus(PlcCommand.StartPreAlign, true);
-                Logger.Debug(LogType.Device, $"Write Fail StartPreAlign[{command}] : Unit is null.", AppsStatus.Instance().CurrentTime);
+                Logger.Debug(LogType.Device, $"Write Fail StartPreAlign[{command}] : Unit is null.");
                 return;
             }
 
@@ -479,7 +499,7 @@ namespace Jastech.Apps.Winform.Service.Plc
             if (param == null)
             {
                 short command = PlcControlManager.Instance().WritePcStatus(PlcCommand.StartPreAlign, true);
-                Logger.Debug(LogType.Device, $"Write Fail StartPreAlign[{command}] : Calibration Param is null.", AppsStatus.Instance().CurrentTime);
+                Logger.Debug(LogType.Device, $"Write Fail StartPreAlign[{command}] : Calibration Param is null.");
                 return;
             }
 
@@ -493,7 +513,7 @@ namespace Jastech.Apps.Winform.Service.Plc
             if (ModelManager.Instance().CurrentModel == null)
             {
                 short command = PlcControlManager.Instance().WritePcStatus(PlcCommand.StartPreAlign, true);
-                Logger.Debug(LogType.Device, $"Write Fail StartPreAlign[{command}] : Current Model is null.", AppsStatus.Instance().CurrentTime);
+                Logger.Debug(LogType.Device, $"Write Fail StartPreAlign[{command}] : Current Model is null.");
                 return;
             }
 

@@ -71,7 +71,6 @@ namespace ATT_UT_Remodeling
 
             tmrMainForm.Start();
             SystemManager.Instance().AddSystemLogMessage("Start program.");
-
         }
 
         private void MainForm_PreAlignRunnerHandler(bool tt)
@@ -202,27 +201,8 @@ namespace ATT_UT_Remodeling
 
         private void tmrMainForm_Tick(object sender, EventArgs e)
         {
-            if (AppsConfig.Instance().EnablePlcTime)
-            {
-                // Model Info
-                var manager = PlcControlManager.Instance();
-
-                string yyyy = manager.GetValue(PlcCommonMap.PLC_Time_Year);
-                string MM = manager.GetValue(PlcCommonMap.PLC_Time_Month);
-                string dd = manager.GetValue(PlcCommonMap.PLC_Time_Day);
-                string hh = manager.GetValue(PlcCommonMap.PLC_Time_Hour);
-                string mm = manager.GetValue(PlcCommonMap.PLC_Time_Minute);
-                string ss = manager.GetValue(PlcCommonMap.PLC_Time_Second);
-                lblCurrentTime.Text = string.Format("{0}-{1}-{2} {3}:{4}:{5}", yyyy, MM, dd, hh, mm, ss);
-            }
-            else
-            {
-                DateTime now = DateTime.Now;
-                lblCurrentTime.Text = now.ToString("yyyy-MM-dd HH:mm:ss");
-            }
-
-            if (lblCurrentTime.Text != "")
-                AppsStatus.Instance().CurrentTime = Convert.ToDateTime(lblCurrentTime.Text);
+            DateTime now = DateTime.Now;
+            lblCurrentTime.Text = now.ToString("yyyy-MM-dd HH:mm:ss");
 
             var user = UserManager.Instance().CurrentUser;
 

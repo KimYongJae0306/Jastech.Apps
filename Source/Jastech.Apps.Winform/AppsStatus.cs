@@ -8,8 +8,6 @@ namespace Jastech.Apps.Winform
 {
     public class AppsStatus
     {
-        public DateTime CurrentTime { get; set; } = new DateTime();
-
         public bool IsRunning { get; set; } = false;
 
         private static AppsStatus _instance = null;
