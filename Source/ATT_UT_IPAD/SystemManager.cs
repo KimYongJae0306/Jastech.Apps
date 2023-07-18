@@ -70,19 +70,30 @@ namespace ATT_UT_IPAD
 
             int percent = 0;
             DoReportProgress(reportProgress, percent, "Initialize Device");
+
             DeviceManager.Instance().Initialized += SystemManager_Initialized;
             DeviceManager.Instance().Initialize(ConfigSet.Instance());
+            PlcControlManager.Instance().Initialize();
 
-            //AppsMotionManager.Instance().CreateAxisHanlder();
+            percent = 50;
+            DoReportProgress(reportProgress, percent, "Create Axis Info");
+
             CreateAxisHanlder();
 
             LAFManager.Instance().Initialize();
             LineCameraManager.Instance().Initialize();
 
-            percent += 30;
+            percent = 80;
+            DoReportProgress(reportProgress, percent, "Initialize Manager.");
+            LAFManager.Instance().Initialize();
+            LineCameraManager.Instance().Initialize();
+            AreaCameraManager.Instance().Initialize();
 
             if (ConfigSet.Instance().Operation.LastModelName != "")
             {
+                percent = 90;
+                DoReportProgress(reportProgress, percent, "Open Last Model.");
+
                 string filePath = Path.Combine(ConfigSet.Instance().Path.Model,
                                     ConfigSet.Instance().Operation.LastModelName,
                                     InspModel.FileName);
@@ -92,6 +103,9 @@ namespace ATT_UT_IPAD
                     ModelManager.Instance().CurrentModel = _mainForm.ATTInspModelService.Load(filePath);
                 }
             }
+
+            percent = 100;
+            DoReportProgress(reportProgress, percent, "Initialize Completed.");
             return true;
         }
 

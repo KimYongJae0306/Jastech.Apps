@@ -279,9 +279,9 @@ namespace Jastech.Framework.Winform.Forms
                     AkkonControl.CalcResolution = LineCamera.Camera.PixelResolution_um / LineCamera.Camera.LensScale;
 
                     if (UserManager.Instance().CurrentUser.Type == AuthorityType.Maker)
-                        AkkonControl.UserMaker = true;
+                        AkkonControl.SetUserMaker(true);
                     else
-                        AkkonControl.UserMaker = false;
+                        AkkonControl.SetUserMaker(false);
                     pnlTeach.Controls.Add(AkkonControl);
                     break;
 
@@ -352,6 +352,9 @@ namespace Jastech.Framework.Winform.Forms
                 TeachingUIManager.Instance().SetOrginCogImageBuffer(cogImage);
                 TeachingUIManager.Instance().SetOriginMatImageBuffer(new Mat(dlg.FileName, ImreadModes.Grayscale));
                 Display.SetImage(TeachingUIManager.Instance().GetOriginCogImageBuffer(false));
+
+                int tabNo = Convert.ToInt32(_currentTabNo);
+                UpdateDisplayImage(tabNo);
             }
         }
 

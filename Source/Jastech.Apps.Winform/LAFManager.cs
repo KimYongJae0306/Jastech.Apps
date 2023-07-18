@@ -75,7 +75,7 @@ namespace Jastech.Apps.Winform
 
             for (int i = 0; i < StatusTaskList.Count(); i++)
             {
-                StatusTaskList[i].Wait();
+                //StatusTaskList[i].Wait();
                 StatusTaskList[i] = null;
             }
             StatusTaskList.Clear();
