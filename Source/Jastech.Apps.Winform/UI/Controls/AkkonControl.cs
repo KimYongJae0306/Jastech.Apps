@@ -62,7 +62,7 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         public AkkonAlgorithm AkkonAlgorithm { get; set; } = new AkkonAlgorithm();
 
-        public bool UserMaker { get; set; } = false;
+        private bool UserMaker { get; set; } = false;
 
         public double CalcResolution { get; set; } = 0.0; // ex :  /camera.PixelResolution_mm(0.0035) / camera.LensScale(5) / 1000;
         #endregion
@@ -78,6 +78,7 @@ namespace Jastech.Apps.Winform.UI.Controls
         private void AkkonControl_Load(object sender, EventArgs e)
         {
             _isLoading = true;
+
             AddControl();
             InitializeUI();
             InitializeGroupInfo(true);
@@ -113,6 +114,11 @@ namespace Jastech.Apps.Winform.UI.Controls
 
             lblOrginalImage.BackColor = _selectedColor;
             lblResultImage.BackColor = _nonSelectedColor;
+        }
+
+        public void SetUserMaker(bool isMaker)
+        {
+            UserMaker = isMaker;
         }
 
         public void SetParams(Tab tab)

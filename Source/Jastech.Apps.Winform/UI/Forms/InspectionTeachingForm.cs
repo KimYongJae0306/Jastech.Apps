@@ -279,9 +279,9 @@ namespace Jastech.Framework.Winform.Forms
                     AkkonControl.CalcResolution = LineCamera.Camera.PixelResolution_um / LineCamera.Camera.LensScale;
 
                     if (UserManager.Instance().CurrentUser.Type == AuthorityType.Maker)
-                        AkkonControl.UserMaker = true;
+                        AkkonControl.SetUserMaker(true);
                     else
-                        AkkonControl.UserMaker = false;
+                        AkkonControl.SetUserMaker(false);
                     pnlTeach.Controls.Add(AkkonControl);
                     break;
 
