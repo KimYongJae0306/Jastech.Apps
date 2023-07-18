@@ -4,6 +4,7 @@ using Jastech.Framework.Winform;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -121,10 +122,22 @@ namespace Jastech.Apps.Winform
                 laf.SetCenterOfGravity(value);
         }
 
-        public void AutoFocusOnOff(string name, bool isOn)
+        public void ServoOnOff(string name, bool isOn)
         {
             if (DeviceManager.Instance().LAFCtrlHandler.Get(name) is NuriOneLAFCtrl laf)
-                laf.SetAutoFocusOnOFF(isOn);
+                laf.SetMotionEnable(isOn);
+        }
+
+        public void LaserOnOff(string name, bool isOn)
+        {
+            if (DeviceManager.Instance().LAFCtrlHandler.Get(name) is NuriOneLAFCtrl laf)
+                laf.SetLaserOnOff(isOn);
+        }
+
+        public void TrackingOnOff(string name, bool isOn)
+        {
+            if (DeviceManager.Instance().LAFCtrlHandler.Get(name) is NuriOneLAFCtrl laf)
+                laf.SetTrackingOnOFF(isOn);
         }
 
         public void DataReceived(string name, byte[] data)
@@ -151,7 +164,7 @@ namespace Jastech.Apps.Winform
                 if (int.TryParse(GetValue(dataString, "lasergate"), out int lasergate))
                     status.IsLaserOn = Convert.ToBoolean(lasergate);
                 if (int.TryParse(GetValue(dataString, "motiontrack"), out int motiontrack))
-                    status.IsAutoFocusOn = Convert.ToBoolean(motiontrack);
+                    status.IsTrackingOn = Convert.ToBoolean(motiontrack);
             }
         }
 

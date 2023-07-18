@@ -477,7 +477,7 @@ namespace ATT_UT_Remodeling.Core
             StopAkkonInspTask();
 
             // 조명 off
-            LAFManager.Instance().AutoFocusOnOff("Laf", false);
+            LAFManager.Instance().TrackingOnOff("Laf", false);
             WriteLog("AutoFocus Off.");
 
             LineCameraManager.Instance().Stop("LineCamera");
@@ -579,7 +579,7 @@ namespace ATT_UT_Remodeling.Core
                     WriteLog("Clear PLC data.");
 
                     // LAF
-                    LAFManager.Instance().AutoFocusOnOff("Laf", false);
+                    LAFManager.Instance().TrackingOnOff("Laf", false);
                     laf.SetMotionAbsoluteMove(0);
                     WriteLog("Laf off.");
 
@@ -619,7 +619,7 @@ namespace ATT_UT_Remodeling.Core
                     AppsInspResult.Cell_ID = DateTime.Now.ToString("yyyyMMddHHmmss");
 
                     // LAF on
-                    LAFManager.Instance().AutoFocusOnOff("Laf", true);
+                    LAFManager.Instance().TrackingOnOff("Laf", true);
                     WriteLog("Laf On.");
 
                     SeqStep = SeqStep.SEQ_SCAN_START;

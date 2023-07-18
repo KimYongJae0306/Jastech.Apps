@@ -97,7 +97,7 @@ namespace Jastech.Apps.Winform.UI.Controls
             lblCuttentPositionValue.Text = mPos_um.ToString();
             lblCurrentCogValue.Text = status.CenterofGravity.ToString();
 
-            if (status.IsAutoFocusOn)
+            if (status.IsTrackingOn)
             {
                 lblAFOn.BackColor = _selectedColor;
                 lblAFOff.BackColor = _nonSelectedColor;
@@ -153,13 +153,13 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         private void lblAFOn_Click(object sender, EventArgs e)
         {
-            LAFManager.Instance().AutoFocusOnOff(LAFCtrl.Name, true);
+            LAFManager.Instance().TrackingOnOff(LAFCtrl.Name, true);
         }
 
 
         private void lblAFOff_Click(object sender, EventArgs e)
         {
-            LAFManager.Instance().AutoFocusOnOff(LAFCtrl.Name, false);
+            LAFManager.Instance().TrackingOnOff(LAFCtrl.Name, false);
         }
 
         public TeachingAxisInfo GetCurrentData()
