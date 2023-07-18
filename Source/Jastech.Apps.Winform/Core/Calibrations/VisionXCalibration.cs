@@ -210,7 +210,7 @@ namespace Jastech.Apps.Winform.Core.Calibrations
 
             double intervalX = 10.0;
             double intervalY = 10.0;
-            double intervalT = 0.1;
+            //double intervalT = 0.1;
 
             int directionT = 1;
 

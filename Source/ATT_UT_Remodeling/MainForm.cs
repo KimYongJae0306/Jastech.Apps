@@ -29,11 +29,9 @@ namespace ATT_UT_Remodeling
         #region 필드
         private MainPage MainPageControl { get; set; } = null;
 
-        private DataPage DataPageControl { get; set; } = new DataPage();
+        private DataPage DataPageControl { get; set; } = null;
 
-        private LogPage LogPageControl { get; set; } = new LogPage();
-
-        private TeachingPage TeachingPageControl { get; set; } = new TeachingPage();
+        private TeachingPage TeachingPageControl { get; set; } = null;
 
         private List<UserControl> PageControlList = null;
 
@@ -42,26 +40,14 @@ namespace ATT_UT_Remodeling
         public ATTInspModelService ATTInspModelService { get; set; } = new ATTInspModelService();
         #endregion
 
-        #region 속성
-        #endregion
-
-        #region 이벤트
-        #endregion
-
-        #region 델리게이트
-        #endregion
-
         #region 생성자
-        #endregion
-
-        #region 메서드
-        #endregion
-
         public MainForm()
         {
             InitializeComponent();
         }
+        #endregion
 
+        #region 메서드
         private void MainForm_Load(object sender, EventArgs e)
         {
             AddControls();
@@ -110,10 +96,6 @@ namespace ATT_UT_Remodeling
             DataPageControl = new DataPage();
             DataPageControl.Dock = DockStyle.Fill;
             PageControlList.Add(DataPageControl);
-
-            LogPageControl = new LogPage();
-            LogPageControl.Dock = DockStyle.Fill;
-            PageControlList.Add(LogPageControl);
 
             TeachingPageControl = new TeachingPage();
             TeachingPageControl.Dock = DockStyle.Fill;
@@ -292,7 +274,7 @@ namespace ATT_UT_Remodeling
             DeviceManager.Instance().Release();
             GrabberMil.Release();
             MilHelper.FreeApplication();
-            Application.ExitThread();
+            //Application.ExitThread();
         }
 
 
@@ -304,5 +286,6 @@ namespace ATT_UT_Remodeling
             PlcControlManager.Instance().Release();
             PlcScenarioManager.Instance().Release();
         }
+        #endregion
     }
 }

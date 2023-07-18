@@ -10,19 +10,10 @@ namespace ATT_UT_IPAD.UI.Pages
 {
     public partial class TeachingPage : UserControl
     {
-        #region 필드
+        #region 속성
         private ATTInspModelService ATTInspModelService { get; set; } = null;
 
-        private MotionPopupForm _motionPopupForm { get; set; } = null;
-        #endregion
-
-        #region 속성
-        #endregion
-
-        #region 이벤트
-        #endregion
-
-        #region 델리게이트
+        private MotionPopupForm MotionPopupForm { get; set; } = null;
         #endregion
 
         #region 생성자
@@ -113,20 +104,16 @@ namespace ATT_UT_IPAD.UI.Pages
 
         private void OpenMotionPopupEventHandler(UnitName unitName)
         {
-            //MotionPopupForm motionPopupForm = new MotionPopupForm();
-            //motionPopupForm.UnitName = unitName;
-            //motionPopupForm.InspModelService = ATTInspModelService;
-            //motionPopupForm.Show();
-            if (_motionPopupForm == null)
+            if (MotionPopupForm == null)
             {
-                _motionPopupForm = new MotionPopupForm();
-                _motionPopupForm.UnitName = unitName;
-                _motionPopupForm.InspModelService = ATTInspModelService;
-                _motionPopupForm.CloseEventDelegate = () => _motionPopupForm = null;
-                _motionPopupForm.Show();
+                MotionPopupForm = new MotionPopupForm();
+                MotionPopupForm.UnitName = unitName;
+                MotionPopupForm.InspModelService = ATTInspModelService;
+                MotionPopupForm.CloseEventDelegate = () => MotionPopupForm = null;
+                MotionPopupForm.Show();
             }
             else
-                _motionPopupForm.Focus();
+                MotionPopupForm.Focus();
         }
 
         internal void SetInspModelService(ATTInspModelService inspModelService)

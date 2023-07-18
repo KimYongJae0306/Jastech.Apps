@@ -11,22 +11,16 @@ namespace ATT_UT_IPAD.UI.Pages
 {
     public partial class DataPage : UserControl
     {
-        #region 필드
+        #region 속성
         private ATTInspModelService ATTInspModelService { get; set; } = null;
 
-        private MotionSettingsForm _motionSettingsForm { get; set; } = null;
+        private MotionSettingsForm MotionSettingsForm { get; set; } = null;
 
-        private PlcStatusForm _plcStatusForm { get; set; } = null;
-        #endregion
-
-        #region 속성
+        private PlcStatusForm PlcStatusForm { get; set; } = null;
         #endregion
 
         #region 이벤트
         public event ApplyModelDelegate ApplyModelEventHandler;
-        #endregion
-
-        #region 델리게이트
         #endregion
 
         #region 생성자
@@ -60,20 +54,16 @@ namespace ATT_UT_IPAD.UI.Pages
                 return;
             }
 
-            //MotionSettingsForm form = new MotionSettingsForm() { UnitName = UnitName.Unit0 };
-            //form.InspModelService = ATTInspModelService;
-            //form.ShowDialog();
-
-            if (_motionSettingsForm == null)
+            if (MotionSettingsForm == null)
             {
-                _motionSettingsForm = new MotionSettingsForm();
-                _motionSettingsForm.UnitName = UnitName.Unit0;
-                _motionSettingsForm.InspModelService = ATTInspModelService;
-                _motionSettingsForm.CloseEventDelegate = () => _motionSettingsForm = null;
-                _motionSettingsForm.Show();
+                MotionSettingsForm = new MotionSettingsForm();
+                MotionSettingsForm.UnitName = UnitName.Unit0;
+                MotionSettingsForm.InspModelService = ATTInspModelService;
+                MotionSettingsForm.CloseEventDelegate = () => MotionSettingsForm = null;
+                MotionSettingsForm.Show();
             }
             else
-                _motionSettingsForm.Focus();
+                MotionSettingsForm.Focus();
         }
 
         private void btnSettings_Click(object sender, EventArgs e)
@@ -89,14 +79,14 @@ namespace ATT_UT_IPAD.UI.Pages
 
         private void btnOpenPLCViewer_Click(object sender, EventArgs e)
         {
-            if (_plcStatusForm == null)
+            if (PlcStatusForm == null)
             {
-                _plcStatusForm = new PlcStatusForm();
-                _plcStatusForm.CloseEventDelegate = () => this._plcStatusForm = null;
-                _plcStatusForm.Show();
+                PlcStatusForm = new PlcStatusForm();
+                PlcStatusForm.CloseEventDelegate = () => this.PlcStatusForm = null;
+                PlcStatusForm.Show();
             }
             else
-                _plcStatusForm.Focus();
+                PlcStatusForm.Focus();
         }
         #endregion
     }

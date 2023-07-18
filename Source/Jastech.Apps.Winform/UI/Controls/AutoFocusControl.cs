@@ -128,7 +128,6 @@ namespace Jastech.Apps.Winform.UI.Controls
         private void lblTargetPositionZValue_Click(object sender, EventArgs e)
         {
             double targetPosition = KeyPadHelper.SetLabelDoubleData((Label)sender);
-            //TeachingPositionList.Where(x => x.Name == TeachingPositionType.ToString()).First().SetTargetPosition(AxisName.Z, targetPosition);
             AxisInfo.TargetPosition = targetPosition;
         }
 
@@ -140,7 +139,6 @@ namespace Jastech.Apps.Winform.UI.Controls
         private void lblTeachCogValue_Click(object sender, EventArgs e)
         {
             int centerOfGravity = KeyPadHelper.SetLabelIntegerData((Label)sender);
-            //TeachingPositionList.Where(x => x.Name == TeachingPositionType.ToString()).First().SetCenterOfGravity(AxisName.Z, centerOfGravity);
             AxisInfo.CenterOfGravity = centerOfGravity;
         }
 

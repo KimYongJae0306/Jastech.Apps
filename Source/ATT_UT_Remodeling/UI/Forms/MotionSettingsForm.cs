@@ -156,8 +156,7 @@ namespace ATT_UT_Remodeling.UI.Forms
             var posData = TeachingData.Instance().GetUnit(UnitName.ToString()).GetTeachingInfoList();
             SetTeachingPosition(posData);
 
-            var laf = LAFManager.Instance().GetLAFCtrl(LafCtrl.Name);
-            SetAlignLAFCtrl(laf);
+            SetAlignLAFCtrl(LafCtrl);
 
             UpdateCommonParam();
             UpdateVariableParam();
@@ -254,7 +253,6 @@ namespace ATT_UT_Remodeling.UI.Forms
 
             UpdateStatusMotionX();
             UpdateStatusAutoFocusZ();
-            //UpdateStatusAutoFocusZ2();
         }
 
         private void UpdateStatusMotionX()
@@ -591,9 +589,6 @@ namespace ATT_UT_Remodeling.UI.Forms
             if (CloseEventDelegate != null)
                 CloseEventDelegate();
         }
-
         #endregion
-
-        
     }
 }

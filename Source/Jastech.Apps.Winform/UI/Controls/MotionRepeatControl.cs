@@ -9,23 +9,38 @@ namespace Jastech.Apps.Winform.UI.Controls
 {
     public partial class MotionRepeatControl : UserControl
     {
+        #region 필드
         private bool _isLoading { get; set; } = false;
-
-        private Axis SelectedAxis { get; set; } = null;
-
-        private AxisHandler AxisHandler { get; set; } = null;
-
-        private Direction _direction = Direction.CW;
 
         private Color _selectedColor;
 
         private Color _nonSelectedColor;
 
+        private System.Threading.Thread _repeatThread = null;
+
+        private bool _isRepeat = false;
+
+        private bool _isInfinite = false;
+
+        private int _remainCount = 0;
+        #endregion
+
+        #region 속성
+        private Axis SelectedAxis { get; set; } = null;
+
+        private AxisHandler AxisHandler { get; set; } = null;
+
+        private Direction _direction = Direction.CW;
+        #endregion
+
+        #region 생성자
         public MotionRepeatControl()
         {
             InitializeComponent();
         }
+        #endregion
 
+        #region 메서드
         public void SetAxisHanlder(AxisHandler axisHandler)
         {
             AxisHandler = axisHandler;
@@ -143,25 +158,6 @@ namespace Jastech.Apps.Winform.UI.Controls
             }
         }
 
-        private class RepeatParam
-        {
-            public double Velocity { get; set; } = 0.0;
-
-            public double AccDec { get; set; } = 0.0;
-
-            public int DwellTime { get; set; } = 0;
-
-            public double StartPosition { get; set; } = 0.0;
-
-            public double EndPosition { get; set; } = 0.0;
-
-            public int RepeatCount { get; set; } = 0;
-        }
-
-        private System.Threading.Thread _repeatThread = null;
-        private bool _isRepeat = false;
-        private bool _isInfinite = false;
-        private int _remainCount = 0;
         private void MoveRepeatThread(object param)
         {
             var repeatParam = param as RepeatParam;
@@ -201,28 +197,10 @@ namespace Jastech.Apps.Winform.UI.Controls
                 _remainCount = repeatCount - count;
                 Console.WriteLine("Set Repeat Count : " + repeatCount.ToString() + " / Complete Count : " + count.ToString() + " / Remain Count : " + _remainCount.ToString());
             }
-
-            //lblStart.Text = "Stop";
         }
-
-        //private delegate void UpdateRepeatCountDelegate(object obj);
-        //public void UpdateRepeatCount(object obj)
-        //{
-        //    if (this.InvokeRequired)
-        //    {
-        //        UpdateRepeatCountDelegate callback = UpdateRepeatCount;
-        //        BeginInvoke(callback, obj);
-        //        return;
-        //    }
-
-        //    UpdateRepeatCount();
-        //}
 
         public void UpdateRepeatCount()
         {
-            //if (!_isRepeat)
-            //    return;
-
             lblRepeatRemain.Text = _remainCount + " / " + lblRepeatCount.Text;
         }
 
@@ -230,5 +208,23 @@ namespace Jastech.Apps.Winform.UI.Controls
         {
             MoveRepeat(true);
         }
+        #endregion
+
+        #region 클래스
+        private class RepeatParam
+        {
+            public double Velocity { get; set; } = 0.0;
+
+            public double AccDec { get; set; } = 0.0;
+
+            public int DwellTime { get; set; } = 0;
+
+            public double StartPosition { get; set; } = 0.0;
+
+            public double EndPosition { get; set; } = 0.0;
+
+            public int RepeatCount { get; set; } = 0;
+        }
+        #endregion
     }
 }

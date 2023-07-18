@@ -28,16 +28,6 @@ namespace ATT_UT_IPAD.UI.Forms
         private Color _selectedColor;
 
         private Color _nonSelectedColor;
-
-        protected override CreateParams CreateParams
-        {
-            get
-            {
-                var cp = base.CreateParams;
-                cp.ExStyle |= 0x02000000;
-                return cp;
-            }
-        }
         #endregion
 
         #region 속성
@@ -68,12 +58,19 @@ namespace ATT_UT_IPAD.UI.Forms
         public TeachingPosType TeachingPositionType = TeachingPosType.Standby;
 
         public UnitName UnitName { get; set; } = UnitName.Unit0;
+
+        protected override CreateParams CreateParams
+        {
+            get
+            {
+                var cp = base.CreateParams;
+                cp.ExStyle |= 0x02000000;
+                return cp;
+            }
+        }
         #endregion
 
         #region 이벤트
-        #endregion
-
-        #region 델리게이트
         public Action CloseEventDelegate;
         #endregion
 
@@ -724,6 +721,6 @@ namespace ATT_UT_IPAD.UI.Forms
             if (CloseEventDelegate != null)
                 CloseEventDelegate();
         }
+        #endregion
     }
-    #endregion
 }

@@ -7,17 +7,26 @@ namespace ATT_UT_IPAD.UI.Pages
 {
     public partial class MainPage : UserControl
     {
-        //public AkkonViewerControl AkkonResultViewer { get; set; } = new AkkonViewerControl() { Dock = DockStyle.Fill };
+        #region 필드
+        #endregion
 
-        //public AlignViewerControl AlignResultViewer { get; set; } = new AlignViewerControl() { Dock = DockStyle.Fill };
+        #region 속성
+        #endregion
 
-        public SystemLogControl SystemLogControl { get; set; } = new SystemLogControl() { Dock = DockStyle.Fill };
+        #region 이벤트
+        #endregion
 
+        #region 델리게이트
+        #endregion
+
+        #region 생성자
         public MainPage()
         {
             InitializeComponent();
         }
+        #endregion
 
+        #region 메서드
         private void MainPage_Load(object sender, EventArgs e)
         {
             AddControls();
@@ -25,26 +34,20 @@ namespace ATT_UT_IPAD.UI.Pages
 
         private void AddControls()
         {
-            //pnlAkkon.Controls.Add(AkkonResultViewer);
-            //pnlAlign.Controls.Add(AlignResultViewer);
         }
 
         public void UpdateTabCount(int tabCount)
         {
-            //AkkonResultViewer.UpdateTabCount(tabCount);
-            //AlignResultViewer.UpdateTabCount(tabCount);
         }
 
         public void UpdateMainResult(AppsInspResult result)
         {
-            //AkkonResultViewer.UpdateMainResult(result);
-            //AlignResultViewer.UpdateMainResult(result);
         }
 
         public void AddSystemLogMessage(string logMessage)
         {
-            SystemLogControl.AddLogMessage(logMessage);
         }
+        #endregion
     }
 
     public enum PageType

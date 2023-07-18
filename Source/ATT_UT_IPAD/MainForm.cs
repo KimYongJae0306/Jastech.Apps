@@ -28,8 +28,6 @@ namespace ATT_UT_IPAD
 
         private DataPage DataPageControl { get; set; } = new DataPage();
 
-        private LogPage LogPageControl { get; set; } = new LogPage();
-
         private TeachingPage TeachingPageControl { get; set; } = new TeachingPage();
 
         private List<UserControl> PageControlList = null;
@@ -52,7 +50,14 @@ namespace ATT_UT_IPAD
             AddControls();
             SelectMainPage();
 
+            TeachingPageControl.SetInspModelService(ATTInspModelService);
+            DataPageControl.SetInspModelService(ATTInspModelService);
+            DataPageControl.ApplyModelEventHandler += ModelPageControl_ApplyModelEventHandler;
+
             ModelManager.Instance().CurrentModelChangedEvent += MainForm_CurrentModelChangedEvent;
+            PlcScenarioManager.Instance().Initialize(ATTInspModelService);
+
+            PlcControlManager.Instance().WritePcCommand(PcCommand.ServoOn_1);
 
             if (ModelManager.Instance().CurrentModel != null)
             {
@@ -61,21 +66,25 @@ namespace ATT_UT_IPAD
             }
 
             tmrMainForm.Start();
+            SystemManager.Instance().AddSystemLogMessage("Start program.");
         }
 
         private void AddControls()
         {
             // Page Control List
             PageControlList = new List<UserControl>();
+
+            MainPageControl = new MainPage();
+            MainPageControl.Dock = DockStyle.Fill;
             PageControlList.Add(MainPageControl);
+
+            DataPageControl = new DataPage();
+            DataPageControl.Dock = DockStyle.Fill;
             PageControlList.Add(DataPageControl);
-            PageControlList.Add(LogPageControl);
+
+            TeachingPageControl = new TeachingPage();
+            TeachingPageControl.Dock = DockStyle.Fill;
             PageControlList.Add(TeachingPageControl);
-
-            TeachingPageControl.SetInspModelService(ATTInspModelService);
-
-            DataPageControl.SetInspModelService(ATTInspModelService);
-            DataPageControl.ApplyModelEventHandler += ModelPageControl_ApplyModelEventHandler;
 
             // Button List
             PageLabelList = new List<Label>();
@@ -250,6 +259,7 @@ namespace ATT_UT_IPAD
             DeviceManager.Instance().Release();
             GrabberMil.Release();
             MilHelper.FreeApplication();
+            //Application.ExitThread();
         }
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)

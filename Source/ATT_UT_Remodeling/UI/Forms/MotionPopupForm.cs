@@ -66,10 +66,11 @@ namespace ATT_UT_Remodeling.UI.Forms
         #endregion
 
         #region 이벤트
+        public Action CloseEventDelegate;
         #endregion
 
         #region 델리게이트
-        public Action CloseEventDelegate;
+        private delegate void UpdateStatusDelegate(object obj);
         #endregion
 
         #region 생성자
@@ -80,7 +81,6 @@ namespace ATT_UT_Remodeling.UI.Forms
         #endregion
 
         #region 메서드
-
         private void MotionPopupForm_Load(object sender, EventArgs e)
         {
             UpdateData();
@@ -155,15 +155,14 @@ namespace ATT_UT_Remodeling.UI.Forms
             var posData = TeachingData.Instance().GetUnit(unitName).GetTeachingInfoList();
             SetTeachingPosition(posData);
 
-            var laf = LAFManager.Instance().GetLAFCtrl(LafCtrl.Name);
-            SetAlignLAFCtrl(laf);
+            SetAlignLAFCtrl(LafCtrl);
 
             UpdateParam();
         }
 
         private void UpdateParam(TeachingPosType teachingPositionType = TeachingPosType.Standby)
         {
-            var param = TeachingPositionList.Where(x => x.Name == teachingPositionType.ToString()).First();
+            var param = TeachingPositionList.Where(x => x.Name == teachingPositionType.ToString()).FirstOrDefault();
             if (param == null)
                 return;
 
@@ -217,7 +216,6 @@ namespace ATT_UT_Remodeling.UI.Forms
             _formTimer = new System.Threading.Timer(UpdateStatus, null, 1000, 1000);
         }
 
-        private delegate void UpdateStatusDelegate(object obj);
         private void UpdateStatus(object obj)
         {
             if (this.InvokeRequired)
@@ -576,6 +574,6 @@ namespace ATT_UT_Remodeling.UI.Forms
             if (CloseEventDelegate != null)
                 CloseEventDelegate();
         }
+        #endregion
     }
-    #endregion
 }

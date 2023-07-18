@@ -77,10 +77,11 @@ namespace ATT_UT_IPAD.UI.Forms
         #endregion
 
         #region 이벤트
+        public Action CloseEventDelegate;
         #endregion
 
         #region 델리게이트
-        public Action CloseEventDelegate;
+        private delegate void UpdateStatusDelegate(object obj);
         #endregion
 
         #region 생성자
@@ -271,7 +272,7 @@ namespace ATT_UT_IPAD.UI.Forms
             _formTimer = new System.Threading.Timer(UpdateStatus, null, 1000, 1000);
         }
 
-        private delegate void UpdateStatusDelegate(object obj);
+    
         private void UpdateStatus(object obj)
         {
             if (this.InvokeRequired)
@@ -734,22 +735,6 @@ namespace ATT_UT_IPAD.UI.Forms
             if (CloseEventDelegate != null)
                 CloseEventDelegate();
         }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
         #endregion
-
-        
     }
 }
