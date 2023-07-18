@@ -281,8 +281,10 @@ namespace ATT_UT_Remodeling.UI.Forms
 
         private void UpdateStatusAutoFocusZ()
         {
-            var status = LafCtrl.Status;
+            if (LafCtrl == null)
+                return;
 
+            var status = LafCtrl.Status;
             if (status == null)
                 return;
 

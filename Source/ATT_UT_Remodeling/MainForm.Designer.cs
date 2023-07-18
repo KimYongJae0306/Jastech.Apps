@@ -181,6 +181,7 @@
             // lblLogPageImage
             // 
             this.lblLogPageImage.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblLogPageImage.Image = global::ATT_UT_Remodeling.Properties.Resources.Log;
             this.lblLogPageImage.Location = new System.Drawing.Point(3, 0);
             this.lblLogPageImage.Name = "lblLogPageImage";
             this.lblLogPageImage.Size = new System.Drawing.Size(44, 44);
@@ -228,6 +229,7 @@
             // lblDataPageImage
             // 
             this.lblDataPageImage.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblDataPageImage.Image = global::ATT_UT_Remodeling.Properties.Resources.Settings;
             this.lblDataPageImage.Location = new System.Drawing.Point(3, 0);
             this.lblDataPageImage.Name = "lblDataPageImage";
             this.lblDataPageImage.Size = new System.Drawing.Size(44, 44);
@@ -323,6 +325,7 @@
             // lblTeachingPageImage
             // 
             this.lblTeachingPageImage.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblTeachingPageImage.Image = global::ATT_UT_Remodeling.Properties.Resources.Teaching;
             this.lblTeachingPageImage.Location = new System.Drawing.Point(3, 0);
             this.lblTeachingPageImage.Name = "lblTeachingPageImage";
             this.lblTeachingPageImage.Size = new System.Drawing.Size(44, 44);
