@@ -125,7 +125,7 @@ namespace Jastech.Apps.Winform
                 return;
 
             CancelPlcReadTask.Cancel();
-            PlcReadTask.Wait();
+            //PlcReadTask.Wait();
             PlcReadTask = null;
         }
 

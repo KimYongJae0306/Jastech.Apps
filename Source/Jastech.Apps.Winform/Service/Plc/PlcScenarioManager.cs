@@ -106,7 +106,7 @@ namespace Jastech.Apps.Winform.Service.Plc
             if (CommandTask == null)
                 return;
             CommandTaskCancellationTokenSource.Cancel();
-            CommandTask.Wait();
+            //CommandTask.Wait();
             CommandTask = null;
         }
 

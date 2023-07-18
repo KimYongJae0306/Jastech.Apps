@@ -48,7 +48,7 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         private int _curSelectedGroup { get; set; } = -1;
 
-        private ROIJogForm _roiJogForm = new ROIJogForm();
+        private ROIJogForm _roiJogForm = null;
         #endregion
 
         #region 속성
@@ -197,7 +197,6 @@ namespace Jastech.Apps.Winform.UI.Controls
             }
 
             DrawROI();
-
         }
 
         private void UpdateParam(int groupIndex)
@@ -286,7 +285,6 @@ namespace Jastech.Apps.Winform.UI.Controls
             double centerY = display.ImageHeight() / 2.0 - display.GetPan().Y;
 
             _autoTeachingRect = VisionProImageHelper.CreateRectangle(centerX, centerY, display.ImageWidth(), display.ImageHeight());
-            //_autoTeachingRect = CogImageHelper.CreateRectangle(centerX, centerY, 100, 100);
             _autoTeachingRect.DraggingStopped += AutoTeachingRect_DraggingStopped;
 
             var teachingDisplay = TeachingUIManager.Instance().GetDisplay();
@@ -411,7 +409,7 @@ namespace Jastech.Apps.Winform.UI.Controls
             if (CurrentTab == null)
                 return;
 
-            int groupIndex = _curSelectedGroup;// cbxGroupNumber.SelectedIndex;
+            int groupIndex = _curSelectedGroup;
             if (groupIndex < 0)
                 return;
 
@@ -749,12 +747,7 @@ namespace Jastech.Apps.Winform.UI.Controls
             DrawROI();
         }
 
-        private void dgvAkkonROI_CellClick(object sender, DataGridViewCellEventArgs e)
-        {
-            SetSelectAkkonROI(e.RowIndex);
-        }
-
-        private void SetSelectAkkonROI(int index)
+        private void SetSelectAkkonROI()
         {
             if (_cogRectAffineList.Count <= 0 || CurrentTab == null)
                 return;
@@ -777,23 +770,7 @@ namespace Jastech.Apps.Winform.UI.Controls
 
                 }
             }
-            //foreach (DataGridViewRow row in dgvAkkonROI.Rows)
-            //{
-            //    if(row.Selected)
-            //    {
-            //        _selectedIndexList.Add(index);
-            //        _cogRectAffineList[index].Color = CogColorConstants.DarkRed;
-            //    }
-            //    else
-            //    {
-            //        _cogRectAffineList[row.Index].Color = CogColorConstants.Blue;
-            //    }
-            //    index++;
-            //}
-               
-
-          
-
+           
             CogGraphicInteractiveCollection collect = new CogGraphicInteractiveCollection();
             foreach (var item in _cogRectAffineList)
                 collect.Add(item);
@@ -860,9 +837,6 @@ namespace Jastech.Apps.Winform.UI.Controls
                 _cogRectAffineList[leadIndex].CenterY = newCenterY;
                 _cogRectAffineList[leadIndex].Skew = newSkew.Value;
 
-                //UpdateROIDataGridView(leadIndex, _cogRectAffineList[leadIndex]);
-                //var group = CurrentTab.AkkonParam.GroupList[groupIndex];
-                //group.AkkonROIList[selectedIndex] = ConvertCogRectAffineToAkkonRoi(_cogRectAffineList[selectedIndex]).DeepCopy();
                 group.AkkonROIList.Add(ConvertCogRectAffineToAkkonRoi(_cogRectAffineList[leadIndex]).DeepCopy());
 
                 CogGraphicInteractiveCollection collect = new CogGraphicInteractiveCollection();
@@ -875,10 +849,6 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         public void ShowROIJog()
         {
-            //ROIJogControl roiJogForm = new ROIJogControl();
-            //roiJogForm.SetTeachingItem(TeachingItem.Akkon);
-            //roiJogForm.SendEventHandler += new ROIJogControl.SendClickEventDelegate(ReceiveClickEvent);
-            //roiJogForm.Show();\
             if (_roiJogForm == null)
             {
                 _roiJogForm = new ROIJogForm();
@@ -945,31 +915,6 @@ namespace Jastech.Apps.Winform.UI.Controls
 
             UpdateROIDataGridView(group.AkkonROIList, _selectedIndexList);
             DrawROI();
-
-            // 원본
-            //if (dgvAkkonROI.CurrentCell == null)
-            //{
-            //    if (isSkewZero)
-            //        _firstCogRectAffine.Skew = 0;
-            //    else
-            //        _firstCogRectAffine.Skew += skewUnit;
-            //}
-            //else
-            //{
-            //    int selectedIndex = dgvAkkonROI.CurrentCell.RowIndex;
-            //    if (isSkewZero)
-            //        _cogRectAffineList[selectedIndex].Skew = 0;
-            //    else
-            //        _cogRectAffineList[selectedIndex].Skew += skewUnit;
-
-            //    UpdateROIDataGridView(selectedIndex, _cogRectAffineList[selectedIndex]);
-
-            //    int groupIndex = cbxGroupNumber.SelectedIndex;
-            //    var group = CurrentTab.AkkonParam.GroupList[groupIndex];
-            //    group.AkkonROIList[selectedIndex] = ConvertCogRectAffineToAkkonRoi(_cogRectAffineList[selectedIndex]).DeepCopy();
-            //    DrawROI();
-            //    SetSelectAkkonROI(selectedIndex);
-            //}
         }
 
         private void MoveMode(string moveType, int jogScale)
@@ -1010,28 +955,6 @@ namespace Jastech.Apps.Winform.UI.Controls
 
             UpdateROIDataGridView(group.AkkonROIList, _selectedIndexList);
             DrawROI();
-
-            // 원본
-            //if (dgvAkkonROI.CurrentCell == null)
-            //{
-            //    _firstCogRectAffine.CenterX += jogMoveX;
-            //    _firstCogRectAffine.CenterY += jogMoveY;
-            //}
-            //else
-            //{
-            //    int selectedIndex = dgvAkkonROI.CurrentCell.RowIndex;
-
-            //    _cogRectAffineList[selectedIndex].CenterX += jogMoveX;
-            //    _cogRectAffineList[selectedIndex].CenterY += jogMoveY;
-
-            //    UpdateROIDataGridView(selectedIndex, _cogRectAffineList[selectedIndex]);
-
-            //    int groupIndex = cbxGroupNumber.SelectedIndex;
-            //    var group = CurrentTab.AkkonParam.GroupList[groupIndex];
-            //    group.AkkonROIList[selectedIndex] = ConvertCogRectAffineToAkkonRoi(_cogRectAffineList[selectedIndex]).DeepCopy();
-            //    DrawROI();
-            //    SetSelectAkkonROI(selectedIndex);
-            //}
         }
 
         private void SizeMode(string sizeType, int jogScale)
@@ -1077,33 +1000,6 @@ namespace Jastech.Apps.Winform.UI.Controls
 
             UpdateROIDataGridView(group.AkkonROIList, _selectedIndexList);
             DrawROI();
-
-            // 원본
-            //if (dgvAkkonROI.CurrentCell == null)
-            //{
-            //    _firstCogRectAffine.SideXLength += jogSizeX;
-            //    _firstCogRectAffine.SideYLength += jogSizeY;
-            //}
-            //else
-            //{
-            //    int selectedIndex = dgvAkkonROI.CurrentCell.RowIndex;
-
-            //    double minimumX = _cogRectAffineList[selectedIndex].SideXLength + jogSizeX;
-            //    double minimumY = _cogRectAffineList[selectedIndex].SideYLength + jogSizeY;
-            //    if (minimumX <= 0 || minimumY <= 0)
-            //        return;
-
-            //    _cogRectAffineList[selectedIndex].SideXLength += jogSizeX;
-            //    _cogRectAffineList[selectedIndex].SideYLength += jogSizeY;
-
-            //    UpdateROIDataGridView(selectedIndex, _cogRectAffineList[selectedIndex]);
-
-            //    int groupIndex = cbxGroupNumber.SelectedIndex;
-            //    var group = CurrentTab.AkkonParam.GroupList[groupIndex];
-            //    group.AkkonROIList[selectedIndex] = ConvertCogRectAffineToAkkonRoi(_cogRectAffineList[selectedIndex]).DeepCopy();
-            //    DrawROI();
-            //    SetSelectAkkonROI(selectedIndex);
-            //}
         }
 
         public void SaveAkkonParam()
@@ -1730,6 +1626,11 @@ namespace Jastech.Apps.Winform.UI.Controls
         public void Run()
         {
             Inspection(false);
+        }
+
+        private void dgvAkkonROI_SelectionChanged(object sender, EventArgs e)
+        {
+            SetSelectAkkonROI();
         }
     }
 }
