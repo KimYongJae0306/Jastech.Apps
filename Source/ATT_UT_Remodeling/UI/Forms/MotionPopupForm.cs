@@ -49,11 +49,8 @@ namespace ATT_UT_Remodeling.UI.Forms
 
         private AxisHandler AxisHandler { get; set; } = null;
 
-        private LAFCtrl AlignLafCtrl { get; set; } = null;
+        private LAFCtrl LafCtrl { get; set; } = null;
 
-        private LAFCtrl AkkonnLafCtrl { get; set; } = null;
-
-        //private LAFCtrl 
         private MotionJogXControl MotionJogXControl { get; set; } = new MotionJogXControl() { Dock = DockStyle.Fill };
 
         private LAFJogControl LAFJogZControl { get; set; } = new LAFJogControl() { Dock = DockStyle.Fill };
@@ -158,7 +155,7 @@ namespace ATT_UT_Remodeling.UI.Forms
             var posData = TeachingData.Instance().GetUnit(unitName).GetTeachingInfoList();
             SetTeachingPosition(posData);
 
-            var laf = LAFManager.Instance().GetLAFCtrl("Laf");
+            var laf = LAFManager.Instance().GetLAFCtrl(LafCtrl.Name);
             SetAlignLAFCtrl(laf);
 
             UpdateParam();
@@ -191,12 +188,7 @@ namespace ATT_UT_Remodeling.UI.Forms
 
         public void SetAlignLAFCtrl(LAFCtrl alignLafCtrl)
         {
-            AlignLafCtrl = alignLafCtrl;
-        }
-
-        public void SetAkkonLafCtrl(LAFCtrl akkonLafCtrl)
-        {
-            AkkonnLafCtrl = akkonLafCtrl;
+            LafCtrl = alignLafCtrl;
         }
 
         private void AddVariableControl()
@@ -217,7 +209,7 @@ namespace ATT_UT_Remodeling.UI.Forms
             MotionJogXControl.SetAxisHanlder(AxisHandler);
 
             pnlLAFZ1Jog.Controls.Add(LAFJogZControl);
-            LAFJogZControl.SetSelectedLafCtrl(AlignLafCtrl);
+            LAFJogZControl.SetSelectedLafCtrl(LafCtrl);
         }
 
         private void StartTimer()
@@ -265,13 +257,13 @@ namespace ATT_UT_Remodeling.UI.Forms
 
         private void UpdateStatusAutoFocusZ()
         {
-            var status = AlignLafCtrl.Status;
+            var status = LafCtrl.Status;
 
             if (status == null)
                 return;
 
             double mPos_um = 0.0;
-            if (AlignLafCtrl is NuriOneLAFCtrl nuriOne)
+            if (LafCtrl is NuriOneLAFCtrl nuriOne)
                 mPos_um = status.MPosPulse / nuriOne.ResolutionAxisZ;
             else
                 mPos_um = status.MPosPulse;
@@ -295,15 +287,15 @@ namespace ATT_UT_Remodeling.UI.Forms
                 lblSensorZ.BackColor = _nonSelectedColor;
             }
 
-            if (status.IsAutoFocusOn)
+            if (status.IsTrackingOn)
             {
-                lblAutoFocusOnZ.BackColor = _selectedColor;
-                lblAutoFocusOffZ.BackColor = _nonSelectedColor;
+                lblServoOnZ.BackColor = _selectedColor;
+                lblServoOffZ.BackColor = _nonSelectedColor;
             }
             else
             {
-                lblAutoFocusOnZ.BackColor = _nonSelectedColor;
-                lblAutoFocusOffZ.BackColor = _selectedColor;
+                lblServoOnZ.BackColor = _nonSelectedColor;
+                lblServoOffZ.BackColor = _selectedColor;
             }
         }
 
@@ -401,6 +393,19 @@ namespace ATT_UT_Remodeling.UI.Forms
             AxisHandler.GetAxis(AxisName.X).StartAbsoluteMove(targetPosition, movingParam);
         }
 
+        private void lblOriginX_Click(object sender, EventArgs e)
+        {
+            AxisHandler.GetAxis(AxisName.X).StartHome();
+        }
+
+        private void lblServoOnOffX_Click(object sender, EventArgs e)
+        {
+            if (AxisHandler.GetAxis(AxisName.X).IsEnable())
+                AxisHandler.GetAxis(AxisName.X).TurnOffServo();
+            else
+                AxisHandler.GetAxis(AxisName.X).TurnOnServo();
+        }
+
         private void lblTargetPositionZ_Click(object sender, EventArgs e)
         {
             double targetPosition = KeyPadHelper.SetLabelDoubleData((Label)sender);
@@ -435,10 +440,10 @@ namespace ATT_UT_Remodeling.UI.Forms
             double targetPosition = TeachingPositionList.Where(x => x.Name == TeachingPositionType.ToString()).First().GetTargetPosition(AxisName.Z0);
 
             double mPos_um = 0.0;
-            if (AlignLafCtrl is NuriOneLAFCtrl nuriOne)
-                mPos_um = AlignLafCtrl.Status.MPosPulse / nuriOne.ResolutionAxisZ;
+            if (LafCtrl is NuriOneLAFCtrl nuriOne)
+                mPos_um = LafCtrl.Status.MPosPulse / nuriOne.ResolutionAxisZ;
             else
-                mPos_um = AlignLafCtrl.Status.MPosPulse;
+                mPos_um = LafCtrl.Status.MPosPulse;
 
             double currentPosition = mPos_um;
 
@@ -449,28 +454,42 @@ namespace ATT_UT_Remodeling.UI.Forms
             else
                 direction = Direction.CCW;
 
-            AlignLafCtrl.SetMotionRelativeMove(direction, Math.Abs(moveAmount));
+            LafCtrl.SetMotionRelativeMove(direction, Math.Abs(moveAmount));
         }
 
         private void lblOriginZ_Click(object sender, EventArgs e)
         {
-            LAFManager.Instance().StartHomeThread("Laf");
+            LAFManager.Instance().StartHomeThread(LafCtrl.Name);
         }
 
-        private void lblAutoFocusOnZ_Click(object sender, EventArgs e)
+        private void lblServoOnZ_Click(object sender, EventArgs e)
         {
-            var status = AlignLafCtrl.Status;
-
-            if (!status.IsAutoFocusOn)
-                LAFManager.Instance().AutoFocusOnOff("Laf", true);
+            LAFManager.Instance().ServoOnOff(LafCtrl.Name, true);
         }
 
-        private void lblAutoFocusOffZ_Click(object sender, EventArgs e)
+        private void lblServoOffZ_Click(object sender, EventArgs e)
         {
-            var status = AlignLafCtrl.Status;
+            LAFManager.Instance().ServoOnOff(LafCtrl.Name, false);
+        }
 
-            if (status.IsAutoFocusOn)
-                LAFManager.Instance().AutoFocusOnOff("Laf", false);
+        private void lblLaserOnOffZ_Click(object sender, EventArgs e)
+        {
+            var status = LafCtrl.Status;
+
+            if (status.IsLaserOn)
+                LAFManager.Instance().LaserOnOff(LafCtrl.Name, false);
+            else
+                LAFManager.Instance().LaserOnOff(LafCtrl.Name, true);
+        }
+
+        private void lblTrackingOnOffZ_Click(object sender, EventArgs e)
+        {
+            var status = LafCtrl.Status;
+
+            if (status.IsTrackingOn)
+                LAFManager.Instance().TrackingOnOff(LafCtrl.Name, false);
+            else
+                LAFManager.Instance().TrackingOnOff(LafCtrl.Name, true);
         }
 
         private void rdoJogSlowMode_CheckedChanged(object sender, EventArgs e)

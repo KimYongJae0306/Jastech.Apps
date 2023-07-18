@@ -446,8 +446,8 @@ namespace ATT_UT_IPAD.Core
             StopAkkonInspTask();
 
             // 조명 off
-            LAFManager.Instance().AutoFocusOnOff("Align", false);
-            LAFManager.Instance().AutoFocusOnOff("Akkon", false);
+            LAFManager.Instance().TrackingOnOff("Align", false);
+            LAFManager.Instance().TrackingOnOff("Akkon", false);
             WriteLog("AutoFocus Off.");
 
             LineCameraManager.Instance().Stop("AlignCamera");
@@ -541,11 +541,11 @@ namespace ATT_UT_IPAD.Core
                     WriteLog("Clear PLC data.");
 
                     // LAF
-                    LAFManager.Instance().AutoFocusOnOff("Align", false);
+                    LAFManager.Instance().TrackingOnOff("Align", false);
                     alignLaf.SetMotionAbsoluteMove(0);
                     WriteLog("Align Laf off.");
 
-                    LAFManager.Instance().AutoFocusOnOff("Akkon", false);
+                    LAFManager.Instance().TrackingOnOff("Akkon", false);
                     alignLaf.SetMotionAbsoluteMove(0);
                     WriteLog("Akkon Laf off.");
 
@@ -583,10 +583,10 @@ namespace ATT_UT_IPAD.Core
                     AppsInspResult.StartInspTime = DateTime.Now;
                     AppsInspResult.Cell_ID = DateTime.Now.ToString("yyyyMMddHHmmss");
 
-                    LAFManager.Instance().AutoFocusOnOff("Align", true);
+                    LAFManager.Instance().TrackingOnOff("Align", true);
                     WriteLog("Align laf A/F on.");
 
-                    LAFManager.Instance().AutoFocusOnOff("Akkon", true);
+                    LAFManager.Instance().TrackingOnOff("Akkon", true);
                     WriteLog("Akkon laf A/F on.");
 
                     SeqStep = SeqStep.SEQ_SCAN_START;

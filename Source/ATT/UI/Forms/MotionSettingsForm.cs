@@ -38,14 +38,16 @@ namespace ATT.UI.Forms
                 return cp;
             }
         }
+        #endregion
 
+        #region 속성
         private TeachingPositionListControl TeachingPositionListControl { get; set; } = new TeachingPositionListControl();
 
         private List<TeachingInfo> TeachingPositionList { get; set; } = null;
 
         private AxisHandler AxisHandler { get; set; } = null;
 
-        private LAFCtrl LAFCtrl { get; set; } = null;
+        private LAFCtrl LafCtrl { get; set; } = null;
 
         private MotionJogXYControl MotionJogXYControl { get; set; } = new MotionJogXYControl() { Dock = DockStyle.Fill };
 
@@ -62,9 +64,7 @@ namespace ATT.UI.Forms
         private MotionParameterVariableControl YVariableControl = new MotionParameterVariableControl();
 
         private MotionParameterVariableControl ZVariableControl = new MotionParameterVariableControl();
-        #endregion
-
-        #region 속성
+        
         public InspModelService InspModelService { get; set; } = null;
 
         public UnitName UnitName { get; set; } = UnitName.Unit0;
@@ -200,7 +200,7 @@ namespace ATT.UI.Forms
 
         private void SetLAFCtrl(LAFCtrl lafCtrl)
         {
-            LAFCtrl = lafCtrl;
+            LafCtrl = lafCtrl;
         }
 
         private void AddJogControl()
@@ -209,7 +209,7 @@ namespace ATT.UI.Forms
             MotionJogXYControl.SetAxisHanlder(AxisHandler);
 
             pnlLAFJog.Controls.Add(LAFJogControl);
-            LAFJogControl.SetSelectedLafCtrl(LAFCtrl);
+            LAFJogControl.SetSelectedLafCtrl(LafCtrl);
         }
 
         private void AddCommonControl()
@@ -314,13 +314,13 @@ namespace ATT.UI.Forms
 
         private void UpdateStatusAutoFocusZ()
         {
-            var status = LAFCtrl.Status;
+            var status = LafCtrl.Status;
 
             if (status == null)
                 return;
 
             double mPos_um = 0.0;
-            if (LAFCtrl is NuriOneLAFCtrl nuriOne)
+            if (LafCtrl is NuriOneLAFCtrl nuriOne)
                 mPos_um = status.MPosPulse / nuriOne.ResolutionAxisZ;
             else
                 mPos_um = status.MPosPulse;
@@ -423,6 +423,11 @@ namespace ATT.UI.Forms
             AxisHandler.GetAxis(AxisName.X).StartAbsoluteMove(targetPosition, movingParam);
         }
 
+        private void lblOriginX_Click(object sender, EventArgs e)
+        {
+            AxisHandler.GetAxis(AxisName.X).StartHome();
+        }
+
         private void lblServoOnOffX_Click(object sender, EventArgs e)
         {
             if (AxisHandler.GetAxis(AxisName.X).IsEnable())
@@ -457,6 +462,11 @@ namespace ATT.UI.Forms
             var movingParam = TeachingPositionList.Where(x => x.Name == TeachingPositionType.ToString()).First().GetMovingParams(AxisName.Y);
 
             AxisHandler.GetAxis(AxisName.Y).StartAbsoluteMove(targetPosition, movingParam);
+        }
+
+        private void lblOriginY_Click(object sender, EventArgs e)
+        {
+            AxisHandler.GetAxis(AxisName.Y).StartHome();
         }
 
         private void lblServoOnOffY_Click(object sender, EventArgs e)
@@ -500,10 +510,10 @@ namespace ATT.UI.Forms
             double targetPosition = TeachingPositionList.Where(x => x.Name == TeachingPositionType.ToString()).First().GetTargetPosition(AxisName.Z0);
 
             double mPos_um = 0.0;
-            if (LAFCtrl is NuriOneLAFCtrl nuriOne)
-                mPos_um = LAFCtrl.Status.MPosPulse / nuriOne.ResolutionAxisZ;
+            if (LafCtrl is NuriOneLAFCtrl nuriOne)
+                mPos_um = LafCtrl.Status.MPosPulse / nuriOne.ResolutionAxisZ;
             else
-                mPos_um = LAFCtrl.Status.MPosPulse;
+                mPos_um = LafCtrl.Status.MPosPulse;
 
             double currentPosition = mPos_um;
 
@@ -514,12 +524,42 @@ namespace ATT.UI.Forms
             else 
                 direction = Direction.CCW;
 
-            LAFCtrl.SetMotionRelativeMove(direction, Math.Abs(moveAmount));
+            LafCtrl.SetMotionRelativeMove(direction, Math.Abs(moveAmount));
         }
 
-        private void lblAutoFocusOnOffZ_Click(object sender, EventArgs e)
+        private void lblOriginZ_Click(object sender, EventArgs e)
         {
-            //AppsLAFManager.Instance().AutoFocusOnOff(LAFName.Akkon.ToString(), true);
+            LAFManager.Instance().StartHomeThread(LafCtrl.Name);
+        }
+
+        private void lblServoOnZ_Click(object sender, EventArgs e)
+        {
+            LAFManager.Instance().ServoOnOff(LafCtrl.Name, true);
+        }
+
+        private void lblServoOffZ_Click(object sender, EventArgs e)
+        {
+            LAFManager.Instance().ServoOnOff(LafCtrl.Name, false);
+        }
+
+        private void lblLaserOnOffZ_Click(object sender, EventArgs e)
+        {
+            var status = LafCtrl.Status;
+
+            if (status.IsLaserOn)
+                LAFManager.Instance().LaserOnOff(LafCtrl.Name, false);
+            else
+                LAFManager.Instance().LaserOnOff(LafCtrl.Name, true);
+        }
+
+        private void lblTrackingOnOffZ_Click(object sender, EventArgs e)
+        {
+            var status = LafCtrl.Status;
+
+            if (status.IsTrackingOn)
+                LAFManager.Instance().TrackingOnOff(LafCtrl.Name, false);
+            else
+                LAFManager.Instance().TrackingOnOff(LafCtrl.Name, true);
         }
 
         private void rdoJogSlowMode_CheckedChanged(object sender, EventArgs e)
@@ -590,21 +630,6 @@ namespace ATT.UI.Forms
             LAFJogControl.MoveAmount = pitchZ;
         }
 
-        private void lblOriginZ_Click(object sender, EventArgs e)
-        {
-            LAFManager.Instance().StartHomeThread("Akkon");
-        }
-
-        private void lblOriginX_Click(object sender, EventArgs e)
-        {
-            AxisHandler.GetAxis(AxisName.X).StartHome();
-        }
-
-        private void lblOriginY_Click(object sender, EventArgs e)
-        {
-            AxisHandler.GetAxis(AxisName.Y).StartHome();
-        }
-
         private void MotionSettingsForm_FormClosing(object sender, FormClosingEventArgs e)
         {
             _formTimer.Change(System.Threading.Timeout.Infinite, System.Threading.Timeout.Infinite);
@@ -622,5 +647,7 @@ namespace ATT.UI.Forms
                 CloseEventDelegate();
         }
         #endregion
+
+        
     }
 }

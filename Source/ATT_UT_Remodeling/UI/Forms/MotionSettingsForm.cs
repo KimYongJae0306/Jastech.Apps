@@ -51,7 +51,7 @@ namespace ATT_UT_Remodeling.UI.Forms
 
         private AxisHandler AxisHandler { get; set; } = null;
 
-        private LAFCtrl AlignLafCtrl { get; set; } = null;
+        private LAFCtrl LafCtrl { get; set; } = null;
 
         private LAFCtrl AkkonLafCtrl { get; set; } = null;
 
@@ -156,7 +156,7 @@ namespace ATT_UT_Remodeling.UI.Forms
             var posData = TeachingData.Instance().GetUnit(UnitName.ToString()).GetTeachingInfoList();
             SetTeachingPosition(posData);
 
-            var laf = LAFManager.Instance().GetLAFCtrl("Laf");
+            var laf = LAFManager.Instance().GetLAFCtrl(LafCtrl.Name);
             SetAlignLAFCtrl(laf);
 
             UpdateCommonParam();
@@ -196,7 +196,7 @@ namespace ATT_UT_Remodeling.UI.Forms
 
         private void SetAlignLAFCtrl(LAFCtrl lafCtrl)
         {
-            AlignLafCtrl = lafCtrl;
+            LafCtrl = lafCtrl;
         }
 
         private void SetAkkonLafCtrl(LAFCtrl lafCtrl)
@@ -210,7 +210,7 @@ namespace ATT_UT_Remodeling.UI.Forms
             MotionJogXControl.SetAxisHanlder(AxisHandler);
 
             pnlLAFZ1Jog.Controls.Add(LAFJogZControl);
-            LAFJogZControl.SetSelectedLafCtrl(AlignLafCtrl);
+            LAFJogZControl.SetSelectedLafCtrl(LafCtrl);
         }
 
         private void AddCommonControl()
@@ -253,7 +253,7 @@ namespace ATT_UT_Remodeling.UI.Forms
             }
 
             UpdateStatusMotionX();
-            UpdateStatusAutoFocusZ1();
+            UpdateStatusAutoFocusZ();
             //UpdateStatusAutoFocusZ2();
         }
 
@@ -281,15 +281,15 @@ namespace ATT_UT_Remodeling.UI.Forms
                 lblServoOnOffX.Text = "Off";
         }
 
-        private void UpdateStatusAutoFocusZ1()
+        private void UpdateStatusAutoFocusZ()
         {
-            var status = AlignLafCtrl.Status;
+            var status = LafCtrl.Status;
 
             if (status == null)
                 return;
 
             double mPos_um = 0.0;
-            if (AlignLafCtrl is NuriOneLAFCtrl nuriOne)
+            if (LafCtrl is NuriOneLAFCtrl nuriOne)
                 mPos_um = status.MPosPulse / nuriOne.ResolutionAxisZ;
             else
                 mPos_um = status.MPosPulse;
@@ -313,52 +313,16 @@ namespace ATT_UT_Remodeling.UI.Forms
                 lblSensorZ.BackColor = _nonSelectedColor;
             }
 
-            if (status.IsAutoFocusOn)
-            {
-                lblAutoFocusOnZ.BackColor = _selectedColor;
-                lblAutoFocusOffZ.BackColor = _nonSelectedColor;
-            }
+            if (status.IsLaserOn)
+                lblLaserOnOffZ.Text = "On";
             else
-            {
-                lblAutoFocusOnZ.BackColor = _nonSelectedColor;
-                lblAutoFocusOffZ.BackColor = _selectedColor;
-            }
+                lblLaserOnOffZ.Text = "Off";
+
+            if (status.IsTrackingOn)
+                lblTrackingOnOffZ.Text = "On";
+            else
+                lblTrackingOnOffZ.Text = "Off";
         }
-
-        //private void UpdateStatusAutoFocusZ2()
-        //{
-        //    var status = AkkonLafCtrl.Status;
-
-        //    if (status == null)
-        //        return;
-
-        //    double mPos_um = 0.0;
-        //    if (AkkonLafCtrl is NuriOneLAFCtrl nuriOne)
-        //        mPos_um = status.MPosPulse / nuriOne.ResolutionAxisZ;
-        //    else
-        //        mPos_um = status.MPosPulse;
-
-        //    lblCurrentPositionZ2.Text = mPos_um.ToString("F3");
-        //    lblCurrentCenterOfGravityZ2.Text = status.CenterofGravity.ToString();
-
-        //    if (status.IsNegativeLimit)
-        //        lblSensorZ2.Text = "-";
-        //    else if (status.IsPositiveLimit)
-        //        lblSensorZ2.Text = "+";
-        //    else
-        //        lblSensorZ2.Text = "Done";
-
-        //    if (status.IsAutoFocusOn)
-        //    {
-        //        lblAutoFocusOnZ2.BackColor = _selectedColor;
-        //        lblAutoFocusOffZ2.BackColor = _nonSelectedColor;
-        //    }
-        //    else
-        //    {
-        //        lblAutoFocusOnZ2.BackColor = _nonSelectedColor;
-        //        lblAutoFocusOffZ2.BackColor = _selectedColor;
-        //    }
-        //}
 
         public void UpdateCurrentData()
         {
@@ -491,10 +455,10 @@ namespace ATT_UT_Remodeling.UI.Forms
             double targetPosition = TeachingPositionList.Where(x => x.Name == TeachingPositionType.ToString()).First().GetTargetPosition(AxisName.Z0);
 
             double mPos_um = 0.0;
-            if (AlignLafCtrl is NuriOneLAFCtrl nuriOne)
-                mPos_um = AlignLafCtrl.Status.MPosPulse / nuriOne.ResolutionAxisZ;
+            if (LafCtrl is NuriOneLAFCtrl nuriOne)
+                mPos_um = LafCtrl.Status.MPosPulse / nuriOne.ResolutionAxisZ;
             else
-                mPos_um = AlignLafCtrl.Status.MPosPulse;
+                mPos_um = LafCtrl.Status.MPosPulse;
 
             double currentPosition = mPos_um;
 
@@ -505,28 +469,42 @@ namespace ATT_UT_Remodeling.UI.Forms
             else
                 direction = Direction.CCW;
 
-            AlignLafCtrl.SetMotionRelativeMove(direction, Math.Abs(moveAmount));
+            LafCtrl.SetMotionRelativeMove(direction, Math.Abs(moveAmount));
         }
 
         private void lblOriginZ_Click(object sender, EventArgs e)
         {
-            LAFManager.Instance().StartHomeThread("Laf");
+            LAFManager.Instance().StartHomeThread(LafCtrl.Name);
         }
 
-        private void lblAutoFocusOnZ_Click(object sender, EventArgs e)
+        private void lblServoOnZ_Click(object sender, EventArgs e)
         {
-            var status = AlignLafCtrl.Status;
-
-            if (!status.IsAutoFocusOn)
-                LAFManager.Instance().AutoFocusOnOff("Laf", true);
+            LAFManager.Instance().ServoOnOff(LafCtrl.Name, true);
         }
 
-        private void lblAutoFocusOffZ_Click(object sender, EventArgs e)
+        private void lblServoOffZ_Click(object sender, EventArgs e)
         {
-            var status = AlignLafCtrl.Status;
+            LAFManager.Instance().ServoOnOff(LafCtrl.Name, false);
+        }
 
-            if (status.IsAutoFocusOn)
-                LAFManager.Instance().AutoFocusOnOff("Laf", false);
+        private void lblLaserOnOffZ_Click(object sender, EventArgs e)
+        {
+            var status = LafCtrl.Status;
+
+            if (status.IsLaserOn)
+                LAFManager.Instance().LaserOnOff(LafCtrl.Name, false);
+            else
+                LAFManager.Instance().LaserOnOff(LafCtrl.Name, true);
+        }
+
+        private void lblTrackingOnOffZ_Click(object sender, EventArgs e)
+        {
+            var status = LafCtrl.Status;
+
+            if (status.IsTrackingOn)
+                LAFManager.Instance().TrackingOnOff(LafCtrl.Name, false);
+            else
+                LAFManager.Instance().TrackingOnOff(LafCtrl.Name, true); 
         }
 
         private void rdoJogSlowMode_CheckedChanged(object sender, EventArgs e)
@@ -613,6 +591,9 @@ namespace ATT_UT_Remodeling.UI.Forms
             if (CloseEventDelegate != null)
                 CloseEventDelegate();
         }
+
         #endregion
+
+        
     }
 }

@@ -49,7 +49,7 @@ namespace ATT.UI.Forms
 
         private AxisHandler AxisHandler { get; set; } = null;
 
-        private LAFCtrl LAFCtrl { get; set; } = null;
+        private LAFCtrl LafCtrl { get; set; } = null;
 
         private MotionJogXYControl MotionJogXYControl { get; set; } = new MotionJogXYControl() { Dock = DockStyle.Fill };
 
@@ -194,7 +194,7 @@ namespace ATT.UI.Forms
 
         public void SetLAFCtrl(LAFCtrl lafCtrl)
         {
-            LAFCtrl = lafCtrl;
+            LafCtrl = lafCtrl;
         }
 
         private void AddVariableControl()
@@ -219,7 +219,7 @@ namespace ATT.UI.Forms
             MotionJogXYControl.SetAxisHanlder(AxisHandler);
 
             pnlLAFJog.Controls.Add(LAFJogControl);
-            LAFJogControl.SetSelectedLafCtrl(LAFCtrl);
+            LAFJogControl.SetSelectedLafCtrl(LafCtrl);
         }
 
         private void StartTimer()
@@ -292,13 +292,13 @@ namespace ATT.UI.Forms
 
         private void UpdateStatusAutoFocusZ()
         {
-            var status = LAFCtrl.Status;
+            var status = LafCtrl.Status;
 
             if (status == null)
                 return;
 
             double mPos_um = 0.0;
-            if (LAFCtrl is NuriOneLAFCtrl nuriOne)
+            if (LafCtrl is NuriOneLAFCtrl nuriOne)
                 mPos_um = status.MPosPulse / nuriOne.ResolutionAxisZ;
             else
                 mPos_um = status.MPosPulse;
@@ -393,6 +393,35 @@ namespace ATT.UI.Forms
             TeachingPositionList.Where(x => x.Name == TeachingPositionType.ToString()).First().SetOffset(AxisName.X, offset);
         }
 
+        private void lblCurrentToTargetX_Click(object sender, EventArgs e)
+        {
+            double currentPosition = Convert.ToDouble(lblCurrentPositionX.Text);
+            TeachingPositionList.Where(x => x.Name == TeachingPositionType.ToString()).First().SetTargetPosition(AxisName.X, currentPosition);
+
+            lblTargetPositionX.Text = currentPosition.ToString("F3");
+        }
+
+        private void lblMoveToTargetX_Click(object sender, EventArgs e)
+        {
+            double targetPosition = TeachingPositionList.Where(x => x.Name == TeachingPositionType.ToString()).First().GetTargetPosition(AxisName.X);
+            var movingParam = TeachingPositionList.Where(x => x.Name == TeachingPositionType.ToString()).First().GetMovingParams(AxisName.X);
+
+            AxisHandler.GetAxis(AxisName.X).StartAbsoluteMove(targetPosition, movingParam);
+        }
+
+        private void lblOriginX_Click(object sender, EventArgs e)
+        {
+            AxisHandler.GetAxis(AxisName.X).StartHome();
+        }
+
+        private void lblServoOnOffX_Click(object sender, EventArgs e)
+        {
+            if (AxisHandler.GetAxis(AxisName.X).IsEnable())
+                AxisHandler.GetAxis(AxisName.X).TurnOffServo();
+            else
+                AxisHandler.GetAxis(AxisName.X).TurnOnServo();
+        }
+
         private void lblTargetPositionY_Click(object sender, EventArgs e)
         {
             double targetPosition = KeyPadHelper.SetLabelDoubleData((Label)sender);
@@ -405,16 +434,118 @@ namespace ATT.UI.Forms
             TeachingPositionList.Where(x => x.Name == TeachingPositionType.ToString()).First().SetOffset(AxisName.Y, offset);
         }
 
+        private void lblCurrentToTargetY_Click(object sender, EventArgs e)
+        {
+            double currentPosition = Convert.ToDouble(lblCurrentPositionY.Text);
+            TeachingPositionList.Where(x => x.Name == TeachingPositionType.ToString()).First().SetTargetPosition(AxisName.Y, currentPosition);
+
+            lblTargetPositionY.Text = currentPosition.ToString("F3");
+        }
+
+        private void lblMoveToTargetY_Click(object sender, EventArgs e)
+        {
+            double targetPosition = TeachingPositionList.Where(x => x.Name == TeachingPositionType.ToString()).First().GetTargetPosition(AxisName.Y);
+            var movingParam = TeachingPositionList.Where(x => x.Name == TeachingPositionType.ToString()).First().GetMovingParams(AxisName.Y);
+
+            AxisHandler.GetAxis(AxisName.Y).StartAbsoluteMove(targetPosition, movingParam);
+        }
+
+        private void lblOriginY_Click(object sender, EventArgs e)
+        {
+            AxisHandler.GetAxis(AxisName.Y).StartHome();
+        }
+
+        private void lblServoOnOffY_Click(object sender, EventArgs e)
+        {
+            if (AxisHandler.GetAxis(AxisName.Y).IsEnable())
+                AxisHandler.GetAxis(AxisName.Y).TurnOffServo();
+            else
+                AxisHandler.GetAxis(AxisName.Y).TurnOnServo();
+        }
+
         private void lblTargetPositionZ_Click(object sender, EventArgs e)
         {
             double targetPosition = KeyPadHelper.SetLabelDoubleData((Label)sender);
             TeachingPositionList.Where(x => x.Name == TeachingPositionType.ToString()).First().SetTargetPosition(AxisName.Z0, targetPosition);
         }
 
+        private void lblCurrentToTargetZ_Click(object sender, EventArgs e)
+        {
+            double currentPosition = Convert.ToDouble(lblCurrentPositionZ.Text);
+            TeachingPositionList.Where(x => x.Name == TeachingPositionType.ToString()).First().SetTargetPosition(AxisName.Z0, currentPosition);
+
+            lblTargetPositionZ.Text = currentPosition.ToString("F3");
+        }
+
         private void lblTeachedCenterOfGravityZ_Click(object sender, EventArgs e)
         {
             int centerOfGravity = KeyPadHelper.SetLabelIntegerData((Label)sender);
             TeachingPositionList.Where(x => x.Name == TeachingPositionType.ToString()).First().SetCenterOfGravity(AxisName.Z0, centerOfGravity);
+        }
+
+        private void lblCurrentToTargetCenterOfGravityZ_Click(object sender, EventArgs e)
+        {
+            int targetCenterOfGravity = Convert.ToInt32(lblCurrentCenterOfGravityZ.Text);
+            TeachingPositionList.Where(x => x.Name == TeachingPositionType.ToString()).First().SetCenterOfGravity(AxisName.Z0, targetCenterOfGravity);
+
+            lblTeachedCenterOfGravityZ.Text = targetCenterOfGravity.ToString();
+        }
+
+        private void lblMoveToTargetZ_Click(object sender, EventArgs e)
+        {
+            double targetPosition = TeachingPositionList.Where(x => x.Name == TeachingPositionType.ToString()).First().GetTargetPosition(AxisName.Z0);
+
+            double mPos_um = 0.0;
+            if (LafCtrl is NuriOneLAFCtrl nuriOne)
+                mPos_um = LafCtrl.Status.MPosPulse / nuriOne.ResolutionAxisZ;
+            else
+                mPos_um = LafCtrl.Status.MPosPulse;
+
+            double currentPosition = mPos_um;
+
+            Direction direction = Direction.CCW;
+            double moveAmount = targetPosition - currentPosition;
+            if (moveAmount < 0)
+                direction = Direction.CW;
+            else
+                direction = Direction.CCW;
+
+            LafCtrl.SetMotionRelativeMove(direction, Math.Abs(moveAmount));
+        }
+
+        private void lblOriginZ_Click(object sender, EventArgs e)
+        {
+            LAFManager.Instance().StartHomeThread(LafCtrl.Name);
+        }
+
+        private void lblServoOnZ_Click(object sender, EventArgs e)
+        {
+            LAFManager.Instance().ServoOnOff(LafCtrl.Name, true);
+        }
+
+        private void lblServoOffZ_Click(object sender, EventArgs e)
+        {
+            LAFManager.Instance().ServoOnOff(LafCtrl.Name, false);
+        }
+
+        private void lblLaserOnOffZ_Click(object sender, EventArgs e)
+        {
+            var status = LafCtrl.Status;
+
+            if (status.IsLaserOn)
+                LAFManager.Instance().LaserOnOff(LafCtrl.Name, false);
+            else
+                LAFManager.Instance().LaserOnOff(LafCtrl.Name, true);
+        }
+
+        private void lblTrackingOnOffZ_Click(object sender, EventArgs e)
+        {
+            var status = LafCtrl.Status;
+
+            if (status.IsTrackingOn)
+                LAFManager.Instance().TrackingOnOff(LafCtrl.Name, false);
+            else
+                LAFManager.Instance().TrackingOnOff(LafCtrl.Name, true);
         }
 
         private void rdoJogSlowMode_CheckedChanged(object sender, EventArgs e)
@@ -483,81 +614,6 @@ namespace ATT.UI.Forms
         {
             double pitchZ = KeyPadHelper.SetLabelDoubleData((Label)sender);
             LAFJogControl.MoveAmount = pitchZ;
-        }
-
-        private void lblOriginZ_Click(object sender, EventArgs e)
-        {
-            LAFManager.Instance().StartHomeThread("Akkon");
-        }
-
-        private void lblCurrentToTargetX_Click(object sender, EventArgs e)
-        {
-            double currentPosition = Convert.ToDouble(lblCurrentPositionX.Text);
-            TeachingPositionList.Where(x => x.Name == TeachingPositionType.ToString()).First().SetTargetPosition(AxisName.X, currentPosition);
-
-            lblTargetPositionX.Text = currentPosition.ToString("F3");
-        }
-
-        private void lblCurrentToTargetY_Click(object sender, EventArgs e)
-        {
-            double currentPosition = Convert.ToDouble(lblCurrentPositionY.Text);
-            TeachingPositionList.Where(x => x.Name == TeachingPositionType.ToString()).First().SetTargetPosition(AxisName.Y, currentPosition);
-
-            lblTargetPositionY.Text = currentPosition.ToString("F3");
-        }
-
-        private void lblCurrentToTargetZ_Click(object sender, EventArgs e)
-        {
-            double currentPosition = Convert.ToDouble(lblCurrentPositionZ.Text);
-            TeachingPositionList.Where(x => x.Name == TeachingPositionType.ToString()).First().SetTargetPosition(AxisName.Z0, currentPosition);
-
-            lblTargetPositionZ.Text = currentPosition.ToString("F3");
-        }
-
-        private void lblCurrentToTargetCenterOfGravityZ_Click(object sender, EventArgs e)
-        {
-            int targetCenterOfGravity = Convert.ToInt32(lblCurrentCenterOfGravityZ.Text);
-            TeachingPositionList.Where(x => x.Name == TeachingPositionType.ToString()).First().SetCenterOfGravity(AxisName.Z0, targetCenterOfGravity);
-
-            lblTeachedCenterOfGravityZ.Text = targetCenterOfGravity.ToString();
-        }
-
-        private void lblMoveToTargetX_Click(object sender, EventArgs e)
-        {
-            double targetPosition = TeachingPositionList.Where(x => x.Name == TeachingPositionType.ToString()).First().GetTargetPosition(AxisName.X);
-            var movingParam = TeachingPositionList.Where(x => x.Name == TeachingPositionType.ToString()).First().GetMovingParams(AxisName.X);
-
-            AxisHandler.GetAxis(AxisName.X).StartAbsoluteMove(targetPosition, movingParam);
-        }
-
-        private void lblMoveToTargetY_Click(object sender, EventArgs e)
-        {
-            double targetPosition = TeachingPositionList.Where(x => x.Name == TeachingPositionType.ToString()).First().GetTargetPosition(AxisName.Y);
-            var movingParam = TeachingPositionList.Where(x => x.Name == TeachingPositionType.ToString()).First().GetMovingParams(AxisName.Y);
-
-            AxisHandler.GetAxis(AxisName.Y).StartAbsoluteMove(targetPosition, movingParam);
-        }
-
-        private void lblMoveToTargetZ_Click(object sender, EventArgs e)
-        {
-            double targetPosition = TeachingPositionList.Where(x => x.Name == TeachingPositionType.ToString()).First().GetTargetPosition(AxisName.Z0);
-
-            double mPos_um = 0.0;
-            if (LAFCtrl is NuriOneLAFCtrl nuriOne)
-                mPos_um = LAFCtrl.Status.MPosPulse / nuriOne.ResolutionAxisZ;
-            else
-                mPos_um = LAFCtrl.Status.MPosPulse;
-
-            double currentPosition = mPos_um;
-
-            Direction direction = Direction.CCW;
-            double moveAmount = targetPosition - currentPosition;
-            if (moveAmount < 0)
-                direction = Direction.CW;
-            else
-                direction = Direction.CCW;
-
-            LAFCtrl.SetMotionRelativeMove(direction, Math.Abs(moveAmount));
         }
 
         private void MotionPopupForm_FormClosing(object sender, FormClosingEventArgs e)
