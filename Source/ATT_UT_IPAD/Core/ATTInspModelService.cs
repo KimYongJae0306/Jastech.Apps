@@ -17,6 +17,8 @@ namespace ATT_UT_IPAD.Core
 {
     public class ATTInspModelService : Jastech.Framework.Structure.Service.InspModelService
     {
+        private object _lock { get; set; } = new object();
+
         public override InspModel New()
         {
             return new AppsInspModel();
@@ -220,6 +222,7 @@ namespace ATT_UT_IPAD.Core
             AppsInspModel attInspModel = model as AppsInspModel;
 
             JsonConvertHelper.Save(filePath, attInspModel);
+            SaveAkkonROI(filePath, attInspModel);
 
             // Vpp 저장
             foreach (var unit in attInspModel.GetUnitList())
@@ -254,6 +257,43 @@ namespace ATT_UT_IPAD.Core
             AppsInspModel attInspModel = model as AppsInspModel;
 
             JsonConvertHelper.Save(filePath, attInspModel);
+            SaveAkkonROI(filePath, attInspModel);
+        }
+
+        private void SaveAkkonROI(string filePath, AppsInspModel inspModel)
+        {
+            string path = Path.GetDirectoryName(filePath);
+            string modelName = inspModel.Name;
+
+            lock (_lock)
+            {
+                for (int unitIndex = 0; unitIndex < inspModel.GetUnitList().Count; unitIndex++)
+                {
+                    Unit unit = inspModel.UnitList[unitIndex];
+                    for (int tabNo = 0; tabNo < unit.GetTabList().Count; tabNo++)
+                    {
+                        string fileName = string.Format("{0}_Unit{1}_Tab{2}_AkkonROI.txt", modelName, unitIndex, tabNo);
+                        string savePath = Path.Combine(path, fileName);
+
+                        Tab tab = unit.GetTab(tabNo);
+                        var akkonROIList = tab.AkkonParam.GetAkkonROIList();
+
+                        using (StreamWriter streamWriter = new StreamWriter(savePath, true))
+                        {
+                            foreach (var roi in akkonROIList)
+                            {
+                                string message = string.Format("{0} {1} {2} {3} {4} {5} {6} {7}",
+                                                            (int)roi.LeftTopX, (int)roi.LeftTopY,
+                                                            (int)roi.RightTopX, (int)roi.RightTopY,
+                                                            (int)roi.RightBottomX, (int)roi.RightBottomY,
+                                                            (int)roi.LeftBottomX, (int)roi.LeftBottomY);
+
+                                streamWriter.WriteLine(message);
+                            }
+                        }
+                    }
+                }
+            }
         }
     }
 }

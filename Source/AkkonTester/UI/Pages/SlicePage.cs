@@ -572,8 +572,12 @@ namespace AkkonTester.UI.Pages
             param.ImageFilterParam.CurrentFilterName = curFilterName;
             param.ImageFilterParam.GetImageFilter(curFilterName).Sigma = Convert.ToDouble(txtSigma.Text);
             param.ImageFilterParam.GetImageFilter(curFilterName).ScaleFactor = Convert.ToDouble(txtScaleFactor.Text);
-            param.ImageFilterParam.GetImageFilter(curFilterName).GusWidth = Convert.ToInt16(txtGusWidth.Text);
-            param.ImageFilterParam.GetImageFilter(curFilterName).LogWidth = Convert.ToInt16(txtLogWidth.Text);
+
+            int.TryParse(txtGusWidth.Text, out int gusWidth);
+            param.ImageFilterParam.GetImageFilter(curFilterName).GusWidth = gusWidth;
+
+            int.TryParse(txtLogWidth.Text, out int logWidth);
+            param.ImageFilterParam.GetImageFilter(curFilterName).LogWidth = logWidth;
 
             param.ImageFilterParam.FilterDir = (AkkonFilterDir)cbxFilterDirection.SelectedIndex;
             param.ImageFilterParam.Mode = (AkkonThMode)cbxThresholdMode.SelectedIndex;

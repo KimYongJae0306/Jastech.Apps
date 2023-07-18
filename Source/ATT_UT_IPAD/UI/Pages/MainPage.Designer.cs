@@ -134,6 +134,7 @@
             // lblStop
             // 
             this.lblStop.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblStop.Image = global::ATT_UT_IPAD.Properties.Resources.Stop_White;
             this.lblStop.Location = new System.Drawing.Point(0, 0);
             this.lblStop.Margin = new System.Windows.Forms.Padding(0);
             this.lblStop.Name = "lblStop";
@@ -194,8 +195,8 @@
             // 
             // MainPage
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
             this.Controls.Add(this.tableLayoutPanel2);
             this.Margin = new System.Windows.Forms.Padding(0);
