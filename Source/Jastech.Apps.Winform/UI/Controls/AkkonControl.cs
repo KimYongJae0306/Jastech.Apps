@@ -67,13 +67,6 @@ namespace Jastech.Apps.Winform.UI.Controls
         public double CalcResolution { get; set; } = 0.0; // ex :  /camera.PixelResolution_mm(0.0035) / camera.LensScale(5) / 1000;
         #endregion
 
-        #region 이벤트
-
-        #endregion
-
-        #region 델리게이트
-        #endregion
-
         #region 생성자
         public AkkonControl()
         {

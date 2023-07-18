@@ -45,13 +45,13 @@ namespace Jastech.Apps.Winform.UI.Forms
 
         public string TitleCameraName { get; set; } = "";
 
-        private CogTeachingDisplayControl Display { get; set; } = new CogTeachingDisplayControl();
+        private CogTeachingDisplayControl Display { get; set; } = null;
 
-        private PreAlignControl PreAlignControl { get; set; } = new PreAlignControl() { Dock = DockStyle.Fill };
+        private PreAlignControl PreAlignControl { get; set; } = null;
 
-        private VisionCalibrationControl VisionCalibrationControl { get; set; } = new VisionCalibrationControl() { Dock = DockStyle.Fill };
+        private VisionCalibrationControl VisionCalibrationControl { get; set; } = null;
 
-        private LightControl LightControl { get; set; } = new LightControl() { Dock = DockStyle.Fill };
+        private LightControl LightControl { get; set; } = null;
 
         public string TeachingImagePath { get; set; }
 
@@ -83,36 +83,39 @@ namespace Jastech.Apps.Winform.UI.Forms
         private void PreAlignTeachingForm_Load(object sender, EventArgs e)
         {
             TeachingData.Instance().UpdateTeachingData();
-
             CurrentUnit = TeachingData.Instance().GetUnit(UnitName.ToString());
 
             AddControl();
             InitializeUI();
+
+            // TeachingUIManager 참조
+            TeachingUIManager.Instance().SetDisplay(Display.GetDisplay());
+            AreaCamera.OnImageGrabbed += AreaCamera_OnImageGrabbed;
+          
             SelectPage(DisplayType.PreAlign);
         }
 
         private void AddControl()
         {
-            // Display Control
             Display = new CogTeachingDisplayControl();
             Display.Dock = DockStyle.Fill;
-
-            //Event 연결
             Display.DeleteEventHandler += Display_DeleteEventHandler;
             pnlDisplay.Controls.Add(Display);
 
-            // 조명
-            var unit = TeachingData.Instance().GetUnit(UnitName.ToString());
-            LightControl.SetParam(DeviceManager.Instance().LightCtrlHandler, unit.PreAlign.LeftLightParam);
+            LightControl = new LightControl();
+            LightControl.Dock = DockStyle.Fill;
+            LightControl.SetParam(DeviceManager.Instance().LightCtrlHandler, CurrentUnit.PreAlign.LeftLightParam);
             pnlLight.Controls.Add(LightControl);
 
-            // TeachingUIManager 참조
-            TeachingUIManager.Instance().SetDisplay(Display.GetDisplay());
-
-            if (AreaCamera != null)
-                AreaCamera.OnImageGrabbed += AreaCamera_OnImageGrabbed;
-
+         
+            PreAlignControl = new PreAlignControl();
+            PreAlignControl.Dock = DockStyle.Fill;
             PreAlignControl.MarkDirectionChanged += MarkDirectionChangedEvent;
+            pnlTeach.Controls.Add(PreAlignControl);
+
+            VisionCalibrationControl = new VisionCalibrationControl();
+            VisionCalibrationControl.Dock = DockStyle.Fill;
+            pnlTeach.Controls.Add(VisionCalibrationControl);
         }
 
         private void AreaCamera_OnImageGrabbed(Camera camera)
@@ -177,13 +180,12 @@ namespace Jastech.Apps.Winform.UI.Forms
 
         private void UpdateLightParam()
         {
-            var unit = TeachingData.Instance().GetUnit(UnitName.ToString());
             if (btnPreAlign.BackColor == _selectedColor)
             {
                 if (_curMark == MarkDirection.Left)
-                    LightControl.UpdateSetParam(unit.PreAlign.LeftLightParam);
+                    LightControl.UpdateSetParam(CurrentUnit.PreAlign.LeftLightParam);
                 else if (_curMark == MarkDirection.Right)
-                    LightControl.UpdateSetParam(unit.PreAlign.RightLightParam);
+                    LightControl.UpdateSetParam(CurrentUnit.PreAlign.RightLightParam);
             }
             if(btnCalibration.BackColor == _selectedColor)
             {

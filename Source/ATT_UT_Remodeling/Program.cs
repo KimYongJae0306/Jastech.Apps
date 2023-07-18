@@ -58,7 +58,6 @@ namespace ATT_UT_Remodeling
 
                 var mainForm = new MainForm();
                 SystemManager.Instance().Initialize(mainForm);
-                PlcControlManager.Instance().Initialize();
                 Application.Run(mainForm);
             }
             else

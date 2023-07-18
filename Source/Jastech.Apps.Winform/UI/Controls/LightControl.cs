@@ -33,7 +33,7 @@ namespace Jastech.Apps.Winform.UI.Controls
         private void LightControl_Load(object sender, EventArgs e)
         {
             InitializeData();
-            //UpdateLightValue();
+            UpdateLightValue();
         }
 
         public void SetParam(LightCtrlHandler lightCtrlHandler, LightParameter lightParam)

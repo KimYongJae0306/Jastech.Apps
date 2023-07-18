@@ -31,28 +31,22 @@ namespace Jastech.Framework.Winform.Forms
         private string _selectedPagePath { get; set; } = string.Empty;
 
         private string _selectedDirectoryFullPath { get; set; } = string.Empty;
+        #endregion
 
+        #region 속성
         private LogControl LogControl { get; set; } = new LogControl() { Dock = DockStyle.Fill };
 
         private CogDisplayControl CogDisplayControl { get; set; } = new CogDisplayControl() { Dock = DockStyle.Fill };
 
-        private AlignTrendControl AlignTrendControl { get; set; } = new AlignTrendControl() { Dock= DockStyle.Fill };
+        private AlignTrendControl AlignTrendControl { get; set; } = new AlignTrendControl() { Dock = DockStyle.Fill };
 
-        private AkkonTrendControl AkkonTrendControl { get; set; } = new AkkonTrendControl() { Dock= DockStyle.Fill };
+        private AkkonTrendControl AkkonTrendControl { get; set; } = new AkkonTrendControl() { Dock = DockStyle.Fill };
 
         private UPHControl UPHControl { get; set; } = new UPHControl() { Dock = DockStyle.Fill };
 
-        private ProcessCapabilityIndexControl ProcessCapabilityControl { get; set; } = new ProcessCapabilityIndexControl() { Dock= DockStyle.Fill };
+        private ProcessCapabilityIndexControl ProcessCapabilityControl { get; set; } = new ProcessCapabilityIndexControl() { Dock = DockStyle.Fill };
 
-        #endregion
-
-        #region 속성
-        #endregion
-
-        #region 이벤트
-        #endregion
-
-        #region 델리게이트
+        public DateTime DateTime { get; set; } = DateTime.Now;
         #endregion
 
         #region 생성자
@@ -221,7 +215,6 @@ namespace Jastech.Framework.Winform.Forms
             }
         }
 
-        public DateTime DateTime { get; set; } = DateTime.Now;
         private void SetSelectionStartDate(DateTime date)
         {
             DateTime = date;

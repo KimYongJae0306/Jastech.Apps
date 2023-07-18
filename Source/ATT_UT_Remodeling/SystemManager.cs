@@ -4,6 +4,7 @@ using Jastech.Apps.Structure.Data;
 using Jastech.Apps.Winform;
 using Jastech.Apps.Winform.Core;
 using Jastech.Apps.Winform.Service;
+using Jastech.Apps.Winform.Service.Plc;
 using Jastech.Apps.Winform.Service.Plc.Maps;
 using Jastech.Framework.Config;
 using Jastech.Framework.Device.Cameras;
@@ -73,29 +74,47 @@ namespace ATT_UT_Remodeling
 
             int percent = 0;
             DoReportProgress(reportProgress, percent, "Initialize Device");
+
             DeviceManager.Instance().Initialized += SystemManager_Initialized;
             DeviceManager.Instance().Initialize(ConfigSet.Instance());
+            PlcControlManager.Instance().Initialize();
+
+            percent = 50;
+            DoReportProgress(reportProgress, percent, "Create Axis Info");
 
             CreateAxisHanlder();
 
+            percent = 80;
+            DoReportProgress(reportProgress, percent, "Initialize Manager.");
             LAFManager.Instance().Initialize();
             LineCameraManager.Instance().Initialize();
             AreaCameraManager.Instance().Initialize();
+           
+            var areaCamera = AreaCameraManager.Instance().GetAppsCamera("PreAlign");
+            if (areaCamera != null)
+                PlcScenarioManager.Instance().VisionXCalibration.SetCamera(areaCamera);
 
-            percent += 30;
+            var axisHandler = MotionManager.Instance().GetAxisHandler(AxisHandlerName.Handler0);
+            if (axisHandler != null)
+                PlcScenarioManager.Instance().VisionXCalibration.SetAxisHandler(axisHandler);
 
             if (ConfigSet.Instance().Operation.LastModelName != "")
             {
+                percent = 90;
+                DoReportProgress(reportProgress, percent, "Open Last Model.");
+
                 string filePath = Path.Combine(ConfigSet.Instance().Path.Model,
                                     ConfigSet.Instance().Operation.LastModelName,
                                     InspModel.FileName);
                 if (File.Exists(filePath))
                 {
                     DoReportProgress(reportProgress, percent, "Model Loading");
-                    //ModelManager.Instance().CurrentModel = _mainForm.ATTInspModelService.Load(filePath);
+                    ModelManager.Instance().CurrentModel = _mainForm.ATTInspModelService.Load(filePath);
                 }
             }
 
+            percent = 100;
+            DoReportProgress(reportProgress, percent, "Initialize Completed.");
             return true;
         }
 

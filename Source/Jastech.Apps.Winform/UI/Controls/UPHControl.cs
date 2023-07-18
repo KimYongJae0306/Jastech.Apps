@@ -14,17 +14,10 @@ namespace Jastech.Apps.Winform.UI.Controls
         private Color _selectedColor;
 
         private Color _nonSelectedColor;
-
-        private UPHData UPHData { get; set; } = new UPHData();
         #endregion
 
         #region 속성
-        #endregion
-
-        #region 이벤트
-        #endregion
-
-        #region 델리게이트
+        private UPHData UPHData { get; set; } = new UPHData();
         #endregion
 
         #region 생성자
@@ -373,11 +366,6 @@ namespace Jastech.Apps.Winform.UI.Controls
         public int[] NGCount { get; set; } = new int[HOUR];
 
         public int[] FailCount { get; set; } = new int[HOUR];
-
-
-
-
-
 
         public int[] MarkNG { get; set; } = new int[HOUR];
                   

@@ -31,7 +31,7 @@ namespace Jastech.Apps.Winform.UI.Controls
         #endregion
 
         #region 속성
-        private CogCaliperParamControl CogCaliperParamControl { get; set; } = new CogCaliperParamControl();
+        private CogCaliperParamControl CogCaliperParamControl { get; set; } = null;
 
         private Tab CurrentTab { get; set; } = null;
 
@@ -42,12 +42,6 @@ namespace Jastech.Apps.Winform.UI.Controls
         private MainAlgorithmTool AlgorithmTool = new MainAlgorithmTool();
 
         public double Resolution_um { get; set; } = 1.0;
-        #endregion
-
-        #region 이벤트
-        #endregion
-
-        #region 델리게이트
         #endregion
 
         #region 생성자
@@ -61,11 +55,16 @@ namespace Jastech.Apps.Winform.UI.Controls
         private void AlignControl_Load(object sender, EventArgs e)
         {
             AddControl();
-            InitializeUI();
+            InitializeLabelColor();
+            
+            UpdateSelectedAlignName(lblLeftFPCX);
+            UpdateParam(ATTTabAlignName.LeftFPCX);
+            UpdateParam(CurrentAlignName);
         }
 
         private void AddControl()
         {
+            CogCaliperParamControl = new CogCaliperParamControl();
             CogCaliperParamControl.Dock = DockStyle.Fill;
             CogCaliperParamControl.GetOriginImageHandler += AlignControl_GetOriginImageHandler;
             CogCaliperParamControl.TestActionEvent += AlignControl_TestActionEvent;
@@ -75,12 +74,6 @@ namespace Jastech.Apps.Winform.UI.Controls
         private void AlignControl_TestActionEvent()
         {
             Inspection();
-        }
-
-        private void InitializeUI()
-        {
-            InitializeLabelColor();
-            InitializeAlignName();
         }
 
         private ICogImage AlignControl_GetOriginImageHandler()
@@ -94,19 +87,13 @@ namespace Jastech.Apps.Winform.UI.Controls
                 return;
 
             CurrentTab = tab;
-            UpdateParam(CurrentAlignName);
+           
         }
 
         private void InitializeLabelColor()
         {
             _selectedColor = Color.FromArgb(104, 104, 104);
             _nonSelectedColor = Color.FromArgb(52, 52, 52);
-        }
-
-        private void InitializeAlignName()
-        {
-            UpdateSelectedAlignName(lblLeftFPCX);
-            UpdateParam(ATTTabAlignName.LeftFPCX);
         }
 
         private void UpdateParam(ATTTabAlignName alignName)
@@ -450,7 +437,6 @@ namespace Jastech.Apps.Winform.UI.Controls
             if (CurrentTab != null)
                 CurrentTab.AlignSpec.LeftSpecY_um = specY;
         }
-        #endregion
 
         private void lblRightAlignSpecX_Click(object sender, EventArgs e)
         {
@@ -581,5 +567,6 @@ namespace Jastech.Apps.Winform.UI.Controls
 
             return value_um;
         }
+        #endregion
     }
 }

@@ -9,21 +9,12 @@ namespace ATT_UT_Remodeling.UI.Controls
 {
     public partial class AlignViewerControl : UserControl
     {
-        #region 필드
-        #endregion
-
         #region 속성
-        public AlignResultDisplayControl AlignResultDisplayControl { get; set; } = null; //= new AlignResultDisplayControl() { Dock = DockStyle.Fill };
+        public AlignResultDisplayControl AlignResultDisplayControl { get; set; } = null;
 
-        public AlignResultDataControl AlignResultDataControl { get; set; } = null; //new AlignResultDataControl() { Dock = DockStyle.Fill };
+        public AlignResultDataControl AlignResultDataControl { get; set; } = null;
 
-        public ResultChartControl AlignResultChartControl { get; set; } = null; //new ResultChartControl() { Dock = DockStyle.Fill };
-        #endregion
-
-        #region 이벤트
-        #endregion
-
-        #region 델리게이트
+        public ResultChartControl AlignResultChartControl { get; set; } = null;
         #endregion
 
         #region 생성자

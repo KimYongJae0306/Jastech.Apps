@@ -256,7 +256,6 @@ namespace Jastech.Apps.Winform.UI.Forms
 
             return modelList;
         }
-        #endregion
 
         private void gvModelList_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
         {
@@ -272,5 +271,6 @@ namespace Jastech.Apps.Winform.UI.Forms
         {
             this.Close();
         }
+        #endregion
     }
 }

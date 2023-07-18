@@ -27,7 +27,7 @@ namespace ATT_UT_Remodeling
     public partial class MainForm : Form
     {
         #region 필드
-        private MainPage MainPageControl { get; set; } = new MainPage();
+        private MainPage MainPageControl { get; set; } = null;
 
         private DataPage DataPageControl { get; set; } = new DataPage();
 
@@ -66,6 +66,9 @@ namespace ATT_UT_Remodeling
         {
             AddControls();
             SelectMainPage();
+            TeachingPageControl.SetInspModelService(ATTInspModelService);
+            DataPageControl.SetInspModelService(ATTInspModelService);
+            DataPageControl.ApplyModelEventHandler += ModelPageControl_ApplyModelEventHandler;
 
             ModelManager.Instance().CurrentModelChangedEvent += MainForm_CurrentModelChangedEvent;
             PlcScenarioManager.Instance().Initialize(ATTInspModelService);
@@ -74,26 +77,15 @@ namespace ATT_UT_Remodeling
 
             PlcControlManager.Instance().WritePcCommand(PcCommand.ServoOn_1);
 
-            var areaCamera = AreaCameraManager.Instance().GetAppsCamera("PreAlign");
-            if (areaCamera != null)
-            {
-                PlcScenarioManager.Instance().VisionXCalibration.SetCamera(areaCamera);
-            }
-
-            var axisHandler = MotionManager.Instance().GetAxisHandler(AxisHandlerName.Handler0);
-            if (axisHandler != null)
-            {
-                PlcScenarioManager.Instance().VisionXCalibration.SetAxisHandler(axisHandler);
-            }
-
             if (ModelManager.Instance().CurrentModel != null)
             {
                 lblCurrentModel.Text = ModelManager.Instance().CurrentModel.Name;
                 ModelManager.Instance().ApplyChangedEvent();
             }
 
-            //tmrMainForm.Start();
+            tmrMainForm.Start();
             SystemManager.Instance().AddSystemLogMessage("Start program.");
+
         }
 
         private void MainForm_PreAlignRunnerHandler(bool tt)
@@ -110,15 +102,22 @@ namespace ATT_UT_Remodeling
         {
             //// Page Control List
             PageControlList = new List<UserControl>();
+
+            MainPageControl = new MainPage();
+            MainPageControl.Dock = DockStyle.Fill;
             PageControlList.Add(MainPageControl);
+
+            DataPageControl = new DataPage();
+            DataPageControl.Dock = DockStyle.Fill;
             PageControlList.Add(DataPageControl);
+
+            LogPageControl = new LogPage();
+            LogPageControl.Dock = DockStyle.Fill;
             PageControlList.Add(LogPageControl);
+
+            TeachingPageControl = new TeachingPage();
+            TeachingPageControl.Dock = DockStyle.Fill;
             PageControlList.Add(TeachingPageControl);
-
-            TeachingPageControl.SetInspModelService(ATTInspModelService);
-
-            DataPageControl.SetInspModelService(ATTInspModelService);
-            DataPageControl.ApplyModelEventHandler += ModelPageControl_ApplyModelEventHandler;
 
             // Button List
             PageLabelList = new List<Label>();

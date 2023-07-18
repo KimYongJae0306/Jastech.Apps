@@ -64,13 +64,13 @@ namespace Jastech.Framework.Winform.Forms
 
         public double Resolution { get; set; }
 
-        private CogTeachingDisplayControl Display { get; set; } = new CogTeachingDisplayControl();
+        private CogTeachingDisplayControl Display { get; set; } = null;
 
-        private AlignControl AlignControl { get; set; } = new AlignControl() { Dock = DockStyle.Fill };
+        private AlignControl AlignControl { get; set; } = null;
 
-        private AkkonControl AkkonControl { get; set; } = new AkkonControl() { Dock = DockStyle.Fill };
+        private AkkonControl AkkonControl { get; set; } = null;
 
-        private MarkControl MarkControl { get; set; } = new MarkControl() { Dock = DockStyle.Fill };
+        private MarkControl MarkControl { get; set; } = null;
 
         private AlgorithmTool Algorithm = new AlgorithmTool();
 
@@ -93,6 +93,8 @@ namespace Jastech.Framework.Winform.Forms
 
         #region 델리게이트
         public delegate void OpenMotionPopupDelegate(UnitName unitName);
+
+        public delegate void UpdateDisplayDele(ICogImage cogImage);
         #endregion
 
         #region 생성자
@@ -110,9 +112,9 @@ namespace Jastech.Framework.Winform.Forms
             TeachingData.Instance().UpdateTeachingData();
 
             TeachingTabList = TeachingData.Instance().GetUnit(UnitName.ToString()).GetTabList();
+            InitializeTabComboBox();
             AddControl();
             InitailizeUI();
-            InitializeTabComboBox();
 
             _isLoading = false;
 
@@ -134,7 +136,7 @@ namespace Jastech.Framework.Winform.Forms
             UpdateDisplayImage(tabNo);
         }
 
-        public delegate void UpdateDisplayDele(ICogImage cogImage);
+    
         private void UpdateDisplay(ICogImage cogImage)
         {
             if (this.InvokeRequired)
@@ -182,14 +184,29 @@ namespace Jastech.Framework.Winform.Forms
             // TeachingUIManager 참조
             TeachingUIManager.Instance().SetDisplay(Display.GetDisplay());
 
+            AlignControl = new AlignControl();
+            AlignControl.Dock = DockStyle.Fill;
+            AlignControl.SetParams(CurrentTab);
+            pnlTeach.Controls.Add(AlignControl);
+
+            AkkonControl = new AkkonControl();
+            AkkonControl.Dock = DockStyle.Fill;
+            AkkonControl.SetParams(CurrentTab);
+            pnlTeach.Controls.Add(AkkonControl);
+
+            MarkControl = new MarkControl();
+            MarkControl.Dock = DockStyle.Fill;
+            MarkControl.SetParams(CurrentTab);
+            pnlTeach.Controls.Add(MarkControl);
+
             // Teaching Item
-            if (LineCamera.Camera.Name == "AlignCamera")
+            if (LineCamera.Camera.Name.ToUpper().Contains("ALIGN"))
             {
                 tlpTeachingItems.Controls.Add(btnAlign, 2, 0);
                 btnAlign.Visible = true;
                 btnAkkon.Visible = false;
             }
-            else if (LineCamera.Camera.Name == "AkkonCamera")
+            else if (LineCamera.Camera.Name.ToUpper().Contains("AKKON"))
             {
                 tlpTeachingItems.Controls.Add(btnAkkon, 2, 0);
                 btnAlign.Visible = false;

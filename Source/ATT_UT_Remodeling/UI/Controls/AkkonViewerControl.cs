@@ -9,21 +9,12 @@ namespace ATT_UT_Remodeling.UI.Controls
 {
     public partial class AkkonViewerControl : UserControl
     {
-        #region 필드
-        #endregion
-
         #region 속성
-        public AkkonResultDisplayControl AkkonResultDisplayControl { get; set; } = null;// new AkkonResultDisplayControl() { Dock = DockStyle.Fill };
+        public AkkonResultDisplayControl AkkonResultDisplayControl { get; set; } = null;
 
-        public AkkonResultDataControl AkkonResultDataControl { get; set; } = null;// new AkkonResultDataControl() { Dock = DockStyle.Fill };
+        public AkkonResultDataControl AkkonResultDataControl { get; set; } = null;
 
-        public ResultChartControl AkkonResultChartControl { get; set; } = null; // new ResultChartControl() { Dock = DockStyle.Fill };
-        #endregion
-
-        #region 이벤트
-        #endregion
-
-        #region 델리게이트
+        public ResultChartControl AkkonResultChartControl { get; set; } = null;
         #endregion
 
         #region 생성자

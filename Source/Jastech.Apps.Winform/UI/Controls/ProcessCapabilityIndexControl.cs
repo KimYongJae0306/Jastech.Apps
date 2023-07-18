@@ -26,25 +26,20 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         private AlignResultType _alignResultType { get; set; } = AlignResultType.Lx;
 
-        public DateTime StartDate { get; set; } = DateTime.Now;
-
-        private ResultChartControl ChartControl = new ResultChartControl() { Dock = DockStyle.Fill };
+        private DateTime _startDate { get; set; } = DateTime.Now;
 
         private List<Label> _tabLabelList = new List<Label>();
-        #endregion
-
-        #region 속성
-        #endregion
-
-        #region 이벤트
-        #endregion
-
-        #region 델리게이트
-        #endregion
 
         private DataTable _resultDataTable = new DataTable();
 
+        private DataTable _bindingDataTable = new DataTable();
+        #endregion
+
+        #region 속성
+        private ResultChartControl ChartControl = null;
+
         private ProcessCapabilityIndex ProcessCapabilityIndex { get; set; } = new ProcessCapabilityIndex();
+        #endregion
 
         #region 생성자
         public ProcessCapabilityIndexControl()
@@ -62,6 +57,8 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         private void AddControl()
         {
+            ChartControl = new ResultChartControl();
+            ChartControl.Dock = DockStyle.Fill;
             ChartControl.ChartType = ResultChartControl.InspChartType.Align;
             pnlChart.Controls.Add(ChartControl);
         }
@@ -76,11 +73,6 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         public void MakeTabListControl(int tabCount)
         {
-            //int controlWidth = 120;
-            //int controlHeight = 60;
-            //Point point = new Point(160, 0);
-            //int interval = 20;
-
             for (int tabIndex = 0; tabIndex < tabCount; tabIndex++)
             {
                 Label lbl = new Label();
@@ -90,13 +82,10 @@ namespace Jastech.Apps.Winform.UI.Controls
                 lbl.TextAlign = ContentAlignment.MiddleCenter;
                 lbl.Text = "Tab" + (tabIndex + 1);
                 lbl.Margin = new Padding(0);
-                //lbl.Size = new Size(controlWidth, controlHeight);
                 lbl.MouseClick += LabelControl_SetTabEventHandler;
-                //lbl.Location = point;
                 lbl.Dock = DockStyle.Fill;
 
                 tlpTab.Controls.Add(lbl);
-                //point.X += controlWidth + interval;
 
                 _tabLabelList.Add(lbl);
             }
@@ -169,12 +158,12 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         public void SetSelectionStartDate(DateTime date)
         {
-            StartDate = date;
+            _startDate = date;
         }
 
         private DateTime GetSelectionStartDate()
         {
-            return StartDate;
+            return _startDate;
         }
 
         private void SetData(int dayCount)
@@ -184,7 +173,6 @@ namespace Jastech.Apps.Winform.UI.Controls
             for (int i = 0; i < dayCount; i++)
             {
                 DateTime ndate = new DateTime(date.Year, date.Month, date.Day - i);              // Pick 날짜 기준으로 -1일씩 돌리기
-                //string FileCheck = Main.DEFINE.SYS_DATADIR + Main.DEFINE.LOG_DATADIR + ndate.ToString("yyyyMMdd") + LV_TreeView01.SelectedNode.FullPath.Substring(ndate.ToShortDateString().Length - 2);       // 여기 좀 확인 필요
             }
         }
 
@@ -214,7 +202,6 @@ namespace Jastech.Apps.Winform.UI.Controls
         {
             _lowerSpecLimit = lowerSpecLimit;
         }
-        #endregion
 
         private void dgvCPK_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
@@ -347,7 +334,7 @@ namespace Jastech.Apps.Winform.UI.Controls
             }
         }
 
-        private DataTable _bindingDataTable = new DataTable();
+
         private void SetDataTable(DataTable dt)
         {
             _bindingDataTable = dt.Copy();
@@ -402,7 +389,7 @@ namespace Jastech.Apps.Winform.UI.Controls
                 var value = Convert.ToDouble(item.ItemArray[columnIndex]);
                 valueList.Add(value);
             }
-            
+
             double upperSpecLimit = Convert.ToDouble(lblUpperSpecLimit.Text);
             double lowerSpecLimit = Convert.ToDouble(lblLowerSpecLimit.Text);
             var result = ProcessCapabilityIndex.GetResult(valueList, upperSpecLimit, lowerSpecLimit);
@@ -457,7 +444,6 @@ namespace Jastech.Apps.Winform.UI.Controls
 
             return query;
         }
-
-        
+        #endregion
     }
 }

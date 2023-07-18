@@ -19,9 +19,6 @@ namespace Jastech.Apps.Winform.UI.Controls
             Align,
         }
 
-        #region 필드
-        #endregion
-
         #region 속성
         public InspChartType ChartType { get; set; } = InspChartType.Akkon;
 
@@ -48,12 +45,11 @@ namespace Jastech.Apps.Winform.UI.Controls
         private List<Series> AlignSeriesList { get; set; } = new List<Series>();
         #endregion
 
-        #region 이벤트
-        #endregion
-
         #region 델리게이트
         private delegate void UpdateAlignChartDelegate(int tabNo);
+
         private delegate void UpdateAkkonChartDelegate(int tabNo);
+
         private delegate void ClearChartDelegate();
         #endregion
 

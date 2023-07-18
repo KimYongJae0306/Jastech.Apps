@@ -33,21 +33,15 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         private MarkDirection _curDirection = MarkDirection.Left;
 
-        private Tab CurrentTab { get; set; } = null;
-
-        private CogPatternMatchingParamControl ParamControl { get; set; } = new CogPatternMatchingParamControl();
-
         private ROIJogForm _roiJogForm { get; set; } = null;
         #endregion
 
         #region 속성
+        private CogPatternMatchingParamControl ParamControl { get; set; } = null;
+
+        private Tab CurrentTab { get; set; } = null;
+
         public TeachingItem TeachingItem = TeachingItem.Mark;
-        #endregion
-
-        #region 이벤트
-        #endregion
-
-        #region 델리게이트
         #endregion
 
         #region 생성자
@@ -58,16 +52,6 @@ namespace Jastech.Apps.Winform.UI.Controls
         #endregion
 
         #region 메서드
-        
-
-
-
-
-
-
-
-
-
         private void MarkControl_Load(object sender, EventArgs e)
         {
             AddControl();
@@ -83,6 +67,7 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         private void AddControl()
         {
+            ParamControl = new CogPatternMatchingParamControl();
             ParamControl.Dock = DockStyle.Fill;
             ParamControl.GetOriginImageHandler += PatternControl_GetOriginImageHandler;
             ParamControl.TestActionEvent += PatternControl_TestActionEvent;
@@ -138,7 +123,7 @@ namespace Jastech.Apps.Winform.UI.Controls
                 currentParam = CurrentTab.GetPanelMark(_curDirection, _curMarkName);
 
             if(currentParam != null)
-                ParamControl.UpdateData(currentParam.InspParam);
+                ParamControl?.UpdateData(currentParam.InspParam);
 
             DrawROI();
         }
@@ -616,10 +601,4 @@ namespace Jastech.Apps.Winform.UI.Controls
         }
         #endregion
     }
-
-    //public enum TeachingItem
-    //{
-    //    Align,
-    //    Akkon,
-    //}
 }

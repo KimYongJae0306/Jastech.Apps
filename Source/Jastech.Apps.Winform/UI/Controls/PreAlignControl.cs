@@ -29,7 +29,7 @@ namespace Jastech.Apps.Winform.UI.Controls
         #endregion
 
         #region 속성
-        private CogPatternMatchingParamControl ParamControl { get; set; } = new CogPatternMatchingParamControl() { Dock = DockStyle.Fill };
+        private CogPatternMatchingParamControl ParamControl { get; set; } = null;
 
         private Unit CurrentUnit { get; set; } = null;
 
@@ -65,6 +65,8 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         private void AddControl()
         {
+            ParamControl = new CogPatternMatchingParamControl();
+            ParamControl.Dock = DockStyle.Fill;
             ParamControl.GetOriginImageHandler += PreAlignControl_GetOriginImageHandler;
             ParamControl.TestActionEvent += PreAlignControl_TestActionEvent;
             pnlParam.Controls.Add(ParamControl);
@@ -200,11 +202,6 @@ namespace Jastech.Apps.Winform.UI.Controls
             currentParam.SetSearchRegion(searchRoi);
         }
 
-        //public List<PreAlignParam> GetTeachingData()
-        //{
-        //    return PreAlignList;
-        //}
-
         private void lblInspection_Click(object sender, EventArgs e)
         {
             var display = TeachingUIManager.Instance().GetDisplay();
@@ -243,24 +240,6 @@ namespace Jastech.Apps.Winform.UI.Controls
         {
             ParamControl?.DisposeImage();
         }
-
-        //private void UpdateGridResult(VisionProPatternMatchingResult result)
-        //{
-        //    gvResult.Rows.Clear();
-
-        //    int count = 1;
-        //    foreach (var matchPos in result.MatchPosList)
-        //    {
-        //        string no = count.ToString();
-        //        string score = string.Format("{0:0.000}", (matchPos.Score * 100));
-        //        string x = string.Format("{0:0.000}", matchPos.FoundPos.X);
-        //        string y = string.Format("{0:0.000}", matchPos.FoundPos.Y);
-        //        string angle = string.Format("{0:0.000}", matchPos.Angle);
-
-        //        gvResult.Rows.Add(no, score, x, y, angle);
-        //        count++;
-        //    }
-        //}
 
         private void lblLeftMain_Click(object sender, EventArgs e)
         {

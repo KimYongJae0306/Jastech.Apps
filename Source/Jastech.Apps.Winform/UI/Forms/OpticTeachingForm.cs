@@ -38,12 +38,14 @@ namespace Jastech.Framework.Winform.Forms
         public double _prevAnalogGain { get; set; } = 0;
 
         public double _prevDigitalGain { get; set; } = 0;
-        #region repeat
+
         private Thread _repeatThread = null;
+
         private bool _isRepeat = false;
+
         private bool _isInfinite = false;
+
         private int _remainCount = 0;
-        #endregion
         #endregion
 
         #region 속성
@@ -53,19 +55,19 @@ namespace Jastech.Framework.Winform.Forms
 
         public InspModelService InspModelService { get; set; } = null;
 
-        private DrawBoxControl DrawBoxControl { get; set; } = new DrawBoxControl() { Dock = DockStyle.Fill };
+        private DrawBoxControl DrawBoxControl { get; set; } = null;
 
-        private PixelValueGraphControl PixelValueGraphControl { get; set; } = new PixelValueGraphControl() { Dock = DockStyle.Fill };
+        private PixelValueGraphControl PixelValueGraphControl { get; set; } = null;
 
-        private AutoFocusControl AutoFocusControl { get; set; } = new AutoFocusControl() { Dock = DockStyle.Fill };
+        private AutoFocusControl AutoFocusControl { get; set; } = null;
 
-        private MotionJogXYControl MotionJogXYControl { get; set; } = new MotionJogXYControl() { Dock = DockStyle.Fill };
+        private MotionJogXYControl MotionJogXYControl { get; set; } = null;
 
-        private MotionJogXControl MotionJogXControl { get; set; } = new MotionJogXControl() { Dock = DockStyle.Fill };
+        private MotionJogXControl MotionJogXControl { get; set; } = null;
 
-        private LAFJogControl LAFJogControl { get; set; } = new LAFJogControl() { Dock = DockStyle.Fill };
+        private LAFJogControl LAFJogControl { get; set; } = null;
 
-        private LightControl LightControl { get; set; } = new LightControl() { Dock = DockStyle.Fill };
+        private LightControl LightControl { get; set; } = null;
 
         public AxisHandler AxisHandler { get; set; } = null;
 
@@ -74,7 +76,6 @@ namespace Jastech.Framework.Winform.Forms
         public LineCamera LineCamera { get; set; } = null;
 
         public string LineCameraDataName { get; set; } = "";
-        //public LineCameraData LineCameraData { get; set; } = null;
 
         private Axis SelectedAxis { get; set; } = null;
         #endregion
@@ -100,39 +101,15 @@ namespace Jastech.Framework.Winform.Forms
         private void LinescanControl_Load(object sender, EventArgs e)
         {
             TeachingData.Instance().UpdateTeachingData();
+            AddControl();
+            InitializeUI();
+            InitializeData();
 
-            SetPrevData();
-            
             LineCamera.TeachingLiveImageGrabbed += LiveDisplay;
             LineCamera.GrabOnceEventHandler += OpticTeachingForm_GrabOnceEventHandler;
             SelectedAxis = AxisHandler.GetAxis(AxisName.X);
 
-            UpdateData();
-            SetCameraProperty();
-            AddControl();
-            InitializeUI();
-            SetDefaultValue();
             StatusTimer.Start();
-        }
-
-        private void SetCameraProperty()
-        {
-            var unit = TeachingData.Instance().GetUnit(UnitName.ToString());
-            var lineCameraData = unit.GetLineCameraData(LineCameraDataName);
-
-            var camera = LineCamera.Camera;
-
-            camera.SetAnalogGain(lineCameraData.AnalogGain);
-            camera.SetDigitalGain(lineCameraData.DigitalGain);
-        }
-
-        private void SetPrevData()
-        {
-            var unit = TeachingData.Instance().GetUnit(UnitName.ToString());
-            var lineCameraData = unit.GetLineCameraData(LineCameraDataName);
-
-            _prevAnalogGain = lineCameraData.AnalogGain;
-            _prevDigitalGain = lineCameraData.DigitalGain;
         }
 
         private void RollbackPrevData()
@@ -154,30 +131,6 @@ namespace Jastech.Framework.Winform.Forms
             }
         }
 
-        private void SetDefaultValue()
-        {
-            if (MotionJogXYControl != null)
-            {
-                MotionJogXYControl.JogMode = JogMode.Jog;
-                MotionJogXYControl.JogSpeedMode = JogSpeedMode.Slow;
-                MotionJogXYControl.JogPitch = Convert.ToDouble(lblPitchXYValue.Text);
-            }
-
-            if (MotionJogXControl != null)
-            {
-                MotionJogXControl.JogMode = JogMode.Jog;
-                MotionJogXControl.JogSpeedMode = JogSpeedMode.Slow;
-                MotionJogXControl.JogPitch = Convert.ToDouble(lblPitchXYValue.Text);
-            }
-
-            if (LAFJogControl != null)
-            {
-                LAFJogControl.JogMode = JogMode.Jog;
-                LAFJogControl.JogSpeedMode = JogSpeedMode.Slow;
-                LAFJogControl.MoveAmount = Convert.ToDouble(lblPitchZValue.Text);
-            }
-        }
-
         private void InitializeUI()
         {
             _selectedColor = Color.FromArgb(104, 104, 104);
@@ -193,28 +146,76 @@ namespace Jastech.Framework.Winform.Forms
 
         private void AddControl()
         {
+            DrawBoxControl = new DrawBoxControl();
+            DrawBoxControl.Dock = DockStyle.Fill;
             DrawBoxControl.FigureDataDelegateEventHanlder += DrawBoxControl_FigureDataDelegateEventHanlder;
             pnlDisplay.Controls.Add(DrawBoxControl);
+
+            PixelValueGraphControl = new PixelValueGraphControl();
+            PixelValueGraphControl.Dock = DockStyle.Fill;
             pnlHistogram.Controls.Add(PixelValueGraphControl);
 
+            AutoFocusControl = new AutoFocusControl();
+            AutoFocusControl.Dock = DockStyle.Fill;
+            pnlAutoFocus.Controls.Add(AutoFocusControl);
+
+
+            MotionJogXYControl = new MotionJogXYControl();
+            MotionJogXYControl.Dock = DockStyle.Fill;
+            pnlMotionJog.Controls.Add(MotionJogXYControl);
+
+            LAFJogControl = new LAFJogControl();
+            LAFJogControl.Dock = DockStyle.Fill;
+            pnlLAFJog.Controls.Add(LAFJogControl);
+
+            LightControl = new LightControl();
+            LightControl.Dock = DockStyle.Fill;
+
+            pnlLight.Controls.Add(LightControl);
+        }
+
+        private void InitializeData()
+        {
             var unit = TeachingData.Instance().GetUnit(UnitName.ToString());
             var posData = unit.GetTeachingInfo(TeachingPosType.Stage1_Scan_Start);
 
-            AutoFocusControl.UpdateData(posData.GetAxisInfo(AxisNameZ));
-
             AutoFocusControl.SetAxisHanlder(AxisHandler);
             AutoFocusControl.SetLAFCtrl(LAFCtrl);
-            pnlAutoFocus.Controls.Add(AutoFocusControl);
+            AutoFocusControl.UpdateData(posData.GetAxisInfo(AxisNameZ));
 
-            pnlMotionJog.Controls.Add(MotionJogXYControl);
-            MotionJogXYControl.SetAxisHanlder(AxisHandler);
+            if (MotionJogXYControl != null)
+            {
+                MotionJogXYControl.SetAxisHanlder(AxisHandler);
+                MotionJogXYControl.JogMode = JogMode.Jog;
+                MotionJogXYControl.JogSpeedMode = JogSpeedMode.Slow;
+                MotionJogXYControl.JogPitch = Convert.ToDouble(lblPitchXYValue.Text);
+            }
+            if (MotionJogXControl != null)
+            {
+                MotionJogXControl.JogMode = JogMode.Jog;
+                MotionJogXControl.JogSpeedMode = JogSpeedMode.Slow;
+                MotionJogXControl.JogPitch = Convert.ToDouble(lblPitchXYValue.Text);
+            }
 
-            pnlLAFJog.Controls.Add(LAFJogControl);
             LAFJogControl.SetSelectedLafCtrl(LAFCtrl);
+            LAFJogControl.JogMode = JogMode.Jog;
+            LAFJogControl.JogSpeedMode = JogSpeedMode.Slow;
+            LAFJogControl.MoveAmount = Convert.ToDouble(lblPitchZValue.Text);
 
             var lineCameraData = unit.GetLineCameraData(LineCameraDataName);
             LightControl.SetParam(DeviceManager.Instance().LightCtrlHandler, lineCameraData.LightParam);
-            pnlLight.Controls.Add(LightControl);
+            LightControl.InitializeData();
+
+            var camera = LineCamera.Camera;
+            camera.SetAnalogGain(lineCameraData.AnalogGain);
+            camera.SetDigitalGain(lineCameraData.DigitalGain);
+
+            lbExposureValue.Text = camera.GetExposureTime().ToString("F4");
+            lblDigitalGainValue.Text = lineCameraData.DigitalGain.ToString("F4");
+            lblAnalogGainValue.Text = lineCameraData.AnalogGain.ToString();
+
+            _prevAnalogGain = lineCameraData.AnalogGain;
+            _prevDigitalGain = lineCameraData.DigitalGain;
         }
 
         private void DrawBoxControl_FigureDataDelegateEventHanlder(byte[] data)
@@ -263,8 +264,6 @@ namespace Jastech.Framework.Winform.Forms
                 default:
                     break;
             }
-
-            //UpdateData();
         }
 
         public void UpdateUI()
@@ -279,19 +278,6 @@ namespace Jastech.Framework.Winform.Forms
             UpdateMotionStatus();
             UpdateRepeatCount();
             AutoFocusControl.UpdateAxisStatus();
-        }
-
-        private void UpdateData()
-        {
-            // Camera Exposure, Gain Load
-            var lineCamera = LineCamera.Camera as CameraMil;
-            lbExposureValue.Text = lineCamera?.GetExposureTime().ToString("F4");
-
-            var unit = TeachingData.Instance().GetUnit(UnitName.ToString());
-            var lineCameraData = unit.GetLineCameraData(LineCameraDataName);
-
-            lblDigitalGainValue.Text = lineCameraData.DigitalGain.ToString("F4");
-            lblAnalogGainValue.Text = lineCameraData.AnalogGain.ToString();
         }
 
         private void UpdateMotionStatus()
@@ -404,29 +390,28 @@ namespace Jastech.Framework.Winform.Forms
             double digitalGain = 0;
             bool isOutOfRange = false;
 
+            digitalGain = KeyPadHelper.SetLabelIntegerData((Label)sender);
+
+            if (digitalGain > 8.0)
+            {
+                isOutOfRange = true;
+                digitalGain = 8.0;
+            }
+
+            if (digitalGain < 0.5)
+            {
+                isOutOfRange = true;
+                digitalGain = 0.5;
+            }
+
+            if (isOutOfRange)
+                ShowConfirmDataRange(minValue: "0.5", maxValue: "8.0");
+
+            lblDigitalGainValue.Text = digitalGain.ToString();
+
             var tdiCamera = LineCamera.Camera as CameraMil;
             if (tdiCamera != null)
-            {
-                digitalGain = KeyPadHelper.SetLabelIntegerData((Label)sender);
-
-                if (digitalGain > 8.0)
-                {
-                    isOutOfRange = true;
-                    digitalGain = 8.0;
-                }
-
-                if (digitalGain < 0.5)
-                {
-                    isOutOfRange = true;
-                    digitalGain = 0.5;
-                }
-
-                if (isOutOfRange)
-                    ShowConfirmDataRange(minValue: "0.5", maxValue: "8.0");
-
-                lblDigitalGainValue.Text = digitalGain.ToString();
                 tdiCamera.SetDigitalGain(digitalGain);
-            }
         }
 
         private void ShowConfirmDataRange(string minValue, string maxValue)
@@ -878,12 +863,11 @@ namespace Jastech.Framework.Winform.Forms
             Console.WriteLine("Update Repeat Display");
         }
         #endregion
-
-        
     }
 
     public class RepeatParam
     {
+        #region 속성
         public double Velocity { get; set; } = 0.0;
 
         public double AccDec { get; set; } = 0.0;
@@ -895,5 +879,6 @@ namespace Jastech.Framework.Winform.Forms
         public double EndPosition { get; set; } = 0.0;
 
         public int RepeatCount { get; set; } = 0;
+        #endregion
     }
 }

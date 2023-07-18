@@ -7,9 +7,6 @@ namespace Jastech.Apps.Winform.UI.Controls
 {
     public partial class UnitSelectControl : UserControl
     {
-        #region 필드
-        #endregion
-
         #region 속성
         public string UnitName { get; set; } = string.Empty;
         #endregion

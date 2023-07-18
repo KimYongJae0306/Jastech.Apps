@@ -13,6 +13,12 @@ namespace Jastech.Apps.Winform.UI.Forms
         private Color _nonSelectedColor = new Color();
 
         private bool _isLoading { get; set; } = false;
+        #endregion
+
+        #region 속성
+        public PlcCommandControl PlcCommandControl { get; set; } = null;
+
+        public PlcModelInfoControl PlcModelInfoControl { get; set; } = null;
 
         protected override CreateParams CreateParams
         {
@@ -23,15 +29,6 @@ namespace Jastech.Apps.Winform.UI.Forms
                 return cp;
             }
         }
-        #endregion
-
-        #region 속성
-        public PlcCommandControl PlcCommandControl { get; set; } = null;
-
-        public PlcModelInfoControl PlcModelInfoControl { get; set; } = null;
-        #endregion
-
-        #region 이벤트
         #endregion
 
         #region 델리게이트
