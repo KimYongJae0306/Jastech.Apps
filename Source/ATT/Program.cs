@@ -84,7 +84,7 @@ namespace ATT
                 light2.ChannelNameMap["Ch.RedRing"] = 0;
                 config.Add(light2);
 
-                var laf = new VirtualLAFCtrl("Akkon");
+                var laf = new VirtualLAFCtrl("Laf");
                 config.Add(laf);
             }
             else
@@ -113,7 +113,7 @@ namespace ATT
                 light2.ChannelNameMap["Ch.RedRing"] = 0;
                 config.Add(light2);
 
-                var laf1 = new NuriOneLAFCtrl("Akkon");
+                var laf1 = new NuriOneLAFCtrl("Laf");
                 laf1.SerialPortComm = new SerialPortComm("COM4", 9600);
                 config.Add(laf1);
 

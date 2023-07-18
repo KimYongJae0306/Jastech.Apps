@@ -1,6 +1,7 @@
 ﻿using ATT_UT_IPAD.Core;
 using ATT_UT_IPAD.UI.Forms;
 using Jastech.Apps.Structure;
+using Jastech.Apps.Winform;
 using Jastech.Apps.Winform.UI.Forms;
 using Jastech.Framework.Winform.Forms;
 using System;
@@ -58,6 +59,9 @@ namespace ATT_UT_IPAD.UI.Pages
             {
                 MotionSettingsForm = new MotionSettingsForm();
                 MotionSettingsForm.UnitName = UnitName.Unit0;
+                MotionSettingsForm.AxisHandler = MotionManager.Instance().GetAxisHandler(AxisHandlerName.Handler0);
+                MotionSettingsForm.AkkonLafCtrl = LAFManager.Instance().GetLAFCtrl("AkkonLaf");
+                MotionSettingsForm.AlignLafCtrl = LAFManager.Instance().GetLAFCtrl("AlignLaf");
                 MotionSettingsForm.InspModelService = ATTInspModelService;
                 MotionSettingsForm.CloseEventDelegate = () => MotionSettingsForm = null;
                 MotionSettingsForm.Show();

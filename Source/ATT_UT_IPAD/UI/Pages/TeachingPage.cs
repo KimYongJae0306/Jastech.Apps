@@ -108,6 +108,9 @@ namespace ATT_UT_IPAD.UI.Pages
             {
                 MotionPopupForm = new MotionPopupForm();
                 MotionPopupForm.UnitName = unitName;
+                MotionPopupForm.AxisHandler = MotionManager.Instance().GetAxisHandler(AxisHandlerName.Handler0);
+                MotionPopupForm.AkkonLafCtrl = LAFManager.Instance().GetLAFCtrl("AkkonLaf");
+                MotionPopupForm.AlignLafCtrl = LAFManager.Instance().GetLAFCtrl("AlignLaf");
                 MotionPopupForm.InspModelService = ATTInspModelService;
                 MotionPopupForm.CloseEventDelegate = () => MotionPopupForm = null;
                 MotionPopupForm.Show();

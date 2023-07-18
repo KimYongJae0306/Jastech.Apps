@@ -435,7 +435,7 @@ namespace ATT.Core
             StopAkkonInspTask();
             
             // 조명 off
-            LAFManager.Instance().TrackingOnOff("Akkon", false);
+            LAFManager.Instance().TrackingOnOff("Laf", false);
             Logger.Write(LogType.Seq, "AutoFocus Off.");
 
             LineCameraManager.Instance().Stop("Camera0");
@@ -533,7 +533,7 @@ namespace ATT.Core
                     AppsInspResult.StartInspTime = DateTime.Now;
                     AppsInspResult.Cell_ID = DateTime.Now.ToString("yyyyMMddHHmmss");
 
-                    LAFManager.Instance().TrackingOnOff("Akkon", true);
+                    LAFManager.Instance().TrackingOnOff("Laf", true);
                     Logger.Write(LogType.Seq, "AutoFocus On.");
 
                     SeqStep = SeqStep.SEQ_SCAN_START;

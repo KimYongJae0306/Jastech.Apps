@@ -80,12 +80,12 @@ namespace ATT_UT_Remodeling
                 config.Add(lineCamera);
 
                 // Motion
-                var motion = new VirtualMotion("VirtualMotion", 3);
+                var motion = new VirtualMotion("VirtualMotion", 1);
                 config.Add(motion);
 
                 // LAF
-                var laf1 = new VirtualLAFCtrl("Laf");
-                config.Add(laf1);
+                var laf = new VirtualLAFCtrl("Laf");
+                config.Add(laf);
 
                 // Light1
                 var spotLight = new VirtualLightCtrl("Spot", 6); // 12V

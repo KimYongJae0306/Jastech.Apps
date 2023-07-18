@@ -1,6 +1,7 @@
 ﻿using ATT.Core;
 using ATT.UI.Forms;
 using Jastech.Apps.Structure;
+using Jastech.Apps.Winform;
 using Jastech.Apps.Winform.UI.Forms;
 using Jastech.Framework.Winform.Forms;
 using System;
@@ -12,12 +13,12 @@ namespace ATT.UI.Pages
     public partial class DataPage : UserControl
     {
         #region 필드
-        private ATTInspModelService ATTInspModelService { get; set; } = null;
-
-        private MotionSettingsForm _motionSettingsForm { get; set; } = null;
         #endregion
 
         #region 속성
+        private ATTInspModelService ATTInspModelService { get; set; } = null;
+
+        private MotionSettingsForm MotionSettingsForm { get; set; } = null;
         #endregion
 
         #region 이벤트
@@ -58,20 +59,18 @@ namespace ATT.UI.Pages
                 return;
             }
 
-            //MotionSettingsForm form = new MotionSettingsForm() { UnitName = UnitName.Unit0 };
-            //form.InspModelService = ATTInspModelService;
-            //form.ShowDialog();
-
-            if (_motionSettingsForm == null)
+            if (MotionSettingsForm == null)
             {
-                _motionSettingsForm = new MotionSettingsForm();
-                _motionSettingsForm.UnitName = UnitName.Unit0;
-                _motionSettingsForm.InspModelService = ATTInspModelService;
-                _motionSettingsForm.CloseEventDelegate = () => _motionSettingsForm = null;
-                _motionSettingsForm.Show();
+                MotionSettingsForm = new MotionSettingsForm();
+                MotionSettingsForm.UnitName = UnitName.Unit0;
+                MotionSettingsForm.AxisHandler = MotionManager.Instance().GetAxisHandler(AxisHandlerName.Handler0);
+                MotionSettingsForm.LafCtrl = LAFManager.Instance().GetLAFCtrl("Laf");
+                MotionSettingsForm.InspModelService = ATTInspModelService;
+                MotionSettingsForm.CloseEventDelegate = () => MotionSettingsForm = null;
+                MotionSettingsForm.Show();
             }
             else
-                _motionSettingsForm.Focus();
+                MotionSettingsForm.Focus();
         }
 
         private void btnSettings_Click(object sender, EventArgs e)

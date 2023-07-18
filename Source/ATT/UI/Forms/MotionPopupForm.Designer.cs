@@ -43,11 +43,12 @@
             this.tlpMotionFunction = new System.Windows.Forms.TableLayoutPanel();
             this.tlpStatus = new System.Windows.Forms.TableLayoutPanel();
             this.tlpLAFStatus = new System.Windows.Forms.TableLayoutPanel();
-            this.lblLaserOnOffZ = new System.Windows.Forms.Label();
-            this.tlpAutoFocusOnOffZ1 = new System.Windows.Forms.TableLayoutPanel();
-            this.lblServoOnZ = new System.Windows.Forms.Label();
-            this.lblServoOffZ = new System.Windows.Forms.Label();
-            this.label10 = new System.Windows.Forms.Label();
+            this.tlpTrackingOnOffZ = new System.Windows.Forms.TableLayoutPanel();
+            this.lblTrackingOnZ = new System.Windows.Forms.Label();
+            this.lblTrackingOffZ = new System.Windows.Forms.Label();
+            this.tlpLaserOnOffZ = new System.Windows.Forms.TableLayoutPanel();
+            this.lblLaserOnZ = new System.Windows.Forms.Label();
+            this.lblLaserOffZ = new System.Windows.Forms.Label();
             this.label11 = new System.Windows.Forms.Label();
             this.label12 = new System.Windows.Forms.Label();
             this.label13 = new System.Windows.Forms.Label();
@@ -70,12 +71,10 @@
             this.lblOriginZ = new System.Windows.Forms.Label();
             this.label23 = new System.Windows.Forms.Label();
             this.label24 = new System.Windows.Forms.Label();
-            this.lblTrackingOnOffZ = new System.Windows.Forms.Label();
             this.tlpMotionStatus = new System.Windows.Forms.TableLayoutPanel();
             this.label9 = new System.Windows.Forms.Label();
             this.label8 = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
-            this.lblServoOnOffX = new System.Windows.Forms.Label();
             this.lblSensorX = new System.Windows.Forms.Label();
             this.lblAxisStatusX = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
@@ -86,7 +85,6 @@
             this.lblTargetPositionY = new System.Windows.Forms.Label();
             this.lblSensorY = new System.Windows.Forms.Label();
             this.lblAxisStatusY = new System.Windows.Forms.Label();
-            this.lblServoOnOffY = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.lblMoveToTargetX = new System.Windows.Forms.Label();
             this.lblMoveToTargetY = new System.Windows.Forms.Label();
@@ -102,6 +100,12 @@
             this.label21 = new System.Windows.Forms.Label();
             this.lblOriginX = new System.Windows.Forms.Label();
             this.lblOriginY = new System.Windows.Forms.Label();
+            this.tlpServoOnOffX = new System.Windows.Forms.TableLayoutPanel();
+            this.lblServoOnX = new System.Windows.Forms.Label();
+            this.lblServoOffX = new System.Windows.Forms.Label();
+            this.tlpServoOnOffY = new System.Windows.Forms.TableLayoutPanel();
+            this.lblServoOnY = new System.Windows.Forms.Label();
+            this.lblServoOffY = new System.Windows.Forms.Label();
             this.tlpJogControl = new System.Windows.Forms.TableLayoutPanel();
             this.tlpJogFunction = new System.Windows.Forms.TableLayoutPanel();
             this.pnlJog = new System.Windows.Forms.Panel();
@@ -131,8 +135,11 @@
             this.tlpMotionFunction.SuspendLayout();
             this.tlpStatus.SuspendLayout();
             this.tlpLAFStatus.SuspendLayout();
-            this.tlpAutoFocusOnOffZ1.SuspendLayout();
+            this.tlpTrackingOnOffZ.SuspendLayout();
+            this.tlpLaserOnOffZ.SuspendLayout();
             this.tlpMotionStatus.SuspendLayout();
+            this.tlpServoOnOffX.SuspendLayout();
+            this.tlpServoOnOffY.SuspendLayout();
             this.tlpJogControl.SuspendLayout();
             this.tlpJogFunction.SuspendLayout();
             this.pnlJog.SuspendLayout();
@@ -370,9 +377,8 @@
             this.tlpLAFStatus.ColumnCount = 2;
             this.tlpLAFStatus.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 60F));
             this.tlpLAFStatus.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 40F));
-            this.tlpLAFStatus.Controls.Add(this.lblLaserOnOffZ, 1, 11);
-            this.tlpLAFStatus.Controls.Add(this.tlpAutoFocusOnOffZ1, 1, 10);
-            this.tlpLAFStatus.Controls.Add(this.label10, 0, 10);
+            this.tlpLAFStatus.Controls.Add(this.tlpTrackingOnOffZ, 1, 11);
+            this.tlpLAFStatus.Controls.Add(this.tlpLaserOnOffZ, 1, 10);
             this.tlpLAFStatus.Controls.Add(this.label11, 0, 5);
             this.tlpLAFStatus.Controls.Add(this.label12, 0, 9);
             this.tlpLAFStatus.Controls.Add(this.label13, 0, 3);
@@ -393,107 +399,125 @@
             this.tlpLAFStatus.Controls.Add(this.lblCurrentToTargCetenterOfGravityZ, 1, 6);
             this.tlpLAFStatus.Controls.Add(this.label20, 0, 8);
             this.tlpLAFStatus.Controls.Add(this.lblOriginZ, 1, 8);
-            this.tlpLAFStatus.Controls.Add(this.label23, 0, 11);
-            this.tlpLAFStatus.Controls.Add(this.label24, 0, 12);
-            this.tlpLAFStatus.Controls.Add(this.lblTrackingOnOffZ, 1, 12);
+            this.tlpLAFStatus.Controls.Add(this.label23, 0, 10);
+            this.tlpLAFStatus.Controls.Add(this.label24, 0, 11);
             this.tlpLAFStatus.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tlpLAFStatus.Location = new System.Drawing.Point(202, 0);
             this.tlpLAFStatus.Margin = new System.Windows.Forms.Padding(0);
             this.tlpLAFStatus.Name = "tlpLAFStatus";
-            this.tlpLAFStatus.RowCount = 13;
-            this.tlpLAFStatus.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 7.692307F));
-            this.tlpLAFStatus.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 7.692307F));
-            this.tlpLAFStatus.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 7.692307F));
-            this.tlpLAFStatus.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 7.692307F));
-            this.tlpLAFStatus.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 7.692307F));
-            this.tlpLAFStatus.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 7.692307F));
-            this.tlpLAFStatus.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 7.692307F));
-            this.tlpLAFStatus.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 7.692307F));
-            this.tlpLAFStatus.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 7.692307F));
-            this.tlpLAFStatus.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 7.692307F));
-            this.tlpLAFStatus.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 7.692307F));
-            this.tlpLAFStatus.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 7.692307F));
-            this.tlpLAFStatus.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 7.692307F));
+            this.tlpLAFStatus.RowCount = 12;
+            this.tlpLAFStatus.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 8.333333F));
+            this.tlpLAFStatus.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 8.333333F));
+            this.tlpLAFStatus.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 8.333333F));
+            this.tlpLAFStatus.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 8.333333F));
+            this.tlpLAFStatus.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 8.333333F));
+            this.tlpLAFStatus.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 8.333333F));
+            this.tlpLAFStatus.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 8.333333F));
+            this.tlpLAFStatus.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 8.333333F));
+            this.tlpLAFStatus.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 8.333333F));
+            this.tlpLAFStatus.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 8.333333F));
+            this.tlpLAFStatus.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 8.333333F));
+            this.tlpLAFStatus.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 8.333333F));
+            this.tlpLAFStatus.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tlpLAFStatus.Size = new System.Drawing.Size(128, 240);
             this.tlpLAFStatus.TabIndex = 1;
             // 
-            // lblLaserOnOffZ
+            // tlpTrackingOnOffZ
             // 
-            this.lblLaserOnOffZ.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
-            this.lblLaserOnOffZ.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lblLaserOnOffZ.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblLaserOnOffZ.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
-            this.lblLaserOnOffZ.ForeColor = System.Drawing.Color.White;
-            this.lblLaserOnOffZ.Location = new System.Drawing.Point(77, 199);
-            this.lblLaserOnOffZ.Margin = new System.Windows.Forms.Padding(1);
-            this.lblLaserOnOffZ.Name = "lblLaserOnOffZ";
-            this.lblLaserOnOffZ.Size = new System.Drawing.Size(50, 16);
-            this.lblLaserOnOffZ.TabIndex = 24;
-            this.lblLaserOnOffZ.Text = "On";
-            this.lblLaserOnOffZ.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.lblLaserOnOffZ.Click += new System.EventHandler(this.lblLaserOnOffZ_Click);
+            this.tlpTrackingOnOffZ.ColumnCount = 2;
+            this.tlpTrackingOnOffZ.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tlpTrackingOnOffZ.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tlpTrackingOnOffZ.Controls.Add(this.lblTrackingOnZ, 0, 0);
+            this.tlpTrackingOnOffZ.Controls.Add(this.lblTrackingOffZ, 1, 0);
+            this.tlpTrackingOnOffZ.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tlpTrackingOnOffZ.Location = new System.Drawing.Point(76, 209);
+            this.tlpTrackingOnOffZ.Margin = new System.Windows.Forms.Padding(0);
+            this.tlpTrackingOnOffZ.Name = "tlpTrackingOnOffZ";
+            this.tlpTrackingOnOffZ.RowCount = 1;
+            this.tlpTrackingOnOffZ.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tlpTrackingOnOffZ.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 31F));
+            this.tlpTrackingOnOffZ.Size = new System.Drawing.Size(52, 31);
+            this.tlpTrackingOnOffZ.TabIndex = 26;
             // 
-            // tlpAutoFocusOnOffZ1
+            // lblTrackingOnZ
             // 
-            this.tlpAutoFocusOnOffZ1.ColumnCount = 2;
-            this.tlpAutoFocusOnOffZ1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tlpAutoFocusOnOffZ1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tlpAutoFocusOnOffZ1.Controls.Add(this.lblServoOnZ, 0, 0);
-            this.tlpAutoFocusOnOffZ1.Controls.Add(this.lblServoOffZ, 1, 0);
-            this.tlpAutoFocusOnOffZ1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tlpAutoFocusOnOffZ1.Location = new System.Drawing.Point(76, 180);
-            this.tlpAutoFocusOnOffZ1.Margin = new System.Windows.Forms.Padding(0);
-            this.tlpAutoFocusOnOffZ1.Name = "tlpAutoFocusOnOffZ1";
-            this.tlpAutoFocusOnOffZ1.RowCount = 1;
-            this.tlpAutoFocusOnOffZ1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tlpAutoFocusOnOffZ1.Size = new System.Drawing.Size(52, 18);
-            this.tlpAutoFocusOnOffZ1.TabIndex = 25;
+            this.lblTrackingOnZ.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
+            this.lblTrackingOnZ.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblTrackingOnZ.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblTrackingOnZ.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
+            this.lblTrackingOnZ.ForeColor = System.Drawing.Color.White;
+            this.lblTrackingOnZ.Location = new System.Drawing.Point(1, 1);
+            this.lblTrackingOnZ.Margin = new System.Windows.Forms.Padding(1);
+            this.lblTrackingOnZ.Name = "lblTrackingOnZ";
+            this.lblTrackingOnZ.Size = new System.Drawing.Size(24, 29);
+            this.lblTrackingOnZ.TabIndex = 24;
+            this.lblTrackingOnZ.Text = "On";
+            this.lblTrackingOnZ.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblTrackingOnZ.Click += new System.EventHandler(this.lblTrackingOnZ_Click);
             // 
-            // lblServoOnZ
+            // lblTrackingOffZ
             // 
-            this.lblServoOnZ.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
-            this.lblServoOnZ.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lblServoOnZ.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblServoOnZ.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
-            this.lblServoOnZ.ForeColor = System.Drawing.Color.White;
-            this.lblServoOnZ.Location = new System.Drawing.Point(1, 1);
-            this.lblServoOnZ.Margin = new System.Windows.Forms.Padding(1);
-            this.lblServoOnZ.Name = "lblServoOnZ";
-            this.lblServoOnZ.Size = new System.Drawing.Size(24, 16);
-            this.lblServoOnZ.TabIndex = 24;
-            this.lblServoOnZ.Text = "On";
-            this.lblServoOnZ.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.lblServoOnZ.Click += new System.EventHandler(this.lblServoOnZ_Click);
+            this.lblTrackingOffZ.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
+            this.lblTrackingOffZ.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblTrackingOffZ.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblTrackingOffZ.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
+            this.lblTrackingOffZ.ForeColor = System.Drawing.Color.White;
+            this.lblTrackingOffZ.Location = new System.Drawing.Point(27, 1);
+            this.lblTrackingOffZ.Margin = new System.Windows.Forms.Padding(1);
+            this.lblTrackingOffZ.Name = "lblTrackingOffZ";
+            this.lblTrackingOffZ.Size = new System.Drawing.Size(24, 29);
+            this.lblTrackingOffZ.TabIndex = 24;
+            this.lblTrackingOffZ.Text = "Off";
+            this.lblTrackingOffZ.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblTrackingOffZ.Click += new System.EventHandler(this.lblTrackingOffZ_Click);
             // 
-            // lblServoOffZ
+            // tlpLaserOnOffZ
             // 
-            this.lblServoOffZ.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
-            this.lblServoOffZ.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lblServoOffZ.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblServoOffZ.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
-            this.lblServoOffZ.ForeColor = System.Drawing.Color.White;
-            this.lblServoOffZ.Location = new System.Drawing.Point(27, 1);
-            this.lblServoOffZ.Margin = new System.Windows.Forms.Padding(1);
-            this.lblServoOffZ.Name = "lblServoOffZ";
-            this.lblServoOffZ.Size = new System.Drawing.Size(24, 16);
-            this.lblServoOffZ.TabIndex = 24;
-            this.lblServoOffZ.Text = "Off";
-            this.lblServoOffZ.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.lblServoOffZ.Click += new System.EventHandler(this.lblServoOffZ_Click);
+            this.tlpLaserOnOffZ.ColumnCount = 2;
+            this.tlpLaserOnOffZ.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tlpLaserOnOffZ.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tlpLaserOnOffZ.Controls.Add(this.lblLaserOnZ, 0, 0);
+            this.tlpLaserOnOffZ.Controls.Add(this.lblLaserOffZ, 1, 0);
+            this.tlpLaserOnOffZ.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tlpLaserOnOffZ.Location = new System.Drawing.Point(76, 190);
+            this.tlpLaserOnOffZ.Margin = new System.Windows.Forms.Padding(0);
+            this.tlpLaserOnOffZ.Name = "tlpLaserOnOffZ";
+            this.tlpLaserOnOffZ.RowCount = 1;
+            this.tlpLaserOnOffZ.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tlpLaserOnOffZ.Size = new System.Drawing.Size(52, 19);
+            this.tlpLaserOnOffZ.TabIndex = 26;
             // 
-            // label10
+            // lblLaserOnZ
             // 
-            this.label10.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.label10.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.label10.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
-            this.label10.ForeColor = System.Drawing.Color.White;
-            this.label10.Location = new System.Drawing.Point(1, 181);
-            this.label10.Margin = new System.Windows.Forms.Padding(1);
-            this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(74, 16);
-            this.label10.TabIndex = 9;
-            this.label10.Text = "Servo";
-            this.label10.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblLaserOnZ.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
+            this.lblLaserOnZ.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblLaserOnZ.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblLaserOnZ.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
+            this.lblLaserOnZ.ForeColor = System.Drawing.Color.White;
+            this.lblLaserOnZ.Location = new System.Drawing.Point(1, 1);
+            this.lblLaserOnZ.Margin = new System.Windows.Forms.Padding(1);
+            this.lblLaserOnZ.Name = "lblLaserOnZ";
+            this.lblLaserOnZ.Size = new System.Drawing.Size(24, 17);
+            this.lblLaserOnZ.TabIndex = 24;
+            this.lblLaserOnZ.Text = "On";
+            this.lblLaserOnZ.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblLaserOnZ.Click += new System.EventHandler(this.lblLaserOnZ_Click);
+            // 
+            // lblLaserOffZ
+            // 
+            this.lblLaserOffZ.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
+            this.lblLaserOffZ.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblLaserOffZ.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblLaserOffZ.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
+            this.lblLaserOffZ.ForeColor = System.Drawing.Color.White;
+            this.lblLaserOffZ.Location = new System.Drawing.Point(27, 1);
+            this.lblLaserOffZ.Margin = new System.Windows.Forms.Padding(1);
+            this.lblLaserOffZ.Name = "lblLaserOffZ";
+            this.lblLaserOffZ.Size = new System.Drawing.Size(24, 17);
+            this.lblLaserOffZ.TabIndex = 24;
+            this.lblLaserOffZ.Text = "Off";
+            this.lblLaserOffZ.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblLaserOffZ.Click += new System.EventHandler(this.lblLaserOffZ_Click);
             // 
             // label11
             // 
@@ -501,10 +525,10 @@
             this.label11.Dock = System.Windows.Forms.DockStyle.Fill;
             this.label11.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
             this.label11.ForeColor = System.Drawing.Color.White;
-            this.label11.Location = new System.Drawing.Point(1, 91);
+            this.label11.Location = new System.Drawing.Point(1, 96);
             this.label11.Margin = new System.Windows.Forms.Padding(1);
             this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(74, 16);
+            this.label11.Size = new System.Drawing.Size(74, 17);
             this.label11.TabIndex = 6;
             this.label11.Text = "Current COG";
             this.label11.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -515,10 +539,10 @@
             this.label12.Dock = System.Windows.Forms.DockStyle.Fill;
             this.label12.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
             this.label12.ForeColor = System.Drawing.Color.White;
-            this.label12.Location = new System.Drawing.Point(1, 163);
+            this.label12.Location = new System.Drawing.Point(1, 172);
             this.label12.Margin = new System.Windows.Forms.Padding(1);
             this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(74, 16);
+            this.label12.Size = new System.Drawing.Size(74, 17);
             this.label12.TabIndex = 8;
             this.label12.Text = "Sensor";
             this.label12.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -529,10 +553,10 @@
             this.label13.Dock = System.Windows.Forms.DockStyle.Fill;
             this.label13.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
             this.label13.ForeColor = System.Drawing.Color.White;
-            this.label13.Location = new System.Drawing.Point(1, 55);
+            this.label13.Location = new System.Drawing.Point(1, 58);
             this.label13.Margin = new System.Windows.Forms.Padding(1);
             this.label13.Name = "label13";
-            this.label13.Size = new System.Drawing.Size(74, 16);
+            this.label13.Size = new System.Drawing.Size(74, 17);
             this.label13.TabIndex = 10;
             this.label13.Text = "Set Current To Target";
             this.label13.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -543,10 +567,10 @@
             this.label14.Dock = System.Windows.Forms.DockStyle.Fill;
             this.label14.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
             this.label14.ForeColor = System.Drawing.Color.White;
-            this.label14.Location = new System.Drawing.Point(1, 127);
+            this.label14.Location = new System.Drawing.Point(1, 134);
             this.label14.Margin = new System.Windows.Forms.Padding(1);
             this.label14.Name = "label14";
-            this.label14.Size = new System.Drawing.Size(74, 16);
+            this.label14.Size = new System.Drawing.Size(74, 17);
             this.label14.TabIndex = 11;
             this.label14.Text = "Move To Target";
             this.label14.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -557,10 +581,10 @@
             this.label15.Dock = System.Windows.Forms.DockStyle.Fill;
             this.label15.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
             this.label15.ForeColor = System.Drawing.Color.White;
-            this.label15.Location = new System.Drawing.Point(1, 73);
+            this.label15.Location = new System.Drawing.Point(1, 77);
             this.label15.Margin = new System.Windows.Forms.Padding(1);
             this.label15.Name = "label15";
-            this.label15.Size = new System.Drawing.Size(74, 16);
+            this.label15.Size = new System.Drawing.Size(74, 17);
             this.label15.TabIndex = 6;
             this.label15.Text = "Teached COG";
             this.label15.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -571,10 +595,10 @@
             this.label16.Dock = System.Windows.Forms.DockStyle.Fill;
             this.label16.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
             this.label16.ForeColor = System.Drawing.Color.White;
-            this.label16.Location = new System.Drawing.Point(1, 109);
+            this.label16.Location = new System.Drawing.Point(1, 115);
             this.label16.Margin = new System.Windows.Forms.Padding(1);
             this.label16.Name = "label16";
-            this.label16.Size = new System.Drawing.Size(74, 16);
+            this.label16.Size = new System.Drawing.Size(74, 17);
             this.label16.TabIndex = 11;
             this.label16.Text = "Set Current To COG";
             this.label16.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -585,10 +609,10 @@
             this.label17.Dock = System.Windows.Forms.DockStyle.Fill;
             this.label17.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
             this.label17.ForeColor = System.Drawing.Color.White;
-            this.label17.Location = new System.Drawing.Point(1, 37);
+            this.label17.Location = new System.Drawing.Point(1, 39);
             this.label17.Margin = new System.Windows.Forms.Padding(1);
             this.label17.Name = "label17";
-            this.label17.Size = new System.Drawing.Size(74, 16);
+            this.label17.Size = new System.Drawing.Size(74, 17);
             this.label17.TabIndex = 6;
             this.label17.Text = "Current Position";
             this.label17.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -599,10 +623,10 @@
             this.label18.Dock = System.Windows.Forms.DockStyle.Fill;
             this.label18.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
             this.label18.ForeColor = System.Drawing.Color.White;
-            this.label18.Location = new System.Drawing.Point(1, 19);
+            this.label18.Location = new System.Drawing.Point(1, 20);
             this.label18.Margin = new System.Windows.Forms.Padding(1);
             this.label18.Name = "label18";
-            this.label18.Size = new System.Drawing.Size(74, 16);
+            this.label18.Size = new System.Drawing.Size(74, 17);
             this.label18.TabIndex = 4;
             this.label18.Text = "Target Position";
             this.label18.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -614,10 +638,10 @@
             this.lblTargetPositionZ.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lblTargetPositionZ.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
             this.lblTargetPositionZ.ForeColor = System.Drawing.Color.White;
-            this.lblTargetPositionZ.Location = new System.Drawing.Point(77, 19);
+            this.lblTargetPositionZ.Location = new System.Drawing.Point(77, 20);
             this.lblTargetPositionZ.Margin = new System.Windows.Forms.Padding(1);
             this.lblTargetPositionZ.Name = "lblTargetPositionZ";
-            this.lblTargetPositionZ.Size = new System.Drawing.Size(50, 16);
+            this.lblTargetPositionZ.Size = new System.Drawing.Size(50, 17);
             this.lblTargetPositionZ.TabIndex = 4;
             this.lblTargetPositionZ.Text = "0.0";
             this.lblTargetPositionZ.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -632,7 +656,7 @@
             this.label19.Location = new System.Drawing.Point(1, 1);
             this.label19.Margin = new System.Windows.Forms.Padding(1);
             this.label19.Name = "label19";
-            this.label19.Size = new System.Drawing.Size(74, 16);
+            this.label19.Size = new System.Drawing.Size(74, 17);
             this.label19.TabIndex = 3;
             this.label19.Text = "Axis";
             this.label19.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -647,7 +671,7 @@
             this.lblAxisName.Location = new System.Drawing.Point(77, 1);
             this.lblAxisName.Margin = new System.Windows.Forms.Padding(1);
             this.lblAxisName.Name = "lblAxisName";
-            this.lblAxisName.Size = new System.Drawing.Size(50, 16);
+            this.lblAxisName.Size = new System.Drawing.Size(50, 17);
             this.lblAxisName.TabIndex = 3;
             this.lblAxisName.Text = "Z";
             this.lblAxisName.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -659,10 +683,10 @@
             this.lblCurrentPositionZ.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lblCurrentPositionZ.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
             this.lblCurrentPositionZ.ForeColor = System.Drawing.Color.White;
-            this.lblCurrentPositionZ.Location = new System.Drawing.Point(77, 37);
+            this.lblCurrentPositionZ.Location = new System.Drawing.Point(77, 39);
             this.lblCurrentPositionZ.Margin = new System.Windows.Forms.Padding(1);
             this.lblCurrentPositionZ.Name = "lblCurrentPositionZ";
-            this.lblCurrentPositionZ.Size = new System.Drawing.Size(50, 16);
+            this.lblCurrentPositionZ.Size = new System.Drawing.Size(50, 17);
             this.lblCurrentPositionZ.TabIndex = 6;
             this.lblCurrentPositionZ.Text = "0.0";
             this.lblCurrentPositionZ.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -674,10 +698,10 @@
             this.lblCurrentToTargetZ.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lblCurrentToTargetZ.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
             this.lblCurrentToTargetZ.ForeColor = System.Drawing.Color.White;
-            this.lblCurrentToTargetZ.Location = new System.Drawing.Point(77, 55);
+            this.lblCurrentToTargetZ.Location = new System.Drawing.Point(77, 58);
             this.lblCurrentToTargetZ.Margin = new System.Windows.Forms.Padding(1);
             this.lblCurrentToTargetZ.Name = "lblCurrentToTargetZ";
-            this.lblCurrentToTargetZ.Size = new System.Drawing.Size(50, 16);
+            this.lblCurrentToTargetZ.Size = new System.Drawing.Size(50, 17);
             this.lblCurrentToTargetZ.TabIndex = 23;
             this.lblCurrentToTargetZ.Text = "Set";
             this.lblCurrentToTargetZ.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -690,10 +714,10 @@
             this.lblCurrentCenterOfGravityZ.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lblCurrentCenterOfGravityZ.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
             this.lblCurrentCenterOfGravityZ.ForeColor = System.Drawing.Color.White;
-            this.lblCurrentCenterOfGravityZ.Location = new System.Drawing.Point(77, 91);
+            this.lblCurrentCenterOfGravityZ.Location = new System.Drawing.Point(77, 96);
             this.lblCurrentCenterOfGravityZ.Margin = new System.Windows.Forms.Padding(1);
             this.lblCurrentCenterOfGravityZ.Name = "lblCurrentCenterOfGravityZ";
-            this.lblCurrentCenterOfGravityZ.Size = new System.Drawing.Size(50, 16);
+            this.lblCurrentCenterOfGravityZ.Size = new System.Drawing.Size(50, 17);
             this.lblCurrentCenterOfGravityZ.TabIndex = 6;
             this.lblCurrentCenterOfGravityZ.Text = "0";
             this.lblCurrentCenterOfGravityZ.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -705,10 +729,10 @@
             this.lblTeachedCenterOfGravityZ.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lblTeachedCenterOfGravityZ.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
             this.lblTeachedCenterOfGravityZ.ForeColor = System.Drawing.Color.White;
-            this.lblTeachedCenterOfGravityZ.Location = new System.Drawing.Point(77, 73);
+            this.lblTeachedCenterOfGravityZ.Location = new System.Drawing.Point(77, 77);
             this.lblTeachedCenterOfGravityZ.Margin = new System.Windows.Forms.Padding(1);
             this.lblTeachedCenterOfGravityZ.Name = "lblTeachedCenterOfGravityZ";
-            this.lblTeachedCenterOfGravityZ.Size = new System.Drawing.Size(50, 16);
+            this.lblTeachedCenterOfGravityZ.Size = new System.Drawing.Size(50, 17);
             this.lblTeachedCenterOfGravityZ.TabIndex = 6;
             this.lblTeachedCenterOfGravityZ.Text = "0";
             this.lblTeachedCenterOfGravityZ.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -721,10 +745,10 @@
             this.lblSensorZ.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lblSensorZ.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
             this.lblSensorZ.ForeColor = System.Drawing.Color.White;
-            this.lblSensorZ.Location = new System.Drawing.Point(77, 163);
+            this.lblSensorZ.Location = new System.Drawing.Point(77, 172);
             this.lblSensorZ.Margin = new System.Windows.Forms.Padding(1);
             this.lblSensorZ.Name = "lblSensorZ";
-            this.lblSensorZ.Size = new System.Drawing.Size(50, 16);
+            this.lblSensorZ.Size = new System.Drawing.Size(50, 17);
             this.lblSensorZ.TabIndex = 8;
             this.lblSensorZ.Text = "Done";
             this.lblSensorZ.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -736,10 +760,10 @@
             this.lblMoveToTargetZ.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lblMoveToTargetZ.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
             this.lblMoveToTargetZ.ForeColor = System.Drawing.Color.White;
-            this.lblMoveToTargetZ.Location = new System.Drawing.Point(77, 127);
+            this.lblMoveToTargetZ.Location = new System.Drawing.Point(77, 134);
             this.lblMoveToTargetZ.Margin = new System.Windows.Forms.Padding(1);
             this.lblMoveToTargetZ.Name = "lblMoveToTargetZ";
-            this.lblMoveToTargetZ.Size = new System.Drawing.Size(50, 16);
+            this.lblMoveToTargetZ.Size = new System.Drawing.Size(50, 17);
             this.lblMoveToTargetZ.TabIndex = 22;
             this.lblMoveToTargetZ.Text = "Move To";
             this.lblMoveToTargetZ.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -752,10 +776,10 @@
             this.lblCurrentToTargCetenterOfGravityZ.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lblCurrentToTargCetenterOfGravityZ.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
             this.lblCurrentToTargCetenterOfGravityZ.ForeColor = System.Drawing.Color.White;
-            this.lblCurrentToTargCetenterOfGravityZ.Location = new System.Drawing.Point(77, 109);
+            this.lblCurrentToTargCetenterOfGravityZ.Location = new System.Drawing.Point(77, 115);
             this.lblCurrentToTargCetenterOfGravityZ.Margin = new System.Windows.Forms.Padding(1);
             this.lblCurrentToTargCetenterOfGravityZ.Name = "lblCurrentToTargCetenterOfGravityZ";
-            this.lblCurrentToTargCetenterOfGravityZ.Size = new System.Drawing.Size(50, 16);
+            this.lblCurrentToTargCetenterOfGravityZ.Size = new System.Drawing.Size(50, 17);
             this.lblCurrentToTargCetenterOfGravityZ.TabIndex = 22;
             this.lblCurrentToTargCetenterOfGravityZ.Text = "Set";
             this.lblCurrentToTargCetenterOfGravityZ.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -767,10 +791,10 @@
             this.label20.Dock = System.Windows.Forms.DockStyle.Fill;
             this.label20.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
             this.label20.ForeColor = System.Drawing.Color.White;
-            this.label20.Location = new System.Drawing.Point(1, 145);
+            this.label20.Location = new System.Drawing.Point(1, 153);
             this.label20.Margin = new System.Windows.Forms.Padding(1);
             this.label20.Name = "label20";
-            this.label20.Size = new System.Drawing.Size(74, 16);
+            this.label20.Size = new System.Drawing.Size(74, 17);
             this.label20.TabIndex = 11;
             this.label20.Text = "Origin";
             this.label20.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -781,10 +805,10 @@
             this.lblOriginZ.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lblOriginZ.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
             this.lblOriginZ.ForeColor = System.Drawing.Color.White;
-            this.lblOriginZ.Location = new System.Drawing.Point(77, 145);
+            this.lblOriginZ.Location = new System.Drawing.Point(77, 153);
             this.lblOriginZ.Margin = new System.Windows.Forms.Padding(1);
             this.lblOriginZ.Name = "lblOriginZ";
-            this.lblOriginZ.Size = new System.Drawing.Size(50, 16);
+            this.lblOriginZ.Size = new System.Drawing.Size(50, 17);
             this.lblOriginZ.TabIndex = 11;
             this.lblOriginZ.Text = "Origin";
             this.lblOriginZ.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -796,10 +820,10 @@
             this.label23.Dock = System.Windows.Forms.DockStyle.Fill;
             this.label23.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
             this.label23.ForeColor = System.Drawing.Color.White;
-            this.label23.Location = new System.Drawing.Point(1, 199);
+            this.label23.Location = new System.Drawing.Point(1, 191);
             this.label23.Margin = new System.Windows.Forms.Padding(1);
             this.label23.Name = "label23";
-            this.label23.Size = new System.Drawing.Size(74, 16);
+            this.label23.Size = new System.Drawing.Size(74, 17);
             this.label23.TabIndex = 9;
             this.label23.Text = "A/F Laser";
             this.label23.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -810,29 +834,13 @@
             this.label24.Dock = System.Windows.Forms.DockStyle.Fill;
             this.label24.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
             this.label24.ForeColor = System.Drawing.Color.White;
-            this.label24.Location = new System.Drawing.Point(1, 217);
+            this.label24.Location = new System.Drawing.Point(1, 210);
             this.label24.Margin = new System.Windows.Forms.Padding(1);
             this.label24.Name = "label24";
-            this.label24.Size = new System.Drawing.Size(74, 22);
+            this.label24.Size = new System.Drawing.Size(74, 29);
             this.label24.TabIndex = 9;
             this.label24.Text = "A/F Tracking";
             this.label24.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // lblTrackingOnOffZ
-            // 
-            this.lblTrackingOnOffZ.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
-            this.lblTrackingOnOffZ.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lblTrackingOnOffZ.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblTrackingOnOffZ.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
-            this.lblTrackingOnOffZ.ForeColor = System.Drawing.Color.White;
-            this.lblTrackingOnOffZ.Location = new System.Drawing.Point(77, 217);
-            this.lblTrackingOnOffZ.Margin = new System.Windows.Forms.Padding(1);
-            this.lblTrackingOnOffZ.Name = "lblTrackingOnOffZ";
-            this.lblTrackingOnOffZ.Size = new System.Drawing.Size(50, 22);
-            this.lblTrackingOnOffZ.TabIndex = 24;
-            this.lblTrackingOnOffZ.Text = "On";
-            this.lblTrackingOnOffZ.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.lblTrackingOnOffZ.Click += new System.EventHandler(this.lblTrackingOnOffZ_Click);
             // 
             // tlpMotionStatus
             // 
@@ -843,7 +851,6 @@
             this.tlpMotionStatus.Controls.Add(this.label9, 0, 9);
             this.tlpMotionStatus.Controls.Add(this.label8, 0, 8);
             this.tlpMotionStatus.Controls.Add(this.label7, 0, 7);
-            this.tlpMotionStatus.Controls.Add(this.lblServoOnOffX, 1, 9);
             this.tlpMotionStatus.Controls.Add(this.lblSensorX, 1, 7);
             this.tlpMotionStatus.Controls.Add(this.lblAxisStatusX, 1, 8);
             this.tlpMotionStatus.Controls.Add(this.label2, 0, 1);
@@ -854,7 +861,6 @@
             this.tlpMotionStatus.Controls.Add(this.lblTargetPositionY, 2, 1);
             this.tlpMotionStatus.Controls.Add(this.lblSensorY, 2, 7);
             this.tlpMotionStatus.Controls.Add(this.lblAxisStatusY, 2, 8);
-            this.tlpMotionStatus.Controls.Add(this.lblServoOnOffY, 2, 9);
             this.tlpMotionStatus.Controls.Add(this.label4, 0, 5);
             this.tlpMotionStatus.Controls.Add(this.lblMoveToTargetX, 1, 5);
             this.tlpMotionStatus.Controls.Add(this.lblMoveToTargetY, 2, 5);
@@ -870,24 +876,26 @@
             this.tlpMotionStatus.Controls.Add(this.label21, 0, 6);
             this.tlpMotionStatus.Controls.Add(this.lblOriginX, 1, 6);
             this.tlpMotionStatus.Controls.Add(this.lblOriginY, 2, 6);
+            this.tlpMotionStatus.Controls.Add(this.tlpServoOnOffX, 1, 9);
+            this.tlpMotionStatus.Controls.Add(this.tlpServoOnOffY, 2, 9);
             this.tlpMotionStatus.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tlpMotionStatus.Location = new System.Drawing.Point(0, 0);
             this.tlpMotionStatus.Margin = new System.Windows.Forms.Padding(0);
             this.tlpMotionStatus.Name = "tlpMotionStatus";
-            this.tlpMotionStatus.RowCount = 13;
-            this.tlpMotionStatus.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 7.692307F));
-            this.tlpMotionStatus.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 7.692307F));
-            this.tlpMotionStatus.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 7.692307F));
-            this.tlpMotionStatus.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 7.692307F));
-            this.tlpMotionStatus.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 7.692307F));
-            this.tlpMotionStatus.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 7.692307F));
-            this.tlpMotionStatus.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 7.692307F));
-            this.tlpMotionStatus.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 7.692307F));
-            this.tlpMotionStatus.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 7.692307F));
-            this.tlpMotionStatus.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 7.692307F));
-            this.tlpMotionStatus.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 7.692307F));
-            this.tlpMotionStatus.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 7.692307F));
-            this.tlpMotionStatus.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 7.692307F));
+            this.tlpMotionStatus.RowCount = 12;
+            this.tlpMotionStatus.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 8.333333F));
+            this.tlpMotionStatus.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 8.333333F));
+            this.tlpMotionStatus.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 8.333333F));
+            this.tlpMotionStatus.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 8.333333F));
+            this.tlpMotionStatus.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 8.333333F));
+            this.tlpMotionStatus.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 8.333333F));
+            this.tlpMotionStatus.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 8.333333F));
+            this.tlpMotionStatus.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 8.333333F));
+            this.tlpMotionStatus.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 8.333333F));
+            this.tlpMotionStatus.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 8.333333F));
+            this.tlpMotionStatus.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 8.333333F));
+            this.tlpMotionStatus.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 8.333333F));
+            this.tlpMotionStatus.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tlpMotionStatus.Size = new System.Drawing.Size(192, 240);
             this.tlpMotionStatus.TabIndex = 0;
             // 
@@ -897,10 +905,10 @@
             this.label9.Dock = System.Windows.Forms.DockStyle.Fill;
             this.label9.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
             this.label9.ForeColor = System.Drawing.Color.White;
-            this.label9.Location = new System.Drawing.Point(1, 163);
+            this.label9.Location = new System.Drawing.Point(1, 172);
             this.label9.Margin = new System.Windows.Forms.Padding(1);
             this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(74, 16);
+            this.label9.Size = new System.Drawing.Size(74, 17);
             this.label9.TabIndex = 9;
             this.label9.Text = "Servo";
             this.label9.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -911,10 +919,10 @@
             this.label8.Dock = System.Windows.Forms.DockStyle.Fill;
             this.label8.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
             this.label8.ForeColor = System.Drawing.Color.White;
-            this.label8.Location = new System.Drawing.Point(1, 145);
+            this.label8.Location = new System.Drawing.Point(1, 153);
             this.label8.Margin = new System.Windows.Forms.Padding(1);
             this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(74, 16);
+            this.label8.Size = new System.Drawing.Size(74, 17);
             this.label8.TabIndex = 7;
             this.label8.Text = "Status";
             this.label8.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -925,29 +933,13 @@
             this.label7.Dock = System.Windows.Forms.DockStyle.Fill;
             this.label7.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
             this.label7.ForeColor = System.Drawing.Color.White;
-            this.label7.Location = new System.Drawing.Point(1, 127);
+            this.label7.Location = new System.Drawing.Point(1, 134);
             this.label7.Margin = new System.Windows.Forms.Padding(1);
             this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(74, 16);
+            this.label7.Size = new System.Drawing.Size(74, 17);
             this.label7.TabIndex = 8;
             this.label7.Text = "Sensor";
             this.label7.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // lblServoOnOffX
-            // 
-            this.lblServoOnOffX.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
-            this.lblServoOnOffX.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lblServoOnOffX.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblServoOnOffX.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
-            this.lblServoOnOffX.ForeColor = System.Drawing.Color.White;
-            this.lblServoOnOffX.Location = new System.Drawing.Point(77, 163);
-            this.lblServoOnOffX.Margin = new System.Windows.Forms.Padding(1);
-            this.lblServoOnOffX.Name = "lblServoOnOffX";
-            this.lblServoOnOffX.Size = new System.Drawing.Size(55, 16);
-            this.lblServoOnOffX.TabIndex = 24;
-            this.lblServoOnOffX.Text = "On";
-            this.lblServoOnOffX.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.lblServoOnOffX.Click += new System.EventHandler(this.lblServoOnOffX_Click);
             // 
             // lblSensorX
             // 
@@ -956,10 +948,10 @@
             this.lblSensorX.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lblSensorX.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
             this.lblSensorX.ForeColor = System.Drawing.Color.White;
-            this.lblSensorX.Location = new System.Drawing.Point(77, 127);
+            this.lblSensorX.Location = new System.Drawing.Point(77, 134);
             this.lblSensorX.Margin = new System.Windows.Forms.Padding(1);
             this.lblSensorX.Name = "lblSensorX";
-            this.lblSensorX.Size = new System.Drawing.Size(55, 16);
+            this.lblSensorX.Size = new System.Drawing.Size(55, 17);
             this.lblSensorX.TabIndex = 8;
             this.lblSensorX.Text = "Done";
             this.lblSensorX.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -971,10 +963,10 @@
             this.lblAxisStatusX.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lblAxisStatusX.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
             this.lblAxisStatusX.ForeColor = System.Drawing.Color.White;
-            this.lblAxisStatusX.Location = new System.Drawing.Point(77, 145);
+            this.lblAxisStatusX.Location = new System.Drawing.Point(77, 153);
             this.lblAxisStatusX.Margin = new System.Windows.Forms.Padding(1);
             this.lblAxisStatusX.Name = "lblAxisStatusX";
-            this.lblAxisStatusX.Size = new System.Drawing.Size(55, 16);
+            this.lblAxisStatusX.Size = new System.Drawing.Size(55, 17);
             this.lblAxisStatusX.TabIndex = 7;
             this.lblAxisStatusX.Text = "Done";
             this.lblAxisStatusX.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -985,10 +977,10 @@
             this.label2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.label2.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
             this.label2.ForeColor = System.Drawing.Color.White;
-            this.label2.Location = new System.Drawing.Point(1, 19);
+            this.label2.Location = new System.Drawing.Point(1, 20);
             this.label2.Margin = new System.Windows.Forms.Padding(1);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(74, 16);
+            this.label2.Size = new System.Drawing.Size(74, 17);
             this.label2.TabIndex = 4;
             this.label2.Text = "Target Position";
             this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -1000,10 +992,10 @@
             this.lblTargetPositionX.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lblTargetPositionX.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
             this.lblTargetPositionX.ForeColor = System.Drawing.Color.White;
-            this.lblTargetPositionX.Location = new System.Drawing.Point(77, 19);
+            this.lblTargetPositionX.Location = new System.Drawing.Point(77, 20);
             this.lblTargetPositionX.Margin = new System.Windows.Forms.Padding(1);
             this.lblTargetPositionX.Name = "lblTargetPositionX";
-            this.lblTargetPositionX.Size = new System.Drawing.Size(55, 16);
+            this.lblTargetPositionX.Size = new System.Drawing.Size(55, 17);
             this.lblTargetPositionX.TabIndex = 4;
             this.lblTargetPositionX.Text = "0.0";
             this.lblTargetPositionX.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -1018,7 +1010,7 @@
             this.label1.Location = new System.Drawing.Point(1, 1);
             this.label1.Margin = new System.Windows.Forms.Padding(1);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(74, 16);
+            this.label1.Size = new System.Drawing.Size(74, 17);
             this.label1.TabIndex = 3;
             this.label1.Text = "Axis";
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -1033,7 +1025,7 @@
             this.lblAxisX.Location = new System.Drawing.Point(77, 1);
             this.lblAxisX.Margin = new System.Windows.Forms.Padding(1);
             this.lblAxisX.Name = "lblAxisX";
-            this.lblAxisX.Size = new System.Drawing.Size(55, 16);
+            this.lblAxisX.Size = new System.Drawing.Size(55, 17);
             this.lblAxisX.TabIndex = 3;
             this.lblAxisX.Text = "X";
             this.lblAxisX.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -1048,7 +1040,7 @@
             this.lblAxisY.Location = new System.Drawing.Point(134, 1);
             this.lblAxisY.Margin = new System.Windows.Forms.Padding(1);
             this.lblAxisY.Name = "lblAxisY";
-            this.lblAxisY.Size = new System.Drawing.Size(57, 16);
+            this.lblAxisY.Size = new System.Drawing.Size(57, 17);
             this.lblAxisY.TabIndex = 3;
             this.lblAxisY.Text = "Y";
             this.lblAxisY.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -1060,10 +1052,10 @@
             this.lblTargetPositionY.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lblTargetPositionY.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
             this.lblTargetPositionY.ForeColor = System.Drawing.Color.White;
-            this.lblTargetPositionY.Location = new System.Drawing.Point(134, 19);
+            this.lblTargetPositionY.Location = new System.Drawing.Point(134, 20);
             this.lblTargetPositionY.Margin = new System.Windows.Forms.Padding(1);
             this.lblTargetPositionY.Name = "lblTargetPositionY";
-            this.lblTargetPositionY.Size = new System.Drawing.Size(57, 16);
+            this.lblTargetPositionY.Size = new System.Drawing.Size(57, 17);
             this.lblTargetPositionY.TabIndex = 4;
             this.lblTargetPositionY.Text = "0.0";
             this.lblTargetPositionY.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -1076,10 +1068,10 @@
             this.lblSensorY.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lblSensorY.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
             this.lblSensorY.ForeColor = System.Drawing.Color.White;
-            this.lblSensorY.Location = new System.Drawing.Point(134, 127);
+            this.lblSensorY.Location = new System.Drawing.Point(134, 134);
             this.lblSensorY.Margin = new System.Windows.Forms.Padding(1);
             this.lblSensorY.Name = "lblSensorY";
-            this.lblSensorY.Size = new System.Drawing.Size(57, 16);
+            this.lblSensorY.Size = new System.Drawing.Size(57, 17);
             this.lblSensorY.TabIndex = 8;
             this.lblSensorY.Text = "Done";
             this.lblSensorY.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -1091,29 +1083,13 @@
             this.lblAxisStatusY.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lblAxisStatusY.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
             this.lblAxisStatusY.ForeColor = System.Drawing.Color.White;
-            this.lblAxisStatusY.Location = new System.Drawing.Point(134, 145);
+            this.lblAxisStatusY.Location = new System.Drawing.Point(134, 153);
             this.lblAxisStatusY.Margin = new System.Windows.Forms.Padding(1);
             this.lblAxisStatusY.Name = "lblAxisStatusY";
-            this.lblAxisStatusY.Size = new System.Drawing.Size(57, 16);
+            this.lblAxisStatusY.Size = new System.Drawing.Size(57, 17);
             this.lblAxisStatusY.TabIndex = 7;
             this.lblAxisStatusY.Text = "Done";
             this.lblAxisStatusY.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // lblServoOnOffY
-            // 
-            this.lblServoOnOffY.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
-            this.lblServoOnOffY.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lblServoOnOffY.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblServoOnOffY.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
-            this.lblServoOnOffY.ForeColor = System.Drawing.Color.White;
-            this.lblServoOnOffY.Location = new System.Drawing.Point(134, 163);
-            this.lblServoOnOffY.Margin = new System.Windows.Forms.Padding(1);
-            this.lblServoOnOffY.Name = "lblServoOnOffY";
-            this.lblServoOnOffY.Size = new System.Drawing.Size(57, 16);
-            this.lblServoOnOffY.TabIndex = 24;
-            this.lblServoOnOffY.Text = "On";
-            this.lblServoOnOffY.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.lblServoOnOffY.Click += new System.EventHandler(this.lblServoOnOffY_Click);
             // 
             // label4
             // 
@@ -1121,10 +1097,10 @@
             this.label4.Dock = System.Windows.Forms.DockStyle.Fill;
             this.label4.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
             this.label4.ForeColor = System.Drawing.Color.White;
-            this.label4.Location = new System.Drawing.Point(1, 91);
+            this.label4.Location = new System.Drawing.Point(1, 96);
             this.label4.Margin = new System.Windows.Forms.Padding(1);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(74, 16);
+            this.label4.Size = new System.Drawing.Size(74, 17);
             this.label4.TabIndex = 11;
             this.label4.Text = "Move To Target";
             this.label4.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -1136,10 +1112,10 @@
             this.lblMoveToTargetX.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lblMoveToTargetX.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
             this.lblMoveToTargetX.ForeColor = System.Drawing.Color.White;
-            this.lblMoveToTargetX.Location = new System.Drawing.Point(77, 91);
+            this.lblMoveToTargetX.Location = new System.Drawing.Point(77, 96);
             this.lblMoveToTargetX.Margin = new System.Windows.Forms.Padding(1);
             this.lblMoveToTargetX.Name = "lblMoveToTargetX";
-            this.lblMoveToTargetX.Size = new System.Drawing.Size(55, 16);
+            this.lblMoveToTargetX.Size = new System.Drawing.Size(55, 17);
             this.lblMoveToTargetX.TabIndex = 22;
             this.lblMoveToTargetX.Text = "Move To";
             this.lblMoveToTargetX.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -1152,10 +1128,10 @@
             this.lblMoveToTargetY.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lblMoveToTargetY.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
             this.lblMoveToTargetY.ForeColor = System.Drawing.Color.White;
-            this.lblMoveToTargetY.Location = new System.Drawing.Point(134, 91);
+            this.lblMoveToTargetY.Location = new System.Drawing.Point(134, 96);
             this.lblMoveToTargetY.Margin = new System.Windows.Forms.Padding(1);
             this.lblMoveToTargetY.Name = "lblMoveToTargetY";
-            this.lblMoveToTargetY.Size = new System.Drawing.Size(57, 16);
+            this.lblMoveToTargetY.Size = new System.Drawing.Size(57, 17);
             this.lblMoveToTargetY.TabIndex = 22;
             this.lblMoveToTargetY.Text = "Move To";
             this.lblMoveToTargetY.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -1168,10 +1144,10 @@
             this.lblCurrentToTargetY.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lblCurrentToTargetY.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
             this.lblCurrentToTargetY.ForeColor = System.Drawing.Color.White;
-            this.lblCurrentToTargetY.Location = new System.Drawing.Point(134, 73);
+            this.lblCurrentToTargetY.Location = new System.Drawing.Point(134, 77);
             this.lblCurrentToTargetY.Margin = new System.Windows.Forms.Padding(1);
             this.lblCurrentToTargetY.Name = "lblCurrentToTargetY";
-            this.lblCurrentToTargetY.Size = new System.Drawing.Size(57, 16);
+            this.lblCurrentToTargetY.Size = new System.Drawing.Size(57, 17);
             this.lblCurrentToTargetY.TabIndex = 23;
             this.lblCurrentToTargetY.Text = "Set";
             this.lblCurrentToTargetY.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -1184,10 +1160,10 @@
             this.lblCurrentToTargetX.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lblCurrentToTargetX.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
             this.lblCurrentToTargetX.ForeColor = System.Drawing.Color.White;
-            this.lblCurrentToTargetX.Location = new System.Drawing.Point(77, 73);
+            this.lblCurrentToTargetX.Location = new System.Drawing.Point(77, 77);
             this.lblCurrentToTargetX.Margin = new System.Windows.Forms.Padding(1);
             this.lblCurrentToTargetX.Name = "lblCurrentToTargetX";
-            this.lblCurrentToTargetX.Size = new System.Drawing.Size(55, 16);
+            this.lblCurrentToTargetX.Size = new System.Drawing.Size(55, 17);
             this.lblCurrentToTargetX.TabIndex = 23;
             this.lblCurrentToTargetX.Text = "Set";
             this.lblCurrentToTargetX.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -1199,10 +1175,10 @@
             this.label6.Dock = System.Windows.Forms.DockStyle.Fill;
             this.label6.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
             this.label6.ForeColor = System.Drawing.Color.White;
-            this.label6.Location = new System.Drawing.Point(1, 73);
+            this.label6.Location = new System.Drawing.Point(1, 77);
             this.label6.Margin = new System.Windows.Forms.Padding(1);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(74, 16);
+            this.label6.Size = new System.Drawing.Size(74, 17);
             this.label6.TabIndex = 10;
             this.label6.Text = "Set Current To Target";
             this.label6.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -1213,10 +1189,10 @@
             this.label5.Dock = System.Windows.Forms.DockStyle.Fill;
             this.label5.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
             this.label5.ForeColor = System.Drawing.Color.White;
-            this.label5.Location = new System.Drawing.Point(1, 55);
+            this.label5.Location = new System.Drawing.Point(1, 58);
             this.label5.Margin = new System.Windows.Forms.Padding(1);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(74, 16);
+            this.label5.Size = new System.Drawing.Size(74, 17);
             this.label5.TabIndex = 6;
             this.label5.Text = "Current Position";
             this.label5.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -1228,10 +1204,10 @@
             this.lblCurrentPositionX.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lblCurrentPositionX.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
             this.lblCurrentPositionX.ForeColor = System.Drawing.Color.White;
-            this.lblCurrentPositionX.Location = new System.Drawing.Point(77, 55);
+            this.lblCurrentPositionX.Location = new System.Drawing.Point(77, 58);
             this.lblCurrentPositionX.Margin = new System.Windows.Forms.Padding(1);
             this.lblCurrentPositionX.Name = "lblCurrentPositionX";
-            this.lblCurrentPositionX.Size = new System.Drawing.Size(55, 16);
+            this.lblCurrentPositionX.Size = new System.Drawing.Size(55, 17);
             this.lblCurrentPositionX.TabIndex = 6;
             this.lblCurrentPositionX.Text = "0.0";
             this.lblCurrentPositionX.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -1243,10 +1219,10 @@
             this.lblCurrentPositionY.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lblCurrentPositionY.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
             this.lblCurrentPositionY.ForeColor = System.Drawing.Color.White;
-            this.lblCurrentPositionY.Location = new System.Drawing.Point(134, 55);
+            this.lblCurrentPositionY.Location = new System.Drawing.Point(134, 58);
             this.lblCurrentPositionY.Margin = new System.Windows.Forms.Padding(1);
             this.lblCurrentPositionY.Name = "lblCurrentPositionY";
-            this.lblCurrentPositionY.Size = new System.Drawing.Size(57, 16);
+            this.lblCurrentPositionY.Size = new System.Drawing.Size(57, 17);
             this.lblCurrentPositionY.TabIndex = 6;
             this.lblCurrentPositionY.Text = "0.0";
             this.lblCurrentPositionY.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -1257,10 +1233,10 @@
             this.label3.Dock = System.Windows.Forms.DockStyle.Fill;
             this.label3.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
             this.label3.ForeColor = System.Drawing.Color.White;
-            this.label3.Location = new System.Drawing.Point(1, 37);
+            this.label3.Location = new System.Drawing.Point(1, 39);
             this.label3.Margin = new System.Windows.Forms.Padding(1);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(74, 16);
+            this.label3.Size = new System.Drawing.Size(74, 17);
             this.label3.TabIndex = 5;
             this.label3.Text = "Offset";
             this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -1272,10 +1248,10 @@
             this.lblOffsetX.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lblOffsetX.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
             this.lblOffsetX.ForeColor = System.Drawing.Color.White;
-            this.lblOffsetX.Location = new System.Drawing.Point(77, 37);
+            this.lblOffsetX.Location = new System.Drawing.Point(77, 39);
             this.lblOffsetX.Margin = new System.Windows.Forms.Padding(1);
             this.lblOffsetX.Name = "lblOffsetX";
-            this.lblOffsetX.Size = new System.Drawing.Size(55, 16);
+            this.lblOffsetX.Size = new System.Drawing.Size(55, 17);
             this.lblOffsetX.TabIndex = 5;
             this.lblOffsetX.Text = "0.0";
             this.lblOffsetX.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -1288,10 +1264,10 @@
             this.lblOffsetY.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lblOffsetY.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
             this.lblOffsetY.ForeColor = System.Drawing.Color.White;
-            this.lblOffsetY.Location = new System.Drawing.Point(134, 37);
+            this.lblOffsetY.Location = new System.Drawing.Point(134, 39);
             this.lblOffsetY.Margin = new System.Windows.Forms.Padding(1);
             this.lblOffsetY.Name = "lblOffsetY";
-            this.lblOffsetY.Size = new System.Drawing.Size(57, 16);
+            this.lblOffsetY.Size = new System.Drawing.Size(57, 17);
             this.lblOffsetY.TabIndex = 5;
             this.lblOffsetY.Text = "0.0";
             this.lblOffsetY.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -1303,10 +1279,10 @@
             this.label21.Dock = System.Windows.Forms.DockStyle.Fill;
             this.label21.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
             this.label21.ForeColor = System.Drawing.Color.White;
-            this.label21.Location = new System.Drawing.Point(1, 109);
+            this.label21.Location = new System.Drawing.Point(1, 115);
             this.label21.Margin = new System.Windows.Forms.Padding(1);
             this.label21.Name = "label21";
-            this.label21.Size = new System.Drawing.Size(74, 16);
+            this.label21.Size = new System.Drawing.Size(74, 17);
             this.label21.TabIndex = 11;
             this.label21.Text = "Origin";
             this.label21.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -1317,10 +1293,10 @@
             this.lblOriginX.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lblOriginX.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
             this.lblOriginX.ForeColor = System.Drawing.Color.White;
-            this.lblOriginX.Location = new System.Drawing.Point(77, 109);
+            this.lblOriginX.Location = new System.Drawing.Point(77, 115);
             this.lblOriginX.Margin = new System.Windows.Forms.Padding(1);
             this.lblOriginX.Name = "lblOriginX";
-            this.lblOriginX.Size = new System.Drawing.Size(55, 16);
+            this.lblOriginX.Size = new System.Drawing.Size(55, 17);
             this.lblOriginX.TabIndex = 11;
             this.lblOriginX.Text = "Origin";
             this.lblOriginX.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -1332,14 +1308,111 @@
             this.lblOriginY.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lblOriginY.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
             this.lblOriginY.ForeColor = System.Drawing.Color.White;
-            this.lblOriginY.Location = new System.Drawing.Point(134, 109);
+            this.lblOriginY.Location = new System.Drawing.Point(134, 115);
             this.lblOriginY.Margin = new System.Windows.Forms.Padding(1);
             this.lblOriginY.Name = "lblOriginY";
-            this.lblOriginY.Size = new System.Drawing.Size(57, 16);
+            this.lblOriginY.Size = new System.Drawing.Size(57, 17);
             this.lblOriginY.TabIndex = 11;
             this.lblOriginY.Text = "Origin";
             this.lblOriginY.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.lblOriginY.Click += new System.EventHandler(this.lblOriginY_Click);
+            // 
+            // tlpServoOnOffX
+            // 
+            this.tlpServoOnOffX.ColumnCount = 2;
+            this.tlpServoOnOffX.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tlpServoOnOffX.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tlpServoOnOffX.Controls.Add(this.lblServoOnX, 0, 0);
+            this.tlpServoOnOffX.Controls.Add(this.lblServoOffX, 1, 0);
+            this.tlpServoOnOffX.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tlpServoOnOffX.Location = new System.Drawing.Point(76, 171);
+            this.tlpServoOnOffX.Margin = new System.Windows.Forms.Padding(0);
+            this.tlpServoOnOffX.Name = "tlpServoOnOffX";
+            this.tlpServoOnOffX.RowCount = 1;
+            this.tlpServoOnOffX.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tlpServoOnOffX.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 19F));
+            this.tlpServoOnOffX.Size = new System.Drawing.Size(57, 19);
+            this.tlpServoOnOffX.TabIndex = 24;
+            // 
+            // lblServoOnX
+            // 
+            this.lblServoOnX.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
+            this.lblServoOnX.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblServoOnX.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblServoOnX.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
+            this.lblServoOnX.ForeColor = System.Drawing.Color.White;
+            this.lblServoOnX.Location = new System.Drawing.Point(1, 1);
+            this.lblServoOnX.Margin = new System.Windows.Forms.Padding(1);
+            this.lblServoOnX.Name = "lblServoOnX";
+            this.lblServoOnX.Size = new System.Drawing.Size(26, 17);
+            this.lblServoOnX.TabIndex = 24;
+            this.lblServoOnX.Text = "On";
+            this.lblServoOnX.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblServoOnX.Click += new System.EventHandler(this.lblServoOnX_Click);
+            // 
+            // lblServoOffX
+            // 
+            this.lblServoOffX.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
+            this.lblServoOffX.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblServoOffX.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblServoOffX.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
+            this.lblServoOffX.ForeColor = System.Drawing.Color.White;
+            this.lblServoOffX.Location = new System.Drawing.Point(29, 1);
+            this.lblServoOffX.Margin = new System.Windows.Forms.Padding(1);
+            this.lblServoOffX.Name = "lblServoOffX";
+            this.lblServoOffX.Size = new System.Drawing.Size(27, 17);
+            this.lblServoOffX.TabIndex = 24;
+            this.lblServoOffX.Text = "Off";
+            this.lblServoOffX.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblServoOffX.Click += new System.EventHandler(this.lblServoOffX_Click);
+            // 
+            // tlpServoOnOffY
+            // 
+            this.tlpServoOnOffY.ColumnCount = 2;
+            this.tlpServoOnOffY.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tlpServoOnOffY.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tlpServoOnOffY.Controls.Add(this.lblServoOnY, 0, 0);
+            this.tlpServoOnOffY.Controls.Add(this.lblServoOffY, 1, 0);
+            this.tlpServoOnOffY.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tlpServoOnOffY.Location = new System.Drawing.Point(133, 171);
+            this.tlpServoOnOffY.Margin = new System.Windows.Forms.Padding(0);
+            this.tlpServoOnOffY.Name = "tlpServoOnOffY";
+            this.tlpServoOnOffY.RowCount = 1;
+            this.tlpServoOnOffY.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tlpServoOnOffY.Size = new System.Drawing.Size(59, 19);
+            this.tlpServoOnOffY.TabIndex = 25;
+            // 
+            // lblServoOnY
+            // 
+            this.lblServoOnY.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
+            this.lblServoOnY.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblServoOnY.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblServoOnY.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
+            this.lblServoOnY.ForeColor = System.Drawing.Color.White;
+            this.lblServoOnY.Location = new System.Drawing.Point(1, 1);
+            this.lblServoOnY.Margin = new System.Windows.Forms.Padding(1);
+            this.lblServoOnY.Name = "lblServoOnY";
+            this.lblServoOnY.Size = new System.Drawing.Size(27, 17);
+            this.lblServoOnY.TabIndex = 24;
+            this.lblServoOnY.Text = "On";
+            this.lblServoOnY.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblServoOnY.Click += new System.EventHandler(this.lblServoOnY_Click);
+            // 
+            // lblServoOffY
+            // 
+            this.lblServoOffY.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
+            this.lblServoOffY.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblServoOffY.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblServoOffY.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
+            this.lblServoOffY.ForeColor = System.Drawing.Color.White;
+            this.lblServoOffY.Location = new System.Drawing.Point(30, 1);
+            this.lblServoOffY.Margin = new System.Windows.Forms.Padding(1);
+            this.lblServoOffY.Name = "lblServoOffY";
+            this.lblServoOffY.Size = new System.Drawing.Size(28, 17);
+            this.lblServoOffY.TabIndex = 24;
+            this.lblServoOffY.Text = "Off";
+            this.lblServoOffY.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblServoOffY.Click += new System.EventHandler(this.lblServoOffY_Click);
             // 
             // tlpJogControl
             // 
@@ -1697,8 +1770,11 @@
             this.tlpMotionFunction.ResumeLayout(false);
             this.tlpStatus.ResumeLayout(false);
             this.tlpLAFStatus.ResumeLayout(false);
-            this.tlpAutoFocusOnOffZ1.ResumeLayout(false);
+            this.tlpTrackingOnOffZ.ResumeLayout(false);
+            this.tlpLaserOnOffZ.ResumeLayout(false);
             this.tlpMotionStatus.ResumeLayout(false);
+            this.tlpServoOnOffX.ResumeLayout(false);
+            this.tlpServoOnOffY.ResumeLayout(false);
             this.tlpJogControl.ResumeLayout(false);
             this.tlpJogFunction.ResumeLayout(false);
             this.pnlJog.ResumeLayout(false);
@@ -1731,7 +1807,6 @@
         private System.Windows.Forms.TableLayoutPanel tlpVariableParameter;
         private System.Windows.Forms.TableLayoutPanel tlpStatus;
         private System.Windows.Forms.TableLayoutPanel tlpLAFStatus;
-        private System.Windows.Forms.Label label10;
         private System.Windows.Forms.Label label11;
         private System.Windows.Forms.Label label12;
         private System.Windows.Forms.Label label13;
@@ -1754,7 +1829,6 @@
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.Label label7;
-        private System.Windows.Forms.Label lblServoOnOffX;
         private System.Windows.Forms.Label lblSensorX;
         private System.Windows.Forms.Label lblAxisStatusX;
         private System.Windows.Forms.Label label2;
@@ -1765,7 +1839,6 @@
         private System.Windows.Forms.Label lblTargetPositionY;
         private System.Windows.Forms.Label lblSensorY;
         private System.Windows.Forms.Label lblAxisStatusY;
-        private System.Windows.Forms.Label lblServoOnOffY;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label lblMoveToTargetX;
         private System.Windows.Forms.Label lblMoveToTargetY;
@@ -1804,12 +1877,19 @@
         private System.Windows.Forms.Label lblOriginX;
         private System.Windows.Forms.Label lblOriginY;
         private System.Windows.Forms.Panel pnlJog;
-        private System.Windows.Forms.Label lblLaserOnOffZ;
-        private System.Windows.Forms.TableLayoutPanel tlpAutoFocusOnOffZ1;
-        private System.Windows.Forms.Label lblServoOnZ;
-        private System.Windows.Forms.Label lblServoOffZ;
         private System.Windows.Forms.Label label23;
         private System.Windows.Forms.Label label24;
-        private System.Windows.Forms.Label lblTrackingOnOffZ;
+        private System.Windows.Forms.TableLayoutPanel tlpServoOnOffX;
+        private System.Windows.Forms.Label lblServoOnX;
+        private System.Windows.Forms.Label lblServoOffX;
+        private System.Windows.Forms.TableLayoutPanel tlpServoOnOffY;
+        private System.Windows.Forms.Label lblServoOnY;
+        private System.Windows.Forms.Label lblServoOffY;
+        private System.Windows.Forms.TableLayoutPanel tlpLaserOnOffZ;
+        private System.Windows.Forms.Label lblLaserOnZ;
+        private System.Windows.Forms.Label lblLaserOffZ;
+        private System.Windows.Forms.TableLayoutPanel tlpTrackingOnOffZ;
+        private System.Windows.Forms.Label lblTrackingOnZ;
+        private System.Windows.Forms.Label lblTrackingOffZ;
     }
 }

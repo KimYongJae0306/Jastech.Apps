@@ -1,7 +1,9 @@
 ﻿using ATT_UT_Remodeling.Core;
 using ATT_UT_Remodeling.UI.Forms;
 using Jastech.Apps.Structure;
+using Jastech.Apps.Winform;
 using Jastech.Apps.Winform.UI.Forms;
+using Jastech.Framework.Winform;
 using Jastech.Framework.Winform.Forms;
 using System;
 using System.Windows.Forms;
@@ -54,10 +56,13 @@ namespace ATT_UT_Remodeling.UI.Pages
                 return;
             }
 
+            
             if (MotionSettingsForm == null)
             {
                 MotionSettingsForm = new MotionSettingsForm();
                 MotionSettingsForm.UnitName = UnitName.Unit0;
+                MotionSettingsForm.AxisHandler = MotionManager.Instance().GetAxisHandler(AxisHandlerName.Handler0);
+                MotionSettingsForm.LafCtrl = LAFManager.Instance().GetLAFCtrl("Laf");
                 MotionSettingsForm.InspModelService = ATTInspModelService;
                 MotionSettingsForm.CloseEventDelegate = () => MotionSettingsForm = null;
                 MotionSettingsForm.Show();

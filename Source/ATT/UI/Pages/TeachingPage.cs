@@ -13,12 +13,12 @@ namespace ATT.UI.Pages
     public partial class TeachingPage : UserControl
     {
         #region 필드
-        private ATTInspModelService ATTInspModelService { get; set; } = null;
-
-        private MotionPopupForm _motionPopupForm { get; set; } = null;
-        #endregion
 
         #region 속성
+        private ATTInspModelService ATTInspModelService { get; set; } = null;
+
+        private MotionPopupForm MotionPopupForm { get; set; } = null;
+        #endregion
         #endregion
 
         #region 이벤트
@@ -45,8 +45,6 @@ namespace ATT.UI.Pages
             form.InspModelService = ATTInspModelService;
             form.OpenMotionPopupEventHandler += OpenMotionPopupEventHandler;
             form.ShowDialog();
-
-            //GC.Collect();
         }
 
         private void btnLinescanSetting_Click(object sender, EventArgs e)
@@ -56,12 +54,12 @@ namespace ATT.UI.Pages
             if(ConfigSet.Instance().Operation.VirtualMode)
             {
                 form.LineCamera = LineCameraManager.Instance().GetAppsCamera("Camera0");
-                form.LAFCtrl = LAFManager.Instance().GetLAFCtrl("Akkon");
+                form.LAFCtrl = LAFManager.Instance().GetLAFCtrl("Laf");
             }
             else
             {
                 form.LineCamera = LineCameraManager.Instance().GetAppsCamera("Camera0");
-                form.LAFCtrl = LAFManager.Instance().GetLAFCtrl("Akkon");
+                form.LAFCtrl = LAFManager.Instance().GetLAFCtrl("Laf");
             }
             form.UnitName = UnitName.Unit0;
             form.AxisNameZ = Jastech.Framework.Device.Motions.AxisName.Z0;
@@ -73,20 +71,18 @@ namespace ATT.UI.Pages
 
         private void OpenMotionPopupEventHandler(UnitName unitName)
         {
-            //MotionPopupForm motionPopupForm = new MotionPopupForm();
-            //motionPopupForm.UnitName = unitName;
-            //motionPopupForm.InspModelService = ATTInspModelService;
-            //motionPopupForm.Show();
-            if (_motionPopupForm == null)
+            if (MotionPopupForm == null)
             {
-                _motionPopupForm = new MotionPopupForm();
-                _motionPopupForm.UnitName = unitName;
-                _motionPopupForm.InspModelService = ATTInspModelService;
-                _motionPopupForm.CloseEventDelegate = () => _motionPopupForm = null;
-                _motionPopupForm.Show();
+                MotionPopupForm = new MotionPopupForm();
+                MotionPopupForm.UnitName = unitName;
+                MotionPopupForm.AxisHandler = MotionManager.Instance().GetAxisHandler(AxisHandlerName.Handler0);
+                MotionPopupForm.LafCtrl = LAFManager.Instance().GetLAFCtrl("Laf");
+                MotionPopupForm.InspModelService = ATTInspModelService;
+                MotionPopupForm.CloseEventDelegate = () => MotionPopupForm = null;
+                MotionPopupForm.Show();
             }
             else
-                _motionPopupForm.Focus();
+                MotionPopupForm.Focus();
         }
 
         internal void SetInspModelService(ATTInspModelService inspModelService)

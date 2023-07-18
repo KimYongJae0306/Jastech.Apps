@@ -45,9 +45,9 @@ namespace ATT.UI.Forms
 
         private List<TeachingInfo> TeachingPositionList { get; set; } = null;
 
-        private AxisHandler AxisHandler { get; set; } = null;
+        public AxisHandler AxisHandler { get; set; } = null;
 
-        private LAFCtrl LafCtrl { get; set; } = null;
+        public LAFCtrl LafCtrl { get; set; } = null;
 
         private MotionJogXYControl MotionJogXYControl { get; set; } = new MotionJogXYControl() { Dock = DockStyle.Fill };
 
@@ -149,14 +149,8 @@ namespace ATT.UI.Forms
 
         private void UpdateData(TeachingPosType teachingPositionType = TeachingPosType.Standby)
         {
-            var axisHandler = MotionManager.Instance().GetAxisHandler(AxisHandlerName.Handler0);
-            SetAxisHandler(axisHandler);
-
             var posData = TeachingData.Instance().GetUnit(UnitName.ToString()).GetTeachingInfoList();
             SetTeachingPosition(posData);
-
-            var lafCtrl = LAFManager.Instance().GetLAFCtrl("Akkon");
-            SetLAFCtrl(lafCtrl);
 
             UpdateCommonParam();
             UpdateVariableParam();
@@ -188,19 +182,9 @@ namespace ATT.UI.Forms
             ZCommonControl.UpdateData(AxisHandler.GetAxis(AxisName.Z0).AxisCommonParams.DeepCopy());
         }
 
-        private void SetAxisHandler(AxisHandler axisHandler)
-        {
-            AxisHandler = axisHandler;
-        }
-
         private void SetTeachingPosition(List<TeachingInfo> teacingPositionList)
         {
             TeachingPositionList = teacingPositionList.ToList();
-        }
-
-        private void SetLAFCtrl(LAFCtrl lafCtrl)
-        {
-            LafCtrl = lafCtrl;
         }
 
         private void AddJogControl()
@@ -274,18 +258,33 @@ namespace ATT.UI.Forms
             lblCurrentPositionX.Text = axis.GetActualPosition().ToString("F3");
 
             if (axis.IsNegativeLimit())
+            {
+                lblSensorX.BackColor = Color.Red;
                 lblSensorX.Text = "-";
+            }
             else if (axis.IsPositiveLimit())
+            {
+                lblSensorX.BackColor = Color.Red;
                 lblSensorX.Text = "+";
+            }
             else
+            {
+                lblSensorX.BackColor = _nonSelectedColor;
                 lblSensorX.Text = "";
+            }
 
             lblAxisStatusX.Text = axis.GetCurrentMotionStatus().ToString();
 
             if (axis.IsEnable())
-                lblServoOnOffX.Text = "On";
+            {
+                lblServoOnX.BackColor = _selectedColor;
+                lblServoOffX.BackColor = _nonSelectedColor;
+            }
             else
-                lblServoOnOffX.Text = "Off";
+            {
+                lblServoOnX.BackColor = _nonSelectedColor;
+                lblServoOffX.BackColor = _selectedColor;
+            }
         }
 
         private void UpdateStatusMotionY()
@@ -302,14 +301,20 @@ namespace ATT.UI.Forms
             else if (axis.IsPositiveLimit())
                 lblSensorY.Text = "+";
             else
-                lblSensorY.Text = "";
+                lblSensorY.Text = "Done";
 
             lblAxisStatusY.Text = axis.GetCurrentMotionStatus().ToString();
 
             if (axis.IsEnable())
-                lblServoOnOffY.Text = "On";
+            {
+                lblServoOnY.BackColor = _selectedColor;
+                lblServoOffY.BackColor = _nonSelectedColor;
+            }
             else
-                lblServoOnOffY.Text = "Off";
+            {
+                lblServoOnY.BackColor = _nonSelectedColor;
+                lblServoOffY.BackColor = _selectedColor;
+            }
         }
 
         private void UpdateStatusAutoFocusZ()
@@ -329,11 +334,42 @@ namespace ATT.UI.Forms
             lblCurrentCenterOfGravityZ.Text = status.CenterofGravity.ToString();
 
             if (status.IsNegativeLimit)
+            {
+                lblSensorZ.BackColor = Color.Red;
                 lblSensorZ.Text = "-";
+            }
             else if (status.IsPositiveLimit)
+            {
+                lblSensorZ.BackColor = Color.Red;
                 lblSensorZ.Text = "+";
+            }
             else
-                lblSensorZ.Text = "";
+            {
+                lblSensorZ.BackColor = _nonSelectedColor;
+                lblSensorZ.Text = "Done";
+            }
+
+            if (status.IsLaserOn)
+            {
+                lblLaserOnZ.BackColor = _selectedColor;
+                lblLaserOffZ.BackColor = _nonSelectedColor;
+            }
+            else
+            {
+                lblLaserOnZ.BackColor = _nonSelectedColor;
+                lblLaserOffZ.BackColor = _selectedColor;
+            }
+
+            if (status.IsTrackingOn)
+            {
+                lblTrackingOnZ.BackColor = _selectedColor;
+                lblTrackingOffZ.BackColor = _nonSelectedColor;
+            }
+            else
+            {
+                lblTrackingOnZ.BackColor = _nonSelectedColor;
+                lblTrackingOffZ.BackColor = _selectedColor;
+            }
         }
 
         public void UpdateCurrentData()
@@ -428,12 +464,14 @@ namespace ATT.UI.Forms
             AxisHandler.GetAxis(AxisName.X).StartHome();
         }
 
-        private void lblServoOnOffX_Click(object sender, EventArgs e)
+        private void lblServoOnX_Click(object sender, EventArgs e)
         {
-            if (AxisHandler.GetAxis(AxisName.X).IsEnable())
-                AxisHandler.GetAxis(AxisName.X).TurnOffServo();
-            else
-                AxisHandler.GetAxis(AxisName.X).TurnOnServo();
+            AxisHandler.GetAxis(AxisName.X).TurnOnServo();
+        }
+
+        private void lblServoOffX_Click(object sender, EventArgs e)
+        {
+            AxisHandler.GetAxis(AxisName.X).TurnOffServo();
         }
 
         private void lblTargetPositionY_Click(object sender, EventArgs e)
@@ -469,12 +507,14 @@ namespace ATT.UI.Forms
             AxisHandler.GetAxis(AxisName.Y).StartHome();
         }
 
-        private void lblServoOnOffY_Click(object sender, EventArgs e)
+        private void lblServoOnY_Click(object sender, EventArgs e)
         {
-            if (AxisHandler.GetAxis(AxisName.Y).IsEnable())
-                AxisHandler.GetAxis(AxisName.Y).TurnOffServo();
-            else
-                AxisHandler.GetAxis(AxisName.Y).TurnOnServo();
+            AxisHandler.GetAxis(AxisName.Y).TurnOnServo();
+        }
+
+        private void lblServoOffY_Click(object sender, EventArgs e)
+        {
+            AxisHandler.GetAxis(AxisName.Y).TurnOffServo();
         }
 
         private void lblTargetPositionZ_Click(object sender, EventArgs e)
@@ -532,36 +572,26 @@ namespace ATT.UI.Forms
             LAFManager.Instance().StartHomeThread(LafCtrl.Name);
         }
 
-        private void lblServoOnZ_Click(object sender, EventArgs e)
+        private void lblLaserOnZ_Click(object sender, EventArgs e)
         {
-            LAFManager.Instance().ServoOnOff(LafCtrl.Name, true);
+            LAFManager.Instance().LaserOnOff(LafCtrl.Name, true);
         }
 
-        private void lblServoOffZ_Click(object sender, EventArgs e)
+        private void lblLaserOffZ_Click(object sender, EventArgs e)
         {
-            LAFManager.Instance().ServoOnOff(LafCtrl.Name, false);
+            LAFManager.Instance().LaserOnOff(LafCtrl.Name, false);
         }
 
-        private void lblLaserOnOffZ_Click(object sender, EventArgs e)
+        private void lblTrackingOnZ_Click(object sender, EventArgs e)
         {
-            var status = LafCtrl.Status;
-
-            if (status.IsLaserOn)
-                LAFManager.Instance().LaserOnOff(LafCtrl.Name, false);
-            else
-                LAFManager.Instance().LaserOnOff(LafCtrl.Name, true);
+            LAFManager.Instance().TrackingOnOff(LafCtrl.Name, true);
         }
 
-        private void lblTrackingOnOffZ_Click(object sender, EventArgs e)
+        private void lblTrackingOffZ_Click(object sender, EventArgs e)
         {
-            var status = LafCtrl.Status;
-
-            if (status.IsTrackingOn)
-                LAFManager.Instance().TrackingOnOff(LafCtrl.Name, false);
-            else
-                LAFManager.Instance().TrackingOnOff(LafCtrl.Name, true);
+            LAFManager.Instance().TrackingOnOff(LafCtrl.Name, false);
         }
-
+      
         private void rdoJogSlowMode_CheckedChanged(object sender, EventArgs e)
         {
             if (rdoJogSlowMode.Checked)
@@ -647,7 +677,5 @@ namespace ATT.UI.Forms
                 CloseEventDelegate();
         }
         #endregion
-
-        
     }
 }
