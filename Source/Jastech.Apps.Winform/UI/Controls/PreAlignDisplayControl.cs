@@ -13,7 +13,7 @@ namespace Jastech.Apps.Winform.UI.Controls
         #endregion
 
         #region 속성
-        private CogPreAlignDisplayControl PreAlignDisplay { get; private set; } = null;
+        private CogPreAlignDisplayControl PreAlignDisplay { get; set; } = null;
         #endregion
 
         #region 이벤트
