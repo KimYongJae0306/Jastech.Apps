@@ -38,8 +38,8 @@ namespace Jastech.Apps.Winform.Service.Plc
         #endregion
 
         #region 델리게이트
-        public delegate void InspRunnerEventHandler(bool tt);
-        public delegate void PreAlignRunnerEventHandler(bool tt);
+        public delegate void InspRunnerEventHandler(bool isStart);
+        public delegate void PreAlignRunnerEventHandler(bool isStart);
         #endregion
 
         #region 생성자

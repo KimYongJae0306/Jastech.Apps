@@ -60,8 +60,6 @@ namespace Jastech.Apps.Winform.Service.Plc
 
             // Akkon Results
             CreateAkkonResult(AppsConfig.Instance().PlcAddressInfo.ResultStart_Akkon, tabTotabInterval);
-
-            CreatePreAlign(AppsConfig.Instance().PlcAddressInfo.ResultStart_PreAlign);
         }
 
         private void CreateAlignResult(int alignStartIndex, int tabTotabInterval)
@@ -128,14 +126,6 @@ namespace Jastech.Apps.Winform.Service.Plc
                 ResultMapList.Add(new PlcAddressMap((PlcResultMap)Enum.Parse(typeof(PlcResultMap), akkonLengthRightMin), WordType.DEC, addressIndex + 5, 1));
                 ResultMapList.Add(new PlcAddressMap((PlcResultMap)Enum.Parse(typeof(PlcResultMap), akkonLengthRightMax), WordType.DEC, addressIndex + 6, 1));
             }
-        }
-
-        private void CreatePreAlign(int preAlignStartIndex)
-        {
-            ResultMapList.Add(new PlcAddressMap(PlcResultMap.PreAlign0_Left_L, WordType.DEC, preAlignStartIndex, 1));
-            ResultMapList.Add(new PlcAddressMap(PlcResultMap.PreAlign0_Left_H, WordType.DEC, preAlignStartIndex, 1));
-            ResultMapList.Add(new PlcAddressMap(PlcResultMap.PreAlign0_Right_L, WordType.DEC, preAlignStartIndex, 1));
-            ResultMapList.Add(new PlcAddressMap(PlcResultMap.PreAlign0_Right_H, WordType.DEC, preAlignStartIndex, 1));
         }
 
         private void CreateAddressMap()

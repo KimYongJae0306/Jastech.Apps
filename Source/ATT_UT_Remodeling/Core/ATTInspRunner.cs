@@ -23,6 +23,7 @@ using Jastech.Framework.Imaging.Result;
 using Jastech.Framework.Imaging.VisionPro;
 using Jastech.Framework.Imaging.VisionPro.VisionAlgorithms.Results;
 using Jastech.Framework.Util.Helper;
+using Jastech.Framework.Winform;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -61,17 +62,19 @@ namespace ATT_UT_Remodeling.Core
 
         private Stopwatch LastInspSW { get; set; } = new Stopwatch();
 
-        public Task AkkonInspTask { get; set; }
+        public Task InspTask { get; set; }
 
-        public CancellationTokenSource CancelAkkonInspTask { get; set; }
+        public CancellationTokenSource CancelInspTask { get; set; }
 
-        public Queue<AkkonThreadParam> AkkonInspQueue = new Queue<AkkonThreadParam>();
+        public Queue<AkkonThreadParam> InspQueue = new Queue<AkkonThreadParam>();
 
         public Queue<ATTInspTab> InspTabQueue = new Queue<ATTInspTab>();
 
         public AkkonAlgorithm AkkonAlgorithm { get; set; } = new AkkonAlgorithm();
 
         public List<ATTInspTab> InspTabList { get; set; } = new List<ATTInspTab>();
+
+       
         #endregion
 
         #region 이벤트
@@ -91,40 +94,6 @@ namespace ATT_UT_Remodeling.Core
         #endregion
 
         #region 메서드
-        private void RunPreAlign(AppsInspResult inspResult)
-        {
-            MainAlgorithmTool algorithmTool = new MainAlgorithmTool();
-
-            if (inspResult.PreAlignResult.PreAlignMark.FoundedMark.Left.Judgement == Judgement.OK && inspResult.PreAlignResult.PreAlignMark.FoundedMark.Right.Judgement == Judgement.OK)
-            {
-                PointF leftVisionCoordinates = inspResult.PreAlignResult.PreAlignMark.FoundedMark.Left.MaxMatchPos.FoundPos;
-                PointF rightVisionCoordinates = inspResult.PreAlignResult.PreAlignMark.FoundedMark.Right.MaxMatchPos.FoundPos;
-
-                List<PointF> realCoordinateList = new List<PointF>();
-                PointF leftRealCoordinates = CalibrationData.Instance().ConvertVisionToReal(leftVisionCoordinates);
-                PointF righttRealCoordinates = CalibrationData.Instance().ConvertVisionToReal(rightVisionCoordinates);
-
-                realCoordinateList.Add(leftRealCoordinates);
-                realCoordinateList.Add(righttRealCoordinates);
-
-                var unit = TeachingData.Instance().GetUnit("Unit0");
-                PointF calibrationStartPosition = CalibrationData.Instance().GetCalibrationStartPosition();
-
-                inspResult.PreAlignResult = algorithmTool.ExecuteAlignment(unit, realCoordinateList, calibrationStartPosition);
-            }
-        }
-
-        private VisionProPatternMatchingResult RunPreAlignMark(Unit unit, ICogImage cogImage, MarkDirection markDirection)
-        {
-            var preAlignParam = unit.PreAlign.AlignParamList.Where(x => x.Direction == markDirection).FirstOrDefault();
-
-            AlgorithmTool algorithmTool = new AlgorithmTool();
-
-            VisionProPatternMatchingResult result = algorithmTool.RunPatternMatch(cogImage, preAlignParam.InspParam);
-
-            return result;
-        }
-
         private void Run(ATTInspTab inspTab)
         {
             Stopwatch sw = new Stopwatch();
@@ -143,7 +112,6 @@ namespace ATT_UT_Remodeling.Core
             Coordinate fpcCoordinate = new Coordinate();
             Coordinate panelCoordinate = new Coordinate();
 
-            #region Mark 검사
             algorithmTool.MainMarkInspect(inspTab.MergeCogImage, tab, ref inspResult);
 
             if (inspResult.IsMarkGood() == false)
@@ -151,94 +119,79 @@ namespace ATT_UT_Remodeling.Core
                 // 검사 실패
                 string message = string.Format("Mark Inspection NG !!! Tab_{0} / Fpc_{1}, Panel_{2}", tab.Index, inspResult.FpcMark.Judgement, inspResult.PanelMark.Judgement);
                 Logger.Debug(LogType.Inspection, message);
-                //return;
             }
             else
             {
-                #region Add mark data
-                // fpc
                 SetCoordinateData(fpcCoordinate, inspResult);
-
-                // panel
                 SetCoordinateData(panelCoordinate, inspResult);
+
+                var lineCamera = LineCameraManager.Instance().GetLineCamera("LineCamera").Camera;
+                double resolution_um = lineCamera.PixelResolution_um / lineCamera.LensScale;
+                double judgementX = resolution_um * tab.AlignSpec.LeftSpecX_um;
+                double judgementY = resolution_um * tab.AlignSpec.LeftSpecY_um;
+
+                #region Align
+                if (AppsConfig.Instance().EnableAlign)
+                {
+                    inspResult.LeftAlignX = algorithmTool.RunMainLeftAlignX(inspTab.MergeCogImage, tab, fpcCoordinate, panelCoordinate, judgementX);
+                    if (inspResult.IsLeftAlignXGood() == false)
+                    {
+                        var leftAlignX = inspResult.LeftAlignX;
+                        string message = string.Format("Left AlignX Inspection NG !!! Tab_{0} / Fpc_{1}, Panel_{2}", tab.Index, leftAlignX.Fpc.Judgement, leftAlignX.Panel.Judgement);
+                        Logger.Debug(LogType.Inspection, message);
+                    }
+
+                    inspResult.LeftAlignY = algorithmTool.RunMainLeftAlignY(inspTab.MergeCogImage, tab, fpcCoordinate, panelCoordinate, judgementY);
+                    if (inspResult.IsLeftAlignYGood() == false)
+                    {
+                        var leftAlignY = inspResult.LeftAlignY;
+                        string message = string.Format("Left AlignY Inspection NG !!! Tab_{0} / Fpc_{1}, Panel_{2}", tab.Index, leftAlignY.Fpc.Judgement, leftAlignY.Panel.Judgement);
+                        Logger.Debug(LogType.Inspection, message);
+                    }
+
+                    inspResult.RightAlignX = algorithmTool.RunMainRightAlignX(inspTab.MergeCogImage, tab, fpcCoordinate, panelCoordinate, judgementX);
+                    if (inspResult.IsRightAlignXGood() == false)
+                    {
+                        var rightAlignX = inspResult.RightAlignX;
+                        string message = string.Format("Right AlignX Inspection NG !!! Tab_{0} / Fpc_{1}, Panel_{2}", tab.Index, rightAlignX.Fpc.Judgement, rightAlignX.Panel.Judgement);
+                        Logger.Debug(LogType.Inspection, message);
+                    }
+
+                    inspResult.RightAlignY = algorithmTool.RunMainRightAlignY(inspTab.MergeCogImage, tab, fpcCoordinate, panelCoordinate, judgementY);
+                    if (inspResult.IsRightAlignYGood() == false)
+                    {
+                        var rightAlignY = inspResult.RightAlignY;
+                        string message = string.Format("Right AlignY Inspection NG !!! Tab_{0} / Fpc_{1}, Panel_{2}", tab.Index, rightAlignY.Fpc.Judgement, rightAlignY.Panel.Judgement);
+                        Logger.Debug(LogType.Inspection, message);
+                    }
+                }
+                else
+                {
+                    inspResult.LeftAlignX = new AlignResult();
+                    inspResult.LeftAlignY = new AlignResult();
+                    inspResult.RightAlignX = new AlignResult();
+                    inspResult.RightAlignY = new AlignResult();
+                }
                 #endregion
-            }
-            #endregion
 
-            var lineCamera = LineCameraManager.Instance().GetLineCamera("LineCamera").Camera;
-            double resolution_um = lineCamera.PixelResolution_um / lineCamera.LensScale;
-            double judgementX = resolution_um * tab.AlignSpec.LeftSpecX_um;
-            double judgementY = resolution_um * tab.AlignSpec.LeftSpecY_um;
+                #region Center Align
+                // EnableAlign false 일때 구조 생각
+                inspResult.CenterX = Math.Abs(inspResult.LeftAlignX.ResultValue_pixel - inspResult.RightAlignX.ResultValue_pixel);
+                #endregion
 
-            #region Left Align
-            if (AppsConfig.Instance().EnableAlign)
-            {
-                inspResult.LeftAlignX = algorithmTool.RunMainLeftAlignX(inspTab.MergeCogImage, tab, fpcCoordinate, panelCoordinate, judgementX);
-                if (inspResult.IsLeftAlignXGood() == false)
+                if (AppsConfig.Instance().EnableAkkon)
                 {
-                    var leftAlignX = inspResult.LeftAlignX;
-                    string message = string.Format("Left AlignX Inspection NG !!! Tab_{0} / Fpc_{1}, Panel_{2}", tab.Index, leftAlignX.Fpc.Judgement, leftAlignX.Panel.Judgement);
-                    Logger.Debug(LogType.Inspection, message);
+                    var roiList = tab.AkkonParam.GetAkkonROIList();
+                    var leadResultList = AkkonAlgorithm.Run(inspTab.MergeMatImage, roiList, tab.AkkonParam.AkkonAlgoritmParam, resolution_um);
+
+                    inspResult.AkkonResult = CreateAkkonResult(unitName, tab.Index, leadResultList);
                 }
+                AppsInspResult.TabResultList.Add(inspResult);
 
-                inspResult.LeftAlignY = algorithmTool.RunMainLeftAlignY(inspTab.MergeCogImage, tab, fpcCoordinate, panelCoordinate, judgementY);
-                if (inspResult.IsLeftAlignYGood() == false)
-                {
-                    var leftAlignY = inspResult.LeftAlignY;
-                    string message = string.Format("Left AlignY Inspection NG !!! Tab_{0} / Fpc_{1}, Panel_{2}", tab.Index, leftAlignY.Fpc.Judgement, leftAlignY.Panel.Judgement);
-                    Logger.Debug(LogType.Inspection, message);
-                }
+                sw.Stop();
+                string resultMessage = string.Format("Inspection Completed. {0}({1}ms)", inspTab.TabScanBuffer.TabNo, sw.ElapsedMilliseconds);
+                Console.WriteLine(resultMessage);
             }
-            else
-            {
-                inspResult.LeftAlignX = new AlignResult();
-                inspResult.LeftAlignY = new AlignResult();
-            }
-            #endregion
-
-            #region Right Align
-            if (AppsConfig.Instance().EnableAlign)
-            {
-                inspResult.RightAlignX = algorithmTool.RunMainRightAlignX(inspTab.MergeCogImage, tab, fpcCoordinate, panelCoordinate, judgementX);
-                if (inspResult.IsRightAlignXGood() == false)
-                {
-                    var rightAlignX = inspResult.RightAlignX;
-                    string message = string.Format("Right AlignX Inspection NG !!! Tab_{0} / Fpc_{1}, Panel_{2}", tab.Index, rightAlignX.Fpc.Judgement, rightAlignX.Panel.Judgement);
-                    Logger.Debug(LogType.Inspection, message);
-                }
-
-                inspResult.RightAlignY = algorithmTool.RunMainRightAlignY(inspTab.MergeCogImage, tab, fpcCoordinate, panelCoordinate, judgementY);
-                if (inspResult.IsRightAlignYGood() == false)
-                {
-                    var rightAlignY = inspResult.RightAlignY;
-                    string message = string.Format("Right AlignY Inspection NG !!! Tab_{0} / Fpc_{1}, Panel_{2}", tab.Index, rightAlignY.Fpc.Judgement, rightAlignY.Panel.Judgement);
-                    Logger.Debug(LogType.Inspection, message);
-                }
-            }
-            else
-            {
-                inspResult.RightAlignX = new AlignResult();
-                inspResult.RightAlignY = new AlignResult();
-            }
-            #endregion
-
-            #region Center Align
-            // EnableAlign false 일때 구조 생각
-            inspResult.CenterX = Math.Abs(inspResult.LeftAlignX.ResultValue_pixel - inspResult.RightAlignX.ResultValue_pixel);
-            #endregion
-
-            if (AppsConfig.Instance().EnableAkkon)
-            {
-                var roiList = tab.AkkonParam.GetAkkonROIList();
-                var leadResultList = AkkonAlgorithm.Run(inspTab.MergeMatImage, roiList, tab.AkkonParam.AkkonAlgoritmParam, resolution_um);
-
-                inspResult.AkkonResult = CreateAkkonResult(unitName, tab.Index, leadResultList);
-            }
-            AppsInspResult.TabResultList.Add(inspResult);
-
-            sw.Stop();
-            string resultMessage = string.Format("Inspection Completed. {0}({1}ms)", inspTab.TabScanBuffer.TabNo, sw.ElapsedMilliseconds);
-            Console.WriteLine(resultMessage);
         }
 
         private AkkonResult CreateAkkonResult(string unitName, int tabNo, List<AkkonLeadResult> leadResultList)
@@ -318,9 +271,7 @@ namespace ATT_UT_Remodeling.Core
         private void AddInspectEventFuction(ATTInspTab inspTab)
         {
             lock (_inspLock)
-            {
                 InspTabQueue.Enqueue(inspTab);
-            }
         }
 
         public void DisposeInspTabList()
@@ -334,16 +285,21 @@ namespace ATT_UT_Remodeling.Core
             InspTabList.Clear();
         }
 
+        public void SetVirtualmage(int tabNo, string fileName)
+        {
+            InspTabList[tabNo].SetVirtualImage(fileName);
+        }
+
         private void ATTSeqRunner_GrabDoneEventHanlder(string cameraName, bool isGrabDone)
         {
             IsGrabDone = isGrabDone;
         }
 
-        private void AkkonInspection()
+        private void Inspection()
         {
             while (true)
             {
-                if (CancelAkkonInspTask.IsCancellationRequested)
+                if (CancelInspTask.IsCancellationRequested)
                 {
                     break;
                 }
@@ -372,8 +328,8 @@ namespace ATT_UT_Remodeling.Core
         {
             lock (_akkonLock)
             {
-                if (AkkonInspQueue.Count > 0)
-                    return AkkonInspQueue.Dequeue();
+                if (InspQueue.Count > 0)
+                    return InspQueue.Dequeue();
                 else
                     return null;
             }
@@ -381,17 +337,17 @@ namespace ATT_UT_Remodeling.Core
 
         public void StartAkkonInspTask()
         {
-            if (AkkonInspTask != null)
+            if (InspTask != null)
                 return;
 
-            CancelAkkonInspTask = new CancellationTokenSource();
-            AkkonInspTask = new Task(AkkonInspection, CancelAkkonInspTask.Token);
-            AkkonInspTask.Start();
+            CancelInspTask = new CancellationTokenSource();
+            InspTask = new Task(Inspection, CancelInspTask.Token);
+            InspTask.Start();
         }
 
         public void StopAkkonInspTask()
         {
-            if (AkkonInspTask == null)
+            if (InspTask == null)
                 return;
 
             while (InspTabQueue.Count > 0)
@@ -400,9 +356,9 @@ namespace ATT_UT_Remodeling.Core
                 data.Dispose();
             }
 
-            CancelAkkonInspTask.Cancel();
-            AkkonInspTask.Wait();
-            AkkonInspTask = null;
+            CancelInspTask.Cancel();
+            InspTask.Wait();
+            InspTask = null;
         }
 
         public void ClearResult()
@@ -419,11 +375,7 @@ namespace ATT_UT_Remodeling.Core
         public bool IsInspectionDone()
         {
             AppsInspModel inspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
-            if (ConfigSet.Instance().Operation.VirtualMode)
-            {
-                RunVirtual();
-                return true;
-            }
+            
             lock (AppsInspResult)
             {
                 if (AppsInspResult.TabResultList.Count() == inspModel.TabCount)
@@ -436,7 +388,7 @@ namespace ATT_UT_Remodeling.Core
         {
             if (ModelManager.Instance().CurrentModel == null)
                 return;
-            //SeqStop();
+
             SystemManager.Instance().MachineStatus = MachineStatus.RUN;
 
             var lineCamera = LineCameraManager.Instance().GetAppsCamera("LineCamera");
@@ -453,8 +405,6 @@ namespace ATT_UT_Remodeling.Core
             SeqTaskCancellationTokenSource = new CancellationTokenSource();
             SeqTask = new Task(SeqTaskAction, SeqTaskCancellationTokenSource.Token);
             SeqTask.Start();
-
-            WriteLog("Start Sequence.", true);
         }
 
         public void SeqStop()
@@ -498,7 +448,7 @@ namespace ATT_UT_Remodeling.Core
         {
             var cancellationToken = SeqTaskCancellationTokenSource.Token;
             cancellationToken.ThrowIfCancellationRequested();
-            SeqStep = SeqStep.SEQ_START;
+            SeqStep = SeqStep.SEQ_WAITING;
 
             while (true)
             {
@@ -538,127 +488,95 @@ namespace ATT_UT_Remodeling.Core
             var laf = LAFManager.Instance().GetLAFCtrl("Laf");
             if (laf == null)
                 return;
+            var light = DeviceManager.Instance().LightCtrlHandler;
 
+            if (light == null)
+                return;
             string systemLogMessage = string.Empty;
             string errorMessage = string.Empty;
 
             switch (SeqStep)
             {
                 case SeqStep.SEQ_IDLE:
-                    // Check model changed
-                    var receivedModelName = PlcControlManager.Instance().GetAddressMap(PlcCommonMap.PLC_PPID_ModelName).Value;
-                    if (inspModel.Name != receivedModelName)
+                    break;
+                case SeqStep.SEQ_WAITING:
+
+                    if(ConfigSet.Instance().Operation.VirtualMode == false)
                     {
-                        // Change model
-                        break;
+                        if (AppsStatus.Instance().IsInspRunnerFlagFromPlc == false)
+                            break;
                     }
 
-                    SeqStep = SeqStep.SEQ_START;
-                    break;
-
-                case SeqStep.SEQ_START:
-                    // Wait for prealign start signal
-                    string preAlignStart = PlcControlManager.Instance().GetAddressMap(PlcCommonMap.PLC_Command_Common).Value;
-                    if (Convert.ToInt32(preAlignStart) == (int)PlcCommand.StartPreAlign)
-                        break;
-
-                    WriteLog("Receive prealign start signal from PLC.");
+                    WriteLog("Receive Inspection Start Signal From PLC.", true);
 
                     SeqStep = SeqStep.SEQ_READY;
                     break;
 
                 case SeqStep.SEQ_READY:
-                    // 조명
-                    WriteLog("Light off.");
-
-                    PlcControlManager.Instance().ClearAlignData();
-                    WriteLog("Clear PLC data.");
-
-                    // LAF
-                    LAFManager.Instance().TrackingOnOff("Laf", false);
-                    laf.SetMotionAbsoluteMove(0);
-                    WriteLog("Laf off.");
-
-                    SeqStep = SeqStep.SEQ_START;
-                    break;
-                
-
-                case SeqStep.SEQ_WAITING:
-                    // Wait for scan start signal command
-                    PlcControlManager.Instance().GetAddressMap(PlcCommonMap.PLC_Command);
-
-                    // Move to scan start position
-                    if (MoveTo(TeachingPosType.Stage1_Scan_Start, out errorMessage) == false)
-                    {
-                        // Alarm
-                        break;
-                    }
-
-                    //if (IsPanelIn == false)
-                    //    break;
-                    SeqStep = SeqStep.SEQ_SCAN_READY;
-                    break;
-
-                case SeqStep.SEQ_SCAN_READY:
                     lineCamera.IsLive = false;
 
-                    // Clear results
+                    light.TurnOff();
+                    WriteLog("Light Off.");
+
+                    LAFManager.Instance().TrackingOnOff("Laf", false);
+                    laf.SetMotionAbsoluteMove(0);
+                    WriteLog("Laf Off.");
+
                     ClearResult();
-                    WriteLog("Clear result.");
+                    WriteLog("Clear Result.");
 
-                    // Init camera buffer
                     InitializeBuffer();
-                    WriteLog("Initialize buffer.");
+                    WriteLog("Initialize Buffer.");
 
-                    // Write panel information
                     AppsInspResult.StartInspTime = DateTime.Now;
-                    AppsInspResult.Cell_ID = DateTime.Now.ToString("yyyyMMddHHmmss");
+                    AppsInspResult.Cell_ID = GetCellID();
 
-                    // LAF on
-                    LAFManager.Instance().TrackingOnOff("Laf", true);
-                    WriteLog("Laf On.");
+                    SeqStep = SeqStep.SEQ_MOVE_START_POS;
+                    break;
+                case SeqStep.SEQ_MOVE_START_POS:
+                    if (MoveTo(TeachingPosType.Stage1_Scan_Start, out errorMessage) == false)
+                        break;
 
                     SeqStep = SeqStep.SEQ_SCAN_START;
                     break;
 
                 case SeqStep.SEQ_SCAN_START:
+
                     IsGrabDone = false;
 
-                    // 조명 코드 작성 요망
+                    LAFManager.Instance().TrackingOnOff("Laf", true);
+                    WriteLog("Laf On.");
 
-                    // Grab
+                    light.TurnOn(unit.GetLineCameraData("Akkon").LightParam);
+                    Thread.Sleep(100);
+                    WriteLog("Left Prealign Light On.");
+
                     lineCamera.SetOperationMode(TDIOperationMode.TDI);
                     lineCamera.StartGrab();
-                    WriteLog("Start grab.");
+                    WriteLog("Start LineScanner Grab.", true);
 
-                    // Move to scan end position
+                    SeqStep = SeqStep.SEQ_MOVE_END_POS;
+
+                    break;
+                case SeqStep.SEQ_MOVE_END_POS:
+                    
                     if (MoveTo(TeachingPosType.Stage1_Scan_End, out errorMessage) == false)
-                    {
-                        // Alarm
-                        // 조명 Off
-                        LineCameraManager.Instance().Stop("LineCamera");
-                        WriteLog("Stop grab.");
-                        break;
-                    }
-
-                    SeqStep = SeqStep.SEQ_WAITING_SCAN_COMPLETED;
+                        SeqStep = SeqStep.SEQ_ERROR;
+                    else
+                        SeqStep = SeqStep.SEQ_WAITING_SCAN_COMPLETED;
                     break;
 
                 case SeqStep.SEQ_WAITING_SCAN_COMPLETED:
-                    if (ConfigSet.Instance().Operation.VirtualMode == false)
-                    {
-                        if (IsGrabDone == false)
-                            break;
-                    }
+                    if (IsGrabDone == false)
+                        break;
 
-                    WriteLog("Complete linescanner grab.");
-
-                    //AppsLAFManager.Instance().AutoFocusOnOff(LAFName.Akkon.ToString(), false);
-                    //Logger.Write(LogType.Seq, "AutoFocus Off.");
-
-                    // Grab stop
+                    WriteLog("Complete LineScanner Grab.", true);
+                    
                     LineCameraManager.Instance().Stop("LineCamera");
-                    WriteLog("Stop grab.");
+                    WriteLog("Stop Grab.");
+
+                    LAFManager.Instance().TrackingOnOff("Laf", false);
+                    WriteLog("Laf Off.");
 
                     LastInspSW.Restart();
 
@@ -666,36 +584,41 @@ namespace ATT_UT_Remodeling.Core
                     break;
 
                 case SeqStep.SEQ_WAITING_INSPECTION_DONE:
-                    // Wait for inspection
+                    
                     if (IsInspectionDone() == false)
                         break;
 
                     LastInspSW.Stop();
                     AppsInspResult.EndInspTime = DateTime.Now;
                     AppsInspResult.LastInspTime = LastInspSW.ElapsedMilliseconds.ToString();
-                    Console.WriteLine("Total tact time : " + LastInspSW.ElapsedMilliseconds.ToString());
 
+                    string message = $"Complete Inspection.{LastInspSW.ElapsedMilliseconds.ToString()}";
+                    WriteLog(message, true);
+
+                    SeqStep = SeqStep.SEQ_SEND_RESULT;
+                    break;
+                case SeqStep.SEQ_SEND_RESULT:
+                    // Align 결과, Akkon 결과
+                    // Ok 이면 + Ng -
+                    
                     SeqStep = SeqStep.SEQ_UI_RESULT_UPDATE;
                     break;
 
                 case SeqStep.SEQ_UI_RESULT_UPDATE:
-                    // Update result data
+
                     GetAkkonResultImage();
                     UpdateDailyInfo(AppsInspResult);
-                    WriteLog("Update inspectinon result.");
+                    WriteLog("Update Inspectinon Result.", true);
                     
-                    // Update main viewer
                     SystemManager.Instance().UpdateMainResult(AppsInspResult);
-                    Console.WriteLine("Scan End to Insp Complete : " + LastInspSW.ElapsedMilliseconds.ToString());
 
                     SeqStep = SeqStep.SEQ_SAVE_RESULT_DATA;
                     break;
 
                 case SeqStep.SEQ_SAVE_RESULT_DATA:
-                    // Save result datas
+
                     DailyInfoService.Save();
 
-                    // Send result datas
                     SaveInspectionResult(AppsInspResult);
                     WriteLog("Save inspection result.");
 
@@ -721,13 +644,25 @@ namespace ATT_UT_Remodeling.Core
 
                     //if (!AppsMotionManager.Instance().IsMotionInPosition(UnitName.Unit0, AxisHandlerName.Handler0, AxisName.X, TeachingPosType.Standby))
                     //    break;
+                    if (ConfigSet.Instance().Operation.VirtualMode)
+                        AppsStatus.Instance().IsInspRunnerFlagFromPlc = false;
 
-                    SeqStep = SeqStep.SEQ_IDLE;
+                    SeqStep = SeqStep.SEQ_WAITING;
                     break;
 
                 default:
                     break;
             }
+        }
+
+        private string GetCellID()
+        {
+            string cellId = PlcControlManager.Instance().GetAddressMap(PlcCommonMap.PLC_Cell_Id).Value;
+
+            if (cellId == "0" || cellId == null)
+                return DateTime.Now.ToString("yyyyMMddHHmmss");
+            else
+                return cellId;
         }
 
         private void GetAkkonResultImage()
@@ -1470,6 +1405,11 @@ namespace ATT_UT_Remodeling.Core
 
             Logger.Write(LogType.Seq, logMessage);
         }
+
+        public void VirtualGrabDone()
+        {
+            IsGrabDone = true;
+        }
         #endregion
     }
 
@@ -1478,11 +1418,15 @@ namespace ATT_UT_Remodeling.Core
         SEQ_IDLE,
         SEQ_START,
         SEQ_READY,
+        SEQ_MOVE_START_POS,
         SEQ_WAITING,
+        SEQ_VIRTUAL,
         SEQ_SCAN_READY,
         SEQ_SCAN_START,
+        SEQ_MOVE_END_POS,
         SEQ_WAITING_SCAN_COMPLETED,
         SEQ_WAITING_INSPECTION_DONE,
+        SEQ_SEND_RESULT,
         SEQ_PATTERN_MATCH,
         SEQ_ALIGN_INSPECTION,
         SEQ_ALIGN_INSPECTION_COMPLETED,
@@ -1493,6 +1437,7 @@ namespace ATT_UT_Remodeling.Core
         SEQ_SAVE_IMAGE,
         SEQ_DELETE_DATA,
         SEQ_CHECK_STANDBY,
+        SEQ_ERROR,
     }
 
     public class AkkonThreadParam

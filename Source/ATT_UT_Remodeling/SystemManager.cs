@@ -212,14 +212,7 @@ namespace ATT_UT_Remodeling
 
         public void StartRun()
         {
-            if (ModelManager.Instance().CurrentModel == null)
-            {
-                MessageConfirmForm form = new MessageConfirmForm();
-                form.Message = "Current Model is null.";
-                return;
-            }
-
-            if (SystemManager.Instance().MachineStatus != MachineStatus.RUN)
+            if (MachineStatus != MachineStatus.RUN)
             {
                 MessageYesNoForm form = new MessageYesNoForm();
                 form.Message = "Do you want to Start Auto Mode?";
@@ -241,7 +234,7 @@ namespace ATT_UT_Remodeling
                 return;
             }
 
-            if (SystemManager.Instance().MachineStatus != MachineStatus.STOP)
+            if (MachineStatus != MachineStatus.STOP)
             {
                 MessageYesNoForm form = new MessageYesNoForm();
                 form.Message = "Do you want to Stop Auto Mode?";
@@ -254,6 +247,17 @@ namespace ATT_UT_Remodeling
                 }
             }
         }
+
+        public void SetVirtualImage(int tabNo, string fileName)
+        {
+            _inspRunner.SetVirtualmage(tabNo, fileName);
+        }
+
+        public void VirtualGrabDone()
+        {
+            _inspRunner.VirtualGrabDone();
+        }
+
         #endregion
     }
 }

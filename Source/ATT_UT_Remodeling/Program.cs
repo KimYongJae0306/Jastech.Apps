@@ -151,7 +151,6 @@ namespace ATT_UT_Remodeling
                 AppsConfig.Instance().PlcAddressInfo.ResultStart_Align = 105220;
                 AppsConfig.Instance().PlcAddressInfo.ResultTabToTabInterval = 200;
                 AppsConfig.Instance().PlcAddressInfo.ResultStart_Akkon = 105230;
-                AppsConfig.Instance().PlcAddressInfo.ResultStart_PreAlign = 105250;
 
                 var plc = new MelsecPlc("PLC", new SocketComm("192.168.130.2", 9021, SocketCommType.Udp, 9031), new MelsecBinaryParser());
                 config.Add(plc);

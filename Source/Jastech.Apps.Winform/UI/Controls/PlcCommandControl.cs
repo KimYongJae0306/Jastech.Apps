@@ -376,30 +376,6 @@ namespace Jastech.Apps.Winform.UI.Controls
             PlcControlManager.Instance().WriteTabAkkonResult(tabNo, judgement, result);
         }
 
-        private void lblLeftMarkScore_Click(object sender, EventArgs e)
-        {
-            double value = KeyPadHelper.SetLabelDoubleData(lblLeftMarkScore);
-            lblLeftMarkScore.Text = value.ToString();
-        }
-
-        private void lblRightMarkScore_Click(object sender, EventArgs e)
-        {
-            double value = KeyPadHelper.SetLabelDoubleData(lblRightMarkScore);
-            lblRightMarkScore.Text = value.ToString();
-        }
-
-        private void btnWritePreAlignResult_Click(object sender, EventArgs e)
-        {
-            double leftScore = 0;
-            double rightScore = 0;
-            if (lblLeftMarkScore.Text != "")
-                leftScore = Convert.ToDouble(lblLeftMarkScore.Text);
-            if (lblRightMarkScore.Text != "")
-                rightScore = Convert.ToDouble(lblRightMarkScore.Text);
-
-            PlcControlManager.Instance().WritePreAlignResult(leftScore, rightScore);
-        }
-
         private void btnCommand_Common_Click(object sender, EventArgs e)
         {
             PlcControlManager.Instance().ClearAddress(PlcCommonMap.PLC_Command_Common);

@@ -159,9 +159,6 @@ namespace Jastech.Apps.Winform.Core.Calibrations
                 return;
             }
 
-            //SeqTaskCancellationTokenSource = new CancellationTokenSource();
-            //CalSeqTask = new Task(CalibrationTaskAction, SeqTaskCancellationTokenSource.Token);
-            //CalSeqTask.Start();
             _workingThread = new Thread(new ThreadStart(CalibrationThread));
             _workingThread.Start();
         }
@@ -175,9 +172,6 @@ namespace Jastech.Apps.Winform.Core.Calibrations
             if (_workingThread == null)
                 return;
 
-            //SeqTaskCancellationTokenSource.Cancel();
-            //CalSeqTask.Wait();
-            //CalSeqTask = null;
             _workingThread = null;
         }
 

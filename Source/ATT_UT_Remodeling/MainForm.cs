@@ -3,6 +3,7 @@ using ATT_UT_Remodeling.UI.Pages;
 using Jastech.Apps.Structure;
 using Jastech.Apps.Structure.Data;
 using Jastech.Apps.Winform;
+using Jastech.Apps.Winform.Core;
 using Jastech.Apps.Winform.Core.Calibrations;
 using Jastech.Apps.Winform.Service.Plc;
 using Jastech.Apps.Winform.Service.Plc.Maps;
@@ -20,13 +21,15 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace ATT_UT_Remodeling
 {
     public partial class MainForm : Form
     {
-        #region 필드
+        #region 속성
         private MainPage MainPageControl { get; set; } = null;
 
         private DataPage DataPageControl { get; set; } = null;
@@ -36,6 +39,12 @@ namespace ATT_UT_Remodeling
         private List<UserControl> PageControlList = null;
 
         private List<Label> PageLabelList = null;
+
+        private Task VirtualInspTask { get; set; }
+
+        private CancellationTokenSource CancelVirtualInspTask { get; set; }
+
+        private Queue<string> VirtualImagePathQueue = new Queue<string>();
 
         public ATTInspModelService ATTInspModelService { get; set; } = new ATTInspModelService();
         #endregion
@@ -70,17 +79,18 @@ namespace ATT_UT_Remodeling
             }
 
             tmrMainForm.Start();
+            StartVirtualInspTask();
             SystemManager.Instance().AddSystemLogMessage("Start program.");
         }
 
-        private void MainForm_PreAlignRunnerHandler(bool tt)
+        private void MainForm_PreAlignRunnerHandler(bool isStart)
         {
-            AppsStatus.Instance().IsPreAlignRunnerFlagFromPlc = tt;
+            AppsStatus.Instance().IsPreAlignRunnerFlagFromPlc = isStart;
         }
 
-        private void MainForm_InspRunnerHandler(bool tt)
+        private void MainForm_InspRunnerHandler(bool isStart)
         {
-            AppsStatus.Instance().IsInspRunnerFlagFromPlc = tt;
+            AppsStatus.Instance().IsInspRunnerFlagFromPlc = isStart;
         }
 
         private void AddControls()
@@ -219,8 +229,8 @@ namespace ATT_UT_Remodeling
                 lblTeachingPageImage.Enabled = true;
             }
 
-            //if (MainPageControl.Visible)
-            //    MainPageControl.UpdateButton();
+            if (MainPageControl.Visible)
+                MainPageControl.UpdateButton();
         }
 
         public void UpdateMainResult(AppsInspResult result)
@@ -261,11 +271,132 @@ namespace ATT_UT_Remodeling
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
             tmrMainForm.Stop();
+            StopVirtualInspTask();
+            SystemManager.Instance().StopRun();
 
             LAFManager.Instance().Release();
             PlcControlManager.Instance().Release();
             PlcScenarioManager.Instance().Release();
         }
+
+        protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
+        {
+            Keys key = keyData & ~(Keys.Shift | Keys.Control);
+
+            if(ConfigSet.Instance().Operation.VirtualMode)
+            {
+                switch (key)
+                {
+                    case Keys.D:
+                        if ((keyData & Keys.Control) != 0)
+                        {
+                            LoadTabImage();
+                            return true;
+                        }
+                        break;
+                }
+            }
+            return base.ProcessCmdKey(ref msg, keyData);
+        }
+
+        protected void LoadTabImage()
+        {
+            var inspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
+            if (inspModel == null)
+                return;
+
+            if(SystemManager.Instance().MachineStatus != MachineStatus.RUN)
+            {
+                MessageConfirmForm form = new MessageConfirmForm();
+                form.Message = "Change Auto Run.";
+                form.ShowDialog();
+                return;
+            }
+            OpenFileDialog dialog = new OpenFileDialog();
+            dialog.Multiselect = true;
+
+            if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            {
+                string[] fileNames = dialog.FileNames;
+
+                if(inspModel.TabCount != fileNames.Count())
+                {
+                    MessageConfirmForm form = new MessageConfirmForm();
+                    form.Message = "The number of Tabs is Different.";
+                    form.ShowDialog();
+                    return;
+                }
+                LoadImage(fileNames);
+            }
+        }
+
+        private void LoadImage(string[] fileNames)
+        {
+            foreach (var fileName in fileNames)
+            {
+                AddVirtualImagePath(fileName);
+            }
+            SystemManager.Instance().VirtualGrabDone();
+        }
+
+        private void StartVirtualInspTask()
+        {
+            if(ConfigSet.Instance().Operation.VirtualMode)
+            {
+                CancelVirtualInspTask = new CancellationTokenSource();
+                VirtualInspTask = new Task(VirtualInspTaskLoop, CancelVirtualInspTask.Token);
+                VirtualInspTask.Start();
+            }
+        }
+
+        private void StopVirtualInspTask()
+        {
+            if (ConfigSet.Instance().Operation.VirtualMode)
+            {
+                CancelVirtualInspTask.Cancel();
+                VirtualInspTask.Wait();
+                VirtualInspTask = null;
+            }
+        }
+        public void VirtualInspTaskLoop()
+        {
+            while(true)
+            {
+                if (CancelVirtualInspTask.IsCancellationRequested)
+                    break;
+
+                if (GetVirtualImagePath() is string filePath)
+                {
+                    string text = "Tab_";
+                    string fileName = Path.GetFileNameWithoutExtension(filePath);
+
+                    int index = fileName.IndexOf(text);
+                    string tabNoString = fileName.Substring(index + text.Length);
+
+                    SystemManager.Instance().SetVirtualImage(Convert.ToInt32(tabNoString), filePath);
+                }
+
+                Thread.Sleep(50);
+            }
+        }
+
+        private void AddVirtualImagePath(string filePath)
+        {
+            lock (VirtualImagePathQueue)
+                VirtualImagePathQueue.Enqueue(filePath);
+        }
+
+        private string GetVirtualImagePath()
+        {
+            lock (VirtualImagePathQueue)
+            {
+                if (VirtualImagePathQueue.Count > 0)
+                    return VirtualImagePathQueue.Dequeue();
+                else
+                    return null;
+            }
+        }
+
         #endregion
     }
 }

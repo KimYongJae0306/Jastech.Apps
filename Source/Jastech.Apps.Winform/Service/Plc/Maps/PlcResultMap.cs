@@ -254,12 +254,5 @@
         Tab9_Akkon_Length_Right_Min,
         Tab9_Akkon_Length_Right_Max,
         #endregion
-
-        #region PreAlign
-        PreAlign0_Left_L,
-        PreAlign0_Left_H,
-        PreAlign0_Right_L,
-        PreAlign0_Right_H,
-        #endregion
     }
 }

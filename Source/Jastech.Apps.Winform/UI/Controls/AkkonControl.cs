@@ -65,6 +65,8 @@ namespace Jastech.Apps.Winform.UI.Controls
         private bool UserMaker { get; set; } = false;
 
         public double CalcResolution { get; set; } = 0.0; // ex :  /camera.PixelResolution_mm(0.0035) / camera.LensScale(5) / 1000;
+
+        public bool IsReScaling { get; set; } = false;
         #endregion
 
         #region 생성자
@@ -175,7 +177,7 @@ namespace Jastech.Apps.Winform.UI.Controls
             if (groupNo < 0 || CurrentTab == null)
             {
                 lblGroupCountValue.Text = "0";
-                DrawROI();
+                //DrawROI();
                 return;
             }
 
@@ -450,6 +452,7 @@ namespace Jastech.Apps.Winform.UI.Controls
             var teachingDisplay = TeachingUIManager.Instance().GetDisplay();
             if (teachingDisplay.GetImage() == null)
                 return;
+            teachingDisplay.ClearGraphic();
             teachingDisplay.SetInteractiveGraphics("tool", collect);
         }
 
@@ -755,9 +758,9 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         private void SetSelectAkkonROI()
         {
-            if (_cogRectAffineList.Count <= 0 || CurrentTab == null)
+            if (_cogRectAffineList.Count <= 0 || CurrentTab == null || IsReScaling)
                 return;
-            
+
             int groupIndex = cbxGroupNumber.SelectedIndex;
             var group = CurrentTab.AkkonParam.GroupList[groupIndex];
             _selectedIndexList = new List<int>();
@@ -786,6 +789,7 @@ namespace Jastech.Apps.Winform.UI.Controls
             if(lblResultImage.BackColor == _selectedColor)
                 SetOrginImageView();
 
+            display.ClearGraphic();
             display.SetInteractiveGraphics("lead", collect);
         }
 
@@ -1004,8 +1008,11 @@ namespace Jastech.Apps.Winform.UI.Controls
                 group.AkkonROIList[index] = ConvertCogRectAffineToAkkonRoi(_cogRectAffineList[index]).DeepCopy();
             }
 
+            IsReScaling = true;
             UpdateROIDataGridView(group.AkkonROIList, _selectedIndexList);
-            DrawROI();
+            IsReScaling = false;
+            SetSelectAkkonROI();
+            //DrawROI();
         }
 
         public void SaveAkkonParam()

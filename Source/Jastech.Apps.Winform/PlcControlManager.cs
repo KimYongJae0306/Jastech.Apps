@@ -586,76 +586,17 @@ namespace Jastech.Apps.Winform
             {
                 if (axisName == AxisName.Y)
                 {
-                    //string high = GetAddressMap(PlcCommonMap.PLC_Position_AxisY_H).Value;
-                    //string low = GetAddressMap(PlcCommonMap.PLC_Position_AxisY).Value;
-
                     var value = ConvertDoubleWordStringFormat_mm(PlcCommonMap.PLC_Position_AxisY);
                     position = Convert.ToDouble(value);
                 }
                 else if (axisName == AxisName.T)
                 {
-                    //string high = GetAddressMap(PlcCommonMap.PLC_Position_AxisT_H).Value;
-                    //string low = GetAddressMap(PlcCommonMap.PLC_Position_AxisT).Value;
-
                     var value = ConvertDoubleWordStringFormat_mm(PlcCommonMap.PLC_Position_AxisT);
                     position = Convert.ToDouble(value);
                 }
             }
 
             return position;
-        }
-
-        public void WritePreAlignResult(double leftScore, double rightScore)
-        {
-            var map = PlcControlManager.Instance().GetResultMap(PlcResultMap.PreAlign0_Left_L);
-            if (DeviceManager.Instance().PlcHandler.Count > 0 && map != null)
-            {
-                var plc = DeviceManager.Instance().PlcHandler.First() as MelsecPlc;
-
-                int convertLeftScore = ConvertPlcScoreData(leftScore);
-                int convertRightScore = ConvertPlcScoreData(rightScore);
-
-                PlcDataStream stream = new PlcDataStream();
-                if (plc.MelsecParser.ParserType == ParserType.Binary)
-                {
-                    stream.AddSwap32BitData(convertLeftScore);
-                    stream.AddSwap32BitData(convertRightScore);
-                }
-                else
-                {
-                    stream.Add32BitData(convertLeftScore);
-                    stream.Add32BitData(convertRightScore);
-                }
-                plc.Write("D" + map.AddressNum, stream.Data);
-            }
-        }
-
-        private PlcCommonCommand _status = PlcCommonCommand.None;
-
-        private Task StatusTask { get; set; }
-
-        private CancellationTokenSource CancelCheckPlcStatus { get; set; }
-
-        public void CheckPlcStatus()
-        {
-            if (StatusTask != null)
-                return;
-
-            CancelCheckPlcStatus = new CancellationTokenSource();
-            StatusTask = new Task(StatusTaskAction, CancelCheckPlcStatus.Token);
-            StatusTask.Start();
-        }
-
-        private void StatusTaskAction()
-        {
-            while (true)
-            {
-                if (_status == PlcCommonCommand.Model_Change)
-                {
-                    ClearAddress(PlcCommonMap.PLC_Command_Common);
-                    //OnPlcCommandReceived?.Invoke((int)_status);
-                }
-            }
         }
     }
 

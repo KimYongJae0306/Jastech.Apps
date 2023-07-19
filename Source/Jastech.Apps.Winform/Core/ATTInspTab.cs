@@ -1,5 +1,6 @@
 ﻿using Cognex.VisionPro;
 using Emgu.CV;
+using Emgu.CV.CvEnum;
 using Jastech.Framework.Imaging;
 using Jastech.Framework.Imaging.Helper;
 using Jastech.Framework.Imaging.VisionPro;
@@ -125,10 +126,7 @@ namespace Jastech.Apps.Winform.Core
                     if (SubImageList.Count() == TabScanBuffer.TotalGrabCount)
                     {
                         MakeMergeImage();
-                        Console.WriteLine("Make Merge Image." + TabScanBuffer.TabNo);
-
                         InspectEvent?.Invoke(this);
-
                         TabScanBuffer.InspectionDone = true;
                     }
 
@@ -157,10 +155,7 @@ namespace Jastech.Apps.Winform.Core
                     if (SubImageList.Count() == TabScanBuffer.TotalGrabCount)
                     {
                         MakeMergeImage();
-                        Console.WriteLine("Make Merge Image." + TabScanBuffer.TabNo);
-
                         TeachingEvent?.Invoke(this);
-
                         TabScanBuffer.TeachingGrabDone = true;
                     }
 
@@ -247,6 +242,14 @@ namespace Jastech.Apps.Winform.Core
             int size = mat.Width * mat.Height * mat.NumberOfChannels;
             var cogImage = VisionProImageHelper.CovertImage(mat.DataPointer, mat.Width, mat.Height, ColorFormat.Gray) as CogImage8Grey;
             return cogImage;
+        }
+
+        public void SetVirtualImage(string fileName)
+        {
+            MergeMatImage = new Mat(fileName, ImreadModes.Grayscale);
+            MergeCogImage = VisionProImageHelper.Load(fileName) as CogImage8Grey;
+            InspectEvent?.Invoke(this);
+            TabScanBuffer.TeachingGrabDone = true;
         }
     }
 }

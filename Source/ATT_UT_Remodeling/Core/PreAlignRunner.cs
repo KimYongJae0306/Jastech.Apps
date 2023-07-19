@@ -42,6 +42,7 @@ namespace ATT_UT_Remodeling
         #endregion
 
         #region 속성
+        private MainAlgorithmTool AlgorithmTool = new MainAlgorithmTool();
         #endregion
 
         #region 이벤트
@@ -67,15 +68,13 @@ namespace ATT_UT_Remodeling
 
             if (SeqTask != null)
             {
-                SeqStep = SeqStep.SEQ_IDLE;
+                SeqStep = SeqStep.SEQ_READY;
                 return;
             }
 
             SeqTaskCancellationTokenSource = new CancellationTokenSource();
             SeqTask = new Task(SeqTaskAction, SeqTaskCancellationTokenSource.Token);
             SeqTask.Start();
-
-            WriteLog("Start Sequence.", true);
         }
 
         public void SeqStop()
@@ -104,7 +103,7 @@ namespace ATT_UT_Remodeling
         {
             var cancellationToken = SeqTaskCancellationTokenSource.Token;
             cancellationToken.ThrowIfCancellationRequested();
-            SeqStep = SeqStep.SEQ_IDLE;
+            SeqStep = SeqStep.SEQ_WAITING;
 
             while (true)
             {
@@ -157,161 +156,170 @@ namespace ATT_UT_Remodeling
             switch (SeqStep)
             {
                 case SeqStep.SEQ_IDLE:
-                    // Wait for prealign start signal
+                    break;
+
+                case SeqStep.SEQ_WAITING:
 
                     if (AppsStatus.Instance().IsPreAlignRunnerFlagFromPlc == false)
                         break;
 
-                    string preAlignStart = PlcControlManager.Instance().GetAddressMap(PlcCommonMap.PLC_Command_Common).Value;
-                    if (Convert.ToInt32(preAlignStart) == (int)PlcCommand.StartPreAlign)
-                        break;
-
-                    WriteLog("Receive prealign start signal from PLC.");
+                    WriteLog("Receive PreAlign Start Signal From PLC.", true);
                     SeqStep = SeqStep.SEQ_READY;
                     break;
 
                 case SeqStep.SEQ_READY:
-                    // 조명
+
                     light.TurnOff();
-                    WriteLog("Light off.");
+                    WriteLog("Light Off.");
 
                     PlcControlManager.Instance().ClearAlignData();
-                    WriteLog("Clear PLC data.");
+                    WriteLog("Clear PLC Data.");
 
-                    // LAF
                     LAFManager.Instance().TrackingOnOff("Laf", false);
                     laf.SetMotionAbsoluteMove(0);
-                    WriteLog("Laf off.");
+                    WriteLog("LAF Off.");
 
+                    var camera = areaCamera.Camera;
+                    camera.Stop();
+                    WriteLog($"Set Camera Property. Expose : {camera.Exposure}, AnalogGain : {camera.AnalogGain}");
+
+                    // CELL ID 넣는곳이 없음
                     SeqStep = SeqStep.SEQ_START;
                     break;
-
+           
                 case SeqStep.SEQ_START:
-
-                    // Set camera property
-                    areaCamera.Camera.SetExposureTime(0);
-                    areaCamera.Camera.SetAnalogGain(0);
-                    WriteLog("Set camera property.");
 
                     SeqStep = SeqStep.SEQ_PREALIGN_R;
                     break;
 
                 case SeqStep.SEQ_PREALIGN_R:
-                    // Move to prealign right position
+
                     if (MoveTo(TeachingPosType.Stage1_PreAlign_Right, out errorMessage) == false)
                         SeqStep = SeqStep.SEQ_ERROR;
                     else
                     {
-                        // Light on
+                        // Light On
                         light.TurnOn(unit.PreAlign.RightLightParam);
-                        WriteLog("Left prealign light on.");
+                        Thread.Sleep(100);
+                        WriteLog("Left Prealign Light On.");
 
                         // Grab
                         var preAlignLeftImage = GetAreaCameraImage(areaCamera.Camera);
                         AppsInspResult.PreAlignResult.PreAlignMark.FoundedMark.Right = RunPreAlignMark(unit, preAlignLeftImage, MarkDirection.Right);
-                        WriteLog("Complete prealign right mark search.");
+                        WriteLog("Complete PreAlign Right Mark Search.", true);
 
                         // Set prealign motion position
                         SetMarkMotionPosition(unit, MarkDirection.Right);
-                        WriteLog("Set axis information for prealign right mark position.");
+                        WriteLog("Set Axis Information For PreAlign Right Mark Position.");
 
                         SeqStep = SeqStep.SEQ_PREALIGN_L;
                     }
                     break;
 
                 case SeqStep.SEQ_PREALIGN_L:
-                    // Move to prealign left position
+
                     if (MoveTo(TeachingPosType.Stage1_PreAlign_Left, out errorMessage) == false)
                         SeqStep = SeqStep.SEQ_ERROR;
                     else
                     {
-                        // Light on
-                        light.TurnOn(unit.PreAlign.RightLightParam);
-                        WriteLog("Right prealign light on.");
+                        // Light On
+                        light.TurnOn(unit.PreAlign.LeftLightParam);
+                        Thread.Sleep(100);
+                        WriteLog("Left PreAlign Light On.", true);
 
                         // Grab start
-                        var preAlignRightImage = GetAreaCameraImage(areaCamera.Camera);
-                        AppsInspResult.PreAlignResult.PreAlignMark.FoundedMark.Left = RunPreAlignMark(unit, preAlignRightImage, MarkDirection.Right);
-                        WriteLog("Complete prealign left mark search.");
+                        var preAlignLeftImage = GetAreaCameraImage(areaCamera.Camera);
+                        AppsInspResult.PreAlignResult.PreAlignMark.FoundedMark.Left = RunPreAlignMark(unit, preAlignLeftImage, MarkDirection.Left);
+                        WriteLog("Complete PreAlign Left Mark Search.", true);
 
                         // Set prealign motion position
                         SetMarkMotionPosition(unit, MarkDirection.Left);
-                        WriteLog("Set axis information for prealign left mark position.");
+                        WriteLog("Set Axis Information For Prealign Left Mark Position.");
 
                         SeqStep = SeqStep.SEQ_SEND_PREALIGN_DATA;
                     }
                     break;
 
                 case SeqStep.SEQ_SEND_PREALIGN_DATA:
-                    // Light oFF
+
                     light.TurnOff();
-                    WriteLog("Prealign light off.");
+                    WriteLog("PreAlign Light Off.",true);
 
-                    // Execute prealign
-                    RunPreAlign(AppsInspResult);
-                    WriteLog("Complete prealign.");
-
-                    // Set prealign result
-                    var offsetX = AppsInspResult.PreAlignResult.OffsetX;
-                    var offsetY = AppsInspResult.PreAlignResult.OffsetY;
-                    var offsetT = AppsInspResult.PreAlignResult.OffsetT;
-
-                    // Check Tolerance
-                    if (Math.Abs(offsetX) <= AppsConfig.Instance().PreAlignToleranceX
-                        || Math.Abs(offsetX) <= AppsConfig.Instance().PreAlignToleranceY
-                        || Math.Abs(offsetX) <= AppsConfig.Instance().PreAlignToleranceTheta)
+                    if (RunPreAlign(AppsInspResult))
                     {
-                        WriteLog("Prealign results are spec-in.");
+                        var offsetX = AppsInspResult.PreAlignResult.OffsetX;
+                        var offsetY = AppsInspResult.PreAlignResult.OffsetY;
+                        var offsetT = AppsInspResult.PreAlignResult.OffsetT;
+
+                        PlcControlManager.Instance().WriteAlignData(offsetX, offsetY, offsetT);
+                        WriteLog($"Write PreAlign Data.(OffsetX : {offsetX.ToString("F4")}, OffsetY : {offsetY.ToString("F4")}, OffsetT : {offsetT.ToString("F4")})", true);
+
+                        // Check Tolerance
+                        if (Math.Abs(offsetX) <= AppsConfig.Instance().PreAlignToleranceX
+                            || Math.Abs(offsetY) <= AppsConfig.Instance().PreAlignToleranceY
+                            || Math.Abs(offsetT) <= AppsConfig.Instance().PreAlignToleranceTheta)
+                        {
+                            PlcControlManager.Instance().WritePcStatus(PlcCommand.StartPreAlign);
+                            WriteLog($"Send PreAlign OK Complete Signal.(SpecIn) {(int)PlcCommand.StartPreAlign}", true);
+                        }
+                        else
+                        {
+                            PlcControlManager.Instance().WritePcStatus(PlcCommand.StartPreAlign, true);
+                            WriteLog($"Send PreAlign NG Complete Signal.(SpecOut) {(int)PlcCommand.StartPreAlign * -1}", true);
+                        }
                     }
                     else
-                        WriteLog("Prealign results are spec-out.");
-
-                    // Send prealign offset results
-                    PlcControlManager.Instance().WriteAlignData(offsetX, offsetY, offsetT);
-                    WriteLog("Write prealign results.");
-
-                    // Send prealign score results
-                    var leftScore = AppsInspResult.PreAlignResult.PreAlignMark.FoundedMark.Left.MaxMatchPos.Score;
-                    var rightScore = AppsInspResult.PreAlignResult.PreAlignMark.FoundedMark.Right.MaxMatchPos.Score;
-                    PlcControlManager.Instance().WritePreAlignResult(leftScore, rightScore);
-                    WriteLog("Send prealign results.");
-
-                    PlcControlManager.Instance().WritePcStatus(PlcCommand.StartPreAlign);
-                    WriteLog("Send prealign normal complete signal.");
-
-                    SeqStep = SeqStep.SEQ_WAITING;
-                    break;
-
-                case SeqStep.SEQ_WAITING:
-                    
+                    {
+                        PlcControlManager.Instance().WritePcStatus(PlcCommand.StartPreAlign, true);
+                        WriteLog($"Send PreAlign NG Complete Signal.(Mark Fail) {(int)PlcCommand.StartPreAlign * -1}", true);
+                    }
+                   
+                    SeqStep = SeqStep.SEQ_UI_RESULT_UPDATE;
                     break;
                 case SeqStep.SEQ_UI_RESULT_UPDATE:
+
+                    SeqStep = SeqStep.SEQ_SAVE_RESULT_DATA;
+
                     break;
                 case SeqStep.SEQ_SAVE_RESULT_DATA:
+
+                    SeqStep = SeqStep.SEQ_SAVE_IMAGE;
+
                     break;
                 case SeqStep.SEQ_SAVE_IMAGE:
+
+                    SeqStep = SeqStep.SEQ_DELETE_DATA;
+
                     break;
                 case SeqStep.SEQ_DELETE_DATA:
-                    break;
-                case SeqStep.SEQ_CHECK_STANDBY:
+                    // 이거 필요한지 고민좀..
+                    // 메인 검사 시퀀스에서 하니깐 필요 없을듯????
+                    SeqStep = SeqStep.SEQ_READY;
+
                     break;
                 case SeqStep.SEQ_ERROR:
+
+                    WriteLog("SEQ_ERROR.", true);
+
                     // Light off
-                    light.TurnOff();
-                    WriteLog("Light off.");
+                    DeviceManager.Instance().LightCtrlHandler.TurnOff();
+                    // Camera stop
+                    AreaCameraManager.Instance().Stop("PreAlign");
 
                     PlcControlManager.Instance().WritePcStatus(PlcCommand.StartPreAlign, false);
-                    WriteLog("Send prealign abnormal complete signal.");
+                    WriteLog($"Send PreAlign NG Complete Signal.{(int)PlcCommand.StartPreAlign * -1}", true);
+
+                    Thread.Sleep(300);
+
+                    SeqStep = SeqStep.SEQ_IDLE;
                     break;
                 default:
                     break;
             }
         }
 
-        private void RunPreAlign(AppsInspResult inspResult)
+        private bool RunPreAlign(AppsInspResult inspResult)
         {
-            MainAlgorithmTool algorithmTool = new MainAlgorithmTool();
-
             if (inspResult.PreAlignResult.PreAlignMark.FoundedMark.Left.Judgement == Judgement.OK && inspResult.PreAlignResult.PreAlignMark.FoundedMark.Right.Judgement == Judgement.OK)
             {
                 PointF leftVisionCoordinates = inspResult.PreAlignResult.PreAlignMark.FoundedMark.Left.MaxMatchPos.FoundPos;
@@ -327,17 +335,35 @@ namespace ATT_UT_Remodeling
                 var unit = TeachingData.Instance().GetUnit("Unit0");
                 PointF calibrationStartPosition = CalibrationData.Instance().GetCalibrationStartPosition();
 
-                inspResult.PreAlignResult = algorithmTool.ExecuteAlignment(unit, realCoordinateList, calibrationStartPosition);
+                inspResult.PreAlignResult = AlgorithmTool.ExecuteAlignment(unit, realCoordinateList, calibrationStartPosition);
+
+                Judgement leftJudgement = AppsInspResult.PreAlignResult.PreAlignMark.FoundedMark.Left.Judgement;
+                Judgement rightJudgement = AppsInspResult.PreAlignResult.PreAlignMark.FoundedMark.Right.Judgement;
+                var leftScore = AppsInspResult.PreAlignResult.PreAlignMark.FoundedMark.Left.MaxMatchPos.Score;
+                var rightScore = AppsInspResult.PreAlignResult.PreAlignMark.FoundedMark.Right.MaxMatchPos.Score;
+
+                WriteLog($"OK Mark Search For PreAlign. (Left : {leftJudgement.ToString()}, Right : {rightJudgement.ToString()})", true);
+                WriteLog($"FoundedMark Score. (Left : {leftScore.ToString("F4")}, Right : {rightScore.ToString("F4")})", true);
+                return true;
             }
+            else
+            {
+                Judgement leftJudgement = AppsInspResult.PreAlignResult.PreAlignMark.FoundedMark.Left.Judgement;
+                Judgement rightJudgement = AppsInspResult.PreAlignResult.PreAlignMark.FoundedMark.Right.Judgement;
+                var leftScore = AppsInspResult.PreAlignResult.PreAlignMark.FoundedMark.Left.MaxMatchPos.Score;
+                var rightScore = AppsInspResult.PreAlignResult.PreAlignMark.FoundedMark.Right.MaxMatchPos.Score;
+
+                WriteLog($"NG Mark Search For PreAlign. (Left : {leftJudgement.ToString()}, Right : {rightJudgement.ToString()})", true);
+                WriteLog($"FoundedMark Score. (Left : {leftScore.ToString("F4")}, Right : {rightScore.ToString("F4")})", true);
+                return false;
+            } 
         }
 
         private VisionProPatternMatchingResult RunPreAlignMark(Unit unit, ICogImage cogImage, MarkDirection markDirection)
         {
             var preAlignParam = unit.PreAlign.AlignParamList.Where(x => x.Direction == markDirection).FirstOrDefault();
 
-            AlgorithmTool algorithmTool = new AlgorithmTool();
-
-            VisionProPatternMatchingResult result = algorithmTool.RunPatternMatch(cogImage, preAlignParam.InspParam);
+            VisionProPatternMatchingResult result = AlgorithmTool.RunPatternMatch(cogImage, preAlignParam.InspParam);
 
             return result;
         }
@@ -530,7 +556,6 @@ namespace ATT_UT_Remodeling
         {
             camera.GrabOnce();
             byte[] dataArrayRight = camera.GetGrabbedImage();
-            Thread.Sleep(50);
 
             // Right PreAlign Pattern Matching
             var cogImage = VisionProImageHelper.ConvertImage(dataArrayRight, camera.ImageWidth, camera.ImageHeight, camera.ColorFormat);
@@ -562,16 +587,15 @@ namespace ATT_UT_Remodeling
     {
         SEQ_IDLE,
         SEQ_READY,
+        SEQ_WAITING,
         SEQ_START,
         SEQ_PREALIGN_R,
         SEQ_PREALIGN_L,
         SEQ_SEND_PREALIGN_DATA,
-        SEQ_WAITING,
         SEQ_UI_RESULT_UPDATE,
         SEQ_SAVE_RESULT_DATA,
         SEQ_SAVE_IMAGE,
         SEQ_DELETE_DATA,
-        SEQ_CHECK_STANDBY,
         SEQ_ERROR,
     }
 }

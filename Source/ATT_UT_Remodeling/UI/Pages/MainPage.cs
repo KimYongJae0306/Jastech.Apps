@@ -1,7 +1,9 @@
 ﻿using ATT_UT_Remodeling.UI.Controls;
+using Jastech.Apps.Structure;
 using Jastech.Apps.Structure.Data;
 using Jastech.Apps.Winform.Core;
 using Jastech.Apps.Winform.UI.Controls;
+using Jastech.Framework.Winform.Forms;
 using System;
 using System.Drawing;
 using System.Windows.Forms;
@@ -91,6 +93,13 @@ namespace ATT_UT_Remodeling.UI.Pages
 
         private void lblStart_Click(object sender, EventArgs e)
         {
+            if (ModelManager.Instance().CurrentModel == null)
+            {
+                MessageConfirmForm form = new MessageConfirmForm();
+                form.Message = "Current Model is null.";
+                return;
+            }
+
             SystemManager.Instance().StartRun();
         }
 

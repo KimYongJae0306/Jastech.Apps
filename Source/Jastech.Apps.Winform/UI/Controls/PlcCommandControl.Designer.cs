@@ -206,15 +206,7 @@
             this.cbxWriteLengthJudgement = new System.Windows.Forms.ComboBox();
             this.label60 = new System.Windows.Forms.Label();
             this.btnWriteAkkonResult = new System.Windows.Forms.Button();
-            this.tableLayoutPanel49 = new System.Windows.Forms.TableLayoutPanel();
-            this.lblRightMarkScore = new System.Windows.Forms.Label();
-            this.label44 = new System.Windows.Forms.Label();
-            this.tableLayoutPanel50 = new System.Windows.Forms.TableLayoutPanel();
-            this.lblLeftMarkScore = new System.Windows.Forms.Label();
-            this.label54 = new System.Windows.Forms.Label();
             this.label56 = new System.Windows.Forms.Label();
-            this.label58 = new System.Windows.Forms.Label();
-            this.btnWritePreAlignResult = new System.Windows.Forms.Button();
             this.label61 = new System.Windows.Forms.Label();
             this.btnClearPcData = new System.Windows.Forms.Button();
             this.tableLayoutPanel51 = new System.Windows.Forms.TableLayoutPanel();
@@ -280,8 +272,6 @@
             this.tableLayoutPanel46.SuspendLayout();
             this.tableLayoutPanel47.SuspendLayout();
             this.tableLayoutPanel48.SuspendLayout();
-            this.tableLayoutPanel49.SuspendLayout();
-            this.tableLayoutPanel50.SuspendLayout();
             this.tableLayoutPanel51.SuspendLayout();
             this.tableLayoutPanel52.SuspendLayout();
             this.tableLayoutPanel53.SuspendLayout();
@@ -2853,94 +2843,6 @@
             this.btnWriteAkkonResult.UseVisualStyleBackColor = false;
             this.btnWriteAkkonResult.Click += new System.EventHandler(this.btnWriteAkkonResult_Click);
             // 
-            // tableLayoutPanel49
-            // 
-            this.tableLayoutPanel49.ColumnCount = 2;
-            this.tableLayoutPanel49.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 180F));
-            this.tableLayoutPanel49.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel49.Controls.Add(this.lblRightMarkScore, 0, 0);
-            this.tableLayoutPanel49.Controls.Add(this.label44, 0, 0);
-            this.tableLayoutPanel49.Location = new System.Drawing.Point(968, 665);
-            this.tableLayoutPanel49.Margin = new System.Windows.Forms.Padding(0);
-            this.tableLayoutPanel49.Name = "tableLayoutPanel49";
-            this.tableLayoutPanel49.RowCount = 1;
-            this.tableLayoutPanel49.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel49.Size = new System.Drawing.Size(270, 33);
-            this.tableLayoutPanel49.TabIndex = 388;
-            // 
-            // lblRightMarkScore
-            // 
-            this.lblRightMarkScore.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lblRightMarkScore.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblRightMarkScore.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
-            this.lblRightMarkScore.ForeColor = System.Drawing.Color.White;
-            this.lblRightMarkScore.Location = new System.Drawing.Point(180, 0);
-            this.lblRightMarkScore.Margin = new System.Windows.Forms.Padding(0);
-            this.lblRightMarkScore.Name = "lblRightMarkScore";
-            this.lblRightMarkScore.Size = new System.Drawing.Size(90, 33);
-            this.lblRightMarkScore.TabIndex = 4;
-            this.lblRightMarkScore.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.lblRightMarkScore.Click += new System.EventHandler(this.lblRightMarkScore_Click);
-            // 
-            // label44
-            // 
-            this.label44.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(104)))), ((int)(((byte)(104)))), ((int)(((byte)(104)))));
-            this.label44.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.label44.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.label44.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
-            this.label44.ForeColor = System.Drawing.Color.White;
-            this.label44.Location = new System.Drawing.Point(0, 0);
-            this.label44.Margin = new System.Windows.Forms.Padding(0);
-            this.label44.Name = "label44";
-            this.label44.Size = new System.Drawing.Size(180, 33);
-            this.label44.TabIndex = 2;
-            this.label44.Text = "R_Mark Score";
-            this.label44.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // tableLayoutPanel50
-            // 
-            this.tableLayoutPanel50.ColumnCount = 2;
-            this.tableLayoutPanel50.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 180F));
-            this.tableLayoutPanel50.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel50.Controls.Add(this.lblLeftMarkScore, 0, 0);
-            this.tableLayoutPanel50.Controls.Add(this.label54, 0, 0);
-            this.tableLayoutPanel50.Location = new System.Drawing.Point(968, 632);
-            this.tableLayoutPanel50.Margin = new System.Windows.Forms.Padding(0);
-            this.tableLayoutPanel50.Name = "tableLayoutPanel50";
-            this.tableLayoutPanel50.RowCount = 1;
-            this.tableLayoutPanel50.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel50.Size = new System.Drawing.Size(270, 33);
-            this.tableLayoutPanel50.TabIndex = 387;
-            // 
-            // lblLeftMarkScore
-            // 
-            this.lblLeftMarkScore.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lblLeftMarkScore.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblLeftMarkScore.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
-            this.lblLeftMarkScore.ForeColor = System.Drawing.Color.White;
-            this.lblLeftMarkScore.Location = new System.Drawing.Point(180, 0);
-            this.lblLeftMarkScore.Margin = new System.Windows.Forms.Padding(0);
-            this.lblLeftMarkScore.Name = "lblLeftMarkScore";
-            this.lblLeftMarkScore.Size = new System.Drawing.Size(90, 33);
-            this.lblLeftMarkScore.TabIndex = 4;
-            this.lblLeftMarkScore.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.lblLeftMarkScore.Click += new System.EventHandler(this.lblLeftMarkScore_Click);
-            // 
-            // label54
-            // 
-            this.label54.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(104)))), ((int)(((byte)(104)))), ((int)(((byte)(104)))));
-            this.label54.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.label54.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.label54.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
-            this.label54.ForeColor = System.Drawing.Color.White;
-            this.label54.Location = new System.Drawing.Point(0, 0);
-            this.label54.Margin = new System.Windows.Forms.Padding(0);
-            this.label54.Name = "label54";
-            this.label54.Size = new System.Drawing.Size(180, 33);
-            this.label54.TabIndex = 2;
-            this.label54.Text = "L_Mark Score";
-            this.label54.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
             // label56
             // 
             this.label56.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(104)))), ((int)(((byte)(104)))), ((int)(((byte)(104)))));
@@ -2955,33 +2857,6 @@
             this.label56.Text = "Tab Akkon Result";
             this.label56.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // label58
-            // 
-            this.label58.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(104)))), ((int)(((byte)(104)))), ((int)(((byte)(104)))));
-            this.label58.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.label58.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
-            this.label58.ForeColor = System.Drawing.Color.White;
-            this.label58.Location = new System.Drawing.Point(968, 599);
-            this.label58.Margin = new System.Windows.Forms.Padding(0);
-            this.label58.Name = "label58";
-            this.label58.Size = new System.Drawing.Size(270, 33);
-            this.label58.TabIndex = 390;
-            this.label58.Text = "Result";
-            this.label58.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // btnWritePreAlignResult
-            // 
-            this.btnWritePreAlignResult.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(104)))), ((int)(((byte)(104)))), ((int)(((byte)(104)))));
-            this.btnWritePreAlignResult.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
-            this.btnWritePreAlignResult.ForeColor = System.Drawing.Color.White;
-            this.btnWritePreAlignResult.Location = new System.Drawing.Point(1185, 601);
-            this.btnWritePreAlignResult.Name = "btnWritePreAlignResult";
-            this.btnWritePreAlignResult.Size = new System.Drawing.Size(53, 31);
-            this.btnWritePreAlignResult.TabIndex = 391;
-            this.btnWritePreAlignResult.Text = "SET";
-            this.btnWritePreAlignResult.UseVisualStyleBackColor = false;
-            this.btnWritePreAlignResult.Click += new System.EventHandler(this.btnWritePreAlignResult_Click);
-            // 
             // label61
             // 
             this.label61.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(104)))), ((int)(((byte)(104)))), ((int)(((byte)(104)))));
@@ -2991,7 +2866,7 @@
             this.label61.Location = new System.Drawing.Point(698, 566);
             this.label61.Margin = new System.Windows.Forms.Padding(0);
             this.label61.Name = "label61";
-            this.label61.Size = new System.Drawing.Size(540, 33);
+            this.label61.Size = new System.Drawing.Size(270, 33);
             this.label61.TabIndex = 392;
             this.label61.Text = "PreAlign";
             this.label61.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -3163,10 +3038,6 @@
             this.Controls.Add(this.tableLayoutPanel51);
             this.Controls.Add(this.btnClearPcData);
             this.Controls.Add(this.label61);
-            this.Controls.Add(this.btnWritePreAlignResult);
-            this.Controls.Add(this.label58);
-            this.Controls.Add(this.tableLayoutPanel49);
-            this.Controls.Add(this.tableLayoutPanel50);
             this.Controls.Add(this.btnWriteAkkonResult);
             this.Controls.Add(this.tableLayoutPanel42);
             this.Controls.Add(this.tableLayoutPanel43);
@@ -3293,8 +3164,6 @@
             this.tableLayoutPanel46.ResumeLayout(false);
             this.tableLayoutPanel47.ResumeLayout(false);
             this.tableLayoutPanel48.ResumeLayout(false);
-            this.tableLayoutPanel49.ResumeLayout(false);
-            this.tableLayoutPanel50.ResumeLayout(false);
             this.tableLayoutPanel51.ResumeLayout(false);
             this.tableLayoutPanel52.ResumeLayout(false);
             this.tableLayoutPanel53.ResumeLayout(false);
@@ -3481,15 +3350,7 @@
         private System.Windows.Forms.ComboBox cbxWriteLengthJudgement;
         private System.Windows.Forms.Label label60;
         private System.Windows.Forms.Button btnWriteAkkonResult;
-        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel49;
-        private System.Windows.Forms.Label lblRightMarkScore;
-        private System.Windows.Forms.Label label44;
-        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel50;
-        private System.Windows.Forms.Label lblLeftMarkScore;
-        private System.Windows.Forms.Label label54;
         private System.Windows.Forms.Label label56;
-        private System.Windows.Forms.Label label58;
-        private System.Windows.Forms.Button btnWritePreAlignResult;
         private System.Windows.Forms.Label label61;
         private System.Windows.Forms.Button btnClearPcData;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel51;
