@@ -30,19 +30,16 @@
         {
             this.tlpPreAlignDisplay = new System.Windows.Forms.TableLayoutPanel();
             this.lblAkkonResultViewer = new System.Windows.Forms.Label();
-            this.tlpDisplay = new System.Windows.Forms.TableLayoutPanel();
-            this.pnlPreAlignLeft = new System.Windows.Forms.Panel();
-            this.pnlPreAlignRight = new System.Windows.Forms.Panel();
+            this.pnlPreAlignDisplay = new System.Windows.Forms.Panel();
             this.tlpPreAlignDisplay.SuspendLayout();
-            this.tlpDisplay.SuspendLayout();
             this.SuspendLayout();
             // 
             // tlpPreAlignDisplay
             // 
             this.tlpPreAlignDisplay.ColumnCount = 1;
             this.tlpPreAlignDisplay.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tlpPreAlignDisplay.Controls.Add(this.pnlPreAlignDisplay, 0, 1);
             this.tlpPreAlignDisplay.Controls.Add(this.lblAkkonResultViewer, 0, 0);
-            this.tlpPreAlignDisplay.Controls.Add(this.tlpDisplay, 0, 1);
             this.tlpPreAlignDisplay.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tlpPreAlignDisplay.Location = new System.Drawing.Point(0, 0);
             this.tlpPreAlignDisplay.Margin = new System.Windows.Forms.Padding(0);
@@ -67,40 +64,14 @@
             this.lblAkkonResultViewer.Text = "PreAlign";
             this.lblAkkonResultViewer.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // tlpDisplay
+            // pnlPreAlignDisplay
             // 
-            this.tlpDisplay.ColumnCount = 3;
-            this.tlpDisplay.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tlpDisplay.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 5F));
-            this.tlpDisplay.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tlpDisplay.Controls.Add(this.pnlPreAlignLeft, 0, 0);
-            this.tlpDisplay.Controls.Add(this.pnlPreAlignRight, 2, 0);
-            this.tlpDisplay.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tlpDisplay.Location = new System.Drawing.Point(0, 40);
-            this.tlpDisplay.Margin = new System.Windows.Forms.Padding(0);
-            this.tlpDisplay.Name = "tlpDisplay";
-            this.tlpDisplay.RowCount = 1;
-            this.tlpDisplay.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tlpDisplay.Size = new System.Drawing.Size(405, 200);
-            this.tlpDisplay.TabIndex = 3;
-            // 
-            // pnlPreAlignLeft
-            // 
-            this.pnlPreAlignLeft.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pnlPreAlignLeft.Location = new System.Drawing.Point(0, 0);
-            this.pnlPreAlignLeft.Margin = new System.Windows.Forms.Padding(0);
-            this.pnlPreAlignLeft.Name = "pnlPreAlignLeft";
-            this.pnlPreAlignLeft.Size = new System.Drawing.Size(200, 200);
-            this.pnlPreAlignLeft.TabIndex = 0;
-            // 
-            // pnlPreAlignRight
-            // 
-            this.pnlPreAlignRight.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pnlPreAlignRight.Location = new System.Drawing.Point(205, 0);
-            this.pnlPreAlignRight.Margin = new System.Windows.Forms.Padding(0);
-            this.pnlPreAlignRight.Name = "pnlPreAlignRight";
-            this.pnlPreAlignRight.Size = new System.Drawing.Size(200, 200);
-            this.pnlPreAlignRight.TabIndex = 1;
+            this.pnlPreAlignDisplay.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pnlPreAlignDisplay.Location = new System.Drawing.Point(0, 40);
+            this.pnlPreAlignDisplay.Margin = new System.Windows.Forms.Padding(0);
+            this.pnlPreAlignDisplay.Name = "pnlPreAlignDisplay";
+            this.pnlPreAlignDisplay.Size = new System.Drawing.Size(405, 200);
+            this.pnlPreAlignDisplay.TabIndex = 3;
             // 
             // PreAlignDisplayControl
             // 
@@ -112,8 +83,8 @@
             this.ForeColor = System.Drawing.Color.White;
             this.Name = "PreAlignDisplayControl";
             this.Size = new System.Drawing.Size(405, 240);
+            this.Load += new System.EventHandler(this.PreAlignDisplayControl_Load);
             this.tlpPreAlignDisplay.ResumeLayout(false);
-            this.tlpDisplay.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -122,8 +93,6 @@
 
         private System.Windows.Forms.TableLayoutPanel tlpPreAlignDisplay;
         private System.Windows.Forms.Label lblAkkonResultViewer;
-        private System.Windows.Forms.TableLayoutPanel tlpDisplay;
-        private System.Windows.Forms.Panel pnlPreAlignLeft;
-        private System.Windows.Forms.Panel pnlPreAlignRight;
+        private System.Windows.Forms.Panel pnlPreAlignDisplay;
     }
 }

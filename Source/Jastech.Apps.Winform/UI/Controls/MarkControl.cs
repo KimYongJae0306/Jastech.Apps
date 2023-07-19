@@ -364,6 +364,7 @@ namespace Jastech.Apps.Winform.UI.Controls
                 form.ShowDialog();
                 return;
             }
+
             VisionProPatternMatchingParam inspParam = currentParam.DeepCopy();
             ICogImage copyCogImage = cogImage.CopyBase(CogImageCopyModeConstants.CopyPixels);
 
@@ -380,6 +381,7 @@ namespace Jastech.Apps.Winform.UI.Controls
                 form.Message = "Pattern is Not Found.";
                 form.ShowDialog();
             }
+
             result.Dispose();
             inspParam.Dispose();
             VisionProImageHelper.Dispose(ref copyCogImage);
@@ -387,10 +389,6 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         public void ShowROIJog()
         {
-            //ROIJogControl roiJogForm = new ROIJogControl();
-            //roiJogForm.SetTeachingItem(TeachingItem.Mark);
-            //roiJogForm.SendEventHandler += new ROIJogControl.SendClickEventDelegate(ReceiveClickEvent);
-            //roiJogForm.ShowDialog();
             if (_roiJogForm == null)
             {
                 _roiJogForm = new ROIJogForm();
