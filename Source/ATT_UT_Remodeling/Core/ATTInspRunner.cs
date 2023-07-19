@@ -189,8 +189,9 @@ namespace ATT_UT_Remodeling.Core
                 AppsInspResult.TabResultList.Add(inspResult);
 
                 sw.Stop();
-                string resultMessage = string.Format("Inspection Completed. {0}({1}ms)", inspTab.TabScanBuffer.TabNo, sw.ElapsedMilliseconds);
+                string resultMessage = string.Format("Tab {0} Inspection Completed.({1}ms)", inspTab.TabScanBuffer.TabNo, sw.ElapsedMilliseconds);
                 Console.WriteLine(resultMessage);
+                WriteLog(resultMessage, true);
             }
         }
 
@@ -592,7 +593,7 @@ namespace ATT_UT_Remodeling.Core
                     AppsInspResult.EndInspTime = DateTime.Now;
                     AppsInspResult.LastInspTime = LastInspSW.ElapsedMilliseconds.ToString();
 
-                    string message = $"Complete Inspection.{LastInspSW.ElapsedMilliseconds.ToString()}";
+                    string message = $"Grab End to Insp Completed Time.({LastInspSW.ElapsedMilliseconds.ToString()}ms)";
                     WriteLog(message, true);
 
                     SeqStep = SeqStep.SEQ_SEND_RESULT;

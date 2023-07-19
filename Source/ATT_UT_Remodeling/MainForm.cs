@@ -29,6 +29,10 @@ namespace ATT_UT_Remodeling
 {
     public partial class MainForm : Form
     {
+        #region 필드
+        private int _virtualImageCount { get; set; } = 0;
+        #endregion
+
         #region 속성
         private MainPage MainPageControl { get; set; } = null;
 
@@ -317,9 +321,10 @@ namespace ATT_UT_Remodeling
 
             if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
             {
+                _virtualImageCount = 0;
                 string[] fileNames = dialog.FileNames;
 
-                if(inspModel.TabCount != fileNames.Count())
+                if (inspModel.TabCount != fileNames.Count())
                 {
                     MessageConfirmForm form = new MessageConfirmForm();
                     form.Message = "The number of Tabs is Different.";
@@ -331,12 +336,11 @@ namespace ATT_UT_Remodeling
         }
 
         private void LoadImage(string[] fileNames)
-        {
+        { 
             foreach (var fileName in fileNames)
             {
                 AddVirtualImagePath(fileName);
             }
-            SystemManager.Instance().VirtualGrabDone();
         }
 
         private void StartVirtualInspTask()
@@ -371,9 +375,22 @@ namespace ATT_UT_Remodeling
                     string fileName = Path.GetFileNameWithoutExtension(filePath);
 
                     int index = fileName.IndexOf(text);
-                    string tabNoString = fileName.Substring(index + text.Length);
+                    if(index < 0)
+                    {
+                        MessageConfirmForm form = new MessageConfirmForm();
+                        form.Message = "The format of the file name is not correct.";
+                        form.ShowDialog();
+                    }
+                    else
+                    {
+                        string tabNoString = fileName.Substring(index + text.Length);
+                        SystemManager.Instance().SetVirtualImage(Convert.ToInt32(tabNoString), filePath);
+                    }
+                    _virtualImageCount++;
 
-                    SystemManager.Instance().SetVirtualImage(Convert.ToInt32(tabNoString), filePath);
+                    var inspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
+                    if(_virtualImageCount == inspModel.TabCount)
+                        SystemManager.Instance().VirtualGrabDone();
                 }
 
                 Thread.Sleep(50);

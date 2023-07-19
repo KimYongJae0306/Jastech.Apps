@@ -203,6 +203,7 @@ namespace ATT.Core
 
             sw.Stop();
             string resultMessage = string.Format("Inspection Completed. {0}({1}ms)", inspTab.TabScanBuffer.TabNo, sw.ElapsedMilliseconds);
+
             Console.WriteLine(resultMessage);
         }
 

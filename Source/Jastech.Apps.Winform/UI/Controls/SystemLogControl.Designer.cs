@@ -76,6 +76,7 @@
             this.lstLogMessage.Name = "lstLogMessage";
             this.lstLogMessage.Size = new System.Drawing.Size(300, 260);
             this.lstLogMessage.TabIndex = 4;
+            this.lstLogMessage.DoubleClick += new System.EventHandler(this.lstLogMessage_DoubleClick);
             // 
             // SystemLogControl
             // 

@@ -48,5 +48,10 @@ namespace Jastech.Apps.Winform.UI.Controls
             WriteLogMessage(logMessage);
         }
         #endregion
+
+        private void lstLogMessage_DoubleClick(object sender, EventArgs e)
+        {
+            ClearLogMessage();
+        }
     }
 }
