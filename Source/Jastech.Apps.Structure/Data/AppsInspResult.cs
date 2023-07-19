@@ -208,6 +208,8 @@ namespace Jastech.Apps.Structure.Data
     {
         public MarkResult PreAlignMark { get; set; } = new MarkResult();
 
+        public ICogImage CogImage { get; set; } = null;
+
         public double OffsetX { get; private set; } = 0.0;
 
         public double OffsetY { get; private set; } = 0.0;
