@@ -126,7 +126,8 @@ namespace ATT_UT_Remodeling.Core
                 SetCoordinateData(panelCoordinate, inspResult);
 
                 var lineCamera = LineCameraManager.Instance().GetLineCamera("LineCamera").Camera;
-                double resolution_um = lineCamera.PixelResolution_um / lineCamera.LensScale;
+
+                float resolution_um = lineCamera.PixelResolution_um / lineCamera.LensScale;
                 double judgementX = resolution_um * tab.AlignSpec.LeftSpecX_um;
                 double judgementY = resolution_um * tab.AlignSpec.LeftSpecY_um;
 

@@ -583,14 +583,14 @@ namespace AkkonTester.UI.Pages
             param.ImageFilterParam.Mode = (AkkonThMode)cbxThresholdMode.SelectedIndex;
             param.ImageFilterParam.Weight = Convert.ToDouble(txtThresholdWeight.Text);
 
-            param.ResultFilterParam.MinArea_um = Convert.ToDouble(txtMinArea.Text);
-            param.ResultFilterParam.MaxArea_um = Convert.ToDouble(txtMaxArea.Text);
-            param.ResultFilterParam.AkkonStrength = Convert.ToDouble(txtAkkonStrength.Text);
-            param.ResultFilterParam.AkkonStrengthScaleFactor = Convert.ToDouble(txtAkkonScaleFactor.Text);
+            param.ResultFilterParam.MinArea_um = Convert.ToSingle(txtMinArea.Text);
+            param.ResultFilterParam.MaxArea_um = Convert.ToSingle(txtMaxArea.Text);
+            param.ResultFilterParam.AkkonStrength = Convert.ToSingle(txtAkkonStrength.Text);
+            param.ResultFilterParam.AkkonStrengthScaleFactor = Convert.ToSingle(txtAkkonScaleFactor.Text);
 
-            param.JudgementParam.LengthX_um = Convert.ToDouble(txtLeadLengthX.Text);
-            param.JudgementParam.LengthY_um = Convert.ToDouble(txtLeadLengthY.Text);
-            param.JudgementParam.LeadStdDev = Convert.ToDouble(txtLeadStdDev.Text);
+            param.JudgementParam.LengthX_um = Convert.ToSingle(txtLeadLengthX.Text);
+            param.JudgementParam.LengthY_um = Convert.ToSingle(txtLeadLengthY.Text);
+            param.JudgementParam.LeadStdDev = Convert.ToSingle(txtLeadStdDev.Text);
 
             param.DrawOption.ContainLeadCount = ckbContainLeadCount.Checked;
             param.DrawOption.ContainLeadROI = ckbContainLeadROI.Checked;
