@@ -798,12 +798,11 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         private CogRectangleAffine ConvertAkkonRoiToCogRectAffine(AkkonROI akkonRoi)
         {
-            CogRectangleAffine cogRectAffine = new CogRectangleAffine();
+            PointF leftTop = new PointF(Convert.ToSingle(akkonRoi.LeftTopX), Convert.ToSingle(akkonRoi.LeftTopY));
+            PointF rightTop = new PointF(Convert.ToSingle(akkonRoi.RightTopX), Convert.ToSingle(akkonRoi.RightTopY));
+            PointF leftBottom = new PointF(Convert.ToSingle(akkonRoi.LeftBottomX), Convert.ToSingle(akkonRoi.LeftBottomY));
 
-            cogRectAffine.SetOriginCornerXCornerY(akkonRoi.LeftTopX, akkonRoi.LeftTopY, 
-                                                    akkonRoi.RightTopX, akkonRoi.RightTopY, akkonRoi.LeftBottomX, akkonRoi.LeftBottomY);
-
-            return cogRectAffine;
+            return VisionProShapeHelper.ConvertToCogRectAffine(leftTop, rightTop, leftBottom);
         }
 
         private void lblSort_Click(object sender, EventArgs e)
