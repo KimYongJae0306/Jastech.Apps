@@ -2,6 +2,7 @@
 using Emgu.CV;
 using Jastech.Framework.Algorithms.Akkon.Results;
 using Jastech.Framework.Imaging.Result;
+using Jastech.Framework.Imaging.VisionPro;
 using Jastech.Framework.Imaging.VisionPro.VisionAlgorithms.Results;
 using System;
 using System.Collections.Generic;
@@ -56,6 +57,8 @@ namespace Jastech.Apps.Structure.Data
         public Mat Image { get; set; } = null;
 
         public ICogImage CogImage { get; set; } = null;
+
+        public ICogImage AkkonInspImage { get; set; } = null;
 
         public ICogImage AkkonResultImage { get; set; } = null;
       
@@ -172,8 +175,21 @@ namespace Jastech.Apps.Structure.Data
                 Image.Dispose();
                 Image = null;
             }
-            CogImage = null;
-            AkkonResultImage = null;
+            if (CogImage is CogImage8Grey orgGrey)
+            {
+                orgGrey.Dispose();
+                orgGrey = null;
+            }
+            if (AkkonInspImage is CogImage8Grey inspGrey)
+            {
+                inspGrey.Dispose();
+                inspGrey = null;
+            }
+            if (AkkonResultImage is CogImage24PlanarColor color)
+            {
+                color.Dispose();
+                color = null;
+            }
 
             FpcMark?.Dispose();
             PanelMark?.Dispose();
@@ -191,6 +207,7 @@ namespace Jastech.Apps.Structure.Data
             result.Judgement = Judgement;
             result.Image = Image?.Clone();
             result.CogImage = CogImage?.CopyBase(CogImageCopyModeConstants.CopyPixels);
+            result.AkkonInspImage = AkkonInspImage?.CopyBase(CogImageCopyModeConstants.CopyPixels);
             result.AkkonResultImage = AkkonResultImage?.CopyBase(CogImageCopyModeConstants.CopyPixels);
             result.FpcMark = FpcMark?.DeepCopy();
             result.PanelMark = PanelMark?.DeepCopy();

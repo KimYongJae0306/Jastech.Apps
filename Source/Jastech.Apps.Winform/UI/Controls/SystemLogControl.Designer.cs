@@ -70,6 +70,7 @@
             this.lstLogMessage.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lstLogMessage.ForeColor = System.Drawing.Color.White;
             this.lstLogMessage.FormattingEnabled = true;
+            this.lstLogMessage.HorizontalScrollbar = true;
             this.lstLogMessage.ItemHeight = 20;
             this.lstLogMessage.Location = new System.Drawing.Point(0, 40);
             this.lstLogMessage.Margin = new System.Windows.Forms.Padding(0);

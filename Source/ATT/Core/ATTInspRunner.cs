@@ -645,14 +645,30 @@ namespace ATT.Core
                 var tabResult = AppsInspResult.TabResultList[i];
                 Tab tab = unit.GetTab(tabResult.TabNo);
 
+                // Overlay Image
                 Mat resultMat = GetResultImage(tabResult.Image, tabResult.AkkonResult.LeadResultList, tab.AkkonParam.AkkonAlgoritmParam);
                 ICogImage cogImage = ConvertCogColorImage(resultMat);
                 tabResult.AkkonResultImage = cogImage;
                 resultMat.Dispose();
+
+                // Resize Image
+                Mat resizeMat = MatHelper.Resize(tabResult.Image, tab.AkkonParam.AkkonAlgoritmParam.ImageFilterParam.ResizeRatio);
+                tabResult.AkkonInspImage = ConvertCogGrayImage(resizeMat);
+                resizeMat.Dispose();
             }
 
             sw.Stop();
             Console.WriteLine("Get Akkon Result Image : " + sw.ElapsedMilliseconds.ToString() + "ms");
+        }
+
+        private CogImage8Grey ConvertCogGrayImage(Mat mat)
+        {
+            if (mat == null)
+                return null;
+
+            int size = mat.Width * mat.Height * mat.NumberOfChannels;
+            var cogImage = VisionProImageHelper.CovertImage(mat.DataPointer, mat.Width, mat.Height, mat.Step, ColorFormat.Gray) as CogImage8Grey;
+            return cogImage;
         }
 
         public ICogImage ConvertCogColorImage(Mat mat)

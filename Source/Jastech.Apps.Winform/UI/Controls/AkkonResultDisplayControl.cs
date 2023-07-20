@@ -17,7 +17,8 @@ namespace ATT_UT_IPAD.UI.Controls
 
         private Color _selectedColor;
 
-        private Color _nonSelectedColor;
+        private Color _noneSelectedColor;
+
         #endregion
 
         #region 속성
@@ -28,6 +29,8 @@ namespace ATT_UT_IPAD.UI.Controls
         public CogInspDisplayControl InspDisplayControl { get; private set; } = new CogInspDisplayControl() { Dock = DockStyle.Fill };
 
         public int CurrentTabNo { get; set; } = -1;
+
+        private bool IsResultImageView { get; set; } = true;
         #endregion
 
         #region 이벤트
@@ -60,13 +63,30 @@ namespace ATT_UT_IPAD.UI.Controls
         private void InitializeUI()
         {
             _selectedColor = Color.FromArgb(104, 104, 104);
-            _nonSelectedColor = Color.FromArgb(52, 52, 52);
+            _noneSelectedColor = Color.FromArgb(52, 52, 52);
+
+            btnResultImage.Focus();
+            UpdateButton();
 
             AppsInspModel inspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
             if (inspModel == null)
                 UpdateTabCount(1);
             else
                 UpdateTabCount(inspModel.TabCount);
+        }
+
+        private void UpdateButton()
+        {
+            if (IsResultImageView)
+            {
+                btnResizeImage.BackColor = _noneSelectedColor;
+                btnResultImage.BackColor = _selectedColor;
+            }
+            else
+            {
+                btnResizeImage.BackColor = _selectedColor;
+                btnResultImage.BackColor = _noneSelectedColor;
+            }
         }
 
         public void UpdateTabCount(int tabCount)
@@ -117,7 +137,12 @@ namespace ATT_UT_IPAD.UI.Controls
             SendTabNumber(tabNum);
 
             if (InspResultDic.ContainsKey(tabNum))
-                InspDisplayControl.SetImage(InspResultDic[tabNum].AkkonResultImage);
+            {
+                if(IsResultImageView)
+                    InspDisplayControl.SetImage(InspResultDic[tabNum].AkkonResultImage);
+                else
+                    InspDisplayControl.SetImage(InspResultDic[tabNum].AkkonInspImage);
+            }
             else
                 InspDisplayControl.Clear();
         }
@@ -136,11 +161,52 @@ namespace ATT_UT_IPAD.UI.Controls
                     InspResultDic.Remove(tabNo);
                 }
 
-                InspResultDic.Add(tabNo, inspResult.TabResultList[i]);
+                InspResultDic.Add(tabNo, inspResult.TabResultList[i].DeepCopy());
 
                 if (CurrentTabNo == tabNo)
-                    InspDisplayControl.SetImage(inspResult.TabResultList[i].AkkonResultImage);
+                {
+                    if (IsResultImageView)
+                        InspDisplayControl.SetImage(inspResult.TabResultList[i].AkkonResultImage);
+                    else
+                        InspDisplayControl.SetImage(inspResult.TabResultList[i].AkkonInspImage);
+                }
             }
+        }
+
+        private void btnResizeImage_Click(object sender, EventArgs e)
+        {
+            IsResultImageView = false;
+            UpdateButton();
+
+            SendTabNumber(CurrentTabNo);
+
+            if (InspResultDic.ContainsKey(CurrentTabNo))
+            {
+                if (IsResultImageView)
+                    InspDisplayControl.SetImage(InspResultDic[CurrentTabNo].AkkonResultImage);
+                else
+                    InspDisplayControl.SetImage(InspResultDic[CurrentTabNo].AkkonInspImage);
+            }
+            else
+                InspDisplayControl.Clear();
+        }
+
+        private void btnResultImage_Click(object sender, EventArgs e)
+        {
+            IsResultImageView = true;
+            UpdateButton();
+
+            SendTabNumber(CurrentTabNo);
+
+            if (InspResultDic.ContainsKey(CurrentTabNo))
+            {
+                if (IsResultImageView)
+                    InspDisplayControl.SetImage(InspResultDic[CurrentTabNo].AkkonResultImage);
+                else
+                    InspDisplayControl.SetImage(InspResultDic[CurrentTabNo].AkkonInspImage);
+            }
+            else
+                InspDisplayControl.Clear();
         }
         #endregion
     }
