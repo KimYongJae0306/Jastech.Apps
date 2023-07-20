@@ -424,7 +424,7 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         private void lblLeftAlignSpecX_Click(object sender, EventArgs e)
         {
-            double specX = KeyPadHelper.SetLabelDoubleData((Label)sender);
+            float specX = KeyPadHelper.SetLabelFloatData((Label)sender);
 
             if (CurrentTab != null)
                 CurrentTab.AlignSpec.LeftSpecX_um = specX;
@@ -432,7 +432,7 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         private void lblLeftAlignSpecY_Click(object sender, EventArgs e)
         {
-            double specY = KeyPadHelper.SetLabelDoubleData((Label)sender);
+            float specY = KeyPadHelper.SetLabelFloatData((Label)sender);
 
             if (CurrentTab != null)
                 CurrentTab.AlignSpec.LeftSpecY_um = specY;
@@ -440,7 +440,7 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         private void lblRightAlignSpecX_Click(object sender, EventArgs e)
         {
-            double specX = KeyPadHelper.SetLabelDoubleData((Label)sender);
+            float specX = KeyPadHelper.SetLabelFloatData((Label)sender);
 
             if (CurrentTab != null)
                 CurrentTab.AlignSpec.RightSpecX_um = specX;
@@ -448,7 +448,7 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         private void lblRightAlignSpecY_Click(object sender, EventArgs e)
         {
-            double specY = KeyPadHelper.SetLabelDoubleData((Label)sender);
+            float specY = KeyPadHelper.SetLabelFloatData((Label)sender);
 
             if (CurrentTab != null)
                 CurrentTab.AlignSpec.RightSpecY_um = specY;

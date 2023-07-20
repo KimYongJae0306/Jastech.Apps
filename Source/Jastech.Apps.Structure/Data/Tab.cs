@@ -111,15 +111,15 @@ namespace Jastech.Apps.Structure.Data
     public class AlignSpec
     {
         [JsonProperty]
-        public double LeftSpecX_um { get; set; } = 0.5;
+        public float LeftSpecX_um { get; set; } = 0.5F;
 
         [JsonProperty]
-        public double LeftSpecY_um { get; set; } = 1;
+        public float LeftSpecY_um { get; set; } = 1.0F;
 
         [JsonProperty]
-        public double RightSpecX_um { get; set; } = 0.5;
+        public float RightSpecX_um { get; set; } = 0.5F;
 
         [JsonProperty]
-        public double RightSpecY_um { get; set; } = 1;
+        public float RightSpecY_um { get; set; } = 1.0F;
     }
 }

@@ -131,9 +131,9 @@ namespace ATT.Core
             #endregion
 
             var camera = LineCameraManager.Instance().GetLineCamera("Camera0").Camera;
-            double resolution_um = camera.PixelResolution_um / camera.LensScale;
-            double judgementX = resolution_um * tab.AlignSpec.LeftSpecX_um;
-            double judgementY = resolution_um* tab.AlignSpec.LeftSpecY_um;
+            float resolution_um = camera.PixelResolution_um / camera.LensScale;
+            float judgementX = resolution_um * tab.AlignSpec.LeftSpecX_um;
+            float judgementY = resolution_um* tab.AlignSpec.LeftSpecY_um;
 
             #region Left Align
             if(AppsConfig.Instance().EnableAlign)

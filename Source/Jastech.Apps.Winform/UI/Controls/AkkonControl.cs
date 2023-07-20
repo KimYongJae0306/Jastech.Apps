@@ -65,7 +65,7 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         private bool UserMaker { get; set; } = false;
 
-        public double CalcResolution { get; set; } = 0.0; // ex :  /camera.PixelResolution_mm(0.0035) / camera.LensScale(5) / 1000;
+        public float CalcResolution { get; set; } = 0.0F; // ex :  /camera.PixelResolution_mm(0.0035) / camera.LensScale(5) / 1000;
 
         public bool IsReScaling { get; set; } = false;
         #endregion

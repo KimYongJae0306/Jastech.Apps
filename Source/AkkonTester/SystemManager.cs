@@ -27,7 +27,7 @@ namespace AkkonTester
 
         public List<AkkonLeadResult> CurrentLeadResult { get; set; } = new List<AkkonLeadResult>();
 
-        public double Resolustion { get; set; } = 0.0005;
+        public float Resolustion { get; set; } = 0.0005F;
 
         private static SystemManager _instance = null;
 

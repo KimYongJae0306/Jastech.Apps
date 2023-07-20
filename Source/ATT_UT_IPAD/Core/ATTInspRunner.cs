@@ -131,9 +131,9 @@ namespace ATT_UT_IPAD.Core
             #endregion
 
             var alignCamera = LineCameraManager.Instance().GetLineCamera("AlignCamera").Camera;
-            double resolution_um = alignCamera.PixelResolution_um / alignCamera.LensScale;
-            double judgementX = resolution_um * tab.AlignSpec.LeftSpecX_um;
-            double judgementY = resolution_um* tab.AlignSpec.LeftSpecY_um;
+            float resolution_um = alignCamera.PixelResolution_um / alignCamera.LensScale;
+            float judgementX = resolution_um * tab.AlignSpec.LeftSpecX_um;
+            float judgementY = resolution_um* tab.AlignSpec.LeftSpecY_um;
 
             var akkonCamera = LineCameraManager.Instance().GetLineCamera("AkkonCamera").Camera;
 

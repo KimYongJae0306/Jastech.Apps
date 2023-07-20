@@ -102,7 +102,7 @@ namespace AkkonTester.UI.Pages
                 return;
             }
             SystemManager.Instance().AkkonParameters.ImageFilterParam.ResizeRatio = Convert.ToDouble(txtResizeRatio.Text);
-            SystemManager.Instance().Resolustion = Convert.ToDouble(txtResolution.Text);
+            SystemManager.Instance().Resolustion = Convert.ToSingle(txtResolution.Text);
 
             SystemManager.Instance().CalcSliceImage();
             SystemManager.Instance().UpdateSliceData();
