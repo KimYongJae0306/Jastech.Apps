@@ -318,9 +318,14 @@ namespace Jastech.Apps.Winform.UI.Controls
             CogRectangle searchRoi = VisionProImageHelper.CreateRectangle(roi.CenterX, roi.CenterY, roi.Width * 2, roi.Height * 2);
 
             var currentParam = ParamControl.GetCurrentParam();
-
+            roi.Changed += Roi_Changed;
             currentParam.SetTrainRegion(roi);
             currentParam.SetSearchRegion(searchRoi);
+            ParamControl.UpdateData(currentParam);
+        }
+
+        private void Roi_Changed(object sender, CogChangedEventArgs e)
+        {
         }
 
         public void DrawROI()
