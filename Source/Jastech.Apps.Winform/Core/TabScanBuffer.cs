@@ -133,7 +133,7 @@ namespace Jastech.Apps.Winform.Core
                 return null;
 
             int size = mat.Width * mat.Height * mat.NumberOfChannels;
-            var cogImage = VisionProImageHelper.CovertImage(mat.DataPointer, mat.Width, mat.Height, ColorFormat.Gray) as CogImage8Grey;
+            var cogImage = VisionProImageHelper.CovertImage(mat.DataPointer, mat.Width, mat.Height, mat.Step, ColorFormat.Gray) as CogImage8Grey;
             return cogImage;
         }
     }

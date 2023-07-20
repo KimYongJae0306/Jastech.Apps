@@ -9,6 +9,7 @@ using Jastech.Apps.Winform.Settings;
 using Jastech.Framework.Algorithms.Akkon;
 using Jastech.Framework.Algorithms.Akkon.Parameters;
 using Jastech.Framework.Algorithms.UI.Controls;
+using Jastech.Framework.Imaging;
 using Jastech.Framework.Imaging.Helper;
 using Jastech.Framework.Imaging.VisionPro;
 using Jastech.Framework.Winform.Forms;
@@ -1288,24 +1289,31 @@ namespace Jastech.Apps.Winform.UI.Controls
                 resultMat = GetDebugResultImage(matImage, tabResult, akkonAlgorithmParam);
             else
                 resultMat = GetResultImage(matImage, tabResult, akkonAlgorithmParam);
+      
+            Mat resizeMat = MatHelper.Resize(matImage, akkonAlgorithmParam.ImageFilterParam.ResizeRatio);
+            var akkonCogImage = ConvertCogGrayImage(resizeMat);
+            TeachingUIManager.Instance().SetAkkonCogImage(akkonCogImage);
 
-            var cogImage = ConvertCogColorImage(resultMat);
-            TeachingUIManager.Instance().SetResultCogImage(cogImage);
+            var resultCogImage = ConvertCogColorImage(resultMat);
+            TeachingUIManager.Instance().SetResultCogImage(resultCogImage);
+
+            resizeMat.Dispose();
             resultMat.Dispose();
             ClearDisplay();
             Console.WriteLine("Completed.");
 
             lblOrginalImage.BackColor = _nonSelectedColor;
+            lblResizeImage.BackColor = _nonSelectedColor;
             lblResultImage.BackColor = _selectedColor;
         }
 
-        public Mat GetDebugResultImage(Mat mat, List<AkkonLeadResult> leadResultList, AkkonAlgoritmParam AkkonParameters)
+        public Mat GetDebugResultImage(Mat mat, List<AkkonLeadResult> leadResultList, AkkonAlgoritmParam akkonParameters)
         {
             if (mat == null)
                 return null;
 
             Mat resizeMat = new Mat();
-            Size newSize = new Size((int)(mat.Width * AkkonParameters.ImageFilterParam.ResizeRatio), (int)(mat.Height * AkkonParameters.ImageFilterParam.ResizeRatio));
+            Size newSize = new Size((int)(mat.Width * akkonParameters.ImageFilterParam.ResizeRatio), (int)(mat.Height * akkonParameters.ImageFilterParam.ResizeRatio));
             CvInvoke.Resize(mat, resizeMat, newSize);
             Mat colorMat = new Mat();
             CvInvoke.CvtColor(resizeMat, colorMat, ColorConversion.Gray2Bgr);
@@ -1324,7 +1332,7 @@ namespace Jastech.Apps.Winform.UI.Controls
                 MCvScalar redColor = new MCvScalar(50, 50, 230, 255);
                 MCvScalar greenColor = new MCvScalar(50, 230, 50, 255);
 
-                if (AkkonParameters.DrawOption.ContainLeadROI)
+                if (akkonParameters.DrawOption.ContainLeadROI)
                 {
                     CvInvoke.Line(colorMat, leftTop, leftBottom, greenColor, 1);
                     CvInvoke.Line(colorMat, leftTop, rightTop, greenColor, 1);
@@ -1350,11 +1358,11 @@ namespace Jastech.Apps.Winform.UI.Controls
                     }
                     else
                     {
-                        if (AkkonParameters.DrawOption.ContainNG)
+                        if (akkonParameters.DrawOption.ContainNG)
                             CvInvoke.Circle(colorMat, center, radius / 2, redColor, 1);
                     }
 
-                    if (AkkonParameters.DrawOption.ContainArea)
+                    if (akkonParameters.DrawOption.ContainArea)
                     {
                         if (blob.IsPass)
                         {
@@ -1365,7 +1373,7 @@ namespace Jastech.Apps.Winform.UI.Controls
                     }
                     else
                     {
-                        if (AkkonParameters.DrawOption.ContainStrength)
+                        if (akkonParameters.DrawOption.ContainStrength)
                         {
                             if (blob.IsPass)
                             {
@@ -1377,7 +1385,7 @@ namespace Jastech.Apps.Winform.UI.Controls
                     }
                 }
 
-                if (AkkonParameters.DrawOption.ContainLeadCount)
+                if (akkonParameters.DrawOption.ContainLeadCount)
                 {
                     string leadIndexString = result.Index.ToString();
                     string blobCountString = string.Format("[{0}]", result.DetectCount);
@@ -1508,9 +1516,15 @@ namespace Jastech.Apps.Winform.UI.Controls
             SetResultImageView();
         }
 
+        private void lblResizeImage_Click(object sender, EventArgs e)
+        {
+            SetResizeImageView();
+        }
+
         private void SetOrginImageView()
         {
             lblOrginalImage.BackColor = _selectedColor;
+            lblResizeImage.BackColor = _nonSelectedColor;
             lblResultImage.BackColor = _nonSelectedColor;
 
             var orgImage = TeachingUIManager.Instance().GetOriginCogImageBuffer(true);
@@ -1521,11 +1535,23 @@ namespace Jastech.Apps.Winform.UI.Controls
         private void SetResultImageView()
         {
             lblOrginalImage.BackColor = _nonSelectedColor;
+            lblResizeImage.BackColor = _nonSelectedColor;
             lblResultImage.BackColor = _selectedColor;
 
-            var orgImage = TeachingUIManager.Instance().GetResultCogImage(false);
-            if(orgImage != null)
-                TeachingUIManager.Instance().GetDisplay().SetImage(orgImage);
+            var resultImage = TeachingUIManager.Instance().GetResultCogImage(false);
+            if(resultImage != null)
+                TeachingUIManager.Instance().GetDisplay().SetImage(resultImage);
+        }
+
+        private void SetResizeImageView()
+        {
+            lblOrginalImage.BackColor = _nonSelectedColor;
+            lblResizeImage.BackColor = _selectedColor;
+            lblResultImage.BackColor = _nonSelectedColor;
+
+            var akkonImage = TeachingUIManager.Instance().GetAkkonCogImage(false);
+            if (akkonImage != null)
+                TeachingUIManager.Instance().GetDisplay().SetImage(akkonImage);
         }
 
         private double GetCalcumToPixel(double value)
@@ -1644,6 +1670,16 @@ namespace Jastech.Apps.Winform.UI.Controls
         private void dgvAkkonROI_SelectionChanged(object sender, EventArgs e)
         {
             SetSelectAkkonROI();
+        }
+
+        private CogImage8Grey ConvertCogGrayImage(Mat mat)
+        {
+            if (mat == null)
+                return null;
+
+            int size = mat.Width * mat.Height * mat.NumberOfChannels;
+            var cogImage = VisionProImageHelper.CovertImage(mat.DataPointer, mat.Width, mat.Height, mat.Step, ColorFormat.Gray) as CogImage8Grey;
+            return cogImage;
         }
     }
 }

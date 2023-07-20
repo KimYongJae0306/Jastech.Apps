@@ -388,7 +388,7 @@ namespace Jastech.Apps.Winform
 
             int size = mat.Width * mat.Height * mat.NumberOfChannels;
             ColorFormat format = mat.NumberOfChannels == 1 ? ColorFormat.Gray : ColorFormat.RGB24;
-            var cogImage = VisionProImageHelper.CovertImage(mat.DataPointer, mat.Width, mat.Height, format);
+            var cogImage = VisionProImageHelper.CovertImage(mat.DataPointer, mat.Width, mat.Height, mat.Step, format);
             return cogImage;
         }
         #endregion
