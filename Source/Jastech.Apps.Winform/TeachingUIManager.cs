@@ -24,10 +24,6 @@ namespace Jastech.Apps.Winform
         private ICogImage ResultCogImageBuffer { get; set; } = null;
 
         private ICogImage AkkonCogImageBuffer { get; set; } = null;
-
-        //public Mat PrevMatImage { get; private set; } = null;
-
-        //public ICogImage PrevResultImage { get; private set; } = null;
         #endregion
 
         #region 이벤트
