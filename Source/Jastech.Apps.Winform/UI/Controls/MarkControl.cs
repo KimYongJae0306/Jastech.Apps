@@ -585,6 +585,22 @@ namespace Jastech.Apps.Winform.UI.Controls
                 display.SetInteractiveGraphics("tool", item.CaliperParams.CreateCurrentRecord(constants));
             }
 
+            foreach (var item in origin.AkkonParam.GetAkkonROIList())
+            {
+                PointF leftTop = new PointF(Convert.ToSingle(item.LeftTopX), Convert.ToSingle(item.LeftTopY));
+                PointF rightTop = new PointF(Convert.ToSingle(item.RightTopX), Convert.ToSingle(item.RightTopY));
+                PointF leftBottom = new PointF(Convert.ToSingle(item.LeftBottomX), Convert.ToSingle(item.LeftBottomY));
+                CogRectangleAffine roi = VisionProShapeHelper.ConvertToCogRectAffine(leftTop, rightTop, leftBottom);
+
+                PointF oldPoint = new PointF();
+                oldPoint.X = (float)roi.CenterX;
+                oldPoint.Y = (float)roi.CenterY;
+
+                var newPoint = algorithmTool.Coordinate.GetCoordinate(oldPoint);
+                roi.CenterX = newPoint.X;
+                roi.CenterY = newPoint.Y;
+            }
+
             return;
         }
 
