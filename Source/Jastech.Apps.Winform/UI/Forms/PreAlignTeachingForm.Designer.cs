@@ -50,6 +50,7 @@
             this.btnSave = new System.Windows.Forms.Button();
             this.btnPreAlign = new System.Windows.Forms.Button();
             this.btnCalibration = new System.Windows.Forms.Button();
+            this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.tlpPreAlignTeaching.SuspendLayout();
             this.pnlTeachingPage.SuspendLayout();
             this.tlpTeaching.SuspendLayout();
@@ -60,6 +61,7 @@
             this.pnlOptic.SuspendLayout();
             this.pnlTeachingItems.SuspendLayout();
             this.tlpTeachingItems.SuspendLayout();
+            this.tableLayoutPanel2.SuspendLayout();
             this.SuspendLayout();
             // 
             // tlpPreAlignTeaching
@@ -291,7 +293,7 @@
             // 
             // pnlTeachingItems
             // 
-            this.pnlTeachingItems.Controls.Add(this.tlpTeachingItems);
+            this.pnlTeachingItems.Controls.Add(this.tableLayoutPanel2);
             this.pnlTeachingItems.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pnlTeachingItems.Location = new System.Drawing.Point(1535, 0);
             this.pnlTeachingItems.Margin = new System.Windows.Forms.Padding(0);
@@ -303,25 +305,22 @@
             // 
             this.tlpTeachingItems.ColumnCount = 1;
             this.tlpTeachingItems.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tlpTeachingItems.Controls.Add(this.btnCancel, 0, 7);
-            this.tlpTeachingItems.Controls.Add(this.btnSave, 0, 6);
             this.tlpTeachingItems.Controls.Add(this.btnPreAlign, 0, 0);
             this.tlpTeachingItems.Controls.Add(this.btnCalibration, 0, 1);
             this.tlpTeachingItems.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tlpTeachingItems.Location = new System.Drawing.Point(0, 0);
             this.tlpTeachingItems.Margin = new System.Windows.Forms.Padding(0);
             this.tlpTeachingItems.Name = "tlpTeachingItems";
-            this.tlpTeachingItems.RowCount = 8;
+            this.tlpTeachingItems.RowCount = 6;
             this.tlpTeachingItems.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 100F));
             this.tlpTeachingItems.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 100F));
             this.tlpTeachingItems.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 100F));
             this.tlpTeachingItems.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 100F));
             this.tlpTeachingItems.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 100F));
             this.tlpTeachingItems.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tlpTeachingItems.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 100F));
-            this.tlpTeachingItems.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 100F));
             this.tlpTeachingItems.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tlpTeachingItems.Size = new System.Drawing.Size(144, 783);
+            this.tlpTeachingItems.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tlpTeachingItems.Size = new System.Drawing.Size(144, 583);
             this.tlpTeachingItems.TabIndex = 0;
             // 
             // btnCancel
@@ -384,6 +383,25 @@
             this.btnCalibration.UseVisualStyleBackColor = false;
             this.btnCalibration.Click += new System.EventHandler(this.btnCalibration_Click);
             // 
+            // tableLayoutPanel2
+            // 
+            this.tableLayoutPanel2.ColumnCount = 1;
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel2.Controls.Add(this.tlpTeachingItems, 0, 0);
+            this.tableLayoutPanel2.Controls.Add(this.btnCancel, 0, 2);
+            this.tableLayoutPanel2.Controls.Add(this.btnSave, 0, 1);
+            this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel2.Location = new System.Drawing.Point(0, 0);
+            this.tableLayoutPanel2.Margin = new System.Windows.Forms.Padding(0);
+            this.tableLayoutPanel2.Name = "tableLayoutPanel2";
+            this.tableLayoutPanel2.RowCount = 3;
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 100F));
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 100F));
+            this.tableLayoutPanel2.Size = new System.Drawing.Size(144, 783);
+            this.tableLayoutPanel2.TabIndex = 0;
+            // 
             // PreAlignTeachingForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
@@ -409,6 +427,7 @@
             this.pnlOptic.ResumeLayout(false);
             this.pnlTeachingItems.ResumeLayout(false);
             this.tlpTeachingItems.ResumeLayout(false);
+            this.tableLayoutPanel2.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -437,5 +456,6 @@
         private System.Windows.Forms.Button btnCalibration;
         private System.Windows.Forms.Button btnPreAlign;
         private System.Windows.Forms.Panel pnlLight;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
     }
 }

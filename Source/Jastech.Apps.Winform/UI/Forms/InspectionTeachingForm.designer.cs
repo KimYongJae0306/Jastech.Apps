@@ -58,6 +58,7 @@
             this.btnAkkon = new System.Windows.Forms.Button();
             this.btnAlign = new System.Windows.Forms.Button();
             this.pnlTeachingItem = new System.Windows.Forms.Panel();
+            this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
             this.tlpTeachingPage.SuspendLayout();
             this.pnlTeachingPage.SuspendLayout();
             this.tlpTeaching.SuspendLayout();
@@ -68,6 +69,7 @@
             this.tlpLoadImage.SuspendLayout();
             this.pnlTeachingItems.SuspendLayout();
             this.tlpTeachingItems.SuspendLayout();
+            this.tableLayoutPanel3.SuspendLayout();
             this.SuspendLayout();
             // 
             // tlpTeachingPage
@@ -83,7 +85,7 @@
             this.tlpTeachingPage.Name = "tlpTeachingPage";
             this.tlpTeachingPage.RowCount = 1;
             this.tlpTeachingPage.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tlpTeachingPage.Size = new System.Drawing.Size(1675, 779);
+            this.tlpTeachingPage.Size = new System.Drawing.Size(1675, 911);
             this.tlpTeachingPage.TabIndex = 1;
             // 
             // pnlTeachingPage
@@ -93,7 +95,7 @@
             this.pnlTeachingPage.Location = new System.Drawing.Point(0, 0);
             this.pnlTeachingPage.Margin = new System.Windows.Forms.Padding(0);
             this.pnlTeachingPage.Name = "pnlTeachingPage";
-            this.pnlTeachingPage.Size = new System.Drawing.Size(1531, 779);
+            this.pnlTeachingPage.Size = new System.Drawing.Size(1531, 911);
             this.pnlTeachingPage.TabIndex = 0;
             // 
             // tlpTeaching
@@ -109,7 +111,7 @@
             this.tlpTeaching.Name = "tlpTeaching";
             this.tlpTeaching.RowCount = 1;
             this.tlpTeaching.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tlpTeaching.Size = new System.Drawing.Size(1531, 779);
+            this.tlpTeaching.Size = new System.Drawing.Size(1531, 911);
             this.tlpTeaching.TabIndex = 0;
             // 
             // pnlDisplay
@@ -118,7 +120,7 @@
             this.pnlDisplay.Location = new System.Drawing.Point(0, 0);
             this.pnlDisplay.Margin = new System.Windows.Forms.Padding(0);
             this.pnlDisplay.Name = "pnlDisplay";
-            this.pnlDisplay.Size = new System.Drawing.Size(765, 779);
+            this.pnlDisplay.Size = new System.Drawing.Size(765, 911);
             this.pnlDisplay.TabIndex = 0;
             // 
             // tableLayoutPanel1
@@ -137,7 +139,7 @@
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 10F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 50F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(762, 775);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(762, 907);
             this.tableLayoutPanel1.TabIndex = 1;
             // 
             // tableLayoutPanel2
@@ -398,25 +400,23 @@
             this.pnlTeach.Location = new System.Drawing.Point(0, 140);
             this.pnlTeach.Margin = new System.Windows.Forms.Padding(0);
             this.pnlTeach.Name = "pnlTeach";
-            this.pnlTeach.Size = new System.Drawing.Size(762, 635);
+            this.pnlTeach.Size = new System.Drawing.Size(762, 767);
             this.pnlTeach.TabIndex = 0;
             // 
             // pnlTeachingItems
             // 
-            this.pnlTeachingItems.Controls.Add(this.tlpTeachingItems);
+            this.pnlTeachingItems.Controls.Add(this.tableLayoutPanel3);
             this.pnlTeachingItems.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pnlTeachingItems.Location = new System.Drawing.Point(1531, 0);
             this.pnlTeachingItems.Margin = new System.Windows.Forms.Padding(0);
             this.pnlTeachingItems.Name = "pnlTeachingItems";
-            this.pnlTeachingItems.Size = new System.Drawing.Size(144, 779);
+            this.pnlTeachingItems.Size = new System.Drawing.Size(144, 911);
             this.pnlTeachingItems.TabIndex = 1;
             // 
             // tlpTeachingItems
             // 
             this.tlpTeachingItems.ColumnCount = 1;
             this.tlpTeachingItems.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tlpTeachingItems.Controls.Add(this.btnCancel, 0, 7);
-            this.tlpTeachingItems.Controls.Add(this.btnSave, 0, 6);
             this.tlpTeachingItems.Controls.Add(this.btnMark, 0, 0);
             this.tlpTeachingItems.Controls.Add(this.btnAkkon, 0, 4);
             this.tlpTeachingItems.Controls.Add(this.btnAlign, 0, 3);
@@ -425,16 +425,14 @@
             this.tlpTeachingItems.Location = new System.Drawing.Point(0, 0);
             this.tlpTeachingItems.Margin = new System.Windows.Forms.Padding(0);
             this.tlpTeachingItems.Name = "tlpTeachingItems";
-            this.tlpTeachingItems.RowCount = 8;
+            this.tlpTeachingItems.RowCount = 6;
             this.tlpTeachingItems.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 100F));
             this.tlpTeachingItems.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 100F));
             this.tlpTeachingItems.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 100F));
             this.tlpTeachingItems.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 100F));
             this.tlpTeachingItems.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 100F));
             this.tlpTeachingItems.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tlpTeachingItems.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 100F));
-            this.tlpTeachingItems.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 100F));
-            this.tlpTeachingItems.Size = new System.Drawing.Size(144, 779);
+            this.tlpTeachingItems.Size = new System.Drawing.Size(144, 711);
             this.tlpTeachingItems.TabIndex = 0;
             // 
             // btnCancel
@@ -443,13 +441,14 @@
             this.btnCancel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.btnCancel.Font = new System.Drawing.Font("맑은 고딕", 20F, System.Drawing.FontStyle.Bold);
             this.btnCancel.ForeColor = System.Drawing.Color.White;
-            this.btnCancel.Location = new System.Drawing.Point(2, 681);
+            this.btnCancel.Location = new System.Drawing.Point(2, 813);
             this.btnCancel.Margin = new System.Windows.Forms.Padding(2);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(140, 96);
             this.btnCancel.TabIndex = 20;
             this.btnCancel.Text = "Cancel";
             this.btnCancel.UseVisualStyleBackColor = false;
+            this.btnCancel.BackColorChanged += new System.EventHandler(this.btnCancel_BackColorChanged);
             this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
             // 
             // btnSave
@@ -458,7 +457,7 @@
             this.btnSave.Dock = System.Windows.Forms.DockStyle.Fill;
             this.btnSave.Font = new System.Drawing.Font("맑은 고딕", 20F, System.Drawing.FontStyle.Bold);
             this.btnSave.ForeColor = System.Drawing.Color.White;
-            this.btnSave.Location = new System.Drawing.Point(2, 581);
+            this.btnSave.Location = new System.Drawing.Point(2, 713);
             this.btnSave.Margin = new System.Windows.Forms.Padding(2);
             this.btnSave.Name = "btnSave";
             this.btnSave.Size = new System.Drawing.Size(140, 96);
@@ -519,12 +518,30 @@
             this.pnlTeachingItem.Size = new System.Drawing.Size(144, 100);
             this.pnlTeachingItem.TabIndex = 21;
             // 
+            // tableLayoutPanel3
+            // 
+            this.tableLayoutPanel3.ColumnCount = 1;
+            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel3.Controls.Add(this.tlpTeachingItems, 0, 0);
+            this.tableLayoutPanel3.Controls.Add(this.btnCancel, 0, 2);
+            this.tableLayoutPanel3.Controls.Add(this.btnSave, 0, 1);
+            this.tableLayoutPanel3.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel3.Location = new System.Drawing.Point(0, 0);
+            this.tableLayoutPanel3.Margin = new System.Windows.Forms.Padding(0);
+            this.tableLayoutPanel3.Name = "tableLayoutPanel3";
+            this.tableLayoutPanel3.RowCount = 3;
+            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 100F));
+            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 100F));
+            this.tableLayoutPanel3.Size = new System.Drawing.Size(144, 911);
+            this.tableLayoutPanel3.TabIndex = 0;
+            // 
             // InspectionTeachingForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
-            this.ClientSize = new System.Drawing.Size(1675, 779);
+            this.ClientSize = new System.Drawing.Size(1675, 911);
             this.Controls.Add(this.tlpTeachingPage);
             this.Font = new System.Drawing.Font("맑은 고딕", 11.25F, System.Drawing.FontStyle.Bold);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D;
@@ -543,6 +560,7 @@
             this.tlpLoadImage.ResumeLayout(false);
             this.pnlTeachingItems.ResumeLayout(false);
             this.tlpTeachingItems.ResumeLayout(false);
+            this.tableLayoutPanel3.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -579,5 +597,6 @@
         private System.Windows.Forms.Label lblInspection;
         private System.Windows.Forms.Label lblROIJog;
         private System.Windows.Forms.Panel pnlTeachingItem;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel3;
     }
 }

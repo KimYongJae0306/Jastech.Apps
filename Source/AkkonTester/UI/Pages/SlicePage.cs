@@ -413,10 +413,10 @@ namespace AkkonTester.UI.Pages
 
             foreach (var result in curResultList)
             {
-                string index = result.Index.ToString();
-                string count = result.DetectCount.ToString();
-                string lengthX = result.LengthX_um.ToString("F2");
-                string lengthY = result.LengthY_um.ToString("F2");
+                string index = result.Roi.Index.ToString();
+                string count = result.CountResult.DetectCount.ToString();
+                string lengthX = result.LengthResult.LengthX_um.ToString("F2");
+                string lengthY = result.LengthResult.LengthY_um.ToString("F2");
                 string stdDev = result.StdDev.ToString("F2");
 
                 string message = string.Format("Count : {0} LengthX : {1}, LengthY : {2}, StdDev : {3}",count, lengthX, lengthY, stdDev);
@@ -455,14 +455,14 @@ namespace AkkonTester.UI.Pages
             {
                 if (curParam.DrawOption.ContainLeadROI)
                 {
-                    var startPoint = new Point((int)result.OffsetToWorldX, (int)result.OffsetToWorldY);
-                    TempDrawLead(ref colorMat, result.Lead, new Point(0,0));
+                    var startPoint = new Point((int)result.Offset.ToWorldX, (int)result.Offset.ToWorldY);
+                    TempDrawLead(ref colorMat, result.Roi, new Point(0,0));
                 }
                 foreach (var blob in result.BlobList)
                 {
                     
-                    int leftFromSlice = (int)(blob.BoundingRect.X + result.OffsetX);
-                    int topFromSlice = (int)(blob.BoundingRect.Y + result.OffsetY);
+                    int leftFromSlice = (int)(blob.BoundingRect.X + result.Offset.X);
+                    int topFromSlice = (int)(blob.BoundingRect.Y + result.Offset.Y);
 
                     Point center = new Point(leftFromSlice + (blob.BoundingRect.Width / 2), topFromSlice + (blob.BoundingRect.Height / 2));
                     int radius = blob.BoundingRect.Width > blob.BoundingRect.Height ? blob.BoundingRect.Width : blob.BoundingRect.Height;
@@ -507,11 +507,11 @@ namespace AkkonTester.UI.Pages
 
                     if (curParam.DrawOption.ContainLeadCount)
                     {
-                        string leadIndexString = result.Index.ToString();
-                        string blobCountString = string.Format("[{0}]", result.DetectCount);
+                        string leadIndexString = result.Roi.Index.ToString();
+                        string blobCountString = string.Format("[{0}]", result.CountResult.DetectCount);
 
-                        var leftBottom = result.Lead.GetLeftBottomPoint();
-                        var rightBottom = result.Lead.GetRightBottomPoint();
+                        var leftBottom = result.Roi.GetLeftBottomPoint();
+                        var rightBottom = result.Roi.GetRightBottomPoint();
                         Point centerPt = new Point((int)((leftBottom.X + rightBottom.X) / 2.0), (int)leftBottom.Y);
 
                         int baseLine = 0;

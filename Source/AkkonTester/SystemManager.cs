@@ -122,8 +122,8 @@ namespace AkkonTester
 
             foreach (var result in leadResultList)
             {
-                var lead = result.Lead;
-                var startPoint = new Point((int)result.OffsetToWorldX, (int)result.OffsetToWorldY);
+                var lead = result.Roi;
+                var startPoint = new Point((int)result.Offset.ToWorldX, (int)result.Offset.ToWorldY);
                     
                 Point leftTop = new Point((int)lead.LeftTopX + startPoint.X, (int)lead.LeftTopY + startPoint.Y);
                 Point leftBottom = new Point((int)lead.LeftBottomX + startPoint.X, (int)lead.LeftBottomY + startPoint.Y);
@@ -142,8 +142,8 @@ namespace AkkonTester
                 foreach (var blob in result.BlobList)
                 {
                     Rectangle rectRect = new Rectangle();
-                    rectRect.X = (int)(blob.BoundingRect.X + result.OffsetToWorldX + result.OffsetX);
-                    rectRect.Y = (int)(blob.BoundingRect.Y + result.OffsetToWorldY + result.OffsetY);
+                    rectRect.X = (int)(blob.BoundingRect.X + result.Offset.ToWorldX + result.Offset.X);
+                    rectRect.Y = (int)(blob.BoundingRect.Y + result.Offset.ToWorldY + result.Offset.Y);
                     rectRect.Width = blob.BoundingRect.Width;
                     rectRect.Height = blob.BoundingRect.Height;
 
@@ -169,7 +169,7 @@ namespace AkkonTester
 
                 if(AkkonParameters.DrawOption.ContainLeadCount)
                 {
-                    string leadIndexString = result.Index.ToString();
+                    string leadIndexString = result.Roi.Index.ToString();
                     string blobCountString = string.Format("[{0}]", blobCount);
 
                     Point centerPt = new Point((int)((leftBottom.X + rightBottom.X) / 2.0), leftBottom.Y);

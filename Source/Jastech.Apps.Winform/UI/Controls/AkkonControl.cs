@@ -1320,8 +1320,8 @@ namespace Jastech.Apps.Winform.UI.Controls
 
             foreach (var result in leadResultList)
             {
-                var lead = result.Lead;
-                var startPoint = new Point((int)result.OffsetToWorldX, (int)result.OffsetToWorldY);
+                var lead = result.Roi;
+                var startPoint = new Point((int)result.Offset.ToWorldX, (int)result.Offset.ToWorldY);
 
                 Point leftTop = new Point((int)lead.LeftTopX + startPoint.X, (int)lead.LeftTopY + startPoint.Y);
                 Point leftBottom = new Point((int)lead.LeftBottomX + startPoint.X, (int)lead.LeftBottomY + startPoint.Y);
@@ -1342,8 +1342,8 @@ namespace Jastech.Apps.Winform.UI.Controls
                 foreach (var blob in result.BlobList)
                 {
                     Rectangle rectRect = new Rectangle();
-                    rectRect.X = (int)(blob.BoundingRect.X + result.OffsetToWorldX + result.OffsetX);
-                    rectRect.Y = (int)(blob.BoundingRect.Y + result.OffsetToWorldY + result.OffsetY);
+                    rectRect.X = (int)(blob.BoundingRect.X + result.Offset.ToWorldX + result.Offset.X);
+                    rectRect.Y = (int)(blob.BoundingRect.Y + result.Offset.ToWorldY + result.Offset.Y);
                     rectRect.Width = blob.BoundingRect.Width;
                     rectRect.Height = blob.BoundingRect.Height;
 
@@ -1386,8 +1386,8 @@ namespace Jastech.Apps.Winform.UI.Controls
 
                 if (akkonParameters.DrawOption.ContainLeadCount)
                 {
-                    string leadIndexString = result.Index.ToString();
-                    string blobCountString = string.Format("[{0}]", result.DetectCount);
+                    string leadIndexString = result.Roi.Index.ToString();
+                    string blobCountString = string.Format("[{0}]", result.CountResult.DetectCount);
 
                     Point centerPt = new Point((int)((leftBottom.X + rightBottom.X) / 2.0), leftBottom.Y);
 
@@ -1420,8 +1420,8 @@ namespace Jastech.Apps.Winform.UI.Controls
 
             foreach (var result in leadResultList)
             {
-                var lead = result.Lead;
-                var startPoint = new Point((int)result.OffsetToWorldX, (int)result.OffsetToWorldY);
+                var lead = result.Roi;
+                var startPoint = new Point((int)result.Offset.ToWorldX, (int)result.Offset.ToWorldY);
 
             
                 MCvScalar redColor = new MCvScalar(50, 50, 230, 255);
@@ -1431,8 +1431,8 @@ namespace Jastech.Apps.Winform.UI.Controls
                 foreach (var blob in result.BlobList)
                 {
                     Rectangle rectRect = new Rectangle();
-                    rectRect.X = (int)(blob.BoundingRect.X + result.OffsetToWorldX + result.OffsetX);
-                    rectRect.Y = (int)(blob.BoundingRect.Y + result.OffsetToWorldY + result.OffsetY);
+                    rectRect.X = (int)(blob.BoundingRect.X + result.Offset.ToWorldX + result.Offset.X);
+                    rectRect.Y = (int)(blob.BoundingRect.Y + result.Offset.ToWorldY + result.Offset.Y);
                     rectRect.Width = blob.BoundingRect.Width;
                     rectRect.Height = blob.BoundingRect.Height;
 
@@ -1444,8 +1444,8 @@ namespace Jastech.Apps.Winform.UI.Controls
                         CvInvoke.Circle(colorMat, center, radius / 2, greenColor, 1);
                 }
 
-                string leadIndexString = result.Index.ToString();
-                string blobCountString = string.Format("[{0}]", result.DetectCount);
+                string leadIndexString = result.Roi.Index.ToString();
+                string blobCountString = string.Format("[{0}]", result.CountResult.DetectCount);
 
                 Point leftTop = new Point((int)lead.LeftTopX + startPoint.X, (int)lead.LeftTopY + startPoint.Y);
                 Point leftBottom = new Point((int)lead.LeftBottomX + startPoint.X, (int)lead.LeftBottomY + startPoint.Y);
@@ -1465,7 +1465,7 @@ namespace Jastech.Apps.Winform.UI.Controls
                 textY = centerPt.Y + (baseLine / 2);
                 CvInvoke.PutText(colorMat, blobCountString, new Point(textX, textY + 60), FontFace.HersheyComplex, 0.25, new MCvScalar(50, 230, 50, 255));
 
-                if(result.DetectCount >= AkkonParameters.JudgementParam.AkkonCount)
+                if(result.CountResult.DetectCount >= AkkonParameters.JudgementParam.AkkonCount)
                 {
                     CvInvoke.Line(colorMat, leftTop, leftBottom, redColor, 1);
                     CvInvoke.Line(colorMat, leftTop, rightTop, redColor, 1);

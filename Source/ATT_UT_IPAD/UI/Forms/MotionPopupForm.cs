@@ -45,9 +45,9 @@ namespace ATT_UT_IPAD.UI.Forms
 
         private MotionJogXControl MotionJogXControl { get; set; } = new MotionJogXControl() { Dock = DockStyle.Fill };
 
-        private LAFJogControl LAFJogZ1Control { get; set; } = new LAFJogControl() { Dock = DockStyle.Fill };
+        private LAFJogControl LAFJogZ0Control { get; set; } = new LAFJogControl() { Dock = DockStyle.Fill };
 
-        private LAFJogControl LAFJogZ2Control { get; set; } = new LAFJogControl() { Dock = DockStyle.Fill };
+        private LAFJogControl LAFJogZ1Control { get; set; } = new LAFJogControl() { Dock = DockStyle.Fill };
 
         private MotionParameterVariableControl XVariableControl = new MotionParameterVariableControl();
 
@@ -100,18 +100,18 @@ namespace ATT_UT_IPAD.UI.Forms
                 MotionJogXControl.JogPitch = Convert.ToDouble(lblPitchXYValue.Text);
             }
 
+            if (LAFJogZ0Control != null)
+            {
+                LAFJogZ0Control.JogMode = JogMode.Jog;
+                LAFJogZ0Control.JogSpeedMode = JogSpeedMode.Slow;
+                LAFJogZ0Control.MoveAmount = Convert.ToDouble(lblPitchZValue.Text);
+            }
+
             if (LAFJogZ1Control != null)
             {
                 LAFJogZ1Control.JogMode = JogMode.Jog;
                 LAFJogZ1Control.JogSpeedMode = JogSpeedMode.Slow;
                 LAFJogZ1Control.MoveAmount = Convert.ToDouble(lblPitchZValue.Text);
-            }
-
-            if (LAFJogZ2Control != null)
-            {
-                LAFJogZ2Control.JogMode = JogMode.Jog;
-                LAFJogZ2Control.JogSpeedMode = JogSpeedMode.Slow;
-                LAFJogZ2Control.MoveAmount = Convert.ToDouble(lblPitchZValue.Text);
             }
         }
 
@@ -207,11 +207,11 @@ namespace ATT_UT_IPAD.UI.Forms
             pnlMotionJog.Controls.Add(MotionJogXControl);
             MotionJogXControl.SetAxisHanlder(AxisHandler);
 
-            pnlLAFZ1Jog.Controls.Add(LAFJogZ1Control);
-            LAFJogZ1Control.SetSelectedLafCtrl(AkkonLafCtrl);
+            pnlLAFZ1Jog.Controls.Add(LAFJogZ0Control);
+            LAFJogZ0Control.SetSelectedLafCtrl(AkkonLafCtrl);
 
-            pnlLAFZ2Jog.Controls.Add(LAFJogZ2Control);
-            LAFJogZ2Control.SetSelectedLafCtrl(AlignLafCtrl);
+            pnlLAFZ2Jog.Controls.Add(LAFJogZ1Control);
+            LAFJogZ1Control.SetSelectedLafCtrl(AlignLafCtrl);
         }
 
         private void StartTimer()
@@ -668,7 +668,7 @@ namespace ATT_UT_IPAD.UI.Forms
         private void SetSelectJogSpeedMode(JogSpeedMode jogSpeedMode)
         {
             MotionJogXControl.JogSpeedMode = jogSpeedMode;
-            LAFJogZ1Control.JogSpeedMode = jogSpeedMode;
+            LAFJogZ0Control.JogSpeedMode = jogSpeedMode;
         }
 
         private void rdoJogMode_CheckedChanged(object sender, EventArgs e)
@@ -696,7 +696,7 @@ namespace ATT_UT_IPAD.UI.Forms
         private void SetSelectJogMode(JogMode jogMode)
         {
             MotionJogXControl.JogMode = jogMode;
-            LAFJogZ1Control.JogMode = jogMode;
+            LAFJogZ0Control.JogMode = jogMode;
         }
 
         private void lblPitchXYValue_Click(object sender, EventArgs e)
@@ -708,7 +708,7 @@ namespace ATT_UT_IPAD.UI.Forms
         private void lblPitchZValue_Click(object sender, EventArgs e)
         {
             double pitchZ = KeyPadHelper.SetLabelDoubleData((Label)sender);
-            LAFJogZ1Control.MoveAmount = pitchZ;
+            LAFJogZ0Control.MoveAmount = pitchZ;
         }
 
         private void MotionPopupForm_FormClosing(object sender, FormClosingEventArgs e)

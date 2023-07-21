@@ -53,7 +53,6 @@ namespace ATT_UT_IPAD
                 ConfigSet.Instance().Initialize();
 
                 AppsConfig.Instance().Initialize();
-
                 UserManager.Instance().Initialize();
 
                 var mainForm = new MainForm();
@@ -73,10 +72,14 @@ namespace ATT_UT_IPAD
             {
                 // Akkon LineScanCamera
                 var alignCamera = new CameraVirtual("AkkonCamera", 4640, 1024, ColorFormat.Gray, SensorType.Line);
+                alignCamera.PixelResolution_um = 0.35F;
+                alignCamera.LensScale = 10F;
                 config.Add(alignCamera);
 
                 // Align LineScanCamera
                 var akkonCamera = new CameraVirtual("AlignCamera", 4640, 1024, ColorFormat.Gray, SensorType.Line);
+                akkonCamera.PixelResolution_um = 0.35F;
+                akkonCamera.LensScale = 10F;
                 config.Add(akkonCamera);
 
                 // Motion
@@ -84,11 +87,11 @@ namespace ATT_UT_IPAD
                 config.Add(motion);
 
                 // Akkon LAF
-                var akkonLaf = new VirtualLAFCtrl("Akkon");
+                var akkonLaf = new VirtualLAFCtrl("AkkonLaf");
                 config.Add(akkonLaf);
 
                 // Akkon LAF
-                var alignLaf = new VirtualLAFCtrl("Align");
+                var alignLaf = new VirtualLAFCtrl("AlignLaf");
                 config.Add(alignLaf);
 
                 // Light1
@@ -113,6 +116,8 @@ namespace ATT_UT_IPAD
                 akkonCamera.TriggerSource = (int)MilCxpTriggerSource.Cxp;
                 akkonCamera.TriggerSignalType = MilTriggerSignalType.TL_Trigger;
                 akkonCamera.TriggerIoSourceType = MILIoSourceType.AUX_IO0;
+                akkonCamera.PixelResolution_um = 0.35F;
+                akkonCamera.LensScale = 10F;
                 akkonCamera.DigitizerNum = 0;
 
                 akkonCamera.DcfFile = CameraMil.GetDcfFile(CameraType.VT_6K3_5X_H160);
@@ -125,6 +130,8 @@ namespace ATT_UT_IPAD
                 alignCamera.TriggerSource = (int)MilCxpTriggerSource.Cxp;
                 alignCamera.TriggerSignalType = MilTriggerSignalType.TL_Trigger;
                 alignCamera.TriggerIoSourceType = MILIoSourceType.AUX_IO0;
+                alignCamera.PixelResolution_um = 0.35F;
+                alignCamera.LensScale = 10F;
                 alignCamera.DigitizerNum = 2;
 
                 alignCamera.DcfFile = CameraMil.GetDcfFile(CameraType.VT_6K3_5X_H160);
