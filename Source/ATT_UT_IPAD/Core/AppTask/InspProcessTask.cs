@@ -153,7 +153,6 @@ namespace ATT_UT_IPAD.Core.AppTask
             // Create Coordinate Object
             CoordinateTransform fpcCoordinate = new CoordinateTransform();
             CoordinateTransform panelCoordinate = new CoordinateTransform();
-         
             algorithmTool.MainMarkInspect(inspTab.MergeCogImage, tab, ref inspResult, true);
 
             if (inspResult.MarkResult.Judgement != Judgement.OK)

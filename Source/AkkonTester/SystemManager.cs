@@ -3,6 +3,7 @@ using Emgu.CV.CvEnum;
 using Emgu.CV.Structure;
 using Jastech.Framework.Algorithms.Akkon;
 using Jastech.Framework.Algorithms.Akkon.Parameters;
+using Jastech.Framework.Imaging.Result;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -99,8 +100,8 @@ namespace AkkonTester
             
             Stopwatch sw = new Stopwatch();
             sw.Restart();
-
-            List<AkkonLeadResult> result = AkkonAlgorithm.Run(OrginalImage, CurrentAkkonROI, AkkonParameters, Resolution_um);
+            Judgement tabJudgement = Judgement.NG;
+            List<AkkonLeadResult> result = AkkonAlgorithm.Run(OrginalImage, CurrentAkkonROI, AkkonParameters, Resolution_um, ref tabJudgement);
 
             sw.Stop();
             Console.WriteLine("Run : " + sw.ElapsedMilliseconds);

@@ -9,6 +9,8 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using Jastech.Framework.Util;
+using Jastech.Framework.Imaging.VisionPro.VisionAlgorithms.Results;
+using Jastech.Framework.Algorithms.Akkon.Results;
 
 namespace Jastech.Apps.Structure.VisionTool
 {
@@ -100,7 +102,7 @@ namespace Jastech.Apps.Structure.VisionTool
 
         public void MainMarkInspect(ICogImage cogImage, Tab tab, ref TabInspResult tabInspResult, bool useAlignMark)
         {
-            tabInspResult.MarkResult.FpcMark = RunFpcMark(cogImage, tab, useAlignMark);
+            tabInspResult.MarkResult.FpcMark = RunFpcMark(cogImage, tab, useAlignMark);     
             tabInspResult.MarkResult.PanelMark = RunPanelMark(cogImage, tab, useAlignMark);
         }
 
@@ -289,7 +291,7 @@ namespace Jastech.Apps.Structure.VisionTool
         public MarkResult RunFpcMark(ICogImage cogImage, Tab tab, bool isAlignMark)
         {
             MarkResult result = new MarkResult();
-
+            //MarkMatchingResult matchingResult = new MarkMatchingResult();
             foreach (MarkName markName in Enum.GetValues(typeof(MarkName)))
             {
                 var leftParam = tab.MarkParamter.GetFPCMark(MarkDirection.Left, markName, isAlignMark);
