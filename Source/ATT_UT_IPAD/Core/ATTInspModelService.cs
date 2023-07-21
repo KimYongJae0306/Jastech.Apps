@@ -124,14 +124,6 @@ namespace ATT_UT_IPAD.Core
             standbyPosition.CreateTeachingInfo(TeachingPosType.Standby.ToString(), "Standby", currentAxisHandler);
             unit.AddTeachingInfo(standbyPosition);
 
-            //TeachingInfo prealignLeftPosition = new TeachingInfo();
-            //prealignLeftPosition.CreateTeachingInfo(TeachingPosType.Stage1_PreAlign_Left.ToString(), "Stage#1 PreAlign Left Position", currentAxisHandler);
-            //unit.AddTeachingInfo(prealignLeftPosition);
-
-            //TeachingInfo prealignRightPosition = new TeachingInfo();
-            //prealignRightPosition.CreateTeachingInfo(TeachingPosType.Stage1_PreAlign_Right.ToString(), "Stage#1 PreAlign Right Position", currentAxisHandler);
-            //unit.AddTeachingInfo(prealignRightPosition);
-
             TeachingInfo scanStartPosition = new TeachingInfo();
             scanStartPosition.CreateTeachingInfo(TeachingPosType.Stage1_Scan_Start.ToString(), "Stage#1 ScanStart", currentAxisHandler);
             unit.AddTeachingInfo(scanStartPosition);

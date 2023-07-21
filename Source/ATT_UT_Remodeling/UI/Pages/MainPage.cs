@@ -12,9 +12,6 @@ namespace ATT_UT_Remodeling.UI.Pages
 {
     public partial class MainPage : UserControl
     {
-        #region 필드
-        #endregion
-
         #region 속성
         public AkkonViewerControl AkkonViewerControl { get; set; } = null;
 
@@ -33,12 +30,6 @@ namespace ATT_UT_Remodeling.UI.Pages
                 return cp;
             }
         }
-        #endregion
-
-        #region 이벤트
-        #endregion
-
-        #region 델리게이트
         #endregion
 
         #region 생성자
@@ -89,7 +80,6 @@ namespace ATT_UT_Remodeling.UI.Pages
         {
             SystemLogControl.AddLogMessage(logMessage);
         }
-        #endregion
 
         private void lblStart_Click(object sender, EventArgs e)
         {
@@ -121,5 +111,6 @@ namespace ATT_UT_Remodeling.UI.Pages
                 lblStopText.ForeColor = Color.Blue;
             }
         }
+        #endregion
     }
 }

@@ -218,19 +218,19 @@ namespace ATT_UT_Remodeling.Core
             {
                 if (leadResult.ContainPos == LeadContainPos.Left)
                 {
-                    leftCountNG |= leadResult.CountJudgement == Judgement.NG ? true : false;
-                    leftCountList.Add(leadResult.DetectCount);
+                    leftCountNG |= leadResult.CountResult.Judgement == Judgement.NG ? true : false;
+                    leftCountList.Add(leadResult.CountResult.DetectCount);
 
-                    leftLengthNG |= leadResult.LengthJudgement == Judgement.NG ? true : false;
-                    leftLengthList.Add(leadResult.LengthY_um);
+                    leftLengthNG |= leadResult.LengthResult.Judgement == Judgement.NG ? true : false;
+                    leftLengthList.Add(leadResult.LengthResult.LengthY_um);
                 }
                 else
                 {
-                    rightCountNG |= leadResult.CountJudgement == Judgement.NG ? true : false;
-                    rightCountList.Add(leadResult.DetectCount);
+                    rightCountNG |= leadResult.CountResult.Judgement == Judgement.NG ? true : false;
+                    rightCountList.Add(leadResult.CountResult.DetectCount);
 
-                    rightLengthNG |= leadResult.LengthJudgement == Judgement.NG ? true : false;
-                    rightLengthList.Add(leadResult.LengthY_um);
+                    rightLengthNG |= leadResult.LengthResult.Judgement == Judgement.NG ? true : false;
+                    rightLengthList.Add(leadResult.LengthResult.LengthY_um);
                 }
             }
 
@@ -747,8 +747,8 @@ namespace ATT_UT_Remodeling.Core
 
             foreach (var result in leadResultList)
             {
-                var lead = result.Lead;
-                var startPoint = new Point((int)result.OffsetToWorldX, (int)result.OffsetToWorldY);
+                var lead = result.Roi;
+                var startPoint = new Point((int)result.Offset.ToWorldX, (int)result.Offset.ToWorldY);
 
                 Point leftTop = new Point((int)lead.LeftTopX + startPoint.X, (int)lead.LeftTopY + startPoint.Y);
                 Point leftBottom = new Point((int)lead.LeftBottomX + startPoint.X, (int)lead.LeftBottomY + startPoint.Y);
@@ -767,8 +767,8 @@ namespace ATT_UT_Remodeling.Core
                 foreach (var blob in result.BlobList)
                 {
                     Rectangle rectRect = new Rectangle();
-                    rectRect.X = (int)(blob.BoundingRect.X + result.OffsetToWorldX + result.OffsetX);
-                    rectRect.Y = (int)(blob.BoundingRect.Y + result.OffsetToWorldY + result.OffsetY);
+                    rectRect.X = (int)(blob.BoundingRect.X + result.Offset.ToWorldX + result.Offset.X);
+                    rectRect.Y = (int)(blob.BoundingRect.Y + result.Offset.ToWorldY + result.Offset.Y);
                     rectRect.Width = blob.BoundingRect.Width;
                     rectRect.Height = blob.BoundingRect.Height;
 
@@ -794,7 +794,7 @@ namespace ATT_UT_Remodeling.Core
 
                 if (autoDrawParam.ContainLeadCount)
                 {
-                    string leadIndexString = result.Index.ToString();
+                    string leadIndexString = result.Roi.Index.ToString();
                     string blobCountString = string.Format("[{0}]", blobCount);
 
                     Point centerPoint = new Point((int)((leftBottom.X + rightBottom.X) / 2.0), leftBottom.Y);

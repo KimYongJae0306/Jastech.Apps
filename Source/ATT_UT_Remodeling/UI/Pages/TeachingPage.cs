@@ -22,12 +22,6 @@ namespace ATT_UT_Remodeling.UI.Pages
         private MotionPopupForm MotionPopupForm { get; set; } = null;
         #endregion
 
-        #region 이벤트
-        #endregion
-
-        #region 델리게이트
-        #endregion
-
         #region 생성자
         public TeachingPage()
         {
@@ -110,6 +104,7 @@ namespace ATT_UT_Remodeling.UI.Pages
             form.LineCamera = LineCameraManager.Instance().GetAppsCamera("LineCamera");
             form.LAFCtrl = LAFManager.Instance().GetLAFCtrl("Laf");
             form.UnitName = UnitName.Unit0;
+            form.TitleCameraName = "LineCamera";
             form.AxisNameZ = Jastech.Framework.Device.Motions.AxisName.Z0;
             form.AxisHandler = MotionManager.Instance().GetAxisHandler(AxisHandlerName.Handler0);
             form.LineCameraDataName = "Akkon";

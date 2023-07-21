@@ -28,16 +28,6 @@ namespace ATT_UT_Remodeling.UI.Forms
         private Color _selectedColor;
 
         private Color _nonSelectedColor;
-
-        protected override CreateParams CreateParams
-        {
-            get
-            {
-                var cp = base.CreateParams;
-                cp.ExStyle |= 0x02000000;
-                return cp;
-            }
-        }
         #endregion
 
         #region 속성
@@ -62,6 +52,16 @@ namespace ATT_UT_Remodeling.UI.Forms
         public TeachingPosType TeachingPositionType = TeachingPosType.Standby;
 
         public UnitName UnitName { get; set; } = UnitName.Unit0;
+
+        protected override CreateParams CreateParams
+        {
+            get
+            {
+                var cp = base.CreateParams;
+                cp.ExStyle |= 0x02000000;
+                return cp;
+            }
+        }
         #endregion
 
         #region 이벤트

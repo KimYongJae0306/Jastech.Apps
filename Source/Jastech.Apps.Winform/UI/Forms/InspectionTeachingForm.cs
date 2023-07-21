@@ -168,7 +168,7 @@ namespace Jastech.Framework.Winform.Forms
         private void InitailizeUI()
         {
             _selectedColor = Color.FromArgb(104, 104, 104);
-            _nonSelectedColor = Color.FromArgb(52, 52, 52);
+            _nonSelectedColor = Color.FromArgb(34, 34, 34);
         }
 
         private void AddControl()
@@ -184,6 +184,11 @@ namespace Jastech.Framework.Winform.Forms
             // TeachingUIManager 참조
             TeachingUIManager.Instance().SetDisplay(Display.GetDisplay());
 
+            MarkControl = new MarkControl();
+            MarkControl.Dock = DockStyle.Fill;
+            MarkControl.SetParams(CurrentTab);
+            pnlTeach.Controls.Add(MarkControl);
+
             AlignControl = new AlignControl();
             AlignControl.Dock = DockStyle.Fill;
             AlignControl.SetParams(CurrentTab);
@@ -193,11 +198,6 @@ namespace Jastech.Framework.Winform.Forms
             AkkonControl.Dock = DockStyle.Fill;
             AkkonControl.SetParams(CurrentTab);
             pnlTeach.Controls.Add(AkkonControl);
-
-            MarkControl = new MarkControl();
-            MarkControl.Dock = DockStyle.Fill;
-            MarkControl.SetParams(CurrentTab);
-            pnlTeach.Controls.Add(MarkControl);
 
             // Teaching Item
             if (LineCamera.Camera.Name.ToUpper().Contains("ALIGN"))
@@ -733,6 +733,11 @@ namespace Jastech.Framework.Winform.Forms
         }
 
         #endregion
+
+        private void btnCancel_BackColorChanged(object sender, EventArgs e)
+        {
+
+        }
     }
 
     public enum DisplayType

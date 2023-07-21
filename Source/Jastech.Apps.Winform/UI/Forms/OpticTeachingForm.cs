@@ -71,6 +71,8 @@ namespace Jastech.Framework.Winform.Forms
 
         public AxisHandler AxisHandler { get; set; } = null;
 
+        public string TitleCameraName { get; set; } = "";
+        
         public LAFCtrl LAFCtrl { get; set; } = null;
 
         public LineCamera LineCamera { get; set; } = null;
@@ -108,6 +110,8 @@ namespace Jastech.Framework.Winform.Forms
             LineCamera.TeachingLiveImageGrabbed += LiveDisplay;
             LineCamera.GrabOnceEventHandler += OpticTeachingForm_GrabOnceEventHandler;
             SelectedAxis = AxisHandler.GetAxis(AxisName.X);
+
+            lblStageCam.Text = $"STAGE : {UnitName} / CAM : {TitleCameraName}";
 
             StatusTimer.Start();
         }
