@@ -116,7 +116,7 @@ namespace Jastech.Apps.Winform
             if (inspModel == null)
                 return;
 
-            ClearTabScanBuffer();
+            //ClearTabScanBuffer();
 
             double plcAlignDataX_mm = PlcControlManager.Instance().ConvertDoubleWordDoubleFormat_mm(Service.Plc.Maps.PlcCommonMap.PLC_AlignDataX);
             float resolution_mm = (float)(Camera.PixelResolution_um / Camera.LensScale) / 1000; // ex) 3.5 um / 5 / 1000 = 0.0007mm
@@ -175,7 +175,7 @@ namespace Jastech.Apps.Winform
             if (inspModel == null)
                 return;
 
-            ClearTabScanBuffer();
+            //ClearTabScanBuffer();
             double plcAlignDataX_mm = PlcControlManager.Instance().ConvertDoubleWordDoubleFormat_mm(Service.Plc.Maps.PlcCommonMap.PLC_AlignDataX);
             float resolution_mm = (float)(Camera.PixelResolution_um / Camera.LensScale) / 1000; // ex) 3.5 um / 5 / 1000 = 0.0007mm
             int totalScanSubImageCount = (int)Math.Ceiling(materialInfo.PanelXSize_mm / resolution_mm / Camera.ImageHeight); // ex) 500mm / 0.0007mm / 1024 pixel

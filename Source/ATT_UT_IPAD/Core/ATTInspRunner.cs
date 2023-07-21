@@ -277,6 +277,7 @@ namespace ATT_UT_IPAD.Core
             string systemLogMessage = string.Empty;
             string errorMessage = string.Empty;
 
+            Stopwatch sw = new Stopwatch();
             switch (SeqStep)
             {
                 case SeqStep.SEQ_IDLE:
@@ -294,13 +295,19 @@ namespace ATT_UT_IPAD.Core
                     LightCtrlHandler.TurnOff();
                     WriteLog("Light Off.");
 
-                    AlignLAFCtrl.SetTrackingOnOFF(true);
+                    AlignLAFCtrl.SetTrackingOnOFF(false);
                     WriteLog("Align Laf Off.");
 
-                    AkkonLAFCtrl.SetTrackingOnOFF(true);
+                    AkkonLAFCtrl.SetTrackingOnOFF(false);
                     WriteLog("Akkon Laf Off.");
 
+                    sw.Restart();
                     InitializeBuffer();
+                    AkkonCamera.ClearTabScanBuffer();
+                    AlignCamera.ClearTabScanBuffer();
+
+                    sw.Stop();
+                    Console.WriteLine("Clear Buffer : " + sw.ElapsedMilliseconds.ToString()); ;
                     WriteLog("Initialize Buffer.");
 
                     SeqStep = SeqStep.SEQ_MOVE_START_POS;
@@ -316,6 +323,10 @@ namespace ATT_UT_IPAD.Core
                 case SeqStep.SEQ_WAITING:
                     if (AppsStatus.Instance().IsInspRunnerFlagFromPlc == false)
                         break;
+
+                    //AkkonCamera.InitGrabSettings();
+                    //AlignCamera.InitGrabSettings(AppsConfig.Instance().CameraGap_mm);
+                    InitializeBuffer();
 
                     WriteLog("Receive Inspection Start Signal From PLC.", true);
 
@@ -576,12 +587,15 @@ namespace ATT_UT_IPAD.Core
         {
             Stopwatch sw = new Stopwatch();
             sw.Restart();
+
             AkkonCamera.InitGrabSettings();
-            
+            //AkkonCamera.ClearTabScanBuffer();
             InspProcessTask.InitalizeInspAkkonBuffer(AkkonCamera.Camera.Name, AkkonCamera.TabScanBufferList);
 
+            
             float akkonToAlignGap_mm = AppsConfig.Instance().CameraGap_mm;
             AlignCamera.InitGrabSettings(akkonToAlignGap_mm);
+            //AlignCamera.ClearTabScanBuffer();
             InspProcessTask.InitalizeInspAlignBuffer(AlignCamera.Camera.Name, AlignCamera.TabScanBufferList);
             sw.Stop();
         }
