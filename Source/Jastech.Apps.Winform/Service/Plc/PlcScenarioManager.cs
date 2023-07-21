@@ -442,18 +442,22 @@ namespace Jastech.Apps.Winform.Service.Plc
 
                 case PlcCommand.Move_StandbyPos:
                     MoveTo(TeachingPosType.Standby);
+                    PlcControlManager.Instance().WritePcStatus(PlcCommand.Move_StandbyPos);
                     break;
 
                 case PlcCommand.Move_Left_AlignPos:
                     MoveTo(TeachingPosType.Stage1_PreAlign_Left);
+                    //PlcControlManager.Instance().WritePcStatus(PlcCommand.Move_StandbyPos);
                     break;
 
                 case PlcCommand.Move_Right_AlignPos:
                     MoveTo(TeachingPosType.Stage1_PreAlign_Right);
+                    //PlcControlManager.Instance().WritePcStatus(PlcCommand.Move_StandbyPos);
                     break;
 
                 case PlcCommand.Move_ScanStartPos:
                     MoveTo(TeachingPosType.Stage1_Scan_Start);
+                    PlcControlManager.Instance().WritePcStatus(PlcCommand.Move_ScanStartPos);
                     break;
 
                 default:
@@ -552,7 +556,6 @@ namespace Jastech.Apps.Winform.Service.Plc
             errorMessage = string.Format("Move Completed.(Teaching Pos : {0})", teachingPos.ToString());
             Logger.Write(LogType.Device, errorMessage);
 
-            PlcControlManager.Instance().WritePcStatus(PlcCommand.Move_StandbyPos);
             return true;
         }
 

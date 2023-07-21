@@ -317,6 +317,7 @@ namespace ATT_UT_IPAD.Core
                     if (MoveTo(TeachingPosType.Stage1_Scan_Start, out errorMessage) == false)
                         break;
 
+                    PlcControlManager.Instance().WritePcStatus(PlcCommand.Move_ScanStartPos);
                     SeqStep = SeqStep.SEQ_WAITING;
                     break;
 
