@@ -277,7 +277,7 @@ namespace Jastech.Framework.Winform.Forms
                 case DisplayType.Akkon:
                     btnAkkon.BackColor = _selectedColor;
                     AkkonControl.SetParams(CurrentTab);
-                    AkkonControl.CalcResolution = LineCamera.Camera.PixelResolution_um / LineCamera.Camera.LensScale;
+                    AkkonControl.Resolution = LineCamera.Camera.PixelResolution_um / LineCamera.Camera.LensScale;
 
                     if (UserManager.Instance().CurrentUser.Type == AuthorityType.Maker)
                         AkkonControl.SetUserMaker(true);

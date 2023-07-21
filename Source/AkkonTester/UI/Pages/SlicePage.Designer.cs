@@ -632,7 +632,7 @@
             this.label24.Name = "label24";
             this.label24.Size = new System.Drawing.Size(162, 33);
             this.label24.TabIndex = 53;
-            this.label24.Text = "Akkon Strength";
+            this.label24.Text = "Akkon Min Strength";
             this.label24.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // txtAkkonStrength

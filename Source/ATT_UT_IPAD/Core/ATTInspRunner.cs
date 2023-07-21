@@ -230,19 +230,19 @@ namespace ATT_UT_IPAD.Core
             {
                 if (leadResult.ContainPos == LeadContainPos.Left)
                 {
-                    leftCountNG |= leadResult.CountResult.Judgement == Judgement.NG ? true : false;
-                    leftCountList.Add(leadResult.CountResult.DetectCount);
+                    leftCountNG |= leadResult.Judgement == Judgement.NG ? true : false;
+                    leftCountList.Add(leadResult.AkkonCount);
 
-                    leftLengthNG |= leadResult.LengthResult.Judgement == Judgement.NG ? true : false;
-                    leftLengthList.Add(leadResult.LengthResult.LengthY_um);
+                    leftLengthNG |= leadResult.Judgement == Judgement.NG ? true : false;
+                    leftLengthList.Add(leadResult.LengthY_um);
                 }
                 else
                 {
-                    rightCountNG |= leadResult.CountResult.Judgement == Judgement.NG ? true : false;
-                    rightCountList.Add(leadResult.CountResult.DetectCount);
+                    rightCountNG |= leadResult.Judgement == Judgement.NG ? true : false;
+                    rightCountList.Add(leadResult.AkkonCount);
 
-                    rightLengthNG |= leadResult.LengthResult.Judgement == Judgement.NG ? true : false;
-                    rightLengthList.Add(leadResult.LengthResult.LengthY_um);
+                    rightLengthNG |= leadResult.Judgement == Judgement.NG ? true : false;
+                    rightLengthList.Add(leadResult.LengthY_um);
                 }
             }
 
@@ -806,9 +806,7 @@ namespace ATT_UT_IPAD.Core
                     int radius = rectRect.Width > rectRect.Height ? rectRect.Width : rectRect.Height;
 
                     int size = blob.BoundingRect.Width * blob.BoundingRect.Height;
-                    double calcMinArea = AkkonParameters.ResultFilterParam.MinArea_um * AkkonParameters.ResultFilterParam.Resolution_um;
-                    double calcMaxArea = AkkonParameters.ResultFilterParam.MaxArea_um * AkkonParameters.ResultFilterParam.Resolution_um;
-                    if (calcMinArea <= size && size <= calcMaxArea)
+                    if (blob.IsAkkonShape)
                     {
                         blobCount++;
                         CvInvoke.Circle(colorMat, center, radius / 2, new MCvScalar(255), 1);

@@ -77,7 +77,7 @@ namespace ATT_UT_Remodeling
 
                 // LineScanCamera
                 var lineCamera = new CameraVirtual("LineCamera", 4640, 1024, ColorFormat.Gray, SensorType.Line);
-                lineCamera.PixelResolution_um = 0.35F;
+                lineCamera.PixelResolution_um = 3.5F;
                 lineCamera.LensScale = 10F;
                 config.Add(lineCamera);
 
@@ -118,7 +118,7 @@ namespace ATT_UT_Remodeling
                 lineCamera.TriggerSource = (int)MilCxpTriggerSource.Cxp;
                 lineCamera.TriggerSignalType = MilTriggerSignalType.TL_Trigger;
                 lineCamera.TriggerIoSourceType = MILIoSourceType.AUX_IO0;
-                lineCamera.PixelResolution_um = 0.35F;
+                lineCamera.PixelResolution_um = 3.5F;
                 lineCamera.LensScale = 10F;
                 lineCamera.DigitizerNum = 0;
 

@@ -19,6 +19,8 @@ namespace AkkonTester
 
         public AkkonAlgoritmParam AkkonParameters { get; set; } = new AkkonAlgoritmParam();
 
+        public float Resolution_um { get; set; } = 1.0F;
+
         public Mat OrginalImage { get; set; } = null;
 
         public List<AkkonROI> CurrentAkkonROI = new List<AkkonROI>();
@@ -26,8 +28,6 @@ namespace AkkonTester
         public List<AkkonSlice> SliceList { get; set; } = new List<AkkonSlice>();
 
         public List<AkkonLeadResult> CurrentLeadResult { get; set; } = new List<AkkonLeadResult>();
-
-        public float Resolustion { get; set; } = 0.0005F;
 
         private static SystemManager _instance = null;
 
@@ -83,8 +83,7 @@ namespace AkkonTester
             Stopwatch sw = new Stopwatch();
             sw.Restart();
 
-
-            List<AkkonLeadResult> result = AkkonAlgorithm.RunForDebug(ref slice, AkkonParameters, Resolustion);
+            List<AkkonLeadResult> result = AkkonAlgorithm.RunForDebug(ref slice, AkkonParameters, Resolution_um);
 
             sw.Stop();
             Console.WriteLine(" RunForDebug TactTime : " + sw.ElapsedMilliseconds);
@@ -101,7 +100,7 @@ namespace AkkonTester
             Stopwatch sw = new Stopwatch();
             sw.Restart();
 
-            List<AkkonLeadResult> result = AkkonAlgorithm.Run(OrginalImage, CurrentAkkonROI, AkkonParameters, Resolustion);
+            List<AkkonLeadResult> result = AkkonAlgorithm.Run(OrginalImage, CurrentAkkonROI, AkkonParameters, Resolution_um);
 
             sw.Stop();
             Console.WriteLine("Run : " + sw.ElapsedMilliseconds);
@@ -120,6 +119,9 @@ namespace AkkonTester
             CvInvoke.CvtColor(resizeMat, colorMat, ColorConversion.Gray2Bgr);
             resizeMat.Dispose();
 
+            MCvScalar redColor = new MCvScalar(50, 50, 230, 255);
+            MCvScalar greenColor = new MCvScalar(50, 230, 50, 255);
+
             foreach (var result in leadResultList)
             {
                 var lead = result.Roi;
@@ -132,10 +134,10 @@ namespace AkkonTester
 
                 if (AkkonParameters.DrawOption.ContainLeadROI)
                 {
-                    CvInvoke.Line(colorMat, leftTop, leftBottom, new MCvScalar(50, 230, 50, 255), 1);
-                    CvInvoke.Line(colorMat, leftTop, rightTop, new MCvScalar(50, 230, 50, 255), 1);
-                    CvInvoke.Line(colorMat, rightTop, rightBottom, new MCvScalar(50, 230, 50, 255), 1);
-                    CvInvoke.Line(colorMat, rightBottom, leftBottom, new MCvScalar(50, 230, 50, 255), 1);
+                    CvInvoke.Line(colorMat, leftTop, leftBottom, greenColor, 1);
+                    CvInvoke.Line(colorMat, leftTop, rightTop, greenColor, 1);
+                    CvInvoke.Line(colorMat, rightTop, rightBottom, greenColor, 1);
+                    CvInvoke.Line(colorMat, rightBottom, leftBottom, greenColor, 1);
                 }
 
                 int blobCount = 0;
@@ -151,18 +153,15 @@ namespace AkkonTester
                     int radius = rectRect.Width > rectRect.Height ? rectRect.Width : rectRect.Height;
 
                     int size = blob.BoundingRect.Width * blob.BoundingRect.Height;
-                    double calcMinArea = AkkonParameters.ResultFilterParam.MinArea_um * AkkonParameters.ResultFilterParam.Resolution_um;
-                    double calcMaxArea = AkkonParameters.ResultFilterParam.MaxArea_um * AkkonParameters.ResultFilterParam.Resolution_um;
+                    double calcMinArea = AkkonParameters.ShapeFilterParam.MinArea_um * Resolution_um;
+                    double calcMaxArea = AkkonParameters.ShapeFilterParam.MaxArea_um * Resolution_um;
 
-                    if (calcMinArea <= size && size <= calcMaxArea)
-                    {
-                        blobCount++;
-                        CvInvoke.Circle(colorMat, center, radius / 2, new MCvScalar(255), 1);
-                    }
+                    if (blob.IsAkkonShape)
+                        CvInvoke.Circle(colorMat, center, radius / 2, greenColor, 1);
                     else
                     {
                         if(AkkonParameters.DrawOption.ContainNG)
-                            CvInvoke.Circle(colorMat, center, radius / 2, new MCvScalar(0), 1);
+                            CvInvoke.Circle(colorMat, center, radius / 2, redColor, 1);
                     }
 
                 }
@@ -170,7 +169,7 @@ namespace AkkonTester
                 if(AkkonParameters.DrawOption.ContainLeadCount)
                 {
                     string leadIndexString = result.Roi.Index.ToString();
-                    string blobCountString = string.Format("[{0}]", blobCount);
+                    string akkonCountString = string.Format("[{0}]", result.AkkonCount);
 
                     Point centerPt = new Point((int)((leftBottom.X + rightBottom.X) / 2.0), leftBottom.Y);
 
@@ -180,10 +179,10 @@ namespace AkkonTester
                     int textY = centerPt.Y + (baseLine / 2);
                     CvInvoke.PutText(colorMat, leadIndexString, new Point(textX, textY + 30), FontFace.HersheyComplex, 0.3, new MCvScalar(50, 230, 50, 255));
 
-                    textSize = CvInvoke.GetTextSize(blobCountString, FontFace.HersheyComplex, 0.3, 1, ref baseLine);
+                    textSize = CvInvoke.GetTextSize(akkonCountString, FontFace.HersheyComplex, 0.3, 1, ref baseLine);
                     textX = centerPt.X - (textSize.Width / 2);
                     textY = centerPt.Y + (baseLine / 2);
-                    CvInvoke.PutText(colorMat, blobCountString, new Point(textX, textY + 60), FontFace.HersheyComplex, 0.3, new MCvScalar(50, 230, 50, 255));
+                    CvInvoke.PutText(colorMat, akkonCountString, new Point(textX, textY + 60), FontFace.HersheyComplex, 0.3, new MCvScalar(50, 230, 50, 255));
                 }
             }
             return colorMat;
