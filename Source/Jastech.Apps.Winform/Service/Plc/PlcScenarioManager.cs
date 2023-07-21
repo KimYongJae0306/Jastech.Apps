@@ -504,7 +504,7 @@ namespace Jastech.Apps.Winform.Service.Plc
             }
 
             VisionXCalibration.SetParam(param);
-            VisionXCalibration.SetCalibrationMode(CalibrationMode.XY);
+            VisionXCalibration.SetCalibrationMode(CalibrationMode.XYT);
             VisionXCalibration.StartCalSeqRun();
         }
 

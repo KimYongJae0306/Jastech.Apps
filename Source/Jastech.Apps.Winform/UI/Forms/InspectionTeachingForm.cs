@@ -17,6 +17,7 @@ using Jastech.Framework.Imaging.VisionPro.VisionAlgorithms.Results;
 using Jastech.Framework.Structure;
 using Jastech.Framework.Structure.Service;
 using Jastech.Framework.Users;
+using Jastech.Framework.Util;
 using Jastech.Framework.Winform.VisionPro.Controls;
 using System;
 using System.Collections.Generic;
@@ -589,6 +590,11 @@ namespace Jastech.Framework.Winform.Forms
 
             if (cogImage == null)
                 return;
+
+            CoordinateTransform fpcCoordinate1 = new CoordinateTransform();
+            fpcCoordinate1.SetTargetData(new PointF(), new PointF());
+
+            //fpcCoordinate.SetTargetData()
 
             // Set Coordinate Params
             Coordinate fpcCoordinate = new Coordinate();
