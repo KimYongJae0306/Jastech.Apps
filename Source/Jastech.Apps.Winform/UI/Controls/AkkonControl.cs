@@ -2,6 +2,7 @@
 using Emgu.CV;
 using Emgu.CV.CvEnum;
 using Emgu.CV.Structure;
+using Emgu.CV.Util;
 using Jastech.Apps.Structure;
 using Jastech.Apps.Structure.Data;
 using Jastech.Apps.Structure.VisionTool;
@@ -12,6 +13,7 @@ using Jastech.Framework.Algorithms.Akkon.Parameters;
 using Jastech.Framework.Algorithms.UI.Controls;
 using Jastech.Framework.Imaging;
 using Jastech.Framework.Imaging.Helper;
+using Jastech.Framework.Imaging.Result;
 using Jastech.Framework.Imaging.VisionAlgorithms;
 using Jastech.Framework.Imaging.VisionPro;
 using Jastech.Framework.Winform.Forms;
@@ -470,7 +472,6 @@ namespace Jastech.Apps.Winform.UI.Controls
 
             display.ClearGraphic();
         }
-        #endregion
 
         private void DrawComboboxCenterAlign(object sender, DrawItemEventArgs e)
         {
@@ -505,7 +506,7 @@ namespace Jastech.Apps.Winform.UI.Controls
         {
             int no = 0;
             dgvJastechAkkonResult.Rows.Clear();
-       
+
             foreach (var lead in leadResultList)
             {
                 string noString = no.ToString();
@@ -750,13 +751,26 @@ namespace Jastech.Apps.Winform.UI.Controls
 
             if (dgvAkkonROI.SelectedRows.Count > 1)
             {
+                List<int> selectedIndexList = new List<int>();
+                foreach (DataGridViewRow row in dgvAkkonROI.SelectedRows)
+                    selectedIndexList.Add(row.Index);
+
+                if (selectedIndexList.Count > 0)
+                    selectedIndexList.Sort((x, y) => y.CompareTo(x));
+
+                foreach (var index in selectedIndexList)
+                {
+                    group.DeleteROI(index);
+                    _cogRectAffineList.RemoveAt(index);
+                }
             }
             else
             {
                 foreach (DataGridViewRow row in dgvAkkonROI.SelectedRows)
                 {
                     group.DeleteROI(row.Index);
-                    _cogRectAffineList.RemoveAt(row.Index);
+                    if (_cogRectAffineList.Count > row.Index)
+                        _cogRectAffineList.RemoveAt(row.Index);
                 }
             }
 
@@ -778,7 +792,7 @@ namespace Jastech.Apps.Winform.UI.Controls
             for (int i = 0; i < dgvAkkonROI.Rows.Count; i++)
             {
                 var row = dgvAkkonROI.Rows[i];
-                if(row.Selected)
+                if (row.Selected)
                 {
                     _selectedIndexList.Add(i);
                     _cogRectAffineList[i].Color = CogColorConstants.DarkRed;
@@ -789,14 +803,14 @@ namespace Jastech.Apps.Winform.UI.Controls
 
                 }
             }
-           
+
             CogGraphicInteractiveCollection collect = new CogGraphicInteractiveCollection();
             foreach (var item in _cogRectAffineList)
                 collect.Add(item);
 
             var display = TeachingUIManager.Instance().GetDisplay();
 
-            if(lblResultImage.BackColor == _selectedColor)
+            if (lblResultImage.BackColor == _selectedColor)
                 SetOrginImageView();
 
             display.ClearGraphic();
@@ -1135,13 +1149,93 @@ namespace Jastech.Apps.Winform.UI.Controls
 
                     ICogImage cogImage = display.GetImage();
                     var roi = _autoTeachingCollect[0] as CogRectangle;
+                    var cropCogImage = VisionProImageHelper.CropImage(cogImage, roi);
 
-                    var cropImage = VisionProImageHelper.CropImage(cogImage, roi);
-                    var binaryImage = VisionProImageHelper.Threshold(cropImage as CogImage8Grey, threshold, 255);
-                    var convertImage = VisionProImageHelper.CogCopyRegionTool(cogImage, binaryImage, roi, true);
+                    var targetMat = GetTeachingConvertImage(cogImage, roi);
+                    var cropImage = AlgorithmTool.ConvertCogImage(targetMat);
+                    cropImage.PixelFromRootTransform = cropCogImage.PixelFromRootTransform;
+
+                    var convertImage = VisionProImageHelper.CogCopyRegionTool(cogImage, cropImage, roi, true);
                     TeachingUIManager.Instance().SetBinaryCogImageBuffer(convertImage as CogImage8Grey);
                 }
             }
+        }
+
+        private Mat GetTeachingConvertImage(ICogImage cogImage, CogRectangle roi)
+        {
+            Rectangle rect = new Rectangle(new Point((int)roi.X, (int)roi.Y), new Size((int)roi.Width, (int)roi.Height));
+
+            Mat sourceMat = TeachingUIManager.Instance().GetOriginMatImageBuffer(false);
+            Mat cropMat = MatHelper.CropRoi(sourceMat, rect);
+            CvInvoke.Threshold(cropMat, cropMat, 85, 255, ThresholdType.Binary);
+
+            if (ckbIgnoreNoise.Checked)
+            {
+                Mat maskingMat = MakeMaskImage(new Size(cropMat.Width, cropMat.Height), roi, rect.X, rect.Y);
+                Mat targetMat = new Mat();
+                CvInvoke.BitwiseAnd(maskingMat, cropMat, targetMat);
+
+                Mat filterdMat = GetFilterImage(targetMat);
+                cropMat.Dispose();
+                maskingMat.Dispose();
+                targetMat.Dispose();
+
+                return filterdMat;
+            }
+            else
+            {
+                return cropMat;
+            }
+        }
+
+        private Mat GetFilterImage(Mat mat)
+        {
+            int ignoreSize = 10000;
+            var contours = new VectorOfVectorOfPoint();
+            Mat hierarchy = new Mat();
+            CvInvoke.FindContours(mat, contours, hierarchy, RetrType.Ccomp, ChainApproxMethod.ChainApproxSimple);
+
+            List<VectorOfPoint> filteredContourList = new List<VectorOfPoint>();
+            if (contours.Size != 0)
+            {
+                for (int idxContour = 0; idxContour < contours.Size; ++idxContour)
+                {
+                    var contour = contours[idxContour];
+                    var hull = new VectorOfPoint();
+                    CvInvoke.ConvexHull(contour, hull, true);
+
+                    double area = CvInvoke.ContourArea(contour);
+
+                    if (area >= ignoreSize)
+                        filteredContourList.Add(contour);
+                }
+            }
+            Mat filteredImage = new Mat(new Size(mat.Width, mat.Height), DepthType.Cv8U, 1);
+            byte[] tempArray = new byte[mat.Step * mat.Height];
+            Marshal.Copy(tempArray, 0, filteredImage.DataPointer, mat.Step * mat.Height);
+
+            IInputArrayOfArrays contoursArray = new VectorOfVectorOfPoint(filteredContourList.Select(vector => vector.ToArray()).ToArray());
+            CvInvoke.DrawContours(filteredImage, contoursArray, -1, new MCvScalar(255), -1);
+
+            hierarchy.Dispose();
+
+            return filteredImage;
+        }
+
+        private Mat MakeMaskImage(Size size, CogRectangle roi, int offsetX, int offsetY)
+        {
+            Mat maskImage = new Mat(size, DepthType.Cv8U, 1);
+            VectorOfVectorOfPoint contours = new VectorOfVectorOfPoint();
+            VectorOfPoint contour = new VectorOfPoint(new[]
+           {
+                new Point((int)roi.X - offsetX,  (int)roi.Y - offsetY),
+                new Point((int)(roi.X + roi.Width - offsetX), (int)(roi.Y - offsetY)),
+                new Point((int)(roi.X + roi.Width - offsetX), (int)(roi.Y + roi.Height - offsetY)),
+                new Point((int)roi.X- offsetX, (int)(roi.Y + roi.Height - offsetY)),
+            });
+            contours.Push(contour);
+            CvInvoke.DrawContours(maskImage, contours, -1, new MCvScalar(255), -1);
+            return maskImage;
         }
 
         private void lblTeachingMode_Click(object sender, EventArgs e)
@@ -1175,7 +1269,7 @@ namespace Jastech.Apps.Winform.UI.Controls
                 return;
 
             var roiList = GetAutoTeachingRoiList(image);
-        
+
             if (roiList.Count == 0)
                 return;
 
@@ -1184,20 +1278,27 @@ namespace Jastech.Apps.Winform.UI.Controls
             UpdateROIDataGridView(GetGroup().AkkonROIList);
             DrawROI();
         }
-        
+
         private List<CogRectangleAffine> GetAutoTeachingRoiList(ICogImage image)
         {
             int threshold = Convert.ToInt32(lblAutoThresholdValue.Text);
-            var cropImage = VisionProImageHelper.CropImage(image, _autoTeachingRect);
-            var binaryImage = VisionProImageHelper.Threshold(cropImage as CogImage8Grey, threshold, 255, true);
+            var cropCogImage = VisionProImageHelper.CropImage(image, _autoTeachingRect);
 
-            byte[] topDataArray = VisionProImageHelper.GetWidthDataArray(binaryImage, 0);
-            byte[] bottomDataArray = VisionProImageHelper.GetWidthDataArray(binaryImage, cropImage.Height - 1);
+
+            var targetMat = GetTeachingConvertImage(image, _autoTeachingRect);
+            var cropImage = AlgorithmTool.ConvertCogImage(targetMat);
+
+            byte[] topDataArray = new byte[targetMat.Step];
+            Marshal.Copy(targetMat.DataPointer, topDataArray, 0, targetMat.Step);
+
+            byte[] bottomDataArray = new byte[targetMat.Step];
+            int startIndex = targetMat.Step * (targetMat.Height - 1);
+            Marshal.Copy(targetMat.DataPointer + startIndex, bottomDataArray, 0, targetMat.Step);
 
             List<int> topEdgePointList = new List<int>();
             List<int> bottomEdgePointList = new List<int>();
 
-            ImageHelper.GetEdgePoint(topDataArray, bottomDataArray, 0, (int)21/*CalcResolution*/, ref topEdgePointList, ref bottomEdgePointList);
+            ImageHelper.GetEdgePoint(topDataArray, bottomDataArray, 255, (int)21/*CalcResolution*/, ref topEdgePointList, ref bottomEdgePointList);
 
             if (topEdgePointList.Count != bottomEdgePointList.Count)
             {
@@ -1253,7 +1354,7 @@ namespace Jastech.Apps.Winform.UI.Controls
                         LeftBottomY = roi.CornerYY,
 
                         RightBottomX = roi.CornerOppositeX,
-                        RightBottomY = roi.CornerOppositeY, 
+                        RightBottomY = roi.CornerOppositeY,
                     };
 
                     group.AddROI(akkonRoi);
@@ -1276,7 +1377,7 @@ namespace Jastech.Apps.Winform.UI.Controls
             int groupIndex = cbxGroupNumber.SelectedIndex;
             if (groupIndex < 0 || CurrentTab == null)
                 return;
-     
+
             Mat matImage = TeachingUIManager.Instance().GetOriginMatImageBuffer(false);
             if (matImage == null)
                 return;
@@ -1289,8 +1390,8 @@ namespace Jastech.Apps.Winform.UI.Controls
             AkkonAlgoritmParam akkonAlgorithmParam = AkkonParamControl.GetCurrentParam();
             var roiList = CurrentTab.AkkonParam.GetAkkonROIList();
 
-            
-            var tabResult = AkkonAlgorithm.Run(matImage, roiList, akkonAlgorithmParam, Resolution);
+            Judgement tabJudgement = Judgement.NG;
+            var tabResult = AkkonAlgorithm.Run(matImage, roiList, akkonAlgorithmParam, Resolution, ref tabJudgement);
 
             UpdateResult(tabResult);
 
@@ -1299,7 +1400,7 @@ namespace Jastech.Apps.Winform.UI.Controls
                 resultMat = GetDebugResultImage(matImage, tabResult, akkonAlgorithmParam);
             else
                 resultMat = GetResultImage(matImage, tabResult, akkonAlgorithmParam);
-      
+
             Mat resizeMat = MatHelper.Resize(matImage, akkonAlgorithmParam.ImageFilterParam.ResizeRatio);
             var akkonCogImage = ConvertCogGrayImage(resizeMat);
             TeachingUIManager.Instance().SetAkkonCogImage(akkonCogImage);
@@ -1343,7 +1444,7 @@ namespace Jastech.Apps.Winform.UI.Controls
                 Point rightTop = new Point((int)lead.RightTopX + startPoint.X, (int)lead.RightTopY + startPoint.Y);
                 Point rightBottom = new Point((int)lead.RightBottomX + startPoint.X, (int)lead.RightBottomY + startPoint.Y);
 
-              
+
                 if (akkonParameters.DrawOption.ContainLeadROI)
                 {
                     CvInvoke.Line(colorMat, leftTop, leftBottom, greenColor, 1);
@@ -1351,7 +1452,7 @@ namespace Jastech.Apps.Winform.UI.Controls
                     CvInvoke.Line(colorMat, rightTop, rightBottom, greenColor, 1);
                     CvInvoke.Line(colorMat, rightBottom, leftBottom, greenColor, 1);
                 }
-             
+
                 foreach (var blob in result.BlobList)
                 {
                     int offsetX = (int)(result.Offset.ToWorldX + result.Offset.X);
@@ -1377,10 +1478,10 @@ namespace Jastech.Apps.Winform.UI.Controls
                         {
                             CvInvoke.Circle(colorMat, center, radius / 2, redColor, 1);
                         }
-                           
+
                     }
 
-                    if(akkonParameters.DrawOption.ContainSize)
+                    if (akkonParameters.DrawOption.ContainSize)
                     {
                         int temp = (int)(radius / 2.0);
                         Point pt = new Point(center.X + temp, center.Y - temp);
@@ -1481,11 +1582,11 @@ namespace Jastech.Apps.Winform.UI.Controls
                 var lead = result.Roi;
                 var startPoint = new Point((int)result.Offset.ToWorldX, (int)result.Offset.ToWorldY);
 
-            
+
                 MCvScalar redColor = new MCvScalar(50, 50, 230, 255);
                 MCvScalar greenColor = new MCvScalar(50, 230, 50, 255);
 
-            
+
                 foreach (var blob in result.BlobList)
                 {
                     Rectangle rectRect = new Rectangle();
@@ -1523,7 +1624,7 @@ namespace Jastech.Apps.Winform.UI.Controls
                 textY = centerPt.Y + (baseLine / 2);
                 CvInvoke.PutText(colorMat, akkonCountString, new Point(textX, textY + 60), FontFace.HersheyComplex, 0.25, new MCvScalar(50, 230, 50, 255));
 
-                if(result.AkkonCount >= AkkonParameters.JudgementParam.AkkonCount)
+                if (result.AkkonCount >= AkkonParameters.JudgementParam.AkkonCount)
                 {
                     CvInvoke.Line(colorMat, leftTop, leftBottom, redColor, 1);
                     CvInvoke.Line(colorMat, leftTop, rightTop, redColor, 1);
@@ -1585,7 +1686,7 @@ namespace Jastech.Apps.Winform.UI.Controls
             lblResultImage.BackColor = _nonSelectedColor;
 
             var orgImage = TeachingUIManager.Instance().GetOriginCogImageBuffer(true);
-            if(orgImage != null)
+            if (orgImage != null)
                 TeachingUIManager.Instance().GetDisplay().SetImage(orgImage);
         }
 
@@ -1596,7 +1697,7 @@ namespace Jastech.Apps.Winform.UI.Controls
             lblResultImage.BackColor = _selectedColor;
 
             var resultImage = TeachingUIManager.Instance().GetResultCogImage(false);
-            if(resultImage != null)
+            if (resultImage != null)
                 TeachingUIManager.Instance().GetDisplay().SetImage(resultImage);
         }
 
@@ -1700,5 +1801,6 @@ namespace Jastech.Apps.Winform.UI.Controls
             form.SetUnitName(UnitName.Unit0);
             form.ShowDialog();
         }
+        #endregion
     }
 }

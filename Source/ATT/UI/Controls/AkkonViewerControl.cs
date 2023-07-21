@@ -15,17 +15,15 @@ namespace ATT.UI.Controls
         #endregion
 
         #region 속성
-        public AkkonResultDisplayControl AkkonResultDisplayControl { get; set; } = new AkkonResultDisplayControl() { Dock = DockStyle.Fill };
-
-        public AkkonResultDataControl AkkonResultDataControl { get; set; } = new AkkonResultDataControl() { Dock = DockStyle.Fill };
-
-        public ResultChartControl AkkonResultChartControl { get; set; } =  new ResultChartControl() { Dock = DockStyle.Fill };
+        public AkkonResultDisplayControl AkkonResultDisplayControl { get; set; } = null;
         #endregion
 
         #region 이벤트
+        public event SetTabDelegate SetTabEventHandler;
         #endregion
 
         #region 델리게이트
+        public delegate void SetTabDelegate(int tabNo);
         #endregion
 
         #region 생성자
@@ -43,12 +41,8 @@ namespace ATT.UI.Controls
 
         private void AddControls()
         {
-            AkkonResultChartControl.SetInspChartType(InspChartType.Akkon);
-            pnlResultChart.Controls.Add(AkkonResultChartControl);
-
-            AkkonResultDataControl.UpdateAkkonDaily();
-            pnlResultData.Controls.Add(AkkonResultDataControl);
-
+            AkkonResultDisplayControl = new AkkonResultDisplayControl();
+            AkkonResultDisplayControl.Dock = DockStyle.Fill;
             AkkonResultDisplayControl.SendTabNumberEvent += UpdateResultChart;
             AkkonResultDisplayControl.GetTabInspResultEvent += GetTabInspResult;
             pnlResultDisplay.Controls.Add(AkkonResultDisplayControl);
@@ -56,8 +50,7 @@ namespace ATT.UI.Controls
 
         private TabInspResult GetTabInspResult(int tabNo)
         {
-            return null;
-            //return AppsInspResult.Instance().Get(tabNo);
+            return AppsInspResult.Instance().GetAkkon(tabNo);
         }
 
         public void UpdateTabCount(int tabCount)
@@ -65,26 +58,24 @@ namespace ATT.UI.Controls
             AkkonResultDisplayControl.UpdateTabCount(tabCount);
         }
 
-        public void UpdateMainResult(AppsInspResult result)
+        public void UpdateMainResult(int tabNo)
         {
-            UpdateResultDisplay(result);
-            UpdateResultData();
-            UpdateResultChart(0);
+            AkkonResultDisplayControl.UpdateResultDisplay(tabNo);
         }
 
-        private void UpdateResultDisplay(AppsInspResult result)
+        public void UpdateResultTabButton(int tabNo)
         {
-            //AkkonResultDisplayControl.UpdateResultDisplay(result);
+            AkkonResultDisplayControl.UpdateResultTabButton(tabNo);
         }
 
-        private void UpdateResultData()
+        public void TabButtonResetColor()
         {
-            AkkonResultDataControl.UpdateAkkonDaily();
+            AkkonResultDisplayControl.TabButtonResetColor();
         }
 
-        private void UpdateResultChart(int tabNumber)
+        private void UpdateResultChart(int tabNo)
         {
-            AkkonResultChartControl.UpdateAkkonDaily(tabNumber);
+            SetTabEventHandler?.Invoke(tabNo);
         }
         #endregion
     }

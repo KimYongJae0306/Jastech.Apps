@@ -1,18 +1,20 @@
-﻿using ATT.Core.Data;
-using ATT.UI.Controls;
-using Jastech.Apps.Structure;
-using Jastech.Apps.Structure.Data;
-using Jastech.Apps.Winform;
-using Jastech.Apps.Winform.Core;
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Drawing;
+using System.Data;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
 using Jastech.Apps.Winform.UI.Controls;
 using Jastech.Framework.Winform.Forms;
-using System;
-using System.Drawing;
-using System.Windows.Forms;
+using Jastech.Apps.Structure;
+using Jastech.Apps.Winform.Core;
 
-namespace ATT.UI.Pages
+namespace ATT_UT_IPAD.UI.Controls
 {
-    public partial class MainPage : UserControl
+    public partial class MainViewControl : UserControl
     {
         #region 필드
         protected override CreateParams CreateParams
@@ -36,21 +38,12 @@ namespace ATT.UI.Pages
         public SystemLogControl SystemLogControl { get; set; } = null;
         #endregion
 
-        #region 이벤트
-        #endregion
-
-        #region 델리게이트
-        #endregion
-
-        #region 생성자
-        public MainPage()
+        public MainViewControl()
         {
             InitializeComponent();
         }
-        #endregion
 
-        #region 메서드
-        private void MainPage_Load(object sender, EventArgs e)
+        private void MainViewControl_Load(object sender, EventArgs e)
         {
             AddControls();
         }
@@ -89,13 +82,15 @@ namespace ATT.UI.Pages
         public void UpdateTabCount(int tabCount)
         {
             AkkonViewerControl.UpdateTabCount(tabCount);
-            //DailyInfoViewerControl.ClearAkkonData();
-
             AlignViewerControl.UpdateTabCount(tabCount);
-            //DailyInfoViewerControl.ClearAlignData();
         }
 
-        public void UpdateMainAkkonResult(int tabNo)
+        public void UpdateMainAkkonResultDisplay(int tabNo)
+        {
+            AkkonViewerControl.UpdateMainResult(tabNo);
+        }
+
+        public void UpdateMainAkkonResultData(int tabNo)
         {
             AkkonViewerControl.UpdateMainResult(tabNo);
             DailyInfoViewerControl.UpdateAkkonResult(tabNo);
@@ -129,6 +124,20 @@ namespace ATT.UI.Pages
             SystemLogControl.AddLogMessage(logMessage);
         }
 
+        public void UpdateButton()
+        {
+            if (SystemManager.Instance().MachineStatus == MachineStatus.RUN)
+            {
+                lblStartText.ForeColor = Color.Blue;
+                lblStopText.ForeColor = Color.White;
+            }
+            else
+            {
+                lblStartText.ForeColor = Color.White;
+                lblStopText.ForeColor = Color.Blue;
+            }
+        }
+
         private void lblStart_Click(object sender, EventArgs e)
         {
             if (ModelManager.Instance().CurrentModel == null)
@@ -144,22 +153,7 @@ namespace ATT.UI.Pages
 
         private void lblStop_Click(object sender, EventArgs e)
         {
-            SystemManager.Instance().StopRun();
+              SystemManager.Instance().StopRun();
         }
-
-        public void UpdateButton()
-        {
-            if (SystemManager.Instance().MachineStatus == MachineStatus.RUN)
-            {
-                lblStartText.ForeColor = Color.Blue;
-                lblStopText.ForeColor = Color.White;
-            }
-            else
-            {
-                lblStartText.ForeColor = Color.White;
-                lblStopText.ForeColor = Color.Blue;
-            }
-        }
-        #endregion
     }
 }

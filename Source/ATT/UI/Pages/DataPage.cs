@@ -3,6 +3,7 @@ using ATT.UI.Forms;
 using Jastech.Apps.Structure;
 using Jastech.Apps.Winform;
 using Jastech.Apps.Winform.UI.Forms;
+using Jastech.Framework.Winform;
 using Jastech.Framework.Winform.Forms;
 using System;
 using System.Windows.Forms;
@@ -19,6 +20,8 @@ namespace ATT.UI.Pages
         private ATTInspModelService ATTInspModelService { get; set; } = null;
 
         private MotionSettingsForm MotionSettingsForm { get; set; } = null;
+
+        private PlcStatusForm PlcStatusForm { get; set; } = null;
         #endregion
 
         #region 이벤트
@@ -51,7 +54,7 @@ namespace ATT.UI.Pages
 
         private void btnMotionData_Click(object sender, EventArgs e)
         {
-            if(ModelManager.Instance().CurrentModel == null)
+            if (ModelManager.Instance().CurrentModel == null)
             {
                 MessageConfirmForm confirmForm = new MessageConfirmForm();
                 confirmForm.Message = "None Current Model.";
@@ -64,7 +67,7 @@ namespace ATT.UI.Pages
                 MotionSettingsForm = new MotionSettingsForm();
                 MotionSettingsForm.UnitName = UnitName.Unit0;
                 MotionSettingsForm.AxisHandler = MotionManager.Instance().GetAxisHandler(AxisHandlerName.Handler0);
-                MotionSettingsForm.LafCtrl = LAFManager.Instance().GetLAFCtrl("Laf");
+                MotionSettingsForm.LafCtrl = LAFManager.Instance().GetLAFCtrl("AkkonLaf");
                 MotionSettingsForm.InspModelService = ATTInspModelService;
                 MotionSettingsForm.CloseEventDelegate = () => MotionSettingsForm = null;
                 MotionSettingsForm.Show();
@@ -83,6 +86,32 @@ namespace ATT.UI.Pages
         {
             ATTInspModelService = inspModelService;
         }
+
+        private void btnOpenPLCViewer_Click(object sender, EventArgs e)
+        {
+            if (PlcStatusForm == null)
+            {
+                var camera = DeviceManager.Instance().CameraHandler.First();
+
+                PlcStatusForm = new PlcStatusForm();
+                PlcStatusForm.Resolution_um = camera.PixelResolution_um / camera.LensScale;
+                PlcStatusForm.CloseEventDelegate = () => this.PlcStatusForm = null;
+                PlcStatusForm.Show();
+            }
+            else
+                PlcStatusForm.Focus();
+        }
+
+        public void UpdateMainAkkonResult(int tabNo)
+        {
+            //AkkonViewerControl.UpdateMainResult(tabNo);
+        }
+
+        public void UpdateMainAlignResult(int tabNo)
+        {
+            //AlignViewerControl.UpdateMainResult(tabNo);
+        }
+
         #endregion
     }
 }

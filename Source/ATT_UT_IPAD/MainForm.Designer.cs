@@ -33,14 +33,8 @@
             this.tlpMainForm = new System.Windows.Forms.TableLayoutPanel();
             this.pnlPage = new System.Windows.Forms.Panel();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
-            this.lblMotionState = new System.Windows.Forms.Label();
-            this.lblLightState = new System.Windows.Forms.Label();
             this.lblPlcStateText = new System.Windows.Forms.Label();
-            this.lblPLCState = new System.Windows.Forms.Label();
-            this.lblLicenseStateText = new System.Windows.Forms.Label();
-            this.lblLicenseState = new System.Windows.Forms.Label();
             this.lblLafStateText = new System.Windows.Forms.Label();
-            this.lblLafState = new System.Windows.Forms.Label();
             this.lblMotionStateText = new System.Windows.Forms.Label();
             this.lblLightStateText = new System.Windows.Forms.Label();
             this.tlpFunctionButtons = new System.Windows.Forms.TableLayoutPanel();
@@ -48,30 +42,34 @@
             this.panel2 = new System.Windows.Forms.Panel();
             this.panel4 = new System.Windows.Forms.Panel();
             this.tableLayoutPanel4 = new System.Windows.Forms.TableLayoutPanel();
-            this.lblLogPageImage = new System.Windows.Forms.Label();
             this.lblLogPage = new System.Windows.Forms.Label();
             this.panel3 = new System.Windows.Forms.Panel();
             this.tableLayoutPanel9 = new System.Windows.Forms.TableLayoutPanel();
-            this.lblDataPageImage = new System.Windows.Forms.Label();
             this.lblDataPage = new System.Windows.Forms.Label();
             this.panel8 = new System.Windows.Forms.Panel();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
-            this.lblInspectionPageImage = new System.Windows.Forms.Label();
             this.lblMainPage = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
             this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
-            this.lblTeachingPageImage = new System.Windows.Forms.Label();
             this.lblTeachingPage = new System.Windows.Forms.Label();
             this.pnlMachineStatus = new System.Windows.Forms.Panel();
             this.tlpMachineStatus = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel5 = new System.Windows.Forms.TableLayoutPanel();
             this.lblCurrentUser = new System.Windows.Forms.Label();
-            this.pictureBox2 = new System.Windows.Forms.PictureBox();
             this.lblCurrentModel = new System.Windows.Forms.Label();
-            this.picLogo = new System.Windows.Forms.PictureBox();
             this.lblMachineName = new System.Windows.Forms.Label();
             this.tmrMainForm = new System.Windows.Forms.Timer(this.components);
             this.tmrUpdateStates = new System.Windows.Forms.Timer(this.components);
+            this.lblMotionState = new System.Windows.Forms.Label();
+            this.lblLightState = new System.Windows.Forms.Label();
+            this.lblPLCState = new System.Windows.Forms.Label();
+            this.lblLafState = new System.Windows.Forms.Label();
+            this.lblLogPageImage = new System.Windows.Forms.Label();
+            this.lblDataPageImage = new System.Windows.Forms.Label();
+            this.lblInspectionPageImage = new System.Windows.Forms.Label();
+            this.lblTeachingPageImage = new System.Windows.Forms.Label();
+            this.pictureBox2 = new System.Windows.Forms.PictureBox();
+            this.picLogo = new System.Windows.Forms.PictureBox();
             this.tlpMainForm.SuspendLayout();
             this.pnlPage.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
@@ -124,144 +122,75 @@
             this.tableLayoutPanel2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(104)))), ((int)(((byte)(104)))), ((int)(((byte)(104)))));
             this.tableLayoutPanel2.ColumnCount = 11;
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 60F));
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 25F));
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 80F));
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 25F));
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 85F));
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 25F));
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 60F));
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 70F));
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 25F));
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 70F));
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 25F));
-            this.tableLayoutPanel2.Controls.Add(this.lblMotionState, 4, 0);
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 70F));
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 25F));
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 70F));
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 25F));
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 70F));
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 25F));
+            this.tableLayoutPanel2.Controls.Add(this.lblMotionState, 6, 0);
             this.tableLayoutPanel2.Controls.Add(this.lblLightState, 10, 0);
-            this.tableLayoutPanel2.Controls.Add(this.lblPlcStateText, 1, 0);
-            this.tableLayoutPanel2.Controls.Add(this.lblPLCState, 2, 0);
-            this.tableLayoutPanel2.Controls.Add(this.lblLicenseStateText, 5, 0);
-            this.tableLayoutPanel2.Controls.Add(this.lblLicenseState, 6, 0);
             this.tableLayoutPanel2.Controls.Add(this.lblLafStateText, 7, 0);
             this.tableLayoutPanel2.Controls.Add(this.lblLafState, 8, 0);
-            this.tableLayoutPanel2.Controls.Add(this.lblMotionStateText, 3, 0);
             this.tableLayoutPanel2.Controls.Add(this.lblLightStateText, 9, 0);
+            this.tableLayoutPanel2.Controls.Add(this.lblMotionStateText, 5, 0);
+            this.tableLayoutPanel2.Controls.Add(this.lblPLCState, 4, 0);
+            this.tableLayoutPanel2.Controls.Add(this.lblPlcStateText, 3, 0);
             this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.tableLayoutPanel2.Font = new System.Drawing.Font("맑은 고딕", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.tableLayoutPanel2.ForeColor = System.Drawing.Color.White;
             this.tableLayoutPanel2.Location = new System.Drawing.Point(0, 512);
+            this.tableLayoutPanel2.Margin = new System.Windows.Forms.Padding(0);
             this.tableLayoutPanel2.Name = "tableLayoutPanel2";
             this.tableLayoutPanel2.RowCount = 1;
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel2.Size = new System.Drawing.Size(1540, 25);
             this.tableLayoutPanel2.TabIndex = 0;
             // 
-            // lblMotionState
-            // 
-            this.lblMotionState.AutoSize = true;
-            this.lblMotionState.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblMotionState.Image = ((System.Drawing.Image)(resources.GetObject("lblMotionState.Image")));
-            this.lblMotionState.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.lblMotionState.Location = new System.Drawing.Point(1228, 0);
-            this.lblMotionState.Name = "lblMotionState";
-            this.lblMotionState.Size = new System.Drawing.Size(19, 25);
-            this.lblMotionState.TabIndex = 9;
-            this.lblMotionState.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // lblLightState
-            // 
-            this.lblLightState.AutoSize = true;
-            this.lblLightState.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblLightState.Image = ((System.Drawing.Image)(resources.GetObject("lblLightState.Image")));
-            this.lblLightState.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.lblLightState.Location = new System.Drawing.Point(1518, 0);
-            this.lblLightState.Name = "lblLightState";
-            this.lblLightState.Size = new System.Drawing.Size(19, 25);
-            this.lblLightState.TabIndex = 8;
-            this.lblLightState.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
             // lblPlcStateText
             // 
             this.lblPlcStateText.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblPlcStateText.Location = new System.Drawing.Point(1063, 0);
+            this.lblPlcStateText.Location = new System.Drawing.Point(1160, 0);
+            this.lblPlcStateText.Margin = new System.Windows.Forms.Padding(0);
             this.lblPlcStateText.Name = "lblPlcStateText";
-            this.lblPlcStateText.Size = new System.Drawing.Size(54, 25);
+            this.lblPlcStateText.Size = new System.Drawing.Size(70, 25);
             this.lblPlcStateText.TabIndex = 0;
             this.lblPlcStateText.Text = "PLC";
             this.lblPlcStateText.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
-            // lblPLCState
-            // 
-            this.lblPLCState.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblPLCState.Image = ((System.Drawing.Image)(resources.GetObject("lblPLCState.Image")));
-            this.lblPLCState.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.lblPLCState.Location = new System.Drawing.Point(1123, 0);
-            this.lblPLCState.Name = "lblPLCState";
-            this.lblPLCState.Size = new System.Drawing.Size(19, 25);
-            this.lblPLCState.TabIndex = 1;
-            this.lblPLCState.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // lblLicenseStateText
-            // 
-            this.lblLicenseStateText.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblLicenseStateText.Location = new System.Drawing.Point(1253, 0);
-            this.lblLicenseStateText.Name = "lblLicenseStateText";
-            this.lblLicenseStateText.Size = new System.Drawing.Size(79, 25);
-            this.lblLicenseStateText.TabIndex = 2;
-            this.lblLicenseStateText.Text = "Cognex";
-            this.lblLicenseStateText.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // lblLicenseState
-            // 
-            this.lblLicenseState.AutoSize = true;
-            this.lblLicenseState.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblLicenseState.Image = ((System.Drawing.Image)(resources.GetObject("lblLicenseState.Image")));
-            this.lblLicenseState.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.lblLicenseState.Location = new System.Drawing.Point(1338, 0);
-            this.lblLicenseState.Name = "lblLicenseState";
-            this.lblLicenseState.Size = new System.Drawing.Size(19, 25);
-            this.lblLicenseState.TabIndex = 3;
-            this.lblLicenseState.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
             // lblLafStateText
             // 
-            this.lblLafStateText.AutoSize = true;
             this.lblLafStateText.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblLafStateText.Location = new System.Drawing.Point(1363, 0);
+            this.lblLafStateText.Location = new System.Drawing.Point(1350, 0);
+            this.lblLafStateText.Margin = new System.Windows.Forms.Padding(0);
             this.lblLafStateText.Name = "lblLafStateText";
-            this.lblLafStateText.Size = new System.Drawing.Size(54, 25);
+            this.lblLafStateText.Size = new System.Drawing.Size(70, 25);
             this.lblLafStateText.TabIndex = 4;
             this.lblLafStateText.Text = "LAF";
             this.lblLafStateText.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
-            // lblLafState
-            // 
-            this.lblLafState.AutoSize = true;
-            this.lblLafState.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblLafState.Image = ((System.Drawing.Image)(resources.GetObject("lblLafState.Image")));
-            this.lblLafState.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.lblLafState.Location = new System.Drawing.Point(1423, 0);
-            this.lblLafState.Name = "lblLafState";
-            this.lblLafState.Size = new System.Drawing.Size(19, 25);
-            this.lblLafState.TabIndex = 5;
-            this.lblLafState.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
             // lblMotionStateText
             // 
-            this.lblMotionStateText.AutoSize = true;
             this.lblMotionStateText.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblMotionStateText.Location = new System.Drawing.Point(1148, 0);
+            this.lblMotionStateText.Location = new System.Drawing.Point(1255, 0);
+            this.lblMotionStateText.Margin = new System.Windows.Forms.Padding(0);
             this.lblMotionStateText.Name = "lblMotionStateText";
-            this.lblMotionStateText.Size = new System.Drawing.Size(74, 25);
+            this.lblMotionStateText.Size = new System.Drawing.Size(70, 25);
             this.lblMotionStateText.TabIndex = 6;
             this.lblMotionStateText.Text = "Motion";
             this.lblMotionStateText.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // lblLightStateText
             // 
-            this.lblLightStateText.AutoSize = true;
             this.lblLightStateText.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblLightStateText.Location = new System.Drawing.Point(1448, 0);
+            this.lblLightStateText.Location = new System.Drawing.Point(1445, 0);
+            this.lblLightStateText.Margin = new System.Windows.Forms.Padding(0);
             this.lblLightStateText.Name = "lblLightStateText";
-            this.lblLightStateText.Size = new System.Drawing.Size(64, 25);
+            this.lblLightStateText.Size = new System.Drawing.Size(70, 25);
             this.lblLightStateText.TabIndex = 7;
             this.lblLightStateText.Text = "Light";
             this.lblLightStateText.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -340,16 +269,6 @@
             this.tableLayoutPanel4.Size = new System.Drawing.Size(194, 44);
             this.tableLayoutPanel4.TabIndex = 0;
             // 
-            // lblLogPageImage
-            // 
-            this.lblLogPageImage.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblLogPageImage.Image = global::ATT_UT_IPAD.Properties.Resources.Log;
-            this.lblLogPageImage.Location = new System.Drawing.Point(3, 0);
-            this.lblLogPageImage.Name = "lblLogPageImage";
-            this.lblLogPageImage.Size = new System.Drawing.Size(44, 44);
-            this.lblLogPageImage.TabIndex = 1;
-            this.lblLogPageImage.Click += new System.EventHandler(this.lblLogPage_Click);
-            // 
             // lblLogPage
             // 
             this.lblLogPage.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -387,16 +306,6 @@
             this.tableLayoutPanel9.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel9.Size = new System.Drawing.Size(194, 44);
             this.tableLayoutPanel9.TabIndex = 0;
-            // 
-            // lblDataPageImage
-            // 
-            this.lblDataPageImage.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblDataPageImage.Image = global::ATT_UT_IPAD.Properties.Resources.Settings;
-            this.lblDataPageImage.Location = new System.Drawing.Point(3, 0);
-            this.lblDataPageImage.Name = "lblDataPageImage";
-            this.lblDataPageImage.Size = new System.Drawing.Size(44, 44);
-            this.lblDataPageImage.TabIndex = 1;
-            this.lblDataPageImage.Click += new System.EventHandler(this.lblDataPage_Click);
             // 
             // lblDataPage
             // 
@@ -436,16 +345,6 @@
             this.tableLayoutPanel1.Size = new System.Drawing.Size(194, 44);
             this.tableLayoutPanel1.TabIndex = 0;
             // 
-            // lblInspectionPageImage
-            // 
-            this.lblInspectionPageImage.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblInspectionPageImage.Image = ((System.Drawing.Image)(resources.GetObject("lblInspectionPageImage.Image")));
-            this.lblInspectionPageImage.Location = new System.Drawing.Point(3, 0);
-            this.lblInspectionPageImage.Name = "lblInspectionPageImage";
-            this.lblInspectionPageImage.Size = new System.Drawing.Size(44, 44);
-            this.lblInspectionPageImage.TabIndex = 1;
-            this.lblInspectionPageImage.Click += new System.EventHandler(this.lblMainPage_Click);
-            // 
             // lblMainPage
             // 
             this.lblMainPage.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -483,16 +382,6 @@
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel3.Size = new System.Drawing.Size(194, 44);
             this.tableLayoutPanel3.TabIndex = 0;
-            // 
-            // lblTeachingPageImage
-            // 
-            this.lblTeachingPageImage.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblTeachingPageImage.Image = global::ATT_UT_IPAD.Properties.Resources.Teaching;
-            this.lblTeachingPageImage.Location = new System.Drawing.Point(3, 0);
-            this.lblTeachingPageImage.Name = "lblTeachingPageImage";
-            this.lblTeachingPageImage.Size = new System.Drawing.Size(44, 44);
-            this.lblTeachingPageImage.TabIndex = 1;
-            this.lblTeachingPageImage.Click += new System.EventHandler(this.lblTeachingPage_Click);
             // 
             // lblTeachingPage
             // 
@@ -570,19 +459,6 @@
             this.lblCurrentUser.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.lblCurrentUser.Click += new System.EventHandler(this.lblCurrentUser_Click);
             // 
-            // pictureBox2
-            // 
-            this.pictureBox2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pictureBox2.Image = global::ATT_UT_IPAD.Properties.Resources.People;
-            this.pictureBox2.Location = new System.Drawing.Point(134, 0);
-            this.pictureBox2.Margin = new System.Windows.Forms.Padding(0);
-            this.pictureBox2.Name = "pictureBox2";
-            this.pictureBox2.Padding = new System.Windows.Forms.Padding(6);
-            this.pictureBox2.Size = new System.Drawing.Size(46, 48);
-            this.pictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.pictureBox2.TabIndex = 4;
-            this.pictureBox2.TabStop = false;
-            // 
             // lblCurrentModel
             // 
             this.lblCurrentModel.BackColor = System.Drawing.Color.Transparent;
@@ -595,18 +471,6 @@
             this.lblCurrentModel.Size = new System.Drawing.Size(174, 42);
             this.lblCurrentModel.TabIndex = 3;
             this.lblCurrentModel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // picLogo
-            // 
-            this.picLogo.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.picLogo.Image = global::ATT_UT_IPAD.Properties.Resources.JastechLogo;
-            this.picLogo.Location = new System.Drawing.Point(3, 3);
-            this.picLogo.Name = "picLogo";
-            this.picLogo.Size = new System.Drawing.Size(214, 42);
-            this.picLogo.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.picLogo.TabIndex = 0;
-            this.picLogo.TabStop = false;
-            this.picLogo.Click += new System.EventHandler(this.picLogo_Click);
             // 
             // lblMachineName
             // 
@@ -632,6 +496,119 @@
             this.tmrUpdateStates.Interval = 300;
             this.tmrUpdateStates.Tick += new System.EventHandler(this.tmrUpdateStates_Tick);
             // 
+            // lblMotionState
+            // 
+            this.lblMotionState.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblMotionState.Image = ((System.Drawing.Image)(resources.GetObject("lblMotionState.Image")));
+            this.lblMotionState.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.lblMotionState.Location = new System.Drawing.Point(1325, 0);
+            this.lblMotionState.Margin = new System.Windows.Forms.Padding(0);
+            this.lblMotionState.Name = "lblMotionState";
+            this.lblMotionState.Size = new System.Drawing.Size(25, 25);
+            this.lblMotionState.TabIndex = 9;
+            this.lblMotionState.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // lblLightState
+            // 
+            this.lblLightState.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblLightState.Image = ((System.Drawing.Image)(resources.GetObject("lblLightState.Image")));
+            this.lblLightState.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.lblLightState.Location = new System.Drawing.Point(1515, 0);
+            this.lblLightState.Margin = new System.Windows.Forms.Padding(0);
+            this.lblLightState.Name = "lblLightState";
+            this.lblLightState.Size = new System.Drawing.Size(25, 25);
+            this.lblLightState.TabIndex = 8;
+            this.lblLightState.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // lblPLCState
+            // 
+            this.lblPLCState.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblPLCState.Image = ((System.Drawing.Image)(resources.GetObject("lblPLCState.Image")));
+            this.lblPLCState.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.lblPLCState.Location = new System.Drawing.Point(1230, 0);
+            this.lblPLCState.Margin = new System.Windows.Forms.Padding(0);
+            this.lblPLCState.Name = "lblPLCState";
+            this.lblPLCState.Size = new System.Drawing.Size(25, 25);
+            this.lblPLCState.TabIndex = 1;
+            this.lblPLCState.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // lblLafState
+            // 
+            this.lblLafState.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblLafState.Image = ((System.Drawing.Image)(resources.GetObject("lblLafState.Image")));
+            this.lblLafState.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.lblLafState.Location = new System.Drawing.Point(1420, 0);
+            this.lblLafState.Margin = new System.Windows.Forms.Padding(0);
+            this.lblLafState.Name = "lblLafState";
+            this.lblLafState.Size = new System.Drawing.Size(25, 25);
+            this.lblLafState.TabIndex = 5;
+            this.lblLafState.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // lblLogPageImage
+            // 
+            this.lblLogPageImage.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblLogPageImage.Image = global::ATT_UT_IPAD.Properties.Resources.Log;
+            this.lblLogPageImage.Location = new System.Drawing.Point(3, 0);
+            this.lblLogPageImage.Name = "lblLogPageImage";
+            this.lblLogPageImage.Size = new System.Drawing.Size(44, 44);
+            this.lblLogPageImage.TabIndex = 1;
+            this.lblLogPageImage.Click += new System.EventHandler(this.lblLogPage_Click);
+            // 
+            // lblDataPageImage
+            // 
+            this.lblDataPageImage.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblDataPageImage.Image = global::ATT_UT_IPAD.Properties.Resources.Settings;
+            this.lblDataPageImage.Location = new System.Drawing.Point(3, 0);
+            this.lblDataPageImage.Name = "lblDataPageImage";
+            this.lblDataPageImage.Size = new System.Drawing.Size(44, 44);
+            this.lblDataPageImage.TabIndex = 1;
+            this.lblDataPageImage.Click += new System.EventHandler(this.lblDataPage_Click);
+            // 
+            // lblInspectionPageImage
+            // 
+            this.lblInspectionPageImage.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblInspectionPageImage.Image = ((System.Drawing.Image)(resources.GetObject("lblInspectionPageImage.Image")));
+            this.lblInspectionPageImage.Location = new System.Drawing.Point(3, 0);
+            this.lblInspectionPageImage.Name = "lblInspectionPageImage";
+            this.lblInspectionPageImage.Size = new System.Drawing.Size(44, 44);
+            this.lblInspectionPageImage.TabIndex = 1;
+            this.lblInspectionPageImage.Click += new System.EventHandler(this.lblMainPage_Click);
+            // 
+            // lblTeachingPageImage
+            // 
+            this.lblTeachingPageImage.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblTeachingPageImage.Image = global::ATT_UT_IPAD.Properties.Resources.Teaching;
+            this.lblTeachingPageImage.Location = new System.Drawing.Point(3, 0);
+            this.lblTeachingPageImage.Name = "lblTeachingPageImage";
+            this.lblTeachingPageImage.Size = new System.Drawing.Size(44, 44);
+            this.lblTeachingPageImage.TabIndex = 1;
+            this.lblTeachingPageImage.Click += new System.EventHandler(this.lblTeachingPage_Click);
+            // 
+            // pictureBox2
+            // 
+            this.pictureBox2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pictureBox2.Image = global::ATT_UT_IPAD.Properties.Resources.People;
+            this.pictureBox2.Location = new System.Drawing.Point(134, 0);
+            this.pictureBox2.Margin = new System.Windows.Forms.Padding(0);
+            this.pictureBox2.Name = "pictureBox2";
+            this.pictureBox2.Padding = new System.Windows.Forms.Padding(6);
+            this.pictureBox2.Size = new System.Drawing.Size(46, 48);
+            this.pictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.pictureBox2.TabIndex = 4;
+            this.pictureBox2.TabStop = false;
+            // 
+            // picLogo
+            // 
+            this.picLogo.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.picLogo.Image = global::ATT_UT_IPAD.Properties.Resources.JastechLogo;
+            this.picLogo.Location = new System.Drawing.Point(3, 3);
+            this.picLogo.Name = "picLogo";
+            this.picLogo.Size = new System.Drawing.Size(214, 42);
+            this.picLogo.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.picLogo.TabIndex = 0;
+            this.picLogo.TabStop = false;
+            this.picLogo.Click += new System.EventHandler(this.picLogo_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
@@ -648,7 +625,6 @@
             this.tlpMainForm.ResumeLayout(false);
             this.pnlPage.ResumeLayout(false);
             this.tableLayoutPanel2.ResumeLayout(false);
-            this.tableLayoutPanel2.PerformLayout();
             this.tlpFunctionButtons.ResumeLayout(false);
             this.panel4.ResumeLayout(false);
             this.tableLayoutPanel4.ResumeLayout(false);
@@ -702,8 +678,6 @@
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
         private System.Windows.Forms.Label lblPlcStateText;
         private System.Windows.Forms.Label lblPLCState;
-        private System.Windows.Forms.Label lblLicenseStateText;
-        private System.Windows.Forms.Label lblLicenseState;
         private System.Windows.Forms.Label lblLafStateText;
         private System.Windows.Forms.Label lblLafState;
         private System.Windows.Forms.Timer tmrUpdateStates;

@@ -121,7 +121,7 @@
   <data name="lblInspectionPageImage.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAL
-        EQAACxEBf2RfkQAAAvtJREFUaEPtms1OFEEUhccEVhAfAAVZgH+JbHwNXIKukLjwB30mJYBowgO4Yo8x
+        DwAACw8BkvkDpQAAAvtJREFUaEPtms1OFEEUhccEVhAfAAVZgH+JbHwNXIKukLjwB30mJYBowgO4Yo8x
         gehaXZGYiBqM8QeNGb8zfWdj6K5bXdVMT/RLTiR6z6kqprv6do2d/wwr3W53Fj1AT9Ae+oh+mvTzLtK/
         3UezZhssTGQULaHnKJYdJO+oxZ0sDHwNvUGpvEbzFts8DDaO1jRyZpQ5bsM0AwNMoFcarSGUPWHD5UXB
         6K1GaRiNkXcRBOqyafI3/zcvUb7LibAmrvkQazZ8GgRpt/HyDa2jBXQejZn08yLaQN+Rl7TdiQDt896t
@@ -139,6 +139,9 @@
   </data>
   <metadata name="tmrMainForm.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>17, 17</value>
+  </metadata>
+  <metadata name="tmrUpdateStates.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>135, 17</value>
   </metadata>
   <metadata name="$this.TrayHeight" type="System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>81</value>

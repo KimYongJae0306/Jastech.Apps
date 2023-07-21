@@ -1,4 +1,4 @@
-﻿using ATT_UT_IPAD.Core.Data;
+﻿using ATT.Core.Data;
 using Jastech.Apps.Structure;
 using Jastech.Apps.Structure.Data;
 using Jastech.Apps.Structure.VisionTool;
@@ -9,7 +9,6 @@ using Jastech.Framework.Algorithms.Akkon;
 using Jastech.Framework.Algorithms.Akkon.Parameters;
 using Jastech.Framework.Algorithms.Akkon.Results;
 using Jastech.Framework.Imaging.Result;
-using Jastech.Framework.Imaging.VisionPro;
 using Jastech.Framework.Util;
 using Jastech.Framework.Util.Helper;
 using System;
@@ -21,7 +20,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace ATT_UT_IPAD.Core.AppTask
+namespace ATT.Core.AppTask
 {
     public class InspProcessTask
     {
@@ -58,14 +57,6 @@ namespace ATT_UT_IPAD.Core.AppTask
         #endregion
 
         #region 메서드
-        // Akkon Camera로 Akkon, Align 검사 실행
-        private void RunAkkonImage(ATTInspTab inspTab)
-        {
-            RunAlign(inspTab);
-            RunAkkon(inspTab);
-        }
-
-        //Akkon Camera로 Akkon만 검사
         private void RunAkkon(ATTInspTab inspTab)
         {
             Stopwatch sw = new Stopwatch();
@@ -84,8 +75,8 @@ namespace ATT_UT_IPAD.Core.AppTask
 
             // Create Coordinate Object
             CoordinateTransform panelCoordinate = new CoordinateTransform();
-            algorithmTool.MainMarkInspect(inspTab.MergeCogImage, tab, ref inspResult, true);
-            //algorithmTool.MainMarkInspect(inspTab.MergeCogImage, tab, ref inspResult, false);
+
+            algorithmTool.MainMarkInspect(inspTab.MergeCogImage, tab, ref inspResult, false);
 
             if (inspResult.MarkResult.Judgement != Judgement.OK)
             {
@@ -113,7 +104,7 @@ namespace ATT_UT_IPAD.Core.AppTask
                     var coordinateList = RenewalAkkonRoi(roiList, panelCoordinate);
 
                     Judgement tabJudgement = Judgement.NG;
-                    var leadResultList = AkkonAlgorithm.Run(inspTab.MergeMatImage, coordinateList, tab.AkkonParam.AkkonAlgoritmParam, resolution_um, ref tabJudgement);
+                    var leadResultList = AkkonAlgorithm.Run(inspTab.MergeMatImage, coordinateList, tab.AkkonParam.AkkonAlgoritmParam, resolution_um, tabJudgement);
 
                     inspResult.AkkonResult = CreateAkkonResult(unitName, tab.Index, leadResultList);
                     inspResult.AkkonResult.Judgement = tabJudgement;
@@ -125,7 +116,7 @@ namespace ATT_UT_IPAD.Core.AppTask
                 sw.Stop();
                 string resultMessage = string.Format("Tab {0} Akkon Inspection Completed.({1}ms)", (inspTab.TabScanBuffer.TabNo + 1), sw.ElapsedMilliseconds);
                 Console.WriteLine(resultMessage);
-                WriteLog(resultMessage, false);
+                WriteLog(resultMessage, true);
             }
 
             AppsInspResult.Instance().AddAkkon(inspResult);
@@ -133,7 +124,6 @@ namespace ATT_UT_IPAD.Core.AppTask
             InspAkkonCount++;
         }
 
-        //Align Camera로 Align만 검사
         private void RunAlign(ATTInspTab inspTab)
         {
             Stopwatch sw = new Stopwatch();
@@ -153,24 +143,19 @@ namespace ATT_UT_IPAD.Core.AppTask
             // Create Coordinate Object
             CoordinateTransform fpcCoordinate = new CoordinateTransform();
             CoordinateTransform panelCoordinate = new CoordinateTransform();
-         
-            algorithmTool.MainMarkInspect(inspTab.MergeCogImage, tab, ref inspResult, true);
+
+            algorithmTool.MainMarkInspect(inspTab.MergeCogImage, tab, ref inspResult, false);
 
             if (inspResult.MarkResult.Judgement != Judgement.OK)
             {
                 // 검사 실패
                 string message = string.Format("Mark Inspection NG !!! Tab_{0} / Fpc_{1}, Panel_{2}", tab.Index, inspResult.MarkResult.FpcMark.Judgement, inspResult.MarkResult.PanelMark.Judgement);
-                WriteLog(message, false);
+                WriteLog(message);
                 Logger.Debug(LogType.Inspection, message);
                 inspResult.AlignResult = new TabAlignResult();
             }
             else
             {
-                // 검사 실패
-                string tq = string.Format("Mark Inspection OK !!! Tab_{0} / Fpc_{1}, Panel_{2}", tab.Index, inspResult.MarkResult.FpcMark.Judgement, inspResult.MarkResult.PanelMark.Judgement);
-                WriteLog(tq, false);
-                Logger.Debug(LogType.Inspection, tq);
-
                 // Set Coordinate Params
                 SetFpcCoordinateData(fpcCoordinate, inspResult);
                 SetPanelCoordinateData(panelCoordinate, inspResult);
@@ -179,7 +164,7 @@ namespace ATT_UT_IPAD.Core.AppTask
                 fpcCoordinate.ExecuteCoordinate();
                 panelCoordinate.ExecuteCoordinate();
 
-                var lineCamera = LineCameraManager.Instance().GetLineCamera("AlignCamera").Camera;
+                var lineCamera = LineCameraManager.Instance().GetLineCamera("AkkonCamera").Camera;
 
                 float resolution_um = lineCamera.PixelResolution_um / lineCamera.LensScale;
                 double judgementX = tab.AlignSpec.LeftSpecX_um / resolution_um;
@@ -237,7 +222,7 @@ namespace ATT_UT_IPAD.Core.AppTask
                 sw.Stop();
                 string resultMessage = string.Format("Tab {0} Align Inspection Completed.({1}ms)", (inspTab.TabScanBuffer.TabNo + 1), sw.ElapsedMilliseconds);
                 Console.WriteLine(resultMessage);
-                WriteLog(resultMessage, false);
+                WriteLog(resultMessage, true);
             }
 
             AppsInspResult.Instance().AddAlign(inspResult);
@@ -333,12 +318,7 @@ namespace ATT_UT_IPAD.Core.AppTask
                     break;
 
                 if (GetInspAkkonTab() is ATTInspTab inspTab)
-                {
-                    if (AppsConfig.Instance().EnableTest1)
-                        RunAkkonImage(inspTab);
-                    else
-                        RunAkkon(inspTab);
-                }
+                    RunAkkon(inspTab);
 
                 Thread.Sleep(50);
             }
@@ -352,10 +332,7 @@ namespace ATT_UT_IPAD.Core.AppTask
                     break;
 
                 if (GetInspAlignTab() is ATTInspTab inspTab)
-                {
-                    if (AppsConfig.Instance().EnableTest1 == false)
-                        RunAlign(inspTab);
-                }
+                    RunAlign(inspTab);
 
                 Thread.Sleep(50);
             }

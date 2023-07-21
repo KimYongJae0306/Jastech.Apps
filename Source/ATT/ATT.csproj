@@ -85,6 +85,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Core\AppTask\InspProcessTask.cs" />
     <Compile Include="Core\ATTInspModelService.cs" />
     <Compile Include="Core\ATTInspRunner.cs" />
     <Compile Include="Core\Data\AppsInspResult.cs" />
@@ -108,6 +109,12 @@
     </Compile>
     <Compile Include="UI\Controls\AlignViewerControl.Designer.cs">
       <DependentUpon>AlignViewerControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Controls\DailyInfoViewerControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UI\Controls\DailyInfoViewerControl.Designer.cs">
+      <DependentUpon>DailyInfoViewerControl.cs</DependentUpon>
     </Compile>
     <Compile Include="UI\Forms\MotionSettingsForm.cs">
       <SubType>Form</SubType>
@@ -169,6 +176,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UI\Controls\AlignViewerControl.resx">
       <DependentUpon>AlignViewerControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\Controls\DailyInfoViewerControl.resx">
+      <DependentUpon>DailyInfoViewerControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\Forms\MotionSettingsForm.resx">
       <DependentUpon>MotionSettingsForm.cs</DependentUpon>
@@ -331,6 +341,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Start_White.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Circle_Green.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Circle_Red.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
