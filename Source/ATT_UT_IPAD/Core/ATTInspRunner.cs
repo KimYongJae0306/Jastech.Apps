@@ -359,9 +359,6 @@ namespace ATT_UT_IPAD.Core
                     AkkonCamera.StartGrab();
                     AkkonLAFCtrl.SetTrackingOnOFF(true);
                     WriteLog("Start Akkon LineScanner Grab.", true);
-
-                    
-                   
                     
                     Thread.Sleep(50);
                     if (ConfigSet.Instance().Operation.VirtualMode)
@@ -396,6 +393,8 @@ namespace ATT_UT_IPAD.Core
 
                     WriteLog("Complete Align LineScanner Grab.", true);
 
+                    LightCtrlHandler.TurnOff();
+                    WriteLog("Light Off.", false);
                     LastInspSW.Restart();
 
                     SeqStep = SeqStep.SEQ_WAITING_INSPECTION_DONE;

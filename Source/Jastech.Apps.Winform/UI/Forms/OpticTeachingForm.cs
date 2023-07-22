@@ -578,6 +578,8 @@ namespace Jastech.Framework.Winform.Forms
             var lineCameraData = unit.GetLineCameraData(LineCamera.Camera.Name);
             lineCameraData.DigitalGain = Convert.ToDouble(lblDigitalGainValue.Text);
             lineCameraData.AnalogGain = Convert.ToInt16(lblAnalogGainValue.Text);
+            _prevDigitalGain = lineCameraData.DigitalGain;
+            _prevAnalogGain = lineCameraData.AnalogGain;
         }
 
         private void btnSave_Click(object sender, EventArgs e)

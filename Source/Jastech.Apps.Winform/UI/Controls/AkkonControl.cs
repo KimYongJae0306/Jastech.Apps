@@ -1159,7 +1159,7 @@ namespace Jastech.Apps.Winform.UI.Controls
                     var polygon = _autoTeachingCollect[0] as CogPolygon;
                     var cropCogImage = VisionProImageHelper.CropImage(cogImage, polygon);
 
-                    var targetMat = GetTeachingConvertImage(cogImage, polygon);
+                    var targetMat = GetTeachingConvertImage(cogImage, polygon, threshold);
                     var cropImage = AlgorithmTool.ConvertCogImage(targetMat);
                     cropImage.PixelFromRootTransform = cropCogImage.PixelFromRootTransform;
 
@@ -1169,13 +1169,13 @@ namespace Jastech.Apps.Winform.UI.Controls
             }
         }
 
-        private Mat GetTeachingConvertImage(ICogImage cogImage, CogPolygon polygon)
+        private Mat GetTeachingConvertImage(ICogImage cogImage, CogPolygon polygon, int threshold)
         {
             Rectangle rect = GetRectangle(polygon);
             CogRectangle cogRect = VisionProImageHelper.CreateRectangle(rect.X + (rect.Width / 2), rect.Y + (rect.Height / 2), rect.Width, rect.Height);
             Mat sourceMat = TeachingUIManager.Instance().GetOriginMatImageBuffer(false);
             Mat cropMat = MatHelper.CropRoi(sourceMat, rect);
-            CvInvoke.Threshold(cropMat, cropMat, 85, 255, ThresholdType.Binary);
+            CvInvoke.Threshold(cropMat, cropMat, threshold, 255, ThresholdType.Binary);
 
             if (ckbIgnoreNoise.Checked)
             {
@@ -1315,7 +1315,7 @@ namespace Jastech.Apps.Winform.UI.Controls
             int threshold = Convert.ToInt32(lblAutoThresholdValue.Text);
             var cropCogImage = VisionProImageHelper.CropImage(image, _autoTeachingPolygon);
 
-            var cropTargetMat = GetTeachingConvertImage(image, _autoTeachingPolygon as CogPolygon);
+            var cropTargetMat = GetTeachingConvertImage(image, _autoTeachingPolygon, threshold);
 
             if(ckbIgnoreNoise.Checked)
             {
@@ -1339,25 +1339,25 @@ namespace Jastech.Apps.Winform.UI.Controls
                 List<PointF> targetTopPointList =  GetPointListOfLine(leftTop, rightTop, 5);
                 List<PointF> targetBottomPointList = GetPointListOfLine(leftBottom, rightBottom, -5);
 
-                Mat colorMat = new Mat();
-                CvInvoke.CvtColor(targetMat, colorMat, ColorConversion.Gray2Bgr);
-                foreach (var item in targetTopPointList)
-                {
+                //Mat colorMat = new Mat();
+                //CvInvoke.CvtColor(targetMat, colorMat, ColorConversion.Gray2Bgr);
+                //foreach (var item in targetTopPointList)
+                //{
 
-                    Point point = new Point((int)item.X, (int)item.Y);
-                    CvInvoke.Line(colorMat, point, point, new MCvScalar(50, 230, 50, 255));
-                    //CvInvoke.DrawMarker(colorMat, point, new MCvScalar(50, 230, 50, 255), MarkerTypes.Cross, 1, 1);
-                }
-                foreach (var item in targetBottomPointList)
-                {
+                //    Point point = new Point((int)item.X, (int)item.Y);
+                //    CvInvoke.Line(colorMat, point, point, new MCvScalar(50, 230, 50, 255));
+                //    //CvInvoke.DrawMarker(colorMat, point, new MCvScalar(50, 230, 50, 255), MarkerTypes.Cross, 1, 1);
+                //}
+                //foreach (var item in targetBottomPointList)
+                //{
 
-                    Point point = new Point((int)item.X, (int)item.Y);
-                    CvInvoke.Line(colorMat, point, point, new MCvScalar(50, 230, 50, 255));
-                    //CvInvoke.DrawMarker(colorMat, point, new MCvScalar(50, 230, 50, 255), MarkerTypes.Cross, 1, 1);
-                }
+                //    Point point = new Point((int)item.X, (int)item.Y);
+                //    CvInvoke.Line(colorMat, point, point, new MCvScalar(50, 230, 50, 255));
+                //    //CvInvoke.DrawMarker(colorMat, point, new MCvScalar(50, 230, 50, 255), MarkerTypes.Cross, 1, 1);
+                //}
 
 
-                colorMat.Save(@"D:\123.bmp");
+                //colorMat.Save(@"D:\123.bmp");
 
 
 
@@ -1612,7 +1612,7 @@ namespace Jastech.Apps.Winform.UI.Controls
         {
             if (GetGroup() is AkkonGroup group)
             {
-                group.AkkonROIList.Clear();
+                //group.AkkonROIList.Clear();
                 foreach (var roi in roiList)
                 {
                     AkkonROI akkonRoi = new AkkonROI

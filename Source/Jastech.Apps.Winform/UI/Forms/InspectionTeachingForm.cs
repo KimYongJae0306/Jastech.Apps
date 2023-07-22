@@ -458,9 +458,9 @@ namespace Jastech.Framework.Winform.Forms
             else
                 MotionManager.Instance().MoveTo(TeachingPosType.Stage1_Scan_End);
 
-            // TEST_230810_S
-            //LAFCtrl.SetTrackingOnOFF(false);
-            // TEST_230810_E
+            LAFCtrl.SetTrackingOnOFF(false);
+            Thread.Sleep(100);
+            DeviceManager.Instance().LightCtrlHandler.TurnOff();
         }
 
         public void InitalizeInspTab(List<TabScanBuffer> bufferList)

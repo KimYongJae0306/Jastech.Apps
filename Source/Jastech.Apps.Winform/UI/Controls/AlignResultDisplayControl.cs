@@ -326,7 +326,8 @@ namespace ATT_UT_IPAD.UI.Controls
         {
             if (pointList == null)
                 return new PointF();
-
+            if (pointList.Count() == 0)
+                return new PointF();
             //float totalX = 0;
             //float totalY = 0;
 
