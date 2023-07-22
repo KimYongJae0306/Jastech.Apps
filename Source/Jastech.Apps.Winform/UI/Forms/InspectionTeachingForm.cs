@@ -222,20 +222,20 @@ namespace Jastech.Framework.Winform.Forms
 
             // Teaching Item
             // 임시
-            //if (LineCamera.Camera.Name.ToUpper().Contains("ALIGN"))
-            //{
-            //    tlpTeachingItems.Controls.Add(btnAlign, 2, 0);
-            //    btnAlign.Visible = true;
-            //    btnAkkon.Visible = false;
-            //}
-            //else if (LineCamera.Camera.Name.ToUpper().Contains("AKKON"))
-            //{
-            //    tlpTeachingItems.Controls.Add(btnAkkon, 2, 0);
-            //    btnAlign.Visible = false;
-            //    btnAkkon.Visible = true;
-            //    MarkControl.TeachingItem = TeachingItem.Akkon;
-            //}
-            //else { }
+            if (LineCamera.Camera.Name.ToUpper().Contains("ALIGN"))
+            {
+                tlpTeachingItems.Controls.Add(btnAlign, 2, 0);
+                btnAlign.Visible = true;
+                btnAkkon.Visible = false;
+            }
+            else if (LineCamera.Camera.Name.ToUpper().Contains("AKKON"))
+            {
+                tlpTeachingItems.Controls.Add(btnAkkon, 2, 0);
+                btnAlign.Visible = false;
+                btnAkkon.Visible = true;
+                MarkControl.TeachingItem = TeachingItem.Akkon;
+            }
+            else { }
         }
 
         private void Display_DeleteEventHandler(object sender, EventArgs e)
