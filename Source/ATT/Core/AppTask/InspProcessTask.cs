@@ -104,7 +104,7 @@ namespace ATT.Core.AppTask
                     var coordinateList = RenewalAkkonRoi(roiList, panelCoordinate);
 
                     Judgement tabJudgement = Judgement.NG;
-                    var leadResultList = AkkonAlgorithm.Run(inspTab.MergeMatImage, coordinateList, tab.AkkonParam.AkkonAlgoritmParam, resolution_um, tabJudgement);
+                    var leadResultList = AkkonAlgorithm.Run(inspTab.MergeMatImage, coordinateList, tab.AkkonParam.AkkonAlgoritmParam, resolution_um,ref tabJudgement);
 
                     inspResult.AkkonResult = CreateAkkonResult(unitName, tab.Index, leadResultList);
                     inspResult.AkkonResult.Judgement = tabJudgement;

@@ -31,7 +31,7 @@ namespace Jastech.Apps.Winform.UI.Controls
     public partial class AkkonControl : UserControl
     {
         #region 필드
-        private CogRectangle _autoTeachingRect { get; set; } = null;
+        private CogPolygon _autoTeachingPolygon { get; set; } = null;
 
         private CogGraphicInteractiveCollection _autoTeachingCollect { get; set; } = new CogGraphicInteractiveCollection();
 
@@ -302,15 +302,23 @@ namespace Jastech.Apps.Winform.UI.Controls
             double centerX = display.ImageWidth() / 2.0 - display.GetPan().X;
             double centerY = display.ImageHeight() / 2.0 - display.GetPan().Y;
 
-            _autoTeachingRect = VisionProImageHelper.CreateRectangle(centerX, centerY, display.ImageWidth(), display.ImageHeight());
-            _autoTeachingRect.DraggingStopped += AutoTeachingRect_DraggingStopped;
+            _autoTeachingPolygon = new CogPolygon();
+            _autoTeachingPolygon.GraphicDOFEnable = CogPolygonDOFConstants.All;
+            _autoTeachingPolygon.GraphicDOFEnableBase = CogGraphicDOFConstants.All;
+
+            _autoTeachingPolygon.AddVertex(centerX - 100, centerY - 100, 0);
+            _autoTeachingPolygon.AddVertex(centerX + 100, centerY - 100, 1);
+            _autoTeachingPolygon.AddVertex(centerX + 100, centerY + 100, 2);
+            _autoTeachingPolygon.AddVertex(centerX - 100, centerY + 100, 3);
+            _autoTeachingPolygon.DraggingStopped += AutoTeachingRect_DraggingStopped;
+            _autoTeachingPolygon.Interactive = true;
 
             var teachingDisplay = TeachingUIManager.Instance().GetDisplay();
             if (teachingDisplay.GetImage() == null)
                 return;
 
             _autoTeachingCollect.Clear();
-            _autoTeachingCollect.Add(_autoTeachingRect);
+            _autoTeachingCollect.Add(_autoTeachingPolygon);
             teachingDisplay.DeleteInInteractiveGraphics("tool");
             teachingDisplay.SetInteractiveGraphics("tool", _autoTeachingCollect);
         }
@@ -1129,7 +1137,7 @@ namespace Jastech.Apps.Winform.UI.Controls
                 lblThresholdPreview.BackColor = _nonSelectedColor;
 
                 _autoTeachingCollect.Clear();
-                _autoTeachingCollect.Add(_autoTeachingRect);
+                _autoTeachingCollect.Add(_autoTeachingPolygon);
 
                 teachingDisplay.SetImage(TeachingUIManager.Instance().GetOriginCogImageBuffer(true));
 
@@ -1148,33 +1156,32 @@ namespace Jastech.Apps.Winform.UI.Controls
                         return;
 
                     ICogImage cogImage = display.GetImage();
-                    var roi = _autoTeachingCollect[0] as CogRectangle;
-                    var cropCogImage = VisionProImageHelper.CropImage(cogImage, roi);
+                    var polygon = _autoTeachingCollect[0] as CogPolygon;
+                    var cropCogImage = VisionProImageHelper.CropImage(cogImage, polygon);
 
-                    var targetMat = GetTeachingConvertImage(cogImage, roi);
+                    var targetMat = GetTeachingConvertImage(cogImage, polygon);
                     var cropImage = AlgorithmTool.ConvertCogImage(targetMat);
                     cropImage.PixelFromRootTransform = cropCogImage.PixelFromRootTransform;
 
-                    var convertImage = VisionProImageHelper.CogCopyRegionTool(cogImage, cropImage, roi, true);
+                    var convertImage = VisionProImageHelper.CogCopyRegionTool(cogImage, cropImage, polygon, true);
                     TeachingUIManager.Instance().SetBinaryCogImageBuffer(convertImage as CogImage8Grey);
                 }
             }
         }
 
-        private Mat GetTeachingConvertImage(ICogImage cogImage, CogRectangle roi)
+        private Mat GetTeachingConvertImage(ICogImage cogImage, CogPolygon polygon)
         {
-            Rectangle rect = new Rectangle(new Point((int)roi.X, (int)roi.Y), new Size((int)roi.Width, (int)roi.Height));
-
+            Rectangle rect = GetRectangle(polygon);
+            CogRectangle cogRect = VisionProImageHelper.CreateRectangle(rect.X + (rect.Width / 2), rect.Y + (rect.Height / 2), rect.Width, rect.Height);
             Mat sourceMat = TeachingUIManager.Instance().GetOriginMatImageBuffer(false);
             Mat cropMat = MatHelper.CropRoi(sourceMat, rect);
             CvInvoke.Threshold(cropMat, cropMat, 85, 255, ThresholdType.Binary);
 
             if (ckbIgnoreNoise.Checked)
             {
-                Mat maskingMat = MakeMaskImage(new Size(cropMat.Width, cropMat.Height), roi, rect.X, rect.Y);
+                Mat maskingMat = MakeMaskImage(new Size(cropMat.Width, cropMat.Height), cogRect, rect.X, rect.Y);
                 Mat targetMat = new Mat();
                 CvInvoke.BitwiseAnd(maskingMat, cropMat, targetMat);
-
                 Mat filterdMat = GetFilterImage(targetMat);
                 cropMat.Dispose();
                 maskingMat.Dispose();
@@ -1186,6 +1193,28 @@ namespace Jastech.Apps.Winform.UI.Controls
             {
                 return cropMat;
             }
+        }
+
+        private Rectangle GetRectangle(CogPolygon polygon)
+        {
+            List<PointF> boundingPoint = new List<PointF>();
+            var vertices = polygon.GetVertices();
+
+            boundingPoint.Add(new PointF((float)vertices[0, 0], (float)vertices[0, 1]));
+            boundingPoint.Add(new PointF((float)vertices[1, 0], (float)vertices[1, 1]));
+            boundingPoint.Add(new PointF((float)vertices[2, 0], (float)vertices[2, 1]));
+            boundingPoint.Add(new PointF((float)vertices[3, 0], (float)vertices[3, 1]));
+
+            float minX = boundingPoint.Select(point => point.X).Min();
+            float maxX = boundingPoint.Select(point => point.X).Max();
+
+            float minY = boundingPoint.Select(point => point.Y).Min();
+            float maxY = boundingPoint.Select(point => point.Y).Max();
+
+            float width = (maxX - minX);
+            float height = (maxY - minY);
+
+            return new Rectangle((int)minX, (int)minY, (int)width, (int)height);
         }
 
         private Mat GetFilterImage(Mat mat)
@@ -1270,6 +1299,8 @@ namespace Jastech.Apps.Winform.UI.Controls
 
             var roiList = GetAutoTeachingRoiList(image);
 
+            if (roiList == null)
+                return;
             if (roiList.Count == 0)
                 return;
 
@@ -1282,59 +1313,301 @@ namespace Jastech.Apps.Winform.UI.Controls
         private List<CogRectangleAffine> GetAutoTeachingRoiList(ICogImage image)
         {
             int threshold = Convert.ToInt32(lblAutoThresholdValue.Text);
-            var cropCogImage = VisionProImageHelper.CropImage(image, _autoTeachingRect);
+            var cropCogImage = VisionProImageHelper.CropImage(image, _autoTeachingPolygon);
 
+            var cropTargetMat = GetTeachingConvertImage(image, _autoTeachingPolygon as CogPolygon);
 
-            var targetMat = GetTeachingConvertImage(image, _autoTeachingRect);
-            var cropImage = AlgorithmTool.ConvertCogImage(targetMat);
-
-            byte[] topDataArray = new byte[targetMat.Step];
-            Marshal.Copy(targetMat.DataPointer, topDataArray, 0, targetMat.Step);
-
-            byte[] bottomDataArray = new byte[targetMat.Step];
-            int startIndex = targetMat.Step * (targetMat.Height - 1);
-            Marshal.Copy(targetMat.DataPointer + startIndex, bottomDataArray, 0, targetMat.Step);
-
-            List<int> topEdgePointList = new List<int>();
-            List<int> bottomEdgePointList = new List<int>();
-
-            ImageHelper.GetEdgePoint(topDataArray, bottomDataArray, 255, (int)21/*CalcResolution*/, ref topEdgePointList, ref bottomEdgePointList);
-
-            if (topEdgePointList.Count != bottomEdgePointList.Count)
+            if(ckbIgnoreNoise.Checked)
             {
-                MessageConfirmForm form = new MessageConfirmForm();
-                form.Message = "The number of edge points found is different.";
-                form.ShowDialog();
-                return new List<CogRectangleAffine>();
-            }
+                Rectangle roi = GetRectangle(_autoTeachingPolygon);
+                Mat targetImage = new Mat(new Size(image.Width, image.Height), DepthType.Cv8U, 1);
+                Mat temp = new Mat(targetImage, roi);
+                cropTargetMat.CopyTo(temp);
 
-            List<PointF> topPointList = new List<PointF>();
-            foreach (var xIndex in topEdgePointList)
-            {
-                float pointX = (float)(_autoTeachingRect.X + xIndex);
-                float pointY = (float)_autoTeachingRect.Y;
-                topPointList.Add(new PointF(pointX, pointY));
-            }
+                Mat polygonMaskImage = GetPolygonMaskingImage(new Size(image.Width, image.Height));
 
-            List<PointF> bottomPointList = new List<PointF>();
-            foreach (var xIndex in bottomEdgePointList)
-            {
-                float pointX = (float)(_autoTeachingRect.X + xIndex);
-                float pointY = (float)(_autoTeachingRect.Y + _autoTeachingRect.Height);
-                bottomPointList.Add(new PointF(pointX, pointY));
-            }
+                Mat targetMat = new Mat();
+                CvInvoke.BitwiseAnd(polygonMaskImage, targetImage, targetMat);
 
-            var roiList = VisionProImageHelper.CreateRectangleAffine(topPointList, bottomPointList);
-            if (roiList == null)
-            {
-                MessageConfirmForm form = new MessageConfirmForm();
-                form.Message = "The top and bottom of the found edge points are different.";
-                form.ShowDialog();
-                return new List<CogRectangleAffine>();
+                var vertices = _autoTeachingPolygon.GetVertices();
+
+                PointF leftTop = new PointF((float)vertices[0, 0], (float)vertices[0, 1] + 5.0F);
+                PointF rightTop = new PointF((float)vertices[1, 0], (float)vertices[1, 1] + 5.0F);
+                PointF rightBottom = new PointF((float)vertices[2, 0], (float)vertices[2, 1] - 5.0F);
+                PointF leftBottom = new PointF((float)vertices[3, 0], (float)vertices[3, 1] - 5.0F);
+
+                List<PointF> targetTopPointList =  GetPointListOfLine(leftTop, rightTop, 5);
+                List<PointF> targetBottomPointList = GetPointListOfLine(leftBottom, rightBottom, -5);
+
+                Mat colorMat = new Mat();
+                CvInvoke.CvtColor(targetMat, colorMat, ColorConversion.Gray2Bgr);
+                foreach (var item in targetTopPointList)
+                {
+
+                    Point point = new Point((int)item.X, (int)item.Y);
+                    CvInvoke.Line(colorMat, point, point, new MCvScalar(50, 230, 50, 255));
+                    //CvInvoke.DrawMarker(colorMat, point, new MCvScalar(50, 230, 50, 255), MarkerTypes.Cross, 1, 1);
+                }
+                foreach (var item in targetBottomPointList)
+                {
+
+                    Point point = new Point((int)item.X, (int)item.Y);
+                    CvInvoke.Line(colorMat, point, point, new MCvScalar(50, 230, 50, 255));
+                    //CvInvoke.DrawMarker(colorMat, point, new MCvScalar(50, 230, 50, 255), MarkerTypes.Cross, 1, 1);
+                }
+
+
+                colorMat.Save(@"D:\123.bmp");
+
+
+
+                byte[] topDataArray = new byte[targetTopPointList.Count()];
+                byte[] bottomDataArray = new byte[targetBottomPointList.Count()];
+                unsafe
+                {
+                    IntPtr ptrData = targetMat.DataPointer;
+                    byte* data = (byte*)(void*)ptrData;
+                    int prev = 0;
+                    for (int i = 0; i < targetTopPointList.Count(); i++)
+                    {
+                        var point = targetTopPointList[i];
+                        int index = (int)((targetMat.Step * (int)(point.Y -3)) + (int)point.X);
+
+                        topDataArray[i] = data[index];
+                        prev = (int)point.X;
+                    }
+
+                    for (int i = 0; i < targetBottomPointList.Count(); i++)
+                    {
+                        var point = targetBottomPointList[i];
+                        int index = (int)((targetMat.Step * (int)(point.Y - 3)) + (int)point.X);
+
+                        bottomDataArray[i] = data[index];
+                        prev = (int)point.X;
+                    }
+
+                    List<int> topEdgePointList = new List<int>();
+                    List<int> bottomEdgePointList = new List<int>();
+
+                    ImageHelper.GetEdgePoint(topDataArray, bottomDataArray,255, (int)1/*CalcResolution*/, ref topEdgePointList, ref bottomEdgePointList);
+
+                    List<PointF> topPointList = new List<PointF>();
+
+                    for (int i = 0; i < topEdgePointList.Count(); i++)
+                    {
+                        float pointX = (float)(leftTop.X + topEdgePointList[i]);
+                        float pointY = targetTopPointList[i].Y;
+                        topPointList.Add(new PointF(pointX, pointY));
+
+                    }
+   
+                    List<PointF> bottomPointList = new List<PointF>();
+                    for (int i = 0; i < bottomEdgePointList.Count(); i++)
+                    {
+                        int valueX = (int)leftBottom.X + bottomEdgePointList[i];
+                        float pointX = valueX;
+                        float pointY = targetBottomPointList[i].Y;
+                        bottomPointList.Add(new PointF(pointX, pointY));
+                    }
+             
+                     var roiList = VisionProImageHelper.CreateRectangleAffine(topPointList, bottomPointList);
+                    return roiList;
+                }
             }
-            return roiList;
+            else
+            {
+                //var cogCropTargetImage = AlgorithmTool.ConvertCogImage(cropTargetMat);
+                //cogCropTargetImage.PixelFromRootTransform = image.PixelFromRootTransform;
+
+                //CogImage8Grey greyCogImage = new CogImage8Grey(image.Width, image.Height);
+                //greyCogImage.PixelFromRootTransform = image.PixelFromRootTransform;
+
+                //var convertImage = VisionProImageHelper.CogCopyRegionTool(greyCogImage, cogCropTargetImage, _autoTeachingPolygon, true);
+
+                //VisionProImageHelper.Save(convertImage, @"D:\123.bmp");
+            }
+            
+
+            return new List<CogRectangleAffine>();
+            //new PointF((float)vertices[0, 0], (float)vertices[0, 1]
+            //new PointF((float)vertices[1, 0], (float)vertices[1, 1]
+            //new PointF((float)vertices[2, 0], (float)vertices[2, 1]
+            //new PointF((float)vertices[3, 0], (float)vertices[3, 1]
+
+            //var cropImage = AlgorithmTool.ConvertCogImage(targetMat);
+
+            //targetMat.Save(@"D:\123.bmp");
+            ///
+            //var contours = new VectorOfVectorOfPoint();
+            //Mat hierarchy = new Mat();
+            //CvInvoke.FindContours(targetMat, contours, hierarchy, RetrType.Ccomp, ChainApproxMethod.ChainApproxSimple);
+
+            //List<VectorOfPoint> filteredContourList = new List<VectorOfPoint>();
+            //if (contours.Size != 0)
+            //{
+            //    for (int idxContour = 0; idxContour < contours.Size; ++idxContour)
+            //    {
+            //        var contour = contours[idxContour];
+            //        var pointList = contour.ToArray();
+
+            //        float minX = pointList.Select(point => point.X).Min();
+            //        float maxX = pointList.Select(point => point.X).Max();
+
+            //        float minY = pointList.Select(point => point.Y).Min();
+            //        float maxY = pointList.Select(point => point.Y).Max();
+
+            //    }
+            //}
+
+
+            ///
+
+            //byte[] topDataArray = new byte[targetMat.Step];
+            //Marshal.Copy(targetMat.DataPointer, topDataArray, 0, targetMat.Step);
+
+            //byte[] bottomDataArray = new byte[targetMat.Step];
+            //int startIndex = targetMat.Step * (targetMat.Height - 1);
+            //Marshal.Copy(targetMat.DataPointer + startIndex, bottomDataArray, 0, targetMat.Step);
+
+            //List<int> topEdgePointList = new List<int>();
+            //List<int> bottomEdgePointList = new List<int>();
+
+            //ImageHelper.GetEdgePoint(topDataArray, bottomDataArray, 255, (int)21/*CalcResolution*/, ref topEdgePointList, ref bottomEdgePointList);
+
+            //if (topEdgePointList.Count != bottomEdgePointList.Count)
+            //{
+            //    MessageConfirmForm form = new MessageConfirmForm();
+            //    form.Message = "The number of edge points found is different.";
+            //    form.ShowDialog();
+            //    return new List<CogRectangleAffine>();
+            //}
+
+            //List<PointF> topPointList = new List<PointF>();
+            //foreach (var xIndex in topEdgePointList)
+            //{
+            //    float pointX = (float)(_autoTeachingPolygon.X + xIndex);
+            //    float pointY = (float)_autoTeachingPolygon.Y;
+            //    topPointList.Add(new PointF(pointX, pointY));
+            //}
+
+            //List<PointF> bottomPointList = new List<PointF>();
+            //foreach (var xIndex in bottomEdgePointList)
+            //{
+            //    float pointX = (float)(_autoTeachingPolygon.X + xIndex);
+            //    float pointY = (float)(_autoTeachingPolygon.Y + _autoTeachingPolygon.Height);
+            //    bottomPointList.Add(new PointF(pointX, pointY));
+            //}
+
+            //var roiList = VisionProImageHelper.CreateRectangleAffine(topPointList, bottomPointList);
+            //if (roiList == null)
+            //{
+            //    MessageConfirmForm form = new MessageConfirmForm();
+            //    form.Message = "The top and bottom of the found edge points are different.";
+            //    form.ShowDialog();
+            //    return new List<CogRectangleAffine>();
+            //}
+            //return roiList;
         }
 
+        public List<PointF> GetPointListOfLine(PointF startPoint, PointF endPoint, float yOffset = 0)
+        {
+            List<PointF> rstPoints = new List<PointF>();
+
+            float x, y, dxD, dyD, step;
+            int cnt = 0;
+
+            dxD = (endPoint.X - startPoint.X);
+            dyD = (endPoint.Y - startPoint.Y);
+
+            if (Math.Abs(dxD) >= Math.Abs(dyD))
+                step = Math.Abs(dxD);
+            else
+                step = Math.Abs(dyD);
+
+            dxD = dxD / step;
+            dyD = dyD / step;
+            x = startPoint.X;
+            y = startPoint.Y;
+
+            int prevX = -1;
+            int prevY = -1;
+            while (cnt <= step)
+            {
+                int calcX = (int)Math.Round(x, 0);
+                int calcY = (int)Math.Round(y, 0);
+                if(prevX != calcX)
+                {
+                    Point point = new Point(calcX, calcY);
+
+                    rstPoints.Add(point);
+                }
+
+
+                x = x + dxD;
+                y = y + dyD ;
+
+                cnt += 1;
+
+                prevX = calcX;
+                prevY = calcY;
+            }
+            return rstPoints;
+        }
+
+        private Mat GetPolygonMaskingImage(Size size)
+        {
+            Rectangle roi = GetRectangle(_autoTeachingPolygon);
+            Mat orgMaskImage = new Mat(size, DepthType.Cv8U, 1);
+
+            VectorOfVectorOfPoint contours = new VectorOfVectorOfPoint();
+            var vertices = _autoTeachingPolygon.GetVertices();
+            VectorOfPoint contour = new VectorOfPoint(new[]
+                {
+                    new Point((int)vertices[0, 0], (int)vertices[0, 1]),
+                    new Point((int)vertices[1, 0], (int)vertices[1, 1]),
+                    new Point((int)vertices[2, 0], (int)vertices[2, 1]),
+                    new Point((int)vertices[3, 0], (int)vertices[3, 1]),
+                });
+            contours.Push(contour);
+            CvInvoke.DrawContours(orgMaskImage, contours, -1, new MCvScalar(255), -1);
+
+            return orgMaskImage;
+        }
+
+        private List<Point> GetRectPointList(Mat mat)
+        {
+
+            var contours = new VectorOfVectorOfPoint();
+            Mat hierarchy = new Mat();
+            CvInvoke.FindContours(mat, contours, hierarchy, RetrType.External, ChainApproxMethod.ChainApproxSimple);
+
+            if (contours.Size != 0)
+            {
+                for (int idxContour = 0; idxContour < contours.Size; ++idxContour)
+                {
+                    //var contour = contours[idxContour];
+                    //Point[] points = contour.ToArray();
+                    //PointF[] pointfs = new PointF[points.Length];
+
+                    //for (int i = 0; i < points.Length; i++)
+                    //{
+                    //    pointfs[i] = new PointF(points[i].X, points[i].Y);
+                    //}
+                    //RotatedRect rotatedRect = CvInvoke.MinAreaRect(pointfs);
+
+                    //// RotatedRect 정보를 행렬로 변환
+                    //Matrix<float> rotationMatrix = new Matrix<float>(2, 3);
+                    //CvInvoke.GetRotationMatrix2D(rotatedRect.Center, rotatedRect.Angle, 1.0, rotationMatrix);
+
+                    //// 변환된 행렬로 CogRectAffine 생성
+                    //CogRectangleAffine cogRectAffine = new CogRectangleAffine();
+                    //cogRectAffine.SetCenterLengthsRotationSkew
+
+
+                }
+            }
+            return new List<Point>();
+        }
         private void AddAutoTeachingAkkonRoi(List<CogRectangleAffine> roiList)
         {
             if (GetGroup() is AkkonGroup group)
