@@ -10,6 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Windows.Forms;
 
 namespace ATT_UT_IPAD.UI.Controls
@@ -145,6 +146,7 @@ namespace ATT_UT_IPAD.UI.Controls
             UpdateImage(tabNo);
             SendTabNumberEvent(tabNo);
         }
+
         public delegate void TabButtonResetColorDele();
         public void TabButtonResetColor()
         {
@@ -156,6 +158,7 @@ namespace ATT_UT_IPAD.UI.Controls
             }
 
             TabBtnControlList.ForEach(x => x.BackColor = Color.FromArgb(52, 52, 52));
+            TabBtnControlList.ForEach(x => x.Enabled = false);
         }
 
         private void UpdateImage(int tabNo)
@@ -221,6 +224,8 @@ namespace ATT_UT_IPAD.UI.Controls
                     TabBtnControlList[tabNo].BackColor = Color.MediumSeaGreen;
                 else
                     TabBtnControlList[tabNo].BackColor = Color.Red;
+
+                TabBtnControlList[tabNo].Enabled = true;
             }
         }
 
