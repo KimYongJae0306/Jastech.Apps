@@ -507,7 +507,7 @@ namespace Jastech.Framework.Winform.Forms
             if (LineCamera.Camera.IsGrabbing())
                 LineCamera.StopGrab();
 
-            LAFCtrl.SetTrackingOnOFF(false);
+            LAFCtrl?.SetTrackingOnOFF(false);
             LineCamera.StopGrab();
             Display.DisposeImage();
             MarkControl.DisposeImage();

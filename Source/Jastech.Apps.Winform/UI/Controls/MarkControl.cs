@@ -13,6 +13,7 @@ using Jastech.Framework.Winform.Forms;
 using Jastech.Framework.Winform.VisionPro.Controls;
 using System;
 using System.Drawing;
+using System.Linq;
 using System.Windows.Forms;
 
 namespace Jastech.Apps.Winform.UI.Controls
@@ -381,7 +382,12 @@ namespace Jastech.Apps.Winform.UI.Controls
             VisionProPatternMatchingParam inspParam = currentParam.DeepCopy();
             ICogImage copyCogImage = cogImage.CopyBase(CogImageCopyModeConstants.CopyPixels);
 
+            PointF originPoint = GetMainOrginPoint();
+
             VisionProPatternMatchingResult result = Algorithm.RunPatternMatch(copyCogImage, inspParam);
+            double gapX = result.MatchPosList[0].FoundPos.X - originPoint.X;
+            double gapY = result.MatchPosList[0].FoundPos.Y - originPoint.Y;
+
             if (result == null)
             {
                 inspParam.Dispose();
@@ -403,6 +409,27 @@ namespace Jastech.Apps.Winform.UI.Controls
             result.Dispose();
             inspParam.Dispose();
             VisionProImageHelper.Dispose(ref copyCogImage);
+        }
+
+        private PointF GetMainOrginPoint()
+        {
+            if (_curMaterial == Material.Panel)
+            {
+                var panelMainMark = CurrentTab.MarkParamter.MainPanelMarkParamList.Where(x => x.Name == MarkName.Main).First();
+                var orgin = panelMainMark.InspParam.GetOrigin();
+                double orginX = orgin.TranslationX;
+                double orginY = orgin.TranslationY;
+                return new PointF((float)orginX, (float)orginY);
+            }
+            else
+            {
+                var fpcMainMark = CurrentTab.MarkParamter.MainFpcMarkParamList.Where(x => x.Name == MarkName.Main).First();
+                var orgin = fpcMainMark.InspParam.GetOrigin();
+
+                double orginX = orgin.TranslationX;
+                double orginY = orgin.TranslationY;
+                return new PointF((float)orginX, (float)orginY);
+            }
         }
 
         public void ShowROIJog()
@@ -520,11 +547,6 @@ namespace Jastech.Apps.Winform.UI.Controls
 
             //currentParam.SetSearchRegion(roi);
             DrawROI();
-        }
-
-        private void lblTest_Click(object sender, EventArgs e)
-        {
-         
         }
         #endregion
     }
