@@ -292,13 +292,13 @@ namespace ATT_UT_IPAD.Core
                     AkkonCamera.StopGrab();
                     WriteLog("AkkonCamera Stop Grab.");
 
-                    LightCtrlHandler.TurnOff();
+                    LightCtrlHandler?.TurnOff();
                     WriteLog("Light Off.");
 
-                    AlignLAFCtrl.SetTrackingOnOFF(false);
+                    AlignLAFCtrl?.SetTrackingOnOFF(false);
                     WriteLog("Align Laf Off.");
 
-                    AkkonLAFCtrl.SetTrackingOnOFF(false);
+                    AkkonLAFCtrl?.SetTrackingOnOFF(false);
                     WriteLog("Akkon Laf Off.");
 
                     sw.Restart();
@@ -353,12 +353,12 @@ namespace ATT_UT_IPAD.Core
 
                     AlignCamera.SetOperationMode(TDIOperationMode.TDI);
                     AlignCamera.StartGrab();
-                    AlignLAFCtrl.SetTrackingOnOFF(true);
+                    AlignLAFCtrl?.SetTrackingOnOFF(true);
                     WriteLog("Start Align LineScanner Grab.", true);
                     Thread.Sleep(50);
                     AkkonCamera.SetOperationMode(TDIOperationMode.TDI);
                     AkkonCamera.StartGrab();
-                    AkkonLAFCtrl.SetTrackingOnOFF(true);
+                    AkkonLAFCtrl?.SetTrackingOnOFF(true);
                     WriteLog("Start Akkon LineScanner Grab.", true);
                     
                     Thread.Sleep(50);
