@@ -222,20 +222,20 @@ namespace Jastech.Framework.Winform.Forms
 
             // Teaching Item
             // 임시
-            //if (LineCamera.Camera.Name.ToUpper().Contains("ALIGN"))
-            //{
-            //    tlpTeachingItems.Controls.Add(btnAlign, 2, 0);
-            //    btnAlign.Visible = true;
-            //    btnAkkon.Visible = false;
-            //}
-            //else if (LineCamera.Camera.Name.ToUpper().Contains("AKKON"))
-            //{
-            //    tlpTeachingItems.Controls.Add(btnAkkon, 2, 0);
-            //    btnAlign.Visible = false;
-            //    btnAkkon.Visible = true;
-            //    MarkControl.TeachingItem = TeachingItem.Akkon;
-            //}
-            //else { }
+            if (LineCamera.Camera.Name.ToUpper().Contains("ALIGN"))
+            {
+                tlpTeachingItems.Controls.Add(btnAlign, 2, 0);
+                btnAlign.Visible = true;
+                btnAkkon.Visible = false;
+            }
+            else if (LineCamera.Camera.Name.ToUpper().Contains("AKKON"))
+            {
+                tlpTeachingItems.Controls.Add(btnAkkon, 2, 0);
+                btnAlign.Visible = false;
+                btnAkkon.Visible = true;
+                MarkControl.TeachingItem = TeachingItem.Akkon;
+            }
+            else { }
         }
 
         private void Display_DeleteEventHandler(object sender, EventArgs e)
@@ -347,8 +347,8 @@ namespace Jastech.Framework.Winform.Forms
 
                 if (yesnoForm.ShowDialog() == DialogResult.Yes)
                     TeachingData.Instance().GetUnit(UnitName.ToString()).SetTab(GetCoordinateTab());
-                else
-                    TeachingData.Instance().GetUnit(UnitName.ToString()).SetTab(CurrentTab);
+                //else
+                //    TeachingData.Instance().GetUnit(UnitName.ToString()).SetTab(CurrentTab);
 
             }
 
@@ -507,7 +507,7 @@ namespace Jastech.Framework.Winform.Forms
             if (LineCamera.Camera.IsGrabbing())
                 LineCamera.StopGrab();
 
-            LAFCtrl.SetTrackingOnOFF(false);
+            LAFCtrl?.SetTrackingOnOFF(false);
             LineCamera.StopGrab();
             Display.DisposeImage();
             MarkControl.DisposeImage();
@@ -686,6 +686,8 @@ namespace Jastech.Framework.Winform.Forms
 
             // Left Fpc
             MarkParam referenceLeftFpcMarkParam = tabOriginData.MarkParamter.GetFPCMark(MarkDirection.Left, MarkName.Main, UseAlignMark);
+            if (referenceLeftFpcMarkParam == null)
+                return;
             VisionProPatternMatchingResult leftFpcMarkResult = Algorithm.RunPatternMatch(cogImage, referenceLeftFpcMarkParam.InspParam);
             if (leftFpcMarkResult == null) 
                 return;
@@ -695,6 +697,8 @@ namespace Jastech.Framework.Winform.Forms
 
             // Right Fpc
             MarkParam referenceRightFpcMarkParam = tabOriginData.MarkParamter.GetFPCMark(MarkDirection.Right, MarkName.Main, UseAlignMark);
+            if (referenceRightFpcMarkParam == null)
+                return;
             VisionProPatternMatchingResult rightFpcMarkResult = Algorithm.RunPatternMatch(cogImage, referenceRightFpcMarkParam.InspParam);
             if (rightFpcMarkResult == null)
                 return;
@@ -704,6 +708,8 @@ namespace Jastech.Framework.Winform.Forms
 
             // Left Panel
             MarkParam referenceLeftPanelMarkParam = tabOriginData.MarkParamter.GetPanelMark(MarkDirection.Left, MarkName.Main, UseAlignMark);
+            if (referenceLeftPanelMarkParam == null)
+                return;
             VisionProPatternMatchingResult leftPanelMarkResult = Algorithm.RunPatternMatch(cogImage, referenceLeftPanelMarkParam.InspParam);
             if (leftPanelMarkResult == null)
                 return;
@@ -713,6 +719,8 @@ namespace Jastech.Framework.Winform.Forms
 
             // 찾은 Right Panel 좌표
             MarkParam referenceRightPanelMarkParam = tabOriginData.MarkParamter.GetPanelMark(MarkDirection.Right, MarkName.Main, UseAlignMark);
+            if (referenceRightPanelMarkParam == null)
+                return;
             VisionProPatternMatchingResult rightPanelMarkResult = Algorithm.RunPatternMatch(cogImage, referenceRightPanelMarkParam.InspParam);
             if (rightPanelMarkResult == null)
                 return;
@@ -802,8 +810,6 @@ namespace Jastech.Framework.Winform.Forms
             // TEST_230810_E
         }
 
-
-
         private void CoordinateAlign(Tab tab, CoordinateTransform fpcCoordinate, CoordinateTransform panelCoordinate)
         {
             foreach (ATTTabAlignName alignName in Enum.GetValues(typeof(ATTTabAlignName)))
@@ -842,45 +848,6 @@ namespace Jastech.Framework.Winform.Forms
                 alignParam.CaliperParams.SetRegion(region);
                 tab.SetAlignParam(alignName, alignParam);
             }
-
-
-
-
-
-            //var alignParamList = tab.AlignParamList.ToList();
-
-            //foreach (var item in alignParamList)
-            //{
-            //    if (item.Name.ToLower().Contains("fpc"))
-            //    {
-            //        var region = item.CaliperParams.GetRegion() as CogRectangleAffine;
-            //        PointF oldPoint = new PointF();
-            //        oldPoint.X = Convert.ToSingle(region.CenterX);
-            //        oldPoint.Y = Convert.ToSingle(region.CenterY);
-
-            //        var newPoint = fpcCoordinate.GetCoordinate(oldPoint);
-            //        region.CenterX = newPoint.X;
-            //        region.CenterY = newPoint.Y;
-
-            //        item.CaliperParams.SetRegion(region);
-            //    }
-            //    else if (item.Name.ToLower().Contains("panel"))
-            //    {
-            //        var region = item.CaliperParams.GetRegion() as CogRectangleAffine;
-            //        PointF oldPoint = new PointF();
-            //        oldPoint.X = Convert.ToSingle(region.CenterX);
-            //        oldPoint.Y = Convert.ToSingle(region.CenterY);
-
-            //        var newPoint = panelCoordinate.GetCoordinate(oldPoint);
-            //        region.CenterX = newPoint.X;
-            //        region.CenterY = newPoint.Y;
-
-            //        item.CaliperParams.SetRegion(region);
-            //    }
-            //}
-
-            //tab.AlignParamList.Clear();
-            //tab.AlignParamList.AddRange(alignParamList);
         }
 
         private void CoordinateAkkon(Tab tab, CoordinateTransform panelCoordinate)
