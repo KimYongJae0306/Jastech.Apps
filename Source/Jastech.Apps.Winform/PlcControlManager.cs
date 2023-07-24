@@ -474,8 +474,8 @@ namespace Jastech.Apps.Winform
         public void WriteTabAlignResult(int tabNo, AlignResult leftAlignResultX, AlignResult leftAlignResultY, AlignResult rightAlignResultX, AlignResult rightAlignResultY, double resolution)
         {
             int judgement = 1; // 1 : OK, 2: NG
-            if (leftAlignResultX.Judgement != Judgement.OK || leftAlignResultY.Judgement != Judgement.OK
-                || rightAlignResultX.Judgement != Judgement.OK || rightAlignResultY.Judgement != Judgement.OK)
+            if (leftAlignResultX.Judgement != Judgment.OK || leftAlignResultY.Judgement != Judgment.OK
+                || rightAlignResultX.Judgement != Judgment.OK || rightAlignResultY.Judgement != Judgment.OK)
                 judgement = 2;
 
             double calcLeftAlignX_mm = (leftAlignResultX.ResultValue_pixel * resolution) * 1000;
@@ -531,7 +531,7 @@ namespace Jastech.Apps.Winform
                     countJudgement = 2;
 
                 int lengthJudgement = 1;
-                if (akkonResult.LengthJudgement == Judgement.OK)
+                if (akkonResult.LengthJudgement == Judgment.OK)
                     lengthJudgement = 1;
                 else
                     lengthJudgement = 2;

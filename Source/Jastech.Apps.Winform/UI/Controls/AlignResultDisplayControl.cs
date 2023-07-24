@@ -158,7 +158,7 @@ namespace ATT_UT_IPAD.UI.Controls
             List<CogCompositeShape> leftResultList = new List<CogCompositeShape>();
             List<PointF> pointList = new List<PointF>();
 
-            var leftAlignX = result.LeftAlignX;
+            var leftAlignX = result.AlignResult.LeftX;
             if (leftAlignX != null)
             {
                 if (leftAlignX.Fpc.CogAlignResult.Count > 0)
@@ -183,7 +183,7 @@ namespace ATT_UT_IPAD.UI.Controls
                 }
             }
 
-            var leftAlignY = result.LeftAlignY;
+            var leftAlignY = result.AlignResult.LeftY;
             if (leftAlignY != null)
             {
                 if (leftAlignY.Fpc.CogAlignResult.Count > 0)
@@ -217,7 +217,7 @@ namespace ATT_UT_IPAD.UI.Controls
             List<CogCompositeShape> rightResultList = new List<CogCompositeShape>();
             List<PointF> pointList = new List<PointF>();
 
-            var rightAlignX = result.RightAlignX;
+            var rightAlignX = result.AlignResult.RightX;
             if (rightAlignX != null)
             {
                 if (rightAlignX.Fpc.CogAlignResult.Count > 0)
@@ -242,7 +242,7 @@ namespace ATT_UT_IPAD.UI.Controls
                 }
             }
 
-            var rightAlignY = result.RightAlignY;
+            var rightAlignY = result.AlignResult.RightY;
             if (rightAlignY != null)
             {
                 if (rightAlignY.Fpc.CogAlignResult.Count > 0)

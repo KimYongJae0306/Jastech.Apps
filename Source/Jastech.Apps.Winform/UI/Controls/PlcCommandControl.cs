@@ -44,7 +44,7 @@ namespace Jastech.Apps.Winform.UI.Controls
                 cbxPCStatus.Items.Add(type.ToString());
             cbxPCStatus.SelectedIndex = 0;
 
-            foreach (Judgement type in Enum.GetValues(typeof(Judgement)))
+            foreach (Judgment type in Enum.GetValues(typeof(Judgment)))
                 cbxWriteAlignJudgement.Items.Add(type.ToString());
             cbxWriteAlignJudgement.SelectedIndex = 0;
 
@@ -52,7 +52,7 @@ namespace Jastech.Apps.Winform.UI.Controls
                 cbxWriteAkkonJudgement.Items.Add(type.ToString());
             cbxWriteAkkonJudgement.SelectedIndex = 0;
 
-            foreach (Judgement type in Enum.GetValues(typeof(Judgement)))
+            foreach (Judgment type in Enum.GetValues(typeof(Judgment)))
                 cbxWriteLengthJudgement.Items.Add(type.ToString());
             cbxWriteLengthJudgement.SelectedIndex = 0;
         }
@@ -234,7 +234,7 @@ namespace Jastech.Apps.Winform.UI.Controls
             string tabIndex = cbxTabNo.SelectedItem as string;
             int tabNo = Convert.ToInt32(tabIndex);
             
-            Judgement judgement = (Judgement)Enum.Parse(typeof(Judgement), cbxWriteAlignJudgement.SelectedItem as string);
+            Judgment judgement = (Judgment)Enum.Parse(typeof(Judgment), cbxWriteAlignJudgement.SelectedItem as string);
             double leftAlignDataX_mm = 0;
             double leftAlignDataY_mm = 0;
             double rightAlignDataX_mm = 0;
@@ -250,7 +250,7 @@ namespace Jastech.Apps.Winform.UI.Controls
             if (lblWriteInspRightAlignY.Text != "")
                 rightAlignDataY_mm = Convert.ToDouble(lblWriteInspRightAlignY.Text);
 
-            int judgementValue = judgement == Judgement.OK ? 1 : 2;
+            int judgementValue = judgement == Judgment.OK ? 1 : 2;
             PlcControlManager.Instance().WriteTabAlignResult(tabNo, judgementValue, leftAlignDataX_mm, leftAlignDataY_mm, rightAlignDataX_mm, rightAlignDataY_mm);
         }
 
@@ -364,7 +364,7 @@ namespace Jastech.Apps.Winform.UI.Controls
             result.RightCount_Min = Convert.ToInt32(lblRightAkkonCountMin.Text);
             result.RightCount_Max = Convert.ToInt32(lblRightAkkonCountMax.Text);
 
-            result.LengthJudgement = (Judgement)Enum.Parse(typeof(Judgement), cbxWriteLengthJudgement.SelectedItem as string);
+            result.LengthJudgement = (Judgment)Enum.Parse(typeof(Judgment), cbxWriteLengthJudgement.SelectedItem as string);
             result.Length_Left_Avg_um = Convert.ToInt32(lblLeftLengthAvg.Text);
             result.Length_Left_Min_um = Convert.ToInt32(lblLeftLengthMin.Text);
             result.Length_Left_Max_um = Convert.ToInt32(lblLeftLengthMax.Text);
