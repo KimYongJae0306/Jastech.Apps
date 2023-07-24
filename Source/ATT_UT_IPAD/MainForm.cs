@@ -66,7 +66,7 @@ namespace ATT_UT_IPAD
             }
 
             tmrMainForm.Start();
-            SystemManager.Instance().AddSystemLogMessage("Start program.");
+            SystemManager.Instance().AddSystemLogMessage("Start Program.");
         }
 
         private void AddControls()

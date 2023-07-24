@@ -84,7 +84,7 @@ namespace ATT_UT_Remodeling
 
             tmrMainForm.Start();
             StartVirtualInspTask();
-            SystemManager.Instance().AddSystemLogMessage("Start program.");
+            SystemManager.Instance().AddSystemLogMessage("Start Program.");
         }
 
         private void MainForm_PreAlignRunnerHandler(bool isStart)
@@ -298,6 +298,13 @@ namespace ATT_UT_Remodeling
                             return true;
                         }
                         break;
+                    case Keys.S:
+                        if ((keyData & Keys.Control) != 0)
+                        {
+                            LoadPreAlignImage();
+                            return true;
+                        }
+                        break;
                 }
             }
             return base.ProcessCmdKey(ref msg, keyData);
@@ -332,6 +339,45 @@ namespace ATT_UT_Remodeling
                     return;
                 }
                 LoadImage(fileNames);
+                AppsStatus.Instance().IsInspRunnerFlagFromPlc = true;
+            }
+        }
+
+        private void LoadPreAlignImage()
+        {
+            var inspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
+            if (inspModel == null)
+                return;
+
+            if (SystemManager.Instance().MachineStatus != MachineStatus.RUN)
+            {
+                MessageConfirmForm form = new MessageConfirmForm();
+                form.Message = "Change Auto Run.";
+                form.ShowDialog();
+                return;
+            }
+            OpenFileDialog dialog = new OpenFileDialog();
+            dialog.Multiselect = true;
+
+            if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            {
+                string[] fileNames = dialog.FileNames;
+                if (fileNames.Count() != 2)
+                {
+                    MessageConfirmForm form = new MessageConfirmForm();
+                    form.Message = "PreAlign Image is 2.";
+                    form.ShowDialog();
+                    return;
+                }
+
+                foreach (var fileName in fileNames)
+                {
+                    if (fileName.Contains("_Left"))
+                        SystemManager.Instance().SetLeftPreAlignImage(fileName);
+                    if (fileName.Contains("_Right"))
+                        SystemManager.Instance().SetRightPreAlignImage(fileName);
+                }
+                AppsStatus.Instance().IsPreAlignRunnerFlagFromPlc = true;
             }
         }
 
