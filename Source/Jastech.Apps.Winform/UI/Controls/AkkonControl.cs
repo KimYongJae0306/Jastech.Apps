@@ -1379,7 +1379,19 @@ namespace Jastech.Apps.Winform.UI.Controls
                            
                     }
 
-                    if (akkonParameters.DrawOption.ContainArea)
+                    if(akkonParameters.DrawOption.ContainSize)
+                    {
+                        int temp = (int)(radius / 2.0);
+                        Point pt = new Point(center.X + temp, center.Y - temp);
+                        double akkonSize = (blob.BoundingRect.Width + blob.BoundingRect.Height) / 2.0;
+                        double blobSize = akkonSize * calcResolution;
+
+                        if (blob.IsAkkonShape)
+                            CvInvoke.PutText(colorMat, blobSize.ToString("F1"), pt, FontFace.HersheySimplex, 0.3, greenColor);
+                        else
+                            CvInvoke.PutText(colorMat, blobSize.ToString("F1"), pt, FontFace.HersheySimplex, 0.3, redColor);
+                    }
+                    else if (akkonParameters.DrawOption.ContainArea)
                     {
                         int temp = (int)(radius / 2.0);
                         Point pt = new Point(center.X + temp, center.Y - temp);
@@ -1390,19 +1402,16 @@ namespace Jastech.Apps.Winform.UI.Controls
                         else
                             CvInvoke.PutText(colorMat, blobArea.ToString("F1"), pt, FontFace.HersheySimplex, 0.3, redColor);
                     }
-                    else
+                    else if (akkonParameters.DrawOption.ContainStrength)
                     {
-                        if (akkonParameters.DrawOption.ContainStrength)
-                        {
-                            int temp = (int)(radius / 2.0);
-                            Point pt = new Point(center.X + temp, center.Y - temp);
-                            string strength = blob.Strength.ToString("F1");
+                        int temp = (int)(radius / 2.0);
+                        Point pt = new Point(center.X + temp, center.Y - temp);
+                        string strength = blob.Strength.ToString("F1");
 
-                            if (blob.IsAkkonShape)
-                                CvInvoke.PutText(colorMat, strength, pt, FontFace.HersheySimplex, 0.3, greenColor);
-                            else
-                                CvInvoke.PutText(colorMat, strength, pt, FontFace.HersheySimplex, 0.3, redColor);
-                        }
+                        if (blob.IsAkkonShape)
+                            CvInvoke.PutText(colorMat, strength, pt, FontFace.HersheySimplex, 0.3, greenColor);
+                        else
+                            CvInvoke.PutText(colorMat, strength, pt, FontFace.HersheySimplex, 0.3, redColor);
                     }
                 }
 

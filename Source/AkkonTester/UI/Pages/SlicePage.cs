@@ -220,6 +220,7 @@ namespace AkkonTester.UI.Pages
             ckbContainLeadCount.Checked = param.DrawOption.ContainLeadCount;
             ckbContainLeadCount.Checked = param.DrawOption.ContainLeadROI;
             ckbContainNG.Checked = param.DrawOption.ContainNG;
+            ckbDrawSize.Checked = param.DrawOption.ContainSize;
             ckbDrawArea.Checked = param.DrawOption.ContainArea;
             ckbDrawStrength.Checked = param.DrawOption.ContainStrength;
         }
@@ -493,8 +494,20 @@ namespace AkkonTester.UI.Pages
                             CvInvoke.Rectangle(colorMat, blob.BoundingRect, redColor, 1);
                         }
                     }
-                 
-                    if(curParam.DrawOption.ContainArea)
+
+                    if (curParam.DrawOption.ContainSize)
+                    {
+                        int temp = (int)(radius / 2.0);
+                        Point pt = new Point(center.X + temp, center.Y - temp);
+                        double akkonSize = (blob.BoundingRect.Width + blob.BoundingRect.Height) / 2.0;
+                        double blobSize = akkonSize * calcResolution;
+
+                        if (blob.IsAkkonShape)
+                            CvInvoke.PutText(colorMat, blobSize.ToString("F1"), pt, FontFace.HersheySimplex, 0.3, greenColor);
+                        else
+                            CvInvoke.PutText(colorMat, blobSize.ToString("F1"), pt, FontFace.HersheySimplex, 0.3, redColor);
+                    }
+                    else if (curParam.DrawOption.ContainArea)
                     {
                         Point pt = new Point(leftFromSlice + blob.BoundingRect.Width, topFromSlice);
                         double blobArea = blob.Area * calcResolution;
@@ -504,8 +517,7 @@ namespace AkkonTester.UI.Pages
                         else
                             CvInvoke.PutText(colorMat, blobArea.ToString("F1"), pt, FontFace.HersheySimplex, 0.3, redColor);
                     }
-
-                    if (curParam.DrawOption.ContainStrength)
+                    else if (curParam.DrawOption.ContainStrength)
                     {
                         Point pt = new Point(leftFromSlice + blob.BoundingRect.Width, topFromSlice);
                         string strength = blob.Strength.ToString("F2");
@@ -595,6 +607,8 @@ namespace AkkonTester.UI.Pages
             param.ImageFilterParam.Mode = (AkkonThMode)cbxThresholdMode.SelectedIndex;
             param.ImageFilterParam.Weight = Convert.ToDouble(txtThresholdWeight.Text);
 
+            param.ShapeFilterParam.MinSize_um = Convert.ToSingle(txtMinSize.Text);
+            param.ShapeFilterParam.MaxSize_um = Convert.ToSingle(txtMaxSize.Text);
             param.ShapeFilterParam.MinArea_um = Convert.ToSingle(txtMinArea.Text);
             param.ShapeFilterParam.MaxArea_um = Convert.ToSingle(txtMaxArea.Text);
             param.ShapeFilterParam.MinAkkonStrength = Convert.ToSingle(txtAkkonStrength.Text);
@@ -607,6 +621,7 @@ namespace AkkonTester.UI.Pages
             param.DrawOption.ContainLeadCount = ckbContainLeadCount.Checked;
             param.DrawOption.ContainLeadROI = ckbContainLeadROI.Checked;
             param.DrawOption.ContainNG = ckbContainNG.Checked;
+            param.DrawOption.ContainSize = ckbDrawSize.Checked;
             param.DrawOption.ContainArea = ckbDrawArea.Checked;
             param.DrawOption.ContainStrength = ckbDrawStrength.Checked;
         }

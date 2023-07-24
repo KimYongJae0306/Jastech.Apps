@@ -140,7 +140,6 @@ namespace AkkonTester
                     CvInvoke.Line(colorMat, rightBottom, leftBottom, greenColor, 1);
                 }
 
-                int blobCount = 0;
                 foreach (var blob in result.BlobList)
                 {
                     Rectangle rectRect = new Rectangle();
@@ -163,7 +162,6 @@ namespace AkkonTester
                         if(AkkonParameters.DrawOption.ContainNG)
                             CvInvoke.Circle(colorMat, center, radius / 2, redColor, 1);
                     }
-
                 }
 
                 if(AkkonParameters.DrawOption.ContainLeadCount)
