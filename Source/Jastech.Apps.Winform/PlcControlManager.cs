@@ -516,67 +516,122 @@ namespace Jastech.Apps.Winform
             }
         }
 
-        public void WriteTabAkkonResult(int tabNo, AkkonJudgement judgement, AkkonResult akkonResult)
+        public void WriteTabAkkonResult(int tabNo, AkkonResult akkonResult)
         {
-            string akkonJudegmentName = string.Format("Tab{0}_Akkon_Count_Judgement", tabNo);
-            PlcResultMap plcResultMap = (PlcResultMap)Enum.Parse(typeof(PlcResultMap), akkonJudegmentName);
-
+            string alignJudegmentName = string.Format("Tab{0}_Akkon_Judgement", tabNo);
+            PlcResultMap plcResultMap = (PlcResultMap)Enum.Parse(typeof(PlcResultMap), alignJudegmentName);
             var map = PlcControlManager.Instance().GetResultMap(plcResultMap);
 
             if (DeviceManager.Instance().PlcHandler.Count > 0 && map != null)
             {
+                int countJudgement = 1; // 1 : OK, 2: NG
+                if (akkonResult.AkkonCountJudgement == AkkonJudgement.OK)
+                    countJudgement = 1;
+                else
+                    countJudgement = 2;
+
+                int lengthJudgement = 1;
+                if (akkonResult.LengthJudgement == Judgement.OK)
+                    lengthJudgement = 1;
+                else
+                    lengthJudgement = 2;
+
                 var plc = DeviceManager.Instance().PlcHandler.First() as MelsecPlc;
                 PlcDataStream stream = new PlcDataStream();
+
                 if (plc.MelsecParser.ParserType == ParserType.Binary)
                 {
-                    stream.AddSwap16BitData(Convert.ToInt16((int)judgement));
+                    stream.AddSwap16BitData(Convert.ToInt16(countJudgement));
                     stream.AddSwap16BitData(Convert.ToInt16(akkonResult.LeftCount_Avg));
                     stream.AddSwap16BitData(Convert.ToInt16(akkonResult.LeftCount_Min));
                     stream.AddSwap16BitData(Convert.ToInt16(akkonResult.LeftCount_Max));
                     stream.AddSwap16BitData(Convert.ToInt16(akkonResult.RightCount_Avg));
                     stream.AddSwap16BitData(Convert.ToInt16(akkonResult.RightCount_Min));
                     stream.AddSwap16BitData(Convert.ToInt16(akkonResult.RightCount_Max));
+                    // Empty 넣어주기
+                    stream.AddSwap16BitData(0);
+                    stream.AddSwap16BitData(0);
+                    stream.AddSwap16BitData(0);
+                    stream.AddSwap16BitData(0);
 
-                    // Empty 넣어주기(237~239)
-                    stream.AddSwap16BitData(0);
-                    stream.AddSwap16BitData(0);
-                    stream.AddSwap16BitData(0);
-
-                    stream.AddSwap16BitData(Convert.ToInt16(akkonResult.LengthJudgement == Judgement.OK ? 1 : 2));
-                    stream.AddSwap16BitData(Convert.ToInt16((int)akkonResult.Length_Left_Avg_um));
-                    stream.AddSwap16BitData(Convert.ToInt16((int)akkonResult.Length_Left_Min_um));
-                    stream.AddSwap16BitData(Convert.ToInt16((int)akkonResult.Length_Left_Max_um));
-                    stream.AddSwap16BitData(Convert.ToInt16((int)akkonResult.Length_Right_Avg_um));
-                    stream.AddSwap16BitData(Convert.ToInt16((int)akkonResult.Length_Right_Min_um));
-                    stream.AddSwap16BitData(Convert.ToInt16((int)akkonResult.Length_Right_Max_um));
+                    stream.AddSwap16BitData(Convert.ToInt16(lengthJudgement));
 
                 }
                 else
                 {
-                    stream.Add16BitData(Convert.ToInt16((int)judgement));
+                    stream.Add16BitData(Convert.ToInt16(countJudgement));
                     stream.Add16BitData(Convert.ToInt16(akkonResult.LeftCount_Avg));
                     stream.Add16BitData(Convert.ToInt16(akkonResult.LeftCount_Min));
                     stream.Add16BitData(Convert.ToInt16(akkonResult.LeftCount_Max));
                     stream.Add16BitData(Convert.ToInt16(akkonResult.RightCount_Avg));
                     stream.Add16BitData(Convert.ToInt16(akkonResult.RightCount_Min));
                     stream.Add16BitData(Convert.ToInt16(akkonResult.RightCount_Max));
-
-                    // Empty 넣어주기(237~239)
-                    stream.Add16BitData(0);
-                    stream.Add16BitData(0);
-                    stream.Add16BitData(0);
-
-                    stream.Add16BitData(Convert.ToInt16(akkonResult.LengthJudgement == Judgement.OK ? 1 : 2));
-                    stream.Add16BitData(Convert.ToInt16((int)akkonResult.Length_Left_Avg_um));
-                    stream.Add16BitData(Convert.ToInt16((int)akkonResult.Length_Left_Min_um));
-                    stream.Add16BitData(Convert.ToInt16((int)akkonResult.Length_Left_Max_um));
-                    stream.Add16BitData(Convert.ToInt16((int)akkonResult.Length_Right_Avg_um));
-                    stream.Add16BitData(Convert.ToInt16((int)akkonResult.Length_Right_Min_um));
-                    stream.Add16BitData(Convert.ToInt16((int)akkonResult.Length_Right_Max_um));
                 }
                 plc.Write("D" + map.AddressNum, stream.Data);
             }
         }
+
+        //public void WriteTabAkkonResult(int tabNo, AkkonJudgement judgement, AkkonResult akkonResult)
+        //{
+        //    string akkonJudegmentName = string.Format("Tab{0}_Akkon_Count_Judgement", tabNo);
+        //    PlcResultMap plcResultMap = (PlcResultMap)Enum.Parse(typeof(PlcResultMap), akkonJudegmentName);
+
+        //    var map = PlcControlManager.Instance().GetResultMap(plcResultMap);
+
+        //    if (DeviceManager.Instance().PlcHandler.Count > 0 && map != null)
+        //    {
+        //        var plc = DeviceManager.Instance().PlcHandler.First() as MelsecPlc;
+        //        PlcDataStream stream = new PlcDataStream();
+        //        if (plc.MelsecParser.ParserType == ParserType.Binary)
+        //        {
+        //            stream.AddSwap16BitData(Convert.ToInt16((int)judgement));
+        //            stream.AddSwap16BitData(Convert.ToInt16(akkonResult.LeftCount_Avg));
+        //            stream.AddSwap16BitData(Convert.ToInt16(akkonResult.LeftCount_Min));
+        //            stream.AddSwap16BitData(Convert.ToInt16(akkonResult.LeftCount_Max));
+        //            stream.AddSwap16BitData(Convert.ToInt16(akkonResult.RightCount_Avg));
+        //            stream.AddSwap16BitData(Convert.ToInt16(akkonResult.RightCount_Min));
+        //            stream.AddSwap16BitData(Convert.ToInt16(akkonResult.RightCount_Max));
+
+        //            // Empty 넣어주기(237~239)
+        //            stream.AddSwap16BitData(0);
+        //            stream.AddSwap16BitData(0);
+        //            stream.AddSwap16BitData(0);
+
+        //            stream.AddSwap16BitData(Convert.ToInt16(akkonResult.LengthJudgement == Judgement.OK ? 1 : 2));
+        //            stream.AddSwap16BitData(Convert.ToInt16((int)akkonResult.Length_Left_Avg_um));
+        //            stream.AddSwap16BitData(Convert.ToInt16((int)akkonResult.Length_Left_Min_um));
+        //            stream.AddSwap16BitData(Convert.ToInt16((int)akkonResult.Length_Left_Max_um));
+        //            stream.AddSwap16BitData(Convert.ToInt16((int)akkonResult.Length_Right_Avg_um));
+        //            stream.AddSwap16BitData(Convert.ToInt16((int)akkonResult.Length_Right_Min_um));
+        //            stream.AddSwap16BitData(Convert.ToInt16((int)akkonResult.Length_Right_Max_um));
+
+        //        }
+        //        else
+        //        {
+        //            stream.Add16BitData(Convert.ToInt16((int)judgement));
+        //            stream.Add16BitData(Convert.ToInt16(akkonResult.LeftCount_Avg));
+        //            stream.Add16BitData(Convert.ToInt16(akkonResult.LeftCount_Min));
+        //            stream.Add16BitData(Convert.ToInt16(akkonResult.LeftCount_Max));
+        //            stream.Add16BitData(Convert.ToInt16(akkonResult.RightCount_Avg));
+        //            stream.Add16BitData(Convert.ToInt16(akkonResult.RightCount_Min));
+        //            stream.Add16BitData(Convert.ToInt16(akkonResult.RightCount_Max));
+
+        //            // Empty 넣어주기(237~239)
+        //            stream.Add16BitData(0);
+        //            stream.Add16BitData(0);
+        //            stream.Add16BitData(0);
+
+        //            stream.Add16BitData(Convert.ToInt16(akkonResult.LengthJudgement == Judgement.OK ? 1 : 2));
+        //            stream.Add16BitData(Convert.ToInt16((int)akkonResult.Length_Left_Avg_um));
+        //            stream.Add16BitData(Convert.ToInt16((int)akkonResult.Length_Left_Min_um));
+        //            stream.Add16BitData(Convert.ToInt16((int)akkonResult.Length_Left_Max_um));
+        //            stream.Add16BitData(Convert.ToInt16((int)akkonResult.Length_Right_Avg_um));
+        //            stream.Add16BitData(Convert.ToInt16((int)akkonResult.Length_Right_Min_um));
+        //            stream.Add16BitData(Convert.ToInt16((int)akkonResult.Length_Right_Max_um));
+        //        }
+        //        plc.Write("D" + map.AddressNum, stream.Data);
+        //    }
+        //}
 
         public double GetReadPosition(AxisName axisName)
         {
@@ -617,7 +672,6 @@ namespace Jastech.Apps.Winform
             int returnValue = Convert.ToInt32(noneDotValue);
             return returnValue;
         }
-
 
         public void SplitDouble(double value, out int high, out int low)
         {

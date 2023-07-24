@@ -206,12 +206,14 @@ namespace AkkonTester.UI.Pages
             cbxThresholdMode.SelectedIndex = (int)param.ImageFilterParam.Mode;
             txtThresholdWeight.Text = param.ImageFilterParam.Weight.ToString();
 
-            // Judgement
+            // Shape
+            txtMinSize.Text = param.ShapeFilterParam.MinSize_um.ToString();
+            txtMaxSize.Text = param.ShapeFilterParam.MaxSize_um.ToString();
             txtMinArea.Text = param.ShapeFilterParam.MinArea_um.ToString();
             txtMaxArea.Text = param.ShapeFilterParam.MaxArea_um.ToString();
             txtAkkonStrength.Text = param.ShapeFilterParam.MinAkkonStrength.ToString();
             txtAkkonScaleFactor.Text = param.ShapeFilterParam.AkkonStrengthScaleFactor.ToString();
-
+            // Judgement
             txtLeadLengthX.Text = param.JudgementParam.LengthX_um.ToString();
             txtLeadLengthY.Text = param.JudgementParam.LengthY_um.ToString();
             txtLeadStdDev.Text = param.JudgementParam.LeadStdDev.ToString();
@@ -416,8 +418,8 @@ namespace AkkonTester.UI.Pages
             {
                 string index = result.Roi.Index.ToString();
                 string count = result.AkkonCount.ToString();
-                string lengthX = result.LengthX_um.ToString("F2");
-                string lengthY = result.LengthY_um.ToString("F2");
+                string lengthX = result.LengthX_um.ToString("F3");
+                string lengthY = result.LengthY_um.ToString("F3");
                 string stdDev = result.StdDev.ToString("F2");
 
                 string message = string.Format("Count : {0} LengthX : {1}, LengthY : {2}, StdDev : {3}",count, lengthX, lengthY, stdDev);

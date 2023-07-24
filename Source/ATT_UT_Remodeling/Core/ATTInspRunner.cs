@@ -128,8 +128,8 @@ namespace ATT_UT_Remodeling.Core
                 var lineCamera = LineCameraManager.Instance().GetLineCamera("LineCamera").Camera;
 
                 float resolution_um = lineCamera.PixelResolution_um / lineCamera.LensScale;
-                double judgementX = resolution_um * tab.AlignSpec.LeftSpecX_um;
-                double judgementY = resolution_um * tab.AlignSpec.LeftSpecY_um;
+                double judgementX = tab.AlignSpec.LeftSpecX_um / resolution_um;
+                double judgementY = tab.AlignSpec.LeftSpecY_um / resolution_um;
 
                 #region Align
                 if (AppsConfig.Instance().EnableAlign)

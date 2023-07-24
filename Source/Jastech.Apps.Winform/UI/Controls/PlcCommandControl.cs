@@ -372,8 +372,7 @@ namespace Jastech.Apps.Winform.UI.Controls
             result.Length_Right_Min_um = Convert.ToInt32(lblRightLengthMin.Text);
             result.Length_Right_Max_um = Convert.ToInt32(lblRightLengthMax.Text);
 
-
-            PlcControlManager.Instance().WriteTabAkkonResult(tabNo, judgement, result);
+            PlcControlManager.Instance().WriteTabAkkonResult(tabNo, result);
         }
 
         private void btnCommand_Common_Click(object sender, EventArgs e)

@@ -2563,7 +2563,7 @@
             this.label42.Name = "label42";
             this.label42.Size = new System.Drawing.Size(180, 33);
             this.label42.TabIndex = 2;
-            this.label42.Text = "R_Length Max(um)";
+            this.label42.Text = "R_Length Max(mm)";
             this.label42.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // tableLayoutPanel43
@@ -2607,7 +2607,7 @@
             this.label46.Name = "label46";
             this.label46.Size = new System.Drawing.Size(180, 33);
             this.label46.TabIndex = 2;
-            this.label46.Text = "R_Length Min(um)";
+            this.label46.Text = "R_Length Min(mm)";
             this.label46.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // tableLayoutPanel44
@@ -2651,7 +2651,7 @@
             this.label52.Name = "label52";
             this.label52.Size = new System.Drawing.Size(180, 33);
             this.label52.TabIndex = 2;
-            this.label52.Text = "R_Length Avg(um)";
+            this.label52.Text = "R_Length Avg(mm)";
             this.label52.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // tableLayoutPanel45
@@ -2695,7 +2695,7 @@
             this.label55.Name = "label55";
             this.label55.Size = new System.Drawing.Size(180, 33);
             this.label55.TabIndex = 2;
-            this.label55.Text = "L_Length Max(um)";
+            this.label55.Text = "L_Length Max(mm)";
             this.label55.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // tableLayoutPanel46
@@ -2739,7 +2739,7 @@
             this.label57.Name = "label57";
             this.label57.Size = new System.Drawing.Size(180, 33);
             this.label57.TabIndex = 2;
-            this.label57.Text = "L_Length Min(um)";
+            this.label57.Text = "L_Length Min(mm)";
             this.label57.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // tableLayoutPanel47
@@ -2783,7 +2783,7 @@
             this.label59.Name = "label59";
             this.label59.Size = new System.Drawing.Size(180, 33);
             this.label59.TabIndex = 2;
-            this.label59.Text = "L_Length Avg(um)";
+            this.label59.Text = "L_Length Avg(mm)";
             this.label59.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // tableLayoutPanel48

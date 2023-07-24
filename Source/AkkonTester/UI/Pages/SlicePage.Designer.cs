@@ -28,11 +28,11 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle11 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle14 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle15 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle12 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle13 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle9 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle10 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle8 = new System.Windows.Forms.DataGridViewCellStyle();
             this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
             this.lblAkkonViewer = new System.Windows.Forms.Label();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
@@ -64,20 +64,26 @@
             this.cbxSliceList = new System.Windows.Forms.ComboBox();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPageParameter = new System.Windows.Forms.TabPage();
+            this.label29 = new System.Windows.Forms.Label();
+            this.panel10 = new System.Windows.Forms.Panel();
             this.label26 = new System.Windows.Forms.Label();
             this.txtLeadStdDev = new System.Windows.Forms.TextBox();
-            this.label25 = new System.Windows.Forms.Label();
-            this.txtAkkonScaleFactor = new System.Windows.Forms.TextBox();
-            this.label24 = new System.Windows.Forms.Label();
-            this.txtAkkonStrength = new System.Windows.Forms.TextBox();
-            this.label23 = new System.Windows.Forms.Label();
-            this.txtLeadLengthY = new System.Windows.Forms.TextBox();
             this.label22 = new System.Windows.Forms.Label();
             this.txtLeadLengthX = new System.Windows.Forms.TextBox();
+            this.txtMinSize = new System.Windows.Forms.TextBox();
+            this.txtLeadLengthY = new System.Windows.Forms.TextBox();
+            this.label27 = new System.Windows.Forms.Label();
+            this.label23 = new System.Windows.Forms.Label();
+            this.label28 = new System.Windows.Forms.Label();
+            this.txtMaxSize = new System.Windows.Forms.TextBox();
             this.label21 = new System.Windows.Forms.Label();
+            this.txtAkkonStrength = new System.Windows.Forms.TextBox();
             this.label17 = new System.Windows.Forms.Label();
             this.txtLogWidth = new System.Windows.Forms.TextBox();
+            this.label24 = new System.Windows.Forms.Label();
+            this.label25 = new System.Windows.Forms.Label();
             this.txtThresholdWeight = new System.Windows.Forms.TextBox();
+            this.txtAkkonScaleFactor = new System.Windows.Forms.TextBox();
             this.label20 = new System.Windows.Forms.Label();
             this.txtMinArea = new System.Windows.Forms.TextBox();
             this.txtScaleFactor = new System.Windows.Forms.TextBox();
@@ -102,6 +108,7 @@
             this.txtMaxArea = new System.Windows.Forms.TextBox();
             this.tabPageDrawOption = new System.Windows.Forms.TabPage();
             this.panel9 = new System.Windows.Forms.Panel();
+            this.ckbDrawSize = new System.Windows.Forms.CheckBox();
             this.ckbDrawStrength = new System.Windows.Forms.CheckBox();
             this.ckbDrawArea = new System.Windows.Forms.CheckBox();
             this.label5 = new System.Windows.Forms.Label();
@@ -113,13 +120,6 @@
             this.dgvResult = new System.Windows.Forms.DataGridView();
             this.colTime = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colPanelID = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ckbDrawSize = new System.Windows.Forms.CheckBox();
-            this.txtMinSize = new System.Windows.Forms.TextBox();
-            this.label27 = new System.Windows.Forms.Label();
-            this.label28 = new System.Windows.Forms.Label();
-            this.txtMaxSize = new System.Windows.Forms.TextBox();
-            this.label29 = new System.Windows.Forms.Label();
-            this.panel10 = new System.Windows.Forms.Panel();
             this.tableLayoutPanel3.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
@@ -595,6 +595,26 @@
             this.tabPageParameter.TabIndex = 0;
             this.tabPageParameter.Text = "Parameter";
             // 
+            // label29
+            // 
+            this.label29.Font = new System.Drawing.Font("맑은 고딕", 14F, System.Drawing.FontStyle.Bold);
+            this.label29.ForeColor = System.Drawing.Color.White;
+            this.label29.Location = new System.Drawing.Point(5, 586);
+            this.label29.Name = "label29";
+            this.label29.Size = new System.Drawing.Size(357, 33);
+            this.label29.TabIndex = 62;
+            this.label29.Text = "Judgement";
+            this.label29.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // panel10
+            // 
+            this.panel10.BackColor = System.Drawing.SystemColors.Highlight;
+            this.panel10.Location = new System.Drawing.Point(3, 619);
+            this.panel10.Margin = new System.Windows.Forms.Padding(0);
+            this.panel10.Name = "panel10";
+            this.panel10.Size = new System.Drawing.Size(370, 2);
+            this.panel10.TabIndex = 63;
+            // 
             // label26
             // 
             this.label26.Font = new System.Drawing.Font("맑은 고딕", 10F, System.Drawing.FontStyle.Bold);
@@ -615,69 +635,6 @@
             this.txtLeadStdDev.TabIndex = 56;
             this.txtLeadStdDev.Text = "0";
             this.txtLeadStdDev.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // label25
-            // 
-            this.label25.Font = new System.Drawing.Font("맑은 고딕", 10F, System.Drawing.FontStyle.Bold);
-            this.label25.ForeColor = System.Drawing.Color.White;
-            this.label25.Location = new System.Drawing.Point(13, 553);
-            this.label25.Name = "label25";
-            this.label25.Size = new System.Drawing.Size(162, 33);
-            this.label25.TabIndex = 55;
-            this.label25.Text = "Akkon ScaleFactor";
-            this.label25.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // txtAkkonScaleFactor
-            // 
-            this.txtAkkonScaleFactor.Font = new System.Drawing.Font("맑은 고딕", 9.75F, System.Drawing.FontStyle.Bold);
-            this.txtAkkonScaleFactor.Location = new System.Drawing.Point(202, 558);
-            this.txtAkkonScaleFactor.Name = "txtAkkonScaleFactor";
-            this.txtAkkonScaleFactor.Size = new System.Drawing.Size(100, 25);
-            this.txtAkkonScaleFactor.TabIndex = 54;
-            this.txtAkkonScaleFactor.Text = "0";
-            this.txtAkkonScaleFactor.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // label24
-            // 
-            this.label24.Font = new System.Drawing.Font("맑은 고딕", 10F, System.Drawing.FontStyle.Bold);
-            this.label24.ForeColor = System.Drawing.Color.White;
-            this.label24.Location = new System.Drawing.Point(13, 520);
-            this.label24.Name = "label24";
-            this.label24.Size = new System.Drawing.Size(170, 33);
-            this.label24.TabIndex = 53;
-            this.label24.Text = "Akkon Min Strength(%)";
-            this.label24.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // txtAkkonStrength
-            // 
-            this.txtAkkonStrength.Font = new System.Drawing.Font("맑은 고딕", 9.75F, System.Drawing.FontStyle.Bold);
-            this.txtAkkonStrength.Location = new System.Drawing.Point(202, 525);
-            this.txtAkkonStrength.Name = "txtAkkonStrength";
-            this.txtAkkonStrength.Size = new System.Drawing.Size(100, 25);
-            this.txtAkkonStrength.TabIndex = 52;
-            this.txtAkkonStrength.Text = "0";
-            this.txtAkkonStrength.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // label23
-            // 
-            this.label23.Font = new System.Drawing.Font("맑은 고딕", 10F, System.Drawing.FontStyle.Bold);
-            this.label23.ForeColor = System.Drawing.Color.White;
-            this.label23.Location = new System.Drawing.Point(13, 665);
-            this.label23.Name = "label23";
-            this.label23.Size = new System.Drawing.Size(162, 33);
-            this.label23.TabIndex = 51;
-            this.label23.Text = "Lead LengthY(um)";
-            this.label23.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // txtLeadLengthY
-            // 
-            this.txtLeadLengthY.Font = new System.Drawing.Font("맑은 고딕", 9.75F, System.Drawing.FontStyle.Bold);
-            this.txtLeadLengthY.Location = new System.Drawing.Point(202, 670);
-            this.txtLeadLengthY.Name = "txtLeadLengthY";
-            this.txtLeadLengthY.Size = new System.Drawing.Size(100, 25);
-            this.txtLeadLengthY.TabIndex = 50;
-            this.txtLeadLengthY.Text = "0";
-            this.txtLeadLengthY.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // label22
             // 
@@ -700,6 +657,69 @@
             this.txtLeadLengthX.Text = "0";
             this.txtLeadLengthX.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
+            // txtMinSize
+            // 
+            this.txtMinSize.Font = new System.Drawing.Font("맑은 고딕", 9.75F, System.Drawing.FontStyle.Bold);
+            this.txtMinSize.Location = new System.Drawing.Point(202, 393);
+            this.txtMinSize.Name = "txtMinSize";
+            this.txtMinSize.Size = new System.Drawing.Size(100, 25);
+            this.txtMinSize.TabIndex = 58;
+            this.txtMinSize.Text = "0";
+            this.txtMinSize.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // txtLeadLengthY
+            // 
+            this.txtLeadLengthY.Font = new System.Drawing.Font("맑은 고딕", 9.75F, System.Drawing.FontStyle.Bold);
+            this.txtLeadLengthY.Location = new System.Drawing.Point(202, 670);
+            this.txtLeadLengthY.Name = "txtLeadLengthY";
+            this.txtLeadLengthY.Size = new System.Drawing.Size(100, 25);
+            this.txtLeadLengthY.TabIndex = 50;
+            this.txtLeadLengthY.Text = "0";
+            this.txtLeadLengthY.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // label27
+            // 
+            this.label27.Font = new System.Drawing.Font("맑은 고딕", 10F, System.Drawing.FontStyle.Bold);
+            this.label27.ForeColor = System.Drawing.Color.White;
+            this.label27.Location = new System.Drawing.Point(13, 388);
+            this.label27.Name = "label27";
+            this.label27.Size = new System.Drawing.Size(162, 33);
+            this.label27.TabIndex = 59;
+            this.label27.Text = "Min Size(um)";
+            this.label27.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // label23
+            // 
+            this.label23.Font = new System.Drawing.Font("맑은 고딕", 10F, System.Drawing.FontStyle.Bold);
+            this.label23.ForeColor = System.Drawing.Color.White;
+            this.label23.Location = new System.Drawing.Point(13, 665);
+            this.label23.Name = "label23";
+            this.label23.Size = new System.Drawing.Size(162, 33);
+            this.label23.TabIndex = 51;
+            this.label23.Text = "Lead LengthY(um)";
+            this.label23.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // label28
+            // 
+            this.label28.Font = new System.Drawing.Font("맑은 고딕", 10F, System.Drawing.FontStyle.Bold);
+            this.label28.ForeColor = System.Drawing.Color.White;
+            this.label28.Location = new System.Drawing.Point(13, 421);
+            this.label28.Name = "label28";
+            this.label28.Size = new System.Drawing.Size(162, 33);
+            this.label28.TabIndex = 61;
+            this.label28.Text = "Max Size(um)";
+            this.label28.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // txtMaxSize
+            // 
+            this.txtMaxSize.Font = new System.Drawing.Font("맑은 고딕", 9.75F, System.Drawing.FontStyle.Bold);
+            this.txtMaxSize.Location = new System.Drawing.Point(202, 426);
+            this.txtMaxSize.Name = "txtMaxSize";
+            this.txtMaxSize.Size = new System.Drawing.Size(100, 25);
+            this.txtMaxSize.TabIndex = 60;
+            this.txtMaxSize.Text = "100";
+            this.txtMaxSize.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
             // label21
             // 
             this.label21.Font = new System.Drawing.Font("맑은 고딕", 10F, System.Drawing.FontStyle.Bold);
@@ -710,6 +730,16 @@
             this.label21.TabIndex = 47;
             this.label21.Text = "LogWidth";
             this.label21.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // txtAkkonStrength
+            // 
+            this.txtAkkonStrength.Font = new System.Drawing.Font("맑은 고딕", 9.75F, System.Drawing.FontStyle.Bold);
+            this.txtAkkonStrength.Location = new System.Drawing.Point(202, 525);
+            this.txtAkkonStrength.Name = "txtAkkonStrength";
+            this.txtAkkonStrength.Size = new System.Drawing.Size(100, 25);
+            this.txtAkkonStrength.TabIndex = 52;
+            this.txtAkkonStrength.Text = "0";
+            this.txtAkkonStrength.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // label17
             // 
@@ -732,6 +762,28 @@
             this.txtLogWidth.Text = "0";
             this.txtLogWidth.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
+            // label24
+            // 
+            this.label24.Font = new System.Drawing.Font("맑은 고딕", 10F, System.Drawing.FontStyle.Bold);
+            this.label24.ForeColor = System.Drawing.Color.White;
+            this.label24.Location = new System.Drawing.Point(13, 520);
+            this.label24.Name = "label24";
+            this.label24.Size = new System.Drawing.Size(170, 33);
+            this.label24.TabIndex = 53;
+            this.label24.Text = "Akkon Min Strength(%)";
+            this.label24.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // label25
+            // 
+            this.label25.Font = new System.Drawing.Font("맑은 고딕", 10F, System.Drawing.FontStyle.Bold);
+            this.label25.ForeColor = System.Drawing.Color.White;
+            this.label25.Location = new System.Drawing.Point(13, 553);
+            this.label25.Name = "label25";
+            this.label25.Size = new System.Drawing.Size(162, 33);
+            this.label25.TabIndex = 55;
+            this.label25.Text = "Akkon ScaleFactor";
+            this.label25.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
             // txtThresholdWeight
             // 
             this.txtThresholdWeight.Font = new System.Drawing.Font("맑은 고딕", 9.75F, System.Drawing.FontStyle.Bold);
@@ -741,6 +793,16 @@
             this.txtThresholdWeight.TabIndex = 3;
             this.txtThresholdWeight.Text = "0";
             this.txtThresholdWeight.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // txtAkkonScaleFactor
+            // 
+            this.txtAkkonScaleFactor.Font = new System.Drawing.Font("맑은 고딕", 9.75F, System.Drawing.FontStyle.Bold);
+            this.txtAkkonScaleFactor.Location = new System.Drawing.Point(202, 558);
+            this.txtAkkonScaleFactor.Name = "txtAkkonScaleFactor";
+            this.txtAkkonScaleFactor.Size = new System.Drawing.Size(100, 25);
+            this.txtAkkonScaleFactor.TabIndex = 54;
+            this.txtAkkonScaleFactor.Text = "0";
+            this.txtAkkonScaleFactor.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // label20
             // 
@@ -760,7 +822,7 @@
             this.txtMinArea.Name = "txtMinArea";
             this.txtMinArea.Size = new System.Drawing.Size(100, 25);
             this.txtMinArea.TabIndex = 4;
-            this.txtMinArea.Text = "0";
+            this.txtMinArea.Text = "2";
             this.txtMinArea.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // txtScaleFactor
@@ -977,7 +1039,7 @@
             this.txtMaxArea.Name = "txtMaxArea";
             this.txtMaxArea.Size = new System.Drawing.Size(100, 25);
             this.txtMaxArea.TabIndex = 31;
-            this.txtMaxArea.Text = "0";
+            this.txtMaxArea.Text = "10";
             this.txtMaxArea.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // tabPageDrawOption
@@ -1007,6 +1069,20 @@
             this.panel9.Name = "panel9";
             this.panel9.Size = new System.Drawing.Size(374, 789);
             this.panel9.TabIndex = 37;
+            // 
+            // ckbDrawSize
+            // 
+            this.ckbDrawSize.AutoSize = true;
+            this.ckbDrawSize.Checked = true;
+            this.ckbDrawSize.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.ckbDrawSize.Font = new System.Drawing.Font("맑은 고딕", 10F, System.Drawing.FontStyle.Bold);
+            this.ckbDrawSize.ForeColor = System.Drawing.Color.White;
+            this.ckbDrawSize.Location = new System.Drawing.Point(7, 147);
+            this.ckbDrawSize.Name = "ckbDrawSize";
+            this.ckbDrawSize.Size = new System.Drawing.Size(138, 23);
+            this.ckbDrawSize.TabIndex = 38;
+            this.ckbDrawSize.Text = "Draw Size Value";
+            this.ckbDrawSize.UseVisualStyleBackColor = true;
             // 
             // ckbDrawStrength
             // 
@@ -1115,27 +1191,27 @@
             this.dgvResult.AllowUserToResizeRows = false;
             this.dgvResult.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
             this.dgvResult.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            dataGridViewCellStyle11.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle11.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(104)))), ((int)(((byte)(104)))), ((int)(((byte)(104)))));
-            dataGridViewCellStyle11.Font = new System.Drawing.Font("맑은 고딕", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            dataGridViewCellStyle11.ForeColor = System.Drawing.Color.White;
-            dataGridViewCellStyle11.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle11.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle11.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgvResult.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle11;
+            dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle6.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(104)))), ((int)(((byte)(104)))), ((int)(((byte)(104)))));
+            dataGridViewCellStyle6.Font = new System.Drawing.Font("맑은 고딕", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            dataGridViewCellStyle6.ForeColor = System.Drawing.Color.White;
+            dataGridViewCellStyle6.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle6.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle6.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvResult.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle6;
             this.dgvResult.ColumnHeadersHeight = 40;
             this.dgvResult.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             this.dgvResult.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.colTime,
             this.colPanelID});
-            dataGridViewCellStyle14.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle14.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle14.Font = new System.Drawing.Font("굴림", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            dataGridViewCellStyle14.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle14.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle14.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle14.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgvResult.DefaultCellStyle = dataGridViewCellStyle14;
+            dataGridViewCellStyle9.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle9.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle9.Font = new System.Drawing.Font("굴림", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            dataGridViewCellStyle9.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle9.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle9.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle9.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvResult.DefaultCellStyle = dataGridViewCellStyle9;
             this.dgvResult.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgvResult.EnableHeadersVisualStyles = false;
             this.dgvResult.Location = new System.Drawing.Point(0, 0);
@@ -1144,8 +1220,8 @@
             this.dgvResult.Name = "dgvResult";
             this.dgvResult.ReadOnly = true;
             this.dgvResult.RowHeadersVisible = false;
-            dataGridViewCellStyle15.ForeColor = System.Drawing.Color.Black;
-            this.dgvResult.RowsDefaultCellStyle = dataGridViewCellStyle15;
+            dataGridViewCellStyle10.ForeColor = System.Drawing.Color.Black;
+            this.dgvResult.RowsDefaultCellStyle = dataGridViewCellStyle10;
             this.dgvResult.RowTemplate.DefaultCellStyle.BackColor = System.Drawing.Color.White;
             this.dgvResult.RowTemplate.Height = 23;
             this.dgvResult.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
@@ -1154,9 +1230,9 @@
             // 
             // colTime
             // 
-            dataGridViewCellStyle12.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle12.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
-            this.colTime.DefaultCellStyle = dataGridViewCellStyle12;
+            dataGridViewCellStyle7.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle7.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
+            this.colTime.DefaultCellStyle = dataGridViewCellStyle7;
             this.colTime.HeaderText = "Index";
             this.colTime.MinimumWidth = 100;
             this.colTime.Name = "colTime";
@@ -1166,91 +1242,15 @@
             // 
             // colPanelID
             // 
-            this.colPanelID.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            dataGridViewCellStyle13.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            this.colPanelID.DefaultCellStyle = dataGridViewCellStyle13;
+            dataGridViewCellStyle8.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            this.colPanelID.DefaultCellStyle = dataGridViewCellStyle8;
             this.colPanelID.HeaderText = "Value";
             this.colPanelID.MinimumWidth = 100;
             this.colPanelID.Name = "colPanelID";
             this.colPanelID.ReadOnly = true;
             this.colPanelID.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.colPanelID.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            // 
-            // ckbDrawSize
-            // 
-            this.ckbDrawSize.AutoSize = true;
-            this.ckbDrawSize.Checked = true;
-            this.ckbDrawSize.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.ckbDrawSize.Font = new System.Drawing.Font("맑은 고딕", 10F, System.Drawing.FontStyle.Bold);
-            this.ckbDrawSize.ForeColor = System.Drawing.Color.White;
-            this.ckbDrawSize.Location = new System.Drawing.Point(7, 147);
-            this.ckbDrawSize.Name = "ckbDrawSize";
-            this.ckbDrawSize.Size = new System.Drawing.Size(138, 23);
-            this.ckbDrawSize.TabIndex = 38;
-            this.ckbDrawSize.Text = "Draw Size Value";
-            this.ckbDrawSize.UseVisualStyleBackColor = true;
-            // 
-            // txtMinSize
-            // 
-            this.txtMinSize.Font = new System.Drawing.Font("맑은 고딕", 9.75F, System.Drawing.FontStyle.Bold);
-            this.txtMinSize.Location = new System.Drawing.Point(202, 393);
-            this.txtMinSize.Name = "txtMinSize";
-            this.txtMinSize.Size = new System.Drawing.Size(100, 25);
-            this.txtMinSize.TabIndex = 58;
-            this.txtMinSize.Text = "0";
-            this.txtMinSize.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // label27
-            // 
-            this.label27.Font = new System.Drawing.Font("맑은 고딕", 10F, System.Drawing.FontStyle.Bold);
-            this.label27.ForeColor = System.Drawing.Color.White;
-            this.label27.Location = new System.Drawing.Point(13, 388);
-            this.label27.Name = "label27";
-            this.label27.Size = new System.Drawing.Size(162, 33);
-            this.label27.TabIndex = 59;
-            this.label27.Text = "Min Size(um)";
-            this.label27.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // label28
-            // 
-            this.label28.Font = new System.Drawing.Font("맑은 고딕", 10F, System.Drawing.FontStyle.Bold);
-            this.label28.ForeColor = System.Drawing.Color.White;
-            this.label28.Location = new System.Drawing.Point(13, 421);
-            this.label28.Name = "label28";
-            this.label28.Size = new System.Drawing.Size(162, 33);
-            this.label28.TabIndex = 61;
-            this.label28.Text = "Max Size(um)";
-            this.label28.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // txtMaxSize
-            // 
-            this.txtMaxSize.Font = new System.Drawing.Font("맑은 고딕", 9.75F, System.Drawing.FontStyle.Bold);
-            this.txtMaxSize.Location = new System.Drawing.Point(202, 426);
-            this.txtMaxSize.Name = "txtMaxSize";
-            this.txtMaxSize.Size = new System.Drawing.Size(100, 25);
-            this.txtMaxSize.TabIndex = 60;
-            this.txtMaxSize.Text = "0";
-            this.txtMaxSize.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // label29
-            // 
-            this.label29.Font = new System.Drawing.Font("맑은 고딕", 14F, System.Drawing.FontStyle.Bold);
-            this.label29.ForeColor = System.Drawing.Color.White;
-            this.label29.Location = new System.Drawing.Point(5, 586);
-            this.label29.Name = "label29";
-            this.label29.Size = new System.Drawing.Size(357, 33);
-            this.label29.TabIndex = 62;
-            this.label29.Text = "Judgement";
-            this.label29.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // panel10
-            // 
-            this.panel10.BackColor = System.Drawing.SystemColors.Highlight;
-            this.panel10.Location = new System.Drawing.Point(3, 619);
-            this.panel10.Margin = new System.Windows.Forms.Padding(0);
-            this.panel10.Name = "panel10";
-            this.panel10.Size = new System.Drawing.Size(370, 2);
-            this.panel10.TabIndex = 63;
+            this.colPanelID.Width = 500;
             // 
             // SlicePage
             // 
@@ -1356,8 +1356,6 @@
         private System.Windows.Forms.CheckBox ckbDrawStrength;
         private System.Windows.Forms.CheckBox ckbDrawArea;
         private System.Windows.Forms.TabPage tabPageResult;
-        private System.Windows.Forms.DataGridViewTextBoxColumn colTime;
-        private System.Windows.Forms.DataGridViewTextBoxColumn colPanelID;
         private System.Windows.Forms.Label label25;
         private System.Windows.Forms.TextBox txtAkkonScaleFactor;
         private System.Windows.Forms.Label label24;
@@ -1375,5 +1373,7 @@
         private System.Windows.Forms.TextBox txtMaxSize;
         private System.Windows.Forms.Label label29;
         private System.Windows.Forms.Panel panel10;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colTime;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colPanelID;
     }
 }

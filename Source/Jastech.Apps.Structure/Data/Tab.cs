@@ -1,5 +1,6 @@
 ﻿using Jastech.Apps.Structure.Parameters;
 using Jastech.Framework.Algorithms.Akkon.Parameters;
+using Jastech.Framework.Util.Helper;
 using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Data;
@@ -39,7 +40,7 @@ namespace Jastech.Apps.Structure.Data
             tab.Name = Name;
             tab.Index = Index;
             tab.StageIndex = StageIndex;
-
+            tab.AlignSpec = JsonConvertHelper.DeepCopy(AlignSpec) as AlignSpec;
             tab.FpcMarkParamList = FpcMarkParamList.Select(x => x.DeepCopy()).ToList();
             tab.PanelMarkParamList = PanelMarkParamList.Select(x => x.DeepCopy()).ToList();
             tab.AlignParamList = AlignParamList.Select(x => x.DeepCopy()).ToList();
