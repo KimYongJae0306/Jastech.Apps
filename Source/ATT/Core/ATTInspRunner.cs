@@ -111,7 +111,7 @@ namespace ATT.Core
             algorithmTool.MainMarkInspect(inspTab.MergeCogImage, tab, ref inspResult);
 
 
-            if (inspResult.MarkResult.IsMarkGood() == false)
+            if (inspResult.MarkResult.IsGood() == false)
             {
                 // 검사 실패
                 string message = string.Format("Mark Inspection NG !!! Tab_{0} / Fpc_{1}, Panel_{2}", tab.Index, inspResult.MarkResult.FpcMark.Judgement, inspResult.MarkResult.PanelMark.Judgement);

@@ -154,7 +154,7 @@ namespace Jastech.Apps.Structure.Data
 
             return result;
         }
-        public bool IsMarkGood()
+        public bool IsGood()
         {
             if (FpcMark == null || PanelMark == null)
                 return false;
@@ -348,9 +348,9 @@ namespace Jastech.Apps.Structure.Data
 
         public float AvgCenterY { get; set; }
 
-        public VisionProAlignCaliperResult Panel { get; set; } = null;
+        public VisionProAlignCaliperResult Panel { get; set; } = new VisionProAlignCaliperResult();
 
-        public VisionProAlignCaliperResult Fpc { get; set; } = null;
+        public VisionProAlignCaliperResult Fpc { get; set; } = new VisionProAlignCaliperResult();
         #endregion
 
         #region 메서드
@@ -379,8 +379,8 @@ namespace Jastech.Apps.Structure.Data
         {
             AlignResult result = new AlignResult();
             result.ResultValue_pixel = ResultValue_pixel;
-            result.Panel = Panel.DeepCopy();
-            result.Fpc = Fpc.DeepCopy();
+            result.Panel = Panel?.DeepCopy();
+            result.Fpc = Fpc?.DeepCopy();
 
             return result;
         }

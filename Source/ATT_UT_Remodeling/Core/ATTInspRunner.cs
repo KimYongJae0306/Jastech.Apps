@@ -114,7 +114,7 @@ namespace ATT_UT_Remodeling.Core
 
             algorithmTool.MainMarkInspect(inspTab.MergeCogImage, tab, ref inspResult);
 
-            if (inspResult.MarkResult.IsMarkGood() == false)
+            if (inspResult.MarkResult.IsGood() == false)
             {
                 // 검사 실패
                 string message = string.Format("Mark Inspection NG !!! Tab_{0} / Fpc_{1}, Panel_{2}", tab.Index, inspResult.MarkResult.FpcMark.Judgement, inspResult.MarkResult.PanelMark.Judgement);
@@ -187,6 +187,9 @@ namespace ATT_UT_Remodeling.Core
 
                     inspResult.AkkonResult = CreateAkkonResult(unitName, tab.Index, leadResultList);
                 }
+                else
+                    inspResult.AkkonResult = new AkkonResult();
+
                 AppsInspResult.TabResultList.Add(inspResult);
 
                 sw.Stop();
@@ -450,7 +453,7 @@ namespace ATT_UT_Remodeling.Core
         {
             var cancellationToken = SeqTaskCancellationTokenSource.Token;
             cancellationToken.ThrowIfCancellationRequested();
-            SeqStep = SeqStep.SEQ_WAITING;
+            SeqStep = SeqStep.SEQ_INIT;
 
             while (true)
             {
@@ -501,20 +504,7 @@ namespace ATT_UT_Remodeling.Core
             {
                 case SeqStep.SEQ_IDLE:
                     break;
-                case SeqStep.SEQ_WAITING:
-
-                    if(ConfigSet.Instance().Operation.VirtualMode == false)
-                    {
-                        if (AppsStatus.Instance().IsInspRunnerFlagFromPlc == false)
-                            break;
-                    }
-
-                    WriteLog("Receive Inspection Start Signal From PLC.", true);
-
-                    SeqStep = SeqStep.SEQ_READY;
-                    break;
-
-                case SeqStep.SEQ_READY:
+                case SeqStep.SEQ_INIT:
                     lineCamera.IsLive = false;
 
                     light.TurnOff();
@@ -530,9 +520,20 @@ namespace ATT_UT_Remodeling.Core
                     InitializeBuffer();
                     WriteLog("Initialize Buffer.");
 
+              
+                    SeqStep = SeqStep.SEQ_WAITING;
+                    break;
+                case SeqStep.SEQ_WAITING:
+
+                    if (AppsStatus.Instance().IsInspRunnerFlagFromPlc == false)
+                        break;
+
+                    WriteLog("Receive Inspection Start Signal From PLC.", true);
+
                     AppsInspResult.StartInspTime = DateTime.Now;
                     AppsInspResult.Cell_ID = GetCellID();
 
+                    WriteLog("Cell ID : " + AppsInspResult.Cell_ID, true);
                     SeqStep = SeqStep.SEQ_MOVE_START_POS;
                     break;
                 case SeqStep.SEQ_MOVE_START_POS:
@@ -649,7 +650,7 @@ namespace ATT_UT_Remodeling.Core
                     if (ConfigSet.Instance().Operation.VirtualMode)
                         AppsStatus.Instance().IsInspRunnerFlagFromPlc = false;
 
-                    SeqStep = SeqStep.SEQ_WAITING;
+                    SeqStep = SeqStep.SEQ_INIT;
                     break;
 
                 default:
@@ -1436,9 +1437,9 @@ namespace ATT_UT_Remodeling.Core
     {
         SEQ_IDLE,
         SEQ_START,
-        SEQ_READY,
-        SEQ_MOVE_START_POS,
+        SEQ_INIT,
         SEQ_WAITING,
+        SEQ_MOVE_START_POS,
         SEQ_VIRTUAL,
         SEQ_SCAN_READY,
         SEQ_SCAN_START,

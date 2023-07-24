@@ -1,4 +1,5 @@
 ﻿using ATT_UT_Remodeling.Core;
+using Cognex.VisionPro;
 using Jastech.Apps.Structure;
 using Jastech.Apps.Structure.Data;
 using Jastech.Apps.Winform;
@@ -12,6 +13,7 @@ using Jastech.Framework.Device.LAFCtrl;
 using Jastech.Framework.Device.LightCtrls;
 using Jastech.Framework.Device.Motions;
 using Jastech.Framework.Device.Plcs;
+using Jastech.Framework.Imaging.VisionPro;
 using Jastech.Framework.Structure;
 using Jastech.Framework.Util.Helper;
 using Jastech.Framework.Winform;
@@ -220,7 +222,7 @@ namespace ATT_UT_Remodeling
                 {
                     _preAlignRunner.SeqRun();
                     _inspRunner.SeqRun();
-                    AddSystemLogMessage("Start auto mode.");
+                    AddSystemLogMessage("Start Auto mode.");
                 }
             }
         }
@@ -243,7 +245,7 @@ namespace ATT_UT_Remodeling
                 {
                     _preAlignRunner.SeqStop();
                     _inspRunner.SeqStop();
-                    AddSystemLogMessage("Stop auto mode.");
+                    AddSystemLogMessage("Stop Auto Mode.");
                 }
             }
         }
@@ -258,6 +260,17 @@ namespace ATT_UT_Remodeling
             _inspRunner.VirtualGrabDone();
         }
 
+        public void SetLeftPreAlignImage(string filePath)
+        {
+            ICogImage cogImage = VisionProImageHelper.Load(filePath);
+             _preAlignRunner.SetPreAlignLeftImage(cogImage as CogImage8Grey);
+        }
+
+        public void SetRightPreAlignImage(string filePath)
+        {
+            ICogImage cogImage = VisionProImageHelper.Load(filePath);
+            _preAlignRunner.SetPreAlignRightImage(cogImage as CogImage8Grey);
+        }
         #endregion
     }
 }

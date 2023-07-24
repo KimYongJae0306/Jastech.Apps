@@ -471,17 +471,17 @@ namespace Jastech.Apps.Winform
             }
         }
 
-        public void WriteTabAlignResult(int tabNo, AlignResult leftAlignResultX, AlignResult leftAlignResultY, AlignResult rightAlignResultX, AlignResult rightAlignResultY, double resolution)
+        public void WriteTabAlignResult(int tabNo, TabAlignResult alignResult, double resolution)
         {
             int judgement = 1; // 1 : OK, 2: NG
-            if (leftAlignResultX.Judgement != Judgment.OK || leftAlignResultY.Judgement != Judgment.OK
-                || rightAlignResultX.Judgement != Judgment.OK || rightAlignResultY.Judgement != Judgment.OK)
+
+            if(alignResult.IsAlignGood() != Judgment.OK)
                 judgement = 2;
 
-            double calcLeftAlignX_mm = (leftAlignResultX.ResultValue_pixel * resolution) * 1000;
-            double calcLeftAlignY_mm = (leftAlignResultY.ResultValue_pixel * resolution) * 1000;
-            double calcRightAlignX_mm = (rightAlignResultX.ResultValue_pixel * resolution) * 1000;
-            double calcRightAlignY_mm = (rightAlignResultY.ResultValue_pixel * resolution) * 1000;
+            double calcLeftAlignX_mm = (alignResult.LeftX.ResultValue_pixel * resolution) * 1000;
+            double calcLeftAlignY_mm = (alignResult.LeftY.ResultValue_pixel * resolution) * 1000;
+            double calcRightAlignX_mm = (alignResult.RightX.ResultValue_pixel * resolution) * 1000;
+            double calcRightAlignY_mm = (alignResult.RightY.ResultValue_pixel * resolution) * 1000;
 
             WriteTabAlignResult(tabNo, judgement, calcLeftAlignX_mm, calcLeftAlignY_mm, calcRightAlignX_mm, calcRightAlignY_mm);
         }

@@ -43,6 +43,10 @@ namespace ATT_UT_Remodeling
 
         #region 속성
         private MainAlgorithmTool AlgorithmTool = new MainAlgorithmTool();
+
+        private CogImage8Grey VirtualLeftImage = null;
+
+        private CogImage8Grey VirtualRightImage = null;
         #endregion
 
         #region 이벤트
@@ -56,8 +60,6 @@ namespace ATT_UT_Remodeling
 
         #region 메서드
         #endregion
-
-
 
         public void SeqRun()
         {
@@ -204,8 +206,18 @@ namespace ATT_UT_Remodeling
                         WriteLog("Left Prealign Light On.");
 
                         // Grab
-                        var preAlignLeftImage = GetAreaCameraImage(areaCamera.Camera);
-                        AppsInspResult.PreAlignResult.PreAlignMark.FoundedMark.Right = RunPreAlignMark(unit, preAlignLeftImage, MarkDirection.Right);
+                        CogImage8Grey leftImage = null;
+
+                        if(ConfigSet.Instance().Operation.VirtualMode == false)
+                        {
+                            var preAlignRightImage = GetAreaCameraImage(areaCamera.Camera) as CogImage8Grey;
+                            AppsInspResult.PreAlignResult.PreAlignMark.FoundedMark.Right = RunPreAlignMark(unit, preAlignRightImage, MarkDirection.Right);
+                        }
+                        else
+                        {
+                            AppsInspResult.PreAlignResult.PreAlignMark.FoundedMark.Right = RunPreAlignMark(unit, VirtualRightImage, MarkDirection.Right);
+                        }
+                  
                         WriteLog("Complete PreAlign Right Mark Search.", true);
 
                         // Set prealign motion position
@@ -228,8 +240,15 @@ namespace ATT_UT_Remodeling
                         WriteLog("Left PreAlign Light On.", true);
 
                         // Grab start
-                        var preAlignLeftImage = GetAreaCameraImage(areaCamera.Camera);
-                        AppsInspResult.PreAlignResult.PreAlignMark.FoundedMark.Left = RunPreAlignMark(unit, preAlignLeftImage, MarkDirection.Left);
+                        if (ConfigSet.Instance().Operation.VirtualMode == false)
+                        {
+                            var preAlignLeftImage = GetAreaCameraImage(areaCamera.Camera);
+                            AppsInspResult.PreAlignResult.PreAlignMark.FoundedMark.Left = RunPreAlignMark(unit, preAlignLeftImage, MarkDirection.Left);
+                        }
+                        else
+                        {
+                            AppsInspResult.PreAlignResult.PreAlignMark.FoundedMark.Left = RunPreAlignMark(unit, VirtualLeftImage, MarkDirection.Left);
+                        }
                         WriteLog("Complete PreAlign Left Mark Search.", true);
 
                         // Set prealign motion position
@@ -294,9 +313,16 @@ namespace ATT_UT_Remodeling
                 case SeqStep.SEQ_DELETE_DATA:
                     // 이거 필요한지 고민좀..
                     // 메인 검사 시퀀스에서 하니깐 필요 없을듯????
-                    SeqStep = SeqStep.SEQ_READY;
+                    SeqStep = SeqStep.SEQ_END;
 
                     break;
+                case SeqStep.SEQ_END:
+                    if (ConfigSet.Instance().Operation.VirtualMode)
+                        AppsStatus.Instance().IsPreAlignRunnerFlagFromPlc = false;
+
+                    SeqStep = SeqStep.SEQ_READY;
+                    break;
+
                 case SeqStep.SEQ_ERROR:
 
                     WriteLog("SEQ_ERROR.", true);
@@ -563,6 +589,24 @@ namespace ATT_UT_Remodeling
             return cogImage;
         }
 
+        public void SetPreAlignLeftImage(CogImage8Grey cogImage)
+        {
+            if (VirtualLeftImage != null)
+                (VirtualLeftImage as CogImage8Grey).Dispose();
+
+            VirtualLeftImage = null;
+            VirtualLeftImage = cogImage;
+        }
+
+        public void SetPreAlignRightImage(CogImage8Grey cogImage)
+        {
+            if (VirtualRightImage != null)
+                (VirtualRightImage as CogImage8Grey).Dispose();
+
+            VirtualRightImage = null;
+            VirtualRightImage = cogImage;
+        }
+
         private void SetMarkMotionPosition(Unit unit, MarkDirection markDirection)
         {
             var preAlignParam = unit.PreAlign.AlignParamList.Where(x => x.Direction == markDirection).FirstOrDefault();
@@ -596,6 +640,7 @@ namespace ATT_UT_Remodeling
         SEQ_SAVE_RESULT_DATA,
         SEQ_SAVE_IMAGE,
         SEQ_DELETE_DATA,
+        SEQ_END,
         SEQ_ERROR,
     }
 }
