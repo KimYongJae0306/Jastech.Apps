@@ -92,6 +92,14 @@ namespace Jastech.Apps.Structure.Parameters
                 group = newGroupParam;
         }
 
+        public void RenewalGroup(List<AkkonGroup> groupList)
+        {
+            if (GroupList.Count > 0)
+                GroupList.Clear();
+
+            GroupList.AddRange(groupList);
+        }
+
         public List<AkkonROI> GetAkkonROIList()
         {
             List<AkkonROI> roiList = new List<AkkonROI>();

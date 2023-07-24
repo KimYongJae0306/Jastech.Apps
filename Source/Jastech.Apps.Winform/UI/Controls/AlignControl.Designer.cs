@@ -48,7 +48,18 @@
             this.lblLeadCount = new System.Windows.Forms.Label();
             this.lblLead = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.label6 = new System.Windows.Forms.Label();
+            this.lblRightAlignSpecX = new System.Windows.Forms.Label();
             this.tableLayoutPanel6 = new System.Windows.Forms.TableLayoutPanel();
+            this.lblRightY_PanelX = new System.Windows.Forms.Label();
+            this.lblLeftY_PanelX = new System.Windows.Forms.Label();
+            this.label11 = new System.Windows.Forms.Label();
+            this.lblRightX_PanelX = new System.Windows.Forms.Label();
+            this.lblLeftY_PanelY = new System.Windows.Forms.Label();
+            this.lblLeftY_FpcX = new System.Windows.Forms.Label();
+            this.lblLeftY_Value = new System.Windows.Forms.Label();
+            this.lblLeftY_Judgement = new System.Windows.Forms.Label();
+            this.label30 = new System.Windows.Forms.Label();
             this.label51 = new System.Windows.Forms.Label();
             this.label50 = new System.Windows.Forms.Label();
             this.label49 = new System.Windows.Forms.Label();
@@ -56,44 +67,33 @@
             this.lblCx_Value = new System.Windows.Forms.Label();
             this.label46 = new System.Windows.Forms.Label();
             this.lblRightY_PanelY = new System.Windows.Forms.Label();
-            this.lblRightY_PanelX = new System.Windows.Forms.Label();
-            this.lblRightY_FpcY = new System.Windows.Forms.Label();
             this.lblRightY_FpcX = new System.Windows.Forms.Label();
             this.lblRightY_Value = new System.Windows.Forms.Label();
             this.lblRightY_Judgement = new System.Windows.Forms.Label();
-            this.lblRightX_PanelY = new System.Windows.Forms.Label();
-            this.lblRightX_PanelX = new System.Windows.Forms.Label();
-            this.lblRightX_FpcY = new System.Windows.Forms.Label();
-            this.lblRightX_FpcX = new System.Windows.Forms.Label();
-            this.lblRightX_Value = new System.Windows.Forms.Label();
-            this.lblRightX_Judgement = new System.Windows.Forms.Label();
-            this.lblLeftY_PanelY = new System.Windows.Forms.Label();
-            this.lblLeftY_PanelX = new System.Windows.Forms.Label();
-            this.lblLeftY_FpcY = new System.Windows.Forms.Label();
-            this.lblLeftY_FpcX = new System.Windows.Forms.Label();
-            this.lblLeftY_Value = new System.Windows.Forms.Label();
-            this.lblLeftY_Judgement = new System.Windows.Forms.Label();
             this.lblLeftX_PanelY = new System.Windows.Forms.Label();
-            this.lblLeftX_PanelX = new System.Windows.Forms.Label();
-            this.lblLeftX_FpcY = new System.Windows.Forms.Label();
             this.lblLeftX_FpcX = new System.Windows.Forms.Label();
             this.lblLeftX_Value = new System.Windows.Forms.Label();
             this.lblLeftX_Judgement = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
             this.label10 = new System.Windows.Forms.Label();
             this.label29 = new System.Windows.Forms.Label();
-            this.label30 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
-            this.label11 = new System.Windows.Forms.Label();
             this.label9 = new System.Windows.Forms.Label();
-            this.label8 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
-            this.label31 = new System.Windows.Forms.Label();
             this.label32 = new System.Windows.Forms.Label();
+            this.label31 = new System.Windows.Forms.Label();
+            this.lblRightX_Judgement = new System.Windows.Forms.Label();
+            this.lblRightX_Value = new System.Windows.Forms.Label();
+            this.lblRightX_FpcX = new System.Windows.Forms.Label();
+            this.lblRightX_PanelY = new System.Windows.Forms.Label();
+            this.label8 = new System.Windows.Forms.Label();
+            this.lblLeftX_FpcY = new System.Windows.Forms.Label();
+            this.lblRightX_FpcY = new System.Windows.Forms.Label();
+            this.lblLeftY_FpcY = new System.Windows.Forms.Label();
+            this.lblRightY_FpcY = new System.Windows.Forms.Label();
+            this.lblLeftX_PanelX = new System.Windows.Forms.Label();
             this.lblRightAlignSpecY = new System.Windows.Forms.Label();
-            this.lblRightAlignSpecX = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
-            this.label6 = new System.Windows.Forms.Label();
             this.lblLeftAlignSpecY = new System.Windows.Forms.Label();
             this.lblLeftAlignSpecX = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
@@ -366,6 +366,29 @@
             this.panel1.Size = new System.Drawing.Size(893, 441);
             this.panel1.TabIndex = 26;
             // 
+            // label6
+            // 
+            this.label6.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.label6.Location = new System.Drawing.Point(5, 61);
+            this.label6.Margin = new System.Windows.Forms.Padding(0);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(200, 40);
+            this.label6.TabIndex = 6;
+            this.label6.Text = "Right Align SpecX(um)";
+            this.label6.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // lblRightAlignSpecX
+            // 
+            this.lblRightAlignSpecX.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblRightAlignSpecX.Location = new System.Drawing.Point(217, 61);
+            this.lblRightAlignSpecX.Margin = new System.Windows.Forms.Padding(0);
+            this.lblRightAlignSpecX.Name = "lblRightAlignSpecX";
+            this.lblRightAlignSpecX.Size = new System.Drawing.Size(209, 40);
+            this.lblRightAlignSpecX.TabIndex = 8;
+            this.lblRightAlignSpecX.Text = "0";
+            this.lblRightAlignSpecX.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblRightAlignSpecX.Click += new System.EventHandler(this.lblRightAlignSpecX_Click);
+            // 
             // tableLayoutPanel6
             // 
             this.tableLayoutPanel6.ColumnCount = 8;
@@ -430,6 +453,108 @@
             this.tableLayoutPanel6.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 16.66667F));
             this.tableLayoutPanel6.Size = new System.Drawing.Size(852, 247);
             this.tableLayoutPanel6.TabIndex = 15;
+            // 
+            // lblRightY_PanelX
+            // 
+            this.lblRightY_PanelX.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblRightY_PanelX.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblRightY_PanelX.Location = new System.Drawing.Point(500, 164);
+            this.lblRightY_PanelX.Margin = new System.Windows.Forms.Padding(0);
+            this.lblRightY_PanelX.Name = "lblRightY_PanelX";
+            this.lblRightY_PanelX.Size = new System.Drawing.Size(100, 41);
+            this.lblRightY_PanelX.TabIndex = 40;
+            this.lblRightY_PanelX.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // lblLeftY_PanelX
+            // 
+            this.lblLeftY_PanelX.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblLeftY_PanelX.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblLeftY_PanelX.Location = new System.Drawing.Point(500, 123);
+            this.lblLeftY_PanelX.Margin = new System.Windows.Forms.Padding(0);
+            this.lblLeftY_PanelX.Name = "lblLeftY_PanelX";
+            this.lblLeftY_PanelX.Size = new System.Drawing.Size(100, 41);
+            this.lblLeftY_PanelX.TabIndex = 26;
+            this.lblLeftY_PanelX.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // label11
+            // 
+            this.label11.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(104)))), ((int)(((byte)(104)))), ((int)(((byte)(104)))));
+            this.label11.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.label11.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.label11.Location = new System.Drawing.Point(500, 0);
+            this.label11.Margin = new System.Windows.Forms.Padding(0);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(100, 41);
+            this.label11.TabIndex = 10;
+            this.label11.Text = "PANEL X";
+            this.label11.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // lblRightX_PanelX
+            // 
+            this.lblRightX_PanelX.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblRightX_PanelX.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblRightX_PanelX.Location = new System.Drawing.Point(500, 82);
+            this.lblRightX_PanelX.Margin = new System.Windows.Forms.Padding(0);
+            this.lblRightX_PanelX.Name = "lblRightX_PanelX";
+            this.lblRightX_PanelX.Size = new System.Drawing.Size(100, 41);
+            this.lblRightX_PanelX.TabIndex = 33;
+            this.lblRightX_PanelX.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // lblLeftY_PanelY
+            // 
+            this.lblLeftY_PanelY.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblLeftY_PanelY.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblLeftY_PanelY.Location = new System.Drawing.Point(700, 123);
+            this.lblLeftY_PanelY.Margin = new System.Windows.Forms.Padding(0);
+            this.lblLeftY_PanelY.Name = "lblLeftY_PanelY";
+            this.lblLeftY_PanelY.Size = new System.Drawing.Size(100, 41);
+            this.lblLeftY_PanelY.TabIndex = 27;
+            this.lblLeftY_PanelY.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // lblLeftY_FpcX
+            // 
+            this.lblLeftY_FpcX.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblLeftY_FpcX.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblLeftY_FpcX.Location = new System.Drawing.Point(400, 123);
+            this.lblLeftY_FpcX.Margin = new System.Windows.Forms.Padding(0);
+            this.lblLeftY_FpcX.Name = "lblLeftY_FpcX";
+            this.lblLeftY_FpcX.Size = new System.Drawing.Size(100, 41);
+            this.lblLeftY_FpcX.TabIndex = 24;
+            this.lblLeftY_FpcX.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // lblLeftY_Value
+            // 
+            this.lblLeftY_Value.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblLeftY_Value.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblLeftY_Value.Location = new System.Drawing.Point(300, 123);
+            this.lblLeftY_Value.Margin = new System.Windows.Forms.Padding(0);
+            this.lblLeftY_Value.Name = "lblLeftY_Value";
+            this.lblLeftY_Value.Size = new System.Drawing.Size(100, 41);
+            this.lblLeftY_Value.TabIndex = 23;
+            this.lblLeftY_Value.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // lblLeftY_Judgement
+            // 
+            this.lblLeftY_Judgement.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblLeftY_Judgement.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblLeftY_Judgement.Location = new System.Drawing.Point(200, 123);
+            this.lblLeftY_Judgement.Margin = new System.Windows.Forms.Padding(0);
+            this.lblLeftY_Judgement.Name = "lblLeftY_Judgement";
+            this.lblLeftY_Judgement.Size = new System.Drawing.Size(100, 41);
+            this.lblLeftY_Judgement.TabIndex = 22;
+            this.lblLeftY_Judgement.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // label30
+            // 
+            this.label30.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.label30.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.label30.Location = new System.Drawing.Point(0, 123);
+            this.label30.Margin = new System.Windows.Forms.Padding(0);
+            this.label30.Name = "label30";
+            this.label30.Size = new System.Drawing.Size(200, 41);
+            this.label30.TabIndex = 11;
+            this.label30.Text = "LeftY";
+            this.label30.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // label51
             // 
@@ -509,28 +634,6 @@
             this.lblRightY_PanelY.TabIndex = 41;
             this.lblRightY_PanelY.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // lblRightY_PanelX
-            // 
-            this.lblRightY_PanelX.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lblRightY_PanelX.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblRightY_PanelX.Location = new System.Drawing.Point(500, 164);
-            this.lblRightY_PanelX.Margin = new System.Windows.Forms.Padding(0);
-            this.lblRightY_PanelX.Name = "lblRightY_PanelX";
-            this.lblRightY_PanelX.Size = new System.Drawing.Size(100, 41);
-            this.lblRightY_PanelX.TabIndex = 40;
-            this.lblRightY_PanelX.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // lblRightY_FpcY
-            // 
-            this.lblRightY_FpcY.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lblRightY_FpcY.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblRightY_FpcY.Location = new System.Drawing.Point(600, 164);
-            this.lblRightY_FpcY.Margin = new System.Windows.Forms.Padding(0);
-            this.lblRightY_FpcY.Name = "lblRightY_FpcY";
-            this.lblRightY_FpcY.Size = new System.Drawing.Size(100, 41);
-            this.lblRightY_FpcY.TabIndex = 39;
-            this.lblRightY_FpcY.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
             // lblRightY_FpcX
             // 
             this.lblRightY_FpcX.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
@@ -564,138 +667,6 @@
             this.lblRightY_Judgement.TabIndex = 36;
             this.lblRightY_Judgement.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // lblRightX_PanelY
-            // 
-            this.lblRightX_PanelY.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lblRightX_PanelY.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblRightX_PanelY.Location = new System.Drawing.Point(700, 82);
-            this.lblRightX_PanelY.Margin = new System.Windows.Forms.Padding(0);
-            this.lblRightX_PanelY.Name = "lblRightX_PanelY";
-            this.lblRightX_PanelY.Size = new System.Drawing.Size(100, 41);
-            this.lblRightX_PanelY.TabIndex = 34;
-            this.lblRightX_PanelY.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // lblRightX_PanelX
-            // 
-            this.lblRightX_PanelX.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lblRightX_PanelX.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblRightX_PanelX.Location = new System.Drawing.Point(500, 82);
-            this.lblRightX_PanelX.Margin = new System.Windows.Forms.Padding(0);
-            this.lblRightX_PanelX.Name = "lblRightX_PanelX";
-            this.lblRightX_PanelX.Size = new System.Drawing.Size(100, 41);
-            this.lblRightX_PanelX.TabIndex = 33;
-            this.lblRightX_PanelX.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // lblRightX_FpcY
-            // 
-            this.lblRightX_FpcY.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lblRightX_FpcY.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblRightX_FpcY.Location = new System.Drawing.Point(600, 82);
-            this.lblRightX_FpcY.Margin = new System.Windows.Forms.Padding(0);
-            this.lblRightX_FpcY.Name = "lblRightX_FpcY";
-            this.lblRightX_FpcY.Size = new System.Drawing.Size(100, 41);
-            this.lblRightX_FpcY.TabIndex = 32;
-            this.lblRightX_FpcY.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // lblRightX_FpcX
-            // 
-            this.lblRightX_FpcX.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lblRightX_FpcX.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblRightX_FpcX.Location = new System.Drawing.Point(400, 82);
-            this.lblRightX_FpcX.Margin = new System.Windows.Forms.Padding(0);
-            this.lblRightX_FpcX.Name = "lblRightX_FpcX";
-            this.lblRightX_FpcX.Size = new System.Drawing.Size(100, 41);
-            this.lblRightX_FpcX.TabIndex = 31;
-            this.lblRightX_FpcX.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // lblRightX_Value
-            // 
-            this.lblRightX_Value.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lblRightX_Value.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblRightX_Value.Location = new System.Drawing.Point(300, 82);
-            this.lblRightX_Value.Margin = new System.Windows.Forms.Padding(0);
-            this.lblRightX_Value.Name = "lblRightX_Value";
-            this.lblRightX_Value.Size = new System.Drawing.Size(100, 41);
-            this.lblRightX_Value.TabIndex = 30;
-            this.lblRightX_Value.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // lblRightX_Judgement
-            // 
-            this.lblRightX_Judgement.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lblRightX_Judgement.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblRightX_Judgement.Location = new System.Drawing.Point(200, 82);
-            this.lblRightX_Judgement.Margin = new System.Windows.Forms.Padding(0);
-            this.lblRightX_Judgement.Name = "lblRightX_Judgement";
-            this.lblRightX_Judgement.Size = new System.Drawing.Size(100, 41);
-            this.lblRightX_Judgement.TabIndex = 29;
-            this.lblRightX_Judgement.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // lblLeftY_PanelY
-            // 
-            this.lblLeftY_PanelY.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lblLeftY_PanelY.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblLeftY_PanelY.Location = new System.Drawing.Point(700, 123);
-            this.lblLeftY_PanelY.Margin = new System.Windows.Forms.Padding(0);
-            this.lblLeftY_PanelY.Name = "lblLeftY_PanelY";
-            this.lblLeftY_PanelY.Size = new System.Drawing.Size(100, 41);
-            this.lblLeftY_PanelY.TabIndex = 27;
-            this.lblLeftY_PanelY.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // lblLeftY_PanelX
-            // 
-            this.lblLeftY_PanelX.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lblLeftY_PanelX.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblLeftY_PanelX.Location = new System.Drawing.Point(500, 123);
-            this.lblLeftY_PanelX.Margin = new System.Windows.Forms.Padding(0);
-            this.lblLeftY_PanelX.Name = "lblLeftY_PanelX";
-            this.lblLeftY_PanelX.Size = new System.Drawing.Size(100, 41);
-            this.lblLeftY_PanelX.TabIndex = 26;
-            this.lblLeftY_PanelX.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // lblLeftY_FpcY
-            // 
-            this.lblLeftY_FpcY.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lblLeftY_FpcY.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblLeftY_FpcY.Location = new System.Drawing.Point(600, 123);
-            this.lblLeftY_FpcY.Margin = new System.Windows.Forms.Padding(0);
-            this.lblLeftY_FpcY.Name = "lblLeftY_FpcY";
-            this.lblLeftY_FpcY.Size = new System.Drawing.Size(100, 41);
-            this.lblLeftY_FpcY.TabIndex = 25;
-            this.lblLeftY_FpcY.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // lblLeftY_FpcX
-            // 
-            this.lblLeftY_FpcX.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lblLeftY_FpcX.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblLeftY_FpcX.Location = new System.Drawing.Point(400, 123);
-            this.lblLeftY_FpcX.Margin = new System.Windows.Forms.Padding(0);
-            this.lblLeftY_FpcX.Name = "lblLeftY_FpcX";
-            this.lblLeftY_FpcX.Size = new System.Drawing.Size(100, 41);
-            this.lblLeftY_FpcX.TabIndex = 24;
-            this.lblLeftY_FpcX.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // lblLeftY_Value
-            // 
-            this.lblLeftY_Value.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lblLeftY_Value.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblLeftY_Value.Location = new System.Drawing.Point(300, 123);
-            this.lblLeftY_Value.Margin = new System.Windows.Forms.Padding(0);
-            this.lblLeftY_Value.Name = "lblLeftY_Value";
-            this.lblLeftY_Value.Size = new System.Drawing.Size(100, 41);
-            this.lblLeftY_Value.TabIndex = 23;
-            this.lblLeftY_Value.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // lblLeftY_Judgement
-            // 
-            this.lblLeftY_Judgement.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lblLeftY_Judgement.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblLeftY_Judgement.Location = new System.Drawing.Point(200, 123);
-            this.lblLeftY_Judgement.Margin = new System.Windows.Forms.Padding(0);
-            this.lblLeftY_Judgement.Name = "lblLeftY_Judgement";
-            this.lblLeftY_Judgement.Size = new System.Drawing.Size(100, 41);
-            this.lblLeftY_Judgement.TabIndex = 22;
-            this.lblLeftY_Judgement.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
             // lblLeftX_PanelY
             // 
             this.lblLeftX_PanelY.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
@@ -706,28 +677,6 @@
             this.lblLeftX_PanelY.Size = new System.Drawing.Size(100, 41);
             this.lblLeftX_PanelY.TabIndex = 20;
             this.lblLeftX_PanelY.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // lblLeftX_PanelX
-            // 
-            this.lblLeftX_PanelX.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lblLeftX_PanelX.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblLeftX_PanelX.Location = new System.Drawing.Point(500, 41);
-            this.lblLeftX_PanelX.Margin = new System.Windows.Forms.Padding(0);
-            this.lblLeftX_PanelX.Name = "lblLeftX_PanelX";
-            this.lblLeftX_PanelX.Size = new System.Drawing.Size(100, 41);
-            this.lblLeftX_PanelX.TabIndex = 19;
-            this.lblLeftX_PanelX.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // lblLeftX_FpcY
-            // 
-            this.lblLeftX_FpcY.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lblLeftX_FpcY.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblLeftX_FpcY.Location = new System.Drawing.Point(600, 41);
-            this.lblLeftX_FpcY.Margin = new System.Windows.Forms.Padding(0);
-            this.lblLeftX_FpcY.Name = "lblLeftX_FpcY";
-            this.lblLeftX_FpcY.Size = new System.Drawing.Size(100, 41);
-            this.lblLeftX_FpcY.TabIndex = 18;
-            this.lblLeftX_FpcY.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // lblLeftX_FpcX
             // 
@@ -799,18 +748,6 @@
             this.label29.Text = "LeftX";
             this.label29.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // label30
-            // 
-            this.label30.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.label30.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.label30.Location = new System.Drawing.Point(0, 123);
-            this.label30.Margin = new System.Windows.Forms.Padding(0);
-            this.label30.Name = "label30";
-            this.label30.Size = new System.Drawing.Size(200, 41);
-            this.label30.TabIndex = 11;
-            this.label30.Text = "LeftY";
-            this.label30.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
             // label4
             // 
             this.label4.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(104)))), ((int)(((byte)(104)))), ((int)(((byte)(104)))));
@@ -823,19 +760,6 @@
             this.label4.TabIndex = 5;
             this.label4.Text = "Judgement";
             this.label4.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // label11
-            // 
-            this.label11.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(104)))), ((int)(((byte)(104)))), ((int)(((byte)(104)))));
-            this.label11.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.label11.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.label11.Location = new System.Drawing.Point(500, 0);
-            this.label11.Margin = new System.Windows.Forms.Padding(0);
-            this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(100, 41);
-            this.label11.TabIndex = 10;
-            this.label11.Text = "PANEL X";
-            this.label11.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // label9
             // 
@@ -850,19 +774,6 @@
             this.label9.Text = "Value";
             this.label9.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // label8
-            // 
-            this.label8.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(104)))), ((int)(((byte)(104)))), ((int)(((byte)(104)))));
-            this.label8.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.label8.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.label8.Location = new System.Drawing.Point(600, 0);
-            this.label8.Margin = new System.Windows.Forms.Padding(0);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(100, 41);
-            this.label8.TabIndex = 7;
-            this.label8.Text = "FPC Y";
-            this.label8.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
             // label3
             // 
             this.label3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(104)))), ((int)(((byte)(104)))), ((int)(((byte)(104)))));
@@ -876,6 +787,18 @@
             this.label3.Text = "FPC X";
             this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
+            // label32
+            // 
+            this.label32.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.label32.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.label32.Location = new System.Drawing.Point(0, 164);
+            this.label32.Margin = new System.Windows.Forms.Padding(0);
+            this.label32.Name = "label32";
+            this.label32.Size = new System.Drawing.Size(200, 41);
+            this.label32.TabIndex = 11;
+            this.label32.Text = "RightY";
+            this.label32.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
             // label31
             // 
             this.label31.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
@@ -888,17 +811,117 @@
             this.label31.Text = "RightX";
             this.label31.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // label32
+            // lblRightX_Judgement
             // 
-            this.label32.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.label32.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.label32.Location = new System.Drawing.Point(0, 164);
-            this.label32.Margin = new System.Windows.Forms.Padding(0);
-            this.label32.Name = "label32";
-            this.label32.Size = new System.Drawing.Size(200, 41);
-            this.label32.TabIndex = 11;
-            this.label32.Text = "RightY";
-            this.label32.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblRightX_Judgement.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblRightX_Judgement.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblRightX_Judgement.Location = new System.Drawing.Point(200, 82);
+            this.lblRightX_Judgement.Margin = new System.Windows.Forms.Padding(0);
+            this.lblRightX_Judgement.Name = "lblRightX_Judgement";
+            this.lblRightX_Judgement.Size = new System.Drawing.Size(100, 41);
+            this.lblRightX_Judgement.TabIndex = 29;
+            this.lblRightX_Judgement.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // lblRightX_Value
+            // 
+            this.lblRightX_Value.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblRightX_Value.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblRightX_Value.Location = new System.Drawing.Point(300, 82);
+            this.lblRightX_Value.Margin = new System.Windows.Forms.Padding(0);
+            this.lblRightX_Value.Name = "lblRightX_Value";
+            this.lblRightX_Value.Size = new System.Drawing.Size(100, 41);
+            this.lblRightX_Value.TabIndex = 30;
+            this.lblRightX_Value.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // lblRightX_FpcX
+            // 
+            this.lblRightX_FpcX.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblRightX_FpcX.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblRightX_FpcX.Location = new System.Drawing.Point(400, 82);
+            this.lblRightX_FpcX.Margin = new System.Windows.Forms.Padding(0);
+            this.lblRightX_FpcX.Name = "lblRightX_FpcX";
+            this.lblRightX_FpcX.Size = new System.Drawing.Size(100, 41);
+            this.lblRightX_FpcX.TabIndex = 31;
+            this.lblRightX_FpcX.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // lblRightX_PanelY
+            // 
+            this.lblRightX_PanelY.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblRightX_PanelY.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblRightX_PanelY.Location = new System.Drawing.Point(700, 82);
+            this.lblRightX_PanelY.Margin = new System.Windows.Forms.Padding(0);
+            this.lblRightX_PanelY.Name = "lblRightX_PanelY";
+            this.lblRightX_PanelY.Size = new System.Drawing.Size(100, 41);
+            this.lblRightX_PanelY.TabIndex = 34;
+            this.lblRightX_PanelY.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // label8
+            // 
+            this.label8.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(104)))), ((int)(((byte)(104)))), ((int)(((byte)(104)))));
+            this.label8.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.label8.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.label8.Location = new System.Drawing.Point(600, 0);
+            this.label8.Margin = new System.Windows.Forms.Padding(0);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(100, 41);
+            this.label8.TabIndex = 7;
+            this.label8.Text = "FPC Y";
+            this.label8.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // lblLeftX_FpcY
+            // 
+            this.lblLeftX_FpcY.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblLeftX_FpcY.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblLeftX_FpcY.Location = new System.Drawing.Point(600, 41);
+            this.lblLeftX_FpcY.Margin = new System.Windows.Forms.Padding(0);
+            this.lblLeftX_FpcY.Name = "lblLeftX_FpcY";
+            this.lblLeftX_FpcY.Size = new System.Drawing.Size(100, 41);
+            this.lblLeftX_FpcY.TabIndex = 18;
+            this.lblLeftX_FpcY.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // lblRightX_FpcY
+            // 
+            this.lblRightX_FpcY.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblRightX_FpcY.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblRightX_FpcY.Location = new System.Drawing.Point(600, 82);
+            this.lblRightX_FpcY.Margin = new System.Windows.Forms.Padding(0);
+            this.lblRightX_FpcY.Name = "lblRightX_FpcY";
+            this.lblRightX_FpcY.Size = new System.Drawing.Size(100, 41);
+            this.lblRightX_FpcY.TabIndex = 32;
+            this.lblRightX_FpcY.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // lblLeftY_FpcY
+            // 
+            this.lblLeftY_FpcY.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblLeftY_FpcY.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblLeftY_FpcY.Location = new System.Drawing.Point(600, 123);
+            this.lblLeftY_FpcY.Margin = new System.Windows.Forms.Padding(0);
+            this.lblLeftY_FpcY.Name = "lblLeftY_FpcY";
+            this.lblLeftY_FpcY.Size = new System.Drawing.Size(100, 41);
+            this.lblLeftY_FpcY.TabIndex = 25;
+            this.lblLeftY_FpcY.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // lblRightY_FpcY
+            // 
+            this.lblRightY_FpcY.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblRightY_FpcY.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblRightY_FpcY.Location = new System.Drawing.Point(600, 164);
+            this.lblRightY_FpcY.Margin = new System.Windows.Forms.Padding(0);
+            this.lblRightY_FpcY.Name = "lblRightY_FpcY";
+            this.lblRightY_FpcY.Size = new System.Drawing.Size(100, 41);
+            this.lblRightY_FpcY.TabIndex = 39;
+            this.lblRightY_FpcY.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // lblLeftX_PanelX
+            // 
+            this.lblLeftX_PanelX.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblLeftX_PanelX.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblLeftX_PanelX.Location = new System.Drawing.Point(500, 41);
+            this.lblLeftX_PanelX.Margin = new System.Windows.Forms.Padding(0);
+            this.lblLeftX_PanelX.Name = "lblLeftX_PanelX";
+            this.lblLeftX_PanelX.Size = new System.Drawing.Size(100, 41);
+            this.lblLeftX_PanelX.TabIndex = 19;
+            this.lblLeftX_PanelX.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // lblRightAlignSpecY
             // 
@@ -912,18 +935,6 @@
             this.lblRightAlignSpecY.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.lblRightAlignSpecY.Click += new System.EventHandler(this.lblRightAlignSpecY_Click);
             // 
-            // lblRightAlignSpecX
-            // 
-            this.lblRightAlignSpecX.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lblRightAlignSpecX.Location = new System.Drawing.Point(217, 61);
-            this.lblRightAlignSpecX.Margin = new System.Windows.Forms.Padding(0);
-            this.lblRightAlignSpecX.Name = "lblRightAlignSpecX";
-            this.lblRightAlignSpecX.Size = new System.Drawing.Size(209, 40);
-            this.lblRightAlignSpecX.TabIndex = 8;
-            this.lblRightAlignSpecX.Text = "0";
-            this.lblRightAlignSpecX.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.lblRightAlignSpecX.Click += new System.EventHandler(this.lblRightAlignSpecX_Click);
-            // 
             // label5
             // 
             this.label5.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
@@ -934,17 +945,6 @@
             this.label5.TabIndex = 7;
             this.label5.Text = "Right Align SpecY(um)";
             this.label5.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // label6
-            // 
-            this.label6.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.label6.Location = new System.Drawing.Point(5, 61);
-            this.label6.Margin = new System.Windows.Forms.Padding(0);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(200, 40);
-            this.label6.TabIndex = 6;
-            this.label6.Text = "Right Align SpecX(um)";
-            this.label6.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // lblLeftAlignSpecY
             // 

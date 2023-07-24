@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using static System.Windows.Forms.AxHost;
@@ -78,14 +79,24 @@ namespace Jastech.Framework.Util
             var targetRadian = TargetData.GetRadian();
 
             var referenceDegree = MathHelper.RadToDeg(referenceRadian);
-            if (referenceDegree > 180.0)
-                referenceDegree -= 360.0;
+            //if (referenceDegree > 180.0)
+            //    referenceDegree += 180.0;
 
             var targetDegree = MathHelper.RadToDeg(targetRadian);
-            if (targetDegree > 180.0)
-                targetDegree -= 360.0;
+            //if (targetDegree > 180.0)
+            //    targetDegree += 180.0;
 
             DiffAngle = referenceDegree - targetDegree;
+            if (DiffAngle > 0)
+            {
+                int gg = 0;
+                //DiffAngle += 180;
+            }
+
+            if (DiffAngle < 0)
+            {
+                int gg = 0;
+            }
         }
 
         private double GetDiffAngle()
@@ -105,12 +116,13 @@ namespace Jastech.Framework.Util
             var diffAngle = GetDiffAngle();
             var offsetPoint = GetOffsetPoint();
 
-            if (diffAngle == 0.0 || offsetPoint == null)
+            if (diffAngle == 0.0 && offsetPoint == null)
                 return inputPoint;
 
             var targetCenterPoint = TargetData.GetCenterPoint();
+            var referenceCenterPoint = ReferenceData.GetCenterPoint();
 
-            return MathHelper.Rotate(inputPoint, targetCenterPoint, diffAngle);
+            return MathHelper.GetCoordinate(targetCenterPoint, diffAngle, offsetPoint, inputPoint);
         }
     }
 
