@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Jastech.Framework.Config;
+using Jastech.Framework.Util.Helper;
+using System;
 using System.Threading;
 using System.Windows.Forms;
 
@@ -19,6 +21,8 @@ namespace AkkonTester
             {
                 Application.EnableVisualStyles();
                 Application.SetCompatibleTextRenderingDefault(false);
+                Logger.Initialize(ConfigSet.Instance().Path.Log);
+
                 Application.Run(new MainForm());
             }
             else

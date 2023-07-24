@@ -33,6 +33,8 @@
             this.pnlResultImage = new System.Windows.Forms.Panel();
             this.pnlOriginalImage = new System.Windows.Forms.Panel();
             this.panel2 = new System.Windows.Forms.Panel();
+            this.label7 = new System.Windows.Forms.Label();
+            this.txtResolution = new System.Windows.Forms.TextBox();
             this.btnInspection = new System.Windows.Forms.Button();
             this.label6 = new System.Windows.Forms.Label();
             this.txtResizeRatio = new System.Windows.Forms.TextBox();
@@ -54,8 +56,6 @@
             this.btnLoadImage = new System.Windows.Forms.Button();
             this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
             this.lblAkkonViewer = new System.Windows.Forms.Label();
-            this.label7 = new System.Windows.Forms.Label();
-            this.txtResolution = new System.Windows.Forms.TextBox();
             this.tableLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
             this.panel2.SuspendLayout();
@@ -141,6 +141,27 @@
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(394, 817);
             this.panel2.TabIndex = 1;
+            // 
+            // label7
+            // 
+            this.label7.Font = new System.Drawing.Font("맑은 고딕", 10F, System.Drawing.FontStyle.Bold);
+            this.label7.ForeColor = System.Drawing.Color.White;
+            this.label7.Location = new System.Drawing.Point(9, 553);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(100, 33);
+            this.label7.TabIndex = 21;
+            this.label7.Text = "Resolution";
+            this.label7.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // txtResolution
+            // 
+            this.txtResolution.Font = new System.Drawing.Font("맑은 고딕", 9.75F, System.Drawing.FontStyle.Bold);
+            this.txtResolution.Location = new System.Drawing.Point(115, 558);
+            this.txtResolution.Name = "txtResolution";
+            this.txtResolution.Size = new System.Drawing.Size(100, 25);
+            this.txtResolution.TabIndex = 20;
+            this.txtResolution.Text = "0.35";
+            this.txtResolution.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // btnInspection
             // 
@@ -381,27 +402,6 @@
             this.lblAkkonViewer.TabIndex = 4;
             this.lblAkkonViewer.Text = "Original Akkon Inspection";
             this.lblAkkonViewer.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // label7
-            // 
-            this.label7.Font = new System.Drawing.Font("맑은 고딕", 10F, System.Drawing.FontStyle.Bold);
-            this.label7.ForeColor = System.Drawing.Color.White;
-            this.label7.Location = new System.Drawing.Point(9, 553);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(100, 33);
-            this.label7.TabIndex = 21;
-            this.label7.Text = "Resolution";
-            this.label7.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // txtResolution
-            // 
-            this.txtResolution.Font = new System.Drawing.Font("맑은 고딕", 9.75F, System.Drawing.FontStyle.Bold);
-            this.txtResolution.Location = new System.Drawing.Point(115, 558);
-            this.txtResolution.Name = "txtResolution";
-            this.txtResolution.Size = new System.Drawing.Size(100, 25);
-            this.txtResolution.TabIndex = 20;
-            this.txtResolution.Text = "0.0005";
-            this.txtResolution.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // OriginalPage
             // 

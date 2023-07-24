@@ -218,19 +218,19 @@ namespace ATT_UT_Remodeling.Core
             {
                 if (leadResult.ContainPos == LeadContainPos.Left)
                 {
-                    leftCountNG |= leadResult.CountResult.Judgement == Judgement.NG ? true : false;
-                    leftCountList.Add(leadResult.CountResult.DetectCount);
+                    leftCountNG |= leadResult.Judgement == Judgement.NG ? true : false;
+                    leftCountList.Add(leadResult.AkkonCount);
 
-                    leftLengthNG |= leadResult.LengthResult.Judgement == Judgement.NG ? true : false;
-                    leftLengthList.Add(leadResult.LengthResult.LengthY_um);
+                    leftLengthNG |= leadResult.Judgement == Judgement.NG ? true : false;
+                    leftLengthList.Add(leadResult.LengthY_um);
                 }
                 else
                 {
-                    rightCountNG |= leadResult.CountResult.Judgement == Judgement.NG ? true : false;
-                    rightCountList.Add(leadResult.CountResult.DetectCount);
+                    rightCountNG |= leadResult.Judgement == Judgement.NG ? true : false;
+                    rightCountList.Add(leadResult.AkkonCount);
 
-                    rightLengthNG |= leadResult.LengthResult.Judgement == Judgement.NG ? true : false;
-                    rightLengthList.Add(leadResult.LengthResult.LengthY_um);
+                    rightLengthNG |= leadResult.Judgement == Judgement.NG ? true : false;
+                    rightLengthList.Add(leadResult.LengthY_um);
                 }
             }
 
@@ -755,6 +755,7 @@ namespace ATT_UT_Remodeling.Core
                 Point rightTop = new Point((int)lead.RightTopX + startPoint.X, (int)lead.RightTopY + startPoint.Y);
                 Point rightBottom = new Point((int)lead.RightBottomX + startPoint.X, (int)lead.RightBottomY + startPoint.Y);
 
+                // 향 후 Main 페이지 ROI 보여 달라고 하면 ContainLeadROI = true로 속성 변경
                 if (autoDrawParam.ContainLeadROI)
                 {
                     CvInvoke.Line(colorMat, leftTop, leftBottom, new MCvScalar(50, 230, 50, 255), 1);
@@ -776,10 +777,11 @@ namespace ATT_UT_Remodeling.Core
                     int radius = rectRect.Width > rectRect.Height ? rectRect.Width : rectRect.Height;
 
                     int size = blob.BoundingRect.Width * blob.BoundingRect.Height;
-                    double calcMinArea = AkkonParameters.ResultFilterParam.MinArea_um * AkkonParameters.ResultFilterParam.Resolution_um;
-                    double calcMaxArea = AkkonParameters.ResultFilterParam.MaxArea_um * AkkonParameters.ResultFilterParam.Resolution_um;
+                    //double calcMinArea = AkkonParameters.ResultFilterParam.MinArea_um * AkkonParameters.ResultFilterParam.Resolution_um;
+                    //double calcMaxArea = AkkonParameters.ResultFilterParam.MaxArea_um * AkkonParameters.ResultFilterParam.Resolution_um;
 
-                    if (calcMinArea <= size && size <= calcMaxArea)
+                    //if (calcMinArea <= size && size <= calcMaxArea)
+                    if(blob.IsAkkonShape)
                     {
                         blobCount++;
                         CvInvoke.Circle(colorMat, center, radius / 2, new MCvScalar(255), 1);
@@ -789,7 +791,6 @@ namespace ATT_UT_Remodeling.Core
                         //if (AkkonParameters.DrawOption.ContainNG)
                         //    CvInvoke.Circle(colorMat, center, radius / 2, new MCvScalar(0), 1);
                     }
-
                 }
 
                 if (autoDrawParam.ContainLeadCount)

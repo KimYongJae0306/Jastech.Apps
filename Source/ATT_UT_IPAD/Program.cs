@@ -72,13 +72,13 @@ namespace ATT_UT_IPAD
             {
                 // Akkon LineScanCamera
                 var alignCamera = new CameraVirtual("AkkonCamera", 4640, 1024, ColorFormat.Gray, SensorType.Line);
-                alignCamera.PixelResolution_um = 0.35F;
+                alignCamera.PixelResolution_um = 3.5F;
                 alignCamera.LensScale = 10F;
                 config.Add(alignCamera);
 
                 // Align LineScanCamera
                 var akkonCamera = new CameraVirtual("AlignCamera", 4640, 1024, ColorFormat.Gray, SensorType.Line);
-                akkonCamera.PixelResolution_um = 0.35F;
+                akkonCamera.PixelResolution_um = 3.5F;
                 akkonCamera.LensScale = 10F;
                 config.Add(akkonCamera);
 
@@ -116,7 +116,7 @@ namespace ATT_UT_IPAD
                 akkonCamera.TriggerSource = (int)MilCxpTriggerSource.Cxp;
                 akkonCamera.TriggerSignalType = MilTriggerSignalType.TL_Trigger;
                 akkonCamera.TriggerIoSourceType = MILIoSourceType.AUX_IO0;
-                akkonCamera.PixelResolution_um = 0.35F;
+                akkonCamera.PixelResolution_um = 3.5F;
                 akkonCamera.LensScale = 10F;
                 akkonCamera.DigitizerNum = 0;
 
@@ -130,7 +130,7 @@ namespace ATT_UT_IPAD
                 alignCamera.TriggerSource = (int)MilCxpTriggerSource.Cxp;
                 alignCamera.TriggerSignalType = MilTriggerSignalType.TL_Trigger;
                 alignCamera.TriggerIoSourceType = MILIoSourceType.AUX_IO0;
-                alignCamera.PixelResolution_um = 0.35F;
+                alignCamera.PixelResolution_um = 3.5F;
                 alignCamera.LensScale = 10F;
                 alignCamera.DigitizerNum = 2;
 

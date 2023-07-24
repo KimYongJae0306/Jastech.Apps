@@ -272,6 +272,10 @@
       <Project>{C9BEB460-E99A-4BFA-8E39-F610B2605499}</Project>
       <Name>Jastech.Framework.Algorithms</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\..\Jastech.Core\src\Jastech.Framework.Config\Jastech.Framework.Config.csproj">
+      <Project>{6244FA20-EDA3-45D4-85C7-50D901C5D376}</Project>
+      <Name>Jastech.Framework.Config</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\..\Jastech.Core\src\Jastech.Framework.Imaging.VisionPro\Jastech.Framework.Imaging.VisionPro.csproj">
       <Project>{22ee7b1a-e7b2-4547-94dd-4e85bdb56956}</Project>
       <Name>Jastech.Framework.Imaging.VisionPro</Name>
@@ -279,6 +283,10 @@
     <ProjectReference Include="..\..\..\Jastech.Core\src\Jastech.Framework.Imaging\Jastech.Framework.Imaging.csproj">
       <Project>{2380DA0F-851A-4430-9A43-E7B2DEEE29F2}</Project>
       <Name>Jastech.Framework.Imaging</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Jastech.Core\src\Jastech.Framework.Util\Jastech.Framework.Util.csproj">
+      <Project>{07EF86CC-AC6A-454E-B12B-EB63454A1DCA}</Project>
+      <Name>Jastech.Framework.Util</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\..\Jastech.Core\src\Jastech.Framework.Winform.VisionPro\Jastech.Framework.Winform.VisionPro.csproj">
       <Project>{8558B173-0E81-4C55-82B8-02417220E02C}</Project>

@@ -28,6 +28,9 @@ namespace ATT.Core
         {
             AppsInspModel appInspModel = inspModel as AppsInspModel;
 
+
+
+
             int count = 0;
             foreach (UnitName unitName in Enum.GetValues(typeof(UnitName)))
             {
