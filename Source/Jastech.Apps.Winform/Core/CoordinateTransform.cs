@@ -5,29 +5,30 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static System.Windows.Forms.AxHost;
 
 namespace Jastech.Framework.Util
 {
     public class CoordinateTransform
     {
-        public double DiffRadian { get; private set; } = 0.0;
-
         public PointF OffsetPoint { get; private set; } = new PointF();
+
+        public double DiffAngle { get; private set; } = 0.0;
 
         CoordinateData ReferenceData = null;
 
         CoordinateData TargetData = null;
 
-        public void SetReferenceData(PointF referencePoint1, PointF referencePoint2)
+        public void SetReferenceData(PointF leftPoint, PointF rightPoint)
         {
             ReferenceData = new CoordinateData();
-            ReferenceData.SetParam(referencePoint1, referencePoint2);
+            ReferenceData.SetPoint(leftPoint, rightPoint);
         }
 
-        public void SetTargetData(PointF targetPoint1, PointF targetPoint2)
+        public void SetTargetData(PointF leftPoint, PointF rightPoint)
         {
             TargetData = new CoordinateData();
-            TargetData.SetParam(targetPoint1, targetPoint2);
+            TargetData.SetPoint(leftPoint, rightPoint);
         }
 
         //public CoordinateTransform DeepCopy()
@@ -57,8 +58,8 @@ namespace Jastech.Framework.Util
             if (ReferenceData == null || TargetData == null)
                 return;
 
-            var referenceCenterPoint = ReferenceData.GetCenterPoint();
             var targetCenterPoint = TargetData.GetCenterPoint();
+            var referenceCenterPoint = ReferenceData.GetCenterPoint();
 
             OffsetPoint =  MathHelper.GetOffset(referenceCenterPoint, targetCenterPoint);
         }
@@ -76,13 +77,22 @@ namespace Jastech.Framework.Util
             var referenceRadian = ReferenceData.GetRadian();
             var targetRadian = TargetData.GetRadian();
 
-            DiffRadian = referenceRadian - targetRadian;
+            var referenceDegree = MathHelper.RadToDeg(referenceRadian);
+            if (referenceDegree > 180.0)
+                referenceDegree -= 360.0;
+
+            var targetDegree = MathHelper.RadToDeg(targetRadian);
+            if (targetDegree > 180.0)
+                targetDegree -= 360.0;
+
+            DiffAngle = referenceDegree - targetDegree;
         }
 
-        private double GetDiffRadian()
+        private double GetDiffAngle()
         {
-            return DiffRadian;
+            return DiffAngle;
         }
+
 
         public void ExecuteCoordinate()
         {
@@ -92,41 +102,38 @@ namespace Jastech.Framework.Util
 
         public PointF GetCoordinate(PointF inputPoint)
         {
-            var diffRadian = GetDiffRadian();
+            var diffAngle = GetDiffAngle();
             var offsetPoint = GetOffsetPoint();
 
-            if (diffRadian == 0.0 || offsetPoint == null)
+            if (diffAngle == 0.0 || offsetPoint == null)
                 return inputPoint;
 
             var targetCenterPoint = TargetData.GetCenterPoint();
-            return MathHelper.GetCoordinate(targetCenterPoint, diffRadian, offsetPoint, inputPoint);
+
+            return MathHelper.Rotate(inputPoint, targetCenterPoint, diffAngle);
         }
     }
 
     public class CoordinateData
     {
-        public PointF Point1 { get; private set; }
+        public PointF LeftPoint { get; private set; }
 
-        public PointF Point2 { get; private set; }
+        public PointF RightPoint { get; private set; }
 
-        public void SetParam(PointF point1, PointF point2)
+        public void SetPoint(PointF leftPoint, PointF rightPoint)
         {
-            Point1 = point1;
-            Point2 = point2;
+            LeftPoint = leftPoint;
+            RightPoint = rightPoint;
         }
 
         public PointF GetCenterPoint()
         {
-            return MathHelper.GetCenterPoint(Point1, Point2);
+            return MathHelper.GetCenterPoint(LeftPoint, RightPoint);
         }
 
         public double GetRadian()
         {
-            double radian = MathHelper.GetRadian(Point1, Point2);
-            if (radian > 180.0)
-                radian -= 360;
-
-            return radian;
+            return MathHelper.GetRadian(LeftPoint, RightPoint);
         }
 
         //public CoordinateData DeepCopy()
