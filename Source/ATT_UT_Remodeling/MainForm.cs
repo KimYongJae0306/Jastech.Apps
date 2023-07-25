@@ -365,7 +365,7 @@ namespace ATT_UT_Remodeling
                 if (fileNames.Count() != 2)
                 {
                     MessageConfirmForm form = new MessageConfirmForm();
-                    form.Message = "PreAlign Image is 2.";
+                    form.Message = "PreAlign Image Count is 2.";
                     form.ShowDialog();
                     return;
                 }

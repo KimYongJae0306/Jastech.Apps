@@ -8,6 +8,7 @@ using Jastech.Apps.Structure.VisionTool;
 using Jastech.Apps.Winform;
 using Jastech.Apps.Winform.Core;
 using Jastech.Apps.Winform.Service;
+using Jastech.Apps.Winform.Service.Plc.Maps;
 using Jastech.Apps.Winform.Settings;
 using Jastech.Framework.Algorithms.Akkon;
 using Jastech.Framework.Algorithms.Akkon.Parameters;
@@ -20,6 +21,7 @@ using Jastech.Framework.Imaging.Helper;
 using Jastech.Framework.Imaging.Result;
 using Jastech.Framework.Imaging.VisionPro;
 using Jastech.Framework.Util.Helper;
+using Jastech.Framework.Winform;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -51,7 +53,9 @@ namespace ATT_UT_IPAD.Core
 
         public bool IsPanelIn { get; set; } = false;
 
-        private bool IsGrabDone { get; set; } = false;
+        private bool IsAlignGrabDone { get; set; } = false;
+
+        private bool IsAkkonGrabDone { get; set; } = false;
 
         private AppsInspResult AppsInspResult { get; set; } = null;
 
@@ -303,7 +307,10 @@ namespace ATT_UT_IPAD.Core
 
         private void ATTSeqRunner_GrabDoneEventHanlder(string cameraName, bool isGrabDone)
         {
-            IsGrabDone = isGrabDone; 
+            if(cameraName == "AlignCamera")
+                IsAlignGrabDone = isGrabDone; 
+            if(cameraName == "AkkonCamera")
+                IsAkkonGrabDone = isGrabDone;
         }
 
         private void AkkonInspection()
@@ -524,6 +531,10 @@ namespace ATT_UT_IPAD.Core
             if (akkonLaf == null)
                 return;
 
+            var light = DeviceManager.Instance().LightCtrlHandler;
+            if (light == null)
+                return;
+
             string systemLogMessage = string.Empty;
             string errorMessage = string.Empty;
 
@@ -534,13 +545,19 @@ namespace ATT_UT_IPAD.Core
                     SeqStep = SeqStep.SEQ_START;
                     break;
 
-                case SeqStep.SEQ_READY:
+                case SeqStep.SEQ_INIT:
+                    alignCamera.IsLive = false;
+                    alignCamera.StopGrab();
+                    WriteLog("Align Camera Stop Grab.");
+
+                    akkonCamera.IsLive = false;
+                    akkonCamera.IsLive = false;
+                    akkonCamera.StopGrab();
+                    WriteLog("Akkon Camera Stop Grab.");
+
+                    light.TurnOff();
                     WriteLog("Light off.");
 
-                    //PlcControlManager.Instance().ClearAlignData();
-                    WriteLog("Clear PLC data.");
-
-                    // LAF
                     LAFManager.Instance().TrackingOnOff("Align", false);
                     alignLaf.SetMotionAbsoluteMove(0);
                     WriteLog("Align Laf off.");
@@ -549,89 +566,84 @@ namespace ATT_UT_IPAD.Core
                     alignLaf.SetMotionAbsoluteMove(0);
                     WriteLog("Akkon Laf off.");
 
-                    
-                    SeqStep = SeqStep.SEQ_START;
-                    break;
+                    ClearResult();
+                    WriteLog("Clear Result.");
 
-                case SeqStep.SEQ_START:
-                    if (MoveTo(TeachingPosType.Stage1_Scan_Start, out errorMessage) == false)
-                    {
-                        // Alarm
-                        break;
-                    }
+                    InitializeBuffer();
+                    WriteLog("Initialize Buffer.");
 
                     SeqStep = SeqStep.SEQ_WAITING;
                     break;
-
                 case SeqStep.SEQ_WAITING:
-                    //if (IsPanelIn == false)
-                    //    break;
-                    SeqStep = SeqStep.SEQ_SCAN_READY;
+
+                    if (AppsStatus.Instance().IsInspRunnerFlagFromPlc == false)
+                        break;
+
+                    WriteLog("Receive Inspection Start Signal From PLC.", true);
+                    AppsInspResult.StartInspTime = DateTime.Now;
+                    AppsInspResult.Cell_ID = GetCellID();
+
+                    WriteLog("Cell ID : " + AppsInspResult.Cell_ID, true);
+                    SeqStep = SeqStep.SEQ_MOVE_START_POS;
                     break;
 
-                case SeqStep.SEQ_SCAN_READY:
-                    LineCameraManager.Instance().GetLineCamera("AlignCamera").IsLive = false;
-                    LineCameraManager.Instance().GetLineCamera("AkkonCamera").IsLive = false;
-
-                    ClearResult();
-                    WriteLog("Clear result.");
-
-                    InitializeBuffer();
-                    WriteLog("Initialize buffer.");
-
-                    // Write panel information
-                    AppsInspResult.StartInspTime = DateTime.Now;
-                    AppsInspResult.Cell_ID = DateTime.Now.ToString("yyyyMMddHHmmss");
-
-                    LAFManager.Instance().TrackingOnOff("Align", true);
-                    WriteLog("Align laf A/F on.");
-
-                    LAFManager.Instance().TrackingOnOff("Akkon", true);
-                    WriteLog("Akkon laf A/F on.");
+                case SeqStep.SEQ_MOVE_START_POS:
+                    if (MoveTo(TeachingPosType.Stage1_Scan_Start, out errorMessage) == false)
+                        break;
 
                     SeqStep = SeqStep.SEQ_SCAN_START;
                     break;
 
                 case SeqStep.SEQ_SCAN_START:
-                    IsGrabDone = false;
-                    // 조명 코드 작성 요망
+                    IsAlignGrabDone = false;
+                    IsAkkonGrabDone = false;
+
+                    LAFManager.Instance().TrackingOnOff("Align", true);
+                    WriteLog("Align Laser Auto Focus On.");
+
+                    LAFManager.Instance().TrackingOnOff("Akkon", true);
+                    WriteLog("Akkon Laser Auto Focus On.");
 
                     alignCamera.SetOperationMode(TDIOperationMode.TDI);
                     alignCamera.StartGrab();
+                    WriteLog("Start Align LineScanner Grab.", true);
 
                     akkonCamera.SetOperationMode(TDIOperationMode.TDI);
                     akkonCamera.StartGrab();
+                    WriteLog("Start Akkon LineScanner Grab.", true);
 
-                    WriteLog("Start grab.");
+                    SeqStep = SeqStep.SEQ_MOVE_END_POS;
+                    break;
 
+                case SeqStep.SEQ_MOVE_END_POS:
                     if (MoveTo(TeachingPosType.Stage1_Scan_End, out errorMessage) == false)
-                    {
-                        // Alarm
-                        // 조명 Off
-                        LineCameraManager.Instance().Stop("AlignCamera");
-                        LineCameraManager.Instance().Stop("AkkonCamera");
-                        WriteLog("Stop grab.");
-                        break;
-                    }
+                        SeqStep = SeqStep.SEQ_ERROR;
+                    else
+                        SeqStep = SeqStep.SEQ_WAITING_SCAN_COMPLETED;
 
-                    SeqStep = SeqStep.SEQ_WAITING_SCAN_COMPLETED;
                     break;
 
                 case SeqStep.SEQ_WAITING_SCAN_COMPLETED:
-                    if (ConfigSet.Instance().Operation.VirtualMode == false)
-                    {
-                        if (IsGrabDone == false)
+                        if (IsAlignGrabDone == false || IsAkkonGrabDone == false)
                             break;
-                    }
 
                     WriteLog("Complete linescanner grab.");
 
+                    alignCamera.StopGrab();
+                    akkonCamera.StopGrab();
                     //AppsLAFManager.Instance().AutoFocusOnOff(LAFName.Akkon.ToString(), false);
                     //Logger.Write(LogType.Seq, "AutoFocus Off.");
 
                     LineCameraManager.Instance().Stop("AlignCamera");
+                    WriteLog("Stop Align Camera Grab.");
                     LineCameraManager.Instance().Stop("AkkonCamera");
-                    WriteLog("Stop grab.");
+                    WriteLog("Stop Akkon Camera Grab.");
+
+                    LAFManager.Instance().TrackingOnOff("Align", false);
+                    WriteLog("Align Laser Auto Focus Off.");
+
+                    LAFManager.Instance().TrackingOnOff("Akkon", false);
+                    WriteLog("Akkon Laser Auto Focus Off.");
 
                     LastInspSW.Restart();
 
@@ -697,6 +709,16 @@ namespace ATT_UT_IPAD.Core
                 SystemManager.Instance().AddSystemLogMessage(logMessage);
 
             Logger.Write(LogType.Seq, logMessage);
+        }
+
+        private string GetCellID()
+        {
+            string cellId = PlcControlManager.Instance().GetAddressMap(PlcCommonMap.PLC_Cell_Id).Value;
+
+            if (cellId == "0" || cellId == null)
+                return DateTime.Now.ToString("yyyyMMddHHmmss");
+            else
+                return cellId;
         }
 
         private void GetAkkonResultImage()
@@ -1438,9 +1460,11 @@ namespace ATT_UT_IPAD.Core
     public enum SeqStep
     {
         SEQ_IDLE,
-        SEQ_READY,
+        SEQ_INIT,
         SEQ_START,
         SEQ_WAITING,
+        SEQ_MOVE_START_POS,
+        SEQ_MOVE_END_POS,
         SEQ_SCAN_READY,
         SEQ_SCAN_START,
         SEQ_WAITING_SCAN_COMPLETED,
@@ -1455,6 +1479,7 @@ namespace ATT_UT_IPAD.Core
         SEQ_SAVE_IMAGE,
         SEQ_DELETE_DATA,
         SEQ_CHECK_STANDBY,
+        SEQ_ERROR,
     }
 
     public class AkkonThreadParam

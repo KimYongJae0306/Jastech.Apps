@@ -506,6 +506,8 @@ namespace ATT_UT_Remodeling.Core
                     break;
                 case SeqStep.SEQ_INIT:
                     lineCamera.IsLive = false;
+                    lineCamera.StopGrab();
+                    WriteLog("Stop Grab.");
 
                     light.TurnOff();
                     WriteLog("Light Off.");
@@ -548,7 +550,7 @@ namespace ATT_UT_Remodeling.Core
                     IsGrabDone = false;
 
                     LAFManager.Instance().TrackingOnOff("Laf", true);
-                    WriteLog("Laf On.");
+                    WriteLog("Laser Auto Focus On.");
 
                     light.TurnOn(unit.GetLineCameraData("Akkon").LightParam);
                     Thread.Sleep(100);
