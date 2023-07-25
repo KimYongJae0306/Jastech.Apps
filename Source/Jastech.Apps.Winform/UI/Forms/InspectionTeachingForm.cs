@@ -615,7 +615,6 @@ namespace Jastech.Framework.Winform.Forms
             VisionProPatternMatchingResult rightReferenceFpcMarkResult = Algorithm.RunPatternMatch(cogImage, teachedRightFpcMarkparam.InspParam);
             PointF searchedRightFpcPoint = rightReferenceFpcMarkResult.MaxMatchPos.FoundPos;
 
-
             // 티칭한 Left Panel 좌표
             MarkParam teachedLeftPanelMarkParam = tabOriginData.GetPanelMark(MarkDirection.Left, MarkName.Main);
             CogTransform2DLinear teachedLeftPanel2D = teachedLeftPanelMarkParam.InspParam.GetOrigin();
@@ -635,216 +634,272 @@ namespace Jastech.Framework.Winform.Forms
             PointF searchedRightPanelPoint = rightReferencePanelMarkResult.MaxMatchPos.FoundPos;
 
             // Set Coordinage Params
-            CoordinateTransform fpcCoordi = new CoordinateTransform();
-            fpcCoordi.SetReferenceData(teachedLeftFpc, teachedRightFpc);
-            fpcCoordi.SetTargetData(searchedLeftFpcPoint, searchedRightFpcPoint);
-            fpcCoordi.ExecuteCoordinate();
+            CoordinateTransform fpcCoordinate = new CoordinateTransform();
+            fpcCoordinate.SetReferenceData(teachedLeftFpc, teachedRightFpc);
+            fpcCoordinate.SetTargetData(searchedLeftFpcPoint, searchedRightFpcPoint);
+            fpcCoordinate.ExecuteCoordinate();
 
-            CoordinateTransform panelCoordi = new CoordinateTransform();
-            panelCoordi.SetReferenceData(teachedLeftPanel, teachedRightPanel);
-            panelCoordi.SetTargetData(searchedLeftPanelPoint, searchedRightPanelPoint);
-            panelCoordi.ExecuteCoordinate();
+            CoordinateTransform panelCoordinate = new CoordinateTransform();
+            panelCoordinate.SetReferenceData(teachedLeftPanel, teachedRightPanel);
+            panelCoordinate.SetTargetData(searchedLeftPanelPoint, searchedRightPanelPoint);
+            panelCoordinate.ExecuteCoordinate();
 
-            var fpcLeftXAlignParam = tabOriginData.GetAlignParam(ATTTabAlignName.LeftFPCX).DeepCopy();
-            var fpcLeftYAlignParam = tabOriginData.GetAlignParam(ATTTabAlignName.LeftFPCY).DeepCopy();
+            //var fpcLeftXAlignParam = tabOriginData.GetAlignParam(ATTTabAlignName.LeftFPCX).DeepCopy();
+            //var fpcLeftYAlignParam = tabOriginData.GetAlignParam(ATTTabAlignName.LeftFPCY).DeepCopy();
 
-            var fpcRightXAlignParam = tabOriginData.GetAlignParam(ATTTabAlignName.RightFPCX).DeepCopy();
-            var fpcRightYAlignParam = tabOriginData.GetAlignParam(ATTTabAlignName.RightFPCY).DeepCopy();
+            //var fpcRightXAlignParam = tabOriginData.GetAlignParam(ATTTabAlignName.RightFPCX).DeepCopy();
+            //var fpcRightYAlignParam = tabOriginData.GetAlignParam(ATTTabAlignName.RightFPCY).DeepCopy();
 
-            var panelLeftXAlignParam = tabOriginData.GetAlignParam(ATTTabAlignName.LeftPanelX).DeepCopy();
-            var panelLeftYAlignParam = tabOriginData.GetAlignParam(ATTTabAlignName.LeftPanelY).DeepCopy();
+            //var panelLeftXAlignParam = tabOriginData.GetAlignParam(ATTTabAlignName.LeftPanelX).DeepCopy();
+            //var panelLeftYAlignParam = tabOriginData.GetAlignParam(ATTTabAlignName.LeftPanelY).DeepCopy();
 
-            var panelRightXAlignParam = tabOriginData.GetAlignParam(ATTTabAlignName.RightPanelX).DeepCopy();
-            var panelRightYAlignParam = tabOriginData.GetAlignParam(ATTTabAlignName.RightPanelY).DeepCopy();
+            //var panelRightXAlignParam = tabOriginData.GetAlignParam(ATTTabAlignName.RightPanelX).DeepCopy();
+            //var panelRightYAlignParam = tabOriginData.GetAlignParam(ATTTabAlignName.RightPanelY).DeepCopy();
 
-            // Align inspection
-            MainAlgorithmTool AlgorithmTool = new MainAlgorithmTool();
-            CogGraphicInteractiveCollection alignCollect = new CogGraphicInteractiveCollection();
+            // Coordinate Align
+            CoordinateAlign(tabOriginData, fpcCoordinate, panelCoordinate);
+            AlignControl.SetParams(tabOriginData);
 
-            foreach (var item in tabOriginData.AlignParamList)
+            int gg = 0;
+            // Coordinate Akkon
+
+
+            //foreach (var item in tabOriginData.AlignParamList)
+            //{
+            //    if (item.Name.ToLower().Contains("fpc"))
+            //    {
+            //        if (item.Name.ToLower().Contains("left"))
+            //        {
+            //            if (item.Name.ToLower().Contains("x"))
+            //            {
+            //                var region = fpcLeftXAlignParam.CaliperParams.GetRegion() as CogRectangleAffine;
+            //                PointF oldPoint = new PointF();
+            //                oldPoint.X = Convert.ToSingle(region.CenterX);
+            //                oldPoint.Y = Convert.ToSingle(region.CenterY);
+
+            //                var newPoint = fpcCoordi.GetCoordinate(oldPoint);
+            //                region.CenterX = newPoint.X;
+            //                region.CenterY = newPoint.Y;
+
+            //                fpcLeftXAlignParam.CaliperParams.SetRegion(region);
+            //            }
+            //            else if (item.Name.ToLower().Contains("y"))
+            //            {
+            //                var region = fpcLeftYAlignParam.CaliperParams.GetRegion() as CogRectangleAffine;
+            //                PointF oldPoint = new PointF();
+            //                oldPoint.X = Convert.ToSingle(region.CenterX);
+            //                oldPoint.Y = Convert.ToSingle(region.CenterY);
+
+            //                var newPoint = fpcCoordi.GetCoordinate(oldPoint);
+            //                region.CenterX = newPoint.X;
+            //                region.CenterY = newPoint.Y;
+
+            //                fpcLeftYAlignParam.CaliperParams.SetRegion(region);
+            //            }
+            //            else { }
+            //        }
+            //        else if (item.Name.ToLower().Contains("right"))
+            //        {
+            //            if (item.Name.ToLower().Contains("x"))
+            //            {
+            //                var region = fpcRightXAlignParam.CaliperParams.GetRegion() as CogRectangleAffine;
+            //                PointF oldPoint = new PointF();
+            //                oldPoint.X = Convert.ToSingle(region.CenterX);
+            //                oldPoint.Y = Convert.ToSingle(region.CenterY);
+
+            //                var newPoint = fpcCoordi.GetCoordinate(oldPoint);
+            //                region.CenterX = newPoint.X;
+            //                region.CenterY = newPoint.Y;
+
+            //                fpcRightXAlignParam.CaliperParams.SetRegion(region);
+            //            }
+            //            else if (item.Name.ToLower().Contains("y"))
+            //            {
+            //                var region = fpcRightYAlignParam.CaliperParams.GetRegion() as CogRectangleAffine;
+            //                PointF oldPoint = new PointF();
+            //                oldPoint.X = Convert.ToSingle(region.CenterX);
+            //                oldPoint.Y = Convert.ToSingle(region.CenterY);
+
+            //                var newPoint = fpcCoordi.GetCoordinate(oldPoint);
+            //                region.CenterX = newPoint.X;
+            //                region.CenterY = newPoint.Y;
+
+            //                fpcRightYAlignParam.CaliperParams.SetRegion(region);
+            //            }
+            //            else { }
+            //        }
+            //        else { }
+            //    }
+            //    else if (item.Name.ToLower().Contains("panel"))
+            //    {
+            //        if (item.Name.ToLower().Contains("left"))
+            //        {
+            //            if (item.Name.ToLower().Contains("x"))
+            //            {
+            //                var region = panelLeftXAlignParam.CaliperParams.GetRegion() as CogRectangleAffine;
+            //                PointF oldPoint = new PointF();
+            //                oldPoint.X = Convert.ToSingle(region.CenterX);
+            //                oldPoint.Y = Convert.ToSingle(region.CenterY);
+
+            //                var newPoint = panelCoordi.GetCoordinate(oldPoint);
+            //                region.CenterX = newPoint.X;
+            //                region.CenterY = newPoint.Y;
+
+            //                panelLeftXAlignParam.CaliperParams.SetRegion(region);
+            //            }
+            //            else if (item.Name.ToLower().Contains("y"))
+            //            {
+            //                var region = panelLeftYAlignParam.CaliperParams.GetRegion() as CogRectangleAffine;
+            //                PointF oldPoint = new PointF();
+            //                oldPoint.X = Convert.ToSingle(region.CenterX);
+            //                oldPoint.Y = Convert.ToSingle(region.CenterY);
+
+            //                var newPoint = panelCoordi.GetCoordinate(oldPoint);
+            //                region.CenterX = newPoint.X;
+            //                region.CenterY = newPoint.Y;
+
+            //                panelLeftYAlignParam.CaliperParams.SetRegion(region);
+            //            }
+            //            else { }
+            //        }
+            //        else if (item.Name.ToLower().Contains("right"))
+            //        {
+            //            if (item.Name.ToLower().Contains("x"))
+            //            {
+            //                var region = panelRightXAlignParam.CaliperParams.GetRegion() as CogRectangleAffine;
+            //                PointF oldPoint = new PointF();
+            //                oldPoint.X = Convert.ToSingle(region.CenterX);
+            //                oldPoint.Y = Convert.ToSingle(region.CenterY);
+
+            //                var newPoint = panelCoordi.GetCoordinate(oldPoint);
+            //                region.CenterX = newPoint.X;
+            //                region.CenterY = newPoint.Y;
+
+            //                panelRightXAlignParam.CaliperParams.SetRegion(region);
+            //            }
+            //            else if (item.Name.ToLower().Contains("y"))
+            //            {
+            //                var region = panelRightYAlignParam.CaliperParams.GetRegion() as CogRectangleAffine;
+            //                PointF oldPoint = new PointF();
+            //                oldPoint.X = Convert.ToSingle(region.CenterX);
+            //                oldPoint.Y = Convert.ToSingle(region.CenterY);
+
+            //                var newPoint = panelCoordi.GetCoordinate(oldPoint);
+            //                region.CenterX = newPoint.X;
+            //                region.CenterY = newPoint.Y;
+
+            //                panelRightYAlignParam.CaliperParams.SetRegion(region);
+            //            }
+            //            else { }
+            //        }
+            //        else { }
+            //    }
+            //}
+
+
+            // Coordinate Akkon
+            CoordinateAkkon(tabOriginData, panelCoordinate);
+            AkkonControl.SetParams(tabOriginData);
+
+            //int cnt = 0;
+            //List<AkkonGroup> newAkkonGroup = new List<AkkonGroup>();
+
+            //foreach (var item in tabOriginData.AkkonParam.GroupList)
+            //{
+            //    AkkonGroup group = new AkkonGroup();
+            //    group.Index = cnt;
+
+            //    var roiList = item.AkkonROIList.ToList();
+
+            //    List<AkkonROI> akkonList = new List<AkkonROI>();
+
+            //    foreach (var rois in roiList)
+            //    {
+            //        PointF leftTop = rois.GetLeftTopPoint();
+            //        PointF rightTop = rois.GetRightTopPoint();
+            //        PointF leftBottom = rois.GetLeftBottomPoint();
+            //        PointF rightBottom = rois.GetRightBottomPoint();
+
+            //        var newLeftTop = panelCoordinate.GetCoordinate(leftTop);
+            //        var newRightTop = panelCoordinate.GetCoordinate(rightTop);
+            //        var newLeftBottom = panelCoordinate.GetCoordinate(leftBottom);
+            //        var newRightBottom = panelCoordinate.GetCoordinate(rightBottom);
+
+            //        AkkonROI akkonRoi = new AkkonROI();
+
+            //        akkonRoi.SetLeftTopPoint(newLeftTop);
+            //        akkonRoi.SetRightTopPoint(newRightTop);
+            //        akkonRoi.SetLeftBottomPoint(newLeftBottom);
+            //        akkonRoi.SetRightBottomPoint(newRightBottom);
+
+            //        akkonList.Add(akkonRoi);
+            //    }
+
+            //    group.ReNewalROIList(akkonList);
+
+            //    newAkkonGroup.Add(group);
+            //}
+
+            //tabOriginData.AkkonParam.RenewalGroup(newAkkonGroup);
+
+            //CogGraphicInteractiveCollection collect = new CogGraphicInteractiveCollection();
+            //var tt = tabOriginData.AkkonParam.GetAkkonROIList();
+            //foreach (var roi in tt)
+            //{
+            //    CogRectangleAffine rect = ConvertAkkonRoiToCogRectAffine(roi);
+            //    collect.Add(rect);
+            //}
+            //display.SetInteractiveGraphics("tool", collect);
+        }
+
+        private void CoordinateAlign(Tab tab, CoordinateTransform fpcCoordinate, CoordinateTransform panelCoordinate)
+        {
+            MainAlgorithmTool algorithmTool = new MainAlgorithmTool();
+
+            var alignParamList = tab.AlignParamList.ToList();
+
+            foreach (var item in alignParamList)
             {
                 if (item.Name.ToLower().Contains("fpc"))
                 {
-                    if (item.Name.ToLower().Contains("left"))
-                    {
-                        if (item.Name.ToLower().Contains("x"))
-                        {
-                            var region = fpcLeftXAlignParam.CaliperParams.GetRegion() as CogRectangleAffine;
-                            PointF oldPoint = new PointF();
-                            oldPoint.X = Convert.ToSingle(region.CenterX);
-                            oldPoint.Y = Convert.ToSingle(region.CenterY);
+                    //var calcFpcRegion = algorithmTool.CoordinateRectangle(item.CaliperParams.GetRegion() as CogRectangleAffine, fpcCoordinate);
+                    //item.CaliperParams.SetRegion(calcFpcRegion);
+                    var region = item.CaliperParams.GetRegion() as CogRectangleAffine;
+                    PointF oldPoint = new PointF();
+                    oldPoint.X = Convert.ToSingle(region.CenterX);
+                    oldPoint.Y = Convert.ToSingle(region.CenterY);
 
-                            var newPoint = fpcCoordi.GetCoordinate(oldPoint);
-                            region.CenterX = newPoint.X;
-                            region.CenterY = newPoint.Y;
+                    var newPoint = fpcCoordinate.GetCoordinate(oldPoint);
+                    region.CenterX = newPoint.X;
+                    region.CenterY = newPoint.Y;
 
-                            fpcLeftXAlignParam.CaliperParams.SetRegion(region);
-
-                            alignCollect.Add(region);
-                        }
-                        else if (item.Name.ToLower().Contains("y"))
-                        {
-                            var region = fpcLeftYAlignParam.CaliperParams.GetRegion() as CogRectangleAffine;
-                            PointF oldPoint = new PointF();
-                            oldPoint.X = Convert.ToSingle(region.CenterX);
-                            oldPoint.Y = Convert.ToSingle(region.CenterY);
-
-                            var newPoint = fpcCoordi.GetCoordinate(oldPoint);
-                            region.CenterX = newPoint.X;
-                            region.CenterY = newPoint.Y;
-
-                            fpcLeftYAlignParam.CaliperParams.SetRegion(region);
-
-                            alignCollect.Add(region);
-                        }
-                        else { }
-                    }
-                    else if (item.Name.ToLower().Contains("right"))
-                    {
-                        if (item.Name.ToLower().Contains("x"))
-                        {
-                            var region = fpcRightXAlignParam.CaliperParams.GetRegion() as CogRectangleAffine;
-                            PointF oldPoint = new PointF();
-                            oldPoint.X = Convert.ToSingle(region.CenterX);
-                            oldPoint.Y = Convert.ToSingle(region.CenterY);
-
-                            var newPoint = fpcCoordi.GetCoordinate(oldPoint);
-                            region.CenterX = newPoint.X;
-                            region.CenterY = newPoint.Y;
-
-                            fpcRightXAlignParam.CaliperParams.SetRegion(region);
-
-                            alignCollect.Add(region);
-                        }
-                        else if (item.Name.ToLower().Contains("y"))
-                        {
-                            var region = fpcRightYAlignParam.CaliperParams.GetRegion() as CogRectangleAffine;
-                            PointF oldPoint = new PointF();
-                            oldPoint.X = Convert.ToSingle(region.CenterX);
-                            oldPoint.Y = Convert.ToSingle(region.CenterY);
-
-                            var newPoint = fpcCoordi.GetCoordinate(oldPoint);
-                            region.CenterX = newPoint.X;
-                            region.CenterY = newPoint.Y;
-
-                            fpcRightYAlignParam.CaliperParams.SetRegion(region);
-
-                            alignCollect.Add(region);
-                        }
-                        else { }
-                    }
-                    else { }
+                    item.CaliperParams.SetRegion(region);
                 }
                 else if (item.Name.ToLower().Contains("panel"))
                 {
-                    if (item.Name.ToLower().Contains("left"))
-                    {
-                        if (item.Name.ToLower().Contains("x"))
-                        {
-                            var region = panelLeftXAlignParam.CaliperParams.GetRegion() as CogRectangleAffine;
-                            PointF oldPoint = new PointF();
-                            oldPoint.X = Convert.ToSingle(region.CenterX);
-                            oldPoint.Y = Convert.ToSingle(region.CenterY);
+                    //var calcPanelRegion = algorithmTool.CoordinateRectangle(item.CaliperParams.GetRegion() as CogRectangleAffine, panelCoordinate);
+                    //item.CaliperParams.SetRegion(calcPanelRegion);
+                    var region = item.CaliperParams.GetRegion() as CogRectangleAffine;
+                    PointF oldPoint = new PointF();
+                    oldPoint.X = Convert.ToSingle(region.CenterX);
+                    oldPoint.Y = Convert.ToSingle(region.CenterY);
 
-                            var newPoint = panelCoordi.GetCoordinate(oldPoint);
-                            region.CenterX = newPoint.X;
-                            region.CenterY = newPoint.Y;
+                    var newPoint = panelCoordinate.GetCoordinate(oldPoint);
+                    region.CenterX = newPoint.X;
+                    region.CenterY = newPoint.Y;
 
-                            panelLeftXAlignParam.CaliperParams.SetRegion(region);
-
-                            alignCollect.Add(region);
-                        }
-                        else if (item.Name.ToLower().Contains("y"))
-                        {
-                            var region = panelLeftYAlignParam.CaliperParams.GetRegion() as CogRectangleAffine;
-                            PointF oldPoint = new PointF();
-                            oldPoint.X = Convert.ToSingle(region.CenterX);
-                            oldPoint.Y = Convert.ToSingle(region.CenterY);
-
-                            var newPoint = panelCoordi.GetCoordinate(oldPoint);
-                            region.CenterX = newPoint.X;
-                            region.CenterY = newPoint.Y;
-
-                            panelLeftYAlignParam.CaliperParams.SetRegion(region);
-
-                            alignCollect.Add(region);
-                        }
-                        else { }
-                    }
-                    else if (item.Name.ToLower().Contains("right"))
-                    {
-                        if (item.Name.ToLower().Contains("x"))
-                        {
-                            var region = panelRightXAlignParam.CaliperParams.GetRegion() as CogRectangleAffine;
-                            PointF oldPoint = new PointF();
-                            oldPoint.X = Convert.ToSingle(region.CenterX);
-                            oldPoint.Y = Convert.ToSingle(region.CenterY);
-
-                            var newPoint = panelCoordi.GetCoordinate(oldPoint);
-                            region.CenterX = newPoint.X;
-                            region.CenterY = newPoint.Y;
-
-                            panelRightXAlignParam.CaliperParams.SetRegion(region);
-
-                            alignCollect.Add(region);
-                        }
-                        else if (item.Name.ToLower().Contains("y"))
-                        {
-                            var region = panelRightYAlignParam.CaliperParams.GetRegion() as CogRectangleAffine;
-                            PointF oldPoint = new PointF();
-                            oldPoint.X = Convert.ToSingle(region.CenterX);
-                            oldPoint.Y = Convert.ToSingle(region.CenterY);
-
-                            var newPoint = panelCoordi.GetCoordinate(oldPoint);
-                            region.CenterX = newPoint.X;
-                            region.CenterY = newPoint.Y;
-
-                            panelRightYAlignParam.CaliperParams.SetRegion(region);
-
-                            alignCollect.Add(region);
-                        }
-                        else { }
-                    }
-                    else { }
+                    item.CaliperParams.SetRegion(region);
                 }
             }
+        }
 
-            
 
-            display.SetInteractiveGraphics("tool", alignCollect);
-
-            //var leftFpcX = AlgorithmTool.RunAlignX(cogImage, fpcLeftXAlignParam.CaliperParams, fpcLeftXAlignParam.LeadCount);
-            //display.UpdateResult(leftFpcX);
-
-            //var leftFpcY = AlgorithmTool.RunAlignY(cogImage, fpcLeftYAlignParam.CaliperParams);
-            //display.UpdateResult(leftFpcY);
-
-            //var rightFpcX = AlgorithmTool.RunAlignX(cogImage, fpcRightXAlignParam.CaliperParams, fpcRightXAlignParam.LeadCount);
-            //display.UpdateResult(rightFpcX);
-
-            //var rightFpcY = AlgorithmTool.RunAlignY(cogImage, fpcRightYAlignParam.CaliperParams);
-            //display.UpdateResult(rightFpcY);
-
-            //var leftPanelX = AlgorithmTool.RunAlignX(cogImage, panelLeftXAlignParam.CaliperParams, panelLeftXAlignParam.LeadCount);
-            //display.UpdateResult(leftPanelX);
-
-            //var leftPanelY = AlgorithmTool.RunAlignY(cogImage, panelLeftYAlignParam.CaliperParams);
-            //display.UpdateResult(leftPanelY);
-
-            //var rightPanelX = AlgorithmTool.RunAlignX(cogImage, panelRightXAlignParam.CaliperParams, panelRightXAlignParam.LeadCount);
-            //display.UpdateResult(rightPanelX);
-
-            //var rightPanelY = AlgorithmTool.RunAlignY(cogImage, panelRightYAlignParam.CaliperParams);
-            //display.UpdateResult(rightPanelY);
-
-            int tlqkf1 = 0;
-
-            // Akkon inspection
-            AkkonAlgorithm AkkonAlgorithm = new AkkonAlgorithm();
+        private void CoordinateAkkon(Tab tab, CoordinateTransform panelCoordinate)
+        {
             int cnt = 0;
             List<AkkonGroup> newAkkonGroup = new List<AkkonGroup>();
 
-            foreach (var item in tabOriginData.AkkonParam.GroupList)
+            foreach (var item in tab.AkkonParam.GroupList)
             {
                 AkkonGroup group = new AkkonGroup();
                 group.Index = cnt;
@@ -860,10 +915,10 @@ namespace Jastech.Framework.Winform.Forms
                     PointF leftBottom = rois.GetLeftBottomPoint();
                     PointF rightBottom = rois.GetRightBottomPoint();
 
-                    var newLeftTop = panelCoordi.GetCoordinate(leftTop);
-                    var newRightTop = panelCoordi.GetCoordinate(rightTop);
-                    var newLeftBottom = panelCoordi.GetCoordinate(leftBottom);
-                    var newRightBottom = panelCoordi.GetCoordinate(rightBottom);
+                    var newLeftTop = panelCoordinate.GetCoordinate(leftTop);
+                    var newRightTop = panelCoordinate.GetCoordinate(rightTop);
+                    var newLeftBottom = panelCoordinate.GetCoordinate(leftBottom);
+                    var newRightBottom = panelCoordinate.GetCoordinate(rightBottom);
 
                     AkkonROI akkonRoi = new AkkonROI();
 
@@ -880,184 +935,67 @@ namespace Jastech.Framework.Winform.Forms
                 newAkkonGroup.Add(group);
             }
 
-            tabOriginData.AkkonParam.RenewalGroup(newAkkonGroup);
+            tab.AkkonParam.RenewalGroup(newAkkonGroup);
 
-            int tlqkf2 = 0;
-            CogGraphicInteractiveCollection collect = new CogGraphicInteractiveCollection();
-            var tt = tabOriginData.AkkonParam.GetAkkonROIList();
-            foreach (var roi in tt)
-            {
-                CogRectangleAffine rect = ConvertAkkonRoiToCogRectAffine(roi);
-                collect.Add(rect);
-            }
-            display.SetInteractiveGraphics("tool", collect);
+            //tab.AkkonParam.RenewalGroup(coordinateList);
+            //List<AkkonGroup> newAkkonGroup = new List<AkkonGroup>();
 
-            int tlqkf3 = 0;
-            //AkkonAlgoritmParam akkonAlgorithmParam = tabOriginData.AkkonParam.AkkonAlgoritmParam;
-
-            //Mat matImage = TeachingUIManager.Instance().GetOriginMatImageBuffer(false);
-
-            //var result = AkkonAlgorithm.Run(matImage, tabOriginData.AkkonParam.GetAkkonROIList(), akkonAlgorithmParam, 1.0F);
-
-            //int no = 0;
-            //foreach (var lead in result)
+            //foreach (var group in tab.AkkonParam.GroupList)
             //{
-            //    string noString = no.ToString();
-            //    int blobCount = lead.BlobList.Count();
-            //    double average = 0.0;
+            //    var coordinateList = RenewalAkkonRoi(group.AkkonROIList, panelCoordinate);
+            //    //List<AkkonROI> newRoiList = new List<AkkonROI>();
+            //    //foreach (var lead in group.AkkonROIList)
+            //    //{
+            //    //    var affineRect = ConvertAkkonRoiToCogRectAffine(lead);
+            //    //    var calcPanelRegion = algorithmTool.CoordinateRectangle(affineRect, panelCoordinate);
+            //    //    var roi = ConvertCogRectAffineToAkkonRoi(calcPanelRegion);
 
-            //    for (int index = 0; index < blobCount; index++)
-            //        average += lead.BlobList[index].Avg;
+            //    //    newRoiList.Add(roi);
+            //    //}
 
-            //    average /= blobCount;
-
-            //    string[] row = { no.ToString(), lead.BlobList.Count().ToString(), Math.Round(average, 2).ToString() };
-            //    no++;
+            //    //newAkkonGroup.Add(group);
             //}
 
-            //Mat resultMat = GetDebugResultImage(matImage, result, akkonAlgorithmParam);
-
-            //var resultCogImage = ConvertCogColorImage(resultMat);
-            //TeachingUIManager.Instance().SetResultCogImage(resultCogImage);
-
-            //int gg = 0;
-
-
-
-
-
-
-
-
-
-            // Set Coordinate Params
-            //Coordinate fpcCoordinate = new Coordinate();
-            //fpcCoordinate = SetFpcCoordinateParam(cogImage, tabOriginData);
-
-            //Coordinate panelCoordinate = new Coordinate();
-            //panelCoordinate = SetPanelCoordinateParam(cogImage, tabOriginData);
-
-            //CoordinateAlign(tabOriginData, fpcCoordinate, panelCoordinate);
-            //CoordinateAkkon(tabOriginData, panelCoordinate);
+            //tab.AkkonParam.GroupList.Clear();
+            //tab.AkkonParam.GroupList.AddRange(newAkkonGroup);
         }
 
-        //private CogRectangleAffine ConvertAkkonRoiToCogRectAffine(AkkonROI akkonRoi)
-        //{
-        //    PointF leftTop = new PointF(Convert.ToSingle(akkonRoi.LeftTopX), Convert.ToSingle(akkonRoi.LeftTopY));
-        //    PointF rightTop = new PointF(Convert.ToSingle(akkonRoi.RightTopX), Convert.ToSingle(akkonRoi.RightTopY));
-        //    PointF leftBottom = new PointF(Convert.ToSingle(akkonRoi.LeftBottomX), Convert.ToSingle(akkonRoi.LeftBottomY));
+        private List<AkkonROI> RenewalAkkonRoi(List<AkkonROI> roiList, CoordinateTransform panelCoordinate)
+        {
+            List<AkkonROI> newList = new List<AkkonROI>();
 
-        //    return VisionProShapeHelper.ConvertToCogRectAffine(leftTop, rightTop, leftBottom);
-        //}
+            foreach (var item in roiList)
+            {
+                PointF leftTop = item.GetLeftTopPoint();
+                PointF rightTop = item.GetRightTopPoint();
+                PointF leftBottom = item.GetLeftBottomPoint();
+                PointF rightBottom = item.GetRightBottomPoint();
 
-        //private Coordinate SetFpcCoordinateParam(ICogImage cogImage, Tab tab)
-        //{
-        //    Coordinate fpcCoordinate = new Coordinate();
+                var newLeftTop = panelCoordinate.GetCoordinate(leftTop);
+                var newRightTop = panelCoordinate.GetCoordinate(rightTop);
+                var newLeftBottom = panelCoordinate.GetCoordinate(leftBottom);
+                var newRightBottom = panelCoordinate.GetCoordinate(rightBottom);
 
-        //    // 티칭한 Left Fpc 좌표
-        //    MarkParam teachedLeftFpcMarkParam = tab.GetFPCMark(MarkDirection.Left, MarkName.Main);
-        //    CogTransform2DLinear teachedLeftFpc2D = teachedLeftFpcMarkParam.InspParam.GetOrigin();
-        //    PointF teachedLeftFpc = new PointF(Convert.ToSingle(teachedLeftFpc2D.TranslationX), Convert.ToSingle(teachedLeftFpc2D.TranslationY));
+                AkkonROI akkonRoi = new AkkonROI();
 
-        //    // 티칭한 Right FPC 좌표
-        //    MarkParam teachedRightFpcMarkparam = tab.GetFPCMark(MarkDirection.Right, MarkName.Main);
-        //    CogTransform2DLinear teachedRightFpc2D = teachedRightFpcMarkparam.InspParam.GetOrigin();
-        //    PointF teachedRightFpc = new PointF(Convert.ToSingle(teachedRightFpc2D.TranslationX), Convert.ToSingle(teachedRightFpc2D.TranslationY));
+                akkonRoi.SetLeftTopPoint(newLeftTop);
+                akkonRoi.SetLeftTopPoint(newRightTop);
+                akkonRoi.SetLeftTopPoint(newLeftBottom);
+                akkonRoi.SetLeftTopPoint(newRightBottom);
 
-        //    // 찾은 Left FPC 좌표
-        //    VisionProPatternMatchingResult leftReferenceMarkResult = Algorithm.RunPatternMatch(cogImage, teachedLeftFpcMarkParam.InspParam);
-        //    PointF searchedLeftFpcPoint = leftReferenceMarkResult.MaxMatchPos.FoundPos;
+                newList.Add(akkonRoi);
+            }
 
-        //    // 찾은 Right FPC 좌표
-        //    VisionProPatternMatchingResult rightReferenceFpcMarkResult = Algorithm.RunPatternMatch(cogImage, teachedRightFpcMarkparam.InspParam);
-        //    PointF searchedRightFpcPoint = rightReferenceFpcMarkResult.MaxMatchPos.FoundPos;
-
-        //    fpcCoordinate.SetCoordinateParam(teachedLeftFpc, teachedRightFpc, searchedLeftFpcPoint, searchedRightFpcPoint);
-
-        //    return fpcCoordinate;
-        //}
-
-        //private Coordinate SetPanelCoordinateParam(ICogImage cogImage, Tab tab)
-        //{
-        //    Coordinate panelCoordinate = new Coordinate();
-
-        //    // 티칭한 Left Panel 좌표
-        //    MarkParam teachedLeftPanelMarkParam = tab.GetPanelMark(MarkDirection.Left, MarkName.Main);
-        //    CogTransform2DLinear teachedLeftPanel2D = teachedLeftPanelMarkParam.InspParam.GetOrigin();
-        //    PointF teachedLeftPanel = new PointF(Convert.ToSingle(teachedLeftPanel2D.TranslationX), Convert.ToSingle(teachedLeftPanel2D.TranslationY));
-
-        //    // 티칭한 Right Panel 좌표
-        //    MarkParam teachedRightPanelMarkparam = tab.GetPanelMark(MarkDirection.Right, MarkName.Main);
-        //    CogTransform2DLinear teachedRightPanel2D = teachedRightPanelMarkparam.InspParam.GetOrigin();
-        //    PointF teachedRightPanel = new PointF(Convert.ToSingle(teachedRightPanel2D.TranslationX), Convert.ToSingle(teachedRightPanel2D.TranslationY));
-
-        //    // 찾은 Left Panel 좌표
-        //    VisionProPatternMatchingResult leftReferencePanelMarkResult = Algorithm.RunPatternMatch(cogImage, teachedLeftPanelMarkParam.InspParam);
-        //    PointF searchedLeftPanelPoint = leftReferencePanelMarkResult.MaxMatchPos.FoundPos;
-
-        //    // 찾은 Right Panel 좌표
-        //    VisionProPatternMatchingResult rightReferencePanelMarkResult = Algorithm.RunPatternMatch(cogImage, teachedRightPanelMarkparam.InspParam);
-        //    PointF searchedRightPanelPoint = rightReferencePanelMarkResult.MaxMatchPos.FoundPos;
-
-        //    panelCoordinate.SetCoordinateParam(teachedLeftPanel, teachedRightPanel, searchedLeftPanelPoint, searchedRightPanelPoint);
-
-        //    return panelCoordinate;
-        //}
-
-        //private void CoordinateAlign(Tab tab, Coordinate fpcCoordinate, Coordinate panelCoordinate)
-        //{
-        //    MainAlgorithmTool algorithmTool = new MainAlgorithmTool();
-
-        //    foreach (var item in tab.AlignParamList)
-        //    {
-        //        if (item.Name.ToLower().Contains("fpc"))
-        //        {
-        //            //var param = tab.GetAlignParam(alignName).DeepCopy();
-        //            var calcFpcRegion = algorithmTool.CoordinateRectangle(item.CaliperParams.GetRegion() as CogRectangleAffine, fpcCoordinate);
-        //            item.CaliperParams.SetRegion(calcFpcRegion);
-        //        }
-        //        else if (item.Name.ToLower().Contains("panel"))
-        //        {
-        //            var calcPanelRegion = algorithmTool.CoordinateRectangle(item.CaliperParams.GetRegion() as CogRectangleAffine, panelCoordinate);
-        //            item.CaliperParams.SetRegion(calcPanelRegion);
-        //        }
-        //    }
-        //}
-
-        //private void CoordinateAkkon(Tab tab, Coordinate panelCoordinate)
-        //{
-        //    MainAlgorithmTool algorithmTool = new MainAlgorithmTool();
-
-        //    List<AkkonGroup> newAkkonGroup = new List<AkkonGroup>();
-
-        //    foreach (var group in tab.AkkonParam.GroupList)
-        //    {
-        //        List<AkkonROI> newRoiList = new List<AkkonROI>();
-
-        //        foreach (var lead in group.AkkonROIList)
-        //        {
-        //            var affineRect = ConvertAkkonRoiToCogRectAffine(lead);
-        //            var calcPanelRegion = algorithmTool.CoordinateRectangle(affineRect, panelCoordinate);
-        //            var roi = ConvertCogRectAffineToAkkonRoi(calcPanelRegion);
-
-        //            newRoiList.Add(roi);
-        //        }
-
-        //        newAkkonGroup.Add(group);
-        //    }
-
-        //    tab.AkkonParam.GroupList.Clear();
-        //    tab.AkkonParam.GroupList.AddRange(newAkkonGroup);
-        //}
+            return newList;
+        }
 
         private CogRectangleAffine ConvertAkkonRoiToCogRectAffine(AkkonROI akkonRoi)
         {
-            CogRectangleAffine cogRectAffine = new CogRectangleAffine();
+            PointF leftTop = new PointF(Convert.ToSingle(akkonRoi.LeftTopX), Convert.ToSingle(akkonRoi.LeftTopY));
+            PointF rightTop = new PointF(Convert.ToSingle(akkonRoi.RightTopX), Convert.ToSingle(akkonRoi.RightTopY));
+            PointF leftBottom = new PointF(Convert.ToSingle(akkonRoi.LeftBottomX), Convert.ToSingle(akkonRoi.LeftBottomY));
 
-            cogRectAffine.SetOriginCornerXCornerY(akkonRoi.LeftTopX, akkonRoi.LeftTopY,
-                                                    akkonRoi.RightTopX, akkonRoi.RightTopY, akkonRoi.LeftBottomX, akkonRoi.LeftBottomY);
-
-            return cogRectAffine;
+            return VisionProShapeHelper.ConvertToCogRectAffine(leftTop, rightTop, leftBottom);
         }
 
         private AkkonROI ConvertCogRectAffineToAkkonRoi(CogRectangleAffine cogRectAffine)

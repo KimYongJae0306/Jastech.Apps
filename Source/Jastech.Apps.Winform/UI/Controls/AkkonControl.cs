@@ -1057,6 +1057,8 @@ namespace Jastech.Apps.Winform.UI.Controls
 
                 group.AddROI(akkonRoi);
             }
+
+            int gg = 0;
         }
 
         private List<Tuple<double, double>> ParseDataGridViewData(DataGridViewRow row)

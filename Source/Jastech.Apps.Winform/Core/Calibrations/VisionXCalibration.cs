@@ -719,7 +719,6 @@ namespace Jastech.Apps.Winform.Core.Calibrations
                     break;
 
                 case CalSeqStep.CAL_SEQ_ERROR_SEND:
-                    Console.WriteLine("tlqkf");
                     Logger.Write(LogType.Device, "Failed calibration.");
 
                     PlcControlManager.Instance().WritePcStatus(PlcCommand.Calibration, false);

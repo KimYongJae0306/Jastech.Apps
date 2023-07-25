@@ -107,9 +107,6 @@ namespace Jastech.Apps.Winform.UI.Controls
 
             CurrentTab = tab;
             UpdateParam();
-
-            // Test
-            DeepCopy(tab);
         }
 
         private void UpdateParam()
@@ -510,29 +507,13 @@ namespace Jastech.Apps.Winform.UI.Controls
             DrawROI();
         }
 
-        private Tab _origin = null;
-
-        private void DeepCopy(Tab tab)
-        {
-            if (tab == null)
-                return;
-
-            _origin = new Tab();
-            _origin = tab.DeepCopy();
-        }
-
-        private Tab GetOriginData()
-        {
-            return _origin;
-        }
-
         private void lblTest_Click(object sender, EventArgs e)
         {
             var display = TeachingUIManager.Instance().GetDisplay();
-            var currentParam = ParamControl.GetCurrentParam();
+            display.ClearGraphic();
 
-            Tab origin = new Tab();
-            origin = GetOriginData();
+            Tab tabOriginData = new Tab();
+            tabOriginData = CurrentTab.DeepCopy();
 
             ICogImage cogImage = display.GetImage();
 
@@ -547,12 +528,12 @@ namespace Jastech.Apps.Winform.UI.Controls
                 return;
 
             // 티칭한 Left Fpc
-            MarkParam teachedLeftFpcMarkParam = origin.GetFPCMark(MarkDirection.Left, MarkName.Main);
+            MarkParam teachedLeftFpcMarkParam = tabOriginData.GetFPCMark(MarkDirection.Left, MarkName.Main);
             CogTransform2DLinear teachedLeftFpc2D = teachedLeftFpcMarkParam.InspParam.GetOrigin();
             PointF teachedLeftFpc = new PointF(Convert.ToSingle(teachedLeftFpc2D.TranslationX), Convert.ToSingle(teachedLeftFpc2D.TranslationY));
 
             // 티칭한 Right FPC 좌표
-            MarkParam teachedRightFpcMarkparam = origin.GetFPCMark(MarkDirection.Right, MarkName.Main);
+            MarkParam teachedRightFpcMarkparam = tabOriginData.GetFPCMark(MarkDirection.Right, MarkName.Main);
             CogTransform2DLinear teachedRightFpc2D = teachedRightFpcMarkparam.InspParam.GetOrigin();
             PointF teachedRightFpc = new PointF(Convert.ToSingle(teachedRightFpc2D.TranslationX), Convert.ToSingle(teachedRightFpc2D.TranslationY));
 
@@ -568,8 +549,9 @@ namespace Jastech.Apps.Winform.UI.Controls
             algorithmTool.Coordinate = new CoordinateTransform();
             algorithmTool.Coordinate.SetReferenceData(teachedLeftFpc, teachedRightFpc);
             algorithmTool.Coordinate.SetTargetData(searchedLeftFpcPoint, searchedRightFpcPoint);
+            algorithmTool.Coordinate.ExecuteCoordinate();
 
-            foreach (var item in origin.AlignParamList)
+            foreach (var item in tabOriginData.AlignParamList)
             {
                 CogRectangleAffine roi = new CogRectangleAffine(item.CaliperParams.CaliperTool.Region);
 
@@ -587,7 +569,7 @@ namespace Jastech.Apps.Winform.UI.Controls
                 display.SetInteractiveGraphics("tool", item.CaliperParams.CreateCurrentRecord(constants));
             }
 
-            foreach (var item in origin.AkkonParam.GetAkkonROIList())
+            foreach (var item in tabOriginData.AkkonParam.GetAkkonROIList())
             {
                 PointF leftTop = new PointF(Convert.ToSingle(item.LeftTopX), Convert.ToSingle(item.LeftTopY));
                 PointF rightTop = new PointF(Convert.ToSingle(item.RightTopX), Convert.ToSingle(item.RightTopY));
