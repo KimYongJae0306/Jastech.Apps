@@ -82,6 +82,8 @@ namespace Jastech.Framework.Winform.Forms
 
         public LAFCtrl LAFCtrl { get; set; } = null;
 
+        public bool UseAlignMark { get; set; } = false;
+
         protected override CreateParams CreateParams
         {
             get
@@ -192,6 +194,7 @@ namespace Jastech.Framework.Winform.Forms
 
             MarkControl = new MarkControl();
             MarkControl.Dock = DockStyle.Fill;
+            MarkControl.UseAlignMark = UseAlignMark;
             MarkControl.SetParams(CurrentTab);
             pnlTeach.Controls.Add(MarkControl);
 
@@ -600,12 +603,12 @@ namespace Jastech.Framework.Winform.Forms
                 return;
 
             // 티칭한 Left Fpc 좌표
-            MarkParam teachedLeftFpcMarkParam = tabOriginData.GetFPCMark(MarkDirection.Left, MarkName.Main);
+            MarkParam teachedLeftFpcMarkParam = tabOriginData.MarkParamter.GetFPCMark(MarkDirection.Left, MarkName.Main, UseAlignMark);
             CogTransform2DLinear teachedLeftFpc2D = teachedLeftFpcMarkParam.InspParam.GetOrigin();
             PointF teachedLeftFpc = new PointF(Convert.ToSingle(teachedLeftFpc2D.TranslationX), Convert.ToSingle(teachedLeftFpc2D.TranslationY));
 
             // 티칭한 Right FPC 좌표
-            MarkParam teachedRightFpcMarkparam = tabOriginData.GetFPCMark(MarkDirection.Right, MarkName.Main);
+            MarkParam teachedRightFpcMarkparam = tabOriginData.MarkParamter.GetFPCMark(MarkDirection.Right, MarkName.Main, UseAlignMark);
             CogTransform2DLinear teachedRightFpc2D = teachedRightFpcMarkparam.InspParam.GetOrigin();
             PointF teachedRightFpc = new PointF(Convert.ToSingle(teachedRightFpc2D.TranslationX), Convert.ToSingle(teachedRightFpc2D.TranslationY));
 
@@ -622,12 +625,12 @@ namespace Jastech.Framework.Winform.Forms
             PointF searchedRightFpcPoint = rightReferenceFpcMarkResult.MaxMatchPos.FoundPos;
 
             // 티칭한 Left Panel 좌표
-            MarkParam teachedLeftPanelMarkParam = tabOriginData.GetPanelMark(MarkDirection.Left, MarkName.Main);
+            MarkParam teachedLeftPanelMarkParam = tabOriginData.MarkParamter.GetPanelMark(MarkDirection.Left, MarkName.Main, UseAlignMark);
             CogTransform2DLinear teachedLeftPanel2D = teachedLeftPanelMarkParam.InspParam.GetOrigin();
             PointF teachedLeftPanel = new PointF(Convert.ToSingle(teachedLeftPanel2D.TranslationX), Convert.ToSingle(teachedLeftPanel2D.TranslationY));
 
             // 티칭한 Right Panel 좌표
-            MarkParam teachedRightPanelMarkparam = tabOriginData.GetPanelMark(MarkDirection.Right, MarkName.Main);
+            MarkParam teachedRightPanelMarkparam = tabOriginData.MarkParamter.GetPanelMark(MarkDirection.Right, MarkName.Main, UseAlignMark);
             CogTransform2DLinear teachedRightPanel2D = teachedRightPanelMarkparam.InspParam.GetOrigin();
             PointF teachedRightPanel = new PointF(Convert.ToSingle(teachedRightPanel2D.TranslationX), Convert.ToSingle(teachedRightPanel2D.TranslationY));
 

@@ -8,6 +8,88 @@ using System.Linq;
 
 namespace Jastech.Apps.Structure.Data
 {
+    public class MarkParamter
+    {
+        [JsonProperty]
+        public List<MarkParam> MainFpcMarkParamList { get; set; } = new List<MarkParam>(); 
+
+        [JsonProperty]
+        public List<MarkParam> MainPanelMarkParamList { get; set; } = new List<MarkParam>();
+
+        [JsonProperty]
+        public List<MarkParam> AlignFpcMarkParamList { get; set; } = new List<MarkParam>();
+
+        [JsonProperty]
+        public List<MarkParam> AlignPanelMarkParamList { get; set; } = new List<MarkParam>();
+
+        public MarkParam GetFPCMark(MarkDirection markDirection, MarkName markName, bool isAlignParam)
+        {
+            if (isAlignParam == false)
+                return GetMainFPCMark(markDirection, markName);
+            else
+                return GetAlignFPCMark(markDirection, markName);
+        }
+
+        public MarkParam GetPanelMark(MarkDirection markDirection, MarkName markName, bool isAlignParam)
+        {
+            if (isAlignParam == false)
+                return GetMainPanelMark(markDirection, markName);
+            else
+                return GetAlignPanelMark(markDirection, markName);
+        }
+
+        private MarkParam GetMainFPCMark(MarkDirection direction, MarkName name)
+        {
+            return MainFpcMarkParamList.Where(x => x.Name == name && x.Direction == direction).FirstOrDefault();
+        }
+
+        private MarkParam GetMainPanelMark(MarkDirection direction, MarkName name)
+        {
+            return MainPanelMarkParamList.Where(x => x.Name == name && x.Direction == direction).FirstOrDefault();
+        }
+
+        private MarkParam GetAlignFPCMark(MarkDirection direction, MarkName name)
+        {
+            return AlignFpcMarkParamList.Where(x => x.Name == name && x.Direction == direction).FirstOrDefault();
+        }
+
+        private MarkParam GetAlignPanelMark(MarkDirection direction, MarkName name)
+        {
+            return AlignPanelMarkParamList.Where(x => x.Name == name && x.Direction == direction).FirstOrDefault();
+        }
+
+        public MarkParamter DeepCopy()
+        {
+            MarkParamter param = new MarkParamter();
+            param.MainFpcMarkParamList = MainFpcMarkParamList.Select(x => x.DeepCopy()).ToList();
+            param.MainPanelMarkParamList = MainPanelMarkParamList.Select(x => x.DeepCopy()).ToList();
+            param.AlignFpcMarkParamList = AlignFpcMarkParamList.Select(x => x.DeepCopy()).ToList();
+            param.AlignPanelMarkParamList = AlignPanelMarkParamList.Select(x => x.DeepCopy()).ToList();
+
+            return param;
+        }
+
+        public void Dispose()
+        {
+            foreach (var fpc in MainFpcMarkParamList)
+                fpc.Dispose();
+
+            foreach (var panel in MainPanelMarkParamList)
+                panel.Dispose();
+
+            foreach (var fpc in AlignFpcMarkParamList)
+                fpc.Dispose();
+
+            foreach (var panel in AlignPanelMarkParamList)
+                panel.Dispose();
+
+            MainFpcMarkParamList.Clear();
+            MainPanelMarkParamList.Clear();
+            AlignFpcMarkParamList.Clear();
+            AlignPanelMarkParamList.Clear();
+        }
+    }
+
     public class Tab
     {
         [JsonProperty]
@@ -23,13 +105,10 @@ namespace Jastech.Apps.Structure.Data
         public AlignSpec AlignSpec { get; set; } = new AlignSpec();
 
         [JsonProperty]
+        public MarkParamter MarkParamter = new MarkParamter();
+
+        [JsonProperty]
         public List<AlignParam> AlignParamList { get; set; } = new List<AlignParam>();
-
-        [JsonProperty]
-        public List<MarkParam> FpcMarkParamList { get; set; } = new List<MarkParam>();
-
-        [JsonProperty]
-        public List<MarkParam> PanelMarkParamList { get; set; } = new List<MarkParam>();
 
         [JsonProperty]
         public AkkonParam AkkonParam { get; set; } = new AkkonParam();
@@ -41,8 +120,7 @@ namespace Jastech.Apps.Structure.Data
             tab.Index = Index;
             tab.StageIndex = StageIndex;
             tab.AlignSpec = JsonConvertHelper.DeepCopy(AlignSpec) as AlignSpec;
-            tab.FpcMarkParamList = FpcMarkParamList.Select(x => x.DeepCopy()).ToList();
-            tab.PanelMarkParamList = PanelMarkParamList.Select(x => x.DeepCopy()).ToList();
+            tab.MarkParamter = MarkParamter.DeepCopy();
             tab.AlignParamList = AlignParamList.Select(x => x.DeepCopy()).ToList();
             tab.AkkonParam = AkkonParam.DeepCopy();
 
@@ -51,17 +129,10 @@ namespace Jastech.Apps.Structure.Data
 
         public void Dispose()
         {
-            foreach (var fpc in FpcMarkParamList)
-                fpc.Dispose();
-
-            foreach (var panel in PanelMarkParamList)
-                panel.Dispose();
-
             foreach (var align in AlignParamList)
                 align.Dispose();
 
-            FpcMarkParamList.Clear();
-            PanelMarkParamList.Clear();
+            MarkParamter.Dispose();
             AlignParamList.Clear();
             AkkonParam.Dispose();
         }
@@ -78,19 +149,6 @@ namespace Jastech.Apps.Structure.Data
 
             AlignParamList.Where(x => x.Name == alignName.ToString()).First().LeadCount = alignParam.LeadCount;
             AlignParamList.Where(x => x.Name == alignName.ToString()).First().CaliperParams = alignParam.CaliperParams.DeepCopy();
-        }
-
-        public MarkParam GetFPCMark(MarkDirection direction, MarkName name)
-        {
-            //if (FpcMarkParamList.Count <= 0)
-            //    return null;
-            
-            return FpcMarkParamList.Where(x => x.Name == name && x.Direction == direction).FirstOrDefault();
-        }
-
-        public MarkParam GetPanelMark(MarkDirection direction, MarkName name)
-        {
-            return PanelMarkParamList.Where(x => x.Name == name && x.Direction == direction).FirstOrDefault();
         }
 
         public AkkonGroup GetAkkonGroup(int index)

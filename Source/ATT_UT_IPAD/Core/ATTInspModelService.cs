@@ -47,69 +47,69 @@ namespace ATT_UT_IPAD.Core
                 unit.AlignCamera.Name = "Align";
                 unit.AlignCamera.LightParam = CreateAlignLightParameter();
 
-                for (int tabIndex = 0; tabIndex < appInspModel.TabCount; tabIndex++)
-                {
-                    Tab tab = new Tab();
-                    tab.Name = tabIndex.ToString(); // 임시
-                    tab.Index = tabIndex;
-                    tab.StageIndex = (int)unitName;
+                //for (int tabIndex = 0; tabIndex < appInspModel.TabCount; tabIndex++)
+                //{
+                //    Tab tab = new Tab();
+                //    tab.Name = tabIndex.ToString(); // 임시
+                //    tab.Index = tabIndex;
+                //    tab.StageIndex = (int)unitName;
 
-                    // Tab Fpc Mark 등록
-                    foreach (MarkName type in Enum.GetValues(typeof(MarkName)))
-                    {
-                        MarkParam leftMark = new MarkParam();
-                        leftMark.Name = type;
-                        leftMark.InspParam.Name = MarkDirection.Left.ToString() + type.ToString();
-                        leftMark.Direction = MarkDirection.Left;
+                //    // Tab Fpc Mark 등록
+                //    foreach (MarkName type in Enum.GetValues(typeof(MarkName)))
+                //    {
+                //        MarkParam leftMark = new MarkParam();
+                //        leftMark.Name = type;
+                //        leftMark.InspParam.Name = MarkDirection.Left.ToString() + type.ToString();
+                //        leftMark.Direction = MarkDirection.Left;
 
-                        MarkParam RightMark = new MarkParam();
-                        RightMark.Name = type;
-                        RightMark.InspParam.Name = MarkDirection.Right.ToString() + type.ToString();
-                        RightMark.Direction = MarkDirection.Right;
+                //        MarkParam RightMark = new MarkParam();
+                //        RightMark.Name = type;
+                //        RightMark.InspParam.Name = MarkDirection.Right.ToString() + type.ToString();
+                //        RightMark.Direction = MarkDirection.Right;
 
-                        tab.FpcMarkParamList.Add(leftMark);
-                        tab.FpcMarkParamList.Add(RightMark);
-                    }
+                //        tab.FpcMarkParamList.Add(leftMark);
+                //        tab.FpcMarkParamList.Add(RightMark);
+                //    }
 
-                    // Tab Panel Mark 등록
-                    foreach (MarkName type in Enum.GetValues(typeof(MarkName)))
-                    {
-                        MarkParam leftMark = new MarkParam();
-                        leftMark.Name = type;
-                        leftMark.InspParam.Name = MarkDirection.Left.ToString() + type.ToString();
-                        leftMark.Direction = MarkDirection.Left;
+                //    // Tab Panel Mark 등록
+                //    foreach (MarkName type in Enum.GetValues(typeof(MarkName)))
+                //    {
+                //        MarkParam leftMark = new MarkParam();
+                //        leftMark.Name = type;
+                //        leftMark.InspParam.Name = MarkDirection.Left.ToString() + type.ToString();
+                //        leftMark.Direction = MarkDirection.Left;
 
-                        MarkParam RightMark = new MarkParam();
-                        RightMark.Name = type;
-                        RightMark.InspParam.Name = MarkDirection.Right.ToString() + type.ToString();
-                        RightMark.Direction = MarkDirection.Right;
+                //        MarkParam RightMark = new MarkParam();
+                //        RightMark.Name = type;
+                //        RightMark.InspParam.Name = MarkDirection.Right.ToString() + type.ToString();
+                //        RightMark.Direction = MarkDirection.Right;
 
-                        tab.PanelMarkParamList.Add(leftMark);
-                        tab.PanelMarkParamList.Add(RightMark);
-                    }
+                //        tab.PanelMarkParamList.Add(leftMark);
+                //        tab.PanelMarkParamList.Add(RightMark);
+                //    }
 
-                    // Tab Align 등록
-                    foreach (ATTTabAlignName type in Enum.GetValues(typeof(ATTTabAlignName)))
-                    {
-                        AlignParam align = new AlignParam();
-                        align.Name = type.ToString();
-                        tab.AlignParamList.Add(align);
-                    }
+                //    // Tab Align 등록
+                //    foreach (ATTTabAlignName type in Enum.GetValues(typeof(ATTTabAlignName)))
+                //    {
+                //        AlignParam align = new AlignParam();
+                //        align.Name = type.ToString();
+                //        tab.AlignParamList.Add(align);
+                //    }
 
-                    tab.AkkonParam = new AkkonParam();
-                    tab.AkkonParam.AkkonAlgoritmParam.Initalize();
-                    tab.AkkonParam.AkkonAlgoritmParam.ImageFilterParam.AddMacronFilter();
+                //    tab.AkkonParam = new AkkonParam();
+                //    tab.AkkonParam.AkkonAlgoritmParam.Initalize();
+                //    tab.AkkonParam.AkkonAlgoritmParam.ImageFilterParam.AddMacronFilter();
 
-                    int cnt = 0;
-                    foreach (var item in tab.AkkonParam.GroupList)
-                    {
-                        AkkonGroup group = new AkkonGroup();
-                        group.Index = cnt;
-                        tab.AkkonParam.SetAkkonGroup(group.Index, group);
-                    }
+                //    int cnt = 0;
+                //    foreach (var item in tab.AkkonParam.GroupList)
+                //    {
+                //        AkkonGroup group = new AkkonGroup();
+                //        group.Index = cnt;
+                //        tab.AkkonParam.SetAkkonGroup(group.Index, group);
+                //    }
 
-                    unit.AddTab(tab);
-                }
+                //    unit.AddTab(tab);
+                //}
 
                 AddTeachingPosition(unit);
                 appInspModel.AddUnit(unit);
@@ -187,22 +187,22 @@ namespace ATT_UT_IPAD.Core
 
                 foreach (var tab in unit.GetTabList())
                 {
-                    string tabDir = unitDir + @"\" + "Tab_" + tab.Name;
+                    //string tabDir = unitDir + @"\" + "Tab_" + tab.Name;
 
-                    //Tab FPC Mark 열기
-                    string tabFpcMarkDir = tabDir + @"\FPC_Mark";
-                    foreach (var alignParam in tab.FpcMarkParamList)
-                        alignParam.InspParam.LoadTool(tabFpcMarkDir);
+                    ////Tab FPC Mark 열기
+                    //string tabFpcMarkDir = tabDir + @"\FPC_Mark";
+                    //foreach (var alignParam in tab.FpcMarkParamList)
+                    //    alignParam.InspParam.LoadTool(tabFpcMarkDir);
 
-                    //Tab Panel Mark 열기
-                    string tabPanelMarkDir = tabDir + @"\Panel_Mark";
-                    foreach (var alignParam in tab.PanelMarkParamList)
-                        alignParam.InspParam.LoadTool(tabPanelMarkDir);
+                    ////Tab Panel Mark 열기
+                    //string tabPanelMarkDir = tabDir + @"\Panel_Mark";
+                    //foreach (var alignParam in tab.PanelMarkParamList)
+                    //    alignParam.InspParam.LoadTool(tabPanelMarkDir);
 
-                    //Tab Align 열기
-                    string tabAlignDir = tabDir + @"\Align";
-                    foreach (var alignParam in tab.AlignParamList)
-                        alignParam.CaliperParams.LoadTool(tabAlignDir, alignParam.Name);
+                    ////Tab Align 열기
+                    //string tabAlignDir = tabDir + @"\Align";
+                    //foreach (var alignParam in tab.AlignParamList)
+                    //    alignParam.CaliperParams.LoadTool(tabAlignDir, alignParam.Name);
                 }
 
             }
@@ -227,14 +227,14 @@ namespace ATT_UT_IPAD.Core
                     string tabDir = unitDir + @"\" + "Tab_" + tab.Name;
 
                     //Tab FPC Mark 저장
-                    string tabFpcMarkDir = tabDir + @"\FPC_Mark";
-                    foreach (var alignParam in tab.FpcMarkParamList)
-                        alignParam.InspParam.SaveTool(tabFpcMarkDir);
+                    //string tabFpcMarkDir = tabDir + @"\FPC_Mark";
+                    //foreach (var alignParam in tab.FpcMarkParamList)
+                    //    alignParam.InspParam.SaveTool(tabFpcMarkDir);
 
-                    //Tab Panel Mark 저장
-                    string tabPanelMarkDir = tabDir + @"\Panel_Mark";
-                    foreach (var alignParam in tab.PanelMarkParamList)
-                        alignParam.InspParam.SaveTool(tabPanelMarkDir);
+                    ////Tab Panel Mark 저장
+                    //string tabPanelMarkDir = tabDir + @"\Panel_Mark";
+                    //foreach (var alignParam in tab.PanelMarkParamList)
+                    //    alignParam.InspParam.SaveTool(tabPanelMarkDir);
 
                     //TabAlign 저장
                     string tabAlignDir = tabDir + @"\Align";

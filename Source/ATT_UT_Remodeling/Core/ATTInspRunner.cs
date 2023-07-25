@@ -114,7 +114,7 @@ namespace ATT_UT_Remodeling.Core
             CoordinateTransform fpcCoordinate = new CoordinateTransform();
             CoordinateTransform panelCoordinate = new CoordinateTransform();
 
-            algorithmTool.MainMarkInspect(inspTab.MergeCogImage, tab, ref inspResult);
+            algorithmTool.MainMarkInspect(inspTab.MergeCogImage, tab, ref inspResult, false);
 
             if (inspResult.MarkResult.IsGood() == false)
             {

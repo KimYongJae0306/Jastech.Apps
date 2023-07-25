@@ -121,7 +121,7 @@ namespace ATT_UT_IPAD.Core
             CoordinateTransform panelCoordinate = new CoordinateTransform();
 
             #region Mark 검사
-            algorithmTool.MainMarkInspect(inspTab.MergeCogImage, tab, ref inspResult);
+            algorithmTool.MainMarkInspect(inspTab.MergeCogImage, tab, ref inspResult, true);
 
 
             if (inspResult.MarkResult.IsGood() == false)
@@ -241,7 +241,7 @@ namespace ATT_UT_IPAD.Core
             CoordinateTransform panelCoordinate = new CoordinateTransform();
 
             #region Mark 검사
-            algorithmTool.MainMarkInspect(inspTab.MergeCogImage, tab, ref inspResult);
+            algorithmTool.MainMarkInspect(inspTab.MergeCogImage, tab, ref inspResult, true);
 
 
             if (inspResult.MarkResult.IsGood() == false)
@@ -485,7 +485,7 @@ namespace ATT_UT_IPAD.Core
 
                 if(GetAkkonInspTab() is ATTInspTab inspTab)
                 {
-                    //Run(inspTab);
+                    RunInspAkkon(inspTab);
                 }
                 
                 Thread.Sleep(50);
@@ -503,7 +503,7 @@ namespace ATT_UT_IPAD.Core
 
                 if (GetAlignInspTab() is ATTInspTab inspTab)
                 {
-                    //Run(inspTab);
+                    RunInspAlign(inspTab);
                 }
 
                 Thread.Sleep(50);

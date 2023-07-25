@@ -43,6 +43,8 @@ namespace Jastech.Apps.Winform.UI.Controls
         private Tab CurrentTab { get; set; } = null;
 
         public TeachingItem TeachingItem = TeachingItem.Mark;
+
+        public bool UseAlignMark { get; set; } = false;
         #endregion
 
         #region 생성자
@@ -115,10 +117,11 @@ namespace Jastech.Apps.Winform.UI.Controls
                 return;
 
             MarkParam currentParam = null;
+
             if (_curMaterial == Material.Fpc)
-                currentParam = CurrentTab.GetFPCMark(_curDirection, _curMarkName);
+                currentParam = CurrentTab.MarkParamter.GetFPCMark(_curDirection, _curMarkName, UseAlignMark);
             else
-                currentParam = CurrentTab.GetPanelMark(_curDirection, _curMarkName);
+                currentParam = CurrentTab.MarkParamter.GetPanelMark(_curDirection, _curMarkName, UseAlignMark);
 
             if(currentParam != null)
                 ParamControl?.UpdateData(currentParam.InspParam);
@@ -336,10 +339,11 @@ namespace Jastech.Apps.Winform.UI.Controls
                 return;
             display.ClearGraphic();
 
+            var currentParam = ParamControl.GetCurrentParam();
+            if (currentParam == null)
+                return;
             CogPMAlignCurrentRecordConstants constants = CogPMAlignCurrentRecordConstants.InputImage | CogPMAlignCurrentRecordConstants.SearchRegion
                 | CogPMAlignCurrentRecordConstants.TrainImage | CogPMAlignCurrentRecordConstants.TrainRegion | CogPMAlignCurrentRecordConstants.PatternOrigin;
-
-            var currentParam = ParamControl.GetCurrentParam();
 
             display.SetInteractiveGraphics("tool", currentParam.CreateCurrentRecord(constants));
             
@@ -509,83 +513,7 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         private void lblTest_Click(object sender, EventArgs e)
         {
-            var display = TeachingUIManager.Instance().GetDisplay();
-            display.ClearGraphic();
-
-            Tab tabOriginData = new Tab();
-            tabOriginData = CurrentTab.DeepCopy();
-
-            ICogImage cogImage = display.GetImage();
-
-            if (cogImage == null)
-                return;
-
-            // 1. FPC Mark 기반으로 Align의 FPC ROI 틀기
-            // 2. Panel Mark 기반으로 Align의 Panel ROI 틀기
-            // 3. Panel Mark 기반으로 Akkon의 ROI 틀기
-
-            if (_curMarkName != MarkName.Main)
-                return;
-
-            // 티칭한 Left Fpc
-            MarkParam teachedLeftFpcMarkParam = tabOriginData.GetFPCMark(MarkDirection.Left, MarkName.Main);
-            CogTransform2DLinear teachedLeftFpc2D = teachedLeftFpcMarkParam.InspParam.GetOrigin();
-            PointF teachedLeftFpc = new PointF(Convert.ToSingle(teachedLeftFpc2D.TranslationX), Convert.ToSingle(teachedLeftFpc2D.TranslationY));
-
-            // 티칭한 Right FPC 좌표
-            MarkParam teachedRightFpcMarkparam = tabOriginData.GetFPCMark(MarkDirection.Right, MarkName.Main);
-            CogTransform2DLinear teachedRightFpc2D = teachedRightFpcMarkparam.InspParam.GetOrigin();
-            PointF teachedRightFpc = new PointF(Convert.ToSingle(teachedRightFpc2D.TranslationX), Convert.ToSingle(teachedRightFpc2D.TranslationY));
-
-            // 찾은 Left FPC 좌표
-            VisionProPatternMatchingResult leftReferenceMarkResult = Algorithm.RunPatternMatch(cogImage, teachedLeftFpcMarkParam.InspParam);
-            PointF searchedLeftFpcPoint = leftReferenceMarkResult.MaxMatchPos.FoundPos;
-
-            // 찾은 Right FPC 좌표
-            VisionProPatternMatchingResult rightReferenceFpcMarkResult = Algorithm.RunPatternMatch(cogImage, teachedRightFpcMarkparam.InspParam);
-            PointF searchedRightFpcPoint = rightReferenceFpcMarkResult.MaxMatchPos.FoundPos;
-
-            MainAlgorithmTool algorithmTool = new MainAlgorithmTool();
-            algorithmTool.Coordinate = new CoordinateTransform();
-            algorithmTool.Coordinate.SetReferenceData(teachedLeftFpc, teachedRightFpc);
-            algorithmTool.Coordinate.SetTargetData(searchedLeftFpcPoint, searchedRightFpcPoint);
-            algorithmTool.Coordinate.ExecuteCoordinate();
-
-            foreach (var item in tabOriginData.AlignParamList)
-            {
-                CogRectangleAffine roi = new CogRectangleAffine(item.CaliperParams.CaliperTool.Region);
-
-                PointF oldPoint = new PointF();
-                oldPoint.X = (float)roi.CenterX;
-                oldPoint.Y = (float)roi.CenterY;
-
-                var newPoint = algorithmTool.Coordinate.GetCoordinate(oldPoint);
-                roi.CenterX = newPoint.X;
-                roi.CenterY = newPoint.Y;
-
-                item.CaliperParams.CaliperTool.Region = roi;
-
-                CogCaliperCurrentRecordConstants constants = CogCaliperCurrentRecordConstants.All;
-                display.SetInteractiveGraphics("tool", item.CaliperParams.CreateCurrentRecord(constants));
-            }
-
-            foreach (var item in tabOriginData.AkkonParam.GetAkkonROIList())
-            {
-                PointF leftTop = new PointF(Convert.ToSingle(item.LeftTopX), Convert.ToSingle(item.LeftTopY));
-                PointF rightTop = new PointF(Convert.ToSingle(item.RightTopX), Convert.ToSingle(item.RightTopY));
-                PointF leftBottom = new PointF(Convert.ToSingle(item.LeftBottomX), Convert.ToSingle(item.LeftBottomY));
-                CogRectangleAffine roi = VisionProShapeHelper.ConvertToCogRectAffine(leftTop, rightTop, leftBottom);
-
-                PointF oldPoint = new PointF();
-                oldPoint.X = (float)roi.CenterX;
-                oldPoint.Y = (float)roi.CenterY;
-
-                var newPoint = algorithmTool.Coordinate.GetCoordinate(oldPoint);
-                roi.CenterX = newPoint.X;
-                roi.CenterY = newPoint.Y;
-            }
-
-            return;
+         
         }
         #endregion
     }

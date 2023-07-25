@@ -110,7 +110,7 @@ namespace ATT.Core
             CoordinateTransform panelCoordinate = new CoordinateTransform();
 
             #region Mark 검사
-            algorithmTool.MainMarkInspect(inspTab.MergeCogImage, tab, ref inspResult);
+            algorithmTool.MainMarkInspect(inspTab.MergeCogImage, tab, ref inspResult, false);
 
             if (inspResult.MarkResult.IsGood() == false)
             {
