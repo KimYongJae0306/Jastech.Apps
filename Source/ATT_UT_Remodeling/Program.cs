@@ -72,7 +72,9 @@ namespace ATT_UT_Remodeling
             if (ConfigSet.Instance().Operation.VirtualMode)
             {
                 // AreaCamera
-                var areaCamera = new CameraVirtual("PreAlign", 1280, 1024, ColorFormat.Gray, SensorType.Area);
+                var areaCamera = new CameraVirtual("PreAlign", 2592, 1944, ColorFormat.Gray, SensorType.Area);
+                areaCamera.PixelResolution_um = 3.45F;
+                areaCamera.LensScale = 1.0F;
                 config.Add(areaCamera);
 
                 // LineScanCamera
