@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using Jastech.Framework.Util;
 
 namespace Jastech.Apps.Structure.VisionTool
 {
@@ -108,7 +109,7 @@ namespace Jastech.Apps.Structure.VisionTool
             tabInspResult.MarkResult.PanelMark = RunPanelMark(cogImage, tab);
         }
 
-        public AlignResult RunMainLeftAlignX(ICogImage cogImage, Tab tab, Coordinate fpcCoordinate, Coordinate panelCoordinate, double judgementX)
+        public AlignResult RunMainLeftAlignX(ICogImage cogImage, Tab tab, CoordinateTransform fpcCoordinate, CoordinateTransform panelCoordinate, double judgementX)
         {
             var fpcParam = tab.GetAlignParam(ATTTabAlignName.LeftFPCX).DeepCopy();
             var panelParam = tab.GetAlignParam(ATTTabAlignName.LeftPanelX).DeepCopy();
@@ -126,7 +127,7 @@ namespace Jastech.Apps.Structure.VisionTool
             return result;
         }
 
-        public AlignResult RunMainLeftAlignY(ICogImage cogImage, Tab tab, Coordinate fpcCoordinate, Coordinate panelCoordinate, double judgementY)
+        public AlignResult RunMainLeftAlignY(ICogImage cogImage, Tab tab, CoordinateTransform fpcCoordinate, CoordinateTransform panelCoordinate, double judgementY)
         {
             var fpcParam = tab.GetAlignParam(ATTTabAlignName.LeftFPCY).DeepCopy();
             var panelParam = tab.GetAlignParam(ATTTabAlignName.LeftPanelY).DeepCopy();
@@ -144,7 +145,7 @@ namespace Jastech.Apps.Structure.VisionTool
             return result;
         }
 
-        public AlignResult RunMainRightAlignX(ICogImage cogImage, Tab tab, Coordinate fpcCoordinate, Coordinate panelCoordinate, double judgementX)
+        public AlignResult RunMainRightAlignX(ICogImage cogImage, Tab tab, CoordinateTransform fpcCoordinate, CoordinateTransform panelCoordinate, double judgementX)
         {
             var fpcParam = tab.GetAlignParam(ATTTabAlignName.RightFPCX);
             var panelParam = tab.GetAlignParam(ATTTabAlignName.RightPanelX);
@@ -163,7 +164,7 @@ namespace Jastech.Apps.Structure.VisionTool
             return result;
         }
 
-        public AlignResult RunMainRightAlignY(ICogImage cogImage, Tab tab, Coordinate fpcCoordinate, Coordinate panelCoordinate, double judgementY)
+        public AlignResult RunMainRightAlignY(ICogImage cogImage, Tab tab, CoordinateTransform fpcCoordinate, CoordinateTransform panelCoordinate, double judgementY)
         {
             var fpcParam = tab.GetAlignParam(ATTTabAlignName.RightFPCY).DeepCopy();
             var panelParam = tab.GetAlignParam(ATTTabAlignName.RightPanelY).DeepCopy();
@@ -384,9 +385,9 @@ namespace Jastech.Apps.Structure.VisionTool
 
     public partial class MainAlgorithmTool : AlgorithmTool
     {
-        public Coordinate Coordinate { get; set; } = new Coordinate();
+        public CoordinateTransform Coordinate = null;
 
-        public CogRectangleAffine CoordinateRectangle(CogRectangleAffine originRegion, Coordinate coordinate)
+        public CogRectangleAffine CoordinateRectangle(CogRectangleAffine originRegion, CoordinateTransform coordinate)
         {
             CogRectangleAffine roi = new CogRectangleAffine(originRegion);
 
@@ -420,88 +421,6 @@ namespace Jastech.Apps.Structure.VisionTool
             roi.SetOriginCornerXCornerY(originX, originY, cornerXX, cornerXY, cornerYX, cornerYY);
 
             return roi;
-        }
-    }
-
-    public class Coordinate
-    {
-        private PointF _teachedCenterPoint { get; set; } = new PointF();
-
-        private PointF _searchedCenterPoint { get; set; } = new PointF();
-
-        private double _diffRadian { get; set; } = 0.0;
-
-        private PointF _offsetPoint { get; set; } = new PointF();
-
-        public void SetCoordinateParam(PointF teachedLeftPoint, PointF teachedRightPoint, PointF searchedLeftPoint, PointF searchedRightPoint)
-        {
-            SetTeachedCenterPoint(teachedLeftPoint, teachedRightPoint);
-
-            SetSearchedCenterPoint(searchedLeftPoint, searchedRightPoint);
-
-            SetDiffAngle(teachedLeftPoint, teachedRightPoint, searchedLeftPoint, searchedRightPoint);
-
-            PointF teachedCenterPoint = GetTeachedCenterPoint();
-            PointF searchedCenterPoint = GetSearchedCenterPoint();
-
-            SetOffsetPoint(teachedCenterPoint, searchedCenterPoint);
-        }
-
-        private void SetTeachedCenterPoint(PointF teachedLeftPoint, PointF teachedRightPoint)
-        {
-            _teachedCenterPoint = MathHelper.GetCenterPoint(teachedLeftPoint, teachedRightPoint);
-        }
-
-        private PointF GetTeachedCenterPoint()
-        {
-            return _teachedCenterPoint;
-        }
-
-        private void SetSearchedCenterPoint(PointF searchedLeftPoint, PointF searchedRightPoint)
-        {
-            _searchedCenterPoint = MathHelper.GetCenterPoint(searchedLeftPoint, searchedRightPoint);
-        }
-
-        private PointF GetSearchedCenterPoint()
-        {
-            return _searchedCenterPoint;
-        }
-
-        private void SetDiffAngle(PointF teachedLeftPoint, PointF teachedRightPoint, PointF searchedLeftPoint, PointF searchedRightPoint)
-        {
-            double teachedRadian = MathHelper.GetRadian(teachedLeftPoint, teachedRightPoint);
-            if (teachedRadian > 180.0)
-                teachedRadian -= 360.0;
-
-            double searchedRadian = MathHelper.GetRadian(searchedLeftPoint, searchedRightPoint);
-            if (searchedRadian > 180.0)
-                searchedRadian -= 360.0;
-
-            _diffRadian = searchedRadian - teachedRadian;
-        }
-
-        private double GetDiffRadian()
-        {
-            return _diffRadian;
-        }
-
-        private void SetOffsetPoint(PointF teachedCenterPoint, PointF searchedCenterPoint)
-        {
-            _offsetPoint = MathHelper.GetOffset(teachedCenterPoint, searchedCenterPoint);
-        }
-
-        private PointF GetOffsetPoint()
-        {
-            return _offsetPoint;
-        }
-
-        public PointF GetCoordinate(PointF inputPoint)
-        {
-            PointF searchedCenterPoint = GetSearchedCenterPoint();
-            double diffRadian = GetDiffRadian();
-            PointF offsetPoint = GetOffsetPoint();
-
-            return MathHelper.GetCoordinate(searchedCenterPoint, diffRadian, offsetPoint, inputPoint);
         }
     }
 }
