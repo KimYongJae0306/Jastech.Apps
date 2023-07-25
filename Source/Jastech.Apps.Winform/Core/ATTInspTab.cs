@@ -16,6 +16,8 @@ namespace Jastech.Apps.Winform.Core
     {
         private object _lock = new object();
 
+        public string CameraName { get; set; }
+
         public Queue<byte[]> DataQueue = new Queue<byte[]>();
 
         public Task InspTask { get; set; }

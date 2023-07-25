@@ -259,7 +259,7 @@ namespace ATT_UT_Remodeling.Core
             return akkonResult;
         }
 
-        public void InitalizeInspTab(List<TabScanBuffer> bufferList)
+        public void InitalizeInspTab(string cameraName, List<TabScanBuffer> bufferList)
         {
             DisposeInspTabList();
             var inspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
@@ -267,6 +267,7 @@ namespace ATT_UT_Remodeling.Core
             foreach (var buffer in bufferList)
             {
                 ATTInspTab inspTab = new ATTInspTab();
+                inspTab.CameraName = cameraName;
                 inspTab.TabScanBuffer = buffer;
                 inspTab.InspectEvent += AddInspectEventFuction;
                 inspTab.StartInspTask();
@@ -822,9 +823,10 @@ namespace ATT_UT_Remodeling.Core
 
         private void InitializeBuffer()
         {
-            var lineCamera = LineCameraManager.Instance().GetLineCamera("LineCamera");
+            string cameraName = "LineCamera";
+            var lineCamera = LineCameraManager.Instance().GetLineCamera(cameraName);
             lineCamera.InitGrabSettings();
-            InitalizeInspTab(lineCamera.TabScanBufferList);
+            InitalizeInspTab(cameraName, lineCamera.TabScanBufferList);
         }
 
         public void RunVirtual()
