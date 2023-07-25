@@ -105,10 +105,7 @@ namespace ATT.Core
             inspResult.Image = inspTab.MergeMatImage;
             inspResult.CogImage = inspTab.MergeCogImage;
 
-            //Coordinate fpcCoordinate = new Coordinate();
-            //Coordinate panelCoordinate = new Coordinate();
-
-            // Set Coordinage Params
+            // Create Coordinate Object
             CoordinateTransform fpcCoordinate = new CoordinateTransform();
             CoordinateTransform panelCoordinate = new CoordinateTransform();
 
@@ -125,13 +122,13 @@ namespace ATT.Core
             else
             {
                 #region Add mark data
-                // fpc
-                //SetCoordinateData(fpcCoordinate, inspResult);
+                // Set Coordinage Params
                 SetCoordinateData(fpcCoordinate, inspResult);
-
-                // panel
-                //SetCoordinateData(panelCoordinate, inspResult);
                 SetCoordinateData(panelCoordinate, inspResult);
+
+                // Excuete Coordinate
+                fpcCoordinate.ExecuteCoordinate();
+                panelCoordinate.ExecuteCoordinate();
                 #endregion
             }
             #endregion
@@ -201,6 +198,7 @@ namespace ATT.Core
             if (AppsConfig.Instance().EnableAkkon)
             {
                 var roiList = tab.AkkonParam.GetAkkonROIList();
+                var coordinateList = RenewalAkkonRoi(roiList, panelCoordinate);
                 var leadResultList = AkkonAlgorithm.Run(inspTab.MergeMatImage, roiList, tab.AkkonParam.AkkonAlgoritmParam, resolution_um);
 
                 inspResult.AkkonResult = CreateAkkonResult(unitName, tab.Index, leadResultList);
@@ -806,15 +804,6 @@ namespace ATT.Core
             // AppsInspResult.TabResultList.Add(result);
         }
 
-        //private void SetCoordinateData(Coordinate coordinate, TabInspResult tabInspResult)
-        //{
-        //    PointF teachedLeftPoint = tabInspResult.MarkResult.FpcMark.FoundedMark.Left.MaxMatchPos.ReferencePos;
-        //    PointF teachedRightPoint = tabInspResult.MarkResult.FpcMark.FoundedMark.Right.MaxMatchPos.ReferencePos;
-        //    PointF searchedLeftPoint = tabInspResult.MarkResult.FpcMark.FoundedMark.Left.MaxMatchPos.FoundPos;
-        //    PointF searchedRightPoint = tabInspResult.MarkResult.FpcMark.FoundedMark.Right.MaxMatchPos.FoundPos;
-        //    coordinate.SetCoordinateParam(teachedLeftPoint, teachedRightPoint, searchedLeftPoint, searchedRightPoint);
-        //}
-
         private void SetCoordinateData(CoordinateTransform coordinate, TabInspResult tabInspResult)
         {
             PointF teachedLeftPoint = tabInspResult.MarkResult.FpcMark.FoundedMark.Left.MaxMatchPos.ReferencePos;
@@ -823,6 +812,35 @@ namespace ATT.Core
             PointF searchedRightPoint = tabInspResult.MarkResult.FpcMark.FoundedMark.Right.MaxMatchPos.FoundPos;
             coordinate.SetReferenceData(teachedLeftPoint, teachedRightPoint);
             coordinate.SetTargetData(searchedLeftPoint, searchedRightPoint);
+        }
+
+        private List<AkkonROI> RenewalAkkonRoi(List<AkkonROI> roiList, CoordinateTransform panelCoordinate)
+        {
+            List<AkkonROI> newList = new List<AkkonROI>();
+
+            foreach (var item in roiList)
+            {
+                PointF leftTop = item.GetLeftTopPoint();
+                PointF rightTop = item.GetRightTopPoint();
+                PointF leftBottom = item.GetLeftBottomPoint();
+                PointF rightBottom = item.GetRightBottomPoint();
+
+                var newLeftTop = panelCoordinate.GetCoordinate(leftTop);
+                var newRightTop = panelCoordinate.GetCoordinate(rightTop);
+                var newLeftBottom = panelCoordinate.GetCoordinate(leftBottom);
+                var newRightBottom = panelCoordinate.GetCoordinate(rightBottom);
+
+                AkkonROI akkonRoi = new AkkonROI();
+
+                akkonRoi.SetLeftTopPoint(newLeftTop);
+                akkonRoi.SetLeftTopPoint(newRightTop);
+                akkonRoi.SetLeftTopPoint(newLeftBottom);
+                akkonRoi.SetLeftTopPoint(newRightBottom);
+
+                newList.Add(akkonRoi);
+            }
+
+            return newList;
         }
 
         #endregion

@@ -311,7 +311,7 @@ namespace ATT_UT_Remodeling.Core
                         Tab tab = unit.GetTab(tabNo);
                         var akkonROIList = tab.AkkonParam.GetAkkonROIList();
 
-                        using (StreamWriter streamWriter = new StreamWriter(savePath, true))
+                        using (StreamWriter streamWriter = new StreamWriter(savePath, false))
                         {
                             foreach (var roi in akkonROIList)
                             {
