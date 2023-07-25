@@ -40,9 +40,9 @@ namespace ATT_UT_IPAD.Core
         #region 필드
         private Axis _axis { get; set; } = null;
 
-        private object _akkonLock = new object();
+        private object _akkonInspLock = new object();
 
-        private object _inspLock = new object();
+        private object _alignInspLock = new object();
         #endregion
 
         #region 속성
@@ -66,9 +66,15 @@ namespace ATT_UT_IPAD.Core
 
         public CancellationTokenSource CancelAkkonInspTask { get; set; }
 
+        public Task AlignInspTask { get; set; }
+
+        public CancellationTokenSource CancelAlignInspTask { get; set; }
+
         public Queue<AkkonThreadParam> AkkonInspQueue = new Queue<AkkonThreadParam>();
 
-       public Queue<ATTInspTab> InspTabQueue = new Queue<ATTInspTab>();
+        public Queue<ATTInspTab> AkkonInspTabQueue = new Queue<ATTInspTab>();
+
+        public Queue<ATTInspTab> AlignInspTabQueue = new Queue<ATTInspTab>();
 
         public AkkonAlgorithm AkkonAlgorithm { get; set; } = new AkkonAlgorithm();
 
@@ -406,7 +412,7 @@ namespace ATT_UT_IPAD.Core
                     ATTInspTab inspTab = new ATTInspTab();
                     inspTab.CameraName = cameraName;
                     inspTab.TabScanBuffer = buffer;
-                    inspTab.InspectEvent += AddInspectEventFuction;
+                    inspTab.InspectEvent += AddAkkonInspectEventFuction;
                     inspTab.StartInspTask();
                     InspAkkonTabList.Add(inspTab);
                 }
@@ -418,18 +424,26 @@ namespace ATT_UT_IPAD.Core
                     ATTInspTab inspTab = new ATTInspTab();
                     inspTab.CameraName = cameraName;
                     inspTab.TabScanBuffer = buffer;
-                    inspTab.InspectEvent += AddInspectEventFuction;
+                    inspTab.InspectEvent += AddAlignInspectEventFuction;
                     inspTab.StartInspTask();
                     InspAlignTabList.Add(inspTab);
                 }
             }
         }
 
-        private void AddInspectEventFuction(ATTInspTab inspTab)
+        private void AddAkkonInspectEventFuction(ATTInspTab inspTab)
         {
-            lock(_inspLock)
+            lock(_akkonInspLock)
             {
-                InspTabQueue.Enqueue(inspTab);
+                AkkonInspTabQueue.Enqueue(inspTab);
+            }
+        }
+
+        private void AddAlignInspectEventFuction(ATTInspTab inspTab)
+        {
+            lock (_alignInspLock)
+            {
+                AlignInspTabQueue.Enqueue(inspTab);
             }
         }
 
@@ -438,7 +452,7 @@ namespace ATT_UT_IPAD.Core
             foreach (var inspTab in InspAkkonTabList)
             {
                 inspTab.StopInspTask();
-                inspTab.InspectEvent -= AddInspectEventFuction;
+                inspTab.InspectEvent -= AddAkkonInspectEventFuction;
                 inspTab.Dispose();
             }
             InspAkkonTabList.Clear();
@@ -446,7 +460,7 @@ namespace ATT_UT_IPAD.Core
             foreach (var inspTab in InspAlignTabList)
             {
                 inspTab.StopInspTask();
-                inspTab.InspectEvent -= AddInspectEventFuction;
+                inspTab.InspectEvent -= AddAlignInspectEventFuction;
                 inspTab.Dispose();
             }
             InspAlignTabList.Clear();
@@ -469,7 +483,7 @@ namespace ATT_UT_IPAD.Core
                     break;
                 }
 
-                if(GetInspTab() is ATTInspTab inspTab)
+                if(GetAkkonInspTab() is ATTInspTab inspTab)
                 {
                     //Run(inspTab);
                 }
@@ -477,54 +491,88 @@ namespace ATT_UT_IPAD.Core
                 Thread.Sleep(50);
             }
         }
-        
-        private ATTInspTab GetInspTab()
-        {
-           lock(_inspLock)
-            {
-                if (InspTabQueue.Count() > 0)
-                    return InspTabQueue.Dequeue();
-                else
-                    return null;
-            }
-        }
 
-        private AkkonThreadParam GetAkkonThreadParam()
+        private void AlignInspection()
         {
-            lock (_akkonLock)
+            while (true)
             {
-                if (AkkonInspQueue.Count > 0)
+                if (CancelAlignInspTask.IsCancellationRequested)
                 {
-                    return AkkonInspQueue.Dequeue();
+                    break;
                 }
+
+                if (GetAlignInspTab() is ATTInspTab inspTab)
+                {
+                    //Run(inspTab);
+                }
+
+                Thread.Sleep(50);
+            }
+        }
+
+        private ATTInspTab GetAkkonInspTab()
+        {
+           lock(_akkonInspLock)
+            {
+                if (AkkonInspTabQueue.Count() > 0)
+                    return AkkonInspTabQueue.Dequeue();
                 else
                     return null;
             }
         }
 
-        public void StartAkkonInspTask()
+        private ATTInspTab GetAlignInspTab()
         {
-            if (AkkonInspTask != null)
-                return;
-
-            CancelAkkonInspTask = new CancellationTokenSource();
-            AkkonInspTask = new Task(AkkonInspection, CancelAkkonInspTask.Token);
-            AkkonInspTask.Start();
+            lock (_alignInspLock)
+            {
+                if (AlignInspTabQueue.Count() > 0)
+                    return AlignInspTabQueue.Dequeue();
+                else
+                    return null;
+            }
         }
 
-        public void StopAkkonInspTask()
+        public void StartInspTask()
         {
             if (AkkonInspTask == null)
-                return;
-           
-            while(InspTabQueue.Count>0)
             {
-                var data = InspTabQueue.Dequeue();
-                data.Dispose();
+                CancelAkkonInspTask = new CancellationTokenSource();
+                AkkonInspTask = new Task(AkkonInspection, CancelAkkonInspTask.Token);
+                AkkonInspTask.Start();
             }
-            CancelAkkonInspTask.Cancel();
-            AkkonInspTask.Wait();
-            AkkonInspTask = null;
+
+            if (AlignInspTask == null)
+            {
+                CancelAlignInspTask = new CancellationTokenSource();
+                AlignInspTask = new Task(AlignInspection, CancelAlignInspTask.Token);
+                AlignInspTask.Start();
+            }
+        }
+
+        public void StopInspTask()
+        {
+            if (AkkonInspTask != null)
+            {
+                while (AkkonInspTabQueue.Count > 0)
+                {
+                    var data = AkkonInspTabQueue.Dequeue();
+                    data.Dispose();
+                }
+                CancelAkkonInspTask.Cancel();
+                AkkonInspTask.Wait();
+                AkkonInspTask = null;
+            }
+            if (AlignInspTask != null)
+            {
+                while (AlignInspTabQueue.Count > 0)
+                {
+                    var data = AlignInspTabQueue.Dequeue();
+                    data.Dispose();
+                }
+                CancelAlignInspTask.Cancel();
+                AlignInspTask.Wait();
+                AlignInspTask = null;
+            }
         }
 
         public void ClearResult()
@@ -567,7 +615,7 @@ namespace ATT_UT_IPAD.Core
             var akkonCamera = LineCameraManager.Instance().GetAppsCamera("AkkonCamera");
             akkonCamera.GrabDoneEventHanlder += ATTSeqRunner_GrabDoneEventHanlder;
 
-            StartAkkonInspTask();
+            StartInspTask();
 
             if (SeqTask != null)
             {
@@ -597,7 +645,7 @@ namespace ATT_UT_IPAD.Core
             LineCameraManager.Instance().GetLineCamera("AkkonCamera").StopGrab();
 
 
-            StopAkkonInspTask();
+            StopInspTask();
 
             // 조명 off
             LAFManager.Instance().TrackingOnOff("Align", false);
@@ -611,11 +659,6 @@ namespace ATT_UT_IPAD.Core
             if (SeqTask == null)
                 return;
 
-            //foreach (var item in AppsInspResult.TabResultList)
-            //{
-            //    item.Dispose();
-            //}
-            //AppsInspResult.TabResultList.Clear();
             SeqTaskCancellationTokenSource.Cancel();
             SeqTask.Wait();
             SeqTask = null;

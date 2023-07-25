@@ -1057,7 +1057,7 @@ namespace Jastech.Apps.Winform.UI.Controls
 
                 group.AddROI(akkonRoi);
             }
-
+            var tt = TeachingData.Instance();
             int gg = 0;
         }
 

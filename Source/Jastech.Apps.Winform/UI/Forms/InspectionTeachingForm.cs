@@ -590,7 +590,7 @@ namespace Jastech.Framework.Winform.Forms
             display.ClearGraphic();
 
             Tab tabOriginData = new Tab();
-            tabOriginData = CurrentTab.DeepCopy();
+            tabOriginData = CurrentTab;
 
             ICogImage cogImage = display.GetImage();
 
@@ -899,16 +899,11 @@ namespace Jastech.Framework.Winform.Forms
             int cnt = 0;
             List<AkkonGroup> newAkkonGroup = new List<AkkonGroup>();
 
-            foreach (var item in tab.AkkonParam.GroupList)
+            foreach (var group in tab.AkkonParam.GroupList)
             {
-                AkkonGroup group = new AkkonGroup();
-                group.Index = cnt;
-
-                var roiList = item.AkkonROIList.ToList();
-
                 List<AkkonROI> akkonList = new List<AkkonROI>();
 
-                foreach (var rois in roiList)
+                foreach (var rois in group.AkkonROIList)
                 {
                     PointF leftTop = rois.GetLeftTopPoint();
                     PointF rightTop = rois.GetRightTopPoint();
@@ -927,15 +922,17 @@ namespace Jastech.Framework.Winform.Forms
                     akkonRoi.SetLeftBottomPoint(newLeftBottom);
                     akkonRoi.SetRightBottomPoint(newRightBottom);
 
+                    //group.AddROI(akkonRoi);
                     akkonList.Add(akkonRoi);
                 }
+                group.AkkonROIList.Clear();
+                //group.AkkonROIList.AddRange(akkonList);
+                //group.ReNewalROIList(akkonList);
 
-                group.ReNewalROIList(akkonList);
-
-                newAkkonGroup.Add(group);
+                //newAkkonGroup.Add(group);
             }
 
-            tab.AkkonParam.RenewalGroup(newAkkonGroup);
+            //tab.AkkonParam.RenewalGroup(newAkkonGroup);
 
             //tab.AkkonParam.RenewalGroup(coordinateList);
             //List<AkkonGroup> newAkkonGroup = new List<AkkonGroup>();
