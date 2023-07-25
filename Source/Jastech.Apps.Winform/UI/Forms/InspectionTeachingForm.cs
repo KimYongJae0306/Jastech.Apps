@@ -926,7 +926,7 @@ namespace Jastech.Framework.Winform.Forms
                     akkonList.Add(akkonRoi);
                 }
                 group.AkkonROIList.Clear();
-                //group.AkkonROIList.AddRange(akkonList);
+                group.AkkonROIList.AddRange(akkonList);
                 //group.ReNewalROIList(akkonList);
 
                 //newAkkonGroup.Add(group);
