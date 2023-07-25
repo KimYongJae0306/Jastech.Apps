@@ -8,6 +8,7 @@ using Jastech.Apps.Structure.VisionTool;
 using Jastech.Framework.Imaging.VisionPro;
 using Jastech.Framework.Imaging.VisionPro.VisionAlgorithms.Parameters;
 using Jastech.Framework.Imaging.VisionPro.VisionAlgorithms.Results;
+using Jastech.Framework.Util;
 using Jastech.Framework.Winform.Forms;
 using Jastech.Framework.Winform.VisionPro.Controls;
 using System;
@@ -564,8 +565,9 @@ namespace Jastech.Apps.Winform.UI.Controls
             PointF searchedRightFpcPoint = rightReferenceFpcMarkResult.MaxMatchPos.FoundPos;
 
             MainAlgorithmTool algorithmTool = new MainAlgorithmTool();
-            algorithmTool.Coordinate = new Coordinate();
-            algorithmTool.Coordinate.SetCoordinateParam(teachedLeftFpc, teachedRightFpc, searchedLeftFpcPoint, searchedRightFpcPoint);
+            algorithmTool.Coordinate = new CoordinateTransform();
+            algorithmTool.Coordinate.SetReferenceData(teachedLeftFpc, teachedRightFpc);
+            algorithmTool.Coordinate.SetTargetData(searchedLeftFpcPoint, searchedRightFpcPoint);
 
             foreach (var item in origin.AlignParamList)
             {
@@ -602,21 +604,6 @@ namespace Jastech.Apps.Winform.UI.Controls
             }
 
             return;
-        }
-
-        private MarkParam CoordinateMark(double x, double y)
-        {
-            return null;
-        }
-
-        private AlignParam CoordinateAlign()
-        {
-            return null;
-        }
-
-        private AkkonParam CoordinateAkkon()
-        {
-            return null;
         }
         #endregion
     }

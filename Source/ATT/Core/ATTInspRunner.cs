@@ -19,6 +19,7 @@ using Jastech.Framework.Imaging;
 using Jastech.Framework.Imaging.Helper;
 using Jastech.Framework.Imaging.Result;
 using Jastech.Framework.Imaging.VisionPro;
+using Jastech.Framework.Util;
 using Jastech.Framework.Util.Helper;
 using System;
 using System.Collections.Generic;
@@ -104,12 +105,15 @@ namespace ATT.Core
             inspResult.Image = inspTab.MergeMatImage;
             inspResult.CogImage = inspTab.MergeCogImage;
 
-            Coordinate fpcCoordinate = new Coordinate();
-            Coordinate panelCoordinate = new Coordinate();
+            //Coordinate fpcCoordinate = new Coordinate();
+            //Coordinate panelCoordinate = new Coordinate();
+
+            // Set Coordinage Params
+            CoordinateTransform fpcCoordinate = new CoordinateTransform();
+            CoordinateTransform panelCoordinate = new CoordinateTransform();
 
             #region Mark 검사
             algorithmTool.MainMarkInspect(inspTab.MergeCogImage, tab, ref inspResult);
-
 
             if (inspResult.MarkResult.IsGood() == false)
             {
@@ -122,9 +126,11 @@ namespace ATT.Core
             {
                 #region Add mark data
                 // fpc
+                //SetCoordinateData(fpcCoordinate, inspResult);
                 SetCoordinateData(fpcCoordinate, inspResult);
 
                 // panel
+                //SetCoordinateData(panelCoordinate, inspResult);
                 SetCoordinateData(panelCoordinate, inspResult);
                 #endregion
             }
@@ -800,14 +806,25 @@ namespace ATT.Core
             // AppsInspResult.TabResultList.Add(result);
         }
 
-        private void SetCoordinateData(Coordinate coordinate, TabInspResult tabInspResult)
+        //private void SetCoordinateData(Coordinate coordinate, TabInspResult tabInspResult)
+        //{
+        //    PointF teachedLeftPoint = tabInspResult.MarkResult.FpcMark.FoundedMark.Left.MaxMatchPos.ReferencePos;
+        //    PointF teachedRightPoint = tabInspResult.MarkResult.FpcMark.FoundedMark.Right.MaxMatchPos.ReferencePos;
+        //    PointF searchedLeftPoint = tabInspResult.MarkResult.FpcMark.FoundedMark.Left.MaxMatchPos.FoundPos;
+        //    PointF searchedRightPoint = tabInspResult.MarkResult.FpcMark.FoundedMark.Right.MaxMatchPos.FoundPos;
+        //    coordinate.SetCoordinateParam(teachedLeftPoint, teachedRightPoint, searchedLeftPoint, searchedRightPoint);
+        //}
+
+        private void SetCoordinateData(CoordinateTransform coordinate, TabInspResult tabInspResult)
         {
             PointF teachedLeftPoint = tabInspResult.MarkResult.FpcMark.FoundedMark.Left.MaxMatchPos.ReferencePos;
             PointF teachedRightPoint = tabInspResult.MarkResult.FpcMark.FoundedMark.Right.MaxMatchPos.ReferencePos;
             PointF searchedLeftPoint = tabInspResult.MarkResult.FpcMark.FoundedMark.Left.MaxMatchPos.FoundPos;
             PointF searchedRightPoint = tabInspResult.MarkResult.FpcMark.FoundedMark.Right.MaxMatchPos.FoundPos;
-            coordinate.SetCoordinateParam(teachedLeftPoint, teachedRightPoint, searchedLeftPoint, searchedRightPoint);
+            coordinate.SetReferenceData(teachedLeftPoint, teachedRightPoint);
+            coordinate.SetTargetData(searchedLeftPoint, searchedRightPoint);
         }
+
         #endregion
     }
 

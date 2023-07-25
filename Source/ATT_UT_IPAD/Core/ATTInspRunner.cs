@@ -19,6 +19,7 @@ using Jastech.Framework.Imaging;
 using Jastech.Framework.Imaging.Helper;
 using Jastech.Framework.Imaging.Result;
 using Jastech.Framework.Imaging.VisionPro;
+using Jastech.Framework.Util;
 using Jastech.Framework.Util.Helper;
 using System;
 using System.Collections.Generic;
@@ -104,8 +105,8 @@ namespace ATT_UT_IPAD.Core
             inspResult.Image = inspTab.MergeMatImage;
             inspResult.CogImage = inspTab.MergeCogImage;
 
-            Coordinate fpcCoordinate = new Coordinate();
-            Coordinate panelCoordinate = new Coordinate();
+            CoordinateTransform fpcCoordinate = new CoordinateTransform();
+            CoordinateTransform panelCoordinate = new CoordinateTransform();
 
             #region Mark 검사
             algorithmTool.MainMarkInspect(inspTab.MergeCogImage, tab, ref inspResult);
@@ -868,13 +869,14 @@ namespace ATT_UT_IPAD.Core
             // AppsInspResult.TabResultList.Add(result);
         }
 
-        private void SetCoordinateData(Coordinate coordinate, TabInspResult tabInspResult)
+        private void SetCoordinateData(CoordinateTransform coordinate, TabInspResult tabInspResult)
         {
             PointF teachedLeftPoint = tabInspResult.MarkResult.FpcMark.FoundedMark.Left.MaxMatchPos.ReferencePos;
             PointF teachedRightPoint = tabInspResult.MarkResult.FpcMark.FoundedMark.Right.MaxMatchPos.ReferencePos;
             PointF searchedLeftPoint = tabInspResult.MarkResult.FpcMark.FoundedMark.Left.MaxMatchPos.FoundPos;
             PointF searchedRightPoint = tabInspResult.MarkResult.FpcMark.FoundedMark.Right.MaxMatchPos.FoundPos;
-            coordinate.SetCoordinateParam(teachedLeftPoint, teachedRightPoint, searchedLeftPoint, searchedRightPoint);
+            coordinate.SetReferenceData(teachedLeftPoint, teachedRightPoint);
+            coordinate.SetTargetData(searchedLeftPoint, searchedRightPoint);
         }
         #endregion
     }

@@ -950,250 +950,105 @@ namespace Jastech.Framework.Winform.Forms
         //    return VisionProShapeHelper.ConvertToCogRectAffine(leftTop, rightTop, leftBottom);
         //}
 
-        public ICogImage ConvertCogColorImage(Mat mat)
-        {
-            Mat matR = Imaging.Helper.MatHelper.ColorChannelSprate(mat, Imaging.Helper.MatHelper.ColorChannel.R);
-            Mat matG = Imaging.Helper.MatHelper.ColorChannelSprate(mat, Imaging.Helper.MatHelper.ColorChannel.G);
-            Mat matB = Imaging.Helper.MatHelper.ColorChannelSprate(mat, Imaging.Helper.MatHelper.ColorChannel.B);
+        //private Coordinate SetFpcCoordinateParam(ICogImage cogImage, Tab tab)
+        //{
+        //    Coordinate fpcCoordinate = new Coordinate();
 
-            byte[] dataR = new byte[matR.Width * matR.Height];
-            Marshal.Copy(matR.DataPointer, dataR, 0, matR.Width * matR.Height);
+        //    // 티칭한 Left Fpc 좌표
+        //    MarkParam teachedLeftFpcMarkParam = tab.GetFPCMark(MarkDirection.Left, MarkName.Main);
+        //    CogTransform2DLinear teachedLeftFpc2D = teachedLeftFpcMarkParam.InspParam.GetOrigin();
+        //    PointF teachedLeftFpc = new PointF(Convert.ToSingle(teachedLeftFpc2D.TranslationX), Convert.ToSingle(teachedLeftFpc2D.TranslationY));
 
-            byte[] dataG = new byte[matG.Width * matG.Height];
-            Marshal.Copy(matG.DataPointer, dataG, 0, matG.Width * matG.Height);
+        //    // 티칭한 Right FPC 좌표
+        //    MarkParam teachedRightFpcMarkparam = tab.GetFPCMark(MarkDirection.Right, MarkName.Main);
+        //    CogTransform2DLinear teachedRightFpc2D = teachedRightFpcMarkparam.InspParam.GetOrigin();
+        //    PointF teachedRightFpc = new PointF(Convert.ToSingle(teachedRightFpc2D.TranslationX), Convert.ToSingle(teachedRightFpc2D.TranslationY));
 
-            byte[] dataB = new byte[matB.Width * matB.Height];
-            Marshal.Copy(matB.DataPointer, dataB, 0, matB.Width * matB.Height);
+        //    // 찾은 Left FPC 좌표
+        //    VisionProPatternMatchingResult leftReferenceMarkResult = Algorithm.RunPatternMatch(cogImage, teachedLeftFpcMarkParam.InspParam);
+        //    PointF searchedLeftFpcPoint = leftReferenceMarkResult.MaxMatchPos.FoundPos;
 
-            var cogImage = VisionProImageHelper.CovertImage(dataR, dataG, dataB, matB.Width, matB.Height);
+        //    // 찾은 Right FPC 좌표
+        //    VisionProPatternMatchingResult rightReferenceFpcMarkResult = Algorithm.RunPatternMatch(cogImage, teachedRightFpcMarkparam.InspParam);
+        //    PointF searchedRightFpcPoint = rightReferenceFpcMarkResult.MaxMatchPos.FoundPos;
 
-            matR.Dispose();
-            matG.Dispose();
-            matB.Dispose();
+        //    fpcCoordinate.SetCoordinateParam(teachedLeftFpc, teachedRightFpc, searchedLeftFpcPoint, searchedRightFpcPoint);
 
-            return cogImage;
-        }
+        //    return fpcCoordinate;
+        //}
 
-        public Mat GetDebugResultImage(Mat mat, List<AkkonLeadResult> leadResultList, AkkonAlgoritmParam akkonParameters)
-        {
-            if (mat == null)
-                return null;
+        //private Coordinate SetPanelCoordinateParam(ICogImage cogImage, Tab tab)
+        //{
+        //    Coordinate panelCoordinate = new Coordinate();
 
-            Mat resizeMat = new Mat();
-            Size newSize = new Size((int)(mat.Width * akkonParameters.ImageFilterParam.ResizeRatio), (int)(mat.Height * akkonParameters.ImageFilterParam.ResizeRatio));
-            CvInvoke.Resize(mat, resizeMat, newSize);
-            Mat colorMat = new Mat();
-            CvInvoke.CvtColor(resizeMat, colorMat, ColorConversion.Gray2Bgr);
-            resizeMat.Dispose();
+        //    // 티칭한 Left Panel 좌표
+        //    MarkParam teachedLeftPanelMarkParam = tab.GetPanelMark(MarkDirection.Left, MarkName.Main);
+        //    CogTransform2DLinear teachedLeftPanel2D = teachedLeftPanelMarkParam.InspParam.GetOrigin();
+        //    PointF teachedLeftPanel = new PointF(Convert.ToSingle(teachedLeftPanel2D.TranslationX), Convert.ToSingle(teachedLeftPanel2D.TranslationY));
 
-            float calcResolution = /*Resolution*/1.0F / CurrentTab.AkkonParam.AkkonAlgoritmParam.ImageFilterParam.ResizeRatio;
-            MCvScalar redColor = new MCvScalar(50, 50, 230, 255);
-            MCvScalar greenColor = new MCvScalar(50, 230, 50, 255);
+        //    // 티칭한 Right Panel 좌표
+        //    MarkParam teachedRightPanelMarkparam = tab.GetPanelMark(MarkDirection.Right, MarkName.Main);
+        //    CogTransform2DLinear teachedRightPanel2D = teachedRightPanelMarkparam.InspParam.GetOrigin();
+        //    PointF teachedRightPanel = new PointF(Convert.ToSingle(teachedRightPanel2D.TranslationX), Convert.ToSingle(teachedRightPanel2D.TranslationY));
 
-            foreach (var result in leadResultList)
-            {
-                var lead = result.Roi;
-                var startPoint = new Point((int)result.Offset.ToWorldX, (int)result.Offset.ToWorldY);
+        //    // 찾은 Left Panel 좌표
+        //    VisionProPatternMatchingResult leftReferencePanelMarkResult = Algorithm.RunPatternMatch(cogImage, teachedLeftPanelMarkParam.InspParam);
+        //    PointF searchedLeftPanelPoint = leftReferencePanelMarkResult.MaxMatchPos.FoundPos;
 
-                Point leftTop = new Point((int)lead.LeftTopX + startPoint.X, (int)lead.LeftTopY + startPoint.Y);
-                Point leftBottom = new Point((int)lead.LeftBottomX + startPoint.X, (int)lead.LeftBottomY + startPoint.Y);
-                Point rightTop = new Point((int)lead.RightTopX + startPoint.X, (int)lead.RightTopY + startPoint.Y);
-                Point rightBottom = new Point((int)lead.RightBottomX + startPoint.X, (int)lead.RightBottomY + startPoint.Y);
+        //    // 찾은 Right Panel 좌표
+        //    VisionProPatternMatchingResult rightReferencePanelMarkResult = Algorithm.RunPatternMatch(cogImage, teachedRightPanelMarkparam.InspParam);
+        //    PointF searchedRightPanelPoint = rightReferencePanelMarkResult.MaxMatchPos.FoundPos;
 
+        //    panelCoordinate.SetCoordinateParam(teachedLeftPanel, teachedRightPanel, searchedLeftPanelPoint, searchedRightPanelPoint);
 
-                if (akkonParameters.DrawOption.ContainLeadROI)
-                {
-                    CvInvoke.Line(colorMat, leftTop, leftBottom, greenColor, 1);
-                    CvInvoke.Line(colorMat, leftTop, rightTop, greenColor, 1);
-                    CvInvoke.Line(colorMat, rightTop, rightBottom, greenColor, 1);
-                    CvInvoke.Line(colorMat, rightBottom, leftBottom, greenColor, 1);
-                }
+        //    return panelCoordinate;
+        //}
 
-                foreach (var blob in result.BlobList)
-                {
-                    int offsetX = (int)(result.Offset.ToWorldX + result.Offset.X);
-                    int offsetY = (int)(result.Offset.ToWorldY + result.Offset.Y);
+        //private void CoordinateAlign(Tab tab, Coordinate fpcCoordinate, Coordinate panelCoordinate)
+        //{
+        //    MainAlgorithmTool algorithmTool = new MainAlgorithmTool();
 
-                    Rectangle rectRect = new Rectangle();
-                    rectRect.X = blob.BoundingRect.X + offsetX;
-                    rectRect.Y = blob.BoundingRect.Y + offsetY;
-                    rectRect.Width = blob.BoundingRect.Width;
-                    rectRect.Height = blob.BoundingRect.Height;
+        //    foreach (var item in tab.AlignParamList)
+        //    {
+        //        if (item.Name.ToLower().Contains("fpc"))
+        //        {
+        //            //var param = tab.GetAlignParam(alignName).DeepCopy();
+        //            var calcFpcRegion = algorithmTool.CoordinateRectangle(item.CaliperParams.GetRegion() as CogRectangleAffine, fpcCoordinate);
+        //            item.CaliperParams.SetRegion(calcFpcRegion);
+        //        }
+        //        else if (item.Name.ToLower().Contains("panel"))
+        //        {
+        //            var calcPanelRegion = algorithmTool.CoordinateRectangle(item.CaliperParams.GetRegion() as CogRectangleAffine, panelCoordinate);
+        //            item.CaliperParams.SetRegion(calcPanelRegion);
+        //        }
+        //    }
+        //}
 
-                    Point center = new Point(rectRect.X + (rectRect.Width / 2), rectRect.Y + (rectRect.Height / 2));
-                    int radius = rectRect.Width > rectRect.Height ? rectRect.Width : rectRect.Height;
+        //private void CoordinateAkkon(Tab tab, Coordinate panelCoordinate)
+        //{
+        //    MainAlgorithmTool algorithmTool = new MainAlgorithmTool();
 
-                    int size = blob.BoundingRect.Width * blob.BoundingRect.Height;
-                    if (blob.IsAkkonShape)
-                    {
-                        CvInvoke.Circle(colorMat, center, radius / 2, greenColor, 1);
-                    }
-                    else
-                    {
-                        if (akkonParameters.DrawOption.ContainNG)
-                        {
-                            CvInvoke.Circle(colorMat, center, radius / 2, redColor, 1);
-                        }
+        //    List<AkkonGroup> newAkkonGroup = new List<AkkonGroup>();
 
-                    }
+        //    foreach (var group in tab.AkkonParam.GroupList)
+        //    {
+        //        List<AkkonROI> newRoiList = new List<AkkonROI>();
 
-                    if (akkonParameters.DrawOption.ContainSize)
-                    {
-                        int temp = (int)(radius / 2.0);
-                        Point pt = new Point(center.X + temp, center.Y - temp);
-                        double akkonSize = (blob.BoundingRect.Width + blob.BoundingRect.Height) / 2.0;
-                        double blobSize = akkonSize * calcResolution;
+        //        foreach (var lead in group.AkkonROIList)
+        //        {
+        //            var affineRect = ConvertAkkonRoiToCogRectAffine(lead);
+        //            var calcPanelRegion = algorithmTool.CoordinateRectangle(affineRect, panelCoordinate);
+        //            var roi = ConvertCogRectAffineToAkkonRoi(calcPanelRegion);
 
-                        if (blob.IsAkkonShape)
-                            CvInvoke.PutText(colorMat, blobSize.ToString("F1"), pt, FontFace.HersheySimplex, 0.3, greenColor);
-                        else
-                            CvInvoke.PutText(colorMat, blobSize.ToString("F1"), pt, FontFace.HersheySimplex, 0.3, redColor);
-                    }
-                    else if (akkonParameters.DrawOption.ContainArea)
-                    {
-                        int temp = (int)(radius / 2.0);
-                        Point pt = new Point(center.X + temp, center.Y - temp);
-                        double blobArea = blob.Area * calcResolution;
+        //            newRoiList.Add(roi);
+        //        }
 
-                        if (blob.IsAkkonShape)
-                            CvInvoke.PutText(colorMat, blobArea.ToString("F1"), pt, FontFace.HersheySimplex, 0.3, greenColor);
-                        else
-                            CvInvoke.PutText(colorMat, blobArea.ToString("F1"), pt, FontFace.HersheySimplex, 0.3, redColor);
-                    }
-                    else if (akkonParameters.DrawOption.ContainStrength)
-                    {
-                        int temp = (int)(radius / 2.0);
-                        Point pt = new Point(center.X + temp, center.Y - temp);
-                        string strength = blob.Strength.ToString("F1");
+        //        newAkkonGroup.Add(group);
+        //    }
 
-                        if (blob.IsAkkonShape)
-                            CvInvoke.PutText(colorMat, strength, pt, FontFace.HersheySimplex, 0.3, greenColor);
-                        else
-                            CvInvoke.PutText(colorMat, strength, pt, FontFace.HersheySimplex, 0.3, redColor);
-                    }
-                }
-
-                if (akkonParameters.DrawOption.ContainLeadCount)
-                {
-                    string leadIndexString = result.Roi.Index.ToString();
-                    string akkonCountString = string.Format("[{0}]", result.AkkonCount);
-
-                    Point centerPt = new Point((int)((leftBottom.X + rightBottom.X) / 2.0), leftBottom.Y);
-
-                    int baseLine = 0;
-                    Size textSize = CvInvoke.GetTextSize(leadIndexString, FontFace.HersheyComplex, 0.3, 1, ref baseLine);
-                    int textX = centerPt.X - (textSize.Width / 2);
-                    int textY = centerPt.Y + (baseLine / 2);
-                    CvInvoke.PutText(colorMat, leadIndexString, new Point(textX, textY + 30), FontFace.HersheyComplex, 0.25, new MCvScalar(50, 230, 50, 255));
-
-                    textSize = CvInvoke.GetTextSize(akkonCountString, FontFace.HersheyComplex, 0.3, 1, ref baseLine);
-                    textX = centerPt.X - (textSize.Width / 2);
-                    textY = centerPt.Y + (baseLine / 2);
-                    CvInvoke.PutText(colorMat, akkonCountString, new Point(textX, textY + 60), FontFace.HersheyComplex, 0.25, new MCvScalar(50, 230, 50, 255));
-                }
-            }
-            return colorMat;
-        }
-
-        private Coordinate SetFpcCoordinateParam(ICogImage cogImage, Tab tab)
-        {
-            Coordinate fpcCoordinate = new Coordinate();
-
-            // 티칭한 Left Fpc 좌표
-            MarkParam teachedLeftFpcMarkParam = tab.GetFPCMark(MarkDirection.Left, MarkName.Main);
-            CogTransform2DLinear teachedLeftFpc2D = teachedLeftFpcMarkParam.InspParam.GetOrigin();
-            PointF teachedLeftFpc = new PointF(Convert.ToSingle(teachedLeftFpc2D.TranslationX), Convert.ToSingle(teachedLeftFpc2D.TranslationY));
-
-            // 티칭한 Right FPC 좌표
-            MarkParam teachedRightFpcMarkparam = tab.GetFPCMark(MarkDirection.Right, MarkName.Main);
-            CogTransform2DLinear teachedRightFpc2D = teachedRightFpcMarkparam.InspParam.GetOrigin();
-            PointF teachedRightFpc = new PointF(Convert.ToSingle(teachedRightFpc2D.TranslationX), Convert.ToSingle(teachedRightFpc2D.TranslationY));
-
-            // 찾은 Left FPC 좌표
-            VisionProPatternMatchingResult leftReferenceMarkResult = Algorithm.RunPatternMatch(cogImage, teachedLeftFpcMarkParam.InspParam);
-            PointF searchedLeftFpcPoint = leftReferenceMarkResult.MaxMatchPos.FoundPos;
-
-            // 찾은 Right FPC 좌표
-            VisionProPatternMatchingResult rightReferenceFpcMarkResult = Algorithm.RunPatternMatch(cogImage, teachedRightFpcMarkparam.InspParam);
-            PointF searchedRightFpcPoint = rightReferenceFpcMarkResult.MaxMatchPos.FoundPos;
-
-            fpcCoordinate.SetCoordinateParam(teachedLeftFpc, teachedRightFpc, searchedLeftFpcPoint, searchedRightFpcPoint);
-
-            return fpcCoordinate;
-        }
-
-        private Coordinate SetPanelCoordinateParam(ICogImage cogImage, Tab tab)
-        {
-            Coordinate panelCoordinate = new Coordinate();
-
-            // 티칭한 Left Panel 좌표
-            MarkParam teachedLeftPanelMarkParam = tab.GetPanelMark(MarkDirection.Left, MarkName.Main);
-            CogTransform2DLinear teachedLeftPanel2D = teachedLeftPanelMarkParam.InspParam.GetOrigin();
-            PointF teachedLeftPanel = new PointF(Convert.ToSingle(teachedLeftPanel2D.TranslationX), Convert.ToSingle(teachedLeftPanel2D.TranslationY));
-
-            // 티칭한 Right Panel 좌표
-            MarkParam teachedRightPanelMarkparam = tab.GetPanelMark(MarkDirection.Right, MarkName.Main);
-            CogTransform2DLinear teachedRightPanel2D = teachedRightPanelMarkparam.InspParam.GetOrigin();
-            PointF teachedRightPanel = new PointF(Convert.ToSingle(teachedRightPanel2D.TranslationX), Convert.ToSingle(teachedRightPanel2D.TranslationY));
-
-            // 찾은 Left Panel 좌표
-            VisionProPatternMatchingResult leftReferencePanelMarkResult = Algorithm.RunPatternMatch(cogImage, teachedLeftPanelMarkParam.InspParam);
-            PointF searchedLeftPanelPoint = leftReferencePanelMarkResult.MaxMatchPos.FoundPos;
-
-            // 찾은 Right Panel 좌표
-            VisionProPatternMatchingResult rightReferencePanelMarkResult = Algorithm.RunPatternMatch(cogImage, teachedRightPanelMarkparam.InspParam);
-            PointF searchedRightPanelPoint = rightReferencePanelMarkResult.MaxMatchPos.FoundPos;
-
-            panelCoordinate.SetCoordinateParam(teachedLeftPanel, teachedRightPanel, searchedLeftPanelPoint, searchedRightPanelPoint);
-
-            return panelCoordinate;
-        }
-
-        private void CoordinateAlign(Tab tab, Coordinate fpcCoordinate, Coordinate panelCoordinate)
-        {
-            MainAlgorithmTool algorithmTool = new MainAlgorithmTool();
-
-            foreach (var item in tab.AlignParamList)
-            {
-                if (item.Name.ToLower().Contains("fpc"))
-                {
-                    //var param = tab.GetAlignParam(alignName).DeepCopy();
-                    var calcFpcRegion = algorithmTool.CoordinateRectangle(item.CaliperParams.GetRegion() as CogRectangleAffine, fpcCoordinate);
-                    item.CaliperParams.SetRegion(calcFpcRegion);
-                }
-                else if (item.Name.ToLower().Contains("panel"))
-                {
-                    var calcPanelRegion = algorithmTool.CoordinateRectangle(item.CaliperParams.GetRegion() as CogRectangleAffine, panelCoordinate);
-                    item.CaliperParams.SetRegion(calcPanelRegion);
-                }
-            }
-        }
-
-        private void CoordinateAkkon(Tab tab, Coordinate panelCoordinate)
-        {
-            MainAlgorithmTool algorithmTool = new MainAlgorithmTool();
-
-            List<AkkonGroup> newAkkonGroup = new List<AkkonGroup>();
-
-            foreach (var group in tab.AkkonParam.GroupList)
-            {
-                List<AkkonROI> newRoiList = new List<AkkonROI>();
-
-                foreach (var lead in group.AkkonROIList)
-                {
-                    var affineRect = ConvertAkkonRoiToCogRectAffine(lead);
-                    var calcPanelRegion = algorithmTool.CoordinateRectangle(affineRect, panelCoordinate);
-                    var roi = ConvertCogRectAffineToAkkonRoi(calcPanelRegion);
-
-                    newRoiList.Add(roi);
-                }
-
-                newAkkonGroup.Add(group);
-            }
-
-            tab.AkkonParam.GroupList.Clear();
-            tab.AkkonParam.GroupList.AddRange(newAkkonGroup);
-        }
+        //    tab.AkkonParam.GroupList.Clear();
+        //    tab.AkkonParam.GroupList.AddRange(newAkkonGroup);
+        //}
 
         private CogRectangleAffine ConvertAkkonRoiToCogRectAffine(AkkonROI akkonRoi)
         {
