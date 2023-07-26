@@ -78,7 +78,7 @@ namespace ATT_UT_Remodeling
                 config.Add(areaCamera);
 
                 // LineScanCamera
-                var lineCamera = new CameraVirtual("LineCamera", 4640, 1024, ColorFormat.Gray, SensorType.Line);
+                var lineCamera = new CameraVirtual("LineCamera", 3072, 1024, ColorFormat.Gray, SensorType.Line);
                 lineCamera.PixelResolution_um = 3.5F;
                 lineCamera.LensScale = 10F;
                 config.Add(lineCamera);
@@ -114,7 +114,7 @@ namespace ATT_UT_Remodeling
                 config.Add(areaScan);
 
                 // LineScanCamera
-                var lineCamera = new CameraMil("LineCamera", 4640, 1024, ColorFormat.Gray, SensorType.Line);
+                var lineCamera = new CameraMil("LineCamera", 3072, 1024, ColorFormat.Gray, SensorType.Line);
                 lineCamera.MilSystemType = MilSystemType.Rapixo;
                 lineCamera.TriggerMode = TriggerMode.Hardware;
                 lineCamera.TriggerSource = (int)MilCxpTriggerSource.Cxp;

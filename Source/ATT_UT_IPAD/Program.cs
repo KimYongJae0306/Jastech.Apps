@@ -71,13 +71,13 @@ namespace ATT_UT_IPAD
             if (ConfigSet.Instance().Operation.VirtualMode)
             {
                 // Akkon LineScanCamera
-                var alignCamera = new CameraVirtual("AkkonCamera", 4640, 1024, ColorFormat.Gray, SensorType.Line);
+                var alignCamera = new CameraVirtual("AkkonCamera", 3072, 1024, ColorFormat.Gray, SensorType.Line);
                 alignCamera.PixelResolution_um = 3.5F;
                 alignCamera.LensScale = 10F;
                 config.Add(alignCamera);
 
                 // Align LineScanCamera
-                var akkonCamera = new CameraVirtual("AlignCamera", 4640, 1024, ColorFormat.Gray, SensorType.Line);
+                var akkonCamera = new CameraVirtual("AlignCamera", 3072, 1024, ColorFormat.Gray, SensorType.Line);
                 akkonCamera.PixelResolution_um = 3.5F;
                 akkonCamera.LensScale = 10F;
                 config.Add(akkonCamera);
@@ -110,7 +110,7 @@ namespace ATT_UT_IPAD
             else
             {
                 // Akkon LineScanCamera
-                var akkonCamera = new CameraMil("AkkonCamera", 4640, 1024, ColorFormat.Gray, SensorType.Line);
+                var akkonCamera = new CameraMil("AkkonCamera", 3072, 1024, ColorFormat.Gray, SensorType.Line);
                 akkonCamera.MilSystemType = MilSystemType.Rapixo;
                 akkonCamera.TriggerMode = TriggerMode.Hardware;
                 akkonCamera.TriggerSource = (int)MilCxpTriggerSource.Cxp;
@@ -124,7 +124,7 @@ namespace ATT_UT_IPAD
                 config.Add(akkonCamera);
 
                 // Align LineScanCamera
-                var alignCamera = new CameraMil("AlignCamera", 4640, 1024, ColorFormat.Gray, SensorType.Line);
+                var alignCamera = new CameraMil("AlignCamera", 3072, 1024, ColorFormat.Gray, SensorType.Line);
                 alignCamera.MilSystemType = MilSystemType.Rapixo;
                 alignCamera.TriggerMode = TriggerMode.Hardware;
                 alignCamera.TriggerSource = (int)MilCxpTriggerSource.Cxp;
