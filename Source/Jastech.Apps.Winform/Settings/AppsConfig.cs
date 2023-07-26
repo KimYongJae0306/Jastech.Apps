@@ -13,6 +13,9 @@ namespace Jastech.Apps.Winform.Settings
 
         #region 속성
         [JsonProperty]
+        public string ProgramType { get; set; }
+
+        [JsonProperty]
         public int UnitCount { get; set; } = 1;
 
         [JsonProperty]

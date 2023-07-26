@@ -120,7 +120,8 @@ namespace ATT_UT_IPAD
                 form.SetList(typeList);
                 form.ShowDialog();
 
-                ProgramType type = (ProgramType)Enum.Parse(typeof(ProgramType), form.SelectedProgramType);
+                AppsConfig.Instance().ProgramType = form.SelectedProgramType;
+                ProgramType type = (ProgramType)Enum.Parse(typeof(ProgramType), AppsConfig.Instance().ProgramType);
                 switch (type)
                 {
                     case ProgramType.ProgramType_1:
