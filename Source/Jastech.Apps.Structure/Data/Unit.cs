@@ -87,6 +87,7 @@ namespace Jastech.Apps.Structure.Data
         public void SetTab(Tab tab)
         {
             var removeTab = GetTab(tab.Index);
+            removeTab.Dispose();
             TabList.Remove(removeTab);
             TabList.Add(tab);
         }
