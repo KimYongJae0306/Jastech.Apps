@@ -10,9 +10,9 @@ using System.Windows.Forms;
 
 namespace Jastech.Apps.Winform.UI.Forms
 {
-    public partial class ProgramTypeSelectForm : Form
+    public partial class ProgramSelectForm : Form
     {
-        public ProgramTypeSelectForm()
+        public ProgramSelectForm()
         {
             InitializeComponent();
         }

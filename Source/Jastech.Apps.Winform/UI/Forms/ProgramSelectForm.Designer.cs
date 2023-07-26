@@ -1,6 +1,6 @@
 ﻿namespace Jastech.Apps.Winform.UI.Forms
 {
-    partial class ProgramTypeSelectForm
+    partial class ProgramSelectForm
     {
         /// <summary>
         /// Required designer variable.
