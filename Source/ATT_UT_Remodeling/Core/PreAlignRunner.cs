@@ -364,20 +364,16 @@ namespace ATT_UT_Remodeling
 
         private void SetPreAlignPatternResult()
         {
-<<<<<<< HEAD
-            if (inspResult.PreAlignResult.PreAlignMark.FoundedMark.Left.Judgement == Judgement.OK && inspResult.PreAlignResult.PreAlignMark.FoundedMark.Right.Judgement == Judgement.OK)
-=======
-            if (AppsPreAlignResult.Left.MatchResult.Judgement == Judgment.OK && AppsPreAlignResult.Right.MatchResult.Judgement == Judgment.OK)
-                AppsPreAlignResult.Judgement = Judgment.OK;
+            if (AppsPreAlignResult.Left.MatchResult.Judgement == Judgement.OK && AppsPreAlignResult.Right.MatchResult.Judgement == Judgement.OK)
+                AppsPreAlignResult.Judgement = Judgement.OK;
 
-            if (AppsPreAlignResult.Left.MatchResult.Judgement == Judgment.NG || AppsPreAlignResult.Right.MatchResult.Judgement == Judgment.NG)
-                AppsPreAlignResult.Judgement = Judgment.NG;
+            if (AppsPreAlignResult.Left.MatchResult.Judgement == Judgement.NG || AppsPreAlignResult.Right.MatchResult.Judgement == Judgement.NG)
+                AppsPreAlignResult.Judgement = Judgement.NG;
         }
 
         private bool RunPreAlign(AppsPreAlignResult preAlignResult)
         {
-            if (preAlignResult.Judgement == Judgment.OK)
->>>>>>> 620b94182f6f2942fbfd948c4611b0e8cb106fc8
+            if (preAlignResult.Judgement == Judgement.OK)
             {
                 PointF leftVisionCoordinates = preAlignResult.Left.MatchResult.MaxMatchPos.FoundPos;
                 PointF rightVisionCoordinates = preAlignResult.Right.MatchResult.MaxMatchPos.FoundPos;
@@ -401,17 +397,10 @@ namespace ATT_UT_Remodeling
 
                 AlgorithmTool.ExecuteAlignment(unit, realCoordinateList, calibrationStartPosition, ref preAlignResult);
 
-<<<<<<< HEAD
-                Judgement leftJudgement = AppsInspResult.PreAlignResult.PreAlignMark.FoundedMark.Left.Judgement;
-                Judgement rightJudgement = AppsInspResult.PreAlignResult.PreAlignMark.FoundedMark.Right.Judgement;
-                var leftScore = AppsInspResult.PreAlignResult.PreAlignMark.FoundedMark.Left.MaxMatchPos.Score;
-                var rightScore = AppsInspResult.PreAlignResult.PreAlignMark.FoundedMark.Right.MaxMatchPos.Score;
-=======
-                Judgment leftJudgement = AppsPreAlignResult.Left.MatchResult.Judgement;
-                Judgment rightJudgement = AppsPreAlignResult.Right.MatchResult.Judgement;
+                Judgement leftJudgement = AppsPreAlignResult.Left.MatchResult.Judgement;
+                Judgement rightJudgement = AppsPreAlignResult.Right.MatchResult.Judgement;
                 var leftScore = AppsPreAlignResult.Left.MatchResult.MaxMatchPos.Score;
                 var rightScore = AppsPreAlignResult.Right.MatchResult.MaxMatchPos.Score;
->>>>>>> 620b94182f6f2942fbfd948c4611b0e8cb106fc8
 
                 WriteLog($"OK Mark Search For PreAlign. (Left : {leftJudgement.ToString()}, Right : {rightJudgement.ToString()})", true);
                 WriteLog($"FoundedMark Score. (Left : {(leftScore * 100).ToString("F2")}, Right : {(rightScore * 100).ToString("F2")})", true);
@@ -419,17 +408,10 @@ namespace ATT_UT_Remodeling
             }
             else
             {
-<<<<<<< HEAD
-                Judgement leftJudgement = AppsInspResult.PreAlignResult.PreAlignMark.FoundedMark.Left.Judgement;
-                Judgement rightJudgement = AppsInspResult.PreAlignResult.PreAlignMark.FoundedMark.Right.Judgement;
-                var leftScore = AppsInspResult.PreAlignResult.PreAlignMark.FoundedMark.Left.MaxMatchPos.Score;
-                var rightScore = AppsInspResult.PreAlignResult.PreAlignMark.FoundedMark.Right.MaxMatchPos.Score;
-=======
-                Judgment leftJudgement = AppsPreAlignResult.Left.MatchResult.Judgement;
-                Judgment rightJudgement = AppsPreAlignResult.Right.MatchResult.Judgement;
+                Judgement leftJudgement = AppsPreAlignResult.Left.MatchResult.Judgement;
+                Judgement rightJudgement = AppsPreAlignResult.Right.MatchResult.Judgement;
                 var leftScore = AppsPreAlignResult.Left.MatchResult.MaxMatchPos.Score;
                 var rightScore = AppsPreAlignResult.Right.MatchResult.MaxMatchPos.Score;
->>>>>>> 620b94182f6f2942fbfd948c4611b0e8cb106fc8
 
                 WriteLog($"NG Mark Search For PreAlign. (Left : {leftJudgement.ToString()}, Right : {rightJudgement.ToString()})", true);
                 WriteLog($"FoundedMark Score. (Left : {(leftScore * 100).ToString("F2")}, Right : {(rightScore * 100).ToString("F2")})", true);

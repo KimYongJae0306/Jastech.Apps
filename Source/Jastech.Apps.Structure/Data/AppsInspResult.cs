@@ -110,31 +110,6 @@ namespace Jastech.Apps.Structure.Data
         }
     }
 
-<<<<<<< HEAD
-    public class PreAlignResult
-    {
-        public MarkResult PreAlignMark { get; set; } = new MarkResult();
-
-        public ICogImage CogImage { get; set; } = null;
-
-        public double OffsetX { get; private set; } = 0.0;
-
-        public double OffsetY { get; private set; } = 0.0;
-
-        public double OffsetT { get; private set; } = 0.0;
-
-        public Judgement Judgement { get; set; } = Judgement.OK;
-
-        public void SetPreAlignResult(double offsetX, double offsetY, double offsetT)
-        {
-            OffsetX = offsetX;
-            OffsetY = offsetY;
-            OffsetT = offsetT;
-        }
-    }
-
-=======
->>>>>>> 620b94182f6f2942fbfd948c4611b0e8cb106fc8
     public class TabMarkResult
     {
         public MarkResult FpcMark { get; set; } = null;
