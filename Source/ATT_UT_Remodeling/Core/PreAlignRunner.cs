@@ -26,6 +26,7 @@ using Jastech.Framework.Imaging.VisionPro.VisionAlgorithms.Results;
 using System.Drawing;
 using Jastech.Framework.Winform;
 using Jastech.Apps.Winform.Core;
+using Jastech.Framework.Algorithms.Akkon.Results;
 
 namespace ATT_UT_Remodeling
 {
@@ -38,7 +39,7 @@ namespace ATT_UT_Remodeling
 
         private SeqStep SeqStep { get; set; } = SeqStep.SEQ_IDLE;
 
-        private AppsInspResult AppsInspResult { get; set; } = null;
+        private AppsPreAlignResult AppsPreAlignResult { get; set; } = null;
         #endregion
 
         #region 속성
@@ -138,10 +139,6 @@ namespace ATT_UT_Remodeling
             if (unit == null)
                 return;
 
-            var tab = unit.GetTab(0);
-            if (tab == null)
-                return;
-
             var areaCamera = AreaCameraManager.Instance().GetAreaCamera("PreAlign");
             if (areaCamera == null)
                 return;
@@ -170,6 +167,8 @@ namespace ATT_UT_Remodeling
                     break;
 
                 case SeqStep.SEQ_READY:
+                    ClearResult();
+                    WriteLog("Clear Result.");
 
                     light.TurnOff();
                     WriteLog("Light Off.");
@@ -211,14 +210,19 @@ namespace ATT_UT_Remodeling
                         if(ConfigSet.Instance().Operation.VirtualMode == false)
                         {
                             var preAlignRightImage = GetAreaCameraImage(areaCamera.Camera) as CogImage8Grey;
-                            AppsInspResult.PreAlignResult.PreAlignMark.FoundedMark.Right = RunPreAlignMark(unit, preAlignRightImage, MarkDirection.Right);
+                            AppsPreAlignResult.Right.CogImage = preAlignRightImage;
+                            AppsPreAlignResult.Right.MatchResult = RunPreAlignMark(unit, preAlignRightImage, MarkDirection.Right);
                         }
                         else
                         {
-                            AppsInspResult.PreAlignResult.PreAlignMark.FoundedMark.Right = RunPreAlignMark(unit, VirtualRightImage, MarkDirection.Right);
+                            AppsPreAlignResult.Right.CogImage = VirtualRightImage;
+                            AppsPreAlignResult.Right.MatchResult = RunPreAlignMark(unit, VirtualRightImage, MarkDirection.Right);
                         }
-                  
+
                         WriteLog("Complete PreAlign Right Mark Search.", true);
+
+                        SystemManager.Instance().UpdateRightPreAlignResult(AppsPreAlignResult);
+                        WriteLog("Update Right PreAlign Image.", true);
 
                         // Set prealign motion position
                         SetMarkMotionPosition(unit, MarkDirection.Right);
@@ -243,13 +247,21 @@ namespace ATT_UT_Remodeling
                         if (ConfigSet.Instance().Operation.VirtualMode == false)
                         {
                             var preAlignLeftImage = GetAreaCameraImage(areaCamera.Camera);
-                            AppsInspResult.PreAlignResult.PreAlignMark.FoundedMark.Left = RunPreAlignMark(unit, preAlignLeftImage, MarkDirection.Left);
+                            AppsPreAlignResult.Left.CogImage = preAlignLeftImage;
+                            AppsPreAlignResult.Left.MatchResult = RunPreAlignMark(unit, preAlignLeftImage, MarkDirection.Left);
                         }
                         else
                         {
-                            AppsInspResult.PreAlignResult.PreAlignMark.FoundedMark.Left = RunPreAlignMark(unit, VirtualLeftImage, MarkDirection.Left);
+                            AppsPreAlignResult.Left.CogImage = VirtualLeftImage;
+                            AppsPreAlignResult.Left.MatchResult = RunPreAlignMark(unit, VirtualLeftImage, MarkDirection.Left);
                         }
                         WriteLog("Complete PreAlign Left Mark Search.", true);
+
+                        SystemManager.Instance().UpdateLeftPreAlignResult(AppsPreAlignResult);
+                        WriteLog("Update Left PreAlign Image.", true);
+
+                        // Set prealign pattern match result
+                        SetPreAlignPatternResult();
 
                         // Set prealign motion position
                         SetMarkMotionPosition(unit, MarkDirection.Left);
@@ -264,11 +276,11 @@ namespace ATT_UT_Remodeling
                     light.TurnOff();
                     WriteLog("PreAlign Light Off.",true);
 
-                    if (RunPreAlign(AppsInspResult))
+                    if (RunPreAlign(AppsPreAlignResult))
                     {
-                        var offsetX = AppsInspResult.PreAlignResult.OffsetX;
-                        var offsetY = AppsInspResult.PreAlignResult.OffsetY;
-                        var offsetT = AppsInspResult.PreAlignResult.OffsetT;
+                        var offsetX = AppsPreAlignResult.OffsetX;
+                        var offsetY = AppsPreAlignResult.OffsetY;
+                        var offsetT = AppsPreAlignResult.OffsetT;
 
                         PlcControlManager.Instance().WriteAlignData(offsetX, offsetY, offsetT);
                         WriteLog($"Write PreAlign Data.(OffsetX : {offsetX.ToString("F4")}, OffsetY : {offsetY.ToString("F4")}, OffsetT : {offsetT.ToString("F4")})", true);
@@ -292,35 +304,32 @@ namespace ATT_UT_Remodeling
                         PlcControlManager.Instance().WritePcStatus(PlcCommand.StartPreAlign, true);
                         WriteLog($"Send PreAlign NG Complete Signal.(Mark Fail) {(int)PlcCommand.StartPreAlign * -1}", true);
                     }
-                   
-                    SeqStep = SeqStep.SEQ_UI_RESULT_UPDATE;
-                    break;
-                case SeqStep.SEQ_UI_RESULT_UPDATE:
 
-                    SeqStep = SeqStep.SEQ_SAVE_RESULT_DATA;
-
+                    SystemManager.Instance().UpdatePreAlignResult(AppsPreAlignResult);
+                    SeqStep = SeqStep.SEQ_SAVE_IMAGE;
                     break;
+
                 case SeqStep.SEQ_SAVE_RESULT_DATA:
 
                     SeqStep = SeqStep.SEQ_SAVE_IMAGE;
-
                     break;
+
                 case SeqStep.SEQ_SAVE_IMAGE:
 
                     SeqStep = SeqStep.SEQ_DELETE_DATA;
-
                     break;
+
                 case SeqStep.SEQ_DELETE_DATA:
                     // 이거 필요한지 고민좀..
                     // 메인 검사 시퀀스에서 하니깐 필요 없을듯????
                     SeqStep = SeqStep.SEQ_END;
-
                     break;
+
                 case SeqStep.SEQ_END:
                     if (ConfigSet.Instance().Operation.VirtualMode)
                         AppsStatus.Instance().IsPreAlignRunnerFlagFromPlc = false;
 
-                    SeqStep = SeqStep.SEQ_READY;
+                    SeqStep = SeqStep.SEQ_END;
                     break;
 
                 case SeqStep.SEQ_ERROR:
@@ -344,12 +353,34 @@ namespace ATT_UT_Remodeling
             }
         }
 
-        private bool RunPreAlign(AppsInspResult inspResult)
+        public void ClearResult()
         {
+            if (AppsPreAlignResult == null)
+                AppsPreAlignResult = new AppsPreAlignResult();
+
+            if (AppsPreAlignResult != null)
+                AppsPreAlignResult.Dispose();
+        }
+
+        private void SetPreAlignPatternResult()
+        {
+<<<<<<< HEAD
             if (inspResult.PreAlignResult.PreAlignMark.FoundedMark.Left.Judgement == Judgement.OK && inspResult.PreAlignResult.PreAlignMark.FoundedMark.Right.Judgement == Judgement.OK)
+=======
+            if (AppsPreAlignResult.Left.MatchResult.Judgement == Judgment.OK && AppsPreAlignResult.Right.MatchResult.Judgement == Judgment.OK)
+                AppsPreAlignResult.Judgement = Judgment.OK;
+
+            if (AppsPreAlignResult.Left.MatchResult.Judgement == Judgment.NG || AppsPreAlignResult.Right.MatchResult.Judgement == Judgment.NG)
+                AppsPreAlignResult.Judgement = Judgment.NG;
+        }
+
+        private bool RunPreAlign(AppsPreAlignResult preAlignResult)
+        {
+            if (preAlignResult.Judgement == Judgment.OK)
+>>>>>>> 620b94182f6f2942fbfd948c4611b0e8cb106fc8
             {
-                PointF leftVisionCoordinates = inspResult.PreAlignResult.PreAlignMark.FoundedMark.Left.MaxMatchPos.FoundPos;
-                PointF rightVisionCoordinates = inspResult.PreAlignResult.PreAlignMark.FoundedMark.Right.MaxMatchPos.FoundPos;
+                PointF leftVisionCoordinates = preAlignResult.Left.MatchResult.MaxMatchPos.FoundPos;
+                PointF rightVisionCoordinates = preAlignResult.Right.MatchResult.MaxMatchPos.FoundPos;
 
                 List<PointF> realCoordinateList = new List<PointF>();
                 PointF leftRealCoordinates = CalibrationData.Instance().ConvertVisionToReal(leftVisionCoordinates);
@@ -358,29 +389,50 @@ namespace ATT_UT_Remodeling
                 realCoordinateList.Add(leftRealCoordinates);
                 realCoordinateList.Add(righttRealCoordinates);
 
-                var unit = TeachingData.Instance().GetUnit("Unit0");
+                var inspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
+                if (inspModel == null)
+                    return false;
+
+                var unit = inspModel.GetUnit(UnitName.Unit0);
+                if (unit == null)
+                    return false;
+
                 PointF calibrationStartPosition = CalibrationData.Instance().GetCalibrationStartPosition();
 
-                inspResult.PreAlignResult = AlgorithmTool.ExecuteAlignment(unit, realCoordinateList, calibrationStartPosition);
+                AlgorithmTool.ExecuteAlignment(unit, realCoordinateList, calibrationStartPosition, ref preAlignResult);
 
+<<<<<<< HEAD
                 Judgement leftJudgement = AppsInspResult.PreAlignResult.PreAlignMark.FoundedMark.Left.Judgement;
                 Judgement rightJudgement = AppsInspResult.PreAlignResult.PreAlignMark.FoundedMark.Right.Judgement;
                 var leftScore = AppsInspResult.PreAlignResult.PreAlignMark.FoundedMark.Left.MaxMatchPos.Score;
                 var rightScore = AppsInspResult.PreAlignResult.PreAlignMark.FoundedMark.Right.MaxMatchPos.Score;
+=======
+                Judgment leftJudgement = AppsPreAlignResult.Left.MatchResult.Judgement;
+                Judgment rightJudgement = AppsPreAlignResult.Right.MatchResult.Judgement;
+                var leftScore = AppsPreAlignResult.Left.MatchResult.MaxMatchPos.Score;
+                var rightScore = AppsPreAlignResult.Right.MatchResult.MaxMatchPos.Score;
+>>>>>>> 620b94182f6f2942fbfd948c4611b0e8cb106fc8
 
                 WriteLog($"OK Mark Search For PreAlign. (Left : {leftJudgement.ToString()}, Right : {rightJudgement.ToString()})", true);
-                WriteLog($"FoundedMark Score. (Left : {leftScore.ToString("F4")}, Right : {rightScore.ToString("F4")})", true);
+                WriteLog($"FoundedMark Score. (Left : {(leftScore * 100).ToString("F2")}, Right : {(rightScore * 100).ToString("F2")})", true);
                 return true;
             }
             else
             {
+<<<<<<< HEAD
                 Judgement leftJudgement = AppsInspResult.PreAlignResult.PreAlignMark.FoundedMark.Left.Judgement;
                 Judgement rightJudgement = AppsInspResult.PreAlignResult.PreAlignMark.FoundedMark.Right.Judgement;
                 var leftScore = AppsInspResult.PreAlignResult.PreAlignMark.FoundedMark.Left.MaxMatchPos.Score;
                 var rightScore = AppsInspResult.PreAlignResult.PreAlignMark.FoundedMark.Right.MaxMatchPos.Score;
+=======
+                Judgment leftJudgement = AppsPreAlignResult.Left.MatchResult.Judgement;
+                Judgment rightJudgement = AppsPreAlignResult.Right.MatchResult.Judgement;
+                var leftScore = AppsPreAlignResult.Left.MatchResult.MaxMatchPos.Score;
+                var rightScore = AppsPreAlignResult.Right.MatchResult.MaxMatchPos.Score;
+>>>>>>> 620b94182f6f2942fbfd948c4611b0e8cb106fc8
 
                 WriteLog($"NG Mark Search For PreAlign. (Left : {leftJudgement.ToString()}, Right : {rightJudgement.ToString()})", true);
-                WriteLog($"FoundedMark Score. (Left : {leftScore.ToString("F4")}, Right : {rightScore.ToString("F4")})", true);
+                WriteLog($"FoundedMark Score. (Left : {(leftScore * 100).ToString("F2")}, Right : {(rightScore * 100).ToString("F2")})", true);
                 return false;
             } 
         }
@@ -636,7 +688,6 @@ namespace ATT_UT_Remodeling
         SEQ_PREALIGN_R,
         SEQ_PREALIGN_L,
         SEQ_SEND_PREALIGN_DATA,
-        SEQ_UI_RESULT_UPDATE,
         SEQ_SAVE_RESULT_DATA,
         SEQ_SAVE_IMAGE,
         SEQ_DELETE_DATA,

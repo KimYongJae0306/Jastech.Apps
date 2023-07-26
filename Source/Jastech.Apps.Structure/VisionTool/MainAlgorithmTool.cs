@@ -14,8 +14,7 @@ namespace Jastech.Apps.Structure.VisionTool
 {
     public partial class MainAlgorithmTool : AlgorithmTool
     {
-        //public void ExecuteAlignment(Unit unit, List<PointF> realCoordinateList, PointF calibrationStartPosition, ref AppsInspResult inspResult)
-        public PreAlignResult ExecuteAlignment(Unit unit, List<PointF> realCoordinateList, PointF calibrationStartPosition)
+        public void ExecuteAlignment(Unit unit, List<PointF> realCoordinateList, PointF calibrationStartPosition, ref AppsPreAlignResult result)
         {
             double t1, t2, dt = 0.0;
             double cX = 0, cY = 0, pX = 0, pY = 0;
@@ -90,9 +89,7 @@ namespace Jastech.Apps.Structure.VisionTool
             //return false;
             //inspResult.PreAlignResult.SetPreAlignResult(offsetX, offsetY, offsetT);
 
-            PreAlignResult result = new PreAlignResult();
             result.SetPreAlignResult(offsetX, offsetY, offsetT);
-            return result;
         }
 
         //public void RunPreAlign(ref AppsInspResult inspResult)

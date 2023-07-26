@@ -271,6 +271,21 @@ namespace ATT_UT_Remodeling
             ICogImage cogImage = VisionProImageHelper.Load(filePath);
             _preAlignRunner.SetPreAlignRightImage(cogImage as CogImage8Grey);
         }
+
+        public void UpdateLeftPreAlignResult(AppsPreAlignResult result)
+        {
+            _mainForm.UpdateLeftPreAlignResult(result);
+        }
+
+        public void UpdateRightPreAlignResult(AppsPreAlignResult result)
+        {
+            _mainForm.UpdateRightPreAlignResult(result);
+        }
+
+        public void UpdatePreAlignResult(AppsPreAlignResult result)
+        {
+            _mainForm.UpdatePreAlignResult(result);
+        }
         #endregion
     }
 

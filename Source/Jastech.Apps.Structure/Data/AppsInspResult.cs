@@ -20,8 +20,6 @@ namespace Jastech.Apps.Structure.Data
 
         public string Cell_ID { get; set; } = "";
 
-        public PreAlignResult PreAlignResult { get; set; } = new PreAlignResult();
-
         public List<TabInspResult> TabResultList { get; set; } = new List<TabInspResult>();
 
         public void Dispose()
@@ -112,6 +110,7 @@ namespace Jastech.Apps.Structure.Data
         }
     }
 
+<<<<<<< HEAD
     public class PreAlignResult
     {
         public MarkResult PreAlignMark { get; set; } = new MarkResult();
@@ -134,6 +133,8 @@ namespace Jastech.Apps.Structure.Data
         }
     }
 
+=======
+>>>>>>> 620b94182f6f2942fbfd948c4611b0e8cb106fc8
     public class TabMarkResult
     {
         public MarkResult FpcMark { get; set; } = null;
@@ -154,6 +155,7 @@ namespace Jastech.Apps.Structure.Data
 
             return result;
         }
+
         public bool IsGood()
         {
             if (FpcMark == null || PanelMark == null)
@@ -168,7 +170,6 @@ namespace Jastech.Apps.Structure.Data
 
             return isGood;
         }
-
     }
 
     public class MarkResult

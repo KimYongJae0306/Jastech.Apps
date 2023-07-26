@@ -76,6 +76,23 @@ namespace ATT_UT_Remodeling.UI.Pages
             AlignViewerControl.UpdateMainResult(result);
         }
 
+        public void UpdateLeftPreAlignResult(AppsPreAlignResult result)
+        {
+            PreAlignDisplayControl.UpdateLeftDisplay(result.Left);
+            PreAlignDisplayControl.UpdateLeftResult(result.Left);
+        }
+
+        public void UpdateRightPreAlignResult(AppsPreAlignResult result)
+        {
+            PreAlignDisplayControl.UpdateRightDisplay(result.Right);
+            PreAlignDisplayControl.UpdateRightResult(result.Right);
+        }
+
+        public void UpdatePreAlignResult(AppsPreAlignResult result)
+        {
+            PreAlignDisplayControl.UpdatePreAlignResult(result);
+        }
+
         public void AddSystemLogMessage(string logMessage)
         {
             SystemLogControl.AddLogMessage(logMessage);
