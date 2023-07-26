@@ -594,7 +594,7 @@ namespace Jastech.Framework.Winform.Forms
 
             if (CurrentTab == null)
                 return;
-
+            var gg = TeachingData.Instance().UnitList;
             Tab tabOriginData = CurrentTab.DeepCopy();
 
             ICogImage cogImage = display.GetImage();
@@ -657,13 +657,18 @@ namespace Jastech.Framework.Winform.Forms
             panelCoordinate.SetTargetData(searchedLeftPanelPoint, searchedRightPanelPoint);
             panelCoordinate.ExecuteCoordinate();
 
+            TeachingData.Instance().GetUnit(UnitName.ToString()).SetTab(tabOriginData);
+
+            CurrentTab = tabOriginData;
             // Coordinate Align
-            CoordinateAlign(tabOriginData, fpcCoordinate, panelCoordinate);
-            AlignControl.SetParams(tabOriginData);
+            CoordinateAlign(CurrentTab, fpcCoordinate, panelCoordinate);
+           // AlignControl.SetParams(CurrentTab);
 
             // Coordinate Akkon
-            //CoordinateAkkon(tabOriginData, panelCoordinate);
-            //AkkonControl.SetParams(tabOriginData);
+            CoordinateAkkon(CurrentTab, panelCoordinate);
+            //AkkonControl.SetParams(CurrentTab);
+
+            UpdateDisplayImage(CurrentTab.Index);
         }
 
         private void CoordinateAlign(Tab tab, CoordinateTransform fpcCoordinate, CoordinateTransform panelCoordinate)

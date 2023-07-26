@@ -246,20 +246,35 @@ namespace ATT_UT_Remodeling.Core
             }
 
             akkonResult.AkkonCountJudgement = (leftCountNG || rightCountNG) == true ? AkkonJudgement.NG_Akkon : AkkonJudgement.OK;
-            akkonResult.LeftCount_Avg = (int)leftCountList.Average();
-            akkonResult.LeftCount_Min = (int)leftCountList.Min();
-            akkonResult.LeftCount_Max = (int)leftCountList.Max();
-            akkonResult.RightCount_Avg = (int)rightCountList.Average();
-            akkonResult.RightCount_Min = (int)rightCountList.Min();
-            akkonResult.RightCount_Max = (int)rightCountList.Max();
+            if(leftCountList.Count > 0)
+            {
+                akkonResult.LeftCount_Avg = (int)leftCountList.Average();
+                akkonResult.LeftCount_Min = (int)leftCountList.Min();
+                akkonResult.LeftCount_Max = (int)leftCountList.Max();
+            }
+
+            if(rightCountList.Count > 0)
+            {
+                akkonResult.RightCount_Avg = (int)rightCountList.Average();
+                akkonResult.RightCount_Min = (int)rightCountList.Min();
+                akkonResult.RightCount_Max = (int)rightCountList.Max();
+            }
 
             akkonResult.LengthJudgement = (leftLengthNG || rightLengthNG) == true ? Judgment.NG : Judgment.OK;
-            akkonResult.Length_Left_Avg_um = (float)leftLengthList.Average();
-            akkonResult.Length_Left_Min_um = (float)leftLengthList.Min();
-            akkonResult.Length_Left_Max_um = (float)leftLengthList.Max();
-            akkonResult.Length_Right_Avg_um = (float)rightLengthList.Average();
-            akkonResult.Length_Right_Min_um = (float)rightLengthList.Min();
-            akkonResult.Length_Right_Max_um = (float)rightLengthList.Max();
+
+            if(leftLengthList.Count > 0)
+            {
+                akkonResult.Length_Left_Avg_um = (float)leftLengthList.Average();
+                akkonResult.Length_Left_Min_um = (float)leftLengthList.Min();
+                akkonResult.Length_Left_Max_um = (float)leftLengthList.Max();
+            }
+           
+            if(rightLengthList.Count > 0)
+            {
+                akkonResult.Length_Right_Avg_um = (float)rightLengthList.Average();
+                akkonResult.Length_Right_Min_um = (float)rightLengthList.Min();
+                akkonResult.Length_Right_Max_um = (float)rightLengthList.Max();
+            }
 
             akkonResult.LeadResultList = leadResultList;
 

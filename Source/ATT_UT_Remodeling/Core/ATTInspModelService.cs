@@ -208,10 +208,6 @@ namespace ATT_UT_Remodeling.Core
                 // Calibration Mark Load
                 string calibrationPath = unitDir + @"\Calibration";
                 unit.GetCalibrationMark().InspParam.LoadTool(calibrationPath);
-                //unit.CalibrationParam.InspParam.LoadTool(calibrationPath);
-
-                //foreach (var item in unit.CalibrationParamList)
-                //    item.InspParam.LoadTool(calibrationPath);
 
                 //PreAlign Load
                 string preAlignPath = unitDir + @"\PreAlign";

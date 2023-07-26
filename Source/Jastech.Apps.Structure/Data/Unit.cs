@@ -84,6 +84,13 @@ namespace Jastech.Apps.Structure.Data
             return TabList;
         }
 
+        public void SetTab(Tab tab)
+        {
+            var removeTab = GetTab(tab.Index);
+            TabList.Remove(removeTab);
+            TabList.Add(tab);
+        }
+
         public void AddPreAlignParam(PreAlignParam preAlignParam)
         {
             if (PreAlign == null)
