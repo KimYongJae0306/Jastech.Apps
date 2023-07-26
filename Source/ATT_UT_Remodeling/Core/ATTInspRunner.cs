@@ -906,9 +906,9 @@ namespace ATT_UT_Remodeling.Core
                 AkkonROI akkonRoi = new AkkonROI();
 
                 akkonRoi.SetLeftTopPoint(newLeftTop);
-                akkonRoi.SetLeftTopPoint(newRightTop);
-                akkonRoi.SetLeftTopPoint(newLeftBottom);
-                akkonRoi.SetLeftTopPoint(newRightBottom);
+                akkonRoi.SetRightTopPoint(newRightTop);
+                akkonRoi.SetLeftBottomPoint(newLeftBottom);
+                akkonRoi.SetRightBottomPoint(newRightBottom);
 
                 newList.Add(akkonRoi);
             }
