@@ -181,7 +181,6 @@ namespace Jastech.Apps.Winform.UI.Controls
             if (groupNo < 0 || CurrentTab == null)
             {
                 lblGroupCountValue.Text = "0";
-                //DrawROI();
                 return;
             }
 

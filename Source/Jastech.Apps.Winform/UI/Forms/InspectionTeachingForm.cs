@@ -595,7 +595,7 @@ namespace Jastech.Framework.Winform.Forms
             if (CurrentTab == null)
                 return;
 
-            Tab tabOriginData = CurrentTab;
+            Tab tabOriginData = CurrentTab.DeepCopy();
 
             ICogImage cogImage = display.GetImage();
 
@@ -662,22 +662,18 @@ namespace Jastech.Framework.Winform.Forms
             AlignControl.SetParams(tabOriginData);
 
             // Coordinate Akkon
-            CoordinateAkkon(tabOriginData, panelCoordinate);
-            AkkonControl.SetParams(tabOriginData);
+            //CoordinateAkkon(tabOriginData, panelCoordinate);
+            //AkkonControl.SetParams(tabOriginData);
         }
 
         private void CoordinateAlign(Tab tab, CoordinateTransform fpcCoordinate, CoordinateTransform panelCoordinate)
         {
-            MainAlgorithmTool algorithmTool = new MainAlgorithmTool();
-
             var alignParamList = tab.AlignParamList.ToList();
 
             foreach (var item in alignParamList)
             {
                 if (item.Name.ToLower().Contains("fpc"))
                 {
-                    //var calcFpcRegion = algorithmTool.CoordinateRectangle(item.CaliperParams.GetRegion() as CogRectangleAffine, fpcCoordinate);
-                    //item.CaliperParams.SetRegion(calcFpcRegion);
                     var region = item.CaliperParams.GetRegion() as CogRectangleAffine;
                     PointF oldPoint = new PointF();
                     oldPoint.X = Convert.ToSingle(region.CenterX);
@@ -691,8 +687,6 @@ namespace Jastech.Framework.Winform.Forms
                 }
                 else if (item.Name.ToLower().Contains("panel"))
                 {
-                    //var calcPanelRegion = algorithmTool.CoordinateRectangle(item.CaliperParams.GetRegion() as CogRectangleAffine, panelCoordinate);
-                    //item.CaliperParams.SetRegion(calcPanelRegion);
                     var region = item.CaliperParams.GetRegion() as CogRectangleAffine;
                     PointF oldPoint = new PointF();
                     oldPoint.X = Convert.ToSingle(region.CenterX);
@@ -705,13 +699,14 @@ namespace Jastech.Framework.Winform.Forms
                     item.CaliperParams.SetRegion(region);
                 }
             }
+
+            tab.AlignParamList.Clear();
+            tab.AlignParamList.AddRange(alignParamList);
         }
 
 
         private void CoordinateAkkon(Tab tab, CoordinateTransform panelCoordinate)
         {
-            List<AkkonGroup> newAkkonGroup = new List<AkkonGroup>();
-
             foreach (var group in tab.AkkonParam.GroupList)
             {
                 List<AkkonROI> akkonList = new List<AkkonROI>();
