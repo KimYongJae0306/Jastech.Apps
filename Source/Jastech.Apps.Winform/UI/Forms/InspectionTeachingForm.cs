@@ -662,11 +662,9 @@ namespace Jastech.Framework.Winform.Forms
             CurrentTab = tabOriginData;
             // Coordinate Align
             CoordinateAlign(CurrentTab, fpcCoordinate, panelCoordinate);
-           // AlignControl.SetParams(CurrentTab);
 
             // Coordinate Akkon
             CoordinateAkkon(CurrentTab, panelCoordinate);
-            //AkkonControl.SetParams(CurrentTab);
 
             UpdateDisplayImage(CurrentTab.Index);
         }
