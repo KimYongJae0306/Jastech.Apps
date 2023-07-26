@@ -20,8 +20,6 @@ namespace Jastech.Apps.Structure.Data
 
         public string Cell_ID { get; set; } = "";
 
-        public PreAlignResult PreAlignResult { get; set; } = new PreAlignResult();
-
         public List<TabInspResult> TabResultList { get; set; } = new List<TabInspResult>();
 
         public void Dispose()
@@ -112,28 +110,6 @@ namespace Jastech.Apps.Structure.Data
         }
     }
 
-    public class PreAlignResult
-    {
-        public MarkResult PreAlignMark { get; set; } = new MarkResult();
-
-        public ICogImage CogImage { get; set; } = null;
-
-        public double OffsetX { get; private set; } = 0.0;
-
-        public double OffsetY { get; private set; } = 0.0;
-
-        public double OffsetT { get; private set; } = 0.0;
-
-        public Judgment Judgement { get; set; } = Judgment.OK;
-
-        public void SetPreAlignResult(double offsetX, double offsetY, double offsetT)
-        {
-            OffsetX = offsetX;
-            OffsetY = offsetY;
-            OffsetT = offsetT;
-        }
-    }
-
     public class TabMarkResult
     {
         public MarkResult FpcMark { get; set; } = null;
@@ -154,6 +130,7 @@ namespace Jastech.Apps.Structure.Data
 
             return result;
         }
+
         public bool IsGood()
         {
             if (FpcMark == null || PanelMark == null)
@@ -168,7 +145,6 @@ namespace Jastech.Apps.Structure.Data
 
             return isGood;
         }
-
     }
 
     public class MarkResult
