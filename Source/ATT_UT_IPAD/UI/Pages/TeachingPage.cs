@@ -42,7 +42,7 @@ namespace ATT_UT_IPAD.UI.Pages
         {
             OpticTeachingForm form = new OpticTeachingForm();
             form.LineCamera = LineCameraManager.Instance().GetAppsCamera("AkkonCamera");
-            form.LAFCtrl = LAFManager.Instance().GetLAFCtrl("AlignLaf");
+            form.LAFCtrl = LAFManager.Instance().GetLAFCtrl("AkkonLaf");
             form.UnitName = UnitName.Unit0;
             form.AxisNameZ = Jastech.Framework.Device.Motions.AxisName.Z1;
             form.AxisHandler = MotionManager.Instance().GetAxisHandler(AxisHandlerName.Handler0);
