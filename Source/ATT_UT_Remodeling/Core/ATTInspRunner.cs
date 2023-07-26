@@ -125,8 +125,8 @@ namespace ATT_UT_Remodeling.Core
             else
             {
                 // Set Coordinate Params
-                SetCoordinateData(fpcCoordinate, inspResult);
-                SetCoordinateData(panelCoordinate, inspResult);
+                SetFpcCoordinateData(fpcCoordinate, inspResult);
+                SetPanelCoordinateData(panelCoordinate, inspResult);
 
                 // Excuete Coordinate
                 fpcCoordinate.ExecuteCoordinate();
@@ -867,14 +867,24 @@ namespace ATT_UT_Remodeling.Core
             // AppsInspResult.TabResultList.Add(result);
         }
 
-        private void SetCoordinateData(CoordinateTransform coordinate, TabInspResult tabInspResult)
+        private void SetFpcCoordinateData(CoordinateTransform fpc, TabInspResult tabInspResult)
         {
             PointF teachedLeftPoint = tabInspResult.MarkResult.FpcMark.FoundedMark.Left.MaxMatchPos.ReferencePos;
             PointF teachedRightPoint = tabInspResult.MarkResult.FpcMark.FoundedMark.Right.MaxMatchPos.ReferencePos;
             PointF searchedLeftPoint = tabInspResult.MarkResult.FpcMark.FoundedMark.Left.MaxMatchPos.FoundPos;
             PointF searchedRightPoint = tabInspResult.MarkResult.FpcMark.FoundedMark.Right.MaxMatchPos.FoundPos;
-            coordinate.SetReferenceData(teachedLeftPoint, teachedRightPoint);
-            coordinate.SetTargetData(searchedLeftPoint, searchedRightPoint);
+            fpc.SetReferenceData(teachedLeftPoint, teachedRightPoint);
+            fpc.SetTargetData(searchedLeftPoint, searchedRightPoint);
+        }
+
+        private void SetPanelCoordinateData(CoordinateTransform panel, TabInspResult tabInspResult)
+        {
+            PointF teachedLeftPoint = tabInspResult.MarkResult.PanelMark.FoundedMark.Left.MaxMatchPos.ReferencePos;
+            PointF teachedRightPoint = tabInspResult.MarkResult.PanelMark.FoundedMark.Right.MaxMatchPos.ReferencePos;
+            PointF searchedLeftPoint = tabInspResult.MarkResult.PanelMark.FoundedMark.Left.MaxMatchPos.FoundPos;
+            PointF searchedRightPoint = tabInspResult.MarkResult.PanelMark.FoundedMark.Right.MaxMatchPos.FoundPos;
+            panel.SetReferenceData(teachedLeftPoint, teachedRightPoint);
+            panel.SetTargetData(searchedLeftPoint, searchedRightPoint);
         }
 
         private List<AkkonROI> RenewalAkkonRoi(List<AkkonROI> roiList, CoordinateTransform panelCoordinate)

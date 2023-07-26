@@ -144,7 +144,6 @@ namespace Jastech.Framework.Winform.Forms
             UpdateDisplayImage(tabNo);
         }
 
-    
         private void UpdateDisplay(ICogImage cogImage)
         {
             if (this.InvokeRequired)
@@ -357,7 +356,6 @@ namespace Jastech.Framework.Winform.Forms
 
                 var cogImage = VisionProImageHelper.ConvertImage(dataArray, image.Width, image.Height, format);
 
-
                 TeachingUIManager.Instance().SetOrginCogImageBuffer(cogImage);
                 TeachingUIManager.Instance().SetOriginMatImageBuffer(new Mat(dlg.FileName, ImreadModes.Grayscale));
                 Display.SetImage(TeachingUIManager.Instance().GetOriginCogImageBuffer(false));
@@ -481,7 +479,6 @@ namespace Jastech.Framework.Winform.Forms
                 Console.WriteLine(err.ToString());
                 throw;
             }
-         
         }
 
         private void cbxTabList_SelectedIndexChanged(object sender, EventArgs e)
@@ -594,7 +591,7 @@ namespace Jastech.Framework.Winform.Forms
 
             if (CurrentTab == null)
                 return;
-            var gg = TeachingData.Instance().UnitList;
+
             Tab tabOriginData = CurrentTab.DeepCopy();
 
             ICogImage cogImage = display.GetImage();
@@ -602,64 +599,56 @@ namespace Jastech.Framework.Winform.Forms
             if (cogImage == null)
                 return;
 
-            // 티칭한 Left Fpc 좌표
-            MarkParam teachedLeftFpcMarkParam = tabOriginData.MarkParamter.GetFPCMark(MarkDirection.Left, MarkName.Main, UseAlignMark);
-            CogTransform2DLinear teachedLeftFpc2D = teachedLeftFpcMarkParam.InspParam.GetOrigin();
-            PointF teachedLeftFpc = new PointF(Convert.ToSingle(teachedLeftFpc2D.TranslationX), Convert.ToSingle(teachedLeftFpc2D.TranslationY));
-
-            // 티칭한 Right FPC 좌표
-            MarkParam teachedRightFpcMarkparam = tabOriginData.MarkParamter.GetFPCMark(MarkDirection.Right, MarkName.Main, UseAlignMark);
-            CogTransform2DLinear teachedRightFpc2D = teachedRightFpcMarkparam.InspParam.GetOrigin();
-            PointF teachedRightFpc = new PointF(Convert.ToSingle(teachedRightFpc2D.TranslationX), Convert.ToSingle(teachedRightFpc2D.TranslationY));
-
-            // 찾은 Left FPC 좌표
-            VisionProPatternMatchingResult leftReferenceMarkResult = Algorithm.RunPatternMatch(cogImage, teachedLeftFpcMarkParam.InspParam);
-            if (leftReferenceMarkResult == null) 
+            // Left Fpc
+            MarkParam referenceLeftFpcMarkParam = tabOriginData.MarkParamter.GetFPCMark(MarkDirection.Left, MarkName.Main, UseAlignMark);
+            VisionProPatternMatchingResult leftFpcResult = Algorithm.RunPatternMatch(cogImage, referenceLeftFpcMarkParam.InspParam);
+            if (leftFpcResult == null) 
                 return;
-            PointF searchedLeftFpcPoint = leftReferenceMarkResult.MaxMatchPos.FoundPos;
 
-            // 찾은 Right FPC 좌표
-            VisionProPatternMatchingResult rightReferenceFpcMarkResult = Algorithm.RunPatternMatch(cogImage, teachedRightFpcMarkparam.InspParam);
-            if (rightReferenceFpcMarkResult == null)
+            PointF referenceLeftFpcPoint = leftFpcResult.MaxMatchPos.ReferencePos;
+            PointF searchedLeftFpcPoint = leftFpcResult.MaxMatchPos.FoundPos;
+
+            // Right Fpc
+            MarkParam referenceRightFpcMarkparam = tabOriginData.MarkParamter.GetFPCMark(MarkDirection.Right, MarkName.Main, UseAlignMark);
+            VisionProPatternMatchingResult rightFpcResult = Algorithm.RunPatternMatch(cogImage, referenceRightFpcMarkparam.InspParam);
+            if (rightFpcResult == null)
                 return;
-            PointF searchedRightFpcPoint = rightReferenceFpcMarkResult.MaxMatchPos.FoundPos;
 
-            // 티칭한 Left Panel 좌표
-            MarkParam teachedLeftPanelMarkParam = tabOriginData.MarkParamter.GetPanelMark(MarkDirection.Left, MarkName.Main, UseAlignMark);
-            CogTransform2DLinear teachedLeftPanel2D = teachedLeftPanelMarkParam.InspParam.GetOrigin();
-            PointF teachedLeftPanel = new PointF(Convert.ToSingle(teachedLeftPanel2D.TranslationX), Convert.ToSingle(teachedLeftPanel2D.TranslationY));
+            PointF referenceRightFpcPoint = rightFpcResult.MaxMatchPos.ReferencePos;
+            PointF searchedRightFpcPoint = rightFpcResult.MaxMatchPos.FoundPos;
 
-            // 티칭한 Right Panel 좌표
-            MarkParam teachedRightPanelMarkparam = tabOriginData.MarkParamter.GetPanelMark(MarkDirection.Right, MarkName.Main, UseAlignMark);
-            CogTransform2DLinear teachedRightPanel2D = teachedRightPanelMarkparam.InspParam.GetOrigin();
-            PointF teachedRightPanel = new PointF(Convert.ToSingle(teachedRightPanel2D.TranslationX), Convert.ToSingle(teachedRightPanel2D.TranslationY));
-
-            // 찾은 Left Panel 좌표
-            VisionProPatternMatchingResult leftReferencePanelMarkResult = Algorithm.RunPatternMatch(cogImage, teachedLeftPanelMarkParam.InspParam);
+            // Left Panel
+            MarkParam referenceLeftPanelMarkParam = tabOriginData.MarkParamter.GetPanelMark(MarkDirection.Left, MarkName.Main, UseAlignMark);
+            VisionProPatternMatchingResult leftReferencePanelMarkResult = Algorithm.RunPatternMatch(cogImage, referenceLeftPanelMarkParam.InspParam);
             if (leftReferencePanelMarkResult == null)
                 return;
+
+            PointF referenceLeftPanelPoint = leftReferencePanelMarkResult.MaxMatchPos.ReferencePos;
             PointF searchedLeftPanelPoint = leftReferencePanelMarkResult.MaxMatchPos.FoundPos;
 
             // 찾은 Right Panel 좌표
-            VisionProPatternMatchingResult rightReferencePanelMarkResult = Algorithm.RunPatternMatch(cogImage, teachedRightPanelMarkparam.InspParam);
+            MarkParam ReferenceRightPanelMarkparam = tabOriginData.MarkParamter.GetPanelMark(MarkDirection.Right, MarkName.Main, UseAlignMark);
+            VisionProPatternMatchingResult rightReferencePanelMarkResult = Algorithm.RunPatternMatch(cogImage, ReferenceRightPanelMarkparam.InspParam);
             if (rightReferencePanelMarkResult == null)
                 return;
+
+            PointF referenceRightPanelPoint = rightReferencePanelMarkResult.MaxMatchPos.ReferencePos;
             PointF searchedRightPanelPoint = rightReferencePanelMarkResult.MaxMatchPos.FoundPos;
 
             // Set Coordinage Params
             CoordinateTransform fpcCoordinate = new CoordinateTransform();
-            fpcCoordinate.SetReferenceData(teachedLeftFpc, teachedRightFpc);
+            fpcCoordinate.SetReferenceData(referenceLeftFpcPoint, referenceRightFpcPoint);
             fpcCoordinate.SetTargetData(searchedLeftFpcPoint, searchedRightFpcPoint);
             fpcCoordinate.ExecuteCoordinate();
 
             CoordinateTransform panelCoordinate = new CoordinateTransform();
-            panelCoordinate.SetReferenceData(teachedLeftPanel, teachedRightPanel);
+            panelCoordinate.SetReferenceData(referenceLeftPanelPoint, referenceRightPanelPoint);
             panelCoordinate.SetTargetData(searchedLeftPanelPoint, searchedRightPanelPoint);
             panelCoordinate.ExecuteCoordinate();
 
             TeachingData.Instance().GetUnit(UnitName.ToString()).SetTab(tabOriginData);
-
             CurrentTab = tabOriginData;
+
             // Coordinate Align
             CoordinateAlign(CurrentTab, fpcCoordinate, panelCoordinate);
 
@@ -707,7 +696,6 @@ namespace Jastech.Framework.Winform.Forms
             tab.AlignParamList.AddRange(alignParamList);
         }
 
-
         private void CoordinateAkkon(Tab tab, CoordinateTransform panelCoordinate)
         {
             foreach (var group in tab.AkkonParam.GroupList)
@@ -735,6 +723,7 @@ namespace Jastech.Framework.Winform.Forms
 
                     akkonList.Add(akkonRoi);
                 }
+
                 group.AkkonROIList.Clear();
                 group.AkkonROIList.AddRange(akkonList);
             }
