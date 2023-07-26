@@ -1,7 +1,10 @@
-﻿using Jastech.Apps.Winform;
+﻿using Emgu.CV.Ocl;
+using Jastech.Apps.Winform;
 using Jastech.Apps.Winform.Settings;
+using Jastech.Apps.Winform.UI.Forms;
 using Jastech.Framework.Comm;
 using Jastech.Framework.Config;
+using Jastech.Framework.Device;
 using Jastech.Framework.Device.Cameras;
 using Jastech.Framework.Device.Grabbers;
 using Jastech.Framework.Device.LAFCtrl;
@@ -15,23 +18,24 @@ using Jastech.Framework.Imaging;
 using Jastech.Framework.Matrox;
 using Jastech.Framework.Util.Helper;
 using System;
+using System.Collections.Generic;
 using System.Threading;
 using System.Windows.Forms;
 
 namespace ATT_UT_IPAD
 {
-    static class Program
+    internal static class Program
     {
         /// <summary>
         /// 해당 응용 프로그램의 주 진입점입니다.
         /// </summary>
         [STAThread]
-        static void Main()
+        private static void Main()
         {
             bool isRunning = false;
             Mutex mutex = new Mutex(true, "ATT", out isRunning);
 
-            if(isRunning)
+            if (isRunning)
             {
                 Application.EnableVisualStyles();
                 Application.SetCompatibleTextRenderingDefault(false);
@@ -109,72 +113,162 @@ namespace ATT_UT_IPAD
             }
             else
             {
-                // Akkon LineScanCamera
-                var akkonCamera = new CameraMil("AkkonCamera", 3072, 1024, ColorFormat.Gray, SensorType.Line);
-                akkonCamera.MilSystemType = MilSystemType.Rapixo;
-                akkonCamera.TriggerMode = TriggerMode.Hardware;
-                akkonCamera.TriggerSource = (int)MilCxpTriggerSource.Cxp;
-                akkonCamera.TriggerSignalType = MilTriggerSignalType.TL_Trigger;
-                akkonCamera.TriggerIoSourceType = MILIoSourceType.AUX_IO0;
-                akkonCamera.PixelResolution_um = 3.5F;
-                akkonCamera.LensScale = 10F;
-                akkonCamera.DigitizerNum = 0;
+                // Initialize Config by Program Types
+                string[] typeList = Enum.GetNames(typeof(ProgramType));
 
-                akkonCamera.DcfFile = CameraMil.GetDcfFile(CameraType.VT_6K3_5X_H160);
-                config.Add(akkonCamera);
+                ProgramSelectForm form = new ProgramSelectForm();
+                form.SetList(typeList);
+                form.ShowDialog();
 
-                // Align LineScanCamera
-                var alignCamera = new CameraMil("AlignCamera", 3072, 1024, ColorFormat.Gray, SensorType.Line);
-                alignCamera.MilSystemType = MilSystemType.Rapixo;
-                alignCamera.TriggerMode = TriggerMode.Hardware;
-                alignCamera.TriggerSource = (int)MilCxpTriggerSource.Cxp;
-                alignCamera.TriggerSignalType = MilTriggerSignalType.TL_Trigger;
-                alignCamera.TriggerIoSourceType = MILIoSourceType.AUX_IO0;
-                alignCamera.PixelResolution_um = 3.5F;
-                alignCamera.LensScale = 10F;
-                alignCamera.DigitizerNum = 2;
-
-                alignCamera.DcfFile = CameraMil.GetDcfFile(CameraType.VT_6K3_5X_H160);
-                config.Add(alignCamera);
-
-                // Motion
-                var motion = new ACSMotion("Motion", 2, ACSConnectType.Ethernet);
-                motion.IpAddress = "10.0.0.100";
-                config.Add(motion);
-
-                // Akkon LAF
-                var akkonLaf = new NuriOneLAFCtrl("AkkonLaf");
-                akkonLaf.SerialPortComm = new SerialPortComm("COM2", 9600);
-                config.Add(akkonLaf);
-
-                // Align LAF
-                var alignLaf = new NuriOneLAFCtrl("AlignLaf");
-                alignLaf.SerialPortComm = new SerialPortComm("COM3", 9600);
-                config.Add(alignLaf);
-
-                // Light1
-                var spotLight = new LvsLightCtrl("Spot", 6, new SerialPortComm("COM4", 19200), new LvsSerialParser()); // 12V
-                spotLight.ChannelNameMap["Ch.AlignBlue"] = 1; // channel 지정
-                spotLight.ChannelNameMap["Ch.AkkonRed"] = 2; // channel 지정
-                spotLight.ChannelNameMap["Ch.AkkonBlue"] = 3; // channel 지정
-                config.Add(spotLight);
-
-                // Light2
-                var ringLight = new LvsLightCtrl("Ring", 6, new SerialPortComm("COM5", 19200), new LvsSerialParser());  // 24V
-                ringLight.ChannelNameMap["Ch.RedRing1"] = 1; // channel 지정
-                ringLight.ChannelNameMap["Ch.RedRing2"] = 2; // channel 지정
-                config.Add(ringLight);
-
-                // PLC IPAD #2
-                AppsConfig.Instance().PlcAddressInfo.CommonStart = 124000;
-                AppsConfig.Instance().PlcAddressInfo.ResultStart = 125000;
-                AppsConfig.Instance().PlcAddressInfo.ResultStart_Align = 125220;
-                AppsConfig.Instance().PlcAddressInfo.ResultTabToTabInterval = 200;
-                AppsConfig.Instance().PlcAddressInfo.ResultStart_Akkon = 125230;
-
-                var plc = new MelsecPlc("PLC", new SocketComm("192.168.130.2", 9023, SocketCommType.Udp, 9033), new MelsecBinaryParser());
-                config.Add(plc);
+                ProgramType type = (ProgramType)Enum.Parse(typeof(ProgramType), form.SelectedProgramType);
+                switch (type)
+                {
+                    case ProgramType.ProgramType_1:
+                        CreateDeviceConfigType1(config);
+                        break;
+                    case ProgramType.ProgramType_2:
+                        CreateDeviceConfigType2(config);
+                        break;
+                }
             }
+        }
+
+        private static void CreateDeviceConfigType1(MachineConfig config)
+        {
+            // Akkon LineScanCamera
+            var akkonCamera = new CameraMil("AkkonCamera", 3072, 1024, ColorFormat.Gray, SensorType.Line);
+            akkonCamera.MilSystemType = MilSystemType.Rapixo;
+            akkonCamera.TriggerMode = TriggerMode.Hardware;
+            akkonCamera.TriggerSource = (int)MilCxpTriggerSource.Cxp;
+            akkonCamera.TriggerSignalType = MilTriggerSignalType.TL_Trigger;
+            akkonCamera.TriggerIoSourceType = MILIoSourceType.AUX_IO0;
+            akkonCamera.PixelResolution_um = 3.5F;
+            akkonCamera.LensScale = 10F;
+            akkonCamera.DigitizerNum = 0;
+
+            akkonCamera.DcfFile = CameraMil.GetDcfFile(CameraType.VT_6K3_5X_H160);
+            config.Add(akkonCamera);
+
+            // Align LineScanCamera
+            var alignCamera = new CameraMil("AlignCamera", 3072, 1024, ColorFormat.Gray, SensorType.Line);
+            alignCamera.MilSystemType = MilSystemType.Rapixo;
+            alignCamera.TriggerMode = TriggerMode.Hardware;
+            alignCamera.TriggerSource = (int)MilCxpTriggerSource.Cxp;
+            alignCamera.TriggerSignalType = MilTriggerSignalType.TL_Trigger;
+            alignCamera.TriggerIoSourceType = MILIoSourceType.AUX_IO0;
+            alignCamera.PixelResolution_um = 3.5F;
+            alignCamera.LensScale = 10F;
+            alignCamera.DigitizerNum = 2;
+
+            alignCamera.DcfFile = CameraMil.GetDcfFile(CameraType.VT_6K3_5X_H160);
+            config.Add(alignCamera);
+
+            // Motion
+            var motion = new ACSMotion("Motion", 2, ACSConnectType.Ethernet);
+            motion.IpAddress = "10.0.0.100";
+            config.Add(motion);
+
+            // Akkon LAF
+            var akkonLaf = new NuriOneLAFCtrl("AkkonLaf");
+            akkonLaf.SerialPortComm = new SerialPortComm("COM2", 9600);
+            config.Add(akkonLaf);
+
+            // Align LAF
+            var alignLaf = new NuriOneLAFCtrl("AlignLaf");
+            alignLaf.SerialPortComm = new SerialPortComm("COM3", 9600);
+            config.Add(alignLaf);
+
+            // Light1
+            var spotLight = new LvsLightCtrl("Spot", 6, new SerialPortComm("COM4", 19200), new LvsSerialParser()); // 12V
+            spotLight.ChannelNameMap["Ch.AlignBlue"] = 1; // channel 지정
+            spotLight.ChannelNameMap["Ch.AkkonRed"] = 2; // channel 지정
+            spotLight.ChannelNameMap["Ch.AkkonBlue"] = 3; // channel 지정
+            config.Add(spotLight);
+
+            // Light2
+            var ringLight = new LvsLightCtrl("Ring", 6, new SerialPortComm("COM5", 19200), new LvsSerialParser());  // 24V
+            ringLight.ChannelNameMap["Ch.RedRing1"] = 1; // channel 지정
+            ringLight.ChannelNameMap["Ch.RedRing2"] = 2; // channel 지정
+            config.Add(ringLight);
+
+            // PLC UT IPAD
+            AppsConfig.Instance().PlcAddressInfo.CommonStart = 120000;
+            AppsConfig.Instance().PlcAddressInfo.ResultStart = 121000;
+            AppsConfig.Instance().PlcAddressInfo.ResultStart_Align = 121220;
+            AppsConfig.Instance().PlcAddressInfo.ResultTabToTabInterval = 200;
+            AppsConfig.Instance().PlcAddressInfo.ResultStart_Akkon = 121230;
+
+            var plc = new MelsecPlc("PLC", new SocketComm("192.168.130.2", 9021, SocketCommType.Udp, 9031), new MelsecBinaryParser());
+            config.Add(plc);
+        }
+
+        private static void CreateDeviceConfigType2(MachineConfig config)
+        {
+            // Akkon LineScanCamera
+            var akkonCamera = new CameraMil("AkkonCamera", 3072, 1024, ColorFormat.Gray, SensorType.Line);
+            akkonCamera.MilSystemType = MilSystemType.Rapixo;
+            akkonCamera.TriggerMode = TriggerMode.Hardware;
+            akkonCamera.TriggerSource = (int)MilCxpTriggerSource.Cxp;
+            akkonCamera.TriggerSignalType = MilTriggerSignalType.TL_Trigger;
+            akkonCamera.TriggerIoSourceType = MILIoSourceType.AUX_IO0;
+            akkonCamera.PixelResolution_um = 3.5F;
+            akkonCamera.LensScale = 10F;
+            akkonCamera.DigitizerNum = 0;
+
+            akkonCamera.DcfFile = CameraMil.GetDcfFile(CameraType.VT_6K3_5X_H160);
+            config.Add(akkonCamera);
+
+            // Align LineScanCamera
+            var alignCamera = new CameraMil("AlignCamera", 3072, 1024, ColorFormat.Gray, SensorType.Line);
+            alignCamera.MilSystemType = MilSystemType.Rapixo;
+            alignCamera.TriggerMode = TriggerMode.Hardware;
+            alignCamera.TriggerSource = (int)MilCxpTriggerSource.Cxp;
+            alignCamera.TriggerSignalType = MilTriggerSignalType.TL_Trigger;
+            alignCamera.TriggerIoSourceType = MILIoSourceType.AUX_IO0;
+            alignCamera.PixelResolution_um = 3.5F;
+            alignCamera.LensScale = 10F;
+            alignCamera.DigitizerNum = 2;
+
+            alignCamera.DcfFile = CameraMil.GetDcfFile(CameraType.VT_6K3_5X_H160);
+            config.Add(alignCamera);
+
+            // Motion
+            var motion = new ACSMotion("Motion", 2, ACSConnectType.Ethernet);
+            motion.IpAddress = "10.0.0.100";
+            config.Add(motion);
+
+            // Akkon LAF
+            var akkonLaf = new NuriOneLAFCtrl("AkkonLaf");
+            akkonLaf.SerialPortComm = new SerialPortComm("COM2", 9600);
+            config.Add(akkonLaf);
+
+            // Align LAF
+            var alignLaf = new NuriOneLAFCtrl("AlignLaf");
+            alignLaf.SerialPortComm = new SerialPortComm("COM3", 9600);
+            config.Add(alignLaf);
+
+            // Light1
+            var spotLight = new LvsLightCtrl("Spot", 6, new SerialPortComm("COM4", 19200), new LvsSerialParser()); // 12V
+            spotLight.ChannelNameMap["Ch.AlignBlue"] = 1; // channel 지정
+            spotLight.ChannelNameMap["Ch.AkkonRed"] = 2; // channel 지정
+            spotLight.ChannelNameMap["Ch.AkkonBlue"] = 3; // channel 지정
+            config.Add(spotLight);
+
+            // Light2
+            var ringLight = new LvsLightCtrl("Ring", 6, new SerialPortComm("COM5", 19200), new LvsSerialParser());  // 24V
+            ringLight.ChannelNameMap["Ch.RedRing1"] = 1; // channel 지정
+            ringLight.ChannelNameMap["Ch.RedRing2"] = 2; // channel 지정
+            config.Add(ringLight);
+
+            // PLC UT IPAD
+            AppsConfig.Instance().PlcAddressInfo.CommonStart = 124000;
+            AppsConfig.Instance().PlcAddressInfo.ResultStart = 125000;
+            AppsConfig.Instance().PlcAddressInfo.ResultStart_Align = 125220;
+            AppsConfig.Instance().PlcAddressInfo.ResultTabToTabInterval = 200;
+            AppsConfig.Instance().PlcAddressInfo.ResultStart_Akkon = 125230;
+
+            var plc = new MelsecPlc("PLC", new SocketComm("192.168.130.2", 9023, SocketCommType.Udp, 9033), new MelsecBinaryParser());
+            config.Add(plc);
         }
 
         private static void ConfigSet_OperationConfigCreated(OperationConfig config)

@@ -94,7 +94,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\Jastech.Library\Cognex\9.6\Cognex.VisionPro.Controls.dll</HintPath>
     </Reference>
-    <Reference Include="Cognex.VisionPro.Core, Version=71.2.0.0, Culture=neutral, PublicKeyToken=ef0f902af9dee505, processorArchitecture=AMD64" />
+    <Reference Include="Cognex.VisionPro.Core, Version=71.2.0.0, Culture=neutral, PublicKeyToken=ef0f902af9dee505, processorArchitecture=AMD64">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Jastech.Library\Cognex\9.6\Cognex.VisionPro.Core.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
