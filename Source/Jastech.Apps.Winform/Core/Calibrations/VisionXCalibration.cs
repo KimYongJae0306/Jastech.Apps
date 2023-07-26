@@ -243,7 +243,7 @@ namespace Jastech.Apps.Winform.Core.Calibrations
 
                     double initX = AxisHandler.GetAxis(AxisName.X).GetActualPosition() / 1000.0;
                     double initY = PlcControlManager.Instance().GetReadPosition(AxisName.Y) / 1000.0;
-                    double initT =PlcControlManager.Instance().GetReadPosition(AxisName.T) / 1000.0;
+                    double initT = PlcControlManager.Instance().GetReadPosition(AxisName.T) / 1000.0;
 
                     SetInitPoistion(initX, initY, initT);
                     Logger.Write(LogType.Device, "Initialize position data.");

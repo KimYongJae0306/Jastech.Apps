@@ -201,7 +201,7 @@ namespace ATT_UT_Remodeling.Core
                 AppsInspResult.TabResultList.Add(inspResult);
 
                 sw.Stop();
-                string resultMessage = string.Format("Tab {0} Inspection Completed.({1}ms)", inspTab.TabScanBuffer.TabNo, sw.ElapsedMilliseconds);
+                string resultMessage = string.Format("Tab {0} Inspection Completed.({1}ms)", (inspTab.TabScanBuffer.TabNo + 1), sw.ElapsedMilliseconds);
                 Console.WriteLine(resultMessage);
                 WriteLog(resultMessage, true);
             }
@@ -528,6 +528,7 @@ namespace ATT_UT_Remodeling.Core
             {
                 case SeqStep.SEQ_IDLE:
                     break;
+
                 case SeqStep.SEQ_INIT:
                     lineCamera.IsLive = false;
                     lineCamera.StopGrab();
@@ -545,10 +546,10 @@ namespace ATT_UT_Remodeling.Core
 
                     InitializeBuffer();
                     WriteLog("Initialize Buffer.");
-
               
                     SeqStep = SeqStep.SEQ_WAITING;
                     break;
+
                 case SeqStep.SEQ_WAITING:
 
                     if (AppsStatus.Instance().IsInspRunnerFlagFromPlc == false)
@@ -562,6 +563,7 @@ namespace ATT_UT_Remodeling.Core
                     WriteLog("Cell ID : " + AppsInspResult.Cell_ID, true);
                     SeqStep = SeqStep.SEQ_MOVE_START_POS;
                     break;
+
                 case SeqStep.SEQ_MOVE_START_POS:
                     if (MoveTo(TeachingPosType.Stage1_Scan_Start, out errorMessage) == false)
                         break;
@@ -1109,7 +1111,7 @@ namespace ATT_UT_Remodeling.Core
                 {
                     inspResult.EndInspTime.ToString("HH:mm:ss"),                                    // Insp Time
                     inspResult.Cell_ID,                                                             // Panel ID
-                    tabNo.ToString(),                                                               // Tab
+                    (tabNo + 1).ToString(),                                                               // Tab
                     judgement.ToString(),                       // Judge
                     alignResult.LeftX.ResultValue_pixel.ToString("F4"),          // Left Align X
                     alignResult.LeftY.ResultValue_pixel.ToString("F4"),          // Left Align Y
@@ -1156,7 +1158,7 @@ namespace ATT_UT_Remodeling.Core
                 {
                     inspResult.EndInspTime.ToString("HH:mm:ss"),
                     inspResult.Cell_ID,
-                    tabNo.ToString(),
+                    (tabNo + 1).ToString(),
                     judgement.ToString(),
                     avgCount.ToString(),
                     avgLength.ToString("F4"),
@@ -1214,7 +1216,7 @@ namespace ATT_UT_Remodeling.Core
                     inspResult.EndInspTime.ToString("HH:mm:ss"),                                    // Insp Time
                     inspResult.Cell_ID,                                                             // Panel ID
                     1.ToString(),                                                                   // Stage
-                    tabNo.ToString(),                                                               // Tab
+                    (tabNo + 1).ToString(),                                                               // Tab
 
                     //inspResult.TabResultList[tabNo].MacronAkkonResult.AvgBlobCount.ToString(),
                     //inspResult.TabResultList[tabNo].MacronAkkonResult.AvgLength.ToString("F3"),
