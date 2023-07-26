@@ -358,6 +358,7 @@ namespace ATT_UT_Remodeling
             if (AppsPreAlignResult == null)
                 AppsPreAlignResult = new AppsPreAlignResult();
 
+
             if (AppsPreAlignResult != null)
                 AppsPreAlignResult.Dispose();
         }
