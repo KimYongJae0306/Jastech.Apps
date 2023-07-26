@@ -149,6 +149,12 @@
     <Compile Include="UI\Forms\InspectionTeachingForm.designer.cs">
       <DependentUpon>InspectionTeachingForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="UI\Forms\MachineSelectForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\Forms\MachineSelectForm.Designer.cs">
+      <DependentUpon>MachineSelectForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="UI\Forms\PreAlignTeachingForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -416,6 +422,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UI\Forms\LogForm.resx">
       <DependentUpon>LogForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\Forms\MachineSelectForm.resx">
+      <DependentUpon>MachineSelectForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\Forms\OperationSettingsForm.resx">
       <DependentUpon>OperationSettingsForm.cs</DependentUpon>

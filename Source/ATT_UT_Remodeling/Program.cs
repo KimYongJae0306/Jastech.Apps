@@ -1,6 +1,7 @@
 ﻿using Jastech.Apps.Winform;
 using Jastech.Apps.Winform.Core.Calibrations;
 using Jastech.Apps.Winform.Settings;
+using Jastech.Apps.Winform.UI.Forms;
 using Jastech.Framework.Comm;
 using Jastech.Framework.Config;
 using Jastech.Framework.Device.Cameras;
@@ -16,6 +17,7 @@ using Jastech.Framework.Imaging;
 using Jastech.Framework.Matrox;
 using Jastech.Framework.Util.Helper;
 using System;
+using System.Collections.Generic;
 using System.Threading;
 using System.Windows.Forms;
 
