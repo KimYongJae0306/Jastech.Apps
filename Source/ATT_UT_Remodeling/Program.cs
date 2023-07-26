@@ -1,6 +1,7 @@
 ﻿using Jastech.Apps.Winform;
 using Jastech.Apps.Winform.Core.Calibrations;
 using Jastech.Apps.Winform.Settings;
+using Jastech.Apps.Winform.UI.Forms;
 using Jastech.Framework.Comm;
 using Jastech.Framework.Config;
 using Jastech.Framework.Device.Cameras;
@@ -16,6 +17,7 @@ using Jastech.Framework.Imaging;
 using Jastech.Framework.Matrox;
 using Jastech.Framework.Util.Helper;
 using System;
+using System.Collections.Generic;
 using System.Threading;
 using System.Windows.Forms;
 
@@ -78,7 +80,7 @@ namespace ATT_UT_Remodeling
                 config.Add(areaCamera);
 
                 // LineScanCamera
-                var lineCamera = new CameraVirtual("LineCamera", 4640, 1024, ColorFormat.Gray, SensorType.Line);
+                var lineCamera = new CameraVirtual("LineCamera", 3072, 1024, ColorFormat.Gray, SensorType.Line);
                 lineCamera.PixelResolution_um = 3.5F;
                 lineCamera.LensScale = 10F;
                 config.Add(lineCamera);
@@ -114,7 +116,7 @@ namespace ATT_UT_Remodeling
                 config.Add(areaScan);
 
                 // LineScanCamera
-                var lineCamera = new CameraMil("LineCamera", 4640, 1024, ColorFormat.Gray, SensorType.Line);
+                var lineCamera = new CameraMil("LineCamera", 3072, 1024, ColorFormat.Gray, SensorType.Line);
                 lineCamera.MilSystemType = MilSystemType.Rapixo;
                 lineCamera.TriggerMode = TriggerMode.Hardware;
                 lineCamera.TriggerSource = (int)MilCxpTriggerSource.Cxp;

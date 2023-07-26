@@ -273,4 +273,9 @@ namespace ATT_UT_Remodeling
         }
         #endregion
     }
+
+    public enum ProgramType
+    {
+        ProgramType_1 = 0, // UT Remodeling PC #1 (출하일 : 2023.08 )
+    }
 }
