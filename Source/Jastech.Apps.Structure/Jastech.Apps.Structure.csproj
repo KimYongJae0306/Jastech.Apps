@@ -109,6 +109,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Data\AppsInspResult.cs" />
+    <Compile Include="Data\AppsPreAlignResult.cs" />
     <Compile Include="Data\LineCameraData.cs" />
     <Compile Include="Data\MaterialInfo.cs" />
     <Compile Include="Data\PreAlignData.cs" />

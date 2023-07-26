@@ -14,8 +14,7 @@ namespace Jastech.Apps.Structure.VisionTool
 {
     public partial class MainAlgorithmTool : AlgorithmTool
     {
-        //public void ExecuteAlignment(Unit unit, List<PointF> realCoordinateList, PointF calibrationStartPosition, ref AppsInspResult inspResult)
-        public PreAlignResult ExecuteAlignment(Unit unit, List<PointF> realCoordinateList, PointF calibrationStartPosition)
+        public void ExecuteAlignment(Unit unit, List<PointF> realCoordinateList, PointF calibrationStartPosition, ref AppsPreAlignResult result)
         {
             double t1, t2, dt = 0.0;
             double cX = 0, cY = 0, pX = 0, pY = 0;
@@ -90,9 +89,7 @@ namespace Jastech.Apps.Structure.VisionTool
             //return false;
             //inspResult.PreAlignResult.SetPreAlignResult(offsetX, offsetY, offsetT);
 
-            PreAlignResult result = new PreAlignResult();
             result.SetPreAlignResult(offsetX, offsetY, offsetT);
-            return result;
         }
 
         //public void RunPreAlign(ref AppsInspResult inspResult)
@@ -192,7 +189,7 @@ namespace Jastech.Apps.Structure.VisionTool
             List<float> panelCenterXList = new List<float>();
             List<float> fpcCenterXList = new List<float>();
 
-            if (result.Panel.Judgement == Judgment.OK && result.Fpc.Judgement == Judgment.OK)
+            if (result.Panel.Judgement == Judgement.OK && result.Fpc.Judgement == Judgement.OK)
             {
                 List<float> intervalValueX = new List<float>();
 
@@ -237,13 +234,13 @@ namespace Jastech.Apps.Structure.VisionTool
                 result.AvgCenterX = GetCenterX(panelCenterXList);
 
                 if (Math.Abs(result.ResultValue_pixel) <= judegementX)
-                    result.Judgement = Judgment.OK;
+                    result.Judgement = Judgement.OK;
                 else
-                    result.Judgement = Judgment.NG;
+                    result.Judgement = Judgement.NG;
             }
             else
             {
-                result.Judgement = Judgment.FAIL;
+                result.Judgement = Judgement.FAIL;
                 string message = string.Format(" Main CaliperX Search Fail. Panel({0}), FPC({1})", panelParam.Name, fpcParam.Name);
                 Logger.Debug(LogType.Inspection, message);
             }
@@ -277,7 +274,7 @@ namespace Jastech.Apps.Structure.VisionTool
             result.Panel = RunAlignY(cogImage, panelParam.CaliperParams);
             result.Fpc = RunAlignY(cogImage, fpcParam.CaliperParams);
 
-            if (result.Panel.Judgement == Judgment.OK && result.Fpc.Judgement == Judgment.OK)
+            if (result.Panel.Judgement == Judgement.OK && result.Fpc.Judgement == Judgement.OK)
             {
                 float panelY = result.Panel.CogAlignResult[0].MaxCaliperMatch.FoundPos.Y;
                 float fpcY = result.Fpc.CogAlignResult[0].MaxCaliperMatch.FoundPos.Y;
@@ -287,15 +284,15 @@ namespace Jastech.Apps.Structure.VisionTool
                 result.ResultValue_pixel = newY;
 
                 if (Math.Abs(result.ResultValue_pixel) <= judgementY)
-                    result.Judgement = Judgment.OK;
+                    result.Judgement = Judgement.OK;
                 else
-                    result.Judgement = Judgment.NG;
+                    result.Judgement = Judgement.NG;
             }
             else
             {
                 string message = string.Format("Main CaliperY Search Fail. Panel({0}), FPC({1})", panelParam.Name, fpcParam.Name);
                 Logger.Debug(LogType.Inspection, message);
-                result.Judgement = Judgment.FAIL;
+                result.Judgement = Judgement.FAIL;
             }
 
             return result;
@@ -318,14 +315,14 @@ namespace Jastech.Apps.Structure.VisionTool
                 if (rightResult == null)
                     continue;
 
-                if (leftResult.Judgement == Judgment.OK && rightResult.Judgement == Judgment.OK)
+                if (leftResult.Judgement == Judgement.OK && rightResult.Judgement == Judgement.OK)
                 {
                     MarkMatchingResult matchingResult = new MarkMatchingResult();
                     matchingResult.Left = leftResult;
                     matchingResult.Right = rightResult;
 
                     result.FoundedMark = matchingResult;
-                    result.Judgement = Judgment.OK;
+                    result.Judgement = Judgement.OK;
 
                     return result;
                 }
@@ -336,7 +333,7 @@ namespace Jastech.Apps.Structure.VisionTool
                     matchingResult.Right = rightResult;
 
                     result.FailMarks.Add(matchingResult);
-                    result.Judgement = Judgment.NG;
+                    result.Judgement = Judgement.NG;
                 }
             }
             return result;
@@ -359,14 +356,14 @@ namespace Jastech.Apps.Structure.VisionTool
                 if (rightResult == null)
                     continue;
 
-                if (leftResult.Judgement == Judgment.OK && rightResult.Judgement == Judgment.OK)
+                if (leftResult.Judgement == Judgement.OK && rightResult.Judgement == Judgement.OK)
                 {
                     MarkMatchingResult matchingResult = new MarkMatchingResult();
                     matchingResult.Left = leftResult;
                     matchingResult.Right = rightResult;
 
                     result.FoundedMark = matchingResult;
-                    result.Judgement = Judgment.OK;
+                    result.Judgement = Judgement.OK;
                     return result;
                 }
                 else
@@ -376,7 +373,7 @@ namespace Jastech.Apps.Structure.VisionTool
                     matchingResult.Right = rightResult;
 
                     result.FailMarks.Add(matchingResult);
-                    result.Judgement = Judgment.NG;
+                    result.Judgement = Judgement.NG;
                 }
             }
             return result;

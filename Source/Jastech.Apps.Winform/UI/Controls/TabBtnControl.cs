@@ -48,9 +48,9 @@ namespace Jastech.Apps.Winform.UI.Controls
             UpdateData();
         }
 
-        public void SetResult(Judgment judgement)
+        public void SetResult(Judgement judgement)
         {
-            if (judgement == Judgment.OK)
+            if (judgement == Judgement.OK)
                 btnTab.BackColor = Color.FromArgb(52, 52, 52);
             else
                 btnTab.BackColor = Color.Red;

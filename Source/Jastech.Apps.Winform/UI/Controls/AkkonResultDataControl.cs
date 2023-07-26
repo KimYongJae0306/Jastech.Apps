@@ -48,8 +48,8 @@ namespace Jastech.Apps.Winform.UI.Controls
                     string panelID = item.PanelID.ToString();
                     string tabNumber = item.TabNo.ToString();
                     string judge = item.Judgement.ToString();
-                    string count = item.AvgBlobCount.ToString();
-                    string length = item.AvgLength.ToString("F2");
+                    string count = item.MinBlobCount.ToString();
+                    string length = item.MinLength.ToString("F2");
 
                     string[] row = { inspectionTime, panelID, tabNumber, judge, count, length };
                     dgvAkkonHistory.Rows.Add(row);

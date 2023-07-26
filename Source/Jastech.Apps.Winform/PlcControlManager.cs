@@ -475,7 +475,7 @@ namespace Jastech.Apps.Winform
         {
             int judgement = 1; // 1 : OK, 2: NG
 
-            if(alignResult.IsAlignGood() != Judgment.OK)
+            if(alignResult.IsAlignGood() == false)
                 judgement = 2;
 
             double calcLeftAlignX_mm = (alignResult.LeftX.ResultValue_pixel * resolution) * 1000;
@@ -525,13 +525,13 @@ namespace Jastech.Apps.Winform
             if (DeviceManager.Instance().PlcHandler.Count > 0 && map != null)
             {
                 int countJudgement = 1; // 1 : OK, 2: NG
-                if (akkonResult.AkkonCountJudgement == AkkonJudgement.OK)
+                if (akkonResult.CountJudgement == Judgement.OK)
                     countJudgement = 1;
                 else
                     countJudgement = 2;
 
                 int lengthJudgement = 1;
-                if (akkonResult.LengthJudgement == Judgment.OK)
+                if (akkonResult.LengthJudgement == Judgement.OK)
                     lengthJudgement = 1;
                 else
                     lengthJudgement = 2;

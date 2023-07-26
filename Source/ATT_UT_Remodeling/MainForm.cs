@@ -237,6 +237,21 @@ namespace ATT_UT_Remodeling
                 MainPageControl.UpdateButton();
         }
 
+        public void UpdateLeftPreAlignResult(AppsPreAlignResult result)
+        {
+            MainPageControl.UpdateLeftPreAlignResult(result);
+        }
+
+        public void UpdateRightPreAlignResult(AppsPreAlignResult result)
+        {
+            MainPageControl.UpdateRightPreAlignResult(result);
+        }
+
+        public void UpdatePreAlignResult(AppsPreAlignResult result)
+        {
+            MainPageControl.UpdatePreAlignResult(result);
+        }
+
         public void UpdateMainResult(AppsInspResult result)
         {
             MainPageControl.UpdateMainResult(result);
@@ -459,7 +474,6 @@ namespace ATT_UT_Remodeling
                     return null;
             }
         }
-
         #endregion
     }
 }
