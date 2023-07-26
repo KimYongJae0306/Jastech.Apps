@@ -125,10 +125,10 @@ namespace Jastech.Apps.Winform.Core.Calibrations
                 datas.Add(index.ToString());
                 datas.Add(matrixPointList[index].PixelX.ToString("F1"));
                 datas.Add(matrixPointList[index].PixelY.ToString("F1"));
-                datas.Add(matrixPointList[index].MotionX.ToString("F3"));
-                datas.Add(matrixPointList[index].MotionY.ToString("F3"));
-                datas.Add(matrixPointList[index].MotionT.ToString("F3"));
-                datas.Add(matrixPointList[index].Score.ToString("F3"));
+                datas.Add(matrixPointList[index].MotionX.ToString("F4"));
+                datas.Add(matrixPointList[index].MotionY.ToString("F4"));
+                datas.Add(matrixPointList[index].MotionT.ToString("F4"));
+                datas.Add(matrixPointList[index].Score.ToString("F4"));
                 datas.Add(CalibrationMatrix[index].ToString("F6"));
 
                 dataList.Add(datas);

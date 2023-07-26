@@ -2,6 +2,7 @@
 using Jastech.Apps.Structure;
 using Jastech.Apps.Structure.Data;
 using Jastech.Apps.Winform.UI.Controls;
+using Jastech.Framework.Imaging.Result;
 using Jastech.Framework.Winform.VisionPro.Controls;
 using System;
 using System.Collections.Generic;
@@ -136,6 +137,7 @@ namespace ATT_UT_IPAD.UI.Controls
             for (int i = 0; i < inspResult.TabResultList.Count(); i++)
             {
                 int tabNo = inspResult.TabResultList[i].TabNo;
+                var result = inspResult.TabResultList[i];
 
                 if (InspResultDic.ContainsKey(tabNo))
                 {
@@ -143,13 +145,17 @@ namespace ATT_UT_IPAD.UI.Controls
                     InspResultDic.Remove(tabNo);
                 }
 
-                InspResultDic.Add(tabNo, inspResult.TabResultList[i]);
+                InspResultDic.Add(tabNo, result);
 
                 if (CurrentTabNo == tabNo)
                 {
-                    UpdateLeftAlignResult(inspResult.TabResultList[i]);
-                    UpdateRightAlignResult(inspResult.TabResultList[i]);
+                    UpdateLeftAlignResult(result);
+                    UpdateRightAlignResult(result);
                 }
+                if(result.AlignResult.IsAlignGood())
+                    TabBtnControlList[tabNo].BackColor = Color.MediumSeaGreen;
+                else
+                    TabBtnControlList[tabNo].BackColor = Color.Red;
             }
         }
 

@@ -1,6 +1,8 @@
 ﻿using Jastech.Apps.Structure;
 using Jastech.Apps.Structure.Data;
 using Jastech.Apps.Winform.UI.Controls;
+using Jastech.Framework.Algorithms.Akkon.Results;
+using Jastech.Framework.Imaging.Result;
 using Jastech.Framework.Winform.VisionPro.Controls;
 using System;
 using System.Collections.Generic;
@@ -26,7 +28,7 @@ namespace ATT_UT_IPAD.UI.Controls
 
         public Dictionary<int, TabInspResult> InspResultDic { get; set; } = new Dictionary<int, TabInspResult>();
 
-        public CogInspDisplayControl InspDisplayControl { get; private set; } = new CogInspDisplayControl() { Dock = DockStyle.Fill };
+        public CogInspDisplayControl InspDisplayControl { get; private set; } = null; 
 
         public int CurrentTabNo { get; set; } = -1;
 
@@ -57,6 +59,8 @@ namespace ATT_UT_IPAD.UI.Controls
 
         private void AddControl()
         {
+            InspDisplayControl = new CogInspDisplayControl();
+            InspDisplayControl.Dock = DockStyle.Fill;
             pnlInspDisplay.Controls.Add(InspDisplayControl);
         }
 
@@ -170,6 +174,14 @@ namespace ATT_UT_IPAD.UI.Controls
                     else
                         InspDisplayControl.SetImage(inspResult.TabResultList[i].AkkonInspImage);
                 }
+
+                var countJudgement = inspResult.TabResultList[i].AkkonResult.CountJudgement;
+                var lengthJudgement = inspResult.TabResultList[i].AkkonResult.LengthJudgement;
+
+                if (countJudgement == Judgement.OK && lengthJudgement == Judgement.OK)
+                    TabBtnControlList[tabNo].BackColor = Color.MediumSeaGreen;
+                else
+                    TabBtnControlList[tabNo].BackColor = Color.Red;
             }
         }
 

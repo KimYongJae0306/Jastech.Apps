@@ -346,7 +346,7 @@ namespace ATT_UT_Remodeling
 
         private bool RunPreAlign(AppsInspResult inspResult)
         {
-            if (inspResult.PreAlignResult.PreAlignMark.FoundedMark.Left.Judgement == Judgment.OK && inspResult.PreAlignResult.PreAlignMark.FoundedMark.Right.Judgement == Judgment.OK)
+            if (inspResult.PreAlignResult.PreAlignMark.FoundedMark.Left.Judgement == Judgement.OK && inspResult.PreAlignResult.PreAlignMark.FoundedMark.Right.Judgement == Judgement.OK)
             {
                 PointF leftVisionCoordinates = inspResult.PreAlignResult.PreAlignMark.FoundedMark.Left.MaxMatchPos.FoundPos;
                 PointF rightVisionCoordinates = inspResult.PreAlignResult.PreAlignMark.FoundedMark.Right.MaxMatchPos.FoundPos;
@@ -363,8 +363,8 @@ namespace ATT_UT_Remodeling
 
                 inspResult.PreAlignResult = AlgorithmTool.ExecuteAlignment(unit, realCoordinateList, calibrationStartPosition);
 
-                Judgment leftJudgement = AppsInspResult.PreAlignResult.PreAlignMark.FoundedMark.Left.Judgement;
-                Judgment rightJudgement = AppsInspResult.PreAlignResult.PreAlignMark.FoundedMark.Right.Judgement;
+                Judgement leftJudgement = AppsInspResult.PreAlignResult.PreAlignMark.FoundedMark.Left.Judgement;
+                Judgement rightJudgement = AppsInspResult.PreAlignResult.PreAlignMark.FoundedMark.Right.Judgement;
                 var leftScore = AppsInspResult.PreAlignResult.PreAlignMark.FoundedMark.Left.MaxMatchPos.Score;
                 var rightScore = AppsInspResult.PreAlignResult.PreAlignMark.FoundedMark.Right.MaxMatchPos.Score;
 
@@ -374,8 +374,8 @@ namespace ATT_UT_Remodeling
             }
             else
             {
-                Judgment leftJudgement = AppsInspResult.PreAlignResult.PreAlignMark.FoundedMark.Left.Judgement;
-                Judgment rightJudgement = AppsInspResult.PreAlignResult.PreAlignMark.FoundedMark.Right.Judgement;
+                Judgement leftJudgement = AppsInspResult.PreAlignResult.PreAlignMark.FoundedMark.Left.Judgement;
+                Judgement rightJudgement = AppsInspResult.PreAlignResult.PreAlignMark.FoundedMark.Right.Judgement;
                 var leftScore = AppsInspResult.PreAlignResult.PreAlignMark.FoundedMark.Left.MaxMatchPos.Score;
                 var rightScore = AppsInspResult.PreAlignResult.PreAlignMark.FoundedMark.Right.MaxMatchPos.Score;
 
@@ -444,7 +444,7 @@ namespace ATT_UT_Remodeling
 
             foreach (var result in insTabResultList)
             {
-                if (result.Judgement == Judgment.OK)
+                if (result.Judgement == Judgement.OK)
                 {
                     if (ConfigSet.Instance().Operation.SaveImageOK)
                     {
@@ -495,12 +495,12 @@ namespace ATT_UT_Remodeling
                     inspResult.EndInspTime.ToString("HH:mm:ss"),                                    // Insp Time
                     inspResult.Cell_ID,                                                             // Panel ID
                     tabNo.ToString(),                                                               // Tab
-                    inspResult.TabResultList[tabNo].AlignResult.Judgment.ToString(),                       // Judge
-                    inspResult.TabResultList[tabNo].AlignResult.LeftX.ResultValue_pixel.ToString("F3"),          // Left Align X
-                    inspResult.TabResultList[tabNo].AlignResult.LeftY.ResultValue_pixel.ToString("F3"),          // Left Align Y
-                    inspResult.TabResultList[tabNo].AlignResult.CenterX.ToString("F3"),                         // Center Align X
-                    inspResult.TabResultList[tabNo].AlignResult.RightX.ResultValue_pixel.ToString("F3"),         // Right Align X
-                    inspResult.TabResultList[tabNo].AlignResult.RightY.ResultValue_pixel.ToString("F3"),         // Right Align Y
+                    //inspResult.TabResultList[tabNo].AlignResult.Judgment.ToString(),                       // Judge
+                    //inspResult.TabResultList[tabNo].AlignResult.LeftX.ResultValue_pixel.ToString("F3"),          // Left Align X
+                    //inspResult.TabResultList[tabNo].AlignResult.LeftY.ResultValue_pixel.ToString("F3"),          // Left Align Y
+                    //inspResult.TabResultList[tabNo].AlignResult.CenterX.ToString("F3"),                         // Center Align X
+                    //inspResult.TabResultList[tabNo].AlignResult.RightX.ResultValue_pixel.ToString("F3"),         // Right Align X
+                    //inspResult.TabResultList[tabNo].AlignResult.RightY.ResultValue_pixel.ToString("F3"),         // Right Align Y
                 };
 
                 dataList.Add(tabData);

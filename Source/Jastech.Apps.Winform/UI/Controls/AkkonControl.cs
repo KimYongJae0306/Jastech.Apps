@@ -1032,6 +1032,8 @@ namespace Jastech.Apps.Winform.UI.Controls
             int groupIndex = cbxGroupNumber.SelectedIndex;
             if (groupIndex < 0)
                 return;
+            if (CurrentTab.AkkonParam.GroupList.Count() <= 0)
+                return;
 
             var group = CurrentTab.AkkonParam.GroupList[groupIndex];
             group.AkkonROIList.Clear();

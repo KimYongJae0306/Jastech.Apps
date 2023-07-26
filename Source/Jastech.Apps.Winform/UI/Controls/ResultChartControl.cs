@@ -26,10 +26,6 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         public Series AkkonSeriesLength { get; private set; } = null;
 
-        public Series AkkonSeriesStrength { get; private set; } = null;
-
-        public Series AkkonSeriesStd { get; private set; } = null;
-
         private List<Series> AkkonSeriesList { get; set; } = new List<Series>();
 
         public Series AlignSeriesLx { get; private set; } = null;
@@ -82,22 +78,8 @@ namespace Jastech.Apps.Winform.UI.Controls
                 AkkonSeriesLength.Color = Color.FromArgb(142, 89, 159);
                 AkkonSeriesLength.Name = "Length";
 
-                AkkonSeriesStrength = new Series();
-                AkkonSeriesStrength = chtData.Series.Add("Strength");
-                AkkonSeriesStrength.ChartType = SeriesChartType.Line;
-                AkkonSeriesStrength.Color = Color.Green;
-                AkkonSeriesStrength.Name = "Strength";
-
-                AkkonSeriesStd = new Series();
-                AkkonSeriesStd = chtData.Series.Add("STD");
-                AkkonSeriesStd.ChartType = SeriesChartType.Line;
-                AkkonSeriesStd.Color = Color.Yellow;
-                AkkonSeriesStd.Name = "STD";
-
                 AkkonSeriesList.Add(AkkonSeriesCount);
                 AkkonSeriesList.Add(AkkonSeriesLength);
-                AkkonSeriesList.Add(AkkonSeriesStrength);
-                AkkonSeriesList.Add(AkkonSeriesStd);
             }
             else
             {
@@ -204,8 +186,8 @@ namespace Jastech.Apps.Winform.UI.Controls
                 {
                     var tabData = item.AkkonDailyInfoList.Where(x => x.TabNo == tabNo).First();
 
-                    AkkonSeriesCount.Points.Add(tabData.AvgBlobCount);
-                    AkkonSeriesLength.Points.Add(tabData.AvgLength);
+                    AkkonSeriesCount.Points.Add(tabData.MinBlobCount);
+                    AkkonSeriesLength.Points.Add(tabData.MinLength);
                 }
             }
         }
@@ -273,8 +255,6 @@ namespace Jastech.Apps.Winform.UI.Controls
             {
                 AkkonSeriesCount.Points.DataBind(dt.AsEnumerable(), "Time", "Count", "");
                 AkkonSeriesLength.Points.DataBind(dt.AsEnumerable(), "Time", "Length", "");
-                AkkonSeriesStrength.Points.DataBind(dt.AsEnumerable(), "Time", "Strength", "");
-                AkkonSeriesStd.Points.DataBind(dt.AsEnumerable(), "Time", "STD", "");
             }
             else
             {

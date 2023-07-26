@@ -284,7 +284,7 @@ namespace Jastech.Apps.Winform.UI.Controls
             else
                 result = AlgorithmTool.RunAlignY(copyCogImage, inspParam);
 
-            if (result.Judgement == Judgment.FAIL)
+            if (result.Judgement == Judgement.FAIL)
             {
                 MessageConfirmForm form = new MessageConfirmForm();
                 form.Message = "Caliper is Not Found.";
@@ -491,7 +491,7 @@ namespace Jastech.Apps.Winform.UI.Controls
             double value_um = alignResultLeftX.ResultValue_pixel / Resolution_um;
 
             lblLeftX_Judgement.Text = alignResultLeftX.Judgement.ToString();
-            if (alignResultLeftX.Judgement != Judgment.FAIL)
+            if (alignResultLeftX.Judgement != Judgement.FAIL)
             {
                 lblLeftX_Value.Text = value_um.ToString("F2");
             }
@@ -513,7 +513,7 @@ namespace Jastech.Apps.Winform.UI.Controls
             lblLeftY_Judgement.Text = alignResultLeftY.Judgement.ToString();
             double value_um = alignResultLeftY.ResultValue_pixel / Resolution_um;
 
-            if (alignResultLeftY.Judgement != Judgment.FAIL)
+            if (alignResultLeftY.Judgement != Judgement.FAIL)
             {
                 lblLeftY_Value.Text = value_um.ToString("F2");
             }
@@ -534,7 +534,7 @@ namespace Jastech.Apps.Winform.UI.Controls
             double value_um = alignResultRightX.ResultValue_pixel / Resolution_um;
 
             lblRightX_Judgement.Text = alignResultRightX.Judgement.ToString();
-            if (alignResultRightX.Judgement != Judgment.FAIL)
+            if (alignResultRightX.Judgement != Judgement.FAIL)
             {
                 lblRightX_Value.Text = value_um.ToString("F2");
             }
@@ -555,7 +555,7 @@ namespace Jastech.Apps.Winform.UI.Controls
             double value_um = alignResultRightY.ResultValue_pixel / Resolution_um;
 
             lblRightY_Judgement.Text = alignResultRightY.Judgement.ToString();
-            if (alignResultRightY.Judgement != Judgment.FAIL)
+            if (alignResultRightY.Judgement != Judgement.FAIL)
             {
                 lblRightY_Value.Text = value_um.ToString("F2");
             }

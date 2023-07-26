@@ -671,7 +671,7 @@ namespace Jastech.Apps.Winform.Core.Calibrations
                     Logger.Write(LogType.Error, "Occur error at calibration sequence.");
 
                     string message = string.Format("Calibration Error.\nDo you want to go to Origin?\nX : {0}, Y : {1}, T : {2}", 
-                        GetInitPositionX().ToString("F3"), GetInitPositionY().ToString("F3"), GetInitPositionT().ToString("F3"));
+                        GetInitPositionX().ToString("F4"), GetInitPositionY().ToString("F4"), GetInitPositionT().ToString("F4"));
 
                     MessageYesNoForm form = new MessageYesNoForm();
                     form.Message = message;
