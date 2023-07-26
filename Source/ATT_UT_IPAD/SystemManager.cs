@@ -4,6 +4,7 @@ using Jastech.Apps.Structure.Data;
 using Jastech.Apps.Winform;
 using Jastech.Apps.Winform.Core;
 using Jastech.Apps.Winform.Service;
+using Jastech.Apps.Winform.Settings;
 using Jastech.Framework.Config;
 using Jastech.Framework.Device.Cameras;
 using Jastech.Framework.Device.LAFCtrl;
@@ -15,6 +16,7 @@ using Jastech.Framework.Util.Helper;
 using Jastech.Framework.Winform;
 using Jastech.Framework.Winform.Forms;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Windows.Forms;
 
@@ -168,15 +170,21 @@ namespace ATT_UT_IPAD
             string unit0FilePath = Path.Combine(dir, unit0FileName);
             if (File.Exists(unit0FilePath) == false)
             {
-                AxisHandler handler0 = new AxisHandler(AxisHandlerName.Handler0.ToString());
+                AxisHandler handler = new AxisHandler();
 
-                handler0.AddAxis(AxisName.X, motion, axisNo: 0, homeOrder: 3);
-                handler0.AddAxis(AxisName.Z0, motion, axisNo: 1, homeOrder: 1);
-                handler0.AddAxis(AxisName.Z1, motion, axisNo: 2, homeOrder: 2);
+                ProgramType type = (ProgramType)Enum.Parse(typeof(ProgramType), AppsConfig.Instance().ProgramType);
+                switch (type)
+                {
+                    case ProgramType.ProgramType_1:
+                        AddAxisHandlerType1(motion, out handler);
+                        break;
+                    case ProgramType.ProgramType_2:
+                        AddAxisHandlerType2(motion, out handler);
+                        break;
+                }
 
-                MotionManager.Instance().AxisHandlerList.Add(handler0);
-
-                JsonConvertHelper.Save(unit0FilePath, handler0);
+                MotionManager.Instance().AxisHandlerList.Add(handler);
+                JsonConvertHelper.Save(unit0FilePath, handler);
             }
             else
             {
@@ -191,6 +199,23 @@ namespace ATT_UT_IPAD
                 MotionManager.Instance().AxisHandlerList.Add(unit0);
             }
             return true;
+        }
+
+        private void AddAxisHandlerType1(Motion motion, out AxisHandler handler)
+        {
+            handler = new AxisHandler(AxisHandlerName.Handler0.ToString());
+
+            handler.AddAxis(AxisName.X, motion, axisNo: 1, homeOrder: 2);
+            handler.AddAxis(AxisName.Z0, motion, axisNo: -1, homeOrder: 1);
+            handler.AddAxis(AxisName.Z1, motion, axisNo: -1, homeOrder: 1);
+        }
+        private void AddAxisHandlerType2(Motion motion, out AxisHandler handler)
+        {
+            handler = new AxisHandler(AxisHandlerName.Handler0.ToString());
+
+            handler.AddAxis(AxisName.X, motion, axisNo: 1, homeOrder: 3);
+            handler.AddAxis(AxisName.Z0, motion, axisNo: -1, homeOrder: 1);
+            handler.AddAxis(AxisName.Z1, motion, axisNo: -1, homeOrder: 2);
         }
 
         public void UpdateMainResult(AppsInspResult result)
