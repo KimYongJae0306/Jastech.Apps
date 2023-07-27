@@ -1,6 +1,7 @@
 ﻿using ATT_UT_Remodeling.UI.Controls;
 using Jastech.Apps.Structure;
 using Jastech.Apps.Structure.Data;
+using Jastech.Apps.Winform;
 using Jastech.Apps.Winform.Core;
 using Jastech.Apps.Winform.UI.Controls;
 using Jastech.Framework.Winform.Forms;
@@ -70,12 +71,23 @@ namespace ATT_UT_Remodeling.UI.Pages
             AlignViewerControl.UpdateTabCount(tabCount);
         }
 
-        public void UpdateMainResult(AppsInspResult result)
+        public void UpdateMainResult(int tabNo)
         {
-            AkkonViewerControl.UpdateMainResult(result);
-            AlignViewerControl.UpdateMainResult(result);
+            AkkonViewerControl.UpdateMainResult(tabNo);
+            AlignViewerControl.UpdateMainResult(tabNo);
         }
 
+        public void UpdateResultTabButton(int tabNo)
+        {
+            AkkonViewerControl.UpdateResultTabButton(tabNo);
+            AlignViewerControl.UpdateResultTabButton(tabNo);
+        }
+
+        public void TabButtonResetColor()
+        {
+            AkkonViewerControl.TabButtonResetColor();
+            AlignViewerControl.TabButtonResetColor();
+        }
         public void UpdateLeftPreAlignResult(AppsPreAlignResult result)
         {
             PreAlignDisplayControl.UpdateLeftDisplay(result.Left);

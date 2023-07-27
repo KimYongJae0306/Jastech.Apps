@@ -2,53 +2,22 @@
 using Emgu.CV;
 using Jastech.Framework.Algorithms.Akkon.Results;
 using Jastech.Framework.Imaging.Result;
-using Jastech.Framework.Imaging.VisionPro;
 using Jastech.Framework.Imaging.VisionPro.VisionAlgorithms.Results;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace Jastech.Apps.Structure.Data
 {
-    public class AppsInspResult
-    {
-        public DateTime StartInspTime { get; set; }
-
-        public DateTime EndInspTime { get; set; }
-
-        public string LastInspTime { get; set; }
-
-        public string Cell_ID { get; set; } = "";
-
-        public List<TabInspResult> TabResultList { get; set; } = new List<TabInspResult>();
-
-        public void Dispose()
-        {
-            for (int i = 0; i < TabResultList.Count(); i++)
-            {
-                TabResultList[i].Dispose();
-                TabResultList[i] = null;
-            }
-
-            TabResultList.Clear();
-        }
-
-        public AppsInspResult DeepCopy()
-        {
-            AppsInspResult result = new AppsInspResult();
-            result.StartInspTime = StartInspTime;
-            result.EndInspTime = EndInspTime;
-            result.LastInspTime = LastInspTime;
-            result.Cell_ID = Cell_ID;
-            result.TabResultList = TabResultList.Select(x => x.DeepCopy()).ToList();
-
-            return result;
-        }
-    }
-
     public class TabInspResult
     {
         public int TabNo { get; set; } = -1;
+
+        public bool IsInspDone { get; set; } = false;
+
+        public bool IsResultProcessDone { get; set; } = false;
 
         public Judgement Judgement { get; set; }
 
@@ -56,9 +25,11 @@ namespace Jastech.Apps.Structure.Data
 
         public ICogImage CogImage { get; set; } = null;
 
-        public ICogImage AkkonInspImage { get; set; } = null;
+        public Mat AkkonInspMatImage { get; set; } = null;
 
-        public ICogImage AkkonResultImage { get; set; } = null;
+        public ICogImage AkkonInspCogImage { get; set; } = null;
+
+        public ICogImage AkkonResultCogImage { get; set; } = null;
 
         public TabMarkResult MarkResult { get; set; } = new TabMarkResult();
 
@@ -68,22 +39,29 @@ namespace Jastech.Apps.Structure.Data
 
         public void Dispose()
         {
+            IsInspDone = false;
+            IsResultProcessDone = false;
             if (Image != null)
             {
                 Image.Dispose();
                 Image = null;
+            }
+            if(AkkonInspMatImage != null)
+            {
+                AkkonInspMatImage.Dispose();
+                AkkonInspMatImage = null;
             }
             if (CogImage is CogImage8Grey orgGrey)
             {
                 orgGrey.Dispose();
                 orgGrey = null;
             }
-            if (AkkonInspImage is CogImage8Grey inspGrey)
+            if (AkkonInspCogImage is CogImage8Grey inspGrey)
             {
                 inspGrey.Dispose();
                 inspGrey = null;
             }
-            if (AkkonResultImage is CogImage24PlanarColor color)
+            if (AkkonResultCogImage is CogImage24PlanarColor color)
             {
                 color.Dispose();
                 color = null;
@@ -93,21 +71,22 @@ namespace Jastech.Apps.Structure.Data
             AlignResult?.Dispose();
         }
 
-        public TabInspResult DeepCopy()
-        {
-            TabInspResult result = new TabInspResult();
+        //public TabInspResult DeepCopy()
+        //{
+        //    TabInspResult result = new TabInspResult();
 
-            result.TabNo = TabNo;
-            result.Judgement = Judgement;
-            result.Image = Image?.Clone();
-            result.CogImage = CogImage?.CopyBase(CogImageCopyModeConstants.CopyPixels);
-            result.AkkonInspImage = AkkonInspImage?.CopyBase(CogImageCopyModeConstants.CopyPixels);
-            result.AkkonResultImage = AkkonResultImage?.CopyBase(CogImageCopyModeConstants.CopyPixels);
-            result.MarkResult = MarkResult?.DeepCopy();
-            result.AlignResult = AlignResult?.DeepCopy();
+        //    result.TabNo = TabNo;
+        //    result.Judgement = Judgement;
+        //    result.Image = Image?.Clone();
+        //    result.CogImage = CogImage?.CopyBase(CogImageCopyModeConstants.CopyPixels);
+        //    result.AkkonInspImage = AkkonInspImage?.CopyBase(CogImageCopyModeConstants.CopyPixels);
+        //    result.AkkonResultImage = AkkonResultImage?.CopyBase(CogImageCopyModeConstants.CopyPixels);
+        //    result.AkkonResult = AkkonResult?.dee
+        //    result.MarkResult = MarkResult?.DeepCopy();
+        //    result.AlignResult = AlignResult?.DeepCopy();
 
-            return result;
-        }
+        //    return result;
+        //}
     }
 
     public class TabMarkResult

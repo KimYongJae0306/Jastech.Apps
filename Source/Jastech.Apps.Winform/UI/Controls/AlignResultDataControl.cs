@@ -17,7 +17,6 @@ namespace Jastech.Apps.Winform.UI.Controls
     public partial class AlignResultDataControl : UserControl
     {
         #region 속성
-        public List<AppsInspResult> ResultList = new List<AppsInspResult>();
         #endregion
 
         #region 델리게이트
@@ -78,6 +77,11 @@ namespace Jastech.Apps.Winform.UI.Controls
                     dgvAlignHistory.Rows.Add(row);
                 }
             }
+        }
+
+        public void ClearData()
+        {
+            dgvAlignHistory.Rows.Clear();
         }
         #endregion
     }

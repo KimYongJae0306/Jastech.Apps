@@ -1,5 +1,6 @@
 ﻿using ATT_UT_IPAD.UI.Controls;
 using Jastech.Apps.Structure.Data;
+using Jastech.Apps.Winform;
 using Jastech.Apps.Winform.UI.Controls;
 using System;
 using System.Windows.Forms;
@@ -65,7 +66,7 @@ namespace ATT.UI.Controls
 
         private void UpdateResultDisplay(AppsInspResult result)
         {
-            AlignResultDisplayControl.UpdateResultDisplay(result);
+            AlignResultDisplayControl.UpdateResultDisplay(0);
         }
 
         private void UpdateResultData()

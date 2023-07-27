@@ -84,6 +84,7 @@ namespace ATT_UT_Remodeling
 
             tmrMainForm.Start();
             StartVirtualInspTask();
+            SystemManager.Instance().InitializeInspRunner();
             SystemManager.Instance().AddSystemLogMessage("Start Program.");
         }
 
@@ -167,7 +168,10 @@ namespace ATT_UT_Remodeling
         {
             AppsInspModel model = inspModel as AppsInspModel;
 
+            AppsInspResult.Instance().Disopose();
+
             MainPageControl.UpdateTabCount(model.TabCount);
+            MainPageControl.ClearPreAlignResult();
 
             lblCurrentModel.Text = model.Name;
 
@@ -257,9 +261,19 @@ namespace ATT_UT_Remodeling
             MainPageControl.ClearPreAlignResult();
         }
 
-        public void UpdateMainResult(AppsInspResult result)
+        public void UpdateMainResult(int tabNo)
         {
-            MainPageControl.UpdateMainResult(result);
+            MainPageControl.UpdateMainResult(tabNo);
+        }
+
+        public void UpdateResultTabButton(int tabNo)
+        {
+            MainPageControl.UpdateResultTabButton(tabNo);
+        }
+
+        public void TabButtonResetColor()
+        {
+            MainPageControl.TabButtonResetColor();
         }
 
         public void AddSystemLogMessage(string logMessage)
@@ -296,6 +310,8 @@ namespace ATT_UT_Remodeling
         {
             tmrMainForm.Stop();
             StopVirtualInspTask();
+
+            SystemManager.Instance().ReleaseInspRunner();
             SystemManager.Instance().StopRun();
 
             LAFManager.Instance().Release();
@@ -456,9 +472,11 @@ namespace ATT_UT_Remodeling
 
                     var inspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
                     if(_virtualImageCount == inspModel.TabCount)
-                        SystemManager.Instance().VirtualGrabDone();
+                    {
+                        AppsStatus.Instance().IsInspRunnerFlagFromPlc = true;
+                    }
                 }
-
+                
                 Thread.Sleep(50);
             }
         }

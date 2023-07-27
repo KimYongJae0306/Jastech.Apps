@@ -1,5 +1,4 @@
 ﻿using Cognex.VisionPro;
-using Jastech.Framework.Imaging.Result;
 using Jastech.Framework.Imaging.VisionPro.VisionAlgorithms.Results;
 using System;
 using System.Collections.Generic;
@@ -9,40 +8,6 @@ using System.Threading.Tasks;
 
 namespace Jastech.Apps.Structure.Data
 {
-    public class AppsPreAlignResult
-    {
-        public DateTime StartInspTime { get; set; }
-
-        public DateTime EndInspTime { get; set; }
-
-        public string Cell_ID { get; set; } = "";
-
-        public Judgement Judgement { get; set; } = Judgement.FAIL;
-
-        public PreAlignResult Left { get; set; } = new PreAlignResult();
-
-        public PreAlignResult Right { get; set; } = new PreAlignResult();
-
-        public double OffsetX { get; private set; } = 0.0;
-
-        public double OffsetY { get; private set; } = 0.0;
-
-        public double OffsetT { get; private set; } = 0.0;
-
-        public void SetPreAlignResult(double offsetX, double offsetY, double offsetT)
-        {
-            OffsetX = offsetX;
-            OffsetY = offsetY;
-            OffsetT = offsetT;
-        }
-
-        public void Dispose()
-        {
-            Left?.Dispose();
-            Right?.Dispose();
-        }
-    }
-
     public class PreAlignResult
     {
         public ICogImage CogImage { get; set; } = null;

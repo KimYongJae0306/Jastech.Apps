@@ -47,33 +47,36 @@ namespace ATT_UT_Remodeling.UI.Controls
             AlignResultDisplayControl.SendTabNumber += UpdateResultChart;
             pnlResultDisplay.Controls.Add(AlignResultDisplayControl);
         }
-
+      
         public void UpdateTabCount(int tabCount)
         {
             AlignResultDisplayControl.UpdateTabCount(tabCount);
+            AlignResultDataControl.ClearData();
+            AlignResultChartControl.ClearChart();
         }
 
-        public void UpdateMainResult(AppsInspResult result)
+        public void UpdateMainResult(int tabNo)
         {
-            UpdateResultDisplay(result);
-            UpdateResultData();
-            UpdateResultChart(0);
-        }
-
-        private void UpdateResultDisplay(AppsInspResult result)
-        {
-            AlignResultDisplayControl.UpdateResultDisplay(result);
-        }
-
-        private void UpdateResultData()
-        {
+            AlignResultDisplayControl.UpdateResultDisplay(tabNo);
             AlignResultDataControl.UpdateAlignDaily();
+            UpdateResultChart(tabNo);
         }
 
-        private void UpdateResultChart(int tabNumber)
+        public void UpdateResultTabButton(int tabNo)
         {
-            AlignResultChartControl.UpdateAlignDaily(tabNumber);
+            AlignResultDisplayControl.UpdateResultTabButton(tabNo);
         }
+
+        public void TabButtonResetColor()
+        {
+            AlignResultDisplayControl.TabButtonResetColor();
+        }
+
+        private void UpdateResultChart(int tabNo)
+        {
+            AlignResultChartControl.UpdateAlignDaily(tabNo);
+        }
+
         #endregion
     }
 }

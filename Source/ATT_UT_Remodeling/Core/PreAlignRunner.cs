@@ -158,9 +158,7 @@ namespace ATT_UT_Remodeling
                     break;
 
                 case SeqStep.SEQ_INIT:
-                    ClearResult();
-                    WriteLog("Clear Result.");
-
+                  
                     light.TurnOff();
                     WriteLog("Light Off.");
 
@@ -184,10 +182,15 @@ namespace ATT_UT_Remodeling
                     if (AppsStatus.Instance().IsPreAlignRunnerFlagFromPlc == false)
                         break;
 
+                    WriteLog("Receive PreAlign Start Signal From PLC.", true);
+
+                    AppsPreAlignResult.Instance().ClearResult();
+                    WriteLog("Clear PreAlign Result.");
+
                     SystemManager.Instance().ClearPreAlignResult();
                     WriteLog("Clear PreAlign Display");
 
-                    WriteLog("Receive PreAlign Start Signal From PLC.", true);
+                   
                     SeqStep = SeqStep.SEQ_PREALIGN_R;
                     break;
            
@@ -351,16 +354,7 @@ namespace ATT_UT_Remodeling
             }
         }
 
-        public void ClearResult()
-        {
-            if (AppsPreAlignResult == null)
-                AppsPreAlignResult = new AppsPreAlignResult();
-
-
-            if (AppsPreAlignResult != null)
-                AppsPreAlignResult.Dispose();
-        }
-
+     
         private void SetPreAlignPatternResult()
         {
             if (AppsPreAlignResult.Left.MatchResult.Judgement == Judgement.OK && AppsPreAlignResult.Right.MatchResult.Judgement == Judgement.OK)
@@ -394,7 +388,9 @@ namespace ATT_UT_Remodeling
 
                 PointF calibrationStartPosition = CalibrationData.Instance().GetCalibrationStartPosition();
 
-                AlgorithmTool.ExecuteAlignment(unit, realCoordinateList, calibrationStartPosition, ref preAlignResult);
+                var alignmentResult = AlgorithmTool.ExecuteAlignment(unit, realCoordinateList, calibrationStartPosition);
+
+                preAlignResult.SetPreAlignResult(alignmentResult.OffsetX, alignmentResult.OffsetY, alignmentResult.OffsetT);
 
                 Judgement leftJudgement = AppsPreAlignResult.Left.MatchResult.Judgement;
                 Judgement rightJudgement = AppsPreAlignResult.Right.MatchResult.Judgement;
@@ -430,116 +426,48 @@ namespace ATT_UT_Remodeling
 
     public partial class PreAlignRunner
     {
-        private void SaveImage(AppsInspResult inspResult)
+        private void SaveImage(AppsInspResult appsInspResult)
         {
             AppsInspModel inspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
-            DateTime currentTime = inspResult.StartInspTime;
+            DateTime currentTime = appsInspResult.StartInspTime;
 
             string month = currentTime.ToString("MM");
             string day = currentTime.ToString("dd");
-            string folderPath = inspResult.Cell_ID;
+            string folderPath = appsInspResult.Cell_ID;
 
-            string path = Path.Combine(ConfigSet.Instance().Path.Result, inspModel.Name, month, day, folderPath);
+            string path = Path.Combine(ConfigSet.Instance().Path.Result, inspModel.Name, month, day, folderPath, "Orgin");
 
             if (Directory.Exists(path) == false)
                 Directory.CreateDirectory(path);
 
-            SaveResultImage(path, inspResult.TabResultList);
-        }
+            var operation = ConfigSet.Instance().Operation;
+            string okExtension = operation.GetExtensionOKImage();
+            string ngExtension = operation.GetExtensionNGImage();
 
-        private void SaveResultImage(string resultPath, List<TabInspResult> insTabResultList)
-        {
-            if (ConfigSet.Instance().Operation.VirtualMode)
-                return;
-
-            string path = Path.Combine(resultPath, "Orgin");
-            if (Directory.Exists(path) == false)
-                Directory.CreateDirectory(path);
-
-            string okExtension = ".bmp";
-
-            if (ConfigSet.Instance().Operation.ExtensionOKImage == ImageExtension.Bmp)
-                okExtension = ".bmp";
-            else if (ConfigSet.Instance().Operation.ExtensionOKImage == ImageExtension.Jpg)
-                okExtension = ".jpg";
-            else if (ConfigSet.Instance().Operation.ExtensionOKImage == ImageExtension.Png)
-                okExtension = ".png";
-
-            string ngExtension = ".bmp";
-
-            if (ConfigSet.Instance().Operation.ExtensionNGImage == ImageExtension.Bmp)
-                ngExtension = ".bmp";
-            else if (ConfigSet.Instance().Operation.ExtensionNGImage == ImageExtension.Jpg)
-                ngExtension = ".jpg";
-            else if (ConfigSet.Instance().Operation.ExtensionNGImage == ImageExtension.Png)
-                ngExtension = ".png";
-
-
-            foreach (var result in insTabResultList)
+            var appsPreAlignResult = AppsPreAlignResult.Instance();
+            if (appsPreAlignResult.Judgement == Judgement.OK)
             {
-                if (result.Judgement == Judgement.OK)
+                if (operation.SaveImageOK)
                 {
-                    if (ConfigSet.Instance().Operation.SaveImageOK)
-                    {
-                        string imageName = "Tab_" + result.TabNo.ToString() + "_OK_" + okExtension;
-                        string imagePath = Path.Combine(path, imageName);
-                        result.Image.Save(imagePath);
-                    }
+                    string imageName = "PreAlign_Left_OK_" + okExtension;
+                    string imagePath = Path.Combine(path, imageName);
                 }
-                else
+            }
+            else
+            {
+                if (operation.SaveImageNG)
                 {
-                    if (ConfigSet.Instance().Operation.SaveImageNG)
-                    {
-                        string imageName = "Tab_" + result.TabNo.ToString() + "_NG_" + ngExtension;
-                        string imagePath = Path.Combine(path, imageName);
-                        result.Image.Save(imagePath);
-                    }
+                    string imageName = "PreAlign_Left_NG_" + okExtension;
+                    string imagePath = Path.Combine(path, imageName);
                 }
             }
         }
 
-        private void SavePreAlignResult(string resultPath, AppsInspResult inspResult)
+
+        private void SavePreAlignResult(string resultPath)
         {
-            string filename = string.Format("Align.csv");
-            string csvFile = Path.Combine(resultPath, filename);
-            if (File.Exists(csvFile) == false)
-            {
-                List<string> header = new List<string>
-                {
-                    "Inspection Time",
-                    "Panel ID",
-                    "Tab",
-                    "Judge",
-                    "Lx",
-                    "Ly",
-                    "Cx",
-                    "Rx",
-                    "Ry"
-                };
-
-                CSVHelper.WriteHeader(csvFile, header);
-            }
-
-            List<List<string>> dataList = new List<List<string>>();
-            for (int tabNo = 0; tabNo < inspResult.TabResultList.Count; tabNo++)
-            {
-                List<string> tabData = new List<string>
-                {
-                    inspResult.EndInspTime.ToString("HH:mm:ss"),                                    // Insp Time
-                    inspResult.Cell_ID,                                                             // Panel ID
-                    tabNo.ToString(),                                                               // Tab
-                    //inspResult.TabResultList[tabNo].AlignResult.Judgment.ToString(),                       // Judge
-                    //inspResult.TabResultList[tabNo].AlignResult.LeftX.ResultValue_pixel.ToString("F3"),          // Left Align X
-                    //inspResult.TabResultList[tabNo].AlignResult.LeftY.ResultValue_pixel.ToString("F3"),          // Left Align Y
-                    //inspResult.TabResultList[tabNo].AlignResult.CenterX.ToString("F3"),                         // Center Align X
-                    //inspResult.TabResultList[tabNo].AlignResult.RightX.ResultValue_pixel.ToString("F3"),         // Right Align X
-                    //inspResult.TabResultList[tabNo].AlignResult.RightY.ResultValue_pixel.ToString("F3"),         // Right Align Y
-                };
-
-                dataList.Add(tabData);
-            }
-
-            CSVHelper.WriteData(csvFile, dataList);
+            string filename = string.Format("PreAlign.csv");
+            var appsPreAlignResult = AppsPreAlignResult.Instance();
         }
 
         private Axis GetAxis(AxisHandlerName axisHandlerName, AxisName axisName)

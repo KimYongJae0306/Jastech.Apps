@@ -85,7 +85,6 @@ namespace ATT_UT_IPAD
 
             CreateAxisHandler();
 
-
             percent = 80;
             DoReportProgress(reportProgress, percent, "Initialize Manager.");
             LAFManager.Instance().Initialize();
@@ -225,7 +224,7 @@ namespace ATT_UT_IPAD
 
         public void UpdateMainResult(AppsInspResult result)
         {
-            _mainForm.UpdateMainResult(result);
+          //  _mainForm.UpdateMainResult(result);
         }
 
         public void AddSystemLogMessage(string logMessage)
