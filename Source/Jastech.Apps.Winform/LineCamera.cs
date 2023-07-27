@@ -132,7 +132,7 @@ namespace Jastech.Apps.Winform
 
                 var temp = endIndex - startIndex;
 
-                tempPos += materialInfo.GetTabToTabDistance(i);
+                tempPos += materialInfo.GetTabToTabDistance(i, tabCount);
 
                 TabScanBuffer scanImage = new TabScanBuffer(i, startIndex, endIndex, Camera.ImageWidth, Camera.ImageHeight);
                 lock(TabScanBufferList)
