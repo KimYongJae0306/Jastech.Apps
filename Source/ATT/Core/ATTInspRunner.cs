@@ -112,7 +112,7 @@ namespace ATT.Core
             #region Mark 검사
             algorithmTool.MainMarkInspect(inspTab.MergeCogImage, tab, ref inspResult, false);
 
-            if (inspResult.MarkResult.IsGood() == false)
+            if (inspResult.MarkResult.Judgement != Judgement.OK)
             {
                 // 검사 실패
                 string message = string.Format("Mark Inspection NG !!! Tab_{0} / Fpc_{1}, Panel_{2}", tab.Index, inspResult.MarkResult.FpcMark.Judgement, inspResult.MarkResult.PanelMark.Judgement);
@@ -142,7 +142,7 @@ namespace ATT.Core
             if(AppsConfig.Instance().EnableAlign)
             {
                 inspResult.AlignResult.LeftX = algorithmTool.RunMainLeftAlignX(inspTab.MergeCogImage, tab, fpcCoordinate, panelCoordinate, judgementX);
-                if (inspResult.AlignResult.IsLeftXGood() == false)
+                if (inspResult.AlignResult.LeftX?.Judgement != Judgement.OK)
                 {
                     var leftAlignX = inspResult.AlignResult.LeftX;
                     string message = string.Format("Left AlignX Inspection NG !!! Tab_{0} / Fpc_{1}, Panel_{2}", tab.Index, leftAlignX.Fpc.Judgement, leftAlignX.Panel.Judgement);
@@ -150,7 +150,7 @@ namespace ATT.Core
                 }
 
                 inspResult.AlignResult.LeftY = algorithmTool.RunMainLeftAlignY(inspTab.MergeCogImage, tab, fpcCoordinate, panelCoordinate, judgementY);
-                if (inspResult.AlignResult.IsLeftYGood() == false)
+                if (inspResult.AlignResult.LeftY?.Judgement != Judgement.OK)
                 {
                     var leftAlignY = inspResult.AlignResult.LeftY;
                     string message = string.Format("Left AlignY Inspection NG !!! Tab_{0} / Fpc_{1}, Panel_{2}", tab.Index, leftAlignY.Fpc.Judgement, leftAlignY.Panel.Judgement);
@@ -168,7 +168,7 @@ namespace ATT.Core
             if (AppsConfig.Instance().EnableAlign)
             {
                 inspResult.AlignResult.RightX = algorithmTool.RunMainRightAlignX(inspTab.MergeCogImage, tab, fpcCoordinate, panelCoordinate, judgementX);
-                if (inspResult.AlignResult.IsRightXGood() == false)
+                if (inspResult.AlignResult.RightX?.Judgement != Judgement.OK)
                 {
                     var rightAlignX = inspResult.AlignResult.RightX;
                     string message = string.Format("Right AlignX Inspection NG !!! Tab_{0} / Fpc_{1}, Panel_{2}", tab.Index, rightAlignX.Fpc.Judgement, rightAlignX.Panel.Judgement);
@@ -176,7 +176,7 @@ namespace ATT.Core
                 }
 
                 inspResult.AlignResult.RightY = algorithmTool.RunMainRightAlignY(inspTab.MergeCogImage, tab, fpcCoordinate, panelCoordinate, judgementY);
-                if (inspResult.AlignResult.IsRightYGood() == false)
+                if (inspResult.AlignResult.RightY?.Judgement != Judgement.OK)
                 {
                     var rightAlignY = inspResult.AlignResult.RightY;
                     string message = string.Format("Right AlignY Inspection NG !!! Tab_{0} / Fpc_{1}, Panel_{2}", tab.Index, rightAlignY.Fpc.Judgement, rightAlignY.Panel.Judgement);
@@ -1030,7 +1030,7 @@ namespace ATT.Core
             for (int tabNo = 0; tabNo < inspResult.TabResultList.Count; tabNo++)
             {
                 var alignResult = inspResult.TabResultList[tabNo].AlignResult;
-                Judgement judgement = alignResult.IsAlignGood() == true ? Judgement.OK : Judgement.NG;
+                Judgement judgement = alignResult.Judgement;
 
                 List<string> tabData = new List<string>
                 {

@@ -475,7 +475,7 @@ namespace Jastech.Apps.Winform
         {
             int judgement = 1; // 1 : OK, 2: NG
 
-            if(alignResult.IsAlignGood() == false)
+            if(alignResult.Judgement != Judgement.OK)
                 judgement = 2;
 
             double calcLeftAlignX_mm = (alignResult.LeftX.ResultValue_pixel * resolution) * 1000;
