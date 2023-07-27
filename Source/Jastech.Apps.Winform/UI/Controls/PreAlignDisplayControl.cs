@@ -1,6 +1,7 @@
 ﻿using Cognex.VisionPro;
 using Jastech.Apps.Structure.Data;
 using Jastech.Framework.Winform.VisionPro.Controls;
+using System.CodeDom;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
@@ -130,6 +131,27 @@ namespace Jastech.Apps.Winform.UI.Controls
                                             result.OffsetX.ToString("F4"), result.OffsetY.ToString("F4"), result.OffsetT.ToString("F4"));
 
             lblPreAlignResult.Text = resultMessage;
+        }
+
+        public delegate void ClearPreAlignResultDelegate();
+        public void ClearPreAlignResult()
+        {
+            if (this.InvokeRequired)
+            {
+                ClearPreAlignResultDelegate callback = ClearPreAlignResult;
+                BeginInvoke(callback);
+                return;
+            }
+
+            ClearImage();
+            ClearPreAlignResultMessage();
+        }
+
+        private void ClearPreAlignResultMessage()
+        {
+            lblLeftPreAlignResult.Text = "";
+            lblRightPreAlignResult.Text = "";
+            lblPreAlignResult.Text = "";
         }
 
         public void ClearImage()

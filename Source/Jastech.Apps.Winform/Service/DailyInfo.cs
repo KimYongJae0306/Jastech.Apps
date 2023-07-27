@@ -80,7 +80,7 @@ namespace Jastech.Apps.Winform.Service
         public int TabNo { get; set; } = 0;
 
         [JsonProperty]
-        public Judgement Judgement { get; set; } = Judgement.OK;
+        public Judgement Judgement { get; set; } = Judgement.FAIL;
 
         [JsonProperty]
         public float LX { get; set; } = 0.0f;
@@ -113,7 +113,7 @@ namespace Jastech.Apps.Winform.Service
         public int TabNo { get; set; } = 0;
 
         [JsonProperty]
-        public Judgement Judgement { get; set; } = Judgement.OK;
+        public Judgement Judgement { get; set; } = Judgement.FAIL;
 
         [JsonProperty]
         public int MinBlobCount { get; set; } = 0;

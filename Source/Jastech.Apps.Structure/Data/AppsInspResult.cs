@@ -150,7 +150,7 @@ namespace Jastech.Apps.Structure.Data
     public class MarkResult
     {
         #region 속성
-        public Judgement Judgement { get; set; } = Judgement.OK;
+        public Judgement Judgement { get; set; } = Judgement.FAIL;
 
         public MarkMatchingResult FoundedMark { get; set; } = null;
 

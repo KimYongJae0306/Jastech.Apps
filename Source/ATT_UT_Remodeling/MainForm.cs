@@ -252,6 +252,11 @@ namespace ATT_UT_Remodeling
             MainPageControl.UpdatePreAlignResult(result);
         }
 
+        public void ClearPreAlignResult()
+        {
+            MainPageControl.ClearPreAlignResult();
+        }
+
         public void UpdateMainResult(AppsInspResult result)
         {
             MainPageControl.UpdateMainResult(result);

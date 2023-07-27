@@ -184,6 +184,9 @@ namespace ATT_UT_Remodeling
                     if (AppsStatus.Instance().IsPreAlignRunnerFlagFromPlc == false)
                         break;
 
+                    SystemManager.Instance().ClearPreAlignResult();
+                    WriteLog("Clear PreAlign Display");
+
                     WriteLog("Receive PreAlign Start Signal From PLC.", true);
                     SeqStep = SeqStep.SEQ_PREALIGN_R;
                     break;

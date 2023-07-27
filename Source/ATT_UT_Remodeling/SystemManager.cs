@@ -286,6 +286,11 @@ namespace ATT_UT_Remodeling
         {
             _mainForm.UpdatePreAlignResult(result);
         }
+
+        public void ClearPreAlignResult()
+        {
+            _mainForm.ClearPreAlignResult();
+        }
         #endregion
     }
 
