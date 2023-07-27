@@ -18,6 +18,9 @@ using Jastech.Framework.Winform.Forms;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Runtime.ExceptionServices;
+using System.Security;
+using System.Security.Permissions;
 using System.Windows.Forms;
 
 namespace ATT_UT_IPAD
@@ -46,69 +49,88 @@ namespace ATT_UT_IPAD
 
             return _instance;
         }
-
+        [HandleProcessCorruptedStateExceptions]
+        [SecurityCritical]
         public bool Initialize(MainForm mainForm)
         {
-            _mainForm = mainForm;
+            try
+            {
+                _mainForm = mainForm;
 
-            Logger.Write(LogType.System, "Init SplashForm");
+                Logger.Write(LogType.System, "Init SplashForm");
 
-            SplashForm form = new SplashForm();
+                SplashForm form = new SplashForm();
 
-            form.Title = "ATT Inspection";
-            form.Version = ConfigSet.Instance().Operation.SystemVersion;
-            form.SetupActionEventHandler = SplashSetupAction;
+                form.Title = "ATT Inspection";
+                form.Version = ConfigSet.Instance().Operation.SystemVersion;
+                form.SetupActionEventHandler = SplashSetupAction;
 
-            form.ShowDialog();
+                form.ShowDialog();
 
-            DailyInfoService.Load();
+                DailyInfoService.Load();
 
-            return true;
+                return true;
+            }
+            catch (AccessViolationException err)
+            {
+
+                return true;
+            }
+           
         }
 
+        [HandleProcessCorruptedStateExceptions]
+        [SecurityCritical]
         private bool SplashSetupAction(IReportProgress reportProgress)
         {
-            Logger.Write(LogType.System, "Initialize Device");
-
-            int percent = 0;
-            DoReportProgress(reportProgress, percent, "Initialize Device");
-
-            DeviceManager.Instance().Initialized += SystemManager_Initialized;
-            DeviceManager.Instance().Initialize(ConfigSet.Instance());
-            PlcControlManager.Instance().Initialize();
-
-            percent = 50;
-            DoReportProgress(reportProgress, percent, "Create Axis Info");
-
-            CreateAxisHanlder();
-
-            LAFManager.Instance().Initialize();
-            LineCameraManager.Instance().Initialize();
-
-            percent = 80;
-            DoReportProgress(reportProgress, percent, "Initialize Manager.");
-            LAFManager.Instance().Initialize();
-            LineCameraManager.Instance().Initialize();
-            AreaCameraManager.Instance().Initialize();
-
-            if (ConfigSet.Instance().Operation.LastModelName != "")
+            try
             {
-                percent = 90;
-                DoReportProgress(reportProgress, percent, "Open Last Model.");
+                Logger.Write(LogType.System, "Initialize Device");
 
-                string filePath = Path.Combine(ConfigSet.Instance().Path.Model,
-                                    ConfigSet.Instance().Operation.LastModelName,
-                                    InspModel.FileName);
-                if (File.Exists(filePath))
+                int percent = 0;
+                DoReportProgress(reportProgress, percent, "Initialize Device");
+
+                DeviceManager.Instance().Initialized += SystemManager_Initialized;
+                DeviceManager.Instance().Initialize(ConfigSet.Instance());
+                PlcControlManager.Instance().Initialize();
+
+                percent = 50;
+                DoReportProgress(reportProgress, percent, "Create Axis Info");
+
+                CreateAxisHanlder();
+
+
+                percent = 80;
+                DoReportProgress(reportProgress, percent, "Initialize Manager.");
+                LAFManager.Instance().Initialize();
+                LineCameraManager.Instance().Initialize();
+                AreaCameraManager.Instance().Initialize();
+
+                if (ConfigSet.Instance().Operation.LastModelName != "")
                 {
-                    DoReportProgress(reportProgress, percent, "Model Loading");
-                    ModelManager.Instance().CurrentModel = _mainForm.ATTInspModelService.Load(filePath);
-                }
-            }
+                    percent = 90;
+                    DoReportProgress(reportProgress, percent, "Open Last Model.");
 
-            percent = 100;
-            DoReportProgress(reportProgress, percent, "Initialize Completed.");
-            return true;
+                    string filePath = Path.Combine(ConfigSet.Instance().Path.Model,
+                                        ConfigSet.Instance().Operation.LastModelName,
+                                        InspModel.FileName);
+                    if (File.Exists(filePath))
+                    {
+                        DoReportProgress(reportProgress, percent, "Model Loading");
+                        ModelManager.Instance().CurrentModel = _mainForm.ATTInspModelService.Load(filePath);
+                    }
+                }
+
+                percent = 100;
+                DoReportProgress(reportProgress, percent, "Initialize Completed.");
+                return true;
+            }
+            catch (AccessViolationException err)
+            {
+
+                return true;
+            }
+            
         }
 
         private void DoReportProgress(IReportProgress reportProgress, int percentage, string message)
@@ -205,7 +227,7 @@ namespace ATT_UT_IPAD
         {
             handler = new AxisHandler(AxisHandlerName.Handler0.ToString());
 
-            handler.AddAxis(AxisName.X, motion, axisNo: 1, homeOrder: 2);
+            handler.AddAxis(AxisName.X, motion, axisNo: 0, homeOrder: 2);
             handler.AddAxis(AxisName.Z0, motion, axisNo: -1, homeOrder: 1);
             handler.AddAxis(AxisName.Z1, motion, axisNo: -1, homeOrder: 1);
         }

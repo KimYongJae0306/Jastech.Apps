@@ -44,6 +44,7 @@ namespace Jastech.Apps.Winform
             if (lafCtrlHandler == null)
                 return;
 
+            return;
             foreach (var laf in lafCtrlHandler)
             {
                 laf.DataReceived += DataReceived;

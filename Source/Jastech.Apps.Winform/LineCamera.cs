@@ -227,6 +227,7 @@ namespace Jastech.Apps.Winform
 
             GrabCount = totalScanSubImageCount;
             // LineScan Page에서 Line 모드 GrabStart 할 때 Height Set 해줘야함
+            Console.WriteLine("Length Grab Count :" + GrabCount);
             Camera.GrabMulti(GrabCount);
         }
 
@@ -268,6 +269,7 @@ namespace Jastech.Apps.Winform
                 if (tabScanBuffer == null)
                     return;
 
+                Console.WriteLine("Add SubImage : " + grabCount);
                 if (tabScanBuffer.StartIndex <= _curGrabCount && _curGrabCount <= tabScanBuffer.EndIndex)
                 {
                     tabScanBuffer.AddData(data);

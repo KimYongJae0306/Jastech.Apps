@@ -24,11 +24,11 @@ namespace ATT_UT_IPAD
     public partial class MainForm : Form
     {
         #region 속성
-        private MainPage MainPageControl { get; set; } = new MainPage();
+        private MainPage MainPageControl { get; set; } = null;
 
-        private DataPage DataPageControl { get; set; } = new DataPage();
+        private DataPage DataPageControl { get; set; } = null;
 
-        private TeachingPage TeachingPageControl { get; set; } = new TeachingPage();
+        private TeachingPage TeachingPageControl { get; set; } = null;
 
         private List<UserControl> PageControlList = null;
 

@@ -19,6 +19,9 @@ using Jastech.Framework.Matrox;
 using Jastech.Framework.Util.Helper;
 using System;
 using System.Collections.Generic;
+using System.Runtime.ExceptionServices;
+using System.Security;
+using System.Security.Permissions;
 using System.Threading;
 using System.Windows.Forms;
 
@@ -29,6 +32,8 @@ namespace ATT_UT_IPAD
         /// <summary>
         /// 해당 응용 프로그램의 주 진입점입니다.
         /// </summary>
+        [HandleProcessCorruptedStateExceptions]
+        [SecurityCritical]
         [STAThread]
         private static void Main()
         {
@@ -37,31 +42,40 @@ namespace ATT_UT_IPAD
 
             if (isRunning)
             {
-                Application.EnableVisualStyles();
-                Application.SetCompatibleTextRenderingDefault(false);
+                try
+                {
+                    Application.EnableVisualStyles();
+                    Application.SetCompatibleTextRenderingDefault(false);
 
-                Application.ThreadException += Application_ThreadException;
-                Application.SetUnhandledExceptionMode(UnhandledExceptionMode.ThrowException);
-                AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
+                    Application.ThreadException += Application_ThreadException;
+                    Application.SetUnhandledExceptionMode(UnhandledExceptionMode.ThrowException);
+                    AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
 
-                Logger.Initialize(ConfigSet.Instance().Path.Log);
+                    Logger.Initialize(ConfigSet.Instance().Path.Log);
 
-                MilHelper.InitApplication();
-                CameraMil.BufferPoolCount = 200;
-                SystemHelper.StartChecker(@"D:\ATT_Memory_Test.txt");
-                AppsConfig.Instance().UnitCount = 1;
+                    MilHelper.InitApplication();
+                    CameraMil.BufferPoolCount = 200;
+                    SystemHelper.StartChecker(@"D:\ATT_Memory_Test.txt");
+                    AppsConfig.Instance().UnitCount = 1;
 
-                ConfigSet.Instance().PathConfigCreated += ConfigSet_PathConfigCreated;
-                ConfigSet.Instance().OperationConfigCreated += ConfigSet_OperationConfigCreated;
-                ConfigSet.Instance().MachineConfigCreated += ConfigSet_MachineConfigCreated;
-                ConfigSet.Instance().Initialize();
+                    ConfigSet.Instance().PathConfigCreated += ConfigSet_PathConfigCreated;
+                    ConfigSet.Instance().OperationConfigCreated += ConfigSet_OperationConfigCreated;
+                    ConfigSet.Instance().MachineConfigCreated += ConfigSet_MachineConfigCreated;
+                    ConfigSet.Instance().Initialize();
 
-                AppsConfig.Instance().Initialize();
-                UserManager.Instance().Initialize();
+                    AppsConfig.Instance().Initialize();
+                    UserManager.Instance().Initialize();
 
-                var mainForm = new MainForm();
-                SystemManager.Instance().Initialize(mainForm);
-                Application.Run(mainForm);
+                    var mainForm = new MainForm();
+                    SystemManager.Instance().Initialize(mainForm);
+                    Application.Run(mainForm);
+                }
+                catch (AccessViolationException err)
+                {
+
+                    throw;
+                }
+                
             }
             else
             {
@@ -262,13 +276,13 @@ namespace ATT_UT_IPAD
             config.Add(ringLight);
 
             // PLC UT IPAD
-            AppsConfig.Instance().PlcAddressInfo.CommonStart = 124000;
-            AppsConfig.Instance().PlcAddressInfo.ResultStart = 125000;
-            AppsConfig.Instance().PlcAddressInfo.ResultStart_Align = 125220;
+            AppsConfig.Instance().PlcAddressInfo.CommonStart = 120000;
+            AppsConfig.Instance().PlcAddressInfo.ResultStart = 121000;
+            AppsConfig.Instance().PlcAddressInfo.ResultStart_Align = 121220;
             AppsConfig.Instance().PlcAddressInfo.ResultTabToTabInterval = 200;
-            AppsConfig.Instance().PlcAddressInfo.ResultStart_Akkon = 125230;
+            AppsConfig.Instance().PlcAddressInfo.ResultStart_Akkon = 121230;
 
-            var plc = new MelsecPlc("PLC", new SocketComm("192.168.130.2", 9023, SocketCommType.Udp, 9033), new MelsecBinaryParser());
+            var plc = new MelsecPlc("PLC", new SocketComm("192.168.130.2", 9021, SocketCommType.Udp, 9031), new MelsecBinaryParser());
             config.Add(plc);
         }
 
