@@ -1016,14 +1016,23 @@ namespace ATT_UT_Remodeling.Core
                 alignInfo.PanelID = inspResult.Cell_ID;
                 alignInfo.TabNo = item.TabNo;
                 alignInfo.Judgement = item.Judgement;
-                alignInfo.LX = item.AlignResult.LeftX.ResultValue_pixel;
-                alignInfo.LY = item.AlignResult.LeftY.ResultValue_pixel;
-                alignInfo.RX = item.AlignResult.RightX.ResultValue_pixel;
-                alignInfo.RY = item.AlignResult.RightY.ResultValue_pixel;
+
+                alignInfo.LX = GetResultAlignResultValue(item.AlignResult.LeftX);
+                alignInfo.LY = GetResultAlignResultValue(item.AlignResult.LeftY);
+                alignInfo.RX = GetResultAlignResultValue(item.AlignResult.RightX);
+                alignInfo.RY = GetResultAlignResultValue(item.AlignResult.RightY);
                 alignInfo.CX = item.AlignResult.CenterX;
 
                 dailyData.AddAlignInfo(alignInfo);
             }
+        }
+
+        private float GetResultAlignResultValue(AlignResult alignResult)
+        {
+            if (alignResult == null)
+                return 0.0F;
+            else
+                return alignResult.ResultValue_pixel;
         }
 
         private void UpdateAkkonDailyInfo(AppsInspResult inspResult, ref DailyData dailyData)
@@ -1036,17 +1045,26 @@ namespace ATT_UT_Remodeling.Core
                 akkonInfo.PanelID = inspResult.Cell_ID;
                 akkonInfo.TabNo = item.TabNo;
 
-                var countJudgement = item.AkkonResult.CountJudgement;
-                var lengthJudgement = item.AkkonResult.LengthJudgement;
+                Judgement countJudgement = Judgement.FAIL;
+                if (item.AkkonResult != null)
+                    countJudgement = item.AkkonResult.CountJudgement;
+
+                Judgement lengthJudgement = Judgement.FAIL;
+                if (item.AkkonResult != null)
+                    lengthJudgement = item.AkkonResult.LengthJudgement;
 
                 if (countJudgement == Judgement.OK || lengthJudgement == Judgement.OK)
                     akkonInfo.Judgement = Judgement.OK;
                 else
                     akkonInfo.Judgement = Judgement.NG;
-                var akkonResult = item.AkkonResult;
-                
-                int minCount = akkonResult.LeftCount_Avg > akkonResult.RightCount_Min ? akkonResult.RightCount_Min : akkonResult.LeftCount_Avg;
-                float minLength = akkonResult.Length_Left_Min_um > akkonResult.Length_Right_Min_um ? akkonResult.Length_Right_Min_um : akkonResult.Length_Left_Min_um;
+
+                int minCount = 0;
+                if (item.AkkonResult != null)
+                    minCount = item.AkkonResult.LeftCount_Avg > item.AkkonResult.RightCount_Min ? item.AkkonResult.RightCount_Min : item.AkkonResult.LeftCount_Avg;
+
+                float minLength = 0.0F;
+                if (item.AkkonResult != null)
+                    minLength = item.AkkonResult.Length_Left_Min_um > item.AkkonResult.Length_Right_Min_um ? item.AkkonResult.Length_Right_Min_um : item.AkkonResult.Length_Left_Min_um;
 
                 akkonInfo.MinBlobCount = minCount;
                 akkonInfo.MinLength = minLength;
