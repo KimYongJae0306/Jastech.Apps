@@ -530,7 +530,7 @@ namespace ATT_UT_IPAD.UI.Forms
 
         private void lblCurrentToTargetZ1_Click(object sender, EventArgs e)
         {
-            double currentPosition = Convert.ToDouble(lblCurrentPositionZ0.Text);
+            double currentPosition = Convert.ToDouble(lblCurrentPositionZ1.Text);
             TeachingPositionList.Where(x => x.Name == TeachingPositionType.ToString()).First().SetTargetPosition(AxisName.Z1, currentPosition);
 
             lblTargetPositionZ1.Text = currentPosition.ToString("F3");
