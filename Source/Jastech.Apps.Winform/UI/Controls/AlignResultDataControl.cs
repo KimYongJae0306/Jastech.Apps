@@ -66,7 +66,7 @@ namespace Jastech.Apps.Winform.UI.Controls
                 {
                     string inspectionTime = item.InspectionTime;
                     string panelID = item.PanelID;
-                    string tabNumber = item.TabNo.ToString();
+                    string tabNumber = (item.TabNo + 1).ToString();
                     string judge = item.Judgement.ToString();
                     string leftAlignX = item.LX.ToString("F2");
                     string leftAlignY = item.LY.ToString("F2");

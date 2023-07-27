@@ -206,7 +206,7 @@ namespace ATT.Core
             AppsInspResult.TabResultList.Add(inspResult);
 
             sw.Stop();
-            string resultMessage = string.Format("Inspection Completed. {0}({1}ms)", inspTab.TabScanBuffer.TabNo, sw.ElapsedMilliseconds);
+            string resultMessage = string.Format("Inspection Completed. {0}({1}ms)", (inspTab.TabScanBuffer.TabNo + 1), sw.ElapsedMilliseconds);
 
             Console.WriteLine(resultMessage);
         }

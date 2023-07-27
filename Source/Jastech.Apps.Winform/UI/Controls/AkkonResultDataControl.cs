@@ -46,7 +46,7 @@ namespace Jastech.Apps.Winform.UI.Controls
                 {
                     string inspectionTime = item.InspectionTime.ToString();
                     string panelID = item.PanelID.ToString();
-                    string tabNumber = item.TabNo.ToString();
+                    string tabNumber = (item.TabNo + 1).ToString();
                     string judge = item.Judgement.ToString();
                     string count = item.MinBlobCount.ToString();
                     string length = item.MinLength.ToString("F2");

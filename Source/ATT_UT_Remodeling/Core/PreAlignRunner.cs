@@ -71,7 +71,7 @@ namespace ATT_UT_Remodeling
 
             if (SeqTask != null)
             {
-                SeqStep = SeqStep.SEQ_READY;
+                SeqStep = SeqStep.SEQ_START;
                 return;
             }
 
@@ -106,7 +106,7 @@ namespace ATT_UT_Remodeling
         {
             var cancellationToken = SeqTaskCancellationTokenSource.Token;
             cancellationToken.ThrowIfCancellationRequested();
-            SeqStep = SeqStep.SEQ_WAITING;
+            SeqStep = SeqStep.SEQ_INIT;
 
             while (true)
             {
@@ -157,16 +157,7 @@ namespace ATT_UT_Remodeling
                 case SeqStep.SEQ_IDLE:
                     break;
 
-                case SeqStep.SEQ_WAITING:
-
-                    if (AppsStatus.Instance().IsPreAlignRunnerFlagFromPlc == false)
-                        break;
-
-                    WriteLog("Receive PreAlign Start Signal From PLC.", true);
-                    SeqStep = SeqStep.SEQ_READY;
-                    break;
-
-                case SeqStep.SEQ_READY:
+                case SeqStep.SEQ_INIT:
                     ClearResult();
                     WriteLog("Clear Result.");
 
@@ -185,14 +176,18 @@ namespace ATT_UT_Remodeling
                     WriteLog($"Set Camera Property. Expose : {camera.Exposure}, AnalogGain : {camera.AnalogGain}");
 
                     // CELL ID 넣는곳이 없음
-                    SeqStep = SeqStep.SEQ_START;
+                    SeqStep = SeqStep.SEQ_WAITING;
                     break;
-           
-                case SeqStep.SEQ_START:
 
+                case SeqStep.SEQ_WAITING:
+
+                    if (AppsStatus.Instance().IsPreAlignRunnerFlagFromPlc == false)
+                        break;
+
+                    WriteLog("Receive PreAlign Start Signal From PLC.", true);
                     SeqStep = SeqStep.SEQ_PREALIGN_R;
                     break;
-
+           
                 case SeqStep.SEQ_PREALIGN_R:
 
                     if (MoveTo(TeachingPosType.Stage1_PreAlign_Right, out errorMessage) == false)
@@ -329,7 +324,7 @@ namespace ATT_UT_Remodeling
                     if (ConfigSet.Instance().Operation.VirtualMode)
                         AppsStatus.Instance().IsPreAlignRunnerFlagFromPlc = false;
 
-                    SeqStep = SeqStep.SEQ_END;
+                    SeqStep = SeqStep.SEQ_INIT;
                     break;
 
                 case SeqStep.SEQ_ERROR:
@@ -665,7 +660,7 @@ namespace ATT_UT_Remodeling
     public enum SeqStep
     {
         SEQ_IDLE,
-        SEQ_READY,
+        SEQ_INIT,
         SEQ_WAITING,
         SEQ_START,
         SEQ_PREALIGN_R,
