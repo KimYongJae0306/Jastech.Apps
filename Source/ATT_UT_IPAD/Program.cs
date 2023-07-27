@@ -19,6 +19,7 @@ using Jastech.Framework.Matrox;
 using Jastech.Framework.Util.Helper;
 using System;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using System.Runtime.ExceptionServices;
 using System.Security;
 using System.Security.Permissions;
@@ -124,16 +125,21 @@ namespace ATT_UT_IPAD
                 form.ShowDialog();
 
                 AppsConfig.Instance().ProgramType = form.SelectedProgramType;
-                ProgramType type = (ProgramType)Enum.Parse(typeof(ProgramType), AppsConfig.Instance().ProgramType);
-                switch (type)
+
+                if (Enum.TryParse(AppsConfig.Instance().ProgramType, true, out ProgramType type))
                 {
-                    case ProgramType.ProgramType_1:
-                        CreateDeviceConfigType1(config);
-                        break;
-                    case ProgramType.ProgramType_2:
-                        CreateDeviceConfigType2(config);
-                        break;
+                    switch (type)
+                    {
+                        case ProgramType.ProgramType_1:
+                            CreateDeviceConfigType1(config);
+                            break;
+                        case ProgramType.ProgramType_2:
+                            CreateDeviceConfigType2(config);
+                            break;
+                    }
                 }
+                else
+                    Console.WriteLine($"ConfigSet_MachineConfigCreated: Failed to parse program type {AppsConfig.Instance().ProgramType}");
             }
         }
 
