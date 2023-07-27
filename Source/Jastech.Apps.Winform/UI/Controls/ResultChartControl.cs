@@ -184,10 +184,13 @@ namespace Jastech.Apps.Winform.UI.Controls
             {
                 if (item.AkkonDailyInfoList.Count > 0)
                 {
-                    var tabData = item.AkkonDailyInfoList.Where(x => x.TabNo == tabNo).First();
+                    var tabData = item.AkkonDailyInfoList.Where(x => x.TabNo == tabNo).FirstOrDefault();
 
-                    AkkonSeriesCount.Points.Add(tabData.MinBlobCount);
-                    AkkonSeriesLength.Points.Add(tabData.MinLength);
+                    if(tabData != null)
+                    {
+                        AkkonSeriesCount.Points.Add(tabData.MinBlobCount);
+                        AkkonSeriesLength.Points.Add(tabData.MinLength);
+                    }
                 }
             }
         }

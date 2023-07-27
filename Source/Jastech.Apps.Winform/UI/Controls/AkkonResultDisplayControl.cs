@@ -1,5 +1,6 @@
 ﻿using Jastech.Apps.Structure;
 using Jastech.Apps.Structure.Data;
+using Jastech.Apps.Winform;
 using Jastech.Apps.Winform.UI.Controls;
 using Jastech.Framework.Algorithms.Akkon.Results;
 using Jastech.Framework.Imaging.Result;
@@ -26,7 +27,7 @@ namespace ATT_UT_IPAD.UI.Controls
         #region 속성
         public List<TabBtnControl> TabBtnControlList { get; private set; } = new List<TabBtnControl>();
 
-        public Dictionary<int, TabInspResult> InspResultDic { get; set; } = new Dictionary<int, TabInspResult>();
+        //public Dictionary<int, TabInspResult> InspResultDic { get; set; } = new Dictionary<int, TabInspResult>();
 
         public CogInspDisplayControl InspDisplayControl { get; private set; } = null; 
 
@@ -40,7 +41,7 @@ namespace ATT_UT_IPAD.UI.Controls
         #endregion
 
         #region 델리게이트
-        public delegate void SendTabNumberDelegate(int tabNumber);
+        public delegate void SendTabNumberDelegate(int tabNo);
         #endregion
 
         #region 생성자
@@ -132,93 +133,109 @@ namespace ATT_UT_IPAD.UI.Controls
             pnlTabButton.Controls.Clear();
         }
 
-        private void ButtonControl_SetTabEventHandler(int tabNum)
+        private void ButtonControl_SetTabEventHandler(int tabNo)
         {
             TabBtnControlList.ForEach(x => x.SetButtonClickNone());
-            TabBtnControlList[tabNum].SetButtonClick();
+            TabBtnControlList[tabNo].SetButtonClick();
 
-            CurrentTabNo = tabNum;
-            SendTabNumber(tabNum);
-
-            if (InspResultDic.ContainsKey(tabNum))
+            CurrentTabNo = tabNo;
+            UpdateImage(tabNo);
+            SendTabNumber(tabNo);
+        }
+        public delegate void TabButtonResetColorDele();
+        public void TabButtonResetColor()
+        {
+            if (this.InvokeRequired)
             {
-                if(IsResultImageView)
-                    InspDisplayControl.SetImage(InspResultDic[tabNum].AkkonResultImage);
-                else
-                    InspDisplayControl.SetImage(InspResultDic[tabNum].AkkonInspImage);
+                TabButtonResetColorDele callback = TabButtonResetColor;
+                BeginInvoke(callback);
+                return;
             }
-            else
-                InspDisplayControl.Clear();
+
+            TabBtnControlList.ForEach(x => x.BackColor = Color.FromArgb(52, 52, 52));
         }
 
-        public void UpdateResultDisplay(AppsInspResult inspResult)
+        private void UpdateImage(int tabNo)
         {
-            InspDisplayControl.Clear();
+            var tabInspResult = AppsInspResult.Instance().Get(tabNo);
 
-            for (int i = 0; i < inspResult.TabResultList.Count(); i++)
+            if (tabInspResult != null)
             {
-                int tabNo = inspResult.TabResultList[i].TabNo;
-
-                if (InspResultDic.ContainsKey(tabNo))
+                if(tabInspResult.Image == null)
                 {
-                    InspResultDic[tabNo].Dispose();
-                    InspResultDic.Remove(tabNo);
+                    InspDisplayControl.ClearImage();
                 }
-
-                InspResultDic.Add(tabNo, inspResult.TabResultList[i].DeepCopy());
-
-                if (CurrentTabNo == tabNo)
+                else
                 {
                     if (IsResultImageView)
-                        InspDisplayControl.SetImage(inspResult.TabResultList[i].AkkonResultImage);
+                    {
+                        if (tabInspResult.AkkonResultCogImage == null)
+                            InspDisplayControl.ClearImage();
+                        else
+                            InspDisplayControl.SetImage(tabInspResult.AkkonResultCogImage);
+                    }
                     else
-                        InspDisplayControl.SetImage(inspResult.TabResultList[i].AkkonInspImage);
+                    {
+                        if (tabInspResult.AkkonInspCogImage == null)
+                            InspDisplayControl.ClearImage();
+                        else
+                            InspDisplayControl.SetImage(tabInspResult.AkkonInspCogImage);
+                    }
                 }
-
-                var countJudgement = inspResult.TabResultList[i].AkkonResult.CountJudgement;
-                var lengthJudgement = inspResult.TabResultList[i].AkkonResult.LengthJudgement;
-
-                if (countJudgement == Judgement.OK && lengthJudgement == Judgement.OK)
-                    TabBtnControlList[tabNo].BackColor = Color.MediumSeaGreen;
-                else
-                    TabBtnControlList[tabNo].BackColor = Color.Red;
             }
+            else
+            {
+                InspDisplayControl.ClearImage();
+            }
+        }
+
+        public void UpdateResultDisplay(int tabNo)
+        {
+            var tabInspResult = AppsInspResult.Instance().Get(tabNo);
+
+            if (CurrentTabNo == tabNo)
+            {
+                UpdateImage(tabNo);
+            }
+        }
+
+        public delegate void UpdateTabButtonDele(int tabNo);
+        public void UpdateResultTabButton(int tabNo)
+        {
+            if (this.InvokeRequired)
+            {
+                UpdateTabButtonDele callback = UpdateResultTabButton;
+                BeginInvoke(callback, tabNo);
+                return;
+            }
+
+            var tabInspResult = AppsInspResult.Instance().Get(tabNo);
+
+            var countJudgement = tabInspResult.AkkonResult.CountJudgement;
+            var lengthJudgement = tabInspResult.AkkonResult.LengthJudgement;
+
+            if (countJudgement == Judgement.OK && lengthJudgement == Judgement.OK)
+                TabBtnControlList[tabNo].BackColor = Color.MediumSeaGreen;
+            else
+                TabBtnControlList[tabNo].BackColor = Color.Red;
         }
 
         private void btnResizeImage_Click(object sender, EventArgs e)
         {
             IsResultImageView = false;
+
             UpdateButton();
-
+            UpdateImage(CurrentTabNo);
             SendTabNumber(CurrentTabNo);
-
-            if (InspResultDic.ContainsKey(CurrentTabNo))
-            {
-                if (IsResultImageView)
-                    InspDisplayControl.SetImage(InspResultDic[CurrentTabNo].AkkonResultImage);
-                else
-                    InspDisplayControl.SetImage(InspResultDic[CurrentTabNo].AkkonInspImage);
-            }
-            else
-                InspDisplayControl.Clear();
         }
 
         private void btnResultImage_Click(object sender, EventArgs e)
         {
             IsResultImageView = true;
+
             UpdateButton();
-
+            UpdateImage(CurrentTabNo);
             SendTabNumber(CurrentTabNo);
-
-            if (InspResultDic.ContainsKey(CurrentTabNo))
-            {
-                if (IsResultImageView)
-                    InspDisplayControl.SetImage(InspResultDic[CurrentTabNo].AkkonResultImage);
-                else
-                    InspDisplayControl.SetImage(InspResultDic[CurrentTabNo].AkkonInspImage);
-            }
-            else
-                InspDisplayControl.Clear();
         }
         #endregion
     }

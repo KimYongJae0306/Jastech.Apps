@@ -56,6 +56,11 @@ namespace Jastech.Apps.Winform.UI.Controls
                 }
             }
         }
+
+        public void ClearData()
+        {
+            dgvAkkonHistory.Rows.Clear();
+        }
         #endregion
     }
 }

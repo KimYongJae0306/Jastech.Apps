@@ -1,6 +1,7 @@
 ﻿using Cognex.VisionPro;
 using Jastech.Apps.Structure;
 using Jastech.Apps.Structure.Data;
+using Jastech.Apps.Winform;
 using Jastech.Apps.Winform.UI.Controls;
 using Jastech.Framework.Imaging.Result;
 using Jastech.Framework.Winform.VisionPro.Controls;
@@ -24,8 +25,6 @@ namespace ATT_UT_IPAD.UI.Controls
         #endregion
 
         #region 속성
-        public Dictionary<int, TabInspResult> InspResultDic { get; set; } = new Dictionary<int, TabInspResult>();
-
         public List<TabBtnControl> TabBtnControlList { get; private set; } = new List<TabBtnControl>();
 
         public CogInspAlignDisplayControl InspAlignDisplay { get; private set; } = null;
@@ -38,7 +37,7 @@ namespace ATT_UT_IPAD.UI.Controls
         #endregion
 
         #region 델리게이트
-        public delegate void SendTabNumberDelegate(int tabNumber);
+        public delegate void SendTabNumberDelegate(int tabNo);
         #endregion
 
         #region 생성자
@@ -113,54 +112,71 @@ namespace ATT_UT_IPAD.UI.Controls
             pnlTabButton.Controls.Clear();
         }
 
-        private void ButtonControl_SetTabEventHandler(int tabNum)
+        private void ButtonControl_SetTabEventHandler(int tabNo)
         {
             TabBtnControlList.ForEach(x => x.SetButtonClickNone());
-            TabBtnControlList[tabNum].SetButtonClick();
+            TabBtnControlList[tabNo].SetButtonClick();
 
-            CurrentTabNo = tabNum;
-            SendTabNumber(tabNum);
-
-            if (InspResultDic.ContainsKey(tabNum))
-            {
-                UpdateLeftAlignResult(InspResultDic[tabNum]);
-                UpdateRightAlignResult(InspResultDic[tabNum]);
-            }
-            else
-                InspAlignDisplay.ClearImage();
+            CurrentTabNo = tabNo;
+            UpdateResultDisplay(tabNo);
+            SendTabNumber(tabNo);
         }
 
-        public void UpdateResultDisplay(AppsInspResult inspResult)
+        public delegate void TabButtonResetColorDele();
+        public void TabButtonResetColor()
         {
-            InspAlignDisplay.ClearImage();
-
-            for (int i = 0; i < inspResult.TabResultList.Count(); i++)
+            if (this.InvokeRequired)
             {
-                int tabNo = inspResult.TabResultList[i].TabNo;
-                var result = inspResult.TabResultList[i];
+                TabButtonResetColorDele callback = TabButtonResetColor;
+                BeginInvoke(callback);
+                return;
+            }
 
-                if (InspResultDic.ContainsKey(tabNo))
-                {
-                    InspResultDic[tabNo].Dispose();
-                    InspResultDic.Remove(tabNo);
-                }
+            TabBtnControlList.ForEach(x => x.BackColor = Color.FromArgb(52, 52, 52));
+        }
 
-                InspResultDic.Add(tabNo, result);
+        public void UpdateResultDisplay(int tabNo)
+        {
+            var tabInspResult = AppsInspResult.Instance().Get(tabNo);
 
+            if(tabInspResult != null)
+            {
                 if (CurrentTabNo == tabNo)
                 {
-                    UpdateLeftAlignResult(result);
-                    UpdateRightAlignResult(result);
+                    UpdateLeftAlignResult(tabInspResult);
+                    UpdateRightAlignResult(tabInspResult);
                 }
-                if(result.AlignResult.Judgement == Judgement.OK)
-                    TabBtnControlList[tabNo].BackColor = Color.MediumSeaGreen;
-                else
-                    TabBtnControlList[tabNo].BackColor = Color.Red;
             }
+            else
+            {
+                InspAlignDisplay.ClearImage();
+            }
+          
+        }
+
+        public delegate void UpdateTabButtonDele(int tabNo);
+        public void UpdateResultTabButton(int tabNo)
+        {
+            if(this.InvokeRequired)
+            {
+                UpdateTabButtonDele callback = UpdateResultTabButton;
+                BeginInvoke(callback, tabNo);
+                return;
+            }
+
+            var tabInspResult = AppsInspResult.Instance().Get(tabNo);
+
+            if (tabInspResult.AlignResult.Judgement == Judgement.OK)
+                TabBtnControlList[tabNo].BackColor = Color.MediumSeaGreen;
+            else
+                TabBtnControlList[tabNo].BackColor = Color.Red;
         }
 
         private void UpdateLeftAlignResult(TabInspResult result)
         {
+            if (result == null)
+                return;
+
             List<CogCompositeShape> leftResultList = new List<CogCompositeShape>();
             List<PointF> pointList = new List<PointF>();
 
@@ -220,6 +236,9 @@ namespace ATT_UT_IPAD.UI.Controls
 
         private void UpdateRightAlignResult(TabInspResult result)
         {
+            if (result == null)
+                return;
+
             List<CogCompositeShape> rightResultList = new List<CogCompositeShape>();
             List<PointF> pointList = new List<PointF>();
 

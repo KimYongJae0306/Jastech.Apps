@@ -51,28 +51,30 @@ namespace ATT_UT_Remodeling.UI.Controls
         public void UpdateTabCount(int tabCount)
         {
             AkkonResultDisplayControl.UpdateTabCount(tabCount);
+            AkkonResultDataControl.ClearData();
+            AkkonResultChartControl.ClearChart();
         }
 
-        public void UpdateMainResult(AppsInspResult result)
+        public void UpdateMainResult(int tabNo)
         {
-            UpdateResultDisplay(result);
-            UpdateResultData();
-            UpdateResultChart(0);
-        }
-
-        private void UpdateResultDisplay(AppsInspResult result)
-        {
-            AkkonResultDisplayControl.UpdateResultDisplay(result);
-        }
-
-        private void UpdateResultData()
-        {
+            AkkonResultDisplayControl.UpdateResultDisplay(tabNo);
             AkkonResultDataControl.UpdateAkkonDaily();
+            UpdateResultChart(tabNo);
         }
 
-        private void UpdateResultChart(int tabNumber)
+        public void UpdateResultTabButton(int tabNo)
         {
-            AkkonResultChartControl.UpdateAkkonDaily(tabNumber);
+            AkkonResultDisplayControl.UpdateResultTabButton(tabNo);
+        }
+
+        public void TabButtonResetColor()
+        {
+            AkkonResultDisplayControl.TabButtonResetColor();
+        }
+
+        private void UpdateResultChart(int tabNo)
+        {
+            AkkonResultChartControl.UpdateAkkonDaily(tabNo);
         }
         #endregion
     }

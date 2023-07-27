@@ -14,7 +14,7 @@ namespace Jastech.Apps.Structure.VisionTool
 {
     public partial class MainAlgorithmTool : AlgorithmTool
     {
-        public void ExecuteAlignment(Unit unit, List<PointF> realCoordinateList, PointF calibrationStartPosition, ref AppsPreAlignResult result)
+        public AlignmentResult ExecuteAlignment(Unit unit, List<PointF> realCoordinateList, PointF calibrationStartPosition)
         {
             double t1, t2, dt = 0.0;
             double cX = 0, cY = 0, pX = 0, pY = 0;
@@ -88,17 +88,15 @@ namespace Jastech.Apps.Structure.VisionTool
 
             //return false;
             //inspResult.PreAlignResult.SetPreAlignResult(offsetX, offsetY, offsetT);
+            AlignmentResult alignment = new AlignmentResult
+            {
+                OffsetX = offsetX,
+                OffsetY = offsetY,
+                OffsetT = offsetT,
+            };
 
-            result.SetPreAlignResult(offsetX, offsetY, offsetT);
+            return alignment;
         }
-
-        //public void RunPreAlign(ref AppsInspResult inspResult)
-        //{
-        //    if (inspResult.PreAlignResult.FoundedMark.Left.Judgement == Judgement.OK && inspResult.PreAlignResult.FoundedMark.Right.Judgement == Judgement.OK)
-        //        inspResult.PreAlignResult.Judgement = Judgement.OK;
-        //    else
-        //        inspResult.PreAlignResult.Judgement = Judgement.NG;
-        //}
 
         public void MainMarkInspect(ICogImage cogImage, Tab tab, ref TabInspResult tabInspResult, bool useAlignMark)
         {
@@ -409,5 +407,16 @@ namespace Jastech.Apps.Structure.VisionTool
 
             return roi;
         }
+    }
+
+    public class AlignmentResult
+    {
+        #region 속성
+        public double OffsetX { get; set; } = 0.0;
+
+        public double OffsetY { get; set; } = 0.0;
+
+        public double OffsetT { get; set; } = 0.0;
+        #endregion
     }
 }

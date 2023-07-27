@@ -202,9 +202,29 @@ namespace ATT_UT_Remodeling
             return true;
         }
 
-        public void UpdateMainResult(AppsInspResult result)
+        public void UpdateMainResult(int tabNo)
         {
-            _mainForm.UpdateMainResult(result);
+            _mainForm.UpdateMainResult(tabNo);
+        }
+
+        public void UpdateResultTabButton(int tabNo)
+        {
+            _mainForm.UpdateResultTabButton(tabNo);
+        }
+
+        public void TabButtonResetColor()
+        {
+            _mainForm.TabButtonResetColor();
+        }
+
+        public void UpdateMainResult()
+        {
+            var inspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
+
+            for (int tabNo = 0; tabNo < inspModel.TabCount; tabNo++)
+            {
+                _mainForm.UpdateMainResult(tabNo);
+            }
         }
 
         public void AddSystemLogMessage(string logMessage)
@@ -255,9 +275,14 @@ namespace ATT_UT_Remodeling
             _inspRunner.SetVirtualmage(tabNo, fileName);
         }
 
-        public void VirtualGrabDone()
+        public void InitializeInspRunner()
         {
-            _inspRunner.VirtualGrabDone();
+            _inspRunner.Initialize();
+        }
+
+        public void ReleaseInspRunner()
+        {
+            _inspRunner.Release();
         }
 
         public void SetLeftPreAlignImage(string filePath)
