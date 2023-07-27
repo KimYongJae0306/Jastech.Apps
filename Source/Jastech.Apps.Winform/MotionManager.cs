@@ -85,7 +85,7 @@ namespace Jastech.Apps.Winform
             var targetPosition = posData.GetTargetPosition(axis.Name);
             var actualPosition = axis.GetActualPosition();
 
-            if (Math.Abs(targetPosition - actualPosition) <= double.Epsilon)
+            if (Math.Abs(targetPosition - actualPosition) <= /*double.Epsilon*/0.0001)
                 return true;
 
             return false;
