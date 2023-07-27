@@ -232,15 +232,10 @@ namespace Jastech.Apps.Structure.VisionTool
 
                 result.ResultValue_pixel = temp / count;
                 result.AvgCenterX = GetCenterX(panelCenterXList);
-
-                if (Math.Abs(result.ResultValue_pixel) <= judegementX)
-                    result.Judgement = Judgement.OK;
-                else
-                    result.Judgement = Judgement.NG;
+                result.JudegementValue_pixel = judegementX;
             }
             else
             {
-                result.Judgement = Judgement.FAIL;
                 string message = string.Format(" Main CaliperX Search Fail. Panel({0}), FPC({1})", panelParam.Name, fpcParam.Name);
                 Logger.Debug(LogType.Inspection, message);
             }
@@ -282,17 +277,12 @@ namespace Jastech.Apps.Structure.VisionTool
                 float newY = panelY - fpcY;
 
                 result.ResultValue_pixel = newY;
-
-                if (Math.Abs(result.ResultValue_pixel) <= judgementY)
-                    result.Judgement = Judgement.OK;
-                else
-                    result.Judgement = Judgement.NG;
+                result.JudegementValue_pixel = judgementY;
             }
             else
             {
                 string message = string.Format("Main CaliperY Search Fail. Panel({0}), FPC({1})", panelParam.Name, fpcParam.Name);
                 Logger.Debug(LogType.Inspection, message);
-                result.Judgement = Judgement.FAIL;
             }
 
             return result;

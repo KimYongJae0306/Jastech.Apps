@@ -19,6 +19,7 @@ using Jastech.Framework.Matrox;
 using Jastech.Framework.Util.Helper;
 using System;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using System.Runtime.ExceptionServices;
 using System.Security;
 using System.Security.Permissions;
@@ -32,8 +33,6 @@ namespace ATT_UT_IPAD
         /// <summary>
         /// 해당 응용 프로그램의 주 진입점입니다.
         /// </summary>
-        [HandleProcessCorruptedStateExceptions]
-        [SecurityCritical]
         [STAThread]
         private static void Main()
         {
@@ -42,40 +41,31 @@ namespace ATT_UT_IPAD
 
             if (isRunning)
             {
-                try
-                {
-                    Application.EnableVisualStyles();
-                    Application.SetCompatibleTextRenderingDefault(false);
+                Application.EnableVisualStyles();
+                Application.SetCompatibleTextRenderingDefault(false);
 
-                    Application.ThreadException += Application_ThreadException;
-                    Application.SetUnhandledExceptionMode(UnhandledExceptionMode.ThrowException);
-                    AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
+                Application.ThreadException += Application_ThreadException;
+                Application.SetUnhandledExceptionMode(UnhandledExceptionMode.ThrowException);
+                AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
 
-                    Logger.Initialize(ConfigSet.Instance().Path.Log);
+                Logger.Initialize(ConfigSet.Instance().Path.Log);
 
-                    MilHelper.InitApplication();
-                    CameraMil.BufferPoolCount = 200;
-                    SystemHelper.StartChecker(@"D:\ATT_Memory_Test.txt");
-                    AppsConfig.Instance().UnitCount = 1;
+                MilHelper.InitApplication();
+                CameraMil.BufferPoolCount = 200;
+                SystemHelper.StartChecker(@"D:\ATT_Memory_Test.txt");
+                AppsConfig.Instance().UnitCount = 1;
 
-                    ConfigSet.Instance().PathConfigCreated += ConfigSet_PathConfigCreated;
-                    ConfigSet.Instance().OperationConfigCreated += ConfigSet_OperationConfigCreated;
-                    ConfigSet.Instance().MachineConfigCreated += ConfigSet_MachineConfigCreated;
-                    ConfigSet.Instance().Initialize();
+                ConfigSet.Instance().PathConfigCreated += ConfigSet_PathConfigCreated;
+                ConfigSet.Instance().OperationConfigCreated += ConfigSet_OperationConfigCreated;
+                ConfigSet.Instance().MachineConfigCreated += ConfigSet_MachineConfigCreated;
+                ConfigSet.Instance().Initialize();
 
-                    AppsConfig.Instance().Initialize();
-                    UserManager.Instance().Initialize();
+                AppsConfig.Instance().Initialize();
+                UserManager.Instance().Initialize();
 
-                    var mainForm = new MainForm();
-                    SystemManager.Instance().Initialize(mainForm);
-                    Application.Run(mainForm);
-                }
-                catch (AccessViolationException err)
-                {
-
-                    throw;
-                }
-                
+                var mainForm = new MainForm();
+                SystemManager.Instance().Initialize(mainForm);
+                Application.Run(mainForm);
             }
             else
             {
@@ -135,16 +125,21 @@ namespace ATT_UT_IPAD
                 form.ShowDialog();
 
                 AppsConfig.Instance().ProgramType = form.SelectedProgramType;
-                ProgramType type = (ProgramType)Enum.Parse(typeof(ProgramType), AppsConfig.Instance().ProgramType);
-                switch (type)
+
+                if (Enum.TryParse(AppsConfig.Instance().ProgramType, true, out ProgramType type))
                 {
-                    case ProgramType.ProgramType_1:
-                        CreateDeviceConfigType1(config);
-                        break;
-                    case ProgramType.ProgramType_2:
-                        CreateDeviceConfigType2(config);
-                        break;
+                    switch (type)
+                    {
+                        case ProgramType.ProgramType_1:
+                            CreateDeviceConfigType1(config);
+                            break;
+                        case ProgramType.ProgramType_2:
+                            CreateDeviceConfigType2(config);
+                            break;
+                    }
                 }
+                else
+                    Console.WriteLine($"ConfigSet_MachineConfigCreated: Failed to parse program type {AppsConfig.Instance().ProgramType}");
             }
         }
 

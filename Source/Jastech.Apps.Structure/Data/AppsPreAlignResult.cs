@@ -17,7 +17,7 @@ namespace Jastech.Apps.Structure.Data
 
         public string Cell_ID { get; set; } = "";
 
-        public Judgement Judgement { get; set; } = Judgement.OK;
+        public Judgement Judgement { get; set; } = Judgement.FAIL;
 
         public PreAlignResult Left { get; set; } = new PreAlignResult();
 

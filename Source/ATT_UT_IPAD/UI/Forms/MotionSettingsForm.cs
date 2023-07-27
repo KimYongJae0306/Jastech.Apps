@@ -223,17 +223,16 @@ namespace ATT_UT_IPAD.UI.Forms
             XCommonControl = new MotionParameterCommonControl();
             XCommonControl.Dock = DockStyle.Fill;
             XCommonControl.SetAxis(AxisHandler.GetAxis(AxisName.X));
+            tlpCommonParameter.Controls.Add(XCommonControl);
 
             Z1CommonControl = new MotionParameterCommonControl();
             Z1CommonControl.Dock = DockStyle.Fill;
             Z1CommonControl.SetAxis(AxisHandler.GetAxis(AxisName.Z0));
+            tlpCommonParameter.Controls.Add(Z1CommonControl);
 
             Z2CommonControl = new MotionParameterCommonControl();
             Z2CommonControl.Dock = DockStyle.Fill;
             Z2CommonControl.SetAxis(AxisHandler.GetAxis(AxisName.Z1));
-
-            tlpCommonParameter.Controls.Add(XCommonControl);
-            tlpCommonParameter.Controls.Add(Z1CommonControl);
             tlpCommonParameter.Controls.Add(Z2CommonControl);
         }
 
@@ -242,17 +241,16 @@ namespace ATT_UT_IPAD.UI.Forms
             XVariableControl = new MotionParameterVariableControl();
             XVariableControl.Dock = DockStyle.Fill;
             XVariableControl.SetAxis(AxisHandler.GetAxis(AxisName.X));
+            tlpVariableParameter.Controls.Add(XVariableControl);
 
             Z1VariableControl = new MotionParameterVariableControl();
             Z1VariableControl.Dock = DockStyle.Fill;
             Z1VariableControl.SetAxis(AxisHandler.GetAxis(AxisName.Z0));
+            tlpVariableParameter.Controls.Add(Z1VariableControl);
 
             Z2VariableControl = new MotionParameterVariableControl();
             Z2VariableControl.Dock = DockStyle.Fill;
             Z2VariableControl.SetAxis(AxisHandler.GetAxis(AxisName.Z1));
-
-            tlpVariableParameter.Controls.Add(XVariableControl);
-            tlpVariableParameter.Controls.Add(Z1VariableControl);
             tlpVariableParameter.Controls.Add(Z2VariableControl);
         }
 

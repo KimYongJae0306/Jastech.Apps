@@ -599,6 +599,9 @@ namespace Jastech.Framework.Winform.Forms
             if (cogImage == null)
                 return;
 
+            if (tabOriginData.MarkParamter == null)
+                return;
+
             // Left Fpc
             MarkParam referenceLeftFpcMarkParam = tabOriginData.MarkParamter.GetFPCMark(MarkDirection.Left, MarkName.Main, UseAlignMark);
             VisionProPatternMatchingResult leftFpcResult = Algorithm.RunPatternMatch(cogImage, referenceLeftFpcMarkParam.InspParam);

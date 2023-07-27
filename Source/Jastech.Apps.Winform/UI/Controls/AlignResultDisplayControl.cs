@@ -152,7 +152,7 @@ namespace ATT_UT_IPAD.UI.Controls
                     UpdateLeftAlignResult(result);
                     UpdateRightAlignResult(result);
                 }
-                if(result.AlignResult.IsAlignGood())
+                if(result.AlignResult.Judgement == Judgement.OK)
                     TabBtnControlList[tabNo].BackColor = Color.MediumSeaGreen;
                 else
                     TabBtnControlList[tabNo].BackColor = Color.Red;

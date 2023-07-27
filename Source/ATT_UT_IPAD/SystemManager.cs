@@ -49,88 +49,67 @@ namespace ATT_UT_IPAD
 
             return _instance;
         }
-        [HandleProcessCorruptedStateExceptions]
-        [SecurityCritical]
+
         public bool Initialize(MainForm mainForm)
         {
-            try
-            {
-                _mainForm = mainForm;
+            _mainForm = mainForm;
 
-                Logger.Write(LogType.System, "Init SplashForm");
+            Logger.Write(LogType.System, "Init SplashForm");
 
-                SplashForm form = new SplashForm();
+            SplashForm form = new SplashForm();
 
-                form.Title = "ATT Inspection";
-                form.Version = ConfigSet.Instance().Operation.SystemVersion;
-                form.SetupActionEventHandler = SplashSetupAction;
+            form.Title = "ATT Inspection";
+            form.Version = ConfigSet.Instance().Operation.SystemVersion;
+            form.SetupActionEventHandler = SplashSetupAction;
 
-                form.ShowDialog();
+            form.ShowDialog();
 
-                DailyInfoService.Load();
+            DailyInfoService.Load();
 
-                return true;
-            }
-            catch (AccessViolationException err)
-            {
-
-                return true;
-            }
-           
+            return true;
         }
 
-        [HandleProcessCorruptedStateExceptions]
-        [SecurityCritical]
         private bool SplashSetupAction(IReportProgress reportProgress)
         {
-            try
+            Logger.Write(LogType.System, "Initialize Device");
+
+            int percent = 0;
+            DoReportProgress(reportProgress, percent, "Initialize Device");
+
+            DeviceManager.Instance().Initialized += SystemManager_Initialized;
+            DeviceManager.Instance().Initialize(ConfigSet.Instance());
+            PlcControlManager.Instance().Initialize();
+
+            percent = 50;
+            DoReportProgress(reportProgress, percent, "Create Axis Info");
+
+            CreateAxisHandler();
+
+
+            percent = 80;
+            DoReportProgress(reportProgress, percent, "Initialize Manager.");
+            LAFManager.Instance().Initialize();
+            LineCameraManager.Instance().Initialize();
+            AreaCameraManager.Instance().Initialize();
+
+            if (ConfigSet.Instance().Operation.LastModelName != "")
             {
-                Logger.Write(LogType.System, "Initialize Device");
+                percent = 90;
+                DoReportProgress(reportProgress, percent, "Open Last Model.");
 
-                int percent = 0;
-                DoReportProgress(reportProgress, percent, "Initialize Device");
-
-                DeviceManager.Instance().Initialized += SystemManager_Initialized;
-                DeviceManager.Instance().Initialize(ConfigSet.Instance());
-                PlcControlManager.Instance().Initialize();
-
-                percent = 50;
-                DoReportProgress(reportProgress, percent, "Create Axis Info");
-
-                CreateAxisHandler();
-
-
-                percent = 80;
-                DoReportProgress(reportProgress, percent, "Initialize Manager.");
-                LAFManager.Instance().Initialize();
-                LineCameraManager.Instance().Initialize();
-                AreaCameraManager.Instance().Initialize();
-
-                if (ConfigSet.Instance().Operation.LastModelName != "")
+                string filePath = Path.Combine(ConfigSet.Instance().Path.Model,
+                                    ConfigSet.Instance().Operation.LastModelName,
+                                    InspModel.FileName);
+                if (File.Exists(filePath))
                 {
-                    percent = 90;
-                    DoReportProgress(reportProgress, percent, "Open Last Model.");
-
-                    string filePath = Path.Combine(ConfigSet.Instance().Path.Model,
-                                        ConfigSet.Instance().Operation.LastModelName,
-                                        InspModel.FileName);
-                    if (File.Exists(filePath))
-                    {
-                        DoReportProgress(reportProgress, percent, "Model Loading");
-                        ModelManager.Instance().CurrentModel = _mainForm.ATTInspModelService.Load(filePath);
-                    }
+                    DoReportProgress(reportProgress, percent, "Model Loading");
+                    ModelManager.Instance().CurrentModel = _mainForm.ATTInspModelService.Load(filePath);
                 }
-
-                percent = 100;
-                DoReportProgress(reportProgress, percent, "Initialize Completed.");
-                return true;
             }
-            catch (AccessViolationException err)
-            {
 
-                return true;
-            }
-            
+            percent = 100;
+            DoReportProgress(reportProgress, percent, "Initialize Completed.");
+            return true;
         }
 
         private void DoReportProgress(IReportProgress reportProgress, int percentage, string message)
@@ -194,16 +173,20 @@ namespace ATT_UT_IPAD
             {
                 AxisHandler handler = new AxisHandler();
 
-                ProgramType type = (ProgramType)Enum.Parse(typeof(ProgramType), AppsConfig.Instance().ProgramType);
-                switch (type)
+                if (Enum.TryParse(AppsConfig.Instance().ProgramType, true, out ProgramType type))
                 {
-                    case ProgramType.ProgramType_1:
-                        AddAxisHandlerType1(motion, out handler);
-                        break;
-                    case ProgramType.ProgramType_2:
-                        AddAxisHandlerType2(motion, out handler);
-                        break;
+                    switch (type)
+                    {
+                        case ProgramType.ProgramType_1:
+                            AddAxisHandlerType1(motion, out handler);
+                            break;
+                        case ProgramType.ProgramType_2:
+                            AddAxisHandlerType2(motion, out handler);
+                            break;
+                    }
                 }
+                else
+                    Console.WriteLine($"CreateAxisHandler: Failed to parse program type {AppsConfig.Instance().ProgramType}");
 
                 MotionManager.Instance().AxisHandlerList.Add(handler);
                 JsonConvertHelper.Save(unit0FilePath, handler);

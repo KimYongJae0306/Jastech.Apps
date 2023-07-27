@@ -93,6 +93,11 @@ namespace ATT_UT_Remodeling.UI.Pages
             PreAlignDisplayControl.UpdatePreAlignResult(result);
         }
 
+        public void ClearPreAlignResult()
+        {
+            PreAlignDisplayControl.ClearPreAlignResult();
+        }
+
         public void AddSystemLogMessage(string logMessage)
         {
             SystemLogControl.AddLogMessage(logMessage);

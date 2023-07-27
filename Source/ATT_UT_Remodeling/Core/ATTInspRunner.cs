@@ -116,11 +116,13 @@ namespace ATT_UT_Remodeling.Core
 
             algorithmTool.MainMarkInspect(inspTab.MergeCogImage, tab, ref inspResult, false);
 
-            if (inspResult.MarkResult.IsGood() == false)
+            if (inspResult.MarkResult.Judgement != Judgement.OK)
             {
                 // 검사 실패
                 string message = string.Format("Mark Inspection NG !!! Tab_{0} / Fpc_{1}, Panel_{2}", tab.Index, inspResult.MarkResult.FpcMark.Judgement, inspResult.MarkResult.PanelMark.Judgement);
+                WriteLog(message);
                 Logger.Debug(LogType.Inspection, message);
+                AppsInspResult.TabResultList.Add(inspResult);
             }
             else
             {
@@ -142,7 +144,7 @@ namespace ATT_UT_Remodeling.Core
                 if (AppsConfig.Instance().EnableAlign)
                 {
                     inspResult.AlignResult.LeftX = algorithmTool.RunMainLeftAlignX(inspTab.MergeCogImage, tab, fpcCoordinate, panelCoordinate, judgementX);
-                    if (inspResult.AlignResult.IsLeftXGood() == false)
+                    if (inspResult.AlignResult.LeftX?.Judgement != Judgement.OK)
                     {
                         var leftAlignX = inspResult.AlignResult.LeftX;
                         string message = string.Format("Left AlignX Inspection NG !!! Tab_{0} / Fpc_{1}, Panel_{2}", tab.Index, leftAlignX.Fpc.Judgement, leftAlignX.Panel.Judgement);
@@ -150,7 +152,7 @@ namespace ATT_UT_Remodeling.Core
                     }
 
                     inspResult.AlignResult.LeftY = algorithmTool.RunMainLeftAlignY(inspTab.MergeCogImage, tab, fpcCoordinate, panelCoordinate, judgementY);
-                    if (inspResult.AlignResult.IsLeftYGood() == false)
+                    if (inspResult.AlignResult.LeftY?.Judgement != Judgement.OK)
                     {
                         var leftAlignY = inspResult.AlignResult.LeftY;
                         string message = string.Format("Left AlignY Inspection NG !!! Tab_{0} / Fpc_{1}, Panel_{2}", tab.Index, leftAlignY.Fpc.Judgement, leftAlignY.Panel.Judgement);
@@ -158,7 +160,7 @@ namespace ATT_UT_Remodeling.Core
                     }
 
                     inspResult.AlignResult.RightX = algorithmTool.RunMainRightAlignX(inspTab.MergeCogImage, tab, fpcCoordinate, panelCoordinate, judgementX);
-                    if (inspResult.AlignResult.IsRightXGood() == false)
+                    if (inspResult.AlignResult.RightX?.Judgement != Judgement.OK)
                     {
                         var rightAlignX = inspResult.AlignResult.RightX;
                         string message = string.Format("Right AlignX Inspection NG !!! Tab_{0} / Fpc_{1}, Panel_{2}", tab.Index, rightAlignX.Fpc.Judgement, rightAlignX.Panel.Judgement);
@@ -166,7 +168,7 @@ namespace ATT_UT_Remodeling.Core
                     }
 
                     inspResult.AlignResult.RightY = algorithmTool.RunMainRightAlignY(inspTab.MergeCogImage, tab, fpcCoordinate, panelCoordinate, judgementY);
-                    if (inspResult.AlignResult.IsRightYGood() == false)
+                    if (inspResult.AlignResult.RightY?.Judgement != Judgement.OK)
                     {
                         var rightAlignY = inspResult.AlignResult.RightY;
                         string message = string.Format("Right AlignY Inspection NG !!! Tab_{0} / Fpc_{1}, Panel_{2}", tab.Index, rightAlignY.Fpc.Judgement, rightAlignY.Panel.Judgement);
@@ -709,16 +711,19 @@ namespace ATT_UT_Remodeling.Core
                 var tabResult = AppsInspResult.TabResultList[i];
                 Tab tab = unit.GetTab(tabResult.TabNo);
 
-                // Overlay Image
-                Mat resultMat = GetResultImage(tabResult.Image, tabResult.AkkonResult.LeadResultList, tab.AkkonParam.AkkonAlgoritmParam);
-                ICogImage cogImage = ConvertCogColorImage(resultMat);
-                tabResult.AkkonResultImage = cogImage;
-                resultMat.Dispose();
+                if(tabResult.MarkResult.Judgement == Judgement.OK)
+                {
+                    // Overlay Image
+                    Mat resultMat = GetResultImage(tabResult.Image, tabResult.AkkonResult.LeadResultList, tab.AkkonParam.AkkonAlgoritmParam);
+                    ICogImage cogImage = ConvertCogColorImage(resultMat);
+                    tabResult.AkkonResultImage = cogImage;
+                    resultMat.Dispose();
 
-                // Resize Image
-                Mat resizeMat = MatHelper.Resize(tabResult.Image, tab.AkkonParam.AkkonAlgoritmParam.ImageFilterParam.ResizeRatio);
-                tabResult.AkkonInspImage = ConvertCogGrayImage(resizeMat);
-                resizeMat.Dispose();
+                    // Resize Image
+                    Mat resizeMat = MatHelper.Resize(tabResult.Image, tab.AkkonParam.AkkonAlgoritmParam.ImageFilterParam.ResizeRatio);
+                    tabResult.AkkonInspImage = ConvertCogGrayImage(resizeMat);
+                    resizeMat.Dispose();
+                }
             }
 
             sw.Stop();
@@ -1011,14 +1016,23 @@ namespace ATT_UT_Remodeling.Core
                 alignInfo.PanelID = inspResult.Cell_ID;
                 alignInfo.TabNo = item.TabNo;
                 alignInfo.Judgement = item.Judgement;
-                alignInfo.LX = item.AlignResult.LeftX.ResultValue_pixel;
-                alignInfo.LY = item.AlignResult.LeftY.ResultValue_pixel;
-                alignInfo.RX = item.AlignResult.RightX.ResultValue_pixel;
-                alignInfo.RY = item.AlignResult.RightY.ResultValue_pixel;
+
+                alignInfo.LX = GetResultAlignResultValue(item.AlignResult.LeftX);
+                alignInfo.LY = GetResultAlignResultValue(item.AlignResult.LeftY);
+                alignInfo.RX = GetResultAlignResultValue(item.AlignResult.RightX);
+                alignInfo.RY = GetResultAlignResultValue(item.AlignResult.RightY);
                 alignInfo.CX = item.AlignResult.CenterX;
 
                 dailyData.AddAlignInfo(alignInfo);
             }
+        }
+
+        private float GetResultAlignResultValue(AlignResult alignResult)
+        {
+            if (alignResult == null)
+                return 0.0F;
+            else
+                return alignResult.ResultValue_pixel;
         }
 
         private void UpdateAkkonDailyInfo(AppsInspResult inspResult, ref DailyData dailyData)
@@ -1031,17 +1045,26 @@ namespace ATT_UT_Remodeling.Core
                 akkonInfo.PanelID = inspResult.Cell_ID;
                 akkonInfo.TabNo = item.TabNo;
 
-                var countJudgement = item.AkkonResult.CountJudgement;
-                var lengthJudgement = item.AkkonResult.LengthJudgement;
+                Judgement countJudgement = Judgement.FAIL;
+                if (item.AkkonResult != null)
+                    countJudgement = item.AkkonResult.CountJudgement;
+
+                Judgement lengthJudgement = Judgement.FAIL;
+                if (item.AkkonResult != null)
+                    lengthJudgement = item.AkkonResult.LengthJudgement;
 
                 if (countJudgement == Judgement.OK || lengthJudgement == Judgement.OK)
                     akkonInfo.Judgement = Judgement.OK;
                 else
                     akkonInfo.Judgement = Judgement.NG;
-                var akkonResult = item.AkkonResult;
-                
-                int minCount = akkonResult.LeftCount_Avg > akkonResult.RightCount_Min ? akkonResult.RightCount_Min : akkonResult.LeftCount_Avg;
-                float minLength = akkonResult.Length_Left_Min_um > akkonResult.Length_Right_Min_um ? akkonResult.Length_Right_Min_um : akkonResult.Length_Left_Min_um;
+
+                int minCount = 0;
+                if (item.AkkonResult != null)
+                    minCount = item.AkkonResult.LeftCount_Avg > item.AkkonResult.RightCount_Min ? item.AkkonResult.RightCount_Min : item.AkkonResult.LeftCount_Avg;
+
+                float minLength = 0.0F;
+                if (item.AkkonResult != null)
+                    minLength = item.AkkonResult.Length_Left_Min_um > item.AkkonResult.Length_Right_Min_um ? item.AkkonResult.Length_Right_Min_um : item.AkkonResult.Length_Left_Min_um;
 
                 akkonInfo.MinBlobCount = minCount;
                 akkonInfo.MinLength = minLength;
@@ -1105,7 +1128,7 @@ namespace ATT_UT_Remodeling.Core
             for (int tabNo = 0; tabNo < inspResult.TabResultList.Count; tabNo++)
             {
                 var alignResult = inspResult.TabResultList[tabNo].AlignResult;
-                Judgement judgement = alignResult.IsAlignGood() == true ? Judgement.OK : Judgement.NG;
+                Judgement judgement = alignResult.Judgement;
 
                 List<string> tabData = new List<string>
                 {
