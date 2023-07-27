@@ -84,8 +84,8 @@ namespace ATT_UT_IPAD.UI.Forms
         #region 메서드
         private void MotionPopupForm_Load(object sender, EventArgs e)
         {
-            UpdateData();
             AddControl();
+            UpdateData();
             StartTimer();
             InitializeUI();
             SetDefaultValue();
@@ -192,17 +192,16 @@ namespace ATT_UT_IPAD.UI.Forms
             XVariableControl = new MotionParameterVariableControl();
             XVariableControl.Dock = DockStyle.Fill;
             XVariableControl.SetAxis(AxisHandler.GetAxis(AxisName.X));
+            tlpVariableParameter.Controls.Add(XVariableControl);
 
             Z0VariableControl = new MotionParameterVariableControl();
             Z0VariableControl.Dock = DockStyle.Fill;
             Z0VariableControl.SetAxis(AxisHandler.GetAxis(AxisName.Z0));
+            tlpVariableParameter.Controls.Add(Z0VariableControl);
 
             Z1VariableControl = new MotionParameterVariableControl();
             Z1VariableControl.Dock = DockStyle.Fill;
             Z1VariableControl.SetAxis(AxisHandler.GetAxis(AxisName.Z1));
-
-            tlpVariableParameter.Controls.Add(XVariableControl);
-            tlpVariableParameter.Controls.Add(Z0VariableControl);
             tlpVariableParameter.Controls.Add(Z1VariableControl);
         }
 

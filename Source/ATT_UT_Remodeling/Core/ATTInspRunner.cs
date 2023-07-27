@@ -122,6 +122,7 @@ namespace ATT_UT_Remodeling.Core
                 string message = string.Format("Mark Inspection NG !!! Tab_{0} / Fpc_{1}, Panel_{2}", tab.Index, inspResult.MarkResult.FpcMark.Judgement, inspResult.MarkResult.PanelMark.Judgement);
                 WriteLog(message);
                 Logger.Debug(LogType.Inspection, message);
+                AppsInspResult.TabResultList.Add(inspResult);
             }
             else
             {
