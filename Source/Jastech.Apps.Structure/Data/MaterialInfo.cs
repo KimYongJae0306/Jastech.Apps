@@ -22,28 +22,34 @@ namespace Jastech.Apps.Structure.Data
 
         public TabOffset RightOffset { get; set; } = new TabOffset();
 
-        public double GetTabToTabDistance(int startTabNo)
+        public double GetTabToTabDistance(int startTabNo, int maxTabCount)
         {
             if (startTabNo == 0)
-                return TabToTabDistance_mm.Tab0ToTab1;
+                return TabToTabDistance_mm.Tab0ToTab1 - TabWidth_mm.Tab0;   // 46 - 43
             else if (startTabNo == 1)
-                return TabToTabDistance_mm.Tab1ToTab2;
+                return TabToTabDistance_mm.Tab1ToTab2 - TabWidth_mm.Tab1;   // 44 - 41
             else if (startTabNo == 2)
-                return TabToTabDistance_mm.Tab2ToTab3;
+                return TabToTabDistance_mm.Tab2ToTab3 - TabWidth_mm.Tab2;   // 44 - 41
             else if (startTabNo == 3)
-                return TabToTabDistance_mm.Tab3ToTab4;
+                return TabToTabDistance_mm.Tab3ToTab4 - TabWidth_mm.Tab3;   // 43.5 - 41
             else if (startTabNo == 4)
-                return TabToTabDistance_mm.Tab4ToTab5;
+                //return TabToTabDistance_mm.Tab4ToTab5 - TabWidth_mm.Tab4;    // 1 - 43
+                return TabWidth_mm.Tab4;
             else if (startTabNo == 5)
-                return TabToTabDistance_mm.Tab5ToTab6;
+                return TabToTabDistance_mm.Tab5ToTab6 - TabWidth_mm.Tab5;
             else if (startTabNo == 6)
-                return TabToTabDistance_mm.Tab6ToTab7;
+                return TabToTabDistance_mm.Tab6ToTab7 - TabWidth_mm.Tab6;
             else if (startTabNo == 7)
-                return TabToTabDistance_mm.Tab7ToTab8;
+                return TabToTabDistance_mm.Tab7ToTab8 - TabWidth_mm.Tab7;
             else if (startTabNo == 8)
-                return TabToTabDistance_mm.Tab8ToTab9;
+                return TabToTabDistance_mm.Tab8ToTab9 - TabWidth_mm.Tab8;
             else
                 return 0;
+        }
+
+        private bool CheckLastTab(int currentTab, int maxTabCount)
+        {
+            return currentTab == maxTabCount;
         }
 
         public double GetTabWidth(int tabNo)
