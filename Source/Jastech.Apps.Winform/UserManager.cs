@@ -6,7 +6,7 @@ namespace Jastech.Apps.Winform
 {
     public class UserManager
     {
-        public UserHanlder UserHanlder { get; private set; } = new UserHanlder();
+        public UserHanlder UserHandler { get; private set; } = new UserHanlder();
 
         public User CurrentUser { get; private set; } = new User();
 
@@ -27,8 +27,8 @@ namespace Jastech.Apps.Winform
             string filePath = Path.Combine(ConfigSet.Instance().Path.Config, "User.cfg");
             if (File.Exists(filePath) == false)
             {
-                UserHanlder.AddUser(new User(AuthorityType.None, ""));
-                UserHanlder.AddUser(new User(AuthorityType.Engineer, "1"));
+                UserHandler.AddUser(new User(AuthorityType.None, ""));
+                UserHandler.AddUser(new User(AuthorityType.Engineer, "1"));
                 
                 Save(filePath);
             }
@@ -38,10 +38,10 @@ namespace Jastech.Apps.Winform
             }
 
             // Cogfig 관리 안함
-            UserHanlder.AddUser(new User(AuthorityType.Maker, "6644"));
+            UserHandler.AddUser(new User(AuthorityType.Maker, "6644"));
 
 #if DEBUG
-            CurrentUser = UserHanlder.GetUser(AuthorityType.Maker);
+            CurrentUser = UserHandler.GetUser(AuthorityType.Maker);
 #else
             CurrentUser = UserHanlder.GetUser(AuthorityType.None);
 #endif
@@ -50,7 +50,7 @@ namespace Jastech.Apps.Winform
 
         public void SetCurrentUser(string id)
         {
-            if(UserHanlder.GetUser(id) is User user)
+            if(UserHandler.GetUser(id) is User user)
             {
                 CurrentUser = user;
             }
@@ -58,14 +58,14 @@ namespace Jastech.Apps.Winform
 
         public void Save(string filePath)
         {
-            UserHanlder.RemoveMaker();
-            UserHanlder.Save(filePath);
+            UserHandler.RemoveMaker();
+            UserHandler.Save(filePath);
         }
 
         public void Load(string filePath)
         {
-            UserHanlder.ClearUser();
-            UserHanlder.Load(filePath);
+            UserHandler.ClearUser();
+            UserHandler.Load(filePath);
         }
     }
 }

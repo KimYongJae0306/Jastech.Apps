@@ -466,7 +466,7 @@ namespace ATT_UT_IPAD.Core
             InspAlignTabList.Clear();
         }
 
-        private void ATTSeqRunner_GrabDoneEventHanlder(string cameraName, bool isGrabDone)
+        private void ATTSeqRunner_GrabDoneEventHandler(string cameraName, bool isGrabDone)
         {
             if(cameraName == "AlignCamera")
                 IsAlignGrabDone = isGrabDone; 
@@ -610,10 +610,10 @@ namespace ATT_UT_IPAD.Core
            SystemManager.Instance().MachineStatus = MachineStatus.RUN;
 
             var alignCamera = LineCameraManager.Instance().GetAppsCamera("AlignCamera");
-            alignCamera.GrabDoneEventHanlder += ATTSeqRunner_GrabDoneEventHanlder;
+            alignCamera.GrabDoneEventHandler += ATTSeqRunner_GrabDoneEventHandler;
 
             var akkonCamera = LineCameraManager.Instance().GetAppsCamera("AkkonCamera");
-            akkonCamera.GrabDoneEventHanlder += ATTSeqRunner_GrabDoneEventHanlder;
+            akkonCamera.GrabDoneEventHandler += ATTSeqRunner_GrabDoneEventHandler;
 
             StartInspTask();
 
@@ -636,12 +636,12 @@ namespace ATT_UT_IPAD.Core
 
             var alignCamera = LineCameraManager.Instance().GetAppsCamera("AlignCamera");
             alignCamera.StopGrab();
-            alignCamera.GrabDoneEventHanlder -= ATTSeqRunner_GrabDoneEventHanlder;
+            alignCamera.GrabDoneEventHandler -= ATTSeqRunner_GrabDoneEventHandler;
             LineCameraManager.Instance().GetLineCamera("AlignCamera").StopGrab();
 
             var akkonCamera = LineCameraManager.Instance().GetAppsCamera("AkkonCamera");
             akkonCamera.StopGrab();
-            akkonCamera.GrabDoneEventHanlder -= ATTSeqRunner_GrabDoneEventHanlder;
+            akkonCamera.GrabDoneEventHandler -= ATTSeqRunner_GrabDoneEventHandler;
             LineCameraManager.Instance().GetLineCamera("AkkonCamera").StopGrab();
 
 

@@ -97,7 +97,7 @@ namespace ATT_UT_IPAD
                 percent = 50;
                 DoReportProgress(reportProgress, percent, "Create Axis Info");
 
-                CreateAxisHanlder();
+                CreateAxisHandler();
 
 
                 percent = 80;
@@ -175,7 +175,7 @@ namespace ATT_UT_IPAD
             }
         }
 
-        public bool CreateAxisHanlder()
+        public bool CreateAxisHandler()
         {
             var motion = DeviceManager.Instance().MotionHandler.First();
             if (motion == null)

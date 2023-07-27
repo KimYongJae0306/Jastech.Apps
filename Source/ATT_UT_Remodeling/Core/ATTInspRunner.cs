@@ -422,7 +422,7 @@ namespace ATT_UT_Remodeling.Core
 
             var lineCamera = LineCameraManager.Instance().GetAppsCamera("LineCamera");
 
-            lineCamera.GrabDoneEventHanlder += ATTSeqRunner_GrabDoneEventHanlder;
+            lineCamera.GrabDoneEventHandler += ATTSeqRunner_GrabDoneEventHanlder;
             StartAkkonInspTask();
 
             if (SeqTask != null)
@@ -442,7 +442,7 @@ namespace ATT_UT_Remodeling.Core
 
             var lineCamera = LineCameraManager.Instance().GetAppsCamera("LineCamera");
             lineCamera.StopGrab();
-            lineCamera.GrabDoneEventHanlder -= ATTSeqRunner_GrabDoneEventHanlder;
+            lineCamera.GrabDoneEventHandler -= ATTSeqRunner_GrabDoneEventHanlder;
             LineCameraManager.Instance().GetLineCamera("LineCamera").StopGrab();
 
             var areaCamera = AreaCameraManager.Instance().GetAppsCamera("PreAlign");

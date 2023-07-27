@@ -152,7 +152,7 @@ namespace Jastech.Framework.Winform.Forms
         {
             DrawBoxControl = new DrawBoxControl();
             DrawBoxControl.Dock = DockStyle.Fill;
-            DrawBoxControl.FigureDataDelegateEventHanlder += DrawBoxControl_FigureDataDelegateEventHanlder;
+            DrawBoxControl.FigureDataDelegateEventHandler += DrawBoxControl_FigureDataDelegateEventHandler;
             pnlDisplay.Controls.Add(DrawBoxControl);
 
             PixelValueGraphControl = new PixelValueGraphControl();
@@ -163,10 +163,10 @@ namespace Jastech.Framework.Winform.Forms
             AutoFocusControl.Dock = DockStyle.Fill;
             pnlAutoFocus.Controls.Add(AutoFocusControl);
 
-
             MotionJogXControl = new MotionJogXControl();
             MotionJogXControl.Dock = DockStyle.Fill;
             pnlMotionJog.Controls.Add(MotionJogXControl);
+            MotionJogXControl.SetAxisHandler(AxisHandler);
 
             LAFJogControl = new LAFJogControl();
             LAFJogControl.Dock = DockStyle.Fill;
@@ -183,7 +183,7 @@ namespace Jastech.Framework.Winform.Forms
             var unit = TeachingData.Instance().GetUnit(UnitName.ToString());
             var posData = unit.GetTeachingInfo(TeachingPosType.Stage1_Scan_Start);
 
-            AutoFocusControl.SetAxisHanlder(AxisHandler);
+            AutoFocusControl.SetAxisHandler(AxisHandler);
             AutoFocusControl.SetLAFCtrl(LAFCtrl);
             AutoFocusControl.UpdateData(posData.GetAxisInfo(AxisNameZ));
 
@@ -222,7 +222,7 @@ namespace Jastech.Framework.Winform.Forms
             _prevDigitalGain = lineCameraData.DigitalGain;
         }
 
-        private void DrawBoxControl_FigureDataDelegateEventHanlder(byte[] data)
+        private void DrawBoxControl_FigureDataDelegateEventHandler(byte[] data)
         {
             PixelValueGraphControl.SetData(data);
         }

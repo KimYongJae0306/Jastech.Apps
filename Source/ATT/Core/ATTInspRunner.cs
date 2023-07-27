@@ -304,7 +304,7 @@ namespace ATT.Core
             InspTabList.Clear();
         }
 
-        private void ATTSeqRunner_GrabDoneEventHanlder(string cameraName, bool isGrabDone)
+        private void ATTSeqRunner_GrabDoneEventHandler(string cameraName, bool isGrabDone)
         {
             IsGrabDone = isGrabDone; 
         }
@@ -413,7 +413,7 @@ namespace ATT.Core
 
             var lineCamera = LineCameraManager.Instance().GetAppsCamera("Camera0");
 
-            lineCamera.GrabDoneEventHanlder += ATTSeqRunner_GrabDoneEventHanlder;
+            lineCamera.GrabDoneEventHandler += ATTSeqRunner_GrabDoneEventHandler;
             StartAkkonInspTask();
 
             Logger.Write(LogType.Seq, "Start Sequence.");
@@ -435,7 +435,7 @@ namespace ATT.Core
 
             var lineCamera = LineCameraManager.Instance().GetAppsCamera("Camera0");
             lineCamera.StopGrab();
-            lineCamera.GrabDoneEventHanlder -= ATTSeqRunner_GrabDoneEventHanlder;
+            lineCamera.GrabDoneEventHandler -= ATTSeqRunner_GrabDoneEventHandler;
             LineCameraManager.Instance().GetLineCamera("Camera0").StopGrab();
             StopAkkonInspTask();
             

@@ -52,7 +52,7 @@ namespace Jastech.Apps.Winform
         #region 이벤트
         public event TeachingImageGrabbedDelegate TeachingLiveImageGrabbed;
 
-        public event GrabDoneDelegate GrabDoneEventHanlder;
+        public event GrabDoneDelegate GrabDoneEventHandler;
 
         public event GrabOnceDelegate GrabOnceEventHandler;
         #endregion
@@ -283,7 +283,7 @@ namespace Jastech.Apps.Winform
                 if (_curGrabCount == GrabCount - 1)
                 {
                     Camera.Stop();
-                    GrabDoneEventHanlder?.Invoke(Camera.Name, true);
+                    GrabDoneEventHandler?.Invoke(Camera.Name, true);
                     GrabOnceEventHandler?.Invoke(tabScanBuffer);
                 }
 

@@ -41,7 +41,7 @@ namespace Jastech.Apps.Winform.UI.Controls
         #endregion
 
         #region 메서드
-        public void SetAxisHanlder(AxisHandler axisHandler)
+        public void SetAxisHandler(AxisHandler axisHandler)
         {
             AxisHandler = axisHandler;
             SetAxis(AxisHandler);
