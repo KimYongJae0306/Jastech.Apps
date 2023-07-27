@@ -84,8 +84,8 @@ namespace ATT_UT_IPAD.UI.Forms
         #region 메서드
         private void MotionPopupForm_Load(object sender, EventArgs e)
         {
-            UpdateData();
             AddControl();
+            UpdateData();
             StartTimer();
             InitializeUI();
             SetDefaultValue();
