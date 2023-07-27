@@ -24,11 +24,11 @@ namespace ATT_UT_IPAD
     public partial class MainForm : Form
     {
         #region 속성
-        private MainPage MainPageControl { get; set; } = new MainPage();
+        private MainPage MainPageControl { get; set; } = null;
 
-        private DataPage DataPageControl { get; set; } = new DataPage();
+        private DataPage DataPageControl { get; set; } = null;
 
-        private TeachingPage TeachingPageControl { get; set; } = new TeachingPage();
+        private TeachingPage TeachingPageControl { get; set; } = null;
 
         private List<UserControl> PageControlList = null;
 
@@ -223,7 +223,7 @@ namespace ATT_UT_IPAD
         {
             LoginForm form = new LoginForm();
             form.CurrentUser = UserManager.Instance().CurrentUser;
-            form.UserHandler = UserManager.Instance().UserHanlder;
+            form.UserHandler = UserManager.Instance().UserHandler;
             form.StopProgramEvent += StopProgramEventFunction;
             form.ShowDialog();
 

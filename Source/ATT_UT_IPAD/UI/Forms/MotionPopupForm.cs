@@ -33,7 +33,7 @@ namespace ATT_UT_IPAD.UI.Forms
         #region 속성
         public InspModelService InspModelService { get; set; } = null;
 
-        private TeachingPositionListControl TeachingPositionListControl { get; set; } = new TeachingPositionListControl();
+        private TeachingPositionListControl TeachingPositionListControl { get; set; } = null;
 
         private List<TeachingInfo> TeachingPositionList { get; set; } = null;
 
@@ -43,17 +43,17 @@ namespace ATT_UT_IPAD.UI.Forms
 
         public LAFCtrl AlignLafCtrl { get; set; } = null;
 
-        private MotionJogXControl MotionJogXControl { get; set; } = new MotionJogXControl() { Dock = DockStyle.Fill };
+        private MotionJogXControl MotionJogXControl { get; set; } = null;
 
-        private LAFJogControl LAFJogZ0Control { get; set; } = new LAFJogControl() { Dock = DockStyle.Fill };
+        private LAFJogControl LAFJogZ0Control { get; set; } = null;
 
-        private LAFJogControl LAFJogZ1Control { get; set; } = new LAFJogControl() { Dock = DockStyle.Fill };
+        private LAFJogControl LAFJogZ1Control { get; set; } = null;
 
-        private MotionParameterVariableControl XVariableControl = new MotionParameterVariableControl();
+        private MotionParameterVariableControl XVariableControl = null;
 
-        private MotionParameterVariableControl Z0VariableControl = new MotionParameterVariableControl();
+        private MotionParameterVariableControl Z0VariableControl = null;
 
-        private MotionParameterVariableControl Z1VariableControl = new MotionParameterVariableControl();
+        private MotionParameterVariableControl Z1VariableControl = null;
 
         public TeachingPosType TeachingPositionType = TeachingPosType.Standby;
 
@@ -140,6 +140,7 @@ namespace ATT_UT_IPAD.UI.Forms
 
         private void AddTeachingPositionListControl()
         {
+            TeachingPositionListControl = new TeachingPositionListControl();
             TeachingPositionListControl.Dock = DockStyle.Fill;
             TeachingPositionListControl.UnitName = UnitName;
             TeachingPositionListControl.SendEventHandler += new TeachingPositionListControl.SetTeachingPositionListDelegate(ReceiveTeachingPosition);
@@ -188,12 +189,15 @@ namespace ATT_UT_IPAD.UI.Forms
 
         private void AddVariableControl()
         {
+            XVariableControl = new MotionParameterVariableControl();
             XVariableControl.Dock = DockStyle.Fill;
             XVariableControl.SetAxis(AxisHandler.GetAxis(AxisName.X));
 
+            Z0VariableControl = new MotionParameterVariableControl();
             Z0VariableControl.Dock = DockStyle.Fill;
             Z0VariableControl.SetAxis(AxisHandler.GetAxis(AxisName.Z0));
 
+            Z1VariableControl = new MotionParameterVariableControl();
             Z1VariableControl.Dock = DockStyle.Fill;
             Z1VariableControl.SetAxis(AxisHandler.GetAxis(AxisName.Z1));
 
@@ -204,12 +208,18 @@ namespace ATT_UT_IPAD.UI.Forms
 
         private void AddJogControl()
         {
+            MotionJogXControl = new MotionJogXControl();
+            MotionJogXControl.Dock = DockStyle.Fill;
             pnlMotionJog.Controls.Add(MotionJogXControl);
-            MotionJogXControl.SetAxisHanlder(AxisHandler);
+            MotionJogXControl.SetAxisHandler(AxisHandler);
 
+            LAFJogZ0Control = new LAFJogControl();
+            LAFJogZ0Control.Dock = DockStyle.Fill;
             pnlLAFZ1Jog.Controls.Add(LAFJogZ0Control);
             LAFJogZ0Control.SetSelectedLafCtrl(AkkonLafCtrl);
 
+            LAFJogZ1Control = new LAFJogControl();
+            LAFJogZ1Control.Dock = DockStyle.Fill;
             pnlLAFZ2Jog.Controls.Add(LAFJogZ1Control);
             LAFJogZ1Control.SetSelectedLafCtrl(AlignLafCtrl);
         }

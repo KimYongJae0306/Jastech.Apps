@@ -181,7 +181,7 @@ namespace ATT_UT_Remodeling.UI.Forms
         private void AddJogControl()
         {
             pnlMotionJog.Controls.Add(MotionJogXControl);
-            MotionJogXControl.SetAxisHanlder(AxisHandler);
+            MotionJogXControl.SetAxisHandler(AxisHandler);
 
             pnlLAFZ1Jog.Controls.Add(LAFJogZControl);
             LAFJogZControl.SetSelectedLafCtrl(LafCtrl);

@@ -214,7 +214,7 @@ namespace ATT
         {
             LoginForm form = new LoginForm();
             form.CurrentUser = UserManager.Instance().CurrentUser;
-            form.UserHandler = UserManager.Instance().UserHanlder;
+            form.UserHandler = UserManager.Instance().UserHandler;
             form.StopProgramEvent += StopProgramEventFunction;
             form.ShowDialog();
 

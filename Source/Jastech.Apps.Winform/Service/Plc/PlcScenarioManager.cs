@@ -412,8 +412,8 @@ namespace Jastech.Apps.Winform.Service.Plc
 
         private void ReceivedLightOff()
         {
-            var lightHanlder = DeviceManager.Instance().LightCtrlHandler;
-            foreach (var light in lightHanlder)
+            var lightHandler = DeviceManager.Instance().LightCtrlHandler;
+            foreach (var light in lightHandler)
                 light.TurnOff();
 
             short command = PlcControlManager.Instance().WritePcStatusCommon(PlcCommonCommand.Light_Off);
@@ -582,16 +582,16 @@ namespace Jastech.Apps.Winform.Service.Plc
 
         private void StartOriginAll()
         {
-            AxisHandler allAxisHanlder = new AxisHandler("All");
+            AxisHandler allAxisHandler = new AxisHandler("All");
 
             foreach (var axisHandler in MotionManager.Instance().AxisHandlerList)
             {
                 if (axisHandler.Name == AxisName.Z0.ToString())
                     continue;
 
-                allAxisHanlder.AddAxis(axisHandler.GetAxisList());
+                allAxisHandler.AddAxis(axisHandler.GetAxisList());
             }
-            allAxisHanlder.StopMove();
+            allAxisHandler.StopMove();
             Thread.Sleep(100);
 
             var lafCtrlHandler = DeviceManager.Instance().LAFCtrlHandler;
@@ -600,13 +600,13 @@ namespace Jastech.Apps.Winform.Service.Plc
             if (lafCtrlHandler.Count > 1)
                 PlcControlManager.Instance().WritePcCommand(PcCommand.ServoOn_2);
             
-            allAxisHanlder.TurnOnServo(true);
+            allAxisHandler.TurnOnServo(true);
 
             foreach (var laf in lafCtrlHandler)
             {
                 // LAF Homming
             }
-            allAxisHanlder.StartHomeMove();
+            allAxisHandler.StartHomeMove();
 
             PlcControlManager.Instance().WritePcStatus(PlcCommand.Origin_All);
         }

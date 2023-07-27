@@ -190,7 +190,7 @@ namespace ATT.UI.Forms
         private void AddJogControl()
         {
             pnlMotionJog.Controls.Add(MotionJogXYControl);
-            MotionJogXYControl.SetAxisHanlder(AxisHandler);
+            MotionJogXYControl.SetAxisHandler(AxisHandler);
 
             pnlLAFJog.Controls.Add(LAFJogControl);
             LAFJogControl.SetSelectedLafCtrl(LafCtrl);

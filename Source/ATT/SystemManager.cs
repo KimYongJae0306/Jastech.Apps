@@ -75,8 +75,7 @@ namespace ATT
             DeviceManager.Instance().Initialized += SystemManager_Initialized;
             DeviceManager.Instance().Initialize(ConfigSet.Instance());
 
-            //AppsMotionManager.Instance().CreateAxisHanlder();
-            CreateAxisHanlder();
+            CreateAxisHandler();
 
             LAFManager.Instance().Initialize();
             LineCameraManager.Instance().Initialize();
@@ -195,7 +194,7 @@ namespace ATT
             _inspRunner.InitalizeInspTab(bufferList);
         }
 
-        public bool CreateAxisHanlder()
+        public bool CreateAxisHandler()
         {
             var motion = DeviceManager.Instance().MotionHandler.FirstOrDefault();
             if (motion == null)

@@ -84,7 +84,7 @@ namespace ATT_UT_Remodeling
             percent = 50;
             DoReportProgress(reportProgress, percent, "Create Axis Info");
 
-            CreateAxisHanlder();
+            CreateAxisHandler();
 
             percent = 80;
             DoReportProgress(reportProgress, percent, "Initialize Manager.");
@@ -162,7 +162,7 @@ namespace ATT_UT_Remodeling
             }
         }
 
-        public bool CreateAxisHanlder()
+        public bool CreateAxisHandler()
         {
             var motion = DeviceManager.Instance().MotionHandler.First();
             if (motion == null)

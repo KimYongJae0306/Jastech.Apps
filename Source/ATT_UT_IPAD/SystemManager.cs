@@ -18,6 +18,9 @@ using Jastech.Framework.Winform.Forms;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Runtime.ExceptionServices;
+using System.Security;
+using System.Security.Permissions;
 using System.Windows.Forms;
 
 namespace ATT_UT_IPAD
@@ -80,10 +83,8 @@ namespace ATT_UT_IPAD
             percent = 50;
             DoReportProgress(reportProgress, percent, "Create Axis Info");
 
-            CreateAxisHanlder();
+            CreateAxisHandler();
 
-            LAFManager.Instance().Initialize();
-            LineCameraManager.Instance().Initialize();
 
             percent = 80;
             DoReportProgress(reportProgress, percent, "Initialize Manager.");
@@ -153,7 +154,7 @@ namespace ATT_UT_IPAD
             }
         }
 
-        public bool CreateAxisHanlder()
+        public bool CreateAxisHandler()
         {
             var motion = DeviceManager.Instance().MotionHandler.First();
             if (motion == null)
@@ -205,7 +206,7 @@ namespace ATT_UT_IPAD
         {
             handler = new AxisHandler(AxisHandlerName.Handler0.ToString());
 
-            handler.AddAxis(AxisName.X, motion, axisNo: 1, homeOrder: 2);
+            handler.AddAxis(AxisName.X, motion, axisNo: 0, homeOrder: 2);
             handler.AddAxis(AxisName.Z0, motion, axisNo: -1, homeOrder: 1);
             handler.AddAxis(AxisName.Z1, motion, axisNo: -1, homeOrder: 1);
         }

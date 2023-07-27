@@ -109,7 +109,7 @@ namespace Jastech.Apps.Winform.UI.Controls
             }
         }
 
-        public void SetAxisHanlder(AxisHandler axisHandler)
+        public void SetAxisHandler(AxisHandler axisHandler)
         {
             AxisHandler = axisHandler;
             SetAxis(AxisHandler);

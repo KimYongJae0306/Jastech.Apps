@@ -128,7 +128,7 @@ namespace Jastech.Framework.Winform.Forms
 
             lblStageCam.Text = $"STAGE : {UnitName} / CAM : {TitleCameraName}";
 
-            LineCamera.GrabDoneEventHanlder += InspectionTeachingForm_GrabDoneEventHanlder;
+            LineCamera.GrabDoneEventHandler += InspectionTeachingForm_GrabDoneEventHandler;
 
             var image = TeachingUIManager.Instance().GetOriginCogImageBuffer(true);
 
@@ -138,7 +138,7 @@ namespace Jastech.Framework.Winform.Forms
             SelectPage(DisplayType.Mark);
         }
 
-        private void InspectionTeachingForm_GrabDoneEventHanlder(string cameraName, bool isGrabDone)
+        private void InspectionTeachingForm_GrabDoneEventHandler(string cameraName, bool isGrabDone)
         {
             int tabNo = Convert.ToInt32(_currentTabNo);
             UpdateDisplayImage(tabNo);
@@ -436,7 +436,7 @@ namespace Jastech.Framework.Winform.Forms
             Display.DisposeImage();
             MarkControl.DisposeImage();
             DisposeInspTabList();
-            LineCamera.GrabDoneEventHanlder -= InspectionTeachingForm_GrabDoneEventHanlder;
+            LineCamera.GrabDoneEventHandler -= InspectionTeachingForm_GrabDoneEventHandler;
         }
 
         private void cbxTabList_DrawItem(object sender, DrawItemEventArgs e)

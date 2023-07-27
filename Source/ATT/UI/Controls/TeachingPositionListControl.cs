@@ -42,7 +42,7 @@ namespace ATT.UI.Controls
             InitializeUI();
         }
 
-        public void SetAxisHanlder(AxisHandler axisHandler)
+        public void SetAxisHandler(AxisHandler axisHandler)
         {
             AxisHandler = axisHandler;
         }

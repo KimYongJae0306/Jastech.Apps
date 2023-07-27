@@ -1,6 +1,7 @@
 ﻿using Emgu.CV;
 using Jastech.Framework.Device.Cameras;
 using Jastech.Framework.Winform;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
@@ -88,6 +89,7 @@ namespace Jastech.Apps.Winform
                 byte[] data = camera.GetGrabbedImage();
                 if (data != null)
                 {
+                    Console.WriteLine(camera.Name);
                     if (GetAppsCamera(camera.Name) is LineCamera lineCamera)
                         GetAppsCamera(camera.Name).AddSubImage(data, camera.GrabCount);
                 }
