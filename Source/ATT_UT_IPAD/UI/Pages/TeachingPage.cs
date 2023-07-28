@@ -2,6 +2,7 @@
 using ATT_UT_IPAD.UI.Forms;
 using Jastech.Apps.Structure;
 using Jastech.Apps.Winform;
+using Jastech.Framework.Device.LAFCtrl;
 using Jastech.Framework.Winform.Forms;
 using System;
 using System.Windows.Forms;
@@ -26,6 +27,9 @@ namespace ATT_UT_IPAD.UI.Pages
         #region 메서드
         private void btnAlignCameraSetting_Click(object sender, EventArgs e)
         {
+            if (LAFManager.Instance().GetLAFCtrl("AkkonLaf") is LAFCtrl lafCtrl)
+                lafCtrl.SetTrackingOnOFF(false);
+
             OpticTeachingForm form = new OpticTeachingForm();
             form.LineCamera = LineCameraManager.Instance().GetAppsCamera("AlignCamera");
             form.LAFCtrl = LAFManager.Instance().GetLAFCtrl("AlignLaf");
@@ -40,6 +44,9 @@ namespace ATT_UT_IPAD.UI.Pages
 
         private void btnAkkonCameraSetting_Click(object sender, EventArgs e)
         {
+            if (LAFManager.Instance().GetLAFCtrl("AlignLaf") is LAFCtrl lafCtrl)
+                lafCtrl.SetTrackingOnOFF(false);
+
             OpticTeachingForm form = new OpticTeachingForm();
             form.LineCamera = LineCameraManager.Instance().GetAppsCamera("AkkonCamera");
             form.LAFCtrl = LAFManager.Instance().GetLAFCtrl("AkkonLaf");
@@ -58,6 +65,7 @@ namespace ATT_UT_IPAD.UI.Pages
             form.UnitName = UnitName.Unit0;
             form.TitleCameraName = "AlignCamera";
             form.LineCamera = LineCameraManager.Instance().GetAppsCamera("AlignCamera");
+            form.UseDelayStart = true;
             form.LAFCtrl = LAFManager.Instance().GetLAFCtrl("AlignLaf");
             form.InspModelService = ATTInspModelService;
             form.OpenMotionPopupEventHandler += OpenMotionPopupEventHandler;

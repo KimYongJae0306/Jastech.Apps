@@ -184,7 +184,7 @@
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(100, 33);
             this.label6.TabIndex = 18;
-            this.label6.Text = "Resize Ratio";
+            this.label6.Text = "Enahnce";
             this.label6.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // txtResizeRatio

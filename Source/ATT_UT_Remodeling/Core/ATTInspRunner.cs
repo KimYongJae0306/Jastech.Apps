@@ -348,12 +348,18 @@ namespace ATT_UT_Remodeling.Core
                     string message = $"Grab End to Insp Completed Time.({LastInspSW.ElapsedMilliseconds.ToString()}ms)";
                     WriteLog(message, true);
 
+                    SeqStep = SeqStep.SEQ_MANUAL_CHECK;
+                    break;
+                case SeqStep.SEQ_MANUAL_CHECK:
+
                     SeqStep = SeqStep.SEQ_SEND_RESULT;
                     break;
                 case SeqStep.SEQ_SEND_RESULT:
                     // Align 결과, Akkon 결과
                     // Ok 이면 + Ng -
-                    
+                    SendResultData();
+                    WriteLog("Completed Send Plc Tab Result Data", true);
+
                     SeqStep = SeqStep.SEQ_WAIT_UI_RESULT_UPDATE;
                     break;
 
@@ -445,6 +451,21 @@ namespace ATT_UT_Remodeling.Core
             }
         }
 
+        private void SendResultData()
+        {
+            bool isManualOK = false;
+
+            double resolution = LineCamera.Camera.PixelResolution_um / LineCamera.Camera.LensScale;
+
+            var inspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
+            for (int tabNo = 0; tabNo < inspModel.TabCount; tabNo++)
+            {
+                var tabInspResult = AppsInspResult.Instance().Get(tabNo);
+                PlcControlManager.Instance().WriteTabResult(tabInspResult, resolution, isManualOK);
+
+                Thread.Sleep(10);
+            }
+        }
         private string GetCellID()
         {
             string cellId = PlcControlManager.Instance().GetAddressMap(PlcCommonMap.PLC_Cell_Id).Value;
@@ -1131,6 +1152,7 @@ namespace ATT_UT_Remodeling.Core
         SEQ_MOVE_END_POS,
         SEQ_WAITING_SCAN_COMPLETED,
         SEQ_WAITING_INSPECTION_DONE,
+        SEQ_MANUAL_CHECK,
         SEQ_SEND_RESULT,
         SEQ_WAIT_UI_RESULT_UPDATE,
         SEQ_SAVE_RESULT_DATA,

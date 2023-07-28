@@ -38,6 +38,8 @@ namespace Jastech.Apps.Winform
 
         public int GrabCount { get; private set; } = 0;
 
+        public int DelayGrabIndex { get; private set; } = -1;
+
         public List<TabScanBuffer> TabScanBufferList { get; private set; } = new List<TabScanBuffer>();
 
         public Queue<byte[]> LiveDataQueue = new Queue<byte[]>();
@@ -57,6 +59,8 @@ namespace Jastech.Apps.Winform
         public event GrabDoneDelegate GrabDoneEventHandler;
 
         public event GrabOnceDelegate GrabOnceEventHandler;
+
+        public event GrabDelayStartDelegate GrabDelayStartEventHandler;
         #endregion
 
         #region 델리게이트
@@ -65,6 +69,8 @@ namespace Jastech.Apps.Winform
         public delegate void GrabDoneDelegate(string cameraName, bool isGrabDone);
 
         public delegate void GrabOnceDelegate(TabScanBuffer tabScanBuffer);
+
+        public delegate void GrabDelayStartDelegate(string cameraName);
         #endregion
 
         #region 생성자
@@ -86,6 +92,7 @@ namespace Jastech.Apps.Winform
             }
             _curGrabCount = 0;
             _stackTabNo = 0;
+            DelayGrabIndex = -1;
         }
 
         public void InitGrabSettings()
@@ -171,6 +178,8 @@ namespace Jastech.Apps.Winform
                 {
                     tempPos += delayStart_mm;
                     tempPos += inspModel.MaterialInfo.PanelEdgeToFirst_mm;
+
+                    DelayGrabIndex = (int)(tempPos / resolution_mm / Camera.ImageHeight);
                 }
 
                 int startIndex = (int)(tempPos / resolution_mm / Camera.ImageHeight);
@@ -329,6 +338,13 @@ namespace Jastech.Apps.Winform
                     return;
 
                 Console.WriteLine("Add SubImage : " + grabCount);
+                if(DelayGrabIndex != -1)
+                {
+                    if(DelayGrabIndex == _curGrabCount)
+                    {
+                        GrabDelayStartEventHandler?.Invoke(Camera.Name);
+                    }
+                }
                 if (tabScanBuffer.StartIndex <= _curGrabCount && _curGrabCount <= tabScanBuffer.EndIndex)
                 {
                     tabScanBuffer.AddData(data);

@@ -181,6 +181,7 @@ namespace ATT_UT_IPAD.Core
         {
             AlignCamera = LineCameraManager.Instance().GetLineCamera("AlignCamera");
             AlignCamera.GrabDoneEventHandler += ATTSeqRunner_GrabDoneEventHandler;
+            AlignCamera.GrabDelayStartEventHandler += AlignCamera_GrabDelayStartEventHandler;
 
             AkkonCamera = LineCameraManager.Instance().GetLineCamera("AkkonCamera");
             AkkonCamera.GrabDoneEventHandler += ATTSeqRunner_GrabDoneEventHandler;
@@ -191,6 +192,12 @@ namespace ATT_UT_IPAD.Core
 
             InspProcessTask.StartTask();
             StartSeqTask();
+        }
+
+        private void AlignCamera_GrabDelayStartEventHandler(string cameraName)
+        {
+            AlignLAFCtrl.SetTrackingOnOFF(true);
+            WriteLog("Delay Align AutoFocus On.");
         }
 
         public void Release()
@@ -405,12 +412,16 @@ namespace ATT_UT_IPAD.Core
                     string message = $"Grab End to Insp Completed Time.({LastInspSW.ElapsedMilliseconds.ToString()}ms)";
                     WriteLog(message, true);
 
+                    SeqStep = SeqStep.SEQ_MANUAL_CHECK;
+                    break;
+                case SeqStep.SEQ_MANUAL_CHECK:
+
                     SeqStep = SeqStep.SEQ_SEND_RESULT;
                     break;
-
                 case SeqStep.SEQ_SEND_RESULT:
-                    // Align 결과, Akkon 결과
-                    // Ok 이면 + Ng -
+
+                    SendResultData();
+                    WriteLog("Completed Send Plc Tab Result Data", true);
 
                     SeqStep = SeqStep.SEQ_WAIT_UI_RESULT_UPDATE;
                     break;
@@ -511,6 +522,20 @@ namespace ATT_UT_IPAD.Core
                 return DateTime.Now.ToString("yyyyMMddHHmmss");
             else
                 return cellId;
+        }
+
+        private void SendResultData()
+        {
+            var inspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
+
+            for (int tabNo = 0; tabNo < inspModel.TabCount; tabNo++)
+            {
+                var akkonTabInspResult = AppsInspResult.Instance().GetAkkon(tabNo);
+                var alignTabInspResult = AppsInspResult.Instance().GetAlign(tabNo);
+                //PlcControlManager.Instance().WriteTabResult(tabNo, )
+
+                Thread.Sleep(10);
+            }
         }
 
         private void InitializeBuffer()
@@ -1199,6 +1224,7 @@ namespace ATT_UT_IPAD.Core
         SEQ_WAITING_AKKON_SCAN_COMPLETED,
         SEQ_WAITING_ALIGN_SCAN_COMPLETED,
         SEQ_WAITING_INSPECTION_DONE,
+        SEQ_MANUAL_CHECK,
         SEQ_SEND_RESULT,
         SEQ_WAIT_UI_RESULT_UPDATE,
         SEQ_SAVE_RESULT_DATA,

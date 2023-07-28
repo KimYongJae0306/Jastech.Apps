@@ -66,6 +66,8 @@ namespace Jastech.Framework.Winform.Forms
 
         public LineCamera LineCamera { get; set; }
 
+        public bool UseDelayStart { get; set; } = false;
+
         public string TeachingImagePath { get; set; }
 
         public double Resolution { get; set; }
@@ -129,6 +131,8 @@ namespace Jastech.Framework.Winform.Forms
             lblStageCam.Text = $"STAGE : {UnitName} / CAM : {TitleCameraName}";
 
             LineCamera.GrabDoneEventHandler += InspectionTeachingForm_GrabDoneEventHandler;
+            if(UseDelayStart)
+                LineCamera.GrabDelayStartEventHandler += InspectionTeachingForm_GrabDelayStartEventHandler;
 
             var image = TeachingUIManager.Instance().GetOriginCogImageBuffer(true);
 
@@ -136,6 +140,11 @@ namespace Jastech.Framework.Winform.Forms
                 Display.SetImage(image);
 
             SelectPage(DisplayType.Mark);
+        }
+
+        private void InspectionTeachingForm_GrabDelayStartEventHandler(string cameraName)
+        {
+            LAFCtrl.SetTrackingOnOFF(true);
         }
 
         private void InspectionTeachingForm_GrabDoneEventHandler(string cameraName, bool isGrabDone)
@@ -157,7 +166,6 @@ namespace Jastech.Framework.Winform.Forms
                 return;
 
             Display.SetImage(cogImage);
-            Console.WriteLine("InspectionTeachingForm 이미지 업데이트.");
         }
 
         private void InitializeTabComboBox()
@@ -385,7 +393,6 @@ namespace Jastech.Framework.Winform.Forms
             AppsInspModel inspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
             TeachingImagePath = Path.Combine(ConfigSet.Instance().Path.Model, inspModel.Name, "TeachingImage", DateTime.Now.ToString("yyyyMMdd_HHmmss"));
 
-            //LAFManager.Instance().getTrackingOnOff(LAFCtrl.Name, true);
             LAFCtrl?.SetTrackingOnOFF(true);
 
             TeachingData.Instance().ClearTeachingImageBuffer();
@@ -490,8 +497,8 @@ namespace Jastech.Framework.Winform.Forms
             string tabIndex = cbxTabList.SelectedItem as string;
             int tabNo = Convert.ToInt32(tabIndex);
 
-            if (_currentTabNo == tabIndex)
-                return;
+            //if (_currentTabNo == tabIndex)
+            //    return;
             CurrentTab = TeachingTabList.Where(x => x.Index == tabNo).FirstOrDefault();
             _currentTabNo = tabIndex;
 
@@ -507,7 +514,9 @@ namespace Jastech.Framework.Winform.Forms
                 if (buffer.TabImage == null)
                     return;
 
-                ICogImage cogImage = teachingData.ConvertCogGrayImage(buffer.TabImage);
+                // ConvertCogGrayImage가 DeepCopy가 아닌가....
+                //ICogImage cogImage = teachingData.ConvertCogGrayImage(buffer.TabImage);
+                ICogImage cogImage = teachingData.ConvertCogGrayImage(buffer.TabImage).CopyBase(CogImageCopyModeConstants.CopyPixels);
 
                 Display.SetImage(cogImage);
                 TeachingUIManager.Instance().SetOrginCogImageBuffer(cogImage);

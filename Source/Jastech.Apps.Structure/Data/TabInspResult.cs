@@ -100,14 +100,7 @@ namespace Jastech.Apps.Structure.Data
                 if (FpcMark == null || PanelMark == null)
                     return Judgement.FAIL;
 
-                bool isGood = true;
-                if (FpcMark.Judgement != Judgement.OK)
-                    isGood = false;
-
-                if (PanelMark.Judgement != Judgement.OK)
-                    isGood = false;
-
-                if (isGood)
+                if (FpcMark.Judgement == Judgement.OK && PanelMark.Judgement == Judgement.OK)
                     return Judgement.OK;
                 else
                     return Judgement.NG;
@@ -235,67 +228,6 @@ namespace Jastech.Apps.Structure.Data
             RightX?.Dispose();
             RightY?.Dispose();
         }
-
-        //public bool IsLeftXGood()
-        //{
-        //    if (LeftX.Fpc == null || LeftX.Panel == null)
-        //        return false;
-
-        //    bool isGood = true;
-        //    if (LeftX.Fpc.Judgement != Judgement.OK)
-        //        isGood = false;
-
-        //    if (LeftX.Panel.Judgement != Judgement.OK)
-        //        isGood = false;
-
-        //    return isGood;
-        //}
-
-        //public bool IsLeftYGood()
-        //{
-        //    if (LeftY.Fpc == null || LeftY.Panel == null)
-        //        return false;
-
-        //    bool isGood = true;
-        //    if (LeftY.Fpc.Judgement != Judgement.OK)
-        //        isGood = false;
-
-        //    if (LeftY.Panel.Judgement != Judgement.OK)
-        //        isGood = false;
-
-        //    return isGood;
-        //}
-
-        //public bool IsRightXGood()
-        //{
-        //    if (RightX.Fpc == null || RightX.Panel == null)
-        //        return false;
-
-        //    bool isGood = true;
-        //    if (RightX.Fpc.Judgement != Judgement.OK)
-        //        isGood = false;
-
-        //    if (RightX.Panel.Judgement != Judgement.OK)
-        //        isGood = false;
-
-        //    return isGood;
-        //}
-
-        //public bool IsRightYGood()
-        //{
-        //    if (RightY.Fpc == null || RightY.Panel == null)
-        //        return false;
-
-        //    bool isGood = true;
-        //    if (RightY.Fpc.Judgement != Judgement.OK)
-        //        isGood = false;
-
-        //    if (RightY.Panel.Judgement != Judgement.OK)
-        //        isGood = false;
-
-        //    return isGood;
-        //}
-
     }
 
     public class AlignResult
@@ -305,9 +237,6 @@ namespace Jastech.Apps.Structure.Data
         {
             get
             {
-                if (Fpc == null || Panel == null)
-                    return Judgement.FAIL;
-
                 if (Fpc.Judgement == Judgement.OK && Panel.Judgement == Judgement.OK)
                 {
                     if (Math.Abs(ResultValue_pixel) <= JudegementValue_pixel)
@@ -365,5 +294,14 @@ namespace Jastech.Apps.Structure.Data
             return result;
         }
         #endregion
+    }
+
+    public enum TabJudgement
+    {
+        None = 0,
+        OK = 1,     // Mark, Align, Akkon 전부 OK
+        NG = 2,     // Align, Akkon 둘 중 한개가 NG
+        Mark_NG = 3, // Mark NG
+        Manual_OK = 4, // Align, Akkon Manual OK
     }
 }
