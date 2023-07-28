@@ -545,23 +545,11 @@ namespace ATT_UT_Remodeling.Core
                 akkonInfo.PanelID = AppsInspResult.Instance().Cell_ID;
                 akkonInfo.TabNo = tabInspResult.TabNo;
 
-                Judgement countJudgement = Judgement.FAIL;
-                if (akkonResult != null)
-                    countJudgement = akkonResult.CountJudgement;
-
-                Judgement lengthJudgement = Judgement.FAIL;
-                if (akkonResult != null)
-                    lengthJudgement = akkonResult.LengthJudgement;
-
-                if (countJudgement == Judgement.OK || lengthJudgement == Judgement.OK)
-                    akkonInfo.Judgement = Judgement.OK;
-                else
-                    akkonInfo.Judgement = Judgement.NG;
-
                 int minCount = 0;
                 float minLength = 0.0F;
                 if (akkonResult != null)
                 {
+                    akkonInfo.Judgement = akkonResult.Judgement;
                     minCount = akkonResult.LeftCount_Avg > akkonResult.RightCount_Min ? akkonResult.RightCount_Min : akkonResult.LeftCount_Avg;
                     minLength = akkonResult.Length_Left_Min_um > akkonResult.Length_Right_Min_um ? akkonResult.Length_Right_Min_um : akkonResult.Length_Left_Min_um;
                 }
@@ -665,7 +653,8 @@ namespace ATT_UT_Remodeling.Core
             {
                 var tabInspResult = AppsInspResult.Instance().Get(tabNo);
                 var akkonResult = tabInspResult.AkkonResult;
-                Judgement judgement = akkonResult.IsAkkonGood() == true ? Judgement.OK : Judgement.NG;
+
+                Judgement judgement = akkonResult.Judgement;
                 int avgCount = (akkonResult.LeftCount_Avg + akkonResult.RightCount_Avg) / 2;
                 float avgLength = (akkonResult.Length_Left_Avg_um + akkonResult.Length_Right_Avg_um) / 2.0F;
 

@@ -364,7 +364,6 @@ namespace Jastech.Apps.Winform.UI.Controls
             result.RightCount_Min = Convert.ToInt32(lblRightAkkonCountMin.Text);
             result.RightCount_Max = Convert.ToInt32(lblRightAkkonCountMax.Text);
 
-            result.LengthJudgement = (Judgement)Enum.Parse(typeof(Judgement), cbxWriteLengthJudgement.SelectedItem as string);
             result.Length_Left_Avg_um = Convert.ToInt32(lblLeftLengthAvg.Text);
             result.Length_Left_Min_um = Convert.ToInt32(lblLeftLengthMin.Text);
             result.Length_Left_Max_um = Convert.ToInt32(lblLeftLengthMax.Text);

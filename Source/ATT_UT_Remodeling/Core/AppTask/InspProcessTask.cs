@@ -263,32 +263,22 @@ namespace ATT_UT_Remodeling.Core.AppTask
             List<double> leftLengthList = new List<double>();
             List<double> rightLengthList = new List<double>();
 
-            bool leftCountNG = false;
-            bool leftLengthNG = false;
-            bool rightCountNG = false;
-            bool rightLengthNG = false;
-
+            bool isNg = false;
             foreach (var leadResult in leadResultList)
             {
                 if (leadResult.ContainPos == LeadContainPos.Left)
                 {
-                    leftCountNG |= leadResult.Judgement == Judgement.NG ? true : false;
                     leftCountList.Add(leadResult.AkkonCount);
-
-                    leftLengthNG |= leadResult.Judgement == Judgement.NG ? true : false;
                     leftLengthList.Add(leadResult.LengthY_um);
                 }
                 else
                 {
-                    rightCountNG |= leadResult.Judgement == Judgement.NG ? true : false;
                     rightCountList.Add(leadResult.AkkonCount);
-
-                    rightLengthNG |= leadResult.Judgement == Judgement.NG ? true : false;
                     rightLengthList.Add(leadResult.LengthY_um);
                 }
             }
 
-            akkonResult.CountJudgement = (leftCountNG || rightCountNG) == true ? Judgement.NG : Judgement.OK;
+            akkonResult.Judgement = isNg == false ? Judgement.OK : Judgement.NG;
             if (leftCountList.Count > 0)
             {
                 akkonResult.LeftCount_Avg = (int)leftCountList.Average();
@@ -302,8 +292,6 @@ namespace ATT_UT_Remodeling.Core.AppTask
                 akkonResult.RightCount_Min = (int)rightCountList.Min();
                 akkonResult.RightCount_Max = (int)rightCountList.Max();
             }
-
-            akkonResult.LengthJudgement = (leftLengthNG || rightLengthNG) == true ? Judgement.NG : Judgement.OK;
 
             if (leftLengthList.Count > 0)
             {

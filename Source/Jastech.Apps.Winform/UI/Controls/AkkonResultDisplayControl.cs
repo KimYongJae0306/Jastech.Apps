@@ -218,10 +218,7 @@ namespace ATT_UT_IPAD.UI.Controls
 
             if(tabInspResult != null)
             {
-                var countJudgement = tabInspResult.AkkonResult.CountJudgement;
-                var lengthJudgement = tabInspResult.AkkonResult.LengthJudgement;
-
-                if (countJudgement == Judgement.OK && lengthJudgement == Judgement.OK)
+                if (tabInspResult.AkkonResult.Judgement == Judgement.OK)
                     TabBtnControlList[tabNo].BackColor = Color.MediumSeaGreen;
                 else
                     TabBtnControlList[tabNo].BackColor = Color.Red;

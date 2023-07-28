@@ -524,49 +524,43 @@ namespace Jastech.Apps.Winform
 
             if (DeviceManager.Instance().PlcHandler.Count > 0 && map != null)
             {
-                int countJudgement = 1; // 1 : OK, 2: NG
-                if (akkonResult.CountJudgement == Judgement.OK)
+                int countJudgement = 0; // 1 : OK, 2: NG
+                if (akkonResult.Judgement == Judgement.OK)
                     countJudgement = 1;
                 else
                     countJudgement = 2;
 
-                int lengthJudgement = 1;
-                if (akkonResult.LengthJudgement == Judgement.OK)
-                    lengthJudgement = 1;
-                else
-                    lengthJudgement = 2;
-
                 var plc = DeviceManager.Instance().PlcHandler.First() as MelsecPlc;
                 PlcDataStream stream = new PlcDataStream();
 
-                if (plc.MelsecParser.ParserType == ParserType.Binary)
-                {
-                    stream.AddSwap16BitData(Convert.ToInt16(countJudgement));
-                    stream.AddSwap16BitData(Convert.ToInt16(akkonResult.LeftCount_Avg));
-                    stream.AddSwap16BitData(Convert.ToInt16(akkonResult.LeftCount_Min));
-                    stream.AddSwap16BitData(Convert.ToInt16(akkonResult.LeftCount_Max));
-                    stream.AddSwap16BitData(Convert.ToInt16(akkonResult.RightCount_Avg));
-                    stream.AddSwap16BitData(Convert.ToInt16(akkonResult.RightCount_Min));
-                    stream.AddSwap16BitData(Convert.ToInt16(akkonResult.RightCount_Max));
-                    // Empty 넣어주기
-                    stream.AddSwap16BitData(0);
-                    stream.AddSwap16BitData(0);
-                    stream.AddSwap16BitData(0);
-                    stream.AddSwap16BitData(0);
+                //if (plc.MelsecParser.ParserType == ParserType.Binary)
+                //{
+                //    stream.AddSwap16BitData(Convert.ToInt16(countJudgement));
+                //    stream.AddSwap16BitData(Convert.ToInt16(akkonResult.LeftCount_Avg));
+                //    stream.AddSwap16BitData(Convert.ToInt16(akkonResult.LeftCount_Min));
+                //    stream.AddSwap16BitData(Convert.ToInt16(akkonResult.LeftCount_Max));
+                //    stream.AddSwap16BitData(Convert.ToInt16(akkonResult.RightCount_Avg));
+                //    stream.AddSwap16BitData(Convert.ToInt16(akkonResult.RightCount_Min));
+                //    stream.AddSwap16BitData(Convert.ToInt16(akkonResult.RightCount_Max));
+                //    // Empty 넣어주기
+                //    stream.AddSwap16BitData(0);
+                //    stream.AddSwap16BitData(0);
+                //    stream.AddSwap16BitData(0);
+                //    stream.AddSwap16BitData(0);
 
-                    stream.AddSwap16BitData(Convert.ToInt16(lengthJudgement));
+                //    stream.AddSwap16BitData(Convert.ToInt16(lengthJudgement));
 
-                }
-                else
-                {
-                    stream.Add16BitData(Convert.ToInt16(countJudgement));
-                    stream.Add16BitData(Convert.ToInt16(akkonResult.LeftCount_Avg));
-                    stream.Add16BitData(Convert.ToInt16(akkonResult.LeftCount_Min));
-                    stream.Add16BitData(Convert.ToInt16(akkonResult.LeftCount_Max));
-                    stream.Add16BitData(Convert.ToInt16(akkonResult.RightCount_Avg));
-                    stream.Add16BitData(Convert.ToInt16(akkonResult.RightCount_Min));
-                    stream.Add16BitData(Convert.ToInt16(akkonResult.RightCount_Max));
-                }
+                //}
+                //else
+                //{
+                //    stream.Add16BitData(Convert.ToInt16(countJudgement));
+                //    stream.Add16BitData(Convert.ToInt16(akkonResult.LeftCount_Avg));
+                //    stream.Add16BitData(Convert.ToInt16(akkonResult.LeftCount_Min));
+                //    stream.Add16BitData(Convert.ToInt16(akkonResult.LeftCount_Max));
+                //    stream.Add16BitData(Convert.ToInt16(akkonResult.RightCount_Avg));
+                //    stream.Add16BitData(Convert.ToInt16(akkonResult.RightCount_Min));
+                //    stream.Add16BitData(Convert.ToInt16(akkonResult.RightCount_Max));
+                //}
                 plc.Write("D" + map.AddressNum, stream.Data);
             }
         }

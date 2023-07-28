@@ -225,32 +225,25 @@ namespace ATT.Core
             List<double> leftLengthList = new List<double>();
             List<double> rightLengthList = new List<double>();
 
-            bool leftCountNG = false;
-            bool leftLengthNG = false;
-            bool rightCountNG = false;
-            bool rightLengthNG = false;
-
+            bool isNg = false;
             foreach (var leadResult in leadResultList)
             {
                 if (leadResult.ContainPos == LeadContainPos.Left)
                 {
-                    leftCountNG |= leadResult.Judgement == Judgement.NG ? true : false;
                     leftCountList.Add(leadResult.AkkonCount);
-
-                    leftLengthNG |= leadResult.Judgement == Judgement.NG ? true : false;
                     leftLengthList.Add(leadResult.LengthY_um);
                 }
                 else
                 {
-                    rightCountNG |= leadResult.Judgement == Judgement.NG ? true : false;
                     rightCountList.Add(leadResult.AkkonCount);
-
-                    rightLengthNG |= leadResult.Judgement == Judgement.NG ? true : false;
                     rightLengthList.Add(leadResult.LengthY_um);
                 }
+
+                if (leadResult.Judgement == Judgement.NG)
+                    isNg |= true;
             }
 
-            akkonResult.CountJudgement = (leftCountNG || rightCountNG) == true ? Judgement.NG : Judgement.OK;
+            akkonResult.Judgement = isNg == false ? Judgement.OK : Judgement.NG;
             akkonResult.LeftCount_Avg = (int)leftCountList.Average();
             akkonResult.LeftCount_Min = (int)leftCountList.Min();
             akkonResult.LeftCount_Max = (int)leftCountList.Max();
@@ -258,7 +251,6 @@ namespace ATT.Core
             akkonResult.RightCount_Min = (int)rightCountList.Min();
             akkonResult.RightCount_Max = (int)rightCountList.Max();
 
-            akkonResult.LengthJudgement = (leftLengthNG || rightLengthNG) == true ? Judgement.NG : Judgement.OK;
             akkonResult.Length_Left_Avg_um = (float)leftLengthList.Average();
             akkonResult.Length_Left_Min_um = (float)leftLengthList.Min();
             akkonResult.Length_Left_Max_um = (float)leftLengthList.Max();
