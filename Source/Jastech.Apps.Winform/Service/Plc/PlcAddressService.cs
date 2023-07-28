@@ -51,15 +51,25 @@ namespace Jastech.Apps.Winform.Service.Plc
         private void CreateResultMap()
         {
             // Current Model Name
-            ResultMapList.Add(new PlcAddressMap(PlcResultMap.Current_ModelName, WordType.HEX, AppsConfig.Instance().PlcAddressInfo.ResultStart, 10));
+            ResultMapList.Add(new PlcAddressMap(PlcResultMap.Current_ModelName, WordType.HEX, AppsConfig.Instance().PlcAddressInfo.ResultStart, 20));
 
             int tabTotabInterval = AppsConfig.Instance().PlcAddressInfo.ResultTabToTabInterval; // AddressMap 참고 
 
-            // Align Results
+            // Version
+            int versionStart = AppsConfig.Instance().PlcAddressInfo.ResultStart + 100;
+            ResultMapList.Add(new PlcAddressMap(PlcResultMap.Version_Major, WordType.DEC, versionStart, 1));
+            ResultMapList.Add(new PlcAddressMap(PlcResultMap.Version_Minor, WordType.DEC, versionStart + 1, 1));
+            ResultMapList.Add(new PlcAddressMap(PlcResultMap.Version_Build, WordType.DEC, versionStart + 2, 1));
+            ResultMapList.Add(new PlcAddressMap(PlcResultMap.Version_Revision, WordType.DEC, versionStart + 3, 1));
+
+            // Align Results, Tab Result
             CreateAlignResult(AppsConfig.Instance().PlcAddressInfo.ResultStart_Align, tabTotabInterval);
 
             // Akkon Results
             CreateAkkonResult(AppsConfig.Instance().PlcAddressInfo.ResultStart_Akkon, tabTotabInterval);
+
+            // Mark Results
+            CreateMarkResult(AppsConfig.Instance().PlcAddressInfo.ResultStart_Akkon, tabTotabInterval);
         }
 
         private void CreateAlignResult(int alignStartIndex, int tabTotabInterval)
@@ -69,6 +79,7 @@ namespace Jastech.Apps.Winform.Service.Plc
 
             for (int i = 0; i < maxCount; i++)
             {
+                string tabJudgement = string.Format("Tab{0}_Judgement", i);
                 string alignJudement = string.Format("Tab{0}_Align_Judgement", i);
                 string alignLeftX = string.Format("Tab{0}_Align_Left_X", i);
                 string alignLeftY = string.Format("Tab{0}_Align_Left_Y", i);
@@ -76,11 +87,13 @@ namespace Jastech.Apps.Winform.Service.Plc
                 string alignRightY = string.Format("Tab{0}_Align_Right_Y", i);
 
                 int addressIndex = addressNum + (tabTotabInterval * i);
+                ResultMapList.Add(new PlcAddressMap((PlcResultMap)Enum.Parse(typeof(PlcResultMap), tabJudgement), WordType.DEC, addressIndex, 1));
+
                 ResultMapList.Add(new PlcAddressMap((PlcResultMap)Enum.Parse(typeof(PlcResultMap), alignJudement), WordType.DEC, addressIndex, 1));
-                ResultMapList.Add(new PlcAddressMap((PlcResultMap)Enum.Parse(typeof(PlcResultMap), alignLeftX), WordType.DEC, addressIndex + 1, 1));
-                ResultMapList.Add(new PlcAddressMap((PlcResultMap)Enum.Parse(typeof(PlcResultMap), alignLeftY), WordType.DEC, addressIndex + 2, 1));
-                ResultMapList.Add(new PlcAddressMap((PlcResultMap)Enum.Parse(typeof(PlcResultMap), alignRightX), WordType.DEC, addressIndex + 3, 1));
-                ResultMapList.Add(new PlcAddressMap((PlcResultMap)Enum.Parse(typeof(PlcResultMap), alignRightY), WordType.DEC, addressIndex + 4, 1));
+                ResultMapList.Add(new PlcAddressMap((PlcResultMap)Enum.Parse(typeof(PlcResultMap), alignLeftX), WordType.DoubleWord, addressIndex + 1, 2));
+                ResultMapList.Add(new PlcAddressMap((PlcResultMap)Enum.Parse(typeof(PlcResultMap), alignLeftY), WordType.DoubleWord, addressIndex + 2, 2));
+                ResultMapList.Add(new PlcAddressMap((PlcResultMap)Enum.Parse(typeof(PlcResultMap), alignRightX), WordType.DoubleWord, addressIndex + 3, 2));
+                ResultMapList.Add(new PlcAddressMap((PlcResultMap)Enum.Parse(typeof(PlcResultMap), alignRightY), WordType.DoubleWord, addressIndex + 4, 2));
             }
         }
 
@@ -91,7 +104,7 @@ namespace Jastech.Apps.Winform.Service.Plc
 
             for (int i = 0; i < maxCount; i++)
             {
-                string akkonCountJudgement = string.Format("Tab{0}_Akkon_Judgement", i);
+                string akkonJudgement = string.Format("Tab{0}_Akkon_Judgement", i);
                 string akkonCountLeftAvg = string.Format("Tab{0}_Akkon_Count_Left_Avg", i);
                 string akkonCountLeftMin = string.Format("Tab{0}_Akkon_Count_Left_Min", i);
                 string akkonCountLeftMax = string.Format("Tab{0}_Akkon_Count_Left_Max", i);
@@ -100,16 +113,15 @@ namespace Jastech.Apps.Winform.Service.Plc
                 string akkonCountRightMax = string.Format("Tab{0}_Akkon_Count_Right_Max", i);
 
                 int addressIndex = addressNum + (tabTotabInterval * i);
-                ResultMapList.Add(new PlcAddressMap((PlcResultMap)Enum.Parse(typeof(PlcResultMap), akkonCountJudgement), WordType.DEC, addressIndex, 1));
-                ResultMapList.Add(new PlcAddressMap((PlcResultMap)Enum.Parse(typeof(PlcResultMap), akkonCountLeftAvg), WordType.DEC, addressIndex + 1, 1));
-                ResultMapList.Add(new PlcAddressMap((PlcResultMap)Enum.Parse(typeof(PlcResultMap), akkonCountLeftMin), WordType.DEC, addressIndex + 2, 1));
-                ResultMapList.Add(new PlcAddressMap((PlcResultMap)Enum.Parse(typeof(PlcResultMap), akkonCountLeftMax), WordType.DEC, addressIndex + 3, 1));
-                ResultMapList.Add(new PlcAddressMap((PlcResultMap)Enum.Parse(typeof(PlcResultMap), akkonCountRightAvg), WordType.DEC, addressIndex + 4, 1));
-                ResultMapList.Add(new PlcAddressMap((PlcResultMap)Enum.Parse(typeof(PlcResultMap), akkonCountRightMin), WordType.DEC, addressIndex + 5, 1));
-                ResultMapList.Add(new PlcAddressMap((PlcResultMap)Enum.Parse(typeof(PlcResultMap), akkonCountRightMax), WordType.DEC, addressIndex + 6, 1));
+                ResultMapList.Add(new PlcAddressMap((PlcResultMap)Enum.Parse(typeof(PlcResultMap), akkonJudgement), WordType.DEC, addressIndex, 1));
+                ResultMapList.Add(new PlcAddressMap((PlcResultMap)Enum.Parse(typeof(PlcResultMap), akkonCountLeftAvg), WordType.DEC, addressIndex + 2, 1));
+                ResultMapList.Add(new PlcAddressMap((PlcResultMap)Enum.Parse(typeof(PlcResultMap), akkonCountLeftMin), WordType.DEC, addressIndex + 3, 1));
+                ResultMapList.Add(new PlcAddressMap((PlcResultMap)Enum.Parse(typeof(PlcResultMap), akkonCountLeftMax), WordType.DEC, addressIndex + 4, 1));
+                ResultMapList.Add(new PlcAddressMap((PlcResultMap)Enum.Parse(typeof(PlcResultMap), akkonCountRightAvg), WordType.DEC, addressIndex + 5, 1));
+                ResultMapList.Add(new PlcAddressMap((PlcResultMap)Enum.Parse(typeof(PlcResultMap), akkonCountRightMin), WordType.DEC, addressIndex + 6, 1));
+                ResultMapList.Add(new PlcAddressMap((PlcResultMap)Enum.Parse(typeof(PlcResultMap), akkonCountRightMax), WordType.DEC, addressIndex + 7, 1));
 
 
-                string akkonLengthJudgement = string.Format("Tab{0}_Akkon_Length_Judgement", i);
                 string akkonLengthLeftAvg = string.Format("Tab{0}_Akkon_Length_Left_Avg", i);
                 string akkonLengthLeftMin = string.Format("Tab{0}_Akkon_Length_Left_Min", i);
                 string akkonLengthLeftMax = string.Format("Tab{0}_Akkon_Length_Left_Max", i);
@@ -118,16 +130,34 @@ namespace Jastech.Apps.Winform.Service.Plc
                 string akkonLengthRightMax = string.Format("Tab{0}_Akkon_Length_Right_Max", i);
 
                 addressIndex = addressNum + 10 + (tabTotabInterval * i);
-                ResultMapList.Add(new PlcAddressMap((PlcResultMap)Enum.Parse(typeof(PlcResultMap), akkonLengthJudgement), WordType.DEC, addressIndex, 1));
-                ResultMapList.Add(new PlcAddressMap((PlcResultMap)Enum.Parse(typeof(PlcResultMap), akkonLengthLeftAvg), WordType.DEC, addressIndex + 1, 1));
-                ResultMapList.Add(new PlcAddressMap((PlcResultMap)Enum.Parse(typeof(PlcResultMap), akkonLengthLeftMin), WordType.DEC, addressIndex + 2, 1));
-                ResultMapList.Add(new PlcAddressMap((PlcResultMap)Enum.Parse(typeof(PlcResultMap), akkonLengthLeftMax), WordType.DEC, addressIndex + 3, 1));
-                ResultMapList.Add(new PlcAddressMap((PlcResultMap)Enum.Parse(typeof(PlcResultMap), akkonLengthRightAvg), WordType.DEC, addressIndex + 4, 1));
-                ResultMapList.Add(new PlcAddressMap((PlcResultMap)Enum.Parse(typeof(PlcResultMap), akkonLengthRightMin), WordType.DEC, addressIndex + 5, 1));
-                ResultMapList.Add(new PlcAddressMap((PlcResultMap)Enum.Parse(typeof(PlcResultMap), akkonLengthRightMax), WordType.DEC, addressIndex + 6, 1));
+                ResultMapList.Add(new PlcAddressMap((PlcResultMap)Enum.Parse(typeof(PlcResultMap), akkonLengthLeftAvg), WordType.DoubleWord, addressIndex + 8, 2));
+                ResultMapList.Add(new PlcAddressMap((PlcResultMap)Enum.Parse(typeof(PlcResultMap), akkonLengthLeftMin), WordType.DoubleWord, addressIndex + 10, 2));
+                ResultMapList.Add(new PlcAddressMap((PlcResultMap)Enum.Parse(typeof(PlcResultMap), akkonLengthLeftMax), WordType.DoubleWord, addressIndex + 12, 2));
+                ResultMapList.Add(new PlcAddressMap((PlcResultMap)Enum.Parse(typeof(PlcResultMap), akkonLengthRightAvg), WordType.DoubleWord, addressIndex + 14, 2));
+                ResultMapList.Add(new PlcAddressMap((PlcResultMap)Enum.Parse(typeof(PlcResultMap), akkonLengthRightMin), WordType.DoubleWord, addressIndex + 16, 2));
+                ResultMapList.Add(new PlcAddressMap((PlcResultMap)Enum.Parse(typeof(PlcResultMap), akkonLengthRightMax), WordType.DoubleWord, addressIndex + 18, 2));
             }
         }
 
+        private void CreateMarkResult(int akkonStartIndex, int tabTotabInterval)
+        {
+            int maxCount = AppsConfig.Instance().TabMaxCount;
+            int addressNum = akkonStartIndex;
+
+            for (int i = 0; i < maxCount; i++)
+            {
+                string panelLeftMarkSocre = string.Format("Tab{0}_Panel_Mark_Left_Score", i);
+                string panelRightMarkSocre = string.Format("Tab{0}_Panel_Mark_Right_Score", i);
+                string fpcLeftMarkSocre = string.Format("Tab{0}_Fpc_Mark_Left_Score", i);
+                string fpcRightMarkSocre = string.Format("Tab{0}_Fpc_Mark_Right_Score", i);
+
+                int addressIndex = addressNum + (tabTotabInterval * i);
+                ResultMapList.Add(new PlcAddressMap((PlcResultMap)Enum.Parse(typeof(PlcResultMap), panelLeftMarkSocre), WordType.DoubleWord, addressIndex + 20, 2));
+                ResultMapList.Add(new PlcAddressMap((PlcResultMap)Enum.Parse(typeof(PlcResultMap), panelRightMarkSocre), WordType.DoubleWord, addressIndex + 22, 2));
+                ResultMapList.Add(new PlcAddressMap((PlcResultMap)Enum.Parse(typeof(PlcResultMap), fpcLeftMarkSocre), WordType.DoubleWord, addressIndex + 24, 2));
+                ResultMapList.Add(new PlcAddressMap((PlcResultMap)Enum.Parse(typeof(PlcResultMap), fpcRightMarkSocre), WordType.DoubleWord, addressIndex + 26, 2));
+            }
+        }
         private void CreateAddressMap()
         {
             int index = AppsConfig.Instance().PlcAddressInfo.CommonStart;
