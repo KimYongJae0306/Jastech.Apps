@@ -55,16 +55,10 @@ namespace Jastech.Apps.Winform.Settings
         public int AkkonThreadCount { get; set; } = 8;
 
         [JsonProperty]
-        public int AlignResultCount { get; set; } = 100;
+        public int AlignResultDailyCount { get; set; } = 100;
 
         [JsonProperty]
-        public int AkkonResultCount { get; set; } = 100;
-
-        [JsonProperty]
-        public bool UseNGDisplay { get; set; } = true;
-
-        [JsonProperty]
-        public int NGSendingCycle { get; set; } = 1;
+        public int AkkonResultDailyCount { get; set; } = 100;
         #endregion
 
         #region 메서드

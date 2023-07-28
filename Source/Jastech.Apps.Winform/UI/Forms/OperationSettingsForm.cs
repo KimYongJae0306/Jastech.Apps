@@ -74,11 +74,8 @@ namespace Jastech.Framework.Winform.Forms
                     mcbxNGExtension.SelectedIndex = i;
             }
 
-            txtAlignResultCount.Text = AppsConfig.Instance().AlignResultCount.ToString();
-            txtAkkonResultCount.Text = AppsConfig.Instance().AkkonResultCount.ToString();
-
-            mtgDisplayNG.Checked = AppsConfig.Instance().UseNGDisplay;
-            txtNGCount.Text = AppsConfig.Instance().NGSendingCycle.ToString();
+            txtAlignResultCount.Text = AppsConfig.Instance().AlignResultDailyCount.ToString();
+            txtAkkonResultCount.Text = AppsConfig.Instance().AkkonResultDailyCount.ToString();
         }
 
         public void UpdateCuurentData()
@@ -105,11 +102,8 @@ namespace Jastech.Framework.Winform.Forms
             operation.ExtensionOKImage = (ImageExtension)Enum.Parse(typeof(ImageExtension), mcbxOKExtension.SelectedItem as string);
             operation.ExtensionNGImage = (ImageExtension)Enum.Parse(typeof(ImageExtension), mcbxNGExtension.SelectedItem as string);
 
-            AppsConfig.Instance().AlignResultCount = Convert.ToInt32(GetValue(txtAlignResultCount.Text));
-            AppsConfig.Instance().AkkonResultCount = Convert.ToInt32(GetValue(txtAkkonResultCount.Text));
-
-            AppsConfig.Instance().UseNGDisplay = mtgDisplayNG.Checked;
-            AppsConfig.Instance().NGSendingCycle = Convert.ToInt32(txtNGCount.Text);
+            AppsConfig.Instance().AlignResultDailyCount = Convert.ToInt32(GetValue(txtAlignResultCount.Text));
+            AppsConfig.Instance().AkkonResultDailyCount = Convert.ToInt32(GetValue(txtAkkonResultCount.Text));
         }
 
         public string GetValue(string value)

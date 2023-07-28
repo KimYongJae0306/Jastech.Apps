@@ -17,6 +17,8 @@ using Jastech.Framework.Algorithms.Akkon.Parameters;
 using Jastech.Framework.Algorithms.Akkon.Results;
 using Jastech.Framework.Config;
 using Jastech.Framework.Device.Cameras;
+using Jastech.Framework.Device.LAFCtrl;
+using Jastech.Framework.Device.LightCtrls;
 using Jastech.Framework.Device.Motions;
 using Jastech.Framework.Imaging;
 using Jastech.Framework.Imaging.Helper;
@@ -49,9 +51,19 @@ namespace ATT_UT_Remodeling.Core
         private object _akkonLock = new object();
 
         private object _inspLock = new object();
+
+        private Thread _deleteThread { get; set; } = null;
         #endregion
 
         #region 속성
+        private LineCamera LineCamera { get; set; } = null;
+
+        private AreaCamera AreaCamera { get; set; } = null;
+
+        private LAFCtrl LafCtrl { get; set; } = null;
+
+        private LightCtrlHandler LightCtrlHandler { get; set; } = null;
+
         private Task SeqTask { get; set; }
 
         private CancellationTokenSource SeqTaskCancellationTokenSource { get; set; }
@@ -127,13 +139,16 @@ namespace ATT_UT_Remodeling.Core
 
             return false;
         }
-
+        
         public void Initialize()
         {
-            var lineCamera = LineCameraManager.Instance().GetAppsCamera("LineCamera");
-            if (lineCamera != null)
+            LineCamera = LineCameraManager.Instance().GetLineCamera("LineCamera");
+            LafCtrl = LAFManager.Instance().GetLAFCtrl("Laf");
+            LightCtrlHandler = DeviceManager.Instance().LightCtrlHandler;
+            AreaCamera = AreaCameraManager.Instance().GetAppsCamera("PreAlign");
+            if (LineCamera != null)
             {
-                lineCamera.GrabDoneEventHandler += ATTSeqRunner_GrabDoneEventHanlder;
+                LineCamera.GrabDoneEventHandler += ATTSeqRunner_GrabDoneEventHanlder;
             }
 
             InspProcessTask.StartTask();
@@ -145,19 +160,17 @@ namespace ATT_UT_Remodeling.Core
             LAFManager.Instance().TrackingOnOff("Laf", false);
             WriteLog("AutoFocus Off.");
 
-            var lineCamera = LineCameraManager.Instance().GetAppsCamera("LineCamera");
-            if(lineCamera != null)
+            if(LineCamera != null)
             {
-                lineCamera.StopGrab();
-                lineCamera.GrabDoneEventHandler -= ATTSeqRunner_GrabDoneEventHanlder;
-                lineCamera.StopGrab();
+                LineCamera.StopGrab();
+                LineCamera.GrabDoneEventHandler -= ATTSeqRunner_GrabDoneEventHanlder;
+                LineCamera.StopGrab();
                 WriteLog("LinceCamera Stop Grab.");
             }
-
-            var areaCamera = AreaCameraManager.Instance().GetAppsCamera("PreAlign");
-            if(areaCamera != null)
+       
+            if(AreaCamera != null)
             {
-                areaCamera.StopGrab();
+                AreaCamera.StopGrab();
                 WriteLog("PreAlignCamera Stop Grab.");
             }
 
@@ -218,20 +231,11 @@ namespace ATT_UT_Remodeling.Core
                 return;
 
             var tab = unit.GetTab(0);
-            if (tab == null)
-                return;
 
-            var lineCamera = LineCameraManager.Instance().GetLineCamera("LineCamera");
-            if (lineCamera == null)
-                return;
+            //var lineCamera = LineCameraManager.Instance().GetLineCamera("LineCamera");
+            //var laf = LAFManager.Instance().GetLAFCtrl("Laf");
+            //var light = DeviceManager.Instance().LightCtrlHandler;
 
-            var laf = LAFManager.Instance().GetLAFCtrl("Laf");
-            if (laf == null)
-                return;
-            var light = DeviceManager.Instance().LightCtrlHandler;
-
-            if (light == null)
-                return;
             string systemLogMessage = string.Empty;
             string errorMessage = string.Empty;
 
@@ -241,15 +245,16 @@ namespace ATT_UT_Remodeling.Core
                     break;
 
                 case SeqStep.SEQ_INIT:
-                    lineCamera.IsLive = false;
-                    lineCamera.StopGrab();
+                    LineCamera.IsLive = false;
+                    LineCamera.StopGrab();
                     WriteLog("Stop Grab.");
 
-                    light.TurnOff();
+                    LightCtrlHandler.TurnOff();
                     WriteLog("Light Off.");
 
                     LAFManager.Instance().TrackingOnOff("Laf", false);
-                    laf.SetMotionAbsoluteMove(0);
+                    LafCtrl.SetMotionAbsoluteMove(0);
+
                     WriteLog("Laf Off.");
 
                     SeqStep = SeqStep.SEQ_WAITING;
@@ -291,12 +296,12 @@ namespace ATT_UT_Remodeling.Core
                     LAFManager.Instance().TrackingOnOff("Laf", true);
                     WriteLog("Laser Auto Focus On.");
 
-                    light.TurnOn(unit.GetLineCameraData("Akkon").LightParam);
+                    LightCtrlHandler.TurnOn(unit.GetLineCameraData("Akkon").LightParam);
                     Thread.Sleep(100);
                     WriteLog("Left Prealign Light On.");
 
-                    lineCamera.SetOperationMode(TDIOperationMode.TDI);
-                    lineCamera.StartGrab();
+                    LineCamera.SetOperationMode(TDIOperationMode.TDI);
+                    LineCamera.StartGrab();
                     WriteLog("Start LineScanner Grab.", true);
 
                     if (ConfigSet.Instance().Operation.VirtualMode)
@@ -383,8 +388,8 @@ namespace ATT_UT_Remodeling.Core
                     break;
 
                 case SeqStep.SEQ_DELETE_DATA:
-                    // Delete result datas
 
+                    StartDeleteData();
                     WriteLog("Delete the old data");
 
                     SeqStep = SeqStep.SEQ_CHECK_STANDBY;
@@ -465,6 +470,15 @@ namespace ATT_UT_Remodeling.Core
             AppsInspModel inspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
 
             Tab tab = inspModel.GetUnit(UnitName.Unit0).GetTab(0);
+        }
+
+        public void StartDeleteData()
+        {
+            if (_deleteThread == null)
+            {
+                _deleteThread = new Thread(DeleteData);
+                _deleteThread.Start();
+            }
         }
         #endregion
     }
@@ -1064,6 +1078,33 @@ namespace ATT_UT_Remodeling.Core
                     filePath += string.Format("_{0}.jpg", judgement.ToString());
                     image.Save(filePath);
                 }
+            }
+        }
+
+        private void DeleteData()
+        {
+            try
+            {
+                var inspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
+                if (inspModel == null)
+                {
+                    _deleteThread = null;
+                    return;
+                }
+
+                string resultPath = ConfigSet.Instance().Path.Result;
+                string logPath = ConfigSet.Instance().Path.Log;
+
+                int duration = ConfigSet.Instance().Operation.DataStoringDuration;
+                FileHelper.DeleteFilesInDirectory(resultPath, ".*", duration);
+                FileHelper.DeleteFilesInDirectory(logPath, ".*", duration);
+
+                _deleteThread = null;
+            }
+            catch (Exception err)
+            {
+                Logger.Error(ErrorType.Etc, "Delete Data Error : " + err.Message);
+                _deleteThread = null;
             }
         }
 
