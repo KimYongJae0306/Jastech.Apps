@@ -222,9 +222,31 @@ namespace ATT_UT_IPAD
             handler.AddAxis(AxisName.Z1, motion, axisNo: -1, homeOrder: 2);
         }
 
-        public void UpdateMainResult(AppsInspResult result)
+        public void UpdateAkkonResultTabButton(int tabNo)
         {
-          //  _mainForm.UpdateMainResult(result);
+            _mainForm.UpdateAkkonResultTabButton(tabNo);
+        }
+
+        public void UpdateAlignResultTabButton(int tabNo)
+        {
+            _mainForm.UpdateAlignResultTabButton(tabNo);
+        }
+
+
+        public void UpdateMainResult()
+        {
+            var inspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
+
+            for (int tabNo = 0; tabNo < inspModel.TabCount; tabNo++)
+            {
+                _mainForm.UpdateMainAkkonResult(tabNo);
+                _mainForm.UpdateMainAlignResult(tabNo);
+            }
+        }
+
+        public void TabButtonResetColor()
+        {
+            _mainForm.TabButtonResetColor();
         }
 
         public void AddSystemLogMessage(string logMessage)

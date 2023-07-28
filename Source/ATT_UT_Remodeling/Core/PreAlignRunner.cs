@@ -27,6 +27,7 @@ using System.Drawing;
 using Jastech.Framework.Winform;
 using Jastech.Apps.Winform.Core;
 using Jastech.Framework.Algorithms.Akkon.Results;
+using ATT_UT_Remodeling.Core.Data;
 
 namespace ATT_UT_Remodeling
 {
@@ -89,7 +90,7 @@ namespace ATT_UT_Remodeling
             AreaCameraManager.Instance().GetAreaCamera("PreAlign").StopGrab();
 
             // 조명 off
-            LAFManager.Instance().TrackingOnOff("Laf", false);
+            LAFManager.Instance().GetLAFCtrl("Laf").SetTrackingOnOFF(false);
             WriteLog("AutoFocus Off.");
 
             if (SeqTask == null)
@@ -165,7 +166,7 @@ namespace ATT_UT_Remodeling
                     PlcControlManager.Instance().ClearAlignData();
                     WriteLog("Clear PLC Data.");
 
-                    LAFManager.Instance().TrackingOnOff("Laf", false);
+                    LAFManager.Instance().GetLAFCtrl("Laf").SetTrackingOnOFF(false);
                     laf.SetMotionAbsoluteMove(0);
                     WriteLog("LAF Off.");
 

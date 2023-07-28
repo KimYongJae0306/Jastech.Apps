@@ -1,4 +1,5 @@
 ﻿using ATT.Core;
+using ATT.Core.Data;
 using ATT.UI.Pages;
 using Jastech.Apps.Structure;
 using Jastech.Apps.Structure.Data;

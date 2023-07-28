@@ -15,8 +15,6 @@ namespace Jastech.Apps.Structure.Data
     {
         public int TabNo { get; set; } = -1;
 
-        public bool IsInspDone { get; set; } = false;
-
         public bool IsResultProcessDone { get; set; } = false;
 
         public Judgement Judgement { get; set; }
@@ -39,7 +37,6 @@ namespace Jastech.Apps.Structure.Data
 
         public void Dispose()
         {
-            IsInspDone = false;
             IsResultProcessDone = false;
             if (Image != null)
             {

@@ -1,5 +1,7 @@
 ﻿using ATT_UT_IPAD.UI.Controls;
+using ATT_UT_Remodeling.Core.Data;
 using Jastech.Apps.Structure.Data;
+using Jastech.Apps.Winform;
 using Jastech.Apps.Winform.UI.Controls;
 using System;
 using System.Windows.Forms;
@@ -44,8 +46,14 @@ namespace ATT_UT_Remodeling.UI.Controls
 
             AkkonResultDisplayControl = new AkkonResultDisplayControl();
             AkkonResultDisplayControl.Dock = DockStyle.Fill;
-            AkkonResultDisplayControl.SendTabNumber += UpdateResultChart;
+            AkkonResultDisplayControl.SendTabNumberEvent += UpdateResultChart;
+            AkkonResultDisplayControl.GetTabInspResultEvent += GetTabInspResult;
             pnlResultDisplay.Controls.Add(AkkonResultDisplayControl);
+        }
+
+        private TabInspResult GetTabInspResult(int tabNo)
+        {
+            return AppsInspResult.Instance().Get(tabNo);
         }
 
         public void UpdateTabCount(int tabCount)

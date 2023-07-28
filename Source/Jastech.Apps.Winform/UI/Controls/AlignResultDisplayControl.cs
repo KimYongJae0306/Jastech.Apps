@@ -33,11 +33,15 @@ namespace ATT_UT_IPAD.UI.Controls
         #endregion
 
         #region 이벤트
-        public event SendTabNumberDelegate SendTabNumber;
+        public event SendTabNumberDelegate SendTabNumberEvent;
+
+        public event GetTabInspResultDele GetTabInspResultEvent;
         #endregion
 
         #region 델리게이트
         public delegate void SendTabNumberDelegate(int tabNo);
+
+        public delegate TabInspResult GetTabInspResultDele(int tabNo);
         #endregion
 
         #region 생성자
@@ -119,7 +123,7 @@ namespace ATT_UT_IPAD.UI.Controls
 
             CurrentTabNo = tabNo;
             UpdateResultDisplay(tabNo);
-            SendTabNumber(tabNo);
+            SendTabNumberEvent(tabNo);
         }
 
         public delegate void TabButtonResetColorDele();
@@ -137,7 +141,7 @@ namespace ATT_UT_IPAD.UI.Controls
 
         public void UpdateResultDisplay(int tabNo)
         {
-            var tabInspResult = AppsInspResult.Instance().Get(tabNo);
+            var tabInspResult = GetTabInspResultEvent?.Invoke(tabNo);
 
             if(tabInspResult != null)
             {
@@ -164,12 +168,15 @@ namespace ATT_UT_IPAD.UI.Controls
                 return;
             }
 
-            var tabInspResult = AppsInspResult.Instance().Get(tabNo);
+            var tabInspResult = GetTabInspResultEvent?.Invoke(tabNo);
 
-            if (tabInspResult.AlignResult.Judgement == Judgement.OK)
-                TabBtnControlList[tabNo].BackColor = Color.MediumSeaGreen;
-            else
-                TabBtnControlList[tabNo].BackColor = Color.Red;
+            if(tabInspResult != null)
+            {
+                if (tabInspResult.AlignResult.Judgement == Judgement.OK)
+                    TabBtnControlList[tabNo].BackColor = Color.MediumSeaGreen;
+                else
+                    TabBtnControlList[tabNo].BackColor = Color.Red;
+            }
         }
 
         private void UpdateLeftAlignResult(TabInspResult result)

@@ -385,7 +385,8 @@ namespace Jastech.Framework.Winform.Forms
             AppsInspModel inspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
             TeachingImagePath = Path.Combine(ConfigSet.Instance().Path.Model, inspModel.Name, "TeachingImage", DateTime.Now.ToString("yyyyMMdd_HHmmss"));
 
-            LAFManager.Instance().TrackingOnOff(LAFCtrl.Name, true);
+            //LAFManager.Instance().getTrackingOnOff(LAFCtrl.Name, true);
+            LAFCtrl?.SetTrackingOnOFF(true);
 
             TeachingData.Instance().ClearTeachingImageBuffer();
             LineCamera.InitGrabSettings();

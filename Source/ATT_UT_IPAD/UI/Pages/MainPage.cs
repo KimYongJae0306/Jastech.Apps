@@ -1,4 +1,5 @@
-﻿using Jastech.Apps.Structure;
+﻿using ATT_UT_IPAD.Core.Data;
+using Jastech.Apps.Structure;
 using Jastech.Apps.Structure.Data;
 using Jastech.Apps.Winform;
 using Jastech.Apps.Winform.Core;
@@ -59,8 +60,29 @@ namespace ATT_UT_IPAD.UI.Pages
         {
         }
 
-        public void UpdateMainResult(AppsInspResult result)
+        public void UpdateMainAkkonResult(int tabNo)
         {
+        }
+
+        public void UpdateMainAlignResult(int tabNo)
+        {
+        }
+
+        public void UpdateAkkonResultTabButton(int tabNo)
+        {
+            //AkkonViewerControl.UpdateResultTabButton(tabNo);
+        }
+
+        public void UpdateAlignResultTabButton(int tabNo)
+        {
+            //AlignViewerControl.UpdateResultTabButton(tabNo);
+        }
+
+
+        public void TabButtonResetColor()
+        {
+            //AkkonViewerControl.TabButtonResetColor();
+            //AlignViewerControl.TabButtonResetColor();
         }
 
         public void AddSystemLogMessage(string logMessage)

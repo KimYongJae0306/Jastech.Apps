@@ -118,31 +118,31 @@ namespace Jastech.Apps.Winform
 
         public void SetCenterOfGravity(string name, int value)
         {
-            if (DeviceManager.Instance().LAFCtrlHandler.Get(name) is NuriOneLAFCtrl laf)
+            if (DeviceManager.Instance().LAFCtrlHandler.Get(name) is LAFCtrl laf)
                 laf.SetCenterOfGravity(value);
         }
 
         public void ServoOnOff(string name, bool isOn)
         {
-            if (DeviceManager.Instance().LAFCtrlHandler.Get(name) is NuriOneLAFCtrl laf)
+            if (DeviceManager.Instance().LAFCtrlHandler.Get(name) is LAFCtrl laf)
                 laf.SetMotionEnable(isOn);
         }
 
         public void LaserOnOff(string name, bool isOn)
         {
-            if (DeviceManager.Instance().LAFCtrlHandler.Get(name) is NuriOneLAFCtrl laf)
+            if (DeviceManager.Instance().LAFCtrlHandler.Get(name) is LAFCtrl laf)
                 laf.SetLaserOnOff(isOn);
         }
 
         public void TrackingOnOff(string name, bool isOn)
         {
-            if (DeviceManager.Instance().LAFCtrlHandler.Get(name) is NuriOneLAFCtrl laf)
+            if (DeviceManager.Instance().LAFCtrlHandler.Get(name) is LAFCtrl laf)
                 laf.SetTrackingOnOFF(isOn);
         }
 
         public void DataReceived(string name, byte[] data)
         {
-            if (DeviceManager.Instance().LAFCtrlHandler.Get(name) is NuriOneLAFCtrl laf)
+            if (DeviceManager.Instance().LAFCtrlHandler.Get(name) is LAFCtrl laf)
             {
                 string dataString = Encoding.Default.GetString(data);
 

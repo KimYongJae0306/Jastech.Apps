@@ -1,4 +1,5 @@
-﻿using Cognex.VisionPro;
+﻿using ATT.Core.Data;
+using Cognex.VisionPro;
 using Emgu.CV;
 using Emgu.CV.CvEnum;
 using Emgu.CV.Structure;
@@ -440,7 +441,7 @@ namespace ATT.Core
             StopAkkonInspTask();
             
             // 조명 off
-            LAFManager.Instance().TrackingOnOff("Laf", false);
+            //LAFManager.Instance().TrackingOnOff("Laf", false);
             Logger.Write(LogType.Seq, "AutoFocus Off.");
 
             LineCameraManager.Instance().Stop("Camera0");
@@ -538,7 +539,7 @@ namespace ATT.Core
                     AppsInspResult.StartInspTime = DateTime.Now;
                     AppsInspResult.Cell_ID = DateTime.Now.ToString("yyyyMMddHHmmss");
 
-                    LAFManager.Instance().TrackingOnOff("Laf", true);
+                    //LAFManager.Instance().TrackingOnOff("Laf", true);
                     Logger.Write(LogType.Seq, "AutoFocus On.");
 
                     SeqStep = SeqStep.SEQ_SCAN_START;
@@ -590,8 +591,8 @@ namespace ATT.Core
                         break;
 
                     LastInspSW.Stop();
-                    AppsInspResult.EndInspTime = DateTime.Now;
-                    AppsInspResult.LastInspTime = LastInspSW.ElapsedMilliseconds.ToString();
+                    AppsInspResult.Instance().EndInspTime = DateTime.Now;
+                    AppsInspResult.Instance().LastInspTime = LastInspSW.ElapsedMilliseconds.ToString();
                     Console.WriteLine("Total Tact Time : " + LastInspSW.ElapsedMilliseconds.ToString());
 
                     SeqStep = SeqStep.SEQ_UI_RESULT_UPDATE;
@@ -601,7 +602,7 @@ namespace ATT.Core
    
                     GetAkkonResultImage();
                     UpdateDailyInfo(AppsInspResult);
-                    SystemManager.Instance().UpdateMainResult(AppsInspResult);
+                    SystemManager.Instance().UpdateMainResult(AppsInspResult.Instance());
                     Console.WriteLine("Scan End to Insp Complete : " + LastInspSW.ElapsedMilliseconds.ToString());
                     SeqStep = SeqStep.SEQ_SAVE_RESULT_DATA;
                     break;
@@ -852,11 +853,11 @@ namespace ATT.Core
         private void SaveImage(AppsInspResult inspResult)
         {
             AppsInspModel inspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
-            DateTime currentTime = inspResult.StartInspTime;
+            DateTime currentTime = AppsInspResult.Instance().StartInspTime;
 
             string month = currentTime.ToString("MM");
             string day = currentTime.ToString("dd");
-            string folderPath = inspResult.Cell_ID;
+            string folderPath = AppsInspResult.Instance().Cell_ID;
 
             string path = Path.Combine(ConfigSet.Instance().Path.Result, inspModel.Name, month, day, folderPath);
 

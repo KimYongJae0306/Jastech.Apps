@@ -209,11 +209,6 @@ namespace ATT_UT_IPAD
             //    MainPageControl.UpdateButton();
         }
 
-        public void UpdateMainResult(AppsInspResult result)
-        {
-            MainPageControl.UpdateMainResult(result);
-        }
-
         public void AddSystemLogMessage(string logMessage)
         {
             MainPageControl.AddSystemLogMessage(logMessage);
@@ -228,6 +223,31 @@ namespace ATT_UT_IPAD
             form.ShowDialog();
 
             UserManager.Instance().SetCurrentUser(form.CurrentUser.Id);
+        }
+
+        public void TabButtonResetColor()
+        {
+            MainPageControl.TabButtonResetColor();
+        }
+
+        public void UpdateAkkonResultTabButton(int tabNo)
+        {
+            MainPageControl.UpdateAkkonResultTabButton(tabNo);
+        }
+
+        public void UpdateAlignResultTabButton(int tabNo)
+        {
+            MainPageControl.UpdateAlignResultTabButton(tabNo);
+        }
+
+        public void UpdateMainAkkonResult(int tabNo)
+        {
+            MainPageControl.UpdateMainAkkonResult(tabNo);
+        }
+
+        public void UpdateMainAlignResult(int tabNo)
+        {
+            MainPageControl.UpdateMainAlignResult(tabNo);
         }
 
         private void StopProgramEventFunction()

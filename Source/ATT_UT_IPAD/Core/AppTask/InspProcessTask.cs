@@ -1,5 +1,4 @@
-﻿using ATT_UT_Remodeling.Core.Data;
-using Emgu.CV;
+﻿using ATT_UT_IPAD.Core.Data;
 using Jastech.Apps.Structure;
 using Jastech.Apps.Structure.Data;
 using Jastech.Apps.Structure.VisionTool;
@@ -21,33 +20,111 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace ATT_UT_Remodeling.Core.AppTask
+namespace ATT_UT_IPAD.Core.AppTask
 {
     public class InspProcessTask
     {
         #region 필드
-        private object _inspLock = new object();
+        private object _inspAkkonLock = new object();
+
+        private object _inspAlignLock = new object();
         #endregion
 
         #region 속성
-        public int InspCount { get; set; } = 0;
+        public int InspAkkonCount { get; set; } = 0;
 
-        public Task ProcessTask { get; set; }
+        public int InspAlignCount { get; set; } = 0;
 
-        public CancellationTokenSource ProcessTaskCancellationTokenSource { get; set; }
+        public Task AkkonProcessTask { get; set; }
+
+        public CancellationTokenSource AkkonProcessTaskCancellationTokenSource { get; set; }
+
+        public Task AlignProcessTask { get; set; }
+
+        public CancellationTokenSource AlignProcessTaskCancellationTokenSource { get; set; }
 
         public AkkonAlgorithm AkkonAlgorithm { get; set; } = new AkkonAlgorithm();
 
-        public List<ATTInspTab> InspTabList { get; set; } = new List<ATTInspTab>();
+        public List<ATTInspTab> InspAkkonTabList { get; set; } = new List<ATTInspTab>();
 
-        private Queue<ATTInspTab> InspTabQueue = new Queue<ATTInspTab>();
+        public List<ATTInspTab> InspAlignTabList { get; set; } = new List<ATTInspTab>();
+
+        private Queue<ATTInspTab> InspAkkonTabQueue = new Queue<ATTInspTab>();
+
+        private Queue<ATTInspTab> InspAlignTabQueue = new Queue<ATTInspTab>();
 
         public Queue<VirtualData> VirtualQueue = new Queue<VirtualData>();
-
         #endregion
 
         #region 메서드
-        private void Run(ATTInspTab inspTab)
+        private void RunAkkon(ATTInspTab inspTab)
+        {
+            Stopwatch sw = new Stopwatch();
+            sw.Restart();
+
+            string unitName = UnitName.Unit0.ToString();
+            AppsInspModel inspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
+            Tab tab = inspModel.GetUnit(unitName).GetTab(inspTab.TabScanBuffer.TabNo);
+
+            MainAlgorithmTool algorithmTool = new MainAlgorithmTool();
+
+            TabInspResult inspResult = new TabInspResult();
+            inspResult.TabNo = inspTab.TabScanBuffer.TabNo;
+            inspResult.Image = inspTab.MergeMatImage;
+            inspResult.CogImage = inspTab.MergeCogImage;
+
+            // Create Coordinate Object
+            CoordinateTransform fpcCoordinate = new CoordinateTransform();
+            CoordinateTransform panelCoordinate = new CoordinateTransform();
+
+            algorithmTool.MainMarkInspect(inspTab.MergeCogImage, tab, ref inspResult, false);
+
+            if (inspResult.MarkResult.Judgement != Judgement.OK)
+            {
+                // 검사 실패
+                string message = string.Format("Mark Inspection NG !!! Tab_{0} / Fpc_{1}, Panel_{2}", tab.Index, inspResult.MarkResult.FpcMark.Judgement, inspResult.MarkResult.PanelMark.Judgement);
+                WriteLog(message);
+                Logger.Debug(LogType.Inspection, message);
+
+            }
+            else
+            {
+                // Set Coordinate Params
+                SetPanelCoordinateData(panelCoordinate, inspResult);
+
+                // Excuete Coordinate
+                panelCoordinate.ExecuteCoordinate();
+
+                var lineCamera = LineCameraManager.Instance().GetLineCamera("LineCamera").Camera;
+
+                float resolution_um = lineCamera.PixelResolution_um / lineCamera.LensScale;
+                double judgementX = tab.AlignSpec.LeftSpecX_um / resolution_um;
+                double judgementY = tab.AlignSpec.LeftSpecY_um / resolution_um;
+
+                if (AppsConfig.Instance().EnableAkkon)
+                {
+                    var roiList = tab.AkkonParam.GetAkkonROIList();
+                    var coordinateList = RenewalAkkonRoi(roiList, panelCoordinate);
+                    var leadResultList = AkkonAlgorithm.Run(inspTab.MergeMatImage, coordinateList, tab.AkkonParam.AkkonAlgoritmParam, resolution_um);
+
+                    inspResult.AkkonResult = CreateAkkonResult(unitName, tab.Index, leadResultList);
+                    inspResult.AkkonInspMatImage = AkkonAlgorithm.ResizeMat;
+                }
+                else
+                    inspResult.AkkonResult = new AkkonResult();
+
+                sw.Stop();
+                string resultMessage = string.Format("Tab {0} Akkon Inspection Completed.({1}ms)", (inspTab.TabScanBuffer.TabNo + 1), sw.ElapsedMilliseconds);
+                Console.WriteLine(resultMessage);
+                WriteLog(resultMessage, true);
+            }
+
+            AppsInspResult.Instance().AddAkkon(inspResult);
+            SystemManager.Instance().UpdateAkkonResultTabButton(inspResult.TabNo);
+            InspAkkonCount++;
+        }
+
+        private void RunAlign(ATTInspTab inspTab)
         {
             Stopwatch sw = new Stopwatch();
             sw.Restart();
@@ -142,33 +219,21 @@ namespace ATT_UT_Remodeling.Core.AppTask
                 inspResult.AlignResult.CenterX = Math.Abs(inspResult.AlignResult.LeftX.ResultValue_pixel - inspResult.AlignResult.RightX.ResultValue_pixel);
                 #endregion
 
-                if (AppsConfig.Instance().EnableAkkon)
-                {
-                    var roiList = tab.AkkonParam.GetAkkonROIList();
-                    var coordinateList = RenewalAkkonRoi(roiList, panelCoordinate);
-                    var leadResultList = AkkonAlgorithm.Run(inspTab.MergeMatImage, coordinateList, tab.AkkonParam.AkkonAlgoritmParam, resolution_um);
-
-                    inspResult.AkkonResult = CreateAkkonResult(unitName, tab.Index, leadResultList);
-                    inspResult.AkkonInspMatImage = AkkonAlgorithm.ResizeMat;
-                }
-                else
-                    inspResult.AkkonResult = new AkkonResult();
-
                 sw.Stop();
-                string resultMessage = string.Format("Tab {0} Inspection Completed.({1}ms)", (inspTab.TabScanBuffer.TabNo + 1), sw.ElapsedMilliseconds);
+                string resultMessage = string.Format("Tab {0} Align Inspection Completed.({1}ms)", (inspTab.TabScanBuffer.TabNo + 1), sw.ElapsedMilliseconds);
                 Console.WriteLine(resultMessage);
                 WriteLog(resultMessage, true);
             }
 
-            AppsInspResult.Instance().Add(inspResult);
-            SystemManager.Instance().UpdateResultTabButton(inspResult.TabNo);
-            InspCount++;
+            AppsInspResult.Instance().AddAlign(inspResult);
+            SystemManager.Instance().UpdateAlignResultTabButton(inspResult.TabNo);
+            InspAlignCount++;
         }
 
-        public void InitalizeInspBuffer(string cameraName, List<TabScanBuffer> bufferList)
+        public void InitalizeInspAkkonBuffer(string cameraName, List<TabScanBuffer> bufferList)
         {
-            InspCount = 0;
-            DisposeInspTabList();
+            InspAkkonCount = 0;
+            DisposeInspAkkonTabList();
             var inspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
 
             foreach (var buffer in bufferList)
@@ -176,78 +241,158 @@ namespace ATT_UT_Remodeling.Core.AppTask
                 ATTInspTab inspTab = new ATTInspTab();
                 inspTab.CameraName = cameraName;
                 inspTab.TabScanBuffer = buffer;
-                inspTab.InspectEvent += AddInspectEventFuction;
+                inspTab.InspectEvent += AddInspAkkonEventFuction;
                 inspTab.StartInspTask();
-                InspTabList.Add(inspTab);
+                InspAkkonTabList.Add(inspTab);
+            }
+        }
+
+        public void InitalizeInspAlignBuffer(string cameraName, List<TabScanBuffer> bufferList)
+        {
+            InspAlignCount = 0;
+            DisposeInspAlignTabList();
+            var inspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
+
+            foreach (var buffer in bufferList)
+            {
+                ATTInspTab inspTab = new ATTInspTab();
+                inspTab.CameraName = cameraName;
+                inspTab.TabScanBuffer = buffer;
+                inspTab.InspectEvent += AddInspAlignEventFuction;
+                inspTab.StartInspTask();
+                InspAlignTabList.Add(inspTab);
             }
         }
 
         public void StartTask()
         {
-            if (ProcessTask != null)
-                return;
+            if (AkkonProcessTask == null)
+            {
+                AkkonProcessTaskCancellationTokenSource = new CancellationTokenSource();
+                AkkonProcessTask = new Task(AkkonInspection, AkkonProcessTaskCancellationTokenSource.Token);
+                AkkonProcessTask.Start();
+            }
 
-            ProcessTaskCancellationTokenSource = new CancellationTokenSource();
-            ProcessTask = new Task(Inspection, ProcessTaskCancellationTokenSource.Token);
-            ProcessTask.Start();
+            if (AlignProcessTask == null)
+            {
+                AlignProcessTaskCancellationTokenSource = new CancellationTokenSource();
+                AlignProcessTask = new Task(AlignInspection, AlignProcessTaskCancellationTokenSource.Token);
+                AlignProcessTask.Start();
+            }
         }
 
         public void StopTask()
         {
-            if (ProcessTask == null)
-                return;
-
-            while (InspTabQueue.Count > 0)
+            if (AkkonProcessTask == null)
             {
-                var data = InspTabQueue.Dequeue();
-                data.Dispose();
+                while (InspAkkonTabQueue.Count > 0)
+                {
+                    var data = InspAkkonTabQueue.Dequeue();
+                    data.Dispose();
+                }
+
+                AkkonProcessTaskCancellationTokenSource.Cancel();
+                AkkonProcessTask.Wait();
+                AkkonProcessTask = null;
             }
 
-            ProcessTaskCancellationTokenSource.Cancel();
-            ProcessTask.Wait();
-            ProcessTask = null;
+            if (AlignProcessTask == null)
+            {
+                while (InspAlignTabQueue.Count > 0)
+                {
+                    var data = InspAlignTabQueue.Dequeue();
+                    data.Dispose();
+                }
+
+                AlignProcessTaskCancellationTokenSource.Cancel();
+                AlignProcessTask.Wait();
+                AlignProcessTask = null;
+            }
         }
 
-        private void Inspection()
+        private void AkkonInspection()
         {
             while (true)
             {
-                if (ProcessTaskCancellationTokenSource.IsCancellationRequested)
+                if (AkkonProcessTaskCancellationTokenSource.IsCancellationRequested)
                     break;
 
-                if (GetInspTab() is ATTInspTab inspTab)
-                    Run(inspTab);
+                if (GetInspAkkonTab() is ATTInspTab inspTab)
+                    RunAkkon(inspTab);
 
                 Thread.Sleep(50);
             }
         }
 
-        private ATTInspTab GetInspTab()
+        private void AlignInspection()
         {
-            lock (_inspLock)
+            while (true)
             {
-                if (InspTabQueue.Count() > 0)
-                    return InspTabQueue.Dequeue();
+                if (AlignProcessTaskCancellationTokenSource.IsCancellationRequested)
+                    break;
+
+                if (GetInspAlignTab() is ATTInspTab inspTab)
+                    RunAlign(inspTab);
+
+                Thread.Sleep(50);
+            }
+        }
+
+        private ATTInspTab GetInspAkkonTab()
+        {
+            lock (_inspAkkonLock)
+            {
+                if (InspAkkonTabQueue.Count() > 0)
+                    return InspAkkonTabQueue.Dequeue();
                 else
                     return null;
             }
         }
 
-        public void DisposeInspTabList()
+
+        private ATTInspTab GetInspAlignTab()
         {
-            foreach (var inspTab in InspTabList)
+            lock (_inspAlignLock)
             {
-                inspTab.StopInspTask();
-                inspTab.InspectEvent -= AddInspectEventFuction;
-                inspTab.Dispose();
+                if (InspAlignTabQueue.Count() > 0)
+                    return InspAlignTabQueue.Dequeue();
+                else
+                    return null;
             }
-            InspTabList.Clear();
         }
 
-        private void AddInspectEventFuction(ATTInspTab inspTab)
+        public void DisposeInspAkkonTabList()
         {
-            lock (_inspLock)
-                InspTabQueue.Enqueue(inspTab);
+            foreach (var inspTab in InspAkkonTabList)
+            {
+                inspTab.StopInspTask();
+                inspTab.InspectEvent -= AddInspAkkonEventFuction;
+                inspTab.Dispose();
+            }
+            InspAkkonTabList.Clear();
+        }
+
+        public void DisposeInspAlignTabList()
+        {
+            foreach (var inspTab in InspAlignTabList)
+            {
+                inspTab.StopInspTask();
+                inspTab.InspectEvent -= AddInspAlignEventFuction;
+                inspTab.Dispose();
+            }
+            InspAlignTabList.Clear();
+        }
+
+        private void AddInspAkkonEventFuction(ATTInspTab inspTab)
+        {
+            lock (_inspAkkonLock)
+                InspAkkonTabQueue.Enqueue(inspTab);
+        }
+
+        private void AddInspAlignEventFuction(ATTInspTab inspTab)
+        {
+            lock (_inspAlignLock)
+                InspAlignTabQueue.Enqueue(inspTab);
         }
 
         private AkkonResult CreateAkkonResult(string unitName, int tabNo, List<AkkonLeadResult> leadResultList)
@@ -379,18 +524,18 @@ namespace ATT_UT_Remodeling.Core.AppTask
                 SystemManager.Instance().AddSystemLogMessage(logMessage);
 
             Logger.Write(LogType.Seq, logMessage);
-          
+
         }
 
         public void StartVirtual()
         {
-            lock(VirtualQueue)
+            lock (VirtualQueue)
             {
-                while(VirtualQueue.Count > 0)
+                while (VirtualQueue.Count > 0)
                 {
                     var data = VirtualQueue.Dequeue();
 
-                    var inspTab = InspTabList.Where(x => x.TabScanBuffer.TabNo == data.TabNo).FirstOrDefault();
+                    var inspTab = InspAkkonTabList.Where(x => x.TabScanBuffer.TabNo == data.TabNo).FirstOrDefault();
                     inspTab?.SetVirtualImage(data.FilePath);
                 }
             }

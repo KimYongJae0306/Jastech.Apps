@@ -92,6 +92,17 @@ namespace ATT_UT_IPAD.UI.Pages
             else
                 PlcStatusForm.Focus();
         }
+
+        public void UpdateMainAkkonResult(int tabNo)
+        {
+            //AkkonViewerControl.UpdateMainResult(tabNo);
+        }
+
+        public void UpdateMainAlignResult(int tabNo)
+        {
+            //AlignViewerControl.UpdateMainResult(tabNo);
+        }
+
         #endregion
     }
 }

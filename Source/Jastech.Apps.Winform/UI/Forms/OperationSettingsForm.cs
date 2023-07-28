@@ -44,8 +44,7 @@ namespace Jastech.Framework.Winform.Forms
             var operation = ConfigSet.Instance().Operation;
             var appsConfig = AppsConfig.Instance();
 
-            txtDistanceX.Text = appsConfig.DistanceFromPreAlignToLineScanX.ToString();
-            txtDistanceY.Text = appsConfig.DistanceFromPreAlignToLineScanY.ToString();
+            txtCameraGap.Text = appsConfig.CameraGap_um.ToString();
 
             txtPreAlignToleranceX.Text = appsConfig.PreAlignToleranceX.ToString();
             txtPreAlignToleranceY.Text = appsConfig.PreAlignToleranceY.ToString();
@@ -83,8 +82,7 @@ namespace Jastech.Framework.Winform.Forms
             var operation = ConfigSet.Instance().Operation;
             var appsConfig = AppsConfig.Instance();
 
-            appsConfig.DistanceFromPreAlignToLineScanX = Convert.ToSingle(GetValue(txtDistanceX.Text));
-            appsConfig.DistanceFromPreAlignToLineScanY = Convert.ToSingle(GetValue(txtDistanceY.Text));
+            appsConfig.CameraGap_um = Convert.ToSingle(GetValue(txtCameraGap.Text));
 
             appsConfig.PreAlignToleranceX = Convert.ToSingle(GetValue(txtPreAlignToleranceX.Text));
             appsConfig.PreAlignToleranceY = Convert.ToSingle(GetValue(txtPreAlignToleranceY.Text));

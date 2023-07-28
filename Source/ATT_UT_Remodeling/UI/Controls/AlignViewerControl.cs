@@ -1,5 +1,7 @@
 ﻿using ATT_UT_IPAD.UI.Controls;
+using ATT_UT_Remodeling.Core.Data;
 using Jastech.Apps.Structure.Data;
+using Jastech.Apps.Winform;
 using Jastech.Apps.Winform.UI.Controls;
 using System;
 using System.Windows.Forms;
@@ -44,10 +46,16 @@ namespace ATT_UT_Remodeling.UI.Controls
 
             AlignResultDisplayControl = new AlignResultDisplayControl();
             AlignResultDisplayControl.Dock = DockStyle.Fill;
-            AlignResultDisplayControl.SendTabNumber += UpdateResultChart;
+            AlignResultDisplayControl.SendTabNumberEvent += UpdateResultChart;
+            AlignResultDisplayControl.GetTabInspResultEvent += GetTabInspResult;
             pnlResultDisplay.Controls.Add(AlignResultDisplayControl);
         }
-      
+
+        private TabInspResult GetTabInspResult(int tabNo)
+        {
+            return AppsInspResult.Instance().Get(tabNo);
+        }
+
         public void UpdateTabCount(int tabCount)
         {
             AlignResultDisplayControl.UpdateTabCount(tabCount);

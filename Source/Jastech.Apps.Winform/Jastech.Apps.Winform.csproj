@@ -79,7 +79,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AppsInspResult.cs" />
     <Compile Include="AppsPreAlignResult.cs" />
     <Compile Include="AppsStatus.cs" />
     <Compile Include="AreaCamera.cs" />

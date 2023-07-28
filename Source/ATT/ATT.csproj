@@ -87,6 +87,7 @@
   <ItemGroup>
     <Compile Include="Core\ATTInspModelService.cs" />
     <Compile Include="Core\ATTInspRunner.cs" />
+    <Compile Include="Core\Data\AppsInspResult.cs" />
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
     </Compile>

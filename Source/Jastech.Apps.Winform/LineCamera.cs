@@ -47,6 +47,8 @@ namespace Jastech.Apps.Winform
         public Task LiveTask { get; set; }
 
         public CancellationTokenSource CancelLiveTask { get; set; }
+
+        public int CameraGab { get; set; } = -1;
         #endregion
 
         #region 이벤트
@@ -136,6 +138,63 @@ namespace Jastech.Apps.Winform
 
                 TabScanBuffer scanImage = new TabScanBuffer(i, startIndex, endIndex, Camera.ImageWidth, Camera.ImageHeight);
                 lock(TabScanBufferList)
+                    TabScanBufferList.Add(scanImage);
+            }
+            GrabCount = maxEndIndex;
+        }
+
+        public void InitGrabSettings(float delayStart_um)
+        {
+            AppsInspModel inspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
+            MaterialInfo materialInfo = inspModel.MaterialInfo;
+
+            int tabCount = inspModel.TabCount;
+            if (inspModel == null)
+                return;
+
+            ClearTabScanBuffer();
+
+            float resolution_mm = (float)(Camera.PixelResolution_um / Camera.LensScale) / 1000; // ex) 3.5 um / 5 / 1000 = 0.0007mm
+            float delayStart_mm = delayStart_um / 1000.0F;
+            int totalScanSubImageCount = (int)Math.Ceiling(materialInfo.PanelXSize_mm / resolution_mm / Camera.ImageHeight); // ex) 500mm / 0.0007mm / 1024 pixel
+
+            GrabCount = totalScanSubImageCount;
+
+            _curGrabCount = 0;
+            _stackTabNo = 0;
+
+            double tempPos = 0.0;
+            int maxEndIndex = 0;
+            for (int i = 0; i < tabCount; i++)
+            {
+                if (i == 0)
+                {
+                    tempPos += delayStart_mm;
+                    tempPos += inspModel.MaterialInfo.PanelEdgeToFirst_mm;
+                }
+
+                int startIndex = (int)(tempPos / resolution_mm / Camera.ImageHeight);
+
+                double tabWidth = materialInfo.GetTabWidth(i);
+                double tabLeftOffset = materialInfo.GetLeftOffset(i);
+                double tabRightOffset = materialInfo.GetRightOffset(i);
+
+                tempPos += tabWidth;
+
+                double calcPos = tempPos;
+                calcPos += tabLeftOffset;
+                calcPos += tabRightOffset;
+
+                int endIndex = (int)(calcPos / resolution_mm / Camera.ImageHeight);
+                if (maxEndIndex <= endIndex)
+                    maxEndIndex = endIndex;
+
+                var temp = endIndex - startIndex;
+
+                tempPos += materialInfo.GetTabToTabDistance(i, tabCount);
+
+                TabScanBuffer scanImage = new TabScanBuffer(i, startIndex, endIndex, Camera.ImageWidth, Camera.ImageHeight);
+                lock (TabScanBufferList)
                     TabScanBufferList.Add(scanImage);
             }
             GrabCount = maxEndIndex;

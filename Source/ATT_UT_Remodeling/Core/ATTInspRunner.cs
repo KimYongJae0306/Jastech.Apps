@@ -1,4 +1,5 @@
 ﻿using ATT_UT_Remodeling.Core.AppTask;
+using ATT_UT_Remodeling.Core.Data;
 using Cognex.VisionPro;
 using Emgu.CV;
 using Emgu.CV.CvEnum;
@@ -60,7 +61,7 @@ namespace ATT_UT_Remodeling.Core
 
         private AreaCamera AreaCamera { get; set; } = null;
 
-        private LAFCtrl LafCtrl { get; set; } = null;
+        private LAFCtrl LAFCtrl { get; set; } = null;
 
         private LightCtrlHandler LightCtrlHandler { get; set; } = null;
 
@@ -105,9 +106,17 @@ namespace ATT_UT_Remodeling.Core
         }
 
 
-        private void ATTSeqRunner_GrabDoneEventHanlder(string cameraName, bool isGrabDone)
+        private void ATTSeqRunner_GrabDoneEventHandler(string cameraName, bool isGrabDone)
         {
             IsGrabDone = isGrabDone;
+
+            if(IsGrabDone)
+            {
+                LineCamera.StopGrab();
+                LAFCtrl.SetTrackingOnOFF(false);
+
+                WriteLog("Received Camera Grab Done Event.");
+            }
         }
 
         public void StartSeqTask()
@@ -143,13 +152,11 @@ namespace ATT_UT_Remodeling.Core
         public void Initialize()
         {
             LineCamera = LineCameraManager.Instance().GetLineCamera("LineCamera");
-            LafCtrl = LAFManager.Instance().GetLAFCtrl("Laf");
+            LineCamera.GrabDoneEventHandler += ATTSeqRunner_GrabDoneEventHandler;
+
+            LAFCtrl = LAFManager.Instance().GetLAFCtrl("Laf");
             LightCtrlHandler = DeviceManager.Instance().LightCtrlHandler;
             AreaCamera = AreaCameraManager.Instance().GetAppsCamera("PreAlign");
-            if (LineCamera != null)
-            {
-                LineCamera.GrabDoneEventHandler += ATTSeqRunner_GrabDoneEventHanlder;
-            }
 
             InspProcessTask.StartTask();
             StartSeqTask();
@@ -157,25 +164,27 @@ namespace ATT_UT_Remodeling.Core
 
         public void Release()
         {
-            LAFManager.Instance().TrackingOnOff("Laf", false);
-            WriteLog("AutoFocus Off.");
-
-            if(LineCamera != null)
-            {
-                LineCamera.StopGrab();
-                LineCamera.GrabDoneEventHandler -= ATTSeqRunner_GrabDoneEventHanlder;
-                LineCamera.StopGrab();
-                WriteLog("LinceCamera Stop Grab.");
-            }
-       
-            if(AreaCamera != null)
-            {
-                AreaCamera.StopGrab();
-                WriteLog("PreAlignCamera Stop Grab.");
-            }
+            StopDevice();
 
             InspProcessTask.StopTask();
             StopSeqTask();
+        }
+
+        private void StopDevice()
+        {
+            LightCtrlHandler.TurnOff();
+
+            LAFCtrl.SetTrackingOnOFF(false);
+
+            WriteLog("AutoFocus Off.");
+
+            LineCamera.StopGrab();
+            LineCamera.GrabDoneEventHandler -= ATTSeqRunner_GrabDoneEventHandler;
+            LineCamera.StopGrab();
+            WriteLog("LinceCamera Stop Grab.");
+
+            AreaCamera.StopGrab();
+            WriteLog("PreAlignCamera Stop Grab.");
         }
 
         public void SeqRun()
@@ -208,10 +217,10 @@ namespace ATT_UT_Remodeling.Core
                 // 작업 취소
                 if (cancellationToken.IsCancellationRequested)
                 {
-                    SeqStep = SeqStep.SEQ_IDLE;
-                    //조명 Off
-                    LineCameraManager.Instance().Stop("LineCamera");
+                    StopDevice();
                     InspProcessTask.DisposeInspTabList();
+
+                    SeqStep = SeqStep.SEQ_IDLE;
                     break;
                 }
 
@@ -232,10 +241,6 @@ namespace ATT_UT_Remodeling.Core
 
             var tab = unit.GetTab(0);
 
-            //var lineCamera = LineCameraManager.Instance().GetLineCamera("LineCamera");
-            //var laf = LAFManager.Instance().GetLAFCtrl("Laf");
-            //var light = DeviceManager.Instance().LightCtrlHandler;
-
             string systemLogMessage = string.Empty;
             string errorMessage = string.Empty;
 
@@ -252,9 +257,8 @@ namespace ATT_UT_Remodeling.Core
                     LightCtrlHandler.TurnOff();
                     WriteLog("Light Off.");
 
-                    LAFManager.Instance().TrackingOnOff("Laf", false);
-                    LafCtrl.SetMotionAbsoluteMove(0);
-
+                    LAFCtrl.SetTrackingOnOFF(false);
+                    LAFCtrl.SetMotionAbsoluteMove(0);
                     WriteLog("Laf Off.");
 
                     SeqStep = SeqStep.SEQ_WAITING;
@@ -293,12 +297,12 @@ namespace ATT_UT_Remodeling.Core
 
                     IsGrabDone = false;
 
-                    LAFManager.Instance().TrackingOnOff("Laf", true);
+                    LAFCtrl.SetTrackingOnOFF(true);
                     WriteLog("Laser Auto Focus On.");
 
                     LightCtrlHandler.TurnOn(unit.GetLineCameraData("Akkon").LightParam);
                     Thread.Sleep(100);
-                    WriteLog("Left Prealign Light On.");
+                    WriteLog("Light On.");
 
                     LineCamera.SetOperationMode(TDIOperationMode.TDI);
                     LineCamera.StartGrab();
@@ -326,12 +330,6 @@ namespace ATT_UT_Remodeling.Core
                         break;
 
                     WriteLog("Complete LineScanner Grab.", true);
-                    
-                    LineCameraManager.Instance().Stop("LineCamera");
-                    WriteLog("Stop Grab.");
-
-                    LAFManager.Instance().TrackingOnOff("Laf", false);
-                    WriteLog("Laf Off.");
 
                     LastInspSW.Restart();
 
@@ -462,7 +460,7 @@ namespace ATT_UT_Remodeling.Core
             string cameraName = "LineCamera";
             var lineCamera = LineCameraManager.Instance().GetLineCamera(cameraName);
             lineCamera.InitGrabSettings();
-            InspProcessTask.Initalize(cameraName, lineCamera.TabScanBufferList);
+            InspProcessTask.InitalizeInspBuffer(cameraName, lineCamera.TabScanBufferList);
         }
 
         public void RunVirtual()
@@ -1137,22 +1135,14 @@ namespace ATT_UT_Remodeling.Core
     public enum SeqStep
     {
         SEQ_IDLE,
-        SEQ_START,
         SEQ_INIT,
         SEQ_WAITING,
         SEQ_MOVE_START_POS,
-        SEQ_VIRTUAL,
-        SEQ_SCAN_READY,
         SEQ_SCAN_START,
         SEQ_MOVE_END_POS,
         SEQ_WAITING_SCAN_COMPLETED,
         SEQ_WAITING_INSPECTION_DONE,
         SEQ_SEND_RESULT,
-        SEQ_PATTERN_MATCH,
-        SEQ_ALIGN_INSPECTION,
-        SEQ_ALIGN_INSPECTION_COMPLETED,
-        SEQ_AKKON_INSPECTION,
-        SEQ_AKKON_INSPECTION_COMPLETED,
         SEQ_WAIT_UI_RESULT_UPDATE,
         SEQ_SAVE_RESULT_DATA,
         SEQ_SAVE_IMAGE,

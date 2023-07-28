@@ -145,19 +145,22 @@ namespace Jastech.Apps.Winform.UI.Controls
         private void lblCurrentToTeach_Click(object sender, EventArgs e)
         {
             int cog = Convert.ToInt32(lblCurrentCogValue.Text);
-            LAFManager.Instance().SetCenterOfGravity(LAFCtrl.Name, cog);
+            if (LAFManager.Instance().GetLAFCtrl("Laf") is LAFCtrl lafCtrl)
+                lafCtrl.SetCenterOfGravity(cog);
             lblTeachCogValue.Text = cog.ToString();
         }
 
         private void lblAFOn_Click(object sender, EventArgs e)
         {
-            LAFManager.Instance().TrackingOnOff(LAFCtrl.Name, true);
+            if (LAFManager.Instance().GetLAFCtrl("Laf") is LAFCtrl lafCtrl)
+                lafCtrl.SetTrackingOnOFF(true);
         }
 
 
         private void lblAFOff_Click(object sender, EventArgs e)
         {
-            LAFManager.Instance().TrackingOnOff(LAFCtrl.Name, false);
+            if (LAFManager.Instance().GetLAFCtrl("Laf") is LAFCtrl lafCtrl)
+                lafCtrl.SetTrackingOnOFF(false);
         }
 
         public TeachingAxisInfo GetCurrentData()

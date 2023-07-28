@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Jastech.Apps.Winform
+namespace ATT.Core.Data
 {
     public class AppsInspResult
     {
@@ -23,15 +23,6 @@ namespace Jastech.Apps.Winform
         public string Cell_ID { get; set; } = "";
 
         private Dictionary<int, TabInspResult> InspResultDic { get; set; } = new Dictionary<int, TabInspResult>();
-        #endregion
-
-        #region 이벤트
-        #endregion
-
-        #region 델리게이트
-        #endregion
-
-        #region 생성자
         #endregion
 
         #region 메서드
@@ -85,18 +76,6 @@ namespace Jastech.Apps.Winform
             }
             return null;
         }
-
-        //public AppsInspResult DeepCopy()
-        //{
-        //    AppsInspResult result = new AppsInspResult();
-        //    result.StartInspTime = StartInspTime;
-        //    result.EndInspTime = EndInspTime;
-        //    result.LastInspTime = LastInspTime;
-        //    result.Cell_ID = Cell_ID;
-        //    result.TabResultList = TabResultList.Select(x => x.DeepCopy()).ToList();
-
-        //    return result;
-        //}
         #endregion
     }
 }

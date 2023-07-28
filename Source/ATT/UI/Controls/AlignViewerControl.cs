@@ -1,4 +1,5 @@
-﻿using ATT_UT_IPAD.UI.Controls;
+﻿using ATT.Core.Data;
+using ATT_UT_IPAD.UI.Controls;
 using Jastech.Apps.Structure.Data;
 using Jastech.Apps.Winform;
 using Jastech.Apps.Winform.UI.Controls;
@@ -48,8 +49,15 @@ namespace ATT.UI.Controls
             AlignResultDataControl.UpdateAlignDaily();
             pnlResultData.Controls.Add(AlignResultDataControl);
 
-            AlignResultDisplayControl.SendTabNumber += UpdateResultChart;
+            AlignResultDisplayControl.SendTabNumberEvent += UpdateResultChart;
+            AlignResultDisplayControl.GetTabInspResultEvent += GetTabInspResult;
             pnlResultDisplay.Controls.Add(AlignResultDisplayControl);
+        }
+
+        private TabInspResult GetTabInspResult(int tabNo)
+        {
+            return null;
+            //return AppsInspResult.Instance().Get(tabNo);
         }
 
         public void UpdateTabCount(int tabCount)

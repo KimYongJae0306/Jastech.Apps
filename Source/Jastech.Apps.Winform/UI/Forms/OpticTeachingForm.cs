@@ -606,10 +606,9 @@ namespace Jastech.Framework.Winform.Forms
         {
             StopGrab();
 
-            //if (LAFCtrl is NuriOneLAFCtrl nuriOne)
-            //    nuriOne.SetAutoFocusOnOFF(true);
+            LAFCtrl.SetTrackingOnOFF(true);
 
-            if(isRepeat)
+            if (isRepeat)
             {
                 AppsInspModel inspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
                 double length = Convert.ToDouble(lblScanXLength.Text);

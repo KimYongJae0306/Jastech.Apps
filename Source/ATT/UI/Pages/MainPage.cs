@@ -1,4 +1,5 @@
-﻿using ATT.UI.Controls;
+﻿using ATT.Core.Data;
+using ATT.UI.Controls;
 using Jastech.Apps.Structure.Data;
 using Jastech.Apps.Winform;
 using Jastech.Apps.Winform.Core;

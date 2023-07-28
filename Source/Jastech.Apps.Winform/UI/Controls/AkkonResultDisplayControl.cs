@@ -27,8 +27,6 @@ namespace ATT_UT_IPAD.UI.Controls
         #region 속성
         public List<TabBtnControl> TabBtnControlList { get; private set; } = new List<TabBtnControl>();
 
-        //public Dictionary<int, TabInspResult> InspResultDic { get; set; } = new Dictionary<int, TabInspResult>();
-
         public CogInspDisplayControl InspDisplayControl { get; private set; } = null; 
 
         public int CurrentTabNo { get; set; } = -1;
@@ -37,11 +35,15 @@ namespace ATT_UT_IPAD.UI.Controls
         #endregion
 
         #region 이벤트
-        public event SendTabNumberDelegate SendTabNumber;
+        public event SendTabNumberDelegate SendTabNumberEvent;
+
+        public event GetTabInspResultDele GetTabInspResultEvent;
         #endregion
 
         #region 델리게이트
         public delegate void SendTabNumberDelegate(int tabNo);
+
+        public delegate TabInspResult GetTabInspResultDele(int tabNo);
         #endregion
 
         #region 생성자
@@ -140,7 +142,7 @@ namespace ATT_UT_IPAD.UI.Controls
 
             CurrentTabNo = tabNo;
             UpdateImage(tabNo);
-            SendTabNumber(tabNo);
+            SendTabNumberEvent(tabNo);
         }
         public delegate void TabButtonResetColorDele();
         public void TabButtonResetColor()
@@ -157,7 +159,7 @@ namespace ATT_UT_IPAD.UI.Controls
 
         private void UpdateImage(int tabNo)
         {
-            var tabInspResult = AppsInspResult.Instance().Get(tabNo);
+            var tabInspResult = GetTabInspResultEvent?.Invoke(tabNo);
 
             if (tabInspResult != null)
             {
@@ -191,11 +193,14 @@ namespace ATT_UT_IPAD.UI.Controls
 
         public void UpdateResultDisplay(int tabNo)
         {
-            var tabInspResult = AppsInspResult.Instance().Get(tabNo);
+            var tabInspResult = GetTabInspResultEvent?.Invoke(tabNo);
 
-            if (CurrentTabNo == tabNo)
+            if(tabInspResult != null)
             {
-                UpdateImage(tabNo);
+                if (CurrentTabNo == tabNo)
+                {
+                    UpdateImage(tabNo);
+                }
             }
         }
 
@@ -209,15 +214,18 @@ namespace ATT_UT_IPAD.UI.Controls
                 return;
             }
 
-            var tabInspResult = AppsInspResult.Instance().Get(tabNo);
+            var tabInspResult = GetTabInspResultEvent?.Invoke(tabNo);
 
-            var countJudgement = tabInspResult.AkkonResult.CountJudgement;
-            var lengthJudgement = tabInspResult.AkkonResult.LengthJudgement;
+            if(tabInspResult != null)
+            {
+                var countJudgement = tabInspResult.AkkonResult.CountJudgement;
+                var lengthJudgement = tabInspResult.AkkonResult.LengthJudgement;
 
-            if (countJudgement == Judgement.OK && lengthJudgement == Judgement.OK)
-                TabBtnControlList[tabNo].BackColor = Color.MediumSeaGreen;
-            else
-                TabBtnControlList[tabNo].BackColor = Color.Red;
+                if (countJudgement == Judgement.OK && lengthJudgement == Judgement.OK)
+                    TabBtnControlList[tabNo].BackColor = Color.MediumSeaGreen;
+                else
+                    TabBtnControlList[tabNo].BackColor = Color.Red;
+            }
         }
 
         private void btnResizeImage_Click(object sender, EventArgs e)
@@ -226,7 +234,7 @@ namespace ATT_UT_IPAD.UI.Controls
 
             UpdateButton();
             UpdateImage(CurrentTabNo);
-            SendTabNumber(CurrentTabNo);
+            SendTabNumberEvent(CurrentTabNo);
         }
 
         private void btnResultImage_Click(object sender, EventArgs e)
@@ -235,7 +243,7 @@ namespace ATT_UT_IPAD.UI.Controls
 
             UpdateButton();
             UpdateImage(CurrentTabNo);
-            SendTabNumber(CurrentTabNo);
+            SendTabNumberEvent(CurrentTabNo);
         }
         #endregion
     }
