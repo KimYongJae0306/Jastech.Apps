@@ -66,6 +66,7 @@ namespace ATT_UT_Remodeling
         {
             AddControls();
             SelectMainPage();
+
             TeachingPageControl.SetInspModelService(ATTInspModelService);
             DataPageControl.SetInspModelService(ATTInspModelService);
             DataPageControl.ApplyModelEventHandler += ModelPageControl_ApplyModelEventHandler;
@@ -87,6 +88,8 @@ namespace ATT_UT_Remodeling
             StartVirtualInspTask();
             SystemManager.Instance().InitializeInspRunner();
             SystemManager.Instance().AddSystemLogMessage("Start Program.");
+
+            PlcControlManager.Instance().WriteVersion();
         }
 
         private void MainForm_PreAlignRunnerHandler(bool isStart)
@@ -147,9 +150,7 @@ namespace ATT_UT_Remodeling
         private void SetSelectLabel(object sender)
         {
             foreach (Label label in PageLabelList)
-            {
                 label.ForeColor = Color.White;
-            }
 
             Label currentLabel = sender as Label;
             currentLabel.ForeColor = Color.Blue;
@@ -169,7 +170,7 @@ namespace ATT_UT_Remodeling
         {
             AppsInspModel model = inspModel as AppsInspModel;
 
-            AppsInspResult.Instance().Disopose();
+            AppsInspResult.Instance().Dispose();
 
             MainPageControl.UpdateTabCount(model.TabCount);
             MainPageControl.ClearPreAlignResult();
@@ -375,6 +376,7 @@ namespace ATT_UT_Remodeling
                     form.ShowDialog();
                     return;
                 }
+
                 LoadImage(fileNames);
                 AppsStatus.Instance().IsInspRunnerFlagFromPlc = true;
             }
@@ -421,9 +423,13 @@ namespace ATT_UT_Remodeling
         private void LoadImage(string[] fileNames)
         { 
             foreach (var fileName in fileNames)
-            {
                 AddVirtualImagePath(fileName);
-            }
+        }
+
+        private void AddVirtualImagePath(string filePath)
+        {
+            lock (VirtualImagePathQueue)
+                VirtualImagePathQueue.Enqueue(filePath);
         }
 
         private void StartVirtualInspTask()
@@ -445,6 +451,7 @@ namespace ATT_UT_Remodeling
                 VirtualInspTask = null;
             }
         }
+
         public void VirtualInspTaskLoop()
         {
             while(true)
@@ -482,11 +489,7 @@ namespace ATT_UT_Remodeling
             }
         }
 
-        private void AddVirtualImagePath(string filePath)
-        {
-            lock (VirtualImagePathQueue)
-                VirtualImagePathQueue.Enqueue(filePath);
-        }
+        
 
         private string GetVirtualImagePath()
         {

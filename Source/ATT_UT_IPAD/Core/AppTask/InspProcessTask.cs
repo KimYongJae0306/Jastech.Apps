@@ -74,7 +74,6 @@ namespace ATT_UT_IPAD.Core.AppTask
             inspResult.CogImage = inspTab.MergeCogImage;
 
             // Create Coordinate Object
-            CoordinateTransform fpcCoordinate = new CoordinateTransform();
             CoordinateTransform panelCoordinate = new CoordinateTransform();
 
             algorithmTool.MainMarkInspect(inspTab.MergeCogImage, tab, ref inspResult, false);
@@ -85,7 +84,6 @@ namespace ATT_UT_IPAD.Core.AppTask
                 string message = string.Format("Mark Inspection NG !!! Tab_{0} / Fpc_{1}, Panel_{2}", tab.Index, inspResult.MarkResult.FpcMark.Judgement, inspResult.MarkResult.PanelMark.Judgement);
                 WriteLog(message);
                 Logger.Debug(LogType.Inspection, message);
-                inspResult.AlignResult = new TabAlignResult();
                 inspResult.AkkonResult = new AkkonResult();
             }
             else
@@ -99,8 +97,6 @@ namespace ATT_UT_IPAD.Core.AppTask
                 var lineCamera = LineCameraManager.Instance().GetLineCamera("LineCamera").Camera;
 
                 float resolution_um = lineCamera.PixelResolution_um / lineCamera.LensScale;
-                double judgementX = tab.AlignSpec.LeftSpecX_um / resolution_um;
-                double judgementY = tab.AlignSpec.LeftSpecY_um / resolution_um;
 
                 if (AppsConfig.Instance().EnableAkkon)
                 {
@@ -153,7 +149,7 @@ namespace ATT_UT_IPAD.Core.AppTask
                 string message = string.Format("Mark Inspection NG !!! Tab_{0} / Fpc_{1}, Panel_{2}", tab.Index, inspResult.MarkResult.FpcMark.Judgement, inspResult.MarkResult.PanelMark.Judgement);
                 WriteLog(message);
                 Logger.Debug(LogType.Inspection, message);
-
+                inspResult.AlignResult = new TabAlignResult();
             }
             else
             {
@@ -350,7 +346,6 @@ namespace ATT_UT_IPAD.Core.AppTask
             }
         }
 
-
         private ATTInspTab GetInspAlignTab()
         {
             lock (_inspAlignLock)
@@ -513,7 +508,6 @@ namespace ATT_UT_IPAD.Core.AppTask
                 SystemManager.Instance().AddSystemLogMessage(logMessage);
 
             Logger.Write(LogType.Seq, logMessage);
-
         }
 
         public void StartVirtual()
@@ -526,6 +520,9 @@ namespace ATT_UT_IPAD.Core.AppTask
 
                     var inspTab = InspAkkonTabList.Where(x => x.TabScanBuffer.TabNo == data.TabNo).FirstOrDefault();
                     inspTab?.SetVirtualImage(data.FilePath);
+
+                    var tlqkf = InspAlignTabList.Where(x => x.TabScanBuffer.TabNo == data.TabNo).FirstOrDefault();
+                    tlqkf?.SetVirtualImage(data.FilePath);
                 }
             }
         }

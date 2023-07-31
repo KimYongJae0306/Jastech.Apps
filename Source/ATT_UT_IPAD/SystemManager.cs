@@ -257,14 +257,7 @@ namespace ATT_UT_IPAD
 
         public void StartRun()
         {
-            if (ModelManager.Instance().CurrentModel == null)
-            {
-                MessageConfirmForm form = new MessageConfirmForm();
-                form.Message = "Current Model is null.";
-                return;
-            }
-
-            if (SystemManager.Instance().MachineStatus != MachineStatus.RUN)
+            if (MachineStatus != MachineStatus.RUN)
             {
                 MessageYesNoForm form = new MessageYesNoForm();
                 form.Message = "Do you want to Start Auto Mode?";
@@ -293,6 +286,21 @@ namespace ATT_UT_IPAD
                     _inspRunner.SeqStop();
                 }
             }
+        }
+
+        public void SetVirtualImage(int tabNo, string fileName)
+        {
+            _inspRunner.SetVirtualmage(tabNo, fileName);
+        }
+
+        public void InitializeInspRunner()
+        {
+            _inspRunner.Initialize();
+        }
+
+        public void ReleaseInspRunner()
+        {
+            _inspRunner.Release();
         }
         #endregion
     }

@@ -56,7 +56,7 @@ namespace Jastech.Apps.Winform
 
             foreach (var camera in cameraCtrlHandler)
             {
-                camera.ImageGrabbed += LinscanImageGrabbed;
+                camera.ImageGrabbed += LinescanImageGrabbed;
                 CameraList.Add(new LineCamera(camera));
             }
         }
@@ -79,7 +79,7 @@ namespace Jastech.Apps.Winform
             return camera;
         }
       
-        public void LinscanImageGrabbed(Camera camera)
+        public void LinescanImageGrabbed(Camera camera)
         {
             if (camera is CameraVirtual)
                 return;
@@ -116,7 +116,7 @@ namespace Jastech.Apps.Winform
 
             foreach (var camera in cameraCtrlHandler)
             {
-                camera.ImageGrabbed -= LinscanImageGrabbed;
+                camera.ImageGrabbed -= LinescanImageGrabbed;
             }
         }
         #endregion

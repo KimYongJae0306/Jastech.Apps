@@ -206,8 +206,6 @@ namespace ATT_UT_Remodeling
                         WriteLog("Left Prealign Light On.");
 
                         // Grab
-                        CogImage8Grey leftImage = null;
-
                         if(ConfigSet.Instance().Operation.VirtualMode == false)
                         {
                             var preAlignRightImage = GetAreaCameraImage(areaCamera.Camera) as CogImage8Grey;
@@ -249,7 +247,7 @@ namespace ATT_UT_Remodeling
                         Thread.Sleep(100);
                         WriteLog("Left PreAlign Light On.", true);
 
-                        // Grab start
+                        // Grab
                         if (ConfigSet.Instance().Operation.VirtualMode == false)
                         {
                             var preAlignLeftImage = GetAreaCameraImage(areaCamera.Camera);
@@ -703,10 +701,7 @@ namespace ATT_UT_Remodeling
             foreach (var item in shapes)
                 collect.Add(item);
 
-            //var tqlkf = AppsPreAlignResult.Instance().Left.CogImage as CogImage24PlanarColor;
-            //tqlkf.s
-
-            int gg = 0;
+            //var tlqkf = AppsPreAlignResult.Instance().Left.CogImage as CogImage24PlanarColor;
 
 
             return null;

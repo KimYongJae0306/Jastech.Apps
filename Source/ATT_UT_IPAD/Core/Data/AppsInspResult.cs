@@ -51,7 +51,7 @@ namespace ATT_UT_IPAD.Core.Data
             }
         }
 
-        public void Disopose()
+        public void Dispose()
         {
             foreach (var inspAkkonResult in InspAkkonResultDic)
             {

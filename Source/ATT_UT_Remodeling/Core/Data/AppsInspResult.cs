@@ -44,7 +44,7 @@ namespace ATT_UT_Remodeling.Core.Data
             }
         }
 
-        public void Disopose()
+        public void Dispose()
         {
             foreach (var inspResult in InspResultDic)
             {

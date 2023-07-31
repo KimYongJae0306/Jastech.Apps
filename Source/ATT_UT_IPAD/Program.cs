@@ -79,6 +79,13 @@ namespace ATT_UT_IPAD
         {
             if (ConfigSet.Instance().Operation.VirtualMode)
             {
+                // Initialize Config by Program Types
+                string[] typeList = Enum.GetNames(typeof(ProgramType));
+                ProgramSelectForm form = new ProgramSelectForm();
+                form.SetList(typeList);
+                form.ShowDialog();
+                AppsConfig.Instance().ProgramType = form.SelectedProgramType;
+
                 // Akkon LineScanCamera
                 var alignCamera = new CameraVirtual("AkkonCamera", 3072, 1024, ColorFormat.Gray, SensorType.Line);
                 alignCamera.PixelResolution_um = 3.5F;

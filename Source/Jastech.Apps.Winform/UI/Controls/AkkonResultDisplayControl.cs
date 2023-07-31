@@ -172,14 +172,20 @@ namespace ATT_UT_IPAD.UI.Controls
                     if (IsResultImageView)
                     {
                         if (tabInspResult.AkkonResultCogImage == null)
-                            InspDisplayControl.ClearImage();
+                        {
+                            //InspDisplayControl.ClearImage();
+                            InspDisplayControl.SetImage(tabInspResult.CogImage);
+                        }
                         else
                             InspDisplayControl.SetImage(tabInspResult.AkkonResultCogImage);
                     }
                     else
                     {
                         if (tabInspResult.AkkonInspCogImage == null)
-                            InspDisplayControl.ClearImage();
+                        {
+                            //InspDisplayControl.ClearImage();
+                            InspDisplayControl.SetImage(tabInspResult.CogImage);
+                        }
                         else
                             InspDisplayControl.SetImage(tabInspResult.AkkonInspCogImage);
                     }

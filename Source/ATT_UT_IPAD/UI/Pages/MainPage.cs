@@ -1,4 +1,5 @@
 ﻿using ATT_UT_IPAD.Core.Data;
+using ATT_UT_IPAD.UI.Controls;
 using Jastech.Apps.Structure;
 using Jastech.Apps.Structure.Data;
 using Jastech.Apps.Winform;
@@ -14,11 +15,6 @@ namespace ATT_UT_IPAD.UI.Pages
     public partial class MainPage : UserControl
     {
         #region 필드
-        #endregion
-
-        #region 속성
-        public SystemLogControl SystemLogControl { get; set; } = null;
-
         protected override CreateParams CreateParams
         {
             get
@@ -28,6 +24,14 @@ namespace ATT_UT_IPAD.UI.Pages
                 return cp;
             }
         }
+        #endregion
+
+        #region 속성
+        public AkkonViewerControl AkkonViewerControl { get; set; } = null;
+
+        public AlignViewerControl AlignViewerControl { get; set; } = null;
+
+        public SystemLogControl SystemLogControl { get; set; } = null;
         #endregion
 
         #region 이벤트
@@ -51,6 +55,14 @@ namespace ATT_UT_IPAD.UI.Pages
 
         private void AddControls()
         {
+            AkkonViewerControl = new AkkonViewerControl();
+            AkkonViewerControl.Dock = DockStyle.Fill;
+            pnlAkkon.Controls.Add(AkkonViewerControl);
+
+            AlignViewerControl = new AlignViewerControl();
+            AlignViewerControl.Dock = DockStyle.Fill;
+            pnlAlign.Controls.Add(AlignViewerControl);
+
             SystemLogControl = new SystemLogControl();
             SystemLogControl.Dock = DockStyle.Fill;
             pnlSystemLog.Controls.Add(SystemLogControl);
@@ -58,31 +70,35 @@ namespace ATT_UT_IPAD.UI.Pages
 
         public void UpdateTabCount(int tabCount)
         {
+            AkkonViewerControl.UpdateTabCount(tabCount);
+            AlignViewerControl.UpdateTabCount(tabCount);
         }
 
         public void UpdateMainAkkonResult(int tabNo)
         {
+            AkkonViewerControl.UpdateMainResult(tabNo);
         }
 
         public void UpdateMainAlignResult(int tabNo)
         {
+            AlignViewerControl.UpdateMainResult(tabNo);
         }
 
         public void UpdateAkkonResultTabButton(int tabNo)
         {
-            //AkkonViewerControl.UpdateResultTabButton(tabNo);
+            AkkonViewerControl.UpdateResultTabButton(tabNo);
         }
 
         public void UpdateAlignResultTabButton(int tabNo)
         {
-            //AlignViewerControl.UpdateResultTabButton(tabNo);
+            AlignViewerControl.UpdateResultTabButton(tabNo);
         }
 
 
         public void TabButtonResetColor()
         {
-            //AkkonViewerControl.TabButtonResetColor();
-            //AlignViewerControl.TabButtonResetColor();
+            AkkonViewerControl.TabButtonResetColor();
+            AlignViewerControl.TabButtonResetColor();
         }
 
         public void AddSystemLogMessage(string logMessage)
@@ -96,6 +112,7 @@ namespace ATT_UT_IPAD.UI.Pages
             {
                 MessageConfirmForm form = new MessageConfirmForm();
                 form.Message = "Current Model is null.";
+                form.ShowDialog();
                 return;
             }
 
@@ -121,11 +138,5 @@ namespace ATT_UT_IPAD.UI.Pages
             }
         }
         #endregion
-    }
-
-    public enum PageType
-    {
-        Result,
-        Log,
     }
 }

@@ -186,8 +186,8 @@ namespace ATT_UT_IPAD.Core
             AkkonCamera = LineCameraManager.Instance().GetLineCamera("AkkonCamera");
             AkkonCamera.GrabDoneEventHandler += ATTSeqRunner_GrabDoneEventHandler;
 
-            AlignLAFCtrl = LAFManager.Instance().GetLAFCtrl("Align");
-            AkkonLAFCtrl = LAFManager.Instance().GetLAFCtrl("Akkon");
+            AlignLAFCtrl = LAFManager.Instance().GetLAFCtrl("AlignLaf");
+            AkkonLAFCtrl = LAFManager.Instance().GetLAFCtrl("AkkonLaf");
             LightCtrlHandler = DeviceManager.Instance().LightCtrlHandler;
 
             InspProcessTask.StartTask();
@@ -259,6 +259,7 @@ namespace ATT_UT_IPAD.Core
                 {
                     StopDevice();
                     InspProcessTask.DisposeInspAkkonTabList();
+                    InspProcessTask.DisposeInspAlignTabList();
 
                     SeqStep = SeqStep.SEQ_IDLE;
                     break;
@@ -701,11 +702,11 @@ namespace ATT_UT_IPAD.Core
                     AppsInspResult.Instance().Cell_ID,                                                             // Panel ID
                     (tabInspResult.TabNo + 1).ToString(),                                                               // Tab
                     judgement.ToString(),                       // Judge
-                    alignResult.LeftX.ResultValue_pixel.ToString("F4"),          // Left Align X
-                    alignResult.LeftY.ResultValue_pixel.ToString("F4"),          // Left Align Y
+                    CheckResultValue(alignResult.LeftX).ToString("F4"),          // Left Align X
+                    CheckResultValue(alignResult.LeftY).ToString("F4"),          // Left Align Y
                     alignResult.CenterX.ToString("F4"),                         // Center Align X
-                    alignResult.RightX.ResultValue_pixel.ToString("F4"),         // Right Align X
-                    alignResult.RightY.ResultValue_pixel.ToString("F4"),         // Right Align Y     // Right Align Y
+                    CheckResultValue(alignResult.RightX).ToString("F4"),         // Right Align X
+                    CheckResultValue(alignResult.RightY).ToString("F4"),         // Right Align Y     // Right Align Y
                 };
 
                 dataList.Add(tabData);
@@ -821,11 +822,11 @@ namespace ATT_UT_IPAD.Core
                     (tabNo + 5).ToString(),                                                         // Strength Min
                     (tabNo + 6).ToString("F4"),                                                     // Strength Avg
 
-                    alignResult.LeftX.ResultValue_pixel.ToString("F4"),    // Left Align X
-                    alignResult.LeftY.ResultValue_pixel.ToString("F4"),    // Left Align Y
+                    CheckResultValue(alignResult.LeftX).ToString("F4"),    // Left Align X
+                    CheckResultValue(alignResult.LeftY).ToString("F4"),    // Left Align Y
                     alignResult.CenterX.ToString("F4"),                         // Center Align X
-                    alignResult.RightX.ResultValue_pixel.ToString("F4"),   // Right Align X
-                    alignResult.RightY.ResultValue_pixel.ToString("F4"),   // Right Align Y
+                    CheckResultValue(alignResult.RightX).ToString("F4"),   // Right Align X
+                    CheckResultValue(alignResult.RightY).ToString("F4"),   // Right Align Y
 
                     (tabNo + 7).ToString(),                                                         // ACF Head
                     (tabNo + 8).ToString(),                                                         // Pre Head
@@ -839,6 +840,14 @@ namespace ATT_UT_IPAD.Core
                 dataList.Add(tabData);
             }
             CSVHelper.WriteData(csvFile, dataList);
+        }
+
+        private float CheckResultValue(AlignResult alignResult)
+        {
+            if (alignResult == null)
+                return 0.0F;
+            else
+                return alignResult.ResultValue_pixel;
         }
 
         private Axis GetAxis(AxisHandlerName axisHandlerName, AxisName axisName)

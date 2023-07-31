@@ -13,15 +13,7 @@ namespace ATT_UT_Remodeling.UI.Pages
 {
     public partial class MainPage : UserControl
     {
-        #region 속성
-        public AkkonViewerControl AkkonViewerControl { get; set; } = null;
-
-        public AlignViewerControl AlignViewerControl { get; set; } = null;
-
-        public PreAlignDisplayControl PreAlignDisplayControl { get; set; } = null;
-
-        public SystemLogControl SystemLogControl { get; set; } = null;
-
+        #region 필드
         protected override CreateParams CreateParams
         {
             get
@@ -31,6 +23,16 @@ namespace ATT_UT_Remodeling.UI.Pages
                 return cp;
             }
         }
+        #endregion
+
+        #region 속성
+        public AkkonViewerControl AkkonViewerControl { get; set; } = null;
+
+        public AlignViewerControl AlignViewerControl { get; set; } = null;
+
+        public PreAlignDisplayControl PreAlignDisplayControl { get; set; } = null;
+
+        public SystemLogControl SystemLogControl { get; set; } = null;
         #endregion
 
         #region 생성자
@@ -121,6 +123,7 @@ namespace ATT_UT_Remodeling.UI.Pages
             {
                 MessageConfirmForm form = new MessageConfirmForm();
                 form.Message = "Current Model is null.";
+                form.ShowDialog();
                 return;
             }
 
