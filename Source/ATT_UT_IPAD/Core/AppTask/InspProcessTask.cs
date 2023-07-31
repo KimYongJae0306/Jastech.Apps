@@ -518,11 +518,11 @@ namespace ATT_UT_IPAD.Core.AppTask
                 {
                     var data = VirtualQueue.Dequeue();
 
-                    var inspTab = InspAkkonTabList.Where(x => x.TabScanBuffer.TabNo == data.TabNo).FirstOrDefault();
-                    inspTab?.SetVirtualImage(data.FilePath);
+                    var akkonInspTab = InspAkkonTabList.Where(x => x.TabScanBuffer.TabNo == data.TabNo).FirstOrDefault();
+                    akkonInspTab?.SetVirtualImage(data.FilePath);
 
-                    var tlqkf = InspAlignTabList.Where(x => x.TabScanBuffer.TabNo == data.TabNo).FirstOrDefault();
-                    tlqkf?.SetVirtualImage(data.FilePath);
+                    var alingInspTab = InspAlignTabList.Where(x => x.TabScanBuffer.TabNo == data.TabNo).FirstOrDefault();
+                    alingInspTab?.SetVirtualImage(data.FilePath);
                 }
             }
         }
