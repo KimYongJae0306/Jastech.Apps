@@ -23,17 +23,28 @@ namespace Jastech.Apps.Winform.Service
             DailyDataList.Add(dailyData);
         }
 
-        public void Save()
+        public void Save(string modelName)
         {
-            string filePath = Path.Combine(ConfigSet.Instance().Path.Temp, FileName);
+            string dirPath = Path.Combine(ConfigSet.Instance().Path.Temp, modelName);
+
+            if (Directory.Exists(dirPath) == false)
+                Directory.CreateDirectory(dirPath);
+
+            string filePath = Path.Combine(dirPath, FileName);
             JsonConvertHelper.Save(filePath, this);
         }
 
-        public void Load()
+        public void Load(string modelName)
         {
-            string filePath = Path.Combine(ConfigSet.Instance().Path.Temp, FileName);
+            string filePath = Path.Combine(ConfigSet.Instance().Path.Temp, modelName, FileName);
             JsonConvertHelper.LoadToExistingTarget<DailyInfo>(filePath, this);
         }
+
+        //public void Dispose()
+        //{
+        //    if (DailyDataList.Count > 0)
+        //        DailyDataList.Clear();
+        //}
     }
 
     public class DailyData

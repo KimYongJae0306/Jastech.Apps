@@ -364,7 +364,6 @@ namespace ATT_UT_Remodeling.Core
                     break;
 
                 case SeqStep.SEQ_WAIT_UI_RESULT_UPDATE:
-
                     GetAkkonResultImage();
                     UpdateDailyInfo();
                     WriteLog("Update Inspectinon Result.", true);
@@ -375,8 +374,7 @@ namespace ATT_UT_Remodeling.Core
                     break;
 
                 case SeqStep.SEQ_SAVE_RESULT_DATA:
-
-                    DailyInfoService.Save();
+                    DailyInfoService.Save(inspModel.Name);
                     SaveInspResultCSV();
                     WriteLog("Save inspection result.");
 
@@ -466,6 +464,7 @@ namespace ATT_UT_Remodeling.Core
                 Thread.Sleep(10);
             }
         }
+
         private string GetCellID()
         {
             string cellId = PlcControlManager.Instance().GetAddressMap(PlcCommonMap.PLC_Cell_Id).Value;
@@ -637,11 +636,11 @@ namespace ATT_UT_Remodeling.Core
                     AppsInspResult.Instance().Cell_ID,                                                             // Panel ID
                     (tabInspResult.TabNo + 1).ToString(),                                                               // Tab
                     judgement.ToString(),                       // Judge
-                    alignResult.LeftX.ResultValue_pixel.ToString("F4"),          // Left Align X
-                    alignResult.LeftY.ResultValue_pixel.ToString("F4"),          // Left Align Y
+                    CheckResultValue(alignResult.LeftX).ToString("F4"),          // Left Align X
+                    CheckResultValue(alignResult.LeftY).ToString("F4"),          // Left Align Y
                     alignResult.CenterX.ToString("F4"),                         // Center Align X
-                    alignResult.RightX.ResultValue_pixel.ToString("F4"),         // Right Align X
-                    alignResult.RightY.ResultValue_pixel.ToString("F4"),         // Right Align Y     // Right Align Y
+                    CheckResultValue(alignResult.RightX).ToString("F4"),         // Right Align X
+                    CheckResultValue(alignResult.RightY).ToString("F4"),         // Right Align Y     // Right Align Y
                 };
 
                 dataList.Add(tabData);
@@ -757,11 +756,11 @@ namespace ATT_UT_Remodeling.Core
                     (tabNo + 5).ToString(),                                                         // Strength Min
                     (tabNo + 6).ToString("F4"),                                                     // Strength Avg
 
-                    alignResult.LeftX.ResultValue_pixel.ToString("F4"),    // Left Align X
-                    alignResult.LeftY.ResultValue_pixel.ToString("F4"),    // Left Align Y
+                    CheckResultValue(alignResult.LeftX).ToString("F4"),    // Left Align X
+                    CheckResultValue(alignResult.LeftY).ToString("F4"),    // Left Align Y
                     alignResult.CenterX.ToString("F4"),                         // Center Align X
-                    alignResult.RightX.ResultValue_pixel.ToString("F4"),   // Right Align X
-                    alignResult.RightY.ResultValue_pixel.ToString("F4"),   // Right Align Y
+                    CheckResultValue(alignResult.RightX).ToString("F4"),   // Right Align X
+                    CheckResultValue(alignResult.RightY).ToString("F4"),   // Right Align Y
 
                     (tabNo + 7).ToString(),                                                         // ACF Head
                     (tabNo + 8).ToString(),                                                         // Pre Head
@@ -775,6 +774,14 @@ namespace ATT_UT_Remodeling.Core
                 dataList.Add(tabData);
             }
             CSVHelper.WriteData(csvFile, dataList);
+        }
+
+        private float CheckResultValue(AlignResult alignResult)
+        {
+            if (alignResult == null)
+                return 0.0F;
+            else
+                return alignResult.ResultValue_pixel;
         }
 
         private Axis GetAxis(AxisHandlerName axisHandlerName, AxisName axisName)
@@ -844,18 +851,6 @@ namespace ATT_UT_Remodeling.Core
             }
 
             return true;
-        }
-
-        private ICogImage GetAreaCameraImage(Camera camera)
-        {
-            camera.GrabOnce();
-            byte[] dataArrayRight = camera.GetGrabbedImage();
-            Thread.Sleep(50);
-
-            // Right PreAlign Pattern Matching
-            var cogImage = VisionProImageHelper.ConvertImage(dataArrayRight, camera.ImageWidth, camera.ImageHeight, camera.ColorFormat);
-
-            return cogImage;
         }
 
         public Mat GetResultImage(Mat resizeMat, List<AkkonLeadResult> leadResultList, AkkonAlgoritmParam AkkonParameters)
@@ -943,9 +938,9 @@ namespace ATT_UT_Remodeling.Core
 
         public ICogImage ConvertCogColorImage(Mat mat)
         {
-            Mat matR = MatHelper.ColorChannelSprate(mat, MatHelper.ColorChannel.R);
-            Mat matG = MatHelper.ColorChannelSprate(mat, MatHelper.ColorChannel.G);
-            Mat matB = MatHelper.ColorChannelSprate(mat, MatHelper.ColorChannel.B);
+            Mat matR = MatHelper.ColorChannelSeperate(mat, MatHelper.ColorChannel.R);
+            Mat matG = MatHelper.ColorChannelSeperate(mat, MatHelper.ColorChannel.G);
+            Mat matB = MatHelper.ColorChannelSeperate(mat, MatHelper.ColorChannel.B);
 
             byte[] dataR = new byte[matR.Width * matR.Height];
             Marshal.Copy(matR.DataPointer, dataR, 0, matR.Width * matR.Height);
@@ -1114,17 +1109,6 @@ namespace ATT_UT_Remodeling.Core
                 Logger.Error(ErrorType.Etc, "Delete Data Error : " + err.Message);
                 _deleteThread = null;
             }
-        }
-
-        private void SetMarkMotionPosition(Unit unit, MarkDirection markDirection)
-        {
-            var preAlignParam = unit.PreAlign.AlignParamList.Where(x => x.Direction == markDirection).FirstOrDefault();
-
-            var motionX = MotionManager.Instance().GetAxis(AxisHandlerName.Handler0, AxisName.X).GetActualPosition();
-            var motionY = PlcControlManager.Instance().GetReadPosition(AxisName.Y) / 1000;
-            var motionT = PlcControlManager.Instance().GetReadPosition(AxisName.T) / 1000;
-
-            preAlignParam.SetMotionData(motionX, motionY, motionT);
         }
 
         private void WriteLog(string logMessage, bool isSystemLog = false)

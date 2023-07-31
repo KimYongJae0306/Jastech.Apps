@@ -62,7 +62,8 @@ namespace ATT
 
             form.ShowDialog();
 
-            DailyInfoService.Load();
+            var recentModelName = ConfigSet.Instance().Operation.LastModelName;
+            DailyInfoService.Load(recentModelName);
 
             return true;
         }

@@ -26,9 +26,9 @@ namespace AkkonTester.Helpers
 
         public static ICogImage ConvertCogColorImage(Mat mat)
         {
-            Mat matR = MatHelper.ColorChannelSprate(mat, MatHelper.ColorChannel.R);
-            Mat matG = MatHelper.ColorChannelSprate(mat, MatHelper.ColorChannel.G);
-            Mat matB = MatHelper.ColorChannelSprate(mat, MatHelper.ColorChannel.B);
+            Mat matR = MatHelper.ColorChannelSeperate(mat, MatHelper.ColorChannel.R);
+            Mat matG = MatHelper.ColorChannelSeperate(mat, MatHelper.ColorChannel.G);
+            Mat matB = MatHelper.ColorChannelSeperate(mat, MatHelper.ColorChannel.B);
 
             byte[] dataR = new byte[matR.Width * matR.Height];
             Marshal.Copy(matR.DataPointer, dataR, 0, matR.Width * matR.Height);

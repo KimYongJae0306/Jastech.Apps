@@ -439,7 +439,7 @@ namespace ATT_UT_IPAD.Core
 
                 case SeqStep.SEQ_SAVE_RESULT_DATA:
 
-                    DailyInfoService.Save();
+                    DailyInfoService.Save(inspModel.Name);
                     SaveInspResultCSV();
                     WriteLog("Save inspection result.");
 
@@ -1007,9 +1007,9 @@ namespace ATT_UT_IPAD.Core
 
         public ICogImage ConvertCogColorImage(Mat mat)
         {
-            Mat matR = MatHelper.ColorChannelSprate(mat, MatHelper.ColorChannel.R);
-            Mat matG = MatHelper.ColorChannelSprate(mat, MatHelper.ColorChannel.G);
-            Mat matB = MatHelper.ColorChannelSprate(mat, MatHelper.ColorChannel.B);
+            Mat matR = MatHelper.ColorChannelSeperate(mat, MatHelper.ColorChannel.R);
+            Mat matG = MatHelper.ColorChannelSeperate(mat, MatHelper.ColorChannel.G);
+            Mat matB = MatHelper.ColorChannelSeperate(mat, MatHelper.ColorChannel.B);
 
             byte[] dataR = new byte[matR.Width * matR.Height];
             Marshal.Copy(matR.DataPointer, dataR, 0, matR.Width * matR.Height);

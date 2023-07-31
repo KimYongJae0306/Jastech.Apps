@@ -64,7 +64,8 @@ namespace ATT_UT_IPAD
 
             form.ShowDialog();
 
-            DailyInfoService.Load();
+            var recentModelName = ConfigSet.Instance().Operation.LastModelName;
+            DailyInfoService.Load(recentModelName);
 
             return true;
         }

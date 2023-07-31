@@ -1,4 +1,5 @@
 ﻿using Cognex.VisionPro;
+using Emgu.CV;
 using Jastech.Framework.Imaging.VisionPro.VisionAlgorithms.Results;
 using System;
 using System.Collections.Generic;
@@ -11,6 +12,8 @@ namespace Jastech.Apps.Structure.Data
     public class PreAlignResult
     {
         public ICogImage CogImage { get; set; } = null;
+
+        public ICogImage OverlayImage { get; set; } = null;
 
         public VisionProPatternMatchingResult MatchResult { get; set; } = null;
 

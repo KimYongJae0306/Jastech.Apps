@@ -61,6 +61,9 @@ namespace Jastech.Apps.Winform.UI.Controls
             List<CogCompositeShape> resultList = new List<CogCompositeShape>();
 
             var matchResult = result.MatchResult;
+            if (matchResult == null)
+                return;
+
             var graphics = matchResult.MaxMatchPos.ResultGraphics;
             resultList.Add(graphics);
             var deepCopyImage = result.CogImage.CopyBase(CogImageCopyModeConstants.CopyPixels);

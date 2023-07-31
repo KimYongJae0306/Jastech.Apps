@@ -5,10 +5,8 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Jastech.Framework.Imaging.Result;
-using Jastech.Framework.Imaging;
 using Jastech.Framework.Util.Helper;
 using Cognex.VisionPro;
 using Jastech.Apps.Winform;
@@ -17,7 +15,6 @@ using Jastech.Framework.Device.Motions;
 using Jastech.Framework.Imaging.VisionPro;
 using System.Diagnostics;
 using System.Threading;
-using Jastech.Framework.Device.LightCtrls;
 using Jastech.Apps.Winform.Service.Plc.Maps;
 using Jastech.Apps.Winform.Settings;
 using Jastech.Apps.Structure.VisionTool;
@@ -26,8 +23,9 @@ using Jastech.Framework.Imaging.VisionPro.VisionAlgorithms.Results;
 using System.Drawing;
 using Jastech.Framework.Winform;
 using Jastech.Apps.Winform.Core;
-using Jastech.Framework.Algorithms.Akkon.Results;
 using ATT_UT_Remodeling.Core.Data;
+using Emgu.CV;
+using System.Windows.Forms;
 
 namespace ATT_UT_Remodeling
 {
@@ -39,8 +37,6 @@ namespace ATT_UT_Remodeling
         private CancellationTokenSource SeqTaskCancellationTokenSource { get; set; }
 
         private SeqStep SeqStep { get; set; } = SeqStep.SEQ_IDLE;
-
-        private AppsPreAlignResult AppsPreAlignResult { get; set; } = null;
         #endregion
 
         #region 속성
@@ -191,7 +187,10 @@ namespace ATT_UT_Remodeling
                     SystemManager.Instance().ClearPreAlignResult();
                     WriteLog("Clear PreAlign Display");
 
-                   
+                    AppsInspResult.Instance().StartInspTime = DateTime.Now;
+                    AppsInspResult.Instance().Cell_ID = GetCellID();
+                    WriteLog("Cell ID : " + AppsInspResult.Instance().Cell_ID, true);
+
                     SeqStep = SeqStep.SEQ_PREALIGN_R;
                     break;
            
@@ -212,25 +211,30 @@ namespace ATT_UT_Remodeling
                         if(ConfigSet.Instance().Operation.VirtualMode == false)
                         {
                             var preAlignRightImage = GetAreaCameraImage(areaCamera.Camera) as CogImage8Grey;
-                            AppsPreAlignResult.Right.CogImage = preAlignRightImage;
-                            AppsPreAlignResult.Right.MatchResult = RunPreAlignMark(unit, preAlignRightImage, MarkDirection.Right);
+                            AppsPreAlignResult.Instance().Right.CogImage = preAlignRightImage;
+                            AppsPreAlignResult.Instance().Right.MatchResult = RunPreAlignMark(unit, preAlignRightImage, MarkDirection.Right);
                         }
                         else
                         {
-                            AppsPreAlignResult.Right.CogImage = VirtualRightImage;
-                            AppsPreAlignResult.Right.MatchResult = RunPreAlignMark(unit, VirtualRightImage, MarkDirection.Right);
+                            AppsPreAlignResult.Instance().Right.CogImage = VirtualRightImage;
+                            AppsPreAlignResult.Instance().Right.MatchResult = RunPreAlignMark(unit, VirtualRightImage, MarkDirection.Right);
                         }
 
-                        WriteLog("Complete PreAlign Right Mark Search.", true);
+                        if (AppsPreAlignResult.Instance().Right.MatchResult == null)
+                            SeqStep = SeqStep.SEQ_ERROR;
+                        else
+                        {
+                            WriteLog("Complete PreAlign Right Mark Search.", true);
 
-                        SystemManager.Instance().UpdateRightPreAlignResult(AppsPreAlignResult);
-                        WriteLog("Update Right PreAlign Image.", true);
+                            SystemManager.Instance().UpdateRightPreAlignResult(AppsPreAlignResult.Instance());
+                            WriteLog("Update Right PreAlign Image.", true);
 
-                        // Set prealign motion position
-                        SetMarkMotionPosition(unit, MarkDirection.Right);
-                        WriteLog("Set Axis Information For PreAlign Right Mark Position.");
+                            // Set prealign motion position
+                            SetMarkMotionPosition(unit, MarkDirection.Right);
+                            WriteLog("Set Axis Information For PreAlign Right Mark Position.");
 
-                        SeqStep = SeqStep.SEQ_PREALIGN_L;
+                            SeqStep = SeqStep.SEQ_PREALIGN_L;
+                        }
                     }
                     break;
 
@@ -249,27 +253,33 @@ namespace ATT_UT_Remodeling
                         if (ConfigSet.Instance().Operation.VirtualMode == false)
                         {
                             var preAlignLeftImage = GetAreaCameraImage(areaCamera.Camera);
-                            AppsPreAlignResult.Left.CogImage = preAlignLeftImage;
-                            AppsPreAlignResult.Left.MatchResult = RunPreAlignMark(unit, preAlignLeftImage, MarkDirection.Left);
+                            AppsPreAlignResult.Instance().Left.CogImage = preAlignLeftImage;
+                            AppsPreAlignResult.Instance().Left.MatchResult = RunPreAlignMark(unit, preAlignLeftImage, MarkDirection.Left);
                         }
                         else
                         {
-                            AppsPreAlignResult.Left.CogImage = VirtualLeftImage;
-                            AppsPreAlignResult.Left.MatchResult = RunPreAlignMark(unit, VirtualLeftImage, MarkDirection.Left);
+                            AppsPreAlignResult.Instance().Left.CogImage = VirtualLeftImage;
+                            AppsPreAlignResult.Instance().Left.MatchResult = RunPreAlignMark(unit, VirtualLeftImage, MarkDirection.Left);
                         }
-                        WriteLog("Complete PreAlign Left Mark Search.", true);
 
-                        SystemManager.Instance().UpdateLeftPreAlignResult(AppsPreAlignResult);
-                        WriteLog("Update Left PreAlign Image.", true);
+                        if (AppsPreAlignResult.Instance().Right.MatchResult == null)
+                            SeqStep = SeqStep.SEQ_ERROR;
+                        else
+                        {
+                            WriteLog("Complete PreAlign Left Mark Search.", true);
 
-                        // Set prealign pattern match result
-                        SetPreAlignPatternResult();
+                            SystemManager.Instance().UpdateLeftPreAlignResult(AppsPreAlignResult.Instance());
+                            WriteLog("Update Left PreAlign Image.", true);
 
-                        // Set prealign motion position
-                        SetMarkMotionPosition(unit, MarkDirection.Left);
-                        WriteLog("Set Axis Information For Prealign Left Mark Position.");
+                            // Set prealign pattern match result
+                            SetPreAlignPatternResult();
 
-                        SeqStep = SeqStep.SEQ_SEND_PREALIGN_DATA;
+                            // Set prealign motion position
+                            SetMarkMotionPosition(unit, MarkDirection.Left);
+                            WriteLog("Set Axis Information For Prealign Left Mark Position.");
+
+                            SeqStep = SeqStep.SEQ_SEND_PREALIGN_DATA;
+                        }
                     }
                     break;
 
@@ -278,11 +288,11 @@ namespace ATT_UT_Remodeling
                     light.TurnOff();
                     WriteLog("PreAlign Light Off.",true);
 
-                    if (RunPreAlign(AppsPreAlignResult))
+                    if (RunPreAlign() == true)
                     {
-                        var offsetX = AppsPreAlignResult.OffsetX;
-                        var offsetY = AppsPreAlignResult.OffsetY;
-                        var offsetT = AppsPreAlignResult.OffsetT;
+                        var offsetX = AppsPreAlignResult.Instance().OffsetX;
+                        var offsetY = AppsPreAlignResult.Instance().OffsetY;
+                        var offsetT = AppsPreAlignResult.Instance().OffsetT;
 
                         PlcControlManager.Instance().WriteAlignData(offsetX, offsetY, offsetT);
                         WriteLog($"Write PreAlign Data.(OffsetX : {offsetX.ToString("F4")}, OffsetY : {offsetY.ToString("F4")}, OffsetT : {offsetT.ToString("F4")})", true);
@@ -307,23 +317,22 @@ namespace ATT_UT_Remodeling
                         WriteLog($"Send PreAlign NG Complete Signal.(Mark Fail) {(int)PlcCommand.StartPreAlign * -1}", true);
                     }
 
-                    SystemManager.Instance().UpdatePreAlignResult(AppsPreAlignResult);
-                    SeqStep = SeqStep.SEQ_SAVE_IMAGE;
+                    AppsInspResult.Instance().EndInspTime = DateTime.Now;
+
+                    SystemManager.Instance().UpdatePreAlignResult(AppsPreAlignResult.Instance());
+                    SeqStep = SeqStep.SEQ_SAVE_RESULT_DATA;
                     break;
 
                 case SeqStep.SEQ_SAVE_RESULT_DATA:
-
+                    SavePreAlignResultCSV();
+                    WriteLog("Save PreAlign result.", true);
                     SeqStep = SeqStep.SEQ_SAVE_IMAGE;
                     break;
 
                 case SeqStep.SEQ_SAVE_IMAGE:
+                    AddOverlay();
 
-                    SeqStep = SeqStep.SEQ_DELETE_DATA;
-                    break;
-
-                case SeqStep.SEQ_DELETE_DATA:
-                    // 이거 필요한지 고민좀..
-                    // 메인 검사 시퀀스에서 하니깐 필요 없을듯????
+                    SaveResultImage();
                     SeqStep = SeqStep.SEQ_END;
                     break;
 
@@ -355,18 +364,31 @@ namespace ATT_UT_Remodeling
             }
         }
 
-     
-        private void SetPreAlignPatternResult()
+        private string GetCellID()
         {
-            if (AppsPreAlignResult.Left.MatchResult.Judgement == Judgement.OK && AppsPreAlignResult.Right.MatchResult.Judgement == Judgement.OK)
-                AppsPreAlignResult.Judgement = Judgement.OK;
+            string cellId = PlcControlManager.Instance().GetAddressMap(PlcCommonMap.PLC_Cell_Id).Value;
 
-            if (AppsPreAlignResult.Left.MatchResult.Judgement == Judgement.NG || AppsPreAlignResult.Right.MatchResult.Judgement == Judgement.NG)
-                AppsPreAlignResult.Judgement = Judgement.NG;
+            if (cellId == "0" || cellId == null)
+                return DateTime.Now.ToString("yyyyMMddHHmmss");
+            else
+                return cellId;
         }
 
-        private bool RunPreAlign(AppsPreAlignResult preAlignResult)
+        private void SetPreAlignPatternResult()
         {
+            var preAlignResult = AppsPreAlignResult.Instance();
+
+            if (preAlignResult.Left.MatchResult.Judgement == Judgement.OK && preAlignResult.Right.MatchResult.Judgement == Judgement.OK)
+                preAlignResult.Judgement = Judgement.OK;
+
+            if (preAlignResult.Left.MatchResult.Judgement == Judgement.NG || preAlignResult.Right.MatchResult.Judgement == Judgement.NG)
+                preAlignResult.Judgement = Judgement.NG;
+        }
+
+        private bool RunPreAlign()
+        {
+            var preAlignResult = AppsPreAlignResult.Instance();
+
             if (preAlignResult.Judgement == Judgement.OK)
             {
                 PointF leftVisionCoordinates = preAlignResult.Left.MatchResult.MaxMatchPos.FoundPos;
@@ -393,10 +415,10 @@ namespace ATT_UT_Remodeling
 
                 preAlignResult.SetPreAlignResult(alignmentResult.OffsetX, alignmentResult.OffsetY, alignmentResult.OffsetT);
 
-                Judgement leftJudgement = AppsPreAlignResult.Left.MatchResult.Judgement;
-                Judgement rightJudgement = AppsPreAlignResult.Right.MatchResult.Judgement;
-                var leftScore = AppsPreAlignResult.Left.MatchResult.MaxMatchPos.Score;
-                var rightScore = AppsPreAlignResult.Right.MatchResult.MaxMatchPos.Score;
+                Judgement leftJudgement = preAlignResult.Left.MatchResult.Judgement;
+                Judgement rightJudgement = preAlignResult.Right.MatchResult.Judgement;
+                var leftScore = preAlignResult.Left.MatchResult.MaxMatchPos.Score;
+                var rightScore = preAlignResult.Right.MatchResult.MaxMatchPos.Score;
 
                 WriteLog($"OK Mark Search For PreAlign. (Left : {leftJudgement.ToString()}, Right : {rightJudgement.ToString()})", true);
                 WriteLog($"FoundedMark Score. (Left : {(leftScore * 100).ToString("F2")}, Right : {(rightScore * 100).ToString("F2")})", true);
@@ -404,10 +426,10 @@ namespace ATT_UT_Remodeling
             }
             else
             {
-                Judgement leftJudgement = AppsPreAlignResult.Left.MatchResult.Judgement;
-                Judgement rightJudgement = AppsPreAlignResult.Right.MatchResult.Judgement;
-                var leftScore = AppsPreAlignResult.Left.MatchResult.MaxMatchPos.Score;
-                var rightScore = AppsPreAlignResult.Right.MatchResult.MaxMatchPos.Score;
+                Judgement leftJudgement = preAlignResult.Left.MatchResult.Judgement;
+                Judgement rightJudgement = preAlignResult.Right.MatchResult.Judgement;
+                var leftScore = preAlignResult.Left.MatchResult.MaxMatchPos.Score;
+                var rightScore = preAlignResult.Right.MatchResult.MaxMatchPos.Score;
 
                 WriteLog($"NG Mark Search For PreAlign. (Left : {leftJudgement.ToString()}, Right : {rightJudgement.ToString()})", true);
                 WriteLog($"FoundedMark Score. (Left : {(leftScore * 100).ToString("F2")}, Right : {(rightScore * 100).ToString("F2")})", true);
@@ -427,8 +449,13 @@ namespace ATT_UT_Remodeling
 
     public partial class PreAlignRunner
     {
-        private void SaveImage(AppsInspResult appsInspResult)
+        private void SaveResultImage()
         {
+            //if (ConfigSet.Instance().Operation.VirtualMode)
+            //    return;
+
+            var appsInspResult = AppsInspResult.Instance();
+
             AppsInspModel inspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
             DateTime currentTime = appsInspResult.StartInspTime;
 
@@ -446,29 +473,100 @@ namespace ATT_UT_Remodeling
             string ngExtension = operation.GetExtensionNGImage();
 
             var appsPreAlignResult = AppsPreAlignResult.Instance();
+
+            //appsPreAlignResult.Left.CogImage
             if (appsPreAlignResult.Judgement == Judgement.OK)
             {
                 if (operation.SaveImageOK)
                 {
-                    string imageName = "PreAlign_Left_OK_" + okExtension;
-                    string imagePath = Path.Combine(path, imageName);
+                    string leftImageName = "PreAlign_Left_OK" + okExtension;
+                    string leftImagePath = Path.Combine(path, leftImageName);
+                    SaveImage(appsPreAlignResult.Left.CogImage, leftImagePath);
+
+                    string rightImageName = "PreAlign_Right_OK" + okExtension;
+                    string rightImagePath = Path.Combine(path, rightImageName);
+                    SaveImage(appsPreAlignResult.Right.CogImage, rightImagePath);
                 }
             }
             else
             {
                 if (operation.SaveImageNG)
                 {
-                    string imageName = "PreAlign_Left_NG_" + okExtension;
-                    string imagePath = Path.Combine(path, imageName);
+                    string leftImageName = "PreAlign_Left_NG" + ngExtension;
+                    string leftImagePath = Path.Combine(path, leftImageName);
+                    SaveImage(appsPreAlignResult.Left.CogImage, leftImagePath);
+
+                    string rightImageName = "PreAlign_Right_OK" + ngExtension;
+                    string rightImagePath = Path.Combine(path, rightImageName);
+                    SaveImage(appsPreAlignResult.Right.CogImage, rightImagePath);
                 }
             }
         }
 
-
-        private void SavePreAlignResult(string resultPath)
+        private void SaveImage(Mat image, string filePath)
         {
-            string filename = string.Format("PreAlign.csv");
+            if (image == null)
+                return;
+
+            image.Save(filePath);
+        }
+
+        private void SaveImage(ICogImage image, string filePath, bool isOverlay = false)
+        {
+            if (image == null)
+                return;
+
+            if (isOverlay)
+            {
+                //var tlqkf = AddOverlay(null);
+                //VisionProImageHelper.Save(tlqkf, filePath);
+            }
+            else
+                VisionProImageHelper.Save(image, filePath);
+        }
+
+        private void SavePreAlignResultCSV()
+        {
+            var inspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
+            DateTime currentTime = AppsInspResult.Instance().StartInspTime;
+
+            string month = currentTime.ToString("MM");
+            string day = currentTime.ToString("dd");
+            string folderPath = AppsInspResult.Instance().Cell_ID;
+
+            string path = Path.Combine(ConfigSet.Instance().Path.Result, inspModel.Name, month, day);
+            if (Directory.Exists(path) == false)
+                Directory.CreateDirectory(path);
+
+            string fileName = string.Format("PreAlign.csv");
+            string csvFile = Path.Combine(path, fileName);
+            
+            if (File.Exists(csvFile) == false)
+            {
+                List<string> header = new List<string>
+                {
+                    "Inspection Time",
+                    "Panel ID",
+                    "OffsetX",
+                    "OffsetY",
+                    "OffsetT",
+                };
+
+                CSVHelper.WriteHeader(csvFile, header);
+            }
+
             var appsPreAlignResult = AppsPreAlignResult.Instance();
+
+            List<string> dataList = new List<string>
+            {
+                AppsInspResult.Instance().EndInspTime.ToString("HH:mm:ss"),
+                AppsInspResult.Instance().Cell_ID,
+                appsPreAlignResult.OffsetX.ToString("F4"),
+                appsPreAlignResult.OffsetY.ToString("F4"),
+                appsPreAlignResult.OffsetT.ToString("F4"),
+            };
+
+            CSVHelper.WriteData(csvFile, dataList);
         }
 
         private Axis GetAxis(AxisHandlerName axisHandlerName, AxisName axisName)
@@ -587,6 +685,32 @@ namespace ATT_UT_Remodeling
 
             Logger.Write(LogType.Seq, logMessage);
         }
+
+        private ICogImage AddOverlay()
+        {
+            //var appsPreAlignResult = AppsPreAlignResult.Instance().Left;
+            var result = AppsPreAlignResult.Instance().Left;
+            List<CogCompositeShape> shapes = new List<CogCompositeShape>();
+
+            var graphics = result.MatchResult.MaxMatchPos.ResultGraphics;
+
+            shapes.Add(graphics);
+
+            var deepCopyImage = result.CogImage.CopyBase(CogImageCopyModeConstants.CopyPixels);
+
+            CogGraphicInteractiveCollection collect = new CogGraphicInteractiveCollection();
+
+            foreach (var item in shapes)
+                collect.Add(item);
+
+            //var tqlkf = AppsPreAlignResult.Instance().Left.CogImage as CogImage24PlanarColor;
+            //tqlkf.s
+
+            int gg = 0;
+
+
+            return null;
+        }
     }
 
     public enum SeqStep
@@ -600,7 +724,6 @@ namespace ATT_UT_Remodeling
         SEQ_SEND_PREALIGN_DATA,
         SEQ_SAVE_RESULT_DATA,
         SEQ_SAVE_IMAGE,
-        SEQ_DELETE_DATA,
         SEQ_END,
         SEQ_ERROR,
     }

@@ -1,4 +1,5 @@
 ﻿using Jastech.Apps.Structure;
+using Jastech.Apps.Winform.Service;
 using Jastech.Framework.Config;
 using Jastech.Framework.Structure;
 using Jastech.Framework.Structure.Helper;
@@ -232,6 +233,9 @@ namespace Jastech.Apps.Winform.UI.Forms
                 return;
 
             ApplyModelEventHandler?.Invoke(lblSelectedName.Text);
+
+            DailyInfoService.Reset();
+            DailyInfoService.Load(lblSelectedName.Text);
 
             MessageConfirmForm form = new MessageConfirmForm();
             form.Message = "Model Load Completed.";
