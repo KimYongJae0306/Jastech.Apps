@@ -196,7 +196,8 @@ namespace ATT_UT_IPAD.Core
 
         private void AlignCamera_GrabDelayStartEventHandler(string cameraName)
         {
-            AlignLAFCtrl.SetTrackingOnOFF(true);
+            //AlignLAFCtrl.SetTrackingOnOFF(true);
+            AlignLAFCtrl.SetTrackingOnOFF(false);       // 일단 끔
             WriteLog("Delay Align AutoFocus On.");
         }
 
@@ -310,12 +311,10 @@ namespace ATT_UT_IPAD.Core
                     AkkonLAFCtrl.SetMotionAbsoluteMove(0);
                     WriteLog("Akkon Laf Off.");
 
-
                     SeqStep = SeqStep.SEQ_WAITING;
                     break;
 
                 case SeqStep.SEQ_WAITING:
-
                     if (AppsStatus.Instance().IsInspRunnerFlagFromPlc == false)
                         break;
 
@@ -344,12 +343,12 @@ namespace ATT_UT_IPAD.Core
                     break;
 
                 case SeqStep.SEQ_SCAN_START:
-
                     IsAkkonGrabDone = false;
                     IsAlignGrabDone = false;
 
                     // AlignLAFCtrl은 그랩 시작 시 On
-                    AkkonLAFCtrl.SetTrackingOnOFF(true);
+                    //AkkonLAFCtrl.SetTrackingOnOFF(true);
+                    AkkonLAFCtrl.SetTrackingOnOFF(false);   // 일단 끔
                     WriteLog("Akkon Laser Auto Focus On.");
 
                     LightCtrlHandler.TurnOn(unit.GetLineCameraData("Akkon").LightParam);
@@ -372,10 +371,9 @@ namespace ATT_UT_IPAD.Core
                     }
 
                     SeqStep = SeqStep.SEQ_MOVE_END_POS;
-
                     break;
-                case SeqStep.SEQ_MOVE_END_POS:
 
+                case SeqStep.SEQ_MOVE_END_POS:
                     if (MoveTo(TeachingPosType.Stage1_Scan_End, out errorMessage) == false)
                         SeqStep = SeqStep.SEQ_ERROR;
                     else
@@ -401,10 +399,15 @@ namespace ATT_UT_IPAD.Core
 
                     SeqStep = SeqStep.SEQ_WAITING_INSPECTION_DONE;
                     break;
-                case SeqStep.SEQ_WAITING_INSPECTION_DONE:
 
-                    if (IsInspAkkonDone() == false || IsInspAlignDone() == false)
+                case SeqStep.SEQ_WAITING_INSPECTION_DONE:
+                    if (IsInspAkkonDone() == false)
                         break;
+                    SystemManager.Instance().UpdateMainAkkonResult();
+
+                    if (IsInspAlignDone() == false)
+                        break;
+                    SystemManager.Instance().UpdateMainAlignResult();
 
                     LastInspSW.Stop();
                     AppsInspResult.Instance().EndInspTime = DateTime.Now;
@@ -415,12 +418,13 @@ namespace ATT_UT_IPAD.Core
 
                     SeqStep = SeqStep.SEQ_MANUAL_CHECK;
                     break;
+
                 case SeqStep.SEQ_MANUAL_CHECK:
 
                     SeqStep = SeqStep.SEQ_SEND_RESULT;
                     break;
-                case SeqStep.SEQ_SEND_RESULT:
 
+                case SeqStep.SEQ_SEND_RESULT:
                     SendResultData();
                     WriteLog("Completed Send Plc Tab Result Data", true);
 
@@ -428,18 +432,16 @@ namespace ATT_UT_IPAD.Core
                     break;
 
                 case SeqStep.SEQ_WAIT_UI_RESULT_UPDATE:
-
                     GetAkkonResultImage();
                     UpdateDailyInfo();
                     WriteLog("Update Inspectinon Result.", true);
 
-                    SystemManager.Instance().UpdateMainResult();
+                    //SystemManager.Instance().UpdateMainResult();
 
                     SeqStep = SeqStep.SEQ_SAVE_RESULT_DATA;
                     break;
 
                 case SeqStep.SEQ_SAVE_RESULT_DATA:
-
                     DailyInfoService.Save(inspModel.Name);
                     SaveInspResultCSV();
                     WriteLog("Save inspection result.");

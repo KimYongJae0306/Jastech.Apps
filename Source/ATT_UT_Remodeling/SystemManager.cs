@@ -44,9 +44,7 @@ namespace ATT_UT_Remodeling
         public static SystemManager Instance()
         {
             if (_instance == null)
-            {
                 _instance = new SystemManager();
-            }
 
             return _instance;
         }
@@ -223,9 +221,7 @@ namespace ATT_UT_Remodeling
             var inspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
 
             for (int tabNo = 0; tabNo < inspModel.TabCount; tabNo++)
-            {
                 _mainForm.UpdateMainResult(tabNo);
-            }
         }
 
         public void AddSystemLogMessage(string logMessage)
@@ -239,6 +235,7 @@ namespace ATT_UT_Remodeling
             {
                 MessageYesNoForm form = new MessageYesNoForm();
                 form.Message = "Do you want to Start Auto Mode?";
+
                 if (form.ShowDialog() == DialogResult.Yes)
                 {
                     _preAlignRunner.SeqRun();
