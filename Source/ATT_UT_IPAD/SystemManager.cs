@@ -43,9 +43,7 @@ namespace ATT_UT_IPAD
         public static SystemManager Instance()
         {
             if (_instance == null)
-            {
                 _instance = new SystemManager();
-            }
 
             return _instance;
         }
@@ -163,9 +161,7 @@ namespace ATT_UT_IPAD
             string dir = Path.Combine(ConfigSet.Instance().Path.Config, "AxisHanlder");
 
             if (Directory.Exists(dir) == false)
-            {
                 Directory.CreateDirectory(dir);
-            }
 
             string unit0FileName = string.Format("AxisHanlder_{0}.json", AxisHandlerName.Handler0);
             string unit0FilePath = Path.Combine(dir, unit0FileName);
@@ -234,15 +230,33 @@ namespace ATT_UT_IPAD
         }
 
 
-        public void UpdateMainResult()
+        //public void UpdateMainResult()
+        //{
+        //    var inspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
+
+        //    for (int tabNo = 0; tabNo < inspModel.TabCount; tabNo++)
+        //    {
+        //        _mainForm.UpdateMainAkkonResult(tabNo);
+        //        _mainForm.UpdateMainAlignResult(tabNo);
+        //    }
+        //}
+
+        public void UpdateMainAkkonResult()
         {
+            // 탭별로 안들어올 수도 있을텐데....
             var inspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
 
             for (int tabNo = 0; tabNo < inspModel.TabCount; tabNo++)
-            {
                 _mainForm.UpdateMainAkkonResult(tabNo);
+        }
+
+        public void UpdateMainAlignResult()
+        {
+            // 탭별로 안들어올 수도 있을텐데....
+            var inspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
+
+            for (int tabNo = 0; tabNo < inspModel.TabCount; tabNo++)
                 _mainForm.UpdateMainAlignResult(tabNo);
-            }
         }
 
         public void TabButtonResetColor()
@@ -261,9 +275,11 @@ namespace ATT_UT_IPAD
             {
                 MessageYesNoForm form = new MessageYesNoForm();
                 form.Message = "Do you want to Start Auto Mode?";
+
                 if (form.ShowDialog() == DialogResult.Yes)
                 {
                     _inspRunner.SeqRun();
+                    AddSystemLogMessage("Start Auto mode.");
                 }
             }
         }
@@ -281,9 +297,11 @@ namespace ATT_UT_IPAD
             {
                 MessageYesNoForm form = new MessageYesNoForm();
                 form.Message = "Do you want to Stop Auto Mode?";
+
                 if (form.ShowDialog() == DialogResult.Yes)
                 {
                     _inspRunner.SeqStop();
+                    AddSystemLogMessage("Stop Auto Mode.");
                 }
             }
         }
