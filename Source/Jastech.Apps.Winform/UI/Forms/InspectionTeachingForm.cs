@@ -393,7 +393,8 @@ namespace Jastech.Framework.Winform.Forms
             AppsInspModel inspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
             TeachingImagePath = Path.Combine(ConfigSet.Instance().Path.Model, inspModel.Name, "TeachingImage", DateTime.Now.ToString("yyyyMMdd_HHmmss"));
 
-            LAFCtrl?.SetTrackingOnOFF(true);
+            //LAFCtrl?.SetTrackingOnOFF(true);  // 임시
+            LAFCtrl?.SetTrackingOnOFF(false);
 
             TeachingData.Instance().ClearTeachingImageBuffer();
             LineCamera.InitGrabSettings();
@@ -441,6 +442,7 @@ namespace Jastech.Framework.Winform.Forms
 
         private void InspectionTeachingForm_FormClosing(object sender, FormClosingEventArgs e)
         {
+            LineCamera.StopGrab();
             Display.DisposeImage();
             MarkControl.DisposeImage();
             DisposeInspTabList();

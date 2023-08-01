@@ -119,9 +119,7 @@ namespace Jastech.Apps.Winform
             for (int i = 0; i < tabCount; i++)
             {
                 if (i == 0)
-                {
                     tempPos += inspModel.MaterialInfo.PanelEdgeToFirst_mm;
-                }
 
                 int startIndex = (int)(tempPos / resolution_mm / Camera.ImageHeight);
 
@@ -147,7 +145,9 @@ namespace Jastech.Apps.Winform
                 lock(TabScanBufferList)
                     TabScanBufferList.Add(scanImage);
             }
+
             GrabCount = maxEndIndex;
+            int gg = 0;
         }
 
         public void InitGrabSettings(float delayStart_um)

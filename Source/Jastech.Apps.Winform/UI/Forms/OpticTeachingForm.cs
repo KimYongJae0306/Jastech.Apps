@@ -606,7 +606,8 @@ namespace Jastech.Framework.Winform.Forms
         {
             StopGrab();
 
-            LAFCtrl.SetTrackingOnOFF(true);
+            //LAFCtrl.SetTrackingOnOFF(true);   // 임시
+            LAFCtrl.SetTrackingOnOFF(false);
 
             if (isRepeat)
             {
@@ -718,9 +719,9 @@ namespace Jastech.Framework.Winform.Forms
 
         private void MoveRepeat(bool isRepeat)
         {
+            LineCamera.IsLive = false;
             if (isRepeat)
             {
-                LineCamera.IsLive = false;
                 LineCamera.StopGrab();
 
                 double currentPosition = SelectedAxis.GetActualPosition();

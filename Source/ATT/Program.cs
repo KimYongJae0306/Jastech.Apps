@@ -69,7 +69,7 @@ namespace ATT
         {
             if (ConfigSet.Instance().Operation.VirtualMode)
             {
-                var camera0 = new CameraVirtual("Camera0", 4640, 1024, 0, ColorFormat.Gray, SensorType.Line);
+                var camera0 = new CameraVirtual("Camera0", 4640, 1024, ColorFormat.Gray, SensorType.Line);
                 config.Add(camera0);
 
                 var motion = new VirtualMotion("VirtualMotion", 3);
@@ -89,7 +89,7 @@ namespace ATT
             }
             else
             {
-                var camera1 = new CameraMil("Camera0", 4640, 1024, 0, ColorFormat.Gray, SensorType.Line);
+                var camera1 = new CameraMil("Camera0", 4640, 1024, ColorFormat.Gray, SensorType.Line);
                 camera1.MilSystemType = MilSystemType.Rapixo;
                 camera1.TriggerMode = TriggerMode.Hardware;
                 camera1.TriggerSource = (int)MilCxpTriggerSource.Cxp;

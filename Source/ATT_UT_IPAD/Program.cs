@@ -17,6 +17,7 @@ using Jastech.Framework.Device.Plcs.Melsec.Parsers;
 using Jastech.Framework.Imaging;
 using Jastech.Framework.Matrox;
 using Jastech.Framework.Util.Helper;
+using Jastech.Framework.Winform.Forms;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
@@ -87,13 +88,15 @@ namespace ATT_UT_IPAD
                 AppsConfig.Instance().ProgramType = form.SelectedProgramType;
 
                 // Akkon LineScanCamera
-                var alignCamera = new CameraVirtual("AkkonCamera", 3072, 1024, 0, ColorFormat.Gray, SensorType.Line);
+                var alignCamera = new CameraVirtual("AkkonCamera", 6560, 1024, ColorFormat.Gray, SensorType.Line);
+                alignCamera.OffsetX = 0;
                 alignCamera.PixelResolution_um = 3.5F;
                 alignCamera.LensScale = 10F;
                 config.Add(alignCamera);
 
                 // Align LineScanCamera
-                var akkonCamera = new CameraVirtual("AlignCamera", 3072, 1024, 0, ColorFormat.Gray, SensorType.Line);
+                var akkonCamera = new CameraVirtual("AlignCamera", 6560, 1024, ColorFormat.Gray, SensorType.Line);
+                akkonCamera.OffsetX = 0;
                 akkonCamera.PixelResolution_um = 3.5F;
                 akkonCamera.LensScale = 10F;
                 config.Add(akkonCamera);
@@ -154,7 +157,8 @@ namespace ATT_UT_IPAD
         private static void CreateDeviceConfigType1(MachineConfig config)
         {
             // Akkon LineScanCamera
-            var akkonCamera = new CameraMil("AkkonCamera", 3072, 1024, 0, ColorFormat.Gray, SensorType.Line);
+            var akkonCamera = new CameraMil("AkkonCamera", 6560, 1024, ColorFormat.Gray, SensorType.Line);
+            akkonCamera.OffsetX = 0;
             akkonCamera.MilSystemType = MilSystemType.Rapixo;
             akkonCamera.TriggerMode = TriggerMode.Hardware;
             akkonCamera.TriggerSource = (int)MilCxpTriggerSource.Cxp;
@@ -168,7 +172,8 @@ namespace ATT_UT_IPAD
             config.Add(akkonCamera);
 
             // Align LineScanCamera
-            var alignCamera = new CameraMil("AlignCamera", 3072, 1024, 0, ColorFormat.Gray, SensorType.Line);
+            var alignCamera = new CameraMil("AlignCamera", 6560, 1024, ColorFormat.Gray, SensorType.Line);
+            alignCamera.OffsetX = 0;
             alignCamera.MilSystemType = MilSystemType.Rapixo;
             alignCamera.TriggerMode = TriggerMode.Hardware;
             alignCamera.TriggerSource = (int)MilCxpTriggerSource.Cxp;
@@ -223,7 +228,8 @@ namespace ATT_UT_IPAD
         private static void CreateDeviceConfigType2(MachineConfig config)
         {
             // Akkon LineScanCamera
-            var akkonCamera = new CameraMil("AkkonCamera", 3072, 1024, 0, ColorFormat.Gray, SensorType.Line);
+            var akkonCamera = new CameraMil("AkkonCamera", 6560, 1024, ColorFormat.Gray, SensorType.Line);
+            akkonCamera.OffsetX = 0;
             akkonCamera.MilSystemType = MilSystemType.Rapixo;
             akkonCamera.TriggerMode = TriggerMode.Hardware;
             akkonCamera.TriggerSource = (int)MilCxpTriggerSource.Cxp;
@@ -237,7 +243,8 @@ namespace ATT_UT_IPAD
             config.Add(akkonCamera);
 
             // Align LineScanCamera
-            var alignCamera = new CameraMil("AlignCamera", 3072, 1024, 0, ColorFormat.Gray, SensorType.Line);
+            var alignCamera = new CameraMil("AlignCamera", 6560, 1024, ColorFormat.Gray, SensorType.Line);
+            alignCamera.OffsetX = 0;
             alignCamera.MilSystemType = MilSystemType.Rapixo;
             alignCamera.TriggerMode = TriggerMode.Hardware;
             alignCamera.TriggerSource = (int)MilCxpTriggerSource.Cxp;
@@ -287,6 +294,44 @@ namespace ATT_UT_IPAD
 
             var plc = new MelsecPlc("PLC", new SocketComm("192.168.130.2", 9021, SocketCommType.Udp, 9031), new MelsecBinaryParser());
             config.Add(plc);
+        }
+
+        private static bool CheckCameraProperty(ref int width, ref int offsetX, int fullPixelSize)
+        {
+            if (width % 16 == 0 && offsetX % 16 == 0)
+            {
+            }
+            else
+            {
+                string errorMessage = string.Format("Set parameter to a multiple of 16\r\n Width : {0}, Offset : {1}", width, offsetX);
+                Logger.Debug(LogType.Device, errorMessage);
+
+                MessageConfirmForm form = new MessageConfirmForm();
+                form.Message = errorMessage;
+                form.ShowDialog();
+            }
+
+            if (width + offsetX > fullPixelSize)
+            {
+                string errorMessage = "Width + Offset <= " + fullPixelSize.ToString();
+                Logger.Debug(LogType.Device, errorMessage);
+
+                int newOffsetX = fullPixelSize - width;
+                errorMessage = string.Format("{0}\r\n\r\nInput Width : {1},Offset : {2}\r\n\r\nDo you want to Change Parameter?\r\n\r\nSet Width : {3},Offset : {4}",
+                                            errorMessage, width, offsetX, width, newOffsetX);
+
+                MessageYesNoForm form = new MessageYesNoForm();
+                form.Message = errorMessage;
+                if (form.ShowDialog() == DialogResult.Yes)
+                {
+                    offsetX = newOffsetX;
+                    return true;
+                }
+                else
+                    return false;
+            }
+            else
+                return true;
         }
 
         private static void ConfigSet_OperationConfigCreated(OperationConfig config)

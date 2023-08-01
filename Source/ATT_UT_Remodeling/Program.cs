@@ -74,13 +74,14 @@ namespace ATT_UT_Remodeling
             if (ConfigSet.Instance().Operation.VirtualMode)
             {
                 // AreaCamera
-                var areaCamera = new CameraVirtual("PreAlign", 2592, 1944, 0, ColorFormat.Gray, SensorType.Area);
+                var areaCamera = new CameraVirtual("PreAlign", 2592, 1944, ColorFormat.Gray, SensorType.Area);
                 areaCamera.PixelResolution_um = 3.45F;
                 areaCamera.LensScale = 1.0F;
                 config.Add(areaCamera);
 
                 // LineScanCamera
-                var lineCamera = new CameraVirtual("LineCamera", 3072, 1024, 0, ColorFormat.Gray, SensorType.Line);
+                var lineCamera = new CameraVirtual("LineCamera", 3072, 1024, ColorFormat.Gray, SensorType.Line);
+                lineCamera.OffsetX = 0;
                 lineCamera.PixelResolution_um = 3.5F;
                 lineCamera.LensScale = 10F;
                 config.Add(lineCamera);
@@ -109,14 +110,14 @@ namespace ATT_UT_Remodeling
             else
             {
                 // AreaCamera
-                var areaScan = new CameraHIK("PreAlign", 2592, 1944, 0, ColorFormat.Gray, SensorType.Area);
+                var areaScan = new CameraHIK("PreAlign", 2592, 1944, ColorFormat.Gray, SensorType.Area);
                 areaScan.SerialNo = "DA0228166";
                 areaScan.Exposure = 5000;
                 areaScan.IsReverseX = true;
                 config.Add(areaScan);
 
                 // LineScanCamera
-                var lineCamera = new CameraMil("LineCamera", 3072, 1024, 0, ColorFormat.Gray, SensorType.Line);
+                var lineCamera = new CameraMil("LineCamera", 3072, 1024, ColorFormat.Gray, SensorType.Line);
                 lineCamera.MilSystemType = MilSystemType.Rapixo;
                 lineCamera.TriggerMode = TriggerMode.Hardware;
                 lineCamera.TriggerSource = (int)MilCxpTriggerSource.Cxp;
