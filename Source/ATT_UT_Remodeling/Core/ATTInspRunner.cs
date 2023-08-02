@@ -265,7 +265,6 @@ namespace ATT_UT_Remodeling.Core
                     break;
 
                 case SeqStep.SEQ_WAITING:
-
                     if (AppsStatus.Instance().IsInspRunnerFlagFromPlc == false)
                         break;
 
@@ -283,6 +282,7 @@ namespace ATT_UT_Remodeling.Core
                     AppsInspResult.Instance().Cell_ID = GetCellID();
 
                     WriteLog("Cell ID : " + AppsInspResult.Instance().Cell_ID, true);
+
                     SeqStep = SeqStep.SEQ_MOVE_START_POS;
                     break;
 
@@ -294,7 +294,6 @@ namespace ATT_UT_Remodeling.Core
                     break;
 
                 case SeqStep.SEQ_SCAN_START:
-
                     IsGrabDone = false;
 
                     LAFCtrl.SetTrackingOnOFF(true);
@@ -315,8 +314,8 @@ namespace ATT_UT_Remodeling.Core
                     }
 
                     SeqStep = SeqStep.SEQ_MOVE_END_POS;
-
                     break;
+
                 case SeqStep.SEQ_MOVE_END_POS:
                     
                     if (MoveTo(TeachingPosType.Stage1_Scan_End, out errorMessage) == false)
@@ -337,7 +336,6 @@ namespace ATT_UT_Remodeling.Core
                     break;
 
                 case SeqStep.SEQ_WAITING_INSPECTION_DONE:
-                    
                     if (IsInspectionDone() == false)
                         break;
 
@@ -350,10 +348,12 @@ namespace ATT_UT_Remodeling.Core
 
                     SeqStep = SeqStep.SEQ_MANUAL_CHECK;
                     break;
+
                 case SeqStep.SEQ_MANUAL_CHECK:
 
                     SeqStep = SeqStep.SEQ_SEND_RESULT;
                     break;
+
                 case SeqStep.SEQ_SEND_RESULT:
                     // Align 결과, Akkon 결과
                     // Ok 이면 + Ng -
@@ -366,9 +366,9 @@ namespace ATT_UT_Remodeling.Core
                 case SeqStep.SEQ_WAIT_UI_RESULT_UPDATE:
                     GetAkkonResultImage();
                     UpdateDailyInfo();
-                    WriteLog("Update Inspectinon Result.", true);
 
                     SystemManager.Instance().UpdateMainResult();
+                    WriteLog("Update Inspectinon Result.", true);
 
                     SeqStep = SeqStep.SEQ_SAVE_RESULT_DATA;
                     break;

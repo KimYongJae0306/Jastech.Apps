@@ -380,7 +380,6 @@ namespace Jastech.Framework.Winform.Forms
                 var teacingData = TeachingData.Instance().GetBufferImage(i);
                 teacingData.TabImage.Save(string.Format(@"D:\tab_{0}.bmp", i));
             }
-
         }
 
         private void btnMotionPopup_Click(object sender, EventArgs e)
@@ -442,6 +441,13 @@ namespace Jastech.Framework.Winform.Forms
 
         private void InspectionTeachingForm_FormClosing(object sender, FormClosingEventArgs e)
         {
+            //if (LineCameraManager.Instance().IsGrabbing(""))
+            //    LineCamera.StopGrab();
+            //LineCameraManager.Instance().Dispose();
+
+            if (LineCamera.Camera.IsGrabbing())
+                LineCamera.StopGrab();
+
             LineCamera.StopGrab();
             Display.DisposeImage();
             MarkControl.DisposeImage();
