@@ -189,6 +189,7 @@ namespace ATT_UT_IPAD
             // Motion
             var motion = new ACSMotion("Motion", 2, ACSConnectType.Ethernet);
             motion.IpAddress = "10.0.0.100";
+            motion.TriggerBuffer = BufferNumber.Buffer4;
             config.Add(motion);
 
             // Akkon LAF
@@ -260,6 +261,7 @@ namespace ATT_UT_IPAD
             // Motion
             var motion = new ACSMotion("Motion", 2, ACSConnectType.Ethernet);
             motion.IpAddress = "10.0.0.100";
+            motion.TriggerBuffer = BufferNumber.Buffer5;
             config.Add(motion);
 
             // Akkon LAF
@@ -337,13 +339,9 @@ namespace ATT_UT_IPAD
         private static void ConfigSet_OperationConfigCreated(OperationConfig config)
         {
             if (MessageBox.Show("Do you want to Virtual Mode?", "Setup", MessageBoxButtons.YesNo) == DialogResult.Yes)
-            {
                 config.VirtualMode = true;
-            }
             else
-            {
                 config.VirtualMode = false;
-            }
         }
 
         private static void ConfigSet_PathConfigCreated(PathConfig config)
