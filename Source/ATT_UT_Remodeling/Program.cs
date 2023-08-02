@@ -16,6 +16,7 @@ using Jastech.Framework.Device.Plcs.Melsec.Parsers;
 using Jastech.Framework.Imaging;
 using Jastech.Framework.Matrox;
 using Jastech.Framework.Util.Helper;
+using Jastech.Framework.Winform.Forms;
 using System;
 using System.Collections.Generic;
 using System.Threading;
@@ -117,18 +118,24 @@ namespace ATT_UT_Remodeling
                 config.Add(areaScan);
 
                 // LineScanCamera
-                var lineCamera = new CameraMil("LineCamera", 3072, 1024, ColorFormat.Gray, SensorType.Line);
-                lineCamera.MilSystemType = MilSystemType.Rapixo;
-                lineCamera.TriggerMode = TriggerMode.Hardware;
-                lineCamera.TriggerSource = (int)MilCxpTriggerSource.Cxp;
-                lineCamera.TriggerSignalType = MilTriggerSignalType.TL_Trigger;
-                lineCamera.TriggerIoSourceType = MILIoSourceType.AUX_IO0;
-                lineCamera.PixelResolution_um = 3.5F;
-                lineCamera.LensScale = 10F;
-                lineCamera.DigitizerNum = 0;
+                int lineCameraWidth = 6560;
+                int lineCameraOffsetX = 0;
+                if (CheckCameraProperty(ref lineCameraWidth, ref lineCameraOffsetX, 6560) == true)
+                {
+                    var lineCamera = new CameraMil("LineCamera", lineCameraWidth, 1024, ColorFormat.Gray, SensorType.Line);
+                    lineCamera.OffsetX = lineCameraOffsetX;
+                    lineCamera.MilSystemType = MilSystemType.Rapixo;
+                    lineCamera.TriggerMode = TriggerMode.Hardware;
+                    lineCamera.TriggerSource = (int)MilCxpTriggerSource.Cxp;
+                    lineCamera.TriggerSignalType = MilTriggerSignalType.TL_Trigger;
+                    lineCamera.TriggerIoSourceType = MILIoSourceType.AUX_IO0;
+                    lineCamera.PixelResolution_um = 3.5F;
+                    lineCamera.LensScale = 10F;
+                    lineCamera.DigitizerNum = 0;
 
-                lineCamera.DcfFile = CameraMil.GetDcfFile(CameraType.VT_6K3_5X_H160);
-                config.Add(lineCamera);
+                    lineCamera.DcfFile = CameraMil.GetDcfFile(CameraType.VT_6K3_5X_H160);
+                    config.Add(lineCamera);
+                }
 
                 // Motion
                 var motion = new ACSMotion("Motion", 2, ACSConnectType.Ethernet);
@@ -165,6 +172,45 @@ namespace ATT_UT_Remodeling
                 var plc = new MelsecPlc("PLC", new SocketComm("192.168.130.2", 9021, SocketCommType.Udp, 9031), new MelsecBinaryParser());
                 config.Add(plc);
             }
+        }
+
+        private static bool CheckCameraProperty(ref int width, ref int offsetX, int fullPixelSize)
+        {
+            if (width % 16 != 0 || offsetX % 16 != 0)
+            {
+                string errorMessage = string.Format("Set parameter to a multiple of 16\r\n Width : {0}, Offset : {1}", width, offsetX);
+                Logger.Debug(LogType.Device, errorMessage);
+
+                MessageConfirmForm form = new MessageConfirmForm();
+                form.Message = errorMessage;
+
+                return false;
+            }
+
+            if (width > fullPixelSize)
+                width = fullPixelSize;
+
+            if (width + offsetX > fullPixelSize)
+            {
+                string errorMessage = "Width + Offset <= " + fullPixelSize.ToString();
+                Logger.Debug(LogType.Device, errorMessage);
+
+                int newOffsetX = fullPixelSize - width;
+                errorMessage = string.Format("{0}\r\n\r\nInput Width : {1},Offset : {2}\r\n\r\nDo you want to Change Parameter?\r\n\r\nSet Width : {3},Offset : {4}",
+                                            errorMessage, width, offsetX, width, newOffsetX);
+
+                MessageYesNoForm form = new MessageYesNoForm();
+                form.Message = errorMessage;
+                if (form.ShowDialog() == DialogResult.Yes)
+                {
+                    offsetX = newOffsetX;
+                    return true;
+                }
+                else
+                    return false;
+            }
+            else
+                return true;
         }
 
         private static void ConfigSet_OperationConfigCreated(OperationConfig config)

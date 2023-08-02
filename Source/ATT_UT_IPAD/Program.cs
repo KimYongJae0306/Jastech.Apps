@@ -23,6 +23,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.ExceptionServices;
+using System.Runtime.InteropServices;
 using System.Security;
 using System.Security.Permissions;
 using System.Threading;
@@ -157,34 +158,44 @@ namespace ATT_UT_IPAD
         private static void CreateDeviceConfigType1(MachineConfig config)
         {
             // Akkon LineScanCamera
-            var akkonCamera = new CameraMil("AkkonCamera", 6560, 1024, ColorFormat.Gray, SensorType.Line);
-            akkonCamera.OffsetX = 0;
-            akkonCamera.MilSystemType = MilSystemType.Rapixo;
-            akkonCamera.TriggerMode = TriggerMode.Hardware;
-            akkonCamera.TriggerSource = (int)MilCxpTriggerSource.Cxp;
-            akkonCamera.TriggerSignalType = MilTriggerSignalType.TL_Trigger;
-            akkonCamera.TriggerIoSourceType = MILIoSourceType.AUX_IO0;
-            akkonCamera.PixelResolution_um = 3.5F;
-            akkonCamera.LensScale = 10F;
-            akkonCamera.DigitizerNum = 0;
+            int akkonCameraWidth = 6560;
+            int akkonCameraOffsetX = 0;
+            if (CheckCameraProperty(ref akkonCameraWidth, ref akkonCameraOffsetX, 6560) == true)
+            {
+                var akkonCamera = new CameraMil("AkkonCamera", akkonCameraWidth, 1024, ColorFormat.Gray, SensorType.Line);
+                akkonCamera.OffsetX = akkonCameraOffsetX;
+                akkonCamera.MilSystemType = MilSystemType.Rapixo;
+                akkonCamera.TriggerMode = TriggerMode.Hardware;
+                akkonCamera.TriggerSource = (int)MilCxpTriggerSource.Cxp;
+                akkonCamera.TriggerSignalType = MilTriggerSignalType.TL_Trigger;
+                akkonCamera.TriggerIoSourceType = MILIoSourceType.AUX_IO0;
+                akkonCamera.PixelResolution_um = 3.5F;
+                akkonCamera.LensScale = 10F;
+                akkonCamera.DigitizerNum = 0;
 
-            akkonCamera.DcfFile = CameraMil.GetDcfFile(CameraType.VT_6K3_5X_H160);
-            config.Add(akkonCamera);
+                akkonCamera.DcfFile = CameraMil.GetDcfFile(CameraType.VT_6K3_5X_H160);
+                config.Add(akkonCamera);
+            }
 
             // Align LineScanCamera
-            var alignCamera = new CameraMil("AlignCamera", 6560, 1024, ColorFormat.Gray, SensorType.Line);
-            alignCamera.OffsetX = 0;
-            alignCamera.MilSystemType = MilSystemType.Rapixo;
-            alignCamera.TriggerMode = TriggerMode.Hardware;
-            alignCamera.TriggerSource = (int)MilCxpTriggerSource.Cxp;
-            alignCamera.TriggerSignalType = MilTriggerSignalType.TL_Trigger;
-            alignCamera.TriggerIoSourceType = MILIoSourceType.AUX_IO0;
-            alignCamera.PixelResolution_um = 3.5F;
-            alignCamera.LensScale = 10F;
-            alignCamera.DigitizerNum = 2;
+            int alignCameraWidth = 6560;
+            int alignCameraOffsetX = 0;
+            if (CheckCameraProperty(ref alignCameraWidth, ref alignCameraOffsetX, 6560) == true)
+            {
+                var alignCamera = new CameraMil("AlignCamera", alignCameraWidth, 1024, ColorFormat.Gray, SensorType.Line);
+                alignCamera.OffsetX = alignCameraOffsetX;
+                alignCamera.MilSystemType = MilSystemType.Rapixo;
+                alignCamera.TriggerMode = TriggerMode.Hardware;
+                alignCamera.TriggerSource = (int)MilCxpTriggerSource.Cxp;
+                alignCamera.TriggerSignalType = MilTriggerSignalType.TL_Trigger;
+                alignCamera.TriggerIoSourceType = MILIoSourceType.AUX_IO0;
+                alignCamera.PixelResolution_um = 3.5F;
+                alignCamera.LensScale = 10F;
+                alignCamera.DigitizerNum = 2;
 
-            alignCamera.DcfFile = CameraMil.GetDcfFile(CameraType.VT_6K3_5X_H160);
-            config.Add(alignCamera);
+                alignCamera.DcfFile = CameraMil.GetDcfFile(CameraType.VT_6K3_5X_H160);
+                config.Add(alignCamera);
+            }
 
             // Motion
             var motion = new ACSMotion("Motion", 2, ACSConnectType.Ethernet);
@@ -229,34 +240,44 @@ namespace ATT_UT_IPAD
         private static void CreateDeviceConfigType2(MachineConfig config)
         {
             // Akkon LineScanCamera
-            var akkonCamera = new CameraMil("AkkonCamera", 6560, 1024, ColorFormat.Gray, SensorType.Line);
-            akkonCamera.OffsetX = 0;
-            akkonCamera.MilSystemType = MilSystemType.Rapixo;
-            akkonCamera.TriggerMode = TriggerMode.Hardware;
-            akkonCamera.TriggerSource = (int)MilCxpTriggerSource.Cxp;
-            akkonCamera.TriggerSignalType = MilTriggerSignalType.TL_Trigger;
-            akkonCamera.TriggerIoSourceType = MILIoSourceType.AUX_IO0;
-            akkonCamera.PixelResolution_um = 3.5F;
-            akkonCamera.LensScale = 10F;
-            akkonCamera.DigitizerNum = 0;
+            int akkonCameraWidth = 6560;
+            int akkonCameraOffsetX = 0;
+            if (CheckCameraProperty(ref akkonCameraWidth, ref akkonCameraOffsetX, 6560) == true)
+            {
+                var akkonCamera = new CameraMil("AkkonCamera", akkonCameraWidth, 1024, ColorFormat.Gray, SensorType.Line);
+                akkonCamera.OffsetX = akkonCameraOffsetX;
+                akkonCamera.MilSystemType = MilSystemType.Rapixo;
+                akkonCamera.TriggerMode = TriggerMode.Hardware;
+                akkonCamera.TriggerSource = (int)MilCxpTriggerSource.Cxp;
+                akkonCamera.TriggerSignalType = MilTriggerSignalType.TL_Trigger;
+                akkonCamera.TriggerIoSourceType = MILIoSourceType.AUX_IO0;
+                akkonCamera.PixelResolution_um = 3.5F;
+                akkonCamera.LensScale = 10F;
+                akkonCamera.DigitizerNum = 0;
 
-            akkonCamera.DcfFile = CameraMil.GetDcfFile(CameraType.VT_6K3_5X_H160);
-            config.Add(akkonCamera);
+                akkonCamera.DcfFile = CameraMil.GetDcfFile(CameraType.VT_6K3_5X_H160);
+                config.Add(akkonCamera);
+            }
 
             // Align LineScanCamera
-            var alignCamera = new CameraMil("AlignCamera", 6560, 1024, ColorFormat.Gray, SensorType.Line);
-            alignCamera.OffsetX = 0;
-            alignCamera.MilSystemType = MilSystemType.Rapixo;
-            alignCamera.TriggerMode = TriggerMode.Hardware;
-            alignCamera.TriggerSource = (int)MilCxpTriggerSource.Cxp;
-            alignCamera.TriggerSignalType = MilTriggerSignalType.TL_Trigger;
-            alignCamera.TriggerIoSourceType = MILIoSourceType.AUX_IO0;
-            alignCamera.PixelResolution_um = 3.5F;
-            alignCamera.LensScale = 10F;
-            alignCamera.DigitizerNum = 2;
+            int alignCameraWidth = 6560;
+            int alignCameraOffsetX = 0;
+            if (CheckCameraProperty(ref alignCameraWidth, ref alignCameraOffsetX, 6560) == true)
+            {
+                var alignCamera = new CameraMil("AlignCamera", alignCameraWidth, 1024, ColorFormat.Gray, SensorType.Line);
+                alignCamera.OffsetX = alignCameraOffsetX;
+                alignCamera.MilSystemType = MilSystemType.Rapixo;
+                alignCamera.TriggerMode = TriggerMode.Hardware;
+                alignCamera.TriggerSource = (int)MilCxpTriggerSource.Cxp;
+                alignCamera.TriggerSignalType = MilTriggerSignalType.TL_Trigger;
+                alignCamera.TriggerIoSourceType = MILIoSourceType.AUX_IO0;
+                alignCamera.PixelResolution_um = 3.5F;
+                alignCamera.LensScale = 10F;
+                alignCamera.DigitizerNum = 2;
 
-            alignCamera.DcfFile = CameraMil.GetDcfFile(CameraType.VT_6K3_5X_H160);
-            config.Add(alignCamera);
+                alignCamera.DcfFile = CameraMil.GetDcfFile(CameraType.VT_6K3_5X_H160);
+                config.Add(alignCamera);
+            }
 
             // Motion
             var motion = new ACSMotion("Motion", 2, ACSConnectType.Ethernet);
@@ -300,18 +321,19 @@ namespace ATT_UT_IPAD
 
         private static bool CheckCameraProperty(ref int width, ref int offsetX, int fullPixelSize)
         {
-            if (width % 16 == 0 && offsetX % 16 == 0)
-            {
-            }
-            else
+            if (width % 16 != 0 || offsetX % 16 != 0)
             {
                 string errorMessage = string.Format("Set parameter to a multiple of 16\r\n Width : {0}, Offset : {1}", width, offsetX);
                 Logger.Debug(LogType.Device, errorMessage);
 
                 MessageConfirmForm form = new MessageConfirmForm();
                 form.Message = errorMessage;
-                form.ShowDialog();
+
+                return false;
             }
+
+            if (width > fullPixelSize) 
+                width = fullPixelSize;
 
             if (width + offsetX > fullPixelSize)
             {
