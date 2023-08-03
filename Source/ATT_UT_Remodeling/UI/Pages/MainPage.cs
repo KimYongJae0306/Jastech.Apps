@@ -32,6 +32,8 @@ namespace ATT_UT_Remodeling.UI.Pages
 
         public PreAlignDisplayControl PreAlignDisplayControl { get; set; } = null;
 
+        public DailyInfoViewerControl DailyInfoViewerControl { get; set; } = null;
+
         public SystemLogControl SystemLogControl { get; set; } = null;
         #endregion
 
@@ -50,12 +52,18 @@ namespace ATT_UT_Remodeling.UI.Pages
 
         private void AddControls()
         {
+            DailyInfoViewerControl = new DailyInfoViewerControl();
+            DailyInfoViewerControl.Dock = DockStyle.Fill;
+            pnlDailyInfo.Controls.Add(DailyInfoViewerControl);
+
             AkkonViewerControl = new AkkonViewerControl();
             AkkonViewerControl.Dock = DockStyle.Fill;
+            AkkonViewerControl.SetTabEventHandler += AkkonViewerControl_SetTabEventHandler;
             pnlAkkon.Controls.Add(AkkonViewerControl);
 
             AlignViewerControl = new AlignViewerControl();
             AlignViewerControl.Dock = DockStyle.Fill;
+            AlignViewerControl.SetTabEventHandler += AlignViewerControl_SetTabEventHandler;
             pnlAlign.Controls.Add(AlignViewerControl);
 
             PreAlignDisplayControl = new PreAlignDisplayControl();
@@ -67,16 +75,32 @@ namespace ATT_UT_Remodeling.UI.Pages
             pnlSystemLog.Controls.Add(SystemLogControl);
         }
 
+        private void AkkonViewerControl_SetTabEventHandler(int tabNo)
+        {
+            DailyInfoViewerControl.UpdateAkkonResult(tabNo);
+        }
+
+        private void AlignViewerControl_SetTabEventHandler(int tabNo)
+        {
+            DailyInfoViewerControl.UpdateAlignResult(tabNo);
+        }
+
         public void UpdateTabCount(int tabCount)
         {
             AkkonViewerControl.UpdateTabCount(tabCount);
+            //DailyInfoViewerControl.ClearAkkonData();
+
             AlignViewerControl.UpdateTabCount(tabCount);
+            //DailyInfoViewerControl.ClearAlignData();
         }
 
         public void UpdateMainResult(int tabNo)
         {
             AkkonViewerControl.UpdateMainResult(tabNo);
+            DailyInfoViewerControl.UpdateAkkonResult(tabNo);
+
             AlignViewerControl.UpdateMainResult(tabNo);
+            DailyInfoViewerControl.UpdateAlignResult(tabNo);
         }
 
         public void UpdateResultTabButton(int tabNo)

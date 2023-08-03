@@ -64,9 +64,10 @@
             // 
             this.lblPreAlignResult.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.lblPreAlignResult.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblPreAlignResult.Location = new System.Drawing.Point(3, 327);
+            this.lblPreAlignResult.Location = new System.Drawing.Point(0, 327);
+            this.lblPreAlignResult.Margin = new System.Windows.Forms.Padding(0);
             this.lblPreAlignResult.Name = "lblPreAlignResult";
-            this.lblPreAlignResult.Size = new System.Drawing.Size(399, 70);
+            this.lblPreAlignResult.Size = new System.Drawing.Size(405, 70);
             this.lblPreAlignResult.TabIndex = 5;
             // 
             // pnlPreAlignDisplay
@@ -89,7 +90,7 @@
             this.lblAkkonResultViewer.Name = "lblAkkonResultViewer";
             this.lblAkkonResultViewer.Size = new System.Drawing.Size(405, 40);
             this.lblAkkonResultViewer.TabIndex = 2;
-            this.lblAkkonResultViewer.Text = "PreAlign";
+            this.lblAkkonResultViewer.Text = "PRE ALIGN";
             this.lblAkkonResultViewer.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // tlpPreAlignResult
@@ -112,18 +113,20 @@
             // 
             this.lblLeftPreAlignResult.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.lblLeftPreAlignResult.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblLeftPreAlignResult.Location = new System.Drawing.Point(3, 0);
+            this.lblLeftPreAlignResult.Location = new System.Drawing.Point(0, 0);
+            this.lblLeftPreAlignResult.Margin = new System.Windows.Forms.Padding(0);
             this.lblLeftPreAlignResult.Name = "lblLeftPreAlignResult";
-            this.lblLeftPreAlignResult.Size = new System.Drawing.Size(196, 90);
+            this.lblLeftPreAlignResult.Size = new System.Drawing.Size(202, 90);
             this.lblLeftPreAlignResult.TabIndex = 0;
             // 
             // lblRightPreAlignResult
             // 
             this.lblRightPreAlignResult.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.lblRightPreAlignResult.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblRightPreAlignResult.Location = new System.Drawing.Point(205, 0);
+            this.lblRightPreAlignResult.Location = new System.Drawing.Point(202, 0);
+            this.lblRightPreAlignResult.Margin = new System.Windows.Forms.Padding(0);
             this.lblRightPreAlignResult.Name = "lblRightPreAlignResult";
-            this.lblRightPreAlignResult.Size = new System.Drawing.Size(197, 90);
+            this.lblRightPreAlignResult.Size = new System.Drawing.Size(203, 90);
             this.lblRightPreAlignResult.TabIndex = 0;
             // 
             // PreAlignDisplayControl

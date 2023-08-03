@@ -13,10 +13,14 @@ namespace ATT_UT_IPAD.UI.Controls
     {
         #region 속성
         public AkkonResultDisplayControl AkkonResultDisplayControl { get; set; } = null;
+        #endregion
 
-        public AkkonResultDataControl AkkonResultDataControl { get; set; } = null;
+        #region 이벤트
+        public event SetTabDelegate SetTabEventHandler;
+        #endregion
 
-        public ResultChartControl AkkonResultChartControl { get; set; } = null;
+        #region 델리게이트
+        public delegate void SetTabDelegate(int tabNo);
         #endregion
 
         #region 생성자
@@ -34,16 +38,6 @@ namespace ATT_UT_IPAD.UI.Controls
 
         private void AddControls()
         {
-            AkkonResultChartControl = new ResultChartControl();
-            AkkonResultChartControl.Dock = DockStyle.Fill;
-            AkkonResultChartControl.SetInspChartType(InspChartType.Akkon);
-            pnlResultChart.Controls.Add(AkkonResultChartControl);
-
-            AkkonResultDataControl = new AkkonResultDataControl();
-            AkkonResultDataControl.Dock = DockStyle.Fill;
-            AkkonResultDataControl.UpdateAkkonDaily();
-            pnlResultData.Controls.Add(AkkonResultDataControl);
-
             AkkonResultDisplayControl = new AkkonResultDisplayControl();
             AkkonResultDisplayControl.Dock = DockStyle.Fill;
             AkkonResultDisplayControl.SendTabNumberEvent += UpdateResultChart;
@@ -59,15 +53,11 @@ namespace ATT_UT_IPAD.UI.Controls
         public void UpdateTabCount(int tabCount)
         {
             AkkonResultDisplayControl.UpdateTabCount(tabCount);
-            AkkonResultDataControl.ClearData();
-            AkkonResultChartControl.ClearChart();
         }
 
         public void UpdateMainResult(int tabNo)
         {
             AkkonResultDisplayControl.UpdateResultDisplay(tabNo);
-            AkkonResultDataControl.UpdateAkkonDaily();
-            UpdateResultChart(tabNo);
         }
 
         public void UpdateResultTabButton(int tabNo)
@@ -82,7 +72,7 @@ namespace ATT_UT_IPAD.UI.Controls
 
         private void UpdateResultChart(int tabNo)
         {
-            AkkonResultChartControl.UpdateAkkonDaily(tabNo);
+            SetTabEventHandler?.Invoke(tabNo);
         }
         #endregion
     }
