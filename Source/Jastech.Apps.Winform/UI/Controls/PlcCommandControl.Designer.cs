@@ -143,10 +143,8 @@
             this.lblWriteAlignDataT = new System.Windows.Forms.Label();
             this.label29 = new System.Windows.Forms.Label();
             this.btnSetPCAlignData = new System.Windows.Forms.Button();
-            this.label31 = new System.Windows.Forms.Label();
             this.tableLayoutPanel29 = new System.Windows.Forms.TableLayoutPanel();
             this.label23 = new System.Windows.Forms.Label();
-            this.cbxTabNo = new System.Windows.Forms.ComboBox();
             this.tableLayoutPanel30 = new System.Windows.Forms.TableLayoutPanel();
             this.cbxWriteAlignJudgement = new System.Windows.Forms.ComboBox();
             this.label27 = new System.Windows.Forms.Label();
@@ -156,7 +154,7 @@
             this.tableLayoutPanel32 = new System.Windows.Forms.TableLayoutPanel();
             this.lblWriteInspLeftAlignY = new System.Windows.Forms.Label();
             this.label39 = new System.Windows.Forms.Label();
-            this.btnWriteInspAlignResult = new System.Windows.Forms.Button();
+            this.btnWriteInspResult = new System.Windows.Forms.Button();
             this.tableLayoutPanel33 = new System.Windows.Forms.TableLayoutPanel();
             this.lblWriteInspRightAlignY = new System.Windows.Forms.Label();
             this.label33 = new System.Windows.Forms.Label();
@@ -202,9 +200,6 @@
             this.tableLayoutPanel47 = new System.Windows.Forms.TableLayoutPanel();
             this.lblLeftLengthAvg = new System.Windows.Forms.Label();
             this.label59 = new System.Windows.Forms.Label();
-            this.tableLayoutPanel48 = new System.Windows.Forms.TableLayoutPanel();
-            this.cbxWriteLengthJudgement = new System.Windows.Forms.ComboBox();
-            this.label60 = new System.Windows.Forms.Label();
             this.btnWriteAkkonResult = new System.Windows.Forms.Button();
             this.label56 = new System.Windows.Forms.Label();
             this.label61 = new System.Windows.Forms.Label();
@@ -219,6 +214,10 @@
             this.tableLayoutPanel53 = new System.Windows.Forms.TableLayoutPanel();
             this.lblPcAxisXBusy = new System.Windows.Forms.Label();
             this.label64 = new System.Windows.Forms.Label();
+            this.lblWriteTabNo = new System.Windows.Forms.Label();
+            this.tableLayoutPanel48 = new System.Windows.Forms.TableLayoutPanel();
+            this.lblManualOK = new System.Windows.Forms.Label();
+            this.label31 = new System.Windows.Forms.Label();
             this.tableLayoutPanel73.SuspendLayout();
             this.tableLayoutPanel71.SuspendLayout();
             this.tableLayoutPanel72.SuspendLayout();
@@ -271,10 +270,10 @@
             this.tableLayoutPanel45.SuspendLayout();
             this.tableLayoutPanel46.SuspendLayout();
             this.tableLayoutPanel47.SuspendLayout();
-            this.tableLayoutPanel48.SuspendLayout();
             this.tableLayoutPanel51.SuspendLayout();
             this.tableLayoutPanel52.SuspendLayout();
             this.tableLayoutPanel53.SuspendLayout();
+            this.tableLayoutPanel48.SuspendLayout();
             this.SuspendLayout();
             // 
             // btnPcStatus
@@ -282,7 +281,7 @@
             this.btnPcStatus.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(104)))), ((int)(((byte)(104)))), ((int)(((byte)(104)))));
             this.btnPcStatus.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
             this.btnPcStatus.ForeColor = System.Drawing.Color.White;
-            this.btnPcStatus.Location = new System.Drawing.Point(1244, 209);
+            this.btnPcStatus.Location = new System.Drawing.Point(1244, 187);
             this.btnPcStatus.Name = "btnPcStatus";
             this.btnPcStatus.Size = new System.Drawing.Size(53, 31);
             this.btnPcStatus.TabIndex = 354;
@@ -295,7 +294,7 @@
             this.btnPcCommand.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(104)))), ((int)(((byte)(104)))), ((int)(((byte)(104)))));
             this.btnPcCommand.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
             this.btnPcCommand.ForeColor = System.Drawing.Color.White;
-            this.btnPcCommand.Location = new System.Drawing.Point(1244, 177);
+            this.btnPcCommand.Location = new System.Drawing.Point(1244, 155);
             this.btnPcCommand.Name = "btnPcCommand";
             this.btnPcCommand.Size = new System.Drawing.Size(53, 33);
             this.btnPcCommand.TabIndex = 352;
@@ -523,7 +522,7 @@
             this.btnPcMoveReq.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(104)))), ((int)(((byte)(104)))), ((int)(((byte)(104)))));
             this.btnPcMoveReq.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
             this.btnPcMoveReq.ForeColor = System.Drawing.Color.White;
-            this.btnPcMoveReq.Location = new System.Drawing.Point(875, 34);
+            this.btnPcMoveReq.Location = new System.Drawing.Point(875, 12);
             this.btnPcMoveReq.Name = "btnPcMoveReq";
             this.btnPcMoveReq.Size = new System.Drawing.Size(168, 55);
             this.btnPcMoveReq.TabIndex = 346;
@@ -588,7 +587,7 @@
             this.btnSetVision.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(104)))), ((int)(((byte)(104)))), ((int)(((byte)(104)))));
             this.btnSetVision.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
             this.btnSetVision.ForeColor = System.Drawing.Color.White;
-            this.btnSetVision.Location = new System.Drawing.Point(701, 34);
+            this.btnSetVision.Location = new System.Drawing.Point(701, 12);
             this.btnSetVision.Name = "btnSetVision";
             this.btnSetVision.Size = new System.Drawing.Size(168, 55);
             this.btnSetVision.TabIndex = 340;
@@ -601,7 +600,7 @@
             this.btnStatusCommon.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(104)))), ((int)(((byte)(104)))), ((int)(((byte)(104)))));
             this.btnStatusCommon.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
             this.btnStatusCommon.ForeColor = System.Drawing.Color.White;
-            this.btnStatusCommon.Location = new System.Drawing.Point(1244, 144);
+            this.btnStatusCommon.Location = new System.Drawing.Point(1244, 122);
             this.btnStatusCommon.Name = "btnStatusCommon";
             this.btnStatusCommon.Size = new System.Drawing.Size(53, 33);
             this.btnStatusCommon.TabIndex = 339;
@@ -1592,7 +1591,7 @@
             this.tableLayoutPanel22.Controls.Add(this.lblPcWriteStatusCommon, 2, 0);
             this.tableLayoutPanel22.Controls.Add(this.label13, 0, 0);
             this.tableLayoutPanel22.Controls.Add(this.cbxPcStatusCommon, 1, 0);
-            this.tableLayoutPanel22.Location = new System.Drawing.Point(701, 144);
+            this.tableLayoutPanel22.Location = new System.Drawing.Point(701, 122);
             this.tableLayoutPanel22.Margin = new System.Windows.Forms.Padding(0);
             this.tableLayoutPanel22.Name = "tableLayoutPanel22";
             this.tableLayoutPanel22.RowCount = 1;
@@ -1682,7 +1681,7 @@
             this.tableLayoutPanel23.Controls.Add(this.lblPcWriteCommand, 2, 0);
             this.tableLayoutPanel23.Controls.Add(this.label17, 0, 0);
             this.tableLayoutPanel23.Controls.Add(this.cbxPCCommand, 1, 0);
-            this.tableLayoutPanel23.Location = new System.Drawing.Point(701, 177);
+            this.tableLayoutPanel23.Location = new System.Drawing.Point(701, 155);
             this.tableLayoutPanel23.Margin = new System.Windows.Forms.Padding(0);
             this.tableLayoutPanel23.Name = "tableLayoutPanel23";
             this.tableLayoutPanel23.RowCount = 1;
@@ -1727,7 +1726,7 @@
             this.tableLayoutPanel24.Controls.Add(this.lblPcWriteStatus, 2, 0);
             this.tableLayoutPanel24.Controls.Add(this.label21, 0, 0);
             this.tableLayoutPanel24.Controls.Add(this.cbxPCStatus, 1, 0);
-            this.tableLayoutPanel24.Location = new System.Drawing.Point(701, 210);
+            this.tableLayoutPanel24.Location = new System.Drawing.Point(701, 188);
             this.tableLayoutPanel24.Margin = new System.Windows.Forms.Padding(0);
             this.tableLayoutPanel24.Name = "tableLayoutPanel24";
             this.tableLayoutPanel24.RowCount = 1;
@@ -1769,7 +1768,7 @@
             this.label1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.label1.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
             this.label1.ForeColor = System.Drawing.Color.White;
-            this.label1.Location = new System.Drawing.Point(698, 599);
+            this.label1.Location = new System.Drawing.Point(1027, 276);
             this.label1.Margin = new System.Windows.Forms.Padding(0);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(270, 33);
@@ -1784,7 +1783,7 @@
             this.tableLayoutPanel26.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel26.Controls.Add(this.lblWriteAlignDataX, 0, 0);
             this.tableLayoutPanel26.Controls.Add(this.label19, 0, 0);
-            this.tableLayoutPanel26.Location = new System.Drawing.Point(698, 632);
+            this.tableLayoutPanel26.Location = new System.Drawing.Point(1027, 309);
             this.tableLayoutPanel26.Margin = new System.Windows.Forms.Padding(0);
             this.tableLayoutPanel26.Name = "tableLayoutPanel26";
             this.tableLayoutPanel26.RowCount = 1;
@@ -1828,7 +1827,7 @@
             this.tableLayoutPanel27.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel27.Controls.Add(this.lblWriteAlignDataY, 0, 0);
             this.tableLayoutPanel27.Controls.Add(this.label25, 0, 0);
-            this.tableLayoutPanel27.Location = new System.Drawing.Point(698, 665);
+            this.tableLayoutPanel27.Location = new System.Drawing.Point(1027, 342);
             this.tableLayoutPanel27.Margin = new System.Windows.Forms.Padding(0);
             this.tableLayoutPanel27.Name = "tableLayoutPanel27";
             this.tableLayoutPanel27.RowCount = 1;
@@ -1872,7 +1871,7 @@
             this.tableLayoutPanel28.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel28.Controls.Add(this.lblWriteAlignDataT, 0, 0);
             this.tableLayoutPanel28.Controls.Add(this.label29, 0, 0);
-            this.tableLayoutPanel28.Location = new System.Drawing.Point(698, 698);
+            this.tableLayoutPanel28.Location = new System.Drawing.Point(1027, 375);
             this.tableLayoutPanel28.Margin = new System.Windows.Forms.Padding(0);
             this.tableLayoutPanel28.Name = "tableLayoutPanel28";
             this.tableLayoutPanel28.RowCount = 1;
@@ -1914,7 +1913,7 @@
             this.btnSetPCAlignData.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(104)))), ((int)(((byte)(104)))), ((int)(((byte)(104)))));
             this.btnSetPCAlignData.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
             this.btnSetPCAlignData.ForeColor = System.Drawing.Color.White;
-            this.btnSetPCAlignData.Location = new System.Drawing.Point(912, 601);
+            this.btnSetPCAlignData.Location = new System.Drawing.Point(1241, 278);
             this.btnSetPCAlignData.Name = "btnSetPCAlignData";
             this.btnSetPCAlignData.Size = new System.Drawing.Size(53, 31);
             this.btnSetPCAlignData.TabIndex = 363;
@@ -1922,29 +1921,15 @@
             this.btnSetPCAlignData.UseVisualStyleBackColor = false;
             this.btnSetPCAlignData.Click += new System.EventHandler(this.btnSetPCAlignData_Click);
             // 
-            // label31
-            // 
-            this.label31.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(104)))), ((int)(((byte)(104)))), ((int)(((byte)(104)))));
-            this.label31.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.label31.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
-            this.label31.ForeColor = System.Drawing.Color.White;
-            this.label31.Location = new System.Drawing.Point(701, 286);
-            this.label31.Margin = new System.Windows.Forms.Padding(0);
-            this.label31.Name = "label31";
-            this.label31.Size = new System.Drawing.Size(270, 33);
-            this.label31.TabIndex = 364;
-            this.label31.Text = "Tab Align Result";
-            this.label31.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
             // tableLayoutPanel29
             // 
             this.tableLayoutPanel29.ColumnCount = 2;
             this.tableLayoutPanel29.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 180F));
             this.tableLayoutPanel29.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel29.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel29.Controls.Add(this.lblWriteTabNo, 0, 0);
             this.tableLayoutPanel29.Controls.Add(this.label23, 0, 0);
-            this.tableLayoutPanel29.Controls.Add(this.cbxTabNo, 1, 0);
-            this.tableLayoutPanel29.Location = new System.Drawing.Point(701, 253);
+            this.tableLayoutPanel29.Location = new System.Drawing.Point(701, 276);
             this.tableLayoutPanel29.Margin = new System.Windows.Forms.Padding(0);
             this.tableLayoutPanel29.Name = "tableLayoutPanel29";
             this.tableLayoutPanel29.RowCount = 1;
@@ -1967,20 +1952,6 @@
             this.label23.Text = "Tab No";
             this.label23.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // cbxTabNo
-            // 
-            this.cbxTabNo.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.cbxTabNo.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
-            this.cbxTabNo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cbxTabNo.Font = new System.Drawing.Font("맑은 고딕", 12F, System.Drawing.FontStyle.Bold);
-            this.cbxTabNo.FormattingEnabled = true;
-            this.cbxTabNo.Location = new System.Drawing.Point(180, 0);
-            this.cbxTabNo.Margin = new System.Windows.Forms.Padding(0);
-            this.cbxTabNo.Name = "cbxTabNo";
-            this.cbxTabNo.Size = new System.Drawing.Size(90, 30);
-            this.cbxTabNo.TabIndex = 342;
-            this.cbxTabNo.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.DrawCombobox);
-            // 
             // tableLayoutPanel30
             // 
             this.tableLayoutPanel30.ColumnCount = 2;
@@ -1988,7 +1959,7 @@
             this.tableLayoutPanel30.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel30.Controls.Add(this.cbxWriteAlignJudgement, 1, 0);
             this.tableLayoutPanel30.Controls.Add(this.label27, 0, 0);
-            this.tableLayoutPanel30.Location = new System.Drawing.Point(701, 319);
+            this.tableLayoutPanel30.Location = new System.Drawing.Point(701, 342);
             this.tableLayoutPanel30.Margin = new System.Windows.Forms.Padding(0);
             this.tableLayoutPanel30.Name = "tableLayoutPanel30";
             this.tableLayoutPanel30.RowCount = 1;
@@ -2032,7 +2003,7 @@
             this.tableLayoutPanel31.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel31.Controls.Add(this.lblWriteInspLeftAlignX, 0, 0);
             this.tableLayoutPanel31.Controls.Add(this.label35, 0, 0);
-            this.tableLayoutPanel31.Location = new System.Drawing.Point(701, 352);
+            this.tableLayoutPanel31.Location = new System.Drawing.Point(701, 375);
             this.tableLayoutPanel31.Margin = new System.Windows.Forms.Padding(0);
             this.tableLayoutPanel31.Name = "tableLayoutPanel31";
             this.tableLayoutPanel31.RowCount = 1;
@@ -2076,7 +2047,7 @@
             this.tableLayoutPanel32.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel32.Controls.Add(this.lblWriteInspLeftAlignY, 0, 0);
             this.tableLayoutPanel32.Controls.Add(this.label39, 0, 0);
-            this.tableLayoutPanel32.Location = new System.Drawing.Point(701, 385);
+            this.tableLayoutPanel32.Location = new System.Drawing.Point(701, 408);
             this.tableLayoutPanel32.Margin = new System.Windows.Forms.Padding(0);
             this.tableLayoutPanel32.Name = "tableLayoutPanel32";
             this.tableLayoutPanel32.RowCount = 1;
@@ -2113,18 +2084,18 @@
             this.label39.Text = "L_AlignY(mm)";
             this.label39.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // btnWriteInspAlignResult
+            // btnWriteInspResult
             // 
-            this.btnWriteInspAlignResult.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(104)))), ((int)(((byte)(104)))), ((int)(((byte)(104)))));
-            this.btnWriteInspAlignResult.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
-            this.btnWriteInspAlignResult.ForeColor = System.Drawing.Color.White;
-            this.btnWriteInspAlignResult.Location = new System.Drawing.Point(915, 286);
-            this.btnWriteInspAlignResult.Name = "btnWriteInspAlignResult";
-            this.btnWriteInspAlignResult.Size = new System.Drawing.Size(53, 31);
-            this.btnWriteInspAlignResult.TabIndex = 369;
-            this.btnWriteInspAlignResult.Text = "SET";
-            this.btnWriteInspAlignResult.UseVisualStyleBackColor = false;
-            this.btnWriteInspAlignResult.Click += new System.EventHandler(this.btnWriteInspAlignResult_Click);
+            this.btnWriteInspResult.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(104)))), ((int)(((byte)(104)))), ((int)(((byte)(104)))));
+            this.btnWriteInspResult.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
+            this.btnWriteInspResult.ForeColor = System.Drawing.Color.White;
+            this.btnWriteInspResult.Location = new System.Drawing.Point(918, 242);
+            this.btnWriteInspResult.Name = "btnWriteInspResult";
+            this.btnWriteInspResult.Size = new System.Drawing.Size(53, 31);
+            this.btnWriteInspResult.TabIndex = 369;
+            this.btnWriteInspResult.Text = "SET";
+            this.btnWriteInspResult.UseVisualStyleBackColor = false;
+            this.btnWriteInspResult.Click += new System.EventHandler(this.btnWriteInspResult_Click);
             // 
             // tableLayoutPanel33
             // 
@@ -2133,7 +2104,7 @@
             this.tableLayoutPanel33.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel33.Controls.Add(this.lblWriteInspRightAlignY, 0, 0);
             this.tableLayoutPanel33.Controls.Add(this.label33, 0, 0);
-            this.tableLayoutPanel33.Location = new System.Drawing.Point(701, 451);
+            this.tableLayoutPanel33.Location = new System.Drawing.Point(701, 474);
             this.tableLayoutPanel33.Margin = new System.Windows.Forms.Padding(0);
             this.tableLayoutPanel33.Name = "tableLayoutPanel33";
             this.tableLayoutPanel33.RowCount = 1;
@@ -2177,7 +2148,7 @@
             this.tableLayoutPanel34.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel34.Controls.Add(this.lblWriteInspRightAlignX, 0, 0);
             this.tableLayoutPanel34.Controls.Add(this.label41, 0, 0);
-            this.tableLayoutPanel34.Location = new System.Drawing.Point(701, 418);
+            this.tableLayoutPanel34.Location = new System.Drawing.Point(701, 441);
             this.tableLayoutPanel34.Margin = new System.Windows.Forms.Padding(0);
             this.tableLayoutPanel34.Name = "tableLayoutPanel34";
             this.tableLayoutPanel34.RowCount = 1;
@@ -2221,7 +2192,7 @@
             this.tableLayoutPanel36.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel36.Controls.Add(this.lblLeftAkkonCountMax, 0, 0);
             this.tableLayoutPanel36.Controls.Add(this.label43, 0, 0);
-            this.tableLayoutPanel36.Location = new System.Drawing.Point(971, 418);
+            this.tableLayoutPanel36.Location = new System.Drawing.Point(701, 606);
             this.tableLayoutPanel36.Margin = new System.Windows.Forms.Padding(0);
             this.tableLayoutPanel36.Name = "tableLayoutPanel36";
             this.tableLayoutPanel36.RowCount = 1;
@@ -2265,7 +2236,7 @@
             this.tableLayoutPanel37.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel37.Controls.Add(this.lblLeftAkkonCountMin, 0, 0);
             this.tableLayoutPanel37.Controls.Add(this.label45, 0, 0);
-            this.tableLayoutPanel37.Location = new System.Drawing.Point(971, 385);
+            this.tableLayoutPanel37.Location = new System.Drawing.Point(701, 573);
             this.tableLayoutPanel37.Margin = new System.Windows.Forms.Padding(0);
             this.tableLayoutPanel37.Name = "tableLayoutPanel37";
             this.tableLayoutPanel37.RowCount = 1;
@@ -2309,7 +2280,7 @@
             this.tableLayoutPanel38.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel38.Controls.Add(this.lblLeftAkkonCountAvg, 0, 0);
             this.tableLayoutPanel38.Controls.Add(this.label47, 0, 0);
-            this.tableLayoutPanel38.Location = new System.Drawing.Point(971, 352);
+            this.tableLayoutPanel38.Location = new System.Drawing.Point(701, 540);
             this.tableLayoutPanel38.Margin = new System.Windows.Forms.Padding(0);
             this.tableLayoutPanel38.Name = "tableLayoutPanel38";
             this.tableLayoutPanel38.RowCount = 1;
@@ -2353,7 +2324,7 @@
             this.tableLayoutPanel39.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel39.Controls.Add(this.cbxWriteAkkonJudgement, 1, 0);
             this.tableLayoutPanel39.Controls.Add(this.label49, 0, 0);
-            this.tableLayoutPanel39.Location = new System.Drawing.Point(971, 319);
+            this.tableLayoutPanel39.Location = new System.Drawing.Point(701, 507);
             this.tableLayoutPanel39.Margin = new System.Windows.Forms.Padding(0);
             this.tableLayoutPanel39.Name = "tableLayoutPanel39";
             this.tableLayoutPanel39.RowCount = 1;
@@ -2397,7 +2368,7 @@
             this.tableLayoutPanel35.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel35.Controls.Add(this.lblRightAkkonCountMax, 0, 0);
             this.tableLayoutPanel35.Controls.Add(this.label37, 0, 0);
-            this.tableLayoutPanel35.Location = new System.Drawing.Point(971, 517);
+            this.tableLayoutPanel35.Location = new System.Drawing.Point(701, 705);
             this.tableLayoutPanel35.Margin = new System.Windows.Forms.Padding(0);
             this.tableLayoutPanel35.Name = "tableLayoutPanel35";
             this.tableLayoutPanel35.RowCount = 1;
@@ -2441,7 +2412,7 @@
             this.tableLayoutPanel40.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel40.Controls.Add(this.lblRightAkkonCountMin, 0, 0);
             this.tableLayoutPanel40.Controls.Add(this.label51, 0, 0);
-            this.tableLayoutPanel40.Location = new System.Drawing.Point(971, 484);
+            this.tableLayoutPanel40.Location = new System.Drawing.Point(701, 672);
             this.tableLayoutPanel40.Margin = new System.Windows.Forms.Padding(0);
             this.tableLayoutPanel40.Name = "tableLayoutPanel40";
             this.tableLayoutPanel40.RowCount = 1;
@@ -2485,7 +2456,7 @@
             this.tableLayoutPanel41.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel41.Controls.Add(this.lblRightAkkonCountAvg, 0, 0);
             this.tableLayoutPanel41.Controls.Add(this.label53, 0, 0);
-            this.tableLayoutPanel41.Location = new System.Drawing.Point(971, 451);
+            this.tableLayoutPanel41.Location = new System.Drawing.Point(701, 639);
             this.tableLayoutPanel41.Margin = new System.Windows.Forms.Padding(0);
             this.tableLayoutPanel41.Name = "tableLayoutPanel41";
             this.tableLayoutPanel41.RowCount = 1;
@@ -2529,7 +2500,7 @@
             this.tableLayoutPanel42.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel42.Controls.Add(this.lblRightLengthMax, 0, 0);
             this.tableLayoutPanel42.Controls.Add(this.label42, 0, 0);
-            this.tableLayoutPanel42.Location = new System.Drawing.Point(1241, 517);
+            this.tableLayoutPanel42.Location = new System.Drawing.Point(701, 903);
             this.tableLayoutPanel42.Margin = new System.Windows.Forms.Padding(0);
             this.tableLayoutPanel42.Name = "tableLayoutPanel42";
             this.tableLayoutPanel42.RowCount = 1;
@@ -2573,7 +2544,7 @@
             this.tableLayoutPanel43.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel43.Controls.Add(this.lblRightLengthMin, 0, 0);
             this.tableLayoutPanel43.Controls.Add(this.label46, 0, 0);
-            this.tableLayoutPanel43.Location = new System.Drawing.Point(1241, 484);
+            this.tableLayoutPanel43.Location = new System.Drawing.Point(701, 870);
             this.tableLayoutPanel43.Margin = new System.Windows.Forms.Padding(0);
             this.tableLayoutPanel43.Name = "tableLayoutPanel43";
             this.tableLayoutPanel43.RowCount = 1;
@@ -2617,7 +2588,7 @@
             this.tableLayoutPanel44.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel44.Controls.Add(this.lblRightLengthAvg, 0, 0);
             this.tableLayoutPanel44.Controls.Add(this.label52, 0, 0);
-            this.tableLayoutPanel44.Location = new System.Drawing.Point(1241, 451);
+            this.tableLayoutPanel44.Location = new System.Drawing.Point(701, 837);
             this.tableLayoutPanel44.Margin = new System.Windows.Forms.Padding(0);
             this.tableLayoutPanel44.Name = "tableLayoutPanel44";
             this.tableLayoutPanel44.RowCount = 1;
@@ -2661,7 +2632,7 @@
             this.tableLayoutPanel45.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel45.Controls.Add(this.lblLeftLengthMax, 0, 0);
             this.tableLayoutPanel45.Controls.Add(this.label55, 0, 0);
-            this.tableLayoutPanel45.Location = new System.Drawing.Point(1241, 418);
+            this.tableLayoutPanel45.Location = new System.Drawing.Point(701, 804);
             this.tableLayoutPanel45.Margin = new System.Windows.Forms.Padding(0);
             this.tableLayoutPanel45.Name = "tableLayoutPanel45";
             this.tableLayoutPanel45.RowCount = 1;
@@ -2705,7 +2676,7 @@
             this.tableLayoutPanel46.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel46.Controls.Add(this.lblLeftLengthMin, 0, 0);
             this.tableLayoutPanel46.Controls.Add(this.label57, 0, 0);
-            this.tableLayoutPanel46.Location = new System.Drawing.Point(1241, 385);
+            this.tableLayoutPanel46.Location = new System.Drawing.Point(701, 771);
             this.tableLayoutPanel46.Margin = new System.Windows.Forms.Padding(0);
             this.tableLayoutPanel46.Name = "tableLayoutPanel46";
             this.tableLayoutPanel46.RowCount = 1;
@@ -2749,7 +2720,7 @@
             this.tableLayoutPanel47.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel47.Controls.Add(this.lblLeftLengthAvg, 0, 0);
             this.tableLayoutPanel47.Controls.Add(this.label59, 0, 0);
-            this.tableLayoutPanel47.Location = new System.Drawing.Point(1241, 352);
+            this.tableLayoutPanel47.Location = new System.Drawing.Point(701, 738);
             this.tableLayoutPanel47.Margin = new System.Windows.Forms.Padding(0);
             this.tableLayoutPanel47.Name = "tableLayoutPanel47";
             this.tableLayoutPanel47.RowCount = 1;
@@ -2786,62 +2757,17 @@
             this.label59.Text = "L_Length Avg(mm)";
             this.label59.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // tableLayoutPanel48
-            // 
-            this.tableLayoutPanel48.ColumnCount = 2;
-            this.tableLayoutPanel48.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 180F));
-            this.tableLayoutPanel48.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel48.Controls.Add(this.cbxWriteLengthJudgement, 1, 0);
-            this.tableLayoutPanel48.Controls.Add(this.label60, 0, 0);
-            this.tableLayoutPanel48.Location = new System.Drawing.Point(1241, 319);
-            this.tableLayoutPanel48.Margin = new System.Windows.Forms.Padding(0);
-            this.tableLayoutPanel48.Name = "tableLayoutPanel48";
-            this.tableLayoutPanel48.RowCount = 1;
-            this.tableLayoutPanel48.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel48.Size = new System.Drawing.Size(270, 33);
-            this.tableLayoutPanel48.TabIndex = 379;
-            // 
-            // cbxWriteLengthJudgement
-            // 
-            this.cbxWriteLengthJudgement.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.cbxWriteLengthJudgement.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
-            this.cbxWriteLengthJudgement.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cbxWriteLengthJudgement.Font = new System.Drawing.Font("맑은 고딕", 12F, System.Drawing.FontStyle.Bold);
-            this.cbxWriteLengthJudgement.FormattingEnabled = true;
-            this.cbxWriteLengthJudgement.Location = new System.Drawing.Point(180, 0);
-            this.cbxWriteLengthJudgement.Margin = new System.Windows.Forms.Padding(0);
-            this.cbxWriteLengthJudgement.Name = "cbxWriteLengthJudgement";
-            this.cbxWriteLengthJudgement.Size = new System.Drawing.Size(90, 30);
-            this.cbxWriteLengthJudgement.TabIndex = 370;
-            this.cbxWriteLengthJudgement.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.DrawCombobox);
-            // 
-            // label60
-            // 
-            this.label60.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(104)))), ((int)(((byte)(104)))), ((int)(((byte)(104)))));
-            this.label60.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.label60.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.label60.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
-            this.label60.ForeColor = System.Drawing.Color.White;
-            this.label60.Location = new System.Drawing.Point(0, 0);
-            this.label60.Margin = new System.Windows.Forms.Padding(0);
-            this.label60.Name = "label60";
-            this.label60.Size = new System.Drawing.Size(180, 33);
-            this.label60.TabIndex = 2;
-            this.label60.Text = "Length OK/NG";
-            this.label60.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
             // btnWriteAkkonResult
             // 
             this.btnWriteAkkonResult.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(104)))), ((int)(((byte)(104)))), ((int)(((byte)(104)))));
             this.btnWriteAkkonResult.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
             this.btnWriteAkkonResult.ForeColor = System.Drawing.Color.White;
-            this.btnWriteAkkonResult.Location = new System.Drawing.Point(1458, 287);
+            this.btnWriteAkkonResult.Location = new System.Drawing.Point(1562, 209);
             this.btnWriteAkkonResult.Name = "btnWriteAkkonResult";
             this.btnWriteAkkonResult.Size = new System.Drawing.Size(53, 31);
             this.btnWriteAkkonResult.TabIndex = 386;
             this.btnWriteAkkonResult.Text = "SET";
             this.btnWriteAkkonResult.UseVisualStyleBackColor = false;
-            this.btnWriteAkkonResult.Click += new System.EventHandler(this.btnWriteAkkonResult_Click);
             // 
             // label56
             // 
@@ -2849,12 +2775,12 @@
             this.label56.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.label56.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
             this.label56.ForeColor = System.Drawing.Color.White;
-            this.label56.Location = new System.Drawing.Point(971, 286);
+            this.label56.Location = new System.Drawing.Point(701, 243);
             this.label56.Margin = new System.Windows.Forms.Padding(0);
             this.label56.Name = "label56";
-            this.label56.Size = new System.Drawing.Size(540, 33);
+            this.label56.Size = new System.Drawing.Size(270, 33);
             this.label56.TabIndex = 389;
-            this.label56.Text = "Tab Akkon Result";
+            this.label56.Text = "Tab Result";
             this.label56.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // label61
@@ -2863,7 +2789,7 @@
             this.label61.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.label61.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
             this.label61.ForeColor = System.Drawing.Color.White;
-            this.label61.Location = new System.Drawing.Point(698, 566);
+            this.label61.Location = new System.Drawing.Point(1027, 243);
             this.label61.Margin = new System.Windows.Forms.Padding(0);
             this.label61.Name = "label61";
             this.label61.Size = new System.Drawing.Size(270, 33);
@@ -2891,7 +2817,7 @@
             this.tableLayoutPanel51.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel51.Controls.Add(this.lblCurrentModel, 0, 0);
             this.tableLayoutPanel51.Controls.Add(this.label50, 0, 0);
-            this.tableLayoutPanel51.Location = new System.Drawing.Point(701, 111);
+            this.tableLayoutPanel51.Location = new System.Drawing.Point(701, 89);
             this.tableLayoutPanel51.Margin = new System.Windows.Forms.Padding(0);
             this.tableLayoutPanel51.Name = "tableLayoutPanel51";
             this.tableLayoutPanel51.RowCount = 1;
@@ -2933,7 +2859,7 @@
             this.btnWriteCurrentModel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(104)))), ((int)(((byte)(104)))), ((int)(((byte)(104)))));
             this.btnWriteCurrentModel.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
             this.btnWriteCurrentModel.ForeColor = System.Drawing.Color.White;
-            this.btnWriteCurrentModel.Location = new System.Drawing.Point(1244, 111);
+            this.btnWriteCurrentModel.Location = new System.Drawing.Point(1244, 89);
             this.btnWriteCurrentModel.Name = "btnWriteCurrentModel";
             this.btnWriteCurrentModel.Size = new System.Drawing.Size(53, 33);
             this.btnWriteCurrentModel.TabIndex = 395;
@@ -3027,11 +2953,69 @@
             this.label64.Text = "AxisX Busy";
             this.label64.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
+            // lblWriteTabNo
+            // 
+            this.lblWriteTabNo.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblWriteTabNo.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblWriteTabNo.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
+            this.lblWriteTabNo.ForeColor = System.Drawing.Color.White;
+            this.lblWriteTabNo.Location = new System.Drawing.Point(180, 0);
+            this.lblWriteTabNo.Margin = new System.Windows.Forms.Padding(0);
+            this.lblWriteTabNo.Name = "lblWriteTabNo";
+            this.lblWriteTabNo.Size = new System.Drawing.Size(90, 33);
+            this.lblWriteTabNo.TabIndex = 5;
+            this.lblWriteTabNo.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // tableLayoutPanel48
+            // 
+            this.tableLayoutPanel48.ColumnCount = 2;
+            this.tableLayoutPanel48.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 180F));
+            this.tableLayoutPanel48.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel48.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel48.Controls.Add(this.lblManualOK, 0, 0);
+            this.tableLayoutPanel48.Controls.Add(this.label31, 0, 0);
+            this.tableLayoutPanel48.Location = new System.Drawing.Point(701, 309);
+            this.tableLayoutPanel48.Margin = new System.Windows.Forms.Padding(0);
+            this.tableLayoutPanel48.Name = "tableLayoutPanel48";
+            this.tableLayoutPanel48.RowCount = 1;
+            this.tableLayoutPanel48.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel48.Size = new System.Drawing.Size(270, 33);
+            this.tableLayoutPanel48.TabIndex = 398;
+            // 
+            // lblManualOK
+            // 
+            this.lblManualOK.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblManualOK.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblManualOK.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
+            this.lblManualOK.ForeColor = System.Drawing.Color.White;
+            this.lblManualOK.Location = new System.Drawing.Point(180, 0);
+            this.lblManualOK.Margin = new System.Windows.Forms.Padding(0);
+            this.lblManualOK.Name = "lblManualOK";
+            this.lblManualOK.Size = new System.Drawing.Size(90, 33);
+            this.lblManualOK.TabIndex = 5;
+            this.lblManualOK.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // label31
+            // 
+            this.label31.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(104)))), ((int)(((byte)(104)))), ((int)(((byte)(104)))));
+            this.label31.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.label31.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.label31.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
+            this.label31.ForeColor = System.Drawing.Color.White;
+            this.label31.Location = new System.Drawing.Point(0, 0);
+            this.label31.Margin = new System.Windows.Forms.Padding(0);
+            this.label31.Name = "label31";
+            this.label31.Size = new System.Drawing.Size(180, 33);
+            this.label31.TabIndex = 2;
+            this.label31.Text = "Manual OK";
+            this.label31.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
             // PlcCommandControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
+            this.Controls.Add(this.tableLayoutPanel48);
             this.Controls.Add(this.tableLayoutPanel52);
             this.Controls.Add(this.tableLayoutPanel53);
             this.Controls.Add(this.btnWriteCurrentModel);
@@ -3045,7 +3029,6 @@
             this.Controls.Add(this.tableLayoutPanel45);
             this.Controls.Add(this.tableLayoutPanel46);
             this.Controls.Add(this.tableLayoutPanel47);
-            this.Controls.Add(this.tableLayoutPanel48);
             this.Controls.Add(this.tableLayoutPanel35);
             this.Controls.Add(this.tableLayoutPanel40);
             this.Controls.Add(this.tableLayoutPanel41);
@@ -3055,12 +3038,11 @@
             this.Controls.Add(this.tableLayoutPanel39);
             this.Controls.Add(this.tableLayoutPanel33);
             this.Controls.Add(this.tableLayoutPanel34);
-            this.Controls.Add(this.btnWriteInspAlignResult);
+            this.Controls.Add(this.btnWriteInspResult);
             this.Controls.Add(this.tableLayoutPanel32);
             this.Controls.Add(this.tableLayoutPanel31);
             this.Controls.Add(this.tableLayoutPanel30);
             this.Controls.Add(this.tableLayoutPanel29);
-            this.Controls.Add(this.label31);
             this.Controls.Add(this.btnSetPCAlignData);
             this.Controls.Add(this.tableLayoutPanel28);
             this.Controls.Add(this.tableLayoutPanel27);
@@ -3109,7 +3091,7 @@
             this.Controls.Add(this.tableLayoutPanel1);
             this.Controls.Add(this.label56);
             this.Name = "PlcCommandControl";
-            this.Size = new System.Drawing.Size(1527, 749);
+            this.Size = new System.Drawing.Size(1987, 958);
             this.Load += new System.EventHandler(this.PlcCommandControl_Load);
             this.tableLayoutPanel73.ResumeLayout(false);
             this.tableLayoutPanel71.ResumeLayout(false);
@@ -3163,10 +3145,10 @@
             this.tableLayoutPanel45.ResumeLayout(false);
             this.tableLayoutPanel46.ResumeLayout(false);
             this.tableLayoutPanel47.ResumeLayout(false);
-            this.tableLayoutPanel48.ResumeLayout(false);
             this.tableLayoutPanel51.ResumeLayout(false);
             this.tableLayoutPanel52.ResumeLayout(false);
             this.tableLayoutPanel53.ResumeLayout(false);
+            this.tableLayoutPanel48.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -3287,10 +3269,8 @@
         private System.Windows.Forms.Label lblWriteAlignDataT;
         private System.Windows.Forms.Label label29;
         private System.Windows.Forms.Button btnSetPCAlignData;
-        private System.Windows.Forms.Label label31;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel29;
         private System.Windows.Forms.Label label23;
-        private System.Windows.Forms.ComboBox cbxTabNo;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel30;
         private System.Windows.Forms.Label label27;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel31;
@@ -3299,7 +3279,7 @@
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel32;
         private System.Windows.Forms.Label lblWriteInspLeftAlignY;
         private System.Windows.Forms.Label label39;
-        private System.Windows.Forms.Button btnWriteInspAlignResult;
+        private System.Windows.Forms.Button btnWriteInspResult;
         private System.Windows.Forms.ComboBox cbxWriteAlignJudgement;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel33;
         private System.Windows.Forms.Label lblWriteInspRightAlignY;
@@ -3346,9 +3326,6 @@
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel47;
         private System.Windows.Forms.Label lblLeftLengthAvg;
         private System.Windows.Forms.Label label59;
-        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel48;
-        private System.Windows.Forms.ComboBox cbxWriteLengthJudgement;
-        private System.Windows.Forms.Label label60;
         private System.Windows.Forms.Button btnWriteAkkonResult;
         private System.Windows.Forms.Label label56;
         private System.Windows.Forms.Label label61;
@@ -3363,5 +3340,9 @@
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel53;
         private System.Windows.Forms.Label lblPcAxisXBusy;
         private System.Windows.Forms.Label label64;
+        private System.Windows.Forms.Label lblWriteTabNo;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel48;
+        private System.Windows.Forms.Label lblManualOK;
+        private System.Windows.Forms.Label label31;
     }
 }

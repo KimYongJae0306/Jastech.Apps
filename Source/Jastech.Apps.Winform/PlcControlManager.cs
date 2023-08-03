@@ -499,7 +499,7 @@ namespace Jastech.Apps.Winform
             }
         }
 
-        public void WriteTabResult(TabInspResult tabInspResult, double resolution, bool isManualOK)
+        public void WriteTabResult(TabInspResult tabInspResult, double resolution)
         {
             string tabJudgementName = string.Format("Tab{0}_Judgement", tabInspResult.TabNo);
             PlcResultMap plcResultMap = (PlcResultMap)Enum.Parse(typeof(PlcResultMap), tabJudgementName);
@@ -510,7 +510,11 @@ namespace Jastech.Apps.Winform
                 var plc = DeviceManager.Instance().PlcHandler.First() as MelsecPlc;
                 PlcDataStream stream = new PlcDataStream();
 
-                int tabJudgement = (int)GetTabResult(tabInspResult, isManualOK);
+                int tabJudgement = 0;
+                if (tabInspResult.IsManualOK)
+                    tabJudgement = (int)TabJudgement.Manual_OK;
+                else
+                    tabJudgement = (int)tabInspResult.Judgement;
 
                 if (plc.MelsecParser.ParserType == ParserType.Binary)
                 {
@@ -527,33 +531,33 @@ namespace Jastech.Apps.Winform
             }
         }
 
-        public void WriteTabResult(int tabNo, TabMarkResult markResult, TabAlignResult alignResult, AkkonResult akkonResult, double resolution, bool isManualOK)
-        {
-            string tabJudgementName = string.Format("Tab{0}_Judgement", tabNo);
-            PlcResultMap plcResultMap = (PlcResultMap)Enum.Parse(typeof(PlcResultMap), tabJudgementName);
+        //public void WriteTabResult(int tabNo, TabMarkResult markResult, TabAlignResult alignResult, AkkonResult akkonResult, double resolution, bool isManualOK)
+        //{
+        //    string tabJudgementName = string.Format("Tab{0}_Judgement", tabNo);
+        //    PlcResultMap plcResultMap = (PlcResultMap)Enum.Parse(typeof(PlcResultMap), tabJudgementName);
 
-            var map = PlcControlManager.Instance().GetResultMap(plcResultMap);
-            if (DeviceManager.Instance().PlcHandler.Count > 0 && map != null)
-            {
-                var plc = DeviceManager.Instance().PlcHandler.First() as MelsecPlc;
-                PlcDataStream stream = new PlcDataStream();
+        //    var map = PlcControlManager.Instance().GetResultMap(plcResultMap);
+        //    if (DeviceManager.Instance().PlcHandler.Count > 0 && map != null)
+        //    {
+        //        var plc = DeviceManager.Instance().PlcHandler.First() as MelsecPlc;
+        //        PlcDataStream stream = new PlcDataStream();
 
-                int tabJudgement = (int)GetTabResult(markResult, alignResult, akkonResult, isManualOK);
+        //        int tabJudgement = (int)GetTabResult(markResult, alignResult, akkonResult, isManualOK);
 
-                if (plc.MelsecParser.ParserType == ParserType.Binary)
-                {
-                    stream.AddSwap16BitData(Convert.ToInt16(tabJudgement));
-                }
-                else
-                {
-                    stream.Add16BitData(Convert.ToInt16(tabJudgement));
-                }
-                AddAlignResult(plc.MelsecParser.ParserType, alignResult, resolution, ref stream);
-                AddAkkonResult(plc.MelsecParser.ParserType, akkonResult, ref stream);
+        //        if (plc.MelsecParser.ParserType == ParserType.Binary)
+        //        {
+        //            stream.AddSwap16BitData(Convert.ToInt16(tabJudgement));
+        //        }
+        //        else
+        //        {
+        //            stream.Add16BitData(Convert.ToInt16(tabJudgement));
+        //        }
+        //        AddAlignResult(plc.MelsecParser.ParserType, alignResult, resolution, ref stream);
+        //        AddAkkonResult(plc.MelsecParser.ParserType, akkonResult, ref stream);
 
-                plc.Write("D" + map.AddressNum, stream.Data);
-            }
-        }
+        //        plc.Write("D" + map.AddressNum, stream.Data);
+        //    }
+        //}
 
         private void AddAlignResult(ParserType parserType, TabAlignResult alignResult, double resolution, ref PlcDataStream stream)
         {
@@ -718,34 +722,15 @@ namespace Jastech.Apps.Winform
             }
         }
 
-        private TabJudgement GetTabResult(TabInspResult inspResult, bool isManualOK)
-        {
-            return GetTabResult(inspResult.MarkResult, inspResult.AlignResult, inspResult.AkkonResult, isManualOK);
-        }
+        //private TabJudgement GetTabResult(TabInspResult inspResult, bool isManualOK)
+        //{
+        //    return GetTabResult(inspResult.MarkResult, inspResult.AlignResult, inspResult.AkkonResult, isManualOK);
+        //}
 
-        private TabJudgement GetTabResult(TabMarkResult markResult, TabAlignResult alignResult, AkkonResult akkonResult, bool isManualOK)
-        {
-            if (isManualOK)
-            {
-                return TabJudgement.Manual_OK;
-            }
-            else
-            {
-                if (markResult.Judgement != Judgement.OK)
-                    return TabJudgement.Mark_NG;
-
-                if (alignResult.Judgement != Judgement.OK)
-                    return TabJudgement.NG;
-
-                if (akkonResult == null)
-                    return TabJudgement.NG;
-
-                if (akkonResult.Judgement != Judgement.OK)
-                    return TabJudgement.NG;
-
-                return TabJudgement.OK;
-            }
-        }
+        //private TabJudgement GetTabResult(TabMarkResult markResult, TabAlignResult alignResult, AkkonResult akkonResult, bool isManualOK)
+        //{
+           
+        //}
 
         public void WriteTabAlignResult(int tabNo, int judgement, double leftAlignX_mm, double leftAlignY_mm, double rightAlignX_mm, double rightAlignY_mm)
         {
@@ -777,54 +762,54 @@ namespace Jastech.Apps.Winform
             }
         }
 
-        public void WriteTabAkkonResult(int tabNo, AkkonResult akkonResult)
-        {
-            string alignJudegmentName = string.Format("Tab{0}_Akkon_Judgement", tabNo);
-            PlcResultMap plcResultMap = (PlcResultMap)Enum.Parse(typeof(PlcResultMap), alignJudegmentName);
-            var map = PlcControlManager.Instance().GetResultMap(plcResultMap);
+        //public void WriteTabAkkonResult(int tabNo, AkkonResult akkonResult)
+        //{
+        //    string alignJudegmentName = string.Format("Tab{0}_Akkon_Judgement", tabNo);
+        //    PlcResultMap plcResultMap = (PlcResultMap)Enum.Parse(typeof(PlcResultMap), alignJudegmentName);
+        //    var map = PlcControlManager.Instance().GetResultMap(plcResultMap);
 
-            if (DeviceManager.Instance().PlcHandler.Count > 0 && map != null)
-            {
-                int countJudgement = 0; // 1 : OK, 2: NG
-                if (akkonResult.Judgement == Judgement.OK)
-                    countJudgement = 1;
-                else
-                    countJudgement = 2;
+        //    if (DeviceManager.Instance().PlcHandler.Count > 0 && map != null)
+        //    {
+        //        int countJudgement = 0; // 1 : OK, 2: NG
+        //        if (akkonResult.Judgement == Judgement.OK)
+        //            countJudgement = 1;
+        //        else
+        //            countJudgement = 2;
 
-                var plc = DeviceManager.Instance().PlcHandler.First() as MelsecPlc;
-                PlcDataStream stream = new PlcDataStream();
+        //        var plc = DeviceManager.Instance().PlcHandler.First() as MelsecPlc;
+        //        PlcDataStream stream = new PlcDataStream();
 
-                //if (plc.MelsecParser.ParserType == ParserType.Binary)
-                //{
-                //    stream.AddSwap16BitData(Convert.ToInt16(countJudgement));
-                //    stream.AddSwap16BitData(Convert.ToInt16(akkonResult.LeftCount_Avg));
-                //    stream.AddSwap16BitData(Convert.ToInt16(akkonResult.LeftCount_Min));
-                //    stream.AddSwap16BitData(Convert.ToInt16(akkonResult.LeftCount_Max));
-                //    stream.AddSwap16BitData(Convert.ToInt16(akkonResult.RightCount_Avg));
-                //    stream.AddSwap16BitData(Convert.ToInt16(akkonResult.RightCount_Min));
-                //    stream.AddSwap16BitData(Convert.ToInt16(akkonResult.RightCount_Max));
-                //    // Empty 넣어주기
-                //    stream.AddSwap16BitData(0);
-                //    stream.AddSwap16BitData(0);
-                //    stream.AddSwap16BitData(0);
-                //    stream.AddSwap16BitData(0);
+        //        //if (plc.MelsecParser.ParserType == ParserType.Binary)
+        //        //{
+        //        //    stream.AddSwap16BitData(Convert.ToInt16(countJudgement));
+        //        //    stream.AddSwap16BitData(Convert.ToInt16(akkonResult.LeftCount_Avg));
+        //        //    stream.AddSwap16BitData(Convert.ToInt16(akkonResult.LeftCount_Min));
+        //        //    stream.AddSwap16BitData(Convert.ToInt16(akkonResult.LeftCount_Max));
+        //        //    stream.AddSwap16BitData(Convert.ToInt16(akkonResult.RightCount_Avg));
+        //        //    stream.AddSwap16BitData(Convert.ToInt16(akkonResult.RightCount_Min));
+        //        //    stream.AddSwap16BitData(Convert.ToInt16(akkonResult.RightCount_Max));
+        //        //    // Empty 넣어주기
+        //        //    stream.AddSwap16BitData(0);
+        //        //    stream.AddSwap16BitData(0);
+        //        //    stream.AddSwap16BitData(0);
+        //        //    stream.AddSwap16BitData(0);
 
-                //    stream.AddSwap16BitData(Convert.ToInt16(lengthJudgement));
+        //        //    stream.AddSwap16BitData(Convert.ToInt16(lengthJudgement));
 
-                //}
-                //else
-                //{
-                //    stream.Add16BitData(Convert.ToInt16(countJudgement));
-                //    stream.Add16BitData(Convert.ToInt16(akkonResult.LeftCount_Avg));
-                //    stream.Add16BitData(Convert.ToInt16(akkonResult.LeftCount_Min));
-                //    stream.Add16BitData(Convert.ToInt16(akkonResult.LeftCount_Max));
-                //    stream.Add16BitData(Convert.ToInt16(akkonResult.RightCount_Avg));
-                //    stream.Add16BitData(Convert.ToInt16(akkonResult.RightCount_Min));
-                //    stream.Add16BitData(Convert.ToInt16(akkonResult.RightCount_Max));
-                //}
-                plc.Write("D" + map.AddressNum, stream.Data);
-            }
-        }
+        //        //}
+        //        //else
+        //        //{
+        //        //    stream.Add16BitData(Convert.ToInt16(countJudgement));
+        //        //    stream.Add16BitData(Convert.ToInt16(akkonResult.LeftCount_Avg));
+        //        //    stream.Add16BitData(Convert.ToInt16(akkonResult.LeftCount_Min));
+        //        //    stream.Add16BitData(Convert.ToInt16(akkonResult.LeftCount_Max));
+        //        //    stream.Add16BitData(Convert.ToInt16(akkonResult.RightCount_Avg));
+        //        //    stream.Add16BitData(Convert.ToInt16(akkonResult.RightCount_Min));
+        //        //    stream.Add16BitData(Convert.ToInt16(akkonResult.RightCount_Max));
+        //        //}
+        //        plc.Write("D" + map.AddressNum, stream.Data);
+        //    }
+        //}
 
         public double GetReadPosition(AxisName axisName)
         {

@@ -17,7 +17,34 @@ namespace Jastech.Apps.Structure.Data
 
         public bool IsResultProcessDone { get; set; } = false;
 
-        public Judgement Judgement { get; set; }
+        public TabJudgement Judgement
+        {
+            get
+            {
+                if (IsManualOK)
+                {
+                    return TabJudgement.Manual_OK;
+                }
+                else
+                {
+                    if (MarkResult.Judgement != Framework.Imaging.Result.Judgement.OK)
+                        return TabJudgement.Mark_NG;
+
+                    if (AlignResult.Judgement != Framework.Imaging.Result.Judgement.OK)
+                        return TabJudgement.NG;
+
+                    if (AkkonResult == null)
+                        return TabJudgement.NG;
+
+                    if (AkkonResult.Judgement != Framework.Imaging.Result.Judgement.OK)
+                        return TabJudgement.NG;
+
+                    return TabJudgement.OK;
+                }
+            }
+        }
+
+        public bool IsManualOK { get; set; } = false;
 
         public Mat Image { get; set; } = null;
 

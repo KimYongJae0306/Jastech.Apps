@@ -86,7 +86,10 @@ namespace ATT_UT_Remodeling.UI.Pages
         {
             if (PlcStatusForm == null)
             {
+                var camera = DeviceManager.Instance().CameraHandler.First();
+
                 PlcStatusForm = new PlcStatusForm();
+                PlcStatusForm.Resolution_um = camera.PixelResolution_um / camera.LensScale;
                 PlcStatusForm.CloseEventDelegate = () => PlcStatusForm = null;
                 PlcStatusForm.Show();
             }

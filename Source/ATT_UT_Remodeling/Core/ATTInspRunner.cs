@@ -451,15 +451,13 @@ namespace ATT_UT_Remodeling.Core
 
         private void SendResultData()
         {
-            bool isManualOK = false;
-
             double resolution = LineCamera.Camera.PixelResolution_um / LineCamera.Camera.LensScale;
 
             var inspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
             for (int tabNo = 0; tabNo < inspModel.TabCount; tabNo++)
             {
                 var tabInspResult = AppsInspResult.Instance().Get(tabNo);
-                PlcControlManager.Instance().WriteTabResult(tabInspResult, resolution, isManualOK);
+                PlcControlManager.Instance().WriteTabResult(tabInspResult, resolution);
 
                 Thread.Sleep(10);
             }
@@ -531,7 +529,7 @@ namespace ATT_UT_Remodeling.Core
                 alignInfo.InspectionTime = AppsInspResult.Instance().EndInspTime.ToString("HH:mm:ss");
                 alignInfo.PanelID = AppsInspResult.Instance().Cell_ID;
                 alignInfo.TabNo = tabInspResult.TabNo;
-                alignInfo.Judgement = tabInspResult.Judgement;
+                alignInfo.Judgement = tabInspResult.AlignResult.Judgement;
                 alignInfo.LX = GetResultAlignResultValue(tabInspResult.AlignResult.LeftX);
                 alignInfo.LY = GetResultAlignResultValue(tabInspResult.AlignResult.LeftY);
                 alignInfo.RX = GetResultAlignResultValue(tabInspResult.AlignResult.RightX);
@@ -1008,7 +1006,7 @@ namespace ATT_UT_Remodeling.Core
             string okExtension = operation.GetExtensionOKImage();
             string ngExtension = operation.GetExtensionNGImage();
 
-            if (tabInspResult.Judgement == Judgement.OK)
+            if (tabInspResult.Judgement == TabJudgement.OK || tabInspResult.Judgement == TabJudgement.Manual_OK)
             {
                 if (ConfigSet.Instance().Operation.SaveImageOK)
                 {

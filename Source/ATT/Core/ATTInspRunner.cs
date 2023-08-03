@@ -404,7 +404,7 @@ namespace ATT.Core
             //SeqStop();
            SystemManager.Instance().MachineStatus = MachineStatus.RUN;
 
-            var lineCamera = LineCameraManager.Instance().GetAppsCamera("Camera0");
+            var lineCamera = LineCameraManager.Instance().GetLineCamera("Camera0");
 
             lineCamera.GrabDoneEventHandler += ATTSeqRunner_GrabDoneEventHandler;
             StartAkkonInspTask();
@@ -426,7 +426,7 @@ namespace ATT.Core
         {
             SystemManager.Instance().MachineStatus = MachineStatus.STOP;
 
-            var lineCamera = LineCameraManager.Instance().GetAppsCamera("Camera0");
+            var lineCamera = LineCameraManager.Instance().GetLineCamera("Camera0");
             lineCamera.StopGrab();
             lineCamera.GrabDoneEventHandler -= ATTSeqRunner_GrabDoneEventHandler;
             LineCameraManager.Instance().GetLineCamera("Camera0").StopGrab();

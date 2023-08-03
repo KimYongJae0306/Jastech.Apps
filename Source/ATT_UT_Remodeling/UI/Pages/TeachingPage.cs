@@ -67,7 +67,7 @@ namespace ATT_UT_Remodeling.UI.Pages
             InspectionTeachingForm form = new InspectionTeachingForm();
             form.UnitName = UnitName.Unit0;
             form.TitleCameraName = "LineCamera";
-            form.LineCamera = LineCameraManager.Instance().GetAppsCamera("LineCamera");
+            form.LineCamera = LineCameraManager.Instance().GetLineCamera("LineCamera");
             form.LAFCtrl = LAFManager.Instance().GetLAFCtrl("Laf");
             form.InspModelService = ATTInspModelService;
             form.OpenMotionPopupEventHandler += OpenMotionPopupEventHandler;
@@ -101,7 +101,7 @@ namespace ATT_UT_Remodeling.UI.Pages
                 return;
 
             OpticTeachingForm form = new OpticTeachingForm();
-            form.LineCamera = LineCameraManager.Instance().GetAppsCamera("LineCamera");
+            form.LineCamera = LineCameraManager.Instance().GetLineCamera("LineCamera");
             form.LAFCtrl = LAFManager.Instance().GetLAFCtrl("Laf");
             form.UnitName = UnitName.Unit0;
             form.TitleCameraName = "LineCamera";

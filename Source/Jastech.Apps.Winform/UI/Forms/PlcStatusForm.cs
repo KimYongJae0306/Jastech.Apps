@@ -20,6 +20,8 @@ namespace Jastech.Apps.Winform.UI.Forms
 
         public PlcModelInfoControl PlcModelInfoControl { get; set; } = null;
 
+        public double Resolution_um { get; set; } = 1;
+
         protected override CreateParams CreateParams
         {
             get
@@ -57,6 +59,7 @@ namespace Jastech.Apps.Winform.UI.Forms
         {
             PlcCommandControl = new PlcCommandControl();
             PlcCommandControl.Dock = DockStyle.Fill;
+            PlcCommandControl.Resolution_um = Resolution_um;
 
             PlcModelInfoControl = new PlcModelInfoControl();
             PlcModelInfoControl.Dock = DockStyle.Fill;

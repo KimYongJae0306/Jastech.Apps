@@ -147,7 +147,6 @@ namespace Jastech.Apps.Winform
             }
 
             GrabCount = maxEndIndex;
-            int gg = 0;
         }
 
         public void InitGrabSettings(float delayStart_um)
