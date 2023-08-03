@@ -30,20 +30,23 @@
         {
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
+            this.tableLayoutPanel7 = new System.Windows.Forms.TableLayoutPanel();
+            this.pnlPreAlign = new System.Windows.Forms.Panel();
             this.pnlAlign = new System.Windows.Forms.Panel();
             this.pnlAkkon = new System.Windows.Forms.Panel();
             this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel5 = new System.Windows.Forms.TableLayoutPanel();
-            this.lblStop = new System.Windows.Forms.Label();
             this.lblStopText = new System.Windows.Forms.Label();
             this.tableLayoutPanel4 = new System.Windows.Forms.TableLayoutPanel();
-            this.lblStart = new System.Windows.Forms.Label();
             this.lblStartText = new System.Windows.Forms.Label();
             this.tableLayoutPanel6 = new System.Windows.Forms.TableLayoutPanel();
             this.pnlSystemLog = new System.Windows.Forms.Panel();
-            this.pnlPreAlign = new System.Windows.Forms.Panel();
+            this.lblStop = new System.Windows.Forms.Label();
+            this.lblStart = new System.Windows.Forms.Label();
+            this.pnlDailyInfo = new System.Windows.Forms.Panel();
             this.tableLayoutPanel2.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
+            this.tableLayoutPanel7.SuspendLayout();
             this.tableLayoutPanel3.SuspendLayout();
             this.tableLayoutPanel5.SuspendLayout();
             this.tableLayoutPanel4.SuspendLayout();
@@ -73,7 +76,7 @@
             // 
             this.tableLayoutPanel1.ColumnCount = 1;
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel1.Controls.Add(this.pnlAlign, 0, 2);
+            this.tableLayoutPanel1.Controls.Add(this.tableLayoutPanel7, 0, 2);
             this.tableLayoutPanel1.Controls.Add(this.pnlAkkon, 0, 0);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel1.Location = new System.Drawing.Point(70, 0);
@@ -86,13 +89,38 @@
             this.tableLayoutPanel1.Size = new System.Drawing.Size(752, 498);
             this.tableLayoutPanel1.TabIndex = 1;
             // 
+            // tableLayoutPanel7
+            // 
+            this.tableLayoutPanel7.ColumnCount = 2;
+            this.tableLayoutPanel7.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 70F));
+            this.tableLayoutPanel7.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 30F));
+            this.tableLayoutPanel7.Controls.Add(this.pnlPreAlign, 1, 0);
+            this.tableLayoutPanel7.Controls.Add(this.pnlAlign, 0, 0);
+            this.tableLayoutPanel7.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel7.Location = new System.Drawing.Point(0, 251);
+            this.tableLayoutPanel7.Margin = new System.Windows.Forms.Padding(0);
+            this.tableLayoutPanel7.Name = "tableLayoutPanel7";
+            this.tableLayoutPanel7.RowCount = 1;
+            this.tableLayoutPanel7.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel7.Size = new System.Drawing.Size(752, 247);
+            this.tableLayoutPanel7.TabIndex = 0;
+            // 
+            // pnlPreAlign
+            // 
+            this.pnlPreAlign.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pnlPreAlign.Location = new System.Drawing.Point(526, 0);
+            this.pnlPreAlign.Margin = new System.Windows.Forms.Padding(0);
+            this.pnlPreAlign.Name = "pnlPreAlign";
+            this.pnlPreAlign.Size = new System.Drawing.Size(226, 247);
+            this.pnlPreAlign.TabIndex = 0;
+            // 
             // pnlAlign
             // 
             this.pnlAlign.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pnlAlign.Location = new System.Drawing.Point(0, 251);
+            this.pnlAlign.Location = new System.Drawing.Point(0, 0);
             this.pnlAlign.Margin = new System.Windows.Forms.Padding(0);
             this.pnlAlign.Name = "pnlAlign";
-            this.pnlAlign.Size = new System.Drawing.Size(752, 247);
+            this.pnlAlign.Size = new System.Drawing.Size(526, 247);
             this.pnlAlign.TabIndex = 1;
             // 
             // pnlAkkon
@@ -138,17 +166,6 @@
             this.tableLayoutPanel5.Size = new System.Drawing.Size(70, 80);
             this.tableLayoutPanel5.TabIndex = 2;
             // 
-            // lblStop
-            // 
-            this.lblStop.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblStop.Image = global::ATT_UT_Remodeling.Properties.Resources.Stop_White;
-            this.lblStop.Location = new System.Drawing.Point(0, 0);
-            this.lblStop.Margin = new System.Windows.Forms.Padding(0);
-            this.lblStop.Name = "lblStop";
-            this.lblStop.Size = new System.Drawing.Size(70, 50);
-            this.lblStop.TabIndex = 3;
-            this.lblStop.Click += new System.EventHandler(this.lblStop_Click);
-            // 
             // lblStopText
             // 
             this.lblStopText.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -178,17 +195,6 @@
             this.tableLayoutPanel4.Size = new System.Drawing.Size(70, 80);
             this.tableLayoutPanel4.TabIndex = 1;
             // 
-            // lblStart
-            // 
-            this.lblStart.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblStart.Image = global::ATT_UT_Remodeling.Properties.Resources.Start_White;
-            this.lblStart.Location = new System.Drawing.Point(0, 0);
-            this.lblStart.Margin = new System.Windows.Forms.Padding(0);
-            this.lblStart.Name = "lblStart";
-            this.lblStart.Size = new System.Drawing.Size(70, 50);
-            this.lblStart.TabIndex = 3;
-            this.lblStart.Click += new System.EventHandler(this.lblStart_Click);
-            // 
             // lblStartText
             // 
             this.lblStartText.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -206,8 +212,8 @@
             // 
             this.tableLayoutPanel6.ColumnCount = 1;
             this.tableLayoutPanel6.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel6.Controls.Add(this.pnlPreAlign, 0, 0);
             this.tableLayoutPanel6.Controls.Add(this.pnlSystemLog, 0, 2);
+            this.tableLayoutPanel6.Controls.Add(this.pnlDailyInfo, 0, 0);
             this.tableLayoutPanel6.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel6.Location = new System.Drawing.Point(827, 0);
             this.tableLayoutPanel6.Margin = new System.Windows.Forms.Padding(0);
@@ -228,14 +234,36 @@
             this.pnlSystemLog.Size = new System.Drawing.Size(189, 247);
             this.pnlSystemLog.TabIndex = 1;
             // 
-            // pnlPreAlign
+            // lblStop
             // 
-            this.pnlPreAlign.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pnlPreAlign.Location = new System.Drawing.Point(0, 0);
-            this.pnlPreAlign.Margin = new System.Windows.Forms.Padding(0);
-            this.pnlPreAlign.Name = "pnlPreAlign";
-            this.pnlPreAlign.Size = new System.Drawing.Size(189, 246);
-            this.pnlPreAlign.TabIndex = 0;
+            this.lblStop.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblStop.Image = global::ATT_UT_Remodeling.Properties.Resources.Stop_White;
+            this.lblStop.Location = new System.Drawing.Point(0, 0);
+            this.lblStop.Margin = new System.Windows.Forms.Padding(0);
+            this.lblStop.Name = "lblStop";
+            this.lblStop.Size = new System.Drawing.Size(70, 50);
+            this.lblStop.TabIndex = 3;
+            this.lblStop.Click += new System.EventHandler(this.lblStop_Click);
+            // 
+            // lblStart
+            // 
+            this.lblStart.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblStart.Image = global::ATT_UT_Remodeling.Properties.Resources.Start_White;
+            this.lblStart.Location = new System.Drawing.Point(0, 0);
+            this.lblStart.Margin = new System.Windows.Forms.Padding(0);
+            this.lblStart.Name = "lblStart";
+            this.lblStart.Size = new System.Drawing.Size(70, 50);
+            this.lblStart.TabIndex = 3;
+            this.lblStart.Click += new System.EventHandler(this.lblStart_Click);
+            // 
+            // pnlDailyInfo
+            // 
+            this.pnlDailyInfo.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pnlDailyInfo.Location = new System.Drawing.Point(0, 0);
+            this.pnlDailyInfo.Margin = new System.Windows.Forms.Padding(0);
+            this.pnlDailyInfo.Name = "pnlDailyInfo";
+            this.pnlDailyInfo.Size = new System.Drawing.Size(189, 246);
+            this.pnlDailyInfo.TabIndex = 2;
             // 
             // MainPage
             // 
@@ -249,6 +277,7 @@
             this.Load += new System.EventHandler(this.MainPage_Load);
             this.tableLayoutPanel2.ResumeLayout(false);
             this.tableLayoutPanel1.ResumeLayout(false);
+            this.tableLayoutPanel7.ResumeLayout(false);
             this.tableLayoutPanel3.ResumeLayout(false);
             this.tableLayoutPanel5.ResumeLayout(false);
             this.tableLayoutPanel4.ResumeLayout(false);
@@ -273,5 +302,7 @@
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel6;
         private System.Windows.Forms.Panel pnlPreAlign;
         private System.Windows.Forms.Panel pnlSystemLog;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel7;
+        private System.Windows.Forms.Panel pnlDailyInfo;
     }
 }

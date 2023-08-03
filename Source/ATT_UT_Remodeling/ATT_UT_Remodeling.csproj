@@ -119,6 +119,12 @@
     <Compile Include="UI\Controls\TeachingPositionListControl.Designer.cs">
       <DependentUpon>TeachingPositionListControl.cs</DependentUpon>
     </Compile>
+    <Compile Include="UI\Controls\DailyInfoViewerControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UI\Controls\DailyInfoViewerControl.Designer.cs">
+      <DependentUpon>DailyInfoViewerControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="UI\Forms\MotionPopupForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -170,6 +176,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UI\Controls\TeachingPositionListControl.resx">
       <DependentUpon>TeachingPositionListControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\Controls\DailyInfoViewerControl.resx">
+      <DependentUpon>DailyInfoViewerControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\Forms\MotionPopupForm.resx">
       <DependentUpon>MotionPopupForm.cs</DependentUpon>

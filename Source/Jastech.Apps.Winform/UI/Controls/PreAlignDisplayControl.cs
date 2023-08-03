@@ -86,9 +86,9 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         private void UpdateLeftMessage(PreAlignResult result)
         {
-            string resultMessage = string.Format("\tJudge : {0}\n\tScore : {1}%\n\tX : {2}\n\tY : {3}",
-                                            result.MatchResult.Judgement.ToString(), (result.MatchResult.MaxScore * 100).ToString("F2"),
-                                            result.MatchResult.MaxMatchPos.FoundPos.X.ToString("F2"), result.MatchResult.MaxMatchPos.FoundPos.Y.ToString("F2"));
+            string resultMessage = string.Format("Judge : {0}\nScore : {1}%\nX : {2}\nY : {3}",
+                                                result.MatchResult.Judgement.ToString(), (result.MatchResult.MaxScore * 100).ToString("F2"),
+                                                result.MatchResult.MaxMatchPos.FoundPos.X.ToString("F2"), result.MatchResult.MaxMatchPos.FoundPos.Y.ToString("F2"));
 
             lblLeftPreAlignResult.Text = resultMessage;
         }
@@ -152,9 +152,11 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         private void ClearPreAlignResultMessage()
         {
-            lblLeftPreAlignResult.Text = "";
-            lblRightPreAlignResult.Text = "";
-            lblPreAlignResult.Text = "";
+            string resultMessage = string.Format("Judge : {0}\nScore : {1}\nX : {2}\nY : {3}", "-", "-", "-", "-");
+
+            lblLeftPreAlignResult.Text = resultMessage;
+            lblRightPreAlignResult.Text = resultMessage;
+            lblPreAlignResult.Text = "-";
         }
 
         public void ClearImage()

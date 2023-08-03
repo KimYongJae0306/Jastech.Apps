@@ -61,7 +61,7 @@
             this.lblAkkonViewer.Name = "lblAkkonViewer";
             this.lblAkkonViewer.Size = new System.Drawing.Size(300, 40);
             this.lblAkkonViewer.TabIndex = 3;
-            this.lblAkkonViewer.Text = "System Log";
+            this.lblAkkonViewer.Text = "SYSTEM LOG";
             this.lblAkkonViewer.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // lstLogMessage

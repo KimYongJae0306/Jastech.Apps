@@ -206,7 +206,7 @@ namespace ATT_UT_IPAD
             // Motion
             var motion = new ACSMotion("Motion", 2, ACSConnectType.Ethernet);
             motion.IpAddress = "10.0.0.100";
-            motion.TriggerBuffer = BufferNumber.Buffer4;
+            motion.TriggerBuffer = ACSBufferNumber.Buffer4;
             config.Add(motion);
 
             // Akkon LAF
@@ -288,7 +288,7 @@ namespace ATT_UT_IPAD
             // Motion
             var motion = new ACSMotion("Motion", 2, ACSConnectType.Ethernet);
             motion.IpAddress = "10.0.0.100";
-            motion.TriggerBuffer = BufferNumber.Buffer5;
+            motion.TriggerBuffer = ACSBufferNumber.Buffer5;
             config.Add(motion);
 
             // Akkon LAF

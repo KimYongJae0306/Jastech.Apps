@@ -13,10 +13,14 @@ namespace ATT_UT_Remodeling.UI.Controls
     {
         #region 속성
         public AlignResultDisplayControl AlignResultDisplayControl { get; set; } = null;
+        #endregion
 
-        public AlignResultDataControl AlignResultDataControl { get; set; } = null;
+        #region 이벤트
+        public event SetTabDelegate SetTabEventHandler;
+        #endregion
 
-        public ResultChartControl AlignResultChartControl { get; set; } = null;
+        #region 델리게이트
+        public delegate void SetTabDelegate(int tabNo);
         #endregion
 
         #region 생성자
@@ -34,16 +38,6 @@ namespace ATT_UT_Remodeling.UI.Controls
 
         private void AddControls()
         {
-            AlignResultChartControl = new ResultChartControl();
-            AlignResultChartControl.Dock = DockStyle.Fill;
-            AlignResultChartControl.SetInspChartType(InspChartType.Align);
-            pnlResultChart.Controls.Add(AlignResultChartControl);
-
-            AlignResultDataControl = new AlignResultDataControl();
-            AlignResultDataControl.Dock = DockStyle.Fill;
-            AlignResultDataControl.UpdateAlignDaily();
-            pnlResultData.Controls.Add(AlignResultDataControl);
-
             AlignResultDisplayControl = new AlignResultDisplayControl();
             AlignResultDisplayControl.Dock = DockStyle.Fill;
             AlignResultDisplayControl.SendTabNumberEvent += UpdateResultChart;
@@ -59,15 +53,11 @@ namespace ATT_UT_Remodeling.UI.Controls
         public void UpdateTabCount(int tabCount)
         {
             AlignResultDisplayControl.UpdateTabCount(tabCount);
-            AlignResultDataControl.ClearData();
-            AlignResultChartControl.ClearChart();
         }
 
         public void UpdateMainResult(int tabNo)
         {
             AlignResultDisplayControl.UpdateResultDisplay(tabNo);
-            AlignResultDataControl.UpdateAlignDaily();
-            UpdateResultChart(tabNo);
         }
 
         public void UpdateResultTabButton(int tabNo)
@@ -82,9 +72,8 @@ namespace ATT_UT_Remodeling.UI.Controls
 
         private void UpdateResultChart(int tabNo)
         {
-            AlignResultChartControl.UpdateAlignDaily(tabNo);
+            SetTabEventHandler?.Invoke(tabNo);
         }
-
         #endregion
     }
 }

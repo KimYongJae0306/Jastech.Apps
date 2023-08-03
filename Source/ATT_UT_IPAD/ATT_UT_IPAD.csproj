@@ -112,6 +112,12 @@
     <Compile Include="UI\Controls\AlignViewerControl.Designer.cs">
       <DependentUpon>AlignViewerControl.cs</DependentUpon>
     </Compile>
+    <Compile Include="UI\Controls\DailyInfoViewerControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UI\Controls\DailyInfoViewerControl.Designer.cs">
+      <DependentUpon>DailyInfoViewerControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="UI\Controls\TeachingPositionListControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -166,6 +172,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UI\Controls\AlignViewerControl.resx">
       <DependentUpon>AlignViewerControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\Controls\DailyInfoViewerControl.resx">
+      <DependentUpon>DailyInfoViewerControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\Controls\TeachingPositionListControl.resx">
       <DependentUpon>TeachingPositionListControl.cs</DependentUpon>
