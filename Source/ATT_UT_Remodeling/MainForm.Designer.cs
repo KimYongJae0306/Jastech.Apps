@@ -60,6 +60,18 @@
             this.picLogo = new System.Windows.Forms.PictureBox();
             this.lblSystemName = new System.Windows.Forms.Label();
             this.tmrMainForm = new System.Windows.Forms.Timer(this.components);
+            this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
+            this.lblMotionState = new System.Windows.Forms.Label();
+            this.lblLightState = new System.Windows.Forms.Label();
+            this.lblPlcStateText = new System.Windows.Forms.Label();
+            this.lblPLCState = new System.Windows.Forms.Label();
+            this.lblLicenseStateText = new System.Windows.Forms.Label();
+            this.lblLicenseState = new System.Windows.Forms.Label();
+            this.lblLafStateText = new System.Windows.Forms.Label();
+            this.lblLafState = new System.Windows.Forms.Label();
+            this.lblMotionStateText = new System.Windows.Forms.Label();
+            this.lblLightStateText = new System.Windows.Forms.Label();
+            this.tmrUpdateStates = new System.Windows.Forms.Timer(this.components);
             this.tlpMainForm.SuspendLayout();
             this.tlpFunctionButtons.SuspendLayout();
             this.panel4.SuspendLayout();
@@ -75,6 +87,7 @@
             this.tableLayoutPanel5.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.picLogo)).BeginInit();
+            this.tableLayoutPanel2.SuspendLayout();
             this.SuspendLayout();
             // 
             // tlpMainForm
@@ -464,12 +477,165 @@
             this.tmrMainForm.Interval = 300;
             this.tmrMainForm.Tick += new System.EventHandler(this.tmrMainForm_Tick);
             // 
+            // tableLayoutPanel2
+            // 
+            this.tableLayoutPanel2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(104)))), ((int)(((byte)(104)))), ((int)(((byte)(104)))));
+            this.tableLayoutPanel2.ColumnCount = 11;
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 60F));
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 25F));
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 80F));
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 25F));
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 85F));
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 25F));
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 60F));
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 25F));
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 70F));
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 25F));
+            this.tableLayoutPanel2.Controls.Add(this.lblMotionState, 4, 0);
+            this.tableLayoutPanel2.Controls.Add(this.lblLightState, 10, 0);
+            this.tableLayoutPanel2.Controls.Add(this.lblPlcStateText, 1, 0);
+            this.tableLayoutPanel2.Controls.Add(this.lblPLCState, 2, 0);
+            this.tableLayoutPanel2.Controls.Add(this.lblLicenseStateText, 5, 0);
+            this.tableLayoutPanel2.Controls.Add(this.lblLicenseState, 6, 0);
+            this.tableLayoutPanel2.Controls.Add(this.lblLafStateText, 7, 0);
+            this.tableLayoutPanel2.Controls.Add(this.lblLafState, 8, 0);
+            this.tableLayoutPanel2.Controls.Add(this.lblMotionStateText, 3, 0);
+            this.tableLayoutPanel2.Controls.Add(this.lblLightStateText, 9, 0);
+            this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.tableLayoutPanel2.Font = new System.Drawing.Font("맑은 고딕", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.tableLayoutPanel2.ForeColor = System.Drawing.Color.White;
+            this.tableLayoutPanel2.Location = new System.Drawing.Point(0, 781);
+            this.tableLayoutPanel2.Name = "tableLayoutPanel2";
+            this.tableLayoutPanel2.RowCount = 1;
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel2.Size = new System.Drawing.Size(1924, 25);
+            this.tableLayoutPanel2.TabIndex = 3;
+            // 
+            // lblMotionState
+            // 
+            this.lblMotionState.AutoSize = true;
+            this.lblMotionState.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblMotionState.Image = ((System.Drawing.Image)(resources.GetObject("lblMotionState.Image")));
+            this.lblMotionState.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.lblMotionState.Location = new System.Drawing.Point(1612, 0);
+            this.lblMotionState.Name = "lblMotionState";
+            this.lblMotionState.Size = new System.Drawing.Size(19, 25);
+            this.lblMotionState.TabIndex = 9;
+            this.lblMotionState.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // lblLightState
+            // 
+            this.lblLightState.AutoSize = true;
+            this.lblLightState.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblLightState.Image = ((System.Drawing.Image)(resources.GetObject("lblLightState.Image")));
+            this.lblLightState.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.lblLightState.Location = new System.Drawing.Point(1902, 0);
+            this.lblLightState.Name = "lblLightState";
+            this.lblLightState.Size = new System.Drawing.Size(19, 25);
+            this.lblLightState.TabIndex = 8;
+            this.lblLightState.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // lblPlcStateText
+            // 
+            this.lblPlcStateText.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblPlcStateText.Location = new System.Drawing.Point(1447, 0);
+            this.lblPlcStateText.Name = "lblPlcStateText";
+            this.lblPlcStateText.Size = new System.Drawing.Size(54, 25);
+            this.lblPlcStateText.TabIndex = 0;
+            this.lblPlcStateText.Text = "PLC";
+            this.lblPlcStateText.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // lblPLCState
+            // 
+            this.lblPLCState.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblPLCState.Image = ((System.Drawing.Image)(resources.GetObject("lblPLCState.Image")));
+            this.lblPLCState.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.lblPLCState.Location = new System.Drawing.Point(1507, 0);
+            this.lblPLCState.Name = "lblPLCState";
+            this.lblPLCState.Size = new System.Drawing.Size(19, 25);
+            this.lblPLCState.TabIndex = 1;
+            this.lblPLCState.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // lblLicenseStateText
+            // 
+            this.lblLicenseStateText.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblLicenseStateText.Location = new System.Drawing.Point(1637, 0);
+            this.lblLicenseStateText.Name = "lblLicenseStateText";
+            this.lblLicenseStateText.Size = new System.Drawing.Size(79, 25);
+            this.lblLicenseStateText.TabIndex = 2;
+            this.lblLicenseStateText.Text = "Cognex";
+            this.lblLicenseStateText.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // lblLicenseState
+            // 
+            this.lblLicenseState.AutoSize = true;
+            this.lblLicenseState.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblLicenseState.Image = ((System.Drawing.Image)(resources.GetObject("lblLicenseState.Image")));
+            this.lblLicenseState.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.lblLicenseState.Location = new System.Drawing.Point(1722, 0);
+            this.lblLicenseState.Name = "lblLicenseState";
+            this.lblLicenseState.Size = new System.Drawing.Size(19, 25);
+            this.lblLicenseState.TabIndex = 3;
+            this.lblLicenseState.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // lblLafStateText
+            // 
+            this.lblLafStateText.AutoSize = true;
+            this.lblLafStateText.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblLafStateText.Location = new System.Drawing.Point(1747, 0);
+            this.lblLafStateText.Name = "lblLafStateText";
+            this.lblLafStateText.Size = new System.Drawing.Size(54, 25);
+            this.lblLafStateText.TabIndex = 4;
+            this.lblLafStateText.Text = "LAF";
+            this.lblLafStateText.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // lblLafState
+            // 
+            this.lblLafState.AutoSize = true;
+            this.lblLafState.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblLafState.Image = ((System.Drawing.Image)(resources.GetObject("lblLafState.Image")));
+            this.lblLafState.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.lblLafState.Location = new System.Drawing.Point(1807, 0);
+            this.lblLafState.Name = "lblLafState";
+            this.lblLafState.Size = new System.Drawing.Size(19, 25);
+            this.lblLafState.TabIndex = 5;
+            this.lblLafState.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // lblMotionStateText
+            // 
+            this.lblMotionStateText.AutoSize = true;
+            this.lblMotionStateText.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblMotionStateText.Location = new System.Drawing.Point(1532, 0);
+            this.lblMotionStateText.Name = "lblMotionStateText";
+            this.lblMotionStateText.Size = new System.Drawing.Size(74, 25);
+            this.lblMotionStateText.TabIndex = 6;
+            this.lblMotionStateText.Text = "Motion";
+            this.lblMotionStateText.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // lblLightStateText
+            // 
+            this.lblLightStateText.AutoSize = true;
+            this.lblLightStateText.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblLightStateText.Location = new System.Drawing.Point(1832, 0);
+            this.lblLightStateText.Name = "lblLightStateText";
+            this.lblLightStateText.Size = new System.Drawing.Size(64, 25);
+            this.lblLightStateText.TabIndex = 7;
+            this.lblLightStateText.Text = "Light";
+            this.lblLightStateText.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // tmrUpdateStates
+            // 
+            this.tmrUpdateStates.Interval = 300;
+            this.tmrUpdateStates.Tick += new System.EventHandler(this.tmrUpdateStates_Tick);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
             this.ClientSize = new System.Drawing.Size(1924, 806);
+            this.Controls.Add(this.tableLayoutPanel2);
             this.Controls.Add(this.tlpMainForm);
             this.Font = new System.Drawing.Font("맑은 고딕", 11.25F, System.Drawing.FontStyle.Bold);
             this.ForeColor = System.Drawing.Color.White;
@@ -495,6 +661,8 @@
             this.tableLayoutPanel5.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.picLogo)).EndInit();
+            this.tableLayoutPanel2.ResumeLayout(false);
+            this.tableLayoutPanel2.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -531,6 +699,18 @@
         private System.Windows.Forms.PictureBox picLogo;
         private System.Windows.Forms.Label lblSystemName;
         private System.Windows.Forms.Timer tmrMainForm;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
+        private System.Windows.Forms.Label lblMotionState;
+        private System.Windows.Forms.Label lblLightState;
+        private System.Windows.Forms.Label lblPlcStateText;
+        private System.Windows.Forms.Label lblPLCState;
+        private System.Windows.Forms.Label lblLicenseStateText;
+        private System.Windows.Forms.Label lblLicenseState;
+        private System.Windows.Forms.Label lblLafStateText;
+        private System.Windows.Forms.Label lblLafState;
+        private System.Windows.Forms.Label lblMotionStateText;
+        private System.Windows.Forms.Label lblLightStateText;
+        private System.Windows.Forms.Timer tmrUpdateStates;
     }
 }
 

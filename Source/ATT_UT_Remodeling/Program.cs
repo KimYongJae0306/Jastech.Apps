@@ -50,6 +50,12 @@ namespace ATT_UT_Remodeling
                 SystemHelper.StartChecker(@"D:\ATT_Memory_Test.txt");
                 AppsConfig.Instance().UnitCount = 1;
 
+                if (Cognex.VisionPro.CogLicense.GetLicensedFeatures(false, false).Count == 0)
+                {
+                    MessageConfirmForm cognexAlart = new MessageConfirmForm { Message = "Cognex license not detected.\r\nPlease check the key." };
+                    cognexAlart.ShowDialog();
+                }
+
                 ConfigSet.Instance().PathConfigCreated += ConfigSet_PathConfigCreated;
                 ConfigSet.Instance().OperationConfigCreated += ConfigSet_OperationConfigCreated;
                 ConfigSet.Instance().MachineConfigCreated += ConfigSet_MachineConfigCreated;
