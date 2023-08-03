@@ -36,11 +36,9 @@
             this.tableLayoutPanel7 = new System.Windows.Forms.TableLayoutPanel();
             this.label13 = new System.Windows.Forms.Label();
             this.mtgEnableAkkon = new MetroFramework.Controls.MetroToggle();
-            this.panel12 = new System.Windows.Forms.Panel();
             this.tableLayoutPanel10 = new System.Windows.Forms.TableLayoutPanel();
             this.label14 = new System.Windows.Forms.Label();
             this.mtgEnableAlign = new MetroFramework.Controls.MetroToggle();
-            this.label21 = new System.Windows.Forms.Label();
             this.panel8 = new System.Windows.Forms.Panel();
             this.label20 = new System.Windows.Forms.Label();
             this.tableLayoutPanel6 = new System.Windows.Forms.TableLayoutPanel();
@@ -51,30 +49,28 @@
             this.label5 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
             this.txtPreAlignToleranceY = new System.Windows.Forms.TextBox();
-            this.tableLayoutPanel18 = new System.Windows.Forms.TableLayoutPanel();
-            this.label27 = new System.Windows.Forms.Label();
-            this.label28 = new System.Windows.Forms.Label();
-            this.txtAkkonResultCount = new System.Windows.Forms.TextBox();
             this.tableLayoutPanel5 = new System.Windows.Forms.TableLayoutPanel();
             this.label7 = new System.Windows.Forms.Label();
             this.label9 = new System.Windows.Forms.Label();
             this.txtPreAlignToleranceX = new System.Windows.Forms.TextBox();
-            this.tableLayoutPanel17 = new System.Windows.Forms.TableLayoutPanel();
-            this.label25 = new System.Windows.Forms.Label();
-            this.label26 = new System.Windows.Forms.Label();
-            this.txtAlignResultCount = new System.Windows.Forms.TextBox();
             this.panel2 = new System.Windows.Forms.Panel();
             this.label10 = new System.Windows.Forms.Label();
+            this.label1 = new System.Windows.Forms.Label();
+            this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
+            this.label3 = new System.Windows.Forms.Label();
+            this.txtCameraGap = new System.Windows.Forms.TextBox();
             this.panel3 = new System.Windows.Forms.Panel();
             this.tableLayoutPanel12 = new System.Windows.Forms.TableLayoutPanel();
             this.mcbxNGExtension = new MetroFramework.Controls.MetroComboBox();
             this.label23 = new System.Windows.Forms.Label();
             this.mtgSaveNG = new MetroFramework.Controls.MetroToggle();
+            this.panel12 = new System.Windows.Forms.Panel();
             this.tableLayoutPanel11 = new System.Windows.Forms.TableLayoutPanel();
             this.mcbxOKExtension = new MetroFramework.Controls.MetroComboBox();
             this.label24 = new System.Windows.Forms.Label();
             this.mtgSaveOK = new MetroFramework.Controls.MetroToggle();
             this.panel6 = new System.Windows.Forms.Panel();
+            this.label21 = new System.Windows.Forms.Label();
             this.label22 = new System.Windows.Forms.Label();
             this.tableLayoutPanel8 = new System.Windows.Forms.TableLayoutPanel();
             this.label15 = new System.Windows.Forms.Label();
@@ -85,11 +81,15 @@
             this.label18 = new System.Windows.Forms.Label();
             this.txtDataStoringDays = new System.Windows.Forms.TextBox();
             this.panel5 = new System.Windows.Forms.Panel();
+            this.tableLayoutPanel18 = new System.Windows.Forms.TableLayoutPanel();
+            this.label27 = new System.Windows.Forms.Label();
+            this.label28 = new System.Windows.Forms.Label();
+            this.txtAkkonResultCount = new System.Windows.Forms.TextBox();
             this.label19 = new System.Windows.Forms.Label();
-            this.label1 = new System.Windows.Forms.Label();
-            this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
-            this.label3 = new System.Windows.Forms.Label();
-            this.txtCameraGap = new System.Windows.Forms.TextBox();
+            this.tableLayoutPanel17 = new System.Windows.Forms.TableLayoutPanel();
+            this.label25 = new System.Windows.Forms.Label();
+            this.label26 = new System.Windows.Forms.Label();
+            this.txtAlignResultCount = new System.Windows.Forms.TextBox();
             this.panel4 = new System.Windows.Forms.Panel();
             this.tableLayoutPanel13 = new System.Windows.Forms.TableLayoutPanel();
             this.panel9 = new System.Windows.Forms.Panel();
@@ -108,15 +108,15 @@
             this.tableLayoutPanel10.SuspendLayout();
             this.tableLayoutPanel6.SuspendLayout();
             this.tableLayoutPanel4.SuspendLayout();
-            this.tableLayoutPanel18.SuspendLayout();
             this.tableLayoutPanel5.SuspendLayout();
-            this.tableLayoutPanel17.SuspendLayout();
+            this.tableLayoutPanel2.SuspendLayout();
             this.panel3.SuspendLayout();
             this.tableLayoutPanel12.SuspendLayout();
             this.tableLayoutPanel11.SuspendLayout();
             this.tableLayoutPanel8.SuspendLayout();
             this.tableLayoutPanel9.SuspendLayout();
-            this.tableLayoutPanel2.SuspendLayout();
+            this.tableLayoutPanel18.SuspendLayout();
+            this.tableLayoutPanel17.SuspendLayout();
             this.tableLayoutPanel13.SuspendLayout();
             this.panel9.SuspendLayout();
             this.tableLayoutPanel14.SuspendLayout();
@@ -236,15 +236,6 @@
             this.mtgEnableAkkon.Theme = MetroFramework.MetroThemeStyle.Dark;
             this.mtgEnableAkkon.UseSelectable = true;
             // 
-            // panel12
-            // 
-            this.panel12.BackColor = System.Drawing.SystemColors.Highlight;
-            this.panel12.Location = new System.Drawing.Point(17, 43);
-            this.panel12.Margin = new System.Windows.Forms.Padding(0);
-            this.panel12.Name = "panel12";
-            this.panel12.Size = new System.Drawing.Size(345, 2);
-            this.panel12.TabIndex = 22;
-            // 
             // tableLayoutPanel10
             // 
             this.tableLayoutPanel10.ColumnCount = 3;
@@ -284,17 +275,6 @@
             this.mtgEnableAlign.Text = "Off";
             this.mtgEnableAlign.Theme = MetroFramework.MetroThemeStyle.Dark;
             this.mtgEnableAlign.UseSelectable = true;
-            // 
-            // label21
-            // 
-            this.label21.Font = new System.Drawing.Font("맑은 고딕", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.label21.ForeColor = System.Drawing.Color.White;
-            this.label21.Location = new System.Drawing.Point(15, 10);
-            this.label21.Name = "label21";
-            this.label21.Size = new System.Drawing.Size(323, 33);
-            this.label21.TabIndex = 27;
-            this.label21.Text = "Daily Result";
-            this.label21.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // panel8
             // 
@@ -426,61 +406,6 @@
             this.txtPreAlignToleranceY.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtKeyPad_KeyPress);
             this.txtPreAlignToleranceY.Leave += new System.EventHandler(this.txtKeyPad_Leave);
             // 
-            // tableLayoutPanel18
-            // 
-            this.tableLayoutPanel18.ColumnCount = 3;
-            this.tableLayoutPanel18.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 100F));
-            this.tableLayoutPanel18.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel18.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 50F));
-            this.tableLayoutPanel18.Controls.Add(this.label27, 2, 0);
-            this.tableLayoutPanel18.Controls.Add(this.label28, 0, 0);
-            this.tableLayoutPanel18.Controls.Add(this.txtAkkonResultCount, 1, 0);
-            this.tableLayoutPanel18.Location = new System.Drawing.Point(61, 102);
-            this.tableLayoutPanel18.Name = "tableLayoutPanel18";
-            this.tableLayoutPanel18.RowCount = 1;
-            this.tableLayoutPanel18.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel18.Size = new System.Drawing.Size(298, 40);
-            this.tableLayoutPanel18.TabIndex = 20;
-            // 
-            // label27
-            // 
-            this.label27.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.label27.Font = new System.Drawing.Font("맑은 고딕", 10.25F, System.Drawing.FontStyle.Bold);
-            this.label27.ForeColor = System.Drawing.Color.White;
-            this.label27.Location = new System.Drawing.Point(251, 0);
-            this.label27.Name = "label27";
-            this.label27.Size = new System.Drawing.Size(44, 40);
-            this.label27.TabIndex = 11;
-            this.label27.Text = "ea";
-            this.label27.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // label28
-            // 
-            this.label28.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.label28.Font = new System.Drawing.Font("맑은 고딕", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.label28.ForeColor = System.Drawing.Color.White;
-            this.label28.Location = new System.Drawing.Point(3, 0);
-            this.label28.Name = "label28";
-            this.label28.Size = new System.Drawing.Size(94, 40);
-            this.label28.TabIndex = 5;
-            this.label28.Text = "Akkon";
-            this.label28.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // txtAkkonResultCount
-            // 
-            this.txtAkkonResultCount.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
-            this.txtAkkonResultCount.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.txtAkkonResultCount.Font = new System.Drawing.Font("맑은 고딕", 14.25F, System.Drawing.FontStyle.Bold);
-            this.txtAkkonResultCount.ForeColor = System.Drawing.Color.White;
-            this.txtAkkonResultCount.Location = new System.Drawing.Point(103, 3);
-            this.txtAkkonResultCount.Name = "txtAkkonResultCount";
-            this.txtAkkonResultCount.Size = new System.Drawing.Size(142, 33);
-            this.txtAkkonResultCount.TabIndex = 8;
-            this.txtAkkonResultCount.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.txtAkkonResultCount.Click += new System.EventHandler(this.textbox_KeyPad_Click);
-            this.txtAkkonResultCount.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtDataStoringDays_KeyPress);
-            this.txtAkkonResultCount.Leave += new System.EventHandler(this.txtDataStoringDays_Leave);
-            // 
             // tableLayoutPanel5
             // 
             this.tableLayoutPanel5.ColumnCount = 3;
@@ -536,61 +461,6 @@
             this.txtPreAlignToleranceX.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtKeyPad_KeyPress);
             this.txtPreAlignToleranceX.Leave += new System.EventHandler(this.txtKeyPad_Leave);
             // 
-            // tableLayoutPanel17
-            // 
-            this.tableLayoutPanel17.ColumnCount = 3;
-            this.tableLayoutPanel17.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 100F));
-            this.tableLayoutPanel17.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel17.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 50F));
-            this.tableLayoutPanel17.Controls.Add(this.label25, 2, 0);
-            this.tableLayoutPanel17.Controls.Add(this.label26, 0, 0);
-            this.tableLayoutPanel17.Controls.Add(this.txtAlignResultCount, 1, 0);
-            this.tableLayoutPanel17.Location = new System.Drawing.Point(61, 52);
-            this.tableLayoutPanel17.Name = "tableLayoutPanel17";
-            this.tableLayoutPanel17.RowCount = 1;
-            this.tableLayoutPanel17.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel17.Size = new System.Drawing.Size(298, 40);
-            this.tableLayoutPanel17.TabIndex = 20;
-            // 
-            // label25
-            // 
-            this.label25.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.label25.Font = new System.Drawing.Font("맑은 고딕", 10.25F, System.Drawing.FontStyle.Bold);
-            this.label25.ForeColor = System.Drawing.Color.White;
-            this.label25.Location = new System.Drawing.Point(251, 0);
-            this.label25.Name = "label25";
-            this.label25.Size = new System.Drawing.Size(44, 40);
-            this.label25.TabIndex = 11;
-            this.label25.Text = "ea";
-            this.label25.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // label26
-            // 
-            this.label26.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.label26.Font = new System.Drawing.Font("맑은 고딕", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.label26.ForeColor = System.Drawing.Color.White;
-            this.label26.Location = new System.Drawing.Point(3, 0);
-            this.label26.Name = "label26";
-            this.label26.Size = new System.Drawing.Size(94, 40);
-            this.label26.TabIndex = 5;
-            this.label26.Text = "Align";
-            this.label26.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // txtAlignResultCount
-            // 
-            this.txtAlignResultCount.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
-            this.txtAlignResultCount.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.txtAlignResultCount.Font = new System.Drawing.Font("맑은 고딕", 14.25F, System.Drawing.FontStyle.Bold);
-            this.txtAlignResultCount.ForeColor = System.Drawing.Color.White;
-            this.txtAlignResultCount.Location = new System.Drawing.Point(103, 3);
-            this.txtAlignResultCount.Name = "txtAlignResultCount";
-            this.txtAlignResultCount.Size = new System.Drawing.Size(142, 33);
-            this.txtAlignResultCount.TabIndex = 8;
-            this.txtAlignResultCount.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.txtAlignResultCount.Click += new System.EventHandler(this.textbox_KeyPad_Click);
-            this.txtAlignResultCount.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtDataStoringDays_KeyPress);
-            this.txtAlignResultCount.Leave += new System.EventHandler(this.txtDataStoringDays_Leave);
-            // 
             // panel2
             // 
             this.panel2.BackColor = System.Drawing.SystemColors.Highlight;
@@ -610,6 +480,60 @@
             this.label10.TabIndex = 13;
             this.label10.Text = "PreAlign Tolerance";
             this.label10.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // label1
+            // 
+            this.label1.Font = new System.Drawing.Font("맑은 고딕", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.label1.ForeColor = System.Drawing.Color.White;
+            this.label1.Location = new System.Drawing.Point(18, 217);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(347, 33);
+            this.label1.TabIndex = 6;
+            this.label1.Text = "Gap Between Cameras";
+            this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // tableLayoutPanel2
+            // 
+            this.tableLayoutPanel2.ColumnCount = 3;
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 100F));
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 50F));
+            this.tableLayoutPanel2.Controls.Add(this.label3, 2, 0);
+            this.tableLayoutPanel2.Controls.Add(this.label8, 0, 0);
+            this.tableLayoutPanel2.Controls.Add(this.txtCameraGap, 1, 0);
+            this.tableLayoutPanel2.Location = new System.Drawing.Point(64, 265);
+            this.tableLayoutPanel2.Name = "tableLayoutPanel2";
+            this.tableLayoutPanel2.RowCount = 1;
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel2.Size = new System.Drawing.Size(298, 40);
+            this.tableLayoutPanel2.TabIndex = 10;
+            // 
+            // label3
+            // 
+            this.label3.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.label3.Font = new System.Drawing.Font("맑은 고딕", 10.25F, System.Drawing.FontStyle.Bold);
+            this.label3.ForeColor = System.Drawing.Color.White;
+            this.label3.Location = new System.Drawing.Point(251, 0);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(44, 40);
+            this.label3.TabIndex = 11;
+            this.label3.Text = "um";
+            this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // txtCameraGap
+            // 
+            this.txtCameraGap.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
+            this.txtCameraGap.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.txtCameraGap.Font = new System.Drawing.Font("맑은 고딕", 14.25F, System.Drawing.FontStyle.Bold);
+            this.txtCameraGap.ForeColor = System.Drawing.Color.White;
+            this.txtCameraGap.Location = new System.Drawing.Point(103, 3);
+            this.txtCameraGap.Name = "txtCameraGap";
+            this.txtCameraGap.Size = new System.Drawing.Size(142, 33);
+            this.txtCameraGap.TabIndex = 8;
+            this.txtCameraGap.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.txtCameraGap.Click += new System.EventHandler(this.textbox_KeyPad_Click);
+            this.txtCameraGap.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtKeyPad_KeyPress);
+            this.txtCameraGap.Leave += new System.EventHandler(this.txtKeyPad_Leave);
             // 
             // panel3
             // 
@@ -687,6 +611,15 @@
             this.mtgSaveNG.Theme = MetroFramework.MetroThemeStyle.Dark;
             this.mtgSaveNG.UseSelectable = true;
             // 
+            // panel12
+            // 
+            this.panel12.BackColor = System.Drawing.SystemColors.Highlight;
+            this.panel12.Location = new System.Drawing.Point(17, 43);
+            this.panel12.Margin = new System.Windows.Forms.Padding(0);
+            this.panel12.Name = "panel12";
+            this.panel12.Size = new System.Drawing.Size(345, 2);
+            this.panel12.TabIndex = 22;
+            // 
             // tableLayoutPanel11
             // 
             this.tableLayoutPanel11.ColumnCount = 3;
@@ -749,6 +682,17 @@
             this.panel6.Name = "panel6";
             this.panel6.Size = new System.Drawing.Size(345, 2);
             this.panel6.TabIndex = 21;
+            // 
+            // label21
+            // 
+            this.label21.Font = new System.Drawing.Font("맑은 고딕", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.label21.ForeColor = System.Drawing.Color.White;
+            this.label21.Location = new System.Drawing.Point(15, 10);
+            this.label21.Name = "label21";
+            this.label21.Size = new System.Drawing.Size(323, 33);
+            this.label21.TabIndex = 27;
+            this.label21.Text = "Daily Result";
+            this.label21.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // label22
             // 
@@ -880,6 +824,61 @@
             this.panel5.Size = new System.Drawing.Size(345, 2);
             this.panel5.TabIndex = 17;
             // 
+            // tableLayoutPanel18
+            // 
+            this.tableLayoutPanel18.ColumnCount = 3;
+            this.tableLayoutPanel18.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 100F));
+            this.tableLayoutPanel18.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel18.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 50F));
+            this.tableLayoutPanel18.Controls.Add(this.label27, 2, 0);
+            this.tableLayoutPanel18.Controls.Add(this.label28, 0, 0);
+            this.tableLayoutPanel18.Controls.Add(this.txtAkkonResultCount, 1, 0);
+            this.tableLayoutPanel18.Location = new System.Drawing.Point(61, 102);
+            this.tableLayoutPanel18.Name = "tableLayoutPanel18";
+            this.tableLayoutPanel18.RowCount = 1;
+            this.tableLayoutPanel18.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel18.Size = new System.Drawing.Size(298, 40);
+            this.tableLayoutPanel18.TabIndex = 20;
+            // 
+            // label27
+            // 
+            this.label27.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.label27.Font = new System.Drawing.Font("맑은 고딕", 10.25F, System.Drawing.FontStyle.Bold);
+            this.label27.ForeColor = System.Drawing.Color.White;
+            this.label27.Location = new System.Drawing.Point(251, 0);
+            this.label27.Name = "label27";
+            this.label27.Size = new System.Drawing.Size(44, 40);
+            this.label27.TabIndex = 11;
+            this.label27.Text = "ea";
+            this.label27.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // label28
+            // 
+            this.label28.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.label28.Font = new System.Drawing.Font("맑은 고딕", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.label28.ForeColor = System.Drawing.Color.White;
+            this.label28.Location = new System.Drawing.Point(3, 0);
+            this.label28.Name = "label28";
+            this.label28.Size = new System.Drawing.Size(94, 40);
+            this.label28.TabIndex = 5;
+            this.label28.Text = "Akkon";
+            this.label28.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // txtAkkonResultCount
+            // 
+            this.txtAkkonResultCount.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
+            this.txtAkkonResultCount.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.txtAkkonResultCount.Font = new System.Drawing.Font("맑은 고딕", 14.25F, System.Drawing.FontStyle.Bold);
+            this.txtAkkonResultCount.ForeColor = System.Drawing.Color.White;
+            this.txtAkkonResultCount.Location = new System.Drawing.Point(103, 3);
+            this.txtAkkonResultCount.Name = "txtAkkonResultCount";
+            this.txtAkkonResultCount.Size = new System.Drawing.Size(142, 33);
+            this.txtAkkonResultCount.TabIndex = 8;
+            this.txtAkkonResultCount.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.txtAkkonResultCount.Click += new System.EventHandler(this.textbox_KeyPad_Click);
+            this.txtAkkonResultCount.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtDataStoringDays_KeyPress);
+            this.txtAkkonResultCount.Leave += new System.EventHandler(this.txtDataStoringDays_Leave);
+            // 
             // label19
             // 
             this.label19.Font = new System.Drawing.Font("맑은 고딕", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
@@ -891,59 +890,60 @@
             this.label19.Text = "Data Store Options";
             this.label19.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
-            // label1
+            // tableLayoutPanel17
             // 
-            this.label1.Font = new System.Drawing.Font("맑은 고딕", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.label1.ForeColor = System.Drawing.Color.White;
-            this.label1.Location = new System.Drawing.Point(18, 217);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(347, 33);
-            this.label1.TabIndex = 6;
-            this.label1.Text = "Gap Between Cameras";
-            this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.tableLayoutPanel17.ColumnCount = 3;
+            this.tableLayoutPanel17.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 100F));
+            this.tableLayoutPanel17.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel17.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 50F));
+            this.tableLayoutPanel17.Controls.Add(this.label25, 2, 0);
+            this.tableLayoutPanel17.Controls.Add(this.label26, 0, 0);
+            this.tableLayoutPanel17.Controls.Add(this.txtAlignResultCount, 1, 0);
+            this.tableLayoutPanel17.Location = new System.Drawing.Point(61, 52);
+            this.tableLayoutPanel17.Name = "tableLayoutPanel17";
+            this.tableLayoutPanel17.RowCount = 1;
+            this.tableLayoutPanel17.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel17.Size = new System.Drawing.Size(298, 40);
+            this.tableLayoutPanel17.TabIndex = 20;
             // 
-            // tableLayoutPanel2
+            // label25
             // 
-            this.tableLayoutPanel2.ColumnCount = 3;
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 100F));
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 50F));
-            this.tableLayoutPanel2.Controls.Add(this.label3, 2, 0);
-            this.tableLayoutPanel2.Controls.Add(this.label8, 0, 0);
-            this.tableLayoutPanel2.Controls.Add(this.txtCameraGap, 1, 0);
-            this.tableLayoutPanel2.Location = new System.Drawing.Point(64, 265);
-            this.tableLayoutPanel2.Name = "tableLayoutPanel2";
-            this.tableLayoutPanel2.RowCount = 1;
-            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel2.Size = new System.Drawing.Size(298, 40);
-            this.tableLayoutPanel2.TabIndex = 10;
+            this.label25.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.label25.Font = new System.Drawing.Font("맑은 고딕", 10.25F, System.Drawing.FontStyle.Bold);
+            this.label25.ForeColor = System.Drawing.Color.White;
+            this.label25.Location = new System.Drawing.Point(251, 0);
+            this.label25.Name = "label25";
+            this.label25.Size = new System.Drawing.Size(44, 40);
+            this.label25.TabIndex = 11;
+            this.label25.Text = "ea";
+            this.label25.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // label3
+            // label26
             // 
-            this.label3.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.label3.Font = new System.Drawing.Font("맑은 고딕", 10.25F, System.Drawing.FontStyle.Bold);
-            this.label3.ForeColor = System.Drawing.Color.White;
-            this.label3.Location = new System.Drawing.Point(251, 0);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(44, 40);
-            this.label3.TabIndex = 11;
-            this.label3.Text = "um";
-            this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.label26.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.label26.Font = new System.Drawing.Font("맑은 고딕", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.label26.ForeColor = System.Drawing.Color.White;
+            this.label26.Location = new System.Drawing.Point(3, 0);
+            this.label26.Name = "label26";
+            this.label26.Size = new System.Drawing.Size(94, 40);
+            this.label26.TabIndex = 5;
+            this.label26.Text = "Align";
+            this.label26.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // txtCameraGap
+            // txtAlignResultCount
             // 
-            this.txtCameraGap.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
-            this.txtCameraGap.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.txtCameraGap.Font = new System.Drawing.Font("맑은 고딕", 14.25F, System.Drawing.FontStyle.Bold);
-            this.txtCameraGap.ForeColor = System.Drawing.Color.White;
-            this.txtCameraGap.Location = new System.Drawing.Point(103, 3);
-            this.txtCameraGap.Name = "txtCameraGap";
-            this.txtCameraGap.Size = new System.Drawing.Size(142, 33);
-            this.txtCameraGap.TabIndex = 8;
-            this.txtCameraGap.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.txtCameraGap.Click += new System.EventHandler(this.textbox_KeyPad_Click);
-            this.txtCameraGap.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtKeyPad_KeyPress);
-            this.txtCameraGap.Leave += new System.EventHandler(this.txtKeyPad_Leave);
+            this.txtAlignResultCount.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
+            this.txtAlignResultCount.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.txtAlignResultCount.Font = new System.Drawing.Font("맑은 고딕", 14.25F, System.Drawing.FontStyle.Bold);
+            this.txtAlignResultCount.ForeColor = System.Drawing.Color.White;
+            this.txtAlignResultCount.Location = new System.Drawing.Point(103, 3);
+            this.txtAlignResultCount.Name = "txtAlignResultCount";
+            this.txtAlignResultCount.Size = new System.Drawing.Size(142, 33);
+            this.txtAlignResultCount.TabIndex = 8;
+            this.txtAlignResultCount.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.txtAlignResultCount.Click += new System.EventHandler(this.textbox_KeyPad_Click);
+            this.txtAlignResultCount.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtDataStoringDays_KeyPress);
+            this.txtAlignResultCount.Leave += new System.EventHandler(this.txtDataStoringDays_Leave);
             // 
             // panel4
             // 
@@ -1118,12 +1118,10 @@
             this.tableLayoutPanel6.PerformLayout();
             this.tableLayoutPanel4.ResumeLayout(false);
             this.tableLayoutPanel4.PerformLayout();
-            this.tableLayoutPanel18.ResumeLayout(false);
-            this.tableLayoutPanel18.PerformLayout();
             this.tableLayoutPanel5.ResumeLayout(false);
             this.tableLayoutPanel5.PerformLayout();
-            this.tableLayoutPanel17.ResumeLayout(false);
-            this.tableLayoutPanel17.PerformLayout();
+            this.tableLayoutPanel2.ResumeLayout(false);
+            this.tableLayoutPanel2.PerformLayout();
             this.panel3.ResumeLayout(false);
             this.tableLayoutPanel12.ResumeLayout(false);
             this.tableLayoutPanel12.PerformLayout();
@@ -1133,8 +1131,10 @@
             this.tableLayoutPanel8.PerformLayout();
             this.tableLayoutPanel9.ResumeLayout(false);
             this.tableLayoutPanel9.PerformLayout();
-            this.tableLayoutPanel2.ResumeLayout(false);
-            this.tableLayoutPanel2.PerformLayout();
+            this.tableLayoutPanel18.ResumeLayout(false);
+            this.tableLayoutPanel18.PerformLayout();
+            this.tableLayoutPanel17.ResumeLayout(false);
+            this.tableLayoutPanel17.PerformLayout();
             this.tableLayoutPanel13.ResumeLayout(false);
             this.panel9.ResumeLayout(false);
             this.tableLayoutPanel14.ResumeLayout(false);
