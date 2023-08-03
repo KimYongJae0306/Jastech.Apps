@@ -140,7 +140,7 @@ namespace ATT_UT_Remodeling
                 // Motion
                 var motion = new ACSMotion("Motion", 2, ACSConnectType.Ethernet);
                 motion.IpAddress = "10.0.0.100";
-                motion.TriggerBuffer = BufferNumber.Buffer4;        // 재확인 필요
+                motion.TriggerBuffer = ACSBufferNumber.Buffer4;        // 재확인 필요
                 config.Add(motion);
 
                 // LAF

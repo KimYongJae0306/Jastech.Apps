@@ -9,10 +9,12 @@ using Jastech.Framework.Device.Cameras;
 using Jastech.Framework.Device.LAFCtrl;
 using Jastech.Framework.Device.Motions;
 using Jastech.Framework.Imaging.Helper;
+using Jastech.Framework.Imaging.VisionPro;
 using Jastech.Framework.Structure;
 using Jastech.Framework.Structure.Service;
 using Jastech.Framework.Winform.Controls;
 using Jastech.Framework.Winform.Helper;
+using Jastech.Framework.Winform.VisionPro.Helper;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -39,13 +41,13 @@ namespace Jastech.Framework.Winform.Forms
 
         public double _prevDigitalGain { get; set; } = 0;
 
-        private Thread _repeatThread = null;
+        private Thread _repeatThread { get; set; } = null;
 
-        private bool _isRepeat = false;
+        private bool _isRepeat { get; set; } = false;
 
-        private bool _isInfinite = false;
+        private bool _isInfinite { get; set; } = false;
 
-        private int _remainCount = 0;
+        private int _remainCount { get; set; } = 0;
         #endregion
 
         #region 속성
@@ -129,14 +131,27 @@ namespace Jastech.Framework.Winform.Forms
 
         private void TeachingEventFunction(ATTInspTab inspTab)
         {
-            if (inspTab.MergeMatImage != null)
+            if(lblAreaMode.BackColor == _selectedColor)
             {
-                DrawBoxControl.SetImage(inspTab.MergeMatImage.ToBitmap());
+                if (inspTab.MergeMatImage != null)
+                {
+                    DrawBoxControl.SetImage(inspTab.MergeMatImage.ToBitmap());
+                }
+            }
+            else
+            {
+                if (inspTab.MergeMatImage != null)
+                {
+                    CogDisplayHelper.DisposeDisplay(cogDisplay);
+                    cogDisplay.Image = inspTab.MergeCogImage;
+                }
             }
         }
 
         private void InitializeUI()
         {
+            cogDisplay.MouseMode = Cognex.VisionPro.Display.CogDisplayMouseModeConstants.Pan;
+
             _selectedColor = Color.FromArgb(104, 104, 104);
             _nonSelectedColor = Color.FromArgb(52, 52, 52);
 
@@ -146,6 +161,8 @@ namespace Jastech.Framework.Winform.Forms
 
             tlpExposure.Dock = DockStyle.Fill;
             tlpDigitalGain.Dock = DockStyle.Fill;
+
+            SetAreaMode();
         }
 
         private void AddControl()
@@ -153,7 +170,7 @@ namespace Jastech.Framework.Winform.Forms
             DrawBoxControl = new DrawBoxControl();
             DrawBoxControl.Dock = DockStyle.Fill;
             DrawBoxControl.FigureDataDelegateEventHandler += DrawBoxControl_FigureDataDelegateEventHandler;
-            pnlDisplay.Controls.Add(DrawBoxControl);
+            pnlDrawBox.Controls.Add(DrawBoxControl);
 
             PixelValueGraphControl = new PixelValueGraphControl();
             PixelValueGraphControl.Dock = DockStyle.Fill;
@@ -229,12 +246,35 @@ namespace Jastech.Framework.Winform.Forms
 
         private void lblAreaMode_Click(object sender, EventArgs e)
         {
-            SetOperationMode(TDIOperationMode.Area);
+            SetAreaMode();
         }
 
         private void lblLineMode_Click(object sender, EventArgs e)
         {
+            SetLineMode();
+        }
+
+        private void SetAreaMode()
+        {
+            UpdateGrabButton(true);
+            SetOperationMode(TDIOperationMode.Area);
+
+            pnlDrawBox.Dock = DockStyle.Fill;
+            pnlDrawBox.Visible = true;
+            pnlCogDisplay.Visible = false;
+
+            pnlDisplay.Controls.Add(pnlDrawBox);
+        }
+
+        private void SetLineMode()
+        {
             SetOperationMode(TDIOperationMode.TDI);
+
+            pnlCogDisplay.Dock = DockStyle.Fill;
+            pnlCogDisplay.Visible = true;
+            pnlDrawBox.Visible = false;
+
+            pnlDisplay.Controls.Add(pnlCogDisplay);
         }
 
         private void SetOperationMode(TDIOperationMode operationMode)
@@ -596,9 +636,15 @@ namespace Jastech.Framework.Winform.Forms
 
         private void btnGrabStart_Click(object sender, EventArgs e)
         {
-            LineCamera.IsLive = true;
-            LineCamera.StartLiveTask();
-
+            if(lblAreaMode.BackColor == _selectedColor)
+            {
+                LineCamera.IsLive = true;
+                LineCamera.StartLiveTask();
+            }
+            else
+            {
+                LineCamera.IsLive = false;
+            }
             StartGrab(false);
         }
 
@@ -640,6 +686,7 @@ namespace Jastech.Framework.Winform.Forms
             StopGrab();
 
             DrawBoxControl.DisposeImage();
+            CogDisplayHelper.DisposeDisplay(cogDisplay);
 
             LineCamera.IsLive = false;
             LineCamera.StopLiveTask();
@@ -719,10 +766,10 @@ namespace Jastech.Framework.Winform.Forms
 
         private void MoveRepeat(bool isRepeat)
         {
-            LineCamera.IsLive = false;
             if (isRepeat)
             {
                 LineCamera.StopGrab();
+                LineCamera.IsLive = false;
 
                 double currentPosition = SelectedAxis.GetActualPosition();
                 double distance = Convert.ToDouble(lblScanXLength.Text);
@@ -775,7 +822,6 @@ namespace Jastech.Framework.Winform.Forms
 
             while (_isRepeat)
             {
-
                 StartGrab(true);
 
                 SelectedAxis.StartAbsoluteMove(repeatParam.EndPosition, movingParam);
@@ -801,6 +847,7 @@ namespace Jastech.Framework.Winform.Forms
                 Console.WriteLine("Set Repeat Count : " + repeatCount.ToString() + " / Complete Count : " + count.ToString() + " / Remain Count : " + _remainCount.ToString());
             }
             lblStartRepeat.BeginInvoke(new Action(() => lblStartRepeat.Text = "Start"));
+            UpdateGrabButton(true);
         }
 
         public void UpdateRepeatCount()
@@ -815,11 +862,13 @@ namespace Jastech.Framework.Winform.Forms
         {
             if (_isRepeat == false)
             {
+                UpdateGrabButton(false);
                 lblStartRepeat.Text = "Stop";
                 MoveRepeat(true);
             }
             else
             {
+                UpdateGrabButton(true);
                 lblStartRepeat.Text = "Start";
                 MoveRepeat(false);
             }
@@ -865,6 +914,23 @@ namespace Jastech.Framework.Winform.Forms
                 mergeMatImage = null;
             }
             Console.WriteLine("Update Repeat Display");
+        }
+
+        public delegate void UpdateGrabButtonDele(bool isEnable);
+        private void UpdateGrabButton(bool isEnable)
+        {
+            if(this.InvokeRequired)
+            {
+                UpdateGrabButtonDele callback = UpdateGrabButton;
+                BeginInvoke(callback, isEnable);
+                return;
+            }
+
+            btnGrabStart.Enabled = isEnable;
+            btnGrabStop.Enabled = isEnable;
+
+            lblAreaMode.Enabled = isEnable;
+            lblLineMode.Enabled = isEnable;
         }
         #endregion
     }
