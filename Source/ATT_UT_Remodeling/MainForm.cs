@@ -1,23 +1,21 @@
 ﻿using ATT_UT_Remodeling.Core;
 using ATT_UT_Remodeling.Core.Data;
+using ATT_UT_Remodeling.Properties;
 using ATT_UT_Remodeling.UI.Pages;
 using Jastech.Apps.Structure;
-using Jastech.Apps.Structure.Data;
 using Jastech.Apps.Winform;
 using Jastech.Apps.Winform.Core;
-using Jastech.Apps.Winform.Core.Calibrations;
 using Jastech.Apps.Winform.Service.Plc;
 using Jastech.Apps.Winform.Service.Plc.Maps;
-using Jastech.Apps.Winform.Settings;
 using Jastech.Apps.Winform.UI.Forms;
 using Jastech.Framework.Config;
-using Jastech.Framework.Device.Cameras;
 using Jastech.Framework.Device.Grabbers;
 using Jastech.Framework.Matrox;
 using Jastech.Framework.Structure;
 using Jastech.Framework.Users;
 using Jastech.Framework.Winform;
 using Jastech.Framework.Winform.Forms;
+using Jastech.Framework.Winform.Helper;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -88,6 +86,7 @@ namespace ATT_UT_Remodeling
             }
 
             tmrMainForm.Start();
+            tmrUpdateStates.Start();
             StartVirtualInspTask();
             SystemManager.Instance().InitializeInspRunner();
             SystemManager.Instance().AddSystemLogMessage("Start Program.");
@@ -248,6 +247,32 @@ namespace ATT_UT_Remodeling
             if (MainPageControl.Visible)
                 MainPageControl.UpdateButton();
         }
+        private void tmrUpdateStates_Tick(object sender, EventArgs e)
+        {
+            var plc = DeviceManager.Instance().PlcHandler;
+            bool isPlcConnected = plc.Count > 0 && plc.All(h => h.IsConnected());
+            ControlDisplayHelper.DisposeDisplay(lblPLCState);
+            lblPLCState.Image = GetStateImage(isPlcConnected);
+
+            var motion = DeviceManager.Instance().MotionHandler;
+            bool isMotionConnected = motion.Count > 0 && motion.All(h => h.IsConnected());
+            ControlDisplayHelper.DisposeDisplay(lblMotionState);
+            lblMotionState.Image = GetStateImage(isMotionConnected);
+
+            bool isCognexLicenseNormal = Cognex.VisionPro.CogLicense.GetLicensedFeatures(false, false).Count != 0;
+            ControlDisplayHelper.DisposeDisplay(lblLicenseState);
+            lblLicenseState.Image = GetStateImage(isCognexLicenseNormal);
+
+            var laf = DeviceManager.Instance().LAFCtrlHandler;
+            bool isLafConnected = laf.Count > 0 && laf.All(h => h.IsConnected());
+            ControlDisplayHelper.DisposeDisplay(lblLafState);
+            lblLafState.Image = GetStateImage(isLafConnected);
+
+            var light = DeviceManager.Instance().LightCtrlHandler;
+            bool isLightConnected = light.Count > 0 && light.All(h => h.IsConnected());
+            ControlDisplayHelper.DisposeDisplay(lblLightState);
+            lblLightState.Image = GetStateImage(isLightConnected);
+        }
 
         public void UpdateLeftPreAlignResult(AppsPreAlignResult result)
         {
@@ -317,6 +342,7 @@ namespace ATT_UT_Remodeling
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
             tmrMainForm.Stop();
+            tmrUpdateStates.Stop();
             StopVirtualInspTask();
 
             SystemManager.Instance().ReleaseInspRunner();
@@ -506,6 +532,10 @@ namespace ATT_UT_Remodeling
                 else
                     return null;
             }
+        }
+        private Image GetStateImage(bool isNormalState)
+        {
+            return isNormalState ? Resources.Circle_Green : Resources.Circle_Red;
         }
         #endregion
 

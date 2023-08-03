@@ -685,6 +685,7 @@ namespace Jastech.Framework.Winform.Forms
         {
             StopGrab();
 
+            //ControlDisplayHelper.DisposeDisplay(DrawBoxControl);
             DrawBoxControl.DisposeImage();
             CogDisplayHelper.DisposeDisplay(cogDisplay);
 
