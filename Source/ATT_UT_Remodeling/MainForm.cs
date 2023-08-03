@@ -9,6 +9,7 @@ using Jastech.Apps.Winform.Core.Calibrations;
 using Jastech.Apps.Winform.Service.Plc;
 using Jastech.Apps.Winform.Service.Plc.Maps;
 using Jastech.Apps.Winform.Settings;
+using Jastech.Apps.Winform.UI.Forms;
 using Jastech.Framework.Config;
 using Jastech.Framework.Device.Cameras;
 using Jastech.Framework.Device.Grabbers;
@@ -52,6 +53,8 @@ namespace ATT_UT_Remodeling
         private Queue<string> VirtualImagePathQueue = new Queue<string>();
 
         public ATTInspModelService ATTInspModelService { get; set; } = new ATTInspModelService();
+
+        private ManualJudgeForm ManualJudgeForm { get; set; } = null;
         #endregion
 
         #region 생성자
@@ -90,6 +93,9 @@ namespace ATT_UT_Remodeling
             SystemManager.Instance().AddSystemLogMessage("Start Program.");
 
             PlcControlManager.Instance().WriteVersion();
+
+            ManualJudgeForm = new ManualJudgeForm();
+            ManualJudgeForm.Hide();
         }
 
         private void MainForm_PreAlignRunnerHandler(bool isStart)
@@ -502,5 +508,11 @@ namespace ATT_UT_Remodeling
             }
         }
         #endregion
+
+        private void lblSystemName_Click(object sender, EventArgs e)
+        {
+            ManualJudgeForm.Message = "tlqkf";
+            ManualJudgeForm.Show();
+        }
     }
 }

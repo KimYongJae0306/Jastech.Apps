@@ -250,6 +250,8 @@ namespace ATT_UT_Remodeling.Core
                     break;
 
                 case SeqStep.SEQ_INIT:
+                    NGManager.Instance().Clear();
+
                     LineCamera.IsLive = false;
                     LineCamera.StopGrab();
                     WriteLog("Stop Grab.");

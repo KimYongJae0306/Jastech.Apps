@@ -33,7 +33,6 @@ namespace Jastech.Apps.Winform.Service.Plc
 
         #region 이벤트
         public event InspRunnerEventHandler InspRunnerHandler;
-
         public event PreAlignRunnerEventHandler PreAlignRunnerHandler;
         #endregion
 
