@@ -35,9 +35,9 @@ namespace Jastech.Apps.Winform
 
         private PlcAddressService PlcAddressService { get; set; } = new PlcAddressService();
 
-        public Task PlcReadTask { get; set; }
+        public Task PlcActionTask { get; set; }
 
-        public CancellationTokenSource CancelPlcReadTask { get; set; }
+        public CancellationTokenSource CancelPlcActionTask { get; set; }
         #endregion
 
         #region 메서드
@@ -122,29 +122,29 @@ namespace Jastech.Apps.Winform
 
         public void StartReadTask()
         {
-            if (PlcReadTask != null)
+            if (PlcActionTask != null)
                 return;
 
-            CancelPlcReadTask = new CancellationTokenSource();
-            PlcReadTask = new Task(PlcReadAction, CancelPlcReadTask.Token);
-            PlcReadTask.Start();
+            CancelPlcActionTask = new CancellationTokenSource();
+            PlcActionTask = new Task(PlcAction, CancelPlcActionTask.Token);
+            PlcActionTask.Start();
         }
 
         public void StopReadTask()
         {
-            if (PlcReadTask == null)
+            if (PlcActionTask == null)
                 return;
 
-            CancelPlcReadTask.Cancel();
+            CancelPlcActionTask.Cancel();
             //PlcReadTask.Wait();
-            PlcReadTask = null;
+            PlcActionTask = null;
         }
 
-        private void PlcReadAction()
+        private void PlcAction()
         {
             while (true)
             {
-                if (CancelPlcReadTask.IsCancellationRequested)
+                if (CancelPlcActionTask.IsCancellationRequested)
                 {
                     break;
                 }

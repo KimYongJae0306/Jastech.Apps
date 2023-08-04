@@ -22,7 +22,7 @@ namespace Jastech.Apps.Winform.UI.Forms
         #region 속성
         public string Message { get; set; } = string.Empty;
 
-        private Judgement Judgement { get; set; } = Judgement.None;
+        private Judgement Judgement { get; set; } = Judgement.NG;
         #endregion
 
         #region 이벤트
