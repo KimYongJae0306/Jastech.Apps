@@ -118,10 +118,70 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <data name="lblMotionState.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
+        wAAADsABataJCQAAAW5JREFUOE+tVLtKA1EQvY2l4L/snElja6EbZBEkiK8gEQQRO7HyhRIfaLAQ7GxE
+        RBAVsbHxP0QUwUIsTCMigqwz601gN9esWXPgVDNz7sydh3GBiLoGgJ4ScLPAfL/N/L7JHJaZH6aAMyYa
+        sa7pCIj8dea701wuvGrCFeZXebhowxrRTdQ5AewdOYJ/oz4qMWUrEceYiKVl5eKFcBTYtzI/6JXUDxOO
+        rVATkfKDSEwbsCyf7XJshYvM1UiwHwiylJqkakj3i2ZWxsDlkIXTomXW2lBujfNA1cjQfrqMWbjD/GG2
+        2igo2/RlVpmfXcYs3GC+1aacu4xZqA02eaDgMrZKHZs80aDxPK9Dav93p+UqPemS1If72OH0V+pB8YmG
+        I7Ea5P4duJzTqKVOArtWJo5xoHKSCGhGrWpGxPT0WYlGQPZR/qPpKGlWc8CLDwzZsHTIBxdkN6+XpGEy
+        X2GF+U2u0qMc1Ms+olK9ATEY8w3ZZ6TU6ZuuGgAAAABJRU5ErkJggg==
+</value>
+  </data>
+  <data name="lblLightState.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
+        wAAADsABataJCQAAAW5JREFUOE+tVLtKA1EQvY2l4L/snElja6EbZBEkiK8gEQQRO7HyhRIfaLAQ7GxE
+        RBAVsbHxP0QUwUIsTCMigqwz601gN9esWXPgVDNz7sydh3GBiLoGgJ4ScLPAfL/N/L7JHJaZH6aAMyYa
+        sa7pCIj8dea701wuvGrCFeZXebhowxrRTdQ5AewdOYJ/oz4qMWUrEceYiKVl5eKFcBTYtzI/6JXUDxOO
+        rVATkfKDSEwbsCyf7XJshYvM1UiwHwiylJqkakj3i2ZWxsDlkIXTomXW2lBujfNA1cjQfrqMWbjD/GG2
+        2igo2/RlVpmfXcYs3GC+1aacu4xZqA02eaDgMrZKHZs80aDxPK9Dav93p+UqPemS1If72OH0V+pB8YmG
+        I7Ea5P4duJzTqKVOArtWJo5xoHKSCGhGrWpGxPT0WYlGQPZR/qPpKGlWc8CLDwzZsHTIBxdkN6+XpGEy
+        X2GF+U2u0qMc1Ms+olK9ATEY8w3ZZ6TU6ZuuGgAAAABJRU5ErkJggg==
+</value>
+  </data>
+  <data name="lblPLCState.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
+        wAAADsABataJCQAAAW5JREFUOE+tVLtKA1EQvY2l4L/snElja6EbZBEkiK8gEQQRO7HyhRIfaLAQ7GxE
+        RBAVsbHxP0QUwUIsTCMigqwz601gN9esWXPgVDNz7sydh3GBiLoGgJ4ScLPAfL/N/L7JHJaZH6aAMyYa
+        sa7pCIj8dea701wuvGrCFeZXebhowxrRTdQ5AewdOYJ/oz4qMWUrEceYiKVl5eKFcBTYtzI/6JXUDxOO
+        rVATkfKDSEwbsCyf7XJshYvM1UiwHwiylJqkakj3i2ZWxsDlkIXTomXW2lBujfNA1cjQfrqMWbjD/GG2
+        2igo2/RlVpmfXcYs3GC+1aacu4xZqA02eaDgMrZKHZs80aDxPK9Dav93p+UqPemS1If72OH0V+pB8YmG
+        I7Ea5P4duJzTqKVOArtWJo5xoHKSCGhGrWpGxPT0WYlGQPZR/qPpKGlWc8CLDwzZsHTIBxdkN6+XpGEy
+        X2GF+U2u0qMc1Ms+olK9ATEY8w3ZZ6TU6ZuuGgAAAABJRU5ErkJggg==
+</value>
+  </data>
+  <data name="lblLicenseState.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
+        wAAADsABataJCQAAAW5JREFUOE+tVLtKA1EQvY2l4L/snElja6EbZBEkiK8gEQQRO7HyhRIfaLAQ7GxE
+        RBAVsbHxP0QUwUIsTCMigqwz601gN9esWXPgVDNz7sydh3GBiLoGgJ4ScLPAfL/N/L7JHJaZH6aAMyYa
+        sa7pCIj8dea701wuvGrCFeZXebhowxrRTdQ5AewdOYJ/oz4qMWUrEceYiKVl5eKFcBTYtzI/6JXUDxOO
+        rVATkfKDSEwbsCyf7XJshYvM1UiwHwiylJqkakj3i2ZWxsDlkIXTomXW2lBujfNA1cjQfrqMWbjD/GG2
+        2igo2/RlVpmfXcYs3GC+1aacu4xZqA02eaDgMrZKHZs80aDxPK9Dav93p+UqPemS1If72OH0V+pB8YmG
+        I7Ea5P4duJzTqKVOArtWJo5xoHKSCGhGrWpGxPT0WYlGQPZR/qPpKGlWc8CLDwzZsHTIBxdkN6+XpGEy
+        X2GF+U2u0qMc1Ms+olK9ATEY8w3ZZ6TU6ZuuGgAAAABJRU5ErkJggg==
+</value>
+  </data>
+  <data name="lblLafState.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
+        wAAADsABataJCQAAAW5JREFUOE+tVLtKA1EQvY2l4L/snElja6EbZBEkiK8gEQQRO7HyhRIfaLAQ7GxE
+        RBAVsbHxP0QUwUIsTCMigqwz601gN9esWXPgVDNz7sydh3GBiLoGgJ4ScLPAfL/N/L7JHJaZH6aAMyYa
+        sa7pCIj8dea701wuvGrCFeZXebhowxrRTdQ5AewdOYJ/oz4qMWUrEceYiKVl5eKFcBTYtzI/6JXUDxOO
+        rVATkfKDSEwbsCyf7XJshYvM1UiwHwiylJqkakj3i2ZWxsDlkIXTomXW2lBujfNA1cjQfrqMWbjD/GG2
+        2igo2/RlVpmfXcYs3GC+1aacu4xZqA02eaDgMrZKHZs80aDxPK9Dav93p+UqPemS1If72OH0V+pB8YmG
+        I7Ea5P4duJzTqKVOArtWJo5xoHKSCGhGrWpGxPT0WYlGQPZR/qPpKGlWc8CLDwzZsHTIBxdkN6+XpGEy
+        X2GF+U2u0qMc1Ms+olK9ATEY8w3ZZ6TU6ZuuGgAAAABJRU5ErkJggg==
+</value>
+  </data>
   <data name="lblInspectionPageImage.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAL
-        DwAACw8BkvkDpQAAAvtJREFUaEPtms1OFEEUhccEVhAfAAVZgH+JbHwNXIKukLjwB30mJYBowgO4Yo8x
+        DAAACwwBP0AiyAAAAvtJREFUaEPtms1OFEEUhccEVhAfAAVZgH+JbHwNXIKukLjwB30mJYBowgO4Yo8x
         gehaXZGYiBqM8QeNGb8zfWdj6K5bXdVMT/RLTiR6z6kqprv6do2d/wwr3W53Fj1AT9Ae+oh+mvTzLtK/
         3UezZhssTGQULaHnKJYdJO+oxZ0sDHwNvUGpvEbzFts8DDaO1jRyZpQ5bsM0AwNMoFcarSGUPWHD5UXB
         6K1GaRiNkXcRBOqyafI3/zcvUb7LibAmrvkQazZ8GgRpt/HyDa2jBXQejZn08yLaQN+Rl7TdiQDt896t
@@ -139,5 +199,8 @@
   </data>
   <metadata name="tmrMainForm.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>17, 17</value>
+  </metadata>
+  <metadata name="tmrUpdateStates.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>145, 17</value>
   </metadata>
 </root>

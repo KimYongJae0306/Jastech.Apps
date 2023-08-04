@@ -200,7 +200,7 @@ namespace ATT.Core
             {
                 var roiList = tab.AkkonParam.GetAkkonROIList();
                 var coordinateList = RenewalAkkonRoi(roiList, panelCoordinate);
-                var leadResultList = AkkonAlgorithm.Run(inspTab.MergeMatImage, roiList, tab.AkkonParam.AkkonAlgoritmParam, resolution_um);
+                var leadResultList = AkkonAlgorithm.Run(inspTab.MergeMatImage, coordinateList, tab.AkkonParam.AkkonAlgoritmParam, resolution_um);
 
                 inspResult.AkkonResult = CreateAkkonResult(unitName, tab.Index, leadResultList);
             }

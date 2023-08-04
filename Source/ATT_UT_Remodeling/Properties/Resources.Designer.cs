@@ -73,6 +73,26 @@ namespace ATT_UT_Remodeling.Properties {
         /// <summary>
         ///   System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
         /// </summary>
+        internal static System.Drawing.Bitmap Circle_Green {
+            get {
+                object obj = ResourceManager.GetObject("Circle_Green", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
+        /// </summary>
+        internal static System.Drawing.Bitmap Circle_Red {
+            get {
+                object obj = ResourceManager.GetObject("Circle_Red", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
+        /// </summary>
         internal static System.Drawing.Bitmap Exit_White {
             get {
                 object obj = ResourceManager.GetObject("Exit_White", resourceCulture);

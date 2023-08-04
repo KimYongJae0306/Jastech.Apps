@@ -109,6 +109,7 @@
     <Compile Include="LineCamera.cs" />
     <Compile Include="LineCameraManager.cs" />
     <Compile Include="MotionManager.cs" />
+    <Compile Include="NGManager.cs" />
     <Compile Include="PlcControlManager.cs" />
     <Compile Include="Service\Plc\Maps\PlcCommonMap.cs" />
     <Compile Include="Service\Plc\Maps\PlcResultMap.cs" />
@@ -169,6 +170,12 @@
     </Compile>
     <Compile Include="UI\Forms\InspectionTeachingForm.designer.cs">
       <DependentUpon>InspectionTeachingForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Forms\ManualJudgeForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\Forms\ManualJudgeForm.Designer.cs">
+      <DependentUpon>ManualJudgeForm.cs</DependentUpon>
     </Compile>
     <Compile Include="UI\Forms\ProgramSelectForm.cs">
       <SubType>Form</SubType>
@@ -443,6 +450,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UI\Forms\LogForm.resx">
       <DependentUpon>LogForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\Forms\ManualJudgeForm.resx">
+      <DependentUpon>ManualJudgeForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\Forms\ProgramSelectForm.resx">
       <DependentUpon>ProgramSelectForm.cs</DependentUpon>
