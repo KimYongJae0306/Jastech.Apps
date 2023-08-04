@@ -247,6 +247,7 @@ namespace ATT_UT_Remodeling
             if (MainPageControl.Visible)
                 MainPageControl.UpdateButton();
         }
+
         private void tmrUpdateStates_Tick(object sender, EventArgs e)
         {
             var plc = DeviceManager.Instance().PlcHandler;
