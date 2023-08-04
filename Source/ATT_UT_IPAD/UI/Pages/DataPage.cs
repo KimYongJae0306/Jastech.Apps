@@ -3,6 +3,7 @@ using ATT_UT_IPAD.UI.Forms;
 using Jastech.Apps.Structure;
 using Jastech.Apps.Winform;
 using Jastech.Apps.Winform.UI.Forms;
+using Jastech.Framework.Winform;
 using Jastech.Framework.Winform.Forms;
 using System;
 using System.Windows.Forms;
@@ -85,7 +86,10 @@ namespace ATT_UT_IPAD.UI.Pages
         {
             if (PlcStatusForm == null)
             {
+                var camera = DeviceManager.Instance().CameraHandler.First();
+
                 PlcStatusForm = new PlcStatusForm();
+                PlcStatusForm.Resolution_um = camera.PixelResolution_um / camera.LensScale;
                 PlcStatusForm.CloseEventDelegate = () => this.PlcStatusForm = null;
                 PlcStatusForm.Show();
             }

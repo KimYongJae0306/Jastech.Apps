@@ -1,4 +1,5 @@
-﻿using Jastech.Apps.Winform.Core;
+﻿using Jastech.Apps.Structure.Data;
+using Jastech.Apps.Winform.Core;
 using Jastech.Apps.Winform.Service.Plc.Maps;
 using Jastech.Framework.Algorithms.Akkon.Results;
 using Jastech.Framework.Imaging.Result;
@@ -15,6 +16,9 @@ namespace Jastech.Apps.Winform.UI.Controls
         private bool _isLoading { get; set; } = false;
         #endregion
 
+        #region 속성
+        public double Resolution_um { get; set; } = 1;
+        #endregion
         #region 생성자
         public PlcCommandControl()
         {
@@ -45,16 +49,18 @@ namespace Jastech.Apps.Winform.UI.Controls
             cbxPCStatus.SelectedIndex = 0;
 
             foreach (Judgement type in Enum.GetValues(typeof(Judgement)))
-                cbxWriteAlignJudgement.Items.Add(type.ToString());
+            {
+                if (type != Judgement.FAIL)
+                    cbxWriteAlignJudgement.Items.Add(type.ToString());
+            }
             cbxWriteAlignJudgement.SelectedIndex = 0;
 
-            foreach (AkkonJudgement type in Enum.GetValues(typeof(AkkonJudgement)))
-                cbxWriteAkkonJudgement.Items.Add(type.ToString());
-            cbxWriteAkkonJudgement.SelectedIndex = 0;
-
             foreach (Judgement type in Enum.GetValues(typeof(Judgement)))
-                cbxWriteLengthJudgement.Items.Add(type.ToString());
-            cbxWriteLengthJudgement.SelectedIndex = 0;
+            {
+                if(type != Judgement.FAIL)
+                    cbxWriteAkkonJudgement.Items.Add(type.ToString());
+            }
+            cbxWriteAkkonJudgement.SelectedIndex = 0;
         }
 
         public void UpdateData()
@@ -144,7 +150,6 @@ namespace Jastech.Apps.Winform.UI.Controls
                 Console.WriteLine(err.ToString());
                 throw;
             }
-
         }
 
         private void DrawCombobox(object sender, DrawItemEventArgs e)
@@ -227,31 +232,6 @@ namespace Jastech.Apps.Winform.UI.Controls
                 alignDataT = Convert.ToDouble(lblWriteAlignDataT.Text);
 
             PlcControlManager.Instance().WriteAlignData(alignDataX, alignDataY, alignDataT);
-        }
-
-        private void btnWriteInspAlignResult_Click(object sender, EventArgs e)
-        {
-            string tabIndex = cbxTabNo.SelectedItem as string;
-            int tabNo = Convert.ToInt32(tabIndex);
-            
-            Judgement judgement = (Judgement)Enum.Parse(typeof(Judgement), cbxWriteAlignJudgement.SelectedItem as string);
-            double leftAlignDataX_mm = 0;
-            double leftAlignDataY_mm = 0;
-            double rightAlignDataX_mm = 0;
-            double rightAlignDataY_mm = 0;
-
-            if (lblWriteInspLeftAlignX.Text != "")
-                leftAlignDataX_mm = Convert.ToDouble(lblWriteInspLeftAlignX.Text);
-            if (lblWriteInspLeftAlignY.Text != "")
-                leftAlignDataY_mm = Convert.ToDouble(lblWriteInspLeftAlignY.Text);
-
-            if (lblWriteInspRightAlignX.Text != "")
-                rightAlignDataX_mm = Convert.ToDouble(lblWriteInspRightAlignX.Text);
-            if (lblWriteInspRightAlignY.Text != "")
-                rightAlignDataY_mm = Convert.ToDouble(lblWriteInspRightAlignY.Text);
-
-            int judgementValue = judgement == Judgement.OK ? 1 : 2;
-            PlcControlManager.Instance().WriteTabAlignResult(tabNo, judgementValue, leftAlignDataX_mm, leftAlignDataY_mm, rightAlignDataX_mm, rightAlignDataY_mm);
         }
 
         private void lblWriteInspLeftAlignX_Click(object sender, EventArgs e)
@@ -350,30 +330,6 @@ namespace Jastech.Apps.Winform.UI.Controls
             lblRightLengthMax.Text = value.ToString();
         }
 
-        private void btnWriteAkkonResult_Click(object sender, EventArgs e)
-        {
-            string tabIndex = cbxTabNo.SelectedItem as string;
-            int tabNo = Convert.ToInt32(tabIndex);
-
-            AkkonJudgement judgement = (AkkonJudgement)Enum.Parse(typeof(AkkonJudgement), cbxWriteAkkonJudgement.SelectedItem as string);
-            AkkonResult result = new AkkonResult();
-            result.LeftCount_Avg = Convert.ToInt32(lblLeftAkkonCountAvg.Text);
-            result.LeftCount_Min = Convert.ToInt32(lblLeftAkkonCountMin.Text);
-            result.LeftCount_Max = Convert.ToInt32(lblLeftAkkonCountMax.Text);
-            result.RightCount_Avg = Convert.ToInt32(lblRightAkkonCountAvg.Text);
-            result.RightCount_Min = Convert.ToInt32(lblRightAkkonCountMin.Text);
-            result.RightCount_Max = Convert.ToInt32(lblRightAkkonCountMax.Text);
-
-            result.Length_Left_Avg_um = Convert.ToInt32(lblLeftLengthAvg.Text);
-            result.Length_Left_Min_um = Convert.ToInt32(lblLeftLengthMin.Text);
-            result.Length_Left_Max_um = Convert.ToInt32(lblLeftLengthMax.Text);
-            result.Length_Right_Avg_um = Convert.ToInt32(lblRightLengthAvg.Text);
-            result.Length_Right_Min_um = Convert.ToInt32(lblRightLengthMin.Text);
-            result.Length_Right_Max_um = Convert.ToInt32(lblRightLengthMax.Text);
-
-            PlcControlManager.Instance().WriteTabAkkonResult(tabNo, result);
-        }
-
         private void btnCommand_Common_Click(object sender, EventArgs e)
         {
             PlcControlManager.Instance().ClearAddress(PlcCommonMap.PLC_Command_Common);
@@ -406,6 +362,93 @@ namespace Jastech.Apps.Winform.UI.Controls
         private void btnWriteCurrentModel_Click(object sender, EventArgs e)
         {
             PlcControlManager.Instance().WriteCurrentModelName(lblCurrentModel.Text);
+        }
+
+        private void btnWriteInspResult_Click(object sender, EventArgs e)
+        {
+            CheckTabResultValue();
+
+            TabInspResult inspResult = new TabInspResult();
+            inspResult.TabNo = Convert.ToInt32(lblWriteTabNo.Text);
+            inspResult.IsManualOK = Convert.ToInt32(lblManualOK.Text) == 0 ? false : true;
+
+            CreateAlignResult(ref inspResult);
+            CreateAkkonResult(ref inspResult);
+
+            PlcControlManager.Instance().WriteTabResult(inspResult, Resolution_um);
+        }
+
+        private void CreateAlignResult(ref TabInspResult tabInspResult)
+        {
+            var result = tabInspResult.AlignResult;
+            if (result == null)
+                result = new TabAlignResult();
+
+            result.LeftX = new AlignResult();
+            result.LeftY = new AlignResult();
+            result.RightX = new AlignResult();
+            result.RightY = new AlignResult();
+
+            // Default 값이 OK 이므로 한개의 Judgement만 바꾸면 전체 결과가 바뀐다.
+            result.LeftX.Fpc.Judgement = (Judgement)Enum.Parse(typeof(Judgement), cbxWriteAlignJudgement.SelectedItem as string);
+            result.LeftX.ResultValue_pixel = GetStringToFloat(lblWriteInspLeftAlignX.Text) * 1000.0F / (float)Resolution_um;
+            result.LeftY.ResultValue_pixel = GetStringToFloat(lblWriteInspLeftAlignY.Text) * 1000.0F / (float)Resolution_um;
+
+            result.RightX.ResultValue_pixel = GetStringToFloat(lblWriteInspRightAlignX.Text) * 1000.0F / (float)Resolution_um;
+            result.RightY.ResultValue_pixel = GetStringToFloat(lblWriteInspRightAlignY.Text) * 1000.0F / (float)Resolution_um;
+        }
+
+        private void CreateAkkonResult(ref TabInspResult tabInspResult)
+        {
+            var result = tabInspResult.AkkonResult;
+            if (result == null)
+                result = new AkkonResult();
+
+            result.Judgement = (Judgement)Enum.Parse(typeof(Judgement), cbxWriteAkkonJudgement.SelectedItem as string);
+            result.LeftCount_Avg = Convert.ToInt32(lblLeftAkkonCountAvg.Text);
+            result.LeftCount_Min = Convert.ToInt32(lblLeftAkkonCountMin.Text);
+            result.LeftCount_Max = Convert.ToInt32(lblLeftAkkonCountMax.Text);
+            result.RightCount_Avg = Convert.ToInt32(lblRightAkkonCountAvg.Text);
+            result.RightCount_Min = Convert.ToInt32(lblRightAkkonCountMin.Text);
+            result.RightCount_Max = Convert.ToInt32(lblRightAkkonCountMax.Text);
+
+            result.Length_Left_Avg_um = GetStringToFloat(lblLeftLengthAvg.Text) * 1000.0F / (float)Resolution_um;
+            result.Length_Left_Min_um = GetStringToFloat(lblLeftLengthMin.Text) * 1000.0F / (float)Resolution_um;
+            result.Length_Left_Max_um = GetStringToFloat(lblLeftLengthMax.Text) * 1000.0F / (float)Resolution_um;
+            result.Length_Right_Avg_um = GetStringToFloat(lblRightLengthAvg.Text) * 1000.0F / (float)Resolution_um;
+            result.Length_Right_Min_um = GetStringToFloat(lblRightLengthMin.Text) * 1000.0F / (float)Resolution_um;
+            result.Length_Right_Max_um = GetStringToFloat(lblRightLengthMax.Text) * 1000.0F / (float)Resolution_um;
+        }
+
+        private float GetStringToFloat(string value)
+        {
+            return Convert.ToSingle(value);
+        }
+
+        private void CheckTabResultValue()
+        {
+            lblWriteTabNo.Text = lblWriteTabNo.Text == "" ? "0" : lblWriteTabNo.Text;
+            lblManualOK.Text = lblManualOK.Text == "" ? "0" : lblManualOK.Text;
+
+            lblWriteInspLeftAlignX.Text = lblWriteInspLeftAlignX.Text == "" ? "0" : lblWriteInspLeftAlignX.Text;
+            lblWriteInspLeftAlignY.Text = lblWriteInspLeftAlignY.Text == "" ? "0" : lblWriteInspLeftAlignY.Text;
+            lblWriteInspRightAlignX.Text = lblWriteInspRightAlignX.Text == "" ? "0" : lblWriteInspRightAlignX.Text;
+            lblWriteInspRightAlignY.Text = lblWriteInspRightAlignY.Text == "" ? "0" : lblWriteInspRightAlignY.Text;
+
+            lblLeftAkkonCountAvg.Text = lblLeftAkkonCountAvg.Text == "" ? "0" : lblLeftAkkonCountAvg.Text;
+            lblLeftAkkonCountMin.Text = lblLeftAkkonCountMin.Text == "" ? "0" : lblLeftAkkonCountMin.Text;
+            lblLeftAkkonCountMax.Text = lblLeftAkkonCountMax.Text == "" ? "0" : lblLeftAkkonCountMax.Text;
+            lblRightAkkonCountAvg.Text = lblRightAkkonCountAvg.Text == "" ? "0" : lblRightAkkonCountAvg.Text;
+            lblRightAkkonCountMin.Text = lblRightAkkonCountMin.Text == "" ? "0" : lblRightAkkonCountMin.Text;
+            lblRightAkkonCountMax.Text = lblRightAkkonCountMax.Text == "" ? "0" : lblRightAkkonCountMax.Text;
+
+            lblLeftLengthAvg.Text = lblLeftLengthAvg.Text == "" ? "0" : lblLeftLengthAvg.Text;
+            lblLeftLengthMin.Text = lblLeftLengthMin.Text == "" ? "0" : lblLeftLengthMin.Text;
+            lblLeftLengthMax.Text = lblLeftLengthMax.Text == "" ? "0" : lblLeftLengthMax.Text;
+            lblRightLengthAvg.Text = lblRightLengthAvg.Text == "" ? "0" : lblRightLengthAvg.Text;
+            lblRightLengthMin.Text = lblRightLengthMin.Text == "" ? "0" : lblRightLengthMin.Text;
+            lblRightLengthMax.Text = lblRightLengthMax.Text == "" ? "0" : lblRightLengthMax.Text;
+
         }
         #endregion
     }

@@ -40,7 +40,7 @@ namespace ATT.UI.Pages
             InspectionTeachingForm form = new InspectionTeachingForm();
             form.UnitName = UnitName.Unit0;
             form.TitleCameraName = "LineScan";
-            form.LineCamera = LineCameraManager.Instance().GetAppsCamera("Camera0");
+            form.LineCamera = LineCameraManager.Instance().GetLineCamera("Camera0");
             form.LAFCtrl = LAFManager.Instance().GetLAFCtrl("Laf");
             form.InspModelService = ATTInspModelService;
             form.OpenMotionPopupEventHandler += OpenMotionPopupEventHandler;
@@ -53,12 +53,12 @@ namespace ATT.UI.Pages
 
             if(ConfigSet.Instance().Operation.VirtualMode)
             {
-                form.LineCamera = LineCameraManager.Instance().GetAppsCamera("Camera0");
+                form.LineCamera = LineCameraManager.Instance().GetLineCamera("Camera0");
                 form.LAFCtrl = LAFManager.Instance().GetLAFCtrl("Laf");
             }
             else
             {
-                form.LineCamera = LineCameraManager.Instance().GetAppsCamera("Camera0");
+                form.LineCamera = LineCameraManager.Instance().GetLineCamera("Camera0");
                 form.LAFCtrl = LAFManager.Instance().GetLAFCtrl("Laf");
             }
             form.UnitName = UnitName.Unit0;

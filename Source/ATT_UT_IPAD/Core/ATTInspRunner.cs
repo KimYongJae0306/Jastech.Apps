@@ -612,7 +612,7 @@ namespace ATT_UT_IPAD.Core
                 alignInfo.InspectionTime = AppsInspResult.Instance().EndInspTime.ToString("HH:mm:ss");
                 alignInfo.PanelID = AppsInspResult.Instance().Cell_ID;
                 alignInfo.TabNo = tabInspResult.TabNo;
-                alignInfo.Judgement = tabInspResult.Judgement;
+                alignInfo.Judgement = tabInspResult.AlignResult.Judgement;
                 alignInfo.LX = GetResultAlignResultValue(tabInspResult.AlignResult.LeftX);
                 alignInfo.LY = GetResultAlignResultValue(tabInspResult.AlignResult.LeftY);
                 alignInfo.RX = GetResultAlignResultValue(tabInspResult.AlignResult.RightX);
@@ -1107,7 +1107,7 @@ namespace ATT_UT_IPAD.Core
             string okExtension = operation.GetExtensionOKImage();
             string ngExtension = operation.GetExtensionNGImage();
 
-            if (tabInspResult.Judgement == Judgement.OK)
+            if (tabInspResult.Judgement == TabJudgement.OK || tabInspResult.Judgement == TabJudgement.Manual_OK)
             {
                 if (ConfigSet.Instance().Operation.SaveImageOK)
                 {

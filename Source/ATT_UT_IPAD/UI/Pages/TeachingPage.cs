@@ -31,7 +31,7 @@ namespace ATT_UT_IPAD.UI.Pages
                 lafCtrl.SetTrackingOnOFF(false);
 
             OpticTeachingForm form = new OpticTeachingForm();
-            form.LineCamera = LineCameraManager.Instance().GetAppsCamera("AlignCamera");
+            form.LineCamera = LineCameraManager.Instance().GetLineCamera("AlignCamera");
             form.LAFCtrl = LAFManager.Instance().GetLAFCtrl("AlignLaf");
             form.UnitName = UnitName.Unit0;
             form.AxisNameZ = Jastech.Framework.Device.Motions.AxisName.Z0;
@@ -48,7 +48,7 @@ namespace ATT_UT_IPAD.UI.Pages
                 lafCtrl.SetTrackingOnOFF(false);
 
             OpticTeachingForm form = new OpticTeachingForm();
-            form.LineCamera = LineCameraManager.Instance().GetAppsCamera("AkkonCamera");
+            form.LineCamera = LineCameraManager.Instance().GetLineCamera("AkkonCamera");
             form.LAFCtrl = LAFManager.Instance().GetLAFCtrl("AkkonLaf");
             form.UnitName = UnitName.Unit0;
             form.AxisNameZ = Jastech.Framework.Device.Motions.AxisName.Z1;
@@ -64,7 +64,7 @@ namespace ATT_UT_IPAD.UI.Pages
             InspectionTeachingForm form = new InspectionTeachingForm();
             form.UnitName = UnitName.Unit0;
             form.TitleCameraName = "AlignCamera";
-            form.LineCamera = LineCameraManager.Instance().GetAppsCamera("AlignCamera");
+            form.LineCamera = LineCameraManager.Instance().GetLineCamera("AlignCamera");
             form.UseDelayStart = true;
             form.LAFCtrl = LAFManager.Instance().GetLAFCtrl("AlignLaf");
             form.InspModelService = ATTInspModelService;
@@ -77,7 +77,7 @@ namespace ATT_UT_IPAD.UI.Pages
             InspectionTeachingForm form = new InspectionTeachingForm();
             form.UnitName = UnitName.Unit0;
             form.TitleCameraName = "AkkonCamera";
-            form.LineCamera = LineCameraManager.Instance().GetAppsCamera("AkkonCamera");
+            form.LineCamera = LineCameraManager.Instance().GetLineCamera("AkkonCamera");
             form.LAFCtrl = LAFManager.Instance().GetLAFCtrl("AkkonLaf");
             form.InspModelService = ATTInspModelService;
             form.OpenMotionPopupEventHandler += OpenMotionPopupEventHandler;

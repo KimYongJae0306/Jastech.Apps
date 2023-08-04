@@ -61,14 +61,9 @@ namespace Jastech.Apps.Winform
             }
         }
 
-        public LineCamera GetAppsCamera(string name)
-        {
-            return CameraList.Where(x => x.Camera.Name == name).FirstOrDefault();
-        }
-
         public void Stop(string name)
         {
-            GetAppsCamera(name).StopGrab();
+            GetLineCamera(name).StopGrab();
         }
 
         private Camera GetCamera(string name)
@@ -89,8 +84,8 @@ namespace Jastech.Apps.Winform
                 byte[] data = camera.GetGrabbedImage();
                 if (data != null)
                 {
-                    if (GetAppsCamera(camera.Name) is LineCamera lineCamera)
-                        GetAppsCamera(camera.Name).AddSubImage(data, camera.GrabCount);
+                    if (GetLineCamera(camera.Name) is LineCamera lineCamera)
+                        GetLineCamera(camera.Name).AddSubImage(data, camera.GrabCount);
                 }
             }
             Thread.Sleep(0);
