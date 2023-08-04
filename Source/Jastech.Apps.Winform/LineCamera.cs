@@ -29,6 +29,10 @@ namespace Jastech.Apps.Winform
         private object _lock = new object();
 
         private object _dataLock = new object();
+
+        private Thread _trackingOnThread { get; set; } = null;
+
+        private bool _isStopTrackingOn { get; set; } = false;
         #endregion
 
         #region 속성
@@ -40,7 +44,7 @@ namespace Jastech.Apps.Winform
 
         public int DelayGrabIndex { get; private set; } = -1;
 
-        public int LAFTrackingOnIndex { get; private set; } = -1;
+        public double LAFTrackingPos_mm { get; private set; } = -1;
 
         public List<TabScanBuffer> TabScanBufferList { get; private set; } = new List<TabScanBuffer>();
 
@@ -53,6 +57,8 @@ namespace Jastech.Apps.Winform
         public CancellationTokenSource CancelLiveTask { get; set; }
 
         public int CameraGab { get; set; } = -1;
+
+    
         #endregion
 
         #region 이벤트
@@ -99,7 +105,7 @@ namespace Jastech.Apps.Winform
             _curGrabCount = 0;
             _stackTabNo = 0;
             DelayGrabIndex = -1;
-            LAFTrackingOnIndex = -1;
+            LAFTrackingPos_mm = -1;
         }
 
         public void InitGrabSettings()
@@ -128,9 +134,7 @@ namespace Jastech.Apps.Winform
                 if (i == 0)
                 {
                     tempPos += inspModel.MaterialInfo.PanelEdgeToFirst_mm;
-
-                    double trackingOn = tempPos - (inspModel.MaterialInfo.PanelEdgeToFirst_mm / 2.0);
-                    LAFTrackingOnIndex = (int)(trackingOn / resolution_mm / Camera.ImageHeight);
+                    LAFTrackingPos_mm = tempPos - (inspModel.MaterialInfo.PanelEdgeToFirst_mm / 2.0);
                 }
 
                 int startIndex = (int)(tempPos / resolution_mm / Camera.ImageHeight);
@@ -192,9 +196,7 @@ namespace Jastech.Apps.Winform
                     tempPos += inspModel.MaterialInfo.PanelEdgeToFirst_mm;
 
                     DelayGrabIndex = (int)(tempPos / resolution_mm / Camera.ImageHeight);
-
-                    double trackingOn = tempPos - (inspModel.MaterialInfo.PanelEdgeToFirst_mm / 2.0);
-                    LAFTrackingOnIndex = (int)(trackingOn / resolution_mm / Camera.ImageHeight);
+                    LAFTrackingPos_mm = tempPos - (inspModel.MaterialInfo.PanelEdgeToFirst_mm / 2.0);
                 }
 
                 int startIndex = (int)(tempPos / resolution_mm / Camera.ImageHeight);
@@ -222,6 +224,53 @@ namespace Jastech.Apps.Winform
                     TabScanBufferList.Add(scanImage);
             }
             GrabCount = maxEndIndex;
+        }
+
+        public void StartLAFTrackingOnThread()
+        {
+            if (ModelManager.Instance().CurrentModel != null)
+            {
+                if (_trackingOnThread == null)
+                {
+                    _isStopTrackingOn = false;
+                    _trackingOnThread = new Thread(LAFTrackingOn);
+                    _trackingOnThread.Start();
+                }
+            }
+        }
+
+        public void StopLAFTrackingOnThread()
+        {
+            if (_trackingOnThread != null)
+            {
+                _isStopTrackingOn = true;
+            }
+        }
+
+        private void LAFTrackingOn()
+        {
+            while(!_isStopTrackingOn)
+            {
+                var appsDeviceMonitor = AppsDeviceMonitor.Instance();
+
+                if (LAFTrackingPos_mm != -1 && appsDeviceMonitor.AxisStatus.IsMovingAxisX)
+                {
+                    var inspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
+                    var scanStartPosX = inspModel.GetUnit(UnitName.Unit0).GetTeachingInfo(TeachingPosType.Stage1_Scan_Start).GetTargetPosition(AxisName.X);
+
+                    var curPosition = appsDeviceMonitor.AxisStatus.CurrentAxisXPosition;
+                    var lafOnPos = scanStartPosX + LAFTrackingPos_mm;
+
+                    if (Math.Abs(lafOnPos - curPosition) <= 1)
+                    {
+                        LAFTrackingOnOffHandler?.Invoke(true);
+                        break;
+                    }
+                }
+
+                Thread.Sleep(50);
+            }
+            _trackingOnThread = null;
         }
 
         public void StartGrab()
@@ -282,6 +331,7 @@ namespace Jastech.Apps.Winform
                 LiveDataQueue.Clear();
 
             Camera.Stop();
+            StopLAFTrackingOnThread();
         }
 
         public void AddSubImage(byte[] data, int grabCount)
@@ -299,9 +349,6 @@ namespace Jastech.Apps.Winform
 
                 if(DelayGrabIndex != -1 && DelayGrabIndex == _curGrabCount)
                     GrabDelayStartEventHandler?.Invoke(Camera.Name);
-
-                if (LAFTrackingOnIndex != -1 && 2 == _curGrabCount)
-                    LAFTrackingOnOffHandler?.Invoke(true);
 
                 if (tabScanBuffer.StartIndex <= _curGrabCount && _curGrabCount <= tabScanBuffer.EndIndex)
                 {
@@ -382,15 +429,6 @@ namespace Jastech.Apps.Winform
                 Thread.Sleep(0);
             }
         }
-
-        //private TabScanImage GetTabScanImage(int tabNo)
-        //{
-        //    if (tabNo <= TabScanImageList.Count)
-        //    {
-        //        return TabScanImageList[tabNo];
-        //    }
-        //    return null;
-        //}
 
         public void SetOperationMode(TDIOperationMode operationMode)
         {

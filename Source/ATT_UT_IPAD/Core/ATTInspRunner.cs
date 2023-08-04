@@ -106,7 +106,6 @@ namespace ATT_UT_IPAD.Core
             InspProcessTask.StartVirtual();
         }
 
-
         private void ATTSeqRunner_GrabDoneEventHandler(string cameraName, bool isGrabDone)
         {
              if(AkkonCamera.Camera.Name == cameraName)
@@ -359,21 +358,17 @@ namespace ATT_UT_IPAD.Core
                     IsAkkonGrabDone = false;
                     IsAlignGrabDone = false;
 
-                    // AlignLAFCtrl은 그랩 시작 시 On
-                    AkkonLAFCtrl.SetTrackingOnOFF(true);
-                    //AkkonLAFCtrl.SetTrackingOnOFF(false);   // 일단 끔
-                    WriteLog("Akkon Laser Auto Focus On.");
-
                     LightCtrlHandler.TurnOn(unit.GetLineCameraData("Akkon").LightParam);
                     Thread.Sleep(100);
-                    WriteLog("Akkon Light On.");
 
                     AkkonCamera.SetOperationMode(TDIOperationMode.TDI);
                     AkkonCamera.StartGrab();
+                    AkkonCamera.StartLAFTrackingOnThread();
                     WriteLog("Start Akkon LineScanner Grab.", true);
 
                     AlignCamera.SetOperationMode(TDIOperationMode.TDI);
                     AlignCamera.StartGrab();
+                    AlignCamera.StartLAFTrackingOnThread();
                     WriteLog("Start Align LineScanner Grab.", true);
 
                     if (ConfigSet.Instance().Operation.VirtualMode)

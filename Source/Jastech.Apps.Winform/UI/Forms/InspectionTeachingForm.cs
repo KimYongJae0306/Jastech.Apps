@@ -8,6 +8,7 @@ using Jastech.Apps.Structure.Parameters;
 using Jastech.Apps.Structure.VisionTool;
 using Jastech.Apps.Winform;
 using Jastech.Apps.Winform.Core;
+using Jastech.Apps.Winform.Settings;
 using Jastech.Apps.Winform.UI.Controls;
 using Jastech.Framework.Algorithms.Akkon;
 using Jastech.Framework.Algorithms.Akkon.Parameters;
@@ -391,37 +392,33 @@ namespace Jastech.Framework.Winform.Forms
 
         private void btnGrabStart_Click(object sender, EventArgs e)
         {
-            //var lightCtrl = DeviceManager.Instance().LightCtrlHandler;
-            //if (lightCtrl == null)
-            //    return;
-
             var inspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
-
-            //var unit = inspModel.GetUnit(UnitName);
-            //lightCtrl.TurnOff();
-            //Thread.Sleep(100);
-            //lightCtrl.TurnOn(unit.GetLineCameraData("Akkon").LightParam);
-            //Thread.Sleep(100);
 
             TeachingImagePath = Path.Combine(ConfigSet.Instance().Path.Model, inspModel.Name, "TeachingImage", DateTime.Now.ToString("yyyyMMdd_HHmmss"));
 
             LAFCtrl?.SetTrackingOnOFF(false);
 
-            //var gg = DeviceManager.Instance().CameraHandler.Get("AkkonCamera");
-            //gg.SetDigitalGain(7);
-            //gg.SetAnalogGain(1);
             TeachingData.Instance().ClearTeachingImageBuffer();
-            LineCamera.InitGrabSettings();
+
+            if (UseDelayStart)
+                LineCamera.InitGrabSettings(AppsConfig.Instance().CameraGap_um);
+            else
+                LineCamera.InitGrabSettings();
             
             InitalizeInspTab(LineCamera.TabScanBufferList);
 
-            string error = "";
-            MotionManager.Instance().MoveTo(TeachingPosType.Stage1_Scan_Start, out error);
+            MotionManager.Instance().MoveTo(TeachingPosType.Stage1_Scan_Start);
 
-            Thread.Sleep(1000);
-            //LAFCtrl?.SetTrackingOnOFF(true);
+            string cameraName = LineCamera.Camera.Name;
+            var unit = inspModel.GetUnit(UnitName);
+            DeviceManager.Instance().LightCtrlHandler.TurnOn(unit.GetLineCameraData(cameraName).LightParam);
+            Thread.Sleep(100);
+
+            LineCamera.StartLAFTrackingOnThread();
             LineCamera.StartGrab();
-            MotionManager.Instance().MoveTo(TeachingPosType.Stage1_Scan_End, out error);
+            MotionManager.Instance().MoveTo(TeachingPosType.Stage1_Scan_End);
+
+            DeviceManager.Instance().LightCtrlHandler.TurnOff();
         }
 
         public void InitalizeInspTab(List<TabScanBuffer> bufferList)
@@ -463,13 +460,10 @@ namespace Jastech.Framework.Winform.Forms
 
         private void InspectionTeachingForm_FormClosing(object sender, FormClosingEventArgs e)
         {
-            //if (LineCameraManager.Instance().IsGrabbing(""))
-            //    LineCamera.StopGrab();
-            //LineCameraManager.Instance().Dispose();
-
             if (LineCamera.Camera.IsGrabbing())
                 LineCamera.StopGrab();
 
+            LAFCtrl.SetTrackingOnOFF(false);
             LineCamera.StopGrab();
             Display.DisposeImage();
             MarkControl.DisposeImage();
@@ -527,8 +521,6 @@ namespace Jastech.Framework.Winform.Forms
             string tabIndex = cbxTabList.SelectedItem as string;
             int tabNo = Convert.ToInt32(tabIndex);
 
-            //if (_currentTabNo == tabIndex)
-            //    return;
             CurrentTab = TeachingTabList.Where(x => x.Index == tabNo).FirstOrDefault();
             _currentTabNo = tabIndex;
 
@@ -544,8 +536,6 @@ namespace Jastech.Framework.Winform.Forms
                 if (buffer.TabImage == null)
                     return;
 
-                // ConvertCogGrayImage가 DeepCopy가 아닌가....
-                //ICogImage cogImage = teachingData.ConvertCogGrayImage(buffer.TabImage);
                 ICogImage cogImage = teachingData.ConvertCogGrayImage(buffer.TabImage).CopyBase(CogImageCopyModeConstants.CopyPixels);
 
                 Display.SetImage(cogImage);
@@ -772,11 +762,6 @@ namespace Jastech.Framework.Winform.Forms
             }
         }
         #endregion
-
-        private void btnCancel_BackColorChanged(object sender, EventArgs e)
-        {
-
-        }
     }
 
     public enum DisplayType

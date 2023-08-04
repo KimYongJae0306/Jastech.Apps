@@ -92,10 +92,9 @@ namespace Jastech.Apps.Winform
 
             return false;
         }
-        public bool MoveTo(TeachingPosType teachingPos, out string error)
-        {
-            error = "";
 
+        public bool MoveTo(TeachingPosType teachingPos)
+        {
             if (ConfigSet.Instance().Operation.VirtualMode)
                 return true;
 
@@ -109,7 +108,7 @@ namespace Jastech.Apps.Winform
 
             if (MoveAxis(teachingPos, axisX, movingParamX) == false)
             {
-                error = string.Format("Move To Axis X TimeOut!({0})", movingParamX.MovingTimeOut.ToString());
+                string error = string.Format("Move To Axis X TimeOut!({0})", movingParamX.MovingTimeOut.ToString());
                 Logger.Write(LogType.Seq, error);
                 return false;
             }

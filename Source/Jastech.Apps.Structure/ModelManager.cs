@@ -50,7 +50,6 @@ namespace Jastech.Apps.Structure
         {
             CurrentModelChangedEvent?.Invoke(CurrentModel);
         }
-
         #endregion
     }
 

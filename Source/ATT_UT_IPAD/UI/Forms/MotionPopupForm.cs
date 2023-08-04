@@ -23,8 +23,6 @@ namespace ATT_UT_IPAD.UI.Forms
     public partial class MotionPopupForm : Form
     {
         #region 필드
-        private System.Threading.Timer _formTimer = null;
-
         private Color _selectedColor;
 
         private Color _nonSelectedColor;
@@ -86,9 +84,10 @@ namespace ATT_UT_IPAD.UI.Forms
         {
             AddControl();
             UpdateData();
-            StartTimer();
             InitializeUI();
             SetDefaultValue();
+
+            StatusTimer.Start();
         }
 
         private void SetDefaultValue()
@@ -221,26 +220,6 @@ namespace ATT_UT_IPAD.UI.Forms
             LAFJogZ1Control.Dock = DockStyle.Fill;
             pnlLAFZ2Jog.Controls.Add(LAFJogZ1Control);
             LAFJogZ1Control.SetSelectedLafCtrl(AlignLafCtrl);
-        }
-
-        private void StartTimer()
-        {
-            _formTimer = new System.Threading.Timer(UpdateStatus, null, 1000, 1000);
-        }
-
-        private delegate void UpdateStatusDelegate(object obj);
-        private void UpdateStatus(object obj)
-        {
-            if (this.InvokeRequired)
-            {
-                UpdateStatusDelegate callback = UpdateStatus;
-                BeginInvoke(callback, obj);
-                return;
-            }
-
-            UpdateStatusMotionX();
-            UpdateStatusAutoFocusZ0();
-            UpdateStatusAutoFocusZ1();
         }
 
         private void UpdateStatusMotionX()
@@ -722,19 +701,33 @@ namespace ATT_UT_IPAD.UI.Forms
 
         private void MotionPopupForm_FormClosing(object sender, FormClosingEventArgs e)
         {
-            _formTimer.Change(System.Threading.Timeout.Infinite, System.Threading.Timeout.Infinite);
-
-            if (_formTimer != null)
-            {
-                _formTimer.Dispose();
-                _formTimer = null;
-            }
+            StatusTimer.Stop();
         }
 
         private void MotionPopupForm_FormClosed(object sender, FormClosedEventArgs e)
         {
             if (CloseEventDelegate != null)
                 CloseEventDelegate();
+        }
+
+        private void StatusTimer_Tick(object sender, EventArgs e)
+        {
+            UpdateStatus();
+        }
+
+        private delegate void UpdateStatusDelegate();
+        private void UpdateStatus()
+        {
+            if (this.InvokeRequired)
+            {
+                UpdateStatusDelegate callback = UpdateStatus;
+                BeginInvoke(callback);
+                return;
+            }
+
+            UpdateStatusMotionX();
+            UpdateStatusAutoFocusZ0();
+            UpdateStatusAutoFocusZ1();
         }
         #endregion
     }
