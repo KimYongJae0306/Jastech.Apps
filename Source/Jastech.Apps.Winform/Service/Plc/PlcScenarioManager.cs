@@ -456,9 +456,6 @@ namespace Jastech.Apps.Winform.Service.Plc
                     MoveTo(TeachingPosType.Stage1_Scan_Start);
                     break;
 
-                case PlcCommand.Move_AlignDataX:
-                    break;
-
                 default:
                     break;
             }

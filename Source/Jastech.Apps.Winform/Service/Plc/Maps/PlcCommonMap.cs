@@ -137,6 +137,7 @@
 
     public enum PlcCommand
     {
+        None = 0,
         StartInspection = 1100,         // 검사 시작 신호(Align+Akkon)
         StartPreAlign = 1200,   // PreAlign 검사 시작 신호
         Calibration = 1300,
@@ -144,7 +145,7 @@
         Move_StandbyPos = 1500,         // X축을 Standby 위치로 이동
         Move_Left_AlignPos = 1501,      // X축을 Left Align 위치로 이동
         Move_Right_AlignPos = 1502,     // X축을 Right Align 위치로 이동
-        Move_ScanStartPos = 1503,       // X축을 ScanStart 위치로 이동
-        Move_AlignDataX = 1504,         // X축 Align 보정량 이동
+        Move_ScanStartPos = 1503,       // X축을 Scan Start 위치로 이동
+        Move_ScanEndPos = 1504,         // X축을 Scan End 위치로 이동
     }
 }

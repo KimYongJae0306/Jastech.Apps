@@ -58,7 +58,7 @@ namespace Jastech.Apps.Winform
         }
 
         public AxisHandler GetAxisHandler(AxisHandlerName axisHandlerName)
-         {
+        {
             return AxisHandlerList.Where(x => x.Name == axisHandlerName.ToString()).FirstOrDefault();
         }
 
@@ -76,7 +76,7 @@ namespace Jastech.Apps.Winform
 
         public bool IsAxisInPosition(UnitName unitName, TeachingPosType teachingPosition, Axis axis)
         {
-            if (axis.Name == AxisName.Z0.ToString())
+            if (axis.Name.Contains("Z"))
                 return true;
 
             var inspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
@@ -90,7 +90,6 @@ namespace Jastech.Apps.Winform
 
             return false;
         }
-
         #endregion
     }
 
