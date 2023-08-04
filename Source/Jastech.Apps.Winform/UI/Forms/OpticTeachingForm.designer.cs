@@ -132,12 +132,12 @@
             this.pnlTeach = new System.Windows.Forms.Panel();
             this.pnlLight = new System.Windows.Forms.Panel();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
-            this.pnlDrawBox = new System.Windows.Forms.Panel();
-            this.cogDisplay = new Cognex.VisionPro.CogRecordDisplay();
             this.pnlHistogram = new System.Windows.Forms.Panel();
-            this.StatusTimer = new System.Windows.Forms.Timer(this.components);
             this.pnlDisplay = new System.Windows.Forms.Panel();
             this.pnlCogDisplay = new System.Windows.Forms.Panel();
+            this.cogDisplay = new Cognex.VisionPro.CogRecordDisplay();
+            this.pnlDrawBox = new System.Windows.Forms.Panel();
+            this.StatusTimer = new System.Windows.Forms.Timer(this.components);
             this.tlpJog.SuspendLayout();
             this.tlpJogFunction.SuspendLayout();
             this.pnlJog.SuspendLayout();
@@ -175,9 +175,9 @@
             this.tlpLoadImage.SuspendLayout();
             this.pnlTeach.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.cogDisplay)).BeginInit();
             this.pnlDisplay.SuspendLayout();
             this.pnlCogDisplay.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.cogDisplay)).BeginInit();
             this.SuspendLayout();
             // 
             // tlpJog
@@ -857,7 +857,7 @@
             this.lblRepeatCount.Name = "lblRepeatCount";
             this.lblRepeatCount.Size = new System.Drawing.Size(80, 40);
             this.lblRepeatCount.TabIndex = 3;
-            this.lblRepeatCount.Text = "3";
+            this.lblRepeatCount.Text = "1";
             this.lblRepeatCount.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.lblRepeatCount.Click += new System.EventHandler(this.lblRepeatCount_Click);
             // 
@@ -1775,32 +1775,6 @@
             this.tableLayoutPanel1.Size = new System.Drawing.Size(851, 861);
             this.tableLayoutPanel1.TabIndex = 1;
             // 
-            // pnlDrawBox
-            // 
-            this.pnlDrawBox.Location = new System.Drawing.Point(68, 70);
-            this.pnlDrawBox.Margin = new System.Windows.Forms.Padding(0);
-            this.pnlDrawBox.Name = "pnlDrawBox";
-            this.pnlDrawBox.Size = new System.Drawing.Size(227, 120);
-            this.pnlDrawBox.TabIndex = 0;
-            // 
-            // cogDisplay
-            // 
-            this.cogDisplay.ColorMapLowerClipColor = System.Drawing.Color.Black;
-            this.cogDisplay.ColorMapLowerRoiLimit = 0D;
-            this.cogDisplay.ColorMapPredefined = Cognex.VisionPro.Display.CogDisplayColorMapPredefinedConstants.None;
-            this.cogDisplay.ColorMapUpperClipColor = System.Drawing.Color.Black;
-            this.cogDisplay.ColorMapUpperRoiLimit = 1D;
-            this.cogDisplay.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.cogDisplay.DoubleTapZoomCycleLength = 2;
-            this.cogDisplay.DoubleTapZoomSensitivity = 2.5D;
-            this.cogDisplay.Location = new System.Drawing.Point(0, 0);
-            this.cogDisplay.MouseWheelMode = Cognex.VisionPro.Display.CogDisplayMouseWheelModeConstants.Zoom1;
-            this.cogDisplay.MouseWheelSensitivity = 1D;
-            this.cogDisplay.Name = "cogDisplay";
-            this.cogDisplay.OcxState = ((System.Windows.Forms.AxHost.State)(resources.GetObject("cogDisplay.OcxState")));
-            this.cogDisplay.Size = new System.Drawing.Size(214, 120);
-            this.cogDisplay.TabIndex = 0;
-            // 
             // pnlHistogram
             // 
             this.pnlHistogram.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -1809,11 +1783,6 @@
             this.pnlHistogram.Name = "pnlHistogram";
             this.pnlHistogram.Size = new System.Drawing.Size(851, 259);
             this.pnlHistogram.TabIndex = 0;
-            // 
-            // StatusTimer
-            // 
-            this.StatusTimer.Interval = 300;
-            this.StatusTimer.Tick += new System.EventHandler(this.StatusTimer_Tick);
             // 
             // pnlDisplay
             // 
@@ -1833,6 +1802,38 @@
             this.pnlCogDisplay.Name = "pnlCogDisplay";
             this.pnlCogDisplay.Size = new System.Drawing.Size(214, 120);
             this.pnlCogDisplay.TabIndex = 1;
+            // 
+            // cogDisplay
+            // 
+            this.cogDisplay.ColorMapLowerClipColor = System.Drawing.Color.Black;
+            this.cogDisplay.ColorMapLowerRoiLimit = 0D;
+            this.cogDisplay.ColorMapPredefined = Cognex.VisionPro.Display.CogDisplayColorMapPredefinedConstants.None;
+            this.cogDisplay.ColorMapUpperClipColor = System.Drawing.Color.Black;
+            this.cogDisplay.ColorMapUpperRoiLimit = 1D;
+            this.cogDisplay.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.cogDisplay.DoubleTapZoomCycleLength = 2;
+            this.cogDisplay.DoubleTapZoomSensitivity = 2.5D;
+            this.cogDisplay.Location = new System.Drawing.Point(0, 0);
+            this.cogDisplay.MouseWheelMode = Cognex.VisionPro.Display.CogDisplayMouseWheelModeConstants.Zoom1;
+            this.cogDisplay.MouseWheelSensitivity = 1D;
+            this.cogDisplay.Name = "cogDisplay";
+            this.cogDisplay.OcxState = ((System.Windows.Forms.AxHost.State)(resources.GetObject("cogDisplay.OcxState")));
+            this.cogDisplay.Size = new System.Drawing.Size(214, 120);
+            this.cogDisplay.TabIndex = 0;
+            this.cogDisplay.Changed += new Cognex.VisionPro.CogChangedEventHandler(this.cogDisplay_Changed);
+            // 
+            // pnlDrawBox
+            // 
+            this.pnlDrawBox.Location = new System.Drawing.Point(68, 70);
+            this.pnlDrawBox.Margin = new System.Windows.Forms.Padding(0);
+            this.pnlDrawBox.Name = "pnlDrawBox";
+            this.pnlDrawBox.Size = new System.Drawing.Size(227, 120);
+            this.pnlDrawBox.TabIndex = 0;
+            // 
+            // StatusTimer
+            // 
+            this.StatusTimer.Interval = 300;
+            this.StatusTimer.Tick += new System.EventHandler(this.StatusTimer_Tick);
             // 
             // OpticTeachingForm
             // 
@@ -1890,9 +1891,9 @@
             this.tlpLoadImage.ResumeLayout(false);
             this.pnlTeach.ResumeLayout(false);
             this.tableLayoutPanel1.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.cogDisplay)).EndInit();
             this.pnlDisplay.ResumeLayout(false);
             this.pnlCogDisplay.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.cogDisplay)).EndInit();
             this.ResumeLayout(false);
 
         }

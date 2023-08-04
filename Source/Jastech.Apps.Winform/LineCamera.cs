@@ -40,6 +40,8 @@ namespace Jastech.Apps.Winform
 
         public int DelayGrabIndex { get; private set; } = -1;
 
+        public int LAFTrackingOnIndex { get; private set; } = -1;
+
         public List<TabScanBuffer> TabScanBufferList { get; private set; } = new List<TabScanBuffer>();
 
         public Queue<byte[]> LiveDataQueue = new Queue<byte[]>();
@@ -61,6 +63,8 @@ namespace Jastech.Apps.Winform
         public event GrabOnceDelegate GrabOnceEventHandler;
 
         public event GrabDelayStartDelegate GrabDelayStartEventHandler;
+
+        public event LAFTrackingOnOffDelegate LAFTrackingOnOffHandler;
         #endregion
 
         #region 델리게이트
@@ -71,6 +75,8 @@ namespace Jastech.Apps.Winform
         public delegate void GrabOnceDelegate(TabScanBuffer tabScanBuffer);
 
         public delegate void GrabDelayStartDelegate(string cameraName);
+
+        public delegate void LAFTrackingOnOffDelegate(bool isOn);
         #endregion
 
         #region 생성자
@@ -93,6 +99,7 @@ namespace Jastech.Apps.Winform
             _curGrabCount = 0;
             _stackTabNo = 0;
             DelayGrabIndex = -1;
+            LAFTrackingOnIndex = -1;
         }
 
         public void InitGrabSettings()
@@ -119,10 +126,16 @@ namespace Jastech.Apps.Winform
             for (int i = 0; i < tabCount; i++)
             {
                 if (i == 0)
+                {
                     tempPos += inspModel.MaterialInfo.PanelEdgeToFirst_mm;
+
+                    double trackingOn = tempPos - (inspModel.MaterialInfo.PanelEdgeToFirst_mm / 2.0);
+                    LAFTrackingOnIndex = (int)(trackingOn / resolution_mm / Camera.ImageHeight);
+                }
 
                 int startIndex = (int)(tempPos / resolution_mm / Camera.ImageHeight);
 
+                
                 double tabWidth = materialInfo.GetTabWidth(i);
                 double tabLeftOffset = materialInfo.GetLeftOffset(i);
                 double tabRightOffset = materialInfo.GetRightOffset(i);
@@ -147,7 +160,6 @@ namespace Jastech.Apps.Winform
             }
 
             GrabCount = maxEndIndex;
-            int gg = 0;
         }
 
         public void InitGrabSettings(float delayStart_um)
@@ -180,6 +192,9 @@ namespace Jastech.Apps.Winform
                     tempPos += inspModel.MaterialInfo.PanelEdgeToFirst_mm;
 
                     DelayGrabIndex = (int)(tempPos / resolution_mm / Camera.ImageHeight);
+
+                    double trackingOn = tempPos - (inspModel.MaterialInfo.PanelEdgeToFirst_mm / 2.0);
+                    LAFTrackingOnIndex = (int)(trackingOn / resolution_mm / Camera.ImageHeight);
                 }
 
                 int startIndex = (int)(tempPos / resolution_mm / Camera.ImageHeight);
@@ -215,65 +230,10 @@ namespace Jastech.Apps.Winform
                 return;
 
             Camera.Stop();
-
-            string error = "";
-            bool ret = MoveTo(TeachingPosType.Stage1_Scan_Start, out error);
-            Thread.Sleep(1000);
+            Thread.Sleep(100);
 
             Camera.GrabMulti(GrabCount);
-     
-            MoveTo(TeachingPosType.Stage1_Scan_End, out error);
-        }
-
-        public bool MoveTo(TeachingPosType teachingPos, out string error)
-        {
-            error = "";
-
-            if (ConfigSet.Instance().Operation.VirtualMode)
-                return true;
-
-            AppsInspModel inspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
-
-            var teachingInfo = inspModel.GetUnit(UnitName.Unit0).GetTeachingInfo(teachingPos);
-
-            Axis axisX = MotionManager.Instance().GetAxis(AxisHandlerName.Handler0, AxisName.X);
-
-            var movingParamX = teachingInfo.GetMovingParam(AxisName.X.ToString());
-
-            if (MoveAxis(teachingPos, axisX, movingParamX) == false)
-            {
-                error = string.Format("Move To Axis X TimeOut!({0})", movingParamX.MovingTimeOut.ToString());
-                Logger.Write(LogType.Seq, error);
-                return false;
-            }
-         
-            string message = string.Format("Move Completed.(Teaching Pos : {0})", teachingPos.ToString());
-            Logger.Write(LogType.Seq, message);
-
-            return true;
-        }
-
-        private bool MoveAxis(TeachingPosType teachingPos, Axis axis, AxisMovingParam movingParam)
-        {
-            MotionManager manager = MotionManager.Instance();
-            if (manager.IsAxisInPosition(UnitName.Unit0, teachingPos, axis) == false)
-            {
-                Stopwatch sw = new Stopwatch();
-                sw.Restart();
-
-                manager.StartAbsoluteMove(UnitName.Unit0, teachingPos, axis);
-
-                while (manager.IsAxisInPosition(UnitName.Unit0, teachingPos, axis) == false)
-                {
-                    if (sw.ElapsedMilliseconds >= movingParam.MovingTimeOut)
-                    {
-                        return false;
-                    }
-                    Thread.Sleep(10);
-                }
-            }
-            Console.WriteLine("Dove Done.");
-            return true;
+            Thread.Sleep(100);
         }
 
         public void StartGrab(float scanLength_mm)
@@ -337,14 +297,12 @@ namespace Jastech.Apps.Winform
                 if (tabScanBuffer == null)
                     return;
 
-                Console.WriteLine("Add SubImage : " + grabCount);
-                if(DelayGrabIndex != -1)
-                {
-                    if(DelayGrabIndex == _curGrabCount)
-                    {
-                        GrabDelayStartEventHandler?.Invoke(Camera.Name);
-                    }
-                }
+                if(DelayGrabIndex != -1 && DelayGrabIndex == _curGrabCount)
+                    GrabDelayStartEventHandler?.Invoke(Camera.Name);
+
+                if (LAFTrackingOnIndex != -1 && 2 == _curGrabCount)
+                    LAFTrackingOnOffHandler?.Invoke(true);
+
                 if (tabScanBuffer.StartIndex <= _curGrabCount && _curGrabCount <= tabScanBuffer.EndIndex)
                 {
                     tabScanBuffer.AddData(data);
@@ -358,6 +316,7 @@ namespace Jastech.Apps.Winform
                 if (_curGrabCount == GrabCount - 1)
                 {
                     Camera.Stop();
+                    LAFTrackingOnOffHandler?.Invoke(false);
                     GrabDoneEventHandler?.Invoke(Camera.Name, true);
                     GrabOnceEventHandler?.Invoke(tabScanBuffer);
                 }

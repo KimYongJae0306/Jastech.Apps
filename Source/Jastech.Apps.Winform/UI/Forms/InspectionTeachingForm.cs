@@ -14,6 +14,7 @@ using Jastech.Framework.Algorithms.Akkon.Parameters;
 using Jastech.Framework.Algorithms.UI.Controls;
 using Jastech.Framework.Config;
 using Jastech.Framework.Device.LAFCtrl;
+using Jastech.Framework.Device.LightCtrls;
 using Jastech.Framework.Imaging;
 using Jastech.Framework.Imaging.Result;
 using Jastech.Framework.Imaging.VisionPro;
@@ -31,6 +32,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Runtime.InteropServices;
+using System.Threading;
 using System.Windows.Forms;
 
 namespace Jastech.Framework.Winform.Forms
@@ -389,17 +391,37 @@ namespace Jastech.Framework.Winform.Forms
 
         private void btnGrabStart_Click(object sender, EventArgs e)
         {
-            AppsInspModel inspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
+            //var lightCtrl = DeviceManager.Instance().LightCtrlHandler;
+            //if (lightCtrl == null)
+            //    return;
+
+            var inspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
+
+            //var unit = inspModel.GetUnit(UnitName);
+            //lightCtrl.TurnOff();
+            //Thread.Sleep(100);
+            //lightCtrl.TurnOn(unit.GetLineCameraData("Akkon").LightParam);
+            //Thread.Sleep(100);
+
             TeachingImagePath = Path.Combine(ConfigSet.Instance().Path.Model, inspModel.Name, "TeachingImage", DateTime.Now.ToString("yyyyMMdd_HHmmss"));
 
-            //LAFCtrl?.SetTrackingOnOFF(true);  // 임시
             LAFCtrl?.SetTrackingOnOFF(false);
 
+            //var gg = DeviceManager.Instance().CameraHandler.Get("AkkonCamera");
+            //gg.SetDigitalGain(7);
+            //gg.SetAnalogGain(1);
             TeachingData.Instance().ClearTeachingImageBuffer();
             LineCamera.InitGrabSettings();
+            
             InitalizeInspTab(LineCamera.TabScanBufferList);
 
+            string error = "";
+            MotionManager.Instance().MoveTo(TeachingPosType.Stage1_Scan_Start, out error);
+
+            Thread.Sleep(1000);
+            //LAFCtrl?.SetTrackingOnOFF(true);
             LineCamera.StartGrab();
+            MotionManager.Instance().MoveTo(TeachingPosType.Stage1_Scan_End, out error);
         }
 
         public void InitalizeInspTab(List<TabScanBuffer> bufferList)

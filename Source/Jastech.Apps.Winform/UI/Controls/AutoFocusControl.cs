@@ -99,13 +99,13 @@ namespace Jastech.Apps.Winform.UI.Controls
 
             if (status.IsTrackingOn)
             {
-                lblAFOn.BackColor = _selectedColor;
-                lblAFOff.BackColor = _nonSelectedColor;
+                lblTrackingOn.BackColor = _selectedColor;
+                lblTrackingOff.BackColor = _nonSelectedColor;
             }
             else
             {
-                lblAFOn.BackColor = _nonSelectedColor;
-                lblAFOff.BackColor = _selectedColor;
+                lblTrackingOn.BackColor = _nonSelectedColor;
+                lblTrackingOff.BackColor = _selectedColor;
             }
         }
 
@@ -150,17 +150,15 @@ namespace Jastech.Apps.Winform.UI.Controls
             lblTeachCogValue.Text = cog.ToString();
         }
 
-        private void lblAFOn_Click(object sender, EventArgs e)
+        private void lblTrackingOn_Click(object sender, EventArgs e)
         {
-            if (LAFManager.Instance().GetLAFCtrl("Laf") is LAFCtrl lafCtrl)
-                lafCtrl.SetTrackingOnOFF(true);
+            LAFCtrl?.SetTrackingOnOFF(true);
         }
 
 
-        private void lblAFOff_Click(object sender, EventArgs e)
+        private void lblTrackingOff_Click(object sender, EventArgs e)
         {
-            if (LAFManager.Instance().GetLAFCtrl("Laf") is LAFCtrl lafCtrl)
-                lafCtrl.SetTrackingOnOFF(false);
+            LAFCtrl?.SetTrackingOnOFF(false);
         }
 
         public TeachingAxisInfo GetCurrentData()

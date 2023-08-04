@@ -89,7 +89,6 @@ namespace Jastech.Apps.Winform
                 byte[] data = camera.GetGrabbedImage();
                 if (data != null)
                 {
-                    Console.WriteLine(camera.Name);
                     if (GetAppsCamera(camera.Name) is LineCamera lineCamera)
                         GetAppsCamera(camera.Name).AddSubImage(data, camera.GrabCount);
                 }

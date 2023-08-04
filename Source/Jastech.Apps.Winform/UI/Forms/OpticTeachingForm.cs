@@ -1,4 +1,5 @@
-﻿using Emgu.CV;
+﻿using Cognex.VisionPro;
+using Emgu.CV;
 using Jastech.Apps.Structure;
 using Jastech.Apps.Structure.Data;
 using Jastech.Apps.Winform;
@@ -8,6 +9,7 @@ using Jastech.Framework.Config;
 using Jastech.Framework.Device.Cameras;
 using Jastech.Framework.Device.LAFCtrl;
 using Jastech.Framework.Device.Motions;
+using Jastech.Framework.Imaging;
 using Jastech.Framework.Imaging.Helper;
 using Jastech.Framework.Imaging.VisionPro;
 using Jastech.Framework.Structure;
@@ -18,6 +20,7 @@ using Jastech.Framework.Winform.VisionPro.Helper;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Runtime.InteropServices;
 using System.Threading;
 using System.Windows.Forms;
 using static Jastech.Framework.Device.Motions.AxisMovingParam;
@@ -652,9 +655,6 @@ namespace Jastech.Framework.Winform.Forms
         {
             StopGrab();
 
-            //LAFCtrl.SetTrackingOnOFF(true);   // 임시
-            LAFCtrl.SetTrackingOnOFF(false);
-
             if (isRepeat)
             {
                 AppsInspModel inspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
@@ -861,6 +861,7 @@ namespace Jastech.Framework.Winform.Forms
 
         private void lblStartRepeat_Click(object sender, EventArgs e)
         {
+            SetLineMode();
             if (_isRepeat == false)
             {
                 UpdateGrabButton(false);
@@ -877,44 +878,56 @@ namespace Jastech.Framework.Winform.Forms
 
         private void OpticTeachingForm_GrabOnceEventHandler(TabScanBuffer tabScanBuffer)
         {
-            if (_isRepeat == false)
-                return;
-
-            List<Mat> subImageList = new List<Mat>();
-
-            int count = 0;
-            while (tabScanBuffer.DataQueue.Count > 0)
+            if (lblLineMode.BackColor == _selectedColor)
             {
-                byte[] data = tabScanBuffer.GetData();
-                if(count ==0)
+                List<Mat> subImageList = new List<Mat>();
+
+                int count = 0;
+                while (tabScanBuffer.DataQueue.Count > 0)
                 {
-                    //TDI 특성상 첫장 버림
-                    count++;
-                    continue;
+                    byte[] data = tabScanBuffer.GetData();
+                    if (count == 0)
+                    {
+                        //TDI 특성상 첫장 버림
+                        count++;
+                        continue;
+                    }
+                    Mat mat = MatHelper.ByteArrayToMat(data, tabScanBuffer.SubImageWidth, tabScanBuffer.SubImageHeight, 1);
+                    Mat rotatedMat = MatHelper.Transpose(mat);
+                    subImageList.Add(rotatedMat);
                 }
-                Mat mat = MatHelper.ByteArrayToMat(data, tabScanBuffer.SubImageWidth, tabScanBuffer.SubImageHeight, 1);
-                Mat rotatedMat = MatHelper.Transpose(mat);
-                subImageList.Add(rotatedMat);
-            }
 
-            if (subImageList.Count > 0)
-            {
-                Mat mergeMatImage = new Mat();
-                CvInvoke.HConcat(subImageList.ToArray(), mergeMatImage);
-
-                for (int i = 0; i < subImageList.Count; i++)
+                if (subImageList.Count > 0)
                 {
-                    subImageList[i].Dispose();
-                    subImageList[i] = null;
-                }
-                subImageList.Clear();
+                    Mat mergeMatImage = new Mat();
+                    CvInvoke.HConcat(subImageList.ToArray(), mergeMatImage);
 
-                Bitmap bmp = mergeMatImage.ToBitmap();
-                DrawBoxControl.SetImage(bmp);
-                mergeMatImage.Dispose();
-                mergeMatImage = null;
+                    for (int i = 0; i < subImageList.Count; i++)
+                    {
+                        subImageList[i].Dispose();
+                        subImageList[i] = null;
+                    }
+                    subImageList.Clear();
+
+                    CogDisplayHelper.DisposeDisplay(cogDisplay);
+                    cogDisplay.Image = ConvertCogImage(mergeMatImage).CopyBase(CogImageCopyModeConstants.CopyPixels);
+                }
+                Console.WriteLine("Update Repeat Display");
             }
-            Console.WriteLine("Update Repeat Display");
+        }
+
+        public ICogImage ConvertCogImage(Mat image)
+        {
+            if (image == null)
+                return null;
+
+            int size = image.Width * image.Height * image.NumberOfChannels;
+            byte[] dataArray = new byte[size];
+            Marshal.Copy(image.DataPointer, dataArray, 0, size);
+            ColorFormat format = image.NumberOfChannels == 1 ? ColorFormat.Gray : ColorFormat.RGB24;
+            var cogImage = VisionProImageHelper.ConvertImage(dataArray, image.Width, image.Height, format);
+
+            return cogImage;
         }
 
         public delegate void UpdateGrabButtonDele(bool isEnable);
@@ -934,6 +947,29 @@ namespace Jastech.Framework.Winform.Forms
             lblLineMode.Enabled = isEnable;
         }
         #endregion
+
+        private void cogDisplay_Changed(object sender, CogChangedEventArgs e)
+        {
+            if (sender is CogRecordDisplay display)
+            {
+                if (display.Image == null)
+                    return;
+
+                string flagNames = e.GetStateFlagNames(sender);
+                if (flagNames.Contains("SfAutoFitWithGraphics"))
+                    return;
+
+                if (flagNames.Contains("SfZoom") || flagNames.Contains("SfMaintainImageRegion"))
+                {
+                    //if (display.Zoom < 0.2)
+                    //    display.Zoom = 0.2;
+
+                    if (display.Zoom > 10)
+                        display.Zoom = 10;
+                }
+
+            }
+        }
     }
 
     public class RepeatParam

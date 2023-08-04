@@ -164,12 +164,13 @@ namespace ATT_UT_IPAD
         private static void CreateDeviceConfigType1(MachineConfig config)
         {
             // Akkon LineScanCamera
-            int akkonCameraWidth = 6560;
-            int akkonCameraOffsetX = 0;
+            int akkonCameraWidth = 3072;
+            int akkonCameraOffsetX = 1536;
             if (CheckCameraProperty(ref akkonCameraWidth, ref akkonCameraOffsetX, 6560) == true)
             {
                 var akkonCamera = new CameraMil("AkkonCamera", akkonCameraWidth, 1024, ColorFormat.Gray, SensorType.Line);
                 akkonCamera.OffsetX = akkonCameraOffsetX;
+                akkonCamera.EnableReverseX = true;
                 akkonCamera.MilSystemType = MilSystemType.Rapixo;
                 akkonCamera.TriggerMode = TriggerMode.Hardware;
                 akkonCamera.TriggerSource = (int)MilCxpTriggerSource.Cxp;
@@ -184,12 +185,13 @@ namespace ATT_UT_IPAD
             }
 
             // Align LineScanCamera
-            int alignCameraWidth = 6560;
-            int alignCameraOffsetX = 0;
+            int alignCameraWidth = 3072;
+            int alignCameraOffsetX = 1536;
             if (CheckCameraProperty(ref alignCameraWidth, ref alignCameraOffsetX, 6560) == true)
             {
                 var alignCamera = new CameraMil("AlignCamera", alignCameraWidth, 1024, ColorFormat.Gray, SensorType.Line);
                 alignCamera.OffsetX = alignCameraOffsetX;
+                alignCamera.EnableReverseX = true;
                 alignCamera.MilSystemType = MilSystemType.Rapixo;
                 alignCamera.TriggerMode = TriggerMode.Hardware;
                 alignCamera.TriggerSource = (int)MilCxpTriggerSource.Cxp;

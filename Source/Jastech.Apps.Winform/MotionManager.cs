@@ -5,8 +5,10 @@ using Jastech.Framework.Device.Motions;
 using Jastech.Framework.Util.Helper;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Threading;
 
 namespace Jastech.Apps.Winform
 {
@@ -89,6 +91,56 @@ namespace Jastech.Apps.Winform
                 return true;
 
             return false;
+        }
+
+        public bool MoveTo(TeachingPosType teachingPos, out string error)
+        {
+            error = "";
+
+            if (ConfigSet.Instance().Operation.VirtualMode)
+                return true;
+
+            AppsInspModel inspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
+
+            var teachingInfo = inspModel.GetUnit(UnitName.Unit0).GetTeachingInfo(teachingPos);
+
+            Axis axisX = MotionManager.Instance().GetAxis(AxisHandlerName.Handler0, AxisName.X);
+
+            var movingParamX = teachingInfo.GetMovingParam(AxisName.X.ToString());
+
+            if (MoveAxis(teachingPos, axisX, movingParamX) == false)
+            {
+                error = string.Format("Move To Axis X TimeOut!({0})", movingParamX.MovingTimeOut.ToString());
+                Logger.Write(LogType.Seq, error);
+                return false;
+            }
+
+            string message = string.Format("Move Completed.(Teaching Pos : {0})", teachingPos.ToString());
+            Logger.Write(LogType.Seq, message);
+
+            return true;
+        }
+
+        private bool MoveAxis(TeachingPosType teachingPos, Axis axis, AxisMovingParam movingParam)
+        {
+            if (IsAxisInPosition(UnitName.Unit0, teachingPos, axis) == false)
+            {
+                Stopwatch sw = new Stopwatch();
+                sw.Restart();
+
+                StartAbsoluteMove(UnitName.Unit0, teachingPos, axis);
+
+                while (IsAxisInPosition(UnitName.Unit0, teachingPos, axis) == false)
+                {
+                    if (sw.ElapsedMilliseconds >= movingParam.MovingTimeOut)
+                    {
+                        return false;
+                    }
+                    Thread.Sleep(10);
+                }
+            }
+            Console.WriteLine("Dove Done.");
+            return true;
         }
 
         #endregion

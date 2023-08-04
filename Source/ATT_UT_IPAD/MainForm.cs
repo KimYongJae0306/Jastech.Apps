@@ -43,6 +43,7 @@ namespace ATT_UT_IPAD
 
         private List<Label> PageLabelList = null;
 
+
         private Task VirtualInspTask { get; set; }
 
         private CancellationTokenSource CancelVirtualInspTask { get; set; }
@@ -247,15 +248,15 @@ namespace ATT_UT_IPAD
             ControlDisplayHelper.DisposeDisplay(lblMotionState);
             lblMotionState.Image = GetStateImage(isMotionConnected);
 
-            bool isCognexLicenseNormal = Cognex.VisionPro.CogLicense.GetLicensedFeatures(false, false).Count != 0;
-            ControlDisplayHelper.DisposeDisplay(lblLicenseState);
-            lblLicenseState.Image = GetStateImage(isCognexLicenseNormal);
+            //bool isCognexLicenseNormal = Cognex.VisionPro.CogLicense.GetLicensedFeatures(false, false).Count != 0;
+            //ControlDisplayHelper.DisposeDisplay(lblLicenseState);
+            //lblLicenseState.Image = GetStateImage(isCognexLicenseNormal);
 
             var laf = DeviceManager.Instance().LAFCtrlHandler;
             bool isLafConnected = laf.Count > 0 && laf.All(h => h.IsConnected());
             ControlDisplayHelper.DisposeDisplay(lblLafState);
             lblLafState.Image = GetStateImage(isLafConnected);
-
+            
             var light = DeviceManager.Instance().LightCtrlHandler;
             bool isLightConnected = light.Count > 0 && light.All(h => h.IsConnected());
             ControlDisplayHelper.DisposeDisplay(lblLightState);

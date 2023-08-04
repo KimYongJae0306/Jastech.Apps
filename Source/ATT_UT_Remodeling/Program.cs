@@ -120,7 +120,7 @@ namespace ATT_UT_Remodeling
                 var areaScan = new CameraHIK("PreAlign", 2592, 1944, ColorFormat.Gray, SensorType.Area);
                 areaScan.SerialNo = "DA0228166";
                 areaScan.Exposure = 5000;
-                areaScan.IsReverseX = true;
+                areaScan.EnableReverseX = true;
                 config.Add(areaScan);
 
                 // LineScanCamera

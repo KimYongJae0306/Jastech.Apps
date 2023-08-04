@@ -182,9 +182,11 @@ namespace ATT_UT_IPAD.Core
             AlignCamera = LineCameraManager.Instance().GetLineCamera("AlignCamera");
             AlignCamera.GrabDoneEventHandler += ATTSeqRunner_GrabDoneEventHandler;
             AlignCamera.GrabDelayStartEventHandler += AlignCamera_GrabDelayStartEventHandler;
+            AlignCamera.LAFTrackingOnOffHandler += AlignCamera_LAFTrackingOnOffHandler;
 
             AkkonCamera = LineCameraManager.Instance().GetLineCamera("AkkonCamera");
             AkkonCamera.GrabDoneEventHandler += ATTSeqRunner_GrabDoneEventHandler;
+            AkkonCamera.LAFTrackingOnOffHandler += AkkonCamera_LAFTrackingOnOffHandler;
 
             AlignLAFCtrl = LAFManager.Instance().GetLAFCtrl("AlignLaf");
             AkkonLAFCtrl = LAFManager.Instance().GetLAFCtrl("AkkonLaf");
@@ -194,10 +196,21 @@ namespace ATT_UT_IPAD.Core
             StartSeqTask();
         }
 
+        private void AkkonCamera_LAFTrackingOnOffHandler(bool isOn)
+        {
+            Console.WriteLine("Akkon LAF ON");
+            AkkonLAFCtrl?.SetTrackingOnOFF(isOn);
+        }
+
+        private void AlignCamera_LAFTrackingOnOffHandler(bool isOn)
+        {
+            AlignLAFCtrl?.SetTrackingOnOFF(isOn);
+        }
+
         private void AlignCamera_GrabDelayStartEventHandler(string cameraName)
         {
-            //AlignLAFCtrl.SetTrackingOnOFF(true);
-            AlignLAFCtrl.SetTrackingOnOFF(false);       // 일단 끔
+            AlignLAFCtrl.SetTrackingOnOFF(true);
+           // AlignLAFCtrl.SetTrackingOnOFF(false);       // 일단 끔
             WriteLog("Delay Align AutoFocus On.");
         }
 
@@ -347,8 +360,8 @@ namespace ATT_UT_IPAD.Core
                     IsAlignGrabDone = false;
 
                     // AlignLAFCtrl은 그랩 시작 시 On
-                    //AkkonLAFCtrl.SetTrackingOnOFF(true);
-                    AkkonLAFCtrl.SetTrackingOnOFF(false);   // 일단 끔
+                    AkkonLAFCtrl.SetTrackingOnOFF(true);
+                    //AkkonLAFCtrl.SetTrackingOnOFF(false);   // 일단 끔
                     WriteLog("Akkon Laser Auto Focus On.");
 
                     LightCtrlHandler.TurnOn(unit.GetLineCameraData("Akkon").LightParam);
