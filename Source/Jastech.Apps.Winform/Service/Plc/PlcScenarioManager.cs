@@ -33,6 +33,7 @@ namespace Jastech.Apps.Winform.Service.Plc
 
         #region 이벤트
         public event InspRunnerEventHandler InspRunnerHandler;
+
         public event PreAlignRunnerEventHandler PreAlignRunnerHandler;
         #endregion
 
@@ -470,7 +471,6 @@ namespace Jastech.Apps.Winform.Service.Plc
             }
 
             // 검사 시작 InspRunner
-            
         }
 
         private void Calibration()

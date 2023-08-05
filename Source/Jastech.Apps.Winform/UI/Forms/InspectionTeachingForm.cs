@@ -403,7 +403,8 @@ namespace Jastech.Framework.Winform.Forms
             var targetPosZ= teachingInfo.GetTargetPosition(AxisName.Z0.ToString());
 
             LAFCtrl?.SetMotionAbsoluteMove(targetPosZ);
-            Thread.Sleep(2000);
+            LAFCtrl?.MoveWaitDone(targetPosZ, 2000);
+
             TeachingData.Instance().ClearTeachingImageBuffer();
 
             if (UseDelayStart)
@@ -415,7 +416,8 @@ namespace Jastech.Framework.Winform.Forms
 
             MotionManager.Instance().MoveTo(TeachingPosType.Stage1_Scan_Start);
             LAFCtrl?.SetMotionAbsoluteMove(targetPosZ);
-            Thread.Sleep(2000);
+            LAFCtrl?.MoveWaitDone(targetPosZ, 2000);
+
             string cameraName = LineCamera.Camera.Name;
             var unit = inspModel.GetUnit(UnitName);
             DeviceManager.Instance().LightCtrlHandler.TurnOn(unit.GetLineCameraData(cameraName).LightParam);

@@ -156,11 +156,8 @@ namespace Jastech.Apps.Winform
                     status.CenterofGravity = cog;
                 if (double.TryParse(GetValue(dataString, "mpos"), out double mposPulse))
                 {
-                    status.MPosPulse = mposPulse;
-                    if (status.MPosPulse == 4)
-                    {
-                        int g1 = 1;
-                    }
+                    if(mposPulse > -50000) // 임시 -> 누리원한테 물어봐야함  정지 상태 일 때 Mpos가 4300 -> -53123 -> 4300 -> -53123
+                        status.MPosPulse = mposPulse;
                 }
                    
                 if (int.TryParse(GetValue(dataString, "ls1"), out int ls1))
@@ -172,8 +169,6 @@ namespace Jastech.Apps.Winform
                     status.IsLaserOn = Convert.ToBoolean(lasergate);
                 if (int.TryParse(GetValue(dataString, "motiontrack"), out int motiontrack))
                     status.IsTrackingOn = Convert.ToBoolean(motiontrack);
-
-                Console.WriteLine("MPos : " + status.MPosPulse);
             }
         }
 

@@ -19,6 +19,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Windows.Forms;
 
 namespace ATT
@@ -57,7 +58,7 @@ namespace ATT
             SplashForm form = new SplashForm();
 
             form.Title = "ATT Inspection";
-            form.Version = ConfigSet.Instance().Operation.SystemVersion;
+            form.Version = Assembly.GetExecutingAssembly().GetName().Version.ToString();
             form.SetupActionEventHandler = SplashSetupAction;
 
             form.ShowDialog();

@@ -44,6 +44,7 @@ namespace Jastech.Apps.Winform
         {
             if (MonitoringTask != null)
                 return;
+
             CancelMonitoringTaskToken = new CancellationTokenSource();
             MonitoringTask = new Task(MachineTaskAction, CancelMonitoringTaskToken.Token);
             MonitoringTask.Start();

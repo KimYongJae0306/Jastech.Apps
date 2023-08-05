@@ -275,11 +275,6 @@ namespace ATT_UT_IPAD.UI.Forms
                 mPos_um = status.MPosPulse;
 
             lblCurrentPositionZ0.Text = mPos_um.ToString("F3");
-            
-            if(mPos_um.ToString("F3") == "0.000")
-            {
-                int g1 = 1;
-            }
             lblCurrentCenterOfGravityZ0.Text = status.CenterofGravity.ToString();
 
             if (status.IsNegativeLimit)

@@ -20,6 +20,7 @@ using Jastech.Framework.Winform;
 using Jastech.Framework.Winform.Forms;
 using System;
 using System.IO;
+using System.Reflection;
 using System.Windows.Forms;
 
 namespace ATT_UT_Remodeling
@@ -58,7 +59,7 @@ namespace ATT_UT_Remodeling
             SplashForm form = new SplashForm();
 
             form.Title = "ATT Inspection";
-            form.Version = ConfigSet.Instance().Operation.SystemVersion;
+            form.Version = Assembly.GetExecutingAssembly().GetName().Version.ToString();
             form.SetupActionEventHandler = SplashSetupAction;
 
             form.ShowDialog();
