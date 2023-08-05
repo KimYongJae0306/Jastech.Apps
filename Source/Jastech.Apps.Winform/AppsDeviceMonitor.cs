@@ -44,7 +44,7 @@ namespace Jastech.Apps.Winform
         {
             if (MonitoringTask != null)
                 return;
-
+            CancelMonitoringTaskToken = new CancellationTokenSource();
             MonitoringTask = new Task(MachineTaskAction, CancelMonitoringTaskToken.Token);
             MonitoringTask.Start();
         }
@@ -78,9 +78,13 @@ namespace Jastech.Apps.Winform
             if (DeviceManager.Instance().MotionHandler.Count > 0)
             {
                 var motion = DeviceManager.Instance().MotionHandler.First() as ACSMotion;
-                var axis = MotionManager.Instance().GetAxis(AxisHandlerName.Handler0, AxisName.X);
 
-                return motion.IsMoving(axis.AxisNo);
+                if(motion != null)
+                {
+                    var axis = MotionManager.Instance().GetAxis(AxisHandlerName.Handler0, AxisName.X);
+                    return motion.IsMoving(axis.AxisNo);
+                }
+                return false;
             }
 
             return false;

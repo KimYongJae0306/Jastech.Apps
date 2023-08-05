@@ -18,6 +18,7 @@ using Jastech.Framework.Winform.Forms;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Reflection;
 using System.Runtime.ExceptionServices;
 using System.Security;
 using System.Security.Permissions;
@@ -57,7 +58,7 @@ namespace ATT_UT_IPAD
             SplashForm form = new SplashForm();
 
             form.Title = "ATT Inspection";
-            form.Version = ConfigSet.Instance().Operation.SystemVersion;
+            form.Version = Assembly.GetExecutingAssembly().GetName().Version.ToString();
             form.SetupActionEventHandler = SplashSetupAction;
 
             form.ShowDialog();
