@@ -99,13 +99,17 @@ namespace Jastech.Apps.Winform
 
                 foreach (TeachingPosType posType in Enum.GetValues(typeof(TeachingPosType)))
                 {
-                    var teachingInfo = inspModel.GetUnit(unitName).GetTeachingInfo(posType);
-                    if (teachingInfo != null)
+                    if(inspModel.GetUnit(unitName) is Unit unit)
                     {
-                        bool inPosition = manager.IsAxisInPosition(unitName, posType, axis);
-                        if (inPosition)
-                            return (int)ConvertToPlcCommand(posType);
+                        var teachingInfo = unit.GetTeachingInfo(posType);
+                        if (teachingInfo != null)
+                        {
+                            bool inPosition = manager.IsAxisInPosition(unitName, posType, axis);
+                            if (inPosition)
+                                return (int)ConvertToPlcCommand(posType);
+                        }
                     }
+                   
                 }
             }
             return 0;

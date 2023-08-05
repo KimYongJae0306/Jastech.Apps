@@ -82,7 +82,7 @@ namespace Jastech.Framework.Winform.Forms
 
         public LineCamera LineCamera { get; set; } = null;
 
-        public string LineCameraDataName { get; set; } = "";
+        //public string LineCameraDataName { get; set; } = "";
 
         private Axis SelectedAxis { get; set; } = null;
         #endregion
@@ -226,7 +226,7 @@ namespace Jastech.Framework.Winform.Forms
             LAFJogControl.JogSpeedMode = JogSpeedMode.Slow;
             LAFJogControl.MoveAmount = Convert.ToDouble(lblPitchZValue.Text);
 
-            var lineCameraData = unit.GetLineCameraData(LineCameraDataName);
+            var lineCameraData = unit.GetLineCameraData(LineCamera.Camera.Name);
             LightControl.SetParam(DeviceManager.Instance().LightCtrlHandler, lineCameraData.LightParam);
             LightControl.InitializeData();
 
@@ -569,7 +569,7 @@ namespace Jastech.Framework.Winform.Forms
             posData.GetAxisInfo(AxisNameZ).TargetPosition = AutoFocusControl.GetCurrentData().TargetPosition;
             posData.GetAxisInfo(AxisNameZ).CenterOfGravity = AutoFocusControl.GetCurrentData().CenterOfGravity;
 
-            var lineCameraData = unit.GetLineCameraData(LineCameraDataName);
+            var lineCameraData = unit.GetLineCameraData(LineCamera.Camera.Name);
             lineCameraData.DigitalGain = Convert.ToDouble(lblDigitalGainValue.Text);
             lineCameraData.AnalogGain = Convert.ToInt16(lblAnalogGainValue.Text);
         }

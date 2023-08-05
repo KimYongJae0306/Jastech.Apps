@@ -240,6 +240,8 @@ namespace Jastech.Apps.Winform
                 int currentPosX = AppsDeviceMonitor.Instance().AxisStatus.PlcAxisXData;
 
                 var plc = DeviceManager.Instance().PlcHandler.First() as MelsecPlc;
+                var map = PlcControlManager.Instance().GetAddressMap(PlcCommonMap.PC_Alive);
+
                 PlcDataStream stream = new PlcDataStream();
 
                 if (plc.MelsecParser.ParserType == ParserType.Binary)
@@ -254,7 +256,7 @@ namespace Jastech.Apps.Winform
                     stream.Add16BitData(Convert.ToInt16(isMovingAxis));
                     stream.Add16BitData(Convert.ToInt16(currentPosX));
                 }
-                plc.Write("D" + PlcCommonMap.PC_Alive, stream.Data);
+                plc.Write("D" + map.AddressNum, stream.Data);
             }
         }
 

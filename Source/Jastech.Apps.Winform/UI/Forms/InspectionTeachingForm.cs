@@ -16,6 +16,7 @@ using Jastech.Framework.Algorithms.UI.Controls;
 using Jastech.Framework.Config;
 using Jastech.Framework.Device.LAFCtrl;
 using Jastech.Framework.Device.LightCtrls;
+using Jastech.Framework.Device.Motions;
 using Jastech.Framework.Imaging;
 using Jastech.Framework.Imaging.Result;
 using Jastech.Framework.Imaging.VisionPro;
@@ -398,17 +399,23 @@ namespace Jastech.Framework.Winform.Forms
 
             LAFCtrl?.SetTrackingOnOFF(false);
 
+            var teachingInfo = inspModel.GetUnit(UnitName.Unit0).GetTeachingInfo(TeachingPosType.Stage1_Scan_Start);
+            var targetPosZ= teachingInfo.GetTargetPosition(AxisName.Z0.ToString());
+
+            LAFCtrl?.SetMotionAbsoluteMove(targetPosZ);
+            Thread.Sleep(2000);
             TeachingData.Instance().ClearTeachingImageBuffer();
 
             if (UseDelayStart)
                 LineCamera.InitGrabSettings(AppsConfig.Instance().CameraGap_um);
             else
                 LineCamera.InitGrabSettings();
-            
+
             InitalizeInspTab(LineCamera.TabScanBufferList);
 
             MotionManager.Instance().MoveTo(TeachingPosType.Stage1_Scan_Start);
-
+            LAFCtrl?.SetMotionAbsoluteMove(targetPosZ);
+            Thread.Sleep(2000);
             string cameraName = LineCamera.Camera.Name;
             var unit = inspModel.GetUnit(UnitName);
             DeviceManager.Instance().LightCtrlHandler.TurnOn(unit.GetLineCameraData(cameraName).LightParam);
@@ -536,11 +543,12 @@ namespace Jastech.Framework.Winform.Forms
                 if (buffer.TabImage == null)
                     return;
 
-                ICogImage cogImage = teachingData.ConvertCogGrayImage(buffer.TabImage).CopyBase(CogImageCopyModeConstants.CopyPixels);
+                Mat temp = buffer.TabImage.Clone() as Mat;
+                ICogImage cogImage = teachingData.ConvertCogGrayImage(temp).CopyBase(CogImageCopyModeConstants.CopyPixels);
 
                 Display.SetImage(cogImage);
                 TeachingUIManager.Instance().SetOrginCogImageBuffer(cogImage);
-                TeachingUIManager.Instance().SetOriginMatImageBuffer(buffer.TabImage.Clone());
+                TeachingUIManager.Instance().SetOriginMatImageBuffer(temp);
 
                 (cogImage as CogImage8Grey).Dispose();
             }

@@ -155,7 +155,14 @@ namespace Jastech.Apps.Winform
                 if (int.TryParse(GetValue(dataString, "cog"), out int cog))
                     status.CenterofGravity = cog;
                 if (double.TryParse(GetValue(dataString, "mpos"), out double mposPulse))
+                {
                     status.MPosPulse = mposPulse;
+                    if (status.MPosPulse == 4)
+                    {
+                        int g1 = 1;
+                    }
+                }
+                   
                 if (int.TryParse(GetValue(dataString, "ls1"), out int ls1))
                     status.IsNegativeLimit = Convert.ToBoolean(ls1);
                 if (int.TryParse(GetValue(dataString, "ls2"), out int ls2))
@@ -165,6 +172,8 @@ namespace Jastech.Apps.Winform
                     status.IsLaserOn = Convert.ToBoolean(lasergate);
                 if (int.TryParse(GetValue(dataString, "motiontrack"), out int motiontrack))
                     status.IsTrackingOn = Convert.ToBoolean(motiontrack);
+
+                Console.WriteLine("MPos : " + status.MPosPulse);
             }
         }
 

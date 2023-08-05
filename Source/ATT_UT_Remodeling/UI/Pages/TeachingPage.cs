@@ -107,7 +107,6 @@ namespace ATT_UT_Remodeling.UI.Pages
             form.TitleCameraName = "LineCamera";
             form.AxisNameZ = Jastech.Framework.Device.Motions.AxisName.Z0;
             form.AxisHandler = MotionManager.Instance().GetAxisHandler(AxisHandlerName.Handler0);
-            form.LineCameraDataName = "Akkon";
             form.InspModelService = ATTInspModelService;
             form.OpenMotionPopupEventHandler += OpenMotionPopupEventHandler;
             form.ShowDialog();

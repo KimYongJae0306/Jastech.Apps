@@ -40,11 +40,11 @@ namespace ATT_UT_IPAD.Core
 
                 // LineScan 조명 Parameter 생성
                 unit.AkkonCamera = new LineCameraData();
-                unit.AkkonCamera.Name = "Akkon";
+                unit.AkkonCamera.Name = "AkkonCamera";
                 unit.AkkonCamera.LightParam = CreateAkkonLightParameter();
 
                 unit.AlignCamera = new LineCameraData();
-                unit.AlignCamera.Name = "Align";
+                unit.AlignCamera.Name = "AlignCamera";
                 unit.AlignCamera.LightParam = CreateAlignLightParameter();
 
                 for (int tabIndex = 0; tabIndex < appInspModel.TabCount; tabIndex++)
