@@ -55,5 +55,11 @@ namespace Jastech.Apps.Structure
 
             UnitList.AddRange(newUnitList.Select(x => x.DeepCopy()).ToList());
         }
+
+        public void SetTeachingList(List<TeachingInfo> teachingInfoList)
+        {
+            foreach (var unit in UnitList)
+                unit.SetTeachingInfoList(teachingInfoList.ToList());
+        }
     }
 }

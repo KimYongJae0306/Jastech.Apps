@@ -133,8 +133,9 @@ namespace Jastech.Apps.Winform
                 if (i == 0)
                 {
                     tempPos += inspModel.MaterialInfo.PanelEdgeToFirst_mm;
-                    //LAFTrackingPos_mm = tempPos - ((inspModel.MaterialInfo.PanelEdgeToFirst_mm / 2.0));
-                    LAFTrackingPos_mm = tempPos;
+                    LAFTrackingPos_mm = tempPos - ((inspModel.MaterialInfo.PanelEdgeToFirst_mm / 2.0));
+                    LAFTrackingPos_mm = 1;
+                    //LAFTrackingPos_mm = tempPos;
                 }
 
                 int startIndex = (int)(tempPos / resolution_mm / Camera.ImageHeight);
@@ -261,15 +262,19 @@ namespace Jastech.Apps.Winform
                     var curPosition = appsDeviceMonitor.AxisStatus.CurrentAxisXPosition;
                     var lafOnPos = scanStartPosX + LAFTrackingPos_mm;
 
-                    if (Math.Abs(lafOnPos - curPosition) <= 1)
+                    var value = (int)curPosition - (int)lafOnPos;
+                    Debug.WriteLine("CurPosition : " + curPosition +" Laf : " + lafOnPos + "  " + value.ToString());
+                    if (Math.Abs(value) < 1)
                     //if(Math.Abs(curPosition - 80) <= 10)
                     {
+                        //var axis = MotionManager.Instance().GetAxis(AxisHandlerName.Handler0, AxisName.X);
+                        //axis.StopMove();
                         LAFTrackingOnOffHandler?.Invoke(true);
                         break;
                     }
                 }
 
-                Thread.Sleep(50);
+                Thread.Sleep(1);
             }
             _trackingOnThread = null;
         }

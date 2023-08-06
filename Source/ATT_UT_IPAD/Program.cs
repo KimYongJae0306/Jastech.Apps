@@ -215,11 +215,13 @@ namespace ATT_UT_IPAD
             // Akkon LAF
             var akkonLaf = new NuriOneLAFCtrl("AkkonLaf");
             akkonLaf.SerialPortComm = new SerialPortComm("COM2", 9600);
+            akkonLaf.AxisName = AxisName.Z0.ToString();
             config.Add(akkonLaf);
 
             // Align LAF
             var alignLaf = new NuriOneLAFCtrl("AlignLaf");
             alignLaf.SerialPortComm = new SerialPortComm("COM3", 9600);
+            alignLaf.AxisName = AxisName.Z1.ToString();
             config.Add(alignLaf);
 
             // Light1

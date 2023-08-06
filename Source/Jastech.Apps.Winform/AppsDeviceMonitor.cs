@@ -63,14 +63,14 @@ namespace Jastech.Apps.Winform
                 if (CancelMonitoringTaskToken.IsCancellationRequested)
                     return;
 
-                lock(AxisStatus)
+                //lock(AxisStatus)
                 {
                     AxisStatus.IsMovingAxisX = IsMovingAxisX();
                     AxisStatus.CurrentAxisXPosition = GetCurrentAxisXPosition();
                     AxisStatus.PlcAxisXData = GetPlcPosXData(UnitName.Unit0);
                 }
 
-                Thread.Sleep(50);
+                Thread.Sleep(1);
             }
         }
 

@@ -256,9 +256,8 @@ namespace ATT_UT_IPAD.UI.Forms
 
         private void StartTimer()
         {
-            _formTimer = new System.Threading.Timer(UpdateStatus, null, 1000, 1000);
+            _formTimer = new System.Threading.Timer(UpdateStatus, null, 500, 500);
         }
-
     
         private void UpdateStatus(object obj)
         {
@@ -472,7 +471,8 @@ namespace ATT_UT_IPAD.UI.Forms
 
             // Save Model
             var model = ModelManager.Instance().CurrentModel as AppsInspModel;
-            model.SetUnitList(TeachingData.Instance().UnitList);
+            //model.SetUnitList(TeachingData.Instance().UnitList);
+            model.SetTeachingList(TeachingPositionList);
 
             string fileName = System.IO.Path.Combine(ConfigSet.Instance().Path.Model, model.Name, InspModel.FileName);
             InspModelService?.Save(fileName, model);

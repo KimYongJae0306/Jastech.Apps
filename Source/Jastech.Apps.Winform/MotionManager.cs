@@ -59,6 +59,22 @@ namespace Jastech.Apps.Winform
             return null;
         }
 
+        public Axis GetAxis(AxisHandlerName axisHandlerName, string axisName)
+        {
+            foreach (var axisHandler in AxisHandlerList)
+            {
+                if (axisHandler.Name == axisHandlerName.ToString())
+                {
+                    foreach (var axis in axisHandler.GetAxisList())
+                    {
+                        if (axis.Name == axisName)
+                            return axis;
+                    }
+                }
+            }
+            return null;
+        }
+
         public AxisHandler GetAxisHandler(AxisHandlerName axisHandlerName)
         {
             return AxisHandlerList.Where(x => x.Name == axisHandlerName.ToString()).FirstOrDefault();

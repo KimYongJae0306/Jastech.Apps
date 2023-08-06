@@ -23,6 +23,8 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         public TeachingAxisInfo AxisInfo { get; set; } = null;
 
+        public AxisCommonParams AxisCommonParams { get; set; } = null;
+
         private AxisHandler AxisHandler { get; set; } = null;
 
         private LAFCtrl LAFCtrl { get; set; } = null;
@@ -53,6 +55,8 @@ namespace Jastech.Apps.Winform.UI.Controls
         public void UpdateData(TeachingAxisInfo axisInfo)
         {
             AxisInfo = axisInfo.DeepCopy();
+            AxisCommonParams = SelectedAxis.AxisCommonParams.DeepCopy();
+
             UpdateUI();
         }
 
@@ -60,6 +64,9 @@ namespace Jastech.Apps.Winform.UI.Controls
         {
             lblTargetPositionValue.Text = AxisInfo.TargetPosition.ToString();
             lblTeachCogValue.Text = AxisInfo.CenterOfGravity.ToString();
+            
+            lblNegativeLimit.Text = SelectedAxis.AxisCommonParams.NegativeLimit.ToString("F3");
+            lblPositiveLimit.Text = SelectedAxis.AxisCommonParams.PositiveLimit.ToString("F3");
         }
 
         public void UpdateAxisStatus()
@@ -109,15 +116,9 @@ namespace Jastech.Apps.Winform.UI.Controls
             }
         }
 
-        public void SetAxisHandler(AxisHandler axisHandler)
+        public void SetAxis(Axis axis)
         {
-            AxisHandler = axisHandler;
-            SetAxis(AxisHandler);
-        }
-
-        private void SetAxis(AxisHandler axisHandler)
-        {
-            SelectedAxis = axisHandler.GetAxis(AxisName.Z0);
+            SelectedAxis = axis;
         }
 
         public void SetLAFCtrl(LAFCtrl lafCtrl)
@@ -142,6 +143,18 @@ namespace Jastech.Apps.Winform.UI.Controls
             AxisInfo.CenterOfGravity = centerOfGravity;
         }
 
+        private void lblNegativeLimit_Click(object sender, EventArgs e)
+        {
+            double swNegativeLimit = KeyPadHelper.SetLabelDoubleData((Label)sender);
+            AxisCommonParams.NegativeLimit = swNegativeLimit;
+        }
+
+        private void lblPositiveLimit_Click(object sender, EventArgs e)
+        {
+            double swPositiveLimit = KeyPadHelper.SetLabelDoubleData((Label)sender);
+            AxisCommonParams.PositiveLimit = swPositiveLimit;
+        }
+
         private void lblCurrentToTeach_Click(object sender, EventArgs e)
         {
             int cog = Convert.ToInt32(lblCurrentCogValue.Text);
@@ -155,21 +168,41 @@ namespace Jastech.Apps.Winform.UI.Controls
             LAFCtrl?.SetTrackingOnOFF(true);
         }
 
-
         private void lblTrackingOff_Click(object sender, EventArgs e)
         {
             LAFCtrl?.SetTrackingOnOFF(false);
         }
 
-        public TeachingAxisInfo GetCurrentData()
+        public TeachingAxisInfo GetCurrentTeachingData()
         {
             TeachingAxisInfo param = new TeachingAxisInfo();
 
             param.TargetPosition = AxisInfo.TargetPosition;
             param.CenterOfGravity = AxisInfo.CenterOfGravity;
 
-            return param.DeepCopy();
+            param.MovingParam = new AxisMovingParam();
+            param.MovingParam = AxisInfo.MovingParam.DeepCopy();
+
+            return param;
+        }
+
+        public AxisCommonParams GetAxisCommonParams()
+        {
+            AxisCommonParams param = new AxisCommonParams();
+
+            param = AxisCommonParams.DeepCopy();
+
+            //param.JogLowSpeed = AxisCommonParams.JogLowSpeed;
+            //param.JogHighSpeed = AxisCommonParams.JogHighSpeed;
+            //param.MoveTolerance = AxisCommonParams.MoveTolerance;
+            //param.NegativeLimit = AxisCommonParams.NegativeLimit;
+            //param.PositiveLimit = AxisCommonParams.PositiveLimit;
+            //param.HommingTimeOut = AxisCommonParams.HommingTimeOut;
+
+            return param;
         }
         #endregion
+
+
     }
 }

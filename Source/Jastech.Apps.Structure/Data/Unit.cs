@@ -64,6 +64,12 @@ namespace Jastech.Apps.Structure.Data
             return TeachingInfoList;
         }
 
+        public void SetTeachingInfoList(List<TeachingInfo> teachingInfoList)
+        {
+            TeachingInfoList.Clear();
+            TeachingInfoList.AddRange(teachingInfoList);
+        }
+
         public Tab GetTab(int index)
         {
             return TabList.Where(x => x.Index == index).FirstOrDefault();

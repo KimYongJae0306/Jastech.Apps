@@ -1,4 +1,7 @@
-﻿using Jastech.Framework.Device.LAFCtrl;
+﻿using Jastech.Apps.Structure;
+using Jastech.Apps.Structure.Data;
+using Jastech.Framework.Device.LAFCtrl;
+using Jastech.Framework.Device.Motions;
 using Jastech.Framework.Util.Helper;
 using Jastech.Framework.Winform;
 using System;
@@ -10,6 +13,8 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows.Forms.DataVisualization.Charting;
+using System.Xml.Linq;
 using static Jastech.Framework.Device.Motions.AxisMovingParam;
 
 namespace Jastech.Apps.Winform
@@ -30,9 +35,7 @@ namespace Jastech.Apps.Winform
         public static LAFManager Instance()
         {
             if (_instance == null)
-            {
                 _instance = new LAFManager();
-            }
 
             return _instance;
         }
@@ -61,9 +64,7 @@ namespace Jastech.Apps.Winform
         public void Release()
         {
             foreach (var cancelTask in StatusCancelTaskList)
-            {
                 cancelTask.Cancel();
-            }
 
             var lafCtrlHandler = DeviceManager.Instance().LAFCtrlHandler;
 
@@ -98,16 +99,16 @@ namespace Jastech.Apps.Winform
                         string command = "uc rep cog mpos ls1 ls2";
                         laf.RequestData(command);
                     }
-                    else if (count % 3 == 1)
-                    {
-                        string command = "uc lasergate";
-                        laf.RequestData(command);
-                    }
-                    else if (count % 3 == 2)
-                    {
-                        string command = "uc motiontrack";
-                        laf.RequestData(command);
-                    }
+                    //else if (count % 3 == 1)
+                    //{
+                    //    string command = "uc lasergate";
+                    //    laf.RequestData(command);
+                    //}
+                    //else if (count % 3 == 2)
+                    //{
+                    //    string command = "uc motiontrack";
+                    //    laf.RequestData(command);
+                    //}
                     if (count >= int.MaxValue)
                         count = 0;
                     count++;
@@ -163,7 +164,9 @@ namespace Jastech.Apps.Winform
                 if (int.TryParse(GetValue(dataString, "ls1"), out int ls1))
                     status.IsNegativeLimit = Convert.ToBoolean(ls1);
                 if (int.TryParse(GetValue(dataString, "ls2"), out int ls2))
+                {
                     status.IsPositiveLimit = Convert.ToBoolean(ls2);
+                }
 
                 if (int.TryParse(GetValue(dataString, "lasergate"), out int lasergate))
                     status.IsLaserOn = Convert.ToBoolean(lasergate);
@@ -261,6 +264,9 @@ namespace Jastech.Apps.Winform
 
         public void StartHomeThread(string lafName)
         {
+            if (_homeThread != null)
+                return;
+
             _isHomeThreadStop = false;
             _homeThread = new Thread(new ParameterizedThreadStart(HomeSequenceThread));
             _homeThread.Start(lafName);
@@ -276,6 +282,7 @@ namespace Jastech.Apps.Winform
                 HomeSequence(lafName);
                 Thread.Sleep(50);
             }
+            _homeThread = null;
         }
 
         private void PrepareHomeSequence(string lafName)
@@ -314,6 +321,7 @@ namespace Jastech.Apps.Winform
                     Logger.Write(LogType.Device, "Prepare to laf home sequence.");
 
                     lafCtrl.SetMotionRelativeMove(Direction.CW, HOMING_FIRST_TARGET);      // -Limit 감지까지 이동
+                    Thread.Sleep(3000); //Test
                     Logger.Write(LogType.Device, "Move to first minus limit detection.");
 
                     sw.Restart();
@@ -343,7 +351,8 @@ namespace Jastech.Apps.Winform
                     break;
 
                 case HomeSequenceStep.CheckZeroConvergence:
-                    if (Math.Abs(status.MPosPulse - /*HOMING_DISTANCE_AWAY_FROM_LIMIT*/0.0002) <= 0.0002/*float.Epsilon*/)
+                    //if (Math.Abs(status.MPosPulse - /*HOMING_DISTANCE_AWAY_FROM_LIMIT*/0.0002) <= 0.0002/*float.Epsilon*/)
+                    if (Math.Abs(status.MPosPulse - /*HOMING_DISTANCE_AWAY_FROM_LIMIT*/2) <= 2/*float.Epsilon*/)
                     {
                         Logger.Write(LogType.Device, "Complete zero convergence.");
                         _homeSequenceStep = HomeSequenceStep.ZeroSet;
@@ -357,6 +366,9 @@ namespace Jastech.Apps.Winform
                     break;
 
                 case HomeSequenceStep.ZeroSet:
+                    lafCtrl.SetMotionRelativeMove(Direction.CCW, HOMING_DISTANCE_AWAY_FROM_LIMIT);
+                    Thread.Sleep(1000);
+
                     lafCtrl.SetMotionStop();
                     Thread.Sleep(500);
 
@@ -373,8 +385,9 @@ namespace Jastech.Apps.Winform
                     lafCtrl.SetMotionAbsoluteMove(0);
                     Thread.Sleep(3000);
 
-                    Logger.Write(LogType.Device, "Complete LAF home.");
+                    EnableSoftwareLimit(lafCtrl);
 
+                    Logger.Write(LogType.Device, "Complete LAF home.");
                     _homeSequenceStep = HomeSequenceStep.End;
                     break;
 
@@ -413,7 +426,8 @@ namespace Jastech.Apps.Winform
                         Thread.Sleep(100);
 
                         lafCtrl.SetMotionRelativeMove(Direction.CW, HOMING_SEARCH_DISTANCE);      // -Limit 감지까지 이동
-                        Thread.Sleep(1000);
+                        Thread.Sleep(3000); //Test
+                        //Thread.Sleep(1000);
                         sw.Restart();
 
                         step = UnitOperation.WaitingForLimitDetection;
@@ -445,7 +459,9 @@ namespace Jastech.Apps.Winform
                         lafCtrl.SetMotionMaxSpeed(velocity);
                         Thread.Sleep(100);
 
-                        lafCtrl.SetMotionRelativeMove(Direction.CCW, HOMING_SEARCH_DISTANCE);                 // +방향으로 이동
+                        lafCtrl.SetMotionRelativeMove(Direction.CCW, HOMING_SEARCH_DISTANCE);
+                        //Thread.Sleep(2000);
+                        //lafCtrl.MoveWaitDone()// +방향으로 이동
                         sw.Restart();
 
                         step = UnitOperation.ReleaseNegativeLimitDetection;
@@ -462,11 +478,7 @@ namespace Jastech.Apps.Winform
                         if (status.IsNegativeLimit == true)                                    // -Limit 감지 해제
                         {
                             lafCtrl.SetMotionStop();
-                            Thread.Sleep(100);
-
-                            lafCtrl.SetMotionZeroSet();
                             Thread.Sleep(500);
-
                             step = UnitOperation.Complete;
                         }
                         else
@@ -494,6 +506,15 @@ namespace Jastech.Apps.Winform
             }
 
             return result;
+        }
+
+        private void EnableSoftwareLimit(LAFCtrl lafCtrl)
+        {
+            var negativeLimit = MotionManager.Instance().GetAxis(AxisHandlerName.Handler0, lafCtrl.AxisName).AxisCommonParams.NegativeLimit;
+            var positiveLimit = MotionManager.Instance().GetAxis(AxisHandlerName.Handler0, lafCtrl.AxisName).AxisCommonParams.PositiveLimit;
+
+            lafCtrl.SetMotionNegativeLimit(negativeLimit);
+            lafCtrl.SetMotionPositiveLimit(positiveLimit);
         }
         #endregion
     }

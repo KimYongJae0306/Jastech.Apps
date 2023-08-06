@@ -88,13 +88,15 @@ namespace Jastech.Framework.Winform.Forms
         #endregion
 
         #region 이벤트
-        public OpenMotionPopupDelegate OpenMotionPopupEventHandler;
+        public MotionPopupDelegate OpenMotionPopupEventHandler;
+
+        public MotionPopupDelegate CloseMotionPopupEventHandler;
         #endregion
 
         #region 델리게이트
         private delegate void UpdateUIDelegate();
 
-        public delegate void OpenMotionPopupDelegate(UnitName unitName);
+        public delegate void MotionPopupDelegate(UnitName unitName);
         #endregion
 
         #region 생성자
@@ -203,7 +205,7 @@ namespace Jastech.Framework.Winform.Forms
             var unit = TeachingData.Instance().GetUnit(UnitName.ToString());
             var posData = unit.GetTeachingInfo(TeachingPosType.Stage1_Scan_Start);
 
-            AutoFocusControl.SetAxisHandler(AxisHandler);
+            AutoFocusControl.SetAxis(AxisHandler.GetAxis(AxisNameZ));
             AutoFocusControl.SetLAFCtrl(LAFCtrl);
             AutoFocusControl.UpdateData(posData.GetAxisInfo(AxisNameZ));
 
@@ -234,7 +236,7 @@ namespace Jastech.Framework.Winform.Forms
             camera.SetAnalogGain(lineCameraData.AnalogGain);
             camera.SetDigitalGain(lineCameraData.DigitalGain);
 
-            lbExposureValue.Text = camera.GetExposureTime().ToString("F4");
+            lblExposureValue.Text = camera.GetExposureTime().ToString();
             lblDigitalGainValue.Text = lineCameraData.DigitalGain.ToString("F4");
             lblAnalogGainValue.Text = lineCameraData.AnalogGain.ToString();
 
@@ -426,7 +428,7 @@ namespace Jastech.Framework.Winform.Forms
                 if (isOutOfRange)
                     ShowConfirmDataRange(minValue: "1.0", maxValue: "200000.0");
 
-                lbExposureValue.Text = exposureTime.ToString();
+                lblExposureValue.Text = exposureTime.ToString();
                 tdiCamera.SetExposureTime(exposureTime);
        
             }
@@ -566,8 +568,13 @@ namespace Jastech.Framework.Winform.Forms
             var unit = TeachingData.Instance().GetUnit(UnitName.ToString());
             var posData = unit.GetTeachingInfo(TeachingPosType.Stage1_Scan_Start);
 
-            posData.GetAxisInfo(AxisNameZ).TargetPosition = AutoFocusControl.GetCurrentData().TargetPosition;
-            posData.GetAxisInfo(AxisNameZ).CenterOfGravity = AutoFocusControl.GetCurrentData().CenterOfGravity;
+            posData.GetAxisInfo(AxisNameZ).TargetPosition = AutoFocusControl.GetCurrentTeachingData().TargetPosition;
+            posData.GetAxisInfo(AxisNameZ).CenterOfGravity = AutoFocusControl.GetCurrentTeachingData().CenterOfGravity;
+
+            var axis = MotionManager.Instance().GetAxis(AxisHandlerName.Handler0, AxisNameZ);
+
+            axis.AxisCommonParams.NegativeLimit = AutoFocusControl.GetAxisCommonParams().NegativeLimit;
+            axis.AxisCommonParams.PositiveLimit = AutoFocusControl.GetAxisCommonParams().PositiveLimit;
 
             var lineCameraData = unit.GetLineCameraData(LineCamera.Camera.Name);
             lineCameraData.DigitalGain = Convert.ToDouble(lblDigitalGainValue.Text);
@@ -697,6 +704,8 @@ namespace Jastech.Framework.Winform.Forms
 
             LineCamera.SetOperationMode(TDIOperationMode.TDI);
             StatusTimer.Stop();
+
+            CloseMotionPopupEventHandler?.Invoke(UnitName);
         }
 
         private void StatusTimer_Tick(object sender, EventArgs e)

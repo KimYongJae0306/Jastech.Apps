@@ -84,7 +84,7 @@
             this.lblDigitalGain = new System.Windows.Forms.Label();
             this.tlpExposure = new System.Windows.Forms.TableLayoutPanel();
             this.lblExposure = new System.Windows.Forms.Label();
-            this.lbExposureValue = new System.Windows.Forms.Label();
+            this.lblExposureValue = new System.Windows.Forms.Label();
             this.lblCamera = new System.Windows.Forms.Label();
             this.lblGrabMode = new System.Windows.Forms.Label();
             this.tlpGrabModeSelect = new System.Windows.Forms.TableLayoutPanel();
@@ -187,7 +187,7 @@
             this.tlpJog.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tlpJog.Controls.Add(this.tlpJogFunction, 0, 1);
             this.tlpJog.Controls.Add(this.lblJog, 0, 0);
-            this.tlpJog.Location = new System.Drawing.Point(41, 403);
+            this.tlpJog.Location = new System.Drawing.Point(41, 346);
             this.tlpJog.Margin = new System.Windows.Forms.Padding(0);
             this.tlpJog.Name = "tlpJog";
             this.tlpJog.RowCount = 3;
@@ -1016,7 +1016,7 @@
             this.tlpExposure.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 160F));
             this.tlpExposure.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 80F));
             this.tlpExposure.Controls.Add(this.lblExposure, 0, 0);
-            this.tlpExposure.Controls.Add(this.lbExposureValue, 1, 0);
+            this.tlpExposure.Controls.Add(this.lblExposureValue, 1, 0);
             this.tlpExposure.Location = new System.Drawing.Point(5, 0);
             this.tlpExposure.Margin = new System.Windows.Forms.Padding(0);
             this.tlpExposure.Name = "tlpExposure";
@@ -1040,21 +1040,21 @@
             this.lblExposure.Text = "EXPOSURE [us]\r\n(1 ~ 200000)";
             this.lblExposure.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // lbExposureValue
+            // lblExposureValue
             // 
-            this.lbExposureValue.AutoSize = true;
-            this.lbExposureValue.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
-            this.lbExposureValue.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lbExposureValue.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lbExposureValue.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
-            this.lbExposureValue.Location = new System.Drawing.Point(160, 0);
-            this.lbExposureValue.Margin = new System.Windows.Forms.Padding(0);
-            this.lbExposureValue.Name = "lbExposureValue";
-            this.lbExposureValue.Size = new System.Drawing.Size(80, 27);
-            this.lbExposureValue.TabIndex = 208;
-            this.lbExposureValue.Text = "0";
-            this.lbExposureValue.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.lbExposureValue.Click += new System.EventHandler(this.lblCameraExposureValue_Click);
+            this.lblExposureValue.AutoSize = true;
+            this.lblExposureValue.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
+            this.lblExposureValue.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblExposureValue.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblExposureValue.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
+            this.lblExposureValue.Location = new System.Drawing.Point(160, 0);
+            this.lblExposureValue.Margin = new System.Windows.Forms.Padding(0);
+            this.lblExposureValue.Name = "lblExposureValue";
+            this.lblExposureValue.Size = new System.Drawing.Size(80, 27);
+            this.lblExposureValue.TabIndex = 208;
+            this.lblExposureValue.Text = "0";
+            this.lblExposureValue.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblExposureValue.Click += new System.EventHandler(this.lblCameraExposureValue_Click);
             // 
             // lblCamera
             // 
@@ -1138,7 +1138,7 @@
             this.tlpMotionStatus.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tlpMotionStatus.Controls.Add(this.lblMotionStatus, 0, 0);
             this.tlpMotionStatus.Controls.Add(this.tlpMotionStatus_, 0, 1);
-            this.tlpMotionStatus.Location = new System.Drawing.Point(41, 203);
+            this.tlpMotionStatus.Location = new System.Drawing.Point(41, 179);
             this.tlpMotionStatus.Margin = new System.Windows.Forms.Padding(0);
             this.tlpMotionStatus.Name = "tlpMotionStatus";
             this.tlpMotionStatus.RowCount = 3;
@@ -1461,14 +1461,14 @@
             this.tlpAutoFocus.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tlpAutoFocus.Controls.Add(this.pnlAutoFocus, 0, 1);
             this.tlpAutoFocus.Controls.Add(this.lblAutoFocus, 0, 0);
-            this.tlpAutoFocus.Location = new System.Drawing.Point(41, 683);
+            this.tlpAutoFocus.Location = new System.Drawing.Point(41, 593);
             this.tlpAutoFocus.Margin = new System.Windows.Forms.Padding(0);
             this.tlpAutoFocus.Name = "tlpAutoFocus";
             this.tlpAutoFocus.RowCount = 3;
             this.tlpAutoFocus.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
-            this.tlpAutoFocus.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 200F));
+            this.tlpAutoFocus.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 240F));
             this.tlpAutoFocus.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tlpAutoFocus.Size = new System.Drawing.Size(400, 230);
+            this.tlpAutoFocus.Size = new System.Drawing.Size(400, 360);
             this.tlpAutoFocus.TabIndex = 7;
             // 
             // pnlAutoFocus
@@ -1477,7 +1477,7 @@
             this.pnlAutoFocus.Location = new System.Drawing.Point(0, 30);
             this.pnlAutoFocus.Margin = new System.Windows.Forms.Padding(0);
             this.pnlAutoFocus.Name = "pnlAutoFocus";
-            this.pnlAutoFocus.Size = new System.Drawing.Size(400, 200);
+            this.pnlAutoFocus.Size = new System.Drawing.Size(400, 240);
             this.pnlAutoFocus.TabIndex = 0;
             // 
             // lblAutoFocus
@@ -1931,7 +1931,7 @@
         private System.Windows.Forms.TableLayoutPanel tlpGrabModeSelect;
         private System.Windows.Forms.TableLayoutPanel tlpCamera;
         private System.Windows.Forms.Label lblAnalogGainValue;
-        private System.Windows.Forms.Label lbExposureValue;
+        private System.Windows.Forms.Label lblExposureValue;
         private System.Windows.Forms.Label lblAnalogGain;
         private System.Windows.Forms.Label lblCamera;
         private System.Windows.Forms.TableLayoutPanel tlpJogFunction;

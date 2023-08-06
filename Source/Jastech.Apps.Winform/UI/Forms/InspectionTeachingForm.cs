@@ -102,11 +102,13 @@ namespace Jastech.Framework.Winform.Forms
         #endregion
 
         #region 이벤트
-        public OpenMotionPopupDelegate OpenMotionPopupEventHandler;
+        public MotionPopupDelegate OpenMotionPopupEventHandler;
+
+        public MotionPopupDelegate CloseMotionPopupEventHandler;
         #endregion
 
         #region 델리게이트
-        public delegate void OpenMotionPopupDelegate(UnitName unitName);
+        public delegate void MotionPopupDelegate(UnitName unitName);
 
         public delegate void UpdateDisplayDele(ICogImage cogImage);
         #endregion
@@ -469,6 +471,8 @@ namespace Jastech.Framework.Winform.Forms
 
         private void InspectionTeachingForm_FormClosing(object sender, FormClosingEventArgs e)
         {
+            CloseMotionPopupEventHandler?.Invoke(UnitName);
+
             if (LineCamera.Camera.IsGrabbing())
                 LineCamera.StopGrab();
 
