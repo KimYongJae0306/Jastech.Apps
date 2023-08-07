@@ -326,6 +326,7 @@
             this.lblStageCam.TabIndex = 294;
             this.lblStageCam.Text = "STAGE : / CAM :";
             this.lblStageCam.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblStageCam.Click += new System.EventHandler(this.lblStageCam_Click);
             // 
             // tlpLoadImage
             // 

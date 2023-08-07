@@ -3,6 +3,7 @@ using Jastech.Apps.Structure.Data;
 using Jastech.Framework.Config;
 using Jastech.Framework.Device.Motions;
 using Jastech.Framework.Util.Helper;
+using Jastech.Framework.Winform;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -157,6 +158,22 @@ namespace Jastech.Apps.Winform
             return true;
         }
 
+        public bool IsMovingAxis(AxisHandlerName axisHandlerName, AxisName axisName)
+        {
+            if (DeviceManager.Instance().MotionHandler.Count > 0)
+            {
+                var motion = DeviceManager.Instance().MotionHandler.First() as ACSMotion;
+
+                if (motion != null)
+                {
+                    var axis = GetAxis(axisHandlerName, axisName);
+                    return motion.IsMoving(axis.AxisNo);
+                }
+                return false;
+            }
+
+            return false;
+        }
         #endregion
     }
 

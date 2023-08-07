@@ -236,8 +236,8 @@ namespace Jastech.Apps.Winform
             if (DeviceManager.Instance().PlcHandler.Count > 0)
             {
                 _pcHeartBit = !_pcHeartBit;
-                bool isMovingAxis = AppsDeviceMonitor.Instance().AxisStatus.IsMovingAxisX;
-                int currentPosX = AppsDeviceMonitor.Instance().AxisStatus.PlcAxisXData;
+                bool isMovingAxis = MotionManager.Instance().IsMovingAxis(AxisHandlerName.Handler0, AxisName.X);
+                int currentPosX = GetPlcPosXData(unitName);
 
                 var plc = DeviceManager.Instance().PlcHandler.First() as MelsecPlc;
                 var map = PlcControlManager.Instance().GetAddressMap(PlcCommonMap.PC_Alive);
@@ -258,6 +258,46 @@ namespace Jastech.Apps.Winform
                 }
                 plc.Write("D" + map.AddressNum, stream.Data);
             }
+        }
+
+        private int GetPlcPosXData(UnitName unitName)
+        {
+            if (ModelManager.Instance().CurrentModel is AppsInspModel inspModel)
+            {
+                var manager = MotionManager.Instance();
+                var axis = manager.GetAxis(AxisHandlerName.Handler0, AxisName.X);
+
+                foreach (TeachingPosType posType in Enum.GetValues(typeof(TeachingPosType)))
+                {
+                    if (inspModel.GetUnit(unitName) is Unit unit)
+                    {
+                        var teachingInfo = unit.GetTeachingInfo(posType);
+                        if (teachingInfo != null)
+                        {
+                            bool inPosition = manager.IsAxisInPosition(unitName, posType, axis);
+                            if (inPosition)
+                                return (int)ConvertToPlcCommand(posType);
+                        }
+                    }
+                }
+            }
+            return 0;
+        }
+
+        private PlcCommand ConvertToPlcCommand(TeachingPosType posType)
+        {
+            if (posType == TeachingPosType.Standby)
+                return PlcCommand.Move_StandbyPos;
+            else if (posType == TeachingPosType.Stage1_PreAlign_Left)
+                return PlcCommand.Move_Left_AlignPos;
+            else if (posType == TeachingPosType.Stage1_PreAlign_Right)
+                return PlcCommand.Move_Right_AlignPos;
+            else if (posType == TeachingPosType.Stage1_Scan_Start)
+                return PlcCommand.Move_ScanStartPos;
+            else if (posType == TeachingPosType.Stage1_Scan_End)
+                return PlcCommand.Move_ScanEndPos;
+            else
+                return PlcCommand.None;
         }
 
         public void WritePcReady(MachineStatus machineStatus)

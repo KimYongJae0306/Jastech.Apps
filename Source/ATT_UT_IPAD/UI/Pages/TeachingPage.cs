@@ -68,7 +68,6 @@ namespace ATT_UT_IPAD.UI.Pages
         {
             InspectionTeachingForm form = new InspectionTeachingForm();
             form.UnitName = UnitName.Unit0;
-            form.TitleCameraName = "AlignCamera";
             form.LineCamera = LineCameraManager.Instance().GetLineCamera("AlignCamera");
             form.UseDelayStart = true;
             form.LAFCtrl = LAFManager.Instance().GetLAFCtrl("AlignLaf");
@@ -81,7 +80,6 @@ namespace ATT_UT_IPAD.UI.Pages
         {
             InspectionTeachingForm form = new InspectionTeachingForm();
             form.UnitName = UnitName.Unit0;
-            form.TitleCameraName = "AkkonCamera";
             form.LineCamera = LineCameraManager.Instance().GetLineCamera("AkkonCamera");
             form.LAFCtrl = LAFManager.Instance().GetLAFCtrl("AkkonLaf");
             form.InspModelService = ATTInspModelService;

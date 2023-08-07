@@ -99,7 +99,6 @@
     <Reference Include="WindowsFormsIntegration" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AppsDeviceMonitor.cs" />
     <Compile Include="AppsPreAlignResult.cs" />
     <Compile Include="AppsStatus.cs" />
     <Compile Include="AreaCamera.cs" />

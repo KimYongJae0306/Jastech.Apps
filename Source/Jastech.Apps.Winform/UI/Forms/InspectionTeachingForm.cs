@@ -29,6 +29,7 @@ using Jastech.Framework.Winform.VisionPro.Controls;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -59,8 +60,6 @@ namespace Jastech.Framework.Winform.Forms
         public InspModelService InspModelService { get; set; } = null;
 
         public UnitName UnitName { get; set; } = UnitName.Unit0;
-
-        public string TitleCameraName { get; set; } = "";
 
         public List<Tab> TeachingTabList { get; private set; } = null;
 
@@ -134,7 +133,7 @@ namespace Jastech.Framework.Winform.Forms
 
             _isLoading = false;
 
-            lblStageCam.Text = $"STAGE : {UnitName} / CAM : {TitleCameraName}";
+            lblStageCam.Text = $"STAGE : {UnitName} / CAM : {LineCamera.Camera.Name}";
 
             LineCamera.GrabDoneEventHandler += InspectionTeachingForm_GrabDoneEventHandler;
             if(UseDelayStart)
@@ -780,6 +779,12 @@ namespace Jastech.Framework.Winform.Forms
                 group.AkkonROIList.Clear();
                 group.AkkonROIList.AddRange(akkonList);
             }
+        }
+
+        private void lblStageCam_Click(object sender, EventArgs e)
+        {
+            String dir = ConfigSet.Instance().Path.Model;
+            Process.Start(dir);
         }
         #endregion
     }
