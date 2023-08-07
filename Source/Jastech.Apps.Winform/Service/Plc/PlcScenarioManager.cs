@@ -469,7 +469,7 @@ namespace Jastech.Apps.Winform.Service.Plc
                 Logger.Debug(LogType.Device, $"Write Fail StartInspection.[{command}]");
                 return;
             }
-
+            PlcControlManager.Instance().WritePcStatus(PlcCommand.StartInspection);
             // 검사 시작 InspRunner
         }
 
@@ -582,10 +582,13 @@ namespace Jastech.Apps.Winform.Service.Plc
 
             foreach (var axisHandler in MotionManager.Instance().AxisHandlerList)
             {
-                if (axisHandler.Name == AxisName.Z0.ToString())
-                    continue;
-
-                allAxisHandler.AddAxis(axisHandler.GetAxisList());
+                foreach (var axis in axisHandler.GetAxisList())
+                {
+                    if(axis.Name.ToUpper().Contains("X"))
+                    {
+                        allAxisHandler.AddAxis(axis);
+                    }
+                }
             }
             allAxisHandler.StopMove();
             Thread.Sleep(100);

@@ -256,7 +256,7 @@ namespace ATT_UT_IPAD.UI.Forms
 
         private void StartTimer()
         {
-            _formTimer = new System.Threading.Timer(UpdateStatus, null, 500, 500);
+            _formTimer = new System.Threading.Timer(UpdateStatus, null, 100, 100);
         }
     
         private void UpdateStatus(object obj)

@@ -1834,7 +1834,6 @@
             // 
             // StatusTimer
             // 
-            this.StatusTimer.Interval = 300;
             this.StatusTimer.Tick += new System.EventHandler(this.StatusTimer_Tick);
             // 
             // MotionPopupForm

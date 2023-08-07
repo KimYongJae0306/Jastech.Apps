@@ -134,7 +134,7 @@ namespace Jastech.Apps.Winform
                 {
                     tempPos += inspModel.MaterialInfo.PanelEdgeToFirst_mm;
                     LAFTrackingPos_mm = tempPos - ((inspModel.MaterialInfo.PanelEdgeToFirst_mm / 2.0));
-                    LAFTrackingPos_mm = 1;
+                    //LAFTrackingPos_mm = 1;
                     //LAFTrackingPos_mm = tempPos;
                 }
 

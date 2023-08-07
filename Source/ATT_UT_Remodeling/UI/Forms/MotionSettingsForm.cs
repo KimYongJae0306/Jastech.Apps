@@ -220,7 +220,7 @@ namespace ATT_UT_Remodeling.UI.Forms
 
         private void StartTimer()
         {
-            _formTimer = new System.Threading.Timer(UpdateStatus, null, 1000, 1000);
+            _formTimer = new System.Threading.Timer(UpdateStatus, null, 100, 100);
         }
 
         private delegate void UpdateStatusDelegate(object obj);
