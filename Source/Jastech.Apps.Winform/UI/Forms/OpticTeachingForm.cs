@@ -19,6 +19,7 @@ using Jastech.Framework.Winform.Helper;
 using Jastech.Framework.Winform.VisionPro.Helper;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.Runtime.InteropServices;
 using System.Threading;
@@ -76,8 +77,6 @@ namespace Jastech.Framework.Winform.Forms
 
         public AxisHandler AxisHandler { get; set; } = null;
 
-        public string TitleCameraName { get; set; } = "";
-        
         public LAFCtrl LAFCtrl { get; set; } = null;
 
         public LineCamera LineCamera { get; set; } = null;
@@ -118,7 +117,7 @@ namespace Jastech.Framework.Winform.Forms
             LineCamera.GrabOnceEventHandler += OpticTeachingForm_GrabOnceEventHandler;
             SelectedAxis = AxisHandler.GetAxis(AxisName.X);
 
-            lblStageCam.Text = $"STAGE : {UnitName} / CAM : {TitleCameraName}";
+            lblStageCam.Text = $"STAGE : {UnitName} / CAM : {LineCamera.Camera.Name}";
 
             StatusTimer.Start();
         }
@@ -955,7 +954,6 @@ namespace Jastech.Framework.Winform.Forms
             lblAreaMode.Enabled = isEnable;
             lblLineMode.Enabled = isEnable;
         }
-        #endregion
 
         private void cogDisplay_Changed(object sender, CogChangedEventArgs e)
         {
@@ -979,6 +977,13 @@ namespace Jastech.Framework.Winform.Forms
 
             }
         }
+
+        private void lblStageCam_Click(object sender, EventArgs e)
+        {
+            String dir = ConfigSet.Instance().Path.Model;
+            Process.Start(dir);
+        }
+        #endregion
     }
 
     public class RepeatParam

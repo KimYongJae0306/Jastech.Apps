@@ -66,7 +66,6 @@ namespace ATT_UT_Remodeling.UI.Pages
         {
             InspectionTeachingForm form = new InspectionTeachingForm();
             form.UnitName = UnitName.Unit0;
-            form.TitleCameraName = "LineCamera";
             form.LineCamera = LineCameraManager.Instance().GetLineCamera("LineCamera");
             form.LAFCtrl = LAFManager.Instance().GetLAFCtrl("Laf");
             form.InspModelService = ATTInspModelService;
@@ -104,7 +103,6 @@ namespace ATT_UT_Remodeling.UI.Pages
             form.LineCamera = LineCameraManager.Instance().GetLineCamera("LineCamera");
             form.LAFCtrl = LAFManager.Instance().GetLAFCtrl("Laf");
             form.UnitName = UnitName.Unit0;
-            form.TitleCameraName = "LineCamera";
             form.AxisNameZ = Jastech.Framework.Device.Motions.AxisName.Z0;
             form.AxisHandler = MotionManager.Instance().GetAxisHandler(AxisHandlerName.Handler0);
             form.InspModelService = ATTInspModelService;
