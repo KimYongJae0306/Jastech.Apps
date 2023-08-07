@@ -263,7 +263,7 @@ namespace Jastech.Apps.Winform
                     var lafOnPos = scanStartPosX + LAFTrackingPos_mm;
 
                     var value = (int)curPosition - (int)lafOnPos;
-                    Debug.WriteLine("CurPosition : " + curPosition +" Laf : " + lafOnPos + "  " + value.ToString());
+                    Debug.WriteLine("CurPosition : " + curPosition + " Laf : " + lafOnPos + "  " + value.ToString());
                     if (Math.Abs(value) < 1)
                     //if(Math.Abs(curPosition - 80) <= 10)
                     {

@@ -425,11 +425,17 @@ namespace Jastech.Framework.Winform.Forms
             DeviceManager.Instance().LightCtrlHandler.TurnOn(unit.GetLineCameraData(cameraName).LightParam);
             Thread.Sleep(100);
 
-            LineCamera.StartLAFTrackingOnThread();
+            Console.WriteLine("MPOS : " + LAFCtrl?.Status.MPosPulse);
+            //LineCamera.StartLAFTrackingOnThread();
+            LAFCtrl?.SetTrackingOnOFF(true);
             LineCamera.StartGrab();
-            MotionManager.Instance().MoveTo(TeachingPosType.Stage1_Scan_End);
+            //bool moveCompleted = MotionManager.Instance().MoveTo(TeachingPosType.Stage1_Scan_End);
+            //if (moveCompleted)
+            //{
+            //    DeviceManager.Instance().LightCtrlHandler.TurnOff();
+            //    LAFCtrl?.SetTrackingOnOFF(false);
 
-            DeviceManager.Instance().LightCtrlHandler.TurnOff();
+            //}
         }
 
         public void InitalizeInspTab(List<TabScanBuffer> bufferList)

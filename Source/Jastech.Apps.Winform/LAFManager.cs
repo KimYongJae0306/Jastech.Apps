@@ -381,11 +381,14 @@ namespace Jastech.Apps.Winform
                     Logger.Write(LogType.Device, "Complete zeroset.");
 
                     // 대기 위치로 이동 - 포지션 필요함
+                    var unit = TeachingData.Instance().GetUnit(UnitName.Unit0.ToString());
+                    var standbyPosition = unit.GetTeachingInfo(TeachingPosType.Stage1_Scan_Start).GetTargetPosition(lafCtrl.AxisName);
+                    lafCtrl.SetMotionAbsoluteMove(standbyPosition);
                     Logger.Write(LogType.Device, "Move to home position.");
-                    lafCtrl.SetMotionAbsoluteMove(0);
                     Thread.Sleep(3000);
 
                     EnableSoftwareLimit(lafCtrl);
+                    Console.WriteLine("tlqkf : " + lafCtrl.Status.MPosPulse);
 
                     Logger.Write(LogType.Device, "Complete LAF home.");
                     _homeSequenceStep = HomeSequenceStep.End;
@@ -399,6 +402,8 @@ namespace Jastech.Apps.Winform
                 case HomeSequenceStep.End:
                     Logger.Write(LogType.Device, "End of LAF home sequence.");
                     _scale = 1.0;
+
+                    Console.WriteLine("tlqkf : " + lafCtrl.Status.MPosPulse);
                     _isHomeThreadStop = true;
                     _homeSequenceStep = HomeSequenceStep.Stop;
                     break;
