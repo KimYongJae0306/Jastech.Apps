@@ -252,14 +252,12 @@ namespace Jastech.Apps.Winform
         {
             while(!_isStopTrackingOn)
             {
-                var appsDeviceMonitor = AppsDeviceMonitor.Instance();
-
                 if (LAFTrackingPos_mm != -1 /*&& appsDeviceMonitor.AxisStatus.IsMovingAxisX*/)
                 {
                     var inspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
                     var scanStartPosX = inspModel.GetUnit(UnitName.Unit0).GetTeachingInfo(TeachingPosType.Stage1_Scan_Start).GetTargetPosition(AxisName.X);
 
-                    var curPosition = appsDeviceMonitor.AxisStatus.CurrentAxisXPosition;
+                    var curPosition = GetCurrentAxisXPosition();
                     var lafOnPos = scanStartPosX + LAFTrackingPos_mm;
 
                     var value = (int)curPosition - (int)lafOnPos;
@@ -277,6 +275,12 @@ namespace Jastech.Apps.Winform
                 Thread.Sleep(1);
             }
             _trackingOnThread = null;
+        }
+
+        private double GetCurrentAxisXPosition()
+        {
+            Axis axisX = MotionManager.Instance().GetAxis(AxisHandlerName.Handler0, AxisName.X);
+            return axisX.GetActualPosition();
         }
 
         public void StartGrab()
