@@ -425,10 +425,10 @@ namespace Jastech.Framework.Winform.Forms
             Thread.Sleep(100);
 
             Console.WriteLine("MPOS : " + LAFCtrl?.Status.MPosPulse);
-            //LineCamera.StartLAFTrackingOnThread();
-            LAFCtrl?.SetTrackingOnOFF(true);
+            LineCamera.StartLAFTrackingOnThread();
+            //LAFCtrl?.SetTrackingOnOFF(true);
             LineCamera.StartGrab();
-            //bool moveCompleted = MotionManager.Instance().MoveTo(TeachingPosType.Stage1_Scan_End);
+            bool moveCompleted = MotionManager.Instance().MoveTo(TeachingPosType.Stage1_Scan_End);
             //if (moveCompleted)
             //{
             //    DeviceManager.Instance().LightCtrlHandler.TurnOff();
@@ -787,6 +787,26 @@ namespace Jastech.Framework.Winform.Forms
             Process.Start(dir);
         }
         #endregion
+
+        private void lblImageSave_Click(object sender, EventArgs e)
+        {
+            SaveScanImage();
+            //var teachingData = TeachingData.Instance();
+
+            //AppsInspModel model = ModelManager.Instance().CurrentModel as AppsInspModel;
+
+            //for (int tabIndex = 0; tabIndex < model.TabCount; tabIndex++)
+            //{
+            //    if (teachingData.GetBufferImage(tabIndex) is TeachingImageBuffer buffer)
+            //    {
+            //        if (buffer.TabImage == null)
+            //            return;
+
+            //        Mat temp = buffer.TabImage.Clone() as Mat;
+            //        temp.Save()
+            //    }
+            //}
+        }
     }
 
     public enum DisplayType

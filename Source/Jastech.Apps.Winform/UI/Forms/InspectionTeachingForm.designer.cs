@@ -59,6 +59,7 @@
             this.pnlTeachingItem = new System.Windows.Forms.Panel();
             this.btnCancel = new System.Windows.Forms.Button();
             this.btnSave = new System.Windows.Forms.Button();
+            this.lblImageSave = new System.Windows.Forms.Label();
             this.tlpTeachingPage.SuspendLayout();
             this.pnlTeachingPage.SuspendLayout();
             this.tlpTeaching.SuspendLayout();
@@ -160,6 +161,7 @@
             this.tableLayoutPanel2.Controls.Add(this.lblAddROI, 4, 0);
             this.tableLayoutPanel2.Controls.Add(this.lblInspection, 3, 0);
             this.tableLayoutPanel2.Controls.Add(this.lblROIJog, 5, 0);
+            this.tableLayoutPanel2.Controls.Add(this.lblImageSave, 6, 0);
             this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel2.ForeColor = System.Drawing.Color.White;
             this.tableLayoutPanel2.Location = new System.Drawing.Point(0, 90);
@@ -536,6 +538,19 @@
             this.btnSave.UseVisualStyleBackColor = false;
             this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
             // 
+            // lblImageSave
+            // 
+            this.lblImageSave.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblImageSave.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblImageSave.Location = new System.Drawing.Point(600, 0);
+            this.lblImageSave.Margin = new System.Windows.Forms.Padding(0);
+            this.lblImageSave.Name = "lblImageSave";
+            this.lblImageSave.Size = new System.Drawing.Size(62, 50);
+            this.lblImageSave.TabIndex = 296;
+            this.lblImageSave.Text = "Image Save";
+            this.lblImageSave.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblImageSave.Click += new System.EventHandler(this.lblImageSave_Click);
+            // 
             // InspectionTeachingForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
@@ -598,5 +613,6 @@
         private System.Windows.Forms.Label lblROIJog;
         private System.Windows.Forms.Panel pnlTeachingItem;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel3;
+        private System.Windows.Forms.Label lblImageSave;
     }
 }
