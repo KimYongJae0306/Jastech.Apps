@@ -471,6 +471,7 @@ namespace Jastech.Apps.Winform.Service.Plc
             }
             PlcControlManager.Instance().WritePcStatus(PlcCommand.StartInspection);
             // 검사 시작 InspRunner
+            InspRunnerHandler.Invoke(true);
         }
 
         private void Calibration()

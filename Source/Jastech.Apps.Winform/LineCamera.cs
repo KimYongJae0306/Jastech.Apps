@@ -227,6 +227,7 @@ namespace Jastech.Apps.Winform
                     TabScanBufferList.Add(scanImage);
             }
             GrabCount = maxEndIndex;
+            Console.WriteLine("Align Grab Max Count : " + GrabCount);
         }
 
         public void StartLAFTrackingOnThread()
@@ -250,6 +251,7 @@ namespace Jastech.Apps.Winform
 
         private void LAFTrackingOn()
         {
+            return;
             while(!_isStopTrackingOn)
             {
                 if (LAFTrackingPos_mm != -1 /*&& appsDeviceMonitor.AxisStatus.IsMovingAxisX*/)
@@ -363,8 +365,17 @@ namespace Jastech.Apps.Winform
                 if (tabScanBuffer == null)
                     return;
 
-                if(DelayGrabIndex != -1 && DelayGrabIndex == _curGrabCount)
-                    GrabDelayStartEventHandler?.Invoke(Camera.Name);
+                //if(DelayGrabIndex != -1 && DelayGrabIndex == _curGrabCount)
+                //    GrabDelayStartEventHandler?.Invoke(Camera.Name);
+
+                if(Camera.Name == "AlignCamera")
+                {
+                    Console.WriteLine("Align : " + _curGrabCount);
+                    if(_curGrabCount == 660)
+                    {
+                        int ga1 = 1;
+                    }
+                }
 
                 if (tabScanBuffer.StartIndex <= _curGrabCount && _curGrabCount <= tabScanBuffer.EndIndex)
                 {
@@ -379,7 +390,7 @@ namespace Jastech.Apps.Winform
                     Camera.Stop();
                     LAFTrackingOnOffHandler?.Invoke(false);
                     GrabDoneEventHandler?.Invoke(Camera.Name, true);
-                    GrabOnceEventHandler?.Invoke(tabScanBuffer);
+                    //GrabOnceEventHandler?.Invoke(tabScanBuffer);
                 }
 
                 _curGrabCount++;

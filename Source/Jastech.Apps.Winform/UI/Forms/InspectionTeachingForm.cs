@@ -415,10 +415,10 @@ namespace Jastech.Framework.Winform.Forms
             //LAFCtrl.SetTrackingOnOFF(false);
             //LAFCtrl.SetMotionNegativeLimit(0);
             //LAFCtrl.SetMotionPositiveLimit(0);
-            //LAFCtrl?.SetMotionAbsoluteMove(targetPosZ);
+            LAFCtrl?.SetMotionAbsoluteMove(targetPosZ);
             //LAFCtrl?.MoveWaitDone(targetPosZ, 2000);
 
-            //LAFCtrl.SetTrackingOnOFF(true);
+            LAFCtrl.SetTrackingOnOFF(true);
 
             string cameraName = LineCamera.Camera.Name;
             var unit = inspModel.GetUnit(UnitName);
@@ -431,7 +431,7 @@ namespace Jastech.Framework.Winform.Forms
                 MotionManager.Instance().MoveTo(TeachingPosType.Stage1_Scan_End, cameraGap);
             else
                 MotionManager.Instance().MoveTo(TeachingPosType.Stage1_Scan_End);
-            //LAFCtrl.SetTrackingOnOFF(false);
+            LAFCtrl.SetTrackingOnOFF(false);
         }
 
         public void InitalizeInspTab(List<TabScanBuffer> bufferList)

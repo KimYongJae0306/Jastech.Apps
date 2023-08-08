@@ -470,5 +470,10 @@ namespace ATT_UT_IPAD
             return isNormalState ? Resources.Circle_Green : Resources.Circle_Red;
         }
         #endregion
+
+        private void picLogo_Click(object sender, EventArgs e)
+        {
+            AppsStatus.Instance().IsInspRunnerFlagFromPlc = true;
+        }
     }
 }
