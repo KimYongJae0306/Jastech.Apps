@@ -25,7 +25,7 @@ namespace Jastech.Apps.Winform.Settings
         public PlcAddressInfo PlcAddressInfo { get; set; } = new PlcAddressInfo();
 
         [JsonProperty]
-        public float CameraGap_um { get; set; } = 1.0F;  //um
+        public float CameraGap_mm { get; set; } = 1.0F;  //um
 
         [JsonProperty]
         public float PreAlignToleranceX { get; set; } = 0.0F;  //um

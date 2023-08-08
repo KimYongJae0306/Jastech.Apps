@@ -517,7 +517,7 @@
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(44, 40);
             this.label3.TabIndex = 11;
-            this.label3.Text = "um";
+            this.label3.Text = "mm";
             this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // txtCameraGap

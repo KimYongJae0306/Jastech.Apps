@@ -387,7 +387,7 @@ namespace Jastech.Apps.Winform
                     Logger.Write(LogType.Device, "Move to home position.");
                     Thread.Sleep(3000);
 
-                    EnableSoftwareLimit(lafCtrl);
+                    //EnableSoftwareLimit(lafCtrl);
                     Console.WriteLine("tlqkf : " + lafCtrl.Status.MPosPulse);
 
                     Logger.Write(LogType.Device, "Complete LAF home.");
@@ -513,13 +513,19 @@ namespace Jastech.Apps.Winform
             return result;
         }
 
-        private void EnableSoftwareLimit(LAFCtrl lafCtrl)
+        public void EnableSoftwareLimit(LAFCtrl lafCtrl)
         {
             var negativeLimit = MotionManager.Instance().GetAxis(AxisHandlerName.Handler0, lafCtrl.AxisName).AxisCommonParams.NegativeLimit;
             var positiveLimit = MotionManager.Instance().GetAxis(AxisHandlerName.Handler0, lafCtrl.AxisName).AxisCommonParams.PositiveLimit;
 
-            lafCtrl.SetMotionNegativeLimit(negativeLimit);
-            lafCtrl.SetMotionPositiveLimit(positiveLimit);
+            lafCtrl?.SetMotionNegativeLimit(negativeLimit);
+            lafCtrl?.SetMotionPositiveLimit(positiveLimit);
+        }
+
+        public void DisableSoftwareLimit(LAFCtrl lafCtrl)
+        {
+            lafCtrl?.SetMotionNegativeLimit(0);
+            lafCtrl?.SetMotionNegativeLimit(0);
         }
         #endregion
     }

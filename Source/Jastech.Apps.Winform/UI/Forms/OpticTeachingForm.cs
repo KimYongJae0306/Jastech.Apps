@@ -570,10 +570,10 @@ namespace Jastech.Framework.Winform.Forms
             posData.GetAxisInfo(AxisNameZ).TargetPosition = AutoFocusControl.GetCurrentTeachingData().TargetPosition;
             posData.GetAxisInfo(AxisNameZ).CenterOfGravity = AutoFocusControl.GetCurrentTeachingData().CenterOfGravity;
 
-            var axis = MotionManager.Instance().GetAxis(AxisHandlerName.Handler0, AxisNameZ);
-
-            axis.AxisCommonParams.NegativeLimit = AutoFocusControl.GetAxisCommonParams().NegativeLimit;
-            axis.AxisCommonParams.PositiveLimit = AutoFocusControl.GetAxisCommonParams().PositiveLimit;
+            //var axis = MotionManager.Instance().GetAxis(AxisHandlerName.Handler0, AxisNameZ);
+            //axis.AxisCommonParams.NegativeLimit = AutoFocusControl.GetAxisCommonParams().NegativeLimit;
+            //axis.AxisCommonParams.PositiveLimit = AutoFocusControl.GetAxisCommonParams().PositiveLimit;
+            AxisHandler.GetAxis(AxisNameZ).AxisCommonParams.SetCommonParams(AutoFocusControl.GetAxisCommonParams());
 
             var lineCameraData = unit.GetLineCameraData(LineCamera.Camera.Name);
             lineCameraData.DigitalGain = Convert.ToDouble(lblDigitalGainValue.Text);
@@ -598,6 +598,9 @@ namespace Jastech.Framework.Winform.Forms
         {
             UpdateCurrentdata();
             model.SetUnitList(TeachingData.Instance().UnitList);
+
+            //var axisHandler = MotionManager.Instance().GetAxisHandler(AxisHandlerName.Handler0);
+            MotionManager.Instance().Save(AxisHandler);
 
             string fileName = System.IO.Path.Combine(ConfigSet.Instance().Path.Model, model.Name, InspModel.FileName);
             InspModelService?.Save(fileName, model);

@@ -398,43 +398,40 @@ namespace Jastech.Framework.Winform.Forms
 
             TeachingImagePath = Path.Combine(ConfigSet.Instance().Path.Model, inspModel.Name, "TeachingImage", DateTime.Now.ToString("yyyyMMdd_HHmmss"));
 
-            LAFCtrl?.SetTrackingOnOFF(false);
-
             var teachingInfo = inspModel.GetUnit(UnitName.Unit0).GetTeachingInfo(TeachingPosType.Stage1_Scan_Start);
-            var targetPosZ= teachingInfo.GetTargetPosition(AxisName.Z0.ToString());
-
-            LAFCtrl?.SetMotionAbsoluteMove(targetPosZ);
-            LAFCtrl?.MoveWaitDone(targetPosZ, 2000);
+            var targetPosZ = teachingInfo.GetTargetPosition(AxisName.Z0.ToString());
+            var cameraGap = AppsConfig.Instance().CameraGap_mm;
 
             TeachingData.Instance().ClearTeachingImageBuffer();
 
             if (UseDelayStart)
-                LineCamera.InitGrabSettings(AppsConfig.Instance().CameraGap_um);
+                LineCamera.InitGrabSettings(cameraGap);
             else
                 LineCamera.InitGrabSettings();
 
             InitalizeInspTab(LineCamera.TabScanBufferList);
 
             MotionManager.Instance().MoveTo(TeachingPosType.Stage1_Scan_Start);
-            LAFCtrl?.SetMotionAbsoluteMove(targetPosZ);
-            LAFCtrl?.MoveWaitDone(targetPosZ, 2000);
+            //LAFCtrl.SetTrackingOnOFF(false);
+            //LAFCtrl.SetMotionNegativeLimit(0);
+            //LAFCtrl.SetMotionPositiveLimit(0);
+            //LAFCtrl?.SetMotionAbsoluteMove(targetPosZ);
+            //LAFCtrl?.MoveWaitDone(targetPosZ, 2000);
+
+            //LAFCtrl.SetTrackingOnOFF(true);
 
             string cameraName = LineCamera.Camera.Name;
             var unit = inspModel.GetUnit(UnitName);
             DeviceManager.Instance().LightCtrlHandler.TurnOn(unit.GetLineCameraData(cameraName).LightParam);
             Thread.Sleep(100);
 
-            Console.WriteLine("MPOS : " + LAFCtrl?.Status.MPosPulse);
             LineCamera.StartLAFTrackingOnThread();
-            //LAFCtrl?.SetTrackingOnOFF(true);
             LineCamera.StartGrab();
-            bool moveCompleted = MotionManager.Instance().MoveTo(TeachingPosType.Stage1_Scan_End);
-            //if (moveCompleted)
-            //{
-            //    DeviceManager.Instance().LightCtrlHandler.TurnOff();
-            //    LAFCtrl?.SetTrackingOnOFF(false);
-
-            //}
+            if (UseDelayStart)
+                MotionManager.Instance().MoveTo(TeachingPosType.Stage1_Scan_End, cameraGap);
+            else
+                MotionManager.Instance().MoveTo(TeachingPosType.Stage1_Scan_End);
+            //LAFCtrl.SetTrackingOnOFF(false);
         }
 
         public void InitalizeInspTab(List<TabScanBuffer> bufferList)

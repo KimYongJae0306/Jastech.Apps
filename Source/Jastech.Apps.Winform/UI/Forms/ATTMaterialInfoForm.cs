@@ -106,10 +106,10 @@ namespace Jastech.Apps.Winform.UI.Forms
         {
             var textBox = (TextBox)sender;
 
-            if (double.TryParse(textBox.Text, out double value))
-                textBox.Text = string.Format("{0:0.0000}", value);
-            else
-                textBox.Text = "0.0000";
+            //if (double.TryParse(textBox.Text, out double value))
+            //    textBox.Text = string.Format("{0:0.0000}", value);
+            //else
+            //    textBox.Text = "0.0000";
         }
 
         private void lblApply_Click(object sender, EventArgs e)

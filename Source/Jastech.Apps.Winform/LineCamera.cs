@@ -10,6 +10,7 @@ using Jastech.Framework.Imaging;
 using Jastech.Framework.Imaging.Helper;
 using Jastech.Framework.Imaging.VisionPro;
 using Jastech.Framework.Util.Helper;
+using Jastech.Framework.Winform;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -144,7 +145,8 @@ namespace Jastech.Apps.Winform
                 double tabWidth = materialInfo.GetTabWidth(i);
                 double tabLeftOffset = materialInfo.GetLeftOffset(i);
                 double tabRightOffset = materialInfo.GetRightOffset(i);
-
+                tabLeftOffset = 0;
+                tabRightOffset = 0;
                 tempPos += tabWidth;
 
                 double calcPos = tempPos;
@@ -167,7 +169,7 @@ namespace Jastech.Apps.Winform
             GrabCount = maxEndIndex;
         }
 
-        public void InitGrabSettings(float delayStart_um)
+        public void InitGrabSettings(float delayStart_mm)
         {
             AppsInspModel inspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
             MaterialInfo materialInfo = inspModel.MaterialInfo;
@@ -179,7 +181,7 @@ namespace Jastech.Apps.Winform
             ClearTabScanBuffer();
 
             float resolution_mm = (float)(Camera.PixelResolution_um / Camera.LensScale) / 1000; // ex) 3.5 um / 5 / 1000 = 0.0007mm
-            float delayStart_mm = delayStart_um / 1000.0F;
+            //float delayStart_mm = (float)delayStart_mm;
             int totalScanSubImageCount = (int)Math.Ceiling(materialInfo.PanelXSize_mm / resolution_mm / Camera.ImageHeight); // ex) 500mm / 0.0007mm / 1024 pixel
 
             GrabCount = totalScanSubImageCount;
@@ -201,7 +203,7 @@ namespace Jastech.Apps.Winform
                 }
 
                 int startIndex = (int)(tempPos / resolution_mm / Camera.ImageHeight);
-
+                Console.WriteLine("StartIndex :" + startIndex.ToString()) ;
                 double tabWidth = materialInfo.GetTabWidth(i);
                 double tabLeftOffset = materialInfo.GetLeftOffset(i);
                 double tabRightOffset = materialInfo.GetRightOffset(i);
@@ -243,9 +245,7 @@ namespace Jastech.Apps.Winform
         public void StopLAFTrackingOnThread()
         {
             if (_trackingOnThread != null)
-            {
                 _isStopTrackingOn = true;
-            }
         }
 
         private void LAFTrackingOn()
@@ -262,7 +262,13 @@ namespace Jastech.Apps.Winform
 
                     var value = (int)curPosition - (int)lafOnPos;
                     Debug.WriteLine("CurPosition : " + curPosition + " Laf : " + lafOnPos + "  " + value.ToString());
-                    if (Math.Abs(value) < 1)
+
+                    // Test - LineCamera Property에 Laf name을 넣을까.... 1:1이면 괜찮을 수도.....
+                    var lafCtrlHandler = DeviceManager.Instance().LAFCtrlHandler;
+                    var laf = lafCtrlHandler.Get("AkkonLaf");
+                    LAFManager.Instance().DisableSoftwareLimit(laf);
+
+                    if (Math.Abs(value) < 2)
                     //if(Math.Abs(curPosition - 80) <= 10)
                     {
                         //var axis = MotionManager.Instance().GetAxis(AxisHandlerName.Handler0, AxisName.X);
@@ -366,9 +372,7 @@ namespace Jastech.Apps.Winform
                 }
 
                 if (tabScanBuffer.IsAddDataDone())
-                {
                     _stackTabNo++;
-                }
 
                 if (_curGrabCount == GrabCount - 1)
                 {

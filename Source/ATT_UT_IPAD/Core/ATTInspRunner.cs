@@ -197,13 +197,23 @@ namespace ATT_UT_IPAD.Core
 
         private void AkkonCamera_LAFTrackingOnOffHandler(bool isOn)
         {
-            Console.WriteLine("Akkon LAF ON");
-            AkkonLAFCtrl?.SetTrackingOnOFF(isOn);
+            //Console.WriteLine("Akkon LAF ON");
+            if(isOn)
+            {
+                //AkkonLAFCtrl.SetMotionPositiveLimit(0);
+                //AkkonLAFCtrl.SetMotionNegativeLimit(0);
+            }
+            
+            //AkkonLAFCtrl?.SetTrackingOnOFF(isOn);
         }
 
         private void AlignCamera_LAFTrackingOnOffHandler(bool isOn)
         {
-            AlignLAFCtrl?.SetTrackingOnOFF(isOn);
+            var nuriOneCtrl = AlignLAFCtrl as NuriOneLAFCtrl;
+            if (isOn)
+            {
+            }
+            //AlignLAFCtrl?.SetTrackingOnOFF(isOn);
         }
 
         private void AlignCamera_GrabDelayStartEventHandler(string cameraName)
@@ -554,8 +564,8 @@ namespace ATT_UT_IPAD.Core
             AkkonCamera.InitGrabSettings();
             InspProcessTask.InitalizeInspAkkonBuffer(AkkonCamera.Camera.Name, AkkonCamera.TabScanBufferList);
 
-            float akkonToAlignGap_um = AppsConfig.Instance().CameraGap_um;
-            AlignCamera.InitGrabSettings(akkonToAlignGap_um);
+            float akkonToAlignGap_mm = AppsConfig.Instance().CameraGap_mm;
+            AlignCamera.InitGrabSettings(akkonToAlignGap_mm);
             InspProcessTask.InitalizeInspAlignBuffer(AlignCamera.Camera.Name, AlignCamera.TabScanBufferList);
         }
 
