@@ -394,8 +394,8 @@ namespace Jastech.Apps.Winform.UI.Controls
 
             if (selectedIndex != null)
             {
-                foreach (var item in selectedIndex)
-                    dgvAkkonROI.Rows[item].Selected = true;
+                //foreach (var item in selectedIndex)
+                //    dgvAkkonROI.Rows[item].Selected = true;
             }
         }
 

@@ -87,7 +87,6 @@ namespace Jastech.Apps.Winform.UI.Controls
                 return;
 
             CurrentTab = tab;
-           
         }
 
         private void InitializeLabelColor()

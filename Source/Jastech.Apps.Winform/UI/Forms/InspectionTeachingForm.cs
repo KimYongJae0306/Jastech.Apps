@@ -275,6 +275,7 @@ namespace Jastech.Framework.Winform.Forms
             _displayType = type;
 
             pnlTeach.Controls.Clear();
+            TeachingUIManager.Instance().GetDisplay().ClearGraphic();
 
             switch (type)
             {

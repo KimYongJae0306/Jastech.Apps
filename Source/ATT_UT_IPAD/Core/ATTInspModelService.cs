@@ -217,8 +217,6 @@ namespace ATT_UT_IPAD.Core
             {
                 string unitDir = rootDir + @"\Unit_" + unit.Name;
 
-                string preAlignPath = unitDir + @"\PreAlign";
-
                 foreach (var tab in unit.GetTabList())
                 {
                     string tabDir = unitDir + @"\" + "Tab_" + tab.Name;
@@ -258,7 +256,6 @@ namespace ATT_UT_IPAD.Core
             foreach (var unit in attInspModel.GetUnitList())
             {
                 string unitDir = Path.GetDirectoryName(filePath) + @"\Unit_" + unit.Name;
-                string preAlignPath = unitDir + @"\PreAlign";
 
                 foreach (var tab in unit.GetTabList())
                 {
