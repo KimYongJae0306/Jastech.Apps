@@ -165,6 +165,12 @@
     <Compile Include="UI\Controls\VisionCalibrationControl.Designer.cs">
       <DependentUpon>VisionCalibrationControl.cs</DependentUpon>
     </Compile>
+    <Compile Include="UI\Forms\AkkonROICopyForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\Forms\AkkonROICopyForm.Designer.cs">
+      <DependentUpon>AkkonROICopyForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="UI\Forms\InspectionTeachingForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -433,6 +439,9 @@
     <EmbeddedResource Include="UI\Controls\UPHControl.resx">
       <DependentUpon>UPHControl.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="UI\Forms\AkkonROICopyForm.resx">
+      <DependentUpon>AkkonROICopyForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="UI\Forms\ATTMaterialInfoForm.resx">
       <DependentUpon>ATTMaterialInfoForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -604,6 +613,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Save_White.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Save_White1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Exit_White1.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

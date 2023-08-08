@@ -160,11 +160,6 @@ namespace Jastech.Apps.Structure.Data
         {
             AkkonParam.SetAkkonGroup(index, newGroup);
         }
-
-        public void AdjustAkkonGroup(int newGroupCount)
-        {
-            AkkonParam.AdjustGroupCount(newGroupCount);
-        }
     }
 
     public class AlignSpec

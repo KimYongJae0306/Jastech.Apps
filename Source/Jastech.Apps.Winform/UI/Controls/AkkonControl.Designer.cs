@@ -87,11 +87,13 @@
             this.lblROIWidth = new System.Windows.Forms.Label();
             this.lblROIHeightValue = new System.Windows.Forms.Label();
             this.lblROIWidthValue = new System.Windows.Forms.Label();
-            this.lblCloneHorizontal = new System.Windows.Forms.Label();
             this.lblLeadPitchValue = new System.Windows.Forms.Label();
             this.lblROIHeight = new System.Windows.Forms.Label();
-            this.lblCloneVertical = new System.Windows.Forms.Label();
             this.lblClone = new System.Windows.Forms.Label();
+            this.lblCloneHorizontal = new System.Windows.Forms.Label();
+            this.lblCloneVertical = new System.Windows.Forms.Label();
+            this.lblTabCopy = new System.Windows.Forms.Label();
+            this.panel2 = new System.Windows.Forms.Panel();
             this.pnlAuto.SuspendLayout();
             this.tlpAkkon.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
@@ -106,6 +108,7 @@
             this.pnlParam.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvJastechAkkonResult)).BeginInit();
             this.pnlManual.SuspendLayout();
+            this.panel2.SuspendLayout();
             this.SuspendLayout();
             // 
             // pnlAuto
@@ -518,6 +521,7 @@
             this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 390F));
             this.tableLayoutPanel3.Controls.Add(this.panel1, 0, 0);
             this.tableLayoutPanel3.Controls.Add(this.panel3, 2, 0);
+            this.tableLayoutPanel3.Controls.Add(this.panel2, 1, 0);
             this.tableLayoutPanel3.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel3.Location = new System.Drawing.Point(0, 32);
             this.tableLayoutPanel3.Margin = new System.Windows.Forms.Padding(0);
@@ -892,21 +896,6 @@
             this.lblROIWidthValue.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.lblROIWidthValue.Click += new System.EventHandler(this.lblROIWidthValue_Click);
             // 
-            // lblCloneHorizontal
-            // 
-            this.lblCloneHorizontal.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
-            this.lblCloneHorizontal.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lblCloneHorizontal.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
-            this.lblCloneHorizontal.ForeColor = System.Drawing.Color.White;
-            this.lblCloneHorizontal.Image = global::Jastech.Apps.Winform.Properties.Resources.Copy_Horizontal_White;
-            this.lblCloneHorizontal.Location = new System.Drawing.Point(219, 184);
-            this.lblCloneHorizontal.Margin = new System.Windows.Forms.Padding(0);
-            this.lblCloneHorizontal.Name = "lblCloneHorizontal";
-            this.lblCloneHorizontal.Size = new System.Drawing.Size(60, 40);
-            this.lblCloneHorizontal.TabIndex = 145;
-            this.lblCloneHorizontal.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.lblCloneHorizontal.Click += new System.EventHandler(this.lblCloneHorizontal_Click);
-            // 
             // lblLeadPitchValue
             // 
             this.lblLeadPitchValue.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
@@ -935,7 +924,35 @@
             this.lblROIHeight.TabIndex = 11;
             this.lblROIHeight.Text = "ROI Height (㎛)";
             this.lblROIHeight.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.lblROIHeight.Click += new System.EventHandler(this.lblROIHeight_Click);
+            // 
+            // lblClone
+            // 
+            this.lblClone.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
+            this.lblClone.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblClone.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
+            this.lblClone.ForeColor = System.Drawing.Color.White;
+            this.lblClone.Location = new System.Drawing.Point(0, 184);
+            this.lblClone.Margin = new System.Windows.Forms.Padding(0);
+            this.lblClone.Name = "lblClone";
+            this.lblClone.Size = new System.Drawing.Size(140, 40);
+            this.lblClone.TabIndex = 27;
+            this.lblClone.Text = "Clone";
+            this.lblClone.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // lblCloneHorizontal
+            // 
+            this.lblCloneHorizontal.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
+            this.lblCloneHorizontal.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblCloneHorizontal.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
+            this.lblCloneHorizontal.ForeColor = System.Drawing.Color.White;
+            this.lblCloneHorizontal.Image = global::Jastech.Apps.Winform.Properties.Resources.Copy_Horizontal_White;
+            this.lblCloneHorizontal.Location = new System.Drawing.Point(219, 184);
+            this.lblCloneHorizontal.Margin = new System.Windows.Forms.Padding(0);
+            this.lblCloneHorizontal.Name = "lblCloneHorizontal";
+            this.lblCloneHorizontal.Size = new System.Drawing.Size(60, 40);
+            this.lblCloneHorizontal.TabIndex = 145;
+            this.lblCloneHorizontal.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblCloneHorizontal.Click += new System.EventHandler(this.lblCloneHorizontal_Click);
             // 
             // lblCloneVertical
             // 
@@ -952,19 +969,27 @@
             this.lblCloneVertical.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.lblCloneVertical.Click += new System.EventHandler(this.lblCloneVertical_Click);
             // 
-            // lblClone
+            // lblTabCopy
             // 
-            this.lblClone.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
-            this.lblClone.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lblClone.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
-            this.lblClone.ForeColor = System.Drawing.Color.White;
-            this.lblClone.Location = new System.Drawing.Point(0, 184);
-            this.lblClone.Margin = new System.Windows.Forms.Padding(0);
-            this.lblClone.Name = "lblClone";
-            this.lblClone.Size = new System.Drawing.Size(140, 40);
-            this.lblClone.TabIndex = 27;
-            this.lblClone.Text = "Clone";
-            this.lblClone.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblTabCopy.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblTabCopy.Location = new System.Drawing.Point(10, 10);
+            this.lblTabCopy.Margin = new System.Windows.Forms.Padding(0);
+            this.lblTabCopy.Name = "lblTabCopy";
+            this.lblTabCopy.Size = new System.Drawing.Size(140, 40);
+            this.lblTabCopy.TabIndex = 296;
+            this.lblTabCopy.Text = "Tab Copy";
+            this.lblTabCopy.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblTabCopy.Click += new System.EventHandler(this.lblTabCopy_Click);
+            // 
+            // panel2
+            // 
+            this.panel2.Controls.Add(this.lblTabCopy);
+            this.panel2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panel2.Location = new System.Drawing.Point(409, 0);
+            this.panel2.Margin = new System.Windows.Forms.Padding(0);
+            this.panel2.Name = "panel2";
+            this.panel2.Size = new System.Drawing.Size(448, 60);
+            this.panel2.TabIndex = 297;
             // 
             // AkkonControl
             // 
@@ -993,6 +1018,7 @@
             this.pnlParam.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgvJastechAkkonResult)).EndInit();
             this.pnlManual.ResumeLayout(false);
+            this.panel2.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -1056,5 +1082,7 @@
         private System.Windows.Forms.CheckBox ckbDrawIndex;
         private System.Windows.Forms.Label lblTest;
         private System.Windows.Forms.Label lblResizeImage;
+        private System.Windows.Forms.Panel panel2;
+        private System.Windows.Forms.Label lblTabCopy;
     }
 }

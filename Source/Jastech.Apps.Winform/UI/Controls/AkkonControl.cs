@@ -2,11 +2,11 @@
 using Emgu.CV;
 using Emgu.CV.CvEnum;
 using Emgu.CV.Structure;
-using Emgu.CV.Util;
 using Jastech.Apps.Structure;
 using Jastech.Apps.Structure.Data;
 using Jastech.Apps.Structure.VisionTool;
 using Jastech.Apps.Winform.Settings;
+using Jastech.Apps.Winform.UI.Forms;
 using Jastech.Framework.Algorithms.Akkon;
 using Jastech.Framework.Algorithms.Akkon.Parameters;
 using Jastech.Framework.Algorithms.UI.Controls;
@@ -1638,48 +1638,6 @@ namespace Jastech.Apps.Winform.UI.Controls
             DrawROI();
         }
 
-        private void lblROIHeight_Click(object sender, EventArgs e)
-        {
-            MoveROIXY(0, 0); // x, y : 330 ,200           (332, 102) * 5 = 1660, 510
-        }
-
-        private void MoveROIXY(int moveX, int moveY)
-        {
-            int groupIndex = cbxGroupNumber.SelectedIndex;
-            var group = CurrentTab.AkkonParam.GroupList[groupIndex];
-
-            List<AkkonROI> newRoiList = new List<AkkonROI>();
-
-            foreach (var roi in group.AkkonROIList)
-            {
-                roi.LeftTopX += moveX;
-                roi.LeftTopY += moveY;
-
-                roi.RightTopX += moveX;
-                roi.RightTopY += moveY;
-
-                roi.LeftBottomX += moveX;
-                roi.LeftBottomY += moveY;
-
-                roi.RightBottomX += moveX;
-                roi.RightBottomY += moveY;
-
-                CogRectangleAffine cogRect = ConvertAkkonRoiToCogRectAffine(roi);
-                cogRect.GraphicDOFEnable = CogRectangleAffineDOFConstants.Position | CogRectangleAffineDOFConstants.Size | CogRectangleAffineDOFConstants.Skew;
-
-                newRoiList.Add(roi.DeepCopy());
-            }
-
-            UpdateROIDataGridView(newRoiList);
-
-            group.AkkonROIList.Clear();
-
-            foreach (var item in newRoiList)
-                group.AddROI(item);
-
-            DrawROI();
-        }
-
         public ICogImage ConvertCogColorImage(Mat mat)
         {
             Mat matR = MatHelper.ColorChannelSeperate(mat, MatHelper.ColorChannel.R);
@@ -1732,6 +1690,15 @@ namespace Jastech.Apps.Winform.UI.Controls
             int size = mat.Width * mat.Height * mat.NumberOfChannels;
             var cogImage = VisionProImageHelper.CovertImage(mat.DataPointer, mat.Width, mat.Height, mat.Step, ColorFormat.Gray) as CogImage8Grey;
             return cogImage;
+        }
+
+        private void lblTabCopy_Click(object sender, EventArgs e)
+        {
+            AppsInspModel appsInspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
+
+            AkkonROICopyForm form = new AkkonROICopyForm();
+            form.SetUnitName(UnitName.Unit0);
+            form.ShowDialog();
         }
     }
 }
