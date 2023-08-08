@@ -368,17 +368,27 @@ namespace ATT_UT_IPAD.Core
                     IsAkkonGrabDone = false;
                     IsAlignGrabDone = false;
 
-                    LightCtrlHandler.TurnOn(unit.GetLineCameraData("Akkon").LightParam);
+                    // 임시
+                    var akkonLight = unit.GetLineCameraData("AkkonCamera").LightParam;
+                    var alignLight = unit.GetLineCameraData("AlignCamera").LightParam;
+                    var total = alignLight.DeepCopy();
+                    //total.Map[0].
+                    total.Map.TryGetValue("Spot", out LightValue value);
+                    akkonLight.Map.TryGetValue("Spot", out LightValue akkonLalue);
+                    value.LightLevels[3] = akkonLalue.LightLevels[3];
+                    LightCtrlHandler.TurnOn(total);
                     Thread.Sleep(100);
 
                     AkkonCamera.SetOperationMode(TDIOperationMode.TDI);
                     AkkonCamera.StartGrab();
+                    AkkonLAFCtrl.SetTrackingOnOFF(true);
                     AkkonCamera.StartLAFTrackingOnThread();
                     WriteLog("Start Akkon LineScanner Grab.", true);
 
                     AlignCamera.SetOperationMode(TDIOperationMode.TDI);
                     AlignCamera.StartGrab();
-                    AlignCamera.StartLAFTrackingOnThread();
+                    AlignLAFCtrl.SetTrackingOnOFF(true);
+                    //AlignCamera.StartLAFTrackingOnThread();
                     WriteLog("Start Align LineScanner Grab.", true);
 
                     if (ConfigSet.Instance().Operation.VirtualMode)
@@ -487,7 +497,7 @@ namespace ATT_UT_IPAD.Core
 
                     //if (!AppsMotionManager.Instance().IsMotionInPosition(UnitName.Unit0, AxisHandlerName.Handler0, AxisName.X, TeachingPosType.Standby))
                     //    break;
-                    if (ConfigSet.Instance().Operation.VirtualMode)
+                    //if (ConfigSet.Instance().Operation.VirtualMode)
                         AppsStatus.Instance().IsInspRunnerFlagFromPlc = false;
 
                     SeqStep = SeqStep.SEQ_INIT;
@@ -920,14 +930,21 @@ namespace ATT_UT_IPAD.Core
         private bool MoveAxis(TeachingPosType teachingPos, Axis axis, AxisMovingParam movingParam)
         {
             MotionManager manager = MotionManager.Instance();
-            if (manager.IsAxisInPosition(UnitName.Unit0, teachingPos, axis) == false)
+            double cameraGap = 0;
+            if (axis.Name == "X")
+            {
+                cameraGap = AppsConfig.Instance().CameraGap_mm;
+                cameraGap += 50;
+            }
+                
+            if (manager.IsAxisInPosition(UnitName.Unit0, teachingPos, axis, cameraGap) == false)
             {
                 Stopwatch sw = new Stopwatch();
                 sw.Restart();
 
-                manager.StartAbsoluteMove(UnitName.Unit0, teachingPos, axis);
+                manager.StartAbsoluteMove(UnitName.Unit0, teachingPos, axis, cameraGap);
 
-                while (manager.IsAxisInPosition(UnitName.Unit0, teachingPos, axis) == false)
+                while (manager.IsAxisInPosition(UnitName.Unit0, teachingPos, axis, cameraGap) == false)
                 {
                     if (sw.ElapsedMilliseconds >= movingParam.MovingTimeOut)
                         return false;

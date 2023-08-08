@@ -402,7 +402,7 @@ namespace Jastech.Apps.Winform
                 case HomeSequenceStep.End:
                     Logger.Write(LogType.Device, "End of LAF home sequence.");
                     _scale = 1.0;
-
+                     
                     Console.WriteLine("tlqkf : " + lafCtrl.Status.MPosPulse);
                     _isHomeThreadStop = true;
                     _homeSequenceStep = HomeSequenceStep.Stop;
