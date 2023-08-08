@@ -180,12 +180,9 @@ namespace ATT_UT_IPAD.Core
         {
             AlignCamera = LineCameraManager.Instance().GetLineCamera("AlignCamera");
             AlignCamera.GrabDoneEventHandler += ATTSeqRunner_GrabDoneEventHandler;
-            AlignCamera.GrabDelayStartEventHandler += AlignCamera_GrabDelayStartEventHandler;
-            AlignCamera.LAFTrackingOnOffHandler += AlignCamera_LAFTrackingOnOffHandler;
 
             AkkonCamera = LineCameraManager.Instance().GetLineCamera("AkkonCamera");
             AkkonCamera.GrabDoneEventHandler += ATTSeqRunner_GrabDoneEventHandler;
-            AkkonCamera.LAFTrackingOnOffHandler += AkkonCamera_LAFTrackingOnOffHandler;
 
             AlignLAFCtrl = LAFManager.Instance().GetLAFCtrl("AlignLaf");
             AkkonLAFCtrl = LAFManager.Instance().GetLAFCtrl("AkkonLaf");
@@ -193,34 +190,6 @@ namespace ATT_UT_IPAD.Core
 
             InspProcessTask.StartTask();
             StartSeqTask();
-        }
-
-        private void AkkonCamera_LAFTrackingOnOffHandler(bool isOn)
-        {
-            //Console.WriteLine("Akkon LAF ON");
-            if(isOn)
-            {
-                //AkkonLAFCtrl.SetMotionPositiveLimit(0);
-                //AkkonLAFCtrl.SetMotionNegativeLimit(0);
-            }
-            
-            //AkkonLAFCtrl?.SetTrackingOnOFF(isOn);
-        }
-
-        private void AlignCamera_LAFTrackingOnOffHandler(bool isOn)
-        {
-            var nuriOneCtrl = AlignLAFCtrl as NuriOneLAFCtrl;
-            if (isOn)
-            {
-            }
-            //AlignLAFCtrl?.SetTrackingOnOFF(isOn);
-        }
-
-        private void AlignCamera_GrabDelayStartEventHandler(string cameraName)
-        {
-            AlignLAFCtrl.SetTrackingOnOFF(true);
-           // AlignLAFCtrl.SetTrackingOnOFF(false);       // 일단 끔
-            WriteLog("Delay Align AutoFocus On.");
         }
 
         public void Release()
@@ -326,12 +295,20 @@ namespace ATT_UT_IPAD.Core
                     WriteLog("Light Off.");
 
                     AlignLAFCtrl.SetTrackingOnOFF(false);
-                    AlignLAFCtrl.SetMotionAbsoluteMove(0);
                     WriteLog("Align Laf Off.");
 
                     AkkonLAFCtrl.SetTrackingOnOFF(false);
-                    AkkonLAFCtrl.SetMotionAbsoluteMove(0);
                     WriteLog("Akkon Laf Off.");
+
+                    InitializeBuffer();
+                    WriteLog("Initialize Buffer.");
+
+                    SeqStep = SeqStep.SEQ_MOVE_START_POS;
+                    break;
+
+                case SeqStep.SEQ_MOVE_START_POS:
+                    if (MoveTo(TeachingPosType.Stage1_Scan_Start, out errorMessage) == false)
+                        break;
 
                     SeqStep = SeqStep.SEQ_WAITING;
                     break;
@@ -347,20 +324,13 @@ namespace ATT_UT_IPAD.Core
 
                     SystemManager.Instance().TabButtonResetColor();
 
-                    InitializeBuffer();
-                    WriteLog("Initialize Buffer.");
+                    //InitializeBuffer();
+                    //WriteLog("Initialize Buffer.");
 
                     AppsInspResult.Instance().StartInspTime = DateTime.Now;
                     AppsInspResult.Instance().Cell_ID = GetCellID();
 
                     WriteLog("Cell ID : " + AppsInspResult.Instance().Cell_ID);
-                    SeqStep = SeqStep.SEQ_MOVE_START_POS;
-                    break;
-
-                case SeqStep.SEQ_MOVE_START_POS:
-                    if (MoveTo(TeachingPosType.Stage1_Scan_Start, out errorMessage) == false)
-                        break;
-
                     SeqStep = SeqStep.SEQ_SCAN_START;
                     break;
 
@@ -368,27 +338,26 @@ namespace ATT_UT_IPAD.Core
                     IsAkkonGrabDone = false;
                     IsAlignGrabDone = false;
 
-                    // 임시
-                    var akkonLight = unit.GetLineCameraData("AkkonCamera").LightParam;
-                    var alignLight = unit.GetLineCameraData("AlignCamera").LightParam;
-                    var total = alignLight.DeepCopy();
-                    //total.Map[0].
-                    total.Map.TryGetValue("Spot", out LightValue value);
-                    akkonLight.Map.TryGetValue("Spot", out LightValue akkonLalue);
-                    value.LightLevels[3] = akkonLalue.LightLevels[3];
-                    LightCtrlHandler.TurnOn(total);
+                    //// 임시
+                    //var akkonLight = unit.GetLineCameraData("AkkonCamera").LightParam;
+                    //var alignLight = unit.GetLineCameraData("AlignCamera").LightParam;
+                    //var total = alignLight.DeepCopy();
+
+                    //total.Map.TryGetValue("Spot", out LightValue value);
+                    //akkonLight.Map.TryGetValue("Spot", out LightValue akkonLalue);
+                    //value.LightLevels[3] = akkonLalue.LightLevels[3];
+                    
+                    LightCtrlHandler.TurnOn(unit.LightParam);
                     Thread.Sleep(100);
 
                     AkkonCamera.SetOperationMode(TDIOperationMode.TDI);
                     AkkonCamera.StartGrab();
                     AkkonLAFCtrl.SetTrackingOnOFF(true);
-                    AkkonCamera.StartLAFTrackingOnThread();
                     WriteLog("Start Akkon LineScanner Grab.", true);
 
                     AlignCamera.SetOperationMode(TDIOperationMode.TDI);
                     AlignCamera.StartGrab();
                     AlignLAFCtrl.SetTrackingOnOFF(true);
-                    //AlignCamera.StartLAFTrackingOnThread();
                     WriteLog("Start Align LineScanner Grab.", true);
 
                     if (ConfigSet.Instance().Operation.VirtualMode)
@@ -548,8 +517,8 @@ namespace ATT_UT_IPAD.Core
         private string GetCellID()
         {
             string cellId = PlcControlManager.Instance().GetAddressMap(PlcCommonMap.PLC_Cell_Id).Value;
-
-            if (cellId == "0" || cellId == null)
+            cellId = cellId.Replace(" ", string.Empty);
+            if (cellId == "0" || cellId == null || cellId == "")
                 return DateTime.Now.ToString("yyyyMMddHHmmss");
             else
                 return cellId;
@@ -558,14 +527,44 @@ namespace ATT_UT_IPAD.Core
         private void SendResultData()
         {
             var inspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
+            double resolution = AkkonCamera.Camera.PixelResolution_um / AkkonCamera.Camera.LensScale;
 
             for (int tabNo = 0; tabNo < inspModel.TabCount; tabNo++)
             {
                 var akkonTabInspResult = AppsInspResult.Instance().GetAkkon(tabNo);
                 var alignTabInspResult = AppsInspResult.Instance().GetAlign(tabNo);
-                //PlcControlManager.Instance().WriteTabResult(tabNo, )
+                TabJudgement judgement = GetJudgemnet(akkonTabInspResult, alignTabInspResult);
+                PlcControlManager.Instance().WriteTabResult(tabNo, judgement, alignTabInspResult.AlignResult, akkonTabInspResult.AkkonResult, resolution);
 
                 Thread.Sleep(10);
+            }
+            PlcControlManager.Instance().WritePcStatus(PlcCommand.StartInspection);
+        }
+
+        private TabJudgement GetJudgemnet(TabInspResult akkonInspResult, TabInspResult alignInspResult)
+        {
+            if (akkonInspResult.IsManualOK || alignInspResult.IsManualOK)
+            {
+                return TabJudgement.Manual_OK;
+            }
+            else
+            {
+                if (akkonInspResult.MarkResult.Judgement != Judgement.OK)
+                    return TabJudgement.Mark_NG;
+
+                if (alignInspResult.MarkResult.Judgement != Judgement.OK)
+                    return TabJudgement.Mark_NG;
+
+                if (alignInspResult.AlignResult.Judgement != Judgement.OK)
+                    return TabJudgement.NG;
+
+                if (akkonInspResult.AkkonResult == null)
+                    return TabJudgement.NG;
+
+                if (akkonInspResult.AkkonResult.Judgement != Judgement.OK)
+                    return TabJudgement.NG;
+
+                return TabJudgement.OK;
             }
         }
 

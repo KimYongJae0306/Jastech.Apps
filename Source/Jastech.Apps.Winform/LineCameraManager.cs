@@ -63,7 +63,6 @@ namespace Jastech.Apps.Winform
 
         public void Release()
         {
-            CameraList.ForEach(x => x.StopLAFTrackingOnThread());
         }
 
         public void Stop(string name)

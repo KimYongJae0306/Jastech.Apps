@@ -38,11 +38,11 @@ namespace ATT_UT_Remodeling.Core
                 Unit unit = new Unit();
 
                 unit.Name = unitName.ToString(); // 임시 -> Apps에서 변경
+                unit.LightParam = CreateLightParameter();
 
                 // LineScan 조명 Parameter 생성
                 unit.AkkonCamera = new LineCameraData();
                 unit.AkkonCamera.Name = "Akkon";
-                unit.AkkonCamera.LightParam = CreateLightParameter();
 
                 CalibrationParam calibrationMark = new CalibrationParam();
                 calibrationMark.MarkName = "Calibration";

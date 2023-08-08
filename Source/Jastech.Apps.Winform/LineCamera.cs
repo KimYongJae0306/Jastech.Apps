@@ -58,8 +58,6 @@ namespace Jastech.Apps.Winform
         public CancellationTokenSource CancelLiveTask { get; set; }
 
         public int CameraGab { get; set; } = -1;
-
-    
         #endregion
 
         #region 이벤트
@@ -135,13 +133,10 @@ namespace Jastech.Apps.Winform
                 {
                     tempPos += inspModel.MaterialInfo.PanelEdgeToFirst_mm;
                     LAFTrackingPos_mm = tempPos - ((inspModel.MaterialInfo.PanelEdgeToFirst_mm / 2.0));
-                    //LAFTrackingPos_mm = 1;
-                    //LAFTrackingPos_mm = tempPos;
                 }
 
                 int startIndex = (int)(tempPos / resolution_mm / Camera.ImageHeight);
 
-                
                 double tabWidth = materialInfo.GetTabWidth(i);
                 double tabLeftOffset = materialInfo.GetLeftOffset(i);
                 double tabRightOffset = materialInfo.GetRightOffset(i);
@@ -181,7 +176,6 @@ namespace Jastech.Apps.Winform
             ClearTabScanBuffer();
 
             float resolution_mm = (float)(Camera.PixelResolution_um / Camera.LensScale) / 1000; // ex) 3.5 um / 5 / 1000 = 0.0007mm
-            //float delayStart_mm = (float)delayStart_mm;
             int totalScanSubImageCount = (int)Math.Ceiling(materialInfo.PanelXSize_mm / resolution_mm / Camera.ImageHeight); // ex) 500mm / 0.0007mm / 1024 pixel
 
             GrabCount = totalScanSubImageCount;
@@ -228,61 +222,6 @@ namespace Jastech.Apps.Winform
             }
             GrabCount = maxEndIndex;
             Console.WriteLine("Align Grab Max Count : " + GrabCount);
-        }
-
-        public void StartLAFTrackingOnThread()
-        {
-            if (ModelManager.Instance().CurrentModel != null)
-            {
-                if (_trackingOnThread == null)
-                {
-                    _isStopTrackingOn = false;
-                    _trackingOnThread = new Thread(LAFTrackingOn);
-                    _trackingOnThread.Start();
-                }
-            }
-        }
-
-        public void StopLAFTrackingOnThread()
-        {
-            if (_trackingOnThread != null)
-                _isStopTrackingOn = true;
-        }
-
-        private void LAFTrackingOn()
-        {
-            return;
-            while(!_isStopTrackingOn)
-            {
-                if (LAFTrackingPos_mm != -1 /*&& appsDeviceMonitor.AxisStatus.IsMovingAxisX*/)
-                {
-                    var inspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
-                    var scanStartPosX = inspModel.GetUnit(UnitName.Unit0).GetTeachingInfo(TeachingPosType.Stage1_Scan_Start).GetTargetPosition(AxisName.X);
-
-                    var curPosition = GetCurrentAxisXPosition();
-                    var lafOnPos = scanStartPosX + LAFTrackingPos_mm;
-
-                    var value = (int)curPosition - (int)lafOnPos;
-                    Debug.WriteLine("CurPosition : " + curPosition + " Laf : " + lafOnPos + "  " + value.ToString());
-
-                    // Test - LineCamera Property에 Laf name을 넣을까.... 1:1이면 괜찮을 수도.....
-                    var lafCtrlHandler = DeviceManager.Instance().LAFCtrlHandler;
-                    var laf = lafCtrlHandler.Get("AkkonLaf");
-                    LAFManager.Instance().DisableSoftwareLimit(laf);
-
-                    if (Math.Abs(value) < 2)
-                    //if(Math.Abs(curPosition - 80) <= 10)
-                    {
-                        //var axis = MotionManager.Instance().GetAxis(AxisHandlerName.Handler0, AxisName.X);
-                        //axis.StopMove();
-                        LAFTrackingOnOffHandler?.Invoke(true);
-                        break;
-                    }
-                }
-
-                Thread.Sleep(1);
-            }
-            _trackingOnThread = null;
         }
 
         private double GetCurrentAxisXPosition()
@@ -349,7 +288,6 @@ namespace Jastech.Apps.Winform
                 LiveDataQueue.Clear();
 
             Camera.Stop();
-            StopLAFTrackingOnThread();
         }
 
         public void AddSubImage(byte[] data, int grabCount)
@@ -364,9 +302,6 @@ namespace Jastech.Apps.Winform
                 TabScanBuffer tabScanBuffer = GetTabScanBuffer(_stackTabNo);
                 if (tabScanBuffer == null)
                     return;
-
-                //if(DelayGrabIndex != -1 && DelayGrabIndex == _curGrabCount)
-                //    GrabDelayStartEventHandler?.Invoke(Camera.Name);
 
                 if(Camera.Name == "AlignCamera")
                 {
@@ -388,9 +323,8 @@ namespace Jastech.Apps.Winform
                 if (_curGrabCount == GrabCount - 1)
                 {
                     Camera.Stop();
-                    LAFTrackingOnOffHandler?.Invoke(false);
                     GrabDoneEventHandler?.Invoke(Camera.Name, true);
-                    //GrabOnceEventHandler?.Invoke(tabScanBuffer);
+                    GrabOnceEventHandler?.Invoke(tabScanBuffer);
                 }
 
                 _curGrabCount++;

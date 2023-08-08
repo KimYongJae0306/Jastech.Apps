@@ -19,8 +19,8 @@ namespace Jastech.Apps.Structure.Data
         [JsonProperty]
         public double DigitalGain { get; set; } = 8.0;        // TDI Mode
 
-        [JsonProperty]
-        public LightParameter LightParam { get; set; } = null;   // LineScan 용 조명 파라메터
+        //[JsonProperty]
+        //public LightParameter LightParam { get; set; } = null;   // LineScan 용 조명 파라메터
 
         public LineCameraData DeepCopy()
         {
@@ -29,7 +29,7 @@ namespace Jastech.Apps.Structure.Data
             lineCameraData.Name = Name;
             lineCameraData.AnalogGain = AnalogGain;
             lineCameraData.DigitalGain = DigitalGain;
-            lineCameraData.LightParam = LightParam?.DeepCopy();
+            //lineCameraData.LightParam = LightParam?.DeepCopy();
 
             return lineCameraData;
         }
