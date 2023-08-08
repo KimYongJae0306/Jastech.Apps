@@ -301,7 +301,7 @@ namespace ATT_UT_Remodeling.Core
                     LAFCtrl.SetTrackingOnOFF(true);
                     WriteLog("Laser Auto Focus On.");
 
-                    LightCtrlHandler.TurnOn(unit.GetLineCameraData("Akkon").LightParam);
+                    LightCtrlHandler.TurnOn(unit.LightParam);
                     Thread.Sleep(100);
                     WriteLog("Light On.");
 

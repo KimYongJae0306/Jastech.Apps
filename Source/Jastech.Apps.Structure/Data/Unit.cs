@@ -23,6 +23,9 @@ namespace Jastech.Apps.Structure.Data
         public LineCameraData AlignCamera { get; set; } = null;
 
         [JsonProperty]
+        public LightParameter LightParam { get; set; } = null;   // LineScan 용 조명 파라메터
+
+        [JsonProperty]
         private List<Tab> TabList { get; set; } = new List<Tab>();
 
         [JsonProperty]
@@ -36,6 +39,7 @@ namespace Jastech.Apps.Structure.Data
             unit.PreAlign = PreAlign?.DeepCopy();
             unit.AkkonCamera = AkkonCamera?.DeepCopy();
             unit.AlignCamera = AlignCamera?.DeepCopy();
+            unit.LightParam = LightParam?.DeepCopy();
             unit.TabList = TabList.Select(x => x.DeepCopy()).ToList();
             unit.TeachingInfoList = TeachingInfoList.Select(x => x.DeepCopy()).ToList();
             return unit;

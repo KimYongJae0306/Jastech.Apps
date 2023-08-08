@@ -598,6 +598,35 @@ namespace Jastech.Apps.Winform
             }
         }
 
+        public void WriteTabResult(int tabNo, TabJudgement judgement, TabAlignResult alignResult, AkkonResult akkonResult, double resolution)
+        {
+            string tabJudgementName = string.Format("Tab{0}_Judgement", tabNo);
+            PlcResultMap plcResultMap = (PlcResultMap)Enum.Parse(typeof(PlcResultMap), tabJudgementName);
+
+            var map = PlcControlManager.Instance().GetResultMap(plcResultMap);
+            if (DeviceManager.Instance().PlcHandler.Count > 0 && map != null)
+            {
+                var plc = DeviceManager.Instance().PlcHandler.First() as MelsecPlc;
+                PlcDataStream stream = new PlcDataStream();
+
+                int tabJudgement = (int)judgement;
+
+                if (plc.MelsecParser.ParserType == ParserType.Binary)
+                {
+                    stream.AddSwap16BitData(Convert.ToInt16(tabJudgement));
+                }
+                else
+                {
+                    stream.Add16BitData(Convert.ToInt16(tabJudgement));
+                }
+
+                AddAlignResult(plc.MelsecParser.ParserType, alignResult, resolution, ref stream);
+                AddAkkonResult(plc.MelsecParser.ParserType, akkonResult, ref stream);
+
+                plc.Write("D" + map.AddressNum, stream.Data);
+            }
+        }
+
         private void AddAlignResult(ParserType parserType, TabAlignResult alignResult, double resolution, ref PlcDataStream stream)
         {
             if (alignResult == null)

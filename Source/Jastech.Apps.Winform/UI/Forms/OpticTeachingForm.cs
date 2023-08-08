@@ -228,7 +228,7 @@ namespace Jastech.Framework.Winform.Forms
             LAFJogControl.MoveAmount = Convert.ToDouble(lblPitchZValue.Text);
 
             var lineCameraData = unit.GetLineCameraData(LineCamera.Camera.Name);
-            LightControl.SetParam(DeviceManager.Instance().LightCtrlHandler, lineCameraData.LightParam);
+            LightControl.SetParam(DeviceManager.Instance().LightCtrlHandler, unit.LightParam);
             LightControl.InitializeData();
 
             var camera = LineCamera.Camera;

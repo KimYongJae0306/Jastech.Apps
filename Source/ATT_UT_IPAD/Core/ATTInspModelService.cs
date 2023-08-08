@@ -37,15 +37,14 @@ namespace ATT_UT_IPAD.Core
                 Unit unit = new Unit();
 
                 unit.Name = unitName.ToString(); // 임시 -> Apps에서 변경
+                unit.LightParam = CreateLightParameter();
 
                 // LineScan 조명 Parameter 생성
                 unit.AkkonCamera = new LineCameraData();
                 unit.AkkonCamera.Name = "AkkonCamera";
-                unit.AkkonCamera.LightParam = CreateAkkonLightParameter();
 
                 unit.AlignCamera = new LineCameraData();
                 unit.AlignCamera.Name = "AlignCamera";
-                unit.AlignCamera.LightParam = CreateAlignLightParameter();
 
                 for (int tabIndex = 0; tabIndex < appInspModel.TabCount; tabIndex++)
                 {
@@ -176,9 +175,9 @@ namespace ATT_UT_IPAD.Core
             return lightParamList;
         }
 
-        private LightParameter CreateAkkonLightParameter()
+        private LightParameter CreateLightParameter()
         {
-            LightParameter lightParameter = new LightParameter("Akkon");
+            LightParameter lightParameter = new LightParameter("Light");
 
             var lightCtrlHandler = DeviceManager.Instance().LightCtrlHandler;
             var spotLightCtrl = lightCtrlHandler.Get("Spot");
@@ -190,19 +189,19 @@ namespace ATT_UT_IPAD.Core
             return lightParameter;
         }
 
-        private LightParameter CreateAlignLightParameter()
-        {
-            LightParameter lightParameter = new LightParameter("Align");
+        //private LightParameter CreateAlignLightParameter()
+        //{
+        //    LightParameter lightParameter = new LightParameter("Align");
 
-            var lightCtrlHandler = DeviceManager.Instance().LightCtrlHandler;
-            var spotLightCtrl = lightCtrlHandler.Get("Spot");
-            var ringLightCtrl = lightCtrlHandler.Get("Ring");
+        //    var lightCtrlHandler = DeviceManager.Instance().LightCtrlHandler;
+        //    var spotLightCtrl = lightCtrlHandler.Get("Spot");
+        //    var ringLightCtrl = lightCtrlHandler.Get("Ring");
 
-            lightParameter.Add(spotLightCtrl, new LightValue(spotLightCtrl.TotalChannelCount));
-            lightParameter.Add(ringLightCtrl, new LightValue(ringLightCtrl.TotalChannelCount));
+        //    lightParameter.Add(spotLightCtrl, new LightValue(spotLightCtrl.TotalChannelCount));
+        //    lightParameter.Add(ringLightCtrl, new LightValue(ringLightCtrl.TotalChannelCount));
 
-            return lightParameter;
-        }
+        //    return lightParameter;
+        //}
 
         public override InspModel Load(string filePath)
         {
