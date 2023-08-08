@@ -353,7 +353,7 @@ namespace ATT_UT_IPAD.Core
                     AppsInspResult.Instance().StartInspTime = DateTime.Now;
                     AppsInspResult.Instance().Cell_ID = GetCellID();
 
-                    WriteLog("Cell ID : " + AppsInspResult.Instance().Cell_ID, true);
+                    WriteLog("Cell ID : " + AppsInspResult.Instance().Cell_ID);
                     SeqStep = SeqStep.SEQ_MOVE_START_POS;
                     break;
 
