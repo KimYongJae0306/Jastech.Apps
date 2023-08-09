@@ -200,8 +200,8 @@ namespace ATT_UT_IPAD.UI.Controls
         public void UpdateResultDisplay(int tabNo)
         {
             var tabInspResult = GetTabInspResultEvent?.Invoke(tabNo);
-
-            if(tabInspResult != null)
+            //TabBtnControlList[tabNo].sa
+            if (tabInspResult != null)
             {
                 if (CurrentTabNo == tabNo)
                 {

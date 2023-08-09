@@ -253,7 +253,6 @@ namespace ATT_UT_IPAD
 
         public void UpdateMainAlignResult()
         {
-            // 탭별로 안들어올 수도 있을텐데....
             var inspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
 
             for (int tabNo = 0; tabNo < inspModel.TabCount; tabNo++)

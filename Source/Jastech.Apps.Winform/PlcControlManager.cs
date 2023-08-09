@@ -651,33 +651,33 @@ namespace Jastech.Apps.Winform
             else
             {
                 int alignJudgement = alignResult.Judgement == Judgement.OK ? 1 : 2;
+                
+                //double leftX_mm = alignResult.LeftX.ResultValue_pixel * resolution / 1000.0;
+                //double leftY_mm = alignResult.LeftY.ResultValue_pixel * resolution / 1000.0;
+                //double rightX_mm = alignResult.RightX.ResultValue_pixel * resolution / 1000.0;
+                //double rightY_mm = alignResult.RightY.ResultValue_pixel * resolution / 1000.0;
 
-                double leftX_mm = alignResult.LeftX.ResultValue_pixel * resolution / 1000.0;
-                double leftY_mm = alignResult.LeftY.ResultValue_pixel * resolution / 1000.0;
-                double rightX_mm = alignResult.RightX.ResultValue_pixel * resolution / 1000.0;
-                double rightY_mm = alignResult.RightY.ResultValue_pixel * resolution / 1000.0;
+                //int leftX_um = ConvertDoubleWordData(leftX_mm);
+                //int leftY_um = ConvertDoubleWordData(leftY_mm);
+                //int rightX_um = ConvertDoubleWordData(rightX_mm);
+                //int rightY_um = ConvertDoubleWordData(rightY_mm);
 
-                int leftX_um = ConvertDoubleWordData(leftX_mm);
-                int leftY_um = ConvertDoubleWordData(leftY_mm);
-                int rightX_um = ConvertDoubleWordData(rightX_mm);
-                int rightY_um = ConvertDoubleWordData(rightY_mm);
-
-                if (parserType == ParserType.Binary)
-                {
-                    stream.AddSwap16BitData(Convert.ToInt16(alignJudgement));   // Align OK/NG
-                    stream.AddSwap32BitData(leftX_um);                          // Left AlignX
-                    stream.AddSwap32BitData(leftY_um);                          // Left AlignY
-                    stream.AddSwap32BitData(rightX_um);                         // Right AlignX
-                    stream.AddSwap32BitData(rightY_um);                         // Right AlignY
-                }
-                else
-                {
-                    stream.Add16BitData(Convert.ToInt16(alignJudgement));   // Align OK/NG
-                    stream.Add32BitData(leftX_um);                          // Left AlignX
-                    stream.Add32BitData(leftY_um);                          // Left AlignY
-                    stream.Add32BitData(rightX_um);                         // Right AlignX
-                    stream.Add32BitData(rightY_um);                         // Right AlignY
-                }
+                //if (parserType == ParserType.Binary)
+                //{
+                //    stream.AddSwap16BitData(Convert.ToInt16(alignJudgement));   // Align OK/NG
+                //    stream.AddSwap32BitData(leftX_um);                          // Left AlignX
+                //    stream.AddSwap32BitData(leftY_um);                          // Left AlignY
+                //    stream.AddSwap32BitData(rightX_um);                         // Right AlignX
+                //    stream.AddSwap32BitData(rightY_um);                         // Right AlignY
+                //}
+                //else
+                //{
+                //    stream.Add16BitData(Convert.ToInt16(alignJudgement));   // Align OK/NG
+                //    stream.Add32BitData(leftX_um);                          // Left AlignX
+                //    stream.Add32BitData(leftY_um);                          // Left AlignY
+                //    stream.Add32BitData(rightX_um);                         // Right AlignX
+                //    stream.Add32BitData(rightY_um);                         // Right AlignY
+                //}
             }
         }
 

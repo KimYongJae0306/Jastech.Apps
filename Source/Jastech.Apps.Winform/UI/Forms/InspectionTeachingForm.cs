@@ -400,7 +400,14 @@ namespace Jastech.Framework.Winform.Forms
             TeachingImagePath = Path.Combine(ConfigSet.Instance().Path.Model, inspModel.Name, "TeachingImage", DateTime.Now.ToString("yyyyMMdd_HHmmss"));
 
             var teachingInfo = inspModel.GetUnit(UnitName.Unit0).GetTeachingInfo(TeachingPosType.Stage1_Scan_Start);
-            var targetPosZ = teachingInfo.GetTargetPosition(AxisName.Z0.ToString());
+
+            double targetPosZ = 0.0;
+
+            if (UseAlignMark == false)
+                targetPosZ = teachingInfo.GetTargetPosition(AxisName.Z0.ToString());
+            else
+                targetPosZ = teachingInfo.GetTargetPosition(AxisName.Z1.ToString());
+
             var cameraGap = AppsConfig.Instance().CameraGap_mm;
 
             TeachingData.Instance().ClearTeachingImageBuffer();
@@ -412,9 +419,9 @@ namespace Jastech.Framework.Winform.Forms
 
             InitalizeInspTab(LineCamera.TabScanBufferList);
 
-            MotionManager.Instance().MoveTo(TeachingPosType.Stage1_Scan_Start);
-            LAFCtrl?.SetMotionAbsoluteMove(targetPosZ);
+
             LAFCtrl.SetTrackingOnOFF(true);
+            MotionManager.Instance().MoveTo(TeachingPosType.Stage1_Scan_Start);
 
             string cameraName = LineCamera.Camera.Name;
             var unit = inspModel.GetUnit(UnitName);
