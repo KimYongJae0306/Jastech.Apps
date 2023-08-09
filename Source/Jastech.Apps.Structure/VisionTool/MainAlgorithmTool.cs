@@ -104,7 +104,7 @@ namespace Jastech.Apps.Structure.VisionTool
             tabInspResult.MarkResult.PanelMark = RunPanelMark(cogImage, tab, useAlignMark);
         }
 
-        public AlignResult RunMainLeftAlignX(ICogImage cogImage, Tab tab, CoordinateTransform fpcCoordinate, CoordinateTransform panelCoordinate, double judgementX)
+        public AlignResult RunMainLeftAlignX(ICogImage cogImage, Tab tab, CoordinateTransform fpcCoordinate, CoordinateTransform panelCoordinate, double judgementX_pixel)
         {
             var fpcParam = tab.GetAlignParam(ATTTabAlignName.LeftFPCX).DeepCopy();
             var panelParam = tab.GetAlignParam(ATTTabAlignName.LeftPanelX).DeepCopy();
@@ -118,11 +118,11 @@ namespace Jastech.Apps.Structure.VisionTool
                 panelParam.CaliperParams.SetRegion(calcPanelRegion);
             }
 
-            var result = RunMainAlignX(cogImage, fpcParam, panelParam, judgementX);
+            var result = RunMainAlignX(cogImage, fpcParam, panelParam, judgementX_pixel);
             return result;
         }
 
-        public AlignResult RunMainLeftAlignY(ICogImage cogImage, Tab tab, CoordinateTransform fpcCoordinate, CoordinateTransform panelCoordinate, double judgementY)
+        public AlignResult RunMainLeftAlignY(ICogImage cogImage, Tab tab, CoordinateTransform fpcCoordinate, CoordinateTransform panelCoordinate, double judgementY_pixel)
         {
             var fpcParam = tab.GetAlignParam(ATTTabAlignName.LeftFPCY).DeepCopy();
             var panelParam = tab.GetAlignParam(ATTTabAlignName.LeftPanelY).DeepCopy();
@@ -136,11 +136,11 @@ namespace Jastech.Apps.Structure.VisionTool
                 panelParam.CaliperParams.SetRegion(calcPanelRegion);
             }
 
-            var result = RunMainAlignY(cogImage, fpcParam, panelParam, judgementY);
+            var result = RunMainAlignY(cogImage, fpcParam, panelParam, judgementY_pixel);
             return result;
         }
 
-        public AlignResult RunMainRightAlignX(ICogImage cogImage, Tab tab, CoordinateTransform fpcCoordinate, CoordinateTransform panelCoordinate, double judgementX)
+        public AlignResult RunMainRightAlignX(ICogImage cogImage, Tab tab, CoordinateTransform fpcCoordinate, CoordinateTransform panelCoordinate, double judgementX_pixel)
         {
             var fpcParam = tab.GetAlignParam(ATTTabAlignName.RightFPCX);
             var panelParam = tab.GetAlignParam(ATTTabAlignName.RightPanelX);
@@ -154,12 +154,12 @@ namespace Jastech.Apps.Structure.VisionTool
                 panelParam.CaliperParams.SetRegion(calcPanelRegion);
             }
 
-            var result = RunMainAlignX(cogImage, fpcParam, panelParam, judgementX);
+            var result = RunMainAlignX(cogImage, fpcParam, panelParam, judgementX_pixel);
 
             return result;
         }
 
-        public AlignResult RunMainRightAlignY(ICogImage cogImage, Tab tab, CoordinateTransform fpcCoordinate, CoordinateTransform panelCoordinate, double judgementY)
+        public AlignResult RunMainRightAlignY(ICogImage cogImage, Tab tab, CoordinateTransform fpcCoordinate, CoordinateTransform panelCoordinate, double judgementY_pixel)
         {
             var fpcParam = tab.GetAlignParam(ATTTabAlignName.RightFPCY).DeepCopy();
             var panelParam = tab.GetAlignParam(ATTTabAlignName.RightPanelY).DeepCopy();
@@ -173,11 +173,11 @@ namespace Jastech.Apps.Structure.VisionTool
                 panelParam.CaliperParams.SetRegion(calcPanelRegion);
             }
 
-            var result = RunMainAlignY(cogImage, fpcParam, panelParam, judgementY);
+            var result = RunMainAlignY(cogImage, fpcParam, panelParam, judgementY_pixel);
             return result;
         }
 
-        public AlignResult RunMainAlignX(ICogImage cogImage, AlignParam fpcParam, AlignParam panelParam, double judegementX)
+        public AlignResult RunMainAlignX(ICogImage cogImage, AlignParam fpcParam, AlignParam panelParam, double judegementX_pixel)
         {
             AlignResult result = new AlignResult();
 
@@ -230,7 +230,7 @@ namespace Jastech.Apps.Structure.VisionTool
 
                 result.ResultValue_pixel = temp / count;
                 result.AvgCenterX = GetCenterX(panelCenterXList);
-                result.JudegementValue_pixel = judegementX;
+                result.JudegementValue_pixel = judegementX_pixel;
             }
             else
             {
@@ -260,7 +260,7 @@ namespace Jastech.Apps.Structure.VisionTool
             return temp / count;
         }
 
-        private AlignResult RunMainAlignY(ICogImage cogImage, AlignParam fpcParam, AlignParam panelParam, double judgementY)
+        private AlignResult RunMainAlignY(ICogImage cogImage, AlignParam fpcParam, AlignParam panelParam, double judgementY_pixel)
         {
             AlignResult result = new AlignResult();
 
@@ -275,7 +275,7 @@ namespace Jastech.Apps.Structure.VisionTool
                 float newY = panelY - fpcY;
 
                 result.ResultValue_pixel = newY;
-                result.JudegementValue_pixel = judgementY;
+                result.JudegementValue_pixel = judgementY_pixel;
             }
             else
             {

@@ -647,10 +647,11 @@ namespace ATT_UT_IPAD.Core
 
         private float GetResultAlignResultValue(AlignResult alignResult)
         {
+            double resolution = AlignCamera.Camera.PixelResolution_um / AlignCamera.Camera.LensScale;
             if (alignResult == null)
                 return 0.0F;
             else
-                return alignResult.ResultValue_pixel;
+                return alignResult.ResultValue_pixel * (float)resolution;
         }
 
         private void UpdateAkkonDailyInfo(ref DailyData dailyData)

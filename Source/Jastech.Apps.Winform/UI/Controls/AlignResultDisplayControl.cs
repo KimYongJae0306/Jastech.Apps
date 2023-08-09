@@ -169,8 +169,9 @@ namespace ATT_UT_IPAD.UI.Controls
         {
             var image = TabBtnControlList[tabNo].GetAlignImage();
             var leftShape = TabBtnControlList[tabNo].GetLeftShape();
+            var rightShape = TabBtnControlList[tabNo].GetRightShape();
             InspAlignDisplay.UpdateLeftDisplay(image, leftShape);
-            InspAlignDisplay.UpdateRightDisplay(image, leftShape);
+            InspAlignDisplay.UpdateRightDisplay(image, rightShape);
         }
 
         public delegate void UpdateTabButtonDele(int tabNo);

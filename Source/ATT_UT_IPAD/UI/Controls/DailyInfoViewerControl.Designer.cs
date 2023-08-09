@@ -56,7 +56,7 @@
             this.tlpDailyInfoViewer.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
             this.tlpDailyInfoViewer.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tlpDailyInfoViewer.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tlpDailyInfoViewer.Size = new System.Drawing.Size(193, 250);
+            this.tlpDailyInfoViewer.Size = new System.Drawing.Size(339, 255);
             this.tlpDailyInfoViewer.TabIndex = 0;
             // 
             // lblAlignLog
@@ -68,7 +68,7 @@
             this.lblAlignLog.Location = new System.Drawing.Point(0, 0);
             this.lblAlignLog.Margin = new System.Windows.Forms.Padding(0);
             this.lblAlignLog.Name = "lblAlignLog";
-            this.lblAlignLog.Size = new System.Drawing.Size(193, 40);
+            this.lblAlignLog.Size = new System.Drawing.Size(339, 40);
             this.lblAlignLog.TabIndex = 3;
             this.lblAlignLog.Text = "DAILY INFO";
             this.lblAlignLog.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -86,7 +86,7 @@
             this.tlpDailyInfoType.Name = "tlpDailyInfoType";
             this.tlpDailyInfoType.RowCount = 1;
             this.tlpDailyInfoType.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tlpDailyInfoType.Size = new System.Drawing.Size(193, 40);
+            this.tlpDailyInfoType.Size = new System.Drawing.Size(339, 40);
             this.tlpDailyInfoType.TabIndex = 4;
             // 
             // lblAlign
@@ -96,12 +96,12 @@
             this.lblAlign.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lblAlign.Font = new System.Drawing.Font("맑은 고딕", 14F, System.Drawing.FontStyle.Bold);
             this.lblAlign.ForeColor = System.Drawing.Color.White;
-            this.lblAlign.Location = new System.Drawing.Point(96, 0);
+            this.lblAlign.Location = new System.Drawing.Point(169, 0);
             this.lblAlign.Margin = new System.Windows.Forms.Padding(0);
             this.lblAlign.Name = "lblAlign";
-            this.lblAlign.Size = new System.Drawing.Size(97, 40);
+            this.lblAlign.Size = new System.Drawing.Size(170, 40);
             this.lblAlign.TabIndex = 4;
-            this.lblAlign.Text = "ALIGN";
+            this.lblAlign.Text = "ALIGN [um]";
             this.lblAlign.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.lblAlign.Click += new System.EventHandler(this.lblAlign_Click);
             // 
@@ -115,9 +115,9 @@
             this.lblAkkon.Location = new System.Drawing.Point(0, 0);
             this.lblAkkon.Margin = new System.Windows.Forms.Padding(0);
             this.lblAkkon.Name = "lblAkkon";
-            this.lblAkkon.Size = new System.Drawing.Size(96, 40);
+            this.lblAkkon.Size = new System.Drawing.Size(169, 40);
             this.lblAkkon.TabIndex = 5;
-            this.lblAkkon.Text = "AKKON";
+            this.lblAkkon.Text = "AKKON [um]";
             this.lblAkkon.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.lblAkkon.Click += new System.EventHandler(this.lblAkkon_Click);
             // 
@@ -127,16 +127,16 @@
             this.pnlDailyResult.Location = new System.Drawing.Point(0, 80);
             this.pnlDailyResult.Margin = new System.Windows.Forms.Padding(0);
             this.pnlDailyResult.Name = "pnlDailyResult";
-            this.pnlDailyResult.Size = new System.Drawing.Size(193, 85);
+            this.pnlDailyResult.Size = new System.Drawing.Size(339, 87);
             this.pnlDailyResult.TabIndex = 5;
             // 
             // pnlDailyChart
             // 
             this.pnlDailyChart.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pnlDailyChart.Location = new System.Drawing.Point(0, 165);
+            this.pnlDailyChart.Location = new System.Drawing.Point(0, 167);
             this.pnlDailyChart.Margin = new System.Windows.Forms.Padding(0);
             this.pnlDailyChart.Name = "pnlDailyChart";
-            this.pnlDailyChart.Size = new System.Drawing.Size(193, 85);
+            this.pnlDailyChart.Size = new System.Drawing.Size(339, 88);
             this.pnlDailyChart.TabIndex = 5;
             // 
             // DailyInfoViewerControl
@@ -148,7 +148,7 @@
             this.Font = new System.Drawing.Font("맑은 고딕", 11.25F, System.Drawing.FontStyle.Bold);
             this.ForeColor = System.Drawing.Color.White;
             this.Name = "DailyInfoViewerControl";
-            this.Size = new System.Drawing.Size(193, 250);
+            this.Size = new System.Drawing.Size(339, 255);
             this.Load += new System.EventHandler(this.DailyInfoViewerControl_Load);
             this.tlpDailyInfoViewer.ResumeLayout(false);
             this.tlpDailyInfoType.ResumeLayout(false);

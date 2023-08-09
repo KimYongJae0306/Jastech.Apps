@@ -265,7 +265,7 @@ namespace ATT_UT_IPAD
 
         public void UpdateMainAkkonResult(int tabNo)
         {
-            MainPageControl.UpdateMainAkkonResult(tabNo);
+            MainPageControl.UpdateMainAkkonResultData(tabNo);
         }
 
         public void UpdateMainAlignResult(int tabNo)

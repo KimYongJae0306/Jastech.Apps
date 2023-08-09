@@ -95,9 +95,13 @@ namespace ATT_UT_IPAD.UI.Pages
             //DailyInfoViewerControl.ClearAlignData();
         }
 
-        public void UpdateMainAkkonResult(int tabNo)
+        public void UpdateMainAkkonResultDisplay(int tabNo)
         {
             AkkonViewerControl.UpdateMainResult(tabNo);
+        }
+
+        public void UpdateMainAkkonResultData(int tabNo)
+        {
             DailyInfoViewerControl.UpdateAkkonResult(tabNo);
         }
 

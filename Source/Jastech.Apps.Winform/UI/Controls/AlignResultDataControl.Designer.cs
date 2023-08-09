@@ -66,7 +66,6 @@
             dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
             this.dgvAlignHistory.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             this.dgvAlignHistory.ColumnHeadersHeight = 40;
-            this.dgvAlignHistory.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             this.dgvAlignHistory.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.colTime,
             this.colPanelID,
@@ -98,7 +97,7 @@
             this.dgvAlignHistory.RowTemplate.DefaultCellStyle.BackColor = System.Drawing.Color.White;
             this.dgvAlignHistory.RowTemplate.Height = 23;
             this.dgvAlignHistory.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvAlignHistory.Size = new System.Drawing.Size(542, 341);
+            this.dgvAlignHistory.Size = new System.Drawing.Size(465, 369);
             this.dgvAlignHistory.TabIndex = 2;
             // 
             // colTime
@@ -107,7 +106,7 @@
             dataGridViewCellStyle2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
             this.colTime.DefaultCellStyle = dataGridViewCellStyle2;
             this.colTime.HeaderText = "Time";
-            this.colTime.MinimumWidth = 100;
+            this.colTime.MinimumWidth = 90;
             this.colTime.Name = "colTime";
             this.colTime.ReadOnly = true;
             this.colTime.Resizable = System.Windows.Forms.DataGridViewTriState.True;
@@ -118,11 +117,11 @@
             dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
             this.colPanelID.DefaultCellStyle = dataGridViewCellStyle3;
             this.colPanelID.HeaderText = "Panel ID";
-            this.colPanelID.MinimumWidth = 100;
+            this.colPanelID.MinimumWidth = 150;
             this.colPanelID.Name = "colPanelID";
             this.colPanelID.ReadOnly = true;
-            this.colPanelID.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.colPanelID.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            this.colPanelID.Width = 150;
             // 
             // colTab
             // 
@@ -133,7 +132,6 @@
             this.colTab.MinimumWidth = 35;
             this.colTab.Name = "colTab";
             this.colTab.ReadOnly = true;
-            this.colTab.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.colTab.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
             this.colTab.Width = 35;
             // 
@@ -146,7 +144,6 @@
             this.colJudge.MinimumWidth = 50;
             this.colJudge.Name = "colJudge";
             this.colJudge.ReadOnly = true;
-            this.colJudge.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.colJudge.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
             this.colJudge.Width = 50;
             // 
@@ -156,12 +153,11 @@
             dataGridViewCellStyle6.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
             this.colCount.DefaultCellStyle = dataGridViewCellStyle6;
             this.colCount.HeaderText = "Lx";
-            this.colCount.MinimumWidth = 50;
+            this.colCount.MinimumWidth = 60;
             this.colCount.Name = "colCount";
             this.colCount.ReadOnly = true;
-            this.colCount.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.colCount.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            this.colCount.Width = 50;
+            this.colCount.Width = 60;
             // 
             // colLenght
             // 
@@ -170,49 +166,45 @@
             dataGridViewCellStyle7.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
             this.colLenght.DefaultCellStyle = dataGridViewCellStyle7;
             this.colLenght.HeaderText = "Ly";
-            this.colLenght.MinimumWidth = 50;
+            this.colLenght.MinimumWidth = 60;
             this.colLenght.Name = "colLenght";
             this.colLenght.ReadOnly = true;
-            this.colLenght.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.colLenght.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
             // 
             // Column1
             // 
             this.Column1.HeaderText = "Rx";
-            this.Column1.MinimumWidth = 50;
+            this.Column1.MinimumWidth = 60;
             this.Column1.Name = "Column1";
             this.Column1.ReadOnly = true;
-            this.Column1.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.Column1.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            this.Column1.Width = 50;
+            this.Column1.Width = 60;
             // 
             // Column2
             // 
             this.Column2.HeaderText = "Ry";
-            this.Column2.MinimumWidth = 50;
+            this.Column2.MinimumWidth = 60;
             this.Column2.Name = "Column2";
             this.Column2.ReadOnly = true;
-            this.Column2.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.Column2.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            this.Column2.Width = 50;
+            this.Column2.Width = 60;
             // 
             // Column3
             // 
             this.Column3.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
             this.Column3.HeaderText = "Cx";
-            this.Column3.MinimumWidth = 50;
+            this.Column3.MinimumWidth = 60;
             this.Column3.Name = "Column3";
             this.Column3.ReadOnly = true;
-            this.Column3.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.Column3.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
             // 
-            // AlignInspResultControl
+            // AlignResultDataControl
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.dgvAlignHistory);
-            this.Name = "AlignInspResultControl";
-            this.Size = new System.Drawing.Size(542, 341);
+            this.Name = "AlignResultDataControl";
+            this.Size = new System.Drawing.Size(465, 369);
             ((System.ComponentModel.ISupportInitialize)(this.dgvAlignHistory)).EndInit();
             this.ResumeLayout(false);
 

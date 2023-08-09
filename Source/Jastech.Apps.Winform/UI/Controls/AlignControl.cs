@@ -484,15 +484,15 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         private double RunLeftX(ICogImage cogImage)
         {
-            double judgementX = Resolution_um * CurrentTab.AlignSpec.LeftSpecX_um;
+            double judgementX_pixel = CurrentTab.AlignSpec.LeftSpecX_um / Resolution_um;
 
-            AlignResult alignResultLeftX = AlgorithmTool.RunMainLeftAlignX(cogImage, CurrentTab, null, null, judgementX);
-            double value_um = alignResultLeftX.ResultValue_pixel / Resolution_um;
+            AlignResult alignResultLeftX = AlgorithmTool.RunMainLeftAlignX(cogImage, CurrentTab, null, null, judgementX_pixel);
+            double value_um = alignResultLeftX.ResultValue_pixel * Resolution_um;
 
             lblLeftX_Judgement.Text = alignResultLeftX.Judgement.ToString();
             if (alignResultLeftX.Judgement != Judgement.FAIL)
             {
-                lblLeftX_Value.Text = value_um.ToString("F2");
+                lblLeftX_Value.Text = value_um.ToString("F3");
             }
             else
                 lblLeftX_Value.Text = "-";
@@ -505,16 +505,16 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         private double RunLeftY(ICogImage cogImage)
         {
-            double judgementY = Resolution_um * CurrentTab.AlignSpec.LeftSpecY_um;
+            double judgementY = CurrentTab.AlignSpec.LeftSpecY_um / Resolution_um;
 
             AlignResult alignResultLeftY = AlgorithmTool.RunMainLeftAlignY(cogImage, CurrentTab, null, null, judgementY);
 
             lblLeftY_Judgement.Text = alignResultLeftY.Judgement.ToString();
-            double value_um = alignResultLeftY.ResultValue_pixel / Resolution_um;
+            double value_um = alignResultLeftY.ResultValue_pixel * Resolution_um;
 
             if (alignResultLeftY.Judgement != Judgement.FAIL)
             {
-                lblLeftY_Value.Text = value_um.ToString("F2");
+                lblLeftY_Value.Text = value_um.ToString("F3");
             }
             else
                 lblLeftY_Value.Text = "-";
@@ -527,15 +527,15 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         private double RunRightX(ICogImage cogImage)
         {
-            double judgementX = Resolution_um * CurrentTab.AlignSpec.RightSpecX_um;
+            double judgementX = CurrentTab.AlignSpec.RightSpecX_um / Resolution_um;
 
             AlignResult alignResultRightX = AlgorithmTool.RunMainRightAlignX(cogImage, CurrentTab, null, null, judgementX);
-            double value_um = alignResultRightX.ResultValue_pixel / Resolution_um;
+            double value_um = alignResultRightX.ResultValue_pixel * Resolution_um;
 
             lblRightX_Judgement.Text = alignResultRightX.Judgement.ToString();
             if (alignResultRightX.Judgement != Judgement.FAIL)
             {
-                lblRightX_Value.Text = value_um.ToString("F2");
+                lblRightX_Value.Text = value_um.ToString("F3");
             }
             else
                 lblRightX_Value.Text = "-";
@@ -548,15 +548,15 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         private double RunRightY(ICogImage cogImage)
         {
-            double judgementY = Resolution_um * CurrentTab.AlignSpec.RightSpecY_um;
+            double judgementY = CurrentTab.AlignSpec.RightSpecY_um / Resolution_um;
 
             AlignResult alignResultRightY = AlgorithmTool.RunMainRightAlignY(cogImage, CurrentTab, null, null, judgementY);
-            double value_um = alignResultRightY.ResultValue_pixel / Resolution_um;
+            double value_um = alignResultRightY.ResultValue_pixel * Resolution_um;
 
             lblRightY_Judgement.Text = alignResultRightY.Judgement.ToString();
             if (alignResultRightY.Judgement != Judgement.FAIL)
             {
-                lblRightY_Value.Text = value_um.ToString("F2");
+                lblRightY_Value.Text = value_um.ToString("F3");
             }
             else
                 lblRightY_Value.Text = "-";

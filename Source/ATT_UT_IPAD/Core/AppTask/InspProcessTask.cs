@@ -9,6 +9,7 @@ using Jastech.Framework.Algorithms.Akkon;
 using Jastech.Framework.Algorithms.Akkon.Parameters;
 using Jastech.Framework.Algorithms.Akkon.Results;
 using Jastech.Framework.Imaging.Result;
+using Jastech.Framework.Imaging.VisionPro;
 using Jastech.Framework.Util;
 using Jastech.Framework.Util.Helper;
 using System;
@@ -140,8 +141,9 @@ namespace ATT_UT_IPAD.Core.AppTask
             // Create Coordinate Object
             CoordinateTransform fpcCoordinate = new CoordinateTransform();
             CoordinateTransform panelCoordinate = new CoordinateTransform();
-
-            algorithmTool.MainMarkInspect(inspTab.MergeCogImage, tab, ref inspResult, false);
+            //VisionProImageHelper.Save(inspTab.MergeCogImage, @"D:\tab.bmp");
+         
+            algorithmTool.MainMarkInspect(inspTab.MergeCogImage, tab, ref inspResult, true);
 
             if (inspResult.MarkResult.Judgement != Judgement.OK)
             {
@@ -161,11 +163,11 @@ namespace ATT_UT_IPAD.Core.AppTask
                 fpcCoordinate.ExecuteCoordinate();
                 panelCoordinate.ExecuteCoordinate();
 
-                var lineCamera = LineCameraManager.Instance().GetLineCamera("LineCamera").Camera;
+                var lineCamera = LineCameraManager.Instance().GetLineCamera("AlignCamera").Camera;
 
                 float resolution_um = lineCamera.PixelResolution_um / lineCamera.LensScale;
-                double judgementX = tab.AlignSpec.LeftSpecX_um / resolution_um;
-                double judgementY = tab.AlignSpec.LeftSpecY_um / resolution_um;
+                double judgementX = tab.AlignSpec.LeftSpecX_um * resolution_um;
+                double judgementY = tab.AlignSpec.LeftSpecY_um * resolution_um;
 
                 #region Align
                 if (AppsConfig.Instance().EnableAlign)

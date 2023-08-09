@@ -204,7 +204,7 @@ namespace ATT.Core
 
                 inspResult.AkkonResult = CreateAkkonResult(unitName, tab.Index, leadResultList);
             }
-            //AppsInspResult.TabResultList.Add(inspResult);
+            AppsInspResult.TabResultList.Add(inspResult);
 
             sw.Stop();
             string resultMessage = string.Format("Inspection Completed. {0}({1}ms)", (inspTab.TabScanBuffer.TabNo + 1), sw.ElapsedMilliseconds);

@@ -148,7 +148,7 @@ namespace Jastech.Apps.Winform.UI.Controls
             {
                 if (item.AlignDailyInfoList.Count > 0)
                 {
-                    var tabData = item.AlignDailyInfoList.Where(x => x.TabNo == tabNo).First();
+                    var tabData = item.AlignDailyInfoList.Where(x => x.TabNo == tabNo).FirstOrDefault();
 
                     if (tabData == null)
                         continue;
