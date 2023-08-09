@@ -318,7 +318,10 @@ namespace Jastech.Apps.Winform
                 }
 
                 if (tabScanBuffer.IsAddDataDone())
+                {
                     _stackTabNo++;
+                }
+                    
 
                 if (_curGrabCount == GrabCount - 1)
                 {

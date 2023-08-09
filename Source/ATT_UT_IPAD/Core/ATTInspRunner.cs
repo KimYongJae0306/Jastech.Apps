@@ -294,10 +294,10 @@ namespace ATT_UT_IPAD.Core
                     LightCtrlHandler.TurnOff();
                     WriteLog("Light Off.");
 
-                    AlignLAFCtrl.SetTrackingOnOFF(false);
+                    AlignLAFCtrl.SetTrackingOnOFF(true);
                     WriteLog("Align Laf Off.");
 
-                    AkkonLAFCtrl.SetTrackingOnOFF(false);
+                    AkkonLAFCtrl.SetTrackingOnOFF(true);
                     WriteLog("Akkon Laf Off.");
 
                     InitializeBuffer();
@@ -350,16 +350,20 @@ namespace ATT_UT_IPAD.Core
                     LightCtrlHandler.TurnOn(unit.LightParam);
                     Thread.Sleep(100);
 
+                    AlignCamera.SetOperationMode(TDIOperationMode.TDI);
+                    AlignCamera.StartGrab();
+                    AlignLAFCtrl.SetTrackingOnOFF(true);
+                    WriteLog("Start Align LineScanner Grab.", true);
+                    Thread.Sleep(50);
                     AkkonCamera.SetOperationMode(TDIOperationMode.TDI);
                     AkkonCamera.StartGrab();
                     AkkonLAFCtrl.SetTrackingOnOFF(true);
                     WriteLog("Start Akkon LineScanner Grab.", true);
 
-                    AlignCamera.SetOperationMode(TDIOperationMode.TDI);
-                    AlignCamera.StartGrab();
-                    AlignLAFCtrl.SetTrackingOnOFF(true);
-                    WriteLog("Start Align LineScanner Grab.", true);
-
+                    
+                   
+                    
+                    Thread.Sleep(50);
                     if (ConfigSet.Instance().Operation.VirtualMode)
                     {
                         InspProcessTask.StartVirtual();
@@ -570,12 +574,16 @@ namespace ATT_UT_IPAD.Core
 
         private void InitializeBuffer()
         {
+            Stopwatch sw = new Stopwatch();
+            sw.Restart();
             AkkonCamera.InitGrabSettings();
+            
             InspProcessTask.InitalizeInspAkkonBuffer(AkkonCamera.Camera.Name, AkkonCamera.TabScanBufferList);
 
             float akkonToAlignGap_mm = AppsConfig.Instance().CameraGap_mm;
             AlignCamera.InitGrabSettings(akkonToAlignGap_mm);
             InspProcessTask.InitalizeInspAlignBuffer(AlignCamera.Camera.Name, AlignCamera.TabScanBufferList);
+            sw.Stop();
         }
 
         public void RunVirtual()
@@ -930,10 +938,10 @@ namespace ATT_UT_IPAD.Core
         {
             MotionManager manager = MotionManager.Instance();
             double cameraGap = 0;
-            if (axis.Name == "X")
+            if (teachingPos == TeachingPosType.Stage1_Scan_End)
             {
                 cameraGap = AppsConfig.Instance().CameraGap_mm;
-                cameraGap += 50;
+                //cameraGap += 50;
             }
                 
             if (manager.IsAxisInPosition(UnitName.Unit0, teachingPos, axis, cameraGap) == false)

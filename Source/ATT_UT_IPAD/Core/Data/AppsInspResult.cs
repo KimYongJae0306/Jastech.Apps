@@ -1,6 +1,7 @@
 ﻿using Jastech.Apps.Structure.Data;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -40,6 +41,9 @@ namespace ATT_UT_IPAD.Core.Data
 
         public void ClearResult()
         {
+            Stopwatch sw = new Stopwatch();
+            sw.Restart();
+
             foreach (var inspAkkonResult in InspAkkonResultDic)
             {
                 inspAkkonResult.Value.Dispose();
@@ -49,6 +53,7 @@ namespace ATT_UT_IPAD.Core.Data
             {
                 inspAlignResult.Value.Dispose();
             }
+            sw.Stop();
         }
 
         public void Dispose()

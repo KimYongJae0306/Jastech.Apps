@@ -400,6 +400,12 @@ namespace ATT_UT_IPAD.UI.Forms
 
         private void btnSave_Click(object sender, EventArgs e)
         {
+            //int.TryParse(lblTeachedCenterOfGravityZ0.Text, out int akkonCog);
+            //int.TryParse(lblTeachedCenterOfGravityZ1.Text, out int alignCog);
+            //int akkonCog = 
+            //LAFManager.Instance().SetCenterOfGravity(AkkonLafCtrl.Name, akkonCog);
+            int alignCog = -3700;
+            LAFManager.Instance().SetCenterOfGravity(AlignLafCtrl.Name, alignCog);
             Save();
         }
 

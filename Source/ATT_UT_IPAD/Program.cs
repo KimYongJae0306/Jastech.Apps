@@ -211,15 +211,15 @@ namespace ATT_UT_IPAD
             motion.TriggerBuffer = ACSBufferNumber.Buffer4;
             config.Add(motion);
 
-            //// Akkon LAF
-            //var akkonLaf = new VirtualLAFCtrl("AkkonLaf");
-            //config.Add(akkonLaf);
+            ////Akkon LAF
+            ////var akkonLaf = new VirtualLAFCtrl("AkkonLaf");
+            ////config.Add(akkonLaf);
 
-            //// Akkon LAF
-            //var alignLaf = new VirtualLAFCtrl("AlignLaf");
-            //config.Add(alignLaf);
+            ////Akkon LAF
+            ////var alignLaf = new VirtualLAFCtrl("AlignLaf");
+            ////config.Add(alignLaf);
 
-            // Akkon LAF
+            //Akkon LAF
             var akkonLaf = new NuriOneLAFCtrl("AkkonLaf");
             akkonLaf.SerialPortComm = new SerialPortComm("COM2", 9600);
             akkonLaf.AxisName = AxisName.Z0.ToString();

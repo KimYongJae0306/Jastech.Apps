@@ -1,4 +1,6 @@
-﻿using Jastech.Framework.Imaging.Result;
+﻿using Cognex.VisionPro;
+using Jastech.Framework.Imaging.Result;
+using Jastech.Framework.Imaging.VisionPro;
 using System;
 using System.Drawing;
 using System.Windows.Forms;
@@ -7,8 +9,14 @@ namespace Jastech.Apps.Winform.UI.Controls
 {
     public partial class TabBtnControl : UserControl
     {
-        #region 속성
+        #region 필드
         public int _tabIndex { get; protected set; } = -1;
+        #endregion
+
+        #region 속성
+        private ICogImage OrgImage { get; set; } = null;
+        
+        private ICogImage CogResultImage { get; set; } = null;
         #endregion
 
         #region 이벤트
@@ -36,6 +44,42 @@ namespace Jastech.Apps.Winform.UI.Controls
         public void SetTabIndex(int tabIndex)
         {
             _tabIndex = tabIndex;
+        }
+
+        public void SetOrgImage(ICogImage cogImage)
+        {
+            if(OrgImage != null)
+            {
+                if (cogImage is CogImage8Grey grey)
+                {
+                    grey.Dispose();
+                    grey = null;
+                }
+                if (cogImage is CogImage24PlanarColor color)
+                {
+                    color.Dispose();
+                    color = null;
+                }
+            }
+            OrgImage = cogImage.CopyBase(CogImageCopyModeConstants.CopyPixels);
+        }
+
+        public void SetResultImage(ICogImage cogImage)
+        {
+            if (OrgImage != null)
+            {
+                if (cogImage is CogImage8Grey grey)
+                {
+                    grey.Dispose();
+                    grey = null;
+                }
+                if (cogImage is CogImage24PlanarColor color)
+                {
+                    color.Dispose();
+                    color = null;
+                }
+            }
+            CogResultImage = cogImage.CopyBase(CogImageCopyModeConstants.CopyPixels);
         }
 
         public void UpdateData()
