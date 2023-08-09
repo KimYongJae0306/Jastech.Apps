@@ -274,7 +274,7 @@ namespace ATT_UT_IPAD.UI.Forms
             else
                 mPos_um = status.MPosPulse;
 
-            lblCurrentPositionZ0.Text = mPos_um.ToString("F3");
+            lblCurrentPositionZ0.Text = mPos_um.ToString("F4");
             lblCurrentCenterOfGravityZ0.Text = status.CenterofGravity.ToString();
 
             if (status.IsNegativeLimit)
@@ -329,7 +329,7 @@ namespace ATT_UT_IPAD.UI.Forms
             else
                 mPos_um = status.MPosPulse;
 
-            lblCurrentPositionZ1.Text = mPos_um.ToString("F3");
+            lblCurrentPositionZ1.Text = mPos_um.ToString("F4");
             lblCurrentCenterOfGravityZ1.Text = status.CenterofGravity.ToString();
 
             if (status.IsNegativeLimit)
@@ -400,12 +400,6 @@ namespace ATT_UT_IPAD.UI.Forms
 
         private void btnSave_Click(object sender, EventArgs e)
         {
-            //int.TryParse(lblTeachedCenterOfGravityZ0.Text, out int akkonCog);
-            //int.TryParse(lblTeachedCenterOfGravityZ1.Text, out int alignCog);
-            //int akkonCog = 
-            //LAFManager.Instance().SetCenterOfGravity(AkkonLafCtrl.Name, akkonCog);
-            int alignCog = -3700;
-            LAFManager.Instance().SetCenterOfGravity(AlignLafCtrl.Name, alignCog);
             Save();
         }
 
@@ -560,21 +554,25 @@ namespace ATT_UT_IPAD.UI.Forms
         private void lblLaserOnZ0_Click(object sender, EventArgs e)
         {
             LAFManager.Instance().LaserOnOff(AkkonLafCtrl.Name, true);
+            Console.WriteLine("Laser On");
         }
 
         private void lblLaserOffZ0_Click(object sender, EventArgs e)
         {
             LAFManager.Instance().LaserOnOff(AkkonLafCtrl.Name, false);
+            Console.WriteLine("Laser Off");
         }
 
         private void lblTrackingOnZ0_Click(object sender, EventArgs e)
         {
             LAFManager.Instance().TrackingOnOff(AkkonLafCtrl.Name, true);
+            Console.WriteLine("Tracking On");
         }
 
         private void lblTrackingOffZ0_Click(object sender, EventArgs e)
         {
             LAFManager.Instance().TrackingOnOff(AkkonLafCtrl.Name, false);
+            Console.WriteLine("Tracking Off");
         }
 
         private void lblTeachedCenterOfGravityZ1_Click(object sender, EventArgs e)
@@ -664,6 +662,7 @@ namespace ATT_UT_IPAD.UI.Forms
         {
             MotionJogXControl.JogSpeedMode = jogSpeedMode;
             LAFJogZ0Control.JogSpeedMode = jogSpeedMode;
+            LAFJogZ1Control.JogSpeedMode = jogSpeedMode;
         }
 
         private void rdoJogMode_CheckedChanged(object sender, EventArgs e)
@@ -692,6 +691,7 @@ namespace ATT_UT_IPAD.UI.Forms
         {
             MotionJogXControl.JogMode = jogMode;
             LAFJogZ0Control.JogMode = jogMode;
+            LAFJogZ1Control.JogMode = jogMode;
         }
 
         private void lblPitchXYValue_Click(object sender, EventArgs e)
@@ -704,6 +704,7 @@ namespace ATT_UT_IPAD.UI.Forms
         {
             double pitchZ = KeyPadHelper.SetLabelDoubleData((Label)sender);
             LAFJogZ0Control.MoveAmount = pitchZ;
+            LAFJogZ1Control.MoveAmount = pitchZ;
         }
 
         private void MotionPopupForm_FormClosing(object sender, FormClosingEventArgs e)

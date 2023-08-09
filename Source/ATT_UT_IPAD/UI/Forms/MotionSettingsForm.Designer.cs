@@ -991,7 +991,7 @@
             this.lblAxisZ0.Name = "lblAxisZ0";
             this.lblAxisZ0.Size = new System.Drawing.Size(84, 31);
             this.lblAxisZ0.TabIndex = 3;
-            this.lblAxisZ0.Text = "Z0";
+            this.lblAxisZ0.Text = "Akkon";
             this.lblAxisZ0.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // lblCurrentPositionZ0
@@ -1144,7 +1144,7 @@
             this.lblAxisZ1.Name = "lblAxisZ1";
             this.lblAxisZ1.Size = new System.Drawing.Size(85, 31);
             this.lblAxisZ1.TabIndex = 3;
-            this.lblAxisZ1.Text = "Z1";
+            this.lblAxisZ1.Text = "Align";
             this.lblAxisZ1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // lblTargetPositionZ1
