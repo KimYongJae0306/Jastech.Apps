@@ -11,6 +11,7 @@ using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
+using System.Windows.Media.Media3D;
 
 namespace ATT_UT_IPAD.UI.Controls
 {
@@ -122,7 +123,8 @@ namespace ATT_UT_IPAD.UI.Controls
             TabBtnControlList[tabNo].SetButtonClick();
 
             CurrentTabNo = tabNo;
-            UpdateResultDisplay(tabNo);
+            //UpdateResultDisplay(tabNo);
+            UpdateImage(tabNo);
             SendTabNumberEvent(tabNo);
         }
 
@@ -142,13 +144,18 @@ namespace ATT_UT_IPAD.UI.Controls
         public void UpdateResultDisplay(int tabNo)
         {
             var tabInspResult = GetTabInspResultEvent?.Invoke(tabNo);
+            if (tabInspResult == null)
+                return;
 
-            if(tabInspResult != null)
+            TabBtnControlList[tabNo].SetAlignImage(tabInspResult.CogImage.CopyBase(CogImageCopyModeConstants.CopyPixels));
+            TabBtnControlList[tabNo].SetLeftAlignShape(GetLeftAlignShape(tabInspResult));
+            TabBtnControlList[tabNo].SetRightAlignShape(GetRightAlignShape(tabInspResult));
+
+            if (tabInspResult != null)
             {
                 if (CurrentTabNo == tabNo)
                 {
-                    UpdateLeftAlignResult(tabInspResult);
-                    UpdateRightAlignResult(tabInspResult);
+                    UpdateImage(tabNo);
                 }
             }
             else
@@ -156,6 +163,14 @@ namespace ATT_UT_IPAD.UI.Controls
                 InspAlignDisplay.ClearImage();
             }
           
+        }
+
+        private void UpdateImage(int tabNo)
+        {
+            var image = TabBtnControlList[tabNo].GetAlignImage();
+            var leftShape = TabBtnControlList[tabNo].GetLeftShape();
+            InspAlignDisplay.UpdateLeftDisplay(image, leftShape);
+            InspAlignDisplay.UpdateRightDisplay(image, leftShape);
         }
 
         public delegate void UpdateTabButtonDele(int tabNo);
@@ -179,13 +194,12 @@ namespace ATT_UT_IPAD.UI.Controls
             }
         }
 
-        private void UpdateLeftAlignResult(TabInspResult result)
+        private List<CogCompositeShape> GetLeftAlignShape(TabInspResult result)
         {
             if (result == null)
-                return;
+                return new List<CogCompositeShape>();
 
             List<CogCompositeShape> leftResultList = new List<CogCompositeShape>();
-            List<PointF> pointList = new List<PointF>();
 
             var leftAlignX = result.AlignResult.LeftX;
             if (leftAlignX != null)
@@ -194,8 +208,6 @@ namespace ATT_UT_IPAD.UI.Controls
                 {
                     foreach (var fpc in leftAlignX.Fpc.CogAlignResult)
                     {
-                        pointList.Add(fpc.MaxCaliperMatch.FoundPos);
-
                         var leftFpcX = fpc.MaxCaliperMatch.ResultGraphics;
                         leftResultList.Add(leftFpcX);
                     }
@@ -204,8 +216,6 @@ namespace ATT_UT_IPAD.UI.Controls
                 {
                     foreach (var panel in leftAlignX.Panel.CogAlignResult)
                     {
-                        pointList.Add(panel.MaxCaliperMatch.FoundPos);
-
                         var leftPanelX = panel.MaxCaliperMatch.ResultGraphics;
                         leftResultList.Add(leftPanelX);
                     }
@@ -219,8 +229,6 @@ namespace ATT_UT_IPAD.UI.Controls
                 {
                     if (leftAlignY.Fpc.CogAlignResult[0].MaxCaliperMatch != null)
                     {
-                        pointList.Add(leftAlignY.Fpc.CogAlignResult[0].MaxCaliperMatch.FoundPos);
-
                         var leftFpcY = leftAlignY.Fpc.CogAlignResult[0].MaxCaliperMatch.ResultGraphics;
                         leftResultList.Add(leftFpcY);
                     }
@@ -230,24 +238,21 @@ namespace ATT_UT_IPAD.UI.Controls
                 {
                     if (leftAlignY.Panel.CogAlignResult[0].MaxCaliperMatch != null)
                     {
-                        pointList.Add(leftAlignY.Panel.CogAlignResult[0].MaxCaliperMatch.FoundPos);
                         var leftPanelY = leftAlignY.Panel.CogAlignResult[0].MaxCaliperMatch.ResultGraphics;
                         leftResultList.Add(leftPanelY);
                     }
                 }
             }
 
-            var deepCopyImage = result.CogImage.CopyBase(CogImageCopyModeConstants.CopyPixels);
-            InspAlignDisplay.UpdateLeftDisplay(deepCopyImage, leftResultList, GetCenterPoint(pointList));
+            return leftResultList;
         }
 
-        private void UpdateRightAlignResult(TabInspResult result)
+        private List<CogCompositeShape> GetRightAlignShape(TabInspResult result)
         {
             if (result == null)
-                return;
+                return new List<CogCompositeShape>();
 
             List<CogCompositeShape> rightResultList = new List<CogCompositeShape>();
-            List<PointF> pointList = new List<PointF>();
 
             var rightAlignX = result.AlignResult.RightX;
             if (rightAlignX != null)
@@ -256,8 +261,6 @@ namespace ATT_UT_IPAD.UI.Controls
                 {
                     foreach (var fpc in rightAlignX.Fpc.CogAlignResult)
                     {
-                        pointList.Add(fpc.MaxCaliperMatch.FoundPos);
-
                         var rightFpcX = fpc.MaxCaliperMatch.ResultGraphics;
                         rightResultList.Add(rightFpcX);
                     }
@@ -266,8 +269,6 @@ namespace ATT_UT_IPAD.UI.Controls
                 {
                     foreach (var panel in rightAlignX.Panel.CogAlignResult)
                     {
-                        pointList.Add(panel.MaxCaliperMatch.FoundPos);
-
                         var rightPanelX = panel.MaxCaliperMatch.ResultGraphics;
                         rightResultList.Add(rightPanelX);
                     }
@@ -281,8 +282,6 @@ namespace ATT_UT_IPAD.UI.Controls
                 {
                     if (rightAlignY.Fpc.CogAlignResult[0].MaxCaliperMatch != null)
                     {
-                        pointList.Add(rightAlignY.Fpc.CogAlignResult[0].MaxCaliperMatch.FoundPos);
-
                         var rightFpcY = rightAlignY.Fpc.CogAlignResult[0].MaxCaliperMatch.ResultGraphics;
                         rightResultList.Add(rightFpcY);
                     }
@@ -292,14 +291,12 @@ namespace ATT_UT_IPAD.UI.Controls
                 {
                     if (rightAlignY.Panel.CogAlignResult[0].MaxCaliperMatch != null)
                     {
-                        pointList.Add(rightAlignY.Panel.CogAlignResult[0].MaxCaliperMatch.FoundPos);
                         var rightPanelY = rightAlignY.Panel.CogAlignResult[0].MaxCaliperMatch.ResultGraphics;
                         rightResultList.Add(rightPanelY);
                     }
                 }
             }
-            var deepCopyImage = result.CogImage.CopyBase(CogImageCopyModeConstants.CopyPixels);
-            InspAlignDisplay.UpdateRightDisplay(deepCopyImage, rightResultList, GetCenterPoint(pointList));
+            return rightResultList;
         }
 
         private Point GetCenterPoint(List<PointF> pointList)

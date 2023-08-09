@@ -1,4 +1,5 @@
-﻿using Jastech.Apps.Structure;
+﻿using Cognex.VisionPro;
+using Jastech.Apps.Structure;
 using Jastech.Apps.Structure.Data;
 using Jastech.Apps.Winform;
 using Jastech.Apps.Winform.UI.Controls;
@@ -159,48 +160,40 @@ namespace ATT_UT_IPAD.UI.Controls
 
         private void UpdateImage(int tabNo)
         {
-            var tabInspResult = GetTabInspResultEvent?.Invoke(tabNo);
-
-            if (tabInspResult != null)
+            //var tabInspResult = GetTabInspResultEvent?.Invoke(tabNo);
+            var tabControl = TabBtnControlList[tabNo];
+            if (tabControl.GetOrgImage() is ICogImage orgImage)
             {
-                if(tabInspResult.Image == null)
+                if (IsResultImageView)
                 {
-                    InspDisplayControl.ClearImage();
+                    if (tabControl.GetCogResultImage() is ICogImage resultImage)
+                        InspDisplayControl.SetImage(resultImage);
+                    else
+                        InspDisplayControl.SetImage(orgImage);
                 }
                 else
                 {
-                    if (IsResultImageView)
-                    {
-                        if (tabInspResult.AkkonResultCogImage == null)
-                        {
-                            //InspDisplayControl.ClearImage();
-                            InspDisplayControl.SetImage(tabInspResult.CogImage);
-                        }
-                        else
-                            InspDisplayControl.SetImage(tabInspResult.AkkonResultCogImage);
-                    }
+                    if(tabControl.GetCogInspImage() is ICogImage inspImage)
+                        InspDisplayControl.SetImage(inspImage);
                     else
-                    {
-                        if (tabInspResult.AkkonInspCogImage == null)
-                        {
-                            //InspDisplayControl.ClearImage();
-                            InspDisplayControl.SetImage(tabInspResult.CogImage);
-                        }
-                        else
-                            InspDisplayControl.SetImage(tabInspResult.AkkonInspCogImage);
-                    }
+                        InspDisplayControl.SetImage(orgImage);
                 }
             }
             else
             {
-                InspDisplayControl.ClearImage();
+                InspDisplayControl.ClearGraphic();
+                InspDisplayControl.ClearThumbnail();
             }
         }
 
         public void UpdateResultDisplay(int tabNo)
         {
             var tabInspResult = GetTabInspResultEvent?.Invoke(tabNo);
-            //TabBtnControlList[tabNo].sa
+
+            TabBtnControlList[tabNo].SetOrgImage(tabInspResult.CogImage);
+            TabBtnControlList[tabNo].SetResultImage(tabInspResult.AkkonResultCogImage);
+            TabBtnControlList[tabNo].SetInspImage(tabInspResult.AkkonInspCogImage);
+
             if (tabInspResult != null)
             {
                 if (CurrentTabNo == tabNo)

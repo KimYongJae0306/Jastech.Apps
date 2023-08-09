@@ -2,8 +2,10 @@
 using Jastech.Framework.Imaging.Result;
 using Jastech.Framework.Imaging.VisionPro;
 using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
+using System.Windows.Media.Animation;
 
 namespace Jastech.Apps.Winform.UI.Controls
 {
@@ -14,9 +16,17 @@ namespace Jastech.Apps.Winform.UI.Controls
         #endregion
 
         #region 속성
-        private ICogImage OrgImage { get; set; } = null;
-        
+        private ICogImage CogOrgImage { get; set; } = null;
+
         private ICogImage CogResultImage { get; set; } = null;
+
+        private ICogImage CogInspImage { get; set; } = null;
+
+        private ICogImage CogAlignImage { get; set; } = null;
+
+        private List<CogCompositeShape> LeftCogShapeList { get; set; } = new List<CogCompositeShape>();
+
+        private List<CogCompositeShape> RightCogShapeList { get; set; } = new List<CogCompositeShape>();
         #endregion
 
         #region 이벤트
@@ -48,38 +58,99 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         public void SetOrgImage(ICogImage cogImage)
         {
-            if(OrgImage != null)
+            if (CogOrgImage != null)
             {
-                if (cogImage is CogImage8Grey grey)
+                if (CogOrgImage is CogImage8Grey grey)
                 {
                     grey.Dispose();
                     grey = null;
                 }
-                if (cogImage is CogImage24PlanarColor color)
+                if (CogOrgImage is CogImage24PlanarColor color)
                 {
                     color.Dispose();
                     color = null;
                 }
             }
-            OrgImage = cogImage.CopyBase(CogImageCopyModeConstants.CopyPixels);
+            CogOrgImage = cogImage?.CopyBase(CogImageCopyModeConstants.CopyPixels);
         }
 
         public void SetResultImage(ICogImage cogImage)
         {
-            if (OrgImage != null)
+            if (CogResultImage != null)
             {
-                if (cogImage is CogImage8Grey grey)
+                if (CogResultImage is CogImage8Grey grey)
                 {
                     grey.Dispose();
                     grey = null;
                 }
-                if (cogImage is CogImage24PlanarColor color)
+                if (CogResultImage is CogImage24PlanarColor color)
                 {
                     color.Dispose();
                     color = null;
                 }
             }
-            CogResultImage = cogImage.CopyBase(CogImageCopyModeConstants.CopyPixels);
+            CogResultImage = cogImage?.CopyBase(CogImageCopyModeConstants.CopyPixels);
+        }
+
+        public void SetInspImage(ICogImage cogImage)
+        {
+            if (CogInspImage != null)
+            {
+                if (CogInspImage is CogImage8Grey grey)
+                {
+                    grey.Dispose();
+                    grey = null;
+                }
+                if (CogInspImage is CogImage24PlanarColor color)
+                {
+                    color.Dispose();
+                    color = null;
+                }
+            }
+            CogInspImage = cogImage?.CopyBase(CogImageCopyModeConstants.CopyPixels);
+        }
+
+        public void SetAlignImage(ICogImage cogImage)
+        {
+            if (CogAlignImage != null)
+            {
+                if (CogAlignImage is CogImage8Grey grey)
+                {
+                    grey.Dispose();
+                    grey = null;
+                }
+                if (CogAlignImage is CogImage24PlanarColor color)
+                {
+                    color.Dispose();
+                    color = null;
+                }
+            }
+            CogAlignImage = cogImage?.CopyBase(CogImageCopyModeConstants.CopyPixels);
+        }
+
+        public void SetLeftAlignShape(List<CogCompositeShape> shapeList)
+        {
+            foreach (var shape in LeftCogShapeList)
+            {
+                shape.Dispose();
+            }
+            LeftCogShapeList.Clear();
+            LeftCogShapeList.AddRange(shapeList);
+        }
+
+        public void SetRightAlignShape(List<CogCompositeShape> shapeList)
+        {
+            foreach (var shape in RightCogShapeList)
+            {
+                shape.Dispose();
+            }
+            RightCogShapeList.Clear();
+            RightCogShapeList.AddRange(shapeList);
+        }
+
+        public ICogImage GetCogInspImage()
+        {
+            return CogInspImage;
         }
 
         public void UpdateData()
@@ -100,6 +171,30 @@ namespace Jastech.Apps.Winform.UI.Controls
         public void SetButtonClickNone()
         {
             btnTab.Text = "TAB " + (_tabIndex + 1).ToString();
+        }
+
+        public ICogImage GetOrgImage()
+        {
+            return CogOrgImage;
+        }
+
+        public ICogImage GetCogResultImage()
+        {
+            return CogResultImage;
+        }
+        public ICogImage GetAlignImage()
+        {
+            return CogAlignImage;
+        }
+
+        public List<CogCompositeShape> GetLeftShape()
+        {
+            return LeftCogShapeList;
+        }
+
+        public List<CogCompositeShape> GetRightShape()
+        {
+            return RightCogShapeList;
         }
         #endregion
     }
