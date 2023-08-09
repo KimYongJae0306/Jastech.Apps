@@ -142,8 +142,8 @@ namespace Jastech.Apps.Structure.VisionTool
 
         public AlignResult RunMainRightAlignX(ICogImage cogImage, Tab tab, CoordinateTransform fpcCoordinate, CoordinateTransform panelCoordinate, double judgementX_pixel)
         {
-            var fpcParam = tab.GetAlignParam(ATTTabAlignName.RightFPCX);
-            var panelParam = tab.GetAlignParam(ATTTabAlignName.RightPanelX);
+            var fpcParam = tab.GetAlignParam(ATTTabAlignName.RightFPCX).DeepCopy();
+            var panelParam = tab.GetAlignParam(ATTTabAlignName.RightPanelX).DeepCopy();
 
             if (fpcCoordinate != null && panelCoordinate != null)
             {

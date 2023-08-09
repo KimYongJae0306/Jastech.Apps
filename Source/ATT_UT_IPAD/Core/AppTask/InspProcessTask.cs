@@ -149,12 +149,17 @@ namespace ATT_UT_IPAD.Core.AppTask
             {
                 // 검사 실패
                 string message = string.Format("Mark Inspection NG !!! Tab_{0} / Fpc_{1}, Panel_{2}", tab.Index, inspResult.MarkResult.FpcMark.Judgement, inspResult.MarkResult.PanelMark.Judgement);
-                WriteLog(message);
+                WriteLog(message, false);
                 Logger.Debug(LogType.Inspection, message);
                 inspResult.AlignResult = new TabAlignResult();
             }
             else
             {
+                // 검사 실패
+                string tq = string.Format("Mark Inspection OK !!! Tab_{0} / Fpc_{1}, Panel_{2}", tab.Index, inspResult.MarkResult.FpcMark.Judgement, inspResult.MarkResult.PanelMark.Judgement);
+                WriteLog(tq, false);
+                Logger.Debug(LogType.Inspection, tq);
+
                 // Set Coordinate Params
                 SetFpcCoordinateData(fpcCoordinate, inspResult);
                 SetPanelCoordinateData(panelCoordinate, inspResult);
