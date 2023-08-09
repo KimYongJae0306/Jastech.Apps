@@ -239,6 +239,11 @@ namespace ATT_UT_IPAD.Core
                     string tabAlignPanelMarkDir = tabDir + @"\Mark\Align\Panel_Mark";
                     foreach (var alignParam in tab.MarkParamter.AlignPanelMarkParamList)
                         alignParam.InspParam.LoadTool(tabAlignPanelMarkDir);
+
+                    //Tab Align 열기
+                    string tabAlignDir = tabDir + @"\Align";
+                    foreach (var alignParam in tab.AlignParamList)
+                        alignParam.CaliperParams.LoadTool(tabAlignDir, alignParam.Name);
                 }
             }
             return model;
@@ -279,6 +284,11 @@ namespace ATT_UT_IPAD.Core
                     string tabAlignPanelMarkDir = tabDir + @"\Mark\Align\Panel_Mark";
                     foreach (var alignParam in tab.MarkParamter.AlignPanelMarkParamList)
                         alignParam.InspParam.SaveTool(tabAlignPanelMarkDir);
+
+                    //TabAlign 저장
+                    string tabAlignDir = tabDir + @"\Align";
+                    foreach (var alignParam in tab.AlignParamList)
+                        alignParam.CaliperParams.SaveTool(tabAlignDir, alignParam.Name);
                 }
             }
         }

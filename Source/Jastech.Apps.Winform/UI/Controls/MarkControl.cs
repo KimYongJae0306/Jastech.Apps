@@ -376,7 +376,12 @@ namespace Jastech.Apps.Winform.UI.Controls
             ICogImage copyCogImage = cogImage.CopyBase(CogImageCopyModeConstants.CopyPixels);
 
             VisionProPatternMatchingResult result = Algorithm.RunPatternMatch(copyCogImage, inspParam);
-
+            if (result == null)
+            {
+                inspParam.Dispose();
+                VisionProImageHelper.Dispose(ref copyCogImage);
+                return;
+            }
             if (result.MatchPosList.Count > 0)
             {
                 display.ClearGraphic();

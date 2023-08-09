@@ -215,9 +215,9 @@ namespace ATT_UT_IPAD
         {
             handler = new AxisHandler(AxisHandlerName.Handler0.ToString());
 
-            handler.AddAxis(AxisName.X, motion, axisNo: 1, homeOrder: 3);
+            handler.AddAxis(AxisName.X, motion, axisNo: 1, homeOrder: 2);
             handler.AddAxis(AxisName.Z0, motion, axisNo: -1, homeOrder: 1);
-            handler.AddAxis(AxisName.Z1, motion, axisNo: -1, homeOrder: 2);
+            handler.AddAxis(AxisName.Z1, motion, axisNo: -1, homeOrder: 1);
         }
 
         public void UpdateAkkonResultTabButton(int tabNo)
