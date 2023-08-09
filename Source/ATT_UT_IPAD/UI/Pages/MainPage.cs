@@ -102,6 +102,7 @@ namespace ATT_UT_IPAD.UI.Pages
 
         public void UpdateMainAkkonResultData(int tabNo)
         {
+            AkkonViewerControl.UpdateMainResult(tabNo);
             DailyInfoViewerControl.UpdateAkkonResult(tabNo);
         }
 
