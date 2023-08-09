@@ -211,25 +211,25 @@ namespace ATT_UT_IPAD
             motion.TriggerBuffer = ACSBufferNumber.Buffer4;
             config.Add(motion);
 
-            ////Akkon LAF
-            ////var akkonLaf = new VirtualLAFCtrl("AkkonLaf");
-            ////config.Add(akkonLaf);
-
-            ////Akkon LAF
-            ////var alignLaf = new VirtualLAFCtrl("AlignLaf");
-            ////config.Add(alignLaf);
-
             //Akkon LAF
-            var akkonLaf = new NuriOneLAFCtrl("AkkonLaf");
-            akkonLaf.SerialPortComm = new SerialPortComm("COM2", 9600);
-            akkonLaf.AxisName = AxisName.Z0.ToString();
+            var akkonLaf = new VirtualLAFCtrl("AkkonLaf");
             config.Add(akkonLaf);
 
-            // Align LAF
-            var alignLaf = new NuriOneLAFCtrl("AlignLaf");
-            alignLaf.SerialPortComm = new SerialPortComm("COM3", 9600);
-            alignLaf.AxisName = AxisName.Z1.ToString();
+            //Akkon LAF
+            var alignLaf = new VirtualLAFCtrl("AlignLaf");
             config.Add(alignLaf);
+
+            ////Akkon LAF
+            //var akkonLaf = new NuriOneLAFCtrl("AkkonLaf");
+            //akkonLaf.SerialPortComm = new SerialPortComm("COM2", 9600);
+            //akkonLaf.AxisName = AxisName.Z0.ToString();
+            //config.Add(akkonLaf);
+
+            //// Align LAF
+            //var alignLaf = new NuriOneLAFCtrl("AlignLaf");
+            //alignLaf.SerialPortComm = new SerialPortComm("COM3", 9600);
+            //alignLaf.AxisName = AxisName.Z1.ToString();
+            //config.Add(alignLaf);
 
             // Light1
             var spotLight = new LvsLightCtrl("Spot", 6, new SerialPortComm("COM4", 19200), new LvsSerialParser()); // 12V
