@@ -83,7 +83,7 @@ namespace ATT_UT_IPAD.UI.Pages
             form.UnitName = UnitName.Unit0;
             form.LineCamera = LineCameraManager.Instance().GetLineCamera("AkkonCamera");
             form.LAFCtrl = LAFManager.Instance().GetLAFCtrl("AkkonLaf");
-            form.UseAlignMark = false;
+            form.UseAlignMark = true;
             form.InspModelService = ATTInspModelService;
             form.OpenMotionPopupEventHandler += OpenMotionPopupEventHandler;
             form.ShowDialog();
