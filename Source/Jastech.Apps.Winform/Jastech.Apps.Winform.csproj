@@ -159,6 +159,12 @@
     <Compile Include="UI\Controls\SystemLogControl.Designer.cs">
       <DependentUpon>SystemLogControl.cs</DependentUpon>
     </Compile>
+    <Compile Include="UI\Controls\TabAlignViewControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UI\Controls\TabAlignViewControl.Designer.cs">
+      <DependentUpon>TabAlignViewControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="UI\Controls\VisionCalibrationControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -405,6 +411,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UI\Controls\SystemLogControl.resx">
       <DependentUpon>SystemLogControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\Controls\TabAlignViewControl.resx">
+      <DependentUpon>TabAlignViewControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\Controls\VisionCalibrationControl.resx">
       <DependentUpon>VisionCalibrationControl.cs</DependentUpon>

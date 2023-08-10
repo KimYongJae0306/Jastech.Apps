@@ -27,6 +27,8 @@ namespace ATT_UT_IPAD.UI.Pages
         #endregion
 
         #region 속성
+        public MainViewControl MainViewControl { get; set; } = null;
+
         public AkkonViewerControl AkkonViewerControl { get; set; } = null;
 
         public AlignViewerControl AlignViewerControl { get; set; } = null;
@@ -57,81 +59,83 @@ namespace ATT_UT_IPAD.UI.Pages
 
         private void AddControls()
         {
-            DailyInfoViewerControl = new DailyInfoViewerControl();
-            DailyInfoViewerControl.Dock = DockStyle.Fill;
-            pnlDailyInfo.Controls.Add(DailyInfoViewerControl);
+            MainViewControl = new MainViewControl();
+            MainViewControl.Dock = DockStyle.Fill;
+            pnlView.Controls.Add(MainViewControl);
 
-            AkkonViewerControl = new AkkonViewerControl();
-            AkkonViewerControl.Dock = DockStyle.Fill;
-            AkkonViewerControl.SetTabEventHandler += AkkonViewerControl_SetTabEventHandler;
-            pnlAkkon.Controls.Add(AkkonViewerControl);
+            //lblMainButton.BackColor = Color.Blue;
+            //DailyInfoViewerControl = new DailyInfoViewerControl();
+            //DailyInfoViewerControl.Dock = DockStyle.Fill;
+            //pnlDailyInfo.Controls.Add(DailyInfoViewerControl);
 
-            AlignViewerControl = new AlignViewerControl();
-            AlignViewerControl.Dock = DockStyle.Fill;
-            AlignViewerControl.SetTabEventHandler += AlignViewerControl_SetTabEventHandler;
-            pnlAlign.Controls.Add(AlignViewerControl);
+            //AkkonViewerControl = new AkkonViewerControl();
+            //AkkonViewerControl.Dock = DockStyle.Fill;
+            //AkkonViewerControl.SetTabEventHandler += AkkonViewerControl_SetTabEventHandler;
+            //pnlAkkon.Controls.Add(AkkonViewerControl);
 
-            SystemLogControl = new SystemLogControl();
-            SystemLogControl.Dock = DockStyle.Fill;
-            pnlSystemLog.Controls.Add(SystemLogControl);
+            //AlignViewerControl = new AlignViewerControl();
+            //AlignViewerControl.Dock = DockStyle.Fill;
+            //AlignViewerControl.SetTabEventHandler += AlignViewerControl_SetTabEventHandler;
+            //pnlAlign.Controls.Add(AlignViewerControl);
+
+            //SystemLogControl = new SystemLogControl();
+            //SystemLogControl.Dock = DockStyle.Fill;
+            //pnlSystemLog.Controls.Add(SystemLogControl);
         }
 
         private void AkkonViewerControl_SetTabEventHandler(int tabNo)
         {
-            DailyInfoViewerControl.UpdateAkkonResult(tabNo);
+            //DailyInfoViewerControl.UpdateAkkonResult(tabNo);
         }
 
         private void AlignViewerControl_SetTabEventHandler(int tabNo)
         {
-            DailyInfoViewerControl.UpdateAlignResult(tabNo);
+            //DailyInfoViewerControl.UpdateAlignResult(tabNo);
         }
 
         public void UpdateTabCount(int tabCount)
         {
-            AkkonViewerControl.UpdateTabCount(tabCount);
-            //DailyInfoViewerControl.ClearAkkonData();
-
-            AlignViewerControl.UpdateTabCount(tabCount);
-            //DailyInfoViewerControl.ClearAlignData();
+            //AkkonViewerControl.UpdateTabCount(tabCount);
+            //AlignViewerControl.UpdateTabCount(tabCount);
         }
 
         public void UpdateMainAkkonResultDisplay(int tabNo)
         {
-            AkkonViewerControl.UpdateMainResult(tabNo);
+            //AkkonViewerControl.UpdateMainResult(tabNo);
         }
 
         public void UpdateMainAkkonResultData(int tabNo)
         {
-            AkkonViewerControl.UpdateMainResult(tabNo);
-            DailyInfoViewerControl.UpdateAkkonResult(tabNo);
+            //AkkonViewerControl.UpdateMainResult(tabNo);
+            //DailyInfoViewerControl.UpdateAkkonResult(tabNo);
         }
 
         public void UpdateMainAlignResult(int tabNo)
         {
-            AlignViewerControl.UpdateMainResult(tabNo);
-            DailyInfoViewerControl.UpdateAlignResult(tabNo);
+            //AlignViewerControl.UpdateMainResult(tabNo);
+            //DailyInfoViewerControl.UpdateAlignResult(tabNo);
         }
 
         public void UpdateAkkonResultTabButton(int tabNo)
         {
-            AkkonViewerControl.UpdateResultTabButton(tabNo);
+            //AkkonViewerControl.UpdateResultTabButton(tabNo);
         }
 
         public void UpdateAlignResultTabButton(int tabNo)
         {
-            AlignViewerControl.UpdateResultTabButton(tabNo);
+            //AlignViewerControl.UpdateResultTabButton(tabNo);
         }
 
 
         public void TabButtonResetColor()
         {
-            AkkonViewerControl.TabButtonResetColor();
-            AlignViewerControl.TabButtonResetColor();
+           // AkkonViewerControl.TabButtonResetColor();
+           // AlignViewerControl.TabButtonResetColor();
         }
 
         public void AddSystemLogMessage(string logMessage)
         {
-            SystemLogControl.AddLogMessage(logMessage);
+            //SystemLogControl.AddLogMessage(logMessage);
         }
 
         private void lblStart_Click(object sender, EventArgs e)
@@ -154,17 +158,42 @@ namespace ATT_UT_IPAD.UI.Pages
 
         public void UpdateButton()
         {
-            if (SystemManager.Instance().MachineStatus == MachineStatus.RUN)
-            {
-                lblStartText.ForeColor = Color.Blue;
-                lblStopText.ForeColor = Color.White;
-            }
-            else
-            {
-                lblStartText.ForeColor = Color.White;
-                lblStopText.ForeColor = Color.Blue;
-            }
+            //if (SystemManager.Instance().MachineStatus == MachineStatus.RUN)
+            //{
+            //    lblStartText.ForeColor = Color.Blue;
+            //    lblStopText.ForeColor = Color.White;
+            //}
+            //else
+            //{
+            //    lblStartText.ForeColor = Color.White;
+            //    lblStopText.ForeColor = Color.Blue;
+            //}
         }
         #endregion
+
+        private void lblMainButton_Click(object sender, EventArgs e)
+        {
+            ClearSelected();
+            lblMainButton.BackColor = Color.FromArgb(104, 104, 104);
+        }
+
+        private void lblAkkonButton_Click(object sender, EventArgs e)
+        {
+            ClearSelected();
+            lblAkkonButton.BackColor = Color.FromArgb(104, 104, 104);
+        }
+
+        private void lblAlignButton_Click(object sender, EventArgs e)
+        {
+            ClearSelected();
+            lblAlignButton.BackColor = Color.FromArgb(104, 104, 104);
+        }
+
+        private void ClearSelected()
+        {
+            lblMainButton.BackColor = Color.FromArgb(52, 52, 52);
+            lblAkkonButton.BackColor = Color.FromArgb(52, 52, 52);
+            lblAlignButton.BackColor = Color.FromArgb(52, 52, 52);
+        }
     }
 }
