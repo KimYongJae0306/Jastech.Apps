@@ -414,10 +414,8 @@ namespace Jastech.Framework.Winform.Forms
 
         private void btnGrabStart_Click(object sender, EventArgs e)
         {
-            // TEST_230810_S
-            LAFCtrl.SetLaserOnOff(false);
+            LAFCtrl.SetTrackingOnOFF(false);
             Thread.Sleep(100);
-            // TEST_230810_E
 
             var inspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
 
@@ -443,11 +441,8 @@ namespace Jastech.Framework.Winform.Forms
 
             InitalizeInspTab(LineCamera.TabScanBufferList);
 
-            // TEST_230810_S
-            LAFCtrl.SetLaserOnOff(true);
+            LAFCtrl.SetTrackingOnOFF(true);
             Thread.Sleep(100);
-            //LAFCtrl.SetTrackingOnOFF(true);
-            // TEST_230810_E
 
             MotionManager.Instance().MoveTo(TeachingPosType.Stage1_Scan_Start);
 
