@@ -112,7 +112,7 @@ namespace ATT_UT_IPAD.Core
             {
                 IsAkkonGrabDone = isGrabDone;
 
-                if(IsAkkonGrabDone == false)
+                if(IsAkkonGrabDone)
                 {
                     AkkonCamera.StopGrab();
                     AkkonLAFCtrl.SetTrackingOnOFF(false);
@@ -126,7 +126,7 @@ namespace ATT_UT_IPAD.Core
             {
                 IsAlignGrabDone = isGrabDone;
 
-                if (IsAlignGrabDone == false)
+                if (IsAlignGrabDone)
                 {
                     AlignCamera.StopGrab();
                     AlignLAFCtrl.SetTrackingOnOFF(false);
