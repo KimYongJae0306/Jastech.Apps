@@ -175,7 +175,6 @@ namespace ATT_UT_Remodeling
                     break;
 
                 case SeqStep.SEQ_WAITING:
-
                     if (AppsStatus.Instance().IsPreAlignRunnerFlagFromPlc == false)
                         break;
 

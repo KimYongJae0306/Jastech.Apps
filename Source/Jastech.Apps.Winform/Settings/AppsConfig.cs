@@ -16,6 +16,9 @@ namespace Jastech.Apps.Winform.Settings
         public string ProgramType { get; set; } = "";
 
         [JsonProperty]
+        public string MachineName { get; set; } = "";
+
+        [JsonProperty]
         public int UnitCount { get; set; } = 1;
 
         [JsonProperty]
@@ -56,6 +59,9 @@ namespace Jastech.Apps.Winform.Settings
 
         [JsonProperty]
         public int AkkonResultDailyCount { get; set; } = 100;
+
+        [JsonProperty]
+        public bool EnableTest1 { get; set; } = false;
         #endregion
 
         #region 메서드

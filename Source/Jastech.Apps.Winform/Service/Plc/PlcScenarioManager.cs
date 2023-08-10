@@ -515,6 +515,7 @@ namespace Jastech.Apps.Winform.Service.Plc
             }
 
             // prealign 검사 시작 InspRunner
+            PreAlignRunnerHandler?.Invoke(true);
         }
 
         private bool MoveTo(TeachingPosType teachingPos)

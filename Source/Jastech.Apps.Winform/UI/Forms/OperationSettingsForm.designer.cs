@@ -102,6 +102,9 @@
             this.tableLayoutPanel16 = new System.Windows.Forms.TableLayoutPanel();
             this.lblApplyImage = new System.Windows.Forms.Label();
             this.lblSave = new System.Windows.Forms.Label();
+            this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
+            this.label2 = new System.Windows.Forms.Label();
+            this.mtgEnableTest1 = new MetroFramework.Controls.MetroToggle();
             this.tableLayoutPanel1.SuspendLayout();
             this.panel1.SuspendLayout();
             this.tableLayoutPanel7.SuspendLayout();
@@ -124,6 +127,7 @@
             this.tableLayoutPanel15.SuspendLayout();
             this.panel11.SuspendLayout();
             this.tableLayoutPanel16.SuspendLayout();
+            this.tableLayoutPanel3.SuspendLayout();
             this.SuspendLayout();
             // 
             // panel7
@@ -178,6 +182,7 @@
             // 
             // panel1
             // 
+            this.panel1.Controls.Add(this.tableLayoutPanel3);
             this.panel1.Controls.Add(this.tableLayoutPanel7);
             this.panel1.Controls.Add(this.tableLayoutPanel10);
             this.panel1.Controls.Add(this.panel8);
@@ -1095,6 +1100,46 @@
             this.lblSave.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.lblSave.Click += new System.EventHandler(this.lblSave_Click);
             // 
+            // tableLayoutPanel3
+            // 
+            this.tableLayoutPanel3.ColumnCount = 3;
+            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 120F));
+            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 100F));
+            this.tableLayoutPanel3.Controls.Add(this.label2, 0, 0);
+            this.tableLayoutPanel3.Controls.Add(this.mtgEnableTest1, 1, 0);
+            this.tableLayoutPanel3.Location = new System.Drawing.Point(67, 467);
+            this.tableLayoutPanel3.Name = "tableLayoutPanel3";
+            this.tableLayoutPanel3.RowCount = 1;
+            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel3.Size = new System.Drawing.Size(298, 36);
+            this.tableLayoutPanel3.TabIndex = 31;
+            // 
+            // label2
+            // 
+            this.label2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.label2.Font = new System.Drawing.Font("맑은 고딕", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.label2.ForeColor = System.Drawing.Color.White;
+            this.label2.Location = new System.Drawing.Point(3, 0);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(114, 36);
+            this.label2.TabIndex = 5;
+            this.label2.Text = "Test1";
+            this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // mtgEnableTest1
+            // 
+            this.mtgEnableTest1.AutoSize = true;
+            this.mtgEnableTest1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.mtgEnableTest1.FontWeight = MetroFramework.MetroLinkWeight.Bold;
+            this.mtgEnableTest1.Location = new System.Drawing.Point(123, 3);
+            this.mtgEnableTest1.Name = "mtgEnableTest1";
+            this.mtgEnableTest1.Size = new System.Drawing.Size(72, 30);
+            this.mtgEnableTest1.TabIndex = 12;
+            this.mtgEnableTest1.Text = "Off";
+            this.mtgEnableTest1.Theme = MetroFramework.MetroThemeStyle.Dark;
+            this.mtgEnableTest1.UseSelectable = true;
+            // 
             // OperationSettingsForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
@@ -1142,6 +1187,8 @@
             this.tableLayoutPanel15.ResumeLayout(false);
             this.panel11.ResumeLayout(false);
             this.tableLayoutPanel16.ResumeLayout(false);
+            this.tableLayoutPanel3.ResumeLayout(false);
+            this.tableLayoutPanel3.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -1222,5 +1269,8 @@
         private System.Windows.Forms.TextBox txtAlignResultCount;
         private System.Windows.Forms.Panel panel13;
         private System.Windows.Forms.Panel panel4;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel3;
+        private System.Windows.Forms.Label label2;
+        private MetroFramework.Controls.MetroToggle mtgEnableTest1;
     }
 }
