@@ -125,7 +125,7 @@ namespace Jastech.Framework.Winform.Forms
             _isLoading = true;
 
             TeachingData.Instance().UpdateTeachingData();
-
+            TeachingData.Instance().GetUnit(UnitName.ToString()).GetTabList().Sort((x, y) => x.Index.CompareTo(y.Index));
             TeachingTabList = TeachingData.Instance().GetUnit(UnitName.ToString()).GetTabList();
             InitializeTabComboBox();
             AddControl();
