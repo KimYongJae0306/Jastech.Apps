@@ -347,6 +347,7 @@ namespace ATT_UT_IPAD.Core
                     //akkonLight.Map.TryGetValue("Spot", out LightValue akkonLalue);
                     //value.LightLevels[3] = akkonLalue.LightLevels[3];
                     
+                    if(unit.LightParam != null)
                     LightCtrlHandler.TurnOn(unit.LightParam);
                     Thread.Sleep(100);
 
@@ -521,11 +522,14 @@ namespace ATT_UT_IPAD.Core
         private string GetCellID()
         {
             string cellId = PlcControlManager.Instance().GetAddressMap(PlcCommonMap.PLC_Cell_Id).Value;
-            cellId = cellId.Replace(" ", string.Empty);
+            
             if (cellId == "0" || cellId == null || cellId == "")
                 return DateTime.Now.ToString("yyyyMMddHHmmss");
             else
+            {
+                cellId = cellId.Replace(" ", string.Empty);
                 return cellId;
+            }
         }
 
         private void SendResultData()
