@@ -36,7 +36,7 @@
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.lblNext = new System.Windows.Forms.Label();
             this.lblPrev = new System.Windows.Forms.Label();
-            this.lblAlign = new System.Windows.Forms.Label();
+            this.lblTracking = new System.Windows.Forms.Label();
             this.cbxTabList = new System.Windows.Forms.ComboBox();
             this.lblAddROI = new System.Windows.Forms.Label();
             this.lblInspection = new System.Windows.Forms.Label();
@@ -156,7 +156,7 @@
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 100F));
             this.tableLayoutPanel2.Controls.Add(this.lblNext, 0, 0);
             this.tableLayoutPanel2.Controls.Add(this.lblPrev, 0, 0);
-            this.tableLayoutPanel2.Controls.Add(this.lblAlign, 7, 0);
+            this.tableLayoutPanel2.Controls.Add(this.lblTracking, 7, 0);
             this.tableLayoutPanel2.Controls.Add(this.cbxTabList, 0, 0);
             this.tableLayoutPanel2.Controls.Add(this.lblAddROI, 4, 0);
             this.tableLayoutPanel2.Controls.Add(this.lblInspection, 3, 0);
@@ -196,18 +196,19 @@
             this.lblPrev.TabIndex = 26;
             this.lblPrev.Click += new System.EventHandler(this.lblPrev_Click);
             // 
-            // lblAlign
+            // lblTracking
             // 
-            this.lblAlign.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lblAlign.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblAlign.Location = new System.Drawing.Point(662, 0);
-            this.lblAlign.Margin = new System.Windows.Forms.Padding(0);
-            this.lblAlign.Name = "lblAlign";
-            this.lblAlign.Size = new System.Drawing.Size(100, 50);
-            this.lblAlign.TabIndex = 296;
-            this.lblAlign.Text = "Align";
-            this.lblAlign.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.lblAlign.Click += new System.EventHandler(this.lblAlign_Click);
+            this.lblTracking.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblTracking.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblTracking.Font = new System.Drawing.Font("맑은 고딕", 14.25F, System.Drawing.FontStyle.Bold);
+            this.lblTracking.Location = new System.Drawing.Point(662, 0);
+            this.lblTracking.Margin = new System.Windows.Forms.Padding(0);
+            this.lblTracking.Name = "lblTracking";
+            this.lblTracking.Size = new System.Drawing.Size(100, 50);
+            this.lblTracking.TabIndex = 296;
+            this.lblTracking.Text = "Tracking";
+            this.lblTracking.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblTracking.Click += new System.EventHandler(this.lblTracking_Click);
             // 
             // cbxTabList
             // 
@@ -270,6 +271,7 @@
             // 
             this.lblImageSave.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.lblImageSave.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblImageSave.Font = new System.Drawing.Font("맑은 고딕", 14.25F, System.Drawing.FontStyle.Bold);
             this.lblImageSave.Location = new System.Drawing.Point(600, 0);
             this.lblImageSave.Margin = new System.Windows.Forms.Padding(0);
             this.lblImageSave.Name = "lblImageSave";
@@ -606,7 +608,7 @@
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
         private System.Windows.Forms.Label lblNext;
         private System.Windows.Forms.Label lblPrev;
-        private System.Windows.Forms.Label lblAlign;
+        private System.Windows.Forms.Label lblTracking;
         private System.Windows.Forms.ComboBox cbxTabList;
         private System.Windows.Forms.Label lblAddROI;
         private System.Windows.Forms.Label lblInspection;

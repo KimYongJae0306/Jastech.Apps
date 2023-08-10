@@ -328,11 +328,30 @@ namespace Jastech.Framework.Winform.Forms
             if (model == null)
                 return;
 
+            ConfirmSaveExecuteCoordiante();
+
             SaveModelData(model);
 
-            MessageConfirmForm form = new MessageConfirmForm();
-            form.Message = "Save Model Completed.";
-            form.ShowDialog();
+            MessageConfirmForm confirmForm = new MessageConfirmForm();
+            confirmForm.Message = "Save Model Completed.";
+            confirmForm.ShowDialog();
+        }
+
+        private void ConfirmSaveExecuteCoordiante()
+        {
+            if (_executedCoordinate == true)
+            {
+                MessageYesNoForm yesnoForm = new MessageYesNoForm();
+                yesnoForm.Message = "Executed coordinate. Do you want to save applied coordinate data?";
+
+                if (yesnoForm.ShowDialog() == DialogResult.Yes)
+                    TeachingData.Instance().GetUnit(UnitName.ToString()).SetTab(GetCoordinateTab());
+                else
+                    TeachingData.Instance().GetUnit(UnitName.ToString()).SetTab(CurrentTab);
+
+            }
+
+            _executedCoordinate = false;
         }
 
         private void SaveModelData(AppsInspModel model)
@@ -395,6 +414,11 @@ namespace Jastech.Framework.Winform.Forms
 
         private void btnGrabStart_Click(object sender, EventArgs e)
         {
+            // TEST_230810_S
+            LAFCtrl.SetLaserOnOff(false);
+            Thread.Sleep(100);
+            // TEST_230810_E
+
             var inspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
 
             TeachingImagePath = Path.Combine(ConfigSet.Instance().Path.Model, inspModel.Name, "TeachingImage", DateTime.Now.ToString("yyyyMMdd_HHmmss"));
@@ -419,8 +443,12 @@ namespace Jastech.Framework.Winform.Forms
 
             InitalizeInspTab(LineCamera.TabScanBufferList);
 
+            // TEST_230810_S
+            LAFCtrl.SetLaserOnOff(true);
+            Thread.Sleep(100);
+            //LAFCtrl.SetTrackingOnOFF(true);
+            // TEST_230810_E
 
-            LAFCtrl.SetTrackingOnOFF(true);
             MotionManager.Instance().MoveTo(TeachingPosType.Stage1_Scan_Start);
 
             string cameraName = LineCamera.Camera.Name;
@@ -433,7 +461,10 @@ namespace Jastech.Framework.Winform.Forms
                 MotionManager.Instance().MoveTo(TeachingPosType.Stage1_Scan_End, cameraGap);
             else
                 MotionManager.Instance().MoveTo(TeachingPosType.Stage1_Scan_End);
-            LAFCtrl.SetTrackingOnOFF(false);
+
+            // TEST_230810_S
+            //LAFCtrl.SetTrackingOnOFF(false);
+            // TEST_230810_E
         }
 
         public void InitalizeInspTab(List<TabScanBuffer> bufferList)
@@ -538,6 +569,9 @@ namespace Jastech.Framework.Winform.Forms
             string tabIndex = cbxTabList.SelectedItem as string;
             int tabNo = Convert.ToInt32(tabIndex);
 
+            if (_currentTabNo == tabIndex)
+                return;
+
             CurrentTab = TeachingTabList.Where(x => x.Index == tabNo).FirstOrDefault();
             _currentTabNo = tabIndex;
 
@@ -627,9 +661,13 @@ namespace Jastech.Framework.Winform.Forms
                 AkkonControl.ShowROIJog();
         }
 
-        private void lblAlign_Click(object sender, EventArgs e)
+        private void lblTracking_Click(object sender, EventArgs e)
         {
-            ExecuteCoordinate();
+            MessageYesNoForm form = new MessageYesNoForm();
+            form.Message = "Do you want to roi tracking?";
+
+            if (form.ShowDialog() == DialogResult.Yes)
+                ExecuteCoordinate();
         }
 
         private void ExecuteCoordinate()
@@ -697,54 +735,127 @@ namespace Jastech.Framework.Winform.Forms
             panelCoordinate.SetTargetData(searchedLeftPanelPoint, searchedRightPanelPoint);
             panelCoordinate.ExecuteCoordinate();
 
-            TeachingData.Instance().GetUnit(UnitName.ToString()).SetTab(tabOriginData);
-            CurrentTab = tabOriginData;
+            //var tt = referenceLeftFpcMarkParam.DeepCopy();
+
+            //CogTransform2DLinear newOrigin = new CogTransform2DLinear();
+            //newOrigin.TranslationX = leftFpcResult.MaxMatchPos.FoundPos.X;
+            //newOrigin.TranslationY = leftFpcResult.MaxMatchPos.FoundPos.Y;
+            //tt.InspParam.SetOrigin(newOrigin);
+
+            //CogRectangle newRect = new CogRectangle();
+
+            // TEST_230810_S
+            //TeachingData.Instance().GetUnit(UnitName.ToString()).SetTab(tabOriginData);
+            //CurrentTab = tabOriginData;
 
             // Coordinate Align
-            CoordinateAlign(CurrentTab, fpcCoordinate, panelCoordinate);
+            //CoordinateAlign(CurrentTab, fpcCoordinate, panelCoordinate);
 
             // Coordinate Akkon
-            CoordinateAkkon(CurrentTab, panelCoordinate);
+            //CoordinateAkkon(CurrentTab, panelCoordinate);
 
-            UpdateDisplayImage(CurrentTab.Index);
+
+            if (_displayType == DisplayType.Align)
+            {
+                CoordinateAlign(tabOriginData, fpcCoordinate, panelCoordinate);
+                AlignControl.SetParams(tabOriginData);
+                AlignControl.DrawROI();
+            }
+            else if (_displayType == DisplayType.Akkon)
+            {
+                CoordinateAkkon(tabOriginData, panelCoordinate);
+                AkkonControl.SetParams(tabOriginData);
+                AkkonControl.DrawROI();
+            }
+            else { }
+
+            SetCoordinateTab(tabOriginData);
+            // TEST_230810_E
+
+            // TEST_230810_S
+            //UpdateDisplayImage(tabOriginData.Index);
+            // TEST_230810_E
         }
+
+        
 
         private void CoordinateAlign(Tab tab, CoordinateTransform fpcCoordinate, CoordinateTransform panelCoordinate)
         {
-            var alignParamList = tab.AlignParamList.ToList();
-
-            foreach (var item in alignParamList)
+            foreach (ATTTabAlignName alignName in Enum.GetValues(typeof(ATTTabAlignName)))
             {
-                if (item.Name.ToLower().Contains("fpc"))
+                var alignParam = tab.GetAlignParam(alignName).DeepCopy();
+                var region = alignParam.CaliperParams.GetRegion() as CogRectangleAffine;
+
+                PointF oldPoint = new PointF();
+                oldPoint.X = Convert.ToSingle(region.CenterX);
+                oldPoint.Y = Convert.ToSingle(region.CenterY);
+
+                PointF newPoint = new PointF();
+
+                switch (alignName)
                 {
-                    var region = item.CaliperParams.GetRegion() as CogRectangleAffine;
-                    PointF oldPoint = new PointF();
-                    oldPoint.X = Convert.ToSingle(region.CenterX);
-                    oldPoint.Y = Convert.ToSingle(region.CenterY);
+                    case ATTTabAlignName.LeftFPCX:
+                    case ATTTabAlignName.LeftFPCY:
+                    case ATTTabAlignName.RightFPCX:
+                    case ATTTabAlignName.RightFPCY:
+                        newPoint = fpcCoordinate.GetCoordinate(oldPoint);
+                        break;
 
-                    var newPoint = fpcCoordinate.GetCoordinate(oldPoint);
-                    region.CenterX = newPoint.X;
-                    region.CenterY = newPoint.Y;
+                    case ATTTabAlignName.LeftPanelX:
+                    case ATTTabAlignName.LeftPanelY:
+                    case ATTTabAlignName.RightPanelX:
+                    case ATTTabAlignName.RightPanelY:
+                        newPoint = panelCoordinate.GetCoordinate(oldPoint);
+                        break;
 
-                    item.CaliperParams.SetRegion(region);
+                    default:
+                        break;
                 }
-                else if (item.Name.ToLower().Contains("panel"))
-                {
-                    var region = item.CaliperParams.GetRegion() as CogRectangleAffine;
-                    PointF oldPoint = new PointF();
-                    oldPoint.X = Convert.ToSingle(region.CenterX);
-                    oldPoint.Y = Convert.ToSingle(region.CenterY);
 
-                    var newPoint = panelCoordinate.GetCoordinate(oldPoint);
-                    region.CenterX = newPoint.X;
-                    region.CenterY = newPoint.Y;
-
-                    item.CaliperParams.SetRegion(region);
-                }
+                region.CenterX = newPoint.X;
+                region.CenterY = newPoint.Y;
+                alignParam.CaliperParams.SetRegion(region);
+                tab.SetAlignParam(alignName, alignParam);
             }
 
-            tab.AlignParamList.Clear();
-            tab.AlignParamList.AddRange(alignParamList);
+
+
+
+
+            //var alignParamList = tab.AlignParamList.ToList();
+
+            //foreach (var item in alignParamList)
+            //{
+            //    if (item.Name.ToLower().Contains("fpc"))
+            //    {
+            //        var region = item.CaliperParams.GetRegion() as CogRectangleAffine;
+            //        PointF oldPoint = new PointF();
+            //        oldPoint.X = Convert.ToSingle(region.CenterX);
+            //        oldPoint.Y = Convert.ToSingle(region.CenterY);
+
+            //        var newPoint = fpcCoordinate.GetCoordinate(oldPoint);
+            //        region.CenterX = newPoint.X;
+            //        region.CenterY = newPoint.Y;
+
+            //        item.CaliperParams.SetRegion(region);
+            //    }
+            //    else if (item.Name.ToLower().Contains("panel"))
+            //    {
+            //        var region = item.CaliperParams.GetRegion() as CogRectangleAffine;
+            //        PointF oldPoint = new PointF();
+            //        oldPoint.X = Convert.ToSingle(region.CenterX);
+            //        oldPoint.Y = Convert.ToSingle(region.CenterY);
+
+            //        var newPoint = panelCoordinate.GetCoordinate(oldPoint);
+            //        region.CenterX = newPoint.X;
+            //        region.CenterY = newPoint.Y;
+
+            //        item.CaliperParams.SetRegion(region);
+            //    }
+            //}
+
+            //tab.AlignParamList.Clear();
+            //tab.AlignParamList.AddRange(alignParamList);
         }
 
         private void CoordinateAkkon(Tab tab, CoordinateTransform panelCoordinate)
@@ -805,6 +916,35 @@ namespace Jastech.Framework.Winform.Forms
             //        temp.Save()
             //    }
             //}
+        }
+
+
+        private Tab _coordinateTab { get; set; } = null;
+
+        private bool _executedCoordinate { get; set; } = false;
+
+        private void SetCoordinateTab(Tab tab)
+        {
+            _executedCoordinate = true;
+            _coordinateTab = new Tab();
+            _coordinateTab = tab.DeepCopy();
+        }
+
+        private Tab GetCoordinateTab()
+        {
+            return _coordinateTab;
+        }
+
+        private MarkParam _coordinateMark { get; set; } = null;
+
+        private void SetCoordinateMark(MarkParam param)
+        {
+            _coordinateMark = param.DeepCopy();
+        }
+
+        private MarkParam GetCoordinateMark()
+        {
+            return _coordinateMark;
         }
     }
 
