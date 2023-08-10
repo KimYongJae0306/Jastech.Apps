@@ -249,6 +249,7 @@ namespace Jastech.Apps.Winform
 
         private enum UnitOperation
         {
+            Init,
             MoveToNegativeLimit,
             WaitingForLimitDetection,
             MoveToPositive,
@@ -292,7 +293,7 @@ namespace Jastech.Apps.Winform
             lafCtrl.SetMotionNegativeLimit(0);
             lafCtrl.SetMotionPositiveLimit(0);
             lafCtrl.SetMotionMaxSpeed(HOMING_SEARCH_VELOCITY);
-            lafCtrl.SetMotionZeroSet();
+            //lafCtrl.SetMotionZeroSet();
             Thread.Sleep(50);
         }
 
@@ -320,9 +321,11 @@ namespace Jastech.Apps.Winform
                     PrepareHomeSequence(lafName);
                     Logger.Write(LogType.Device, "Prepare to laf home sequence.");
 
-                    lafCtrl.SetMotionRelativeMove(Direction.CW, HOMING_FIRST_TARGET);      // -Limit 감지까지 이동
-                    Thread.Sleep(3000); //Test
-                    Logger.Write(LogType.Device, "Move to first minus limit detection.");
+                    if(status.IsNegativeLimit == false)
+                    {
+                        lafCtrl.SetMotionRelativeMove(Direction.CW, HOMING_FIRST_TARGET);      // -Limit 감지까지 이동
+                        Logger.Write(LogType.Device, "Move to first minus limit detection.");
+                    }
 
                     sw.Restart();
 
@@ -330,14 +333,18 @@ namespace Jastech.Apps.Winform
                     break;
 
                 case HomeSequenceStep.CheckFirstLimit:
-                    if (status.IsNegativeLimit == false)
-                        break;
+
                     if (sw.ElapsedMilliseconds > HOMING_TIME_OUT)
                     {
                         Logger.Write(LogType.Device, "Time over check first limit.");
                         _homeSequenceStep = HomeSequenceStep.Error;
                         break;
                     }
+
+                    if (status.IsNegativeLimit == false)
+                        break;
+
+                    sw.Stop();
                     _homeSequenceStep = HomeSequenceStep.UnitOperation;
                     break;
 
@@ -352,7 +359,8 @@ namespace Jastech.Apps.Winform
 
                 case HomeSequenceStep.CheckZeroConvergence:
                     //if (Math.Abs(status.MPosPulse - /*HOMING_DISTANCE_AWAY_FROM_LIMIT*/0.0002) <= 0.0002/*float.Epsilon*/)
-                    if (Math.Abs(status.MPosPulse - /*HOMING_DISTANCE_AWAY_FROM_LIMIT*/2) <= 2/*float.Epsilon*/)
+                    double mPos = status.MPosPulse / lafCtrl.ResolutionAxisZ;
+                    if (Math.Abs(status.MPosPulse - 0.0002) == 0/*float.Epsilon*/)
                     {
                         Logger.Write(LogType.Device, "Complete zero convergence.");
                         _homeSequenceStep = HomeSequenceStep.ZeroSet;
@@ -421,55 +429,53 @@ namespace Jastech.Apps.Winform
 
             bool isComplete = false;
             bool result = false;
-            UnitOperation step = UnitOperation.MoveToNegativeLimit;
+            UnitOperation step = UnitOperation.Init;
             while (isComplete == false)
             {
                 switch (step)
                 {
-                    case UnitOperation.MoveToNegativeLimit:
+                    case UnitOperation.Init:// Litmit 된 상태에서 여기로 들어옴
                         lafCtrl.SetMotionMaxSpeed(velocity);
                         Thread.Sleep(100);
 
-                        lafCtrl.SetMotionRelativeMove(Direction.CW, HOMING_SEARCH_DISTANCE);      // -Limit 감지까지 이동
-                        Thread.Sleep(3000); //Test
-                        //Thread.Sleep(1000);
-                        sw.Restart();
+                        step = UnitOperation.MoveToPositive;
 
-                        step = UnitOperation.WaitingForLimitDetection;
                         break;
+                    //case UnitOperation.WaitingForLimitDetection: 
+                    //    if (sw.ElapsedMilliseconds > HOMING_TIME_OUT)
+                    //    {
+                    //        Logger.Write(LogType.Device, "Failed to move time out.");
+                    //        step = UnitOperation.Error;
+                    //        break;
+                    //    }
 
-                    case UnitOperation.WaitingForLimitDetection:
-                        if (sw.ElapsedMilliseconds > HOMING_TIME_OUT)
+                    //    if (status.IsNegativeLimit == false)                                    // Check -Limit
+                    //        break;
+                    //    else
+                    //    {
+                    //        lafCtrl.SetMotionStop();
+                    //        Thread.Sleep(100);
+
+                    //        lafCtrl.SetMotionZeroSet();
+                    //        Thread.Sleep(500);
+
+                    //        step = UnitOperation.MoveToPositive;
+                    //    }
+                    //    break;
+
+                    case UnitOperation.MoveToPositive:
+                        lafCtrl.SetMotionRelativeMove(Direction.CCW, HOMING_SEARCH_DISTANCE);
+
+                        sw.Restart();
+                        if (lafCtrl.MoveWaitDone(lafCtrl.LastCommandPos, 60 * 1000))
+                        {
+                            step = UnitOperation.ReleaseNegativeLimitDetection;
+                        }
+                        else
                         {
                             Logger.Write(LogType.Device, "Failed to move time out.");
                             step = UnitOperation.Error;
-                            break;
                         }
-
-                        if (status.IsNegativeLimit == false)                                    // Check -Limit
-                            break;
-                        else
-                        {
-                            lafCtrl.SetMotionStop();
-                            Thread.Sleep(100);
-
-                            lafCtrl.SetMotionZeroSet();
-                            Thread.Sleep(500);
-
-                            step = UnitOperation.MoveToPositive;
-                        }
-                        break;
-
-                    case UnitOperation.MoveToPositive:
-                        lafCtrl.SetMotionMaxSpeed(velocity);
-                        Thread.Sleep(100);
-
-                        lafCtrl.SetMotionRelativeMove(Direction.CCW, HOMING_SEARCH_DISTANCE);
-                        //Thread.Sleep(2000);
-                        //lafCtrl.MoveWaitDone()// +방향으로 이동
-                        sw.Restart();
-
-                        step = UnitOperation.ReleaseNegativeLimitDetection;
                         break;
 
                     case UnitOperation.ReleaseNegativeLimitDetection:
@@ -482,12 +488,14 @@ namespace Jastech.Apps.Winform
 
                         if (status.IsNegativeLimit == true)                                    // -Limit 감지 해제
                         {
+                            step = UnitOperation.MoveToPositive;
+                        }
+                        else
+                        {
                             lafCtrl.SetMotionStop();
                             Thread.Sleep(500);
                             step = UnitOperation.Complete;
                         }
-                        else
-                            step = UnitOperation.MoveToPositive;
                         break;
 
                     case UnitOperation.Complete:
