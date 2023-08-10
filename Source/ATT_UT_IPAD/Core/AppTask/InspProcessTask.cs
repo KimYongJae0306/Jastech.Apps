@@ -58,6 +58,14 @@ namespace ATT_UT_IPAD.Core.AppTask
         #endregion
 
         #region 메서드
+        // Akkon Camera로 Akkon, Align 검사 실행
+        private void RunAkkonImage(ATTInspTab inspTab)
+        {
+            RunAlign(inspTab);
+            RunAkkon(inspTab);
+        }
+
+        //Akkon Camera로 Akkon만 검사
         private void RunAkkon(ATTInspTab inspTab)
         {
             Stopwatch sw = new Stopwatch();
@@ -76,7 +84,6 @@ namespace ATT_UT_IPAD.Core.AppTask
 
             // Create Coordinate Object
             CoordinateTransform panelCoordinate = new CoordinateTransform();
-
             algorithmTool.MainMarkInspect(inspTab.MergeCogImage, tab, ref inspResult, false);
 
             if (inspResult.MarkResult.Judgement != Judgement.OK)
@@ -122,6 +129,7 @@ namespace ATT_UT_IPAD.Core.AppTask
             InspAkkonCount++;
         }
 
+        //Align Camera로 Align만 검사
         private void RunAlign(ATTInspTab inspTab)
         {
             Stopwatch sw = new Stopwatch();
@@ -141,7 +149,6 @@ namespace ATT_UT_IPAD.Core.AppTask
             // Create Coordinate Object
             CoordinateTransform fpcCoordinate = new CoordinateTransform();
             CoordinateTransform panelCoordinate = new CoordinateTransform();
-            //VisionProImageHelper.Save(inspTab.MergeCogImage, @"D:\tab.bmp");
          
             algorithmTool.MainMarkInspect(inspTab.MergeCogImage, tab, ref inspResult, true);
 
@@ -322,7 +329,12 @@ namespace ATT_UT_IPAD.Core.AppTask
                     break;
 
                 if (GetInspAkkonTab() is ATTInspTab inspTab)
-                    RunAkkon(inspTab);
+                {
+                    if (AppsConfig.Instance().EnableTest1)
+                        RunAkkonImage(inspTab);
+                    else
+                        RunAkkon(inspTab);
+                }
 
                 Thread.Sleep(50);
             }
@@ -336,7 +348,10 @@ namespace ATT_UT_IPAD.Core.AppTask
                     break;
 
                 if (GetInspAlignTab() is ATTInspTab inspTab)
-                    RunAlign(inspTab);
+                {
+                    if (AppsConfig.Instance().EnableTest1 == false)
+                        RunAlign(inspTab);
+                }
 
                 Thread.Sleep(50);
             }

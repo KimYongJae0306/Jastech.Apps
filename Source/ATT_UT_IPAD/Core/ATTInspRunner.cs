@@ -324,9 +324,6 @@ namespace ATT_UT_IPAD.Core
 
                     SystemManager.Instance().TabButtonResetColor();
 
-                    //InitializeBuffer();
-                    //WriteLog("Initialize Buffer.");
-
                     AppsInspResult.Instance().StartInspTime = DateTime.Now;
                     AppsInspResult.Instance().Cell_ID = GetCellID();
 
@@ -338,15 +335,6 @@ namespace ATT_UT_IPAD.Core
                     IsAkkonGrabDone = false;
                     IsAlignGrabDone = false;
 
-                    //// 임시
-                    //var akkonLight = unit.GetLineCameraData("AkkonCamera").LightParam;
-                    //var alignLight = unit.GetLineCameraData("AlignCamera").LightParam;
-                    //var total = alignLight.DeepCopy();
-
-                    //total.Map.TryGetValue("Spot", out LightValue value);
-                    //akkonLight.Map.TryGetValue("Spot", out LightValue akkonLalue);
-                    //value.LightLevels[3] = akkonLalue.LightLevels[3];
-                    
                     if(unit.LightParam != null)
                     LightCtrlHandler.TurnOn(unit.LightParam);
                     Thread.Sleep(100);
