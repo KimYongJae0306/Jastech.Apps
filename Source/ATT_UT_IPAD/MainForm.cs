@@ -9,6 +9,7 @@ using Jastech.Apps.Winform.Service.Plc;
 using Jastech.Apps.Winform.Service.Plc.Maps;
 using Jastech.Framework.Config;
 using Jastech.Framework.Device.Grabbers;
+using Jastech.Framework.Device.LAFCtrl;
 using Jastech.Framework.Matrox;
 using Jastech.Framework.Structure;
 using Jastech.Framework.Users;
@@ -473,7 +474,9 @@ namespace ATT_UT_IPAD
 
         private void picLogo_Click(object sender, EventArgs e)
         {
-            AppsStatus.Instance().IsInspRunnerFlagFromPlc = true;
+            var laf = LAFManager.Instance().GetLAFCtrl("AkkonLaf") as NuriOneLAFCtrl;
+            laf.GetLaserOnValue();
+            //AppsStatus.Instance().IsInspRunnerFlagFromPlc = true;
         }
     }
 }
