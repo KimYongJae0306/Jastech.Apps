@@ -149,9 +149,11 @@ namespace ATT_UT_IPAD
                     switch (type)
                     {
                         case ProgramType.ProgramType_1:
+                            AppsConfig.Instance().MachineName = "COF ATT #1";
                             CreateDeviceConfigType1(config);
                             break;
                         case ProgramType.ProgramType_2:
+                            AppsConfig.Instance().MachineName = "COF ATT #2";
                             CreateDeviceConfigType2(config);
                             break;
                     }

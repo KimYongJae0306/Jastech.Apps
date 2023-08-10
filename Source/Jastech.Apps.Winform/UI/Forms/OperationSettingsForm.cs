@@ -52,6 +52,7 @@ namespace Jastech.Framework.Winform.Forms
 
             mtgEnableAlign.Checked = appsConfig.EnableAlign;
             mtgEnableAkkon.Checked = appsConfig.EnableAkkon;
+            mtgEnableTest1.Checked = appsConfig.EnableTest1;
 
             txtDataStoringDays.Text = operation.DataStoringDuration.ToString();
             txtDataStoringCapcity.Text = operation.DataStiringCapcity.ToString();
@@ -90,6 +91,7 @@ namespace Jastech.Framework.Winform.Forms
 
             appsConfig.EnableAlign = mtgEnableAlign.Checked;
             appsConfig.EnableAkkon = mtgEnableAkkon.Checked;
+            appsConfig.EnableTest1 = mtgEnableTest1.Checked;
 
             operation.DataStoringDuration = (int)Convert.ToDouble(GetValue(txtDataStoringDays.Text));
             operation.DataStiringCapcity = (int)Convert.ToDouble(GetValue(txtDataStoringCapcity.Text));

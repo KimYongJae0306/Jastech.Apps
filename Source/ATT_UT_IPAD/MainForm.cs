@@ -7,6 +7,7 @@ using Jastech.Apps.Winform;
 using Jastech.Apps.Winform.Core;
 using Jastech.Apps.Winform.Service.Plc;
 using Jastech.Apps.Winform.Service.Plc.Maps;
+using Jastech.Apps.Winform.Settings;
 using Jastech.Framework.Config;
 using Jastech.Framework.Device.Grabbers;
 using Jastech.Framework.Device.LAFCtrl;
@@ -64,6 +65,8 @@ namespace ATT_UT_IPAD
         #region 메서드
         private void MainForm_Load(object sender, EventArgs e)
         {
+            lblMachineName.Text = AppsConfig.Instance().MachineName;
+
             AddControls();
             SelectMainPage();
 
@@ -475,8 +478,8 @@ namespace ATT_UT_IPAD
         private void picLogo_Click(object sender, EventArgs e)
         {
             var laf = LAFManager.Instance().GetLAFCtrl("AkkonLaf") as NuriOneLAFCtrl;
-            laf.GetLaserOnValue();
-            //AppsStatus.Instance().IsInspRunnerFlagFromPlc = true;
+            //laf.GetLaserOnValue();
+            AppsStatus.Instance().IsInspRunnerFlagFromPlc = true;
         }
     }
 }
