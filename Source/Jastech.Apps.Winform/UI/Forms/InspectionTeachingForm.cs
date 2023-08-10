@@ -395,6 +395,11 @@ namespace Jastech.Framework.Winform.Forms
 
         private void btnGrabStart_Click(object sender, EventArgs e)
         {
+            // TEST_230810_S
+            LAFCtrl.SetLaserOnOff(false);
+            Thread.Sleep(100);
+            // TEST_230810_E
+
             var inspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
 
             TeachingImagePath = Path.Combine(ConfigSet.Instance().Path.Model, inspModel.Name, "TeachingImage", DateTime.Now.ToString("yyyyMMdd_HHmmss"));
@@ -419,8 +424,12 @@ namespace Jastech.Framework.Winform.Forms
 
             InitalizeInspTab(LineCamera.TabScanBufferList);
 
+            // TEST_230810_S
+            LAFCtrl.SetLaserOnOff(true);
+            Thread.Sleep(100);
+            //LAFCtrl.SetTrackingOnOFF(true);
+            // TEST_230810_E
 
-            LAFCtrl.SetTrackingOnOFF(true);
             MotionManager.Instance().MoveTo(TeachingPosType.Stage1_Scan_Start);
 
             string cameraName = LineCamera.Camera.Name;
@@ -433,7 +442,10 @@ namespace Jastech.Framework.Winform.Forms
                 MotionManager.Instance().MoveTo(TeachingPosType.Stage1_Scan_End, cameraGap);
             else
                 MotionManager.Instance().MoveTo(TeachingPosType.Stage1_Scan_End);
-            LAFCtrl.SetTrackingOnOFF(false);
+
+            // TEST_230810_S
+            //LAFCtrl.SetTrackingOnOFF(false);
+            // TEST_230810_E
         }
 
         public void InitalizeInspTab(List<TabScanBuffer> bufferList)
@@ -627,7 +639,7 @@ namespace Jastech.Framework.Winform.Forms
                 AkkonControl.ShowROIJog();
         }
 
-        private void lblAlign_Click(object sender, EventArgs e)
+        private void lblTracking_Click(object sender, EventArgs e)
         {
             ExecuteCoordinate();
         }
