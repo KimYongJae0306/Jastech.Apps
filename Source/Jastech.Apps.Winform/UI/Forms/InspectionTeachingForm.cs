@@ -690,39 +690,39 @@ namespace Jastech.Framework.Winform.Forms
 
             // Left Fpc
             MarkParam referenceLeftFpcMarkParam = tabOriginData.MarkParamter.GetFPCMark(MarkDirection.Left, MarkName.Main, UseAlignMark);
-            VisionProPatternMatchingResult leftFpcResult = Algorithm.RunPatternMatch(cogImage, referenceLeftFpcMarkParam.InspParam);
-            if (leftFpcResult == null) 
+            VisionProPatternMatchingResult leftFpcMarkResult = Algorithm.RunPatternMatch(cogImage, referenceLeftFpcMarkParam.InspParam);
+            if (leftFpcMarkResult == null) 
                 return;
 
-            PointF referenceLeftFpcPoint = leftFpcResult.MaxMatchPos.ReferencePos;
-            PointF searchedLeftFpcPoint = leftFpcResult.MaxMatchPos.FoundPos;
+            PointF referenceLeftFpcPoint = leftFpcMarkResult.MaxMatchPos.ReferencePos;
+            PointF searchedLeftFpcPoint = leftFpcMarkResult.MaxMatchPos.FoundPos;
 
             // Right Fpc
-            MarkParam referenceRightFpcMarkparam = tabOriginData.MarkParamter.GetFPCMark(MarkDirection.Right, MarkName.Main, UseAlignMark);
-            VisionProPatternMatchingResult rightFpcResult = Algorithm.RunPatternMatch(cogImage, referenceRightFpcMarkparam.InspParam);
-            if (rightFpcResult == null)
+            MarkParam referenceRightFpcMarkParam = tabOriginData.MarkParamter.GetFPCMark(MarkDirection.Right, MarkName.Main, UseAlignMark);
+            VisionProPatternMatchingResult rightFpcMarkResult = Algorithm.RunPatternMatch(cogImage, referenceRightFpcMarkParam.InspParam);
+            if (rightFpcMarkResult == null)
                 return;
 
-            PointF referenceRightFpcPoint = rightFpcResult.MaxMatchPos.ReferencePos;
-            PointF searchedRightFpcPoint = rightFpcResult.MaxMatchPos.FoundPos;
+            PointF referenceRightFpcPoint = rightFpcMarkResult.MaxMatchPos.ReferencePos;
+            PointF searchedRightFpcPoint = rightFpcMarkResult.MaxMatchPos.FoundPos;
 
             // Left Panel
             MarkParam referenceLeftPanelMarkParam = tabOriginData.MarkParamter.GetPanelMark(MarkDirection.Left, MarkName.Main, UseAlignMark);
-            VisionProPatternMatchingResult leftReferencePanelMarkResult = Algorithm.RunPatternMatch(cogImage, referenceLeftPanelMarkParam.InspParam);
-            if (leftReferencePanelMarkResult == null)
+            VisionProPatternMatchingResult leftPanelMarkResult = Algorithm.RunPatternMatch(cogImage, referenceLeftPanelMarkParam.InspParam);
+            if (leftPanelMarkResult == null)
                 return;
 
-            PointF referenceLeftPanelPoint = leftReferencePanelMarkResult.MaxMatchPos.ReferencePos;
-            PointF searchedLeftPanelPoint = leftReferencePanelMarkResult.MaxMatchPos.FoundPos;
+            PointF referenceLeftPanelPoint = leftPanelMarkResult.MaxMatchPos.ReferencePos;
+            PointF searchedLeftPanelPoint = leftPanelMarkResult.MaxMatchPos.FoundPos;
 
             // 찾은 Right Panel 좌표
-            MarkParam ReferenceRightPanelMarkparam = tabOriginData.MarkParamter.GetPanelMark(MarkDirection.Right, MarkName.Main, UseAlignMark);
-            VisionProPatternMatchingResult rightReferencePanelMarkResult = Algorithm.RunPatternMatch(cogImage, ReferenceRightPanelMarkparam.InspParam);
-            if (rightReferencePanelMarkResult == null)
+            MarkParam referenceRightPanelMarkParam = tabOriginData.MarkParamter.GetPanelMark(MarkDirection.Right, MarkName.Main, UseAlignMark);
+            VisionProPatternMatchingResult rightPanelMarkResult = Algorithm.RunPatternMatch(cogImage, referenceRightPanelMarkParam.InspParam);
+            if (rightPanelMarkResult == null)
                 return;
 
-            PointF referenceRightPanelPoint = rightReferencePanelMarkResult.MaxMatchPos.ReferencePos;
-            PointF searchedRightPanelPoint = rightReferencePanelMarkResult.MaxMatchPos.FoundPos;
+            PointF referenceRightPanelPoint = rightPanelMarkResult.MaxMatchPos.ReferencePos;
+            PointF searchedRightPanelPoint = rightPanelMarkResult.MaxMatchPos.FoundPos;
 
             // Set Coordinage Params
             CoordinateTransform fpcCoordinate = new CoordinateTransform();
@@ -735,14 +735,7 @@ namespace Jastech.Framework.Winform.Forms
             panelCoordinate.SetTargetData(searchedLeftPanelPoint, searchedRightPanelPoint);
             panelCoordinate.ExecuteCoordinate();
 
-            //var tt = referenceLeftFpcMarkParam.DeepCopy();
 
-            //CogTransform2DLinear newOrigin = new CogTransform2DLinear();
-            //newOrigin.TranslationX = leftFpcResult.MaxMatchPos.FoundPos.X;
-            //newOrigin.TranslationY = leftFpcResult.MaxMatchPos.FoundPos.Y;
-            //tt.InspParam.SetOrigin(newOrigin);
-
-            //CogRectangle newRect = new CogRectangle();
 
             // TEST_230810_S
             //TeachingData.Instance().GetUnit(UnitName.ToString()).SetTab(tabOriginData);
@@ -770,6 +763,42 @@ namespace Jastech.Framework.Winform.Forms
             else { }
 
             SetCoordinateTab(tabOriginData);
+
+
+
+
+
+
+
+            //var newLeftFpcMark = SetCoordinateMark(referenceLeftFpcMarkParam, leftFpcMarkResult);
+            //var newRightFpcMark = SetCoordinateMark(referenceRightFpcMarkParam, rightFpcMarkResult);
+            //var newLeftPanelMark = SetCoordinateMark(referenceLeftPanelMarkParam, leftPanelMarkResult);
+            //var newRightPanelMark = SetCoordinateMark(referenceRightPanelMarkParam, rightPanelMarkResult);
+
+
+            //var mainFpcLeftMark = tabOriginData.MarkParamter.MainFpcMarkParamList.Where(x => x.Name == MarkName.Main && x.Direction == MarkDirection.Left).FirstOrDefault();
+            //mainFpcLeftMark = newLeftFpcMark.DeepCopy();
+            //mainFpcLeftMark.InspParam.SetInputImage(cogImage);
+            //mainFpcLeftMark.InspParam.Train(cogImage);
+
+            //var mainFpcRightMark = tabOriginData.MarkParamter.MainFpcMarkParamList.Where(x => x.Name == MarkName.Main && x.Direction == MarkDirection.Right).FirstOrDefault();
+            //mainFpcRightMark = newLeftFpcMark.DeepCopy();
+            //mainFpcRightMark.InspParam.SetInputImage(cogImage);
+            //mainFpcRightMark.InspParam.Train(cogImage);
+
+            //var mainPanelLeftMark = tabOriginData.MarkParamter.MainPanelMarkParamList.Where(x => x.Name == MarkName.Main && x.Direction == MarkDirection.Left).FirstOrDefault();
+            //mainPanelLeftMark = newLeftFpcMark.DeepCopy();
+            //mainPanelLeftMark.InspParam.SetInputImage(cogImage);
+            //mainPanelLeftMark.InspParam.Train(cogImage);
+
+            //var mainPanelRightMark = tabOriginData.MarkParamter.MainPanelMarkParamList.Where(x => x.Name == MarkName.Main && x.Direction == MarkDirection.Right).FirstOrDefault();
+            //mainPanelRightMark = newLeftFpcMark.DeepCopy();
+            //mainPanelRightMark.InspParam.SetInputImage(cogImage);
+            //mainPanelRightMark.InspParam.Train(cogImage);
+
+
+
+
             // TEST_230810_E
 
             // TEST_230810_S
@@ -777,7 +806,7 @@ namespace Jastech.Framework.Winform.Forms
             // TEST_230810_E
         }
 
-        
+
 
         private void CoordinateAlign(Tab tab, CoordinateTransform fpcCoordinate, CoordinateTransform panelCoordinate)
         {
@@ -889,6 +918,26 @@ namespace Jastech.Framework.Winform.Forms
                 group.AkkonROIList.Clear();
                 group.AkkonROIList.AddRange(akkonList);
             }
+        }
+
+        private MarkParam SetCoordinateMark(MarkParam param, VisionProPatternMatchingResult result)
+        {
+            var newParam = param.DeepCopy();
+            
+            CogTransform2DLinear newOrigin = new CogTransform2DLinear();
+            newOrigin.TranslationX = result.MaxMatchPos.FoundPos.X;
+            newOrigin.TranslationY = result.MaxMatchPos.FoundPos.Y;
+            newParam.InspParam.SetOrigin(newOrigin);
+
+            CogRectangle newTrainRegion = new CogRectangle(newParam.InspParam.GetTrainRegion() as CogRectangle);
+            newTrainRegion.SetCenterWidthHeight(newOrigin.TranslationX, newOrigin.TranslationY, newTrainRegion.Width, newTrainRegion.Height);
+            newParam.InspParam.SetTrainRegion(newTrainRegion);
+
+            CogRectangle newSearchRegion = new CogRectangle(newParam.InspParam.GetSearchRegion() as CogRectangle);
+            newSearchRegion.SetCenterWidthHeight(newOrigin.TranslationX, newOrigin.TranslationY, newSearchRegion.Width, newSearchRegion.Height);
+            newParam.InspParam.SetSearchRegion(newSearchRegion);
+
+            return newParam;
         }
 
         private void lblStageCam_Click(object sender, EventArgs e)
