@@ -103,7 +103,7 @@ namespace ATT_UT_IPAD.Core.AppTask
                 // Excuete Coordinate
                 panelCoordinate.ExecuteCoordinate();
 
-                var lineCamera = LineCameraManager.Instance().GetLineCamera("LineCamera").Camera;
+                var lineCamera = LineCameraManager.Instance().GetLineCamera("AkkonCamera").Camera;
 
                 float resolution_um = lineCamera.PixelResolution_um / lineCamera.LensScale;
 
@@ -111,9 +111,12 @@ namespace ATT_UT_IPAD.Core.AppTask
                 {
                     var roiList = tab.AkkonParam.GetAkkonROIList();
                     var coordinateList = RenewalAkkonRoi(roiList, panelCoordinate);
-                    var leadResultList = AkkonAlgorithm.Run(inspTab.MergeMatImage, coordinateList, tab.AkkonParam.AkkonAlgoritmParam, resolution_um);
+
+                    Judgement tabJudgement = Judgement.NG;
+                    var leadResultList = AkkonAlgorithm.Run(inspTab.MergeMatImage, coordinateList, tab.AkkonParam.AkkonAlgoritmParam, resolution_um, ref tabJudgement);
 
                     inspResult.AkkonResult = CreateAkkonResult(unitName, tab.Index, leadResultList);
+                    inspResult.AkkonResult.Judgement = tabJudgement;
                     inspResult.AkkonInspMatImage = AkkonAlgorithm.ResizeMat;
                 }
                 else
