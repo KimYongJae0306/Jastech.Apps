@@ -430,7 +430,7 @@ namespace Jastech.Apps.Winform
                     double mPos = status.MPosPulse / lafCtrl.ResolutionAxisZ;
                     double calcMPos = mPos - lafCtrl.HomePosition_mm;
                     Console.WriteLine("mPos : " + mPos + "   calc : " + calcMPos);
-                    if (mPos >=0 && mPos < 0.02)
+                    if (mPos >=0 && mPos < lafCtrl.HomePosition_mm)
                     {
                         Logger.Write(LogType.Device, "Complete zero convergence.");
                         _homeSequenceStep = HomeSequenceStep.ZeroSet;
