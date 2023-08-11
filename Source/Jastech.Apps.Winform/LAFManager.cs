@@ -301,8 +301,8 @@ namespace Jastech.Apps.Winform
 
         public void StartHomeThread(string lafName)
         {
-            if (_homeThread != null)
-                return;
+            //if (_homeThread != null)
+            //    return;
 
             _isHomeThreadStop = false;
             _homeThread = new Thread(new ParameterizedThreadStart(HomeSequenceThread));
