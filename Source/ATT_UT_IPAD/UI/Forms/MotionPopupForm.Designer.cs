@@ -463,7 +463,7 @@
             // lblTrackingOnZ1
             // 
             this.lblTrackingOnZ1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
-            this.lblTrackingOnZ1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblTrackingOnZ1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.lblTrackingOnZ1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lblTrackingOnZ1.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
             this.lblTrackingOnZ1.ForeColor = System.Drawing.Color.White;
@@ -479,7 +479,7 @@
             // lblTrackingOffZ1
             // 
             this.lblTrackingOffZ1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
-            this.lblTrackingOffZ1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblTrackingOffZ1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.lblTrackingOffZ1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lblTrackingOffZ1.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
             this.lblTrackingOffZ1.ForeColor = System.Drawing.Color.White;
@@ -512,7 +512,7 @@
             // lblLaserOnZ1
             // 
             this.lblLaserOnZ1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
-            this.lblLaserOnZ1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblLaserOnZ1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.lblLaserOnZ1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lblLaserOnZ1.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
             this.lblLaserOnZ1.ForeColor = System.Drawing.Color.White;
@@ -528,7 +528,7 @@
             // lblLaserOffZ1
             // 
             this.lblLaserOffZ1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
-            this.lblLaserOffZ1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblLaserOffZ1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.lblLaserOffZ1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lblLaserOffZ1.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
             this.lblLaserOffZ1.ForeColor = System.Drawing.Color.White;
@@ -561,7 +561,7 @@
             // lblTrackingOnZ0
             // 
             this.lblTrackingOnZ0.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
-            this.lblTrackingOnZ0.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblTrackingOnZ0.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.lblTrackingOnZ0.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lblTrackingOnZ0.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
             this.lblTrackingOnZ0.ForeColor = System.Drawing.Color.White;
@@ -577,7 +577,7 @@
             // lblTrackingOffZ0
             // 
             this.lblTrackingOffZ0.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
-            this.lblTrackingOffZ0.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblTrackingOffZ0.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.lblTrackingOffZ0.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lblTrackingOffZ0.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
             this.lblTrackingOffZ0.ForeColor = System.Drawing.Color.White;
@@ -623,7 +623,7 @@
             // lblLaserOnZ0
             // 
             this.lblLaserOnZ0.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
-            this.lblLaserOnZ0.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblLaserOnZ0.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.lblLaserOnZ0.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lblLaserOnZ0.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
             this.lblLaserOnZ0.ForeColor = System.Drawing.Color.White;
@@ -639,7 +639,7 @@
             // lblLaserOffZ0
             // 
             this.lblLaserOffZ0.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
-            this.lblLaserOffZ0.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblLaserOffZ0.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.lblLaserOffZ0.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lblLaserOffZ0.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
             this.lblLaserOffZ0.ForeColor = System.Drawing.Color.White;
@@ -813,7 +813,7 @@
             // lblCurrentToTargetZ0
             // 
             this.lblCurrentToTargetZ0.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
-            this.lblCurrentToTargetZ0.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblCurrentToTargetZ0.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.lblCurrentToTargetZ0.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lblCurrentToTargetZ0.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
             this.lblCurrentToTargetZ0.ForeColor = System.Drawing.Color.White;
@@ -875,8 +875,9 @@
             // lblMoveToTargetZ0
             // 
             this.lblMoveToTargetZ0.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
-            this.lblMoveToTargetZ0.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblMoveToTargetZ0.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.lblMoveToTargetZ0.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblMoveToTargetZ0.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.lblMoveToTargetZ0.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
             this.lblMoveToTargetZ0.ForeColor = System.Drawing.Color.White;
             this.lblMoveToTargetZ0.Location = new System.Drawing.Point(77, 134);
@@ -891,7 +892,7 @@
             // lblCurrentToTargCetenterOfGravityZ0
             // 
             this.lblCurrentToTargCetenterOfGravityZ0.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
-            this.lblCurrentToTargCetenterOfGravityZ0.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblCurrentToTargCetenterOfGravityZ0.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.lblCurrentToTargCetenterOfGravityZ0.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lblCurrentToTargCetenterOfGravityZ0.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
             this.lblCurrentToTargCetenterOfGravityZ0.ForeColor = System.Drawing.Color.White;
@@ -920,8 +921,10 @@
             // 
             // lblOriginZ0
             // 
-            this.lblOriginZ0.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblOriginZ0.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
+            this.lblOriginZ0.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.lblOriginZ0.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblOriginZ0.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.lblOriginZ0.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
             this.lblOriginZ0.ForeColor = System.Drawing.Color.White;
             this.lblOriginZ0.Location = new System.Drawing.Point(77, 153);
@@ -982,7 +985,7 @@
             // lblCurrentToTargetZ1
             // 
             this.lblCurrentToTargetZ1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
-            this.lblCurrentToTargetZ1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblCurrentToTargetZ1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.lblCurrentToTargetZ1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lblCurrentToTargetZ1.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
             this.lblCurrentToTargetZ1.ForeColor = System.Drawing.Color.White;
@@ -1029,7 +1032,7 @@
             // lblCurrentToTargCetenterOfGravityZ1
             // 
             this.lblCurrentToTargCetenterOfGravityZ1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
-            this.lblCurrentToTargCetenterOfGravityZ1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblCurrentToTargCetenterOfGravityZ1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.lblCurrentToTargCetenterOfGravityZ1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lblCurrentToTargCetenterOfGravityZ1.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
             this.lblCurrentToTargCetenterOfGravityZ1.ForeColor = System.Drawing.Color.White;
@@ -1045,8 +1048,9 @@
             // lblMoveToTargetZ1
             // 
             this.lblMoveToTargetZ1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
-            this.lblMoveToTargetZ1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblMoveToTargetZ1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.lblMoveToTargetZ1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblMoveToTargetZ1.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.lblMoveToTargetZ1.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
             this.lblMoveToTargetZ1.ForeColor = System.Drawing.Color.White;
             this.lblMoveToTargetZ1.Location = new System.Drawing.Point(134, 134);
@@ -1060,8 +1064,10 @@
             // 
             // lblOriginZ1
             // 
-            this.lblOriginZ1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblOriginZ1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
+            this.lblOriginZ1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.lblOriginZ1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblOriginZ1.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.lblOriginZ1.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
             this.lblOriginZ1.ForeColor = System.Drawing.Color.White;
             this.lblOriginZ1.Location = new System.Drawing.Point(134, 153);
@@ -1210,7 +1216,7 @@
             // lblServoOnX
             // 
             this.lblServoOnX.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
-            this.lblServoOnX.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblServoOnX.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.lblServoOnX.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lblServoOnX.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
             this.lblServoOnX.ForeColor = System.Drawing.Color.White;
@@ -1226,7 +1232,7 @@
             // lblServoOffX
             // 
             this.lblServoOffX.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
-            this.lblServoOffX.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblServoOffX.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.lblServoOffX.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lblServoOffX.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
             this.lblServoOffX.ForeColor = System.Drawing.Color.White;
@@ -1359,8 +1365,9 @@
             // lblMoveToTargetX
             // 
             this.lblMoveToTargetX.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
-            this.lblMoveToTargetX.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblMoveToTargetX.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.lblMoveToTargetX.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblMoveToTargetX.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.lblMoveToTargetX.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
             this.lblMoveToTargetX.ForeColor = System.Drawing.Color.White;
             this.lblMoveToTargetX.Location = new System.Drawing.Point(77, 96);
@@ -1375,7 +1382,7 @@
             // lblCurrentToTargetX
             // 
             this.lblCurrentToTargetX.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
-            this.lblCurrentToTargetX.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblCurrentToTargetX.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.lblCurrentToTargetX.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lblCurrentToTargetX.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
             this.lblCurrentToTargetX.ForeColor = System.Drawing.Color.White;
@@ -1477,8 +1484,10 @@
             // 
             // lblOriginX
             // 
-            this.lblOriginX.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblOriginX.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
+            this.lblOriginX.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.lblOriginX.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblOriginX.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.lblOriginX.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
             this.lblOriginX.ForeColor = System.Drawing.Color.White;
             this.lblOriginX.Location = new System.Drawing.Point(77, 115);
@@ -1645,7 +1654,7 @@
             // lblPitchZValue
             // 
             this.lblPitchZValue.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
-            this.lblPitchZValue.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblPitchZValue.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.lblPitchZValue.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lblPitchZValue.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
             this.lblPitchZValue.ForeColor = System.Drawing.Color.White;
@@ -1691,7 +1700,7 @@
             // lblPitchXYValue
             // 
             this.lblPitchXYValue.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
-            this.lblPitchXYValue.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblPitchXYValue.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.lblPitchXYValue.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lblPitchXYValue.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
             this.lblPitchXYValue.ForeColor = System.Drawing.Color.White;
@@ -1724,6 +1733,7 @@
             this.rdoIncreaseMode.Appearance = System.Windows.Forms.Appearance.Button;
             this.rdoIncreaseMode.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
             this.rdoIncreaseMode.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.rdoIncreaseMode.FlatAppearance.BorderColor = System.Drawing.Color.White;
             this.rdoIncreaseMode.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.rdoIncreaseMode.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
             this.rdoIncreaseMode.ForeColor = System.Drawing.Color.White;
@@ -1743,6 +1753,7 @@
             this.rdoJogMode.Appearance = System.Windows.Forms.Appearance.Button;
             this.rdoJogMode.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
             this.rdoJogMode.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.rdoJogMode.FlatAppearance.BorderColor = System.Drawing.Color.White;
             this.rdoJogMode.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.rdoJogMode.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
             this.rdoJogMode.ForeColor = System.Drawing.Color.White;
@@ -1777,6 +1788,7 @@
             this.rdoJogFastMode.Appearance = System.Windows.Forms.Appearance.Button;
             this.rdoJogFastMode.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
             this.rdoJogFastMode.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.rdoJogFastMode.FlatAppearance.BorderColor = System.Drawing.Color.White;
             this.rdoJogFastMode.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.rdoJogFastMode.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
             this.rdoJogFastMode.ForeColor = System.Drawing.Color.White;
@@ -1796,6 +1808,7 @@
             this.rdoJogSlowMode.Appearance = System.Windows.Forms.Appearance.Button;
             this.rdoJogSlowMode.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
             this.rdoJogSlowMode.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.rdoJogSlowMode.FlatAppearance.BorderColor = System.Drawing.Color.White;
             this.rdoJogSlowMode.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.rdoJogSlowMode.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
             this.rdoJogSlowMode.ForeColor = System.Drawing.Color.White;

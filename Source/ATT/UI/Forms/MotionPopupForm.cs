@@ -23,21 +23,9 @@ namespace ATT.UI.Forms
     public partial class MotionPopupForm : Form
     {
         #region 필드
-        private System.Threading.Timer _formTimer = null;
-
         private Color _selectedColor;
 
         private Color _nonSelectedColor;
-
-        protected override CreateParams CreateParams
-        {
-            get
-            {
-                var cp = base.CreateParams;
-                cp.ExStyle |= 0x02000000;
-                return cp;
-            }
-        }
         #endregion
 
         #region 속성
@@ -53,6 +41,8 @@ namespace ATT.UI.Forms
 
         private MotionJogXYControl MotionJogXYControl { get; set; } = null;
 
+        private MotionJogXControl MotionJogXControl { get; set; } = null;
+
         private LAFJogControl LAFJogControl { get; set; } = null;
 
         private MotionParameterVariableControl XVariableControl = null;
@@ -64,6 +54,16 @@ namespace ATT.UI.Forms
         public TeachingPosType TeachingPositionType = TeachingPosType.Standby;
 
         public UnitName UnitName { get; set; } = UnitName.Unit0;
+
+        protected override CreateParams CreateParams
+        {
+            get
+            {
+                var cp = base.CreateParams;
+                cp.ExStyle |= 0x02000000;
+                return cp;
+            }
+        }
         #endregion
 
         #region 이벤트
@@ -87,9 +87,10 @@ namespace ATT.UI.Forms
         {
             AddControl();
             UpdateData();
-            StartTimer();
             InitializeUI();
             SetDefaultValue();
+
+            StatusTimer.Start();
         }
 
         private void SetDefaultValue()
@@ -159,7 +160,7 @@ namespace ATT.UI.Forms
 
         private void UpdateParam(TeachingPosType teachingPositionType = TeachingPosType.Standby)
         {
-            var param = TeachingPositionList.Where(x => x.Name == teachingPositionType.ToString()).FirstOrDefault();
+            var param = TeachingPositionList.Where(x => x.Name == teachingPositionType.ToString()).First();
             if (param == null)
                 return;
 
@@ -211,27 +212,6 @@ namespace ATT.UI.Forms
             pnlLAFJog.Controls.Add(LAFJogControl);
             LAFJogControl.SetSelectedLafCtrl(LafCtrl);
         }
-
-        private void StartTimer()
-        {
-            _formTimer = new System.Threading.Timer(UpdateStatus, null, 100, 100);
-        }
-
-        private delegate void UpdateStatusDelegate(object obj);
-        private void UpdateStatus(object obj)
-        {
-            if (this.InvokeRequired)
-            {
-                UpdateStatusDelegate callback = UpdateStatus;
-                BeginInvoke(callback, obj);
-                return;
-            }
-
-            UpdateStatusMotionX();
-            UpdateStatusMotionY();
-            UpdateStatusAutoFocusZ();
-        }
-
         private void UpdateStatusMotionX()
         {
             var axis = AxisHandler.GetAxis(AxisName.X);
@@ -655,19 +635,33 @@ namespace ATT.UI.Forms
 
         private void MotionPopupForm_FormClosing(object sender, FormClosingEventArgs e)
         {
-            _formTimer.Change(System.Threading.Timeout.Infinite, System.Threading.Timeout.Infinite);
-
-            if (_formTimer != null)
-            {
-                _formTimer.Dispose();
-                _formTimer = null;
-            }
+            StatusTimer.Stop();
         }
 
         private void MotionPopupForm_FormClosed(object sender, FormClosedEventArgs e)
         {
             if (CloseEventDelegate != null)
                 CloseEventDelegate();
+        }
+
+        private void StatusTimer_Tick(object sender, EventArgs e)
+        {
+            UpdateStatus();
+        }
+
+        private delegate void UpdateStatusDelegate();
+        private void UpdateStatus()
+        {
+            if (this.InvokeRequired)
+            {
+                UpdateStatusDelegate callback = UpdateStatus;
+                BeginInvoke(callback);
+                return;
+            }
+
+            UpdateStatusMotionX();
+            UpdateStatusMotionY();
+            UpdateStatusAutoFocusZ();
         }
         #endregion
     }

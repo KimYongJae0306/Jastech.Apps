@@ -13,12 +13,12 @@ namespace ATT.UI.Pages
     public partial class TeachingPage : UserControl
     {
         #region 필드
+        #endregion
 
         #region 속성
         private ATTInspModelService ATTInspModelService { get; set; } = null;
 
         private MotionPopupForm MotionPopupForm { get; set; } = null;
-        #endregion
         #endregion
 
         #region 이벤트
@@ -35,34 +35,59 @@ namespace ATT.UI.Pages
         #endregion
 
         #region 메서드
-        private void btnModelPage_Click(object sender, EventArgs e)
+        private void btnAlignCameraSetting_Click(object sender, EventArgs e)
+        {
+            OpticTeachingForm form = new OpticTeachingForm();
+            form.LineCamera = LineCameraManager.Instance().GetLineCamera("AlignCamera");
+            form.LAFCtrl = LAFManager.Instance().GetLAFCtrl("AlignLaf");
+            form.UnitName = UnitName.Unit0;
+            form.AxisNameZ = Jastech.Framework.Device.Motions.AxisName.Z1;
+            form.AxisHandler = MotionManager.Instance().GetAxisHandler(AxisHandlerName.Handler0);
+            form.InspModelService = ATTInspModelService;
+            form.OpenMotionPopupEventHandler += OpenMotionPopupEventHandler;
+            form.CloseMotionPopupEventHandler += CloseMotionPopupEventHandler;
+            form.ShowDialog();
+        }
+
+        private void CloseMotionPopupEventHandler(UnitName unitName)
+        {
+            MotionPopupForm?.Close();
+        }
+
+        private void btnAkkonCameraSetting_Click(object sender, EventArgs e)
+        {
+            OpticTeachingForm form = new OpticTeachingForm();
+            form.LineCamera = LineCameraManager.Instance().GetLineCamera("AkkonCamera");
+            form.LAFCtrl = LAFManager.Instance().GetLAFCtrl("AkkonLaf");
+            form.UnitName = UnitName.Unit0;
+            form.AxisNameZ = Jastech.Framework.Device.Motions.AxisName.Z0;
+            form.AxisHandler = MotionManager.Instance().GetAxisHandler(AxisHandlerName.Handler0);
+            form.InspModelService = ATTInspModelService;
+            form.OpenMotionPopupEventHandler += OpenMotionPopupEventHandler;
+            form.CloseMotionPopupEventHandler += CloseMotionPopupEventHandler;
+            form.ShowDialog();
+        }
+
+        private void btnAlignInspectionPage_Click(object sender, EventArgs e)
         {
             InspectionTeachingForm form = new InspectionTeachingForm();
             form.UnitName = UnitName.Unit0;
-            form.LineCamera = LineCameraManager.Instance().GetLineCamera("Camera0");
-            form.LAFCtrl = LAFManager.Instance().GetLAFCtrl("Laf");
+            form.LineCamera = LineCameraManager.Instance().GetLineCamera("AlignCamera");
+            form.UseDelayStart = true;
+            form.LAFCtrl = LAFManager.Instance().GetLAFCtrl("AlignLaf");
+            form.UseAlignMark = true;
             form.InspModelService = ATTInspModelService;
             form.OpenMotionPopupEventHandler += OpenMotionPopupEventHandler;
             form.ShowDialog();
         }
 
-        private void btnLinescanSetting_Click(object sender, EventArgs e)
+        private void btnAkkonInspectionPage_Click(object sender, EventArgs e)
         {
-            OpticTeachingForm form = new OpticTeachingForm();
-
-            if(ConfigSet.Instance().Operation.VirtualMode)
-            {
-                form.LineCamera = LineCameraManager.Instance().GetLineCamera("Camera0");
-                form.LAFCtrl = LAFManager.Instance().GetLAFCtrl("Laf");
-            }
-            else
-            {
-                form.LineCamera = LineCameraManager.Instance().GetLineCamera("Camera0");
-                form.LAFCtrl = LAFManager.Instance().GetLAFCtrl("Laf");
-            }
+            InspectionTeachingForm form = new InspectionTeachingForm();
             form.UnitName = UnitName.Unit0;
-            form.AxisNameZ = Jastech.Framework.Device.Motions.AxisName.Z0;
-            form.AxisHandler = MotionManager.Instance().GetAxisHandler(AxisHandlerName.Handler0);
+            form.LineCamera = LineCameraManager.Instance().GetLineCamera("AkkonCamera");
+            form.LAFCtrl = LAFManager.Instance().GetLAFCtrl("AkkonLaf");
+            form.UseAlignMark = false;
             form.InspModelService = ATTInspModelService;
             form.OpenMotionPopupEventHandler += OpenMotionPopupEventHandler;
             form.ShowDialog();
@@ -75,7 +100,7 @@ namespace ATT.UI.Pages
                 MotionPopupForm = new MotionPopupForm();
                 MotionPopupForm.UnitName = unitName;
                 MotionPopupForm.AxisHandler = MotionManager.Instance().GetAxisHandler(AxisHandlerName.Handler0);
-                MotionPopupForm.LafCtrl = LAFManager.Instance().GetLAFCtrl("Laf");
+                MotionPopupForm.LafCtrl = LAFManager.Instance().GetLAFCtrl("AkkonLaf");
                 MotionPopupForm.InspModelService = ATTInspModelService;
                 MotionPopupForm.CloseEventDelegate = () => MotionPopupForm = null;
                 MotionPopupForm.Show();

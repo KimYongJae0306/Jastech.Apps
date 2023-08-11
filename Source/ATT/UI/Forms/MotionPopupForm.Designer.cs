@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.tlpMotionPopup = new System.Windows.Forms.TableLayoutPanel();
             this.tlpFormFunction = new System.Windows.Forms.TableLayoutPanel();
             this.btnMoveTeachingPosition = new System.Windows.Forms.Button();
@@ -128,6 +129,7 @@
             this.rdoJogSlowMode = new System.Windows.Forms.RadioButton();
             this.lblJog = new System.Windows.Forms.Label();
             this.pnlTeachingPositionList = new System.Windows.Forms.Panel();
+            this.StatusTimer = new System.Windows.Forms.Timer(this.components);
             this.tlpMotionPopup.SuspendLayout();
             this.tlpFormFunction.SuspendLayout();
             this.pnlFunction.SuspendLayout();
@@ -1745,6 +1747,10 @@
             this.pnlTeachingPositionList.Size = new System.Drawing.Size(684, 100);
             this.pnlTeachingPositionList.TabIndex = 3;
             // 
+            // StatusTimer
+            // 
+            this.StatusTimer.Tick += new System.EventHandler(this.StatusTimer_Tick);
+            // 
             // MotionPopupForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(11F, 25F);
@@ -1891,5 +1897,6 @@
         private System.Windows.Forms.TableLayoutPanel tlpTrackingOnOffZ;
         private System.Windows.Forms.Label lblTrackingOnZ;
         private System.Windows.Forms.Label lblTrackingOffZ;
+        private System.Windows.Forms.Timer StatusTimer;
     }
 }

@@ -28,19 +28,13 @@ namespace ATT.UI.Forms
         private Color _selectedColor;
 
         private Color _nonSelectedColor;
-
-        protected override CreateParams CreateParams
-        {
-            get
-            {
-                var cp = base.CreateParams;
-                cp.ExStyle |= 0x02000000;
-                return cp;
-            }
-        }
         #endregion
 
         #region 속성
+        public InspModelService InspModelService { get; set; } = null;
+
+        public UnitName UnitName { get; set; } = UnitName.Unit0;
+
         private TeachingPositionListControl TeachingPositionListControl { get; set; } = null;
 
         private List<TeachingInfo> TeachingPositionList { get; set; } = null;
@@ -65,18 +59,25 @@ namespace ATT.UI.Forms
 
         private MotionParameterVariableControl ZVariableControl = null;
 
-        public InspModelService InspModelService { get; set; } = null;
-
-        public UnitName UnitName { get; set; } = UnitName.Unit0;
-
         public TeachingPosType TeachingPositionType = TeachingPosType.Standby;
+
+        protected override CreateParams CreateParams
+        {
+            get
+            {
+                var cp = base.CreateParams;
+                cp.ExStyle |= 0x02000000;
+                return cp;
+            }
+        }
         #endregion
 
         #region 이벤트
+        public Action CloseEventDelegate;
         #endregion
 
         #region 델리게이트
-        public Action CloseEventDelegate;
+        private delegate void UpdateStatusDelegate(object obj);
         #endregion
 
         #region 생성자
@@ -159,7 +160,7 @@ namespace ATT.UI.Forms
 
         private void UpdateVariableParam(TeachingPosType teachingPositionType = TeachingPosType.Standby)
         {
-            var param = TeachingPositionList.Where(x => x.Name == teachingPositionType.ToString()).FirstOrDefault();
+            var param = TeachingPositionList.Where(x => x.Name == teachingPositionType.ToString()).First();
             if (param == null)
                 return;
 
@@ -241,8 +242,7 @@ namespace ATT.UI.Forms
         {
             _formTimer = new System.Threading.Timer(UpdateStatus, null, 100, 100);
         }
-
-        private delegate void UpdateStatusDelegate(object obj);
+    
         private void UpdateStatus(object obj)
         {
             if (this.InvokeRequired)
@@ -279,7 +279,7 @@ namespace ATT.UI.Forms
             else
             {
                 lblSensorX.BackColor = _nonSelectedColor;
-                lblSensorX.Text = "";
+                lblSensorX.Text = "Done";
             }
 
             lblAxisStatusX.Text = axis.GetCurrentMotionStatus().ToString();

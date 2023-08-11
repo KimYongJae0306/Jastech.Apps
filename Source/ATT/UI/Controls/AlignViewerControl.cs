@@ -15,17 +15,15 @@ namespace ATT.UI.Controls
         #endregion
 
         #region 속성
-        public AlignResultDisplayControl AlignResultDisplayControl { get; set; } = new AlignResultDisplayControl() { Dock = DockStyle.Fill };
-
-        public AlignResultDataControl AlignResultDataControl { get; set; } = new AlignResultDataControl() { Dock = DockStyle.Fill };
-
-        public ResultChartControl AlignResultChartControl { get; set; } = new ResultChartControl() { Dock = DockStyle.Fill };
+        public AlignResultDisplayControl AlignResultDisplayControl { get; set; } = null;
         #endregion
 
         #region 이벤트
+        public event SetTabDelegate SetTabEventHandler;
         #endregion
 
         #region 델리게이트
+        public delegate void SetTabDelegate(int tabNo);
         #endregion
 
         #region 생성자
@@ -43,12 +41,8 @@ namespace ATT.UI.Controls
 
         private void AddControls()
         {
-            AlignResultChartControl.SetInspChartType(InspChartType.Align);
-            pnlResultChart.Controls.Add(AlignResultChartControl);
-
-            AlignResultDataControl.UpdateAlignDaily();
-            pnlResultData.Controls.Add(AlignResultDataControl);
-
+            AlignResultDisplayControl = new AlignResultDisplayControl();
+            AlignResultDisplayControl.Dock = DockStyle.Fill;
             AlignResultDisplayControl.SendTabNumberEvent += UpdateResultChart;
             AlignResultDisplayControl.GetTabInspResultEvent += GetTabInspResult;
             pnlResultDisplay.Controls.Add(AlignResultDisplayControl);
@@ -56,8 +50,7 @@ namespace ATT.UI.Controls
 
         private TabInspResult GetTabInspResult(int tabNo)
         {
-            return null;
-            //return AppsInspResult.Instance().Get(tabNo);
+            return AppsInspResult.Instance().GetAlign(tabNo);
         }
 
         public void UpdateTabCount(int tabCount)
@@ -65,26 +58,24 @@ namespace ATT.UI.Controls
             AlignResultDisplayControl.UpdateTabCount(tabCount);
         }
 
-        public void UpdateMainResult(AppsInspResult result)
+        public void UpdateMainResult(int tabNo)
         {
-            UpdateResultDisplay(result);
-            UpdateResultData();
-            UpdateResultChart(0);
+            AlignResultDisplayControl.UpdateResultDisplay(tabNo);
         }
 
-        private void UpdateResultDisplay(AppsInspResult result)
+        public void UpdateResultTabButton(int tabNo)
         {
-            AlignResultDisplayControl.UpdateResultDisplay(0);
+            AlignResultDisplayControl.UpdateResultTabButton(tabNo);
         }
 
-        private void UpdateResultData()
+        public void TabButtonResetColor()
         {
-            AlignResultDataControl.UpdateAlignDaily();
+            AlignResultDisplayControl.TabButtonResetColor();
         }
 
-        private void UpdateResultChart(int tabNumber)
+        private void UpdateResultChart(int tabNo)
         {
-            AlignResultChartControl.UpdateAlignDaily(tabNumber);
+            SetTabEventHandler?.Invoke(tabNo);
         }
         #endregion
     }
