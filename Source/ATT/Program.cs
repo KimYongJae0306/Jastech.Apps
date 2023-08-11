@@ -69,7 +69,11 @@ namespace ATT
         {
             if (ConfigSet.Instance().Operation.VirtualMode)
             {
-                var camera0 = new CameraVirtual("Camera0", 4640, 1024, ColorFormat.Gray, SensorType.Line);
+                // Initialize Config by Program Types
+                AppsConfig.Instance().ProgramType = ProgramType.ProgramType_1.ToString();
+                AppsConfig.Instance().MachineName = "Test Equipment #7";
+
+                var camera0 = new CameraVirtual("AkkonCamera", 4640, 1024, ColorFormat.Gray, SensorType.Line);
                 config.Add(camera0);
 
                 var motion = new VirtualMotion("VirtualMotion", 3);
@@ -84,12 +88,16 @@ namespace ATT
                 light2.ChannelNameMap["Ch.RedRing"] = 0;
                 config.Add(light2);
 
-                var laf = new VirtualLAFCtrl("Laf");
+                var laf = new VirtualLAFCtrl("AkkonLaf");
                 config.Add(laf);
             }
             else
             {
-                var camera1 = new CameraMil("Camera0", 4640, 1024, ColorFormat.Gray, SensorType.Line);
+                // Initialize Config by Program Types
+                AppsConfig.Instance().ProgramType = ProgramType.ProgramType_1.ToString();
+                AppsConfig.Instance().MachineName = "Test Equipment #7";
+
+                var camera1 = new CameraMil("AkkonCamera", 4640, 1024, ColorFormat.Gray, SensorType.Line);
                 camera1.MilSystemType = MilSystemType.Rapixo;
                 camera1.TriggerMode = TriggerMode.Hardware;
                 camera1.TriggerSource = (int)MilCxpTriggerSource.Cxp;
@@ -113,7 +121,7 @@ namespace ATT
                 light2.ChannelNameMap["Ch.RedRing"] = 0;
                 config.Add(light2);
 
-                var laf1 = new NuriOneLAFCtrl("Laf");
+                var laf1 = new NuriOneLAFCtrl("AkkonLaf");
                 laf1.SerialPortComm = new SerialPortComm("COM4", 9600);
                 config.Add(laf1);
 

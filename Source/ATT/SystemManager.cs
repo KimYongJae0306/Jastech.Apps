@@ -5,6 +5,7 @@ using Jastech.Apps.Structure.Data;
 using Jastech.Apps.Winform;
 using Jastech.Apps.Winform.Core;
 using Jastech.Apps.Winform.Service;
+using Jastech.Apps.Winform.Settings;
 using Jastech.Framework.Config;
 using Jastech.Framework.Device.Cameras;
 using Jastech.Framework.Device.LAFCtrl;
@@ -20,6 +21,9 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.ExceptionServices;
+using System.Security;
+using System.Security.Permissions;
 using System.Windows.Forms;
 
 namespace ATT
@@ -42,9 +46,7 @@ namespace ATT
         public static SystemManager Instance()
         {
             if (_instance == null)
-            {
                 _instance = new SystemManager();
-            }
 
             return _instance;
         }
@@ -52,7 +54,7 @@ namespace ATT
         public bool Initialize(MainForm mainForm)
         {
             _mainForm = mainForm;
-            
+
             Logger.Write(LogType.System, "Init SplashForm");
 
             SplashForm form = new SplashForm();
@@ -75,29 +77,46 @@ namespace ATT
 
             int percent = 0;
             DoReportProgress(reportProgress, percent, "Initialize Device");
+
             DeviceManager.Instance().Initialized += SystemManager_Initialized;
             DeviceManager.Instance().Initialize(ConfigSet.Instance());
 
+            percent = 50;
+            DoReportProgress(reportProgress, percent, "Create Axis Info");
+
             CreateAxisHandler();
 
+            percent = 80;
+            DoReportProgress(reportProgress, percent, "Initialize Manager.");
             LAFManager.Instance().Initialize();
             LineCameraManager.Instance().Initialize();
-
-            percent += 30;
+            //AreaCameraManager.Instance().Initialize();
 
             if (ConfigSet.Instance().Operation.LastModelName != "")
             {
+                percent = 90;
+                DoReportProgress(reportProgress, percent, "Open Last Model.");
+
                 string filePath = Path.Combine(ConfigSet.Instance().Path.Model,
                                     ConfigSet.Instance().Operation.LastModelName,
                                     InspModel.FileName);
-                if(File.Exists(filePath))
+                if (File.Exists(filePath))
                 {
                     DoReportProgress(reportProgress, percent, "Model Loading");
-                    ModelManager.Instance().CurrentModel =  _mainForm.ATTInspModelService.Load(filePath);
+                    ModelManager.Instance().CurrentModel = _mainForm.ATTInspModelService.Load(filePath);
                 }
             }
 
+            percent = 100;
+            DoReportProgress(reportProgress, percent, "Initialize Completed.");
             return true;
+        }
+
+        private void DoReportProgress(IReportProgress reportProgress, int percentage, string message)
+        {
+            Logger.Write(LogType.System, message);
+
+            reportProgress?.ReportProgress(percentage, message);
         }
 
         private void SystemManager_Initialized(Type deviceType, bool success)
@@ -135,29 +154,123 @@ namespace ATT
             }
         }
 
-        private void DoReportProgress(IReportProgress reportProgress, int percentage, string message)
+        public bool CreateAxisHandler()
         {
-            Logger.Write(LogType.System, message);
+            var motion = DeviceManager.Instance().MotionHandler.First();
+            if (motion == null)
+                return false;
 
-            reportProgress?.ReportProgress(percentage, message);
+            string dir = Path.Combine(ConfigSet.Instance().Path.Config, "AxisHanlder");
+
+            if (Directory.Exists(dir) == false)
+                Directory.CreateDirectory(dir);
+
+            string unit0FileName = string.Format("AxisHanlder_{0}.json", AxisHandlerName.Handler0);
+            string unit0FilePath = Path.Combine(dir, unit0FileName);
+            if (File.Exists(unit0FilePath) == false)
+            {
+                AxisHandler handler = new AxisHandler();
+
+                if (Enum.TryParse(AppsConfig.Instance().ProgramType, true, out ProgramType type))
+                {
+                    switch (type)
+                    {
+                        case ProgramType.ProgramType_1:
+                            AddAxisHandlerType1(motion, out handler);
+                            break;
+                    }
+                }
+                else
+                    Console.WriteLine($"CreateAxisHandler: Failed to parse program type {AppsConfig.Instance().ProgramType}");
+
+                MotionManager.Instance().AxisHandlerList.Add(handler);
+                JsonConvertHelper.Save(unit0FilePath, handler);
+            }
+            else
+            {
+                AxisHandler unit0 = new AxisHandler();
+                JsonConvertHelper.LoadToExistingTarget<AxisHandler>(unit0FilePath, unit0);
+
+                foreach (var axis in unit0.GetAxisList())
+                {
+                    axis.SetMotion(motion);
+                }
+
+                MotionManager.Instance().AxisHandlerList.Add(unit0);
+            }
+            return true;
+        }
+
+        private void AddAxisHandlerType1(Motion motion, out AxisHandler handler)
+        {
+            handler = new AxisHandler(AxisHandlerName.Handler0.ToString());
+
+            handler.AddAxis(AxisName.X, motion, axisNo: 0, homeOrder: 2);
+			handler.AddAxis(AxisName.Y, motion, axisNo: 8, homeOrder: 1);
+            handler.AddAxis(AxisName.Z0, motion, axisNo: -1, homeOrder: 1);
+        }
+
+        public void UpdateAkkonResultTabButton(int tabNo)
+        {
+            _mainForm.UpdateAkkonResultTabButton(tabNo);
+        }
+
+        public void UpdateAlignResultTabButton(int tabNo)
+        {
+            _mainForm.UpdateAlignResultTabButton(tabNo);
+        }
+
+
+        //public void UpdateMainResult()
+        //{
+        //    var inspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
+
+        //    for (int tabNo = 0; tabNo < inspModel.TabCount; tabNo++)
+        //    {
+        //        _mainForm.UpdateMainAkkonResult(tabNo);
+        //        _mainForm.UpdateMainAlignResult(tabNo);
+        //    }
+        //}
+
+        public void UpdateMainAkkonResult()
+        {
+            // 탭별로 안들어올 수도 있을텐데....
+            var inspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
+
+            for (int tabNo = 0; tabNo < inspModel.TabCount; tabNo++)
+                _mainForm.UpdateMainAkkonResult(tabNo);
+        }
+
+        public void UpdateMainAlignResult()
+        {
+            // 탭별로 안들어올 수도 있을텐데....
+            var inspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
+
+            for (int tabNo = 0; tabNo < inspModel.TabCount; tabNo++)
+                _mainForm.UpdateMainAlignResult(tabNo);
+        }
+
+        public void TabButtonResetColor()
+        {
+            _mainForm.TabButtonResetColor();
+        }
+
+        public void AddSystemLogMessage(string logMessage)
+        {
+            _mainForm.AddSystemLogMessage(logMessage);
         }
 
         public void StartRun()
         {
-            if(ModelManager.Instance().CurrentModel == null)
-            {
-                MessageConfirmForm form = new MessageConfirmForm();
-                form.Message = "Current Model is null.";
-                return;
-            }
-
-            if(SystemManager.Instance().MachineStatus != MachineStatus.RUN)
+            if (MachineStatus != MachineStatus.RUN)
             {
                 MessageYesNoForm form = new MessageYesNoForm();
                 form.Message = "Do you want to Start Auto Mode?";
-                if(form.ShowDialog() == DialogResult.Yes)
+
+                if (form.ShowDialog() == DialogResult.Yes)
                 {
                     _inspRunner.SeqRun();
+                    AddSystemLogMessage("Start Auto mode.");
                 }
             }
         }
@@ -175,72 +288,34 @@ namespace ATT
             {
                 MessageYesNoForm form = new MessageYesNoForm();
                 form.Message = "Do you want to Stop Auto Mode?";
+
                 if (form.ShowDialog() == DialogResult.Yes)
                 {
                     _inspRunner.SeqStop();
+                    AddSystemLogMessage("Stop Auto Mode.");
                 }
             }
         }
 
-        public void UpdateMainResult(AppsInspResult result)
+        public void SetVirtualImage(int tabNo, string fileName)
         {
-            _mainForm.UpdateMainResult(result);
+            _inspRunner.SetVirtualmage(tabNo, fileName);
         }
 
-        //public void InitializeResult(int tabCount)
-        //{
-        //    _mainForm.InitializeResult(tabCount);
-        //}
-
-        public void InitalizeInspTab(List<TabScanBuffer> bufferList)
+        public void InitializeInspRunner()
         {
-            _inspRunner.InitalizeInspTab(bufferList);
+            _inspRunner.Initialize();
         }
 
-        public bool CreateAxisHandler()
+        public void ReleaseInspRunner()
         {
-            var motion = DeviceManager.Instance().MotionHandler.FirstOrDefault();
-            if (motion == null)
-                return false;
-
-            string dir = Path.Combine(ConfigSet.Instance().Path.Config, "AxisHanlder");
-
-            if (Directory.Exists(dir) == false)
-            {
-                Directory.CreateDirectory(dir);
-            }
-
-            string unit0FileName = string.Format("AxisHanlder_{0}.json", AxisHandlerName.Handler0);
-            string unit0FilePath = Path.Combine(dir, unit0FileName);
-            if (File.Exists(unit0FilePath) == false)
-            {
-                AxisHandler handler0 = new AxisHandler(AxisHandlerName.Handler0.ToString());
-
-                handler0.AddAxis(AxisName.X, motion, 0, 2);
-                handler0.AddAxis(AxisName.Y, motion, 8, 1);
-                handler0.AddAxis(AxisName.Z0, motion, 0, 2);
-
-                //AxisHandlerList.Add(handler0);
-                MotionManager.Instance().AxisHandlerList.Add(handler0);
-
-                JsonConvertHelper.Save(unit0FilePath, handler0);
-            }
-            else
-            {
-                AxisHandler unit0 = new AxisHandler();
-                JsonConvertHelper.LoadToExistingTarget<AxisHandler>(unit0FilePath, unit0);
-
-                foreach (var axis in unit0.GetAxisList())
-                {
-                    axis.SetMotion(motion);
-                }
-
-                //AxisHandlerList.Add(unit0);
-                MotionManager.Instance().AxisHandlerList.Add(unit0);
-            }
-
-            return true;
+            _inspRunner.Release();
         }
         #endregion
+    }
+
+    public enum ProgramType
+    {
+        ProgramType_1,  // ATT TEST#7호기
     }
 }

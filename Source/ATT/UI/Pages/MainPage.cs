@@ -1,8 +1,11 @@
 ﻿using ATT.Core.Data;
 using ATT.UI.Controls;
+using Jastech.Apps.Structure;
 using Jastech.Apps.Structure.Data;
 using Jastech.Apps.Winform;
 using Jastech.Apps.Winform.Core;
+using Jastech.Apps.Winform.UI.Controls;
+using Jastech.Framework.Winform.Forms;
 using System;
 using System.Drawing;
 using System.Windows.Forms;
@@ -12,16 +15,6 @@ namespace ATT.UI.Pages
     public partial class MainPage : UserControl
     {
         #region 필드
-        #endregion
-
-        #region 속성
-        //public AkkonInspDisplayControl AkkonInspControl { get; private set; } = new AkkonInspDisplayControl();
-
-        //public AlignInspDisplayControl AlignInspControl { get; private set; } = new AlignInspDisplayControl();
-
-        public AkkonViewerControl AkkonViewerControl { get; set; } = new AkkonViewerControl() { Dock = DockStyle.Fill };
-        public AlignViewerControl AlignViewerControl { get; set; } = new AlignViewerControl() { Dock = DockStyle.Fill };
-
         protected override CreateParams CreateParams
         {
             get
@@ -31,6 +24,16 @@ namespace ATT.UI.Pages
                 return cp;
             }
         }
+        #endregion
+
+        #region 속성
+        public AkkonViewerControl AkkonViewerControl { get; set; } = null;
+
+        public AlignViewerControl AlignViewerControl { get; set; } = null;
+
+        public DailyInfoViewerControl DailyInfoViewerControl { get; set; } = null;
+
+        public SystemLogControl SystemLogControl { get; set; } = null;
         #endregion
 
         #region 이벤트
@@ -54,42 +57,88 @@ namespace ATT.UI.Pages
 
         private void AddControls()
         {
-            //AkkonInspControl.Dock = DockStyle.Fill;
-            //pnlAkkon.Controls.Add(AkkonInspControl);
+            DailyInfoViewerControl = new DailyInfoViewerControl();
+            DailyInfoViewerControl.Dock = DockStyle.Fill;
+            pnlDailyInfo.Controls.Add(DailyInfoViewerControl);
 
-            //AlignInspControl.Dock = DockStyle.Fill;
-            //pnlAlign.Controls.Add(AlignInspControl);
-
+            AkkonViewerControl = new AkkonViewerControl();
+            AkkonViewerControl.Dock = DockStyle.Fill;
+            AkkonViewerControl.SetTabEventHandler += AkkonViewerControl_SetTabEventHandler;
             pnlAkkon.Controls.Add(AkkonViewerControl);
+
+            AlignViewerControl = new AlignViewerControl();
+            AlignViewerControl.Dock = DockStyle.Fill;
+            AlignViewerControl.SetTabEventHandler += AlignViewerControl_SetTabEventHandler;
             pnlAlign.Controls.Add(AlignViewerControl);
+
+            SystemLogControl = new SystemLogControl();
+            SystemLogControl.Dock = DockStyle.Fill;
+            pnlSystemLog.Controls.Add(SystemLogControl);
+        }
+
+        private void AkkonViewerControl_SetTabEventHandler(int tabNo)
+        {
+            DailyInfoViewerControl.UpdateAkkonResult(tabNo);
+        }
+
+        private void AlignViewerControl_SetTabEventHandler(int tabNo)
+        {
+            DailyInfoViewerControl.UpdateAlignResult(tabNo);
         }
 
         public void UpdateTabCount(int tabCount)
         {
-            //AkkonInspControl.UpdateTabCount(tabCount);
-            //AlignInspControl.UpdateTabCount(tabCount);
-
             AkkonViewerControl.UpdateTabCount(tabCount);
+            //DailyInfoViewerControl.ClearAkkonData();
+
             AlignViewerControl.UpdateTabCount(tabCount);
+            //DailyInfoViewerControl.ClearAlignData();
         }
 
-        public void UpdateMainResult(AppsInspResult result)
+        public void UpdateMainAkkonResult(int tabNo)
         {
-            //AkkonInspControl.UpdateMainResult(result);
-            //AlignInspControl.UpdateMainResult(result);
-
-            AkkonViewerControl.UpdateMainResult(result);
-            AlignViewerControl.UpdateMainResult(result);
+            AkkonViewerControl.UpdateMainResult(tabNo);
+            DailyInfoViewerControl.UpdateAkkonResult(tabNo);
         }
 
-        //public void InitializeResult(int tabCount)
-        //{
-        //    AlignInspControl.InitalizeResultData(tabCount);
-        //}
-        #endregion
+        public void UpdateMainAlignResult(int tabNo)
+        {
+            AlignViewerControl.UpdateMainResult(tabNo);
+            DailyInfoViewerControl.UpdateAlignResult(tabNo);
+        }
+
+        public void UpdateAkkonResultTabButton(int tabNo)
+        {
+            AkkonViewerControl.UpdateResultTabButton(tabNo);
+        }
+
+        public void UpdateAlignResultTabButton(int tabNo)
+        {
+            AlignViewerControl.UpdateResultTabButton(tabNo);
+        }
+
+
+        public void TabButtonResetColor()
+        {
+            AkkonViewerControl.TabButtonResetColor();
+            AlignViewerControl.TabButtonResetColor();
+        }
+
+        public void AddSystemLogMessage(string logMessage)
+        {
+            SystemLogControl.AddLogMessage(logMessage);
+        }
 
         private void lblStart_Click(object sender, EventArgs e)
         {
+            if (ModelManager.Instance().CurrentModel == null)
+            {
+                MessageConfirmForm form = new MessageConfirmForm();
+                form.Message = "Current Model is null.";
+                form.ShowDialog();
+                return;
+            }
+
             SystemManager.Instance().StartRun();
         }
 
@@ -104,27 +153,13 @@ namespace ATT.UI.Pages
             {
                 lblStartText.ForeColor = Color.Blue;
                 lblStopText.ForeColor = Color.White;
-                //lblStart.Enabled = false;
-                //lblStartText.Enabled = false;
-
-                //lblStop.Enabled = true;
-                //lblStopText.Enabled = true;
-
-              
             }
             else
             {
                 lblStartText.ForeColor = Color.White;
                 lblStopText.ForeColor = Color.Blue;
-
-                //lblStart.Enabled = true;
-                //lblStartText.Enabled = true;
-
-                //lblStop.Enabled = false;
-                //lblStopText.Enabled = false;
-
-                
             }
         }
+        #endregion
     }
 }

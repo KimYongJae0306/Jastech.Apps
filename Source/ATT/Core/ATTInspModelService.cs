@@ -8,10 +8,10 @@ using Jastech.Framework.Config;
 using Jastech.Framework.Device.LightCtrls;
 using Jastech.Framework.Structure;
 using Jastech.Framework.Util.Helper;
+using Jastech.Framework.Winform;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 
 namespace ATT.Core
 {
@@ -28,9 +28,6 @@ namespace ATT.Core
         {
             AppsInspModel appInspModel = inspModel as AppsInspModel;
 
-
-
-
             int count = 0;
             foreach (UnitName unitName in Enum.GetValues(typeof(UnitName)))
             {
@@ -40,9 +37,11 @@ namespace ATT.Core
                 Unit unit = new Unit();
 
                 unit.Name = unitName.ToString(); // 임시 -> Apps에서 변경
+                unit.LightParam = CreateLightParameter();
 
                 // LineScan 조명 Parameter 생성
-                //unit.LineScanLightParamList.AddRange(CreateLightParameter());
+                unit.AkkonCamera = new LineCameraData();
+                unit.AkkonCamera.Name = "AkkonCamera";
 
                 for (int tabIndex = 0; tabIndex < appInspModel.TabCount; tabIndex++)
                 {
@@ -51,7 +50,7 @@ namespace ATT.Core
                     tab.Index = tabIndex;
                     tab.StageIndex = (int)unitName;
 
-                    // Tab Fpc Mark 등록
+                    // Tab Main Fpc Mark 등록
                     foreach (MarkName type in Enum.GetValues(typeof(MarkName)))
                     {
                         MarkParam leftMark = new MarkParam();
@@ -68,7 +67,7 @@ namespace ATT.Core
                         tab.MarkParamter.MainFpcMarkParamList.Add(RightMark);
                     }
 
-                    // Tab Panel Mark 등록
+                    // Tab Main Panel Mark 등록
                     foreach (MarkName type in Enum.GetValues(typeof(MarkName)))
                     {
                         MarkParam leftMark = new MarkParam();
@@ -121,14 +120,6 @@ namespace ATT.Core
             standbyPosition.CreateTeachingInfo(TeachingPosType.Standby.ToString(), "Standby", currentAxisHandler);
             unit.AddTeachingInfo(standbyPosition);
 
-            //TeachingInfo prealignLeftPosition = new TeachingInfo();
-            //prealignLeftPosition.CreateTeachingInfo(TeachingPosType.Stage1_PreAlign_Left.ToString(), "Stage#1 PreAlign Left Position", currentAxisHandler);
-            //unit.AddTeachingInfo(prealignLeftPosition);
-
-            //TeachingInfo prealignRightPosition = new TeachingInfo();
-            //prealignRightPosition.CreateTeachingInfo(TeachingPosType.Stage1_PreAlign_Right.ToString(), "Stage#1 PreAlign Right Position", currentAxisHandler);
-            //unit.AddTeachingInfo(prealignRightPosition);
-
             TeachingInfo scanStartPosition = new TeachingInfo();
             scanStartPosition.CreateTeachingInfo(TeachingPosType.Stage1_Scan_Start.ToString(), "Stage#1 ScanStart", currentAxisHandler);
             unit.AddTeachingInfo(scanStartPosition);
@@ -147,16 +138,33 @@ namespace ATT.Core
             return lightParamList;
         }
 
-        private List<LightParameter> CreateLightParameter()
+        private LightParameter CreateLightParameter()
         {
-            List<LightParameter> lightParameterList = new List<LightParameter>();
+            LightParameter lightParameter = new LightParameter("Light");
 
-            var lightCtrls = ConfigSet.Instance().Machine.GetDevices<LightCtrl>();
-            if (lightCtrls == null)
-                return lightParameterList;
-           
-            return lightParameterList;
+            var lightCtrlHandler = DeviceManager.Instance().LightCtrlHandler;
+            var light12v = lightCtrlHandler.Get("LvsLight12V");
+            var light24v = lightCtrlHandler.Get("LvsLight24V");
+
+            lightParameter.Add(light12v, new LightValue(light12v.TotalChannelCount));
+            lightParameter.Add(light24v, new LightValue(light24v.TotalChannelCount));
+
+            return lightParameter;
         }
+
+        //private LightParameter CreateAlignLightParameter()
+        //{
+        //    LightParameter lightParameter = new LightParameter("Align");
+
+        //    var lightCtrlHandler = DeviceManager.Instance().LightCtrlHandler;
+        //    var spotLightCtrl = lightCtrlHandler.Get("Spot");
+        //    var ringLightCtrl = lightCtrlHandler.Get("Ring");
+
+        //    lightParameter.Add(spotLightCtrl, new LightValue(spotLightCtrl.TotalChannelCount));
+        //    lightParameter.Add(ringLightCtrl, new LightValue(ringLightCtrl.TotalChannelCount));
+
+        //    return lightParameter;
+        //}
 
         public override InspModel Load(string filePath)
         {
@@ -171,32 +179,25 @@ namespace ATT.Core
             {
                 string unitDir = rootDir + @"\Unit_" + unit.Name;
 
-                //string preAlignPath = unitDir + @"\PreAlign";
-
-                ////PreAlign Load
-                //foreach (var item in unit.PreAligns)
-                //    item.InspParam.LoadTool(preAlignPath);
-
                 foreach (var tab in unit.GetTabList())
                 {
                     string tabDir = unitDir + @"\" + "Tab_" + tab.Name;
 
-                    //Tab FPC Mark 열기
-                    string tabFpcMarkDir = tabDir + @"\Mark\Main\FPC_Mark";
+                    //Tab Main FPC Mark 열기
+                    string tabMainFpcMarkDir = tabDir + @"\Mark\Main\FPC_Mark";
                     foreach (var alignParam in tab.MarkParamter.MainFpcMarkParamList)
-                        alignParam.InspParam.LoadTool(tabFpcMarkDir);
+                        alignParam.InspParam.LoadTool(tabMainFpcMarkDir);
 
-                    //Tab Panel Mark 열기
-                    string tabPanelMarkDir = tabDir + @"\Mark\Main\Panel_Mark";
+                    //Tab Main Panel Mark 열기
+                    string tabMainPanelMarkDir = tabDir + @"\Mark\Main\Panel_Mark";
                     foreach (var alignParam in tab.MarkParamter.MainPanelMarkParamList)
-                        alignParam.InspParam.LoadTool(tabPanelMarkDir);
+                        alignParam.InspParam.LoadTool(tabMainPanelMarkDir);
 
                     //Tab Align 열기
                     string tabAlignDir = tabDir + @"\Align";
                     foreach (var alignParam in tab.AlignParamList)
                         alignParam.CaliperParams.LoadTool(tabAlignDir, alignParam.Name);
                 }
-
             }
             return model;
         }
@@ -212,25 +213,20 @@ namespace ATT.Core
             foreach (var unit in attInspModel.GetUnitList())
             {
                 string unitDir = Path.GetDirectoryName(filePath) + @"\Unit_" + unit.Name;
-                string preAlignPath = unitDir + @"\PreAlign";
-
-                ////PreAlign 저장
-                //foreach (var item in unit.PreAligns)
-                //    item.InspParam.SaveTool(preAlignPath);
 
                 foreach (var tab in unit.GetTabList())
                 {
                     string tabDir = unitDir + @"\" + "Tab_" + tab.Name;
 
-                    //Tab FPC Mark 저장
-                    string tabFpcMarkDir = tabDir + @"\Mark\Main\FPC_Mark";
+                    //Tab Main FPC Mark 저장
+                    string tabMainFpcMarkDir = tabDir + @"\Mark\Main\FPC_Mark";
                     foreach (var alignParam in tab.MarkParamter.MainFpcMarkParamList)
-                        alignParam.InspParam.SaveTool(tabFpcMarkDir);
+                        alignParam.InspParam.SaveTool(tabMainFpcMarkDir);
 
-                    //Tab Panel Mark 저장
-                    string tabPanelMarkDir = tabDir + @"\Mark\Main\Panel_Mark";
+                    //Tab Main Panel Mark 저장
+                    string tabMainPanelMarkDir = tabDir + @"\Mark\Main\Panel_Mark";
                     foreach (var alignParam in tab.MarkParamter.MainPanelMarkParamList)
-                        alignParam.InspParam.SaveTool(tabPanelMarkDir);
+                        alignParam.InspParam.SaveTool(tabMainPanelMarkDir);
 
                     //TabAlign 저장
                     string tabAlignDir = tabDir + @"\Align";
@@ -253,9 +249,9 @@ namespace ATT.Core
             string path = Path.GetDirectoryName(filePath);
             string modelName = inspModel.Name;
 
-            lock(_lock)
+            lock (_lock)
             {
-                for (int unitIndex = 0; unitIndex < inspModel.UnitList.Count(); unitIndex++)
+                for (int unitIndex = 0; unitIndex < inspModel.GetUnitList().Count; unitIndex++)
                 {
                     Unit unit = inspModel.UnitList[unitIndex];
                     for (int tabNo = 0; tabNo < unit.GetTabList().Count; tabNo++)
@@ -277,51 +273,6 @@ namespace ATT.Core
                                                             (int)roi.LeftBottomX, (int)roi.LeftBottomY);
 
                                 streamWriter.WriteLine(message);
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
-        private void LoadROI(string filePath,ref AppsInspModel inspModel)
-        {
-            string path = Path.GetDirectoryName(filePath);
-            string modelName = inspModel.Name;
-
-            lock (_lock)
-            {
-                for (int unitIndex = 0; unitIndex < inspModel.UnitList.Count(); unitIndex++)
-                {
-                    Unit unit = inspModel.UnitList[unitIndex];
-                    for (int tabNo = 0; tabNo < unit.GetTabList().Count; tabNo++)
-                    {
-                        string fileName = string.Format("{0}_Unit{1}_Tab{2}_AkkonROI.txt", modelName, unitIndex, tabNo);
-                        string loadPath = Path.Combine(path, fileName);
-
-                        if (File.Exists(loadPath) == false)
-                            continue;
-
-                        Tab tab = unit.GetTab(tabNo);
-                        var akkonROIList = tab.AkkonParam.GetAkkonROIList();
-                     
-                        using (StreamReader streamReader = new StreamReader(loadPath, true))
-                        {
-                            string line;
-                            while((line = streamReader.ReadLine()) != null)
-                            {
-                                string[] parts = line.Split(' ');
-
-                                AkkonROI roi = new AkkonROI();
-                                roi.LeftTopX = Convert.ToInt32(parts[0]);
-                                roi.LeftTopY = Convert.ToInt32(parts[1]);
-                                roi.RightTopX = Convert.ToInt32(parts[2]);
-                                roi.RightTopY = Convert.ToInt32(parts[3]);
-                                roi.RightBottomX = Convert.ToInt32(parts[4]);
-                                roi.RightBottomY = Convert.ToInt32(parts[5]);
-                                roi.LeftBottomX = Convert.ToInt32(parts[6]);
-                                roi.LeftBottomY = Convert.ToInt32(parts[7]);
-
                             }
                         }
                     }
