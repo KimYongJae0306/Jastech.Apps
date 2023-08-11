@@ -225,12 +225,14 @@ namespace ATT_UT_IPAD
             var akkonLaf = new NuriOneLAFCtrl("AkkonLaf");
             akkonLaf.SerialPortComm = new SerialPortComm("COM2", 9600);
             akkonLaf.AxisName = AxisName.Z0.ToString();
+            akkonLaf.HomePosition_mm = 0.002;
             config.Add(akkonLaf);
 
             // Align LAF
             var alignLaf = new NuriOneLAFCtrl("AlignLaf");
             alignLaf.SerialPortComm = new SerialPortComm("COM3", 9600);
             alignLaf.AxisName = AxisName.Z1.ToString();
+            akkonLaf.HomePosition_mm = 0.002;
             config.Add(alignLaf);
 
             // Light1
@@ -311,12 +313,14 @@ namespace ATT_UT_IPAD
             var akkonLaf = new NuriOneLAFCtrl("AkkonLaf");
             akkonLaf.SerialPortComm = new SerialPortComm("COM2", 9600);
             akkonLaf.AxisName = AxisName.Z0.ToString();
+            akkonLaf.HomePosition_mm = 0.0025;
             config.Add(akkonLaf);
 
             // Align LAF
             var alignLaf = new NuriOneLAFCtrl("AlignLaf");
             alignLaf.SerialPortComm = new SerialPortComm("COM3", 9600);
             alignLaf.AxisName = AxisName.Z1.ToString();
+            akkonLaf.HomePosition_mm = 0.002;
             config.Add(alignLaf);
 
             // Light1

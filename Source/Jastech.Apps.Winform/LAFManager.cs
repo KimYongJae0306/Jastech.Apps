@@ -428,7 +428,7 @@ namespace Jastech.Apps.Winform
                 case HomeSequenceStep.CheckZeroConvergence:
                     //if (Math.Abs(status.MPosPulse - /*HOMING_DISTANCE_AWAY_FROM_LIMIT*/0.0002) <= 0.0002/*float.Epsilon*/)
                     double mPos = status.MPosPulse / lafCtrl.ResolutionAxisZ;
-                    double calcMPos = mPos - 0.002;
+                    double calcMPos = mPos - lafCtrl.HomePosition_mm;
                     Console.WriteLine("mPos : " + mPos + "   calc : " + calcMPos);
                     if (mPos >=0 && mPos < 0.02)
                     {
