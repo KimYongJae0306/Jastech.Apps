@@ -393,11 +393,10 @@ namespace ATT_UT_IPAD.Core
                 case SeqStep.SEQ_WAITING_INSPECTION_DONE:
                     if (IsInspAkkonDone() == false)
                         break;
-                    SystemManager.Instance().UpdateMainAkkonResult();
-
+              
                     if (IsInspAlignDone() == false)
                         break;
-                    SystemManager.Instance().UpdateMainAlignResult();
+                   
 
                     LastInspSW.Stop();
                     AppsInspResult.Instance().EndInspTime = DateTime.Now;
@@ -426,7 +425,8 @@ namespace ATT_UT_IPAD.Core
                     UpdateDailyInfo();
                     WriteLog("Update Inspectinon Result.", true);
 
-                    //SystemManager.Instance().UpdateMainResult();
+                    SystemManager.Instance().UpdateMainAkkonResult();
+                    SystemManager.Instance().UpdateMainAlignResult();
 
                     SeqStep = SeqStep.SEQ_SAVE_RESULT_DATA;
                     break;
@@ -1024,7 +1024,7 @@ namespace ATT_UT_IPAD.Core
                     if (blob.IsAkkonShape)
                     {
                         blobCount++;
-                        CvInvoke.Circle(colorMat, center, radius / 2, new MCvScalar(255), 1);
+                        CvInvoke.Circle(colorMat, center, radius / 2, greenColor, 1);
                     }
                 }
 

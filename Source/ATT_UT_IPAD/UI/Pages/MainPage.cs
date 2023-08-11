@@ -15,6 +15,10 @@ namespace ATT_UT_IPAD.UI.Pages
     public partial class MainPage : UserControl
     {
         #region 필드
+        private Color _noneSelectColor { get; set; } = Color.FromArgb(52, 52, 52);
+
+        private Color _selectedColor { get; set; } = Color.FromArgb(104, 104, 104);
+
         protected override CreateParams CreateParams
         {
             get
@@ -29,13 +33,9 @@ namespace ATT_UT_IPAD.UI.Pages
         #region 속성
         public MainViewControl MainViewControl { get; set; } = null;
 
-        public AkkonViewerControl AkkonViewerControl { get; set; } = null;
+        public TabAlignViewControl TabAlignViewControl { get; set; } = null;
 
-        public AlignViewerControl AlignViewerControl { get; set; } = null;
-
-        public DailyInfoViewerControl DailyInfoViewerControl { get; set; } = null;
-
-        public SystemLogControl SystemLogControl { get; set; } = null;
+        public TabAkkonViewControl TabAkkonViewControl { get; set; } = null;
         #endregion
 
         #region 이벤트
@@ -61,139 +61,88 @@ namespace ATT_UT_IPAD.UI.Pages
         {
             MainViewControl = new MainViewControl();
             MainViewControl.Dock = DockStyle.Fill;
+            MainViewControl.Visible = false;
             pnlView.Controls.Add(MainViewControl);
 
-            //lblMainButton.BackColor = Color.Blue;
-            //DailyInfoViewerControl = new DailyInfoViewerControl();
-            //DailyInfoViewerControl.Dock = DockStyle.Fill;
-            //pnlDailyInfo.Controls.Add(DailyInfoViewerControl);
+            TabAlignViewControl = new TabAlignViewControl();
+            TabAlignViewControl.Dock = DockStyle.Fill;
+            TabAlignViewControl.Visible = false;
+            pnlView.Controls.Add(TabAlignViewControl);
 
-            //AkkonViewerControl = new AkkonViewerControl();
-            //AkkonViewerControl.Dock = DockStyle.Fill;
-            //AkkonViewerControl.SetTabEventHandler += AkkonViewerControl_SetTabEventHandler;
-            //pnlAkkon.Controls.Add(AkkonViewerControl);
+            TabAkkonViewControl = new TabAkkonViewControl();
+            TabAkkonViewControl.Dock = DockStyle.Fill;
+            TabAkkonViewControl.Visible = false;
+            pnlView.Controls.Add(TabAkkonViewControl);
 
-            //AlignViewerControl = new AlignViewerControl();
-            //AlignViewerControl.Dock = DockStyle.Fill;
-            //AlignViewerControl.SetTabEventHandler += AlignViewerControl_SetTabEventHandler;
-            //pnlAlign.Controls.Add(AlignViewerControl);
-
-            //SystemLogControl = new SystemLogControl();
-            //SystemLogControl.Dock = DockStyle.Fill;
-            //pnlSystemLog.Controls.Add(SystemLogControl);
+            SelectMainView();
         }
-
-        private void AkkonViewerControl_SetTabEventHandler(int tabNo)
-        {
-            //DailyInfoViewerControl.UpdateAkkonResult(tabNo);
-        }
-
-        private void AlignViewerControl_SetTabEventHandler(int tabNo)
-        {
-            //DailyInfoViewerControl.UpdateAlignResult(tabNo);
-        }
-
-        public void UpdateTabCount(int tabCount)
-        {
-            //AkkonViewerControl.UpdateTabCount(tabCount);
-            //AlignViewerControl.UpdateTabCount(tabCount);
-        }
-
-        public void UpdateMainAkkonResultDisplay(int tabNo)
-        {
-            //AkkonViewerControl.UpdateMainResult(tabNo);
-        }
-
-        public void UpdateMainAkkonResultData(int tabNo)
-        {
-            //AkkonViewerControl.UpdateMainResult(tabNo);
-            //DailyInfoViewerControl.UpdateAkkonResult(tabNo);
-        }
-
-        public void UpdateMainAlignResult(int tabNo)
-        {
-            //AlignViewerControl.UpdateMainResult(tabNo);
-            //DailyInfoViewerControl.UpdateAlignResult(tabNo);
-        }
-
-        public void UpdateAkkonResultTabButton(int tabNo)
-        {
-            //AkkonViewerControl.UpdateResultTabButton(tabNo);
-        }
-
-        public void UpdateAlignResultTabButton(int tabNo)
-        {
-            //AlignViewerControl.UpdateResultTabButton(tabNo);
-        }
-
-
-        public void TabButtonResetColor()
-        {
-           // AkkonViewerControl.TabButtonResetColor();
-           // AlignViewerControl.TabButtonResetColor();
-        }
-
-        public void AddSystemLogMessage(string logMessage)
-        {
-            //SystemLogControl.AddLogMessage(logMessage);
-        }
-
-        private void lblStart_Click(object sender, EventArgs e)
-        {
-            if (ModelManager.Instance().CurrentModel == null)
-            {
-                MessageConfirmForm form = new MessageConfirmForm();
-                form.Message = "Current Model is null.";
-                form.ShowDialog();
-                return;
-            }
-
-            SystemManager.Instance().StartRun();
-        }
-
-        private void lblStop_Click(object sender, EventArgs e)
-        {
-            SystemManager.Instance().StopRun();
-        }
-
-        public void UpdateButton()
-        {
-            //if (SystemManager.Instance().MachineStatus == MachineStatus.RUN)
-            //{
-            //    lblStartText.ForeColor = Color.Blue;
-            //    lblStopText.ForeColor = Color.White;
-            //}
-            //else
-            //{
-            //    lblStartText.ForeColor = Color.White;
-            //    lblStopText.ForeColor = Color.Blue;
-            //}
-        }
-        #endregion
 
         private void lblMainButton_Click(object sender, EventArgs e)
         {
-            ClearSelected();
-            lblMainButton.BackColor = Color.FromArgb(104, 104, 104);
+            SelectMainView();
         }
 
         private void lblAkkonButton_Click(object sender, EventArgs e)
         {
-            ClearSelected();
-            lblAkkonButton.BackColor = Color.FromArgb(104, 104, 104);
+            SelectAkkonView();
         }
 
         private void lblAlignButton_Click(object sender, EventArgs e)
         {
-            ClearSelected();
-            lblAlignButton.BackColor = Color.FromArgb(104, 104, 104);
+            SelectAlignView();
         }
 
-        private void ClearSelected()
+        private void SelectMainView()
         {
-            lblMainButton.BackColor = Color.FromArgb(52, 52, 52);
-            lblAkkonButton.BackColor = Color.FromArgb(52, 52, 52);
-            lblAlignButton.BackColor = Color.FromArgb(52, 52, 52);
+            if (MainViewControl.Visible)
+                return;
+
+            lblMainButton.BackColor = _selectedColor;
+            lblAkkonButton.BackColor = _noneSelectColor;
+            lblAlignButton.BackColor = _noneSelectColor;
+
+            MainViewControl.Visible = true;
+            TabAlignViewControl.Visible = false;
+            TabAkkonViewControl.Visible = false;
+
+            MainViewControl.Dock = DockStyle.Fill;
+            pnlView.Controls.Add(MainViewControl);
         }
+
+        public void SelectAlignView()
+        {
+            if (TabAlignViewControl.Visible)
+                return;
+
+            lblMainButton.BackColor = _noneSelectColor;
+            lblAkkonButton.BackColor = _noneSelectColor;
+            lblAlignButton.BackColor = _selectedColor;
+
+            MainViewControl.Visible = false;
+            TabAlignViewControl.Visible = true;
+            TabAkkonViewControl.Visible = false;
+
+            TabAlignViewControl.Dock = DockStyle.Fill;
+            pnlView.Controls.Add(TabAlignViewControl);
+        }
+
+        public void SelectAkkonView()
+        {
+            if (TabAkkonViewControl.Visible)
+                return;
+
+            lblMainButton.BackColor = _noneSelectColor;
+            lblAkkonButton.BackColor = _selectedColor;
+            lblAlignButton.BackColor = _noneSelectColor;
+
+            MainViewControl.Visible = false;
+            TabAlignViewControl.Visible = false;
+            TabAkkonViewControl.Visible = true;
+
+            TabAkkonViewControl.Dock = DockStyle.Fill;
+            pnlView.Controls.Add(TabAkkonViewControl);
+        }
+
+        #endregion
     }
 }

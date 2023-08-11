@@ -18,7 +18,7 @@ namespace Jastech.Apps.Structure.VisionTool
 
         public CogAlignCaliper AlignAlgorithm { get; set; } = new CogAlignCaliper();
 
-       public ICogImage ConvertCogImage(Mat image)
+        public static ICogImage ConvertCogImage(Mat image)
         {
             if (image == null)
                 return null;

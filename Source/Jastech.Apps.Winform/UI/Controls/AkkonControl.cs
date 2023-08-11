@@ -2,6 +2,7 @@
 using Emgu.CV;
 using Emgu.CV.CvEnum;
 using Emgu.CV.Structure;
+using Emgu.CV.Util;
 using Jastech.Apps.Structure;
 using Jastech.Apps.Structure.Data;
 using Jastech.Apps.Structure.VisionTool;
@@ -750,13 +751,26 @@ namespace Jastech.Apps.Winform.UI.Controls
 
             if (dgvAkkonROI.SelectedRows.Count > 1)
             {
+                List<int> selectedIndexList = new List<int>();
+                foreach (DataGridViewRow row in dgvAkkonROI.SelectedRows)
+                    selectedIndexList.Add(row.Index);
+
+                if (selectedIndexList.Count > 0)
+                    selectedIndexList.Sort((x, y) => y.CompareTo(x));
+
+                foreach (var index in selectedIndexList)
+                {
+                    group.DeleteROI(index);
+                    _cogRectAffineList.RemoveAt(index);
+                }
             }
             else
             {
                 foreach (DataGridViewRow row in dgvAkkonROI.SelectedRows)
                 {
                     group.DeleteROI(row.Index);
-                    _cogRectAffineList.RemoveAt(row.Index);
+                    if (_cogRectAffineList.Count > row.Index)
+                        _cogRectAffineList.RemoveAt(row.Index);
                 }
             }
 
@@ -1135,13 +1149,93 @@ namespace Jastech.Apps.Winform.UI.Controls
 
                     ICogImage cogImage = display.GetImage();
                     var roi = _autoTeachingCollect[0] as CogRectangle;
+                    var cropCogImage = VisionProImageHelper.CropImage(cogImage, roi);
 
-                    var cropImage = VisionProImageHelper.CropImage(cogImage, roi);
-                    var binaryImage = VisionProImageHelper.Threshold(cropImage as CogImage8Grey, threshold, 255);
-                    var convertImage = VisionProImageHelper.CogCopyRegionTool(cogImage, binaryImage, roi, true);
+                    var targetMat = GetTeachingConvertImage(cogImage, roi);
+                    var cropImage = AlgorithmTool.ConvertCogImage(targetMat);
+                    cropImage.PixelFromRootTransform = cropCogImage.PixelFromRootTransform;
+
+                    var convertImage = VisionProImageHelper.CogCopyRegionTool(cogImage, cropImage, roi, true);
                     TeachingUIManager.Instance().SetBinaryCogImageBuffer(convertImage as CogImage8Grey);
                 }
             }
+        }
+
+        private Mat GetTeachingConvertImage(ICogImage cogImage, CogRectangle roi)
+        {
+            Rectangle rect = new Rectangle(new Point((int)roi.X, (int)roi.Y), new Size((int)roi.Width, (int)roi.Height));
+
+            Mat sourceMat = TeachingUIManager.Instance().GetOriginMatImageBuffer(false);
+            Mat cropMat = MatHelper.CropRoi(sourceMat, rect);
+            CvInvoke.Threshold(cropMat, cropMat, 85, 255, ThresholdType.Binary);
+
+            if(ckbIgnoreNoise.Checked)
+            {
+                Mat maskingMat = MakeMaskImage(new Size(cropMat.Width, cropMat.Height), roi, rect.X, rect.Y);
+                Mat targetMat = new Mat();
+                CvInvoke.BitwiseAnd(maskingMat, cropMat, targetMat);
+
+                Mat filterdMat = GetFilterImage(targetMat);
+                cropMat.Dispose();
+                maskingMat.Dispose();
+                targetMat.Dispose();
+
+                return filterdMat;
+            }
+            else
+            {
+                return cropMat;
+            }
+        }
+
+        private Mat GetFilterImage(Mat mat)
+        {
+            int ignoreSize = 10000;
+            var contours = new VectorOfVectorOfPoint();
+            Mat hierarchy = new Mat();
+            CvInvoke.FindContours(mat, contours, hierarchy, RetrType.Ccomp, ChainApproxMethod.ChainApproxSimple);
+
+            List<VectorOfPoint> filteredContourList = new List<VectorOfPoint>();
+            if (contours.Size != 0)
+            {
+                for (int idxContour = 0; idxContour < contours.Size; ++idxContour)
+                {
+                    var contour = contours[idxContour];
+                    var hull = new VectorOfPoint();
+                    CvInvoke.ConvexHull(contour, hull, true);
+
+                    double area = CvInvoke.ContourArea(contour);
+
+                    if (area >= ignoreSize)
+                        filteredContourList.Add(contour);
+                }
+            }
+            Mat filteredImage = new Mat(new Size(mat.Width, mat.Height), DepthType.Cv8U, 1);
+            byte[] tempArray = new byte[mat.Step * mat.Height];
+            Marshal.Copy(tempArray, 0, filteredImage.DataPointer, mat.Step * mat.Height);
+
+            IInputArrayOfArrays contoursArray = new VectorOfVectorOfPoint(filteredContourList.Select(vector => vector.ToArray()).ToArray());
+            CvInvoke.DrawContours(filteredImage, contoursArray, -1, new MCvScalar(255), -1);
+
+            hierarchy.Dispose();
+
+            return filteredImage;
+        }
+
+        private Mat MakeMaskImage(Size size, CogRectangle roi, int offsetX, int offsetY)
+        {
+            Mat maskImage = new Mat(size, DepthType.Cv8U, 1);
+            VectorOfVectorOfPoint contours = new VectorOfVectorOfPoint();
+            VectorOfPoint contour = new VectorOfPoint(new[]
+           {
+                new Point((int)roi.X - offsetX,  (int)roi.Y - offsetY),
+                new Point((int)(roi.X + roi.Width - offsetX), (int)(roi.Y - offsetY)),
+                new Point((int)(roi.X + roi.Width - offsetX), (int)(roi.Y + roi.Height - offsetY)),
+                new Point((int)roi.X- offsetX, (int)(roi.Y + roi.Height - offsetY)),
+            });
+            contours.Push(contour);
+            CvInvoke.DrawContours(maskImage, contours, -1, new MCvScalar(255), -1);
+            return maskImage;
         }
 
         private void lblTeachingMode_Click(object sender, EventArgs e)
@@ -1188,16 +1282,33 @@ namespace Jastech.Apps.Winform.UI.Controls
         private List<CogRectangleAffine> GetAutoTeachingRoiList(ICogImage image)
         {
             int threshold = Convert.ToInt32(lblAutoThresholdValue.Text);
-            var cropImage = VisionProImageHelper.CropImage(image, _autoTeachingRect);
-            var binaryImage = VisionProImageHelper.Threshold(cropImage as CogImage8Grey, threshold, 255, true);
+            var cropCogImage = VisionProImageHelper.CropImage(image, _autoTeachingRect);
 
-            byte[] topDataArray = VisionProImageHelper.GetWidthDataArray(binaryImage, 0);
-            byte[] bottomDataArray = VisionProImageHelper.GetWidthDataArray(binaryImage, cropImage.Height - 1);
+
+            var targetMat = GetTeachingConvertImage(image, _autoTeachingRect);
+            var cropImage = AlgorithmTool.ConvertCogImage(targetMat);
+            //cropImage.PixelFromRootTransform = cropCogImage.PixelFromRootTransform;
+
+
+            //VisionProImageHelper.Save(cropImage, @"D:\123.bmp");
+            //var binaryImage = VisionProImageHelper.Threshold(cropImage as CogImage8Grey, threshold, 255, true);
+
+            byte[] topDataArray = new byte[targetMat.Step];
+
+            Marshal.Copy(targetMat.DataPointer, topDataArray, 0, targetMat.Step);
+
+            byte[] bottomDataArray = new byte[targetMat.Step];
+
+            int startIndex = targetMat.Step * (targetMat.Height - 1);
+            Marshal.Copy(targetMat.DataPointer + startIndex, bottomDataArray, 0, targetMat.Step);
+
+            //byte[] topDataArray = VisionProImageHelper.GetWidthDataArray(cropImage as CogImage8Grey, 0);
+            //byte[] bottomDataArray = VisionProImageHelper.GetWidthDataArray(cropImage as CogImage8Grey, cropImage.Height - 1);
 
             List<int> topEdgePointList = new List<int>();
             List<int> bottomEdgePointList = new List<int>();
 
-            ImageHelper.GetEdgePoint(topDataArray, bottomDataArray, 0, (int)21/*CalcResolution*/, ref topEdgePointList, ref bottomEdgePointList);
+            ImageHelper.GetEdgePoint(topDataArray, bottomDataArray, 255, (int)21/*CalcResolution*/, ref topEdgePointList, ref bottomEdgePointList);
 
             if (topEdgePointList.Count != bottomEdgePointList.Count)
             {
