@@ -306,10 +306,10 @@ namespace Jastech.Apps.Winform.UI.Controls
             _autoTeachingPolygon.GraphicDOFEnable = CogPolygonDOFConstants.All;
             _autoTeachingPolygon.GraphicDOFEnableBase = CogGraphicDOFConstants.All;
 
-            _autoTeachingPolygon.AddVertex(centerX - 100, centerY - 100, 0);
-            _autoTeachingPolygon.AddVertex(centerX + 100, centerY - 100, 1);
-            _autoTeachingPolygon.AddVertex(centerX + 100, centerY + 100, 2);
-            _autoTeachingPolygon.AddVertex(centerX - 100, centerY + 100, 3);
+            _autoTeachingPolygon.AddVertex(centerX - 1000, centerY - 1000, 0);
+            _autoTeachingPolygon.AddVertex(centerX + 1000, centerY - 1000, 1);
+            _autoTeachingPolygon.AddVertex(centerX + 1000, centerY + 1000, 2);
+            _autoTeachingPolygon.AddVertex(centerX - 1000, centerY + 1000, 3);
             _autoTeachingPolygon.DraggingStopped += AutoTeachingRect_DraggingStopped;
             _autoTeachingPolygon.Interactive = true;
 
@@ -772,7 +772,8 @@ namespace Jastech.Apps.Winform.UI.Controls
                 foreach (var index in selectedIndexList)
                 {
                     group.DeleteROI(index);
-                    _cogRectAffineList.RemoveAt(index);
+                    if(_cogRectAffineList.Count > index)
+                        _cogRectAffineList.RemoveAt(index);
                 }
             }
             else
@@ -815,8 +816,8 @@ namespace Jastech.Apps.Winform.UI.Controls
                 }
                 else
                 {
-                    _cogRectAffineList[row.Index].Color = CogColorConstants.Blue;
-
+                    if(row.Index < _cogRectAffineList.Count)
+                        _cogRectAffineList[row.Index].Color = CogColorConstants.Blue;
                 }
             }
 
