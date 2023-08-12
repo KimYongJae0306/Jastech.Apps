@@ -357,7 +357,7 @@ namespace Jastech.Apps.Structure.VisionTool
 
                     result.FoundedMark = matchingResult;
                     result.Judgement = Judgement.OK;
-                    return result;
+                    break;
                 }
                 else
                 {
