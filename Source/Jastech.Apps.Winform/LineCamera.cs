@@ -307,25 +307,11 @@ namespace Jastech.Apps.Winform
                 if (tabScanBuffer == null)
                     return;
 
-                if(Camera.Name == "AlignCamera")
-                {
-                    Console.WriteLine("Align : " + _curGrabCount);
-                    if(_curGrabCount == 660)
-                    {
-                        int ga1 = 1;
-                    }
-                }
-
                 if (tabScanBuffer.StartIndex <= _curGrabCount && _curGrabCount <= tabScanBuffer.EndIndex)
-                {
                     tabScanBuffer.AddData(data);
-                }
 
                 if (tabScanBuffer.IsAddDataDone())
-                {
                     _stackTabNo++;
-                }
-                    
 
                 if (_curGrabCount == GrabCount - 1)
                 {

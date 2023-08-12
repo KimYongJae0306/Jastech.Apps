@@ -95,7 +95,6 @@ namespace Jastech.Apps.Winform
         public void RequestStatusData(string name, CancellationTokenSource cancellationTokenSource)
         {
          
-            int count = 0;
             while(true)
             {
                 if (cancellationTokenSource.IsCancellationRequested)
