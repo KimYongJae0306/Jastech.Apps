@@ -84,7 +84,8 @@ namespace ATT_UT_IPAD.Core.AppTask
 
             // Create Coordinate Object
             CoordinateTransform panelCoordinate = new CoordinateTransform();
-            algorithmTool.MainMarkInspect(inspTab.MergeCogImage, tab, ref inspResult, false);
+            algorithmTool.MainMarkInspect(inspTab.MergeCogImage, tab, ref inspResult, true);
+            //algorithmTool.MainMarkInspect(inspTab.MergeCogImage, tab, ref inspResult, false);
 
             if (inspResult.MarkResult.Judgement != Judgement.OK)
             {
@@ -102,7 +103,7 @@ namespace ATT_UT_IPAD.Core.AppTask
                 // Excuete Coordinate
                 panelCoordinate.ExecuteCoordinate();
 
-                var lineCamera = LineCameraManager.Instance().GetLineCamera("LineCamera").Camera;
+                var lineCamera = LineCameraManager.Instance().GetLineCamera("AkkonCamera").Camera;
 
                 float resolution_um = lineCamera.PixelResolution_um / lineCamera.LensScale;
 
@@ -110,9 +111,12 @@ namespace ATT_UT_IPAD.Core.AppTask
                 {
                     var roiList = tab.AkkonParam.GetAkkonROIList();
                     var coordinateList = RenewalAkkonRoi(roiList, panelCoordinate);
-                    var leadResultList = AkkonAlgorithm.Run(inspTab.MergeMatImage, coordinateList, tab.AkkonParam.AkkonAlgoritmParam, resolution_um);
+
+                    Judgement tabJudgement = Judgement.NG;
+                    var leadResultList = AkkonAlgorithm.Run(inspTab.MergeMatImage, coordinateList, tab.AkkonParam.AkkonAlgoritmParam, resolution_um, ref tabJudgement);
 
                     inspResult.AkkonResult = CreateAkkonResult(unitName, tab.Index, leadResultList);
+                    inspResult.AkkonResult.Judgement = tabJudgement;
                     inspResult.AkkonInspMatImage = AkkonAlgorithm.ResizeMat;
                 }
                 else
@@ -121,7 +125,7 @@ namespace ATT_UT_IPAD.Core.AppTask
                 sw.Stop();
                 string resultMessage = string.Format("Tab {0} Akkon Inspection Completed.({1}ms)", (inspTab.TabScanBuffer.TabNo + 1), sw.ElapsedMilliseconds);
                 Console.WriteLine(resultMessage);
-                WriteLog(resultMessage, true);
+                WriteLog(resultMessage, false);
             }
 
             AppsInspResult.Instance().AddAkkon(inspResult);
@@ -178,8 +182,8 @@ namespace ATT_UT_IPAD.Core.AppTask
                 var lineCamera = LineCameraManager.Instance().GetLineCamera("AlignCamera").Camera;
 
                 float resolution_um = lineCamera.PixelResolution_um / lineCamera.LensScale;
-                double judgementX = tab.AlignSpec.LeftSpecX_um * resolution_um;
-                double judgementY = tab.AlignSpec.LeftSpecY_um * resolution_um;
+                double judgementX = tab.AlignSpec.LeftSpecX_um / resolution_um;
+                double judgementY = tab.AlignSpec.LeftSpecY_um / resolution_um;
 
                 #region Align
                 if (AppsConfig.Instance().EnableAlign)
@@ -233,7 +237,7 @@ namespace ATT_UT_IPAD.Core.AppTask
                 sw.Stop();
                 string resultMessage = string.Format("Tab {0} Align Inspection Completed.({1}ms)", (inspTab.TabScanBuffer.TabNo + 1), sw.ElapsedMilliseconds);
                 Console.WriteLine(resultMessage);
-                WriteLog(resultMessage, true);
+                WriteLog(resultMessage, false);
             }
 
             AppsInspResult.Instance().AddAlign(inspResult);

@@ -277,6 +277,7 @@ namespace ATT_UT_IPAD.Core
             string systemLogMessage = string.Empty;
             string errorMessage = string.Empty;
 
+            Stopwatch sw = new Stopwatch();
             switch (SeqStep)
             {
                 case SeqStep.SEQ_IDLE:
@@ -294,13 +295,19 @@ namespace ATT_UT_IPAD.Core
                     LightCtrlHandler.TurnOff();
                     WriteLog("Light Off.");
 
-                    AlignLAFCtrl.SetTrackingOnOFF(true);
+                    AlignLAFCtrl.SetTrackingOnOFF(false);
                     WriteLog("Align Laf Off.");
 
-                    AkkonLAFCtrl.SetTrackingOnOFF(true);
+                    AkkonLAFCtrl.SetTrackingOnOFF(false);
                     WriteLog("Akkon Laf Off.");
 
+                    sw.Restart();
                     InitializeBuffer();
+                    AkkonCamera.ClearTabScanBuffer();
+                    AlignCamera.ClearTabScanBuffer();
+
+                    sw.Stop();
+                    Console.WriteLine("Clear Buffer : " + sw.ElapsedMilliseconds.ToString()); ;
                     WriteLog("Initialize Buffer.");
 
                     SeqStep = SeqStep.SEQ_MOVE_START_POS;
@@ -316,6 +323,10 @@ namespace ATT_UT_IPAD.Core
                 case SeqStep.SEQ_WAITING:
                     if (AppsStatus.Instance().IsInspRunnerFlagFromPlc == false)
                         break;
+
+                    //AkkonCamera.InitGrabSettings();
+                    //AlignCamera.InitGrabSettings(AppsConfig.Instance().CameraGap_mm);
+                    InitializeBuffer();
 
                     WriteLog("Receive Inspection Start Signal From PLC.", true);
 
@@ -348,9 +359,6 @@ namespace ATT_UT_IPAD.Core
                     AkkonCamera.StartGrab();
                     AkkonLAFCtrl.SetTrackingOnOFF(true);
                     WriteLog("Start Akkon LineScanner Grab.", true);
-
-                    
-                   
                     
                     Thread.Sleep(50);
                     if (ConfigSet.Instance().Operation.VirtualMode)
@@ -385,6 +393,8 @@ namespace ATT_UT_IPAD.Core
 
                     WriteLog("Complete Align LineScanner Grab.", true);
 
+                    LightCtrlHandler.TurnOff();
+                    WriteLog("Light Off.", false);
                     LastInspSW.Restart();
 
                     SeqStep = SeqStep.SEQ_WAITING_INSPECTION_DONE;
@@ -393,11 +403,10 @@ namespace ATT_UT_IPAD.Core
                 case SeqStep.SEQ_WAITING_INSPECTION_DONE:
                     if (IsInspAkkonDone() == false)
                         break;
-                    SystemManager.Instance().UpdateMainAkkonResult();
-
+              
                     if (IsInspAlignDone() == false)
                         break;
-                    SystemManager.Instance().UpdateMainAlignResult();
+                   
 
                     LastInspSW.Stop();
                     AppsInspResult.Instance().EndInspTime = DateTime.Now;
@@ -426,7 +435,8 @@ namespace ATT_UT_IPAD.Core
                     UpdateDailyInfo();
                     WriteLog("Update Inspectinon Result.", true);
 
-                    //SystemManager.Instance().UpdateMainResult();
+                    SystemManager.Instance().UpdateMainAkkonResult();
+                    SystemManager.Instance().UpdateMainAlignResult();
 
                     SeqStep = SeqStep.SEQ_SAVE_RESULT_DATA;
                     break;
@@ -568,12 +578,15 @@ namespace ATT_UT_IPAD.Core
         {
             Stopwatch sw = new Stopwatch();
             sw.Restart();
+
             AkkonCamera.InitGrabSettings();
-            
+            //AkkonCamera.ClearTabScanBuffer();
             InspProcessTask.InitalizeInspAkkonBuffer(AkkonCamera.Camera.Name, AkkonCamera.TabScanBufferList);
 
+            
             float akkonToAlignGap_mm = AppsConfig.Instance().CameraGap_mm;
             AlignCamera.InitGrabSettings(akkonToAlignGap_mm);
+            //AlignCamera.ClearTabScanBuffer();
             InspProcessTask.InitalizeInspAlignBuffer(AlignCamera.Camera.Name, AlignCamera.TabScanBufferList);
             sw.Stop();
         }
@@ -1024,7 +1037,7 @@ namespace ATT_UT_IPAD.Core
                     if (blob.IsAkkonShape)
                     {
                         blobCount++;
-                        CvInvoke.Circle(colorMat, center, radius / 2, new MCvScalar(255), 1);
+                        CvInvoke.Circle(colorMat, center, radius / 2, greenColor, 1);
                     }
                 }
 
@@ -1050,7 +1063,126 @@ namespace ATT_UT_IPAD.Core
 
             return colorMat;
         }
+        public Mat GetDebugResultImage(Mat mat, List<AkkonLeadResult> leadResultList, AkkonAlgoritmParam akkonParameters)
+        {
+            if (mat == null)
+                return null;
 
+            Mat resizeMat = new Mat();
+            Size newSize = new Size((int)(mat.Width * akkonParameters.ImageFilterParam.ResizeRatio), (int)(mat.Height * akkonParameters.ImageFilterParam.ResizeRatio));
+            CvInvoke.Resize(mat, resizeMat, newSize);
+            Mat colorMat = new Mat();
+            CvInvoke.CvtColor(resizeMat, colorMat, ColorConversion.Gray2Bgr);
+            resizeMat.Dispose();
+
+            float calcResolution = (float)(AkkonCamera.Camera.Resolution / akkonParameters.ImageFilterParam.ResizeRatio);
+            MCvScalar redColor = new MCvScalar(50, 50, 230, 255);
+            MCvScalar greenColor = new MCvScalar(50, 230, 50, 255);
+
+            foreach (var result in leadResultList)
+            {
+                var lead = result.Roi;
+                var startPoint = new Point((int)result.Offset.ToWorldX, (int)result.Offset.ToWorldY);
+
+                Point leftTop = new Point((int)lead.LeftTopX + startPoint.X, (int)lead.LeftTopY + startPoint.Y);
+                Point leftBottom = new Point((int)lead.LeftBottomX + startPoint.X, (int)lead.LeftBottomY + startPoint.Y);
+                Point rightTop = new Point((int)lead.RightTopX + startPoint.X, (int)lead.RightTopY + startPoint.Y);
+                Point rightBottom = new Point((int)lead.RightBottomX + startPoint.X, (int)lead.RightBottomY + startPoint.Y);
+
+
+                if (akkonParameters.DrawOption.ContainLeadROI)
+                {
+                    CvInvoke.Line(colorMat, leftTop, leftBottom, greenColor, 1);
+                    CvInvoke.Line(colorMat, leftTop, rightTop, greenColor, 1);
+                    CvInvoke.Line(colorMat, rightTop, rightBottom, greenColor, 1);
+                    CvInvoke.Line(colorMat, rightBottom, leftBottom, greenColor, 1);
+                }
+
+                foreach (var blob in result.BlobList)
+                {
+                    int offsetX = (int)(result.Offset.ToWorldX + result.Offset.X);
+                    int offsetY = (int)(result.Offset.ToWorldY + result.Offset.Y);
+
+                    Rectangle rectRect = new Rectangle();
+                    rectRect.X = blob.BoundingRect.X + offsetX;
+                    rectRect.Y = blob.BoundingRect.Y + offsetY;
+                    rectRect.Width = blob.BoundingRect.Width;
+                    rectRect.Height = blob.BoundingRect.Height;
+
+                    Point center = new Point(rectRect.X + (rectRect.Width / 2), rectRect.Y + (rectRect.Height / 2));
+                    int radius = rectRect.Width > rectRect.Height ? rectRect.Width : rectRect.Height;
+
+                    int size = blob.BoundingRect.Width * blob.BoundingRect.Height;
+                    if (blob.IsAkkonShape)
+                    {
+                        CvInvoke.Circle(colorMat, center, radius / 2, greenColor, 1);
+                    }
+                    else
+                    {
+                        if (akkonParameters.DrawOption.ContainNG)
+                        {
+                            CvInvoke.Circle(colorMat, center, radius / 2, redColor, 1);
+                        }
+
+                    }
+
+                    if (akkonParameters.DrawOption.ContainSize)
+                    {
+                        int temp = (int)(radius / 2.0);
+                        Point pt = new Point(center.X + temp, center.Y - temp);
+                        double akkonSize = (blob.BoundingRect.Width + blob.BoundingRect.Height) / 2.0;
+                        double blobSize = akkonSize * calcResolution;
+
+                        if (blob.IsAkkonShape)
+                            CvInvoke.PutText(colorMat, blobSize.ToString("F1"), pt, FontFace.HersheySimplex, 0.3, greenColor);
+                        else
+                            CvInvoke.PutText(colorMat, blobSize.ToString("F1"), pt, FontFace.HersheySimplex, 0.3, redColor);
+                    }
+                    else if (akkonParameters.DrawOption.ContainArea)
+                    {
+                        int temp = (int)(radius / 2.0);
+                        Point pt = new Point(center.X + temp, center.Y - temp);
+                        double blobArea = blob.Area * calcResolution;
+
+                        if (blob.IsAkkonShape)
+                            CvInvoke.PutText(colorMat, blobArea.ToString("F1"), pt, FontFace.HersheySimplex, 0.3, greenColor);
+                        else
+                            CvInvoke.PutText(colorMat, blobArea.ToString("F1"), pt, FontFace.HersheySimplex, 0.3, redColor);
+                    }
+                    else if (akkonParameters.DrawOption.ContainStrength)
+                    {
+                        int temp = (int)(radius / 2.0);
+                        Point pt = new Point(center.X + temp, center.Y - temp);
+                        string strength = blob.Strength.ToString("F1");
+
+                        if (blob.IsAkkonShape)
+                            CvInvoke.PutText(colorMat, strength, pt, FontFace.HersheySimplex, 0.3, greenColor);
+                        else
+                            CvInvoke.PutText(colorMat, strength, pt, FontFace.HersheySimplex, 0.3, redColor);
+                    }
+                }
+
+                if (akkonParameters.DrawOption.ContainLeadCount)
+                {
+                    string leadIndexString = result.Roi.Index.ToString();
+                    string akkonCountString = string.Format("[{0}]", result.AkkonCount);
+
+                    Point centerPt = new Point((int)((leftBottom.X + rightBottom.X) / 2.0), leftBottom.Y);
+
+                    int baseLine = 0;
+                    Size textSize = CvInvoke.GetTextSize(leadIndexString, FontFace.HersheyComplex, 0.3, 1, ref baseLine);
+                    int textX = centerPt.X - (textSize.Width / 2);
+                    int textY = centerPt.Y + (baseLine / 2);
+                    CvInvoke.PutText(colorMat, leadIndexString, new Point(textX, textY + 30), FontFace.HersheyComplex, 0.25, new MCvScalar(50, 230, 50, 255));
+
+                    textSize = CvInvoke.GetTextSize(akkonCountString, FontFace.HersheyComplex, 0.3, 1, ref baseLine);
+                    textX = centerPt.X - (textSize.Width / 2);
+                    textY = centerPt.Y + (baseLine / 2);
+                    CvInvoke.PutText(colorMat, akkonCountString, new Point(textX, textY + 60), FontFace.HersheyComplex, 0.25, new MCvScalar(50, 230, 50, 255));
+                }
+            }
+            return colorMat;
+        }
         public ICogImage ConvertCogColorImage(Mat mat)
         {
             Mat matR = MatHelper.ColorChannelSeperate(mat, MatHelper.ColorChannel.R);

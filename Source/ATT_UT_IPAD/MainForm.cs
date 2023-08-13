@@ -170,7 +170,7 @@ namespace ATT_UT_IPAD
 
             AppsInspResult.Instance().Dispose();
 
-            MainPageControl.UpdateTabCount(model.TabCount);
+            MainPageControl.MainViewControl?.UpdateTabCount(model.TabCount);
 
             lblCurrentModel.Text = model.Name;
 
@@ -237,7 +237,7 @@ namespace ATT_UT_IPAD
             }
 
             if (MainPageControl.Visible)
-                MainPageControl.UpdateButton();
+                MainPageControl.MainViewControl.UpdateButton();
         }
 
         private void tmrUpdateStates_Tick(object sender, EventArgs e)
@@ -269,32 +269,32 @@ namespace ATT_UT_IPAD
 
         public void UpdateMainAkkonResult(int tabNo)
         {
-            MainPageControl.UpdateMainAkkonResultData(tabNo);
+            MainPageControl.MainViewControl.UpdateMainAkkonResultData(tabNo);
         }
 
         public void UpdateMainAlignResult(int tabNo)
         {
-            MainPageControl.UpdateMainAlignResult(tabNo);
+            MainPageControl.MainViewControl.UpdateMainAlignResult(tabNo);
         }
 
         public void UpdateAkkonResultTabButton(int tabNo)
         {
-            MainPageControl.UpdateAkkonResultTabButton(tabNo);
+            MainPageControl.MainViewControl.UpdateAkkonResultTabButton(tabNo);
         }
 
         public void UpdateAlignResultTabButton(int tabNo)
         {
-            MainPageControl.UpdateAlignResultTabButton(tabNo);
+            MainPageControl.MainViewControl.UpdateAlignResultTabButton(tabNo);
         }
 
         public void TabButtonResetColor()
         {
-            MainPageControl.TabButtonResetColor();
+            MainPageControl.MainViewControl.TabButtonResetColor();
         }
 
         public void AddSystemLogMessage(string logMessage)
         {
-            MainPageControl.AddSystemLogMessage(logMessage);
+            MainPageControl.MainViewControl.AddSystemLogMessage(logMessage);
         }
 
         private void lblCurrentUser_Click(object sender, EventArgs e)
@@ -430,8 +430,8 @@ namespace ATT_UT_IPAD
 
                 if (GetVirtualImagePath() is string filePath)
                 {
-                    string text = "Tab_";
-                    string fileName = Path.GetFileNameWithoutExtension(filePath);
+                    string text = "TAB_";
+                    string fileName = Path.GetFileNameWithoutExtension(filePath).ToUpper();
 
                     int index = fileName.IndexOf(text);
                     if (index < 0)

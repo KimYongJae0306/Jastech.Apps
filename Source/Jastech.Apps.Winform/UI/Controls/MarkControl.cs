@@ -364,39 +364,43 @@ namespace Jastech.Apps.Winform.UI.Controls
             if (cogImage == null)
                 return;
 
-            if (currentParam.IsTrained() == false)
-            {
-                MessageConfirmForm form = new MessageConfirmForm();
-                form.Message = "Pattern is not trained.";
-                form.ShowDialog();
-                return;
-            }
+            //int tabNo = cb
+            //TeachingData.Instance().GetUnit(UnitName.Unit0.ToString()).GetTab()
+            //MainAlgorithmTool algorithmTool = new MainAlgorithmTool();
+            //algorithmTool.MainMarkInspect(cogImage, tab, ref inspResult, true);
+            //if (currentParam.IsTrained() == false)
+            //{
+            //    MessageConfirmForm form = new MessageConfirmForm();
+            //    form.Message = "Pattern is not trained.";
+            //    form.ShowDialog();
+            //    return;
+            //}
 
-            VisionProPatternMatchingParam inspParam = currentParam.DeepCopy();
-            ICogImage copyCogImage = cogImage.CopyBase(CogImageCopyModeConstants.CopyPixels);
+            //VisionProPatternMatchingParam inspParam = currentParam.DeepCopy();
+            //ICogImage copyCogImage = cogImage.CopyBase(CogImageCopyModeConstants.CopyPixels);
 
-            VisionProPatternMatchingResult result = Algorithm.RunPatternMatch(copyCogImage, inspParam);
-            if (result == null)
-            {
-                inspParam.Dispose();
-                VisionProImageHelper.Dispose(ref copyCogImage);
-                return;
-            }
-            if (result.MatchPosList.Count > 0)
-            {
-                display.ClearGraphic();
-                display.UpdateResult(result);
-            }
-            else
-            {
-                MessageConfirmForm form = new MessageConfirmForm();
-                form.Message = "Pattern is Not Found.";
-                form.ShowDialog();
-            }
+            //VisionProPatternMatchingResult result = Algorithm.RunPatternMatch(copyCogImage, inspParam);
+            //if (result == null)
+            //{
+            //    inspParam.Dispose();
+            //    VisionProImageHelper.Dispose(ref copyCogImage);
+            //    return;
+            //}
+            //if (result.MatchPosList.Count > 0)
+            //{
+            //    display.ClearGraphic();
+            //    display.UpdateResult(result);
+            //}
+            //else
+            //{
+            //    MessageConfirmForm form = new MessageConfirmForm();
+            //    form.Message = "Pattern is Not Found.";
+            //    form.ShowDialog();
+            //}
 
-            result.Dispose();
-            inspParam.Dispose();
-            VisionProImageHelper.Dispose(ref copyCogImage);
+            //result.Dispose();
+            //inspParam.Dispose();
+            //VisionProImageHelper.Dispose(ref copyCogImage);
         }
 
         public void ShowROIJog()

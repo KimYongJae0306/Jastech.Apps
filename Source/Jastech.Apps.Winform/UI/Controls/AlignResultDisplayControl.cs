@@ -31,6 +31,10 @@ namespace ATT_UT_IPAD.UI.Controls
         public CogInspAlignDisplayControl InspAlignDisplay { get; private set; } = null;
 
         public int CurrentTabNo { get; set; } = -1;
+
+        private List<PointF> LeftPointList { get; set; } = null;
+
+        private List<PointF> RightPointList { get; set; } = null;
         #endregion
 
         #region 이벤트
@@ -170,8 +174,8 @@ namespace ATT_UT_IPAD.UI.Controls
             var image = TabBtnControlList[tabNo].GetAlignImage();
             var leftShape = TabBtnControlList[tabNo].GetLeftShape();
             var rightShape = TabBtnControlList[tabNo].GetRightShape();
-            InspAlignDisplay.UpdateLeftDisplay(image, leftShape);
-            InspAlignDisplay.UpdateRightDisplay(image, rightShape);
+            InspAlignDisplay.UpdateLeftDisplay(image, leftShape, GetCenterPoint(LeftPointList));
+            InspAlignDisplay.UpdateRightDisplay(image, rightShape, GetCenterPoint(RightPointList));
         }
 
         public delegate void UpdateTabButtonDele(int tabNo);
@@ -201,6 +205,7 @@ namespace ATT_UT_IPAD.UI.Controls
                 return new List<CogCompositeShape>();
 
             List<CogCompositeShape> leftResultList = new List<CogCompositeShape>();
+           LeftPointList = new List<PointF>();
 
             var leftAlignX = result.AlignResult.LeftX;
             if (leftAlignX != null)
@@ -209,6 +214,8 @@ namespace ATT_UT_IPAD.UI.Controls
                 {
                     foreach (var fpc in leftAlignX.Fpc.CogAlignResult)
                     {
+                        LeftPointList.Add(fpc.MaxCaliperMatch.FoundPos);
+
                         var leftFpcX = fpc.MaxCaliperMatch.ResultGraphics;
                         leftResultList.Add(leftFpcX);
                     }
@@ -217,6 +224,8 @@ namespace ATT_UT_IPAD.UI.Controls
                 {
                     foreach (var panel in leftAlignX.Panel.CogAlignResult)
                     {
+                        LeftPointList.Add(panel.MaxCaliperMatch.FoundPos);
+
                         var leftPanelX = panel.MaxCaliperMatch.ResultGraphics;
                         leftResultList.Add(leftPanelX);
                     }
@@ -230,6 +239,8 @@ namespace ATT_UT_IPAD.UI.Controls
                 {
                     if (leftAlignY.Fpc.CogAlignResult[0].MaxCaliperMatch != null)
                     {
+                        LeftPointList.Add(leftAlignY.Fpc.CogAlignResult[0].MaxCaliperMatch.FoundPos);
+
                         var leftFpcY = leftAlignY.Fpc.CogAlignResult[0].MaxCaliperMatch.ResultGraphics;
                         leftResultList.Add(leftFpcY);
                     }
@@ -239,6 +250,8 @@ namespace ATT_UT_IPAD.UI.Controls
                 {
                     if (leftAlignY.Panel.CogAlignResult[0].MaxCaliperMatch != null)
                     {
+                        LeftPointList.Add(leftAlignY.Panel.CogAlignResult[0].MaxCaliperMatch.FoundPos);
+
                         var leftPanelY = leftAlignY.Panel.CogAlignResult[0].MaxCaliperMatch.ResultGraphics;
                         leftResultList.Add(leftPanelY);
                     }
@@ -254,6 +267,7 @@ namespace ATT_UT_IPAD.UI.Controls
                 return new List<CogCompositeShape>();
 
             List<CogCompositeShape> rightResultList = new List<CogCompositeShape>();
+            RightPointList = new List<PointF>();
 
             var rightAlignX = result.AlignResult.RightX;
             if (rightAlignX != null)
@@ -262,6 +276,8 @@ namespace ATT_UT_IPAD.UI.Controls
                 {
                     foreach (var fpc in rightAlignX.Fpc.CogAlignResult)
                     {
+                        RightPointList.Add(fpc.MaxCaliperMatch.FoundPos);
+
                         var rightFpcX = fpc.MaxCaliperMatch.ResultGraphics;
                         rightResultList.Add(rightFpcX);
                     }
@@ -270,6 +286,8 @@ namespace ATT_UT_IPAD.UI.Controls
                 {
                     foreach (var panel in rightAlignX.Panel.CogAlignResult)
                     {
+                        RightPointList.Add(panel.MaxCaliperMatch.FoundPos);
+
                         var rightPanelX = panel.MaxCaliperMatch.ResultGraphics;
                         rightResultList.Add(rightPanelX);
                     }
@@ -283,6 +301,8 @@ namespace ATT_UT_IPAD.UI.Controls
                 {
                     if (rightAlignY.Fpc.CogAlignResult[0].MaxCaliperMatch != null)
                     {
+                        RightPointList.Add(rightAlignY.Fpc.CogAlignResult[0].MaxCaliperMatch.FoundPos);
+
                         var rightFpcY = rightAlignY.Fpc.CogAlignResult[0].MaxCaliperMatch.ResultGraphics;
                         rightResultList.Add(rightFpcY);
                     }
@@ -292,6 +312,8 @@ namespace ATT_UT_IPAD.UI.Controls
                 {
                     if (rightAlignY.Panel.CogAlignResult[0].MaxCaliperMatch != null)
                     {
+                        RightPointList.Add(rightAlignY.Panel.CogAlignResult[0].MaxCaliperMatch.FoundPos);
+
                         var rightPanelY = rightAlignY.Panel.CogAlignResult[0].MaxCaliperMatch.ResultGraphics;
                         rightResultList.Add(rightPanelY);
                     }
@@ -300,13 +322,30 @@ namespace ATT_UT_IPAD.UI.Controls
             return rightResultList;
         }
 
-        private Point GetCenterPoint(List<PointF> pointList)
+        private PointF GetCenterPoint(List<PointF> pointList)
         {
             if (pointList == null)
-                return new Point();
+                return new PointF();
+            if (pointList.Count() == 0)
+                return new PointF();
+            //float totalX = 0;
+            //float totalY = 0;
 
-            if (pointList.Count == 0)
-                return new Point();
+            //foreach (var point in pointList)
+            //{
+            //    totalX += point.X;
+            //    totalY += point.Y;
+            //}
+
+            //float centerX = totalX / pointList.Count;
+            //float centerY = totalY / pointList.Count;
+
+            //return new PointF(centerX, centerY);
+            //if (pointList == null)
+            //    return new Point();
+
+            //if (pointList.Count == 0)
+            //    return new Point();
 
             float minX = pointList.Select(point => point.X).Min();
             float maxX = pointList.Select(point => point.X).Max();
@@ -317,7 +356,7 @@ namespace ATT_UT_IPAD.UI.Controls
             float width = (maxX - minX) / 2.0f;
             float height = (maxY - minY) / 2.0f;
 
-            return new Point((int)(minX + width), (int)(minY + height));
+            return new PointF((minX + width), (minY + height));
         }
         #endregion
     }
