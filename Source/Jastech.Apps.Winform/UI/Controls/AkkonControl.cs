@@ -1814,10 +1814,10 @@ namespace Jastech.Apps.Winform.UI.Controls
 
                 if (result.AkkonCount >= AkkonParameters.JudgementParam.AkkonCount)
                 {
-                    CvInvoke.Line(colorMat, leftTop, leftBottom, redColor, 1);
-                    CvInvoke.Line(colorMat, leftTop, rightTop, redColor, 1);
-                    CvInvoke.Line(colorMat, rightTop, rightBottom, redColor, 1);
-                    CvInvoke.Line(colorMat, rightBottom, leftBottom, redColor, 1);
+                    CvInvoke.Line(colorMat, leftTop, leftBottom, redColor, 2);
+                    CvInvoke.Line(colorMat, leftTop, rightTop, redColor, 2);
+                    CvInvoke.Line(colorMat, rightTop, rightBottom, redColor, 2);
+                    CvInvoke.Line(colorMat, rightBottom, leftBottom, redColor, 2);
                 }
             }
             return colorMat;
