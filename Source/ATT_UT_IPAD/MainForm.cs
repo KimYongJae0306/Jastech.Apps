@@ -432,7 +432,8 @@ namespace ATT_UT_IPAD
                 {
                     string text = "TAB_";
                     string fileName = Path.GetFileNameWithoutExtension(filePath).ToUpper();
-
+                    fileName = fileName.Replace("_OK", "");
+                    fileName = fileName.Replace("_NG", "");
                     int index = fileName.IndexOf(text);
                     if (index < 0)
                     {
