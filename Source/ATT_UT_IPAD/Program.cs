@@ -113,12 +113,12 @@ namespace ATT_UT_IPAD
                 config.Add(motion);
 
                 // Akkon LAF
-                //var akkonLaf = new VirtualLAFCtrl("AkkonLaf");
-                //config.Add(akkonLaf);
+                var akkonLaf = new VirtualLAFCtrl("AkkonLaf");
+                config.Add(akkonLaf);
 
                 // Akkon LAF
-                //var alignLaf = new VirtualLAFCtrl("AlignLaf");
-                //config.Add(alignLaf);
+                var alignLaf = new VirtualLAFCtrl("AlignLaf");
+                config.Add(alignLaf);
 
                 // Light1
                 var spotLight = new VirtualLightCtrl("Spot", 6); // 12V
