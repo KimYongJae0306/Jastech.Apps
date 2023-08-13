@@ -13,6 +13,7 @@ using Jastech.Framework.Winform.VisionPro.Controls;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
 using System.Windows.Forms;
 
 namespace Jastech.Apps.Winform.UI.Controls
@@ -480,6 +481,16 @@ namespace Jastech.Apps.Winform.UI.Controls
                 double cx = (lx + rx) / 2.0;
                 lblCx_Value.Text = cx.ToString("F2");
             }
+
+            List<VisionProAlignCaliperResult> alignCaliperResultList = new List<VisionProAlignCaliperResult>();
+            alignCaliperResultList = GetDisplayAlignCaliperResult();
+            display.UpdateResult(alignCaliperResultList);
+
+            //foreach (var item in alignResultList)
+            //{
+            //    display.UpdateResult(item.Fpc);
+            //    display.UpdateResult(item.Panel);
+            //}
         }
 
         private double RunLeftX(ICogImage cogImage)
@@ -499,6 +510,12 @@ namespace Jastech.Apps.Winform.UI.Controls
 
             lblLeftX_FpcX.Text = alignResultLeftX.Fpc.Judgement.ToString();
             lblLeftX_PanelX.Text = alignResultLeftX.Panel.Judgement.ToString();
+
+            //var display = TeachingUIManager.Instance().GetDisplay();
+            //display.UpdateResult(alignResultLeftX.Fpc);
+            //display.UpdateResult(alignResultLeftX.Panel);
+            AddAlignCaliperResult(alignResultLeftX.Fpc);
+            AddAlignCaliperResult(alignResultLeftX.Panel);
 
             return value_um;
         }
@@ -522,6 +539,12 @@ namespace Jastech.Apps.Winform.UI.Controls
             lblLeftY_FpcY.Text = alignResultLeftY.Fpc.Judgement.ToString();
             lblLeftY_PanelY.Text = alignResultLeftY.Panel.Judgement.ToString();
 
+            //var display = TeachingUIManager.Instance().GetDisplay();
+            //display.UpdateResult(alignResultLeftY.Fpc);
+            //display.UpdateResult(alignResultLeftY.Panel);
+            AddAlignCaliperResult(alignResultLeftY.Fpc);
+            AddAlignCaliperResult(alignResultLeftY.Panel);
+
             return value_um;
         }
 
@@ -542,6 +565,12 @@ namespace Jastech.Apps.Winform.UI.Controls
 
             lblRightX_FpcX.Text = alignResultRightX.Fpc.Judgement.ToString();
             lblRightX_PanelX.Text = alignResultRightX.Panel.Judgement.ToString();
+
+            //var display = TeachingUIManager.Instance().GetDisplay();
+            //display.UpdateResult(alignResultRightX.Fpc);
+            //display.UpdateResult(alignResultRightX.Panel);
+            AddAlignCaliperResult(alignResultRightX.Fpc);
+            AddAlignCaliperResult(alignResultRightX.Panel);
 
             return value_um;
         }
@@ -564,7 +593,28 @@ namespace Jastech.Apps.Winform.UI.Controls
             lblRightY_FpcY.Text = alignResultRightY.Fpc.Judgement.ToString();
             lblRightY_PanelY.Text = alignResultRightY.Panel.Judgement.ToString();
 
+            //var display = TeachingUIManager.Instance().GetDisplay();
+            //display.UpdateResult(alignResultRightY.Fpc);
+            //display.UpdateResult(alignResultRightY.Panel);
+            AddAlignCaliperResult(alignResultRightY.Fpc);
+            AddAlignCaliperResult(alignResultRightY.Panel);
+
             return value_um;
+        }
+
+        private List<VisionProAlignCaliperResult> _displayCaliperResult = null;
+        private void AddAlignCaliperResult(VisionProAlignCaliperResult caliperResult)
+        {
+            _displayCaliperResult = new List<VisionProAlignCaliperResult>();
+            _displayCaliperResult.Add(caliperResult);
+        }
+
+        private List<VisionProAlignCaliperResult> GetDisplayAlignCaliperResult()
+        {
+            if (_displayCaliperResult.Count <= 0)
+                return null;
+
+            return _displayCaliperResult;
         }
         #endregion
     }

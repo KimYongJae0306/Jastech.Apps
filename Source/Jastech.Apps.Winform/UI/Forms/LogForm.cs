@@ -355,7 +355,8 @@ namespace Jastech.Framework.Winform.Forms
             {
                 CogDisplayControl.ClearImage();
 
-                string filePath = Path.Combine(Path.GetDirectoryName(fullPath), "Origin", Path.GetFileName(fullPath));
+                //string filePath = Path.Combine(Path.GetDirectoryName(fullPath), "Origin", Path.GetFileName(fullPath));
+                string filePath = fullPath;
 
                 Mat image = new Mat(filePath, ImreadModes.Grayscale);
                 int size = image.Width * image.Height * image.NumberOfChannels;

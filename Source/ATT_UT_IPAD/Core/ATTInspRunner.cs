@@ -329,6 +329,10 @@ namespace ATT_UT_IPAD.Core
                     //AlignCamera.InitGrabSettings(AppsConfig.Instance().CameraGap_mm);
                     InitializeBuffer();
 
+                    // 아래에서 위로 위치 변경
+                    AkkonLAFCtrl.SetTrackingOnOFF(true);
+                    AlignLAFCtrl.SetTrackingOnOFF(true);
+
                     WriteLog("Receive Inspection Start Signal From PLC.", true);
 
                     AppsInspResult.Instance().ClearResult();
@@ -353,12 +357,12 @@ namespace ATT_UT_IPAD.Core
 
                     AlignCamera.SetOperationMode(TDIOperationMode.TDI);
                     AlignCamera.StartGrab();
-                    AlignLAFCtrl.SetTrackingOnOFF(true);
+                    //AlignLAFCtrl.SetTrackingOnOFF(true);  // 위치 변경
                     WriteLog("Start Align LineScanner Grab.", true);
                     Thread.Sleep(50);
                     AkkonCamera.SetOperationMode(TDIOperationMode.TDI);
                     AkkonCamera.StartGrab();
-                    AkkonLAFCtrl.SetTrackingOnOFF(true);
+                    //AkkonLAFCtrl.SetTrackingOnOFF(true);  // 위치 변경
                     WriteLog("Start Akkon LineScanner Grab.", true);
                     
                     Thread.Sleep(50);
