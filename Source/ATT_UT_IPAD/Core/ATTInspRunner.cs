@@ -502,13 +502,16 @@ namespace ATT_UT_IPAD.Core
                         var tab = inspModel.GetUnit(UnitName.Unit0).GetTab(tabNo);
 
                         // Overlay Image
-                        Mat resultMat = GetResultImage(tabResult.AkkonInspMatImage, tabResult.AkkonResult.LeadResultList, tab.AkkonParam.AkkonAlgoritmParam);
-                        ICogImage cogImage = ConvertCogColorImage(resultMat);
-                        tabResult.AkkonResultCogImage = cogImage;
-                        resultMat.Dispose();
+                        if(tabResult.AkkonInspMatImage != null)
+                        {
+                            Mat resultMat = GetResultImage(tabResult.AkkonInspMatImage, tabResult.AkkonResult.LeadResultList, tab.AkkonParam.AkkonAlgoritmParam);
+                            ICogImage cogImage = ConvertCogColorImage(resultMat);
+                            tabResult.AkkonResultCogImage = cogImage;
+                            resultMat.Dispose();
 
-                        // AkkonInspCogImage
-                        tabResult.AkkonInspCogImage = ConvertCogGrayImage(tabResult.AkkonInspMatImage);
+                            // AkkonInspCogImage
+                            tabResult.AkkonInspCogImage = ConvertCogGrayImage(tabResult.AkkonInspMatImage);
+                        }
 
                         sw.Stop();
                         Console.WriteLine(string.Format("Get Akkon Result Image_Tab{0} : {1}ms", tabNo, sw.ElapsedMilliseconds.ToString()));

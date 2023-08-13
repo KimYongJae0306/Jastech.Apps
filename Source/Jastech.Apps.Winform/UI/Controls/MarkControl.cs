@@ -385,8 +385,6 @@ namespace Jastech.Apps.Winform.UI.Controls
             PointF originPoint = GetMainOrginPoint();
 
             VisionProPatternMatchingResult result = Algorithm.RunPatternMatch(copyCogImage, inspParam);
-            double gapX = result.MatchPosList[0].FoundPos.X - originPoint.X;
-            double gapY = result.MatchPosList[0].FoundPos.Y - originPoint.Y;
 
             if (result == null)
             {

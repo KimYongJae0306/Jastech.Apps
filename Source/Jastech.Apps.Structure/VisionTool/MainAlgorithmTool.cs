@@ -102,7 +102,7 @@ namespace Jastech.Apps.Structure.VisionTool
 
         public void MainMarkInspect(ICogImage cogImage, Tab tab, ref TabInspResult tabInspResult, bool useAlignMark)
         {
-            tabInspResult.MarkResult.FpcMark = RunFpcMark(cogImage, tab, useAlignMark);     
+            tabInspResult.MarkResult.FpcMark = RunFpcMark(cogImage, tab, useAlignMark);
             tabInspResult.MarkResult.PanelMark = RunPanelMark(cogImage, tab, useAlignMark);
         }
 

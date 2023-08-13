@@ -120,6 +120,10 @@ namespace Jastech.Apps.Structure.Data
 
         public MarkResult PanelMark { get; set; } = null;
 
+        public double OffsetX { get; set; } = 0;
+
+        public double OffsetY { get; set; } = 0;
+
         public Judgement Judgement
         {
             get
