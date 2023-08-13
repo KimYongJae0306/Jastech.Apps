@@ -503,7 +503,7 @@ namespace Jastech.Apps.Winform.UI.Controls
             lblLeftX_Judgement.Text = alignResultLeftX.Judgement.ToString();
             if (alignResultLeftX.Judgement != Judgement.FAIL)
             {
-                lblLeftX_Value.Text = value_um.ToString("F3");
+                lblLeftX_Value.Text = value_um.ToString("F2");
             }
             else
                 lblLeftX_Value.Text = "-";
@@ -531,7 +531,7 @@ namespace Jastech.Apps.Winform.UI.Controls
 
             if (alignResultLeftY.Judgement != Judgement.FAIL)
             {
-                lblLeftY_Value.Text = value_um.ToString("F3");
+                lblLeftY_Value.Text = value_um.ToString("F2");
             }
             else
                 lblLeftY_Value.Text = "-";
@@ -558,7 +558,7 @@ namespace Jastech.Apps.Winform.UI.Controls
             lblRightX_Judgement.Text = alignResultRightX.Judgement.ToString();
             if (alignResultRightX.Judgement != Judgement.FAIL)
             {
-                lblRightX_Value.Text = value_um.ToString("F3");
+                lblRightX_Value.Text = value_um.ToString("F2");
             }
             else
                 lblRightX_Value.Text = "-";
@@ -585,7 +585,7 @@ namespace Jastech.Apps.Winform.UI.Controls
             lblRightY_Judgement.Text = alignResultRightY.Judgement.ToString();
             if (alignResultRightY.Judgement != Judgement.FAIL)
             {
-                lblRightY_Value.Text = value_um.ToString("F3");
+                lblRightY_Value.Text = value_um.ToString("F2");
             }
             else
                 lblRightY_Value.Text = "-";
