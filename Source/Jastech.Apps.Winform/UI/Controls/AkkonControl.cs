@@ -23,6 +23,7 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
 
@@ -109,6 +110,8 @@ namespace Jastech.Apps.Winform.UI.Controls
         {
             _selectedColor = Color.FromArgb(104, 104, 104);
             _nonSelectedColor = Color.FromArgb(52, 52, 52);
+
+            dgvAkkonROI.DoubleBuffered(true);
 
             dgvJastechAkkonResult.Dock = DockStyle.Fill;
             tlpnlGroup.Dock = DockStyle.Fill;
@@ -404,8 +407,8 @@ namespace Jastech.Apps.Winform.UI.Controls
 
             if (selectedIndex != null)
             {
-                //foreach (var item in selectedIndex)
-                //    dgvAkkonROI.Rows[item].Selected = true;
+                foreach (var item in selectedIndex)
+                    dgvAkkonROI.Rows[item].Selected = true;
             }
         }
 
@@ -1985,6 +1988,18 @@ namespace Jastech.Apps.Winform.UI.Controls
             form.SetUnitName(UnitName.Unit0);
             form.ShowDialog();
         }
+
+
         #endregion
+    }
+
+    public static class ExtensionMethods
+    {
+        public static void DoubleBuffered(this DataGridView dgv, bool setting)
+        {
+            Type dgvType = dgv.GetType();
+            PropertyInfo pi = dgvType.GetProperty("DoubleBuffered", BindingFlags.Instance | BindingFlags.NonPublic);
+            pi.SetValue(dgv, setting, null);
+        }
     }
 }
