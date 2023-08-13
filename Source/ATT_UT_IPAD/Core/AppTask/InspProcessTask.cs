@@ -139,6 +139,7 @@ namespace ATT_UT_IPAD.Core.AppTask
         //Align Camera로 Align만 검사
         private void RunAlign(ATTInspTab inspTab)
         {
+            Console.WriteLine("Test");
             Stopwatch sw = new Stopwatch();
             sw.Restart();
 

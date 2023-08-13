@@ -393,10 +393,16 @@ namespace Jastech.Apps.Winform.UI.Controls
             display.ClearGraphic();
 
             List<CogCompositeShape> shapeList = new List<CogCompositeShape>();
-            shapeList.Add(leftFpc);
-            shapeList.Add(rightFpc);
-            shapeList.Add(leftPanel);
-            shapeList.Add(rightPanel);
+            if(foundedFpcMark.Left.Found)
+                shapeList.Add(leftFpc);
+
+            if (foundedFpcMark.Right.Found)
+                shapeList.Add(rightFpc);
+            if (foundedPanelMark.Left.Found)
+                shapeList.Add(leftPanel);
+            if (foundedPanelMark.Right.Found)
+                shapeList.Add(rightPanel);
+
             display.UpdateGraphic(shapeList);
         }
 
