@@ -7,6 +7,7 @@ using Jastech.Framework.Imaging.Result;
 using Jastech.Framework.Imaging.VisionPro;
 using Jastech.Framework.Imaging.VisionPro.VisionAlgorithms.Parameters;
 using Jastech.Framework.Imaging.VisionPro.VisionAlgorithms.Results;
+using Jastech.Framework.Util;
 using Jastech.Framework.Winform.Forms;
 using Jastech.Framework.Winform.Helper;
 using Jastech.Framework.Winform.VisionPro.Controls;
@@ -22,7 +23,6 @@ namespace Jastech.Apps.Winform.UI.Controls
     {
         #region 필드
         private string _prevTabName { get; set; } = string.Empty;
-
 
         private Color _selectedColor = new Color();
 
@@ -457,40 +457,117 @@ namespace Jastech.Apps.Winform.UI.Controls
         public void Run()
         {
             var display = TeachingUIManager.Instance().GetDisplay();
-
-            var currentParam = CogCaliperParamControl.GetCurrentParam();
-
-            if (display == null || currentParam == null || CurrentTab == null)
+            if (display == null)
                 return;
-
-            if (display.GetImage() == null)
-                return;
-
-            var param = CurrentTab.GetAlignParam(CurrentAlignName);
 
             ICogImage cogImage = display.GetImage();
-            double lx = RunLeftX(cogImage);
-            double ly = RunLeftY(cogImage);
-            double rx = RunRightX(cogImage);
-            double ry = RunRightY(cogImage);
+            if (cogImage == null)
+                return;
 
-            if (lblLeftX_Value.Text == "-" || lblRightX_Value.Text == "-")
-                lblCx_Value.Text = "";
-            else
+            MainAlgorithmTool algorithmTool = new MainAlgorithmTool();
+            TabInspResult tabInspResult = new TabInspResult();
+
+            algorithmTool.MainMarkInspect(cogImage, CurrentTab, ref tabInspResult, true);
+
+            if (tabInspResult.MarkResult.Judgement != Judgement.OK)
             {
-                double cx = (lx + rx) / 2.0;
-                lblCx_Value.Text = cx.ToString("F2");
+                // 검사 실패
+                string message = string.Format("Mark Inspection NG !!! Tab_{0} / Fpc_{1}, Panel_{2}", CurrentTab.Index,
+                    tabInspResult.MarkResult.FpcMark.Judgement, tabInspResult.MarkResult.PanelMark.Judgement);
+
+                MessageConfirmForm form = new MessageConfirmForm();
+                form.Message = message;
+                form.ShowDialog();
+                return;
+            }
+            // Create Coordinate Object
+            CoordinateTransform fpcCoordinate = new CoordinateTransform();
+            CoordinateTransform panelCoordinate = new CoordinateTransform();
+
+            algorithmTool.GetAlignFpcLeftOffset(CurrentTab, tabInspResult, out double fpcLeftOffsetX, out double fpcLeftOffsetY);
+            algorithmTool.GetAlignFpcRightOffset(CurrentTab, tabInspResult, out double fpcRightOffsetX, out double fpcRightOffsetY);
+            SetFpcCoordinateData(fpcCoordinate, tabInspResult, fpcLeftOffsetX, fpcLeftOffsetY, fpcRightOffsetX, fpcRightOffsetY);
+
+            algorithmTool.GetAlignPanelLeftOffset(CurrentTab, tabInspResult, out double panelLeftOffsetX, out double panelLeftOffsetY);
+            algorithmTool.GetAlignPanelRightOffset(CurrentTab, tabInspResult, out double panelRightOffsetX, out double panelRightOffsetY);
+            SetPanelCoordinateData(panelCoordinate, tabInspResult, panelLeftOffsetX, panelLeftOffsetY, panelRightOffsetX, panelRightOffsetY);
+
+            // Excuete Coordinate
+            fpcCoordinate.ExecuteCoordinate();
+            panelCoordinate.ExecuteCoordinate();
+
+            double judgementX = CurrentTab.AlignSpec.LeftSpecX_um / Resolution_um;
+            double judgementY = CurrentTab.AlignSpec.LeftSpecY_um / Resolution_um;
+
+            tabInspResult.AlignResult.LeftX = algorithmTool.RunMainLeftAlignX(cogImage, CurrentTab, fpcCoordinate, panelCoordinate, judgementX);
+            tabInspResult.AlignResult.LeftY = algorithmTool.RunMainLeftAlignY(cogImage, CurrentTab, fpcCoordinate, panelCoordinate, judgementY);
+            tabInspResult.AlignResult.RightX = algorithmTool.RunMainRightAlignX(cogImage, CurrentTab, fpcCoordinate, panelCoordinate, judgementX);
+            tabInspResult.AlignResult.RightY = algorithmTool.RunMainRightAlignY(cogImage, CurrentTab, fpcCoordinate, panelCoordinate, judgementY);
+            tabInspResult.AlignResult.CenterX = Math.Abs(tabInspResult.AlignResult.LeftX.ResultValue_pixel - tabInspResult.AlignResult.RightX.ResultValue_pixel);
+
+            display.ClearGraphic();
+
+            List<CogCompositeShape> shapeList = new List<CogCompositeShape>();
+            shapeList.AddRange(GetAlignResultGraphics(tabInspResult.AlignResult.LeftX));
+            shapeList.AddRange(GetAlignResultGraphics(tabInspResult.AlignResult.LeftY));
+            shapeList.AddRange(GetAlignResultGraphics(tabInspResult.AlignResult.RightX));
+            shapeList.AddRange(GetAlignResultGraphics(tabInspResult.AlignResult.RightY));
+
+            display.UpdateGraphic(shapeList);
+        }
+
+        private List<CogCompositeShape> GetAlignResultGraphics(AlignResult alignResult)
+        {
+            List<CogCompositeShape> shapeList = new List<CogCompositeShape>();
+            if(alignResult.Fpc.CogAlignResult.Count() > 0)
+            {
+                foreach (var result in alignResult.Fpc.CogAlignResult)
+                {
+                    if (result.Found)
+                        shapeList.Add(result.MaxCaliperMatch.ResultGraphics);
+                }
             }
 
-            List<VisionProAlignCaliperResult> alignCaliperResultList = new List<VisionProAlignCaliperResult>();
-            alignCaliperResultList = GetDisplayAlignCaliperResult();
-            display.UpdateResult(alignCaliperResultList);
+            if (alignResult.Panel.CogAlignResult.Count() > 0)
+            {
+                foreach (var result in alignResult.Panel.CogAlignResult)
+                {
+                    if (result.Found)
+                        shapeList.Add(result.MaxCaliperMatch.ResultGraphics);
+                }
+            }
 
-            //foreach (var item in alignResultList)
-            //{
-            //    display.UpdateResult(item.Fpc);
-            //    display.UpdateResult(item.Panel);
-            //}
+            return shapeList;
+        }
+
+        private void SetFpcCoordinateData(CoordinateTransform fpc, TabInspResult tabInspResult, double leftOffsetX, double leftOffsetY, double rightOffsetX, double rightOffsetY)
+        {
+            var teachingLeftPoint = tabInspResult.MarkResult.FpcMark.FoundedMark.Left.MaxMatchPos.ReferencePos;
+            PointF teachedLeftPoint = new PointF(teachingLeftPoint.X + (float)leftOffsetX, teachingLeftPoint.Y + (float)leftOffsetY);
+
+            PointF searchedLeftPoint = tabInspResult.MarkResult.FpcMark.FoundedMark.Left.MaxMatchPos.FoundPos;
+
+            var teachingRightPoint = tabInspResult.MarkResult.FpcMark.FoundedMark.Right.MaxMatchPos.ReferencePos;
+            PointF teachedRightPoint = new PointF(teachingRightPoint.X + (float)rightOffsetX, teachingRightPoint.Y + (float)rightOffsetY);
+
+            PointF searchedRightPoint = tabInspResult.MarkResult.FpcMark.FoundedMark.Right.MaxMatchPos.FoundPos;
+
+            fpc.SetReferenceData(teachedLeftPoint, teachedRightPoint);
+            fpc.SetTargetData(searchedLeftPoint, searchedRightPoint);
+        }
+
+        private void SetPanelCoordinateData(CoordinateTransform panel, TabInspResult tabInspResult, double leftOffsetX, double leftOffsetY, double rightOffsetX, double rightOffsetY)
+        {
+            var teachingLeftPoint = tabInspResult.MarkResult.PanelMark.FoundedMark.Left.MaxMatchPos.ReferencePos;
+            PointF teachedLeftPoint = new PointF(teachingLeftPoint.X + (float)leftOffsetX, teachingLeftPoint.Y + (float)leftOffsetY);
+            PointF searchedLeftPoint = tabInspResult.MarkResult.PanelMark.FoundedMark.Left.MaxMatchPos.FoundPos;
+
+            var teachingRightPoint = tabInspResult.MarkResult.PanelMark.FoundedMark.Right.MaxMatchPos.ReferencePos;
+            PointF teachedRightPoint = new PointF(teachingRightPoint.X + (float)rightOffsetX, teachingRightPoint.Y + (float)rightOffsetY);
+            PointF searchedRightPoint = tabInspResult.MarkResult.PanelMark.FoundedMark.Right.MaxMatchPos.FoundPos;
+
+            panel.SetReferenceData(teachedLeftPoint, teachedRightPoint);
+            panel.SetTargetData(searchedLeftPoint, searchedRightPoint);
         }
 
         private double RunLeftX(ICogImage cogImage)

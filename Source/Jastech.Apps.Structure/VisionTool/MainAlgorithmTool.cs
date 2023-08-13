@@ -300,6 +300,8 @@ namespace Jastech.Apps.Structure.VisionTool
                 if (leftResult == null)
                     continue;
 
+                leftResult.Name = markName.ToString();
+
                 if (leftResult.Judgement == Judgement.OK)
                 {
                     matchingResult.Left = leftResult;
@@ -321,6 +323,8 @@ namespace Jastech.Apps.Structure.VisionTool
                 var rightResult = RunPatternMatch(cogImage, rightParam.InspParam);
                 if (rightResult == null)
                     continue;
+
+                rightResult.Name = markName.ToString();
 
                 if (rightResult.Judgement == Judgement.OK)
                 {
@@ -353,6 +357,8 @@ namespace Jastech.Apps.Structure.VisionTool
                 if (leftResult == null)
                     continue;
 
+                leftResult.Name = markName.ToString();
+
                 if (leftResult.Judgement == Judgement.OK)
                 {
                     matchingResult.Left = leftResult;
@@ -376,6 +382,8 @@ namespace Jastech.Apps.Structure.VisionTool
                 var rightResult = RunPatternMatch(cogImage, rightParam.InspParam);
                 if (rightResult == null)
                     continue;
+
+                rightResult.Name = markName.ToString();
 
                 if (rightResult.Judgement == Judgement.OK)
                 {
@@ -433,6 +441,54 @@ namespace Jastech.Apps.Structure.VisionTool
             roi.SetOriginCornerXCornerY(originX, originY, cornerXX, cornerXY, cornerYX, cornerYY);
 
             return roi;
+        }
+
+        public void GetAlignFpcLeftOffset(Tab tab, TabInspResult tabInspResult, out double offsetX, out double offsetY)
+        {
+            double fpcRefX = tabInspResult.MarkResult.FpcMark.FoundedMark.Left.MaxMatchPos.ReferencePos.X;
+            double fpcRefY = tabInspResult.MarkResult.FpcMark.FoundedMark.Left.MaxMatchPos.ReferencePos.Y;
+
+            var mainFPCMark = tab.MarkParamter.GetFPCMark(MarkDirection.Left, MarkName.Main, true);
+            var mainOrigin = mainFPCMark.InspParam.GetOrigin();
+
+            offsetX = mainOrigin.TranslationX - fpcRefX;
+            offsetY = mainOrigin.TranslationY - fpcRefY;
+        }
+
+        public void GetAlignFpcRightOffset(Tab tab, TabInspResult tabInspResult, out double offsetX, out double offsetY)
+        {
+            double fpcRefX = tabInspResult.MarkResult.FpcMark.FoundedMark.Right.MaxMatchPos.ReferencePos.X;
+            double fpcRefY = tabInspResult.MarkResult.FpcMark.FoundedMark.Right.MaxMatchPos.ReferencePos.Y;
+
+            var mainFPCMark = tab.MarkParamter.GetFPCMark(MarkDirection.Right, MarkName.Main, true);
+            var mainOrigin = mainFPCMark.InspParam.GetOrigin();
+
+            offsetX = mainOrigin.TranslationX - fpcRefX;
+            offsetY = mainOrigin.TranslationY - fpcRefY;
+        }
+
+        public void GetAlignPanelLeftOffset(Tab tab, TabInspResult tabInspResult, out double offsetX, out double offsetY)
+        {
+            double panelRefX = tabInspResult.MarkResult.PanelMark.FoundedMark.Left.MaxMatchPos.ReferencePos.X;
+            double panelRefY = tabInspResult.MarkResult.PanelMark.FoundedMark.Left.MaxMatchPos.ReferencePos.Y;
+
+            var mainPanelMark = tab.MarkParamter.GetPanelMark(MarkDirection.Left, MarkName.Main, true);
+            var mainOrigin = mainPanelMark.InspParam.GetOrigin();
+
+            offsetX = mainOrigin.TranslationX - panelRefX;
+            offsetY = mainOrigin.TranslationY - panelRefY;
+        }
+
+        public void GetAlignPanelRightOffset(Tab tab, TabInspResult tabInspResult, out double offsetX, out double offsetY)
+        {
+            double panelRefX = tabInspResult.MarkResult.PanelMark.FoundedMark.Right.MaxMatchPos.ReferencePos.X;
+            double panelRefY = tabInspResult.MarkResult.PanelMark.FoundedMark.Right.MaxMatchPos.ReferencePos.Y;
+
+            var mainPanelMark = tab.MarkParamter.GetPanelMark(MarkDirection.Right, MarkName.Main, true);
+            var mainOrigin = mainPanelMark.InspParam.GetOrigin();
+
+            offsetX = mainOrigin.TranslationX - panelRefX;
+            offsetY = mainOrigin.TranslationY - panelRefY;
         }
     }
 

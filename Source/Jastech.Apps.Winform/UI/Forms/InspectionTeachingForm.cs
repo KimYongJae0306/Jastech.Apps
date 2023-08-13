@@ -278,6 +278,9 @@ namespace Jastech.Framework.Winform.Forms
             pnlTeach.Controls.Clear();
             TeachingUIManager.Instance().GetDisplay().ClearGraphic();
 
+            var orgImage = TeachingUIManager.Instance().GetOriginCogImageBuffer(false);
+            if (orgImage != null)
+                TeachingUIManager.Instance().GetDisplay().SetImage(orgImage);
             switch (type)
             {
                 case DisplayType.Mark:
@@ -299,7 +302,7 @@ namespace Jastech.Framework.Winform.Forms
                 case DisplayType.Akkon:
                     btnAkkon.BackColor = _selectedColor;
                     AkkonControl.SetParams(CurrentTab);
-                    AkkonControl.Resolution = LineCamera.Camera.PixelResolution_um / LineCamera.Camera.LensScale;
+                    AkkonControl.Resolution_um = LineCamera.Camera.PixelResolution_um / LineCamera.Camera.LensScale;
 
                     if (UserManager.Instance().CurrentUser.Type == AuthorityType.Maker)
                         AkkonControl.SetUserMaker(true);
@@ -630,7 +633,7 @@ namespace Jastech.Framework.Winform.Forms
         private void lblInspection_Click(object sender, EventArgs e)
         {
             if (_displayType == DisplayType.Mark)
-                MarkControl.Inspection();
+                MarkControl.Run();
             else if (_displayType == DisplayType.Align)
                 AlignControl.Run();
             else if (_displayType == DisplayType.Akkon)

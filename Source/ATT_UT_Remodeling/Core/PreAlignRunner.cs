@@ -434,7 +434,7 @@ namespace ATT_UT_Remodeling
             } 
         }
 
-        private VisionProPatternMatchingResult RunPreAlignMark(Unit unit, ICogImage cogImage, MarkDirection markDirection)
+        private VisionProPatternMatchingResult RunPreAlignMark( Unit unit, ICogImage cogImage, MarkDirection markDirection)
         {
             var preAlignParam = unit.PreAlign.AlignParamList.Where(x => x.Direction == markDirection).FirstOrDefault();
 

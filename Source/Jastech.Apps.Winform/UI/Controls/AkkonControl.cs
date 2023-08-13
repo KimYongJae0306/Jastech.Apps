@@ -16,6 +16,7 @@ using Jastech.Framework.Imaging.Helper;
 using Jastech.Framework.Imaging.Result;
 using Jastech.Framework.Imaging.VisionAlgorithms;
 using Jastech.Framework.Imaging.VisionPro;
+using Jastech.Framework.Util;
 using Jastech.Framework.Winform.Forms;
 using Jastech.Framework.Winform.Helper;
 using Jastech.Framework.Winform.VisionPro.Controls;
@@ -70,7 +71,7 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         private bool UserMaker { get; set; } = false;
 
-        public float Resolution { get; set; } = 0.0F; // ex :  /camera.PixelResolution_mm(0.0035) / camera.LensScale(5) / 1000;
+        public float Resolution_um { get; set; } = 0.0F; // ex :  /camera.PixelResolution_mm(0.0035) / camera.LensScale(5) / 1000;
 
         public bool IsReScaling { get; set; } = false;
 
@@ -282,8 +283,8 @@ namespace Jastech.Apps.Winform.UI.Controls
             CogRectangleAffineDOFConstants constants = CogRectangleAffineDOFConstants.Position | CogRectangleAffineDOFConstants.Size | CogRectangleAffineDOFConstants.Skew;
 
             float akkonResizeRatio = CurrentTab.AkkonParam.AkkonAlgoritmParam.ImageFilterParam.ResizeRatio;
-            float calcRoiWidth_um = roiwidth * Resolution / akkonResizeRatio;
-            float calcRoiHeight_um = roiwidth * Resolution / akkonResizeRatio;
+            float calcRoiWidth_um = roiwidth * Resolution_um / akkonResizeRatio;
+            float calcRoiHeight_um = roiwidth * Resolution_um / akkonResizeRatio;
 
             _firstCogRectAffine = VisionProImageHelper.CreateRectangleAffine(centerX, centerY, calcRoiWidth_um, calcRoiHeight_um, constants: constants);
 
@@ -704,10 +705,10 @@ namespace Jastech.Apps.Winform.UI.Controls
             var leadCount = CurrentTab.GetAkkonGroup(groupIndex).Count;
             AkkonROI firstRoi = GetFirstROI();
 
-            if (Resolution == 0)
+            if (Resolution_um == 0)
                 return;
 
-            float calcResolution = Resolution / CurrentTab.AkkonParam.AkkonAlgoritmParam.ImageFilterParam.ResizeRatio;
+            float calcResolution = Resolution_um / CurrentTab.AkkonParam.AkkonAlgoritmParam.ImageFilterParam.ResizeRatio;
 
             for (int leadIndex = 0; leadIndex < leadCount; leadIndex++)
             {
@@ -1559,7 +1560,7 @@ namespace Jastech.Apps.Winform.UI.Controls
             return group;
         }
 
-        public void Inspection(bool isDebug = true)
+        public void Inspection()
         {
             int groupIndex = cbxGroupNumber.SelectedIndex;
             if (groupIndex < 0 || CurrentTab == null)
@@ -1578,15 +1579,15 @@ namespace Jastech.Apps.Winform.UI.Controls
             var roiList = CurrentTab.AkkonParam.GetAkkonROIList();
 
             Judgement tabJudgement = Judgement.NG;
-            var tabResult = AkkonAlgorithm.Run(matImage, roiList, akkonAlgorithmParam, Resolution, ref tabJudgement);
+            var tabResult = AkkonAlgorithm.Run(matImage, roiList, akkonAlgorithmParam, Resolution_um, ref tabJudgement);
 
             UpdateResult(tabResult);
 
             Mat resultMat = null;
-            if (isDebug)
+            //if (isDebug)
                 resultMat = GetDebugResultImage(matImage, tabResult, akkonAlgorithmParam);
-            else
-                resultMat = GetResultImage(matImage, tabResult, akkonAlgorithmParam);
+            //else
+            //    resultMat = GetResultImage(matImage, tabResult, akkonAlgorithmParam);
 
             Mat resizeMat = MatHelper.Resize(matImage, akkonAlgorithmParam.ImageFilterParam.ResizeRatio);
             var akkonCogImage = ConvertCogGrayImage(resizeMat);
@@ -1617,7 +1618,7 @@ namespace Jastech.Apps.Winform.UI.Controls
             CvInvoke.CvtColor(resizeMat, colorMat, ColorConversion.Gray2Bgr);
             resizeMat.Dispose();
 
-            float calcResolution = Resolution / CurrentTab.AkkonParam.AkkonAlgoritmParam.ImageFilterParam.ResizeRatio;
+            float calcResolution = Resolution_um / CurrentTab.AkkonParam.AkkonAlgoritmParam.ImageFilterParam.ResizeRatio;
             MCvScalar redColor = new MCvScalar(50, 50, 230, 255);
             MCvScalar greenColor = new MCvScalar(50, 230, 50, 255);
 
@@ -1957,12 +1958,142 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         private void lblTest_Click(object sender, EventArgs e)
         {
-            Inspection(true);
+            Inspection();
         }
 
         public void Run()
         {
-            Inspection(false);
+            var display = TeachingUIManager.Instance().GetDisplay();
+            if (display == null)
+                return;
+
+            ICogImage cogImage = display.GetImage();
+            if (cogImage == null)
+                return;
+
+            Mat matImage = TeachingUIManager.Instance().GetOriginMatImageBuffer(false);
+            if (matImage == null)
+                return;
+
+            ICogImage orgCogImage = TeachingUIManager.Instance().GetOriginCogImageBuffer(false);
+
+            MainAlgorithmTool algorithmTool = new MainAlgorithmTool();
+            TabInspResult tabInspResult = new TabInspResult();
+            // Create Coordinate Object
+
+            algorithmTool.MainMarkInspect(orgCogImage, CurrentTab, ref tabInspResult, true);
+
+            if (tabInspResult.MarkResult.Judgement != Judgement.OK)
+            {
+                // 검사 실패
+                string message = string.Format("Mark Inspection NG !!! Tab_{0} / Fpc_{1}, Panel_{2}", CurrentTab.Index,
+                    tabInspResult.MarkResult.FpcMark.Judgement, tabInspResult.MarkResult.PanelMark.Judgement);
+
+                MessageConfirmForm form = new MessageConfirmForm();
+                form.Message = message;
+                form.ShowDialog();
+                return;
+            }
+
+            CoordinateTransform panelCoordinate = new CoordinateTransform();
+
+            // Set Coordinate Params
+            algorithmTool.GetAlignPanelLeftOffset(CurrentTab, tabInspResult, out double panelLeftOffsetX, out double panelLeftOffsetY);
+            algorithmTool.GetAlignPanelRightOffset(CurrentTab, tabInspResult, out double panelRightOffsetX, out double panelRightOffsetY);
+            SetPanelCoordinateData(panelCoordinate, tabInspResult, panelLeftOffsetX, panelLeftOffsetY, panelRightOffsetX, panelRightOffsetY);
+
+            // Excuete Coordinate
+            panelCoordinate.ExecuteCoordinate();
+            var akkonParam = CurrentTab.AkkonParam.AkkonAlgoritmParam;
+
+            var roiList = CurrentTab.AkkonParam.GetAkkonROIList();
+            var coordinateList = RenewalAkkonRoi(roiList, panelCoordinate);
+
+            Judgement tabJudgement = Judgement.NG;
+            var leadResultList = AkkonAlgorithm.Run(matImage, coordinateList, akkonParam, Resolution_um, ref tabJudgement);
+            tabInspResult.AkkonResult = new Framework.Algorithms.Akkon.Results.AkkonResult();
+            tabInspResult.AkkonResult.Judgement = tabJudgement;
+            tabInspResult.AkkonInspMatImage = AkkonAlgorithm.ResizeMat;
+
+            Mat resultMat = GetResultImage(matImage, leadResultList, akkonParam);
+            tabInspResult.AkkonResultCogImage = ConvertCogColorImage(resultMat);
+
+            Mat resizeMat = MatHelper.Resize(matImage, akkonParam.ImageFilterParam.ResizeRatio);
+            var akkonCogImage = ConvertCogGrayImage(resizeMat);
+            TeachingUIManager.Instance().SetAkkonCogImage(akkonCogImage);
+
+            var resultCogImage = ConvertCogColorImage(resultMat);
+            TeachingUIManager.Instance().SetResultCogImage(resultCogImage);
+
+            resizeMat.Dispose();
+            resultMat.Dispose();
+            ClearDisplay();
+            Console.WriteLine("Completed.");
+
+            lblOrginalImage.BackColor = _nonSelectedColor;
+            lblResizeImage.BackColor = _nonSelectedColor;
+            lblResultImage.BackColor = _selectedColor;
+
+
+        }
+
+        private List<AkkonROI> RenewalAkkonRoi(List<AkkonROI> roiList, CoordinateTransform panelCoordinate)
+        {
+            List<AkkonROI> newList = new List<AkkonROI>();
+
+            foreach (var item in roiList)
+            {
+                PointF leftTop = item.GetLeftTopPoint();
+                PointF rightTop = item.GetRightTopPoint();
+                PointF leftBottom = item.GetLeftBottomPoint();
+                PointF rightBottom = item.GetRightBottomPoint();
+
+                var newLeftTop = panelCoordinate.GetCoordinate(leftTop);
+                var newRightTop = panelCoordinate.GetCoordinate(rightTop);
+                var newLeftBottom = panelCoordinate.GetCoordinate(leftBottom);
+                var newRightBottom = panelCoordinate.GetCoordinate(rightBottom);
+
+                AkkonROI akkonRoi = new AkkonROI();
+
+                akkonRoi.SetLeftTopPoint(newLeftTop);
+                akkonRoi.SetRightTopPoint(newRightTop);
+                akkonRoi.SetLeftBottomPoint(newLeftBottom);
+                akkonRoi.SetRightBottomPoint(newRightBottom);
+
+                newList.Add(akkonRoi);
+            }
+
+            return newList;
+        }
+
+        private void SetFpcCoordinateData(CoordinateTransform fpc, TabInspResult tabInspResult, double leftOffsetX, double leftOffsetY, double rightOffsetX, double rightOffsetY)
+        {
+            var teachingLeftPoint = tabInspResult.MarkResult.FpcMark.FoundedMark.Left.MaxMatchPos.ReferencePos;
+            PointF teachedLeftPoint = new PointF(teachingLeftPoint.X + (float)leftOffsetX, teachingLeftPoint.Y + (float)leftOffsetY);
+
+            PointF searchedLeftPoint = tabInspResult.MarkResult.FpcMark.FoundedMark.Left.MaxMatchPos.FoundPos;
+
+            var teachingRightPoint = tabInspResult.MarkResult.FpcMark.FoundedMark.Right.MaxMatchPos.ReferencePos;
+            PointF teachedRightPoint = new PointF(teachingRightPoint.X + (float)rightOffsetX, teachingRightPoint.Y + (float)rightOffsetY);
+
+            PointF searchedRightPoint = tabInspResult.MarkResult.FpcMark.FoundedMark.Right.MaxMatchPos.FoundPos;
+
+            fpc.SetReferenceData(teachedLeftPoint, teachedRightPoint);
+            fpc.SetTargetData(searchedLeftPoint, searchedRightPoint);
+        }
+
+        private void SetPanelCoordinateData(CoordinateTransform panel, TabInspResult tabInspResult, double leftOffsetX, double leftOffsetY, double rightOffsetX, double rightOffsetY)
+        {
+            var teachingLeftPoint = tabInspResult.MarkResult.PanelMark.FoundedMark.Left.MaxMatchPos.ReferencePos;
+            PointF teachedLeftPoint = new PointF(teachingLeftPoint.X + (float)leftOffsetX, teachingLeftPoint.Y + (float)leftOffsetY);
+            PointF searchedLeftPoint = tabInspResult.MarkResult.PanelMark.FoundedMark.Left.MaxMatchPos.FoundPos;
+
+            var teachingRightPoint = tabInspResult.MarkResult.PanelMark.FoundedMark.Right.MaxMatchPos.ReferencePos;
+            PointF teachedRightPoint = new PointF(teachingRightPoint.X + (float)rightOffsetX, teachingRightPoint.Y + (float)rightOffsetY);
+            PointF searchedRightPoint = tabInspResult.MarkResult.PanelMark.FoundedMark.Right.MaxMatchPos.FoundPos;
+
+            panel.SetReferenceData(teachedLeftPoint, teachedRightPoint);
+            panel.SetTargetData(searchedLeftPoint, searchedRightPoint);
         }
 
         private void dgvAkkonROI_SelectionChanged(object sender, EventArgs e)
@@ -1988,8 +2119,6 @@ namespace Jastech.Apps.Winform.UI.Controls
             form.SetUnitName(UnitName.Unit0);
             form.ShowDialog();
         }
-
-
         #endregion
     }
 

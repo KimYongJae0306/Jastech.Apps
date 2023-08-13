@@ -5,6 +5,7 @@ using Jastech.Apps.Structure;
 using Jastech.Apps.Structure.Data;
 using Jastech.Apps.Structure.Parameters;
 using Jastech.Apps.Structure.VisionTool;
+using Jastech.Framework.Imaging.Result;
 using Jastech.Framework.Imaging.VisionPro;
 using Jastech.Framework.Imaging.VisionPro.VisionAlgorithms.Parameters;
 using Jastech.Framework.Imaging.VisionPro.VisionAlgorithms.Results;
@@ -12,6 +13,7 @@ using Jastech.Framework.Util;
 using Jastech.Framework.Winform.Forms;
 using Jastech.Framework.Winform.VisionPro.Controls;
 using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
@@ -353,60 +355,49 @@ namespace Jastech.Apps.Winform.UI.Controls
                 display.SetDisplayToCenter(new Point((int)rect.CenterX, (int)rect.CenterY));
         }
 
-        public void Inspection()
+        public void Run()
         {
             var display = TeachingUIManager.Instance().GetDisplay();
-            var currentParam = ParamControl.GetCurrentParam();
-
-            if (display == null || currentParam == null)
+            if (display == null)
                 return;
 
             ICogImage cogImage = display.GetImage();
             if (cogImage == null)
                 return;
 
-            //int tabNo = cb
-            //TeachingData.Instance().GetUnit(UnitName.Unit0.ToString()).GetTab()
-            //MainAlgorithmTool algorithmTool = new MainAlgorithmTool();
-            //algorithmTool.MainMarkInspect(cogImage, tab, ref inspResult, true);
+            MainAlgorithmTool algorithmTool = new MainAlgorithmTool();
+            TabInspResult tabInspResult = new TabInspResult();
 
-            // 아랫부분 왜 주석?   해제함 : 20230722_1239
-            if (currentParam.IsTrained() == false)
+            algorithmTool.MainMarkInspect(cogImage, CurrentTab, ref tabInspResult, UseAlignMark);
+
+            if (tabInspResult.MarkResult.Judgement != Judgement.OK)
             {
+                // 검사 실패
+                string message = string.Format("Mark Inspection NG !!! Tab_{0} / Fpc_{1}, Panel_{2}", CurrentTab.Index,
+                    tabInspResult.MarkResult.FpcMark.Judgement, tabInspResult.MarkResult.PanelMark.Judgement);
+
                 MessageConfirmForm form = new MessageConfirmForm();
-                form.Message = "Pattern is not trained.";
+                form.Message = message;
                 form.ShowDialog();
                 return;
             }
 
-            VisionProPatternMatchingParam inspParam = currentParam.DeepCopy();
-            ICogImage copyCogImage = cogImage.CopyBase(CogImageCopyModeConstants.CopyPixels);
+            var foundedFpcMark = tabInspResult.MarkResult.FpcMark.FoundedMark;
+            var leftFpc = foundedFpcMark.Left.MaxMatchPos.ResultGraphics;
+            var rightFpc = foundedFpcMark.Right.MaxMatchPos.ResultGraphics;
 
-            PointF originPoint = GetMainOrginPoint();
+            var foundedPanelMark = tabInspResult.MarkResult.PanelMark.FoundedMark;
+            var leftPanel = foundedPanelMark.Left.MaxMatchPos.ResultGraphics;
+            var rightPanel = foundedPanelMark.Right.MaxMatchPos.ResultGraphics;
 
-            VisionProPatternMatchingResult result = Algorithm.RunPatternMatch(copyCogImage, inspParam);
+            display.ClearGraphic();
 
-            if (result == null)
-            {
-                inspParam.Dispose();
-                VisionProImageHelper.Dispose(ref copyCogImage);
-                return;
-            }
-            if (result.MatchPosList.Count > 0)
-            {
-                display.ClearGraphic();
-                display.UpdateResult(result);
-            }
-            else
-            {
-                MessageConfirmForm form = new MessageConfirmForm();
-                form.Message = "Pattern is Not Found.";
-                form.ShowDialog();
-            }
-
-            result.Dispose();
-            inspParam.Dispose();
-            VisionProImageHelper.Dispose(ref copyCogImage);
+            List<CogCompositeShape> shapeList = new List<CogCompositeShape>();
+            shapeList.Add(leftFpc);
+            shapeList.Add(rightFpc);
+            shapeList.Add(leftPanel);
+            shapeList.Add(rightPanel);
+            display.UpdateGraphic(shapeList);
         }
 
         private PointF GetMainOrginPoint()
@@ -545,6 +536,56 @@ namespace Jastech.Apps.Winform.UI.Controls
 
             //currentParam.SetSearchRegion(roi);
             DrawROI();
+        }
+
+        public void Inspection()
+        {
+            var display = TeachingUIManager.Instance().GetDisplay();
+            var currentParam = ParamControl.GetCurrentParam();
+
+            if (display == null || currentParam == null)
+                return;
+
+            ICogImage cogImage = display.GetImage();
+            if (cogImage == null)
+                return;
+
+            if (currentParam.IsTrained() == false)
+            {
+                MessageConfirmForm form = new MessageConfirmForm();
+                form.Message = "Pattern is not trained.";
+                form.ShowDialog();
+                return;
+            }
+
+            VisionProPatternMatchingParam inspParam = currentParam.DeepCopy();
+            ICogImage copyCogImage = cogImage.CopyBase(CogImageCopyModeConstants.CopyPixels);
+
+            PointF originPoint = GetMainOrginPoint();
+
+            VisionProPatternMatchingResult result = Algorithm.RunPatternMatch(copyCogImage, inspParam);
+
+            if (result == null)
+            {
+                inspParam.Dispose();
+                VisionProImageHelper.Dispose(ref copyCogImage);
+                return;
+            }
+            if (result.MatchPosList.Count > 0)
+            {
+                display.ClearGraphic();
+                display.UpdateResult(result);
+            }
+            else
+            {
+                MessageConfirmForm form = new MessageConfirmForm();
+                form.Message = "Pattern is Not Found.";
+                form.ShowDialog();
+            }
+
+            result.Dispose();
+            inspParam.Dispose();
+            VisionProImageHelper.Dispose(ref copyCogImage);
         }
         #endregion
     }
