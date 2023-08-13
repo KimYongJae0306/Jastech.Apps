@@ -94,23 +94,6 @@ namespace Jastech.Apps.Structure.Data
             MarkResult?.Dispose();
             AlignResult?.Dispose();
         }
-
-        //public TabInspResult DeepCopy()
-        //{
-        //    TabInspResult result = new TabInspResult();
-
-        //    result.TabNo = TabNo;
-        //    result.Judgement = Judgement;
-        //    result.Image = Image?.Clone();
-        //    result.CogImage = CogImage?.CopyBase(CogImageCopyModeConstants.CopyPixels);
-        //    result.AkkonInspImage = AkkonInspImage?.CopyBase(CogImageCopyModeConstants.CopyPixels);
-        //    result.AkkonResultImage = AkkonResultImage?.CopyBase(CogImageCopyModeConstants.CopyPixels);
-        //    result.AkkonResult = AkkonResult?.dee
-        //    result.MarkResult = MarkResult?.DeepCopy();
-        //    result.AlignResult = AlignResult?.DeepCopy();
-
-        //    return result;
-        //}
     }
 
     public class TabMarkResult

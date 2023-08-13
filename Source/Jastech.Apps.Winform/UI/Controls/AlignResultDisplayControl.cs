@@ -123,11 +123,13 @@ namespace ATT_UT_IPAD.UI.Controls
 
         private void ButtonControl_SetTabEventHandler(int tabNo)
         {
+            if (AppsStatus.Instance().IsInspRunnerFlagFromPlc)
+                return;
+
             TabBtnControlList.ForEach(x => x.SetButtonClickNone());
             TabBtnControlList[tabNo].SetButtonClick();
 
             CurrentTabNo = tabNo;
-            //UpdateResultDisplay(tabNo);
             UpdateImage(tabNo);
             SendTabNumberEvent(tabNo);
         }
@@ -147,10 +149,13 @@ namespace ATT_UT_IPAD.UI.Controls
 
         public void UpdateResultDisplay(int tabNo)
         {
+            if (TabBtnControlList[tabNo].Enabled == false)
+                return;
+
             var tabInspResult = GetTabInspResultEvent?.Invoke(tabNo);
             if (tabInspResult == null)
                 return;
-
+            
             TabBtnControlList[tabNo].SetAlignImage(tabInspResult.CogImage.CopyBase(CogImageCopyModeConstants.CopyPixels));
             TabBtnControlList[tabNo].SetLeftAlignShape(GetLeftAlignShape(tabInspResult));
             TabBtnControlList[tabNo].SetRightAlignShape(GetRightAlignShape(tabInspResult));

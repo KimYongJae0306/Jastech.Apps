@@ -139,6 +139,9 @@ namespace ATT_UT_IPAD.UI.Controls
 
         private void ButtonControl_SetTabEventHandler(int tabNo)
         {
+            if (AppsStatus.Instance().IsInspRunnerFlagFromPlc)
+                return;
+
             TabBtnControlList.ForEach(x => x.SetButtonClickNone());
             TabBtnControlList[tabNo].SetButtonClick();
 
@@ -158,7 +161,6 @@ namespace ATT_UT_IPAD.UI.Controls
             }
 
             TabBtnControlList.ForEach(x => x.BackColor = Color.FromArgb(52, 52, 52));
-            TabBtnControlList.ForEach(x => x.Enabled = false);
         }
 
         private void UpdateImage(int tabNo)
