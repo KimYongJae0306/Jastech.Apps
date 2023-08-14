@@ -348,7 +348,7 @@ namespace Jastech.Apps.Winform.UI.Controls
             CogPMAlignCurrentRecordConstants constants = CogPMAlignCurrentRecordConstants.InputImage | CogPMAlignCurrentRecordConstants.SearchRegion
                 | CogPMAlignCurrentRecordConstants.TrainImage | CogPMAlignCurrentRecordConstants.TrainRegion | CogPMAlignCurrentRecordConstants.PatternOrigin;
 
-            display.SetInteractiveGraphics("tool", currentParam.CreateCurrentRecord(constants));
+            display.SetInteractiveGraphics("tool", currentParam.CreateCurrentRecord(CogPMAlignCurrentRecordConstants.constants));
             
             var rect = currentParam.GetTrainRegion() as CogRectangle;
             if(rect != null)
