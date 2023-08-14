@@ -94,28 +94,35 @@ namespace Jastech.Apps.Structure.VisionTool
                     matchingResult.Judgement = Judgement.OK;
                 else
                 {
-                    VisionProSearchMaxTool searchMaxTool = new VisionProSearchMaxTool();
-                    VisionProSearchMaxToolParam searchMaxParam = new VisionProSearchMaxToolParam();
+                    //VisionProSearchMaxTool searchMaxTool = new VisionProSearchMaxTool();
+                    //VisionProSearchMaxToolParam searchMaxParam = new VisionProSearchMaxToolParam();
 
-                    searchMaxParam.CreateTool();
-                    searchMaxParam.SetOrigin(param.GetOrigin());
-                    searchMaxParam.SetSearchRegion(param.GetSearchRegion() as CogRectangle);
-                    searchMaxParam.SetTrainRegion(param.GetTrainRegion() as CogRectangle);
-                    searchMaxParam.SetTrainImage(param.GetTrainImage());
-                    searchMaxParam.TrainImageMask(param.GetTrainImageMask());
-                    searchMaxParam.Train();
-                    var searchMaxResults = searchMaxTool.Run(image, searchMaxParam);
-                    if(searchMaxResults != null)
-                    {
-                        if(searchMaxResults.MatchPosList.Count > 0)
-                        {
-                            if(searchMaxResults.MaxScore * 100 >= param.Score)
-                            {
-                                matchingResult.Judgement = Judgement.OK;
-                                return matchingResult;
-                            }
-                        }
-                    }
+                    //searchMaxParam.CreateTool();
+                    //searchMaxParam.SetOrigin(param.GetOrigin());
+                    //searchMaxParam.SetSearchRegion(param.GetSearchRegion() as CogRectangle);
+                    //searchMaxParam.SetTrainRegion(param.GetTrainRegion() as CogRectangle);
+                    //searchMaxParam.SetTrainImage(param.GetTrainImage());
+                    //searchMaxParam.TrainImageMask(param.GetTrainImageMask());
+                    //searchMaxParam.Train();
+                    //var searchMaxResults = searchMaxTool.Run(image, searchMaxParam);
+                    //if(searchMaxResults != null)
+                    //{
+                    //    if(searchMaxResults.MatchPosList.Count > 0)
+                    //    {
+                    //        if(searchMaxResults.MaxScore * 100 >= param.Score)
+                    //        {
+                    //            matchingResult.MatchPosList.Clear();
+                    //            matchingResult.MatchPosList = searchMaxResults.MatchPosList;
+                    //            matchingResult.Judgement = Judgement.OK;
+                    //            return matchingResult;
+                    //        }
+                    //        else
+                    //        {
+                    //            matchingResult.MatchPosList.Clear();
+                    //            matchingResult.MatchPosList = searchMaxResults.MatchPosList;
+                    //        }
+                    //    }
+                    //}
                     matchingResult.Judgement = Judgement.NG;
                 }
             }
