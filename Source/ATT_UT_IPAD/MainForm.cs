@@ -55,6 +55,9 @@ namespace ATT_UT_IPAD
         public ATTInspModelService ATTInspModelService { get; set; } = new ATTInspModelService();
         #endregion
 
+        #region 델리게이트
+        private delegate void UpdateLabelDelegate(string modelname);
+        #endregion
         #region 생성자
         public MainForm()
         {
@@ -132,8 +135,7 @@ namespace ATT_UT_IPAD
 
             ModelManager.Instance().CurrentModel = ATTInspModelService.Load(filePath);
             SelectMainPage();
-
-            lblCurrentModel.Text = modelName;
+            UpdateLabel(modelName);            
 
             ConfigSet.Instance().Operation.LastModelName = modelName;
             ConfigSet.Instance().Operation.Save(ConfigSet.Instance().Path.Config);
@@ -172,12 +174,21 @@ namespace ATT_UT_IPAD
 
             MainPageControl.MainViewControl?.UpdateTabCount(model.TabCount);
 
-            lblCurrentModel.Text = model.Name;
-
+            UpdateLabel(model.Name);
             ConfigSet.Instance().Operation.LastModelName = model.Name;
             ConfigSet.Instance().Operation.Save(ConfigSet.Instance().Path.Config);
         }
-
+     
+        private void UpdateLabel(string modelname)
+        {
+            if(this.InvokeRequired)
+            {
+                UpdateLabelDelegate callback = UpdateLabel;
+                BeginInvoke(callback, modelname);
+                return;
+            }
+            lblCurrentModel.Text = modelname;
+        }
         private void lblMainPage_Click(object sender, EventArgs e)
         {
             SetSelectLabel(sender);

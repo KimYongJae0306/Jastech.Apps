@@ -408,6 +408,8 @@ namespace Jastech.Framework.Winform.Forms
             for (int i = 0; i < 5; i++)
             {
                 var teacingData = TeachingData.Instance().GetBufferImage(i);
+                if (teacingData == null)
+                    return;
                 teacingData.TabImage.Save(string.Format(@"D:\tab_{0}.bmp", i));
             }
         }
