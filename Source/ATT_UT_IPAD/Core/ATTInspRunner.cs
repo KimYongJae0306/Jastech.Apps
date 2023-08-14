@@ -328,16 +328,19 @@ namespace ATT_UT_IPAD.Core
                     WriteLog("Initialize Buffer.");
 
                     // Wait for Laf's traking mode
-                    if (AkkonLAFCtrl.Status.IsTrackingOn == false)
+                    if(ConfigSet.Instance().Operation.VirtualMode == false)
                     {
-                        AkkonLAFCtrl.SetTrackingOnOFF(true);
-                        break;
-                    }
+                        if (AkkonLAFCtrl.Status.IsTrackingOn == false)
+                        {
+                            AkkonLAFCtrl.SetTrackingOnOFF(true);
+                            break;
+                        }
 
-                    if (AlignLAFCtrl.Status.IsTrackingOn == false)
-                    {
-                        AlignLAFCtrl.SetTrackingOnOFF(true);
-                        break;
+                        if (AlignLAFCtrl.Status.IsTrackingOn == false)
+                        {
+                            AlignLAFCtrl.SetTrackingOnOFF(true);
+                            break;
+                        }
                     }
 
                     AppsInspResult.Instance().ClearResult();

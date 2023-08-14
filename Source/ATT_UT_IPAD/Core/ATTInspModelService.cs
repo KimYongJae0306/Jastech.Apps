@@ -189,20 +189,6 @@ namespace ATT_UT_IPAD.Core
             return lightParameter;
         }
 
-        //private LightParameter CreateAlignLightParameter()
-        //{
-        //    LightParameter lightParameter = new LightParameter("Align");
-
-        //    var lightCtrlHandler = DeviceManager.Instance().LightCtrlHandler;
-        //    var spotLightCtrl = lightCtrlHandler.Get("Spot");
-        //    var ringLightCtrl = lightCtrlHandler.Get("Ring");
-
-        //    lightParameter.Add(spotLightCtrl, new LightValue(spotLightCtrl.TotalChannelCount));
-        //    lightParameter.Add(ringLightCtrl, new LightValue(ringLightCtrl.TotalChannelCount));
-
-        //    return lightParameter;
-        //}
-
         public override InspModel Load(string filePath)
         {
             var model = new AppsInspModel();
