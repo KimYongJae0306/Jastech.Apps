@@ -938,41 +938,41 @@ namespace Jastech.Framework.Winform.Forms
 
         private void lblROICopy_Click(object sender, EventArgs e)
         {
-            // 탭 선택 기능 Form
-            ROICopyForm form = new ROICopyForm();
-            form.SetUnitName(UnitName.Unit0);
-            form.SetDisplayType(_displayType);
-            form.ShowDialog();
+            //// 탭 선택 기능 Form
+            //ROICopyForm form = new ROICopyForm();
+            //form.SetUnitName(UnitName.Unit0);
+            //form.SetDisplayType(_displayType);
+            //form.ShowDialog();
 
-            // 그루브짱 요청
-            //MessageYesNoForm form = new MessageYesNoForm();
-            //form.Message = "Do you want to roi copy?";
-            //if (form.ShowDialog() == DialogResult.Yes)
-            //{
-            //    // 그냥 다 복사
-            //    switch (_displayType)
-            //    {
-            //        case DisplayType.Mark:
-            //            MarkControl.CopyMark(UnitName);
-            //            break;
+            // 그룹장님 요청
+            MessageYesNoForm form = new MessageYesNoForm();
+            form.Message = "Do you want to roi copy?";
+            if (form.ShowDialog() == DialogResult.Yes)
+            {
+                // 그냥 다 복사
+                switch (_displayType)
+                {
+                    case DisplayType.Mark:
+                        MarkControl.CopyMark(UnitName);
+                        break;
 
-            //        case DisplayType.Align:
-            //            CopyAlign();
-            //            break;
+                    case DisplayType.Align:
+                        CopyAlign();
+                        break;
 
-            //        case DisplayType.Akkon:
-            //            break;
+                    case DisplayType.Akkon:
+                        break;
 
-            //        case DisplayType.PreAlign:
-            //            break;
+                    case DisplayType.PreAlign:
+                        break;
 
-            //        case DisplayType.Calibration:
-            //            break;
+                    case DisplayType.Calibration:
+                        break;
 
-            //        default:
-            //            break;
-            //    }
-            //}
+                    default:
+                        break;
+                }
+            }
         }
 
         private void CopyAlign()

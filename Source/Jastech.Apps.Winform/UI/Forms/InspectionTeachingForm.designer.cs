@@ -34,12 +34,15 @@
             this.pnlDisplay = new System.Windows.Forms.Panel();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
+            this.lblNext = new System.Windows.Forms.Label();
+            this.lblPrev = new System.Windows.Forms.Label();
             this.lblTracking = new System.Windows.Forms.Label();
             this.cbxTabList = new System.Windows.Forms.ComboBox();
             this.lblAddROI = new System.Windows.Forms.Label();
             this.lblInspection = new System.Windows.Forms.Label();
             this.lblROIJog = new System.Windows.Forms.Label();
             this.lblImageSave = new System.Windows.Forms.Label();
+            this.lblROICopy = new System.Windows.Forms.Label();
             this.tlpCommon = new System.Windows.Forms.TableLayoutPanel();
             this.tlpUnit = new System.Windows.Forms.TableLayoutPanel();
             this.btnMotionPopup = new System.Windows.Forms.Button();
@@ -58,9 +61,6 @@
             this.pnlTeachingItem = new System.Windows.Forms.Panel();
             this.btnCancel = new System.Windows.Forms.Button();
             this.btnSave = new System.Windows.Forms.Button();
-            this.lblNext = new System.Windows.Forms.Label();
-            this.lblPrev = new System.Windows.Forms.Label();
-            this.lblROICopy = new System.Windows.Forms.Label();
             this.tlpTeachingPage.SuspendLayout();
             this.pnlTeachingPage.SuspendLayout();
             this.tlpTeaching.SuspendLayout();
@@ -175,6 +175,30 @@
             this.tableLayoutPanel2.Size = new System.Drawing.Size(762, 50);
             this.tableLayoutPanel2.TabIndex = 3;
             // 
+            // lblNext
+            // 
+            this.lblNext.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblNext.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblNext.Image = global::Jastech.Apps.Winform.Properties.Resources.Next_White;
+            this.lblNext.Location = new System.Drawing.Point(250, 0);
+            this.lblNext.Margin = new System.Windows.Forms.Padding(0);
+            this.lblNext.Name = "lblNext";
+            this.lblNext.Size = new System.Drawing.Size(50, 50);
+            this.lblNext.TabIndex = 27;
+            this.lblNext.Click += new System.EventHandler(this.lblNext_Click);
+            // 
+            // lblPrev
+            // 
+            this.lblPrev.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblPrev.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblPrev.Image = global::Jastech.Apps.Winform.Properties.Resources.Prev_White;
+            this.lblPrev.Location = new System.Drawing.Point(200, 0);
+            this.lblPrev.Margin = new System.Windows.Forms.Padding(0);
+            this.lblPrev.Name = "lblPrev";
+            this.lblPrev.Size = new System.Drawing.Size(50, 50);
+            this.lblPrev.TabIndex = 26;
+            this.lblPrev.Click += new System.EventHandler(this.lblPrev_Click);
+            // 
             // lblTracking
             // 
             this.lblTracking.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
@@ -259,6 +283,20 @@
             this.lblImageSave.Text = "Image Save";
             this.lblImageSave.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.lblImageSave.Click += new System.EventHandler(this.lblImageSave_Click);
+            // 
+            // lblROICopy
+            // 
+            this.lblROICopy.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblROICopy.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblROICopy.Font = new System.Drawing.Font("맑은 고딕", 14.25F, System.Drawing.FontStyle.Bold);
+            this.lblROICopy.Location = new System.Drawing.Point(662, 0);
+            this.lblROICopy.Margin = new System.Windows.Forms.Padding(0);
+            this.lblROICopy.Name = "lblROICopy";
+            this.lblROICopy.Size = new System.Drawing.Size(100, 50);
+            this.lblROICopy.TabIndex = 296;
+            this.lblROICopy.Text = "ROI Copy";
+            this.lblROICopy.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblROICopy.Click += new System.EventHandler(this.lblROICopy_Click);
             // 
             // tlpCommon
             // 
@@ -532,57 +570,17 @@
             this.btnSave.UseVisualStyleBackColor = false;
             this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
             // 
-            // lblNext
-            // 
-            this.lblNext.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lblNext.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblNext.Image = global::Jastech.Apps.Winform.Properties.Resources.Next_White;
-            this.lblNext.Location = new System.Drawing.Point(250, 0);
-            this.lblNext.Margin = new System.Windows.Forms.Padding(0);
-            this.lblNext.Name = "lblNext";
-            this.lblNext.Size = new System.Drawing.Size(50, 50);
-            this.lblNext.TabIndex = 27;
-            this.lblNext.Click += new System.EventHandler(this.lblNext_Click);
-            // 
-            // lblPrev
-            // 
-            this.lblPrev.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lblPrev.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblPrev.Image = global::Jastech.Apps.Winform.Properties.Resources.Prev_White;
-            this.lblPrev.Location = new System.Drawing.Point(200, 0);
-            this.lblPrev.Margin = new System.Windows.Forms.Padding(0);
-            this.lblPrev.Name = "lblPrev";
-            this.lblPrev.Size = new System.Drawing.Size(50, 50);
-            this.lblPrev.TabIndex = 26;
-            this.lblPrev.Click += new System.EventHandler(this.lblPrev_Click);
-            // 
-            // lblROICopy
-            // 
-            this.lblROICopy.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lblROICopy.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblROICopy.Font = new System.Drawing.Font("맑은 고딕", 14.25F, System.Drawing.FontStyle.Bold);
-            this.lblROICopy.Location = new System.Drawing.Point(662, 0);
-            this.lblROICopy.Margin = new System.Windows.Forms.Padding(0);
-            this.lblROICopy.Name = "lblROICopy";
-            this.lblROICopy.Size = new System.Drawing.Size(100, 50);
-            this.lblROICopy.TabIndex = 296;
-            this.lblROICopy.Text = "ROI Copy";
-            this.lblROICopy.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.lblROICopy.Click += new System.EventHandler(this.lblROICopy_Click);
-            // 
             // InspectionTeachingForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
             this.ClientSize = new System.Drawing.Size(1675, 911);
-            this.ControlBox = false;
             this.Controls.Add(this.tlpTeachingPage);
             this.Font = new System.Drawing.Font("맑은 고딕", 11.25F, System.Drawing.FontStyle.Bold);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D;
             this.Name = "InspectionTeachingForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = " ";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.InspectionTeachingForm_FormClosing);
             this.Load += new System.EventHandler(this.InspectionTeachingForm_Load);
