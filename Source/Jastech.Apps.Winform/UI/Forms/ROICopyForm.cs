@@ -16,7 +16,7 @@ using System.Windows.Forms;
 
 namespace Jastech.Apps.Winform.UI.Forms
 {
-    public partial class AkkonROICopyForm : Form
+    public partial class ROICopyForm : Form
     {
         #region 필드
         private Color _selectedColor;
@@ -32,6 +32,8 @@ namespace Jastech.Apps.Winform.UI.Forms
         public UnitName UnitName { get; set; } = UnitName.Unit0;
 
         public List<Tab> TeachingTabList { get; private set; } = null;
+
+        public DisplayType DisplayType { get; set; } = DisplayType.Akkon;
         #endregion
 
         #region 이벤트
@@ -41,7 +43,7 @@ namespace Jastech.Apps.Winform.UI.Forms
         #endregion
 
         #region 생성자
-        public AkkonROICopyForm()
+        public ROICopyForm()
         {
             InitializeComponent();
         }
@@ -65,6 +67,8 @@ namespace Jastech.Apps.Winform.UI.Forms
 
             _selectedColor = Color.FromArgb(104, 104, 104);
             _nonSelectedColor = Color.FromArgb(52, 52, 52);
+
+            lblTop.Text = DisplayType.ToString() + " ROI Copy";
 
             InitializeSourceTab(tabCount);
             InitializeTargetTab(tabCount);
@@ -160,6 +164,11 @@ namespace Jastech.Apps.Winform.UI.Forms
             UnitName = unitName;
         }
 
+        public void SetDisplayType(DisplayType displayType)
+        {
+            DisplayType = displayType;
+        }
+
         private void lblApply_Click(object sender, EventArgs e)
         {
             MessageYesNoForm form = new MessageYesNoForm();
@@ -192,11 +201,35 @@ namespace Jastech.Apps.Winform.UI.Forms
                 return;
             }
 
-            CopyROI();
+            Excute();
         }
 
-        private void CopyROI()
+        private void Excute()
         {
+            switch (DisplayType)
+            {
+                case DisplayType.Mark:
+                    CopyMark();
+                    break;
+
+                case DisplayType.Align:
+                    CopyAlign();
+                    break;
+
+                case DisplayType.Akkon:
+                    CopyAkkon();
+                    break;
+
+                case DisplayType.PreAlign:
+                    break;
+
+                case DisplayType.Calibration:
+                    break;
+
+                default:
+                    break;
+            }
+
             TeachingTabList = TeachingData.Instance().GetUnit(UnitName.ToString()).GetTabList();
 
             Tab selectedSourceTab = TeachingTabList.Where(x => x.Index == _selectedSourceTabNumber).FirstOrDefault();
@@ -206,11 +239,40 @@ namespace Jastech.Apps.Winform.UI.Forms
 
             // 복사할놈, 복사당할놈 마크 티칭 비교 후 ROI 복사하고나서 티칭값 기준 틀어버리기 필요
 
+            
+        }
+
+        private void CopyMark()
+        {
+            TeachingTabList = TeachingData.Instance().GetUnit(UnitName.ToString()).GetTabList();
+            Tab selectedSourceTab = TeachingTabList.Where(x => x.Index == _selectedSourceTabNumber).FirstOrDefault();
+        }
+
+        private void CopyAlign()
+        {
+            TeachingTabList = TeachingData.Instance().GetUnit(UnitName.ToString()).GetTabList();
+            Tab selectedSourceTab = TeachingTabList.Where(x => x.Index == _selectedSourceTabNumber).FirstOrDefault();
+
+            var sourceROIList = selectedSourceTab.MarkParamter.DeepCopy();
+
+            foreach (var tabNo in _selectedTargetTabNumber)
+            {
+                Tab selectedTargetTab = TeachingData.Instance().GetUnit(UnitName.ToString()).GetTab(index: tabNo);
+
+
+            }
+        }
+
+        private void CopyAkkon()
+        {
+            TeachingTabList = TeachingData.Instance().GetUnit(UnitName.ToString()).GetTabList();
+            Tab selectedSourceTab = TeachingTabList.Where(x => x.Index == _selectedSourceTabNumber).FirstOrDefault();
+
             var sourceROIList = selectedSourceTab.AkkonParam.GetAkkonROIList();
 
-            foreach (var item in _selectedTargetTabNumber)
+            foreach (var tabNo in _selectedTargetTabNumber)
             {
-                Tab selectedTargetTab = TeachingData.Instance().GetUnit(UnitName.ToString()).GetTab(item);
+                Tab selectedTargetTab = TeachingData.Instance().GetUnit(UnitName.ToString()).GetTab(index: tabNo);
 
                 foreach (var group in selectedTargetTab.AkkonParam.GroupList)
                 {

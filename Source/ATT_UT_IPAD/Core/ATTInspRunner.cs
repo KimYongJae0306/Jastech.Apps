@@ -292,6 +292,9 @@ namespace ATT_UT_IPAD.Core
                     AkkonCamera.StopGrab();
                     WriteLog("AkkonCamera Stop Grab.");
 
+                    AlignCamera.SetOperationMode(TDIOperationMode.TDI);
+                    AkkonCamera.SetOperationMode(TDIOperationMode.TDI);
+
                     LightCtrlHandler?.TurnOff();
                     WriteLog("Light Off.");
 
@@ -301,14 +304,9 @@ namespace ATT_UT_IPAD.Core
                     AkkonLAFCtrl?.SetTrackingOnOFF(false);
                     WriteLog("Akkon Laf Off.");
 
-                    sw.Restart();
-                    InitializeBuffer();
                     AkkonCamera.ClearTabScanBuffer();
                     AlignCamera.ClearTabScanBuffer();
-
-                    sw.Stop();
-                    Console.WriteLine("Clear Buffer : " + sw.ElapsedMilliseconds.ToString()); ;
-                    WriteLog("Initialize Buffer.");
+                    WriteLog("Clear Buffer.");
 
                     SeqStep = SeqStep.SEQ_MOVE_START_POS;
                     break;
@@ -324,16 +322,23 @@ namespace ATT_UT_IPAD.Core
                 case SeqStep.SEQ_WAITING:
                     if (AppsStatus.Instance().IsInspRunnerFlagFromPlc == false)
                         break;
-
-                    //AkkonCamera.InitGrabSettings();
-                    //AlignCamera.InitGrabSettings(AppsConfig.Instance().CameraGap_mm);
-                    InitializeBuffer();
-
-                    // 아래에서 위로 위치 변경
-                    AkkonLAFCtrl.SetTrackingOnOFF(true);
-                    AlignLAFCtrl.SetTrackingOnOFF(true);
-
                     WriteLog("Receive Inspection Start Signal From PLC.", true);
+
+                    InitializeBuffer();
+                    WriteLog("Initialize Buffer.");
+
+                    // Wait for Laf's traking mode
+                    if (AkkonLAFCtrl.Status.IsTrackingOn == false)
+                    {
+                        AkkonLAFCtrl.SetTrackingOnOFF(true);
+                        break;
+                    }
+
+                    if (AlignLAFCtrl.Status.IsTrackingOn == false)
+                    {
+                        AlignLAFCtrl.SetTrackingOnOFF(true);
+                        break;
+                    }
 
                     AppsInspResult.Instance().ClearResult();
                     WriteLog("Clear Result.");
@@ -355,16 +360,14 @@ namespace ATT_UT_IPAD.Core
                         LightCtrlHandler.TurnOn(unit.LightParam);
                     Thread.Sleep(100);
 
-                    AlignCamera.SetOperationMode(TDIOperationMode.TDI);
                     AlignCamera.StartGrab();
-
                     WriteLog("Start Align LineScanner Grab.", true);
                     Thread.Sleep(50);
-                    AkkonCamera.SetOperationMode(TDIOperationMode.TDI);
+
                     AkkonCamera.StartGrab();
                     WriteLog("Start Akkon LineScanner Grab.", true);
-                    
                     Thread.Sleep(50);
+
                     if (ConfigSet.Instance().Operation.VirtualMode)
                     {
                         InspProcessTask.StartVirtual();
@@ -583,19 +586,12 @@ namespace ATT_UT_IPAD.Core
 
         private void InitializeBuffer()
         {
-            Stopwatch sw = new Stopwatch();
-            sw.Restart();
-
             AkkonCamera.InitGrabSettings();
-            //AkkonCamera.ClearTabScanBuffer();
             InspProcessTask.InitalizeInspAkkonBuffer(AkkonCamera.Camera.Name, AkkonCamera.TabScanBufferList);
 
-            
             float akkonToAlignGap_mm = AppsConfig.Instance().CameraGap_mm;
             AlignCamera.InitGrabSettings(akkonToAlignGap_mm);
-            //AlignCamera.ClearTabScanBuffer();
             InspProcessTask.InitalizeInspAlignBuffer(AlignCamera.Camera.Name, AlignCamera.TabScanBufferList);
-            sw.Stop();
         }
 
         public void RunVirtual()
