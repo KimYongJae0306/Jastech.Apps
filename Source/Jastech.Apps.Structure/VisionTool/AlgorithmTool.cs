@@ -93,7 +93,31 @@ namespace Jastech.Apps.Structure.VisionTool
                 if ((matchingResult.MaxScore * 100) >= param.Score)
                     matchingResult.Judgement = Judgement.OK;
                 else
+                {
+                    VisionProSearchMaxTool searchMaxTool = new VisionProSearchMaxTool();
+                    VisionProSearchMaxToolParam searchMaxParam = new VisionProSearchMaxToolParam();
+
+                    searchMaxParam.CreateTool();
+                    searchMaxParam.SetOrigin(param.GetOrigin());
+                    searchMaxParam.SetSearchRegion(param.GetSearchRegion() as CogRectangle);
+                    searchMaxParam.SetTrainRegion(param.GetTrainRegion() as CogRectangle);
+                    searchMaxParam.SetTrainImage(param.GetTrainImage());
+                    searchMaxParam.TrainImageMask(param.GetTrainImageMask());
+                    searchMaxParam.Train();
+                    var searchMaxResults = searchMaxTool.Run(image, searchMaxParam);
+                    if(searchMaxResults != null)
+                    {
+                        if(searchMaxResults.MatchPosList.Count > 0)
+                        {
+                            if(searchMaxResults.MaxScore * 100 >= param.Score)
+                            {
+                                matchingResult.Judgement = Judgement.OK;
+                                return matchingResult;
+                            }
+                        }
+                    }
                     matchingResult.Judgement = Judgement.NG;
+                }
             }
 
             return matchingResult;
