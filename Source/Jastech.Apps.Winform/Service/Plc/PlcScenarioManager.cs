@@ -215,7 +215,7 @@ namespace Jastech.Apps.Winform.Service.Plc
         {
             var manager = PlcControlManager.Instance();
 
-            string modelName = manager.GetValue(PlcCommonMap.PLC_PPID_ModelName);
+            string modelName = manager.GetValue(PlcCommonMap.PLC_PPID_ModelName).TrimEnd();
             string modelDir = ConfigSet.Instance().Path.Model;
             string filePath = Path.Combine(modelDir, modelName, InspModel.FileName);
             short command = -1;
