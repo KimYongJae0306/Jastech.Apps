@@ -77,7 +77,22 @@ namespace Jastech.Apps.Winform.UI.Controls
             ParamControl.Dock = DockStyle.Fill;
             ParamControl.GetOriginImageHandler += PatternControl_GetOriginImageHandler;
             ParamControl.TestActionEvent += PatternControl_TestActionEvent;
+            ParamControl.ClearActionEvent += PatternControl_ClearActionEvent;
             pnlParam.Controls.Add(ParamControl);
+        }
+
+        private void PatternControl_ClearActionEvent()
+        {
+            var display = TeachingUIManager.Instance().GetDisplay();
+            var currentParam = ParamControl.GetCurrentParam();
+
+            if (display == null || currentParam == null)
+                return;
+
+            ICogImage cogImage = display.GetImage();
+            if (cogImage == null)
+                return;
+            display.ClearGraphic();
         }
 
         private void PatternControl_TestActionEvent()
@@ -348,7 +363,7 @@ namespace Jastech.Apps.Winform.UI.Controls
             CogPMAlignCurrentRecordConstants constants = CogPMAlignCurrentRecordConstants.InputImage | CogPMAlignCurrentRecordConstants.SearchRegion
                 | CogPMAlignCurrentRecordConstants.TrainImage | CogPMAlignCurrentRecordConstants.TrainRegion | CogPMAlignCurrentRecordConstants.PatternOrigin;
 
-            display.SetInteractiveGraphics("tool", currentParam.CreateCurrentRecord(CogPMAlignCurrentRecordConstants.constants));
+            display.SetInteractiveGraphics("tool", currentParam.CreateCurrentRecord(constants));
             
             var rect = currentParam.GetTrainRegion() as CogRectangle;
             if(rect != null)
@@ -555,7 +570,7 @@ namespace Jastech.Apps.Winform.UI.Controls
             ICogImage cogImage = display.GetImage();
             if (cogImage == null)
                 return;
-
+            display.ClearGraphic();
             if (currentParam.IsTrained() == false)
             {
                 MessageConfirmForm form = new MessageConfirmForm();

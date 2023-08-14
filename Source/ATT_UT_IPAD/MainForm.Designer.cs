@@ -31,7 +31,6 @@
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.tlpMainForm = new System.Windows.Forms.TableLayoutPanel();
-            this.pnlPage = new System.Windows.Forms.Panel();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.lblMotionState = new System.Windows.Forms.Label();
             this.lblLightState = new System.Windows.Forms.Label();
@@ -41,6 +40,7 @@
             this.lblMotionStateText = new System.Windows.Forms.Label();
             this.lblPLCState = new System.Windows.Forms.Label();
             this.lblPlcStateText = new System.Windows.Forms.Label();
+            this.pnlPage = new System.Windows.Forms.Panel();
             this.tlpFunctionButtons = new System.Windows.Forms.TableLayoutPanel();
             this.lblCurrentTime = new System.Windows.Forms.Label();
             this.panel2 = new System.Windows.Forms.Panel();
@@ -105,17 +105,8 @@
             this.tlpMainForm.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 50F));
             this.tlpMainForm.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tlpMainForm.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 25F));
-            this.tlpMainForm.Size = new System.Drawing.Size(1540, 637);
+            this.tlpMainForm.Size = new System.Drawing.Size(1540, 1144);
             this.tlpMainForm.TabIndex = 1;
-            // 
-            // pnlPage
-            // 
-            this.pnlPage.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pnlPage.Location = new System.Drawing.Point(0, 100);
-            this.pnlPage.Margin = new System.Windows.Forms.Padding(0);
-            this.pnlPage.Name = "pnlPage";
-            this.pnlPage.Size = new System.Drawing.Size(1540, 512);
-            this.pnlPage.TabIndex = 3;
             // 
             // tableLayoutPanel2
             // 
@@ -143,7 +134,7 @@
             this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel2.Font = new System.Drawing.Font("맑은 고딕", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.tableLayoutPanel2.ForeColor = System.Drawing.Color.White;
-            this.tableLayoutPanel2.Location = new System.Drawing.Point(0, 612);
+            this.tableLayoutPanel2.Location = new System.Drawing.Point(0, 1119);
             this.tableLayoutPanel2.Margin = new System.Windows.Forms.Padding(0);
             this.tableLayoutPanel2.Name = "tableLayoutPanel2";
             this.tableLayoutPanel2.RowCount = 1;
@@ -242,6 +233,15 @@
             this.lblPlcStateText.TabIndex = 0;
             this.lblPlcStateText.Text = "PLC";
             this.lblPlcStateText.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // pnlPage
+            // 
+            this.pnlPage.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pnlPage.Location = new System.Drawing.Point(0, 100);
+            this.pnlPage.Margin = new System.Windows.Forms.Padding(0);
+            this.pnlPage.Name = "pnlPage";
+            this.pnlPage.Size = new System.Drawing.Size(1540, 1019);
+            this.pnlPage.TabIndex = 3;
             // 
             // tlpFunctionButtons
             // 
@@ -614,10 +614,13 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
-            this.ClientSize = new System.Drawing.Size(1540, 637);
+            this.ClientSize = new System.Drawing.Size(1540, 1144);
+            this.ControlBox = false;
             this.Controls.Add(this.tlpMainForm);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.Name = "MainForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+            this.Text = " ";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.MainForm_FormClosed);

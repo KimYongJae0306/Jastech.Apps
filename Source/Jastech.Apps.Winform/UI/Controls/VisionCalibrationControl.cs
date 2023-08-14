@@ -56,7 +56,22 @@ namespace Jastech.Apps.Winform.UI.Controls
             ParamControl.Dock = DockStyle.Fill;
             ParamControl.GetOriginImageHandler += VisionCalibrationControl_GetOriginImageHandler;
             ParamControl.TestActionEvent += VisionCalibrationControl_TestActionEvent;
+            ParamControl.ClearActionEvent += PatternControl_ClearActionEvent;
             pnlParam.Controls.Add(ParamControl);
+        }
+
+        private void PatternControl_ClearActionEvent()
+        {
+            var display = TeachingUIManager.Instance().GetDisplay();
+            var currentParam = ParamControl.GetCurrentParam();
+
+            if (display == null || currentParam == null)
+                return;
+
+            ICogImage cogImage = display.GetImage();
+            if (cogImage == null)
+                return;
+            display.ClearGraphic();
         }
 
         private void InitializeUI()
@@ -108,7 +123,7 @@ namespace Jastech.Apps.Winform.UI.Controls
             ICogImage cogImage = display.GetImage();
             if (cogImage == null)
                 return;
-
+            display.ClearGraphic();
             if (currentParam.IsTrained() == false)
             {
                 MessageConfirmForm form = new MessageConfirmForm();
