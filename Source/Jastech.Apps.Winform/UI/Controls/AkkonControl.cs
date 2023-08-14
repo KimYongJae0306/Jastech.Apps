@@ -1592,7 +1592,7 @@ namespace Jastech.Apps.Winform.UI.Controls
             Mat resizeMat = MatHelper.Resize(matImage, akkonAlgorithmParam.ImageFilterParam.ResizeRatio);
             var akkonCogImage = ConvertCogGrayImage(resizeMat);
             TeachingUIManager.Instance().SetAkkonCogImage(akkonCogImage);
-
+            resultMat.Save(@"D:\123.bmp");
             var resultCogImage = ConvertCogColorImage(resultMat);
             TeachingUIManager.Instance().SetResultCogImage(resultCogImage);
 
@@ -2115,7 +2115,7 @@ namespace Jastech.Apps.Winform.UI.Controls
         {
             AppsInspModel appsInspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
 
-            AkkonROICopyForm form = new AkkonROICopyForm();
+            ROICopyForm form = new ROICopyForm();
             form.SetUnitName(UnitName.Unit0);
             form.ShowDialog();
         }

@@ -1,6 +1,6 @@
 ﻿namespace Jastech.Apps.Winform.UI.Forms
 {
-    partial class AkkonROICopyForm
+    partial class ROICopyForm
     {
         /// <summary>
         /// Required designer variable.

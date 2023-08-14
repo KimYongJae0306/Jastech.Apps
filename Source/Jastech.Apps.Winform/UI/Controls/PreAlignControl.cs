@@ -69,7 +69,23 @@ namespace Jastech.Apps.Winform.UI.Controls
             ParamControl.Dock = DockStyle.Fill;
             ParamControl.GetOriginImageHandler += PreAlignControl_GetOriginImageHandler;
             ParamControl.TestActionEvent += PreAlignControl_TestActionEvent;
+            ParamControl.ClearActionEvent += PatternControl_ClearActionEvent;
             pnlParam.Controls.Add(ParamControl);
+        }
+
+        private void PatternControl_ClearActionEvent()
+        {
+            var display = TeachingUIManager.Instance().GetDisplay();
+            var currentParam = ParamControl.GetCurrentParam();
+
+            if (display == null || currentParam == null)
+                return;
+
+            ICogImage cogImage = display.GetImage();
+            if (cogImage == null)
+                return;
+            display.Clear();
+
         }
 
         private void PreAlignControl_TestActionEvent()
@@ -88,6 +104,7 @@ namespace Jastech.Apps.Winform.UI.Controls
             ICogImage cogImage = display.GetImage();
             if (cogImage == null)
                 return;
+            display.Clear();
 
             if (currentParam.IsTrained() == false)
             {

@@ -77,7 +77,22 @@ namespace Jastech.Apps.Winform.UI.Controls
             ParamControl.Dock = DockStyle.Fill;
             ParamControl.GetOriginImageHandler += PatternControl_GetOriginImageHandler;
             ParamControl.TestActionEvent += PatternControl_TestActionEvent;
+            ParamControl.ClearActionEvent += PatternControl_ClearActionEvent;
             pnlParam.Controls.Add(ParamControl);
+        }
+
+        private void PatternControl_ClearActionEvent()
+        {
+            var display = TeachingUIManager.Instance().GetDisplay();
+            var currentParam = ParamControl.GetCurrentParam();
+
+            if (display == null || currentParam == null)
+                return;
+
+            ICogImage cogImage = display.GetImage();
+            if (cogImage == null)
+                return;
+            display.ClearGraphic();
         }
 
         private void PatternControl_TestActionEvent()
@@ -555,7 +570,7 @@ namespace Jastech.Apps.Winform.UI.Controls
             ICogImage cogImage = display.GetImage();
             if (cogImage == null)
                 return;
-
+            display.ClearGraphic();
             if (currentParam.IsTrained() == false)
             {
                 MessageConfirmForm form = new MessageConfirmForm();
@@ -592,6 +607,34 @@ namespace Jastech.Apps.Winform.UI.Controls
             result.Dispose();
             inspParam.Dispose();
             VisionProImageHelper.Dispose(ref copyCogImage);
+        }
+
+        public void CopyMark(UnitName unitName)
+        {
+            var TeachingTabList = TeachingData.Instance().GetUnit(unitName.ToString()).GetTabList();
+
+            foreach (Tab tab in TeachingTabList)
+            {
+                if (tab.Index == CurrentTab.Index)
+                    continue;
+
+                switch (_curMaterial)
+                {
+                    case Material.Fpc:
+                        var fpcMark = CurrentTab.MarkParamter.GetFPCMark(_curDirection, _curMarkName, UseAlignMark).DeepCopy();
+                        tab.MarkParamter.SetFPCMark(_curDirection, _curMarkName, fpcMark, UseAlignMark);
+                        break;
+
+                    case Material.Panel:
+                        var panelMark = CurrentTab.MarkParamter.GetPanelMark(_curDirection, _curMarkName, UseAlignMark).DeepCopy();
+                        tab.MarkParamter.SetPanelMark(_curDirection, _curMarkName, panelMark, UseAlignMark);
+                        break;
+
+                    default:
+                        break;
+                }
+                
+            }
         }
         #endregion
     }

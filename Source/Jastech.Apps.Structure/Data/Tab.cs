@@ -5,6 +5,8 @@ using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using static Jastech.Framework.Device.Motions.AxisMovingParam;
+using System.Xml.Linq;
 
 namespace Jastech.Apps.Structure.Data
 {
@@ -36,6 +38,66 @@ namespace Jastech.Apps.Structure.Data
                 return GetMainPanelMark(markDirection, markName);
             else
                 return GetAlignPanelMark(markDirection, markName);
+        }
+
+        public void SetFPCMark(MarkDirection markDirection, MarkName markName, MarkParam param, bool isAlignParam)
+        {
+            if (isAlignParam == false)
+                SetMainFpcMark(markDirection, markName, param);
+            else
+                SetAlignFpcMark(markDirection, markName, param);
+        }
+
+        public void SetPanelMark(MarkDirection markDirection, MarkName markName, MarkParam param, bool isAlignParam)
+        {
+            if (isAlignParam == false)
+                SetMainPanelMark(markDirection, markName, param);
+            else
+                SetAlignPanelMark(markDirection, markName, param);
+        }
+
+        private void SetMainFpcMark(MarkDirection direction, MarkName name, MarkParam param)
+        {
+            if (param == null)
+                return;
+
+            //var origin = MainFpcMarkParamList.Where(x => x.Name == name && x.Direction == direction).FirstOrDefault();
+            //origin = param;
+
+            MainFpcMarkParamList.Where(x => x.Name == name && x.Direction == direction).First().InspParam = param.InspParam.DeepCopy();
+        }
+
+        private void SetMainPanelMark(MarkDirection direction, MarkName name, MarkParam param)
+        {
+            if (param == null)
+                return;
+
+            //var origin = MainPanelMarkParamList.Where(x => x.Name == name && x.Direction == direction).FirstOrDefault();
+            //origin = param;
+
+            MainPanelMarkParamList.Where(x => x.Name == name && x.Direction == direction).First().InspParam = param.InspParam.DeepCopy();
+        }
+
+        private void SetAlignFpcMark(MarkDirection direction, MarkName name, MarkParam param)
+        {
+            if (param == null)
+                return;
+
+            //var origin = AlignFpcMarkParamList.Where(x => x.Name == name && x.Direction == direction).FirstOrDefault();
+            //origin = param;
+
+            AlignFpcMarkParamList.Where(x => x.Name == name && x.Direction == direction).First().InspParam = param.InspParam.DeepCopy();
+        }
+
+        private void SetAlignPanelMark(MarkDirection direction, MarkName name, MarkParam param)
+        {
+            if (param == null)
+                return;
+
+            //var origin = AlignPanelMarkParamList.Where(x => x.Name == name && x.Direction == direction).FirstOrDefault();
+            //origin = param;
+
+            AlignPanelMarkParamList.Where(x => x.Name == name && x.Direction == direction).First().InspParam = param.InspParam.DeepCopy();
         }
 
         private MarkParam GetMainFPCMark(MarkDirection direction, MarkName name)
