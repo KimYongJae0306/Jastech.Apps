@@ -593,6 +593,34 @@ namespace Jastech.Apps.Winform.UI.Controls
             inspParam.Dispose();
             VisionProImageHelper.Dispose(ref copyCogImage);
         }
+
+        public void CopyMark(UnitName unitName)
+        {
+            var TeachingTabList = TeachingData.Instance().GetUnit(unitName.ToString()).GetTabList();
+
+            foreach (Tab tab in TeachingTabList)
+            {
+                if (tab.Index == CurrentTab.Index)
+                    continue;
+
+                switch (_curMaterial)
+                {
+                    case Material.Fpc:
+                        var fpcMark = CurrentTab.MarkParamter.GetFPCMark(_curDirection, _curMarkName, UseAlignMark).DeepCopy();
+                        tab.MarkParamter.SetFPCMark(_curDirection, _curMarkName, fpcMark, UseAlignMark);
+                        break;
+
+                    case Material.Panel:
+                        var panelMark = CurrentTab.MarkParamter.GetPanelMark(_curDirection, _curMarkName, UseAlignMark).DeepCopy();
+                        tab.MarkParamter.SetPanelMark(_curDirection, _curMarkName, panelMark, UseAlignMark);
+                        break;
+
+                    default:
+                        break;
+                }
+                
+            }
+        }
         #endregion
     }
 }

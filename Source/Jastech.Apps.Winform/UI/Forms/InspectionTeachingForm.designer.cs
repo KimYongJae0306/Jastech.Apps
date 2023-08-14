@@ -34,8 +34,6 @@
             this.pnlDisplay = new System.Windows.Forms.Panel();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
-            this.lblNext = new System.Windows.Forms.Label();
-            this.lblPrev = new System.Windows.Forms.Label();
             this.lblTracking = new System.Windows.Forms.Label();
             this.cbxTabList = new System.Windows.Forms.ComboBox();
             this.lblAddROI = new System.Windows.Forms.Label();
@@ -60,6 +58,9 @@
             this.pnlTeachingItem = new System.Windows.Forms.Panel();
             this.btnCancel = new System.Windows.Forms.Button();
             this.btnSave = new System.Windows.Forms.Button();
+            this.lblNext = new System.Windows.Forms.Label();
+            this.lblPrev = new System.Windows.Forms.Label();
+            this.lblROICopy = new System.Windows.Forms.Label();
             this.tlpTeachingPage.SuspendLayout();
             this.pnlTeachingPage.SuspendLayout();
             this.tlpTeaching.SuspendLayout();
@@ -145,7 +146,7 @@
             // 
             // tableLayoutPanel2
             // 
-            this.tableLayoutPanel2.ColumnCount = 8;
+            this.tableLayoutPanel2.ColumnCount = 9;
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 200F));
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 50F));
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 50F));
@@ -153,6 +154,7 @@
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 100F));
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 100F));
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 100F));
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 100F));
             this.tableLayoutPanel2.Controls.Add(this.lblNext, 0, 0);
             this.tableLayoutPanel2.Controls.Add(this.lblPrev, 0, 0);
@@ -162,6 +164,7 @@
             this.tableLayoutPanel2.Controls.Add(this.lblInspection, 3, 0);
             this.tableLayoutPanel2.Controls.Add(this.lblROIJog, 5, 0);
             this.tableLayoutPanel2.Controls.Add(this.lblImageSave, 6, 0);
+            this.tableLayoutPanel2.Controls.Add(this.lblROICopy, 8, 0);
             this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel2.ForeColor = System.Drawing.Color.White;
             this.tableLayoutPanel2.Location = new System.Drawing.Point(0, 90);
@@ -172,36 +175,12 @@
             this.tableLayoutPanel2.Size = new System.Drawing.Size(762, 50);
             this.tableLayoutPanel2.TabIndex = 3;
             // 
-            // lblNext
-            // 
-            this.lblNext.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lblNext.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblNext.Image = global::Jastech.Apps.Winform.Properties.Resources.Next_White;
-            this.lblNext.Location = new System.Drawing.Point(250, 0);
-            this.lblNext.Margin = new System.Windows.Forms.Padding(0);
-            this.lblNext.Name = "lblNext";
-            this.lblNext.Size = new System.Drawing.Size(50, 50);
-            this.lblNext.TabIndex = 27;
-            this.lblNext.Click += new System.EventHandler(this.lblNext_Click);
-            // 
-            // lblPrev
-            // 
-            this.lblPrev.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lblPrev.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblPrev.Image = global::Jastech.Apps.Winform.Properties.Resources.Prev_White;
-            this.lblPrev.Location = new System.Drawing.Point(200, 0);
-            this.lblPrev.Margin = new System.Windows.Forms.Padding(0);
-            this.lblPrev.Name = "lblPrev";
-            this.lblPrev.Size = new System.Drawing.Size(50, 50);
-            this.lblPrev.TabIndex = 26;
-            this.lblPrev.Click += new System.EventHandler(this.lblPrev_Click);
-            // 
             // lblTracking
             // 
             this.lblTracking.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.lblTracking.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lblTracking.Font = new System.Drawing.Font("맑은 고딕", 14.25F, System.Drawing.FontStyle.Bold);
-            this.lblTracking.Location = new System.Drawing.Point(662, 0);
+            this.lblTracking.Location = new System.Drawing.Point(562, 0);
             this.lblTracking.Margin = new System.Windows.Forms.Padding(0);
             this.lblTracking.Name = "lblTracking";
             this.lblTracking.Size = new System.Drawing.Size(100, 50);
@@ -275,7 +254,7 @@
             this.lblImageSave.Location = new System.Drawing.Point(600, 0);
             this.lblImageSave.Margin = new System.Windows.Forms.Padding(0);
             this.lblImageSave.Name = "lblImageSave";
-            this.lblImageSave.Size = new System.Drawing.Size(62, 50);
+            this.lblImageSave.Size = new System.Drawing.Size(1, 50);
             this.lblImageSave.TabIndex = 296;
             this.lblImageSave.Text = "Image Save";
             this.lblImageSave.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -553,6 +532,44 @@
             this.btnSave.UseVisualStyleBackColor = false;
             this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
             // 
+            // lblNext
+            // 
+            this.lblNext.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblNext.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblNext.Image = global::Jastech.Apps.Winform.Properties.Resources.Next_White;
+            this.lblNext.Location = new System.Drawing.Point(250, 0);
+            this.lblNext.Margin = new System.Windows.Forms.Padding(0);
+            this.lblNext.Name = "lblNext";
+            this.lblNext.Size = new System.Drawing.Size(50, 50);
+            this.lblNext.TabIndex = 27;
+            this.lblNext.Click += new System.EventHandler(this.lblNext_Click);
+            // 
+            // lblPrev
+            // 
+            this.lblPrev.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblPrev.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblPrev.Image = global::Jastech.Apps.Winform.Properties.Resources.Prev_White;
+            this.lblPrev.Location = new System.Drawing.Point(200, 0);
+            this.lblPrev.Margin = new System.Windows.Forms.Padding(0);
+            this.lblPrev.Name = "lblPrev";
+            this.lblPrev.Size = new System.Drawing.Size(50, 50);
+            this.lblPrev.TabIndex = 26;
+            this.lblPrev.Click += new System.EventHandler(this.lblPrev_Click);
+            // 
+            // lblROICopy
+            // 
+            this.lblROICopy.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblROICopy.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblROICopy.Font = new System.Drawing.Font("맑은 고딕", 14.25F, System.Drawing.FontStyle.Bold);
+            this.lblROICopy.Location = new System.Drawing.Point(662, 0);
+            this.lblROICopy.Margin = new System.Windows.Forms.Padding(0);
+            this.lblROICopy.Name = "lblROICopy";
+            this.lblROICopy.Size = new System.Drawing.Size(100, 50);
+            this.lblROICopy.TabIndex = 296;
+            this.lblROICopy.Text = "ROI Copy";
+            this.lblROICopy.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblROICopy.Click += new System.EventHandler(this.lblROICopy_Click);
+            // 
             // InspectionTeachingForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
@@ -616,5 +633,6 @@
         private System.Windows.Forms.Panel pnlTeachingItem;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel3;
         private System.Windows.Forms.Label lblImageSave;
+        private System.Windows.Forms.Label lblROICopy;
     }
 }

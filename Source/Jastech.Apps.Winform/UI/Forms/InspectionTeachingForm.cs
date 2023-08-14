@@ -10,6 +10,7 @@ using Jastech.Apps.Winform;
 using Jastech.Apps.Winform.Core;
 using Jastech.Apps.Winform.Settings;
 using Jastech.Apps.Winform.UI.Controls;
+using Jastech.Apps.Winform.UI.Forms;
 using Jastech.Framework.Algorithms.Akkon;
 using Jastech.Framework.Algorithms.Akkon.Parameters;
 using Jastech.Framework.Algorithms.UI.Controls;
@@ -916,21 +917,6 @@ namespace Jastech.Framework.Winform.Forms
         private void lblImageSave_Click(object sender, EventArgs e)
         {
             SaveScanImage();
-            //var teachingData = TeachingData.Instance();
-
-            //AppsInspModel model = ModelManager.Instance().CurrentModel as AppsInspModel;
-
-            //for (int tabIndex = 0; tabIndex < model.TabCount; tabIndex++)
-            //{
-            //    if (teachingData.GetBufferImage(tabIndex) is TeachingImageBuffer buffer)
-            //    {
-            //        if (buffer.TabImage == null)
-            //            return;
-
-            //        Mat temp = buffer.TabImage.Clone() as Mat;
-            //        temp.Save()
-            //    }
-            //}
         }
 
 
@@ -950,16 +936,63 @@ namespace Jastech.Framework.Winform.Forms
             return _coordinateTab;
         }
 
-        private MarkParam _coordinateMark { get; set; } = null;
-
-        private void SetCoordinateMark(MarkParam param)
+        private void lblROICopy_Click(object sender, EventArgs e)
         {
-            _coordinateMark = param.DeepCopy();
+            // 탭 선택 기능 Form
+            ROICopyForm form = new ROICopyForm();
+            form.SetUnitName(UnitName.Unit0);
+            form.SetDisplayType(_displayType);
+            form.ShowDialog();
+
+            // 그루브짱 요청
+            //MessageYesNoForm form = new MessageYesNoForm();
+            //form.Message = "Do you want to roi copy?";
+            //if (form.ShowDialog() == DialogResult.Yes)
+            //{
+            //    // 그냥 다 복사
+            //    switch (_displayType)
+            //    {
+            //        case DisplayType.Mark:
+            //            MarkControl.CopyMark(UnitName);
+            //            break;
+
+            //        case DisplayType.Align:
+            //            CopyAlign();
+            //            break;
+
+            //        case DisplayType.Akkon:
+            //            break;
+
+            //        case DisplayType.PreAlign:
+            //            break;
+
+            //        case DisplayType.Calibration:
+            //            break;
+
+            //        default:
+            //            break;
+            //    }
+            //}
         }
 
-        private MarkParam GetCoordinateMark()
+        private void CopyAlign()
         {
-            return _coordinateMark;
+            foreach (Tab tab in TeachingTabList)
+            {
+                if (tab.Index == CurrentTab.Index)
+                    continue;
+
+                foreach (ATTTabAlignName alignName in Enum.GetValues(typeof(ATTTabAlignName)))
+                {
+                    var alignParam = CurrentTab.GetAlignParam(alignName).DeepCopy();
+                    tab.SetAlignParam(alignName, alignParam);
+                }
+            }
+        }
+
+        private void CopyAkkon()
+        {
+
         }
     }
 

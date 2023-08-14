@@ -2115,7 +2115,7 @@ namespace Jastech.Apps.Winform.UI.Controls
         {
             AppsInspModel appsInspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
 
-            AkkonROICopyForm form = new AkkonROICopyForm();
+            ROICopyForm form = new ROICopyForm();
             form.SetUnitName(UnitName.Unit0);
             form.ShowDialog();
         }
