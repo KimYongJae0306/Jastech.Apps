@@ -312,10 +312,27 @@ namespace ATT_UT_IPAD.Core
                     break;
 
                 case SeqStep.SEQ_MOVE_START_POS:
+                    if (ConfigSet.Instance().Operation.VirtualMode == false)
+                    {
+                        if (AkkonLAFCtrl.Status.IsTrackingOn == true)
+                        {
+                            AkkonLAFCtrl.SetTrackingOnOFF(false);
+                            Thread.Sleep(50);
+                            break;
+                        }
+
+                        if (AlignLAFCtrl.Status.IsTrackingOn == true)
+                        {
+                            AlignLAFCtrl.SetTrackingOnOFF(false);
+                            Thread.Sleep(50);
+                            break;
+                        }
+                    }
                     if (MoveTo(TeachingPosType.Stage1_Scan_Start, out errorMessage) == false)
                         break;
 
                     PlcControlManager.Instance().WritePcStatus(PlcCommand.Move_ScanStartPos);
+                    WriteLog("Wait Inspection Start Signal From PLC.", true);
                     SeqStep = SeqStep.SEQ_WAITING;
                     break;
 
@@ -324,24 +341,34 @@ namespace ATT_UT_IPAD.Core
                         break;
                     WriteLog("Receive Inspection Start Signal From PLC.", true);
 
-                    InitializeBuffer();
-                    WriteLog("Initialize Buffer.");
+                    SeqStep = SeqStep.SEQ_LAF_CHECK;
 
                     // Wait for Laf's traking mode
-                    if(ConfigSet.Instance().Operation.VirtualMode == false)
+
+                    SeqStep = SeqStep.SEQ_LAF_CHECK;
+                    break;
+                case SeqStep.SEQ_LAF_CHECK:
+                    if (ConfigSet.Instance().Operation.VirtualMode == false)
                     {
                         if (AkkonLAFCtrl.Status.IsTrackingOn == false)
                         {
+                            Console.WriteLine("Send Akkon Tracking true");
                             AkkonLAFCtrl.SetTrackingOnOFF(true);
+                            Thread.Sleep(50);
                             break;
                         }
 
                         if (AlignLAFCtrl.Status.IsTrackingOn == false)
                         {
+                            Console.WriteLine("Send Align Tracking true");
                             AlignLAFCtrl.SetTrackingOnOFF(true);
+                            Thread.Sleep(50);
                             break;
                         }
                     }
+
+                    InitializeBuffer();
+                    WriteLog("Initialize Buffer.");
 
                     AppsInspResult.Instance().ClearResult();
                     WriteLog("Clear Result.");
@@ -354,7 +381,6 @@ namespace ATT_UT_IPAD.Core
                     WriteLog("Cell ID : " + AppsInspResult.Instance().Cell_ID);
                     SeqStep = SeqStep.SEQ_SCAN_START;
                     break;
-
                 case SeqStep.SEQ_SCAN_START:
                     IsAkkonGrabDone = false;
                     IsAlignGrabDone = false;
@@ -484,7 +510,9 @@ namespace ATT_UT_IPAD.Core
 
                     SeqStep = SeqStep.SEQ_INIT;
                     break;
-
+                case SeqStep.SEQ_ERROR:
+                    // 추가 필요
+                    break;
                 default:
                     break;
             }
@@ -921,39 +949,52 @@ namespace ATT_UT_IPAD.Core
             var teachingInfo = inspModel.GetUnit(UnitName.Unit0).GetTeachingInfo(teachingPos);
 
             Axis axisX = GetAxis(AxisHandlerName.Handler0, AxisName.X);
-            Axis axisZ = GetAxis(AxisHandlerName.Handler0, AxisName.Z0);
+           
 
             var movingParamX = teachingInfo.GetMovingParam(AxisName.X.ToString());
-            var movingParamZ = teachingInfo.GetMovingParam(AxisName.Z0.ToString());
-
-            if (MoveAxis(teachingPos, axisX, movingParamX) == false)
+            if (MoveAxisX(teachingPos, axisX, movingParamX) == false)
             {
                 errorMessage = string.Format("Move To Axis X TimeOut!({0})", movingParamX.MovingTimeOut.ToString());
                 WriteLog(errorMessage);
                 return false;
             }
 
-            if (MoveAxis(teachingPos, axisZ, movingParamZ) == false)
+            if(teachingPos == TeachingPosType.Stage1_Scan_Start)
             {
-                errorMessage = string.Format("Move To Axis Z TimeOut!({0})", movingParamZ.MovingTimeOut.ToString());
-                Logger.Write(LogType.Seq, errorMessage);
-                return false;
-            }
+                Axis axisAkkonZ = GetAxis(AxisHandlerName.Handler0, AxisName.Z0);
+                var AkkonMovingParamZ = teachingInfo.GetMovingParam(AxisName.Z0.ToString());
 
+                if (MoveAkkonLAF(teachingPos, axisAkkonZ, AkkonMovingParamZ) == false)
+                {
+                    errorMessage = string.Format("Move To Axis AkkonZ TimeOut!({0})", AkkonMovingParamZ.MovingTimeOut.ToString());
+                    Logger.Write(LogType.Seq, errorMessage);
+                    return false;
+                }
+
+                Axis axisAlignZ = GetAxis(AxisHandlerName.Handler0, AxisName.Z1);
+                var AlignMovingParamZ = teachingInfo.GetMovingParam(AxisName.Z1.ToString());
+
+                if (MoveAlignLAF(teachingPos, axisAlignZ, AlignMovingParamZ) == false)
+                {
+                    errorMessage = string.Format("Move To Axis AlignZ TimeOut!({0})", AlignMovingParamZ.MovingTimeOut.ToString());
+                    Logger.Write(LogType.Seq, errorMessage);
+                    return false;
+                }
+            }
             string message = string.Format("Move Completed.(Teaching Pos : {0})", teachingPos.ToString());
             WriteLog(message);
 
             return true;
         }
 
-        private bool MoveAxis(TeachingPosType teachingPos, Axis axis, AxisMovingParam movingParam)
+        private bool MoveAxisX(TeachingPosType teachingPos, Axis axis, AxisMovingParam movingParam)
         {
             MotionManager manager = MotionManager.Instance();
             double cameraGap = 0;
             if (teachingPos == TeachingPosType.Stage1_Scan_End)
             {
                 cameraGap = AppsConfig.Instance().CameraGap_mm;
-                //cameraGap += 50;
+                cameraGap += 50;
             }
                 
             if (manager.IsAxisInPosition(UnitName.Unit0, teachingPos, axis, cameraGap) == false)
@@ -974,6 +1015,36 @@ namespace ATT_UT_IPAD.Core
 
             return true;
         }
+
+        private bool MoveAkkonLAF(TeachingPosType teachingPos, Axis axis, AxisMovingParam movingParam)
+        {
+            var inspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
+
+            var posData = inspModel.GetUnit(UnitName.Unit0).GetTeachingInfo(teachingPos);
+            var targetPosition = posData.GetTargetPosition(axis.Name);
+
+            AkkonLAFCtrl.SetMotionAbsoluteMove(targetPosition);
+
+            Thread.Sleep(5000);
+            var position = AkkonLAFCtrl.Status.MPosPulse;
+            Console.WriteLine("Target Akkon MPos : " + position.ToString());
+            return true;
+        }
+
+        private bool MoveAlignLAF(TeachingPosType teachingPos, Axis axis, AxisMovingParam movingParam)
+        {
+            var inspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
+
+            var posData = inspModel.GetUnit(UnitName.Unit0).GetTeachingInfo(teachingPos);
+            var targetPosition = posData.GetTargetPosition(axis.Name);
+
+            AlignLAFCtrl.SetMotionAbsoluteMove(targetPosition);
+            Thread.Sleep(5000);
+            var position = AlignLAFCtrl.Status.MPosPulse ;
+            Console.WriteLine("Target Align MPos : " + position.ToString());
+            return true;
+        }
+
 
         private ICogImage GetAreaCameraImage(Camera camera)
         {
@@ -1402,6 +1473,7 @@ namespace ATT_UT_IPAD.Core
         SEQ_IDLE,
         SEQ_INIT,
         SEQ_WAITING,
+        SEQ_LAF_CHECK,
         SEQ_MOVE_START_POS,
         SEQ_SCAN_START,
         SEQ_MOVE_END_POS,
