@@ -528,19 +528,19 @@ namespace Jastech.Apps.Winform.UI.Controls
         {
             var leftResultX = inspResult.AlignResult.LeftX;
             lblLeftX_Judgement.Text = leftResultX.Judgement.ToString();
-            lblLeftX_Value.Text = (leftResultX.ResultValue_pixel * Resolution_um).ToString("F0");
+            lblLeftX_Value.Text = (leftResultX.ResultValue_pixel * Resolution_um).ToString("F2");
 
             var leftResultY = inspResult.AlignResult.LeftY;
             lblLeftY_Judgement.Text = leftResultY.Judgement.ToString();
-            lblLeftY_Value.Text = (leftResultY.ResultValue_pixel * Resolution_um).ToString("F0");
+            lblLeftY_Value.Text = (leftResultY.ResultValue_pixel * Resolution_um).ToString("F2");
 
             var rightResultX = inspResult.AlignResult.RightX;
             lblRightX_Judgement.Text = rightResultX.Judgement.ToString();
-            lblRightX_Value.Text = (rightResultX.ResultValue_pixel * Resolution_um).ToString("F0");
+            lblRightX_Value.Text = (rightResultX.ResultValue_pixel * Resolution_um).ToString("F2");
 
             var rightResultY = inspResult.AlignResult.RightY;
             lblRightY_Judgement.Text = rightResultY.Judgement.ToString();
-            lblRightY_Value.Text = (rightResultY.ResultValue_pixel * Resolution_um).ToString("F0");
+            lblRightY_Value.Text = (rightResultY.ResultValue_pixel * Resolution_um).ToString("F2");
         }
 
         private List<CogCompositeShape> GetAlignResultGraphics(AlignResult alignResult)
