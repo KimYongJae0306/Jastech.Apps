@@ -188,7 +188,7 @@ namespace Jastech.Apps.Winform
             {
                 if (i == 0)
                 {
-                    Console.WriteLine("AlignX : " + plcAlignDataX_mm.ToString());
+                    //Console.WriteLine("AlignX : " + plcAlignDataX_mm.ToString());
                     tempPos += plcAlignDataX_mm;
                     tempPos += delayStart_mm;
                     tempPos += inspModel.MaterialInfo.PanelEdgeToFirst_mm;
@@ -198,7 +198,7 @@ namespace Jastech.Apps.Winform
                 }
 
                 int startIndex = (int)(tempPos / resolution_mm / Camera.ImageHeight);
-                Console.WriteLine("StartIndex :" + startIndex.ToString()) ;
+                //Console.WriteLine("StartIndex :" + startIndex.ToString()) ;
                 double tabWidth = materialInfo.GetTabWidth(i);
                 double tabLeftOffset = materialInfo.GetLeftOffset(i);
                 double tabRightOffset = materialInfo.GetRightOffset(i);
@@ -222,7 +222,7 @@ namespace Jastech.Apps.Winform
                     TabScanBufferList.Add(scanImage);
             }
             GrabCount = maxEndIndex;
-            Console.WriteLine("Align Grab Max Count : " + GrabCount);
+            //Console.WriteLine("Align Grab Max Count : " + GrabCount);
         }
 
         private double GetCurrentAxisXPosition()
