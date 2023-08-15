@@ -237,10 +237,10 @@ namespace Jastech.Apps.Winform
                 return;
 
             Camera.Stop();
-            Thread.Sleep(100);
+            Thread.Sleep(50);
 
             Camera.GrabMulti(GrabCount);
-            Thread.Sleep(100);
+            Thread.Sleep(50);
         }
 
         public void StartGrab(float scanLength_mm)
