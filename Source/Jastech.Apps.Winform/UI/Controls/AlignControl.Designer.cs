@@ -555,7 +555,7 @@
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(110, 41);
             this.label9.TabIndex = 8;
-            this.label9.Text = "Value";
+            this.label9.Text = "Value(um)";
             this.label9.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // label32
