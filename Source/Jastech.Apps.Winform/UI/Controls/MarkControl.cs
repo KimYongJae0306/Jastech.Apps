@@ -380,6 +380,9 @@ namespace Jastech.Apps.Winform.UI.Controls
             if (cogImage == null)
                 return;
 
+            display.ClearGraphic();
+            display.Refresh();
+
             MainAlgorithmTool algorithmTool = new MainAlgorithmTool();
             TabInspResult tabInspResult = new TabInspResult();
 
@@ -570,7 +573,10 @@ namespace Jastech.Apps.Winform.UI.Controls
             ICogImage cogImage = display.GetImage();
             if (cogImage == null)
                 return;
+
             display.ClearGraphic();
+            display.Refresh();
+
             if (currentParam.IsTrained() == false)
             {
                 MessageConfirmForm form = new MessageConfirmForm();

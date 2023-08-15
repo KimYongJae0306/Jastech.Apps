@@ -270,6 +270,9 @@ namespace Jastech.Apps.Winform.UI.Controls
             if (display.GetImage() == null)
                 return;
 
+            display.ClearGraphic();
+            display.Refresh();
+
             var param = CurrentTab.GetAlignParam(CurrentAlignName);
 
             ICogImage cogImage = display.GetImage();
@@ -463,6 +466,9 @@ namespace Jastech.Apps.Winform.UI.Controls
             ICogImage cogImage = display.GetImage();
             if (cogImage == null)
                 return;
+
+            display.ClearGraphic();
+            display.Refresh();
 
             MainAlgorithmTool algorithmTool = new MainAlgorithmTool();
             TabInspResult tabInspResult = new TabInspResult();
