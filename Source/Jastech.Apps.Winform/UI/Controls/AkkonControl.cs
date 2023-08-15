@@ -1985,7 +1985,7 @@ namespace Jastech.Apps.Winform.UI.Controls
             TabInspResult tabInspResult = new TabInspResult();
             // Create Coordinate Object
 
-            algorithmTool.MainMarkInspect(orgCogImage, CurrentTab, ref tabInspResult, true);
+            algorithmTool.MainMarkInspect(orgCogImage, CurrentTab, ref tabInspResult, false);
 
             if (tabInspResult.MarkResult.Judgement != Judgement.OK)
             {

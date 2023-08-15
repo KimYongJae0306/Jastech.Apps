@@ -1,6 +1,7 @@
 ﻿using Jastech.Apps.Structure;
 using Jastech.Apps.Structure.Data;
 using Jastech.Framework.Config;
+using Jastech.Framework.Device.LAFCtrl;
 using Jastech.Framework.Device.Motions;
 using Jastech.Framework.Util.Helper;
 using Jastech.Framework.Winform;
@@ -154,7 +155,7 @@ namespace Jastech.Apps.Winform
                     Thread.Sleep(10);
                 }
             }
-            Console.WriteLine("Dove Done.");
+            Console.WriteLine(string.Format("Dove Done.{0}", axis.Name.ToString()));
             return true;
         }
 
@@ -171,6 +172,51 @@ namespace Jastech.Apps.Winform
                 }
                 return false;
             }
+
+            return false;
+        }
+
+        public bool MoveAxisZ(TeachingPosType teachingPos, LAFCtrl lafCtrl, AxisName axisNameZ)
+        {
+            if (ConfigSet.Instance().Operation.VirtualMode)
+                return true;
+
+            if(IsAxisZInPosition(teachingPos, lafCtrl, axisNameZ) == false)
+            {
+                Stopwatch sw = new Stopwatch();
+                sw.Restart();
+
+                var inspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
+
+                var posData = inspModel.GetUnit(UnitName.Unit0).GetTeachingInfo(teachingPos);
+                var targetPosition = posData.GetTargetPosition(axisNameZ);
+                var AlignMovingParamZ = posData.GetMovingParam(axisNameZ.ToString());
+
+                lafCtrl.SetMotionAbsoluteMove(targetPosition);
+
+                while(IsAxisZInPosition(teachingPos, lafCtrl, axisNameZ) == false)
+                {
+                    if (sw.ElapsedMilliseconds >= AlignMovingParamZ.MovingTimeOut)
+                    {
+                        return false;
+                    }
+                    Thread.Sleep(10);
+                }
+            }
+            Console.WriteLine(string.Format("Dove Done.{0}", axisNameZ.ToString()));
+            return true;
+        }
+
+        public bool IsAxisZInPosition(TeachingPosType teachingPosition, LAFCtrl lafCtrl, AxisName axisNameZ)
+        {
+            var inspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
+
+            var posData = inspModel.GetUnit(UnitName.Unit0).GetTeachingInfo(teachingPosition);
+            var targetPosition = posData.GetTargetPosition(axisNameZ);
+            var curPos = lafCtrl.Status.MPosPulse / lafCtrl.ResolutionAxisZ;
+
+            if (Math.Abs(targetPosition - curPos) <= 0.001)
+                return true;
 
             return false;
         }

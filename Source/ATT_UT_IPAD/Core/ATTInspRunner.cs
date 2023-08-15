@@ -51,6 +51,8 @@ namespace ATT_UT_IPAD.Core
         private object _inspLock = new object();
 
         private Thread _deleteThread { get; set; } = null;
+
+        private Thread _ClearBufferThread { get; set; } = null;
         #endregion
 
         #region 속성
@@ -283,51 +285,18 @@ namespace ATT_UT_IPAD.Core
                     break;
 
                 case SeqStep.SEQ_INIT:
-                    AlignCamera.IsLive = false;
-                    AlignCamera.StopGrab();
-                    WriteLog("Align Stop Grab.");
-
-                    AkkonCamera.IsLive = false;
-                    AkkonCamera.StopGrab();
-                    WriteLog("AkkonCamera Stop Grab.");
-
-                    AlignCamera.SetOperationMode(TDIOperationMode.TDI);
-                    AkkonCamera.SetOperationMode(TDIOperationMode.TDI);
-
-                    LightCtrlHandler?.TurnOff();
-                    WriteLog("Light Off.");
-
-                    AlignLAFCtrl?.SetTrackingOnOFF(false);
-                    WriteLog("Align Laf Off.");
-
-                    AkkonLAFCtrl?.SetTrackingOnOFF(false);
-                    WriteLog("Akkon Laf Off.");
-
-                    AkkonCamera.ClearTabScanBuffer();
-                    AlignCamera.ClearTabScanBuffer();
-                    WriteLog("Clear Buffer.");
+                    ClearBufferThread();
 
                     SeqStep = SeqStep.SEQ_MOVE_START_POS;
                     break;
 
                 case SeqStep.SEQ_MOVE_START_POS:
-                    if (ConfigSet.Instance().Operation.VirtualMode == false)
-                    {
-                        if (AkkonLAFCtrl.Status.IsTrackingOn == true)
-                        {
-                            AkkonLAFCtrl.SetTrackingOnOFF(false);
-                            Thread.Sleep(50);
-                            break;
-                        }
-
-                        if (AlignLAFCtrl.Status.IsTrackingOn == true)
-                        {
-                            AlignLAFCtrl.SetTrackingOnOFF(false);
-                            Thread.Sleep(50);
-                            break;
-                        }
-                    }
                     if (MoveTo(TeachingPosType.Stage1_Scan_Start, out errorMessage) == false)
+                        break;
+
+                    MotionManager.Instance().MoveAxisZ(TeachingPosType.Stage1_Scan_Start, AkkonLAFCtrl, AxisName.Z0);
+
+                    if (_ClearBufferThread != null)
                         break;
 
                     PlcControlManager.Instance().WritePcStatus(PlcCommand.Move_ScanStartPos);
@@ -340,32 +309,15 @@ namespace ATT_UT_IPAD.Core
                         break;
                     WriteLog("Receive Inspection Start Signal From PLC.", true);
 
-                    SeqStep = SeqStep.SEQ_LAF_CHECK;
+                    AkkonLAFCtrl.SetTrackingOnOFF(true);
+                    WriteLog("Akkon LAF Tracking ON.");
 
-                    // Wait for Laf's traking mode
+                    AlignLAFCtrl.SetTrackingOnOFF(true);
+                    WriteLog("Align LAF Tracking ON.");
 
-                    SeqStep = SeqStep.SEQ_LAF_CHECK;
+                    SeqStep = SeqStep.SEQ_BUFFER_INIT;
                     break;
-                case SeqStep.SEQ_LAF_CHECK:
-                    if (ConfigSet.Instance().Operation.VirtualMode == false)
-                    {
-                        if (AkkonLAFCtrl.Status.IsTrackingOn == false)
-                        {
-                            Console.WriteLine("Send Akkon Tracking true");
-                            AkkonLAFCtrl.SetTrackingOnOFF(true);
-                            Thread.Sleep(50);
-                            break;
-                        }
-
-                        if (AlignLAFCtrl.Status.IsTrackingOn == false)
-                        {
-                            Console.WriteLine("Send Align Tracking true");
-                            AlignLAFCtrl.SetTrackingOnOFF(true);
-                            Thread.Sleep(50);
-                            break;
-                        }
-                    }
-
+                case SeqStep.SEQ_BUFFER_INIT:
                     InitializeBuffer();
                     WriteLog("Initialize Buffer.");
 
@@ -377,7 +329,7 @@ namespace ATT_UT_IPAD.Core
                     AppsInspResult.Instance().StartInspTime = DateTime.Now;
                     AppsInspResult.Instance().Cell_ID = GetCellID();
 
-                    WriteLog("Cell ID : " + AppsInspResult.Instance().Cell_ID);
+                    WriteLog("Cell ID : " + AppsInspResult.Instance().Cell_ID, true);
                     SeqStep = SeqStep.SEQ_SCAN_START;
                     break;
                 case SeqStep.SEQ_SCAN_START:
@@ -386,15 +338,12 @@ namespace ATT_UT_IPAD.Core
 
                     if(unit.LightParam != null)
                         LightCtrlHandler.TurnOn(unit.LightParam);
-                    Thread.Sleep(100);
 
                     AlignCamera.StartGrab();
                     WriteLog("Start Align LineScanner Grab.", true);
-                    Thread.Sleep(50);
 
                     AkkonCamera.StartGrab();
                     WriteLog("Start Akkon LineScanner Grab.", true);
-                    Thread.Sleep(50);
 
                     if (ConfigSet.Instance().Operation.VirtualMode)
                     {
@@ -441,7 +390,6 @@ namespace ATT_UT_IPAD.Core
               
                     if (IsInspAlignDone() == false)
                         break;
-                   
 
                     LastInspSW.Stop();
                     AppsInspResult.Instance().EndInspTime = DateTime.Now;
@@ -501,16 +449,17 @@ namespace ATT_UT_IPAD.Core
                     break;
 
                 case SeqStep.SEQ_CHECK_STANDBY:
-
-                    //if (!AppsMotionManager.Instance().IsMotionInPosition(UnitName.Unit0, AxisHandlerName.Handler0, AxisName.X, TeachingPosType.Standby))
-                    //    break;
-                    //if (ConfigSet.Instance().Operation.VirtualMode)
-                        AppsStatus.Instance().IsInspRunnerFlagFromPlc = false;
-
+                    AppsStatus.Instance().IsInspRunnerFlagFromPlc = false;
+                    ClearBufferThread();
                     SeqStep = SeqStep.SEQ_INIT;
                     break;
                 case SeqStep.SEQ_ERROR:
+                    short command = PlcControlManager.Instance().WritePcStatus(PlcCommand.StartInspection, true);
+                    Logger.Debug(LogType.Device, $"Sequence Error StartInspection.[{command}]");
                     // 추가 필요
+                    IsAkkonGrabDone = false;
+                    IsAlignGrabDone = false;
+                    ClearBuffer();
                     break;
                 default:
                     break;
@@ -958,28 +907,28 @@ namespace ATT_UT_IPAD.Core
                 return false;
             }
 
-            if(teachingPos == TeachingPosType.Stage1_Scan_Start)
-            {
-                Axis axisAkkonZ = GetAxis(AxisHandlerName.Handler0, AxisName.Z0);
-                var AkkonMovingParamZ = teachingInfo.GetMovingParam(AxisName.Z0.ToString());
+            //if(teachingPos == TeachingPosType.Stage1_Scan_Start)
+            //{
+            //    Axis axisAkkonZ = GetAxis(AxisHandlerName.Handler0, AxisName.Z0);
+            //    var AkkonMovingParamZ = teachingInfo.GetMovingParam(AxisName.Z0.ToString());
 
-                if (MoveAkkonLAF(teachingPos, axisAkkonZ, AkkonMovingParamZ) == false)
-                {
-                    errorMessage = string.Format("Move To Axis AkkonZ TimeOut!({0})", AkkonMovingParamZ.MovingTimeOut.ToString());
-                    Logger.Write(LogType.Seq, errorMessage);
-                    return false;
-                }
+            //    if (MoveAkkonLAF(teachingPos, axisAkkonZ, AkkonMovingParamZ) == false)
+            //    {
+            //        errorMessage = string.Format("Move To Axis AkkonZ TimeOut!({0})", AkkonMovingParamZ.MovingTimeOut.ToString());
+            //        Logger.Write(LogType.Seq, errorMessage);
+            //        return false;
+            //    }
 
-                Axis axisAlignZ = GetAxis(AxisHandlerName.Handler0, AxisName.Z1);
-                var AlignMovingParamZ = teachingInfo.GetMovingParam(AxisName.Z1.ToString());
+            //    Axis axisAlignZ = GetAxis(AxisHandlerName.Handler0, AxisName.Z1);
+            //    var AlignMovingParamZ = teachingInfo.GetMovingParam(AxisName.Z1.ToString());
 
-                if (MoveAlignLAF(teachingPos, axisAlignZ, AlignMovingParamZ) == false)
-                {
-                    errorMessage = string.Format("Move To Axis AlignZ TimeOut!({0})", AlignMovingParamZ.MovingTimeOut.ToString());
-                    Logger.Write(LogType.Seq, errorMessage);
-                    return false;
-                }
-            }
+            //    if (MoveAlignLAF(teachingPos, axisAlignZ, AlignMovingParamZ) == false)
+            //    {
+            //        errorMessage = string.Format("Move To Axis AlignZ TimeOut!({0})", AlignMovingParamZ.MovingTimeOut.ToString());
+            //        Logger.Write(LogType.Seq, errorMessage);
+            //        return false;
+            //    }
+            //}
             string message = string.Format("Move Completed.(Teaching Pos : {0})", teachingPos.ToString());
             WriteLog(message);
 
@@ -1139,6 +1088,7 @@ namespace ATT_UT_IPAD.Core
 
             return colorMat;
         }
+
         public Mat GetDebugResultImage(Mat mat, List<AkkonLeadResult> leadResultList, AkkonAlgoritmParam akkonParameters)
         {
             if (mat == null)
@@ -1259,6 +1209,7 @@ namespace ATT_UT_IPAD.Core
             }
             return colorMat;
         }
+
         public ICogImage ConvertCogColorImage(Mat mat)
         {
             Mat matR = MatHelper.ColorChannelSeperate(mat, MatHelper.ColorChannel.R);
@@ -1464,6 +1415,49 @@ namespace ATT_UT_IPAD.Core
             IsAkkonGrabDone = true;
             IsAlignGrabDone = true;
         }
+
+        public bool ClearBufferThread()
+        {
+            if (_ClearBufferThread == null)
+            {
+                _ClearBufferThread = new Thread(ClearBuffer);
+                _ClearBufferThread.Start();
+                return true;
+            }
+            return false;
+        }
+
+        private void ClearBuffer()
+        {
+            AlignCamera.IsLive = false;
+            AlignCamera.StopGrab();
+            WriteLog("Align Stop Grab.");
+
+            AkkonCamera.IsLive = false;
+            AkkonCamera.StopGrab();
+            WriteLog("AkkonCamera Stop Grab.");
+
+            AlignCamera.SetOperationMode(TDIOperationMode.TDI);
+            AkkonCamera.SetOperationMode(TDIOperationMode.TDI);
+
+            LightCtrlHandler?.TurnOff();
+            WriteLog("Light Off.");
+
+            AlignLAFCtrl?.SetTrackingOnOFF(false);
+            WriteLog("Align Laf Off.");
+
+            AkkonLAFCtrl?.SetTrackingOnOFF(false);
+            WriteLog("Akkon Laf Off.");
+
+            AkkonCamera.ClearTabScanBuffer();
+            AlignCamera.ClearTabScanBuffer();
+            WriteLog("Clear Buffer.");
+
+            MotionManager.Instance().MoveAxisZ(TeachingPosType.Stage1_Scan_Start, AkkonLAFCtrl, AxisName.Z0);
+            MotionManager.Instance().MoveAxisZ(TeachingPosType.Stage1_Scan_Start, AlignLAFCtrl, AxisName.Z1);
+
+            _ClearBufferThread = null;
+        }
         #endregion
     }
 
@@ -1472,7 +1466,7 @@ namespace ATT_UT_IPAD.Core
         SEQ_IDLE,
         SEQ_INIT,
         SEQ_WAITING,
-        SEQ_LAF_CHECK,
+        SEQ_BUFFER_INIT,
         SEQ_MOVE_START_POS,
         SEQ_SCAN_START,
         SEQ_MOVE_END_POS,
