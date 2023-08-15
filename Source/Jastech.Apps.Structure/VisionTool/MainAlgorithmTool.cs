@@ -210,23 +210,41 @@ namespace Jastech.Apps.Structure.VisionTool
                 float fpcCenterX = fpcResult1.CaliperMatchList[0].FoundPos.X + (fpcIntervalX / 2.0f);
                 float fpcCenterY = fpcResult1.CaliperMatchList[0].FoundPos.Y + (fpcIntervalY / 2.0f);
 
+                // PJH_TEST_S
+                var centerY = (panelCenterY + fpcCenterY) / 2.0f;
+
+                var deltaFpcY = Math.Abs(centerY - fpcCenterY);//fpcCenterY - centerY;
+                var fpcSkew = fpcResult1.CaliperMatchList[0].ReferenceSkew;
+                var deltaFpcX = Math.Tan(MathHelper.RadToDeg(fpcSkew)) * deltaFpcY;
+                var fpcX = fpcCenterX - deltaFpcX;
+
+                var deltaPanelY = Math.Abs(centerY - panelCenterY);
+                var panelSkew = panelResult1.CaliperMatchList[0].ReferenceSkew;
+                var deltaPanelX = Math.Tan(MathHelper.RadToDeg(panelSkew)) * deltaPanelY;
+                var panelX = panelCenterX - deltaPanelX;
+
+                var res = panelX - fpcX;
+                Console.WriteLine("Lead : " + i.ToString("X2") + " / 결과 : " + res.ToString("F2"));
+
+                // PJH_TEST_E
+
                 // y = ax + b
-                double standardY = 100;
+                //double standardY = 100;
 
-                double a = MathHelper.GetSlope(new PointF(panelCenterX, panelCenterY), new PointF(fpcCenterY, fpcCenterY));
-                double panelX = panelCenterX;
-                double panelY = panelCenterY;
-                double panel_b = panelY - (a * panelX);
-                double newX = (standardY - panel_b) / a;
+                //double a = MathHelper.GetSlope(new PointF(panelCenterX, panelCenterY), new PointF(fpcCenterY, fpcCenterY));
+                //double panelX = panelCenterX;
+                //double panelY = panelCenterY;
+                //double panel_b = panelY - (a * panelX);
+                //double newX = (standardY - panel_b) / a;
 
-                double fpcX = fpcCenterX;
-                double fpcY = fpcCenterY;
-                double fpc_b = fpcY - (a * fpcX);
-                double newX2= (standardY - fpc_b) / a;
+                //double fpcX = fpcCenterX;
+                //double fpcY = fpcCenterY;
+                //double fpc_b = fpcY - (a * fpcX);
+                //double newX2= (standardY - fpc_b) / a;
 
-                double ggg = newX2 - newX;
-                double g1123123 = ggg * 0.35;
-                int g1 = 1;
+                //double ggg = newX2 - newX;
+                //double g1123123 = ggg * 0.35;
+                //int g1 = 1;
 
                 // y - b = m(x - a): 점(a, b), 기울기(m) => 1 로 가정
                 // y = x - a + b;
