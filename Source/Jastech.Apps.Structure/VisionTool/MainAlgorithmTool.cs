@@ -188,58 +188,76 @@ namespace Jastech.Apps.Structure.VisionTool
 
             List<float> panelCenterXList = new List<float>();
             List<float> fpcCenterXList = new List<float>();
-
-            if (result.Panel.Judgement == Judgement.OK && result.Fpc.Judgement == Judgement.OK)
+            // 정환
+            for (int i = 0; i < panelParam.LeadCount * 2; i += 2)
             {
-                List<float> intervalValueX = new List<float>();
+                var panelResult1 = result.Panel.CogAlignResult[i];
+                var panelResult2 = result.Panel.CogAlignResult[i + 1];
 
-                for (int i = 0; i < panelParam.LeadCount * 2; i += 2)
-                {
-                    if(i >= result.Panel.CogAlignResult.Count || i >= result.Fpc.CogAlignResult.Count)
-                        continue;
+                var fpcResult1 = result.Fpc.CogAlignResult[i];
+                var fpcResult2 = result.Fpc.CogAlignResult[i + 1];
 
-                    var panelResult1 = result.Panel.CogAlignResult[i];
-                    var panelResult2 = result.Panel.CogAlignResult[i + 1];
+                if (panelResult1.Found == false || panelResult2.Found == false || fpcResult1.Found == false || fpcResult2.Found == false)
+                    continue;
 
-                    float panelInterval = Math.Abs(panelResult1.CaliperMatchList[0].FoundPos.X - panelResult2.CaliperMatchList[0].FoundPos.X);
-                    float panelCenterX = panelResult1.CaliperMatchList[0].FoundPos.X + (panelInterval / 2.0f);
-                    panelCenterXList.Add(panelCenterX);
+                float panelIntervalX = Math.Abs(panelResult1.CaliperMatchList[0].FoundPos.X - panelResult2.CaliperMatchList[0].FoundPos.X);
+                float panelIntervalY = Math.Abs(panelResult1.CaliperMatchList[0].FoundPos.Y - panelResult2.CaliperMatchList[0].FoundPos.Y);
+                float panelCenterX = panelResult1.CaliperMatchList[0].FoundPos.X + (panelIntervalX / 2.0f);
+                float panelCenterY = panelResult1.CaliperMatchList[0].FoundPos.Y + (panelIntervalY / 2.0f);
 
-                    var fpcResult1 = result.Fpc.CogAlignResult[i];
-                    var fpcResult2 = result.Fpc.CogAlignResult[i + 1];
+                float fpcIntervalX = Math.Abs(fpcResult1.CaliperMatchList[0].FoundPos.X - fpcResult2.CaliperMatchList[0].FoundPos.X);
+                float fpcIntervalY = Math.Abs(fpcResult1.CaliperMatchList[0].FoundPos.Y - fpcResult2.CaliperMatchList[0].FoundPos.Y);
+                float fpcCenterX = fpcResult1.CaliperMatchList[0].FoundPos.X + (fpcIntervalX / 2.0f);
+                float fpcCenterY = fpcResult1.CaliperMatchList[0].FoundPos.Y + (fpcIntervalY / 2.0f);
 
-                    float fpcInterval = Math.Abs(fpcResult1.CaliperMatchList[0].FoundPos.X - fpcResult2.CaliperMatchList[0].FoundPos.X);
-                    float fpcCenterX = fpcResult1.CaliperMatchList[0].FoundPos.X + (fpcInterval / 2.0f);
-                    fpcCenterXList.Add(fpcCenterX);
+                // y = ax + b
+                double standardY = 100;
 
-                    float interval = Math.Abs(panelCenterX - fpcCenterX);
-                    intervalValueX.Add(Math.Abs(interval));
-                }
+                double a = MathHelper.GetSlope(new PointF(panelCenterX, panelCenterY), new PointF(fpcCenterY, fpcCenterY));
+                double panelX = panelCenterX;
+                double panelY = panelCenterY;
+                double panel_b = panelY - (a * panelX);
+                double newX = (standardY - panel_b) / a;
 
-                float max = intervalValueX.Max();
-                float min = intervalValueX.Min();
+                double fpcX = fpcCenterX;
+                double fpcY = fpcCenterY;
+                double fpc_b = fpcY - (a * fpcX);
+                double newX2= (standardY - fpc_b) / a;
 
-                float temp = 0.0f;
-                int count = 0;
-                foreach (var value in intervalValueX)
-                {
-                    if (value == max || value == min)
-                        continue;
+                double ggg = newX2 - newX;
+                double g1123123 = ggg * 0.35;
+                int g1 = 1;
 
-                    temp += value;
-                    count++;
-                }
+                // y - b = m(x - a): 점(a, b), 기울기(m) => 1 로 가정
+                // y = x - a + b;
+                // x = a - b;
+                // y가 0 일 때 x의 편차를 계산
+                //float fpcX = fpcCenterX - fpcCenterY;
+                //float panelX = panelCenterX - fpcCenterY;
+                //float value = panelX - fpcX;
+                //float value1 = value * 0.35F;
 
-                result.ResultValue_pixel = temp / count;
-                result.AvgCenterX = GetCenterX(panelCenterXList);
-                result.JudegementValue_pixel = judegementX_pixel;
+                //// y - b = m(x - a): 점(a, b), 기울기(m) => -1 로 가정
+                //// y = -x + a + b;
+                //// x = a + b;
+                //// y가 0 일 때 x의 편차를 계산
+                //float fpcX1 = fpcCenterX + fpcCenterY;
+                //float panelX1 = panelCenterX + panelCenterY;
+                //float value11 = panelX - fpcX;
+                //float value111 = value * 0.35F;
+
+                //float fpc_b = fpcCenterY - fpcCenterX; // y = x + fpc_b
+                //float panel_b = panelCenterY - panelCenterX; // y = x + panel_b
+
+                //// y 값을 동일하게 하여 x값 축출
+                //float y = 0; // x = y - fpc_b
+                //float fpc_x = y - fpc_b;
+                //float panel_x = y - panel_b;
+
+                //float g1 = Math.Abs(panelCenterX - fpcCenterX);
+                //float gg = Math.Abs(panel_x - fpc_x);
+
             }
-            else
-            {
-                string message = string.Format(" Main CaliperX Search Fail. Panel({0}), FPC({1})", panelParam.Name, fpcParam.Name);
-                Logger.Debug(LogType.Inspection, message);
-            }
-
             return result;
         }
 

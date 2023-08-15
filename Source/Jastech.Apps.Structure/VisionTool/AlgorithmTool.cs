@@ -49,12 +49,12 @@ namespace Jastech.Apps.Structure.VisionTool
 
             alignResult.Judgement = isFounded ? Judgement.OK : Judgement.FAIL;
 
-            if(alignResult.Judgement == Judgement.OK)
+            if (alignResult.Judgement == Judgement.OK)
             {
                 if (leadCount != alignResult.CogAlignResult.Count() / 2)
                     alignResult.Judgement = Judgement.NG;
             }
-                
+
             return alignResult;
         }
 
