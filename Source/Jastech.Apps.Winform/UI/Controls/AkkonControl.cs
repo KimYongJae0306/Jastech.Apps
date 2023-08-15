@@ -1816,12 +1816,16 @@ namespace Jastech.Apps.Winform.UI.Controls
                 textY = centerPt.Y + (baseLine / 2);
                 CvInvoke.PutText(colorMat, akkonCountString, new Point(textX, textY + 60), FontFace.HersheyComplex, 0.25, new MCvScalar(50, 230, 50, 255));
 
-                if (result.AkkonCount >= AkkonParameters.JudgementParam.AkkonCount)
+                if(result.Judgement == Judgement.NG)
                 {
                     CvInvoke.Line(colorMat, leftTop, leftBottom, redColor, 2);
                     CvInvoke.Line(colorMat, leftTop, rightTop, redColor, 2);
                     CvInvoke.Line(colorMat, rightTop, rightBottom, redColor, 2);
                     CvInvoke.Line(colorMat, rightBottom, leftBottom, redColor, 2);
+                }
+                if (result.AkkonCount >= AkkonParameters.JudgementParam.AkkonCount)
+                {
+                    
                 }
             }
             return colorMat;
