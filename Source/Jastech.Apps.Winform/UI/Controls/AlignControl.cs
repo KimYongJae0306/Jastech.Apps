@@ -514,6 +514,27 @@ namespace Jastech.Apps.Winform.UI.Controls
             shapeList.AddRange(GetAlignResultGraphics(tabInspResult.AlignResult.RightY));
 
             display.UpdateGraphic(shapeList);
+
+            UpdateData(tabInspResult);
+        }
+
+        private void UpdateData(TabInspResult inspResult)
+        {
+            var leftResultX = inspResult.AlignResult.LeftX;
+            lblLeftX_Judgement.Text = leftResultX.Judgement.ToString();
+            lblLeftX_Value.Text = (leftResultX.ResultValue_pixel * Resolution_um).ToString("F0");
+
+            var leftResultY = inspResult.AlignResult.LeftY;
+            lblLeftY_Judgement.Text = leftResultY.Judgement.ToString();
+            lblLeftY_Value.Text = (leftResultY.ResultValue_pixel * Resolution_um).ToString("F0");
+
+            var rightResultX = inspResult.AlignResult.RightX;
+            lblRightX_Judgement.Text = rightResultX.Judgement.ToString();
+            lblRightX_Value.Text = (rightResultX.ResultValue_pixel * Resolution_um).ToString("F0");
+
+            var rightResultY = inspResult.AlignResult.RightY;
+            lblRightY_Judgement.Text = rightResultY.Judgement.ToString();
+            lblRightY_Value.Text = (rightResultY.ResultValue_pixel * Resolution_um).ToString("F0");
         }
 
         private List<CogCompositeShape> GetAlignResultGraphics(AlignResult alignResult)
@@ -568,115 +589,6 @@ namespace Jastech.Apps.Winform.UI.Controls
 
             panel.SetReferenceData(teachedLeftPoint, teachedRightPoint);
             panel.SetTargetData(searchedLeftPoint, searchedRightPoint);
-        }
-
-        private double RunLeftX(ICogImage cogImage)
-        {
-            double judgementX_pixel = CurrentTab.AlignSpec.LeftSpecX_um / Resolution_um;
-
-            AlignResult alignResultLeftX = AlgorithmTool.RunMainLeftAlignX(cogImage, CurrentTab, null, null, judgementX_pixel);
-            double value_um = alignResultLeftX.ResultValue_pixel * Resolution_um;
-
-            lblLeftX_Judgement.Text = alignResultLeftX.Judgement.ToString();
-            if (alignResultLeftX.Judgement != Judgement.FAIL)
-            {
-                lblLeftX_Value.Text = value_um.ToString("F2");
-            }
-            else
-                lblLeftX_Value.Text = "-";
-
-            lblLeftX_FpcX.Text = alignResultLeftX.Fpc.Judgement.ToString();
-            lblLeftX_PanelX.Text = alignResultLeftX.Panel.Judgement.ToString();
-
-            //var display = TeachingUIManager.Instance().GetDisplay();
-            //display.UpdateResult(alignResultLeftX.Fpc);
-            //display.UpdateResult(alignResultLeftX.Panel);
-            AddAlignCaliperResult(alignResultLeftX.Fpc);
-            AddAlignCaliperResult(alignResultLeftX.Panel);
-
-            return value_um;
-        }
-
-        private double RunLeftY(ICogImage cogImage)
-        {
-            double judgementY = CurrentTab.AlignSpec.LeftSpecY_um / Resolution_um;
-
-            AlignResult alignResultLeftY = AlgorithmTool.RunMainLeftAlignY(cogImage, CurrentTab, null, null, judgementY);
-
-            lblLeftY_Judgement.Text = alignResultLeftY.Judgement.ToString();
-            double value_um = alignResultLeftY.ResultValue_pixel * Resolution_um;
-
-            if (alignResultLeftY.Judgement != Judgement.FAIL)
-            {
-                lblLeftY_Value.Text = value_um.ToString("F2");
-            }
-            else
-                lblLeftY_Value.Text = "-";
-
-            lblLeftY_FpcY.Text = alignResultLeftY.Fpc.Judgement.ToString();
-            lblLeftY_PanelY.Text = alignResultLeftY.Panel.Judgement.ToString();
-
-            //var display = TeachingUIManager.Instance().GetDisplay();
-            //display.UpdateResult(alignResultLeftY.Fpc);
-            //display.UpdateResult(alignResultLeftY.Panel);
-            AddAlignCaliperResult(alignResultLeftY.Fpc);
-            AddAlignCaliperResult(alignResultLeftY.Panel);
-
-            return value_um;
-        }
-
-        private double RunRightX(ICogImage cogImage)
-        {
-            double judgementX = CurrentTab.AlignSpec.RightSpecX_um / Resolution_um;
-
-            AlignResult alignResultRightX = AlgorithmTool.RunMainRightAlignX(cogImage, CurrentTab, null, null, judgementX);
-            double value_um = alignResultRightX.ResultValue_pixel * Resolution_um;
-
-            lblRightX_Judgement.Text = alignResultRightX.Judgement.ToString();
-            if (alignResultRightX.Judgement != Judgement.FAIL)
-            {
-                lblRightX_Value.Text = value_um.ToString("F2");
-            }
-            else
-                lblRightX_Value.Text = "-";
-
-            lblRightX_FpcX.Text = alignResultRightX.Fpc.Judgement.ToString();
-            lblRightX_PanelX.Text = alignResultRightX.Panel.Judgement.ToString();
-
-            //var display = TeachingUIManager.Instance().GetDisplay();
-            //display.UpdateResult(alignResultRightX.Fpc);
-            //display.UpdateResult(alignResultRightX.Panel);
-            AddAlignCaliperResult(alignResultRightX.Fpc);
-            AddAlignCaliperResult(alignResultRightX.Panel);
-
-            return value_um;
-        }
-
-        private double RunRightY(ICogImage cogImage)
-        {
-            double judgementY = CurrentTab.AlignSpec.RightSpecY_um / Resolution_um;
-
-            AlignResult alignResultRightY = AlgorithmTool.RunMainRightAlignY(cogImage, CurrentTab, null, null, judgementY);
-            double value_um = alignResultRightY.ResultValue_pixel * Resolution_um;
-
-            lblRightY_Judgement.Text = alignResultRightY.Judgement.ToString();
-            if (alignResultRightY.Judgement != Judgement.FAIL)
-            {
-                lblRightY_Value.Text = value_um.ToString("F2");
-            }
-            else
-                lblRightY_Value.Text = "-";
-
-            lblRightY_FpcY.Text = alignResultRightY.Fpc.Judgement.ToString();
-            lblRightY_PanelY.Text = alignResultRightY.Panel.Judgement.ToString();
-
-            //var display = TeachingUIManager.Instance().GetDisplay();
-            //display.UpdateResult(alignResultRightY.Fpc);
-            //display.UpdateResult(alignResultRightY.Panel);
-            AddAlignCaliperResult(alignResultRightY.Fpc);
-            AddAlignCaliperResult(alignResultRightY.Panel);
-
-            return value_um;
         }
 
         private List<VisionProAlignCaliperResult> _displayCaliperResult = null;

@@ -282,6 +282,7 @@ namespace ATT_UT_IPAD.Core
             switch (SeqStep)
             {
                 case SeqStep.SEQ_IDLE:
+                    AppsStatus.Instance().IsInspRunnerFlagFromPlc = false;
                     break;
 
                 case SeqStep.SEQ_INIT:
@@ -459,6 +460,7 @@ namespace ATT_UT_IPAD.Core
                     // 추가 필요
                     IsAkkonGrabDone = false;
                     IsAlignGrabDone = false;
+                    AppsStatus.Instance().IsInspRunnerFlagFromPlc = false;
                     ClearBuffer();
                     break;
                 default:
@@ -906,29 +908,6 @@ namespace ATT_UT_IPAD.Core
                 WriteLog(errorMessage);
                 return false;
             }
-
-            //if(teachingPos == TeachingPosType.Stage1_Scan_Start)
-            //{
-            //    Axis axisAkkonZ = GetAxis(AxisHandlerName.Handler0, AxisName.Z0);
-            //    var AkkonMovingParamZ = teachingInfo.GetMovingParam(AxisName.Z0.ToString());
-
-            //    if (MoveAkkonLAF(teachingPos, axisAkkonZ, AkkonMovingParamZ) == false)
-            //    {
-            //        errorMessage = string.Format("Move To Axis AkkonZ TimeOut!({0})", AkkonMovingParamZ.MovingTimeOut.ToString());
-            //        Logger.Write(LogType.Seq, errorMessage);
-            //        return false;
-            //    }
-
-            //    Axis axisAlignZ = GetAxis(AxisHandlerName.Handler0, AxisName.Z1);
-            //    var AlignMovingParamZ = teachingInfo.GetMovingParam(AxisName.Z1.ToString());
-
-            //    if (MoveAlignLAF(teachingPos, axisAlignZ, AlignMovingParamZ) == false)
-            //    {
-            //        errorMessage = string.Format("Move To Axis AlignZ TimeOut!({0})", AlignMovingParamZ.MovingTimeOut.ToString());
-            //        Logger.Write(LogType.Seq, errorMessage);
-            //        return false;
-            //    }
-            //}
             string message = string.Format("Move Completed.(Teaching Pos : {0})", teachingPos.ToString());
             WriteLog(message);
 

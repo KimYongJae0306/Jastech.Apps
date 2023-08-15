@@ -186,11 +186,9 @@ namespace Jastech.Apps.Structure.VisionTool
             result.Panel = RunAlignX(cogImage, panelParam.CaliperParams, panelParam.LeadCount);
             result.Fpc = RunAlignX(cogImage, fpcParam.CaliperParams, fpcParam.LeadCount);
 
-            List<float> panelCenterXList = new List<float>();
-            List<float> fpcCenterXList = new List<float>();
+            List<double> alignValueList = new List<double>();
 
             // 정환
-            Console.WriteLine("---------------------------------------------");
             for (int i = 0; i < panelParam.LeadCount * 2; i += 2)
             {
                 var panelResult1 = result.Panel.CogAlignResult[i];
@@ -212,10 +210,6 @@ namespace Jastech.Apps.Structure.VisionTool
                 float fpcCenterX = fpcResult1.CaliperMatchList[0].FoundPos.X + (fpcIntervalX / 2.0f);
                 float fpcCenterY = fpcResult1.CaliperMatchList[0].FoundPos.Y + (fpcIntervalY / 2.0f);
 
-                // PJH_TEST_S
-                for (int tt = 0; tt < 3; tt++)
-                    Console.WriteLine();
-
                 var centerY = (panelCenterY + fpcCenterY) / 2.0f;
                 var panelSkew = panelResult1.CaliperMatchList[0].ReferenceSkew;
                 var fpcSkew = fpcResult1.CaliperMatchList[0].ReferenceSkew;
@@ -223,86 +217,37 @@ namespace Jastech.Apps.Structure.VisionTool
                 var deltaPanelY = centerY - panelCenterY;
                 var deltaPanelX = panelSkew * deltaPanelY;
                 var panelX = panelCenterX - deltaPanelX;
-                Console.WriteLine("Panel 교점 X : " + panelX.ToString());
 
                 var deltaFpcY = fpcCenterY - centerY;
                 var deltaFpcX = fpcSkew * deltaFpcY;
 
                 var fpcX = fpcCenterX + deltaFpcX;
-                Console.WriteLine("FpcX 교점 X : " + fpcX.ToString());
-
                 var res = panelX - fpcX;
-                Console.WriteLine("Lead : " + i.ToString("X2") + " / 결과 : " + res.ToString("F2"));
-                // PJH_TEST_E
 
-                // y = ax + b
-                //double standardY = 100;
-
-                //double a = MathHelper.GetSlope(new PointF(panelCenterX, panelCenterY), new PointF(fpcCenterY, fpcCenterY));
-                //double panelX = panelCenterX;
-                //double panelY = panelCenterY;
-                //double panel_b = panelY - (a * panelX);
-                //double newX = (standardY - panel_b) / a;
-
-                //double fpcX = fpcCenterX;
-                //double fpcY = fpcCenterY;
-                //double fpc_b = fpcY - (a * fpcX);
-                //double newX2= (standardY - fpc_b) / a;
-
-                //double ggg = newX2 - newX;
-                //double g1123123 = ggg * 0.35;
-                //int g1 = 1;
-
-                // y - b = m(x - a): 점(a, b), 기울기(m) => 1 로 가정
-                // y = x - a + b;
-                // x = a - b;
-                // y가 0 일 때 x의 편차를 계산
-                //float fpcX = fpcCenterX - fpcCenterY;
-                //float panelX = panelCenterX - fpcCenterY;
-                //float value = panelX - fpcX;
-                //float value1 = value * 0.35F;
-
-                //// y - b = m(x - a): 점(a, b), 기울기(m) => -1 로 가정
-                //// y = -x + a + b;
-                //// x = a + b;
-                //// y가 0 일 때 x의 편차를 계산
-                //float fpcX1 = fpcCenterX + fpcCenterY;
-                //float panelX1 = panelCenterX + panelCenterY;
-                //float value11 = panelX - fpcX;
-                //float value111 = value * 0.35F;
-
-                //float fpc_b = fpcCenterY - fpcCenterX; // y = x + fpc_b
-                //float panel_b = panelCenterY - panelCenterX; // y = x + panel_b
-
-                //// y 값을 동일하게 하여 x값 축출
-                //float y = 0; // x = y - fpc_b
-                //float fpc_x = y - fpc_b;
-                //float panel_x = y - panel_b;
-
-                //float g1 = Math.Abs(panelCenterX - fpcCenterX);
-                //float gg = Math.Abs(panel_x - fpc_x);
-
+                alignValueList.Add(res);
             }
-            return result;
-        }
 
-        private float GetCenterX(List<float> dataList)
-        {
-            float max = dataList.Max();
-            float min = dataList.Min();
-
-            float temp = 0.0f;
-            int count = 0;
-            foreach (var value in dataList)
+            if(alignValueList.Count > 0)
             {
-                if (value == max || value == min)
-                    continue;
+                double max = alignValueList.Max();
+                double min = alignValueList.Min();
 
-                temp += value;
-                count++;
+                double temp = 0.0f;
+                int count = 0;
+                foreach (var value in alignValueList)
+                {
+                    if (value == max || value == min)
+                        continue;
+
+                    temp += value;
+                    count++;
+                }
+
+                result.ResultValue_pixel = Convert.ToSingle(temp / count);
+                result.JudegementValue_pixel = judegementX_pixel;
             }
-
-            return temp / count;
+           
+            return result;
         }
 
         private AlignResult RunMainAlignY(ICogImage cogImage, AlignParam fpcParam, AlignParam panelParam, double judgementY_pixel)

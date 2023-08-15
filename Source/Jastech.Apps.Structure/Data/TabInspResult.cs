@@ -267,8 +267,6 @@ namespace Jastech.Apps.Structure.Data
 
         public double JudegementValue_pixel { get; set; }
 
-        public float AvgCenterX { get; set; }
-
         public float AvgCenterY { get; set; }
 
         public VisionProAlignCaliperResult Panel { get; set; } = new VisionProAlignCaliperResult();
