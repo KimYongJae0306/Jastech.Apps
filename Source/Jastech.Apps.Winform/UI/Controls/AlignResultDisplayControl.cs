@@ -333,30 +333,20 @@ namespace ATT_UT_IPAD.UI.Controls
                 return new PointF();
             if (pointList.Count() == 0)
                 return new PointF();
-            //float totalX = 0;
-            //float totalY = 0;
 
-            //foreach (var point in pointList)
-            //{
-            //    totalX += point.X;
-            //    totalY += point.Y;
-            //}
+            List<PointF> tempPointList = new List<PointF>();
 
-            //float centerX = totalX / pointList.Count;
-            //float centerY = totalY / pointList.Count;
+            foreach (var point in pointList)
+            {
+                if (point.X != 0 && point.Y != 0)
+                    tempPointList.Add(point);
+            }
 
-            //return new PointF(centerX, centerY);
-            //if (pointList == null)
-            //    return new Point();
+            float minX = tempPointList.Select(point => point.X).Min();
+            float maxX = tempPointList.Select(point => point.X).Max();
 
-            //if (pointList.Count == 0)
-            //    return new Point();
-
-            float minX = pointList.Select(point => point.X).Min();
-            float maxX = pointList.Select(point => point.X).Max();
-
-            float minY = pointList.Select(point => point.Y).Min();
-            float maxY = pointList.Select(point => point.Y).Max();
+            float minY = tempPointList.Select(point => point.Y).Min();
+            float maxY = tempPointList.Select(point => point.Y).Max();
 
             float width = (maxX - minX) / 2.0f;
             float height = (maxY - minY) / 2.0f;

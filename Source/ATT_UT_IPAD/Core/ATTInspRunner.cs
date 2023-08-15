@@ -338,13 +338,19 @@ namespace ATT_UT_IPAD.Core
                     IsAlignGrabDone = false;
 
                     if(unit.LightParam != null)
+                    {
                         LightCtrlHandler.TurnOn(unit.LightParam);
-
-                    AlignCamera.StartGrab();
-                    WriteLog("Start Align LineScanner Grab.", true);
+                        WriteLog("Light Turn On.", true);
+                    }
 
                     AkkonCamera.StartGrab();
                     WriteLog("Start Akkon LineScanner Grab.", true);
+
+                    if(AppsConfig.Instance().EnableTest1 == false)
+                    {
+                        AlignCamera.StartGrab();
+                        WriteLog("Start Align LineScanner Grab.", true);
+                    }
 
                     if (ConfigSet.Instance().Operation.VirtualMode)
                     {
@@ -373,10 +379,12 @@ namespace ATT_UT_IPAD.Core
                     break;
 
                 case SeqStep.SEQ_WAITING_ALIGN_SCAN_COMPLETED:
-                    if (IsAlignGrabDone == false)
-                        break;
-
-                    WriteLog("Complete Align LineScanner Grab.", true);
+                    if (AppsConfig.Instance().EnableTest1 == false)
+                    {
+                        if (IsAlignGrabDone == false)
+                            break;
+                        WriteLog("Complete Align LineScanner Grab.", true);
+                    }
 
                     LightCtrlHandler.TurnOff();
                     WriteLog("Light Off.", false);
