@@ -188,7 +188,9 @@ namespace Jastech.Apps.Structure.VisionTool
 
             List<float> panelCenterXList = new List<float>();
             List<float> fpcCenterXList = new List<float>();
+
             // 정환
+            Console.WriteLine("---------------------------------------------");
             for (int i = 0; i < panelParam.LeadCount * 2; i += 2)
             {
                 var panelResult1 = result.Panel.CogAlignResult[i];
@@ -211,21 +213,26 @@ namespace Jastech.Apps.Structure.VisionTool
                 float fpcCenterY = fpcResult1.CaliperMatchList[0].FoundPos.Y + (fpcIntervalY / 2.0f);
 
                 // PJH_TEST_S
+                for (int tt = 0; tt < 3; tt++)
+                    Console.WriteLine();
+
                 var centerY = (panelCenterY + fpcCenterY) / 2.0f;
-
-                var deltaFpcY = Math.Abs(centerY - fpcCenterY);//fpcCenterY - centerY;
-                var fpcSkew = fpcResult1.CaliperMatchList[0].ReferenceSkew;
-                var deltaFpcX = Math.Tan(MathHelper.RadToDeg(fpcSkew)) * deltaFpcY;
-                var fpcX = fpcCenterX - deltaFpcX;
-
-                var deltaPanelY = Math.Abs(centerY - panelCenterY);
                 var panelSkew = panelResult1.CaliperMatchList[0].ReferenceSkew;
-                var deltaPanelX = Math.Tan(MathHelper.RadToDeg(panelSkew)) * deltaPanelY;
+                var fpcSkew = fpcResult1.CaliperMatchList[0].ReferenceSkew;
+
+                var deltaPanelY = centerY - panelCenterY;
+                var deltaPanelX = panelSkew * deltaPanelY;
                 var panelX = panelCenterX - deltaPanelX;
+                Console.WriteLine("Panel 교점 X : " + panelX.ToString());
+
+                var deltaFpcY = fpcCenterY - centerY;
+                var deltaFpcX = fpcSkew * deltaFpcY;
+
+                var fpcX = fpcCenterX + deltaFpcX;
+                Console.WriteLine("FpcX 교점 X : " + fpcX.ToString());
 
                 var res = panelX - fpcX;
                 Console.WriteLine("Lead : " + i.ToString("X2") + " / 결과 : " + res.ToString("F2"));
-
                 // PJH_TEST_E
 
                 // y = ax + b
