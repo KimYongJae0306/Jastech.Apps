@@ -1149,13 +1149,16 @@ namespace Jastech.Apps.Winform.UI.Controls
 
                 lblThresholdPreview.BackColor = _nonSelectedColor;
 
-                _autoTeachingCollect.Clear();
-                _autoTeachingCollect.Add(_autoTeachingPolygon);
+                if(_autoTeachingPolygon != null)
+                {
+                    _autoTeachingCollect.Clear();
+                    _autoTeachingCollect.Add(_autoTeachingPolygon);
 
-                teachingDisplay.SetImage(TeachingUIManager.Instance().GetOriginCogImageBuffer(true));
+                    teachingDisplay.SetImage(TeachingUIManager.Instance().GetOriginCogImageBuffer(true));
 
-                teachingDisplay.DeleteInInteractiveGraphics("tool");
-                teachingDisplay.SetInteractiveGraphics("tool", _autoTeachingCollect);
+                    teachingDisplay.DeleteInInteractiveGraphics("tool");
+                    teachingDisplay.SetInteractiveGraphics("tool", _autoTeachingCollect);
+                }
             }
             else
             {
@@ -1385,12 +1388,13 @@ namespace Jastech.Apps.Winform.UI.Controls
                 return;
 
             var roiList = GetAutoTeachingRoiList(image);
-
+            //teachingDisplay.ClearGraphic();
             if (roiList == null)
                 return;
             if (roiList.Count == 0)
                 return;
-
+            
+            roiList = roiList.OrderBy(x => x.CornerXX).ToList();
             AddAutoTeachingAkkonRoi(roiList);
 
             UpdateROIDataGridView(GetGroup().AkkonROIList);

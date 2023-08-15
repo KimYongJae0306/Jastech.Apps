@@ -119,7 +119,6 @@ namespace ATT_UT_IPAD.Core
 
                     WriteLog("Received Akkon Camera Grab Done Event.");
                 }
-                    
             }
 
             if (AlignCamera.Camera.Name == cameraName)
