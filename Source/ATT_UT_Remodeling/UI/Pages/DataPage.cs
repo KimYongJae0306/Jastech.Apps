@@ -62,7 +62,7 @@ namespace ATT_UT_Remodeling.UI.Pages
                 MotionSettingsForm = new MotionSettingsForm();
                 MotionSettingsForm.UnitName = UnitName.Unit0;
                 MotionSettingsForm.AxisHandler = MotionManager.Instance().GetAxisHandler(AxisHandlerName.Handler0);
-                MotionSettingsForm.LafCtrl = LAFManager.Instance().GetLAFCtrl("Laf");
+                MotionSettingsForm.LafCtrl = LAFManager.Instance().GetLAF("Laf").LafCtrl;
                 MotionSettingsForm.InspModelService = ATTInspModelService;
                 MotionSettingsForm.CloseEventDelegate = () => MotionSettingsForm = null;
                 MotionSettingsForm.Show();

@@ -522,8 +522,8 @@ namespace ATT_UT_IPAD.UI.Forms
             TeachingPositionList.Where(x => x.Name == TeachingPositionType.ToString()).First().SetCenterOfGravity(AxisName.Z0, targetCenterOfGravity);
 
             lblTeachedCenterOfGravityZ0.Text = targetCenterOfGravity.ToString();
-
-            LAFManager.Instance().SetCenterOfGravity(AkkonLafCtrl.Name, targetCenterOfGravity);
+            if (LAFManager.Instance().GetLAF(AkkonLafCtrl.Name) is LAF akkonLAF)
+                akkonLAF.SetCenterOfGravity(targetCenterOfGravity);
         }
 
         private void lblMoveToTargetZ0_Click(object sender, EventArgs e)
@@ -544,37 +544,47 @@ namespace ATT_UT_IPAD.UI.Forms
                 direction = Direction.CW;
             else
                 direction = Direction.CCW;
-
+            
             AkkonLafCtrl.SetMotionRelativeMove(direction, Math.Abs(moveAmount));
         }
 
         private void lblOriginZ0_Click(object sender, EventArgs e)
         {
-            LAFManager.Instance().StartHomeThread(AkkonLafCtrl.Name);
+            if (LAFManager.Instance().GetLAF(AkkonLafCtrl.Name) is LAF akkonLAF)
+            {
+                bool ret = akkonLAF.StartHomeThread();
+
+                if(ret == false)
+                {
+                    MessageConfirmForm form = new MessageConfirmForm();
+                    form.Message = "Origin sequence is in operation.";
+                    form.ShowDialog();
+                }
+            }
         }
 
         private void lblLaserOnZ0_Click(object sender, EventArgs e)
         {
-            LAFManager.Instance().LaserOnOff(AkkonLafCtrl.Name, true);
-            Console.WriteLine("Laser On");
+            if (LAFManager.Instance().GetLAF(AkkonLafCtrl.Name) is LAF akkonLAF)
+                akkonLAF.LaserOnOff(true);
         }
 
         private void lblLaserOffZ0_Click(object sender, EventArgs e)
         {
-            LAFManager.Instance().LaserOnOff(AkkonLafCtrl.Name, false);
-            Console.WriteLine("Laser Off");
+            if (LAFManager.Instance().GetLAF(AkkonLafCtrl.Name) is LAF akkonLAF)
+                akkonLAF.LaserOnOff(false);
         }
 
         private void lblTrackingOnZ0_Click(object sender, EventArgs e)
         {
-            LAFManager.Instance().TrackingOnOff(AkkonLafCtrl.Name, true);
-            Console.WriteLine("Tracking On");
+            if (LAFManager.Instance().GetLAF(AkkonLafCtrl.Name) is LAF akkonLAF)
+                akkonLAF.TrackingOnOff(true);
         }
 
         private void lblTrackingOffZ0_Click(object sender, EventArgs e)
         {
-            LAFManager.Instance().TrackingOnOff(AkkonLafCtrl.Name, false);
-            Console.WriteLine("Tracking Off");
+            if (LAFManager.Instance().GetLAF(AkkonLafCtrl.Name) is LAF akkonLAF)
+                akkonLAF.TrackingOnOff(false);
         }
 
         private void lblTeachedCenterOfGravityZ1_Click(object sender, EventArgs e)
@@ -589,7 +599,9 @@ namespace ATT_UT_IPAD.UI.Forms
             TeachingPositionList.Where(x => x.Name == TeachingPositionType.ToString()).First().SetCenterOfGravity(AxisName.Z1, targetCenterOfGravity);
 
             lblTeachedCenterOfGravityZ1.Text = targetCenterOfGravity.ToString();
-            LAFManager.Instance().SetCenterOfGravity(AlignLafCtrl.Name, targetCenterOfGravity);
+
+            if(LAFManager.Instance().GetLAF(AlignLafCtrl.Name) is LAF alignLAF)
+                alignLAF.SetCenterOfGravity(targetCenterOfGravity);
         }
 
         private void lblMoveToTargetZ1_Click(object sender, EventArgs e)
@@ -616,27 +628,32 @@ namespace ATT_UT_IPAD.UI.Forms
 
         private void lblOriginZ1_Click(object sender, EventArgs e)
         {
-            LAFManager.Instance().StartHomeThread(AlignLafCtrl.Name);
+            if (LAFManager.Instance().GetLAF(AlignLafCtrl.Name) is LAF alignLAF)
+                alignLAF.StartHomeThread();
         }
 
         private void lblLaserOnZ1_Click(object sender, EventArgs e)
         {
-            LAFManager.Instance().LaserOnOff(AlignLafCtrl.Name, true);
+            if (LAFManager.Instance().GetLAF(AlignLafCtrl.Name) is LAF alignLAF)
+                alignLAF.LaserOnOff(true);
         }
 
         private void lblLaserOffZ1_Click(object sender, EventArgs e)
         {
-            LAFManager.Instance().LaserOnOff(AlignLafCtrl.Name, false);
+            if (LAFManager.Instance().GetLAF(AlignLafCtrl.Name) is LAF alignLAF)
+                alignLAF.LaserOnOff(false);
         }
 
         private void lblTrackingOnZ1_Click(object sender, EventArgs e)
         {
-            LAFManager.Instance().TrackingOnOff(AlignLafCtrl.Name, true);
+            if (LAFManager.Instance().GetLAF(AlignLafCtrl.Name) is LAF alignLAF)
+                alignLAF.TrackingOnOff(true);
         }
 
         private void lblTrackingOffZ1_Click(object sender, EventArgs e)
         {
-            LAFManager.Instance().TrackingOnOff(AlignLafCtrl.Name, false);
+            if (LAFManager.Instance().GetLAF(AlignLafCtrl.Name) is LAF alignLAF)
+                alignLAF.TrackingOnOff(false);
         }
 
         private void rdoJogSlowMode_CheckedChanged(object sender, EventArgs e)

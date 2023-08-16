@@ -162,7 +162,7 @@ namespace ATT.Core
             Camera = LineCameraManager.Instance().GetLineCamera("AkkonCamera");
             Camera.GrabDoneEventHandler += ATTSeqRunner_GrabDoneEventHandler;
 
-            LAFCtrl = LAFManager.Instance().GetLAFCtrl("AkkonLaf");
+            LAFCtrl = LAFManager.Instance().GetLAF("AkkonLaf").LafCtrl;
             LightCtrlHandler = DeviceManager.Instance().LightCtrlHandler;
 
             InspProcessTask.StartTask();
