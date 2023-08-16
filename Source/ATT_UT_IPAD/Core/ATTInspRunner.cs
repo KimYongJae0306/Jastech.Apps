@@ -469,7 +469,10 @@ namespace ATT_UT_IPAD.Core
                     IsAkkonGrabDone = false;
                     IsAlignGrabDone = false;
                     AppsStatus.Instance().IsInspRunnerFlagFromPlc = false;
+                    WriteLog("Sequnce Error.", true);
                     ClearBuffer();
+
+                    SeqStep = SeqStep.SEQ_IDLE;
                     break;
                 default:
                     break;

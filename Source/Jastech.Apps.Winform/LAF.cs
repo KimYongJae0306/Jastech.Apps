@@ -58,7 +58,7 @@ namespace Jastech.Apps.Winform
                 LafCtrl.DataReceived += DataReceived;
 
                 cancelTokenSource = new CancellationTokenSource();
-                statusTask = new Task(() => RequestStatusData(LafCtrl.Name, cancelTokenSource), cancelTokenSource.Token);
+                statusTask = new Task(() => RequestStatusData(cancelTokenSource), cancelTokenSource.Token);
                 statusTask.Start();
             }
         }
@@ -73,7 +73,7 @@ namespace Jastech.Apps.Winform
             }
         }
 
-        public void RequestStatusData(string name, CancellationTokenSource cancellationTokenSource)
+        public void RequestStatusData(CancellationTokenSource cancellationTokenSource)
         {
 
             while (true)
@@ -251,8 +251,9 @@ namespace Jastech.Apps.Winform
                     //if (Math.Abs(status.MPosPulse - /*HOMING_DISTANCE_AWAY_FROM_LIMIT*/0.0002) <= 0.0002/*float.Epsilon*/)
                     double mPos = status.MPosPulse / LafCtrl.ResolutionAxisZ;
                     double calcMPos = mPos - LafCtrl.HomePosition_mm;
-                    Console.WriteLine("mPos : " + mPos + "   calc : " + calcMPos);
-                    if (mPos >= 0 && mPos < LafCtrl.HomePosition_mm)
+                    double vel = HOMING_SEARCH_VELOCITY * _scale;
+                    Console.WriteLine("mPos : " + mPos + "   calc :  " + calcMPos + " Ve; : " + vel); 
+                    if (mPos >= 0 && mPos < LafCtrl.HomePosition_mm && vel < 0.001)
                     {
                         Logger.Write(LogType.Device, "Complete zero convergence.");
                         _homeSequenceStep = HomeSequenceStep.ZeroSet;
