@@ -30,9 +30,9 @@
         {
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
+            this.lblAlignButton = new System.Windows.Forms.Label();
             this.lblAkkonButton = new System.Windows.Forms.Label();
             this.lblMainButton = new System.Windows.Forms.Label();
-            this.lblAlignButton = new System.Windows.Forms.Label();
             this.pnlView = new System.Windows.Forms.Panel();
             this.tableLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
@@ -75,6 +75,21 @@
             this.tableLayoutPanel2.Size = new System.Drawing.Size(1016, 50);
             this.tableLayoutPanel2.TabIndex = 1;
             // 
+            // lblAlignButton
+            // 
+            this.lblAlignButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
+            this.lblAlignButton.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblAlignButton.Font = new System.Drawing.Font("맑은 고딕", 14F, System.Drawing.FontStyle.Bold);
+            this.lblAlignButton.ForeColor = System.Drawing.Color.White;
+            this.lblAlignButton.Location = new System.Drawing.Point(400, 0);
+            this.lblAlignButton.Margin = new System.Windows.Forms.Padding(0);
+            this.lblAlignButton.Name = "lblAlignButton";
+            this.lblAlignButton.Size = new System.Drawing.Size(200, 50);
+            this.lblAlignButton.TabIndex = 2;
+            this.lblAlignButton.Text = "ALIGN";
+            this.lblAlignButton.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblAlignButton.Click += new System.EventHandler(this.lblAlignButton_Click);
+            // 
             // lblAkkonButton
             // 
             this.lblAkkonButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
@@ -104,21 +119,6 @@
             this.lblMainButton.Text = "Main";
             this.lblMainButton.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.lblMainButton.Click += new System.EventHandler(this.lblMainButton_Click);
-            // 
-            // lblAlignButton
-            // 
-            this.lblAlignButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
-            this.lblAlignButton.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblAlignButton.Font = new System.Drawing.Font("맑은 고딕", 14F, System.Drawing.FontStyle.Bold);
-            this.lblAlignButton.ForeColor = System.Drawing.Color.White;
-            this.lblAlignButton.Location = new System.Drawing.Point(400, 0);
-            this.lblAlignButton.Margin = new System.Windows.Forms.Padding(0);
-            this.lblAlignButton.Name = "lblAlignButton";
-            this.lblAlignButton.Size = new System.Drawing.Size(200, 50);
-            this.lblAlignButton.TabIndex = 2;
-            this.lblAlignButton.Text = "ALIGN";
-            this.lblAlignButton.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.lblAlignButton.Click += new System.EventHandler(this.lblAlignButton_Click);
             // 
             // pnlView
             // 

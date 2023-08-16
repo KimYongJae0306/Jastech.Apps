@@ -74,6 +74,8 @@
             this.lblLeftAlignSpecX = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
+            this.lblCenter = new System.Windows.Forms.Label();
+            this.label8 = new System.Windows.Forms.Label();
             this.tlpAlign.SuspendLayout();
             this.pnlPosition.SuspendLayout();
             this.tlpParams.SuspendLayout();
@@ -96,7 +98,7 @@
             this.tlpAlign.Name = "tlpAlign";
             this.tlpAlign.RowCount = 4;
             this.tlpAlign.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 32F));
-            this.tlpAlign.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 120F));
+            this.tlpAlign.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 160F));
             this.tlpAlign.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 300F));
             this.tlpAlign.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tlpAlign.Size = new System.Drawing.Size(893, 893);
@@ -117,6 +119,8 @@
             // 
             // pnlPosition
             // 
+            this.pnlPosition.Controls.Add(this.label8);
+            this.pnlPosition.Controls.Add(this.lblCenter);
             this.pnlPosition.Controls.Add(this.lblRightPanelY);
             this.pnlPosition.Controls.Add(this.lblLeft);
             this.pnlPosition.Controls.Add(this.lblRightPanelX);
@@ -130,7 +134,7 @@
             this.pnlPosition.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pnlPosition.Location = new System.Drawing.Point(3, 35);
             this.pnlPosition.Name = "pnlPosition";
-            this.pnlPosition.Size = new System.Drawing.Size(887, 114);
+            this.pnlPosition.Size = new System.Drawing.Size(887, 154);
             this.pnlPosition.TabIndex = 7;
             // 
             // lblRightPanelY
@@ -258,7 +262,7 @@
             this.tlpParams.Controls.Add(this.pnlCaliperParam, 0, 1);
             this.tlpParams.Controls.Add(this.pnlLeadParam, 0, 0);
             this.tlpParams.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tlpParams.Location = new System.Drawing.Point(0, 152);
+            this.tlpParams.Location = new System.Drawing.Point(0, 192);
             this.tlpParams.Margin = new System.Windows.Forms.Padding(0);
             this.tlpParams.Name = "tlpParams";
             this.tlpParams.RowCount = 2;
@@ -336,10 +340,10 @@
             this.panel1.Controls.Add(this.label2);
             this.panel1.Controls.Add(this.label1);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel1.Location = new System.Drawing.Point(0, 452);
+            this.panel1.Location = new System.Drawing.Point(0, 492);
             this.panel1.Margin = new System.Windows.Forms.Padding(0);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(893, 441);
+            this.panel1.Size = new System.Drawing.Size(893, 401);
             this.panel1.TabIndex = 26;
             // 
             // label6
@@ -673,6 +677,29 @@
             this.label1.Text = "Left Align SpecX(um)";
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
+            // lblCenter
+            // 
+            this.lblCenter.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblCenter.Location = new System.Drawing.Point(214, 107);
+            this.lblCenter.Margin = new System.Windows.Forms.Padding(0);
+            this.lblCenter.Name = "lblCenter";
+            this.lblCenter.Size = new System.Drawing.Size(100, 40);
+            this.lblCenter.TabIndex = 1;
+            this.lblCenter.Text = "Center";
+            this.lblCenter.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblCenter.Click += new System.EventHandler(this.lblCenter_Click);
+            // 
+            // label8
+            // 
+            this.label8.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.label8.Location = new System.Drawing.Point(2, 107);
+            this.label8.Margin = new System.Windows.Forms.Padding(0);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(200, 40);
+            this.label8.TabIndex = 2;
+            this.label8.Text = "Center";
+            this.label8.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
             // AlignControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
@@ -743,5 +770,7 @@
         private System.Windows.Forms.Label lblLeftY_Judgement;
         private System.Windows.Forms.Label lblLeftX_Value;
         private System.Windows.Forms.Label lblLeftX_Judgement;
+        private System.Windows.Forms.Label lblCenter;
+        private System.Windows.Forms.Label label8;
     }
 }

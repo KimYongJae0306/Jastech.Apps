@@ -101,7 +101,22 @@ namespace Jastech.Apps.Winform.UI.Controls
             CurrentAlignName = alignName;
 
             var alignParam = CurrentTab.GetAlignParam(alignName);
+            if (alignParam == null)
+                alignParam = new Structure.Parameters.AlignParam();
+
             CogCaliperParamControl.UpdateData(alignParam.CaliperParams);
+
+            if(alignName == ATTTabAlignName.Center)
+            {
+                pnlLeadParam.Visible = false;
+                pnlCaliperParam.Visible = false;
+            }
+            else
+            {
+                pnlLeadParam.Visible = true;
+                pnlCaliperParam.Visible = true;
+            }
+
             lblLeadCount.Text = alignParam.LeadCount.ToString();
 
             lblLeftAlignSpecX.Text = CurrentTab.AlignSpec.LeftSpecX_um.ToString();
@@ -172,6 +187,7 @@ namespace Jastech.Apps.Winform.UI.Controls
             lblRightFPCY.BackColor = _nonSelectedColor;
             lblRightPanelX.BackColor = _nonSelectedColor;
             lblRightPanelY.BackColor = _nonSelectedColor;
+            lblCenter.BackColor = _nonSelectedColor;
 
             Label lbl = sender as Label;
             lbl.BackColor = _selectedColor;
@@ -612,5 +628,11 @@ namespace Jastech.Apps.Winform.UI.Controls
             return _displayCaliperResult;
         }
         #endregion
+
+        private void lblCenter_Click(object sender, EventArgs e)
+        {
+            UpdateSelectedAlignName(sender);
+            UpdateParam(ATTTabAlignName.Center);
+        }
     }
 }
