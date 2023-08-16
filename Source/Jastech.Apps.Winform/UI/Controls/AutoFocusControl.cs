@@ -158,8 +158,7 @@ namespace Jastech.Apps.Winform.UI.Controls
         private void lblCurrentToTeach_Click(object sender, EventArgs e)
         {
             int cog = Convert.ToInt32(lblCurrentCogValue.Text);
-            if (LAFManager.Instance().GetLAFCtrl("Laf") is LAFCtrl lafCtrl)
-                lafCtrl.SetCenterOfGravity(cog);
+            LAFCtrl?.SetCenterOfGravity(cog);
             lblTeachCogValue.Text = cog.ToString();
         }
 

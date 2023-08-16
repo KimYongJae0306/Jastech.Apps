@@ -154,7 +154,7 @@ namespace ATT_UT_Remodeling.Core
             LineCamera = LineCameraManager.Instance().GetLineCamera("LineCamera");
             LineCamera.GrabDoneEventHandler += ATTSeqRunner_GrabDoneEventHandler;
 
-            LAFCtrl = LAFManager.Instance().GetLAFCtrl("Laf");
+            LAFCtrl = LAFManager.Instance().GetLAF("Laf").LafCtrl;
             LightCtrlHandler = DeviceManager.Instance().LightCtrlHandler;
             AreaCamera = AreaCameraManager.Instance().GetAppsCamera("PreAlign");
 

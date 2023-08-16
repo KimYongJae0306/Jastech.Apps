@@ -58,6 +58,7 @@ namespace ATT_UT_IPAD
         #region 델리게이트
         private delegate void UpdateLabelDelegate(string modelname);
         #endregion
+
         #region 생성자
         public MainForm()
         {
@@ -485,13 +486,11 @@ namespace ATT_UT_IPAD
         {
             return isNormalState ? Resources.Circle_Green : Resources.Circle_Red;
         }
-        #endregion
 
         private void picLogo_Click(object sender, EventArgs e)
         {
-            var laf = LAFManager.Instance().GetLAFCtrl("AkkonLaf") as NuriOneLAFCtrl;
-            //laf.GetLaserOnValue();
             AppsStatus.Instance().IsInspRunnerFlagFromPlc = true;
         }
+        #endregion
     }
 }

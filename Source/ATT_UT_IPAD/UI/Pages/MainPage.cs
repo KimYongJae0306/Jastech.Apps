@@ -38,12 +38,6 @@ namespace ATT_UT_IPAD.UI.Pages
         public TabAkkonViewControl TabAkkonViewControl { get; set; } = null;
         #endregion
 
-        #region 이벤트
-        #endregion
-
-        #region 델리게이트
-        #endregion
-
         #region 생성자
         public MainPage()
         {

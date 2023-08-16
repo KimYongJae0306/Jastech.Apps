@@ -61,8 +61,8 @@ namespace ATT_UT_IPAD.UI.Pages
                 MotionSettingsForm = new MotionSettingsForm();
                 MotionSettingsForm.UnitName = UnitName.Unit0;
                 MotionSettingsForm.AxisHandler = MotionManager.Instance().GetAxisHandler(AxisHandlerName.Handler0);
-                MotionSettingsForm.AkkonLafCtrl = LAFManager.Instance().GetLAFCtrl("AkkonLaf");
-                MotionSettingsForm.AlignLafCtrl = LAFManager.Instance().GetLAFCtrl("AlignLaf");
+                MotionSettingsForm.AkkonLafCtrl = LAFManager.Instance().GetLAF("AkkonLaf").LafCtrl;
+                MotionSettingsForm.AlignLafCtrl = LAFManager.Instance().GetLAF("AlignLaf").LafCtrl;
                 MotionSettingsForm.InspModelService = ATTInspModelService;
                 MotionSettingsForm.CloseEventDelegate = () => MotionSettingsForm = null;
                 MotionSettingsForm.Show();

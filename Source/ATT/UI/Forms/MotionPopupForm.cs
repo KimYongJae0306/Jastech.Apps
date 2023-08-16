@@ -542,27 +542,27 @@ namespace ATT.UI.Forms
 
         private void lblOriginZ_Click(object sender, EventArgs e)
         {
-            LAFManager.Instance().StartHomeThread(LafCtrl.Name);
+            //LAFManager.Instance().StartHomeThread(LafCtrl.Name);
         }
 
         private void lblLaserOnZ_Click(object sender, EventArgs e)
         {
-            LAFManager.Instance().LaserOnOff(LafCtrl.Name, true);
+            //LAFManager.Instance().LaserOnOff(LafCtrl.Name, true);
         }
 
         private void lblLaserOffZ_Click(object sender, EventArgs e)
         {
-            LAFManager.Instance().LaserOnOff(LafCtrl.Name, false);
+           // LAFManager.Instance().LaserOnOff(LafCtrl.Name, false);
         }
 
         private void lblTrackingOnZ_Click(object sender, EventArgs e)
         {
-            LAFManager.Instance().TrackingOnOff(LafCtrl.Name, true);
+            //LAFManager.Instance().TrackingOnOff(LafCtrl.Name, true);
         }
 
         private void lblTrackingOffZ_Click(object sender, EventArgs e)
         {
-            LAFManager.Instance().TrackingOnOff(LafCtrl.Name, false);
+            //LAFManager.Instance().TrackingOnOff(LafCtrl.Name, false);
         }
 
         private void rdoJogSlowMode_CheckedChanged(object sender, EventArgs e)

@@ -132,7 +132,8 @@ namespace Jastech.Apps.Winform.UI.Controls
         {
             foreach (var shape in LeftCogShapeList)
             {
-                shape.Dispose();
+                if(shape != null)
+                    shape.Dispose();
             }
             LeftCogShapeList.Clear();
             LeftCogShapeList.AddRange(shapeList);
@@ -142,7 +143,8 @@ namespace Jastech.Apps.Winform.UI.Controls
         {
             foreach (var shape in RightCogShapeList)
             {
-                shape.Dispose();
+                if (shape != null)
+                    shape.Dispose();
             }
             RightCogShapeList.Clear();
             RightCogShapeList.AddRange(shapeList);
