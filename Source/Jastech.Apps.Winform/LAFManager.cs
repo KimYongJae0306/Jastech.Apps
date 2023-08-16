@@ -473,7 +473,7 @@ namespace Jastech.Apps.Winform
                     Thread.Sleep(3000);
 
                     //EnableSoftwareLimit(lafCtrl);
-                    Console.WriteLine("tlqkf : " + lafCtrl.Status.MPosPulse);
+                    Console.WriteLine("Completed Homming : " + lafCtrl.Status.MPosPulse);
 
                     Logger.Write(LogType.Device, "Complete LAF home.");
                     _homeSequenceStep = HomeSequenceStep.End;
@@ -488,7 +488,6 @@ namespace Jastech.Apps.Winform
                     Logger.Write(LogType.Device, "End of LAF home sequence.");
                     _scale = 1.0;
                      
-                    Console.WriteLine("tlqkf : " + lafCtrl.Status.MPosPulse);
                     _isHomeThreadStop = true;
                     _homeSequenceStep = HomeSequenceStep.Stop;
                     break;

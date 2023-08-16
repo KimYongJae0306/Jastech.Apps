@@ -522,6 +522,8 @@ namespace ATT_UT_IPAD.UI.Forms
             TeachingPositionList.Where(x => x.Name == TeachingPositionType.ToString()).First().SetCenterOfGravity(AxisName.Z0, targetCenterOfGravity);
 
             lblTeachedCenterOfGravityZ0.Text = targetCenterOfGravity.ToString();
+
+            LAFManager.Instance().SetCenterOfGravity(AkkonLafCtrl.Name, targetCenterOfGravity);
         }
 
         private void lblMoveToTargetZ0_Click(object sender, EventArgs e)
@@ -587,6 +589,7 @@ namespace ATT_UT_IPAD.UI.Forms
             TeachingPositionList.Where(x => x.Name == TeachingPositionType.ToString()).First().SetCenterOfGravity(AxisName.Z1, targetCenterOfGravity);
 
             lblTeachedCenterOfGravityZ1.Text = targetCenterOfGravity.ToString();
+            LAFManager.Instance().SetCenterOfGravity(AlignLafCtrl.Name, targetCenterOfGravity);
         }
 
         private void lblMoveToTargetZ1_Click(object sender, EventArgs e)
