@@ -703,13 +703,8 @@ namespace ATT_UT_IPAD.Core
             SaveAlignResult(path, inspModel.TabCount);
             SaveAkkonResult(path, inspModel.TabCount);
             SaveUPHResult(path, inspModel.TabCount);
-
-            //bool writeMsaSummary = true;    //Considering convert to Property
-            //if (writeMsaSummary == true)
-            //{
-            //    SaveAkkonResultAsMsaSummary(path, inspModel.TabCount);
-            //    SaveAlignResultAsMsaSummary(path, inspModel.TabCount);
-            //}
+            SaveAkkonResultAsMsaSummary(path, inspModel.TabCount);
+            SaveAlignResultAsMsaSummary(path, inspModel.TabCount);
         }
 
         private void SaveAlignResult(string resultPath, int tabCount)
@@ -833,7 +828,7 @@ namespace ATT_UT_IPAD.Core
                 };
                 foreach (string position in positions)
                 {
-                    var akkonCount = akkonResult.GetAkkonCounts(position).Cast<string>();
+                    var akkonCount = akkonResult.GetAkkonCounts(position).Select(count => count.ToString());
                     body.AddRange(akkonCount);
                 }
 
@@ -843,7 +838,6 @@ namespace ATT_UT_IPAD.Core
                 // Write a CSV file
                 string filename = string.Format($"AkkonSummary_Tab{tabNo}.csv");
                 string csvFile = Path.Combine(resultPath, filename);
-
                 CSVHelper.WriteHeader(csvFile, header);
                 CSVHelper.WriteData(csvFile, body);
             }
