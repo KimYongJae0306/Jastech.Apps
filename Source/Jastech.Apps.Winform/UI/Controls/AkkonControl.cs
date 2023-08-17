@@ -1564,7 +1564,7 @@ namespace Jastech.Apps.Winform.UI.Controls
             return group;
         }
 
-        public void Inspection()
+        public void RunForTest()
         {
             int groupIndex = cbxGroupNumber.SelectedIndex;
             if (groupIndex < 0 || CurrentTab == null)
@@ -1963,7 +1963,7 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         private void lblTest_Click(object sender, EventArgs e)
         {
-            Inspection();
+            RunForTest();
         }
 
         public void Run()
@@ -1984,38 +1984,13 @@ namespace Jastech.Apps.Winform.UI.Controls
 
             MainAlgorithmTool algorithmTool = new MainAlgorithmTool();
             TabInspResult tabInspResult = new TabInspResult();
-            // Create Coordinate Object
 
-            algorithmTool.MainMarkInspect(orgCogImage, CurrentTab, ref tabInspResult, false);
-
-            if (tabInspResult.MarkResult.Judgement != Judgement.OK)
-            {
-                // 검사 실패
-                string message = string.Format("Mark Inspection NG !!! Tab_{0} / Fpc_{1}, Panel_{2}", CurrentTab.Index,
-                    tabInspResult.MarkResult.FpcMark.Judgement, tabInspResult.MarkResult.PanelMark.Judgement);
-
-                MessageConfirmForm form = new MessageConfirmForm();
-                form.Message = message;
-                form.ShowDialog();
-                return;
-            }
-
-            CoordinateTransform panelCoordinate = new CoordinateTransform();
-
-            // Set Coordinate Params
-            algorithmTool.GetAlignPanelLeftOffset(CurrentTab, tabInspResult, out double panelLeftOffsetX, out double panelLeftOffsetY);
-            algorithmTool.GetAlignPanelRightOffset(CurrentTab, tabInspResult, out double panelRightOffsetX, out double panelRightOffsetY);
-            SetPanelCoordinateData(panelCoordinate, tabInspResult, panelLeftOffsetX, panelLeftOffsetY, panelRightOffsetX, panelRightOffsetY);
-
-            // Excuete Coordinate
-            panelCoordinate.ExecuteCoordinate();
             var akkonParam = CurrentTab.AkkonParam.AkkonAlgoritmParam;
 
             var roiList = CurrentTab.AkkonParam.GetAkkonROIList();
-            var coordinateList = RenewalAkkonRoi(roiList, panelCoordinate);
 
             Judgement tabJudgement = Judgement.NG;
-            var leadResultList = AkkonAlgorithm.Run(matImage, coordinateList, akkonParam, Resolution_um, ref tabJudgement);
+            var leadResultList = AkkonAlgorithm.Run(matImage, roiList, akkonParam, Resolution_um, ref tabJudgement);
             tabInspResult.AkkonResult = new Framework.Algorithms.Akkon.Results.AkkonResult();
             tabInspResult.AkkonResult.Judgement = tabJudgement;
             tabInspResult.AkkonInspMatImage = AkkonAlgorithm.ResizeMat;
@@ -2033,13 +2008,10 @@ namespace Jastech.Apps.Winform.UI.Controls
             resizeMat.Dispose();
             resultMat.Dispose();
             ClearDisplay();
-            Console.WriteLine("Completed.");
 
             lblOrginalImage.BackColor = _nonSelectedColor;
             lblResizeImage.BackColor = _nonSelectedColor;
             lblResultImage.BackColor = _selectedColor;
-
-
         }
 
         private List<AkkonROI> RenewalAkkonRoi(List<AkkonROI> roiList, CoordinateTransform panelCoordinate)

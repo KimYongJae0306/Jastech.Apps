@@ -55,6 +55,12 @@ namespace Jastech.Framework.Winform.Forms
         private DisplayType _displayType { get; set; } = DisplayType.Align;
 
         private string _currentTabNo { get; set; } = "";
+
+        private bool _isPrevTrackingOn { get; set; } = false;
+
+        private TabInspResult _tabInspResult { get; set; } = null;
+
+        private MainAlgorithmTool _algorithmTool = new MainAlgorithmTool();
         #endregion
 
         #region 속성
@@ -574,6 +580,9 @@ namespace Jastech.Framework.Winform.Forms
             if (_currentTabNo == tabIndex)
                 return;
 
+            if (_isPrevTrackingOn)
+                SetTeachingTracking(false);
+
             CurrentTab = TeachingTabList.Where(x => x.Index == tabNo).FirstOrDefault();
             _currentTabNo = tabIndex;
 
@@ -665,11 +674,113 @@ namespace Jastech.Framework.Winform.Forms
 
         private void lblTracking_Click(object sender, EventArgs e)
         {
-            MessageYesNoForm form = new MessageYesNoForm();
-            form.Message = "Do you want to roi tracking?";
+            var display = TeachingUIManager.Instance().GetDisplay();
+            if (display == null)
+                return;
 
-            if (form.ShowDialog() == DialogResult.Yes)
-                ExecuteCoordinate();
+            if (_isPrevTrackingOn == false)
+                SetTeachingTracking(true);
+            else
+                SetTeachingTracking(false);
+
+            if (_displayType == DisplayType.Align)
+                AlignControl.DrawROI();
+            else if (_displayType == DisplayType.Akkon)
+                AkkonControl.DrawROI();
+        }
+
+        private bool SetTeachingTracking(bool isOn)
+        {
+            var display = TeachingUIManager.Instance().GetDisplay();
+            if (display == null)
+                return false;
+
+            ICogImage cogImage = display.GetImage();
+            if (cogImage == null)
+                return false;
+
+            if (_tabInspResult != null)
+            {
+                _tabInspResult.Dispose();
+                _tabInspResult = null;
+            }
+
+            _tabInspResult = new TabInspResult();
+            _tabInspResult.MarkResult.FpcMark = _algorithmTool.RunFpcMark(cogImage, CurrentTab, UseAlignMark);
+            _tabInspResult.MarkResult.PanelMark = _algorithmTool.RunPanelMark(cogImage, CurrentTab, UseAlignMark);
+
+            var coordinate = TeachingData.Instance().coordinate;
+            var markResult = _tabInspResult.MarkResult;
+
+            if (_tabInspResult.MarkResult.Judgement != Judgement.OK)
+            {
+                // 검사 실패
+                string message = string.Format("Mark Inspection NG !!! Tab_{0} / Fpc_{1}, Panel_{2}", CurrentTab.Index,
+                    _tabInspResult.MarkResult.FpcMark.Judgement, _tabInspResult.MarkResult.PanelMark.Judgement);
+
+                MessageConfirmForm form = new MessageConfirmForm();
+                form.Message = message;
+                form.ShowDialog();
+
+                _tabInspResult.Dispose();
+                _tabInspResult = null;
+                return false;
+            }
+    
+            if (isOn)
+            {
+                lblTracking.BackColor = Color.FromArgb(104, 104, 104);
+
+                coordinate.SetAlignFpcLeftOffset(CurrentTab, markResult.FpcMark.FoundedMark.Left);
+                coordinate.SetAlignFpcRightOffset(CurrentTab, markResult.FpcMark.FoundedMark.Right);
+
+                coordinate.SetAlignPanelLeftOffset(CurrentTab, markResult.PanelMark.FoundedMark.Left);
+                coordinate.SetAlignPanelRightOffset(CurrentTab, markResult.PanelMark.FoundedMark.Right);
+
+                coordinate.SetFpcTransform(markResult.FpcMark.FoundedMark);
+                coordinate.SetPanelTransform(markResult.PanelMark.FoundedMark);
+            }
+            else
+            {
+                lblTracking.BackColor = Color.FromArgb(52, 52, 52); 
+
+                coordinate.SetFpcReverseTransform(markResult.FpcMark.FoundedMark);
+                coordinate.SetPanelReverseTransform(markResult.PanelMark.FoundedMark);
+            }
+            coordinate.Excute(CurrentTab);
+
+            _isPrevTrackingOn = isOn;
+
+            return true;
+        }
+
+        private void MarkInspect()
+        {
+            var display = TeachingUIManager.Instance().GetDisplay();
+            if (display == null)
+                return;
+
+            ICogImage cogImage = display.GetImage();
+            if (cogImage == null)
+                return;
+            display.ClearGraphic();
+            display.DisplayRefresh();
+
+            MainAlgorithmTool algorithmTool = new MainAlgorithmTool();
+            TabInspResult tabInspResult = new TabInspResult();
+            algorithmTool.MainMarkInspect(cogImage, CurrentTab, ref tabInspResult, UseAlignMark);
+
+            if (tabInspResult.MarkResult.Judgement != Judgement.OK)
+            {
+                // 검사 실패
+                string message = string.Format("Mark Inspection NG !!! Tab_{0} / Fpc_{1}, Panel_{2}", CurrentTab.Index,
+                    tabInspResult.MarkResult.FpcMark.Judgement, tabInspResult.MarkResult.PanelMark.Judgement);
+
+                MessageConfirmForm form = new MessageConfirmForm();
+                form.Message = message;
+                form.ShowDialog();
+                return;
+            }
         }
 
         private void ExecuteCoordinate()

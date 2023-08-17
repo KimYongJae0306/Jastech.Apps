@@ -200,15 +200,15 @@ namespace Jastech.Apps.Structure.VisionTool
                 if (panelResult1.Found == false || panelResult2.Found == false || fpcResult1.Found == false || fpcResult2.Found == false)
                     continue;
 
-                float panelIntervalX = Math.Abs(panelResult1.CaliperMatchList[0].FoundPos.X - panelResult2.CaliperMatchList[0].FoundPos.X);
-                float panelIntervalY = Math.Abs(panelResult1.CaliperMatchList[0].FoundPos.Y - panelResult2.CaliperMatchList[0].FoundPos.Y);
-                float panelCenterX = panelResult1.CaliperMatchList[0].FoundPos.X + (panelIntervalX / 2.0f);
-                float panelCenterY = panelResult1.CaliperMatchList[0].FoundPos.Y + (panelIntervalY / 2.0f);
+                double panelIntervalX = Math.Abs(panelResult1.CaliperMatchList[0].FoundPos.X - panelResult2.CaliperMatchList[0].FoundPos.X);
+                double panelIntervalY = Math.Abs(panelResult1.CaliperMatchList[0].FoundPos.Y - panelResult2.CaliperMatchList[0].FoundPos.Y);
+                double panelCenterX = panelResult1.CaliperMatchList[0].FoundPos.X + (panelIntervalX / 2.0f);
+                double panelCenterY = panelResult1.CaliperMatchList[0].FoundPos.Y + (panelIntervalY / 2.0f);
 
-                float fpcIntervalX = Math.Abs(fpcResult1.CaliperMatchList[0].FoundPos.X - fpcResult2.CaliperMatchList[0].FoundPos.X);
-                float fpcIntervalY = Math.Abs(fpcResult1.CaliperMatchList[0].FoundPos.Y - fpcResult2.CaliperMatchList[0].FoundPos.Y);
-                float fpcCenterX = fpcResult1.CaliperMatchList[0].FoundPos.X + (fpcIntervalX / 2.0f);
-                float fpcCenterY = fpcResult1.CaliperMatchList[0].FoundPos.Y + (fpcIntervalY / 2.0f);
+                double fpcIntervalX = Math.Abs(fpcResult1.CaliperMatchList[0].FoundPos.X - fpcResult2.CaliperMatchList[0].FoundPos.X);
+                double fpcIntervalY = Math.Abs(fpcResult1.CaliperMatchList[0].FoundPos.Y - fpcResult2.CaliperMatchList[0].FoundPos.Y);
+                double fpcCenterX = fpcResult1.CaliperMatchList[0].FoundPos.X + (fpcIntervalX / 2.0f);
+                double fpcCenterY = fpcResult1.CaliperMatchList[0].FoundPos.Y + (fpcIntervalY / 2.0f);
 
                 var centerY = (panelCenterY + fpcCenterY) / 2.0f;
                 var panelSkew = panelResult1.CaliperMatchList[0].ReferenceSkew;
@@ -281,6 +281,9 @@ namespace Jastech.Apps.Structure.VisionTool
             MarkResult result = new MarkResult();
             MarkMatchingResult matchingResult = new MarkMatchingResult();
 
+            Judgement leftJudgement = Judgement.NG;
+            Judgement rightJudgement = Judgement.NG;
+
             foreach (MarkName markName in Enum.GetValues(typeof(MarkName)))
             {
                 var leftParam = tab.MarkParamter.GetFPCMark(MarkDirection.Left, markName, isAlignMark);
@@ -294,14 +297,14 @@ namespace Jastech.Apps.Structure.VisionTool
                 {
                     matchingResult.Left = leftResult;
                     result.FoundedMark = matchingResult;
-                    result.Judgement = Judgement.OK;
+                    leftJudgement = Judgement.OK;
                     break;
                 }
                 else
                 {
                     matchingResult.Left = leftResult;
                     result.FailMarks.Add(matchingResult);
-                    result.Judgement = Judgement.NG;
+                    leftJudgement = Judgement.NG;
                 }
             }
 
@@ -318,16 +321,21 @@ namespace Jastech.Apps.Structure.VisionTool
                 {
                     matchingResult.Right = rightResult;
                     result.FoundedMark = matchingResult;
-                    result.Judgement = Judgement.OK;
+                    rightJudgement = Judgement.OK;
                     break;
                 }
                 else
                 {
                     matchingResult.Right = rightResult;
                     result.FailMarks.Add(matchingResult);
-                    result.Judgement = Judgement.NG;
+                    rightJudgement = Judgement.NG;
                 }
             }
+
+            if (leftJudgement == Judgement.NG || rightJudgement == Judgement.NG)
+                result.Judgement = Judgement.NG;
+            else
+                result.Judgement = Judgement.OK;
 
             return result;
         }
@@ -336,6 +344,10 @@ namespace Jastech.Apps.Structure.VisionTool
         {
             MarkResult result = new MarkResult();
             MarkMatchingResult matchingResult = new MarkMatchingResult();
+
+            Judgement leftJudgement = Judgement.NG;
+            Judgement rightJudgement = Judgement.NG;
+
             foreach (MarkName markName in Enum.GetValues(typeof(MarkName)))
             {
                 var leftParam = tab.MarkParamter.GetPanelMark(MarkDirection.Left, markName, useAlignMark);
@@ -349,14 +361,14 @@ namespace Jastech.Apps.Structure.VisionTool
                 {
                     matchingResult.Left = leftResult;
                     result.FoundedMark = matchingResult;
-                    result.Judgement = Judgement.OK;
+                    leftJudgement = Judgement.OK;
                     break;
                 }
                 else
                 {
                     matchingResult.Left = leftResult;
                     result.FailMarks.Add(matchingResult);
-                    result.Judgement = Judgement.NG;
+                    leftJudgement = Judgement.NG;
                 }
             }
 
@@ -373,16 +385,22 @@ namespace Jastech.Apps.Structure.VisionTool
                 {
                     matchingResult.Right = rightResult;
                     result.FoundedMark = matchingResult;
-                    result.Judgement = Judgement.OK;
+                    rightJudgement = Judgement.OK;
                     break;
                 }
                 else
                 {
                     matchingResult.Right = rightResult;
                     result.FailMarks.Add(matchingResult);
-                    result.Judgement = Judgement.NG;
+                    rightJudgement = Judgement.NG;
                 }
             }
+
+            if (leftJudgement == Judgement.NG || rightJudgement == Judgement.NG)
+                result.Judgement = Judgement.NG;
+            else
+                result.Judgement = Judgement.OK;
+
             return result;
         }
     }

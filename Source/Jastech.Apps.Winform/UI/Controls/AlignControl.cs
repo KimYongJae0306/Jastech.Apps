@@ -74,7 +74,7 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         private void AlignControl_TestActionEvent()
         {
-            Inspection();
+            RunForTest();
         }
 
         private ICogImage AlignControl_GetOriginImageHandler()
@@ -274,7 +274,7 @@ namespace Jastech.Apps.Winform.UI.Controls
                 display.SetDisplayToCenter(new Point((int)rect.CenterX, (int)rect.CenterY));
         }
 
-        public void Inspection()
+        public void RunForTest()
         {
             var display = TeachingUIManager.Instance().GetDisplay();
 
@@ -489,54 +489,27 @@ namespace Jastech.Apps.Winform.UI.Controls
             MainAlgorithmTool algorithmTool = new MainAlgorithmTool();
             TabInspResult tabInspResult = new TabInspResult();
 
-            algorithmTool.MainMarkInspect(cogImage, CurrentTab, ref tabInspResult, true);
-
-            if (tabInspResult.MarkResult.Judgement != Judgement.OK)
-            {
-                // 검사 실패
-                string message = string.Format("Mark Inspection NG !!! Tab_{0} / Fpc_{1}, Panel_{2}", CurrentTab.Index,
-                    tabInspResult.MarkResult.FpcMark.Judgement, tabInspResult.MarkResult.PanelMark.Judgement);
-
-                MessageConfirmForm form = new MessageConfirmForm();
-                form.Message = message;
-                form.ShowDialog();
-                return;
-            }
-            // Create Coordinate Object
-            CoordinateTransform fpcCoordinate = new CoordinateTransform();
-            CoordinateTransform panelCoordinate = new CoordinateTransform();
-
-            algorithmTool.GetAlignFpcLeftOffset(CurrentTab, tabInspResult, out double fpcLeftOffsetX, out double fpcLeftOffsetY);
-            algorithmTool.GetAlignFpcRightOffset(CurrentTab, tabInspResult, out double fpcRightOffsetX, out double fpcRightOffsetY);
-            SetFpcCoordinateData(fpcCoordinate, tabInspResult, fpcLeftOffsetX, fpcLeftOffsetY, fpcRightOffsetX, fpcRightOffsetY);
-
-            algorithmTool.GetAlignPanelLeftOffset(CurrentTab, tabInspResult, out double panelLeftOffsetX, out double panelLeftOffsetY);
-            algorithmTool.GetAlignPanelRightOffset(CurrentTab, tabInspResult, out double panelRightOffsetX, out double panelRightOffsetY);
-            SetPanelCoordinateData(panelCoordinate, tabInspResult, panelLeftOffsetX, panelLeftOffsetY, panelRightOffsetX, panelRightOffsetY);
-
-            // Excuete Coordinate
-            fpcCoordinate.ExecuteCoordinate();
-            panelCoordinate.ExecuteCoordinate();
-
             double judgementX = CurrentTab.AlignSpec.LeftSpecX_um / Resolution_um;
             double judgementY = CurrentTab.AlignSpec.LeftSpecY_um / Resolution_um;
 
-            tabInspResult.AlignResult.LeftX = algorithmTool.RunMainLeftAlignX(cogImage, CurrentTab, fpcCoordinate, panelCoordinate, judgementX);
-            tabInspResult.AlignResult.LeftY = algorithmTool.RunMainLeftAlignY(cogImage, CurrentTab, fpcCoordinate, panelCoordinate, judgementY);
-            tabInspResult.AlignResult.RightX = algorithmTool.RunMainRightAlignX(cogImage, CurrentTab, fpcCoordinate, panelCoordinate, judgementX);
-            tabInspResult.AlignResult.RightY = algorithmTool.RunMainRightAlignY(cogImage, CurrentTab, fpcCoordinate, panelCoordinate, judgementY);
+            tabInspResult.AlignResult.LeftX = algorithmTool.RunMainLeftAlignX(cogImage, CurrentTab, null, null, judgementX);
+            tabInspResult.AlignResult.LeftY = algorithmTool.RunMainLeftAlignY(cogImage, CurrentTab, null, null, judgementY);
+            tabInspResult.AlignResult.RightX = algorithmTool.RunMainRightAlignX(cogImage, CurrentTab, null, null, judgementX);
+            tabInspResult.AlignResult.RightY = algorithmTool.RunMainRightAlignY(cogImage, CurrentTab, null, null, judgementY);
             tabInspResult.AlignResult.CenterX = Math.Abs(tabInspResult.AlignResult.LeftX.ResultValue_pixel - tabInspResult.AlignResult.RightX.ResultValue_pixel);
 
             display.ClearGraphic();
 
             List<CogCompositeShape> shapeList = new List<CogCompositeShape>();
+
+            shapeList.AddRange(GetMarkResultGrapics(tabInspResult));
+
             shapeList.AddRange(GetAlignResultGraphics(tabInspResult.AlignResult.LeftX));
             shapeList.AddRange(GetAlignResultGraphics(tabInspResult.AlignResult.LeftY));
             shapeList.AddRange(GetAlignResultGraphics(tabInspResult.AlignResult.RightX));
             shapeList.AddRange(GetAlignResultGraphics(tabInspResult.AlignResult.RightY));
 
             display.UpdateGraphic(shapeList);
-
             UpdateData(tabInspResult);
         }
 
@@ -583,6 +556,37 @@ namespace Jastech.Apps.Winform.UI.Controls
             return shapeList;
         }
 
+        private List<CogCompositeShape> GetMarkResultGrapics(TabInspResult tabInspResult)
+        {
+            List<CogCompositeShape> shapeList = new List<CogCompositeShape>();
+            
+            if (tabInspResult.MarkResult.FpcMark != null)
+            {
+                var foundedFpcMark = tabInspResult.MarkResult.FpcMark.FoundedMark;
+                var leftFpc = foundedFpcMark.Left.MaxMatchPos.ResultGraphics;
+                var rightFpc = foundedFpcMark.Right.MaxMatchPos.ResultGraphics;
+
+                if (foundedFpcMark.Left.Found)
+                    shapeList.Add(leftFpc);
+
+                if (foundedFpcMark.Right.Found)
+                    shapeList.Add(rightFpc);
+            }
+           
+            if(tabInspResult.MarkResult.PanelMark != null)
+            {
+                var foundedPanelMark = tabInspResult.MarkResult.PanelMark.FoundedMark;
+                var leftPanel = foundedPanelMark.Left.MaxMatchPos.ResultGraphics;
+                var rightPanel = foundedPanelMark.Right.MaxMatchPos.ResultGraphics;
+
+                if (foundedPanelMark.Left.Found)
+                    shapeList.Add(leftPanel);
+                if (foundedPanelMark.Right.Found)
+                    shapeList.Add(rightPanel);
+            }
+
+            return shapeList;
+        }
         private void SetFpcCoordinateData(CoordinateTransform fpc, TabInspResult tabInspResult, double leftOffsetX, double leftOffsetY, double rightOffsetX, double rightOffsetY)
         {
             var teachingLeftPoint = tabInspResult.MarkResult.FpcMark.FoundedMark.Left.MaxMatchPos.ReferencePos;

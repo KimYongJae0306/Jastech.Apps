@@ -97,7 +97,7 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         private void PatternControl_TestActionEvent()
         {
-            Inspection();
+            RunForTest();
         }
 
         private ICogImage PatternControl_GetOriginImageHandler()
@@ -397,7 +397,6 @@ namespace Jastech.Apps.Winform.UI.Controls
                 MessageConfirmForm form = new MessageConfirmForm();
                 form.Message = message;
                 form.ShowDialog();
-                return;
             }
 
             var foundedFpcMark = tabInspResult.MarkResult.FpcMark.FoundedMark;
@@ -409,19 +408,30 @@ namespace Jastech.Apps.Winform.UI.Controls
             var rightPanel = foundedPanelMark.Right.MaxMatchPos.ResultGraphics;
 
             display.ClearGraphic();
+            List<VisionProPatternMatchingResult> matchingResultList = new List<VisionProPatternMatchingResult>();
+            matchingResultList.Add(foundedFpcMark.Left);
+            matchingResultList.Add(foundedFpcMark.Right);
+            matchingResultList.Add(foundedPanelMark.Left);
+            matchingResultList.Add(foundedPanelMark.Right);
 
-            List<CogCompositeShape> shapeList = new List<CogCompositeShape>();
-            if(foundedFpcMark.Left.Found)
-                shapeList.Add(leftFpc);
+            display.UpdateResult(matchingResultList);
+        }
 
-            if (foundedFpcMark.Right.Found)
-                shapeList.Add(rightFpc);
-            if (foundedPanelMark.Left.Found)
-                shapeList.Add(leftPanel);
-            if (foundedPanelMark.Right.Found)
-                shapeList.Add(rightPanel);
+        private void SetNGColor(CogGraphicChildren shapes)
+        {
 
-            display.UpdateGraphic(shapeList);
+            CogColorConstants color = CogColorConstants.Red;
+            foreach (var shape in shapes)
+            {
+                if (shape is CogPointMarker pointMarker)
+                    pointMarker.Color = color;
+
+                if (shape is CogRectangleAffine cogRectangleAffine)
+                    cogRectangleAffine.Color = color;
+
+                if (shape is CogRectangle cogRectangle)
+                    cogRectangle.Color = color;
+            }
         }
 
         private PointF GetMainOrginPoint()
@@ -562,7 +572,7 @@ namespace Jastech.Apps.Winform.UI.Controls
             DrawROI();
         }
 
-        public void Inspection()
+        public void RunForTest()
         {
             var display = TeachingUIManager.Instance().GetDisplay();
             var currentParam = ParamControl.GetCurrentParam();
