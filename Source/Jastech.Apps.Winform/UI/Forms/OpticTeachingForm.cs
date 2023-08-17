@@ -438,7 +438,7 @@ namespace Jastech.Framework.Winform.Forms
             double digitalGain = 0;
             bool isOutOfRange = false;
 
-            digitalGain = KeyPadHelper.SetLabelIntegerData((Label)sender);
+            digitalGain = KeyPadHelper.SetLabelDoubleData((Label)sender);
 
             if (digitalGain > 8.0)
             {
