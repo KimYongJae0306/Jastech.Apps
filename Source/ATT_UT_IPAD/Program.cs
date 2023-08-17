@@ -41,7 +41,7 @@ namespace ATT_UT_IPAD
         {
             bool isRunning = false;
             Mutex mutex = new Mutex(true, "ATT", out isRunning);
-
+            isRunning = true;
             if (isRunning)
             {
                 Application.EnableVisualStyles();
@@ -55,7 +55,7 @@ namespace ATT_UT_IPAD
 
                 MilHelper.InitApplication();
                 CameraMil.BufferPoolCount = 200;
-                SystemHelper.StartChecker(@"D:\ATT_Memory_Test.txt");
+                //SystemHelper.StartChecker(@"D:\ATT_Memory_Test.txt");
                 AppsConfig.Instance().UnitCount = 1;
 
                 if (Cognex.VisionPro.CogLicense.GetLicensedFeatures(false, false).Count == 0)

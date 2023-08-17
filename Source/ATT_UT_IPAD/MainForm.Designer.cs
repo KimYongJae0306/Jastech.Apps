@@ -617,7 +617,6 @@
             this.ClientSize = new System.Drawing.Size(1540, 1144);
             this.ControlBox = false;
             this.Controls.Add(this.tlpMainForm);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.Name = "MainForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = " ";
