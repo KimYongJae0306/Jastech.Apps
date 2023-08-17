@@ -38,16 +38,7 @@ namespace Jastech.Apps.Winform.UI.Controls
             _selectedColor = Color.FromArgb(104, 104, 104);
             _nonSelectedColor = Color.FromArgb(52, 52, 52);
 
-            InitializeLabel();
             InitializeDataGridView();
-        }
-
-        private void InitializeLabel()
-        {
-            lblTotal.ForeColor = Color.Blue;
-            lblTotalOK.ForeColor = Color.Green;
-            lblTotalNG.ForeColor = Color.Red;
-            lblTotalFail.ForeColor = Color.Black;
         }
 
         private void InitializeDataGridView()
@@ -263,21 +254,21 @@ namespace Jastech.Apps.Winform.UI.Controls
             double ngRatio = UPHData.NGCount.Sum() / (double)total;
             double failRatio = UPHData.FailCount.Sum() / (double)total;
 
-            series.Points.AddXY("OK", okRatio.ToString("F2"));
-            series.Points.AddXY("NG", ngRatio.ToString("F2"));
-            series.Points.AddXY("FAIL", failRatio.ToString("F2"));
+            series.Points.AddXY("OK", $"{okRatio:F2}");
+            series.Points.AddXY("NG", $"{ngRatio:F2}");
+            series.Points.AddXY("FAIL", $"{failRatio:F2}");
 
             series.Points[0].Color = Color.Lime;
             series.Points[1].Color = Color.LightCoral;
             series.Points[2].Color = Color.FromArgb(104, 104, 104);
 
-            series.Points[0].Label = okRatio.ToString("F2") + "%";
-            series.Points[1].Label = ngRatio.ToString("F2") + "%";
-            series.Points[2].Label = failRatio.ToString("F2") + "%";
+            series.Points[0].Label = okRatio > 0 ? $"OK\r\n{okRatio * 100:F2}%" : "";
+            series.Points[1].Label = ngRatio > 0 ? $"NG\r\n{ngRatio * 100:F2}%" : "";
+            series.Points[2].Label = failRatio > 0 ? $"FAIL\r\n{failRatio * 100:F2}%" : "";
 
-            series.Points[0].LegendText = "OK : " + okRatio.ToString("F2") + "%";
-            series.Points[1].LegendText = "NG : " + ngRatio.ToString("F2") + "%";
-            series.Points[2].LegendText = "FAIL : " + failRatio.ToString("F2") + "%";
+            series.Points[1].LegendText = $"NG : {ngRatio * 100:F2}%";
+            series.Points[2].LegendText = $"FAIL : {failRatio * 100:F2}%";
+            series.Points[0].LegendText = $"OK : {okRatio * 100:F2}%";
         }
 
         private void UpdateBarChart(BarChartContentsType type)

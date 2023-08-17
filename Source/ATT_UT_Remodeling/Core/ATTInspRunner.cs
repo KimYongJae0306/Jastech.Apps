@@ -636,11 +636,11 @@ namespace ATT_UT_Remodeling.Core
                     AppsInspResult.Instance().Cell_ID,                                                             // Panel ID
                     (tabInspResult.TabNo + 1).ToString(),                                                               // Tab
                     judgement.ToString(),                       // Judge
-                    CheckResultValue(alignResult.LeftX).ToString("F4"),          // Left Align X
-                    CheckResultValue(alignResult.LeftY).ToString("F4"),          // Left Align Y
-                    alignResult.CenterX.ToString("F4"),                         // Center Align X
-                    CheckResultValue(alignResult.RightX).ToString("F4"),         // Right Align X
-                    CheckResultValue(alignResult.RightY).ToString("F4"),         // Right Align Y     // Right Align Y
+                    CheckResultValue(alignResult.LeftX).ToString("F2"),          // Left Align X
+                    CheckResultValue(alignResult.LeftY).ToString("F2"),          // Left Align Y
+                    alignResult.CenterX.ToString("F2"),                         // Center Align X
+                    CheckResultValue(alignResult.RightX).ToString("F2"),         // Right Align X
+                    CheckResultValue(alignResult.RightY).ToString("F2"),         // Right Align Y     // Right Align Y
                 };
 
                 dataList.Add(tabData);
@@ -685,7 +685,7 @@ namespace ATT_UT_Remodeling.Core
                     (tabInspResult.TabNo + 1).ToString(),
                     judgement.ToString(),
                     avgCount.ToString(),
-                    avgLength.ToString("F4"),
+                    avgLength.ToString("F2"),
                 };
 
                 dataList.Add(tabData);
@@ -750,17 +750,17 @@ namespace ATT_UT_Remodeling.Core
                     //inspResult.TabResultList[tabNo].MacronAkkonResult.AvgStrength.ToString("F3"),
                     //inspResult.TabResultList[tabNo].MacronAkkonResult.AvgStd.ToString("F3"),
                     (tabNo + 1).ToString(),                                                         // Count Min
-                    (tabNo + 2).ToString("F4"),                                                     // Count Avg
+                    (tabNo + 2).ToString("F2"),                                                     // Count Avg
                     (tabNo + 3).ToString(),                                                         // Length Min
-                    (tabNo + 4).ToString("F4"),                                                     // Length Avg
+                    (tabNo + 4).ToString("F2"),                                                     // Length Avg
                     (tabNo + 5).ToString(),                                                         // Strength Min
-                    (tabNo + 6).ToString("F4"),                                                     // Strength Avg
+                    (tabNo + 6).ToString("F2"),                                                     // Strength Avg
 
-                    CheckResultValue(alignResult.LeftX).ToString("F4"),    // Left Align X
-                    CheckResultValue(alignResult.LeftY).ToString("F4"),    // Left Align Y
-                    alignResult.CenterX.ToString("F4"),                         // Center Align X
-                    CheckResultValue(alignResult.RightX).ToString("F4"),   // Right Align X
-                    CheckResultValue(alignResult.RightY).ToString("F4"),   // Right Align Y
+                    CheckResultValue(alignResult.LeftX).ToString("F2"),    // Left Align X
+                    CheckResultValue(alignResult.LeftY).ToString("F2"),    // Left Align Y
+                    alignResult.CenterX.ToString("F2"),                         // Center Align X
+                    CheckResultValue(alignResult.RightX).ToString("F2"),   // Right Align X
+                    CheckResultValue(alignResult.RightY).ToString("F2"),   // Right Align Y
 
                     (tabNo + 7).ToString(),                                                         // ACF Head
                     (tabNo + 8).ToString(),                                                         // Pre Head

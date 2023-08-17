@@ -67,13 +67,13 @@ namespace Jastech.Apps.Winform.UI.Controls
             if (ChartType == InspChartType.Akkon)
             {
                 AkkonSeriesCount = new Series();
-                AkkonSeriesCount = chtData.Series.Add("Count");
+                AkkonSeriesCount = chtData.Series.Add("Avg Count");
                 AkkonSeriesCount.ChartType = SeriesChartType.Line;
                 AkkonSeriesCount.Color = Color.Blue;
                 AkkonSeriesCount.Name = "Count";
 
                 AkkonSeriesLength = new Series();
-                AkkonSeriesLength = chtData.Series.Add("Length");
+                AkkonSeriesLength = chtData.Series.Add("Avg Length");
                 AkkonSeriesLength.ChartType = SeriesChartType.Line;
                 AkkonSeriesLength.Color = Color.FromArgb(142, 89, 159);
                 AkkonSeriesLength.Name = "Length";

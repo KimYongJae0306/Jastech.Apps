@@ -34,10 +34,12 @@
             // rtxLogMessage
             // 
             this.rtxLogMessage.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
+            this.rtxLogMessage.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.rtxLogMessage.Dock = System.Windows.Forms.DockStyle.Fill;
             this.rtxLogMessage.ForeColor = System.Drawing.Color.White;
             this.rtxLogMessage.Location = new System.Drawing.Point(0, 0);
             this.rtxLogMessage.Name = "rtxLogMessage";
+            this.rtxLogMessage.ReadOnly = true;
             this.rtxLogMessage.Size = new System.Drawing.Size(300, 300);
             this.rtxLogMessage.TabIndex = 0;
             this.rtxLogMessage.Text = "";
@@ -46,10 +48,10 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
+            this.BackColor = System.Drawing.Color.White;
             this.Controls.Add(this.rtxLogMessage);
             this.Font = new System.Drawing.Font("맑은 고딕", 11.25F, System.Drawing.FontStyle.Bold);
-            this.ForeColor = System.Drawing.Color.White;
+            this.ForeColor = System.Drawing.Color.Black;
             this.Name = "LogControl";
             this.Size = new System.Drawing.Size(300, 300);
             this.ResumeLayout(false);

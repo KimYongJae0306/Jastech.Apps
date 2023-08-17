@@ -10,6 +10,7 @@ using Jastech.Framework.Winform.VisionPro.Controls;
 using System;
 using System.Drawing;
 using System.IO;
+using System.Net;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
 
@@ -84,21 +85,21 @@ namespace Jastech.Framework.Winform.Forms
             {
                 case PageType.Log:
                     _selectedPagePath = _logPath;
-                    lblLog.BackColor = _selectedColor;
+                    btnSelectionLog.BackColor = _selectedColor;
 
                     pnlContents.Controls.Add(LogControl);
                     break;
 
                 case PageType.Image:
                     _selectedPagePath = _resultPath;
-                    lblImage.BackColor = _selectedColor;
+                    btnSelectionImage.BackColor = _selectedColor;
 
                     pnlContents.Controls.Add(CogDisplayControl);
                     break;
 
                 case PageType.AlignTrend:
                     _selectedPagePath = _resultPath;
-                    lblAlignTrend.BackColor = _selectedColor;
+                    btnSelectionAlignTrend.BackColor = _selectedColor;
 
                     AlignTrendControl.MakeTabListControl(inspModel.TabCount);
                     pnlContents.Controls.Add(AlignTrendControl);
@@ -106,7 +107,7 @@ namespace Jastech.Framework.Winform.Forms
 
                 case PageType.AkkonTrend:
                     _selectedPagePath = _resultPath;
-                    lblAkkonTrend.BackColor = _selectedColor;
+                    btnSelectionAkkonTrend.BackColor = _selectedColor;
 
                     AkkonTrendControl.MakeTabListControl(inspModel.TabCount);
                     pnlContents.Controls.Add(AkkonTrendControl);
@@ -114,14 +115,14 @@ namespace Jastech.Framework.Winform.Forms
 
                 case PageType.UPH:
                     _selectedPagePath = _resultPath;
-                    lblUPH.BackColor = _selectedColor;
+                    btnSelectionUPH.BackColor = _selectedColor;
 
                     pnlContents.Controls.Add(UPHControl);
                     break;
 
                 case PageType.ProcessCapability:
                     _selectedPagePath = _resultPath;
-                    lblProcessCapability.BackColor = _selectedColor;
+                    btnSelectionProcessCapability.BackColor = _selectedColor;
 
                     ProcessCapabilityControl.MakeTabListControl(inspModel.TabCount);
                     pnlContents.Controls.Add(ProcessCapabilityControl);
@@ -138,42 +139,42 @@ namespace Jastech.Framework.Winform.Forms
         {
             foreach (Control control in pnlLogType.Controls)
             {
-                if (control is Label)
+                if (control is Button)
                     control.BackColor = _nonSelectedColor;
             }
         }
 
-        private void btnExit_Click(object sender, EventArgs e)
+        private void btnCancel_Click(object sender, EventArgs e)
         {
             this.Close();
         }
 
-        private void lblLog_Click(object sender, EventArgs e)
+        private void btnSelectionLog_Click(object sender, EventArgs e)
         {
             SetPageType(PageType.Log);
         }
 
-        private void lblImage_Click(object sender, EventArgs e)
+        private void btnSelectionImage_Click(object sender, EventArgs e)
         {
             SetPageType(PageType.Image);
         }
 
-        private void lblAlignTrend_Click(object sender, EventArgs e)
+        private void btnSelectionAlignTrend_Click(object sender, EventArgs e)
         {
             SetPageType(PageType.AlignTrend);
         }
 
-        private void lblAkkonTrend_Click(object sender, EventArgs e)
+        private void btnSelectionAkkonTrend_Click(object sender, EventArgs e)
         {
             SetPageType(PageType.AkkonTrend);
         }
 
-        private void lblUPH_Click(object sender, EventArgs e)
+        private void btnSelectionUPH_Click(object sender, EventArgs e)
         {
             SetPageType(PageType.UPH);
         }
 
-        private void lblProcessCapability_Click(object sender, EventArgs e)
+        private void btnSelectionProcessCapability_Click(object sender, EventArgs e)
         {
             SetPageType(PageType.ProcessCapability);
         }
@@ -213,6 +214,12 @@ namespace Jastech.Framework.Winform.Forms
                 tvwLogPath.Nodes.Add(treeNode);
                 RecursiveDirectory(directoryInfo, treeNode);
             }
+
+            if(tvwLogPath.Nodes.Count > 0 && tvwLogPath.Nodes[0].Nodes.Count > 0)
+            {
+                tvwLogPath.SelectedNode = tvwLogPath.Nodes[0].Nodes[0];
+                tvwLogPath_NodeMouseClick(null, null);
+            }
         }
 
         private void SetSelectionStartDate(DateTime date)
@@ -247,10 +254,10 @@ namespace Jastech.Framework.Winform.Forms
                     if (_selectedPageType == PageType.Image && files2.Name.ToLower().Contains(".csv"))
                         continue;
 
-                    if ((_selectedPageType == PageType.AlignTrend || _selectedPageType == PageType.ProcessCapability ) && files2.Name.ToLower().Contains("align") == false)
+                    if ((_selectedPageType == PageType.AlignTrend || _selectedPageType == PageType.ProcessCapability) && (files2.Name.ToLower().Contains("align") == false || files2.Name.ToLower().Contains("summary")))
                         continue;
 
-                    if (_selectedPageType == PageType.AkkonTrend && files2.Name.ToLower().Contains("akkon") == false)
+                    if (_selectedPageType == PageType.AkkonTrend && (files2.Name.ToLower().Contains("akkon") == false || files2.Name.ToLower().Contains("summary")))
                         continue;
 
                     if (_selectedPageType == PageType.UPH && files2.Name.ToLower().Contains("uph") == false)

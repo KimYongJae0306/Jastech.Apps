@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Drawing;
 using System.IO;
+using System.Linq;
 using System.Windows.Forms;
 
 namespace Jastech.Apps.Winform.UI.Controls
@@ -29,8 +30,6 @@ namespace Jastech.Apps.Winform.UI.Controls
         private DateTime _startDate { get; set; } = DateTime.Now;
 
         private List<Label> _tabLabelList = new List<Label>();
-
-        private DataTable _resultDataTable = new DataTable();
 
         private DataTable _bindingDataTable = new DataTable();
         #endregion
@@ -68,26 +67,30 @@ namespace Jastech.Apps.Winform.UI.Controls
             _selectedColor = Color.FromArgb(104, 104, 104);
             _nonSelectedColor = Color.FromArgb(52, 52, 52);
 
-            InitializeResultDataTable();
+            InitializeDataGridView();
         }
 
         public void MakeTabListControl(int tabCount)
         {
+            Size size = new Size(60, 34);
+            Point location = new Point(20, 0);
+            int margin = 10;
+
             for (int tabIndex = 0; tabIndex < tabCount; tabIndex++)
             {
                 Label lbl = new Label();
 
-                lbl.BorderStyle = BorderStyle.FixedSingle;
+                lbl.BorderStyle = BorderStyle.Fixed3D;
                 lbl.Font = new Font("맑은 고딕", 11F, FontStyle.Bold);
                 lbl.TextAlign = ContentAlignment.MiddleCenter;
                 lbl.Text = "Tab" + (tabIndex + 1);
-                lbl.Margin = new Padding(0);
+                lbl.Size = size;
+                lbl.Location = location;
                 lbl.MouseClick += LabelControl_SetTabEventHandler;
-                lbl.Dock = DockStyle.Fill;
 
-                tlpTab.Controls.Add(lbl);
-
+                pnlTabs.Controls.Add(lbl);
                 _tabLabelList.Add(lbl);
+                location.X += size.Width + margin;
             }
         }
 
@@ -113,42 +116,16 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         private void ClearSelectedTabLabel()
         {
-            foreach (Control control in tlpTab.Controls)
+            foreach (Control control in pnlTabs.Controls)
             {
                 if (control is Label)
                     control.BackColor = _nonSelectedColor;
             }
         }
 
-        private int GetDataCount()
+        private void InitializeDataGridView()
         {
-            int dataCount = Convert.ToInt32(lblDataCount.Text);
-
-            return dataCount;
-        }
-
-        private void SetDataCount(int dataCount)
-        {
-            int temp = dataCount;
-        }
-
-        private void InitializeResultDataTable()
-        {
-            _resultDataTable.Columns.Add("Type");
-            _resultDataTable.Columns.Add("Cp");
-            _resultDataTable.Columns.Add("Cpk");
-            _resultDataTable.Columns.Add("Pp");
-            _resultDataTable.Columns.Add("Ppk");
-
-            int dataCount = GetDataCount();
-            SetDataCount(dataCount);
-
-            InitializeDataGridView(_resultDataTable.Copy());
-        }
-
-        private void InitializeDataGridView(DataTable dataTable)
-        {
-            dgvPCResult.DataSource = dataTable;
+            dgvPCResult.DataSource = new PcResult();
         }
 
         private void lblDayCount_Click(object sender, EventArgs e)
@@ -164,16 +141,6 @@ namespace Jastech.Apps.Winform.UI.Controls
         private DateTime GetSelectionStartDate()
         {
             return _startDate;
-        }
-
-        private void SetData(int dayCount)
-        {
-            DateTime date = GetSelectionStartDate();
-
-            for (int i = 0; i < dayCount; i++)
-            {
-                DateTime ndate = new DateTime(date.Year, date.Month, date.Day - i);              // Pick 날짜 기준으로 -1일씩 돌리기
-            }
         }
 
         private void lblDataCount_Click(object sender, EventArgs e)
@@ -201,11 +168,6 @@ namespace Jastech.Apps.Winform.UI.Controls
         private void SetLowerSpecLimit(double lowerSpecLimit)
         {
             _lowerSpecLimit = lowerSpecLimit;
-        }
-
-        private void dgvCPK_CellContentClick(object sender, DataGridViewCellEventArgs e)
-        {
-
         }
 
         public void UpdateAlignDataGridView(string path)
@@ -256,84 +218,13 @@ namespace Jastech.Apps.Winform.UI.Controls
             }
         }
 
-        private void lblLx_Click(object sender, EventArgs e)
-        {
-            SetAlignResultType(AlignResultType.Lx);
-        }
-
-        private void lblLy_Click(object sender, EventArgs e)
-        {
-            SetAlignResultType(AlignResultType.Ly);
-        }
-
-        private void lblCx_Click(object sender, EventArgs e)
-        {
-            SetAlignResultType(AlignResultType.Cx);
-        }
-
-        private void lblRx_Click(object sender, EventArgs e)
-        {
-            SetAlignResultType(AlignResultType.Rx);
-        }
-
-        private void lblRy_Click(object sender, EventArgs e)
-        {
-            SetAlignResultType(AlignResultType.Ry);
-        }
-
         public void SetAlignResultType(AlignResultType alignResultType)
         {
             _alignResultType = alignResultType;
-            UpdateSelectedAlignResultType(alignResultType);
 
             UpdateChart(_tabType, _alignResultType);
             UpdateDataGridView(_tabType, _alignResultType);
         }
-
-        private void UpdateSelectedAlignResultType(AlignResultType alignResultType)
-        {
-            ClearSelectedAlignTypeLabel();
-
-            switch (alignResultType)
-            {
-                case AlignResultType.All:
-                    lblAlign.BackColor = _selectedColor;
-                    break;
-
-                case AlignResultType.Lx:
-                    lblLx.BackColor = _selectedColor;
-                    break;
-
-                case AlignResultType.Ly:
-                    lblLy.BackColor = _selectedColor;
-                    break;
-
-                case AlignResultType.Cx:
-                    lblCx.BackColor = _selectedColor;
-                    break;
-
-                case AlignResultType.Rx:
-                    lblRx.BackColor = _selectedColor;
-                    break;
-
-                case AlignResultType.Ry:
-                    lblRy.BackColor = _selectedColor;
-                    break;
-
-                default:
-                    break;
-            }
-        }
-
-        private void ClearSelectedAlignTypeLabel()
-        {
-            foreach (Control control in tlpAlignTypes.Controls)
-            {
-                if (control is Label)
-                    control.BackColor = _nonSelectedColor;
-            }
-        }
-
 
         private void SetDataTable(DataTable dt)
         {
@@ -377,42 +268,28 @@ namespace Jastech.Apps.Winform.UI.Controls
         {
             var dataTable = GetDataTable();
 
+            if (dataTable.Rows.Count == 0)
+                return;
+
             string queryTab = SelectQuery(tabType);
             DataRow[] dataRowArray = dataTable.Select(queryTab);
 
-            int columnIndex = dataTable.Columns.IndexOf(alignResultType.ToString());
-
-            List<double> valueList = new List<double>();
-
-            foreach (var item in dataRowArray)
-            {
-                var value = Convert.ToDouble(item.ItemArray[columnIndex]);
-                valueList.Add(value);
-            }
-
             double upperSpecLimit = Convert.ToDouble(lblUpperSpecLimit.Text);
             double lowerSpecLimit = Convert.ToDouble(lblLowerSpecLimit.Text);
-            var result = ProcessCapabilityIndex.GetResult(valueList, upperSpecLimit, lowerSpecLimit);
 
-            List<string> dataList = new List<string>();
-            dataList.Add(alignResultType.ToString());
-            dataList.Add(result.Cp.ToString());
-            dataList.Add(result.Cpk.ToString());
-            dataList.Add(result.Pp.ToString());
-            dataList.Add(result.Ppk.ToString());
+            var listCapabilityResults = new List<PcResult>();
+            var resultTypes = Enum.GetNames(typeof(AlignResultType)).Where(name => name.ToUpper() != "ALL").ToList();
+            for (int index = 0; index < resultTypes.Count; index++)
+            {
+                int columnIndex = dataTable.Columns.IndexOf(resultTypes[index]);
 
-            DataTable newDataTable = new DataTable();
-            newDataTable = _resultDataTable.Clone();
+                var values = dataRowArray.Select(row => Convert.ToDouble(row[columnIndex])).ToList();
+                var result = ProcessCapabilityIndex.GetResult(values, upperSpecLimit, lowerSpecLimit);
+                result.Type = resultTypes[index];
 
-
-            //string[] dataArray = { alignResultType.ToString(), result.Cp.ToString(), result.Cpk.ToString(), result.Pp.ToString(), result.Ppk.ToString() };
-
-            DataRow dr = newDataTable.NewRow();
-            dr.ItemArray = dataList.ToArray();
-
-            newDataTable.Rows.Add(dr);
-
-            dgvPCResult.DataSource = newDataTable;
+                listCapabilityResults.Add(result);
+            }
+            dgvPCResult.DataSource = listCapabilityResults;
         }
 
         private string SelectQuery(TabType tabType)

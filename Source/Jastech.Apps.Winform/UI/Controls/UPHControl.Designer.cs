@@ -1,4 +1,6 @@
-﻿namespace Jastech.Apps.Winform.UI.Controls
+﻿using Jastech.Framework.Winform.Controls;
+
+namespace Jastech.Apps.Winform.UI.Controls
 {
     partial class UPHControl
     {
@@ -38,7 +40,7 @@
             this.chtBar = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.tlpData = new System.Windows.Forms.TableLayoutPanel();
             this.chtPie = new System.Windows.Forms.DataVisualization.Charting.Chart();
-            this.dgvUPHData = new System.Windows.Forms.DataGridView();
+            this.dgvUPHData = new Jastech.Framework.Winform.Controls.DoubleBufferedDatagridView();
             this.pnlBasicFunction = new System.Windows.Forms.Panel();
             this.lblExport = new System.Windows.Forms.Label();
             this.lblTotalFail = new System.Windows.Forms.Label();
@@ -169,7 +171,7 @@
             this.dgvUPHData.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.DisplayedCells;
             this.dgvUPHData.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
             dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
+            dataGridViewCellStyle1.BackColor = System.Drawing.Color.Black;
             dataGridViewCellStyle1.Font = new System.Drawing.Font("맑은 고딕", 11.25F, System.Drawing.FontStyle.Bold);
             dataGridViewCellStyle1.ForeColor = System.Drawing.Color.White;
             dataGridViewCellStyle1.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(104)))), ((int)(((byte)(104)))), ((int)(((byte)(104)))));
@@ -186,6 +188,7 @@
             dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
             this.dgvUPHData.DefaultCellStyle = dataGridViewCellStyle2;
             this.dgvUPHData.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dgvUPHData.EnableHeadersVisualStyles = false;
             this.dgvUPHData.Location = new System.Drawing.Point(476, 3);
             this.dgvUPHData.Name = "dgvUPHData";
             this.dgvUPHData.ReadOnly = true;
@@ -209,61 +212,70 @@
             // 
             // lblExport
             // 
-            this.lblExport.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblExport.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
+            this.lblExport.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.lblExport.Location = new System.Drawing.Point(680, 30);
             this.lblExport.Margin = new System.Windows.Forms.Padding(0);
             this.lblExport.Name = "lblExport";
-            this.lblExport.Size = new System.Drawing.Size(120, 60);
+            this.lblExport.Size = new System.Drawing.Size(130, 60);
             this.lblExport.TabIndex = 6;
-            this.lblExport.Text = "Export";
+            this.lblExport.Text = "DATA EXPORT";
             this.lblExport.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.lblExport.Click += new System.EventHandler(this.lblExport_Click);
             // 
             // lblTotalFail
             // 
-            this.lblTotalFail.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblTotalFail.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(104)))), ((int)(((byte)(104)))), ((int)(((byte)(104)))));
+            this.lblTotalFail.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.lblTotalFail.ForeColor = System.Drawing.Color.DarkGray;
             this.lblTotalFail.Location = new System.Drawing.Point(520, 30);
             this.lblTotalFail.Margin = new System.Windows.Forms.Padding(0);
             this.lblTotalFail.Name = "lblTotalFail";
-            this.lblTotalFail.Size = new System.Drawing.Size(120, 60);
+            this.lblTotalFail.Size = new System.Drawing.Size(130, 60);
             this.lblTotalFail.TabIndex = 6;
-            this.lblTotalFail.Text = "Total Fail";
+            this.lblTotalFail.Text = "TOTAL FAIL";
             this.lblTotalFail.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.lblTotalFail.Click += new System.EventHandler(this.lblTotalFail_Click);
             // 
             // lblTotalNG
             // 
-            this.lblTotalNG.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblTotalNG.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
+            this.lblTotalNG.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.lblTotalNG.ForeColor = System.Drawing.Color.Red;
             this.lblTotalNG.Location = new System.Drawing.Point(360, 30);
             this.lblTotalNG.Margin = new System.Windows.Forms.Padding(0);
             this.lblTotalNG.Name = "lblTotalNG";
-            this.lblTotalNG.Size = new System.Drawing.Size(120, 60);
+            this.lblTotalNG.Size = new System.Drawing.Size(130, 60);
             this.lblTotalNG.TabIndex = 6;
-            this.lblTotalNG.Text = "Total NG";
+            this.lblTotalNG.Text = "TOTAL NG";
             this.lblTotalNG.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.lblTotalNG.Click += new System.EventHandler(this.lblTotalNG_Click);
             // 
             // lblTotalOK
             // 
-            this.lblTotalOK.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblTotalOK.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
+            this.lblTotalOK.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.lblTotalOK.ForeColor = System.Drawing.Color.LawnGreen;
             this.lblTotalOK.Location = new System.Drawing.Point(200, 30);
             this.lblTotalOK.Margin = new System.Windows.Forms.Padding(0);
             this.lblTotalOK.Name = "lblTotalOK";
-            this.lblTotalOK.Size = new System.Drawing.Size(120, 60);
+            this.lblTotalOK.Size = new System.Drawing.Size(130, 60);
             this.lblTotalOK.TabIndex = 6;
-            this.lblTotalOK.Text = "Total OK";
+            this.lblTotalOK.Text = "TOTAL OK";
             this.lblTotalOK.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.lblTotalOK.Click += new System.EventHandler(this.lblTotalOK_Click);
             // 
             // lblTotal
             // 
-            this.lblTotal.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblTotal.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
+            this.lblTotal.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.lblTotal.ForeColor = System.Drawing.Color.Yellow;
             this.lblTotal.Location = new System.Drawing.Point(40, 30);
             this.lblTotal.Margin = new System.Windows.Forms.Padding(0);
             this.lblTotal.Name = "lblTotal";
-            this.lblTotal.Size = new System.Drawing.Size(120, 60);
+            this.lblTotal.Size = new System.Drawing.Size(130, 60);
             this.lblTotal.TabIndex = 6;
-            this.lblTotal.Text = "Total";
+            this.lblTotal.Text = "TOTAL";
             this.lblTotal.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.lblTotal.Click += new System.EventHandler(this.lblTotal_Click);
             // 
@@ -292,7 +304,7 @@
 
         private System.Windows.Forms.TableLayoutPanel tlpUPH;
         private System.Windows.Forms.TableLayoutPanel tlpData;
-        private System.Windows.Forms.DataGridView dgvUPHData;
+        private DoubleBufferedDatagridView dgvUPHData;
         private System.Windows.Forms.Panel pnlBasicFunction;
         private System.Windows.Forms.Label lblTotal;
         private System.Windows.Forms.Label lblExport;

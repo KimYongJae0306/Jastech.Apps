@@ -1,4 +1,6 @@
-﻿namespace Jastech.Apps.Winform.UI.Controls
+﻿using Jastech.Framework.Winform.Controls;
+
+namespace Jastech.Apps.Winform.UI.Controls
 {
     partial class ProcessCapabilityIndexControl
     {
@@ -33,43 +35,31 @@
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
             this.tlpProcessCapability = new System.Windows.Forms.TableLayoutPanel();
-            this.tlpData = new System.Windows.Forms.TableLayoutPanel();
-            this.dgvAlignData = new System.Windows.Forms.DataGridView();
-            this.pnlChart = new System.Windows.Forms.Panel();
+            this.dgvAlignData = new Jastech.Framework.Winform.Controls.DoubleBufferedDatagridView();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.tableLayoutPanel4 = new System.Windows.Forms.TableLayoutPanel();
+            this.tlpTabSelection = new System.Windows.Forms.TableLayoutPanel();
             this.lblTab = new System.Windows.Forms.Label();
-            this.tlpTab = new System.Windows.Forms.TableLayoutPanel();
-            this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
+            this.pnlTabs = new System.Windows.Forms.Panel();
+            this.tlpCountConfig = new System.Windows.Forms.TableLayoutPanel();
             this.lblDayCounts = new System.Windows.Forms.Label();
             this.lblDayCount = new System.Windows.Forms.Label();
             this.lblDataCounts = new System.Windows.Forms.Label();
             this.lblDataCount = new System.Windows.Forms.Label();
-            this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
-            this.lblAlign = new System.Windows.Forms.Label();
-            this.tlpAlignTypes = new System.Windows.Forms.TableLayoutPanel();
-            this.lblLx = new System.Windows.Forms.Label();
-            this.lblLy = new System.Windows.Forms.Label();
-            this.lblCx = new System.Windows.Forms.Label();
-            this.lblRx = new System.Windows.Forms.Label();
-            this.lblRy = new System.Windows.Forms.Label();
-            this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
+            this.tlpSpecLimits = new System.Windows.Forms.TableLayoutPanel();
             this.lblUSL = new System.Windows.Forms.Label();
             this.lblLSL = new System.Windows.Forms.Label();
             this.lblUpperSpecLimit = new System.Windows.Forms.Label();
             this.lblLowerSpecLimit = new System.Windows.Forms.Label();
             this.tlpPCResult = new System.Windows.Forms.TableLayoutPanel();
             this.lblResult = new System.Windows.Forms.Label();
-            this.dgvPCResult = new System.Windows.Forms.DataGridView();
+            this.dgvPCResult = new Jastech.Framework.Winform.Controls.DoubleBufferedDatagridView();
+            this.pnlChart = new System.Windows.Forms.Panel();
             this.tlpProcessCapability.SuspendLayout();
-            this.tlpData.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvAlignData)).BeginInit();
             this.panel1.SuspendLayout();
-            this.tableLayoutPanel4.SuspendLayout();
-            this.tableLayoutPanel3.SuspendLayout();
-            this.tableLayoutPanel2.SuspendLayout();
-            this.tlpAlignTypes.SuspendLayout();
-            this.tableLayoutPanel1.SuspendLayout();
+            this.tlpTabSelection.SuspendLayout();
+            this.tlpCountConfig.SuspendLayout();
+            this.tlpSpecLimits.SuspendLayout();
             this.tlpPCResult.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvPCResult)).BeginInit();
             this.SuspendLayout();
@@ -79,39 +69,26 @@
             this.tlpProcessCapability.ColumnCount = 2;
             this.tlpProcessCapability.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tlpProcessCapability.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tlpProcessCapability.Controls.Add(this.tlpData, 1, 0);
+            this.tlpProcessCapability.Controls.Add(this.pnlChart, 1, 0);
+            this.tlpProcessCapability.Controls.Add(this.dgvAlignData, 1, 1);
             this.tlpProcessCapability.Controls.Add(this.panel1, 0, 0);
+            this.tlpProcessCapability.Controls.Add(this.tlpPCResult, 0, 1);
             this.tlpProcessCapability.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tlpProcessCapability.Location = new System.Drawing.Point(0, 0);
             this.tlpProcessCapability.Margin = new System.Windows.Forms.Padding(0);
             this.tlpProcessCapability.Name = "tlpProcessCapability";
-            this.tlpProcessCapability.RowCount = 1;
-            this.tlpProcessCapability.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tlpProcessCapability.RowCount = 2;
+            this.tlpProcessCapability.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tlpProcessCapability.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tlpProcessCapability.Size = new System.Drawing.Size(1072, 554);
             this.tlpProcessCapability.TabIndex = 0;
             // 
-            // tlpData
-            // 
-            this.tlpData.ColumnCount = 1;
-            this.tlpData.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tlpData.Controls.Add(this.dgvAlignData, 0, 1);
-            this.tlpData.Controls.Add(this.pnlChart, 0, 0);
-            this.tlpData.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tlpData.Location = new System.Drawing.Point(536, 0);
-            this.tlpData.Margin = new System.Windows.Forms.Padding(0);
-            this.tlpData.Name = "tlpData";
-            this.tlpData.RowCount = 2;
-            this.tlpData.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tlpData.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tlpData.Size = new System.Drawing.Size(536, 554);
-            this.tlpData.TabIndex = 0;
-            // 
             // dgvAlignData
             // 
-            this.dgvAlignData.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.dgvAlignData.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
             this.dgvAlignData.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
             dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
+            dataGridViewCellStyle1.BackColor = System.Drawing.Color.Black;
             dataGridViewCellStyle1.Font = new System.Drawing.Font("맑은 고딕", 11.25F, System.Drawing.FontStyle.Bold);
             dataGridViewCellStyle1.ForeColor = System.Drawing.Color.White;
             dataGridViewCellStyle1.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(104)))), ((int)(((byte)(104)))), ((int)(((byte)(104)))));
@@ -128,7 +105,8 @@
             dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
             this.dgvAlignData.DefaultCellStyle = dataGridViewCellStyle2;
             this.dgvAlignData.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dgvAlignData.Location = new System.Drawing.Point(3, 280);
+            this.dgvAlignData.EnableHeadersVisualStyles = false;
+            this.dgvAlignData.Location = new System.Drawing.Point(539, 280);
             this.dgvAlignData.Name = "dgvAlignData";
             this.dgvAlignData.ReadOnly = true;
             this.dgvAlignData.RowHeadersVisible = false;
@@ -136,92 +114,74 @@
             this.dgvAlignData.Size = new System.Drawing.Size(530, 271);
             this.dgvAlignData.TabIndex = 3;
             // 
-            // pnlChart
-            // 
-            this.pnlChart.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pnlChart.Location = new System.Drawing.Point(0, 0);
-            this.pnlChart.Margin = new System.Windows.Forms.Padding(0);
-            this.pnlChart.Name = "pnlChart";
-            this.pnlChart.Size = new System.Drawing.Size(536, 277);
-            this.pnlChart.TabIndex = 2;
-            // 
             // panel1
             // 
-            this.panel1.Controls.Add(this.tableLayoutPanel4);
-            this.panel1.Controls.Add(this.tableLayoutPanel3);
-            this.panel1.Controls.Add(this.tableLayoutPanel2);
-            this.panel1.Controls.Add(this.tableLayoutPanel1);
-            this.panel1.Controls.Add(this.tlpPCResult);
+            this.panel1.Controls.Add(this.tlpTabSelection);
+            this.panel1.Controls.Add(this.tlpCountConfig);
+            this.panel1.Controls.Add(this.tlpSpecLimits);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel1.Location = new System.Drawing.Point(0, 0);
             this.panel1.Margin = new System.Windows.Forms.Padding(0);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(536, 554);
+            this.panel1.Size = new System.Drawing.Size(536, 277);
             this.panel1.TabIndex = 1;
             // 
-            // tableLayoutPanel4
+            // tlpTabSelection
             // 
-            this.tableLayoutPanel4.ColumnCount = 2;
-            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 20F));
-            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 80F));
-            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel4.Controls.Add(this.lblTab, 0, 0);
-            this.tableLayoutPanel4.Controls.Add(this.tlpTab, 1, 0);
-            this.tableLayoutPanel4.Location = new System.Drawing.Point(19, 134);
-            this.tableLayoutPanel4.Margin = new System.Windows.Forms.Padding(0);
-            this.tableLayoutPanel4.Name = "tableLayoutPanel4";
-            this.tableLayoutPanel4.RowCount = 1;
-            this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel4.Size = new System.Drawing.Size(499, 40);
-            this.tableLayoutPanel4.TabIndex = 9;
+            this.tlpTabSelection.ColumnCount = 2;
+            this.tlpTabSelection.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 100F));
+            this.tlpTabSelection.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tlpTabSelection.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tlpTabSelection.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tlpTabSelection.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tlpTabSelection.Controls.Add(this.lblTab, 0, 0);
+            this.tlpTabSelection.Controls.Add(this.pnlTabs, 1, 0);
+            this.tlpTabSelection.Location = new System.Drawing.Point(18, 102);
+            this.tlpTabSelection.Margin = new System.Windows.Forms.Padding(0);
+            this.tlpTabSelection.Name = "tlpTabSelection";
+            this.tlpTabSelection.RowCount = 1;
+            this.tlpTabSelection.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tlpTabSelection.Size = new System.Drawing.Size(500, 40);
+            this.tlpTabSelection.TabIndex = 7;
             // 
             // lblTab
             // 
             this.lblTab.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(104)))), ((int)(((byte)(104)))), ((int)(((byte)(104)))));
             this.lblTab.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblTab.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lblTab.Location = new System.Drawing.Point(0, 0);
             this.lblTab.Margin = new System.Windows.Forms.Padding(0);
             this.lblTab.Name = "lblTab";
-            this.lblTab.Size = new System.Drawing.Size(99, 40);
+            this.lblTab.Size = new System.Drawing.Size(100, 40);
             this.lblTab.TabIndex = 6;
             this.lblTab.Text = "Tab";
             this.lblTab.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // tlpTab
+            // pnlTabs
             // 
-            this.tlpTab.ColumnCount = 4;
-            this.tlpTab.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
-            this.tlpTab.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
-            this.tlpTab.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
-            this.tlpTab.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
-            this.tlpTab.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tlpTab.Location = new System.Drawing.Point(99, 0);
-            this.tlpTab.Margin = new System.Windows.Forms.Padding(0);
-            this.tlpTab.Name = "tlpTab";
-            this.tlpTab.RowCount = 1;
-            this.tlpTab.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tlpTab.Size = new System.Drawing.Size(400, 40);
-            this.tlpTab.TabIndex = 7;
+            this.pnlTabs.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pnlTabs.Location = new System.Drawing.Point(103, 3);
+            this.pnlTabs.Name = "pnlTabs";
+            this.pnlTabs.Size = new System.Drawing.Size(394, 34);
+            this.pnlTabs.TabIndex = 10;
             // 
-            // tableLayoutPanel3
+            // tlpCountConfig
             // 
-            this.tableLayoutPanel3.ColumnCount = 2;
-            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel3.Controls.Add(this.lblDayCounts, 0, 0);
-            this.tableLayoutPanel3.Controls.Add(this.lblDayCount, 1, 0);
-            this.tableLayoutPanel3.Controls.Add(this.lblDataCounts, 0, 1);
-            this.tableLayoutPanel3.Controls.Add(this.lblDataCount, 1, 1);
-            this.tableLayoutPanel3.Location = new System.Drawing.Point(18, 12);
-            this.tableLayoutPanel3.Margin = new System.Windows.Forms.Padding(0);
-            this.tableLayoutPanel3.Name = "tableLayoutPanel3";
-            this.tableLayoutPanel3.RowCount = 2;
-            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel3.Size = new System.Drawing.Size(240, 80);
-            this.tableLayoutPanel3.TabIndex = 7;
+            this.tlpCountConfig.ColumnCount = 2;
+            this.tlpCountConfig.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tlpCountConfig.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tlpCountConfig.Controls.Add(this.lblDayCounts, 0, 0);
+            this.tlpCountConfig.Controls.Add(this.lblDayCount, 1, 0);
+            this.tlpCountConfig.Controls.Add(this.lblDataCounts, 0, 1);
+            this.tlpCountConfig.Controls.Add(this.lblDataCount, 1, 1);
+            this.tlpCountConfig.Location = new System.Drawing.Point(18, 12);
+            this.tlpCountConfig.Margin = new System.Windows.Forms.Padding(0);
+            this.tlpCountConfig.Name = "tlpCountConfig";
+            this.tlpCountConfig.RowCount = 2;
+            this.tlpCountConfig.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tlpCountConfig.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tlpCountConfig.Size = new System.Drawing.Size(240, 80);
+            this.tlpCountConfig.TabIndex = 7;
             // 
             // lblDayCounts
             // 
@@ -239,7 +199,7 @@
             // lblDayCount
             // 
             this.lblDayCount.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
-            this.lblDayCount.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblDayCount.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.lblDayCount.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lblDayCount.Location = new System.Drawing.Point(120, 0);
             this.lblDayCount.Margin = new System.Windows.Forms.Padding(0);
@@ -265,7 +225,7 @@
             // 
             // lblDataCount
             // 
-            this.lblDataCount.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblDataCount.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.lblDataCount.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lblDataCount.Location = new System.Drawing.Point(120, 40);
             this.lblDataCount.Margin = new System.Windows.Forms.Padding(0);
@@ -276,138 +236,23 @@
             this.lblDataCount.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.lblDataCount.Click += new System.EventHandler(this.lblDataCount_Click);
             // 
-            // tableLayoutPanel2
+            // tlpSpecLimits
             // 
-            this.tableLayoutPanel2.ColumnCount = 1;
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel2.Controls.Add(this.lblAlign, 0, 0);
-            this.tableLayoutPanel2.Controls.Add(this.tlpAlignTypes, 0, 1);
-            this.tableLayoutPanel2.Location = new System.Drawing.Point(18, 194);
-            this.tableLayoutPanel2.Margin = new System.Windows.Forms.Padding(0);
-            this.tableLayoutPanel2.Name = "tableLayoutPanel2";
-            this.tableLayoutPanel2.RowCount = 2;
-            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
-            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel2.Size = new System.Drawing.Size(500, 80);
-            this.tableLayoutPanel2.TabIndex = 6;
-            // 
-            // lblAlign
-            // 
-            this.lblAlign.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(104)))), ((int)(((byte)(104)))), ((int)(((byte)(104)))));
-            this.lblAlign.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lblAlign.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblAlign.Location = new System.Drawing.Point(0, 0);
-            this.lblAlign.Margin = new System.Windows.Forms.Padding(0);
-            this.lblAlign.Name = "lblAlign";
-            this.lblAlign.Size = new System.Drawing.Size(500, 40);
-            this.lblAlign.TabIndex = 7;
-            this.lblAlign.Text = "Parameter";
-            this.lblAlign.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // tlpAlignTypes
-            // 
-            this.tlpAlignTypes.ColumnCount = 5;
-            this.tlpAlignTypes.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 20F));
-            this.tlpAlignTypes.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 20F));
-            this.tlpAlignTypes.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 20F));
-            this.tlpAlignTypes.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 20F));
-            this.tlpAlignTypes.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 20F));
-            this.tlpAlignTypes.Controls.Add(this.lblLx, 0, 0);
-            this.tlpAlignTypes.Controls.Add(this.lblLy, 1, 0);
-            this.tlpAlignTypes.Controls.Add(this.lblCx, 2, 0);
-            this.tlpAlignTypes.Controls.Add(this.lblRx, 3, 0);
-            this.tlpAlignTypes.Controls.Add(this.lblRy, 4, 0);
-            this.tlpAlignTypes.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tlpAlignTypes.Location = new System.Drawing.Point(0, 40);
-            this.tlpAlignTypes.Margin = new System.Windows.Forms.Padding(0);
-            this.tlpAlignTypes.Name = "tlpAlignTypes";
-            this.tlpAlignTypes.RowCount = 1;
-            this.tlpAlignTypes.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tlpAlignTypes.Size = new System.Drawing.Size(500, 40);
-            this.tlpAlignTypes.TabIndex = 8;
-            // 
-            // lblLx
-            // 
-            this.lblLx.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lblLx.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblLx.Location = new System.Drawing.Point(0, 0);
-            this.lblLx.Margin = new System.Windows.Forms.Padding(0);
-            this.lblLx.Name = "lblLx";
-            this.lblLx.Size = new System.Drawing.Size(100, 40);
-            this.lblLx.TabIndex = 2;
-            this.lblLx.Text = "Lx";
-            this.lblLx.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.lblLx.Click += new System.EventHandler(this.lblLx_Click);
-            // 
-            // lblLy
-            // 
-            this.lblLy.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lblLy.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblLy.Location = new System.Drawing.Point(100, 0);
-            this.lblLy.Margin = new System.Windows.Forms.Padding(0);
-            this.lblLy.Name = "lblLy";
-            this.lblLy.Size = new System.Drawing.Size(100, 40);
-            this.lblLy.TabIndex = 3;
-            this.lblLy.Text = "Ly";
-            this.lblLy.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.lblLy.Click += new System.EventHandler(this.lblLy_Click);
-            // 
-            // lblCx
-            // 
-            this.lblCx.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lblCx.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblCx.Location = new System.Drawing.Point(200, 0);
-            this.lblCx.Margin = new System.Windows.Forms.Padding(0);
-            this.lblCx.Name = "lblCx";
-            this.lblCx.Size = new System.Drawing.Size(100, 40);
-            this.lblCx.TabIndex = 4;
-            this.lblCx.Text = "Cx";
-            this.lblCx.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.lblCx.Click += new System.EventHandler(this.lblCx_Click);
-            // 
-            // lblRx
-            // 
-            this.lblRx.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lblRx.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblRx.Location = new System.Drawing.Point(300, 0);
-            this.lblRx.Margin = new System.Windows.Forms.Padding(0);
-            this.lblRx.Name = "lblRx";
-            this.lblRx.Size = new System.Drawing.Size(100, 40);
-            this.lblRx.TabIndex = 5;
-            this.lblRx.Text = "Rx";
-            this.lblRx.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.lblRx.Click += new System.EventHandler(this.lblRx_Click);
-            // 
-            // lblRy
-            // 
-            this.lblRy.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lblRy.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblRy.Location = new System.Drawing.Point(400, 0);
-            this.lblRy.Margin = new System.Windows.Forms.Padding(0);
-            this.lblRy.Name = "lblRy";
-            this.lblRy.Size = new System.Drawing.Size(100, 40);
-            this.lblRy.TabIndex = 6;
-            this.lblRy.Text = "Ry";
-            this.lblRy.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.lblRy.Click += new System.EventHandler(this.lblRy_Click);
-            // 
-            // tableLayoutPanel1
-            // 
-            this.tableLayoutPanel1.ColumnCount = 2;
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel1.Controls.Add(this.lblUSL, 0, 0);
-            this.tableLayoutPanel1.Controls.Add(this.lblLSL, 1, 0);
-            this.tableLayoutPanel1.Controls.Add(this.lblUpperSpecLimit, 0, 1);
-            this.tableLayoutPanel1.Controls.Add(this.lblLowerSpecLimit, 1, 1);
-            this.tableLayoutPanel1.Location = new System.Drawing.Point(278, 12);
-            this.tableLayoutPanel1.Margin = new System.Windows.Forms.Padding(0);
-            this.tableLayoutPanel1.Name = "tableLayoutPanel1";
-            this.tableLayoutPanel1.RowCount = 2;
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(240, 80);
-            this.tableLayoutPanel1.TabIndex = 5;
+            this.tlpSpecLimits.ColumnCount = 2;
+            this.tlpSpecLimits.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tlpSpecLimits.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tlpSpecLimits.Controls.Add(this.lblUSL, 0, 0);
+            this.tlpSpecLimits.Controls.Add(this.lblLSL, 1, 0);
+            this.tlpSpecLimits.Controls.Add(this.lblUpperSpecLimit, 0, 1);
+            this.tlpSpecLimits.Controls.Add(this.lblLowerSpecLimit, 1, 1);
+            this.tlpSpecLimits.Location = new System.Drawing.Point(278, 12);
+            this.tlpSpecLimits.Margin = new System.Windows.Forms.Padding(0);
+            this.tlpSpecLimits.Name = "tlpSpecLimits";
+            this.tlpSpecLimits.RowCount = 2;
+            this.tlpSpecLimits.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tlpSpecLimits.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tlpSpecLimits.Size = new System.Drawing.Size(240, 80);
+            this.tlpSpecLimits.TabIndex = 5;
             // 
             // lblUSL
             // 
@@ -419,7 +264,7 @@
             this.lblUSL.Name = "lblUSL";
             this.lblUSL.Size = new System.Drawing.Size(120, 40);
             this.lblUSL.TabIndex = 2;
-            this.lblUSL.Text = "USL";
+            this.lblUSL.Text = "Upper\r\nSpec Limit";
             this.lblUSL.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // lblLSL
@@ -432,12 +277,12 @@
             this.lblLSL.Name = "lblLSL";
             this.lblLSL.Size = new System.Drawing.Size(120, 40);
             this.lblLSL.TabIndex = 2;
-            this.lblLSL.Text = "LSL";
+            this.lblLSL.Text = "Lower\r\nSpec Limit";
             this.lblLSL.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // lblUpperSpecLimit
             // 
-            this.lblUpperSpecLimit.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblUpperSpecLimit.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.lblUpperSpecLimit.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lblUpperSpecLimit.Location = new System.Drawing.Point(0, 40);
             this.lblUpperSpecLimit.Margin = new System.Windows.Forms.Padding(0);
@@ -450,7 +295,7 @@
             // 
             // lblLowerSpecLimit
             // 
-            this.lblLowerSpecLimit.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblLowerSpecLimit.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.lblLowerSpecLimit.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lblLowerSpecLimit.Location = new System.Drawing.Point(120, 40);
             this.lblLowerSpecLimit.Margin = new System.Windows.Forms.Padding(0);
@@ -467,13 +312,14 @@
             this.tlpPCResult.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tlpPCResult.Controls.Add(this.lblResult, 0, 0);
             this.tlpPCResult.Controls.Add(this.dgvPCResult, 0, 1);
-            this.tlpPCResult.Location = new System.Drawing.Point(18, 295);
+            this.tlpPCResult.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tlpPCResult.Location = new System.Drawing.Point(0, 277);
             this.tlpPCResult.Margin = new System.Windows.Forms.Padding(0);
             this.tlpPCResult.Name = "tlpPCResult";
             this.tlpPCResult.RowCount = 2;
             this.tlpPCResult.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
             this.tlpPCResult.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tlpPCResult.Size = new System.Drawing.Size(500, 240);
+            this.tlpPCResult.Size = new System.Drawing.Size(536, 277);
             this.tlpPCResult.TabIndex = 3;
             // 
             // lblResult
@@ -484,17 +330,20 @@
             this.lblResult.Location = new System.Drawing.Point(0, 0);
             this.lblResult.Margin = new System.Windows.Forms.Padding(0);
             this.lblResult.Name = "lblResult";
-            this.lblResult.Size = new System.Drawing.Size(500, 40);
+            this.lblResult.Size = new System.Drawing.Size(536, 40);
             this.lblResult.TabIndex = 7;
             this.lblResult.Text = "CPK / PPK Result";
             this.lblResult.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // dgvPCResult
             // 
-            this.dgvPCResult.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.dgvPCResult.AllowUserToAddRows = false;
+            this.dgvPCResult.AllowUserToDeleteRows = false;
+            this.dgvPCResult.AllowUserToResizeRows = false;
+            this.dgvPCResult.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
             this.dgvPCResult.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
             dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
+            dataGridViewCellStyle3.BackColor = System.Drawing.Color.Black;
             dataGridViewCellStyle3.Font = new System.Drawing.Font("맑은 고딕", 11.25F, System.Drawing.FontStyle.Bold);
             dataGridViewCellStyle3.ForeColor = System.Drawing.Color.White;
             dataGridViewCellStyle3.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(104)))), ((int)(((byte)(104)))), ((int)(((byte)(104)))));
@@ -511,14 +360,24 @@
             dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
             this.dgvPCResult.DefaultCellStyle = dataGridViewCellStyle4;
             this.dgvPCResult.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dgvPCResult.EnableHeadersVisualStyles = false;
             this.dgvPCResult.Location = new System.Drawing.Point(0, 40);
             this.dgvPCResult.Margin = new System.Windows.Forms.Padding(0);
             this.dgvPCResult.Name = "dgvPCResult";
             this.dgvPCResult.ReadOnly = true;
             this.dgvPCResult.RowHeadersVisible = false;
             this.dgvPCResult.RowTemplate.Height = 23;
-            this.dgvPCResult.Size = new System.Drawing.Size(500, 200);
+            this.dgvPCResult.Size = new System.Drawing.Size(536, 237);
             this.dgvPCResult.TabIndex = 6;
+            // 
+            // pnlChart
+            // 
+            this.pnlChart.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pnlChart.Location = new System.Drawing.Point(536, 0);
+            this.pnlChart.Margin = new System.Windows.Forms.Padding(0);
+            this.pnlChart.Name = "pnlChart";
+            this.pnlChart.Size = new System.Drawing.Size(536, 277);
+            this.pnlChart.TabIndex = 2;
             // 
             // ProcessCapabilityIndexControl
             // 
@@ -532,14 +391,11 @@
             this.Size = new System.Drawing.Size(1072, 554);
             this.Load += new System.EventHandler(this.ProcessCapabilityIndexControl_Load);
             this.tlpProcessCapability.ResumeLayout(false);
-            this.tlpData.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgvAlignData)).EndInit();
             this.panel1.ResumeLayout(false);
-            this.tableLayoutPanel4.ResumeLayout(false);
-            this.tableLayoutPanel3.ResumeLayout(false);
-            this.tableLayoutPanel2.ResumeLayout(false);
-            this.tlpAlignTypes.ResumeLayout(false);
-            this.tableLayoutPanel1.ResumeLayout(false);
+            this.tlpTabSelection.ResumeLayout(false);
+            this.tlpCountConfig.ResumeLayout(false);
+            this.tlpSpecLimits.ResumeLayout(false);
             this.tlpPCResult.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgvPCResult)).EndInit();
             this.ResumeLayout(false);
@@ -549,33 +405,24 @@
         #endregion
 
         private System.Windows.Forms.TableLayoutPanel tlpProcessCapability;
-        private System.Windows.Forms.TableLayoutPanel tlpData;
         private System.Windows.Forms.Panel panel1;
-        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
+        private System.Windows.Forms.TableLayoutPanel tlpSpecLimits;
         private System.Windows.Forms.Label lblUSL;
         private System.Windows.Forms.Label lblLSL;
         private System.Windows.Forms.Label lblUpperSpecLimit;
         private System.Windows.Forms.Label lblLowerSpecLimit;
         private System.Windows.Forms.TableLayoutPanel tlpPCResult;
         private System.Windows.Forms.Label lblResult;
-        private System.Windows.Forms.DataGridView dgvPCResult;
-        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel3;
+        private DoubleBufferedDatagridView dgvPCResult;
+        private System.Windows.Forms.TableLayoutPanel tlpCountConfig;
         private System.Windows.Forms.Label lblDayCounts;
         private System.Windows.Forms.Label lblDayCount;
         private System.Windows.Forms.Label lblDataCounts;
         private System.Windows.Forms.Label lblDataCount;
-        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
-        private System.Windows.Forms.Label lblAlign;
-        private System.Windows.Forms.TableLayoutPanel tlpAlignTypes;
-        private System.Windows.Forms.Label lblLx;
-        private System.Windows.Forms.Label lblLy;
-        private System.Windows.Forms.Label lblCx;
-        private System.Windows.Forms.Label lblRx;
-        private System.Windows.Forms.Label lblRy;
-        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel4;
         private System.Windows.Forms.Label lblTab;
-        private System.Windows.Forms.TableLayoutPanel tlpTab;
+        private System.Windows.Forms.TableLayoutPanel tlpTabSelection;
+        private DoubleBufferedDatagridView dgvAlignData;
+        private System.Windows.Forms.Panel pnlTabs;
         private System.Windows.Forms.Panel pnlChart;
-        private System.Windows.Forms.DataGridView dgvAlignData;
     }
 }

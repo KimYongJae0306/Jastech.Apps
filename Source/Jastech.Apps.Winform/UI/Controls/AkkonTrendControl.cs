@@ -56,27 +56,27 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         public void MakeTabListControl(int tabCount)
         {
-            int controlWidth = 120;
-            int controlHeight = 60;
-            Point point = new Point(160, 0);
-            int interval = 20;
+            Size size = new Size(100, 54);
+            Point location = new Point(20, 0);
+            int margin = 10;
 
             for (int tabIndex = 0; tabIndex < tabCount; tabIndex++)
             {
                 Label lbl = new Label();
 
-                lbl.BorderStyle = BorderStyle.FixedSingle;
+                lbl.BorderStyle = BorderStyle.Fixed3D;
+                lbl.BackColor = Color.FromArgb(52, 52, 52);
                 lbl.Font = new Font("맑은 고딕", 11F, FontStyle.Bold);
                 lbl.TextAlign = ContentAlignment.MiddleCenter;
                 lbl.Text = "Tab" + (tabIndex + 1);
-                lbl.Size = new Size(controlWidth, controlHeight);
+                lbl.Size = size;
+                lbl.Location = location;
                 lbl.MouseClick += LabelControl_SetTabEventHandler;
-                lbl.Location = point;
 
                 pnlTabs.Controls.Add(lbl);
-                point.X += controlWidth + interval;
-
                 _tabLabelList.Add(lbl);
+
+                location.X += size.Width + margin;
             }
         }
 
@@ -162,14 +162,6 @@ namespace Jastech.Apps.Winform.UI.Controls
                     lblLength.BackColor = _selectedColor;
                     break;
 
-                case AkkonResultType.Strength:
-                    lblStrength.BackColor = _selectedColor;
-                    break;
-
-                case AkkonResultType.STD:
-                    lblStd.BackColor = _selectedColor;
-                    break;
-
                 default:
                     break;
             }
@@ -177,7 +169,7 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         private void ClearSelectedAkkonTypeLabel()
         {
-            foreach (Control control in pnlAkkonType.Controls)
+            foreach (Control control in pnlChartTypes.Controls)
             {
                 if (control is Label)
                     control.BackColor = _nonSelectedColor;
@@ -218,8 +210,6 @@ namespace Jastech.Apps.Winform.UI.Controls
                 table.Columns.Add("Judge");
                 table.Columns.Add("Count");
                 table.Columns.Add("Length");
-                table.Columns.Add("Strength");
-                table.Columns.Add("STD");
 
                 StreamReader sr = new StreamReader(fs);
 
@@ -235,8 +225,7 @@ namespace Jastech.Apps.Winform.UI.Controls
 
                         string[] dataArray = contents.Split(',');
 
-                        table.Rows.Add(dataArray[0], dataArray[1], dataArray[2], dataArray[3],
-                            dataArray[4], dataArray[5], dataArray[6], dataArray[7]);
+                        table.Rows.Add(dataArray[0], dataArray[1], dataArray[2], dataArray[3], dataArray[4], dataArray[5]);
                     }
 
                     readLine++;
