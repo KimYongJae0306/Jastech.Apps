@@ -700,6 +700,13 @@ namespace ATT_UT_IPAD.Core
             SaveAlignResult(path, inspModel.TabCount);
             SaveAkkonResult(path, inspModel.TabCount);
             SaveUPHResult(path, inspModel.TabCount);
+
+            bool writeMsaSummary = true;    //Considering convert to Property
+            if (writeMsaSummary == true)
+            {
+                SaveAkkonResultAsMsaSummary(path, inspModel.TabCount);
+                SaveAlignResultAsMsaSummary(path, inspModel.TabCount);
+            }
         }
 
         private void SaveAlignResult(string resultPath, int tabCount)
@@ -758,7 +765,7 @@ namespace ATT_UT_IPAD.Core
             {
                 List<string> header = new List<string>
                 {
-                     "Inspection Time",
+                    "Inspection Time",
                     "Panel ID",
                     "Tab",
                     "Judge",
@@ -793,6 +800,92 @@ namespace ATT_UT_IPAD.Core
 
             }
             CSVHelper.WriteData(csvFile, dataList);
+        }
+
+        private void SaveAkkonResultAsMsaSummary(string resultPath, int tabCount)
+        {
+            // Write Summary for each tabs
+            for (int tabNo = 0; tabNo < tabCount; tabNo++)
+            {
+                var akkonResult = AppsInspResult.Instance().GetAkkon(tabNo);
+                var positions = new string[] { "Left", "Center", "Right" };
+
+                // Add header strings
+                var header = new List<string>
+                {
+                    "Panel ID",
+                    "Inspection Time",
+                };
+                foreach (string position in positions)
+                {
+                    for (int index = 0; index < akkonResult.ResultSamplingCount; index++)
+                        header.Add($"{position}{index}");
+                }
+
+                // Add Body strings
+                var body = new List<string>
+                {
+                    AppsInspResult.Instance().Cell_ID,
+                    $"{AppsInspResult.Instance().EndInspTime:HH:mm:ss}",
+                };
+                foreach (string position in positions)
+                {
+                    var akkonCount = akkonResult.GetAkkonCounts(position).Cast<string>();
+                    body.AddRange(akkonCount);
+                }
+
+                if (header.Count != body.Count)
+                    Console.WriteLine($"[SaveAkkonResultAsMsaSummary()] Column counts are not matched");
+
+                // Write a CSV file
+                string filename = string.Format($"AkkonSummary_Tab{tabNo}.csv");
+                string csvFile = Path.Combine(resultPath, filename);
+
+                CSVHelper.WriteHeader(csvFile, header);
+                CSVHelper.WriteData(csvFile, body);
+            }
+        }
+
+        private void SaveAlignResultAsMsaSummary(string resultPath, int tabCount)
+        {
+            // Write Summary for each tabs
+            for (int tabNo = 0; tabNo < tabCount; tabNo++)
+            {
+                var alignResult = AppsInspResult.Instance().GetAlign(tabNo).AlignResult;
+
+                // Add header strings
+                var header = new List<string>
+                {
+                    "Panel ID",
+                    "Inspection Time",
+                    "LeftX",
+                    "LeftY",
+                    "CenteX",
+                    "RightX",
+                    "RightY",
+                };
+
+                // Add Body strings
+                var body = new List<string>
+                {
+                    AppsInspResult.Instance().Cell_ID,
+                    $"{AppsInspResult.Instance().EndInspTime:HH:mm:ss}",
+                    $"{CheckResultValue(alignResult.LeftX):F2}",
+                    $"{CheckResultValue(alignResult.LeftY):F2}",
+                    $"{alignResult.CenterX:F2}",
+                    $"{CheckResultValue(alignResult.RightX):F2}",
+                    $"{CheckResultValue(alignResult.RightY):F2}",
+                };
+
+                if (header.Count != body.Count)
+                    Console.WriteLine($"[SaveAlignResultAsMsaSummary()] Column counts are not matched");
+
+                // Write a CSV file
+                string filename = string.Format($"AlignSummary_Tab{tabNo}.csv");
+                string csvFile = Path.Combine(resultPath, filename);
+                CSVHelper.WriteHeader(csvFile, header);
+                CSVHelper.WriteData(csvFile, body);
+            }
         }
 
         private void SaveUPHResult(string resultPath, int tabCount)

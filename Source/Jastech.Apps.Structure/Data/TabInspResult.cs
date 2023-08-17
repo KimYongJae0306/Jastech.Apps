@@ -1,5 +1,6 @@
 ﻿using Cognex.VisionPro;
 using Emgu.CV;
+using Jastech.Framework.Algorithms.Akkon.Parameters;
 using Jastech.Framework.Algorithms.Akkon.Results;
 using Jastech.Framework.Imaging.Result;
 using Jastech.Framework.Imaging.VisionPro.VisionAlgorithms.Results;
@@ -62,6 +63,8 @@ namespace Jastech.Apps.Structure.Data
 
         public AkkonResult AkkonResult { get; set; } = null;
 
+        public int ResultSamplingCount => 5;
+
         public void Dispose()
         {
             IsResultProcessDone = false;
@@ -93,6 +96,23 @@ namespace Jastech.Apps.Structure.Data
 
             MarkResult?.Dispose();
             AlignResult?.Dispose();
+        }
+
+        public IEnumerable<int> GetAkkonCounts(string position)
+        {
+            var leadResults = AkkonResult.LeadResultList;
+            int offset = 0;
+            if (Enum.TryParse(position, out LeadContainPos containPos) == true)
+            {
+                if (containPos == LeadContainPos.Left)
+                    offset = 0;
+                if (containPos == LeadContainPos.Right)
+                    offset = leadResults.Count / 2;
+            }
+            else    // Center or ETC.
+                offset = leadResults.Count - ResultSamplingCount;
+
+            return leadResults.Select((result) => result.AkkonCount).Skip(offset).Take(ResultSamplingCount);
         }
     }
 
