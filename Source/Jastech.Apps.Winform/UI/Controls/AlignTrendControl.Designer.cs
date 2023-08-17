@@ -1,4 +1,6 @@
-﻿namespace Jastech.Apps.Winform.UI.Controls
+﻿using Jastech.Framework.Winform.Controls;
+
+namespace Jastech.Apps.Winform.UI.Controls
 {
     partial class AlignTrendControl
     {
@@ -28,132 +30,50 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             this.tlpAlignTrend = new System.Windows.Forms.TableLayoutPanel();
-            this.pnlAlignType = new System.Windows.Forms.Panel();
+            this.tlpData = new System.Windows.Forms.TableLayoutPanel();
+            this.dgvAlignTrendData = new Jastech.Framework.Winform.Controls.DoubleBufferedDatagridView();
+            this.pnlChart = new System.Windows.Forms.Panel();
+            this.tclChartType = new System.Windows.Forms.TableLayoutPanel();
+            this.lblChartType = new System.Windows.Forms.Label();
+            this.pnlChartTypes = new System.Windows.Forms.Panel();
             this.lblRy = new System.Windows.Forms.Label();
             this.lblRx = new System.Windows.Forms.Label();
             this.lblCx = new System.Windows.Forms.Label();
             this.lblLy = new System.Windows.Forms.Label();
             this.lblLx = new System.Windows.Forms.Label();
             this.lblAlign = new System.Windows.Forms.Label();
-            this.tlpData = new System.Windows.Forms.TableLayoutPanel();
-            this.dgvAlignTrendData = new System.Windows.Forms.DataGridView();
+            this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.pnlTabs = new System.Windows.Forms.Panel();
-            this.lblTab = new System.Windows.Forms.Label();
-            this.pnlChart = new System.Windows.Forms.Panel();
+            this.lblTabSelection = new System.Windows.Forms.Label();
             this.tlpAlignTrend.SuspendLayout();
-            this.pnlAlignType.SuspendLayout();
             this.tlpData.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvAlignTrendData)).BeginInit();
-            this.pnlTabs.SuspendLayout();
+            this.tclChartType.SuspendLayout();
+            this.pnlChartTypes.SuspendLayout();
+            this.tableLayoutPanel2.SuspendLayout();
             this.SuspendLayout();
             // 
             // tlpAlignTrend
             // 
             this.tlpAlignTrend.ColumnCount = 1;
             this.tlpAlignTrend.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tlpAlignTrend.Controls.Add(this.pnlAlignType, 0, 1);
-            this.tlpAlignTrend.Controls.Add(this.tlpData, 0, 2);
-            this.tlpAlignTrend.Controls.Add(this.pnlTabs, 0, 0);
+            this.tlpAlignTrend.Controls.Add(this.tlpData, 0, 3);
+            this.tlpAlignTrend.Controls.Add(this.tclChartType, 0, 2);
+            this.tlpAlignTrend.Controls.Add(this.tableLayoutPanel2, 0, 0);
             this.tlpAlignTrend.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tlpAlignTrend.Location = new System.Drawing.Point(0, 0);
             this.tlpAlignTrend.Margin = new System.Windows.Forms.Padding(0);
             this.tlpAlignTrend.Name = "tlpAlignTrend";
-            this.tlpAlignTrend.RowCount = 3;
+            this.tlpAlignTrend.RowCount = 4;
             this.tlpAlignTrend.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 60F));
+            this.tlpAlignTrend.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 15F));
             this.tlpAlignTrend.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 60F));
             this.tlpAlignTrend.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tlpAlignTrend.Size = new System.Drawing.Size(860, 540);
             this.tlpAlignTrend.TabIndex = 0;
-            // 
-            // pnlAlignType
-            // 
-            this.pnlAlignType.Controls.Add(this.lblRy);
-            this.pnlAlignType.Controls.Add(this.lblRx);
-            this.pnlAlignType.Controls.Add(this.lblCx);
-            this.pnlAlignType.Controls.Add(this.lblLy);
-            this.pnlAlignType.Controls.Add(this.lblLx);
-            this.pnlAlignType.Controls.Add(this.lblAlign);
-            this.pnlAlignType.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pnlAlignType.Location = new System.Drawing.Point(0, 60);
-            this.pnlAlignType.Margin = new System.Windows.Forms.Padding(0);
-            this.pnlAlignType.Name = "pnlAlignType";
-            this.pnlAlignType.Size = new System.Drawing.Size(860, 60);
-            this.pnlAlignType.TabIndex = 2;
-            // 
-            // lblRy
-            // 
-            this.lblRy.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lblRy.Location = new System.Drawing.Point(720, 0);
-            this.lblRy.Margin = new System.Windows.Forms.Padding(0);
-            this.lblRy.Name = "lblRy";
-            this.lblRy.Size = new System.Drawing.Size(120, 60);
-            this.lblRy.TabIndex = 5;
-            this.lblRy.Text = "Ry";
-            this.lblRy.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.lblRy.Click += new System.EventHandler(this.lblRy_Click);
-            // 
-            // lblRx
-            // 
-            this.lblRx.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lblRx.Location = new System.Drawing.Point(580, 0);
-            this.lblRx.Margin = new System.Windows.Forms.Padding(0);
-            this.lblRx.Name = "lblRx";
-            this.lblRx.Size = new System.Drawing.Size(120, 60);
-            this.lblRx.TabIndex = 4;
-            this.lblRx.Text = "Rx";
-            this.lblRx.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.lblRx.Click += new System.EventHandler(this.lblRx_Click);
-            // 
-            // lblCx
-            // 
-            this.lblCx.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lblCx.Location = new System.Drawing.Point(440, 0);
-            this.lblCx.Margin = new System.Windows.Forms.Padding(0);
-            this.lblCx.Name = "lblCx";
-            this.lblCx.Size = new System.Drawing.Size(120, 60);
-            this.lblCx.TabIndex = 3;
-            this.lblCx.Text = "Cx";
-            this.lblCx.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.lblCx.Click += new System.EventHandler(this.lblCx_Click);
-            // 
-            // lblLy
-            // 
-            this.lblLy.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lblLy.Location = new System.Drawing.Point(300, 0);
-            this.lblLy.Margin = new System.Windows.Forms.Padding(0);
-            this.lblLy.Name = "lblLy";
-            this.lblLy.Size = new System.Drawing.Size(120, 60);
-            this.lblLy.TabIndex = 2;
-            this.lblLy.Text = "Ly";
-            this.lblLy.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.lblLy.Click += new System.EventHandler(this.lblLy_Click);
-            // 
-            // lblLx
-            // 
-            this.lblLx.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lblLx.Location = new System.Drawing.Point(160, 0);
-            this.lblLx.Margin = new System.Windows.Forms.Padding(0);
-            this.lblLx.Name = "lblLx";
-            this.lblLx.Size = new System.Drawing.Size(120, 60);
-            this.lblLx.TabIndex = 1;
-            this.lblLx.Text = "Lx";
-            this.lblLx.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.lblLx.Click += new System.EventHandler(this.lblLx_Click);
-            // 
-            // lblAlign
-            // 
-            this.lblAlign.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lblAlign.Location = new System.Drawing.Point(0, 0);
-            this.lblAlign.Margin = new System.Windows.Forms.Padding(0);
-            this.lblAlign.Name = "lblAlign";
-            this.lblAlign.Size = new System.Drawing.Size(120, 60);
-            this.lblAlign.TabIndex = 0;
-            this.lblAlign.Text = "Align";
-            this.lblAlign.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.lblAlign.Click += new System.EventHandler(this.lblAlign_Click);
             // 
             // tlpData
             // 
@@ -163,64 +83,44 @@
             this.tlpData.Controls.Add(this.dgvAlignTrendData, 1, 0);
             this.tlpData.Controls.Add(this.pnlChart, 0, 0);
             this.tlpData.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tlpData.Location = new System.Drawing.Point(0, 120);
+            this.tlpData.Location = new System.Drawing.Point(0, 135);
             this.tlpData.Margin = new System.Windows.Forms.Padding(0);
             this.tlpData.Name = "tlpData";
             this.tlpData.RowCount = 1;
             this.tlpData.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tlpData.Size = new System.Drawing.Size(860, 420);
+            this.tlpData.Size = new System.Drawing.Size(860, 405);
             this.tlpData.TabIndex = 3;
             // 
             // dgvAlignTrendData
             // 
-            this.dgvAlignTrendData.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.DisplayedCells;
+            this.dgvAlignTrendData.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
             this.dgvAlignTrendData.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
-            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
-            dataGridViewCellStyle3.Font = new System.Drawing.Font("맑은 고딕", 11.25F, System.Drawing.FontStyle.Bold);
-            dataGridViewCellStyle3.ForeColor = System.Drawing.Color.White;
-            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(104)))), ((int)(((byte)(104)))), ((int)(((byte)(104)))));
-            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgvAlignTrendData.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle3;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle1.BackColor = System.Drawing.Color.Black;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("맑은 고딕", 11.25F, System.Drawing.FontStyle.Bold);
+            dataGridViewCellStyle1.ForeColor = System.Drawing.Color.White;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(104)))), ((int)(((byte)(104)))), ((int)(((byte)(104)))));
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvAlignTrendData.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             this.dgvAlignTrendData.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle4.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
-            dataGridViewCellStyle4.Font = new System.Drawing.Font("맑은 고딕", 11.25F, System.Drawing.FontStyle.Bold);
-            dataGridViewCellStyle4.ForeColor = System.Drawing.Color.White;
-            dataGridViewCellStyle4.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(104)))), ((int)(((byte)(104)))), ((int)(((byte)(104)))));
-            dataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgvAlignTrendData.DefaultCellStyle = dataGridViewCellStyle4;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("맑은 고딕", 11.25F, System.Drawing.FontStyle.Bold);
+            dataGridViewCellStyle2.ForeColor = System.Drawing.Color.White;
+            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(104)))), ((int)(((byte)(104)))), ((int)(((byte)(104)))));
+            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvAlignTrendData.DefaultCellStyle = dataGridViewCellStyle2;
             this.dgvAlignTrendData.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dgvAlignTrendData.EnableHeadersVisualStyles = false;
             this.dgvAlignTrendData.Location = new System.Drawing.Point(476, 3);
             this.dgvAlignTrendData.Name = "dgvAlignTrendData";
             this.dgvAlignTrendData.ReadOnly = true;
             this.dgvAlignTrendData.RowHeadersVisible = false;
             this.dgvAlignTrendData.RowTemplate.Height = 23;
-            this.dgvAlignTrendData.Size = new System.Drawing.Size(381, 414);
+            this.dgvAlignTrendData.Size = new System.Drawing.Size(381, 399);
             this.dgvAlignTrendData.TabIndex = 0;
-            // 
-            // pnlTabs
-            // 
-            this.pnlTabs.Controls.Add(this.lblTab);
-            this.pnlTabs.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pnlTabs.Location = new System.Drawing.Point(0, 0);
-            this.pnlTabs.Margin = new System.Windows.Forms.Padding(0);
-            this.pnlTabs.Name = "pnlTabs";
-            this.pnlTabs.Size = new System.Drawing.Size(860, 60);
-            this.pnlTabs.TabIndex = 4;
-            // 
-            // lblTab
-            // 
-            this.lblTab.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lblTab.Location = new System.Drawing.Point(0, 0);
-            this.lblTab.Margin = new System.Windows.Forms.Padding(0);
-            this.lblTab.Name = "lblTab";
-            this.lblTab.Size = new System.Drawing.Size(120, 60);
-            this.lblTab.TabIndex = 6;
-            this.lblTab.Text = "Tab";
-            this.lblTab.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // pnlChart
             // 
@@ -228,8 +128,159 @@
             this.pnlChart.Location = new System.Drawing.Point(0, 0);
             this.pnlChart.Margin = new System.Windows.Forms.Padding(0);
             this.pnlChart.Name = "pnlChart";
-            this.pnlChart.Size = new System.Drawing.Size(473, 420);
+            this.pnlChart.Size = new System.Drawing.Size(473, 405);
             this.pnlChart.TabIndex = 1;
+            // 
+            // tclChartType
+            // 
+            this.tclChartType.ColumnCount = 2;
+            this.tclChartType.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 120F));
+            this.tclChartType.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tclChartType.Controls.Add(this.lblChartType, 0, 0);
+            this.tclChartType.Controls.Add(this.pnlChartTypes, 1, 0);
+            this.tclChartType.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tclChartType.Location = new System.Drawing.Point(3, 78);
+            this.tclChartType.Name = "tclChartType";
+            this.tclChartType.RowCount = 1;
+            this.tclChartType.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tclChartType.Size = new System.Drawing.Size(854, 54);
+            this.tclChartType.TabIndex = 5;
+            // 
+            // lblChartType
+            // 
+            this.lblChartType.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(104)))), ((int)(((byte)(104)))), ((int)(((byte)(104)))));
+            this.lblChartType.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblChartType.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblChartType.Location = new System.Drawing.Point(0, 0);
+            this.lblChartType.Margin = new System.Windows.Forms.Padding(0);
+            this.lblChartType.Name = "lblChartType";
+            this.lblChartType.Size = new System.Drawing.Size(120, 54);
+            this.lblChartType.TabIndex = 7;
+            this.lblChartType.Text = "Chart Type";
+            this.lblChartType.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // pnlChartTypes
+            // 
+            this.pnlChartTypes.Controls.Add(this.lblRy);
+            this.pnlChartTypes.Controls.Add(this.lblRx);
+            this.pnlChartTypes.Controls.Add(this.lblCx);
+            this.pnlChartTypes.Controls.Add(this.lblLy);
+            this.pnlChartTypes.Controls.Add(this.lblLx);
+            this.pnlChartTypes.Controls.Add(this.lblAlign);
+            this.pnlChartTypes.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pnlChartTypes.Location = new System.Drawing.Point(120, 0);
+            this.pnlChartTypes.Margin = new System.Windows.Forms.Padding(0);
+            this.pnlChartTypes.Name = "pnlChartTypes";
+            this.pnlChartTypes.Size = new System.Drawing.Size(734, 54);
+            this.pnlChartTypes.TabIndex = 2;
+            // 
+            // lblRy
+            // 
+            this.lblRy.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.lblRy.Location = new System.Drawing.Point(570, 0);
+            this.lblRy.Margin = new System.Windows.Forms.Padding(10, 0, 0, 0);
+            this.lblRy.Name = "lblRy";
+            this.lblRy.Size = new System.Drawing.Size(100, 54);
+            this.lblRy.TabIndex = 5;
+            this.lblRy.Text = "Ry";
+            this.lblRy.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblRy.Click += new System.EventHandler(this.lblRy_Click);
+            // 
+            // lblRx
+            // 
+            this.lblRx.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.lblRx.Location = new System.Drawing.Point(460, 0);
+            this.lblRx.Margin = new System.Windows.Forms.Padding(10, 0, 0, 0);
+            this.lblRx.Name = "lblRx";
+            this.lblRx.Size = new System.Drawing.Size(100, 54);
+            this.lblRx.TabIndex = 4;
+            this.lblRx.Text = "Rx";
+            this.lblRx.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblRx.Click += new System.EventHandler(this.lblRx_Click);
+            // 
+            // lblCx
+            // 
+            this.lblCx.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.lblCx.Location = new System.Drawing.Point(350, 0);
+            this.lblCx.Margin = new System.Windows.Forms.Padding(10, 0, 0, 0);
+            this.lblCx.Name = "lblCx";
+            this.lblCx.Size = new System.Drawing.Size(100, 54);
+            this.lblCx.TabIndex = 3;
+            this.lblCx.Text = "Cx";
+            this.lblCx.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblCx.Click += new System.EventHandler(this.lblCx_Click);
+            // 
+            // lblLy
+            // 
+            this.lblLy.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.lblLy.Location = new System.Drawing.Point(240, 0);
+            this.lblLy.Margin = new System.Windows.Forms.Padding(10, 0, 0, 0);
+            this.lblLy.Name = "lblLy";
+            this.lblLy.Size = new System.Drawing.Size(100, 54);
+            this.lblLy.TabIndex = 2;
+            this.lblLy.Text = "Ly";
+            this.lblLy.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblLy.Click += new System.EventHandler(this.lblLy_Click);
+            // 
+            // lblLx
+            // 
+            this.lblLx.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.lblLx.Location = new System.Drawing.Point(130, 0);
+            this.lblLx.Margin = new System.Windows.Forms.Padding(10, 0, 0, 0);
+            this.lblLx.Name = "lblLx";
+            this.lblLx.Size = new System.Drawing.Size(100, 54);
+            this.lblLx.TabIndex = 1;
+            this.lblLx.Text = "Lx";
+            this.lblLx.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblLx.Click += new System.EventHandler(this.lblLx_Click);
+            // 
+            // lblAlign
+            // 
+            this.lblAlign.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.lblAlign.Location = new System.Drawing.Point(20, 0);
+            this.lblAlign.Margin = new System.Windows.Forms.Padding(20, 0, 0, 0);
+            this.lblAlign.Name = "lblAlign";
+            this.lblAlign.Size = new System.Drawing.Size(100, 54);
+            this.lblAlign.TabIndex = 0;
+            this.lblAlign.Text = "Align";
+            this.lblAlign.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblAlign.Click += new System.EventHandler(this.lblAlign_Click);
+            // 
+            // tableLayoutPanel2
+            // 
+            this.tableLayoutPanel2.ColumnCount = 2;
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 120F));
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel2.Controls.Add(this.pnlTabs, 0, 0);
+            this.tableLayoutPanel2.Controls.Add(this.lblTabSelection, 0, 0);
+            this.tableLayoutPanel2.Location = new System.Drawing.Point(3, 3);
+            this.tableLayoutPanel2.Name = "tableLayoutPanel2";
+            this.tableLayoutPanel2.RowCount = 1;
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel2.Size = new System.Drawing.Size(854, 54);
+            this.tableLayoutPanel2.TabIndex = 6;
+            // 
+            // pnlTabs
+            // 
+            this.pnlTabs.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pnlTabs.Location = new System.Drawing.Point(120, 0);
+            this.pnlTabs.Margin = new System.Windows.Forms.Padding(0);
+            this.pnlTabs.Name = "pnlTabs";
+            this.pnlTabs.Size = new System.Drawing.Size(734, 54);
+            this.pnlTabs.TabIndex = 7;
+            // 
+            // lblTabSelection
+            // 
+            this.lblTabSelection.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(104)))), ((int)(((byte)(104)))), ((int)(((byte)(104)))));
+            this.lblTabSelection.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblTabSelection.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblTabSelection.Location = new System.Drawing.Point(0, 0);
+            this.lblTabSelection.Margin = new System.Windows.Forms.Padding(0);
+            this.lblTabSelection.Name = "lblTabSelection";
+            this.lblTabSelection.Size = new System.Drawing.Size(120, 54);
+            this.lblTabSelection.TabIndex = 6;
+            this.lblTabSelection.Text = "Tab Selection";
+            this.lblTabSelection.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // AlignTrendControl
             // 
@@ -243,10 +294,11 @@
             this.Size = new System.Drawing.Size(860, 540);
             this.Load += new System.EventHandler(this.AlignTrendControl_Load);
             this.tlpAlignTrend.ResumeLayout(false);
-            this.pnlAlignType.ResumeLayout(false);
             this.tlpData.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgvAlignTrendData)).EndInit();
-            this.pnlTabs.ResumeLayout(false);
+            this.tclChartType.ResumeLayout(false);
+            this.pnlChartTypes.ResumeLayout(false);
+            this.tableLayoutPanel2.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -254,7 +306,7 @@
         #endregion
 
         private System.Windows.Forms.TableLayoutPanel tlpAlignTrend;
-        private System.Windows.Forms.Panel pnlAlignType;
+        private System.Windows.Forms.Panel pnlChartTypes;
         private System.Windows.Forms.Label lblRy;
         private System.Windows.Forms.Label lblRx;
         private System.Windows.Forms.Label lblCx;
@@ -262,9 +314,12 @@
         private System.Windows.Forms.Label lblLx;
         private System.Windows.Forms.Label lblAlign;
         private System.Windows.Forms.TableLayoutPanel tlpData;
-        private System.Windows.Forms.Panel pnlTabs;
-        private System.Windows.Forms.DataGridView dgvAlignTrendData;
-        private System.Windows.Forms.Label lblTab;
+        private DoubleBufferedDatagridView dgvAlignTrendData;
+        private System.Windows.Forms.Label lblTabSelection;
         private System.Windows.Forms.Panel pnlChart;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
+        private System.Windows.Forms.TableLayoutPanel tclChartType;
+        private System.Windows.Forms.Label lblChartType;
+        private System.Windows.Forms.Panel pnlTabs;
     }
 }

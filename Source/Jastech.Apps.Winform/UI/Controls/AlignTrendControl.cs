@@ -56,25 +56,24 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         public void MakeTabListControl(int tabCount)
         {
-            int controlWidth = 120;
-            int controlHeight = 60;
-            Point point = new Point(160, 0);
-            int interval = 20;
+            Size size = new Size(100, 54);
+            Point location = new Point(20, 0);
+            int margin = 10;
 
             for (int tabIndex = 0; tabIndex < tabCount; tabIndex++)
             {
                 Label lbl = new Label();
 
-                lbl.BorderStyle = BorderStyle.FixedSingle;
+                lbl.BorderStyle = BorderStyle.Fixed3D;
                 lbl.Font = new Font("맑은 고딕", 11F, FontStyle.Bold);
                 lbl.TextAlign = ContentAlignment.MiddleCenter;
                 lbl.Text = "Tab" + (tabIndex + 1);
-                lbl.Size = new Size(controlWidth, controlHeight);
+                lbl.Size = size;
+                lbl.Location = location;
                 lbl.MouseClick += LabelControl_SetTabEventHandler;
-                lbl.Location = point;
 
                 pnlTabs.Controls.Add(lbl);
-                point.X += controlWidth + interval;
+                location.X += size.Width + margin;
 
                 _tabLabelList.Add(lbl);
             }
@@ -183,7 +182,7 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         private void ClearSelectedAlignTypeLabel()
         {
-            foreach (Control control in pnlAlignType.Controls)
+            foreach (Control control in pnlChartTypes.Controls)
             {
                 if (control is Label)
                     control.BackColor = _nonSelectedColor;

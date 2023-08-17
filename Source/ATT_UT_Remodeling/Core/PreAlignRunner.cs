@@ -292,7 +292,7 @@ namespace ATT_UT_Remodeling
                         var offsetT = AppsPreAlignResult.Instance().OffsetT;
 
                         PlcControlManager.Instance().WriteAlignData(offsetX, offsetY, offsetT);
-                        WriteLog($"Write PreAlign Data.(OffsetX : {offsetX.ToString("F4")}, OffsetY : {offsetY.ToString("F4")}, OffsetT : {offsetT.ToString("F4")})", true);
+                        WriteLog($"Write PreAlign Data.(OffsetX : {offsetX:F4}, OffsetY : {offsetY:F4}, OffsetT : {offsetT:F4})", true);
 
                         // Check Tolerance
                         if (Math.Abs(offsetX) <= AppsConfig.Instance().PreAlignToleranceX

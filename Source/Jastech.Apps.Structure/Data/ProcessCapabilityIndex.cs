@@ -10,22 +10,22 @@ namespace Jastech.Apps.Structure.Data
         private const double d2 = 1.128;
         private const int TOLERANCE = 6;
 
-        public Result GetResult(List<double> valueList, double upperSpecLimit, double lowerSpecLimit)
+        public PcResult GetResult(List<double> valueList, double upperSpecLimit, double lowerSpecLimit)
         {
             if (valueList.Count <= 1)
-                return new Result();
+                return new PcResult();
 
-            Result result = new Result();
+            PcResult result = new PcResult();
 
-            result.Average = valueList.Average();
-            result.StdOverall = GetStandardDeviation(valueList);
+            double Average = valueList.Average();
+            double StdOverall = GetStandardDeviation(valueList);
 
             double T = Math.Abs(upperSpecLimit - lowerSpecLimit);
 
-            result.Pp = Math.Round(T / (6 * result.StdOverall), 2);
-            result.PpU = Math.Round((upperSpecLimit - result.Average) / (3 * result.StdOverall), 2);
-            result.PpL = Math.Round((result.Average - lowerSpecLimit) / (3 * result.StdOverall), 2);
-            result.Ppk = Math.Min(result.PpU, result.PpL);
+            double PpU = Math.Round((upperSpecLimit - Average) / (3 * StdOverall), 2);
+            double PpL = Math.Round((Average - lowerSpecLimit) / (3 * StdOverall), 2);
+            result.Pp = Math.Round(T / (6 * StdOverall), 2);
+            result.Ppk = Math.Min(PpU, PpL);
 
             List<double> listMove = new List<double>();
 
@@ -39,13 +39,12 @@ namespace Jastech.Apps.Structure.Data
             }
 
             double RBar = listMove.Sum() / (valueList.Count - WEIGHT + 1);
-            
-            result.StdWithin = RBar / d2;
+            double StdWithin = RBar / d2;
 
-            result.Cp = Math.Round(T / (6 * result.StdWithin), 2);
-            result.CpU = Math.Round((upperSpecLimit - result.Average) / (TOLERANCE / 2 * result.StdWithin), 2);
-            result.CpL = Math.Round((result.Average - lowerSpecLimit) / (TOLERANCE / 2 * result.StdWithin), 2);
-            result.Cpk = Math.Min(result.CpU, result.CpL);
+            double CpU = Math.Round((upperSpecLimit - Average) / (TOLERANCE / 2 * StdWithin), 2);
+            double CpL = Math.Round((Average - lowerSpecLimit) / (TOLERANCE / 2 * StdWithin), 2);
+            result.Cp = Math.Round(T / (6 * StdWithin), 2);
+            result.Cpk = Math.Min(CpU, CpL);
 
             return result;
         }
@@ -66,28 +65,30 @@ namespace Jastech.Apps.Structure.Data
         }
     }
 
-    public class Result
+    public class PcResult
     {
+        public string Type { get; set; } = "NaN";
+
         public double Cp { get; set; } = 0.0;
 
-        public double CpL { get; set; } = 0.0;
+        //public double CpL { get; set; } = 0.0;
 
-        public double CpU { get; set; } = 0.0;
+        //public double CpU { get; set; } = 0.0;
 
         public double Cpk { get; set; } = 0.0;
 
         public double Pp { get; set; } = 0.0;
 
-        public double PpL { get; set; } = 0.0;
+        //public double PpL { get; set; } = 0.0;
 
-        public double PpU { get; set; } = 0.0;
+        //public double PpU { get; set; } = 0.0;
 
         public double Ppk { get; set; } = 0.0;
 
-        public double StdOverall { get; set; } = 0.0;
+        //public double StdOverall { get; set; } = 0.0;
 
-        public double StdWithin { get; set; } = 0.0;
+        //public double StdWithin { get; set; } = 0.0;
 
-        public double Average { get; set; } = 0.0;
+        //public double Average { get; set; } = 0.0;
     }
 }
