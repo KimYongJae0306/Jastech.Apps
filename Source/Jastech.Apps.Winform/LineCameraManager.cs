@@ -17,7 +17,7 @@ namespace Jastech.Apps.Winform
         #endregion
 
         #region 속성
-        public List<LineCamera> CameraList = new List<LineCamera>();
+        private List<LineCamera> CameraList = new List<LineCamera>();
 
         public bool IsLive { get; set; } = false;
         #endregion

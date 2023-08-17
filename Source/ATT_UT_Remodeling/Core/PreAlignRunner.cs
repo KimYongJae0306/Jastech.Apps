@@ -86,7 +86,7 @@ namespace ATT_UT_Remodeling
             AreaCameraManager.Instance().GetAreaCamera("PreAlign").StopGrab();
 
             // 조명 off
-            LAFManager.Instance().GetLAFCtrl("Laf").SetTrackingOnOFF(false);
+            LAFManager.Instance().GetLAF("Laf").LafCtrl.SetTrackingOnOFF(false);
             WriteLog("AutoFocus Off.");
 
             if (SeqTask == null)
@@ -140,7 +140,7 @@ namespace ATT_UT_Remodeling
             if (areaCamera == null)
                 return;
 
-            var laf = LAFManager.Instance().GetLAFCtrl("Laf");
+            var laf = LAFManager.Instance().GetLAF("Laf").LafCtrl;
             if (laf == null)
                 return;
 
@@ -162,7 +162,7 @@ namespace ATT_UT_Remodeling
                     PlcControlManager.Instance().ClearAlignData();
                     WriteLog("Clear PLC Data.");
 
-                    LAFManager.Instance().GetLAFCtrl("Laf").SetTrackingOnOFF(false);
+                    laf.SetTrackingOnOFF(false);
                     laf.SetMotionAbsoluteMove(0);
                     WriteLog("LAF Off.");
 

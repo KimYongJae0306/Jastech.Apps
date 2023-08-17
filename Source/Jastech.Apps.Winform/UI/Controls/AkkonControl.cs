@@ -1588,15 +1588,12 @@ namespace Jastech.Apps.Winform.UI.Controls
             UpdateResult(tabResult);
 
             Mat resultMat = null;
-            //if (isDebug)
-                resultMat = GetDebugResultImage(matImage, tabResult, akkonAlgorithmParam);
-            //else
-            //    resultMat = GetResultImage(matImage, tabResult, akkonAlgorithmParam);
+
+            resultMat = GetDebugResultImage(matImage, tabResult, akkonAlgorithmParam);
 
             Mat resizeMat = MatHelper.Resize(matImage, akkonAlgorithmParam.ImageFilterParam.ResizeRatio);
             var akkonCogImage = ConvertCogGrayImage(resizeMat);
             TeachingUIManager.Instance().SetAkkonCogImage(akkonCogImage);
-            resultMat.Save(@"D:\123.bmp");
             var resultCogImage = ConvertCogColorImage(resultMat);
             TeachingUIManager.Instance().SetResultCogImage(resultCogImage);
 

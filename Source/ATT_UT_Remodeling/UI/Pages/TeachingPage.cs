@@ -38,7 +38,7 @@ namespace ATT_UT_Remodeling.UI.Pages
         private void PreAlignSetting()
         {
             PreAlignTeachingForm form = new PreAlignTeachingForm();
-            form.LAFCtrl = LAFManager.Instance().GetLAFCtrl("Laf");
+            form.LAFCtrl = LAFManager.Instance().GetLAF("Laf").LafCtrl;
             form.AreaCamera = AreaCameraManager.Instance().GetAppsCamera("PreAlign");
             form.UnitName = UnitName.Unit0;
             form.AxisHandler = MotionManager.Instance().GetAxisHandler(AxisHandlerName.Handler0);
@@ -67,7 +67,7 @@ namespace ATT_UT_Remodeling.UI.Pages
             InspectionTeachingForm form = new InspectionTeachingForm();
             form.UnitName = UnitName.Unit0;
             form.LineCamera = LineCameraManager.Instance().GetLineCamera("LineCamera");
-            form.LAFCtrl = LAFManager.Instance().GetLAFCtrl("Laf");
+            form.LAFCtrl = LAFManager.Instance().GetLAF("Laf").LafCtrl;
             form.InspModelService = ATTInspModelService;
             form.OpenMotionPopupEventHandler += OpenMotionPopupEventHandler;
             form.ShowDialog();
@@ -80,7 +80,7 @@ namespace ATT_UT_Remodeling.UI.Pages
                 MotionPopupForm = new MotionPopupForm();
                 MotionPopupForm.UnitName = unitName;
                 MotionPopupForm.AxisHandler = MotionManager.Instance().GetAxisHandler(AxisHandlerName.Handler0);
-                MotionPopupForm.LafCtrl = LAFManager.Instance().GetLAFCtrl("Laf");
+                MotionPopupForm.LafCtrl = LAFManager.Instance().GetLAF("Laf").LafCtrl;
                 MotionPopupForm.InspModelService = ATTInspModelService;
                 MotionPopupForm.CloseEventDelegate = () => MotionPopupForm = null;
                 MotionPopupForm.Show();
@@ -101,7 +101,7 @@ namespace ATT_UT_Remodeling.UI.Pages
 
             OpticTeachingForm form = new OpticTeachingForm();
             form.LineCamera = LineCameraManager.Instance().GetLineCamera("LineCamera");
-            form.LAFCtrl = LAFManager.Instance().GetLAFCtrl("Laf");
+            form.LAFCtrl = LAFManager.Instance().GetLAF("Laf").LafCtrl;
             form.UnitName = UnitName.Unit0;
             form.AxisNameZ = Jastech.Framework.Device.Motions.AxisName.Z0;
             form.AxisHandler = MotionManager.Instance().GetAxisHandler(AxisHandlerName.Handler0);

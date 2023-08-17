@@ -381,7 +381,7 @@ namespace Jastech.Apps.Winform.UI.Controls
                 return;
 
             display.ClearGraphic();
-            display.Refresh();
+            display.DisplayRefresh();
 
             MainAlgorithmTool algorithmTool = new MainAlgorithmTool();
             TabInspResult tabInspResult = new TabInspResult();
@@ -575,7 +575,7 @@ namespace Jastech.Apps.Winform.UI.Controls
                 return;
 
             display.ClearGraphic();
-            display.Refresh();
+            display.DisplayRefresh();
 
             if (currentParam.IsTrained() == false)
             {

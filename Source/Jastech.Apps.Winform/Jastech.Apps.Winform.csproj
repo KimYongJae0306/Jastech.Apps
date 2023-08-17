@@ -105,6 +105,7 @@
     <Compile Include="AreaCameraManager.cs" />
     <Compile Include="Core\Calibrations\CalibrationData.cs" />
     <Compile Include="Core\Calibrations\VisionXCalibration.cs" />
+    <Compile Include="LAF.cs" />
     <Compile Include="LAFManager.cs" />
     <Compile Include="LineCamera.cs" />
     <Compile Include="LineCameraManager.cs" />

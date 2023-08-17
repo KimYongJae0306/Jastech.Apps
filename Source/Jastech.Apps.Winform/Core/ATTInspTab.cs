@@ -130,13 +130,13 @@ namespace Jastech.Apps.Winform.Core
                         MakeMergeImage();
                         InspectEvent?.Invoke(this);
                         TabScanBuffer.InspectionDone = true;
-                        if (CameraName.Contains("Align"))
-                        {
+                        //if (CameraName.Contains("Align"))
+                        //{
                             
-                            string name = string.Format(@"D:\Test\{0}.bmp", TabScanBuffer.TabNo);
+                        //    string name = string.Format(@"D:\Test\{0}.bmp", TabScanBuffer.TabNo);
                             
-                            MergeMatImage.Save(name);
-                        }
+                        //    MergeMatImage.Save(name);
+                        //}
                         
                     }
 

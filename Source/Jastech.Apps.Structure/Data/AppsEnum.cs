@@ -44,5 +44,7 @@
 
         RightPanelX,
         RightPanelY,
+
+        Center,
     }
 }

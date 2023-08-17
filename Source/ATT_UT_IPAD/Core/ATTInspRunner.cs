@@ -185,8 +185,8 @@ namespace ATT_UT_IPAD.Core
             AkkonCamera = LineCameraManager.Instance().GetLineCamera("AkkonCamera");
             AkkonCamera.GrabDoneEventHandler += ATTSeqRunner_GrabDoneEventHandler;
 
-            AlignLAFCtrl = LAFManager.Instance().GetLAFCtrl("AlignLaf");
-            AkkonLAFCtrl = LAFManager.Instance().GetLAFCtrl("AkkonLaf");
+            AlignLAFCtrl = LAFManager.Instance().GetLAF("AlignLaf").LafCtrl;
+            AkkonLAFCtrl = LAFManager.Instance().GetLAF("AkkonLaf").LafCtrl;
             LightCtrlHandler = DeviceManager.Instance().LightCtrlHandler;
 
             InspProcessTask.StartTask();
@@ -469,7 +469,10 @@ namespace ATT_UT_IPAD.Core
                     IsAkkonGrabDone = false;
                     IsAlignGrabDone = false;
                     AppsStatus.Instance().IsInspRunnerFlagFromPlc = false;
+                    WriteLog("Sequnce Error.", true);
                     ClearBuffer();
+
+                    SeqStep = SeqStep.SEQ_IDLE;
                     break;
                 default:
                     break;
@@ -1511,32 +1514,29 @@ namespace ATT_UT_IPAD.Core
         {
             AlignCamera.IsLive = false;
             AlignCamera.StopGrab();
-            WriteLog("Align Stop Grab.");
 
             AkkonCamera.IsLive = false;
             AkkonCamera.StopGrab();
-            WriteLog("AkkonCamera Stop Grab.");
 
             AlignCamera.SetOperationMode(TDIOperationMode.TDI);
             AkkonCamera.SetOperationMode(TDIOperationMode.TDI);
 
             LightCtrlHandler?.TurnOff();
-            WriteLog("Light Off.");
 
             AlignLAFCtrl?.SetTrackingOnOFF(false);
-            WriteLog("Align Laf Off.");
+            AlignLAFCtrl?.SetDefaultParameter();
 
             AkkonLAFCtrl?.SetTrackingOnOFF(false);
-            WriteLog("Akkon Laf Off.");
+            AkkonLAFCtrl?.SetDefaultParameter();
 
             AkkonCamera.ClearTabScanBuffer();
             AlignCamera.ClearTabScanBuffer();
-            WriteLog("Clear Buffer.");
 
             MotionManager.Instance().MoveAxisZ(TeachingPosType.Stage1_Scan_Start, AkkonLAFCtrl, AxisName.Z0);
             MotionManager.Instance().MoveAxisZ(TeachingPosType.Stage1_Scan_Start, AlignLAFCtrl, AxisName.Z1);
 
             _ClearBufferThread = null;
+            WriteLog("Clear Buffer.");
         }
         #endregion
     }

@@ -486,27 +486,27 @@ namespace ATT_UT_Remodeling.UI.Forms
 
         private void lblOriginZ_Click(object sender, EventArgs e)
         {
-            LAFManager.Instance().StartHomeThread(LafCtrl.Name);
+            LAFManager.Instance().GetLAF("Laf").StartHomeThread();
         }
 
         private void lblLaserOnZ_Click(object sender, EventArgs e)
         {
-            LAFManager.Instance().LaserOnOff(LafCtrl.Name, true);
+            LAFManager.Instance().GetLAF("Laf").LaserOnOff(true);
         }
 
         private void lblLaserOffZ_Click(object sender, EventArgs e)
         {
-            LAFManager.Instance().LaserOnOff(LafCtrl.Name, false);
+            LAFManager.Instance().GetLAF("Laf").LaserOnOff(false);
         }
 
         private void lblTrackingOnZ_Click(object sender, EventArgs e)
         {
-            LAFManager.Instance().TrackingOnOff(LafCtrl.Name, true);
+            LAFManager.Instance().GetLAF("Laf").TrackingOnOff(true);
         }
 
         private void lblTrackingOffZ_Click(object sender, EventArgs e)
         {
-            LAFManager.Instance().TrackingOnOff(LafCtrl.Name, false);
+            LAFManager.Instance().GetLAF("Laf").TrackingOnOff(false);
         }
 
         private void rdoJogSlowMode_CheckedChanged(object sender, EventArgs e)
