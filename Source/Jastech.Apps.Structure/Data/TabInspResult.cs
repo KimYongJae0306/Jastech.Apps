@@ -101,18 +101,22 @@ namespace Jastech.Apps.Structure.Data
         public IEnumerable<int> GetAkkonCounts(string position)
         {
             var leadResults = AkkonResult.LeadResultList;
-            int offset = 0;
-            if (Enum.TryParse(position, out LeadContainPos containPos) == true)
-            {
-                if (containPos == LeadContainPos.Left)
-                    offset = 0;
-                if (containPos == LeadContainPos.Right)
-                    offset = leadResults.Count / 2;
-            }
-            else    // Center or ETC.
-                offset = leadResults.Count - ResultSamplingCount;
 
-            return leadResults.Select((result) => result.AkkonCount).Skip(offset).Take(ResultSamplingCount);
+            int offsetLeft = 0;
+            int offsetCenter = leadResults.Count / 2;
+            int offsetRight = leadResults.Count - ResultSamplingCount;
+
+            IEnumerable<int> samplingResult = null;
+            if (position.ToUpper() == "Left".ToUpper())
+                samplingResult = leadResults.Select((result) => result.AkkonCount).Skip(offsetLeft).Take(ResultSamplingCount);
+            else if (position.ToUpper() == "Right".ToUpper())
+                samplingResult = leadResults.Select((result) => result.AkkonCount).Skip(offsetRight).Take(ResultSamplingCount);
+            else if (position.ToUpper() == "Center".ToUpper())
+                samplingResult = leadResults.Select((result) => result.AkkonCount).Skip(offsetCenter).Take(ResultSamplingCount);
+            else
+                samplingResult = leadResults.Select((result) => result.AkkonCount).Skip(0).Take(ResultSamplingCount);
+
+            return samplingResult;
         }
     }
 
