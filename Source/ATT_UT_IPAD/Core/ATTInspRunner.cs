@@ -704,12 +704,12 @@ namespace ATT_UT_IPAD.Core
             SaveAkkonResult(path, inspModel.TabCount);
             SaveUPHResult(path, inspModel.TabCount);
 
-            bool writeMsaSummary = true;    //Considering convert to Property
-            if (writeMsaSummary == true)
-            {
-                SaveAkkonResultAsMsaSummary(path, inspModel.TabCount);
-                SaveAlignResultAsMsaSummary(path, inspModel.TabCount);
-            }
+            //bool writeMsaSummary = true;    //Considering convert to Property
+            //if (writeMsaSummary == true)
+            //{
+            //    SaveAkkonResultAsMsaSummary(path, inspModel.TabCount);
+            //    SaveAlignResultAsMsaSummary(path, inspModel.TabCount);
+            //}
         }
 
         private void SaveAlignResult(string resultPath, int tabCount)
