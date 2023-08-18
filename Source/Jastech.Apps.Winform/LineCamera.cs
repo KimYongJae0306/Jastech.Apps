@@ -251,7 +251,7 @@ namespace Jastech.Apps.Winform
             if (Camera.IsGrabbing())
                 Camera.Stop();
 
-            ClearTabScanBuffer();
+            //ClearTabScanBuffer();
 
             float resolution_mm = (float)(Camera.PixelResolution_um / Camera.LensScale) / 1000;
             int totalScanSubImageCount = (int)Math.Ceiling(scanLength_mm / resolution_mm / Camera.ImageHeight);
@@ -313,14 +313,28 @@ namespace Jastech.Apps.Winform
                     return;
 
                 if (tabScanBuffer.StartIndex <= _curGrabCount && _curGrabCount <= tabScanBuffer.EndIndex)
+                {
+                    //if (_stackTabNo == 4)
+                    //{
+                    //    Console.WriteLine("----------------------------------------------------------------------" + data.Length);
+                    //}
+                    //if (_stackTabNo == 3)
+                    //{
+                    //    Console.WriteLine("-----------------------------------------------" + data.Length);
+                    //}
+                    //if(_stackTabNo == 2)
+                    //{
+                    //    Console.WriteLine("----------------------" + data.Length);
+                    //}
                     tabScanBuffer.AddData(data);
+                }
 
                 if (tabScanBuffer.IsAddDataDone())
                 {
                     _stackTabNo++;
                 }
-                if(Camera.Name.ToUpper().Contains("ALIGN"))
-                    Console.WriteLine(_curGrabCount.ToString());
+                //if(Camera.Name.ToUpper().Contains("ALIGN"))
+                //    Console.WriteLine(_curGrabCount.ToString());
 
                 if (_curGrabCount == GrabCount - 1)
                 {

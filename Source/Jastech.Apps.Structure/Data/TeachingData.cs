@@ -6,6 +6,7 @@ using Jastech.Framework.Imaging;
 using Jastech.Framework.Imaging.VisionPro;
 using Jastech.Framework.Imaging.VisionPro.VisionAlgorithms.Results;
 using Jastech.Framework.Util;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
@@ -104,6 +105,7 @@ namespace Jastech.Apps.Structure.Data
 
         public void AddBufferImage(int tabNo, Mat tabImage)
         {
+            Console.WriteLine("Add " + tabNo.ToString());
             lock (ImageBufferList)
                 ImageBufferList.Add(new TeachingImageBuffer
                 {

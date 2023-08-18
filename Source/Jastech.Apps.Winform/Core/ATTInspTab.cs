@@ -107,7 +107,7 @@ namespace Jastech.Apps.Winform.Core
             if (InspTask == null)
                 return;
 
-            //CancelInspTask.Cancel();
+            CancelInspTask.Cancel();
             //InspTask.Wait();
             InspTask = null;
         }
@@ -189,6 +189,11 @@ namespace Jastech.Apps.Winform.Core
             CancelTeachingGrabTask = new CancellationTokenSource();
             TeachingGrabTask = new Task(TeachingGrabMergeTask, CancelTeachingGrabTask.Token);
             TeachingGrabTask.Start();
+
+            while(TeachingGrabTask.Status != TaskStatus.Running)
+            {
+                Thread.Sleep(10);
+            }
         }
 
         public void StopTeachingTask()

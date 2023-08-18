@@ -427,6 +427,8 @@ namespace Jastech.Framework.Winform.Forms
 
         private void btnGrabStart_Click(object sender, EventArgs e)
         {
+            LineCamera.StopGrab();
+            
             LAFCtrl.SetTrackingOnOFF(false);
             Thread.Sleep(100);
 
@@ -446,6 +448,7 @@ namespace Jastech.Framework.Winform.Forms
             var cameraGap = AppsConfig.Instance().CameraGap_mm;
 
             TeachingData.Instance().ClearTeachingImageBuffer();
+            LineCamera.ClearTabScanBuffer();
 
             if (UseDelayStart)
                 LineCamera.InitGrabSettings(cameraGap);
@@ -453,6 +456,7 @@ namespace Jastech.Framework.Winform.Forms
                 LineCamera.InitGrabSettings();
 
             InitalizeInspTab(LineCamera.TabScanBufferList);
+
 
             LAFCtrl.SetTrackingOnOFF(true);
             Thread.Sleep(100);
@@ -465,6 +469,7 @@ namespace Jastech.Framework.Winform.Forms
             Thread.Sleep(100);
 
             LineCamera.StartGrab();
+            Thread.Sleep(50);
             if (UseDelayStart)
                 MotionManager.Instance().MoveTo(TeachingPosType.Stage1_Scan_End, cameraGap);
             else
