@@ -268,9 +268,11 @@ namespace Jastech.Apps.Winform.UI.Controls
             if (display.GetImage() == null)
                 return;
 
-            CogCaliperCurrentRecordConstants constants = CogCaliperCurrentRecordConstants.All;
             var currentParam = CogCaliperParamControl.GetCurrentParam();
+            if (currentParam == null)
+                return;
 
+            CogCaliperCurrentRecordConstants constants = CogCaliperCurrentRecordConstants.All;
             display.SetInteractiveGraphics("tool", currentParam.CreateCurrentRecord(constants));
 
             var rect = currentParam.GetRegion() as CogRectangleAffine;

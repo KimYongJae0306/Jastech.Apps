@@ -450,7 +450,6 @@ namespace ATT_UT_IPAD.Core
                     break;
 
                 case SeqStep.SEQ_SAVE_IMAGE:
-
                     SaveImage();
                     WriteLog("Save inspection images.");
 
@@ -458,7 +457,6 @@ namespace ATT_UT_IPAD.Core
                     break;
 
                 case SeqStep.SEQ_DELETE_DATA:
-
                     StartDeleteData();
                     WriteLog("Delete the old data");
 
@@ -483,6 +481,7 @@ namespace ATT_UT_IPAD.Core
 
                     SeqStep = SeqStep.SEQ_IDLE;
                     break;
+
                 default:
                     break;
             }

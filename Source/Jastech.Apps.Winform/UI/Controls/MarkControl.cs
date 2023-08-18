@@ -330,10 +330,10 @@ namespace Jastech.Apps.Winform.UI.Controls
         {
             ICogImage cogImage = display.GetImage();
 
-            double centerX = display.ImageWidth() / 2.0;
-            double centerY = display.ImageHeight() / 2.0;
+            double centerX = display.ImageWidth() / 2.0 - display.GetPan().X;
+            double centerY = display.ImageHeight() / 2.0 - display.GetPan().Y;
 
-            CogRectangle roi = VisionProImageHelper.CreateRectangle(centerX - display.GetPan().X, centerY - display.GetPan().Y, 100, 100);
+            CogRectangle roi = VisionProImageHelper.CreateRectangle(centerX, centerY, 100, 100);
             CogRectangle searchRoi = VisionProImageHelper.CreateRectangle(roi.CenterX, roi.CenterY, roi.Width * 2, roi.Height * 2);
 
             var currentParam = ParamControl.GetCurrentParam();
@@ -355,14 +355,15 @@ namespace Jastech.Apps.Winform.UI.Controls
             var display = TeachingUIManager.Instance().GetDisplay();
             if (display.GetImage() == null)
                 return;
+
             display.ClearGraphic();
 
             var currentParam = ParamControl.GetCurrentParam();
             if (currentParam == null)
                 return;
+
             CogPMAlignCurrentRecordConstants constants = CogPMAlignCurrentRecordConstants.InputImage | CogPMAlignCurrentRecordConstants.SearchRegion
                 | CogPMAlignCurrentRecordConstants.TrainImage | CogPMAlignCurrentRecordConstants.TrainRegion | CogPMAlignCurrentRecordConstants.PatternOrigin;
-
             display.SetInteractiveGraphics("tool", currentParam.CreateCurrentRecord(constants));
             
             var rect = currentParam.GetTrainRegion() as CogRectangle;

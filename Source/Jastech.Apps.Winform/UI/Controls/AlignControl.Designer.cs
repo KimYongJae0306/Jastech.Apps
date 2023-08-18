@@ -31,6 +31,8 @@
             this.tlpAlign = new System.Windows.Forms.TableLayoutPanel();
             this.lblParameter = new System.Windows.Forms.Label();
             this.pnlPosition = new System.Windows.Forms.Panel();
+            this.label8 = new System.Windows.Forms.Label();
+            this.lblCenter = new System.Windows.Forms.Label();
             this.lblRightPanelY = new System.Windows.Forms.Label();
             this.lblLeft = new System.Windows.Forms.Label();
             this.lblRightPanelX = new System.Windows.Forms.Label();
@@ -74,8 +76,6 @@
             this.lblLeftAlignSpecX = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
-            this.lblCenter = new System.Windows.Forms.Label();
-            this.label8 = new System.Windows.Forms.Label();
             this.tlpAlign.SuspendLayout();
             this.pnlPosition.SuspendLayout();
             this.tlpParams.SuspendLayout();
@@ -137,10 +137,33 @@
             this.pnlPosition.Size = new System.Drawing.Size(887, 154);
             this.pnlPosition.TabIndex = 7;
             // 
+            // label8
+            // 
+            this.label8.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.label8.Location = new System.Drawing.Point(2, 107);
+            this.label8.Margin = new System.Windows.Forms.Padding(0);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(200, 40);
+            this.label8.TabIndex = 2;
+            this.label8.Text = "Center";
+            this.label8.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // lblCenter
+            // 
+            this.lblCenter.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblCenter.Location = new System.Drawing.Point(214, 107);
+            this.lblCenter.Margin = new System.Windows.Forms.Padding(0);
+            this.lblCenter.Name = "lblCenter";
+            this.lblCenter.Size = new System.Drawing.Size(100, 40);
+            this.lblCenter.TabIndex = 1;
+            this.lblCenter.Text = "Center";
+            this.lblCenter.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblCenter.Click += new System.EventHandler(this.lblCenter_Click);
+            // 
             // lblRightPanelY
             // 
             this.lblRightPanelY.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lblRightPanelY.Location = new System.Drawing.Point(543, 63);
+            this.lblRightPanelY.Location = new System.Drawing.Point(543, 59);
             this.lblRightPanelY.Margin = new System.Windows.Forms.Padding(0);
             this.lblRightPanelY.Name = "lblRightPanelY";
             this.lblRightPanelY.Size = new System.Drawing.Size(100, 40);
@@ -163,7 +186,7 @@
             // lblRightPanelX
             // 
             this.lblRightPanelX.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lblRightPanelX.Location = new System.Drawing.Point(433, 63);
+            this.lblRightPanelX.Location = new System.Drawing.Point(433, 59);
             this.lblRightPanelX.Margin = new System.Windows.Forms.Padding(0);
             this.lblRightPanelX.Name = "lblRightPanelX";
             this.lblRightPanelX.Size = new System.Drawing.Size(100, 40);
@@ -175,7 +198,7 @@
             // lblRight
             // 
             this.lblRight.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lblRight.Location = new System.Drawing.Point(2, 63);
+            this.lblRight.Location = new System.Drawing.Point(2, 59);
             this.lblRight.Margin = new System.Windows.Forms.Padding(0);
             this.lblRight.Name = "lblRight";
             this.lblRight.Size = new System.Drawing.Size(200, 40);
@@ -186,7 +209,7 @@
             // lblRightFPCY
             // 
             this.lblRightFPCY.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lblRightFPCY.Location = new System.Drawing.Point(323, 63);
+            this.lblRightFPCY.Location = new System.Drawing.Point(323, 59);
             this.lblRightFPCY.Margin = new System.Windows.Forms.Padding(0);
             this.lblRightFPCY.Name = "lblRightFPCY";
             this.lblRightFPCY.Size = new System.Drawing.Size(100, 40);
@@ -210,7 +233,7 @@
             // lblRightFPCX
             // 
             this.lblRightFPCX.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lblRightFPCX.Location = new System.Drawing.Point(214, 63);
+            this.lblRightFPCX.Location = new System.Drawing.Point(214, 59);
             this.lblRightFPCX.Margin = new System.Windows.Forms.Padding(0);
             this.lblRightFPCX.Name = "lblRightFPCX";
             this.lblRightFPCX.Size = new System.Drawing.Size(100, 40);
@@ -676,29 +699,6 @@
             this.label1.TabIndex = 2;
             this.label1.Text = "Left Align SpecX(um)";
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // lblCenter
-            // 
-            this.lblCenter.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lblCenter.Location = new System.Drawing.Point(214, 107);
-            this.lblCenter.Margin = new System.Windows.Forms.Padding(0);
-            this.lblCenter.Name = "lblCenter";
-            this.lblCenter.Size = new System.Drawing.Size(100, 40);
-            this.lblCenter.TabIndex = 1;
-            this.lblCenter.Text = "Center";
-            this.lblCenter.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.lblCenter.Click += new System.EventHandler(this.lblCenter_Click);
-            // 
-            // label8
-            // 
-            this.label8.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.label8.Location = new System.Drawing.Point(2, 107);
-            this.label8.Margin = new System.Windows.Forms.Padding(0);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(200, 40);
-            this.label8.TabIndex = 2;
-            this.label8.Text = "Center";
-            this.label8.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // AlignControl
             // 
