@@ -197,6 +197,8 @@ namespace Jastech.Apps.Structure.VisionTool
                 var fpcResult1 = result.Fpc.CogAlignResult[i];
                 var fpcResult2 = result.Fpc.CogAlignResult[i + 1];
 
+                if (panelResult1 == null || panelResult2 == null || fpcResult1 == null || fpcResult2 == null)
+                    continue;
                 if (panelResult1.Found == false || panelResult2.Found == false || fpcResult1.Found == false || fpcResult2.Found == false)
                     continue;
 
@@ -236,11 +238,13 @@ namespace Jastech.Apps.Structure.VisionTool
                 int count = 0;
                 foreach (var value in alignValueList)
                 {
-                    if (value == max || value == min)
-                        continue;
-
+                    if (alignValueList.Count > 2)
+                    {
+                        if (value == max || value == min)
+                            continue;
+                    }
                     temp += value;
-                    count++;
+                     count++;
                 }
 
                 result.ResultValue_pixel = Convert.ToSingle(temp / count);
