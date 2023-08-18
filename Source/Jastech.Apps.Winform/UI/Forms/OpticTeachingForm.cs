@@ -671,6 +671,7 @@ namespace Jastech.Framework.Winform.Forms
                 AppsInspModel inspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
                 double length = Convert.ToDouble(lblScanXLength.Text);
 
+                LineCamera.ClearTabScanBuffer();
                 // Motion 이동 추가
                 LineCamera.StartGrab((float)length);
             }
