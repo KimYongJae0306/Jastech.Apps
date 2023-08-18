@@ -219,20 +219,26 @@ namespace ATT_UT_IPAD.UI.Controls
                 {
                     foreach (var fpc in leftAlignX.Fpc.CogAlignResult)
                     {
-                        LeftPointList.Add(fpc.MaxCaliperMatch.FoundPos);
+                        if (fpc != null)
+                        {
+                            LeftPointList.Add(fpc.MaxCaliperMatch.FoundPos);
 
-                        var leftFpcX = fpc.MaxCaliperMatch.ResultGraphics;
-                        leftResultList.Add(leftFpcX);
+                            var leftFpcX = fpc.MaxCaliperMatch.ResultGraphics;
+                            leftResultList.Add(leftFpcX);
+                        }
                     }
                 }
                 if (leftAlignX.Panel.CogAlignResult.Count() > 0)
                 {
                     foreach (var panel in leftAlignX.Panel.CogAlignResult)
                     {
-                        LeftPointList.Add(panel.MaxCaliperMatch.FoundPos);
+                        if (panel != null)
+                        {
+                            LeftPointList.Add(panel.MaxCaliperMatch.FoundPos);
 
-                        var leftPanelX = panel.MaxCaliperMatch.ResultGraphics;
-                        leftResultList.Add(leftPanelX);
+                            var leftPanelX = panel.MaxCaliperMatch.ResultGraphics;
+                            leftResultList.Add(leftPanelX);
+                        }
                     }
                 }
             }
@@ -348,16 +354,21 @@ namespace ATT_UT_IPAD.UI.Controls
                     tempPointList.Add(point);
             }
 
-            float minX = tempPointList.Select(point => point.X).Min();
-            float maxX = tempPointList.Select(point => point.X).Max();
+            if (tempPointList.Count() > 0)
+            {
+                float minX = tempPointList.Select(point => point.X).Min();
+                float maxX = tempPointList.Select(point => point.X).Max();
 
-            float minY = tempPointList.Select(point => point.Y).Min();
-            float maxY = tempPointList.Select(point => point.Y).Max();
+                float minY = tempPointList.Select(point => point.Y).Min();
+                float maxY = tempPointList.Select(point => point.Y).Max();
 
-            float width = (maxX - minX) / 2.0f;
-            float height = (maxY - minY) / 2.0f;
+                float width = (maxX - minX) / 2.0f;
+                float height = (maxY - minY) / 2.0f;
 
-            return new PointF((minX + width), (minY + height));
+                return new PointF((minX + width), (minY + height));
+            }
+            else
+                return new PointF();
         }
         #endregion
     }

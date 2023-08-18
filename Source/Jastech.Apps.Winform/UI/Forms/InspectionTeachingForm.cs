@@ -714,7 +714,7 @@ namespace Jastech.Framework.Winform.Forms
             _tabInspResult.MarkResult.FpcMark = _algorithmTool.RunFpcMark(cogImage, CurrentTab, UseAlignMark);
             _tabInspResult.MarkResult.PanelMark = _algorithmTool.RunPanelMark(cogImage, CurrentTab, UseAlignMark);
 
-            var coordinate = TeachingData.Instance().coordinate;
+            var coordinate = TeachingData.Instance().Coordinate;
             var markResult = _tabInspResult.MarkResult;
 
             if (_tabInspResult.MarkResult.Judgement != Judgement.OK)

@@ -24,7 +24,7 @@ namespace Jastech.Apps.Structure.Data
 
         private List<TeachingImageBuffer> ImageBufferList { get; set; } = new List<TeachingImageBuffer>();
 
-        public TeachingCoordinate coordinate = new TeachingCoordinate();
+        public TeachingCoordinate Coordinate = new TeachingCoordinate();
         #endregion
 
         #region 이벤트
