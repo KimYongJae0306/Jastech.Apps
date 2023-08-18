@@ -28,50 +28,48 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.pnlFrom = new System.Windows.Forms.Panel();
             this.lblFrom = new System.Windows.Forms.Label();
-            this.pnlTo = new System.Windows.Forms.Panel();
             this.lblTo = new System.Windows.Forms.Label();
             this.tlpSourceTab = new System.Windows.Forms.TableLayoutPanel();
             this.tlpTargetTab = new System.Windows.Forms.TableLayoutPanel();
             this.tlpAkkonROICopy = new System.Windows.Forms.TableLayoutPanel();
             this.pnlTop = new System.Windows.Forms.Panel();
             this.lblTop = new System.Windows.Forms.Label();
-            this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.pnlAkkonROICopy = new System.Windows.Forms.Panel();
+            this.panel2 = new System.Windows.Forms.Panel();
+            this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
+            this.pnlApply = new System.Windows.Forms.Panel();
             this.tlpApply = new System.Windows.Forms.TableLayoutPanel();
             this.lblApplyImage = new System.Windows.Forms.Label();
             this.lblApply = new System.Windows.Forms.Label();
+            this.pnlCancel = new System.Windows.Forms.Panel();
             this.tlpCancel = new System.Windows.Forms.TableLayoutPanel();
             this.lblCancelImage = new System.Windows.Forms.Label();
             this.lblCancel = new System.Windows.Forms.Label();
-            this.pnlApply = new System.Windows.Forms.Panel();
-            this.pnlCancel = new System.Windows.Forms.Panel();
-            this.panel2 = new System.Windows.Forms.Panel();
-            this.pnlFrom.SuspendLayout();
-            this.pnlTo.SuspendLayout();
+            this.pnlAkkonROICopy = new System.Windows.Forms.Panel();
+            this.tlpCopyItem = new System.Windows.Forms.TableLayoutPanel();
+            this.tlpFrom = new System.Windows.Forms.TableLayoutPanel();
+            this.tlpTo = new System.Windows.Forms.TableLayoutPanel();
+            this.lblItem = new System.Windows.Forms.Label();
+            this.tlpItem = new System.Windows.Forms.TableLayoutPanel();
+            this.chkMark = new System.Windows.Forms.CheckBox();
+            this.chkAlign = new System.Windows.Forms.CheckBox();
+            this.chkAkkon = new System.Windows.Forms.CheckBox();
             this.tlpAkkonROICopy.SuspendLayout();
             this.pnlTop.SuspendLayout();
-            this.tableLayoutPanel1.SuspendLayout();
             this.panel1.SuspendLayout();
-            this.pnlAkkonROICopy.SuspendLayout();
-            this.tlpApply.SuspendLayout();
-            this.tlpCancel.SuspendLayout();
-            this.pnlApply.SuspendLayout();
-            this.pnlCancel.SuspendLayout();
             this.panel2.SuspendLayout();
+            this.tableLayoutPanel1.SuspendLayout();
+            this.pnlApply.SuspendLayout();
+            this.tlpApply.SuspendLayout();
+            this.pnlCancel.SuspendLayout();
+            this.tlpCancel.SuspendLayout();
+            this.pnlAkkonROICopy.SuspendLayout();
+            this.tlpCopyItem.SuspendLayout();
+            this.tlpFrom.SuspendLayout();
+            this.tlpTo.SuspendLayout();
+            this.tlpItem.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // pnlFrom
-            // 
-            this.pnlFrom.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.pnlFrom.Controls.Add(this.lblFrom);
-            this.pnlFrom.Location = new System.Drawing.Point(17, 21);
-            this.pnlFrom.Margin = new System.Windows.Forms.Padding(0);
-            this.pnlFrom.Name = "pnlFrom";
-            this.pnlFrom.Size = new System.Drawing.Size(120, 60);
-            this.pnlFrom.TabIndex = 288;
             // 
             // lblFrom
             // 
@@ -82,20 +80,10 @@
             this.lblFrom.Location = new System.Drawing.Point(0, 0);
             this.lblFrom.Margin = new System.Windows.Forms.Padding(0);
             this.lblFrom.Name = "lblFrom";
-            this.lblFrom.Size = new System.Drawing.Size(118, 58);
+            this.lblFrom.Size = new System.Drawing.Size(180, 60);
             this.lblFrom.TabIndex = 1;
             this.lblFrom.Text = "FROM";
             this.lblFrom.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // pnlTo
-            // 
-            this.pnlTo.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.pnlTo.Controls.Add(this.lblTo);
-            this.pnlTo.Location = new System.Drawing.Point(282, 21);
-            this.pnlTo.Margin = new System.Windows.Forms.Padding(0);
-            this.pnlTo.Name = "pnlTo";
-            this.pnlTo.Size = new System.Drawing.Size(120, 60);
-            this.pnlTo.TabIndex = 288;
             // 
             // lblTo
             // 
@@ -106,7 +94,7 @@
             this.lblTo.Location = new System.Drawing.Point(0, 0);
             this.lblTo.Margin = new System.Windows.Forms.Padding(0);
             this.lblTo.Name = "lblTo";
-            this.lblTo.Size = new System.Drawing.Size(118, 58);
+            this.lblTo.Size = new System.Drawing.Size(180, 60);
             this.lblTo.TabIndex = 1;
             this.lblTo.Text = "TO";
             this.lblTo.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -115,23 +103,26 @@
             // 
             this.tlpSourceTab.ColumnCount = 1;
             this.tlpSourceTab.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tlpSourceTab.Location = new System.Drawing.Point(17, 81);
+            this.tlpSourceTab.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tlpSourceTab.Location = new System.Drawing.Point(0, 60);
             this.tlpSourceTab.Margin = new System.Windows.Forms.Padding(0);
             this.tlpSourceTab.Name = "tlpSourceTab";
             this.tlpSourceTab.RowCount = 1;
             this.tlpSourceTab.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tlpSourceTab.Size = new System.Drawing.Size(120, 300);
+            this.tlpSourceTab.Size = new System.Drawing.Size(180, 300);
             this.tlpSourceTab.TabIndex = 289;
             // 
             // tlpTargetTab
             // 
             this.tlpTargetTab.ColumnCount = 1;
             this.tlpTargetTab.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tlpTargetTab.Location = new System.Drawing.Point(282, 81);
+            this.tlpTargetTab.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tlpTargetTab.Location = new System.Drawing.Point(0, 60);
+            this.tlpTargetTab.Margin = new System.Windows.Forms.Padding(0);
             this.tlpTargetTab.Name = "tlpTargetTab";
             this.tlpTargetTab.RowCount = 1;
             this.tlpTargetTab.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tlpTargetTab.Size = new System.Drawing.Size(120, 300);
+            this.tlpTargetTab.Size = new System.Drawing.Size(180, 300);
             this.tlpTargetTab.TabIndex = 290;
             // 
             // tlpAkkonROICopy
@@ -149,7 +140,7 @@
             this.tlpAkkonROICopy.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 60F));
             this.tlpAkkonROICopy.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tlpAkkonROICopy.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 60F));
-            this.tlpAkkonROICopy.Size = new System.Drawing.Size(426, 526);
+            this.tlpAkkonROICopy.Size = new System.Drawing.Size(758, 616);
             this.tlpAkkonROICopy.TabIndex = 291;
             // 
             // pnlTop
@@ -161,7 +152,7 @@
             this.pnlTop.Location = new System.Drawing.Point(0, 0);
             this.pnlTop.Margin = new System.Windows.Forms.Padding(0);
             this.pnlTop.Name = "pnlTop";
-            this.pnlTop.Size = new System.Drawing.Size(426, 60);
+            this.pnlTop.Size = new System.Drawing.Size(758, 60);
             this.pnlTop.TabIndex = 1;
             // 
             // lblTop
@@ -174,6 +165,29 @@
             this.lblTop.Size = new System.Drawing.Size(107, 30);
             this.lblTop.TabIndex = 1;
             this.lblTop.Text = "ROI Copy";
+            // 
+            // panel1
+            // 
+            this.panel1.Controls.Add(this.tlpTo);
+            this.panel1.Controls.Add(this.tlpFrom);
+            this.panel1.Controls.Add(this.tlpCopyItem);
+            this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panel1.Location = new System.Drawing.Point(0, 60);
+            this.panel1.Margin = new System.Windows.Forms.Padding(0);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(758, 496);
+            this.panel1.TabIndex = 3;
+            // 
+            // panel2
+            // 
+            this.panel2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel2.Controls.Add(this.tableLayoutPanel1);
+            this.panel2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panel2.Location = new System.Drawing.Point(0, 556);
+            this.panel2.Margin = new System.Windows.Forms.Padding(0);
+            this.panel2.Name = "panel2";
+            this.panel2.Size = new System.Drawing.Size(758, 60);
+            this.panel2.TabIndex = 4;
             // 
             // tableLayoutPanel1
             // 
@@ -189,32 +203,19 @@
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 1;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(424, 58);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(756, 58);
             this.tableLayoutPanel1.TabIndex = 2;
             // 
-            // panel1
+            // pnlApply
             // 
-            this.panel1.Controls.Add(this.pnlFrom);
-            this.panel1.Controls.Add(this.pnlTo);
-            this.panel1.Controls.Add(this.tlpTargetTab);
-            this.panel1.Controls.Add(this.tlpSourceTab);
-            this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel1.Location = new System.Drawing.Point(0, 60);
-            this.panel1.Margin = new System.Windows.Forms.Padding(0);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(426, 406);
-            this.panel1.TabIndex = 3;
-            // 
-            // pnlAkkonROICopy
-            // 
-            this.pnlAkkonROICopy.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.pnlAkkonROICopy.Controls.Add(this.tlpAkkonROICopy);
-            this.pnlAkkonROICopy.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pnlAkkonROICopy.Location = new System.Drawing.Point(0, 0);
-            this.pnlAkkonROICopy.Margin = new System.Windows.Forms.Padding(0);
-            this.pnlAkkonROICopy.Name = "pnlAkkonROICopy";
-            this.pnlAkkonROICopy.Size = new System.Drawing.Size(428, 528);
-            this.pnlAkkonROICopy.TabIndex = 292;
+            this.pnlApply.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.pnlApply.Controls.Add(this.tlpApply);
+            this.pnlApply.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pnlApply.Location = new System.Drawing.Point(0, 0);
+            this.pnlApply.Margin = new System.Windows.Forms.Padding(0);
+            this.pnlApply.Name = "pnlApply";
+            this.pnlApply.Size = new System.Drawing.Size(160, 58);
+            this.pnlApply.TabIndex = 3;
             // 
             // tlpApply
             // 
@@ -255,6 +256,17 @@
             this.lblApply.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.lblApply.Click += new System.EventHandler(this.lblApply_Click);
             // 
+            // pnlCancel
+            // 
+            this.pnlCancel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.pnlCancel.Controls.Add(this.tlpCancel);
+            this.pnlCancel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pnlCancel.Location = new System.Drawing.Point(596, 0);
+            this.pnlCancel.Margin = new System.Windows.Forms.Padding(0);
+            this.pnlCancel.Name = "pnlCancel";
+            this.pnlCancel.Size = new System.Drawing.Size(160, 58);
+            this.pnlCancel.TabIndex = 3;
+            // 
             // tlpCancel
             // 
             this.tlpCancel.ColumnCount = 2;
@@ -294,76 +306,185 @@
             this.lblCancel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.lblCancel.Click += new System.EventHandler(this.lblCancel_Click);
             // 
-            // pnlApply
+            // pnlAkkonROICopy
             // 
-            this.pnlApply.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.pnlApply.Controls.Add(this.tlpApply);
-            this.pnlApply.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pnlApply.Location = new System.Drawing.Point(0, 0);
-            this.pnlApply.Margin = new System.Windows.Forms.Padding(0);
-            this.pnlApply.Name = "pnlApply";
-            this.pnlApply.Size = new System.Drawing.Size(160, 58);
-            this.pnlApply.TabIndex = 3;
+            this.pnlAkkonROICopy.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.pnlAkkonROICopy.Controls.Add(this.tlpAkkonROICopy);
+            this.pnlAkkonROICopy.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pnlAkkonROICopy.Location = new System.Drawing.Point(0, 0);
+            this.pnlAkkonROICopy.Margin = new System.Windows.Forms.Padding(0);
+            this.pnlAkkonROICopy.Name = "pnlAkkonROICopy";
+            this.pnlAkkonROICopy.Size = new System.Drawing.Size(760, 618);
+            this.pnlAkkonROICopy.TabIndex = 292;
             // 
-            // pnlCancel
+            // tlpCopyItem
             // 
-            this.pnlCancel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.pnlCancel.Controls.Add(this.tlpCancel);
-            this.pnlCancel.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pnlCancel.Location = new System.Drawing.Point(264, 0);
-            this.pnlCancel.Margin = new System.Windows.Forms.Padding(0);
-            this.pnlCancel.Name = "pnlCancel";
-            this.pnlCancel.Size = new System.Drawing.Size(160, 58);
-            this.pnlCancel.TabIndex = 3;
+            this.tlpCopyItem.ColumnCount = 2;
+            this.tlpCopyItem.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 180F));
+            this.tlpCopyItem.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tlpCopyItem.Controls.Add(this.tlpItem, 0, 0);
+            this.tlpCopyItem.Controls.Add(this.lblItem, 0, 0);
+            this.tlpCopyItem.Location = new System.Drawing.Point(17, 18);
+            this.tlpCopyItem.Margin = new System.Windows.Forms.Padding(0);
+            this.tlpCopyItem.Name = "tlpCopyItem";
+            this.tlpCopyItem.RowCount = 1;
+            this.tlpCopyItem.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tlpCopyItem.Size = new System.Drawing.Size(720, 60);
+            this.tlpCopyItem.TabIndex = 291;
             // 
-            // panel2
+            // tlpFrom
             // 
-            this.panel2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panel2.Controls.Add(this.tableLayoutPanel1);
-            this.panel2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel2.Location = new System.Drawing.Point(0, 466);
-            this.panel2.Margin = new System.Windows.Forms.Padding(0);
-            this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(426, 60);
-            this.panel2.TabIndex = 4;
+            this.tlpFrom.ColumnCount = 1;
+            this.tlpFrom.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tlpFrom.Controls.Add(this.lblFrom, 0, 0);
+            this.tlpFrom.Controls.Add(this.tlpSourceTab, 0, 1);
+            this.tlpFrom.Location = new System.Drawing.Point(17, 110);
+            this.tlpFrom.Margin = new System.Windows.Forms.Padding(0);
+            this.tlpFrom.Name = "tlpFrom";
+            this.tlpFrom.RowCount = 2;
+            this.tlpFrom.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 60F));
+            this.tlpFrom.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tlpFrom.Size = new System.Drawing.Size(180, 360);
+            this.tlpFrom.TabIndex = 292;
             // 
-            // AkkonROICopyForm
+            // tlpTo
+            // 
+            this.tlpTo.ColumnCount = 1;
+            this.tlpTo.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tlpTo.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tlpTo.Controls.Add(this.lblTo, 0, 0);
+            this.tlpTo.Controls.Add(this.tlpTargetTab, 0, 1);
+            this.tlpTo.Location = new System.Drawing.Point(557, 110);
+            this.tlpTo.Margin = new System.Windows.Forms.Padding(0);
+            this.tlpTo.Name = "tlpTo";
+            this.tlpTo.RowCount = 2;
+            this.tlpTo.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 60F));
+            this.tlpTo.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tlpTo.Size = new System.Drawing.Size(180, 360);
+            this.tlpTo.TabIndex = 293;
+            // 
+            // lblItem
+            // 
+            this.lblItem.BackColor = System.Drawing.Color.DarkSlateGray;
+            this.lblItem.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblItem.Font = new System.Drawing.Font("맑은 고딕", 14F, System.Drawing.FontStyle.Bold);
+            this.lblItem.ForeColor = System.Drawing.Color.White;
+            this.lblItem.Location = new System.Drawing.Point(0, 0);
+            this.lblItem.Margin = new System.Windows.Forms.Padding(0);
+            this.lblItem.Name = "lblItem";
+            this.lblItem.Size = new System.Drawing.Size(180, 60);
+            this.lblItem.TabIndex = 2;
+            this.lblItem.Text = "ITEM";
+            this.lblItem.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // tlpItem
+            // 
+            this.tlpItem.ColumnCount = 3;
+            this.tlpItem.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this.tlpItem.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this.tlpItem.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this.tlpItem.Controls.Add(this.chkAkkon, 2, 0);
+            this.tlpItem.Controls.Add(this.chkAlign, 1, 0);
+            this.tlpItem.Controls.Add(this.chkMark, 0, 0);
+            this.tlpItem.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tlpItem.Location = new System.Drawing.Point(180, 0);
+            this.tlpItem.Margin = new System.Windows.Forms.Padding(0);
+            this.tlpItem.Name = "tlpItem";
+            this.tlpItem.RowCount = 1;
+            this.tlpItem.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tlpItem.Size = new System.Drawing.Size(540, 60);
+            this.tlpItem.TabIndex = 291;
+            // 
+            // chkMark
+            // 
+            this.chkMark.Appearance = System.Windows.Forms.Appearance.Button;
+            this.chkMark.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
+            this.chkMark.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.chkMark.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.chkMark.ForeColor = System.Drawing.Color.White;
+            this.chkMark.Location = new System.Drawing.Point(3, 4);
+            this.chkMark.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.chkMark.Name = "chkMark";
+            this.chkMark.Size = new System.Drawing.Size(174, 52);
+            this.chkMark.TabIndex = 83;
+            this.chkMark.TabStop = false;
+            this.chkMark.Text = "Mark";
+            this.chkMark.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.chkMark.UseVisualStyleBackColor = false;
+            this.chkMark.CheckedChanged += new System.EventHandler(this.chkMark_CheckedChanged);
+            // 
+            // chkAlign
+            // 
+            this.chkAlign.Appearance = System.Windows.Forms.Appearance.Button;
+            this.chkAlign.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
+            this.chkAlign.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.chkAlign.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.chkAlign.ForeColor = System.Drawing.Color.White;
+            this.chkAlign.Location = new System.Drawing.Point(183, 4);
+            this.chkAlign.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.chkAlign.Name = "chkAlign";
+            this.chkAlign.Size = new System.Drawing.Size(174, 52);
+            this.chkAlign.TabIndex = 84;
+            this.chkAlign.TabStop = false;
+            this.chkAlign.Text = "Align";
+            this.chkAlign.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.chkAlign.UseVisualStyleBackColor = false;
+            this.chkAlign.CheckedChanged += new System.EventHandler(this.chkAlign_CheckedChanged);
+            // 
+            // chkAkkon
+            // 
+            this.chkAkkon.Appearance = System.Windows.Forms.Appearance.Button;
+            this.chkAkkon.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
+            this.chkAkkon.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.chkAkkon.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.chkAkkon.ForeColor = System.Drawing.Color.White;
+            this.chkAkkon.Location = new System.Drawing.Point(363, 4);
+            this.chkAkkon.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.chkAkkon.Name = "chkAkkon";
+            this.chkAkkon.Size = new System.Drawing.Size(174, 52);
+            this.chkAkkon.TabIndex = 85;
+            this.chkAkkon.TabStop = false;
+            this.chkAkkon.Text = "Akkon";
+            this.chkAkkon.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.chkAkkon.UseVisualStyleBackColor = false;
+            this.chkAkkon.CheckedChanged += new System.EventHandler(this.chkAkkon_CheckedChanged);
+            // 
+            // ROICopyForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
-            this.ClientSize = new System.Drawing.Size(428, 528);
+            this.ClientSize = new System.Drawing.Size(760, 618);
             this.Controls.Add(this.pnlAkkonROICopy);
             this.Font = new System.Drawing.Font("맑은 고딕", 11.25F, System.Drawing.FontStyle.Bold);
             this.ForeColor = System.Drawing.Color.White;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.Name = "AkkonROICopyForm";
+            this.Name = "ROICopyForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "AkkonROICopyForm";
             this.Load += new System.EventHandler(this.AkkonROICopyForm_Load);
-            this.pnlFrom.ResumeLayout(false);
-            this.pnlTo.ResumeLayout(false);
             this.tlpAkkonROICopy.ResumeLayout(false);
             this.pnlTop.ResumeLayout(false);
             this.pnlTop.PerformLayout();
-            this.tableLayoutPanel1.ResumeLayout(false);
             this.panel1.ResumeLayout(false);
-            this.pnlAkkonROICopy.ResumeLayout(false);
-            this.tlpApply.ResumeLayout(false);
-            this.tlpCancel.ResumeLayout(false);
-            this.pnlApply.ResumeLayout(false);
-            this.pnlCancel.ResumeLayout(false);
             this.panel2.ResumeLayout(false);
+            this.tableLayoutPanel1.ResumeLayout(false);
+            this.pnlApply.ResumeLayout(false);
+            this.tlpApply.ResumeLayout(false);
+            this.pnlCancel.ResumeLayout(false);
+            this.tlpCancel.ResumeLayout(false);
+            this.pnlAkkonROICopy.ResumeLayout(false);
+            this.tlpCopyItem.ResumeLayout(false);
+            this.tlpFrom.ResumeLayout(false);
+            this.tlpTo.ResumeLayout(false);
+            this.tlpItem.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
 
         #endregion
-
-        private System.Windows.Forms.Panel pnlFrom;
         private System.Windows.Forms.Label lblFrom;
-        private System.Windows.Forms.Panel pnlTo;
         private System.Windows.Forms.Label lblTo;
         private System.Windows.Forms.TableLayoutPanel tlpSourceTab;
         private System.Windows.Forms.TableLayoutPanel tlpTargetTab;
@@ -382,5 +503,13 @@
         private System.Windows.Forms.Panel pnlApply;
         private System.Windows.Forms.Panel pnlCancel;
         private System.Windows.Forms.Panel panel2;
+        private System.Windows.Forms.TableLayoutPanel tlpTo;
+        private System.Windows.Forms.TableLayoutPanel tlpFrom;
+        private System.Windows.Forms.TableLayoutPanel tlpCopyItem;
+        private System.Windows.Forms.TableLayoutPanel tlpItem;
+        private System.Windows.Forms.Label lblItem;
+        private System.Windows.Forms.CheckBox chkAkkon;
+        private System.Windows.Forms.CheckBox chkAlign;
+        private System.Windows.Forms.CheckBox chkMark;
     }
 }

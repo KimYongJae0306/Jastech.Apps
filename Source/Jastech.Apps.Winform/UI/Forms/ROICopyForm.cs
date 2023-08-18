@@ -26,6 +26,12 @@ namespace Jastech.Apps.Winform.UI.Forms
         private int _selectedSourceTabNumber { get; set; } = -1;
 
         private List<int> _selectedTargetTabNumber { get; set; } = null;
+
+        private bool _isMarkCopy { get; set; } = false;
+
+        private bool _isAlignCopy { get; set; } = false;
+
+        private bool _isAkkonCopy { get; set; } = false;
         #endregion
 
         #region 속성
@@ -33,7 +39,7 @@ namespace Jastech.Apps.Winform.UI.Forms
 
         public List<Tab> TeachingTabList { get; private set; } = null;
 
-        public DisplayType DisplayType { get; set; } = DisplayType.Akkon;
+        //public DisplayType DisplayType { get; set; } = DisplayType.Akkon;
         #endregion
 
         #region 이벤트
@@ -68,7 +74,7 @@ namespace Jastech.Apps.Winform.UI.Forms
             _selectedColor = Color.FromArgb(104, 104, 104);
             _nonSelectedColor = Color.FromArgb(52, 52, 52);
 
-            lblTop.Text = DisplayType.ToString() + " ROI Copy";
+            //lblTop.Text = DisplayType.ToString() + " ROI Copy";
 
             InitializeSourceTab(tabCount);
             InitializeTargetTab(tabCount);
@@ -159,20 +165,47 @@ namespace Jastech.Apps.Winform.UI.Forms
             }
         }
 
+        private void chkMark_CheckedChanged(object sender, EventArgs e)
+        {
+            _isMarkCopy = chkMark.Checked;
+
+            if (_isMarkCopy)
+                chkMark.BackColor = _selectedColor;
+            else
+                chkMark.BackColor = _nonSelectedColor;
+        }
+
+        private void chkAlign_CheckedChanged(object sender, EventArgs e)
+        {
+            _isAlignCopy = chkAlign.Checked;
+
+            if (_isAlignCopy)
+                chkAlign.BackColor = _selectedColor;
+            else
+                chkAlign.BackColor = _nonSelectedColor;
+        }
+
+        private void chkAkkon_CheckedChanged(object sender, EventArgs e)
+        {
+            _isAkkonCopy = chkAkkon.Checked;
+
+            if (_isAkkonCopy)
+                chkAkkon.BackColor = _selectedColor;
+            else
+                chkAkkon.BackColor = _nonSelectedColor;
+        }
+
         public void SetUnitName(UnitName unitName)
         {
             UnitName = unitName;
         }
 
-        public void SetDisplayType(DisplayType displayType)
-        {
-            DisplayType = displayType;
-        }
-
         private void lblApply_Click(object sender, EventArgs e)
         {
+            string message = string.Format("Do you want to overwite\nfrom source Tab {0}\nto selected target Tab ?", _selectedSourceTabNumber + 1);
+
             MessageYesNoForm form = new MessageYesNoForm();
-            form.Message = "Do you want to overwrite?";
+            form.Message = message;
 
             if (form.ShowDialog() == DialogResult.Yes)
                 Apply();
@@ -184,13 +217,15 @@ namespace Jastech.Apps.Winform.UI.Forms
             {
                 MessageConfirmForm form = new MessageConfirmForm();
                 form.Message = "Current Model is null.";
+                form.ShowDialog();
                 return;
             }
 
-            if (_selectedSourceTabNumber <= 0)
+            if (_selectedSourceTabNumber < 0)
             {
                 MessageConfirmForm form = new MessageConfirmForm();
                 form.Message = "No Source selected.";
+                form.ShowDialog();
                 return;
             }
 
@@ -198,6 +233,15 @@ namespace Jastech.Apps.Winform.UI.Forms
             {
                 MessageConfirmForm form = new MessageConfirmForm();
                 form.Message = "No Target selected.";
+                form.ShowDialog();
+                return;
+            }
+
+            if (_isMarkCopy == false && _isAlignCopy == false && _isAkkonCopy == false)
+            {
+                MessageConfirmForm form = new MessageConfirmForm();
+                form.Message = "No Item selected.";
+                form.ShowDialog();
                 return;
             }
 
@@ -206,96 +250,68 @@ namespace Jastech.Apps.Winform.UI.Forms
 
         private void Excute()
         {
-            switch (DisplayType)
-            {
-                case DisplayType.Mark:
-                    CopyMark();
-                    break;
+            if (_isMarkCopy)
+                CopyMarkParam();
+            
+            if (_isAlignCopy)
+                CopyAlignParam();
 
-                case DisplayType.Align:
-                    CopyAlign();
-                    break;
+            if (_isAkkonCopy)
+                CopyAkkonParam();
 
-                case DisplayType.Akkon:
-                    CopyAkkon();
-                    break;
+            this.Close();
 
-                case DisplayType.PreAlign:
-                    break;
+            //TeachingTabList = TeachingData.Instance().GetUnit(UnitName.ToString()).GetTabList();
 
-                case DisplayType.Calibration:
-                    break;
+            //Tab selectedSourceTab = TeachingTabList.Where(x => x.Index == _selectedSourceTabNumber).FirstOrDefault();
 
-                default:
-                    break;
-            }
-
-            TeachingTabList = TeachingData.Instance().GetUnit(UnitName.ToString()).GetTabList();
-
-            Tab selectedSourceTab = TeachingTabList.Where(x => x.Index == _selectedSourceTabNumber).FirstOrDefault();
-
-            if (ExistMarkParam(selectedSourceTab) == false)
-                return;
+            //if (ExistMarkParam(selectedSourceTab) == false)
+            //    return;
 
             // 복사할놈, 복사당할놈 마크 티칭 비교 후 ROI 복사하고나서 티칭값 기준 틀어버리기 필요
-
-            
         }
 
-        private void CopyMark()
+        private void CopyMarkParam()
         {
             TeachingTabList = TeachingData.Instance().GetUnit(UnitName.ToString()).GetTabList();
             Tab selectedSourceTab = TeachingTabList.Where(x => x.Index == _selectedSourceTabNumber).FirstOrDefault();
-        }
-
-        private void CopyAlign()
-        {
-            TeachingTabList = TeachingData.Instance().GetUnit(UnitName.ToString()).GetTabList();
-            Tab selectedSourceTab = TeachingTabList.Where(x => x.Index == _selectedSourceTabNumber).FirstOrDefault();
-
-            var sourceROIList = selectedSourceTab.MarkParamter.DeepCopy();
 
             foreach (var tabNo in _selectedTargetTabNumber)
             {
                 Tab selectedTargetTab = TeachingData.Instance().GetUnit(UnitName.ToString()).GetTab(index: tabNo);
-
-
+                selectedTargetTab.MarkParamter = selectedSourceTab.MarkParamter.DeepCopy();
             }
         }
 
-        private void CopyAkkon()
+        private void CopyAlignParam()
         {
             TeachingTabList = TeachingData.Instance().GetUnit(UnitName.ToString()).GetTabList();
             Tab selectedSourceTab = TeachingTabList.Where(x => x.Index == _selectedSourceTabNumber).FirstOrDefault();
-
-            var sourceROIList = selectedSourceTab.AkkonParam.GetAkkonROIList();
 
             foreach (var tabNo in _selectedTargetTabNumber)
             {
                 Tab selectedTargetTab = TeachingData.Instance().GetUnit(UnitName.ToString()).GetTab(index: tabNo);
 
-                foreach (var group in selectedTargetTab.AkkonParam.GroupList)
+                foreach (ATTTabAlignName alignName in Enum.GetValues(typeof(ATTTabAlignName)))
                 {
-                    List<AkkonROI> akkonList = new List<AkkonROI>();
-
-                    akkonList.AddRange(sourceROIList.ToList());
-                    group.AkkonROIList.Clear();
-                    group.AkkonROIList.AddRange(akkonList);
+                    var seledtedSourceAlignParam = selectedSourceTab.GetAlignParam(alignName);
+                    selectedTargetTab.SetAlignParam(alignName, seledtedSourceAlignParam);
                 }
             }
         }
 
-        private bool ExistMarkParam(Tab tab)
+        private void CopyAkkonParam()
         {
-            if (tab.MarkParamter.GetPanelMark(MarkDirection.Left, MarkName.Main, false).InspParam.IsTrained() == false)
-                return false;
+            TeachingTabList = TeachingData.Instance().GetUnit(UnitName.ToString()).GetTabList();
+            Tab selectedSourceTab = TeachingTabList.Where(x => x.Index == _selectedSourceTabNumber).FirstOrDefault();
 
-            if (tab.MarkParamter.GetPanelMark(MarkDirection.Right, MarkName.Main, false).InspParam.IsTrained() == false)
-                return false;
-
-            return true;
+            foreach (var tabNo in _selectedTargetTabNumber)
+            {
+                Tab selectedTargetTab = TeachingData.Instance().GetUnit(UnitName.ToString()).GetTab(index: tabNo);
+                selectedTargetTab.AkkonParam = selectedSourceTab.AkkonParam.DeepCopy();
+            }
         }
-
+        
         private void lblCancel_Click(object sender, EventArgs e)
         {
             this.Close();
