@@ -227,6 +227,8 @@ namespace ATT_UT_IPAD.Core.AppTask
                         message = string.Format("Right AlignY Inspection NG !!! Tab_{0} / Fpc_{1}, Panel_{2}", tab.Index, rightAlignY.Fpc.Judgement, rightAlignY.Panel.Judgement);
                         Logger.Debug(LogType.Inspection, message);
                     }
+
+                    tabInspResult.AlignResult.CenterImage = algorithmTool.CropCenterAlign(inspTab.MergeCogImage, tab, fpcCoordinate);
                 }
                 else
                 {

@@ -11,6 +11,7 @@ using System.Linq;
 using Jastech.Framework.Util;
 using Jastech.Framework.Imaging.VisionPro.VisionAlgorithms.Results;
 using Jastech.Framework.Algorithms.Akkon.Results;
+using Jastech.Framework.Imaging.VisionPro;
 
 namespace Jastech.Apps.Structure.VisionTool
 {
@@ -177,6 +178,21 @@ namespace Jastech.Apps.Structure.VisionTool
 
             var result = RunMainAlignY(cogImage, fpcParam, panelParam, judgementY_pixel);
             return result;
+        }
+
+        public ICogImage CropCenterAlign(ICogImage cogImage, Tab tab, CoordinateTransform fpcCoordinate)
+        {
+            var centerParam = tab.GetAlignParam(ATTTabAlignName.CenterFPC)?.DeepCopy();
+
+            if(centerParam != null)
+            {
+                var calcFpcRegion = CoordinateRectangle(centerParam.CaliperParams.GetRegion() as CogRectangleAffine, fpcCoordinate);
+                centerParam.CaliperParams.SetRegion(calcFpcRegion);
+
+                return VisionProImageHelper.CropImage(cogImage, centerParam.CaliperParams.GetRegion() as CogRectangleAffine);
+            }
+
+            return null;
         }
 
         public AlignResult RunMainAlignX(ICogImage cogImage, AlignParam fpcParam, AlignParam panelParam, double judegementX_pixel)

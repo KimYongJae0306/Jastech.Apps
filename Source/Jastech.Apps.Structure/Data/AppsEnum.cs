@@ -45,6 +45,6 @@
         RightPanelX,
         RightPanelY,
 
-        Center,
+        CenterFPC,
     }
 }

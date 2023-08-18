@@ -317,7 +317,6 @@ namespace ATT_UT_IPAD.Core
                     AlignLAFCtrl.SetTrackingOnOFF(true);
                     WriteLog("Align LAF Tracking ON.");
 
-                    //Thread.Sleep(5000);
                     SeqStep = SeqStep.SEQ_BUFFER_INIT;
                     break;
                 case SeqStep.SEQ_BUFFER_INIT:
@@ -387,6 +386,7 @@ namespace ATT_UT_IPAD.Core
                     {
                         if (IsAlignGrabDone == false)
                             break;
+
                         WriteLog("Complete Align LineScanner Grab.", true);
                     }
 

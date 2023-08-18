@@ -3,6 +3,7 @@ using Emgu.CV;
 using Jastech.Framework.Algorithms.Akkon.Parameters;
 using Jastech.Framework.Algorithms.Akkon.Results;
 using Jastech.Framework.Imaging.Result;
+using Jastech.Framework.Imaging.VisionPro;
 using Jastech.Framework.Imaging.VisionPro.VisionAlgorithms.Results;
 using System;
 using System.Collections.Generic;
@@ -245,6 +246,8 @@ namespace Jastech.Apps.Structure.Data
 
         public AlignResult RightY { get; set; } = null;
 
+        public ICogImage CenterImage { get; set; } = null;
+
         public float CenterX { get; set; }
 
         public TabAlignResult DeepCopy()
@@ -255,6 +258,7 @@ namespace Jastech.Apps.Structure.Data
             result.RightX = RightX?.DeepCopy();
             result.RightY = RightY?.DeepCopy();
             result.CenterX = CenterX;
+            result.CenterImage = CenterImage?.CopyBase(CogImageCopyModeConstants.CopyPixels);
 
             return result;
         }
@@ -265,6 +269,12 @@ namespace Jastech.Apps.Structure.Data
             LeftY?.Dispose();
             RightX?.Dispose();
             RightY?.Dispose();
+
+            if (CenterImage is CogImage8Grey grey)
+            {
+                grey.Dispose();
+                grey = null;
+            }
         }
     }
 

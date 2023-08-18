@@ -159,6 +159,8 @@ namespace ATT_UT_IPAD.UI.Controls
             TabBtnControlList[tabNo].SetAlignImage(tabInspResult.CogImage.CopyBase(CogImageCopyModeConstants.CopyPixels));
             TabBtnControlList[tabNo].SetLeftAlignShape(GetLeftAlignShape(tabInspResult));
             TabBtnControlList[tabNo].SetRightAlignShape(GetRightAlignShape(tabInspResult));
+            if (tabInspResult.AlignResult != null)
+                TabBtnControlList[tabNo].SetCenterImage(tabInspResult.AlignResult.CenterImage?.CopyBase(CogImageCopyModeConstants.CopyPixels));
 
             if (tabInspResult != null)
             {
@@ -179,8 +181,12 @@ namespace ATT_UT_IPAD.UI.Controls
             var image = TabBtnControlList[tabNo].GetAlignImage();
             var leftShape = TabBtnControlList[tabNo].GetLeftShape();
             var rightShape = TabBtnControlList[tabNo].GetRightShape();
+
             InspAlignDisplay.UpdateLeftDisplay(image, leftShape, GetCenterPoint(LeftPointList));
             InspAlignDisplay.UpdateRightDisplay(image, rightShape, GetCenterPoint(RightPointList));
+
+            var centerImage = TabBtnControlList[tabNo].GetCenterImage();
+            InspAlignDisplay.UpdateCenterDisplay(centerImage);
         }
 
         public delegate void UpdateTabButtonDele(int tabNo);

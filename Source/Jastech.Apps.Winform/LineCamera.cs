@@ -274,22 +274,11 @@ namespace Jastech.Apps.Winform
             if (Camera.IsGrabbing())
                 Camera.Stop();
 
-            //if(Camera is ICameraTDIavailable tdiCamera)
-            //    tdiCamera.SetTDIOperationMode(TDIOperationMode.Area);
-
             Camera.GrabContinous();
         }
 
         public void StopGrab()
         {
-            if(Camera.Name.ToUpper().Contains("ALIGN"))
-            {
-                int g1 = 1;
-            }
-            if (Camera.Name.ToUpper().Contains("AKKON"))
-            {
-                int g2 = 1;
-            }
             if (Camera == null)
                 return;
 
@@ -314,18 +303,6 @@ namespace Jastech.Apps.Winform
 
                 if (tabScanBuffer.StartIndex <= _curGrabCount && _curGrabCount <= tabScanBuffer.EndIndex)
                 {
-                    //if (_stackTabNo == 4)
-                    //{
-                    //    Console.WriteLine("----------------------------------------------------------------------" + data.Length);
-                    //}
-                    //if (_stackTabNo == 3)
-                    //{
-                    //    Console.WriteLine("-----------------------------------------------" + data.Length);
-                    //}
-                    //if(_stackTabNo == 2)
-                    //{
-                    //    Console.WriteLine("----------------------" + data.Length);
-                    //}
                     tabScanBuffer.AddData(data);
                 }
 
@@ -333,8 +310,6 @@ namespace Jastech.Apps.Winform
                 {
                     _stackTabNo++;
                 }
-                //if(Camera.Name.ToUpper().Contains("ALIGN"))
-                //    Console.WriteLine(_curGrabCount.ToString());
 
                 if (_curGrabCount == GrabCount - 1)
                 {

@@ -24,6 +24,8 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         private ICogImage CogAlignImage { get; set; } = null;
 
+        private ICogImage CogCenterImage { get; set; } = null;
+
         private List<CogCompositeShape> LeftCogShapeList { get; set; } = new List<CogCompositeShape>();
 
         private List<CogCompositeShape> RightCogShapeList { get; set; } = new List<CogCompositeShape>();
@@ -128,6 +130,25 @@ namespace Jastech.Apps.Winform.UI.Controls
             CogAlignImage = cogImage;//?.CopyBase(CogImageCopyModeConstants.CopyPixels);
         }
 
+        public void SetCenterImage(ICogImage cogImage)
+        {
+            if (CogCenterImage != null)
+            {
+                if (CogCenterImage is CogImage8Grey grey)
+                {
+                    grey.Dispose();
+                    grey = null;
+                }
+                if (CogCenterImage is CogImage24PlanarColor color)
+                {
+                    color.Dispose();
+                    color = null;
+                }
+            }
+            CogCenterImage = cogImage;//?.CopyBase(CogImageCopyModeConstants.CopyPixels);
+        }
+
+
         public void SetLeftAlignShape(List<CogCompositeShape> shapeList)
         {
             foreach (var shape in LeftCogShapeList)
@@ -187,6 +208,11 @@ namespace Jastech.Apps.Winform.UI.Controls
         public ICogImage GetAlignImage()
         {
             return CogAlignImage;
+        }
+
+        public ICogImage GetCenterImage()
+        {
+            return CogCenterImage;
         }
 
         public List<CogCompositeShape> GetLeftShape()

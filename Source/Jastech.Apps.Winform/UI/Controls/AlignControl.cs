@@ -110,7 +110,7 @@ namespace Jastech.Apps.Winform.UI.Controls
 
             CogCaliperParamControl.UpdateData(alignParam.CaliperParams);
 
-            if(alignName == ATTTabAlignName.Center)
+            if(alignName == ATTTabAlignName.CenterFPC)
             {
                 pnlLeadParam.Visible = false;
                 pnlCaliperParam.Visible = false;
@@ -646,7 +646,7 @@ namespace Jastech.Apps.Winform.UI.Controls
         private void lblCenter_Click(object sender, EventArgs e)
         {
             UpdateSelectedAlignName(sender);
-            UpdateParam(ATTTabAlignName.Center);
+            UpdateParam(ATTTabAlignName.CenterFPC);
         }
     }
 }
