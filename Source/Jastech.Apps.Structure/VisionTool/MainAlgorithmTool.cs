@@ -236,11 +236,13 @@ namespace Jastech.Apps.Structure.VisionTool
                 int count = 0;
                 foreach (var value in alignValueList)
                 {
-                    if (value == max || value == min)
-                        continue;
-
+                    if (alignValueList.Count > 2)
+                    {
+                        if (value == max || value == min)
+                            continue;
+                    }
                     temp += value;
-                    count++;
+                     count++;
                 }
 
                 result.ResultValue_pixel = Convert.ToSingle(temp / count);
