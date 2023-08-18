@@ -249,7 +249,7 @@ namespace ATT_UT_IPAD
             }
 
             if (MainPageControl.Visible)
-                MainPageControl.MainViewControl.UpdateButton();
+                MainPageControl.UpdateButton();
         }
 
         private void tmrUpdateStates_Tick(object sender, EventArgs e)

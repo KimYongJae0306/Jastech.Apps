@@ -38,11 +38,14 @@ namespace ATT_UT_IPAD.UI.Controls
         public SystemLogControl SystemLogControl { get; set; } = null;
         #endregion
 
+        #region 생성자
         public MainViewControl()
         {
             InitializeComponent();
         }
+        #endregion
 
+        #region 메서드
         private void MainViewControl_Load(object sender, EventArgs e)
         {
             AddControls();
@@ -112,7 +115,6 @@ namespace ATT_UT_IPAD.UI.Controls
             AlignViewerControl.UpdateResultTabButton(tabNo);
         }
 
-
         public void TabButtonResetColor()
         {
             AkkonViewerControl.TabButtonResetColor();
@@ -123,37 +125,6 @@ namespace ATT_UT_IPAD.UI.Controls
         {
             SystemLogControl.AddLogMessage(logMessage);
         }
-
-        public void UpdateButton()
-        {
-            if (SystemManager.Instance().MachineStatus == MachineStatus.RUN)
-            {
-                lblStartText.ForeColor = Color.Blue;
-                lblStopText.ForeColor = Color.White;
-            }
-            else
-            {
-                lblStartText.ForeColor = Color.White;
-                lblStopText.ForeColor = Color.Blue;
-            }
-        }
-
-        private void lblStart_Click(object sender, EventArgs e)
-        {
-            if (ModelManager.Instance().CurrentModel == null)
-            {
-                MessageConfirmForm form = new MessageConfirmForm();
-                form.Message = "Current Model is null.";
-                form.ShowDialog();
-                return;
-            }
-
-            SystemManager.Instance().StartRun();
-        }
-
-        private void lblStop_Click(object sender, EventArgs e)
-        {
-              SystemManager.Instance().StopRun();
-        }
+        #endregion
     }
 }

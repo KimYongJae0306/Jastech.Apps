@@ -137,6 +137,37 @@ namespace ATT_UT_IPAD.UI.Pages
             pnlView.Controls.Add(TabAkkonViewControl);
         }
 
+        private void lblStart_Click(object sender, EventArgs e)
+        {
+            if (ModelManager.Instance().CurrentModel == null)
+            {
+                MessageConfirmForm form = new MessageConfirmForm();
+                form.Message = "Current Model is null.";
+                form.ShowDialog();
+                return;
+            }
+
+            SystemManager.Instance().StartRun();
+        }
+
+        private void lblStop_Click(object sender, EventArgs e)
+        {
+            SystemManager.Instance().StopRun();
+        }
+
+        public void UpdateButton()
+        {
+            if (SystemManager.Instance().MachineStatus == MachineStatus.RUN)
+            {
+                lblStartText.ForeColor = Color.Blue;
+                lblStopText.ForeColor = Color.White;
+            }
+            else
+            {
+                lblStartText.ForeColor = Color.White;
+                lblStopText.ForeColor = Color.Blue;
+            }
+        }
         #endregion
     }
 }

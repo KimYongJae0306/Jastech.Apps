@@ -246,6 +246,10 @@ namespace Jastech.Apps.Structure.VisionTool
                 result.ResultValue_pixel = Convert.ToSingle(temp / count);
                 result.JudegementValue_pixel = judegementX_pixel;
             }
+            else
+            {
+                result.AlignMissing = true;
+            }
            
             return result;
         }

@@ -275,17 +275,26 @@ namespace Jastech.Apps.Structure.Data
         {
             get
             {
-                if (Fpc.Judgement == Judgement.OK && Panel.Judgement == Judgement.OK)
+                if(AlignMissing)
                 {
-                    if (Math.Abs(ResultValue_pixel) <= JudegementValue_pixel)
-                        return Judgement.OK;
+                    return Judgement.FAIL;
+                }
+                else
+                {
+                    if (Fpc.Judgement == Judgement.OK && Panel.Judgement == Judgement.OK)
+                    {
+                        if (Math.Abs(ResultValue_pixel) <= JudegementValue_pixel)
+                            return Judgement.OK;
+                        else
+                            return Judgement.NG;
+                    }
                     else
                         return Judgement.NG;
                 }
-                else
-                    return Judgement.NG;
             }
         }
+
+        public bool AlignMissing { get; set; } = false;
 
         public float ResultValue_pixel { get; set; } = 0.0f;
 

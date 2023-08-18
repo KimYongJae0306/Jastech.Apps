@@ -102,7 +102,11 @@ namespace Jastech.Apps.Winform.UI.Controls
 
             var alignParam = CurrentTab.GetAlignParam(alignName);
             if (alignParam == null)
+            {
                 alignParam = new Structure.Parameters.AlignParam();
+                alignParam.Name = alignName.ToString();
+                CurrentTab.AlignParamList.Add(alignParam);
+            }
 
             CogCaliperParamControl.UpdateData(alignParam.CaliperParams);
 
