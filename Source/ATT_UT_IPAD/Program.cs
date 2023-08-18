@@ -54,7 +54,7 @@ namespace ATT_UT_IPAD
                 Logger.Initialize(ConfigSet.Instance().Path.Log);
 
                 MilHelper.InitApplication();
-                CameraMil.BufferPoolCount = 200;
+                CameraMil.BufferPoolCount = 400;
                 //SystemHelper.StartChecker(@"D:\ATT_Memory_Test.txt");
                 AppsConfig.Instance().UnitCount = 1;
 

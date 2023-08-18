@@ -193,8 +193,8 @@ namespace Jastech.Apps.Winform
                     tempPos += delayStart_mm;
                     tempPos += inspModel.MaterialInfo.PanelEdgeToFirst_mm;
 
-                    DelayGrabIndex = (int)(tempPos / resolution_mm / Camera.ImageHeight);
-                    LAFTrackingPos_mm = tempPos - (inspModel.MaterialInfo.PanelEdgeToFirst_mm / 2.0);
+                    //DelayGrabIndex = (int)(tempPos / resolution_mm / Camera.ImageHeight);
+                    //LAFTrackingPos_mm = tempPos - (inspModel.MaterialInfo.PanelEdgeToFirst_mm / 2.0);
                 }
 
                 int startIndex = (int)(tempPos / resolution_mm / Camera.ImageHeight);
@@ -308,7 +308,9 @@ namespace Jastech.Apps.Winform
                     tabScanBuffer.AddData(data);
 
                 if (tabScanBuffer.IsAddDataDone())
+                {
                     _stackTabNo++;
+                }
 
                 if (_curGrabCount == GrabCount - 1)
                 {

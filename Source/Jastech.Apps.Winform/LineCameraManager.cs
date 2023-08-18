@@ -89,7 +89,10 @@ namespace Jastech.Apps.Winform
                 if (data != null)
                 {
                     if (GetLineCamera(camera.Name) is LineCamera lineCamera)
+                    {
+
                         GetLineCamera(camera.Name).AddSubImage(data, camera.GrabCount);
+                    }
                 }
             }
             Thread.Sleep(0);

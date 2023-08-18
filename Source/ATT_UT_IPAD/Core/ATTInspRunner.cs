@@ -344,11 +344,13 @@ namespace ATT_UT_IPAD.Core
                     }
 
                     AkkonCamera.StartGrab();
+                   
                     WriteLog("Start Akkon LineScanner Grab.", true);
 
                     if(AppsConfig.Instance().EnableTest1 == false)
                     {
                         AlignCamera.StartGrab();
+                        Thread.Sleep(1000); 
                         WriteLog("Start Align LineScanner Grab.", true);
                     }
 
@@ -1019,7 +1021,7 @@ namespace ATT_UT_IPAD.Core
             if (teachingPos == TeachingPosType.Stage1_Scan_End)
             {
                 cameraGap = AppsConfig.Instance().CameraGap_mm;
-                cameraGap += 50;
+                //cameraGap += 50;
             }
                 
             if (manager.IsAxisInPosition(UnitName.Unit0, teachingPos, axis, cameraGap) == false)
