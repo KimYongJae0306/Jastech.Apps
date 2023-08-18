@@ -102,6 +102,7 @@
             this.lblAlignButton.TabIndex = 2;
             this.lblAlignButton.Text = "ALIGN";
             this.lblAlignButton.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblAlignButton.Visible = false;
             this.lblAlignButton.Click += new System.EventHandler(this.lblAlignButton_Click);
             // 
             // lblAkkonButton
@@ -117,6 +118,7 @@
             this.lblAkkonButton.TabIndex = 3;
             this.lblAkkonButton.Text = "AKKON";
             this.lblAkkonButton.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblAkkonButton.Visible = false;
             this.lblAkkonButton.Click += new System.EventHandler(this.lblAkkonButton_Click);
             // 
             // lblMainButton
