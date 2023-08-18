@@ -97,6 +97,7 @@ namespace Jastech.Apps.Structure.Data
 
             MarkResult?.Dispose();
             AlignResult?.Dispose();
+            AkkonResult?.Dispose();
         }
 
         public IEnumerable<int> GetAkkonCounts(string position)
