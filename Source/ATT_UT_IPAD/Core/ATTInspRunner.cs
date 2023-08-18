@@ -296,6 +296,7 @@ namespace ATT_UT_IPAD.Core
                         break;
 
                     MotionManager.Instance().MoveAxisZ(TeachingPosType.Stage1_Scan_Start, AkkonLAFCtrl, AxisName.Z0);
+                    MotionManager.Instance().MoveAxisZ(TeachingPosType.Stage1_Scan_Start, AlignLAFCtrl, AxisName.Z1);
 
                     if (_ClearBufferThread != null)
                         break;
@@ -316,6 +317,7 @@ namespace ATT_UT_IPAD.Core
                     AlignLAFCtrl.SetTrackingOnOFF(true);
                     WriteLog("Align LAF Tracking ON.");
 
+                    //Thread.Sleep(5000);
                     SeqStep = SeqStep.SEQ_BUFFER_INIT;
                     break;
                 case SeqStep.SEQ_BUFFER_INIT:
@@ -431,6 +433,8 @@ namespace ATT_UT_IPAD.Core
 
                     SystemManager.Instance().UpdateMainAkkonResult();
                     SystemManager.Instance().UpdateMainAlignResult();
+
+                    AppsStatus.Instance().IsInspRunnerFlagFromPlc = false;
 
                     SeqStep = SeqStep.SEQ_SAVE_RESULT_DATA;
                     break;
@@ -1508,6 +1512,7 @@ namespace ATT_UT_IPAD.Core
 
         private void ClearBuffer()
         {
+            Console.WriteLine("ClearBuffer");
             AlignCamera.IsLive = false;
             AlignCamera.StopGrab();
 

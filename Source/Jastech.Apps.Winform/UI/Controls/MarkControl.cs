@@ -398,22 +398,30 @@ namespace Jastech.Apps.Winform.UI.Controls
                 form.Message = message;
                 form.ShowDialog();
             }
-
-            var foundedFpcMark = tabInspResult.MarkResult.FpcMark.FoundedMark;
-            var leftFpc = foundedFpcMark.Left.MaxMatchPos.ResultGraphics;
-            var rightFpc = foundedFpcMark.Right.MaxMatchPos.ResultGraphics;
-
-            var foundedPanelMark = tabInspResult.MarkResult.PanelMark.FoundedMark;
-            var leftPanel = foundedPanelMark.Left.MaxMatchPos.ResultGraphics;
-            var rightPanel = foundedPanelMark.Right.MaxMatchPos.ResultGraphics;
-
             display.ClearGraphic();
             List<VisionProPatternMatchingResult> matchingResultList = new List<VisionProPatternMatchingResult>();
-            matchingResultList.Add(foundedFpcMark.Left);
-            matchingResultList.Add(foundedFpcMark.Right);
-            matchingResultList.Add(foundedPanelMark.Left);
-            matchingResultList.Add(foundedPanelMark.Right);
 
+            var foundedFpcMark = tabInspResult.MarkResult.FpcMark.FoundedMark;
+            if(foundedFpcMark != null)
+            {
+                var leftFpc = foundedFpcMark.Left.MaxMatchPos.ResultGraphics;
+                var rightFpc = foundedFpcMark.Right.MaxMatchPos.ResultGraphics;
+                matchingResultList.Add(foundedFpcMark.Left);
+                matchingResultList.Add(foundedFpcMark.Right);
+            }
+            
+
+            var foundedPanelMark = tabInspResult.MarkResult.PanelMark.FoundedMark;
+
+            if(foundedPanelMark != null)
+            {
+                var leftPanel = foundedPanelMark.Left.MaxMatchPos.ResultGraphics;
+                var rightPanel = foundedPanelMark.Right.MaxMatchPos.ResultGraphics;
+
+                matchingResultList.Add(foundedPanelMark.Left);
+                matchingResultList.Add(foundedPanelMark.Right);
+            }
+            
             display.UpdateResult(matchingResultList);
         }
 

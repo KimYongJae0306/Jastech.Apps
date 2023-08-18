@@ -194,14 +194,14 @@ namespace Jastech.Apps.Winform
 
                 lafCtrl.SetMotionAbsoluteMove(targetPosition);
 
-                while(IsAxisZInPosition(teachingPos, lafCtrl, axisNameZ) == false)
-                {
-                    if (sw.ElapsedMilliseconds >= AlignMovingParamZ.MovingTimeOut)
-                    {
-                        return false;
-                    }
-                    Thread.Sleep(10);
-                }
+                //while(IsAxisZInPosition(teachingPos, lafCtrl, axisNameZ) == false)
+                //{
+                //    if (sw.ElapsedMilliseconds >= AlignMovingParamZ.MovingTimeOut)
+                //    {
+                //        return false;
+                //    }
+                //    Thread.Sleep(10);
+                //}
             }
             Console.WriteLine(string.Format("Dove Done.{0}", axisNameZ.ToString()));
             return true;

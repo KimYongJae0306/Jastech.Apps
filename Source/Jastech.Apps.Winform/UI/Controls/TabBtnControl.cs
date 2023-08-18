@@ -71,7 +71,7 @@ namespace Jastech.Apps.Winform.UI.Controls
                     color = null;
                 }
             }
-            CogOrgImage = cogImage?.CopyBase(CogImageCopyModeConstants.CopyPixels);
+            CogOrgImage = cogImage;//?.CopyBase(CogImageCopyModeConstants.CopyPixels);
         }
 
         public void SetResultImage(ICogImage cogImage)
@@ -89,7 +89,7 @@ namespace Jastech.Apps.Winform.UI.Controls
                     color = null;
                 }
             }
-            CogResultImage = cogImage?.CopyBase(CogImageCopyModeConstants.CopyPixels);
+            CogResultImage = cogImage;//?.CopyBase(CogImageCopyModeConstants.CopyPixels);
         }
 
         public void SetInspImage(ICogImage cogImage)
@@ -107,7 +107,7 @@ namespace Jastech.Apps.Winform.UI.Controls
                     color = null;
                 }
             }
-            CogInspImage = cogImage?.CopyBase(CogImageCopyModeConstants.CopyPixels);
+            CogInspImage = cogImage;//?;.CopyBase(CogImageCopyModeConstants.CopyPixels);
         }
 
         public void SetAlignImage(ICogImage cogImage)
@@ -125,7 +125,7 @@ namespace Jastech.Apps.Winform.UI.Controls
                     color = null;
                 }
             }
-            CogAlignImage = cogImage?.CopyBase(CogImageCopyModeConstants.CopyPixels);
+            CogAlignImage = cogImage;//?.CopyBase(CogImageCopyModeConstants.CopyPixels);
         }
 
         public void SetLeftAlignShape(List<CogCompositeShape> shapeList)

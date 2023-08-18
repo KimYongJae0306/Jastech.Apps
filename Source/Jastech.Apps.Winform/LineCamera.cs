@@ -282,6 +282,14 @@ namespace Jastech.Apps.Winform
 
         public void StopGrab()
         {
+            if(Camera.Name.ToUpper().Contains("ALIGN"))
+            {
+                int g1 = 1;
+            }
+            if (Camera.Name.ToUpper().Contains("AKKON"))
+            {
+                int g2 = 1;
+            }
             if (Camera == null)
                 return;
 
@@ -311,6 +319,8 @@ namespace Jastech.Apps.Winform
                 {
                     _stackTabNo++;
                 }
+                if(Camera.Name.ToUpper().Contains("ALIGN"))
+                    Console.WriteLine(_curGrabCount.ToString());
 
                 if (_curGrabCount == GrabCount - 1)
                 {
