@@ -197,6 +197,8 @@ namespace Jastech.Apps.Structure.VisionTool
                 var fpcResult1 = result.Fpc.CogAlignResult[i];
                 var fpcResult2 = result.Fpc.CogAlignResult[i + 1];
 
+                if (panelResult1 == null || panelResult2 == null || fpcResult1 == null || fpcResult2 == null)
+                    continue;
                 if (panelResult1.Found == false || panelResult2.Found == false || fpcResult1.Found == false || fpcResult2.Found == false)
                     continue;
 

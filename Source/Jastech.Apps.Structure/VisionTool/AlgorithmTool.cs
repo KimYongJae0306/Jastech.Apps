@@ -45,7 +45,10 @@ namespace Jastech.Apps.Structure.VisionTool
             bool isFounded = false;
             foreach (var item in alignResult.CogAlignResult)
             {
-                isFounded |= item.Found;
+                if (item == null)
+                    isFounded |= false;
+                else
+                    isFounded |= item.Found;
             }
 
             alignResult.Judgement = isFounded ? Judgement.OK : Judgement.FAIL;

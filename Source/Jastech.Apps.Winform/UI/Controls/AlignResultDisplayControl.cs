@@ -281,20 +281,26 @@ namespace ATT_UT_IPAD.UI.Controls
                 {
                     foreach (var fpc in rightAlignX.Fpc.CogAlignResult)
                     {
-                        RightPointList.Add(fpc.MaxCaliperMatch.FoundPos);
+                        if (fpc != null)
+                        {
+                            RightPointList.Add(fpc.MaxCaliperMatch.FoundPos);
 
-                        var rightFpcX = fpc.MaxCaliperMatch.ResultGraphics;
-                        rightResultList.Add(rightFpcX);
+                            var rightFpcX = fpc.MaxCaliperMatch.ResultGraphics;
+                            rightResultList.Add(rightFpcX);
+                        }
                     }
                 }
                 if (rightAlignX.Panel.CogAlignResult.Count() > 0)
                 {
                     foreach (var panel in rightAlignX.Panel.CogAlignResult)
                     {
-                        RightPointList.Add(panel.MaxCaliperMatch.FoundPos);
+                        if (panel != null)
+                        {
+                            RightPointList.Add(panel.MaxCaliperMatch.FoundPos);
 
-                        var rightPanelX = panel.MaxCaliperMatch.ResultGraphics;
-                        rightResultList.Add(rightPanelX);
+                            var rightPanelX = panel.MaxCaliperMatch.ResultGraphics;
+                            rightResultList.Add(rightPanelX);
+                        }
                     }
                 }
             }

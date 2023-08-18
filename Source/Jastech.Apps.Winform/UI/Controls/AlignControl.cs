@@ -539,8 +539,11 @@ namespace Jastech.Apps.Winform.UI.Controls
             {
                 foreach (var result in alignResult.Fpc.CogAlignResult)
                 {
-                    if (result.Found)
-                        shapeList.Add(result.MaxCaliperMatch.ResultGraphics);
+                    if(result != null)
+                    {
+                        if (result.Found)
+                            shapeList.Add(result.MaxCaliperMatch.ResultGraphics);
+                    }
                 }
             }
 
@@ -548,8 +551,11 @@ namespace Jastech.Apps.Winform.UI.Controls
             {
                 foreach (var result in alignResult.Panel.CogAlignResult)
                 {
-                    if (result.Found)
-                        shapeList.Add(result.MaxCaliperMatch.ResultGraphics);
+                    if(result != null)
+                    {
+                        if (result.Found)
+                            shapeList.Add(result.MaxCaliperMatch.ResultGraphics);
+                    }
                 }
             }
 
