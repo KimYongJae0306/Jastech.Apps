@@ -319,6 +319,7 @@ namespace ATT_UT_IPAD.Core
 
                     SeqStep = SeqStep.SEQ_BUFFER_INIT;
                     break;
+
                 case SeqStep.SEQ_BUFFER_INIT:
                     InitializeBuffer();
                     WriteLog("Initialize Buffer.");
@@ -334,6 +335,7 @@ namespace ATT_UT_IPAD.Core
                     WriteLog("Cell ID : " + AppsInspResult.Instance().Cell_ID, true);
                     SeqStep = SeqStep.SEQ_SCAN_START;
                     break;
+
                 case SeqStep.SEQ_SCAN_START:
                     IsAkkonGrabDone = false;
                     IsAlignGrabDone = false;
@@ -468,6 +470,7 @@ namespace ATT_UT_IPAD.Core
                     ClearBufferThread();
                     SeqStep = SeqStep.SEQ_INIT;
                     break;
+
                 case SeqStep.SEQ_ERROR:
                     short command = PlcControlManager.Instance().WritePcStatus(PlcCommand.StartInspection, true);
                     Logger.Debug(LogType.Device, $"Sequence Error StartInspection.[{command}]");
