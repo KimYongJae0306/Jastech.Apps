@@ -229,7 +229,7 @@ namespace Jastech.Apps.Structure.VisionTool
                 var deltaFpcX = fpcSkew * deltaFpcY;
                 var fpcX = fpcCenterX + deltaFpcX;
 
-                var res = panelX - fpcX;
+                var res = fpcX - panelX;
 
                 alignValueList.Add(res);
             }

@@ -75,6 +75,9 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         public bool IsReScaling { get; set; } = false;
 
+        public bool IsMoving { get; set; } = false;
+
+        public bool IsSkewing { get; set; } = false;
         #endregion
 
         #region 생성자
@@ -413,6 +416,7 @@ namespace Jastech.Apps.Winform.UI.Controls
             }
         }
 
+        private List<int> _selectedIndex = null;
         private void UpdateROIDataGridView(int index, CogRectangleAffine cogRectAffine)
         {
             string leftTop = cogRectAffine.CornerOriginX.ToString("F2") + " , " + cogRectAffine.CornerOriginY.ToString("F2");
@@ -798,7 +802,7 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         private void SetSelectAkkonROI()
         {
-            if (_cogRectAffineList.Count <= 0 || CurrentTab == null || IsReScaling)
+            if (_cogRectAffineList.Count <= 0 || CurrentTab == null || IsReScaling || IsMoving || IsSkewing)
                 return;
 
             int groupIndex = cbxGroupNumber.SelectedIndex;
@@ -967,8 +971,10 @@ namespace Jastech.Apps.Winform.UI.Controls
                 group.AkkonROIList[index] = ConvertCogRectAffineToAkkonRoi(_cogRectAffineList[index]).DeepCopy();
             }
 
+            IsSkewing = true;
             UpdateROIDataGridView(group.AkkonROIList, _selectedIndexList);
-            DrawROI();
+            IsSkewing = false;
+            SetSelectAkkonROI();
         }
 
         private void MoveMode(string moveType, int jogScale)
@@ -1007,8 +1013,11 @@ namespace Jastech.Apps.Winform.UI.Controls
                 group.AkkonROIList[index] = ConvertCogRectAffineToAkkonRoi(_cogRectAffineList[index]).DeepCopy();
             }
 
+            IsMoving = true;
             UpdateROIDataGridView(group.AkkonROIList, _selectedIndexList);
-            DrawROI();
+            IsMoving = false;
+            SetSelectAkkonROI();
+            //DrawROI();
         }
 
         private void SizeMode(string sizeType, int jogScale)

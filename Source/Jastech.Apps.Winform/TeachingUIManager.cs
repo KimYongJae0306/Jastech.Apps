@@ -15,7 +15,7 @@ namespace Jastech.Apps.Winform
         #region 속성
         private CogDisplayControl TeachingDisplay { get; set; } = null;
 
-        private ICogImage OrginCogImageBuffer { get; set; } = null;
+        private ICogImage OriginCogImageBuffer { get; set; } = null;
 
         private Mat OriginMatImageBuffer { get; set; } = null;
 
@@ -60,19 +60,19 @@ namespace Jastech.Apps.Winform
         {
             if (isDeepCopy)
             {
-                if (OrginCogImageBuffer == null)
+                if (OriginCogImageBuffer == null)
                     return null;
 
-                return OrginCogImageBuffer.CopyBase(CogImageCopyModeConstants.CopyPixels);
+                return OriginCogImageBuffer.CopyBase(CogImageCopyModeConstants.CopyPixels);
             }
 
-            return OrginCogImageBuffer;
+            return OriginCogImageBuffer;
         }
 
         public void SetOrginCogImageBuffer(ICogImage cogImage)
         {
-            if(OrginCogImageBuffer != null)
-                (OrginCogImageBuffer as CogImage8Grey).Dispose();
+            if(OriginCogImageBuffer != null)
+                (OriginCogImageBuffer as CogImage8Grey).Dispose();
 
             if (BinaryCogImageBuffer != null)
                 (BinaryCogImageBuffer as CogImage8Grey).Dispose();
@@ -83,11 +83,11 @@ namespace Jastech.Apps.Winform
             if(AkkonCogImageBuffer != null)
                 (AkkonCogImageBuffer as CogImage8Grey).Dispose();
 
-            OrginCogImageBuffer = null;
+            OriginCogImageBuffer = null;
             BinaryCogImageBuffer = null;
             ResultCogImageBuffer = null;
             AkkonCogImageBuffer = null;
-            OrginCogImageBuffer = cogImage.CopyBase(CogImageCopyModeConstants.CopyPixels);
+            OriginCogImageBuffer = cogImage.CopyBase(CogImageCopyModeConstants.CopyPixels);
 
             if (OriginMatImageBuffer != null)
             {
