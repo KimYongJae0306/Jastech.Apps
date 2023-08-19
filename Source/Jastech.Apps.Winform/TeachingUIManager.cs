@@ -148,8 +148,8 @@ namespace Jastech.Apps.Winform
                 color = null;
             }
 
-            //ResultCogImageBuffer = cogImage.CopyBase(CogImageCopyModeConstants.CopyPixels);
-            ResultCogImageBuffer = cogImage;
+            ResultCogImageBuffer = cogImage.CopyBase(CogImageCopyModeConstants.CopyPixels);
+           // ResultCogImageBuffer = cogImage;
             TeachingDisplay?.SetImage(ResultCogImageBuffer);
         }
 
@@ -179,8 +179,8 @@ namespace Jastech.Apps.Winform
                 color = null;
             }
 
-            //ResultCogImageBuffer = cogImage.CopyBase(CogImageCopyModeConstants.CopyPixels);
-            AkkonCogImageBuffer = cogImage;
+            AkkonCogImageBuffer = cogImage.CopyBase(CogImageCopyModeConstants.CopyPixels);
+            //AkkonCogImageBuffer = cogImage;
             TeachingDisplay?.SetImage(AkkonCogImageBuffer);
         }
 
