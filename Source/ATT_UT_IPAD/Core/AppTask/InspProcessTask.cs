@@ -92,16 +92,21 @@ namespace ATT_UT_IPAD.Core.AppTask
             algorithmTool.MainMarkInspect(inspTab.MergeCogImage, tab, ref inspResult, false);
             //algorithmTool.MainMarkInspect(inspTab.MergeCogImage, tab, ref inspResult, false);
 
+            string message = string.Empty;
             if (inspResult.MarkResult.Judgement != Judgement.OK)
             {
                 // 검사 실패
-                string message = string.Format("Mark Inspection NG !!! Tab_{0} / Fpc_{1}, Panel_{2}", tab.Index + 1, inspResult.MarkResult.FpcMark.Judgement, inspResult.MarkResult.PanelMark.Judgement);
+                message = string.Format("Akkon Mark Inspection NG !!! Tab_{0} / Fpc_{1}, Panel_{2}", tab.Index + 1, inspResult.MarkResult.FpcMark.Judgement, inspResult.MarkResult.PanelMark.Judgement);
                 WriteLog(message);
                 Logger.Debug(LogType.Inspection, message);
                 inspResult.AkkonResult = new AkkonResult();
             }
             else
             {
+                message = string.Format("Akkon Mark Inspection OK !!! Tab_{0} / Fpc_{1}, Panel_{2}", tab.Index + 1, inspResult.MarkResult.FpcMark.Judgement, inspResult.MarkResult.PanelMark.Judgement);
+                WriteLog(message, true);
+                Logger.Debug(LogType.Inspection, message);
+
                 // Set Coordinate Params
                 //algorithmTool.GetAlignPanelLeftOffset(tab, inspResult, out double panelLeftOffsetX, out double panelLeftOffsetY);
                 //algorithmTool.GetAlignPanelRightOffset(tab, inspResult, out double panelRightOffsetX, out double panelRightOffsetY);
@@ -170,37 +175,22 @@ namespace ATT_UT_IPAD.Core.AppTask
             if (tabInspResult.MarkResult.Judgement != Judgement.OK)
             {
                 // 검사 실패
-                message = string.Format("Mark Inspection NG !!! Tab_{0} / Fpc_{1}, Panel_{2}", tab.Index + 1, tabInspResult.MarkResult.FpcMark.Judgement, tabInspResult.MarkResult.PanelMark.Judgement);
+                message = string.Format("Align Mark Inspection NG !!! Tab_{0} / Fpc_{1}, Panel_{2}", tab.Index + 1, tabInspResult.MarkResult.FpcMark.Judgement, tabInspResult.MarkResult.PanelMark.Judgement);
                 WriteLog(message, true);
                 Logger.Debug(LogType.Inspection, message);
                 tabInspResult.AlignResult = new TabAlignResult();
             }
             else
             {
-                //CoordinateTransform fpcCoordinate = new CoordinateTransform();
-                //CoordinateTransform panelCoordinate = new CoordinateTransform();
-
                 // 검사 성공
-                message = string.Format("Mark Inspection OK !!! Tab_{0} / Fpc_{1}, Panel_{2}", tab.Index + 1, tabInspResult.MarkResult.FpcMark.Judgement, tabInspResult.MarkResult.PanelMark.Judgement);
+                message = string.Format("Align Mark Inspection OK !!! Tab_{0} / Fpc_{1}, Panel_{2}", tab.Index + 1, tabInspResult.MarkResult.FpcMark.Judgement, tabInspResult.MarkResult.PanelMark.Judgement);
                 WriteLog(message, true);
                 Logger.Debug(LogType.Inspection, message);
 
-                PointF fpcLeftOffset = MathHelper.GetOffset(tabInspResult.MarkResult.FpcMark.FoundedMark.Left.MaxMatchPos.FoundPos, tabInspResult.MarkResult.FpcMark.FoundedMark.Left.MaxMatchPos.ReferencePos);
-                PointF fpcRightOffset = MathHelper.GetOffset(tabInspResult.MarkResult.FpcMark.FoundedMark.Right.MaxMatchPos.FoundPos, tabInspResult.MarkResult.FpcMark.FoundedMark.Right.MaxMatchPos.ReferencePos);
-                PointF panelLeftOffset = MathHelper.GetOffset(tabInspResult.MarkResult.PanelMark.FoundedMark.Left.MaxMatchPos.FoundPos, tabInspResult.MarkResult.PanelMark.FoundedMark.Left.MaxMatchPos.ReferencePos);
-                PointF panelRightOffset = MathHelper.GetOffset(tabInspResult.MarkResult.PanelMark.FoundedMark.Right.MaxMatchPos.FoundPos, tabInspResult.MarkResult.PanelMark.FoundedMark.Right.MaxMatchPos.ReferencePos);
-
-                //algorithmTool.GetAlignFpcLeftOffset(tab, tabInspResult, out double fpcLeftOffsetX, out double fpcLeftOffsetY);
-                //algorithmTool.GetAlignFpcRightOffset(tab, tabInspResult, out double fpcRightOffsetX, out double fpcRightOffsetY);
-                //SetFpcCoordinateData(fpcCoordinate, tabInspResult, fpcLeftOffsetX, fpcLeftOffsetY, fpcRightOffsetX, fpcRightOffsetY);
-
-                //algorithmTool.GetAlignPanelLeftOffset(tab, tabInspResult, out double panelLeftOffsetX, out double panelLeftOffsetY);
-                //algorithmTool.GetAlignPanelRightOffset(tab, tabInspResult, out double panelRightOffsetX, out double panelRightOffsetY);
-                //SetPanelCoordinateData(panelCoordinate, tabInspResult, panelLeftOffsetX, panelLeftOffsetY, panelRightOffsetX, panelRightOffsetY);
-
-                //// Execute Coordinate
-                //fpcCoordinate.ExecuteCoordinate();
-                //panelCoordinate.ExecuteCoordinate();
+                PointF fpcLeftOffset = MathHelper.GetOffset(tabInspResult.MarkResult.FpcMark.FoundedMark.Left.MaxMatchPos.ReferencePos, tabInspResult.MarkResult.FpcMark.FoundedMark.Left.MaxMatchPos.FoundPos);
+                PointF fpcRightOffset = MathHelper.GetOffset(tabInspResult.MarkResult.FpcMark.FoundedMark.Right.MaxMatchPos.ReferencePos, tabInspResult.MarkResult.FpcMark.FoundedMark.Right.MaxMatchPos.FoundPos);
+                PointF panelLeftOffset = MathHelper.GetOffset(tabInspResult.MarkResult.PanelMark.FoundedMark.Left.MaxMatchPos.ReferencePos, tabInspResult.MarkResult.PanelMark.FoundedMark.Left.MaxMatchPos.FoundPos);
+                PointF panelRightOffset = MathHelper.GetOffset(tabInspResult.MarkResult.PanelMark.FoundedMark.Right.MaxMatchPos.ReferencePos, tabInspResult.MarkResult.PanelMark.FoundedMark.Right.MaxMatchPos.FoundPos);
 
                 var lineCamera = LineCameraManager.Instance().GetLineCamera("AlignCamera").Camera;
 

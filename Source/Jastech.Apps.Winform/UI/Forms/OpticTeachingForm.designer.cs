@@ -575,7 +575,7 @@
             this.lblRepeatVelocityValue.Name = "lblRepeatVelocityValue";
             this.lblRepeatVelocityValue.Size = new System.Drawing.Size(160, 40);
             this.lblRepeatVelocityValue.TabIndex = 3;
-            this.lblRepeatVelocityValue.Text = "10";
+            this.lblRepeatVelocityValue.Text = "48";
             this.lblRepeatVelocityValue.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.lblRepeatVelocityValue.Click += new System.EventHandler(this.lblRepeatVelocityValue_Click);
             // 
@@ -606,7 +606,7 @@
             this.lblRepeatAccelerationValue.Name = "lblRepeatAccelerationValue";
             this.lblRepeatAccelerationValue.Size = new System.Drawing.Size(160, 40);
             this.lblRepeatAccelerationValue.TabIndex = 3;
-            this.lblRepeatAccelerationValue.Text = "20";
+            this.lblRepeatAccelerationValue.Text = "150";
             this.lblRepeatAccelerationValue.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.lblRepeatAccelerationValue.Click += new System.EventHandler(this.lblRepeatAccelerationValue_Click);
             // 

@@ -250,6 +250,21 @@ namespace ATT_UT_IPAD
 
             if (MainPageControl.Visible)
                 MainPageControl.UpdateButton();
+
+            if (SystemManager.Instance().MachineStatus == MachineStatus.RUN)
+            {
+                lblTeachingPageImage.Enabled = false;
+                lblTeachingPage.Enabled = false;
+                lblDataPageImage.Enabled = false;
+                lblDataPage.Enabled = false;
+            }
+            else
+            {
+                lblTeachingPageImage.Enabled = true;
+                lblTeachingPage.Enabled = true;
+                lblDataPageImage.Enabled = true;
+                lblDataPage.Enabled = true;
+            }
         }
 
         private void tmrUpdateStates_Tick(object sender, EventArgs e)

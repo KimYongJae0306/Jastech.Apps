@@ -87,7 +87,7 @@
             this.tlpTeachingPage.Name = "tlpTeachingPage";
             this.tlpTeachingPage.RowCount = 1;
             this.tlpTeachingPage.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tlpTeachingPage.Size = new System.Drawing.Size(1675, 911);
+            this.tlpTeachingPage.Size = new System.Drawing.Size(1874, 911);
             this.tlpTeachingPage.TabIndex = 1;
             // 
             // pnlTeachingPage
@@ -97,7 +97,7 @@
             this.pnlTeachingPage.Location = new System.Drawing.Point(0, 0);
             this.pnlTeachingPage.Margin = new System.Windows.Forms.Padding(0);
             this.pnlTeachingPage.Name = "pnlTeachingPage";
-            this.pnlTeachingPage.Size = new System.Drawing.Size(1531, 911);
+            this.pnlTeachingPage.Size = new System.Drawing.Size(1730, 911);
             this.pnlTeachingPage.TabIndex = 0;
             // 
             // tlpTeaching
@@ -113,7 +113,7 @@
             this.tlpTeaching.Name = "tlpTeaching";
             this.tlpTeaching.RowCount = 1;
             this.tlpTeaching.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tlpTeaching.Size = new System.Drawing.Size(1531, 911);
+            this.tlpTeaching.Size = new System.Drawing.Size(1730, 911);
             this.tlpTeaching.TabIndex = 0;
             // 
             // pnlDisplay
@@ -122,7 +122,7 @@
             this.pnlDisplay.Location = new System.Drawing.Point(0, 0);
             this.pnlDisplay.Margin = new System.Windows.Forms.Padding(0);
             this.pnlDisplay.Name = "pnlDisplay";
-            this.pnlDisplay.Size = new System.Drawing.Size(765, 911);
+            this.pnlDisplay.Size = new System.Drawing.Size(865, 911);
             this.pnlDisplay.TabIndex = 0;
             // 
             // tableLayoutPanel1
@@ -133,7 +133,7 @@
             this.tableLayoutPanel1.Controls.Add(this.tlpCommon, 0, 0);
             this.tableLayoutPanel1.Controls.Add(this.pnlTeach, 0, 3);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel1.Location = new System.Drawing.Point(767, 2);
+            this.tableLayoutPanel1.Location = new System.Drawing.Point(867, 2);
             this.tableLayoutPanel1.Margin = new System.Windows.Forms.Padding(2);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 4;
@@ -141,13 +141,13 @@
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 10F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 50F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(762, 907);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(861, 907);
             this.tableLayoutPanel1.TabIndex = 1;
             // 
             // tableLayoutPanel2
             // 
             this.tableLayoutPanel2.ColumnCount = 9;
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 200F));
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 160F));
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 50F));
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 50F));
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 100F));
@@ -172,7 +172,7 @@
             this.tableLayoutPanel2.Name = "tableLayoutPanel2";
             this.tableLayoutPanel2.RowCount = 1;
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel2.Size = new System.Drawing.Size(762, 50);
+            this.tableLayoutPanel2.Size = new System.Drawing.Size(861, 50);
             this.tableLayoutPanel2.TabIndex = 3;
             // 
             // lblNext
@@ -180,7 +180,7 @@
             this.lblNext.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.lblNext.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lblNext.Image = global::Jastech.Apps.Winform.Properties.Resources.Next_White;
-            this.lblNext.Location = new System.Drawing.Point(250, 0);
+            this.lblNext.Location = new System.Drawing.Point(210, 0);
             this.lblNext.Margin = new System.Windows.Forms.Padding(0);
             this.lblNext.Name = "lblNext";
             this.lblNext.Size = new System.Drawing.Size(50, 50);
@@ -192,7 +192,7 @@
             this.lblPrev.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.lblPrev.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lblPrev.Image = global::Jastech.Apps.Winform.Properties.Resources.Prev_White;
-            this.lblPrev.Location = new System.Drawing.Point(200, 0);
+            this.lblPrev.Location = new System.Drawing.Point(160, 0);
             this.lblPrev.Margin = new System.Windows.Forms.Padding(0);
             this.lblPrev.Name = "lblPrev";
             this.lblPrev.Size = new System.Drawing.Size(50, 50);
@@ -203,14 +203,16 @@
             // 
             this.lblTracking.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.lblTracking.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblTracking.Enabled = false;
             this.lblTracking.Font = new System.Drawing.Font("맑은 고딕", 14.25F, System.Drawing.FontStyle.Bold);
-            this.lblTracking.Location = new System.Drawing.Point(562, 0);
+            this.lblTracking.Location = new System.Drawing.Point(661, 0);
             this.lblTracking.Margin = new System.Windows.Forms.Padding(0);
             this.lblTracking.Name = "lblTracking";
             this.lblTracking.Size = new System.Drawing.Size(100, 50);
             this.lblTracking.TabIndex = 296;
             this.lblTracking.Text = "Tracking";
             this.lblTracking.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblTracking.Visible = false;
             this.lblTracking.Click += new System.EventHandler(this.lblTracking_Click);
             // 
             // cbxTabList
@@ -223,7 +225,7 @@
             this.cbxTabList.Location = new System.Drawing.Point(0, 0);
             this.cbxTabList.Margin = new System.Windows.Forms.Padding(0);
             this.cbxTabList.Name = "cbxTabList";
-            this.cbxTabList.Size = new System.Drawing.Size(200, 34);
+            this.cbxTabList.Size = new System.Drawing.Size(160, 34);
             this.cbxTabList.TabIndex = 25;
             this.cbxTabList.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.cbxTabList_DrawItem);
             this.cbxTabList.SelectedIndexChanged += new System.EventHandler(this.cbxTabList_SelectedIndexChanged);
@@ -233,7 +235,7 @@
             this.lblAddROI.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.lblAddROI.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lblAddROI.Font = new System.Drawing.Font("맑은 고딕", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.lblAddROI.Location = new System.Drawing.Point(400, 0);
+            this.lblAddROI.Location = new System.Drawing.Point(360, 0);
             this.lblAddROI.Margin = new System.Windows.Forms.Padding(0);
             this.lblAddROI.Name = "lblAddROI";
             this.lblAddROI.Size = new System.Drawing.Size(100, 50);
@@ -247,7 +249,7 @@
             this.lblInspection.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.lblInspection.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lblInspection.Font = new System.Drawing.Font("맑은 고딕", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.lblInspection.Location = new System.Drawing.Point(300, 0);
+            this.lblInspection.Location = new System.Drawing.Point(260, 0);
             this.lblInspection.Margin = new System.Windows.Forms.Padding(0);
             this.lblInspection.Name = "lblInspection";
             this.lblInspection.Size = new System.Drawing.Size(100, 50);
@@ -261,7 +263,7 @@
             this.lblROIJog.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.lblROIJog.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lblROIJog.Font = new System.Drawing.Font("맑은 고딕", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.lblROIJog.Location = new System.Drawing.Point(500, 0);
+            this.lblROIJog.Location = new System.Drawing.Point(460, 0);
             this.lblROIJog.Margin = new System.Windows.Forms.Padding(0);
             this.lblROIJog.Name = "lblROIJog";
             this.lblROIJog.Size = new System.Drawing.Size(100, 50);
@@ -275,12 +277,12 @@
             this.lblImageSave.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.lblImageSave.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lblImageSave.Font = new System.Drawing.Font("맑은 고딕", 14.25F, System.Drawing.FontStyle.Bold);
-            this.lblImageSave.Location = new System.Drawing.Point(600, 0);
+            this.lblImageSave.Location = new System.Drawing.Point(560, 0);
             this.lblImageSave.Margin = new System.Windows.Forms.Padding(0);
             this.lblImageSave.Name = "lblImageSave";
-            this.lblImageSave.Size = new System.Drawing.Size(1, 50);
+            this.lblImageSave.Size = new System.Drawing.Size(101, 50);
             this.lblImageSave.TabIndex = 296;
-            this.lblImageSave.Text = "Image Save";
+            this.lblImageSave.Text = "Img Save";
             this.lblImageSave.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.lblImageSave.Click += new System.EventHandler(this.lblImageSave_Click);
             // 
@@ -289,7 +291,7 @@
             this.lblROICopy.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.lblROICopy.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lblROICopy.Font = new System.Drawing.Font("맑은 고딕", 14.25F, System.Drawing.FontStyle.Bold);
-            this.lblROICopy.Location = new System.Drawing.Point(662, 0);
+            this.lblROICopy.Location = new System.Drawing.Point(761, 0);
             this.lblROICopy.Margin = new System.Windows.Forms.Padding(0);
             this.lblROICopy.Name = "lblROICopy";
             this.lblROICopy.Size = new System.Drawing.Size(100, 50);
@@ -311,7 +313,7 @@
             this.tlpCommon.RowCount = 2;
             this.tlpCommon.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tlpCommon.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tlpCommon.Size = new System.Drawing.Size(762, 80);
+            this.tlpCommon.Size = new System.Drawing.Size(861, 80);
             this.tlpCommon.TabIndex = 3;
             // 
             // tlpUnit
@@ -327,7 +329,7 @@
             this.tlpUnit.Name = "tlpUnit";
             this.tlpUnit.RowCount = 1;
             this.tlpUnit.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tlpUnit.Size = new System.Drawing.Size(762, 40);
+            this.tlpUnit.Size = new System.Drawing.Size(861, 40);
             this.tlpUnit.TabIndex = 287;
             // 
             // btnMotionPopup
@@ -337,10 +339,10 @@
             this.btnMotionPopup.Dock = System.Windows.Forms.DockStyle.Fill;
             this.btnMotionPopup.Font = new System.Drawing.Font("맑은 고딕", 14F, System.Drawing.FontStyle.Bold);
             this.btnMotionPopup.ForeColor = System.Drawing.Color.White;
-            this.btnMotionPopup.Location = new System.Drawing.Point(507, 0);
+            this.btnMotionPopup.Location = new System.Drawing.Point(573, 0);
             this.btnMotionPopup.Margin = new System.Windows.Forms.Padding(0);
             this.btnMotionPopup.Name = "btnMotionPopup";
-            this.btnMotionPopup.Size = new System.Drawing.Size(255, 40);
+            this.btnMotionPopup.Size = new System.Drawing.Size(288, 40);
             this.btnMotionPopup.TabIndex = 295;
             this.btnMotionPopup.Text = "MOTION";
             this.btnMotionPopup.UseVisualStyleBackColor = false;
@@ -356,7 +358,7 @@
             this.lblStageCam.Location = new System.Drawing.Point(0, 0);
             this.lblStageCam.Margin = new System.Windows.Forms.Padding(0);
             this.lblStageCam.Name = "lblStageCam";
-            this.lblStageCam.Size = new System.Drawing.Size(507, 40);
+            this.lblStageCam.Size = new System.Drawing.Size(573, 40);
             this.lblStageCam.TabIndex = 294;
             this.lblStageCam.Text = "STAGE : / CAM :";
             this.lblStageCam.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -378,7 +380,7 @@
             this.tlpLoadImage.Name = "tlpLoadImage";
             this.tlpLoadImage.RowCount = 1;
             this.tlpLoadImage.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tlpLoadImage.Size = new System.Drawing.Size(762, 40);
+            this.tlpLoadImage.Size = new System.Drawing.Size(861, 40);
             this.tlpLoadImage.TabIndex = 2;
             // 
             // btnLoadImage
@@ -388,10 +390,10 @@
             this.btnLoadImage.Dock = System.Windows.Forms.DockStyle.Fill;
             this.btnLoadImage.Font = new System.Drawing.Font("맑은 고딕", 14F, System.Drawing.FontStyle.Bold);
             this.btnLoadImage.ForeColor = System.Drawing.Color.White;
-            this.btnLoadImage.Location = new System.Drawing.Point(508, 0);
+            this.btnLoadImage.Location = new System.Drawing.Point(574, 0);
             this.btnLoadImage.Margin = new System.Windows.Forms.Padding(0);
             this.btnLoadImage.Name = "btnLoadImage";
-            this.btnLoadImage.Size = new System.Drawing.Size(254, 40);
+            this.btnLoadImage.Size = new System.Drawing.Size(287, 40);
             this.btnLoadImage.TabIndex = 201;
             this.btnLoadImage.Text = "LOAD IMAGE";
             this.btnLoadImage.UseVisualStyleBackColor = false;
@@ -404,10 +406,10 @@
             this.btnGrabStop.Dock = System.Windows.Forms.DockStyle.Fill;
             this.btnGrabStop.Font = new System.Drawing.Font("맑은 고딕", 14F, System.Drawing.FontStyle.Bold);
             this.btnGrabStop.ForeColor = System.Drawing.Color.White;
-            this.btnGrabStop.Location = new System.Drawing.Point(254, 0);
+            this.btnGrabStop.Location = new System.Drawing.Point(287, 0);
             this.btnGrabStop.Margin = new System.Windows.Forms.Padding(0);
             this.btnGrabStop.Name = "btnGrabStop";
-            this.btnGrabStop.Size = new System.Drawing.Size(254, 40);
+            this.btnGrabStop.Size = new System.Drawing.Size(287, 40);
             this.btnGrabStop.TabIndex = 200;
             this.btnGrabStop.Text = "GRAB STOP";
             this.btnGrabStop.UseVisualStyleBackColor = false;
@@ -423,7 +425,7 @@
             this.btnGrabStart.Location = new System.Drawing.Point(0, 0);
             this.btnGrabStart.Margin = new System.Windows.Forms.Padding(0);
             this.btnGrabStart.Name = "btnGrabStart";
-            this.btnGrabStart.Size = new System.Drawing.Size(254, 40);
+            this.btnGrabStart.Size = new System.Drawing.Size(287, 40);
             this.btnGrabStart.TabIndex = 199;
             this.btnGrabStart.Text = "GRAB START";
             this.btnGrabStart.UseVisualStyleBackColor = false;
@@ -435,14 +437,14 @@
             this.pnlTeach.Location = new System.Drawing.Point(0, 140);
             this.pnlTeach.Margin = new System.Windows.Forms.Padding(0);
             this.pnlTeach.Name = "pnlTeach";
-            this.pnlTeach.Size = new System.Drawing.Size(762, 767);
+            this.pnlTeach.Size = new System.Drawing.Size(861, 767);
             this.pnlTeach.TabIndex = 0;
             // 
             // pnlTeachingItems
             // 
             this.pnlTeachingItems.Controls.Add(this.tableLayoutPanel3);
             this.pnlTeachingItems.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pnlTeachingItems.Location = new System.Drawing.Point(1531, 0);
+            this.pnlTeachingItems.Location = new System.Drawing.Point(1730, 0);
             this.pnlTeachingItems.Margin = new System.Windows.Forms.Padding(0);
             this.pnlTeachingItems.Name = "pnlTeachingItems";
             this.pnlTeachingItems.Size = new System.Drawing.Size(144, 911);
@@ -575,7 +577,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
-            this.ClientSize = new System.Drawing.Size(1675, 911);
+            this.ClientSize = new System.Drawing.Size(1874, 911);
             this.ControlBox = false;
             this.Controls.Add(this.tlpTeachingPage);
             this.Font = new System.Drawing.Font("맑은 고딕", 11.25F, System.Drawing.FontStyle.Bold);

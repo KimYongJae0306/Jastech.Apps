@@ -68,6 +68,8 @@ namespace Jastech.Framework.Winform.Forms
 
         public UnitName UnitName { get; set; } = UnitName.Unit0;
 
+        public ICogImage ScanImage { get; set; } = null;
+
         public List<Tab> TeachingTabList { get; private set; } = null;
 
         public List<ATTInspTab> InspTabList { get; set; } = new List<ATTInspTab>();
@@ -79,8 +81,6 @@ namespace Jastech.Framework.Winform.Forms
         public bool UseDelayStart { get; set; } = false;
 
         public string TeachingImagePath { get; set; }
-
-        public double Resolution { get; set; }
 
         private CogTeachingDisplayControl Display { get; set; } = null;
 
@@ -136,7 +136,13 @@ namespace Jastech.Framework.Winform.Forms
             TeachingTabList = TeachingData.Instance().GetUnit(UnitName.ToString()).GetTabList();
             InitializeTabComboBox();
             AddControl();
-            InitailizeUI();
+            InitializeUI();
+
+            if (ScanImage != null)
+            {
+                TeachingUIManager.Instance().SetOrginCogImageBuffer(ScanImage);
+                Display.SetImage(TeachingUIManager.Instance().GetOriginCogImageBuffer(false));
+            }
 
             _isLoading = false;
 
@@ -192,7 +198,7 @@ namespace Jastech.Framework.Winform.Forms
             _currentTabNo = cbxTabList.SelectedItem as string;
         }
 
-        private void InitailizeUI()
+        private void InitializeUI()
         {
             _selectedColor = Color.FromArgb(104, 104, 104);
             _nonSelectedColor = Color.FromArgb(34, 34, 34);
@@ -679,6 +685,7 @@ namespace Jastech.Framework.Winform.Forms
 
         private void lblTracking_Click(object sender, EventArgs e)
         {
+            return;
             var display = TeachingUIManager.Instance().GetDisplay();
             if (display == null)
                 return;
@@ -722,6 +729,7 @@ namespace Jastech.Framework.Winform.Forms
                 var akkonParam = CurrentTab.AkkonParam.DeepCopy();
                 var roiList = akkonParam.GetAkkonROIList();
                 var coordinateList = RenewalAkkonRoi(roiList, panelCoordinate);
+
             }
             //if (_isPrevTrackingOn == false)
             //    SetTeachingTracking(true);
@@ -1120,7 +1128,6 @@ namespace Jastech.Framework.Winform.Forms
         {
             SaveScanImage();
         }
-
 
         private Tab _coordinateTab { get; set; } = null;
 
