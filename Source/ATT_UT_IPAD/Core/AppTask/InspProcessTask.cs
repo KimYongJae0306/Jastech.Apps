@@ -103,6 +103,8 @@ namespace ATT_UT_IPAD.Core.AppTask
                 //algorithmTool.GetAlignPanelRightOffset(tab, inspResult, out double panelRightOffsetX, out double panelRightOffsetY);
                 //SetPanelCoordinateData(panelCoordinate, inspResult, panelLeftOffsetX, panelLeftOffsetY, panelRightOffsetX, panelRightOffsetY);
 
+                SetPanelCoordinateData(panelCoordinate, inspResult, 0, 0, 0, 0);
+
                 // Excuete Coordinate
                 SetPanelCoordinateData(panelCoordinate, inspResult, 0, 0, 0, 0);
                 panelCoordinate.ExecuteCoordinate();
