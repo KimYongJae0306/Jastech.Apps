@@ -8,6 +8,7 @@ using Jastech.Apps.Winform.Settings;
 using Jastech.Framework.Algorithms.Akkon;
 using Jastech.Framework.Algorithms.Akkon.Parameters;
 using Jastech.Framework.Algorithms.Akkon.Results;
+using Jastech.Framework.Config;
 using Jastech.Framework.Imaging.Result;
 using Jastech.Framework.Imaging.VisionPro;
 using Jastech.Framework.Util;
@@ -16,6 +17,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -120,6 +122,9 @@ namespace ATT_UT_IPAD.Core.AppTask
                     var roiList = tab.AkkonParam.GetAkkonROIList();
                     var coordinateList = RenewalAkkonRoi(roiList, panelCoordinate);
 
+                    // Tracking ROI Save                  
+                    string filepath = ConfigSet.Instance().Path.Result + "Tab" + inspResult.TabNo + ".txt";
+                    SaveAkkonROI(filepath, inspResult.TabNo, coordinateList);
                     Judgement tabJudgement = Judgement.NG;
                     var leadResultList = AkkonAlgorithm.Run(inspTab.MergeMatImage, coordinateList, tab.AkkonParam.AkkonAlgoritmParam, resolution_um, ref tabJudgement);
 
@@ -531,7 +536,26 @@ namespace ATT_UT_IPAD.Core.AppTask
 
             return newList;
         }
+        private void SaveAkkonROI(string filePath, int tabNo, List<AkkonROI> roiList)
+        {
+            string path = filePath;
 
+            var akkonROIList = roiList;
+
+            using (StreamWriter streamWriter = new StreamWriter(path, false))
+            {
+                foreach (var roi in akkonROIList)
+                {
+                    string message = string.Format("{0} {1} {2} {3} {4} {5} {6} {7}",
+                                                (int)roi.LeftTopX, (int)roi.LeftTopY,
+                                                (int)roi.RightTopX, (int)roi.RightTopY,
+                                                (int)roi.RightBottomX, (int)roi.RightBottomY,
+                                                (int)roi.LeftBottomX, (int)roi.LeftBottomY);
+
+                    streamWriter.WriteLine(message);
+                }
+            }
+        }
         private void SetFpcCoordinateData(CoordinateTransform fpc, TabInspResult tabInspResult, double leftOffsetX, double leftOffsetY, double rightOffsetX, double rightOffsetY)
         {
             var teachingLeftPoint = tabInspResult.MarkResult.FpcMark.FoundedMark.Left.MaxMatchPos.ReferencePos;
