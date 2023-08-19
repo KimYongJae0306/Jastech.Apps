@@ -498,10 +498,10 @@ namespace Jastech.Apps.Winform.UI.Controls
             double judgementX = CurrentTab.AlignSpec.LeftSpecX_um / Resolution_um;
             double judgementY = CurrentTab.AlignSpec.LeftSpecY_um / Resolution_um;
 
-            tabInspResult.AlignResult.LeftX = algorithmTool.RunMainLeftAlignX(cogImage, CurrentTab, null, null, judgementX);
-            tabInspResult.AlignResult.LeftY = algorithmTool.RunMainLeftAlignY(cogImage, CurrentTab, null, null, judgementY);
-            tabInspResult.AlignResult.RightX = algorithmTool.RunMainRightAlignX(cogImage, CurrentTab, null, null, judgementX);
-            tabInspResult.AlignResult.RightY = algorithmTool.RunMainRightAlignY(cogImage, CurrentTab, null, null, judgementY);
+            tabInspResult.AlignResult.LeftX = algorithmTool.RunMainLeftAlignX(cogImage, CurrentTab, new PointF(0, 0), new PointF(0, 0), judgementX);
+            tabInspResult.AlignResult.LeftY = algorithmTool.RunMainLeftAlignY(cogImage, CurrentTab, new PointF(0, 0), new PointF(0, 0), judgementY);
+            tabInspResult.AlignResult.RightX = algorithmTool.RunMainRightAlignX(cogImage, CurrentTab, new PointF(0, 0), new PointF(0, 0), judgementX);
+            tabInspResult.AlignResult.RightY = algorithmTool.RunMainRightAlignY(cogImage, CurrentTab, new PointF(0, 0), new PointF(0, 0), judgementY);
             tabInspResult.AlignResult.CenterX = Math.Abs(tabInspResult.AlignResult.LeftX.ResultValue_pixel - tabInspResult.AlignResult.RightX.ResultValue_pixel);
 
             display.ClearGraphic();

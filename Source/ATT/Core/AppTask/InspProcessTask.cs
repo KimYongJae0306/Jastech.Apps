@@ -81,7 +81,7 @@ namespace ATT.Core.AppTask
             if (inspResult.MarkResult.Judgement != Judgement.OK)
             {
                 // 검사 실패
-                string message = string.Format("Mark Inspection NG !!! Tab_{0} / Fpc_{1}, Panel_{2}", tab.Index, inspResult.MarkResult.FpcMark.Judgement, inspResult.MarkResult.PanelMark.Judgement);
+                string message = string.Format("Mark Inspection NG !!! Tab_{0} / Fpc_{1}, Panel_{2}", tab.Index + 1, inspResult.MarkResult.FpcMark.Judgement, inspResult.MarkResult.PanelMark.Judgement);
                 WriteLog(message);
                 Logger.Debug(LogType.Inspection, message);
                 inspResult.AkkonResult = new AkkonResult();
@@ -149,7 +149,7 @@ namespace ATT.Core.AppTask
             if (inspResult.MarkResult.Judgement != Judgement.OK)
             {
                 // 검사 실패
-                string message = string.Format("Mark Inspection NG !!! Tab_{0} / Fpc_{1}, Panel_{2}", tab.Index, inspResult.MarkResult.FpcMark.Judgement, inspResult.MarkResult.PanelMark.Judgement);
+                string message = string.Format("Mark Inspection NG !!! Tab_{0} / Fpc_{1}, Panel_{2}", tab.Index + 1, inspResult.MarkResult.FpcMark.Judgement, inspResult.MarkResult.PanelMark.Judgement);
                 WriteLog(message);
                 Logger.Debug(LogType.Inspection, message);
                 inspResult.AlignResult = new TabAlignResult();

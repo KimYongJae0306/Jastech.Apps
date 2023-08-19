@@ -679,10 +679,50 @@ namespace Jastech.Framework.Winform.Forms
 
         private void lblTracking_Click(object sender, EventArgs e)
         {
-            //var display = TeachingUIManager.Instance().GetDisplay();
-            //if (display == null)
-            //    return;
+            var display = TeachingUIManager.Instance().GetDisplay();
+            if (display == null)
+                return;
 
+            ICogImage cogImage = display.GetImage();
+            if (cogImage == null)
+                return;
+
+            if (_tabInspResult != null)
+            {
+                _tabInspResult.Dispose();
+                _tabInspResult = null;
+            }
+
+            _tabInspResult = new TabInspResult();
+            _tabInspResult.MarkResult.FpcMark = _algorithmTool.RunFpcMark(cogImage, CurrentTab, UseAlignMark);
+            _tabInspResult.MarkResult.PanelMark = _algorithmTool.RunPanelMark(cogImage, CurrentTab, UseAlignMark);
+
+            if (_tabInspResult.MarkResult.Judgement != Judgement.OK)
+            {
+                // 검사 실패
+                string message = string.Format("Mark Inspection NG !!! Tab_{0} / Fpc_{1}, Panel_{2}", CurrentTab.Index + 1,
+                    _tabInspResult.MarkResult.FpcMark.Judgement, _tabInspResult.MarkResult.PanelMark.Judgement);
+
+                MessageConfirmForm form = new MessageConfirmForm();
+                form.Message = message;
+                form.ShowDialog();
+
+                _tabInspResult.Dispose();
+                _tabInspResult = null;
+                return;
+            }
+
+            if (_displayType == DisplayType.Akkon)
+            {
+                CoordinateTransform panelCoordinate = new CoordinateTransform();
+
+                SetPanelCoordinateData(panelCoordinate, _tabInspResult);
+                panelCoordinate.ExecuteCoordinate();
+
+                var akkonParam = CurrentTab.AkkonParam.DeepCopy();
+                var roiList = akkonParam.GetAkkonROIList();
+                var coordinateList = RenewalAkkonRoi(roiList, panelCoordinate);
+            }
             //if (_isPrevTrackingOn == false)
             //    SetTeachingTracking(true);
             //else
@@ -692,6 +732,47 @@ namespace Jastech.Framework.Winform.Forms
             //    AlignControl.DrawROI();
             //else if (_displayType == DisplayType.Akkon)
             //    AkkonControl.DrawROI();
+        }
+
+        private void SetPanelCoordinateData(CoordinateTransform panel, TabInspResult tabInspResult)
+        {
+            PointF teachingLeftPoint = tabInspResult.MarkResult.PanelMark.FoundedMark.Left.MaxMatchPos.ReferencePos;
+            PointF searchedLeftPoint = tabInspResult.MarkResult.PanelMark.FoundedMark.Left.MaxMatchPos.FoundPos;
+
+            PointF teachingRightPoint = tabInspResult.MarkResult.PanelMark.FoundedMark.Right.MaxMatchPos.ReferencePos;
+            PointF searchedRightPoint = tabInspResult.MarkResult.PanelMark.FoundedMark.Right.MaxMatchPos.FoundPos;
+
+            panel.SetReferenceData(teachingLeftPoint, teachingRightPoint);
+            panel.SetTargetData(searchedLeftPoint, searchedRightPoint);
+        }
+
+        private List<AkkonROI> RenewalAkkonRoi(List<AkkonROI> roiList, CoordinateTransform panelCoordinate)
+        {
+            List<AkkonROI> newList = new List<AkkonROI>();
+
+            foreach (var item in roiList)
+            {
+                PointF leftTop = item.GetLeftTopPoint();
+                PointF rightTop = item.GetRightTopPoint();
+                PointF leftBottom = item.GetLeftBottomPoint();
+                PointF rightBottom = item.GetRightBottomPoint();
+
+                var newLeftTop = panelCoordinate.GetCoordinate(leftTop);
+                var newRightTop = panelCoordinate.GetCoordinate(rightTop);
+                var newLeftBottom = panelCoordinate.GetCoordinate(leftBottom);
+                var newRightBottom = panelCoordinate.GetCoordinate(rightBottom);
+
+                AkkonROI akkonRoi = new AkkonROI();
+
+                akkonRoi.SetLeftTopPoint(newLeftTop);
+                akkonRoi.SetRightTopPoint(newRightTop);
+                akkonRoi.SetLeftBottomPoint(newLeftBottom);
+                akkonRoi.SetRightBottomPoint(newRightBottom);
+
+                newList.Add(akkonRoi);
+            }
+
+            return newList;
         }
 
         private bool SetTeachingTracking(bool isOn)
@@ -720,7 +801,7 @@ namespace Jastech.Framework.Winform.Forms
             if (_tabInspResult.MarkResult.Judgement != Judgement.OK)
             {
                 // 검사 실패
-                string message = string.Format("Mark Inspection NG !!! Tab_{0} / Fpc_{1}, Panel_{2}", CurrentTab.Index,
+                string message = string.Format("Mark Inspection NG !!! Tab_{0} / Fpc_{1}, Panel_{2}", CurrentTab.Index + 1,
                     _tabInspResult.MarkResult.FpcMark.Judgement, _tabInspResult.MarkResult.PanelMark.Judgement);
 
                 MessageConfirmForm form = new MessageConfirmForm();
@@ -781,7 +862,7 @@ namespace Jastech.Framework.Winform.Forms
             if (tabInspResult.MarkResult.Judgement != Judgement.OK)
             {
                 // 검사 실패
-                string message = string.Format("Mark Inspection NG !!! Tab_{0} / Fpc_{1}, Panel_{2}", CurrentTab.Index,
+                string message = string.Format("Mark Inspection NG !!! Tab_{0} / Fpc_{1}, Panel_{2}", CurrentTab.Index + 1,
                     tabInspResult.MarkResult.FpcMark.Judgement, tabInspResult.MarkResult.PanelMark.Judgement);
 
                 MessageConfirmForm form = new MessageConfirmForm();
