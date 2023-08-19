@@ -736,11 +736,14 @@ namespace Jastech.Framework.Winform.Forms
             {
                 lblTracking.BackColor = Color.FromArgb(104, 104, 104);
 
-                //coordinate.SetAlignFpcLeftOffset(CurrentTab, markResult.FpcMark.FoundedMark.Left);
-                //coordinate.SetAlignFpcRightOffset(CurrentTab, markResult.FpcMark.FoundedMark.Right);
+                if (_displayType != DisplayType.Akkon)
+                {
+                    coordinate.SetAlignFpcLeftOffset(CurrentTab, markResult.FpcMark.FoundedMark.Left);
+                    coordinate.SetAlignFpcRightOffset(CurrentTab, markResult.FpcMark.FoundedMark.Right);
 
-                //coordinate.SetAlignPanelLeftOffset(CurrentTab, markResult.PanelMark.FoundedMark.Left);
-                //coordinate.SetAlignPanelRightOffset(CurrentTab, markResult.PanelMark.FoundedMark.Right);
+                    coordinate.SetAlignPanelLeftOffset(CurrentTab, markResult.PanelMark.FoundedMark.Left);
+                    coordinate.SetAlignPanelRightOffset(CurrentTab, markResult.PanelMark.FoundedMark.Right);
+                }
 
                 coordinate.SetFpcTransform(markResult.FpcMark.FoundedMark);
                 coordinate.SetPanelTransform(markResult.PanelMark.FoundedMark);

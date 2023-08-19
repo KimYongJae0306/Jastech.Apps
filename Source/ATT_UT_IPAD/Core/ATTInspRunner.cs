@@ -317,6 +317,8 @@ namespace ATT_UT_IPAD.Core
                     AlignLAFCtrl.SetTrackingOnOFF(true);
                     WriteLog("Align LAF Tracking ON.");
 
+                    Thread.Sleep(300);
+
                     SeqStep = SeqStep.SEQ_BUFFER_INIT;
                     break;
 

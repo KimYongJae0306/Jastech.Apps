@@ -85,7 +85,7 @@ namespace ATT_UT_IPAD.Core.AppTask
             // Create Coordinate Object
             CoordinateTransform panelCoordinate = new CoordinateTransform();
 
-            algorithmTool.MainMarkInspect(inspTab.MergeCogImage, tab, ref inspResult, true);
+            algorithmTool.MainMarkInspect(inspTab.MergeCogImage, tab, ref inspResult, false);
             //algorithmTool.MainMarkInspect(inspTab.MergeCogImage, tab, ref inspResult, false);
 
             if (inspResult.MarkResult.Judgement != Judgement.OK)
@@ -99,11 +99,12 @@ namespace ATT_UT_IPAD.Core.AppTask
             else
             {
                 // Set Coordinate Params
-                algorithmTool.GetAlignPanelLeftOffset(tab, inspResult, out double panelLeftOffsetX, out double panelLeftOffsetY);
-                algorithmTool.GetAlignPanelRightOffset(tab, inspResult, out double panelRightOffsetX, out double panelRightOffsetY);
-                SetPanelCoordinateData(panelCoordinate, inspResult, panelLeftOffsetX, panelLeftOffsetY, panelRightOffsetX, panelRightOffsetY);
+                //algorithmTool.GetAlignPanelLeftOffset(tab, inspResult, out double panelLeftOffsetX, out double panelLeftOffsetY);
+                //algorithmTool.GetAlignPanelRightOffset(tab, inspResult, out double panelRightOffsetX, out double panelRightOffsetY);
+                //SetPanelCoordinateData(panelCoordinate, inspResult, panelLeftOffsetX, panelLeftOffsetY, panelRightOffsetX, panelRightOffsetY);
 
                 // Excuete Coordinate
+                SetPanelCoordinateData(panelCoordinate, inspResult, 0, 0, 0, 0);
                 panelCoordinate.ExecuteCoordinate();
 
                 var lineCamera = LineCameraManager.Instance().GetLineCamera("AkkonCamera").Camera;
@@ -183,7 +184,7 @@ namespace ATT_UT_IPAD.Core.AppTask
                 algorithmTool.GetAlignPanelRightOffset(tab, tabInspResult, out double panelRightOffsetX, out double panelRightOffsetY);
                 SetPanelCoordinateData(panelCoordinate, tabInspResult, panelLeftOffsetX, panelLeftOffsetY, panelRightOffsetX, panelRightOffsetY);
 
-                // Excuete Coordinate
+                // Execute Coordinate
                 fpcCoordinate.ExecuteCoordinate();
                 panelCoordinate.ExecuteCoordinate();
 
@@ -201,6 +202,7 @@ namespace ATT_UT_IPAD.Core.AppTask
                     {
                         var leftAlignX = tabInspResult.AlignResult.LeftX;
                         message = string.Format("Left AlignX Inspection NG !!! Tab_{0} / Fpc_{1}, Panel_{2}", tab.Index, leftAlignX.Fpc.Judgement, leftAlignX.Panel.Judgement);
+                        WriteLog(message, true);
                         Logger.Debug(LogType.Inspection, message);
                     }
 
@@ -209,6 +211,7 @@ namespace ATT_UT_IPAD.Core.AppTask
                     {
                         var leftAlignY = tabInspResult.AlignResult.LeftY;
                         message = string.Format("Left AlignY Inspection NG !!! Tab_{0} / Fpc_{1}, Panel_{2}", tab.Index, leftAlignY.Fpc.Judgement, leftAlignY.Panel.Judgement);
+                        WriteLog(message, true);
                         Logger.Debug(LogType.Inspection, message);
                     }
 
@@ -217,6 +220,7 @@ namespace ATT_UT_IPAD.Core.AppTask
                     {
                         var rightAlignX = tabInspResult.AlignResult.RightX;
                         message = string.Format("Right AlignX Inspection NG !!! Tab_{0} / Fpc_{1}, Panel_{2}", tab.Index, rightAlignX.Fpc.Judgement, rightAlignX.Panel.Judgement);
+                        WriteLog(message, true);
                         Logger.Debug(LogType.Inspection, message);
                     }
 
@@ -225,6 +229,7 @@ namespace ATT_UT_IPAD.Core.AppTask
                     {
                         var rightAlignY = tabInspResult.AlignResult.RightY;
                         message = string.Format("Right AlignY Inspection NG !!! Tab_{0} / Fpc_{1}, Panel_{2}", tab.Index, rightAlignY.Fpc.Judgement, rightAlignY.Panel.Judgement);
+                        WriteLog(message, true);
                         Logger.Debug(LogType.Inspection, message);
                     }
 
