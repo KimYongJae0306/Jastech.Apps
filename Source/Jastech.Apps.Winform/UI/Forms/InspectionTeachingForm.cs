@@ -679,19 +679,19 @@ namespace Jastech.Framework.Winform.Forms
 
         private void lblTracking_Click(object sender, EventArgs e)
         {
-            var display = TeachingUIManager.Instance().GetDisplay();
-            if (display == null)
-                return;
+            //var display = TeachingUIManager.Instance().GetDisplay();
+            //if (display == null)
+            //    return;
 
-            if (_isPrevTrackingOn == false)
-                SetTeachingTracking(true);
-            else
-                SetTeachingTracking(false);
+            //if (_isPrevTrackingOn == false)
+            //    SetTeachingTracking(true);
+            //else
+            //    SetTeachingTracking(false);
 
-            if (_displayType == DisplayType.Align)
-                AlignControl.DrawROI();
-            else if (_displayType == DisplayType.Akkon)
-                AkkonControl.DrawROI();
+            //if (_displayType == DisplayType.Align)
+            //    AlignControl.DrawROI();
+            //else if (_displayType == DisplayType.Akkon)
+            //    AkkonControl.DrawROI();
         }
 
         private bool SetTeachingTracking(bool isOn)

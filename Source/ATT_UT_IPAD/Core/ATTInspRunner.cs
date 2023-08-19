@@ -1125,10 +1125,10 @@ namespace ATT_UT_IPAD.Core
                 }
                 if (result.Judgement == Judgement.NG)
                 {
-                    CvInvoke.Line(colorMat, leftTop, leftBottom, redColor, 3);
-                    CvInvoke.Line(colorMat, leftTop, rightTop, redColor, 3);
-                    CvInvoke.Line(colorMat, rightTop, rightBottom, redColor, 3);
-                    CvInvoke.Line(colorMat, rightBottom, leftBottom, redColor, 3);
+                    CvInvoke.Line(colorMat, leftTop, leftBottom, redColor, 1);
+                    CvInvoke.Line(colorMat, leftTop, rightTop, redColor, 1);
+                    CvInvoke.Line(colorMat, rightTop, rightBottom, redColor, 1);
+                    CvInvoke.Line(colorMat, rightBottom, leftBottom, redColor, 1);
                 }
                 int blobCount = 0;
                 foreach (var blob in result.BlobList)
