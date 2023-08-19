@@ -324,6 +324,7 @@ namespace ATT_UT_IPAD.Core
 
                 case SeqStep.SEQ_BUFFER_INIT:
                     InitializeBuffer();
+                    //SystemManager.Instance().ReleaseLastScanImage();
                     WriteLog("Initialize Buffer.");
 
                     AppsInspResult.Instance().ClearResult();

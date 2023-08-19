@@ -2,6 +2,7 @@
 using ATT_UT_IPAD.Core.Data;
 using ATT_UT_IPAD.Properties;
 using ATT_UT_IPAD.UI.Pages;
+using Cognex.VisionPro;
 using Jastech.Apps.Structure;
 using Jastech.Apps.Winform;
 using Jastech.Apps.Winform.Core;
@@ -52,6 +53,8 @@ namespace ATT_UT_IPAD
 
         private Queue<string> VirtualImagePathQueue = new Queue<string>();
 
+        private Queue<ICogImage> AlignLastScanImageQueue = new Queue<ICogImage>();
+        private Queue<ICogImage> AkkonLastScanImageQueue = new Queue<ICogImage>();
         public ATTInspModelService ATTInspModelService { get; set; } = new ATTInspModelService();
         #endregion
 
@@ -426,6 +429,50 @@ namespace ATT_UT_IPAD
         {
             lock (VirtualImagePathQueue)
                 VirtualImagePathQueue.Enqueue(filePath);
+        }
+
+        public void SetAkkonLastScanImage(ICogImage cogImage)
+        {
+            lock (AkkonLastScanImageQueue)
+                AkkonLastScanImageQueue.Enqueue(cogImage);
+        }
+
+        public ICogImage GetAkkonLastScanImage()
+        {
+            lock (AkkonLastScanImageQueue)
+            {
+                if (AkkonLastScanImageQueue.Count > 0)
+                    return AkkonLastScanImageQueue.Dequeue();
+                else
+                    return null;
+            }
+        }
+
+        public void ReleaseAkkonLastScanImage()
+        {
+            AkkonLastScanImageQueue.Clear();
+        }
+
+        public void SetAlignLastScanImage(ICogImage cogImage)
+        {
+            lock (AlignLastScanImageQueue)
+                AlignLastScanImageQueue.Enqueue(cogImage);
+        }
+
+        public ICogImage GetAlignLastScanImage()
+        {
+            lock (AlignLastScanImageQueue)
+            {
+                if (AlignLastScanImageQueue.Count > 0)
+                    return AlignLastScanImageQueue.Dequeue();
+                else
+                    return null;
+            }
+        }
+
+        public void ReleaseAlignLastScanImage()
+        {
+            AlignLastScanImageQueue.Clear();
         }
 
         private void StartVirtualInspTask()

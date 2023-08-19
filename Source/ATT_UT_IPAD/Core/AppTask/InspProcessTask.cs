@@ -84,6 +84,8 @@ namespace ATT_UT_IPAD.Core.AppTask
             inspResult.Image = inspTab.MergeMatImage;
             inspResult.CogImage = inspTab.MergeCogImage;
 
+            //SystemManager.Instance().SetAkkonLastScanImage(inspTab.MergeCogImage);
+
             // Create Coordinate Object
             CoordinateTransform panelCoordinate = new CoordinateTransform();
 
@@ -163,6 +165,8 @@ namespace ATT_UT_IPAD.Core.AppTask
             tabInspResult.TabNo = inspTab.TabScanBuffer.TabNo;
             tabInspResult.Image = inspTab.MergeMatImage;
             tabInspResult.CogImage = inspTab.MergeCogImage;
+
+            //SystemManager.Instance().SetAlignLastScanImage(inspTab.MergeCogImage);
 
             algorithmTool.MainMarkInspect(inspTab.MergeCogImage, tab, ref tabInspResult, true);
 
