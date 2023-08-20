@@ -324,6 +324,7 @@ namespace ATT_UT_IPAD.Core
 
                 case SeqStep.SEQ_BUFFER_INIT:
                     InitializeBuffer();
+                    //SystemManager.Instance().ReleaseLastScanImage();
                     WriteLog("Initialize Buffer.");
 
                     AppsInspResult.Instance().ClearResult();
@@ -752,11 +753,11 @@ namespace ATT_UT_IPAD.Core
                     AppsInspResult.Instance().Cell_ID,                                                             // Panel ID
                     (tabInspResult.TabNo + 1).ToString(),                                                               // Tab
                     judgement.ToString(),                       // Judge
-                    CheckResultValue(alignResult.LeftX).ToString("F2"),          // Left Align X
-                    CheckResultValue(alignResult.LeftY).ToString("F2"),          // Left Align Y
+                    CheckAlignResultValue(alignResult.LeftX).ToString("F2"),          // Left Align X
+                    CheckAlignResultValue(alignResult.LeftY).ToString("F2"),          // Left Align Y
                     alignResult.CenterX.ToString("F2"),                         // Center Align X
-                    CheckResultValue(alignResult.RightX).ToString("F2"),         // Right Align X
-                    CheckResultValue(alignResult.RightY).ToString("F2"),         // Right Align Y     // Right Align Y
+                    CheckAlignResultValue(alignResult.RightX).ToString("F2"),         // Right Align X
+                    CheckAlignResultValue(alignResult.RightY).ToString("F2"),         // Right Align Y     // Right Align Y
                 };
 
                 dataList.Add(tabData);
@@ -818,6 +819,8 @@ namespace ATT_UT_IPAD.Core
                 var akkonResult = AppsInspResult.Instance().GetAkkon(tabNo);
                 var positions = new string[] { "Left", "Center", "Right" };
 
+                //akkonResult.AkkonResult.LeadResultList.OrderBy(x => x.Id);dsfasdfd
+
                 // Add header strings
                 var header = new List<string>
                 {
@@ -877,11 +880,11 @@ namespace ATT_UT_IPAD.Core
                 {
                     AppsInspResult.Instance().Cell_ID,
                     $"{AppsInspResult.Instance().EndInspTime:HH:mm:ss}",
-                    $"{CheckResultValue(alignResult.LeftX):F2}",
-                    $"{CheckResultValue(alignResult.LeftY):F2}",
+                    $"{CheckAlignResultValue(alignResult.LeftX):F2}",
+                    $"{CheckAlignResultValue(alignResult.LeftY):F2}",
                     $"{alignResult.CenterX:F2}",
-                    $"{CheckResultValue(alignResult.RightX):F2}",
-                    $"{CheckResultValue(alignResult.RightY):F2}",
+                    $"{CheckAlignResultValue(alignResult.RightX):F2}",
+                    $"{CheckAlignResultValue(alignResult.RightY):F2}",
                 };
 
                 if (header.Count != body.Count)
@@ -957,11 +960,11 @@ namespace ATT_UT_IPAD.Core
                     (tabNo + 5).ToString(),                                                         // Strength Min
                     (tabNo + 6).ToString("F2"),                                                     // Strength Avg
 
-                    CheckResultValue(alignResult.LeftX).ToString("F2"),    // Left Align X
-                    CheckResultValue(alignResult.LeftY).ToString("F2"),    // Left Align Y
+                    CheckAlignResultValue(alignResult.LeftX).ToString("F2"),    // Left Align X
+                    CheckAlignResultValue(alignResult.LeftY).ToString("F2"),    // Left Align Y
                     alignResult.CenterX.ToString("F2"),                         // Center Align X
-                    CheckResultValue(alignResult.RightX).ToString("F2"),   // Right Align X
-                    CheckResultValue(alignResult.RightY).ToString("F2"),   // Right Align Y
+                    CheckAlignResultValue(alignResult.RightX).ToString("F2"),   // Right Align X
+                    CheckAlignResultValue(alignResult.RightY).ToString("F2"),   // Right Align Y
 
                     (tabNo + 7).ToString(),                                                         // ACF Head
                     (tabNo + 8).ToString(),                                                         // Pre Head
@@ -977,12 +980,13 @@ namespace ATT_UT_IPAD.Core
             CSVHelper.WriteData(csvFile, dataList);
         }
 
-        private float CheckResultValue(AlignResult alignResult)
+        private float CheckAlignResultValue(AlignResult alignResult)
         {
+            float resolution = AlignCamera.Camera.PixelResolution_um / AlignCamera.Camera.LensScale;
             if (alignResult == null)
                 return 0.0F;
             else
-                return alignResult.ResultValue_pixel;
+                return alignResult.ResultValue_pixel * resolution;
         }
 
         private Axis GetAxis(AxisHandlerName axisHandlerName, AxisName axisName)

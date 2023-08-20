@@ -49,9 +49,9 @@ namespace ATT_UT_IPAD.UI.Forms
 
         private MotionParameterVariableControl XVariableControl = null;
 
-        private MotionParameterVariableControl Z0VariableControl = null;
+        //private MotionParameterVariableControl Z0VariableControl = null;
 
-        private MotionParameterVariableControl Z1VariableControl = null;
+        //private MotionParameterVariableControl Z1VariableControl = null;
 
         public TeachingPosType TeachingPositionType = TeachingPosType.Standby;
 
@@ -174,11 +174,11 @@ namespace ATT_UT_IPAD.UI.Forms
 
             lblTargetPositionZ0.Text = param.GetTargetPosition(AxisName.Z0).ToString();
             lblTeachedCenterOfGravityZ0.Text = param.GetCenterOfGravity(AxisName.Z0).ToString();
-            Z0VariableControl.UpdateData(param.GetMovingParams(AxisName.Z0));
+            //Z0VariableControl.UpdateData(param.GetMovingParams(AxisName.Z0));
 
             lblTargetPositionZ1.Text = param.GetTargetPosition(AxisName.Z1).ToString();
             lblTeachedCenterOfGravityZ1.Text = param.GetCenterOfGravity(AxisName.Z1).ToString();
-            Z1VariableControl.UpdateData(param.GetMovingParams(AxisName.Z1));
+            //Z1VariableControl.UpdateData(param.GetMovingParams(AxisName.Z1));
         }
 
         public void SetTeachingPosition(List<TeachingInfo> teacingPositionList)
@@ -193,15 +193,15 @@ namespace ATT_UT_IPAD.UI.Forms
             XVariableControl.SetAxis(AxisHandler.GetAxis(AxisName.X));
             tlpVariableParameter.Controls.Add(XVariableControl);
 
-            Z0VariableControl = new MotionParameterVariableControl();
-            Z0VariableControl.Dock = DockStyle.Fill;
-            Z0VariableControl.SetAxis(AxisHandler.GetAxis(AxisName.Z0));
-            tlpVariableParameter.Controls.Add(Z0VariableControl);
+            //Z0VariableControl = new MotionParameterVariableControl();
+            //Z0VariableControl.Dock = DockStyle.Fill;
+            //Z0VariableControl.SetAxis(AxisHandler.GetAxis(AxisName.Z0));
+            //tlpVariableParameter.Controls.Add(Z0VariableControl);
 
-            Z1VariableControl = new MotionParameterVariableControl();
-            Z1VariableControl.Dock = DockStyle.Fill;
-            Z1VariableControl.SetAxis(AxisHandler.GetAxis(AxisName.Z1));
-            tlpVariableParameter.Controls.Add(Z1VariableControl);
+            //Z1VariableControl = new MotionParameterVariableControl();
+            //Z1VariableControl.Dock = DockStyle.Fill;
+            //Z1VariableControl.SetAxis(AxisHandler.GetAxis(AxisName.Z1));
+            //tlpVariableParameter.Controls.Add(Z1VariableControl);
         }
 
         private void AddJogControl()
@@ -413,30 +413,36 @@ namespace ATT_UT_IPAD.UI.Forms
             var posData = TeachingData.Instance().GetUnit(UnitName.ToString()).GetTeachingInfo(TeachingPositionType);
 
             posData.SetMovingParams(AxisName.X, XVariableControl.GetCurrentData());
-            posData.SetMovingParams(AxisName.Z0, Z0VariableControl.GetCurrentData());
-            posData.SetMovingParams(AxisName.Z1, Z1VariableControl.GetCurrentData());
+            //posData.SetMovingParams(AxisName.Z0, Z0VariableControl.GetCurrentData());
+            //posData.SetMovingParams(AxisName.Z1, Z1VariableControl.GetCurrentData());
         }
 
         private void Save()
         {
-            UpdateCurrentData();
+            MessageYesNoForm yesNoForm = new MessageYesNoForm();
+            yesNoForm.Message = "Teaching data will change.\nDo you agree?";
 
-            // Save AxisHandler
-            var axisHandler = MotionManager.Instance().GetAxisHandler(AxisHandlerName.Handler0);
-            MotionManager.Instance().Save(axisHandler);
+            if (yesNoForm.ShowDialog() == DialogResult.Yes)
+            {
+                UpdateCurrentData();
 
-            // Save Model
-            var model = ModelManager.Instance().CurrentModel as AppsInspModel;
-            //model.SetUnitList(TeachingData.Instance().UnitList);
-            model.SetTeachingList(TeachingPositionList);
+                // Save AxisHandler
+                var axisHandler = MotionManager.Instance().GetAxisHandler(AxisHandlerName.Handler0);
+                MotionManager.Instance().Save(axisHandler);
 
-            string fileName = System.IO.Path.Combine(ConfigSet.Instance().Path.Model, model.Name, InspModel.FileName);
+                // Save Model
+                var model = ModelManager.Instance().CurrentModel as AppsInspModel;
+                //model.SetUnitList(TeachingData.Instance().UnitList);
+                model.SetTeachingList(TeachingPositionList);
 
-            InspModelService?.Save(fileName, model);
+                string fileName = System.IO.Path.Combine(ConfigSet.Instance().Path.Model, model.Name, InspModel.FileName);
 
-            MessageConfirmForm form = new MessageConfirmForm();
-            form.Message = "Save Motion Data Completed.";
-            form.ShowDialog();
+                InspModelService?.Save(fileName, model);
+
+                MessageConfirmForm form = new MessageConfirmForm();
+                form.Message = "Save Motion Data Completed.";
+                form.ShowDialog();
+            }
         }
 
         private void lblTargetPositionX_Click(object sender, EventArgs e)

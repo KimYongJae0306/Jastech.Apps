@@ -237,6 +237,7 @@ namespace ATT_UT_IPAD.UI.Controls
                         }
                     }
                 }
+
                 if (leftAlignX.Panel.CogAlignResult.Count() > 0)
                 {
                     foreach (var panel in leftAlignX.Panel.CogAlignResult)

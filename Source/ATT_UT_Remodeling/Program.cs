@@ -1,7 +1,6 @@
 ﻿using Jastech.Apps.Winform;
 using Jastech.Apps.Winform.Core.Calibrations;
 using Jastech.Apps.Winform.Settings;
-using Jastech.Apps.Winform.UI.Forms;
 using Jastech.Framework.Comm;
 using Jastech.Framework.Config;
 using Jastech.Framework.Device.Cameras;
@@ -18,7 +17,6 @@ using Jastech.Framework.Matrox;
 using Jastech.Framework.Util.Helper;
 using Jastech.Framework.Winform.Forms;
 using System;
-using System.Collections.Generic;
 using System.Threading;
 using System.Windows.Forms;
 
@@ -87,7 +85,7 @@ namespace ATT_UT_Remodeling
                 config.Add(areaCamera);
 
                 // LineScanCamera
-                var lineCamera = new CameraVirtual("LineCamera", 3072, 1024, ColorFormat.Gray, SensorType.Line);
+                var lineCamera = new CameraVirtual("LineCamera", 6560, 1024, ColorFormat.Gray, SensorType.Line);
                 lineCamera.OffsetX = 0;
                 lineCamera.PixelResolution_um = 3.5F;
                 lineCamera.LensScale = 10F;
@@ -124,12 +122,13 @@ namespace ATT_UT_Remodeling
                 config.Add(areaScan);
 
                 // LineScanCamera
-                int lineCameraWidth = 6560;
-                int lineCameraOffsetX = 0;
+                int lineCameraWidth = 3072;
+                int lineCameraOffsetX = 1536;
                 if (CheckCameraProperty(ref lineCameraWidth, ref lineCameraOffsetX, 6560) == true)
                 {
                     var lineCamera = new CameraMil("LineCamera", lineCameraWidth, 1024, ColorFormat.Gray, SensorType.Line);
                     lineCamera.OffsetX = lineCameraOffsetX;
+                    lineCamera.EnableReverseX = true;
                     lineCamera.MilSystemType = MilSystemType.Rapixo;
                     lineCamera.TriggerMode = TriggerMode.Hardware;
                     lineCamera.TriggerSource = (int)MilCxpTriggerSource.Cxp;
@@ -152,7 +151,11 @@ namespace ATT_UT_Remodeling
                 // LAF
                 var laf = new NuriOneLAFCtrl("Laf");
                 laf.SerialPortComm = new SerialPortComm("COM1", 9600);
-
+                laf.AxisName = AxisName.Z0.ToString();
+                laf.HomePosition_mm = 0.02;
+                laf.ResolutionAxisZ = 10000.0;
+                laf.MaxSppedAxisZ = 20;
+                laf.AccDec = 15;
                 config.Add(laf);
 
                 // Light1

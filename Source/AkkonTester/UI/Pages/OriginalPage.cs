@@ -112,10 +112,10 @@ namespace AkkonTester.UI.Pages
 
         private void txtAkkonRoiOffset_KeyPress(object sender, KeyPressEventArgs e)
         {
-            if (!(char.IsDigit(e.KeyChar) || e.KeyChar == Convert.ToChar(Keys.Back)))    //숫자와 백스페이스를 제외한 나머지를 바로 처리             
-            {
-                e.Handled = true;
-            }
+            //if (!(char.IsDigit(e.KeyChar) || e.KeyChar == Convert.ToChar(Keys.Back)))    //숫자와 백스페이스를 제외한 나머지를 바로 처리             
+            //{
+            //    e.Handled = true;
+            //}
         }
 
         private void btnLoadRoiData_Click(object sender, EventArgs e)
@@ -145,7 +145,7 @@ namespace AkkonTester.UI.Pages
                 lblMessage.Text = "Akkon ROI Data is exist.";
 
                 int offsetX = Convert.ToInt32(txtAkkonRoiOffsetX.Text);
-                int offsetY = Convert.ToInt32(txtAkkonRoiOffsetX.Text);
+                int offsetY = Convert.ToInt32(txtAkkonRoiOffsetY.Text);
                 var roiList = AppsHelper.ReadROI(roiPath, offsetX, offsetY);
 
                 SystemManager.Instance().CurrentAkkonROI.Clear();

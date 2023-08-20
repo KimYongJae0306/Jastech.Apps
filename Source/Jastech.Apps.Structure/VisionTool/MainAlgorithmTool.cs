@@ -107,86 +107,75 @@ namespace Jastech.Apps.Structure.VisionTool
             tabInspResult.MarkResult.PanelMark = RunPanelMark(cogImage, tab, useAlignMark);
         }
 
-        public AlignResult RunMainLeftAlignX(ICogImage cogImage, Tab tab, CoordinateTransform fpcCoordinate, CoordinateTransform panelCoordinate, double judgementX_pixel)
+        public AlignResult RunMainLeftAlignX(ICogImage cogImage, Tab tab, PointF fpcOffset, PointF panelOffset, double judgementX_pixel)
         {
             var fpcParam = tab.GetAlignParam(ATTTabAlignName.LeftFPCX).DeepCopy();
             var panelParam = tab.GetAlignParam(ATTTabAlignName.LeftPanelX).DeepCopy();
 
-            if (fpcCoordinate != null && panelCoordinate != null)
-            {
-                var calcFpcRegion = CoordinateRectangle(fpcParam.CaliperParams.GetRegion() as CogRectangleAffine, fpcCoordinate);
-                var calcPanelRegion = CoordinateRectangle(panelParam.CaliperParams.GetRegion() as CogRectangleAffine, panelCoordinate);
+            var calcFpcRegion = VisionProShapeHelper.AddOffsetToCogRectAffine(fpcParam.CaliperParams.GetRegion() as CogRectangleAffine, fpcOffset);
+            var calcPanelRegion = VisionProShapeHelper.AddOffsetToCogRectAffine(panelParam.CaliperParams.GetRegion() as CogRectangleAffine, panelOffset);
 
-                fpcParam.CaliperParams.SetRegion(calcFpcRegion);
-                panelParam.CaliperParams.SetRegion(calcPanelRegion);
-            }
+            fpcParam.CaliperParams.SetRegion(calcFpcRegion);
+            panelParam.CaliperParams.SetRegion(calcPanelRegion);
 
             var result = RunMainAlignX(cogImage, fpcParam, panelParam, judgementX_pixel);
             return result;
         }
 
-        public AlignResult RunMainLeftAlignY(ICogImage cogImage, Tab tab, CoordinateTransform fpcCoordinate, CoordinateTransform panelCoordinate, double judgementY_pixel)
+        public AlignResult RunMainLeftAlignY(ICogImage cogImage, Tab tab, PointF fpcOffset, PointF panelOffset, double judgementY_pixel)
         {
             var fpcParam = tab.GetAlignParam(ATTTabAlignName.LeftFPCY).DeepCopy();
             var panelParam = tab.GetAlignParam(ATTTabAlignName.LeftPanelY).DeepCopy();
 
-            if (fpcCoordinate != null && panelCoordinate != null)
-            {
-                var calcFpcRegion = CoordinateRectangle(fpcParam.CaliperParams.GetRegion() as CogRectangleAffine, fpcCoordinate);
-                var calcPanelRegion = CoordinateRectangle(panelParam.CaliperParams.GetRegion() as CogRectangleAffine, panelCoordinate);
+            var calcFpcRegion = VisionProShapeHelper.AddOffsetToCogRectAffine(fpcParam.CaliperParams.GetRegion() as CogRectangleAffine, fpcOffset);
+            var calcPanelRegion = VisionProShapeHelper.AddOffsetToCogRectAffine(panelParam.CaliperParams.GetRegion() as CogRectangleAffine, panelOffset);
 
-                fpcParam.CaliperParams.SetRegion(calcFpcRegion);
-                panelParam.CaliperParams.SetRegion(calcPanelRegion);
-            }
+            fpcParam.CaliperParams.SetRegion(calcFpcRegion);
+            panelParam.CaliperParams.SetRegion(calcPanelRegion);
 
             var result = RunMainAlignY(cogImage, fpcParam, panelParam, judgementY_pixel);
             return result;
         }
 
-        public AlignResult RunMainRightAlignX(ICogImage cogImage, Tab tab, CoordinateTransform fpcCoordinate, CoordinateTransform panelCoordinate, double judgementX_pixel)
+        public AlignResult RunMainRightAlignX(ICogImage cogImage, Tab tab, PointF fpcOffset, PointF panelOffset, double judgementX_pixel)
         {
             var fpcParam = tab.GetAlignParam(ATTTabAlignName.RightFPCX).DeepCopy();
             var panelParam = tab.GetAlignParam(ATTTabAlignName.RightPanelX).DeepCopy();
 
-            if (fpcCoordinate != null && panelCoordinate != null)
-            {
-                var calcFpcRegion = CoordinateRectangle(fpcParam.CaliperParams.GetRegion() as CogRectangleAffine, fpcCoordinate);
-                var calcPanelRegion = CoordinateRectangle(panelParam.CaliperParams.GetRegion() as CogRectangleAffine, panelCoordinate);
+            var calcFpcRegion = VisionProShapeHelper.AddOffsetToCogRectAffine(fpcParam.CaliperParams.GetRegion() as CogRectangleAffine, fpcOffset);
+            var calcPanelRegion = VisionProShapeHelper.AddOffsetToCogRectAffine(panelParam.CaliperParams.GetRegion() as CogRectangleAffine, panelOffset);
 
-                fpcParam.CaliperParams.SetRegion(calcFpcRegion);
-                panelParam.CaliperParams.SetRegion(calcPanelRegion);
-            }
+            fpcParam.CaliperParams.SetRegion(calcFpcRegion);
+            panelParam.CaliperParams.SetRegion(calcPanelRegion);
 
             var result = RunMainAlignX(cogImage, fpcParam, panelParam, judgementX_pixel);
 
             return result;
         }
 
-        public AlignResult RunMainRightAlignY(ICogImage cogImage, Tab tab, CoordinateTransform fpcCoordinate, CoordinateTransform panelCoordinate, double judgementY_pixel)
+        public AlignResult RunMainRightAlignY(ICogImage cogImage, Tab tab, PointF fpcOffset, PointF panelOffset, double judgementY_pixel)
         {
             var fpcParam = tab.GetAlignParam(ATTTabAlignName.RightFPCY).DeepCopy();
             var panelParam = tab.GetAlignParam(ATTTabAlignName.RightPanelY).DeepCopy();
 
-            if (fpcCoordinate != null && panelCoordinate != null)
-            {
-                var calcFpcRegion = CoordinateRectangle(fpcParam.CaliperParams.GetRegion() as CogRectangleAffine, fpcCoordinate);
-                var calcPanelRegion = CoordinateRectangle(panelParam.CaliperParams.GetRegion() as CogRectangleAffine, panelCoordinate);
+            var calcFpcRegion = VisionProShapeHelper.AddOffsetToCogRectAffine(fpcParam.CaliperParams.GetRegion() as CogRectangleAffine, fpcOffset);
+            var calcPanelRegion = VisionProShapeHelper.AddOffsetToCogRectAffine(panelParam.CaliperParams.GetRegion() as CogRectangleAffine, panelOffset);
 
-                fpcParam.CaliperParams.SetRegion(calcFpcRegion);
-                panelParam.CaliperParams.SetRegion(calcPanelRegion);
-            }
+            fpcParam.CaliperParams.SetRegion(calcFpcRegion);
+            panelParam.CaliperParams.SetRegion(calcPanelRegion);
 
             var result = RunMainAlignY(cogImage, fpcParam, panelParam, judgementY_pixel);
             return result;
         }
 
-        public ICogImage CropCenterAlign(ICogImage cogImage, Tab tab, CoordinateTransform fpcCoordinate)
+        public ICogImage CropCenterAlign(ICogImage cogImage, Tab tab, PointF fpcOffset)
         {
             var centerParam = tab.GetAlignParam(ATTTabAlignName.CenterFPC)?.DeepCopy();
 
             if(centerParam != null)
             {
-                var calcFpcRegion = CoordinateRectangle(centerParam.CaliperParams.GetRegion() as CogRectangleAffine, fpcCoordinate);
+                //var calcFpcRegion = CoordinateRectangle(centerParam.CaliperParams.GetRegion() as CogRectangleAffine, fpcCoordinate);
+                var calcFpcRegion = VisionProShapeHelper.AddOffsetToCogRectAffine(centerParam.CaliperParams.GetRegion() as CogRectangleAffine, fpcOffset);
                 centerParam.CaliperParams.SetRegion(calcFpcRegion);
 
                 return VisionProImageHelper.CropImage(cogImage, centerParam.CaliperParams.GetRegion() as CogRectangleAffine);
@@ -204,7 +193,6 @@ namespace Jastech.Apps.Structure.VisionTool
 
             List<double> alignValueList = new List<double>();
 
-            // 정환
             for (int i = 0; i < panelParam.LeadCount * 2; i += 2)
             {
                 var panelResult1 = result.Panel.CogAlignResult[i];
@@ -220,6 +208,10 @@ namespace Jastech.Apps.Structure.VisionTool
 
                 double panelIntervalX = Math.Abs(panelResult1.CaliperMatchList[0].FoundPos.X - panelResult2.CaliperMatchList[0].FoundPos.X);
                 double panelIntervalY = Math.Abs(panelResult1.CaliperMatchList[0].FoundPos.Y - panelResult2.CaliperMatchList[0].FoundPos.Y);
+
+                var height = panelResult1.CaliperMatchList[0].ReferenceHeight;
+                var skew = panelResult1.CaliperMatchList[0].ReferenceSkew;
+
                 double panelCenterX = panelResult1.CaliperMatchList[0].FoundPos.X + (panelIntervalX / 2.0f);
                 double panelCenterY = panelResult1.CaliperMatchList[0].FoundPos.Y + (panelIntervalY / 2.0f);
 
@@ -240,7 +232,7 @@ namespace Jastech.Apps.Structure.VisionTool
                 var deltaFpcX = fpcSkew * deltaFpcY;
                 var fpcX = fpcCenterX + deltaFpcX;
 
-                var res = panelX - fpcX;
+                var res = fpcX - panelX;
 
                 alignValueList.Add(res);
             }
@@ -516,6 +508,8 @@ namespace Jastech.Apps.Structure.VisionTool
             offsetX = mainOrigin.TranslationX - panelRefX;
             offsetY = mainOrigin.TranslationY - panelRefY;
         }
+
+        
     }
 
     public class AlignmentResult
