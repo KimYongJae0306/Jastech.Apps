@@ -1,10 +1,8 @@
-﻿using Emgu.CV.Ocl;
-using Jastech.Apps.Winform;
+﻿using Jastech.Apps.Winform;
 using Jastech.Apps.Winform.Settings;
 using Jastech.Apps.Winform.UI.Forms;
 using Jastech.Framework.Comm;
 using Jastech.Framework.Config;
-using Jastech.Framework.Device;
 using Jastech.Framework.Device.Cameras;
 using Jastech.Framework.Device.Grabbers;
 using Jastech.Framework.Device.LAFCtrl;
@@ -19,13 +17,6 @@ using Jastech.Framework.Matrox;
 using Jastech.Framework.Util.Helper;
 using Jastech.Framework.Winform.Forms;
 using System;
-using System.Collections.Generic;
-using System.Reflection;
-using System.Runtime.CompilerServices;
-using System.Runtime.ExceptionServices;
-using System.Runtime.InteropServices;
-using System.Security;
-using System.Security.Permissions;
 using System.Threading;
 using System.Windows.Forms;
 
@@ -330,7 +321,7 @@ namespace ATT_UT_IPAD
             akkonLaf.HomePosition_mm = 0.025;
             akkonLaf.ResolutionAxisZ = 10000.0;
             akkonLaf.MaxSppedAxisZ = 20;
-            akkonLaf.AccDec = 15;
+            akkonLaf.AccDec = 70;
             config.Add(akkonLaf);
 
             //// Align LAF

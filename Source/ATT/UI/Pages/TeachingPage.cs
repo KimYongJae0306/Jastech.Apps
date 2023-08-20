@@ -57,8 +57,8 @@ namespace ATT.UI.Pages
         private void btnAkkonCameraSetting_Click(object sender, EventArgs e)
         {
             OpticTeachingForm form = new OpticTeachingForm();
-            form.LineCamera = LineCameraManager.Instance().GetLineCamera("AkkonCamera");
-            form.LAFCtrl = LAFManager.Instance().GetLAF("AkkonLaf").LafCtrl;
+            form.LineCamera = LineCameraManager.Instance().GetLineCamera("LineCamera");
+            form.LAFCtrl = LAFManager.Instance().GetLAF("Laf").LafCtrl;
             form.UnitName = UnitName.Unit0;
             form.AxisNameZ = Jastech.Framework.Device.Motions.AxisName.Z0;
             form.AxisHandler = MotionManager.Instance().GetAxisHandler(AxisHandlerName.Handler0);
@@ -85,8 +85,8 @@ namespace ATT.UI.Pages
         {
             InspectionTeachingForm form = new InspectionTeachingForm();
             form.UnitName = UnitName.Unit0;
-            form.LineCamera = LineCameraManager.Instance().GetLineCamera("AkkonCamera");
-            form.LAFCtrl = LAFManager.Instance().GetLAF("AkkonLaf").LafCtrl;
+            form.LineCamera = LineCameraManager.Instance().GetLineCamera("LineCamera");
+            form.LAFCtrl = LAFManager.Instance().GetLAF("Laf").LafCtrl;
             form.UseAlignMark = false;
             form.InspModelService = ATTInspModelService;
             form.OpenMotionPopupEventHandler += OpenMotionPopupEventHandler;
@@ -100,7 +100,7 @@ namespace ATT.UI.Pages
                 MotionPopupForm = new MotionPopupForm();
                 MotionPopupForm.UnitName = unitName;
                 MotionPopupForm.AxisHandler = MotionManager.Instance().GetAxisHandler(AxisHandlerName.Handler0);
-                MotionPopupForm.LafCtrl = LAFManager.Instance().GetLAF("AkkonLaf").LafCtrl;
+                MotionPopupForm.LafCtrl = LAFManager.Instance().GetLAF("Laf").LafCtrl;
                 MotionPopupForm.InspModelService = ATTInspModelService;
                 MotionPopupForm.CloseEventDelegate = () => MotionPopupForm = null;
                 MotionPopupForm.Show();

@@ -64,7 +64,7 @@ namespace ATT_UT_Remodeling.Core.AppTask
             inspResult.CogImage = inspTab.MergeCogImage;
 
             // Create Coordinate Object
-            CoordinateTransform fpcCoordinate = new CoordinateTransform();
+            //CoordinateTransform fpcCoordinate = new CoordinateTransform();
             CoordinateTransform panelCoordinate = new CoordinateTransform();
 
             algorithmTool.MainMarkInspect(inspTab.MergeCogImage, tab, ref inspResult, false);
@@ -80,12 +80,15 @@ namespace ATT_UT_Remodeling.Core.AppTask
             }
             else
             {
+                PointF fpcLeftOffset = MathHelper.GetOffset(inspResult.MarkResult.FpcMark.FoundedMark.Left.MaxMatchPos.ReferencePos, inspResult.MarkResult.FpcMark.FoundedMark.Left.MaxMatchPos.FoundPos);
+                PointF fpcRightOffset = MathHelper.GetOffset(inspResult.MarkResult.FpcMark.FoundedMark.Right.MaxMatchPos.ReferencePos, inspResult.MarkResult.FpcMark.FoundedMark.Right.MaxMatchPos.FoundPos);
+                PointF panelLeftOffset = MathHelper.GetOffset(inspResult.MarkResult.PanelMark.FoundedMark.Left.MaxMatchPos.ReferencePos, inspResult.MarkResult.PanelMark.FoundedMark.Left.MaxMatchPos.FoundPos);
+                PointF panelRightOffset = MathHelper.GetOffset(inspResult.MarkResult.PanelMark.FoundedMark.Right.MaxMatchPos.ReferencePos, inspResult.MarkResult.PanelMark.FoundedMark.Right.MaxMatchPos.FoundPos);
+
                 // Set Coordinate Params
-                SetFpcCoordinateData(fpcCoordinate, inspResult);
                 SetPanelCoordinateData(panelCoordinate, inspResult);
 
                 // Excuete Coordinate
-                fpcCoordinate.ExecuteCoordinate();
                 panelCoordinate.ExecuteCoordinate();
 
                 var lineCamera = LineCameraManager.Instance().GetLineCamera("LineCamera").Camera;
@@ -97,7 +100,7 @@ namespace ATT_UT_Remodeling.Core.AppTask
                 #region Align
                 if (AppsConfig.Instance().EnableAlign)
                 {
-                    inspResult.AlignResult.LeftX = algorithmTool.RunMainLeftAlignX(inspTab.MergeCogImage, tab, fpcCoordinate, panelCoordinate, judgementX);
+                    inspResult.AlignResult.LeftX = algorithmTool.RunMainLeftAlignX(inspTab.MergeCogImage, tab, fpcLeftOffset, panelLeftOffset, judgementX);
                     if (inspResult.AlignResult.LeftX?.Judgement != Judgement.OK)
                     {
                         var leftAlignX = inspResult.AlignResult.LeftX;
@@ -105,7 +108,7 @@ namespace ATT_UT_Remodeling.Core.AppTask
                         Logger.Debug(LogType.Inspection, message);
                     }
 
-                    inspResult.AlignResult.LeftY = algorithmTool.RunMainLeftAlignY(inspTab.MergeCogImage, tab, fpcCoordinate, panelCoordinate, judgementY);
+                    inspResult.AlignResult.LeftY = algorithmTool.RunMainLeftAlignY(inspTab.MergeCogImage, tab, fpcLeftOffset, panelLeftOffset, judgementY);
                     if (inspResult.AlignResult.LeftY?.Judgement != Judgement.OK)
                     {
                         var leftAlignY = inspResult.AlignResult.LeftY;
@@ -113,7 +116,7 @@ namespace ATT_UT_Remodeling.Core.AppTask
                         Logger.Debug(LogType.Inspection, message);
                     }
 
-                    inspResult.AlignResult.RightX = algorithmTool.RunMainRightAlignX(inspTab.MergeCogImage, tab, fpcCoordinate, panelCoordinate, judgementX);
+                    inspResult.AlignResult.RightX = algorithmTool.RunMainRightAlignX(inspTab.MergeCogImage, tab, fpcRightOffset, panelRightOffset, judgementX);
                     if (inspResult.AlignResult.RightX?.Judgement != Judgement.OK)
                     {
                         var rightAlignX = inspResult.AlignResult.RightX;
@@ -121,7 +124,7 @@ namespace ATT_UT_Remodeling.Core.AppTask
                         Logger.Debug(LogType.Inspection, message);
                     }
 
-                    inspResult.AlignResult.RightY = algorithmTool.RunMainRightAlignY(inspTab.MergeCogImage, tab, fpcCoordinate, panelCoordinate, judgementY);
+                    inspResult.AlignResult.RightY = algorithmTool.RunMainRightAlignY(inspTab.MergeCogImage, tab, fpcRightOffset, panelRightOffset, judgementY);
                     if (inspResult.AlignResult.RightY?.Judgement != Judgement.OK)
                     {
                         var rightAlignY = inspResult.AlignResult.RightY;
