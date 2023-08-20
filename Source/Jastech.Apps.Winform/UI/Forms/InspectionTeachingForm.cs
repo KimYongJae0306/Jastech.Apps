@@ -26,6 +26,7 @@ using Jastech.Framework.Structure;
 using Jastech.Framework.Structure.Service;
 using Jastech.Framework.Users;
 using Jastech.Framework.Util;
+using Jastech.Framework.Util.Helper;
 using Jastech.Framework.Winform.VisionPro.Controls;
 using System;
 using System.Collections.Generic;
@@ -345,13 +346,19 @@ namespace Jastech.Framework.Winform.Forms
             if (model == null)
                 return;
 
-            ConfirmSaveExecuteCoordiante();
+            MessageYesNoForm yesNoForm = new MessageYesNoForm();
+            yesNoForm.Message = "Teaching data will change.\nDo you agree?";
 
-            SaveModelData(model);
+            if (yesNoForm.ShowDialog() == DialogResult.Yes)
+            {
+                ConfirmSaveExecuteCoordiante();
 
-            MessageConfirmForm confirmForm = new MessageConfirmForm();
-            confirmForm.Message = "Save Model Completed.";
-            confirmForm.ShowDialog();
+                SaveModelData(model);
+
+                MessageConfirmForm confirmForm = new MessageConfirmForm();
+                confirmForm.Message = "Save Model Completed.";
+                confirmForm.ShowDialog();
+            }
         }
 
         private void ConfirmSaveExecuteCoordiante()
@@ -363,9 +370,6 @@ namespace Jastech.Framework.Winform.Forms
 
                 if (yesnoForm.ShowDialog() == DialogResult.Yes)
                     TeachingData.Instance().GetUnit(UnitName.ToString()).SetTab(GetCoordinateTab());
-                //else
-                //    TeachingData.Instance().GetUnit(UnitName.ToString()).SetTab(CurrentTab);
-
             }
 
             _executedCoordinate = false;
@@ -387,8 +391,6 @@ namespace Jastech.Framework.Winform.Forms
 
         private void btnLoadImage_Click(object sender, EventArgs e)
         {
-            //SaveScanImage();
-            //return;
             OpenFileDialog dlg = new OpenFileDialog();
             dlg.ReadOnlyChecked = true;
             dlg.Filter = "BMP Files (*.bmp)|*.bmp";
@@ -686,9 +688,12 @@ namespace Jastech.Framework.Winform.Forms
         private void lblTracking_Click(object sender, EventArgs e)
         {
             return;
+
             var display = TeachingUIManager.Instance().GetDisplay();
             if (display == null)
                 return;
+
+            Tab tabOriginData = CurrentTab.DeepCopy();
 
             ICogImage cogImage = display.GetImage();
             if (cogImage == null)
@@ -707,7 +712,7 @@ namespace Jastech.Framework.Winform.Forms
             if (_tabInspResult.MarkResult.Judgement != Judgement.OK)
             {
                 // 검사 실패
-                string message = string.Format("Mark Inspection NG !!! Tab_{0} / Fpc_{1}, Panel_{2}", CurrentTab.Index + 1,
+                string message = string.Format("Mark Insp NG !!! Tab_{0} / Fpc_{1}, Panel_{2}", CurrentTab.Index + 1,
                     _tabInspResult.MarkResult.FpcMark.Judgement, _tabInspResult.MarkResult.PanelMark.Judgement);
 
                 MessageConfirmForm form = new MessageConfirmForm();
@@ -731,6 +736,25 @@ namespace Jastech.Framework.Winform.Forms
                 var coordinateList = RenewalAkkonRoi(roiList, panelCoordinate);
 
             }
+
+            if (_displayType == DisplayType.Align)
+            {
+
+                foreach (ATTTabAlignName alignName in Enum.GetValues(typeof(ATTTabAlignName)))
+                {
+                    var alignParam = CurrentTab.GetAlignParam(alignName).DeepCopy();
+
+                    PointF offset = GetAlignOffset(_tabInspResult, alignName);
+
+                    var calcRegion = VisionProShapeHelper.AddOffsetToCogRectAffine(alignParam.CaliperParams.GetRegion() as CogRectangleAffine, offset);
+                    alignParam.CaliperParams.SetRegion(calcRegion);
+                    CurrentTab.SetAlignParam(alignName, alignParam);
+                }
+
+                AlignControl.SetParams(CurrentTab);
+                AlignControl.DrawROI();
+            }
+
             //if (_isPrevTrackingOn == false)
             //    SetTeachingTracking(true);
             //else
@@ -752,6 +776,39 @@ namespace Jastech.Framework.Winform.Forms
 
             panel.SetReferenceData(teachingLeftPoint, teachingRightPoint);
             panel.SetTargetData(searchedLeftPoint, searchedRightPoint);
+        }
+
+        private PointF GetAlignOffset(TabInspResult tabInspResult, ATTTabAlignName alignName)
+        {
+            PointF offset = new PointF();
+            switch (alignName)
+            {
+                case ATTTabAlignName.LeftFPCX:
+                case ATTTabAlignName.LeftFPCY:
+                    offset = MathHelper.GetOffset(tabInspResult.MarkResult.FpcMark.FoundedMark.Left.MaxMatchPos.ReferencePos, tabInspResult.MarkResult.FpcMark.FoundedMark.Left.MaxMatchPos.FoundPos);
+                    break;
+
+                case ATTTabAlignName.RightFPCX:
+                case ATTTabAlignName.RightFPCY:
+                    offset = MathHelper.GetOffset(tabInspResult.MarkResult.FpcMark.FoundedMark.Right.MaxMatchPos.ReferencePos, tabInspResult.MarkResult.FpcMark.FoundedMark.Right.MaxMatchPos.FoundPos);
+                    break;
+
+                case ATTTabAlignName.LeftPanelX:
+                case ATTTabAlignName.LeftPanelY:
+                    MathHelper.GetOffset(tabInspResult.MarkResult.PanelMark.FoundedMark.Left.MaxMatchPos.ReferencePos, tabInspResult.MarkResult.PanelMark.FoundedMark.Left.MaxMatchPos.FoundPos);
+                    break;
+
+                case ATTTabAlignName.RightPanelX:
+                case ATTTabAlignName.RightPanelY:
+                    MathHelper.GetOffset(tabInspResult.MarkResult.PanelMark.FoundedMark.Right.MaxMatchPos.ReferencePos, tabInspResult.MarkResult.PanelMark.FoundedMark.Right.MaxMatchPos.FoundPos);
+                    break;
+
+                case ATTTabAlignName.CenterFPC:
+                    break;
+                default:
+                    break;
+            }
+            return offset;
         }
 
         private List<AkkonROI> RenewalAkkonRoi(List<AkkonROI> roiList, CoordinateTransform panelCoordinate)
@@ -809,7 +866,7 @@ namespace Jastech.Framework.Winform.Forms
             if (_tabInspResult.MarkResult.Judgement != Judgement.OK)
             {
                 // 검사 실패
-                string message = string.Format("Mark Inspection NG !!! Tab_{0} / Fpc_{1}, Panel_{2}", CurrentTab.Index + 1,
+                string message = string.Format("Mark Insp NG !!! Tab_{0} / Fpc_{1}, Panel_{2}", CurrentTab.Index + 1,
                     _tabInspResult.MarkResult.FpcMark.Judgement, _tabInspResult.MarkResult.PanelMark.Judgement);
 
                 MessageConfirmForm form = new MessageConfirmForm();
@@ -870,7 +927,7 @@ namespace Jastech.Framework.Winform.Forms
             if (tabInspResult.MarkResult.Judgement != Judgement.OK)
             {
                 // 검사 실패
-                string message = string.Format("Mark Inspection NG !!! Tab_{0} / Fpc_{1}, Panel_{2}", CurrentTab.Index + 1,
+                string message = string.Format("Mark Insp NG !!! Tab_{0} / Fpc_{1}, Panel_{2}", CurrentTab.Index + 1,
                     tabInspResult.MarkResult.FpcMark.Judgement, tabInspResult.MarkResult.PanelMark.Judgement);
 
                 MessageConfirmForm form = new MessageConfirmForm();
@@ -1129,6 +1186,13 @@ namespace Jastech.Framework.Winform.Forms
             SaveScanImage();
         }
 
+        private void lblROICopy_Click(object sender, EventArgs e)
+        {
+            ROICopyForm form = new ROICopyForm();
+            form.SetUnitName(UnitName.Unit0);
+            form.ShowDialog();
+        }
+
         private Tab _coordinateTab { get; set; } = null;
 
         private bool _executedCoordinate { get; set; } = false;
@@ -1143,65 +1207,6 @@ namespace Jastech.Framework.Winform.Forms
         private Tab GetCoordinateTab()
         {
             return _coordinateTab;
-        }
-
-        private void lblROICopy_Click(object sender, EventArgs e)
-        {
-            //// 탭 선택 기능 Form
-            ROICopyForm form = new ROICopyForm();
-            form.SetUnitName(UnitName.Unit0);
-            //form.SetDisplayType(_displayType);
-            form.ShowDialog();
-
-            // 그룹장님 요청
-            //MessageYesNoForm form = new MessageYesNoForm();
-            //form.Message = "Do you want to roi copy?";
-            //if (form.ShowDialog() == DialogResult.Yes)
-            //{
-            //    // 그냥 다 복사
-            //    switch (_displayType)
-            //    {
-            //        case DisplayType.Mark:
-            //            MarkControl.CopyMark(UnitName);
-            //            break;
-
-            //        case DisplayType.Align:
-            //            CopyAlign();
-            //            break;
-
-            //        case DisplayType.Akkon:
-            //            break;
-
-            //        case DisplayType.PreAlign:
-            //            break;
-
-            //        case DisplayType.Calibration:
-            //            break;
-
-            //        default:
-            //            break;
-            //    }
-            //}
-        }
-
-        private void CopyAlign()
-        {
-            foreach (Tab tab in TeachingTabList)
-            {
-                if (tab.Index == CurrentTab.Index)
-                    continue;
-
-                foreach (ATTTabAlignName alignName in Enum.GetValues(typeof(ATTTabAlignName)))
-                {
-                    var alignParam = CurrentTab.GetAlignParam(alignName).DeepCopy();
-                    tab.SetAlignParam(alignName, alignParam);
-                }
-            }
-        }
-
-        private void CopyAkkon()
-        {
-
         }
     }
 

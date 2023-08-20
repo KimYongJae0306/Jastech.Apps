@@ -463,23 +463,29 @@ namespace ATT_UT_IPAD.UI.Forms
 
         private void Save()
         {
-            UpdateCurrentData();
+            MessageYesNoForm yesNoForm = new MessageYesNoForm();
+            yesNoForm.Message = "Teaching data will change.\nDo you agree?";
 
-            // Save AxisHandler
-            var axisHandler = MotionManager.Instance().GetAxisHandler(AxisHandlerName.Handler0);
-            MotionManager.Instance().Save(axisHandler);
+            if (yesNoForm.ShowDialog() == DialogResult.Yes)
+            {
+                UpdateCurrentData();
 
-            // Save Model
-            var model = ModelManager.Instance().CurrentModel as AppsInspModel;
-            //model.SetUnitList(TeachingData.Instance().UnitList);
-            model.SetTeachingList(TeachingPositionList);
+                // Save AxisHandler
+                var axisHandler = MotionManager.Instance().GetAxisHandler(AxisHandlerName.Handler0);
+                MotionManager.Instance().Save(axisHandler);
 
-            string fileName = System.IO.Path.Combine(ConfigSet.Instance().Path.Model, model.Name, InspModel.FileName);
-            InspModelService?.Save(fileName, model);
+                // Save Model
+                var model = ModelManager.Instance().CurrentModel as AppsInspModel;
+                //model.SetUnitList(TeachingData.Instance().UnitList);
+                model.SetTeachingList(TeachingPositionList);
 
-            MessageConfirmForm form = new MessageConfirmForm();
-            form.Message = "Save Motion Data Completed.";
-            form.ShowDialog();
+                string fileName = System.IO.Path.Combine(ConfigSet.Instance().Path.Model, model.Name, InspModel.FileName);
+                InspModelService?.Save(fileName, model);
+
+                MessageConfirmForm form = new MessageConfirmForm();
+                form.Message = "Save Motion Data Completed.";
+                form.ShowDialog();
+            }
         }
 
         private void lblTargetPositionX_Click(object sender, EventArgs e)

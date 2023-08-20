@@ -589,11 +589,17 @@ namespace Jastech.Framework.Winform.Forms
             if (model == null)
                 return;
 
-            SaveModelData(model);
+            MessageYesNoForm yesNoForm = new MessageYesNoForm();
+            yesNoForm.Message = "Teaching data will change.\nDo you agree?";
 
-            MessageConfirmForm form = new MessageConfirmForm();
-            form.Message = "Save Model Completed.";
-            form.ShowDialog();
+            if (yesNoForm.ShowDialog() == DialogResult.Yes)
+            {
+                SaveModelData(model);
+
+                MessageConfirmForm confirmForm = new MessageConfirmForm();
+                confirmForm.Message = "Save Model Completed.";
+                confirmForm.ShowDialog();
+            }
         }
 
         private void SaveModelData(AppsInspModel model)

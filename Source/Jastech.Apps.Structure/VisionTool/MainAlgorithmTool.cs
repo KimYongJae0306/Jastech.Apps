@@ -112,8 +112,8 @@ namespace Jastech.Apps.Structure.VisionTool
             var fpcParam = tab.GetAlignParam(ATTTabAlignName.LeftFPCX).DeepCopy();
             var panelParam = tab.GetAlignParam(ATTTabAlignName.LeftPanelX).DeepCopy();
 
-            var calcFpcRegion = AddOffset(fpcParam.CaliperParams.GetRegion() as CogRectangleAffine, fpcOffset);
-            var calcPanelRegion = AddOffset(panelParam.CaliperParams.GetRegion() as CogRectangleAffine, panelOffset);
+            var calcFpcRegion = VisionProShapeHelper.AddOffsetToCogRectAffine(fpcParam.CaliperParams.GetRegion() as CogRectangleAffine, fpcOffset);
+            var calcPanelRegion = VisionProShapeHelper.AddOffsetToCogRectAffine(panelParam.CaliperParams.GetRegion() as CogRectangleAffine, panelOffset);
 
             fpcParam.CaliperParams.SetRegion(calcFpcRegion);
             panelParam.CaliperParams.SetRegion(calcPanelRegion);
@@ -127,8 +127,8 @@ namespace Jastech.Apps.Structure.VisionTool
             var fpcParam = tab.GetAlignParam(ATTTabAlignName.LeftFPCY).DeepCopy();
             var panelParam = tab.GetAlignParam(ATTTabAlignName.LeftPanelY).DeepCopy();
 
-            var calcFpcRegion = AddOffset(fpcParam.CaliperParams.GetRegion() as CogRectangleAffine, fpcOffset);
-            var calcPanelRegion = AddOffset(panelParam.CaliperParams.GetRegion() as CogRectangleAffine, panelOffset);
+            var calcFpcRegion = VisionProShapeHelper.AddOffsetToCogRectAffine(fpcParam.CaliperParams.GetRegion() as CogRectangleAffine, fpcOffset);
+            var calcPanelRegion = VisionProShapeHelper.AddOffsetToCogRectAffine(panelParam.CaliperParams.GetRegion() as CogRectangleAffine, panelOffset);
 
             fpcParam.CaliperParams.SetRegion(calcFpcRegion);
             panelParam.CaliperParams.SetRegion(calcPanelRegion);
@@ -142,8 +142,8 @@ namespace Jastech.Apps.Structure.VisionTool
             var fpcParam = tab.GetAlignParam(ATTTabAlignName.RightFPCX).DeepCopy();
             var panelParam = tab.GetAlignParam(ATTTabAlignName.RightPanelX).DeepCopy();
 
-            var calcFpcRegion = AddOffset(fpcParam.CaliperParams.GetRegion() as CogRectangleAffine, fpcOffset);
-            var calcPanelRegion = AddOffset(panelParam.CaliperParams.GetRegion() as CogRectangleAffine, panelOffset);
+            var calcFpcRegion = VisionProShapeHelper.AddOffsetToCogRectAffine(fpcParam.CaliperParams.GetRegion() as CogRectangleAffine, fpcOffset);
+            var calcPanelRegion = VisionProShapeHelper.AddOffsetToCogRectAffine(panelParam.CaliperParams.GetRegion() as CogRectangleAffine, panelOffset);
 
             fpcParam.CaliperParams.SetRegion(calcFpcRegion);
             panelParam.CaliperParams.SetRegion(calcPanelRegion);
@@ -158,8 +158,8 @@ namespace Jastech.Apps.Structure.VisionTool
             var fpcParam = tab.GetAlignParam(ATTTabAlignName.RightFPCY).DeepCopy();
             var panelParam = tab.GetAlignParam(ATTTabAlignName.RightPanelY).DeepCopy();
 
-            var calcFpcRegion = AddOffset(fpcParam.CaliperParams.GetRegion() as CogRectangleAffine, fpcOffset);
-            var calcPanelRegion = AddOffset(panelParam.CaliperParams.GetRegion() as CogRectangleAffine, panelOffset);
+            var calcFpcRegion = VisionProShapeHelper.AddOffsetToCogRectAffine(fpcParam.CaliperParams.GetRegion() as CogRectangleAffine, fpcOffset);
+            var calcPanelRegion = VisionProShapeHelper.AddOffsetToCogRectAffine(panelParam.CaliperParams.GetRegion() as CogRectangleAffine, panelOffset);
 
             fpcParam.CaliperParams.SetRegion(calcFpcRegion);
             panelParam.CaliperParams.SetRegion(calcPanelRegion);
@@ -175,7 +175,7 @@ namespace Jastech.Apps.Structure.VisionTool
             if(centerParam != null)
             {
                 //var calcFpcRegion = CoordinateRectangle(centerParam.CaliperParams.GetRegion() as CogRectangleAffine, fpcCoordinate);
-                var calcFpcRegion = AddOffset(centerParam.CaliperParams.GetRegion() as CogRectangleAffine, fpcOffset);
+                var calcFpcRegion = VisionProShapeHelper.AddOffsetToCogRectAffine(centerParam.CaliperParams.GetRegion() as CogRectangleAffine, fpcOffset);
                 centerParam.CaliperParams.SetRegion(calcFpcRegion);
 
                 return VisionProImageHelper.CropImage(cogImage, centerParam.CaliperParams.GetRegion() as CogRectangleAffine);
@@ -193,7 +193,6 @@ namespace Jastech.Apps.Structure.VisionTool
 
             List<double> alignValueList = new List<double>();
 
-            // 정환
             for (int i = 0; i < panelParam.LeadCount * 2; i += 2)
             {
                 var panelResult1 = result.Panel.CogAlignResult[i];
@@ -209,6 +208,10 @@ namespace Jastech.Apps.Structure.VisionTool
 
                 double panelIntervalX = Math.Abs(panelResult1.CaliperMatchList[0].FoundPos.X - panelResult2.CaliperMatchList[0].FoundPos.X);
                 double panelIntervalY = Math.Abs(panelResult1.CaliperMatchList[0].FoundPos.Y - panelResult2.CaliperMatchList[0].FoundPos.Y);
+
+                var height = panelResult1.CaliperMatchList[0].ReferenceHeight;
+                var skew = panelResult1.CaliperMatchList[0].ReferenceSkew;
+
                 double panelCenterX = panelResult1.CaliperMatchList[0].FoundPos.X + (panelIntervalX / 2.0f);
                 double panelCenterY = panelResult1.CaliperMatchList[0].FoundPos.Y + (panelIntervalY / 2.0f);
 
@@ -506,23 +509,7 @@ namespace Jastech.Apps.Structure.VisionTool
             offsetY = mainOrigin.TranslationY - panelRefY;
         }
 
-        public CogRectangleAffine AddOffset(CogRectangleAffine originRegion, PointF offset)
-        {
-            CogRectangleAffine roi = new CogRectangleAffine(originRegion);
-
-            PointF inputPoint = new PointF();
-            inputPoint.X = (float)roi.CenterX;
-            inputPoint.Y = (float)roi.CenterY;
-
-            PointF newPoint = new PointF();
-            newPoint.X = inputPoint.X + offset.X;
-            newPoint.Y = inputPoint.Y + offset.Y;
-
-            roi.CenterX = newPoint.X;
-            roi.CenterY = newPoint.Y;
-
-            return roi;
-        }
+        
     }
 
     public class AlignmentResult
