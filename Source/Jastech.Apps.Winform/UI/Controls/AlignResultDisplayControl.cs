@@ -159,11 +159,11 @@ namespace ATT_UT_IPAD.UI.Controls
             if (tabInspResult == null)
                 return;
             
-            TabBtnControlList[tabNo].SetAlignImage(tabInspResult.CogImage/*.CopyBase(CogImageCopyModeConstants.CopyPixels)*/);
+            TabBtnControlList[tabNo].SetAlignImage(tabInspResult.CogImage);
             TabBtnControlList[tabNo].SetLeftAlignShape(GetLeftAlignShape(tabInspResult));
             TabBtnControlList[tabNo].SetRightAlignShape(GetRightAlignShape(tabInspResult));
             if (tabInspResult.AlignResult != null)
-                TabBtnControlList[tabNo].SetCenterImage(tabInspResult.AlignResult.CenterImage/*?.CopyBase(CogImageCopyModeConstants.CopyPixels)*/);
+                TabBtnControlList[tabNo].SetCenterImage(tabInspResult.AlignResult.CenterImage);
 
             if (tabInspResult != null)
             {
