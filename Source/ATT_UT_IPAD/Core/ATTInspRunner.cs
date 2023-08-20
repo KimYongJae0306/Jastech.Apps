@@ -819,7 +819,7 @@ namespace ATT_UT_IPAD.Core
                 var akkonResult = AppsInspResult.Instance().GetAkkon(tabNo);
                 var positions = new string[] { "Left", "Center", "Right" };
 
-                //akkonResult.AkkonResult.LeadResultList.OrderBy(x => x.Id);
+                //akkonResult.AkkonResult.LeadResultList.OrderBy(x => x.Id);dsfasdfd
 
                 // Add header strings
                 var header = new List<string>
