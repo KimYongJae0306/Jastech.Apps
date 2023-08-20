@@ -226,6 +226,9 @@ namespace ATT_UT_IPAD
             akkonLaf.SerialPortComm = new SerialPortComm("COM2", 9600);
             akkonLaf.AxisName = AxisName.Z0.ToString();
             akkonLaf.HomePosition_mm = 0.02;
+            akkonLaf.ResolutionAxisZ = 10000.0;
+            akkonLaf.MaxSppedAxisZ = 20;
+            akkonLaf.AccDec = 15;
             config.Add(akkonLaf);
 
             // Align LAF
@@ -233,6 +236,9 @@ namespace ATT_UT_IPAD
             alignLaf.SerialPortComm = new SerialPortComm("COM3", 9600);
             alignLaf.AxisName = AxisName.Z1.ToString();
             alignLaf.HomePosition_mm = 0.02;
+            alignLaf.ResolutionAxisZ = 10000.0;
+            alignLaf.MaxSppedAxisZ = 20;
+            alignLaf.AccDec = 15;
             config.Add(alignLaf);
 
             // Light1
@@ -322,6 +328,9 @@ namespace ATT_UT_IPAD
             akkonLaf.SerialPortComm = new SerialPortComm("COM2", 9600);
             akkonLaf.AxisName = AxisName.Z0.ToString();
             akkonLaf.HomePosition_mm = 0.025;
+            akkonLaf.ResolutionAxisZ = 10000.0;
+            akkonLaf.MaxSppedAxisZ = 20;
+            akkonLaf.AccDec = 15;
             config.Add(akkonLaf);
 
             //// Align LAF
@@ -329,6 +338,9 @@ namespace ATT_UT_IPAD
             alignLaf.SerialPortComm = new SerialPortComm("COM3", 9600);
             alignLaf.AxisName = AxisName.Z1.ToString();
             alignLaf.HomePosition_mm = 0.02;
+            alignLaf.ResolutionAxisZ = 10000.0;
+            alignLaf.MaxSppedAxisZ = 20;
+            alignLaf.AccDec = 15;
             config.Add(alignLaf);
 
             // Light1
