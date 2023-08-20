@@ -59,9 +59,9 @@ namespace ATT_UT_IPAD.UI.Forms
 
         private MotionParameterVariableControl XVariableControl = null;
 
-        private MotionParameterVariableControl Z1VariableControl = null;
+        //private MotionParameterVariableControl Z1VariableControl = null;
 
-        private MotionParameterVariableControl Z2VariableControl = null;
+        //private MotionParameterVariableControl Z2VariableControl = null;
 
         public TeachingPosType TeachingPositionType = TeachingPosType.Standby;
 
@@ -181,11 +181,11 @@ namespace ATT_UT_IPAD.UI.Forms
 
             lblTargetPositionZ0.Text = param.GetTargetPosition(AxisName.Z0).ToString();
             lblTeachedCenterOfGravityZ0.Text = param.GetCenterOfGravity(AxisName.Z0).ToString();
-            Z1VariableControl.UpdateData(param.GetMovingParams(AxisName.Z0));
+            //Z1VariableControl.UpdateData(param.GetMovingParams(AxisName.Z0));
 
             lblTargetPositionZ1.Text = param.GetTargetPosition(AxisName.Z1).ToString();
             lblTeachedCenterOfGravityZ1.Text = param.GetCenterOfGravity(AxisName.Z1).ToString();
-            Z2VariableControl.UpdateData(param.GetMovingParams(AxisName.Z1));
+            //Z2VariableControl.UpdateData(param.GetMovingParams(AxisName.Z1));
         }
 
         private void UpdateCommonParam()
@@ -243,15 +243,15 @@ namespace ATT_UT_IPAD.UI.Forms
             XVariableControl.SetAxis(AxisHandler.GetAxis(AxisName.X));
             tlpVariableParameter.Controls.Add(XVariableControl);
 
-            Z1VariableControl = new MotionParameterVariableControl();
-            Z1VariableControl.Dock = DockStyle.Fill;
-            Z1VariableControl.SetAxis(AxisHandler.GetAxis(AxisName.Z0));
-            tlpVariableParameter.Controls.Add(Z1VariableControl);
+            //Z1VariableControl = new MotionParameterVariableControl();
+            //Z1VariableControl.Dock = DockStyle.Fill;
+            //Z1VariableControl.SetAxis(AxisHandler.GetAxis(AxisName.Z0));
+            //tlpVariableParameter.Controls.Add(Z1VariableControl);
 
-            Z2VariableControl = new MotionParameterVariableControl();
-            Z2VariableControl.Dock = DockStyle.Fill;
-            Z2VariableControl.SetAxis(AxisHandler.GetAxis(AxisName.Z1));
-            tlpVariableParameter.Controls.Add(Z2VariableControl);
+            //Z2VariableControl = new MotionParameterVariableControl();
+            //Z2VariableControl.Dock = DockStyle.Fill;
+            //Z2VariableControl.SetAxis(AxisHandler.GetAxis(AxisName.Z1));
+            //tlpVariableParameter.Controls.Add(Z2VariableControl);
         }
 
         private void StartTimer()
@@ -442,8 +442,8 @@ namespace ATT_UT_IPAD.UI.Forms
             var posData = TeachingData.Instance().GetUnit(UnitName.ToString()).GetTeachingInfo(TeachingPositionType);
 
             posData.SetMovingParams(AxisName.X, XVariableControl.GetCurrentData());
-            posData.SetMovingParams(AxisName.Z0, Z1VariableControl.GetCurrentData());
-            posData.SetMovingParams(AxisName.Z1, Z2VariableControl.GetCurrentData());
+            //posData.SetMovingParams(AxisName.Z0, Z1VariableControl.GetCurrentData());
+            //posData.SetMovingParams(AxisName.Z1, Z2VariableControl.GetCurrentData());
         }
 
         private void btnMoveToTeachingPosition_Click(object sender, EventArgs e)
