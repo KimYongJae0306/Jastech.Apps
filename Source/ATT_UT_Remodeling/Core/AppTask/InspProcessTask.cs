@@ -142,8 +142,6 @@ namespace ATT_UT_Remodeling.Core.AppTask
                 #endregion
 
                 #region Center Align
-                // EnableAlign false 일때 구조 생각
-                inspResult.AlignResult.CenterX = Math.Abs(inspResult.AlignResult.LeftX.ResultValue_pixel - inspResult.AlignResult.RightX.ResultValue_pixel);
                 #endregion
 
                 if (AppsConfig.Instance().EnableAkkon)

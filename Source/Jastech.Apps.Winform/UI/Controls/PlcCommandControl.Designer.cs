@@ -144,6 +144,7 @@
             this.label29 = new System.Windows.Forms.Label();
             this.btnSetPCAlignData = new System.Windows.Forms.Button();
             this.tableLayoutPanel29 = new System.Windows.Forms.TableLayoutPanel();
+            this.lblWriteTabNo = new System.Windows.Forms.Label();
             this.label23 = new System.Windows.Forms.Label();
             this.tableLayoutPanel30 = new System.Windows.Forms.TableLayoutPanel();
             this.cbxWriteAlignJudgement = new System.Windows.Forms.ComboBox();
@@ -214,7 +215,6 @@
             this.tableLayoutPanel53 = new System.Windows.Forms.TableLayoutPanel();
             this.lblPcAxisXBusy = new System.Windows.Forms.Label();
             this.label64 = new System.Windows.Forms.Label();
-            this.lblWriteTabNo = new System.Windows.Forms.Label();
             this.tableLayoutPanel48 = new System.Windows.Forms.TableLayoutPanel();
             this.lblManualOK = new System.Windows.Forms.Label();
             this.label31 = new System.Windows.Forms.Label();
@@ -1937,6 +1937,19 @@
             this.tableLayoutPanel29.Size = new System.Drawing.Size(270, 33);
             this.tableLayoutPanel29.TabIndex = 365;
             // 
+            // lblWriteTabNo
+            // 
+            this.lblWriteTabNo.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblWriteTabNo.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblWriteTabNo.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
+            this.lblWriteTabNo.ForeColor = System.Drawing.Color.White;
+            this.lblWriteTabNo.Location = new System.Drawing.Point(180, 0);
+            this.lblWriteTabNo.Margin = new System.Windows.Forms.Padding(0);
+            this.lblWriteTabNo.Name = "lblWriteTabNo";
+            this.lblWriteTabNo.Size = new System.Drawing.Size(90, 33);
+            this.lblWriteTabNo.TabIndex = 5;
+            this.lblWriteTabNo.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
             // label23
             // 
             this.label23.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(104)))), ((int)(((byte)(104)))), ((int)(((byte)(104)))));
@@ -2952,19 +2965,6 @@
             this.label64.TabIndex = 2;
             this.label64.Text = "AxisX Busy";
             this.label64.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // lblWriteTabNo
-            // 
-            this.lblWriteTabNo.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lblWriteTabNo.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblWriteTabNo.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
-            this.lblWriteTabNo.ForeColor = System.Drawing.Color.White;
-            this.lblWriteTabNo.Location = new System.Drawing.Point(180, 0);
-            this.lblWriteTabNo.Margin = new System.Windows.Forms.Padding(0);
-            this.lblWriteTabNo.Name = "lblWriteTabNo";
-            this.lblWriteTabNo.Size = new System.Drawing.Size(90, 33);
-            this.lblWriteTabNo.TabIndex = 5;
-            this.lblWriteTabNo.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // tableLayoutPanel48
             // 

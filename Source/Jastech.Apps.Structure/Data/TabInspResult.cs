@@ -249,7 +249,7 @@ namespace Jastech.Apps.Structure.Data
 
         public ICogImage CenterImage { get; set; } = null;
 
-        public float CenterX { get; set; }
+        //public float CenterX { get; set; }
 
         public TabAlignResult DeepCopy()
         {
@@ -258,7 +258,6 @@ namespace Jastech.Apps.Structure.Data
             result.LeftY = LeftY?.DeepCopy();
             result.RightX = RightX?.DeepCopy();
             result.RightY = RightY?.DeepCopy();
-            result.CenterX = CenterX;
             result.CenterImage = CenterImage?.CopyBase(CogImageCopyModeConstants.CopyPixels);
 
             return result;
