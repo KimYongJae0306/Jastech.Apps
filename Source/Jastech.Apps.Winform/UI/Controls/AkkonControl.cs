@@ -1631,6 +1631,7 @@ namespace Jastech.Apps.Winform.UI.Controls
             float calcResolution = Resolution_um / CurrentTab.AkkonParam.AkkonAlgoritmParam.ImageFilterParam.ResizeRatio;
             MCvScalar redColor = new MCvScalar(50, 50, 230, 255);
             MCvScalar greenColor = new MCvScalar(50, 230, 50, 255);
+            MCvScalar orangeColor = new MCvScalar(0, 165, 255); 
 
             foreach (var result in leadResultList)
             {
@@ -1676,7 +1677,6 @@ namespace Jastech.Apps.Winform.UI.Controls
                         {
                             CvInvoke.Circle(colorMat, center, radius / 2, redColor, 1);
                         }
-
                     }
 
                     if (akkonParameters.DrawOption.ContainSize)
@@ -1712,6 +1712,20 @@ namespace Jastech.Apps.Winform.UI.Controls
                             CvInvoke.PutText(colorMat, strength, pt, FontFace.HersheySimplex, 0.3, greenColor);
                         else
                             CvInvoke.PutText(colorMat, strength, pt, FontFace.HersheySimplex, 0.3, redColor);
+                    }
+
+                    if(blob.IsAkkonShape == false)
+                    {
+                        double strengthValue = Math.Abs(blob.Strength - akkonParameters.ShapeFilterParam.MinAkkonStrength);
+                        if (strengthValue <= 1)
+                        {
+                            int temp = (int)(radius / 2.0);
+                            Point pt = new Point(center.X + temp, center.Y - temp);
+                            string strength = blob.Strength.ToString("F1");
+
+                            CvInvoke.Circle(colorMat, center, radius / 2, orangeColor, 1);
+                            CvInvoke.PutText(colorMat, strength, pt, FontFace.HersheySimplex, 0.3, orangeColor);
+                        }
                     }
                 }
 

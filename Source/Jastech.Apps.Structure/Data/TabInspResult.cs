@@ -1,5 +1,6 @@
 ﻿using Cognex.VisionPro;
 using Emgu.CV;
+using Jastech.Apps.Structure.VisionTool;
 using Jastech.Framework.Algorithms.Akkon.Parameters;
 using Jastech.Framework.Algorithms.Akkon.Results;
 using Jastech.Framework.Imaging.Result;
@@ -308,6 +309,8 @@ namespace Jastech.Apps.Structure.Data
         public bool AlignMissing { get; set; } = false;
 
         public float ResultValue_pixel { get; set; } = 0.0f;
+
+        public List<LeadAlignResult> AlignResultList { get; set; } = new List<LeadAlignResult>();
 
         public double JudegementValue_pixel { get; set; }
 
