@@ -162,20 +162,17 @@ namespace ATT_UT_IPAD.UI.Controls
             TabBtnControlList[tabNo].SetAlignImage(tabInspResult.CogImage);
             TabBtnControlList[tabNo].SetLeftAlignShape(GetLeftAlignShape(tabInspResult));
             TabBtnControlList[tabNo].SetRightAlignShape(GetRightAlignShape(tabInspResult));
+
             if (tabInspResult.AlignResult != null)
                 TabBtnControlList[tabNo].SetCenterImage(tabInspResult.AlignResult.CenterImage);
 
             if (tabInspResult != null)
             {
                 if (CurrentTabNo == tabNo)
-                {
                     UpdateImage(tabNo);
-                }
             }
             else
-            {
                 InspAlignDisplay.ClearImage();
-            }
           
         }
 
@@ -207,7 +204,7 @@ namespace ATT_UT_IPAD.UI.Controls
             if(tabInspResult != null)
             {
                 if (tabInspResult.AlignResult.Judgement == Judgement.OK)
-                    TabBtnControlList[tabNo].BackColor = Color.MediumSeaGreen;
+                    TabBtnControlList[tabNo].BackColor = Color.GreenYellow; // Color.MediumSeaGreen;
                 else
                     TabBtnControlList[tabNo].BackColor = Color.Red;
             }

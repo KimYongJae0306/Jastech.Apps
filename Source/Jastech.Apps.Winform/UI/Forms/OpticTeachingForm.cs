@@ -208,13 +208,6 @@ namespace Jastech.Framework.Winform.Forms
             AutoFocusControl.SetLAFCtrl(LAFCtrl);
             AutoFocusControl.UpdateData(posData.GetAxisInfo(AxisNameZ));
 
-            //if (MotionJogXYControl != null)
-            //{
-            //    MotionJogXYControl.SetAxisHanlder(AxisHandler);
-            //    MotionJogXYControl.JogMode = JogMode.Jog;
-            //    MotionJogXYControl.JogSpeedMode = JogSpeedMode.Slow;
-            //    MotionJogXYControl.JogPitch = Convert.ToDouble(lblPitchXYValue.Text);
-            //}
             if (MotionJogXControl != null)
             {
                 MotionJogXControl.JogMode = JogMode.Jog;
