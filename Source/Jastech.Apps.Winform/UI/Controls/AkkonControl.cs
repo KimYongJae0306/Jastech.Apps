@@ -1780,10 +1780,8 @@ namespace Jastech.Apps.Winform.UI.Controls
                 var lead = result.Roi;
                 var startPoint = new Point((int)result.Offset.ToWorldX, (int)result.Offset.ToWorldY);
 
-
                 MCvScalar redColor = new MCvScalar(50, 50, 230, 255);
                 MCvScalar greenColor = new MCvScalar(50, 230, 50, 255);
-
 
                 foreach (var blob in result.BlobList)
                 {
@@ -2004,7 +2002,8 @@ namespace Jastech.Apps.Winform.UI.Controls
             tabInspResult.AkkonResult.Judgement = tabJudgement;
             tabInspResult.AkkonInspMatImage = AkkonAlgorithm.ResizeMat;
 
-            Mat resultMat = GetResultImage(matImage, leadResultList, akkonParam);
+            //Mat resultMat = GetResultImage(matImage, leadResultList, akkonParam);
+            Mat resultMat = GetDebugResultImage(matImage, leadResultList, akkonParam);
             tabInspResult.AkkonResultCogImage = ConvertCogColorImage(resultMat);
 
             Mat resizeMat = MatHelper.Resize(matImage, akkonParam.ImageFilterParam.ResizeRatio);
