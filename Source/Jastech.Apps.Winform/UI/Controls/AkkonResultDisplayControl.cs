@@ -223,7 +223,7 @@ namespace ATT_UT_IPAD.UI.Controls
             if(tabInspResult != null)
             {
                 if (tabInspResult.AkkonResult.Judgement == Judgement.OK)
-                    TabBtnControlList[tabNo].BackColor = Color.GreenYellow; // Color.MediumSeaGreen;
+                    TabBtnControlList[tabNo].BackColor = Color.MediumSeaGreen;
                 else
                     TabBtnControlList[tabNo].BackColor = Color.Red;
 
