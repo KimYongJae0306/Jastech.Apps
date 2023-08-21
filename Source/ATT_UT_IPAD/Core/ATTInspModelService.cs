@@ -204,6 +204,12 @@ namespace ATT_UT_IPAD.Core
 
                 foreach (var tab in unit.GetTabList())
                 {
+                    foreach (var group in tab.AkkonParam.GroupList)
+                    {
+                        var akkonRoi = group.AkkonROIList;
+                        akkonRoi.Sort((x, y) => x.LeftTopX.CompareTo(y.LeftTopX));
+                    }
+
                     string tabDir = unitDir + @"\" + "Tab_" + tab.Name;
 
                     //Tab Main FPC Mark 열기
