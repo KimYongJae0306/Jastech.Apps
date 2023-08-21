@@ -304,8 +304,12 @@ namespace Jastech.Apps.Winform.UI.Controls
 
             VisionProCaliperParam inspParam = currentParam.DeepCopy();
 
+            bool usePanel = false;
+            if (CurrentAlignName.ToString().ToUpper().Contains("PANEL"))
+                usePanel = true;
+
             if (CurrentAlignName.ToString().Contains("X"))
-                result = AlgorithmTool.RunAlignX(copyCogImage, inspParam, param.LeadCount);
+                result = AlgorithmTool.RunAlignX(copyCogImage, inspParam, param.LeadCount, usePanel);
             else
                 result = AlgorithmTool.RunAlignY(copyCogImage, inspParam);
 

@@ -188,8 +188,8 @@ namespace Jastech.Apps.Structure.VisionTool
         {
             AlignResult result = new AlignResult();
 
-            result.Panel = RunAlignX(cogImage, panelParam.CaliperParams, panelParam.LeadCount);
-            result.Fpc = RunAlignX(cogImage, fpcParam.CaliperParams, fpcParam.LeadCount);
+            result.Panel = RunAlignX(cogImage, panelParam.CaliperParams, panelParam.LeadCount, true);
+            result.Fpc = RunAlignX(cogImage, fpcParam.CaliperParams, fpcParam.LeadCount, false);
 
             List<double> alignValueList = new List<double>();
 
