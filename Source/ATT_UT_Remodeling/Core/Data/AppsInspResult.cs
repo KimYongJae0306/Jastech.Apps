@@ -29,9 +29,7 @@ namespace ATT_UT_Remodeling.Core.Data
         public static AppsInspResult Instance()
         {
             if (_instance == null)
-            {
                 _instance = new AppsInspResult();
-            }
 
             return _instance;
         }
@@ -39,17 +37,14 @@ namespace ATT_UT_Remodeling.Core.Data
         public void ClearResult()
         {
             foreach (var inspResult in InspResultDic)
-            {
                 inspResult.Value.Dispose();
-            }
         }
 
         public void Dispose()
         {
             foreach (var inspResult in InspResultDic)
-            {
                 inspResult.Value.Dispose();
-            }
+
             InspResultDic.Clear();
         }
 
@@ -58,11 +53,13 @@ namespace ATT_UT_Remodeling.Core.Data
             lock (InspResultDic)
             {
                 int tabNo = tabInspResult.TabNo;
+
                 if (InspResultDic.ContainsKey(tabNo))
                 {
                     InspResultDic[tabNo].Dispose();
                     InspResultDic.Remove(tabNo);
                 }
+
                 InspResultDic.Add(tabNo, tabInspResult);
             }
         }
@@ -74,6 +71,7 @@ namespace ATT_UT_Remodeling.Core.Data
                 if (InspResultDic.ContainsKey(tabNo))
                     return InspResultDic[tabNo];
             }
+
             return null;
         }
         #endregion

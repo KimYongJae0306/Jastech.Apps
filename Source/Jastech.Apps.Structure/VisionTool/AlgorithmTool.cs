@@ -33,13 +33,13 @@ namespace Jastech.Apps.Structure.VisionTool
             return cogImage;
         }
 
-        public VisionProAlignCaliperResult RunAlignX(ICogImage image, VisionProCaliperParam param, int leadCount)
+        public VisionProAlignCaliperResult RunAlignX(ICogImage image, VisionProCaliperParam param, int leadCount, bool isPanel)
         {
             if (image == null || param == null)
                 return null;
 
             VisionProAlignCaliperResult alignResult = new VisionProAlignCaliperResult();
-            var result = AlignAlgorithm.RunAlignX(image, param, leadCount);
+            var result = AlignAlgorithm.RunAlignX(image, param, leadCount, isPanel);
             alignResult.AddAlignResult(result);
 
             bool isFounded = false;

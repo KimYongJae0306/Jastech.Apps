@@ -149,7 +149,6 @@ namespace Jastech.Apps.Structure.VisionTool
             panelParam.CaliperParams.SetRegion(calcPanelRegion);
 
             var result = RunMainAlignX(cogImage, fpcParam, panelParam, judgementX_pixel);
-
             return result;
         }
 
@@ -188,8 +187,8 @@ namespace Jastech.Apps.Structure.VisionTool
         {
             AlignResult result = new AlignResult();
 
-            result.Panel = RunAlignX(cogImage, panelParam.CaliperParams, panelParam.LeadCount);
-            result.Fpc = RunAlignX(cogImage, fpcParam.CaliperParams, fpcParam.LeadCount);
+            result.Panel = RunAlignX(cogImage, panelParam.CaliperParams, panelParam.LeadCount, true);
+            result.Fpc = RunAlignX(cogImage, fpcParam.CaliperParams, fpcParam.LeadCount, false);
 
             List<double> alignValueList = new List<double>();
 
@@ -203,6 +202,7 @@ namespace Jastech.Apps.Structure.VisionTool
 
                 if (panelResult1 == null || panelResult2 == null || fpcResult1 == null || fpcResult2 == null)
                     continue;
+
                 if (panelResult1.Found == false || panelResult2.Found == false || fpcResult1.Found == false || fpcResult2.Found == false)
                     continue;
 

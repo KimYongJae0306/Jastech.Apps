@@ -304,8 +304,12 @@ namespace Jastech.Apps.Winform.UI.Controls
 
             VisionProCaliperParam inspParam = currentParam.DeepCopy();
 
+            bool usePanel = false;
+            if (CurrentAlignName.ToString().ToUpper().Contains("PANEL"))
+                usePanel = true;
+
             if (CurrentAlignName.ToString().Contains("X"))
-                result = AlgorithmTool.RunAlignX(copyCogImage, inspParam, param.LeadCount);
+                result = AlgorithmTool.RunAlignX(copyCogImage, inspParam, param.LeadCount, usePanel);
             else
                 result = AlgorithmTool.RunAlignY(copyCogImage, inspParam);
 
@@ -502,7 +506,6 @@ namespace Jastech.Apps.Winform.UI.Controls
             tabInspResult.AlignResult.LeftY = algorithmTool.RunMainLeftAlignY(cogImage, CurrentTab, new PointF(0, 0), new PointF(0, 0), judgementY);
             tabInspResult.AlignResult.RightX = algorithmTool.RunMainRightAlignX(cogImage, CurrentTab, new PointF(0, 0), new PointF(0, 0), judgementX);
             tabInspResult.AlignResult.RightY = algorithmTool.RunMainRightAlignY(cogImage, CurrentTab, new PointF(0, 0), new PointF(0, 0), judgementY);
-            tabInspResult.AlignResult.CenterX = Math.Abs(tabInspResult.AlignResult.LeftX.ResultValue_pixel - tabInspResult.AlignResult.RightX.ResultValue_pixel);
 
             display.ClearGraphic();
 

@@ -135,11 +135,13 @@ namespace Jastech.Apps.Structure.Data
                 if (AkkonCamera.Name == name)
                     return AkkonCamera;
             }
+
             if(AlignCamera != null)
             {
                 if (AlignCamera.Name == name)
                     return AlignCamera;
             }
+
             return null;
         }
     }

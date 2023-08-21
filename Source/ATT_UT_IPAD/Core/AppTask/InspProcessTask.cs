@@ -253,8 +253,6 @@ namespace ATT_UT_IPAD.Core.AppTask
                 #endregion
 
                 #region Center Align
-                // EnableAlign false 일때 구조 생각
-                tabInspResult.AlignResult.CenterX = Math.Abs(tabInspResult.AlignResult.LeftX.ResultValue_pixel - tabInspResult.AlignResult.RightX.ResultValue_pixel);
                 #endregion
 
                 sw.Stop();

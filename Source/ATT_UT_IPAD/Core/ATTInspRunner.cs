@@ -650,7 +650,7 @@ namespace ATT_UT_IPAD.Core
                 alignInfo.LY = GetResultAlignResultValue(tabInspResult.AlignResult.LeftY);
                 alignInfo.RX = GetResultAlignResultValue(tabInspResult.AlignResult.RightX);
                 alignInfo.RY = GetResultAlignResultValue(tabInspResult.AlignResult.RightY);
-                alignInfo.CX = tabInspResult.AlignResult.CenterX;
+                alignInfo.CX = (alignInfo.LX + alignInfo.RX) / 2.0F;
 
                 dailyData.AddAlignInfo(alignInfo);
             }
@@ -747,16 +747,20 @@ namespace ATT_UT_IPAD.Core
                 var alignResult = tabInspResult.AlignResult;
                 Judgement judgement = alignResult.Judgement;
 
+                var lx = CheckAlignResultValue(alignResult.LeftX);
+                var rx = CheckAlignResultValue(alignResult.RightX);
+                var cx = (lx + rx) / 2.0F;
+
                 List<string> tabData = new List<string>
                 {
                     AppsInspResult.Instance().EndInspTime.ToString("HH:mm:ss"),                                    // Insp Time
                     AppsInspResult.Instance().Cell_ID,                                                             // Panel ID
                     (tabInspResult.TabNo + 1).ToString(),                                                               // Tab
                     judgement.ToString(),                       // Judge
-                    CheckAlignResultValue(alignResult.LeftX).ToString("F2"),          // Left Align X
+                    lx.ToString("F2"),          // Left Align X
                     CheckAlignResultValue(alignResult.LeftY).ToString("F2"),          // Left Align Y
-                    alignResult.CenterX.ToString("F2"),                         // Center Align X
-                    CheckAlignResultValue(alignResult.RightX).ToString("F2"),         // Right Align X
+                    cx.ToString("F2"),                         // Center Align X
+                    rx.ToString("F2"),         // Right Align X
                     CheckAlignResultValue(alignResult.RightY).ToString("F2"),         // Right Align Y     // Right Align Y
                 };
 
@@ -876,13 +880,14 @@ namespace ATT_UT_IPAD.Core
                 };
 
                 // Add Body strings
+                var cx = (CheckAlignResultValue(alignResult.LeftX) + CheckAlignResultValue(alignResult.RightX)) / 2.0F;
                 var body = new List<string>
                 {
                     AppsInspResult.Instance().Cell_ID,
                     $"{AppsInspResult.Instance().EndInspTime:HH:mm:ss}",
                     $"{CheckAlignResultValue(alignResult.LeftX):F2}",
                     $"{CheckAlignResultValue(alignResult.LeftY):F2}",
-                    $"{alignResult.CenterX:F2}",
+                    $"{cx:F2}",
                     $"{CheckAlignResultValue(alignResult.RightX):F2}",
                     $"{CheckAlignResultValue(alignResult.RightY):F2}",
                 };
@@ -942,6 +947,10 @@ namespace ATT_UT_IPAD.Core
                 var tabInspResult = AppsInspResult.Instance().GetAkkon(tabNo);
                 var alignResult = tabInspResult.AlignResult;
 
+                var lx = CheckAlignResultValue(alignResult.LeftX);
+                var rx = CheckAlignResultValue(alignResult.RightX);
+                var cx = (lx + rx) / 2.0;
+
                 List<string> tabData = new List<string>
                 {
                     AppsInspResult.Instance().EndInspTime.ToString("HH:mm:ss"),                                    // Insp Time
@@ -960,10 +969,10 @@ namespace ATT_UT_IPAD.Core
                     (tabNo + 5).ToString(),                                                         // Strength Min
                     (tabNo + 6).ToString("F2"),                                                     // Strength Avg
 
-                    CheckAlignResultValue(alignResult.LeftX).ToString("F2"),    // Left Align X
+                    lx.ToString("F2"),    // Left Align X
                     CheckAlignResultValue(alignResult.LeftY).ToString("F2"),    // Left Align Y
-                    alignResult.CenterX.ToString("F2"),                         // Center Align X
-                    CheckAlignResultValue(alignResult.RightX).ToString("F2"),   // Right Align X
+                    cx.ToString("F2"),                         // Center Align X
+                    rx.ToString("F2"),   // Right Align X
                     CheckAlignResultValue(alignResult.RightY).ToString("F2"),   // Right Align Y
 
                     (tabNo + 7).ToString(),                                                         // ACF Head
