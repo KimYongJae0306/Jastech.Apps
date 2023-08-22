@@ -219,7 +219,7 @@ namespace ATT_UT_IPAD
             akkonLaf.HomePosition_mm = 0.02;
             akkonLaf.ResolutionAxisZ = 10000.0;
             akkonLaf.MaxSppedAxisZ = 20;
-            akkonLaf.AccDec = 15;
+            akkonLaf.AccDec = 70;
             config.Add(akkonLaf);
 
             // Align LAF
