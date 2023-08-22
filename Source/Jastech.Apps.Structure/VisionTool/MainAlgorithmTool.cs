@@ -235,6 +235,15 @@ namespace Jastech.Apps.Structure.VisionTool
                 var res = fpcX - panelX;
 
                 alignValueList.Add(res);
+
+                //// 2Point : 센터 위치까지만 그리기
+                //CogLine cogLine = new CogLine();
+                //cogLine.SetFromStartXYEndXY(fpcCenterX, fpcCenterY, panelCenterX, panelCenterY);
+
+                //// 1Point + Skew : 영역 전체 그리기 ( fpc skew와 panel skew가 일치하지 않을 경우 어디선가 교점이 생김....
+                //// fpc skew, panel skew 동일하게 하거나, line 그리는 skew에 fpc skew, panel skew를 넣는 것이 아닌 두 skew의 평균으로 넣든해야함
+                //cogLine.SetXYRotation(fpcCenterX, fpcCenterY, fpcSkew);
+                //cogLine.SetXYRotation(panelCenterX, panelCenterY, panelSkew);
             }
 
             if(alignValueList.Count > 0)

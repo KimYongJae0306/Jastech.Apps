@@ -203,7 +203,6 @@
             // 
             this.lblTracking.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.lblTracking.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblTracking.Enabled = false;
             this.lblTracking.Font = new System.Drawing.Font("맑은 고딕", 14.25F, System.Drawing.FontStyle.Bold);
             this.lblTracking.Location = new System.Drawing.Point(661, 0);
             this.lblTracking.Margin = new System.Windows.Forms.Padding(0);
@@ -212,7 +211,6 @@
             this.lblTracking.TabIndex = 296;
             this.lblTracking.Text = "Tracking";
             this.lblTracking.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.lblTracking.Visible = false;
             this.lblTracking.Click += new System.EventHandler(this.lblTracking_Click);
             // 
             // cbxTabList

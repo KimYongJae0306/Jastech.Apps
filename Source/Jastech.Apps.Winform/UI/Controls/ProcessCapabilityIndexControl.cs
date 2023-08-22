@@ -322,5 +322,10 @@ namespace Jastech.Apps.Winform.UI.Controls
             return query;
         }
         #endregion
+
+        private void dgvPCResult_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            int gg = 0;
+        }
     }
 }

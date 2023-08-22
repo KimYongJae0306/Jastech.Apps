@@ -557,6 +557,7 @@ namespace ATT_UT_IPAD.Core
 
                 Thread.Sleep(10);
             }
+
             PlcControlManager.Instance().WritePcStatus(PlcCommand.StartInspection);
         }
 
