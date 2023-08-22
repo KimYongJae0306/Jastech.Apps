@@ -268,9 +268,11 @@ namespace Jastech.Apps.Winform.UI.Controls
             if (display.GetImage() == null)
                 return;
 
-            CogCaliperCurrentRecordConstants constants = CogCaliperCurrentRecordConstants.All;
             var currentParam = CogCaliperParamControl.GetCurrentParam();
+            if (currentParam == null)
+                return;
 
+            CogCaliperCurrentRecordConstants constants = CogCaliperCurrentRecordConstants.All;
             display.SetInteractiveGraphics("tool", currentParam.CreateCurrentRecord(constants));
 
             var rect = currentParam.GetRegion() as CogRectangleAffine;
@@ -302,8 +304,12 @@ namespace Jastech.Apps.Winform.UI.Controls
 
             VisionProCaliperParam inspParam = currentParam.DeepCopy();
 
+            bool usePanel = false;
+            if (CurrentAlignName.ToString().ToUpper().Contains("PANEL"))
+                usePanel = true;
+
             if (CurrentAlignName.ToString().Contains("X"))
-                result = AlgorithmTool.RunAlignX(copyCogImage, inspParam, param.LeadCount);
+                result = AlgorithmTool.RunAlignX(copyCogImage, inspParam, param.LeadCount, usePanel);
             else
                 result = AlgorithmTool.RunAlignY(copyCogImage, inspParam);
 
@@ -496,11 +502,10 @@ namespace Jastech.Apps.Winform.UI.Controls
             double judgementX = CurrentTab.AlignSpec.LeftSpecX_um / Resolution_um;
             double judgementY = CurrentTab.AlignSpec.LeftSpecY_um / Resolution_um;
 
-            tabInspResult.AlignResult.LeftX = algorithmTool.RunMainLeftAlignX(cogImage, CurrentTab, null, null, judgementX);
-            tabInspResult.AlignResult.LeftY = algorithmTool.RunMainLeftAlignY(cogImage, CurrentTab, null, null, judgementY);
-            tabInspResult.AlignResult.RightX = algorithmTool.RunMainRightAlignX(cogImage, CurrentTab, null, null, judgementX);
-            tabInspResult.AlignResult.RightY = algorithmTool.RunMainRightAlignY(cogImage, CurrentTab, null, null, judgementY);
-            tabInspResult.AlignResult.CenterX = Math.Abs(tabInspResult.AlignResult.LeftX.ResultValue_pixel - tabInspResult.AlignResult.RightX.ResultValue_pixel);
+            tabInspResult.AlignResult.LeftX = algorithmTool.RunMainLeftAlignX(cogImage, CurrentTab, new PointF(0, 0), new PointF(0, 0), judgementX);
+            tabInspResult.AlignResult.LeftY = algorithmTool.RunMainLeftAlignY(cogImage, CurrentTab, new PointF(0, 0), new PointF(0, 0), judgementY);
+            tabInspResult.AlignResult.RightX = algorithmTool.RunMainRightAlignX(cogImage, CurrentTab, new PointF(0, 0), new PointF(0, 0), judgementX);
+            tabInspResult.AlignResult.RightY = algorithmTool.RunMainRightAlignY(cogImage, CurrentTab, new PointF(0, 0), new PointF(0, 0), judgementY);
 
             display.ClearGraphic();
 

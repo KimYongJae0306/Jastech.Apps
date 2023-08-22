@@ -49,7 +49,7 @@ namespace ATT.UI.Forms
 
         private MotionParameterVariableControl YVariableControl = null;
 
-        private MotionParameterVariableControl ZVariableControl = null;
+        //private MotionParameterVariableControl ZVariableControl = null;
 
         public TeachingPosType TeachingPositionType = TeachingPosType.Standby;
 
@@ -174,7 +174,7 @@ namespace ATT.UI.Forms
 
             lblTargetPositionZ.Text = param.GetTargetPosition(AxisName.Z0).ToString();
             lblTeachedCenterOfGravityZ.Text = param.GetCenterOfGravity(AxisName.Z0).ToString();
-            ZVariableControl.UpdateData(param.GetMovingParams(AxisName.Z0));
+            //ZVariableControl.UpdateData(param.GetMovingParams(AxisName.Z0));
         }
 
         public void SetTeachingPosition(List<TeachingInfo> teacingPositionList)
@@ -194,10 +194,10 @@ namespace ATT.UI.Forms
             YVariableControl.SetAxis(AxisHandler.GetAxis(AxisName.Y));
             tlpVariableParameter.Controls.Add(YVariableControl);
 
-            ZVariableControl = new MotionParameterVariableControl();
-            ZVariableControl.Dock = DockStyle.Fill;
-            ZVariableControl.SetAxis(AxisHandler.GetAxis(AxisName.Z0));
-            tlpVariableParameter.Controls.Add(ZVariableControl);
+            //ZVariableControl = new MotionParameterVariableControl();
+            //ZVariableControl.Dock = DockStyle.Fill;
+            //ZVariableControl.SetAxis(AxisHandler.GetAxis(AxisName.Z0));
+            //tlpVariableParameter.Controls.Add(ZVariableControl);
         }
 
         private void AddJogControl()
@@ -379,7 +379,7 @@ namespace ATT.UI.Forms
 
             posData.SetMovingParams(AxisName.X, XVariableControl.GetCurrentData());
             posData.SetMovingParams(AxisName.Y, YVariableControl.GetCurrentData());
-            posData.SetMovingParams(AxisName.Z0, ZVariableControl.GetCurrentData());
+            //posData.SetMovingParams(AxisName.Z0, ZVariableControl.GetCurrentData());
         }
 
         private void Save()

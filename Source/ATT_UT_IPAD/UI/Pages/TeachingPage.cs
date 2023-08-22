@@ -1,5 +1,6 @@
 ﻿using ATT_UT_IPAD.Core;
 using ATT_UT_IPAD.UI.Forms;
+using Cognex.VisionPro;
 using Jastech.Apps.Structure;
 using Jastech.Apps.Winform;
 using Jastech.Framework.Device.LAFCtrl;
@@ -15,6 +16,8 @@ namespace ATT_UT_IPAD.UI.Pages
         private ATTInspModelService ATTInspModelService { get; set; } = null;
 
         private MotionPopupForm MotionPopupForm { get; set; } = null;
+
+        public ICogImage ScanImage { get; set; } = null;
         #endregion
 
         #region 생성자
@@ -67,6 +70,7 @@ namespace ATT_UT_IPAD.UI.Pages
         private void btnAlignInspectionPage_Click(object sender, EventArgs e)
         {
             InspectionTeachingForm form = new InspectionTeachingForm();
+            form.ScanImage = ScanImage?.CopyBase(CogImageCopyModeConstants.CopyPixels);
             form.UnitName = UnitName.Unit0;
             form.LineCamera = LineCameraManager.Instance().GetLineCamera("AlignCamera");
             form.UseDelayStart = true;
@@ -80,6 +84,7 @@ namespace ATT_UT_IPAD.UI.Pages
         private void btnAkkonInspectionPage_Click(object sender, EventArgs e)
         {
             InspectionTeachingForm form = new InspectionTeachingForm();
+            form.ScanImage = ScanImage?.CopyBase(CogImageCopyModeConstants.CopyPixels);
             form.UnitName = UnitName.Unit0;
             form.LineCamera = LineCameraManager.Instance().GetLineCamera("AkkonCamera");
             form.LAFCtrl = LAFManager.Instance().GetLAF("AkkonLaf").LafCtrl;

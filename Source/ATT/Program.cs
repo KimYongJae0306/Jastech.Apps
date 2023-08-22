@@ -12,6 +12,7 @@ using Jastech.Framework.Device.Motions;
 using Jastech.Framework.Imaging;
 using Jastech.Framework.Matrox;
 using Jastech.Framework.Util.Helper;
+using Jastech.Framework.Winform.Forms;
 using System;
 using System.Threading;
 using System.Windows.Forms;
@@ -73,8 +74,8 @@ namespace ATT
                 AppsConfig.Instance().ProgramType = ProgramType.ProgramType_1.ToString();
                 AppsConfig.Instance().MachineName = "Test Equipment #7";
 
-                var camera0 = new CameraVirtual("AkkonCamera", 4640, 1024, ColorFormat.Gray, SensorType.Line);
-                config.Add(camera0);
+                var lineCamera = new CameraVirtual("LineCamera", 6560, 1024, ColorFormat.Gray, SensorType.Line);
+                config.Add(lineCamera);
 
                 var motion = new VirtualMotion("VirtualMotion", 3);
                 config.Add(motion);
@@ -88,7 +89,7 @@ namespace ATT
                 light2.ChannelNameMap["Ch.RedRing"] = 0;
                 config.Add(light2);
 
-                var laf = new VirtualLAFCtrl("AkkonLaf");
+                var laf = new VirtualLAFCtrl("Laf");
                 config.Add(laf);
             }
             else
@@ -97,16 +98,25 @@ namespace ATT
                 AppsConfig.Instance().ProgramType = ProgramType.ProgramType_1.ToString();
                 AppsConfig.Instance().MachineName = "Test Equipment #7";
 
-                var camera1 = new CameraMil("AkkonCamera", 4640, 1024, ColorFormat.Gray, SensorType.Line);
-                camera1.MilSystemType = MilSystemType.Rapixo;
-                camera1.TriggerMode = TriggerMode.Hardware;
-                camera1.TriggerSource = (int)MilCxpTriggerSource.Cxp;
-                camera1.TriggerSignalType = MilTriggerSignalType.TL_Trigger;
-                camera1.TriggerIoSourceType = MILIoSourceType.AUX_IO0;
-                camera1.DigitizerNum = 0;
+                int cameraWidth = 3072;
+                int cameraOffsetX = 1536;
+                if (CheckCameraProperty(ref cameraWidth, ref cameraOffsetX, 6560) == true)
+                {
+                    var lineCamera = new CameraMil("LineCamera", cameraWidth, 1024, ColorFormat.Gray, SensorType.Line);
+                    lineCamera.OffsetX = cameraOffsetX;
+                    lineCamera.EnableReverseX = true;
+                    lineCamera.MilSystemType = MilSystemType.Rapixo;
+                    lineCamera.TriggerMode = TriggerMode.Hardware;
+                    lineCamera.TriggerSource = (int)MilCxpTriggerSource.Cxp;
+                    lineCamera.TriggerSignalType = MilTriggerSignalType.TL_Trigger;
+                    lineCamera.TriggerIoSourceType = MILIoSourceType.AUX_IO0;
+                    lineCamera.PixelResolution_um = 3.5F;
+                    lineCamera.LensScale = 10F;
+                    lineCamera.DigitizerNum = 0;
 
-                camera1.DcfFile = CameraMil.GetDcfFile(CameraType.VT_4K5X_H200);
-                config.Add(camera1);
+                    lineCamera.DcfFile = CameraMil.GetDcfFile(CameraType.VT_4K5X_H200);
+                    config.Add(lineCamera);
+                }
 
                 var motion = new ACSMotion("Motion", 2, ACSConnectType.Ethernet);
                 motion.IpAddress = "10.0.0.100";
@@ -121,9 +131,14 @@ namespace ATT
                 light2.ChannelNameMap["Ch.RedRing"] = 0;
                 config.Add(light2);
 
-                var laf1 = new NuriOneLAFCtrl("AkkonLaf");
-                laf1.SerialPortComm = new SerialPortComm("COM4", 9600);
-                config.Add(laf1);
+                var laf = new NuriOneLAFCtrl("Laf");
+                laf.SerialPortComm = new SerialPortComm("COM4", 9600);
+                laf.AxisName = AxisName.Z0.ToString();
+                laf.HomePosition_mm = 0.02;
+                laf.ResolutionAxisZ = 10000.0;
+                laf.MaxSppedAxisZ = 20;
+                laf.AccDec = 15;
+                config.Add(laf);
 
                 //var laf2 = new NuriOneLAFCtrl(LAFName.Akkon.ToString());
                 //laf2.SerialPortComm = new SerialPortComm
@@ -133,6 +148,45 @@ namespace ATT
                 //};
                 //config.Add(laf2);
             }
+        }
+
+        private static bool CheckCameraProperty(ref int width, ref int offsetX, int fullPixelSize)
+        {
+            if (width % 16 != 0 || offsetX % 16 != 0)
+            {
+                string errorMessage = string.Format("Set parameter to a multiple of 16\r\n Width : {0}, Offset : {1}", width, offsetX);
+                Logger.Debug(LogType.Device, errorMessage);
+
+                MessageConfirmForm form = new MessageConfirmForm();
+                form.Message = errorMessage;
+
+                return false;
+            }
+
+            if (width > fullPixelSize)
+                width = fullPixelSize;
+
+            if (width + offsetX > fullPixelSize)
+            {
+                string errorMessage = "Width + Offset <= " + fullPixelSize.ToString();
+                Logger.Debug(LogType.Device, errorMessage);
+
+                int newOffsetX = fullPixelSize - width;
+                errorMessage = string.Format("{0}\r\n\r\nInput Width : {1},Offset : {2}\r\n\r\nDo you want to Change Parameter?\r\n\r\nSet Width : {3},Offset : {4}",
+                                            errorMessage, width, offsetX, width, newOffsetX);
+
+                MessageYesNoForm form = new MessageYesNoForm();
+                form.Message = errorMessage;
+                if (form.ShowDialog() == DialogResult.Yes)
+                {
+                    offsetX = newOffsetX;
+                    return true;
+                }
+                else
+                    return false;
+            }
+            else
+                return true;
         }
 
         private static void ConfigSet_OperationConfigCreated(OperationConfig config)

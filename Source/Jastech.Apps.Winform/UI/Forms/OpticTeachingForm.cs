@@ -208,13 +208,6 @@ namespace Jastech.Framework.Winform.Forms
             AutoFocusControl.SetLAFCtrl(LAFCtrl);
             AutoFocusControl.UpdateData(posData.GetAxisInfo(AxisNameZ));
 
-            //if (MotionJogXYControl != null)
-            //{
-            //    MotionJogXYControl.SetAxisHanlder(AxisHandler);
-            //    MotionJogXYControl.JogMode = JogMode.Jog;
-            //    MotionJogXYControl.JogSpeedMode = JogSpeedMode.Slow;
-            //    MotionJogXYControl.JogPitch = Convert.ToDouble(lblPitchXYValue.Text);
-            //}
             if (MotionJogXControl != null)
             {
                 MotionJogXControl.JogMode = JogMode.Jog;
@@ -589,11 +582,17 @@ namespace Jastech.Framework.Winform.Forms
             if (model == null)
                 return;
 
-            SaveModelData(model);
+            MessageYesNoForm yesNoForm = new MessageYesNoForm();
+            yesNoForm.Message = "Teaching data will change.\nDo you agree?";
 
-            MessageConfirmForm form = new MessageConfirmForm();
-            form.Message = "Save Model Completed.";
-            form.ShowDialog();
+            if (yesNoForm.ShowDialog() == DialogResult.Yes)
+            {
+                SaveModelData(model);
+
+                MessageConfirmForm confirmForm = new MessageConfirmForm();
+                confirmForm.Message = "Save Model Completed.";
+                confirmForm.ShowDialog();
+            }
         }
 
         private void SaveModelData(AppsInspModel model)

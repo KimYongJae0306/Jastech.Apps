@@ -1,4 +1,5 @@
 ﻿using ATT_UT_IPAD.Core;
+using Cognex.VisionPro;
 using Jastech.Apps.Structure;
 using Jastech.Apps.Structure.Data;
 using Jastech.Apps.Winform;
@@ -325,6 +326,36 @@ namespace ATT_UT_IPAD
         public void ReleaseInspRunner()
         {
             _inspRunner.Release();
+        }
+
+        public void SetAkkonLastScanImage(ICogImage cogImage)
+        {
+            _mainForm.SetAkkonLastScanImage(cogImage);
+        }
+
+        public ICogImage GetAkkonLastScanImage()
+        {
+            return _mainForm.GetAkkonLastScanImage();
+        }
+
+        public void ReleaseAkkonLastScanImage()
+        {
+            _mainForm.ReleaseAkkonLastScanImage();
+        }
+
+        public void SetAlignLastScanImage(ICogImage cogImage)
+        {
+            _mainForm.SetAlignLastScanImage(cogImage);
+        }
+
+        public ICogImage GetAlignLastScanImage()
+        {
+            return _mainForm.GetAlignLastScanImage();
+        }
+
+        public void ReleaseAlignLastScanImage()
+        {
+            _mainForm.ReleaseAlignLastScanImage();
         }
         #endregion
     }

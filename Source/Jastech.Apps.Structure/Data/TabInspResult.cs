@@ -82,21 +82,22 @@ namespace Jastech.Apps.Structure.Data
             if (CogImage is CogImage8Grey orgGrey)
             {
                 orgGrey.Dispose();
-                orgGrey = null;
+                CogImage = null;
             }
             if (AkkonInspCogImage is CogImage8Grey inspGrey)
             {
                 inspGrey.Dispose();
-                inspGrey = null;
+                AkkonInspCogImage = null;
             }
             if (AkkonResultCogImage is CogImage24PlanarColor color)
             {
                 color.Dispose();
-                color = null;
+                AkkonResultCogImage = null;
             }
 
             MarkResult?.Dispose();
             AlignResult?.Dispose();
+            AkkonResult?.Dispose();
         }
 
         public IEnumerable<int> GetAkkonCounts(string position)
@@ -248,7 +249,7 @@ namespace Jastech.Apps.Structure.Data
 
         public ICogImage CenterImage { get; set; } = null;
 
-        public float CenterX { get; set; }
+        //public float CenterX { get; set; }
 
         public TabAlignResult DeepCopy()
         {
@@ -257,7 +258,6 @@ namespace Jastech.Apps.Structure.Data
             result.LeftY = LeftY?.DeepCopy();
             result.RightX = RightX?.DeepCopy();
             result.RightY = RightY?.DeepCopy();
-            result.CenterX = CenterX;
             result.CenterImage = CenterImage?.CopyBase(CogImageCopyModeConstants.CopyPixels);
 
             return result;

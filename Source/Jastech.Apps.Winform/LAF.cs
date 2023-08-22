@@ -284,7 +284,7 @@ namespace Jastech.Apps.Winform
                     LafCtrl.SetMotionZeroSet();
                     Thread.Sleep(100);
 
-                    LafCtrl.SetMotionMaxSpeed(30);
+                    LafCtrl.SetMotionMaxSpeed(LafCtrl.MaxSppedAxisZ);
                     Thread.Sleep(100);
 
                     Logger.Write(LogType.Device, "Complete zeroset.");

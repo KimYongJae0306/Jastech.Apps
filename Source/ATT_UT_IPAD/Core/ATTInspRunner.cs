@@ -317,11 +317,14 @@ namespace ATT_UT_IPAD.Core
                     AlignLAFCtrl.SetTrackingOnOFF(true);
                     WriteLog("Align LAF Tracking ON.");
 
+                    Thread.Sleep(300);
+
                     SeqStep = SeqStep.SEQ_BUFFER_INIT;
                     break;
 
                 case SeqStep.SEQ_BUFFER_INIT:
                     InitializeBuffer();
+                    //SystemManager.Instance().ReleaseLastScanImage();
                     WriteLog("Initialize Buffer.");
 
                     AppsInspResult.Instance().ClearResult();
@@ -450,7 +453,6 @@ namespace ATT_UT_IPAD.Core
                     break;
 
                 case SeqStep.SEQ_SAVE_IMAGE:
-
                     SaveImage();
                     WriteLog("Save inspection images.");
 
@@ -458,7 +460,6 @@ namespace ATT_UT_IPAD.Core
                     break;
 
                 case SeqStep.SEQ_DELETE_DATA:
-
                     StartDeleteData();
                     WriteLog("Delete the old data");
 
@@ -483,6 +484,7 @@ namespace ATT_UT_IPAD.Core
 
                     SeqStep = SeqStep.SEQ_IDLE;
                     break;
+
                 default:
                     break;
             }
@@ -555,6 +557,7 @@ namespace ATT_UT_IPAD.Core
 
                 Thread.Sleep(10);
             }
+
             PlcControlManager.Instance().WritePcStatus(PlcCommand.StartInspection);
         }
 
@@ -648,7 +651,7 @@ namespace ATT_UT_IPAD.Core
                 alignInfo.LY = GetResultAlignResultValue(tabInspResult.AlignResult.LeftY);
                 alignInfo.RX = GetResultAlignResultValue(tabInspResult.AlignResult.RightX);
                 alignInfo.RY = GetResultAlignResultValue(tabInspResult.AlignResult.RightY);
-                alignInfo.CX = tabInspResult.AlignResult.CenterX;
+                alignInfo.CX = (alignInfo.LX + alignInfo.RX) / 2.0F;
 
                 dailyData.AddAlignInfo(alignInfo);
             }
@@ -745,17 +748,21 @@ namespace ATT_UT_IPAD.Core
                 var alignResult = tabInspResult.AlignResult;
                 Judgement judgement = alignResult.Judgement;
 
+                var lx = CheckAlignResultValue(alignResult.LeftX);
+                var rx = CheckAlignResultValue(alignResult.RightX);
+                var cx = (lx + rx) / 2.0F;
+
                 List<string> tabData = new List<string>
                 {
                     AppsInspResult.Instance().EndInspTime.ToString("HH:mm:ss"),                                    // Insp Time
                     AppsInspResult.Instance().Cell_ID,                                                             // Panel ID
                     (tabInspResult.TabNo + 1).ToString(),                                                               // Tab
                     judgement.ToString(),                       // Judge
-                    CheckResultValue(alignResult.LeftX).ToString("F2"),          // Left Align X
-                    CheckResultValue(alignResult.LeftY).ToString("F2"),          // Left Align Y
-                    alignResult.CenterX.ToString("F2"),                         // Center Align X
-                    CheckResultValue(alignResult.RightX).ToString("F2"),         // Right Align X
-                    CheckResultValue(alignResult.RightY).ToString("F2"),         // Right Align Y     // Right Align Y
+                    lx.ToString("F2"),          // Left Align X
+                    CheckAlignResultValue(alignResult.LeftY).ToString("F2"),          // Left Align Y
+                    cx.ToString("F2"),                         // Center Align X
+                    rx.ToString("F2"),         // Right Align X
+                    CheckAlignResultValue(alignResult.RightY).ToString("F2"),         // Right Align Y     // Right Align Y
                 };
 
                 dataList.Add(tabData);
@@ -817,6 +824,8 @@ namespace ATT_UT_IPAD.Core
                 var akkonResult = AppsInspResult.Instance().GetAkkon(tabNo);
                 var positions = new string[] { "Left", "Center", "Right" };
 
+                //akkonResult.AkkonResult.LeadResultList.OrderBy(x => x.Id);dsfasdfd
+
                 // Add header strings
                 var header = new List<string>
                 {
@@ -872,15 +881,16 @@ namespace ATT_UT_IPAD.Core
                 };
 
                 // Add Body strings
+                var cx = (CheckAlignResultValue(alignResult.LeftX) + CheckAlignResultValue(alignResult.RightX)) / 2.0F;
                 var body = new List<string>
                 {
                     AppsInspResult.Instance().Cell_ID,
                     $"{AppsInspResult.Instance().EndInspTime:HH:mm:ss}",
-                    $"{CheckResultValue(alignResult.LeftX):F2}",
-                    $"{CheckResultValue(alignResult.LeftY):F2}",
-                    $"{alignResult.CenterX:F2}",
-                    $"{CheckResultValue(alignResult.RightX):F2}",
-                    $"{CheckResultValue(alignResult.RightY):F2}",
+                    $"{CheckAlignResultValue(alignResult.LeftX):F2}",
+                    $"{CheckAlignResultValue(alignResult.LeftY):F2}",
+                    $"{cx:F2}",
+                    $"{CheckAlignResultValue(alignResult.RightX):F2}",
+                    $"{CheckAlignResultValue(alignResult.RightY):F2}",
                 };
 
                 if (header.Count != body.Count)
@@ -938,6 +948,10 @@ namespace ATT_UT_IPAD.Core
                 var tabInspResult = AppsInspResult.Instance().GetAkkon(tabNo);
                 var alignResult = tabInspResult.AlignResult;
 
+                var lx = CheckAlignResultValue(alignResult.LeftX);
+                var rx = CheckAlignResultValue(alignResult.RightX);
+                var cx = (lx + rx) / 2.0;
+
                 List<string> tabData = new List<string>
                 {
                     AppsInspResult.Instance().EndInspTime.ToString("HH:mm:ss"),                                    // Insp Time
@@ -956,11 +970,11 @@ namespace ATT_UT_IPAD.Core
                     (tabNo + 5).ToString(),                                                         // Strength Min
                     (tabNo + 6).ToString("F2"),                                                     // Strength Avg
 
-                    CheckResultValue(alignResult.LeftX).ToString("F2"),    // Left Align X
-                    CheckResultValue(alignResult.LeftY).ToString("F2"),    // Left Align Y
-                    alignResult.CenterX.ToString("F2"),                         // Center Align X
-                    CheckResultValue(alignResult.RightX).ToString("F2"),   // Right Align X
-                    CheckResultValue(alignResult.RightY).ToString("F2"),   // Right Align Y
+                    lx.ToString("F2"),    // Left Align X
+                    CheckAlignResultValue(alignResult.LeftY).ToString("F2"),    // Left Align Y
+                    cx.ToString("F2"),                         // Center Align X
+                    rx.ToString("F2"),   // Right Align X
+                    CheckAlignResultValue(alignResult.RightY).ToString("F2"),   // Right Align Y
 
                     (tabNo + 7).ToString(),                                                         // ACF Head
                     (tabNo + 8).ToString(),                                                         // Pre Head
@@ -976,12 +990,13 @@ namespace ATT_UT_IPAD.Core
             CSVHelper.WriteData(csvFile, dataList);
         }
 
-        private float CheckResultValue(AlignResult alignResult)
+        private float CheckAlignResultValue(AlignResult alignResult)
         {
+            float resolution = AlignCamera.Camera.PixelResolution_um / AlignCamera.Camera.LensScale;
             if (alignResult == null)
                 return 0.0F;
             else
-                return alignResult.ResultValue_pixel;
+                return alignResult.ResultValue_pixel * resolution;
         }
 
         private Axis GetAxis(AxisHandlerName axisHandlerName, AxisName axisName)
@@ -1126,10 +1141,10 @@ namespace ATT_UT_IPAD.Core
                 }
                 if (result.Judgement == Judgement.NG)
                 {
-                    CvInvoke.Line(colorMat, leftTop, leftBottom, redColor, 3);
-                    CvInvoke.Line(colorMat, leftTop, rightTop, redColor, 3);
-                    CvInvoke.Line(colorMat, rightTop, rightBottom, redColor, 3);
-                    CvInvoke.Line(colorMat, rightBottom, leftBottom, redColor, 3);
+                    CvInvoke.Line(colorMat, leftTop, leftBottom, redColor, 1);
+                    CvInvoke.Line(colorMat, leftTop, rightTop, redColor, 1);
+                    CvInvoke.Line(colorMat, rightTop, rightBottom, redColor, 1);
+                    CvInvoke.Line(colorMat, rightBottom, leftBottom, redColor, 1);
                 }
                 int blobCount = 0;
                 foreach (var blob in result.BlobList)
