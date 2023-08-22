@@ -292,6 +292,15 @@ namespace Jastech.Apps.Winform.UI.Controls
             dgvPCResult.DataSource = listCapabilityResults;
         }
 
+        private void dgvPCResult_DataSourceChanged(object sender, EventArgs e)
+        {
+            for (int index = 1; index < dgvPCResult.ColumnCount; index++)
+            {
+                dgvPCResult.Columns[index].MinimumWidth = tlpPCResult.Width / 4 - 20;
+                dgvPCResult.Columns[index].SortMode = DataGridViewColumnSortMode.NotSortable;
+            }
+        }
+
         private string SelectQuery(TabType tabType)
         {
             string query = string.Empty;

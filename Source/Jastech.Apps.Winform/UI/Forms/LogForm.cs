@@ -1,4 +1,5 @@
 ﻿using Cognex.VisionPro;
+using Cognex.VisionPro.ImageFile;
 using Emgu.CV;
 using Emgu.CV.CvEnum;
 using Jastech.Apps.Structure;
@@ -6,6 +7,7 @@ using Jastech.Apps.Winform.UI.Controls;
 using Jastech.Framework.Imaging;
 using Jastech.Framework.Imaging.VisionPro;
 using Jastech.Framework.Winform.Controls;
+using Jastech.Framework.Winform.Helper;
 using Jastech.Framework.Winform.VisionPro.Controls;
 using System;
 using System.Drawing;
@@ -61,6 +63,17 @@ namespace Jastech.Framework.Winform.Forms
         private void LogForm_Load(object sender, EventArgs e)
         {
             InitializeUI();
+        }
+
+        private void LogForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            CogDisplayControl.DisposeImage();
+            ControlDisplayHelper.DisposeChildControls(CogDisplayControl);
+            ControlDisplayHelper.DisposeChildControls(LogControl);
+            ControlDisplayHelper.DisposeChildControls(AlignTrendControl);
+            ControlDisplayHelper.DisposeChildControls(AkkonTrendControl);
+            ControlDisplayHelper.DisposeChildControls(UPHControl);
+            ControlDisplayHelper.DisposeChildControls(ProcessCapabilityControl);
         }
 
         private void InitializeUI()
@@ -197,17 +210,12 @@ namespace Jastech.Framework.Winform.Forms
 
             tvwLogPath.Nodes.Clear();
 
-            for (int index = tvwLogPath.Nodes.Count; index < 0; index--)
-                tvwLogPath.Nodes.RemoveAt(index - 1);
+            SetSelectionStartDate(cdrMonthCalendar.SelectionStart);
+            SetSelectedDirectoryFullPath(_selectedPagePath);
 
-            DateTime date = cdrMonthCalendar.SelectionStart;
-            SetSelectionStartDate(date);
+            string path = GetSelectedDirectoryFullPath();
 
-            string path = Path.Combine(_selectedPagePath, date.Month.ToString("D2"), date.Day.ToString("D2"));
-
-            SetSelectedDirectoryFullPath(path);
             DirectoryInfo directoryInfo = new DirectoryInfo(path);
-
             if (Directory.Exists(directoryInfo.FullName))
             {
                 TreeNode treeNode = new TreeNode(directoryInfo.Name);
@@ -237,9 +245,9 @@ namespace Jastech.Framework.Winform.Forms
             _selectedDirectoryFullPath = path;
         }
 
-        private string GetSelectedDirectoryFullPath()
+        public string GetSelectedDirectoryFullPath()
         {
-            return _selectedDirectoryFullPath;
+            return Path.Combine(_selectedDirectoryFullPath, DateTime.Month.ToString("D2"), DateTime.Day.ToString("D2"));
         }
 
         private void RecursiveDirectory(DirectoryInfo directoryInfo, TreeNode treeNode)
@@ -312,10 +320,14 @@ namespace Jastech.Framework.Winform.Forms
                     return;
 
                 string extension = Path.GetExtension(tvwLogPath.SelectedNode.FullPath);
-                string fullPath = Path.Combine(GetSelectedDirectoryFullPath(), tvwLogPath.SelectedNode.Text);
-
                 if (extension == string.Empty)
                     return;
+
+                string fullPath = "";
+                    fullPath = Path.Combine(GetSelectedDirectoryFullPath(), tvwLogPath.SelectedNode.FullPath);
+                //else
+                //    fullPath = Path.Combine(GetSelectedDirectoryFullPath(), tvwLogPath.SelectedNode.Text);
+
 
                 DisplaySelectedNode(extension, fullPath);
             }
