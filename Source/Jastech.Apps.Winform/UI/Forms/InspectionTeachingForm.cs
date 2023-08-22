@@ -373,31 +373,22 @@ namespace Jastech.Framework.Winform.Forms
 
                 if (yesnoForm.ShowDialog() == DialogResult.Yes)
                 {
-                    var origin = CurrentTab.DeepCopy();
+                    //var origin = CurrentTab.DeepCopy();
 
-                    var alignParam = origin.GetAlignParam(ATTTabAlignName.LeftFPCX);
-                    var tlqkf = _coordinateTab.GetAlignParam(ATTTabAlignName.LeftFPCX);
+                    //var alignParam = origin.GetAlignParam(ATTTabAlignName.LeftFPCX);
+                    //var tlqkf = _coordinateTab.GetAlignParam(ATTTabAlignName.LeftFPCX);
 
-                    foreach (ATTTabAlignName alignName in Enum.GetValues(typeof(ATTTabAlignName)))
-                    {
-                        var originParam = CurrentTab.GetAlignParam(alignName);
-                        var originRegion = originParam.CaliperParams.GetRegion() as CogRectangleAffine;
+                    //foreach (ATTTabAlignName alignName in Enum.GetValues(typeof(ATTTabAlignName)))
+                    //{
+                    //    var originParam = CurrentTab.GetAlignParam(alignName);
+                    //    var originRegion = originParam.CaliperParams.GetRegion() as CogRectangleAffine;
 
-                        var coordinateParam = _coordinateTab.GetAlignParam(alignName);
-                        var coordinateRegion = coordinateParam.CaliperParams.GetRegion() as CogRectangleAffine;
+                    //    var coordinateParam = _coordinateTab.GetAlignParam(alignName);
+                    //    var coordinateRegion = coordinateParam.CaliperParams.GetRegion() as CogRectangleAffine;
 
-                        var resultX = originRegion.CenterX + coordinateRegion.CenterX - TrackingData.AlignTracking.GetAlignOffset(alignName).X;
-                        var resultY = originRegion.CenterY + coordinateRegion.CenterY - TrackingData.AlignTracking.GetAlignOffset(alignName).Y;
-                    }
-
-
-
-
-
-
-
-
-
+                    //    var resultX = originRegion.CenterX + coordinateRegion.CenterX - TrackingData.AlignTracking.GetAlignOffset(alignName).X;
+                    //    var resultY = originRegion.CenterY + coordinateRegion.CenterY - TrackingData.AlignTracking.GetAlignOffset(alignName).Y;
+                    //}
 
 
 
