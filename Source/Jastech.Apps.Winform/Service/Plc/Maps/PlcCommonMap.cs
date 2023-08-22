@@ -5,6 +5,7 @@
         PC_Alive,
         PC_AxisX_Busy,
         PC_AxisX_CurPos,
+        PC_AxisX_ServoOn,
         PLC_Alive,
 
         PC_Ready,
@@ -82,6 +83,7 @@
         PLC_TabtoTab_Distance8,
         #endregion
 
+        PC_GrabDone,
         PC_Command,
         PC_Status,
         PC_Move_REQ,

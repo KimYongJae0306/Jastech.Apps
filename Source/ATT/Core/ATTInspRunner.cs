@@ -477,6 +477,7 @@ namespace ATT.Core
 
                 Thread.Sleep(10);
             }
+
             PlcControlManager.Instance().WritePcStatus(PlcCommand.StartInspection);
         }
 

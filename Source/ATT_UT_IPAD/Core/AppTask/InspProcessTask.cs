@@ -209,7 +209,7 @@ namespace ATT_UT_IPAD.Core.AppTask
                     if (tabInspResult.AlignResult.LeftX?.Judgement != Judgement.OK)
                     {
                         var leftAlignX = tabInspResult.AlignResult.LeftX;
-                        message = string.Format("Left AlignX Insp NG !!! Tab_{0} / Fpc_{1}, Panel_{2}", tab.Index, leftAlignX.Fpc.Judgement, leftAlignX.Panel.Judgement);
+                        message = string.Format("Left AlignX Insp NG !!! Tab_{0} / Fpc_{1}, Panel_{2}", tab.Index + 1, leftAlignX.Fpc.Judgement, leftAlignX.Panel.Judgement);
                         WriteLog(message, true);
                         Logger.Debug(LogType.Inspection, message);
                     }
@@ -218,7 +218,7 @@ namespace ATT_UT_IPAD.Core.AppTask
                     if (tabInspResult.AlignResult.LeftY?.Judgement != Judgement.OK)
                     {
                         var leftAlignY = tabInspResult.AlignResult.LeftY;
-                        message = string.Format("Left AlignY Insp NG !!! Tab_{0} / Fpc_{1}, Panel_{2}", tab.Index, leftAlignY.Fpc.Judgement, leftAlignY.Panel.Judgement);
+                        message = string.Format("Left AlignY Insp NG !!! Tab_{0} / Fpc_{1}, Panel_{2}", tab.Index + 1, leftAlignY.Fpc.Judgement, leftAlignY.Panel.Judgement);
                         WriteLog(message, true);
                         Logger.Debug(LogType.Inspection, message);
                     }
@@ -227,7 +227,7 @@ namespace ATT_UT_IPAD.Core.AppTask
                     if (tabInspResult.AlignResult.RightX?.Judgement != Judgement.OK)
                     {
                         var rightAlignX = tabInspResult.AlignResult.RightX;
-                        message = string.Format("Right AlignX Insp NG !!! Tab_{0} / Fpc_{1}, Panel_{2}", tab.Index, rightAlignX.Fpc.Judgement, rightAlignX.Panel.Judgement);
+                        message = string.Format("Right AlignX Insp NG !!! Tab_{0} / Fpc_{1}, Panel_{2}", tab.Index + 1, rightAlignX.Fpc.Judgement, rightAlignX.Panel.Judgement);
                         WriteLog(message, true);
                         Logger.Debug(LogType.Inspection, message);
                     }
@@ -236,7 +236,7 @@ namespace ATT_UT_IPAD.Core.AppTask
                     if (tabInspResult.AlignResult.RightY?.Judgement != Judgement.OK)
                     {
                         var rightAlignY = tabInspResult.AlignResult.RightY;
-                        message = string.Format("Right AlignY Insp NG !!! Tab_{0} / Fpc_{1}, Panel_{2}", tab.Index, rightAlignY.Fpc.Judgement, rightAlignY.Panel.Judgement);
+                        message = string.Format("Right AlignY Insp NG !!! Tab_{0} / Fpc_{1}, Panel_{2}", tab.Index + 1, rightAlignY.Fpc.Judgement, rightAlignY.Panel.Judgement);
                         WriteLog(message, true);
                         Logger.Debug(LogType.Inspection, message);
                     }

@@ -90,7 +90,6 @@ namespace ATT
             DoReportProgress(reportProgress, percent, "Initialize Manager.");
             LAFManager.Instance().Initialize();
             LineCameraManager.Instance().Initialize();
-            //AreaCameraManager.Instance().Initialize();
 
             if (ConfigSet.Instance().Operation.LastModelName != "")
             {
@@ -192,9 +191,7 @@ namespace ATT
                 JsonConvertHelper.LoadToExistingTarget<AxisHandler>(unit0FilePath, unit0);
 
                 foreach (var axis in unit0.GetAxisList())
-                {
                     axis.SetMotion(motion);
-                }
 
                 MotionManager.Instance().AxisHandlerList.Add(unit0);
             }

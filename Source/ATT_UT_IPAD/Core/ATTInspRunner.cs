@@ -394,6 +394,8 @@ namespace ATT_UT_IPAD.Core
 
                         WriteLog("Complete Align LineScanner Grab.", true);
                     }
+                    PlcControlManager.Instance().WriteGrabDone();
+
 
                     LightCtrlHandler.TurnOff();
                     WriteLog("Light Off.", false);
@@ -557,6 +559,7 @@ namespace ATT_UT_IPAD.Core
 
                 Thread.Sleep(10);
             }
+
             PlcControlManager.Instance().WritePcStatus(PlcCommand.StartInspection);
         }
 

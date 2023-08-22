@@ -35,6 +35,7 @@ namespace Jastech.Apps.Winform.UI.Controls
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
             this.tlpProcessCapability = new System.Windows.Forms.TableLayoutPanel();
+            this.pnlChart = new System.Windows.Forms.Panel();
             this.dgvAlignData = new Jastech.Framework.Winform.Controls.DoubleBufferedDatagridView();
             this.panel1 = new System.Windows.Forms.Panel();
             this.tlpTabSelection = new System.Windows.Forms.TableLayoutPanel();
@@ -53,7 +54,6 @@ namespace Jastech.Apps.Winform.UI.Controls
             this.tlpPCResult = new System.Windows.Forms.TableLayoutPanel();
             this.lblResult = new System.Windows.Forms.Label();
             this.dgvPCResult = new Jastech.Framework.Winform.Controls.DoubleBufferedDatagridView();
-            this.pnlChart = new System.Windows.Forms.Panel();
             this.tlpProcessCapability.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvAlignData)).BeginInit();
             this.panel1.SuspendLayout();
@@ -82,6 +82,15 @@ namespace Jastech.Apps.Winform.UI.Controls
             this.tlpProcessCapability.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tlpProcessCapability.Size = new System.Drawing.Size(1072, 554);
             this.tlpProcessCapability.TabIndex = 0;
+            // 
+            // pnlChart
+            // 
+            this.pnlChart.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pnlChart.Location = new System.Drawing.Point(536, 0);
+            this.pnlChart.Margin = new System.Windows.Forms.Padding(0);
+            this.pnlChart.Name = "pnlChart";
+            this.pnlChart.Size = new System.Drawing.Size(536, 277);
+            this.pnlChart.TabIndex = 2;
             // 
             // dgvAlignData
             // 
@@ -369,15 +378,7 @@ namespace Jastech.Apps.Winform.UI.Controls
             this.dgvPCResult.RowTemplate.Height = 23;
             this.dgvPCResult.Size = new System.Drawing.Size(536, 237);
             this.dgvPCResult.TabIndex = 6;
-            // 
-            // pnlChart
-            // 
-            this.pnlChart.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pnlChart.Location = new System.Drawing.Point(536, 0);
-            this.pnlChart.Margin = new System.Windows.Forms.Padding(0);
-            this.pnlChart.Name = "pnlChart";
-            this.pnlChart.Size = new System.Drawing.Size(536, 277);
-            this.pnlChart.TabIndex = 2;
+            this.dgvPCResult.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvPCResult_CellClick);
             // 
             // ProcessCapabilityIndexControl
             // 
