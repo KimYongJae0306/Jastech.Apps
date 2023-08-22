@@ -1,18 +1,15 @@
 ﻿using Cognex.VisionPro;
-using Cognex.VisionPro.ImageFile;
 using Emgu.CV;
 using Emgu.CV.CvEnum;
 using Jastech.Apps.Structure;
 using Jastech.Apps.Winform.UI.Controls;
 using Jastech.Framework.Imaging;
 using Jastech.Framework.Imaging.VisionPro;
-using Jastech.Framework.Winform.Controls;
 using Jastech.Framework.Winform.Helper;
 using Jastech.Framework.Winform.VisionPro.Controls;
 using System;
 using System.Drawing;
 using System.IO;
-using System.Net;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
 
@@ -211,7 +208,7 @@ namespace Jastech.Framework.Winform.Forms
             tvwLogPath.Nodes.Clear();
 
             SetSelectionStartDate(cdrMonthCalendar.SelectionStart);
-            SetSelectedDirectoryFullPath(_selectedPagePath);
+            //SetSelectedDirectoryFullPath(_selectedPagePath);
 
             DateTime date = cdrMonthCalendar.SelectionStart;
             SetSelectionStartDate(date);

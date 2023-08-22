@@ -27,6 +27,7 @@ using Jastech.Framework.Structure.Service;
 using Jastech.Framework.Users;
 using Jastech.Framework.Util;
 using Jastech.Framework.Util.Helper;
+using Jastech.Framework.Winform.Helper;
 using Jastech.Framework.Winform.VisionPro.Controls;
 using System;
 using System.Collections.Generic;
