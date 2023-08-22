@@ -190,7 +190,7 @@ namespace Jastech.Apps.Structure.VisionTool
             result.Panel = RunAlignX(cogImage, panelParam.CaliperParams, panelParam.LeadCount, true);
             result.Fpc = RunAlignX(cogImage, fpcParam.CaliperParams, fpcParam.LeadCount, false);
 
-            List<double> alignValueList = new List<double>();
+            List<LeadAlignResult> leadAlignResultList = new List<LeadAlignResult>();
 
             for (int i = 0; i < panelParam.LeadCount * 2; i += 2)
             {
@@ -234,36 +234,40 @@ namespace Jastech.Apps.Structure.VisionTool
 
                 var res = fpcX - panelX;
 
-                alignValueList.Add(res);
+                LeadAlignResult leadAlignResult = new LeadAlignResult
+                {
+                    PanelSkew = panelSkew,
+                    FpcSkew = fpcSkew,
+                    PanelCenterX = panelCenterX,
+                    PanelCenterY = panelCenterY,
+                    FpcCenterX = fpcCenterX,
+                    FpcCenterY = fpcCenterY,
+                    Value = res,
+                };
+                leadAlignResultList.Add(leadAlignResult);
             }
 
-            if (alignValueList.Count > 0)
+            if (leadAlignResultList.Count > 0)
             {
-                double max = alignValueList.Max(item => item.Item1);
-                double min = alignValueList.Min(item => item.Item1);
+                double max = leadAlignResultList.Max(item => item.Value);
+                double min = leadAlignResultList.Min(item => item.Value);
 
                 double temp = 0.0f;
                 int count = 0;
-                foreach (var value in alignValueList)
+                foreach (var alignResult in leadAlignResultList)
                 {
-                    if (alignValueList.Count > 2)
+                    if (leadAlignResultList.Count > 2)
                     {
-                        if (value.Item1 == max || value.Item1 == min)
+                        if (alignResult.Value == max || alignResult.Value == min)
                             continue;
                     }
-                    temp += value.Item1;
+                    temp += alignResult.Value;
                     count++;
                 }
 
                 result.ResultValue_pixel = Convert.ToSingle(temp / count);
                 result.JudegementValue_pixel = judegementX_pixel;
-                result.AlignResultList.Add(new LeadAlignResult
-                {
-                    JudegementValue_pixel = judegementX_pixel,
-                    ResultValue_pixel = temp,
-
-                });
-
+                result.AlignResultList.AddRange(leadAlignResultList);
             }
             else
             {
@@ -441,12 +445,18 @@ namespace Jastech.Apps.Structure.VisionTool
 
     public class LeadAlignResult
     {
-        public float ResultValue_pixel { get; set; }
+        public double Value { get; set; }
 
-        public float FpcSkew { get; set; }
+        public double FpcSkew { get; set; }
 
-        public float FanelSkew { get; set; }
+        public double PanelSkew { get; set; }
 
-        public float JudegementValue_pixel { get; set; }
+        public double PanelCenterX { get; set; }
+
+        public double PanelCenterY { get; set; }
+
+        public double FpcCenterX { get; set; }
+
+        public double FpcCenterY { get; set; }
     }
 }
