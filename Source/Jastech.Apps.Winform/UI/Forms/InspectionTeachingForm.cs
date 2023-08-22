@@ -687,7 +687,7 @@ namespace Jastech.Framework.Winform.Forms
 
         private void lblTracking_Click(object sender, EventArgs e)
         {
-            return;
+            //return;
 
             var display = TeachingUIManager.Instance().GetDisplay();
             if (display == null)
@@ -727,29 +727,34 @@ namespace Jastech.Framework.Winform.Forms
             if (_displayType == DisplayType.Akkon)
             {
                 CoordinateTransform panelCoordinate = new CoordinateTransform();
-
                 SetPanelCoordinateData(panelCoordinate, _tabInspResult);
                 panelCoordinate.ExecuteCoordinate();
 
-                var akkonParam = CurrentTab.AkkonParam.DeepCopy();
-                var roiList = akkonParam.GetAkkonROIList();
-                var coordinateList = RenewalAkkonRoi(roiList, panelCoordinate);
-
+                CoordinateAkkon(tabOriginData, panelCoordinate);
+                AkkonControl.SetParams(tabOriginData);
+                AkkonControl.DrawROI();
             }
+
+            //if (_displayType == DisplayType.Akkon)
+            //{
+            //    CoordinateTransform panelCoordinate = new CoordinateTransform();
+
+            //    SetPanelCoordinateData(panelCoordinate, _tabInspResult);
+            //    panelCoordinate.ExecuteCoordinate();
+
+            //    var akkonParam = CurrentTab.AkkonParam.DeepCopy();
+            //    var roiList = akkonParam.GetAkkonROIList();
+            //    var coordinateList = RenewalAkkonRoi(roiList, panelCoordinate);
+            //}
 
             if (_displayType == DisplayType.Align)
             {
+                PointF leftFpcOffset = MathHelper.GetOffset(_tabInspResult.MarkResult.FpcMark.FoundedMark.Left.MaxMatchPos.ReferencePos, _tabInspResult.MarkResult.FpcMark.FoundedMark.Left.MaxMatchPos.FoundPos);
+                PointF fpcRightOffset = MathHelper.GetOffset(_tabInspResult.MarkResult.FpcMark.FoundedMark.Right.MaxMatchPos.ReferencePos, _tabInspResult.MarkResult.FpcMark.FoundedMark.Right.MaxMatchPos.FoundPos);
+                PointF panelLeftOffset = MathHelper.GetOffset(_tabInspResult.MarkResult.PanelMark.FoundedMark.Left.MaxMatchPos.ReferencePos, _tabInspResult.MarkResult.PanelMark.FoundedMark.Left.MaxMatchPos.FoundPos);
+                PointF panelRightOffset = MathHelper.GetOffset(_tabInspResult.MarkResult.PanelMark.FoundedMark.Right.MaxMatchPos.ReferencePos, _tabInspResult.MarkResult.PanelMark.FoundedMark.Right.MaxMatchPos.FoundPos);
 
-                foreach (ATTTabAlignName alignName in Enum.GetValues(typeof(ATTTabAlignName)))
-                {
-                    var alignParam = CurrentTab.GetAlignParam(alignName).DeepCopy();
-
-                    PointF offset = GetAlignOffset(_tabInspResult, alignName);
-
-                    var calcRegion = VisionProShapeHelper.AddOffsetToCogRectAffine(alignParam.CaliperParams.GetRegion() as CogRectangleAffine, offset);
-                    alignParam.CaliperParams.SetRegion(calcRegion);
-                    CurrentTab.SetAlignParam(alignName, alignParam);
-                }
+                CoordinateAlign(tabOriginData, leftFpcOffset, fpcRightOffset, panelLeftOffset, panelRightOffset);
 
                 AlignControl.SetParams(CurrentTab);
                 AlignControl.DrawROI();
@@ -1079,6 +1084,44 @@ namespace Jastech.Framework.Winform.Forms
             // TEST_230810_S
             //UpdateDisplayImage(tabOriginData.Index);
             // TEST_230810_E
+        }
+
+        private void CoordinateAlign(Tab tab, PointF leftFpcOffset, PointF rightFpcOffset, PointF leftPanelOffset, PointF rightPanelOffset)
+        {
+            foreach (ATTTabAlignName alignName in Enum.GetValues(typeof(ATTTabAlignName)))
+            {
+                var alignParam = tab.GetAlignParam(alignName).DeepCopy();
+                var region = alignParam.CaliperParams.GetRegion() as CogRectangleAffine;
+
+                CogRectangleAffine newRegion = new CogRectangleAffine();
+
+                switch (alignName)
+                {
+                    case ATTTabAlignName.LeftFPCX:
+                    case ATTTabAlignName.LeftFPCY:
+                        newRegion = VisionProShapeHelper.AddOffsetToCogRectAffine(region, leftFpcOffset);
+                        break;
+                    case ATTTabAlignName.RightFPCX:
+                    case ATTTabAlignName.RightFPCY:
+                        newRegion = VisionProShapeHelper.AddOffsetToCogRectAffine(region, rightFpcOffset);
+                        break;
+
+                    case ATTTabAlignName.LeftPanelX:
+                    case ATTTabAlignName.LeftPanelY:
+                        newRegion = VisionProShapeHelper.AddOffsetToCogRectAffine(region, leftPanelOffset);
+                        break;
+                    case ATTTabAlignName.RightPanelX:
+                    case ATTTabAlignName.RightPanelY:
+                        newRegion = VisionProShapeHelper.AddOffsetToCogRectAffine(region, rightPanelOffset);
+                        break;
+
+                    default:
+                        break;
+                }
+
+                alignParam.CaliperParams.SetRegion(newRegion);
+                tab.SetAlignParam(alignName, alignParam);
+            }
         }
 
         private void CoordinateAlign(Tab tab, CoordinateTransform fpcCoordinate, CoordinateTransform panelCoordinate)

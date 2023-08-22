@@ -162,20 +162,17 @@ namespace ATT_UT_IPAD.UI.Controls
             TabBtnControlList[tabNo].SetAlignImage(tabInspResult.CogImage);
             TabBtnControlList[tabNo].SetLeftAlignShape(GetLeftAlignShape(tabInspResult));
             TabBtnControlList[tabNo].SetRightAlignShape(GetRightAlignShape(tabInspResult));
+
             if (tabInspResult.AlignResult != null)
                 TabBtnControlList[tabNo].SetCenterImage(tabInspResult.AlignResult.CenterImage);
 
             if (tabInspResult != null)
             {
                 if (CurrentTabNo == tabNo)
-                {
                     UpdateImage(tabNo);
-                }
             }
             else
-            {
                 InspAlignDisplay.ClearImage();
-            }
           
         }
 

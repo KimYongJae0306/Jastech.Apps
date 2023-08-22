@@ -64,7 +64,6 @@ namespace ATT_UT_Remodeling.Core.AppTask
             inspResult.CogImage = inspTab.MergeCogImage;
 
             // Create Coordinate Object
-            //CoordinateTransform fpcCoordinate = new CoordinateTransform();
             CoordinateTransform panelCoordinate = new CoordinateTransform();
 
             algorithmTool.MainMarkInspect(inspTab.MergeCogImage, tab, ref inspResult, false);
