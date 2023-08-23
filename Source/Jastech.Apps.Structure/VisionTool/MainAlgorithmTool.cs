@@ -187,6 +187,12 @@ namespace Jastech.Apps.Structure.VisionTool
         {
             AlignResult result = new AlignResult();
 
+            // test
+            var fpcRegion = fpcParam.CaliperParams.GetRegion() as CogRectangleAffine;
+            var panelRegion = panelParam.CaliperParams.GetRegion() as CogRectangleAffine;
+            fpcRegion.Skew = panelRegion.Skew;
+            // test
+
             result.Panel = RunAlignX(cogImage, panelParam.CaliperParams, panelParam.LeadCount, true);
             result.Fpc = RunAlignX(cogImage, fpcParam.CaliperParams, fpcParam.LeadCount, false);
 
