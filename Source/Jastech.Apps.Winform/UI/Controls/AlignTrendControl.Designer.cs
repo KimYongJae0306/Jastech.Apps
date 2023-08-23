@@ -78,8 +78,8 @@ namespace Jastech.Apps.Winform.UI.Controls
             // tlpData
             // 
             this.tlpData.ColumnCount = 2;
-            this.tlpData.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 55F));
-            this.tlpData.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 45F));
+            this.tlpData.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tlpData.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tlpData.Controls.Add(this.dgvAlignTrendData, 1, 0);
             this.tlpData.Controls.Add(this.pnlChart, 0, 0);
             this.tlpData.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -114,12 +114,12 @@ namespace Jastech.Apps.Winform.UI.Controls
             this.dgvAlignTrendData.DefaultCellStyle = dataGridViewCellStyle2;
             this.dgvAlignTrendData.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgvAlignTrendData.EnableHeadersVisualStyles = false;
-            this.dgvAlignTrendData.Location = new System.Drawing.Point(476, 3);
+            this.dgvAlignTrendData.Location = new System.Drawing.Point(433, 3);
             this.dgvAlignTrendData.Name = "dgvAlignTrendData";
             this.dgvAlignTrendData.ReadOnly = true;
             this.dgvAlignTrendData.RowHeadersVisible = false;
             this.dgvAlignTrendData.RowTemplate.Height = 23;
-            this.dgvAlignTrendData.Size = new System.Drawing.Size(381, 399);
+            this.dgvAlignTrendData.Size = new System.Drawing.Size(424, 399);
             this.dgvAlignTrendData.TabIndex = 0;
             // 
             // pnlChart
@@ -128,7 +128,7 @@ namespace Jastech.Apps.Winform.UI.Controls
             this.pnlChart.Location = new System.Drawing.Point(0, 0);
             this.pnlChart.Margin = new System.Windows.Forms.Padding(0);
             this.pnlChart.Name = "pnlChart";
-            this.pnlChart.Size = new System.Drawing.Size(473, 405);
+            this.pnlChart.Size = new System.Drawing.Size(430, 405);
             this.pnlChart.TabIndex = 1;
             // 
             // tclChartType

@@ -101,12 +101,12 @@ namespace Jastech.Framework.Winform.Forms
             // 
             this.btnSelectionProcessCapability.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
             this.btnSelectionProcessCapability.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.btnSelectionProcessCapability.Font = new System.Drawing.Font("맑은 고딕", 14F, System.Drawing.FontStyle.Bold);
+            this.btnSelectionProcessCapability.Font = new System.Drawing.Font("맑은 고딕", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.btnSelectionProcessCapability.ForeColor = System.Drawing.Color.White;
-            this.btnSelectionProcessCapability.Location = new System.Drawing.Point(817, 30);
+            this.btnSelectionProcessCapability.Location = new System.Drawing.Point(645, 19);
             this.btnSelectionProcessCapability.Margin = new System.Windows.Forms.Padding(0);
             this.btnSelectionProcessCapability.Name = "btnSelectionProcessCapability";
-            this.btnSelectionProcessCapability.Size = new System.Drawing.Size(150, 89);
+            this.btnSelectionProcessCapability.Size = new System.Drawing.Size(117, 67);
             this.btnSelectionProcessCapability.TabIndex = 204;
             this.btnSelectionProcessCapability.Text = "PROCESS\r\nCAPABILITY";
             this.btnSelectionProcessCapability.UseVisualStyleBackColor = false;
@@ -116,12 +116,12 @@ namespace Jastech.Framework.Winform.Forms
             // 
             this.btnSelectionUPH.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
             this.btnSelectionUPH.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.btnSelectionUPH.Font = new System.Drawing.Font("맑은 고딕", 14F, System.Drawing.FontStyle.Bold);
+            this.btnSelectionUPH.Font = new System.Drawing.Font("맑은 고딕", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.btnSelectionUPH.ForeColor = System.Drawing.Color.White;
-            this.btnSelectionUPH.Location = new System.Drawing.Point(658, 30);
+            this.btnSelectionUPH.Location = new System.Drawing.Point(520, 19);
             this.btnSelectionUPH.Margin = new System.Windows.Forms.Padding(0);
             this.btnSelectionUPH.Name = "btnSelectionUPH";
-            this.btnSelectionUPH.Size = new System.Drawing.Size(150, 89);
+            this.btnSelectionUPH.Size = new System.Drawing.Size(117, 67);
             this.btnSelectionUPH.TabIndex = 204;
             this.btnSelectionUPH.Text = "UPH";
             this.btnSelectionUPH.UseVisualStyleBackColor = false;
@@ -131,12 +131,12 @@ namespace Jastech.Framework.Winform.Forms
             // 
             this.btnSelectionAkkonTrend.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
             this.btnSelectionAkkonTrend.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.btnSelectionAkkonTrend.Font = new System.Drawing.Font("맑은 고딕", 14F, System.Drawing.FontStyle.Bold);
+            this.btnSelectionAkkonTrend.Font = new System.Drawing.Font("맑은 고딕", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.btnSelectionAkkonTrend.ForeColor = System.Drawing.Color.White;
-            this.btnSelectionAkkonTrend.Location = new System.Drawing.Point(499, 30);
+            this.btnSelectionAkkonTrend.Location = new System.Drawing.Point(395, 19);
             this.btnSelectionAkkonTrend.Margin = new System.Windows.Forms.Padding(0);
             this.btnSelectionAkkonTrend.Name = "btnSelectionAkkonTrend";
-            this.btnSelectionAkkonTrend.Size = new System.Drawing.Size(150, 89);
+            this.btnSelectionAkkonTrend.Size = new System.Drawing.Size(117, 67);
             this.btnSelectionAkkonTrend.TabIndex = 203;
             this.btnSelectionAkkonTrend.Text = "AKKON\r\nTREND";
             this.btnSelectionAkkonTrend.UseVisualStyleBackColor = false;
@@ -146,12 +146,12 @@ namespace Jastech.Framework.Winform.Forms
             // 
             this.btnSelectionAlignTrend.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
             this.btnSelectionAlignTrend.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.btnSelectionAlignTrend.Font = new System.Drawing.Font("맑은 고딕", 14F, System.Drawing.FontStyle.Bold);
+            this.btnSelectionAlignTrend.Font = new System.Drawing.Font("맑은 고딕", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.btnSelectionAlignTrend.ForeColor = System.Drawing.Color.White;
-            this.btnSelectionAlignTrend.Location = new System.Drawing.Point(340, 30);
+            this.btnSelectionAlignTrend.Location = new System.Drawing.Point(270, 19);
             this.btnSelectionAlignTrend.Margin = new System.Windows.Forms.Padding(0);
             this.btnSelectionAlignTrend.Name = "btnSelectionAlignTrend";
-            this.btnSelectionAlignTrend.Size = new System.Drawing.Size(150, 89);
+            this.btnSelectionAlignTrend.Size = new System.Drawing.Size(117, 67);
             this.btnSelectionAlignTrend.TabIndex = 202;
             this.btnSelectionAlignTrend.Text = "ALIGN\r\nTREND";
             this.btnSelectionAlignTrend.UseVisualStyleBackColor = false;
@@ -161,12 +161,12 @@ namespace Jastech.Framework.Winform.Forms
             // 
             this.btnSelectionImage.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
             this.btnSelectionImage.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.btnSelectionImage.Font = new System.Drawing.Font("맑은 고딕", 14F, System.Drawing.FontStyle.Bold);
+            this.btnSelectionImage.Font = new System.Drawing.Font("맑은 고딕", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.btnSelectionImage.ForeColor = System.Drawing.Color.White;
-            this.btnSelectionImage.Location = new System.Drawing.Point(181, 30);
+            this.btnSelectionImage.Location = new System.Drawing.Point(145, 19);
             this.btnSelectionImage.Margin = new System.Windows.Forms.Padding(0);
             this.btnSelectionImage.Name = "btnSelectionImage";
-            this.btnSelectionImage.Size = new System.Drawing.Size(150, 89);
+            this.btnSelectionImage.Size = new System.Drawing.Size(117, 67);
             this.btnSelectionImage.TabIndex = 201;
             this.btnSelectionImage.Text = "IMAGE";
             this.btnSelectionImage.UseVisualStyleBackColor = false;
@@ -176,12 +176,12 @@ namespace Jastech.Framework.Winform.Forms
             // 
             this.btnSelectionLog.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
             this.btnSelectionLog.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.btnSelectionLog.Font = new System.Drawing.Font("맑은 고딕", 14F, System.Drawing.FontStyle.Bold);
+            this.btnSelectionLog.Font = new System.Drawing.Font("맑은 고딕", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.btnSelectionLog.ForeColor = System.Drawing.Color.White;
-            this.btnSelectionLog.Location = new System.Drawing.Point(22, 30);
+            this.btnSelectionLog.Location = new System.Drawing.Point(20, 19);
             this.btnSelectionLog.Margin = new System.Windows.Forms.Padding(0);
             this.btnSelectionLog.Name = "btnSelectionLog";
-            this.btnSelectionLog.Size = new System.Drawing.Size(150, 89);
+            this.btnSelectionLog.Size = new System.Drawing.Size(117, 67);
             this.btnSelectionLog.TabIndex = 200;
             this.btnSelectionLog.Text = "LOG";
             this.btnSelectionLog.UseVisualStyleBackColor = false;

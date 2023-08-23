@@ -75,8 +75,8 @@ namespace Jastech.Apps.Winform.UI.Controls
             // tlpData
             // 
             this.tlpData.ColumnCount = 2;
-            this.tlpData.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 55F));
-            this.tlpData.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 45F));
+            this.tlpData.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tlpData.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tlpData.Controls.Add(this.pnlChart, 0, 0);
             this.tlpData.Controls.Add(this.dgvAkkonTrendData, 1, 0);
             this.tlpData.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -94,7 +94,7 @@ namespace Jastech.Apps.Winform.UI.Controls
             this.pnlChart.Location = new System.Drawing.Point(0, 0);
             this.pnlChart.Margin = new System.Windows.Forms.Padding(0);
             this.pnlChart.Name = "pnlChart";
-            this.pnlChart.Size = new System.Drawing.Size(473, 405);
+            this.pnlChart.Size = new System.Drawing.Size(430, 405);
             this.pnlChart.TabIndex = 2;
             // 
             // dgvAkkonTrendData
@@ -120,12 +120,12 @@ namespace Jastech.Apps.Winform.UI.Controls
             this.dgvAkkonTrendData.DefaultCellStyle = dataGridViewCellStyle2;
             this.dgvAkkonTrendData.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgvAkkonTrendData.EnableHeadersVisualStyles = false;
-            this.dgvAkkonTrendData.Location = new System.Drawing.Point(476, 3);
+            this.dgvAkkonTrendData.Location = new System.Drawing.Point(433, 3);
             this.dgvAkkonTrendData.Name = "dgvAkkonTrendData";
             this.dgvAkkonTrendData.ReadOnly = true;
             this.dgvAkkonTrendData.RowHeadersVisible = false;
             this.dgvAkkonTrendData.RowTemplate.Height = 23;
-            this.dgvAkkonTrendData.Size = new System.Drawing.Size(381, 399);
+            this.dgvAkkonTrendData.Size = new System.Drawing.Size(424, 399);
             this.dgvAkkonTrendData.TabIndex = 0;
             // 
             // tlpTabList

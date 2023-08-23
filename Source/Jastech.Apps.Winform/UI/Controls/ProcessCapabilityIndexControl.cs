@@ -1,5 +1,6 @@
 ﻿using Jastech.Apps.Structure;
 using Jastech.Apps.Structure.Data;
+using Jastech.Framework.Util.Helper;
 using Jastech.Framework.Winform.Forms;
 using Jastech.Framework.Winform.Helper;
 using System;
@@ -172,50 +173,10 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         public void UpdateAlignDataGridView(string path)
         {
-            using (FileStream fs = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
-            {
-                int readLine = 0;
-                int headerLine = 0;
+            var dataTable = FileHelper.CsvToDataTable(path);
 
-                DataTable table = new DataTable();
-
-                table.Columns.Add("Time");
-                table.Columns.Add("Panel ID");
-                table.Columns.Add("Tab");
-                table.Columns.Add("Judge");
-                table.Columns.Add("Lx");
-                table.Columns.Add("Ly");
-                table.Columns.Add("Cx");
-                table.Columns.Add("Rx");
-                table.Columns.Add("Ry");
-
-                StreamReader sr = new StreamReader(fs);
-
-                while (!sr.EndOfStream)
-                {
-                    if (readLine == headerLine)
-                    {
-                        string header = sr.ReadLine();
-                    }
-                    else
-                    {
-                        string contents = sr.ReadLine();
-
-                        string[] dataArray = contents.Split(',');
-
-                        table.Rows.Add(dataArray[0], dataArray[1], dataArray[2], dataArray[3],
-                            dataArray[4], dataArray[5], dataArray[6], dataArray[7], dataArray[8]);
-                    }
-
-                    readLine++;
-                }
-
-                sr.Close();
-
-                dgvAlignData.DataSource = table;
-
-                SetDataTable(table.Copy());
-            }
+            dgvAlignData.DataSource = dataTable;
+            SetDataTable(dataTable.Copy());
         }
 
         public void SetAlignResultType(AlignResultType alignResultType)

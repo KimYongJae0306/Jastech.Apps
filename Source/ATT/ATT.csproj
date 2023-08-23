@@ -146,12 +146,6 @@
     <Compile Include="UI\Pages\DataPage.Designer.cs">
       <DependentUpon>DataPage.cs</DependentUpon>
     </Compile>
-    <Compile Include="UI\Pages\LogPage.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="UI\Pages\LogPage.Designer.cs">
-      <DependentUpon>LogPage.cs</DependentUpon>
-    </Compile>
     <Compile Include="UI\Pages\MainPage.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -200,9 +194,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UI\Pages\DataPage.resx">
       <DependentUpon>DataPage.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="UI\Pages\LogPage.resx">
-      <DependentUpon>LogPage.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\Pages\MainPage.resx">
       <DependentUpon>MainPage.cs</DependentUpon>

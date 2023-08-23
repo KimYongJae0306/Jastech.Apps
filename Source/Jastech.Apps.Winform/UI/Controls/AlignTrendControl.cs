@@ -1,9 +1,11 @@
-﻿using Jastech.Framework.Winform.Forms;
+﻿using Jastech.Framework.Util.Helper;
+using Jastech.Framework.Winform.Forms;
 using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Drawing;
 using System.IO;
+using System.Linq;
 using System.Windows.Forms;
 
 namespace Jastech.Apps.Winform.UI.Controls
@@ -210,50 +212,10 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         public void UpdateDataGridView(string path)
         {
-            using (FileStream fs = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
-            {
-                int readLine = 0;
-                int headerLine = 0;
+            var dataTable = FileHelper.CsvToDataTable(path);
 
-                DataTable table = new DataTable();
-
-                table.Columns.Add("Time");
-                table.Columns.Add("Panel ID");
-                table.Columns.Add("Tab");
-                table.Columns.Add("Judge");
-                table.Columns.Add("Lx");
-                table.Columns.Add("Ly");
-                table.Columns.Add("Cx");
-                table.Columns.Add("Rx");
-                table.Columns.Add("Ry");
-
-                StreamReader sr = new StreamReader(fs);
-
-                while (!sr.EndOfStream)
-                {
-                    if (readLine == headerLine)
-                    {
-                        string header = sr.ReadLine();
-                    }
-                    else
-                    {
-                        string contents = sr.ReadLine();
-
-                        string[] dataArray = contents.Split(',');
-
-                        table.Rows.Add(dataArray[0], dataArray[1], dataArray[2], dataArray[3],
-                            dataArray[4], dataArray[5], dataArray[6], dataArray[7], dataArray[8]);
-                    }
-
-                    readLine++;
-                }
-
-                sr.Close();
-
-                dgvAlignTrendData.DataSource = table;
-
-                SetDataTable(table.Copy());
-            }
+            dgvAlignTrendData.DataSource = dataTable;
+            SetDataTable(dataTable.Copy());
         }
         #endregion
     }

@@ -38,8 +38,6 @@ namespace ATT
         #region 속성
         private MainPage MainPageControl { get; set; } = null;
 
-        private LogPage LogPageControl { get; set; } = null;
-
         private DataPage DataPageControl { get; set; } = null;
 
         private TeachingPage TeachingPageControl { get; set; } = null;
@@ -117,17 +115,12 @@ namespace ATT
             TeachingPageControl = new TeachingPage();
             TeachingPageControl.Dock = DockStyle.Fill;
             PageControlList.Add(TeachingPageControl);
-			
-			LogPageControl = new LogPage();
-			LogPageControl.Dock = DockStyle.Fill;
-            PageControlList.Add(LogPageControl);
 
             // Button List
             PageLabelList = new List<Label>();
             PageLabelList.Add(lblMainPage);
             PageLabelList.Add(lblTeachingPage);
             PageLabelList.Add(lblDataPage);
-            PageLabelList.Add(lblLogPage);
         }
 
         private void ModelPageControl_ApplyModelEventHandler(string modelName)
