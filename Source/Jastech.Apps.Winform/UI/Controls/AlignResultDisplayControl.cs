@@ -174,35 +174,32 @@ namespace ATT_UT_IPAD.UI.Controls
                 {
                     UpdateImage(tabNo);
                     // 확인 필요
+                    // 정환
                     foreach (var result in tabInspResult.AlignResult.LeftX.AlignResultList)
                     {
-                        PointF orginPoint = new PointF(tabInspResult.CogImage.Width / 2, tabInspResult.CogImage.Height / 2);
-                        PointF fpcCenter = new PointF((float)(result.FpcCenterX - orginPoint.X), (float)(result.FpcCenterY - orginPoint.Y));
-                        PointF panelCenter = new PointF((float)(result.PanelCenterX - orginPoint.X), (float)(result.PanelCenterY - orginPoint.Y));
+                        //PointF orginPoint = new PointF(tabInspResult.CogImage.Width / 2, tabInspResult.CogImage.Height / 2);
+                        //PointF fpcCenter = new PointF((float)(result.FpcCenterX - orginPoint.X), (float)(result.FpcCenterY - orginPoint.Y));
+                        //PointF panelCenter = new PointF((float)(result.PanelCenterX - orginPoint.X), (float)(result.PanelCenterY - orginPoint.Y));
 
-                        double m = MathHelper.RadToDeg(result.FpcSkew);
-                        //PointF aPoint = new PointF(3363, 573);
-                        //PointF bPoint = new PointF(3391, 769);
+                        //double m = MathHelper.RadToDeg(result.FpcSkew);
 
-                        //var m5 = (bPoint.Y - aPoint.Y) / (bPoint.X - aPoint.X);
+                        //var degree = Math.Atan(m) * 180.0 / Math.PI;
+                        //degree += 320;
+                        //var g22222 = Math.Tan(degree * Math.PI / 180);
+                        ////y = mx + b
 
-                        var degree = Math.Atan(m) * 180.0 / Math.PI;
-                        degree += 180;
-                        var g22222 = Math.Tan(degree * Math.PI / 180) * -1; ;
-                        //y = mx + b
+                        //var b = fpcCenter.Y - (g22222 * fpcCenter.X);
 
-                        var b = fpcCenter.Y - (g22222 * fpcCenter.X);
+                        //var x = (panelCenter.Y - b ) / g22222;
 
-                        var x = (panelCenter.Y - b ) / g22222;
+                        //CogLineSegment fpcLine = new CogLineSegment();
+                        ////fpcLine.SetStartEnd(fpcCenter.X + orginPoint.X, fpcCenter.Y +orginPoint.Y, x + orginPoint.X, panelCenter.Y + orginPoint.Y);
+                        //fpcLine.SetStartLengthRotation(fpcCenter.X + orginPoint.X, fpcCenter.Y + orginPoint.Y, 500, g22222);
+                        ////fpcLine.SetStartLengthRotation(fpcCenter.X, fpcCenter.Y, x, m);
 
-                        CogLineSegment fpcLine = new CogLineSegment();
-                        fpcLine.SetStartEnd(fpcCenter.X + orginPoint.X, fpcCenter.Y +orginPoint.Y, x + orginPoint.X, panelCenter.Y + orginPoint.Y);
-                        //fpcLine.SetStartEnd(fpcCenter.X, fpcCenter.Y, x, 1000);
-                        //fpcLine.SetStartLengthRotation(fpcCenter.X, fpcCenter.Y, x, m);
-
-                        //fpcLine.SetStartLengthRotation(fpcCenter.X, fpcCenter.Y, x, fpcDegree);
-                        fpcLine.Color = CogColorConstants.Blue;
-                        InspAlignDisplay.DrawLine(fpcLine);
+                        ////fpcLine.SetStartLengthRotation(fpcCenter.X, fpcCenter.Y, x, fpcDegree);
+                        //fpcLine.Color = CogColorConstants.Blue;
+                        //InspAlignDisplay.DrawLine(fpcLine);
 
                         //CogLine cogLine = new CogLine();
                         //cogLine.set(fpcCenter.X, fpcCenter.Y, result.FpcSkew, result.PanelSkew);

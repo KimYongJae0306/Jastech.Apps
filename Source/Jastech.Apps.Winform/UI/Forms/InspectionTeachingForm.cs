@@ -356,7 +356,7 @@ namespace Jastech.Framework.Winform.Forms
 
             if (yesNoForm.ShowDialog() == DialogResult.Yes)
             {
-                //if (ConfirmSaveExecuteCoordiante())
+                if (ConfirmSaveExecuteCoordiante())
                 {
                     SaveModelData(model);
 
