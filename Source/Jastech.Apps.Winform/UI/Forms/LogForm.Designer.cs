@@ -252,6 +252,7 @@ namespace Jastech.Framework.Winform.Forms
             this.cdrMonthCalendar.ForeColor = System.Drawing.Color.White;
             this.cdrMonthCalendar.Location = new System.Drawing.Point(0, 0);
             this.cdrMonthCalendar.Margin = new System.Windows.Forms.Padding(0);
+            this.cdrMonthCalendar.MaxSelectionCount = 1;
             this.cdrMonthCalendar.Name = "cdrMonthCalendar";
             this.cdrMonthCalendar.TabIndex = 7;
             this.cdrMonthCalendar.TitleBackColor = System.Drawing.Color.Black;

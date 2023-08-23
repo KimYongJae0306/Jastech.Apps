@@ -208,24 +208,11 @@ namespace Jastech.Framework.Winform.Forms
             tvwLogPath.Nodes.Clear();
 
             SetSelectionStartDate(cdrMonthCalendar.SelectionStart);
-            //SetSelectedDirectoryFullPath(_selectedPagePath);
 
-            DateTime date = cdrMonthCalendar.SelectionStart;
-            SetSelectionStartDate(date);
+            string path = GetPath(_selectedPagePath, DateTime.Month.ToString("D2"), DateTime.Day.ToString("D2"));
+            if (path == string.Empty)
+                return;
 
-
-            //tvwLogPath.Nodes.Find("aaa", true);
-            // 원본
-            //string tt = Path.Combine(_selectedPagePath, date.Month.ToString("D2"), date.Day.ToString("D2"));
-
-            //if (tvwLogPath.SelectedNode != null)
-            //{
-
-            //    var t1 = tvwLogPath.SelectedNode.FullPath;
-            //}
-            //string path = GetPath(_selectedPagePath, date.Month.ToString("D2"), date.Day.ToString("D2"));
-            string path = GetPath(_selectedPagePath, date.Month.ToString("D2"), date.Day.ToString("D2"));
-            if (path == string.Empty) return;
             SetSelectedDirectoryParentPath(path);
             DirectoryInfo directoryInfo = new DirectoryInfo(path);
             if (Directory.Exists(directoryInfo.FullName))
@@ -364,19 +351,13 @@ namespace Jastech.Framework.Winform.Forms
                 if (tvwLogPath.SelectedNode == null)
                     return;
 
-                string fullPath = Path.Combine(GetSelectedDirectoryParentPath(), tvwLogPath.SelectedNode.Text);
+                string basePath = Path.Combine(_selectedPagePath, DateTime.Month.ToString("D2"));
+                string fullPath = Path.Combine(basePath, tvwLogPath.SelectedNode.FullPath);
 
-
-                string extension = Path.GetExtension(tvwLogPath.SelectedNode.FullPath);
+                string extension = Path.GetExtension(fullPath);
                 if (extension == string.Empty)
                     return;
 
-                //var ttwtqwt = GetFullPathName(tvwLogPath.SelectedNode); 
-
-                //var t1 = tvwLogPath.SelectedNode.Parent as TreeNode;
-                //var t2 = t1.Parent as TreeNode;
-                //var tt = tvwLogPath.SelectedNode.FirstNode;
-                //var tlqkf = tvwLogPath.SelectedNode.LastNode;
                 DisplaySelectedNode(extension, fullPath);
             }
             catch (Exception ex)
