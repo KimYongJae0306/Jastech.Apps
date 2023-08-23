@@ -281,8 +281,6 @@ namespace ATT_UT_IPAD
 
                     PlcControlManager.Instance().WritePcReady(MachineStatus.RUN);
                 }
-
-               
             }
         }
 

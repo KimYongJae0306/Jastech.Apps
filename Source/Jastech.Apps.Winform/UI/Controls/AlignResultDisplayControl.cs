@@ -152,6 +152,58 @@ namespace ATT_UT_IPAD.UI.Controls
             TabBtnControlList.ForEach(x => x.BackColor = Color.FromArgb(52, 52, 52));
         }
 
+        private void DrawCenterLineByAlignResult(int tabNo)
+        {
+            // 확인 필요
+            // 정환
+
+            var tabInspResult = GetTabInspResultEvent?.Invoke(tabNo);
+            if (tabInspResult == null)
+                return;
+
+            foreach (var result in tabInspResult.AlignResult.LeftX.AlignResultList)
+            {
+                PointF fpcCenter = new PointF((float)(result.FpcCenterX), (float)(result.FpcCenterY));
+                var fpcSkew = result.FpcSkew;
+
+                PointF panelCenter = new PointF((float)(result.PanelCenterX), (float)(result.PanelCenterY));
+                var panelSkew = result.PanelSkew;
+
+                double length = MathHelper.GetDistance(fpcCenter, panelCenter);
+
+                CogLineSegment fpcLine = new CogLineSegment();
+                fpcLine.Color = CogColorConstants.Blue;
+                fpcLine.SetStartLengthRotation(fpcCenter.X, fpcCenter.Y, length, fpcSkew + MathHelper.DegToRad(90));
+                InspAlignDisplay.DrawLineLeftDisplay(fpcLine);
+
+                CogLineSegment panelLine = new CogLineSegment();
+                panelLine.Color = CogColorConstants.Red;
+                panelLine.SetStartLengthRotation(panelCenter.X, panelCenter.Y, length, panelSkew + MathHelper.DegToRad(270));
+                InspAlignDisplay.DrawLineLeftDisplay(panelLine);
+            }
+
+            foreach (var result in tabInspResult.AlignResult.RightX.AlignResultList)
+            {
+                PointF fpcCenter = new PointF((float)(result.FpcCenterX), (float)(result.FpcCenterY));
+                var fpcSkew = result.FpcSkew;
+
+                PointF panelCenter = new PointF((float)(result.PanelCenterX), (float)(result.PanelCenterY));
+                var panelSkew = result.PanelSkew;
+
+                double length = MathHelper.GetDistance(fpcCenter, panelCenter);
+
+                CogLineSegment fpcLine = new CogLineSegment();
+                fpcLine.Color = CogColorConstants.Blue;
+                fpcLine.SetStartLengthRotation(fpcCenter.X, fpcCenter.Y, length, fpcSkew + MathHelper.DegToRad(90));
+                InspAlignDisplay.DrawLineRightDisplay(fpcLine);
+
+                CogLineSegment panelLine = new CogLineSegment();
+                panelLine.Color = CogColorConstants.Red;
+                panelLine.SetStartLengthRotation(panelCenter.X, panelCenter.Y, length, panelSkew + MathHelper.DegToRad(270));
+                InspAlignDisplay.DrawLineRightDisplay(panelLine);
+            }
+        }
+
         public void UpdateResultDisplay(int tabNo)
         {
             if (TabBtnControlList[tabNo].Enabled == false)
@@ -172,32 +224,7 @@ namespace ATT_UT_IPAD.UI.Controls
             if (tabInspResult != null)
             {
                 if (CurrentTabNo == tabNo)
-                {
                     UpdateImage(tabNo);
-                    // 확인 필요
-                    // 정환
-                    foreach (var result in tabInspResult.AlignResult.LeftX.AlignResultList)
-                    {
-                        var rad = MathHelper.DegToRad(90);
-
-                        PointF fpcCenter = new PointF((float)(result.FpcCenterX), (float)(result.FpcCenterY));
-                        var fpcSkew = result.FpcSkew;
-
-                        CogLineSegment fpcLine = new CogLineSegment();
-                        fpcLine.Color = CogColorConstants.Blue;
-                        fpcLine.SetStartLengthRotation(fpcCenter.X, fpcCenter.Y, 450, rad + fpcSkew);
-                        InspAlignDisplay.DrawLine(fpcLine);
-
-
-                        PointF panelCenter = new PointF((float)(result.PanelCenterX), (float)(result.PanelCenterY));
-                        var panelSkew = result.PanelSkew;
-
-                        CogLineSegment panelLine = new CogLineSegment();
-                        panelLine.Color = CogColorConstants.Red;
-                        panelLine.SetStartLengthRotation(panelCenter.X, panelCenter.Y, 450, rad + panelSkew);
-                        InspAlignDisplay.DrawLine(panelLine);
-                    }
-                }
             }
             else
                 InspAlignDisplay.ClearImage();
@@ -215,8 +242,7 @@ namespace ATT_UT_IPAD.UI.Controls
             var centerImage = TabBtnControlList[tabNo].GetCenterImage();
             InspAlignDisplay.UpdateCenterDisplay(centerImage);
 
-
-           
+            DrawCenterLineByAlignResult(tabNo);
         }
 
         public delegate void UpdateTabButtonDele(int tabNo);

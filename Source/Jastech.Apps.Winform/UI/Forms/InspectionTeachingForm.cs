@@ -356,18 +356,17 @@ namespace Jastech.Framework.Winform.Forms
 
             if (yesNoForm.ShowDialog() == DialogResult.Yes)
             {
-                if (ConfirmSaveExecuteCoordiante())
-                {
-                    SaveModelData(model);
+                ConfirmSaveExecuteCoordiante();
 
-                    MessageConfirmForm confirmForm = new MessageConfirmForm();
-                    confirmForm.Message = "Save Model Completed.";
-                    confirmForm.ShowDialog();
-                }
+                SaveModelData(model);
+
+                MessageConfirmForm confirmForm = new MessageConfirmForm();
+                confirmForm.Message = "Save Model Completed.";
+                confirmForm.ShowDialog();
             }
         }
 
-        private bool ConfirmSaveExecuteCoordiante()
+        private void ConfirmSaveExecuteCoordiante()
         {
             if (_executedCoordinate == true)
             {
@@ -378,13 +377,10 @@ namespace Jastech.Framework.Winform.Forms
                 {
                     ApplyAlignCoordinate();
                     ApplyAkkonCoordinate();
-
-                    return true;
                 }
             }
 
             _executedCoordinate = false;
-            return false;
         }
 
         private void ApplyAlignCoordinate()
