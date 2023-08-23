@@ -5,12 +5,11 @@ using Jastech.Apps.Structure;
 using Jastech.Apps.Winform.UI.Controls;
 using Jastech.Framework.Imaging;
 using Jastech.Framework.Imaging.VisionPro;
-using Jastech.Framework.Winform.Controls;
+using Jastech.Framework.Winform.Helper;
 using Jastech.Framework.Winform.VisionPro.Controls;
 using System;
 using System.Drawing;
 using System.IO;
-using System.Net;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
 
@@ -30,8 +29,6 @@ namespace Jastech.Framework.Winform.Forms
         private PageType _selectedPageType { get; set; } = PageType.Log;
 
         private string _selectedPagePath { get; set; } = string.Empty;
-
-        private string _selectedDirectoryParentPath { get; set; } = string.Empty;
         #endregion
 
         #region 속성
@@ -61,6 +58,17 @@ namespace Jastech.Framework.Winform.Forms
         private void LogForm_Load(object sender, EventArgs e)
         {
             InitializeUI();
+        }
+
+        private void LogForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            CogDisplayControl.DisposeImage();
+            ControlDisplayHelper.DisposeChildControls(CogDisplayControl);
+            ControlDisplayHelper.DisposeChildControls(LogControl);
+            ControlDisplayHelper.DisposeChildControls(AlignTrendControl);
+            ControlDisplayHelper.DisposeChildControls(AkkonTrendControl);
+            ControlDisplayHelper.DisposeChildControls(UPHControl);
+            ControlDisplayHelper.DisposeChildControls(ProcessCapabilityControl);
         }
 
         private void InitializeUI()
@@ -196,29 +204,13 @@ namespace Jastech.Framework.Winform.Forms
                 return;
 
             tvwLogPath.Nodes.Clear();
+            DateTime = cdrMonthCalendar.SelectionStart;
 
-            for (int index = tvwLogPath.Nodes.Count; index < 0; index--)
-                tvwLogPath.Nodes.RemoveAt(index - 1);
+            string path = Path.Combine(_selectedPagePath, DateTime.Month.ToString("D2"), DateTime.Day.ToString("D2"));
+            if (path == string.Empty)
+                return;
 
-            DateTime date = cdrMonthCalendar.SelectionStart;
-            SetSelectionStartDate(date);
-
-
-            //tvwLogPath.Nodes.Find("aaa", true);
-            // 원본
-            //string tt = Path.Combine(_selectedPagePath, date.Month.ToString("D2"), date.Day.ToString("D2"));
-
-            //if (tvwLogPath.SelectedNode != null)
-            //{
-
-            //    var t1 = tvwLogPath.SelectedNode.FullPath;
-            //}
-            //string path = GetPath(_selectedPagePath, date.Month.ToString("D2"), date.Day.ToString("D2"));
-            string path = GetPath(_selectedPagePath, date.Month.ToString("D2"), date.Day.ToString("D2"));
-            if (path == string.Empty) return;
-            SetSelectedDirectoryParentPath(path);
             DirectoryInfo directoryInfo = new DirectoryInfo(path);
-
             if (Directory.Exists(directoryInfo.FullName))
             {
                 TreeNode treeNode = new TreeNode(directoryInfo.Name);
@@ -231,62 +223,6 @@ namespace Jastech.Framework.Winform.Forms
                 tvwLogPath.SelectedNode = tvwLogPath.Nodes[0].Nodes[0];
                 tvwLogPath_NodeMouseClick(null, null);
             }
-        }
-
-        private string GetPath(string basePath, string month, string day)
-        {
-            string path = string.Empty;
-
-            switch (_selectedPageType)
-            {
-                case PageType.Log:
-                    path = Path.Combine(basePath, month, day);
-                    break;
-
-                case PageType.Image:
-                    path = Path.Combine(basePath, month, day);
-                    break;
-
-                case PageType.AlignTrend:
-                    path = Path.Combine(basePath, month, day);
-                    break;
-
-                case PageType.AkkonTrend:
-                    path = Path.Combine(basePath, month, day);
-                    break;
-
-                case PageType.UPH:
-                    path = Path.Combine(basePath, month, day);
-                    break;
-
-                case PageType.ProcessCapability:
-                    path = Path.Combine(basePath, month, day);
-                    break;
-                default:
-                    break;
-            }
-
-            return path;
-        }
-
-        private void SetSelectionStartDate(DateTime date)
-        {
-            DateTime = date;
-        }
-
-        public DateTime GetSelectionStartDate()
-        { 
-            return DateTime;
-        }
-        
-        private void SetSelectedDirectoryParentPath(string path)
-        {
-            _selectedDirectoryParentPath = path;
-        }
-
-        private string GetSelectedDirectoryParentPath()
-        {
-            return _selectedDirectoryParentPath;
         }
 
         private void RecursiveDirectory(DirectoryInfo directoryInfo, TreeNode treeNode)
@@ -313,16 +249,14 @@ namespace Jastech.Framework.Winform.Forms
                     treeNode.Nodes.Add(node);
                 }
 
+                if (_selectedPageType != PageType.Image)
+                    return;
+
+                // PageType이 Image인 경우에만 Recursive로 순회하여 경로 취득
                 DirectoryInfo[] dirs = directoryInfo.GetDirectories();
                 foreach (DirectoryInfo dirInfo in dirs)
                 {
                     TreeNode upperNode = new TreeNode(dirInfo.Name);
-
-                    if (_selectedPageType == PageType.AlignTrend || _selectedPageType == PageType.AkkonTrend || _selectedPageType == PageType.UPH || _selectedPageType == PageType.ProcessCapability)
-                    {
-                        if (dirInfo.Name.ToLower().Contains("origin"))
-                            continue;
-                    }
 
                     treeNode.Nodes.Add(upperNode);
 
@@ -358,38 +292,23 @@ namespace Jastech.Framework.Winform.Forms
                 if (tvwLogPath.SelectedNode == null)
                     return;
 
-                string fullPath = Path.Combine(GetSelectedDirectoryParentPath(), tvwLogPath.SelectedNode.Text);
+
+                string basePath = Path.Combine(_selectedPagePath, DateTime.Month.ToString("D2"));
+                string fullPath = Path.Combine(basePath, tvwLogPath.SelectedNode.FullPath);
 
 
-                string extension = Path.GetExtension(tvwLogPath.SelectedNode.FullPath);
+                string extension = Path.GetExtension(fullPath);
                 if (extension == string.Empty)
                     return;
 
-                //var ttwtqwt = GetFullPathName(tvwLogPath.SelectedNode); 
 
-                //var t1 = tvwLogPath.SelectedNode.Parent as TreeNode;
-                //var t2 = t1.Parent as TreeNode;
-                //var tt = tvwLogPath.SelectedNode.FirstNode;
-                //var tlqkf = tvwLogPath.SelectedNode.LastNode;
+
                 DisplaySelectedNode(extension, fullPath);
             }
             catch (Exception ex)
             {
                 Console.WriteLine(ex.ToString());
             }
-        }
-
-        private string GetFullPathName(TreeNode treeNode)
-        {
-            if (treeNode.Parent == null)
-                return treeNode.Text;
-
-            if (GetSelectedDirectoryParentPath() == null)
-            {
-                return "";
-            }
-            else
-                return GetFullPathName(treeNode.Parent) + "\\" + treeNode.Text;
         }
 
         private void DisplaySelectedNode(string extension, string fullPath)
@@ -470,7 +389,7 @@ namespace Jastech.Framework.Winform.Forms
 
                 case PageType.ProcessCapability:
                     ProcessCapabilityControl.UpdateAlignDataGridView(fullPath);
-                    ProcessCapabilityControl.SetSelectionStartDate(GetSelectionStartDate());
+                    ProcessCapabilityControl.SetSelectionStartDate(DateTime);
                     ProcessCapabilityControl.SetTabType(TabType.Tab1);
                     ProcessCapabilityControl.SetAlignResultType(AlignResultType.Lx);
                     break;

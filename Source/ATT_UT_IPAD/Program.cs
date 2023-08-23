@@ -135,22 +135,18 @@ namespace ATT_UT_IPAD
 
                 AppsConfig.Instance().ProgramType = form.SelectedProgramType;
 
-                if (Enum.TryParse(AppsConfig.Instance().ProgramType, true, out ProgramType type))
+                var programType = StringHelper.StringToEnum<ProgramType>(AppsConfig.Instance().ProgramType);
+                switch (programType)
                 {
-                    switch (type)
-                    {
-                        case ProgramType.ProgramType_1:
-                            AppsConfig.Instance().MachineName = "COF ATT #1";
-                            CreateDeviceConfigType1(config);
-                            break;
-                        case ProgramType.ProgramType_2:
-                            AppsConfig.Instance().MachineName = "COF ATT #2";
-                            CreateDeviceConfigType2(config);
-                            break;
-                    }
+                    case ProgramType.ProgramType_1:
+                        AppsConfig.Instance().MachineName = "COF ATT #1";
+                        CreateDeviceConfigType1(config);
+                        break;
+                    case ProgramType.ProgramType_2:
+                        AppsConfig.Instance().MachineName = "COF ATT #2";
+                        CreateDeviceConfigType2(config);
+                        break;
                 }
-                else
-                    Console.WriteLine($"ConfigSet_MachineConfigCreated: Failed to parse program type {AppsConfig.Instance().ProgramType}");
             }
         }
 

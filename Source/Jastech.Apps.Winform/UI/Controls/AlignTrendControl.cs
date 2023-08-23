@@ -107,7 +107,7 @@ namespace Jastech.Apps.Winform.UI.Controls
             }
         }
 
-        private void lblAlign_Click(object sender, EventArgs e)
+        private void lblAllData_Click(object sender, EventArgs e)
         {
             SetAlignResultType(AlignResultType.All);
         }
@@ -152,7 +152,7 @@ namespace Jastech.Apps.Winform.UI.Controls
             switch (alignResultType)
             {
                 case AlignResultType.All:
-                    lblAlign.BackColor = _selectedColor;
+                    lblAllData.BackColor = _selectedColor;
                     break;
 
                 case AlignResultType.Lx:

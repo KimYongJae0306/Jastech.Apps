@@ -231,6 +231,24 @@ namespace Jastech.Framework.Winform.Forms
             this.tvwLogPath.TabIndex = 11;
             this.tvwLogPath.NodeMouseDoubleClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.tvwLogPath_NodeMouseClick);
             // 
+<<<<<<< HEAD
+=======
+            // cdrMonthCalendar
+            // 
+            this.cdrMonthCalendar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(104)))), ((int)(((byte)(104)))), ((int)(((byte)(104)))));
+            this.cdrMonthCalendar.Font = new System.Drawing.Font("맑은 고딕", 12.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.cdrMonthCalendar.ForeColor = System.Drawing.Color.White;
+            this.cdrMonthCalendar.Location = new System.Drawing.Point(0, 0);
+            this.cdrMonthCalendar.Margin = new System.Windows.Forms.Padding(0);
+            this.cdrMonthCalendar.MaxSelectionCount = 1;
+            this.cdrMonthCalendar.Name = "cdrMonthCalendar";
+            this.cdrMonthCalendar.TabIndex = 7;
+            this.cdrMonthCalendar.TitleBackColor = System.Drawing.Color.Black;
+            this.cdrMonthCalendar.TitleForeColor = System.Drawing.Color.White;
+            this.cdrMonthCalendar.TrailingForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
+            this.cdrMonthCalendar.DateChanged += new System.Windows.Forms.DateRangeEventHandler(this.cdrMonthCalendar_DateChanged);
+            // 
+>>>>>>> f7f3b51718b31eb3ffbd59ce8737bd2cf13b49cd
             // btnCancel
             // 
             this.btnCancel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(34)))), ((int)(((byte)(34)))), ((int)(((byte)(34)))));
@@ -276,6 +294,7 @@ namespace Jastech.Framework.Winform.Forms
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = " ";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.LogForm_FormClosing);
             this.Load += new System.EventHandler(this.LogForm_Load);
             this.tlpLog.ResumeLayout(false);
             this.tlpContents.ResumeLayout(false);
