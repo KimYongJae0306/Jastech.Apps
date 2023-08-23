@@ -370,7 +370,7 @@ namespace ATT_UT_Remodeling.Core
                     UpdateDailyInfo();
 
                     SystemManager.Instance().UpdateMainResult();
-                    WriteLog("Update Inspectinon Result.", true);
+                    WriteLog("Update Inspection Result.", true);
 
                     SeqStep = SeqStep.SEQ_SAVE_RESULT_DATA;
                     break;

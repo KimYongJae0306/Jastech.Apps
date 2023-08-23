@@ -43,7 +43,7 @@
             this.colTab = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colJudge = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colCount = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colLenght = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colLength = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -72,7 +72,7 @@
             this.colTab,
             this.colJudge,
             this.colCount,
-            this.colLenght,
+            this.colLength,
             this.Column1,
             this.Column2,
             this.Column3});
@@ -161,15 +161,15 @@
             // 
             // colLenght
             // 
-            this.colLenght.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.colLength.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
             dataGridViewCellStyle7.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
             dataGridViewCellStyle7.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
-            this.colLenght.DefaultCellStyle = dataGridViewCellStyle7;
-            this.colLenght.HeaderText = "Ly";
-            this.colLenght.MinimumWidth = 60;
-            this.colLenght.Name = "colLenght";
-            this.colLenght.ReadOnly = true;
-            this.colLenght.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            this.colLength.DefaultCellStyle = dataGridViewCellStyle7;
+            this.colLength.HeaderText = "Ly";
+            this.colLength.MinimumWidth = 60;
+            this.colLength.Name = "colLength";
+            this.colLength.ReadOnly = true;
+            this.colLength.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
             // 
             // Column1
             // 
@@ -218,7 +218,7 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn colTab;
         private System.Windows.Forms.DataGridViewTextBoxColumn colJudge;
         private System.Windows.Forms.DataGridViewTextBoxColumn colCount;
-        private System.Windows.Forms.DataGridViewTextBoxColumn colLenght;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colLength;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column1;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column2;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column3;
