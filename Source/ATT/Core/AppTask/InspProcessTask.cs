@@ -8,6 +8,7 @@ using Jastech.Apps.Winform.Settings;
 using Jastech.Framework.Algorithms.Akkon;
 using Jastech.Framework.Algorithms.Akkon.Parameters;
 using Jastech.Framework.Algorithms.Akkon.Results;
+using Jastech.Framework.Config;
 using Jastech.Framework.Imaging.Result;
 using Jastech.Framework.Util;
 using Jastech.Framework.Util.Helper;
@@ -15,8 +16,8 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
+using System.IO;
 using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -57,6 +58,14 @@ namespace ATT.Core.AppTask
         #endregion
 
         #region 메서드
+        // Akkon Camera로 Akkon, Align 검사 실행
+        private void RunAkkonImage(ATTInspTab inspTab)
+        {
+            RunAlign(inspTab);
+            RunAkkon(inspTab);
+        }
+
+        //Akkon Camera로 Akkon만 검사
         private void RunAkkon(ATTInspTab inspTab)
         {
             Stopwatch sw = new Stopwatch();
@@ -78,16 +87,21 @@ namespace ATT.Core.AppTask
 
             algorithmTool.MainMarkInspect(inspTab.MergeCogImage, tab, ref inspResult, false);
 
+            string message = string.Empty;
             if (inspResult.MarkResult.Judgement != Judgement.OK)
             {
                 // 검사 실패
-                string message = string.Format("Mark Inspection NG !!! Tab_{0} / Fpc_{1}, Panel_{2}", tab.Index + 1, inspResult.MarkResult.FpcMark.Judgement, inspResult.MarkResult.PanelMark.Judgement);
+                message = string.Format("Akkon Mark Insp NG !!! Tab_{0} / Fpc_{1}, Panel_{2}", tab.Index + 1, inspResult.MarkResult.FpcMark.Judgement, inspResult.MarkResult.PanelMark.Judgement);
                 WriteLog(message);
                 Logger.Debug(LogType.Inspection, message);
                 inspResult.AkkonResult = new AkkonResult();
             }
             else
             {
+                message = string.Format("Akkon Mark Insp OK !!! Tab_{0} / Fpc_{1}, Panel_{2}", tab.Index + 1, inspResult.MarkResult.FpcMark.Judgement, inspResult.MarkResult.PanelMark.Judgement);
+                WriteLog(message, true);
+                Logger.Debug(LogType.Inspection, message);
+
                 // Set Coordinate Params
                 SetPanelCoordinateData(panelCoordinate, inspResult);
 
@@ -103,8 +117,11 @@ namespace ATT.Core.AppTask
                     var roiList = tab.AkkonParam.GetAkkonROIList();
                     var coordinateList = RenewalAkkonRoi(roiList, panelCoordinate);
 
+                    // Tracking ROI Save                  
+                    string filepath = ConfigSet.Instance().Path.Result + "Tab" + inspResult.TabNo + ".txt";
+                    SaveAkkonROI(filepath, inspResult.TabNo, coordinateList);
                     Judgement tabJudgement = Judgement.NG;
-                    var leadResultList = AkkonAlgorithm.Run(inspTab.MergeMatImage, coordinateList, tab.AkkonParam.AkkonAlgoritmParam, resolution_um,ref tabJudgement);
+                    var leadResultList = AkkonAlgorithm.Run(inspTab.MergeMatImage, coordinateList, tab.AkkonParam.AkkonAlgoritmParam, resolution_um, ref tabJudgement);
 
                     inspResult.AkkonResult = CreateAkkonResult(unitName, tab.Index, leadResultList);
                     inspResult.AkkonResult.Judgement = tabJudgement;
@@ -114,9 +131,9 @@ namespace ATT.Core.AppTask
                     inspResult.AkkonResult = new AkkonResult();
 
                 sw.Stop();
-                string resultMessage = string.Format("Tab {0} Akkon Inspection Completed.({1}ms)", (inspTab.TabScanBuffer.TabNo + 1), sw.ElapsedMilliseconds);
+                string resultMessage = string.Format("Tab {0} Akkon Insp Completed.({1}ms)", (inspTab.TabScanBuffer.TabNo + 1), sw.ElapsedMilliseconds);
                 Console.WriteLine(resultMessage);
-                WriteLog(resultMessage, true);
+                WriteLog(resultMessage, false);
             }
 
             AppsInspResult.Instance().AddAkkon(inspResult);
@@ -135,36 +152,35 @@ namespace ATT.Core.AppTask
 
             MainAlgorithmTool algorithmTool = new MainAlgorithmTool();
 
-            TabInspResult inspResult = new TabInspResult();
-            inspResult.TabNo = inspTab.TabScanBuffer.TabNo;
-            inspResult.Image = inspTab.MergeMatImage;
-            inspResult.CogImage = inspTab.MergeCogImage;
+            TabInspResult tabInspResult = new TabInspResult();
+            tabInspResult.TabNo = inspTab.TabScanBuffer.TabNo;
+            tabInspResult.Image = inspTab.MergeMatImage;
+            tabInspResult.CogImage = inspTab.MergeCogImage;
 
-            // Create Coordinate Object
-            CoordinateTransform panelCoordinate = new CoordinateTransform();
+            //SystemManager.Instance().SetAlignLastScanImage(inspTab.MergeCogImage);
 
-            algorithmTool.MainMarkInspect(inspTab.MergeCogImage, tab, ref inspResult, false);
+            algorithmTool.MainMarkInspect(inspTab.MergeCogImage, tab, ref tabInspResult, true);
 
-            if (inspResult.MarkResult.Judgement != Judgement.OK)
+            string message = string.Empty;
+            if (tabInspResult.MarkResult.Judgement != Judgement.OK)
             {
                 // 검사 실패
-                string message = string.Format("Mark Inspection NG !!! Tab_{0} / Fpc_{1}, Panel_{2}", tab.Index + 1, inspResult.MarkResult.FpcMark.Judgement, inspResult.MarkResult.PanelMark.Judgement);
-                WriteLog(message);
+                message = string.Format("Align Mark Insp NG !!! Tab_{0} / Fpc_{1}, Panel_{2}", tab.Index + 1, tabInspResult.MarkResult.FpcMark.Judgement, tabInspResult.MarkResult.PanelMark.Judgement);
+                WriteLog(message, true);
                 Logger.Debug(LogType.Inspection, message);
-                inspResult.AlignResult = new TabAlignResult();
+                tabInspResult.AlignResult = new TabAlignResult();
             }
             else
             {
-                PointF fpcLeftOffset = MathHelper.GetOffset(inspResult.MarkResult.FpcMark.FoundedMark.Left.MaxMatchPos.ReferencePos, inspResult.MarkResult.FpcMark.FoundedMark.Left.MaxMatchPos.FoundPos);
-                PointF fpcRightOffset = MathHelper.GetOffset(inspResult.MarkResult.FpcMark.FoundedMark.Right.MaxMatchPos.ReferencePos, inspResult.MarkResult.FpcMark.FoundedMark.Right.MaxMatchPos.FoundPos);
-                PointF panelLeftOffset = MathHelper.GetOffset(inspResult.MarkResult.PanelMark.FoundedMark.Left.MaxMatchPos.ReferencePos, inspResult.MarkResult.PanelMark.FoundedMark.Left.MaxMatchPos.FoundPos);
-                PointF panelRightOffset = MathHelper.GetOffset(inspResult.MarkResult.PanelMark.FoundedMark.Right.MaxMatchPos.ReferencePos, inspResult.MarkResult.PanelMark.FoundedMark.Right.MaxMatchPos.FoundPos);
+                // 검사 성공
+                message = string.Format("Align Mark Insp OK !!! Tab_{0} / Fpc_{1}, Panel_{2}", tab.Index + 1, tabInspResult.MarkResult.FpcMark.Judgement, tabInspResult.MarkResult.PanelMark.Judgement);
+                WriteLog(message, true);
+                Logger.Debug(LogType.Inspection, message);
 
-                // Set Coordinate Params
-                SetPanelCoordinateData(panelCoordinate, inspResult);
-
-                // Excuete Coordinate
-                panelCoordinate.ExecuteCoordinate();
+                PointF fpcLeftOffset = MathHelper.GetOffset(tabInspResult.MarkResult.FpcMark.FoundedMark.Left.MaxMatchPos.ReferencePos, tabInspResult.MarkResult.FpcMark.FoundedMark.Left.MaxMatchPos.FoundPos);
+                PointF fpcRightOffset = MathHelper.GetOffset(tabInspResult.MarkResult.FpcMark.FoundedMark.Right.MaxMatchPos.ReferencePos, tabInspResult.MarkResult.FpcMark.FoundedMark.Right.MaxMatchPos.FoundPos);
+                PointF panelLeftOffset = MathHelper.GetOffset(tabInspResult.MarkResult.PanelMark.FoundedMark.Left.MaxMatchPos.ReferencePos, tabInspResult.MarkResult.PanelMark.FoundedMark.Left.MaxMatchPos.FoundPos);
+                PointF panelRightOffset = MathHelper.GetOffset(tabInspResult.MarkResult.PanelMark.FoundedMark.Right.MaxMatchPos.ReferencePos, tabInspResult.MarkResult.PanelMark.FoundedMark.Right.MaxMatchPos.FoundPos);
 
                 var lineCamera = LineCameraManager.Instance().GetLineCamera("LineCamera").Camera;
 
@@ -175,44 +191,50 @@ namespace ATT.Core.AppTask
                 #region Align
                 if (AppsConfig.Instance().EnableAlign)
                 {
-                    inspResult.AlignResult.LeftX = algorithmTool.RunMainLeftAlignX(inspTab.MergeCogImage, tab, fpcLeftOffset, panelLeftOffset, judgementX);
-                    if (inspResult.AlignResult.LeftX?.Judgement != Judgement.OK)
+                    tabInspResult.AlignResult.LeftX = algorithmTool.RunMainLeftAlignX(inspTab.MergeCogImage, tab, fpcLeftOffset, panelLeftOffset, judgementX);
+                    if (tabInspResult.AlignResult.LeftX?.Judgement != Judgement.OK)
                     {
-                        var leftAlignX = inspResult.AlignResult.LeftX;
-                        string message = string.Format("Left AlignX Inspection NG !!! Tab_{0} / Fpc_{1}, Panel_{2}", tab.Index, leftAlignX.Fpc.Judgement, leftAlignX.Panel.Judgement);
+                        var leftAlignX = tabInspResult.AlignResult.LeftX;
+                        message = string.Format("Left AlignX Insp NG !!! Tab_{0} / Fpc_{1}, Panel_{2}", tab.Index + 1, leftAlignX.Fpc.Judgement, leftAlignX.Panel.Judgement);
+                        WriteLog(message, true);
                         Logger.Debug(LogType.Inspection, message);
                     }
 
-                    inspResult.AlignResult.LeftY = algorithmTool.RunMainLeftAlignY(inspTab.MergeCogImage, tab, fpcLeftOffset, panelLeftOffset, judgementY);
-                    if (inspResult.AlignResult.LeftY?.Judgement != Judgement.OK)
+                    tabInspResult.AlignResult.LeftY = algorithmTool.RunMainLeftAlignY(inspTab.MergeCogImage, tab, fpcLeftOffset, panelLeftOffset, judgementY);
+                    if (tabInspResult.AlignResult.LeftY?.Judgement != Judgement.OK)
                     {
-                        var leftAlignY = inspResult.AlignResult.LeftY;
-                        string message = string.Format("Left AlignY Inspection NG !!! Tab_{0} / Fpc_{1}, Panel_{2}", tab.Index, leftAlignY.Fpc.Judgement, leftAlignY.Panel.Judgement);
+                        var leftAlignY = tabInspResult.AlignResult.LeftY;
+                        message = string.Format("Left AlignY Insp NG !!! Tab_{0} / Fpc_{1}, Panel_{2}", tab.Index + 1, leftAlignY.Fpc.Judgement, leftAlignY.Panel.Judgement);
+                        WriteLog(message, true);
                         Logger.Debug(LogType.Inspection, message);
                     }
 
-                    inspResult.AlignResult.RightX = algorithmTool.RunMainRightAlignX(inspTab.MergeCogImage, tab, fpcRightOffset, panelRightOffset, judgementX);
-                    if (inspResult.AlignResult.RightX?.Judgement != Judgement.OK)
+                    tabInspResult.AlignResult.RightX = algorithmTool.RunMainRightAlignX(inspTab.MergeCogImage, tab, fpcRightOffset, panelRightOffset, judgementX);
+                    if (tabInspResult.AlignResult.RightX?.Judgement != Judgement.OK)
                     {
-                        var rightAlignX = inspResult.AlignResult.RightX;
-                        string message = string.Format("Right AlignX Inspection NG !!! Tab_{0} / Fpc_{1}, Panel_{2}", tab.Index, rightAlignX.Fpc.Judgement, rightAlignX.Panel.Judgement);
+                        var rightAlignX = tabInspResult.AlignResult.RightX;
+                        message = string.Format("Right AlignX Insp NG !!! Tab_{0} / Fpc_{1}, Panel_{2}", tab.Index + 1, rightAlignX.Fpc.Judgement, rightAlignX.Panel.Judgement);
+                        WriteLog(message, true);
                         Logger.Debug(LogType.Inspection, message);
                     }
 
-                    inspResult.AlignResult.RightY = algorithmTool.RunMainRightAlignY(inspTab.MergeCogImage, tab, fpcRightOffset, panelRightOffset, judgementY);
-                    if (inspResult.AlignResult.RightY?.Judgement != Judgement.OK)
+                    tabInspResult.AlignResult.RightY = algorithmTool.RunMainRightAlignY(inspTab.MergeCogImage, tab, fpcRightOffset, panelRightOffset, judgementY);
+                    if (tabInspResult.AlignResult.RightY?.Judgement != Judgement.OK)
                     {
-                        var rightAlignY = inspResult.AlignResult.RightY;
-                        string message = string.Format("Right AlignY Inspection NG !!! Tab_{0} / Fpc_{1}, Panel_{2}", tab.Index, rightAlignY.Fpc.Judgement, rightAlignY.Panel.Judgement);
+                        var rightAlignY = tabInspResult.AlignResult.RightY;
+                        message = string.Format("Right AlignY Insp NG !!! Tab_{0} / Fpc_{1}, Panel_{2}", tab.Index + 1, rightAlignY.Fpc.Judgement, rightAlignY.Panel.Judgement);
+                        WriteLog(message, true);
                         Logger.Debug(LogType.Inspection, message);
                     }
+
+                    tabInspResult.AlignResult.CenterImage = algorithmTool.CropCenterAlign(inspTab.MergeCogImage, tab, fpcLeftOffset);
                 }
                 else
                 {
-                    inspResult.AlignResult.LeftX = new AlignResult();
-                    inspResult.AlignResult.LeftY = new AlignResult();
-                    inspResult.AlignResult.RightX = new AlignResult();
-                    inspResult.AlignResult.RightY = new AlignResult();
+                    tabInspResult.AlignResult.LeftX = new AlignResult();
+                    tabInspResult.AlignResult.LeftY = new AlignResult();
+                    tabInspResult.AlignResult.RightX = new AlignResult();
+                    tabInspResult.AlignResult.RightY = new AlignResult();
                 }
                 #endregion
 
@@ -220,13 +242,13 @@ namespace ATT.Core.AppTask
                 #endregion
 
                 sw.Stop();
-                string resultMessage = string.Format("Tab {0} Align Inspection Completed.({1}ms)", (inspTab.TabScanBuffer.TabNo + 1), sw.ElapsedMilliseconds);
+                string resultMessage = string.Format("Tab {0} Align Insp Completed.({1}ms)", (inspTab.TabScanBuffer.TabNo + 1), sw.ElapsedMilliseconds);
                 Console.WriteLine(resultMessage);
-                WriteLog(resultMessage, true);
+                WriteLog(resultMessage, false);
             }
 
-            AppsInspResult.Instance().AddAlign(inspResult);
-            SystemManager.Instance().UpdateAlignResultTabButton(inspResult.TabNo);
+            AppsInspResult.Instance().AddAlign(tabInspResult);
+            SystemManager.Instance().UpdateAlignResultTabButton(tabInspResult.TabNo);
             InspAlignCount++;
         }
 
@@ -318,7 +340,12 @@ namespace ATT.Core.AppTask
                     break;
 
                 if (GetInspAkkonTab() is ATTInspTab inspTab)
-                    RunAkkon(inspTab);
+                {
+                    if (AppsConfig.Instance().EnableTest1)
+                        RunAkkonImage(inspTab);
+                    else
+                        RunAkkon(inspTab);
+                }
 
                 Thread.Sleep(50);
             }
@@ -484,7 +511,26 @@ namespace ATT.Core.AppTask
 
             return newList;
         }
+        private void SaveAkkonROI(string filePath, int tabNo, List<AkkonROI> roiList)
+        {
+            string path = filePath;
 
+            var akkonROIList = roiList;
+
+            using (StreamWriter streamWriter = new StreamWriter(path, false))
+            {
+                foreach (var roi in akkonROIList)
+                {
+                    string message = string.Format("{0} {1} {2} {3} {4} {5} {6} {7}",
+                                                (int)roi.LeftTopX, (int)roi.LeftTopY,
+                                                (int)roi.RightTopX, (int)roi.RightTopY,
+                                                (int)roi.RightBottomX, (int)roi.RightBottomY,
+                                                (int)roi.LeftBottomX, (int)roi.LeftBottomY);
+
+                    streamWriter.WriteLine(message);
+                }
+            }
+        }
         private void SetFpcCoordinateData(CoordinateTransform fpc, TabInspResult tabInspResult)
         {
             PointF teachedLeftPoint = tabInspResult.MarkResult.FpcMark.FoundedMark.Left.MaxMatchPos.ReferencePos;
@@ -527,6 +573,27 @@ namespace ATT.Core.AppTask
                     var alingInspTab = InspAlignTabList.Where(x => x.TabScanBuffer.TabNo == data.TabNo).FirstOrDefault();
                     alingInspTab?.SetVirtualImage(data.FilePath);
                 }
+            }
+        }
+
+        private PointF GetMainOrginPoint(Material material, Tab tab)
+        {
+            if (material == Material.Panel)
+            {
+                var panelMainMark = tab.MarkParamter.MainPanelMarkParamList.Where(x => x.Name == MarkName.Main).First();
+                var orgin = panelMainMark.InspParam.GetOrigin();
+                double orginX = orgin.TranslationX;
+                double orginY = orgin.TranslationY;
+                return new PointF((float)orginX, (float)orginY);
+            }
+            else
+            {
+                var fpcMainMark = tab.MarkParamter.MainFpcMarkParamList.Where(x => x.Name == MarkName.Main).First();
+                var orgin = fpcMainMark.InspParam.GetOrigin();
+
+                double orginX = orgin.TranslationX;
+                double orginY = orgin.TranslationY;
+                return new PointF((float)orginX, (float)orginY);
             }
         }
         #endregion

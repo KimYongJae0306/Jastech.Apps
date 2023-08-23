@@ -422,23 +422,29 @@ namespace ATT.UI.Forms
 
         private void Save()
         {
-            UpdateCurrentData();
+            MessageYesNoForm yesNoForm = new MessageYesNoForm();
+            yesNoForm.Message = "Teaching data will change.\nDo you agree?";
 
-            // Save AxisHandler
-            var axisHandler = MotionManager.Instance().GetAxisHandler(AxisHandlerName.Handler0);
-            MotionManager.Instance().Save(axisHandler);
+            if (yesNoForm.ShowDialog() == DialogResult.Yes)
+            {
+                UpdateCurrentData();
 
-            // Save Model
-            var model = ModelManager.Instance().CurrentModel as AppsInspModel;
-            //model.SetUnitList(TeachingData.Instance().UnitList);
-            model.SetTeachingList(TeachingPositionList);
+                // Save AxisHandler
+                var axisHandler = MotionManager.Instance().GetAxisHandler(AxisHandlerName.Handler0);
+                MotionManager.Instance().Save(axisHandler);
 
-            string fileName = System.IO.Path.Combine(ConfigSet.Instance().Path.Model, model.Name, InspModel.FileName);
-            InspModelService?.Save(fileName, model);
+                // Save Model
+                var model = ModelManager.Instance().CurrentModel as AppsInspModel;
+                //model.SetUnitList(TeachingData.Instance().UnitList);
+                model.SetTeachingList(TeachingPositionList);
 
-            MessageConfirmForm form = new MessageConfirmForm();
-            form.Message = "Save Motion Data Completed.";
-            form.ShowDialog();
+                string fileName = System.IO.Path.Combine(ConfigSet.Instance().Path.Model, model.Name, InspModel.FileName);
+                InspModelService?.Save(fileName, model);
+
+                MessageConfirmForm form = new MessageConfirmForm();
+                form.Message = "Save Motion Data Completed.";
+                form.ShowDialog();
+            }
         }
 
         private void lblTargetPositionX_Click(object sender, EventArgs e)
@@ -571,7 +577,7 @@ namespace ATT.UI.Forms
             double moveAmount = targetPosition - currentPosition;
             if (moveAmount < 0)
                 direction = Direction.CW;
-            else 
+            else
                 direction = Direction.CCW;
 
             LafCtrl.SetMotionRelativeMove(direction, Math.Abs(moveAmount));
@@ -579,29 +585,34 @@ namespace ATT.UI.Forms
 
         private void lblOriginZ_Click(object sender, EventArgs e)
         {
-            //LAFManager.Instance().StartHomeThread(LafCtrl.Name);
+            if (LAFManager.Instance().GetLAF(LafCtrl.Name) is LAF laf)
+                laf.StartHomeThread();
         }
 
         private void lblLaserOnZ_Click(object sender, EventArgs e)
         {
-            //LAFManager.Instance().LaserOnOff(LafCtrl.Name, true);
+            if (LAFManager.Instance().GetLAF(LafCtrl.Name) is LAF laf)
+                laf.LaserOnOff(true);
         }
 
         private void lblLaserOffZ_Click(object sender, EventArgs e)
         {
-            //LAFManager.Instance().LaserOnOff(LafCtrl.Name, false);
+            if (LAFManager.Instance().GetLAF(LafCtrl.Name) is LAF laf)
+                laf.LaserOnOff(false);
         }
 
         private void lblTrackingOnZ_Click(object sender, EventArgs e)
         {
-           // LAFManager.Instance().TrackingOnOff(LafCtrl.Name, true);
+            if (LAFManager.Instance().GetLAF(LafCtrl.Name) is LAF laf)
+                laf.TrackingOnOff(true);
         }
 
         private void lblTrackingOffZ_Click(object sender, EventArgs e)
         {
-            //LAFManager.Instance().TrackingOnOff(LafCtrl.Name, false);
+            if (LAFManager.Instance().GetLAF(LafCtrl.Name) is LAF laf)
+                laf.TrackingOnOff(false);
         }
-      
+
         private void rdoJogSlowMode_CheckedChanged(object sender, EventArgs e)
         {
             if (rdoJogSlowMode.Checked)
