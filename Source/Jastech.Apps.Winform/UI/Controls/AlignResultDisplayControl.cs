@@ -4,6 +4,7 @@ using Jastech.Apps.Structure.Data;
 using Jastech.Apps.Winform;
 using Jastech.Apps.Winform.UI.Controls;
 using Jastech.Framework.Imaging.Result;
+using Jastech.Framework.Util.Helper;
 using Jastech.Framework.Winform.VisionPro.Controls;
 using System;
 using System.Collections.Generic;
@@ -160,6 +161,7 @@ namespace ATT_UT_IPAD.UI.Controls
                 return;
             
             TabBtnControlList[tabNo].SetAlignImage(tabInspResult.CogImage);
+
             TabBtnControlList[tabNo].SetLeftAlignShape(GetLeftAlignShape(tabInspResult));
             TabBtnControlList[tabNo].SetRightAlignShape(GetRightAlignShape(tabInspResult));
 
@@ -169,7 +171,42 @@ namespace ATT_UT_IPAD.UI.Controls
             if (tabInspResult != null)
             {
                 if (CurrentTabNo == tabNo)
+                {
                     UpdateImage(tabNo);
+                    // 확인 필요
+                    // 정환
+                    foreach (var result in tabInspResult.AlignResult.LeftX.AlignResultList)
+                    {
+                        //PointF orginPoint = new PointF(tabInspResult.CogImage.Width / 2, tabInspResult.CogImage.Height / 2);
+                        //PointF fpcCenter = new PointF((float)(result.FpcCenterX - orginPoint.X), (float)(result.FpcCenterY - orginPoint.Y));
+                        //PointF panelCenter = new PointF((float)(result.PanelCenterX - orginPoint.X), (float)(result.PanelCenterY - orginPoint.Y));
+
+                        //double m = MathHelper.RadToDeg(result.FpcSkew);
+
+                        //var degree = Math.Atan(m) * 180.0 / Math.PI;
+                        //degree += 320;
+                        //var g22222 = Math.Tan(degree * Math.PI / 180);
+                        ////y = mx + b
+
+                        //var b = fpcCenter.Y - (g22222 * fpcCenter.X);
+
+                        //var x = (panelCenter.Y - b ) / g22222;
+
+                        //CogLineSegment fpcLine = new CogLineSegment();
+                        ////fpcLine.SetStartEnd(fpcCenter.X + orginPoint.X, fpcCenter.Y +orginPoint.Y, x + orginPoint.X, panelCenter.Y + orginPoint.Y);
+                        //fpcLine.SetStartLengthRotation(fpcCenter.X + orginPoint.X, fpcCenter.Y + orginPoint.Y, 500, g22222);
+                        ////fpcLine.SetStartLengthRotation(fpcCenter.X, fpcCenter.Y, x, m);
+
+                        ////fpcLine.SetStartLengthRotation(fpcCenter.X, fpcCenter.Y, x, fpcDegree);
+                        //fpcLine.Color = CogColorConstants.Blue;
+                        //InspAlignDisplay.DrawLine(fpcLine);
+
+                        //CogLine cogLine = new CogLine();
+                        //cogLine.set(fpcCenter.X, fpcCenter.Y, result.FpcSkew, result.PanelSkew);
+                        //InspAlignDisplay.DrawLine(cogLine);
+
+                    }
+                }
             }
             else
                 InspAlignDisplay.ClearImage();
@@ -187,6 +224,9 @@ namespace ATT_UT_IPAD.UI.Controls
 
             var centerImage = TabBtnControlList[tabNo].GetCenterImage();
             InspAlignDisplay.UpdateCenterDisplay(centerImage);
+
+
+           
         }
 
         public delegate void UpdateTabButtonDele(int tabNo);

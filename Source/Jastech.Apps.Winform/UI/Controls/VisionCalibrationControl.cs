@@ -62,7 +62,7 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         private void PatternControl_ClearActionEvent()
         {
-            var display = TeachingUIManager.Instance().GetDisplay();
+            var display = TeachingUIManager.Instance().TeachingDisplayControl.GetDisplay();
             var currentParam = ParamControl.GetCurrentParam();
 
             if (display == null || currentParam == null)
@@ -82,7 +82,7 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         private ICogImage VisionCalibrationControl_GetOriginImageHandler()
         {
-            return TeachingUIManager.Instance().GetDisplay().GetImage();
+            return TeachingUIManager.Instance().TeachingDisplayControl.GetDisplay().GetImage();
         }
 
         private void VisionCalibrationControl_TestActionEvent()
@@ -114,7 +114,7 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         private void Inspection()
         {
-            var display = TeachingUIManager.Instance().GetDisplay();
+            var display = TeachingUIManager.Instance().TeachingDisplayControl.GetDisplay();
             var currentParam = ParamControl.GetCurrentParam();
 
             if (display == null || currentParam == null)
@@ -155,7 +155,7 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         private void lblAddROI_Click(object sender, EventArgs e)
         {
-            var display = TeachingUIManager.Instance().GetDisplay();
+            var display = TeachingUIManager.Instance().TeachingDisplayControl.GetDisplay();
             if (display.GetImage() == null)
                 return;
 
@@ -184,7 +184,7 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         public void DrawROI()
         {
-            var display = TeachingUIManager.Instance().GetDisplay();
+            var display = TeachingUIManager.Instance().TeachingDisplayControl.GetDisplay();
             if (display.GetImage() == null)
                 return;
 

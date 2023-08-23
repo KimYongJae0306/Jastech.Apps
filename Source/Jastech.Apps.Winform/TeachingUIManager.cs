@@ -3,6 +3,7 @@ using Emgu.CV;
 using Jastech.Framework.Imaging.Helper;
 using Jastech.Framework.Imaging.VisionPro;
 using Jastech.Framework.Winform.VisionPro.Controls;
+using System.Collections.Generic;
 
 namespace Jastech.Apps.Winform
 {
@@ -13,7 +14,7 @@ namespace Jastech.Apps.Winform
         #endregion
 
         #region 속성
-        private CogDisplayControl TeachingDisplay { get; set; } = null;
+        public CogTeachingDisplayControl TeachingDisplayControl { get; set; } = null;
 
         private ICogImage OriginCogImageBuffer { get; set; } = null;
 
@@ -46,15 +47,23 @@ namespace Jastech.Apps.Winform
             return _instance;
         }
 
-        public CogDisplayControl GetDisplay()
-        {
-            return TeachingDisplay;
-        }
+        //public CogDisplayControl GetDisplay()
+        //{
+        //    if (TeachingDisplay == null)
+        //        return null;
 
-        public void SetDisplay(CogDisplayControl display)
-        {
-            TeachingDisplay = display;
-        }
+        //    return TeachingDisplay.GetDisplay();
+        //}
+
+        //public CogTeachingDisplayControl GetTeachingDisplayControl()
+        //{
+        //    return TeachingDisplayControl;
+        //}
+
+        //public void SetTeachingDisplayControl(CogTeachingDisplayControl display)
+        //{
+        //    TeachingDisplayControl = display;
+        //}
 
         public ICogImage GetOriginCogImageBuffer(bool isDeepCopy)
         {
@@ -119,7 +128,7 @@ namespace Jastech.Apps.Winform
         public void SetBinaryCogImageBuffer(ICogImage cogImage)
         {
             BinaryCogImageBuffer = cogImage;
-            TeachingDisplay?.SetImage(BinaryCogImageBuffer);
+            TeachingDisplayControl?.SetImage(BinaryCogImageBuffer);
         }
 
         public ICogImage GetBinaryCogImage(bool isDeepCopy)
@@ -149,9 +158,28 @@ namespace Jastech.Apps.Winform
             }
 
             ResultCogImageBuffer = cogImage.CopyBase(CogImageCopyModeConstants.CopyPixels);
-           // ResultCogImageBuffer = cogImage;
-            TeachingDisplay?.SetImage(ResultCogImageBuffer);
+            TeachingDisplayControl?.SetImage(ResultCogImageBuffer);
         }
+
+
+        public void SetResultCogImage(ICogImage cogImage, List<CogRectangleAffine> cogRectangleAffines)
+        {
+            if (ResultCogImageBuffer is CogImage8Grey grey)
+            {
+                grey.Dispose();
+                grey = null;
+            }
+            if (ResultCogImageBuffer is CogImage24PlanarColor color)
+            {
+                color.Dispose();
+                color = null;
+            }
+
+            ResultCogImageBuffer = cogImage.CopyBase(CogImageCopyModeConstants.CopyPixels);
+            TeachingDisplayControl?.SetImage(ResultCogImageBuffer);
+            TeachingDisplayControl?.SetThumbnailImage(ResultCogImageBuffer, cogRectangleAffines);
+        }
+
 
         public ICogImage GetResultCogImage(bool isDeepCopy)
         {
@@ -180,8 +208,7 @@ namespace Jastech.Apps.Winform
             }
 
             AkkonCogImageBuffer = cogImage.CopyBase(CogImageCopyModeConstants.CopyPixels);
-            //AkkonCogImageBuffer = cogImage;
-            TeachingDisplay?.SetImage(AkkonCogImageBuffer);
+            TeachingDisplayControl?.SetImage(AkkonCogImageBuffer);
         }
 
         public ICogImage GetAkkonCogImage(bool isDeepCopy)

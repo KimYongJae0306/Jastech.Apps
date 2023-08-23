@@ -4,6 +4,7 @@ using Cognex.VisionPro;
 using Emgu.CV;
 using Emgu.CV.CvEnum;
 using Emgu.CV.Structure;
+using Emgu.CV.Util;
 using Jastech.Apps.Structure;
 using Jastech.Apps.Structure.Data;
 using Jastech.Apps.Structure.VisionTool;
@@ -394,6 +395,8 @@ namespace ATT_UT_IPAD.Core
 
                         WriteLog("Complete Align LineScanner Grab.", true);
                     }
+                    PlcControlManager.Instance().WriteGrabDone();
+
 
                     LightCtrlHandler.TurnOff();
                     WriteLog("Light Off.", false);
@@ -510,9 +513,10 @@ namespace ATT_UT_IPAD.Core
                         // Overlay Image
                         if(tabResult.AkkonInspMatImage != null)
                         {
-                            Mat resultMat = GetResultImage(tabResult.AkkonInspMatImage, tabResult.AkkonResult.LeadResultList, tab.AkkonParam.AkkonAlgoritmParam);
+                            Mat resultMat = GetResultImage(tabResult.AkkonInspMatImage, tabResult.AkkonResult.LeadResultList, tab.AkkonParam.AkkonAlgoritmParam, ref tabResult.AkkonNGAffineList);
                             ICogImage cogImage = ConvertCogColorImage(resultMat);
                             tabResult.AkkonResultCogImage = cogImage;
+
                             resultMat.Dispose();
 
                             // AkkonInspCogImage
@@ -1115,7 +1119,7 @@ namespace ATT_UT_IPAD.Core
             return cogImage;
         }
 
-        public Mat GetResultImage(Mat resizeMat, List<AkkonLeadResult> leadResultList, AkkonAlgoritmParam AkkonParameters)
+        public Mat GetResultImage(Mat resizeMat, List<AkkonLeadResult> leadResultList, AkkonAlgoritmParam akkonParameters, ref List<CogRectangleAffine> akkonNGAffineList)
         {
             if (resizeMat == null)
                 return null;
@@ -1125,6 +1129,7 @@ namespace ATT_UT_IPAD.Core
 
             MCvScalar redColor = new MCvScalar(50, 50, 230, 255);
             MCvScalar greenColor = new MCvScalar(50, 230, 50, 255);
+            MCvScalar orangeColor = new MCvScalar(0, 165, 255);
 
             DrawParam autoDrawParam = new DrawParam();
             autoDrawParam.ContainLeadCount = true;
@@ -1153,8 +1158,13 @@ namespace ATT_UT_IPAD.Core
                     CvInvoke.Line(colorMat, leftTop, rightTop, redColor, 1);
                     CvInvoke.Line(colorMat, rightTop, rightBottom, redColor, 1);
                     CvInvoke.Line(colorMat, rightBottom, leftBottom, redColor, 1);
+
+                    var rect = VisionProShapeHelper.ConvertToCogRectAffine(leftTop, rightTop, leftBottom);
+                    akkonNGAffineList.Add(rect);
                 }
+
                 int blobCount = 0;
+   
                 foreach (var blob in result.BlobList)
                 {
                     Rectangle rectRect = new Rectangle();
@@ -1167,11 +1177,24 @@ namespace ATT_UT_IPAD.Core
                     int radius = rectRect.Width > rectRect.Height ? rectRect.Width : rectRect.Height;
 
                     int size = blob.BoundingRect.Width * blob.BoundingRect.Height;
-
+            
                     if (blob.IsAkkonShape)
                     {
                         blobCount++;
                         CvInvoke.Circle(colorMat, center, radius / 2, greenColor, 1);
+                    }
+                    else
+                    {
+                        double strengthValue = Math.Abs(blob.Strength - akkonParameters.ShapeFilterParam.MinAkkonStrength);
+                        if (strengthValue <= 1)
+                        {
+                            int temp = (int)(radius / 2.0);
+                            Point pt = new Point(center.X + temp, center.Y - temp);
+                            string strength = blob.Strength.ToString("F1");
+
+                            CvInvoke.Circle(colorMat, center, radius / 2, orangeColor, 1);
+                            CvInvoke.PutText(colorMat, strength, pt, FontFace.HersheySimplex, 0.3, orangeColor);
+                        }
                     }
                 }
 
@@ -1193,6 +1216,7 @@ namespace ATT_UT_IPAD.Core
                     textY = centerPoint.Y + (baseLine / 2);
                     CvInvoke.PutText(colorMat, blobCountString, new Point(textX, textY + 60), FontFace.HersheyComplex, 0.3, new MCvScalar(50, 230, 50, 255));
                 }
+
             }
 
             return colorMat;

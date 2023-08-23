@@ -236,8 +236,10 @@ namespace Jastech.Apps.Winform
             if (DeviceManager.Instance().PlcHandler.Count > 0)
             {
                 _pcHeartBit = !_pcHeartBit;
-                bool isMovingAxis = MotionManager.Instance().IsMovingAxis(AxisHandlerName.Handler0, AxisName.X);
+          
+                bool isMoving = MotionManager.Instance().IsMoving(AxisHandlerName.Handler0, AxisName.X);
                 int currentPosX = GetPlcPosXData(unitName);
+                bool isServoOn = MotionManager.Instance().IsEnable(AxisHandlerName.Handler0, AxisName.X);
 
                 var plc = DeviceManager.Instance().PlcHandler.First() as MelsecPlc;
                 var map = PlcControlManager.Instance().GetAddressMap(PlcCommonMap.PC_Alive);
@@ -247,15 +249,40 @@ namespace Jastech.Apps.Winform
                 if (plc.MelsecParser.ParserType == ParserType.Binary)
                 {
                     stream.AddSwap16BitData(Convert.ToInt16(_pcHeartBit));
-                    stream.AddSwap16BitData(Convert.ToInt16(isMovingAxis));
+                    stream.AddSwap16BitData(Convert.ToInt16(isMoving));
                     stream.AddSwap16BitData(Convert.ToInt16(currentPosX));
+                    stream.AddSwap16BitData(Convert.ToInt16(isServoOn));
                 }
                 else
                 {
                     stream.Add16BitData(Convert.ToInt16(_pcHeartBit));
-                    stream.Add16BitData(Convert.ToInt16(isMovingAxis));
+                    stream.Add16BitData(Convert.ToInt16(isMoving));
                     stream.Add16BitData(Convert.ToInt16(currentPosX));
+                    stream.Add16BitData(Convert.ToInt16(isServoOn));
                 }
+
+                plc.Write("D" + map.AddressNum, stream.Data);
+            }
+        }
+
+        public void WriteGrabDone()
+        {
+            if (DeviceManager.Instance().PlcHandler.Count > 0)
+            {
+                var plc = DeviceManager.Instance().PlcHandler.First() as MelsecPlc;
+                var map = PlcControlManager.Instance().GetAddressMap(PlcCommonMap.PC_GrabDone);
+
+                PlcDataStream stream = new PlcDataStream();
+
+                if (plc.MelsecParser.ParserType == ParserType.Binary)
+                {
+                    stream.AddSwap16BitData(Convert.ToInt16(true));
+                }
+                else
+                {
+                    stream.Add16BitData(Convert.ToInt16(true));
+                }
+
                 plc.Write("D" + map.AddressNum, stream.Data);
             }
         }

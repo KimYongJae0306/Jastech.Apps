@@ -241,14 +241,14 @@ namespace ATT_UT_IPAD
             if (user.Type == AuthorityType.None)
             {
                 lblCurrentUser.Text = "Operator";
-                lblTeachingPage.Enabled = false;
-                lblTeachingPageImage.Enabled = false;
+                //lblTeachingPage.Enabled = false;
+                //lblTeachingPageImage.Enabled = false;
             }
             else
             {
                 lblCurrentUser.Text = user.Id.ToString();
-                lblTeachingPage.Enabled = true;
-                lblTeachingPageImage.Enabled = true;
+                //lblTeachingPage.Enabled = true;
+                //lblTeachingPageImage.Enabled = true;
             }
 
             if (MainPageControl.Visible)
@@ -263,8 +263,16 @@ namespace ATT_UT_IPAD
             }
             else
             {
-                lblTeachingPageImage.Enabled = true;
-                lblTeachingPage.Enabled = true;
+                if(user.Type == AuthorityType.None)
+                {
+                    lblTeachingPage.Enabled = false;
+                    lblTeachingPageImage.Enabled = false;
+                }
+                else
+                {
+                    lblTeachingPage.Enabled = true;
+                    lblTeachingPageImage.Enabled = true;
+                }
                 lblDataPageImage.Enabled = true;
                 lblDataPage.Enabled = true;
             }

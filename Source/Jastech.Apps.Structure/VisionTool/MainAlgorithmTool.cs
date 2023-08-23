@@ -190,7 +190,7 @@ namespace Jastech.Apps.Structure.VisionTool
             result.Panel = RunAlignX(cogImage, panelParam.CaliperParams, panelParam.LeadCount, true);
             result.Fpc = RunAlignX(cogImage, fpcParam.CaliperParams, fpcParam.LeadCount, false);
 
-            List<double> alignValueList = new List<double>();
+            List<LeadAlignResult> leadAlignResultList = new List<LeadAlignResult>();
 
             for (int i = 0; i < panelParam.LeadCount * 2; i += 2)
             {
@@ -234,7 +234,21 @@ namespace Jastech.Apps.Structure.VisionTool
 
                 var res = fpcX - panelX;
 
-                alignValueList.Add(res);
+                var deltaCenter = (deltaFpcX + deltaPanelX) / 2.0;
+
+                LeadAlignResult leadAlignResult = new LeadAlignResult
+                {
+                    PanelSkew = panelSkew,
+                    FpcSkew = fpcSkew,
+                    PanelCenterX = panelCenterX,
+                    PanelCenterY = panelCenterY,
+                    FpcCenterX = fpcCenterX,
+                    FpcCenterY = fpcCenterY,
+                    FpcDeltaX = deltaFpcX,
+                    PanelDeltaX = deltaPanelX,
+                    Value = res,
+                };
+                leadAlignResultList.Add(leadAlignResult);
 
                 //// 2Point : 센터 위치까지만 그리기
                 //CogLine cogLine = new CogLine();
@@ -246,32 +260,33 @@ namespace Jastech.Apps.Structure.VisionTool
                 //cogLine.SetXYRotation(panelCenterX, panelCenterY, panelSkew);
             }
 
-            if(alignValueList.Count > 0)
+            if (leadAlignResultList.Count > 0)
             {
-                double max = alignValueList.Max();
-                double min = alignValueList.Min();
+                double max = leadAlignResultList.Max(item => item.Value);
+                double min = leadAlignResultList.Min(item => item.Value);
 
                 double temp = 0.0f;
                 int count = 0;
-                foreach (var value in alignValueList)
+                foreach (var alignResult in leadAlignResultList)
                 {
-                    if (alignValueList.Count > 2)
+                    if (leadAlignResultList.Count > 2)
                     {
-                        if (value == max || value == min)
+                        if (alignResult.Value == max || alignResult.Value == min)
                             continue;
                     }
-                    temp += value;
-                     count++;
+                    temp += alignResult.Value;
+                    count++;
                 }
 
                 result.ResultValue_pixel = Convert.ToSingle(temp / count);
                 result.JudegementValue_pixel = judegementX_pixel;
+                result.AlignResultList.AddRange(leadAlignResultList);
             }
             else
             {
                 result.AlignMissing = true;
             }
-           
+
             return result;
         }
 
@@ -430,97 +445,6 @@ namespace Jastech.Apps.Structure.VisionTool
         }
     }
 
-    public partial class MainAlgorithmTool : AlgorithmTool
-    {
-        public CoordinateTransform Coordinate = null;
-
-        public CogRectangleAffine CoordinateRectangle(CogRectangleAffine originRegion, CoordinateTransform coordinate)
-        {
-            CogRectangleAffine roi = new CogRectangleAffine(originRegion);
-
-            PointF inputPoint = new PointF();
-            inputPoint.X = (float)roi.CenterX;
-            inputPoint.Y = (float)roi.CenterY;
-
-            var newPoint = coordinate.GetCoordinate(inputPoint);
-
-            roi.CenterX = newPoint.X;
-            roi.CenterY = newPoint.Y;
-
-            return roi;
-        }
-
-        public CogRectangleAffine CalcTheta(CogRectangleAffine orginRegion, double theta)
-        {
-            PointF orginPoint = new PointF((float)orginRegion.CornerOriginX, (float)orginRegion.CornerOriginY);
-            PointF corner1Point = new PointF((float)orginRegion.CornerXX, (float)orginRegion.CornerXX);
-            PointF corner2Point = new PointF((float)orginRegion.CornerYX, (float)orginRegion.CornerYY);
-
-            CogRectangleAffine roi = new CogRectangleAffine();
-
-            double originX = orginPoint.X;
-            double originY = orginPoint.Y;
-            double cornerXX = corner1Point.X;
-            double cornerXY = corner1Point.Y;
-            double cornerYX = corner2Point.X;
-            double cornerYY = corner2Point.Y;
-
-            roi.SetOriginCornerXCornerY(originX, originY, cornerXX, cornerXY, cornerYX, cornerYY);
-
-            return roi;
-        }
-
-        public void GetAlignFpcLeftOffset(Tab tab, TabInspResult tabInspResult, out double offsetX, out double offsetY)
-        {
-            double fpcRefX = tabInspResult.MarkResult.FpcMark.FoundedMark.Left.MaxMatchPos.ReferencePos.X;
-            double fpcRefY = tabInspResult.MarkResult.FpcMark.FoundedMark.Left.MaxMatchPos.ReferencePos.Y;
-
-            var mainFPCMark = tab.MarkParamter.GetFPCMark(MarkDirection.Left, MarkName.Main, true);
-            var mainOrigin = mainFPCMark.InspParam.GetOrigin();
-
-            offsetX = mainOrigin.TranslationX - fpcRefX;
-            offsetY = mainOrigin.TranslationY - fpcRefY;
-        }
-
-        public void GetAlignFpcRightOffset(Tab tab, TabInspResult tabInspResult, out double offsetX, out double offsetY)
-        {
-            double fpcRefX = tabInspResult.MarkResult.FpcMark.FoundedMark.Right.MaxMatchPos.ReferencePos.X;
-            double fpcRefY = tabInspResult.MarkResult.FpcMark.FoundedMark.Right.MaxMatchPos.ReferencePos.Y;
-
-            var mainFPCMark = tab.MarkParamter.GetFPCMark(MarkDirection.Right, MarkName.Main, true);
-            var mainOrigin = mainFPCMark.InspParam.GetOrigin();
-
-            offsetX = mainOrigin.TranslationX - fpcRefX;
-            offsetY = mainOrigin.TranslationY - fpcRefY;
-        }
-
-        public void GetAlignPanelLeftOffset(Tab tab, TabInspResult tabInspResult, out double offsetX, out double offsetY)
-        {
-            double panelRefX = tabInspResult.MarkResult.PanelMark.FoundedMark.Left.MaxMatchPos.ReferencePos.X;
-            double panelRefY = tabInspResult.MarkResult.PanelMark.FoundedMark.Left.MaxMatchPos.ReferencePos.Y;
-
-            var mainPanelMark = tab.MarkParamter.GetPanelMark(MarkDirection.Left, MarkName.Main, true);
-            var mainOrigin = mainPanelMark.InspParam.GetOrigin();
-
-            offsetX = mainOrigin.TranslationX - panelRefX;
-            offsetY = mainOrigin.TranslationY - panelRefY;
-        }
-
-        public void GetAlignPanelRightOffset(Tab tab, TabInspResult tabInspResult, out double offsetX, out double offsetY)
-        {
-            double panelRefX = tabInspResult.MarkResult.PanelMark.FoundedMark.Right.MaxMatchPos.ReferencePos.X;
-            double panelRefY = tabInspResult.MarkResult.PanelMark.FoundedMark.Right.MaxMatchPos.ReferencePos.Y;
-
-            var mainPanelMark = tab.MarkParamter.GetPanelMark(MarkDirection.Right, MarkName.Main, true);
-            var mainOrigin = mainPanelMark.InspParam.GetOrigin();
-
-            offsetX = mainOrigin.TranslationX - panelRefX;
-            offsetY = mainOrigin.TranslationY - panelRefY;
-        }
-
-        
-    }
-
     public class AlignmentResult
     {
         #region 속성
@@ -530,5 +454,26 @@ namespace Jastech.Apps.Structure.VisionTool
 
         public double OffsetT { get; set; } = 0.0;
         #endregion
+    }
+
+    public class LeadAlignResult
+    {
+        public double Value { get; set; }
+
+        public double FpcSkew { get; set; }
+
+        public double PanelSkew { get; set; }
+
+        public double PanelCenterX { get; set; }
+
+        public double PanelCenterY { get; set; }
+
+        public double FpcCenterX { get; set; }
+
+        public double FpcCenterY { get; set; }
+
+        public double FpcDeltaX { get; set; }
+
+        public double PanelDeltaX { get; set; }
     }
 }

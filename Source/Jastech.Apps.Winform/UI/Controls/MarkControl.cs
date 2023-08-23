@@ -83,7 +83,7 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         private void PatternControl_ClearActionEvent()
         {
-            var display = TeachingUIManager.Instance().GetDisplay();
+            var display = TeachingUIManager.Instance().TeachingDisplayControl.GetDisplay();
             var currentParam = ParamControl.GetCurrentParam();
 
             if (display == null || currentParam == null)
@@ -102,7 +102,7 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         private ICogImage PatternControl_GetOriginImageHandler()
         {
-            return TeachingUIManager.Instance().GetDisplay().GetImage();
+            return TeachingUIManager.Instance().TeachingDisplayControl.GetDisplay().GetImage();
         }
 
         private void InitializeUI()
@@ -315,7 +315,7 @@ namespace Jastech.Apps.Winform.UI.Controls
      
         public void AddROI()
         {
-            var display = TeachingUIManager.Instance().GetDisplay();
+            var display = TeachingUIManager.Instance().TeachingDisplayControl.GetDisplay();
             if (display.GetImage() == null)
                 return;
 
@@ -352,7 +352,7 @@ namespace Jastech.Apps.Winform.UI.Controls
             if (Enabled == false)
                 return;
             
-            var display = TeachingUIManager.Instance().GetDisplay();
+            var display = TeachingUIManager.Instance().TeachingDisplayControl.GetDisplay();
             if (display.GetImage() == null)
                 return;
 
@@ -373,7 +373,7 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         public void Run()
         {
-            var display = TeachingUIManager.Instance().GetDisplay();
+            var display = TeachingUIManager.Instance().TeachingDisplayControl.GetDisplay();
             if (display == null)
                 return;
 
@@ -583,7 +583,7 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         public void RunForTest()
         {
-            var display = TeachingUIManager.Instance().GetDisplay();
+            var display = TeachingUIManager.Instance().TeachingDisplayControl.GetDisplay();
             var currentParam = ParamControl.GetCurrentParam();
 
             if (display == null || currentParam == null)

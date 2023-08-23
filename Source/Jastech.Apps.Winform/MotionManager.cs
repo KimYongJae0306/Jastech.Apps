@@ -159,7 +159,24 @@ namespace Jastech.Apps.Winform
             return true;
         }
 
-        public bool IsMovingAxis(AxisHandlerName axisHandlerName, AxisName axisName)
+        public bool IsEnable(AxisHandlerName axisHandlerName, AxisName axisName)
+        {
+            if (DeviceManager.Instance().MotionHandler.Count > 0)
+            {
+                var motion = DeviceManager.Instance().MotionHandler.First() as ACSMotion;
+
+                if (motion != null)
+                {
+                    var axis = GetAxis(axisHandlerName, axisName);
+                    return motion.IsEnable(axis.AxisNo);
+                }
+                return false;
+            }
+
+            return false;
+        }
+
+        public bool IsMoving(AxisHandlerName axisHandlerName, AxisName axisName)
         {
             if (DeviceManager.Instance().MotionHandler.Count > 0)
             {

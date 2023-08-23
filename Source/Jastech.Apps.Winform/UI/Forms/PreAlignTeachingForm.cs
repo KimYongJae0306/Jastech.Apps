@@ -89,7 +89,7 @@ namespace Jastech.Apps.Winform.UI.Forms
             InitializeUI();
 
             // TeachingUIManager 참조
-            TeachingUIManager.Instance().SetDisplay(Display.GetDisplay());
+            TeachingUIManager.Instance().TeachingDisplayControl = Display;
             AreaCamera.OnImageGrabbed += AreaCamera_OnImageGrabbed;
           
             SelectPage(DisplayType.PreAlign);

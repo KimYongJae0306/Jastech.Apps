@@ -221,7 +221,7 @@ namespace Jastech.Apps.Winform.UI.Controls
 
             List<CogRectangleAffine> cropRectList = VisionProImageHelper.DivideRegion(rect, leadCount);
 
-            var display = TeachingUIManager.Instance().GetDisplay();
+            var display = TeachingUIManager.Instance().TeachingDisplayControl.GetDisplay();
 
             display.ClearGraphic();
 
@@ -234,7 +234,7 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         public void AddROI()
         {
-            var display = TeachingUIManager.Instance().GetDisplay();
+            var display = TeachingUIManager.Instance().TeachingDisplayControl.GetDisplay();
             if (display.GetImage() == null)
                 return;
 
@@ -261,7 +261,7 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         public void DrawROI()
         {
-            var display = TeachingUIManager.Instance().GetDisplay();
+            var display = TeachingUIManager.Instance().TeachingDisplayControl.GetDisplay();
 
             display.ClearGraphic();
 
@@ -282,7 +282,7 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         public void RunForTest()
         {
-            var display = TeachingUIManager.Instance().GetDisplay();
+            var display = TeachingUIManager.Instance().TeachingDisplayControl.GetDisplay();
 
             var currentParam = CogCaliperParamControl.GetCurrentParam();
 
@@ -365,7 +365,7 @@ namespace Jastech.Apps.Winform.UI.Controls
             if (CurrentTab == null)
                 return;
 
-            var display = TeachingUIManager.Instance().GetDisplay();
+            var display = TeachingUIManager.Instance().TeachingDisplayControl.GetDisplay();
 
             double skewUnit = (double)jogScale / 1000;
             double zoom = display.GetZoomValue();
@@ -485,7 +485,7 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         public void Run()
         {
-            var display = TeachingUIManager.Instance().GetDisplay();
+            var display = TeachingUIManager.Instance().TeachingDisplayControl.GetDisplay();
             if (display == null)
                 return;
 
