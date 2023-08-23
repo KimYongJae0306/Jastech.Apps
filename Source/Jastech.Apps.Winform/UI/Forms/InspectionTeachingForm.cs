@@ -568,7 +568,7 @@ namespace Jastech.Framework.Winform.Forms
             DisposeInspTabList();
             LineCamera.GrabDoneEventHandler -= InspectionTeachingForm_GrabDoneEventHandler;
 
-            ControlDisplayHelper.DisposeChildControls(MarkControl);
+            //ControlDisplayHelper.DisposeChildControls(MarkControl); RCW COM 예외 임시주석
             ControlDisplayHelper.DisposeChildControls(AkkonControl);
             ControlDisplayHelper.DisposeChildControls(AlignControl);
         }
