@@ -29,6 +29,8 @@ namespace Jastech.Apps.Winform.UI.Controls
         private List<CogCompositeShape> LeftCogShapeList { get; set; } = new List<CogCompositeShape>();
 
         private List<CogCompositeShape> RightCogShapeList { get; set; } = new List<CogCompositeShape>();
+
+        private List<CogRectangleAffine> AkkonNGAffineList { get; set; } = new List<CogRectangleAffine>();
         #endregion
 
         #region 이벤트
@@ -92,6 +94,14 @@ namespace Jastech.Apps.Winform.UI.Controls
                 }
             }
             CogResultImage = cogImage;//?.CopyBase(CogImageCopyModeConstants.CopyPixels);
+        }
+
+        public void SetAkkonNGAffineRectList(List<CogRectangleAffine> akkonNGList)
+        {
+            AkkonNGAffineList.ForEach(x => x.Dispose());
+            AkkonNGAffineList.Clear();
+
+            AkkonNGAffineList = akkonNGList;
         }
 
         public void SetInspImage(ICogImage cogImage)
@@ -213,6 +223,11 @@ namespace Jastech.Apps.Winform.UI.Controls
         public ICogImage GetCenterImage()
         {
             return CogCenterImage;
+        }
+
+        public List<CogRectangleAffine> GetAkkonNGAffineRectList()
+        {
+            return AkkonNGAffineList;
         }
 
         public List<CogCompositeShape> GetLeftShape()

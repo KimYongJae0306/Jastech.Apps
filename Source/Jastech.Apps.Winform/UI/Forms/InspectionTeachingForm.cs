@@ -218,7 +218,7 @@ namespace Jastech.Framework.Winform.Forms
             pnlDisplay.Controls.Add(Display);
 
             // TeachingUIManager 참조
-            TeachingUIManager.Instance().SetDisplay(Display.GetDisplay());
+            TeachingUIManager.Instance().TeachingDisplayControl = Display;
 
             MarkControl = new MarkControl();
             MarkControl.Dock = DockStyle.Fill;
@@ -292,11 +292,15 @@ namespace Jastech.Framework.Winform.Forms
             _displayType = type;
 
             pnlTeach.Controls.Clear();
-            TeachingUIManager.Instance().GetDisplay().ClearGraphic();
+            TeachingUIManager.Instance().TeachingDisplayControl.GetDisplay().ClearGraphic();
 
             var orgImage = TeachingUIManager.Instance().GetOriginCogImageBuffer(false);
             if (orgImage != null)
-                TeachingUIManager.Instance().GetDisplay().SetImage(orgImage);
+            {
+                TeachingUIManager.Instance().TeachingDisplayControl.SetImage(orgImage);
+                TeachingUIManager.Instance().TeachingDisplayControl.SetThumbnailImage(orgImage);
+
+            }
             switch (type)
             {
                 case DisplayType.Mark:
@@ -353,7 +357,7 @@ namespace Jastech.Framework.Winform.Forms
 
             if (yesNoForm.ShowDialog() == DialogResult.Yes)
             {
-                if (ConfirmSaveExecuteCoordiante())
+                //if (ConfirmSaveExecuteCoordiante())
                 {
                     SaveModelData(model);
 
@@ -438,7 +442,10 @@ namespace Jastech.Framework.Winform.Forms
 
                 TeachingUIManager.Instance().SetOrginCogImageBuffer(cogImage);
                 TeachingUIManager.Instance().SetOriginMatImageBuffer(new Mat(dlg.FileName, ImreadModes.Grayscale));
-                Display.SetImage(TeachingUIManager.Instance().GetOriginCogImageBuffer(false));
+
+                var orgImage = TeachingUIManager.Instance().GetOriginCogImageBuffer(false);
+                Display.SetImage(orgImage);
+                Display.SetThumbnailImage(orgImage);
 
                 int tabNo = Convert.ToInt32(_currentTabNo);
                 UpdateDisplayImage(tabNo);
@@ -810,7 +817,7 @@ namespace Jastech.Framework.Winform.Forms
         {
             //Tab tabOriginData = CurrentTab.DeepCopy();
             _coordinateTab = CurrentTab.DeepCopy();
-            var display = TeachingUIManager.Instance().GetDisplay();
+            var display = TeachingUIManager.Instance().TeachingDisplayControl.GetDisplay();
             if (display == null)
                 return;
 
@@ -983,7 +990,7 @@ namespace Jastech.Framework.Winform.Forms
 
         private bool SetTeachingTracking(bool isOn)
         {
-            var display = TeachingUIManager.Instance().GetDisplay();
+            var display = TeachingUIManager.Instance().TeachingDisplayControl.GetDisplay();
             if (display == null)
                 return false;
 
@@ -1051,7 +1058,7 @@ namespace Jastech.Framework.Winform.Forms
 
         private void MarkInspect(DisplayType displayType)
         {
-            var display = TeachingUIManager.Instance().GetDisplay();
+            var display = TeachingUIManager.Instance().TeachingDisplayControl.GetDisplay();
             if (display == null)
                 return;
 
@@ -1081,7 +1088,7 @@ namespace Jastech.Framework.Winform.Forms
 
         private void ExecuteCoordinate()
         {
-            var display = TeachingUIManager.Instance().GetDisplay();
+            var display = TeachingUIManager.Instance().TeachingDisplayControl.GetDisplay();
             display.ClearGraphic();
 
             if (CurrentTab == null)

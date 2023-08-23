@@ -8,6 +8,7 @@ using Jastech.Framework.Imaging.VisionPro;
 using Jastech.Framework.Imaging.VisionPro.VisionAlgorithms.Results;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -65,11 +66,14 @@ namespace Jastech.Apps.Structure.Data
 
         public AkkonResult AkkonResult { get; set; } = null;
 
+        public List<CogRectangleAffine> AkkonNGAffineList = new List<CogRectangleAffine>();
+
         public int ResultSamplingCount => 5;
 
         public void Dispose()
         {
             IsResultProcessDone = false;
+            
             if (Image != null)
             {
                 Image.Dispose();
@@ -99,6 +103,9 @@ namespace Jastech.Apps.Structure.Data
             MarkResult?.Dispose();
             AlignResult?.Dispose();
             AkkonResult?.Dispose();
+
+            AkkonNGAffineList.ForEach(x => x.Dispose());
+            AkkonNGAffineList.Clear();
         }
 
         public IEnumerable<int> GetAkkonCounts(string position)

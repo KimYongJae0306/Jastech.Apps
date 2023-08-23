@@ -4,6 +4,7 @@ using Cognex.VisionPro;
 using Emgu.CV;
 using Emgu.CV.CvEnum;
 using Emgu.CV.Structure;
+using Emgu.CV.Util;
 using Jastech.Apps.Structure;
 using Jastech.Apps.Structure.Data;
 using Jastech.Apps.Structure.VisionTool;
@@ -512,9 +513,10 @@ namespace ATT_UT_IPAD.Core
                         // Overlay Image
                         if(tabResult.AkkonInspMatImage != null)
                         {
-                            Mat resultMat = GetResultImage(tabResult.AkkonInspMatImage, tabResult.AkkonResult.LeadResultList, tab.AkkonParam.AkkonAlgoritmParam);
+                            Mat resultMat = GetResultImage(tabResult.AkkonInspMatImage, tabResult.AkkonResult.LeadResultList, tab.AkkonParam.AkkonAlgoritmParam, ref tabResult.AkkonNGAffineList);
                             ICogImage cogImage = ConvertCogColorImage(resultMat);
                             tabResult.AkkonResultCogImage = cogImage;
+
                             resultMat.Dispose();
 
                             // AkkonInspCogImage
@@ -1109,7 +1111,7 @@ namespace ATT_UT_IPAD.Core
             return cogImage;
         }
 
-        public Mat GetResultImage(Mat resizeMat, List<AkkonLeadResult> leadResultList, AkkonAlgoritmParam akkonParameters)
+        public Mat GetResultImage(Mat resizeMat, List<AkkonLeadResult> leadResultList, AkkonAlgoritmParam akkonParameters, ref List<CogRectangleAffine> akkonNGAffineList)
         {
             if (resizeMat == null)
                 return null;
@@ -1148,8 +1150,13 @@ namespace ATT_UT_IPAD.Core
                     CvInvoke.Line(colorMat, leftTop, rightTop, redColor, 1);
                     CvInvoke.Line(colorMat, rightTop, rightBottom, redColor, 1);
                     CvInvoke.Line(colorMat, rightBottom, leftBottom, redColor, 1);
+
+                    var rect = VisionProShapeHelper.ConvertToCogRectAffine(leftTop, rightTop, leftBottom);
+                    akkonNGAffineList.Add(rect);
                 }
+
                 int blobCount = 0;
+   
                 foreach (var blob in result.BlobList)
                 {
                     Rectangle rectRect = new Rectangle();
@@ -1162,7 +1169,7 @@ namespace ATT_UT_IPAD.Core
                     int radius = rectRect.Width > rectRect.Height ? rectRect.Width : rectRect.Height;
 
                     int size = blob.BoundingRect.Width * blob.BoundingRect.Height;
-
+            
                     if (blob.IsAkkonShape)
                     {
                         blobCount++;

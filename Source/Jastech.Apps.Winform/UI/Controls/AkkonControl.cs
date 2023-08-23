@@ -253,7 +253,7 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         public void AddROI()
         {
-            var display = TeachingUIManager.Instance().GetDisplay();
+            var display = TeachingUIManager.Instance().TeachingDisplayControl.GetDisplay();
             if (display.GetImage() == null)
                 return;
 
@@ -291,7 +291,7 @@ namespace Jastech.Apps.Winform.UI.Controls
 
             _firstCogRectAffine = VisionProImageHelper.CreateRectangleAffine(centerX, centerY, calcRoiWidth_um, calcRoiHeight_um, constants: constants);
 
-            var teachingDisplay = TeachingUIManager.Instance().GetDisplay();
+            var teachingDisplay = TeachingUIManager.Instance().TeachingDisplayControl.GetDisplay();
             if (teachingDisplay.GetImage() == null)
                 return;
 
@@ -320,7 +320,7 @@ namespace Jastech.Apps.Winform.UI.Controls
             _autoTeachingPolygon.DraggingStopped += AutoTeachingRect_DraggingStopped;
             _autoTeachingPolygon.Interactive = true;
 
-            var teachingDisplay = TeachingUIManager.Instance().GetDisplay();
+            var teachingDisplay = TeachingUIManager.Instance().TeachingDisplayControl.GetDisplay();
             if (teachingDisplay.GetImage() == null)
                 return;
 
@@ -332,7 +332,7 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         private void AutoTeachingRect_DraggingStopped(object sender, CogDraggingEventArgs e)
         {
-            var display = TeachingUIManager.Instance().GetDisplay();
+            var display = TeachingUIManager.Instance().TeachingDisplayControl.GetDisplay();
             if (display.GetImage() == null)
                 return;
 
@@ -351,7 +351,7 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         public void RegisterROI()
         {
-            var display = TeachingUIManager.Instance().GetDisplay();
+            var display = TeachingUIManager.Instance().TeachingDisplayControl.GetDisplay();
             if (display == null)
                 return;
 
@@ -433,7 +433,7 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         public void DrawROI()
         {
-            var display = TeachingUIManager.Instance().GetDisplay();
+            var display = TeachingUIManager.Instance().TeachingDisplayControl.GetDisplay();
 
             display.ClearGraphic();
 
@@ -478,7 +478,7 @@ namespace Jastech.Apps.Winform.UI.Controls
                 count++;
             }
 
-            var teachingDisplay = TeachingUIManager.Instance().GetDisplay();
+            var teachingDisplay = TeachingUIManager.Instance().TeachingDisplayControl.GetDisplay();
             if (teachingDisplay.GetImage() == null)
                 return;
             teachingDisplay.ClearGraphic();
@@ -487,7 +487,7 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         public void ClearDisplay()
         {
-            var display = TeachingUIManager.Instance().GetDisplay();
+            var display = TeachingUIManager.Instance().TeachingDisplayControl.GetDisplay();
 
             display.ClearGraphic();
         }
@@ -833,7 +833,7 @@ namespace Jastech.Apps.Winform.UI.Controls
             foreach (var item in _cogRectAffineList)
                 collect.Add(item);
 
-            var display = TeachingUIManager.Instance().GetDisplay();
+            var display = TeachingUIManager.Instance().TeachingDisplayControl.GetDisplay();
 
             if (lblResultImage.BackColor == _selectedColor)
                 SetOrginImageView();
@@ -863,7 +863,7 @@ namespace Jastech.Apps.Winform.UI.Controls
             if (_cogRectAffineList.Count <= 0 || CurrentTab == null)
                 return;
 
-            var display = TeachingUIManager.Instance().GetDisplay();
+            var display = TeachingUIManager.Instance().TeachingDisplayControl.GetDisplay();
 
             int groupIndex = cbxGroupNumber.SelectedIndex;
             var group = CurrentTab.AkkonParam.GroupList[groupIndex];
@@ -936,7 +936,7 @@ namespace Jastech.Apps.Winform.UI.Controls
             if (CurrentTab == null)
                 return;
 
-            var display = TeachingUIManager.Instance().GetDisplay();
+            var display = TeachingUIManager.Instance().TeachingDisplayControl.GetDisplay();
 
             double skewUnit = (double)jogScale / 1000;
             double zoom = display.GetZoomValue();
@@ -1152,7 +1152,7 @@ namespace Jastech.Apps.Winform.UI.Controls
         {
             if (lblThresholdPreview.BackColor == _selectedColor)
             {
-                var teachingDisplay = TeachingUIManager.Instance().GetDisplay();
+                var teachingDisplay = TeachingUIManager.Instance().TeachingDisplayControl.GetDisplay();
                 if (teachingDisplay.GetImage() == null)
                     return;
 
@@ -1176,7 +1176,7 @@ namespace Jastech.Apps.Winform.UI.Controls
 
                 if (_autoTeachingCollect.Count > 0)
                 {
-                    var display = TeachingUIManager.Instance().GetDisplay();
+                    var display = TeachingUIManager.Instance().TeachingDisplayControl.GetDisplay();
                     if (display.GetImage() == null)
                         return;
 
@@ -1390,7 +1390,7 @@ namespace Jastech.Apps.Winform.UI.Controls
             if (image == null)
                 return;
 
-            var teachingDisplay = TeachingUIManager.Instance().GetDisplay();
+            var teachingDisplay = TeachingUIManager.Instance().TeachingDisplayControl.GetDisplay();
             teachingDisplay.SetImage(image);
 
             if (ModelManager.Instance().CurrentModel == null)
@@ -1643,7 +1643,6 @@ namespace Jastech.Apps.Winform.UI.Controls
                 Point rightTop = new Point((int)lead.RightTopX + startPoint.X, (int)lead.RightTopY + startPoint.Y);
                 Point rightBottom = new Point((int)lead.RightBottomX + startPoint.X, (int)lead.RightBottomY + startPoint.Y);
 
-
                 if (akkonParameters.DrawOption.ContainLeadROI)
                 {
                     CvInvoke.Line(colorMat, leftTop, leftBottom, greenColor, 1);
@@ -1777,7 +1776,7 @@ namespace Jastech.Apps.Winform.UI.Controls
             return newPoints;
         }
 
-        public Mat GetResultImage(Mat mat, List<AkkonLeadResult> leadResultList, AkkonAlgoritmParam AkkonParameters)
+        public Mat GetResultImage(Mat mat, List<AkkonLeadResult> leadResultList, AkkonAlgoritmParam AkkonParameters, ref List<CogRectangleAffine> akkonNGAffineList)
         {
             if (mat == null)
                 return null;
@@ -1836,10 +1835,13 @@ namespace Jastech.Apps.Winform.UI.Controls
 
                 if(result.Judgement == Judgement.NG)
                 {
-                    CvInvoke.Line(colorMat, leftTop, leftBottom, redColor, 2);
-                    CvInvoke.Line(colorMat, leftTop, rightTop, redColor, 2);
-                    CvInvoke.Line(colorMat, rightTop, rightBottom, redColor, 2);
-                    CvInvoke.Line(colorMat, rightBottom, leftBottom, redColor, 2);
+                    CvInvoke.Line(colorMat, leftTop, leftBottom, redColor, 1);
+                    CvInvoke.Line(colorMat, leftTop, rightTop, redColor, 1);
+                    CvInvoke.Line(colorMat, rightTop, rightBottom, redColor, 1);
+                    CvInvoke.Line(colorMat, rightBottom, leftBottom, redColor, 1);
+
+                    var rect = VisionProShapeHelper.ConvertToCogRectAffine(leftTop, rightTop, leftBottom);
+                    akkonNGAffineList.Add(rect);
                 }
                 if (result.AkkonCount >= AkkonParameters.JudgementParam.AkkonCount)
                 {
@@ -1901,7 +1903,7 @@ namespace Jastech.Apps.Winform.UI.Controls
 
             var orgImage = TeachingUIManager.Instance().GetOriginCogImageBuffer(true);
             if (orgImage != null)
-                TeachingUIManager.Instance().GetDisplay().SetImage(orgImage);
+                TeachingUIManager.Instance().TeachingDisplayControl.GetDisplay().SetImage(orgImage);
         }
 
         private void SetResultImageView()
@@ -1912,7 +1914,7 @@ namespace Jastech.Apps.Winform.UI.Controls
 
             var resultImage = TeachingUIManager.Instance().GetResultCogImage(false);
             if (resultImage != null)
-                TeachingUIManager.Instance().GetDisplay().SetImage(resultImage);
+                TeachingUIManager.Instance().TeachingDisplayControl.GetDisplay().SetImage(resultImage);
         }
 
         private void SetResizeImageView()
@@ -1923,7 +1925,7 @@ namespace Jastech.Apps.Winform.UI.Controls
 
             var akkonImage = TeachingUIManager.Instance().GetAkkonCogImage(false);
             if (akkonImage != null)
-                TeachingUIManager.Instance().GetDisplay().SetImage(akkonImage);
+                TeachingUIManager.Instance().TeachingDisplayControl.GetDisplay().SetImage(akkonImage);
         }
 
         private void lblAdd_Click(object sender, EventArgs e)
@@ -1989,7 +1991,7 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         public void Run()
         {
-            var display = TeachingUIManager.Instance().GetDisplay();
+            var display = TeachingUIManager.Instance().TeachingDisplayControl.GetDisplay();
             if (display == null)
                 return;
 
@@ -2016,8 +2018,8 @@ namespace Jastech.Apps.Winform.UI.Controls
             tabInspResult.AkkonResult.Judgement = tabJudgement;
             tabInspResult.AkkonInspMatImage = AkkonAlgorithm.ResizeMat;
 
-            //Mat resultMat = GetResultImage(matImage, leadResultList, akkonParam);
-            Mat resultMat = GetDebugResultImage(matImage, leadResultList, akkonParam);
+            Mat resultMat = GetResultImage(matImage, leadResultList, akkonParam, ref tabInspResult.AkkonNGAffineList);
+            //Mat resultMat = GetDebugResultImage(matImage, leadResultList, akkonParam);
             tabInspResult.AkkonResultCogImage = ConvertCogColorImage(resultMat);
 
             Mat resizeMat = MatHelper.Resize(matImage, akkonParam.ImageFilterParam.ResizeRatio);
@@ -2025,7 +2027,7 @@ namespace Jastech.Apps.Winform.UI.Controls
             TeachingUIManager.Instance().SetAkkonCogImage(akkonCogImage);
 
             var resultCogImage = ConvertCogColorImage(resultMat);
-            TeachingUIManager.Instance().SetResultCogImage(resultCogImage);
+            TeachingUIManager.Instance().SetResultCogImage(resultCogImage, tabInspResult.AkkonNGAffineList);
 
             resizeMat.Dispose();
             resultMat.Dispose();

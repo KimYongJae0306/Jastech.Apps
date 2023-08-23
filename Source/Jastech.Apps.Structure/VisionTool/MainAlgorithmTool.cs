@@ -234,6 +234,8 @@ namespace Jastech.Apps.Structure.VisionTool
 
                 var res = fpcX - panelX;
 
+                var deltaCenter = (deltaFpcX + deltaPanelX) / 2.0;
+
                 LeadAlignResult leadAlignResult = new LeadAlignResult
                 {
                     PanelSkew = panelSkew,
@@ -242,6 +244,8 @@ namespace Jastech.Apps.Structure.VisionTool
                     PanelCenterY = panelCenterY,
                     FpcCenterX = fpcCenterX,
                     FpcCenterY = fpcCenterY,
+                    FpcDeltaX = deltaFpcX,
+                    PanelDeltaX = deltaPanelX,
                     Value = res,
                 };
                 leadAlignResultList.Add(leadAlignResult);
@@ -467,5 +471,9 @@ namespace Jastech.Apps.Structure.VisionTool
         public double FpcCenterX { get; set; }
 
         public double FpcCenterY { get; set; }
+
+        public double FpcDeltaX { get; set; }
+
+        public double PanelDeltaX { get; set; }
     }
 }

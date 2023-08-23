@@ -4,6 +4,7 @@ using Jastech.Apps.Structure.Data;
 using Jastech.Apps.Winform;
 using Jastech.Apps.Winform.UI.Controls;
 using Jastech.Framework.Imaging.Result;
+using Jastech.Framework.Util.Helper;
 using Jastech.Framework.Winform.VisionPro.Controls;
 using System;
 using System.Collections.Generic;
@@ -160,6 +161,7 @@ namespace ATT_UT_IPAD.UI.Controls
                 return;
             
             TabBtnControlList[tabNo].SetAlignImage(tabInspResult.CogImage);
+
             TabBtnControlList[tabNo].SetLeftAlignShape(GetLeftAlignShape(tabInspResult));
             TabBtnControlList[tabNo].SetRightAlignShape(GetRightAlignShape(tabInspResult));
 
@@ -169,7 +171,31 @@ namespace ATT_UT_IPAD.UI.Controls
             if (tabInspResult != null)
             {
                 if (CurrentTabNo == tabNo)
+                {
                     UpdateImage(tabNo);
+                    // 확인 필요
+                    foreach (var result in tabInspResult.AlignResult.LeftX.AlignResultList)
+                    {
+                        Point fpcCenter = new Point((int)result.FpcCenterX, (int)result.FpcCenterY);
+                        Point panelCenter = new Point((int)result.PanelCenterX, (int)result.PanelCenterY);
+
+                        double fpcDegree = MathHelper.RadToDeg(result.FpcSkew);
+                        var m = fpcDegree ;
+
+                        //y = mx + b
+
+                        var b = fpcCenter.Y - (m * fpcCenter.X);
+
+                        var x = (panelCenter.Y) / m;
+
+                        CogLineSegment fpcLine = new CogLineSegment();
+                        //fpcLine.SetStartEnd(fpcCenter.X, fpcCenter.Y, x, panelCenter.Y);
+
+                        fpcLine.SetStartLengthRotation(fpcCenter.X, fpcCenter.Y, 500, fpcDegree);
+                        fpcLine.Color = CogColorConstants.Blue;
+                        InspAlignDisplay.DrawLine(fpcLine);
+                    }
+                }
             }
             else
                 InspAlignDisplay.ClearImage();
@@ -187,6 +213,9 @@ namespace ATT_UT_IPAD.UI.Controls
 
             var centerImage = TabBtnControlList[tabNo].GetCenterImage();
             InspAlignDisplay.UpdateCenterDisplay(centerImage);
+
+
+           
         }
 
         public delegate void UpdateTabButtonDele(int tabNo);

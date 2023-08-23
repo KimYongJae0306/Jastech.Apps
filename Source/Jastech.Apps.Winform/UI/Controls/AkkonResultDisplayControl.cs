@@ -172,7 +172,7 @@ namespace ATT_UT_IPAD.UI.Controls
                 if (IsResultImageView)
                 {
                     if (tabControl.GetCogResultImage() is ICogImage resultImage)
-                        InspDisplayControl.SetImage(resultImage);
+                        InspDisplayControl.SetImage(resultImage, tabControl.GetAkkonNGAffineRectList());
                     else
                         InspDisplayControl.SetImage(orgImage);
                 }
@@ -197,6 +197,7 @@ namespace ATT_UT_IPAD.UI.Controls
 
             TabBtnControlList[tabNo].SetOrgImage(tabInspResult.CogImage);
             TabBtnControlList[tabNo].SetResultImage(tabInspResult.AkkonResultCogImage);
+            TabBtnControlList[tabNo].SetAkkonNGAffineRectList(tabInspResult.AkkonNGAffineList);
             TabBtnControlList[tabNo].SetInspImage(tabInspResult.AkkonInspCogImage);
 
             if (tabInspResult != null)
