@@ -391,19 +391,25 @@ namespace Jastech.Framework.Winform.Forms
         {
             foreach (ATTTabAlignName alignName in Enum.GetValues(typeof(ATTTabAlignName)))
             {
-                var currentParam = CurrentTab.GetAlignParam(alignName);
-                var currentOrigin = currentParam.CaliperParams.GetRegion() as CogRectangleAffine;
+                var currentAlignParam = CurrentTab.GetAlignParam(alignName);
+                var currentCaliperParam = currentAlignParam.CaliperParams.GetRegion() as CogRectangleAffine;
 
                 if (TrackingData.AlignTracking == null)
                     continue;
 
-                currentOrigin.CenterX -= TrackingData.AlignTracking.GetAlignOffset(alignName).X;
-                currentOrigin.CenterY -= TrackingData.AlignTracking.GetAlignOffset(alignName).Y;
+                currentCaliperParam.CenterX -= TrackingData.AlignTracking.GetAlignOffset(alignName).X;
+                currentCaliperParam.CenterY -= TrackingData.AlignTracking.GetAlignOffset(alignName).Y;
             }
+
+            var tt = CurrentTab;
+            int gg = 0;
         }
 
         private void ApplyAkkonCoordinate()
         {
+            if (_panelCoordinate == null)
+                return;
+
             SetPanelReverseCoordinateData(_panelCoordinate, _tabInspResult.MarkResult.PanelMark.FoundedMark);
             CoordinateAkkon(CurrentTab, _panelCoordinate);
         }
@@ -799,6 +805,8 @@ namespace Jastech.Framework.Winform.Forms
                     TrackingData.AlignTracking.SetRightPanelOffset(panelRightOffset);
 
                     CoordinateAlign(CurrentTab, leftFpcOffset, fpcRightOffset, panelLeftOffset, panelRightOffset);
+
+                    int g1 = 0;
                 }
                 else
                 {
@@ -849,6 +857,9 @@ namespace Jastech.Framework.Winform.Forms
 
         private void SetPanelReverseCoordinateData(CoordinateTransform panel, MarkMatchingResult panelMarkResult)
         {
+            if (panel == null)
+                return;
+
             PointF teachingLeftPoint = panelMarkResult.Left.MaxMatchPos.ReferencePos;
             PointF searchedLeftPoint = panelMarkResult.Left.MaxMatchPos.FoundPos;
 
