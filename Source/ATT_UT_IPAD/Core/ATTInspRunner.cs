@@ -719,6 +719,7 @@ namespace ATT_UT_IPAD.Core
             SaveAlignResult(path, inspModel.TabCount);
             SaveAkkonResult(path, inspModel.TabCount);
             SaveUPHResult(path, inspModel.TabCount);
+
             SaveAkkonResultAsMsaSummary(path, inspModel.TabCount);
             SaveAlignResultAsMsaSummary(path, inspModel.TabCount);
         }
@@ -733,6 +734,7 @@ namespace ATT_UT_IPAD.Core
                 {
                     "Inspection Time",
                     "Panel ID",
+                    "Stage No",
                     "Tab",
                     "Judge",
                     "Lx",
@@ -745,7 +747,7 @@ namespace ATT_UT_IPAD.Core
                 CSVHelper.WriteHeader(csvFile, header);
             }
 
-            List<List<string>> dataList = new List<List<string>>();
+            List<List<string>> body = new List<List<string>>();
             for (int tabNo = 0; tabNo < tabCount; tabNo++)
             {
                 var tabInspResult = AppsInspResult.Instance().GetAlign(tabNo);
@@ -756,10 +758,12 @@ namespace ATT_UT_IPAD.Core
                 var rx = CheckAlignResultValue(alignResult.RightX);
                 var cx = (lx + rx) / 2.0F;
 
+                var programType = StringHelper.StringToEnum<ProgramType>(AppsConfig.Instance().ProgramType);
                 List<string> tabData = new List<string>
                 {
                     AppsInspResult.Instance().EndInspTime.ToString("HH:mm:ss"),                                    // Insp Time
                     AppsInspResult.Instance().Cell_ID,                                                             // Panel ID
+                    $"{(int)programType + 1}",            // Unit No
                     (tabInspResult.TabNo + 1).ToString(),                                                               // Tab
                     judgement.ToString(),                       // Judge
                     lx.ToString("F2"),          // Left Align X
@@ -769,10 +773,10 @@ namespace ATT_UT_IPAD.Core
                     CheckAlignResultValue(alignResult.RightY).ToString("F2"),         // Right Align Y     // Right Align Y
                 };
 
-                dataList.Add(tabData);
+                body.Add(tabData);
             }
 
-            CSVHelper.WriteData(csvFile, dataList);
+            CSVHelper.WriteData(csvFile, body);
         }
 
         private void SaveAkkonResult(string resultPath, int tabCount)
@@ -785,6 +789,7 @@ namespace ATT_UT_IPAD.Core
                 {
                     "Inspection Time",
                     "Panel ID",
+                    "Stage No",
                     "Tab",
                     "Judge",
                     "Avg Count",
@@ -794,7 +799,7 @@ namespace ATT_UT_IPAD.Core
                 CSVHelper.WriteHeader(csvFile, header);
             }
 
-            List<List<string>> dataList = new List<List<string>>();
+            List<List<string>> body = new List<List<string>>();
             for (int tabNo = 0; tabNo < tabCount; tabNo++)
             {
                 var tabInspResult = AppsInspResult.Instance().GetAkkon(tabNo);
@@ -804,20 +809,109 @@ namespace ATT_UT_IPAD.Core
                 int avgCount = (akkonResult.LeftCount_Avg + akkonResult.RightCount_Avg) / 2;
                 float avgLength = (akkonResult.Length_Left_Avg_um + akkonResult.Length_Right_Avg_um) / 2.0F;
 
+                var programType = StringHelper.StringToEnum<ProgramType>(AppsConfig.Instance().ProgramType);
                 List<string> tabData = new List<string>
                 {
                     AppsInspResult.Instance().EndInspTime.ToString("HH:mm:ss"),
                     AppsInspResult.Instance().Cell_ID,
+                    $"{(int)programType + 1}",     // Unit No
                     (tabInspResult.TabNo + 1).ToString(),
                     judgement.ToString(),
                     avgCount.ToString(),
                     avgLength.ToString("F2"),
                 };
 
-                dataList.Add(tabData);
+                body.Add(tabData);
 
             }
-            CSVHelper.WriteData(csvFile, dataList);
+            CSVHelper.WriteData(csvFile, body);
+        }
+
+        private void SaveUPHResult(string resultPath, int tabCount)
+        {
+            string filename = string.Format("UPH.csv");
+            string csvFile = Path.Combine(resultPath, filename);
+            if (File.Exists(csvFile) == false)
+            {
+                List<string> header = new List<string>
+                {
+                    "Inspection Time",
+                    "Panel ID",
+                    "Stage No",
+                    "Tab No.",
+
+                    "Count Min",
+                    "Count Avg",
+                    "Length Min",
+                    "Length Avg",
+                    "Strength Min",
+                    "Strength Avg",
+
+                    "Left Align X",
+                    "Left Align Y",
+                    "Center Align X",
+                    "Right Align X",
+                    "Right Align Y",
+
+                    "ACF Head",
+                    "Pre Head",
+                    "Main Head",
+
+                    "Judge",
+                    "Cause",
+                    "Op Judge"
+                };
+
+                CSVHelper.WriteHeader(csvFile, header);
+            }
+
+            List<List<string>> body = new List<List<string>>();
+            for (int tabNo = 0; tabNo < tabCount; tabNo++)
+            {
+                var tabInspResult = AppsInspResult.Instance().GetAkkon(tabNo);
+                var alignResult = tabInspResult.AlignResult;
+
+                var lx = CheckAlignResultValue(alignResult.LeftX);
+                var rx = CheckAlignResultValue(alignResult.RightX);
+                var cx = (lx + rx) / 2.0;
+
+                var programType = StringHelper.StringToEnum<ProgramType>(AppsConfig.Instance().ProgramType);
+                List<string> tabData = new List<string>
+                {
+                    AppsInspResult.Instance().EndInspTime.ToString("HH:mm:ss"),                                    // Insp Time
+                    AppsInspResult.Instance().Cell_ID,                                                             // Panel ID
+                    $"{(int)programType + 1}",            // Unit No
+                    (tabInspResult.TabNo + 1).ToString(),                                                               // Tab
+
+                    //inspResult.TabResultList[tabNo].MacronAkkonResult.AvgBlobCount.ToString(),
+                    //inspResult.TabResultList[tabNo].MacronAkkonResult.AvgLength.ToString("F3"),
+                    //inspResult.TabResultList[tabNo].MacronAkkonResult.AvgStrength.ToString("F3"),
+                    //inspResult.TabResultList[tabNo].MacronAkkonResult.AvgStd.ToString("F3"),
+                    (tabNo + 1).ToString(),                                                         // Count Min
+                    (tabNo + 2).ToString("F2"),                                                     // Count Avg
+                    (tabNo + 3).ToString(),                                                         // Length Min
+                    (tabNo + 4).ToString("F2"),                                                     // Length Avg
+                    (tabNo + 5).ToString(),                                                         // Strength Min
+                    (tabNo + 6).ToString("F2"),                                                     // Strength Avg
+
+                    lx.ToString("F2"),    // Left Align X
+                    CheckAlignResultValue(alignResult.LeftY).ToString("F2"),    // Left Align Y
+                    cx.ToString("F2"),                         // Center Align X
+                    rx.ToString("F2"),   // Right Align X
+                    CheckAlignResultValue(alignResult.RightY).ToString("F2"),   // Right Align Y
+
+                    (tabNo + 7).ToString(),                                                         // ACF Head
+                    (tabNo + 8).ToString(),                                                         // Pre Head
+                    (tabNo + 9).ToString(),                                                         // Main Head
+
+                    tabInspResult.Judgement.ToString(),                           // Judge
+                    "Count",                                                                        // Cause
+                    "OP_OK"                                                                         // OP Judge
+                };
+
+                body.Add(tabData);
+            }
+            CSVHelper.WriteData(csvFile, body);
         }
 
         private void SaveAkkonResultAsMsaSummary(string resultPath, int tabCount)
@@ -906,92 +1000,6 @@ namespace ATT_UT_IPAD.Core
                 CSVHelper.WriteHeader(csvFile, header);
                 CSVHelper.WriteData(csvFile, body);
             }
-        }
-
-        private void SaveUPHResult(string resultPath, int tabCount)
-        {
-            string filename = string.Format("UPH.csv");
-            string csvFile = Path.Combine(resultPath, filename);
-            if (File.Exists(csvFile) == false)
-            {
-                List<string> header = new List<string>
-                {
-                    "Inspection Time",
-                    "Panel ID",
-                    "Stage No.",
-                    "Tab No.",
-
-                    "Count Min",
-                    "Count Avg",
-                    "Length Min",
-                    "Length Avg",
-                    "Strength Min",
-                    "Strength Avg",
-
-                    "Left Align X",
-                    "Left Align Y",
-                    "Center Align X",
-                    "Right Align X",
-                    "Right Align Y",
-
-                    "ACF Head",
-                    "Pre Head",
-                    "Main Head",
-
-                    "Judge",
-                    "Cause",
-                    "Op Judge"
-                };
-
-                CSVHelper.WriteHeader(csvFile, header);
-            }
-
-            List<List<string>> dataList = new List<List<string>>();
-            for (int tabNo = 0; tabNo < tabCount; tabNo++)
-            {
-                var tabInspResult = AppsInspResult.Instance().GetAkkon(tabNo);
-                var alignResult = tabInspResult.AlignResult;
-
-                var lx = CheckAlignResultValue(alignResult.LeftX);
-                var rx = CheckAlignResultValue(alignResult.RightX);
-                var cx = (lx + rx) / 2.0;
-
-                List<string> tabData = new List<string>
-                {
-                    AppsInspResult.Instance().EndInspTime.ToString("HH:mm:ss"),                                    // Insp Time
-                    AppsInspResult.Instance().Cell_ID,                                                             // Panel ID
-                    1.ToString(),                                                                   // Stage
-                    (tabInspResult.TabNo + 1).ToString(),                                                               // Tab
-
-                    //inspResult.TabResultList[tabNo].MacronAkkonResult.AvgBlobCount.ToString(),
-                    //inspResult.TabResultList[tabNo].MacronAkkonResult.AvgLength.ToString("F3"),
-                    //inspResult.TabResultList[tabNo].MacronAkkonResult.AvgStrength.ToString("F3"),
-                    //inspResult.TabResultList[tabNo].MacronAkkonResult.AvgStd.ToString("F3"),
-                    (tabNo + 1).ToString(),                                                         // Count Min
-                    (tabNo + 2).ToString("F2"),                                                     // Count Avg
-                    (tabNo + 3).ToString(),                                                         // Length Min
-                    (tabNo + 4).ToString("F2"),                                                     // Length Avg
-                    (tabNo + 5).ToString(),                                                         // Strength Min
-                    (tabNo + 6).ToString("F2"),                                                     // Strength Avg
-
-                    lx.ToString("F2"),    // Left Align X
-                    CheckAlignResultValue(alignResult.LeftY).ToString("F2"),    // Left Align Y
-                    cx.ToString("F2"),                         // Center Align X
-                    rx.ToString("F2"),   // Right Align X
-                    CheckAlignResultValue(alignResult.RightY).ToString("F2"),   // Right Align Y
-
-                    (tabNo + 7).ToString(),                                                         // ACF Head
-                    (tabNo + 8).ToString(),                                                         // Pre Head
-                    (tabNo + 9).ToString(),                                                         // Main Head
-
-                    tabInspResult.Judgement.ToString(),                           // Judge
-                    "Count",                                                                        // Cause
-                    "OP_OK"                                                                         // OP Judge
-                };
-
-                dataList.Add(tabData);
-            }
-            CSVHelper.WriteData(csvFile, dataList);
         }
 
         private float CheckAlignResultValue(AlignResult alignResult)

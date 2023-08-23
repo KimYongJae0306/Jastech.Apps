@@ -176,24 +176,38 @@ namespace ATT_UT_IPAD.UI.Controls
                     // 확인 필요
                     foreach (var result in tabInspResult.AlignResult.LeftX.AlignResultList)
                     {
-                        Point fpcCenter = new Point((int)result.FpcCenterX, (int)result.FpcCenterY);
-                        Point panelCenter = new Point((int)result.PanelCenterX, (int)result.PanelCenterY);
+                        PointF orginPoint = new PointF(tabInspResult.CogImage.Width / 2, tabInspResult.CogImage.Height / 2);
+                        PointF fpcCenter = new PointF((float)(result.FpcCenterX - orginPoint.X), (float)(result.FpcCenterY - orginPoint.Y));
+                        PointF panelCenter = new PointF((float)(result.PanelCenterX - orginPoint.X), (float)(result.PanelCenterY - orginPoint.Y));
 
-                        double fpcDegree = MathHelper.RadToDeg(result.FpcSkew);
-                        var m = fpcDegree ;
+                        double m = MathHelper.RadToDeg(result.FpcSkew);
+                        //PointF aPoint = new PointF(3363, 573);
+                        //PointF bPoint = new PointF(3391, 769);
 
+                        //var m5 = (bPoint.Y - aPoint.Y) / (bPoint.X - aPoint.X);
+
+                        var degree = Math.Atan(m) * 180.0 / Math.PI;
+                        degree += 180;
+                        var g22222 = Math.Tan(degree * Math.PI / 180) * -1; ;
                         //y = mx + b
 
-                        var b = fpcCenter.Y - (m * fpcCenter.X);
+                        var b = fpcCenter.Y - (g22222 * fpcCenter.X);
 
-                        var x = (panelCenter.Y) / m;
+                        var x = (panelCenter.Y - b ) / g22222;
 
                         CogLineSegment fpcLine = new CogLineSegment();
-                        //fpcLine.SetStartEnd(fpcCenter.X, fpcCenter.Y, x, panelCenter.Y);
+                        fpcLine.SetStartEnd(fpcCenter.X + orginPoint.X, fpcCenter.Y +orginPoint.Y, x + orginPoint.X, panelCenter.Y + orginPoint.Y);
+                        //fpcLine.SetStartEnd(fpcCenter.X, fpcCenter.Y, x, 1000);
+                        //fpcLine.SetStartLengthRotation(fpcCenter.X, fpcCenter.Y, x, m);
 
-                        fpcLine.SetStartLengthRotation(fpcCenter.X, fpcCenter.Y, 500, fpcDegree);
+                        //fpcLine.SetStartLengthRotation(fpcCenter.X, fpcCenter.Y, x, fpcDegree);
                         fpcLine.Color = CogColorConstants.Blue;
                         InspAlignDisplay.DrawLine(fpcLine);
+
+                        //CogLine cogLine = new CogLine();
+                        //cogLine.set(fpcCenter.X, fpcCenter.Y, result.FpcSkew, result.PanelSkew);
+                        //InspAlignDisplay.DrawLine(cogLine);
+
                     }
                 }
             }

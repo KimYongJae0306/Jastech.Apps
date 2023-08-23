@@ -94,6 +94,9 @@ namespace Jastech.Apps.Winform.UI.Controls
             // 
             // dgvAlignData
             // 
+            this.dgvAlignData.AllowUserToAddRows = false;
+            this.dgvAlignData.AllowUserToDeleteRows = false;
+            this.dgvAlignData.AllowUserToResizeRows = false;
             this.dgvAlignData.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
             this.dgvAlignData.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
             dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
@@ -376,9 +379,11 @@ namespace Jastech.Apps.Winform.UI.Controls
             this.dgvPCResult.ReadOnly = true;
             this.dgvPCResult.RowHeadersVisible = false;
             this.dgvPCResult.RowTemplate.Height = 23;
+            this.dgvPCResult.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgvPCResult.Size = new System.Drawing.Size(536, 237);
             this.dgvPCResult.TabIndex = 6;
-            this.dgvPCResult.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvPCResult_CellClick);
+            this.dgvPCResult.DataSourceChanged += new System.EventHandler(this.dgvPCResult_DataSourceChanged);
+            this.dgvPCResult.SelectionChanged += new System.EventHandler(this.dgvPCResult_SelectionChanged);
             // 
             // ProcessCapabilityIndexControl
             // 
