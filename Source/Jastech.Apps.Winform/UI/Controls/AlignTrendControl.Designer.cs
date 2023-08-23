@@ -44,7 +44,7 @@ namespace Jastech.Apps.Winform.UI.Controls
             this.lblCx = new System.Windows.Forms.Label();
             this.lblLy = new System.Windows.Forms.Label();
             this.lblLx = new System.Windows.Forms.Label();
-            this.lblAlign = new System.Windows.Forms.Label();
+            this.lblAllData = new System.Windows.Forms.Label();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.pnlTabs = new System.Windows.Forms.Panel();
             this.lblTabSelection = new System.Windows.Forms.Label();
@@ -166,7 +166,7 @@ namespace Jastech.Apps.Winform.UI.Controls
             this.pnlChartTypes.Controls.Add(this.lblCx);
             this.pnlChartTypes.Controls.Add(this.lblLy);
             this.pnlChartTypes.Controls.Add(this.lblLx);
-            this.pnlChartTypes.Controls.Add(this.lblAlign);
+            this.pnlChartTypes.Controls.Add(this.lblAllData);
             this.pnlChartTypes.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pnlChartTypes.Location = new System.Drawing.Point(120, 0);
             this.pnlChartTypes.Margin = new System.Windows.Forms.Padding(0);
@@ -234,17 +234,17 @@ namespace Jastech.Apps.Winform.UI.Controls
             this.lblLx.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.lblLx.Click += new System.EventHandler(this.lblLx_Click);
             // 
-            // lblAlign
+            // lblAllData
             // 
-            this.lblAlign.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.lblAlign.Location = new System.Drawing.Point(20, 0);
-            this.lblAlign.Margin = new System.Windows.Forms.Padding(20, 0, 0, 0);
-            this.lblAlign.Name = "lblAlign";
-            this.lblAlign.Size = new System.Drawing.Size(100, 54);
-            this.lblAlign.TabIndex = 0;
-            this.lblAlign.Text = "Align";
-            this.lblAlign.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.lblAlign.Click += new System.EventHandler(this.lblAlign_Click);
+            this.lblAllData.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.lblAllData.Location = new System.Drawing.Point(20, 0);
+            this.lblAllData.Margin = new System.Windows.Forms.Padding(20, 0, 0, 0);
+            this.lblAllData.Name = "lblAllData";
+            this.lblAllData.Size = new System.Drawing.Size(100, 54);
+            this.lblAllData.TabIndex = 0;
+            this.lblAllData.Text = "All Data";
+            this.lblAllData.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblAllData.Click += new System.EventHandler(this.lblAllData_Click);
             // 
             // tableLayoutPanel2
             // 
@@ -312,7 +312,7 @@ namespace Jastech.Apps.Winform.UI.Controls
         private System.Windows.Forms.Label lblCx;
         private System.Windows.Forms.Label lblLy;
         private System.Windows.Forms.Label lblLx;
-        private System.Windows.Forms.Label lblAlign;
+        private System.Windows.Forms.Label lblAllData;
         private System.Windows.Forms.TableLayoutPanel tlpData;
         private DoubleBufferedDatagridView dgvAlignTrendData;
         private System.Windows.Forms.Label lblTabSelection;

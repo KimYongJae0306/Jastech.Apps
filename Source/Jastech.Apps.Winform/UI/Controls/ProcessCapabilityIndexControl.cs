@@ -223,7 +223,6 @@ namespace Jastech.Apps.Winform.UI.Controls
             _alignResultType = alignResultType;
 
             UpdateChart(_tabType, _alignResultType);
-            UpdateDataGridView(_tabType, _alignResultType);
         }
 
         private void SetDataTable(DataTable dt)
@@ -330,14 +329,15 @@ namespace Jastech.Apps.Winform.UI.Controls
 
             return query;
         }
-        #endregion
 
-        private void dgvPCResult_CellClick(object sender, DataGridViewCellEventArgs e)
+        private void dgvPCResult_SelectionChanged(object sender, EventArgs e)
         {
-            int gg = 0;
-
-            AlignResultType alignType = (AlignResultType)(e.RowIndex + 1);
-            SetAlignResultType(alignType);
+            if (dgvPCResult.SelectedCells.Count > 0)
+            {
+                AlignResultType alignType = (AlignResultType)(dgvPCResult.SelectedCells[0].RowIndex + 1);
+                SetAlignResultType(alignType);
+            }
         }
+        #endregion
     }
 }

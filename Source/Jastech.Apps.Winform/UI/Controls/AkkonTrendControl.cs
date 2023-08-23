@@ -108,7 +108,7 @@ namespace Jastech.Apps.Winform.UI.Controls
             }
         }
 
-        private void lblAkkon_Click(object sender, EventArgs e)
+        private void lblAllData_Click(object sender, EventArgs e)
         {
             SetAkkonResultType(AkkonResultType.All);
             UpdateChart(_tabType, _akkonResultType);

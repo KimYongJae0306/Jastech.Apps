@@ -170,17 +170,13 @@ namespace ATT
             {
                 AxisHandler handler = new AxisHandler();
 
-                if (Enum.TryParse(AppsConfig.Instance().ProgramType, true, out ProgramType type))
+                var programType = StringHelper.StringToEnum<ProgramType>(AppsConfig.Instance().ProgramType);
+                switch (programType)
                 {
-                    switch (type)
-                    {
-                        case ProgramType.ProgramType_1:
-                            AddAxisHandlerType1(motion, out handler);
-                            break;
-                    }
+                    case ProgramType.ProgramType_1:
+                        AddAxisHandlerType1(motion, out handler);
+                        break;
                 }
-                else
-                    Console.WriteLine($"CreateAxisHandler: Failed to parse program type {AppsConfig.Instance().ProgramType}");
 
                 MotionManager.Instance().AxisHandlerList.Add(handler);
                 JsonConvertHelper.Save(unit0FilePath, handler);

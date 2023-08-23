@@ -35,6 +35,8 @@ namespace Jastech.Apps.Winform.UI.Controls
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
             this.tlpProcessCapability = new System.Windows.Forms.TableLayoutPanel();
+            this.pnlChart = new System.Windows.Forms.Panel();
+            this.dgvAlignData = new Jastech.Framework.Winform.Controls.DoubleBufferedDatagridView();
             this.panel1 = new System.Windows.Forms.Panel();
             this.tlpTabSelection = new System.Windows.Forms.TableLayoutPanel();
             this.lblTab = new System.Windows.Forms.Label();
@@ -51,16 +53,14 @@ namespace Jastech.Apps.Winform.UI.Controls
             this.lblLowerSpecLimit = new System.Windows.Forms.Label();
             this.tlpPCResult = new System.Windows.Forms.TableLayoutPanel();
             this.lblResult = new System.Windows.Forms.Label();
-            this.pnlChart = new System.Windows.Forms.Panel();
-            this.dgvAlignData = new Jastech.Framework.Winform.Controls.DoubleBufferedDatagridView();
             this.dgvPCResult = new Jastech.Framework.Winform.Controls.DoubleBufferedDatagridView();
             this.tlpProcessCapability.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvAlignData)).BeginInit();
             this.panel1.SuspendLayout();
             this.tlpTabSelection.SuspendLayout();
             this.tlpCountConfig.SuspendLayout();
             this.tlpSpecLimits.SuspendLayout();
             this.tlpPCResult.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dgvAlignData)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvPCResult)).BeginInit();
             this.SuspendLayout();
             // 
@@ -82,6 +82,49 @@ namespace Jastech.Apps.Winform.UI.Controls
             this.tlpProcessCapability.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tlpProcessCapability.Size = new System.Drawing.Size(1072, 554);
             this.tlpProcessCapability.TabIndex = 0;
+            // 
+            // pnlChart
+            // 
+            this.pnlChart.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pnlChart.Location = new System.Drawing.Point(536, 0);
+            this.pnlChart.Margin = new System.Windows.Forms.Padding(0);
+            this.pnlChart.Name = "pnlChart";
+            this.pnlChart.Size = new System.Drawing.Size(536, 277);
+            this.pnlChart.TabIndex = 2;
+            // 
+            // dgvAlignData
+            // 
+            this.dgvAlignData.AllowUserToAddRows = false;
+            this.dgvAlignData.AllowUserToDeleteRows = false;
+            this.dgvAlignData.AllowUserToResizeRows = false;
+            this.dgvAlignData.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
+            this.dgvAlignData.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle1.BackColor = System.Drawing.Color.Black;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("맑은 고딕", 11.25F, System.Drawing.FontStyle.Bold);
+            dataGridViewCellStyle1.ForeColor = System.Drawing.Color.White;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(104)))), ((int)(((byte)(104)))), ((int)(((byte)(104)))));
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvAlignData.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
+            this.dgvAlignData.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("맑은 고딕", 11.25F, System.Drawing.FontStyle.Bold);
+            dataGridViewCellStyle2.ForeColor = System.Drawing.Color.White;
+            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(104)))), ((int)(((byte)(104)))), ((int)(((byte)(104)))));
+            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvAlignData.DefaultCellStyle = dataGridViewCellStyle2;
+            this.dgvAlignData.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dgvAlignData.EnableHeadersVisualStyles = false;
+            this.dgvAlignData.Location = new System.Drawing.Point(539, 280);
+            this.dgvAlignData.Name = "dgvAlignData";
+            this.dgvAlignData.ReadOnly = true;
+            this.dgvAlignData.RowHeadersVisible = false;
+            this.dgvAlignData.RowTemplate.Height = 23;
+            this.dgvAlignData.Size = new System.Drawing.Size(530, 271);
+            this.dgvAlignData.TabIndex = 3;
             // 
             // panel1
             // 
@@ -304,46 +347,6 @@ namespace Jastech.Apps.Winform.UI.Controls
             this.lblResult.Text = "CPK / PPK Result";
             this.lblResult.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // pnlChart
-            // 
-            this.pnlChart.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pnlChart.Location = new System.Drawing.Point(536, 0);
-            this.pnlChart.Margin = new System.Windows.Forms.Padding(0);
-            this.pnlChart.Name = "pnlChart";
-            this.pnlChart.Size = new System.Drawing.Size(536, 277);
-            this.pnlChart.TabIndex = 2;
-            // 
-            // dgvAlignData
-            // 
-            this.dgvAlignData.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
-            this.dgvAlignData.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle1.BackColor = System.Drawing.Color.Black;
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("맑은 고딕", 11.25F, System.Drawing.FontStyle.Bold);
-            dataGridViewCellStyle1.ForeColor = System.Drawing.Color.White;
-            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(104)))), ((int)(((byte)(104)))), ((int)(((byte)(104)))));
-            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgvAlignData.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
-            this.dgvAlignData.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
-            dataGridViewCellStyle2.Font = new System.Drawing.Font("맑은 고딕", 11.25F, System.Drawing.FontStyle.Bold);
-            dataGridViewCellStyle2.ForeColor = System.Drawing.Color.White;
-            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(104)))), ((int)(((byte)(104)))), ((int)(((byte)(104)))));
-            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgvAlignData.DefaultCellStyle = dataGridViewCellStyle2;
-            this.dgvAlignData.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dgvAlignData.EnableHeadersVisualStyles = false;
-            this.dgvAlignData.Location = new System.Drawing.Point(539, 280);
-            this.dgvAlignData.Name = "dgvAlignData";
-            this.dgvAlignData.ReadOnly = true;
-            this.dgvAlignData.RowHeadersVisible = false;
-            this.dgvAlignData.RowTemplate.Height = 23;
-            this.dgvAlignData.Size = new System.Drawing.Size(530, 271);
-            this.dgvAlignData.TabIndex = 3;
-            // 
             // dgvPCResult
             // 
             this.dgvPCResult.AllowUserToAddRows = false;
@@ -376,9 +379,11 @@ namespace Jastech.Apps.Winform.UI.Controls
             this.dgvPCResult.ReadOnly = true;
             this.dgvPCResult.RowHeadersVisible = false;
             this.dgvPCResult.RowTemplate.Height = 23;
+            this.dgvPCResult.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgvPCResult.Size = new System.Drawing.Size(536, 237);
             this.dgvPCResult.TabIndex = 6;
             this.dgvPCResult.DataSourceChanged += new System.EventHandler(this.dgvPCResult_DataSourceChanged);
+            this.dgvPCResult.SelectionChanged += new System.EventHandler(this.dgvPCResult_SelectionChanged);
             // 
             // ProcessCapabilityIndexControl
             // 
@@ -392,12 +397,12 @@ namespace Jastech.Apps.Winform.UI.Controls
             this.Size = new System.Drawing.Size(1072, 554);
             this.Load += new System.EventHandler(this.ProcessCapabilityIndexControl_Load);
             this.tlpProcessCapability.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.dgvAlignData)).EndInit();
             this.panel1.ResumeLayout(false);
             this.tlpTabSelection.ResumeLayout(false);
             this.tlpCountConfig.ResumeLayout(false);
             this.tlpSpecLimits.ResumeLayout(false);
             this.tlpPCResult.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.dgvAlignData)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvPCResult)).EndInit();
             this.ResumeLayout(false);
 
