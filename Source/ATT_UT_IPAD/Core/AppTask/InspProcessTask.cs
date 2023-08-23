@@ -92,7 +92,6 @@ namespace ATT_UT_IPAD.Core.AppTask
             CoordinateTransform panelCoordinate = new CoordinateTransform();
 
             algorithmTool.MainMarkInspect(inspTab.MergeCogImage, tab, ref inspResult, false);
-            //algorithmTool.MainMarkInspect(inspTab.MergeCogImage, tab, ref inspResult, false);
 
             string message = string.Empty;
             if (inspResult.MarkResult.Judgement != Judgement.OK)
@@ -110,14 +109,9 @@ namespace ATT_UT_IPAD.Core.AppTask
                 Logger.Debug(LogType.Inspection, message);
 
                 // Set Coordinate Params
-                //algorithmTool.GetAlignPanelLeftOffset(tab, inspResult, out double panelLeftOffsetX, out double panelLeftOffsetY);
-                //algorithmTool.GetAlignPanelRightOffset(tab, inspResult, out double panelRightOffsetX, out double panelRightOffsetY);
-                //SetPanelCoordinateData(panelCoordinate, inspResult, panelLeftOffsetX, panelLeftOffsetY, panelRightOffsetX, panelRightOffsetY);
-
                 SetPanelCoordinateData(panelCoordinate, inspResult, 0, 0, 0, 0);
 
                 // Excuete Coordinate
-                SetPanelCoordinateData(panelCoordinate, inspResult, 0, 0, 0, 0);
                 panelCoordinate.ExecuteCoordinate();
 
                 var lineCamera = LineCameraManager.Instance().GetLineCamera("AkkonCamera").Camera;

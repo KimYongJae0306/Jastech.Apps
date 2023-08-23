@@ -80,6 +80,7 @@ namespace ATT
 
             DeviceManager.Instance().Initialized += SystemManager_Initialized;
             DeviceManager.Instance().Initialize(ConfigSet.Instance());
+            PlcControlManager.Instance().Initialize();
 
             percent = 50;
             DoReportProgress(reportProgress, percent, "Create Axis Info");

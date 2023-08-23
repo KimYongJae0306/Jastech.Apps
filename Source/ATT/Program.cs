@@ -9,6 +9,8 @@ using Jastech.Framework.Device.LightCtrls;
 using Jastech.Framework.Device.LightCtrls.Lvs;
 using Jastech.Framework.Device.LightCtrls.Lvs.Parser;
 using Jastech.Framework.Device.Motions;
+using Jastech.Framework.Device.Plcs.Melsec.Parsers;
+using Jastech.Framework.Device.Plcs.Melsec;
 using Jastech.Framework.Imaging;
 using Jastech.Framework.Matrox;
 using Jastech.Framework.Util.Helper;
@@ -19,13 +21,13 @@ using System.Windows.Forms;
 
 namespace ATT
 {
-    static class Program
+    internal static class Program
     {
         /// <summary>
         /// 해당 응용 프로그램의 주 진입점입니다.
         /// </summary>
         [STAThread]
-        static void Main()
+        private static void Main()
         {
             bool isRunning = false;
             Mutex mutex = new Mutex(true, "ATT", out isRunning);
@@ -42,9 +44,15 @@ namespace ATT
                 Logger.Initialize(ConfigSet.Instance().Path.Log);
 
                 MilHelper.InitApplication();
-                CameraMil.BufferPoolCount = 200;
-                SystemHelper.StartChecker(@"D:\ATT_Memory_Test.txt");
+                CameraMil.BufferPoolCount = 400;
+                //SystemHelper.StartChecker(@"D:\ATT_Memory_Test.txt");
                 AppsConfig.Instance().UnitCount = 1;
+
+                if (Cognex.VisionPro.CogLicense.GetLicensedFeatures(false, false).Count == 0)
+                {
+                    MessageConfirmForm cognexAlart = new MessageConfirmForm { Message = "Cognex license not detected.\r\nPlease check the key." };
+                    cognexAlart.ShowDialog();
+                }
 
                 ConfigSet.Instance().PathConfigCreated += ConfigSet_PathConfigCreated;
                 ConfigSet.Instance().OperationConfigCreated += ConfigSet_OperationConfigCreated;
@@ -52,7 +60,6 @@ namespace ATT
                 ConfigSet.Instance().Initialize();
 
                 AppsConfig.Instance().Initialize();
-
                 UserManager.Instance().Initialize();
 
                 var mainForm = new MainForm();
@@ -118,8 +125,10 @@ namespace ATT
                     config.Add(lineCamera);
                 }
 
+                // Motion
                 var motion = new ACSMotion("Motion", 2, ACSConnectType.Ethernet);
                 motion.IpAddress = "10.0.0.100";
+                motion.TriggerBuffer = ACSBufferNumber.CameraTrigger_Unit1;
                 config.Add(motion);
 
                 var light1 = new LvsLightCtrl("LvsLight12V", 6, new SerialPortComm("COM2", 9600), new LvsSerialParser());
@@ -147,6 +156,16 @@ namespace ATT
                 //    BaudRate = 9600,
                 //};
                 //config.Add(laf2);
+
+                // PLC ATT Tester
+                AppsConfig.Instance().PlcAddressInfo.CommonStart = 20000;
+                AppsConfig.Instance().PlcAddressInfo.ResultStart = 21000;
+                AppsConfig.Instance().PlcAddressInfo.ResultStart_Align = 21220;
+                AppsConfig.Instance().PlcAddressInfo.ResultTabToTabInterval = 200;
+                AppsConfig.Instance().PlcAddressInfo.ResultStart_Akkon = 21230;
+
+                var plc = new MelsecPlc("PLC", new SocketComm("127.0.0.1", 9021, SocketCommType.Udp, 9031), new MelsecBinaryParser());
+                config.Add(plc);
             }
         }
 
@@ -192,13 +211,9 @@ namespace ATT
         private static void ConfigSet_OperationConfigCreated(OperationConfig config)
         {
             if (MessageBox.Show("Do you want to Virtual Mode?", "Setup", MessageBoxButtons.YesNo) == DialogResult.Yes)
-            {
                 config.VirtualMode = true;
-            }
             else
-            {
                 config.VirtualMode = false;
-            }
         }
 
         private static void ConfigSet_PathConfigCreated(PathConfig config)

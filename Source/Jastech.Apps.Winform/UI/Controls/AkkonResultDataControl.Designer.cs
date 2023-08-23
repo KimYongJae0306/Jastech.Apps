@@ -43,7 +43,7 @@
             this.colTab = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colJudge = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colCount = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colLenght = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colLength = new System.Windows.Forms.DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.dgvAkkonHistory)).BeginInit();
             this.SuspendLayout();
             // 
@@ -69,7 +69,7 @@
             this.colTab,
             this.colJudge,
             this.colCount,
-            this.colLenght});
+            this.colLength});
             dataGridViewCellStyle8.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
             dataGridViewCellStyle8.BackColor = System.Drawing.SystemColors.Window;
             dataGridViewCellStyle8.Font = new System.Drawing.Font("굴림", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
@@ -154,15 +154,15 @@
             // 
             // colLenght
             // 
-            this.colLenght.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.colLength.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
             dataGridViewCellStyle7.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
             dataGridViewCellStyle7.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
-            this.colLenght.DefaultCellStyle = dataGridViewCellStyle7;
-            this.colLenght.HeaderText = "Lengh";
-            this.colLenght.MinimumWidth = 70;
-            this.colLenght.Name = "colLenght";
-            this.colLenght.ReadOnly = true;
-            this.colLenght.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            this.colLength.DefaultCellStyle = dataGridViewCellStyle7;
+            this.colLength.HeaderText = "Length";
+            this.colLength.MinimumWidth = 70;
+            this.colLength.Name = "colLength";
+            this.colLength.ReadOnly = true;
+            this.colLength.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
             // 
             // AkkonResultDataControl
             // 
@@ -184,6 +184,6 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn colTab;
         private System.Windows.Forms.DataGridViewTextBoxColumn colJudge;
         private System.Windows.Forms.DataGridViewTextBoxColumn colCount;
-        private System.Windows.Forms.DataGridViewTextBoxColumn colLenght;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colLength;
     }
 }

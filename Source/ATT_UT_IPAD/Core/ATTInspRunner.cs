@@ -434,7 +434,7 @@ namespace ATT_UT_IPAD.Core
                 case SeqStep.SEQ_WAIT_UI_RESULT_UPDATE:
                     GetAkkonResultImage();
                     UpdateDailyInfo();
-                    WriteLog("Update Inspectinon Result.", true);
+                    WriteLog("Update Inspection Result.", true);
 
                     SystemManager.Instance().UpdateMainAkkonResult();
                     SystemManager.Instance().UpdateMainAlignResult();
