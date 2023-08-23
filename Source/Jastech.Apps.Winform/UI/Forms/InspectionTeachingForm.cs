@@ -400,9 +400,6 @@ namespace Jastech.Framework.Winform.Forms
                 currentCaliperParam.CenterX -= TrackingData.AlignTracking.GetAlignOffset(alignName).X;
                 currentCaliperParam.CenterY -= TrackingData.AlignTracking.GetAlignOffset(alignName).Y;
             }
-
-            var tt = CurrentTab;
-            int gg = 0;
         }
 
         private void ApplyAkkonCoordinate()
@@ -805,8 +802,6 @@ namespace Jastech.Framework.Winform.Forms
                     TrackingData.AlignTracking.SetRightPanelOffset(panelRightOffset);
 
                     CoordinateAlign(CurrentTab, leftFpcOffset, fpcRightOffset, panelLeftOffset, panelRightOffset);
-
-                    int g1 = 0;
                 }
                 else
                 {

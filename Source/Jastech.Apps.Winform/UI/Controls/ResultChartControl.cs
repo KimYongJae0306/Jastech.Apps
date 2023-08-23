@@ -232,16 +232,16 @@ namespace Jastech.Apps.Winform.UI.Controls
 
             if (alignResultType == AlignResultType.All)
             {
-                AlignSeriesLx.Points.DataBind(dt.AsEnumerable(), "Time", "Lx", "");
-                AlignSeriesLy.Points.DataBind(dt.AsEnumerable(), "Time", "Ly", "");
-                AlignSeriesCx.Points.DataBind(dt.AsEnumerable(), "Time", "Cx", "");
-                AlignSeriesRx.Points.DataBind(dt.AsEnumerable(), "Time", "Rx", "");
-                AlignSeriesRy.Points.DataBind(dt.AsEnumerable(), "Time", "Ry", "");
+                AlignSeriesLx.Points.DataBind(dt.AsEnumerable(), "Inspection Time", "Lx", "");
+                AlignSeriesLy.Points.DataBind(dt.AsEnumerable(), "Inspection Time", "Ly", "");
+                AlignSeriesCx.Points.DataBind(dt.AsEnumerable(), "Inspection Time", "Cx", "");
+                AlignSeriesRx.Points.DataBind(dt.AsEnumerable(), "Inspection Time", "Rx", "");
+                AlignSeriesRy.Points.DataBind(dt.AsEnumerable(), "Inspection Time", "Ry", "");
             }
             else
             {
                 var alignSeries = AlignSeriesList.Where(x => x.Name == alignResultType.ToString()).First();
-                alignSeries.Points.DataBind(dt.AsEnumerable(), "Time", alignResultType.ToString(), "");
+                alignSeries.Points.DataBind(dt.AsEnumerable(), "Inspection Time", alignResultType.ToString(), "");
             }
         }
 
