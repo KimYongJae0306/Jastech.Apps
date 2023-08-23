@@ -250,12 +250,15 @@ namespace Jastech.Framework.Winform.Forms
                 case PageType.AlignTrend:
                     path = Path.Combine(basePath, month, day);
                     break;
+
                 case PageType.AkkonTrend:
                     path = Path.Combine(basePath, month, day);
                     break;
+
                 case PageType.UPH:
                     path = Path.Combine(basePath, month, day);
                     break;
+
                 case PageType.ProcessCapability:
                     path = Path.Combine(basePath, month, day);
                     break;
