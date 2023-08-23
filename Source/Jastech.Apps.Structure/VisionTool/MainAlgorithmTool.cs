@@ -312,7 +312,7 @@ namespace Jastech.Apps.Structure.VisionTool
             foreach (MarkName markName in Enum.GetValues(typeof(MarkName)))
             {
                 var leftParam = tab.MarkParamter.GetFPCMark(MarkDirection.Left, markName, isAlignMark);
-                var leftResult = RunPatternMatch(cogImage, leftParam.InspParam);
+                var leftResult = RunPatternMatch(cogImage, leftParam?.InspParam);
                 if (leftResult == null)
                     continue;
 
@@ -336,7 +336,7 @@ namespace Jastech.Apps.Structure.VisionTool
             foreach (MarkName markName in Enum.GetValues(typeof(MarkName)))
             {
                 var rightParam = tab.MarkParamter.GetFPCMark(MarkDirection.Right, markName, isAlignMark);
-                var rightResult = RunPatternMatch(cogImage, rightParam.InspParam);
+                var rightResult = RunPatternMatch(cogImage, rightParam?.InspParam);
                 if (rightResult == null)
                     continue;
 
@@ -376,7 +376,7 @@ namespace Jastech.Apps.Structure.VisionTool
             foreach (MarkName markName in Enum.GetValues(typeof(MarkName)))
             {
                 var leftParam = tab.MarkParamter.GetPanelMark(MarkDirection.Left, markName, useAlignMark);
-                var leftResult = RunPatternMatch(cogImage, leftParam.InspParam);
+                var leftResult = RunPatternMatch(cogImage, leftParam?.InspParam);
                 if (leftResult == null)
                     continue;
 
@@ -400,7 +400,7 @@ namespace Jastech.Apps.Structure.VisionTool
             foreach (MarkName markName in Enum.GetValues(typeof(MarkName)))
             {
                 var rightParam = tab.MarkParamter.GetPanelMark(MarkDirection.Right, markName, useAlignMark);
-                var rightResult = RunPatternMatch(cogImage, rightParam.InspParam);
+                var rightResult = RunPatternMatch(cogImage, rightParam?.InspParam);
                 if (rightResult == null)
                     continue;
 
