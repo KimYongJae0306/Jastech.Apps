@@ -2,6 +2,7 @@
 using ATT.Core.Data;
 using ATT.Properties;
 using ATT.UI.Pages;
+using Cognex.VisionPro;
 using Jastech.Apps.Structure;
 using Jastech.Apps.Structure.Data;
 using Jastech.Apps.Winform;
@@ -52,9 +53,13 @@ namespace ATT
 
         private CancellationTokenSource CancelVirtualInspTask { get; set; }
 
-        private Queue<string> VirtualImagePathQueue = new Queue<string>();
+        private readonly Queue<string> VirtualImagePathQueue = new Queue<string>();
 
+        private readonly Queue<ICogImage> LastScanImageQueue = new Queue<ICogImage>();
         public ATTInspModelService ATTInspModelService { get; set; } = new ATTInspModelService();
+        #endregion
+        #region 델리게이트
+        private delegate void UpdateLabelDelegate(string modelname);
         #endregion
 
         #region 생성자
@@ -132,8 +137,7 @@ namespace ATT
 
             ModelManager.Instance().CurrentModel = ATTInspModelService.Load(filePath);
             SelectMainPage();
-
-            lblCurrentModel.Text = modelName;
+            UpdateLabel(modelName);            
 
             ConfigSet.Instance().Operation.LastModelName = modelName;
             ConfigSet.Instance().Operation.Save(ConfigSet.Instance().Path.Config);
@@ -170,14 +174,23 @@ namespace ATT
 
             AppsInspResult.Instance().Dispose();
 
-            MainPageControl.UpdateTabCount(model.TabCount);
+            MainPageControl.MainViewControl?.UpdateTabCount(model.TabCount);
 
-            lblCurrentModel.Text = model.Name;
-
+            UpdateLabel(model.Name);
             ConfigSet.Instance().Operation.LastModelName = model.Name;
             ConfigSet.Instance().Operation.Save(ConfigSet.Instance().Path.Config);
         }
-
+     
+        private void UpdateLabel(string modelname)
+        {
+            if(this.InvokeRequired)
+            {
+                UpdateLabelDelegate callback = UpdateLabel;
+                BeginInvoke(callback, modelname);
+                return;
+            }
+            lblCurrentModel.Text = modelname;
+        }
         private void lblMainPage_Click(object sender, EventArgs e)
         {
             SetSelectLabel(sender);
@@ -215,7 +228,7 @@ namespace ATT
             logForm.SetLogViewPath(logPath, resultPath, modelName);
             logForm.ShowDialog();
         }
-
+     
         private void tmrMainForm_Tick(object sender, EventArgs e)
         {
             DateTime now = DateTime.Now;
@@ -238,6 +251,21 @@ namespace ATT
 
             if (MainPageControl.Visible)
                 MainPageControl.UpdateButton();
+
+            if (SystemManager.Instance().MachineStatus == MachineStatus.RUN)
+            {
+                lblTeachingPageImage.Enabled = false;
+                lblTeachingPage.Enabled = false;
+                lblDataPageImage.Enabled = false;
+                lblDataPage.Enabled = false;
+            }
+            else
+            {
+                lblTeachingPageImage.Enabled = true;
+                lblTeachingPage.Enabled = true;
+                lblDataPageImage.Enabled = true;
+                lblDataPage.Enabled = true;
+            }
         }
 
         private void tmrUpdateStates_Tick(object sender, EventArgs e)
@@ -269,32 +297,32 @@ namespace ATT
 
         public void UpdateMainAkkonResult(int tabNo)
         {
-            MainPageControl.UpdateMainAkkonResult(tabNo);
+            MainPageControl.MainViewControl.UpdateMainAkkonResultData(tabNo);
         }
 
         public void UpdateMainAlignResult(int tabNo)
         {
-            MainPageControl.UpdateMainAlignResult(tabNo);
+            MainPageControl.MainViewControl.UpdateMainAlignResult(tabNo);
         }
 
         public void UpdateAkkonResultTabButton(int tabNo)
         {
-            MainPageControl.UpdateAkkonResultTabButton(tabNo);
+            MainPageControl.MainViewControl.UpdateAkkonResultTabButton(tabNo);
         }
 
         public void UpdateAlignResultTabButton(int tabNo)
         {
-            MainPageControl.UpdateAlignResultTabButton(tabNo);
+            MainPageControl.MainViewControl.UpdateAlignResultTabButton(tabNo);
         }
 
         public void TabButtonResetColor()
         {
-            MainPageControl.TabButtonResetColor();
+            MainPageControl.MainViewControl.TabButtonResetColor();
         }
 
         public void AddSystemLogMessage(string logMessage)
         {
-            MainPageControl.AddSystemLogMessage(logMessage);
+            MainPageControl.MainViewControl.AddSystemLogMessage(logMessage);
         }
 
         private void lblCurrentUser_Click(object sender, EventArgs e)
@@ -399,6 +427,27 @@ namespace ATT
                 VirtualImagePathQueue.Enqueue(filePath);
         }
 
+        public void SetLastScanImage(ICogImage cogImage)
+        {
+            lock (LastScanImageQueue)
+                LastScanImageQueue.Enqueue(cogImage);
+        }
+
+        public ICogImage GetLastScanImage()
+        {
+            lock (LastScanImageQueue)
+            {
+                if (LastScanImageQueue.Count > 0)
+                    return LastScanImageQueue.Dequeue();
+                else
+                    return null;
+            }
+        }
+
+        public void ReleaseLastScanImage()
+        {
+            LastScanImageQueue.Clear();
+        }
         private void StartVirtualInspTask()
         {
             if (ConfigSet.Instance().Operation.VirtualMode)
@@ -428,9 +477,10 @@ namespace ATT
 
                 if (GetVirtualImagePath() is string filePath)
                 {
-                    string text = "Tab_";
-                    string fileName = Path.GetFileNameWithoutExtension(filePath);
-
+                    string text = "TAB_";
+                    string fileName = Path.GetFileNameWithoutExtension(filePath).ToUpper();
+                    fileName = fileName.Replace("_OK", "");
+                    fileName = fileName.Replace("_NG", "");
                     int index = fileName.IndexOf(text);
                     if (index < 0)
                     {

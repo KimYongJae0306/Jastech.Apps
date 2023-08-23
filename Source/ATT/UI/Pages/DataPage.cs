@@ -13,9 +13,6 @@ namespace ATT.UI.Pages
 {
     public partial class DataPage : UserControl
     {
-        #region 필드
-        #endregion
-
         #region 속성
         private ATTInspModelService ATTInspModelService { get; set; } = null;
 
@@ -26,9 +23,6 @@ namespace ATT.UI.Pages
 
         #region 이벤트
         public event ApplyModelDelegate ApplyModelEventHandler;
-        #endregion
-
-        #region 델리게이트
         #endregion
 
         #region 생성자

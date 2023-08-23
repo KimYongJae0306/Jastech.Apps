@@ -11,9 +11,6 @@ namespace ATT.UI.Controls
 {
     public partial class AkkonViewerControl : UserControl
     {
-        #region 필드
-        #endregion
-
         #region 속성
         public AkkonResultDisplayControl AkkonResultDisplayControl { get; set; } = null;
         #endregion

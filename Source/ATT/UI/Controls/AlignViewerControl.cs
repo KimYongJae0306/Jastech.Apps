@@ -11,9 +11,6 @@ namespace ATT.UI.Controls
 {
     public partial class AlignViewerControl : UserControl
     {
-        #region 필드
-        #endregion
-
         #region 속성
         public AlignResultDisplayControl AlignResultDisplayControl { get; set; } = null;
         #endregion
