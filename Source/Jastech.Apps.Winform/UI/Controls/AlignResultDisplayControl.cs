@@ -13,7 +13,6 @@ using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
-using System.Windows.Media.Media3D;
 
 namespace ATT_UT_IPAD.UI.Controls
 {
@@ -25,6 +24,10 @@ namespace ATT_UT_IPAD.UI.Controls
         private Color _selectedColor;
 
         private Color _nonSelectedColor;
+
+        private CogColorConstants _fpcColor = CogColorConstants.Purple;
+
+        private CogColorConstants _panelColor = CogColorConstants.Orange;
         #endregion
 
         #region 속성
@@ -152,14 +155,14 @@ namespace ATT_UT_IPAD.UI.Controls
             TabBtnControlList.ForEach(x => x.BackColor = Color.FromArgb(52, 52, 52));
         }
 
-        private void DrawCenterLineByAlignResult(int tabNo)
+        private List<CogLineSegment> GetCenterLineByAlignLeftResult(int tabNo)
         {
-            // 확인 필요
-            // 정환
-
             var tabInspResult = GetTabInspResultEvent?.Invoke(tabNo);
-            if (tabInspResult == null)
-                return;
+
+            List<CogLineSegment> cogLineSegmentList = new List<CogLineSegment>();
+
+            if (tabInspResult == null || tabInspResult.AlignResult.LeftX == null)
+                return cogLineSegmentList;
 
             foreach (var result in tabInspResult.AlignResult.LeftX.AlignResultList)
             {
@@ -172,15 +175,26 @@ namespace ATT_UT_IPAD.UI.Controls
                 double length = MathHelper.GetDistance(fpcCenter, panelCenter);
 
                 CogLineSegment fpcLine = new CogLineSegment();
-                fpcLine.Color = CogColorConstants.Blue;
+                fpcLine.Color = _fpcColor;
                 fpcLine.SetStartLengthRotation(fpcCenter.X, fpcCenter.Y, length, fpcSkew + MathHelper.DegToRad(90));
-                InspAlignDisplay.DrawLineLeftDisplay(fpcLine);
+                cogLineSegmentList.Add(fpcLine);
 
                 CogLineSegment panelLine = new CogLineSegment();
-                panelLine.Color = CogColorConstants.Red;
+                panelLine.Color = _panelColor;
                 panelLine.SetStartLengthRotation(panelCenter.X, panelCenter.Y, length, panelSkew + MathHelper.DegToRad(270));
-                InspAlignDisplay.DrawLineLeftDisplay(panelLine);
+                cogLineSegmentList.Add(panelLine);
             }
+            return cogLineSegmentList;
+        }
+
+        private List<CogLineSegment> GetCenterLineByAlignRightResult(int tabNo)
+        {
+            var tabInspResult = GetTabInspResultEvent?.Invoke(tabNo);
+
+            List<CogLineSegment> cogLineSegmentList = new List<CogLineSegment>();
+
+            if (tabInspResult == null || tabInspResult.AlignResult.RightX == null)
+                return cogLineSegmentList;
 
             foreach (var result in tabInspResult.AlignResult.RightX.AlignResultList)
             {
@@ -193,15 +207,16 @@ namespace ATT_UT_IPAD.UI.Controls
                 double length = MathHelper.GetDistance(fpcCenter, panelCenter);
 
                 CogLineSegment fpcLine = new CogLineSegment();
-                fpcLine.Color = CogColorConstants.Blue;
+                fpcLine.Color = _fpcColor;
                 fpcLine.SetStartLengthRotation(fpcCenter.X, fpcCenter.Y, length, fpcSkew + MathHelper.DegToRad(90));
-                InspAlignDisplay.DrawLineRightDisplay(fpcLine);
+                cogLineSegmentList.Add(fpcLine);
 
                 CogLineSegment panelLine = new CogLineSegment();
-                panelLine.Color = CogColorConstants.Red;
+                panelLine.Color = _panelColor;
                 panelLine.SetStartLengthRotation(panelCenter.X, panelCenter.Y, length, panelSkew + MathHelper.DegToRad(270));
-                InspAlignDisplay.DrawLineRightDisplay(panelLine);
+                cogLineSegmentList.Add(panelLine);
             }
+            return cogLineSegmentList;
         }
 
         public void UpdateResultDisplay(int tabNo)
@@ -215,8 +230,17 @@ namespace ATT_UT_IPAD.UI.Controls
             
             TabBtnControlList[tabNo].SetAlignImage(tabInspResult.CogImage);
 
-            TabBtnControlList[tabNo].SetLeftAlignShape(GetLeftAlignShape(tabInspResult));
-            TabBtnControlList[tabNo].SetRightAlignShape(GetRightAlignShape(tabInspResult));
+            TabBtnControlList[tabNo].SetLeftAlignShapeResult(GetLeftAlignShape(tabInspResult), GetCenterLineByAlignLeftResult(tabNo));
+            TabBtnControlList[tabNo].SetRightAlignShapeResult(GetRightAlignShape(tabInspResult), GetCenterLineByAlignRightResult(tabNo));
+
+            if(tabInspResult.AlignResult.LeftX != null)
+                TabBtnControlList[tabNo].Lx = tabInspResult.AlignResult.LeftX.ResultValue_pixel * tabInspResult.Resolution_um;
+            if(tabInspResult.AlignResult.LeftY != null)
+                TabBtnControlList[tabNo].Ly = tabInspResult.AlignResult.LeftY.ResultValue_pixel * tabInspResult.Resolution_um;
+            if(tabInspResult.AlignResult.RightX != null)
+                TabBtnControlList[tabNo].Rx = tabInspResult.AlignResult.RightX.ResultValue_pixel * tabInspResult.Resolution_um;
+            if(tabInspResult.AlignResult.RightY != null)
+                TabBtnControlList[tabNo].Ry = tabInspResult.AlignResult.RightY.ResultValue_pixel * tabInspResult.Resolution_um;
 
             if (tabInspResult.AlignResult != null)
                 TabBtnControlList[tabNo].SetCenterImage(tabInspResult.AlignResult.CenterImage);
@@ -233,16 +257,30 @@ namespace ATT_UT_IPAD.UI.Controls
         private void UpdateImage(int tabNo)
         {
             var image = TabBtnControlList[tabNo].GetAlignImage();
-            var leftShape = TabBtnControlList[tabNo].GetLeftShape();
-            var rightShape = TabBtnControlList[tabNo].GetRightShape();
+            var leftShape = TabBtnControlList[tabNo].GetLeftShapeResult();
+            var rightShape = TabBtnControlList[tabNo].GetRightShapeResult();
 
-            InspAlignDisplay.UpdateLeftDisplay(image, leftShape, GetCenterPoint(LeftPointList[tabNo]));
-            InspAlignDisplay.UpdateRightDisplay(image, rightShape, GetCenterPoint(RightPointList[tabNo]));
+            string lx = TabBtnControlList[tabNo].Lx.ToString("F2");
+            string ly = TabBtnControlList[tabNo].Ly.ToString("F2");
+            string rx = TabBtnControlList[tabNo].Rx.ToString("F2");
+            string ry = TabBtnControlList[tabNo].Ry.ToString("F2");
+
+            string cx = ((Convert.ToDouble(lx) + Convert.ToDouble(rx)) / 2.0).ToString("F2");
+
+
+            InspAlignDisplay.UpdateLeftDisplay(image, leftShape.CaliperShapeList, leftShape.LineSegmentList, GetCenterPoint(LeftPointList[tabNo]));
+            InspAlignDisplay.DrawLeftResult("X Align : " + lx + " um", 0);
+            InspAlignDisplay.DrawLeftResult("Y Align : " + ly + " um", 1);
+            InspAlignDisplay.DrawLeftResult("CX Align : " + cx + " um", 2);
+
+
+            InspAlignDisplay.UpdateRightDisplay(image, rightShape.CaliperShapeList, rightShape.LineSegmentList, GetCenterPoint(RightPointList[tabNo]));
+            InspAlignDisplay.DrawRightResult("X Align : " + rx + " um", 0);
+            InspAlignDisplay.DrawRightResult("Y Align : " + ry + " um", 1);
+            InspAlignDisplay.DrawRightResult("CX Align : " + cx + " um", 2);
 
             var centerImage = TabBtnControlList[tabNo].GetCenterImage();
             InspAlignDisplay.UpdateCenterDisplay(centerImage);
-
-            DrawCenterLineByAlignResult(tabNo);
         }
 
         public delegate void UpdateTabButtonDele(int tabNo);
@@ -286,6 +324,8 @@ namespace ATT_UT_IPAD.UI.Controls
                             LeftPointList[result.TabNo].Add(fpc.MaxCaliperMatch.FoundPos);
 
                             var leftFpcX = fpc.MaxCaliperMatch.ResultGraphics;
+                            leftFpcX.Color = _fpcColor;
+                            leftFpcX.LineWidthInScreenPixels = 2;
                             leftResultList.Add(leftFpcX);
                         }
                     }
@@ -300,6 +340,8 @@ namespace ATT_UT_IPAD.UI.Controls
                             LeftPointList[result.TabNo].Add(panel.MaxCaliperMatch.FoundPos);
 
                             var leftPanelX = panel.MaxCaliperMatch.ResultGraphics;
+                            leftPanelX.Color = _panelColor;
+                            leftPanelX.LineWidthInScreenPixels = 2;
                             leftResultList.Add(leftPanelX);
                         }
                     }
@@ -316,6 +358,7 @@ namespace ATT_UT_IPAD.UI.Controls
                         LeftPointList[result.TabNo].Add(leftAlignY.Fpc.CogAlignResult[0].MaxCaliperMatch.FoundPos);
 
                         var leftFpcY = leftAlignY.Fpc.CogAlignResult[0].MaxCaliperMatch.ResultGraphics;
+                        leftFpcY.Color = _fpcColor;
                         leftResultList.Add(leftFpcY);
                     }
                 }
@@ -327,6 +370,7 @@ namespace ATT_UT_IPAD.UI.Controls
                         LeftPointList[result.TabNo].Add(leftAlignY.Panel.CogAlignResult[0].MaxCaliperMatch.FoundPos);
 
                         var leftPanelY = leftAlignY.Panel.CogAlignResult[0].MaxCaliperMatch.ResultGraphics;
+                        leftPanelY.Color = _panelColor;
                         leftResultList.Add(leftPanelY);
                     }
                 }
@@ -355,6 +399,8 @@ namespace ATT_UT_IPAD.UI.Controls
                             RightPointList[result.TabNo].Add(fpc.MaxCaliperMatch.FoundPos);
 
                             var rightFpcX = fpc.MaxCaliperMatch.ResultGraphics;
+                            rightFpcX.Color = _fpcColor;
+                            rightFpcX.LineWidthInScreenPixels = 2;
                             rightResultList.Add(rightFpcX);
                         }
                     }
@@ -368,6 +414,8 @@ namespace ATT_UT_IPAD.UI.Controls
                             RightPointList[result.TabNo].Add(panel.MaxCaliperMatch.FoundPos);
 
                             var rightPanelX = panel.MaxCaliperMatch.ResultGraphics;
+                            rightPanelX.Color = _panelColor;
+                            rightPanelX.LineWidthInScreenPixels = 2;
                             rightResultList.Add(rightPanelX);
                         }
                     }
@@ -384,6 +432,7 @@ namespace ATT_UT_IPAD.UI.Controls
                         RightPointList[result.TabNo].Add(rightAlignY.Fpc.CogAlignResult[0].MaxCaliperMatch.FoundPos);
 
                         var rightFpcY = rightAlignY.Fpc.CogAlignResult[0].MaxCaliperMatch.ResultGraphics;
+                        rightFpcY.Color = _fpcColor;
                         rightResultList.Add(rightFpcY);
                     }
                 }
@@ -395,6 +444,7 @@ namespace ATT_UT_IPAD.UI.Controls
                         RightPointList[result.TabNo].Add(rightAlignY.Panel.CogAlignResult[0].MaxCaliperMatch.FoundPos);
 
                         var rightPanelY = rightAlignY.Panel.CogAlignResult[0].MaxCaliperMatch.ResultGraphics;
+                        rightPanelY.Color = _panelColor;
                         rightResultList.Add(rightPanelY);
                     }
                 }

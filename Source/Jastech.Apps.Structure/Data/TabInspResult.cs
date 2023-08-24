@@ -64,6 +64,8 @@ namespace Jastech.Apps.Structure.Data
 
         public TabAlignResult AlignResult { get; set; } = new TabAlignResult();
 
+        public float Resolution_um { get; set; } = 0.0F;
+
         public AkkonResult AkkonResult { get; set; } = null;
 
         public List<CogRectangleAffine> AkkonNGAffineList = new List<CogRectangleAffine>();
@@ -257,7 +259,7 @@ namespace Jastech.Apps.Structure.Data
 
         public ICogImage CenterImage { get; set; } = null;
 
-        //public float CenterX { get; set; }
+        public double Resolution { get; set; }
 
         public TabAlignResult DeepCopy()
         {
@@ -266,6 +268,7 @@ namespace Jastech.Apps.Structure.Data
             result.LeftY = LeftY?.DeepCopy();
             result.RightX = RightX?.DeepCopy();
             result.RightY = RightY?.DeepCopy();
+            result.Resolution = Resolution;
             result.CenterImage = CenterImage?.CopyBase(CogImageCopyModeConstants.CopyPixels);
 
             return result;
@@ -316,6 +319,8 @@ namespace Jastech.Apps.Structure.Data
 
         public float ResultValue_pixel { get; set; } = 0.0f;
 
+        public float ResultValue_um { get; set; } = 0.0f;
+
         public List<LeadAlignResult> AlignResultList { get; set; } = new List<LeadAlignResult>();
 
         public double JudegementValue_pixel { get; set; }
@@ -353,9 +358,9 @@ namespace Jastech.Apps.Structure.Data
         {
             AlignResult result = new AlignResult();
             result.ResultValue_pixel = ResultValue_pixel;
+            result.ResultValue_um = ResultValue_um;
             result.Panel = Panel?.DeepCopy();
             result.Fpc = Fpc?.DeepCopy();
-
             return result;
         }
         #endregion

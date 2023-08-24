@@ -150,9 +150,11 @@ namespace ATT_UT_IPAD.Core.AppTask
         //Align Camera로 Align만 검사
         private void RunAlign(ATTInspTab inspTab)
         {
-            Console.WriteLine("Test");
             Stopwatch sw = new Stopwatch();
             sw.Restart();
+
+            var lineCamera = LineCameraManager.Instance().GetLineCamera("AlignCamera").Camera;
+            float resolution_um = lineCamera.PixelResolution_um / lineCamera.LensScale;
 
             string unitName = UnitName.Unit0.ToString();
             AppsInspModel inspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
@@ -164,8 +166,7 @@ namespace ATT_UT_IPAD.Core.AppTask
             tabInspResult.TabNo = inspTab.TabScanBuffer.TabNo;
             tabInspResult.Image = inspTab.MergeMatImage;
             tabInspResult.CogImage = inspTab.MergeCogImage;
-
-            //SystemManager.Instance().SetAlignLastScanImage(inspTab.MergeCogImage);
+            tabInspResult.Resolution_um = resolution_um;
 
             algorithmTool.MainMarkInspect(inspTab.MergeCogImage, tab, ref tabInspResult, true);
 
@@ -189,10 +190,7 @@ namespace ATT_UT_IPAD.Core.AppTask
                 PointF fpcRightOffset = MathHelper.GetOffset(tabInspResult.MarkResult.FpcMark.FoundedMark.Right.MaxMatchPos.ReferencePos, tabInspResult.MarkResult.FpcMark.FoundedMark.Right.MaxMatchPos.FoundPos);
                 PointF panelLeftOffset = MathHelper.GetOffset(tabInspResult.MarkResult.PanelMark.FoundedMark.Left.MaxMatchPos.ReferencePos, tabInspResult.MarkResult.PanelMark.FoundedMark.Left.MaxMatchPos.FoundPos);
                 PointF panelRightOffset = MathHelper.GetOffset(tabInspResult.MarkResult.PanelMark.FoundedMark.Right.MaxMatchPos.ReferencePos, tabInspResult.MarkResult.PanelMark.FoundedMark.Right.MaxMatchPos.FoundPos);
-
-                var lineCamera = LineCameraManager.Instance().GetLineCamera("AlignCamera").Camera;
-
-                float resolution_um = lineCamera.PixelResolution_um / lineCamera.LensScale;
+              
                 double judgementX = tab.AlignSpec.LeftSpecX_um / resolution_um;
                 double judgementY = tab.AlignSpec.LeftSpecY_um / resolution_um;
 

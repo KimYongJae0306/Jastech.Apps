@@ -26,11 +26,20 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         private ICogImage CogCenterImage { get; set; } = null;
 
-        private List<CogCompositeShape> LeftCogShapeList { get; set; } = new List<CogCompositeShape>();
+        private AlignShapeResult LeftShapeResultList { get; set; } = new AlignShapeResult();
 
-        private List<CogCompositeShape> RightCogShapeList { get; set; } = new List<CogCompositeShape>();
+        private AlignShapeResult RightShapeResultList { get; set; } = new AlignShapeResult();
 
         private List<CogRectangleAffine> AkkonNGAffineList { get; set; } = new List<CogRectangleAffine>();
+
+        public float Lx { get; set; } = 0.0F;
+
+        public float Ly { get; set; } = 0.0F;
+
+        public float Rx { get; set; } = 0.0F;
+
+        public float Ry { get; set; } = 0.0F;
+
         #endregion
 
         #region 이벤트
@@ -159,26 +168,44 @@ namespace Jastech.Apps.Winform.UI.Controls
         }
 
 
-        public void SetLeftAlignShape(List<CogCompositeShape> shapeList)
+        public void SetLeftAlignShapeResult(List<CogCompositeShape> shapeList, List<CogLineSegment> lineSegmentList)
         {
-            foreach (var shape in LeftCogShapeList)
+            foreach (var shape in LeftShapeResultList.CaliperShapeList)
             {
                 if(shape != null)
                     shape.Dispose();
             }
-            LeftCogShapeList.Clear();
-            LeftCogShapeList.AddRange(shapeList);
+            LeftShapeResultList.CaliperShapeList.Clear();
+
+            foreach (var lineSegment in LeftShapeResultList.LineSegmentList)
+            {
+                if (lineSegment != null)
+                    lineSegment.Dispose();
+            }
+            LeftShapeResultList.LineSegmentList.Clear();
+
+            LeftShapeResultList.CaliperShapeList.AddRange(shapeList);
+            LeftShapeResultList.LineSegmentList.AddRange(lineSegmentList);
         }
 
-        public void SetRightAlignShape(List<CogCompositeShape> shapeList)
+        public void SetRightAlignShapeResult(List<CogCompositeShape> shapeList, List<CogLineSegment> lineSegmentList)
         {
-            foreach (var shape in RightCogShapeList)
+            foreach (var shape in RightShapeResultList.CaliperShapeList)
             {
                 if (shape != null)
                     shape.Dispose();
             }
-            RightCogShapeList.Clear();
-            RightCogShapeList.AddRange(shapeList);
+            RightShapeResultList.CaliperShapeList.Clear();
+
+            foreach (var lineSegment in RightShapeResultList.LineSegmentList)
+            {
+                if (lineSegment != null)
+                    lineSegment.Dispose();
+            }
+            RightShapeResultList.LineSegmentList.Clear();
+
+            RightShapeResultList.CaliperShapeList.AddRange(shapeList);
+            RightShapeResultList.LineSegmentList.AddRange(lineSegmentList);
         }
 
         public ICogImage GetCogInspImage()
@@ -230,15 +257,22 @@ namespace Jastech.Apps.Winform.UI.Controls
             return AkkonNGAffineList;
         }
 
-        public List<CogCompositeShape> GetLeftShape()
+        public AlignShapeResult GetLeftShapeResult()
         {
-            return LeftCogShapeList;
+            return LeftShapeResultList;
         }
 
-        public List<CogCompositeShape> GetRightShape()
+        public AlignShapeResult GetRightShapeResult()
         {
-            return RightCogShapeList;
+            return RightShapeResultList;
         }
         #endregion
+    }
+
+    public class AlignShapeResult
+    {
+        public List<CogCompositeShape> CaliperShapeList { get; set; } = new List<CogCompositeShape>();
+
+        public List<CogLineSegment> LineSegmentList { get; set; } = new List<CogLineSegment>();
     }
 }
