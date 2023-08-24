@@ -324,9 +324,12 @@ namespace ATT_UT_IPAD.UI.Controls
                             LeftPointList[result.TabNo].Add(fpc.MaxCaliperMatch.FoundPos);
 
                             var leftFpcX = fpc.MaxCaliperMatch.ResultGraphics;
-                            leftFpcX.Color = _fpcColor;
-                            leftFpcX.LineWidthInScreenPixels = 2;
-                            leftResultList.Add(leftFpcX);
+                            if (leftFpcX != null)
+                            {
+                                leftFpcX.Color = _fpcColor;
+                                leftFpcX.LineWidthInScreenPixels = 2;
+                                leftResultList.Add(leftFpcX);
+                            }
                         }
                     }
                 }
@@ -340,9 +343,12 @@ namespace ATT_UT_IPAD.UI.Controls
                             LeftPointList[result.TabNo].Add(panel.MaxCaliperMatch.FoundPos);
 
                             var leftPanelX = panel.MaxCaliperMatch.ResultGraphics;
-                            leftPanelX.Color = _panelColor;
-                            leftPanelX.LineWidthInScreenPixels = 2;
-                            leftResultList.Add(leftPanelX);
+                            if (leftPanelX != null)
+                            {
+                                leftPanelX.Color = _panelColor;
+                                leftPanelX.LineWidthInScreenPixels = 2;
+                                leftResultList.Add(leftPanelX);
+                            }
                         }
                     }
                 }
@@ -358,8 +364,11 @@ namespace ATT_UT_IPAD.UI.Controls
                         LeftPointList[result.TabNo].Add(leftAlignY.Fpc.CogAlignResult[0].MaxCaliperMatch.FoundPos);
 
                         var leftFpcY = leftAlignY.Fpc.CogAlignResult[0].MaxCaliperMatch.ResultGraphics;
-                        leftFpcY.Color = _fpcColor;
-                        leftResultList.Add(leftFpcY);
+                        if (leftFpcY != null)
+                        {
+                            leftFpcY.Color = _fpcColor;
+                            leftResultList.Add(leftFpcY);
+                        }
                     }
                 }
 
@@ -370,8 +379,11 @@ namespace ATT_UT_IPAD.UI.Controls
                         LeftPointList[result.TabNo].Add(leftAlignY.Panel.CogAlignResult[0].MaxCaliperMatch.FoundPos);
 
                         var leftPanelY = leftAlignY.Panel.CogAlignResult[0].MaxCaliperMatch.ResultGraphics;
-                        leftPanelY.Color = _panelColor;
-                        leftResultList.Add(leftPanelY);
+                        if (leftPanelY != null)
+                        {
+                            leftPanelY.Color = _panelColor;
+                            leftResultList.Add(leftPanelY);
+                        }
                     }
                 }
             }
@@ -399,9 +411,12 @@ namespace ATT_UT_IPAD.UI.Controls
                             RightPointList[result.TabNo].Add(fpc.MaxCaliperMatch.FoundPos);
 
                             var rightFpcX = fpc.MaxCaliperMatch.ResultGraphics;
-                            rightFpcX.Color = _fpcColor;
-                            rightFpcX.LineWidthInScreenPixels = 2;
-                            rightResultList.Add(rightFpcX);
+                            if(rightFpcX != null)
+                            {
+                                rightFpcX.Color = _fpcColor;
+                                rightFpcX.LineWidthInScreenPixels = 2;
+                                rightResultList.Add(rightFpcX);
+                            }
                         }
                     }
                 }
@@ -414,9 +429,12 @@ namespace ATT_UT_IPAD.UI.Controls
                             RightPointList[result.TabNo].Add(panel.MaxCaliperMatch.FoundPos);
 
                             var rightPanelX = panel.MaxCaliperMatch.ResultGraphics;
-                            rightPanelX.Color = _panelColor;
-                            rightPanelX.LineWidthInScreenPixels = 2;
-                            rightResultList.Add(rightPanelX);
+                            if (rightPanelX != null)
+                            {
+                                rightPanelX.Color = _panelColor;
+                                rightPanelX.LineWidthInScreenPixels = 2;
+                                rightResultList.Add(rightPanelX);
+                            }
                         }
                     }
                 }
@@ -432,8 +450,11 @@ namespace ATT_UT_IPAD.UI.Controls
                         RightPointList[result.TabNo].Add(rightAlignY.Fpc.CogAlignResult[0].MaxCaliperMatch.FoundPos);
 
                         var rightFpcY = rightAlignY.Fpc.CogAlignResult[0].MaxCaliperMatch.ResultGraphics;
-                        rightFpcY.Color = _fpcColor;
-                        rightResultList.Add(rightFpcY);
+                        if (rightFpcY != null)
+                        {
+                            rightFpcY.Color = _fpcColor;
+                            rightResultList.Add(rightFpcY);
+                        }
                     }
                 }
 
@@ -444,8 +465,11 @@ namespace ATT_UT_IPAD.UI.Controls
                         RightPointList[result.TabNo].Add(rightAlignY.Panel.CogAlignResult[0].MaxCaliperMatch.FoundPos);
 
                         var rightPanelY = rightAlignY.Panel.CogAlignResult[0].MaxCaliperMatch.ResultGraphics;
-                        rightPanelY.Color = _panelColor;
-                        rightResultList.Add(rightPanelY);
+                        if (rightPanelY != null)
+                        {
+                            rightPanelY.Color = _panelColor;
+                            rightResultList.Add(rightPanelY);
+                        }
                     }
                 }
             }
