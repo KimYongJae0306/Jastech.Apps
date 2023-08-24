@@ -264,6 +264,8 @@ namespace Jastech.Framework.Winform.Forms
 
         private void btnMark_Click(object sender, EventArgs e)
         {
+            if (_isPrevTrackingOn)
+                SetTrackingOnOff(false);
             SelectPage(DisplayType.Mark);
         }
 
