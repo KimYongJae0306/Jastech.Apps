@@ -356,7 +356,8 @@ namespace Jastech.Framework.Winform.Forms
 
             if (yesNoForm.ShowDialog() == DialogResult.Yes)
             {
-                SetTrackingOnOff(false);
+                if (_isPrevTrackingOn == true)
+                    SetTrackingOnOff(false);
                 SaveModelData(model);
 
                 MessageConfirmForm confirmForm = new MessageConfirmForm();
@@ -426,6 +427,9 @@ namespace Jastech.Framework.Winform.Forms
             dlg.ReadOnlyChecked = true;
             dlg.Filter = "BMP Files (*.bmp)|*.bmp";
             dlg.ShowDialog();
+
+            if (_isPrevTrackingOn == true)
+                SetTrackingOnOff(false);
 
             if (dlg.FileName != "")
             {
