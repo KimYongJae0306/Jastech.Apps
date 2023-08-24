@@ -127,6 +127,8 @@ namespace ATT_UT_IPAD.Core.AppTask
                     string filepath = ConfigSet.Instance().Path.Result + "Tab" + inspResult.TabNo + ".txt";
                     SaveAkkonROI(filepath, inspResult.TabNo, coordinateList);
                     Judgement tabJudgement = Judgement.NG;
+
+                    AkkonAlgorithm.UseOverCount = AppsConfig.Instance().EnableTest2;
                     var leadResultList = AkkonAlgorithm.Run(inspTab.MergeMatImage, coordinateList, tab.AkkonParam.AkkonAlgoritmParam, resolution_um, ref tabJudgement);
 
                     inspResult.AkkonResult = CreateAkkonResult(unitName, tab.Index, leadResultList);

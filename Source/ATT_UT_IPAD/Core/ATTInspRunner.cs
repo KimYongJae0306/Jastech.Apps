@@ -174,18 +174,20 @@ namespace ATT_UT_IPAD.Core
         private void UpdateUI()
         {
             GetAkkonResultImage();
+            WriteLog("Make Akkon ResultImage.", true);
 
             StartSaveThread();
             UpdateDailyInfo();
-
-            WriteLog("Update Inspection Result.", true);
 
             SystemManager.Instance().UpdateMainAkkonResult();
             SystemManager.Instance().UpdateMainAlignResult();
 
             AppsStatus.Instance().IsInspRunnerFlagFromPlc = false;
             SystemManager.Instance().EnableMainView(true);
+
             _updateThread = null;
+
+            WriteLog("Update UI Inspection Result.", true);
         }
 
         public bool IsInspAkkonDone()
@@ -329,10 +331,13 @@ namespace ATT_UT_IPAD.Core
 
                     if (_ClearBufferThread != null || _updateThread != null)
                         break;
+
                     if (MoveTo(TeachingPosType.Stage1_Scan_Start, out errorMessage) == false)
                         break;
 
                     PlcControlManager.Instance().WritePcStatus(PlcCommand.Move_ScanStartPos);
+                    WriteLog("Send Scan Start Position", true);
+
                     WriteLog("Wait Inspection Start Signal From PLC.", true);
                     SeqStep = SeqStep.SEQ_WAITING;
                     break;
@@ -340,6 +345,7 @@ namespace ATT_UT_IPAD.Core
                 case SeqStep.SEQ_WAITING:
                     if (AppsStatus.Instance().IsInspRunnerFlagFromPlc == false)
                         break;
+                    SystemManager.Instance().TabButtonResetColor();
                     SystemManager.Instance().EnableMainView(false);
 
                     WriteLog("Receive Inspection Start Signal From PLC.", true);
@@ -357,13 +363,10 @@ namespace ATT_UT_IPAD.Core
 
                 case SeqStep.SEQ_BUFFER_INIT:
                     InitializeBuffer();
-                    //SystemManager.Instance().ReleaseLastScanImage();
                     WriteLog("Initialize Buffer.");
 
                     AppsInspResult.Instance().ClearResult();
                     WriteLog("Clear Result.");
-
-                    SystemManager.Instance().TabButtonResetColor();
 
                     AppsInspResult.Instance().StartInspTime = DateTime.Now;
                     AppsInspResult.Instance().Cell_ID = GetCellID();
@@ -389,7 +392,6 @@ namespace ATT_UT_IPAD.Core
                     if(AppsConfig.Instance().EnableTest1 == false)
                     {
                         AlignCamera.StartGrab();
-                        //Thread.Sleep(1000); 
                         WriteLog("Start Align LineScanner Grab.", true);
                     }
 
@@ -428,7 +430,7 @@ namespace ATT_UT_IPAD.Core
                         WriteLog("Complete Align LineScanner Grab.", true);
                     }
                     PlcControlManager.Instance().WriteGrabDone();
-
+                    WriteLog("Send to Plc Grab Done", true);
 
                     LightCtrlHandler.TurnOff();
                     WriteLog("Light Off.", false);
@@ -467,42 +469,17 @@ namespace ATT_UT_IPAD.Core
                     break;
 
                 case SeqStep.SEQ_WAIT_UI_RESULT_UPDATE:
+
                     MoveTo(TeachingPosType.Stage1_Scan_Start, out errorMessage, false);
+
                     StartUpdateThread();
 
-                    //GetAkkonResultImage();
-
-                    //StartSaveThread();
-                    //UpdateDailyInfo();
-
-                    //WriteLog("Update Inspection Result.", true);
-
-                    //SystemManager.Instance().UpdateMainAkkonResult();
-                    //SystemManager.Instance().UpdateMainAlignResult();
-
-                    //AppsStatus.Instance().IsInspRunnerFlagFromPlc = false;
-                    //SystemManager.Instance().EnableMainView(true);
                     SeqStep = SeqStep.SEQ_SAVE_RESULT_DATA;
                     break;
                
                 case SeqStep.SEQ_SAVE_RESULT_DATA:
                     DailyInfoService.Save(inspModel.Name);
-                    Stopwatch sw12 = new Stopwatch();
-                    sw12.Restart();
                     SaveInspResultCSV();
-
-                    sw12.Stop();
-                    //WriteLog("Save inspection result.");
-
-                    SeqStep = SeqStep.SEQ_SAVE_IMAGE;
-                    break;
-
-                case SeqStep.SEQ_SAVE_IMAGE:
-                    //Stopwatch sw123 = new Stopwatch();
-                    //sw123.Restart();
-                    //SaveImage();
-                    //sw123.Stop();
-                    //WriteLog("Save inspection images.");
 
                     SeqStep = SeqStep.SEQ_DELETE_DATA;
                     break;

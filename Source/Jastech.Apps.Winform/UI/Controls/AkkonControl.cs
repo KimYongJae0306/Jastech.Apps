@@ -1592,6 +1592,7 @@ namespace Jastech.Apps.Winform.UI.Controls
             var roiList = CurrentTab.AkkonParam.GetAkkonROIList();
 
             Judgement tabJudgement = Judgement.NG;
+            AkkonAlgorithm.UseOverCount = AppsConfig.Instance().EnableTest2;
             var tabResult = AkkonAlgorithm.Run(matImage, roiList, akkonAlgorithmParam, Resolution_um, ref tabJudgement);
 
             UpdateResult(tabResult);
@@ -2013,6 +2014,8 @@ namespace Jastech.Apps.Winform.UI.Controls
             var roiList = CurrentTab.AkkonParam.GetAkkonROIList();
 
             Judgement tabJudgement = Judgement.NG;
+
+            AkkonAlgorithm.UseOverCount = AppsConfig.Instance().EnableTest2;
             var leadResultList = AkkonAlgorithm.Run(matImage, roiList, akkonParam, Resolution_um, ref tabJudgement);
             tabInspResult.AkkonResult = new Framework.Algorithms.Akkon.Results.AkkonResult();
             tabInspResult.AkkonResult.Judgement = tabJudgement;
