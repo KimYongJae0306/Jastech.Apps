@@ -354,7 +354,8 @@ namespace Jastech.Framework.Winform.Forms
 
             if (yesNoForm.ShowDialog() == DialogResult.Yes)
             {
-                SetTrackingOnOff(false);
+                if (_isPrevTrackingOn == true)
+                    SetTrackingOnOff(false);
                 SaveModelData(model);
 
                 MessageConfirmForm confirmForm = new MessageConfirmForm();
@@ -383,6 +384,9 @@ namespace Jastech.Framework.Winform.Forms
             dlg.ReadOnlyChecked = true;
             dlg.Filter = "BMP Files (*.bmp)|*.bmp";
             dlg.ShowDialog();
+
+            if (_isPrevTrackingOn == true)
+                SetTrackingOnOff(false);
 
             if (dlg.FileName != "")
             {
@@ -623,6 +627,7 @@ namespace Jastech.Framework.Winform.Forms
             else if (_displayType == DisplayType.Align)
             {
                 AlignControl.SetParams(CurrentTab);
+                AlignControl.UpdateCurrentParam();
                 AlignControl.DrawROI();
             }
             else if (_displayType == DisplayType.Akkon)

@@ -269,7 +269,7 @@ namespace Jastech.Apps.Winform.Service.Plc
             AddressMapList.Add(new PlcAddressMap(PlcCommonMap.PLC_ManualMatch, WordType.DEC, index + 229, 1));
 
             // 320~339
-            AddressMapList.Add(new PlcAddressMap(PlcCommonMap.PLC_Cell_Id, WordType.HEX, index + 320, 10));
+            AddressMapList.Add(new PlcAddressMap(PlcCommonMap.PLC_Cell_Id, WordType.HEX, index + 320, 40));
 
             // 130~139
             AddressMapList.Add(new PlcAddressMap(PlcCommonMap.PLC_AkkonZ_ServoOnOff, WordType.DEC, index + 130, 1));

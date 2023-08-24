@@ -323,6 +323,7 @@ namespace ATT_UT_IPAD
             _inspRunner.Release();
         }
 
+        // 정환
         public void SetAkkonLastScanImage(ICogImage cogImage)
         {
             _mainForm.SetAkkonLastScanImage(cogImage);

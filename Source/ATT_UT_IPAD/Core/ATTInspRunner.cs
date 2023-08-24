@@ -1425,7 +1425,7 @@ namespace ATT_UT_IPAD.Core
             {
                 if (ConfigSet.Instance().Operation.SaveImageOK)
                 {
-                    string imageName = "Tab_" + tabInspResult.TabNo.ToString();
+                    string imageName = AppsInspResult.Instance().Cell_ID + "_Tab_" + tabInspResult.TabNo.ToString();
                     string filePath = Path.Combine(resultPath, imageName);
 
                     if (operation.ExtensionOKImage == ImageExtension.Bmp)
@@ -1445,7 +1445,7 @@ namespace ATT_UT_IPAD.Core
             {
                 if (ConfigSet.Instance().Operation.SaveImageNG)
                 {
-                    string imageName = "Tab_" + tabInspResult.TabNo.ToString();
+                    string imageName = AppsInspResult.Instance().Cell_ID + "_Tab_" + tabInspResult.TabNo.ToString();
                     string filePath = Path.Combine(resultPath, imageName);
                     if (operation.ExtensionNGImage == ImageExtension.Bmp)
                     {
@@ -1464,17 +1464,19 @@ namespace ATT_UT_IPAD.Core
 
         private void SaveImage(Mat image, string filePath, Judgement judgement, ImageExtension extension, bool isHalfSave)
         {
+            string cellID = AppsInspResult.Instance().Cell_ID;
             if (extension == ImageExtension.Bmp)
             {
-                filePath += string.Format("_{0}.bmp", judgement.ToString());
+                filePath += string.Format("{0}_{1}.bmp", cellID, judgement.ToString());
                 image.Save(filePath);
             }
             else if (extension == ImageExtension.Jpg)
             {
                 if (isHalfSave)
                 {
-                    string leftPath = filePath + string.Format("_{0}_Left.jpg", judgement.ToString());
-                    string rightPath = filePath + string.Format("_{0}_Right.jpg", judgement.ToString());
+
+                    string leftPath = filePath + string.Format("{0}_{1}_Left.jpg", cellID, judgement.ToString());
+                    string rightPath = filePath + string.Format("{0}_{1}_Right.jpg", cellID, judgement.ToString());
 
                     int half = image.Width / 2;
                     Rectangle leftRect = new Rectangle(0, 0, half, image.Height);
@@ -1491,7 +1493,7 @@ namespace ATT_UT_IPAD.Core
                 }
                 else
                 {
-                    filePath += string.Format("_{0}.jpg", judgement.ToString());
+                    filePath += string.Format("{0}_{1}.jpg", cellID, judgement.ToString());
                     image.Save(filePath);
                 }
             }
