@@ -96,8 +96,6 @@ namespace Jastech.Framework.Winform.Forms
 
         public bool UseAlignMark { get; set; } = false;
 
-        public TrackingData TrackingData { get; set; } = null;
-
         protected override CreateParams CreateParams
         {
             get
@@ -356,8 +354,7 @@ namespace Jastech.Framework.Winform.Forms
 
             if (yesNoForm.ShowDialog() == DialogResult.Yes)
             {
-                ConfirmSaveExecuteCoordiante();
-
+                SetTrackingOnOff(false);
                 SaveModelData(model);
 
                 MessageConfirmForm confirmForm = new MessageConfirmForm();
@@ -366,46 +363,46 @@ namespace Jastech.Framework.Winform.Forms
             }
         }
 
-        private void ConfirmSaveExecuteCoordiante()
-        {
-            if (_executedCoordinate == true)
-            {
-                MessageYesNoForm yesnoForm = new MessageYesNoForm();
-                yesnoForm.Message = "Executed coordinate. Do you want to save applied coordinate data?";
+        //private void ConfirmSaveExecuteCoordiante()
+        //{
+        //    if (_executedCoordinate == true)
+        //    {
+        //        MessageYesNoForm yesnoForm = new MessageYesNoForm();
+        //        yesnoForm.Message = "Executed coordinate. Do you want to save applied coordinate data?";
 
-                if (yesnoForm.ShowDialog() == DialogResult.Yes)
-                {
-                    ApplyAlignCoordinate();
-                    ApplyAkkonCoordinate();
-                }
-            }
+        //        if (yesnoForm.ShowDialog() == DialogResult.Yes)
+        //        {
+        //            //ApplyAlignCoordinate();
+        //            //ApplyAkkonCoordinate();
+        //        }
+        //    }
 
-            _executedCoordinate = false;
-        }
+        //    _executedCoordinate = false;
+        //}
 
-        private void ApplyAlignCoordinate()
-        {
-            foreach (ATTTabAlignName alignName in Enum.GetValues(typeof(ATTTabAlignName)))
-            {
-                var currentAlignParam = CurrentTab.GetAlignParam(alignName);
-                var currentCaliperParam = currentAlignParam.CaliperParams.GetRegion() as CogRectangleAffine;
+        //private void ApplyAlignCoordinate()
+        //{
+        //    foreach (ATTTabAlignName alignName in Enum.GetValues(typeof(ATTTabAlignName)))
+        //    {
+        //        var currentAlignParam = CurrentTab.GetAlignParam(alignName);
+        //        var currentCaliperParam = currentAlignParam.CaliperParams.GetRegion() as CogRectangleAffine;
 
-                if (TrackingData.AlignTracking == null)
-                    continue;
+        //        if (TrackingData.AlignTracking == null)
+        //            continue;
 
-                currentCaliperParam.CenterX -= TrackingData.AlignTracking.GetAlignOffset(alignName).X;
-                currentCaliperParam.CenterY -= TrackingData.AlignTracking.GetAlignOffset(alignName).Y;
-            }
-        }
+        //        currentCaliperParam.CenterX -= TrackingData.AlignTracking.GetAlignOffset(alignName).X;
+        //        currentCaliperParam.CenterY -= TrackingData.AlignTracking.GetAlignOffset(alignName).Y;
+        //    }
+        //}
 
-        private void ApplyAkkonCoordinate()
-        {
-            if (_panelCoordinate == null)
-                return;
+        //private void ApplyAkkonCoordinate()
+        //{
+        //    if (_panelCoordinate == null)
+        //        return;
 
-            SetPanelReverseCoordinateData(_panelCoordinate, _tabInspResult.MarkResult.PanelMark.FoundedMark);
-            CoordinateAkkon(CurrentTab, _panelCoordinate);
-        }
+        //    SetReverseCoordinateAkkon(_panelCoordinate, _tabInspResult.MarkResult.PanelMark.FoundedMark);
+        //    CoordinateAkkon(CurrentTab, _panelCoordinate);
+        //}
 
         private void SaveModelData(AppsInspModel model)
         {
@@ -732,7 +729,6 @@ namespace Jastech.Framework.Winform.Forms
         }
 
         private Tab _originTabData { get; set; } = null;
-        private CoordinateTransform _panelCoordinate { get; set; } = null;
 
         private void SetTrackingOnOff(bool isOn)
         {
@@ -754,11 +750,14 @@ namespace Jastech.Framework.Winform.Forms
             _tabInspResult.MarkResult.FpcMark = _algorithmTool.RunFpcMark(cogImage, CurrentTab, UseAlignMark);
             _tabInspResult.MarkResult.PanelMark = _algorithmTool.RunPanelMark(cogImage, CurrentTab, UseAlignMark);
 
+            var coordinate = TeachingData.Instance().Coordinate;
+            var markResult = _tabInspResult.MarkResult;
+
             if (_tabInspResult.MarkResult.Judgement != Judgement.OK)
             {
                 // 검사 실패
                 string message = string.Format("Mark Insp NG !!! Tab_{0} / Fpc_{1}, Panel_{2}", CurrentTab.Index + 1,
-                    _tabInspResult.MarkResult.FpcMark.Judgement, _tabInspResult.MarkResult.PanelMark.Judgement);
+                    markResult.FpcMark.Judgement, markResult.PanelMark.Judgement);
 
                 MessageConfirmForm form = new MessageConfirmForm();
                 form.Message = message;
@@ -771,46 +770,41 @@ namespace Jastech.Framework.Winform.Forms
 
             if (isOn)
             {
-                _executedCoordinate = true;
                 lblTracking.BackColor = _selectedColor;
-                _originTabData = CurrentTab.DeepCopy();
-                TrackingData = new TrackingData();
 
                 if (_displayType == DisplayType.Akkon)
                 {
-                    _panelCoordinate = new CoordinateTransform();
-                    SetPanelCoordinateData(_panelCoordinate, _tabInspResult.MarkResult.PanelMark.FoundedMark);
-
-                    CoordinateAkkon(CurrentTab, _panelCoordinate);
+                    coordinate.SetCoordinateAkkon(markResult.PanelMark.FoundedMark);
+                    coordinate.ExcuteCoordinateAkkon(CurrentTab);
+                    //AkkonControl.DrawROI();
                 }
                 else if (_displayType == DisplayType.Align)
                 {
-                    TrackingData.AlignTracking = new AlignTracking();
-
-                    PointF leftFpcOffset = MathHelper.GetOffset(_tabInspResult.MarkResult.FpcMark.FoundedMark.Left.MaxMatchPos.ReferencePos, _tabInspResult.MarkResult.FpcMark.FoundedMark.Left.MaxMatchPos.FoundPos);
-                    PointF fpcRightOffset = MathHelper.GetOffset(_tabInspResult.MarkResult.FpcMark.FoundedMark.Right.MaxMatchPos.ReferencePos, _tabInspResult.MarkResult.FpcMark.FoundedMark.Right.MaxMatchPos.FoundPos);
-                    PointF panelLeftOffset = MathHelper.GetOffset(_tabInspResult.MarkResult.PanelMark.FoundedMark.Left.MaxMatchPos.ReferencePos, _tabInspResult.MarkResult.PanelMark.FoundedMark.Left.MaxMatchPos.FoundPos);
-                    PointF panelRightOffset = MathHelper.GetOffset(_tabInspResult.MarkResult.PanelMark.FoundedMark.Right.MaxMatchPos.ReferencePos, _tabInspResult.MarkResult.PanelMark.FoundedMark.Right.MaxMatchPos.FoundPos);
-                    
-                    TrackingData.AlignTracking.SetLeftFpcOffset(leftFpcOffset);
-                    TrackingData.AlignTracking.SetRightFpcOffset(fpcRightOffset);
-                    TrackingData.AlignTracking.SetLeftPanelOffset(panelLeftOffset);
-                    TrackingData.AlignTracking.SetRightPanelOffset(panelRightOffset);
-
-                    CoordinateAlign(CurrentTab, leftFpcOffset, fpcRightOffset, panelLeftOffset, panelRightOffset);
+                    coordinate.SetCoordinateFpcAlign(markResult.FpcMark.FoundedMark);
+                    coordinate.SetCoordinatePanelAlign(markResult.PanelMark.FoundedMark);
+                    coordinate.ExecuteCoordinateAlign(CurrentTab);
+                    //AlignControl.DrawROI();
                 }
-                else
-                {
-                    MessageConfirmForm form = new MessageConfirmForm();
-                    form.Message = "Not selected teaching item.";
-                    form.ShowDialog();
-                }
+                else { }
             }
             else
             {
-                _executedCoordinate = false;
                 lblTracking.BackColor = _nonSelectedColor;
-                CurrentTab = _originTabData.DeepCopy();
+
+                if (_displayType == DisplayType.Akkon)
+                {
+                    coordinate.SetReverseCoordinateAkkon(markResult.PanelMark.FoundedMark);
+                    coordinate.ExcuteCoordinateAkkon(CurrentTab);
+                    //AkkonControl.DrawROI();
+                }
+                else if (_displayType == DisplayType.Align)
+                {
+                    coordinate.SetReverseCoordinateFpcAlign(markResult.FpcMark.FoundedMark);
+                    coordinate.SetReverseCoordinatePanelAlign(markResult.PanelMark.FoundedMark);
+                    coordinate.ExecuteCoordinateAlign(CurrentTab);
+                    //AlignControl.DrawROI();
+                }
+                else { }
             }
 
             UpdateDisplayImage(CurrentTab.Index);
@@ -818,282 +812,11 @@ namespace Jastech.Framework.Winform.Forms
             _isPrevTrackingOn = isOn;
         }
 
-        private void SetPanelCoordinateData(CoordinateTransform panel, MarkMatchingResult panelMarkResult)
-        {
-            PointF teachingLeftPoint = panelMarkResult.Left.MaxMatchPos.ReferencePos;
-            PointF searchedLeftPoint = panelMarkResult.Left.MaxMatchPos.FoundPos;
-
-            PointF teachingRightPoint = panelMarkResult.Right.MaxMatchPos.ReferencePos;
-            PointF searchedRightPoint = panelMarkResult.Right.MaxMatchPos.FoundPos;
-
-            panel.SetReferenceData(teachingLeftPoint, teachingRightPoint);
-            panel.SetTargetData(searchedLeftPoint, searchedRightPoint);
-
-            panel.ExecuteCoordinate();
-        }
-
-        private void SetPanelCoordinateData(CoordinateTransform panel, TabInspResult tabInspResult)
-        {
-            PointF teachingLeftPoint = tabInspResult.MarkResult.PanelMark.FoundedMark.Left.MaxMatchPos.ReferencePos;
-            PointF searchedLeftPoint = tabInspResult.MarkResult.PanelMark.FoundedMark.Left.MaxMatchPos.FoundPos;
-
-            PointF teachingRightPoint = tabInspResult.MarkResult.PanelMark.FoundedMark.Right.MaxMatchPos.ReferencePos;
-            PointF searchedRightPoint = tabInspResult.MarkResult.PanelMark.FoundedMark.Right.MaxMatchPos.FoundPos;
-
-            panel.SetReferenceData(teachingLeftPoint, teachingRightPoint);
-            panel.SetTargetData(searchedLeftPoint, searchedRightPoint);
-
-            panel.ExecuteCoordinate();
-        }
-
-        private void SetPanelReverseCoordinateData(CoordinateTransform panel, MarkMatchingResult panelMarkResult)
-        {
-            if (panel == null)
-                return;
-
-            PointF teachingLeftPoint = panelMarkResult.Left.MaxMatchPos.ReferencePos;
-            PointF searchedLeftPoint = panelMarkResult.Left.MaxMatchPos.FoundPos;
-
-            PointF teachingRightPoint = panelMarkResult.Right.MaxMatchPos.ReferencePos;
-            PointF searchedRightPoint = panelMarkResult.Right.MaxMatchPos.FoundPos;
-
-            panel.SetReferenceData(searchedLeftPoint, searchedRightPoint);
-            panel.SetTargetData(teachingLeftPoint, teachingRightPoint);
-
-            panel.ExecuteCoordinate();
-        }
-
-        private void SetPanelReverseCoordinateData(CoordinateTransform panel, TabInspResult tabInspResult)
-        {
-            PointF teachingLeftPoint = tabInspResult.MarkResult.PanelMark.FoundedMark.Left.MaxMatchPos.ReferencePos;
-            PointF searchedLeftPoint = tabInspResult.MarkResult.PanelMark.FoundedMark.Left.MaxMatchPos.FoundPos;
-
-            PointF teachingRightPoint = tabInspResult.MarkResult.PanelMark.FoundedMark.Right.MaxMatchPos.ReferencePos;
-            PointF searchedRightPoint = tabInspResult.MarkResult.PanelMark.FoundedMark.Right.MaxMatchPos.FoundPos;
-
-            panel.SetReferenceData(searchedLeftPoint, searchedRightPoint);
-            panel.SetTargetData(teachingLeftPoint, teachingRightPoint);
-
-            panel.ExecuteCoordinate();
-        }
-
-        private void MarkInspect(DisplayType displayType)
-        {
-            var display = TeachingUIManager.Instance().TeachingDisplayControl.GetDisplay();
-            if (display == null)
-                return;
-
-            ICogImage cogImage = display.GetImage();
-            if (cogImage == null)
-                return;
-
-            display.ClearGraphic();
-            display.DisplayRefresh();
-
-            MainAlgorithmTool algorithmTool = new MainAlgorithmTool();
-            TabInspResult tabInspResult = new TabInspResult();
-            algorithmTool.MainMarkInspect(cogImage, CurrentTab, ref tabInspResult, UseAlignMark);
-
-            if (tabInspResult.MarkResult.Judgement != Judgement.OK)
-            {
-                // 검사 실패
-                string message = string.Format("Mark Insp NG !!! Tab_{0} / Fpc_{1}, Panel_{2}", CurrentTab.Index + 1,
-                    tabInspResult.MarkResult.FpcMark.Judgement, tabInspResult.MarkResult.PanelMark.Judgement);
-
-                MessageConfirmForm form = new MessageConfirmForm();
-                form.Message = message;
-                form.ShowDialog();
-                return;
-            }
-        }
-
-        private void ExecuteCoordinate()
-        {
-            var display = TeachingUIManager.Instance().TeachingDisplayControl.GetDisplay();
-            display.ClearGraphic();
-
-            if (CurrentTab == null)
-                return;
-
-            Tab tabOriginData = CurrentTab.DeepCopy();
-
-            ICogImage cogImage = display.GetImage();
-
-            if (cogImage == null)
-                return;
-
-            if (tabOriginData.MarkParamter == null)
-                return;
-
-            // Left Fpc
-            MarkParam referenceLeftFpcMarkParam = tabOriginData.MarkParamter.GetFPCMark(MarkDirection.Left, MarkName.Main, UseAlignMark);
-            if (referenceLeftFpcMarkParam == null)
-                return;
-            VisionProPatternMatchingResult leftFpcMarkResult = Algorithm.RunPatternMatch(cogImage, referenceLeftFpcMarkParam.InspParam);
-            if (leftFpcMarkResult == null)
-                return;
-
-            PointF referenceLeftFpcPoint = leftFpcMarkResult.MaxMatchPos.ReferencePos;
-            PointF searchedLeftFpcPoint = leftFpcMarkResult.MaxMatchPos.FoundPos;
-
-            // Right Fpc
-            MarkParam referenceRightFpcMarkParam = tabOriginData.MarkParamter.GetFPCMark(MarkDirection.Right, MarkName.Main, UseAlignMark);
-            if (referenceRightFpcMarkParam == null)
-                return;
-            VisionProPatternMatchingResult rightFpcMarkResult = Algorithm.RunPatternMatch(cogImage, referenceRightFpcMarkParam.InspParam);
-            if (rightFpcMarkResult == null)
-                return;
-
-            PointF referenceRightFpcPoint = rightFpcMarkResult.MaxMatchPos.ReferencePos;
-            PointF searchedRightFpcPoint = rightFpcMarkResult.MaxMatchPos.FoundPos;
-
-            // Left Panel
-            MarkParam referenceLeftPanelMarkParam = tabOriginData.MarkParamter.GetPanelMark(MarkDirection.Left, MarkName.Main, UseAlignMark);
-            if (referenceLeftPanelMarkParam == null)
-                return;
-            VisionProPatternMatchingResult leftPanelMarkResult = Algorithm.RunPatternMatch(cogImage, referenceLeftPanelMarkParam.InspParam);
-            if (leftPanelMarkResult == null)
-                return;
-
-            PointF referenceLeftPanelPoint = leftPanelMarkResult.MaxMatchPos.ReferencePos;
-            PointF searchedLeftPanelPoint = leftPanelMarkResult.MaxMatchPos.FoundPos;
-
-            // 찾은 Right Panel 좌표
-            MarkParam referenceRightPanelMarkParam = tabOriginData.MarkParamter.GetPanelMark(MarkDirection.Right, MarkName.Main, UseAlignMark);
-            if (referenceRightPanelMarkParam == null)
-                return;
-            VisionProPatternMatchingResult rightPanelMarkResult = Algorithm.RunPatternMatch(cogImage, referenceRightPanelMarkParam.InspParam);
-            if (rightPanelMarkResult == null)
-                return;
-
-            PointF referenceRightPanelPoint = rightPanelMarkResult.MaxMatchPos.ReferencePos;
-            PointF searchedRightPanelPoint = rightPanelMarkResult.MaxMatchPos.FoundPos;
-
-            // Set Coordinage Params
-            CoordinateTransform fpcCoordinate = new CoordinateTransform();
-            fpcCoordinate.SetReferenceData(referenceLeftFpcPoint, referenceRightFpcPoint);
-            fpcCoordinate.SetTargetData(searchedLeftFpcPoint, searchedRightFpcPoint);
-            fpcCoordinate.ExecuteCoordinate();
-
-            CoordinateTransform panelCoordinate = new CoordinateTransform();
-            panelCoordinate.SetReferenceData(referenceLeftPanelPoint, referenceRightPanelPoint);
-            panelCoordinate.SetTargetData(searchedLeftPanelPoint, searchedRightPanelPoint);
-            panelCoordinate.ExecuteCoordinate();
-
-
-
-            // TEST_230810_S
-            //TeachingData.Instance().GetUnit(UnitName.ToString()).SetTab(tabOriginData);
-            //CurrentTab = tabOriginData;
-
-            // Coordinate Align
-            //CoordinateAlign(CurrentTab, fpcCoordinate, panelCoordinate);
-
-            // Coordinate Akkon
-            //CoordinateAkkon(CurrentTab, panelCoordinate);
-
-
-            if (_displayType == DisplayType.Align)
-            {
-                CoordinateAlign(tabOriginData, fpcCoordinate, panelCoordinate);
-                AlignControl.SetParams(tabOriginData);
-                AlignControl.DrawROI();
-            }
-            else if (_displayType == DisplayType.Akkon)
-            {
-                CoordinateAkkon(tabOriginData, panelCoordinate);
-                AkkonControl.SetParams(tabOriginData);
-                AkkonControl.DrawROI();
-            }
-            else { }
-
-            //SetCoordinateTab(tabOriginData);
-
-
-
-
-
-
-
-            //var newLeftFpcMark = SetCoordinateMark(referenceLeftFpcMarkParam, leftFpcMarkResult);
-            //var newRightFpcMark = SetCoordinateMark(referenceRightFpcMarkParam, rightFpcMarkResult);
-            //var newLeftPanelMark = SetCoordinateMark(referenceLeftPanelMarkParam, leftPanelMarkResult);
-            //var newRightPanelMark = SetCoordinateMark(referenceRightPanelMarkParam, rightPanelMarkResult);
-
-
-            //var mainFpcLeftMark = tabOriginData.MarkParamter.MainFpcMarkParamList.Where(x => x.Name == MarkName.Main && x.Direction == MarkDirection.Left).FirstOrDefault();
-            //mainFpcLeftMark = newLeftFpcMark.DeepCopy();
-            //mainFpcLeftMark.InspParam.SetInputImage(cogImage);
-            //mainFpcLeftMark.InspParam.Train(cogImage);
-
-            //var mainFpcRightMark = tabOriginData.MarkParamter.MainFpcMarkParamList.Where(x => x.Name == MarkName.Main && x.Direction == MarkDirection.Right).FirstOrDefault();
-            //mainFpcRightMark = newLeftFpcMark.DeepCopy();
-            //mainFpcRightMark.InspParam.SetInputImage(cogImage);
-            //mainFpcRightMark.InspParam.Train(cogImage);
-
-            //var mainPanelLeftMark = tabOriginData.MarkParamter.MainPanelMarkParamList.Where(x => x.Name == MarkName.Main && x.Direction == MarkDirection.Left).FirstOrDefault();
-            //mainPanelLeftMark = newLeftFpcMark.DeepCopy();
-            //mainPanelLeftMark.InspParam.SetInputImage(cogImage);
-            //mainPanelLeftMark.InspParam.Train(cogImage);
-
-            //var mainPanelRightMark = tabOriginData.MarkParamter.MainPanelMarkParamList.Where(x => x.Name == MarkName.Main && x.Direction == MarkDirection.Right).FirstOrDefault();
-            //mainPanelRightMark = newLeftFpcMark.DeepCopy();
-            //mainPanelRightMark.InspParam.SetInputImage(cogImage);
-            //mainPanelRightMark.InspParam.Train(cogImage);
-
-
-
-
-            // TEST_230810_E
-
-            // TEST_230810_S
-            //UpdateDisplayImage(tabOriginData.Index);
-            // TEST_230810_E
-        }
-
-        private void CoordinateAlign(Tab tab, PointF leftFpcOffset, PointF rightFpcOffset, PointF leftPanelOffset, PointF rightPanelOffset)
-        {
-            foreach (ATTTabAlignName alignName in Enum.GetValues(typeof(ATTTabAlignName)))
-            {
-                var alignParam = tab.GetAlignParam(alignName).DeepCopy();
-                var region = alignParam.CaliperParams.GetRegion() as CogRectangleAffine;
-
-                CogRectangleAffine newRegion = new CogRectangleAffine();
-
-                switch (alignName)
-                {
-                    case ATTTabAlignName.LeftFPCX:
-                    case ATTTabAlignName.LeftFPCY:
-                        newRegion = VisionProShapeHelper.AddOffsetToCogRectAffine(region, leftFpcOffset);
-                        break;
-                    case ATTTabAlignName.RightFPCX:
-                    case ATTTabAlignName.RightFPCY:
-                        newRegion = VisionProShapeHelper.AddOffsetToCogRectAffine(region, rightFpcOffset);
-                        break;
-
-                    case ATTTabAlignName.LeftPanelX:
-                    case ATTTabAlignName.LeftPanelY:
-                        newRegion = VisionProShapeHelper.AddOffsetToCogRectAffine(region, leftPanelOffset);
-                        break;
-                    case ATTTabAlignName.RightPanelX:
-                    case ATTTabAlignName.RightPanelY:
-                        newRegion = VisionProShapeHelper.AddOffsetToCogRectAffine(region, rightPanelOffset);
-                        break;
-
-                    default:
-                        break;
-                }
-
-                alignParam.CaliperParams.SetRegion(newRegion);
-                tab.SetAlignParam(alignName, alignParam);
-            }
-        }
-
         private void CoordinateAlign(Tab tab, CoordinateTransform fpcCoordinate, CoordinateTransform panelCoordinate)
         {
             foreach (ATTTabAlignName alignName in Enum.GetValues(typeof(ATTTabAlignName)))
             {
-                var alignParam = tab.GetAlignParam(alignName).DeepCopy();
+                var alignParam = tab.GetAlignParam(alignName);
                 var region = alignParam.CaliperParams.GetRegion() as CogRectangleAffine;
 
                 PointF oldPoint = new PointF();
@@ -1213,126 +936,5 @@ namespace Jastech.Framework.Winform.Forms
 
         PreAlign,
         Calibration,
-    }
-
-    public class TrackingData
-    {
-        public AlignTracking AlignTracking { get; set; } = null;
-
-        public AkkonTracking AkkonTracking { get; set; } = null;
-    }
-
-    public class AlignTracking
-    {
-        private PointF _leftFpcOffset { get; set; } = new PointF(0, 0);
-
-        private PointF _fpcRightOffset { get; set; } = new PointF(0, 0);
-
-        private PointF _panelLeftOffset { get; set; } = new PointF(0, 0);
-
-        private PointF _panelRightOffset { get; set; } = new PointF(0, 0);
-
-        public void SetLeftFpcOffset(PointF leftFpcOffset)
-        {
-            _leftFpcOffset = leftFpcOffset;
-        }
-
-        public void SetRightFpcOffset(PointF rightFpcOffset)
-        {
-            _fpcRightOffset = rightFpcOffset;
-        }
-
-        public void SetLeftPanelOffset(PointF leftPanelOffset)
-        {
-            _panelLeftOffset = leftPanelOffset;
-        }
-
-        public void SetRightPanelOffset(PointF rightPanelOffset)
-        {
-            _panelRightOffset = rightPanelOffset;
-        }
-
-        private PointF GetLeftFpcOffset()
-        {
-            return _leftFpcOffset;
-        }
-
-        private PointF GetRightFpcOffset()
-        {
-            return _fpcRightOffset;
-        }
-
-        private PointF GetLeftPanelOffset()
-        {
-            return _panelLeftOffset;
-        }
-
-        private PointF GetRightPanelOffset()
-        {
-            return _panelRightOffset;
-        }
-
-        public PointF GetAlignOffset(ATTTabAlignName alignName) 
-        {
-            PointF offset = new PointF();
-
-            switch (alignName)
-            {
-                case ATTTabAlignName.LeftFPCX:
-                case ATTTabAlignName.LeftFPCY:
-                    offset = GetLeftFpcOffset();
-                    break;
-
-                case ATTTabAlignName.RightFPCX:
-                case ATTTabAlignName.RightFPCY:
-                    offset = GetRightFpcOffset();
-                    break;
-
-                case ATTTabAlignName.LeftPanelX:
-                case ATTTabAlignName.LeftPanelY:
-                    offset = GetLeftPanelOffset();
-                    break;
-
-                case ATTTabAlignName.RightPanelX:
-                case ATTTabAlignName.RightPanelY:
-                    offset = GetRightPanelOffset();
-                    break;
-
-                case ATTTabAlignName.CenterFPC:
-                    break;
-                default:
-                    break;
-            }
-
-            return offset;
-        }
-    }
-
-    public class AkkonTracking
-    {
-        private List<PointF> _offsetList = null;
-
-        private AkkonROI _offset = new AkkonROI();
-
-        public void SetOffset(AkkonROI roi)
-        {
-            //_offset.x
-        }
-
-        public void AddOffset(PointF offset)
-        {
-            if (_offsetList.Count > 0)
-                _offsetList.Clear();
-
-            _offsetList.Add(offset);
-        }
-
-        public List<PointF> GetOffsetList()
-        {
-            if (_offsetList.Count <= 0)
-                return null;
-
-            return _offsetList;
-        }
     }
 }
