@@ -169,21 +169,15 @@ namespace Jastech.Apps.Structure.Data
         #endregion
 
         #region 속성
-        public CoordinateTransform Fpc = new CoordinateTransform();
-
         public CoordinateTransform Panel = new CoordinateTransform();
 
         public PointF FpcLeftOffset { get; private set; }
 
-
         public PointF FpcRightOffset { get; private set; }
-
 
         public PointF PanelLeftOffsetX { get; private set; }
 
-
         public PointF PanelRightOffsetX { get; private set; }
-
         #endregion
 
         #region 이벤트
@@ -196,56 +190,6 @@ namespace Jastech.Apps.Structure.Data
         #endregion
 
         #region 메서드
-        #endregion
-
-        //public void SetAlignFpcLeftOffset(Tab tab, VisionProPatternMatchingResult markResult)
-        //{
-        //    double fpcRefX = markResult.MaxMatchPos.ReferencePos.X;
-        //    double fpcRefY = markResult.MaxMatchPos.ReferencePos.Y;
-
-        //    var mainFPCMark = tab.MarkParamter.GetFPCMark(MarkDirection.Left, MarkName.Main, true);
-        //    var mainOrigin = mainFPCMark.InspParam.GetOrigin();
-
-        //    FpcLeftOffsetX = mainOrigin.TranslationX - fpcRefX;
-        //    FpcLeftOffsetY = mainOrigin.TranslationY - fpcRefY;
-        //}
-
-        //public void SetAlignFpcRightOffset(Tab tab, VisionProPatternMatchingResult markResult)
-        //{
-        //    double fpcRefX = markResult.MaxMatchPos.ReferencePos.X;
-        //    double fpcRefY = markResult.MaxMatchPos.ReferencePos.Y;
-
-        //    var mainFPCMark = tab.MarkParamter.GetFPCMark(MarkDirection.Right, MarkName.Main, true);
-        //    var mainOrigin = mainFPCMark.InspParam.GetOrigin();
-
-        //    FpcRightOffsetX = mainOrigin.TranslationX - fpcRefX;
-        //    FpcRightOffsetY = mainOrigin.TranslationY - fpcRefY;
-        //}
-
-        //public void SetAlignPanelLeftOffset(Tab tab, VisionProPatternMatchingResult markResult)
-        //{
-        //    double panelRefX = markResult.MaxMatchPos.ReferencePos.X;
-        //    double panelRefY = markResult.MaxMatchPos.ReferencePos.Y;
-
-        //    var mainPanelMark = tab.MarkParamter.GetPanelMark(MarkDirection.Left, MarkName.Main, true);
-        //    var mainOrigin = mainPanelMark.InspParam.GetOrigin();
-
-        //    PanelLeftOffsetX = mainOrigin.TranslationX - panelRefX;
-        //    PanelLeftOffsetY = mainOrigin.TranslationY - panelRefY;
-        //}
-
-        //public void SetAlignPanelRightOffset(Tab tab, VisionProPatternMatchingResult markResult)
-        //{
-        //    double panelRefX = markResult.MaxMatchPos.ReferencePos.X;
-        //    double panelRefY = markResult.MaxMatchPos.ReferencePos.Y;
-
-        //    var mainPanelMark = tab.MarkParamter.GetPanelMark(MarkDirection.Right, MarkName.Main, true);
-        //    var mainOrigin = mainPanelMark.InspParam.GetOrigin();
-
-        //    PanelRightOffsetX = mainOrigin.TranslationX - panelRefX;
-        //    PanelRightOffsetY = mainOrigin.TranslationY - panelRefY;
-        //}
-
         public void SetCoordinateAkkon(MarkMatchingResult panelMarkResult)
         {
             PointF teachingLeftPoint = panelMarkResult.Left.MaxMatchPos.ReferencePos;
@@ -369,21 +313,6 @@ namespace Jastech.Apps.Structure.Data
             }
         }
 
-        private CogRectangleAffine CoordinateFromFpc(CogRectangleAffine cogRegion, bool isReverse = false)
-        {
-            CogRectangleAffine roi = new CogRectangleAffine(cogRegion);
-            PointF inputPoint = new PointF();
-            inputPoint.X = (float)roi.CenterX;
-            inputPoint.Y = (float)roi.CenterY;
-
-            var newPoint = Fpc.GetCoordinate(inputPoint);
-
-            roi.CenterX = newPoint.X;
-            roi.CenterY = newPoint.Y;
-
-            return roi;
-        }
-
         public void SetFpcLeftOffset(PointF leftFpcOffset)
         {
             FpcLeftOffset = leftFpcOffset;
@@ -458,5 +387,6 @@ namespace Jastech.Apps.Structure.Data
 
             return offset;
         }
+        #endregion
     }
 }

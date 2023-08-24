@@ -90,8 +90,6 @@ namespace Jastech.Framework.Winform.Forms
 
         private MarkControl MarkControl { get; set; } = null;
 
-        private AlgorithmTool Algorithm = new AlgorithmTool();
-
         public LAFCtrl LAFCtrl { get; set; } = null;
 
         public bool UseAlignMark { get; set; } = false;
@@ -365,47 +363,6 @@ namespace Jastech.Framework.Winform.Forms
             }
         }
 
-        //private void ConfirmSaveExecuteCoordiante()
-        //{
-        //    if (_executedCoordinate == true)
-        //    {
-        //        MessageYesNoForm yesnoForm = new MessageYesNoForm();
-        //        yesnoForm.Message = "Executed coordinate. Do you want to save applied coordinate data?";
-
-        //        if (yesnoForm.ShowDialog() == DialogResult.Yes)
-        //        {
-        //            //ApplyAlignCoordinate();
-        //            //ApplyAkkonCoordinate();
-        //        }
-        //    }
-
-        //    _executedCoordinate = false;
-        //}
-
-        //private void ApplyAlignCoordinate()
-        //{
-        //    foreach (ATTTabAlignName alignName in Enum.GetValues(typeof(ATTTabAlignName)))
-        //    {
-        //        var currentAlignParam = CurrentTab.GetAlignParam(alignName);
-        //        var currentCaliperParam = currentAlignParam.CaliperParams.GetRegion() as CogRectangleAffine;
-
-        //        if (TrackingData.AlignTracking == null)
-        //            continue;
-
-        //        currentCaliperParam.CenterX -= TrackingData.AlignTracking.GetAlignOffset(alignName).X;
-        //        currentCaliperParam.CenterY -= TrackingData.AlignTracking.GetAlignOffset(alignName).Y;
-        //    }
-        //}
-
-        //private void ApplyAkkonCoordinate()
-        //{
-        //    if (_panelCoordinate == null)
-        //        return;
-
-        //    SetReverseCoordinateAkkon(_panelCoordinate, _tabInspResult.MarkResult.PanelMark.FoundedMark);
-        //    CoordinateAkkon(CurrentTab, _panelCoordinate);
-        //}
-
         private void SaveModelData(AppsInspModel model)
         {
             AkkonControl.SaveAkkonParam();
@@ -673,6 +630,7 @@ namespace Jastech.Framework.Winform.Forms
                 AkkonControl.SetParams(CurrentTab);
                 AkkonControl.DrawROI();
             }
+
             GC.Collect();
         }
 
@@ -799,79 +757,6 @@ namespace Jastech.Framework.Winform.Forms
             _isPrevTrackingOn = isOn;
         }
 
-        private void CoordinateAlign(Tab tab, CoordinateTransform fpcCoordinate, CoordinateTransform panelCoordinate)
-        {
-            foreach (ATTTabAlignName alignName in Enum.GetValues(typeof(ATTTabAlignName)))
-            {
-                var alignParam = tab.GetAlignParam(alignName);
-                var region = alignParam.CaliperParams.GetRegion() as CogRectangleAffine;
-
-                PointF oldPoint = new PointF();
-                oldPoint.X = Convert.ToSingle(region.CenterX);
-                oldPoint.Y = Convert.ToSingle(region.CenterY);
-
-                PointF newPoint = new PointF();
-
-                switch (alignName)
-                {
-                    case ATTTabAlignName.LeftFPCX:
-                    case ATTTabAlignName.LeftFPCY:
-                    case ATTTabAlignName.RightFPCX:
-                    case ATTTabAlignName.RightFPCY:
-                        newPoint = fpcCoordinate.GetCoordinate(oldPoint);
-                        break;
-
-                    case ATTTabAlignName.LeftPanelX:
-                    case ATTTabAlignName.LeftPanelY:
-                    case ATTTabAlignName.RightPanelX:
-                    case ATTTabAlignName.RightPanelY:
-                        newPoint = panelCoordinate.GetCoordinate(oldPoint);
-                        break;
-
-                    default:
-                        break;
-                }
-
-                region.CenterX = newPoint.X;
-                region.CenterY = newPoint.Y;
-                alignParam.CaliperParams.SetRegion(region);
-                tab.SetAlignParam(alignName, alignParam);
-            }
-        }
-
-        private void CoordinateAkkon(Tab tab, CoordinateTransform panelCoordinate)
-        {
-            foreach (var group in tab.AkkonParam.GroupList)
-            {
-                List<AkkonROI> akkonList = new List<AkkonROI>();
-
-                foreach (var rois in group.AkkonROIList)
-                {
-                    PointF leftTop = rois.GetLeftTopPoint();
-                    PointF rightTop = rois.GetRightTopPoint();
-                    PointF leftBottom = rois.GetLeftBottomPoint();
-                    PointF rightBottom = rois.GetRightBottomPoint();
-
-                    var newLeftTop = panelCoordinate.GetCoordinate(leftTop);
-                    var newRightTop = panelCoordinate.GetCoordinate(rightTop);
-                    var newLeftBottom = panelCoordinate.GetCoordinate(leftBottom);
-                    var newRightBottom = panelCoordinate.GetCoordinate(rightBottom);
-
-                    AkkonROI akkonRoi = new AkkonROI();
-
-                    akkonRoi.SetLeftTopPoint(newLeftTop);
-                    akkonRoi.SetRightTopPoint(newRightTop);
-                    akkonRoi.SetLeftBottomPoint(newLeftBottom);
-                    akkonRoi.SetRightBottomPoint(newRightBottom);
-
-                    akkonList.Add(akkonRoi);
-                }
-
-                group.AkkonROIList.Clear();
-                group.AkkonROIList.AddRange(akkonList);
-            }
-        }
-
         private MarkParam SetCoordinateMark(MarkParam param, VisionProPatternMatchingResult result)
         {
             var newParam = param.DeepCopy();
@@ -897,7 +782,6 @@ namespace Jastech.Framework.Winform.Forms
             String dir = ConfigSet.Instance().Path.Model;
             Process.Start(dir);
         }
-        #endregion
 
         private void lblImageSave_Click(object sender, EventArgs e)
         {
@@ -910,9 +794,7 @@ namespace Jastech.Framework.Winform.Forms
             form.SetUnitName(UnitName.Unit0);
             form.ShowDialog();
         }
-
-        private bool _executedCoordinate { get; set; } = false;
-
+        #endregion
     }
 
     public enum DisplayType
