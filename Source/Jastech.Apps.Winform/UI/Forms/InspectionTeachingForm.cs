@@ -670,6 +670,7 @@ namespace Jastech.Framework.Winform.Forms
             else if (_displayType == DisplayType.Align)
             {
                 AlignControl.SetParams(CurrentTab);
+                AlignControl.UpdateCurrentParam();
                 AlignControl.DrawROI();
             }
             else if (_displayType == DisplayType.Akkon)

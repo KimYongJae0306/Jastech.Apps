@@ -60,7 +60,7 @@ namespace Jastech.Apps.Winform.UI.Controls
             
             UpdateSelectedAlignName(lblLeftFPCX);
             UpdateParam(ATTTabAlignName.LeftFPCX);
-            UpdateParam(CurrentAlignName);
+            //UpdateParam(CurrentAlignName);
         }
 
         private void AddControl()
@@ -88,6 +88,10 @@ namespace Jastech.Apps.Winform.UI.Controls
                 return;
 
             CurrentTab = tab;
+        }
+
+        public void UpdateCurrentParam()
+        {
             UpdateParam(CurrentAlignName);
         }
 
