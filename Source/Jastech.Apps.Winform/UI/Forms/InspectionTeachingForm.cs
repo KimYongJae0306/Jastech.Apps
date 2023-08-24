@@ -296,7 +296,6 @@ namespace Jastech.Framework.Winform.Forms
             {
                 TeachingUIManager.Instance().TeachingDisplayControl.SetImage(orgImage);
                 TeachingUIManager.Instance().TeachingDisplayControl.SetThumbnailImage(orgImage);
-
             }
             switch (type)
             {
@@ -304,6 +303,7 @@ namespace Jastech.Framework.Winform.Forms
                     btnMark.BackColor = _selectedColor;
                     MarkControl.SetParams(CurrentTab);
                     pnlTeach.Controls.Add(MarkControl);
+                    MarkControl.DrawROI();
                     break;
 
                 case DisplayType.Align:
@@ -314,6 +314,7 @@ namespace Jastech.Framework.Winform.Forms
                     AlignControl.Resolution_um = camera.PixelResolution_um / camera.LensScale;
 
                     pnlTeach.Controls.Add(AlignControl);
+                    AlignControl.DrawROI();
                     break;
 
                 case DisplayType.Akkon:
@@ -326,6 +327,7 @@ namespace Jastech.Framework.Winform.Forms
                     else
                         AkkonControl.SetUserMaker(false);
                     pnlTeach.Controls.Add(AkkonControl);
+                    AkkonControl.DrawROI();
                     break;
 
                 default:
@@ -771,43 +773,28 @@ namespace Jastech.Framework.Winform.Forms
             if (isOn)
             {
                 lblTracking.BackColor = _selectedColor;
+                coordinate.SetCoordinateAkkon(markResult.PanelMark.FoundedMark);
 
-                if (_displayType == DisplayType.Akkon)
-                {
-                    coordinate.SetCoordinateAkkon(markResult.PanelMark.FoundedMark);
-                    coordinate.ExcuteCoordinateAkkon(CurrentTab);
-                    //AkkonControl.DrawROI();
-                }
-                else if (_displayType == DisplayType.Align)
-                {
-                    coordinate.SetCoordinateFpcAlign(markResult.FpcMark.FoundedMark);
-                    coordinate.SetCoordinatePanelAlign(markResult.PanelMark.FoundedMark);
-                    coordinate.ExecuteCoordinateAlign(CurrentTab);
-                    //AlignControl.DrawROI();
-                }
-                else { }
+                coordinate.SetCoordinateFpcAlign(markResult.FpcMark.FoundedMark);
+                coordinate.SetCoordinatePanelAlign(markResult.PanelMark.FoundedMark);
             }
             else
             {
                 lblTracking.BackColor = _nonSelectedColor;
+                coordinate.SetReverseCoordinateAkkon(markResult.PanelMark.FoundedMark);
 
-                if (_displayType == DisplayType.Akkon)
-                {
-                    coordinate.SetReverseCoordinateAkkon(markResult.PanelMark.FoundedMark);
-                    coordinate.ExcuteCoordinateAkkon(CurrentTab);
-                    //AkkonControl.DrawROI();
-                }
-                else if (_displayType == DisplayType.Align)
-                {
-                    coordinate.SetReverseCoordinateFpcAlign(markResult.FpcMark.FoundedMark);
-                    coordinate.SetReverseCoordinatePanelAlign(markResult.PanelMark.FoundedMark);
-                    coordinate.ExecuteCoordinateAlign(CurrentTab);
-                    //AlignControl.DrawROI();
-                }
-                else { }
+                coordinate.SetReverseCoordinateFpcAlign(markResult.FpcMark.FoundedMark);
+                coordinate.SetReverseCoordinatePanelAlign(markResult.PanelMark.FoundedMark);
             }
+            coordinate.ExcuteCoordinateAkkon(CurrentTab);
+            coordinate.ExecuteCoordinateAlign(CurrentTab);
 
-            UpdateDisplayImage(CurrentTab.Index);
+
+            if (_displayType == DisplayType.Akkon)
+                AkkonControl.DrawROI();
+            else if (_displayType == DisplayType.Align)
+                AlignControl.DrawROI();
+            else { }
 
             _isPrevTrackingOn = isOn;
         }

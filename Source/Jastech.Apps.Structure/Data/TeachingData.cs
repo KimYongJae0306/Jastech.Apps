@@ -356,16 +356,7 @@ namespace Jastech.Apps.Structure.Data
             PointF panelRightOffset = MathHelper.GetOffset(panelMarkResult.Right.MaxMatchPos.FoundPos, panelMarkResult.Right.MaxMatchPos.ReferencePos);
             SetPanelRightOffset(panelRightOffset);
         }
-        //public void ExecuteCoordinateAlign(Tab tab)
-        //{
-        //    foreach (var alignParam in tab.AlignParamList)
-        //    {
-        //        var alignRegion = alignParam.CaliperParams.GetRegion();
-        //        var calcAlignRegion = CoordinateFromFpc(alignRegion as CogRectangleAffine);
-        //        alignParam.CaliperParams.SetRegion(calcAlignRegion);
-        //    }
-        //}
-
+    
         public void ExecuteCoordinateAlign(Tab tab)
         {
             foreach (ATTTabAlignName alignName in Enum.GetValues(typeof(ATTTabAlignName)))
@@ -375,7 +366,6 @@ namespace Jastech.Apps.Structure.Data
 
                 CogRectangleAffine newRegion = VisionProShapeHelper.AddOffsetToCogRectAffine(region, GetAlignOffset(alignName));
                 alignParam.CaliperParams.SetRegion(newRegion);
-                tab.SetAlignParam(alignName, alignParam);
             }
         }
 
