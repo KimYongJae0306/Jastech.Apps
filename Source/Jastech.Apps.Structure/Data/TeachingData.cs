@@ -104,7 +104,6 @@ namespace Jastech.Apps.Structure.Data
 
         public void AddBufferImage(int tabNo, Mat tabImage)
         {
-            Console.WriteLine("Add " + tabNo.ToString());
             lock (ImageBufferList)
                 ImageBufferList.Add(new TeachingImageBuffer
                 {
@@ -362,6 +361,8 @@ namespace Jastech.Apps.Structure.Data
             foreach (ATTTabAlignName alignName in Enum.GetValues(typeof(ATTTabAlignName)))
             {
                 var alignParam = tab.GetAlignParam(alignName);
+                if (alignParam == null)
+                    alignParam = new Parameters.AlignParam();
                 var region = alignParam.CaliperParams.GetRegion() as CogRectangleAffine;
 
                 CogRectangleAffine newRegion = VisionProShapeHelper.AddOffsetToCogRectAffine(region, GetAlignOffset(alignName));

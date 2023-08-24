@@ -19,6 +19,8 @@ namespace Jastech.Apps.Winform
         public bool IsInspRunnerFlagFromPlc { get; set; } = false;
 
         public bool IsPreAlignRunnerFlagFromPlc { get; set; } = false;
+
+        public bool IsLastAutoInspGrab { get; set; } = false;
         #endregion
 
         #region 메서드
