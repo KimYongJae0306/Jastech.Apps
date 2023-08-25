@@ -168,6 +168,11 @@ namespace ATT_UT_IPAD.UI.Pages
                 lblStopText.ForeColor = Color.Blue;
             }
         }
+
+        public void Enable(bool isEnable)
+        {
+            MainViewControl.Enable(isEnable);
+        }
         #endregion
     }
 }

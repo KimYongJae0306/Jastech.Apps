@@ -1,4 +1,5 @@
 ﻿using ATT_UT_IPAD.Core;
+using ATT_UT_IPAD.UI.Controls;
 using Cognex.VisionPro;
 using Jastech.Apps.Structure;
 using Jastech.Apps.Structure.Data;
@@ -19,9 +20,11 @@ using Jastech.Framework.Winform.Forms;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.IO;
 using System.Reflection;
 using System.Runtime.ExceptionServices;
+using System.Runtime.InteropServices;
 using System.Security;
 using System.Security.Permissions;
 using System.Windows.Forms;
@@ -242,11 +245,21 @@ namespace ATT_UT_IPAD
 
         public void UpdateMainAkkonResult()
         {
+            Stopwatch sw = new Stopwatch();
+            sw.Restart();
+
             // 탭별로 안들어올 수도 있을텐데....
             var inspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
 
             for (int tabNo = 0; tabNo < inspModel.TabCount; tabNo++)
                 _mainForm.UpdateMainAkkonResult(tabNo);
+
+            sw.Stop();
+        }
+
+        public void EnableMainView(bool isEnable)
+        {
+            _mainForm.Enabled(isEnable);
         }
 
         public void UpdateMainAlignResult()

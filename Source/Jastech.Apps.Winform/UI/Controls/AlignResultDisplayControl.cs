@@ -87,6 +87,11 @@ namespace ATT_UT_IPAD.UI.Controls
                 UpdateTabCount(inspModel.TabCount);
         }
 
+        public void Enable(bool isEnable)
+        {
+            InspAlignDisplay.Enable(isEnable);
+        }
+
         public void UpdateTabCount(int tabCount)
         {
             if (_prevTabCount == tabCount)

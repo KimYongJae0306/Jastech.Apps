@@ -84,6 +84,11 @@ namespace ATT_UT_IPAD.UI.Controls
                 UpdateTabCount(inspModel.TabCount);
         }
 
+        public void Enable(bool isEnable)
+        {
+            InspDisplayControl.Enable(isEnable);
+        }
+
         private void UpdateButton()
         {
             if (IsResultImageView)

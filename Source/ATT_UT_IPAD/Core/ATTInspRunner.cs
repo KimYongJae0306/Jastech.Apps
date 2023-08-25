@@ -54,6 +54,10 @@ namespace ATT_UT_IPAD.Core
         private Thread _deleteThread { get; set; } = null;
 
         private Thread _ClearBufferThread { get; set; } = null;
+
+        private Thread _saveThread { get; set; } = null;
+
+        private Thread _updateThread { get; set; } = null;
         #endregion
 
         #region 속성
@@ -156,6 +160,32 @@ namespace ATT_UT_IPAD.Core
                 SeqTask.Wait();
                 SeqTask = null;
             }
+        }
+
+        public void StartUpdateThread()
+        {
+            if(_updateThread == null)
+            {
+                _updateThread = new Thread(UpdateUI);
+                _updateThread.Start();
+            }
+        }
+
+        private void UpdateUI()
+        {
+            GetAkkonResultImage();
+
+            StartSaveThread();
+            UpdateDailyInfo();
+
+            WriteLog("Update Inspection Result.", true);
+
+            SystemManager.Instance().UpdateMainAkkonResult();
+            SystemManager.Instance().UpdateMainAlignResult();
+
+            AppsStatus.Instance().IsInspRunnerFlagFromPlc = false;
+            SystemManager.Instance().EnableMainView(true);
+            _updateThread = null;
         }
 
         public bool IsInspAkkonDone()
@@ -293,13 +323,13 @@ namespace ATT_UT_IPAD.Core
                     break;
 
                 case SeqStep.SEQ_MOVE_START_POS:
-                    if (MoveTo(TeachingPosType.Stage1_Scan_Start, out errorMessage) == false)
-                        break;
-
+               
                     MotionManager.Instance().MoveAxisZ(TeachingPosType.Stage1_Scan_Start, AkkonLAFCtrl, AxisName.Z0);
                     MotionManager.Instance().MoveAxisZ(TeachingPosType.Stage1_Scan_Start, AlignLAFCtrl, AxisName.Z1);
 
-                    if (_ClearBufferThread != null)
+                    if (_ClearBufferThread != null || _updateThread != null)
+                        break;
+                    if (MoveTo(TeachingPosType.Stage1_Scan_Start, out errorMessage) == false)
                         break;
 
                     PlcControlManager.Instance().WritePcStatus(PlcCommand.Move_ScanStartPos);
@@ -310,6 +340,8 @@ namespace ATT_UT_IPAD.Core
                 case SeqStep.SEQ_WAITING:
                     if (AppsStatus.Instance().IsInspRunnerFlagFromPlc == false)
                         break;
+                    SystemManager.Instance().EnableMainView(false);
+
                     WriteLog("Receive Inspection Start Signal From PLC.", true);
 
                     AkkonLAFCtrl.SetTrackingOnOFF(true);
@@ -435,29 +467,42 @@ namespace ATT_UT_IPAD.Core
                     break;
 
                 case SeqStep.SEQ_WAIT_UI_RESULT_UPDATE:
-                    GetAkkonResultImage();
-                    UpdateDailyInfo();
-                    WriteLog("Update Inspection Result.", true);
+                    MoveTo(TeachingPosType.Stage1_Scan_Start, out errorMessage, false);
+                    StartUpdateThread();
 
-                    SystemManager.Instance().UpdateMainAkkonResult();
-                    SystemManager.Instance().UpdateMainAlignResult();
+                    //GetAkkonResultImage();
 
-                    AppsStatus.Instance().IsInspRunnerFlagFromPlc = false;
+                    //StartSaveThread();
+                    //UpdateDailyInfo();
 
+                    //WriteLog("Update Inspection Result.", true);
+
+                    //SystemManager.Instance().UpdateMainAkkonResult();
+                    //SystemManager.Instance().UpdateMainAlignResult();
+
+                    //AppsStatus.Instance().IsInspRunnerFlagFromPlc = false;
+                    //SystemManager.Instance().EnableMainView(true);
                     SeqStep = SeqStep.SEQ_SAVE_RESULT_DATA;
                     break;
-
+               
                 case SeqStep.SEQ_SAVE_RESULT_DATA:
                     DailyInfoService.Save(inspModel.Name);
+                    Stopwatch sw12 = new Stopwatch();
+                    sw12.Restart();
                     SaveInspResultCSV();
-                    WriteLog("Save inspection result.");
+
+                    sw12.Stop();
+                    //WriteLog("Save inspection result.");
 
                     SeqStep = SeqStep.SEQ_SAVE_IMAGE;
                     break;
 
                 case SeqStep.SEQ_SAVE_IMAGE:
-                    SaveImage();
-                    WriteLog("Save inspection images.");
+                    //Stopwatch sw123 = new Stopwatch();
+                    //sw123.Restart();
+                    //SaveImage();
+                    //sw123.Stop();
+                    //WriteLog("Save inspection images.");
 
                     SeqStep = SeqStep.SEQ_DELETE_DATA;
                     break;
@@ -482,6 +527,7 @@ namespace ATT_UT_IPAD.Core
                     IsAkkonGrabDone = false;
                     IsAlignGrabDone = false;
                     AppsStatus.Instance().IsInspRunnerFlagFromPlc = false;
+                    SystemManager.Instance().EnableMainView(true);
                     WriteLog("Sequnce Error.", true);
                     ClearBuffer();
 
@@ -589,6 +635,15 @@ namespace ATT_UT_IPAD.Core
                     return TabJudgement.NG;
 
                 return TabJudgement.OK;
+            }
+        }
+
+        public void StartSaveThread()
+        {
+            if(_saveThread == null)
+            {
+                _saveThread = new Thread(SaveImage);
+                _saveThread.Start();
             }
         }
 
@@ -720,8 +775,8 @@ namespace ATT_UT_IPAD.Core
             SaveAkkonResult(path, inspModel.TabCount);
             SaveUPHResult(path, inspModel.TabCount);
 
-            SaveAkkonResultAsMsaSummary(path, inspModel.TabCount);
-            SaveAlignResultAsMsaSummary(path, inspModel.TabCount);
+            //SaveAkkonResultAsMsaSummary(path, inspModel.TabCount);
+            //SaveAlignResultAsMsaSummary(path, inspModel.TabCount);
         }
 
         private void SaveAlignResult(string resultPath, int tabCount)
@@ -1021,7 +1076,7 @@ namespace ATT_UT_IPAD.Core
             return MotionManager.Instance().IsAxisInPosition(unitName, teachingPos, axis);
         }
 
-        public bool MoveTo(TeachingPosType teachingPos, out string errorMessage)
+        public bool MoveTo(TeachingPosType teachingPos, out string errorMessage, bool isEnableInPosition = true)
         {
             errorMessage = string.Empty;
 
@@ -1036,7 +1091,7 @@ namespace ATT_UT_IPAD.Core
            
 
             var movingParamX = teachingInfo.GetMovingParam(AxisName.X.ToString());
-            if (MoveAxisX(teachingPos, axisX, movingParamX) == false)
+            if (MoveAxisX(teachingPos, axisX, movingParamX, isEnableInPosition) == false)
             {
                 errorMessage = string.Format("Move To Axis X TimeOut!({0})", movingParamX.MovingTimeOut.ToString());
                 WriteLog(errorMessage);
@@ -1048,7 +1103,7 @@ namespace ATT_UT_IPAD.Core
             return true;
         }
 
-        private bool MoveAxisX(TeachingPosType teachingPos, Axis axis, AxisMovingParam movingParam)
+        private bool MoveAxisX(TeachingPosType teachingPos, Axis axis, AxisMovingParam movingParam, bool isEnableInPosition = true)
         {
             MotionManager manager = MotionManager.Instance();
             double cameraGap = 0;
@@ -1065,12 +1120,15 @@ namespace ATT_UT_IPAD.Core
 
                 manager.StartAbsoluteMove(UnitName.Unit0, teachingPos, axis, cameraGap);
 
-                while (manager.IsAxisInPosition(UnitName.Unit0, teachingPos, axis, cameraGap) == false)
+                if(isEnableInPosition)
                 {
-                    if (sw.ElapsedMilliseconds >= movingParam.MovingTimeOut)
-                        return false;
+                    while (manager.IsAxisInPosition(UnitName.Unit0, teachingPos, axis, cameraGap) == false)
+                    {
+                        if (sw.ElapsedMilliseconds >= movingParam.MovingTimeOut)
+                            return false;
 
-                    Thread.Sleep(10);
+                        Thread.Sleep(10);
+                    }
                 }
             }
 
@@ -1403,6 +1461,7 @@ namespace ATT_UT_IPAD.Core
 
             sw.Stop();
             Console.WriteLine("Save Image : " + sw.ElapsedMilliseconds.ToString() + "ms");
+            WriteLog("Save Image : " + sw.ElapsedMilliseconds.ToString() + "ms");
         }
 
         private void SaveResultImage(string resultPath, int tabNo, bool isAkkonResult)
@@ -1460,6 +1519,7 @@ namespace ATT_UT_IPAD.Core
                     }
                 }
             }
+            _saveThread = null;
         }
 
         private void SaveImage(Mat image, string filePath, Judgement judgement, ImageExtension extension, bool isHalfSave)
