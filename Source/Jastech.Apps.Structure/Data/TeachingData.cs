@@ -334,7 +334,7 @@ namespace Jastech.Apps.Structure.Data
 
         public PointF GetPanelMainMarkOrigin(Tab tab, MarkDirection markDirection)
         {
-            var mainMarkParam = tab.MarkParamter.GetPanelMark(markDirection, MarkName.Main, true);
+            var mainMarkParam = tab.MarkParamter.GetPanelMark(markDirection, MarkName.Main, false);
             var mainMarkOrigin = mainMarkParam.InspParam.GetOrigin();
 
             PointF mainMarkOriginPoint = new PointF(Convert.ToSingle(mainMarkOrigin.TranslationX), Convert.ToSingle(mainMarkOrigin.TranslationY));
