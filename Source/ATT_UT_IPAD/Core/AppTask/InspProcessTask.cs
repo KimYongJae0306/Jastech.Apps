@@ -86,11 +86,6 @@ namespace ATT_UT_IPAD.Core.AppTask
             inspResult.Image = inspTab.MergeMatImage;
             inspResult.CogImage = inspTab.MergeCogImage;
 
-            //SystemManager.Instance().SetAkkonLastScanImage(inspTab.MergeCogImage);
-
-            // Create Coordinate Object
-            CoordinateTransform panelCoordinate = new CoordinateTransform();
-
             algorithmTool.MainMarkInspect(inspTab.MergeCogImage, tab, ref inspResult, false);
 
             string message = string.Empty;
@@ -108,8 +103,11 @@ namespace ATT_UT_IPAD.Core.AppTask
                 WriteLog(message, true);
                 Logger.Debug(LogType.Inspection, message);
 
+                // Create Coordinate Object
+                CoordinateTransform panelCoordinate = new CoordinateTransform();
+
                 // Set Coordinate Params
-                SetPanelCoordinateData(panelCoordinate, inspResult, 0, 0, 0, 0);
+                SetPanelCoordinateData(tab, panelCoordinate, inspResult);
 
                 // Excuete Coordinate
                 panelCoordinate.ExecuteCoordinate();
@@ -188,10 +186,20 @@ namespace ATT_UT_IPAD.Core.AppTask
                 WriteLog(message, true);
                 Logger.Debug(LogType.Inspection, message);
 
-                PointF fpcLeftOffset = MathHelper.GetOffset(tabInspResult.MarkResult.FpcMark.FoundedMark.Left.MaxMatchPos.ReferencePos, tabInspResult.MarkResult.FpcMark.FoundedMark.Left.MaxMatchPos.FoundPos);
-                PointF fpcRightOffset = MathHelper.GetOffset(tabInspResult.MarkResult.FpcMark.FoundedMark.Right.MaxMatchPos.ReferencePos, tabInspResult.MarkResult.FpcMark.FoundedMark.Right.MaxMatchPos.FoundPos);
-                PointF panelLeftOffset = MathHelper.GetOffset(tabInspResult.MarkResult.PanelMark.FoundedMark.Left.MaxMatchPos.ReferencePos, tabInspResult.MarkResult.PanelMark.FoundedMark.Left.MaxMatchPos.FoundPos);
-                PointF panelRightOffset = MathHelper.GetOffset(tabInspResult.MarkResult.PanelMark.FoundedMark.Right.MaxMatchPos.ReferencePos, tabInspResult.MarkResult.PanelMark.FoundedMark.Right.MaxMatchPos.FoundPos);
+                var fpcLeftOrigin = tab.MarkParamter.GetFPCMark(MarkDirection.Left, MarkName.Main, true).InspParam.GetOrigin();
+                var fpcRightOrigin = tab.MarkParamter.GetFPCMark(MarkDirection.Right, MarkName.Main, true).InspParam.GetOrigin();
+                var panelLeftOrigin = tab.MarkParamter.GetPanelMark(MarkDirection.Left, MarkName.Main, true).InspParam.GetOrigin();
+                var panelRightOrigin = tab.MarkParamter.GetPanelMark(MarkDirection.Right, MarkName.Main, true).InspParam.GetOrigin();
+
+                PointF fpcLeftOriginPoint = new PointF(Convert.ToSingle(fpcLeftOrigin.TranslationX), Convert.ToSingle(fpcLeftOrigin.TranslationY));
+                PointF fpcRightOriginPoint = new PointF(Convert.ToSingle(fpcRightOrigin.TranslationX), Convert.ToSingle(fpcRightOrigin.TranslationY));
+                PointF panelLeftOriginPoint = new PointF(Convert.ToSingle(panelLeftOrigin.TranslationX), Convert.ToSingle(panelLeftOrigin.TranslationY));
+                PointF panelRightOriginPoint = new PointF(Convert.ToSingle(panelRightOrigin.TranslationX), Convert.ToSingle(panelRightOrigin.TranslationY));
+
+                PointF fpcLeftOffset = MathHelper.GetOffset(fpcLeftOriginPoint, tabInspResult.MarkResult.FpcMark.FoundedMark.Left.MaxMatchPos.FoundPos);
+                PointF fpcRightOffset = MathHelper.GetOffset(fpcRightOriginPoint, tabInspResult.MarkResult.FpcMark.FoundedMark.Right.MaxMatchPos.FoundPos);
+                PointF panelLeftOffset = MathHelper.GetOffset(panelLeftOriginPoint, tabInspResult.MarkResult.PanelMark.FoundedMark.Left.MaxMatchPos.FoundPos);
+                PointF panelRightOffset = MathHelper.GetOffset(panelRightOriginPoint, tabInspResult.MarkResult.PanelMark.FoundedMark.Right.MaxMatchPos.FoundPos);
               
                 double judgementX = tab.AlignSpec.LeftSpecX_um / resolution_um;
                 double judgementY = tab.AlignSpec.LeftSpecY_um / resolution_um;
@@ -558,17 +566,19 @@ namespace ATT_UT_IPAD.Core.AppTask
             fpc.SetTargetData(searchedLeftPoint, searchedRightPoint);
         }
 
-        private void SetPanelCoordinateData(CoordinateTransform panel, TabInspResult tabInspResult, double leftOffsetX, double leftOffsetY, double rightOffsetX, double rightOffsetY)
+        private void SetPanelCoordinateData(Tab tab, CoordinateTransform panel, TabInspResult tabInspResult)
         {
-            var teachingLeftPoint = tabInspResult.MarkResult.PanelMark.FoundedMark.Left.MaxMatchPos.ReferencePos;
-            PointF teachedLeftPoint = new PointF(teachingLeftPoint.X + (float)leftOffsetX, teachingLeftPoint.Y + (float)leftOffsetY);
+            var leftMainMarkParam = tab.MarkParamter.GetPanelMark(MarkDirection.Left, MarkName.Main, true);
+            var leftMainMarkOrigin = leftMainMarkParam.InspParam.GetOrigin();
+            PointF leftMainMarkOriginPoint = new PointF(Convert.ToSingle(leftMainMarkOrigin.TranslationX), Convert.ToSingle(leftMainMarkOrigin.TranslationY));
             PointF searchedLeftPoint = tabInspResult.MarkResult.PanelMark.FoundedMark.Left.MaxMatchPos.FoundPos;
 
-            var teachingRightPoint = tabInspResult.MarkResult.PanelMark.FoundedMark.Right.MaxMatchPos.ReferencePos;
-            PointF teachedRightPoint = new PointF(teachingRightPoint.X + (float)rightOffsetX, teachingRightPoint.Y + (float)rightOffsetY);
+            var rightMainMarkParam = tab.MarkParamter.GetPanelMark(MarkDirection.Right, MarkName.Main, true);
+            var lrightMainMarkOrigin = rightMainMarkParam.InspParam.GetOrigin();
+            PointF rightMainMarkOriginPoint = new PointF(Convert.ToSingle(lrightMainMarkOrigin.TranslationX), Convert.ToSingle(lrightMainMarkOrigin.TranslationY));
             PointF searchedRightPoint = tabInspResult.MarkResult.PanelMark.FoundedMark.Right.MaxMatchPos.FoundPos;
 
-            panel.SetReferenceData(teachedLeftPoint, teachedRightPoint);
+            panel.SetReferenceData(leftMainMarkOriginPoint, rightMainMarkOriginPoint);
             panel.SetTargetData(searchedLeftPoint, searchedRightPoint);
         }
 

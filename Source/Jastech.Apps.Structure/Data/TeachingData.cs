@@ -189,12 +189,12 @@ namespace Jastech.Apps.Structure.Data
         #endregion
 
         #region 메서드
-        public void SetCoordinateAkkon(MarkMatchingResult panelMarkResult)
+        public void SetCoordinateAkkon(Tab tab, MarkMatchingResult panelMarkResult)
         {
-            PointF teachingLeftPoint = panelMarkResult.Left.MaxMatchPos.ReferencePos;
+            PointF teachingLeftPoint = GetPanelMainMarkOrigin(tab, MarkDirection.Left);
             PointF searchedLeftPoint = panelMarkResult.Left.MaxMatchPos.FoundPos;
 
-            PointF teachingRightPoint = panelMarkResult.Right.MaxMatchPos.ReferencePos;
+            PointF teachingRightPoint = GetPanelMainMarkOrigin(tab, MarkDirection.Right);
             PointF searchedRightPoint = panelMarkResult.Right.MaxMatchPos.FoundPos;
 
             Panel.SetReferenceData(teachingLeftPoint, teachingRightPoint);
@@ -203,12 +203,12 @@ namespace Jastech.Apps.Structure.Data
             Panel.ExecuteCoordinate();
         }
 
-        public void SetReverseCoordinateAkkon(MarkMatchingResult panelMarkResult)
+        public void SetReverseCoordinateAkkon(Tab tab, MarkMatchingResult panelMarkResult)
         {
-            PointF teachingLeftPoint = panelMarkResult.Left.MaxMatchPos.ReferencePos;
+            PointF teachingLeftPoint = GetPanelMainMarkOrigin(tab, MarkDirection.Left);
             PointF searchedLeftPoint = panelMarkResult.Left.MaxMatchPos.FoundPos;
 
-            PointF teachingRightPoint = panelMarkResult.Right.MaxMatchPos.ReferencePos;
+            PointF teachingRightPoint = GetPanelMainMarkOrigin(tab, MarkDirection.Right);
             PointF searchedRightPoint = panelMarkResult.Right.MaxMatchPos.FoundPos;
 
             Panel.SetReferenceData(searchedLeftPoint, searchedRightPoint);
@@ -264,39 +264,47 @@ namespace Jastech.Apps.Structure.Data
             return newList;
         }
 
-        public void SetCoordinateFpcAlign(MarkMatchingResult fpcMarkResult)
+        public void SetCoordinateFpcAlign(Tab tab, MarkMatchingResult fpcMarkResult)
         {
-            PointF leftFpcOffset = MathHelper.GetOffset(fpcMarkResult.Left.MaxMatchPos.ReferencePos, fpcMarkResult.Left.MaxMatchPos.FoundPos);
+            var fpcLeftMainMarkOrigin = GetFpcMainMarkOrigin(tab, MarkDirection.Left);
+            PointF leftFpcOffset = MathHelper.GetOffset(fpcLeftMainMarkOrigin, fpcMarkResult.Left.MaxMatchPos.FoundPos);
             SetFpcLeftOffset(leftFpcOffset);
 
-            PointF fpcRightOffset = MathHelper.GetOffset(fpcMarkResult.Right.MaxMatchPos.ReferencePos, fpcMarkResult.Right.MaxMatchPos.FoundPos);
+            var fpcRightMainMarkOrigin = GetFpcMainMarkOrigin(tab, MarkDirection.Right);
+            PointF fpcRightOffset = MathHelper.GetOffset(fpcRightMainMarkOrigin, fpcMarkResult.Right.MaxMatchPos.FoundPos);
             SettFpcRighOffset(fpcRightOffset);
         }
 
-        public void SetReverseCoordinateFpcAlign(MarkMatchingResult fpcMarkResult)
+        public void SetReverseCoordinateFpcAlign(Tab tab, MarkMatchingResult fpcMarkResult)
         {
-            PointF leftFpcOffset = MathHelper.GetOffset(fpcMarkResult.Left.MaxMatchPos.FoundPos, fpcMarkResult.Left.MaxMatchPos.ReferencePos);
+            var fpcLeftMainMarkOrigin = GetFpcMainMarkOrigin(tab, MarkDirection.Left);
+            PointF leftFpcOffset = MathHelper.GetOffset(fpcMarkResult.Left.MaxMatchPos.FoundPos, fpcLeftMainMarkOrigin);
             SetFpcLeftOffset(leftFpcOffset);
 
-            PointF fpcRightOffset = MathHelper.GetOffset(fpcMarkResult.Right.MaxMatchPos.FoundPos, fpcMarkResult.Right.MaxMatchPos.ReferencePos);
+            var fpcRightMainMarkOrigin = GetFpcMainMarkOrigin(tab, MarkDirection.Right);
+            PointF fpcRightOffset = MathHelper.GetOffset(fpcMarkResult.Right.MaxMatchPos.FoundPos, fpcRightMainMarkOrigin);
             SettFpcRighOffset(fpcRightOffset);
         }
 
-        public void SetCoordinatePanelAlign(MarkMatchingResult panelMarkResult)
+        public void SetCoordinatePanelAlign(Tab tab, MarkMatchingResult panelMarkResult)
         {
-            PointF panelLeftOffset = MathHelper.GetOffset(panelMarkResult.Left.MaxMatchPos.ReferencePos, panelMarkResult.Left.MaxMatchPos.FoundPos);
+            var panelLeftMainMarkOrigin = GetPanelMainMarkOrigin(tab, MarkDirection.Left);
+            PointF panelLeftOffset = MathHelper.GetOffset(panelLeftMainMarkOrigin, panelMarkResult.Left.MaxMatchPos.FoundPos);
             SetPanelLeftOffset(panelLeftOffset);
 
-            PointF panelRightOffset = MathHelper.GetOffset(panelMarkResult.Right.MaxMatchPos.ReferencePos, panelMarkResult.Right.MaxMatchPos.FoundPos);
+            var panelRightMainMarkOrigin = GetPanelMainMarkOrigin(tab, MarkDirection.Right);
+            PointF panelRightOffset = MathHelper.GetOffset(panelRightMainMarkOrigin, panelMarkResult.Right.MaxMatchPos.FoundPos);
             SetPanelRightOffset(panelRightOffset);
         }
 
-        public void SetReverseCoordinatePanelAlign(MarkMatchingResult panelMarkResult)
+        public void SetReverseCoordinatePanelAlign(Tab tab, MarkMatchingResult panelMarkResult)
         {
-            PointF panelLeftOffset = MathHelper.GetOffset(panelMarkResult.Left.MaxMatchPos.FoundPos, panelMarkResult.Left.MaxMatchPos.ReferencePos);
+            var panelLeftMainMarkOrigin = GetPanelMainMarkOrigin(tab, MarkDirection.Left);
+            PointF panelLeftOffset = MathHelper.GetOffset(panelMarkResult.Left.MaxMatchPos.FoundPos, panelLeftMainMarkOrigin);
             SetPanelLeftOffset(panelLeftOffset);
 
-            PointF panelRightOffset = MathHelper.GetOffset(panelMarkResult.Right.MaxMatchPos.FoundPos, panelMarkResult.Right.MaxMatchPos.ReferencePos);
+            var panelRightMainMarkOrigin = GetPanelMainMarkOrigin(tab, MarkDirection.Right);
+            PointF panelRightOffset = MathHelper.GetOffset(panelMarkResult.Right.MaxMatchPos.FoundPos, panelRightMainMarkOrigin);
             SetPanelRightOffset(panelRightOffset);
         }
     
@@ -312,6 +320,26 @@ namespace Jastech.Apps.Structure.Data
                 CogRectangleAffine newRegion = VisionProShapeHelper.AddOffsetToCogRectAffine(region, GetAlignOffset(alignName));
                 alignParam.CaliperParams.SetRegion(newRegion);
             }
+        }
+
+        public PointF GetFpcMainMarkOrigin(Tab tab, MarkDirection markDirection)
+        {
+            var mainMarkParam = tab.MarkParamter.GetFPCMark(markDirection, MarkName.Main, true);
+            var mainMarkOrigin = mainMarkParam.InspParam.GetOrigin();
+
+            PointF mainMarkOriginPoint = new PointF(Convert.ToSingle(mainMarkOrigin.TranslationX), Convert.ToSingle(mainMarkOrigin.TranslationY));
+
+            return mainMarkOriginPoint;
+        }
+
+        public PointF GetPanelMainMarkOrigin(Tab tab, MarkDirection markDirection)
+        {
+            var mainMarkParam = tab.MarkParamter.GetPanelMark(markDirection, MarkName.Main, true);
+            var mainMarkOrigin = mainMarkParam.InspParam.GetOrigin();
+
+            PointF mainMarkOriginPoint = new PointF(Convert.ToSingle(mainMarkOrigin.TranslationX), Convert.ToSingle(mainMarkOrigin.TranslationY));
+
+            return mainMarkOriginPoint;
         }
 
         public void SetFpcLeftOffset(PointF leftFpcOffset)

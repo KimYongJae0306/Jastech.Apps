@@ -738,19 +738,20 @@ namespace Jastech.Framework.Winform.Forms
             if (isOn)
             {
                 lblTracking.BackColor = _selectedColor;
-                coordinate.SetCoordinateAkkon(markResult.PanelMark.FoundedMark);
+                coordinate.SetCoordinateAkkon(CurrentTab, markResult.PanelMark.FoundedMark);
 
-                coordinate.SetCoordinateFpcAlign(markResult.FpcMark.FoundedMark);
-                coordinate.SetCoordinatePanelAlign(markResult.PanelMark.FoundedMark);
+                coordinate.SetCoordinateFpcAlign(CurrentTab, markResult.FpcMark.FoundedMark);
+                coordinate.SetCoordinatePanelAlign(CurrentTab, markResult.PanelMark.FoundedMark);
             }
             else
             {
                 lblTracking.BackColor = _nonSelectedColor;
-                coordinate.SetReverseCoordinateAkkon(markResult.PanelMark.FoundedMark);
+                coordinate.SetReverseCoordinateAkkon(CurrentTab, markResult.PanelMark.FoundedMark);
 
-                coordinate.SetReverseCoordinateFpcAlign(markResult.FpcMark.FoundedMark);
-                coordinate.SetReverseCoordinatePanelAlign(markResult.PanelMark.FoundedMark);
+                coordinate.SetReverseCoordinateFpcAlign(CurrentTab, markResult.FpcMark.FoundedMark);
+                coordinate.SetReverseCoordinatePanelAlign(CurrentTab, markResult.PanelMark.FoundedMark);
             }
+
             coordinate.ExcuteCoordinateAkkon(CurrentTab);
             coordinate.ExecuteCoordinateAlign(CurrentTab);
 

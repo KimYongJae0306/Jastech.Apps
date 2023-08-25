@@ -173,10 +173,12 @@ namespace ATT_UT_IPAD.Core
 
         private void UpdateUI()
         {
+            StartSaveThread();
+
             GetAkkonResultImage();
             WriteLog("Make Akkon ResultImage.", true);
 
-            StartSaveThread();
+            //StartSaveThread();        // 상위로.. 택 테스트
             UpdateDailyInfo();
 
             SystemManager.Instance().UpdateMainAkkonResult();
