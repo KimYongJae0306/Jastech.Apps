@@ -172,16 +172,16 @@ namespace ATT_UT_IPAD.UI.Controls
                 if (IsResultImageView)
                 {
                     if (tabControl.GetCogResultImage() is ICogImage resultImage)
-                        InspDisplayControl.SetImage(resultImage, tabControl.GetAkkonNGAffineRectList());
+                        InspDisplayControl.SetImage(resultImage, tabControl.GetAkkonNGAffineRectList(), false);
                     else
-                        InspDisplayControl.SetImage(orgImage);
+                        InspDisplayControl.SetImage(orgImage, false);
                 }
                 else
                 {
                     if(tabControl.GetCogInspImage() is ICogImage inspImage)
-                        InspDisplayControl.SetImage(inspImage);
+                        InspDisplayControl.SetImage(inspImage, false);
                     else
-                        InspDisplayControl.SetImage(orgImage);
+                        InspDisplayControl.SetImage(orgImage, false);
                 }
             }
             else

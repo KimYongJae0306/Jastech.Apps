@@ -320,7 +320,7 @@ namespace ATT_UT_IPAD.Core.AppTask
                 }
 
                 AkkonProcessTaskCancellationTokenSource.Cancel();
-                AkkonProcessTask.Wait();
+                //AkkonProcessTask.Wait();
                 AkkonProcessTask = null;
             }
 
@@ -333,7 +333,7 @@ namespace ATT_UT_IPAD.Core.AppTask
                 }
 
                 AlignProcessTaskCancellationTokenSource.Cancel();
-                AlignProcessTask.Wait();
+                //AlignProcessTask.Wait();
                 AlignProcessTask = null;
             }
         }

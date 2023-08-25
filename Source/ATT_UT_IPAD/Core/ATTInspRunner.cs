@@ -357,7 +357,7 @@ namespace ATT_UT_IPAD.Core
                     if(AppsConfig.Instance().EnableTest1 == false)
                     {
                         AlignCamera.StartGrab();
-                        Thread.Sleep(1000); 
+                        //Thread.Sleep(1000); 
                         WriteLog("Start Align LineScanner Grab.", true);
                     }
 
