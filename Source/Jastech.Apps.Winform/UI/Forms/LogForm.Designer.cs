@@ -43,7 +43,7 @@ namespace Jastech.Framework.Winform.Forms
             this.tlpBasicFunction = new System.Windows.Forms.TableLayoutPanel();
             this.tvwLogPath = new System.Windows.Forms.TreeView();
             this.btnCancel = new System.Windows.Forms.Button();
-            this.cdrMonthCalendar = new Jastech.Framework.Winform.Controls.StyledCalender();
+            this.pnlCalendar = new System.Windows.Forms.Panel();
             this.tlpLog.SuspendLayout();
             this.tlpContents.SuspendLayout();
             this.pnlLogType.SuspendLayout();
@@ -54,7 +54,7 @@ namespace Jastech.Framework.Winform.Forms
             // 
             this.tlpLog.ColumnCount = 2;
             this.tlpLog.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tlpLog.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 283F));
+            this.tlpLog.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 260F));
             this.tlpLog.Controls.Add(this.tlpContents, 0, 0);
             this.tlpLog.Controls.Add(this.tlpBasicFunction, 1, 0);
             this.tlpLog.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -79,7 +79,7 @@ namespace Jastech.Framework.Winform.Forms
             this.tlpContents.RowCount = 2;
             this.tlpContents.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 162F));
             this.tlpContents.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tlpContents.Size = new System.Drawing.Size(1097, 981);
+            this.tlpContents.Size = new System.Drawing.Size(1125, 981);
             this.tlpContents.TabIndex = 10;
             // 
             // pnlLogType
@@ -94,7 +94,7 @@ namespace Jastech.Framework.Winform.Forms
             this.pnlLogType.Location = new System.Drawing.Point(0, 0);
             this.pnlLogType.Margin = new System.Windows.Forms.Padding(0);
             this.pnlLogType.Name = "pnlLogType";
-            this.pnlLogType.Size = new System.Drawing.Size(1097, 162);
+            this.pnlLogType.Size = new System.Drawing.Size(1125, 162);
             this.pnlLogType.TabIndex = 8;
             // 
             // btnSelectionProcessCapability
@@ -195,7 +195,7 @@ namespace Jastech.Framework.Winform.Forms
             this.pnlContents.Location = new System.Drawing.Point(0, 162);
             this.pnlContents.Margin = new System.Windows.Forms.Padding(0);
             this.pnlContents.Name = "pnlContents";
-            this.pnlContents.Size = new System.Drawing.Size(1097, 819);
+            this.pnlContents.Size = new System.Drawing.Size(1125, 819);
             this.pnlContents.TabIndex = 9;
             // 
             // tlpBasicFunction
@@ -204,10 +204,10 @@ namespace Jastech.Framework.Winform.Forms
             this.tlpBasicFunction.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tlpBasicFunction.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 146F));
             this.tlpBasicFunction.Controls.Add(this.tvwLogPath, 0, 1);
-            this.tlpBasicFunction.Controls.Add(this.cdrMonthCalendar, 0, 0);
             this.tlpBasicFunction.Controls.Add(this.btnCancel, 1, 3);
+            this.tlpBasicFunction.Controls.Add(this.pnlCalendar, 0, 0);
             this.tlpBasicFunction.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tlpBasicFunction.Location = new System.Drawing.Point(1097, 0);
+            this.tlpBasicFunction.Location = new System.Drawing.Point(1125, 0);
             this.tlpBasicFunction.Margin = new System.Windows.Forms.Padding(0);
             this.tlpBasicFunction.Name = "tlpBasicFunction";
             this.tlpBasicFunction.RowCount = 4;
@@ -215,7 +215,7 @@ namespace Jastech.Framework.Winform.Forms
             this.tlpBasicFunction.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tlpBasicFunction.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 87F));
             this.tlpBasicFunction.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 100F));
-            this.tlpBasicFunction.Size = new System.Drawing.Size(283, 981);
+            this.tlpBasicFunction.Size = new System.Drawing.Size(255, 981);
             this.tlpBasicFunction.TabIndex = 9;
             // 
             // tvwLogPath
@@ -227,7 +227,7 @@ namespace Jastech.Framework.Winform.Forms
             this.tvwLogPath.Location = new System.Drawing.Point(0, 250);
             this.tvwLogPath.Margin = new System.Windows.Forms.Padding(0);
             this.tvwLogPath.Name = "tvwLogPath";
-            this.tvwLogPath.Size = new System.Drawing.Size(283, 544);
+            this.tvwLogPath.Size = new System.Drawing.Size(255, 544);
             this.tvwLogPath.TabIndex = 11;
             this.tvwLogPath.NodeMouseDoubleClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.tvwLogPath_NodeMouseClick);
             // 
@@ -236,7 +236,7 @@ namespace Jastech.Framework.Winform.Forms
             this.btnCancel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(34)))), ((int)(((byte)(34)))), ((int)(((byte)(34)))));
             this.btnCancel.Font = new System.Drawing.Font("맑은 고딕", 20F, System.Drawing.FontStyle.Bold);
             this.btnCancel.ForeColor = System.Drawing.Color.White;
-            this.btnCancel.Location = new System.Drawing.Point(139, 883);
+            this.btnCancel.Location = new System.Drawing.Point(111, 883);
             this.btnCancel.Margin = new System.Windows.Forms.Padding(2);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(142, 96);
@@ -245,20 +245,16 @@ namespace Jastech.Framework.Winform.Forms
             this.btnCancel.UseVisualStyleBackColor = false;
             this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
             // 
-            // cdrMonthCalendar
+            // pnlCalendar
             // 
-            this.cdrMonthCalendar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(104)))), ((int)(((byte)(104)))), ((int)(((byte)(104)))));
-            this.cdrMonthCalendar.Font = new System.Drawing.Font("맑은 고딕", 12.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.cdrMonthCalendar.ForeColor = System.Drawing.Color.White;
-            this.cdrMonthCalendar.Location = new System.Drawing.Point(0, 0);
-            this.cdrMonthCalendar.Margin = new System.Windows.Forms.Padding(0);
-            this.cdrMonthCalendar.MaxSelectionCount = 1;
-            this.cdrMonthCalendar.Name = "cdrMonthCalendar";
-            this.cdrMonthCalendar.TabIndex = 7;
-            this.cdrMonthCalendar.TitleBackColor = System.Drawing.Color.Black;
-            this.cdrMonthCalendar.TitleForeColor = System.Drawing.Color.White;
-            this.cdrMonthCalendar.TrailingForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
-            this.cdrMonthCalendar.DateChanged += new System.Windows.Forms.DateRangeEventHandler(this.cdrMonthCalendar_DateChanged);
+            this.pnlCalendar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
+            this.tlpBasicFunction.SetColumnSpan(this.pnlCalendar, 2);
+            this.pnlCalendar.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pnlCalendar.Font = new System.Drawing.Font("맑은 고딕", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.pnlCalendar.Location = new System.Drawing.Point(3, 3);
+            this.pnlCalendar.Name = "pnlCalendar";
+            this.pnlCalendar.Size = new System.Drawing.Size(249, 244);
+            this.pnlCalendar.TabIndex = 296;
             // 
             // LogForm
             // 
@@ -302,6 +298,6 @@ namespace Jastech.Framework.Winform.Forms
         private System.Windows.Forms.Button btnSelectionLog;
         private System.Windows.Forms.Button btnCancel;
         private System.Windows.Forms.TreeView tvwLogPath;
-        private StyledCalender cdrMonthCalendar;
+        private System.Windows.Forms.Panel pnlCalendar;
     }
 }

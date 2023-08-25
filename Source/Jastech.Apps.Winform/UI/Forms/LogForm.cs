@@ -5,13 +5,18 @@ using Jastech.Apps.Structure;
 using Jastech.Apps.Winform.UI.Controls;
 using Jastech.Framework.Imaging;
 using Jastech.Framework.Imaging.VisionPro;
+using Jastech.Framework.Winform.Controls;
 using Jastech.Framework.Winform.Helper;
 using Jastech.Framework.Winform.VisionPro.Controls;
 using System;
+using System.Collections.Generic;
+using System.ComponentModel;
 using System.Drawing;
 using System.IO;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
+using System.Linq;
 
 namespace Jastech.Framework.Winform.Forms
 {
@@ -43,6 +48,8 @@ namespace Jastech.Framework.Winform.Forms
         private UPHControl UPHControl { get; set; } = new UPHControl() { Dock = DockStyle.Fill };
 
         private ProcessCapabilityIndexControl ProcessCapabilityControl { get; set; } = new ProcessCapabilityIndexControl() { Dock = DockStyle.Fill };
+
+        private StyledCalender Calender { get; set; } = null;
 
         public DateTime DateTime { get; set; } = DateTime.Now;
         #endregion
@@ -76,8 +83,21 @@ namespace Jastech.Framework.Winform.Forms
             _selectedColor = Color.FromArgb(104, 104, 104);
             _nonSelectedColor = Color.FromArgb(52, 52, 52);
 
+            Calender = new StyledCalender
+            {
+                BackColor = Color.FromArgb(104, 104, 104),
+                ForeColor = Color.White,
+                MaxSelectionCount = 1,
+                TitleBackColor = Color.Black,
+                TitleForeColor = Color.White,
+                TrailingForeColor = Color.FromArgb(52, 52, 52)
+            };
+            Calender.DateChanged += new DateRangeEventHandler(cdrMonthCalendar_DateChanged);
+            Calender.SelectionStart = DateTime.Now;
+
+            pnlCalendar.Controls.Add(Calender);
+
             SetPageType(PageType.Log);
-            cdrMonthCalendar.SelectionStart = DateTime.Now;
         }
 
         private void SetPageType(PageType pageType)
@@ -204,7 +224,7 @@ namespace Jastech.Framework.Winform.Forms
                 return;
 
             tvwLogPath.Nodes.Clear();
-            DateTime = cdrMonthCalendar.SelectionStart;
+            DateTime = Calender.SelectionStart;
 
             string path = Path.Combine(_selectedPagePath, DateTime.Month.ToString("D2"), DateTime.Day.ToString("D2"));
             if (path == string.Empty)
@@ -301,8 +321,6 @@ namespace Jastech.Framework.Winform.Forms
                 if (extension == string.Empty)
                     return;
 
-
-
                 DisplaySelectedNode(extension, fullPath);
             }
             catch (Exception ex)
@@ -326,10 +344,8 @@ namespace Jastech.Framework.Winform.Forms
                     DisplayImageFile(fullPath);
                     break;
 
-
                 case ".csv":
                     DisplayCSVFile(fullPath);
-                    
                     break;
 
                 default:
@@ -401,6 +417,79 @@ namespace Jastech.Framework.Winform.Forms
         #endregion
     }
 
+
+    public class ResultLogData
+    {
+        public PageType PageType { get; private set; }
+        private const string NullString = "NaN";
+        private const string NullInteger = "-1";
+
+        private readonly Dictionary<Enum, string> _datas = new Dictionary<Enum, string>();
+
+        public ResultLogData(PageType type)
+        {
+            PageType = type;
+
+            _datas.Add(CommonResultType.Inspection_Time, $"{DateTime.UtcNow:HH:mm:ss}");
+            _datas.Add(CommonResultType.Panel_ID, $"{DateTime.UtcNow:yyMMddhhmmssff}");
+            _datas.Add(CommonResultType.Stage_No, NullInteger);
+            _datas.Add(CommonResultType.Tab, NullInteger);
+            switch (PageType)
+            {
+                case PageType.AkkonTrend:
+                    _datas.Add(CommonResultType.Judge, NullString);
+                    _datas.Add(AkkonResultType.AkkonJudge, NullString);
+                    //_datas.Add(AkkonResultType.Min_Count, NullInteger);
+                    _datas.Add(AkkonResultType.Avg_Count, NullInteger);
+                    //_datas.Add(AkkonResultType.Min_Length, NullInteger);
+                    _datas.Add(AkkonResultType.Avg_Length, NullInteger);
+                    break;
+                case PageType.AlignTrend:
+                    _datas.Add(CommonResultType.Judge, NullString);
+                    _datas.Add(AlignResultType.AlignJudge, NullString);
+                    _datas.Add(AlignResultType.Lx, NullInteger);
+                    _datas.Add(AlignResultType.Ly, NullInteger);
+                    _datas.Add(AlignResultType.Rx, NullInteger);
+                    _datas.Add(AlignResultType.Ry, NullInteger);
+                    _datas.Add(AlignResultType.Cx, NullInteger);
+                    break;
+                case PageType.UPH:
+                    _datas.Add(AkkonResultType.Min_Count, NullInteger);
+                    _datas.Add(AkkonResultType.Avg_Count, NullInteger);
+                    _datas.Add(AkkonResultType.Min_Length, NullInteger);
+                    _datas.Add(AkkonResultType.Avg_Length, NullInteger);
+                    _datas.Add(AkkonResultType.Strength_Min, NullString);   //미사용 시 제외
+                    _datas.Add(AkkonResultType.Strength_Avg, NullString);   //미사용 시 제외
+
+                    _datas.Add(AlignResultType.Lx, NullInteger);
+                    _datas.Add(AlignResultType.Ly, NullInteger);
+                    _datas.Add(AlignResultType.Rx, NullInteger);
+                    _datas.Add(AlignResultType.Ry, NullInteger);
+                    _datas.Add(AlignResultType.Cx, NullInteger);
+
+                    _datas.Add(CommonResultType.ACF_Head, NullInteger);
+                    _datas.Add(CommonResultType.Pre_Head, NullInteger);
+                    _datas.Add(CommonResultType.Main_Head, NullInteger);
+                    break;
+            }
+        }
+
+        public void SetData(Enum key, string value, [CallerMemberName] string caller = "")
+        {
+            if (_datas.ContainsKey(key))
+                _datas[key] = value;
+            else
+                Console.WriteLine($"{caller}().InspResultLogData.SetData({key}, {value})\r\nKey is not exist, Please check container initializer.");
+        }
+
+        public static string ParseHeader(Enum value) => $"{value}".Replace('_', ' ');
+
+        // KeyCollection(Header)이 변경될 경우 기존 CSV파일 Header를 변경하거나 신규파일로 작성 필요
+        public List<string> GetHeaderData() => _datas.Keys.Select(key => ParseHeader(key)).ToList();
+
+        public List<string> GetBodyData() => _datas.Values.Select(value => value).ToList();
+    }
+
     public enum PageType
     {
         Log,
@@ -420,9 +509,36 @@ namespace Jastech.Framework.Winform.Forms
         Tab5,
     }
 
+    public enum CommonResultType
+    {
+        Inspection_Time,
+        Panel_ID,
+        Stage_No,
+        Tab,
+        Judge,
+        Reason,
+
+        ACF_Head,
+        Pre_Head,
+        Main_Head,
+    }
+
+    public enum AkkonResultType
+    {
+        All,
+        AkkonJudge,
+        Min_Count,
+        Avg_Count,
+        Min_Length,
+        Avg_Length,
+        Strength_Min,
+        Strength_Avg,
+    }
+
     public enum AlignResultType
     {
         All,
+        AlignJudge,
         Lx,
         Ly,
         Cx,
