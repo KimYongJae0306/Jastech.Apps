@@ -660,13 +660,6 @@ namespace Jastech.Apps.Winform.UI.Controls
             UpdateParam(ATTTabAlignName.CenterFPC);
         }
 
-        private void lblRightPanelX__Click(object sender, EventArgs e)
-        {
-            UpdateSelectedAlignName(sender);
-            lblTest.BackColor = _nonSelectedColor;
-            UpdateParam(ATTTabAlignName.RightPanelX);
-        }
-
         private void lblTest_Click(object sender, EventArgs e)
         {
             if (CurrentAlignName == ATTTabAlignName.LeftPanelX || CurrentAlignName == ATTTabAlignName.RightPanelX)
