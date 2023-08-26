@@ -191,10 +191,10 @@ namespace Jastech.Apps.Structure.Data
         #region 메서드
         public void SetCoordinateAkkon(Tab tab, MarkMatchingResult panelMarkResult)
         {
-            PointF teachingLeftPoint = GetPanelMainMarkOrigin(tab, MarkDirection.Left);
+            PointF teachingLeftPoint = GetPanelMainMarkOrigin(tab, MarkDirection.Left, false);
             PointF searchedLeftPoint = panelMarkResult.Left.MaxMatchPos.FoundPos;
 
-            PointF teachingRightPoint = GetPanelMainMarkOrigin(tab, MarkDirection.Right);
+            PointF teachingRightPoint = GetPanelMainMarkOrigin(tab, MarkDirection.Right, false);
             PointF searchedRightPoint = panelMarkResult.Right.MaxMatchPos.FoundPos;
 
             Panel.SetReferenceData(teachingLeftPoint, teachingRightPoint);
@@ -205,10 +205,10 @@ namespace Jastech.Apps.Structure.Data
 
         public void SetReverseCoordinateAkkon(Tab tab, MarkMatchingResult panelMarkResult)
         {
-            PointF teachingLeftPoint = GetPanelMainMarkOrigin(tab, MarkDirection.Left);
+            PointF teachingLeftPoint = GetPanelMainMarkOrigin(tab, MarkDirection.Left, false);
             PointF searchedLeftPoint = panelMarkResult.Left.MaxMatchPos.FoundPos;
 
-            PointF teachingRightPoint = GetPanelMainMarkOrigin(tab, MarkDirection.Right);
+            PointF teachingRightPoint = GetPanelMainMarkOrigin(tab, MarkDirection.Right, false);
             PointF searchedRightPoint = panelMarkResult.Right.MaxMatchPos.FoundPos;
 
             Panel.SetReferenceData(searchedLeftPoint, searchedRightPoint);
@@ -266,44 +266,44 @@ namespace Jastech.Apps.Structure.Data
 
         public void SetCoordinateFpcAlign(Tab tab, MarkMatchingResult fpcMarkResult)
         {
-            var fpcLeftMainMarkOrigin = GetFpcMainMarkOrigin(tab, MarkDirection.Left);
+            var fpcLeftMainMarkOrigin = GetFpcMainMarkOrigin(tab, MarkDirection.Left, true);
             PointF leftFpcOffset = MathHelper.GetOffset(fpcLeftMainMarkOrigin, fpcMarkResult.Left.MaxMatchPos.FoundPos);
             SetFpcLeftOffset(leftFpcOffset);
 
-            var fpcRightMainMarkOrigin = GetFpcMainMarkOrigin(tab, MarkDirection.Right);
+            var fpcRightMainMarkOrigin = GetFpcMainMarkOrigin(tab, MarkDirection.Right, true);
             PointF fpcRightOffset = MathHelper.GetOffset(fpcRightMainMarkOrigin, fpcMarkResult.Right.MaxMatchPos.FoundPos);
             SettFpcRighOffset(fpcRightOffset);
         }
 
         public void SetReverseCoordinateFpcAlign(Tab tab, MarkMatchingResult fpcMarkResult)
         {
-            var fpcLeftMainMarkOrigin = GetFpcMainMarkOrigin(tab, MarkDirection.Left);
+            var fpcLeftMainMarkOrigin = GetFpcMainMarkOrigin(tab, MarkDirection.Left, true);
             PointF leftFpcOffset = MathHelper.GetOffset(fpcMarkResult.Left.MaxMatchPos.FoundPos, fpcLeftMainMarkOrigin);
             SetFpcLeftOffset(leftFpcOffset);
 
-            var fpcRightMainMarkOrigin = GetFpcMainMarkOrigin(tab, MarkDirection.Right);
+            var fpcRightMainMarkOrigin = GetFpcMainMarkOrigin(tab, MarkDirection.Right, true);
             PointF fpcRightOffset = MathHelper.GetOffset(fpcMarkResult.Right.MaxMatchPos.FoundPos, fpcRightMainMarkOrigin);
             SettFpcRighOffset(fpcRightOffset);
         }
 
         public void SetCoordinatePanelAlign(Tab tab, MarkMatchingResult panelMarkResult)
         {
-            var panelLeftMainMarkOrigin = GetPanelMainMarkOrigin(tab, MarkDirection.Left);
+            var panelLeftMainMarkOrigin = GetPanelMainMarkOrigin(tab, MarkDirection.Left, true);
             PointF panelLeftOffset = MathHelper.GetOffset(panelLeftMainMarkOrigin, panelMarkResult.Left.MaxMatchPos.FoundPos);
             SetPanelLeftOffset(panelLeftOffset);
 
-            var panelRightMainMarkOrigin = GetPanelMainMarkOrigin(tab, MarkDirection.Right);
+            var panelRightMainMarkOrigin = GetPanelMainMarkOrigin(tab, MarkDirection.Right, true);
             PointF panelRightOffset = MathHelper.GetOffset(panelRightMainMarkOrigin, panelMarkResult.Right.MaxMatchPos.FoundPos);
             SetPanelRightOffset(panelRightOffset);
         }
 
         public void SetReverseCoordinatePanelAlign(Tab tab, MarkMatchingResult panelMarkResult)
         {
-            var panelLeftMainMarkOrigin = GetPanelMainMarkOrigin(tab, MarkDirection.Left);
+            var panelLeftMainMarkOrigin = GetPanelMainMarkOrigin(tab, MarkDirection.Left, true);
             PointF panelLeftOffset = MathHelper.GetOffset(panelMarkResult.Left.MaxMatchPos.FoundPos, panelLeftMainMarkOrigin);
             SetPanelLeftOffset(panelLeftOffset);
 
-            var panelRightMainMarkOrigin = GetPanelMainMarkOrigin(tab, MarkDirection.Right);
+            var panelRightMainMarkOrigin = GetPanelMainMarkOrigin(tab, MarkDirection.Right, true);
             PointF panelRightOffset = MathHelper.GetOffset(panelMarkResult.Right.MaxMatchPos.FoundPos, panelRightMainMarkOrigin);
             SetPanelRightOffset(panelRightOffset);
         }
@@ -322,9 +322,9 @@ namespace Jastech.Apps.Structure.Data
             }
         }
 
-        public PointF GetFpcMainMarkOrigin(Tab tab, MarkDirection markDirection)
+        public PointF GetFpcMainMarkOrigin(Tab tab, MarkDirection markDirection, bool isAlignMark)
         {
-            var mainMarkParam = tab.MarkParamter.GetFPCMark(markDirection, MarkName.Main, true);
+            var mainMarkParam = tab.MarkParamter.GetFPCMark(markDirection, MarkName.Main, isAlignMark);
             var mainMarkOrigin = mainMarkParam.InspParam.GetOrigin();
 
             PointF mainMarkOriginPoint = new PointF(Convert.ToSingle(mainMarkOrigin.TranslationX), Convert.ToSingle(mainMarkOrigin.TranslationY));
@@ -332,9 +332,9 @@ namespace Jastech.Apps.Structure.Data
             return mainMarkOriginPoint;
         }
 
-        public PointF GetPanelMainMarkOrigin(Tab tab, MarkDirection markDirection)
+        public PointF GetPanelMainMarkOrigin(Tab tab, MarkDirection markDirection, bool isAlignMark)
         {
-            var mainMarkParam = tab.MarkParamter.GetPanelMark(markDirection, MarkName.Main, false);
+            var mainMarkParam = tab.MarkParamter.GetPanelMark(markDirection, MarkName.Main, isAlignMark);
             var mainMarkOrigin = mainMarkParam.InspParam.GetOrigin();
 
             PointF mainMarkOriginPoint = new PointF(Convert.ToSingle(mainMarkOrigin.TranslationX), Convert.ToSingle(mainMarkOrigin.TranslationY));

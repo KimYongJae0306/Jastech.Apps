@@ -568,12 +568,12 @@ namespace ATT_UT_IPAD.Core.AppTask
 
         private void SetPanelCoordinateData(Tab tab, CoordinateTransform panel, TabInspResult tabInspResult)
         {
-            var leftMainMarkParam = tab.MarkParamter.GetPanelMark(MarkDirection.Left, MarkName.Main, true);
+            var leftMainMarkParam = tab.MarkParamter.GetPanelMark(MarkDirection.Left, MarkName.Main, false);
             var leftMainMarkOrigin = leftMainMarkParam.InspParam.GetOrigin();
             PointF leftMainMarkOriginPoint = new PointF(Convert.ToSingle(leftMainMarkOrigin.TranslationX), Convert.ToSingle(leftMainMarkOrigin.TranslationY));
             PointF searchedLeftPoint = tabInspResult.MarkResult.PanelMark.FoundedMark.Left.MaxMatchPos.FoundPos;
 
-            var rightMainMarkParam = tab.MarkParamter.GetPanelMark(MarkDirection.Right, MarkName.Main, true);
+            var rightMainMarkParam = tab.MarkParamter.GetPanelMark(MarkDirection.Right, MarkName.Main, false);
             var lrightMainMarkOrigin = rightMainMarkParam.InspParam.GetOrigin();
             PointF rightMainMarkOriginPoint = new PointF(Convert.ToSingle(lrightMainMarkOrigin.TranslationX), Convert.ToSingle(lrightMainMarkOrigin.TranslationY));
             PointF searchedRightPoint = tabInspResult.MarkResult.PanelMark.FoundedMark.Right.MaxMatchPos.FoundPos;

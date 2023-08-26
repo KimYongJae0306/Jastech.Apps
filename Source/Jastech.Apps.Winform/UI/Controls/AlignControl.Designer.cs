@@ -76,6 +76,9 @@
             this.lblLeftAlignSpecX = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
+            this.lblTest = new System.Windows.Forms.Label();
+            this.lblOffsetY = new System.Windows.Forms.Label();
+            this.label10 = new System.Windows.Forms.Label();
             this.tlpAlign.SuspendLayout();
             this.pnlPosition.SuspendLayout();
             this.tlpParams.SuspendLayout();
@@ -119,6 +122,9 @@
             // 
             // pnlPosition
             // 
+            this.pnlPosition.Controls.Add(this.label10);
+            this.pnlPosition.Controls.Add(this.lblOffsetY);
+            this.pnlPosition.Controls.Add(this.lblTest);
             this.pnlPosition.Controls.Add(this.label8);
             this.pnlPosition.Controls.Add(this.lblCenter);
             this.pnlPosition.Controls.Add(this.lblRightPanelY);
@@ -700,6 +706,41 @@
             this.label1.Text = "Left Align SpecX(um)";
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
+            // lblTest
+            // 
+            this.lblTest.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblTest.Location = new System.Drawing.Point(784, 107);
+            this.lblTest.Margin = new System.Windows.Forms.Padding(0);
+            this.lblTest.Name = "lblTest";
+            this.lblTest.Size = new System.Drawing.Size(100, 40);
+            this.lblTest.TabIndex = 4;
+            this.lblTest.Text = "Test";
+            this.lblTest.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblTest.Click += new System.EventHandler(this.lblTest_Click);
+            // 
+            // lblOffsetY
+            // 
+            this.lblOffsetY.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblOffsetY.Location = new System.Drawing.Point(684, 107);
+            this.lblOffsetY.Margin = new System.Windows.Forms.Padding(0);
+            this.lblOffsetY.Name = "lblOffsetY";
+            this.lblOffsetY.Size = new System.Drawing.Size(100, 40);
+            this.lblOffsetY.TabIndex = 3;
+            this.lblOffsetY.Text = "-240";
+            this.lblOffsetY.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblOffsetY.Click += new System.EventHandler(this.lblOffsetY_Click);
+            // 
+            // label10
+            // 
+            this.label10.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.label10.Location = new System.Drawing.Point(684, 67);
+            this.label10.Margin = new System.Windows.Forms.Padding(0);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(200, 40);
+            this.label10.TabIndex = 5;
+            this.label10.Text = "OffsetY";
+            this.label10.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
             // AlignControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
@@ -772,5 +813,8 @@
         private System.Windows.Forms.Label lblLeftX_Judgement;
         private System.Windows.Forms.Label lblCenter;
         private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.Label lblTest;
+        private System.Windows.Forms.Label label10;
+        private System.Windows.Forms.Label lblOffsetY;
     }
 }

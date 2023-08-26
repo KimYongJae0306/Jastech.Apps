@@ -8,6 +8,7 @@ using Jastech.Framework.Imaging.VisionPro;
 using Jastech.Framework.Imaging.VisionPro.VisionAlgorithms.Parameters;
 using Jastech.Framework.Imaging.VisionPro.VisionAlgorithms.Results;
 using Jastech.Framework.Util;
+using Jastech.Framework.Util.Helper;
 using Jastech.Framework.Winform.Forms;
 using Jastech.Framework.Winform.Helper;
 using Jastech.Framework.Winform.VisionPro.Controls;
@@ -224,7 +225,7 @@ namespace Jastech.Apps.Winform.UI.Controls
             var currentParam = CogCaliperParamControl.GetCurrentParam();
             CogRectangleAffine rect = new CogRectangleAffine(currentParam.CaliperTool.Region);
 
-            List<CogRectangleAffine> cropRectList = VisionProImageHelper.DivideRegion(rect, leadCount);
+            List<CogRectangleAffine> cropRectList = VisionProShapeHelper.DivideRegion(rect, leadCount);
 
             var display = TeachingUIManager.Instance().TeachingDisplayControl.GetDisplay();
 
@@ -657,6 +658,52 @@ namespace Jastech.Apps.Winform.UI.Controls
         {
             UpdateSelectedAlignName(sender);
             UpdateParam(ATTTabAlignName.CenterFPC);
+        }
+
+        private void lblTest_Click(object sender, EventArgs e)
+        {
+            if (CurrentAlignName == ATTTabAlignName.LeftPanelX || CurrentAlignName == ATTTabAlignName.RightPanelX)
+            {
+                double offsetY = Convert.ToDouble(lblOffsetY.Text);
+
+                if (CurrentAlignName == ATTTabAlignName.LeftPanelX)
+                    CalcFpcFromPanel(ATTTabAlignName.LeftFPCX, offsetY);
+
+                if (CurrentAlignName == ATTTabAlignName.RightPanelX)
+                    CalcFpcFromPanel(ATTTabAlignName.RightFPCX, offsetY);
+            }
+            else
+            {
+                MessageConfirmForm confirmForm = new MessageConfirmForm();
+                confirmForm.Message = "Select a panel and try again";
+                confirmForm.ShowDialog();
+                return;
+            }
+        }
+
+        private void CalcFpcFromPanel(ATTTabAlignName alignName, double offsetY)
+        {
+            var display = TeachingUIManager.Instance().TeachingDisplayControl.GetDisplay();
+            if (display.GetImage() == null)
+                return;
+
+            var currentParam = CogCaliperParamControl.GetCurrentParam();
+            if (currentParam == null)
+                return;
+
+            var newRegion = VisionProShapeHelper.MoveTranslationY(currentParam.CaliperTool.Region, offsetY);
+
+            var alignParam = CurrentTab.GetAlignParam(alignName);
+            alignParam.CaliperParams.SetRegion(newRegion);
+
+            CogGraphicInteractiveCollection collection = new CogGraphicInteractiveCollection();
+            collection.Add(newRegion);
+            display.SetInteractiveGraphics("tool", collection);
+        }
+
+        private void lblOffsetY_Click(object sender, EventArgs e)
+        {
+            KeyPadHelper.SetLabelDoubleData((Label)sender);
         }
     }
 }
