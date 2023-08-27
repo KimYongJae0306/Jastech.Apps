@@ -72,7 +72,67 @@ namespace ATT_UT_IPAD.UI.Controls
         {
             InspAlignDisplay = new CogInspAlignDisplayControl();
             InspAlignDisplay.Dock = DockStyle.Fill;
+            InspAlignDisplay.UpdateLeftImage += UpdateLeftImageEvent;
+            InspAlignDisplay.UpdateRightImage += UpdateRightImageEvent;
+
             pnlInspDisplay.Controls.Add(InspAlignDisplay);
+        }
+
+        private void UpdateRightImageEvent(bool isResult)
+        {
+            int tabNo = CurrentTabNo;
+
+            var image = TabBtnControlList[tabNo].GetAlignImage();
+            if (image == null)
+                return;
+
+            if (isResult)
+            {
+                var rightShape = TabBtnControlList[tabNo].GetRightShapeResult();
+
+                string lx = TabBtnControlList[tabNo].Lx.ToString("F2");
+                string rx = TabBtnControlList[tabNo].Rx.ToString("F2");
+                string ry = TabBtnControlList[tabNo].Ry.ToString("F2");
+                string cx = ((Convert.ToDouble(lx) + Convert.ToDouble(rx)) / 2.0).ToString("F2");
+
+                InspAlignDisplay.UpdateRightDisplay(image, rightShape.CaliperShapeList, rightShape.LineSegmentList, GetCenterPoint(RightPointList[tabNo]));
+                InspAlignDisplay.DrawRightResult("X Align : " + rx + " um", 0);
+                InspAlignDisplay.DrawRightResult("Y Align : " + ry + " um", 1);
+                InspAlignDisplay.DrawRightResult("CX Align : " + cx + " um", 2);
+            }
+            else
+            {
+                InspAlignDisplay.UpdateRightDisplay(image);
+            }
+        }
+
+        private void UpdateLeftImageEvent(bool isResult)
+        {
+            int tabNo = CurrentTabNo;
+
+            var image = TabBtnControlList[tabNo].GetAlignImage();
+
+            if (image == null)
+                return;
+
+            if(isResult)
+            {
+                var leftShape = TabBtnControlList[tabNo].GetLeftShapeResult();
+
+                string lx = TabBtnControlList[tabNo].Lx.ToString("F2");
+                string ly = TabBtnControlList[tabNo].Ly.ToString("F2");
+                string rx = TabBtnControlList[tabNo].Rx.ToString("F2");
+                string cx = ((Convert.ToDouble(lx) + Convert.ToDouble(rx)) / 2.0).ToString("F2");
+
+                InspAlignDisplay.UpdateLeftDisplay(image, leftShape.CaliperShapeList, leftShape.LineSegmentList, GetCenterPoint(LeftPointList[tabNo]));
+                InspAlignDisplay.DrawLeftResult("X Align : " + lx + " um", 0);
+                InspAlignDisplay.DrawLeftResult("Y Align : " + ly + " um", 1);
+                InspAlignDisplay.DrawLeftResult("CX Align : " + cx + " um", 2);
+            }
+            else
+            {
+                InspAlignDisplay.UpdateLeftDisplay(image);
+            }
         }
 
         private void InitializeUI()
@@ -227,9 +287,6 @@ namespace ATT_UT_IPAD.UI.Controls
 
         public void UpdateResultDisplay(int tabNo)
         {
-            //if (TabBtnControlList[tabNo].Enabled == false)
-            //    return;
-
             var tabInspResult = GetTabInspResultEvent?.Invoke(tabNo);
             if (tabInspResult == null)
                 return;
@@ -272,18 +329,22 @@ namespace ATT_UT_IPAD.UI.Controls
             string ry = TabBtnControlList[tabNo].Ry.ToString("F2");
 
             string cx = ((Convert.ToDouble(lx) + Convert.ToDouble(rx)) / 2.0).ToString("F2");
-
-
+            
             InspAlignDisplay.UpdateLeftDisplay(image, leftShape.CaliperShapeList, leftShape.LineSegmentList, GetCenterPoint(LeftPointList[tabNo]));
-            InspAlignDisplay.DrawLeftResult("X Align : " + lx + " um", 0);
-            InspAlignDisplay.DrawLeftResult("Y Align : " + ly + " um", 1);
-            InspAlignDisplay.DrawLeftResult("CX Align : " + cx + " um", 2);
-
+            if(InspAlignDisplay.IsLeftResultImageView)
+            {
+                InspAlignDisplay.DrawLeftResult("X Align : " + lx + " um", 0);
+                InspAlignDisplay.DrawLeftResult("Y Align : " + ly + " um", 1);
+                InspAlignDisplay.DrawLeftResult("CX Align : " + cx + " um", 2);
+            }
 
             InspAlignDisplay.UpdateRightDisplay(image, rightShape.CaliperShapeList, rightShape.LineSegmentList, GetCenterPoint(RightPointList[tabNo]));
-            InspAlignDisplay.DrawRightResult("X Align : " + rx + " um", 0);
-            InspAlignDisplay.DrawRightResult("Y Align : " + ry + " um", 1);
-            InspAlignDisplay.DrawRightResult("CX Align : " + cx + " um", 2);
+            if(InspAlignDisplay.IsRightResultImageView)
+            {
+                InspAlignDisplay.DrawRightResult("X Align : " + rx + " um", 0);
+                InspAlignDisplay.DrawRightResult("Y Align : " + ry + " um", 1);
+                InspAlignDisplay.DrawRightResult("CX Align : " + cx + " um", 2);
+            }
 
             var centerImage = TabBtnControlList[tabNo].GetCenterImage();
             InspAlignDisplay.UpdateCenterDisplay(centerImage);
@@ -417,7 +478,7 @@ namespace ATT_UT_IPAD.UI.Controls
                             RightPointList[result.TabNo].Add(fpc.MaxCaliperMatch.FoundPos);
 
                             var rightFpcX = fpc.MaxCaliperMatch.ResultGraphics;
-                            if(rightFpcX != null)
+                            if (rightFpcX != null)
                             {
                                 rightFpcX.Color = _fpcColor;
                                 rightFpcX.LineWidthInScreenPixels = 2;
@@ -505,10 +566,11 @@ namespace ATT_UT_IPAD.UI.Controls
                 float minY = tempPointList.Select(point => point.Y).Min();
                 float maxY = tempPointList.Select(point => point.Y).Max();
 
-                float width = (maxX - minX) / 2.0f;
-                float height = (maxY - minY) / 2.0f;
+                float width =  Math.Abs(maxX - minX) / 2.0f;
+                float height = Math.Abs(maxY - minY) / 2.0f;
 
                 return new PointF((minX + width), (minY + height));
+                //return new PointF((minX + width), minY + 300);
             }
             else
                 return new PointF();

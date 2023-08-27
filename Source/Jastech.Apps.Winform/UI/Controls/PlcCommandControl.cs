@@ -110,9 +110,9 @@ namespace Jastech.Apps.Winform.UI.Controls
         private void btnSetVision_Click(object sender, EventArgs e)
         {
             if (lblPcReady.Text == "9000")
-                PlcControlManager.Instance().WritePcReady(MachineStatus.STOP);
+                PlcControlManager.Instance().MachineStatus = MachineStatus.STOP;
             else
-                PlcControlManager.Instance().WritePcReady(MachineStatus.RUN);
+                PlcControlManager.Instance().MachineStatus = MachineStatus.RUN;
         }
 
         private void DrawComboboxCenterAlign(object sender, DrawItemEventArgs e)

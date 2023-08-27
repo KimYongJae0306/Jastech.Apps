@@ -31,6 +31,8 @@ namespace Jastech.Apps.Winform
         #endregion
 
         #region 속성
+        public MachineStatus MachineStatus { get; set; } = MachineStatus.STOP;
+
         private ParserType ParserType { get; set; } = ParserType.Binary;
 
         private PlcAddressService PlcAddressService { get; set; } = new PlcAddressService();
@@ -38,6 +40,12 @@ namespace Jastech.Apps.Winform
         public Task PlcActionTask { get; set; }
 
         public CancellationTokenSource CancelPlcActionTask { get; set; }
+
+        public bool EnableSendPeriodically { get; set; } = true;
+        #endregion
+
+        #region MyRegion
+
         #endregion
 
         #region 메서드
@@ -149,12 +157,15 @@ namespace Jastech.Apps.Winform
                     break;
                 }
 
-                if (DeviceManager.Instance().PlcHandler.Count > 0)
+                if(EnableSendPeriodically)
                 {
-                    if (_loopCount % 2 == 0)
-                        ReadCommand();
-                    else if (_loopCount % 3 == 0)
-                        WritePcStatusPeriodically(UnitName.Unit0);
+                    if (DeviceManager.Instance().PlcHandler.Count > 0)
+                    {
+                        if (_loopCount % 2 == 0)
+                            ReadCommand();
+                        else if (_loopCount % 3 == 0)
+                            WritePcStatusPeriodically(UnitName.Unit0);
+                    }
                 }
 
                 if (_loopCount >= int.MaxValue)
@@ -244,6 +255,7 @@ namespace Jastech.Apps.Winform
                 var plc = DeviceManager.Instance().PlcHandler.First() as MelsecPlc;
                 var map = PlcControlManager.Instance().GetAddressMap(PlcCommonMap.PC_Alive);
 
+                int value = PlcControlManager.Instance().MachineStatus == MachineStatus.RUN ? 9000 : 0;
                 PlcDataStream stream = new PlcDataStream();
 
                 if (plc.MelsecParser.ParserType == ParserType.Binary)
@@ -252,6 +264,7 @@ namespace Jastech.Apps.Winform
                     stream.AddSwap16BitData(Convert.ToInt16(isMoving));
                     stream.AddSwap16BitData(Convert.ToInt16(currentPosX));
                     stream.AddSwap16BitData(Convert.ToInt16(isServoOn));
+                    stream.AddSwap16BitData(Convert.ToInt16(value));
                 }
                 else
                 {
@@ -259,6 +272,7 @@ namespace Jastech.Apps.Winform
                     stream.Add16BitData(Convert.ToInt16(isMoving));
                     stream.Add16BitData(Convert.ToInt16(currentPosX));
                     stream.Add16BitData(Convert.ToInt16(isServoOn));
+                    stream.Add16BitData(Convert.ToInt16(value));
                 }
 
                 plc.Write("D" + map.AddressNum, stream.Data);

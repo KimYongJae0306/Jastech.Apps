@@ -254,7 +254,7 @@ namespace ATT_UT_IPAD
             if (MainPageControl.Visible)
                 MainPageControl.UpdateButton();
 
-            if (SystemManager.Instance().MachineStatus == MachineStatus.RUN)
+            if (PlcControlManager.Instance().MachineStatus == MachineStatus.RUN)
             {
                 lblTeachingPageImage.Enabled = false;
                 lblTeachingPage.Enabled = false;
@@ -399,7 +399,7 @@ namespace ATT_UT_IPAD
             if (inspModel == null)
                 return;
 
-            if (SystemManager.Instance().MachineStatus != MachineStatus.RUN)
+            if (PlcControlManager.Instance().MachineStatus != MachineStatus.RUN)
             {
                 MessageConfirmForm form = new MessageConfirmForm();
                 form.Message = "Change Auto Run.";

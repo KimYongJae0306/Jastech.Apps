@@ -97,7 +97,7 @@ namespace ATT_UT_IPAD.UI.Pages
 
         public void UpdateButton()
         {
-            if (SystemManager.Instance().MachineStatus == MachineStatus.RUN)
+            if (PlcControlManager.Instance().MachineStatus == MachineStatus.RUN)
             {
                 lblStartText.ForeColor = Color.Blue;
                 lblStopText.ForeColor = Color.White;
