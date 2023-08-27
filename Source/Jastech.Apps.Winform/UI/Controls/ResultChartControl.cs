@@ -256,13 +256,13 @@ namespace Jastech.Apps.Winform.UI.Controls
 
             if (akkonResultType == AkkonResultType.All)
             {
-                AkkonSeriesCount.Points.DataBind(dt.AsEnumerable(), "Time", "Count", "");
-                AkkonSeriesLength.Points.DataBind(dt.AsEnumerable(), "Time", "Length", "");
+                AkkonSeriesCount.Points.DataBind(dt.AsEnumerable(), "Inspection Time", "Avg Count", "");
+                AkkonSeriesLength.Points.DataBind(dt.AsEnumerable(), "Inspection Time", "Avg Length", "");
             }
             else
             {
                 var akkonSeries = AkkonSeriesList.Where(x => x.Name == akkonResultType.ToString()).First();
-                akkonSeries.Points.DataBind(dt.AsEnumerable(), "Time", akkonResultType.ToString(), "");
+                akkonSeries.Points.DataBind(dt.AsEnumerable(), "Inspection Time", "Avg " + akkonResultType.ToString(), "");
             }
         }
 
