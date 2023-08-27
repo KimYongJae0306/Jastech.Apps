@@ -90,6 +90,7 @@ namespace ATT_UT_IPAD.UI.Controls
         public void Enable(bool isEnable)
         {
             InspAlignDisplay.Enable(isEnable);
+            BeginInvoke(new Action(() => Enabled = isEnable));
         }
 
         public void UpdateTabCount(int tabCount)
@@ -226,8 +227,8 @@ namespace ATT_UT_IPAD.UI.Controls
 
         public void UpdateResultDisplay(int tabNo)
         {
-            if (TabBtnControlList[tabNo].Enabled == false)
-                return;
+            //if (TabBtnControlList[tabNo].Enabled == false)
+            //    return;
 
             var tabInspResult = GetTabInspResultEvent?.Invoke(tabNo);
             if (tabInspResult == null)

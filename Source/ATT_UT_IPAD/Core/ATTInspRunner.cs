@@ -347,8 +347,8 @@ namespace ATT_UT_IPAD.Core
                 case SeqStep.SEQ_WAITING:
                     if (AppsStatus.Instance().IsInspRunnerFlagFromPlc == false)
                         break;
-                    SystemManager.Instance().TabButtonResetColor();
                     SystemManager.Instance().EnableMainView(false);
+                    SystemManager.Instance().TabButtonResetColor();
 
                     WriteLog("Receive Inspection Start Signal From PLC.", true);
 
@@ -494,7 +494,7 @@ namespace ATT_UT_IPAD.Core
                     break;
 
                 case SeqStep.SEQ_CHECK_STANDBY:
-                    AppsStatus.Instance().IsInspRunnerFlagFromPlc = false;
+                    //AppsStatus.Instance().IsInspRunnerFlagFromPlc = false;
                     ClearBufferThread();
                     SeqStep = SeqStep.SEQ_INIT;
                     break;

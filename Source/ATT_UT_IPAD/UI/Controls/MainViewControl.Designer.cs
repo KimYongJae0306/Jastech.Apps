@@ -29,15 +29,15 @@
         private void InitializeComponent()
         {
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
-            this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
-            this.pnlAlign = new System.Windows.Forms.Panel();
-            this.pnlAkkon = new System.Windows.Forms.Panel();
             this.tableLayoutPanel6 = new System.Windows.Forms.TableLayoutPanel();
             this.pnlDailyInfo = new System.Windows.Forms.Panel();
             this.pnlSystemLog = new System.Windows.Forms.Panel();
+            this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
+            this.pnlAlign = new System.Windows.Forms.Panel();
+            this.pnlAkkon = new System.Windows.Forms.Panel();
             this.tableLayoutPanel2.SuspendLayout();
-            this.tableLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel6.SuspendLayout();
+            this.tableLayoutPanel1.SuspendLayout();
             this.SuspendLayout();
             // 
             // tableLayoutPanel2
@@ -57,6 +57,41 @@
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel2.Size = new System.Drawing.Size(645, 517);
             this.tableLayoutPanel2.TabIndex = 3;
+            // 
+            // tableLayoutPanel6
+            // 
+            this.tableLayoutPanel6.ColumnCount = 1;
+            this.tableLayoutPanel6.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel6.Controls.Add(this.pnlDailyInfo, 0, 0);
+            this.tableLayoutPanel6.Controls.Add(this.pnlSystemLog, 0, 2);
+            this.tableLayoutPanel6.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel6.Location = new System.Drawing.Point(453, 0);
+            this.tableLayoutPanel6.Margin = new System.Windows.Forms.Padding(0);
+            this.tableLayoutPanel6.Name = "tableLayoutPanel6";
+            this.tableLayoutPanel6.RowCount = 3;
+            this.tableLayoutPanel6.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 70F));
+            this.tableLayoutPanel6.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 5F));
+            this.tableLayoutPanel6.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 30F));
+            this.tableLayoutPanel6.Size = new System.Drawing.Size(192, 517);
+            this.tableLayoutPanel6.TabIndex = 3;
+            // 
+            // pnlDailyInfo
+            // 
+            this.pnlDailyInfo.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pnlDailyInfo.Location = new System.Drawing.Point(0, 0);
+            this.pnlDailyInfo.Margin = new System.Windows.Forms.Padding(0);
+            this.pnlDailyInfo.Name = "pnlDailyInfo";
+            this.pnlDailyInfo.Size = new System.Drawing.Size(192, 358);
+            this.pnlDailyInfo.TabIndex = 3;
+            // 
+            // pnlSystemLog
+            // 
+            this.pnlSystemLog.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pnlSystemLog.Location = new System.Drawing.Point(0, 363);
+            this.pnlSystemLog.Margin = new System.Windows.Forms.Padding(0);
+            this.pnlSystemLog.Name = "pnlSystemLog";
+            this.pnlSystemLog.Size = new System.Drawing.Size(192, 154);
+            this.pnlSystemLog.TabIndex = 1;
             // 
             // tableLayoutPanel1
             // 
@@ -93,42 +128,6 @@
             this.pnlAkkon.Size = new System.Drawing.Size(448, 256);
             this.pnlAkkon.TabIndex = 0;
             // 
-            // tableLayoutPanel6
-            // 
-            this.tableLayoutPanel6.ColumnCount = 1;
-            this.tableLayoutPanel6.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel6.Controls.Add(this.pnlDailyInfo, 0, 0);
-            this.tableLayoutPanel6.Controls.Add(this.pnlSystemLog, 0, 2);
-            this.tableLayoutPanel6.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel6.Location = new System.Drawing.Point(453, 0);
-            this.tableLayoutPanel6.Margin = new System.Windows.Forms.Padding(0);
-            this.tableLayoutPanel6.Name = "tableLayoutPanel6";
-            this.tableLayoutPanel6.RowCount = 3;
-            this.tableLayoutPanel6.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel6.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 5F));
-            this.tableLayoutPanel6.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel6.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel6.Size = new System.Drawing.Size(192, 517);
-            this.tableLayoutPanel6.TabIndex = 3;
-            // 
-            // pnlDailyInfo
-            // 
-            this.pnlDailyInfo.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pnlDailyInfo.Location = new System.Drawing.Point(0, 0);
-            this.pnlDailyInfo.Margin = new System.Windows.Forms.Padding(0);
-            this.pnlDailyInfo.Name = "pnlDailyInfo";
-            this.pnlDailyInfo.Size = new System.Drawing.Size(192, 256);
-            this.pnlDailyInfo.TabIndex = 3;
-            // 
-            // pnlSystemLog
-            // 
-            this.pnlSystemLog.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pnlSystemLog.Location = new System.Drawing.Point(0, 261);
-            this.pnlSystemLog.Margin = new System.Windows.Forms.Padding(0);
-            this.pnlSystemLog.Name = "pnlSystemLog";
-            this.pnlSystemLog.Size = new System.Drawing.Size(192, 256);
-            this.pnlSystemLog.TabIndex = 1;
-            // 
             // MainViewControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
@@ -140,8 +139,8 @@
             this.Size = new System.Drawing.Size(645, 517);
             this.Load += new System.EventHandler(this.MainViewControl_Load);
             this.tableLayoutPanel2.ResumeLayout(false);
-            this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel6.ResumeLayout(false);
+            this.tableLayoutPanel1.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }

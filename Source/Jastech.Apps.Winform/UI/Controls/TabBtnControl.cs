@@ -13,6 +13,8 @@ namespace Jastech.Apps.Winform.UI.Controls
     {
         #region 필드
         public int _tabIndex { get; protected set; } = -1;
+
+        private object _lock = new object();
         #endregion
 
         #region 속성
@@ -71,38 +73,44 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         public void SetOrgImage(ICogImage cogImage)
         {
-            if (CogOrgImage != null)
+            lock(_lock)
             {
-                if (CogOrgImage is CogImage8Grey grey)
+                if (CogOrgImage != null)
                 {
-                    grey.Dispose();
-                    grey = null;
+                    if (CogOrgImage is CogImage8Grey grey)
+                    {
+                        grey.Dispose();
+                        grey = null;
+                    }
+                    if (CogOrgImage is CogImage24PlanarColor color)
+                    {
+                        color.Dispose();
+                        color = null;
+                    }
                 }
-                if (CogOrgImage is CogImage24PlanarColor color)
-                {
-                    color.Dispose();
-                    color = null;
-                }
+                CogOrgImage = cogImage;//?.CopyBase(CogImageCopyModeConstants.CopyPixels);
             }
-            CogOrgImage = cogImage;//?.CopyBase(CogImageCopyModeConstants.CopyPixels);
         }
 
         public void SetResultImage(ICogImage cogImage)
         {
-            if (CogResultImage != null)
+            lock (_lock)
             {
-                if (CogResultImage is CogImage8Grey grey)
+                if (CogResultImage != null)
                 {
-                    grey.Dispose();
-                    grey = null;
+                    if (CogResultImage is CogImage8Grey grey)
+                    {
+                        grey.Dispose();
+                        grey = null;
+                    }
+                    if (CogResultImage is CogImage24PlanarColor color)
+                    {
+                        color.Dispose();
+                        color = null;
+                    }
                 }
-                if (CogResultImage is CogImage24PlanarColor color)
-                {
-                    color.Dispose();
-                    color = null;
-                }
+                CogResultImage = cogImage;//?.CopyBase(CogImageCopyModeConstants.CopyPixels);
             }
-            CogResultImage = cogImage;//?.CopyBase(CogImageCopyModeConstants.CopyPixels);
         }
 
         public void SetAkkonNGAffineRectList(List<CogRectangleAffine> akkonNGList)
@@ -115,56 +123,65 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         public void SetInspImage(ICogImage cogImage)
         {
-            if (CogInspImage != null)
+            lock (_lock)
             {
-                if (CogInspImage is CogImage8Grey grey)
+                if (CogInspImage != null)
                 {
-                    grey.Dispose();
-                    grey = null;
+                    if (CogInspImage is CogImage8Grey grey)
+                    {
+                        grey.Dispose();
+                        grey = null;
+                    }
+                    if (CogInspImage is CogImage24PlanarColor color)
+                    {
+                        color.Dispose();
+                        color = null;
+                    }
                 }
-                if (CogInspImage is CogImage24PlanarColor color)
-                {
-                    color.Dispose();
-                    color = null;
-                }
+                CogInspImage = cogImage;//?;.CopyBase(CogImageCopyModeConstants.CopyPixels);
             }
-            CogInspImage = cogImage;//?;.CopyBase(CogImageCopyModeConstants.CopyPixels);
         }
 
         public void SetAlignImage(ICogImage cogImage)
         {
-            if (CogAlignImage != null)
+            lock (_lock)
             {
-                if (CogAlignImage is CogImage8Grey grey)
+                if (CogAlignImage != null)
                 {
-                    grey.Dispose();
-                    grey = null;
+                    if (CogAlignImage is CogImage8Grey grey)
+                    {
+                        grey.Dispose();
+                        grey = null;
+                    }
+                    if (CogAlignImage is CogImage24PlanarColor color)
+                    {
+                        color.Dispose();
+                        color = null;
+                    }
                 }
-                if (CogAlignImage is CogImage24PlanarColor color)
-                {
-                    color.Dispose();
-                    color = null;
-                }
+                CogAlignImage = cogImage;//?.CopyBase(CogImageCopyModeConstants.CopyPixels);
             }
-            CogAlignImage = cogImage;//?.CopyBase(CogImageCopyModeConstants.CopyPixels);
         }
 
         public void SetCenterImage(ICogImage cogImage)
         {
-            if (CogCenterImage != null)
+            lock (_lock)
             {
-                if (CogCenterImage is CogImage8Grey grey)
+                if (CogCenterImage != null)
                 {
-                    grey.Dispose();
-                    grey = null;
+                    if (CogCenterImage is CogImage8Grey grey)
+                    {
+                        grey.Dispose();
+                        grey = null;
+                    }
+                    if (CogCenterImage is CogImage24PlanarColor color)
+                    {
+                        color.Dispose();
+                        color = null;
+                    }
                 }
-                if (CogCenterImage is CogImage24PlanarColor color)
-                {
-                    color.Dispose();
-                    color = null;
-                }
+                CogCenterImage = cogImage;//?.CopyBase(CogImageCopyModeConstants.CopyPixels);
             }
-            CogCenterImage = cogImage;//?.CopyBase(CogImageCopyModeConstants.CopyPixels);
         }
 
 
@@ -210,7 +227,8 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         public ICogImage GetCogInspImage()
         {
-            return CogInspImage;
+            lock (_lock)
+                return CogInspImage;
         }
 
         public void UpdateData()
@@ -235,21 +253,25 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         public ICogImage GetOrgImage()
         {
-            return CogOrgImage;
+            lock (_lock)
+                return CogOrgImage;
         }
 
         public ICogImage GetCogResultImage()
         {
-            return CogResultImage;
+            lock (_lock)
+                return CogResultImage;
         }
         public ICogImage GetAlignImage()
         {
-            return CogAlignImage;
+            lock (_lock)
+                return CogAlignImage;
         }
 
         public ICogImage GetCenterImage()
         {
-            return CogCenterImage;
+            lock (_lock)
+                return CogCenterImage;
         }
 
         public List<CogRectangleAffine> GetAkkonNGAffineRectList()

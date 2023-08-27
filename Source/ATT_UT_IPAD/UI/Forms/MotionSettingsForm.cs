@@ -164,7 +164,7 @@ namespace ATT_UT_IPAD.UI.Forms
         {
             var posData = TeachingData.Instance().GetUnit(UnitName.ToString()).GetTeachingInfoList();
             SetTeachingPosition(posData);
-
+            
             UpdateCommonParam();
             UpdateVariableParam();
         }

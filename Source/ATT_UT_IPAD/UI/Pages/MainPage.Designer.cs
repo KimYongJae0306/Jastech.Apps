@@ -29,10 +29,6 @@
         private void InitializeComponent()
         {
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
-            this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
-            this.lblAlignButton = new System.Windows.Forms.Label();
-            this.lblAkkonButton = new System.Windows.Forms.Label();
-            this.lblMainButton = new System.Windows.Forms.Label();
             this.pnlView = new System.Windows.Forms.Panel();
             this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel7 = new System.Windows.Forms.TableLayoutPanel();
@@ -44,7 +40,6 @@
             this.lblStart = new System.Windows.Forms.Label();
             this.lblStartText = new System.Windows.Forms.Label();
             this.tableLayoutPanel1.SuspendLayout();
-            this.tableLayoutPanel2.SuspendLayout();
             this.tableLayoutPanel3.SuspendLayout();
             this.tableLayoutPanel7.SuspendLayout();
             this.tableLayoutPanel4.SuspendLayout();
@@ -56,93 +51,24 @@
             // 
             this.tableLayoutPanel1.ColumnCount = 1;
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel1.Controls.Add(this.tableLayoutPanel2, 0, 0);
-            this.tableLayoutPanel1.Controls.Add(this.pnlView, 0, 1);
+            this.tableLayoutPanel1.Controls.Add(this.pnlView, 0, 0);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel1.Location = new System.Drawing.Point(70, 0);
             this.tableLayoutPanel1.Margin = new System.Windows.Forms.Padding(0);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
-            this.tableLayoutPanel1.RowCount = 2;
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 50F));
+            this.tableLayoutPanel1.RowCount = 1;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tableLayoutPanel1.Size = new System.Drawing.Size(946, 498);
             this.tableLayoutPanel1.TabIndex = 0;
-            // 
-            // tableLayoutPanel2
-            // 
-            this.tableLayoutPanel2.ColumnCount = 6;
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 200F));
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 200F));
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 200F));
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 200F));
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 200F));
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel2.Controls.Add(this.lblAlignButton, 2, 0);
-            this.tableLayoutPanel2.Controls.Add(this.lblAkkonButton, 1, 0);
-            this.tableLayoutPanel2.Controls.Add(this.lblMainButton, 0, 0);
-            this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel2.Location = new System.Drawing.Point(0, 0);
-            this.tableLayoutPanel2.Margin = new System.Windows.Forms.Padding(0);
-            this.tableLayoutPanel2.Name = "tableLayoutPanel2";
-            this.tableLayoutPanel2.RowCount = 1;
-            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel2.Size = new System.Drawing.Size(946, 50);
-            this.tableLayoutPanel2.TabIndex = 1;
-            // 
-            // lblAlignButton
-            // 
-            this.lblAlignButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
-            this.lblAlignButton.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblAlignButton.Font = new System.Drawing.Font("맑은 고딕", 14F, System.Drawing.FontStyle.Bold);
-            this.lblAlignButton.ForeColor = System.Drawing.Color.White;
-            this.lblAlignButton.Location = new System.Drawing.Point(400, 0);
-            this.lblAlignButton.Margin = new System.Windows.Forms.Padding(0);
-            this.lblAlignButton.Name = "lblAlignButton";
-            this.lblAlignButton.Size = new System.Drawing.Size(200, 50);
-            this.lblAlignButton.TabIndex = 2;
-            this.lblAlignButton.Text = "ALIGN";
-            this.lblAlignButton.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.lblAlignButton.Visible = false;
-            this.lblAlignButton.Click += new System.EventHandler(this.lblAlignButton_Click);
-            // 
-            // lblAkkonButton
-            // 
-            this.lblAkkonButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
-            this.lblAkkonButton.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblAkkonButton.Font = new System.Drawing.Font("맑은 고딕", 14F, System.Drawing.FontStyle.Bold);
-            this.lblAkkonButton.ForeColor = System.Drawing.Color.White;
-            this.lblAkkonButton.Location = new System.Drawing.Point(200, 0);
-            this.lblAkkonButton.Margin = new System.Windows.Forms.Padding(0);
-            this.lblAkkonButton.Name = "lblAkkonButton";
-            this.lblAkkonButton.Size = new System.Drawing.Size(200, 50);
-            this.lblAkkonButton.TabIndex = 3;
-            this.lblAkkonButton.Text = "AKKON";
-            this.lblAkkonButton.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.lblAkkonButton.Visible = false;
-            this.lblAkkonButton.Click += new System.EventHandler(this.lblAkkonButton_Click);
-            // 
-            // lblMainButton
-            // 
-            this.lblMainButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
-            this.lblMainButton.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblMainButton.Font = new System.Drawing.Font("맑은 고딕", 14F, System.Drawing.FontStyle.Bold);
-            this.lblMainButton.ForeColor = System.Drawing.Color.White;
-            this.lblMainButton.Location = new System.Drawing.Point(0, 0);
-            this.lblMainButton.Margin = new System.Windows.Forms.Padding(0);
-            this.lblMainButton.Name = "lblMainButton";
-            this.lblMainButton.Size = new System.Drawing.Size(200, 50);
-            this.lblMainButton.TabIndex = 1;
-            this.lblMainButton.Text = "Main";
-            this.lblMainButton.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.lblMainButton.Click += new System.EventHandler(this.lblMainButton_Click);
             // 
             // pnlView
             // 
             this.pnlView.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pnlView.Location = new System.Drawing.Point(0, 50);
+            this.pnlView.Location = new System.Drawing.Point(0, 0);
             this.pnlView.Margin = new System.Windows.Forms.Padding(0);
             this.pnlView.Name = "pnlView";
-            this.pnlView.Size = new System.Drawing.Size(946, 448);
+            this.pnlView.Size = new System.Drawing.Size(946, 498);
             this.pnlView.TabIndex = 2;
             // 
             // tableLayoutPanel3
@@ -165,14 +91,14 @@
             // 
             this.tableLayoutPanel7.ColumnCount = 1;
             this.tableLayoutPanel7.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel7.Controls.Add(this.tableLayoutPanel4, 0, 1);
+            this.tableLayoutPanel7.Controls.Add(this.tableLayoutPanel4, 0, 0);
             this.tableLayoutPanel7.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel7.Location = new System.Drawing.Point(0, 0);
             this.tableLayoutPanel7.Margin = new System.Windows.Forms.Padding(0);
             this.tableLayoutPanel7.Name = "tableLayoutPanel7";
-            this.tableLayoutPanel7.RowCount = 2;
-            this.tableLayoutPanel7.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 50F));
+            this.tableLayoutPanel7.RowCount = 1;
             this.tableLayoutPanel7.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel7.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tableLayoutPanel7.Size = new System.Drawing.Size(70, 498);
             this.tableLayoutPanel7.TabIndex = 2;
             // 
@@ -184,14 +110,14 @@
             this.tableLayoutPanel4.Controls.Add(this.tableLayoutPanel5, 0, 1);
             this.tableLayoutPanel4.Controls.Add(this.tableLayoutPanel6, 0, 0);
             this.tableLayoutPanel4.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel4.Location = new System.Drawing.Point(0, 50);
+            this.tableLayoutPanel4.Location = new System.Drawing.Point(0, 0);
             this.tableLayoutPanel4.Margin = new System.Windows.Forms.Padding(0);
             this.tableLayoutPanel4.Name = "tableLayoutPanel4";
             this.tableLayoutPanel4.RowCount = 3;
             this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 80F));
             this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 80F));
             this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel4.Size = new System.Drawing.Size(70, 448);
+            this.tableLayoutPanel4.Size = new System.Drawing.Size(70, 498);
             this.tableLayoutPanel4.TabIndex = 1;
             // 
             // tableLayoutPanel5
@@ -285,7 +211,6 @@
             this.Size = new System.Drawing.Size(1016, 498);
             this.Load += new System.EventHandler(this.MainPage_Load);
             this.tableLayoutPanel1.ResumeLayout(false);
-            this.tableLayoutPanel2.ResumeLayout(false);
             this.tableLayoutPanel3.ResumeLayout(false);
             this.tableLayoutPanel7.ResumeLayout(false);
             this.tableLayoutPanel4.ResumeLayout(false);
@@ -298,10 +223,6 @@
         #endregion
 
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
-        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
-        private System.Windows.Forms.Label lblMainButton;
-        private System.Windows.Forms.Label lblAlignButton;
-        private System.Windows.Forms.Label lblAkkonButton;
         private System.Windows.Forms.Panel pnlView;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel3;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel7;

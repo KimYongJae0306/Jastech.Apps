@@ -54,8 +54,8 @@
             this.tlpDailyInfoViewer.RowCount = 4;
             this.tlpDailyInfoViewer.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
             this.tlpDailyInfoViewer.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
-            this.tlpDailyInfoViewer.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tlpDailyInfoViewer.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tlpDailyInfoViewer.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 70F));
+            this.tlpDailyInfoViewer.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 30F));
             this.tlpDailyInfoViewer.Size = new System.Drawing.Size(339, 255);
             this.tlpDailyInfoViewer.TabIndex = 0;
             // 
@@ -127,16 +127,16 @@
             this.pnlDailyResult.Location = new System.Drawing.Point(0, 80);
             this.pnlDailyResult.Margin = new System.Windows.Forms.Padding(0);
             this.pnlDailyResult.Name = "pnlDailyResult";
-            this.pnlDailyResult.Size = new System.Drawing.Size(339, 87);
+            this.pnlDailyResult.Size = new System.Drawing.Size(339, 122);
             this.pnlDailyResult.TabIndex = 5;
             // 
             // pnlDailyChart
             // 
             this.pnlDailyChart.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pnlDailyChart.Location = new System.Drawing.Point(0, 167);
+            this.pnlDailyChart.Location = new System.Drawing.Point(0, 202);
             this.pnlDailyChart.Margin = new System.Windows.Forms.Padding(0);
             this.pnlDailyChart.Name = "pnlDailyChart";
-            this.pnlDailyChart.Size = new System.Drawing.Size(339, 88);
+            this.pnlDailyChart.Size = new System.Drawing.Size(339, 53);
             this.pnlDailyChart.TabIndex = 5;
             // 
             // DailyInfoViewerControl
