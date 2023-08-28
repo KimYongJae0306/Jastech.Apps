@@ -298,20 +298,21 @@ namespace Jastech.Apps.Winform.UI.Controls
 
             ClearChartData();
 
-            var dt = ParseData(dataTable, (int)tabType);
+            int tabIndex = (int)tabType;
+            var dataSource = ParseData(dataTable, tabIndex++).AsEnumerable();
 
             if (alignResultType == AlignResultType.All)
             {
-                AlignSeriesLx.Points.DataBind(dt.AsEnumerable(), "Inspection Time", "Lx", "");
-                AlignSeriesLy.Points.DataBind(dt.AsEnumerable(), "Inspection Time", "Ly", "");
-                AlignSeriesCx.Points.DataBind(dt.AsEnumerable(), "Inspection Time", "Cx", "");
-                AlignSeriesRx.Points.DataBind(dt.AsEnumerable(), "Inspection Time", "Rx", "");
-                AlignSeriesRy.Points.DataBind(dt.AsEnumerable(), "Inspection Time", "Ry", "");
+                AlignSeriesLx.Points.DataBind(dataSource, "Inspection Time", $"Lx_{tabIndex}", "");
+                AlignSeriesLy.Points.DataBind(dataSource, "Inspection Time", $"Ly_{tabIndex}", "");
+                AlignSeriesCx.Points.DataBind(dataSource, "Inspection Time", $"Cx_{tabIndex}", "");
+                AlignSeriesRx.Points.DataBind(dataSource, "Inspection Time", $"Rx_{tabIndex}", "");
+                AlignSeriesRy.Points.DataBind(dataSource, "Inspection Time", $"Ry_{tabIndex}", "");
             }
             else
             {
-                var alignSeries = AlignSeriesList.Where(x => x.Name == alignResultType.ToString()).First();
-                alignSeries.Points.DataBind(dt.AsEnumerable(), "Inspection Time", alignResultType.ToString(), "");
+                var alignSeries = AlignSeriesList.First(x => x.Name == alignResultType.ToString());
+                alignSeries?.Points.DataBind(dataSource, "Inspection Time", $"{alignResultType}_{tabIndex}", "");
             }
         }
 
@@ -322,17 +323,18 @@ namespace Jastech.Apps.Winform.UI.Controls
 
             ClearChartData();
 
-            var dt = ParseData(dataTable, (int)tabType);
+            int tabIndex = (int)tabType;
+            var dataSource = ParseData(dataTable, tabIndex++).AsEnumerable();
 
             if (akkonResultType == AkkonResultType.All)
             {
-                AkkonSeriesCount.Points.DataBind(dt.AsEnumerable(), "Inspection Time", "Avg Count", "");
-                AkkonSeriesLength.Points.DataBind(dt.AsEnumerable(), "Inspection Time", "Avg Length", "");
+                AkkonSeriesCount.Points.DataBind(dataSource, "Inspection Time", $"Avg Count_{tabIndex}", "");
+                AkkonSeriesLength.Points.DataBind(dataSource, "Inspection Time", $"Avg Length_{tabIndex}", "");
             }
             else
             {
-                var akkonSeries = AkkonSeriesList.Where(x => x.Name == akkonResultType.ToString()).First();
-                akkonSeries.Points.DataBind(dt.AsEnumerable(), "Inspection Time", "Avg " + akkonResultType.ToString(), "");
+                var akkonSeries = AkkonSeriesList.First(x => x.Name == akkonResultType.ToString());
+                akkonSeries?.Points.DataBind(dataSource, "Inspection Time", $"Avg {akkonResultType}_{tabIndex}", "");
             }
         }
 
@@ -344,11 +346,11 @@ namespace Jastech.Apps.Winform.UI.Controls
 
             AppsInspModel inspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
 
-            for (int rowIndex = 0; rowIndex < dataTable.Rows.Count / inspModel.TabCount; rowIndex++)
+            for (int rowIndex = 0; rowIndex < dataTable.Rows.Count; rowIndex++)
             {
                 int index = (rowIndex * inspModel.TabCount) + tabNo;
 
-                var rowData = dataTable.Rows[index];
+                var rowData = dataTable.Rows[rowIndex];
 
                 newDataTable.Rows.Add(rowData.ItemArray);
             }

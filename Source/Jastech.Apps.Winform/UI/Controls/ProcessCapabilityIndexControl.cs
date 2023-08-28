@@ -231,9 +231,6 @@ namespace Jastech.Apps.Winform.UI.Controls
             if (dataTable.Rows.Count == 0)
                 return;
 
-            string queryTab = SelectQuery(tabType);
-            DataRow[] dataRowArray = dataTable.Select(queryTab);
-
             double upperSpecLimit = Convert.ToDouble(lblUpperSpecLimit.Text);
             double lowerSpecLimit = Convert.ToDouble(lblLowerSpecLimit.Text);
 
@@ -241,9 +238,9 @@ namespace Jastech.Apps.Winform.UI.Controls
             var resultTypes = Enum.GetNames(typeof(AlignResultType)).Where(name => name.ToUpper() != "ALL").ToList();
             for (int index = 0; index < resultTypes.Count; index++)
             {
-                int columnIndex = dataTable.Columns.IndexOf(resultTypes[index]);
+                int columnIndex = dataTable.Columns.IndexOf($"{resultTypes[index]}_{(int)tabType + 1}");
 
-                var values = dataRowArray.Select(row => Convert.ToDouble(row[columnIndex])).ToList();
+                var values = dataTable.AsEnumerable().Select(row => Convert.ToDouble(row[columnIndex])).ToList();
                 var result = ProcessCapabilityIndex.GetResult(values, upperSpecLimit, lowerSpecLimit);
                 result.Type = resultTypes[index];
 
