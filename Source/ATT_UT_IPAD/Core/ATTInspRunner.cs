@@ -768,11 +768,11 @@ namespace ATT_UT_IPAD.Core
                     "Inspection Time",
                     "Panel ID",
                     "Stage No",
-                    "Judge",
                 };
                 for (int index = 0; index < tabCount; index++)
                 {
-                    //header.Add($"Tab_{index + 1}");
+                    header.Add($"Tab_{index + 1}");
+                    header.Add($"Judge{index + 1}");
                     header.Add($"Lx_{index + 1}");
                     header.Add($"Ly_{index + 1}");
                     header.Add($"Cx_{index + 1}");
@@ -789,7 +789,6 @@ namespace ATT_UT_IPAD.Core
             body.Add($"{AppsInspResult.Instance().EndInspTime:HH:mm:ss}");                  // Insp Time
             body.Add($"{AppsInspResult.Instance().Cell_ID}");                               // Panel ID
             body.Add($"{(int)programType + 1}");                                            // Stage No
-            body.Add($"{AppsInspResult.Instance().GetAlign(0).Judgement}");                 // Judge
 
             for (int tabNo = 0; tabNo < tabCount; tabNo++)
             {
@@ -802,7 +801,8 @@ namespace ATT_UT_IPAD.Core
                 float ry = CheckAlignResultValue(alignResult.RightY);
                 float cx = (lx + rx) / 2.0F;
 
-                //body.Add($"{tabInspResult.TabNo + 1}");                                     // Tab No
+                body.Add($"{tabInspResult.TabNo + 1}");                                     // Tab No
+                body.Add($"{tabInspResult.Judgement}");                                     // Judge
                 body.Add($"{lx:F3}");                                                       // Align Lx
                 body.Add($"{ly:F3}");                                                       // Align Ly
                 body.Add($"{cx:F3}");                                                       // Align Cx
@@ -823,11 +823,11 @@ namespace ATT_UT_IPAD.Core
                     "Inspection Time",
                     "Panel ID",
                     "Stage No",
-                    "Judge",
                 };
                 for (int index = 0; index < tabCount; index++)
                 {
-                    //header.Add($"Tab_{index + 1}");
+                    header.Add($"Tab_{index + 1}");
+                    header.Add($"Judge_{index + 1}");
                     header.Add($"Avg Count_{index + 1}");
                     header.Add($"Avg Length_{index + 1}");
                 }
@@ -841,7 +841,6 @@ namespace ATT_UT_IPAD.Core
             body.Add($"{AppsInspResult.Instance().EndInspTime:HH:mm:ss}");                  // Insp Time
             body.Add($"{AppsInspResult.Instance().Cell_ID}");                               // Panel ID
             body.Add($"{(int)programType + 1}");                                            // Stage No
-            body.Add($"{AppsInspResult.Instance().GetAkkon(0).Judgement}");                 // Judge
             for (int tabNo = 0; tabNo < tabCount; tabNo++)
             {
                 var tabInspResult = AppsInspResult.Instance().GetAkkon(tabNo);
@@ -850,7 +849,8 @@ namespace ATT_UT_IPAD.Core
                 int avgCount = (akkonResult.LeftCount_Avg + akkonResult.RightCount_Avg) / 2;
                 float avgLength = (akkonResult.Length_Left_Avg_um + akkonResult.Length_Right_Avg_um) / 2.0F;
 
-                //body.Add($"{tabInspResult.TabNo + 1}");                                     // Tab No
+                body.Add($"{tabInspResult.TabNo + 1}");                                     // Tab No
+                body.Add($"{tabInspResult.Judgement}");                                     // Judge
                 body.Add($"{avgCount}");                                                    // Average Count
                 body.Add($"{avgLength:F3}");                                                // Average Length
 
