@@ -545,6 +545,8 @@ namespace Jastech.Apps.Winform.UI.Controls
             var rightResultY = inspResult.AlignResult.RightY;
             lblRightY_Judgement.Text = rightResultY.Judgement.ToString();
             lblRightY_Value.Text = (rightResultY.ResultValue_pixel * Resolution_um).ToString("F2");
+
+            lblCx_Value.Text = (((leftResultX.ResultValue_pixel * Resolution_um) + (rightResultX.ResultValue_pixel * Resolution_um)) / 2).ToString("F2");
         }
 
         private List<CogCompositeShape> GetAlignResultGraphics(AlignResult alignResult)

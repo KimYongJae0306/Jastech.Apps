@@ -588,7 +588,7 @@
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(200, 42);
             this.label7.TabIndex = 12;
-            this.label7.Text = "Cx";
+            this.label7.Text = "CenterX";
             this.label7.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // label29
