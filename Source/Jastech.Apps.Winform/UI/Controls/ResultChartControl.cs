@@ -16,6 +16,8 @@ namespace Jastech.Apps.Winform.UI.Controls
     {
         #region 필드
         private int _selectedTabNo { get; set; } = -1;
+
+        private AlignResultType _selectedAlignResult { get; set; } = AlignResultType.All;
         #endregion
 
         public enum InspChartType
@@ -94,6 +96,10 @@ namespace Jastech.Apps.Winform.UI.Controls
                 AlignSeriesLx.Color = Color.Blue;
                 AlignSeriesLx.Name = "Lx";
 
+                
+                //AlignSeriesLx.XValueMember = "ea";
+                //AlignSeriesLx.YValueMembers = "um";
+
                 AlignSeriesLy = new Series();
                 AlignSeriesLy = chtData.Series.Add("Ly");
                 AlignSeriesLy.ChartType = SeriesChartType.Line;
@@ -142,12 +148,36 @@ namespace Jastech.Apps.Winform.UI.Controls
 
             _selectedTabNo = tabNo;
 
-            UpdateAlignChart(tabNo);
+            UpdateAlignChart(tabNo, _selectedAlignResult);
+        }
+
+        private void InitializeAlignChart()
+        {
+            //chtData.Titles[0].Position.Auto = false;
+
+            //chtData.ChartAreas[0].Position.Auto = false;
+
+            chtData.ChartAreas[0].AxisX.Interval = 10;
+            chtData.ChartAreas[0].AxisX.Title = "ea";
+            chtData.ChartAreas[0].AxisX.TextOrientation = TextOrientation.Auto;
+            chtData.ChartAreas[0].AxisX.TitleForeColor = Color.White;
+            chtData.ChartAreas[0].AxisX.TitleAlignment = StringAlignment.Far;
+            chtData.ChartAreas[0].AxisX.MajorGrid.LineDashStyle = ChartDashStyle.Dash;
+
+            chtData.ChartAreas[0].AxisY.Title = "um";
+            chtData.ChartAreas[0].AxisY.TextOrientation = TextOrientation.Auto;
+            chtData.ChartAreas[0].AxisY.TitleForeColor = Color.White;
+            chtData.ChartAreas[0].AxisY.TitleAlignment = StringAlignment.Far;
+            chtData.ChartAreas[0].AxisY.MajorGrid.LineDashStyle = ChartDashStyle.Dash;
         }
 
         private void UpdateAlignChart(int tabNo, AlignResultType alignResultType = AlignResultType.All)
         {
             ClearChartData();
+            InitializeAlignChart();
+            //chtData.AlignDataPointsByAxisLabel();
+
+
 
             var dailyInfo = DailyInfoService.GetDailyInfo();
 
@@ -339,11 +369,16 @@ namespace Jastech.Apps.Winform.UI.Controls
                 if (result.Object is LegendItem)
                 {
                     LegendItem legendItem = (LegendItem)result.Object;
-                    UpdateAlignChart(_selectedTabNo, (AlignResultType)Enum.Parse(typeof(AlignResultType), legendItem.SeriesName));
+                    _selectedAlignResult = (AlignResultType)Enum.Parse(typeof(AlignResultType), legendItem.SeriesName);
+
+                    UpdateAlignChart(_selectedTabNo, _selectedAlignResult);
                 }
             }
             else
-                UpdateAlignChart(_selectedTabNo);
+            {
+                _selectedAlignResult = AlignResultType.All;
+                UpdateAlignChart(_selectedTabNo, _selectedAlignResult);
+            }
 
         }
     }
