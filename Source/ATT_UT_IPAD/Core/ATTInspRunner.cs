@@ -260,7 +260,7 @@ namespace ATT_UT_IPAD.Core
             if (ModelManager.Instance().CurrentModel == null)
                 return;
 
-            SystemManager.Instance().MachineStatus = MachineStatus.RUN;
+            PlcControlManager.Instance().MachineStatus = MachineStatus.RUN;
             SeqStep = SeqStep.SEQ_INIT;
 
             WriteLog("Start Sequence.");
@@ -268,7 +268,7 @@ namespace ATT_UT_IPAD.Core
 
         public void SeqStop()
         {
-            SystemManager.Instance().MachineStatus = MachineStatus.STOP;
+            PlcControlManager.Instance().MachineStatus = MachineStatus.STOP;
             SeqStep = SeqStep.SEQ_IDLE;
 
             WriteLog("Stop Sequence.");
@@ -318,6 +318,7 @@ namespace ATT_UT_IPAD.Core
             {
                 case SeqStep.SEQ_IDLE:
                     AppsStatus.Instance().IsInspRunnerFlagFromPlc = false;
+                    PlcControlManager.Instance().EnableSendPeriodically = true;
                     break;
 
                 case SeqStep.SEQ_INIT:
@@ -347,8 +348,8 @@ namespace ATT_UT_IPAD.Core
                 case SeqStep.SEQ_WAITING:
                     if (AppsStatus.Instance().IsInspRunnerFlagFromPlc == false)
                         break;
-                    SystemManager.Instance().TabButtonResetColor();
                     SystemManager.Instance().EnableMainView(false);
+                    SystemManager.Instance().TabButtonResetColor();
 
                     WriteLog("Receive Inspection Start Signal From PLC.", true);
 
@@ -455,6 +456,8 @@ namespace ATT_UT_IPAD.Core
                     string message = $"Grab End to Insp Completed Time.({LastInspSW.ElapsedMilliseconds.ToString()}ms)";
                     WriteLog(message, true);
 
+                    PlcControlManager.Instance().EnableSendPeriodically = false;
+
                     SeqStep = SeqStep.SEQ_MANUAL_CHECK;
                     break;
 
@@ -467,6 +470,7 @@ namespace ATT_UT_IPAD.Core
                     SendResultData();
                     WriteLog("Completed Send Plc Tab Result Data", true);
 
+                    PlcControlManager.Instance().EnableSendPeriodically = true;
                     SeqStep = SeqStep.SEQ_WAIT_UI_RESULT_UPDATE;
                     break;
 
@@ -494,7 +498,7 @@ namespace ATT_UT_IPAD.Core
                     break;
 
                 case SeqStep.SEQ_CHECK_STANDBY:
-                    AppsStatus.Instance().IsInspRunnerFlagFromPlc = false;
+                    //AppsStatus.Instance().IsInspRunnerFlagFromPlc = false;
                     ClearBufferThread();
                     SeqStep = SeqStep.SEQ_INIT;
                     break;
@@ -507,6 +511,7 @@ namespace ATT_UT_IPAD.Core
                     IsAlignGrabDone = false;
                     AppsStatus.Instance().IsInspRunnerFlagFromPlc = false;
                     SystemManager.Instance().EnableMainView(true);
+                    PlcControlManager.Instance().EnableSendPeriodically = true;
                     WriteLog("Sequnce Error.", true);
                     ClearBuffer();
 

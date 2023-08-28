@@ -68,8 +68,6 @@ namespace Jastech.Apps.Winform
         public event GrabOnceDelegate GrabOnceEventHandler;
 
         public event GrabDelayStartDelegate GrabDelayStartEventHandler;
-
-        public event LAFTrackingOnOffDelegate LAFTrackingOnOffHandler;
         #endregion
 
         #region 델리게이트

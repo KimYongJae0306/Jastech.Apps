@@ -33,9 +33,9 @@ namespace ATT_UT_IPAD.UI.Pages
         #region 속성
         public MainViewControl MainViewControl { get; set; } = null;
 
-        public TabAlignViewControl TabAlignViewControl { get; set; } = null;
+        //public TabAlignViewControl TabAlignViewControl { get; set; } = null;
 
-        public TabAkkonViewControl TabAkkonViewControl { get; set; } = null;
+        //public TabAkkonViewControl TabAkkonViewControl { get; set; } = null;
         #endregion
 
         #region 생성자
@@ -58,16 +58,6 @@ namespace ATT_UT_IPAD.UI.Pages
             MainViewControl.Visible = false;
             pnlView.Controls.Add(MainViewControl);
 
-            TabAlignViewControl = new TabAlignViewControl();
-            TabAlignViewControl.Dock = DockStyle.Fill;
-            TabAlignViewControl.Visible = false;
-            pnlView.Controls.Add(TabAlignViewControl);
-
-            TabAkkonViewControl = new TabAkkonViewControl();
-            TabAkkonViewControl.Dock = DockStyle.Fill;
-            TabAkkonViewControl.Visible = false;
-            pnlView.Controls.Add(TabAkkonViewControl);
-
             SelectMainView();
         }
 
@@ -76,65 +66,15 @@ namespace ATT_UT_IPAD.UI.Pages
             SelectMainView();
         }
 
-        private void lblAkkonButton_Click(object sender, EventArgs e)
-        {
-            SelectAkkonView();
-        }
-
-        private void lblAlignButton_Click(object sender, EventArgs e)
-        {
-            SelectAlignView();
-        }
-
         private void SelectMainView()
         {
             if (MainViewControl.Visible)
                 return;
 
-            lblMainButton.BackColor = _selectedColor;
-            lblAkkonButton.BackColor = _noneSelectColor;
-            lblAlignButton.BackColor = _noneSelectColor;
-
             MainViewControl.Visible = true;
-            TabAlignViewControl.Visible = false;
-            TabAkkonViewControl.Visible = false;
 
             MainViewControl.Dock = DockStyle.Fill;
             pnlView.Controls.Add(MainViewControl);
-        }
-
-        public void SelectAlignView()
-        {
-            if (TabAlignViewControl.Visible)
-                return;
-
-            lblMainButton.BackColor = _noneSelectColor;
-            lblAkkonButton.BackColor = _noneSelectColor;
-            lblAlignButton.BackColor = _selectedColor;
-
-            MainViewControl.Visible = false;
-            TabAlignViewControl.Visible = true;
-            TabAkkonViewControl.Visible = false;
-
-            TabAlignViewControl.Dock = DockStyle.Fill;
-            pnlView.Controls.Add(TabAlignViewControl);
-        }
-
-        public void SelectAkkonView()
-        {
-            if (TabAkkonViewControl.Visible)
-                return;
-
-            lblMainButton.BackColor = _noneSelectColor;
-            lblAkkonButton.BackColor = _selectedColor;
-            lblAlignButton.BackColor = _noneSelectColor;
-
-            MainViewControl.Visible = false;
-            TabAlignViewControl.Visible = false;
-            TabAkkonViewControl.Visible = true;
-
-            TabAkkonViewControl.Dock = DockStyle.Fill;
-            pnlView.Controls.Add(TabAkkonViewControl);
         }
 
         private void lblStart_Click(object sender, EventArgs e)
@@ -157,7 +97,7 @@ namespace ATT_UT_IPAD.UI.Pages
 
         public void UpdateButton()
         {
-            if (SystemManager.Instance().MachineStatus == MachineStatus.RUN)
+            if (PlcControlManager.Instance().MachineStatus == MachineStatus.RUN)
             {
                 lblStartText.ForeColor = Color.Blue;
                 lblStopText.ForeColor = Color.White;

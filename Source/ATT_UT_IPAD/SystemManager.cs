@@ -42,7 +42,7 @@ namespace ATT_UT_IPAD
         #endregion
 
         #region 속성
-        public MachineStatus MachineStatus { get; set; } = MachineStatus.STOP;
+      
         #endregion
 
         #region 메서드
@@ -282,7 +282,7 @@ namespace ATT_UT_IPAD
 
         public void StartRun()
         {
-            if (MachineStatus != MachineStatus.RUN)
+            if (PlcControlManager.Instance().MachineStatus != MachineStatus.RUN)
             {
                 MessageYesNoForm form = new MessageYesNoForm();
                 form.Message = "Do you want to Start Auto Mode?";
@@ -291,8 +291,8 @@ namespace ATT_UT_IPAD
                 {
                     _inspRunner.SeqRun();
                     AddSystemLogMessage("Start Auto mode.");
-
-                    PlcControlManager.Instance().WritePcReady(MachineStatus.RUN);
+                    PlcControlManager.Instance().MachineStatus = MachineStatus.RUN;
+                    //PlcControlManager.Instance().WritePcReady(MachineStatus.RUN);
                 }
             }
         }
@@ -306,7 +306,7 @@ namespace ATT_UT_IPAD
                 return;
             }
 
-            if (SystemManager.Instance().MachineStatus != MachineStatus.STOP)
+            if (PlcControlManager.Instance().MachineStatus != MachineStatus.STOP)
             {
                 MessageYesNoForm form = new MessageYesNoForm();
                 form.Message = "Do you want to Stop Auto Mode?";
@@ -316,7 +316,8 @@ namespace ATT_UT_IPAD
                     _inspRunner.SeqStop();
                     AddSystemLogMessage("Stop Auto Mode.");
 
-                    PlcControlManager.Instance().WritePcReady(MachineStatus.STOP);
+                    PlcControlManager.Instance().MachineStatus = MachineStatus.STOP;
+                    //PlcControlManager.Instance().WritePcReady(MachineStatus.STOP);
                 }
             }
         }

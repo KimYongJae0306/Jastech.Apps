@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Runtime.InteropServices.ComTypes;
 using System.Windows.Forms;
 using System.Windows.Forms.DataVisualization.Charting;
 
@@ -13,6 +14,12 @@ namespace Jastech.Apps.Winform.UI.Controls
 {
     public partial class ResultChartControl : UserControl
     {
+        #region 필드
+        private int _selectedTabNo { get; set; } = -1;
+
+        private AlignResultType _selectedAlignResult { get; set; } = AlignResultType.All;
+        #endregion
+
         public enum InspChartType
         {
             Akkon,
@@ -89,6 +96,10 @@ namespace Jastech.Apps.Winform.UI.Controls
                 AlignSeriesLx.Color = Color.Blue;
                 AlignSeriesLx.Name = "Lx";
 
+                
+                //AlignSeriesLx.XValueMember = "ea";
+                //AlignSeriesLx.YValueMembers = "um";
+
                 AlignSeriesLy = new Series();
                 AlignSeriesLy = chtData.Series.Add("Ly");
                 AlignSeriesLy.ChartType = SeriesChartType.Line;
@@ -135,12 +146,38 @@ namespace Jastech.Apps.Winform.UI.Controls
                 return;
             }
 
-            UpdateAlignChart(tabNo);
+            _selectedTabNo = tabNo;
+
+            UpdateAlignChart(tabNo, _selectedAlignResult);
         }
 
-        private void UpdateAlignChart(int tabNo)
+        private void InitializeAlignChart()
+        {
+            //chtData.Titles[0].Position.Auto = false;
+
+            //chtData.ChartAreas[0].Position.Auto = false;
+
+            chtData.ChartAreas[0].AxisX.Interval = 10;
+            chtData.ChartAreas[0].AxisX.Title = "ea";
+            chtData.ChartAreas[0].AxisX.TextOrientation = TextOrientation.Auto;
+            chtData.ChartAreas[0].AxisX.TitleForeColor = Color.White;
+            chtData.ChartAreas[0].AxisX.TitleAlignment = StringAlignment.Far;
+            chtData.ChartAreas[0].AxisX.MajorGrid.LineDashStyle = ChartDashStyle.Dash;
+
+            chtData.ChartAreas[0].AxisY.Title = "um";
+            chtData.ChartAreas[0].AxisY.TextOrientation = TextOrientation.Auto;
+            chtData.ChartAreas[0].AxisY.TitleForeColor = Color.White;
+            chtData.ChartAreas[0].AxisY.TitleAlignment = StringAlignment.Far;
+            chtData.ChartAreas[0].AxisY.MajorGrid.LineDashStyle = ChartDashStyle.Dash;
+        }
+
+        private void UpdateAlignChart(int tabNo, AlignResultType alignResultType = AlignResultType.All)
         {
             ClearChartData();
+            InitializeAlignChart();
+            //chtData.AlignDataPointsByAxisLabel();
+
+
 
             var dailyInfo = DailyInfoService.GetDailyInfo();
 
@@ -153,12 +190,45 @@ namespace Jastech.Apps.Winform.UI.Controls
                     if (tabData == null)
                         continue;
 
+                    AddSeriesPoint(tabData, alignResultType);
+                }
+            }
+        }
+
+        private void AddSeriesPoint(AlignDailyInfo tabData, AlignResultType alignResultType)
+        {
+            switch (alignResultType)
+            {
+                case AlignResultType.All:
                     AlignSeriesLx.Points.Add(tabData.LX);
                     AlignSeriesLy.Points.Add(tabData.LY);
                     AlignSeriesRx.Points.Add(tabData.RX);
                     AlignSeriesRy.Points.Add(tabData.RY);
                     AlignSeriesCx.Points.Add(tabData.CX);
-                }
+                    break;
+
+                case AlignResultType.Lx:
+                    AlignSeriesLx.Points.Add(tabData.LX);
+                    break;
+
+                case AlignResultType.Ly:
+                    AlignSeriesLy.Points.Add(tabData.LY);
+                    break;
+
+                case AlignResultType.Cx:
+                    AlignSeriesCx.Points.Add(tabData.CX);
+                    break;
+
+                case AlignResultType.Rx:
+                    AlignSeriesRx.Points.Add(tabData.RX);
+                    break;
+
+                case AlignResultType.Ry:
+                    AlignSeriesRy.Points.Add(tabData.RY);
+                    break;
+
+                default:
+                    break;
             }
         }
 
@@ -256,13 +326,13 @@ namespace Jastech.Apps.Winform.UI.Controls
 
             if (akkonResultType == AkkonResultType.All)
             {
-                AkkonSeriesCount.Points.DataBind(dt.AsEnumerable(), "Time", "Count", "");
-                AkkonSeriesLength.Points.DataBind(dt.AsEnumerable(), "Time", "Length", "");
+                AkkonSeriesCount.Points.DataBind(dt.AsEnumerable(), "Inspection Time", "Avg Count", "");
+                AkkonSeriesLength.Points.DataBind(dt.AsEnumerable(), "Inspection Time", "Avg Length", "");
             }
             else
             {
                 var akkonSeries = AkkonSeriesList.Where(x => x.Name == akkonResultType.ToString()).First();
-                akkonSeries.Points.DataBind(dt.AsEnumerable(), "Time", akkonResultType.ToString(), "");
+                akkonSeries.Points.DataBind(dt.AsEnumerable(), "Inspection Time", "Avg " + akkonResultType.ToString(), "");
             }
         }
 
@@ -284,6 +354,30 @@ namespace Jastech.Apps.Winform.UI.Controls
             }
 
             return newDataTable;
+        }
+
+        private void chtData_MouseDown(object sender, MouseEventArgs e)
+        {
+            if (ChartType == InspChartType.Akkon)
+                return;
+
+            HitTestResult result = chtData.HitTest(e.X, e.Y);
+
+            if (result != null && result.Object != null)
+            {
+                if (result.Object is LegendItem)
+                {
+                    LegendItem legendItem = (LegendItem)result.Object;
+
+                    _selectedAlignResult = (AlignResultType)Enum.Parse(typeof(AlignResultType), legendItem.SeriesName);
+                    UpdateAlignChart(_selectedTabNo, _selectedAlignResult);
+                }
+            }
+            else
+            {
+                _selectedAlignResult = AlignResultType.All;
+                UpdateAlignChart(_selectedTabNo, _selectedAlignResult);
+            }
         }
         #endregion
     }

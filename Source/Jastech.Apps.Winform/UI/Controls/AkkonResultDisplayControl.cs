@@ -87,8 +87,9 @@ namespace ATT_UT_IPAD.UI.Controls
         public void Enable(bool isEnable)
         {
             InspDisplayControl.Enable(isEnable);
+            BeginInvoke(new Action(() => Enabled = isEnable));
         }
-
+        
         private void UpdateButton()
         {
             if (IsResultImageView)
