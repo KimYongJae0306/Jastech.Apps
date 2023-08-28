@@ -355,7 +355,6 @@ namespace Jastech.Apps.Winform.UI.Controls
 
             return newDataTable;
         }
-        #endregion
 
         private void chtData_MouseDown(object sender, MouseEventArgs e)
         {
@@ -369,8 +368,8 @@ namespace Jastech.Apps.Winform.UI.Controls
                 if (result.Object is LegendItem)
                 {
                     LegendItem legendItem = (LegendItem)result.Object;
-                    _selectedAlignResult = (AlignResultType)Enum.Parse(typeof(AlignResultType), legendItem.SeriesName);
 
+                    _selectedAlignResult = (AlignResultType)Enum.Parse(typeof(AlignResultType), legendItem.SeriesName);
                     UpdateAlignChart(_selectedTabNo, _selectedAlignResult);
                 }
             }
@@ -379,7 +378,7 @@ namespace Jastech.Apps.Winform.UI.Controls
                 _selectedAlignResult = AlignResultType.All;
                 UpdateAlignChart(_selectedTabNo, _selectedAlignResult);
             }
-
         }
+        #endregion
     }
 }
