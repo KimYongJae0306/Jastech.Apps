@@ -1503,10 +1503,9 @@ namespace ATT_UT_IPAD.Core
 
         private void SaveImage(Mat image, string filePath, Judgement judgement, ImageExtension extension, bool isHalfSave)
         {
-            string cellID = AppsInspResult.Instance().Cell_ID;
             if (extension == ImageExtension.Bmp)
             {
-                filePath += string.Format("{0}_{1}.bmp", cellID, judgement.ToString());
+                filePath += $"_{judgement}.bmp";
                 image.Save(filePath);
             }
             else if (extension == ImageExtension.Jpg)
@@ -1514,8 +1513,8 @@ namespace ATT_UT_IPAD.Core
                 if (isHalfSave)
                 {
 
-                    string leftPath = filePath + string.Format("{0}_{1}_Left.jpg", cellID, judgement.ToString());
-                    string rightPath = filePath + string.Format("{0}_{1}_Right.jpg", cellID, judgement.ToString());
+                    string leftPath = $"{filePath}_{judgement}_Left.jpg";
+                    string rightPath = $"{filePath}_{judgement}_Right.jpg";
 
                     int half = image.Width / 2;
                     Rectangle leftRect = new Rectangle(0, 0, half, image.Height);
@@ -1532,7 +1531,7 @@ namespace ATT_UT_IPAD.Core
                 }
                 else
                 {
-                    filePath += string.Format("{0}_{1}.jpg", cellID, judgement.ToString());
+                    filePath += $"_{judgement}.jpg";
                     image.Save(filePath);
                 }
             }
