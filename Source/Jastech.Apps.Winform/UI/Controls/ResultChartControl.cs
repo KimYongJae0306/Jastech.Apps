@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Runtime.InteropServices.ComTypes;
 using System.Windows.Forms;
 using System.Windows.Forms.DataVisualization.Charting;
 
@@ -13,6 +14,10 @@ namespace Jastech.Apps.Winform.UI.Controls
 {
     public partial class ResultChartControl : UserControl
     {
+        #region 필드
+        private int _selectedTabNo { get; set; } = -1;
+        #endregion
+
         public enum InspChartType
         {
             Akkon,
@@ -135,10 +140,12 @@ namespace Jastech.Apps.Winform.UI.Controls
                 return;
             }
 
+            _selectedTabNo = tabNo;
+
             UpdateAlignChart(tabNo);
         }
 
-        private void UpdateAlignChart(int tabNo)
+        private void UpdateAlignChart(int tabNo, AlignResultType alignResultType = AlignResultType.All)
         {
             ClearChartData();
 
@@ -153,12 +160,45 @@ namespace Jastech.Apps.Winform.UI.Controls
                     if (tabData == null)
                         continue;
 
+                    AddSeriesPoint(tabData, alignResultType);
+                }
+            }
+        }
+
+        private void AddSeriesPoint(AlignDailyInfo tabData, AlignResultType alignResultType)
+        {
+            switch (alignResultType)
+            {
+                case AlignResultType.All:
                     AlignSeriesLx.Points.Add(tabData.LX);
                     AlignSeriesLy.Points.Add(tabData.LY);
                     AlignSeriesRx.Points.Add(tabData.RX);
                     AlignSeriesRy.Points.Add(tabData.RY);
                     AlignSeriesCx.Points.Add(tabData.CX);
-                }
+                    break;
+
+                case AlignResultType.Lx:
+                    AlignSeriesLx.Points.Add(tabData.LX);
+                    break;
+
+                case AlignResultType.Ly:
+                    AlignSeriesLy.Points.Add(tabData.LY);
+                    break;
+
+                case AlignResultType.Cx:
+                    AlignSeriesCx.Points.Add(tabData.CX);
+                    break;
+
+                case AlignResultType.Rx:
+                    AlignSeriesRx.Points.Add(tabData.RX);
+                    break;
+
+                case AlignResultType.Ry:
+                    AlignSeriesRy.Points.Add(tabData.RY);
+                    break;
+
+                default:
+                    break;
             }
         }
 
@@ -286,5 +326,22 @@ namespace Jastech.Apps.Winform.UI.Controls
             return newDataTable;
         }
         #endregion
+
+        private void chtData_MouseDown(object sender, MouseEventArgs e)
+        {
+            HitTestResult result = chtData.HitTest(e.X, e.Y);
+
+            if (result != null && result.Object != null)
+            {
+                if (result.Object is LegendItem)
+                {
+                    LegendItem legendItem = (LegendItem)result.Object;
+                    UpdateAlignChart(_selectedTabNo, (AlignResultType)Enum.Parse(typeof(AlignResultType), legendItem.SeriesName));
+                }
+            }
+            else
+                UpdateAlignChart(_selectedTabNo);
+
+        }
     }
 }

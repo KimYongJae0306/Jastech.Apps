@@ -19,8 +19,14 @@ namespace Jastech.Apps.Winform.UI.Controls
         #region 속성
         #endregion
 
+        #region 이벤트
+        //public event SelectAlignResultTypeDelegate SelectAlignResultTypeEventHandler;
+        #endregion
+
         #region 델리게이트
         private delegate void UpdateAlignResultDelegate();
+
+        //public delegate void SelectAlignResultTypeDelegate(AlignResult alignResultType);
         #endregion
 
         #region 생성자
