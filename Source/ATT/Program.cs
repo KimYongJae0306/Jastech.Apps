@@ -79,7 +79,7 @@ namespace ATT
             {
                 // Initialize Config by Program Types
                 AppsConfig.Instance().ProgramType = ProgramType.ProgramType_1.ToString();
-                AppsConfig.Instance().MachineName = "Test Equipment #7";
+                AppsConfig.Instance().MachineName = "Test Equipment #7 (Virtual)";
 
                 var lineCamera = new CameraVirtual("LineCamera", 6560, 1024, ColorFormat.Gray, SensorType.Line);
                 config.Add(lineCamera);

@@ -420,6 +420,15 @@ namespace Jastech.Framework.Winform.Forms
         Tab5,
     }
 
+    public enum AkkonResultType
+    {
+        All,
+        Count,
+        Length,
+        Strength,
+        STD,
+    }
+
     public enum AlignResultType
     {
         All,

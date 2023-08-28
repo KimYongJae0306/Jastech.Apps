@@ -128,18 +128,6 @@ namespace Jastech.Apps.Winform.UI.Controls
             UpdateChart(_tabType, _akkonResultType);
         }
 
-        private void lblStrength_Click(object sender, EventArgs e)
-        {
-            SetAkkonResultType(AkkonResultType.Strength);
-            UpdateChart(_tabType, _akkonResultType);
-        }
-
-        private void lblStd_Click(object sender, EventArgs e)
-        {
-            SetAkkonResultType(AkkonResultType.STD);
-            UpdateChart(_tabType, _akkonResultType);
-        }
-
         public void SetAkkonResultType(AkkonResultType akkonResultType)
         {
             _akkonResultType = akkonResultType;
@@ -200,14 +188,5 @@ namespace Jastech.Apps.Winform.UI.Controls
             SetDataTable(dataTable.Copy());
         }
         #endregion
-    }
-
-    public enum AkkonResultType
-    {
-        All,
-        Count,
-        Length,
-        Strength,
-        STD,
     }
 }
