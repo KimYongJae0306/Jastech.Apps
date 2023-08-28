@@ -329,6 +329,9 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         private void chtData_MouseDown(object sender, MouseEventArgs e)
         {
+            if (ChartType == InspChartType.Akkon)
+                return;
+
             HitTestResult result = chtData.HitTest(e.X, e.Y);
 
             if (result != null && result.Object != null)

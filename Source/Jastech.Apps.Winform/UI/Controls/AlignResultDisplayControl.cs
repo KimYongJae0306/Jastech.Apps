@@ -95,7 +95,8 @@ namespace ATT_UT_IPAD.UI.Controls
                 string ry = TabBtnControlList[tabNo].Ry.ToString("F2");
                 string cx = ((Convert.ToDouble(lx) + Convert.ToDouble(rx)) / 2.0).ToString("F2");
 
-                InspAlignDisplay.UpdateRightDisplay(image, rightShape.CaliperShapeList, rightShape.LineSegmentList, GetCenterPoint(RightPointList[tabNo]));
+                //InspAlignDisplay.UpdateRightDisplay(image, rightShape.CaliperShapeList, rightShape.LineSegmentList, GetCenterPoint(RightPointList[tabNo]));
+                InspAlignDisplay.UpdateRightDisplay(image, rightShape.CaliperShapeList, rightShape.LineSegmentList, GetMinimumPointY(RightPointList[tabNo]));
                 InspAlignDisplay.DrawRightResult("X Align : " + rx + " um", 0);
                 InspAlignDisplay.DrawRightResult("Y Align : " + ry + " um", 1);
                 InspAlignDisplay.DrawRightResult("CX Align : " + cx + " um", 2);
@@ -124,7 +125,8 @@ namespace ATT_UT_IPAD.UI.Controls
                 string rx = TabBtnControlList[tabNo].Rx.ToString("F2");
                 string cx = ((Convert.ToDouble(lx) + Convert.ToDouble(rx)) / 2.0).ToString("F2");
 
-                InspAlignDisplay.UpdateLeftDisplay(image, leftShape.CaliperShapeList, leftShape.LineSegmentList, GetCenterPoint(LeftPointList[tabNo]));
+                //InspAlignDisplay.UpdateLeftDisplay(image, leftShape.CaliperShapeList, leftShape.LineSegmentList, GetCenterPoint(LeftPointList[tabNo]));
+                InspAlignDisplay.UpdateLeftDisplay(image, leftShape.CaliperShapeList, leftShape.LineSegmentList, GetMinimumPointY(LeftPointList[tabNo]));
                 InspAlignDisplay.DrawLeftResult("X Align : " + lx + " um", 0);
                 InspAlignDisplay.DrawLeftResult("Y Align : " + ly + " um", 1);
                 InspAlignDisplay.DrawLeftResult("CX Align : " + cx + " um", 2);
@@ -329,17 +331,19 @@ namespace ATT_UT_IPAD.UI.Controls
             string ry = TabBtnControlList[tabNo].Ry.ToString("F2");
 
             string cx = ((Convert.ToDouble(lx) + Convert.ToDouble(rx)) / 2.0).ToString("F2");
-            
-            InspAlignDisplay.UpdateLeftDisplay(image, leftShape.CaliperShapeList, leftShape.LineSegmentList, GetCenterPoint(LeftPointList[tabNo]));
-            if(InspAlignDisplay.IsLeftResultImageView)
+
+            //InspAlignDisplay.UpdateLeftDisplay(image, leftShape.CaliperShapeList, leftShape.LineSegmentList, GetCenterPoint(LeftPointList[tabNo]));
+            InspAlignDisplay.UpdateLeftDisplay(image, leftShape.CaliperShapeList, leftShape.LineSegmentList, GetMinimumPointY(LeftPointList[tabNo]));
+            if (InspAlignDisplay.IsLeftResultImageView)
             {
                 InspAlignDisplay.DrawLeftResult("X Align : " + lx + " um", 0);
                 InspAlignDisplay.DrawLeftResult("Y Align : " + ly + " um", 1);
                 InspAlignDisplay.DrawLeftResult("CX Align : " + cx + " um", 2);
             }
 
-            InspAlignDisplay.UpdateRightDisplay(image, rightShape.CaliperShapeList, rightShape.LineSegmentList, GetCenterPoint(RightPointList[tabNo]));
-            if(InspAlignDisplay.IsRightResultImageView)
+            //InspAlignDisplay.UpdateRightDisplay(image, rightShape.CaliperShapeList, rightShape.LineSegmentList, GetCenterPoint(RightPointList[tabNo]));
+            InspAlignDisplay.UpdateRightDisplay(image, rightShape.CaliperShapeList, rightShape.LineSegmentList, GetMinimumPointY(RightPointList[tabNo]));
+            if (InspAlignDisplay.IsRightResultImageView)
             {
                 InspAlignDisplay.DrawRightResult("X Align : " + rx + " um", 0);
                 InspAlignDisplay.DrawRightResult("Y Align : " + ry + " um", 1);
@@ -570,7 +574,38 @@ namespace ATT_UT_IPAD.UI.Controls
                 float height = Math.Abs(maxY - minY) / 2.0f;
 
                 return new PointF((minX + width), (minY + height));
-                //return new PointF((minX + width), minY + 300);
+            }
+            else
+                return new PointF();
+        }
+
+        private PointF GetMinimumPointY(List<PointF> pointList)
+        {
+            if (pointList == null)
+                return new PointF();
+            if (pointList.Count() == 0)
+                return new PointF();
+
+            List<PointF> tempPointList = new List<PointF>();
+
+            foreach (var point in pointList)
+            {
+                if (point.X != 0 && point.Y != 0)
+                    tempPointList.Add(point);
+            }
+
+            if (tempPointList.Count() > 0)
+            {
+                float minX = tempPointList.Select(point => point.X).Min();
+                float maxX = tempPointList.Select(point => point.X).Max();
+
+                float minY = tempPointList.Select(point => point.Y).Min();
+                float maxY = tempPointList.Select(point => point.Y).Max();
+
+                float width = Math.Abs(maxX - minX) / 2.0f;
+                float height = Math.Abs(maxY - minY) / 2.0f;
+
+                return new PointF((minX + width), (minY + (height / 2.0f)));
             }
             else
                 return new PointF();
