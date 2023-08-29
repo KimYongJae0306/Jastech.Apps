@@ -639,6 +639,9 @@ namespace ATT.Core
                 alignInfo.PanelID = AppsInspResult.Instance().Cell_ID;
                 alignInfo.TabNo = tabInspResult.TabNo;
                 alignInfo.Judgement = tabInspResult.AlignResult.Judgement;
+                alignInfo.AcfHead = tabInspResult.AlignResult.AcfHead;
+                alignInfo.PreHead = tabInspResult.AlignResult.PreHead;
+                alignInfo.FinalHead = tabInspResult.AlignResult.FinalHead;
                 alignInfo.LX = GetResultAlignResultValue(tabInspResult.AlignResult.LeftX);
                 alignInfo.LY = GetResultAlignResultValue(tabInspResult.AlignResult.LeftY);
                 alignInfo.RX = GetResultAlignResultValue(tabInspResult.AlignResult.RightX);

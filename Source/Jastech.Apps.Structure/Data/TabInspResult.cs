@@ -249,6 +249,12 @@ namespace Jastech.Apps.Structure.Data
             }
         }
 
+        public string AcfHead { get; set; } = "acf";//string.Empty;
+
+        public string PreHead { get; set; } = "pre";//string.Empty;
+
+        public string FinalHead { get; set; } = "final";//string.Empty;
+
         public AlignResult LeftX { get; set; } = null;
 
         public AlignResult LeftY { get; set; } = null;

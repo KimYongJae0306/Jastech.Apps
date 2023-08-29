@@ -685,6 +685,9 @@ namespace ATT_UT_IPAD.Core
                 alignInfo.PanelID = AppsInspResult.Instance().Cell_ID;
                 alignInfo.TabNo = tabInspResult.TabNo;
                 alignInfo.Judgement = tabInspResult.AlignResult.Judgement;
+                alignInfo.AcfHead = tabInspResult.AlignResult.AcfHead;
+                alignInfo.PreHead = tabInspResult.AlignResult.PreHead;
+                alignInfo.FinalHead = tabInspResult.AlignResult.FinalHead;
                 alignInfo.LX = GetResultAlignResultValue(tabInspResult.AlignResult.LeftX);
                 alignInfo.LY = GetResultAlignResultValue(tabInspResult.AlignResult.LeftY);
                 alignInfo.RX = GetResultAlignResultValue(tabInspResult.AlignResult.RightX);
@@ -771,13 +774,16 @@ namespace ATT_UT_IPAD.Core
                 };
                 for (int index = 0; index < tabCount; index++)
                 {
-                    header.Add($"Tab_{index + 1}");
-                    header.Add($"Judge{index + 1}");
-                    header.Add($"Lx_{index + 1}");
-                    header.Add($"Ly_{index + 1}");
-                    header.Add($"Cx_{index + 1}");
-                    header.Add($"Rx_{index + 1}");
-                    header.Add($"Ry_{index + 1}");
+                    header.Add($"Tab");
+                    header.Add($"Judge");
+                    header.Add($"ACF Head");
+                    header.Add($"Pre Head");
+                    header.Add($"Final Head");
+                    header.Add($"Lx");
+                    header.Add($"Ly");
+                    header.Add($"Cx");
+                    header.Add($"Rx");
+                    header.Add($"Ry");
                 }
 
                 CSVHelper.WriteHeader(csvFile, header);
@@ -795,6 +801,10 @@ namespace ATT_UT_IPAD.Core
                 var tabInspResult = AppsInspResult.Instance().GetAlign(tabNo);
                 var alignResult = tabInspResult.AlignResult;
 
+                string acfHead = alignResult.AcfHead;
+                string preHead = alignResult.PreHead;
+                string finalHead = alignResult.FinalHead;
+
                 float lx = CheckAlignResultValue(alignResult.LeftX);
                 float ly = CheckAlignResultValue(alignResult.LeftY);
                 float rx = CheckAlignResultValue(alignResult.RightX);
@@ -803,6 +813,9 @@ namespace ATT_UT_IPAD.Core
 
                 body.Add($"{tabInspResult.TabNo + 1}");                                     // Tab No
                 body.Add($"{tabInspResult.Judgement}");                                     // Judge
+                body.Add($"{acfHead}");                                                     // ACF Head
+                body.Add($"{preHead}");                                                     // Pre Head
+                body.Add($"{finalHead}");                                                   // Final Head
                 body.Add($"{lx:F3}");                                                       // Align Lx
                 body.Add($"{ly:F3}");                                                       // Align Ly
                 body.Add($"{cx:F3}");                                                       // Align Cx
@@ -876,15 +889,15 @@ namespace ATT_UT_IPAD.Core
                     "Length Min",
                     "Length Avg",
 
+                    "ACF Head",
+                    "Pre Head",
+                    "Main Head",
+
                     "Left Align X",
                     "Left Align Y",
                     "Center Align X",
                     "Right Align X",
                     "Right Align Y",
-
-                    "ACF Head",
-                    "Pre Head",
-                    "Main Head",
 
                     "AkkonJudge",
                     "AlignJudge",
@@ -902,11 +915,16 @@ namespace ATT_UT_IPAD.Core
                 float lengthMin = Math.Min(akkonResult.AkkonResult.Length_Left_Min_um, akkonResult.AkkonResult.Length_Right_Min_um);
                 float lengthAvg = (akkonResult.AkkonResult.Length_Left_Avg_um + akkonResult.AkkonResult.Length_Right_Avg_um) / 2.0F;
 
-                var alignResult = AppsInspResult.Instance().GetAlign(tabNo);
-                float lx = CheckAlignResultValue(alignResult.AlignResult.LeftX);
-                float ly = CheckAlignResultValue(alignResult.AlignResult.LeftY);
-                float rx = CheckAlignResultValue(alignResult.AlignResult.RightX);
-                float ry = CheckAlignResultValue(alignResult.AlignResult.RightY);
+                var tabAlignResult = AppsInspResult.Instance().GetAlign(tabNo);
+
+                string acfHead = tabAlignResult.AlignResult.AcfHead;
+                string preHead = tabAlignResult.AlignResult.PreHead;
+                string finalHead = tabAlignResult.AlignResult.FinalHead;
+
+                float lx = CheckAlignResultValue(tabAlignResult.AlignResult.LeftX);
+                float ly = CheckAlignResultValue(tabAlignResult.AlignResult.LeftY);
+                float rx = CheckAlignResultValue(tabAlignResult.AlignResult.RightX);
+                float ry = CheckAlignResultValue(tabAlignResult.AlignResult.RightY);
                 float cx = (lx + rx) / 2.0F;
 
                 var programType = StringHelper.StringToEnum<ProgramType>(AppsConfig.Instance().ProgramType);
@@ -922,6 +940,10 @@ namespace ATT_UT_IPAD.Core
                     $"{lengthMin:F3}",                                                     // Length Min
                     $"{lengthAvg:F3}",                                                     // Length Avg
 
+                    $"{acfHead}",                                                           // ACF Head
+                    $"{preHead}",                                                           // Pre Head
+                    $"{finalHead}",                                                         // Final Head
+
                     $"{lx:F3}",                                                            // Left Align X
                     $"{ly:F3}",                                                            // Left Align Y
                     $"{cx:F3}",                                                            // Center Align X
@@ -933,7 +955,7 @@ namespace ATT_UT_IPAD.Core
                     "-1",                                                         // Main Head
 
                     akkonResult.Judgement.ToString(),                           // Akkon Judge
-                    alignResult.Judgement.ToString(),                           // Align Judge
+                    tabAlignResult.Judgement.ToString(),                           // Align Judge
                 };
 
                 body.Add(tabData);
@@ -998,6 +1020,9 @@ namespace ATT_UT_IPAD.Core
                 {
                     "Panel ID",
                     "Inspection Time",
+                    "ACF Head",
+                    "Pre Head",
+                    "Final Head",
                     "LeftX",
                     "LeftY",
                     "CenteX",
@@ -1011,6 +1036,9 @@ namespace ATT_UT_IPAD.Core
                 {
                     AppsInspResult.Instance().Cell_ID,
                     $"{AppsInspResult.Instance().EndInspTime:HH:mm:ss}",
+                    $"{alignResult.AcfHead}",
+                    $"{alignResult.PreHead}",
+                    $"{alignResult.FinalHead}",
                     $"{CheckAlignResultValue(alignResult.LeftX):F2}",
                     $"{CheckAlignResultValue(alignResult.LeftY):F2}",
                     $"{cx:F2}",

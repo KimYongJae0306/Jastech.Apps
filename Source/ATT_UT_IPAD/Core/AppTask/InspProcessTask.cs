@@ -167,6 +167,9 @@ namespace ATT_UT_IPAD.Core.AppTask
             tabInspResult.Image = inspTab.MergeMatImage;
             tabInspResult.CogImage = inspTab.MergeCogImage;
             tabInspResult.Resolution_um = resolution_um;
+            tabInspResult.AlignResult.AcfHead = $"Acf_Head_{inspTab.TabScanBuffer.TabNo}";
+            tabInspResult.AlignResult.PreHead = $"Pre_Head_{inspTab.TabScanBuffer.TabNo}";
+            tabInspResult.AlignResult.FinalHead = $"Final_Head_{inspTab.TabScanBuffer.TabNo}";
 
             algorithmTool.MainMarkInspect(inspTab.MergeCogImage, tab, ref tabInspResult, true);
 
