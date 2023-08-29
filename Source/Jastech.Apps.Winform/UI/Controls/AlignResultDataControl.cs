@@ -17,6 +17,7 @@ using Jastech.Apps.Structure;
 using Jastech.Framework.Structure;
 using Jastech.Framework.Util.Helper;
 using System.Diagnostics;
+using Jastech.Framework.Winform.Forms;
 
 namespace Jastech.Apps.Winform.UI.Controls
 {
@@ -120,6 +121,14 @@ namespace Jastech.Apps.Winform.UI.Controls
                 }
             }
 
+            if (selectedPath == string.Empty)
+            {
+                MessageConfirmForm confirmForm = new MessageConfirmForm();
+                confirmForm.Message = "The selected cell id does not have an image file.";
+                confirmForm.ShowDialog();
+                return;
+            }
+
             var imageFiles = Directory.GetFiles(selectedPath, "*.bmp");
 
             string selectedImageFilePath = string.Empty;
@@ -132,8 +141,14 @@ namespace Jastech.Apps.Winform.UI.Controls
                 }
             }
 
-            Process.Start(selectedImageFilePath);
-            return;
+            if (selectedImageFilePath == string.Empty)
+            {
+                MessageConfirmForm confirmForm = new MessageConfirmForm();
+                confirmForm.Message = "The selected cell id does not have an image file.";
+                confirmForm.ShowDialog();
+            }
+            else
+                Process.Start(selectedImageFilePath);
         }
     }
 }
