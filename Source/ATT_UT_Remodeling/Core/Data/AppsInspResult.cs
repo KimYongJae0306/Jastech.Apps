@@ -22,6 +22,8 @@ namespace ATT_UT_Remodeling.Core.Data
 
         public string Cell_ID { get; set; } = "";
 
+        public string FinalHead { get; set; } = string.Empty;
+
         private Dictionary<int, TabInspResult> InspResultDic { get; set; } = new Dictionary<int, TabInspResult>();
         #endregion
 

@@ -590,9 +590,7 @@ namespace Jastech.Apps.Winform.Service.Plc
                 foreach (var axis in axisHandler.GetAxisList())
                 {
                     if(axis.Name.ToUpper().Contains("X"))
-                    {
                         allAxisHandler.AddAxis(axis);
-                    }
                 }
             }
             allAxisHandler.StopMove();

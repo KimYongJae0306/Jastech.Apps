@@ -533,7 +533,7 @@ namespace ATT_UT_Remodeling.Core
                 alignInfo.TabNo = tabInspResult.TabNo;
                 alignInfo.Judgement = tabInspResult.AlignResult.Judgement;
                 alignInfo.PreHead = tabInspResult.AlignResult.PreHead;
-                alignInfo.FinalHead = tabInspResult.AlignResult.FinalHead;
+                alignInfo.FinalHead = AppsInspResult.Instance().FinalHead;
                 alignInfo.LX = GetResultAlignResultValue(tabInspResult.AlignResult.LeftX);
                 alignInfo.LY = GetResultAlignResultValue(tabInspResult.AlignResult.LeftY);
                 alignInfo.RX = GetResultAlignResultValue(tabInspResult.AlignResult.RightX);

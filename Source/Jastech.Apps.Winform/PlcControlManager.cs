@@ -1029,6 +1029,42 @@ namespace Jastech.Apps.Winform
         {
             return Convert.ToDouble(ConvertDoubleWordStringFormat_mm(plcCommonMap));
         }
+
+        public string GetPreHeadData(int tabNo)
+        {
+            PlcCommonMap plcCommonMap = PlcCommonMap.PLC_PreBond_Tab0;
+            if (tabNo == 0)
+                plcCommonMap = PlcCommonMap.PLC_PreBond_Tab0;
+            else if (tabNo == 1)
+                plcCommonMap = PlcCommonMap.PLC_PreBond_Tab1;
+            else if (tabNo == 2)
+                plcCommonMap = PlcCommonMap.PLC_PreBond_Tab2;
+            else if (tabNo == 3)
+                plcCommonMap = PlcCommonMap.PLC_PreBond_Tab3;
+            else if (tabNo == 4)
+                plcCommonMap = PlcCommonMap.PLC_PreBond_Tab4;
+            else if (tabNo == 5)
+                plcCommonMap = PlcCommonMap.PLC_PreBond_Tab5;
+            else if (tabNo == 6)
+                plcCommonMap = PlcCommonMap.PLC_PreBond_Tab6;
+            else if (tabNo == 7)
+                plcCommonMap = PlcCommonMap.PLC_PreBond_Tab7;
+            else if (tabNo == 8)
+                plcCommonMap = PlcCommonMap.PLC_PreBond_Tab8;
+            else if (tabNo == 9)
+                plcCommonMap = PlcCommonMap.PLC_PreBond_Tab9;
+            else { }
+
+            string outputValue = string.Empty;
+
+            string sendData = GetValue(plcCommonMap);
+            if (sendData == null || sendData == string.Empty || sendData == "")
+                outputValue = $"PreHead_{tabNo + 1}";
+            else
+                outputValue = sendData.Substring(0, 1) + "#" + sendData.Substring(2, 1);
+
+            return outputValue;
+        }
         #endregion
     }
 }

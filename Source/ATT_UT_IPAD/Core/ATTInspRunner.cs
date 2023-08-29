@@ -368,6 +368,7 @@ namespace ATT_UT_IPAD.Core
 
                     AppsInspResult.Instance().StartInspTime = DateTime.Now;
                     AppsInspResult.Instance().Cell_ID = GetCellID();
+                    AppsInspResult.Instance().FinalHead = GetFinalHead();
 
                     WriteLog("Cell ID : " + AppsInspResult.Instance().Cell_ID, true);
                     SeqStep = SeqStep.SEQ_SCAN_START;
@@ -572,11 +573,13 @@ namespace ATT_UT_IPAD.Core
             }
         }
 
-        private string GetHeadData(int tabNo)
+        private string GetFinalHead()
         {
-            string acfHead = PlcControlManager.Instance().GetAddressMap(PlcCommonMap.PLC_PreBond_Tab0).Value;
+            string finalHead = PlcControlManager.Instance().GetAddressMap(PlcCommonMap.PLC_FinalBond).Value;
+            if (finalHead == null)
+                finalHead = "0";
 
-            return acfHead;
+            return finalHead;
         }
 
         private void SendResultData()
@@ -693,7 +696,7 @@ namespace ATT_UT_IPAD.Core
                 alignInfo.TabNo = tabInspResult.TabNo;
                 alignInfo.Judgement = tabInspResult.AlignResult.Judgement;
                 alignInfo.PreHead = tabInspResult.AlignResult.PreHead;
-                alignInfo.FinalHead = tabInspResult.AlignResult.FinalHead;
+                alignInfo.FinalHead = AppsInspResult.Instance().FinalHead;
                 alignInfo.LX = GetResultAlignResultValue(tabInspResult.AlignResult.LeftX);
                 alignInfo.LY = GetResultAlignResultValue(tabInspResult.AlignResult.LeftY);
                 alignInfo.RX = GetResultAlignResultValue(tabInspResult.AlignResult.RightX);
@@ -807,7 +810,7 @@ namespace ATT_UT_IPAD.Core
                 var alignResult = tabInspResult.AlignResult;
 
                 string preHead = alignResult.PreHead;
-                string finalHead = alignResult.FinalHead;
+                string finalHead = AppsInspResult.Instance().FinalHead;
 
                 float lx = CheckAlignResultValue(alignResult.LeftX);
                 float ly = CheckAlignResultValue(alignResult.LeftY);
@@ -920,7 +923,7 @@ namespace ATT_UT_IPAD.Core
                 var tabAlignResult = AppsInspResult.Instance().GetAlign(tabNo);
 
                 string preHead = tabAlignResult.AlignResult.PreHead;
-                string finalHead = tabAlignResult.AlignResult.FinalHead;
+                string finalHead = AppsInspResult.Instance().FinalHead;
 
                 float lx = CheckAlignResultValue(tabAlignResult.AlignResult.LeftX);
                 float ly = CheckAlignResultValue(tabAlignResult.AlignResult.LeftY);
@@ -1036,7 +1039,7 @@ namespace ATT_UT_IPAD.Core
                     AppsInspResult.Instance().Cell_ID,
                     $"{AppsInspResult.Instance().EndInspTime:HH:mm:ss}",
                     $"{alignResult.PreHead}",
-                    $"{alignResult.FinalHead}",
+                    $"{AppsInspResult.Instance().FinalHead}",
                     $"{CheckAlignResultValue(alignResult.LeftX):F2}",
                     $"{CheckAlignResultValue(alignResult.LeftY):F2}",
                     $"{cx:F2}",

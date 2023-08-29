@@ -23,6 +23,8 @@ namespace ATT_UT_IPAD.Core.Data
 
         public string Cell_ID { get; set; } = "";
 
+        public string FinalHead { get; set; } = string.Empty;
+
         private Dictionary<int, TabInspResult> InspAkkonResultDic { get; set; } = new Dictionary<int, TabInspResult>();
 
         private Dictionary<int, TabInspResult> InspAlignResultDic { get; set; } = new Dictionary<int, TabInspResult>();
@@ -32,9 +34,7 @@ namespace ATT_UT_IPAD.Core.Data
         public static AppsInspResult Instance()
         {
             if (_instance == null)
-            {
                 _instance = new AppsInspResult();
-            }
 
             return _instance;
         }
