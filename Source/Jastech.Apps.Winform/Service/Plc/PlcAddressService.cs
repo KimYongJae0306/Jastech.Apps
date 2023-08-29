@@ -158,6 +158,7 @@ namespace Jastech.Apps.Winform.Service.Plc
                 ResultMapList.Add(new PlcAddressMap((PlcResultMap)Enum.Parse(typeof(PlcResultMap), fpcRightMarkSocre), WordType.DoubleWord, addressIndex + 26, 2));
             }
         }
+
         private void CreateAddressMap()
         {
             int index = AppsConfig.Instance().PlcAddressInfo.CommonStart;
