@@ -543,7 +543,7 @@ namespace ATT_UT_IPAD.Core
                             tabResult.AkkonResultCogImage = cogImage;
 
                             resultMat.Dispose();
-
+                            
                             // AkkonInspCogImage
                             tabResult.AkkonInspCogImage = ConvertCogGrayImage(tabResult.AkkonInspMatImage);
                         }
@@ -1164,7 +1164,6 @@ namespace ATT_UT_IPAD.Core
             return true;
         }
 
-
         private ICogImage GetAreaCameraImage(Camera camera)
         {
             camera.GrabOnce();
@@ -1521,8 +1520,55 @@ namespace ATT_UT_IPAD.Core
                         else
                             SaveImage(tabInspResult.Image, filePath, Judgement.NG, ImageExtension.Jpg, false);
                     }
+
+                    if(isAkkonResult)
+                    {
+                        if(tabInspResult.AkkonResult.Judgement == Judgement.NG)
+                        {
+                            int maxSaveCount = 20;
+                            int saveCount = 0;
+                            foreach (var leadResult in tabInspResult.AkkonResult.LeadResultList)
+                            {
+                                //if (saveCount > maxSaveCount)
+                                //    break;
+                                string akkonNGDirName = string.Format("Tab{0}_NG", tabInspResult.TabNo);
+                                string akkonNGDir = Path.Combine(resultPath, akkonNGDirName);
+                                if (Directory.Exists(akkonNGDir) == false)
+                                    Directory.CreateDirectory(akkonNGDir);
+
+                                if(leadResult.Judgement == Judgement.NG)
+                                {
+                                    AkkonROI roi = tabInspResult.AkkonResult.TrackingROIList.Where(x => x.Index == leadResult.Id).FirstOrDefault();
+                                    if (roi != null)
+                                    {
+                                        try
+                                        {
+                                            string fileName = string.Format("{0}_Count_{1}.jpg", leadResult.Id, leadResult.AkkonCount);
+                                            Mat cropAkkonMat = MatHelper.CropRoi(tabInspResult.Image, roi.GetBoundRect());
+                                            string savePath = Path.Combine(akkonNGDir, fileName);
+                                            cropAkkonMat.Save(savePath);
+                                            //tabInspResult.Image.Save(@"D:\123.bmp");
+                                            cropAkkonMat.Dispose();
+                                            saveCount++;
+                                        }
+                                        catch (Exception er)
+                                        {
+                                            // 가압 : PreBond
+                                            // 본압 : FinalBond
+                                        }
+                                        
+                                    }
+                                }
+                            }
+                        }
+                    }
                 }
             }
+        }
+
+        private void SaveDefectImage()
+        {
+
         }
 
         private void SaveImage(Mat image, string filePath, Judgement judgement, ImageExtension extension, bool isHalfSave)

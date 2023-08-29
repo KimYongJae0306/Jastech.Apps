@@ -266,10 +266,23 @@ namespace Jastech.Apps.Winform.Service.Plc
             AddressMapList.Add(new PlcAddressMap(PlcCommonMap.PLC_Move_END, WordType.DEC, index + 128, 1));
 
             // 220~229
+            AddressMapList.Add(new PlcAddressMap(PlcCommonMap.PLC_FinalBond, WordType.DEC, index + 220, 1));
             AddressMapList.Add(new PlcAddressMap(PlcCommonMap.PLC_ManualMatch, WordType.DEC, index + 229, 1));
 
             // 320~339
             AddressMapList.Add(new PlcAddressMap(PlcCommonMap.PLC_Cell_Id, WordType.HEX, index + 320, 40));
+
+            // 420~429
+            AddressMapList.Add(new PlcAddressMap(PlcCommonMap.PLC_PreBond_Tab0, WordType.HEX, index + 420, 1));
+            AddressMapList.Add(new PlcAddressMap(PlcCommonMap.PLC_PreBond_Tab1, WordType.HEX, index + 421, 1));
+            AddressMapList.Add(new PlcAddressMap(PlcCommonMap.PLC_PreBond_Tab2, WordType.HEX, index + 422, 1));
+            AddressMapList.Add(new PlcAddressMap(PlcCommonMap.PLC_PreBond_Tab3, WordType.HEX, index + 423, 1));
+            AddressMapList.Add(new PlcAddressMap(PlcCommonMap.PLC_PreBond_Tab4, WordType.HEX, index + 424, 1));
+            AddressMapList.Add(new PlcAddressMap(PlcCommonMap.PLC_PreBond_Tab5, WordType.HEX, index + 425, 1));
+            AddressMapList.Add(new PlcAddressMap(PlcCommonMap.PLC_PreBond_Tab6, WordType.HEX, index + 426, 1));
+            AddressMapList.Add(new PlcAddressMap(PlcCommonMap.PLC_PreBond_Tab7, WordType.HEX, index + 427, 1));
+            AddressMapList.Add(new PlcAddressMap(PlcCommonMap.PLC_PreBond_Tab8, WordType.HEX, index + 428, 1));
+            AddressMapList.Add(new PlcAddressMap(PlcCommonMap.PLC_PreBond_Tab9, WordType.HEX, index + 429, 1));
 
             // 130~139
             AddressMapList.Add(new PlcAddressMap(PlcCommonMap.PLC_AkkonZ_ServoOnOff, WordType.DEC, index + 130, 1));

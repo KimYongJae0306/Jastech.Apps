@@ -149,8 +149,8 @@ namespace ATT_UT_Remodeling.Core.AppTask
                     var coordinateList = RenewalAkkonRoi(roiList, panelCoordinate);
                     Judgement tabJudgement = Judgement.NG;
                     var leadResultList = AkkonAlgorithm.Run(inspTab.MergeMatImage, coordinateList, tab.AkkonParam.AkkonAlgoritmParam, resolution_um, ref tabJudgement);
-
-                    inspResult.AkkonResult = CreateAkkonResult(unitName, tab.Index, leadResultList);
+                    var resizeRatio = tab.AkkonParam.AkkonAlgoritmParam.ImageFilterParam.ResizeRatio;
+                    inspResult.AkkonResult = CreateAkkonResult(unitName, tab.Index, resizeRatio, leadResultList);
                     inspResult.AkkonResult.Judgement = tabJudgement;
                     inspResult.AkkonInspMatImage = AkkonAlgorithm.ResizeMat;
                 }
@@ -253,11 +253,12 @@ namespace ATT_UT_Remodeling.Core.AppTask
                 InspTabQueue.Enqueue(inspTab);
         }
 
-        private AkkonResult CreateAkkonResult(string unitName, int tabNo, List<AkkonLeadResult> leadResultList)
+        private AkkonResult CreateAkkonResult(string unitName, int tabNo, float resizeRatio, List<AkkonLeadResult> leadResultList)
         {
             AkkonResult akkonResult = new AkkonResult();
             akkonResult.UnitName = unitName;
             akkonResult.TabNo = tabNo;
+            akkonResult.ResizeRatio = resizeRatio;
             akkonResult.LeadResultList = leadResultList;
 
             List<int> leftCountList = new List<int>();

@@ -119,18 +119,20 @@ namespace ATT_UT_IPAD.Core.AppTask
                 if (AppsConfig.Instance().EnableAkkon)
                 {
                     var roiList = tab.AkkonParam.GetAkkonROIList();
-                    var coordinateList = RenewalAkkonRoi(roiList, panelCoordinate);
+                    var coordinateRoiList = RenewalAkkonRoi(roiList, panelCoordinate);
 
                     // Tracking ROI Save                  
                     string filepath = ConfigSet.Instance().Path.Result + "Tab" + inspResult.TabNo + ".txt";
-                    SaveAkkonROI(filepath, inspResult.TabNo, coordinateList);
+                    SaveAkkonROI(filepath, inspResult.TabNo, coordinateRoiList);
                     Judgement tabJudgement = Judgement.NG;
 
                     AkkonAlgorithm.UseOverCount = AppsConfig.Instance().EnableTest2;
-                    var leadResultList = AkkonAlgorithm.Run(inspTab.MergeMatImage, coordinateList, tab.AkkonParam.AkkonAlgoritmParam, resolution_um, ref tabJudgement);
+                    var leadResultList = AkkonAlgorithm.Run(inspTab.MergeMatImage, coordinateRoiList, tab.AkkonParam.AkkonAlgoritmParam, resolution_um, ref tabJudgement);
+                    var resizeRatio = tab.AkkonParam.AkkonAlgoritmParam.ImageFilterParam.ResizeRatio;
 
-                    inspResult.AkkonResult = CreateAkkonResult(unitName, tab.Index, leadResultList);
+                    inspResult.AkkonResult = CreateAkkonResult(unitName, tab.Index, resizeRatio, leadResultList);
                     inspResult.AkkonResult.Judgement = tabJudgement;
+                    inspResult.AkkonResult.TrackingROIList.AddRange(coordinateRoiList);
                     inspResult.AkkonInspMatImage = AkkonAlgorithm.ResizeMat;
                 }
                 else
@@ -443,11 +445,12 @@ namespace ATT_UT_IPAD.Core.AppTask
                 InspAlignTabQueue.Enqueue(inspTab);
         }
 
-        private AkkonResult CreateAkkonResult(string unitName, int tabNo, List<AkkonLeadResult> leadResultList)
+        private AkkonResult CreateAkkonResult(string unitName, int tabNo, float resizeRatio, List<AkkonLeadResult> leadResultList)
         {
             AkkonResult akkonResult = new AkkonResult();
             akkonResult.UnitName = unitName;
             akkonResult.TabNo = tabNo;
+            akkonResult.ResizeRatio = resizeRatio;
             akkonResult.LeadResultList = leadResultList;
 
             List<int> leftCountList = new List<int>();
@@ -508,13 +511,14 @@ namespace ATT_UT_IPAD.Core.AppTask
         private List<AkkonROI> RenewalAkkonRoi(List<AkkonROI> roiList, CoordinateTransform panelCoordinate)
         {
             List<AkkonROI> newList = new List<AkkonROI>();
-
-            foreach (var item in roiList)
+            roiList = roiList.OrderBy(x => x.LeftTopX).ToList();
+            int id = 0;
+            foreach (var roi in roiList)
             {
-                PointF leftTop = item.GetLeftTopPoint();
-                PointF rightTop = item.GetRightTopPoint();
-                PointF leftBottom = item.GetLeftBottomPoint();
-                PointF rightBottom = item.GetRightBottomPoint();
+                PointF leftTop = roi.GetLeftTopPoint();
+                PointF rightTop = roi.GetRightTopPoint();
+                PointF leftBottom = roi.GetLeftBottomPoint();
+                PointF rightBottom = roi.GetRightBottomPoint();
 
                 var newLeftTop = panelCoordinate.GetCoordinate(leftTop);
                 var newRightTop = panelCoordinate.GetCoordinate(rightTop);
@@ -523,12 +527,14 @@ namespace ATT_UT_IPAD.Core.AppTask
 
                 AkkonROI akkonRoi = new AkkonROI();
 
+                akkonRoi.Index = id;
                 akkonRoi.SetLeftTopPoint(newLeftTop);
                 akkonRoi.SetRightTopPoint(newRightTop);
                 akkonRoi.SetLeftBottomPoint(newLeftBottom);
                 akkonRoi.SetRightBottomPoint(newRightBottom);
 
                 newList.Add(akkonRoi);
+                id++;
             }
 
             return newList;
