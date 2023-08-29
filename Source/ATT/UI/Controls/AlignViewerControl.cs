@@ -74,6 +74,11 @@ namespace ATT.UI.Controls
         {
             SetTabEventHandler?.Invoke(tabNo);
         }
+
+        public void Enable(bool isEnable)
+        {
+            AlignResultDisplayControl.Enable(isEnable);
+        }
         #endregion
     }
 }

@@ -39,7 +39,7 @@ namespace ATT
         #endregion
 
         #region 속성
-        public MachineStatus MachineStatus { get; set; } = MachineStatus.STOP;
+      
         #endregion
 
         #region 메서드
@@ -235,9 +235,13 @@ namespace ATT
                 _mainForm.UpdateMainAkkonResult(tabNo);
         }
 
+        public void EnableMainView(bool isEnable)
+        {
+            _mainForm.Enabled(isEnable);
+        }
+
         public void UpdateMainAlignResult()
         {
-            // 탭별로 안들어올 수도 있을텐데....
             var inspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
 
             for (int tabNo = 0; tabNo < inspModel.TabCount; tabNo++)
@@ -256,7 +260,7 @@ namespace ATT
 
         public void StartRun()
         {
-            if (MachineStatus != MachineStatus.RUN)
+            if (PlcControlManager.Instance().MachineStatus != MachineStatus.RUN)
             {
                 MessageYesNoForm form = new MessageYesNoForm();
                 form.Message = "Do you want to Start Auto Mode?";
@@ -265,6 +269,8 @@ namespace ATT
                 {
                     _inspRunner.SeqRun();
                     AddSystemLogMessage("Start Auto mode.");
+                    PlcControlManager.Instance().MachineStatus = MachineStatus.RUN;
+                    //PlcControlManager.Instance().WritePcReady(MachineStatus.RUN);
                 }
             }
         }
@@ -278,7 +284,7 @@ namespace ATT
                 return;
             }
 
-            if (SystemManager.Instance().MachineStatus != MachineStatus.STOP)
+            if (PlcControlManager.Instance().MachineStatus != MachineStatus.STOP)
             {
                 MessageYesNoForm form = new MessageYesNoForm();
                 form.Message = "Do you want to Stop Auto Mode?";
@@ -287,6 +293,9 @@ namespace ATT
                 {
                     _inspRunner.SeqStop();
                     AddSystemLogMessage("Stop Auto Mode.");
+
+                    PlcControlManager.Instance().MachineStatus = MachineStatus.STOP;
+                    //PlcControlManager.Instance().WritePcReady(MachineStatus.STOP);
                 }
             }
         }

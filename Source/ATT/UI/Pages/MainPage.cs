@@ -157,7 +157,7 @@ namespace ATT.UI.Pages
 
         public void UpdateButton()
         {
-            if (SystemManager.Instance().MachineStatus == MachineStatus.RUN)
+            if (PlcControlManager.Instance().MachineStatus == MachineStatus.RUN)
             {
                 lblStartText.ForeColor = Color.Blue;
                 lblStopText.ForeColor = Color.White;
@@ -167,6 +167,11 @@ namespace ATT.UI.Pages
                 lblStartText.ForeColor = Color.White;
                 lblStopText.ForeColor = Color.Blue;
             }
+        }
+
+        public void Enable(bool isEnable)
+        {
+            MainViewControl.Enable(isEnable);
         }
         #endregion
     }

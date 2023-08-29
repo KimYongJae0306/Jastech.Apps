@@ -92,6 +92,8 @@ namespace ATT
             StartVirtualInspTask();
             SystemManager.Instance().InitializeInspRunner();
             SystemManager.Instance().AddSystemLogMessage("Start Program.");
+
+            PlcControlManager.Instance().WriteVersion();
         }
 
         private void MainForm_InspRunnerHandler(bool isStart)
@@ -121,6 +123,7 @@ namespace ATT
             PageLabelList.Add(lblMainPage);
             PageLabelList.Add(lblTeachingPage);
             PageLabelList.Add(lblDataPage);
+            PageLabelList.Add(lblLogPage);
         }
 
         private void ModelPageControl_ApplyModelEventHandler(string modelName)
@@ -245,7 +248,7 @@ namespace ATT
             if (MainPageControl.Visible)
                 MainPageControl.UpdateButton();
 
-            if (SystemManager.Instance().MachineStatus == MachineStatus.RUN)
+            if (PlcControlManager.Instance().MachineStatus == MachineStatus.RUN)
             {
                 lblTeachingPageImage.Enabled = false;
                 lblTeachingPage.Enabled = false;
@@ -352,6 +355,8 @@ namespace ATT
             SystemManager.Instance().StopRun();
 
             LAFManager.Instance().Release();
+            PlcControlManager.Instance().Release();
+            PlcScenarioManager.Instance().Release();
         }
 
         protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
@@ -380,7 +385,7 @@ namespace ATT
             if (inspModel == null)
                 return;
 
-            if (SystemManager.Instance().MachineStatus != MachineStatus.RUN)
+            if (PlcControlManager.Instance().MachineStatus != MachineStatus.RUN)
             {
                 MessageConfirmForm form = new MessageConfirmForm();
                 form.Message = "Change Auto Run.";
@@ -518,6 +523,11 @@ namespace ATT
         private void picLogo_Click(object sender, EventArgs e)
         {
             AppsStatus.Instance().IsInspRunnerFlagFromPlc = true;
+        }
+
+        internal void Enabled(bool isEnable)
+        {
+            MainPageControl?.Enable(isEnable);
         }
         #endregion
     }
