@@ -82,9 +82,6 @@ namespace ATT.Core.AppTask
             inspResult.Image = inspTab.MergeMatImage;
             inspResult.CogImage = inspTab.MergeCogImage;
 
-            // Create Coordinate Object
-            CoordinateTransform panelCoordinate = new CoordinateTransform();
-
             algorithmTool.MainMarkInspect(inspTab.MergeCogImage, tab, ref inspResult, false);
 
             string message = string.Empty;
@@ -102,8 +99,11 @@ namespace ATT.Core.AppTask
                 WriteLog(message, true);
                 Logger.Debug(LogType.Inspection, message);
 
+                // Create Coordinate Object
+                CoordinateTransform panelCoordinate = new CoordinateTransform();
+
                 // Set Coordinate Params
-                SetPanelCoordinateData(panelCoordinate, inspResult);
+                SetPanelCoordinateData(tab, panelCoordinate, inspResult);
 
                 // Excuete Coordinate
                 panelCoordinate.ExecuteCoordinate();
@@ -121,6 +121,8 @@ namespace ATT.Core.AppTask
                     string filepath = ConfigSet.Instance().Path.Result + "Tab" + inspResult.TabNo + ".txt";
                     SaveAkkonROI(filepath, inspResult.TabNo, coordinateList);
                     Judgement tabJudgement = Judgement.NG;
+
+                    AkkonAlgorithm.UseOverCount = AppsConfig.Instance().EnableTest2;
                     var leadResultList = AkkonAlgorithm.Run(inspTab.MergeMatImage, coordinateList, tab.AkkonParam.AkkonAlgoritmParam, resolution_um, ref tabJudgement);
 
                     inspResult.AkkonResult = CreateAkkonResult(unitName, tab.Index, leadResultList);
@@ -141,10 +143,14 @@ namespace ATT.Core.AppTask
             InspAkkonCount++;
         }
 
+        //Align Camera로 Align만 검사
         private void RunAlign(ATTInspTab inspTab)
         {
             Stopwatch sw = new Stopwatch();
             sw.Restart();
+
+            var lineCamera = LineCameraManager.Instance().GetLineCamera("LineCamera").Camera;
+            float resolution_um = lineCamera.PixelResolution_um / lineCamera.LensScale;
 
             string unitName = UnitName.Unit0.ToString();
             AppsInspModel inspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
@@ -156,8 +162,7 @@ namespace ATT.Core.AppTask
             tabInspResult.TabNo = inspTab.TabScanBuffer.TabNo;
             tabInspResult.Image = inspTab.MergeMatImage;
             tabInspResult.CogImage = inspTab.MergeCogImage;
-
-            //SystemManager.Instance().SetAlignLastScanImage(inspTab.MergeCogImage);
+            tabInspResult.Resolution_um = resolution_um;
 
             algorithmTool.MainMarkInspect(inspTab.MergeCogImage, tab, ref tabInspResult, true);
 
@@ -177,14 +182,21 @@ namespace ATT.Core.AppTask
                 WriteLog(message, true);
                 Logger.Debug(LogType.Inspection, message);
 
-                PointF fpcLeftOffset = MathHelper.GetOffset(tabInspResult.MarkResult.FpcMark.FoundedMark.Left.MaxMatchPos.ReferencePos, tabInspResult.MarkResult.FpcMark.FoundedMark.Left.MaxMatchPos.FoundPos);
-                PointF fpcRightOffset = MathHelper.GetOffset(tabInspResult.MarkResult.FpcMark.FoundedMark.Right.MaxMatchPos.ReferencePos, tabInspResult.MarkResult.FpcMark.FoundedMark.Right.MaxMatchPos.FoundPos);
-                PointF panelLeftOffset = MathHelper.GetOffset(tabInspResult.MarkResult.PanelMark.FoundedMark.Left.MaxMatchPos.ReferencePos, tabInspResult.MarkResult.PanelMark.FoundedMark.Left.MaxMatchPos.FoundPos);
-                PointF panelRightOffset = MathHelper.GetOffset(tabInspResult.MarkResult.PanelMark.FoundedMark.Right.MaxMatchPos.ReferencePos, tabInspResult.MarkResult.PanelMark.FoundedMark.Right.MaxMatchPos.FoundPos);
+                var fpcLeftOrigin = tab.MarkParamter.GetFPCMark(MarkDirection.Left, MarkName.Main, true).InspParam.GetOrigin();
+                var fpcRightOrigin = tab.MarkParamter.GetFPCMark(MarkDirection.Right, MarkName.Main, true).InspParam.GetOrigin();
+                var panelLeftOrigin = tab.MarkParamter.GetPanelMark(MarkDirection.Left, MarkName.Main, true).InspParam.GetOrigin();
+                var panelRightOrigin = tab.MarkParamter.GetPanelMark(MarkDirection.Right, MarkName.Main, true).InspParam.GetOrigin();
 
-                var lineCamera = LineCameraManager.Instance().GetLineCamera("LineCamera").Camera;
+                PointF fpcLeftOriginPoint = new PointF(Convert.ToSingle(fpcLeftOrigin.TranslationX), Convert.ToSingle(fpcLeftOrigin.TranslationY));
+                PointF fpcRightOriginPoint = new PointF(Convert.ToSingle(fpcRightOrigin.TranslationX), Convert.ToSingle(fpcRightOrigin.TranslationY));
+                PointF panelLeftOriginPoint = new PointF(Convert.ToSingle(panelLeftOrigin.TranslationX), Convert.ToSingle(panelLeftOrigin.TranslationY));
+                PointF panelRightOriginPoint = new PointF(Convert.ToSingle(panelRightOrigin.TranslationX), Convert.ToSingle(panelRightOrigin.TranslationY));
 
-                float resolution_um = lineCamera.PixelResolution_um / lineCamera.LensScale;
+                PointF fpcLeftOffset = MathHelper.GetOffset(fpcLeftOriginPoint, tabInspResult.MarkResult.FpcMark.FoundedMark.Left.MaxMatchPos.FoundPos);
+                PointF fpcRightOffset = MathHelper.GetOffset(fpcRightOriginPoint, tabInspResult.MarkResult.FpcMark.FoundedMark.Right.MaxMatchPos.FoundPos);
+                PointF panelLeftOffset = MathHelper.GetOffset(panelLeftOriginPoint, tabInspResult.MarkResult.PanelMark.FoundedMark.Left.MaxMatchPos.FoundPos);
+                PointF panelRightOffset = MathHelper.GetOffset(panelRightOriginPoint, tabInspResult.MarkResult.PanelMark.FoundedMark.Right.MaxMatchPos.FoundPos);
+              
                 double judgementX = tab.AlignSpec.LeftSpecX_um / resolution_um;
                 double judgementY = tab.AlignSpec.LeftSpecY_um / resolution_um;
 
@@ -314,7 +326,7 @@ namespace ATT.Core.AppTask
                 }
 
                 AkkonProcessTaskCancellationTokenSource.Cancel();
-                AkkonProcessTask.Wait();
+                //AkkonProcessTask.Wait();
                 AkkonProcessTask = null;
             }
 
@@ -327,7 +339,7 @@ namespace ATT.Core.AppTask
                 }
 
                 AlignProcessTaskCancellationTokenSource.Cancel();
-                AlignProcessTask.Wait();
+                //AlignProcessTask.Wait();
                 AlignProcessTask = null;
             }
         }
@@ -359,7 +371,10 @@ namespace ATT.Core.AppTask
                     break;
 
                 if (GetInspAlignTab() is ATTInspTab inspTab)
-                    RunAlign(inspTab);
+                {
+                    if (AppsConfig.Instance().EnableTest1 == false)
+                        RunAlign(inspTab);
+                }
 
                 Thread.Sleep(50);
             }
@@ -531,23 +546,35 @@ namespace ATT.Core.AppTask
                 }
             }
         }
-        private void SetFpcCoordinateData(CoordinateTransform fpc, TabInspResult tabInspResult)
+        private void SetFpcCoordinateData(CoordinateTransform fpc, TabInspResult tabInspResult, double leftOffsetX, double leftOffsetY, double rightOffsetX, double rightOffsetY)
         {
-            PointF teachedLeftPoint = tabInspResult.MarkResult.FpcMark.FoundedMark.Left.MaxMatchPos.ReferencePos;
-            PointF teachedRightPoint = tabInspResult.MarkResult.FpcMark.FoundedMark.Right.MaxMatchPos.ReferencePos;
+            var teachingLeftPoint = tabInspResult.MarkResult.FpcMark.FoundedMark.Left.MaxMatchPos.ReferencePos;
+            PointF teachedLeftPoint = new PointF(teachingLeftPoint.X + (float)leftOffsetX, teachingLeftPoint.Y + (float)leftOffsetY);
+
             PointF searchedLeftPoint = tabInspResult.MarkResult.FpcMark.FoundedMark.Left.MaxMatchPos.FoundPos;
+
+            var teachingRightPoint = tabInspResult.MarkResult.FpcMark.FoundedMark.Right.MaxMatchPos.ReferencePos;
+            PointF teachedRightPoint = new PointF(teachingRightPoint.X + (float)rightOffsetX, teachingRightPoint.Y + (float)rightOffsetY);
+
             PointF searchedRightPoint = tabInspResult.MarkResult.FpcMark.FoundedMark.Right.MaxMatchPos.FoundPos;
+
             fpc.SetReferenceData(teachedLeftPoint, teachedRightPoint);
             fpc.SetTargetData(searchedLeftPoint, searchedRightPoint);
         }
 
-        private void SetPanelCoordinateData(CoordinateTransform panel, TabInspResult tabInspResult)
+        private void SetPanelCoordinateData(Tab tab, CoordinateTransform panel, TabInspResult tabInspResult)
         {
-            PointF teachedLeftPoint = tabInspResult.MarkResult.PanelMark.FoundedMark.Left.MaxMatchPos.ReferencePos;
-            PointF teachedRightPoint = tabInspResult.MarkResult.PanelMark.FoundedMark.Right.MaxMatchPos.ReferencePos;
+            var leftMainMarkParam = tab.MarkParamter.GetPanelMark(MarkDirection.Left, MarkName.Main, false);
+            var leftMainMarkOrigin = leftMainMarkParam.InspParam.GetOrigin();
+            PointF leftMainMarkOriginPoint = new PointF(Convert.ToSingle(leftMainMarkOrigin.TranslationX), Convert.ToSingle(leftMainMarkOrigin.TranslationY));
             PointF searchedLeftPoint = tabInspResult.MarkResult.PanelMark.FoundedMark.Left.MaxMatchPos.FoundPos;
+
+            var rightMainMarkParam = tab.MarkParamter.GetPanelMark(MarkDirection.Right, MarkName.Main, false);
+            var lrightMainMarkOrigin = rightMainMarkParam.InspParam.GetOrigin();
+            PointF rightMainMarkOriginPoint = new PointF(Convert.ToSingle(lrightMainMarkOrigin.TranslationX), Convert.ToSingle(lrightMainMarkOrigin.TranslationY));
             PointF searchedRightPoint = tabInspResult.MarkResult.PanelMark.FoundedMark.Right.MaxMatchPos.FoundPos;
-            panel.SetReferenceData(teachedLeftPoint, teachedRightPoint);
+
+            panel.SetReferenceData(leftMainMarkOriginPoint, rightMainMarkOriginPoint);
             panel.SetTargetData(searchedLeftPoint, searchedRightPoint);
         }
 

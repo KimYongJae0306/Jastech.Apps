@@ -125,6 +125,12 @@ namespace ATT.UI.Controls
         {
             SystemLogControl.AddLogMessage(logMessage);
         }
+
+        public void Enable(bool isEnable)
+        {
+            AkkonViewerControl.Enable(isEnable);
+            AlignViewerControl.Enable(isEnable);
+        }
         #endregion
     }
 }

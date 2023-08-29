@@ -11,6 +11,13 @@ using Jastech.Apps.Structure.Data;
 using Jastech.Apps.Winform.Service;
 using System.IO;
 using Emgu.CV.Structure;
+using Jastech.Apps.Winform.Settings;
+using Jastech.Framework.Config;
+using Jastech.Apps.Structure;
+using Jastech.Framework.Structure;
+using Jastech.Framework.Util.Helper;
+using System.Diagnostics;
+using Jastech.Framework.Winform.Forms;
 
 namespace Jastech.Apps.Winform.UI.Controls
 {
@@ -89,5 +96,59 @@ namespace Jastech.Apps.Winform.UI.Controls
             dgvAlignHistory.Rows.Clear();
         }
         #endregion
+
+        private void dgvAlignHistory_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+            string basePath = ConfigSet.Instance().Path.Result;
+
+            var model = ModelManager.Instance().CurrentModel as InspModel;
+            string modelName = model.Name;
+            
+            string fullPath = Path.Combine(basePath, modelName);
+
+            var directoryList = Directory.EnumerateDirectories(fullPath, "*", SearchOption.AllDirectories);
+
+            string cellID = dgvAlignHistory.Rows[e.RowIndex].Cells[1].Value.ToString();
+            string tabNo = dgvAlignHistory.Rows[e.RowIndex].Cells[2].Value.ToString();
+            string selectedPath = string.Empty;
+
+            foreach (var directory in directoryList)
+            {
+                if (directory.Contains(cellID) && directory.Contains("Align"))
+                {
+                    selectedPath = directory;
+                    break;
+                }
+            }
+
+            if (selectedPath == string.Empty)
+            {
+                MessageConfirmForm confirmForm = new MessageConfirmForm();
+                confirmForm.Message = "The selected cell id does not have an image file.";
+                confirmForm.ShowDialog();
+                return;
+            }
+
+            var imageFiles = Directory.GetFiles(selectedPath, "*.bmp");
+
+            string selectedImageFilePath = string.Empty; 
+            foreach (var file in imageFiles)
+            {
+                if (file.ToUpper().Contains($"TAB_{tabNo}"))
+                {
+                    selectedImageFilePath = file;
+                    break;
+                }
+            }
+
+            if (selectedImageFilePath == string.Empty)
+            {
+                MessageConfirmForm confirmForm = new MessageConfirmForm();
+                confirmForm.Message = "The selected cell id does not have an image file.";
+                confirmForm.ShowDialog();
+            }
+            else
+                Process.Start(selectedImageFilePath);
+        }
     }
 }
