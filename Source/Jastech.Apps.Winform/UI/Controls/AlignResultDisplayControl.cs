@@ -74,6 +74,7 @@ namespace ATT_UT_IPAD.UI.Controls
             InspAlignDisplay.Dock = DockStyle.Fill;
             InspAlignDisplay.UpdateLeftImage += UpdateLeftImageEvent;
             InspAlignDisplay.UpdateRightImage += UpdateRightImageEvent;
+            InspAlignDisplay.UseAllContextMenu(true);
 
             pnlInspDisplay.Controls.Add(InspAlignDisplay);
         }
