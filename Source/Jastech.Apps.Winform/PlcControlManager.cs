@@ -242,6 +242,26 @@ namespace Jastech.Apps.Winform
             }
         }
 
+        public void ClearPlcCommonCommand()
+        {
+            var map = PlcControlManager.Instance().GetAddressMap(PlcCommonMap.PLC_Command_Common);
+            if (DeviceManager.Instance().PlcHandler.Count > 0 && map != null)
+            {
+                var plc = DeviceManager.Instance().PlcHandler.First() as MelsecPlc;
+
+                PlcDataStream stream = new PlcDataStream();
+
+                short value = Convert.ToInt16(0);
+
+                if (plc.MelsecParser.ParserType == ParserType.Binary)
+                    stream.AddSwap16BitData(value);
+                else
+                    stream.Add16BitData(value);
+
+                plc.Write("D" + map.AddressNum, stream.Data);
+            }
+        }
+
         private void WritePcStatusPeriodically(UnitName unitName)
         {
             if (DeviceManager.Instance().PlcHandler.Count > 0)
