@@ -94,9 +94,6 @@ namespace Jastech.Apps.Winform.Service
         public Judgement Judgement { get; set; } = Judgement.FAIL;
 
         [JsonProperty]
-        public string AcfHead { get; set; } = "acf";//string.Empty;
-
-        [JsonProperty]
         public string PreHead { get; set; } = "pre";//string.Empty;
 
         [JsonProperty]

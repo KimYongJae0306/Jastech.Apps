@@ -42,7 +42,6 @@
             this.colPanelID = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colTab = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colJudge = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colAcfHead = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colPreHead = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colFinalHead = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colCount = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -74,7 +73,6 @@
             this.colPanelID,
             this.colTab,
             this.colJudge,
-            this.colAcfHead,
             this.colPreHead,
             this.colFinalHead,
             this.colCount,
@@ -153,15 +151,6 @@
             this.colJudge.ReadOnly = true;
             this.colJudge.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
             this.colJudge.Width = 50;
-            // 
-            // colAcfHead
-            // 
-            this.colAcfHead.HeaderText = "ACF Head";
-            this.colAcfHead.MinimumWidth = 90;
-            this.colAcfHead.Name = "colAcfHead";
-            this.colAcfHead.ReadOnly = true;
-            this.colAcfHead.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            this.colAcfHead.Width = 90;
             // 
             // colPreHead
             // 
@@ -251,7 +240,6 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn colPanelID;
         private System.Windows.Forms.DataGridViewTextBoxColumn colTab;
         private System.Windows.Forms.DataGridViewTextBoxColumn colJudge;
-        private System.Windows.Forms.DataGridViewTextBoxColumn colAcfHead;
         private System.Windows.Forms.DataGridViewTextBoxColumn colPreHead;
         private System.Windows.Forms.DataGridViewTextBoxColumn colFinalHead;
         private System.Windows.Forms.DataGridViewTextBoxColumn colCount;

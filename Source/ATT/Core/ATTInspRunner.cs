@@ -639,7 +639,6 @@ namespace ATT.Core
                 alignInfo.PanelID = AppsInspResult.Instance().Cell_ID;
                 alignInfo.TabNo = tabInspResult.TabNo;
                 alignInfo.Judgement = tabInspResult.AlignResult.Judgement;
-                alignInfo.AcfHead = tabInspResult.AlignResult.AcfHead;
                 alignInfo.PreHead = tabInspResult.AlignResult.PreHead;
                 alignInfo.FinalHead = tabInspResult.AlignResult.FinalHead;
                 alignInfo.LX = GetResultAlignResultValue(tabInspResult.AlignResult.LeftX);
@@ -836,7 +835,6 @@ namespace ATT.Core
                     "Right Align X",
                     "Right Align Y",
 
-                    "ACF Head",
                     "Pre Head",
                     "Main Head",
 

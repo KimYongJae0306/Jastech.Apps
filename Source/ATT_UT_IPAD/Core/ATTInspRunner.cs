@@ -572,6 +572,13 @@ namespace ATT_UT_IPAD.Core
             }
         }
 
+        private string GetHeadData(int tabNo)
+        {
+            string acfHead = PlcControlManager.Instance().GetAddressMap(PlcCommonMap.PLC_PreBond_Tab0).Value;
+
+            return acfHead;
+        }
+
         private void SendResultData()
         {
             var inspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
@@ -685,7 +692,6 @@ namespace ATT_UT_IPAD.Core
                 alignInfo.PanelID = AppsInspResult.Instance().Cell_ID;
                 alignInfo.TabNo = tabInspResult.TabNo;
                 alignInfo.Judgement = tabInspResult.AlignResult.Judgement;
-                alignInfo.AcfHead = tabInspResult.AlignResult.AcfHead;
                 alignInfo.PreHead = tabInspResult.AlignResult.PreHead;
                 alignInfo.FinalHead = tabInspResult.AlignResult.FinalHead;
                 alignInfo.LX = GetResultAlignResultValue(tabInspResult.AlignResult.LeftX);
@@ -776,7 +782,6 @@ namespace ATT_UT_IPAD.Core
                 {
                     header.Add($"Tab");
                     header.Add($"Judge");
-                    header.Add($"ACF Head");
                     header.Add($"Pre Head");
                     header.Add($"Final Head");
                     header.Add($"Lx");
@@ -801,7 +806,6 @@ namespace ATT_UT_IPAD.Core
                 var tabInspResult = AppsInspResult.Instance().GetAlign(tabNo);
                 var alignResult = tabInspResult.AlignResult;
 
-                string acfHead = alignResult.AcfHead;
                 string preHead = alignResult.PreHead;
                 string finalHead = alignResult.FinalHead;
 
@@ -813,7 +817,6 @@ namespace ATT_UT_IPAD.Core
 
                 body.Add($"{tabInspResult.TabNo + 1}");                                     // Tab No
                 body.Add($"{tabInspResult.Judgement}");                                     // Judge
-                body.Add($"{acfHead}");                                                     // ACF Head
                 body.Add($"{preHead}");                                                     // Pre Head
                 body.Add($"{finalHead}");                                                   // Final Head
                 body.Add($"{lx:F3}");                                                       // Align Lx
@@ -889,7 +892,6 @@ namespace ATT_UT_IPAD.Core
                     "Length Min",
                     "Length Avg",
 
-                    "ACF Head",
                     "Pre Head",
                     "Main Head",
 
@@ -917,7 +919,6 @@ namespace ATT_UT_IPAD.Core
 
                 var tabAlignResult = AppsInspResult.Instance().GetAlign(tabNo);
 
-                string acfHead = tabAlignResult.AlignResult.AcfHead;
                 string preHead = tabAlignResult.AlignResult.PreHead;
                 string finalHead = tabAlignResult.AlignResult.FinalHead;
 
@@ -940,7 +941,6 @@ namespace ATT_UT_IPAD.Core
                     $"{lengthMin:F3}",                                                     // Length Min
                     $"{lengthAvg:F3}",                                                     // Length Avg
 
-                    $"{acfHead}",                                                           // ACF Head
                     $"{preHead}",                                                           // Pre Head
                     $"{finalHead}",                                                         // Final Head
 
@@ -1020,7 +1020,6 @@ namespace ATT_UT_IPAD.Core
                 {
                     "Panel ID",
                     "Inspection Time",
-                    "ACF Head",
                     "Pre Head",
                     "Final Head",
                     "LeftX",
@@ -1036,7 +1035,6 @@ namespace ATT_UT_IPAD.Core
                 {
                     AppsInspResult.Instance().Cell_ID,
                     $"{AppsInspResult.Instance().EndInspTime:HH:mm:ss}",
-                    $"{alignResult.AcfHead}",
                     $"{alignResult.PreHead}",
                     $"{alignResult.FinalHead}",
                     $"{CheckAlignResultValue(alignResult.LeftX):F2}",
