@@ -168,23 +168,31 @@ namespace ATT_UT_IPAD.Core
 
         private void UpdateUI()
         {
-            StartSaveThread();
+            try
+            {
+                StartSaveThread();
 
-            GetAkkonResultImage();
-            WriteLog("Make Akkon ResultImage.", true);
+                GetAkkonResultImage();
+                WriteLog("Make Akkon ResultImage.", true);
 
-            //StartSaveThread();        // 상위로.. 택 테스트
-            UpdateDailyInfo();
+                //StartSaveThread();        // 상위로.. 택 테스트
+                UpdateDailyInfo();
 
-            SystemManager.Instance().UpdateMainAkkonResult();
-            SystemManager.Instance().UpdateMainAlignResult();
+                SystemManager.Instance().UpdateMainAkkonResult();
+                SystemManager.Instance().UpdateMainAlignResult();
 
-            AppsStatus.Instance().IsInspRunnerFlagFromPlc = false;
-            SystemManager.Instance().EnableMainView(true);
+                AppsStatus.Instance().IsInspRunnerFlagFromPlc = false;
+                SystemManager.Instance().EnableMainView(true);
 
-            _updateThread = null;
+                _updateThread = null;
 
-            WriteLog("Update UI Inspection Result.", true);
+                WriteLog("Update UI Inspection Result.", true);
+            }
+            catch (Exception err)
+            {
+                Logger.Error(ErrorType.Etc, "UpdateUI Error : " + err.Message);
+                _updateThread = null;
+            }
         }
 
         public bool IsInspAkkonDone()
@@ -243,10 +251,12 @@ namespace ATT_UT_IPAD.Core
 
             AlignCamera.GrabDoneEventHandler -= ATTSeqRunner_GrabDoneEventHandler;
             AlignCamera.StopGrab();
+            Thread.Sleep(50);
             WriteLog("AlignCamera Stop Grab.");
 
             AkkonCamera.GrabDoneEventHandler -= ATTSeqRunner_GrabDoneEventHandler;
             AkkonCamera.StopGrab();
+            Thread.Sleep(50);
             WriteLog("AkkonCamera Stop Grab.");
         }
 
@@ -594,7 +604,7 @@ namespace ATT_UT_IPAD.Core
                 TabJudgement judgement = GetJudgemnet(akkonTabInspResult, alignTabInspResult);
                 PlcControlManager.Instance().WriteTabResult(tabNo, judgement, alignTabInspResult.AlignResult, akkonTabInspResult.AkkonResult, resolution);
 
-                Thread.Sleep(10);
+                Thread.Sleep(20);
             }
 
             PlcControlManager.Instance().WritePcStatus(PlcCommand.StartInspection);
@@ -1524,44 +1534,44 @@ namespace ATT_UT_IPAD.Core
 
                     if(isAkkonResult)
                     {
-                        if(tabInspResult.AkkonResult.Judgement == Judgement.NG)
-                        {
-                            int maxSaveCount = 20;
-                            int saveCount = 0;
-                            foreach (var leadResult in tabInspResult.AkkonResult.LeadResultList)
-                            {
-                                //if (saveCount > maxSaveCount)
-                                //    break;
-                                string akkonNGDirName = string.Format("Tab{0}_NG", tabInspResult.TabNo);
-                                string akkonNGDir = Path.Combine(resultPath, akkonNGDirName);
-                                if (Directory.Exists(akkonNGDir) == false)
-                                    Directory.CreateDirectory(akkonNGDir);
+                        //if(tabInspResult.AkkonResult.Judgement == Judgement.NG)
+                        //{
+                        //    int maxSaveCount = 20;
+                        //    int saveCount = 0;
+                        //    foreach (var leadResult in tabInspResult.AkkonResult.LeadResultList)
+                        //    {
+                        //        //if (saveCount > maxSaveCount)
+                        //        //    break;
+                        //        string akkonNGDirName = string.Format("Tab{0}_NG", tabInspResult.TabNo);
+                        //        string akkonNGDir = Path.Combine(resultPath, akkonNGDirName);
+                        //        if (Directory.Exists(akkonNGDir) == false)
+                        //            Directory.CreateDirectory(akkonNGDir);
 
-                                if(leadResult.Judgement == Judgement.NG)
-                                {
-                                    AkkonROI roi = tabInspResult.AkkonResult.TrackingROIList.Where(x => x.Index == leadResult.Id).FirstOrDefault();
-                                    if (roi != null)
-                                    {
-                                        try
-                                        {
-                                            string fileName = string.Format("{0}_Count_{1}.jpg", leadResult.Id, leadResult.AkkonCount);
-                                            Mat cropAkkonMat = MatHelper.CropRoi(tabInspResult.Image, roi.GetBoundRect());
-                                            string savePath = Path.Combine(akkonNGDir, fileName);
-                                            cropAkkonMat.Save(savePath);
-                                            //tabInspResult.Image.Save(@"D:\123.bmp");
-                                            cropAkkonMat.Dispose();
-                                            saveCount++;
-                                        }
-                                        catch (Exception er)
-                                        {
-                                            // 가압 : PreBond
-                                            // 본압 : FinalBond
-                                        }
+                        //        if(leadResult.Judgement == Judgement.NG)
+                        //        {
+                        //            AkkonROI roi = tabInspResult.AkkonResult.TrackingROIList.Where(x => x.Index == leadResult.Id).FirstOrDefault();
+                        //            if (roi != null)
+                        //            {
+                        //                try
+                        //                {
+                        //                    string fileName = string.Format("{0}_Count_{1}.jpg", leadResult.Id, leadResult.AkkonCount);
+                        //                    Mat cropAkkonMat = MatHelper.CropRoi(tabInspResult.Image, roi.GetBoundRect());
+                        //                    string savePath = Path.Combine(akkonNGDir, fileName);
+                        //                    cropAkkonMat.Save(savePath);
+                        //                    //tabInspResult.Image.Save(@"D:\123.bmp");
+                        //                    cropAkkonMat.Dispose();
+                        //                    saveCount++;
+                        //                }
+                        //                catch (Exception er)
+                        //                {
+                        //                    // 가압 : PreBond
+                        //                    // 본압 : FinalBond
+                        //                }
                                         
-                                    }
-                                }
-                            }
-                        }
+                        //            }
+                        //        }
+                        //    }
+                        //}
                     }
                 }
             }
@@ -1698,32 +1708,44 @@ namespace ATT_UT_IPAD.Core
 
         private void ClearBuffer()
         {
-            Console.WriteLine("ClearBuffer");
-            AlignCamera.IsLive = false;
-            AlignCamera.StopGrab();
+            try
+            {
+                Console.WriteLine("ClearBuffer");
+                AlignCamera.IsLive = false;
+                AlignCamera.StopGrab();
+                Thread.Sleep(50);
 
-            AkkonCamera.IsLive = false;
-            AkkonCamera.StopGrab();
+                AkkonCamera.IsLive = false;
+                AkkonCamera.StopGrab();
+                Thread.Sleep(50);
 
-            AlignCamera.SetOperationMode(TDIOperationMode.TDI);
-            AkkonCamera.SetOperationMode(TDIOperationMode.TDI);
+                AlignCamera.SetOperationMode(TDIOperationMode.TDI);
+                AkkonCamera.SetOperationMode(TDIOperationMode.TDI);
 
-            LightCtrlHandler?.TurnOff();
+                LightCtrlHandler?.TurnOff();
 
-            AlignLAFCtrl?.SetTrackingOnOFF(false);
-            AlignLAFCtrl?.SetDefaultParameter();
+                AlignLAFCtrl?.SetTrackingOnOFF(false);
+                AlignLAFCtrl?.SetDefaultParameter();
 
-            AkkonLAFCtrl?.SetTrackingOnOFF(false);
-            AkkonLAFCtrl?.SetDefaultParameter();
+                AkkonLAFCtrl?.SetTrackingOnOFF(false);
+                AkkonLAFCtrl?.SetDefaultParameter();
 
-            AkkonCamera.ClearTabScanBuffer();
-            AlignCamera.ClearTabScanBuffer();
+                AkkonCamera.ClearTabScanBuffer();
+                AlignCamera.ClearTabScanBuffer();
 
-            MotionManager.Instance().MoveAxisZ(TeachingPosType.Stage1_Scan_Start, AkkonLAFCtrl, AxisName.Z0);
-            MotionManager.Instance().MoveAxisZ(TeachingPosType.Stage1_Scan_Start, AlignLAFCtrl, AxisName.Z1);
+                MotionManager.Instance().MoveAxisZ(TeachingPosType.Stage1_Scan_Start, AkkonLAFCtrl, AxisName.Z0);
+                MotionManager.Instance().MoveAxisZ(TeachingPosType.Stage1_Scan_Start, AlignLAFCtrl, AxisName.Z1);
 
-            _ClearBufferThread = null;
-            WriteLog("Clear Buffer.");
+                _ClearBufferThread = null;
+                WriteLog("Clear Buffer.");
+            }
+            catch (Exception err)
+            {
+                string message = string.Format("Clear Buffer : {0}", err.Message);
+                Logger.Error(ErrorType.Etc, message);
+                _ClearBufferThread = null;
+            }
+            
         }
         #endregion
     }
