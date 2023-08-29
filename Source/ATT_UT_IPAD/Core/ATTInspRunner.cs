@@ -1547,6 +1547,11 @@ namespace ATT_UT_IPAD.Core
                 string resultPath = ConfigSet.Instance().Path.Result;
                 string logPath = ConfigSet.Instance().Path.Log;
 
+                int capacity = ConfigSet.Instance().Operation.DataStiringCapcity;
+                
+                DeleteDirectoryByCapacity(Path.Combine(resultPath, inspModel.Name), capacity);
+                DeleteDirectoryByCapacity(logPath, capacity);
+                
                 int duration = ConfigSet.Instance().Operation.DataStoringDuration;
                 FileHelper.DeleteFilesInDirectory(resultPath, ".*", duration);
                 FileHelper.DeleteFilesInDirectory(logPath, ".*", duration);
@@ -1559,6 +1564,26 @@ namespace ATT_UT_IPAD.Core
                 _deleteThread = null;
             }
         }
+
+        private void DeleteDirectoryByCapacity(string folderPath, int capacity)
+        {
+            double useRate = FileHelper.CheckCapacity("D");
+            if (useRate >= capacity)
+            {
+                var directoryList = FileHelper.GetDirectoryList(folderPath);
+                string directoryPath = directoryList.FirstOrDefault();
+                var oldDirectory = FileHelper.GetOldDirectory(directoryPath);
+                if (oldDirectory == null)
+                {
+                    DirectoryInfo directoryInfo = new DirectoryInfo(directoryPath);
+                    directoryInfo.Delete(true);
+                }
+                else
+                    oldDirectory.Delete(true);
+            }
+            
+        }
+
 
         private void SetMarkMotionPosition(Unit unit, MarkDirection markDirection)
         {

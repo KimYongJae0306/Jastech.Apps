@@ -131,7 +131,7 @@ namespace Jastech.Apps.Winform.UI.Controls
 
             var imageFiles = Directory.GetFiles(selectedPath, "*.bmp");
 
-            string selectedImageFilePath = string.Empty;
+            string selectedImageFilePath = string.Empty; 
             foreach (var file in imageFiles)
             {
                 if (file.ToUpper().Contains($"TAB_{tabNo}"))
