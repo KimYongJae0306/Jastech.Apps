@@ -182,6 +182,7 @@ namespace ATT_UT_IPAD.Core
                 SystemManager.Instance().UpdateMainAlignResult();
 
                 AppsStatus.Instance().IsInspRunnerFlagFromPlc = false;
+                PlcControlManager.Instance().EnableSendPeriodically = true;
                 SystemManager.Instance().EnableMainView(true);
 
                 _updateThread = null;
@@ -476,7 +477,7 @@ namespace ATT_UT_IPAD.Core
                     SendResultData();
                     WriteLog("Completed Send Plc Tab Result Data", true);
 
-                    PlcControlManager.Instance().EnableSendPeriodically = true;
+                    
                     SeqStep = SeqStep.SEQ_WAIT_UI_RESULT_UPDATE;
                     break;
 
@@ -586,7 +587,7 @@ namespace ATT_UT_IPAD.Core
         private string GetFinalHead()
         {
             string finalHead = PlcControlManager.Instance().GetAddressMap(PlcCommonMap.PLC_FinalBond).Value;
-            if (finalHead == null)
+            if (finalHead == null || finalHead == "")
                 finalHead = "0";
 
             return finalHead;
@@ -790,13 +791,13 @@ namespace ATT_UT_IPAD.Core
                     "Inspection Time",
                     "Panel ID",
                     "Stage No",
+                    "Final Head",
                 };
                 for (int index = 0; index < tabCount; index++)
                 {
                     header.Add($"Tab");
                     header.Add($"Judge");
                     header.Add($"Pre Head");
-                    header.Add($"Final Head");
                     header.Add($"Lx");
                     header.Add($"Ly");
                     header.Add($"Cx");
