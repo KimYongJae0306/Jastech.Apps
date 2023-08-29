@@ -1,4 +1,7 @@
-﻿using Jastech.Framework.Util.Helper;
+﻿using Jastech.Apps.Structure;
+using Jastech.Apps.Winform.Settings;
+using Jastech.Framework.Imaging.Result;
+using Jastech.Framework.Util.Helper;
 using Jastech.Framework.Winform.Forms;
 using System;
 using System.Collections.Generic;
@@ -6,6 +9,7 @@ using System.Data;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Security.Principal;
 using System.Windows.Forms;
 
 namespace Jastech.Apps.Winform.UI.Controls
@@ -193,29 +197,74 @@ namespace Jastech.Apps.Winform.UI.Controls
         
         private void UpdateChart(TabType tabType, AlignResultType alignResultType)
         {
-            if (GetDataTable() == null)
-                return;
-
-            ChartControl.UpdateAlignChart(GetDataTable(), tabType, alignResultType);
+            ChartControl.UpdateAlignChart(_alignTrendResults, tabType, alignResultType);
         }
 
-        private DataTable _bindingDataTable = new DataTable();
-        private void SetDataTable(DataTable dt) 
+        private List<TrendResult> _alignTrendResults { get; set; } = new List<TrendResult>();
+
+        public void UpdateDataGridView()
         {
-            _bindingDataTable = dt.Copy();
+            for (int rowIndex = 0; rowIndex < _alignTrendResults.Count; rowIndex++)
+            {
+                if (rowIndex == 0)
+                {
+                    List<string> header = new List<string>
+                    {
+                        "Inspection Time",
+                        "Panel ID",
+                        "Stage No",
+                        "Final Head",
+                    };
+                    for (int index = 0; index < AppsConfig.Instance().TabMaxCount; index++)
+                    {
+                        header.Add($"Tab");
+                        header.Add($"Judge");
+                        header.Add($"Pre Head");
+                        header.Add($"Lx");
+                        header.Add($"Ly");
+                        header.Add($"Cx");
+                        header.Add($"Rx");
+                        header.Add($"Ry");
+                    }
+                    var columns = header.Select(text => new DataGridViewTextBoxColumn { Name = text });
+                    dgvAlignTrendData.Columns.AddRange(columns.ToArray());
+                }
+
+                foreach (var datas in _alignTrendResults[rowIndex].GetStringDatas())
+                    dgvAlignTrendData.Rows.Add(datas);
+            }
         }
 
-        private DataTable GetDataTable()
+        public void SetAlignResultData(string path)
         {
-            return _bindingDataTable;
-        }
+            List<string[]> texts = new List<string[]>();
+            foreach (string textLine in File.ReadAllLines(path))
+                texts.Add(textLine.Split(','));
 
-        public void UpdateDataGridView(string path)
-        {
-            var dataTable = FileHelper.CsvToDataTable(path);
+            int tabCount = AppsConfig.Instance().TabMaxCount;
+            for (int rowIndex = 0; rowIndex < texts.Count; rowIndex++)
+            {
+                _alignTrendResults[rowIndex].InspectionTime = texts[rowIndex][0];
+                _alignTrendResults[rowIndex].PanelID = texts[rowIndex][1];
+                _alignTrendResults[rowIndex].StageNo = Convert.ToInt32(texts[rowIndex][2]);
+                _alignTrendResults[rowIndex].FinalHead = texts[rowIndex][3];
 
-            dgvAlignTrendData.DataSource = dataTable;
-            SetDataTable(dataTable.Copy());
+                for (int colIndex = 0; colIndex < tabCount; colIndex++)
+                {
+                    int skipIndex = colIndex * tabCount;
+                    _alignTrendResults[rowIndex].TabAlignResults[rowIndex] = new TabAlignTrendResult
+                    {
+                        Tab = Convert.ToInt32(texts[rowIndex][skipIndex + 4]),
+                        Judge = texts[rowIndex][skipIndex + 5],
+                        PreHead = texts[rowIndex][skipIndex + 6],
+                        Lx = Convert.ToDouble(texts[rowIndex][skipIndex + 7]),
+                        Ly = Convert.ToDouble(texts[rowIndex][skipIndex + 8]),
+                        Cx = Convert.ToDouble(texts[rowIndex][skipIndex + 9]),
+                        Rx = Convert.ToDouble(texts[rowIndex][skipIndex + 10]),
+                        Ry = Convert.ToDouble(texts[rowIndex][skipIndex + 11]),
+                    };
+                }
+            }
         }
         #endregion
     }

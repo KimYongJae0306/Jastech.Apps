@@ -291,28 +291,29 @@ namespace Jastech.Apps.Winform.UI.Controls
             }
         }
 
-        public void UpdateAlignChart(DataTable dataTable, TabType tabType, AlignResultType alignResultType)
+        public void UpdateAlignChart(List<TrendResult> alignTrendResults, TabType tabType, AlignResultType alignResultType)
         {
-            if (dataTable == null)
+            if (alignTrendResults == null)
                 return;
 
             ClearChartData();
 
-            int tabIndex = (int)tabType;
-            var dataSource = ParseData(dataTable, tabIndex++).AsEnumerable();
-
             if (alignResultType == AlignResultType.All)
             {
-                AlignSeriesLx.Points.DataBind(dataSource, "Inspection Time", $"Lx_{tabIndex}", "");
-                AlignSeriesLy.Points.DataBind(dataSource, "Inspection Time", $"Ly_{tabIndex}", "");
-                AlignSeriesCx.Points.DataBind(dataSource, "Inspection Time", $"Cx_{tabIndex}", "");
-                AlignSeriesRx.Points.DataBind(dataSource, "Inspection Time", $"Rx_{tabIndex}", "");
-                AlignSeriesRy.Points.DataBind(dataSource, "Inspection Time", $"Ry_{tabIndex}", "");
+                foreach (TrendResult trendResult in alignTrendResults)
+                {
+                    AlignSeriesLx.Points.AddXY(trendResult.InspectionTime, trendResult.GetAlignDatas(tabType, AlignResultType.Lx));
+                    AlignSeriesLy.Points.AddXY(trendResult.InspectionTime, trendResult.GetAlignDatas(tabType, AlignResultType.Ly));
+                    AlignSeriesCx.Points.AddXY(trendResult.InspectionTime, trendResult.GetAlignDatas(tabType, AlignResultType.Cx));
+                    AlignSeriesRx.Points.AddXY(trendResult.InspectionTime, trendResult.GetAlignDatas(tabType, AlignResultType.Rx));
+                    AlignSeriesRy.Points.AddXY(trendResult.InspectionTime, trendResult.GetAlignDatas(tabType, AlignResultType.Ry));
+                }
             }
             else
             {
                 var alignSeries = AlignSeriesList.First(x => x.Name == alignResultType.ToString());
-                alignSeries?.Points.DataBind(dataSource, "Inspection Time", $"{alignResultType}_{tabIndex}", "");
+                foreach (TrendResult trendResult in alignTrendResults)
+                    alignSeries?.Points.AddXY(trendResult.InspectionTime, trendResult.GetAlignDatas(tabType, alignResultType));
             }
         }
 

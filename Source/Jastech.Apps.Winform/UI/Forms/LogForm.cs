@@ -8,8 +8,10 @@ using Jastech.Framework.Imaging.VisionPro;
 using Jastech.Framework.Winform.Helper;
 using Jastech.Framework.Winform.VisionPro.Controls;
 using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
+using System.Linq;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
 
@@ -372,8 +374,9 @@ namespace Jastech.Framework.Winform.Forms
             switch (_selectedPageType)
             {
                 case PageType.AlignTrend:
-                    AlignTrendControl.UpdateDataGridView(fullPath);
+                    AlignTrendControl.SetAlignResultData(fullPath);
                     AlignTrendControl.SetAlignResultType(AlignResultType.All);
+                    AlignTrendControl.UpdateDataGridView();
                     AlignTrendControl.SetTabType(TabType.Tab1);
                     break;
 
@@ -437,5 +440,79 @@ namespace Jastech.Framework.Winform.Forms
         Cx,
         Rx,
         Ry,
+    }
+
+    public class TrendResult
+    {
+        public string InspectionTime { get; set; }
+        public string PanelID { get; set; }
+        public int StageNo { get; set; }
+        public string FinalHead { get; set; }
+        public List<TabAlignTrendResult> TabAlignResults { get; private set; } = new List<TabAlignTrendResult>();
+        public List<TabAkkonTrendResult> TabAkkonResults { get; private set; } = new List<TabAkkonTrendResult>();
+
+        public List<string> GetStringDatas()
+        {
+            List<string> datas = new List<string>
+            {
+                $"{InspectionTime}",
+                $"{PanelID}",
+                $"{StageNo}",
+                $"{FinalHead}",
+            };
+            foreach (var tab in TabAlignResults)
+            {
+                datas.Add($"{tab.Tab}");
+                datas.Add($"{tab.Judge}");
+                datas.Add($"{tab.PreHead}");
+                datas.Add($"{tab.Lx}");
+                datas.Add($"{tab.Ly}");
+                datas.Add($"{tab.Cx}");
+                datas.Add($"{tab.Rx}");
+                datas.Add($"{tab.Ry}");
+            }
+
+            return datas;
+        }
+
+        public double[] GetAlignDatas(TabType tabType, AlignResultType alignResultType)
+        {
+            double[] datas = null;
+
+            var resultByTab = TabAlignResults.Where(result => result.Tab == (int)tabType);
+
+            if (alignResultType is AlignResultType.Lx)
+                datas = resultByTab.Select(result => result.Lx).ToArray();
+            else if (alignResultType is AlignResultType.Ly)
+                datas = resultByTab.Select(result => result.Ly).ToArray();
+            else if (alignResultType is AlignResultType.Cx)
+                datas = resultByTab.Select(result => result.Cx).ToArray();
+            else if (alignResultType is AlignResultType.Rx)
+                datas = resultByTab.Select(result => result.Rx).ToArray();
+            else if (alignResultType is AlignResultType.Ry)
+                datas = resultByTab.Select(result => result.Ry).ToArray();
+
+            return datas;
+        }
+    }
+
+    public class TabAlignTrendResult
+    {
+        public int Tab { get; set; }
+        public string Judge { get; set; }
+        public string PreHead { get; set; }
+        public double Lx { get; set; }
+        public double Ly { get; set; }
+        public double Cx { get; set; }
+        public double Rx { get; set; }
+        public double Ry { get; set; }
+    }
+
+    public class TabAkkonTrendResult
+    {
+        public int Tab { get; set; }
+        public string Judge { get; set; }
+        public int AvgCount { get; set; }
+        public double AvgLength { get; set; }
     }
 }

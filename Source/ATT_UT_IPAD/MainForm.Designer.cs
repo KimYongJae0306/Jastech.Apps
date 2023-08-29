@@ -501,7 +501,7 @@
             this.tlpMachineStatus.ColumnCount = 4;
             this.tlpMachineStatus.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 220F));
             this.tlpMachineStatus.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tlpMachineStatus.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 180F));
+            this.tlpMachineStatus.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 323F));
             this.tlpMachineStatus.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 180F));
             this.tlpMachineStatus.Controls.Add(this.tableLayoutPanel5, 3, 0);
             this.tlpMachineStatus.Controls.Add(this.lblCurrentModel, 2, 0);
@@ -566,12 +566,12 @@
             this.lblCurrentModel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lblCurrentModel.Font = new System.Drawing.Font("맑은 고딕", 15F, System.Drawing.FontStyle.Bold);
             this.lblCurrentModel.ForeColor = System.Drawing.Color.White;
-            this.lblCurrentModel.Location = new System.Drawing.Point(1181, 3);
+            this.lblCurrentModel.Location = new System.Drawing.Point(1038, 3);
             this.lblCurrentModel.Margin = new System.Windows.Forms.Padding(3);
             this.lblCurrentModel.Name = "lblCurrentModel";
-            this.lblCurrentModel.Size = new System.Drawing.Size(174, 42);
+            this.lblCurrentModel.Size = new System.Drawing.Size(317, 42);
             this.lblCurrentModel.TabIndex = 3;
-            this.lblCurrentModel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblCurrentModel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // picLogo
             // 
@@ -594,7 +594,7 @@
             this.lblMachineName.Location = new System.Drawing.Point(223, 3);
             this.lblMachineName.Margin = new System.Windows.Forms.Padding(3);
             this.lblMachineName.Name = "lblMachineName";
-            this.lblMachineName.Size = new System.Drawing.Size(952, 42);
+            this.lblMachineName.Size = new System.Drawing.Size(809, 42);
             this.lblMachineName.TabIndex = 1;
             this.lblMachineName.Text = "ATT Inspection";
             this.lblMachineName.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;

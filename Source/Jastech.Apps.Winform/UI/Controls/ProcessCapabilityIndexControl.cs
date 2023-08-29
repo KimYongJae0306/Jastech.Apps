@@ -1,5 +1,6 @@
 ﻿using Jastech.Apps.Structure;
 using Jastech.Apps.Structure.Data;
+using Jastech.Apps.Winform.Settings;
 using Jastech.Framework.Util.Helper;
 using Jastech.Framework.Winform.Forms;
 using Jastech.Framework.Winform.Helper;
@@ -112,7 +113,7 @@ namespace Jastech.Apps.Winform.UI.Controls
             _tabLabelList[(int)tabType].BackColor = _selectedColor;
 
             UpdateChart(_tabType, _alignResultType);
-            UpdateDataGridView(_tabType, _alignResultType);
+            UpdateDataGridView(_tabType);
         }
 
         private void ClearSelectedTabLabel()
@@ -198,10 +199,7 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         private void UpdateChart(TabType tabType, AlignResultType alignResultType)
         {
-            if (GetDataTable() == null)
-                return;
-
-            ChartControl.UpdateAlignChart(GetDataTable(), tabType, alignResultType);
+            ChartControl.UpdateAlignChart(_alignTrendResults, tabType, alignResultType);
         }
 
         private DataTable ParseData(DataTable dataTable, int tabNo)
@@ -224,29 +222,33 @@ namespace Jastech.Apps.Winform.UI.Controls
             return newDataTable;
         }
 
-        private void UpdateDataGridView(TabType tabType, AlignResultType alignResultType)
+        private void UpdateDataGridView(TabType tabType)
         {
-            var dataTable = GetDataTable();
-
-            if (dataTable.Rows.Count == 0)
-                return;
-
             double upperSpecLimit = Convert.ToDouble(lblUpperSpecLimit.Text);
             double lowerSpecLimit = Convert.ToDouble(lblLowerSpecLimit.Text);
 
-            var listCapabilityResults = new List<PcResult>();
-            var resultTypes = Enum.GetNames(typeof(AlignResultType)).Where(name => name.ToUpper() != "ALL").ToList();
-            for (int index = 0; index < resultTypes.Count; index++)
-            {
-                int columnIndex = dataTable.Columns.IndexOf($"{resultTypes[index]}_{(int)tabType + 1}");
+            List<PcResult> listCapabilityResults = new List<PcResult>();
 
-                var values = dataTable.AsEnumerable().Select(row => Convert.ToDouble(row[columnIndex])).ToList();
-                var result = ProcessCapabilityIndex.GetResult(values, upperSpecLimit, lowerSpecLimit);
-                result.Type = resultTypes[index];
+            var lxData = GetPcData(tabType, AlignResultType.Lx);
+            var lyData = GetPcData(tabType, AlignResultType.Ly);
+            var cxData = GetPcData(tabType,AlignResultType.Cx);
+            var rxData = GetPcData(tabType,AlignResultType.Rx);
+            var ryData = GetPcData(tabType, AlignResultType.Ry);
 
-                listCapabilityResults.Add(result);
-            }
+            listCapabilityResults.Add(ProcessCapabilityIndex.GetResult(AlignResultType.Lx.ToString(), lxData, upperSpecLimit, lowerSpecLimit));
+            listCapabilityResults.Add(ProcessCapabilityIndex.GetResult(AlignResultType.Ly.ToString(), lyData, upperSpecLimit, lowerSpecLimit));
+            listCapabilityResults.Add(ProcessCapabilityIndex.GetResult(AlignResultType.Cx.ToString(), cxData, upperSpecLimit, lowerSpecLimit));
+            listCapabilityResults.Add(ProcessCapabilityIndex.GetResult(AlignResultType.Rx.ToString(), rxData, upperSpecLimit, lowerSpecLimit));
+            listCapabilityResults.Add(ProcessCapabilityIndex.GetResult(AlignResultType.Ry.ToString(), ryData, upperSpecLimit, lowerSpecLimit));
+
             dgvPCResult.DataSource = listCapabilityResults;
+        }
+
+        private List<double> GetPcData(TabType tabType, AlignResultType alignResultType)
+        {
+            return _alignTrendResults.Select(trendResult => trendResult
+                                                        .GetAlignDatas(tabType, alignResultType))
+                                                        .SelectMany(value => value).ToList();
         }
 
         private void dgvPCResult_DataSourceChanged(object sender, EventArgs e)
@@ -258,34 +260,37 @@ namespace Jastech.Apps.Winform.UI.Controls
             }
         }
 
-        private string SelectQuery(TabType tabType)
+        private List<TrendResult> _alignTrendResults = new List<TrendResult>();
+        public void SetAlignResultData(string path)
         {
-            string query = string.Empty;
+            List<string[]> texts = new List<string[]>();
+            foreach (string textLine in File.ReadAllLines(path))
+                texts.Add(textLine.Split(','));
 
-            switch (tabType)
+            int tabCount = AppsConfig.Instance().TabMaxCount;
+            for (int rowIndex = 0; rowIndex < texts.Count; rowIndex++)
             {
-                case TabType.Tab1:
-                    query = "Tab = '0'";
-                    break;
+                _alignTrendResults[rowIndex].InspectionTime = texts[rowIndex][0];
+                _alignTrendResults[rowIndex].PanelID = texts[rowIndex][1];
+                _alignTrendResults[rowIndex].StageNo = Convert.ToInt32(texts[rowIndex][2]);
+                _alignTrendResults[rowIndex].FinalHead = texts[rowIndex][3];
 
-                case TabType.Tab2:
-                    query = "Tab = '1'";
-                    break;
-
-                case TabType.Tab3:
-                    query = "Tab = '2'";
-                    break;
-                case TabType.Tab4:
-                    query = "Tab = '3'";
-                    break;
-                case TabType.Tab5:
-                    query = "Tab = '4'";
-                    break;
-                default:
-                    break;
+                for (int colIndex = 0; colIndex < tabCount; colIndex++)
+                {
+                    int skipIndex = colIndex * tabCount;
+                    _alignTrendResults[rowIndex].TabAlignResults[rowIndex] = new TabAlignTrendResult
+                    {
+                        Tab = Convert.ToInt32(texts[rowIndex][skipIndex + 4]),
+                        Judge = texts[rowIndex][skipIndex + 5],
+                        PreHead = texts[rowIndex][skipIndex + 6],
+                        Lx = Convert.ToDouble(texts[rowIndex][skipIndex + 7]),
+                        Ly = Convert.ToDouble(texts[rowIndex][skipIndex + 8]),
+                        Cx = Convert.ToDouble(texts[rowIndex][skipIndex + 9]),
+                        Rx = Convert.ToDouble(texts[rowIndex][skipIndex + 10]),
+                        Ry = Convert.ToDouble(texts[rowIndex][skipIndex + 11]),
+                    };
+                }
             }
-
-            return query;
         }
 
         private void dgvPCResult_SelectionChanged(object sender, EventArgs e)

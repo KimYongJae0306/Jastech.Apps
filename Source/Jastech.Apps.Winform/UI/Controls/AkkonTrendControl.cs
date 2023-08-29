@@ -1,4 +1,5 @@
-﻿using Jastech.Framework.Util.Helper;
+﻿using Jastech.Apps.Winform.Settings;
+using Jastech.Framework.Util.Helper;
 using Jastech.Framework.Winform.Forms;
 using System;
 using System.Collections.Generic;
@@ -186,6 +187,34 @@ namespace Jastech.Apps.Winform.UI.Controls
 
             dgvAkkonTrendData.DataSource = dataTable;
             SetDataTable(dataTable.Copy());
+        }
+
+        private List<TrendResult> _akkonTrendResults = new List<TrendResult>();
+        public void SetAkkonResultData(string path)
+        {
+            List<string[]> texts = new List<string[]>();
+            foreach (string textLine in File.ReadAllLines(path))
+                texts.Add(textLine.Split(','));
+
+            int tabCount = AppsConfig.Instance().TabMaxCount;
+            for (int rowIndex = 0; rowIndex < texts.Count; rowIndex++)
+            {
+                _akkonTrendResults[rowIndex].InspectionTime = texts[rowIndex][0];
+                _akkonTrendResults[rowIndex].PanelID = texts[rowIndex][1];
+                _akkonTrendResults[rowIndex].StageNo = Convert.ToInt32(texts[rowIndex][2]);
+
+                for (int colIndex = 0; colIndex < tabCount; colIndex++)
+                {
+                    int skipIndex = colIndex * tabCount;
+                    _akkonTrendResults[rowIndex].TabAkkonResults[rowIndex] = new TabAkkonTrendResult
+                    {
+                        Tab = Convert.ToInt32(texts[rowIndex][skipIndex + 3]),
+                        Judge = texts[rowIndex][skipIndex + 4],
+                        AvgCount = Convert.ToInt32(texts[rowIndex][skipIndex + 5]),
+                        AvgLength = Convert.ToDouble(texts[rowIndex][skipIndex + 6]),
+                    };
+                }
+            }
         }
         #endregion
     }

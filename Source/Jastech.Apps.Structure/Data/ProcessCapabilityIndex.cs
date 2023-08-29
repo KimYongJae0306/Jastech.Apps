@@ -10,12 +10,13 @@ namespace Jastech.Apps.Structure.Data
         private const double d2 = 1.128;
         private const int TOLERANCE = 6;
 
-        public PcResult GetResult(List<double> valueList, double upperSpecLimit, double lowerSpecLimit)
+        public PcResult GetResult(string type, List<double> valueList, double upperSpecLimit, double lowerSpecLimit)
         {
             if (valueList.Count <= 1)
                 return new PcResult();
 
             PcResult result = new PcResult();
+            result.Type = type;
 
             double Average = valueList.Average();
             double StdOverall = GetStandardDeviation(valueList);
