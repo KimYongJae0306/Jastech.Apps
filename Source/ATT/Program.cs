@@ -131,31 +131,23 @@ namespace ATT
                 motion.TriggerBuffer = ACSBufferNumber.CameraTrigger_Unit1;
                 config.Add(motion);
 
-                var light1 = new LvsLightCtrl("LvsLight12V", 6, new SerialPortComm("COM2", 9600), new LvsSerialParser());
-                light1.ChannelNameMap["Ch.Blue"] = 0;
-                light1.ChannelNameMap["Ch.RedSpot"] = 1;
-                config.Add(light1);
+                //var light1 = new LvsLightCtrl("LvsLight12V", 6, new SerialPortComm("COM2", 9600), new LvsSerialParser());
+                //light1.ChannelNameMap["Ch.Blue"] = 0;
+                //light1.ChannelNameMap["Ch.RedSpot"] = 1;
+                //config.Add(light1);
 
-                var light2 = new LvsLightCtrl("LvsLight24V", 6, new SerialPortComm("COM3", 9600), new LvsSerialParser());
-                light2.ChannelNameMap["Ch.RedRing"] = 0;
-                config.Add(light2);
+                //var light2 = new LvsLightCtrl("LvsLight24V", 6, new SerialPortComm("COM3", 9600), new LvsSerialParser());
+                //light2.ChannelNameMap["Ch.RedRing"] = 0;
+                //config.Add(light2);
 
                 var laf = new NuriOneLAFCtrl("Laf");
-                laf.SerialPortComm = new SerialPortComm("COM4", 9600);
+                laf.SerialPortComm = new SerialPortComm("COM1", 9600);
                 laf.AxisName = AxisName.Z0.ToString();
                 laf.HomePosition_mm = 0.02;
                 laf.ResolutionAxisZ = 10000.0;
                 laf.MaxSppedAxisZ = 20;
                 laf.AccDec = 15;
                 config.Add(laf);
-
-                //var laf2 = new NuriOneLAFCtrl(LAFName.Akkon.ToString());
-                //laf2.SerialPortComm = new SerialPortComm
-                //{
-                //    PortName = "COM3",
-                //    BaudRate = 9600,
-                //};
-                //config.Add(laf2);
 
                 // PLC ATT Tester
                 AppsConfig.Instance().PlcAddressInfo.CommonStart = 20000;
