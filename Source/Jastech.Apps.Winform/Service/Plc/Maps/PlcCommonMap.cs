@@ -95,9 +95,22 @@
         PLC_Command,
         PLC_Move_END,
 
+        PLC_FinalBond,
         PLC_ManualMatch,
 
         PLC_Cell_Id,
+
+        PLC_PreBond_Tab0,
+        PLC_PreBond_Tab1,
+        PLC_PreBond_Tab2,
+        PLC_PreBond_Tab3,
+        PLC_PreBond_Tab4,
+        PLC_PreBond_Tab5,
+        PLC_PreBond_Tab6,
+        PLC_PreBond_Tab7,
+        PLC_PreBond_Tab8,
+        PLC_PreBond_Tab9,
+
 
         PLC_AkkonZ_ServoOnOff,
         PLC_AkkonZ_Alarm,
