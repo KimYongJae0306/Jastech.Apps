@@ -36,6 +36,14 @@
             this.pnlTop = new System.Windows.Forms.Panel();
             this.lblTop = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.tlpTo = new System.Windows.Forms.TableLayoutPanel();
+            this.tlpFrom = new System.Windows.Forms.TableLayoutPanel();
+            this.tlpCopyItem = new System.Windows.Forms.TableLayoutPanel();
+            this.tlpItem = new System.Windows.Forms.TableLayoutPanel();
+            this.chkAkkon = new System.Windows.Forms.CheckBox();
+            this.chkAlign = new System.Windows.Forms.CheckBox();
+            this.chkMark = new System.Windows.Forms.CheckBox();
+            this.lblItem = new System.Windows.Forms.Label();
             this.panel2 = new System.Windows.Forms.Panel();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.pnlApply = new System.Windows.Forms.Panel();
@@ -47,17 +55,13 @@
             this.lblCancelImage = new System.Windows.Forms.Label();
             this.lblCancel = new System.Windows.Forms.Label();
             this.pnlAkkonROICopy = new System.Windows.Forms.Panel();
-            this.tlpCopyItem = new System.Windows.Forms.TableLayoutPanel();
-            this.tlpFrom = new System.Windows.Forms.TableLayoutPanel();
-            this.tlpTo = new System.Windows.Forms.TableLayoutPanel();
-            this.lblItem = new System.Windows.Forms.Label();
-            this.tlpItem = new System.Windows.Forms.TableLayoutPanel();
-            this.chkMark = new System.Windows.Forms.CheckBox();
-            this.chkAlign = new System.Windows.Forms.CheckBox();
-            this.chkAkkon = new System.Windows.Forms.CheckBox();
             this.tlpAkkonROICopy.SuspendLayout();
             this.pnlTop.SuspendLayout();
             this.panel1.SuspendLayout();
+            this.tlpTo.SuspendLayout();
+            this.tlpFrom.SuspendLayout();
+            this.tlpCopyItem.SuspendLayout();
+            this.tlpItem.SuspendLayout();
             this.panel2.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             this.pnlApply.SuspendLayout();
@@ -65,10 +69,6 @@
             this.pnlCancel.SuspendLayout();
             this.tlpCancel.SuspendLayout();
             this.pnlAkkonROICopy.SuspendLayout();
-            this.tlpCopyItem.SuspendLayout();
-            this.tlpFrom.SuspendLayout();
-            this.tlpTo.SuspendLayout();
-            this.tlpItem.SuspendLayout();
             this.SuspendLayout();
             // 
             // lblFrom
@@ -154,6 +154,8 @@
             this.pnlTop.Name = "pnlTop";
             this.pnlTop.Size = new System.Drawing.Size(758, 60);
             this.pnlTop.TabIndex = 1;
+            this.pnlTop.MouseDown += new System.Windows.Forms.MouseEventHandler(this.pnlTop_MouseDown);
+            this.pnlTop.MouseMove += new System.Windows.Forms.MouseEventHandler(this.pnlTop_MouseMove);
             // 
             // lblTop
             // 
@@ -177,6 +179,138 @@
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(758, 496);
             this.panel1.TabIndex = 3;
+            // 
+            // tlpTo
+            // 
+            this.tlpTo.ColumnCount = 1;
+            this.tlpTo.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tlpTo.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tlpTo.Controls.Add(this.lblTo, 0, 0);
+            this.tlpTo.Controls.Add(this.tlpTargetTab, 0, 1);
+            this.tlpTo.Location = new System.Drawing.Point(557, 110);
+            this.tlpTo.Margin = new System.Windows.Forms.Padding(0);
+            this.tlpTo.Name = "tlpTo";
+            this.tlpTo.RowCount = 2;
+            this.tlpTo.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 60F));
+            this.tlpTo.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tlpTo.Size = new System.Drawing.Size(180, 360);
+            this.tlpTo.TabIndex = 293;
+            // 
+            // tlpFrom
+            // 
+            this.tlpFrom.ColumnCount = 1;
+            this.tlpFrom.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tlpFrom.Controls.Add(this.lblFrom, 0, 0);
+            this.tlpFrom.Controls.Add(this.tlpSourceTab, 0, 1);
+            this.tlpFrom.Location = new System.Drawing.Point(17, 110);
+            this.tlpFrom.Margin = new System.Windows.Forms.Padding(0);
+            this.tlpFrom.Name = "tlpFrom";
+            this.tlpFrom.RowCount = 2;
+            this.tlpFrom.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 60F));
+            this.tlpFrom.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tlpFrom.Size = new System.Drawing.Size(180, 360);
+            this.tlpFrom.TabIndex = 292;
+            // 
+            // tlpCopyItem
+            // 
+            this.tlpCopyItem.ColumnCount = 2;
+            this.tlpCopyItem.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 180F));
+            this.tlpCopyItem.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tlpCopyItem.Controls.Add(this.tlpItem, 0, 0);
+            this.tlpCopyItem.Controls.Add(this.lblItem, 0, 0);
+            this.tlpCopyItem.Location = new System.Drawing.Point(17, 18);
+            this.tlpCopyItem.Margin = new System.Windows.Forms.Padding(0);
+            this.tlpCopyItem.Name = "tlpCopyItem";
+            this.tlpCopyItem.RowCount = 1;
+            this.tlpCopyItem.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tlpCopyItem.Size = new System.Drawing.Size(720, 60);
+            this.tlpCopyItem.TabIndex = 291;
+            // 
+            // tlpItem
+            // 
+            this.tlpItem.ColumnCount = 3;
+            this.tlpItem.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this.tlpItem.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this.tlpItem.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this.tlpItem.Controls.Add(this.chkAkkon, 2, 0);
+            this.tlpItem.Controls.Add(this.chkAlign, 1, 0);
+            this.tlpItem.Controls.Add(this.chkMark, 0, 0);
+            this.tlpItem.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tlpItem.Location = new System.Drawing.Point(180, 0);
+            this.tlpItem.Margin = new System.Windows.Forms.Padding(0);
+            this.tlpItem.Name = "tlpItem";
+            this.tlpItem.RowCount = 1;
+            this.tlpItem.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tlpItem.Size = new System.Drawing.Size(540, 60);
+            this.tlpItem.TabIndex = 291;
+            // 
+            // chkAkkon
+            // 
+            this.chkAkkon.Appearance = System.Windows.Forms.Appearance.Button;
+            this.chkAkkon.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
+            this.chkAkkon.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.chkAkkon.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.chkAkkon.ForeColor = System.Drawing.Color.White;
+            this.chkAkkon.Location = new System.Drawing.Point(363, 4);
+            this.chkAkkon.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.chkAkkon.Name = "chkAkkon";
+            this.chkAkkon.Size = new System.Drawing.Size(174, 52);
+            this.chkAkkon.TabIndex = 85;
+            this.chkAkkon.TabStop = false;
+            this.chkAkkon.Text = "Akkon";
+            this.chkAkkon.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.chkAkkon.UseVisualStyleBackColor = false;
+            this.chkAkkon.CheckedChanged += new System.EventHandler(this.chkAkkon_CheckedChanged);
+            // 
+            // chkAlign
+            // 
+            this.chkAlign.Appearance = System.Windows.Forms.Appearance.Button;
+            this.chkAlign.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
+            this.chkAlign.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.chkAlign.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.chkAlign.ForeColor = System.Drawing.Color.White;
+            this.chkAlign.Location = new System.Drawing.Point(183, 4);
+            this.chkAlign.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.chkAlign.Name = "chkAlign";
+            this.chkAlign.Size = new System.Drawing.Size(174, 52);
+            this.chkAlign.TabIndex = 84;
+            this.chkAlign.TabStop = false;
+            this.chkAlign.Text = "Align";
+            this.chkAlign.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.chkAlign.UseVisualStyleBackColor = false;
+            this.chkAlign.CheckedChanged += new System.EventHandler(this.chkAlign_CheckedChanged);
+            // 
+            // chkMark
+            // 
+            this.chkMark.Appearance = System.Windows.Forms.Appearance.Button;
+            this.chkMark.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
+            this.chkMark.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.chkMark.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.chkMark.ForeColor = System.Drawing.Color.White;
+            this.chkMark.Location = new System.Drawing.Point(3, 4);
+            this.chkMark.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.chkMark.Name = "chkMark";
+            this.chkMark.Size = new System.Drawing.Size(174, 52);
+            this.chkMark.TabIndex = 83;
+            this.chkMark.TabStop = false;
+            this.chkMark.Text = "Mark";
+            this.chkMark.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.chkMark.UseVisualStyleBackColor = false;
+            this.chkMark.CheckedChanged += new System.EventHandler(this.chkMark_CheckedChanged);
+            // 
+            // lblItem
+            // 
+            this.lblItem.BackColor = System.Drawing.Color.DarkSlateGray;
+            this.lblItem.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblItem.Font = new System.Drawing.Font("맑은 고딕", 14F, System.Drawing.FontStyle.Bold);
+            this.lblItem.ForeColor = System.Drawing.Color.White;
+            this.lblItem.Location = new System.Drawing.Point(0, 0);
+            this.lblItem.Margin = new System.Windows.Forms.Padding(0);
+            this.lblItem.Name = "lblItem";
+            this.lblItem.Size = new System.Drawing.Size(180, 60);
+            this.lblItem.TabIndex = 2;
+            this.lblItem.Text = "ITEM";
+            this.lblItem.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // panel2
             // 
@@ -317,138 +451,6 @@
             this.pnlAkkonROICopy.Size = new System.Drawing.Size(760, 618);
             this.pnlAkkonROICopy.TabIndex = 292;
             // 
-            // tlpCopyItem
-            // 
-            this.tlpCopyItem.ColumnCount = 2;
-            this.tlpCopyItem.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 180F));
-            this.tlpCopyItem.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tlpCopyItem.Controls.Add(this.tlpItem, 0, 0);
-            this.tlpCopyItem.Controls.Add(this.lblItem, 0, 0);
-            this.tlpCopyItem.Location = new System.Drawing.Point(17, 18);
-            this.tlpCopyItem.Margin = new System.Windows.Forms.Padding(0);
-            this.tlpCopyItem.Name = "tlpCopyItem";
-            this.tlpCopyItem.RowCount = 1;
-            this.tlpCopyItem.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tlpCopyItem.Size = new System.Drawing.Size(720, 60);
-            this.tlpCopyItem.TabIndex = 291;
-            // 
-            // tlpFrom
-            // 
-            this.tlpFrom.ColumnCount = 1;
-            this.tlpFrom.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tlpFrom.Controls.Add(this.lblFrom, 0, 0);
-            this.tlpFrom.Controls.Add(this.tlpSourceTab, 0, 1);
-            this.tlpFrom.Location = new System.Drawing.Point(17, 110);
-            this.tlpFrom.Margin = new System.Windows.Forms.Padding(0);
-            this.tlpFrom.Name = "tlpFrom";
-            this.tlpFrom.RowCount = 2;
-            this.tlpFrom.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 60F));
-            this.tlpFrom.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tlpFrom.Size = new System.Drawing.Size(180, 360);
-            this.tlpFrom.TabIndex = 292;
-            // 
-            // tlpTo
-            // 
-            this.tlpTo.ColumnCount = 1;
-            this.tlpTo.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tlpTo.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tlpTo.Controls.Add(this.lblTo, 0, 0);
-            this.tlpTo.Controls.Add(this.tlpTargetTab, 0, 1);
-            this.tlpTo.Location = new System.Drawing.Point(557, 110);
-            this.tlpTo.Margin = new System.Windows.Forms.Padding(0);
-            this.tlpTo.Name = "tlpTo";
-            this.tlpTo.RowCount = 2;
-            this.tlpTo.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 60F));
-            this.tlpTo.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tlpTo.Size = new System.Drawing.Size(180, 360);
-            this.tlpTo.TabIndex = 293;
-            // 
-            // lblItem
-            // 
-            this.lblItem.BackColor = System.Drawing.Color.DarkSlateGray;
-            this.lblItem.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblItem.Font = new System.Drawing.Font("맑은 고딕", 14F, System.Drawing.FontStyle.Bold);
-            this.lblItem.ForeColor = System.Drawing.Color.White;
-            this.lblItem.Location = new System.Drawing.Point(0, 0);
-            this.lblItem.Margin = new System.Windows.Forms.Padding(0);
-            this.lblItem.Name = "lblItem";
-            this.lblItem.Size = new System.Drawing.Size(180, 60);
-            this.lblItem.TabIndex = 2;
-            this.lblItem.Text = "ITEM";
-            this.lblItem.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // tlpItem
-            // 
-            this.tlpItem.ColumnCount = 3;
-            this.tlpItem.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
-            this.tlpItem.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
-            this.tlpItem.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
-            this.tlpItem.Controls.Add(this.chkAkkon, 2, 0);
-            this.tlpItem.Controls.Add(this.chkAlign, 1, 0);
-            this.tlpItem.Controls.Add(this.chkMark, 0, 0);
-            this.tlpItem.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tlpItem.Location = new System.Drawing.Point(180, 0);
-            this.tlpItem.Margin = new System.Windows.Forms.Padding(0);
-            this.tlpItem.Name = "tlpItem";
-            this.tlpItem.RowCount = 1;
-            this.tlpItem.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tlpItem.Size = new System.Drawing.Size(540, 60);
-            this.tlpItem.TabIndex = 291;
-            // 
-            // chkMark
-            // 
-            this.chkMark.Appearance = System.Windows.Forms.Appearance.Button;
-            this.chkMark.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
-            this.chkMark.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.chkMark.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.chkMark.ForeColor = System.Drawing.Color.White;
-            this.chkMark.Location = new System.Drawing.Point(3, 4);
-            this.chkMark.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.chkMark.Name = "chkMark";
-            this.chkMark.Size = new System.Drawing.Size(174, 52);
-            this.chkMark.TabIndex = 83;
-            this.chkMark.TabStop = false;
-            this.chkMark.Text = "Mark";
-            this.chkMark.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.chkMark.UseVisualStyleBackColor = false;
-            this.chkMark.CheckedChanged += new System.EventHandler(this.chkMark_CheckedChanged);
-            // 
-            // chkAlign
-            // 
-            this.chkAlign.Appearance = System.Windows.Forms.Appearance.Button;
-            this.chkAlign.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
-            this.chkAlign.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.chkAlign.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.chkAlign.ForeColor = System.Drawing.Color.White;
-            this.chkAlign.Location = new System.Drawing.Point(183, 4);
-            this.chkAlign.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.chkAlign.Name = "chkAlign";
-            this.chkAlign.Size = new System.Drawing.Size(174, 52);
-            this.chkAlign.TabIndex = 84;
-            this.chkAlign.TabStop = false;
-            this.chkAlign.Text = "Align";
-            this.chkAlign.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.chkAlign.UseVisualStyleBackColor = false;
-            this.chkAlign.CheckedChanged += new System.EventHandler(this.chkAlign_CheckedChanged);
-            // 
-            // chkAkkon
-            // 
-            this.chkAkkon.Appearance = System.Windows.Forms.Appearance.Button;
-            this.chkAkkon.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
-            this.chkAkkon.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.chkAkkon.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.chkAkkon.ForeColor = System.Drawing.Color.White;
-            this.chkAkkon.Location = new System.Drawing.Point(363, 4);
-            this.chkAkkon.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.chkAkkon.Name = "chkAkkon";
-            this.chkAkkon.Size = new System.Drawing.Size(174, 52);
-            this.chkAkkon.TabIndex = 85;
-            this.chkAkkon.TabStop = false;
-            this.chkAkkon.Text = "Akkon";
-            this.chkAkkon.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.chkAkkon.UseVisualStyleBackColor = false;
-            this.chkAkkon.CheckedChanged += new System.EventHandler(this.chkAkkon_CheckedChanged);
-            // 
             // ROICopyForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
@@ -468,6 +470,10 @@
             this.pnlTop.ResumeLayout(false);
             this.pnlTop.PerformLayout();
             this.panel1.ResumeLayout(false);
+            this.tlpTo.ResumeLayout(false);
+            this.tlpFrom.ResumeLayout(false);
+            this.tlpCopyItem.ResumeLayout(false);
+            this.tlpItem.ResumeLayout(false);
             this.panel2.ResumeLayout(false);
             this.tableLayoutPanel1.ResumeLayout(false);
             this.pnlApply.ResumeLayout(false);
@@ -475,10 +481,6 @@
             this.pnlCancel.ResumeLayout(false);
             this.tlpCancel.ResumeLayout(false);
             this.pnlAkkonROICopy.ResumeLayout(false);
-            this.tlpCopyItem.ResumeLayout(false);
-            this.tlpFrom.ResumeLayout(false);
-            this.tlpTo.ResumeLayout(false);
-            this.tlpItem.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
