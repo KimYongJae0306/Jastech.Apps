@@ -757,7 +757,10 @@ namespace Jastech.Framework.Winform.Forms
 
 
             if (_displayType == DisplayType.Akkon)
+            {
                 AkkonControl.DrawROI();
+                AkkonControl.SetParams(CurrentTab);
+            }
             else if (_displayType == DisplayType.Align)
                 AlignControl.DrawROI();
             else { }
@@ -765,25 +768,25 @@ namespace Jastech.Framework.Winform.Forms
             _isPrevTrackingOn = isOn;
         }
 
-        private MarkParam SetCoordinateMark(MarkParam param, VisionProPatternMatchingResult result)
-        {
-            var newParam = param.DeepCopy();
+        //private MarkParam SetCoordinateMark(MarkParam param, VisionProPatternMatchingResult result)
+        //{
+        //    var newParam = param.DeepCopy();
 
-            CogTransform2DLinear newOrigin = new CogTransform2DLinear();
-            newOrigin.TranslationX = result.MaxMatchPos.FoundPos.X;
-            newOrigin.TranslationY = result.MaxMatchPos.FoundPos.Y;
-            newParam.InspParam.SetOrigin(newOrigin);
+        //    CogTransform2DLinear newOrigin = new CogTransform2DLinear();
+        //    newOrigin.TranslationX = result.MaxMatchPos.FoundPos.X;
+        //    newOrigin.TranslationY = result.MaxMatchPos.FoundPos.Y;
+        //    newParam.InspParam.SetOrigin(newOrigin);
 
-            CogRectangle newTrainRegion = new CogRectangle(newParam.InspParam.GetTrainRegion() as CogRectangle);
-            newTrainRegion.SetCenterWidthHeight(newOrigin.TranslationX, newOrigin.TranslationY, newTrainRegion.Width, newTrainRegion.Height);
-            newParam.InspParam.SetTrainRegion(newTrainRegion);
+        //    CogRectangle newTrainRegion = new CogRectangle(newParam.InspParam.GetTrainRegion() as CogRectangle);
+        //    newTrainRegion.SetCenterWidthHeight(newOrigin.TranslationX, newOrigin.TranslationY, newTrainRegion.Width, newTrainRegion.Height);
+        //    newParam.InspParam.SetTrainRegion(newTrainRegion);
 
-            CogRectangle newSearchRegion = new CogRectangle(newParam.InspParam.GetSearchRegion() as CogRectangle);
-            newSearchRegion.SetCenterWidthHeight(newOrigin.TranslationX, newOrigin.TranslationY, newSearchRegion.Width, newSearchRegion.Height);
-            newParam.InspParam.SetSearchRegion(newSearchRegion);
+        //    CogRectangle newSearchRegion = new CogRectangle(newParam.InspParam.GetSearchRegion() as CogRectangle);
+        //    newSearchRegion.SetCenterWidthHeight(newOrigin.TranslationX, newOrigin.TranslationY, newSearchRegion.Width, newSearchRegion.Height);
+        //    newParam.InspParam.SetSearchRegion(newSearchRegion);
 
-            return newParam;
-        }
+        //    return newParam;
+        //}
 
         private void lblStageCam_Click(object sender, EventArgs e)
         {

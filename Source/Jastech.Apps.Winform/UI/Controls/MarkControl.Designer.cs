@@ -85,6 +85,7 @@
             this.lblTest.TabIndex = 12;
             this.lblTest.Text = "Test";
             this.lblTest.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblTest.Click += new System.EventHandler(this.lblTest_Click);
             // 
             // lblRight
             // 

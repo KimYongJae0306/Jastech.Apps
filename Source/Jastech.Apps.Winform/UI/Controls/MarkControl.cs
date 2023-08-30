@@ -10,11 +10,13 @@ using Jastech.Framework.Imaging.VisionPro;
 using Jastech.Framework.Imaging.VisionPro.VisionAlgorithms.Parameters;
 using Jastech.Framework.Imaging.VisionPro.VisionAlgorithms.Results;
 using Jastech.Framework.Util;
+using Jastech.Framework.Util.Helper;
 using Jastech.Framework.Winform.Forms;
 using Jastech.Framework.Winform.VisionPro.Controls;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 
@@ -41,6 +43,8 @@ namespace Jastech.Apps.Winform.UI.Controls
         #endregion
 
         #region 속성
+        private VisionProPointMarkerParam PointMarkerParam { get; set; } = null;
+
         private CogPatternMatchingParamControl ParamControl { get; set; } = null;
 
         private Tab CurrentTab { get; set; } = null;
@@ -48,6 +52,14 @@ namespace Jastech.Apps.Winform.UI.Controls
         public TeachingItem TeachingItem = TeachingItem.Mark;
 
         public bool UseAlignMark { get; set; } = false;
+        #endregion
+
+        #region 이벤트
+        public event SetOriginDelegate SetOriginEventHandler;
+        #endregion
+
+        #region 델리게이트
+        public delegate void SetOriginDelegate(PointF originPoint);
         #endregion
 
         #region 생성자
@@ -79,6 +91,15 @@ namespace Jastech.Apps.Winform.UI.Controls
             ParamControl.TestActionEvent += PatternControl_TestActionEvent;
             ParamControl.ClearActionEvent += PatternControl_ClearActionEvent;
             pnlParam.Controls.Add(ParamControl);
+
+            PointMarkerParam = new VisionProPointMarkerParam();
+            PointMarkerParam.SetOriginEventHandler += PointMarkerParam_SetOriginEventHandler;
+        }
+
+        private void PointMarkerParam_SetOriginEventHandler(CogTransform2DLinear originPoint)
+        {
+            var currentParam = ParamControl.GetCurrentParam();
+            currentParam.SetOrigin(originPoint);
         }
 
         private void PatternControl_ClearActionEvent()
@@ -336,7 +357,43 @@ namespace Jastech.Apps.Winform.UI.Controls
             roi.Changed += Roi_Changed;
             currentParam.SetTrainRegion(roi);
             currentParam.SetSearchRegion(searchRoi);
+            DrawOriginPointMark(display, new PointF(Convert.ToSingle(roi.X), Convert.ToSingle(roi.Y)));
             ParamControl.UpdateData(currentParam);
+        }
+
+        private void DrawOriginPointMark(CogDisplayControl display, PointF centerPoint)
+        {
+            PointMarkerParam.SetOriginPoint(Convert.ToSingle(centerPoint.X), Convert.ToSingle(centerPoint.Y));
+            display.SetInteractiveGraphics("tool", PointMarkerParam.GetCurrentRecord());
+            //display.SetInteractiveGraphics("tool", currentParam.CreateCurrentRecord(constants));
+
+            //double centerX = display.ImageWidth() / 2.0 - display.GetPan().X;
+            //double centerY = display.ImageHeight() / 2.0 - display.GetPan().Y;
+            ////double centerX = trainRegion.CenterX;
+            ////double centerY = trainRegion.CenterY;
+
+
+            //CogLineSegment cogLineSegmentX = new CogLineSegment();
+            //double horizontalStartX = centerX - length;
+            //double horizontalStartY = centerY;
+            //cogLineSegmentX.SetStartLengthRotation(horizontalStartX, horizontalStartY, length * 2, MathHelper.DegToRad(0));
+            //cogLineSegmentX.Interactive = true;
+            //cogLineSegmentX.Color = CogColorConstants.Cyan;
+
+            //CogLineSegment cogLineSegmentY = new CogLineSegment();
+            //double verticalStartX = centerX;
+            //double verticalStartY = centerY - length;
+            //cogLineSegmentY.SetStartLengthRotation(verticalStartX, verticalStartY, length * 2, MathHelper.DegToRad(90));
+            //cogLineSegmentY.Interactive = true;
+            //cogLineSegmentY.Color = CogColorConstants.Cyan;
+
+            //CogGraphicInteractiveCollection collection = new CogGraphicInteractiveCollection
+            //{
+            //    cogLineSegmentX,
+            //    cogLineSegmentY
+            //};
+
+            //OriginShape.SetOriginShape(collection as ICogRecord);
         }
 
         private void Roi_Changed(object sender, CogChangedEventArgs e)
@@ -359,9 +416,13 @@ namespace Jastech.Apps.Winform.UI.Controls
                 return;
 
             CogPMAlignCurrentRecordConstants constants = CogPMAlignCurrentRecordConstants.InputImage | CogPMAlignCurrentRecordConstants.SearchRegion
-                | CogPMAlignCurrentRecordConstants.TrainImage | CogPMAlignCurrentRecordConstants.TrainRegion | CogPMAlignCurrentRecordConstants.PatternOrigin;
+                | CogPMAlignCurrentRecordConstants.TrainImage | CogPMAlignCurrentRecordConstants.TrainRegion /*| CogPMAlignCurrentRecordConstants.PatternOrigin*/;
             display.SetInteractiveGraphics("tool", currentParam.CreateCurrentRecord(constants));
-            
+
+            var originPoint = currentParam.GetOrigin();
+            PointF centerPoint = new PointF(Convert.ToSingle(originPoint.TranslationX), Convert.ToSingle(originPoint.TranslationY));
+            DrawOriginPointMark(display, centerPoint);
+
             var rect = currentParam.GetTrainRegion() as CogRectangle;
             if(rect != null)
                 display.SetDisplayToCenter(new Point((int)rect.CenterX, (int)rect.CenterY));
@@ -445,19 +506,19 @@ namespace Jastech.Apps.Winform.UI.Controls
             if (_curMaterial == Material.Panel)
             {
                 var panelMainMark = CurrentTab.MarkParamter.MainPanelMarkParamList.Where(x => x.Name == MarkName.Main).First();
-                var orgin = panelMainMark.InspParam.GetOrigin();
-                double orginX = orgin.TranslationX;
-                double orginY = orgin.TranslationY;
-                return new PointF((float)orginX, (float)orginY);
+                var origin = panelMainMark.InspParam.GetOrigin();
+                double orginX = origin.TranslationX;
+                double originY = origin.TranslationY;
+                return new PointF((float)orginX, (float)originY);
             }
             else
             {
                 var fpcMainMark = CurrentTab.MarkParamter.MainFpcMarkParamList.Where(x => x.Name == MarkName.Main).First();
                 var orgin = fpcMainMark.InspParam.GetOrigin();
 
-                double orginX = orgin.TranslationX;
-                double orginY = orgin.TranslationY;
-                return new PointF((float)orginX, (float)orginY);
+                double originX = orgin.TranslationX;
+                double originY = orgin.TranslationY;
+                return new PointF((float)originX, (float)originY);
             }
         }
 
@@ -658,6 +719,58 @@ namespace Jastech.Apps.Winform.UI.Controls
                 
             }
         }
+
         #endregion
+
+        private void lblTest_Click(object sender, EventArgs e)
+        {
+            var currentParam = ParamControl.GetCurrentParam();
+
+            Console.WriteLine("origin x : " + currentParam.GetOrigin().TranslationX.ToString("F2") + " / y : " + currentParam.GetOrigin().TranslationY.ToString("F2"));
+        }
     }
+
+    //public class OriginMark
+    //{
+    //    public PointF CenterPoint;
+
+    //    public void SetCenterPoint(double x, double y)
+    //    {
+    //        CenterPoint = new PointF();
+    //        CenterPoint.X = Convert.ToSingle(x);
+    //        CenterPoint.Y = Convert.ToSingle(y);
+    //    }
+
+    //    public PointF GetCenterPoint()
+    //    {
+    //        return CenterPoint;
+    //    }
+    //}
+    //public class OriginShape
+    //{
+    //    private ICogRecord Collect;
+    //    private PointF CenterPoint;
+
+    //    public void SetOriginShape(ICogRecord collect)
+    //    {
+    //        Collect = collect;
+    //    }
+
+    //    public ICogRecord GetOriginShape()
+    //    {
+    //        return Collect;
+    //    }
+
+    //    public void SetCenterPoint(double x, double y)
+    //    {
+    //        CenterPoint = new PointF();
+    //        CenterPoint.X = Convert.ToSingle(x);
+    //        CenterPoint.Y = Convert.ToSingle(y);
+    //    }
+
+    //    public PointF GetCenterPoint()
+    //    {
+    //        return CenterPoint;
+    //    }
+    //}
 }

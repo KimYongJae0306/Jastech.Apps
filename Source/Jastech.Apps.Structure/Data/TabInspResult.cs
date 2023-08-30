@@ -249,7 +249,7 @@ namespace Jastech.Apps.Structure.Data
             }
         }
 
-        public string PreHead { get; set; } = "pre";//string.Empty;
+        public string PreHead { get; set; } = "0";//string.Empty;
 
         public AlignResult LeftX { get; set; } = null;
 
