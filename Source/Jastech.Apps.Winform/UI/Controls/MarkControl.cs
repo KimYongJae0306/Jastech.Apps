@@ -92,6 +92,9 @@ namespace Jastech.Apps.Winform.UI.Controls
             ParamControl.ClearActionEvent += PatternControl_ClearActionEvent;
             pnlParam.Controls.Add(ParamControl);
 
+            if (PointMarkerParam != null)
+                PointMarkerParam.SetOriginEventHandler -= PointMarkerParam_SetOriginEventHandler;
+
             PointMarkerParam = new VisionProPointMarkerParam();
             PointMarkerParam.SetOriginEventHandler += PointMarkerParam_SetOriginEventHandler;
         }
@@ -357,13 +360,14 @@ namespace Jastech.Apps.Winform.UI.Controls
             roi.Changed += Roi_Changed;
             currentParam.SetTrainRegion(roi);
             currentParam.SetSearchRegion(searchRoi);
-            DrawOriginPointMark(display, new PointF(Convert.ToSingle(roi.X), Convert.ToSingle(roi.Y)));
+            int size = 200;
+            DrawOriginPointMark(display, new PointF(Convert.ToSingle(roi.X), Convert.ToSingle(roi.Y)), size);
             ParamControl.UpdateData(currentParam);
         }
 
-        private void DrawOriginPointMark(CogDisplayControl display, PointF centerPoint)
+        private void DrawOriginPointMark(CogDisplayControl display, PointF centerPoint, int size)
         {
-            PointMarkerParam.SetOriginPoint(Convert.ToSingle(centerPoint.X), Convert.ToSingle(centerPoint.Y));
+            PointMarkerParam.SetOriginPoint(Convert.ToSingle(centerPoint.X), Convert.ToSingle(centerPoint.Y), size);
             display.SetInteractiveGraphics("tool", PointMarkerParam.GetCurrentRecord());
             //display.SetInteractiveGraphics("tool", currentParam.CreateCurrentRecord(constants));
 
@@ -421,7 +425,8 @@ namespace Jastech.Apps.Winform.UI.Controls
 
             var originPoint = currentParam.GetOrigin();
             PointF centerPoint = new PointF(Convert.ToSingle(originPoint.TranslationX), Convert.ToSingle(originPoint.TranslationY));
-            DrawOriginPointMark(display, centerPoint);
+            int size = 200;
+            DrawOriginPointMark(display, centerPoint, size);
 
             var rect = currentParam.GetTrainRegion() as CogRectangle;
             if(rect != null)
@@ -719,57 +724,9 @@ namespace Jastech.Apps.Winform.UI.Controls
             }
         }
 
-        #endregion
-
         private void lblTest_Click(object sender, EventArgs e)
         {
-            var currentParam = ParamControl.GetCurrentParam();
-
-            Console.WriteLine("origin x : " + currentParam.GetOrigin().TranslationX.ToString("F2") + " / y : " + currentParam.GetOrigin().TranslationY.ToString("F2"));
         }
+        #endregion
     }
-
-    //public class OriginMark
-    //{
-    //    public PointF CenterPoint;
-
-    //    public void SetCenterPoint(double x, double y)
-    //    {
-    //        CenterPoint = new PointF();
-    //        CenterPoint.X = Convert.ToSingle(x);
-    //        CenterPoint.Y = Convert.ToSingle(y);
-    //    }
-
-    //    public PointF GetCenterPoint()
-    //    {
-    //        return CenterPoint;
-    //    }
-    //}
-    //public class OriginShape
-    //{
-    //    private ICogRecord Collect;
-    //    private PointF CenterPoint;
-
-    //    public void SetOriginShape(ICogRecord collect)
-    //    {
-    //        Collect = collect;
-    //    }
-
-    //    public ICogRecord GetOriginShape()
-    //    {
-    //        return Collect;
-    //    }
-
-    //    public void SetCenterPoint(double x, double y)
-    //    {
-    //        CenterPoint = new PointF();
-    //        CenterPoint.X = Convert.ToSingle(x);
-    //        CenterPoint.Y = Convert.ToSingle(y);
-    //    }
-
-    //    public PointF GetCenterPoint()
-    //    {
-    //        return CenterPoint;
-    //    }
-    //}
 }
