@@ -542,7 +542,7 @@ namespace ATT_UT_Remodeling
 
         private void lblSystemName_Click(object sender, EventArgs e)
         {
-            ManualJudgeForm.Message = "tlqkf";
+            ManualJudgeForm.Message = "";
             ManualJudgeForm.Show();
         }
     }

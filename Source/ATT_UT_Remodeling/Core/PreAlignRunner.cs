@@ -515,8 +515,6 @@ namespace ATT_UT_Remodeling
 
             if (isOverlay)
             {
-                //var tlqkf = AddOverlay(null);
-                //VisionProImageHelper.Save(tlqkf, filePath);
             }
             else
                 VisionProImageHelper.Save(image, filePath);
@@ -685,7 +683,6 @@ namespace ATT_UT_Remodeling
 
         private ICogImage AddOverlay()
         {
-            //var appsPreAlignResult = AppsPreAlignResult.Instance().Left;
             var result = AppsPreAlignResult.Instance().Left;
             List<CogCompositeShape> shapes = new List<CogCompositeShape>();
 
@@ -699,9 +696,6 @@ namespace ATT_UT_Remodeling
 
             foreach (var item in shapes)
                 collect.Add(item);
-
-            //var tlqkf = AppsPreAlignResult.Instance().Left.CogImage as CogImage24PlanarColor;
-
 
             return null;
         }
