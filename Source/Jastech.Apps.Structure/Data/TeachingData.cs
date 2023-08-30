@@ -266,6 +266,9 @@ namespace Jastech.Apps.Structure.Data
 
         public void SetCoordinateFpcAlign(Tab tab, MarkMatchingResult fpcMarkResult)
         {
+            if (fpcMarkResult == null)
+                return;
+
             var fpcLeftMainMarkOrigin = GetFpcMainMarkOrigin(tab, MarkDirection.Left, true);
             PointF leftFpcOffset = MathHelper.GetOffset(fpcLeftMainMarkOrigin, fpcMarkResult.Left.MaxMatchPos.FoundPos);
             SetFpcLeftOffset(leftFpcOffset);
@@ -277,6 +280,9 @@ namespace Jastech.Apps.Structure.Data
 
         public void SetReverseCoordinateFpcAlign(Tab tab, MarkMatchingResult fpcMarkResult)
         {
+            if (fpcMarkResult == null)
+                return;
+
             var fpcLeftMainMarkOrigin = GetFpcMainMarkOrigin(tab, MarkDirection.Left, true);
             PointF leftFpcOffset = MathHelper.GetOffset(fpcMarkResult.Left.MaxMatchPos.FoundPos, fpcLeftMainMarkOrigin);
             SetFpcLeftOffset(leftFpcOffset);
@@ -288,6 +294,9 @@ namespace Jastech.Apps.Structure.Data
 
         public void SetCoordinatePanelAlign(Tab tab, MarkMatchingResult panelMarkResult)
         {
+            if (panelMarkResult == null)
+                return;
+
             var panelLeftMainMarkOrigin = GetPanelMainMarkOrigin(tab, MarkDirection.Left, true);
             PointF panelLeftOffset = MathHelper.GetOffset(panelLeftMainMarkOrigin, panelMarkResult.Left.MaxMatchPos.FoundPos);
             SetPanelLeftOffset(panelLeftOffset);
@@ -299,6 +308,9 @@ namespace Jastech.Apps.Structure.Data
 
         public void SetReverseCoordinatePanelAlign(Tab tab, MarkMatchingResult panelMarkResult)
         {
+            if (panelMarkResult == null)
+                return;
+
             var panelLeftMainMarkOrigin = GetPanelMainMarkOrigin(tab, MarkDirection.Left, true);
             PointF panelLeftOffset = MathHelper.GetOffset(panelMarkResult.Left.MaxMatchPos.FoundPos, panelLeftMainMarkOrigin);
             SetPanelLeftOffset(panelLeftOffset);

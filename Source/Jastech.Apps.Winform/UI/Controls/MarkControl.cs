@@ -49,8 +49,6 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         private Tab CurrentTab { get; set; } = null;
 
-        public TeachingItem TeachingItem = TeachingItem.Mark;
-
         public bool UseAlignMark { get; set; } = false;
         #endregion
 
@@ -428,61 +426,61 @@ namespace Jastech.Apps.Winform.UI.Controls
                 display.SetDisplayToCenter(new Point((int)rect.CenterX, (int)rect.CenterY));
         }
 
-        public void Run()
-        {
-            var display = TeachingUIManager.Instance().TeachingDisplayControl.GetDisplay();
-            if (display == null)
-                return;
+        //public void Run()
+        //{
+        //    var display = TeachingUIManager.Instance().TeachingDisplayControl.GetDisplay();
+        //    if (display == null)
+        //        return;
 
-            ICogImage cogImage = display.GetImage();
-            if (cogImage == null)
-                return;
+        //    ICogImage cogImage = display.GetImage();
+        //    if (cogImage == null)
+        //        return;
 
-            display.ClearGraphic();
-            display.DisplayRefresh();
+        //    display.ClearGraphic();
+        //    display.DisplayRefresh();
 
-            MainAlgorithmTool algorithmTool = new MainAlgorithmTool();
-            TabInspResult tabInspResult = new TabInspResult();
+        //    MainAlgorithmTool algorithmTool = new MainAlgorithmTool();
+        //    TabInspResult tabInspResult = new TabInspResult();
            
-            //algorithmTool.MainMarkInspect(cogImage, CurrentTab, ref tabInspResult, UseAlignMark);
-            algorithmTool.MainPanelMarkInspect(cogImage, CurrentTab, ref tabInspResult);
+        //    //algorithmTool.MainMarkInspect(cogImage, CurrentTab, ref tabInspResult, UseAlignMark);
+        //    algorithmTool.MainPanelMarkInspect(cogImage, CurrentTab, ref tabInspResult);
 
-            if (tabInspResult.MarkResult.Judgement != Judgement.OK)
-            {
-                // 검사 실패
-                string message = string.Format("Mark Insp NG !!! Tab_{0} / Fpc_{1}, Panel_{2}", CurrentTab.Index,
-                    tabInspResult.MarkResult.FpcMark.Judgement, tabInspResult.MarkResult.PanelMark.Judgement);
+        //    if (tabInspResult.MarkResult.Judgement != Judgement.OK)
+        //    {
+        //        // 검사 실패
+        //        string message = string.Format("Mark Insp NG !!! Tab_{0} / Fpc_{1}, Panel_{2}", CurrentTab.Index,
+        //            tabInspResult.MarkResult.FpcMark.Judgement, tabInspResult.MarkResult.PanelMark.Judgement);
 
-                MessageConfirmForm form = new MessageConfirmForm();
-                form.Message = message;
-                form.ShowDialog();
-            }
-            display.ClearGraphic();
-            List<VisionProPatternMatchingResult> matchingResultList = new List<VisionProPatternMatchingResult>();
+        //        MessageConfirmForm form = new MessageConfirmForm();
+        //        form.Message = message;
+        //        form.ShowDialog();
+        //    }
+        //    display.ClearGraphic();
+        //    List<VisionProPatternMatchingResult> matchingResultList = new List<VisionProPatternMatchingResult>();
 
-            var foundedFpcMark = tabInspResult.MarkResult.FpcMark.FoundedMark;
-            if(foundedFpcMark != null)
-            {
-                var leftFpc = foundedFpcMark.Left.MaxMatchPos.ResultGraphics;
-                var rightFpc = foundedFpcMark.Right.MaxMatchPos.ResultGraphics;
-                matchingResultList.Add(foundedFpcMark.Left);
-                matchingResultList.Add(foundedFpcMark.Right);
-            }
+        //    var foundedFpcMark = tabInspResult.MarkResult.FpcMark.FoundedMark;
+        //    if(foundedFpcMark != null)
+        //    {
+        //        var leftFpc = foundedFpcMark.Left.MaxMatchPos.ResultGraphics;
+        //        var rightFpc = foundedFpcMark.Right.MaxMatchPos.ResultGraphics;
+        //        matchingResultList.Add(foundedFpcMark.Left);
+        //        matchingResultList.Add(foundedFpcMark.Right);
+        //    }
             
 
-            var foundedPanelMark = tabInspResult.MarkResult.PanelMark.FoundedMark;
+        //    var foundedPanelMark = tabInspResult.MarkResult.PanelMark.FoundedMark;
 
-            if(foundedPanelMark != null)
-            {
-                var leftPanel = foundedPanelMark.Left.MaxMatchPos.ResultGraphics;
-                var rightPanel = foundedPanelMark.Right.MaxMatchPos.ResultGraphics;
+        //    if(foundedPanelMark != null)
+        //    {
+        //        var leftPanel = foundedPanelMark.Left.MaxMatchPos.ResultGraphics;
+        //        var rightPanel = foundedPanelMark.Right.MaxMatchPos.ResultGraphics;
 
-                matchingResultList.Add(foundedPanelMark.Left);
-                matchingResultList.Add(foundedPanelMark.Right);
-            }
+        //        matchingResultList.Add(foundedPanelMark.Left);
+        //        matchingResultList.Add(foundedPanelMark.Right);
+        //    }
             
-            display.UpdateResult(matchingResultList);
-        }
+        //    display.UpdateResult(matchingResultList);
+        //}
 
         private void SetNGColor(CogGraphicChildren shapes)
         {
@@ -692,33 +690,33 @@ namespace Jastech.Apps.Winform.UI.Controls
             VisionProImageHelper.Dispose(ref copyCogImage);
         }
 
-        public void CopyMark(UnitName unitName)
-        {
-            var TeachingTabList = TeachingData.Instance().GetUnit(unitName.ToString()).GetTabList();
+        //public void CopyMark(UnitName unitName)
+        //{
+        //    var TeachingTabList = TeachingData.Instance().GetUnit(unitName.ToString()).GetTabList();
 
-            foreach (Tab tab in TeachingTabList)
-            {
-                if (tab.Index == CurrentTab.Index)
-                    continue;
+        //    foreach (Tab tab in TeachingTabList)
+        //    {
+        //        if (tab.Index == CurrentTab.Index)
+        //            continue;
 
-                switch (_curMaterial)
-                {
-                    case Material.Fpc:
-                        var fpcMark = CurrentTab.MarkParamter.GetFPCMark(_curDirection, _curMarkName, UseAlignMark).DeepCopy();
-                        tab.MarkParamter.SetFPCMark(_curDirection, _curMarkName, fpcMark, UseAlignMark);
-                        break;
+        //        switch (_curMaterial)
+        //        {
+        //            case Material.Fpc:
+        //                var fpcMark = CurrentTab.MarkParamter.GetFPCMark(_curDirection, _curMarkName, UseAlignMark).DeepCopy();
+        //                tab.MarkParamter.SetFPCMark(_curDirection, _curMarkName, fpcMark, UseAlignMark);
+        //                break;
 
-                    case Material.Panel:
-                        var panelMark = CurrentTab.MarkParamter.GetPanelMark(_curDirection, _curMarkName, UseAlignMark).DeepCopy();
-                        tab.MarkParamter.SetPanelMark(_curDirection, _curMarkName, panelMark, UseAlignMark);
-                        break;
+        //            case Material.Panel:
+        //                var panelMark = CurrentTab.MarkParamter.GetPanelMark(_curDirection, _curMarkName, UseAlignMark).DeepCopy();
+        //                tab.MarkParamter.SetPanelMark(_curDirection, _curMarkName, panelMark, UseAlignMark);
+        //                break;
 
-                    default:
-                        break;
-                }
+        //            default:
+        //                break;
+        //        }
                 
-            }
-        }
+        //    }
+        //}
 
         #endregion
 

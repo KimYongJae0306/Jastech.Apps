@@ -86,7 +86,8 @@ namespace ATT_UT_IPAD.Core.AppTask
             inspResult.Image = inspTab.MergeMatImage;
             inspResult.CogImage = inspTab.MergeCogImage;
 
-            algorithmTool.MainMarkInspect(inspTab.MergeCogImage, tab, ref inspResult, false);
+            //algorithmTool.MainMarkInspect(inspTab.MergeCogImage, tab, ref inspResult, false);
+            algorithmTool.MainPanelMarkInspect(inspTab.MergeCogImage, tab, ref inspResult);
 
             string message = string.Empty;
             if (inspResult.MarkResult.Judgement != Judgement.OK)
