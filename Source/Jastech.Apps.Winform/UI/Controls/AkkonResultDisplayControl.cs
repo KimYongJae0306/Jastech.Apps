@@ -76,7 +76,6 @@ namespace ATT_UT_IPAD.UI.Controls
             _selectedColor = Color.FromArgb(104, 104, 104);
             _noneSelectedColor = Color.FromArgb(52, 52, 52);
 
-            btnResultImage.Focus();
             UpdateButton();
 
             AppsInspModel inspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
