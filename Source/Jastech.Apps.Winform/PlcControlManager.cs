@@ -1079,7 +1079,7 @@ namespace Jastech.Apps.Winform
 
             string sendData = GetValue(plcCommonMap);
             if (sendData == null || sendData == string.Empty || sendData == "")
-                outputValue = $"PreHead_{tabNo + 1}";
+                outputValue = "0";
             else
                 outputValue = sendData.Substring(0, 1) + "#" + sendData.Substring(2, 1);
 

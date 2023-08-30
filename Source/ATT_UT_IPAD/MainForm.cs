@@ -9,6 +9,7 @@ using Jastech.Apps.Winform.Core;
 using Jastech.Apps.Winform.Service.Plc;
 using Jastech.Apps.Winform.Service.Plc.Maps;
 using Jastech.Apps.Winform.Settings;
+using Jastech.Apps.Winform.UI.Forms;
 using Jastech.Framework.Config;
 using Jastech.Framework.Device.Grabbers;
 using Jastech.Framework.Device.LAFCtrl;
@@ -58,6 +59,8 @@ namespace ATT_UT_IPAD
         private Queue<ICogImage> AlignLastScanImageQueue = new Queue<ICogImage>();
         private Queue<ICogImage> AkkonLastScanImageQueue = new Queue<ICogImage>();
         public ATTInspModelService ATTInspModelService { get; set; } = new ATTInspModelService();
+
+        public ManualJudgeForm ManualJudgeForm { get; set; } = null;
         #endregion
 
         #region 델리게이트
@@ -570,6 +573,11 @@ namespace ATT_UT_IPAD
         public void Enable(bool isEnable)
         {
             MainPageControl?.Enable(isEnable);
+        }
+
+        public void ShowManualJudgeForm()
+        {
+            ManualJudgeForm.Show();
         }
         #endregion
     }

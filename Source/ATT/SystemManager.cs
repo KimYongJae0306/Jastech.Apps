@@ -214,7 +214,6 @@ namespace ATT
             _mainForm.UpdateAlignResultTabButton(tabNo);
         }
 
-
         //public void UpdateMainResult()
         //{
         //    var inspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
