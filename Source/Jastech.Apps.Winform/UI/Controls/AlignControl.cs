@@ -489,46 +489,7 @@ namespace Jastech.Apps.Winform.UI.Controls
                 CurrentTab.AlignSpec.RightSpecY_um = specY;
         }
 
-        public void Run()
-        {
-            var display = TeachingUIManager.Instance().TeachingDisplayControl.GetDisplay();
-            if (display == null)
-                return;
-
-            ICogImage cogImage = display.GetImage();
-            if (cogImage == null)
-                return;
-
-            display.ClearGraphic();
-            display.DisplayRefresh();
-
-            MainAlgorithmTool algorithmTool = new MainAlgorithmTool();
-            TabInspResult tabInspResult = new TabInspResult();
-
-            double judgementX = CurrentTab.AlignSpec.LeftSpecX_um / Resolution_um;
-            double judgementY = CurrentTab.AlignSpec.LeftSpecY_um / Resolution_um;
-
-            tabInspResult.AlignResult.LeftX = algorithmTool.RunMainLeftAlignX(cogImage, CurrentTab, new PointF(0, 0), new PointF(0, 0), judgementX);
-            tabInspResult.AlignResult.LeftY = algorithmTool.RunMainLeftAlignY(cogImage, CurrentTab, new PointF(0, 0), new PointF(0, 0), judgementY);
-            tabInspResult.AlignResult.RightX = algorithmTool.RunMainRightAlignX(cogImage, CurrentTab, new PointF(0, 0), new PointF(0, 0), judgementX);
-            tabInspResult.AlignResult.RightY = algorithmTool.RunMainRightAlignY(cogImage, CurrentTab, new PointF(0, 0), new PointF(0, 0), judgementY);
-
-            display.ClearGraphic();
-
-            List<CogCompositeShape> shapeList = new List<CogCompositeShape>();
-
-            shapeList.AddRange(GetMarkResultGrapics(tabInspResult));
-
-            shapeList.AddRange(GetAlignResultGraphics(tabInspResult.AlignResult.LeftX));
-            shapeList.AddRange(GetAlignResultGraphics(tabInspResult.AlignResult.LeftY));
-            shapeList.AddRange(GetAlignResultGraphics(tabInspResult.AlignResult.RightX));
-            shapeList.AddRange(GetAlignResultGraphics(tabInspResult.AlignResult.RightY));
-
-            display.UpdateGraphic(shapeList);
-            UpdateData(tabInspResult);
-        }
-
-        private void UpdateData(TabInspResult inspResult)
+        public void UpdateData(TabInspResult inspResult)
         {
             var leftResultX = inspResult.AlignResult.LeftX;
             lblLeftX_Judgement.Text = leftResultX.Judgement.ToString();
@@ -549,67 +510,6 @@ namespace Jastech.Apps.Winform.UI.Controls
             lblCx_Value.Text = (((leftResultX.ResultValue_pixel * Resolution_um) + (rightResultX.ResultValue_pixel * Resolution_um)) / 2).ToString("F2");
         }
 
-        private List<CogCompositeShape> GetAlignResultGraphics(AlignResult alignResult)
-        {
-            List<CogCompositeShape> shapeList = new List<CogCompositeShape>();
-            if(alignResult.Fpc.CogAlignResult.Count() > 0)
-            {
-                foreach (var result in alignResult.Fpc.CogAlignResult)
-                {
-                    if(result != null)
-                    {
-                        if (result.Found)
-                            shapeList.Add(result.MaxCaliperMatch.ResultGraphics);
-                    }
-                }
-            }
-
-            if (alignResult.Panel.CogAlignResult.Count() > 0)
-            {
-                foreach (var result in alignResult.Panel.CogAlignResult)
-                {
-                    if(result != null)
-                    {
-                        if (result.Found)
-                            shapeList.Add(result.MaxCaliperMatch.ResultGraphics);
-                    }
-                }
-            }
-
-            return shapeList;
-        }
-
-        private List<CogCompositeShape> GetMarkResultGrapics(TabInspResult tabInspResult)
-        {
-            List<CogCompositeShape> shapeList = new List<CogCompositeShape>();
-            
-            if (tabInspResult.MarkResult.FpcMark != null)
-            {
-                var foundedFpcMark = tabInspResult.MarkResult.FpcMark.FoundedMark;
-                var leftFpc = foundedFpcMark.Left.MaxMatchPos.ResultGraphics;
-                var rightFpc = foundedFpcMark.Right.MaxMatchPos.ResultGraphics;
-
-                if (foundedFpcMark.Left.Found)
-                    shapeList.Add(leftFpc);
-
-                if (foundedFpcMark.Right.Found)
-                    shapeList.Add(rightFpc);
-            }
-           
-            if(tabInspResult.MarkResult.PanelMark != null)
-            {
-                var foundedPanelMark = tabInspResult.MarkResult.PanelMark.FoundedMark;
-                var leftPanel = foundedPanelMark.Left.MaxMatchPos.ResultGraphics;
-                var rightPanel = foundedPanelMark.Right.MaxMatchPos.ResultGraphics;
-
-                if (foundedPanelMark.Left.Found)
-                    shapeList.Add(leftPanel);
-                if (foundedPanelMark.Right.Found)
-                    shapeList.Add(rightPanel);
-            }
-
-            return shapeList;
-        }
         private void SetFpcCoordinateData(CoordinateTransform fpc, TabInspResult tabInspResult, double leftOffsetX, double leftOffsetY, double rightOffsetX, double rightOffsetY)
         {
             var teachingLeftPoint = tabInspResult.MarkResult.FpcMark.FoundedMark.Left.MaxMatchPos.ReferencePos;

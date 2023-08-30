@@ -237,7 +237,7 @@ namespace ATT
 
         public void EnableMainView(bool isEnable)
         {
-            _mainForm.Enabled(isEnable);
+            _mainForm.Enable(isEnable);
         }
 
         public void UpdateMainAlignResult()

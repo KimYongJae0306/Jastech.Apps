@@ -567,7 +567,7 @@ namespace ATT_UT_IPAD
             AppsStatus.Instance().IsInspRunnerFlagFromPlc = true;
         }
 
-        internal void Enabled(bool isEnable)
+        public void Enable(bool isEnable)
         {
             MainPageControl?.Enable(isEnable);
         }

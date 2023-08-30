@@ -66,8 +66,6 @@ namespace Jastech.Apps.Winform
         public event GrabDoneDelegate GrabDoneEventHandler;
 
         public event GrabOnceDelegate GrabOnceEventHandler;
-
-        public event GrabDelayStartDelegate GrabDelayStartEventHandler;
         #endregion
 
         #region 델리게이트

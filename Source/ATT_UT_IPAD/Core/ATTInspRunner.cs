@@ -1450,35 +1450,43 @@ namespace ATT_UT_IPAD.Core
 
         private void SaveImage()
         {
-            if (ConfigSet.Instance().Operation.VirtualMode)
+            try
+            {
+                if (ConfigSet.Instance().Operation.VirtualMode)
+                {
+                    _saveThread = null;
+                    return;
+                }
+
+                var inspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
+
+                Stopwatch sw = new Stopwatch();
+                sw.Restart();
+
+                for (int tabNo = 0; tabNo < inspModel.TabCount; tabNo++)
+                {
+                    DateTime currentTime = AppsInspResult.Instance().StartInspTime;
+
+                    string month = currentTime.ToString("MM");
+                    string day = currentTime.ToString("dd");
+                    string folderPath = AppsInspResult.Instance().Cell_ID;
+
+                    string path = Path.Combine(ConfigSet.Instance().Path.Result, inspModel.Name, month, day, folderPath);
+
+                    SaveResultImage(Path.Combine(path, "Akkon"), tabNo, true);
+                    SaveResultImage(Path.Combine(path, "Align"), tabNo, false);
+                }
+
+                sw.Stop();
+                Console.WriteLine("Save Image : " + sw.ElapsedMilliseconds.ToString() + "ms");
+                WriteLog("Save Image : " + sw.ElapsedMilliseconds.ToString() + "ms");
+                _saveThread = null;
+            }
+            catch (Exception err)
             {
                 _saveThread = null;
-                return;
+                Logger.Error(ErrorType.Etc, "SaveImage Error : " + err.Message);
             }
-
-            var inspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
-
-            Stopwatch sw = new Stopwatch();
-            sw.Restart();
-
-            for (int tabNo = 0; tabNo < inspModel.TabCount; tabNo++)
-            {
-                DateTime currentTime = AppsInspResult.Instance().StartInspTime;
-
-                string month = currentTime.ToString("MM");
-                string day = currentTime.ToString("dd");
-                string folderPath = AppsInspResult.Instance().Cell_ID;
-
-                string path = Path.Combine(ConfigSet.Instance().Path.Result, inspModel.Name, month, day, folderPath);
-
-                SaveResultImage(Path.Combine(path, "Akkon"), tabNo, true);
-                SaveResultImage(Path.Combine(path, "Align"), tabNo, false);
-            }
-
-            sw.Stop();
-            Console.WriteLine("Save Image : " + sw.ElapsedMilliseconds.ToString() + "ms");
-            WriteLog("Save Image : " + sw.ElapsedMilliseconds.ToString() + "ms");
-            _saveThread = null;
         }
 
         private void SaveResultImage(string resultPath, int tabNo, bool isAkkonResult)
@@ -1537,44 +1545,54 @@ namespace ATT_UT_IPAD.Core
 
                     if(isAkkonResult)
                     {
-                        //if(tabInspResult.AkkonResult.Judgement == Judgement.NG)
-                        //{
-                        //    int maxSaveCount = 20;
-                        //    int saveCount = 0;
-                        //    foreach (var leadResult in tabInspResult.AkkonResult.LeadResultList)
-                        //    {
-                        //        //if (saveCount > maxSaveCount)
-                        //        //    break;
-                        //        string akkonNGDirName = string.Format("Tab{0}_NG", tabInspResult.TabNo);
-                        //        string akkonNGDir = Path.Combine(resultPath, akkonNGDirName);
-                        //        if (Directory.Exists(akkonNGDir) == false)
-                        //            Directory.CreateDirectory(akkonNGDir);
+                        if (tabInspResult.AkkonResult.Judgement == Judgement.NG)
+                        {
+                            int maxSaveCount = 20;
+                            int saveCount = 0;
+                            foreach (var leadResult in tabInspResult.AkkonResult.LeadResultList)
+                            {
+                                if (saveCount > maxSaveCount)
+                                    break;
+                                string akkonNGDirName = string.Format("Tab{0}_NG", tabInspResult.TabNo);
+                                string akkonNGDir = Path.Combine(resultPath, akkonNGDirName);
+                                if (Directory.Exists(akkonNGDir) == false)
+                                    Directory.CreateDirectory(akkonNGDir);
 
-                        //        if(leadResult.Judgement == Judgement.NG)
-                        //        {
-                        //            AkkonROI roi = tabInspResult.AkkonResult.TrackingROIList.Where(x => x.Index == leadResult.Id).FirstOrDefault();
-                        //            if (roi != null)
-                        //            {
-                        //                try
-                        //                {
-                        //                    string fileName = string.Format("{0}_Count_{1}.jpg", leadResult.Id, leadResult.AkkonCount);
-                        //                    Mat cropAkkonMat = MatHelper.CropRoi(tabInspResult.Image, roi.GetBoundRect());
-                        //                    string savePath = Path.Combine(akkonNGDir, fileName);
-                        //                    cropAkkonMat.Save(savePath);
-                        //                    //tabInspResult.Image.Save(@"D:\123.bmp");
-                        //                    cropAkkonMat.Dispose();
-                        //                    saveCount++;
-                        //                }
-                        //                catch (Exception er)
-                        //                {
-                        //                    // 가압 : PreBond
-                        //                    // 본압 : FinalBond
-                        //                }
-                                        
-                        //            }
-                        //        }
-                        //    }
-                        //}
+                                if (leadResult.Judgement == Judgement.NG)
+                                {
+                                    AkkonROI roi = tabInspResult.AkkonResult.TrackingROIList.Where(x => x.Index == leadResult.Id).FirstOrDefault();
+                                    if (roi != null)
+                                    {
+                                        try
+                                        {
+                                            string fileName = string.Format("{0}_Count_{1}.jpg", leadResult.Id, leadResult.AkkonCount);
+                                            var boundRect = roi.GetBoundRect();
+                                            var centerPoint = new Point(boundRect.X + (boundRect.Width / 2), boundRect.Y + (boundRect.Height / 2));
+
+                                            var cropRoi = new Rectangle();
+                                            int cropWidth = 100;
+                                            cropRoi.X = (int)(centerPoint.X - (cropWidth / 2));
+                                            cropRoi.Y = (int)(centerPoint.Y - (boundRect.Height / 2));
+                                            cropRoi.Width = cropWidth;
+                                            cropRoi.Height = boundRect.Height;
+
+                                            Mat cropAkkonMat = MatHelper.CropRoi(tabInspResult.Image, boundRect);
+                                            string savePath = Path.Combine(akkonNGDir, fileName);
+                                            cropAkkonMat.Save(savePath);
+                                            //tabInspResult.Image.Save(@"D:\123.bmp");
+                                            cropAkkonMat.Dispose();
+                                            saveCount++;
+                                        }
+                                        catch (Exception er)
+                                        {
+                                            // 가압 : PreBond
+                                            // 본압 : FinalBond
+                                        }
+
+                                    }
+                                }
+                            }
+                        }
                     }
                 }
             }
