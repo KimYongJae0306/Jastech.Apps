@@ -146,39 +146,36 @@
             // label10
             // 
             this.label10.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.label10.Location = new System.Drawing.Point(684, 67);
+            this.label10.Location = new System.Drawing.Point(678, 63);
             this.label10.Margin = new System.Windows.Forms.Padding(0);
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(200, 40);
             this.label10.TabIndex = 5;
             this.label10.Text = "OffsetY";
             this.label10.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.label10.Visible = false;
             // 
             // lblOffsetY
             // 
             this.lblOffsetY.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lblOffsetY.Location = new System.Drawing.Point(684, 107);
+            this.lblOffsetY.Location = new System.Drawing.Point(678, 103);
             this.lblOffsetY.Margin = new System.Windows.Forms.Padding(0);
             this.lblOffsetY.Name = "lblOffsetY";
             this.lblOffsetY.Size = new System.Drawing.Size(100, 40);
             this.lblOffsetY.TabIndex = 3;
             this.lblOffsetY.Text = "-240";
             this.lblOffsetY.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.lblOffsetY.Visible = false;
             this.lblOffsetY.Click += new System.EventHandler(this.lblOffsetY_Click);
             // 
             // lblTest
             // 
             this.lblTest.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lblTest.Location = new System.Drawing.Point(784, 107);
+            this.lblTest.Location = new System.Drawing.Point(778, 103);
             this.lblTest.Margin = new System.Windows.Forms.Padding(0);
             this.lblTest.Name = "lblTest";
             this.lblTest.Size = new System.Drawing.Size(100, 40);
             this.lblTest.TabIndex = 4;
             this.lblTest.Text = "Test";
             this.lblTest.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.lblTest.Visible = false;
             this.lblTest.Click += new System.EventHandler(this.lblTest_Click);
             // 
             // label8

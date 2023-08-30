@@ -262,6 +262,7 @@ namespace ATT_UT_IPAD
                 lblTeachingPage.Enabled = false;
                 lblDataPageImage.Enabled = false;
                 lblDataPage.Enabled = false;
+                lblLogPage.Enabled = false;
             }
             else
             {
@@ -275,8 +276,10 @@ namespace ATT_UT_IPAD
                     lblTeachingPage.Enabled = true;
                     lblTeachingPageImage.Enabled = true;
                 }
+
                 lblDataPageImage.Enabled = true;
                 lblDataPage.Enabled = true;
+                lblLogPage.Enabled = true;
             }
         }
 
