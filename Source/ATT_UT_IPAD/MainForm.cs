@@ -21,6 +21,7 @@ using Jastech.Framework.Winform.Forms;
 using Jastech.Framework.Winform.Helper;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -567,6 +568,11 @@ namespace ATT_UT_IPAD
         internal void Enabled(bool isEnable)
         {
             MainPageControl?.Enable(isEnable);
+        }
+
+        private void lblMachineName_DoubleClick(object sender, EventArgs e)
+        {
+            Process.Start(ConfigSet.Instance().Path.Result);
         }
         #endregion
     }

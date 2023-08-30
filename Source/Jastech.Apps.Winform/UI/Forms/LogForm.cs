@@ -381,8 +381,9 @@ namespace Jastech.Framework.Winform.Forms
                     break;
 
                 case PageType.AkkonTrend:
-                    AkkonTrendControl.UpdateDataGridView(fullPath);
+                    AkkonTrendControl.SetAkkonResultData(fullPath);
                     AkkonTrendControl.SetAkkonResultType(AkkonResultType.All);
+                    AkkonTrendControl.UpdateDataGridView();
                     AkkonTrendControl.SetTabType(TabType.Tab1);
                     break;
 
@@ -391,7 +392,8 @@ namespace Jastech.Framework.Winform.Forms
                     break;
 
                 case PageType.ProcessCapability:
-                    ProcessCapabilityControl.UpdateAlignDataGridView(fullPath);
+                    ProcessCapabilityControl.SetAlignResultData(fullPath);
+                    ProcessCapabilityControl.UpdateAlignDataGridView();
                     ProcessCapabilityControl.SetSelectionStartDate(DateTime);
                     ProcessCapabilityControl.SetTabType(TabType.Tab1);
                     ProcessCapabilityControl.SetAlignResultType(AlignResultType.Lx);
@@ -451,7 +453,7 @@ namespace Jastech.Framework.Winform.Forms
         public List<TabAlignTrendResult> TabAlignResults { get; private set; } = new List<TabAlignTrendResult>();
         public List<TabAkkonTrendResult> TabAkkonResults { get; private set; } = new List<TabAkkonTrendResult>();
 
-        public List<string> GetStringDatas()
+        public List<string> GetAlignStringDatas()
         {
             List<string> datas = new List<string>
             {
@@ -475,11 +477,30 @@ namespace Jastech.Framework.Winform.Forms
             return datas;
         }
 
+        public List<string> GetAkkonStringDatas()
+        {
+            List<string> datas = new List<string>
+            {
+                $"{InspectionTime}",
+                $"{PanelID}",
+                $"{StageNo}",
+            };
+            foreach (var tab in TabAkkonResults)
+            {
+                datas.Add($"{tab.Tab}");
+                datas.Add($"{tab.Judge}");
+                datas.Add($"{tab.AvgCount}");
+                datas.Add($"{tab.AvgLength}");
+            }
+
+            return datas;
+        }
+
         public double[] GetAlignDatas(TabType tabType, AlignResultType alignResultType)
         {
             double[] datas = null;
 
-            var resultByTab = TabAlignResults.Where(result => result.Tab == (int)tabType);
+            var resultByTab = TabAlignResults.Where(result => result.Tab == (int)tabType + 1);
 
             if (alignResultType is AlignResultType.Lx)
                 datas = resultByTab.Select(result => result.Lx).ToArray();
@@ -491,6 +512,20 @@ namespace Jastech.Framework.Winform.Forms
                 datas = resultByTab.Select(result => result.Rx).ToArray();
             else if (alignResultType is AlignResultType.Ry)
                 datas = resultByTab.Select(result => result.Ry).ToArray();
+
+            return datas;
+        }
+
+        public double[] GetAkkonDatas(TabType tabType, AkkonResultType akkonResultType)
+        {
+            double[] datas = null;
+
+            var resultByTab = TabAkkonResults.Where(result => result.Tab == (int)tabType + 1);
+
+            if (akkonResultType is AkkonResultType.Count)
+                datas = resultByTab.Select(result => (double)result.AvgCount).ToArray();
+            else if (akkonResultType is AkkonResultType.Length)
+                datas = resultByTab.Select(result => result.AvgLength).ToArray();
 
             return datas;
         }

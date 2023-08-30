@@ -1,6 +1,7 @@
 ﻿using Jastech.Apps.Structure;
 using Jastech.Apps.Structure.Data;
 using Jastech.Apps.Winform.Settings;
+using Jastech.Framework.Structure;
 using Jastech.Framework.Util.Helper;
 using Jastech.Framework.Winform.Forms;
 using Jastech.Framework.Winform.Helper;
@@ -113,7 +114,7 @@ namespace Jastech.Apps.Winform.UI.Controls
             _tabLabelList[(int)tabType].BackColor = _selectedColor;
 
             UpdateChart(_tabType, _alignResultType);
-            UpdateDataGridView(_tabType);
+            UpdatePcInfoDataGridView(_tabType);
         }
 
         private void ClearSelectedTabLabel()
@@ -127,7 +128,41 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         private void InitializeDataGridView()
         {
-            dgvPCResult.DataSource = new PcResult();
+            var inspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
+
+            dgvPCResult.Columns.Clear();
+            List<string> pcHeader = new List<string>
+            {
+                "Type",
+                "Cp",
+                "Cpk",
+                "Pp",
+                "Ppk",
+            };
+            var pcColumns = pcHeader.Select(text => new DataGridViewTextBoxColumn { Name = text });
+            dgvPCResult.Columns.AddRange(pcColumns.ToArray());
+
+            dgvAlignData.Columns.Clear();
+            List<string> alignHeader = new List<string>
+            {
+                "Inspection Time",
+                "Panel ID",
+                "Stage No",
+                "Final Head",
+            };
+            for (int index = 0; index < inspModel.TabCount; index++)
+            {
+                alignHeader.Add($"Tab");
+                alignHeader.Add($"Judge");
+                alignHeader.Add($"Pre Head");
+                alignHeader.Add($"Lx");
+                alignHeader.Add($"Ly");
+                alignHeader.Add($"Cx");
+                alignHeader.Add($"Rx");
+                alignHeader.Add($"Ry");
+            }
+            var alignColumns = alignHeader.Select(text => new DataGridViewTextBoxColumn { Name = text });
+            dgvAlignData.Columns.AddRange(alignColumns.ToArray());
         }
 
         private void lblDayCount_Click(object sender, EventArgs e)
@@ -143,6 +178,35 @@ namespace Jastech.Apps.Winform.UI.Controls
         private DateTime GetSelectionStartDate()
         {
             return _startDate;
+        }
+        private void lblAllData_Click(object sender, EventArgs e)
+        {
+            SetAlignResultType(AlignResultType.All);
+        }
+
+        private void lblLx_Click(object sender, EventArgs e)
+        {
+            SetAlignResultType(AlignResultType.Lx);
+        }
+
+        private void lblLy_Click(object sender, EventArgs e)
+        {
+            SetAlignResultType(AlignResultType.Ly);
+        }
+
+        private void lblCx_Click(object sender, EventArgs e)
+        {
+            SetAlignResultType(AlignResultType.Cx);
+        }
+
+        private void lblRx_Click(object sender, EventArgs e)
+        {
+            SetAlignResultType(AlignResultType.Rx);
+        }
+
+        private void lblRy_Click(object sender, EventArgs e)
+        {
+            SetAlignResultType(AlignResultType.Ry);
         }
 
         private void lblDataCount_Click(object sender, EventArgs e)
@@ -172,12 +236,11 @@ namespace Jastech.Apps.Winform.UI.Controls
             _lowerSpecLimit = lowerSpecLimit;
         }
 
-        public void UpdateAlignDataGridView(string path)
+        public void UpdateAlignDataGridView()
         {
-            var dataTable = FileHelper.CsvToDataTable(path);
-
-            dgvAlignData.DataSource = dataTable;
-            SetDataTable(dataTable.Copy());
+            dgvAlignData.Rows.Clear();
+            for (int rowIndex = 1; rowIndex < _alignTrendResults.Count; rowIndex++)
+                dgvAlignData.Rows.Add(_alignTrendResults[rowIndex].GetAlignStringDatas().ToArray());
         }
 
         public void SetAlignResultType(AlignResultType alignResultType)
@@ -222,7 +285,7 @@ namespace Jastech.Apps.Winform.UI.Controls
             return newDataTable;
         }
 
-        private void UpdateDataGridView(TabType tabType)
+        private void UpdatePcInfoDataGridView(TabType tabType)
         {
             double upperSpecLimit = Convert.ToDouble(lblUpperSpecLimit.Text);
             double lowerSpecLimit = Convert.ToDouble(lblLowerSpecLimit.Text);
@@ -231,8 +294,8 @@ namespace Jastech.Apps.Winform.UI.Controls
 
             var lxData = GetPcData(tabType, AlignResultType.Lx);
             var lyData = GetPcData(tabType, AlignResultType.Ly);
-            var cxData = GetPcData(tabType,AlignResultType.Cx);
-            var rxData = GetPcData(tabType,AlignResultType.Rx);
+            var cxData = GetPcData(tabType, AlignResultType.Cx);
+            var rxData = GetPcData(tabType, AlignResultType.Rx);
             var ryData = GetPcData(tabType, AlignResultType.Ry);
 
             listCapabilityResults.Add(ProcessCapabilityIndex.GetResult(AlignResultType.Lx.ToString(), lxData, upperSpecLimit, lowerSpecLimit));
@@ -241,7 +304,21 @@ namespace Jastech.Apps.Winform.UI.Controls
             listCapabilityResults.Add(ProcessCapabilityIndex.GetResult(AlignResultType.Rx.ToString(), rxData, upperSpecLimit, lowerSpecLimit));
             listCapabilityResults.Add(ProcessCapabilityIndex.GetResult(AlignResultType.Ry.ToString(), ryData, upperSpecLimit, lowerSpecLimit));
 
-            dgvPCResult.DataSource = listCapabilityResults;
+            var inspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
+
+            dgvPCResult.Rows.Clear();
+            foreach (var pcResult in listCapabilityResults)
+            {
+                string[] row = new string[]
+                {
+                    $"{pcResult.Type}",
+                    $"{pcResult.Cp}",
+                    $"{pcResult.Cpk}",
+                    $"{pcResult.Pp}",
+                    $"{pcResult.Ppk}",
+                };
+                dgvPCResult.Rows.Add(row);
+            }
         }
 
         private List<double> GetPcData(TabType tabType, AlignResultType alignResultType)
@@ -263,33 +340,39 @@ namespace Jastech.Apps.Winform.UI.Controls
         private List<TrendResult> _alignTrendResults = new List<TrendResult>();
         public void SetAlignResultData(string path)
         {
+            _alignTrendResults.Clear();
             List<string[]> texts = new List<string[]>();
             foreach (string textLine in File.ReadAllLines(path))
                 texts.Add(textLine.Split(','));
 
-            int tabCount = AppsConfig.Instance().TabMaxCount;
-            for (int rowIndex = 0; rowIndex < texts.Count; rowIndex++)
-            {
-                _alignTrendResults[rowIndex].InspectionTime = texts[rowIndex][0];
-                _alignTrendResults[rowIndex].PanelID = texts[rowIndex][1];
-                _alignTrendResults[rowIndex].StageNo = Convert.ToInt32(texts[rowIndex][2]);
-                _alignTrendResults[rowIndex].FinalHead = texts[rowIndex][3];
+            var inspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
 
-                for (int colIndex = 0; colIndex < tabCount; colIndex++)
+            _alignTrendResults.Clear();
+            for (int rowIndex = 1; rowIndex < texts.Count; rowIndex++)
+            {
+                var trendResult = new TrendResult();
+                trendResult.InspectionTime = texts[rowIndex][0];
+                trendResult.PanelID = texts[rowIndex][1];
+                trendResult.StageNo = Convert.ToInt32(texts[rowIndex][2]);
+                trendResult.FinalHead = texts[rowIndex][3];
+
+                for (int colIndex = 0, dataCount = 8; colIndex < inspModel.TabCount; colIndex++)
                 {
-                    int skipIndex = colIndex * tabCount;
-                    _alignTrendResults[rowIndex].TabAlignResults[rowIndex] = new TabAlignTrendResult
+                    int columnSkip = colIndex * dataCount;
+                    var tabAlignResult = new TabAlignTrendResult
                     {
-                        Tab = Convert.ToInt32(texts[rowIndex][skipIndex + 4]),
-                        Judge = texts[rowIndex][skipIndex + 5],
-                        PreHead = texts[rowIndex][skipIndex + 6],
-                        Lx = Convert.ToDouble(texts[rowIndex][skipIndex + 7]),
-                        Ly = Convert.ToDouble(texts[rowIndex][skipIndex + 8]),
-                        Cx = Convert.ToDouble(texts[rowIndex][skipIndex + 9]),
-                        Rx = Convert.ToDouble(texts[rowIndex][skipIndex + 10]),
-                        Ry = Convert.ToDouble(texts[rowIndex][skipIndex + 11]),
+                        Tab = Convert.ToInt32(texts[rowIndex][columnSkip + 4]),
+                        Judge = texts[rowIndex][columnSkip + 5],
+                        PreHead = texts[rowIndex][columnSkip + 6],
+                        Lx = Convert.ToDouble(texts[rowIndex][columnSkip + 7]),
+                        Ly = Convert.ToDouble(texts[rowIndex][columnSkip + 8]),
+                        Cx = Convert.ToDouble(texts[rowIndex][columnSkip + 9]),
+                        Rx = Convert.ToDouble(texts[rowIndex][columnSkip + 10]),
+                        Ry = Convert.ToDouble(texts[rowIndex][columnSkip + 11])
                     };
+                    trendResult.TabAlignResults.Add(tabAlignResult);
                 }
+                _alignTrendResults.Add(trendResult);
             }
         }
 

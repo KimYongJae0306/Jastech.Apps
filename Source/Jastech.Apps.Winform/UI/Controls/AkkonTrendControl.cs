@@ -1,4 +1,6 @@
-﻿using Jastech.Apps.Winform.Settings;
+﻿using Jastech.Apps.Structure;
+using Jastech.Apps.Winform.Settings;
+using Jastech.Framework.Structure;
 using Jastech.Framework.Util.Helper;
 using Jastech.Framework.Winform.Forms;
 using System;
@@ -7,6 +9,7 @@ using System.Data;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Security.Principal;
 using System.Windows.Forms;
 
 namespace Jastech.Apps.Winform.UI.Controls
@@ -55,6 +58,29 @@ namespace Jastech.Apps.Winform.UI.Controls
         {
             _selectedColor = Color.FromArgb(104, 104, 104);
             _nonSelectedColor = Color.FromArgb(52, 52, 52);
+            InitializeDataGridView();
+        }
+
+        private void InitializeDataGridView()
+        {
+            var inspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
+
+            dgvAkkonTrendData.Columns.Clear();
+            List<string> header = new List<string>
+            {
+                "Inspection Time",
+                "Panel ID",
+                "Stage No",
+            };
+            for (int index = 0; index < inspModel.TabCount; index++)
+            {
+                header.Add($"Tab_{index + 1}");
+                header.Add($"Judge_{index + 1}");
+                header.Add($"Avg Count_{index + 1}");
+                header.Add($"Avg Length_{index + 1}");
+            }
+            var columns = header.Select(text => new DataGridViewTextBoxColumn { Name = text });
+            dgvAkkonTrendData.Columns.AddRange(columns.ToArray());
         }
 
         public void MakeTabListControl(int tabCount)
@@ -169,24 +195,17 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         private void UpdateChart(TabType tabType, AkkonResultType akkonResultType)
         {
-            if (_bindingDataTable == null)
+            if (_akkonTrendResults == null)
                 return;
 
-            ChartControl.UpdateAkkonChart(_bindingDataTable, tabType, akkonResultType);
+            ChartControl.UpdateAkkonChart(_akkonTrendResults, tabType, akkonResultType);
         }
 
-        private DataTable _bindingDataTable = new DataTable();
-        private void SetDataTable(DataTable dt)
+        public void UpdateDataGridView()
         {
-            _bindingDataTable = dt.Copy();
-        }
-
-        public void UpdateDataGridView(string path)
-        {
-            var dataTable = FileHelper.CsvToDataTable(path);
-
-            dgvAkkonTrendData.DataSource = dataTable;
-            SetDataTable(dataTable.Copy());
+            dgvAkkonTrendData.Rows.Clear();
+            for (int rowIndex = 1; rowIndex < _akkonTrendResults.Count; rowIndex++)
+                dgvAkkonTrendData.Rows.Add(_akkonTrendResults[rowIndex].GetAkkonStringDatas().ToArray());
         }
 
         private List<TrendResult> _akkonTrendResults = new List<TrendResult>();
@@ -196,24 +215,29 @@ namespace Jastech.Apps.Winform.UI.Controls
             foreach (string textLine in File.ReadAllLines(path))
                 texts.Add(textLine.Split(','));
 
-            int tabCount = AppsConfig.Instance().TabMaxCount;
-            for (int rowIndex = 0; rowIndex < texts.Count; rowIndex++)
-            {
-                _akkonTrendResults[rowIndex].InspectionTime = texts[rowIndex][0];
-                _akkonTrendResults[rowIndex].PanelID = texts[rowIndex][1];
-                _akkonTrendResults[rowIndex].StageNo = Convert.ToInt32(texts[rowIndex][2]);
+            var inspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
 
-                for (int colIndex = 0; colIndex < tabCount; colIndex++)
+            _akkonTrendResults.Clear();
+            for (int rowIndex = 1; rowIndex < texts.Count; rowIndex++)
+            {
+                TrendResult trendResult = new TrendResult();
+                trendResult.InspectionTime = texts[rowIndex][0];
+                trendResult.PanelID = texts[rowIndex][1];
+                trendResult.StageNo = Convert.ToInt32(texts[rowIndex][2]);
+
+                for (int colIndex = 0, dataCount = 4; colIndex < inspModel.TabCount; colIndex++)
                 {
-                    int skipIndex = colIndex * tabCount;
-                    _akkonTrendResults[rowIndex].TabAkkonResults[rowIndex] = new TabAkkonTrendResult
+                    int skipIndex = colIndex * dataCount;
+                    var akkonResult = new TabAkkonTrendResult
                     {
                         Tab = Convert.ToInt32(texts[rowIndex][skipIndex + 3]),
                         Judge = texts[rowIndex][skipIndex + 4],
                         AvgCount = Convert.ToInt32(texts[rowIndex][skipIndex + 5]),
                         AvgLength = Convert.ToDouble(texts[rowIndex][skipIndex + 6]),
                     };
+                    trendResult.TabAkkonResults.Add(akkonResult);
                 }
+                _akkonTrendResults.Add(trendResult);
             }
         }
         #endregion
