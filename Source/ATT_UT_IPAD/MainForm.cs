@@ -105,6 +105,9 @@ namespace ATT_UT_IPAD
             SystemManager.Instance().AddSystemLogMessage("Start Program.");
 
             PlcControlManager.Instance().WriteVersion();
+
+            ManualJudgeForm = new ManualJudgeForm();
+            ManualJudgeForm.Show();
         }
 
         private void MainForm_InspRunnerHandler(bool isStart)
@@ -198,6 +201,7 @@ namespace ATT_UT_IPAD
             }
             lblCurrentModel.Text = modelname;
         }
+
         private void lblMainPage_Click(object sender, EventArgs e)
         {
             SetSelectLabel(sender);
@@ -575,8 +579,9 @@ namespace ATT_UT_IPAD
             MainPageControl?.Enable(isEnable);
         }
 
-        public void ShowManualJudgeForm()
+        public void ShowManualJudgeForm(string message)
         {
+            ManualJudgeForm.SetMessage(message);
             ManualJudgeForm.Show();
         }
         #endregion

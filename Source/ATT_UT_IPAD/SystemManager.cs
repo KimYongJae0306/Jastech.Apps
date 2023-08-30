@@ -368,9 +368,9 @@ namespace ATT_UT_IPAD
             _mainForm.ReleaseAlignLastScanImage();
         }
 
-        public void ShowManualJugdeForm()
+        public void ShowManualJugdeForm(string message)
         {
-            _mainForm.ShowManualJudgeForm();
+            _mainForm.ShowManualJudgeForm(message);
         }
         #endregion
     }

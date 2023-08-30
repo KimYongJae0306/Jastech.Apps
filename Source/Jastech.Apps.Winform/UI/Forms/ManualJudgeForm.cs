@@ -22,7 +22,7 @@ namespace Jastech.Apps.Winform.UI.Forms
         #endregion
 
         #region 속성
-        public string Message { get; set; } = string.Empty;
+        public string Message { get; private set; } = string.Empty;
 
         private Judgement Judgement { get; set; } = Judgement.NG;
         #endregion
@@ -31,6 +31,7 @@ namespace Jastech.Apps.Winform.UI.Forms
         #endregion
 
         #region 델리게이트
+        //private delegate void UpdateMessageDelegate(string message);
         #endregion
 
         #region 생성자
@@ -66,9 +67,26 @@ namespace Jastech.Apps.Winform.UI.Forms
             }
         }
 
+        //public void UpdateJudgeMessage(string message)
+        //{
+        //    if (this.InvokeRequired)
+        //    {
+        //        UpdateMessageDelegate callback = UpdateJudgeMessage;
+        //        BeginInvoke(callback, message);
+        //        return;
+        //    }
+
+        //    UpdateMessage(message);
+        //}
+
         private void UpdateMessage()
         {
             lblMessage.Text = Message;
+        }
+
+        public void SetMessage(string message)
+        {
+            Message = message;
         }
 
         private void lblOK_Click(object sender, EventArgs e)
