@@ -684,6 +684,9 @@ namespace Jastech.Framework.Winform.Forms
 
         private void lblTracking_Click(object sender, EventArgs e)
         {
+            if (_displayType == DisplayType.Akkon)
+                AkkonControl.SetOrginImageView();
+
             if (_isPrevTrackingOn == false)
                 SetTrackingOnOff(true);
             else
