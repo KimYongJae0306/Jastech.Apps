@@ -25,36 +25,20 @@ namespace Jastech.Apps.Winform.Service.Plc
     public class PlcScenarioManager
     {
         #region 필드
-        #endregion
-
-        #region 속성
-        public VisionXCalibration VisionXCalibration { get; set; } = new VisionXCalibration();
-        #endregion
-
-        #region 이벤트
-        public event InspRunnerEventHandler InspRunnerHandler;
-
-        public event PreAlignRunnerEventHandler PreAlignRunnerHandler;
-        #endregion
-
-        #region 델리게이트
-        public delegate void InspRunnerEventHandler(bool isStart);
-        public delegate void PreAlignRunnerEventHandler(bool isStart);
-        #endregion
-
-        #region 생성자
-        #endregion
-
-        #region 메서드
-        #endregion
-
-        private bool EnableActive { get; set; } = false;
 
         private static PlcScenarioManager _instance = null;
 
         private int _prevCommonCommand { get; set; } = 0;
 
         private int _prevCommand { get; set; } = 0;
+        #endregion
+
+        #region 속성
+        public InspModelService InspModelService = null;
+
+        public VisionXCalibration VisionXCalibration { get; set; } = new VisionXCalibration();
+
+        private bool EnableActive { get; set; } = false;
 
         private Queue<int> PlcCommonCommandQueue { get; set; } = new Queue<int>();
 
@@ -63,12 +47,28 @@ namespace Jastech.Apps.Winform.Service.Plc
         private Task CommandTask { get; set; }
 
         private CancellationTokenSource CommandTaskCancellationTokenSource { get; set; }
+        #endregion
+
+        #region 이벤트
+        public event InspRunnerEventHandler InspRunnerHandler;
+
+        public event PreAlignRunnerEventHandler PreAlignRunnerHandler;
 
         public OriginAllDelegate OriginAllEvent;
+        #endregion
+
+        #region 델리게이트
+        public delegate void InspRunnerEventHandler(bool isStart);
+
+        public delegate void PreAlignRunnerEventHandler(bool isStart);
 
         public delegate bool OriginAllDelegate();
-        public InspModelService InspModelService = null;
+        #endregion
 
+        #region 생성자
+        #endregion
+
+        #region 메서드
         public static PlcScenarioManager Instance()
         {
             if (_instance == null)
@@ -115,7 +115,7 @@ namespace Jastech.Apps.Winform.Service.Plc
             if (_prevCommonCommand == command)
                 return;
 
-            if(command != 0 && EnableActive == false)
+            if (command != 0 && EnableActive == false)
             {
                 lock (PlcCommonCommandQueue)
                     PlcCommonCommandQueue.Enqueue(command);
@@ -139,7 +139,7 @@ namespace Jastech.Apps.Winform.Service.Plc
 
         public int GetCommonCommand()
         {
-            lock(PlcCommonCommandQueue)
+            lock (PlcCommonCommandQueue)
             {
                 if (PlcCommonCommandQueue.Count() > 0)
                     return PlcCommonCommandQueue.Dequeue();
@@ -161,21 +161,23 @@ namespace Jastech.Apps.Winform.Service.Plc
 
         private void ScenarioTask()
         {
-            while(true)
+            while (true)
             {
                 if (CommandTaskCancellationTokenSource.IsCancellationRequested)
                     break;
 
-                if(GetCommonCommand() is int commonCommand)
+                if (GetCommonCommand() is int commonCommand)
                 {
                     EnableActive = true;
+                    PlcControlManager.Instance().ClearAddress(PlcCommonMap.PLC_Command_Common);
                     CommonCommandReceived((PlcCommonCommand)commonCommand);
                     EnableActive = false;
                 }
-                
-                if(GetCommand() is int command)
+
+                if (GetCommand() is int command)
                 {
                     EnableActive = true;
+                    PlcControlManager.Instance().ClearAddress(PlcCommonMap.PLC_Command);
                     PlcCommandReceived((PlcCommand)command);
                     EnableActive = false;
                 }
@@ -220,14 +222,14 @@ namespace Jastech.Apps.Winform.Service.Plc
             string filePath = Path.Combine(modelDir, modelName, InspModel.FileName);
             short command = -1;
 
-            if (File.Exists(modelName) ||AppsStatus.Instance().IsRunning)
+            if (File.Exists(modelName) || AppsStatus.Instance().IsRunning)
             {
                 // 모델이 존재O, 검사 중일 때
                 command = manager.WritePcStatusCommon(PlcCommonCommand.Model_Create, true);
                 Logger.Debug(LogType.Device, $"Write Fail CreateModelData.[{command}]");
                 return;
             }
-        
+
             AppsInspModel inspModel = InspModelService.New() as AppsInspModel;
 
             inspModel.Name = modelName;
@@ -286,7 +288,7 @@ namespace Jastech.Apps.Winform.Service.Plc
                 return;
             }
 
-            if(currentModel.TabCount != Convert.ToInt32(manager.GetValue(PlcCommonMap.PLC_TabCount)))
+            if (currentModel.TabCount != Convert.ToInt32(manager.GetValue(PlcCommonMap.PLC_TabCount)))
             {
                 // Tab Count는 변경 불가
                 command = manager.WritePcStatusCommon(PlcCommonCommand.Model_Edit, true);
@@ -467,7 +469,7 @@ namespace Jastech.Apps.Winform.Service.Plc
 
         private void StartInspection()
         {
-            if(ModelManager.Instance().CurrentModel == null)
+            if (ModelManager.Instance().CurrentModel == null)
             {
                 short command = PlcControlManager.Instance().WritePcStatus(PlcCommand.StartInspection, true);
                 Logger.Debug(LogType.Device, $"Write Fail StartInspection.[{command}]");
@@ -589,7 +591,7 @@ namespace Jastech.Apps.Winform.Service.Plc
             {
                 foreach (var axis in axisHandler.GetAxisList())
                 {
-                    if(axis.Name.ToUpper().Contains("X"))
+                    if (axis.Name.ToUpper().Contains("X"))
                         allAxisHandler.AddAxis(axis);
                 }
             }
@@ -601,7 +603,7 @@ namespace Jastech.Apps.Winform.Service.Plc
 
             if (lafCtrlHandler.Count > 1)
                 PlcControlManager.Instance().WritePcCommand(PcCommand.ServoOn_2);
-            
+
             allAxisHandler.TurnOnServo(true);
 
             foreach (var laf in lafCtrlHandler)
@@ -612,5 +614,6 @@ namespace Jastech.Apps.Winform.Service.Plc
 
             PlcControlManager.Instance().WritePcStatus(PlcCommand.Origin_All);
         }
+        #endregion
     }
 }

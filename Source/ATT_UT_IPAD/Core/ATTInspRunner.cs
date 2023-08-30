@@ -354,6 +354,8 @@ namespace ATT_UT_IPAD.Core
                 case SeqStep.SEQ_WAITING:
                     if (AppsStatus.Instance().IsInspRunnerFlagFromPlc == false)
                         break;
+
+                    //PlcControlManager.Instance().ClearAddress(PlcCommonMap.PLC_Command_Common);
                     SystemManager.Instance().EnableMainView(false);
                     SystemManager.Instance().TabButtonResetColor();
 
