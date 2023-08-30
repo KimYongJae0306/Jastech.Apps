@@ -1903,7 +1903,7 @@ namespace Jastech.Apps.Winform.UI.Controls
             SetResizeImageView();
         }
 
-        private void SetOrginImageView()
+        public void SetOrginImageView()
         {
             lblOrginalImage.BackColor = _selectedColor;
             lblResizeImage.BackColor = _nonSelectedColor;
