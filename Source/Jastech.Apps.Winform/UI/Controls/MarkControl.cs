@@ -382,8 +382,9 @@ namespace Jastech.Apps.Winform.UI.Controls
 
             MainAlgorithmTool algorithmTool = new MainAlgorithmTool();
             TabInspResult tabInspResult = new TabInspResult();
-
-            algorithmTool.MainMarkInspect(cogImage, CurrentTab, ref tabInspResult, UseAlignMark);
+           
+            //algorithmTool.MainMarkInspect(cogImage, CurrentTab, ref tabInspResult, UseAlignMark);
+            algorithmTool.MainPanelMarkInspect(cogImage, CurrentTab, ref tabInspResult);
 
             if (tabInspResult.MarkResult.Judgement != Judgement.OK)
             {
