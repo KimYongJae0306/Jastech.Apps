@@ -31,14 +31,11 @@
             this.tlpTeachingUnitControl = new System.Windows.Forms.TableLayoutPanel();
             this.btnNext = new System.Windows.Forms.Button();
             this.btnPrev = new System.Windows.Forms.Button();
-            this.tlpUnitList = new System.Windows.Forms.TableLayoutPanel();
             this.tlpTeachingPosition = new System.Windows.Forms.TableLayoutPanel();
-            this.btnStandby = new System.Windows.Forms.Button();
-            this.btnScanEnd = new System.Windows.Forms.Button();
             this.btnScanStart = new System.Windows.Forms.Button();
-            this.lblUnit = new System.Windows.Forms.Label();
+            this.btnScanEnd = new System.Windows.Forms.Button();
+            this.btnStandby = new System.Windows.Forms.Button();
             this.tlpTeachingUnitControl.SuspendLayout();
-            this.tlpUnitList.SuspendLayout();
             this.tlpTeachingPosition.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -50,7 +47,7 @@
             this.tlpTeachingUnitControl.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 40F));
             this.tlpTeachingUnitControl.Controls.Add(this.btnNext, 2, 0);
             this.tlpTeachingUnitControl.Controls.Add(this.btnPrev, 0, 0);
-            this.tlpTeachingUnitControl.Controls.Add(this.tlpUnitList, 1, 0);
+            this.tlpTeachingUnitControl.Controls.Add(this.tlpTeachingPosition, 1, 0);
             this.tlpTeachingUnitControl.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tlpTeachingUnitControl.Location = new System.Drawing.Point(0, 0);
             this.tlpTeachingUnitControl.Margin = new System.Windows.Forms.Padding(0);
@@ -59,7 +56,7 @@
             this.tlpTeachingUnitControl.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tlpTeachingUnitControl.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 120F));
             this.tlpTeachingUnitControl.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 120F));
-            this.tlpTeachingUnitControl.Size = new System.Drawing.Size(606, 120);
+            this.tlpTeachingUnitControl.Size = new System.Drawing.Size(606, 87);
             this.tlpTeachingUnitControl.TabIndex = 2;
             // 
             // btnNext
@@ -71,7 +68,7 @@
             this.btnNext.Location = new System.Drawing.Point(566, 0);
             this.btnNext.Margin = new System.Windows.Forms.Padding(0);
             this.btnNext.Name = "btnNext";
-            this.btnNext.Size = new System.Drawing.Size(40, 120);
+            this.btnNext.Size = new System.Drawing.Size(40, 87);
             this.btnNext.TabIndex = 14;
             this.btnNext.UseVisualStyleBackColor = false;
             this.btnNext.Click += new System.EventHandler(this.btnNext_Click);
@@ -85,26 +82,10 @@
             this.btnPrev.Location = new System.Drawing.Point(0, 0);
             this.btnPrev.Margin = new System.Windows.Forms.Padding(0);
             this.btnPrev.Name = "btnPrev";
-            this.btnPrev.Size = new System.Drawing.Size(40, 120);
+            this.btnPrev.Size = new System.Drawing.Size(40, 87);
             this.btnPrev.TabIndex = 13;
             this.btnPrev.UseVisualStyleBackColor = false;
             this.btnPrev.Click += new System.EventHandler(this.btnPrev_Click);
-            // 
-            // tlpUnitList
-            // 
-            this.tlpUnitList.ColumnCount = 1;
-            this.tlpUnitList.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tlpUnitList.Controls.Add(this.tlpTeachingPosition, 0, 1);
-            this.tlpUnitList.Controls.Add(this.lblUnit, 0, 0);
-            this.tlpUnitList.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tlpUnitList.Location = new System.Drawing.Point(40, 0);
-            this.tlpUnitList.Margin = new System.Windows.Forms.Padding(0);
-            this.tlpUnitList.Name = "tlpUnitList";
-            this.tlpUnitList.RowCount = 2;
-            this.tlpUnitList.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
-            this.tlpUnitList.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tlpUnitList.Size = new System.Drawing.Size(526, 120);
-            this.tlpUnitList.TabIndex = 15;
             // 
             // tlpTeachingPosition
             // 
@@ -120,39 +101,13 @@
             this.tlpTeachingPosition.Controls.Add(this.btnScanEnd, 6, 0);
             this.tlpTeachingPosition.Controls.Add(this.btnScanStart, 5, 0);
             this.tlpTeachingPosition.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tlpTeachingPosition.Location = new System.Drawing.Point(0, 40);
+            this.tlpTeachingPosition.Location = new System.Drawing.Point(40, 0);
             this.tlpTeachingPosition.Margin = new System.Windows.Forms.Padding(0);
             this.tlpTeachingPosition.Name = "tlpTeachingPosition";
             this.tlpTeachingPosition.RowCount = 1;
             this.tlpTeachingPosition.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tlpTeachingPosition.Size = new System.Drawing.Size(526, 80);
+            this.tlpTeachingPosition.Size = new System.Drawing.Size(526, 87);
             this.tlpTeachingPosition.TabIndex = 1;
-            // 
-            // btnStandby
-            // 
-            this.btnStandby.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.btnStandby.Font = new System.Drawing.Font("맑은 고딕", 11.25F, System.Drawing.FontStyle.Bold);
-            this.btnStandby.ForeColor = System.Drawing.Color.White;
-            this.btnStandby.Location = new System.Drawing.Point(3, 3);
-            this.btnStandby.Name = "btnStandby";
-            this.btnStandby.Size = new System.Drawing.Size(94, 74);
-            this.btnStandby.TabIndex = 12;
-            this.btnStandby.Text = "Standby";
-            this.btnStandby.UseVisualStyleBackColor = false;
-            this.btnStandby.Click += new System.EventHandler(this.btnStandby_Click);
-            // 
-            // btnScanEnd
-            // 
-            this.btnScanEnd.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.btnScanEnd.Font = new System.Drawing.Font("맑은 고딕", 11.25F, System.Drawing.FontStyle.Bold);
-            this.btnScanEnd.ForeColor = System.Drawing.Color.White;
-            this.btnScanEnd.Location = new System.Drawing.Point(429, 3);
-            this.btnScanEnd.Name = "btnScanEnd";
-            this.btnScanEnd.Size = new System.Drawing.Size(94, 74);
-            this.btnScanEnd.TabIndex = 12;
-            this.btnScanEnd.Text = "Scan\r\nEnd";
-            this.btnScanEnd.UseVisualStyleBackColor = false;
-            this.btnScanEnd.Click += new System.EventHandler(this.btnScanEnd_Click);
             // 
             // btnScanStart
             // 
@@ -161,24 +116,37 @@
             this.btnScanStart.ForeColor = System.Drawing.Color.White;
             this.btnScanStart.Location = new System.Drawing.Point(329, 3);
             this.btnScanStart.Name = "btnScanStart";
-            this.btnScanStart.Size = new System.Drawing.Size(94, 74);
+            this.btnScanStart.Size = new System.Drawing.Size(94, 81);
             this.btnScanStart.TabIndex = 12;
             this.btnScanStart.Text = "Scan\r\nStart";
             this.btnScanStart.UseVisualStyleBackColor = false;
             this.btnScanStart.Click += new System.EventHandler(this.btnScanStart_Click);
             // 
-            // lblUnit
+            // btnScanEnd
             // 
-            this.lblUnit.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(104)))), ((int)(((byte)(104)))), ((int)(((byte)(104)))));
-            this.lblUnit.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblUnit.Font = new System.Drawing.Font("맑은 고딕", 14F, System.Drawing.FontStyle.Bold);
-            this.lblUnit.ForeColor = System.Drawing.Color.White;
-            this.lblUnit.Location = new System.Drawing.Point(3, 0);
-            this.lblUnit.Name = "lblUnit";
-            this.lblUnit.Size = new System.Drawing.Size(520, 40);
-            this.lblUnit.TabIndex = 5;
-            this.lblUnit.Text = "Unit";
-            this.lblUnit.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.btnScanEnd.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.btnScanEnd.Font = new System.Drawing.Font("맑은 고딕", 11.25F, System.Drawing.FontStyle.Bold);
+            this.btnScanEnd.ForeColor = System.Drawing.Color.White;
+            this.btnScanEnd.Location = new System.Drawing.Point(429, 3);
+            this.btnScanEnd.Name = "btnScanEnd";
+            this.btnScanEnd.Size = new System.Drawing.Size(94, 81);
+            this.btnScanEnd.TabIndex = 12;
+            this.btnScanEnd.Text = "Scan\r\nEnd";
+            this.btnScanEnd.UseVisualStyleBackColor = false;
+            this.btnScanEnd.Click += new System.EventHandler(this.btnScanEnd_Click);
+            // 
+            // btnStandby
+            // 
+            this.btnStandby.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.btnStandby.Font = new System.Drawing.Font("맑은 고딕", 11.25F, System.Drawing.FontStyle.Bold);
+            this.btnStandby.ForeColor = System.Drawing.Color.White;
+            this.btnStandby.Location = new System.Drawing.Point(3, 3);
+            this.btnStandby.Name = "btnStandby";
+            this.btnStandby.Size = new System.Drawing.Size(94, 81);
+            this.btnStandby.TabIndex = 12;
+            this.btnStandby.Text = "Standby";
+            this.btnStandby.UseVisualStyleBackColor = false;
+            this.btnStandby.Click += new System.EventHandler(this.btnStandby_Click);
             // 
             // TeachingPositionListControl
             // 
@@ -188,10 +156,9 @@
             this.Controls.Add(this.tlpTeachingUnitControl);
             this.Font = new System.Drawing.Font("맑은 고딕", 11.25F, System.Drawing.FontStyle.Bold);
             this.Name = "TeachingPositionListControl";
-            this.Size = new System.Drawing.Size(606, 120);
+            this.Size = new System.Drawing.Size(606, 87);
             this.Load += new System.EventHandler(this.TeachingPositionListControl_Load);
             this.tlpTeachingUnitControl.ResumeLayout(false);
-            this.tlpUnitList.ResumeLayout(false);
             this.tlpTeachingPosition.ResumeLayout(false);
             this.ResumeLayout(false);
 
@@ -202,11 +169,9 @@
         private System.Windows.Forms.TableLayoutPanel tlpTeachingUnitControl;
         private System.Windows.Forms.Button btnNext;
         private System.Windows.Forms.Button btnPrev;
-        private System.Windows.Forms.TableLayoutPanel tlpUnitList;
         private System.Windows.Forms.TableLayoutPanel tlpTeachingPosition;
         private System.Windows.Forms.Button btnStandby;
         private System.Windows.Forms.Button btnScanEnd;
         private System.Windows.Forms.Button btnScanStart;
-        private System.Windows.Forms.Label lblUnit;
     }
 }
