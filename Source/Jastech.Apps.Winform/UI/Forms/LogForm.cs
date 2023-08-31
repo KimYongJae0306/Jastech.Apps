@@ -60,6 +60,7 @@ namespace Jastech.Framework.Winform.Forms
         private void LogForm_Load(object sender, EventArgs e)
         {
             InitializeUI();
+            CogDisplayControl.UseAllContextMenu(false);
         }
 
         private void LogForm_FormClosing(object sender, FormClosingEventArgs e)
@@ -294,16 +295,12 @@ namespace Jastech.Framework.Winform.Forms
                 if (tvwLogPath.SelectedNode == null)
                     return;
 
-
                 string basePath = Path.Combine(_selectedPagePath, DateTime.Month.ToString("D2"));
                 string fullPath = Path.Combine(basePath, tvwLogPath.SelectedNode.FullPath);
-
 
                 string extension = Path.GetExtension(fullPath);
                 if (extension == string.Empty)
                     return;
-
-
 
                 DisplaySelectedNode(extension, fullPath);
             }
@@ -376,15 +373,15 @@ namespace Jastech.Framework.Winform.Forms
                 case PageType.AlignTrend:
                     AlignTrendControl.SetAlignResultData(fullPath);
                     AlignTrendControl.SetAlignResultType(AlignResultType.All);
-                    AlignTrendControl.UpdateDataGridView();
                     AlignTrendControl.SetTabType(TabType.Tab1);
+                    AlignTrendControl.UpdateDataGridView();
                     break;
 
                 case PageType.AkkonTrend:
                     AkkonTrendControl.SetAkkonResultData(fullPath);
                     AkkonTrendControl.SetAkkonResultType(AkkonResultType.All);
-                    AkkonTrendControl.UpdateDataGridView();
                     AkkonTrendControl.SetTabType(TabType.Tab1);
+                    AkkonTrendControl.UpdateDataGridView();
                     break;
 
                 case PageType.UPH:
@@ -393,10 +390,9 @@ namespace Jastech.Framework.Winform.Forms
 
                 case PageType.ProcessCapability:
                     ProcessCapabilityControl.SetAlignResultData(fullPath);
-                    ProcessCapabilityControl.UpdateAlignDataGridView();
-                    ProcessCapabilityControl.SetSelectionStartDate(DateTime);
+                    ProcessCapabilityControl.SetAlignResultType(AlignResultType.All);
                     ProcessCapabilityControl.SetTabType(TabType.Tab1);
-                    ProcessCapabilityControl.SetAlignResultType(AlignResultType.Lx);
+                    ProcessCapabilityControl.UpdateAlignDataGridView();
                     break;
 
                 default:

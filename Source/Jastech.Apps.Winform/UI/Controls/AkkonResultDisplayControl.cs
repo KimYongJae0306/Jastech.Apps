@@ -66,7 +66,7 @@ namespace ATT_UT_IPAD.UI.Controls
         {
             InspDisplayControl = new CogInspDisplayControl();
             InspDisplayControl.Dock = DockStyle.Fill;
-            InspDisplayControl.UseAllContextMenu(true);
+            InspDisplayControl.UseAllContextMenu(false);
 
             pnlInspDisplay.Controls.Add(InspDisplayControl);
         }

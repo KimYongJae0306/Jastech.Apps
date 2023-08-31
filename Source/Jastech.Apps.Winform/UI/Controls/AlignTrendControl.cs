@@ -21,9 +21,13 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         private List<Label> _tabLabelList = new List<Label>();
 
+        private List<Label> _alignTypeLabelList = new List<Label>();
+
         private TabType _tabType { get; set; } = TabType.Tab1;
 
         private AlignResultType _alignResultType { get; set; } = AlignResultType.All;
+
+        private List<TrendResult> _alignTrendResults { get; set; } = new List<TrendResult>();
         #endregion
 
         #region 속성
@@ -50,6 +54,7 @@ namespace Jastech.Apps.Winform.UI.Controls
             ChartControl.Dock = DockStyle.Fill;
             ChartControl.ChartType = ResultChartControl.InspChartType.Align;
             pnlChart.Controls.Add(ChartControl);
+            _alignTypeLabelList.AddRange(new Label[] { lblAllData, lblLx, lblLy, lblCx, lblRx, lblRy });
         }
 
         private void InitializeUI()
@@ -121,148 +126,84 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         public void SetTabType(TabType tabType)
         {
-            ClearSelectedTabLabel();
+            ClearSelectedLabel(pnlTabs);
             _tabType = tabType;
-
             _tabLabelList[(int)tabType].BackColor = _selectedColor;
             
             UpdateChart(_tabType, _alignResultType);
         }
 
-        private void ClearSelectedTabLabel()
-        {
-            foreach (Control control in pnlTabs.Controls)
-            {
-                if (control is Label)
-                    control.BackColor = _nonSelectedColor;
-            }
-        }
-
-        private void lblAllData_Click(object sender, EventArgs e)
-        {
-            SetAlignResultType(AlignResultType.All);
-        }
-
-        private void lblLx_Click(object sender, EventArgs e)
-        {
-            SetAlignResultType(AlignResultType.Lx);
-        }
-
-        private void lblLy_Click(object sender, EventArgs e)
-        {
-            SetAlignResultType(AlignResultType.Ly);
-        }
-
-        private void lblCx_Click(object sender, EventArgs e)
-        {
-            SetAlignResultType(AlignResultType.Cx);
-        }
-
-        private void lblRx_Click(object sender, EventArgs e)
-        {
-            SetAlignResultType(AlignResultType.Rx);
-        }
-
-        private void lblRy_Click(object sender, EventArgs e)
-        {
-            SetAlignResultType(AlignResultType.Ry);
-        }
-
         public void SetAlignResultType(AlignResultType alignResultType)
         {
+            ClearSelectedLabel(pnlChartTypes);
             _alignResultType = alignResultType;
-            UpdateSelectedAlignResultType(alignResultType);
+
+            _alignTypeLabelList[(int)alignResultType].BackColor = _selectedColor;
             UpdateChart(_tabType, alignResultType);
         }
 
-        private void UpdateSelectedAlignResultType(AlignResultType alignResultType)
+        private void ClearSelectedLabel(Panel panel)
         {
-            ClearSelectedAlignTypeLabel();
-
-            switch (alignResultType)
+            foreach (Control control in panel.Controls)
             {
-                case AlignResultType.All:
-                    lblAllData.BackColor = _selectedColor;
-                    break;
-
-                case AlignResultType.Lx:
-                    lblLx.BackColor = _selectedColor;
-                    break;
-
-                case AlignResultType.Ly:
-                    lblLy.BackColor = _selectedColor;
-                    break;
-
-                case AlignResultType.Cx:
-                    lblCx.BackColor = _selectedColor;
-                    break;
-
-                case AlignResultType.Rx:
-                    lblRx.BackColor = _selectedColor;   
-                    break;
-
-                case AlignResultType.Ry:
-                    lblRy.BackColor = _selectedColor;
-                    break;
-
-                default:
-                    break;
+                if (control is Label label)
+                    label.BackColor = _nonSelectedColor;
             }
         }
 
-        private void ClearSelectedAlignTypeLabel()
-        {
-            foreach (Control control in pnlChartTypes.Controls)
-            {
-                if (control is Label)
-                    control.BackColor = _nonSelectedColor;
-            }
-        }
-        
-        private void UpdateChart(TabType tabType, AlignResultType alignResultType)
-        {
-            ChartControl.UpdateAlignChart(_alignTrendResults, tabType, alignResultType);
-        }
+        private void lblAllData_Click(object sender, EventArgs e) => SetAlignResultType(AlignResultType.All);
 
-        private List<TrendResult> _alignTrendResults { get; set; } = new List<TrendResult>();
+        private void lblLx_Click(object sender, EventArgs e) => SetAlignResultType(AlignResultType.Lx);
+
+        private void lblLy_Click(object sender, EventArgs e) => SetAlignResultType(AlignResultType.Ly);
+
+        private void lblCx_Click(object sender, EventArgs e) => SetAlignResultType(AlignResultType.Cx);
+
+        private void lblRx_Click(object sender, EventArgs e) => SetAlignResultType(AlignResultType.Rx);
+
+        private void lblRy_Click(object sender, EventArgs e) => SetAlignResultType(AlignResultType.Ry);
+
+        private void UpdateChart(TabType tabType, AlignResultType alignResultType) => ChartControl.UpdateAlignChart(_alignTrendResults, tabType, alignResultType);
 
         public void UpdateDataGridView()
         {
             dgvAlignTrendData.Rows.Clear();
-            for (int rowIndex = 1; rowIndex < _alignTrendResults.Count; rowIndex++)
+            for (int rowIndex = 0; rowIndex < _alignTrendResults.Count; rowIndex++)
                 dgvAlignTrendData.Rows.Add(_alignTrendResults[rowIndex].GetAlignStringDatas().ToArray());
         }
 
         public void SetAlignResultData(string path)
         {
-            List<string[]> texts = new List<string[]>();
+            List<string[]> readTexts = new List<string[]>();
             foreach (string textLine in File.ReadAllLines(path))
-                texts.Add(textLine.Split(','));
+                readTexts.Add(textLine.Split(','));
 
             var inspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
 
             _alignTrendResults.Clear();
-            for (int rowIndex = 1; rowIndex < texts.Count; rowIndex++)
+            for (int rowIndex = 1; rowIndex < readTexts.Count; rowIndex++)
             {
                 var trendResult = new TrendResult();
-                trendResult.InspectionTime = texts[rowIndex][0];
-                trendResult.PanelID = texts[rowIndex][1];
-                trendResult.StageNo = Convert.ToInt32(texts[rowIndex][2]);
-                trendResult.FinalHead = texts[rowIndex][3];
+                string[] datas = readTexts[rowIndex];
+
+                trendResult.InspectionTime = datas[0];
+                trendResult.PanelID = datas[1];
+                trendResult.StageNo = Convert.ToInt32(datas[2]);
+                trendResult.FinalHead = datas[3];
 
                 for (int colIndex = 0, dataCount = 8; colIndex < inspModel.TabCount; colIndex++)
                 {
                     int columnSkip = colIndex * dataCount;
                     var tabAlignResult = new TabAlignTrendResult
                     {
-                        Tab = Convert.ToInt32(texts[rowIndex][columnSkip + 4]),
-                        Judge = texts[rowIndex][columnSkip + 5],
-                        PreHead = texts[rowIndex][columnSkip + 6],
-                        Lx = Convert.ToDouble(texts[rowIndex][columnSkip + 7]),
-                        Ly = Convert.ToDouble(texts[rowIndex][columnSkip + 8]),
-                        Cx = Convert.ToDouble(texts[rowIndex][columnSkip + 9]),
-                        Rx = Convert.ToDouble(texts[rowIndex][columnSkip + 10]),
-                        Ry = Convert.ToDouble(texts[rowIndex][columnSkip + 11])
+                        Tab = Convert.ToInt32(datas[columnSkip + 4]),
+                        Judge = datas[columnSkip + 5],
+                        PreHead = datas[columnSkip + 6],
+                        Lx = Convert.ToDouble(datas[columnSkip + 7]),
+                        Ly = Convert.ToDouble(datas[columnSkip + 8]),
+                        Cx = Convert.ToDouble(datas[columnSkip + 9]),
+                        Rx = Convert.ToDouble(datas[columnSkip + 10]),
+                        Ry = Convert.ToDouble(datas[columnSkip + 11])
                     };
                     trendResult.TabAlignResults.Add(tabAlignResult);
                 }

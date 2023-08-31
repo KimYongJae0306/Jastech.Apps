@@ -48,12 +48,15 @@ namespace Jastech.Apps.Winform.UI.Controls
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.pnlTabs = new System.Windows.Forms.Panel();
             this.lblTabSelection = new System.Windows.Forms.Label();
+            this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
+            this.lblResult = new System.Windows.Forms.Label();
             this.tlpAlignTrend.SuspendLayout();
             this.tlpData.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvAlignTrendData)).BeginInit();
             this.tclChartType.SuspendLayout();
             this.pnlChartTypes.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
+            this.tableLayoutPanel1.SuspendLayout();
             this.SuspendLayout();
             // 
             // tlpAlignTrend
@@ -80,19 +83,21 @@ namespace Jastech.Apps.Winform.UI.Controls
             this.tlpData.ColumnCount = 2;
             this.tlpData.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tlpData.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tlpData.Controls.Add(this.dgvAlignTrendData, 1, 0);
             this.tlpData.Controls.Add(this.pnlChart, 0, 0);
+            this.tlpData.Controls.Add(this.tableLayoutPanel1, 1, 0);
             this.tlpData.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tlpData.Location = new System.Drawing.Point(0, 135);
             this.tlpData.Margin = new System.Windows.Forms.Padding(0);
             this.tlpData.Name = "tlpData";
-            this.tlpData.RowCount = 1;
+            this.tlpData.RowCount = 2;
             this.tlpData.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tlpData.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 45F));
             this.tlpData.Size = new System.Drawing.Size(860, 405);
             this.tlpData.TabIndex = 3;
             // 
             // dgvAlignTrendData
             // 
+            this.dgvAlignTrendData.AllowUserToAddRows = false;
             this.dgvAlignTrendData.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
             this.dgvAlignTrendData.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
             dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
@@ -114,12 +119,12 @@ namespace Jastech.Apps.Winform.UI.Controls
             this.dgvAlignTrendData.DefaultCellStyle = dataGridViewCellStyle2;
             this.dgvAlignTrendData.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgvAlignTrendData.EnableHeadersVisualStyles = false;
-            this.dgvAlignTrendData.Location = new System.Drawing.Point(433, 3);
+            this.dgvAlignTrendData.Location = new System.Drawing.Point(3, 33);
             this.dgvAlignTrendData.Name = "dgvAlignTrendData";
             this.dgvAlignTrendData.ReadOnly = true;
             this.dgvAlignTrendData.RowHeadersVisible = false;
             this.dgvAlignTrendData.RowTemplate.Height = 23;
-            this.dgvAlignTrendData.Size = new System.Drawing.Size(424, 399);
+            this.dgvAlignTrendData.Size = new System.Drawing.Size(418, 318);
             this.dgvAlignTrendData.TabIndex = 0;
             // 
             // pnlChart
@@ -128,6 +133,7 @@ namespace Jastech.Apps.Winform.UI.Controls
             this.pnlChart.Location = new System.Drawing.Point(0, 0);
             this.pnlChart.Margin = new System.Windows.Forms.Padding(0);
             this.pnlChart.Name = "pnlChart";
+            this.tlpData.SetRowSpan(this.pnlChart, 2);
             this.pnlChart.Size = new System.Drawing.Size(430, 405);
             this.pnlChart.TabIndex = 1;
             // 
@@ -282,6 +288,34 @@ namespace Jastech.Apps.Winform.UI.Controls
             this.lblTabSelection.Text = "Tab Selection";
             this.lblTabSelection.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
+            // tableLayoutPanel1
+            // 
+            this.tableLayoutPanel1.ColumnCount = 1;
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel1.Controls.Add(this.lblResult, 0, 0);
+            this.tableLayoutPanel1.Controls.Add(this.dgvAlignTrendData, 0, 1);
+            this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel1.Location = new System.Drawing.Point(433, 3);
+            this.tableLayoutPanel1.Name = "tableLayoutPanel1";
+            this.tableLayoutPanel1.RowCount = 2;
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(424, 354);
+            this.tableLayoutPanel1.TabIndex = 2;
+            // 
+            // lblResult
+            // 
+            this.lblResult.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(32)))), ((int)(((byte)(32)))), ((int)(((byte)(32)))));
+            this.lblResult.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblResult.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblResult.Location = new System.Drawing.Point(0, 0);
+            this.lblResult.Margin = new System.Windows.Forms.Padding(0);
+            this.lblResult.Name = "lblResult";
+            this.lblResult.Size = new System.Drawing.Size(424, 30);
+            this.lblResult.TabIndex = 8;
+            this.lblResult.Text = "Align Result";
+            this.lblResult.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
             // AlignTrendControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
@@ -299,6 +333,7 @@ namespace Jastech.Apps.Winform.UI.Controls
             this.tclChartType.ResumeLayout(false);
             this.pnlChartTypes.ResumeLayout(false);
             this.tableLayoutPanel2.ResumeLayout(false);
+            this.tableLayoutPanel1.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -321,5 +356,7 @@ namespace Jastech.Apps.Winform.UI.Controls
         private System.Windows.Forms.TableLayoutPanel tclChartType;
         private System.Windows.Forms.Label lblChartType;
         private System.Windows.Forms.Panel pnlTabs;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
+        private System.Windows.Forms.Label lblResult;
     }
 }

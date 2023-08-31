@@ -30,8 +30,8 @@ namespace Jastech.Apps.Winform.UI.Controls
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
             this.tlpAkkonTrend = new System.Windows.Forms.TableLayoutPanel();
             this.tlpData = new System.Windows.Forms.TableLayoutPanel();
             this.pnlChart = new System.Windows.Forms.Panel();
@@ -41,16 +41,19 @@ namespace Jastech.Apps.Winform.UI.Controls
             this.pnlTabs = new System.Windows.Forms.Panel();
             this.tplChartType = new System.Windows.Forms.TableLayoutPanel();
             this.pnlChartTypes = new System.Windows.Forms.Panel();
-            this.lblAkkon = new System.Windows.Forms.Label();
+            this.lblAllData = new System.Windows.Forms.Label();
             this.lblCount = new System.Windows.Forms.Label();
             this.lblLength = new System.Windows.Forms.Label();
             this.lblChartType = new System.Windows.Forms.Label();
+            this.tlpAkkonResult = new System.Windows.Forms.TableLayoutPanel();
+            this.lblResult = new System.Windows.Forms.Label();
             this.tlpAkkonTrend.SuspendLayout();
             this.tlpData.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvAkkonTrendData)).BeginInit();
             this.tlpTabList.SuspendLayout();
             this.tplChartType.SuspendLayout();
             this.pnlChartTypes.SuspendLayout();
+            this.tlpAkkonResult.SuspendLayout();
             this.SuspendLayout();
             // 
             // tlpAkkonTrend
@@ -78,13 +81,14 @@ namespace Jastech.Apps.Winform.UI.Controls
             this.tlpData.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tlpData.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tlpData.Controls.Add(this.pnlChart, 0, 0);
-            this.tlpData.Controls.Add(this.dgvAkkonTrendData, 1, 0);
+            this.tlpData.Controls.Add(this.tlpAkkonResult, 1, 0);
             this.tlpData.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tlpData.Location = new System.Drawing.Point(0, 135);
             this.tlpData.Margin = new System.Windows.Forms.Padding(0);
             this.tlpData.Name = "tlpData";
-            this.tlpData.RowCount = 1;
+            this.tlpData.RowCount = 2;
             this.tlpData.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tlpData.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 45F));
             this.tlpData.Size = new System.Drawing.Size(860, 405);
             this.tlpData.TabIndex = 3;
             // 
@@ -94,38 +98,41 @@ namespace Jastech.Apps.Winform.UI.Controls
             this.pnlChart.Location = new System.Drawing.Point(0, 0);
             this.pnlChart.Margin = new System.Windows.Forms.Padding(0);
             this.pnlChart.Name = "pnlChart";
+            this.tlpData.SetRowSpan(this.pnlChart, 2);
             this.pnlChart.Size = new System.Drawing.Size(430, 405);
             this.pnlChart.TabIndex = 2;
             // 
             // dgvAkkonTrendData
             // 
+            this.dgvAkkonTrendData.AllowUserToAddRows = false;
+            this.dgvAkkonTrendData.AllowUserToDeleteRows = false;
             this.dgvAkkonTrendData.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
             this.dgvAkkonTrendData.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle1.BackColor = System.Drawing.Color.Black;
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("맑은 고딕", 11.25F, System.Drawing.FontStyle.Bold);
-            dataGridViewCellStyle1.ForeColor = System.Drawing.Color.White;
-            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(104)))), ((int)(((byte)(104)))), ((int)(((byte)(104)))));
-            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgvAkkonTrendData.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle3.BackColor = System.Drawing.Color.Black;
+            dataGridViewCellStyle3.Font = new System.Drawing.Font("맑은 고딕", 11.25F, System.Drawing.FontStyle.Bold);
+            dataGridViewCellStyle3.ForeColor = System.Drawing.Color.White;
+            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(104)))), ((int)(((byte)(104)))), ((int)(((byte)(104)))));
+            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvAkkonTrendData.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle3;
             this.dgvAkkonTrendData.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
-            dataGridViewCellStyle2.Font = new System.Drawing.Font("맑은 고딕", 11.25F, System.Drawing.FontStyle.Bold);
-            dataGridViewCellStyle2.ForeColor = System.Drawing.Color.White;
-            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(104)))), ((int)(((byte)(104)))), ((int)(((byte)(104)))));
-            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgvAkkonTrendData.DefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle4.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
+            dataGridViewCellStyle4.Font = new System.Drawing.Font("맑은 고딕", 11.25F, System.Drawing.FontStyle.Bold);
+            dataGridViewCellStyle4.ForeColor = System.Drawing.Color.White;
+            dataGridViewCellStyle4.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(104)))), ((int)(((byte)(104)))), ((int)(((byte)(104)))));
+            dataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvAkkonTrendData.DefaultCellStyle = dataGridViewCellStyle4;
             this.dgvAkkonTrendData.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgvAkkonTrendData.EnableHeadersVisualStyles = false;
-            this.dgvAkkonTrendData.Location = new System.Drawing.Point(433, 3);
+            this.dgvAkkonTrendData.Location = new System.Drawing.Point(3, 33);
             this.dgvAkkonTrendData.Name = "dgvAkkonTrendData";
             this.dgvAkkonTrendData.ReadOnly = true;
             this.dgvAkkonTrendData.RowHeadersVisible = false;
             this.dgvAkkonTrendData.RowTemplate.Height = 23;
-            this.dgvAkkonTrendData.Size = new System.Drawing.Size(424, 399);
+            this.dgvAkkonTrendData.Size = new System.Drawing.Size(418, 318);
             this.dgvAkkonTrendData.TabIndex = 0;
             // 
             // tlpTabList
@@ -182,7 +189,7 @@ namespace Jastech.Apps.Winform.UI.Controls
             // 
             // pnlChartTypes
             // 
-            this.pnlChartTypes.Controls.Add(this.lblAkkon);
+            this.pnlChartTypes.Controls.Add(this.lblAllData);
             this.pnlChartTypes.Controls.Add(this.lblCount);
             this.pnlChartTypes.Controls.Add(this.lblLength);
             this.pnlChartTypes.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -192,17 +199,17 @@ namespace Jastech.Apps.Winform.UI.Controls
             this.pnlChartTypes.Size = new System.Drawing.Size(734, 54);
             this.pnlChartTypes.TabIndex = 8;
             // 
-            // lblAkkon
+            // lblAllData
             // 
-            this.lblAkkon.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.lblAkkon.Location = new System.Drawing.Point(20, 0);
-            this.lblAkkon.Margin = new System.Windows.Forms.Padding(20, 0, 0, 0);
-            this.lblAkkon.Name = "lblAkkon";
-            this.lblAkkon.Size = new System.Drawing.Size(100, 54);
-            this.lblAkkon.TabIndex = 0;
-            this.lblAkkon.Text = "All Data";
-            this.lblAkkon.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.lblAkkon.Click += new System.EventHandler(this.lblAllData_Click);
+            this.lblAllData.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.lblAllData.Location = new System.Drawing.Point(20, 0);
+            this.lblAllData.Margin = new System.Windows.Forms.Padding(20, 0, 0, 0);
+            this.lblAllData.Name = "lblAllData";
+            this.lblAllData.Size = new System.Drawing.Size(100, 54);
+            this.lblAllData.TabIndex = 0;
+            this.lblAllData.Text = "All Data";
+            this.lblAllData.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblAllData.Click += new System.EventHandler(this.lblAllData_Click);
             // 
             // lblCount
             // 
@@ -241,6 +248,34 @@ namespace Jastech.Apps.Winform.UI.Controls
             this.lblChartType.Text = "Chart Type";
             this.lblChartType.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
+            // tlpAkkonResult
+            // 
+            this.tlpAkkonResult.ColumnCount = 1;
+            this.tlpAkkonResult.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tlpAkkonResult.Controls.Add(this.lblResult, 0, 0);
+            this.tlpAkkonResult.Controls.Add(this.dgvAkkonTrendData, 0, 1);
+            this.tlpAkkonResult.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tlpAkkonResult.Location = new System.Drawing.Point(433, 3);
+            this.tlpAkkonResult.Name = "tlpAkkonResult";
+            this.tlpAkkonResult.RowCount = 2;
+            this.tlpAkkonResult.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
+            this.tlpAkkonResult.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tlpAkkonResult.Size = new System.Drawing.Size(424, 354);
+            this.tlpAkkonResult.TabIndex = 3;
+            // 
+            // lblResult
+            // 
+            this.lblResult.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(26)))), ((int)(((byte)(26)))), ((int)(((byte)(26)))));
+            this.lblResult.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblResult.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblResult.Location = new System.Drawing.Point(0, 0);
+            this.lblResult.Margin = new System.Windows.Forms.Padding(0);
+            this.lblResult.Name = "lblResult";
+            this.lblResult.Size = new System.Drawing.Size(424, 30);
+            this.lblResult.TabIndex = 8;
+            this.lblResult.Text = "Akkon Result";
+            this.lblResult.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
             // AkkonTrendControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
@@ -258,6 +293,7 @@ namespace Jastech.Apps.Winform.UI.Controls
             this.tlpTabList.ResumeLayout(false);
             this.tplChartType.ResumeLayout(false);
             this.pnlChartTypes.ResumeLayout(false);
+            this.tlpAkkonResult.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -267,7 +303,7 @@ namespace Jastech.Apps.Winform.UI.Controls
         private System.Windows.Forms.TableLayoutPanel tlpAkkonTrend;
         private System.Windows.Forms.Label lblLength;
         private System.Windows.Forms.Label lblCount;
-        private System.Windows.Forms.Label lblAkkon;
+        private System.Windows.Forms.Label lblAllData;
         private System.Windows.Forms.TableLayoutPanel tlpData;
         private DoubleBufferedDatagridView dgvAkkonTrendData;
         private System.Windows.Forms.Panel pnlTabs;
@@ -277,5 +313,7 @@ namespace Jastech.Apps.Winform.UI.Controls
         private System.Windows.Forms.Panel pnlChartTypes;
         private System.Windows.Forms.TableLayoutPanel tlpTabList;
         private System.Windows.Forms.Label lblTabSelection;
+        private System.Windows.Forms.TableLayoutPanel tlpAkkonResult;
+        private System.Windows.Forms.Label lblResult;
     }
 }
