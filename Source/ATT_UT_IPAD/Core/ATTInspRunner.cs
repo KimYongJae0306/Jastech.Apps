@@ -832,7 +832,7 @@ namespace ATT_UT_IPAD.Core
                 float cx = (lx + rx) / 2.0F;
 
                 body.Add($"{tabInspResult.TabNo + 1}");                                     // Tab No
-                body.Add($"{tabInspResult.Judgement}");                                     // Judge
+                body.Add($"{alignResult.Judgement}");                                       // Judge
                 body.Add($"{preHead}");                                                     // Pre Head
                 body.Add($"{lx:F3}");                                                       // Align Lx
                 body.Add($"{ly:F3}");                                                       // Align Ly
@@ -881,7 +881,7 @@ namespace ATT_UT_IPAD.Core
                 float avgLength = (akkonResult.Length_Left_Avg_um + akkonResult.Length_Right_Avg_um) / 2.0F;
 
                 body.Add($"{tabInspResult.TabNo + 1}");                                     // Tab No
-                body.Add($"{tabInspResult.Judgement}");                                     // Judge
+                body.Add($"{akkonResult.Judgement}");                                       // Judge
                 body.Add($"{avgCount}");                                                    // Average Count
                 body.Add($"{avgLength:F3}");                                                // Average Length
 
@@ -966,8 +966,8 @@ namespace ATT_UT_IPAD.Core
                     $"{rx:F3}",                                                             // Right Align X
                     $"{ry:F3}",                                                             // Right Align Y
 
-                    $"{tabAkkonResult.Judgement}",                                          // Akkon Judge
-                    $"{tabAlignResult.Judgement}",                                          // Align Judge
+                    $"{tabAkkonResult.AkkonResult.Judgement}",                                          // Akkon Judge
+                    $"{tabAlignResult.AlignResult.Judgement}",                                          // Align Judge
                 };
 
                 body.Add(tabData);
