@@ -19,6 +19,7 @@ using Jastech.Framework.Device.LAFCtrl;
 using Jastech.Framework.Device.LightCtrls;
 using Jastech.Framework.Device.Motions;
 using Jastech.Framework.Imaging;
+using Jastech.Framework.Imaging.Helper;
 using Jastech.Framework.Imaging.Result;
 using Jastech.Framework.Imaging.VisionPro;
 using Jastech.Framework.Imaging.VisionPro.VisionAlgorithms.Results;
@@ -92,6 +93,10 @@ namespace Jastech.Framework.Winform.Forms
 
         public LAFCtrl LAFCtrl { get; set; } = null;
 
+        public bool UseAlignTeaching { get; set; } = true;
+
+        public bool UseAkkonTeaching { get; set; } = true;
+
         public bool UseAlignMark { get; set; } = false;
 
         protected override CreateParams CreateParams
@@ -147,8 +152,6 @@ namespace Jastech.Framework.Winform.Forms
             lblStageCam.Text = $"STAGE : {UnitName} / CAM : {LineCamera.Camera.Name}";
 
             LineCamera.GrabDoneEventHandler += InspectionTeachingForm_GrabDoneEventHandler;
-            if (UseDelayStart)
-                LineCamera.GrabDelayStartEventHandler += InspectionTeachingForm_GrabDelayStartEventHandler;
 
             var image = TeachingUIManager.Instance().GetOriginCogImageBuffer(true);
 
@@ -156,32 +159,6 @@ namespace Jastech.Framework.Winform.Forms
                 Display.SetImage(image);
 
             SelectPage(DisplayType.Mark);
-        }
-
-        private void InspectionTeachingForm_GrabDelayStartEventHandler(string cameraName)
-        {
-            LAFCtrl.SetTrackingOnOFF(true);
-        }
-
-        private void InspectionTeachingForm_GrabDoneEventHandler(string cameraName, bool isGrabDone)
-        {
-            int tabNo = Convert.ToInt32(_currentTabNo);
-            UpdateDisplayImage(tabNo);
-        }
-
-        private void UpdateDisplay(ICogImage cogImage)
-        {
-            if (this.InvokeRequired)
-            {
-                UpdateDisplayDele callback = UpdateDisplay;
-                BeginInvoke(callback, cogImage);
-                return;
-            }
-
-            if (cogImage == null)
-                return;
-
-            Display.SetImage(cogImage);
         }
 
         private void InitializeTabComboBox()
@@ -231,22 +208,41 @@ namespace Jastech.Framework.Winform.Forms
             AkkonControl.SetParams(CurrentTab);
             pnlTeach.Controls.Add(AkkonControl);
 
-            // Teaching Item
-            // 임시
-            if (LineCamera.Camera.Name.ToUpper().Contains("ALIGN"))
-            {
-                tlpTeachingItems.Controls.Add(btnAlign, 2, 0);
-                btnAlign.Visible = true;
-                btnAkkon.Visible = false;
-            }
-            else if (LineCamera.Camera.Name.ToUpper().Contains("AKKON"))
-            {
-                tlpTeachingItems.Controls.Add(btnAkkon, 2, 0);
+            if (UseAlignTeaching)
+                tlpTeachingItems.Controls.Add(btnAlign, 2, 0); 
+            else
                 btnAlign.Visible = false;
-                btnAkkon.Visible = true;
-                MarkControl.TeachingItem = TeachingItem.Akkon;
+
+            if (UseAkkonTeaching)
+                tlpTeachingItems.Controls.Add(btnAkkon, 2, 0); 
+            else
+                btnAkkon.Visible = false;
+        }
+
+        private void InspectionTeachingForm_GrabDelayStartEventHandler(string cameraName)
+        {
+            LAFCtrl.SetTrackingOnOFF(true);
+        }
+
+        private void InspectionTeachingForm_GrabDoneEventHandler(string cameraName, bool isGrabDone)
+        {
+            int tabNo = Convert.ToInt32(_currentTabNo);
+            UpdateDisplayImage(tabNo);
+        }
+
+        private void UpdateDisplay(ICogImage cogImage)
+        {
+            if (this.InvokeRequired)
+            {
+                UpdateDisplayDele callback = UpdateDisplay;
+                BeginInvoke(callback, cogImage);
+                return;
             }
-            else { }
+
+            if (cogImage == null)
+                return;
+
+            Display.SetImage(cogImage);
         }
 
         private void Display_DeleteEventHandler(object sender, EventArgs e)
@@ -462,7 +458,6 @@ namespace Jastech.Framework.Winform.Forms
 
             InitalizeInspTab(LineCamera.TabScanBufferList);
 
-
             LAFCtrl.SetTrackingOnOFF(true);
             Thread.Sleep(100);
 
@@ -660,11 +655,11 @@ namespace Jastech.Framework.Winform.Forms
         private void lblInspection_Click(object sender, EventArgs e)
         {
             if (_displayType == DisplayType.Mark)
-                MarkControl.Run();
+                InspectionMark();
             else if (_displayType == DisplayType.Align)
-                AlignControl.Run();
+                InspectionAlign();
             else if (_displayType == DisplayType.Akkon)
-                AkkonControl.Run();
+                InspectionAkkon();
         }
 
         private void lblAddROI_Click(object sender, EventArgs e)
@@ -689,6 +684,9 @@ namespace Jastech.Framework.Winform.Forms
 
         private void lblTracking_Click(object sender, EventArgs e)
         {
+            if (_displayType == DisplayType.Akkon)
+                AkkonControl.SetOrginImageView();
+
             if (_isPrevTrackingOn == false)
                 SetTrackingOnOff(true);
             else
@@ -714,8 +712,18 @@ namespace Jastech.Framework.Winform.Forms
             }
 
             _tabInspResult = new TabInspResult();
-            _tabInspResult.MarkResult.FpcMark = _algorithmTool.RunFpcMark(cogImage, CurrentTab, UseAlignMark);
-            _tabInspResult.MarkResult.PanelMark = _algorithmTool.RunPanelMark(cogImage, CurrentTab, UseAlignMark);
+            if (UseAkkonTeaching && UseAlignTeaching == false)
+            {
+                _tabInspResult.MarkResult.FpcMark = new MarkResult();
+                _tabInspResult.MarkResult.FpcMark.Judgement = Judgement.OK;
+
+                _tabInspResult.MarkResult.PanelMark = _algorithmTool.RunPanelMark(cogImage, CurrentTab, false);
+            }
+            else
+            {
+                _tabInspResult.MarkResult.FpcMark = _algorithmTool.RunFpcMark(cogImage, CurrentTab, UseAlignMark);
+                _tabInspResult.MarkResult.PanelMark = _algorithmTool.RunPanelMark(cogImage, CurrentTab, UseAlignMark);
+            }
 
             var coordinate = TeachingData.Instance().Coordinate;
             var markResult = _tabInspResult.MarkResult;
@@ -757,7 +765,10 @@ namespace Jastech.Framework.Winform.Forms
 
 
             if (_displayType == DisplayType.Akkon)
+            {
                 AkkonControl.DrawROI();
+                AkkonControl.SetParams(CurrentTab);
+            }
             else if (_displayType == DisplayType.Align)
                 AlignControl.DrawROI();
             else { }
@@ -765,25 +776,25 @@ namespace Jastech.Framework.Winform.Forms
             _isPrevTrackingOn = isOn;
         }
 
-        private MarkParam SetCoordinateMark(MarkParam param, VisionProPatternMatchingResult result)
-        {
-            var newParam = param.DeepCopy();
+        //private MarkParam SetCoordinateMark(MarkParam param, VisionProPatternMatchingResult result)
+        //{
+        //    var newParam = param.DeepCopy();
 
-            CogTransform2DLinear newOrigin = new CogTransform2DLinear();
-            newOrigin.TranslationX = result.MaxMatchPos.FoundPos.X;
-            newOrigin.TranslationY = result.MaxMatchPos.FoundPos.Y;
-            newParam.InspParam.SetOrigin(newOrigin);
+        //    CogTransform2DLinear newOrigin = new CogTransform2DLinear();
+        //    newOrigin.TranslationX = result.MaxMatchPos.FoundPos.X;
+        //    newOrigin.TranslationY = result.MaxMatchPos.FoundPos.Y;
+        //    newParam.InspParam.SetOrigin(newOrigin);
 
-            CogRectangle newTrainRegion = new CogRectangle(newParam.InspParam.GetTrainRegion() as CogRectangle);
-            newTrainRegion.SetCenterWidthHeight(newOrigin.TranslationX, newOrigin.TranslationY, newTrainRegion.Width, newTrainRegion.Height);
-            newParam.InspParam.SetTrainRegion(newTrainRegion);
+        //    CogRectangle newTrainRegion = new CogRectangle(newParam.InspParam.GetTrainRegion() as CogRectangle);
+        //    newTrainRegion.SetCenterWidthHeight(newOrigin.TranslationX, newOrigin.TranslationY, newTrainRegion.Width, newTrainRegion.Height);
+        //    newParam.InspParam.SetTrainRegion(newTrainRegion);
 
-            CogRectangle newSearchRegion = new CogRectangle(newParam.InspParam.GetSearchRegion() as CogRectangle);
-            newSearchRegion.SetCenterWidthHeight(newOrigin.TranslationX, newOrigin.TranslationY, newSearchRegion.Width, newSearchRegion.Height);
-            newParam.InspParam.SetSearchRegion(newSearchRegion);
+        //    CogRectangle newSearchRegion = new CogRectangle(newParam.InspParam.GetSearchRegion() as CogRectangle);
+        //    newSearchRegion.SetCenterWidthHeight(newOrigin.TranslationX, newOrigin.TranslationY, newSearchRegion.Width, newSearchRegion.Height);
+        //    newParam.InspParam.SetSearchRegion(newSearchRegion);
 
-            return newParam;
-        }
+        //    return newParam;
+        //}
 
         private void lblStageCam_Click(object sender, EventArgs e)
         {
@@ -801,6 +812,205 @@ namespace Jastech.Framework.Winform.Forms
             ROICopyForm form = new ROICopyForm();
             form.SetUnitName(UnitName.Unit0);
             form.ShowDialog();
+        }
+
+        public void InspectionMark()
+        {
+            var display = TeachingUIManager.Instance().TeachingDisplayControl.GetDisplay();
+            if (display == null)
+                return;
+
+            ICogImage cogImage = display.GetImage();
+            if (cogImage == null)
+                return;
+
+            display.ClearGraphic();
+            display.DisplayRefresh();
+
+            MainAlgorithmTool algorithmTool = new MainAlgorithmTool();
+            TabInspResult tabInspResult = new TabInspResult();
+
+            if(UseAkkonTeaching && UseAlignTeaching == false)
+                algorithmTool.MainPanelMarkInspect(cogImage, CurrentTab, ref tabInspResult);
+            else
+                algorithmTool.MainMarkInspect(cogImage, CurrentTab, ref tabInspResult, UseAlignMark);
+
+            if (tabInspResult.MarkResult.Judgement != Judgement.OK)
+            {
+                // 검사 실패
+                string message = string.Format("Mark Insp NG !!! Tab_{0} / Fpc_{1}, Panel_{2}", CurrentTab.Index,
+                    tabInspResult.MarkResult.FpcMark.Judgement, tabInspResult.MarkResult.PanelMark.Judgement);
+
+                MessageConfirmForm form = new MessageConfirmForm();
+                form.Message = message;
+                form.ShowDialog();
+            }
+            display.ClearGraphic();
+            display.UpdateGraphic(GetMarkResultGrapics(tabInspResult));
+        }
+
+
+        public void InspectionAlign()
+        {
+            var display = TeachingUIManager.Instance().TeachingDisplayControl.GetDisplay();
+            if (display == null)
+                return;
+
+            ICogImage cogImage = display.GetImage();
+            if (cogImage == null)
+                return;
+
+            display.ClearGraphic();
+            display.DisplayRefresh();
+
+            MainAlgorithmTool algorithmTool = new MainAlgorithmTool();
+            TabInspResult tabInspResult = new TabInspResult();
+
+            var camera = LineCamera.Camera;
+            double resolution_um = camera.PixelResolution_um / camera.LensScale;
+
+            double judgementX = CurrentTab.AlignSpec.LeftSpecX_um / resolution_um;
+            double judgementY = CurrentTab.AlignSpec.LeftSpecY_um / resolution_um;
+
+            tabInspResult.AlignResult.LeftX = algorithmTool.RunMainLeftAlignX(cogImage, CurrentTab, new PointF(0, 0), new PointF(0, 0), judgementX);
+            tabInspResult.AlignResult.LeftY = algorithmTool.RunMainLeftAlignY(cogImage, CurrentTab, new PointF(0, 0), new PointF(0, 0), judgementY);
+            tabInspResult.AlignResult.RightX = algorithmTool.RunMainRightAlignX(cogImage, CurrentTab, new PointF(0, 0), new PointF(0, 0), judgementX);
+            tabInspResult.AlignResult.RightY = algorithmTool.RunMainRightAlignY(cogImage, CurrentTab, new PointF(0, 0), new PointF(0, 0), judgementY);
+
+            display.ClearGraphic();
+
+            List<CogCompositeShape> shapeList = new List<CogCompositeShape>();
+
+            shapeList.AddRange(GetMarkResultGrapics(tabInspResult));
+
+            shapeList.AddRange(GetAlignResultGraphics(tabInspResult.AlignResult.LeftX));
+            shapeList.AddRange(GetAlignResultGraphics(tabInspResult.AlignResult.LeftY));
+            shapeList.AddRange(GetAlignResultGraphics(tabInspResult.AlignResult.RightX));
+            shapeList.AddRange(GetAlignResultGraphics(tabInspResult.AlignResult.RightY));
+
+            display.UpdateGraphic(shapeList);
+            AlignControl.UpdateData(tabInspResult);
+        }
+
+        public void InspectionAkkon()
+        {
+            var display = TeachingUIManager.Instance().TeachingDisplayControl.GetDisplay();
+            if (display == null)
+                return;
+
+            ICogImage cogImage = display.GetImage();
+            if (cogImage == null)
+                return;
+
+            Mat matImage = TeachingUIManager.Instance().GetOriginMatImageBuffer(false);
+            if (matImage == null)
+                return;
+
+            ICogImage orgCogImage = TeachingUIManager.Instance().GetOriginCogImageBuffer(false);
+
+            MainAlgorithmTool algorithmTool = new MainAlgorithmTool();
+            TabInspResult tabInspResult = new TabInspResult();
+
+            var akkonParam = CurrentTab.AkkonParam.AkkonAlgoritmParam;
+
+            var roiList = CurrentTab.AkkonParam.GetAkkonROIList();
+
+            Judgement tabJudgement = Judgement.NG;
+
+            var camera = LineCamera.Camera;
+            double resolution_um = camera.PixelResolution_um / camera.LensScale;
+
+            var akkonAlgorithm = AkkonControl.AkkonAlgorithm;
+            akkonAlgorithm.UseOverCount = AppsConfig.Instance().EnableTest2;
+            var leadResultList = akkonAlgorithm.Run(matImage, roiList, akkonParam, (float)resolution_um, ref tabJudgement);
+            tabInspResult.AkkonResult = new Framework.Algorithms.Akkon.Results.AkkonResult();
+            tabInspResult.AkkonResult.Judgement = tabJudgement;
+            tabInspResult.AkkonInspMatImage = akkonAlgorithm.ResizeMat;
+
+            Mat resultMat = AkkonControl.GetResultImage(matImage, leadResultList, akkonParam, ref tabInspResult.AkkonNGAffineList);
+            tabInspResult.AkkonResultCogImage = AkkonControl.ConvertCogColorImage(resultMat);
+
+            Mat resizeMat = MatHelper.Resize(matImage, akkonParam.ImageFilterParam.ResizeRatio);
+            var akkonCogImage = AkkonControl.ConvertCogGrayImage(resizeMat);
+            TeachingUIManager.Instance().SetAkkonCogImage(akkonCogImage);
+
+            var resultCogImage = AkkonControl.ConvertCogColorImage(resultMat);
+            TeachingUIManager.Instance().SetResultCogImage(resultCogImage, tabInspResult.AkkonNGAffineList);
+
+            resizeMat.Dispose();
+            resultMat.Dispose();
+            display.ClearGraphic();
+
+            AkkonControl.InspectionDoneUI();
+        }
+
+        private List<CogCompositeShape> GetMarkResultGrapics(TabInspResult tabInspResult)
+        {
+            List<CogCompositeShape> shapeList = new List<CogCompositeShape>();
+
+            if (tabInspResult.MarkResult.FpcMark != null)
+            {
+                var foundedFpcMark = tabInspResult.MarkResult.FpcMark.FoundedMark;
+                if(foundedFpcMark != null)
+                {
+                    var leftFpc = foundedFpcMark.Left.MaxMatchPos.ResultGraphics;
+
+                    var rightFpc = foundedFpcMark.Right.MaxMatchPos.ResultGraphics;
+
+                    if (foundedFpcMark.Left.Found)
+                        shapeList.Add(leftFpc);
+
+                    if (foundedFpcMark.Right.Found)
+                        shapeList.Add(rightFpc);
+                }
+            }
+
+            if (tabInspResult.MarkResult.PanelMark != null)
+            {
+                var foundedPanelMark = tabInspResult.MarkResult.PanelMark.FoundedMark;
+                if(foundedPanelMark != null)
+                {
+                    var leftPanel = foundedPanelMark.Left.MaxMatchPos.ResultGraphics;
+                    var rightPanel = foundedPanelMark.Right.MaxMatchPos.ResultGraphics;
+
+                    if (foundedPanelMark.Left.Found)
+                        shapeList.Add(leftPanel);
+                    if (foundedPanelMark.Right.Found)
+                        shapeList.Add(rightPanel);
+                }
+            }
+
+            return shapeList;
+        }
+
+        private List<CogCompositeShape> GetAlignResultGraphics(AlignResult alignResult)
+        {
+            List<CogCompositeShape> shapeList = new List<CogCompositeShape>();
+            if (alignResult.Fpc.CogAlignResult.Count() > 0)
+            {
+                foreach (var result in alignResult.Fpc.CogAlignResult)
+                {
+                    if (result != null)
+                    {
+                        if (result.Found)
+                            shapeList.Add(result.MaxCaliperMatch.ResultGraphics);
+                    }
+                }
+            }
+
+            if (alignResult.Panel.CogAlignResult.Count() > 0)
+            {
+                foreach (var result in alignResult.Panel.CogAlignResult)
+                {
+                    if (result != null)
+                    {
+                        if (result.Found)
+                            shapeList.Add(result.MaxCaliperMatch.ResultGraphics);
+                    }
+                }
+            }
+
+            return shapeList;
         }
         #endregion
     }

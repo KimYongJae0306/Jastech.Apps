@@ -94,10 +94,10 @@ namespace Jastech.Apps.Winform.Service
         public Judgement Judgement { get; set; } = Judgement.FAIL;
 
         [JsonProperty]
-        public string PreHead { get; set; } = "pre";//string.Empty;
+        public string PreHead { get; set; } = "0";//string.Empty;
 
         [JsonProperty]
-        public string FinalHead { get; set; } = "final";//string.Empty;
+        public string FinalHead { get; set; } = "0";//string.Empty;
 
         [JsonProperty]
         public float LX { get; set; } = 0.0f;

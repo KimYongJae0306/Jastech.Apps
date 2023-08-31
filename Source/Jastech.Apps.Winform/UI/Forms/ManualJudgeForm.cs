@@ -17,10 +17,12 @@ namespace Jastech.Apps.Winform.UI.Forms
     {
         #region 필드
         private bool _onFocus { get; set; } = false;
+
+        private Point _mousePoint;
         #endregion
 
         #region 속성
-        public string Message { get; set; } = string.Empty;
+        public string Message { get; private set; } = string.Empty;
 
         private Judgement Judgement { get; set; } = Judgement.NG;
         #endregion
@@ -29,6 +31,7 @@ namespace Jastech.Apps.Winform.UI.Forms
         #endregion
 
         #region 델리게이트
+        //private delegate void UpdateMessageDelegate(string message);
         #endregion
 
         #region 생성자
@@ -64,9 +67,26 @@ namespace Jastech.Apps.Winform.UI.Forms
             }
         }
 
+        //public void UpdateJudgeMessage(string message)
+        //{
+        //    if (this.InvokeRequired)
+        //    {
+        //        UpdateMessageDelegate callback = UpdateJudgeMessage;
+        //        BeginInvoke(callback, message);
+        //        return;
+        //    }
+
+        //    UpdateMessage(message);
+        //}
+
         private void UpdateMessage()
         {
             lblMessage.Text = Message;
+        }
+
+        public void SetMessage(string message)
+        {
+            Message = message;
         }
 
         private void lblOK_Click(object sender, EventArgs e)
@@ -99,9 +119,35 @@ namespace Jastech.Apps.Winform.UI.Forms
             _onFocus = true;
         }
 
+        private void lblFail_Click(object sender, EventArgs e)
+        {
+            _onFocus = false;
+
+            MessageYesNoForm form = new MessageYesNoForm();
+            form.Message = "Will it be decided as FAIL?";
+            if (form.ShowDialog() == DialogResult.Yes)
+            {
+                Judgement = Judgement.FAIL;
+                this.Hide();
+            }
+
+            _onFocus = true;
+        }
+
         public Judgement GetManualJudgement()
         {
             return Judgement;
+        }
+
+        private void pnlTop_MouseDown(object sender, MouseEventArgs e)
+        {
+            _mousePoint = new Point(e.X, e.Y);
+        }
+
+        private void pnlTop_MouseMove(object sender, MouseEventArgs e)
+        {
+            if ((e.Button & MouseButtons.Left) == MouseButtons.Left)
+                Location = new Point(this.Left - (_mousePoint.X - e.X), this.Top - (_mousePoint.Y - e.Y));
         }
         #endregion
     }

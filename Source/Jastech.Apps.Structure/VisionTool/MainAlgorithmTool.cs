@@ -107,6 +107,15 @@ namespace Jastech.Apps.Structure.VisionTool
             tabInspResult.MarkResult.PanelMark = RunPanelMark(cogImage, tab, useAlignMark);
         }
 
+        public void MainPanelMarkInspect(ICogImage cogImage, Tab tab, ref TabInspResult tabInspResult)
+        {
+            tabInspResult.MarkResult.FpcMark = new MarkResult();
+            tabInspResult.MarkResult.FpcMark.Judgement = Judgement.OK;
+
+            tabInspResult.MarkResult.PanelMark = RunPanelMark(cogImage, tab, false);
+        }
+
+
         public AlignResult RunMainLeftAlignX(ICogImage cogImage, Tab tab, PointF fpcOffset, PointF panelOffset, double judgementX_pixel)
         {
             var fpcParam = tab.GetAlignParam(ATTTabAlignName.LeftFPCX).DeepCopy();
@@ -481,5 +490,12 @@ namespace Jastech.Apps.Structure.VisionTool
         public double FpcDeltaX { get; set; }
 
         public double PanelDeltaX { get; set; }
+    }
+
+    public enum UseMark
+    {
+        Both,
+        Fpc,
+        Panel,
     }
 }

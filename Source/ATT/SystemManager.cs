@@ -214,7 +214,6 @@ namespace ATT
             _mainForm.UpdateAlignResultTabButton(tabNo);
         }
 
-
         //public void UpdateMainResult()
         //{
         //    var inspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
@@ -237,7 +236,7 @@ namespace ATT
 
         public void EnableMainView(bool isEnable)
         {
-            _mainForm.Enabled(isEnable);
+            _mainForm.Enable(isEnable);
         }
 
         public void UpdateMainAlignResult()

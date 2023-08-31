@@ -76,6 +76,8 @@ namespace ATT_UT_IPAD.UI.Pages
             form.UseDelayStart = true;
             form.LAFCtrl = LAFManager.Instance().GetLAF("AlignLaf").LafCtrl;
             form.UseAlignMark = true;
+            form.UseAlignTeaching = true;
+            form.UseAkkonTeaching = false;
             form.InspModelService = ATTInspModelService;
             form.OpenMotionPopupEventHandler += OpenMotionPopupEventHandler;
             form.ShowDialog();
@@ -89,6 +91,8 @@ namespace ATT_UT_IPAD.UI.Pages
             form.LineCamera = LineCameraManager.Instance().GetLineCamera("AkkonCamera");
             form.LAFCtrl = LAFManager.Instance().GetLAF("AkkonLaf").LafCtrl;
             form.UseAlignMark = false;
+            form.UseAlignTeaching = false;
+            form.UseAkkonTeaching = true;
             form.InspModelService = ATTInspModelService;
             form.OpenMotionPopupEventHandler += OpenMotionPopupEventHandler;
             form.ShowDialog();

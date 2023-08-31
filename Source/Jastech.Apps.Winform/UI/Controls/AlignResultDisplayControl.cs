@@ -23,7 +23,7 @@ namespace ATT_UT_IPAD.UI.Controls
 
         private Color _selectedColor;
 
-        private Color _nonSelectedColor;
+        private Color _noneSelectedColor;
 
         private CogColorConstants _fpcColor = CogColorConstants.Purple;
 
@@ -40,6 +40,8 @@ namespace ATT_UT_IPAD.UI.Controls
         private List<PointF>[] LeftPointList { get; set; } = null;
 
         private List<PointF>[] RightPointList { get; set; } = null;
+
+        private bool IsResultImageView { get; set; } = true;
         #endregion
 
         #region 이벤트
@@ -141,7 +143,9 @@ namespace ATT_UT_IPAD.UI.Controls
         private void InitializeUI()
         {
             _selectedColor = Color.FromArgb(104, 104, 104);
-            _nonSelectedColor = Color.FromArgb(52, 52, 52);
+            _noneSelectedColor = Color.FromArgb(52, 52, 52);
+
+            UpdateButton();
 
             AppsInspModel inspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
             if (inspModel == null)
@@ -323,36 +327,42 @@ namespace ATT_UT_IPAD.UI.Controls
         private void UpdateImage(int tabNo)
         {
             var image = TabBtnControlList[tabNo].GetAlignImage();
-            var leftShape = TabBtnControlList[tabNo].GetLeftShapeResult();
-            var rightShape = TabBtnControlList[tabNo].GetRightShapeResult();
 
-            string lx = TabBtnControlList[tabNo].Lx.ToString("F2");
-            string ly = TabBtnControlList[tabNo].Ly.ToString("F2");
-            string rx = TabBtnControlList[tabNo].Rx.ToString("F2");
-            string ry = TabBtnControlList[tabNo].Ry.ToString("F2");
-
-            string cx = ((Convert.ToDouble(lx) + Convert.ToDouble(rx)) / 2.0).ToString("F2");
-
-            //InspAlignDisplay.UpdateLeftDisplay(image, leftShape.CaliperShapeList, leftShape.LineSegmentList, GetCenterPoint(LeftPointList[tabNo]));
-            InspAlignDisplay.UpdateLeftDisplay(image, leftShape.CaliperShapeList, leftShape.LineSegmentList, GetMinimumPointY(LeftPointList[tabNo]));
-            if (InspAlignDisplay.IsLeftResultImageView)
+            if(IsResultImageView == false)
             {
-                InspAlignDisplay.DrawLeftResult("X Align : " + lx + " um", 0);
-                InspAlignDisplay.DrawLeftResult("Y Align : " + ly + " um", 1);
-                InspAlignDisplay.DrawLeftResult("CX Align : " + cx + " um", 2);
+                InspAlignDisplay.UpdateLeftDisplay(image);
+                InspAlignDisplay.UpdateRightDisplay(image);
             }
-
-            //InspAlignDisplay.UpdateRightDisplay(image, rightShape.CaliperShapeList, rightShape.LineSegmentList, GetCenterPoint(RightPointList[tabNo]));
-            InspAlignDisplay.UpdateRightDisplay(image, rightShape.CaliperShapeList, rightShape.LineSegmentList, GetMinimumPointY(RightPointList[tabNo]));
-            if (InspAlignDisplay.IsRightResultImageView)
+            else
             {
-                InspAlignDisplay.DrawRightResult("X Align : " + rx + " um", 0);
-                InspAlignDisplay.DrawRightResult("Y Align : " + ry + " um", 1);
-                InspAlignDisplay.DrawRightResult("CX Align : " + cx + " um", 2);
-            }
+                var leftShape = TabBtnControlList[tabNo].GetLeftShapeResult();
+                var rightShape = TabBtnControlList[tabNo].GetRightShapeResult();
 
-            var centerImage = TabBtnControlList[tabNo].GetCenterImage();
-            InspAlignDisplay.UpdateCenterDisplay(centerImage);
+                string lx = TabBtnControlList[tabNo].Lx.ToString("F2");
+                string ly = TabBtnControlList[tabNo].Ly.ToString("F2");
+                string rx = TabBtnControlList[tabNo].Rx.ToString("F2");
+                string ry = TabBtnControlList[tabNo].Ry.ToString("F2");
+                string cx = ((Convert.ToDouble(lx) + Convert.ToDouble(rx)) / 2.0).ToString("F2");
+
+                InspAlignDisplay.UpdateLeftDisplay(image, leftShape.CaliperShapeList, leftShape.LineSegmentList, GetMinimumPointY(LeftPointList[tabNo]));
+                if (InspAlignDisplay.IsLeftResultImageView)
+                {
+                    InspAlignDisplay.DrawLeftResult("X Align : " + lx + " um", 0);
+                    InspAlignDisplay.DrawLeftResult("Y Align : " + ly + " um", 1);
+                    InspAlignDisplay.DrawLeftResult("CX Align : " + cx + " um", 2);
+                }
+
+                InspAlignDisplay.UpdateRightDisplay(image, rightShape.CaliperShapeList, rightShape.LineSegmentList, GetMinimumPointY(RightPointList[tabNo]));
+                if (InspAlignDisplay.IsRightResultImageView)
+                {
+                    InspAlignDisplay.DrawRightResult("X Align : " + rx + " um", 0);
+                    InspAlignDisplay.DrawRightResult("Y Align : " + ry + " um", 1);
+                    InspAlignDisplay.DrawRightResult("CX Align : " + cx + " um", 2);
+                }
+
+                var centerImage = TabBtnControlList[tabNo].GetCenterImage();
+                InspAlignDisplay.UpdateCenterDisplay(centerImage);
+            }
         }
 
         public delegate void UpdateTabButtonDele(int tabNo);
@@ -612,5 +622,38 @@ namespace ATT_UT_IPAD.UI.Controls
                 return new PointF();
         }
         #endregion
+
+        private void btnOrgImage_Click(object sender, EventArgs e)
+        {
+            IsResultImageView = false;
+            UpdateButton();
+
+            UpdateImage(CurrentTabNo);
+            SendTabNumberEvent(CurrentTabNo);
+        }
+
+        private void btnResultImage_Click(object sender, EventArgs e)
+        {
+            IsResultImageView = true;
+            UpdateButton();
+
+            UpdateImage(CurrentTabNo);
+            SendTabNumberEvent(CurrentTabNo);
+        }
+
+        private void UpdateButton()
+        {
+            if (IsResultImageView)
+            {
+                btnOrgImage.BackColor = _noneSelectedColor;
+                btnResultImage.BackColor = _selectedColor;
+            }
+            else
+            {
+                btnOrgImage.BackColor = _selectedColor;
+                btnResultImage.BackColor = _noneSelectedColor;
+            }
+        }
+
     }
 }

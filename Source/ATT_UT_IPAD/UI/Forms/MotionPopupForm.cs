@@ -26,6 +26,8 @@ namespace ATT_UT_IPAD.UI.Forms
         private Color _selectedColor;
 
         private Color _nonSelectedColor;
+
+        private Point _mousePoint;
         #endregion
 
         #region 속성
@@ -763,6 +765,18 @@ namespace ATT_UT_IPAD.UI.Forms
             UpdateStatusAutoFocusZ0();
             UpdateStatusAutoFocusZ1();
         }
+
+        private void pnlTop_MouseDown(object sender, MouseEventArgs e)
+        {
+            _mousePoint = new Point(e.X, e.Y);
+        }
+
+        private void pnlTop_MouseMove(object sender, MouseEventArgs e)
+        {
+            if ((e.Button & MouseButtons.Left) == MouseButtons.Left)
+                Location = new Point(this.Left - (_mousePoint.X - e.X), this.Top - (_mousePoint.Y - e.Y));
+        }
         #endregion
+
     }
 }

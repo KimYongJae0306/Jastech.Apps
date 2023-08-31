@@ -9,6 +9,7 @@ using Jastech.Apps.Winform.Core;
 using Jastech.Apps.Winform.Service.Plc;
 using Jastech.Apps.Winform.Service.Plc.Maps;
 using Jastech.Apps.Winform.Settings;
+using Jastech.Apps.Winform.UI.Forms;
 using Jastech.Framework.Config;
 using Jastech.Framework.Device.Grabbers;
 using Jastech.Framework.Device.LAFCtrl;
@@ -59,6 +60,8 @@ namespace ATT_UT_IPAD
         private Queue<ICogImage> AlignLastScanImageQueue = new Queue<ICogImage>();
         private Queue<ICogImage> AkkonLastScanImageQueue = new Queue<ICogImage>();
         public ATTInspModelService ATTInspModelService { get; set; } = new ATTInspModelService();
+
+        public ManualJudgeForm ManualJudgeForm { get; set; } = null;
         #endregion
 
         #region 델리게이트
@@ -103,6 +106,9 @@ namespace ATT_UT_IPAD
             SystemManager.Instance().AddSystemLogMessage("Start Program.");
 
             PlcControlManager.Instance().WriteVersion();
+
+            ManualJudgeForm = new ManualJudgeForm();
+            ManualJudgeForm.Show();
         }
 
         private void MainForm_InspRunnerHandler(bool isStart)
@@ -196,6 +202,7 @@ namespace ATT_UT_IPAD
             }
             lblCurrentModel.Text = modelname;
         }
+
         private void lblMainPage_Click(object sender, EventArgs e)
         {
             SetSelectLabel(sender);
@@ -263,6 +270,7 @@ namespace ATT_UT_IPAD
                 lblTeachingPage.Enabled = false;
                 lblDataPageImage.Enabled = false;
                 lblDataPage.Enabled = false;
+                lblLogPage.Enabled = false;
             }
             else
             {
@@ -276,8 +284,10 @@ namespace ATT_UT_IPAD
                     lblTeachingPage.Enabled = true;
                     lblTeachingPageImage.Enabled = true;
                 }
+
                 lblDataPageImage.Enabled = true;
                 lblDataPage.Enabled = true;
+                lblLogPage.Enabled = true;
             }
         }
 
@@ -565,9 +575,15 @@ namespace ATT_UT_IPAD
             AppsStatus.Instance().IsInspRunnerFlagFromPlc = true;
         }
 
-        internal void Enabled(bool isEnable)
+        public void Enable(bool isEnable)
         {
             MainPageControl?.Enable(isEnable);
+        }
+
+        public void ShowManualJudgeForm(string message)
+        {
+            ManualJudgeForm.SetMessage(message);
+            ManualJudgeForm.Show();
         }
 
         private void lblMachineName_DoubleClick(object sender, EventArgs e)

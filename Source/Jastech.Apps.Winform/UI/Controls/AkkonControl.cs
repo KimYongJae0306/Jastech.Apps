@@ -492,6 +492,13 @@ namespace Jastech.Apps.Winform.UI.Controls
             display.ClearGraphic();
         }
 
+        public void InspectionDoneUI()
+        {
+            lblOrginalImage.BackColor = _nonSelectedColor;
+            lblResizeImage.BackColor = _nonSelectedColor;
+            lblResultImage.BackColor = _selectedColor;
+        }
+
         private void DrawComboboxCenterAlign(object sender, DrawItemEventArgs e)
         {
             ComboBox cmb = sender as ComboBox;
@@ -1896,7 +1903,7 @@ namespace Jastech.Apps.Winform.UI.Controls
             SetResizeImageView();
         }
 
-        private void SetOrginImageView()
+        public void SetOrginImageView()
         {
             lblOrginalImage.BackColor = _selectedColor;
             lblResizeImage.BackColor = _nonSelectedColor;
@@ -1990,57 +1997,6 @@ namespace Jastech.Apps.Winform.UI.Controls
             RunForTest();
         }
 
-        public void Run()
-        {
-            var display = TeachingUIManager.Instance().TeachingDisplayControl.GetDisplay();
-            if (display == null)
-                return;
-
-            ICogImage cogImage = display.GetImage();
-            if (cogImage == null)
-                return;
-
-            Mat matImage = TeachingUIManager.Instance().GetOriginMatImageBuffer(false);
-            if (matImage == null)
-                return;
-
-            ICogImage orgCogImage = TeachingUIManager.Instance().GetOriginCogImageBuffer(false);
-
-            MainAlgorithmTool algorithmTool = new MainAlgorithmTool();
-            TabInspResult tabInspResult = new TabInspResult();
-
-            var akkonParam = CurrentTab.AkkonParam.AkkonAlgoritmParam;
-
-            var roiList = CurrentTab.AkkonParam.GetAkkonROIList();
-
-            Judgement tabJudgement = Judgement.NG;
-
-            AkkonAlgorithm.UseOverCount = AppsConfig.Instance().EnableTest2;
-            var leadResultList = AkkonAlgorithm.Run(matImage, roiList, akkonParam, Resolution_um, ref tabJudgement);
-            tabInspResult.AkkonResult = new Framework.Algorithms.Akkon.Results.AkkonResult();
-            tabInspResult.AkkonResult.Judgement = tabJudgement;
-            tabInspResult.AkkonInspMatImage = AkkonAlgorithm.ResizeMat;
-
-            Mat resultMat = GetResultImage(matImage, leadResultList, akkonParam, ref tabInspResult.AkkonNGAffineList);
-            //Mat resultMat = GetDebugResultImage(matImage, leadResultList, akkonParam);
-            tabInspResult.AkkonResultCogImage = ConvertCogColorImage(resultMat);
-
-            Mat resizeMat = MatHelper.Resize(matImage, akkonParam.ImageFilterParam.ResizeRatio);
-            var akkonCogImage = ConvertCogGrayImage(resizeMat);
-            TeachingUIManager.Instance().SetAkkonCogImage(akkonCogImage);
-
-            var resultCogImage = ConvertCogColorImage(resultMat);
-            TeachingUIManager.Instance().SetResultCogImage(resultCogImage, tabInspResult.AkkonNGAffineList);
-
-            resizeMat.Dispose();
-            resultMat.Dispose();
-            ClearDisplay();
-
-            lblOrginalImage.BackColor = _nonSelectedColor;
-            lblResizeImage.BackColor = _nonSelectedColor;
-            lblResultImage.BackColor = _selectedColor;
-        }
-
         private List<AkkonROI> RenewalAkkonRoi(List<AkkonROI> roiList, CoordinateTransform panelCoordinate)
         {
             List<AkkonROI> newList = new List<AkkonROI>();
@@ -2105,7 +2061,7 @@ namespace Jastech.Apps.Winform.UI.Controls
             SetSelectAkkonROI();
         }
 
-        private CogImage8Grey ConvertCogGrayImage(Mat mat)
+        public CogImage8Grey ConvertCogGrayImage(Mat mat)
         {
             if (mat == null)
                 return null;

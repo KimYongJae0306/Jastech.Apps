@@ -10,11 +10,13 @@ using Jastech.Framework.Imaging.VisionPro;
 using Jastech.Framework.Imaging.VisionPro.VisionAlgorithms.Parameters;
 using Jastech.Framework.Imaging.VisionPro.VisionAlgorithms.Results;
 using Jastech.Framework.Util;
+using Jastech.Framework.Util.Helper;
 using Jastech.Framework.Winform.Forms;
 using Jastech.Framework.Winform.VisionPro.Controls;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 
@@ -41,13 +43,21 @@ namespace Jastech.Apps.Winform.UI.Controls
         #endregion
 
         #region 속성
+        private VisionProPointMarkerParam PointMarkerParam { get; set; } = null;
+
         private CogPatternMatchingParamControl ParamControl { get; set; } = null;
 
         private Tab CurrentTab { get; set; } = null;
 
-        public TeachingItem TeachingItem = TeachingItem.Mark;
-
         public bool UseAlignMark { get; set; } = false;
+        #endregion
+
+        #region 이벤트
+        public event SetOriginDelegate SetOriginEventHandler;
+        #endregion
+
+        #region 델리게이트
+        public delegate void SetOriginDelegate(PointF originPoint);
         #endregion
 
         #region 생성자
@@ -79,6 +89,18 @@ namespace Jastech.Apps.Winform.UI.Controls
             ParamControl.TestActionEvent += PatternControl_TestActionEvent;
             ParamControl.ClearActionEvent += PatternControl_ClearActionEvent;
             pnlParam.Controls.Add(ParamControl);
+
+            if (PointMarkerParam != null)
+                PointMarkerParam.SetOriginEventHandler -= PointMarkerParam_SetOriginEventHandler;
+
+            PointMarkerParam = new VisionProPointMarkerParam();
+            PointMarkerParam.SetOriginEventHandler += PointMarkerParam_SetOriginEventHandler;
+        }
+
+        private void PointMarkerParam_SetOriginEventHandler(CogTransform2DLinear originPoint)
+        {
+            var currentParam = ParamControl.GetCurrentParam();
+            currentParam.SetOrigin(originPoint);
         }
 
         private void PatternControl_ClearActionEvent()
@@ -336,7 +358,44 @@ namespace Jastech.Apps.Winform.UI.Controls
             roi.Changed += Roi_Changed;
             currentParam.SetTrainRegion(roi);
             currentParam.SetSearchRegion(searchRoi);
+            int size = 200;
+            DrawOriginPointMark(display, new PointF(Convert.ToSingle(roi.X), Convert.ToSingle(roi.Y)), size);
             ParamControl.UpdateData(currentParam);
+        }
+
+        private void DrawOriginPointMark(CogDisplayControl display, PointF centerPoint, int size)
+        {
+            PointMarkerParam.SetOriginPoint(Convert.ToSingle(centerPoint.X), Convert.ToSingle(centerPoint.Y), size);
+            display.SetInteractiveGraphics("tool", PointMarkerParam.GetCurrentRecord());
+            //display.SetInteractiveGraphics("tool", currentParam.CreateCurrentRecord(constants));
+
+            //double centerX = display.ImageWidth() / 2.0 - display.GetPan().X;
+            //double centerY = display.ImageHeight() / 2.0 - display.GetPan().Y;
+            ////double centerX = trainRegion.CenterX;
+            ////double centerY = trainRegion.CenterY;
+
+
+            //CogLineSegment cogLineSegmentX = new CogLineSegment();
+            //double horizontalStartX = centerX - length;
+            //double horizontalStartY = centerY;
+            //cogLineSegmentX.SetStartLengthRotation(horizontalStartX, horizontalStartY, length * 2, MathHelper.DegToRad(0));
+            //cogLineSegmentX.Interactive = true;
+            //cogLineSegmentX.Color = CogColorConstants.Cyan;
+
+            //CogLineSegment cogLineSegmentY = new CogLineSegment();
+            //double verticalStartX = centerX;
+            //double verticalStartY = centerY - length;
+            //cogLineSegmentY.SetStartLengthRotation(verticalStartX, verticalStartY, length * 2, MathHelper.DegToRad(90));
+            //cogLineSegmentY.Interactive = true;
+            //cogLineSegmentY.Color = CogColorConstants.Cyan;
+
+            //CogGraphicInteractiveCollection collection = new CogGraphicInteractiveCollection
+            //{
+            //    cogLineSegmentX,
+            //    cogLineSegmentY
+            //};
+
+            //OriginShape.SetOriginShape(collection as ICogRecord);
         }
 
         private void Roi_Changed(object sender, CogChangedEventArgs e)
@@ -359,68 +418,74 @@ namespace Jastech.Apps.Winform.UI.Controls
                 return;
 
             CogPMAlignCurrentRecordConstants constants = CogPMAlignCurrentRecordConstants.InputImage | CogPMAlignCurrentRecordConstants.SearchRegion
-                | CogPMAlignCurrentRecordConstants.TrainImage | CogPMAlignCurrentRecordConstants.TrainRegion | CogPMAlignCurrentRecordConstants.PatternOrigin;
+                | CogPMAlignCurrentRecordConstants.TrainImage | CogPMAlignCurrentRecordConstants.TrainRegion /*| CogPMAlignCurrentRecordConstants.PatternOrigin*/;
             display.SetInteractiveGraphics("tool", currentParam.CreateCurrentRecord(constants));
-            
+
+            var originPoint = currentParam.GetOrigin();
+            PointF centerPoint = new PointF(Convert.ToSingle(originPoint.TranslationX), Convert.ToSingle(originPoint.TranslationY));
+            int size = 200;
+            DrawOriginPointMark(display, centerPoint, size);
+
             var rect = currentParam.GetTrainRegion() as CogRectangle;
             if(rect != null)
                 display.SetDisplayToCenter(new Point((int)rect.CenterX, (int)rect.CenterY));
         }
 
-        public void Run()
-        {
-            var display = TeachingUIManager.Instance().TeachingDisplayControl.GetDisplay();
-            if (display == null)
-                return;
+        //public void Run()
+        //{
+        //    var display = TeachingUIManager.Instance().TeachingDisplayControl.GetDisplay();
+        //    if (display == null)
+        //        return;
 
-            ICogImage cogImage = display.GetImage();
-            if (cogImage == null)
-                return;
+        //    ICogImage cogImage = display.GetImage();
+        //    if (cogImage == null)
+        //        return;
 
-            display.ClearGraphic();
-            display.DisplayRefresh();
+        //    display.ClearGraphic();
+        //    display.DisplayRefresh();
 
-            MainAlgorithmTool algorithmTool = new MainAlgorithmTool();
-            TabInspResult tabInspResult = new TabInspResult();
+        //    MainAlgorithmTool algorithmTool = new MainAlgorithmTool();
+        //    TabInspResult tabInspResult = new TabInspResult();
+           
+        //    //algorithmTool.MainMarkInspect(cogImage, CurrentTab, ref tabInspResult, UseAlignMark);
+        //    algorithmTool.MainPanelMarkInspect(cogImage, CurrentTab, ref tabInspResult);
 
-            algorithmTool.MainMarkInspect(cogImage, CurrentTab, ref tabInspResult, UseAlignMark);
+        //    if (tabInspResult.MarkResult.Judgement != Judgement.OK)
+        //    {
+        //        // 검사 실패
+        //        string message = string.Format("Mark Insp NG !!! Tab_{0} / Fpc_{1}, Panel_{2}", CurrentTab.Index,
+        //            tabInspResult.MarkResult.FpcMark.Judgement, tabInspResult.MarkResult.PanelMark.Judgement);
 
-            if (tabInspResult.MarkResult.Judgement != Judgement.OK)
-            {
-                // 검사 실패
-                string message = string.Format("Mark Insp NG !!! Tab_{0} / Fpc_{1}, Panel_{2}", CurrentTab.Index,
-                    tabInspResult.MarkResult.FpcMark.Judgement, tabInspResult.MarkResult.PanelMark.Judgement);
+        //        MessageConfirmForm form = new MessageConfirmForm();
+        //        form.Message = message;
+        //        form.ShowDialog();
+        //    }
+        //    display.ClearGraphic();
+        //    List<VisionProPatternMatchingResult> matchingResultList = new List<VisionProPatternMatchingResult>();
 
-                MessageConfirmForm form = new MessageConfirmForm();
-                form.Message = message;
-                form.ShowDialog();
-            }
-            display.ClearGraphic();
-            List<VisionProPatternMatchingResult> matchingResultList = new List<VisionProPatternMatchingResult>();
-
-            var foundedFpcMark = tabInspResult.MarkResult.FpcMark.FoundedMark;
-            if(foundedFpcMark != null)
-            {
-                var leftFpc = foundedFpcMark.Left.MaxMatchPos.ResultGraphics;
-                var rightFpc = foundedFpcMark.Right.MaxMatchPos.ResultGraphics;
-                matchingResultList.Add(foundedFpcMark.Left);
-                matchingResultList.Add(foundedFpcMark.Right);
-            }
+        //    var foundedFpcMark = tabInspResult.MarkResult.FpcMark.FoundedMark;
+        //    if(foundedFpcMark != null)
+        //    {
+        //        var leftFpc = foundedFpcMark.Left.MaxMatchPos.ResultGraphics;
+        //        var rightFpc = foundedFpcMark.Right.MaxMatchPos.ResultGraphics;
+        //        matchingResultList.Add(foundedFpcMark.Left);
+        //        matchingResultList.Add(foundedFpcMark.Right);
+        //    }
             
 
-            var foundedPanelMark = tabInspResult.MarkResult.PanelMark.FoundedMark;
+        //    var foundedPanelMark = tabInspResult.MarkResult.PanelMark.FoundedMark;
 
-            if(foundedPanelMark != null)
-            {
-                var leftPanel = foundedPanelMark.Left.MaxMatchPos.ResultGraphics;
-                var rightPanel = foundedPanelMark.Right.MaxMatchPos.ResultGraphics;
+        //    if(foundedPanelMark != null)
+        //    {
+        //        var leftPanel = foundedPanelMark.Left.MaxMatchPos.ResultGraphics;
+        //        var rightPanel = foundedPanelMark.Right.MaxMatchPos.ResultGraphics;
 
-                matchingResultList.Add(foundedPanelMark.Left);
-                matchingResultList.Add(foundedPanelMark.Right);
-            }
+        //        matchingResultList.Add(foundedPanelMark.Left);
+        //        matchingResultList.Add(foundedPanelMark.Right);
+        //    }
             
-            display.UpdateResult(matchingResultList);
-        }
+        //    display.UpdateResult(matchingResultList);
+        //}
 
         private void SetNGColor(CogGraphicChildren shapes)
         {
@@ -444,19 +509,19 @@ namespace Jastech.Apps.Winform.UI.Controls
             if (_curMaterial == Material.Panel)
             {
                 var panelMainMark = CurrentTab.MarkParamter.MainPanelMarkParamList.Where(x => x.Name == MarkName.Main).First();
-                var orgin = panelMainMark.InspParam.GetOrigin();
-                double orginX = orgin.TranslationX;
-                double orginY = orgin.TranslationY;
-                return new PointF((float)orginX, (float)orginY);
+                var origin = panelMainMark.InspParam.GetOrigin();
+                double orginX = origin.TranslationX;
+                double originY = origin.TranslationY;
+                return new PointF((float)orginX, (float)originY);
             }
             else
             {
                 var fpcMainMark = CurrentTab.MarkParamter.MainFpcMarkParamList.Where(x => x.Name == MarkName.Main).First();
                 var orgin = fpcMainMark.InspParam.GetOrigin();
 
-                double orginX = orgin.TranslationX;
-                double orginY = orgin.TranslationY;
-                return new PointF((float)orginX, (float)orginY);
+                double originX = orgin.TranslationX;
+                double originY = orgin.TranslationY;
+                return new PointF((float)originX, (float)originY);
             }
         }
 
@@ -630,32 +695,36 @@ namespace Jastech.Apps.Winform.UI.Controls
             VisionProImageHelper.Dispose(ref copyCogImage);
         }
 
-        public void CopyMark(UnitName unitName)
-        {
-            var TeachingTabList = TeachingData.Instance().GetUnit(unitName.ToString()).GetTabList();
+        //public void CopyMark(UnitName unitName)
+        //{
+        //    var TeachingTabList = TeachingData.Instance().GetUnit(unitName.ToString()).GetTabList();
 
-            foreach (Tab tab in TeachingTabList)
-            {
-                if (tab.Index == CurrentTab.Index)
-                    continue;
+        //    foreach (Tab tab in TeachingTabList)
+        //    {
+        //        if (tab.Index == CurrentTab.Index)
+        //            continue;
 
-                switch (_curMaterial)
-                {
-                    case Material.Fpc:
-                        var fpcMark = CurrentTab.MarkParamter.GetFPCMark(_curDirection, _curMarkName, UseAlignMark).DeepCopy();
-                        tab.MarkParamter.SetFPCMark(_curDirection, _curMarkName, fpcMark, UseAlignMark);
-                        break;
+        //        switch (_curMaterial)
+        //        {
+        //            case Material.Fpc:
+        //                var fpcMark = CurrentTab.MarkParamter.GetFPCMark(_curDirection, _curMarkName, UseAlignMark).DeepCopy();
+        //                tab.MarkParamter.SetFPCMark(_curDirection, _curMarkName, fpcMark, UseAlignMark);
+        //                break;
 
-                    case Material.Panel:
-                        var panelMark = CurrentTab.MarkParamter.GetPanelMark(_curDirection, _curMarkName, UseAlignMark).DeepCopy();
-                        tab.MarkParamter.SetPanelMark(_curDirection, _curMarkName, panelMark, UseAlignMark);
-                        break;
+        //            case Material.Panel:
+        //                var panelMark = CurrentTab.MarkParamter.GetPanelMark(_curDirection, _curMarkName, UseAlignMark).DeepCopy();
+        //                tab.MarkParamter.SetPanelMark(_curDirection, _curMarkName, panelMark, UseAlignMark);
+        //                break;
 
-                    default:
-                        break;
-                }
+        //            default:
+        //                break;
+        //        }
                 
-            }
+        //    }
+        //}
+
+        private void lblTest_Click(object sender, EventArgs e)
+        {
         }
         #endregion
     }

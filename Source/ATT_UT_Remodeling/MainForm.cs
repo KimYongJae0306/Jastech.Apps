@@ -51,8 +51,6 @@ namespace ATT_UT_Remodeling
         private Queue<string> VirtualImagePathQueue = new Queue<string>();
 
         public ATTInspModelService ATTInspModelService { get; set; } = new ATTInspModelService();
-
-        private ManualJudgeForm ManualJudgeForm { get; set; } = null;
         #endregion
 
         #region 생성자
@@ -92,9 +90,6 @@ namespace ATT_UT_Remodeling
             SystemManager.Instance().AddSystemLogMessage("Start Program.");
 
             PlcControlManager.Instance().WriteVersion();
-
-            ManualJudgeForm = new ManualJudgeForm();
-            ManualJudgeForm.Hide();
         }
 
         private void MainForm_PreAlignRunnerHandler(bool isStart)
@@ -539,11 +534,5 @@ namespace ATT_UT_Remodeling
             return isNormalState ? Resources.Circle_Green : Resources.Circle_Red;
         }
         #endregion
-
-        private void lblSystemName_Click(object sender, EventArgs e)
-        {
-            ManualJudgeForm.Message = "tlqkf";
-            ManualJudgeForm.Show();
-        }
     }
 }
