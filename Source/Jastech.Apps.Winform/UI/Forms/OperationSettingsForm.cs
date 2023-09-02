@@ -1,6 +1,8 @@
 ﻿using Jastech.Apps.Winform.Settings;
 using Jastech.Framework.Config;
 using Jastech.Framework.Imaging;
+using Jastech.Framework.Util.Helper;
+using MetroFramework.Controls;
 using System;
 using System.Windows.Forms;
 
@@ -8,6 +10,10 @@ namespace Jastech.Framework.Winform.Forms
 {
     public partial class OperationSettingsForm : Form
     {
+        #region
+        private readonly ParamTrackingLogger _paramLogger = new ParamTrackingLogger();
+        #endregion
+
         #region 속성
         protected override CreateParams CreateParams
         {
@@ -77,6 +83,8 @@ namespace Jastech.Framework.Winform.Forms
 
             txtAlignResultCount.Text = AppsConfig.Instance().AlignResultDailyCount.ToString();
             txtAkkonResultCount.Text = AppsConfig.Instance().AkkonResultDailyCount.ToString();
+
+            _paramLogger.ClearChangedLog();
         }
 
         public void UpdateCuurentData()
@@ -121,6 +129,12 @@ namespace Jastech.Framework.Winform.Forms
 
             ConfigSet.Instance().Save();
             AppsConfig.Instance().Save();
+
+            if (_paramLogger.IsEmpty == false)
+            {
+                _paramLogger.AddLog("Operation Setting Saved.");
+                _paramLogger.WriteLogToFile();
+            }
 
             MessageConfirmForm form = new MessageConfirmForm();
             form.Message = "Save Completed.";
@@ -195,6 +209,14 @@ namespace Jastech.Framework.Winform.Forms
                 textBox.Text = string.Format("{0:0}", value);
             else
                 textBox.Text = "0";
+        }
+
+        private void mtgOperationSetting_CheckedChanged(object sender, EventArgs e)
+        {
+            if (sender is MetroToggle toggleButton)
+            {
+                _paramLogger.AddChangeHistory("OperationSetting", toggleButton.Name.Replace("mtg", ""), !toggleButton.Checked, toggleButton.Checked);
+            }
         }
         #endregion
     }

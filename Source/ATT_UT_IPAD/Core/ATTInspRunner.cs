@@ -816,7 +816,7 @@ namespace ATT_UT_IPAD.Core
             body.Add($"{AppsInspResult.Instance().EndInspTime:HH:mm:ss}");                  // Insp Time
             body.Add($"{AppsInspResult.Instance().Cell_ID}");                               // Panel ID
             body.Add($"{(int)programType + 1}");                                            // Stage No
-            body.Add($"{AppsInspResult.Instance().FinalHead}");                                                   // Final Head
+            body.Add($"{AppsInspResult.Instance().FinalHead}");                             // Final Head
 
             for (int tabNo = 0; tabNo < tabCount; tabNo++)
             {

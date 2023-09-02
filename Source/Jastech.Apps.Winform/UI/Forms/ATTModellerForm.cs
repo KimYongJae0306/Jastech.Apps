@@ -21,6 +21,8 @@ namespace Jastech.Apps.Winform.UI.Forms
         public string ModelPath { get; set; } = "";
 
         public Jastech.Framework.Structure.Service.InspModelService InspModelService = null;
+
+        private readonly ParamTrackingLogger _paramLogger = new ParamTrackingLogger();
         #endregion
 
         #region 이벤트
@@ -232,10 +234,16 @@ namespace Jastech.Apps.Winform.UI.Forms
             if (lblSelectedName.Text == "")
                 return;
 
-            ApplyModelEventHandler?.Invoke(lblSelectedName.Text);
+            var inspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
+            string previousModel = inspModel.Name;
+            string selectedModel = lblSelectedName.Text;
+
+            ApplyModelEventHandler?.Invoke(selectedModel);
 
             DailyInfoService.Reset();
-            DailyInfoService.Load(lblSelectedName.Text);
+            DailyInfoService.Load(selectedModel);
+
+            _paramLogger.AddChangeHistory("Inspector", "InspectionModel", previousModel, selectedModel);
 
             MessageConfirmForm form = new MessageConfirmForm();
             form.Message = "Model Load Completed.";
