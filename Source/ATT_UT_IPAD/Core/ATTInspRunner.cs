@@ -816,6 +816,7 @@ namespace ATT_UT_IPAD.Core
             body.Add($"{AppsInspResult.Instance().EndInspTime:HH:mm:ss}");                  // Insp Time
             body.Add($"{AppsInspResult.Instance().Cell_ID}");                               // Panel ID
             body.Add($"{(int)programType + 1}");                                            // Stage No
+            body.Add($"{AppsInspResult.Instance().FinalHead}");                             // Final Head
 
             for (int tabNo = 0; tabNo < tabCount; tabNo++)
             {
@@ -823,7 +824,6 @@ namespace ATT_UT_IPAD.Core
                 var alignResult = tabInspResult.AlignResult;
 
                 string preHead = alignResult.PreHead;
-                string finalHead = AppsInspResult.Instance().FinalHead;
 
                 float lx = CheckAlignResultValue(alignResult.LeftX);
                 float ly = CheckAlignResultValue(alignResult.LeftY);
@@ -832,9 +832,8 @@ namespace ATT_UT_IPAD.Core
                 float cx = (lx + rx) / 2.0F;
 
                 body.Add($"{tabInspResult.TabNo + 1}");                                     // Tab No
-                body.Add($"{tabInspResult.Judgement}");                                     // Judge
+                body.Add($"{alignResult.Judgement}");                                       // Judge
                 body.Add($"{preHead}");                                                     // Pre Head
-                body.Add($"{finalHead}");                                                   // Final Head
                 body.Add($"{lx:F3}");                                                       // Align Lx
                 body.Add($"{ly:F3}");                                                       // Align Ly
                 body.Add($"{cx:F3}");                                                       // Align Cx
@@ -882,7 +881,7 @@ namespace ATT_UT_IPAD.Core
                 float avgLength = (akkonResult.Length_Left_Avg_um + akkonResult.Length_Right_Avg_um) / 2.0F;
 
                 body.Add($"{tabInspResult.TabNo + 1}");                                     // Tab No
-                body.Add($"{tabInspResult.Judgement}");                                     // Judge
+                body.Add($"{akkonResult.Judgement}");                                       // Judge
                 body.Add($"{avgCount}");                                                    // Average Count
                 body.Add($"{avgLength:F3}");                                                // Average Length
 
@@ -927,11 +926,12 @@ namespace ATT_UT_IPAD.Core
             List<List<string>> body = new List<List<string>>();
             for (int tabNo = 0; tabNo < tabCount; tabNo++)
             {
-                var akkonResult = AppsInspResult.Instance().GetAkkon(tabNo);
-                int countMin = Math.Min(akkonResult.AkkonResult.LeftCount_Min, akkonResult.AkkonResult.RightCount_Min);
-                float countAvg = (akkonResult.AkkonResult.LeftCount_Avg + akkonResult.AkkonResult.RightCount_Avg) / 2.0F;
-                float lengthMin = Math.Min(akkonResult.AkkonResult.Length_Left_Min_um, akkonResult.AkkonResult.Length_Right_Min_um);
-                float lengthAvg = (akkonResult.AkkonResult.Length_Left_Avg_um + akkonResult.AkkonResult.Length_Right_Avg_um) / 2.0F;
+                var tabAkkonResult = AppsInspResult.Instance().GetAkkon(tabNo);
+
+                int countMin = Math.Min(tabAkkonResult.AkkonResult.LeftCount_Min, tabAkkonResult.AkkonResult.RightCount_Min);
+                float countAvg = (tabAkkonResult.AkkonResult.LeftCount_Avg + tabAkkonResult.AkkonResult.RightCount_Avg) / 2.0F;
+                float lengthMin = Math.Min(tabAkkonResult.AkkonResult.Length_Left_Min_um, tabAkkonResult.AkkonResult.Length_Right_Min_um);
+                float lengthAvg = (tabAkkonResult.AkkonResult.Length_Left_Avg_um + tabAkkonResult.AkkonResult.Length_Right_Avg_um) / 2.0F;
 
                 var tabAlignResult = AppsInspResult.Instance().GetAlign(tabNo);
 
@@ -947,31 +947,27 @@ namespace ATT_UT_IPAD.Core
                 var programType = StringHelper.StringToEnum<ProgramType>(AppsConfig.Instance().ProgramType);
                 List<string> tabData = new List<string>
                 {
-                    $"{AppsInspResult.Instance().EndInspTime:HH:mm:ss}",                   // Insp Time
-                    $"{AppsInspResult.Instance().Cell_ID}",                                // Panel ID
-                    $"{(int)programType + 1}",                                             // Unit No
-                    $"{akkonResult.TabNo + 1}",                                            // Tab
+                    $"{AppsInspResult.Instance().EndInspTime:HH:mm:ss}",                    // Insp Time
+                    $"{AppsInspResult.Instance().Cell_ID}",                                 // Panel ID
+                    $"{(int)programType + 1}",                                              // Unit No
+                    $"{tabAkkonResult.TabNo + 1}",                                          // Tab
 
-                    $"{countMin}",                                                         // Count Min
-                    $"{countAvg:F3}",                                                      // Count Avg
-                    $"{lengthMin:F3}",                                                     // Length Min
-                    $"{lengthAvg:F3}",                                                     // Length Avg
+                    $"{countMin}",                                                          // Count Min
+                    $"{countAvg:F3}",                                                       // Count Avg
+                    $"{lengthMin:F3}",                                                      // Length Min
+                    $"{lengthAvg:F3}",                                                      // Length Avg
 
                     $"{preHead}",                                                           // Pre Head
                     $"{finalHead}",                                                         // Final Head
 
-                    $"{lx:F3}",                                                            // Left Align X
-                    $"{ly:F3}",                                                            // Left Align Y
-                    $"{cx:F3}",                                                            // Center Align X
-                    $"{rx:F3}",                                                            // Right Align X
-                    $"{ry:F3}",                                                            // Right Align Y
+                    $"{lx:F3}",                                                             // Left Align X
+                    $"{ly:F3}",                                                             // Left Align Y
+                    $"{cx:F3}",                                                             // Center Align X
+                    $"{rx:F3}",                                                             // Right Align X
+                    $"{ry:F3}",                                                             // Right Align Y
 
-                    "-1",                                                         // ACF Head
-                    "-1",                                                         // Pre Head
-                    "-1",                                                         // Main Head
-
-                    akkonResult.Judgement.ToString(),                           // Akkon Judge
-                    tabAlignResult.Judgement.ToString(),                           // Align Judge
+                    $"{tabAkkonResult.AkkonResult.Judgement}",                                          // Akkon Judge
+                    $"{tabAlignResult.AlignResult.Judgement}",                                          // Align Judge
                 };
 
                 body.Add(tabData);
@@ -1644,7 +1640,7 @@ namespace ATT_UT_IPAD.Core
                 string resultPath = ConfigSet.Instance().Path.Result;
                 string logPath = ConfigSet.Instance().Path.Log;
 
-                int capacity = ConfigSet.Instance().Operation.DataStiringCapcity;
+                int capacity = ConfigSet.Instance().Operation.DataStoringCapacity;
                 
                 DeleteDirectoryByCapacity(Path.Combine(resultPath, inspModel.Name), capacity);
                 DeleteDirectoryByCapacity(logPath, capacity);

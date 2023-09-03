@@ -39,6 +39,7 @@ namespace Jastech.Apps.Winform.UI.Controls
             _nonSelectedColor = Color.FromArgb(52, 52, 52);
 
             InitializeDataGridView();
+            lblTotal_Click(null, null);
         }
 
         private void InitializeDataGridView()
@@ -175,10 +176,10 @@ namespace Jastech.Apps.Winform.UI.Controls
                         // "[" 부터 2글자가 시간
                         int hour = Convert.ToInt32(datas[index +innerIndex][0].Substring(hourStringIndex + 1, 2));
 
-                        if (datas[index + innerIndex][16].ToLower().Contains("fail"))
+                        if (datas[index + innerIndex][15].ToLower().Contains("fail") || datas[index + innerIndex][16].ToLower().Contains("fail"))
                             isFail = true;
 
-                        if (datas[index + innerIndex][16].ToLower().Contains("ng"))
+                        if (datas[index + innerIndex][15].ToLower().Contains("ng") || datas[index + innerIndex][16].ToLower().Contains("ng"))
                             isNg = true;
 
                         SortJudge(hour, isFail, isNg);

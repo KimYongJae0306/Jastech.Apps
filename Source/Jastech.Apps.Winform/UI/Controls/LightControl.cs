@@ -1,18 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
+﻿using Jastech.Framework.Device.LightCtrls;
+using System;
 using System.Drawing;
-using System.Data;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Runtime.Remoting.Channels;
 using System.Windows.Forms;
-using Jastech.Framework.Device.LightCtrls;
 
 namespace Jastech.Apps.Winform.UI.Controls
 {
     public partial class LightControl : UserControl
     {
+
+        #region 필드
         private bool _isLoding { get; set; } = false;
 
         private bool _usingScroll { get; set; } = false;
@@ -20,16 +18,30 @@ namespace Jastech.Apps.Winform.UI.Controls
         private bool _usingNupdn { get; set; } = false;
 
         private int _curChannelIndex { get; set; } = 0;
+        #endregion
 
+        #region 속성
         public LightCtrlHandler LightCtrlHandler { get; private set; } = null;
 
         public LightParameter LightParam { get; private set; } = null;
+        #endregion
 
+        #region 이벤트
+        public event ParameterValueChangedEventHandler LightParamChanged;
+        #endregion
+
+        #region 델리게이트
+        public delegate void ParameterValueChangedEventHandler(string component, int channel, double oldValue, double newValue);
+        #endregion
+
+        #region 생성자
         public LightControl()
         {
             InitializeComponent();
         }
+        #endregion
 
+        #region 메서드
         private void LightControl_Load(object sender, EventArgs e)
         {
             InitializeData();
@@ -61,7 +73,7 @@ namespace Jastech.Apps.Winform.UI.Controls
             foreach (var key in keys)
                 cbxControlNameList.Items.Add(key.ToString());
 
-            if(cbxControlNameList.Items.Count > 0)
+            if (cbxControlNameList.Items.Count > 0)
                 cbxControlNameList.SelectedIndex = 0;
 
             InitializeChannelUI();
@@ -94,7 +106,7 @@ namespace Jastech.Apps.Winform.UI.Controls
         public delegate void UpdateNupdnDele(decimal lightValue);
         private void UpdateNupdn(decimal lightValue)
         {
-            if(this.InvokeRequired)
+            if (this.InvokeRequired)
             {
                 UpdateNupdnDele callback = UpdateNupdn;
                 this.Invoke(callback, lightValue);
@@ -188,10 +200,12 @@ namespace Jastech.Apps.Winform.UI.Controls
 
             _usingScroll = true;
 
-            int value = trbLightLevelValue.Value;
-            nupdnLightLevel.Value = value;
+            string ctrlName = cbxControlNameList.SelectedItem as string;
+            int channel = GetLightChannel(ctrlName);
+            int newValue = trbLightLevelValue.Value;
 
-            SetLightValue(value);
+            nupdnLightLevel.Value = newValue;
+            SetLightValue(ctrlName, newValue);
 
             _usingScroll = false;
         }
@@ -200,27 +214,43 @@ namespace Jastech.Apps.Winform.UI.Controls
         {
             if (_usingScroll)
                 return;
+
             _usingNupdn = true;
 
-            int value = (int)nupdnLightLevel.Value;
-            trbLightLevelValue.Value = value;
+            string ctrlName = cbxControlNameList.SelectedItem as string;
+            int newValue = (int)nupdnLightLevel.Value;
 
-            SetLightValue(value);
+            trbLightLevelValue.Value = newValue;
+            SetLightValue(ctrlName, newValue);
 
             _usingNupdn = false;
         }
 
-        private void SetLightValue(int value)
+        private void SetLightValue(string ctrlName, int value)
         {
-            string ctrlName = cbxControlNameList.SelectedItem as string;
-            string channel = cbxChannelNameList.SelectedItem as string;
-
+            int oldValue = GetLightValue(ctrlName);
             var lightControl = LightCtrlHandler.Get(ctrlName);
-            var channelNum = lightControl.ChannelNameMap[channel];
+            var channelNum = GetLightChannel(ctrlName);
 
             LightParam.Map[ctrlName].LightLevels[channelNum] = value;
+            LightParamChanged?.Invoke(ctrlName, channelNum, oldValue, value);
 
             lightControl.TurnOn(channelNum, value);
+        }
+
+        private int GetLightValue(string ctrlName)
+        {
+            var channelNum = GetLightChannel(ctrlName);
+
+            return LightParam.Map[ctrlName].LightLevels[channelNum];
+        }
+
+        private int GetLightChannel(string ctrlName)
+        {
+            var lightControl = LightCtrlHandler.Get(ctrlName);
+            string channel = cbxChannelNameList.SelectedItem as string;
+
+            return lightControl.ChannelNameMap[channel];
         }
 
         private void lblPrevChannel_Click(object sender, EventArgs e)
@@ -289,5 +319,6 @@ namespace Jastech.Apps.Winform.UI.Controls
 
             lightControl.TurnOff();
         }
+        #endregion
     }
 }

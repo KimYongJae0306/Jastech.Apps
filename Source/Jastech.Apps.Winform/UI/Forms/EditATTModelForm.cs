@@ -15,6 +15,10 @@ namespace Jastech.Apps.Winform.UI.Forms
 {
     public partial class EditATTModelForm : Form
     {
+        #region 필드
+        private readonly ParamTrackingLogger _paramLogger = new ParamTrackingLogger();
+        #endregion
+
         #region 속성
         private AppsInspModel PrevModel { get; set; } = new AppsInspModel();
 
@@ -42,7 +46,6 @@ namespace Jastech.Apps.Winform.UI.Forms
             string filePath = Path.Combine(ModelPath, PrevModelName, InspModel.FileName);
 
             JsonConvertHelper.LoadToExistingTarget<AppsInspModel>(filePath, PrevModel);
-
 
             txtDescription.Text = PrevModel.Description;
             txtTabCount.Text = PrevModel.TabCount.ToString();
@@ -78,7 +81,6 @@ namespace Jastech.Apps.Winform.UI.Forms
                     AlignToleranceCx_um = Convert.ToDouble(txtSpecInfoCx.Text),
                     AlignStandard_um = Convert.ToDouble(txtSpecInfoStandardValue.Text),
                 },
-
             };
             if (AppsConfig.Instance().UseMaterialInfo)
             {
@@ -95,6 +97,12 @@ namespace Jastech.Apps.Winform.UI.Forms
             Close();
 
             EditModelEvent?.Invoke(PrevModelName, inspModel);
+
+            if (_paramLogger.IsEmpty == false)
+            {
+                _paramLogger.AddLog("Inspection Model parameters saved.");
+                _paramLogger.WriteLogToFile();
+            }
         }
 
         public bool IsEdit()
@@ -169,6 +177,22 @@ namespace Jastech.Apps.Winform.UI.Forms
                 textBox.Text = string.Format("{0:0.000}", value);
             else
                 textBox.Text = "0.000";
+        }
+
+        private void CompareModelParameter(AppsInspModel previousModel, AppsInspModel selectedModel)
+        {
+            if (previousModel == null || selectedModel == null)
+                return;
+
+            //if (previousModel.Name == selectedModel.Name)
+            //{
+            //    previousModel.SpecInfo.
+            //    AddChangeHistory("Inspector", "Description", )
+            //}
+            //else
+            //{
+
+            //}
         }
         #endregion
     }

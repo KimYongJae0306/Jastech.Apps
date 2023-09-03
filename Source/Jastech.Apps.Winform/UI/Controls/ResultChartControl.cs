@@ -177,8 +177,6 @@ namespace Jastech.Apps.Winform.UI.Controls
             InitializeAlignChart();
             //chtData.AlignDataPointsByAxisLabel();
 
-
-
             var dailyInfo = DailyInfoService.GetDailyInfo();
 
             foreach (var item in dailyInfo.DailyDataList)
@@ -296,46 +294,49 @@ namespace Jastech.Apps.Winform.UI.Controls
             if (alignTrendResults == null)
                 return;
 
+            _selectedTabNo = (int)tabType;
             ClearChartData();
 
             if (alignResultType == AlignResultType.All)
             {
                 foreach (TrendResult trendResult in alignTrendResults)
                 {
-                    AlignSeriesLx.Points.AddXY(trendResult.InspectionTime, trendResult.GetAlignDatas(tabType, AlignResultType.Lx));
-                    AlignSeriesLy.Points.AddXY(trendResult.InspectionTime, trendResult.GetAlignDatas(tabType, AlignResultType.Ly));
-                    AlignSeriesCx.Points.AddXY(trendResult.InspectionTime, trendResult.GetAlignDatas(tabType, AlignResultType.Cx));
-                    AlignSeriesRx.Points.AddXY(trendResult.InspectionTime, trendResult.GetAlignDatas(tabType, AlignResultType.Rx));
-                    AlignSeriesRy.Points.AddXY(trendResult.InspectionTime, trendResult.GetAlignDatas(tabType, AlignResultType.Ry));
+                    AlignSeriesLx.Points.Add(trendResult.GetAlignDatas(tabType, AlignResultType.Lx));
+                    AlignSeriesLy.Points.Add(trendResult.GetAlignDatas(tabType, AlignResultType.Ly));
+                    AlignSeriesCx.Points.Add(trendResult.GetAlignDatas(tabType, AlignResultType.Cx));
+                    AlignSeriesRx.Points.Add(trendResult.GetAlignDatas(tabType, AlignResultType.Rx));
+                    AlignSeriesRy.Points.Add(trendResult.GetAlignDatas(tabType, AlignResultType.Ry));
                 }
             }
             else
             {
                 var alignSeries = AlignSeriesList.First(x => x.Name == alignResultType.ToString());
                 foreach (TrendResult trendResult in alignTrendResults)
-                    alignSeries?.Points.AddXY(trendResult.InspectionTime, trendResult.GetAlignDatas(tabType, alignResultType));
+                    alignSeries?.Points.Add(trendResult.GetAlignDatas(tabType, alignResultType));
             }
         }
 
-        public void UpdateAkkonChart(DataTable dataTable, TabType tabType, AkkonResultType akkonResultType)
+        public void UpdateAkkonChart(List<TrendResult> akkonTrendResults, TabType tabType, AkkonResultType akkonResultType)
         {
-            if (dataTable == null)
+            if (akkonTrendResults == null)
                 return;
 
+            _selectedTabNo = (int)tabType;
             ClearChartData();
-
-            int tabIndex = (int)tabType;
-            var dataSource = ParseData(dataTable, tabIndex++).AsEnumerable();
 
             if (akkonResultType == AkkonResultType.All)
             {
-                AkkonSeriesCount.Points.DataBind(dataSource, "Inspection Time", $"Avg Count_{tabIndex}", "");
-                AkkonSeriesLength.Points.DataBind(dataSource, "Inspection Time", $"Avg Length_{tabIndex}", "");
+                foreach (TrendResult trendResult in akkonTrendResults)
+                {
+                    AkkonSeriesCount.Points.Add(trendResult.GetAkkonDatas(tabType, AkkonResultType.Count));
+                    AkkonSeriesLength.Points.Add(trendResult.GetAkkonDatas(tabType, AkkonResultType.Length));
+                }
             }
             else
             {
                 var akkonSeries = AkkonSeriesList.First(x => x.Name == akkonResultType.ToString());
-                akkonSeries?.Points.DataBind(dataSource, "Inspection Time", $"Avg {akkonResultType}_{tabIndex}", "");
+                foreach (TrendResult trendResult in akkonTrendResults)
+                    akkonSeries?.Points.Add(trendResult.GetAkkonDatas(tabType, akkonResultType));
             }
         }
 

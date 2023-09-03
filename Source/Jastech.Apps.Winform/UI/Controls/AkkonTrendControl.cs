@@ -1,4 +1,6 @@
-﻿using Jastech.Apps.Winform.Settings;
+﻿using Jastech.Apps.Structure;
+using Jastech.Apps.Winform.Settings;
+using Jastech.Framework.Structure;
 using Jastech.Framework.Util.Helper;
 using Jastech.Framework.Winform.Forms;
 using System;
@@ -7,6 +9,7 @@ using System.Data;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Security.Principal;
 using System.Windows.Forms;
 
 namespace Jastech.Apps.Winform.UI.Controls
@@ -19,6 +22,10 @@ namespace Jastech.Apps.Winform.UI.Controls
         private Color _nonSelectedColor;
 
         private List<Label> _tabLabelList = new List<Label>();
+
+        private List<Label> _akkonTypeLabelList = new List<Label>();
+
+        private List<TrendResult> _akkonTrendResults = new List<TrendResult>();
 
         private TabType _tabType { get; set; } = TabType.Tab1;
 
@@ -55,6 +62,31 @@ namespace Jastech.Apps.Winform.UI.Controls
         {
             _selectedColor = Color.FromArgb(104, 104, 104);
             _nonSelectedColor = Color.FromArgb(52, 52, 52);
+            InitializeDataGridView();
+        }
+
+        private void InitializeDataGridView()
+        {
+            var inspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
+
+            dgvAkkonTrendData.Columns.Clear();
+            List<string> header = new List<string>
+            {
+                "Inspection Time",
+                "Panel ID",
+                "Stage No",
+            };
+            for (int index = 0; index < inspModel.TabCount; index++)
+            {
+                header.Add($"Tab_{index + 1}");
+                header.Add($"Judge_{index + 1}");
+                header.Add($"Avg Count_{index + 1}");
+                header.Add($"Avg Length_{index + 1}");
+            }
+            var columns = header.Select(text => new DataGridViewTextBoxColumn { Name = text });
+            dgvAkkonTrendData.Columns.AddRange(columns.ToArray());
+
+            _akkonTypeLabelList.AddRange(new Label[] { lblAllData, lblCount, lblLength });
         }
 
         public void MakeTabListControl(int tabCount)
@@ -94,126 +126,77 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         public void SetTabType(TabType tabType)
         {
-            ClearSelectedTabLabel();
+            ClearSelectedLabel(pnlTabs);
             _tabType = tabType;
 
             _tabLabelList[(int)tabType].BackColor = _selectedColor;
-
-            UpdateChart(_tabType, _akkonResultType);
-        }
-
-        private void ClearSelectedTabLabel()
-        {
-            foreach (Control control in pnlTabs.Controls)
-            {
-                if (control is Label)
-                    control.BackColor = _nonSelectedColor;
-            }
-        }
-
-        private void lblAllData_Click(object sender, EventArgs e)
-        {
-            SetAkkonResultType(AkkonResultType.All);
-            UpdateChart(_tabType, _akkonResultType);
-        }
-
-        private void lblCount_Click(object sender, EventArgs e)
-        {
-            SetAkkonResultType(AkkonResultType.Count);
-            UpdateChart(_tabType, _akkonResultType);
-        }
-
-        private void lblLength_Click(object sender, EventArgs e)
-        {
-            SetAkkonResultType(AkkonResultType.Length);
             UpdateChart(_tabType, _akkonResultType);
         }
 
         public void SetAkkonResultType(AkkonResultType akkonResultType)
         {
+            ClearSelectedLabel(pnlChartTypes);
             _akkonResultType = akkonResultType;
-            UpdateSelectedAkkonResultType(akkonResultType);
+
+            _akkonTypeLabelList[(int)_tabType].BackColor = _selectedColor;
+            UpdateChart(_tabType, _akkonResultType);
         }
 
-        private void UpdateSelectedAkkonResultType(AkkonResultType akkonResultType)
+        private void ClearSelectedLabel(Panel panel)
         {
-            ClearSelectedAkkonTypeLabel();
-
-            switch (akkonResultType)
+            foreach (Control control in panel.Controls)
             {
-                case AkkonResultType.All:
-                    lblAkkon.BackColor = _selectedColor;
-                    break;
-
-                case AkkonResultType.Count:
-                    lblCount.BackColor = _selectedColor;
-                    break;
-
-                case AkkonResultType.Length:
-                    lblLength.BackColor = _selectedColor;
-                    break;
-
-                default:
-                    break;
+                if (control is Label label)
+                    label.BackColor = _nonSelectedColor;
             }
         }
 
-        private void ClearSelectedAkkonTypeLabel()
+        private void lblAllData_Click(object sender, EventArgs e) => SetAkkonResultType(AkkonResultType.All);
+
+        private void lblCount_Click(object sender, EventArgs e) => SetAkkonResultType(AkkonResultType.Count);
+
+        private void lblLength_Click(object sender, EventArgs e) => SetAkkonResultType(AkkonResultType.Length);
+
+        private void UpdateChart(TabType tabType, AkkonResultType akkonResultType) => ChartControl.UpdateAkkonChart(_akkonTrendResults, tabType, akkonResultType);
+
+        public void UpdateDataGridView()
         {
-            foreach (Control control in pnlChartTypes.Controls)
-            {
-                if (control is Label)
-                    control.BackColor = _nonSelectedColor;
-            }
+            dgvAkkonTrendData.Rows.Clear();
+            for (int Index = 0; Index < _akkonTrendResults.Count; Index++)
+                dgvAkkonTrendData.Rows.Add(_akkonTrendResults[Index].GetAkkonStringDatas().ToArray());
         }
 
-        private void UpdateChart(TabType tabType, AkkonResultType akkonResultType)
-        {
-            if (_bindingDataTable == null)
-                return;
-
-            ChartControl.UpdateAkkonChart(_bindingDataTable, tabType, akkonResultType);
-        }
-
-        private DataTable _bindingDataTable = new DataTable();
-        private void SetDataTable(DataTable dt)
-        {
-            _bindingDataTable = dt.Copy();
-        }
-
-        public void UpdateDataGridView(string path)
-        {
-            var dataTable = FileHelper.CsvToDataTable(path);
-
-            dgvAkkonTrendData.DataSource = dataTable;
-            SetDataTable(dataTable.Copy());
-        }
-
-        private List<TrendResult> _akkonTrendResults = new List<TrendResult>();
         public void SetAkkonResultData(string path)
         {
-            List<string[]> texts = new List<string[]>();
+            List<string[]> readTexts = new List<string[]>();
             foreach (string textLine in File.ReadAllLines(path))
-                texts.Add(textLine.Split(','));
+                readTexts.Add(textLine.Split(','));
 
-            int tabCount = AppsConfig.Instance().TabMaxCount;
-            for (int rowIndex = 0; rowIndex < texts.Count; rowIndex++)
+            var inspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
+
+            _akkonTrendResults.Clear();
+            for (int rowIndex = 1; rowIndex < readTexts.Count; rowIndex++)
             {
-                _akkonTrendResults[rowIndex].InspectionTime = texts[rowIndex][0];
-                _akkonTrendResults[rowIndex].PanelID = texts[rowIndex][1];
-                _akkonTrendResults[rowIndex].StageNo = Convert.ToInt32(texts[rowIndex][2]);
+                TrendResult trendResult = new TrendResult();
+                string[] datas = readTexts[rowIndex];
 
-                for (int colIndex = 0; colIndex < tabCount; colIndex++)
+                trendResult.InspectionTime = datas[0];
+                trendResult.PanelID = datas[1];
+                trendResult.StageNo = Convert.ToInt32(datas[2]);
+
+                for (int colIndex = 0, dataCount = 4; colIndex < inspModel.TabCount; colIndex++)
                 {
-                    int skipIndex = colIndex * tabCount;
-                    _akkonTrendResults[rowIndex].TabAkkonResults[rowIndex] = new TabAkkonTrendResult
+                    int skipIndex = colIndex * dataCount;
+                    var akkonResult = new TabAkkonTrendResult
                     {
-                        Tab = Convert.ToInt32(texts[rowIndex][skipIndex + 3]),
-                        Judge = texts[rowIndex][skipIndex + 4],
-                        AvgCount = Convert.ToInt32(texts[rowIndex][skipIndex + 5]),
-                        AvgLength = Convert.ToDouble(texts[rowIndex][skipIndex + 6]),
+                        Tab = Convert.ToInt32(datas[skipIndex + 3]),
+                        Judge = datas[skipIndex + 4],
+                        AvgCount = Convert.ToInt32(datas[skipIndex + 5]),
+                        AvgLength = Convert.ToDouble(datas[skipIndex + 6]),
                     };
+                    trendResult.TabAkkonResults.Add(akkonResult);
                 }
+                _akkonTrendResults.Add(trendResult);
             }
         }
         #endregion

@@ -33,6 +33,9 @@
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.panel13 = new System.Windows.Forms.Panel();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.tableLayoutPanel19 = new System.Windows.Forms.TableLayoutPanel();
+            this.label4 = new System.Windows.Forms.Label();
+            this.mtgEnableTest2 = new MetroFramework.Controls.MetroToggle();
             this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
             this.label2 = new System.Windows.Forms.Label();
             this.mtgEnableTest1 = new MetroFramework.Controls.MetroToggle();
@@ -78,7 +81,7 @@
             this.tableLayoutPanel8 = new System.Windows.Forms.TableLayoutPanel();
             this.label15 = new System.Windows.Forms.Label();
             this.label16 = new System.Windows.Forms.Label();
-            this.txtDataStoringCapcity = new System.Windows.Forms.TextBox();
+            this.txtDataStoringCapacity = new System.Windows.Forms.TextBox();
             this.tableLayoutPanel9 = new System.Windows.Forms.TableLayoutPanel();
             this.label17 = new System.Windows.Forms.Label();
             this.label18 = new System.Windows.Forms.Label();
@@ -105,11 +108,9 @@
             this.tableLayoutPanel16 = new System.Windows.Forms.TableLayoutPanel();
             this.lblApplyImage = new System.Windows.Forms.Label();
             this.lblSave = new System.Windows.Forms.Label();
-            this.tableLayoutPanel19 = new System.Windows.Forms.TableLayoutPanel();
-            this.label4 = new System.Windows.Forms.Label();
-            this.mtgEnableTest2 = new MetroFramework.Controls.MetroToggle();
             this.tableLayoutPanel1.SuspendLayout();
             this.panel1.SuspendLayout();
+            this.tableLayoutPanel19.SuspendLayout();
             this.tableLayoutPanel3.SuspendLayout();
             this.tableLayoutPanel7.SuspendLayout();
             this.tableLayoutPanel10.SuspendLayout();
@@ -131,7 +132,6 @@
             this.tableLayoutPanel15.SuspendLayout();
             this.panel11.SuspendLayout();
             this.tableLayoutPanel16.SuspendLayout();
-            this.tableLayoutPanel19.SuspendLayout();
             this.SuspendLayout();
             // 
             // panel7
@@ -206,6 +206,47 @@
             this.panel1.Size = new System.Drawing.Size(382, 802);
             this.panel1.TabIndex = 0;
             // 
+            // tableLayoutPanel19
+            // 
+            this.tableLayoutPanel19.ColumnCount = 3;
+            this.tableLayoutPanel19.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 120F));
+            this.tableLayoutPanel19.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel19.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 100F));
+            this.tableLayoutPanel19.Controls.Add(this.label4, 0, 0);
+            this.tableLayoutPanel19.Controls.Add(this.mtgEnableTest2, 1, 0);
+            this.tableLayoutPanel19.Location = new System.Drawing.Point(67, 509);
+            this.tableLayoutPanel19.Name = "tableLayoutPanel19";
+            this.tableLayoutPanel19.RowCount = 1;
+            this.tableLayoutPanel19.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel19.Size = new System.Drawing.Size(298, 36);
+            this.tableLayoutPanel19.TabIndex = 32;
+            // 
+            // label4
+            // 
+            this.label4.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.label4.Font = new System.Drawing.Font("맑은 고딕", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.label4.ForeColor = System.Drawing.Color.White;
+            this.label4.Location = new System.Drawing.Point(3, 0);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(114, 36);
+            this.label4.TabIndex = 5;
+            this.label4.Text = "Test2";
+            this.label4.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // mtgEnableTest2
+            // 
+            this.mtgEnableTest2.AutoSize = true;
+            this.mtgEnableTest2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.mtgEnableTest2.FontWeight = MetroFramework.MetroLinkWeight.Bold;
+            this.mtgEnableTest2.Location = new System.Drawing.Point(123, 3);
+            this.mtgEnableTest2.Name = "mtgEnableTest2";
+            this.mtgEnableTest2.Size = new System.Drawing.Size(72, 30);
+            this.mtgEnableTest2.TabIndex = 12;
+            this.mtgEnableTest2.Text = "Off";
+            this.mtgEnableTest2.Theme = MetroFramework.MetroThemeStyle.Dark;
+            this.mtgEnableTest2.UseSelectable = true;
+            this.mtgEnableTest2.CheckedChanged += new System.EventHandler(this.mtgOperationSetting_CheckedChanged);
+            // 
             // tableLayoutPanel3
             // 
             this.tableLayoutPanel3.ColumnCount = 3;
@@ -245,6 +286,7 @@
             this.mtgEnableTest1.Text = "Off";
             this.mtgEnableTest1.Theme = MetroFramework.MetroThemeStyle.Dark;
             this.mtgEnableTest1.UseSelectable = true;
+            this.mtgEnableTest1.CheckedChanged += new System.EventHandler(this.mtgOperationSetting_CheckedChanged);
             // 
             // tableLayoutPanel7
             // 
@@ -285,6 +327,7 @@
             this.mtgEnableAkkon.Text = "Off";
             this.mtgEnableAkkon.Theme = MetroFramework.MetroThemeStyle.Dark;
             this.mtgEnableAkkon.UseSelectable = true;
+            this.mtgEnableAkkon.CheckedChanged += new System.EventHandler(this.mtgOperationSetting_CheckedChanged);
             // 
             // tableLayoutPanel10
             // 
@@ -325,6 +368,7 @@
             this.mtgEnableAlign.Text = "Off";
             this.mtgEnableAlign.Theme = MetroFramework.MetroThemeStyle.Dark;
             this.mtgEnableAlign.UseSelectable = true;
+            this.mtgEnableAlign.CheckedChanged += new System.EventHandler(this.mtgOperationSetting_CheckedChanged);
             // 
             // panel8
             // 
@@ -660,6 +704,7 @@
             this.mtgSaveNG.Text = "Off";
             this.mtgSaveNG.Theme = MetroFramework.MetroThemeStyle.Dark;
             this.mtgSaveNG.UseSelectable = true;
+            this.mtgSaveNG.CheckedChanged += new System.EventHandler(this.mtgOperationSetting_CheckedChanged);
             // 
             // panel12
             // 
@@ -723,6 +768,7 @@
             this.mtgSaveOK.Text = "Off";
             this.mtgSaveOK.Theme = MetroFramework.MetroThemeStyle.Dark;
             this.mtgSaveOK.UseSelectable = true;
+            this.mtgSaveOK.CheckedChanged += new System.EventHandler(this.mtgOperationSetting_CheckedChanged);
             // 
             // panel6
             // 
@@ -763,7 +809,7 @@
             this.tableLayoutPanel8.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 50F));
             this.tableLayoutPanel8.Controls.Add(this.label15, 2, 0);
             this.tableLayoutPanel8.Controls.Add(this.label16, 0, 0);
-            this.tableLayoutPanel8.Controls.Add(this.txtDataStoringCapcity, 1, 0);
+            this.tableLayoutPanel8.Controls.Add(this.txtDataStoringCapacity, 1, 0);
             this.tableLayoutPanel8.Location = new System.Drawing.Point(61, 263);
             this.tableLayoutPanel8.Name = "tableLayoutPanel8";
             this.tableLayoutPanel8.RowCount = 1;
@@ -795,20 +841,20 @@
             this.label16.Text = "Capcity";
             this.label16.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // txtDataStoringCapcity
+            // txtDataStoringCapacity
             // 
-            this.txtDataStoringCapcity.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
-            this.txtDataStoringCapcity.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.txtDataStoringCapcity.Font = new System.Drawing.Font("맑은 고딕", 14.25F, System.Drawing.FontStyle.Bold);
-            this.txtDataStoringCapcity.ForeColor = System.Drawing.Color.White;
-            this.txtDataStoringCapcity.Location = new System.Drawing.Point(103, 3);
-            this.txtDataStoringCapcity.Name = "txtDataStoringCapcity";
-            this.txtDataStoringCapcity.Size = new System.Drawing.Size(142, 33);
-            this.txtDataStoringCapcity.TabIndex = 8;
-            this.txtDataStoringCapcity.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.txtDataStoringCapcity.Click += new System.EventHandler(this.textbox_KeyPad_Click);
-            this.txtDataStoringCapcity.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtDataStoringDays_KeyPress);
-            this.txtDataStoringCapcity.Leave += new System.EventHandler(this.txtDataStoringDays_Leave);
+            this.txtDataStoringCapacity.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
+            this.txtDataStoringCapacity.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.txtDataStoringCapacity.Font = new System.Drawing.Font("맑은 고딕", 14.25F, System.Drawing.FontStyle.Bold);
+            this.txtDataStoringCapacity.ForeColor = System.Drawing.Color.White;
+            this.txtDataStoringCapacity.Location = new System.Drawing.Point(103, 3);
+            this.txtDataStoringCapacity.Name = "txtDataStoringCapacity";
+            this.txtDataStoringCapacity.Size = new System.Drawing.Size(142, 33);
+            this.txtDataStoringCapacity.TabIndex = 8;
+            this.txtDataStoringCapacity.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.txtDataStoringCapacity.Click += new System.EventHandler(this.textbox_KeyPad_Click);
+            this.txtDataStoringCapacity.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtDataStoringDays_KeyPress);
+            this.txtDataStoringCapacity.Leave += new System.EventHandler(this.txtDataStoringDays_Leave);
             // 
             // tableLayoutPanel9
             // 
@@ -1145,46 +1191,6 @@
             this.lblSave.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.lblSave.Click += new System.EventHandler(this.lblSave_Click);
             // 
-            // tableLayoutPanel19
-            // 
-            this.tableLayoutPanel19.ColumnCount = 3;
-            this.tableLayoutPanel19.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 120F));
-            this.tableLayoutPanel19.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel19.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 100F));
-            this.tableLayoutPanel19.Controls.Add(this.label4, 0, 0);
-            this.tableLayoutPanel19.Controls.Add(this.mtgEnableTest2, 1, 0);
-            this.tableLayoutPanel19.Location = new System.Drawing.Point(67, 509);
-            this.tableLayoutPanel19.Name = "tableLayoutPanel19";
-            this.tableLayoutPanel19.RowCount = 1;
-            this.tableLayoutPanel19.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel19.Size = new System.Drawing.Size(298, 36);
-            this.tableLayoutPanel19.TabIndex = 32;
-            // 
-            // label4
-            // 
-            this.label4.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.label4.Font = new System.Drawing.Font("맑은 고딕", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.label4.ForeColor = System.Drawing.Color.White;
-            this.label4.Location = new System.Drawing.Point(3, 0);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(114, 36);
-            this.label4.TabIndex = 5;
-            this.label4.Text = "Test2";
-            this.label4.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // mtgEnableTest2
-            // 
-            this.mtgEnableTest2.AutoSize = true;
-            this.mtgEnableTest2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.mtgEnableTest2.FontWeight = MetroFramework.MetroLinkWeight.Bold;
-            this.mtgEnableTest2.Location = new System.Drawing.Point(123, 3);
-            this.mtgEnableTest2.Name = "mtgEnableTest2";
-            this.mtgEnableTest2.Size = new System.Drawing.Size(72, 30);
-            this.mtgEnableTest2.TabIndex = 12;
-            this.mtgEnableTest2.Text = "Off";
-            this.mtgEnableTest2.Theme = MetroFramework.MetroThemeStyle.Dark;
-            this.mtgEnableTest2.UseSelectable = true;
-            // 
             // OperationSettingsForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
@@ -1200,6 +1206,8 @@
             this.Load += new System.EventHandler(this.OperationSettingsForm_Load);
             this.tableLayoutPanel1.ResumeLayout(false);
             this.panel1.ResumeLayout(false);
+            this.tableLayoutPanel19.ResumeLayout(false);
+            this.tableLayoutPanel19.PerformLayout();
             this.tableLayoutPanel3.ResumeLayout(false);
             this.tableLayoutPanel3.PerformLayout();
             this.tableLayoutPanel7.ResumeLayout(false);
@@ -1234,8 +1242,6 @@
             this.tableLayoutPanel15.ResumeLayout(false);
             this.panel11.ResumeLayout(false);
             this.tableLayoutPanel16.ResumeLayout(false);
-            this.tableLayoutPanel19.ResumeLayout(false);
-            this.tableLayoutPanel19.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -1268,7 +1274,7 @@
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel8;
         private System.Windows.Forms.Label label15;
         private System.Windows.Forms.Label label16;
-        private System.Windows.Forms.TextBox txtDataStoringCapcity;
+        private System.Windows.Forms.TextBox txtDataStoringCapacity;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel9;
         private System.Windows.Forms.Label label17;
         private System.Windows.Forms.Label label18;

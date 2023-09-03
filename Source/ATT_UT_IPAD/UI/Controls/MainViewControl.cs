@@ -130,6 +130,7 @@ namespace ATT_UT_IPAD.UI.Controls
         {
             AkkonViewerControl.Enable(isEnable);
             AlignViewerControl.Enable(isEnable);
+            DailyInfoViewerControl.Enable(isEnable);
         }
         #endregion
     }

@@ -5,6 +5,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -143,6 +144,15 @@ namespace ATT_UT_IPAD.UI.Controls
         {
             AlignResultDataControl.ClearData();
             AlignResultChartControl.ClearChart();
+        }
+
+        public void Enable(bool isEnable)
+        {
+            BeginInvoke(new Action(() =>
+            {
+                AkkonResultDataControl.Enabled = isEnable;
+                AlignResultDataControl.Enabled = isEnable;
+            }));
         }
         #endregion
     }

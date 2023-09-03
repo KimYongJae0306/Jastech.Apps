@@ -14,6 +14,7 @@ using Jastech.Framework.Imaging.Helper;
 using Jastech.Framework.Imaging.VisionPro;
 using Jastech.Framework.Structure;
 using Jastech.Framework.Structure.Service;
+using Jastech.Framework.Util.Helper;
 using Jastech.Framework.Winform.Controls;
 using Jastech.Framework.Winform.Helper;
 using Jastech.Framework.Winform.VisionPro.Helper;
@@ -52,6 +53,8 @@ namespace Jastech.Framework.Winform.Forms
         private bool _isInfinite { get; set; } = false;
 
         private int _remainCount { get; set; } = 0;
+
+        private readonly ParamTrackingLogger _paramLogger = new ParamTrackingLogger();
         #endregion
 
         #region 속성
@@ -195,6 +198,7 @@ namespace Jastech.Framework.Winform.Forms
 
             LightControl = new LightControl();
             LightControl.Dock = DockStyle.Fill;
+            LightControl.LightParamChanged += LightParamChanged; 
 
             pnlLight.Controls.Add(LightControl);
         }
@@ -397,62 +401,69 @@ namespace Jastech.Framework.Winform.Forms
 
         private void lblCameraExposureValue_Click(object sender, EventArgs e)
         {
-            double exposureTime = 0;
+            double oldExposureTime = 0;
+            double newExposureTime = 0;
             bool isOutOfRange = false;
 
             var tdiCamera = LineCamera.Camera as CameraMil;
             if (tdiCamera != null)
             {
-                exposureTime = KeyPadHelper.SetLabelIntegerData((Label)sender);
+                oldExposureTime = tdiCamera.Exposure;
+                newExposureTime = KeyPadHelper.SetLabelIntegerData((Label)sender);
 
-                if (exposureTime > 200000.0)
+                if (newExposureTime > 200000.0)
                 {
                     isOutOfRange = true;
-                    exposureTime = 200000.0;
+                    newExposureTime = 200000.0;
                 }
 
-                if (exposureTime < 1.0)
+                if (newExposureTime < 1.0)
                 {
                     isOutOfRange = true;
-                    exposureTime = 1.0;
+                    newExposureTime = 1.0;
                 }
 
                 if (isOutOfRange)
                     ShowConfirmDataRange(minValue: "1.0", maxValue: "200000.0");
 
-                lblExposureValue.Text = exposureTime.ToString();
-                tdiCamera.SetExposureTime(exposureTime);
-       
+                lblExposureValue.Text = newExposureTime.ToString();
+                tdiCamera.SetExposureTime(newExposureTime);
+
+                _paramLogger.AddChangeHistory($"{tdiCamera.Name}", "Exposure", oldExposureTime, newExposureTime);
             }
         }
 
         private void lblCameraDigitalGainValue_Click(object sender, EventArgs e)
         {
-            double digitalGain = 0;
+            double oldDigitalGain = 0;
+            double newDigitalGain = KeyPadHelper.SetLabelDoubleData((Label)sender);
             bool isOutOfRange = false;
 
-            digitalGain = KeyPadHelper.SetLabelDoubleData((Label)sender);
-
-            if (digitalGain > 8.0)
+            if (newDigitalGain > 8.0)
             {
                 isOutOfRange = true;
-                digitalGain = 8.0;
+                newDigitalGain = 8.0;
             }
 
-            if (digitalGain < 0.5)
+            if (newDigitalGain < 0.5)
             {
                 isOutOfRange = true;
-                digitalGain = 0.5;
+                newDigitalGain = 0.5;
             }
 
             if (isOutOfRange)
                 ShowConfirmDataRange(minValue: "0.5", maxValue: "8.0");
 
-            lblDigitalGainValue.Text = digitalGain.ToString();
-
             var tdiCamera = LineCamera.Camera as CameraMil;
             if (tdiCamera != null)
-                tdiCamera.SetDigitalGain(digitalGain);
+            {
+                oldDigitalGain = tdiCamera.GetDigitalGain();
+
+                lblDigitalGainValue.Text = newDigitalGain.ToString();
+                tdiCamera.SetDigitalGain(newDigitalGain);
+
+                _paramLogger.AddChangeHistory($"{tdiCamera.Name}", "DigitalGain", oldDigitalGain, newDigitalGain);
+            }
         }
 
         private void ShowConfirmDataRange(string minValue, string maxValue)
@@ -464,27 +475,33 @@ namespace Jastech.Framework.Winform.Forms
 
         private void lblCameraGainValue_Click(object sender, EventArgs e)
         {
-            int analogGain = KeyPadHelper.SetLabelIntegerData((Label)sender);
+            int oldAnalogGain = 0;
+            int newAnalogGain = KeyPadHelper.SetLabelIntegerData((Label)sender); ;
 
             bool isOutOfRange = false;
 
-            if (analogGain > 4.0)
+            if (newAnalogGain > 4.0)
             {
                 isOutOfRange = true;
-                analogGain = 4;
+                newAnalogGain = 4;
             }
 
-            if (analogGain < 1)
+            if (newAnalogGain < 1)
             {
                 isOutOfRange = true;
-                analogGain = 1;
+                newAnalogGain = 1;
             }
 
             if (isOutOfRange)
                 ShowConfirmDataRange(minValue: "1", maxValue: "4");
 
-            lblAnalogGainValue.Text = analogGain.ToString();
-            LineCamera?.Camera.SetAnalogGain(analogGain);
+            if (LineCamera != null)
+            {
+                lblAnalogGainValue.Text = newAnalogGain.ToString();
+                LineCamera.Camera.SetAnalogGain(newAnalogGain);
+
+                _paramLogger.AddChangeHistory($"{LineCamera.Camera.Name}", "AnalogGain", oldAnalogGain, newAnalogGain);
+            }
         }
 
         private void rdoJogSlowMode_CheckedChanged(object sender, EventArgs e)
@@ -588,6 +605,12 @@ namespace Jastech.Framework.Winform.Forms
             if (yesNoForm.ShowDialog() == DialogResult.Yes)
             {
                 SaveModelData(model);
+
+                if (_paramLogger.IsEmpty == false)
+                {
+                    _paramLogger.AddLog("Optic Teaching Parameter saved.");
+                    _paramLogger.WriteLogToFile();
+                }
 
                 MessageConfirmForm confirmForm = new MessageConfirmForm();
                 confirmForm.Message = "Save Model Completed.";
@@ -766,16 +789,6 @@ namespace Jastech.Framework.Winform.Forms
         private void lblRepeatCount_Click(object sender, EventArgs e)
         {
             KeyPadHelper.SetLabelIntegerData((Label)sender);
-        }
-
-        private void lblStart_Click(object sender, EventArgs e)
-        {
-            SetOperationMode(TDIOperationMode.TDI);
-        }
-
-        public double GetScanLength()
-        {
-            return Convert.ToDouble(lblScanXLength.Text);
         }
 
         private void MoveRepeat(bool isRepeat)
@@ -987,6 +1000,11 @@ namespace Jastech.Framework.Winform.Forms
         {
             String dir = ConfigSet.Instance().Path.Model;
             Process.Start(dir);
+        }
+
+        private void LightParamChanged(string component, int channel, double oldValue, double newValue)
+        {
+            _paramLogger.AddChangeHistory($"{LineCamera.Camera.Name}", $"Light_{component}_{channel}", oldValue, newValue);
         }
         #endregion
     }
