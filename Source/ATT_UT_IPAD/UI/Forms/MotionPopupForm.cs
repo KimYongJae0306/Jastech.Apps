@@ -444,6 +444,8 @@ namespace ATT_UT_IPAD.UI.Forms
 
                 InspModelService?.Save(fileName, model);
 
+                XVariableControl?.WriteChangeLog();
+
                 if (_paramLogger.IsEmpty == false)
                 {
                     _paramLogger.AddLog("Motion Parameter saved.");

@@ -2,6 +2,7 @@
 using System;
 using System.Drawing;
 using System.Linq;
+using System.Runtime.Remoting.Channels;
 using System.Windows.Forms;
 
 namespace Jastech.Apps.Winform.UI.Controls
@@ -201,13 +202,10 @@ namespace Jastech.Apps.Winform.UI.Controls
 
             string ctrlName = cbxControlNameList.SelectedItem as string;
             int channel = GetLightChannel(ctrlName);
-            int oldValue = GetLightValue(ctrlName);
-            int newValue = (int)trbLightLevelValue.Value;
+            int newValue = trbLightLevelValue.Value;
 
             nupdnLightLevel.Value = newValue;
             SetLightValue(ctrlName, newValue);
-
-            LightParamChanged?.Invoke(ctrlName, channel, oldValue, newValue);
 
             _usingScroll = false;
         }
@@ -216,27 +214,26 @@ namespace Jastech.Apps.Winform.UI.Controls
         {
             if (_usingScroll)
                 return;
+
             _usingNupdn = true;
 
             string ctrlName = cbxControlNameList.SelectedItem as string;
-            int channel = GetLightChannel(ctrlName);
-            int oldValue = GetLightValue(ctrlName);
             int newValue = (int)nupdnLightLevel.Value;
 
             trbLightLevelValue.Value = newValue;
             SetLightValue(ctrlName, newValue);
-
-            LightParamChanged?.Invoke(ctrlName, channel, oldValue, newValue);
 
             _usingNupdn = false;
         }
 
         private void SetLightValue(string ctrlName, int value)
         {
+            int oldValue = GetLightValue(ctrlName);
             var lightControl = LightCtrlHandler.Get(ctrlName);
             var channelNum = GetLightChannel(ctrlName);
 
             LightParam.Map[ctrlName].LightLevels[channelNum] = value;
+            LightParamChanged?.Invoke(ctrlName, channelNum, oldValue, value);
 
             lightControl.TurnOn(channelNum, value);
         }

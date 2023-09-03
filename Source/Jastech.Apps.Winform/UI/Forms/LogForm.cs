@@ -381,17 +381,7 @@ namespace Jastech.Framework.Winform.Forms
                 InspDisplayControl.ClearThumbnail();
                 InspDisplayControl.ClearGraphic();
 
-                //string filePath = Path.Combine(Path.GetDirectoryName(fullPath), "Origin", Path.GetFileName(fullPath));
-                string filePath = fullPath;
-
-                Mat image = new Mat(filePath, ImreadModes.Grayscale);
-                int size = image.Width * image.Height * image.NumberOfChannels;
-                byte[] dataArray = new byte[size];
-                Marshal.Copy(image.DataPointer, dataArray, 0, size);
-
-                ColorFormat format = image.NumberOfChannels == 1 ? ColorFormat.Gray : ColorFormat.RGB24;
-
-                var cogImage = VisionProImageHelper.ConvertImage(dataArray, image.Width, image.Height, format);
+                var cogImage = VisionProImageHelper.Load(fullPath);
                 InspDisplayControl.SetImage(cogImage.CopyBase(CogImageCopyModeConstants.CopyPixels));
             }
             catch (Exception ex)

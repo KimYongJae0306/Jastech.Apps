@@ -131,6 +131,7 @@ namespace Jastech.Apps.Winform.UI.Controls
             var inspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
 
             dgvPCResult.Columns.Clear();
+            dgvPCResult.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             List<string> pcHeader = new List<string>
             {
                 "Type",
@@ -139,7 +140,7 @@ namespace Jastech.Apps.Winform.UI.Controls
                 "Pp",
                 "Ppk",
             };
-            var pcColumns = pcHeader.Select(text => new DataGridViewTextBoxColumn { Name = text });
+            var pcColumns = pcHeader.Select(text => new DataGridViewTextBoxColumn { Name = text});
             dgvPCResult.Columns.AddRange(pcColumns.ToArray());
 
             dgvAlignData.Columns.Clear();

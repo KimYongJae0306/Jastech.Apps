@@ -39,6 +39,7 @@ namespace Jastech.Apps.Winform.UI.Controls
             _nonSelectedColor = Color.FromArgb(52, 52, 52);
 
             InitializeDataGridView();
+            lblTotal_Click(null, null);
         }
 
         private void InitializeDataGridView()

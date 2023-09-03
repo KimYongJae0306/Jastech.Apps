@@ -330,10 +330,9 @@ namespace Jastech.Apps.Winform.UI.Controls
             this.tlpPCResult.Location = new System.Drawing.Point(3, 257);
             this.tlpPCResult.Name = "tlpPCResult";
             this.tlpPCResult.RowCount = 2;
-            this.tlpProcessCapability.SetRowSpan(this.tlpPCResult, 2);
             this.tlpPCResult.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
             this.tlpPCResult.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tlpPCResult.Size = new System.Drawing.Size(530, 294);
+            this.tlpPCResult.Size = new System.Drawing.Size(530, 248);
             this.tlpPCResult.TabIndex = 3;
             // 
             // lblResultTitle1
@@ -382,7 +381,7 @@ namespace Jastech.Apps.Winform.UI.Controls
             this.dgvPCResult.RowHeadersVisible = false;
             this.dgvPCResult.RowTemplate.Height = 23;
             this.dgvPCResult.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvPCResult.Size = new System.Drawing.Size(530, 264);
+            this.dgvPCResult.Size = new System.Drawing.Size(530, 218);
             this.dgvPCResult.TabIndex = 6;
             this.dgvPCResult.DataSourceChanged += new System.EventHandler(this.dgvPCResult_DataSourceChanged);
             // 

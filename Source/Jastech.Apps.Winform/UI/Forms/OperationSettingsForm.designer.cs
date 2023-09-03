@@ -81,7 +81,7 @@
             this.tableLayoutPanel8 = new System.Windows.Forms.TableLayoutPanel();
             this.label15 = new System.Windows.Forms.Label();
             this.label16 = new System.Windows.Forms.Label();
-            this.txtDataStoringCapcity = new System.Windows.Forms.TextBox();
+            this.txtDataStoringCapacity = new System.Windows.Forms.TextBox();
             this.tableLayoutPanel9 = new System.Windows.Forms.TableLayoutPanel();
             this.label17 = new System.Windows.Forms.Label();
             this.label18 = new System.Windows.Forms.Label();
@@ -809,7 +809,7 @@
             this.tableLayoutPanel8.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 50F));
             this.tableLayoutPanel8.Controls.Add(this.label15, 2, 0);
             this.tableLayoutPanel8.Controls.Add(this.label16, 0, 0);
-            this.tableLayoutPanel8.Controls.Add(this.txtDataStoringCapcity, 1, 0);
+            this.tableLayoutPanel8.Controls.Add(this.txtDataStoringCapacity, 1, 0);
             this.tableLayoutPanel8.Location = new System.Drawing.Point(61, 263);
             this.tableLayoutPanel8.Name = "tableLayoutPanel8";
             this.tableLayoutPanel8.RowCount = 1;
@@ -841,20 +841,20 @@
             this.label16.Text = "Capcity";
             this.label16.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // txtDataStoringCapcity
+            // txtDataStoringCapacity
             // 
-            this.txtDataStoringCapcity.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
-            this.txtDataStoringCapcity.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.txtDataStoringCapcity.Font = new System.Drawing.Font("맑은 고딕", 14.25F, System.Drawing.FontStyle.Bold);
-            this.txtDataStoringCapcity.ForeColor = System.Drawing.Color.White;
-            this.txtDataStoringCapcity.Location = new System.Drawing.Point(103, 3);
-            this.txtDataStoringCapcity.Name = "txtDataStoringCapcity";
-            this.txtDataStoringCapcity.Size = new System.Drawing.Size(142, 33);
-            this.txtDataStoringCapcity.TabIndex = 8;
-            this.txtDataStoringCapcity.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.txtDataStoringCapcity.Click += new System.EventHandler(this.textbox_KeyPad_Click);
-            this.txtDataStoringCapcity.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtDataStoringDays_KeyPress);
-            this.txtDataStoringCapcity.Leave += new System.EventHandler(this.txtDataStoringDays_Leave);
+            this.txtDataStoringCapacity.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
+            this.txtDataStoringCapacity.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.txtDataStoringCapacity.Font = new System.Drawing.Font("맑은 고딕", 14.25F, System.Drawing.FontStyle.Bold);
+            this.txtDataStoringCapacity.ForeColor = System.Drawing.Color.White;
+            this.txtDataStoringCapacity.Location = new System.Drawing.Point(103, 3);
+            this.txtDataStoringCapacity.Name = "txtDataStoringCapacity";
+            this.txtDataStoringCapacity.Size = new System.Drawing.Size(142, 33);
+            this.txtDataStoringCapacity.TabIndex = 8;
+            this.txtDataStoringCapacity.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.txtDataStoringCapacity.Click += new System.EventHandler(this.textbox_KeyPad_Click);
+            this.txtDataStoringCapacity.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtDataStoringDays_KeyPress);
+            this.txtDataStoringCapacity.Leave += new System.EventHandler(this.txtDataStoringDays_Leave);
             // 
             // tableLayoutPanel9
             // 
@@ -1274,7 +1274,7 @@
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel8;
         private System.Windows.Forms.Label label15;
         private System.Windows.Forms.Label label16;
-        private System.Windows.Forms.TextBox txtDataStoringCapcity;
+        private System.Windows.Forms.TextBox txtDataStoringCapacity;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel9;
         private System.Windows.Forms.Label label17;
         private System.Windows.Forms.Label label18;

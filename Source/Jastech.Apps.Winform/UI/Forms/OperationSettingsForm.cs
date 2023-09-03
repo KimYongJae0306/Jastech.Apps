@@ -62,7 +62,7 @@ namespace Jastech.Framework.Winform.Forms
             mtgEnableTest2.Checked = appsConfig.EnableTest2;
 
             txtDataStoringDays.Text = operation.DataStoringDuration.ToString();
-            txtDataStoringCapcity.Text = operation.DataStiringCapcity.ToString();
+            txtDataStoringCapacity.Text = operation.DataStoringCapacity.ToString();
 
             mtgSaveOK.Checked = operation.SaveImageOK;
             mtgSaveNG.Checked = operation.SaveImageNG;
@@ -87,7 +87,7 @@ namespace Jastech.Framework.Winform.Forms
             _paramLogger.ClearChangedLog();
         }
 
-        public void UpdateCuurentData()
+        public void UpdateCurrentData()
         {
             var operation = ConfigSet.Instance().Operation;
             var appsConfig = AppsConfig.Instance();
@@ -104,7 +104,7 @@ namespace Jastech.Framework.Winform.Forms
             appsConfig.EnableTest2 = mtgEnableTest2.Checked;
 
             operation.DataStoringDuration = (int)Convert.ToDouble(GetValue(txtDataStoringDays.Text));
-            operation.DataStiringCapcity = (int)Convert.ToDouble(GetValue(txtDataStoringCapcity.Text));
+            operation.DataStoringCapacity = (int)Convert.ToDouble(GetValue(txtDataStoringCapacity.Text));
 
             operation.SaveImageOK = mtgSaveOK.Checked;
             operation.SaveImageNG = mtgSaveNG.Checked;
@@ -125,7 +125,7 @@ namespace Jastech.Framework.Winform.Forms
 
         private void lblSave_Click(object sender, EventArgs e)
         {
-            UpdateCuurentData();
+            UpdateCurrentData();
 
             ConfigSet.Instance().Save();
             AppsConfig.Instance().Save();
@@ -214,9 +214,9 @@ namespace Jastech.Framework.Winform.Forms
         private void mtgOperationSetting_CheckedChanged(object sender, EventArgs e)
         {
             if (sender is MetroToggle toggleButton)
-            {
                 _paramLogger.AddChangeHistory("OperationSetting", toggleButton.Name.Replace("mtg", ""), !toggleButton.Checked, toggleButton.Checked);
-            }
+            else if (sender is RadioButton radioButton)
+                _paramLogger.AddChangeHistory("OperationSetting", radioButton.Name.Replace("rdo", ""), !radioButton.Checked, radioButton.Checked);
         }
         #endregion
     }
