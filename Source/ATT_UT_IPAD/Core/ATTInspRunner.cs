@@ -1553,6 +1553,7 @@ namespace ATT_UT_IPAD.Core
                             {
                                 if (saveCount > maxSaveCount)
                                     break;
+
                                 string akkonNGDirName = string.Format("Tab{0}_NG", tabInspResult.TabNo);
                                 string akkonNGDir = Path.Combine(resultPath, akkonNGDirName);
                                 if (Directory.Exists(akkonNGDir) == false)
@@ -1569,26 +1570,16 @@ namespace ATT_UT_IPAD.Core
                                             var boundRect = roi.GetBoundRect();
                                             var centerPoint = new Point(boundRect.X + (boundRect.Width / 2), boundRect.Y + (boundRect.Height / 2));
 
-                                            var cropRoi = new Rectangle();
-                                            int cropWidth = 100;
-                                            cropRoi.X = (int)(centerPoint.X - (cropWidth / 2));
-                                            cropRoi.Y = (int)(centerPoint.Y - (boundRect.Height / 2));
-                                            cropRoi.Width = cropWidth;
-                                            cropRoi.Height = boundRect.Height;
-
                                             Mat cropAkkonMat = MatHelper.CropRoi(tabInspResult.Image, boundRect);
                                             string savePath = Path.Combine(akkonNGDir, fileName);
                                             cropAkkonMat.Save(savePath);
-                                            //tabInspResult.Image.Save(@"D:\123.bmp");
                                             cropAkkonMat.Dispose();
                                             saveCount++;
                                         }
-                                        catch (Exception er)
+                                        catch (Exception err)
                                         {
-                                            // 가압 : PreBond
-                                            // 본압 : FinalBond
+                                        
                                         }
-
                                     }
                                 }
                             }

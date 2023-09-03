@@ -115,7 +115,7 @@ namespace Jastech.Apps.Structure.VisionTool
             tabInspResult.MarkResult.PanelMark = RunPanelMark(cogImage, tab, false);
         }
 
-
+        // 기존 얼라인 검사
         public AlignResult RunMainLeftAlignX(ICogImage cogImage, Tab tab, PointF fpcOffset, PointF panelOffset, double judgementX_pixel)
         {
             var fpcParam = tab.GetAlignParam(ATTTabAlignName.LeftFPCX).DeepCopy();
@@ -128,6 +128,24 @@ namespace Jastech.Apps.Structure.VisionTool
             panelParam.CaliperParams.SetRegion(calcPanelRegion);
 
             var result = RunMainAlignX(cogImage, fpcParam, panelParam, judgementX_pixel);
+            return result;
+        }
+        
+        // 변경된 얼라인 검사
+        public AlignResult RunMainLeftAutoAlignX(ICogImage cogImage, Tab tab, PointF fpcOffset, PointF panelOffset, double judgementX_pixel)
+        {
+            var fpcParam = tab.GetAlignParam(ATTTabAlignName.LeftFPCX).DeepCopy();
+            var panelParam = tab.GetAlignParam(ATTTabAlignName.LeftPanelX).DeepCopy();
+
+            var calcFpcRegion = VisionProShapeHelper.AddOffsetToCogRectAffine(fpcParam.CaliperParams.GetRegion() as CogRectangleAffine, fpcOffset);
+            var calcPanelRegion = VisionProShapeHelper.AddOffsetToCogRectAffine(panelParam.CaliperParams.GetRegion() as CogRectangleAffine, panelOffset);
+
+            var newRegion = VisionProShapeHelper.MoveTranslationY(calcPanelRegion, -calcPanelRegion.SideYLength - 10);
+            fpcParam.CaliperParams.SetRegion(newRegion);
+
+            panelParam.CaliperParams.SetRegion(calcPanelRegion);
+
+            var result = RunMainAutoAlignX(cogImage, fpcParam, panelParam, judgementX_pixel);
             return result;
         }
 
@@ -146,6 +164,7 @@ namespace Jastech.Apps.Structure.VisionTool
             return result;
         }
 
+        // 기존 얼라인 검사
         public AlignResult RunMainRightAlignX(ICogImage cogImage, Tab tab, PointF fpcOffset, PointF panelOffset, double judgementX_pixel)
         {
             var fpcParam = tab.GetAlignParam(ATTTabAlignName.RightFPCX).DeepCopy();
@@ -158,6 +177,24 @@ namespace Jastech.Apps.Structure.VisionTool
             panelParam.CaliperParams.SetRegion(calcPanelRegion);
 
             var result = RunMainAlignX(cogImage, fpcParam, panelParam, judgementX_pixel);
+            return result;
+        }
+
+        // 변경된 얼라인 검사
+        public AlignResult RunMainRightAutoAlignX(ICogImage cogImage, Tab tab, PointF fpcOffset, PointF panelOffset, double judgementX_pixel)
+        {
+            var fpcParam = tab.GetAlignParam(ATTTabAlignName.RightFPCX).DeepCopy();
+            var panelParam = tab.GetAlignParam(ATTTabAlignName.RightPanelX).DeepCopy();
+
+            var calcFpcRegion = VisionProShapeHelper.AddOffsetToCogRectAffine(fpcParam.CaliperParams.GetRegion() as CogRectangleAffine, fpcOffset);
+            var calcPanelRegion = VisionProShapeHelper.AddOffsetToCogRectAffine(panelParam.CaliperParams.GetRegion() as CogRectangleAffine, panelOffset);
+
+            var newRegion = VisionProShapeHelper.MoveTranslationY(calcPanelRegion, -calcPanelRegion.SideYLength - 10);
+            fpcParam.CaliperParams.SetRegion(newRegion);
+
+            panelParam.CaliperParams.SetRegion(calcPanelRegion);
+
+            var result = RunMainAutoAlignX(cogImage, fpcParam, panelParam, judgementX_pixel);
             return result;
         }
 
@@ -264,15 +301,6 @@ namespace Jastech.Apps.Structure.VisionTool
                     Value = res,
                 };
                 leadAlignResultList.Add(leadAlignResult);
-
-                //// 2Point : 센터 위치까지만 그리기
-                //CogLine cogLine = new CogLine();
-                //cogLine.SetFromStartXYEndXY(fpcCenterX, fpcCenterY, panelCenterX, panelCenterY);
-
-                //// 1Point + Skew : 영역 전체 그리기 ( fpc skew와 panel skew가 일치하지 않을 경우 어디선가 교점이 생김....
-                //// fpc skew, panel skew 동일하게 하거나, line 그리는 skew에 fpc skew, panel skew를 넣는 것이 아닌 두 skew의 평균으로 넣든해야함
-                //cogLine.SetXYRotation(fpcCenterX, fpcCenterY, fpcSkew);
-                //cogLine.SetXYRotation(panelCenterX, panelCenterY, panelSkew);
             }
 
             if (leadAlignResultList.Count > 0)
@@ -290,6 +318,126 @@ namespace Jastech.Apps.Structure.VisionTool
                             continue;
                     }
                     temp += alignResult.Value;
+                    count++;
+                }
+
+                result.ResultValue_pixel = Convert.ToSingle(temp / count);
+                result.JudegementValue_pixel = judegementX_pixel;
+                result.AlignResultList.AddRange(leadAlignResultList);
+            }
+            else
+            {
+                result.AlignMissing = true;
+            }
+
+            return result;
+        }
+
+        public AlignResult RunMainAutoAlignX(ICogImage cogImage, AlignParam fpcParam, AlignParam panelParam, double judegementX_pixel)
+        {
+            AlignResult result = new AlignResult();
+
+            // test
+            var fpcRegion = fpcParam.CaliperParams.GetRegion() as CogRectangleAffine;
+            var panelRegion = panelParam.CaliperParams.GetRegion() as CogRectangleAffine;
+            fpcRegion.Skew = panelRegion.Skew;
+            // test
+
+            result.Panel = RunAlignX(cogImage, panelParam.CaliperParams, panelParam.LeadCount, true);
+            result.Fpc = RunAlignX(cogImage, fpcParam.CaliperParams, fpcParam.LeadCount, false);
+
+            List<LeadAlignResult> leadAlignResultList = new List<LeadAlignResult>();
+
+            for (int i = 0; i < panelParam.LeadCount * 2; i += 2)
+            {
+                var panelResult1 = result.Panel.CogAlignResult[i];
+                var panelResult2 = result.Panel.CogAlignResult[i + 1];
+
+                var fpcResult1 = result.Fpc.CogAlignResult[i];
+                var fpcResult2 = result.Fpc.CogAlignResult[i + 1];
+
+                if (panelResult1 == null || panelResult2 == null || fpcResult1 == null || fpcResult2 == null)
+                    continue;
+
+                if (panelResult1.Found == false || panelResult2.Found == false || fpcResult1.Found == false || fpcResult2.Found == false)
+                    continue;
+
+                double panelIntervalX = Math.Abs(panelResult1.CaliperMatchList[0].FoundPos.X - panelResult2.CaliperMatchList[0].FoundPos.X);
+                double panelIntervalY = Math.Abs(panelResult1.CaliperMatchList[0].FoundPos.Y - panelResult2.CaliperMatchList[0].FoundPos.Y);
+
+                var height = panelResult1.CaliperMatchList[0].ReferenceHeight;
+                var skew = panelResult1.CaliperMatchList[0].ReferenceSkew;
+
+                double panelCenterX = panelResult1.CaliperMatchList[0].FoundPos.X + (panelIntervalX / 2.0);
+                double panelCenterY = panelResult1.CaliperMatchList[0].FoundPos.Y + (panelIntervalY / 2.0);
+
+                double fpcIntervalX = Math.Abs(fpcResult1.CaliperMatchList[0].FoundPos.X - fpcResult2.CaliperMatchList[0].FoundPos.X);
+                double fpcIntervalY = Math.Abs(fpcResult1.CaliperMatchList[0].FoundPos.Y - fpcResult2.CaliperMatchList[0].FoundPos.Y);
+                double fpcCenterX = fpcResult1.CaliperMatchList[0].FoundPos.X + (fpcIntervalX / 2.0);
+                double fpcCenterY = fpcResult1.CaliperMatchList[0].FoundPos.Y + (fpcIntervalY / 2.0);
+
+                double dx = panelCenterX - fpcCenterX;
+                double dy = panelCenterY - fpcCenterY;
+
+                double length = Math.Sqrt(dx * dx + dy * dy);
+
+                CogLineSegment fpcLine = new CogLineSegment();
+                var fpcSkew = fpcResult1.CaliperMatchList[0].ReferenceSkew;
+                fpcLine.SetStartLengthRotation(fpcCenterX, fpcCenterY, length, fpcSkew + MathHelper.DegToRad(90));
+                fpcLine.GetStartEnd(out double startFpcX, out double startFpcY, out double endFpcX, out double endFpcY);
+                fpcLine.Dispose();
+
+                List<PointF> fpcPointList = GetPointListOfLine(startFpcX, startFpcY, endFpcX, endFpcY);
+
+                CogLineSegment panelLine = new CogLineSegment();
+                var panelSkew = panelResult1.CaliperMatchList[0].ReferenceSkew;
+                panelLine.SetStartLengthRotation(panelCenterX, panelCenterY, length, panelSkew + MathHelper.DegToRad(270));
+                panelLine.GetStartEnd(out double startPanelX, out double startPanelY, out double endPanelX, out double endPanelY);
+                panelLine.Dispose();
+
+                List<PointF> panelPointList = GetPointListOfLine(startPanelX, startPanelY, endPanelX, endPanelY);
+
+                fpcPointList.Sort((p1, p2) => p1.Y.CompareTo(p2.Y));
+                panelPointList.Sort((p1, p2) => p1.Y.CompareTo(p2.Y));
+
+                var res = DistanceFromPointToLine(panelPointList[0].X, panelPointList[0].Y, panelPointList[panelPointList.Count() - 1].X, panelPointList[panelPointList.Count() - 1].Y, fpcCenterX, fpcCenterY);
+
+                LeadAlignResult leadAlignResult = new LeadAlignResult
+                {
+                    PanelSkew = panelSkew,
+                    FpcSkew = fpcSkew,
+                    PanelCenterX = panelCenterX,
+                    PanelCenterY = panelCenterY,
+                    FpcCenterX = fpcCenterX,
+                    FpcCenterY = fpcCenterY,
+                    //FpcDeltaX = deltaFpcX,
+                    //PanelDeltaX = deltaPanelX,
+                    Value = res,
+                };
+                leadAlignResultList.Add(leadAlignResult);
+            }
+
+            if (leadAlignResultList.Count > 0)
+            {
+                double max = leadAlignResultList.Max(item => item.Value);
+                double min = leadAlignResultList.Min(item => item.Value);
+
+                double temp = 0.0;
+                int count = 0;
+                foreach (var alignResult in leadAlignResultList)
+                {
+                    if (leadAlignResultList.Count > 2)
+                    {
+                        if (alignResult.Value == max || alignResult.Value == min)
+                            continue;
+                    }
+                    temp += alignResult.Value;
+                    count++;
+                }
+
+                if (leadAlignResultList.Count >= 2 && temp == 0)
+                {
+                    temp = (min + max) / 2.0;
                     count++;
                 }
 
@@ -460,6 +608,88 @@ namespace Jastech.Apps.Structure.VisionTool
         }
     }
 
+    public partial class MainAlgorithmTool
+    {
+        public List<PointF> GetPointListOfLine(PointF startPoint, PointF endPoint)
+        {
+            List<PointF> rstPoints = new List<PointF>();
+
+            float x, y, dxD, dyD, step;
+            int cnt = 0;
+
+            dxD = (endPoint.X - startPoint.X);
+            dyD = (endPoint.Y - startPoint.Y);
+
+            if (Math.Abs(dxD) >= Math.Abs(dyD))
+                step = Math.Abs(dxD);
+            else
+                step = Math.Abs(dyD);
+
+            dxD = dxD / step;
+            dyD = dyD / step;
+            x = startPoint.X;
+            y = startPoint.Y;
+
+            while (cnt <= step)
+            {
+                Point point = new Point((int)Math.Round(x, 0), (int)Math.Round(y, 0));
+
+                rstPoints.Add(point);
+
+                x = x + dxD;
+                y = y + dyD;
+
+                cnt += 1;
+            }
+            return rstPoints;
+        }
+
+        public List<PointF> GetPointListOfLine(double startPointX, double startPointY, double endPointX, double endPointY)
+        {
+            List<PointF> rstPoints = new List<PointF>();
+
+            double x, y, dxD, dyD, step;
+            int cnt = 0;
+
+            dxD = (endPointX - startPointX);
+            dyD = (endPointY - startPointY);
+
+            if (Math.Abs(dxD) >= Math.Abs(dyD))
+                step = Math.Abs(dxD);
+            else
+                step = Math.Abs(dyD);
+
+            dxD = dxD / step;
+            dyD = dyD / step;
+            x = startPointX;
+            y = startPointY;
+
+            while (cnt <= step)
+            {
+                Point point = new Point((int)Math.Round(x, 0), (int)Math.Round(y, 0));
+
+                rstPoints.Add(point);
+
+                x = x + dxD;
+                y = y + dyD;
+
+                cnt += 1;
+            }
+            return rstPoints;
+        }
+
+        private double DistanceFromPointToLine(double x1, double y1, double x2, double y2, double x, double y)
+        {
+            // 시작점과 끝점으로 구성된 선분의 두 점 좌표를 사용하여 직선의 방정식을 찾습니다.
+            // 선분 방정식: ax + by + C = 0
+            double a = y2 - y1;
+            double b = x1 - x2;
+            double c = x2 * y1 - x1 * y2;
+
+            // 점 P(x, y)까지의 거리를 계산합니다.
+            return (a * x + b * y + c) / Math.Sqrt(a * a + b * b);
+        }
+    }
     public class AlignmentResult
     {
         #region 속성

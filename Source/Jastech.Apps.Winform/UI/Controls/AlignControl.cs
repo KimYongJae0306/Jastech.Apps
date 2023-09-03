@@ -309,7 +309,7 @@ namespace Jastech.Apps.Winform.UI.Controls
             VisionProAlignCaliperResult result = new VisionProAlignCaliperResult();
 
             VisionProCaliperParam inspParam = currentParam.DeepCopy();
-
+    
             bool usePanel = false;
             if (CurrentAlignName.ToString().ToUpper().Contains("PANEL"))
                 usePanel = true;
