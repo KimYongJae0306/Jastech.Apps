@@ -1649,7 +1649,7 @@ namespace ATT_UT_IPAD.Core
                 string resultPath = ConfigSet.Instance().Path.Result;
                 string logPath = ConfigSet.Instance().Path.Log;
 
-                int capacity = ConfigSet.Instance().Operation.DataStiringCapcity;
+                int capacity = ConfigSet.Instance().Operation.DataStoringCapacity;
                 
                 DeleteDirectoryByCapacity(Path.Combine(resultPath, inspModel.Name), capacity);
                 DeleteDirectoryByCapacity(logPath, capacity);

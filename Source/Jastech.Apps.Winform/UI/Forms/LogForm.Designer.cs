@@ -84,6 +84,7 @@ namespace Jastech.Framework.Winform.Forms
             // 
             // pnlLogType
             // 
+            this.pnlLogType.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.pnlLogType.Controls.Add(this.btnSelectionProcessCapability);
             this.pnlLogType.Controls.Add(this.btnSelectionUPH);
             this.pnlLogType.Controls.Add(this.btnSelectionAkkonTrend);
@@ -189,7 +190,6 @@ namespace Jastech.Framework.Winform.Forms
             // 
             // pnlContents
             // 
-            this.pnlContents.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.pnlContents.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pnlContents.ForeColor = System.Drawing.Color.Black;
             this.pnlContents.Location = new System.Drawing.Point(0, 162);
@@ -238,6 +238,7 @@ namespace Jastech.Framework.Winform.Forms
             this.cdrMonthCalendar.ForeColor = System.Drawing.Color.White;
             this.cdrMonthCalendar.Location = new System.Drawing.Point(0, 0);
             this.cdrMonthCalendar.Margin = new System.Windows.Forms.Padding(0);
+            this.cdrMonthCalendar.MaxSelectionCount = 28;
             this.cdrMonthCalendar.Name = "cdrMonthCalendar";
             this.cdrMonthCalendar.TabIndex = 7;
             this.cdrMonthCalendar.TitleBackColor = System.Drawing.Color.Black;

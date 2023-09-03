@@ -1,8 +1,12 @@
 ﻿using Cognex.VisionPro;
+using Cognex.VisionPro.Display;
+using Cognex.VisionPro.Exceptions;
 using Emgu.CV;
 using Emgu.CV.CvEnum;
 using Jastech.Apps.Structure;
+using Jastech.Apps.Winform;
 using Jastech.Apps.Winform.UI.Controls;
+using Jastech.Apps.Winform.Core;
 using Jastech.Framework.Imaging;
 using Jastech.Framework.Imaging.VisionPro;
 using Jastech.Framework.Winform.Helper;
@@ -34,17 +38,17 @@ namespace Jastech.Framework.Winform.Forms
         #endregion
 
         #region 속성
-        private LogControl LogControl { get; set; } = new LogControl() { Dock = DockStyle.Fill };
+        private LogControl LogControl { get; set; } = null;
 
-        private CogDisplayControl CogDisplayControl { get; set; } = new CogDisplayControl() { Dock = DockStyle.Fill };
+        private CogInspDisplayControl InspDisplayControl { get; set; } = null;
 
-        private AlignTrendControl AlignTrendControl { get; set; } = new AlignTrendControl() { Dock = DockStyle.Fill };
+        private AlignTrendControl AlignTrendControl { get; set; } = null;
 
-        private AkkonTrendControl AkkonTrendControl { get; set; } = new AkkonTrendControl() { Dock = DockStyle.Fill };
+        private AkkonTrendControl AkkonTrendControl { get; set; } = null;
 
-        private UPHControl UPHControl { get; set; } = new UPHControl() { Dock = DockStyle.Fill };
+        private UPHControl UPHControl { get; set; } = null;
 
-        private ProcessCapabilityIndexControl ProcessCapabilityControl { get; set; } = new ProcessCapabilityIndexControl() { Dock = DockStyle.Fill };
+        private ProcessCapabilityIndexControl ProcessCapabilityControl { get; set; } = null;
 
         public DateTime DateTime { get; set; } = DateTime.Now;
         #endregion
@@ -59,14 +63,17 @@ namespace Jastech.Framework.Winform.Forms
         #region 메서드
         private void LogForm_Load(object sender, EventArgs e)
         {
+            AddControls();
             InitializeUI();
-            CogDisplayControl.UseAllContextMenu(false);
+            InspDisplayControl.UseAllContextMenu(false);
         }
 
         private void LogForm_FormClosing(object sender, FormClosingEventArgs e)
         {
-            CogDisplayControl.DisposeImage();
-            ControlDisplayHelper.DisposeChildControls(CogDisplayControl);
+            InspDisplayControl.ClearImage();
+            InspDisplayControl.ClearThumbnail();
+            InspDisplayControl.ClearGraphic();
+            ControlDisplayHelper.DisposeChildControls(InspDisplayControl);
             ControlDisplayHelper.DisposeChildControls(LogControl);
             ControlDisplayHelper.DisposeChildControls(AlignTrendControl);
             ControlDisplayHelper.DisposeChildControls(AkkonTrendControl);
@@ -74,13 +81,23 @@ namespace Jastech.Framework.Winform.Forms
             ControlDisplayHelper.DisposeChildControls(ProcessCapabilityControl);
         }
 
+        private void AddControls()
+        {
+            LogControl = new LogControl { Dock = DockStyle.Fill };
+            InspDisplayControl = new CogInspDisplayControl { Dock = DockStyle.Top, Height = tvwLogPath.Height + cdrMonthCalendar.Height - pnlLogType.Height};
+            AlignTrendControl = new AlignTrendControl { Dock = DockStyle.Fill };
+            AkkonTrendControl = new AkkonTrendControl { Dock = DockStyle.Fill };
+            UPHControl = new UPHControl { Dock = DockStyle.Fill };
+            ProcessCapabilityControl = new ProcessCapabilityIndexControl { Dock = DockStyle.Fill };
+;        }
+
         private void InitializeUI()
         {
             _selectedColor = Color.FromArgb(104, 104, 104);
             _nonSelectedColor = Color.FromArgb(52, 52, 52);
 
             SetPageType(PageType.Log);
-            cdrMonthCalendar.SelectionStart = DateTime.Now;
+            cdrMonthCalendar.SelectionRange = new SelectionRange { Start = DateTime.Now.AddDays(-cdrMonthCalendar.MaxSelectionCount), End = DateTime.Now };
         }
 
         private void SetPageType(PageType pageType)
@@ -105,7 +122,7 @@ namespace Jastech.Framework.Winform.Forms
                     _selectedPagePath = _resultPath;
                     btnSelectionImage.BackColor = _selectedColor;
 
-                    pnlContents.Controls.Add(CogDisplayControl);
+                    pnlContents.Controls.Add(InspDisplayControl);
                     break;
 
                 case PageType.AlignTrend:
@@ -207,24 +224,37 @@ namespace Jastech.Framework.Winform.Forms
                 return;
 
             tvwLogPath.Nodes.Clear();
-            DateTime = cdrMonthCalendar.SelectionStart;
 
-            string path = Path.Combine(_selectedPagePath, DateTime.Month.ToString("D2"), DateTime.Day.ToString("D2"));
-            if (path == string.Empty)
-                return;
-
-            DirectoryInfo directoryInfo = new DirectoryInfo(path);
-            if (Directory.Exists(directoryInfo.FullName))
+            for (DateTime dateTime = cdrMonthCalendar.SelectionStart; dateTime <= cdrMonthCalendar.SelectionEnd; dateTime = dateTime.AddDays(1))
             {
-                TreeNode treeNode = new TreeNode(directoryInfo.Name);
-                tvwLogPath.Nodes.Add(treeNode);
-                RecursiveDirectory(directoryInfo, treeNode);
-            }
+                string month = dateTime.Month.ToString("D2");
+                string day = dateTime.Day.ToString("D2");
+                string rootPath = Path.Combine(_selectedPagePath, month);
 
-            if(tvwLogPath.Nodes.Count > 0 && tvwLogPath.Nodes[0].Nodes.Count > 0)
-            {
-                tvwLogPath.SelectedNode = tvwLogPath.Nodes[0].Nodes[0];
-                tvwLogPath_NodeMouseClick(null, null);
+
+                DirectoryInfo rootDirectoryInfo = new DirectoryInfo(rootPath);
+                TreeNode rootNode = null;
+                if (tvwLogPath.Nodes.ContainsKey(rootDirectoryInfo.Name) == false)
+                {
+                    rootNode = new TreeNode { Name = rootDirectoryInfo.Name, Text = rootDirectoryInfo.Name };
+                    tvwLogPath.Nodes.Add(rootNode);
+                }
+                else
+                    rootNode = tvwLogPath.Nodes[rootDirectoryInfo.Name];
+
+                DirectoryInfo subDirectoryInfo = new DirectoryInfo($@"{rootPath}\{day}");
+                if (Directory.Exists(subDirectoryInfo.FullName))
+                {
+                    TreeNode treeNode = new TreeNode { Name = subDirectoryInfo.Name, Text = subDirectoryInfo.Name };
+                    rootNode.Nodes.Add(treeNode);
+                    RecursiveDirectory(subDirectoryInfo, treeNode);
+                }
+
+                if (tvwLogPath.Nodes.Count > 0 && tvwLogPath.Nodes[0].Nodes.Count > 0)
+                {
+                    tvwLogPath.SelectedNode = tvwLogPath.Nodes[0].Nodes[0];
+                    tvwLogPath_NodeMouseClick(null, null);
+                }
             }
         }
 
@@ -295,8 +325,7 @@ namespace Jastech.Framework.Winform.Forms
                 if (tvwLogPath.SelectedNode == null)
                     return;
 
-                string basePath = Path.Combine(_selectedPagePath, DateTime.Month.ToString("D2"));
-                string fullPath = Path.Combine(basePath, tvwLogPath.SelectedNode.FullPath);
+                string fullPath = Path.Combine(_selectedPagePath, tvwLogPath.SelectedNode.FullPath);
 
                 string extension = Path.GetExtension(fullPath);
                 if (extension == string.Empty)
@@ -307,11 +336,13 @@ namespace Jastech.Framework.Winform.Forms
             catch (Exception ex)
             {
                 Console.WriteLine(ex.ToString());
+                Cursor = Cursors.Default;
             }
         }
 
         private void DisplaySelectedNode(string extension, string fullPath)
         {
+            Cursor = Cursors.WaitCursor;
             switch (extension.ToLower())
             {
                 case ".log":
@@ -334,6 +365,7 @@ namespace Jastech.Framework.Winform.Forms
                 default:
                     break;
             }
+            Cursor = Cursors.Default;
         }
 
         private void DisplayTextFile(string fullPath)
@@ -345,7 +377,9 @@ namespace Jastech.Framework.Winform.Forms
         {
             try
             {
-                CogDisplayControl.ClearImage();
+                InspDisplayControl.ClearImage();
+                InspDisplayControl.ClearThumbnail();
+                InspDisplayControl.ClearGraphic();
 
                 //string filePath = Path.Combine(Path.GetDirectoryName(fullPath), "Origin", Path.GetFileName(fullPath));
                 string filePath = fullPath;
@@ -358,7 +392,7 @@ namespace Jastech.Framework.Winform.Forms
                 ColorFormat format = image.NumberOfChannels == 1 ? ColorFormat.Gray : ColorFormat.RGB24;
 
                 var cogImage = VisionProImageHelper.ConvertImage(dataArray, image.Width, image.Height, format);
-                CogDisplayControl.SetImage(cogImage.CopyBase(CogImageCopyModeConstants.CopyPixels));
+                InspDisplayControl.SetImage(cogImage.CopyBase(CogImageCopyModeConstants.CopyPixels));
             }
             catch (Exception ex)
             {
