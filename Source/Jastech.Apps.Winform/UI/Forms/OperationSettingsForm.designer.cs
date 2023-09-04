@@ -1203,6 +1203,7 @@
             this.Name = "OperationSettingsForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.OperationSettingsForm_FormClosed);
             this.Load += new System.EventHandler(this.OperationSettingsForm_Load);
             this.tableLayoutPanel1.ResumeLayout(false);
             this.panel1.ResumeLayout(false);

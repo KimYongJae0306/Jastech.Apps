@@ -15,10 +15,6 @@ namespace Jastech.Apps.Winform.UI.Forms
 {
     public partial class EditATTModelForm : Form
     {
-        #region 필드
-        private readonly ParamTrackingLogger _paramLogger = new ParamTrackingLogger();
-        #endregion
-
         #region 속성
         private AppsInspModel PrevModel { get; set; } = new AppsInspModel();
 
@@ -68,7 +64,6 @@ namespace Jastech.Apps.Winform.UI.Forms
                 }
             }
 
-            bool isEdit = IsEdit();
             AppsInspModel inspModel = new AppsInspModel
             {
                 Name = txtModelName.Text,
@@ -97,30 +92,6 @@ namespace Jastech.Apps.Winform.UI.Forms
             Close();
 
             EditModelEvent?.Invoke(PrevModelName, inspModel);
-
-            if (_paramLogger.IsEmpty == false)
-            {
-                _paramLogger.AddLog("Inspection Model parameters saved.");
-                _paramLogger.WriteLogToFile();
-            }
-        }
-
-        public bool IsEdit()
-        {
-            if (PrevModel.Name != txtModelName.Text)
-                return true;
-            if (PrevModel.TabCount.ToString() != txtTabCount.Text)
-                return true;
-            if (PrevModel.SpecInfo.AlignToleranceX_um.ToString() != txtSpecInfoX.Text)
-                return true;
-            if (PrevModel.SpecInfo.AlignToleranceY_um.ToString() != txtSpecInfoY.Text)
-                return true;
-            if (PrevModel.SpecInfo.AlignToleranceCx_um.ToString() != txtSpecInfoCx.Text)
-                return true;
-            if (PrevModel.SpecInfo.AlignStandard_um.ToString() != txtSpecInfoStandardValue.Text)
-                return true;
-
-            return false;
         }
 
         private void lblCancel_Click(object sender, EventArgs e)

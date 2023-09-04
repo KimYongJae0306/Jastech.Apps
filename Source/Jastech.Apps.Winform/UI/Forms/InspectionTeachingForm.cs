@@ -196,6 +196,7 @@ namespace Jastech.Framework.Winform.Forms
             MarkControl.Dock = DockStyle.Fill;
             MarkControl.UseAlignMark = UseAlignMark;
             MarkControl.SetParams(CurrentTab);
+            MarkControl.MarkParamChanged += MarkControl_MarkParamChanged;
             pnlTeach.Controls.Add(MarkControl);
 
             AlignControl = new AlignControl();
@@ -228,6 +229,11 @@ namespace Jastech.Framework.Winform.Forms
         {
             int tabNo = Convert.ToInt32(_currentTabNo);
             UpdateDisplayImage(tabNo);
+        }
+
+        private void MarkControl_MarkParamChanged(string component, string parameter, double oldValue, double newValue)
+        {
+            ParamTrackingLogger.AddChangeHistory($"{_displayType} {component}", parameter, oldValue, newValue);
         }
 
         private void UpdateDisplay(ICogImage cogImage)

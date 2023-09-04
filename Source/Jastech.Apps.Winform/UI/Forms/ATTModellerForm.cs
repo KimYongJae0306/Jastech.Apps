@@ -21,8 +21,6 @@ namespace Jastech.Apps.Winform.UI.Forms
         public string ModelPath { get; set; } = "";
 
         public Jastech.Framework.Structure.Service.InspModelService InspModelService = null;
-
-        private readonly ParamTrackingLogger _paramLogger = new ParamTrackingLogger();
         #endregion
 
         #region 이벤트
@@ -46,6 +44,12 @@ namespace Jastech.Apps.Winform.UI.Forms
 
             ButtonEnable();
             UpdateModelList();
+        }
+
+        private void ATTModellerForm_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            // TODO: Tracking Model Parameter Changed
+            ParamTrackingLogger.ClearChangedLog();
         }
 
         private void ButtonEnable()
@@ -138,7 +142,6 @@ namespace Jastech.Apps.Winform.UI.Forms
             {
                 UpdateModelList();
             }
-            form.EditModelEvent += ATTModellerForm_EditModelEvent;
         }
 
         private void ATTModellerForm_EditModelEvent(string prevModelName, InspModel editModel)
@@ -243,7 +246,9 @@ namespace Jastech.Apps.Winform.UI.Forms
             DailyInfoService.Reset();
             DailyInfoService.Load(selectedModel);
 
-            _paramLogger.AddChangeHistory("Inspector", "InspectionModel", previousModel, selectedModel);
+            ParamTrackingLogger.AddChangeHistory("Inspector", "InspectionModel", previousModel, selectedModel);
+            ParamTrackingLogger.AddLog("Inspection Model Changed.");
+            ParamTrackingLogger.WriteLogToFile();
 
             MessageConfirmForm form = new MessageConfirmForm();
             form.Message = "Model Load Completed.";

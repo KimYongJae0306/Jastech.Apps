@@ -54,10 +54,14 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         #region 이벤트
         public event SetOriginDelegate SetOriginEventHandler;
+
+        public event ParameterValueChangedEventHandler MarkParamChanged;
         #endregion
 
         #region 델리게이트
         public delegate void SetOriginDelegate(PointF originPoint);
+
+        public delegate void ParameterValueChangedEventHandler(string component, string parameter, double oldValue, double newValue);
         #endregion
 
         #region 생성자
@@ -88,6 +92,7 @@ namespace Jastech.Apps.Winform.UI.Controls
             ParamControl.GetOriginImageHandler += PatternControl_GetOriginImageHandler;
             ParamControl.TestActionEvent += PatternControl_TestActionEvent;
             ParamControl.ClearActionEvent += PatternControl_ClearActionEvent;
+            ParamControl.MarkParamChanged += ParamControl_MarkParamChanged;
             pnlParam.Controls.Add(ParamControl);
 
             if (PointMarkerParam != null)
@@ -125,6 +130,11 @@ namespace Jastech.Apps.Winform.UI.Controls
         private ICogImage PatternControl_GetOriginImageHandler()
         {
             return TeachingUIManager.Instance().TeachingDisplayControl.GetDisplay().GetImage();
+        }
+
+        private void ParamControl_MarkParamChanged(string component, string parameter, double oldValue, double newValue)
+        {
+            MarkParamChanged?.Invoke($"{CurrentTab.Name} {component}", parameter, oldValue, newValue);
         }
 
         private void InitializeUI()

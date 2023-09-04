@@ -31,8 +31,6 @@ namespace ATT_UT_IPAD.UI.Forms
         private Color _selectedColor;
 
         private Color _nonSelectedColor;
-
-        private readonly ParamTrackingLogger _paramLogger = new ParamTrackingLogger();
         #endregion
 
         #region 속성
@@ -105,6 +103,24 @@ namespace ATT_UT_IPAD.UI.Forms
             StartTimer();
             InitializeUI();
             SetDefaultValue();
+        }
+
+        private void MotionSettingsForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            _formTimer.Change(System.Threading.Timeout.Infinite, System.Threading.Timeout.Infinite);
+
+            if (_formTimer != null)
+            {
+                _formTimer.Dispose();
+                _formTimer = null;
+            }
+        }
+
+        private void MotionSettingsForm_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            ParamTrackingLogger.ClearChangedLog();
+            if (CloseEventDelegate != null)
+                CloseEventDelegate();
         }
 
         private void SetDefaultValue()
@@ -493,10 +509,10 @@ namespace ATT_UT_IPAD.UI.Forms
 
                 XVariableControl?.WriteChangeLog();
 
-                if (_paramLogger.IsEmpty == false)
+                if (ParamTrackingLogger.IsEmpty == false)
                 {
-                    _paramLogger.AddLog("All Motion Parameter saved.");
-                    _paramLogger.WriteLogToFile();
+                    ParamTrackingLogger.AddLog("All Motion Parameter saved.");
+                    ParamTrackingLogger.WriteLogToFile();
                 }
 
                 MessageConfirmForm form = new MessageConfirmForm();
@@ -513,7 +529,7 @@ namespace ATT_UT_IPAD.UI.Forms
 
             TeachingPositionList.First(x => x.Name == TeachingPositionType.ToString()).SetOffset(AxisName.X, newOffset);
 
-            _paramLogger.AddChangeHistory($"{AxisName.X}", "Offset", oldOffset, newOffset);
+            ParamTrackingLogger.AddChangeHistory($"{AxisName.X}", "Offset", oldOffset, newOffset);
         }
 
         private void lblTargetPositionX_Click(object sender, EventArgs e)
@@ -524,7 +540,7 @@ namespace ATT_UT_IPAD.UI.Forms
 
             TeachingPositionList.First(x => x.Name == TeachingPositionType.ToString()).SetTargetPosition(AxisName.X, newPosition);
 
-            _paramLogger.AddChangeHistory($"{AxisName.X}", "TargetPos", oldPosition, newPosition);
+            ParamTrackingLogger.AddChangeHistory($"{AxisName.X}", "TargetPos", oldPosition, newPosition);
         }
 
         private void lblCurrentToTargetX_Click(object sender, EventArgs e)
@@ -535,7 +551,7 @@ namespace ATT_UT_IPAD.UI.Forms
             TeachingPositionList.First(x => x.Name == TeachingPositionType.ToString()).SetTargetPosition(AxisName.X, newPosition);
 
             lblTargetPositionX.Text = newPosition.ToString("F3");
-            _paramLogger.AddChangeHistory($"{AxisName.X}", "TargetPos", oldPosition, newPosition);
+            ParamTrackingLogger.AddChangeHistory($"{AxisName.X}", "TargetPos", oldPosition, newPosition);
         }
 
         private void lblMoveToTargetX_Click(object sender, EventArgs e)
@@ -569,7 +585,7 @@ namespace ATT_UT_IPAD.UI.Forms
 
             TeachingPositionList.First(x => x.Name == TeachingPositionType.ToString()).SetTargetPosition(AxisName.Z0, newPosition);
 
-            _paramLogger.AddChangeHistory($"{AxisName.Z0}", "TargetPos", oldPosition, newPosition);
+            ParamTrackingLogger.AddChangeHistory($"{AxisName.Z0}", "TargetPos", oldPosition, newPosition);
         }
 
         private void lblCurrentToTargetZ0_Click(object sender, EventArgs e)
@@ -580,7 +596,7 @@ namespace ATT_UT_IPAD.UI.Forms
             TeachingPositionList.First(x => x.Name == TeachingPositionType.ToString()).SetTargetPosition(AxisName.Z0, newPosition);
 
             lblTargetPositionZ0.Text = newPosition.ToString("F3");
-            _paramLogger.AddChangeHistory($"{AxisName.Z0}", "TargetPos", oldPosition, newPosition);
+            ParamTrackingLogger.AddChangeHistory($"{AxisName.Z0}", "TargetPos", oldPosition, newPosition);
         }
 
         private void lblTeachedCenterOfGravityZ0_Click(object sender, EventArgs e)
@@ -594,7 +610,7 @@ namespace ATT_UT_IPAD.UI.Forms
             if (LAFManager.Instance().GetLAF(AkkonLafCtrl.Name) is LAF akkonLAF)
                 akkonLAF.SetCenterOfGravity(newCenterOfGravity);
 
-            _paramLogger.AddChangeHistory($"{AxisName.Z0}", "CoG", oldCenterOfGravity, newCenterOfGravity);
+            ParamTrackingLogger.AddChangeHistory($"{AxisName.Z0}", "CoG", oldCenterOfGravity, newCenterOfGravity);
         }
 
         private void lblCurrentToTargetCenterOfGravityZ0_Click(object sender, EventArgs e)
@@ -608,7 +624,7 @@ namespace ATT_UT_IPAD.UI.Forms
                 akkonLAF.SetCenterOfGravity(oldCenterOfGravity);
 
             lblTeachedCenterOfGravityZ0.Text = newCenterOfGravity.ToString();
-            _paramLogger.AddChangeHistory($"{AxisName.Z0}", "CoG", oldCenterOfGravity, newCenterOfGravity);
+            ParamTrackingLogger.AddChangeHistory($"{AxisName.Z0}", "CoG", oldCenterOfGravity, newCenterOfGravity);
 
         }
 
@@ -672,7 +688,7 @@ namespace ATT_UT_IPAD.UI.Forms
 
             TeachingPositionList.First(x => x.Name == TeachingPositionType.ToString()).SetTargetPosition(AxisName.Z1, newPosition);
 
-            _paramLogger.AddChangeHistory($"{AxisName.Z1}", "TargetPos", oldPosition, newPosition);
+            ParamTrackingLogger.AddChangeHistory($"{AxisName.Z1}", "TargetPos", oldPosition, newPosition);
         }
 
         private void lblCurrentToTargetZ1_Click(object sender, EventArgs e)
@@ -683,7 +699,7 @@ namespace ATT_UT_IPAD.UI.Forms
             TeachingPositionList.First(x => x.Name == TeachingPositionType.ToString()).SetTargetPosition(AxisName.Z1, newPosition);
 
             lblTargetPositionZ1.Text = newPosition.ToString("F3");
-            _paramLogger.AddChangeHistory($"{AxisName.Z1}", "TargetPos", oldPosition, newPosition);
+            ParamTrackingLogger.AddChangeHistory($"{AxisName.Z1}", "TargetPos", oldPosition, newPosition);
         }
 
         private void lblTeachedCenterOfGravityZ1_Click(object sender, EventArgs e)
@@ -697,7 +713,7 @@ namespace ATT_UT_IPAD.UI.Forms
             if (LAFManager.Instance().GetLAF(AlignLafCtrl.Name) is LAF alignLAF)
                 alignLAF.SetCenterOfGravity(newCenterOfGravity);
 
-            _paramLogger.AddChangeHistory($"{AxisName.Z1}", "CoG", oldCenterOfGravity, newCenterOfGravity);
+            ParamTrackingLogger.AddChangeHistory($"{AxisName.Z1}", "CoG", oldCenterOfGravity, newCenterOfGravity);
         }
 
         private void lblCurrentToTargetCenterOfGravityZ1_Click(object sender, EventArgs e)
@@ -711,7 +727,7 @@ namespace ATT_UT_IPAD.UI.Forms
                 alignLAF.SetCenterOfGravity(newCenterOfGravity);
 
             lblTeachedCenterOfGravityZ1.Text = newCenterOfGravity.ToString();
-            _paramLogger.AddChangeHistory($"{AxisName.Z1}", "CoG", oldCenterOfGravity, newCenterOfGravity);
+            ParamTrackingLogger.AddChangeHistory($"{AxisName.Z1}", "CoG", oldCenterOfGravity, newCenterOfGravity);
         }
 
         private void lblMoveToTargetZ1_Click(object sender, EventArgs e)
@@ -835,23 +851,6 @@ namespace ATT_UT_IPAD.UI.Forms
             double pitchZ = KeyPadHelper.SetLabelDoubleData((Label)sender);
             LAFJogZ0Control.MoveAmount = pitchZ;
             LAFJogZ1Control.MoveAmount = pitchZ;
-        }
-
-        private void MotionSettingsForm_FormClosing(object sender, FormClosingEventArgs e)
-        {
-            _formTimer.Change(System.Threading.Timeout.Infinite, System.Threading.Timeout.Infinite);
-
-            if (_formTimer != null)
-            {
-                _formTimer.Dispose();
-                _formTimer = null;
-            }
-        }
-
-        private void MotionSettingsForm_FormClosed(object sender, FormClosedEventArgs e)
-        {
-            if (CloseEventDelegate != null)
-                CloseEventDelegate();
         }
         #endregion
     }

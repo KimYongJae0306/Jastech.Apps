@@ -53,8 +53,6 @@ namespace Jastech.Framework.Winform.Forms
         private bool _isInfinite { get; set; } = false;
 
         private int _remainCount { get; set; } = 0;
-
-        private readonly ParamTrackingLogger _paramLogger = new ParamTrackingLogger();
         #endregion
 
         #region 속성
@@ -109,7 +107,7 @@ namespace Jastech.Framework.Winform.Forms
         #endregion
 
         #region 메서드
-        private void LinescanControl_Load(object sender, EventArgs e)
+        private void OpticTeachingForm_Load(object sender, EventArgs e)
         {
             TeachingData.Instance().UpdateTeachingData();
             AddControl();
@@ -123,6 +121,11 @@ namespace Jastech.Framework.Winform.Forms
             lblStageCam.Text = $"STAGE : {UnitName} / CAM : {LineCamera.Camera.Name}";
 
             StatusTimer.Start();
+        }
+
+        private void OpticTeachingForm_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            ParamTrackingLogger.ClearChangedLog();
         }
 
         private void RollbackPrevData()
@@ -429,7 +432,7 @@ namespace Jastech.Framework.Winform.Forms
                 lblExposureValue.Text = newExposureTime.ToString();
                 tdiCamera.SetExposureTime(newExposureTime);
 
-                _paramLogger.AddChangeHistory($"{tdiCamera.Name}", "Exposure", oldExposureTime, newExposureTime);
+                ParamTrackingLogger.AddChangeHistory($"{tdiCamera.Name}", "Exposure", oldExposureTime, newExposureTime);
             }
         }
 
@@ -462,7 +465,7 @@ namespace Jastech.Framework.Winform.Forms
                 lblDigitalGainValue.Text = newDigitalGain.ToString();
                 tdiCamera.SetDigitalGain(newDigitalGain);
 
-                _paramLogger.AddChangeHistory($"{tdiCamera.Name}", "DigitalGain", oldDigitalGain, newDigitalGain);
+                ParamTrackingLogger.AddChangeHistory($"{tdiCamera.Name}", "DigitalGain", oldDigitalGain, newDigitalGain);
             }
         }
 
@@ -500,7 +503,7 @@ namespace Jastech.Framework.Winform.Forms
                 lblAnalogGainValue.Text = newAnalogGain.ToString();
                 LineCamera.Camera.SetAnalogGain(newAnalogGain);
 
-                _paramLogger.AddChangeHistory($"{LineCamera.Camera.Name}", "AnalogGain", oldAnalogGain, newAnalogGain);
+                ParamTrackingLogger.AddChangeHistory($"{LineCamera.Camera.Name}", "AnalogGain", oldAnalogGain, newAnalogGain);
             }
         }
 
@@ -606,10 +609,10 @@ namespace Jastech.Framework.Winform.Forms
             {
                 SaveModelData(model);
 
-                if (_paramLogger.IsEmpty == false)
+                if (ParamTrackingLogger.IsEmpty == false)
                 {
-                    _paramLogger.AddLog("Optic Teaching Parameter saved.");
-                    _paramLogger.WriteLogToFile();
+                    ParamTrackingLogger.AddLog("Optic Teaching Parameter saved.");
+                    ParamTrackingLogger.WriteLogToFile();
                 }
 
                 MessageConfirmForm confirmForm = new MessageConfirmForm();
@@ -1004,7 +1007,7 @@ namespace Jastech.Framework.Winform.Forms
 
         private void LightParamChanged(string component, int channel, double oldValue, double newValue)
         {
-            _paramLogger.AddChangeHistory($"{LineCamera.Camera.Name}", $"Light_{component}_{channel}", oldValue, newValue);
+            ParamTrackingLogger.AddChangeHistory($"{LineCamera.Camera.Name}", $"Light_{component}_{channel}", oldValue, newValue);
         }
         #endregion
     }

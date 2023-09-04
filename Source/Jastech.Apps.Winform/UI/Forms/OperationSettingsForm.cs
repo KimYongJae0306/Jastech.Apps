@@ -10,10 +10,6 @@ namespace Jastech.Framework.Winform.Forms
 {
     public partial class OperationSettingsForm : Form
     {
-        #region
-        private readonly ParamTrackingLogger _paramLogger = new ParamTrackingLogger();
-        #endregion
-
         #region 속성
         protected override CreateParams CreateParams
         {
@@ -43,6 +39,12 @@ namespace Jastech.Framework.Winform.Forms
             }
 
             LoadData();
+        }
+
+        private void OperationSettingsForm_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            // TODO: Tracking Text Params
+            ParamTrackingLogger.ClearChangedLog();
         }
 
         private void LoadData()
@@ -83,8 +85,6 @@ namespace Jastech.Framework.Winform.Forms
 
             txtAlignResultCount.Text = AppsConfig.Instance().AlignResultDailyCount.ToString();
             txtAkkonResultCount.Text = AppsConfig.Instance().AkkonResultDailyCount.ToString();
-
-            _paramLogger.ClearChangedLog();
         }
 
         public void UpdateCurrentData()
@@ -130,10 +130,10 @@ namespace Jastech.Framework.Winform.Forms
             ConfigSet.Instance().Save();
             AppsConfig.Instance().Save();
 
-            if (_paramLogger.IsEmpty == false)
+            if (ParamTrackingLogger.IsEmpty == false)
             {
-                _paramLogger.AddLog("Operation Setting Saved.");
-                _paramLogger.WriteLogToFile();
+                ParamTrackingLogger.AddLog("Operation Setting Saved.");
+                ParamTrackingLogger.WriteLogToFile();
             }
 
             MessageConfirmForm form = new MessageConfirmForm();
@@ -214,9 +214,9 @@ namespace Jastech.Framework.Winform.Forms
         private void mtgOperationSetting_CheckedChanged(object sender, EventArgs e)
         {
             if (sender is MetroToggle toggleButton)
-                _paramLogger.AddChangeHistory("OperationSetting", toggleButton.Name.Replace("mtg", ""), !toggleButton.Checked, toggleButton.Checked);
+                ParamTrackingLogger.AddChangeHistory("OperationSetting", toggleButton.Name.Replace("mtg", ""), !toggleButton.Checked, toggleButton.Checked);
             else if (sender is RadioButton radioButton)
-                _paramLogger.AddChangeHistory("OperationSetting", radioButton.Name.Replace("rdo", ""), !radioButton.Checked, radioButton.Checked);
+                ParamTrackingLogger.AddChangeHistory("OperationSetting", radioButton.Name.Replace("rdo", ""), !radioButton.Checked, radioButton.Checked);
         }
         #endregion
     }

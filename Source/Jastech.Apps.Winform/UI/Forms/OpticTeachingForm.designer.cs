@@ -1852,7 +1852,8 @@
             this.Text = " ";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.OpticTeachingForm_FormClosing);
-            this.Load += new System.EventHandler(this.LinescanControl_Load);
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.OpticTeachingForm_FormClosed);
+            this.Load += new System.EventHandler(this.OpticTeachingForm_Load);
             this.tlpJog.ResumeLayout(false);
             this.tlpJogFunction.ResumeLayout(false);
             this.pnlJog.ResumeLayout(false);

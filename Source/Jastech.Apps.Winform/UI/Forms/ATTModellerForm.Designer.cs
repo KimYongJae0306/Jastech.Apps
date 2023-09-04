@@ -824,6 +824,7 @@
             this.Name = "ATTModellerForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.ATTModellerForm_FormClosed);
             this.Load += new System.EventHandler(this.ATTModellerForm_Load);
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tlpnlMenu.ResumeLayout(false);
