@@ -1,68 +1,77 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Jastech.Apps.Winform.Core;
 
 namespace Jastech.Apps.Structure.Data
 {
     public class ProcessCapabilityIndex
     {
-        private const double WEIGHT = 2.0;
-        private const double d2 = 1.128;
-        private const int TOLERANCE = 6;
+        public double CapabilityUSL { private get; set; }
+        public double CapabilityLSL { private get; set; }
+        public double PerformanceUSL_Center { private get; set; }
+        public double PerformanceLSL_Center { private get; set; }
+        public double PerformanceUSL_Side { private get; set; }
+        public double PerformanceLSL_Side { private get; set; }
 
-        public PcResult GetResult(string type, List<double> valueList, double upperSpecLimit, double lowerSpecLimit)
+        public PcResult GetResult(string type, List<double> valueList)
         {
-            if (valueList.Count <= 1)
-                return new PcResult();
+            PcResult result = new PcResult { Type = type };
 
-            PcResult result = new PcResult();
-            result.Type = type;
+            if (valueList.Count == 0)
+                return result;
 
-            double Average = valueList.Average();
-            double StdOverall = GetStandardDeviation(valueList);
+            // Get average, standard deviations
+            double mean = valueList.Average();
+            double sampleStdDev = GetSampleStandardDeviation(valueList, mean);
+            double populationStdDev = GetPopulationStandardDeviation(valueList, mean);
 
-            double T = Math.Abs(upperSpecLimit - lowerSpecLimit);
+            // Calculate Cp
+            result.Cp = (CapabilityUSL - CapabilityLSL) / (sampleStdDev * 6);
 
-            double PpU = Math.Round((upperSpecLimit - Average) / (3 * StdOverall), 2);
-            double PpL = Math.Round((Average - lowerSpecLimit) / (3 * StdOverall), 2);
-            result.Pp = Math.Round(T / (6 * StdOverall), 2);
-            result.Ppk = Math.Min(PpU, PpL);
+            // Calculate Cpk
+            double upperCandidateCpk = (CapabilityUSL - mean) / (sampleStdDev * 3);
+            double lowerCandidateCpk = (mean - CapabilityLSL) / (sampleStdDev * 3);
+            result.Cpk = Math.Min(upperCandidateCpk, lowerCandidateCpk);
 
-            List<double> listMove = new List<double>();
+            // Calculate Pp
+            double performanceUSL = type.ToUpper() == "CX" ? PerformanceUSL_Center : PerformanceUSL_Side;
+            double performanceLSL = type.ToUpper() == "CX" ? PerformanceLSL_Center : PerformanceLSL_Side;
+            result.Pp = (performanceUSL - performanceLSL) / (populationStdDev * 6);
 
-            for (int index = 0; index < valueList.Count; index++)
-            {
-                if (index == valueList.Count - 1)
-                    continue;
+            // Calculate Ppk
+            double upperCandidatePpk = (performanceUSL - mean) / (sampleStdDev * 3);
+            double lowerCandidatePpk = (mean - performanceLSL) / (sampleStdDev * 3);
+            result.Ppk = Math.Min(upperCandidatePpk, lowerCandidatePpk);
 
-                double diff = Math.Abs(valueList[index + 1] - valueList[index]);
-                listMove.Add(diff);
-            }
-
-            double RBar = listMove.Sum() / (valueList.Count - WEIGHT + 1);
-            double StdWithin = RBar / d2;
-
-            double CpU = Math.Round((upperSpecLimit - Average) / (TOLERANCE / 2 * StdWithin), 2);
-            double CpL = Math.Round((Average - lowerSpecLimit) / (TOLERANCE / 2 * StdWithin), 2);
-            result.Cp = Math.Round(T / (6 * StdWithin), 2);
-            result.Cpk = Math.Min(CpU, CpL);
+            // Round the results
+            result.Cp = Math.Round(result.Cp, 3);
+            result.Cpk = Math.Round(result.Cpk, 3);
+            result.Pp = Math.Round(result.Pp, 3);
+            result.Ppk = Math.Round(result.Ppk, 3);
 
             return result;
         }
 
-        private double GetStandardDeviation(List<double> valueList)
+        private double GetSampleStandardDeviation(List<double> valueList, double mean)
         {
-            if (valueList.Count <= 0)
-                return 0.0;
+            double squaredDifferencesSum = valueList.Sum(value => Math.Pow(value - mean, 2));
+            double squaredDifferencesMean = squaredDifferencesSum / (valueList.Count - 1);
+            double standardDeviation = Math.Sqrt(squaredDifferencesMean);
 
-            double average = valueList.Average();
-            double sumOfDeviation = 0.0;
+            return standardDeviation;
+        }
 
-            foreach (var item in valueList)
-                sumOfDeviation += Math.Pow(item - average, 2);
+        private double GetPopulationStandardDeviation(List<double> valueList, double mean)
+        {
+            if (valueList.Count < 2)
+                return 0;
 
-            double std = Math.Sqrt(sumOfDeviation / (valueList.Count - 1));
-            return std;
+            double squaredDifferencesSum = valueList.Select(value => Math.Pow(value - mean, 2)).Sum();
+            double squaredDifferencesMean = squaredDifferencesSum / valueList.Count;
+            double standardDeviation = Math.Sqrt(squaredDifferencesMean);
+
+            return standardDeviation;
         }
     }
 
@@ -72,24 +81,10 @@ namespace Jastech.Apps.Structure.Data
 
         public double Cp { get; set; } = 0.0;
 
-        //public double CpL { get; set; } = 0.0;
-
-        //public double CpU { get; set; } = 0.0;
-
         public double Cpk { get; set; } = 0.0;
 
         public double Pp { get; set; } = 0.0;
 
-        //public double PpL { get; set; } = 0.0;
-
-        //public double PpU { get; set; } = 0.0;
-
         public double Ppk { get; set; } = 0.0;
-
-        //public double StdOverall { get; set; } = 0.0;
-
-        //public double StdWithin { get; set; } = 0.0;
-
-        //public double Average { get; set; } = 0.0;
     }
 }

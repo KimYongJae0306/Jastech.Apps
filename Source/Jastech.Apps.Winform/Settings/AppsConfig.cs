@@ -61,6 +61,24 @@ namespace Jastech.Apps.Winform.Settings
         public int AkkonResultDailyCount { get; set; } = 100;
 
         [JsonProperty]
+        public double CapabilityUSL { get; set; } = 4;
+
+        [JsonProperty]
+        public double CapabilityLSL { get; set; } = -4;
+
+        [JsonProperty]
+        public double PerformanceUSL_Center { get; set; } = 4;
+
+        [JsonProperty]
+        public double PerformanceLSL_Center { get; set; } = -4;
+
+        [JsonProperty]
+        public double PerformanceUSL_Side { get; set; } = 9;
+
+        [JsonProperty]
+        public double PerformanceLSL_Side { get; set; } = -9;
+
+        [JsonProperty]
         public bool EnableTest1 { get; set; } = false;
 
         [JsonProperty]

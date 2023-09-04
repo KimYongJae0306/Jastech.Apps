@@ -11,6 +11,7 @@ using System.Data;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Security.Policy;
 using System.Windows.Forms;
 
 namespace Jastech.Apps.Winform.UI.Controls
@@ -22,10 +23,6 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         private Color _nonSelectedColor;
 
-        private double _upperSpecLimit { get; set; } = 0.0;
-
-        public double _lowerSpecLimit { get; set; } = 0.0;
-
         private TabType _tabType { get; set; } = TabType.Tab1;
 
         private AlignResultType _alignResultType { get; set; } = AlignResultType.All;
@@ -35,12 +32,13 @@ namespace Jastech.Apps.Winform.UI.Controls
         private List<Label> _alignTypeLabelList = new List<Label>();
 
         private List<TrendResult> _alignTrendResults = new List<TrendResult>();
+
+        private readonly ProcessCapabilityIndex _processCapabilityIndex = new ProcessCapabilityIndex();
         #endregion
 
         #region 속성
         private ResultChartControl ChartControl = null;
 
-        private ProcessCapabilityIndex ProcessCapabilityIndex { get; set; } = new ProcessCapabilityIndex();
         #endregion
 
         #region 생성자
@@ -55,6 +53,14 @@ namespace Jastech.Apps.Winform.UI.Controls
         {
             AddControl();
             InitializeUI();
+
+            var config = AppsConfig.Instance();
+            lblCapabilityUSL.DataBindings.Add("Text", config, "CapabilityUSL", false, DataSourceUpdateMode.OnPropertyChanged);
+            lblCapabilityLSL.DataBindings.Add("Text", config, "CapabilityLSL", false, DataSourceUpdateMode.OnPropertyChanged);
+            lblPerformanceUSL_Center.DataBindings.Add("Text", config, "PerformanceUSL_Center", false, DataSourceUpdateMode.OnPropertyChanged);
+            lblPerformanceLSL_Center.DataBindings.Add("Text", config, "PerformanceLSL_Center", false, DataSourceUpdateMode.OnPropertyChanged);
+            lblPerformanceUSL_Side.DataBindings.Add("Text", config, "PerformanceUSL_Side", false, DataSourceUpdateMode.OnPropertyChanged);
+            lblPerformanceLSL_Side.DataBindings.Add("Text", config, "PerformanceLSL_Side", false, DataSourceUpdateMode.OnPropertyChanged);
         }
 
         private void AddControl()
@@ -178,20 +184,7 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         private void lblRy_Click(object sender, EventArgs e) => SetAlignResultType(AlignResultType.Ry);
 
-        private void lblUpperSpecLimit_Click(object sender, EventArgs e)
-        {
-            double usl = KeyPadHelper.SetLabelDoubleData((Label)sender);
-            SetUpperSpecLimit(usl);
-        }
-        private void lblLowerSpecLimit_Click(object sender, EventArgs e)
-        {
-            double lsl = KeyPadHelper.SetLabelDoubleData((Label)sender);
-            SetLowerSpecLimit(lsl);
-        }
-
-        private void SetUpperSpecLimit(double upperSpecLimit) => _upperSpecLimit = upperSpecLimit;
-
-        private void SetLowerSpecLimit(double lowerSpecLimit) => _lowerSpecLimit = lowerSpecLimit;
+        private void lblSpecLimit_Click(object sender, EventArgs e) => KeyPadHelper.SetLabelDoubleData((Label)sender);
 
         public void SetAlignResultType(AlignResultType alignResultType)
         {
@@ -207,13 +200,14 @@ namespace Jastech.Apps.Winform.UI.Controls
         public void UpdateAlignDataGridView()
         {
             dgvAlignData.Rows.Clear();
-            for (int rowIndex = 1; rowIndex < _alignTrendResults.Count; rowIndex++)
+            for (int rowIndex = 0; rowIndex < _alignTrendResults.Count; rowIndex++)
                 dgvAlignData.Rows.Add(_alignTrendResults[rowIndex].GetAlignStringDatas().ToArray());
         }
 
         private void UpdatePcInfoDataGridView(TabType tabType)
         {
             List<PcResult> listCapabilityResults = new List<PcResult>();
+            var config = AppsConfig.Instance();
 
             var lxData = GetPcData(tabType, AlignResultType.Lx);
             var lyData = GetPcData(tabType, AlignResultType.Ly);
@@ -221,11 +215,18 @@ namespace Jastech.Apps.Winform.UI.Controls
             var rxData = GetPcData(tabType, AlignResultType.Rx);
             var ryData = GetPcData(tabType, AlignResultType.Ry);
 
-            listCapabilityResults.Add(ProcessCapabilityIndex.GetResult(AlignResultType.Lx.ToString(), lxData, _upperSpecLimit, _lowerSpecLimit));
-            listCapabilityResults.Add(ProcessCapabilityIndex.GetResult(AlignResultType.Ly.ToString(), lyData, _upperSpecLimit, _lowerSpecLimit));
-            listCapabilityResults.Add(ProcessCapabilityIndex.GetResult(AlignResultType.Cx.ToString(), cxData, _upperSpecLimit, _lowerSpecLimit));
-            listCapabilityResults.Add(ProcessCapabilityIndex.GetResult(AlignResultType.Rx.ToString(), rxData, _upperSpecLimit, _lowerSpecLimit));
-            listCapabilityResults.Add(ProcessCapabilityIndex.GetResult(AlignResultType.Ry.ToString(), ryData, _upperSpecLimit, _lowerSpecLimit));
+            _processCapabilityIndex.CapabilityUSL = config.CapabilityUSL;
+            _processCapabilityIndex.CapabilityLSL = config.CapabilityLSL;
+            _processCapabilityIndex.PerformanceUSL_Center = config.PerformanceUSL_Center;
+            _processCapabilityIndex.PerformanceLSL_Center = config.PerformanceUSL_Center;
+            _processCapabilityIndex.PerformanceUSL_Side = config.PerformanceUSL_Side;
+            _processCapabilityIndex.PerformanceUSL_Side = config.PerformanceUSL_Side;
+
+            listCapabilityResults.Add(_processCapabilityIndex.GetResult($"{AlignResultType.Lx}", lxData));
+            listCapabilityResults.Add(_processCapabilityIndex.GetResult($"{AlignResultType.Ly}", lyData));
+            listCapabilityResults.Add(_processCapabilityIndex.GetResult($"{AlignResultType.Cx}", cxData));
+            listCapabilityResults.Add(_processCapabilityIndex.GetResult($"{AlignResultType.Rx}", rxData));
+            listCapabilityResults.Add(_processCapabilityIndex.GetResult($"{AlignResultType.Ry}", ryData));
 
             dgvPCResult.Rows.Clear();
             foreach (var pcResult in listCapabilityResults)
