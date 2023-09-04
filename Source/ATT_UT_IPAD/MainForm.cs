@@ -78,6 +78,9 @@ namespace ATT_UT_IPAD
         #region 메서드
         private void MainForm_Load(object sender, EventArgs e)
         {
+            if (UserManager.Instance().CurrentUser.Type == AuthorityType.Maker)
+                this.Text = " ";
+
             lblMachineName.Text = AppsConfig.Instance().MachineName;
 
             AddControls();
@@ -572,7 +575,18 @@ namespace ATT_UT_IPAD
 
         private void picLogo_Click(object sender, EventArgs e)
         {
-            AppsStatus.Instance().IsInspRunnerFlagFromPlc = true;
+            if (PlcControlManager.Instance().MachineStatus != MachineStatus.RUN)
+                return;
+
+            if(AppsStatus.Instance().IsInspRunnerFlagFromPlc == false)
+            {
+                MessageYesNoForm form = new MessageYesNoForm();
+                form.Message = "Would you like to do a test run?";
+                if (form.ShowDialog() == DialogResult.Yes)
+                {
+                    AppsStatus.Instance().IsInspRunnerFlagFromPlc = true;
+                }
+            }
         }
 
         public void Enable(bool isEnable)
@@ -586,10 +600,11 @@ namespace ATT_UT_IPAD
             ManualJudgeForm.Show();
         }
 
-        private void lblMachineName_DoubleClick(object sender, EventArgs e)
+        #endregion
+
+        private void lblMachineName_Click(object sender, EventArgs e)
         {
             Process.Start(ConfigSet.Instance().Path.Result);
         }
-        #endregion
     }
 }

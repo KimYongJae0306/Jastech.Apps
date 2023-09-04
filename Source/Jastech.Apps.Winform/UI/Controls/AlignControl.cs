@@ -131,7 +131,7 @@ namespace Jastech.Apps.Winform.UI.Controls
 
             lblLeftAlignSpecX.Text = CurrentTab.AlignSpec.LeftSpecX_um.ToString();
             lblLeftAlignSpecY.Text = CurrentTab.AlignSpec.LeftSpecY_um.ToString();
-
+            
             lblRightAlignSpecX.Text = CurrentTab.AlignSpec.RightSpecX_um.ToString();
             lblRightAlignSpecY.Text = CurrentTab.AlignSpec.RightSpecY_um.ToString();
 
