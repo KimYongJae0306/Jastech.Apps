@@ -107,8 +107,7 @@ namespace ATT_UT_IPAD.UI.Controls
 
         public void UpdateTabCount(int tabCount)
         {
-            if (_prevTabCount == tabCount)
-                return;
+            InspDisplayControl.ClearImage();
 
             ClearTabBtnList();
 

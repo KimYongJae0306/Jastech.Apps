@@ -86,6 +86,7 @@ namespace ATT_UT_IPAD.UI.Controls
         {
             AkkonViewerControl.UpdateTabCount(tabCount);
             AlignViewerControl.UpdateTabCount(tabCount);
+            DailyInfoViewerControl.ReUpdate();
         }
 
         public void UpdateMainAkkonResultDisplay(int tabNo)

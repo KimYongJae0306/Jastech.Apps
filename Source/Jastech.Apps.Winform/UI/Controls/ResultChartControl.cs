@@ -151,7 +151,12 @@ namespace Jastech.Apps.Winform.UI.Controls
             UpdateAlignChart(tabNo, _selectedAlignResult);
         }
 
-        private void InitializeAlignChart()
+        public void ReUpdate()
+        {
+            UpdateAlignChart(_selectedTabNo, _selectedAlignResult);
+        }
+
+         private void InitializeAlignChart()
         {
             //chtData.Titles[0].Position.Auto = false;
 
