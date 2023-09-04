@@ -250,6 +250,7 @@ namespace ATT_UT_IPAD.UI.Controls
                 CogLineSegment fpcLine = new CogLineSegment();
                 fpcLine.Color = _fpcColor;
                 fpcLine.SetStartLengthRotation(fpcCenter.X, fpcCenter.Y, length, fpcSkew + MathHelper.DegToRad(90));
+                
                 cogLineSegmentList.Add(fpcLine);
 
                 CogLineSegment panelLine = new CogLineSegment();

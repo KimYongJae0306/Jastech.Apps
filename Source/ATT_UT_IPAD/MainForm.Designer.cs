@@ -599,7 +599,7 @@
             this.lblMachineName.TabIndex = 1;
             this.lblMachineName.Text = "ATT Inspection";
             this.lblMachineName.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.lblMachineName.DoubleClick += new System.EventHandler(this.lblMachineName_DoubleClick);
+            this.lblMachineName.Click += new System.EventHandler(this.lblMachineName_Click);
             // 
             // tmrMainForm
             // 

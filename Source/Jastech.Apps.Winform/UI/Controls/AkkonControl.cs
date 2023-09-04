@@ -416,7 +416,6 @@ namespace Jastech.Apps.Winform.UI.Controls
             }
         }
 
-        private List<int> _selectedIndex = null;
         private void UpdateROIDataGridView(int index, CogRectangleAffine cogRectAffine)
         {
             string leftTop = cogRectAffine.CornerOriginX.ToString("F2") + " , " + cogRectAffine.CornerOriginY.ToString("F2");

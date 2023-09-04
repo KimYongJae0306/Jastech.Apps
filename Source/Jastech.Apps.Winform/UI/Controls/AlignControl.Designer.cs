@@ -79,6 +79,8 @@
             this.lblLeftAlignSpecX = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
+            this.label3 = new System.Windows.Forms.Label();
+            this.label11 = new System.Windows.Forms.Label();
             this.tlpAlign.SuspendLayout();
             this.pnlPosition.SuspendLayout();
             this.tlpParams.SuspendLayout();
@@ -102,9 +104,9 @@
             this.tlpAlign.RowCount = 4;
             this.tlpAlign.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 32F));
             this.tlpAlign.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 160F));
-            this.tlpAlign.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 300F));
+            this.tlpAlign.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 250F));
             this.tlpAlign.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tlpAlign.Size = new System.Drawing.Size(893, 893);
+            this.tlpAlign.Size = new System.Drawing.Size(893, 899);
             this.tlpAlign.TabIndex = 1;
             // 
             // lblParameter
@@ -332,7 +334,7 @@
             this.tlpParams.RowCount = 2;
             this.tlpParams.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 60F));
             this.tlpParams.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tlpParams.Size = new System.Drawing.Size(893, 300);
+            this.tlpParams.Size = new System.Drawing.Size(893, 250);
             this.tlpParams.TabIndex = 25;
             // 
             // pnlCaliperParam
@@ -342,7 +344,7 @@
             this.pnlCaliperParam.Margin = new System.Windows.Forms.Padding(0);
             this.pnlCaliperParam.Name = "pnlCaliperParam";
             this.pnlCaliperParam.Padding = new System.Windows.Forms.Padding(4);
-            this.pnlCaliperParam.Size = new System.Drawing.Size(893, 240);
+            this.pnlCaliperParam.Size = new System.Drawing.Size(893, 190);
             this.pnlCaliperParam.TabIndex = 15;
             // 
             // pnlLeadParam
@@ -394,6 +396,8 @@
             // 
             // panel1
             // 
+            this.panel1.Controls.Add(this.label3);
+            this.panel1.Controls.Add(this.label11);
             this.panel1.Controls.Add(this.label6);
             this.panel1.Controls.Add(this.lblRightAlignSpecX);
             this.panel1.Controls.Add(this.tableLayoutPanel6);
@@ -404,10 +408,10 @@
             this.panel1.Controls.Add(this.label2);
             this.panel1.Controls.Add(this.label1);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel1.Location = new System.Drawing.Point(0, 492);
+            this.panel1.Location = new System.Drawing.Point(0, 442);
             this.panel1.Margin = new System.Windows.Forms.Padding(0);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(893, 401);
+            this.panel1.Size = new System.Drawing.Size(893, 457);
             this.panel1.TabIndex = 26;
             // 
             // label6
@@ -462,7 +466,7 @@
             this.tableLayoutPanel6.Controls.Add(this.label31, 0, 2);
             this.tableLayoutPanel6.Controls.Add(this.lblRightX_Judgement, 1, 2);
             this.tableLayoutPanel6.Controls.Add(this.lblRightX_Value, 2, 2);
-            this.tableLayoutPanel6.Location = new System.Drawing.Point(5, 123);
+            this.tableLayoutPanel6.Location = new System.Drawing.Point(5, 169);
             this.tableLayoutPanel6.Margin = new System.Windows.Forms.Padding(0);
             this.tableLayoutPanel6.Name = "tableLayoutPanel6";
             this.tableLayoutPanel6.RowCount = 6;
@@ -741,6 +745,28 @@
             this.label1.Text = "Left Align SpecX(um)";
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
+            // label3
+            // 
+            this.label3.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.label3.Location = new System.Drawing.Point(5, 111);
+            this.label3.Margin = new System.Windows.Forms.Padding(0);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(200, 40);
+            this.label3.TabIndex = 16;
+            this.label3.Text = "Center Align SpecX(um)";
+            this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // label11
+            // 
+            this.label11.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.label11.Location = new System.Drawing.Point(217, 111);
+            this.label11.Margin = new System.Windows.Forms.Padding(0);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(209, 40);
+            this.label11.TabIndex = 17;
+            this.label11.Text = "0";
+            this.label11.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
             // AlignControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
@@ -751,7 +777,7 @@
             this.ForeColor = System.Drawing.Color.White;
             this.Margin = new System.Windows.Forms.Padding(0);
             this.Name = "AlignControl";
-            this.Size = new System.Drawing.Size(893, 893);
+            this.Size = new System.Drawing.Size(893, 899);
             this.Load += new System.EventHandler(this.AlignControl_Load);
             this.tlpAlign.ResumeLayout(false);
             this.pnlPosition.ResumeLayout(false);
@@ -816,5 +842,7 @@
         private System.Windows.Forms.Label lblTest;
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.Label lblOffsetY;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Label label11;
     }
 }

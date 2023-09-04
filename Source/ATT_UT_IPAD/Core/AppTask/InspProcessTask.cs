@@ -122,9 +122,9 @@ namespace ATT_UT_IPAD.Core.AppTask
                     var roiList = tab.AkkonParam.GetAkkonROIList();
                     var coordinateRoiList = RenewalAkkonRoi(roiList, panelCoordinate);
 
-                    // Tracking ROI Save                  
-                    string filepath = ConfigSet.Instance().Path.Result + "Tab" + inspResult.TabNo + ".txt";
-                    SaveAkkonROI(filepath, inspResult.TabNo, coordinateRoiList);
+                    // Tracking ROI Save        
+                    SaveTrackingAkkonROI(inspResult.TabNo, coordinateRoiList);
+
                     Judgement tabJudgement = Judgement.NG;
 
                     AkkonAlgorithm.UseOverCount = AppsConfig.Instance().EnableTest2;
@@ -211,7 +211,7 @@ namespace ATT_UT_IPAD.Core.AppTask
                 #region Align
                 if (AppsConfig.Instance().EnableAlign)
                 {
-                    tabInspResult.AlignResult.LeftX = algorithmTool.RunMainLeftAlignX(inspTab.MergeCogImage, tab, fpcLeftOffset, panelLeftOffset, judgementX);
+                    tabInspResult.AlignResult.LeftX = algorithmTool.RunMainLeftAutoAlignX(inspTab.MergeCogImage, tab, fpcLeftOffset, panelLeftOffset, judgementX);
                     if (tabInspResult.AlignResult.LeftX?.Judgement != Judgement.OK)
                     {
                         var leftAlignX = tabInspResult.AlignResult.LeftX;
@@ -229,7 +229,7 @@ namespace ATT_UT_IPAD.Core.AppTask
                         Logger.Debug(LogType.Inspection, message);
                     }
 
-                    tabInspResult.AlignResult.RightX = algorithmTool.RunMainRightAlignX(inspTab.MergeCogImage, tab, fpcRightOffset, panelRightOffset, judgementX);
+                    tabInspResult.AlignResult.RightX = algorithmTool.RunMainRightAutoAlignX(inspTab.MergeCogImage, tab, fpcRightOffset, panelRightOffset, judgementX);
                     if (tabInspResult.AlignResult.RightX?.Judgement != Judgement.OK)
                     {
                         var rightAlignX = tabInspResult.AlignResult.RightX;
@@ -538,15 +538,24 @@ namespace ATT_UT_IPAD.Core.AppTask
 
             return newList;
         }
-        private void SaveAkkonROI(string filePath, int tabNo, List<AkkonROI> roiList)
+        private void SaveTrackingAkkonROI(int tabNo, List<AkkonROI> roiList)
         {
-            string path = filePath;
+            AppsInspModel inspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
 
-            var akkonROIList = roiList;
+            DateTime currentTime = AppsInspResult.Instance().StartInspTime;
 
-            using (StreamWriter streamWriter = new StreamWriter(path, false))
+            string month = currentTime.ToString("MM");
+            string day = currentTime.ToString("dd");
+            string cellId = AppsInspResult.Instance().Cell_ID;
+
+            string path = Path.Combine(ConfigSet.Instance().Path.Result, inspModel.Name, month, day, cellId, "Akkon");
+            if (Directory.Exists(path) == false)
+                Directory.CreateDirectory(path);
+            string filepath = Path.Combine(path, cellId + "_Tab_" + tabNo + ".txt");
+
+            using (StreamWriter streamWriter = new StreamWriter(filepath, false))
             {
-                foreach (var roi in akkonROIList)
+                foreach (var roi in roiList)
                 {
                     string message = string.Format("{0} {1} {2} {3} {4} {5} {6} {7}",
                                                 (int)roi.LeftTopX, (int)roi.LeftTopY,

@@ -131,7 +131,7 @@ namespace Jastech.Apps.Winform.UI.Controls
 
             lblLeftAlignSpecX.Text = CurrentTab.AlignSpec.LeftSpecX_um.ToString();
             lblLeftAlignSpecY.Text = CurrentTab.AlignSpec.LeftSpecY_um.ToString();
-
+            
             lblRightAlignSpecX.Text = CurrentTab.AlignSpec.RightSpecX_um.ToString();
             lblRightAlignSpecY.Text = CurrentTab.AlignSpec.RightSpecY_um.ToString();
 
@@ -309,7 +309,7 @@ namespace Jastech.Apps.Winform.UI.Controls
             VisionProAlignCaliperResult result = new VisionProAlignCaliperResult();
 
             VisionProCaliperParam inspParam = currentParam.DeepCopy();
-
+    
             bool usePanel = false;
             if (CurrentAlignName.ToString().ToUpper().Contains("PANEL"))
                 usePanel = true;
