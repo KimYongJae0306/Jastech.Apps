@@ -168,7 +168,7 @@ namespace ATT
         {
             AppsInspModel model = inspModel as AppsInspModel;
 
-            AppsInspResult.Instance().Dispose();
+            //AppsInspResult.Instance().Dispose();
 
             MainPageControl.MainViewControl?.UpdateTabCount(model.TabCount);
 

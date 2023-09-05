@@ -241,10 +241,10 @@ namespace Jastech.Apps.Winform.UI.Forms
             string previousModel = inspModel.Name;
             string selectedModel = lblSelectedName.Text;
 
-            ApplyModelEventHandler?.Invoke(selectedModel);
-
             DailyInfoService.Reset();
             DailyInfoService.Load(selectedModel);
+
+            ApplyModelEventHandler?.Invoke(selectedModel);
 
             ParamTrackingLogger.AddChangeHistory("Inspector", "InspectionModel", previousModel, selectedModel);
             ParamTrackingLogger.AddLog("Inspection Model Changed.");

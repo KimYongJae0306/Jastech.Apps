@@ -162,8 +162,7 @@ namespace ATT_UT_IPAD.UI.Controls
 
         public void UpdateTabCount(int tabCount)
         {
-            if (_prevTabCount == tabCount)
-                return;
+            InspAlignDisplay.ClearImage();
 
             ClearTabBtnList();
 
@@ -321,8 +320,8 @@ namespace ATT_UT_IPAD.UI.Controls
                 if (CurrentTabNo == tabNo)
                     UpdateImage(tabNo);
             }
-            else
-                InspAlignDisplay.ClearImage();
+            //else
+            //    InspAlignDisplay.ClearImage();
         }
 
         private void UpdateImage(int tabNo)
@@ -346,7 +345,7 @@ namespace ATT_UT_IPAD.UI.Controls
                 string cx = ((Convert.ToDouble(lx) + Convert.ToDouble(rx)) / 2.0).ToString("F2");
 
                 InspAlignDisplay.UpdateLeftDisplay(image, leftShape.CaliperShapeList, leftShape.LineSegmentList, GetMinimumPointY(LeftPointList[tabNo]));
-                if (InspAlignDisplay.IsLeftResultImageView)
+                if (InspAlignDisplay.IsLeftResultImageView && image != null)
                 {
                     InspAlignDisplay.DrawLeftResult("X Align : " + lx + " um", 0);
                     InspAlignDisplay.DrawLeftResult("Y Align : " + ly + " um", 1);
@@ -354,7 +353,7 @@ namespace ATT_UT_IPAD.UI.Controls
                 }
 
                 InspAlignDisplay.UpdateRightDisplay(image, rightShape.CaliperShapeList, rightShape.LineSegmentList, GetMinimumPointY(RightPointList[tabNo]));
-                if (InspAlignDisplay.IsRightResultImageView)
+                if (InspAlignDisplay.IsRightResultImageView && image != null)
                 {
                     InspAlignDisplay.DrawRightResult("X Align : " + rx + " um", 0);
                     InspAlignDisplay.DrawRightResult("Y Align : " + ry + " um", 1);

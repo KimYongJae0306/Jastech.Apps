@@ -117,6 +117,12 @@ namespace ATT.UI.Controls
             UpdateAkkonChart(tabNo);
         }
 
+        public void ReUpdate()
+        {
+            AkkonResultDataControl.UpdateAkkonDaily();
+            AkkonResultChartControl.ReUpdate();
+        }
+
         public void UpdateAlignResult(int tabNo)
         {
             AlignResultDataControl.UpdateAlignDaily();
