@@ -1,7 +1,7 @@
-﻿using System;
+﻿using Jastech.Framework.Util.Helper;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using Jastech.Apps.Winform.Core;
 
 namespace Jastech.Apps.Structure.Data
 {
@@ -23,8 +23,8 @@ namespace Jastech.Apps.Structure.Data
 
             // Get average, standard deviations
             double mean = valueList.Average();
-            double sampleStdDev = GetSampleStandardDeviation(valueList, mean);
-            double populationStdDev = GetPopulationStandardDeviation(valueList, mean);
+            double sampleStdDev = MathHelper.GetSampleStandardDeviation(valueList, mean);
+            double populationStdDev = MathHelper.GetPopulationStandardDeviation(valueList, mean);
 
             // Calculate Cp
             result.Cp = (CapabilityUSL - CapabilityLSL) / (sampleStdDev * 6);
@@ -51,27 +51,6 @@ namespace Jastech.Apps.Structure.Data
             result.Ppk = Math.Round(result.Ppk, 3);
 
             return result;
-        }
-
-        private double GetSampleStandardDeviation(List<double> valueList, double mean)
-        {
-            double squaredDifferencesSum = valueList.Sum(value => Math.Pow(value - mean, 2));
-            double squaredDifferencesMean = squaredDifferencesSum / (valueList.Count - 1);
-            double standardDeviation = Math.Sqrt(squaredDifferencesMean);
-
-            return standardDeviation;
-        }
-
-        private double GetPopulationStandardDeviation(List<double> valueList, double mean)
-        {
-            if (valueList.Count < 2)
-                return 0;
-
-            double squaredDifferencesSum = valueList.Select(value => Math.Pow(value - mean, 2)).Sum();
-            double squaredDifferencesMean = squaredDifferencesSum / valueList.Count;
-            double standardDeviation = Math.Sqrt(squaredDifferencesMean);
-
-            return standardDeviation;
         }
     }
 
