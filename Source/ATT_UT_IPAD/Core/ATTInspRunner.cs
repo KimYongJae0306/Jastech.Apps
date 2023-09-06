@@ -176,8 +176,6 @@ namespace ATT_UT_IPAD.Core
                 WriteLog("Make Akkon ResultImage.", true);
 
                 //StartSaveThread();        // 상위로.. 택 테스트
-                UpdateDailyInfo();
-
                 SystemManager.Instance().UpdateMainAkkonResult();
                 SystemManager.Instance().UpdateMainAlignResult();
 
@@ -493,6 +491,7 @@ namespace ATT_UT_IPAD.Core
                     break;
                
                 case SeqStep.SEQ_SAVE_RESULT_DATA:
+                    UpdateDailyInfo();
                     DailyInfoService.Save(inspModel.Name);
                     SaveInspResultCSV();
 
