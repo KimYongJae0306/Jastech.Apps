@@ -203,19 +203,24 @@ namespace Jastech.Apps.Winform.UI.Controls
             switch (alignResultType)
             {
                 case AlignResultType.All:
-                    AlignSeriesLx.Points.Add(tabData.LX);
-                    AlignSeriesLy.Points.Add(tabData.LY);
+                    if(double.TryParse(tabData.LX, out double lx1))
+                        AlignSeriesLx.Points.Add(lx1);
+                    if (double.TryParse(tabData.LY, out double ly1))
+                        AlignSeriesLy.Points.Add(ly1);
+
                     AlignSeriesRx.Points.Add(tabData.RX);
                     AlignSeriesRy.Points.Add(tabData.RY);
                     AlignSeriesCx.Points.Add(tabData.CX);
                     break;
 
                 case AlignResultType.Lx:
-                    AlignSeriesLx.Points.Add(tabData.LX);
+                    if (double.TryParse(tabData.LX, out double lx2))
+                        AlignSeriesLx.Points.Add(lx2);
                     break;
 
                 case AlignResultType.Ly:
-                    AlignSeriesLy.Points.Add(tabData.LY);
+                    if (double.TryParse(tabData.LY, out double ly2))
+                        AlignSeriesLy.Points.Add(ly2);
                     break;
 
                 case AlignResultType.Cx:

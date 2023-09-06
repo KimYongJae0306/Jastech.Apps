@@ -710,7 +710,7 @@ namespace ATT_UT_IPAD.Core
                 alignInfo.Judgement = tabInspResult.AlignResult.Judgement;
                 alignInfo.PreHead = tabInspResult.AlignResult.PreHead;
                 alignInfo.FinalHead = AppsInspResult.Instance().FinalHead;
-                alignInfo.LX = GetResultAlignResultValue(tabInspResult.AlignResult.LeftX);
+                alignInfo.LX = MathHelper. GetResultAlignResultValue(tabInspResult.AlignResult.LeftX);
                 alignInfo.LY = GetResultAlignResultValue(tabInspResult.AlignResult.LeftY);
                 alignInfo.RX = GetResultAlignResultValue(tabInspResult.AlignResult.RightX);
                 alignInfo.RY = GetResultAlignResultValue(tabInspResult.AlignResult.RightY);

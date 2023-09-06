@@ -972,7 +972,6 @@ namespace Jastech.Framework.Winform.Forms
                         if (foundedFpcMark.Right.Found)
                             shapeList.Add(rightFpc);
                     }
-                    
                 }
             }
 

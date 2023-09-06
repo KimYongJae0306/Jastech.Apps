@@ -100,19 +100,19 @@ namespace Jastech.Apps.Winform.Service
         public string FinalHead { get; set; } = "0";//string.Empty;
 
         [JsonProperty]
-        public float LX { get; set; } = 0.0f;
+        public string LX { get; set; } = "-";
 
         [JsonProperty]
-        public float LY { get; set; } = 0.0f;
+        public string LY { get; set; } = "-";
 
         [JsonProperty]
-        public float RX { get; set; } = 0.0f;
+        public string RX { get; set; } = "-";
 
         [JsonProperty]
-        public float RY { get; set; } = 0.0f;
+        public string RY { get; set; } = "-";
 
         [JsonProperty]
-        public float CX { get; set; } = 0.0f;
+        public string CX { get; set; } = "-";
     }
 
     public class AkkonDailyInfo
