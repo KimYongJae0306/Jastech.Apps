@@ -128,6 +128,8 @@ namespace Jastech.Apps.Structure.Data
             else
                 return 0;
         }
+
+        public MaterialInfo Clone() => (MaterialInfo)MemberwiseClone();
     }
 
     public class TabWidth

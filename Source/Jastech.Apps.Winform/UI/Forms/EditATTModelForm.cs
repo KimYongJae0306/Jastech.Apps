@@ -149,22 +149,6 @@ namespace Jastech.Apps.Winform.UI.Forms
             else
                 textBox.Text = "0.000";
         }
-
-        private void CompareModelParameter(AppsInspModel previousModel, AppsInspModel selectedModel)
-        {
-            if (previousModel == null || selectedModel == null)
-                return;
-
-            //if (previousModel.Name == selectedModel.Name)
-            //{
-            //    previousModel.SpecInfo.
-            //    AddChangeHistory("Inspector", "Description", )
-            //}
-            //else
-            //{
-
-            //}
-        }
         #endregion
     }
 }
