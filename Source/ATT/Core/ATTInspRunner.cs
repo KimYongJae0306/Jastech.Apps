@@ -56,7 +56,7 @@ namespace ATT.Core
         #endregion
 
         #region 속성
-        private LineCamera Camera { get; set; } = null;
+        private LineCamera LineCamera { get; set; } = null;
 
         private LAFCtrl LAFCtrl { get; set; } = null;
 
@@ -104,13 +104,13 @@ namespace ATT.Core
 
         private void ATTSeqRunner_GrabDoneEventHandler(string cameraName, bool isGrabDone)
         {
-             if(Camera.Camera.Name == cameraName)
+             if(LineCamera.Camera.Name == cameraName)
             {
                 IsGrabDone = isGrabDone;
 
                 if(IsGrabDone == false)
                 {
-                    Camera.StopGrab();
+                    LineCamera.StopGrab();
                     LAFCtrl.SetTrackingOnOFF(false);
 
                     WriteLog("Received Akkon Camera Grab Done Event.");
@@ -191,8 +191,8 @@ namespace ATT.Core
 
         public void Initialize()
         {
-            Camera = LineCameraManager.Instance().GetLineCamera("LineCamera");
-            Camera.GrabDoneEventHandler += ATTSeqRunner_GrabDoneEventHandler;
+            LineCamera = LineCameraManager.Instance().GetLineCamera("LineCamera");
+            LineCamera.GrabDoneEventHandler += ATTSeqRunner_GrabDoneEventHandler;
 
             LAFCtrl = LAFManager.Instance().GetLAF("Laf").LafCtrl;
             LightCtrlHandler = DeviceManager.Instance().LightCtrlHandler;
@@ -216,8 +216,8 @@ namespace ATT.Core
             LAFCtrl.SetTrackingOnOFF(false);
             WriteLog("AutoFocus Off.");
 
-            Camera.GrabDoneEventHandler -= ATTSeqRunner_GrabDoneEventHandler;
-            Camera.StopGrab();
+            LineCamera.GrabDoneEventHandler -= ATTSeqRunner_GrabDoneEventHandler;
+            LineCamera.StopGrab();
             WriteLog("AkkonCamera Stop Grab.");
         }
 
@@ -352,7 +352,7 @@ namespace ATT.Core
                         WriteLog("Light Turn On.", true);
                     }
 
-                    Camera.StartGrab();
+                    LineCamera.StartGrab();
                    
                     WriteLog("Start Akkon LineScanner Grab.", true);
 
@@ -532,7 +532,7 @@ namespace ATT.Core
         private void SendResultData()
         {
             var inspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
-            double resolution = Camera.Camera.PixelResolution_um / Camera.Camera.LensScale;
+            double resolution = LineCamera.Camera.PixelResolution_um / LineCamera.Camera.LensScale;
 
             for (int tabNo = 0; tabNo < inspModel.TabCount; tabNo++)
             {
@@ -585,9 +585,9 @@ namespace ATT.Core
 
         private void InitializeBuffer()
         {
-        	Camera.InitGrabSettings();
-            InspProcessTask.InitalizeInspAkkonBuffer(Camera.Camera.Name, Camera.TabScanBufferList);
-            InspProcessTask.InitalizeInspAlignBuffer(Camera.Camera.Name, Camera.TabScanBufferList);
+        	LineCamera.InitGrabSettings();
+            InspProcessTask.InitalizeInspAkkonBuffer(LineCamera.Camera.Name, LineCamera.TabScanBufferList);
+            InspProcessTask.InitalizeInspAlignBuffer(LineCamera.Camera.Name, LineCamera.TabScanBufferList);
         }
 
         public void RunVirtual()
@@ -645,19 +645,27 @@ namespace ATT.Core
                 alignInfo.LY = GetResultAlignResultValue(tabInspResult.AlignResult.LeftY);
                 alignInfo.RX = GetResultAlignResultValue(tabInspResult.AlignResult.RightX);
                 alignInfo.RY = GetResultAlignResultValue(tabInspResult.AlignResult.RightY);
-                alignInfo.CX = (alignInfo.LX + alignInfo.RX) / 2.0F;
+
+                if (double.TryParse(alignInfo.LX, out double lx) && double.TryParse(alignInfo.RX, out double rx))
+                    alignInfo.CX = ((lx + rx) / 2.0F).ToString();
+                else
+                    alignInfo.CX = "-";
 
                 dailyData.AddAlignInfo(alignInfo);
             }
         }
 
-        private float GetResultAlignResultValue(AlignResult alignResult)
+        private string GetResultAlignResultValue(AlignResult alignResult)
         {
-            double resolution = Camera.Camera.PixelResolution_um / Camera.Camera.LensScale;
             if (alignResult == null)
-                return 0.0F;
-            else
-                return alignResult.ResultValue_pixel * (float)resolution;
+                return "-";
+
+            if (alignResult.AlignMissing)
+                return "-";
+
+            double resolution = LineCamera.Camera.PixelResolution_um / LineCamera.Camera.LensScale;
+            double value = MathHelper.GetFloorDecimal(alignResult.ResultValue_pixel * (float)resolution, 2);
+            return value.ToString("F2");
         }
 
         private void UpdateAkkonDailyInfo(ref DailyData dailyData)
@@ -895,7 +903,7 @@ namespace ATT.Core
 
         private float CheckResultValue(AlignResult alignResult)
         {
-            float resolution = Camera.Camera.PixelResolution_um / Camera.Camera.LensScale;
+            float resolution = LineCamera.Camera.PixelResolution_um / LineCamera.Camera.LensScale;
             if (alignResult == null)
                 return 0.0F;
             else
@@ -1341,15 +1349,15 @@ namespace ATT.Core
         private void ClearBuffer()
         {
             Console.WriteLine("ClearBuffer");
-            Camera.IsLive = false;
+            LineCamera.IsLive = false;
 
-            Camera.SetOperationMode(TDIOperationMode.TDI);
+            LineCamera.SetOperationMode(TDIOperationMode.TDI);
 
             LightCtrlHandler?.TurnOff();
 
             LAFCtrl?.SetTrackingOnOFF(false);
             LAFCtrl?.SetDefaultParameter();
-            Camera.ClearTabScanBuffer();
+            LineCamera.ClearTabScanBuffer();
 
             MotionManager.Instance().MoveAxisZ(TeachingPosType.Stage1_Scan_Start, LAFCtrl, AxisName.Z0);
 

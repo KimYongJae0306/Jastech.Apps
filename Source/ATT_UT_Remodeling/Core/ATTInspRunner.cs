@@ -538,19 +538,29 @@ namespace ATT_UT_Remodeling.Core
                 alignInfo.LY = GetResultAlignResultValue(tabInspResult.AlignResult.LeftY);
                 alignInfo.RX = GetResultAlignResultValue(tabInspResult.AlignResult.RightX);
                 alignInfo.RY = GetResultAlignResultValue(tabInspResult.AlignResult.RightY);
-                alignInfo.CX = (alignInfo.LX + alignInfo.RX) / 2.0F;
+
+                if (double.TryParse(alignInfo.LX, out double lx) && double.TryParse(alignInfo.RX, out double rx))
+                    alignInfo.CX = ((lx + rx) / 2.0F).ToString();
+                else
+                    alignInfo.CX = "-";
 
                 dailyData.AddAlignInfo(alignInfo);
             }
         }
 
-        private float GetResultAlignResultValue(AlignResult alignResult)
+        private string GetResultAlignResultValue(AlignResult alignResult)
         {
             if (alignResult == null)
-                return 0.0F;
-            else
-                return alignResult.ResultValue_pixel;
+                return "-";
+
+            if (alignResult.AlignMissing)
+                return "-";
+
+            double resolution = LineCamera.Camera.PixelResolution_um / LineCamera.Camera.LensScale;
+            double value = MathHelper.GetFloorDecimal(alignResult.ResultValue_pixel * (float)resolution, 2);
+            return value.ToString("F2");
         }
+
 
         private void UpdateAkkonDailyInfo(ref DailyData dailyData)
         {
