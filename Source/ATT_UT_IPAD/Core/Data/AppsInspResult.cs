@@ -23,7 +23,7 @@ namespace ATT_UT_IPAD.Core.Data
 
         public string Cell_ID { get; set; } = "";
 
-        public string FinalHead { get; set; } = string.Empty;
+        public string FinalHead { get; set; } = "";
 
         private Dictionary<int, TabInspResult> InspAkkonResultDic { get; set; } = new Dictionary<int, TabInspResult>();
 

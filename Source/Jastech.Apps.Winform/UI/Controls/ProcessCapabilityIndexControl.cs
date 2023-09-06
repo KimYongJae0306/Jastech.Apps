@@ -146,29 +146,29 @@ namespace Jastech.Apps.Winform.UI.Controls
                 "Pp",
                 "Ppk",
             };
-            var pcColumns = pcHeader.Select(text => new DataGridViewTextBoxColumn { Name = text});
+            var pcColumns = pcHeader.Select(text => new DataGridViewTextBoxColumn { Name = text, SortMode = DataGridViewColumnSortMode.NotSortable});
             dgvPCResult.Columns.AddRange(pcColumns.ToArray());
 
             dgvAlignData.Columns.Clear();
             List<string> alignHeader = new List<string>
             {
-                "Inspection Time",
-                "Panel ID",
-                "Stage No",
-                "Final Head",
+                "Time",
+                "ID",
+                "Stage",
+                "F",
             };
             for (int index = 0; index < inspModel.TabCount; index++)
             {
                 alignHeader.Add($"Tab");
                 alignHeader.Add($"Judge");
-                alignHeader.Add($"Pre Head");
-                alignHeader.Add($"Lx");
-                alignHeader.Add($"Ly");
+                alignHeader.Add($"P");
                 alignHeader.Add($"Cx");
+                alignHeader.Add($"Lx");
                 alignHeader.Add($"Rx");
+                alignHeader.Add($"Ly");
                 alignHeader.Add($"Ry");
             }
-            var alignColumns = alignHeader.Select(text => new DataGridViewTextBoxColumn { Name = text });
+            var alignColumns = alignHeader.Select(text => new DataGridViewTextBoxColumn { Name = text, SortMode = DataGridViewColumnSortMode.NotSortable });
             dgvAlignData.Columns.AddRange(alignColumns.ToArray());
         }
 

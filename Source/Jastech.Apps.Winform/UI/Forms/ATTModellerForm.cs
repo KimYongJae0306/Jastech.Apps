@@ -1,4 +1,5 @@
 ﻿using Jastech.Apps.Structure;
+using Jastech.Apps.Structure.Data;
 using Jastech.Apps.Winform.Service;
 using Jastech.Framework.Config;
 using Jastech.Framework.Structure;
@@ -150,13 +151,14 @@ namespace Jastech.Apps.Winform.UI.Forms
             {
                 string modelDir = ConfigSet.Instance().Path.Model;
                 string filePath = Path.Combine(modelDir, prevModelName, InspModel.FileName);
-                AppsInspModel prevModel = InspModelService.Load(filePath) as AppsInspModel;
+                var prevModel = InspModelService.Load(filePath) as AppsInspModel;
+                var editInspModel = editModel as AppsInspModel;
 
-                prevModel.SpecInfo.AlignToleranceX_um = (editModel as AppsInspModel).SpecInfo.AlignToleranceX_um;
-                prevModel.SpecInfo.AlignToleranceY_um = (editModel as AppsInspModel).SpecInfo.AlignToleranceY_um;
-                prevModel.SpecInfo.AlignToleranceCx_um = (editModel as AppsInspModel).SpecInfo.AlignToleranceCx_um;
-                prevModel.SpecInfo.AlignStandard_um = (editModel as AppsInspModel).SpecInfo.AlignStandard_um;
-                prevModel.MaterialInfo = (editModel as AppsInspModel).MaterialInfo;
+                prevModel.SpecInfo.AlignToleranceX_um = editInspModel.SpecInfo.AlignToleranceX_um;
+                prevModel.SpecInfo.AlignToleranceY_um = editInspModel.SpecInfo.AlignToleranceY_um;
+                prevModel.SpecInfo.AlignToleranceCx_um = editInspModel.SpecInfo.AlignToleranceCx_um;
+                prevModel.SpecInfo.AlignStandard_um = editInspModel.SpecInfo.AlignStandard_um;
+                prevModel.MaterialInfo = editInspModel.MaterialInfo;
 
                 ModelFileHelper.Edit(modelDir, prevModel, editModel);
             }
@@ -282,6 +284,11 @@ namespace Jastech.Apps.Winform.UI.Forms
             UpdateSelectedModel(e.RowIndex);
 
             ApplyModel();
+        }
+
+        private void CompareInspModelParam<T>(string paramName, T oldParam, T newParam) where T : struct, IConvertible
+        {
+            ParamTrackingLogger.AddChangeHistory("Inspection Model", paramName, oldParam, newParam);
         }
 
         private void lblCancel_Click(object sender, EventArgs e)

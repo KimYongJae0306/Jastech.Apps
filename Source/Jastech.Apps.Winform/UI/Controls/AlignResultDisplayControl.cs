@@ -93,12 +93,11 @@ namespace ATT_UT_IPAD.UI.Controls
             {
                 var rightShape = TabBtnControlList[tabNo].GetRightShapeResult();
 
-                string lx = TabBtnControlList[tabNo].Lx.ToString("F2");
-                string rx = TabBtnControlList[tabNo].Rx.ToString("F2");
-                string ry = TabBtnControlList[tabNo].Ry.ToString("F2");
-                string cx = ((Convert.ToDouble(lx) + Convert.ToDouble(rx)) / 2.0).ToString("F2");
+                string lx = $"{MathHelper.GetFloorDecimal(TabBtnControlList[tabNo].Lx, 2):F2}";
+                string rx = $"{MathHelper.GetFloorDecimal(TabBtnControlList[tabNo].Rx, 2):F2}";
+                string ry = $"{MathHelper.GetFloorDecimal(TabBtnControlList[tabNo].Ry, 2):F2}";
+                string cx = $"{MathHelper.GetFloorDecimal((Convert.ToDouble(lx) + Convert.ToDouble(rx)) / 2.0, 2):F2}";
 
-                //InspAlignDisplay.UpdateRightDisplay(image, rightShape.CaliperShapeList, rightShape.LineSegmentList, GetCenterPoint(RightPointList[tabNo]));
                 InspAlignDisplay.UpdateRightDisplay(image, rightShape.CaliperShapeList, rightShape.LineSegmentList, GetMinimumPointY(RightPointList[tabNo]));
                 InspAlignDisplay.DrawRightResult("X Align : " + rx + " um", 0);
                 InspAlignDisplay.DrawRightResult("Y Align : " + ry + " um", 1);
@@ -123,12 +122,11 @@ namespace ATT_UT_IPAD.UI.Controls
             {
                 var leftShape = TabBtnControlList[tabNo].GetLeftShapeResult();
 
-                string lx = TabBtnControlList[tabNo].Lx.ToString("F2");
-                string ly = TabBtnControlList[tabNo].Ly.ToString("F2");
-                string rx = TabBtnControlList[tabNo].Rx.ToString("F2");
-                string cx = ((Convert.ToDouble(lx) + Convert.ToDouble(rx)) / 2.0).ToString("F2");
+                string lx = $"{MathHelper.GetFloorDecimal(TabBtnControlList[tabNo].Lx, 2):F2}";
+                string ly = $"{MathHelper.GetFloorDecimal(TabBtnControlList[tabNo].Ly, 2):F2}";
+                string rx = $"{MathHelper.GetFloorDecimal(TabBtnControlList[tabNo].Rx, 2):F2}";
+                string cx = $"{MathHelper.GetFloorDecimal((Convert.ToDouble(lx) + Convert.ToDouble(rx)) / 2.0, 2):F2}";
 
-                //InspAlignDisplay.UpdateLeftDisplay(image, leftShape.CaliperShapeList, leftShape.LineSegmentList, GetCenterPoint(LeftPointList[tabNo]));
                 InspAlignDisplay.UpdateLeftDisplay(image, leftShape.CaliperShapeList, leftShape.LineSegmentList, GetMinimumPointY(LeftPointList[tabNo]));
                 InspAlignDisplay.DrawLeftResult("X Align : " + lx + " um", 0);
                 InspAlignDisplay.DrawLeftResult("Y Align : " + ly + " um", 1);
