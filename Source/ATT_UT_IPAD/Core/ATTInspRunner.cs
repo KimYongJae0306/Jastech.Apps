@@ -779,6 +779,8 @@ namespace ATT_UT_IPAD.Core
             SaveAkkonResult(path, inspModel.TabCount);
             SaveUPHResult(path, inspModel.TabCount);
 
+            if (AppsConfig.Instance().EnableAkkonLeadResultLog == true)
+                SaveAkkonLeadResults(path, inspModel.TabCount);
             //SaveAkkonResultAsMsaSummary(path, inspModel.TabCount);
             //SaveAlignResultAsMsaSummary(path, inspModel.TabCount);
         }
@@ -793,17 +795,17 @@ namespace ATT_UT_IPAD.Core
                     "Inspection Time",
                     "Panel ID",
                     "Stage No",
-                    "Final Head",
+                    "F",
                 };
                 for (int index = 0; index < tabCount; index++)
                 {
                     header.Add($"Tab");
                     header.Add($"Judge");
-                    header.Add($"Pre Head");
-                    header.Add($"Lx");
-                    header.Add($"Ly");
+                    header.Add($"P");
                     header.Add($"Cx");
+                    header.Add($"Lx");
                     header.Add($"Rx");
+                    header.Add($"Ly");
                     header.Add($"Ry");
                 }
 
@@ -823,21 +825,19 @@ namespace ATT_UT_IPAD.Core
                 var tabInspResult = AppsInspResult.Instance().GetAlign(tabNo);
                 var alignResult = tabInspResult.AlignResult;
 
-                string preHead = alignResult.PreHead;
-
                 float lx = CheckAlignResultValue(alignResult.LeftX);
-                float ly = CheckAlignResultValue(alignResult.LeftY);
                 float rx = CheckAlignResultValue(alignResult.RightX);
-                float ry = CheckAlignResultValue(alignResult.RightY);
                 float cx = (lx + rx) / 2.0F;
+                float ly = CheckAlignResultValue(alignResult.LeftY);
+                float ry = CheckAlignResultValue(alignResult.RightY);
 
                 body.Add($"{tabInspResult.TabNo + 1}");                                     // Tab No
                 body.Add($"{alignResult.Judgement}");                                       // Judge
-                body.Add($"{preHead}");                                                     // Pre Head
-                body.Add($"{lx:F3}");                                                       // Align Lx
-                body.Add($"{ly:F3}");                                                       // Align Ly
+                body.Add($"{alignResult.PreHead}");                                         // Pre Head
                 body.Add($"{cx:F3}");                                                       // Align Cx
+                body.Add($"{lx:F3}");                                                       // Align Lx
                 body.Add($"{rx:F3}");                                                       // Align Rx
+                body.Add($"{ly:F3}");                                                       // Align Ly
                 body.Add($"{ry:F3}");                                                       // Align Ry
             }
 
@@ -975,6 +975,29 @@ namespace ATT_UT_IPAD.Core
             CSVHelper.WriteData(csvFile, body);
         }
 
+        private void SaveAkkonLeadResults(string resultPath, int tabCount)
+        {
+            for (int tabIndex = 0; tabIndex < tabCount; tabIndex++)
+            {
+                var tabResult = AppsInspResult.Instance().GetAkkon(tabIndex).AkkonResult;
+                string csvFile = Path.Combine(resultPath, $"AkkonLeadResult_Tab{tabIndex + 1}.csv");
+
+                if (File.Exists(csvFile) == false)
+                {
+                    List<string> header = new List<string>() { "Panel ID" };
+                    for (int index = 0; index < 2000; index++)
+                        header.Add($"Lead{index + 1}");
+
+                    CSVHelper.WriteHeader(csvFile, header);
+                }
+
+                List<string> body = new List<string>() { AppsInspResult.Instance().Cell_ID };
+                for (int index = 0; index < tabResult.LeadResultList.Count; index++)
+                    body.Add($"{tabResult.LeadResultList[index].AkkonCount}");
+                CSVHelper.WriteData(csvFile, body);
+            }
+        }
+
         private void SaveAkkonResultAsMsaSummary(string resultPath, int tabCount)
         {
             // Write Summary for each tabs
@@ -1073,7 +1096,7 @@ namespace ATT_UT_IPAD.Core
             if (alignResult == null)
                 return 0.0F;
             else
-                return alignResult.ResultValue_pixel * resolution;
+                return MathHelper.GetFloorDecimal(alignResult.ResultValue_pixel * resolution, 3);
         }
 
         private Axis GetAxis(AxisHandlerName axisHandlerName, AxisName axisName)

@@ -1,4 +1,6 @@
 ﻿using Jastech.Apps.Winform.Service;
+using Jastech.Framework.Util.Helper;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
@@ -36,10 +38,8 @@ namespace Jastech.Apps.Winform.UI.Controls
             dgvAkkonHistory.Rows.Clear();
 
             var dailyInfo = DailyInfoService.GetDailyInfo();
-
-            List<DailyData> reverseList = new List<DailyData>();
-            reverseList = Enumerable.Reverse(dailyInfo.DailyDataList).ToList();
-
+            
+            List<DailyData> reverseList = Enumerable.Reverse(dailyInfo.DailyDataList).ToList();
             foreach (var dailyDataList in reverseList)
             {
                 foreach (var item in dailyDataList.AkkonDailyInfoList)
@@ -49,7 +49,7 @@ namespace Jastech.Apps.Winform.UI.Controls
                     string tabNumber = (item.TabNo + 1).ToString();
                     string judge = item.Judgement.ToString();
                     string count = item.MinBlobCount.ToString();
-                    string length = item.MinLength.ToString("F2");
+                    string length = $"{MathHelper.GetFloorDecimal(item.MinLength, 2):F2}";
 
                     string[] row = { inspectionTime, panelID, tabNumber, judge, count, length };
                     dgvAkkonHistory.Rows.Add(row);

@@ -109,7 +109,7 @@
             // 
             dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
             this.colPanelID.DefaultCellStyle = dataGridViewCellStyle3;
-            this.colPanelID.HeaderText = "Panel ID";
+            this.colPanelID.HeaderText = "ID";
             this.colPanelID.MinimumWidth = 150;
             this.colPanelID.Name = "colPanelID";
             this.colPanelID.ReadOnly = true;
@@ -152,7 +152,7 @@
             this.colCount.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
             this.colCount.Width = 50;
             // 
-            // colLenght
+            // colLength
             // 
             this.colLength.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
             dataGridViewCellStyle7.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;

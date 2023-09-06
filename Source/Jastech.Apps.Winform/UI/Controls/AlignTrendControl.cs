@@ -69,16 +69,16 @@ namespace Jastech.Apps.Winform.UI.Controls
             var inspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
             List<string> header = new List<string>
                     {
-                        "Inspection Time",
-                        "Panel ID",
-                        "Stage No",
-                        "Final Head",
+                        "Time",
+                        "ID",
+                        "Stage",
+                        "F",
                     };
             for (int index = 0; index < inspModel.TabCount; index++)
             {
                 header.Add($"Tab");
                 header.Add($"Judge");
-                header.Add($"Pre Head");
+                header.Add($"P");
                 header.Add($"Lx");
                 header.Add($"Ly");
                 header.Add($"Cx");

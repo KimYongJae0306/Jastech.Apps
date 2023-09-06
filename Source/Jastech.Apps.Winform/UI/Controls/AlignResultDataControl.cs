@@ -81,13 +81,13 @@ namespace Jastech.Apps.Winform.UI.Controls
                     string judge = item.Judgement.ToString();
                     string preHead = item.PreHead;
                     string finalHead = item.FinalHead;
-                    string leftAlignX = item.LX.ToString("F2");
-                    string leftAlignY = item.LY.ToString("F2");
-                    string rightAlignX = item.RX.ToString("F2");
-                    string rightAlignY = item.RY.ToString("F2");
-                    string centerAlignX = item.CX.ToString("F2");
+                    string centerAlignX = $"{MathHelper.GetFloorDecimal(item.CX, 2):F2}";
+                    string leftAlignX = $"{MathHelper.GetFloorDecimal(item.LX, 2):F2}";
+                    string rightAlignX = $"{MathHelper.GetFloorDecimal(item.RX, 2):F2}";
+                    string leftAlignY = $"{MathHelper.GetFloorDecimal(item.LY, 2):F2}";
+                    string rightAlignY = $"{MathHelper.GetFloorDecimal(item.RY, 2):F2}";
 
-                    string[] row = { inspectionTime, panelID, tabNumber, judge, preHead, finalHead, leftAlignX, leftAlignY, rightAlignX, rightAlignY, centerAlignX };
+                    string[] row = { inspectionTime, panelID, tabNumber, judge, preHead, finalHead, centerAlignX, leftAlignX, rightAlignX, leftAlignY, rightAlignY };
                     dgvAlignHistory.Rows.Add(row);
                 }
             }

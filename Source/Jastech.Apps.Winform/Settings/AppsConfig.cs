@@ -83,6 +83,9 @@ namespace Jastech.Apps.Winform.Settings
 
         [JsonProperty]
         public bool EnableTest2 { get; set; } = false;
+
+        [JsonProperty]
+        public bool EnableAkkonLeadResultLog{ get; set; } = false;
         #endregion
 
         #region 메서드

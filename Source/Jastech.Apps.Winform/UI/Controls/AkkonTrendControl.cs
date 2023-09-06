@@ -72,9 +72,9 @@ namespace Jastech.Apps.Winform.UI.Controls
             dgvAkkonTrendData.Columns.Clear();
             List<string> header = new List<string>
             {
-                "Inspection Time",
-                "Panel ID",
-                "Stage No",
+                "Time",
+                "ID",
+                "Stage",
             };
             for (int index = 0; index < inspModel.TabCount; index++)
             {

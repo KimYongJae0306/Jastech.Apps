@@ -44,11 +44,11 @@
             this.colJudge = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colPreHead = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colFinalHead = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colCount = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colLength = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colCount = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colLength = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.dgvAlignHistory)).BeginInit();
             this.SuspendLayout();
             // 
@@ -75,11 +75,11 @@
             this.colJudge,
             this.colPreHead,
             this.colFinalHead,
+            this.Column3,
             this.colCount,
-            this.colLength,
             this.Column1,
-            this.Column2,
-            this.Column3});
+            this.colLength,
+            this.Column2});
             dataGridViewCellStyle8.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
             dataGridViewCellStyle8.BackColor = System.Drawing.SystemColors.Window;
             dataGridViewCellStyle8.Font = new System.Drawing.Font("굴림", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
@@ -121,7 +121,7 @@
             // 
             dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
             this.colPanelID.DefaultCellStyle = dataGridViewCellStyle3;
-            this.colPanelID.HeaderText = "Panel ID";
+            this.colPanelID.HeaderText = "ID";
             this.colPanelID.MinimumWidth = 150;
             this.colPanelID.Name = "colPanelID";
             this.colPanelID.ReadOnly = true;
@@ -154,20 +154,31 @@
             // 
             // colPreHead
             // 
-            this.colPreHead.HeaderText = "Pre Head";
-            this.colPreHead.MinimumWidth = 80;
+            this.colPreHead.HeaderText = "P";
+            this.colPreHead.MinimumWidth = 50;
             this.colPreHead.Name = "colPreHead";
             this.colPreHead.ReadOnly = true;
             this.colPreHead.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            this.colPreHead.Width = 80;
+            this.colPreHead.Width = 50;
             // 
             // colFinalHead
             // 
-            this.colFinalHead.HeaderText = "Final Head";
-            this.colFinalHead.MinimumWidth = 100;
+            this.colFinalHead.HeaderText = "F";
+            this.colFinalHead.MinimumWidth = 50;
             this.colFinalHead.Name = "colFinalHead";
             this.colFinalHead.ReadOnly = true;
             this.colFinalHead.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            this.colFinalHead.Width = 50;
+            // 
+            // Column3
+            // 
+            this.Column3.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            this.Column3.HeaderText = "Cx";
+            this.Column3.MinimumWidth = 60;
+            this.Column3.Name = "Column3";
+            this.Column3.ReadOnly = true;
+            this.Column3.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            this.Column3.Width = 60;
             // 
             // colCount
             // 
@@ -181,18 +192,6 @@
             this.colCount.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
             this.colCount.Width = 60;
             // 
-            // colLength
-            // 
-            this.colLength.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            dataGridViewCellStyle7.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle7.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
-            this.colLength.DefaultCellStyle = dataGridViewCellStyle7;
-            this.colLength.HeaderText = "Ly";
-            this.colLength.MinimumWidth = 60;
-            this.colLength.Name = "colLength";
-            this.colLength.ReadOnly = true;
-            this.colLength.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            // 
             // Column1
             // 
             this.Column1.HeaderText = "Rx";
@@ -202,23 +201,27 @@
             this.Column1.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
             this.Column1.Width = 60;
             // 
+            // colLength
+            // 
+            this.colLength.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            dataGridViewCellStyle7.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle7.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
+            this.colLength.DefaultCellStyle = dataGridViewCellStyle7;
+            this.colLength.HeaderText = "Ly";
+            this.colLength.MinimumWidth = 60;
+            this.colLength.Name = "colLength";
+            this.colLength.ReadOnly = true;
+            this.colLength.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            this.colLength.Width = 60;
+            // 
             // Column2
             // 
+            this.Column2.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
             this.Column2.HeaderText = "Ry";
             this.Column2.MinimumWidth = 60;
             this.Column2.Name = "Column2";
             this.Column2.ReadOnly = true;
             this.Column2.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            this.Column2.Width = 60;
-            // 
-            // Column3
-            // 
-            this.Column3.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.Column3.HeaderText = "Cx";
-            this.Column3.MinimumWidth = 60;
-            this.Column3.Name = "Column3";
-            this.Column3.ReadOnly = true;
-            this.Column3.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
             // 
             // AlignResultDataControl
             // 
@@ -242,10 +245,10 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn colJudge;
         private System.Windows.Forms.DataGridViewTextBoxColumn colPreHead;
         private System.Windows.Forms.DataGridViewTextBoxColumn colFinalHead;
-        private System.Windows.Forms.DataGridViewTextBoxColumn colCount;
-        private System.Windows.Forms.DataGridViewTextBoxColumn colLength;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column1;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column2;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column3;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colCount;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colLength;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column2;
     }
 }
