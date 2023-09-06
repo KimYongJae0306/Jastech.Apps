@@ -959,15 +959,20 @@ namespace Jastech.Framework.Winform.Forms
                 var foundedFpcMark = tabInspResult.MarkResult.FpcMark.FoundedMark;
                 if(foundedFpcMark != null)
                 {
-                    var leftFpc = foundedFpcMark.Left.MaxMatchPos.ResultGraphics;
+                    if(foundedFpcMark.Left != null)
+                    {
+                        var leftFpc = foundedFpcMark.Left.MaxMatchPos.ResultGraphics;
+                        if (foundedFpcMark.Left.Found)
+                            shapeList.Add(leftFpc);
+                    }
 
-                    var rightFpc = foundedFpcMark.Right.MaxMatchPos.ResultGraphics;
-
-                    if (foundedFpcMark.Left.Found)
-                        shapeList.Add(leftFpc);
-
-                    if (foundedFpcMark.Right.Found)
-                        shapeList.Add(rightFpc);
+                    if(foundedFpcMark.Right != null)
+                    {
+                        var rightFpc = foundedFpcMark.Right.MaxMatchPos.ResultGraphics;
+                        if (foundedFpcMark.Right.Found)
+                            shapeList.Add(rightFpc);
+                    }
+                    
                 }
             }
 
@@ -976,13 +981,19 @@ namespace Jastech.Framework.Winform.Forms
                 var foundedPanelMark = tabInspResult.MarkResult.PanelMark.FoundedMark;
                 if(foundedPanelMark != null)
                 {
-                    var leftPanel = foundedPanelMark.Left.MaxMatchPos.ResultGraphics;
-                    var rightPanel = foundedPanelMark.Right.MaxMatchPos.ResultGraphics;
-
-                    if (foundedPanelMark.Left.Found)
-                        shapeList.Add(leftPanel);
-                    if (foundedPanelMark.Right.Found)
-                        shapeList.Add(rightPanel);
+                    if(foundedPanelMark.Left != null)
+                    {
+                        var leftPanel = foundedPanelMark.Left.MaxMatchPos.ResultGraphics;
+                        if (foundedPanelMark.Left.Found)
+                            shapeList.Add(leftPanel);
+                    }
+                    
+                    if(foundedPanelMark.Right != null)
+                    {
+                        var rightPanel = foundedPanelMark.Right.MaxMatchPos.ResultGraphics;
+                        if (foundedPanelMark.Right.Found)
+                            shapeList.Add(rightPanel);
+                    }
                 }
             }
 
