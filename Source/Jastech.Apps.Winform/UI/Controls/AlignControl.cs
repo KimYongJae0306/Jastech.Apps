@@ -607,5 +607,50 @@ namespace Jastech.Apps.Winform.UI.Controls
         {
             KeyPadHelper.SetLabelDoubleData((Label)sender);
         }
+
+        private void lblNewTest_Click(object sender, EventArgs e)
+        {
+            if (CurrentAlignName == ATTTabAlignName.LeftPanelX || CurrentAlignName == ATTTabAlignName.RightPanelX)
+            {
+                if (CurrentAlignName == ATTTabAlignName.LeftPanelX)
+                    tt(ATTTabAlignName.LeftFPCX);
+
+                if (CurrentAlignName == ATTTabAlignName.RightPanelX)
+                    tt(ATTTabAlignName.RightFPCX);
+            }
+            else
+            {
+                MessageConfirmForm confirmForm = new MessageConfirmForm();
+                confirmForm.Message = "Select a panel and try again";
+                confirmForm.ShowDialog();
+                return;
+            }
+        }
+
+        private void tt(ATTTabAlignName alignName)
+        {
+            var display = TeachingUIManager.Instance().TeachingDisplayControl.GetDisplay();
+            if (display.GetImage() == null)
+                return;
+
+            var currentParam = CogCaliperParamControl.GetCurrentParam();
+            if (currentParam == null)
+                return;
+
+            var alignParam = CurrentTab.GetAlignParam(alignName);
+
+            var diff = VisionProShapeHelper.GetOffsetBetweenCenterPointOfAffineRectangles(alignParam.CaliperParams.GetRegion() as CogRectangleAffine, currentParam.GetRegion() as CogRectangleAffine);
+            var diffY = diff.Y;
+
+            double offsetY = (alignParam.CaliperParams.GetRegion() as CogRectangleAffine).SideYLength + 10;
+
+            var newRegion = VisionProShapeHelper.MoveTranslationY(alignParam.CaliperParams.GetRegion() as CogRectangleAffine, diffY - offsetY);
+            //var newRegion = VisionProShapeHelper.MoveOffsetY(currentParam.CaliperTool.Region, -offset, (alignParam.CaliperParams.GetRegion() as CogRectangleAffine).Skew);
+            alignParam.CaliperParams.SetRegion(newRegion);
+
+            CogGraphicInteractiveCollection collection = new CogGraphicInteractiveCollection();
+            collection.Add(newRegion);
+            display.SetInteractiveGraphics("tool", collection);
+        }
     }
 }

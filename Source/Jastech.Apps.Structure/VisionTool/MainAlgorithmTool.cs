@@ -140,9 +140,14 @@ namespace Jastech.Apps.Structure.VisionTool
             var calcFpcRegion = VisionProShapeHelper.AddOffsetToCogRectAffine(fpcParam.CaliperParams.GetRegion() as CogRectangleAffine, fpcOffset);
             var calcPanelRegion = VisionProShapeHelper.AddOffsetToCogRectAffine(panelParam.CaliperParams.GetRegion() as CogRectangleAffine, panelOffset);
 
-            var newRegion = VisionProShapeHelper.MoveTranslationY(calcPanelRegion, -calcPanelRegion.SideYLength - 10);
-            fpcParam.CaliperParams.SetRegion(newRegion);
+            var diff = VisionProShapeHelper.GetOffsetBetweenCenterPointOfAffineRectangles(calcFpcRegion, calcPanelRegion);
+            var diffY = diff.Y;
+            double offsetY = calcPanelRegion.SideYLength + 10;
 
+            var newRegion = VisionProShapeHelper.MoveTranslationY(calcFpcRegion, diffY - offsetY);
+
+            fpcParam.CaliperParams.SetRegion(newRegion);
+            //fpcParam.CaliperParams.SetRegion(calcFpcRegion);
             panelParam.CaliperParams.SetRegion(calcPanelRegion);
 
             var result = RunMainAutoAlignX(cogImage, fpcParam, panelParam, judgementX_pixel);
@@ -189,9 +194,14 @@ namespace Jastech.Apps.Structure.VisionTool
             var calcFpcRegion = VisionProShapeHelper.AddOffsetToCogRectAffine(fpcParam.CaliperParams.GetRegion() as CogRectangleAffine, fpcOffset);
             var calcPanelRegion = VisionProShapeHelper.AddOffsetToCogRectAffine(panelParam.CaliperParams.GetRegion() as CogRectangleAffine, panelOffset);
 
-            var newRegion = VisionProShapeHelper.MoveTranslationY(calcPanelRegion, -calcPanelRegion.SideYLength - 10);
-            fpcParam.CaliperParams.SetRegion(newRegion);
+            var diff = VisionProShapeHelper.GetOffsetBetweenCenterPointOfAffineRectangles(calcFpcRegion, calcPanelRegion);
+            var diffY = diff.Y;
+            double offsetY = calcPanelRegion.SideYLength + 10;
 
+            var newRegion = VisionProShapeHelper.MoveTranslationY(calcFpcRegion, diffY - offsetY);
+
+            fpcParam.CaliperParams.SetRegion(newRegion);
+            //fpcParam.CaliperParams.SetRegion(calcFpcRegion);
             panelParam.CaliperParams.SetRegion(calcPanelRegion);
 
             var result = RunMainAutoAlignX(cogImage, fpcParam, panelParam, judgementX_pixel);
