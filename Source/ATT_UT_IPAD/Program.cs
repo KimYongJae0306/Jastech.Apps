@@ -168,6 +168,7 @@ namespace ATT_UT_IPAD
                 akkonCamera.PixelResolution_um = 3.5F;
                 akkonCamera.LensScale = 10F;
                 akkonCamera.DigitizerNum = 0;
+                akkonCamera.TDIDirection = TDIDirectionType.Reverse;
 
                 akkonCamera.DcfFile = CameraMil.GetDcfFile(CameraType.VT_6K3_5X_H160);
                 config.Add(akkonCamera);
@@ -189,6 +190,7 @@ namespace ATT_UT_IPAD
                 alignCamera.PixelResolution_um = 3.5F;
                 alignCamera.LensScale = 10F;
                 alignCamera.DigitizerNum = 2;
+                alignCamera.TDIDirection = TDIDirectionType.Reverse;
 
                 alignCamera.DcfFile = CameraMil.GetDcfFile(CameraType.VT_6K3_5X_H160);
                 config.Add(alignCamera);
@@ -270,6 +272,7 @@ namespace ATT_UT_IPAD
                 akkonCamera.PixelResolution_um = 3.5F;
                 akkonCamera.LensScale = 10F;
                 akkonCamera.DigitizerNum = 0;
+                akkonCamera.TDIDirection = TDIDirectionType.Reverse;
 
                 akkonCamera.DcfFile = CameraMil.GetDcfFile(CameraType.VT_6K3_5X_H160);
                 config.Add(akkonCamera);
@@ -291,6 +294,7 @@ namespace ATT_UT_IPAD
                 alignCamera.PixelResolution_um = 3.5F;
                 alignCamera.LensScale = 10F;
                 alignCamera.DigitizerNum = 2;
+                alignCamera.TDIDirection = TDIDirectionType.Reverse;
 
                 alignCamera.DcfFile = CameraMil.GetDcfFile(CameraType.VT_6K3_5X_H160);
                 config.Add(alignCamera);
