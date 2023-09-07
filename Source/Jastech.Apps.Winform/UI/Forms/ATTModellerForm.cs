@@ -154,13 +154,16 @@ namespace Jastech.Apps.Winform.UI.Forms
                 var prevModel = InspModelService.Load(filePath) as AppsInspModel;
                 var editInspModel = editModel as AppsInspModel;
 
-                prevModel.SpecInfo.AlignToleranceX_um = editInspModel.SpecInfo.AlignToleranceX_um;
-                prevModel.SpecInfo.AlignToleranceY_um = editInspModel.SpecInfo.AlignToleranceY_um;
-                prevModel.SpecInfo.AlignToleranceCx_um = editInspModel.SpecInfo.AlignToleranceCx_um;
-                prevModel.SpecInfo.AlignStandard_um = editInspModel.SpecInfo.AlignStandard_um;
+                prevModel.SpecInfo = editInspModel.SpecInfo;
                 prevModel.MaterialInfo = editInspModel.MaterialInfo;
 
                 ModelFileHelper.Edit(modelDir, prevModel, editModel);
+
+                if (ParamTrackingLogger.IsEmpty == false)
+                {
+                    ParamTrackingLogger.AddLog($"Inspection model '{prevModel.Name} : {prevModel.Description}' has been modified.");
+                    ParamTrackingLogger.WriteLogToFile();
+                }
             }
         }
 
@@ -248,9 +251,14 @@ namespace Jastech.Apps.Winform.UI.Forms
 
             ApplyModelEventHandler?.Invoke(selectedModel);
 
-            ParamTrackingLogger.AddChangeHistory("Inspector", "InspectionModel", previousModel, selectedModel);
-            ParamTrackingLogger.AddLog("Inspection Model Changed.");
-            ParamTrackingLogger.WriteLogToFile();
+            if (previousModel.Equals(selectedModel) == false)
+                ParamTrackingLogger.AddChangeHistory("Inspector", "InspectionModel", previousModel, selectedModel);
+
+            if (ParamTrackingLogger.IsEmpty == false)
+            {
+                ParamTrackingLogger.AddLog("Inspection Model Changed.");
+                ParamTrackingLogger.WriteLogToFile();
+            }
 
             MessageConfirmForm form = new MessageConfirmForm();
             form.Message = "Model Load Completed.";
@@ -286,13 +294,9 @@ namespace Jastech.Apps.Winform.UI.Forms
             ApplyModel();
         }
 
-        private void CompareInspModelParam<T>(string paramName, T oldParam, T newParam) where T : struct, IConvertible
-        {
-            ParamTrackingLogger.AddChangeHistory("Inspection Model", paramName, oldParam, newParam);
-        }
-
         private void lblCancel_Click(object sender, EventArgs e)
         {
+            ParamTrackingLogger.ClearChangedLog();
             this.Close();
         }
         #endregion

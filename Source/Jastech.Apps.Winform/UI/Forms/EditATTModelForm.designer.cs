@@ -302,6 +302,7 @@
             this.txtSpecInfoCx.Location = new System.Drawing.Point(0, 7);
             this.txtSpecInfoCx.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.txtSpecInfoCx.Name = "txtSpecInfoCx";
+            this.txtSpecInfoCx.ReadOnly = true;
             this.txtSpecInfoCx.Size = new System.Drawing.Size(87, 32);
             this.txtSpecInfoCx.TabIndex = 15;
             this.txtSpecInfoCx.Text = "1.000";
@@ -368,6 +369,7 @@
             this.txtSpecInfoStandardValue.Location = new System.Drawing.Point(0, 7);
             this.txtSpecInfoStandardValue.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.txtSpecInfoStandardValue.Name = "txtSpecInfoStandardValue";
+            this.txtSpecInfoStandardValue.ReadOnly = true;
             this.txtSpecInfoStandardValue.Size = new System.Drawing.Size(87, 32);
             this.txtSpecInfoStandardValue.TabIndex = 15;
             this.txtSpecInfoStandardValue.Text = "0";
@@ -434,6 +436,7 @@
             this.txtSpecInfoY.Location = new System.Drawing.Point(0, 7);
             this.txtSpecInfoY.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.txtSpecInfoY.Name = "txtSpecInfoY";
+            this.txtSpecInfoY.ReadOnly = true;
             this.txtSpecInfoY.Size = new System.Drawing.Size(87, 32);
             this.txtSpecInfoY.TabIndex = 15;
             this.txtSpecInfoY.Text = "1.000";
@@ -523,6 +526,7 @@
             this.txtSpecInfoX.Location = new System.Drawing.Point(0, 7);
             this.txtSpecInfoX.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.txtSpecInfoX.Name = "txtSpecInfoX";
+            this.txtSpecInfoX.ReadOnly = true;
             this.txtSpecInfoX.Size = new System.Drawing.Size(87, 32);
             this.txtSpecInfoX.TabIndex = 15;
             this.txtSpecInfoX.Text = "1.000";
@@ -560,6 +564,7 @@
             this.txtTabCount.Location = new System.Drawing.Point(6, 171);
             this.txtTabCount.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.txtTabCount.Name = "txtTabCount";
+            this.txtTabCount.ReadOnly = true;
             this.txtTabCount.Size = new System.Drawing.Size(477, 32);
             this.txtTabCount.TabIndex = 17;
             this.txtTabCount.Click += new System.EventHandler(this.textbox_KeyPad_Click);
