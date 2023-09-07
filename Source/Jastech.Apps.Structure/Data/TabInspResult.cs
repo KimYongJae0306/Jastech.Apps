@@ -6,6 +6,7 @@ using Jastech.Framework.Algorithms.Akkon.Results;
 using Jastech.Framework.Imaging.Result;
 using Jastech.Framework.Imaging.VisionPro;
 using Jastech.Framework.Imaging.VisionPro.VisionAlgorithms.Results;
+using Jastech.Framework.Util.Helper;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -17,6 +18,10 @@ namespace Jastech.Apps.Structure.Data
 {
     public class TabInspResult
     {
+        private static CogColorConstants _fpcColor = CogColorConstants.Purple;
+
+        private static CogColorConstants _panelColor = CogColorConstants.Orange;
+
         public int TabNo { get; set; } = -1;
 
         public bool IsResultProcessDone { get; set; } = false;
@@ -129,6 +134,304 @@ namespace Jastech.Apps.Structure.Data
                 samplingResult = leadResults.Select((result) => result.AkkonCount).Skip(0).Take(ResultSamplingCount);
 
             return samplingResult;
+        }
+
+        public List<CogLineSegment> GetCenterLineByAlignLeftResult()
+        {
+            List<CogLineSegment> cogLineSegmentList = new List<CogLineSegment>();
+
+            if (AlignResult.LeftX == null)
+                return cogLineSegmentList;
+
+            var fpcCenterLineList = GetFpcCenterLine(AlignResult.LeftX);
+            if (fpcCenterLineList.Count > 0)
+                cogLineSegmentList.AddRange(fpcCenterLineList);
+
+            var panelCenterLineList = GetPanelCenterLine(AlignResult.LeftX);
+            if (panelCenterLineList.Count > 0)
+                cogLineSegmentList.AddRange(panelCenterLineList);
+
+            return cogLineSegmentList;
+        }
+
+        public List<CogLineSegment> GetCenterLineByAlignRightResult()
+        {
+            List<CogLineSegment> cogLineSegmentList = new List<CogLineSegment>();
+
+            if (AlignResult.RightX == null)
+                return cogLineSegmentList;
+
+            var fpcCenterLineList = GetFpcCenterLine(AlignResult.RightX);
+            if (fpcCenterLineList.Count > 0)
+                cogLineSegmentList.AddRange(fpcCenterLineList);
+
+            var panelCenterLineList = GetPanelCenterLine(AlignResult.RightX);
+            if (panelCenterLineList.Count > 0)
+                cogLineSegmentList.AddRange(panelCenterLineList);
+
+            return cogLineSegmentList;
+        }
+
+        private List<CogLineSegment> GetFpcCenterLine(AlignResult alignResult)
+        {
+            List<CogLineSegment> lineList = new List<CogLineSegment>();
+
+            if (alignResult == null)
+                return lineList;
+
+            foreach (var result in alignResult.AlignResultList)
+            {
+                PointF fpcCenter = new PointF((float)(result.FpcCenterX), (float)(result.FpcCenterY));
+                PointF panelCenter = new PointF((float)(result.PanelCenterX), (float)(result.PanelCenterY));
+
+                double length = MathHelper.GetDistance(fpcCenter, panelCenter);
+
+                var fpcSkew = result.FpcSkew;
+
+                CogLineSegment fpcLine = new CogLineSegment();
+                fpcLine.Color = _fpcColor;
+                fpcLine.SetStartLengthRotation(fpcCenter.X, fpcCenter.Y, length, fpcSkew + MathHelper.DegToRad(90));
+
+                lineList.Add(fpcLine);
+            }
+
+            return lineList;
+        }
+
+        private List<CogLineSegment> GetPanelCenterLine(AlignResult alignResult)
+        {
+            List<CogLineSegment> lineList = new List<CogLineSegment>();
+
+            if (alignResult == null)
+                return lineList;
+
+            foreach (var result in alignResult.AlignResultList)
+            {
+                PointF fpcCenter = new PointF((float)(result.FpcCenterX), (float)(result.FpcCenterY));
+                PointF panelCenter = new PointF((float)(result.PanelCenterX), (float)(result.PanelCenterY));
+
+                double length = MathHelper.GetDistance(fpcCenter, panelCenter);
+
+                var panelSkew = result.PanelSkew;
+
+                CogLineSegment panelLine = new CogLineSegment();
+                panelLine.Color = _panelColor;
+                panelLine.SetStartLengthRotation(panelCenter.X, panelCenter.Y, length, panelSkew + MathHelper.DegToRad(270));
+                lineList.Add(panelLine);
+            }
+            return lineList;
+        }
+
+        //public List<AlignGraphicPosition> GetResultGraphic()
+        //{
+        //    List<AlignGraphicPosition> positionList = new List<AlignGraphicPosition>();
+
+        //    GetLeftAlignShapeList();
+        //    GetRightAlignShapeList();
+
+        //    return new List<AlignGraphicPosition>();
+        //}
+
+        public List<AlignGraphicPosition> GetLeftAlignShapeList()
+        {
+            List<AlignGraphicPosition> leftResultList = new List<AlignGraphicPosition>();
+
+            var leftAlignX = AlignResult.LeftX;
+            if (leftAlignX != null)
+            {
+                if (leftAlignX.Fpc.CogAlignResult.Count > 0)
+                {
+                    foreach (var fpc in leftAlignX.Fpc.CogAlignResult)
+                    {
+                        var leftFpcX = fpc?.MaxCaliperMatch.ResultGraphics;
+                        var fpcGraphicList = GetAlignGraphicPosition(leftFpcX, true);
+                        if (fpcGraphicList.Count > 0)
+                            leftResultList.AddRange(fpcGraphicList);
+                    }
+                }
+
+                if (leftAlignX.Panel.CogAlignResult.Count() > 0)
+                {
+                    foreach (var panel in leftAlignX.Panel.CogAlignResult)
+                    {
+                        var leftPanelX = panel?.MaxCaliperMatch.ResultGraphics;
+                        var panelGraphicList = GetAlignGraphicPosition(leftPanelX, false);
+                        if (panelGraphicList.Count > 0)
+                            leftResultList.AddRange(panelGraphicList);
+                    }
+                }
+            }
+
+            var leftAlignY = AlignResult.LeftY;
+            if (leftAlignY != null)
+            {
+                if (leftAlignY.Fpc.CogAlignResult.Count > 0)
+                {
+                    if (leftAlignY.Fpc.CogAlignResult[0].MaxCaliperMatch != null)
+                    {
+                        var leftFpcY = leftAlignY.Fpc.CogAlignResult[0].MaxCaliperMatch.ResultGraphics;
+                        var fpcGraphicList = GetAlignGraphicPosition(leftFpcY, true);
+                        if (fpcGraphicList.Count > 0)
+                            leftResultList.AddRange(fpcGraphicList);
+                    }
+                }
+
+                if (leftAlignY.Panel.CogAlignResult.Count > 0)
+                {
+                    if (leftAlignY.Panel.CogAlignResult[0].MaxCaliperMatch != null)
+                    {
+                        var leftPanelY = leftAlignY.Panel.CogAlignResult[0].MaxCaliperMatch.ResultGraphics;
+                        var panelGraphicList = GetAlignGraphicPosition(leftPanelY, false);
+                        if (panelGraphicList.Count > 0)
+                            leftResultList.AddRange(panelGraphicList);
+                    }
+                }
+            }
+
+            var fpcLeftCenterLineList = GetFpcCenterLine(AlignResult.LeftX);
+            foreach (var fpc in fpcLeftCenterLineList)
+            {
+                AlignGraphicPosition position = new AlignGraphicPosition
+                {
+                    IsFpc = true,
+                    StartX = fpc.StartX,
+                    StartY = fpc.StartY,
+                    EndX = fpc.EndX,
+                    EndY = fpc.EndY,
+                };
+                leftResultList.Add(position);
+            }
+
+            var panelLeftCenterLineList = GetPanelCenterLine(AlignResult.LeftX);
+            foreach (var panel in panelLeftCenterLineList)
+            {
+                AlignGraphicPosition position = new AlignGraphicPosition
+                {
+                    IsFpc = false,
+                    StartX = panel.StartX,
+                    StartY = panel.StartY,
+                    EndX = panel.EndX,
+                    EndY = panel.EndY,
+                };
+                leftResultList.Add(position);
+            }
+
+            return leftResultList;
+        }
+
+        public List<AlignGraphicPosition> GetRightAlignShapeList()
+        {
+            List<AlignGraphicPosition> rightResultList = new List<AlignGraphicPosition>();
+
+            var rightAlignX = AlignResult.RightX;
+            if (rightAlignX != null)
+            {
+                if (rightAlignX.Fpc.CogAlignResult.Count > 0)
+                {
+                    foreach (var fpc in rightAlignX.Fpc.CogAlignResult)
+                    {
+                        var rightFpcX = fpc?.MaxCaliperMatch.ResultGraphics;
+                        var fpcGraphicList = GetAlignGraphicPosition(rightFpcX, true);
+                        if (fpcGraphicList.Count > 0)
+                            rightResultList.AddRange(fpcGraphicList);
+                    }
+                }
+                if (rightAlignX.Panel.CogAlignResult.Count() > 0)
+                {
+                    foreach (var panel in rightAlignX.Panel.CogAlignResult)
+                    {
+                        if (panel != null)
+                        {
+                            var rightPanelX = panel.MaxCaliperMatch.ResultGraphics;
+                            var panelGraphicList = GetAlignGraphicPosition(rightPanelX, false);
+                            if (panelGraphicList.Count > 0)
+                                rightResultList.AddRange(panelGraphicList);
+                        }
+                    }
+                }
+            }
+
+            var rightAlignY = AlignResult.RightY;
+            if (rightAlignY != null)
+            {
+                if (rightAlignY.Fpc.CogAlignResult.Count > 0)
+                {
+                    if (rightAlignY.Fpc.CogAlignResult[0].MaxCaliperMatch != null)
+                    {
+                        var rightFpcY = rightAlignY.Fpc.CogAlignResult[0].MaxCaliperMatch.ResultGraphics;
+                        var fpcGraphicList = GetAlignGraphicPosition(rightFpcY, true);
+                        if (fpcGraphicList.Count > 0)
+                            rightResultList.AddRange(fpcGraphicList);
+                    }
+                }
+          
+                if (rightAlignY.Panel.CogAlignResult.Count > 0)
+                {
+                    if (rightAlignY.Panel.CogAlignResult[0].MaxCaliperMatch != null)
+                    {
+                        var rightPanelY = rightAlignY.Panel.CogAlignResult[0].MaxCaliperMatch.ResultGraphics;
+                        var panelGraphicList = GetAlignGraphicPosition(rightPanelY, true);
+                        if (panelGraphicList.Count > 0)
+                            rightResultList.AddRange(panelGraphicList);
+                    }
+                }
+            }
+
+            var fpcRightCenterLineList = GetFpcCenterLine(AlignResult.RightX);
+            foreach (var fpc in fpcRightCenterLineList)
+            {
+                AlignGraphicPosition position = new AlignGraphicPosition
+                {
+                    IsFpc = true,
+                    StartX = fpc.StartX,
+                    StartY = fpc.StartY,
+                    EndX = fpc.EndX,
+                    EndY = fpc.EndY,
+                };
+                rightResultList.Add(position);
+            }
+
+            var panelRightCenterLineList = GetPanelCenterLine(AlignResult.RightY);
+            foreach (var panel in panelRightCenterLineList)
+            {
+                AlignGraphicPosition position = new AlignGraphicPosition
+                {
+                    IsFpc = false,
+                    StartX = panel.StartX,
+                    StartY = panel.StartY,
+                    EndX = panel.EndX,
+                    EndY = panel.EndY,
+                };
+                rightResultList.Add(position);
+            }
+
+            return rightResultList;
+        }
+
+        private List<AlignGraphicPosition> GetAlignGraphicPosition(CogCompositeShape cogCompositeShape, bool isFpc)
+        {
+            List<AlignGraphicPosition> positionList = new List<AlignGraphicPosition>();
+            if (cogCompositeShape == null)
+                return positionList;
+
+            foreach (var item in cogCompositeShape.Shapes)
+            {
+                if (item is CogLineSegment lineSegment)
+                {
+                    AlignGraphicPosition alignGraphic = new AlignGraphicPosition
+                    {
+                        IsFpc = isFpc,
+                        StartX = lineSegment.StartX,
+                        StartY = lineSegment.StartY,
+                        EndX = lineSegment.EndX,
+                        EndY = lineSegment.EndY,
+                    };
+
+                    positionList.Add(alignGraphic);
+                }
+            }
+
+            return positionList;
         }
     }
 
@@ -365,6 +668,21 @@ namespace Jastech.Apps.Structure.Data
             result.Fpc = Fpc?.DeepCopy();
             return result;
         }
+        #endregion
+    }
+
+    public class AlignGraphicPosition
+    {
+        #region 속성
+        public bool IsFpc { get; set; } = false;
+
+        public double StartX { get; set; } = 0;
+
+        public double StartY { get; set; } = 0;
+
+        public double EndX { get; set; } = 0;
+
+        public double EndY { get; set; } = 0;
         #endregion
     }
 

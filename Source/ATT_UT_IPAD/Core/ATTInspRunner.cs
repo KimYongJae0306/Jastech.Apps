@@ -175,7 +175,6 @@ namespace ATT_UT_IPAD.Core
                 GetAkkonResultImage();
                 WriteLog("Make Akkon ResultImage.", true);
 
-                //StartSaveThread();        // 상위로.. 택 테스트
                 SystemManager.Instance().UpdateMainAkkonResult();
                 SystemManager.Instance().UpdateMainAlignResult();
 
@@ -1315,11 +1314,11 @@ namespace ATT_UT_IPAD.Core
         {
             try
             {
-                if (ConfigSet.Instance().Operation.VirtualMode)
-                {
-                    _saveThread = null;
-                    return;
-                }
+                //if (ConfigSet.Instance().Operation.VirtualMode)
+                //{
+                //    _saveThread = null;
+                //    return;
+                //}
 
                 var inspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
 
@@ -1416,11 +1415,13 @@ namespace ATT_UT_IPAD.Core
 
             if(isAkkonResult == false)
             {
+                Test(tabInspResult);
                 //if(tabInspResult.AlignResult.LeftX.Fpc.CogAlignResult[0].MaxCaliperMatch.ResultGraphics.Shapes[0] is CogLineSegment g)
                 //{
 
                 //}
-                //VisionProImageHelper.CropImage()
+                //tabInspResult.Image
+
             }
         }
 
@@ -1429,6 +1430,17 @@ namespace ATT_UT_IPAD.Core
             string alignResultDir = Path.Combine(resultPath, "AlignResult");
             if (Directory.Exists(alignResultDir) == false)
                 Directory.CreateDirectory(alignResultDir);
+        }
+
+        public void Test(TabInspResult tabInspResult)
+        {
+            if (tabInspResult == null)
+                return;
+            //new Mat()
+            //Mat leftMatImage = tabInspResult.Image
+            // tabInspResult.GetLeftAlignShapeList();
+
+
         }
 
         private void SaveAkkonDefectLeadImage(string resultPath, TabInspResult tabInspResult)
