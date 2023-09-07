@@ -137,7 +137,7 @@ namespace Jastech.Apps.Winform.UI.Forms
         #region 메서드
         private void ATTMaterialInfoForm_Load(object sender, EventArgs e)
         {
-            NewMaterialInfo = PrevMaterialInfo?.Clone();
+            NewMaterialInfo = PrevMaterialInfo?.ShallowCopy();
             if (NewMaterialInfo != null)
             {
                 // Data

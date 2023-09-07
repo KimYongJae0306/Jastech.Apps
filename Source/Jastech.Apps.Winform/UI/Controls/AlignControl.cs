@@ -61,7 +61,6 @@ namespace Jastech.Apps.Winform.UI.Controls
             
             UpdateSelectedAlignName(lblLeftFPCX);
             UpdateParam(ATTTabAlignName.LeftFPCX);
-            //UpdateParam(CurrentAlignName);
         }
 
         private void AddControl()
@@ -70,7 +69,13 @@ namespace Jastech.Apps.Winform.UI.Controls
             CogCaliperParamControl.Dock = DockStyle.Fill;
             CogCaliperParamControl.GetOriginImageHandler += AlignControl_GetOriginImageHandler;
             CogCaliperParamControl.TestActionEvent += AlignControl_TestActionEvent;
+            CogCaliperParamControl.CaliperParamChanged += CogCaliperParamControl_CaliperParamChanged;
             pnlCaliperParam.Controls.Add(CogCaliperParamControl);
+        }
+
+        private void CogCaliperParamControl_CaliperParamChanged(string component, string parameter, double oldValue, double newValue)
+        {
+            ParamTrackingLogger.AddChangeHistory($"Tab{CurrentTab.Name} {component}", parameter, oldValue, newValue);
         }
 
         private void AlignControl_TestActionEvent()
@@ -134,6 +139,8 @@ namespace Jastech.Apps.Winform.UI.Controls
             
             lblRightAlignSpecX.Text = CurrentTab.AlignSpec.RightSpecX_um.ToString();
             lblRightAlignSpecY.Text = CurrentTab.AlignSpec.RightSpecY_um.ToString();
+
+            lblCenterAlignSpecX.Text = CurrentTab.AlignSpec.CenterSpecX_um.ToString();
 
             DrawROI();
         }
@@ -459,34 +466,77 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         private void lblLeftAlignSpecX_Click(object sender, EventArgs e)
         {
-            float specX = KeyPadHelper.SetLabelFloatData((Label)sender);
+            if (sender is Label label)
+            {
+                float oldSpec = Convert.ToSingle(label.Text);
+                float newSpec = KeyPadHelper.SetLabelFloatData(label);
 
-            if (CurrentTab != null)
-                CurrentTab.AlignSpec.LeftSpecX_um = specX;
+                if (CurrentTab != null)
+                {
+                    CurrentTab.AlignSpec.LeftSpecX_um = newSpec;
+                    ParamTrackingLogger.AddChangeHistory($"Tab{CurrentTab.Name}", label.Name.Replace("lbl", ""), oldSpec, newSpec);
+                }
+            }
         }
 
         private void lblLeftAlignSpecY_Click(object sender, EventArgs e)
         {
-            float specY = KeyPadHelper.SetLabelFloatData((Label)sender);
+            if (sender is Label label)
+            {
+                float oldSpec = Convert.ToSingle(label.Text);
+                float newSpec = KeyPadHelper.SetLabelFloatData(label);
 
-            if (CurrentTab != null)
-                CurrentTab.AlignSpec.LeftSpecY_um = specY;
+                if (CurrentTab != null)
+                {
+                    CurrentTab.AlignSpec.LeftSpecY_um = newSpec;
+                    ParamTrackingLogger.AddChangeHistory($"Tab{CurrentTab.Name}", label.Name.Replace("lbl", ""), oldSpec, newSpec);
+                }
+            }
         }
 
         private void lblRightAlignSpecX_Click(object sender, EventArgs e)
         {
-            float specX = KeyPadHelper.SetLabelFloatData((Label)sender);
+            if (sender is Label label)
+            {
+                float oldSpec = Convert.ToSingle(label.Text);
+                float newSpec = KeyPadHelper.SetLabelFloatData(label);
 
-            if (CurrentTab != null)
-                CurrentTab.AlignSpec.RightSpecX_um = specX;
+                if (CurrentTab != null)
+                {
+                    CurrentTab.AlignSpec.RightSpecX_um = newSpec;
+                    ParamTrackingLogger.AddChangeHistory($"Tab{CurrentTab.Name}", label.Name.Replace("lbl", ""), oldSpec, newSpec);
+                }
+            }
         }
 
         private void lblRightAlignSpecY_Click(object sender, EventArgs e)
         {
-            float specY = KeyPadHelper.SetLabelFloatData((Label)sender);
+            if (sender is Label label)
+            {
+                float oldSpec = Convert.ToSingle(label.Text);
+                float newSpec = KeyPadHelper.SetLabelFloatData(label);
 
-            if (CurrentTab != null)
-                CurrentTab.AlignSpec.RightSpecY_um = specY;
+                if (CurrentTab != null)
+                {
+                    CurrentTab.AlignSpec.RightSpecY_um = newSpec;
+                    ParamTrackingLogger.AddChangeHistory($"Tab{CurrentTab.Name}", label.Name.Replace("lbl", ""), oldSpec, newSpec);
+                }
+            }
+        }
+
+        private void lblCenterAlignSpecX_Click(object sender, EventArgs e)
+        {
+            if (sender is Label label)
+            {
+                float oldSpec = Convert.ToSingle(label.Text);
+                float newSpec = KeyPadHelper.SetLabelFloatData(label);
+
+                if (CurrentTab != null)
+                {
+                    CurrentTab.AlignSpec.CenterSpecX_um = newSpec;
+                    ParamTrackingLogger.AddChangeHistory($"Tab{CurrentTab.Name}", label.Name.Replace("lbl", ""), oldSpec, newSpec);
+                }
+            }
         }
 
         public void UpdateData(TabInspResult inspResult)

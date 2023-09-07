@@ -376,7 +376,8 @@ namespace Jastech.Framework.Winform.Forms
 
         private void SaveModelData(AppsInspModel model)
         {
-            AkkonControl.SaveAkkonParam();
+            if (_displayType == DisplayType.Akkon)
+                AkkonControl.SaveAkkonParam();
             model.SetUnitList(TeachingData.Instance().UnitList);
 
             string fileName = Path.Combine(ConfigSet.Instance().Path.Model, model.Name, InspModel.FileName);
@@ -385,6 +386,7 @@ namespace Jastech.Framework.Winform.Forms
 
         private void btnCancel_Click(object sender, EventArgs e)
         {
+            ParamTrackingLogger.ClearChangedLog();
             this.Close();
         }
 
