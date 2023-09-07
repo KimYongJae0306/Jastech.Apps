@@ -52,6 +52,7 @@ namespace Jastech.Apps.Winform.UI.Controls
         {
             ChartControl = new ResultChartControl();
             ChartControl.Dock = DockStyle.Fill;
+            ChartControl.IsDailyInfo = false;
             ChartControl.ChartType = ResultChartControl.InspChartType.Align;
             pnlChart.Controls.Add(ChartControl);
             _alignTypeLabelList.AddRange(new Label[] { lblAllData, lblLx, lblLy, lblCx, lblRx, lblRy });

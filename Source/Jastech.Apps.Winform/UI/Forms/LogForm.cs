@@ -97,7 +97,7 @@ namespace Jastech.Framework.Winform.Forms
             _nonSelectedColor = Color.FromArgb(52, 52, 52);
 
             SetPageType(PageType.Log);
-            cdrMonthCalendar.SelectionRange = new SelectionRange { Start = DateTime.Now.AddDays(-cdrMonthCalendar.MaxSelectionCount), End = DateTime.Now };
+            cdrMonthCalendar.SelectionRange = new SelectionRange { Start = DateTime.Now.AddDays((cdrMonthCalendar.MaxSelectionCount - 1)*-1), End = DateTime.Now.AddDays(1) };
         }
 
         private void SetPageType(PageType pageType)

@@ -1,16 +1,23 @@
 ﻿using Jastech.Apps.Structure.Data;
-using Jastech.Framework.Config;
 using Jastech.Framework.Util.Helper;
-using Jastech.Framework.Winform.Forms;
 using Jastech.Framework.Winform.Helper;
 using System;
+using System.Collections.Generic;
 using System.Windows.Forms;
 
 namespace Jastech.Apps.Winform.UI.Forms
 {
     public partial class ATTMaterialInfoForm : Form
     {
+        #region 필드
+        private readonly Dictionary<string, List<TextBox>> _textBoxes = new Dictionary<string, List<TextBox>>();
+
+        private readonly Dictionary<string, List<TableLayoutPanel>> _layoutPanels = new Dictionary<string, List<TableLayoutPanel>>();
+        #endregion
+
         #region 속성
+        public int TabCount { private get; set; } = 1;
+
         public MaterialInfo PrevMaterialInfo { get; set; } = null;
 
         public MaterialInfo NewMaterialInfo { get; set; } = null;
@@ -20,6 +27,110 @@ namespace Jastech.Apps.Winform.UI.Forms
         public ATTMaterialInfoForm()
         {
             InitializeComponent();
+
+            _textBoxes["TabWidth"] = new List<TextBox>
+            {
+                txtTab1Width,
+                txtTab2Width,
+                txtTab3Width,
+                txtTab4Width,
+                txtTab5Width,
+                txtTab6Width,
+                txtTab7Width,
+                txtTab8Width,
+                txtTab9Width,
+                txtTab10Width,
+            };
+            _textBoxes["Distance"] = new List<TextBox>
+            {
+                txtDistance1,
+                txtDistance2,
+                txtDistance3,
+                txtDistance4,
+                txtDistance5,
+                txtDistance6,
+                txtDistance7,
+                txtDistance8,
+                txtDistance9,
+            };
+            _textBoxes["LeftOffset"] = new List<TextBox>
+            {
+                txtLeftOffset1,
+                txtLeftOffset2,
+                txtLeftOffset3,
+                txtLeftOffset4,
+                txtLeftOffset5,
+                txtLeftOffset6,
+                txtLeftOffset7,
+                txtLeftOffset8,
+                txtLeftOffset9,
+                txtLeftOffset10,
+            };
+            _textBoxes["RightOffset"] = new List<TextBox>
+            {
+                txtRightOffset1,
+                txtRightOffset2,
+                txtRightOffset3,
+                txtRightOffset4,
+                txtRightOffset5,
+                txtRightOffset6,
+                txtRightOffset7,
+                txtRightOffset8,
+                txtRightOffset9,
+                txtRightOffset10,
+            };
+
+            _layoutPanels["TabWidth"] = new List<TableLayoutPanel>
+            { 
+                tlpTabWidth1,
+                tlpTabWidth2,
+                tlpTabWidth3,
+                tlpTabWidth4,
+                tlpTabWidth5,
+                tlpTabWidth6,
+                tlpTabWidth7,
+                tlpTabWidth8,
+                tlpTabWidth9,
+                tlpTabWidth10,
+            };
+            _layoutPanels["Distance"] = new List<TableLayoutPanel>
+            { 
+                tlpTab1ToTab2,
+                tlpTab2ToTab3,
+                tlpTab3ToTab4,
+                tlpTab4ToTab5,
+                tlpTab5ToTab6,
+                tlpTab6ToTab7,
+                tlpTab7ToTab8,
+                tlpTab8ToTab9,
+                tlpTab9ToTab10,
+            };
+            _layoutPanels["LeftOffset"] = new List<TableLayoutPanel>
+            { 
+                tlpLeftOffset1,
+                tlpLeftOffset2,
+                tlpLeftOffset3,
+                tlpLeftOffset4,
+                tlpLeftOffset5,
+                tlpLeftOffset6,
+                tlpLeftOffset7,
+                tlpLeftOffset8,
+                tlpLeftOffset9,
+                tlpLeftOffset10,
+            };
+            _layoutPanels["RightOffset"] = new List<TableLayoutPanel>
+            {
+                tlpRightOffset1,
+                tlpRightOffset2,
+                tlpRightOffset3,
+                tlpRightOffset4,
+                tlpRightOffset5,
+                tlpRightOffset6,
+                tlpRightOffset7,
+                tlpRightOffset8,
+                tlpRightOffset9,
+                tlpRightOffset10,
+            };
         }
         #endregion
 
@@ -35,51 +146,52 @@ namespace Jastech.Apps.Winform.UI.Forms
                 txtPanelEdgeToFirst.DataBindings.Add("Text", NewMaterialInfo, "PanelEdgeToFirst_mm", true, DataSourceUpdateMode.OnPropertyChanged, "0");
 
                 // Tab Width
-                txtTab1Width.DataBindings.Add("Text", NewMaterialInfo.TabWidth_mm, "Tab0", true, DataSourceUpdateMode.OnPropertyChanged, "0");
-                txtTab2Width.DataBindings.Add("Text", NewMaterialInfo.TabWidth_mm, "Tab1", true, DataSourceUpdateMode.OnPropertyChanged, "0");
-                txtTab3Width.DataBindings.Add("Text", NewMaterialInfo.TabWidth_mm, "Tab2", true, DataSourceUpdateMode.OnPropertyChanged, "0");
-                txtTab4Width.DataBindings.Add("Text", NewMaterialInfo.TabWidth_mm, "Tab3", true, DataSourceUpdateMode.OnPropertyChanged, "0");
-                txtTab5Width.DataBindings.Add("Text", NewMaterialInfo.TabWidth_mm, "Tab4", true, DataSourceUpdateMode.OnPropertyChanged, "0");
-                txtTab6Width.DataBindings.Add("Text", NewMaterialInfo.TabWidth_mm, "Tab5", true, DataSourceUpdateMode.OnPropertyChanged, "0");
-                txtTab7Width.DataBindings.Add("Text", NewMaterialInfo.TabWidth_mm, "Tab6", true, DataSourceUpdateMode.OnPropertyChanged, "0");
-                txtTab8Width.DataBindings.Add("Text", NewMaterialInfo.TabWidth_mm, "Tab7", true, DataSourceUpdateMode.OnPropertyChanged, "0");
-                txtTab9Width.DataBindings.Add("Text", NewMaterialInfo.TabWidth_mm, "Tab8", true, DataSourceUpdateMode.OnPropertyChanged, "0");
-                txtTab10Width.DataBindings.Add("Text", NewMaterialInfo.TabWidth_mm, "Tab9", true, DataSourceUpdateMode.OnPropertyChanged, "0");
+                for (int index = 0; index < _layoutPanels["TabWidth"].Count; index++)
+                {
+                    if (index < TabCount)
+                    {
+                        var binding = new Binding("Text", NewMaterialInfo.TabWidth_mm, $"Tab{index}", true, DataSourceUpdateMode.OnPropertyChanged, "0");
+                        _textBoxes["TabWidth"][index].DataBindings.Add(binding);
+                    }
+                    else
+                        _layoutPanels["TabWidth"][index].Visible = false;
+                }
 
                 // Tab To Tab Distance
-                txtDistance1.DataBindings.Add("Text", NewMaterialInfo.TabToTabDistance_mm, "Tab0ToTab1", true, DataSourceUpdateMode.OnPropertyChanged, "0");
-                txtDistance2.DataBindings.Add("Text", NewMaterialInfo.TabToTabDistance_mm, "Tab1ToTab2", true, DataSourceUpdateMode.OnPropertyChanged, "0");
-                txtDistance3.DataBindings.Add("Text", NewMaterialInfo.TabToTabDistance_mm, "Tab2ToTab3", true, DataSourceUpdateMode.OnPropertyChanged, "0");
-                txtDistance4.DataBindings.Add("Text", NewMaterialInfo.TabToTabDistance_mm, "Tab3ToTab4", true, DataSourceUpdateMode.OnPropertyChanged, "0");
-                txtDistance5.DataBindings.Add("Text", NewMaterialInfo.TabToTabDistance_mm, "Tab4ToTab5", true, DataSourceUpdateMode.OnPropertyChanged, "0");
-                txtDistance6.DataBindings.Add("Text", NewMaterialInfo.TabToTabDistance_mm, "Tab5ToTab6", true, DataSourceUpdateMode.OnPropertyChanged, "0");
-                txtDistance7.DataBindings.Add("Text", NewMaterialInfo.TabToTabDistance_mm, "Tab6ToTab7", true, DataSourceUpdateMode.OnPropertyChanged, "0");
-                txtDistance8.DataBindings.Add("Text", NewMaterialInfo.TabToTabDistance_mm, "Tab7ToTab8", true, DataSourceUpdateMode.OnPropertyChanged, "0");
-                txtDistance9.DataBindings.Add("Text", NewMaterialInfo.TabToTabDistance_mm, "Tab8ToTab9", true, DataSourceUpdateMode.OnPropertyChanged, "0");
+                for (int index = 0; index < _layoutPanels["Distance"].Count; index++)
+                {
+                    if (index + 1 < TabCount)
+                    {
+                        var binding = new Binding("Text", NewMaterialInfo.TabToTabDistance_mm, $"Tab{index}ToTab{index + 1}", true, DataSourceUpdateMode.OnPropertyChanged, "0");
+                        _textBoxes["Distance"][index].DataBindings.Add(binding);
+                    }
+                    else
+                        _layoutPanels["Distance"][index].Visible = false;
+                }
 
                 // Left Offset
-                txtLeftOffset1.DataBindings.Add("Text", NewMaterialInfo.LeftOffset, "Tab0", true, DataSourceUpdateMode.OnPropertyChanged, "0");
-                txtLeftOffset2.DataBindings.Add("Text", NewMaterialInfo.LeftOffset, "Tab1", true, DataSourceUpdateMode.OnPropertyChanged, "0");
-                txtLeftOffset3.DataBindings.Add("Text", NewMaterialInfo.LeftOffset, "Tab2", true, DataSourceUpdateMode.OnPropertyChanged, "0");
-                txtLeftOffset4.DataBindings.Add("Text", NewMaterialInfo.LeftOffset, "Tab3", true, DataSourceUpdateMode.OnPropertyChanged, "0");
-                txtLeftOffset5.DataBindings.Add("Text", NewMaterialInfo.LeftOffset, "Tab4", true, DataSourceUpdateMode.OnPropertyChanged, "0");
-                txtLeftOffset6.DataBindings.Add("Text", NewMaterialInfo.LeftOffset, "Tab5", true, DataSourceUpdateMode.OnPropertyChanged, "0");
-                txtLeftOffset7.DataBindings.Add("Text", NewMaterialInfo.LeftOffset, "Tab6", true, DataSourceUpdateMode.OnPropertyChanged, "0");
-                txtLeftOffset8.DataBindings.Add("Text", NewMaterialInfo.LeftOffset, "Tab7", true, DataSourceUpdateMode.OnPropertyChanged, "0");
-                txtLeftOffset9.DataBindings.Add("Text", NewMaterialInfo.LeftOffset, "Tab8", true, DataSourceUpdateMode.OnPropertyChanged, "0");
-                txtLeftOffset10.DataBindings.Add("Text", NewMaterialInfo.LeftOffset, "Tab9", true, DataSourceUpdateMode.OnPropertyChanged, "0");
+                for (int index = 0; index < _layoutPanels["LeftOffset"].Count; index++)
+                {
+                    if (index < TabCount)
+                    {
+                        var binding = new Binding("Text", NewMaterialInfo.LeftOffset, $"Tab{index}", true, DataSourceUpdateMode.OnPropertyChanged, "0");
+                        _textBoxes["LeftOffset"][index].DataBindings.Add(binding);
+                    }
+                    else
+                        _layoutPanels["LeftOffset"][index].Visible = false;
+                }
 
                 // Right Offset
-                txtRightOffset1.DataBindings.Add("Text", NewMaterialInfo.RightOffset, "Tab0", true, DataSourceUpdateMode.OnPropertyChanged, "0");
-                txtRightOffset2.DataBindings.Add("Text", NewMaterialInfo.RightOffset, "Tab1", true, DataSourceUpdateMode.OnPropertyChanged, "0");
-                txtRightOffset3.DataBindings.Add("Text", NewMaterialInfo.RightOffset, "Tab2", true, DataSourceUpdateMode.OnPropertyChanged, "0");
-                txtRightOffset4.DataBindings.Add("Text", NewMaterialInfo.RightOffset, "Tab3", true, DataSourceUpdateMode.OnPropertyChanged, "0");
-                txtRightOffset5.DataBindings.Add("Text", NewMaterialInfo.RightOffset, "Tab4", true, DataSourceUpdateMode.OnPropertyChanged, "0");
-                txtRightOffset6.DataBindings.Add("Text", NewMaterialInfo.RightOffset, "Tab5", true, DataSourceUpdateMode.OnPropertyChanged, "0");
-                txtRightOffset7.DataBindings.Add("Text", NewMaterialInfo.RightOffset, "Tab6", true, DataSourceUpdateMode.OnPropertyChanged, "0");
-                txtRightOffset8.DataBindings.Add("Text", NewMaterialInfo.RightOffset, "Tab7", true, DataSourceUpdateMode.OnPropertyChanged, "0");
-                txtRightOffset9.DataBindings.Add("Text", NewMaterialInfo.RightOffset, "Tab8", true, DataSourceUpdateMode.OnPropertyChanged, "0");
-                txtRightOffset10.DataBindings.Add("Text", NewMaterialInfo.RightOffset, "Tab9", true, DataSourceUpdateMode.OnPropertyChanged, "0");
+                for (int index = 0; index < _layoutPanels["RightOffset"].Count; index++)
+                {
+                    if (index < TabCount)
+                    {
+                        var binding = new Binding("Text", NewMaterialInfo.RightOffset, $"Tab{index}", true, DataSourceUpdateMode.OnPropertyChanged, "0");
+                        _textBoxes["RightOffset"][index].DataBindings.Add(binding);
+                    }
+                    else
+                        _layoutPanels["RightOffset"][index].Visible = false;
+                }
             }
         }
 
@@ -110,11 +222,6 @@ namespace Jastech.Apps.Winform.UI.Forms
             NewMaterialInfo = PrevMaterialInfo;
             DialogResult = DialogResult.Cancel;
             Close();
-        }
-
-        private void txtKeyPad_Leave(object sender, EventArgs e)
-        {
-            return;
         }
         #endregion
     }

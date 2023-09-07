@@ -29,6 +29,8 @@ namespace Jastech.Apps.Winform.UI.Controls
         #region 속성
         public InspChartType ChartType { get; set; } = InspChartType.Akkon;
 
+        public bool IsDailyInfo { get; set; } = true;
+
         public Series AkkonSeriesCount { get; private set; } = null;
 
         public Series AkkonSeriesLength { get; private set; } = null;
@@ -210,13 +212,13 @@ namespace Jastech.Apps.Winform.UI.Controls
                         AlignSeriesLy.Points.Add(ly1);
 
                     if (double.TryParse(tabData.RX, out double rx1))
-                        AlignSeriesLy.Points.Add(rx1);
+                        AlignSeriesCx.Points.Add(rx1);
 
                     if (double.TryParse(tabData.RY, out double ry1))
-                        AlignSeriesLy.Points.Add(ry1);
+                        AlignSeriesRy.Points.Add(ry1);
 
                     if (double.TryParse(tabData.CX, out double cx1))
-                        AlignSeriesLy.Points.Add(cx1);
+                        AlignSeriesRx.Points.Add(cx1);
                     break;
 
                 case AlignResultType.Lx:
@@ -231,17 +233,17 @@ namespace Jastech.Apps.Winform.UI.Controls
 
                 case AlignResultType.Cx:
                     if (double.TryParse(tabData.CX, out double cx2))
-                        AlignSeriesLy.Points.Add(cx2);
+                        AlignSeriesCx.Points.Add(cx2);
                     break;
 
                 case AlignResultType.Rx:
                     if (double.TryParse(tabData.RX, out double rx2))
-                        AlignSeriesLy.Points.Add(rx2);
+                        AlignSeriesRx.Points.Add(rx2);
                     break;
 
                 case AlignResultType.Ry:
                     if (double.TryParse(tabData.RY, out double ry2))
-                        AlignSeriesLy.Points.Add(ry2);
+                        AlignSeriesRy.Points.Add(ry2);
                     break;
 
                 default:
@@ -381,6 +383,8 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         private void chtData_MouseDown(object sender, MouseEventArgs e)
         {
+            if (IsDailyInfo == false)
+                return;
             if (ChartType == InspChartType.Akkon)
                 return;
 

@@ -2,6 +2,7 @@
 using Jastech.Framework.Config;
 using Jastech.Framework.Imaging;
 using Jastech.Framework.Util.Helper;
+using Jastech.Framework.Winform.Helper;
 using MetroFramework.Controls;
 using System;
 using System.Windows.Forms;
@@ -62,6 +63,7 @@ namespace Jastech.Framework.Winform.Forms
             mtgEnableAkkon.Checked = appsConfig.EnableAkkon;
             mtgEnableTest1.Checked = appsConfig.EnableTest1;
             mtgEnableTest2.Checked = appsConfig.EnableTest2;
+            mtgLogAkkonLead.Checked = appsConfig.EnableAkkonLeadResultLog;
 
             txtDataStoringDays.Text = operation.DataStoringDuration.ToString();
             txtDataStoringCapacity.Text = operation.DataStoringCapacity.ToString();
@@ -102,6 +104,7 @@ namespace Jastech.Framework.Winform.Forms
             appsConfig.EnableAkkon = mtgEnableAkkon.Checked;
             appsConfig.EnableTest1 = mtgEnableTest1.Checked;
             appsConfig.EnableTest2 = mtgEnableTest2.Checked;
+            appsConfig.EnableAkkonLeadResultLog = mtgLogAkkonLead.Checked;
 
             operation.DataStoringDuration = (int)Convert.ToDouble(GetValue(txtDataStoringDays.Text));
             operation.DataStoringCapacity = (int)Convert.ToDouble(GetValue(txtDataStoringCapacity.Text));
@@ -186,18 +189,15 @@ namespace Jastech.Framework.Winform.Forms
 
         private void textbox_KeyPad_Click(object sender, EventArgs e)
         {
-            if (OperationConfig.UseKeyboard)
+            if (sender is TextBox textBox)
             {
-                var textBox = (TextBox)sender;
-
                 if (textBox.Text == "")
                     textBox.Text = "0";
 
-                KeyPadForm keyPadForm = new KeyPadForm();
-                keyPadForm.PreviousValue = Convert.ToDouble(textBox.Text);
-                keyPadForm.ShowDialog();
+                double oldValue = Convert.ToDouble(textBox.Text);
+                double newValue = KeyPadHelper.SetLabelDoubleData(textBox);
 
-                textBox.Text = keyPadForm.PadValue.ToString();
+                ParamTrackingLogger.AddChangeHistory("Operation Setting", textBox.Name.Replace("txt", ""), oldValue, newValue);
             }
         }
 

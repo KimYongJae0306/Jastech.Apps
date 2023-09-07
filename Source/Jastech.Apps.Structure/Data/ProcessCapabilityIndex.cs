@@ -44,11 +44,11 @@ namespace Jastech.Apps.Structure.Data
             double lowerCandidatePpk = (mean - performanceLSL) / (sampleStdDev * 3);
             result.Ppk = Math.Min(upperCandidatePpk, lowerCandidatePpk);
 
-            // Round the results
-            result.Cp = Math.Round(result.Cp, 3);
-            result.Cpk = Math.Round(result.Cpk, 3);
-            result.Pp = Math.Round(result.Pp, 3);
-            result.Ppk = Math.Round(result.Ppk, 3);
+            // Round the results and Get absolute value
+            result.Cp = Math.Abs(Math.Round(result.Cp, 3));
+            result.Cpk = Math.Abs(Math.Round(result.Cpk, 3));
+            result.Pp = Math.Abs(Math.Round(result.Pp, 3));
+            result.Ppk = Math.Abs(Math.Round(result.Ppk, 3));
 
             return result;
         }

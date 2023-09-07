@@ -365,6 +365,12 @@ namespace Jastech.Framework.Winform.Forms
                 MessageConfirmForm confirmForm = new MessageConfirmForm();
                 confirmForm.Message = "Save Model Completed.";
                 confirmForm.ShowDialog();
+
+                if (ParamTrackingLogger.IsEmpty == false)
+                {
+                    ParamTrackingLogger.AddLog($"{_displayType} Teaching Saved.");
+                    ParamTrackingLogger.WriteLogToFile();
+                }
             }
         }
 

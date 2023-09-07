@@ -708,10 +708,10 @@ namespace ATT_UT_IPAD.Core
                 alignInfo.Judgement = tabInspResult.AlignResult.Judgement;
                 alignInfo.PreHead = tabInspResult.AlignResult.PreHead;
                 alignInfo.FinalHead = AppsInspResult.Instance().FinalHead;
-                alignInfo.LX = GetResultAlignResultValue(tabInspResult.AlignResult.LeftX);
-                alignInfo.LY = GetResultAlignResultValue(tabInspResult.AlignResult.LeftY);
-                alignInfo.RX = GetResultAlignResultValue(tabInspResult.AlignResult.RightX);
-                alignInfo.RY = GetResultAlignResultValue(tabInspResult.AlignResult.RightY);
+                alignInfo.LX = GetResultAlignResultValue(tabInspResult.AlignResult.LeftX, 2);
+                alignInfo.LY = GetResultAlignResultValue(tabInspResult.AlignResult.LeftY, 2);
+                alignInfo.RX = GetResultAlignResultValue(tabInspResult.AlignResult.RightX, 2);
+                alignInfo.RY = GetResultAlignResultValue(tabInspResult.AlignResult.RightY, 2);
 
                 if (double.TryParse(alignInfo.LX, out double lx) && double.TryParse(alignInfo.RX, out double rx))
                     alignInfo.CX = ((lx + rx) / 2.0F).ToString();
@@ -722,7 +722,7 @@ namespace ATT_UT_IPAD.Core
             }
         }
 
-        private string GetResultAlignResultValue(AlignResult alignResult)
+        private string GetResultAlignResultValue(AlignResult alignResult, int decimalPlaces)
         {
             if (alignResult == null)
                 return "-";
@@ -731,7 +731,7 @@ namespace ATT_UT_IPAD.Core
                 return "-";
 
             double resolution = AlignCamera.Camera.PixelResolution_um / AlignCamera.Camera.LensScale;
-            double value = MathHelper.GetFloorDecimal(alignResult.ResultValue_pixel * (float)resolution, 2);
+            double value = MathHelper.GetFloorDecimal(alignResult.ResultValue_pixel * (float)resolution, decimalPlaces);
             return value.ToString("F2");
         }
 
@@ -831,20 +831,25 @@ namespace ATT_UT_IPAD.Core
                 var tabInspResult = AppsInspResult.Instance().GetAlign(tabNo);
                 var alignResult = tabInspResult.AlignResult;
 
-                float lx = CheckAlignResultValue(alignResult.LeftX);
-                float rx = CheckAlignResultValue(alignResult.RightX);
-                float cx = (lx + rx) / 2.0F;
-                float ly = CheckAlignResultValue(alignResult.LeftY);
-                float ry = CheckAlignResultValue(alignResult.RightY);
+                string lx = GetResultAlignResultValue(alignResult.LeftX, 3);
+                string rx = GetResultAlignResultValue(alignResult.RightX, 3);
+                string ly = GetResultAlignResultValue(alignResult.LeftY, 3);
+                string ry = GetResultAlignResultValue(alignResult.RightY, 3);
+                string cx;
+
+                if (double.TryParse(lx, out double lx1) && double.TryParse(rx, out double rx1))
+                    cx = ((lx1 + rx1) / 2.0F).ToString();
+                else
+                    cx = "-";
 
                 body.Add($"{tabInspResult.TabNo + 1}");                                     // Tab No
                 body.Add($"{alignResult.Judgement}");                                       // Judge
                 body.Add($"{alignResult.PreHead}");                                         // Pre Head
-                body.Add($"{cx:F3}");                                                       // Align Cx
-                body.Add($"{lx:F3}");                                                       // Align Lx
-                body.Add($"{rx:F3}");                                                       // Align Rx
-                body.Add($"{ly:F3}");                                                       // Align Ly
-                body.Add($"{ry:F3}");                                                       // Align Ry
+                body.Add($"{cx}");                                                       // Align Cx
+                body.Add($"{lx}");                                                       // Align Lx
+                body.Add($"{rx}");                                                       // Align Rx
+                body.Add($"{ly}");                                                       // Align Ly
+                body.Add($"{ry}");                                                       // Align Ry
             }
 
             CSVHelper.WriteData(csvFile, body);
@@ -1331,7 +1336,8 @@ namespace ATT_UT_IPAD.Core
 
                     string month = currentTime.ToString("MM");
                     string day = currentTime.ToString("dd");
-                    string folderPath = AppsInspResult.Instance().Cell_ID;
+                    string timeStamp = currentTime.ToString("yyyyMMdd_HHmmss");
+                    string folderPath = AppsInspResult.Instance().Cell_ID + "_" + timeStamp;
 
                     string path = Path.Combine(ConfigSet.Instance().Path.Result, inspModel.Name, month, day, folderPath);
 

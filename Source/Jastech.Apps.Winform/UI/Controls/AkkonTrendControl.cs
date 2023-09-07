@@ -54,6 +54,7 @@ namespace Jastech.Apps.Winform.UI.Controls
         {
             ChartControl = new ResultChartControl();
             ChartControl.Dock = DockStyle.Fill;
+            ChartControl.IsDailyInfo = false;
             ChartControl.ChartType = ResultChartControl.InspChartType.Akkon;
             pnlChart.Controls.Add(ChartControl);
         }

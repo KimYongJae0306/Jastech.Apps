@@ -67,6 +67,7 @@ namespace Jastech.Apps.Winform.UI.Controls
         {
             ChartControl = new ResultChartControl();
             ChartControl.Dock = DockStyle.Fill;
+            ChartControl.IsDailyInfo = false;
             ChartControl.ChartType = ResultChartControl.InspChartType.Align;
             pnlChart.Controls.Add(ChartControl);
             _alignTypeLabelList.AddRange(new Label[] { lblAllData, lblLx, lblLy, lblCx, lblRx, lblRy });
@@ -184,7 +185,16 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         private void lblRy_Click(object sender, EventArgs e) => SetAlignResultType(AlignResultType.Ry);
 
-        private void lblSpecLimit_Click(object sender, EventArgs e) => KeyPadHelper.SetLabelDoubleData((Label)sender);
+        private void lblSpecLimit_Click(object sender, EventArgs e)
+        {
+            if (sender is Label label)
+            {
+                double oldSpec = Convert.ToDouble(label.Text);
+                double newSpec = KeyPadHelper.SetLabelDoubleData(label);
+
+                ParamTrackingLogger.AddChangeHistory("6Sigma", label.Text, oldSpec, newSpec);
+            }
+        }
 
         public void SetAlignResultType(AlignResultType alignResultType)
         {
@@ -218,9 +228,9 @@ namespace Jastech.Apps.Winform.UI.Controls
             _processCapabilityIndex.CapabilityUSL = config.CapabilityUSL;
             _processCapabilityIndex.CapabilityLSL = config.CapabilityLSL;
             _processCapabilityIndex.PerformanceUSL_Center = config.PerformanceUSL_Center;
-            _processCapabilityIndex.PerformanceLSL_Center = config.PerformanceUSL_Center;
+            _processCapabilityIndex.PerformanceLSL_Center = config.PerformanceLSL_Center;
             _processCapabilityIndex.PerformanceUSL_Side = config.PerformanceUSL_Side;
-            _processCapabilityIndex.PerformanceUSL_Side = config.PerformanceUSL_Side;
+            _processCapabilityIndex.PerformanceLSL_Side = config.PerformanceLSL_Side;
 
             listCapabilityResults.Add(_processCapabilityIndex.GetResult($"{AlignResultType.Lx}", lxData));
             listCapabilityResults.Add(_processCapabilityIndex.GetResult($"{AlignResultType.Ly}", lyData));
