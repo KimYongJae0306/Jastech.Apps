@@ -31,7 +31,6 @@
             this.tlpAlign = new System.Windows.Forms.TableLayoutPanel();
             this.lblParameter = new System.Windows.Forms.Label();
             this.pnlPosition = new System.Windows.Forms.Panel();
-            this.lblNewTest = new System.Windows.Forms.Label();
             this.label10 = new System.Windows.Forms.Label();
             this.lblOffsetY = new System.Windows.Forms.Label();
             this.lblTest = new System.Windows.Forms.Label();
@@ -82,6 +81,9 @@
             this.lblLeftAlignSpecX = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
+            this.lblNewTest = new System.Windows.Forms.Label();
+            this.lblOffset = new System.Windows.Forms.Label();
+            this.lblPanelToFpcOffset = new System.Windows.Forms.Label();
             this.tlpAlign.SuspendLayout();
             this.pnlPosition.SuspendLayout();
             this.tlpParams.SuspendLayout();
@@ -346,7 +348,7 @@
             this.tlpParams.Margin = new System.Windows.Forms.Padding(0);
             this.tlpParams.Name = "tlpParams";
             this.tlpParams.RowCount = 2;
-            this.tlpParams.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 60F));
+            this.tlpParams.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 115F));
             this.tlpParams.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tlpParams.Size = new System.Drawing.Size(893, 250);
             this.tlpParams.TabIndex = 25;
@@ -354,15 +356,17 @@
             // pnlCaliperParam
             // 
             this.pnlCaliperParam.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pnlCaliperParam.Location = new System.Drawing.Point(0, 60);
+            this.pnlCaliperParam.Location = new System.Drawing.Point(0, 115);
             this.pnlCaliperParam.Margin = new System.Windows.Forms.Padding(0);
             this.pnlCaliperParam.Name = "pnlCaliperParam";
             this.pnlCaliperParam.Padding = new System.Windows.Forms.Padding(4);
-            this.pnlCaliperParam.Size = new System.Drawing.Size(893, 190);
+            this.pnlCaliperParam.Size = new System.Drawing.Size(893, 135);
             this.pnlCaliperParam.TabIndex = 15;
             // 
             // pnlLeadParam
             // 
+            this.pnlLeadParam.Controls.Add(this.lblPanelToFpcOffset);
+            this.pnlLeadParam.Controls.Add(this.lblOffset);
             this.pnlLeadParam.Controls.Add(this.lblApply);
             this.pnlLeadParam.Controls.Add(this.lblLeadCount);
             this.pnlLeadParam.Controls.Add(this.lblLead);
@@ -370,7 +374,7 @@
             this.pnlLeadParam.Location = new System.Drawing.Point(0, 0);
             this.pnlLeadParam.Margin = new System.Windows.Forms.Padding(0);
             this.pnlLeadParam.Name = "pnlLeadParam";
-            this.pnlLeadParam.Size = new System.Drawing.Size(893, 60);
+            this.pnlLeadParam.Size = new System.Drawing.Size(893, 115);
             this.pnlLeadParam.TabIndex = 16;
             // 
             // lblApply
@@ -782,6 +786,41 @@
             this.label1.Text = "Left Align SpecX(um)";
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
+            // lblNewTest
+            // 
+            this.lblNewTest.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblNewTest.Location = new System.Drawing.Point(754, 12);
+            this.lblNewTest.Margin = new System.Windows.Forms.Padding(0);
+            this.lblNewTest.Name = "lblNewTest";
+            this.lblNewTest.Size = new System.Drawing.Size(100, 40);
+            this.lblNewTest.TabIndex = 6;
+            this.lblNewTest.Text = "New Test";
+            this.lblNewTest.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblNewTest.Click += new System.EventHandler(this.lblNewTest_Click);
+            // 
+            // lblOffset
+            // 
+            this.lblOffset.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblOffset.Location = new System.Drawing.Point(5, 62);
+            this.lblOffset.Margin = new System.Windows.Forms.Padding(0);
+            this.lblOffset.Name = "lblOffset";
+            this.lblOffset.Size = new System.Drawing.Size(200, 40);
+            this.lblOffset.TabIndex = 4;
+            this.lblOffset.Text = "Panel To FPC Offset";
+            this.lblOffset.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // lblPanelToFpcOffset
+            // 
+            this.lblPanelToFpcOffset.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblPanelToFpcOffset.Location = new System.Drawing.Point(217, 62);
+            this.lblPanelToFpcOffset.Margin = new System.Windows.Forms.Padding(0);
+            this.lblPanelToFpcOffset.Name = "lblPanelToFpcOffset";
+            this.lblPanelToFpcOffset.Size = new System.Drawing.Size(209, 40);
+            this.lblPanelToFpcOffset.TabIndex = 5;
+            this.lblPanelToFpcOffset.Text = "0";
+            this.lblPanelToFpcOffset.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblPanelToFpcOffset.Click += new System.EventHandler(this.lblPanelToFpcOffset_Click);
+            // 
             // AlignControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
@@ -801,7 +840,6 @@
             this.panel1.ResumeLayout(false);
             this.tableLayoutPanel6.ResumeLayout(false);
             this.ResumeLayout(false);
-
         }
 
         #endregion
@@ -860,5 +898,7 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label lblCenterAlignSpecX;
         private System.Windows.Forms.Label lblNewTest;
+        private System.Windows.Forms.Label lblPanelToFpcOffset;
+        private System.Windows.Forms.Label lblOffset;
     }
 }

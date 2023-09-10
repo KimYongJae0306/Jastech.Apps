@@ -543,14 +543,16 @@ namespace ATT_UT_IPAD.Core.AppTask
             AppsInspModel inspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
 
             DateTime currentTime = AppsInspResult.Instance().StartInspTime;
-
+            string timeStamp = currentTime.ToString("yyyyMMddHHmmss");
             string month = currentTime.ToString("MM");
             string day = currentTime.ToString("dd");
-            string cellId = AppsInspResult.Instance().Cell_ID;
+            string folderPath = AppsInspResult.Instance().Cell_ID + "_" + timeStamp;
 
-            string path = Path.Combine(ConfigSet.Instance().Path.Result, inspModel.Name, month, day, cellId, "Akkon");
+            string path = Path.Combine(ConfigSet.Instance().Path.Result, inspModel.Name, month, day, folderPath, "Akkon");
             if (Directory.Exists(path) == false)
                 Directory.CreateDirectory(path);
+
+            string cellId = AppsInspResult.Instance().Cell_ID + "_" + timeStamp;
             string filepath = Path.Combine(path, cellId + "_Tab_" + tabNo + ".txt");
 
             using (StreamWriter streamWriter = new StreamWriter(filepath, false))

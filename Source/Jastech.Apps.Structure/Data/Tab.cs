@@ -68,6 +68,7 @@ namespace Jastech.Apps.Structure.Data
                 return;
 
             AlignParamList.Where(x => x.Name == alignName.ToString()).First().LeadCount = alignParam.LeadCount;
+            AlignParamList.Where(x => x.Name == alignName.ToString()).First().PanelToFpcOffset = alignParam.PanelToFpcOffset;
             AlignParamList.Where(x => x.Name == alignName.ToString()).First().CaliperParams = alignParam.CaliperParams.DeepCopy();
         }
 
