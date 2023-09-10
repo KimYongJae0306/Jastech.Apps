@@ -222,16 +222,6 @@ namespace Jastech.Apps.Structure.Data
             return lineList;
         }
 
-        //public List<AlignGraphicPosition> GetResultGraphic()
-        //{
-        //    List<AlignGraphicPosition> positionList = new List<AlignGraphicPosition>();
-
-        //    GetLeftAlignShapeList();
-        //    GetRightAlignShapeList();
-
-        //    return new List<AlignGraphicPosition>();
-        //}
-
         public List<AlignGraphicPosition> GetLeftAlignShapeList()
         {
             List<AlignGraphicPosition> leftResultList = new List<AlignGraphicPosition>();

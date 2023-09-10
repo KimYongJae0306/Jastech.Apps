@@ -207,43 +207,63 @@ namespace Jastech.Apps.Winform.UI.Controls
                 case AlignResultType.All:
                     if(double.TryParse(tabData.LX, out double lx1))
                         AlignSeriesLx.Points.Add(lx1);
+                    else
+                        AlignSeriesLx.Points.Add(0);
 
                     if (double.TryParse(tabData.LY, out double ly1))
                         AlignSeriesLy.Points.Add(ly1);
+                    else
+                        AlignSeriesLy.Points.Add(0);
 
                     if (double.TryParse(tabData.RX, out double rx1))
                         AlignSeriesCx.Points.Add(rx1);
+                    else
+                        AlignSeriesCx.Points.Add(0);
 
                     if (double.TryParse(tabData.RY, out double ry1))
                         AlignSeriesRy.Points.Add(ry1);
+                    else
+                        AlignSeriesRy.Points.Add(0);
 
                     if (double.TryParse(tabData.CX, out double cx1))
                         AlignSeriesRx.Points.Add(cx1);
+                    else
+                        AlignSeriesRx.Points.Add(0);
                     break;
 
                 case AlignResultType.Lx:
                     if (double.TryParse(tabData.LX, out double lx2))
                         AlignSeriesLx.Points.Add(lx2);
+                    else
+                        AlignSeriesLx.Points.Add(0);
                     break;
 
                 case AlignResultType.Ly:
                     if (double.TryParse(tabData.LY, out double ly2))
                         AlignSeriesLy.Points.Add(ly2);
+                    else
+                        AlignSeriesLy.Points.Add(0);
                     break;
 
                 case AlignResultType.Cx:
                     if (double.TryParse(tabData.CX, out double cx2))
                         AlignSeriesCx.Points.Add(cx2);
+                    else
+                        AlignSeriesCx.Points.Add(0);
                     break;
 
                 case AlignResultType.Rx:
                     if (double.TryParse(tabData.RX, out double rx2))
                         AlignSeriesRx.Points.Add(rx2);
+                    else
+                        AlignSeriesRx.Points.Add(0);
                     break;
 
                 case AlignResultType.Ry:
                     if (double.TryParse(tabData.RY, out double ry2))
                         AlignSeriesRy.Points.Add(ry2);
+                    else
+                        AlignSeriesRy.Points.Add(0);
                     break;
 
                 default:
