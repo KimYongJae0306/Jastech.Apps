@@ -31,7 +31,6 @@
             this.tlpAlign = new System.Windows.Forms.TableLayoutPanel();
             this.lblParameter = new System.Windows.Forms.Label();
             this.pnlPosition = new System.Windows.Forms.Panel();
-            this.lblNewTest = new System.Windows.Forms.Label();
             this.label10 = new System.Windows.Forms.Label();
             this.lblOffsetY = new System.Windows.Forms.Label();
             this.lblTest = new System.Windows.Forms.Label();
@@ -82,6 +81,7 @@
             this.lblLeftAlignSpecX = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
+            this.lblNewTest = new System.Windows.Forms.Label();
             this.lblOffset = new System.Windows.Forms.Label();
             this.lblPanelToFpcOffset = new System.Windows.Forms.Label();
             this.tlpAlign.SuspendLayout();
@@ -786,6 +786,18 @@
             this.label1.Text = "Left Align SpecX(um)";
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
+            // lblNewTest
+            // 
+            this.lblNewTest.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblNewTest.Location = new System.Drawing.Point(754, 12);
+            this.lblNewTest.Margin = new System.Windows.Forms.Padding(0);
+            this.lblNewTest.Name = "lblNewTest";
+            this.lblNewTest.Size = new System.Drawing.Size(100, 40);
+            this.lblNewTest.TabIndex = 6;
+            this.lblNewTest.Text = "New Test";
+            this.lblNewTest.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblNewTest.Click += new System.EventHandler(this.lblNewTest_Click);
+            // 
             // lblOffset
             // 
             this.lblOffset.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
@@ -828,7 +840,6 @@
             this.panel1.ResumeLayout(false);
             this.tableLayoutPanel6.ResumeLayout(false);
             this.ResumeLayout(false);
-
         }
 
         #endregion
