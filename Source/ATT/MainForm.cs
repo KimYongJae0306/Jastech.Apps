@@ -530,5 +530,10 @@ namespace ATT
             MainPageControl?.Enable(isEnable);
         }
         #endregion
+
+        private void lblLightState_Click(object sender, EventArgs e)
+        {
+            new ProgressForm().ShowDialog();
+        }
     }
 }

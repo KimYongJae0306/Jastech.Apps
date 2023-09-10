@@ -249,12 +249,6 @@ namespace Jastech.Framework.Winform.Forms
                     rootNode.Nodes.Add(treeNode);
                     RecursiveDirectory(subDirectoryInfo, treeNode);
                 }
-
-                if (tvwLogPath.Nodes.Count > 0 && tvwLogPath.Nodes[0].Nodes.Count > 0)
-                {
-                    tvwLogPath.SelectedNode = tvwLogPath.Nodes[0].Nodes[0];
-                    tvwLogPath_NodeMouseClick(null, null);
-                }
             }
         }
 
