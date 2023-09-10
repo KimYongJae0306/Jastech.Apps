@@ -1322,9 +1322,9 @@ namespace ATT_UT_IPAD.Core
         {
             try
             {
-                if (configset.instance().operation.virtualmode)
+                if (ConfigSet.Instance().Operation.VirtualMode)
                 {
-                    _savethread = null;
+                    _saveThread = null;
                     return;
                 }
 
