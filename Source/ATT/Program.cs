@@ -120,6 +120,7 @@ namespace ATT
                     lineCamera.PixelResolution_um = 3.5F;
                     lineCamera.LensScale = 10F;
                     lineCamera.DigitizerNum = 0;
+                    lineCamera.TDIDirection = TDIDirectionType.Reverse;
 
                     lineCamera.DcfFile = CameraMil.GetDcfFile(CameraType.VT_4K5X_H200);
                     config.Add(lineCamera);

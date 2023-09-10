@@ -365,12 +365,19 @@ namespace Jastech.Framework.Winform.Forms
                 MessageConfirmForm confirmForm = new MessageConfirmForm();
                 confirmForm.Message = "Save Model Completed.";
                 confirmForm.ShowDialog();
+
+                if (ParamTrackingLogger.IsEmpty == false)
+                {
+                    ParamTrackingLogger.AddLog($"{_displayType} Teaching Saved.");
+                    ParamTrackingLogger.WriteLogToFile();
+                }
             }
         }
 
         private void SaveModelData(AppsInspModel model)
         {
-            AkkonControl.SaveAkkonParam();
+            if (_displayType == DisplayType.Akkon)
+                AkkonControl.SaveAkkonParam();
             model.SetUnitList(TeachingData.Instance().UnitList);
 
             string fileName = Path.Combine(ConfigSet.Instance().Path.Model, model.Name, InspModel.FileName);
@@ -379,6 +386,7 @@ namespace Jastech.Framework.Winform.Forms
 
         private void btnCancel_Click(object sender, EventArgs e)
         {
+            ParamTrackingLogger.ClearChangedLog();
             this.Close();
         }
 

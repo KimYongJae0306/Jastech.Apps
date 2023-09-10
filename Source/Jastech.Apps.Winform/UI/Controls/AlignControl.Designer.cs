@@ -31,6 +31,7 @@
             this.tlpAlign = new System.Windows.Forms.TableLayoutPanel();
             this.lblParameter = new System.Windows.Forms.Label();
             this.pnlPosition = new System.Windows.Forms.Panel();
+            this.lblNewTest = new System.Windows.Forms.Label();
             this.label10 = new System.Windows.Forms.Label();
             this.lblOffsetY = new System.Windows.Forms.Label();
             this.lblTest = new System.Windows.Forms.Label();
@@ -54,7 +55,7 @@
             this.lblLead = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
             this.label3 = new System.Windows.Forms.Label();
-            this.label11 = new System.Windows.Forms.Label();
+            this.lblCenterAlignSpecX = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
             this.lblRightAlignSpecX = new System.Windows.Forms.Label();
             this.tableLayoutPanel6 = new System.Windows.Forms.TableLayoutPanel();
@@ -81,7 +82,6 @@
             this.lblLeftAlignSpecX = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
-            this.lblNewTest = new System.Windows.Forms.Label();
             this.lblOffset = new System.Windows.Forms.Label();
             this.lblPanelToFpcOffset = new System.Windows.Forms.Label();
             this.tlpAlign.SuspendLayout();
@@ -148,6 +148,18 @@
             this.pnlPosition.Name = "pnlPosition";
             this.pnlPosition.Size = new System.Drawing.Size(887, 154);
             this.pnlPosition.TabIndex = 7;
+            // 
+            // lblNewTest
+            // 
+            this.lblNewTest.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblNewTest.Location = new System.Drawing.Point(754, 12);
+            this.lblNewTest.Margin = new System.Windows.Forms.Padding(0);
+            this.lblNewTest.Name = "lblNewTest";
+            this.lblNewTest.Size = new System.Drawing.Size(100, 40);
+            this.lblNewTest.TabIndex = 6;
+            this.lblNewTest.Text = "New Test";
+            this.lblNewTest.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblNewTest.Click += new System.EventHandler(this.lblNewTest_Click);
             // 
             // label10
             // 
@@ -403,7 +415,7 @@
             // panel1
             // 
             this.panel1.Controls.Add(this.label3);
-            this.panel1.Controls.Add(this.label11);
+            this.panel1.Controls.Add(this.lblCenterAlignSpecX);
             this.panel1.Controls.Add(this.label6);
             this.panel1.Controls.Add(this.lblRightAlignSpecX);
             this.panel1.Controls.Add(this.tableLayoutPanel6);
@@ -431,16 +443,17 @@
             this.label3.Text = "Center Align SpecX(um)";
             this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // label11
+            // lblCenterAlignSpecX
             // 
-            this.label11.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.label11.Location = new System.Drawing.Point(217, 111);
-            this.label11.Margin = new System.Windows.Forms.Padding(0);
-            this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(209, 40);
-            this.label11.TabIndex = 17;
-            this.label11.Text = "0";
-            this.label11.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblCenterAlignSpecX.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblCenterAlignSpecX.Location = new System.Drawing.Point(217, 111);
+            this.lblCenterAlignSpecX.Margin = new System.Windows.Forms.Padding(0);
+            this.lblCenterAlignSpecX.Name = "lblCenterAlignSpecX";
+            this.lblCenterAlignSpecX.Size = new System.Drawing.Size(209, 40);
+            this.lblCenterAlignSpecX.TabIndex = 17;
+            this.lblCenterAlignSpecX.Text = "0";
+            this.lblCenterAlignSpecX.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblCenterAlignSpecX.Click += new System.EventHandler(this.lblCenterAlignSpecX_Click);
             // 
             // label6
             // 
@@ -773,18 +786,6 @@
             this.label1.Text = "Left Align SpecX(um)";
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // lblNewTest
-            // 
-            this.lblNewTest.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lblNewTest.Location = new System.Drawing.Point(754, 12);
-            this.lblNewTest.Margin = new System.Windows.Forms.Padding(0);
-            this.lblNewTest.Name = "lblNewTest";
-            this.lblNewTest.Size = new System.Drawing.Size(100, 40);
-            this.lblNewTest.TabIndex = 6;
-            this.lblNewTest.Text = "New Test";
-            this.lblNewTest.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.lblNewTest.Click += new System.EventHandler(this.lblNewTest_Click);
-            // 
             // lblOffset
             // 
             this.lblOffset.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
@@ -884,7 +885,7 @@
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.Label lblOffsetY;
         private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.Label label11;
+        private System.Windows.Forms.Label lblCenterAlignSpecX;
         private System.Windows.Forms.Label lblNewTest;
         private System.Windows.Forms.Label lblPanelToFpcOffset;
         private System.Windows.Forms.Label lblOffset;

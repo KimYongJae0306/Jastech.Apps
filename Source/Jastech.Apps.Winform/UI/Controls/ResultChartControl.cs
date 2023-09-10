@@ -29,6 +29,8 @@ namespace Jastech.Apps.Winform.UI.Controls
         #region 속성
         public InspChartType ChartType { get; set; } = InspChartType.Akkon;
 
+        public bool IsDailyInfo { get; set; } = true;
+
         public Series AkkonSeriesCount { get; private set; } = null;
 
         public Series AkkonSeriesLength { get; private set; } = null;
@@ -381,6 +383,8 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         private void chtData_MouseDown(object sender, MouseEventArgs e)
         {
+            if (IsDailyInfo == false)
+                return;
             if (ChartType == InspChartType.Akkon)
                 return;
 

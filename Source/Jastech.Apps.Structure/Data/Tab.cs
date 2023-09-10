@@ -238,5 +238,8 @@ namespace Jastech.Apps.Structure.Data
 
         [JsonProperty]
         public float RightSpecY_um { get; set; } = 1.0F;
+
+        [JsonProperty]
+        public float CenterSpecX_um { get; set; } = 0.5F;
     }
 }

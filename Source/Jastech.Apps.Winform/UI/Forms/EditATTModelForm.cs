@@ -6,9 +6,11 @@ using Jastech.Framework.Structure;
 using Jastech.Framework.Structure.Helper;
 using Jastech.Framework.Util.Helper;
 using Jastech.Framework.Winform.Forms;
+using Jastech.Framework.Winform.Helper;
 using System;
 using System.IO;
 using System.Windows.Forms;
+using System.Windows.Media.TextFormatting;
 using static Jastech.Framework.Modeller.Controls.ModelControl;
 
 namespace Jastech.Apps.Winform.UI.Forms
@@ -81,6 +83,7 @@ namespace Jastech.Apps.Winform.UI.Forms
             {
                 ATTMaterialInfoForm form = new ATTMaterialInfoForm();
                 form.PrevMaterialInfo = PrevModel.MaterialInfo;
+                form.TabCount = Convert.ToInt32(txtTabCount.Text);
 
                 if (form.ShowDialog() == DialogResult.OK)
                     inspModel.MaterialInfo = form.NewMaterialInfo;
@@ -96,6 +99,7 @@ namespace Jastech.Apps.Winform.UI.Forms
 
         private void lblCancel_Click(object sender, EventArgs e)
         {
+            ParamTrackingLogger.ClearChangedLog();
             DialogResult = DialogResult.Cancel;
             Close();
         }
@@ -116,18 +120,15 @@ namespace Jastech.Apps.Winform.UI.Forms
 
         private void textbox_KeyPad_Click(object sender, EventArgs e)
         {
-            if (OperationConfig.UseKeyboard)
+            if (sender is TextBox textBox)
             {
-                var textBox = (TextBox)sender;
-
                 if (textBox.Text == "")
                     textBox.Text = "0";
 
-                KeyPadForm keyPadForm = new KeyPadForm();
-                keyPadForm.PreviousValue = Convert.ToDouble(textBox.Text);
-                keyPadForm.ShowDialog();
+                double oldValue = Convert.ToDouble(textBox.Text);
+                double newValue = KeyPadHelper.SetLabelDoubleData(textBox);
 
-                textBox.Text = keyPadForm.PadValue.ToString();
+                ParamTrackingLogger.AddChangeHistory("Inspection Model Spec", textBox.Name.Replace("txt", ""), oldValue, newValue);
             }
         }
 
