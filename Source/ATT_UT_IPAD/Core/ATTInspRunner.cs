@@ -465,14 +465,17 @@ namespace ATT_UT_IPAD.Core
 
                     PlcControlManager.Instance().EnableSendPeriodically = false;
 
-                    SeqStep = SeqStep.SEQ_MANUAL_CHECK;
+                    SeqStep = SeqStep.SEQ_MANUAL_JUDGE;
                     break;
 
-                case SeqStep.SEQ_MANUAL_CHECK:
-
+                    // NG 날때만 탈 것
+                case SeqStep.SEQ_MANUAL_JUDGE:
+                    PlcControlManager.Instance().WriteManualJudge();
+                    SystemManager.Instance().ShowManualJugdeForm(AppsInspResult.Instance());
                     SeqStep = SeqStep.SEQ_SEND_RESULT;
                     break;
 
+                    // 메뉴얼 판정하겠다 -> 메뉴얼 판정 -> PLC에서 받고 응답 오기까지 대기 루틴 필요
                 case SeqStep.SEQ_SEND_RESULT:
                     SendResultData();
                     WriteLog("Completed Send Plc Tab Result Data", true);
@@ -1651,7 +1654,7 @@ namespace ATT_UT_IPAD.Core
         SEQ_WAITING_AKKON_SCAN_COMPLETED,
         SEQ_WAITING_ALIGN_SCAN_COMPLETED,
         SEQ_WAITING_INSPECTION_DONE,
-        SEQ_MANUAL_CHECK,
+        SEQ_MANUAL_JUDGE,
         SEQ_SEND_RESULT,
         SEQ_WAIT_UI_RESULT_UPDATE,
         SEQ_SAVE_RESULT_DATA,

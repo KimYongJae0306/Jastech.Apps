@@ -142,7 +142,7 @@ namespace Jastech.Apps.Structure.VisionTool
 
             var diff = VisionProShapeHelper.GetOffsetBetweenCenterPointOfAffineRectangles(calcFpcRegion, calcPanelRegion);
             var diffY = diff.Y;
-            double offsetY = calcPanelRegion.SideYLength + 10;
+            double offsetY = panelParam.PanelToFpcOffset;//calcPanelRegion.SideYLength + 10;
 
             var newRegion = VisionProShapeHelper.MoveTranslationY(calcFpcRegion, diffY - offsetY);
 
@@ -196,7 +196,7 @@ namespace Jastech.Apps.Structure.VisionTool
 
             var diff = VisionProShapeHelper.GetOffsetBetweenCenterPointOfAffineRectangles(calcFpcRegion, calcPanelRegion);
             var diffY = diff.Y;
-            double offsetY = calcPanelRegion.SideYLength + 10;
+            double offsetY = panelParam.PanelToFpcOffset;//calcPanelRegion.SideYLength + 10;
 
             var newRegion = VisionProShapeHelper.MoveTranslationY(calcFpcRegion, diffY - offsetY);
 
@@ -310,6 +310,7 @@ namespace Jastech.Apps.Structure.VisionTool
                     PanelDeltaX = deltaPanelX,
                     Value = res,
                 };
+
                 leadAlignResultList.Add(leadAlignResult);
             }
 

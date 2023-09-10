@@ -1,4 +1,7 @@
-﻿using Jastech.Apps.Winform.Core;
+﻿using Jastech.Apps.Structure;
+using Jastech.Apps.Structure.Data;
+using Jastech.Apps.Winform.Core;
+using Jastech.Apps.Winform.UI.Controls;
 using Jastech.Framework.Imaging.Result;
 using Jastech.Framework.Winform.Forms;
 using System;
@@ -19,12 +22,17 @@ namespace Jastech.Apps.Winform.UI.Forms
         private bool _onFocus { get; set; } = false;
 
         private Point _mousePoint;
+
+        private Color _selectedColor;
+
+        private Color _nonSelectedColor;
+
+        private List<ManualJudgeControl> _manualJudgeControlList = null;
         #endregion
 
         #region 속성
-        public string Message { get; private set; } = string.Empty;
-
-        private Judgement Judgement { get; set; } = Judgement.NG;
+        private List<TabInspResult> _tabAlignInspResultList = new List<TabInspResult>();
+        private List<TabInspResult> _tabAkkonInspResultList = new List<TabInspResult>();
         #endregion
 
         #region 이벤트
@@ -44,7 +52,14 @@ namespace Jastech.Apps.Winform.UI.Forms
         #region 메서드
         private void ManualJudgeForm_Load(object sender, EventArgs e)
         {
+            InitializeUI();
+            AddControl();
             tmrManualJudge.Start();
+
+            //foreach (var item in _manualJudgeControlList)
+            //{
+            //    item.UpdateResult(null);
+            //}
         }
 
         private void tmrManualJudge_Tick(object sender, EventArgs e)
@@ -52,7 +67,7 @@ namespace Jastech.Apps.Winform.UI.Forms
             if (_onFocus)
                 return;
 
-            if (NGManager.Instance().IsExistNG())
+            if (IsNg())
             {
                 if (this.Visible)
                 {
@@ -65,6 +80,41 @@ namespace Jastech.Apps.Winform.UI.Forms
                     Hide();
                 }
             }
+        }
+
+        private void InitializeUI()
+        {
+            _selectedColor = Color.FromArgb(104, 104, 104);
+            _nonSelectedColor = Color.FromArgb(52, 52, 52);
+
+            InitializeJudgeStatus();
+        }
+
+        private void AddControl()
+        {
+            _manualJudgeControlList = new List<ManualJudgeControl>();
+
+            for (int tabIndex = 0; tabIndex < tlpJudge.RowCount; tabIndex++)
+            {
+                ManualJudgeControl manualJudgeControl = new ManualJudgeControl() { Dock  = DockStyle.Fill };
+                manualJudgeControl.SetTabCount(tabIndex);
+                _manualJudgeControlList.Add(manualJudgeControl);
+                tlpJudge.Controls.Add(manualJudgeControl, 0, tabIndex);
+            }
+        }
+
+        private void InitializeJudgeStatus()
+        {
+            var appInspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
+            var tabCount = appInspModel.TabCount;
+
+            tlpJudge.ColumnStyles.Clear();
+            tlpJudge.RowStyles.Clear();
+
+            tlpJudge.RowCount = tabCount;
+
+            for (int rowIndex = 0; rowIndex < tlpJudge.RowCount; rowIndex++)
+                tlpJudge.RowStyles.Add(new RowStyle(SizeType.Percent, (float)(100 / tlpJudge.RowCount)));
         }
 
         //public void UpdateJudgeMessage(string message)
@@ -81,23 +131,84 @@ namespace Jastech.Apps.Winform.UI.Forms
 
         private void UpdateMessage()
         {
-            lblMessage.Text = Message;
+            //lblMessage.Text = Message;
         }
 
-        public void SetMessage(string message)
+        private bool IsNg()
         {
-            Message = message;
+            if (_tabAlignInspResultList == null)
+                return false;
+
+            var alignResult = _tabAlignInspResultList.Where(x => x.Judgement == TabJudgement.NG).FirstOrDefault();
+            if (alignResult == null)
+                return false;
+
+            if (alignResult.MarkResult.Judgement == Judgement.NG)
+                return true;
+
+            if (alignResult.Judgement == TabJudgement.NG)
+                return true;
+
+            if (_tabAkkonInspResultList == null)
+                return false;
+
+            var akkonResult = _tabAkkonInspResultList.Where(x => x.Judgement == TabJudgement.NG).FirstOrDefault();
+            if (akkonResult == null)
+                return false;
+
+            if (akkonResult.MarkResult.Judgement == Judgement.NG)
+                return true;
+
+            if (akkonResult.Judgement == TabJudgement.NG)
+                return true;
+
+            return false;
+        }
+
+        public void SetTabAkkonInspectionResult(TabInspResult tabAkkonInspResult)
+        {
+            _tabAkkonInspResultList.Add(tabAkkonInspResult);
+        }
+
+        public void SetTabAlignInspectionResult(TabInspResult tabAlignResult)
+        {
+            _tabAlignInspResultList.Add(tabAlignResult);
+        }
+
+        public void SetInspectionResult()
+        {
+            int tabNo = 0;
+            foreach (var manualJudgeControl in _manualJudgeControlList)
+            {
+                manualJudgeControl.UpdateResult(_tabAlignInspResultList[tabNo], _tabAkkonInspResultList[tabNo]);
+                tabNo++;
+            }
+        }
+
+        private void ClearInspectionResult()
+        {
+            _tabAlignInspResultList.Clear();
+            _tabAkkonInspResultList.Clear();
         }
 
         private void lblOK_Click(object sender, EventArgs e)
         {
             _onFocus = false;
 
+            var appInspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
+            var tabCount = appInspModel.TabCount;
+
             MessageYesNoForm form = new MessageYesNoForm();
             form.Message = "Will it be decided as OK?";
             if (form.ShowDialog() == DialogResult.Yes)
             {
-                Judgement = Judgement.OK;
+                for (int tabNo = 0; tabNo < tabCount; tabNo++)
+                {
+                    _tabAlignInspResultList[tabNo].IsManualOK = true;
+                    _tabAkkonInspResultList[tabNo].IsManualOK = true;
+                }
+
+                ClearInspectionResult();
                 this.Hide();
             }
 
@@ -112,31 +223,11 @@ namespace Jastech.Apps.Winform.UI.Forms
             form.Message = "Will it be decided as NG?";
             if (form.ShowDialog() == DialogResult.Yes)
             {
-                Judgement = Judgement.NG;
+                ClearInspectionResult();
                 this.Hide();
             }
 
             _onFocus = true;
-        }
-
-        private void lblFail_Click(object sender, EventArgs e)
-        {
-            _onFocus = false;
-
-            MessageYesNoForm form = new MessageYesNoForm();
-            form.Message = "Will it be decided as FAIL?";
-            if (form.ShowDialog() == DialogResult.Yes)
-            {
-                Judgement = Judgement.FAIL;
-                this.Hide();
-            }
-
-            _onFocus = true;
-        }
-
-        public Judgement GetManualJudgement()
-        {
-            return Judgement;
         }
 
         private void pnlTop_MouseDown(object sender, MouseEventArgs e)

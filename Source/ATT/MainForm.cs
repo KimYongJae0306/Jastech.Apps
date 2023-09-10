@@ -179,12 +179,13 @@ namespace ATT
      
         private void UpdateLabel(string modelname)
         {
-            if(this.InvokeRequired)
+            if (this.InvokeRequired)
             {
                 UpdateLabelDelegate callback = UpdateLabel;
                 BeginInvoke(callback, modelname);
                 return;
             }
+
             lblCurrentModel.Text = modelname;
         }
         private void lblMainPage_Click(object sender, EventArgs e)

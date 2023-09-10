@@ -136,6 +136,12 @@
     <Compile Include="UI\Controls\LightControl.Designer.cs">
       <DependentUpon>LightControl.cs</DependentUpon>
     </Compile>
+    <Compile Include="UI\Controls\ManualJudgeControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UI\Controls\ManualJudgeControl.Designer.cs">
+      <DependentUpon>ManualJudgeControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="UI\Controls\PlcCommandControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -406,6 +412,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UI\Controls\LightControl.resx">
       <DependentUpon>LightControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\Controls\ManualJudgeControl.resx">
+      <DependentUpon>ManualJudgeControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\Controls\PlcCommandControl.resx">
       <DependentUpon>PlcCommandControl.cs</DependentUpon>

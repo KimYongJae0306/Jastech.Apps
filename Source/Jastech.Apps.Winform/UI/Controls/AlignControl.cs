@@ -2,6 +2,7 @@
 using Cognex.VisionPro.Caliper;
 using Jastech.Apps.Structure;
 using Jastech.Apps.Structure.Data;
+using Jastech.Apps.Structure.Parameters;
 using Jastech.Apps.Structure.VisionTool;
 using Jastech.Framework.Imaging.Result;
 using Jastech.Framework.Imaging.VisionPro;
@@ -109,7 +110,7 @@ namespace Jastech.Apps.Winform.UI.Controls
             var alignParam = CurrentTab.GetAlignParam(alignName);
             if (alignParam == null)
             {
-                alignParam = new Structure.Parameters.AlignParam();
+                alignParam = new AlignParam();
                 alignParam.Name = alignName.ToString();
                 CurrentTab.AlignParamList.Add(alignParam);
             }
@@ -128,6 +129,7 @@ namespace Jastech.Apps.Winform.UI.Controls
             }
 
             lblLeadCount.Text = alignParam.LeadCount.ToString();
+            lblPanelToFpcOffset.Text = alignParam.PanelToFpcOffset.ToString("F2");
 
             lblLeftAlignSpecX.Text = CurrentTab.AlignSpec.LeftSpecX_um.ToString();
             lblLeftAlignSpecY.Text = CurrentTab.AlignSpec.LeftSpecY_um.ToString();
@@ -135,6 +137,7 @@ namespace Jastech.Apps.Winform.UI.Controls
             lblRightAlignSpecX.Text = CurrentTab.AlignSpec.RightSpecX_um.ToString();
             lblRightAlignSpecY.Text = CurrentTab.AlignSpec.RightSpecY_um.ToString();
 
+            EnableUIPanelToFpcOffset(alignName);
             DrawROI();
         }
 
@@ -203,12 +206,28 @@ namespace Jastech.Apps.Winform.UI.Controls
             lbl.BackColor = _selectedColor;
         }
 
+        private void EnableUIPanelToFpcOffset(ATTTabAlignName alignName)
+        {
+            if (alignName == ATTTabAlignName.LeftPanelX || alignName == ATTTabAlignName.RightPanelX)
+                lblPanelToFpcOffset.Enabled = true;
+            else
+                lblPanelToFpcOffset.Enabled = false;
+        }
+
         private void lblLeadCount_Click(object sender, EventArgs e)
         {
             int leadCount = KeyPadHelper.SetLabelIntegerData((Label)sender);
 
             var alignParam = CurrentTab.GetAlignParam(CurrentAlignName);
             alignParam.LeadCount = leadCount;
+        }
+
+        private void lblPanelToFpcOffset_Click(object sender, EventArgs e)
+        {
+            double offset = KeyPadHelper.SetLabelDoubleData((Label)sender);
+
+            var alignParam = CurrentTab.GetAlignParam(CurrentAlignName);
+            alignParam.PanelToFpcOffset = offset;
         }
 
         private void lblApply_Click(object sender, EventArgs e)
@@ -652,5 +671,7 @@ namespace Jastech.Apps.Winform.UI.Controls
             collection.Add(newRegion);
             display.SetInteractiveGraphics("tool", collection);
         }
+
+        
     }
 }

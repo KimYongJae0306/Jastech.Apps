@@ -1,4 +1,5 @@
 ﻿using ATT_UT_IPAD.Core;
+using ATT_UT_IPAD.Core.Data;
 using ATT_UT_IPAD.UI.Controls;
 using Cognex.VisionPro;
 using Jastech.Apps.Structure;
@@ -368,9 +369,9 @@ namespace ATT_UT_IPAD
             _mainForm.ReleaseAlignLastScanImage();
         }
 
-        public void ShowManualJugdeForm(string message)
+        public void ShowManualJugdeForm(AppsInspResult inspResult)
         {
-            _mainForm.ShowManualJudgeForm(message);
+            _mainForm.ShowManualJudgeForm(inspResult);
         }
         #endregion
     }

@@ -12,6 +12,9 @@ namespace Jastech.Apps.Structure.Parameters
         public int LeadCount { get; set; } = 5;
 
         [JsonProperty]
+        public double PanelToFpcOffset { get; set; } = 130.0;
+
+        [JsonProperty]
         public VisionProCaliperParam CaliperParams { get; set; } = new VisionProCaliperParam();
 
         public void Dispose()
@@ -24,6 +27,7 @@ namespace Jastech.Apps.Structure.Parameters
             AlignParam align = new AlignParam();
             align.Name = Name;
             align.LeadCount = LeadCount;
+            align.PanelToFpcOffset = PanelToFpcOffset;
             align.CaliperParams = CaliperParams.DeepCopy();
 
             return align;

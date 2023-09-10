@@ -151,6 +151,7 @@ namespace Jastech.Apps.Winform.UI.Controls
             }
             else
             {
+                _isInfinite = false;
                 _isRepeat = false;
                 _repeatThread.Interrupt();
                 _repeatThread.Abort();
