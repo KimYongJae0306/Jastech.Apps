@@ -97,6 +97,11 @@
             this.label26 = new System.Windows.Forms.Label();
             this.txtAlignResultCount = new System.Windows.Forms.TextBox();
             this.panel4 = new System.Windows.Forms.Panel();
+            this.tlpLogSaveAkkonLeadResult = new System.Windows.Forms.TableLayoutPanel();
+            this.label29 = new System.Windows.Forms.Label();
+            this.mtgLogAkkonLead = new MetroFramework.Controls.MetroToggle();
+            this.panel14 = new System.Windows.Forms.Panel();
+            this.label30 = new System.Windows.Forms.Label();
             this.tableLayoutPanel13 = new System.Windows.Forms.TableLayoutPanel();
             this.panel9 = new System.Windows.Forms.Panel();
             this.tableLayoutPanel14 = new System.Windows.Forms.TableLayoutPanel();
@@ -108,11 +113,6 @@
             this.tableLayoutPanel16 = new System.Windows.Forms.TableLayoutPanel();
             this.lblApplyImage = new System.Windows.Forms.Label();
             this.lblSave = new System.Windows.Forms.Label();
-            this.tlpLogSaveAkkonLeadResult = new System.Windows.Forms.TableLayoutPanel();
-            this.label29 = new System.Windows.Forms.Label();
-            this.mtgLogAkkonLead = new MetroFramework.Controls.MetroToggle();
-            this.panel14 = new System.Windows.Forms.Panel();
-            this.label30 = new System.Windows.Forms.Label();
             this.tableLayoutPanel1.SuspendLayout();
             this.panel1.SuspendLayout();
             this.tlpVisionAlgotirhmTest2.SuspendLayout();
@@ -131,6 +131,7 @@
             this.tlpDailyResultEnableAkkon.SuspendLayout();
             this.tlpDailyResultEnableAlign.SuspendLayout();
             this.panel4.SuspendLayout();
+            this.tlpLogSaveAkkonLeadResult.SuspendLayout();
             this.tableLayoutPanel13.SuspendLayout();
             this.panel9.SuspendLayout();
             this.tableLayoutPanel14.SuspendLayout();
@@ -138,7 +139,6 @@
             this.tableLayoutPanel15.SuspendLayout();
             this.panel11.SuspendLayout();
             this.tableLayoutPanel16.SuspendLayout();
-            this.tlpLogSaveAkkonLeadResult.SuspendLayout();
             this.SuspendLayout();
             // 
             // panel7
@@ -1067,6 +1067,67 @@
             this.panel4.Size = new System.Drawing.Size(382, 802);
             this.panel4.TabIndex = 2;
             // 
+            // tlpLogSaveAkkonLeadResult
+            // 
+            this.tlpLogSaveAkkonLeadResult.ColumnCount = 3;
+            this.tlpLogSaveAkkonLeadResult.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 120F));
+            this.tlpLogSaveAkkonLeadResult.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tlpLogSaveAkkonLeadResult.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 100F));
+            this.tlpLogSaveAkkonLeadResult.Controls.Add(this.label29, 0, 0);
+            this.tlpLogSaveAkkonLeadResult.Controls.Add(this.mtgLogAkkonLead, 1, 0);
+            this.tlpLogSaveAkkonLeadResult.Location = new System.Drawing.Point(70, 52);
+            this.tlpLogSaveAkkonLeadResult.Name = "tlpLogSaveAkkonLeadResult";
+            this.tlpLogSaveAkkonLeadResult.RowCount = 1;
+            this.tlpLogSaveAkkonLeadResult.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tlpLogSaveAkkonLeadResult.Size = new System.Drawing.Size(298, 36);
+            this.tlpLogSaveAkkonLeadResult.TabIndex = 33;
+            // 
+            // label29
+            // 
+            this.label29.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.label29.Font = new System.Drawing.Font("맑은 고딕", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.label29.ForeColor = System.Drawing.Color.White;
+            this.label29.Location = new System.Drawing.Point(3, 0);
+            this.label29.Name = "label29";
+            this.label29.Size = new System.Drawing.Size(114, 36);
+            this.label29.TabIndex = 5;
+            this.label29.Text = "AkkonLead";
+            this.label29.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // mtgLogAkkonLead
+            // 
+            this.mtgLogAkkonLead.AutoSize = true;
+            this.mtgLogAkkonLead.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.mtgLogAkkonLead.FontWeight = MetroFramework.MetroLinkWeight.Bold;
+            this.mtgLogAkkonLead.Location = new System.Drawing.Point(123, 3);
+            this.mtgLogAkkonLead.Name = "mtgLogAkkonLead";
+            this.mtgLogAkkonLead.Size = new System.Drawing.Size(72, 30);
+            this.mtgLogAkkonLead.TabIndex = 12;
+            this.mtgLogAkkonLead.Text = "Off";
+            this.mtgLogAkkonLead.Theme = MetroFramework.MetroThemeStyle.Dark;
+            this.mtgLogAkkonLead.UseSelectable = true;
+            this.mtgLogAkkonLead.CheckedChanged += new System.EventHandler(this.mtgOperationSetting_CheckedChanged);
+            // 
+            // panel14
+            // 
+            this.panel14.BackColor = System.Drawing.SystemColors.Highlight;
+            this.panel14.Location = new System.Drawing.Point(23, 43);
+            this.panel14.Margin = new System.Windows.Forms.Padding(0);
+            this.panel14.Name = "panel14";
+            this.panel14.Size = new System.Drawing.Size(345, 2);
+            this.panel14.TabIndex = 23;
+            // 
+            // label30
+            // 
+            this.label30.Font = new System.Drawing.Font("맑은 고딕", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.label30.ForeColor = System.Drawing.Color.White;
+            this.label30.Location = new System.Drawing.Point(18, 10);
+            this.label30.Name = "label30";
+            this.label30.Size = new System.Drawing.Size(323, 33);
+            this.label30.TabIndex = 24;
+            this.label30.Text = "Log Save Options";
+            this.label30.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
             // tableLayoutPanel13
             // 
             this.tableLayoutPanel13.ColumnCount = 1;
@@ -1209,67 +1270,6 @@
             this.lblSave.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.lblSave.Click += new System.EventHandler(this.lblSave_Click);
             // 
-            // tlpLogSaveAkkonLeadResult
-            // 
-            this.tlpLogSaveAkkonLeadResult.ColumnCount = 3;
-            this.tlpLogSaveAkkonLeadResult.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 120F));
-            this.tlpLogSaveAkkonLeadResult.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tlpLogSaveAkkonLeadResult.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 100F));
-            this.tlpLogSaveAkkonLeadResult.Controls.Add(this.label29, 0, 0);
-            this.tlpLogSaveAkkonLeadResult.Controls.Add(this.mtgLogAkkonLead, 1, 0);
-            this.tlpLogSaveAkkonLeadResult.Location = new System.Drawing.Point(70, 52);
-            this.tlpLogSaveAkkonLeadResult.Name = "tlpLogSaveAkkonLeadResult";
-            this.tlpLogSaveAkkonLeadResult.RowCount = 1;
-            this.tlpLogSaveAkkonLeadResult.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tlpLogSaveAkkonLeadResult.Size = new System.Drawing.Size(298, 36);
-            this.tlpLogSaveAkkonLeadResult.TabIndex = 33;
-            // 
-            // label29
-            // 
-            this.label29.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.label29.Font = new System.Drawing.Font("맑은 고딕", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.label29.ForeColor = System.Drawing.Color.White;
-            this.label29.Location = new System.Drawing.Point(3, 0);
-            this.label29.Name = "label29";
-            this.label29.Size = new System.Drawing.Size(114, 36);
-            this.label29.TabIndex = 5;
-            this.label29.Text = "AkkonLead";
-            this.label29.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // mtgLogAkkonLead
-            // 
-            this.mtgLogAkkonLead.AutoSize = true;
-            this.mtgLogAkkonLead.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.mtgLogAkkonLead.FontWeight = MetroFramework.MetroLinkWeight.Bold;
-            this.mtgLogAkkonLead.Location = new System.Drawing.Point(123, 3);
-            this.mtgLogAkkonLead.Name = "mtgLogAkkonLead";
-            this.mtgLogAkkonLead.Size = new System.Drawing.Size(72, 30);
-            this.mtgLogAkkonLead.TabIndex = 12;
-            this.mtgLogAkkonLead.Text = "Off";
-            this.mtgLogAkkonLead.Theme = MetroFramework.MetroThemeStyle.Dark;
-            this.mtgLogAkkonLead.UseSelectable = true;
-            this.mtgLogAkkonLead.CheckedChanged += new System.EventHandler(this.mtgOperationSetting_CheckedChanged);
-            // 
-            // panel14
-            // 
-            this.panel14.BackColor = System.Drawing.SystemColors.Highlight;
-            this.panel14.Location = new System.Drawing.Point(23, 43);
-            this.panel14.Margin = new System.Windows.Forms.Padding(0);
-            this.panel14.Name = "panel14";
-            this.panel14.Size = new System.Drawing.Size(345, 2);
-            this.panel14.TabIndex = 23;
-            // 
-            // label30
-            // 
-            this.label30.Font = new System.Drawing.Font("맑은 고딕", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.label30.ForeColor = System.Drawing.Color.White;
-            this.label30.Location = new System.Drawing.Point(18, 10);
-            this.label30.Name = "label30";
-            this.label30.Size = new System.Drawing.Size(323, 33);
-            this.label30.TabIndex = 24;
-            this.label30.Text = "Log Save Options";
-            this.label30.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
             // OperationSettingsForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
@@ -1316,6 +1316,8 @@
             this.tlpDailyResultEnableAlign.ResumeLayout(false);
             this.tlpDailyResultEnableAlign.PerformLayout();
             this.panel4.ResumeLayout(false);
+            this.tlpLogSaveAkkonLeadResult.ResumeLayout(false);
+            this.tlpLogSaveAkkonLeadResult.PerformLayout();
             this.tableLayoutPanel13.ResumeLayout(false);
             this.panel9.ResumeLayout(false);
             this.tableLayoutPanel14.ResumeLayout(false);
@@ -1323,8 +1325,6 @@
             this.tableLayoutPanel15.ResumeLayout(false);
             this.panel11.ResumeLayout(false);
             this.tableLayoutPanel16.ResumeLayout(false);
-            this.tlpLogSaveAkkonLeadResult.ResumeLayout(false);
-            this.tlpLogSaveAkkonLeadResult.PerformLayout();
             this.ResumeLayout(false);
 
         }

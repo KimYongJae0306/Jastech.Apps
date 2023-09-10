@@ -4,6 +4,7 @@ using ATT_UT_IPAD.Properties;
 using ATT_UT_IPAD.UI.Pages;
 using Cognex.VisionPro;
 using Jastech.Apps.Structure;
+using Jastech.Apps.Structure.Data;
 using Jastech.Apps.Winform;
 using Jastech.Apps.Winform.Core;
 using Jastech.Apps.Winform.Service.Plc;
@@ -591,10 +592,27 @@ namespace ATT_UT_IPAD
             MainPageControl?.Enable(isEnable);
         }
 
-        public void ShowManualJudgeForm(string message)
+        public void ShowManualJudgeForm(AppsInspResult inspResult)
         {
-            ManualJudgeForm.SetMessage(message);
-            ManualJudgeForm.Show();
+            var inspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
+
+            for (int tabNo = 0; tabNo < inspModel.TabCount; tabNo++)
+            {
+                ManualJudgeForm.SetTabAlignInspectionResult(inspResult.GetAlign(tabNo));
+                ManualJudgeForm.SetTabAkkonInspectionResult(inspResult.GetAkkon(tabNo));
+            }
+
+            ManualJudgeForm.SetInspectionResult();
+
+            if (ManualJudgeForm.InvokeRequired)
+            {
+                ManualJudgeForm.Invoke(new MethodInvoker(delegate
+                {
+                    ManualJudgeForm.Show();
+                }));
+            }
+            else
+                ManualJudgeForm.Show();
         }
 
         #endregion

@@ -901,6 +901,28 @@ namespace Jastech.Apps.Winform
 
             return position;
         }
+
+        public void WriteManualJudge()
+        {
+            var map = GetAddressMap(PlcCommonMap.PLC_ManualMatch);
+            if (DeviceManager.Instance().PlcHandler.Count > 0 && map != null)
+            {
+                var plc = DeviceManager.Instance().PlcHandler.First() as MelsecPlc;
+
+                PlcDataStream stream = new PlcDataStream();
+
+                if (plc.MelsecParser.ParserType == ParserType.Binary)
+                {
+                    stream.AddSwap16BitData(5);
+                }
+                else
+                {
+                    stream.Add16BitData(5);
+                }
+
+                plc.Write("D" + map.AddressNum, stream.Data);
+            }
+        }
         #endregion
     }
 

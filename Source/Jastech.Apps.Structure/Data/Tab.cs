@@ -68,6 +68,7 @@ namespace Jastech.Apps.Structure.Data
                 return;
 
             AlignParamList.Where(x => x.Name == alignName.ToString()).First().LeadCount = alignParam.LeadCount;
+            AlignParamList.Where(x => x.Name == alignName.ToString()).First().PanelToFpcOffset = alignParam.PanelToFpcOffset;
             AlignParamList.Where(x => x.Name == alignName.ToString()).First().CaliperParams = alignParam.CaliperParams.DeepCopy();
         }
 
@@ -237,5 +238,8 @@ namespace Jastech.Apps.Structure.Data
 
         [JsonProperty]
         public float RightSpecY_um { get; set; } = 1.0F;
+
+        [JsonProperty]
+        public float CenterSpecX_um { get; set; } = 0.5F;
     }
 }

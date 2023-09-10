@@ -15,7 +15,7 @@ namespace Jastech.Apps.Winform
         #endregion
 
         #region 속성
-        private List<Judgement> _judgementList = new List<Judgement>();
+        private List<TabJudgement> _judgementList = new List<TabJudgement>();
 
         private List<TabInspResult> _tabInspResult = new List<TabInspResult>();
         #endregion
@@ -49,7 +49,7 @@ namespace Jastech.Apps.Winform
             {
                 foreach (var item in _judgementList)
                 {
-                    if (item == Judgement.NG)
+                    if (item == TabJudgement.NG || item == TabJudgement.Mark_NG)
                         return true;
                 }
             }
@@ -57,15 +57,15 @@ namespace Jastech.Apps.Winform
             return false;
         }
 
-        public List<Judgement> GetNGList()
+        public List<TabJudgement> GetNGList()
         {
-            List<Judgement> ngList = new List<Judgement>();
+            List<TabJudgement> ngList = new List<TabJudgement>();
 
             lock (_judgementList)
             {
                 foreach (var item in _judgementList)
                 {
-                    if (item == Judgement.NG)
+                    if (item == TabJudgement.NG)
                         ngList.Add(item);
                 }
 
@@ -73,12 +73,12 @@ namespace Jastech.Apps.Winform
             }
         }
 
-        public void AddJudgementList(Judgement judgement)
+        public void AddJudgementList(TabJudgement judgement)
         {
             _judgementList.Add(judgement);
         }
 
-        public void SetJudgementList(List<Judgement> judgementList)
+        public void SetJudgementList(List<TabJudgement> judgementList)
         {
             if (_judgementList.Count >= 0)
                 _judgementList.Clear();
