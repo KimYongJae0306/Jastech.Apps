@@ -465,13 +465,17 @@ namespace ATT_UT_IPAD.Core
 
                     PlcControlManager.Instance().EnableSendPeriodically = false;
 
-                    SeqStep = SeqStep.SEQ_MANUAL_JUDGE;
+                    if (AppsConfig.Instance().EnableManualJudge)
+                        SeqStep = SeqStep.SEQ_MANUAL_JUDGE;
+                    else
+                        SeqStep = SeqStep.SEQ_SEND_RESULT;
                     break;
 
                     // NG 날때만 탈 것
                 case SeqStep.SEQ_MANUAL_JUDGE:
                     PlcControlManager.Instance().WriteManualJudge();
                     SystemManager.Instance().ShowManualJugdeForm(AppsInspResult.Instance());
+                    WriteLog("Show Manual Judge Form", false);
                     SeqStep = SeqStep.SEQ_SEND_RESULT;
                     break;
 
@@ -480,7 +484,6 @@ namespace ATT_UT_IPAD.Core
                     SendResultData();
                     WriteLog("Completed Send Plc Tab Result Data", true);
 
-                    
                     SeqStep = SeqStep.SEQ_WAIT_UI_RESULT_UPDATE;
                     break;
 
