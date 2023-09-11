@@ -175,7 +175,6 @@ namespace ATT_UT_IPAD.Core
                 GetAkkonResultImage();
                 WriteLog("Make Akkon ResultImage.", true);
 
-                //StartSaveThread();        // 상위로.. 택 테스트
                 SystemManager.Instance().UpdateMainAkkonResult();
                 SystemManager.Instance().UpdateMainAlignResult();
 
@@ -1343,7 +1342,7 @@ namespace ATT_UT_IPAD.Core
 
                     string month = currentTime.ToString("MM");
                     string day = currentTime.ToString("dd");
-                    string timeStamp = currentTime.ToString("yyyyMMdd_HHmmss");
+                    string timeStamp = currentTime.ToString("yyyyMMddHHmmss");
                     string folderPath = AppsInspResult.Instance().Cell_ID + "_" + timeStamp;
 
                     string path = Path.Combine(ConfigSet.Instance().Path.Result, inspModel.Name, month, day, folderPath);
@@ -1428,11 +1427,7 @@ namespace ATT_UT_IPAD.Core
 
             if(isAkkonResult == false)
             {
-                //if(tabInspResult.AlignResult.LeftX.Fpc.CogAlignResult[0].MaxCaliperMatch.ResultGraphics.Shapes[0] is CogLineSegment g)
-                //{
-
-                //}
-                //VisionProImageHelper.CropImage()
+                SaveAlignResult(tabInspResult, resultPath);
             }
         }
 
@@ -1441,6 +1436,96 @@ namespace ATT_UT_IPAD.Core
             string alignResultDir = Path.Combine(resultPath, "AlignResult");
             if (Directory.Exists(alignResultDir) == false)
                 Directory.CreateDirectory(alignResultDir);
+        }
+
+        public void SaveAlignResult(TabInspResult tabInspResult, string path)
+        {
+            if (tabInspResult == null)
+                return;
+            string savePath = Path.Combine(path, "Result");
+
+            if (Directory.Exists(savePath) == false)
+                Directory.CreateDirectory(savePath);
+
+            var leftAlignShapeList = tabInspResult.GetLeftAlignShapeList();
+            if(leftAlignShapeList.Count() > 0)
+            {
+                Mat cropLeftImage = GetAlignResultImage(tabInspResult, leftAlignShapeList);
+                string fileName = string.Format("Left_Align_Tab_{0}.jpeg", tabInspResult.TabNo);
+                string filePath = Path.Combine(savePath, fileName);
+                cropLeftImage?.Save(filePath);
+            }
+
+            var rightAlignShapeList = tabInspResult.GetRightAlignShapeList();
+            if (rightAlignShapeList.Count() > 0)
+            {
+                Mat cropRightImage = GetAlignResultImage(tabInspResult, rightAlignShapeList);
+                string fileName = string.Format("Right_Align_Tab_{0}.jpeg", tabInspResult.TabNo);
+                string filePath = Path.Combine(savePath, fileName);
+                cropRightImage?.Save(filePath);
+            }
+        }
+
+        private Mat GetAlignResultImage(TabInspResult tabInspResult, List<AlignGraphicPosition> graphicList)
+        {
+            MCvScalar fpcColor = new MCvScalar(255, 0, 0);
+            MCvScalar panelColor = new MCvScalar(0, 165, 255);
+
+            var roi = GetCropROI(graphicList, tabInspResult.Image.Width, tabInspResult.Image.Height);
+            var cropImage = new Mat(tabInspResult.Image, roi);
+
+            CvInvoke.CvtColor(cropImage, cropImage, ColorConversion.Gray2Bgr);
+
+            foreach (var shape in graphicList)
+            {
+                Point startPoint = new Point((int)shape.StartX - roi.X, (int)shape.StartY - roi.Y);
+                Point endPoint = new Point((int)shape.EndX - roi.X, (int)shape.EndY - roi.Y);
+                if (shape.IsFpc)
+                    CvInvoke.Line(cropImage, startPoint, endPoint, fpcColor);
+                else
+                    CvInvoke.Line(cropImage, startPoint, endPoint, panelColor);
+            }
+
+            return cropImage;
+        }
+
+        private Rectangle GetCropROI(List<AlignGraphicPosition> alignShapeList, int imageWidth, int imageHeight)
+        {
+            List<PointF> pointList = new List<PointF>();
+
+            foreach (var shape in alignShapeList)
+            {
+                pointList.Add(new PointF((float)shape.StartX, (float)shape.StartY));
+                pointList.Add(new PointF((float)shape.EndX, (float)shape.EndY));
+            }
+
+            float minX = pointList.Select(point => point.X).Min();
+            float maxX = pointList.Select(point => point.X).Max();
+
+            float minY = pointList.Select(point => point.Y).Min();
+            float maxY = pointList.Select(point => point.Y).Max();
+
+            float width = Math.Abs(maxX - minX) / 2.0f;
+            float height = Math.Abs(maxY - minY) / 2.0f;
+
+            PointF centerPoint = new PointF((minX + width), (minY + height));
+
+            float size = 2000.0f;
+
+            var roi = new Rectangle((int)centerPoint.X - (int)(size / 2.0f), (int)centerPoint.Y - (int)(size / 2.0f), (int)size, (int)size);
+            if (roi.X < 0)
+                roi.X = 0;
+
+            if (roi.Y < 0)
+                roi.Y = 0;
+
+            if (roi.X + roi.Width > imageWidth)
+                roi.Width = imageWidth - roi.X;
+
+            if (roi.Y + roi.Height > imageHeight)
+                roi.Height = imageHeight - roi.Y;
+
+            return roi;
         }
 
         private void SaveAkkonDefectLeadImage(string resultPath, TabInspResult tabInspResult)
@@ -1567,9 +1652,7 @@ namespace ATT_UT_IPAD.Core
                 else
                     oldDirectory.Delete(true);
             }
-            
         }
-
 
         private void SetMarkMotionPosition(Unit unit, MarkDirection markDirection)
         {

@@ -30,6 +30,8 @@
         {
             this.components = new System.ComponentModel.Container();
             this.tlpMotionPopup = new System.Windows.Forms.TableLayoutPanel();
+            this.pnlTop = new System.Windows.Forms.Panel();
+            this.lblTop = new System.Windows.Forms.Label();
             this.tlpFormFunction = new System.Windows.Forms.TableLayoutPanel();
             this.btnMoveTeachingPosition = new System.Windows.Forms.Button();
             this.btnExit = new System.Windows.Forms.Button();
@@ -135,9 +137,8 @@
             this.lblJog = new System.Windows.Forms.Label();
             this.pnlTeachingPositionList = new System.Windows.Forms.Panel();
             this.StatusTimer = new System.Windows.Forms.Timer(this.components);
-            this.pnlTop = new System.Windows.Forms.Panel();
-            this.lblTop = new System.Windows.Forms.Label();
             this.tlpMotionPopup.SuspendLayout();
+            this.pnlTop.SuspendLayout();
             this.tlpFormFunction.SuspendLayout();
             this.pnlFunction.SuspendLayout();
             this.tlpVariableParameters.SuspendLayout();
@@ -160,7 +161,6 @@
             this.tlpPitchXY.SuspendLayout();
             this.tlpJogMode.SuspendLayout();
             this.tlpJogSpeedMode.SuspendLayout();
-            this.pnlTop.SuspendLayout();
             this.SuspendLayout();
             // 
             // tlpMotionPopup
@@ -183,6 +183,31 @@
             this.tlpMotionPopup.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tlpMotionPopup.Size = new System.Drawing.Size(684, 861);
             this.tlpMotionPopup.TabIndex = 2;
+            // 
+            // pnlTop
+            // 
+            this.pnlTop.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(104)))), ((int)(((byte)(104)))), ((int)(((byte)(104)))));
+            this.pnlTop.Controls.Add(this.lblTop);
+            this.pnlTop.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pnlTop.ForeColor = System.Drawing.Color.White;
+            this.pnlTop.Location = new System.Drawing.Point(0, 0);
+            this.pnlTop.Margin = new System.Windows.Forms.Padding(0);
+            this.pnlTop.Name = "pnlTop";
+            this.pnlTop.Size = new System.Drawing.Size(684, 60);
+            this.pnlTop.TabIndex = 1;
+            this.pnlTop.MouseDown += new System.Windows.Forms.MouseEventHandler(this.pnlTop_MouseDown);
+            this.pnlTop.MouseMove += new System.Windows.Forms.MouseEventHandler(this.pnlTop_MouseMove);
+            // 
+            // lblTop
+            // 
+            this.lblTop.AutoSize = true;
+            this.lblTop.Font = new System.Drawing.Font("맑은 고딕", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.lblTop.ForeColor = System.Drawing.Color.White;
+            this.lblTop.Location = new System.Drawing.Point(12, 14);
+            this.lblTop.Name = "lblTop";
+            this.lblTop.Size = new System.Drawing.Size(158, 30);
+            this.lblTop.TabIndex = 1;
+            this.lblTop.Text = "Motion Popup";
             // 
             // tlpFormFunction
             // 
@@ -1878,31 +1903,6 @@
             // 
             this.StatusTimer.Tick += new System.EventHandler(this.StatusTimer_Tick);
             // 
-            // pnlTop
-            // 
-            this.pnlTop.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(104)))), ((int)(((byte)(104)))), ((int)(((byte)(104)))));
-            this.pnlTop.Controls.Add(this.lblTop);
-            this.pnlTop.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pnlTop.ForeColor = System.Drawing.Color.White;
-            this.pnlTop.Location = new System.Drawing.Point(0, 0);
-            this.pnlTop.Margin = new System.Windows.Forms.Padding(0);
-            this.pnlTop.Name = "pnlTop";
-            this.pnlTop.Size = new System.Drawing.Size(684, 60);
-            this.pnlTop.TabIndex = 1;
-            this.pnlTop.MouseDown += new System.Windows.Forms.MouseEventHandler(this.pnlTop_MouseDown);
-            this.pnlTop.MouseMove += new System.Windows.Forms.MouseEventHandler(this.pnlTop_MouseMove);
-            // 
-            // lblTop
-            // 
-            this.lblTop.AutoSize = true;
-            this.lblTop.Font = new System.Drawing.Font("맑은 고딕", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.lblTop.ForeColor = System.Drawing.Color.White;
-            this.lblTop.Location = new System.Drawing.Point(12, 14);
-            this.lblTop.Name = "lblTop";
-            this.lblTop.Size = new System.Drawing.Size(158, 30);
-            this.lblTop.TabIndex = 1;
-            this.lblTop.Text = "Motion Popup";
-            // 
             // MotionPopupForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
@@ -1922,6 +1922,8 @@
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.MotionPopupForm_FormClosed);
             this.Load += new System.EventHandler(this.MotionPopupForm_Load);
             this.tlpMotionPopup.ResumeLayout(false);
+            this.pnlTop.ResumeLayout(false);
+            this.pnlTop.PerformLayout();
             this.tlpFormFunction.ResumeLayout(false);
             this.pnlFunction.ResumeLayout(false);
             this.tlpVariableParameters.ResumeLayout(false);
@@ -1944,8 +1946,6 @@
             this.tlpPitchXY.ResumeLayout(false);
             this.tlpJogMode.ResumeLayout(false);
             this.tlpJogSpeedMode.ResumeLayout(false);
-            this.pnlTop.ResumeLayout(false);
-            this.pnlTop.PerformLayout();
             this.ResumeLayout(false);
 
         }

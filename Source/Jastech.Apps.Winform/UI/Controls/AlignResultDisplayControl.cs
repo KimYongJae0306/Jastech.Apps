@@ -225,71 +225,6 @@ namespace ATT_UT_IPAD.UI.Controls
             TabBtnControlList.ForEach(x => x.BackColor = Color.FromArgb(52, 52, 52));
         }
 
-        private List<CogLineSegment> GetCenterLineByAlignLeftResult(int tabNo)
-        {
-            var tabInspResult = GetTabInspResultEvent?.Invoke(tabNo);
-
-            List<CogLineSegment> cogLineSegmentList = new List<CogLineSegment>();
-
-            if (tabInspResult == null || tabInspResult.AlignResult.LeftX == null)
-                return cogLineSegmentList;
-
-            foreach (var result in tabInspResult.AlignResult.LeftX.AlignResultList)
-            {
-                PointF fpcCenter = new PointF((float)(result.FpcCenterX), (float)(result.FpcCenterY));
-                var fpcSkew = result.FpcSkew;
-
-                PointF panelCenter = new PointF((float)(result.PanelCenterX), (float)(result.PanelCenterY));
-                var panelSkew = result.PanelSkew;
-
-                double length = MathHelper.GetDistance(fpcCenter, panelCenter);
-
-                CogLineSegment fpcLine = new CogLineSegment();
-                fpcLine.Color = _fpcColor;
-                fpcLine.SetStartLengthRotation(fpcCenter.X, fpcCenter.Y, length, fpcSkew + MathHelper.DegToRad(90));
-                
-                cogLineSegmentList.Add(fpcLine);
-
-                CogLineSegment panelLine = new CogLineSegment();
-                panelLine.Color = _panelColor;
-                panelLine.SetStartLengthRotation(panelCenter.X, panelCenter.Y, length, panelSkew + MathHelper.DegToRad(270));
-                cogLineSegmentList.Add(panelLine);
-            }
-            return cogLineSegmentList;
-        }
-
-        private List<CogLineSegment> GetCenterLineByAlignRightResult(int tabNo)
-        {
-            var tabInspResult = GetTabInspResultEvent?.Invoke(tabNo);
-
-            List<CogLineSegment> cogLineSegmentList = new List<CogLineSegment>();
-
-            if (tabInspResult == null || tabInspResult.AlignResult.RightX == null)
-                return cogLineSegmentList;
-
-            foreach (var result in tabInspResult.AlignResult.RightX.AlignResultList)
-            {
-                PointF fpcCenter = new PointF((float)(result.FpcCenterX), (float)(result.FpcCenterY));
-                var fpcSkew = result.FpcSkew;
-
-                PointF panelCenter = new PointF((float)(result.PanelCenterX), (float)(result.PanelCenterY));
-                var panelSkew = result.PanelSkew;
-
-                double length = MathHelper.GetDistance(fpcCenter, panelCenter);
-
-                CogLineSegment fpcLine = new CogLineSegment();
-                fpcLine.Color = _fpcColor;
-                fpcLine.SetStartLengthRotation(fpcCenter.X, fpcCenter.Y, length, fpcSkew + MathHelper.DegToRad(90));
-                cogLineSegmentList.Add(fpcLine);
-
-                CogLineSegment panelLine = new CogLineSegment();
-                panelLine.Color = _panelColor;
-                panelLine.SetStartLengthRotation(panelCenter.X, panelCenter.Y, length, panelSkew + MathHelper.DegToRad(270));
-                cogLineSegmentList.Add(panelLine);
-            }
-            return cogLineSegmentList;
-        }
-
         public void UpdateResultDisplay(int tabNo)
         {
             var tabInspResult = GetTabInspResultEvent?.Invoke(tabNo);
@@ -298,8 +233,8 @@ namespace ATT_UT_IPAD.UI.Controls
             
             TabBtnControlList[tabNo].SetAlignImage(tabInspResult.CogImage);
 
-            TabBtnControlList[tabNo].SetLeftAlignShapeResult(GetLeftAlignShape(tabInspResult), GetCenterLineByAlignLeftResult(tabNo));
-            TabBtnControlList[tabNo].SetRightAlignShapeResult(GetRightAlignShape(tabInspResult), GetCenterLineByAlignRightResult(tabNo));
+            TabBtnControlList[tabNo].SetLeftAlignShapeResult(GetLeftAlignShape(tabInspResult), tabInspResult.GetCenterLineByAlignLeftResult());
+            TabBtnControlList[tabNo].SetRightAlignShapeResult(GetRightAlignShape(tabInspResult), tabInspResult.GetCenterLineByAlignRightResult());
 
             if(tabInspResult.AlignResult.LeftX != null)
                 TabBtnControlList[tabNo].Lx = tabInspResult.AlignResult.LeftX.ResultValue_pixel * tabInspResult.Resolution_um;

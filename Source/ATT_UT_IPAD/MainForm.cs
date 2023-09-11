@@ -13,11 +13,9 @@ using Jastech.Apps.Winform.Settings;
 using Jastech.Apps.Winform.UI.Forms;
 using Jastech.Framework.Config;
 using Jastech.Framework.Device.Grabbers;
-using Jastech.Framework.Device.LAFCtrl;
 using Jastech.Framework.Matrox;
 using Jastech.Framework.Structure;
 using Jastech.Framework.Users;
-using Jastech.Framework.Util.Helper;
 using Jastech.Framework.Winform;
 using Jastech.Framework.Winform.Forms;
 using Jastech.Framework.Winform.Helper;
@@ -27,7 +25,6 @@ using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
-using System.Runtime.InteropServices;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -81,7 +78,7 @@ namespace ATT_UT_IPAD
         {
             if (UserManager.Instance().CurrentUser.Type == AuthorityType.Maker)
                 this.Text = " ";
-
+            
             lblMachineName.Text = AppsConfig.Instance().MachineName;
 
             AddControls();
