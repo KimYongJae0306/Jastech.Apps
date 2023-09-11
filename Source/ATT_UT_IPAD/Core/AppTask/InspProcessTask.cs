@@ -207,7 +207,7 @@ namespace ATT_UT_IPAD.Core.AppTask
               
                 double judgementX = tab.AlignSpec.LeftSpecX_um / resolution_um;
                 double judgementY = tab.AlignSpec.LeftSpecY_um / resolution_um;
-
+                double judgementCX = tab.AlignSpec.CenterSpecX_um;
                 #region Align
                 if (AppsConfig.Instance().EnableAlign)
                 {

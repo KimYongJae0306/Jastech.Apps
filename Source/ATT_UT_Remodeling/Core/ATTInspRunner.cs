@@ -794,7 +794,7 @@ namespace ATT_UT_Remodeling.Core
             CSVHelper.WriteData(csvFile, dataList);
         }
 
-        private float CheckResultValue(AlignResult alignResult)
+        private double CheckResultValue(AlignResult alignResult)
         {
             if (alignResult == null)
                 return 0.0F;

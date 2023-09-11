@@ -96,7 +96,9 @@ namespace Jastech.Apps.Winform.UI.Controls
         private string GetValue(string value)
         {
             if(double.TryParse(value, out double temp))
+            {
                 return MathHelper.GetFloorDecimal(temp, 2).ToString();
+            }
             else
                 return "-";
         }
@@ -105,7 +107,6 @@ namespace Jastech.Apps.Winform.UI.Controls
         {
             dgvAlignHistory.Rows.Clear();
         }
-        #endregion
 
         private void dgvAlignHistory_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
@@ -113,7 +114,7 @@ namespace Jastech.Apps.Winform.UI.Controls
 
             //var model = ModelManager.Instance().CurrentModel as InspModel;
             //string modelName = model.Name;
-            
+
             //string fullPath = Path.Combine(basePath, modelName);
 
             //var directoryList = Directory.EnumerateDirectories(fullPath, "*", SearchOption.AllDirectories);
@@ -184,5 +185,6 @@ namespace Jastech.Apps.Winform.UI.Controls
             form.ShowDialog();
             return;
         }
+        #endregion
     }
 }

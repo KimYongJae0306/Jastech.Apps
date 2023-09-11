@@ -1101,7 +1101,7 @@ namespace Jastech.Apps.Winform
 
             string sendData = GetValue(plcCommonMap);
             if (sendData == null || sendData == string.Empty || sendData == "")
-                outputValue = "0";
+                outputValue = "-";
             else
                 outputValue = sendData.Substring(0, 1) + "#" + sendData.Substring(2, 1);
 

@@ -756,11 +756,11 @@ namespace ATT.Core
                 var tabInspResult = AppsInspResult.Instance().GetAlign(tabNo);
                 var alignResult = tabInspResult.AlignResult;
 
-                float lx = CheckResultValue(alignResult.LeftX);
-                float ly = CheckResultValue(alignResult.LeftY);
-                float rx = CheckResultValue(alignResult.RightX);
-                float ry = CheckResultValue(alignResult.RightY);
-                float cx = (lx + rx) / 2.0F;
+                double lx = CheckResultValue(alignResult.LeftX);
+                double ly = CheckResultValue(alignResult.LeftY);
+                double rx = CheckResultValue(alignResult.RightX);
+                double ry = CheckResultValue(alignResult.RightY);
+                double cx = (lx + rx) / 2.0F;
 
                 body.Add($"{tabInspResult.TabNo + 1}");                                     // Tab No
                 body.Add($"{tabInspResult.Judgement}");                                     // Judge
@@ -863,11 +863,11 @@ namespace ATT.Core
                 float lengthAvg = (akkonResult.AkkonResult.Length_Left_Avg_um + akkonResult.AkkonResult.Length_Right_Avg_um) / 2.0F;
 
                 var alignResult = AppsInspResult.Instance().GetAlign(tabNo);
-                float lx = CheckResultValue(alignResult.AlignResult.LeftX);
-                float ly = CheckResultValue(alignResult.AlignResult.LeftY);
-                float rx = CheckResultValue(alignResult.AlignResult.RightX);
-                float ry = CheckResultValue(alignResult.AlignResult.RightY);
-                float cx = (lx + rx) / 2.0F;
+                double lx = CheckResultValue(alignResult.AlignResult.LeftX);
+                double ly = CheckResultValue(alignResult.AlignResult.LeftY);
+                double rx = CheckResultValue(alignResult.AlignResult.RightX);
+                double ry = CheckResultValue(alignResult.AlignResult.RightY);
+                double cx = (lx + rx) / 2.0F;
 
                 var programType = StringHelper.StringToEnum<ProgramType>(AppsConfig.Instance().ProgramType);
                 List<string> tabData = new List<string>
@@ -901,7 +901,7 @@ namespace ATT.Core
             CSVHelper.WriteData(csvFile, body);
         }
 
-        private float CheckResultValue(AlignResult alignResult)
+        private double CheckResultValue(AlignResult alignResult)
         {
             float resolution = LineCamera.Camera.PixelResolution_um / LineCamera.Camera.LensScale;
             if (alignResult == null)

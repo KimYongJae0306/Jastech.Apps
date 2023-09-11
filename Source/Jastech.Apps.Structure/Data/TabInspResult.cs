@@ -536,13 +536,18 @@ namespace Jastech.Apps.Structure.Data
                     return Judgement.FAIL;
 
                 if (LeftX.Judgement == Judgement.OK && LeftY.Judgement == Judgement.OK && RightX.Judgement == Judgement.OK && RightY.Judgement == Judgement.OK)
+                {
+
                     return Judgement.OK;
+                }
                 else
                     return Judgement.NG;
             }
         }
 
-        public string PreHead { get; set; } = "";
+        public string PreHead { get; set; } = "-";
+
+        public double Cx_um { get; set; } = 0;
 
         public AlignResult LeftX { get; set; } = null;
 
@@ -552,13 +557,14 @@ namespace Jastech.Apps.Structure.Data
 
         public AlignResult RightY { get; set; } = null;
 
-        public ICogImage CenterImage { get; set; } = null;
-
         public double Resolution { get; set; }
+
+        public ICogImage CenterImage { get; set; } = null;
 
         public TabAlignResult DeepCopy()
         {
             TabAlignResult result = new TabAlignResult();
+            result.PreHead = PreHead;
             result.LeftX = LeftX?.DeepCopy();
             result.LeftY = LeftY?.DeepCopy();
             result.RightX = RightX?.DeepCopy();
@@ -612,9 +618,9 @@ namespace Jastech.Apps.Structure.Data
 
         public bool AlignMissing { get; set; } = false;
 
-        public float ResultValue_pixel { get; set; } = 0.0f;
+        public double ResultValue_pixel { get; set; } = 0.0;
 
-        public float ResultValue_um { get; set; } = 0.0f;
+        public double ResultValue_um { get; set; } = 0.0;
 
         public List<LeadAlignResult> AlignResultList { get; set; } = new List<LeadAlignResult>();
 

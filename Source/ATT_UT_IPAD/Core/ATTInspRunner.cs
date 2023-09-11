@@ -594,7 +594,7 @@ namespace ATT_UT_IPAD.Core
         {
             string finalHead = PlcControlManager.Instance().GetAddressMap(PlcCommonMap.PLC_FinalBond).Value;
             if (finalHead == null || finalHead == "")
-                finalHead = "0";
+                finalHead = "-";
 
             return finalHead;
         }
@@ -714,10 +714,10 @@ namespace ATT_UT_IPAD.Core
                 alignInfo.Judgement = tabInspResult.AlignResult.Judgement;
                 alignInfo.PreHead = tabInspResult.AlignResult.PreHead;
                 alignInfo.FinalHead = AppsInspResult.Instance().FinalHead;
-                alignInfo.LX = GetResultAlignResultValue(tabInspResult.AlignResult.LeftX, 2);
-                alignInfo.LY = GetResultAlignResultValue(tabInspResult.AlignResult.LeftY, 2);
-                alignInfo.RX = GetResultAlignResultValue(tabInspResult.AlignResult.RightX, 2);
-                alignInfo.RY = GetResultAlignResultValue(tabInspResult.AlignResult.RightY, 2);
+                alignInfo.LX = GetResultAlignResultValue(tabInspResult.AlignResult.LeftX, 3);
+                alignInfo.LY = GetResultAlignResultValue(tabInspResult.AlignResult.LeftY, 3);
+                alignInfo.RX = GetResultAlignResultValue(tabInspResult.AlignResult.RightX, 3);
+                alignInfo.RY = GetResultAlignResultValue(tabInspResult.AlignResult.RightY, 3);
                 alignInfo.ResultPath = GetResultPath();
 
                 if (double.TryParse(alignInfo.LX, out double lx) && double.TryParse(alignInfo.RX, out double rx))
@@ -738,8 +738,10 @@ namespace ATT_UT_IPAD.Core
                 return "-";
 
             double resolution = AlignCamera.Camera.PixelResolution_um / AlignCamera.Camera.LensScale;
-            double value = MathHelper.GetFloorDecimal(alignResult.ResultValue_pixel * (float)resolution, decimalPlaces);
-            return value.ToString("F2");
+            
+            double value = MathHelper.GetFloorDecimal(alignResult.ResultValue_pixel * resolution, decimalPlaces);
+            string format = "F" + decimalPlaces.ToString();
+            return value.ToString(format);
         }
 
         private void UpdateAkkonDailyInfo(ref DailyData dailyData)
@@ -956,11 +958,11 @@ namespace ATT_UT_IPAD.Core
                 string preHead = tabAlignResult.AlignResult.PreHead;
                 string finalHead = AppsInspResult.Instance().FinalHead;
 
-                float lx = CheckAlignResultValue(tabAlignResult.AlignResult.LeftX);
-                float ly = CheckAlignResultValue(tabAlignResult.AlignResult.LeftY);
-                float rx = CheckAlignResultValue(tabAlignResult.AlignResult.RightX);
-                float ry = CheckAlignResultValue(tabAlignResult.AlignResult.RightY);
-                float cx = (lx + rx) / 2.0F;
+                double lx = CheckAlignResultValue(tabAlignResult.AlignResult.LeftX);
+                double ly = CheckAlignResultValue(tabAlignResult.AlignResult.LeftY);
+                double rx = CheckAlignResultValue(tabAlignResult.AlignResult.RightX);
+                double ry = CheckAlignResultValue(tabAlignResult.AlignResult.RightY);
+                double cx = (lx + rx) / 2.0F;
 
                 var programType = StringHelper.StringToEnum<ProgramType>(AppsConfig.Instance().ProgramType);
                 List<string> tabData = new List<string>
@@ -1108,7 +1110,7 @@ namespace ATT_UT_IPAD.Core
             }
         }
 
-        private float CheckAlignResultValue(AlignResult alignResult)
+        private double CheckAlignResultValue(AlignResult alignResult)
         {
             float resolution = AlignCamera.Camera.PixelResolution_um / AlignCamera.Camera.LensScale;
             if (alignResult == null)
