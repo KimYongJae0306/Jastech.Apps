@@ -34,13 +34,13 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         private List<CogRectangleAffine> AkkonNGAffineList { get; set; } = new List<CogRectangleAffine>();
 
-        public float Lx { get; set; } = 0.0F;
+        public string Lx { get; set; } = "-";//0.0F;
 
-        public float Ly { get; set; } = 0.0F;
+        public string Ly { get; set; } = "-";//0.0F;
 
-        public float Rx { get; set; } = 0.0F;
+        public string Rx { get; set; } = "-";//0.0F;
 
-        public float Ry { get; set; } = 0.0F;
+        public string Ry { get; set; } = "-";//0.0F;
 
         #endregion
 
