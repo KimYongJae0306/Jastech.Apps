@@ -464,7 +464,7 @@ namespace ATT_UT_IPAD.Core
 
                     PlcControlManager.Instance().EnableSendPeriodically = false;
 
-                    if (AppsConfig.Instance().EnableManualJudge)
+                    if (AppsConfig.Instance().EnableManualJudge /*&& NG*/)
                         SeqStep = SeqStep.SEQ_MANUAL_JUDGE;
                     else
                         SeqStep = SeqStep.SEQ_SEND_RESULT;
