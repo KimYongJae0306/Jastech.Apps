@@ -113,6 +113,9 @@ namespace Jastech.Apps.Winform.Service
 
         [JsonProperty]
         public string CX { get; set; } = "-";
+
+        [JsonProperty]
+        public string ResultPath { get; set; } = "";
     }
 
     public class AkkonDailyInfo

@@ -715,6 +715,7 @@ namespace ATT_UT_IPAD.Core
                 alignInfo.LY = GetResultAlignResultValue(tabInspResult.AlignResult.LeftY, 2);
                 alignInfo.RX = GetResultAlignResultValue(tabInspResult.AlignResult.RightX, 2);
                 alignInfo.RY = GetResultAlignResultValue(tabInspResult.AlignResult.RightY, 2);
+                alignInfo.ResultPath = GetResultPath();
 
                 if (double.TryParse(alignInfo.LX, out double lx) && double.TryParse(alignInfo.RX, out double rx))
                     alignInfo.CX = ((lx + rx) / 2.0F).ToString();
@@ -1322,11 +1323,11 @@ namespace ATT_UT_IPAD.Core
         {
             try
             {
-                if (ConfigSet.Instance().Operation.VirtualMode)
-                {
-                    _saveThread = null;
-                    return;
-                }
+                //if (ConfigSet.Instance().Operation.VirtualMode)
+                //{
+                //    _saveThread = null;
+                //    return;
+                //}
 
                 var inspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
 
@@ -1335,15 +1336,8 @@ namespace ATT_UT_IPAD.Core
 
                 for (int tabNo = 0; tabNo < inspModel.TabCount; tabNo++)
                 {
-                    DateTime currentTime = AppsInspResult.Instance().StartInspTime;
-
-                    string month = currentTime.ToString("MM");
-                    string day = currentTime.ToString("dd");
-                    string timeStamp = currentTime.ToString("yyyyMMddHHmmss");
-                    string folderPath = AppsInspResult.Instance().Cell_ID + "_" + timeStamp;
-
-                    string path = Path.Combine(ConfigSet.Instance().Path.Result, inspModel.Name, month, day, folderPath);
-
+                    string path = GetResultPath();
+                    
                     SaveResultImage(Path.Combine(path, "Akkon"), tabNo, true);
                     SaveResultImage(Path.Combine(path, "Align"), tabNo, false);
                 }
@@ -1428,13 +1422,6 @@ namespace ATT_UT_IPAD.Core
             }
         }
 
-        private void SaveAlignOverlayImage(string resultPath, TabInspResult tabInspResult)
-        {
-            string alignResultDir = Path.Combine(resultPath, "AlignResult");
-            if (Directory.Exists(alignResultDir) == false)
-                Directory.CreateDirectory(alignResultDir);
-        }
-
         public void SaveAlignResult(TabInspResult tabInspResult, string path)
         {
             if (tabInspResult == null)
@@ -1444,6 +1431,13 @@ namespace ATT_UT_IPAD.Core
             if (Directory.Exists(savePath) == false)
                 Directory.CreateDirectory(savePath);
 
+            if(tabInspResult.AlignResult.CenterImage != null)
+            {
+                string fileName = string.Format("Center_Align_Tab_{0}.jpeg", tabInspResult.TabNo);
+                string filePath = Path.Combine(savePath, fileName);
+                VisionProImageHelper.Save(tabInspResult.AlignResult.CenterImage, filePath);
+            }
+            
             var leftAlignShapeList = tabInspResult.GetLeftAlignShapeList();
             if(leftAlignShapeList.Count() > 0)
             {
@@ -1484,6 +1478,21 @@ namespace ATT_UT_IPAD.Core
             }
 
             return cropImage;
+        }
+
+        private string GetResultPath()
+        {
+            var inspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
+            DateTime currentTime = AppsInspResult.Instance().StartInspTime;
+
+            string month = currentTime.ToString("MM");
+            string day = currentTime.ToString("dd");
+            string timeStamp = currentTime.ToString("yyyyMMddHHmmss");
+            string folderPath = AppsInspResult.Instance().Cell_ID + "_" + timeStamp;
+
+            string path = Path.Combine(ConfigSet.Instance().Path.Result, inspModel.Name, month, day, folderPath);
+
+            return path;
         }
 
         private Rectangle GetCropROI(List<AlignGraphicPosition> alignShapeList, int imageWidth, int imageHeight)
