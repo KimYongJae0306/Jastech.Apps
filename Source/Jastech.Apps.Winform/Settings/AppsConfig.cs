@@ -49,6 +49,9 @@ namespace Jastech.Apps.Winform.Settings
         public bool EnableAkkon { get; set; } = true;
 
         [JsonProperty]
+        public bool EnableManualJudge { get; set; } = false;
+
+        [JsonProperty]
         public bool UseMaterialInfo { get; set; } = true;
 
         [JsonProperty]
