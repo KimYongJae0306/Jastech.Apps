@@ -40,11 +40,19 @@ namespace Jastech.Apps.Winform.Service
             JsonConvertHelper.LoadToExistingTarget<DailyInfo>(filePath, this);
         }
 
-        //public void Dispose()
-        //{
-        //    if (DailyDataList.Count > 0)
-        //        DailyDataList.Clear();
-        //}
+        public AlignDailyInfo GetAlignDailyInfo(string inspTime)
+        {
+            foreach (var dailyData in DailyDataList)
+            {
+                foreach (var alignDailyInfo in dailyData.AlignDailyInfoList)
+                {
+                    if (alignDailyInfo.InspectionTime == inspTime)
+                        return alignDailyInfo;
+                }
+            }
+
+            return null;
+        }
     }
 
     public class DailyData

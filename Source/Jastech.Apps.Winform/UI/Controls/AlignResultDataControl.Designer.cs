@@ -104,6 +104,7 @@
             this.dgvAlignHistory.Size = new System.Drawing.Size(940, 341);
             this.dgvAlignHistory.TabIndex = 2;
             this.dgvAlignHistory.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvAlignHistory_CellContentClick);
+            this.dgvAlignHistory.CellContentDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvAlignHistory_CellContentDoubleClick);
             // 
             // colTime
             // 

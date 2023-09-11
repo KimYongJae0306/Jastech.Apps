@@ -1326,11 +1326,11 @@ namespace ATT_UT_IPAD.Core
         {
             try
             {
-                //if (ConfigSet.Instance().Operation.VirtualMode)
-                //{
-                //    _saveThread = null;
-                //    return;
-                //}
+                if (ConfigSet.Instance().Operation.VirtualMode)
+                {
+                    _saveThread = null;
+                    return;
+                }
 
                 var inspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
 
