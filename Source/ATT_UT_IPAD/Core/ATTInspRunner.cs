@@ -740,8 +740,7 @@ namespace ATT_UT_IPAD.Core
             double resolution = AlignCamera.Camera.PixelResolution_um / AlignCamera.Camera.LensScale;
             
             double value = MathHelper.GetFloorDecimal(alignResult.ResultValue_pixel * resolution, decimalPlaces);
-            string format = "F" + decimalPlaces.ToString();
-            return value.ToString(format);
+            return value.ToString();
         }
 
         private void UpdateAkkonDailyInfo(ref DailyData dailyData)

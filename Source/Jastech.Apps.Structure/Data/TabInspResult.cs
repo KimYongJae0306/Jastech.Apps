@@ -537,8 +537,11 @@ namespace Jastech.Apps.Structure.Data
 
                 if (LeftX.Judgement == Judgement.OK && LeftY.Judgement == Judgement.OK && RightX.Judgement == Judgement.OK && RightY.Judgement == Judgement.OK)
                 {
-
-                    return Judgement.OK;
+                    var cx = GetCx_um();
+                    if (GetCx_um() <= Math.Abs(CxJudegementValue_pixel * Resolution_um))
+                        return Judgement.OK;
+                    else
+                        return Judgement.NG;
                 }
                 else
                     return Judgement.NG;
@@ -547,7 +550,7 @@ namespace Jastech.Apps.Structure.Data
 
         public string PreHead { get; set; } = "-";
 
-        public double Cx_um { get; set; } = 0;
+        public double CxJudegementValue_pixel { get; set; }
 
         public AlignResult LeftX { get; set; } = null;
 
@@ -557,7 +560,7 @@ namespace Jastech.Apps.Structure.Data
 
         public AlignResult RightY { get; set; } = null;
 
-        public double Resolution { get; set; }
+        public double Resolution_um { get; set; }
 
         public ICogImage CenterImage { get; set; } = null;
 
@@ -569,10 +572,21 @@ namespace Jastech.Apps.Structure.Data
             result.LeftY = LeftY?.DeepCopy();
             result.RightX = RightX?.DeepCopy();
             result.RightY = RightY?.DeepCopy();
-            result.Resolution = Resolution;
+            result.Resolution_um = Resolution_um;
+            result.CxJudegementValue_pixel = CxJudegementValue_pixel;
             result.CenterImage = CenterImage?.CopyBase(CogImageCopyModeConstants.CopyPixels);
 
             return result;
+        }
+
+        private double GetCx_um()
+        {
+            double lx = MathHelper.GetFloorDecimal(LeftX.ResultValue_pixel * Resolution_um, 3);
+            double rx = MathHelper.GetFloorDecimal(RightX.ResultValue_pixel * Resolution_um, 3);
+
+            double cx = (lx + rx) / 2.0;
+
+            return cx;
         }
 
         public void Dispose()
@@ -620,11 +634,9 @@ namespace Jastech.Apps.Structure.Data
 
         public double ResultValue_pixel { get; set; } = 0.0;
 
-        public double ResultValue_um { get; set; } = 0.0;
+        public double JudegementValue_pixel { get; set; }
 
         public List<LeadAlignResult> AlignResultList { get; set; } = new List<LeadAlignResult>();
-
-        public double JudegementValue_pixel { get; set; }
 
         public float AvgCenterY { get; set; }
 
@@ -659,7 +671,7 @@ namespace Jastech.Apps.Structure.Data
         {
             AlignResult result = new AlignResult();
             result.ResultValue_pixel = ResultValue_pixel;
-            result.ResultValue_um = ResultValue_um;
+            //result.ResultValue_um = ResultValue_um;
             result.Panel = Panel?.DeepCopy();
             result.Fpc = Fpc?.DeepCopy();
             return result;

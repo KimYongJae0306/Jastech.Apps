@@ -665,7 +665,7 @@ namespace ATT.Core
 
             double resolution = LineCamera.Camera.PixelResolution_um / LineCamera.Camera.LensScale;
             double value = MathHelper.GetFloorDecimal(alignResult.ResultValue_pixel * (float)resolution, 2);
-            return value.ToString("F2");
+            return value.ToString();
         }
 
         private void UpdateAkkonDailyInfo(ref DailyData dailyData)

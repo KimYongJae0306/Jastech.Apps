@@ -207,7 +207,11 @@ namespace ATT_UT_IPAD.Core.AppTask
               
                 double judgementX = tab.AlignSpec.LeftSpecX_um / resolution_um;
                 double judgementY = tab.AlignSpec.LeftSpecY_um / resolution_um;
-                double judgementCX = tab.AlignSpec.CenterSpecX_um;
+                double judgementCX = tab.AlignSpec.CenterSpecX_um / resolution_um;
+
+                tabInspResult.AlignResult.Resolution_um = resolution_um;
+                tabInspResult.AlignResult.CxJudegementValue_pixel = judgementCX;
+
                 #region Align
                 if (AppsConfig.Instance().EnableAlign)
                 {
@@ -256,9 +260,6 @@ namespace ATT_UT_IPAD.Core.AppTask
                     tabInspResult.AlignResult.RightX = new AlignResult();
                     tabInspResult.AlignResult.RightY = new AlignResult();
                 }
-                #endregion
-
-                #region Center Align
                 #endregion
 
                 sw.Stop();
@@ -334,7 +335,6 @@ namespace ATT_UT_IPAD.Core.AppTask
                 }
 
                 AkkonProcessTaskCancellationTokenSource.Cancel();
-                //AkkonProcessTask.Wait();
                 AkkonProcessTask = null;
             }
 
@@ -347,7 +347,6 @@ namespace ATT_UT_IPAD.Core.AppTask
                 }
 
                 AlignProcessTaskCancellationTokenSource.Cancel();
-                //AlignProcessTask.Wait();
                 AlignProcessTask = null;
             }
         }

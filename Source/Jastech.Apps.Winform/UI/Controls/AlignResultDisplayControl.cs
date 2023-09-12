@@ -174,8 +174,8 @@ namespace ATT_UT_IPAD.UI.Controls
             if (alignResult.AlignMissing)
                 return "-";
 
-            double value = MathHelper.GetFloorDecimal(alignResult.ResultValue_pixel * (float)resolution, 2);
-            return value.ToString("F2");
+            double value = MathHelper.GetFloorDecimal(alignResult.ResultValue_pixel * (float)resolution, 3);
+            return value.ToString();
         }
 
         public void UpdateResultDisplay(int tabNo)
@@ -236,7 +236,7 @@ namespace ATT_UT_IPAD.UI.Controls
                 if (lx == "-" || rx == "-")
                     cx = "-";
                 else
-                    cx = ((Convert.ToDouble(lx) + Convert.ToDouble(rx)) / 2.0).ToString("F2");
+                    cx = ((Convert.ToDouble(lx) + Convert.ToDouble(rx)) / 2.0).ToString();
 
                 InspAlignDisplay.UpdateLeftDisplay(image, leftShape.CaliperShapeList, leftShape.LineSegmentList, GetMinimumPointY(LeftPointList[tabNo]));
                 if (InspAlignDisplay.IsLeftResultImageView && image != null)
