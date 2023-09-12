@@ -175,7 +175,7 @@
             this.lblLightState.Size = new System.Drawing.Size(19, 25);
             this.lblLightState.TabIndex = 8;
             this.lblLightState.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.lblLightState.Click += new System.EventHandler(this.lblLightState_Click);
+            this.lblLightState.Click += new System.EventHandler(this.Test_Click);
             // 
             // lblPlcStateText
             // 

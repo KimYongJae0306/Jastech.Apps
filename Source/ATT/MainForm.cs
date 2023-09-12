@@ -12,6 +12,7 @@ using Jastech.Apps.Winform.Service.Plc.Maps;
 using Jastech.Apps.Winform.Settings;
 using Jastech.Framework.Config;
 using Jastech.Framework.Device.Grabbers;
+using Jastech.Framework.Device.LAFCtrl;
 using Jastech.Framework.Matrox;
 using Jastech.Framework.Structure;
 using Jastech.Framework.Users;
@@ -532,9 +533,32 @@ namespace ATT
         }
         #endregion
 
-        private void lblLightState_Click(object sender, EventArgs e)
+        private void Test_Click(object sender, EventArgs e)
         {
-            new ProgressForm().ShowDialog();
+            if (ConfigSet.Instance().Operation.VirtualMode == false)
+                return;
+
+            ProgressForm tpc = new ProgressForm();
+
+            bool running = true;
+            tpc.RunTask($"Test Wait 5Sec", new Action(() =>
+            {
+                for (int i = 0; i < 50 && running; i++)
+                    Thread.Sleep(100);
+            }));
+            tpc.StopInnerLoop += delegate { running = false; };
+            tpc.ShowDialog();
+
+            bool isComp = false;
+            object isCompObj = isComp;
+
+            ProgressForm tpc2 = new ProgressForm();
+            var ctrl = LAFManager.Instance().GetLAF("Laf");
+            tpc2.RunTask($"LAF homing", new Func<bool>(() => ctrl.HomeSequenceAction()));
+            tpc2.StopInnerLoop += ctrl.StopHomeSequence;
+            tpc2.ShowDialog();
+
+            //new MultiProgressForm().ShowDialog();
         }
     }
 }
