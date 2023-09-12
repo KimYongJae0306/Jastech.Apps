@@ -156,7 +156,7 @@ namespace Jastech.Apps.Winform
         {
             _homeSequenceStep = HomeSequenceStep.Start;
 
-            while (!_isHomeThreadStop)
+            while (_isHomeThreadStop == false)
             {
                 HomeSequence();
                 Thread.Sleep(50);
@@ -164,6 +164,30 @@ namespace Jastech.Apps.Winform
             _homeThread = null;
         }
 
+        private bool _isHomeActionStop = false;
+        public bool HomeSequenceAction()
+        {
+            _isHomeActionStop = false;
+            _homeSequenceStep = HomeSequenceStep.Start;
+
+            while (_isHomeActionStop == false)
+            {
+                HomeSequence();
+                Thread.Sleep(50);
+            }
+
+            if (_homeSequenceStep != HomeSequenceStep.Stop)
+            {
+                _homeSequenceStep = HomeSequenceStep.Stop;
+                return false;
+            }
+            else
+                return true;
+        }
+
+        public void StopHomeSequence() => _isHomeActionStop = true;
+
+        Stopwatch sw = null;
         private void HomeSequence()
         {
             if (LafCtrl == null)
@@ -171,7 +195,8 @@ namespace Jastech.Apps.Winform
 
             var status = LafCtrl.Status;
 
-            Stopwatch sw = new Stopwatch();
+            if (sw == null)
+                sw = new Stopwatch();
 
             switch (_homeSequenceStep)
             {
@@ -179,6 +204,7 @@ namespace Jastech.Apps.Winform
                     break;
 
                 case HomeSequenceStep.Start:
+                    sw?.Restart();
                     _scale = 1.0;
                     _homeSequenceStep = HomeSequenceStep.MoveFirstLimit;
                     break;
@@ -188,10 +214,8 @@ namespace Jastech.Apps.Winform
 
                     if (status.IsNegativeLimit == false)
                     {
-
                         LafCtrl.SetMotionRelativeMove(Direction.CW, HOMING_FIRST_TARGET);      // -Limit 감지까지 이동
                         Logger.Write(LogType.Device, "Move to first minus limit detection.");
-                        sw.Restart();
                         _homeSequenceStep = HomeSequenceStep.CheckFirstLimit;
                     }
                     else
@@ -312,6 +336,7 @@ namespace Jastech.Apps.Winform
                     _scale = 1.0;
 
                     _isHomeThreadStop = true;
+                    _isHomeActionStop = true;
                     LafCtrl?.SetDefaultParameter();
                     _homeSequenceStep = HomeSequenceStep.Stop;
                     break;
