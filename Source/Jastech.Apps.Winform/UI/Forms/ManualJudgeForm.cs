@@ -106,6 +106,9 @@ namespace Jastech.Apps.Winform.UI.Forms
         private void InitializeJudgeStatus()
         {
             var appInspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
+            if (appInspModel == null)
+                return;
+
             var tabCount = appInspModel.TabCount;
 
             tlpJudge.ColumnStyles.Clear();

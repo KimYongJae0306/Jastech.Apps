@@ -186,7 +186,7 @@ namespace ATT_UT_IPAD
 
             AppsInspResult.Instance().Dispose();
 
-            MainPageControl.MainViewControl?.UpdateTabCount(model.TabCount);
+            MainPageControl.UpdateTabCount(model.TabCount);
 
             UpdateLabel(model.Name);
             ConfigSet.Instance().Operation.LastModelName = model.Name;
@@ -322,32 +322,32 @@ namespace ATT_UT_IPAD
 
         public void UpdateMainAkkonResult(int tabNo)
         {
-            MainPageControl.MainViewControl.UpdateMainAkkonResultData(tabNo);
+            MainPageControl.UpdateMainAkkonResultData(tabNo);
         }
 
         public void UpdateMainAlignResult(int tabNo)
         {
-            MainPageControl.MainViewControl.UpdateMainAlignResult(tabNo);
+            MainPageControl.UpdateMainAlignResult(tabNo);
         }
 
         public void UpdateAkkonResultTabButton(int tabNo)
         {
-            MainPageControl.MainViewControl.UpdateAkkonResultTabButton(tabNo);
+            MainPageControl.UpdateAkkonResultTabButton(tabNo);
         }
 
         public void UpdateAlignResultTabButton(int tabNo)
         {
-            MainPageControl.MainViewControl.UpdateAlignResultTabButton(tabNo);
+            MainPageControl.UpdateAlignResultTabButton(tabNo);
         }
 
         public void TabButtonResetColor()
         {
-            MainPageControl.MainViewControl.TabButtonResetColor();
+            MainPageControl.TabButtonResetColor();
         }
 
         public void AddSystemLogMessage(string logMessage)
         {
-            MainPageControl.MainViewControl.AddSystemLogMessage(logMessage);
+            MainPageControl.AddSystemLogMessage(logMessage);
         }
 
         private void lblCurrentUser_Click(object sender, EventArgs e)
