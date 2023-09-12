@@ -41,11 +41,12 @@ namespace ATT_UT_Remodeling
 
                 Application.EnableVisualStyles();
                 Application.SetCompatibleTextRenderingDefault(false);
-                MilHelper.InitApplication();
-                CameraMil.BufferPoolCount = 200;
 
                 Logger.Initialize(ConfigSet.Instance().Path.Log);
-                SystemHelper.StartChecker(@"D:\ATT_Memory_Test.txt");
+
+                MilHelper.InitApplication();
+                CameraMil.BufferPoolCount = 200;
+                //SystemHelper.StartChecker(@"D:\ATT_Memory_Test.txt");
                 AppsConfig.Instance().UnitCount = 1;
 
                 if (Cognex.VisionPro.CogLicense.GetLicensedFeatures(false, false).Count == 0)

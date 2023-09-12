@@ -58,7 +58,7 @@
             this.pictureBox2 = new System.Windows.Forms.PictureBox();
             this.lblCurrentModel = new System.Windows.Forms.Label();
             this.picLogo = new System.Windows.Forms.PictureBox();
-            this.lblSystemName = new System.Windows.Forms.Label();
+            this.lblMachineName = new System.Windows.Forms.Label();
             this.tmrMainForm = new System.Windows.Forms.Timer(this.components);
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.lblMotionState = new System.Windows.Forms.Label();
@@ -380,7 +380,7 @@
             this.tlpMachineStatus.Controls.Add(this.tableLayoutPanel5, 3, 0);
             this.tlpMachineStatus.Controls.Add(this.lblCurrentModel, 2, 0);
             this.tlpMachineStatus.Controls.Add(this.picLogo, 0, 0);
-            this.tlpMachineStatus.Controls.Add(this.lblSystemName, 1, 0);
+            this.tlpMachineStatus.Controls.Add(this.lblMachineName, 1, 0);
             this.tlpMachineStatus.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tlpMachineStatus.Location = new System.Drawing.Point(0, 0);
             this.tlpMachineStatus.Margin = new System.Windows.Forms.Padding(0);
@@ -457,20 +457,22 @@
             this.picLogo.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.picLogo.TabIndex = 0;
             this.picLogo.TabStop = false;
+            this.picLogo.Click += new System.EventHandler(this.picLogo_Click);
             // 
-            // lblSystemName
+            // lblMachineName
             // 
-            this.lblSystemName.BackColor = System.Drawing.Color.Transparent;
-            this.lblSystemName.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblSystemName.Font = new System.Drawing.Font("맑은 고딕", 20.2F, System.Drawing.FontStyle.Bold);
-            this.lblSystemName.ForeColor = System.Drawing.Color.White;
-            this.lblSystemName.Location = new System.Drawing.Point(223, 3);
-            this.lblSystemName.Margin = new System.Windows.Forms.Padding(3);
-            this.lblSystemName.Name = "lblSystemName";
-            this.lblSystemName.Size = new System.Drawing.Size(1336, 42);
-            this.lblSystemName.TabIndex = 1;
-            this.lblSystemName.Text = "ATT Inspection";
-            this.lblSystemName.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblMachineName.BackColor = System.Drawing.Color.Transparent;
+            this.lblMachineName.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblMachineName.Font = new System.Drawing.Font("맑은 고딕", 20.2F, System.Drawing.FontStyle.Bold);
+            this.lblMachineName.ForeColor = System.Drawing.Color.White;
+            this.lblMachineName.Location = new System.Drawing.Point(223, 3);
+            this.lblMachineName.Margin = new System.Windows.Forms.Padding(3);
+            this.lblMachineName.Name = "lblMachineName";
+            this.lblMachineName.Size = new System.Drawing.Size(1336, 42);
+            this.lblMachineName.TabIndex = 1;
+            this.lblMachineName.Text = "ATT Inspection";
+            this.lblMachineName.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblMachineName.Click += new System.EventHandler(this.lblMachineName_Click);
             // 
             // tmrMainForm
             // 
@@ -697,7 +699,7 @@
         private System.Windows.Forms.PictureBox pictureBox2;
         private System.Windows.Forms.Label lblCurrentModel;
         private System.Windows.Forms.PictureBox picLogo;
-        private System.Windows.Forms.Label lblSystemName;
+        private System.Windows.Forms.Label lblMachineName;
         private System.Windows.Forms.Timer tmrMainForm;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
         private System.Windows.Forms.Label lblMotionState;

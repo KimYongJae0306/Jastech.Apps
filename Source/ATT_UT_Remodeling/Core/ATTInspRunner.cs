@@ -192,7 +192,7 @@ namespace ATT_UT_Remodeling.Core
             if (ModelManager.Instance().CurrentModel == null)
                 return;
 
-            SystemManager.Instance().MachineStatus = MachineStatus.RUN;
+            PlcControlManager.Instance().MachineStatus = MachineStatus.RUN;
             SeqStep = SeqStep.SEQ_INIT;
 
             WriteLog("Start Sequence.");
@@ -200,7 +200,7 @@ namespace ATT_UT_Remodeling.Core
 
         public void SeqStop()
         {
-            SystemManager.Instance().MachineStatus = MachineStatus.STOP;
+            PlcControlManager.Instance().MachineStatus = MachineStatus.STOP;
             SeqStep = SeqStep.SEQ_IDLE;
 
             WriteLog("Stop Sequence.");

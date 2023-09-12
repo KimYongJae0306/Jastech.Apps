@@ -107,7 +107,7 @@
             this.tlpAlign.RowCount = 4;
             this.tlpAlign.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 32F));
             this.tlpAlign.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 160F));
-            this.tlpAlign.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 320F));
+            this.tlpAlign.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 300F));
             this.tlpAlign.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tlpAlign.Size = new System.Drawing.Size(893, 899);
             this.tlpAlign.TabIndex = 1;
@@ -350,7 +350,7 @@
             this.tlpParams.RowCount = 2;
             this.tlpParams.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 115F));
             this.tlpParams.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tlpParams.Size = new System.Drawing.Size(893, 320);
+            this.tlpParams.Size = new System.Drawing.Size(893, 300);
             this.tlpParams.TabIndex = 25;
             // 
             // pnlCaliperParam
@@ -360,7 +360,7 @@
             this.pnlCaliperParam.Margin = new System.Windows.Forms.Padding(0);
             this.pnlCaliperParam.Name = "pnlCaliperParam";
             this.pnlCaliperParam.Padding = new System.Windows.Forms.Padding(4);
-            this.pnlCaliperParam.Size = new System.Drawing.Size(893, 205);
+            this.pnlCaliperParam.Size = new System.Drawing.Size(893, 185);
             this.pnlCaliperParam.TabIndex = 15;
             // 
             // pnlLeadParam
@@ -449,16 +449,16 @@
             this.panel1.Controls.Add(this.label2);
             this.panel1.Controls.Add(this.label1);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel1.Location = new System.Drawing.Point(0, 512);
+            this.panel1.Location = new System.Drawing.Point(0, 492);
             this.panel1.Margin = new System.Windows.Forms.Padding(0);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(893, 387);
+            this.panel1.Size = new System.Drawing.Size(893, 407);
             this.panel1.TabIndex = 26;
             // 
             // label3
             // 
             this.label3.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.label3.Location = new System.Drawing.Point(5, 148);
+            this.label3.Location = new System.Drawing.Point(5, 114);
             this.label3.Margin = new System.Windows.Forms.Padding(0);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(200, 40);
@@ -469,7 +469,7 @@
             // lblCenterAlignSpecX
             // 
             this.lblCenterAlignSpecX.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lblCenterAlignSpecX.Location = new System.Drawing.Point(217, 148);
+            this.lblCenterAlignSpecX.Location = new System.Drawing.Point(217, 114);
             this.lblCenterAlignSpecX.Margin = new System.Windows.Forms.Padding(0);
             this.lblCenterAlignSpecX.Name = "lblCenterAlignSpecX";
             this.lblCenterAlignSpecX.Size = new System.Drawing.Size(209, 40);
@@ -481,7 +481,7 @@
             // label6
             // 
             this.label6.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.label6.Location = new System.Drawing.Point(5, 98);
+            this.label6.Location = new System.Drawing.Point(5, 64);
             this.label6.Margin = new System.Windows.Forms.Padding(0);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(200, 40);
@@ -492,7 +492,7 @@
             // lblRightAlignSpecX
             // 
             this.lblRightAlignSpecX.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lblRightAlignSpecX.Location = new System.Drawing.Point(217, 98);
+            this.lblRightAlignSpecX.Location = new System.Drawing.Point(217, 64);
             this.lblRightAlignSpecX.Margin = new System.Windows.Forms.Padding(0);
             this.lblRightAlignSpecX.Name = "lblRightAlignSpecX";
             this.lblRightAlignSpecX.Size = new System.Drawing.Size(209, 40);
@@ -530,7 +530,7 @@
             this.tableLayoutPanel6.Controls.Add(this.label31, 0, 2);
             this.tableLayoutPanel6.Controls.Add(this.lblRightX_Judgement, 1, 2);
             this.tableLayoutPanel6.Controls.Add(this.lblRightX_Value, 2, 2);
-            this.tableLayoutPanel6.Location = new System.Drawing.Point(5, 201);
+            this.tableLayoutPanel6.Location = new System.Drawing.Point(5, 167);
             this.tableLayoutPanel6.Margin = new System.Windows.Forms.Padding(0);
             this.tableLayoutPanel6.Name = "tableLayoutPanel6";
             this.tableLayoutPanel6.RowCount = 6;
@@ -743,7 +743,7 @@
             // lblRightAlignSpecY
             // 
             this.lblRightAlignSpecY.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lblRightAlignSpecY.Location = new System.Drawing.Point(648, 98);
+            this.lblRightAlignSpecY.Location = new System.Drawing.Point(648, 64);
             this.lblRightAlignSpecY.Margin = new System.Windows.Forms.Padding(0);
             this.lblRightAlignSpecY.Name = "lblRightAlignSpecY";
             this.lblRightAlignSpecY.Size = new System.Drawing.Size(209, 40);
@@ -755,7 +755,7 @@
             // label5
             // 
             this.label5.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.label5.Location = new System.Drawing.Point(436, 98);
+            this.label5.Location = new System.Drawing.Point(436, 64);
             this.label5.Margin = new System.Windows.Forms.Padding(0);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(200, 40);
@@ -766,7 +766,7 @@
             // lblLeftAlignSpecY
             // 
             this.lblLeftAlignSpecY.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lblLeftAlignSpecY.Location = new System.Drawing.Point(648, 48);
+            this.lblLeftAlignSpecY.Location = new System.Drawing.Point(648, 14);
             this.lblLeftAlignSpecY.Margin = new System.Windows.Forms.Padding(0);
             this.lblLeftAlignSpecY.Name = "lblLeftAlignSpecY";
             this.lblLeftAlignSpecY.Size = new System.Drawing.Size(209, 40);
@@ -778,7 +778,7 @@
             // lblLeftAlignSpecX
             // 
             this.lblLeftAlignSpecX.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lblLeftAlignSpecX.Location = new System.Drawing.Point(217, 48);
+            this.lblLeftAlignSpecX.Location = new System.Drawing.Point(217, 14);
             this.lblLeftAlignSpecX.Margin = new System.Windows.Forms.Padding(0);
             this.lblLeftAlignSpecX.Name = "lblLeftAlignSpecX";
             this.lblLeftAlignSpecX.Size = new System.Drawing.Size(209, 40);
@@ -790,7 +790,7 @@
             // label2
             // 
             this.label2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.label2.Location = new System.Drawing.Point(436, 48);
+            this.label2.Location = new System.Drawing.Point(436, 14);
             this.label2.Margin = new System.Windows.Forms.Padding(0);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(200, 40);
@@ -801,7 +801,7 @@
             // label1
             // 
             this.label1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.label1.Location = new System.Drawing.Point(5, 48);
+            this.label1.Location = new System.Drawing.Point(5, 14);
             this.label1.Margin = new System.Windows.Forms.Padding(0);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(200, 40);

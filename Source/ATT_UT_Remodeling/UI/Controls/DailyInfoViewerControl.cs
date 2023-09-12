@@ -133,6 +133,12 @@ namespace ATT_UT_Remodeling.UI.Controls
             AlignResultChartControl.UpdateAlignDaily(tabNo);
         }
 
+        public void ReUpdate()
+        {
+            AkkonResultDataControl.UpdateAkkonDaily();
+            AkkonResultChartControl.ReUpdate();
+        }
+
         public void ClearAkkonData()
         {
             AkkonResultDataControl.ClearData();
@@ -143,6 +149,15 @@ namespace ATT_UT_Remodeling.UI.Controls
         {
             AlignResultDataControl.ClearData();
             AlignResultChartControl.ClearChart();
+        }
+
+        public void Enable(bool isEnable)
+        {
+            BeginInvoke(new Action(() =>
+            {
+                AkkonResultDataControl.Enabled = isEnable;
+                AlignResultDataControl.Enabled = isEnable;
+            }));
         }
         #endregion
     }

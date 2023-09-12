@@ -7,6 +7,7 @@ using Jastech.Apps.Winform;
 using Jastech.Apps.Winform.Core;
 using Jastech.Apps.Winform.Service.Plc;
 using Jastech.Apps.Winform.Service.Plc.Maps;
+using Jastech.Apps.Winform.Settings;
 using Jastech.Apps.Winform.UI.Forms;
 using Jastech.Framework.Config;
 using Jastech.Framework.Device.Grabbers;
@@ -18,6 +19,7 @@ using Jastech.Framework.Winform.Forms;
 using Jastech.Framework.Winform.Helper;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -51,6 +53,12 @@ namespace ATT_UT_Remodeling
         private Queue<string> VirtualImagePathQueue = new Queue<string>();
 
         public ATTInspModelService ATTInspModelService { get; set; } = new ATTInspModelService();
+
+        public ManualJudgeForm ManualJudgeForm { get; set; } = null;
+        #endregion
+
+        #region 델리게이트
+        private delegate void UpdateLabelDelegate(string modelname);
         #endregion
 
         #region 생성자
@@ -60,9 +68,15 @@ namespace ATT_UT_Remodeling
         }
         #endregion
 
+
         #region 메서드
         private void MainForm_Load(object sender, EventArgs e)
         {
+            if (UserManager.Instance().CurrentUser.Type == AuthorityType.Maker)
+                this.Text = " ";
+
+            lblMachineName.Text = AppsConfig.Instance().MachineName;
+
             AddControls();
             SelectMainPage();
 
@@ -90,6 +104,9 @@ namespace ATT_UT_Remodeling
             SystemManager.Instance().AddSystemLogMessage("Start Program.");
 
             PlcControlManager.Instance().WriteVersion();
+
+            ManualJudgeForm = new ManualJudgeForm();
+            ManualJudgeForm.Show();
         }
 
         private void MainForm_PreAlignRunnerHandler(bool isStart)
@@ -134,8 +151,7 @@ namespace ATT_UT_Remodeling
 
             ModelManager.Instance().CurrentModel = ATTInspModelService.Load(filePath);
             SelectMainPage();
-
-            lblCurrentModel.Text = modelName;
+            UpdateLabel(modelName);
 
             ConfigSet.Instance().Operation.LastModelName = modelName;
             ConfigSet.Instance().Operation.Save(ConfigSet.Instance().Path.Config);
@@ -175,10 +191,21 @@ namespace ATT_UT_Remodeling
             MainPageControl.UpdateTabCount(model.TabCount);
             MainPageControl.ClearPreAlignResult();
 
-            lblCurrentModel.Text = model.Name;
-
+            UpdateLabel(model.Name);
             ConfigSet.Instance().Operation.LastModelName = model.Name;
             ConfigSet.Instance().Operation.Save(ConfigSet.Instance().Path.Config);
+        }
+
+        private void UpdateLabel(string modelname)
+        {
+            if (this.InvokeRequired)
+            {
+                UpdateLabelDelegate callback = UpdateLabel;
+                BeginInvoke(callback, modelname);
+                return;
+            }
+
+            lblCurrentModel.Text = modelname;
         }
 
         private void lblMainPage_Click(object sender, EventArgs e)
@@ -229,18 +256,44 @@ namespace ATT_UT_Remodeling
             if (user.Type == AuthorityType.None)
             {
                 lblCurrentUser.Text = "Operator";
-                lblTeachingPage.Enabled = false;
-                lblTeachingPageImage.Enabled = false;
+                //lblTeachingPage.Enabled = false;
+                //lblTeachingPageImage.Enabled = false;
             }
             else
             {
                 lblCurrentUser.Text = user.Id.ToString();
-                lblTeachingPage.Enabled = true;
-                lblTeachingPageImage.Enabled = true;
+                //lblTeachingPage.Enabled = true;
+                //lblTeachingPageImage.Enabled = true;
             }
 
             if (MainPageControl.Visible)
                 MainPageControl.UpdateButton();
+
+            if (PlcControlManager.Instance().MachineStatus == MachineStatus.RUN)
+            {
+                lblTeachingPageImage.Enabled = false;
+                lblTeachingPage.Enabled = false;
+                lblDataPageImage.Enabled = false;
+                lblDataPage.Enabled = false;
+                lblLogPage.Enabled = false;
+            }
+            else
+            {
+                if (user.Type == AuthorityType.None)
+                {
+                    lblTeachingPage.Enabled = false;
+                    lblTeachingPageImage.Enabled = false;
+                }
+                else
+                {
+                    lblTeachingPage.Enabled = true;
+                    lblTeachingPageImage.Enabled = true;
+                }
+
+                lblDataPageImage.Enabled = true;
+                lblDataPage.Enabled = true;
+                lblLogPage.Enabled = true;
+            }
         }
 
         private void tmrUpdateStates_Tick(object sender, EventArgs e)
@@ -255,9 +308,9 @@ namespace ATT_UT_Remodeling
             ControlDisplayHelper.DisposeDisplay(lblMotionState);
             lblMotionState.Image = GetStateImage(isMotionConnected);
 
-            bool isCognexLicenseNormal = Cognex.VisionPro.CogLicense.GetLicensedFeatures(false, false).Count != 0;
-            ControlDisplayHelper.DisposeDisplay(lblLicenseState);
-            lblLicenseState.Image = GetStateImage(isCognexLicenseNormal);
+            //bool isCognexLicenseNormal = Cognex.VisionPro.CogLicense.GetLicensedFeatures(false, false).Count != 0;
+            //ControlDisplayHelper.DisposeDisplay(lblLicenseState);
+            //lblLicenseState.Image = GetStateImage(isCognexLicenseNormal);
 
             var laf = DeviceManager.Instance().LAFCtrlHandler;
             bool isLafConnected = laf.Count > 0 && laf.All(h => h.IsConnected());
@@ -382,13 +435,14 @@ namespace ATT_UT_Remodeling
             if (inspModel == null)
                 return;
 
-            if(SystemManager.Instance().MachineStatus != MachineStatus.RUN)
+            if(PlcControlManager.Instance().MachineStatus != MachineStatus.RUN)
             {
                 MessageConfirmForm form = new MessageConfirmForm();
                 form.Message = "Change Auto Run.";
                 form.ShowDialog();
                 return;
             }
+
             OpenFileDialog dialog = new OpenFileDialog();
             dialog.Multiselect = true;
 
@@ -416,7 +470,7 @@ namespace ATT_UT_Remodeling
             if (inspModel == null)
                 return;
 
-            if (SystemManager.Instance().MachineStatus != MachineStatus.RUN)
+            if (PlcControlManager.Instance().MachineStatus != MachineStatus.RUN)
             {
                 MessageConfirmForm form = new MessageConfirmForm();
                 form.Message = "Change Auto Run.";
@@ -489,8 +543,10 @@ namespace ATT_UT_Remodeling
 
                 if (GetVirtualImagePath() is string filePath)
                 {
-                    string text = "Tab_";
-                    string fileName = Path.GetFileNameWithoutExtension(filePath);
+                    string text = "TAB_";
+                    string fileName = Path.GetFileNameWithoutExtension(filePath).ToUpper();
+                    fileName = fileName.Replace("_OK", "");
+                    fileName = fileName.Replace("_NG", "");
 
                     int index = fileName.IndexOf(text);
                     if(index < 0)
@@ -517,8 +573,6 @@ namespace ATT_UT_Remodeling
             }
         }
 
-        
-
         private string GetVirtualImagePath()
         {
             lock (VirtualImagePathQueue)
@@ -529,10 +583,61 @@ namespace ATT_UT_Remodeling
                     return null;
             }
         }
+
         private Image GetStateImage(bool isNormalState)
         {
             return isNormalState ? Resources.Circle_Green : Resources.Circle_Red;
         }
+
+        private void picLogo_Click(object sender, EventArgs e)
+        {
+            if (PlcControlManager.Instance().MachineStatus != MachineStatus.RUN)
+                return;
+
+            if (AppsStatus.Instance().IsInspRunnerFlagFromPlc == false)
+            {
+                MessageYesNoForm form = new MessageYesNoForm();
+                form.Message = "Would you like to do a test run?";
+
+                if (form.ShowDialog() == DialogResult.Yes)
+                    AppsStatus.Instance().IsInspRunnerFlagFromPlc = true;
+            }
+        }
+
+        public void Enable(bool isEnable)
+        {
+            MainPageControl?.Enable(isEnable);
+        }
+
+        public void ShowManualJudgeForm(AppsInspResult inspResult)
+        {
+            var inspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
+
+            for (int tabNo = 0; tabNo < inspModel.TabCount; tabNo++)
+            {
+                //ManualJudgeForm.SetTabAlignInspectionResult(inspResult.GetAlign(tabNo));
+                //ManualJudgeForm.SetTabAkkonInspectionResult(inspResult.GetAkkon(tabNo));
+            }
+
+            ManualJudgeForm.SetInspectionResult();
+
+            if (ManualJudgeForm.InvokeRequired)
+            {
+                ManualJudgeForm.Invoke(new MethodInvoker(delegate
+                {
+                    ManualJudgeForm.Show();
+                }));
+            }
+            else
+                ManualJudgeForm.Show();
+        }
+
+        private void lblMachineName_Click(object sender, EventArgs e)
+        {
+            Process.Start(ConfigSet.Instance().Path.Result);
+        }
         #endregion
+
+        
     }
 }

@@ -149,7 +149,7 @@ namespace ATT_UT_IPAD
 
             ModelManager.Instance().CurrentModel = ATTInspModelService.Load(filePath);
             SelectMainPage();
-            UpdateLabel(modelName);            
+            UpdateLabel(modelName);
 
             ConfigSet.Instance().Operation.LastModelName = modelName;
             ConfigSet.Instance().Operation.Save(ConfigSet.Instance().Path.Config);
@@ -201,6 +201,7 @@ namespace ATT_UT_IPAD
                 BeginInvoke(callback, modelname);
                 return;
             }
+
             lblCurrentModel.Text = modelname;
         }
 
@@ -420,6 +421,7 @@ namespace ATT_UT_IPAD
                 form.ShowDialog();
                 return;
             }
+
             OpenFileDialog dialog = new OpenFileDialog();
             dialog.Multiselect = true;
 
@@ -530,6 +532,7 @@ namespace ATT_UT_IPAD
                     string fileName = Path.GetFileNameWithoutExtension(filePath).ToUpper();
                     fileName = fileName.Replace("_OK", "");
                     fileName = fileName.Replace("_NG", "");
+
                     int index = fileName.IndexOf(text);
                     if (index < 0)
                     {
@@ -581,9 +584,7 @@ namespace ATT_UT_IPAD
                 MessageYesNoForm form = new MessageYesNoForm();
                 form.Message = "Would you like to do a test run?";
                 if (form.ShowDialog() == DialogResult.Yes)
-                {
                     AppsStatus.Instance().IsInspRunnerFlagFromPlc = true;
-                }
             }
         }
 
@@ -615,11 +616,10 @@ namespace ATT_UT_IPAD
                 ManualJudgeForm.Show();
         }
 
-        #endregion
-
         private void lblMachineName_Click(object sender, EventArgs e)
         {
             Process.Start(ConfigSet.Instance().Path.Result);
         }
+        #endregion
     }
 }

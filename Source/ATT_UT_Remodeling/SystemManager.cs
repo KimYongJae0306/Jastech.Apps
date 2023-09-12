@@ -38,7 +38,7 @@ namespace ATT_UT_Remodeling
         #endregion
 
         #region 속성
-        public MachineStatus MachineStatus { get; set; } = MachineStatus.STOP;
+        //public MachineStatus MachineStatus { get; set; } = MachineStatus.STOP;
         #endregion
 
         #region 메서드
@@ -232,7 +232,7 @@ namespace ATT_UT_Remodeling
 
         public void StartRun()
         {
-            if (MachineStatus != MachineStatus.RUN)
+            if (PlcControlManager.Instance().MachineStatus != MachineStatus.RUN)
             {
                 MessageYesNoForm form = new MessageYesNoForm();
                 form.Message = "Do you want to Start Auto Mode?";
@@ -242,6 +242,8 @@ namespace ATT_UT_Remodeling
                     _preAlignRunner.SeqRun();
                     _inspRunner.SeqRun();
                     AddSystemLogMessage("Start Auto mode.");
+
+                    PlcControlManager.Instance().MachineStatus = MachineStatus.RUN;
                 }
             }
         }
@@ -255,7 +257,7 @@ namespace ATT_UT_Remodeling
                 return;
             }
 
-            if (MachineStatus != MachineStatus.STOP)
+            if (PlcControlManager.Instance().MachineStatus != MachineStatus.STOP)
             {
                 MessageYesNoForm form = new MessageYesNoForm();
                 form.Message = "Do you want to Stop Auto Mode?";
@@ -265,6 +267,8 @@ namespace ATT_UT_Remodeling
                     _preAlignRunner.SeqStop();
                     _inspRunner.SeqStop();
                     AddSystemLogMessage("Stop Auto Mode.");
+
+                    PlcControlManager.Instance().MachineStatus = MachineStatus.STOP;
                 }
             }
         }

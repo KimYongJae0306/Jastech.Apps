@@ -57,24 +57,6 @@ namespace ATT_UT_IPAD.UI.Pages
             MainViewControl.Dock = DockStyle.Fill;
             MainViewControl.Visible = false;
             pnlView.Controls.Add(MainViewControl);
-
-            SelectMainView();
-        }
-
-        private void lblMainButton_Click(object sender, EventArgs e)
-        {
-            SelectMainView();
-        }
-
-        private void SelectMainView()
-        {
-            if (MainViewControl.Visible)
-                return;
-
-            MainViewControl.Visible = true;
-
-            MainViewControl.Dock = DockStyle.Fill;
-            pnlView.Controls.Add(MainViewControl);
         }
 
         private void lblStart_Click(object sender, EventArgs e)

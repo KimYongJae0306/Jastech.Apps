@@ -7,6 +7,7 @@ using Jastech.Framework.Device.LAFCtrl;
 using Jastech.Framework.Device.Motions;
 using Jastech.Framework.Structure;
 using Jastech.Framework.Structure.Service;
+using Jastech.Framework.Util.Helper;
 using Jastech.Framework.Winform.Controls;
 using Jastech.Framework.Winform.Forms;
 using Jastech.Framework.Winform.Helper;
@@ -91,6 +92,24 @@ namespace ATT_UT_Remodeling.UI.Forms
             StartTimer();
             InitializeUI();
             SetDefaultValue();
+        }
+
+        private void MotionSettingsForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            _formTimer.Change(System.Threading.Timeout.Infinite, System.Threading.Timeout.Infinite);
+
+            if (_formTimer != null)
+            {
+                _formTimer.Dispose();
+                _formTimer = null;
+            }
+        }
+
+        private void MotionSettingsForm_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            ParamTrackingLogger.ClearChangedLog();
+            if (CloseEventDelegate != null)
+                CloseEventDelegate();
         }
 
         private void SetDefaultValue()
@@ -372,43 +391,84 @@ namespace ATT_UT_Remodeling.UI.Forms
 
         private void Save()
         {
-            UpdateCurrentData();
+            MessageYesNoForm yesNoForm = new MessageYesNoForm();
+            yesNoForm.Message = "Teaching data will change.\nDo you agree?";
 
-            // Save AxisHandler
-            var axisHandler = MotionManager.Instance().GetAxisHandler(AxisHandlerName.Handler0);
-            MotionManager.Instance().Save(axisHandler);
+            if (yesNoForm.ShowDialog() == DialogResult.Yes)
+            {
+                UpdateCurrentData();
 
-            // Save Model
-            var model = ModelManager.Instance().CurrentModel as AppsInspModel;
-            //model.SetUnitList(TeachingData.Instance().UnitList);
-            model.SetTeachingList(TeachingPositionList);
+                // Save AxisHandler
+                var axisHandler = MotionManager.Instance().GetAxisHandler(AxisHandlerName.Handler0);
+                MotionManager.Instance().Save(axisHandler);
 
-            string fileName = System.IO.Path.Combine(ConfigSet.Instance().Path.Model, model.Name, InspModel.FileName);
-            InspModelService?.Save(fileName, model);
+                // Save Model
+                var model = ModelManager.Instance().CurrentModel as AppsInspModel;
+                //model.SetUnitList(TeachingData.Instance().UnitList);
+                model.SetTeachingList(TeachingPositionList);
 
-            MessageConfirmForm form = new MessageConfirmForm();
-            form.Message = "Save Motion Data Completed.";
-            form.ShowDialog();
+                string fileName = System.IO.Path.Combine(ConfigSet.Instance().Path.Model, model.Name, InspModel.FileName);
+                InspModelService?.Save(fileName, model);
+
+                XCommonControl?.WriteChangeLog();
+                ZCommonControl?.WriteChangeLog();
+
+                XVariableControl?.WriteChangeLog();
+
+                if (ParamTrackingLogger.IsEmpty == false)
+                {
+                    ParamTrackingLogger.AddLog("All Motion Parameter saved.");
+                    ParamTrackingLogger.WriteLogToFile();
+                }
+
+                MessageConfirmForm form = new MessageConfirmForm();
+                form.Message = "Save Motion Data Completed.";
+                form.ShowDialog();
+            }
         }
 
         private void lblTargetPositionX_Click(object sender, EventArgs e)
         {
-            double targetPosition = KeyPadHelper.SetLabelDoubleData((Label)sender);
-            TeachingPositionList.Where(x => x.Name == TeachingPositionType.ToString()).First().SetTargetPosition(AxisName.X, targetPosition);
+            //double targetPosition = KeyPadHelper.SetLabelDoubleData((Label)sender);
+            //TeachingPositionList.Where(x => x.Name == TeachingPositionType.ToString()).First().SetTargetPosition(AxisName.X, targetPosition);
+
+            Label label = sender as Label;
+            double oldPosition = Convert.ToDouble(label.Text);
+            double newPosition = KeyPadHelper.SetLabelDoubleData(label);
+
+            TeachingPositionList.First(x => x.Name == TeachingPositionType.ToString()).SetTargetPosition(AxisName.X, newPosition);
+
+            ParamTrackingLogger.AddChangeHistory($"{AxisName.X}", "TargetPos", oldPosition, newPosition);
         }
 
         private void lblOffsetX_Click(object sender, EventArgs e)
         {
-            double offset = KeyPadHelper.SetLabelDoubleData((Label)sender);
-            TeachingPositionList.Where(x => x.Name == TeachingPositionType.ToString()).First().SetOffset(AxisName.X, offset);
+            //double offset = KeyPadHelper.SetLabelDoubleData((Label)sender);
+            //TeachingPositionList.Where(x => x.Name == TeachingPositionType.ToString()).First().SetOffset(AxisName.X, offset);
+
+            Label label = sender as Label;
+            double oldOffset = Convert.ToDouble(label.Text);
+            double newOffset = KeyPadHelper.SetLabelDoubleData(label);
+
+            TeachingPositionList.First(x => x.Name == TeachingPositionType.ToString()).SetOffset(AxisName.X, newOffset);
+
+            ParamTrackingLogger.AddChangeHistory($"{AxisName.X}", "Offset", oldOffset, newOffset);
         }
 
         private void lblCurrentToTargetX_Click(object sender, EventArgs e)
         {
-            double currentPosition = Convert.ToDouble(lblCurrentPositionX.Text);
-            TeachingPositionList.Where(x => x.Name == TeachingPositionType.ToString()).First().SetTargetPosition(AxisName.X, currentPosition);
+            //double currentPosition = Convert.ToDouble(lblCurrentPositionX.Text);
+            //TeachingPositionList.Where(x => x.Name == TeachingPositionType.ToString()).First().SetTargetPosition(AxisName.X, currentPosition);
 
-            lblTargetPositionX.Text = currentPosition.ToString("F3");
+            //lblTargetPositionX.Text = currentPosition.ToString("F3");
+
+            double oldPosition = Convert.ToDouble(lblTargetPositionX.Text);
+            double newPosition = Convert.ToDouble(lblCurrentPositionX.Text);
+
+            TeachingPositionList.First(x => x.Name == TeachingPositionType.ToString()).SetTargetPosition(AxisName.X, newPosition);
+
+            lblTargetPositionX.Text = newPosition.ToString("F3");
+            ParamTrackingLogger.AddChangeHistory($"{AxisName.X}", "TargetPos", oldPosition, newPosition);
         }
 
         private void lblMoveToTargetX_Click(object sender, EventArgs e)
@@ -436,30 +496,68 @@ namespace ATT_UT_Remodeling.UI.Forms
 
         private void lblTargetPositionZ_Click(object sender, EventArgs e)
         {
-            double targetPosition = KeyPadHelper.SetLabelDoubleData((Label)sender);
-            TeachingPositionList.Where(x => x.Name == TeachingPositionType.ToString()).First().SetTargetPosition(AxisName.Z0, targetPosition);
+            //double targetPosition = KeyPadHelper.SetLabelDoubleData((Label)sender);
+            //TeachingPositionList.Where(x => x.Name == TeachingPositionType.ToString()).First().SetTargetPosition(AxisName.Z0, targetPosition);
+
+            Label label = sender as Label;
+            double oldPosition = Convert.ToDouble(label.Text);
+            double newPosition = KeyPadHelper.SetLabelDoubleData(label);
+
+            TeachingPositionList.First(x => x.Name == TeachingPositionType.ToString()).SetTargetPosition(AxisName.Z0, newPosition);
+
+            ParamTrackingLogger.AddChangeHistory($"{AxisName.Z0}", "TargetPos", oldPosition, newPosition);
         }
 
         private void lblCurrentToTargetZ_Click(object sender, EventArgs e)
         {
-            double currentPosition = Convert.ToDouble(lblCurrentPositionZ.Text);
-            TeachingPositionList.Where(x => x.Name == TeachingPositionType.ToString()).First().SetTargetPosition(AxisName.Z0, currentPosition);
+            //double currentPosition = Convert.ToDouble(lblCurrentPositionZ.Text);
+            //TeachingPositionList.Where(x => x.Name == TeachingPositionType.ToString()).First().SetTargetPosition(AxisName.Z0, currentPosition);
 
-            lblTargetPositionZ.Text = currentPosition.ToString("F3");
+            //lblTargetPositionZ.Text = currentPosition.ToString("F3");
+
+            double oldPosition = Convert.ToDouble(lblTargetPositionZ.Text);
+            double newPosition = Convert.ToDouble(lblCurrentPositionZ.Text);
+
+            TeachingPositionList.First(x => x.Name == TeachingPositionType.ToString()).SetTargetPosition(AxisName.Z0, newPosition);
+
+            lblTargetPositionZ.Text = newPosition.ToString("F3");
+            ParamTrackingLogger.AddChangeHistory($"{AxisName.Z0}", "TargetPos", oldPosition, newPosition);
         }
 
         private void lblTeachedCenterOfGravityZ_Click(object sender, EventArgs e)
         {
-            int targetCenterOfGravity = KeyPadHelper.SetLabelIntegerData((Label)sender);
-            TeachingPositionList.Where(x => x.Name == TeachingPositionType.ToString()).First().SetCenterOfGravity(AxisName.Z0, targetCenterOfGravity);
+            //int targetCenterOfGravity = KeyPadHelper.SetLabelIntegerData((Label)sender);
+            //TeachingPositionList.Where(x => x.Name == TeachingPositionType.ToString()).First().SetCenterOfGravity(AxisName.Z0, targetCenterOfGravity);
+
+            Label label = sender as Label;
+            int oldCenterOfGravity = Convert.ToInt32(label.Text);
+            int newCenterOfGravity = KeyPadHelper.SetLabelIntegerData(label);
+
+            TeachingPositionList.First(x => x.Name == TeachingPositionType.ToString()).SetCenterOfGravity(AxisName.Z0, newCenterOfGravity);
+
+            if (LAFManager.Instance().GetLAF(LafCtrl.Name) is LAF laf)
+                laf.SetCenterOfGravity(newCenterOfGravity);
+
+            ParamTrackingLogger.AddChangeHistory($"{AxisName.Z0}", "CoG", oldCenterOfGravity, newCenterOfGravity);
         }
 
         private void lblCurrentToTargetCenterOfGravityZ_Click(object sender, EventArgs e)
         {
-            int targetCenterOfGravity = Convert.ToInt32(lblCurrentCenterOfGravityZ.Text);
-            TeachingPositionList.Where(x => x.Name == TeachingPositionType.ToString()).First().SetCenterOfGravity(AxisName.Z0, targetCenterOfGravity);
+            //int targetCenterOfGravity = Convert.ToInt32(lblCurrentCenterOfGravityZ.Text);
+            //TeachingPositionList.Where(x => x.Name == TeachingPositionType.ToString()).First().SetCenterOfGravity(AxisName.Z0, targetCenterOfGravity);
 
-            lblTeachedCenterOfGravityZ.Text = targetCenterOfGravity.ToString();
+            //lblTeachedCenterOfGravityZ.Text = targetCenterOfGravity.ToString();
+
+            int oldCenterOfGravity = Convert.ToInt32(lblTeachedCenterOfGravityZ.Text);
+            int newCenterOfGravity = Convert.ToInt32(lblCurrentCenterOfGravityZ.Text);
+
+            TeachingPositionList.First(x => x.Name == TeachingPositionType.ToString()).SetCenterOfGravity(AxisName.Z0, newCenterOfGravity);
+
+            if (LAFManager.Instance().GetLAF(LafCtrl.Name) is LAF alignLAF)
+                alignLAF.SetCenterOfGravity(newCenterOfGravity);
+
+            lblTeachedCenterOfGravityZ.Text = newCenterOfGravity.ToString();
+            ParamTrackingLogger.AddChangeHistory($"{AxisName.Z0}", "CoG", oldCenterOfGravity, newCenterOfGravity);
         }
 
         private void lblMoveToTargetZ_Click(object sender, EventArgs e)
@@ -486,27 +584,27 @@ namespace ATT_UT_Remodeling.UI.Forms
 
         private void lblOriginZ_Click(object sender, EventArgs e)
         {
-            LAFManager.Instance().GetLAF("Laf").StartHomeThread();
+            LAFManager.Instance().GetLAF(LafCtrl.Name).StartHomeThread();
         }
 
         private void lblLaserOnZ_Click(object sender, EventArgs e)
         {
-            LAFManager.Instance().GetLAF("Laf").LaserOnOff(true);
+            LAFManager.Instance().GetLAF(LafCtrl.Name).LaserOnOff(true);
         }
 
         private void lblLaserOffZ_Click(object sender, EventArgs e)
         {
-            LAFManager.Instance().GetLAF("Laf").LaserOnOff(false);
+            LAFManager.Instance().GetLAF(LafCtrl.Name).LaserOnOff(false);
         }
 
         private void lblTrackingOnZ_Click(object sender, EventArgs e)
         {
-            LAFManager.Instance().GetLAF("Laf").TrackingOnOff(true);
+            LAFManager.Instance().GetLAF(LafCtrl.Name).TrackingOnOff(true);
         }
 
         private void lblTrackingOffZ_Click(object sender, EventArgs e)
         {
-            LAFManager.Instance().GetLAF("Laf").TrackingOnOff(false);
+            LAFManager.Instance().GetLAF(LafCtrl.Name).TrackingOnOff(false);
         }
 
         private void rdoJogSlowMode_CheckedChanged(object sender, EventArgs e)
@@ -575,23 +673,6 @@ namespace ATT_UT_Remodeling.UI.Forms
         {
             double pitchZ = KeyPadHelper.SetLabelDoubleData((Label)sender);
             LAFJogZControl.MoveAmount = pitchZ;
-        }
-
-        private void MotionSettingsForm_FormClosing(object sender, FormClosingEventArgs e)
-        {
-            _formTimer.Change(System.Threading.Timeout.Infinite, System.Threading.Timeout.Infinite);
-
-            if (_formTimer != null)
-            {
-                _formTimer.Dispose();
-                _formTimer = null;
-            }
-        }
-
-        private void MotionSettingsForm_FormClosed(object sender, FormClosedEventArgs e)
-        {
-            if (CloseEventDelegate != null)
-                CloseEventDelegate();
         }
         #endregion
     }

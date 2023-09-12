@@ -88,10 +88,8 @@ namespace ATT_UT_Remodeling.UI.Pages
         public void UpdateTabCount(int tabCount)
         {
             AkkonViewerControl.UpdateTabCount(tabCount);
-            //DailyInfoViewerControl.ClearAkkonData();
-
             AlignViewerControl.UpdateTabCount(tabCount);
-            //DailyInfoViewerControl.ClearAlignData();
+            DailyInfoViewerControl.ReUpdate();
         }
 
         public void UpdateMainResult(int tabNo)
@@ -114,6 +112,7 @@ namespace ATT_UT_Remodeling.UI.Pages
             AkkonViewerControl.TabButtonResetColor();
             AlignViewerControl.TabButtonResetColor();
         }
+
         public void UpdateLeftPreAlignResult(AppsPreAlignResult result)
         {
             PreAlignDisplayControl.UpdateLeftDisplay(result.Left);
@@ -161,7 +160,7 @@ namespace ATT_UT_Remodeling.UI.Pages
 
         public void UpdateButton()
         {
-            if (SystemManager.Instance().MachineStatus == MachineStatus.RUN)
+            if (PlcControlManager.Instance().MachineStatus == MachineStatus.RUN)
             {
                 lblStartText.ForeColor = Color.Blue;
                 lblStopText.ForeColor = Color.White;
@@ -171,6 +170,13 @@ namespace ATT_UT_Remodeling.UI.Pages
                 lblStartText.ForeColor = Color.White;
                 lblStopText.ForeColor = Color.Blue;
             }
+        }
+
+        public void Enable(bool isEnable)
+        {
+            AkkonViewerControl.Enable(isEnable);
+            AlignViewerControl.Enable(isEnable);
+            DailyInfoViewerControl.Enable(isEnable);
         }
         #endregion
     }

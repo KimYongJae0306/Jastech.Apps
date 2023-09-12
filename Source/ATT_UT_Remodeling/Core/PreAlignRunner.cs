@@ -64,7 +64,7 @@ namespace ATT_UT_Remodeling
             if (ModelManager.Instance().CurrentModel == null)
                 return;
 
-            SystemManager.Instance().MachineStatus = MachineStatus.RUN;
+            PlcControlManager.Instance().MachineStatus = MachineStatus.RUN;
 
             if (SeqTask != null)
             {
@@ -79,7 +79,7 @@ namespace ATT_UT_Remodeling
 
         public void SeqStop()
         {
-            SystemManager.Instance().MachineStatus = MachineStatus.STOP;
+            PlcControlManager.Instance().MachineStatus = MachineStatus.STOP;
 
             var areaCamera = AreaCameraManager.Instance().GetAppsCamera("PreAlign");
             areaCamera.StopGrab();

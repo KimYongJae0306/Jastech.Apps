@@ -80,6 +80,7 @@ namespace ATT_UT_IPAD.UI.Pages
             form.UseAkkonTeaching = false;
             form.InspModelService = ATTInspModelService;
             form.OpenMotionPopupEventHandler += OpenMotionPopupEventHandler;
+            form.CloseMotionPopupEventHandler += CloseMotionPopupEventHandler;
             form.ShowDialog();
         }
 
@@ -95,6 +96,7 @@ namespace ATT_UT_IPAD.UI.Pages
             form.UseAkkonTeaching = true;
             form.InspModelService = ATTInspModelService;
             form.OpenMotionPopupEventHandler += OpenMotionPopupEventHandler;
+            form.CloseMotionPopupEventHandler += CloseMotionPopupEventHandler;
             form.ShowDialog();
         }
 
