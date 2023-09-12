@@ -18,6 +18,7 @@ using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
+using System.Reflection;
 
 namespace Jastech.Framework.Winform.Forms
 {
@@ -233,7 +234,7 @@ namespace Jastech.Framework.Winform.Forms
 
 
                 DirectoryInfo rootDirectoryInfo = new DirectoryInfo(rootPath);
-                TreeNode rootNode = null;
+                TreeNode rootNode;
                 if (tvwLogPath.Nodes.ContainsKey(rootDirectoryInfo.Name) == false)
                 {
                     rootNode = new TreeNode { Name = rootDirectoryInfo.Name, Text = rootDirectoryInfo.Name };
@@ -244,71 +245,44 @@ namespace Jastech.Framework.Winform.Forms
 
                 DirectoryInfo subDirectoryInfo = new DirectoryInfo($@"{rootPath}\{day}");
                 if (Directory.Exists(subDirectoryInfo.FullName))
-                {
-                    TreeNode treeNode = new TreeNode { Name = subDirectoryInfo.Name, Text = subDirectoryInfo.Name };
-                    rootNode.Nodes.Add(treeNode);
-                    RecursiveDirectory(subDirectoryInfo, treeNode);
-                }
+                    rootNode.Nodes.Add(RecursiveDirectory(subDirectoryInfo));
             }
         }
 
-        private void RecursiveDirectory(DirectoryInfo directoryInfo, TreeNode treeNode)
+        private TreeNode RecursiveDirectory(DirectoryInfo directoryInfo)
         {
+            TreeNode newNode = new TreeNode { Name = directoryInfo.Name, Text = directoryInfo.Name };
             try
             {
-                FileInfo[] files = directoryInfo.GetFiles();
-                foreach (FileInfo files2 in files)
+                foreach (FileInfo file in directoryInfo.GetFiles())
                 {
-                    TreeNode node = new TreeNode(files2.Name);
-
-                    if (_selectedPageType == PageType.Image && files2.Name.ToLower().Contains(".csv"))
+                    if (file.Name.ToLower().Contains("summary"))
+                        continue;
+                    if ((_selectedPageType == PageType.AlignTrend || _selectedPageType == PageType.ProcessCapability) && file.Name.ToLower().Contains("align") == false)
+                        continue;
+                    if (_selectedPageType == PageType.AkkonTrend && file.Name.ToLower().Contains("akkon") == false)
+                        continue;
+                    if (_selectedPageType == PageType.UPH && file.Name.ToLower().Contains("uph") == false)
+                        continue;
+                    if (_selectedPageType == PageType.Image && (file.Name.ToLower().Contains(".txt") || file.Name.ToLower().Contains(".csv")))
                         continue;
 
-                    if ((_selectedPageType == PageType.AlignTrend || _selectedPageType == PageType.ProcessCapability) && (files2.Name.ToLower().Contains("align") == false || files2.Name.ToLower().Contains("summary")))
-                        continue;
-
-                    if (_selectedPageType == PageType.AkkonTrend && (files2.Name.ToLower().Contains("akkon") == false || files2.Name.ToLower().Contains("summary")))
-                        continue;
-
-                    if (_selectedPageType == PageType.UPH && files2.Name.ToLower().Contains("uph") == false)
-                        continue;
-
-                    treeNode.Nodes.Add(node);
+                    newNode.Nodes.Add(new TreeNode(file.Name));
                 }
-
-                if (_selectedPageType != PageType.Image)
-                    return;
 
                 // PageType이 Image인 경우에만 Recursive로 순회하여 경로 취득
-                DirectoryInfo[] dirs = directoryInfo.GetDirectories();
-                foreach (DirectoryInfo dirInfo in dirs)
+                if (_selectedPageType == PageType.Image)
                 {
-                    TreeNode upperNode = new TreeNode(dirInfo.Name);
-
-                    treeNode.Nodes.Add(upperNode);
-
-                    files = dirInfo.GetFiles();
-                    foreach (FileInfo fileInfo in files)
-                    {
-                        TreeNode underNode = new TreeNode(fileInfo.Name);
-                        upperNode.Nodes.Add(underNode);
-                    }
-
-                    try
-                    {
-                        if (dirInfo.GetDirectories().Length > 0)
-                            RecursiveDirectory(dirInfo, upperNode);
-                    }
-                    catch (Exception ex)
-                    {
-                        Console.WriteLine(ex.ToString());
-                        continue;
-                    }
+                    foreach (DirectoryInfo subDirectory in directoryInfo.GetDirectories())
+                        newNode.Nodes.Add(RecursiveDirectory(subDirectory));
                 }
+
+                return newNode;
             }
             catch (Exception ex)
             {
                 Console.WriteLine(ex.ToString());
+                return null;
             }
         }
 
