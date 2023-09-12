@@ -51,7 +51,7 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         public bool UseAlignMark { get; set; } = false;
 
-        public bool UseFpcMark { get; set; } = true;
+        public bool UseAlignTeaching { get; set; } = false;
         #endregion
 
         #region 이벤트
@@ -144,7 +144,7 @@ namespace Jastech.Apps.Winform.UI.Controls
             _selectedColor = Color.FromArgb(104, 104, 104);
             _nonSelectedColor = Color.FromArgb(52, 52, 52);
 
-            if (UseFpcMark)
+            if (UseAlignTeaching)
                 lblFpc.Visible = true;
             else
                 lblFpc.Visible = false;

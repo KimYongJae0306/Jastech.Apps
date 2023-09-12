@@ -79,7 +79,8 @@ namespace ATT_UT_Remodeling.UI.Pages
             form.LineCamera = LineCameraManager.Instance().GetLineCamera("LineCamera");
             form.LAFCtrl = LAFManager.Instance().GetLAF("Laf").LafCtrl;
             form.UseAlignMark = false;
-            form.UseFpcMark = true;
+            form.UseAlignTeaching = true;
+            form.UseAkkonTeaching = true;
             form.InspModelService = ATTInspModelService;
             form.OpenMotionPopupEventHandler += OpenMotionPopupEventHandler;
             form.CloseMotionPopupEventHandler += CloseMotionPopupEventHandler;

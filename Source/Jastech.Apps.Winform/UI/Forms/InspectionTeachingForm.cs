@@ -62,6 +62,16 @@ namespace Jastech.Framework.Winform.Forms
         private TabInspResult _tabInspResult { get; set; } = null;
 
         private MainAlgorithmTool _algorithmTool = new MainAlgorithmTool();
+
+        protected override CreateParams CreateParams
+        {
+            get
+            {
+                var cp = base.CreateParams;
+                cp.ExStyle |= 0x02000000;
+                return cp;
+            }
+        }
         #endregion
 
         #region 속성
@@ -98,18 +108,6 @@ namespace Jastech.Framework.Winform.Forms
         public bool UseAkkonTeaching { get; set; } = true;
 
         public bool UseAlignMark { get; set; } = false;
-
-        public bool UseFpcMark { get; set; } = true;
-
-        protected override CreateParams CreateParams
-        {
-            get
-            {
-                var cp = base.CreateParams;
-                cp.ExStyle |= 0x02000000;
-                return cp;
-            }
-        }
         #endregion
 
         #region 이벤트
@@ -197,7 +195,7 @@ namespace Jastech.Framework.Winform.Forms
             MarkControl = new MarkControl();
             MarkControl.Dock = DockStyle.Fill;
             MarkControl.UseAlignMark = UseAlignMark;
-            MarkControl.UseFpcMark = UseFpcMark;
+            MarkControl.UseAlignTeaching = UseAlignTeaching;
             MarkControl.SetParams(CurrentTab);
             MarkControl.MarkParamChanged += MarkControl_MarkParamChanged;
             pnlTeach.Controls.Add(MarkControl);
@@ -212,15 +210,26 @@ namespace Jastech.Framework.Winform.Forms
             AkkonControl.SetParams(CurrentTab);
             pnlTeach.Controls.Add(AkkonControl);
 
+            OptimizeUIByTeachingItem();
+        }
+
+        private void OptimizeUIByTeachingItem()
+        {
             if (UseAlignTeaching)
-                tlpTeachingItems.Controls.Add(btnAlign, 2, 0); 
+                tlpTeachingItems.Controls.Add(btnAlign, 0, 1);
             else
                 btnAlign.Visible = false;
 
             if (UseAkkonTeaching)
-                tlpTeachingItems.Controls.Add(btnAkkon, 2, 0); 
+                tlpTeachingItems.Controls.Add(btnAkkon, 0, 1);
             else
                 btnAkkon.Visible = false;
+
+            if (UseAlignTeaching && UseAkkonTeaching)
+            {
+                tlpTeachingItems.Controls.Add(btnAlign, 0, 1);
+                tlpTeachingItems.Controls.Add(btnAkkon, 0, 2);
+            }
         }
 
         private void InspectionTeachingForm_GrabDelayStartEventHandler(string cameraName)

@@ -155,6 +155,16 @@ namespace ATT_UT_Remodeling
 
             ConfigSet.Instance().Operation.LastModelName = modelName;
             ConfigSet.Instance().Operation.Save(ConfigSet.Instance().Path.Config);
+
+            if (ManualJudgeForm != null)
+            {
+                ManualJudgeForm.Close();
+                ManualJudgeForm.Dispose();
+                ManualJudgeForm = null;
+
+                ManualJudgeForm = new ManualJudgeForm();
+                ManualJudgeForm.Hide();
+            }
         }
 
         private void SelectMainPage()
