@@ -47,10 +47,6 @@ namespace Jastech.Apps.Winform.UI.Forms
 
             txtDescription.Text = PrevModel.Description;
             txtTabCount.Text = PrevModel.TabCount.ToString();
-            txtSpecInfoX.Text = PrevModel.SpecInfo.AlignToleranceX_um.ToString();
-            txtSpecInfoY.Text = PrevModel.SpecInfo.AlignToleranceY_um.ToString();
-            txtSpecInfoCx.Text = PrevModel.SpecInfo.AlignToleranceCx_um.ToString();
-            txtSpecInfoStandardValue.Text = PrevModel.SpecInfo.AlignStandard_um.ToString();
         }
 
         private void lblOK_Click(object sender, EventArgs e)
@@ -71,13 +67,6 @@ namespace Jastech.Apps.Winform.UI.Forms
                 Name = txtModelName.Text,
                 Description = txtDescription.Text,
                 TabCount = Convert.ToInt32(txtTabCount.Text),
-                SpecInfo = new SpecInfo
-                {
-                    AlignToleranceX_um = Convert.ToDouble(txtSpecInfoX.Text),
-                    AlignToleranceY_um = Convert.ToDouble(txtSpecInfoY.Text),
-                    AlignToleranceCx_um = Convert.ToDouble(txtSpecInfoCx.Text),
-                    AlignStandard_um = Convert.ToDouble(txtSpecInfoStandardValue.Text),
-                },
             };
             if (AppsConfig.Instance().UseMaterialInfo)
             {

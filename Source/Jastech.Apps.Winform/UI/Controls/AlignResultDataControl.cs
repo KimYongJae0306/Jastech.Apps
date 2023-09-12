@@ -96,7 +96,9 @@ namespace Jastech.Apps.Winform.UI.Controls
         private string GetValue(string value)
         {
             if(double.TryParse(value, out double temp))
+            {
                 return MathHelper.GetFloorDecimal(temp, 2).ToString();
+            }
             else
                 return "-";
         }
@@ -105,60 +107,84 @@ namespace Jastech.Apps.Winform.UI.Controls
         {
             dgvAlignHistory.Rows.Clear();
         }
-        #endregion
 
         private void dgvAlignHistory_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
-            string basePath = ConfigSet.Instance().Path.Result;
+            //string basePath = ConfigSet.Instance().Path.Result;
 
-            var model = ModelManager.Instance().CurrentModel as InspModel;
-            string modelName = model.Name;
-            
-            string fullPath = Path.Combine(basePath, modelName);
+            //var model = ModelManager.Instance().CurrentModel as InspModel;
+            //string modelName = model.Name;
 
-            var directoryList = Directory.EnumerateDirectories(fullPath, "*", SearchOption.AllDirectories);
+            //string fullPath = Path.Combine(basePath, modelName);
 
-            string cellID = dgvAlignHistory.Rows[e.RowIndex].Cells[1].Value.ToString();
-            string tabNo = dgvAlignHistory.Rows[e.RowIndex].Cells[2].Value.ToString();
-            string selectedPath = string.Empty;
+            //var directoryList = Directory.EnumerateDirectories(fullPath, "*", SearchOption.AllDirectories);
 
-            foreach (var directory in directoryList)
-            {
-                if (directory.Contains(cellID) && directory.Contains("Align"))
-                {
-                    selectedPath = directory;
-                    break;
-                }
-            }
+            //string cellID = dgvAlignHistory.Rows[e.RowIndex].Cells[1].Value.ToString();
+            //string tabNo = dgvAlignHistory.Rows[e.RowIndex].Cells[2].Value.ToString();
+            //string selectedPath = string.Empty;
 
-            if (selectedPath == string.Empty)
-            {
-                MessageConfirmForm confirmForm = new MessageConfirmForm();
-                confirmForm.Message = "The selected cell id does not have an image file.";
-                confirmForm.ShowDialog();
-                return;
-            }
+            //foreach (var directory in directoryList)
+            //{
+            //    if (directory.Contains(cellID) && directory.Contains("Align"))
+            //    {
+            //        selectedPath = directory;
+            //        break;
+            //    }
+            //}
 
-            var imageFiles = Directory.GetFiles(selectedPath, "*.bmp");
+            //if (selectedPath == string.Empty)
+            //{
+            //    MessageConfirmForm confirmForm = new MessageConfirmForm();
+            //    confirmForm.Message = "The selected cell id does not have an image file.";
+            //    confirmForm.ShowDialog();
+            //    return;
+            //}
 
-            string selectedImageFilePath = string.Empty; 
-            foreach (var file in imageFiles)
-            {
-                if (file.ToUpper().Contains($"TAB_{tabNo}"))
-                {
-                    selectedImageFilePath = file;
-                    break;
-                }
-            }
+            //var imageFiles = Directory.GetFiles(selectedPath, "*.bmp");
 
-            if (selectedImageFilePath == string.Empty)
-            {
-                MessageConfirmForm confirmForm = new MessageConfirmForm();
-                confirmForm.Message = "The selected cell id does not have an image file.";
-                confirmForm.ShowDialog();
-            }
-            else
-                Process.Start(selectedImageFilePath);
+            //string selectedImageFilePath = string.Empty; 
+            //foreach (var file in imageFiles)
+            //{
+            //    if (file.ToUpper().Contains($"TAB_{tabNo}"))
+            //    {
+            //        selectedImageFilePath = file;
+            //        break;
+            //    }
+            //}
+
+            //if (selectedImageFilePath == string.Empty)
+            //{
+            //    MessageConfirmForm confirmForm = new MessageConfirmForm();
+            //    confirmForm.Message = "The selected cell id does not have an image file.";
+            //    confirmForm.ShowDialog();
+            //}
+            //else
+            //    Process.Start(selectedImageFilePath);
         }
+
+        private void dgvAlignHistory_CellContentDoubleClick(object sender, DataGridViewCellEventArgs e)
+        {
+            var dailyInfo = DailyInfoService.GetDailyInfo();
+
+            string time = dgvAlignHistory.Rows[e.RowIndex].Cells[0].Value.ToString();
+            var alignDailyInfo = dailyInfo.GetAlignDailyInfo(time);
+
+            if (alignDailyInfo != null)
+            {
+                string path = Path.Combine(alignDailyInfo.ResultPath, "Align", "Result");
+
+                if (Directory.Exists(path))
+                {
+                    Process.Start(path);
+                    return;
+                }
+            }
+
+            MessageConfirmForm form = new MessageConfirmForm();
+            form.Message = "The data does not exist.";
+            form.ShowDialog();
+            return;
+        }
+        #endregion
     }
 }

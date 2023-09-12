@@ -31,6 +31,7 @@
             this.tlpAlign = new System.Windows.Forms.TableLayoutPanel();
             this.lblParameter = new System.Windows.Forms.Label();
             this.pnlPosition = new System.Windows.Forms.Panel();
+            this.lblNewTest = new System.Windows.Forms.Label();
             this.label10 = new System.Windows.Forms.Label();
             this.lblOffsetY = new System.Windows.Forms.Label();
             this.lblTest = new System.Windows.Forms.Label();
@@ -49,6 +50,8 @@
             this.tlpParams = new System.Windows.Forms.TableLayoutPanel();
             this.pnlCaliperParam = new System.Windows.Forms.Panel();
             this.pnlLeadParam = new System.Windows.Forms.Panel();
+            this.lblPanelToFpcOffset = new System.Windows.Forms.Label();
+            this.lblOffset = new System.Windows.Forms.Label();
             this.lblApply = new System.Windows.Forms.Label();
             this.lblLeadCount = new System.Windows.Forms.Label();
             this.lblLead = new System.Windows.Forms.Label();
@@ -81,9 +84,6 @@
             this.lblLeftAlignSpecX = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
-            this.lblNewTest = new System.Windows.Forms.Label();
-            this.lblOffset = new System.Windows.Forms.Label();
-            this.lblPanelToFpcOffset = new System.Windows.Forms.Label();
             this.tlpAlign.SuspendLayout();
             this.pnlPosition.SuspendLayout();
             this.tlpParams.SuspendLayout();
@@ -107,7 +107,7 @@
             this.tlpAlign.RowCount = 4;
             this.tlpAlign.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 32F));
             this.tlpAlign.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 160F));
-            this.tlpAlign.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 250F));
+            this.tlpAlign.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 300F));
             this.tlpAlign.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tlpAlign.Size = new System.Drawing.Size(893, 899);
             this.tlpAlign.TabIndex = 1;
@@ -350,7 +350,7 @@
             this.tlpParams.RowCount = 2;
             this.tlpParams.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 115F));
             this.tlpParams.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tlpParams.Size = new System.Drawing.Size(893, 250);
+            this.tlpParams.Size = new System.Drawing.Size(893, 300);
             this.tlpParams.TabIndex = 25;
             // 
             // pnlCaliperParam
@@ -360,7 +360,7 @@
             this.pnlCaliperParam.Margin = new System.Windows.Forms.Padding(0);
             this.pnlCaliperParam.Name = "pnlCaliperParam";
             this.pnlCaliperParam.Padding = new System.Windows.Forms.Padding(4);
-            this.pnlCaliperParam.Size = new System.Drawing.Size(893, 135);
+            this.pnlCaliperParam.Size = new System.Drawing.Size(893, 185);
             this.pnlCaliperParam.TabIndex = 15;
             // 
             // pnlLeadParam
@@ -376,6 +376,29 @@
             this.pnlLeadParam.Name = "pnlLeadParam";
             this.pnlLeadParam.Size = new System.Drawing.Size(893, 115);
             this.pnlLeadParam.TabIndex = 16;
+            // 
+            // lblPanelToFpcOffset
+            // 
+            this.lblPanelToFpcOffset.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblPanelToFpcOffset.Location = new System.Drawing.Point(217, 62);
+            this.lblPanelToFpcOffset.Margin = new System.Windows.Forms.Padding(0);
+            this.lblPanelToFpcOffset.Name = "lblPanelToFpcOffset";
+            this.lblPanelToFpcOffset.Size = new System.Drawing.Size(209, 40);
+            this.lblPanelToFpcOffset.TabIndex = 5;
+            this.lblPanelToFpcOffset.Text = "0";
+            this.lblPanelToFpcOffset.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblPanelToFpcOffset.Click += new System.EventHandler(this.lblPanelToFpcOffset_Click);
+            // 
+            // lblOffset
+            // 
+            this.lblOffset.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblOffset.Location = new System.Drawing.Point(5, 62);
+            this.lblOffset.Margin = new System.Windows.Forms.Padding(0);
+            this.lblOffset.Name = "lblOffset";
+            this.lblOffset.Size = new System.Drawing.Size(200, 40);
+            this.lblOffset.TabIndex = 4;
+            this.lblOffset.Text = "Panel To FPC Offset";
+            this.lblOffset.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // lblApply
             // 
@@ -426,16 +449,16 @@
             this.panel1.Controls.Add(this.label2);
             this.panel1.Controls.Add(this.label1);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel1.Location = new System.Drawing.Point(0, 442);
+            this.panel1.Location = new System.Drawing.Point(0, 492);
             this.panel1.Margin = new System.Windows.Forms.Padding(0);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(893, 457);
+            this.panel1.Size = new System.Drawing.Size(893, 407);
             this.panel1.TabIndex = 26;
             // 
             // label3
             // 
             this.label3.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.label3.Location = new System.Drawing.Point(5, 111);
+            this.label3.Location = new System.Drawing.Point(5, 114);
             this.label3.Margin = new System.Windows.Forms.Padding(0);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(200, 40);
@@ -446,7 +469,7 @@
             // lblCenterAlignSpecX
             // 
             this.lblCenterAlignSpecX.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lblCenterAlignSpecX.Location = new System.Drawing.Point(217, 111);
+            this.lblCenterAlignSpecX.Location = new System.Drawing.Point(217, 114);
             this.lblCenterAlignSpecX.Margin = new System.Windows.Forms.Padding(0);
             this.lblCenterAlignSpecX.Name = "lblCenterAlignSpecX";
             this.lblCenterAlignSpecX.Size = new System.Drawing.Size(209, 40);
@@ -458,7 +481,7 @@
             // label6
             // 
             this.label6.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.label6.Location = new System.Drawing.Point(5, 61);
+            this.label6.Location = new System.Drawing.Point(5, 64);
             this.label6.Margin = new System.Windows.Forms.Padding(0);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(200, 40);
@@ -469,7 +492,7 @@
             // lblRightAlignSpecX
             // 
             this.lblRightAlignSpecX.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lblRightAlignSpecX.Location = new System.Drawing.Point(217, 61);
+            this.lblRightAlignSpecX.Location = new System.Drawing.Point(217, 64);
             this.lblRightAlignSpecX.Margin = new System.Windows.Forms.Padding(0);
             this.lblRightAlignSpecX.Name = "lblRightAlignSpecX";
             this.lblRightAlignSpecX.Size = new System.Drawing.Size(209, 40);
@@ -507,7 +530,7 @@
             this.tableLayoutPanel6.Controls.Add(this.label31, 0, 2);
             this.tableLayoutPanel6.Controls.Add(this.lblRightX_Judgement, 1, 2);
             this.tableLayoutPanel6.Controls.Add(this.lblRightX_Value, 2, 2);
-            this.tableLayoutPanel6.Location = new System.Drawing.Point(5, 169);
+            this.tableLayoutPanel6.Location = new System.Drawing.Point(5, 167);
             this.tableLayoutPanel6.Margin = new System.Windows.Forms.Padding(0);
             this.tableLayoutPanel6.Name = "tableLayoutPanel6";
             this.tableLayoutPanel6.RowCount = 6;
@@ -720,7 +743,7 @@
             // lblRightAlignSpecY
             // 
             this.lblRightAlignSpecY.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lblRightAlignSpecY.Location = new System.Drawing.Point(648, 61);
+            this.lblRightAlignSpecY.Location = new System.Drawing.Point(648, 64);
             this.lblRightAlignSpecY.Margin = new System.Windows.Forms.Padding(0);
             this.lblRightAlignSpecY.Name = "lblRightAlignSpecY";
             this.lblRightAlignSpecY.Size = new System.Drawing.Size(209, 40);
@@ -732,7 +755,7 @@
             // label5
             // 
             this.label5.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.label5.Location = new System.Drawing.Point(436, 61);
+            this.label5.Location = new System.Drawing.Point(436, 64);
             this.label5.Margin = new System.Windows.Forms.Padding(0);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(200, 40);
@@ -743,7 +766,7 @@
             // lblLeftAlignSpecY
             // 
             this.lblLeftAlignSpecY.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lblLeftAlignSpecY.Location = new System.Drawing.Point(648, 11);
+            this.lblLeftAlignSpecY.Location = new System.Drawing.Point(648, 14);
             this.lblLeftAlignSpecY.Margin = new System.Windows.Forms.Padding(0);
             this.lblLeftAlignSpecY.Name = "lblLeftAlignSpecY";
             this.lblLeftAlignSpecY.Size = new System.Drawing.Size(209, 40);
@@ -755,7 +778,7 @@
             // lblLeftAlignSpecX
             // 
             this.lblLeftAlignSpecX.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lblLeftAlignSpecX.Location = new System.Drawing.Point(217, 11);
+            this.lblLeftAlignSpecX.Location = new System.Drawing.Point(217, 14);
             this.lblLeftAlignSpecX.Margin = new System.Windows.Forms.Padding(0);
             this.lblLeftAlignSpecX.Name = "lblLeftAlignSpecX";
             this.lblLeftAlignSpecX.Size = new System.Drawing.Size(209, 40);
@@ -767,7 +790,7 @@
             // label2
             // 
             this.label2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.label2.Location = new System.Drawing.Point(436, 11);
+            this.label2.Location = new System.Drawing.Point(436, 14);
             this.label2.Margin = new System.Windows.Forms.Padding(0);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(200, 40);
@@ -778,48 +801,13 @@
             // label1
             // 
             this.label1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.label1.Location = new System.Drawing.Point(5, 11);
+            this.label1.Location = new System.Drawing.Point(5, 14);
             this.label1.Margin = new System.Windows.Forms.Padding(0);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(200, 40);
             this.label1.TabIndex = 2;
             this.label1.Text = "Left Align SpecX(um)";
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // lblNewTest
-            // 
-            this.lblNewTest.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lblNewTest.Location = new System.Drawing.Point(754, 12);
-            this.lblNewTest.Margin = new System.Windows.Forms.Padding(0);
-            this.lblNewTest.Name = "lblNewTest";
-            this.lblNewTest.Size = new System.Drawing.Size(100, 40);
-            this.lblNewTest.TabIndex = 6;
-            this.lblNewTest.Text = "New Test";
-            this.lblNewTest.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.lblNewTest.Click += new System.EventHandler(this.lblNewTest_Click);
-            // 
-            // lblOffset
-            // 
-            this.lblOffset.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lblOffset.Location = new System.Drawing.Point(5, 62);
-            this.lblOffset.Margin = new System.Windows.Forms.Padding(0);
-            this.lblOffset.Name = "lblOffset";
-            this.lblOffset.Size = new System.Drawing.Size(200, 40);
-            this.lblOffset.TabIndex = 4;
-            this.lblOffset.Text = "Panel To FPC Offset";
-            this.lblOffset.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // lblPanelToFpcOffset
-            // 
-            this.lblPanelToFpcOffset.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lblPanelToFpcOffset.Location = new System.Drawing.Point(217, 62);
-            this.lblPanelToFpcOffset.Margin = new System.Windows.Forms.Padding(0);
-            this.lblPanelToFpcOffset.Name = "lblPanelToFpcOffset";
-            this.lblPanelToFpcOffset.Size = new System.Drawing.Size(209, 40);
-            this.lblPanelToFpcOffset.TabIndex = 5;
-            this.lblPanelToFpcOffset.Text = "0";
-            this.lblPanelToFpcOffset.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.lblPanelToFpcOffset.Click += new System.EventHandler(this.lblPanelToFpcOffset_Click);
             // 
             // AlignControl
             // 
@@ -840,6 +828,7 @@
             this.panel1.ResumeLayout(false);
             this.tableLayoutPanel6.ResumeLayout(false);
             this.ResumeLayout(false);
+
         }
 
         #endregion

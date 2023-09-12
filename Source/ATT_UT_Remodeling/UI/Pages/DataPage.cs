@@ -56,7 +56,6 @@ namespace ATT_UT_Remodeling.UI.Pages
                 return;
             }
 
-            
             if (MotionSettingsForm == null)
             {
                 MotionSettingsForm = new MotionSettingsForm();

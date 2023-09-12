@@ -243,7 +243,7 @@ namespace Jastech.Apps.Winform.UI.Forms
                 return;
 
             var inspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
-            string previousModel = inspModel?.Name;
+         
             string selectedModel = lblSelectedName.Text;
 
             DailyInfoService.Reset();
@@ -251,6 +251,7 @@ namespace Jastech.Apps.Winform.UI.Forms
 
             ApplyModelEventHandler?.Invoke(selectedModel);
 
+            string previousModel = inspModel?.Name;
             if (previousModel?.Equals(selectedModel) == false)
                 ParamTrackingLogger.AddChangeHistory("Inspector", "InspectionModel", previousModel, selectedModel);
 

@@ -109,7 +109,7 @@ namespace ATT_UT_IPAD
             PlcControlManager.Instance().WriteVersion();
 
             ManualJudgeForm = new ManualJudgeForm();
-            ManualJudgeForm.Show();
+            ManualJudgeForm.Hide();
         }
 
         private void MainForm_InspRunnerHandler(bool isStart)
@@ -149,10 +149,20 @@ namespace ATT_UT_IPAD
 
             ModelManager.Instance().CurrentModel = ATTInspModelService.Load(filePath);
             SelectMainPage();
-            UpdateLabel(modelName);            
+            UpdateLabel(modelName);
 
             ConfigSet.Instance().Operation.LastModelName = modelName;
             ConfigSet.Instance().Operation.Save(ConfigSet.Instance().Path.Config);
+
+            if (ManualJudgeForm != null)
+            {
+                ManualJudgeForm.Close();
+                ManualJudgeForm.Dispose();
+                ManualJudgeForm = null;
+
+                ManualJudgeForm = new ManualJudgeForm();
+                ManualJudgeForm.Hide();
+            }
         }
 
         private void SelectMainPage()
@@ -186,7 +196,7 @@ namespace ATT_UT_IPAD
 
             AppsInspResult.Instance().Dispose();
 
-            MainPageControl.MainViewControl?.UpdateTabCount(model.TabCount);
+            MainPageControl.UpdateTabCount(model.TabCount);
 
             UpdateLabel(model.Name);
             ConfigSet.Instance().Operation.LastModelName = model.Name;
@@ -201,6 +211,7 @@ namespace ATT_UT_IPAD
                 BeginInvoke(callback, modelname);
                 return;
             }
+
             lblCurrentModel.Text = modelname;
         }
 
@@ -321,32 +332,32 @@ namespace ATT_UT_IPAD
 
         public void UpdateMainAkkonResult(int tabNo)
         {
-            MainPageControl.MainViewControl.UpdateMainAkkonResultData(tabNo);
+            MainPageControl.UpdateMainAkkonResultData(tabNo);
         }
 
         public void UpdateMainAlignResult(int tabNo)
         {
-            MainPageControl.MainViewControl.UpdateMainAlignResult(tabNo);
+            MainPageControl.UpdateMainAlignResult(tabNo);
         }
 
         public void UpdateAkkonResultTabButton(int tabNo)
         {
-            MainPageControl.MainViewControl.UpdateAkkonResultTabButton(tabNo);
+            MainPageControl.UpdateAkkonResultTabButton(tabNo);
         }
 
         public void UpdateAlignResultTabButton(int tabNo)
         {
-            MainPageControl.MainViewControl.UpdateAlignResultTabButton(tabNo);
+            MainPageControl.UpdateAlignResultTabButton(tabNo);
         }
 
         public void TabButtonResetColor()
         {
-            MainPageControl.MainViewControl.TabButtonResetColor();
+            MainPageControl.TabButtonResetColor();
         }
 
         public void AddSystemLogMessage(string logMessage)
         {
-            MainPageControl.MainViewControl.AddSystemLogMessage(logMessage);
+            MainPageControl.AddSystemLogMessage(logMessage);
         }
 
         private void lblCurrentUser_Click(object sender, EventArgs e)
@@ -420,6 +431,7 @@ namespace ATT_UT_IPAD
                 form.ShowDialog();
                 return;
             }
+
             OpenFileDialog dialog = new OpenFileDialog();
             dialog.Multiselect = true;
 
@@ -530,6 +542,7 @@ namespace ATT_UT_IPAD
                     string fileName = Path.GetFileNameWithoutExtension(filePath).ToUpper();
                     fileName = fileName.Replace("_OK", "");
                     fileName = fileName.Replace("_NG", "");
+
                     int index = fileName.IndexOf(text);
                     if (index < 0)
                     {
@@ -581,9 +594,7 @@ namespace ATT_UT_IPAD
                 MessageYesNoForm form = new MessageYesNoForm();
                 form.Message = "Would you like to do a test run?";
                 if (form.ShowDialog() == DialogResult.Yes)
-                {
                     AppsStatus.Instance().IsInspRunnerFlagFromPlc = true;
-                }
             }
         }
 
@@ -615,11 +626,10 @@ namespace ATT_UT_IPAD
                 ManualJudgeForm.Show();
         }
 
-        #endregion
-
         private void lblMachineName_Click(object sender, EventArgs e)
         {
             Process.Start(ConfigSet.Instance().Path.Result);
         }
+        #endregion
     }
 }

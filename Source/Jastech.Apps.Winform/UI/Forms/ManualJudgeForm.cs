@@ -28,11 +28,15 @@ namespace Jastech.Apps.Winform.UI.Forms
         private Color _nonSelectedColor;
 
         private List<ManualJudgeControl> _manualJudgeControlList = null;
+
+        private List<TabInspResult> _tabAlignInspResultList = new List<TabInspResult>();
+
+        private List<TabInspResult> _tabAkkonInspResultList = new List<TabInspResult>();
+
+        private ManualJudge _manualJudge = null;
         #endregion
 
         #region 속성
-        private List<TabInspResult> _tabAlignInspResultList = new List<TabInspResult>();
-        private List<TabInspResult> _tabAkkonInspResultList = new List<TabInspResult>();
         #endregion
 
         #region 이벤트
@@ -60,6 +64,11 @@ namespace Jastech.Apps.Winform.UI.Forms
             //{
             //    item.UpdateResult(null);
             //}
+        }
+
+        public void SetManualJudge(ManualJudge manualJudge)
+        {
+            _manualJudge = manualJudge;
         }
 
         private void tmrManualJudge_Tick(object sender, EventArgs e)
@@ -106,6 +115,9 @@ namespace Jastech.Apps.Winform.UI.Forms
         private void InitializeJudgeStatus()
         {
             var appInspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
+            if (appInspModel == null)
+                return;
+
             var tabCount = appInspModel.TabCount;
 
             tlpJudge.ColumnStyles.Clear();
@@ -175,6 +187,12 @@ namespace Jastech.Apps.Winform.UI.Forms
             _tabAlignInspResultList.Add(tabAlignResult);
         }
 
+        public void SetTabInspectionResult(TabInspResult tabInspResult)
+        {
+            _tabAkkonInspResultList.Add(tabInspResult);
+            _tabAlignInspResultList.Add(tabInspResult);
+        }
+
         public void SetInspectionResult()
         {
             int tabNo = 0;
@@ -241,5 +259,28 @@ namespace Jastech.Apps.Winform.UI.Forms
                 Location = new Point(this.Left - (_mousePoint.X - e.X), this.Top - (_mousePoint.Y - e.Y));
         }
         #endregion
+    }
+
+    public class ManualJudge
+    {
+        public TabJudgement AlignJudgement { get; set; }
+
+        // Spec
+        public double Lx { get; set; } = 0.0;
+
+        public double Ly { get; set; } = 0.0;
+
+        public double Cx { get; set; } = 0.0;
+
+        public double Rx { get; set; } = 0.0;
+
+        public double Ry { get; set; } = 0.0;
+
+        public TabJudgement AkkonJudgement { get; set; }
+
+        // Spec
+        public int Count { get; set; } = 0;
+
+        public double Length { get; set; } = 0.0;
     }
 }

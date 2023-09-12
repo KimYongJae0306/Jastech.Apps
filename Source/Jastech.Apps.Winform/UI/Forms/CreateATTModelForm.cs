@@ -59,31 +59,12 @@ namespace Jastech.Apps.Winform.UI.Forms
                 return;
             }
 
-            if (txtSpecInfoX.Text == "")
-                txtSpecInfoX.Text = "0";
-
-            if (txtSpecInfoY.Text == "")
-                txtSpecInfoY.Text = "0";
-
-            if (txtSpecInfoCx.Text == "")
-                txtSpecInfoCx.Text = "0";
-
-            if (txtSpecInfoStandardValue.Text == "")
-                txtSpecInfoStandardValue.Text = "0";
-
             AppsInspModel model = new AppsInspModel
             {
                 Name = modelName,
                 Description = description,
                 CreateDate = time,
                 ModifiedDate = time,
-                SpecInfo = new Structure.Data.SpecInfo
-                {
-                    AlignToleranceX_um = Convert.ToDouble(txtSpecInfoX.Text),
-                    AlignToleranceY_um = Convert.ToDouble(txtSpecInfoY.Text),
-                    AlignToleranceCx_um = Convert.ToDouble(txtSpecInfoCx.Text),
-                    AlignStandard_um = Convert.ToDouble(txtSpecInfoStandardValue.Text),
-                },
                 TabCount = Convert.ToInt32(tabCount),
             };
 

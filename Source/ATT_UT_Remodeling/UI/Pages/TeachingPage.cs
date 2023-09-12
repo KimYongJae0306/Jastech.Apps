@@ -1,5 +1,6 @@
 ﻿using ATT_UT_Remodeling.Core;
 using ATT_UT_Remodeling.UI.Forms;
+using Cognex.VisionPro;
 using Jastech.Apps.Structure;
 using Jastech.Apps.Winform;
 using Jastech.Apps.Winform.UI.Forms;
@@ -20,6 +21,8 @@ namespace ATT_UT_Remodeling.UI.Pages
         private ATTInspModelService ATTInspModelService { get; set; } = null;
 
         private MotionPopupForm MotionPopupForm { get; set; } = null;
+
+        public ICogImage ScanImage { get; set; } = null;
         #endregion
 
         #region 생성자
@@ -46,7 +49,13 @@ namespace ATT_UT_Remodeling.UI.Pages
             form.CalibLightParameter = CreateCalibrationLightParam();
             form.InspModelService = ATTInspModelService;
             form.OpenMotionPopupEventHandler += OpenMotionPopupEventHandler;
+            form.CloseMotionPopupEventHandler += CloseMotionPopupEventHandler;
             form.ShowDialog();
+        }
+
+        private void CloseMotionPopupEventHandler(UnitName unitName)
+        {
+            MotionPopupForm?.Close();
         }
 
         private LightParameter CreateCalibrationLightParam()
@@ -62,14 +71,19 @@ namespace ATT_UT_Remodeling.UI.Pages
             return calibLightParameter;
         }
 
-        private void btnAlgorithm_Click(object sender, EventArgs e)
+        private void btnInspection_Click(object sender, EventArgs e)
         {
             InspectionTeachingForm form = new InspectionTeachingForm();
+            form.ScanImage = ScanImage?.CopyBase(CogImageCopyModeConstants.CopyPixels);
             form.UnitName = UnitName.Unit0;
             form.LineCamera = LineCameraManager.Instance().GetLineCamera("LineCamera");
             form.LAFCtrl = LAFManager.Instance().GetLAF("Laf").LafCtrl;
+            form.UseAlignMark = false;
+            form.UseAlignTeaching = true;
+            form.UseAkkonTeaching = true;
             form.InspModelService = ATTInspModelService;
             form.OpenMotionPopupEventHandler += OpenMotionPopupEventHandler;
+            form.CloseMotionPopupEventHandler += CloseMotionPopupEventHandler;
             form.ShowDialog();
         }
 
@@ -96,8 +110,8 @@ namespace ATT_UT_Remodeling.UI.Pages
 
         private void btnLinescanSetting_Click(object sender, EventArgs e)
         {
-            if (ModelManager.Instance().CurrentModel == null)
-                return;
+            if (LAFManager.Instance().GetLAF("Laf") is LAF laf)
+                laf.LafCtrl.SetTrackingOnOFF(false);
 
             OpticTeachingForm form = new OpticTeachingForm();
             form.LineCamera = LineCameraManager.Instance().GetLineCamera("LineCamera");
@@ -107,6 +121,7 @@ namespace ATT_UT_Remodeling.UI.Pages
             form.AxisHandler = MotionManager.Instance().GetAxisHandler(AxisHandlerName.Handler0);
             form.InspModelService = ATTInspModelService;
             form.OpenMotionPopupEventHandler += OpenMotionPopupEventHandler;
+            form.CloseMotionPopupEventHandler += CloseMotionPopupEventHandler;
             form.ShowDialog();
         }
         #endregion

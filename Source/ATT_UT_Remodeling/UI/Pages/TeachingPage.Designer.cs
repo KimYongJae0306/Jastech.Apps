@@ -33,7 +33,7 @@
             this.btnPreAlign = new System.Windows.Forms.Button();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.label1 = new System.Windows.Forms.Label();
-            this.btnAlgorithm = new System.Windows.Forms.Button();
+            this.btnInspection = new System.Windows.Forms.Button();
             this.tableLayoutPanel6 = new System.Windows.Forms.TableLayoutPanel();
             this.label6 = new System.Windows.Forms.Label();
             this.btnLinescanSetting = new System.Windows.Forms.Button();
@@ -89,7 +89,7 @@
             this.tableLayoutPanel1.ColumnCount = 1;
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel1.Controls.Add(this.label1, 0, 0);
-            this.tableLayoutPanel1.Controls.Add(this.btnAlgorithm, 0, 1);
+            this.tableLayoutPanel1.Controls.Add(this.btnInspection, 0, 1);
             this.tableLayoutPanel1.Location = new System.Drawing.Point(332, 175);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 2;
@@ -112,19 +112,19 @@
             this.label1.Text = "ATT Inspection";
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // btnAlgorithm
+            // btnInspection
             // 
-            this.btnAlgorithm.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(34)))), ((int)(((byte)(34)))), ((int)(((byte)(34)))));
-            this.btnAlgorithm.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.btnAlgorithm.Font = new System.Drawing.Font("맑은 고딕", 13F, System.Drawing.FontStyle.Bold);
-            this.btnAlgorithm.ForeColor = System.Drawing.Color.White;
-            this.btnAlgorithm.Location = new System.Drawing.Point(3, 33);
-            this.btnAlgorithm.Name = "btnAlgorithm";
-            this.btnAlgorithm.Size = new System.Drawing.Size(235, 65);
-            this.btnAlgorithm.TabIndex = 1;
-            this.btnAlgorithm.Text = "Algorithm";
-            this.btnAlgorithm.UseVisualStyleBackColor = false;
-            this.btnAlgorithm.Click += new System.EventHandler(this.btnAlgorithm_Click);
+            this.btnInspection.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(34)))), ((int)(((byte)(34)))), ((int)(((byte)(34)))));
+            this.btnInspection.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.btnInspection.Font = new System.Drawing.Font("맑은 고딕", 13F, System.Drawing.FontStyle.Bold);
+            this.btnInspection.ForeColor = System.Drawing.Color.White;
+            this.btnInspection.Location = new System.Drawing.Point(3, 33);
+            this.btnInspection.Name = "btnInspection";
+            this.btnInspection.Size = new System.Drawing.Size(235, 65);
+            this.btnInspection.TabIndex = 1;
+            this.btnInspection.Text = "Inspection";
+            this.btnInspection.UseVisualStyleBackColor = false;
+            this.btnInspection.Click += new System.EventHandler(this.btnInspection_Click);
             // 
             // tableLayoutPanel6
             // 
@@ -192,7 +192,7 @@
         private System.Windows.Forms.Button btnPreAlign;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Button btnAlgorithm;
+        private System.Windows.Forms.Button btnInspection;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel6;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Button btnLinescanSetting;

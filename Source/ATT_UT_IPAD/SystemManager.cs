@@ -292,6 +292,7 @@ namespace ATT_UT_IPAD
                 {
                     _inspRunner.SeqRun();
                     AddSystemLogMessage("Start Auto mode.");
+
                     PlcControlManager.Instance().MachineStatus = MachineStatus.RUN;
                     //PlcControlManager.Instance().WritePcReady(MachineStatus.RUN);
                 }
@@ -318,7 +319,6 @@ namespace ATT_UT_IPAD
                     AddSystemLogMessage("Stop Auto Mode.");
 
                     PlcControlManager.Instance().MachineStatus = MachineStatus.STOP;
-                    //PlcControlManager.Instance().WritePcReady(MachineStatus.STOP);
                 }
             }
         }

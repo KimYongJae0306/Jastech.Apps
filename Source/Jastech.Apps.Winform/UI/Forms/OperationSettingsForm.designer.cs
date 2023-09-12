@@ -42,10 +42,15 @@
             this.tlpVisionAlgorithmEnableAkkon = new System.Windows.Forms.TableLayoutPanel();
             this.label13 = new System.Windows.Forms.Label();
             this.mtgEnableAkkon = new MetroFramework.Controls.MetroToggle();
+            this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
+            this.label32 = new System.Windows.Forms.Label();
+            this.mtgEnableManualJudge = new MetroFramework.Controls.MetroToggle();
             this.tlpVisionAlgorithmEnableAlign = new System.Windows.Forms.TableLayoutPanel();
             this.label14 = new System.Windows.Forms.Label();
             this.mtgEnableAlign = new MetroFramework.Controls.MetroToggle();
+            this.panel15 = new System.Windows.Forms.Panel();
             this.panel8 = new System.Windows.Forms.Panel();
+            this.label31 = new System.Windows.Forms.Label();
             this.label20 = new System.Windows.Forms.Label();
             this.tlpPreAlignToleranceT = new System.Windows.Forms.TableLayoutPanel();
             this.label11 = new System.Windows.Forms.Label();
@@ -118,6 +123,7 @@
             this.tlpVisionAlgotirhmTest2.SuspendLayout();
             this.tlpVisionAlgorithmEnableTest1.SuspendLayout();
             this.tlpVisionAlgorithmEnableAkkon.SuspendLayout();
+            this.tableLayoutPanel2.SuspendLayout();
             this.tlpVisionAlgorithmEnableAlign.SuspendLayout();
             this.tlpPreAlignToleranceT.SuspendLayout();
             this.tlpPreAlignToleranceY.SuspendLayout();
@@ -196,8 +202,11 @@
             this.panel1.Controls.Add(this.tlpVisionAlgotirhmTest2);
             this.panel1.Controls.Add(this.tlpVisionAlgorithmEnableTest1);
             this.panel1.Controls.Add(this.tlpVisionAlgorithmEnableAkkon);
+            this.panel1.Controls.Add(this.tableLayoutPanel2);
             this.panel1.Controls.Add(this.tlpVisionAlgorithmEnableAlign);
+            this.panel1.Controls.Add(this.panel15);
             this.panel1.Controls.Add(this.panel8);
+            this.panel1.Controls.Add(this.label31);
             this.panel1.Controls.Add(this.label20);
             this.panel1.Controls.Add(this.tlpPreAlignToleranceT);
             this.panel1.Controls.Add(this.tlpPreAlignToleranceY);
@@ -336,6 +345,48 @@
             this.mtgEnableAkkon.UseSelectable = true;
             this.mtgEnableAkkon.CheckedChanged += new System.EventHandler(this.mtgOperationSetting_CheckedChanged);
             // 
+            // tableLayoutPanel2
+            // 
+            this.tableLayoutPanel2.ColumnCount = 3;
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 120F));
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 100F));
+            this.tableLayoutPanel2.Controls.Add(this.label32, 0, 0);
+            this.tableLayoutPanel2.Controls.Add(this.mtgEnableManualJudge, 1, 0);
+            this.tableLayoutPanel2.Location = new System.Drawing.Point(67, 640);
+            this.tableLayoutPanel2.Name = "tableLayoutPanel2";
+            this.tableLayoutPanel2.RowCount = 1;
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 36F));
+            this.tableLayoutPanel2.Size = new System.Drawing.Size(298, 36);
+            this.tableLayoutPanel2.TabIndex = 29;
+            // 
+            // label32
+            // 
+            this.label32.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.label32.Font = new System.Drawing.Font("맑은 고딕", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.label32.ForeColor = System.Drawing.Color.White;
+            this.label32.Location = new System.Drawing.Point(3, 0);
+            this.label32.Name = "label32";
+            this.label32.Size = new System.Drawing.Size(114, 36);
+            this.label32.TabIndex = 5;
+            this.label32.Text = "Use";
+            this.label32.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // mtgEnableManualJudge
+            // 
+            this.mtgEnableManualJudge.AutoSize = true;
+            this.mtgEnableManualJudge.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.mtgEnableManualJudge.FontWeight = MetroFramework.MetroLinkWeight.Bold;
+            this.mtgEnableManualJudge.Location = new System.Drawing.Point(123, 3);
+            this.mtgEnableManualJudge.Name = "mtgEnableManualJudge";
+            this.mtgEnableManualJudge.Size = new System.Drawing.Size(72, 30);
+            this.mtgEnableManualJudge.TabIndex = 12;
+            this.mtgEnableManualJudge.Text = "Off";
+            this.mtgEnableManualJudge.Theme = MetroFramework.MetroThemeStyle.Dark;
+            this.mtgEnableManualJudge.UseSelectable = true;
+            this.mtgEnableManualJudge.CheckedChanged += new System.EventHandler(this.mtgOperationSetting_CheckedChanged);
+            // 
             // tlpVisionAlgorithmEnableAlign
             // 
             this.tlpVisionAlgorithmEnableAlign.ColumnCount = 3;
@@ -348,6 +399,7 @@
             this.tlpVisionAlgorithmEnableAlign.Name = "tlpVisionAlgorithmEnableAlign";
             this.tlpVisionAlgorithmEnableAlign.RowCount = 1;
             this.tlpVisionAlgorithmEnableAlign.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tlpVisionAlgorithmEnableAlign.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 36F));
             this.tlpVisionAlgorithmEnableAlign.Size = new System.Drawing.Size(298, 36);
             this.tlpVisionAlgorithmEnableAlign.TabIndex = 29;
             // 
@@ -377,6 +429,15 @@
             this.mtgEnableAlign.UseSelectable = true;
             this.mtgEnableAlign.CheckedChanged += new System.EventHandler(this.mtgOperationSetting_CheckedChanged);
             // 
+            // panel15
+            // 
+            this.panel15.BackColor = System.Drawing.SystemColors.Highlight;
+            this.panel15.Location = new System.Drawing.Point(23, 625);
+            this.panel15.Margin = new System.Windows.Forms.Padding(0);
+            this.panel15.Name = "panel15";
+            this.panel15.Size = new System.Drawing.Size(345, 2);
+            this.panel15.TabIndex = 27;
+            // 
             // panel8
             // 
             this.panel8.BackColor = System.Drawing.SystemColors.Highlight;
@@ -385,6 +446,17 @@
             this.panel8.Name = "panel8";
             this.panel8.Size = new System.Drawing.Size(345, 2);
             this.panel8.TabIndex = 27;
+            // 
+            // label31
+            // 
+            this.label31.Font = new System.Drawing.Font("맑은 고딕", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.label31.ForeColor = System.Drawing.Color.White;
+            this.label31.Location = new System.Drawing.Point(18, 592);
+            this.label31.Name = "label31";
+            this.label31.Size = new System.Drawing.Size(350, 33);
+            this.label31.TabIndex = 28;
+            this.label31.Text = "Manual Judge";
+            this.label31.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // label20
             // 
@@ -1292,6 +1364,8 @@
             this.tlpVisionAlgorithmEnableTest1.PerformLayout();
             this.tlpVisionAlgorithmEnableAkkon.ResumeLayout(false);
             this.tlpVisionAlgorithmEnableAkkon.PerformLayout();
+            this.tableLayoutPanel2.ResumeLayout(false);
+            this.tableLayoutPanel2.PerformLayout();
             this.tlpVisionAlgorithmEnableAlign.ResumeLayout(false);
             this.tlpVisionAlgorithmEnableAlign.PerformLayout();
             this.tlpPreAlignToleranceT.ResumeLayout(false);
@@ -1416,5 +1490,10 @@
         private MetroFramework.Controls.MetroToggle mtgLogAkkonLead;
         private System.Windows.Forms.Panel panel14;
         private System.Windows.Forms.Label label30;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
+        private System.Windows.Forms.Label label32;
+        private MetroFramework.Controls.MetroToggle mtgEnableManualJudge;
+        private System.Windows.Forms.Panel panel15;
+        private System.Windows.Forms.Label label31;
     }
 }

@@ -35,12 +35,12 @@ namespace ATT_UT_IPAD
             isRunning = true;
             if (isRunning)
             {
-                Application.EnableVisualStyles();
-                Application.SetCompatibleTextRenderingDefault(false);
-
                 Application.ThreadException += Application_ThreadException;
                 Application.SetUnhandledExceptionMode(UnhandledExceptionMode.ThrowException);
                 AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
+
+                Application.EnableVisualStyles();
+                Application.SetCompatibleTextRenderingDefault(false);
 
                 Logger.Initialize(ConfigSet.Instance().Path.Log);
 

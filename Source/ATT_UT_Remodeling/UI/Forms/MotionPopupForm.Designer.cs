@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.tlpMotionPopup = new System.Windows.Forms.TableLayoutPanel();
             this.tlpFormFunction = new System.Windows.Forms.TableLayoutPanel();
             this.btnMoveTeachingPosition = new System.Windows.Forms.Button();
@@ -116,6 +117,9 @@
             this.rdoJogSlowMode = new System.Windows.Forms.RadioButton();
             this.lblJog = new System.Windows.Forms.Label();
             this.pnlTeachingPositionList = new System.Windows.Forms.Panel();
+            this.pnlTop = new System.Windows.Forms.Panel();
+            this.lblTop = new System.Windows.Forms.Label();
+            this.StatusTimer = new System.Windows.Forms.Timer(this.components);
             this.tlpMotionPopup.SuspendLayout();
             this.tlpFormFunction.SuspendLayout();
             this.pnlFunction.SuspendLayout();
@@ -137,23 +141,27 @@
             this.tlpPitchXY.SuspendLayout();
             this.tlpJogMode.SuspendLayout();
             this.tlpJogSpeedMode.SuspendLayout();
+            this.pnlTop.SuspendLayout();
             this.SuspendLayout();
             // 
             // tlpMotionPopup
             // 
             this.tlpMotionPopup.ColumnCount = 1;
             this.tlpMotionPopup.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tlpMotionPopup.Controls.Add(this.tlpFormFunction, 0, 2);
-            this.tlpMotionPopup.Controls.Add(this.pnlFunction, 0, 1);
-            this.tlpMotionPopup.Controls.Add(this.pnlTeachingPositionList, 0, 0);
+            this.tlpMotionPopup.Controls.Add(this.pnlTop, 0, 0);
+            this.tlpMotionPopup.Controls.Add(this.tlpFormFunction, 0, 3);
+            this.tlpMotionPopup.Controls.Add(this.pnlFunction, 0, 2);
+            this.tlpMotionPopup.Controls.Add(this.pnlTeachingPositionList, 0, 1);
             this.tlpMotionPopup.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tlpMotionPopup.Location = new System.Drawing.Point(0, 0);
             this.tlpMotionPopup.Margin = new System.Windows.Forms.Padding(0);
             this.tlpMotionPopup.Name = "tlpMotionPopup";
-            this.tlpMotionPopup.RowCount = 3;
+            this.tlpMotionPopup.RowCount = 4;
+            this.tlpMotionPopup.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 60F));
             this.tlpMotionPopup.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 100F));
             this.tlpMotionPopup.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tlpMotionPopup.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 100F));
+            this.tlpMotionPopup.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tlpMotionPopup.Size = new System.Drawing.Size(684, 861);
             this.tlpMotionPopup.TabIndex = 2;
             // 
@@ -276,10 +284,10 @@
             this.pnlFunction.Controls.Add(this.tlpVariableParameters);
             this.pnlFunction.Controls.Add(this.tlpMotionFunction);
             this.pnlFunction.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pnlFunction.Location = new System.Drawing.Point(0, 100);
+            this.pnlFunction.Location = new System.Drawing.Point(0, 160);
             this.pnlFunction.Margin = new System.Windows.Forms.Padding(0);
             this.pnlFunction.Name = "pnlFunction";
-            this.pnlFunction.Size = new System.Drawing.Size(684, 661);
+            this.pnlFunction.Size = new System.Drawing.Size(684, 601);
             this.pnlFunction.TabIndex = 2;
             // 
             // tlpVariableParameters
@@ -723,7 +731,7 @@
             this.lblTeachedCenterOfGravityZ.TabIndex = 6;
             this.lblTeachedCenterOfGravityZ.Text = "0";
             this.lblTeachedCenterOfGravityZ.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.lblTeachedCenterOfGravityZ.Click += new System.EventHandler(this.lblCurrentToTargetCenterOfGravityZ_Click);
+            this.lblTeachedCenterOfGravityZ.Click += new System.EventHandler(this.lblTeachedCenterOfGravityZ_Click);
             // 
             // lblSensorZ
             // 
@@ -1528,11 +1536,40 @@
             // pnlTeachingPositionList
             // 
             this.pnlTeachingPositionList.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pnlTeachingPositionList.Location = new System.Drawing.Point(0, 0);
+            this.pnlTeachingPositionList.Location = new System.Drawing.Point(0, 60);
             this.pnlTeachingPositionList.Margin = new System.Windows.Forms.Padding(0);
             this.pnlTeachingPositionList.Name = "pnlTeachingPositionList";
             this.pnlTeachingPositionList.Size = new System.Drawing.Size(684, 100);
             this.pnlTeachingPositionList.TabIndex = 3;
+            // 
+            // pnlTop
+            // 
+            this.pnlTop.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(104)))), ((int)(((byte)(104)))), ((int)(((byte)(104)))));
+            this.pnlTop.Controls.Add(this.lblTop);
+            this.pnlTop.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pnlTop.ForeColor = System.Drawing.Color.White;
+            this.pnlTop.Location = new System.Drawing.Point(0, 0);
+            this.pnlTop.Margin = new System.Windows.Forms.Padding(0);
+            this.pnlTop.Name = "pnlTop";
+            this.pnlTop.Size = new System.Drawing.Size(684, 60);
+            this.pnlTop.TabIndex = 1;
+            this.pnlTop.MouseDown += new System.Windows.Forms.MouseEventHandler(this.pnlTop_MouseDown);
+            this.pnlTop.MouseMove += new System.Windows.Forms.MouseEventHandler(this.pnlTop_MouseMove);
+            // 
+            // lblTop
+            // 
+            this.lblTop.AutoSize = true;
+            this.lblTop.Font = new System.Drawing.Font("맑은 고딕", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.lblTop.ForeColor = System.Drawing.Color.White;
+            this.lblTop.Location = new System.Drawing.Point(12, 14);
+            this.lblTop.Name = "lblTop";
+            this.lblTop.Size = new System.Drawing.Size(158, 30);
+            this.lblTop.TabIndex = 1;
+            this.lblTop.Text = "Motion Popup";
+            // 
+            // StatusTimer
+            // 
+            this.StatusTimer.Tick += new System.EventHandler(this.StatusTimer_Tick);
             // 
             // MotionPopupForm
             // 
@@ -1544,7 +1581,7 @@
             this.Controls.Add(this.tlpMotionPopup);
             this.Font = new System.Drawing.Font("맑은 고딕", 14F, System.Drawing.FontStyle.Bold);
             this.ForeColor = System.Drawing.Color.White;
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Margin = new System.Windows.Forms.Padding(5, 6, 5, 6);
             this.Name = "MotionPopupForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
@@ -1573,6 +1610,8 @@
             this.tlpPitchXY.ResumeLayout(false);
             this.tlpJogMode.ResumeLayout(false);
             this.tlpJogSpeedMode.ResumeLayout(false);
+            this.pnlTop.ResumeLayout(false);
+            this.pnlTop.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -1667,5 +1706,8 @@
         private System.Windows.Forms.TableLayoutPanel tlpTrackingOnOffZ;
         private System.Windows.Forms.Label lblTrackingOnZ;
         private System.Windows.Forms.Label lblTrackingOffZ;
+        private System.Windows.Forms.Panel pnlTop;
+        private System.Windows.Forms.Label lblTop;
+        private System.Windows.Forms.Timer StatusTimer;
     }
 }

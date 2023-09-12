@@ -63,6 +63,9 @@ namespace Jastech.Framework.Winform.Forms
             mtgEnableAkkon.Checked = appsConfig.EnableAkkon;
             mtgEnableTest1.Checked = appsConfig.EnableTest1;
             mtgEnableTest2.Checked = appsConfig.EnableTest2;
+
+            mtgEnableManualJudge.Checked = appsConfig.EnableManualJudge;
+
             mtgLogAkkonLead.Checked = appsConfig.EnableAkkonLeadResultLog;
 
             txtDataStoringDays.Text = operation.DataStoringDuration.ToString();
@@ -104,6 +107,9 @@ namespace Jastech.Framework.Winform.Forms
             appsConfig.EnableAkkon = mtgEnableAkkon.Checked;
             appsConfig.EnableTest1 = mtgEnableTest1.Checked;
             appsConfig.EnableTest2 = mtgEnableTest2.Checked;
+
+            appsConfig.EnableManualJudge = mtgEnableManualJudge.Checked;
+
             appsConfig.EnableAkkonLeadResultLog = mtgLogAkkonLead.Checked;
 
             operation.DataStoringDuration = (int)Convert.ToDouble(GetValue(txtDataStoringDays.Text));

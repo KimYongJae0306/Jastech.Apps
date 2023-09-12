@@ -146,8 +146,11 @@ namespace Jastech.Apps.Winform.UI.Controls
                     _isInfinite = true;
 
                 _isRepeat = true;
+
+                bool tlqkf = false;
+
                 _repeatThread = new System.Threading.Thread(new System.Threading.ParameterizedThreadStart(this.MoveRepeatThread));
-                _repeatThread.Start(param);
+                _repeatThread.Start(tlqkf);
             }
             else
             {

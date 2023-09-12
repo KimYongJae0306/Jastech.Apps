@@ -58,7 +58,6 @@
             this.btnMark = new System.Windows.Forms.Button();
             this.btnAkkon = new System.Windows.Forms.Button();
             this.btnAlign = new System.Windows.Forms.Button();
-            this.pnlTeachingItem = new System.Windows.Forms.Panel();
             this.btnCancel = new System.Windows.Forms.Button();
             this.btnSave = new System.Windows.Forms.Button();
             this.tlpTeachingPage.SuspendLayout();
@@ -473,7 +472,6 @@
             this.tlpTeachingItems.Controls.Add(this.btnMark, 0, 0);
             this.tlpTeachingItems.Controls.Add(this.btnAkkon, 0, 4);
             this.tlpTeachingItems.Controls.Add(this.btnAlign, 0, 3);
-            this.tlpTeachingItems.Controls.Add(this.pnlTeachingItem, 0, 1);
             this.tlpTeachingItems.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tlpTeachingItems.Location = new System.Drawing.Point(0, 0);
             this.tlpTeachingItems.Margin = new System.Windows.Forms.Padding(0);
@@ -530,15 +528,6 @@
             this.btnAlign.Text = "Align";
             this.btnAlign.UseVisualStyleBackColor = false;
             this.btnAlign.Click += new System.EventHandler(this.btnAlign_Click);
-            // 
-            // pnlTeachingItem
-            // 
-            this.pnlTeachingItem.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pnlTeachingItem.Location = new System.Drawing.Point(0, 100);
-            this.pnlTeachingItem.Margin = new System.Windows.Forms.Padding(0);
-            this.pnlTeachingItem.Name = "pnlTeachingItem";
-            this.pnlTeachingItem.Size = new System.Drawing.Size(144, 100);
-            this.pnlTeachingItem.TabIndex = 21;
             // 
             // btnCancel
             // 
@@ -632,7 +621,6 @@
         private System.Windows.Forms.Label lblAddROI;
         private System.Windows.Forms.Label lblInspection;
         private System.Windows.Forms.Label lblROIJog;
-        private System.Windows.Forms.Panel pnlTeachingItem;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel3;
         private System.Windows.Forms.Label lblImageSave;
         private System.Windows.Forms.Label lblROICopy;

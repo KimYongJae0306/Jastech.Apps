@@ -65,11 +65,13 @@ namespace Jastech.Apps.Winform.UI.Forms
         #endregion
 
         #region 이벤트
-        public OpenMotionPopupDelegate OpenMotionPopupEventHandler;
+        public MotionPopupDelegate OpenMotionPopupEventHandler;
+
+        public MotionPopupDelegate CloseMotionPopupEventHandler;
         #endregion
 
         #region 델리게이트
-        public delegate void OpenMotionPopupDelegate(UnitName unitName);
+        public delegate void MotionPopupDelegate(UnitName unitName);
         #endregion
 
         #region 생성자
