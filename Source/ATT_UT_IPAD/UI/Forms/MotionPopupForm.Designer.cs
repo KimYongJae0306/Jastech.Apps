@@ -28,7 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
             this.tlpMotionPopup = new System.Windows.Forms.TableLayoutPanel();
             this.pnlTop = new System.Windows.Forms.Panel();
             this.lblTop = new System.Windows.Forms.Label();
@@ -136,7 +135,7 @@
             this.rdoJogSlowMode = new System.Windows.Forms.RadioButton();
             this.lblJog = new System.Windows.Forms.Label();
             this.pnlTeachingPositionList = new System.Windows.Forms.Panel();
-            this.StatusTimer = new System.Windows.Forms.Timer(this.components);
+            this.StatusTimer = new System.Windows.Forms.Timer();
             this.tlpMotionPopup.SuspendLayout();
             this.pnlTop.SuspendLayout();
             this.tlpFormFunction.SuspendLayout();

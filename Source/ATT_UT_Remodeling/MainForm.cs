@@ -106,7 +106,7 @@ namespace ATT_UT_Remodeling
             PlcControlManager.Instance().WriteVersion();
 
             ManualJudgeForm = new ManualJudgeForm();
-            ManualJudgeForm.Show();
+            ManualJudgeForm.Hide();
         }
 
         private void MainForm_PreAlignRunnerHandler(bool isStart)
@@ -617,6 +617,7 @@ namespace ATT_UT_Remodeling
             {
                 //ManualJudgeForm.SetTabAlignInspectionResult(inspResult.GetAlign(tabNo));
                 //ManualJudgeForm.SetTabAkkonInspectionResult(inspResult.GetAkkon(tabNo));
+                ManualJudgeForm.SetTabInspectionResult(inspResult.Get(tabNo));
             }
 
             ManualJudgeForm.SetInspectionResult();

@@ -355,6 +355,7 @@ namespace Jastech.Apps.Winform.UI.Controls
                 display.ClearGraphic();
                 display.UpdateResult(result);
             }
+
             result.Dispose();
             inspParam.Dispose();
 
@@ -710,7 +711,7 @@ namespace Jastech.Apps.Winform.UI.Controls
             var diff = VisionProShapeHelper.GetOffsetBetweenCenterPointOfAffineRectangles(alignParam.CaliperParams.GetRegion() as CogRectangleAffine, currentParam.GetRegion() as CogRectangleAffine);
             var diffY = diff.Y;
 
-            double offsetY = (alignParam.CaliperParams.GetRegion() as CogRectangleAffine).SideYLength + 10;
+            double offsetY = Convert.ToDouble(lblPanelToFpcOffset.Text);
 
             var newRegion = VisionProShapeHelper.MoveTranslationY(alignParam.CaliperParams.GetRegion() as CogRectangleAffine, diffY - offsetY);
             //var newRegion = VisionProShapeHelper.MoveOffsetY(currentParam.CaliperTool.Region, -offset, (alignParam.CaliperParams.GetRegion() as CogRectangleAffine).Skew);

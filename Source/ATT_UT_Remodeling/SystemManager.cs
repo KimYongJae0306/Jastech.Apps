@@ -1,4 +1,5 @@
 ﻿using ATT_UT_Remodeling.Core;
+using ATT_UT_Remodeling.Core.Data;
 using Cognex.VisionPro;
 using Jastech.Apps.Structure;
 using Jastech.Apps.Structure.Data;
@@ -212,6 +213,11 @@ namespace ATT_UT_Remodeling
             _mainForm.UpdateResultTabButton(tabNo);
         }
 
+        public void EnableMainView(bool isEnable)
+        {
+            _mainForm.Enable(isEnable);
+        }
+
         public void TabButtonResetColor()
         {
             _mainForm.TabButtonResetColor();
@@ -318,6 +324,11 @@ namespace ATT_UT_Remodeling
         public void ClearPreAlignResult()
         {
             _mainForm.ClearPreAlignResult();
+        }
+
+        public void ShowManualJugdeForm(AppsInspResult inspResult)
+        {
+            _mainForm.ShowManualJudgeForm(inspResult);
         }
         #endregion
     }

@@ -75,6 +75,10 @@ namespace ATT_UT_IPAD.UI.Forms
         public Action CloseEventDelegate;
         #endregion
 
+        #region 델리게이트
+        private delegate void UpdateStatusDelegate();
+        #endregion
+
         #region 생성자
         public MotionPopupForm()
         {
@@ -456,17 +460,6 @@ namespace ATT_UT_IPAD.UI.Forms
             }
         }
 
-        private void lblOffsetX_Click(object sender, EventArgs e)
-        {
-            Label label = sender as Label;
-            double oldOffset = Convert.ToDouble(label.Text);
-            double newOffset = KeyPadHelper.SetLabelDoubleData(label);
-
-            TeachingPositionList.First(x => x.Name == TeachingPositionType.ToString()).SetOffset(AxisName.X, newOffset);
-
-            ParamTrackingLogger.AddChangeHistory($"{AxisName.X}", "Offset", oldOffset, newOffset);
-        }
-
         private void lblTargetPositionX_Click(object sender, EventArgs e)
         {
             Label label = sender as Label;
@@ -476,6 +469,17 @@ namespace ATT_UT_IPAD.UI.Forms
             TeachingPositionList.First(x => x.Name == TeachingPositionType.ToString()).SetTargetPosition(AxisName.X, newPosition);
 
             ParamTrackingLogger.AddChangeHistory($"{AxisName.X}", "TargetPos", oldPosition, newPosition);
+        }
+
+        private void lblOffsetX_Click(object sender, EventArgs e)
+        {
+            Label label = sender as Label;
+            double oldOffset = Convert.ToDouble(label.Text);
+            double newOffset = KeyPadHelper.SetLabelDoubleData(label);
+
+            TeachingPositionList.First(x => x.Name == TeachingPositionType.ToString()).SetOffset(AxisName.X, newOffset);
+
+            ParamTrackingLogger.AddChangeHistory($"{AxisName.X}", "Offset", oldOffset, newOffset);
         }
 
         private void lblCurrentToTargetX_Click(object sender, EventArgs e)
@@ -804,6 +808,7 @@ namespace ATT_UT_IPAD.UI.Forms
         private void MotionPopupForm_FormClosed(object sender, FormClosedEventArgs e)
         {
             ParamTrackingLogger.ClearChangedLog();
+
             if (CloseEventDelegate != null)
                 CloseEventDelegate();
         }
@@ -813,7 +818,6 @@ namespace ATT_UT_IPAD.UI.Forms
             UpdateStatus();
         }
 
-        private delegate void UpdateStatusDelegate();
         private void UpdateStatus()
         {
             if (this.InvokeRequired)

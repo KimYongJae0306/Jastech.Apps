@@ -110,7 +110,7 @@ namespace ATT_UT_IPAD.Core
 
         private void ATTSeqRunner_GrabDoneEventHandler(string cameraName, bool isGrabDone)
         {
-             if(AkkonCamera.Camera.Name == cameraName)
+            if(AkkonCamera.Camera.Name == cameraName)
             {
                 IsAkkonGrabDone = isGrabDone;
 
@@ -331,7 +331,6 @@ namespace ATT_UT_IPAD.Core
                     break;
 
                 case SeqStep.SEQ_MOVE_START_POS:
-               
                     MotionManager.Instance().MoveAxisZ(TeachingPosType.Stage1_Scan_Start, AkkonLAFCtrl, AxisName.Z0);
                     MotionManager.Instance().MoveAxisZ(TeachingPosType.Stage1_Scan_Start, AlignLAFCtrl, AxisName.Z1);
 
@@ -352,17 +351,16 @@ namespace ATT_UT_IPAD.Core
                     if (AppsStatus.Instance().IsInspRunnerFlagFromPlc == false)
                         break;
 
-                    //PlcControlManager.Instance().ClearAddress(PlcCommonMap.PLC_Command_Common);
+                    WriteLog("Receive Inspection Start Signal From PLC.", true);
+
                     SystemManager.Instance().EnableMainView(false);
                     SystemManager.Instance().TabButtonResetColor();
 
-                    WriteLog("Receive Inspection Start Signal From PLC.", true);
-
                     AkkonLAFCtrl.SetTrackingOnOFF(true);
-                    WriteLog("Akkon LAF Tracking ON.");
+                    WriteLog("Akkon LAF Tracking On.");
 
                     AlignLAFCtrl.SetTrackingOnOFF(true);
-                    WriteLog("Align LAF Tracking ON.");
+                    WriteLog("Align LAF Tracking On.");
 
                     Thread.Sleep(300);
 
@@ -381,6 +379,7 @@ namespace ATT_UT_IPAD.Core
                     AppsInspResult.Instance().FinalHead = GetFinalHead();
 
                     WriteLog("Cell ID : " + AppsInspResult.Instance().Cell_ID, true);
+
                     SeqStep = SeqStep.SEQ_SCAN_START;
                     break;
 
@@ -438,6 +437,7 @@ namespace ATT_UT_IPAD.Core
 
                         WriteLog("Complete Align LineScanner Grab.", true);
                     }
+
                     PlcControlManager.Instance().WriteGrabDone();
                     WriteLog("Send to Plc Grab Done", true);
 
@@ -470,11 +470,12 @@ namespace ATT_UT_IPAD.Core
                         SeqStep = SeqStep.SEQ_SEND_RESULT;
                     break;
 
-                    // NG 날때만 탈 것
+                // NG 날때만 탈 것
                 case SeqStep.SEQ_MANUAL_JUDGE:
                     PlcControlManager.Instance().WriteManualJudge();
                     SystemManager.Instance().ShowManualJugdeForm(AppsInspResult.Instance());
                     WriteLog("Show Manual Judge Form", false);
+
                     SeqStep = SeqStep.SEQ_SEND_RESULT;
                     break;
 
@@ -487,7 +488,6 @@ namespace ATT_UT_IPAD.Core
                     break;
 
                 case SeqStep.SEQ_WAIT_UI_RESULT_UPDATE:
-
                     MoveTo(TeachingPosType.Stage1_Scan_Start, out errorMessage, false);
 
                     StartUpdateThread();
@@ -511,7 +511,6 @@ namespace ATT_UT_IPAD.Core
                     break;
 
                 case SeqStep.SEQ_CHECK_STANDBY:
-                    //AppsStatus.Instance().IsInspRunnerFlagFromPlc = false;
                     ClearBufferThread();
                     SeqStep = SeqStep.SEQ_INIT;
                     break;
@@ -738,8 +737,8 @@ namespace ATT_UT_IPAD.Core
                 return "-";
 
             double resolution = AlignCamera.Camera.PixelResolution_um / AlignCamera.Camera.LensScale;
-            
             double value = MathHelper.GetFloorDecimal(alignResult.ResultValue_pixel * resolution, decimalPlaces);
+
             return value.ToString();
         }
 
@@ -905,6 +904,7 @@ namespace ATT_UT_IPAD.Core
                 body.Add($"{avgLength:F3}");                                                // Average Length
 
             }
+
             CSVHelper.WriteData(csvFile, body);
         }
 
@@ -991,6 +991,7 @@ namespace ATT_UT_IPAD.Core
 
                 body.Add(tabData);
             }
+
             CSVHelper.WriteData(csvFile, body);
         }
 
@@ -1140,7 +1141,6 @@ namespace ATT_UT_IPAD.Core
             var teachingInfo = inspModel.GetUnit(UnitName.Unit0).GetTeachingInfo(teachingPos);
 
             Axis axisX = GetAxis(AxisHandlerName.Handler0, AxisName.X);
-           
 
             var movingParamX = teachingInfo.GetMovingParam(AxisName.X.ToString());
             if (MoveAxisX(teachingPos, axisX, movingParamX, isEnableInPosition) == false)
@@ -1283,7 +1283,6 @@ namespace ATT_UT_IPAD.Core
                     textY = centerPoint.Y + (baseLine / 2);
                     CvInvoke.PutText(colorMat, blobCountString, new Point(textX, textY + 60), FontFace.HersheyComplex, 0.3, new MCvScalar(50, 230, 50, 255));
                 }
-
             }
 
             return colorMat;
@@ -1382,9 +1381,7 @@ namespace ATT_UT_IPAD.Core
                     string filePath = Path.Combine(resultPath, imageName);
 
                     if (operation.ExtensionOKImage == ImageExtension.Bmp)
-                    {
                         SaveImage(tabInspResult.Image, filePath, Judgement.OK, ImageExtension.Bmp, false);
-                    }
                     else if (operation.ExtensionOKImage == ImageExtension.Jpg)
                     {
                         if (tabInspResult.Image.Width > SAVE_IMAGE_MAX_WIDTH)
@@ -1589,7 +1586,6 @@ namespace ATT_UT_IPAD.Core
             {
                 if (isHalfSave)
                 {
-
                     string leftPath = $"{filePath}_{judgement}_Left.jpg";
                     string rightPath = $"{filePath}_{judgement}_Right.jpg";
 
@@ -1646,6 +1642,14 @@ namespace ATT_UT_IPAD.Core
             }
         }
 
+        private void WriteLog(string logMessage, bool isSystemLog = false)
+        {
+            if (isSystemLog)
+                SystemManager.Instance().AddSystemLogMessage(logMessage);
+
+            Logger.Write(LogType.Seq, logMessage);
+        }
+
         private void DeleteDirectoryByCapacity(string folderPath, int capacity)
         {
             double useRate = FileHelper.CheckCapacity("D");
@@ -1673,14 +1677,6 @@ namespace ATT_UT_IPAD.Core
             var motionT = PlcControlManager.Instance().GetReadPosition(AxisName.T) / 1000;
 
             preAlignParam.SetMotionData(motionX, motionY, motionT);
-        }
-
-        private void WriteLog(string logMessage, bool isSystemLog = false)
-        {
-            if (isSystemLog)
-                SystemManager.Instance().AddSystemLogMessage(logMessage);
-
-            Logger.Write(LogType.Seq, logMessage);
         }
 
         public void VirtualGrabDone()
@@ -1739,7 +1735,6 @@ namespace ATT_UT_IPAD.Core
                 Logger.Error(ErrorType.Etc, message);
                 _ClearBufferThread = null;
             }
-            
         }
         #endregion
     }

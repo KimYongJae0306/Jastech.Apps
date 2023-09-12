@@ -537,6 +537,7 @@ namespace ATT_UT_IPAD.Core.AppTask
 
             return newList;
         }
+
         private void SaveTrackingAkkonROI(int tabNo, List<AkkonROI> roiList)
         {
             AppsInspModel inspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
@@ -568,6 +569,7 @@ namespace ATT_UT_IPAD.Core.AppTask
                 }
             }
         }
+
         private void SetFpcCoordinateData(CoordinateTransform fpc, TabInspResult tabInspResult, double leftOffsetX, double leftOffsetY, double rightOffsetX, double rightOffsetY)
         {
             var teachingLeftPoint = tabInspResult.MarkResult.FpcMark.FoundedMark.Left.MaxMatchPos.ReferencePos;

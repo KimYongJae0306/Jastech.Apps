@@ -109,7 +109,7 @@ namespace ATT_UT_IPAD
             PlcControlManager.Instance().WriteVersion();
 
             ManualJudgeForm = new ManualJudgeForm();
-            ManualJudgeForm.Show();
+            ManualJudgeForm.Hide();
         }
 
         private void MainForm_InspRunnerHandler(bool isStart)

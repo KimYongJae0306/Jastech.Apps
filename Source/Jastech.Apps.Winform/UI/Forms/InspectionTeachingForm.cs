@@ -99,6 +99,8 @@ namespace Jastech.Framework.Winform.Forms
 
         public bool UseAlignMark { get; set; } = false;
 
+        public bool UseFpcMark { get; set; } = true;
+
         protected override CreateParams CreateParams
         {
             get
@@ -195,6 +197,7 @@ namespace Jastech.Framework.Winform.Forms
             MarkControl = new MarkControl();
             MarkControl.Dock = DockStyle.Fill;
             MarkControl.UseAlignMark = UseAlignMark;
+            MarkControl.UseFpcMark = UseFpcMark;
             MarkControl.SetParams(CurrentTab);
             MarkControl.MarkParamChanged += MarkControl_MarkParamChanged;
             pnlTeach.Controls.Add(MarkControl);

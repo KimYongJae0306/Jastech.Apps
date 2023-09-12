@@ -70,10 +70,11 @@ namespace ATT_UT_Remodeling.UI.Forms
         #endregion
 
         #region 이벤트
+        public Action CloseEventDelegate;
         #endregion
 
         #region 델리게이트
-        public Action CloseEventDelegate;
+        private delegate void UpdateStatusDelegate(object obj);
         #endregion
 
         #region 생성자
@@ -242,7 +243,6 @@ namespace ATT_UT_Remodeling.UI.Forms
             _formTimer = new System.Threading.Timer(UpdateStatus, null, 100, 100);
         }
 
-        private delegate void UpdateStatusDelegate(object obj);
         private void UpdateStatus(object obj)
         {
             if (this.InvokeRequired)

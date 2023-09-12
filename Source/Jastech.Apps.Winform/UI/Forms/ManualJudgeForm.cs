@@ -178,6 +178,12 @@ namespace Jastech.Apps.Winform.UI.Forms
             _tabAlignInspResultList.Add(tabAlignResult);
         }
 
+        public void SetTabInspectionResult(TabInspResult tabInspResult)
+        {
+            _tabAkkonInspResultList.Add(tabInspResult);
+            _tabAlignInspResultList.Add(tabInspResult);
+        }
+
         public void SetInspectionResult()
         {
             int tabNo = 0;
@@ -244,5 +250,26 @@ namespace Jastech.Apps.Winform.UI.Forms
                 Location = new Point(this.Left - (_mousePoint.X - e.X), this.Top - (_mousePoint.Y - e.Y));
         }
         #endregion
+    }
+
+    public class ManualJudge
+    {
+        public TabJudgement AlignJudgement { get; set; }
+
+        public double Lx { get; set; } = 0.0;
+
+        public double Ly { get; set; } = 0.0;
+
+        public double Cx { get; set; } = 0.0;
+
+        public double Rx { get; set; } = 0.0;
+
+        public double Ry { get; set; } = 0.0;
+
+        public TabJudgement AkkonJudgement { get; set; }
+
+        public int Count { get; set; } = 0;
+
+        public double Length { get; set; } = 0.0;
     }
 }
