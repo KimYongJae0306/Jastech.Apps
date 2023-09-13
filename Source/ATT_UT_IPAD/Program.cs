@@ -78,6 +78,8 @@ namespace ATT_UT_IPAD
         {
             if (ConfigSet.Instance().Operation.VirtualMode)
             {
+                AppsConfig.Instance().MachineName = "ATT IPAD (Virtual)";
+
                 // Initialize Config by Program Types
                 string[] typeList = Enum.GetNames(typeof(ProgramType));
                 ProgramSelectForm form = new ProgramSelectForm();
