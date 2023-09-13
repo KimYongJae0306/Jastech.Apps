@@ -33,7 +33,7 @@ namespace Jastech.Apps.Winform.UI.Forms
 
         private List<TabInspResult> _tabAkkonInspResultList = new List<TabInspResult>();
 
-        private ManualJudge _manualJudge = null;
+        private List<ManualJudge> _manualJudgeList = new List<ManualJudge>();
         #endregion
 
         #region 속성
@@ -66,9 +66,9 @@ namespace Jastech.Apps.Winform.UI.Forms
             //}
         }
 
-        public void SetManualJudge(ManualJudge manualJudge)
+        public void SetManualJudge(List<ManualJudge> manualJudgeList)
         {
-            _manualJudge = manualJudge;
+            _manualJudgeList = manualJudgeList;
         }
 
         private void tmrManualJudge_Tick(object sender, EventArgs e)
@@ -198,7 +198,7 @@ namespace Jastech.Apps.Winform.UI.Forms
             int tabNo = 0;
             foreach (var manualJudgeControl in _manualJudgeControlList)
             {
-                manualJudgeControl.UpdateResult(_tabAlignInspResultList[tabNo], _tabAkkonInspResultList[tabNo]);
+                manualJudgeControl.UpdateResult(_manualJudgeList[tabNo]);
                 tabNo++;
             }
         }
@@ -263,7 +263,7 @@ namespace Jastech.Apps.Winform.UI.Forms
 
     public class ManualJudge
     {
-        public TabJudgement AlignJudgement { get; set; }
+        public Judgement AlignJudgement { get; set; }
 
         // Spec
         public double Lx { get; set; } = 0.0;
@@ -276,7 +276,7 @@ namespace Jastech.Apps.Winform.UI.Forms
 
         public double Ry { get; set; } = 0.0;
 
-        public TabJudgement AkkonJudgement { get; set; }
+        public Judgement AkkonJudgement { get; set; }
 
         // Spec
         public int Count { get; set; } = 0;

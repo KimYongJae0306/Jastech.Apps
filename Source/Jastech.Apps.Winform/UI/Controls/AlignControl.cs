@@ -721,7 +721,5 @@ namespace Jastech.Apps.Winform.UI.Controls
             collection.Add(newRegion);
             display.SetInteractiveGraphics("tool", collection);
         }
-
-        
     }
 }

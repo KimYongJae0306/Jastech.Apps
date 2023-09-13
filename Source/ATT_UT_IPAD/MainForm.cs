@@ -109,6 +109,7 @@ namespace ATT_UT_IPAD
             PlcControlManager.Instance().WriteVersion();
 
             ManualJudgeForm = new ManualJudgeForm();
+            ManualJudgeForm.Show();
             ManualJudgeForm.Hide();
         }
 
@@ -603,18 +604,14 @@ namespace ATT_UT_IPAD
             MainPageControl?.Enable(isEnable);
         }
 
-        public void ShowManualJudgeForm(AppsInspResult inspResult)
+        public void SetManualJudgeData(List<ManualJudge> manualJudgeList)
         {
-            var inspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
-
-            for (int tabNo = 0; tabNo < inspModel.TabCount; tabNo++)
-            {
-                ManualJudgeForm.SetTabAlignInspectionResult(inspResult.GetAlign(tabNo));
-                ManualJudgeForm.SetTabAkkonInspectionResult(inspResult.GetAkkon(tabNo));
-            }
-
+            ManualJudgeForm.SetManualJudge(manualJudgeList);
             ManualJudgeForm.SetInspectionResult();
+        }
 
+        public void ShowManualJudgeForm()
+        {
             if (ManualJudgeForm.InvokeRequired)
             {
                 ManualJudgeForm.Invoke(new MethodInvoker(delegate

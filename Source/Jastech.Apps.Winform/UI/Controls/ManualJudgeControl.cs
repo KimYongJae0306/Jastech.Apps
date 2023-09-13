@@ -1,4 +1,5 @@
 ﻿using Jastech.Apps.Structure.Data;
+using Jastech.Apps.Winform.UI.Forms;
 using Jastech.Framework.Algorithms.Akkon.Results;
 using System;
 using System.Collections.Generic;
@@ -57,64 +58,38 @@ namespace Jastech.Apps.Winform.UI.Controls
         }
 
         // delegate 추가할 것
-        public void UpdateResult(TabInspResult tabAlignInspResult, TabInspResult tabAkkonInspResult)
+        public void UpdateResult(/*TabInspResult tabAlignInspResult, TabInspResult tabAkkonInspResult*/ManualJudge manualJudge)
         {
-            if (tabAlignInspResult == null)
+            if (manualJudge == null)
                 return;
 
-            UpdateAkkonResult(tabAkkonInspResult);
-            UpdateAlignResult(tabAlignInspResult);
+            UpdateAkkonResult(manualJudge);
+            UpdateAlignResult(manualJudge);
 
             UpdateResult();
         }
 
-        private void UpdateMarkResult(TabMarkResult markResult)
+        private void UpdateAlignResult(ManualJudge manualJudge)
         {
-            if (markResult != null)
-            {
-                if (markResult.FpcMark.Judgement == Framework.Imaging.Result.Judgement.OK)
-                    _alignResult = markResult.FpcMark.Judgement.ToString();
-                else if (markResult.FpcMark.Judgement == Framework.Imaging.Result.Judgement.NG)
-                    _alignResult = "COF Mark NG";
-                else if (markResult.FpcMark.Judgement == Framework.Imaging.Result.Judgement.FAIL)
-                    _alignResult = "COF Mark FAIL";
-                else { }
-
-                if (markResult.PanelMark.Judgement == Framework.Imaging.Result.Judgement.OK)
-                {
-                    _alignResult = markResult.PanelMark.Judgement.ToString();
-                    _akkonResult = markResult.PanelMark.Judgement.ToString();
-                }
-                else if (markResult.PanelMark.Judgement == Framework.Imaging.Result.Judgement.NG)
-                {
-                    _alignResult = "Panel Mark NG";
-                    _akkonResult = "Panel Mark NG";
-                }
-                else if (markResult.PanelMark.Judgement == Framework.Imaging.Result.Judgement.FAIL)
-                {
-                    _alignResult = "Panel Mark FAIL";
-                    _akkonResult = "Panel Mark FAIL";
-                }
-                else { }
-            }
+            if (manualJudge != null)
+                _alignResult = manualJudge.AlignJudgement.ToString();
         }
 
-        private void UpdateAlignResult(TabInspResult tabAlignResult)
+        private string AlignSpecification(ManualJudge manualJudge)
         {
-            if (tabAlignResult != null)
-                _alignResult = tabAlignResult.AlignResult.Judgement.ToString();
+            string spec = "Lx : " + manualJudge.Lx.ToString() + "\r\n" +
+                            "Ly : " + manualJudge.Ly.ToString() + "\r\n" +
+                            "Cx : " + manualJudge.Cx.ToString() + "\r\n" +
+                            "Rx : " + manualJudge.Rx.ToString() + "\r\n" +
+                            "Ry : " + manualJudge.Ry.ToString() + "\r\n";
 
-            if (tabAlignResult.MarkResult.Judgement == Framework.Imaging.Result.Judgement.NG)
-                _alignResult = "Mark " + tabAlignResult.MarkResult.Judgement.ToString();
+            return spec;
         }
 
-        private void UpdateAkkonResult(TabInspResult tabAkkonResult)
+        private void UpdateAkkonResult(ManualJudge manualJudge)
         {
-            if (tabAkkonResult != null)
-                _akkonResult = tabAkkonResult.Judgement.ToString();
-
-            if (tabAkkonResult.MarkResult.Judgement == Framework.Imaging.Result.Judgement.NG)
-                _akkonResult = "Mark" + tabAkkonResult.MarkResult.Judgement.ToString();
+            if (manualJudge != null)
+                _akkonResult = manualJudge.AkkonJudgement.ToString();
         }
 
         private void UpdateResult()
