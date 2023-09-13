@@ -174,15 +174,10 @@ namespace Jastech.Apps.Winform
             {
                 HomeSequence();
                 Thread.Sleep(50);
+                if (_homeSequenceStep == HomeSequenceStep.Error)
+                    return false;
             }
-
-            if (_homeSequenceStep != HomeSequenceStep.Stop)
-            {
-                _homeSequenceStep = HomeSequenceStep.Stop;
-                return false;
-            }
-            else
-                return true;
+            return true;
         }
 
         public void StopHomeSequence() => _isHomeActionStop = true;
