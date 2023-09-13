@@ -52,8 +52,9 @@ namespace ATT_UT_IPAD.Core
                     tab.Name = tabIndex.ToString(); // 임시
                     tab.Index = tabIndex;
                     tab.StageIndex = (int)unitName;
+                    tab.AlignCamMark = new MarkParamter();
 
-                    // Tab Main Fpc Mark 등록
+                    // Akkon 카메라 Mark 등록
                     foreach (MarkName type in Enum.GetValues(typeof(MarkName)))
                     {
                         MarkParam leftMark = new MarkParam();
@@ -66,11 +67,11 @@ namespace ATT_UT_IPAD.Core
                         RightMark.InspParam.Name = MarkDirection.Right.ToString() + type.ToString();
                         RightMark.Direction = MarkDirection.Right;
 
-                        tab.MarkParamter.MainFpcMarkParamList.Add(leftMark);
-                        tab.MarkParamter.MainFpcMarkParamList.Add(RightMark);
+                        tab.Mark.PanelMarkList.Add(leftMark);
+                        tab.Mark.PanelMarkList.Add(RightMark);
                     }
 
-                    // Tab Main Panel Mark 등록
+                    // Align 카메라 FPC Mark 등록
                     foreach (MarkName type in Enum.GetValues(typeof(MarkName)))
                     {
                         MarkParam leftMark = new MarkParam();
@@ -83,11 +84,11 @@ namespace ATT_UT_IPAD.Core
                         RightMark.InspParam.Name = MarkDirection.Right.ToString() + type.ToString();
                         RightMark.Direction = MarkDirection.Right;
 
-                        tab.MarkParamter.MainPanelMarkParamList.Add(leftMark);
-                        tab.MarkParamter.MainPanelMarkParamList.Add(RightMark);
+                        tab.AlignCamMark.FpcMarkList.Add(leftMark);
+                        tab.AlignCamMark.FpcMarkList.Add(RightMark);
                     }
 
-                    // Tab Align Fpc Mark 등록
+                    // Align 카메라 Panel Mark 등록
                     foreach (MarkName type in Enum.GetValues(typeof(MarkName)))
                     {
                         MarkParam leftMark = new MarkParam();
@@ -100,25 +101,8 @@ namespace ATT_UT_IPAD.Core
                         RightMark.InspParam.Name = MarkDirection.Right.ToString() + type.ToString();
                         RightMark.Direction = MarkDirection.Right;
 
-                        tab.MarkParamter.AlignFpcMarkParamList.Add(leftMark);
-                        tab.MarkParamter.AlignFpcMarkParamList.Add(RightMark);
-                    }
-
-                    // Tab Align Panel Mark 등록
-                    foreach (MarkName type in Enum.GetValues(typeof(MarkName)))
-                    {
-                        MarkParam leftMark = new MarkParam();
-                        leftMark.Name = type;
-                        leftMark.InspParam.Name = MarkDirection.Left.ToString() + type.ToString();
-                        leftMark.Direction = MarkDirection.Left;
-
-                        MarkParam RightMark = new MarkParam();
-                        RightMark.Name = type;
-                        RightMark.InspParam.Name = MarkDirection.Right.ToString() + type.ToString();
-                        RightMark.Direction = MarkDirection.Right;
-
-                        tab.MarkParamter.AlignPanelMarkParamList.Add(leftMark);
-                        tab.MarkParamter.AlignPanelMarkParamList.Add(RightMark);
+                        tab.AlignCamMark.PanelMarkList.Add(leftMark);
+                        tab.AlignCamMark.PanelMarkList.Add(RightMark);
                     }
 
                     // Tab Align 등록
@@ -212,24 +196,24 @@ namespace ATT_UT_IPAD.Core
 
                     string tabDir = unitDir + @"\" + "Tab_" + tab.Name;
 
-                    //Tab Main FPC Mark 열기
-                    string tabMainFpcMarkDir = tabDir + @"\Mark\Main\FPC_Mark";
-                    foreach (var alignParam in tab.MarkParamter.MainFpcMarkParamList)
+                    //Tab Akkon Camera FPC Mark 열기
+                    string tabMainFpcMarkDir = tabDir + @"\Mark\AkkonCamera\FPC_Mark";
+                    foreach (var alignParam in tab.Mark.FpcMarkList)
                         alignParam.InspParam.LoadTool(tabMainFpcMarkDir);
 
-                    //Tab Main Panel Mark 열기
-                    string tabMainPanelMarkDir = tabDir + @"\Mark\Main\Panel_Mark";
-                    foreach (var alignParam in tab.MarkParamter.MainPanelMarkParamList)
+                    //Tab Akkon Camera Panel Mark 열기
+                    string tabMainPanelMarkDir = tabDir + @"\Mark\AkkonCamera\Panel_Mark";
+                    foreach (var alignParam in tab.Mark.PanelMarkList)
                         alignParam.InspParam.LoadTool(tabMainPanelMarkDir);
 
-                    //Tab Align FPC Mark 열기
-                    string tabAlignFpcMarkDir = tabDir + @"\Mark\Align\FPC_Mark";
-                    foreach (var alignParam in tab.MarkParamter.AlignFpcMarkParamList)
+                    //Tab Align Camera FPC Mark 열기
+                    string tabAlignFpcMarkDir = tabDir + @"\Mark\AlignCamera\FPC_Mark";
+                    foreach (var alignParam in tab.AlignCamMark.FpcMarkList)
                         alignParam.InspParam.LoadTool(tabAlignFpcMarkDir);
 
-                    //Tab Align Panel Mark 열기
-                    string tabAlignPanelMarkDir = tabDir + @"\Mark\Align\Panel_Mark";
-                    foreach (var alignParam in tab.MarkParamter.AlignPanelMarkParamList)
+                    //Tab Align Camera Panel Mark 열기
+                    string tabAlignPanelMarkDir = tabDir + @"\Mark\AlignCamera\Panel_Mark";
+                    foreach (var alignParam in tab.AlignCamMark.PanelMarkList)
                         alignParam.InspParam.LoadTool(tabAlignPanelMarkDir);
 
                     //Tab Align 열기
@@ -257,24 +241,24 @@ namespace ATT_UT_IPAD.Core
                 {
                     string tabDir = unitDir + @"\" + "Tab_" + tab.Name;
 
-                    //Tab Main FPC Mark 저장
-                    string tabMainFpcMarkDir = tabDir + @"\Mark\Main\FPC_Mark";
-                    foreach (var alignParam in tab.MarkParamter.MainFpcMarkParamList)
+                    //Tab Akkon Camera FPC Mark 저장
+                    string tabMainFpcMarkDir = tabDir + @"\Mark\AkkonCamera\FPC_Mark";
+                    foreach (var alignParam in tab.Mark.FpcMarkList)
                         alignParam.InspParam.SaveTool(tabMainFpcMarkDir);
 
-                    //Tab Main Panel Mark 저장
-                    string tabMainPanelMarkDir = tabDir + @"\Mark\Main\Panel_Mark";
-                    foreach (var alignParam in tab.MarkParamter.MainPanelMarkParamList)
+                    //Tab Akkon Camera Panel Mark 저장
+                    string tabMainPanelMarkDir = tabDir + @"\Mark\AkkonCamera\Panel_Mark";
+                    foreach (var alignParam in tab.Mark.PanelMarkList)
                         alignParam.InspParam.SaveTool(tabMainPanelMarkDir);
 
-                    //Tab Align FPC Mark 저장
-                    string tabAlignFpcMarkDir = tabDir + @"\Mark\Align\FPC_Mark";
-                    foreach (var alignParam in tab.MarkParamter.AlignFpcMarkParamList)
+                    //Tab Align Camera FPC Mark 저장
+                    string tabAlignFpcMarkDir = tabDir + @"\Mark\AlignCamera\FPC_Mark";
+                    foreach (var alignParam in tab.AlignCamMark.FpcMarkList)
                         alignParam.InspParam.SaveTool(tabAlignFpcMarkDir);
 
-                    //Tab Align Panel Mark 저장
-                    string tabAlignPanelMarkDir = tabDir + @"\Mark\Align\Panel_Mark";
-                    foreach (var alignParam in tab.MarkParamter.AlignPanelMarkParamList)
+                    //Tab Align Camera Panel Mark 저장
+                    string tabAlignPanelMarkDir = tabDir + @"\Mark\AlignCamera\Panel_Mark";
+                    foreach (var alignParam in tab.AlignCamMark.PanelMarkList)
                         alignParam.InspParam.SaveTool(tabAlignPanelMarkDir);
 
                     //TabAlign 저장

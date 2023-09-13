@@ -89,10 +89,10 @@ namespace ATT_UT_Remodeling.Core.AppTask
                 Logger.Debug(LogType.Inspection, message);
 
                 #region Align Coordinate
-                var fpcLeftOrigin = tab.MarkParamter.GetFPCMark(MarkDirection.Left, MarkName.Main, true).InspParam.GetOrigin();
-                var fpcRightOrigin = tab.MarkParamter.GetFPCMark(MarkDirection.Right, MarkName.Main, true).InspParam.GetOrigin();
-                var panelLeftOrigin = tab.MarkParamter.GetPanelMark(MarkDirection.Left, MarkName.Main, true).InspParam.GetOrigin();
-                var panelRightOrigin = tab.MarkParamter.GetPanelMark(MarkDirection.Right, MarkName.Main, true).InspParam.GetOrigin();
+                var fpcLeftOrigin = tab.Mark.GetFPCMark(MarkDirection.Left, MarkName.Main).InspParam.GetOrigin();
+                var fpcRightOrigin = tab.Mark.GetFPCMark(MarkDirection.Right, MarkName.Main).InspParam.GetOrigin();
+                var panelLeftOrigin = tab.Mark.GetPanelMark(MarkDirection.Left, MarkName.Main).InspParam.GetOrigin();
+                var panelRightOrigin = tab.Mark.GetPanelMark(MarkDirection.Right, MarkName.Main).InspParam.GetOrigin();
 
                 PointF fpcLeftOriginPoint = new PointF(Convert.ToSingle(fpcLeftOrigin.TranslationX), Convert.ToSingle(fpcLeftOrigin.TranslationY));
                 PointF fpcRightOriginPoint = new PointF(Convert.ToSingle(fpcRightOrigin.TranslationX), Convert.ToSingle(fpcRightOrigin.TranslationY));
@@ -429,12 +429,12 @@ namespace ATT_UT_Remodeling.Core.AppTask
 
         private void SetPanelCoordinateData(Tab tab, CoordinateTransform panel, TabInspResult tabInspResult)
         {
-            var leftMainMarkParam = tab.MarkParamter.GetPanelMark(MarkDirection.Left, MarkName.Main, false);
+            var leftMainMarkParam = tab.Mark.GetPanelMark(MarkDirection.Left, MarkName.Main);
             var leftMainMarkOrigin = leftMainMarkParam.InspParam.GetOrigin();
             PointF leftMainMarkOriginPoint = new PointF(Convert.ToSingle(leftMainMarkOrigin.TranslationX), Convert.ToSingle(leftMainMarkOrigin.TranslationY));
             PointF searchedLeftPoint = tabInspResult.MarkResult.PanelMark.FoundedMark.Left.MaxMatchPos.FoundPos;
 
-            var rightMainMarkParam = tab.MarkParamter.GetPanelMark(MarkDirection.Right, MarkName.Main, false);
+            var rightMainMarkParam = tab.Mark.GetPanelMark(MarkDirection.Right, MarkName.Main);
             var lrightMainMarkOrigin = rightMainMarkParam.InspParam.GetOrigin();
             PointF rightMainMarkOriginPoint = new PointF(Convert.ToSingle(lrightMainMarkOrigin.TranslationX), Convert.ToSingle(lrightMainMarkOrigin.TranslationY));
             PointF searchedRightPoint = tabInspResult.MarkResult.PanelMark.FoundedMark.Right.MaxMatchPos.FoundPos;

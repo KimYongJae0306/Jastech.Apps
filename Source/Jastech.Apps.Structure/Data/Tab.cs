@@ -25,7 +25,10 @@ namespace Jastech.Apps.Structure.Data
         public AlignSpec AlignSpec { get; set; } = new AlignSpec();
 
         [JsonProperty]
-        public MarkParamter MarkParamter = new MarkParamter();
+        public MarkParamter Mark = new MarkParamter();
+
+        [JsonProperty]
+        public MarkParamter AlignCamMark = null;
 
         [JsonProperty]
         public List<AlignParam> AlignParamList { get; set; } = new List<AlignParam>();
@@ -40,7 +43,8 @@ namespace Jastech.Apps.Structure.Data
             tab.Index = Index;
             tab.StageIndex = StageIndex;
             tab.AlignSpec = JsonConvertHelper.DeepCopy(AlignSpec) as AlignSpec;
-            tab.MarkParamter = MarkParamter.DeepCopy();
+            tab.Mark = Mark.DeepCopy();
+            tab.AlignCamMark = AlignCamMark?.DeepCopy();
             tab.AlignParamList = AlignParamList.Select(x => x.DeepCopy()).ToList();
             tab.AkkonParam = AkkonParam.DeepCopy();
 
@@ -52,7 +56,8 @@ namespace Jastech.Apps.Structure.Data
             foreach (var align in AlignParamList)
                 align.Dispose();
 
-            MarkParamter.Dispose();
+            Mark.Dispose();
+            AlignCamMark?.Dispose();
             AlignParamList.Clear();
             AkkonParam.Dispose();
         }
@@ -81,148 +86,74 @@ namespace Jastech.Apps.Structure.Data
         {
             AkkonParam.SetAkkonGroup(index, newGroup);
         }
+
+        public MarkParamter GetMarkParamter(bool isAlignCamMark)
+        {
+            if (isAlignCamMark)
+                return AlignCamMark;
+            else
+                return Mark;
+        }
     }
 
     public class MarkParamter
     {
+        #region 속성
         [JsonProperty]
-        public List<MarkParam> MainFpcMarkParamList { get; set; } = new List<MarkParam>(); 
+        public List<MarkParam> FpcMarkList { get; set; } = new List<MarkParam>();
 
         [JsonProperty]
-        public List<MarkParam> MainPanelMarkParamList { get; set; } = new List<MarkParam>();
+        public List<MarkParam> PanelMarkList { get; set; } = new List<MarkParam>();
+        #endregion
 
-        [JsonProperty]
-        public List<MarkParam> AlignFpcMarkParamList { get; set; } = new List<MarkParam>();
-
-        [JsonProperty]
-        public List<MarkParam> AlignPanelMarkParamList { get; set; } = new List<MarkParam>();
-
-        public MarkParam GetFPCMark(MarkDirection markDirection, MarkName markName, bool isAlignParam)
+        #region 메서드
+        public MarkParam GetFPCMark(MarkDirection markDirection, MarkName markName)
         {
-            if (isAlignParam == false)
-                return GetMainFPCMark(markDirection, markName);
-            else
-                return GetAlignFPCMark(markDirection, markName);
+            return FpcMarkList.Where(x => x.Name == markName && x.Direction == markDirection).FirstOrDefault();
         }
 
-        public MarkParam GetPanelMark(MarkDirection markDirection, MarkName markName, bool isAlignParam)
+        public MarkParam GetPanelMark(MarkDirection markDirection, MarkName markName)
         {
-            if (isAlignParam == false)
-                return GetMainPanelMark(markDirection, markName);
-            else
-                return GetAlignPanelMark(markDirection, markName);
+            return PanelMarkList.Where(x => x.Name == markName && x.Direction == markDirection).FirstOrDefault();
         }
 
-        public void SetFPCMark(MarkDirection markDirection, MarkName markName, MarkParam param, bool isAlignParam)
+        public void SetFPCMark(MarkDirection markDirection, MarkName markName, MarkParam param)
         {
-            if (isAlignParam == false)
-                SetMainFpcMark(markDirection, markName, param);
-            else
-                SetAlignFpcMark(markDirection, markName, param);
+            if (param == null)
+                return;
+
+            FpcMarkList.Where(x => x.Name == markName && x.Direction == markDirection).First().InspParam = param.InspParam.DeepCopy();
         }
 
         public void SetPanelMark(MarkDirection markDirection, MarkName markName, MarkParam param, bool isAlignParam)
         {
-            if (isAlignParam == false)
-                SetMainPanelMark(markDirection, markName, param);
-            else
-                SetAlignPanelMark(markDirection, markName, param);
-        }
-
-        private void SetMainFpcMark(MarkDirection direction, MarkName name, MarkParam param)
-        {
             if (param == null)
                 return;
 
-            //var origin = MainFpcMarkParamList.Where(x => x.Name == name && x.Direction == direction).FirstOrDefault();
-            //origin = param;
-
-            MainFpcMarkParamList.Where(x => x.Name == name && x.Direction == direction).First().InspParam = param.InspParam.DeepCopy();
-        }
-
-        private void SetMainPanelMark(MarkDirection direction, MarkName name, MarkParam param)
-        {
-            if (param == null)
-                return;
-
-            //var origin = MainPanelMarkParamList.Where(x => x.Name == name && x.Direction == direction).FirstOrDefault();
-            //origin = param;
-
-            MainPanelMarkParamList.Where(x => x.Name == name && x.Direction == direction).First().InspParam = param.InspParam.DeepCopy();
-        }
-
-        private void SetAlignFpcMark(MarkDirection direction, MarkName name, MarkParam param)
-        {
-            if (param == null)
-                return;
-
-            //var origin = AlignFpcMarkParamList.Where(x => x.Name == name && x.Direction == direction).FirstOrDefault();
-            //origin = param;
-
-            AlignFpcMarkParamList.Where(x => x.Name == name && x.Direction == direction).First().InspParam = param.InspParam.DeepCopy();
-        }
-
-        private void SetAlignPanelMark(MarkDirection direction, MarkName name, MarkParam param)
-        {
-            if (param == null)
-                return;
-
-            //var origin = AlignPanelMarkParamList.Where(x => x.Name == name && x.Direction == direction).FirstOrDefault();
-            //origin = param;
-
-            AlignPanelMarkParamList.Where(x => x.Name == name && x.Direction == direction).First().InspParam = param.InspParam.DeepCopy();
-        }
-
-        private MarkParam GetMainFPCMark(MarkDirection direction, MarkName name)
-        {
-            return MainFpcMarkParamList.Where(x => x.Name == name && x.Direction == direction).FirstOrDefault();
-        }
-
-        private MarkParam GetMainPanelMark(MarkDirection direction, MarkName name)
-        {
-            return MainPanelMarkParamList.Where(x => x.Name == name && x.Direction == direction).FirstOrDefault();
-        }
-
-        private MarkParam GetAlignFPCMark(MarkDirection direction, MarkName name)
-        {
-            return AlignFpcMarkParamList.Where(x => x.Name == name && x.Direction == direction).FirstOrDefault();
-        }
-
-        private MarkParam GetAlignPanelMark(MarkDirection direction, MarkName name)
-        {
-            return AlignPanelMarkParamList.Where(x => x.Name == name && x.Direction == direction).FirstOrDefault();
+            PanelMarkList.Where(x => x.Name == markName && x.Direction == markDirection).First().InspParam = param.InspParam.DeepCopy();
         }
 
         public MarkParamter DeepCopy()
         {
             MarkParamter param = new MarkParamter();
-            param.MainFpcMarkParamList = MainFpcMarkParamList.Select(x => x.DeepCopy()).ToList();
-            param.MainPanelMarkParamList = MainPanelMarkParamList.Select(x => x.DeepCopy()).ToList();
-            param.AlignFpcMarkParamList = AlignFpcMarkParamList.Select(x => x.DeepCopy()).ToList();
-            param.AlignPanelMarkParamList = AlignPanelMarkParamList.Select(x => x.DeepCopy()).ToList();
+            param.FpcMarkList = FpcMarkList.Select(x => x.DeepCopy()).ToList();
+            param.PanelMarkList = PanelMarkList.Select(x => x.DeepCopy()).ToList();
 
             return param;
         }
 
         public void Dispose()
         {
-            foreach (var fpc in MainFpcMarkParamList)
+            foreach (var fpc in FpcMarkList)
                 fpc.Dispose();
 
-            foreach (var panel in MainPanelMarkParamList)
+            foreach (var panel in PanelMarkList)
                 panel.Dispose();
 
-            foreach (var fpc in AlignFpcMarkParamList)
-                fpc.Dispose();
-
-            foreach (var panel in AlignPanelMarkParamList)
-                panel.Dispose();
-
-            MainFpcMarkParamList.Clear();
-            MainPanelMarkParamList.Clear();
-            AlignFpcMarkParamList.Clear();
-            AlignPanelMarkParamList.Clear();
+            FpcMarkList.Clear();
+            PanelMarkList.Clear();
         }
+        #endregion
     }
 
     public class AlignSpec
