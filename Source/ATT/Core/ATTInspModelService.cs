@@ -167,13 +167,16 @@ namespace ATT.Core
 
                 foreach (var tab in unit.GetTabList())
                 {
+                    string tabDir = unitDir + @"\" + "Tab_" + tab.Name;
+
+                    string akkonDir = tabDir + @"\Akkon";
+                    tab.LoadAkkonParam(akkonDir);
+
                     foreach (var group in tab.AkkonParam.GroupList)
                     {
                         var akkonRoi = group.AkkonROIList;
                         akkonRoi.Sort((x, y) => x.LeftTopX.CompareTo(y.LeftTopX));
                     }
-
-                    string tabDir = unitDir + @"\" + "Tab_" + tab.Name;
 
                     //Tab FPC Mark 열기
                     string tabMainFpcMarkDir = tabDir + @"\Mark\FPC_Mark";
@@ -210,6 +213,9 @@ namespace ATT.Core
                 {
                     string tabDir = unitDir + @"\" + "Tab_" + tab.Name;
 
+                    string akkonDir = tabDir + @"\Akkon";
+                    tab.SaveAkkonParam(akkonDir);
+
                     //Tab FPC Mark 저장
                     string tabMainFpcMarkDir = tabDir + @"\Mark\FPC_Mark";
                     foreach (var alignParam in tab.Mark.FpcMarkList)
@@ -234,6 +240,19 @@ namespace ATT.Core
 
             JsonConvertHelper.Save(filePath, attInspModel);
             SaveAkkonROI(filePath, attInspModel);
+
+            foreach (var unit in attInspModel.GetUnitList())
+            {
+                string unitDir = Path.GetDirectoryName(filePath) + @"\Unit_" + unit.Name;
+
+                foreach (var tab in unit.GetTabList())
+                {
+                    string tabDir = unitDir + @"\" + "Tab_" + tab.Name;
+
+                    string akkonDir = tabDir + @"\Akkon";
+                    tab.SaveAkkonParam(akkonDir);
+                }
+            }
         }
 
         private void SaveAkkonROI(string filePath, AppsInspModel inspModel)

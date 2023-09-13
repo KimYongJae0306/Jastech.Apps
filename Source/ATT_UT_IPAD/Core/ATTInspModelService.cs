@@ -281,6 +281,19 @@ namespace ATT_UT_IPAD.Core
 
             JsonConvertHelper.Save(filePath, attInspModel);
             SaveAkkonROI(filePath, attInspModel);
+
+            foreach (var unit in attInspModel.GetUnitList())
+            {
+                string unitDir = Path.GetDirectoryName(filePath) + @"\Unit_" + unit.Name;
+
+                foreach (var tab in unit.GetTabList())
+                {
+                    string tabDir = unitDir + @"\" + "Tab_" + tab.Name;
+
+                    string akkonDir = tabDir + @"\Akkon";
+                    tab.SaveAkkonParam(akkonDir);
+                }
+            }
         }
 
         private void SaveAkkonROI(string filePath, AppsInspModel inspModel)
