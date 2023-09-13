@@ -71,6 +71,7 @@ namespace Jastech.Apps.Winform.UI.Forms
             if (AppsConfig.Instance().UseMaterialInfo)
             {
                 ATTMaterialInfoForm form = new ATTMaterialInfoForm();
+                form.TabCount = model.TabCount;
                 if (form.ShowDialog() == DialogResult.OK)
                     model.MaterialInfo = form.NewMaterialInfo;
                 else

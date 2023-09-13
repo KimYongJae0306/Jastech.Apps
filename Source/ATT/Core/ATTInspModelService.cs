@@ -40,9 +40,8 @@ namespace ATT.Core
                 unit.LightParam = CreateLightParameter();
 
                 // LineScan 조명 Parameter 생성
-                unit.AkkonCamera = new LineCameraData();
-                unit.AkkonCamera.Name = "LineCamera";
-
+                unit.CameraData = new LineCameraData();
+                unit.CameraData.Name = "LineCamera";
 
                 for (int tabIndex = 0; tabIndex < appInspModel.TabCount; tabIndex++)
                 {
@@ -64,8 +63,8 @@ namespace ATT.Core
                         RightMark.InspParam.Name = MarkDirection.Right.ToString() + type.ToString();
                         RightMark.Direction = MarkDirection.Right;
 
-                        tab.MarkParamter.MainFpcMarkParamList.Add(leftMark);
-                        tab.MarkParamter.MainFpcMarkParamList.Add(RightMark);
+                        tab.Mark.FpcMarkList.Add(leftMark);
+                        tab.Mark.FpcMarkList.Add(RightMark);
                     }
 
                     // Tab Main Panel Mark 등록
@@ -81,42 +80,8 @@ namespace ATT.Core
                         RightMark.InspParam.Name = MarkDirection.Right.ToString() + type.ToString();
                         RightMark.Direction = MarkDirection.Right;
 
-                        tab.MarkParamter.MainPanelMarkParamList.Add(leftMark);
-                        tab.MarkParamter.MainPanelMarkParamList.Add(RightMark);
-                    }
-
-                    // Tab Align Fpc Mark 등록
-                    foreach (MarkName type in Enum.GetValues(typeof(MarkName)))
-                    {
-                        MarkParam leftMark = new MarkParam();
-                        leftMark.Name = type;
-                        leftMark.InspParam.Name = MarkDirection.Left.ToString() + type.ToString();
-                        leftMark.Direction = MarkDirection.Left;
-
-                        MarkParam RightMark = new MarkParam();
-                        RightMark.Name = type;
-                        RightMark.InspParam.Name = MarkDirection.Right.ToString() + type.ToString();
-                        RightMark.Direction = MarkDirection.Right;
-
-                        tab.MarkParamter.AlignFpcMarkParamList.Add(leftMark);
-                        tab.MarkParamter.AlignFpcMarkParamList.Add(RightMark);
-                    }
-
-                    // Tab Align Panel Mark 등록
-                    foreach (MarkName type in Enum.GetValues(typeof(MarkName)))
-                    {
-                        MarkParam leftMark = new MarkParam();
-                        leftMark.Name = type;
-                        leftMark.InspParam.Name = MarkDirection.Left.ToString() + type.ToString();
-                        leftMark.Direction = MarkDirection.Left;
-
-                        MarkParam RightMark = new MarkParam();
-                        RightMark.Name = type;
-                        RightMark.InspParam.Name = MarkDirection.Right.ToString() + type.ToString();
-                        RightMark.Direction = MarkDirection.Right;
-
-                        tab.MarkParamter.AlignPanelMarkParamList.Add(leftMark);
-                        tab.MarkParamter.AlignPanelMarkParamList.Add(RightMark);
+                        tab.Mark.PanelMarkList.Add(leftMark);
+                        tab.Mark.PanelMarkList.Add(RightMark);
                     }
 
                     // Tab Align 등록
@@ -202,33 +167,26 @@ namespace ATT.Core
 
                 foreach (var tab in unit.GetTabList())
                 {
+                    string tabDir = unitDir + @"\" + "Tab_" + tab.Name;
+
+                    string akkonDir = tabDir + @"\Akkon";
+                    tab.LoadAkkonParam(akkonDir);
+
                     foreach (var group in tab.AkkonParam.GroupList)
                     {
                         var akkonRoi = group.AkkonROIList;
                         akkonRoi.Sort((x, y) => x.LeftTopX.CompareTo(y.LeftTopX));
                     }
 
-                    string tabDir = unitDir + @"\" + "Tab_" + tab.Name;
-
-                    //Tab Main FPC Mark 열기
-                    string tabMainFpcMarkDir = tabDir + @"\Mark\Main\FPC_Mark";
-                    foreach (var alignParam in tab.MarkParamter.MainFpcMarkParamList)
+                    //Tab FPC Mark 열기
+                    string tabMainFpcMarkDir = tabDir + @"\Mark\FPC_Mark";
+                    foreach (var alignParam in tab.Mark.FpcMarkList)
                         alignParam.InspParam.LoadTool(tabMainFpcMarkDir);
 
-                    //Tab Main Panel Mark 열기
-                    string tabMainPanelMarkDir = tabDir + @"\Mark\Main\Panel_Mark";
-                    foreach (var alignParam in tab.MarkParamter.MainPanelMarkParamList)
+                    //Tab Panel Mark 열기
+                    string tabMainPanelMarkDir = tabDir + @"\Mark\Panel_Mark";
+                    foreach (var alignParam in tab.Mark.PanelMarkList)
                         alignParam.InspParam.LoadTool(tabMainPanelMarkDir);
-
-                    //Tab Align FPC Mark 열기
-                    string tabAlignFpcMarkDir = tabDir + @"\Mark\Align\FPC_Mark";
-                    foreach (var alignParam in tab.MarkParamter.AlignFpcMarkParamList)
-                        alignParam.InspParam.LoadTool(tabAlignFpcMarkDir);
-
-                    //Tab Align Panel Mark 열기
-                    string tabAlignPanelMarkDir = tabDir + @"\Mark\Align\Panel_Mark";
-                    foreach (var alignParam in tab.MarkParamter.AlignPanelMarkParamList)
-                        alignParam.InspParam.LoadTool(tabAlignPanelMarkDir);
 
                     //Tab Align 열기
                     string tabAlignDir = tabDir + @"\Align";
@@ -255,25 +213,18 @@ namespace ATT.Core
                 {
                     string tabDir = unitDir + @"\" + "Tab_" + tab.Name;
 
-                    //Tab Main FPC Mark 저장
-                    string tabMainFpcMarkDir = tabDir + @"\Mark\Main\FPC_Mark";
-                    foreach (var alignParam in tab.MarkParamter.MainFpcMarkParamList)
+                    string akkonDir = tabDir + @"\Akkon";
+                    tab.SaveAkkonParam(akkonDir);
+
+                    //Tab FPC Mark 저장
+                    string tabMainFpcMarkDir = tabDir + @"\Mark\FPC_Mark";
+                    foreach (var alignParam in tab.Mark.FpcMarkList)
                         alignParam.InspParam.SaveTool(tabMainFpcMarkDir);
 
-                    //Tab Main Panel Mark 저장
-                    string tabMainPanelMarkDir = tabDir + @"\Mark\Main\Panel_Mark";
-                    foreach (var alignParam in tab.MarkParamter.MainPanelMarkParamList)
+                    //Tab Panel Mark 저장
+                    string tabMainPanelMarkDir = tabDir + @"\Mark\Panel_Mark";
+                    foreach (var alignParam in tab.Mark.PanelMarkList)
                         alignParam.InspParam.SaveTool(tabMainPanelMarkDir);
-
-                    //Tab Align FPC Mark 저장
-                    string tabAlignFpcMarkDir = tabDir + @"\Mark\Align\FPC_Mark";
-                    foreach (var alignParam in tab.MarkParamter.AlignFpcMarkParamList)
-                        alignParam.InspParam.SaveTool(tabAlignFpcMarkDir);
-
-                    //Tab Align Panel Mark 저장
-                    string tabAlignPanelMarkDir = tabDir + @"\Mark\Align\Panel_Mark";
-                    foreach (var alignParam in tab.MarkParamter.AlignPanelMarkParamList)
-                        alignParam.InspParam.SaveTool(tabAlignPanelMarkDir);
 
                     //TabAlign 저장
                     string tabAlignDir = tabDir + @"\Align";
@@ -289,6 +240,19 @@ namespace ATT.Core
 
             JsonConvertHelper.Save(filePath, attInspModel);
             SaveAkkonROI(filePath, attInspModel);
+
+            foreach (var unit in attInspModel.GetUnitList())
+            {
+                string unitDir = Path.GetDirectoryName(filePath) + @"\Unit_" + unit.Name;
+
+                foreach (var tab in unit.GetTabList())
+                {
+                    string tabDir = unitDir + @"\" + "Tab_" + tab.Name;
+
+                    string akkonDir = tabDir + @"\Akkon";
+                    tab.SaveAkkonParam(akkonDir);
+                }
+            }
         }
 
         private void SaveAkkonROI(string filePath, AppsInspModel inspModel)

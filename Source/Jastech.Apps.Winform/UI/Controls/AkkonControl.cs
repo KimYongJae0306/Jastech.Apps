@@ -2069,15 +2069,6 @@ namespace Jastech.Apps.Winform.UI.Controls
             var cogImage = VisionProImageHelper.CovertImage(mat.DataPointer, mat.Width, mat.Height, mat.Step, ColorFormat.Gray) as CogImage8Grey;
             return cogImage;
         }
-
-        private void lblTabCopy_Click(object sender, EventArgs e)
-        {
-            AppsInspModel appsInspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
-
-            ROICopyForm form = new ROICopyForm();
-            form.SetUnitName(UnitName.Unit0);
-            form.ShowDialog();
-        }
         #endregion
     }
 

@@ -72,6 +72,7 @@ namespace ATT_UT_IPAD.Core.AppTask
         //Akkon Camera로 Akkon만 검사
         private void RunAkkon(ATTInspTab inspTab)
         {
+            Console.WriteLine("들어옴");
             Stopwatch sw = new Stopwatch();
             sw.Restart();
 
@@ -190,10 +191,10 @@ namespace ATT_UT_IPAD.Core.AppTask
                 WriteLog(message, true);
                 Logger.Debug(LogType.Inspection, message);
 
-                var fpcLeftOrigin = tab.MarkParamter.GetFPCMark(MarkDirection.Left, MarkName.Main, true).InspParam.GetOrigin();
-                var fpcRightOrigin = tab.MarkParamter.GetFPCMark(MarkDirection.Right, MarkName.Main, true).InspParam.GetOrigin();
-                var panelLeftOrigin = tab.MarkParamter.GetPanelMark(MarkDirection.Left, MarkName.Main, true).InspParam.GetOrigin();
-                var panelRightOrigin = tab.MarkParamter.GetPanelMark(MarkDirection.Right, MarkName.Main, true).InspParam.GetOrigin();
+                var fpcLeftOrigin = tab.AlignCamMark.GetFPCMark(MarkDirection.Left, MarkName.Main).InspParam.GetOrigin();
+                var fpcRightOrigin = tab.AlignCamMark.GetFPCMark(MarkDirection.Right, MarkName.Main).InspParam.GetOrigin();
+                var panelLeftOrigin = tab.AlignCamMark.GetPanelMark(MarkDirection.Left, MarkName.Main).InspParam.GetOrigin();
+                var panelRightOrigin = tab.AlignCamMark.GetPanelMark(MarkDirection.Right, MarkName.Main).InspParam.GetOrigin();
 
                 PointF fpcLeftOriginPoint = new PointF(Convert.ToSingle(fpcLeftOrigin.TranslationX), Convert.ToSingle(fpcLeftOrigin.TranslationY));
                 PointF fpcRightOriginPoint = new PointF(Convert.ToSingle(fpcRightOrigin.TranslationX), Convert.ToSingle(fpcRightOrigin.TranslationY));
@@ -588,12 +589,12 @@ namespace ATT_UT_IPAD.Core.AppTask
 
         private void SetPanelCoordinateData(Tab tab, CoordinateTransform panel, TabInspResult tabInspResult)
         {
-            var leftMainMarkParam = tab.MarkParamter.GetPanelMark(MarkDirection.Left, MarkName.Main, false);
+            var leftMainMarkParam = tab.Mark.GetPanelMark(MarkDirection.Left, MarkName.Main);
             var leftMainMarkOrigin = leftMainMarkParam.InspParam.GetOrigin();
             PointF leftMainMarkOriginPoint = new PointF(Convert.ToSingle(leftMainMarkOrigin.TranslationX), Convert.ToSingle(leftMainMarkOrigin.TranslationY));
             PointF searchedLeftPoint = tabInspResult.MarkResult.PanelMark.FoundedMark.Left.MaxMatchPos.FoundPos;
 
-            var rightMainMarkParam = tab.MarkParamter.GetPanelMark(MarkDirection.Right, MarkName.Main, false);
+            var rightMainMarkParam = tab.Mark.GetPanelMark(MarkDirection.Right, MarkName.Main);
             var lrightMainMarkOrigin = rightMainMarkParam.InspParam.GetOrigin();
             PointF rightMainMarkOriginPoint = new PointF(Convert.ToSingle(lrightMainMarkOrigin.TranslationX), Convert.ToSingle(lrightMainMarkOrigin.TranslationY));
             PointF searchedRightPoint = tabInspResult.MarkResult.PanelMark.FoundedMark.Right.MaxMatchPos.FoundPos;
@@ -626,35 +627,6 @@ namespace ATT_UT_IPAD.Core.AppTask
                 }
             }
         }
-
-        private PointF GetMainOrginPoint(Material material, Tab tab)
-        {
-            if (material == Material.Panel)
-            {
-                var panelMainMark = tab.MarkParamter.MainPanelMarkParamList.Where(x => x.Name == MarkName.Main).First();
-                var orgin = panelMainMark.InspParam.GetOrigin();
-                double orginX = orgin.TranslationX;
-                double orginY = orgin.TranslationY;
-                return new PointF((float)orginX, (float)orginY);
-            }
-            else
-            {
-                var fpcMainMark = tab.MarkParamter.MainFpcMarkParamList.Where(x => x.Name == MarkName.Main).First();
-                var orgin = fpcMainMark.InspParam.GetOrigin();
-
-                double orginX = orgin.TranslationX;
-                double orginY = orgin.TranslationY;
-                return new PointF((float)orginX, (float)orginY);
-            }
-        }
-
-        //private PointF GetFpcLeftOffset(TabMarkResult markResult)
-        //{
-        //    var searchedLeftPoint = markResult.FpcMark.FoundedMark.Left.MaxMatchPos.FoundPos;
-        //    var teachingLeftPoint = markResult.FpcMark.FoundedMark.Left.MaxMatchPos.ReferencePos;
-
-        //    return MathHelper.GetOffset(searchedLeftPoint, teachingLeftPoint);
-        //}
         #endregion
     }
 

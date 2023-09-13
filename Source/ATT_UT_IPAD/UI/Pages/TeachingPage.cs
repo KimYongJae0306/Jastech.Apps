@@ -75,7 +75,7 @@ namespace ATT_UT_IPAD.UI.Pages
             form.LineCamera = LineCameraManager.Instance().GetLineCamera("AlignCamera");
             form.UseDelayStart = true;
             form.LAFCtrl = LAFManager.Instance().GetLAF("AlignLaf").LafCtrl;
-            form.UseAlignMark = true;
+            form.UseAlignCamMark = true;
             form.UseAlignTeaching = true;
             form.UseAkkonTeaching = false;
             form.InspModelService = ATTInspModelService;
@@ -91,7 +91,7 @@ namespace ATT_UT_IPAD.UI.Pages
             form.UnitName = UnitName.Unit0;
             form.LineCamera = LineCameraManager.Instance().GetLineCamera("AkkonCamera");
             form.LAFCtrl = LAFManager.Instance().GetLAF("AkkonLaf").LafCtrl;
-            form.UseAlignMark = false;
+            form.UseAlignCamMark = false;
             form.UseAlignTeaching = false;
             form.UseAkkonTeaching = true;
             form.InspModelService = ATTInspModelService;

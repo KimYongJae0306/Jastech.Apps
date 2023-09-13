@@ -41,6 +41,7 @@ namespace Jastech.Apps.Winform.UI.Forms
 
         public List<Tab> TeachingTabList { get; private set; } = null;
 
+        public bool UseAlignCamMark { get; set; } = false;
         //public DisplayType DisplayType { get; set; } = DisplayType.Akkon;
         #endregion
 
@@ -281,7 +282,11 @@ namespace Jastech.Apps.Winform.UI.Forms
             foreach (var tabNo in _selectedTargetTabNumber)
             {
                 Tab selectedTargetTab = TeachingData.Instance().GetUnit(UnitName.ToString()).GetTab(index: tabNo);
-                selectedTargetTab.MarkParamter = selectedSourceTab.MarkParamter.DeepCopy();
+
+                if(UseAlignCamMark)
+                    selectedTargetTab.AlignCamMark = selectedSourceTab.AlignCamMark.DeepCopy();
+                else
+                    selectedTargetTab.Mark = selectedSourceTab.Mark.DeepCopy();
             }
         }
 

@@ -78,7 +78,7 @@ namespace ATT_UT_Remodeling.UI.Pages
             form.UnitName = UnitName.Unit0;
             form.LineCamera = LineCameraManager.Instance().GetLineCamera("LineCamera");
             form.LAFCtrl = LAFManager.Instance().GetLAF("Laf").LafCtrl;
-            form.UseAlignMark = false;
+            form.UseAlignCamMark = false;
             form.UseAlignTeaching = true;
             form.UseAkkonTeaching = true;
             form.InspModelService = ATTInspModelService;

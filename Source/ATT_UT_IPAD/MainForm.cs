@@ -109,6 +109,7 @@ namespace ATT_UT_IPAD
             PlcControlManager.Instance().WriteVersion();
 
             ManualJudgeForm = new ManualJudgeForm();
+            ManualJudgeForm.Show();
             ManualJudgeForm.Hide();
         }
 

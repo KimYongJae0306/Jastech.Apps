@@ -49,9 +49,7 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         private Tab CurrentTab { get; set; } = null;
 
-        public bool UseAlignMark { get; set; } = false;
-
-        public bool UseAlignTeaching { get; set; } = false;
+        public bool UseAlignCamMark { get; set; } = false;
         #endregion
 
         #region 이벤트
@@ -144,7 +142,17 @@ namespace Jastech.Apps.Winform.UI.Controls
             _selectedColor = Color.FromArgb(104, 104, 104);
             _nonSelectedColor = Color.FromArgb(52, 52, 52);
 
-            if (UseAlignTeaching)
+            if (CurrentTab == null)
+                return;
+
+            var markParam = CurrentTab.GetMarkParamter(UseAlignCamMark);
+
+            if (markParam.PanelMarkList.Count > 0)
+                lblPanel.Visible = true;
+            else
+                lblPanel.Visible = false;
+
+            if (markParam.FpcMarkList.Count > 0)
                 lblFpc.Visible = true;
             else
                 lblFpc.Visible = false;
@@ -167,11 +175,11 @@ namespace Jastech.Apps.Winform.UI.Controls
             MarkParam currentParam = null;
 
             if (_curMaterial == Material.Fpc)
-                currentParam = CurrentTab.MarkParamter.GetFPCMark(_curDirection, _curMarkName, UseAlignMark);
+                currentParam = CurrentTab.GetMarkParamter(UseAlignCamMark).GetFPCMark(_curDirection, _curMarkName);
             else
-                currentParam = CurrentTab.MarkParamter.GetPanelMark(_curDirection, _curMarkName, UseAlignMark);
+                currentParam = CurrentTab.GetMarkParamter(UseAlignCamMark).GetPanelMark(_curDirection, _curMarkName);
 
-            if(currentParam != null)
+            if (currentParam != null)
                 ParamControl?.UpdateData(currentParam.InspParam);
 
             DrawROI();
@@ -520,7 +528,7 @@ namespace Jastech.Apps.Winform.UI.Controls
         {
             if (_curMaterial == Material.Panel)
             {
-                var panelMainMark = CurrentTab.MarkParamter.MainPanelMarkParamList.Where(x => x.Name == MarkName.Main).First();
+                var panelMainMark = CurrentTab.Mark.PanelMarkList.Where(x => x.Name == MarkName.Main).First();
                 var origin = panelMainMark.InspParam.GetOrigin();
                 double orginX = origin.TranslationX;
                 double originY = origin.TranslationY;
@@ -528,7 +536,7 @@ namespace Jastech.Apps.Winform.UI.Controls
             }
             else
             {
-                var fpcMainMark = CurrentTab.MarkParamter.MainFpcMarkParamList.Where(x => x.Name == MarkName.Main).First();
+                var fpcMainMark = CurrentTab.Mark.FpcMarkList.Where(x => x.Name == MarkName.Main).First();
                 var orgin = fpcMainMark.InspParam.GetOrigin();
 
                 double originX = orgin.TranslationX;

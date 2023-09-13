@@ -490,7 +490,7 @@ namespace Jastech.Apps.Structure.VisionTool
             return result;
         }
 
-        public MarkResult RunFpcMark(ICogImage cogImage, Tab tab, bool isAlignMark)
+        public MarkResult RunFpcMark(ICogImage cogImage, Tab tab, bool useAlignCamMark)
         {
             MarkResult result = new MarkResult();
             MarkMatchingResult matchingResult = new MarkMatchingResult();
@@ -500,7 +500,12 @@ namespace Jastech.Apps.Structure.VisionTool
 
             foreach (MarkName markName in Enum.GetValues(typeof(MarkName)))
             {
-                var leftParam = tab.MarkParamter.GetFPCMark(MarkDirection.Left, markName, isAlignMark);
+                MarkParam leftParam = null;
+                if (useAlignCamMark)
+                    leftParam = tab.AlignCamMark.GetFPCMark(MarkDirection.Left, markName);
+                else
+                    leftParam = tab.Mark.GetFPCMark(MarkDirection.Left, markName);
+
                 var leftResult = RunPatternMatch(cogImage, leftParam?.InspParam);
                 if (leftResult == null)
                     continue;
@@ -524,7 +529,12 @@ namespace Jastech.Apps.Structure.VisionTool
 
             foreach (MarkName markName in Enum.GetValues(typeof(MarkName)))
             {
-                var rightParam = tab.MarkParamter.GetFPCMark(MarkDirection.Right, markName, isAlignMark);
+                MarkParam rightParam = null;
+                if (useAlignCamMark)
+                    rightParam = tab.AlignCamMark.GetFPCMark(MarkDirection.Right, markName);
+                else
+                    rightParam = tab.Mark.GetFPCMark(MarkDirection.Right, markName);
+
                 var rightResult = RunPatternMatch(cogImage, rightParam?.InspParam);
                 if (rightResult == null)
                     continue;
@@ -554,7 +564,7 @@ namespace Jastech.Apps.Structure.VisionTool
             return result;
         }
 
-        public MarkResult RunPanelMark(ICogImage cogImage, Tab tab, bool useAlignMark)
+        public MarkResult RunPanelMark(ICogImage cogImage, Tab tab, bool useAlignCamMark)
         {
             MarkResult result = new MarkResult();
             MarkMatchingResult matchingResult = new MarkMatchingResult();
@@ -564,7 +574,12 @@ namespace Jastech.Apps.Structure.VisionTool
 
             foreach (MarkName markName in Enum.GetValues(typeof(MarkName)))
             {
-                var leftParam = tab.MarkParamter.GetPanelMark(MarkDirection.Left, markName, useAlignMark);
+                MarkParam leftParam = null;
+                if (useAlignCamMark)
+                    leftParam = tab.AlignCamMark.GetPanelMark(MarkDirection.Left, markName);
+                else
+                    leftParam = tab.Mark.GetPanelMark(MarkDirection.Left, markName);
+
                 var leftResult = RunPatternMatch(cogImage, leftParam?.InspParam);
                 if (leftResult == null)
                     continue;
@@ -588,7 +603,12 @@ namespace Jastech.Apps.Structure.VisionTool
 
             foreach (MarkName markName in Enum.GetValues(typeof(MarkName)))
             {
-                var rightParam = tab.MarkParamter.GetPanelMark(MarkDirection.Right, markName, useAlignMark);
+                MarkParam rightParam = null;
+                if (useAlignCamMark)
+                    rightParam = tab.AlignCamMark.GetPanelMark(MarkDirection.Right, markName);
+                else
+                    rightParam = tab.Mark.GetPanelMark(MarkDirection.Right, markName);
+
                 var rightResult = RunPatternMatch(cogImage, rightParam?.InspParam);
                 if (rightResult == null)
                     continue;

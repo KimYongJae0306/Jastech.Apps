@@ -107,7 +107,7 @@ namespace Jastech.Framework.Winform.Forms
 
         public bool UseAkkonTeaching { get; set; } = true;
 
-        public bool UseAlignMark { get; set; } = false;
+        public bool UseAlignCamMark { get; set; } = false;
         #endregion
 
         #region 이벤트
@@ -194,8 +194,7 @@ namespace Jastech.Framework.Winform.Forms
 
             MarkControl = new MarkControl();
             MarkControl.Dock = DockStyle.Fill;
-            MarkControl.UseAlignMark = UseAlignMark;
-            MarkControl.UseAlignTeaching = UseAlignTeaching;
+            MarkControl.UseAlignCamMark = UseAlignCamMark;
             MarkControl.SetParams(CurrentTab);
             MarkControl.MarkParamChanged += MarkControl_MarkParamChanged;
             pnlTeach.Controls.Add(MarkControl);
@@ -463,15 +462,16 @@ namespace Jastech.Framework.Winform.Forms
 
             TeachingImagePath = Path.Combine(ConfigSet.Instance().Path.Model, inspModel.Name, "TeachingImage", DateTime.Now.ToString("yyyyMMdd_HHmmss"));
 
-            var teachingInfo = inspModel.GetUnit(UnitName.Unit0).GetTeachingInfo(TeachingPosType.Stage1_Scan_Start);
+            // 정환 : 이벤트로 변경 
+            var teachingInfo = inspModel.GetUnit(UnitName).GetTeachingInfo(TeachingPosType.Stage1_Scan_Start);
 
             double targetPosZ = 0.0;
-
-            if (UseAlignMark == false)
+            
+            if (UseAlignCamMark == false)
                 targetPosZ = teachingInfo.GetTargetPosition(AxisName.Z0.ToString());
             else
                 targetPosZ = teachingInfo.GetTargetPosition(AxisName.Z1.ToString());
-
+            /////////////////////////////
             var cameraGap = AppsConfig.Instance().CameraGap_mm;
 
             TeachingData.Instance().ClearTeachingImageBuffer();
@@ -747,8 +747,8 @@ namespace Jastech.Framework.Winform.Forms
             }
             else
             {
-                _tabInspResult.MarkResult.FpcMark = _algorithmTool.RunFpcMark(cogImage, CurrentTab, UseAlignMark);
-                _tabInspResult.MarkResult.PanelMark = _algorithmTool.RunPanelMark(cogImage, CurrentTab, UseAlignMark);
+                _tabInspResult.MarkResult.FpcMark = _algorithmTool.RunFpcMark(cogImage, CurrentTab, UseAlignCamMark);
+                _tabInspResult.MarkResult.PanelMark = _algorithmTool.RunPanelMark(cogImage, CurrentTab, UseAlignCamMark);
             }
 
             var coordinate = TeachingData.Instance().Coordinate;
@@ -774,16 +774,16 @@ namespace Jastech.Framework.Winform.Forms
                 lblTracking.BackColor = _selectedColor;
                 coordinate.SetCoordinateAkkon(CurrentTab, markResult.PanelMark.FoundedMark);
 
-                coordinate.SetCoordinateFpcAlign(CurrentTab, markResult.FpcMark.FoundedMark);
-                coordinate.SetCoordinatePanelAlign(CurrentTab, markResult.PanelMark.FoundedMark);
+                coordinate.SetCoordinateFpcAlign(CurrentTab, markResult.FpcMark.FoundedMark, UseAlignCamMark);
+                coordinate.SetCoordinatePanelAlign(CurrentTab, markResult.PanelMark.FoundedMark, UseAlignCamMark);
             }
             else
             {
                 lblTracking.BackColor = _nonSelectedColor;
                 coordinate.SetReverseCoordinateAkkon(CurrentTab, markResult.PanelMark.FoundedMark);
 
-                coordinate.SetReverseCoordinateFpcAlign(CurrentTab, markResult.FpcMark.FoundedMark);
-                coordinate.SetReverseCoordinatePanelAlign(CurrentTab, markResult.PanelMark.FoundedMark);
+                coordinate.SetReverseCoordinateFpcAlign(CurrentTab, markResult.FpcMark.FoundedMark, UseAlignCamMark);
+                coordinate.SetReverseCoordinatePanelAlign(CurrentTab, markResult.PanelMark.FoundedMark, UseAlignCamMark);
             }
 
             coordinate.ExcuteCoordinateAkkon(CurrentTab);
@@ -802,29 +802,9 @@ namespace Jastech.Framework.Winform.Forms
             _isPrevTrackingOn = isOn;
         }
 
-        //private MarkParam SetCoordinateMark(MarkParam param, VisionProPatternMatchingResult result)
-        //{
-        //    var newParam = param.DeepCopy();
-
-        //    CogTransform2DLinear newOrigin = new CogTransform2DLinear();
-        //    newOrigin.TranslationX = result.MaxMatchPos.FoundPos.X;
-        //    newOrigin.TranslationY = result.MaxMatchPos.FoundPos.Y;
-        //    newParam.InspParam.SetOrigin(newOrigin);
-
-        //    CogRectangle newTrainRegion = new CogRectangle(newParam.InspParam.GetTrainRegion() as CogRectangle);
-        //    newTrainRegion.SetCenterWidthHeight(newOrigin.TranslationX, newOrigin.TranslationY, newTrainRegion.Width, newTrainRegion.Height);
-        //    newParam.InspParam.SetTrainRegion(newTrainRegion);
-
-        //    CogRectangle newSearchRegion = new CogRectangle(newParam.InspParam.GetSearchRegion() as CogRectangle);
-        //    newSearchRegion.SetCenterWidthHeight(newOrigin.TranslationX, newOrigin.TranslationY, newSearchRegion.Width, newSearchRegion.Height);
-        //    newParam.InspParam.SetSearchRegion(newSearchRegion);
-
-        //    return newParam;
-        //}
-
         private void lblStageCam_Click(object sender, EventArgs e)
         {
-            String dir = ConfigSet.Instance().Path.Model;
+            string dir = ConfigSet.Instance().Path.Model;
             Process.Start(dir);
         }
 
@@ -836,7 +816,8 @@ namespace Jastech.Framework.Winform.Forms
         private void lblROICopy_Click(object sender, EventArgs e)
         {
             ROICopyForm form = new ROICopyForm();
-            form.SetUnitName(UnitName.Unit0);
+            form.SetUnitName(UnitName);
+            form.UseAlignCamMark = UseAlignCamMark;
             form.ShowDialog();
         }
 
@@ -859,7 +840,7 @@ namespace Jastech.Framework.Winform.Forms
             if(UseAkkonTeaching && UseAlignTeaching == false)
                 algorithmTool.MainPanelMarkInspect(cogImage, CurrentTab, ref tabInspResult);
             else
-                algorithmTool.MainMarkInspect(cogImage, CurrentTab, ref tabInspResult, UseAlignMark);
+                algorithmTool.MainMarkInspect(cogImage, CurrentTab, ref tabInspResult, UseAlignCamMark);
 
             if (tabInspResult.MarkResult.Judgement != Judgement.OK)
             {
