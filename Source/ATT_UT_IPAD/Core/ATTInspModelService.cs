@@ -40,11 +40,11 @@ namespace ATT_UT_IPAD.Core
                 unit.LightParam = CreateLightParameter();
 
                 // LineScan 조명 Parameter 생성
-                unit.AkkonCamera = new LineCameraData();
-                unit.AkkonCamera.Name = "AkkonCamera";
+                unit.CameraData = new LineCameraData();
+                unit.CameraData.Name = "AkkonCamera";
 
-                unit.AlignCamera = new LineCameraData();
-                unit.AlignCamera.Name = "AlignCamera";
+                unit.AlignCamCameraData = new LineCameraData();
+                unit.AlignCamCameraData.Name = "AlignCamera";
 
                 for (int tabIndex = 0; tabIndex < appInspModel.TabCount; tabIndex++)
                 {
@@ -188,13 +188,16 @@ namespace ATT_UT_IPAD.Core
 
                 foreach (var tab in unit.GetTabList())
                 {
+                    string tabDir = unitDir + @"\" + "Tab_" + tab.Name;
+
+                    string akkonDir = tabDir + @"\Akkon";
+                    tab.LoadAkkonParam(akkonDir);
+
                     foreach (var group in tab.AkkonParam.GroupList)
                     {
                         var akkonRoi = group.AkkonROIList;
                         akkonRoi.Sort((x, y) => x.LeftTopX.CompareTo(y.LeftTopX));
                     }
-
-                    string tabDir = unitDir + @"\" + "Tab_" + tab.Name;
 
                     //Tab Akkon Camera FPC Mark 열기
                     string tabMainFpcMarkDir = tabDir + @"\Mark\AkkonCamera\FPC_Mark";
@@ -241,15 +244,18 @@ namespace ATT_UT_IPAD.Core
                 {
                     string tabDir = unitDir + @"\" + "Tab_" + tab.Name;
 
+                    string akkonDir = tabDir + @"\Akkon";
+                    tab.SaveAkkonParam(akkonDir);
+
                     //Tab Akkon Camera FPC Mark 저장
-                    string tabMainFpcMarkDir = tabDir + @"\Mark\AkkonCamera\FPC_Mark";
+                    string tabAkkonFpcMarkDir = tabDir + @"\Mark\AkkonCamera\FPC_Mark";
                     foreach (var alignParam in tab.Mark.FpcMarkList)
-                        alignParam.InspParam.SaveTool(tabMainFpcMarkDir);
+                        alignParam.InspParam.SaveTool(tabAkkonFpcMarkDir);
 
                     //Tab Akkon Camera Panel Mark 저장
-                    string tabMainPanelMarkDir = tabDir + @"\Mark\AkkonCamera\Panel_Mark";
+                    string tabAkkonPanelMarkDir = tabDir + @"\Mark\AkkonCamera\Panel_Mark";
                     foreach (var alignParam in tab.Mark.PanelMarkList)
-                        alignParam.InspParam.SaveTool(tabMainPanelMarkDir);
+                        alignParam.InspParam.SaveTool(tabAkkonPanelMarkDir);
 
                     //Tab Align Camera FPC Mark 저장
                     string tabAlignFpcMarkDir = tabDir + @"\Mark\AlignCamera\FPC_Mark";

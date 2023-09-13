@@ -17,10 +17,10 @@ namespace Jastech.Apps.Structure.Data
         public PreAlignData PreAlign { get; set; } = null;
 
         [JsonProperty]
-        public LineCameraData AkkonCamera { get; set; } = null;
+        public LineCameraData CameraData { get; set; } = null;
 
         [JsonProperty]
-        public LineCameraData AlignCamera { get; set; } = null;
+        public LineCameraData AlignCamCameraData { get; set; } = null;
 
         [JsonProperty]
         public LightParameter LightParam { get; set; } = null;   // LineScan 용 조명 파라메터
@@ -37,8 +37,8 @@ namespace Jastech.Apps.Structure.Data
             Unit unit = new Unit();
             unit.Name = Name;
             unit.PreAlign = PreAlign?.DeepCopy();
-            unit.AkkonCamera = AkkonCamera?.DeepCopy();
-            unit.AlignCamera = AlignCamera?.DeepCopy();
+            unit.CameraData = CameraData?.DeepCopy();
+            unit.AlignCamCameraData = AlignCamCameraData?.DeepCopy();
             unit.LightParam = LightParam?.DeepCopy();
             unit.TabList = TabList.Select(x => x.DeepCopy()).ToList();
             unit.TeachingInfoList = TeachingInfoList.Select(x => x.DeepCopy()).ToList();
@@ -130,16 +130,16 @@ namespace Jastech.Apps.Structure.Data
 
         public LineCameraData GetLineCameraData(string name)
         {
-            if(AkkonCamera != null)
+            if(CameraData != null)
             {
-                if (AkkonCamera.Name == name)
-                    return AkkonCamera;
+                if (CameraData.Name == name)
+                    return CameraData;
             }
 
-            if(AlignCamera != null)
+            if(AlignCamCameraData != null)
             {
-                if (AlignCamera.Name == name)
-                    return AlignCamera;
+                if (AlignCamCameraData.Name == name)
+                    return AlignCamCameraData;
             }
 
             return null;

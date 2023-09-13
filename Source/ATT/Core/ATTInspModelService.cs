@@ -40,8 +40,8 @@ namespace ATT.Core
                 unit.LightParam = CreateLightParameter();
 
                 // LineScan 조명 Parameter 생성
-                unit.AkkonCamera = new LineCameraData();
-                unit.AkkonCamera.Name = "LineCamera";
+                unit.CameraData = new LineCameraData();
+                unit.CameraData.Name = "LineCamera";
 
                 for (int tabIndex = 0; tabIndex < appInspModel.TabCount; tabIndex++)
                 {

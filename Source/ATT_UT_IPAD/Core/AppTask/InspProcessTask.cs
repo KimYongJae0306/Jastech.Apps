@@ -72,6 +72,7 @@ namespace ATT_UT_IPAD.Core.AppTask
         //Akkon Camera로 Akkon만 검사
         private void RunAkkon(ATTInspTab inspTab)
         {
+            Console.WriteLine("들어옴");
             Stopwatch sw = new Stopwatch();
             sw.Restart();
 
