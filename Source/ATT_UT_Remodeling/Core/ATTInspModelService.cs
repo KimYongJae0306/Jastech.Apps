@@ -41,8 +41,8 @@ namespace ATT_UT_Remodeling.Core
                 unit.LightParam = CreateLightParameter();
 
                 // LineScan 조명 Parameter 생성
-                unit.AkkonCamera = new LineCameraData();
-                unit.AkkonCamera.Name = "Akkon";
+                unit.CameraData = new LineCameraData();
+                unit.CameraData.Name = "Akkon";
 
                 CalibrationParam calibrationMark = new CalibrationParam();
                 calibrationMark.MarkName = "Calibration";
@@ -218,6 +218,15 @@ namespace ATT_UT_Remodeling.Core
                 {
                     string tabDir = unitDir + @"\" + "Tab_" + tab.Name;
 
+                    string akkonDir = tabDir + @"\Akkon";
+                    tab.LoadAkkonParam(akkonDir);
+
+                    foreach (var group in tab.AkkonParam.GroupList)
+                    {
+                        var akkonRoi = group.AkkonROIList;
+                        akkonRoi.Sort((x, y) => x.LeftTopX.CompareTo(y.LeftTopX));
+                    }
+
                     //Tab FPC Mark 열기
                     string tabFpcMarkDir = tabDir + @"\Mark\FPC_Mark";
                     foreach (var alignParam in tab.Mark.FpcMarkList)
@@ -263,6 +272,9 @@ namespace ATT_UT_Remodeling.Core
                 {
                     string tabDir = unitDir + @"\" + "Tab_" + tab.Name;
 
+                    string akkonDir = tabDir + @"\Akkon";
+                    tab.SaveAkkonParam(akkonDir);
+
                     //Tab FPC Mark 저장
                     string tabFpcMarkDir = tabDir + @"\Mark\FPC_Mark";
                     foreach (var alignParam in tab.Mark.FpcMarkList)
@@ -287,6 +299,19 @@ namespace ATT_UT_Remodeling.Core
 
             JsonConvertHelper.Save(filePath, attInspModel);
             SaveAkkonROI(filePath, attInspModel);
+
+            foreach (var unit in attInspModel.GetUnitList())
+            {
+                string unitDir = Path.GetDirectoryName(filePath) + @"\Unit_" + unit.Name;
+
+                foreach (var tab in unit.GetTabList())
+                {
+                    string tabDir = unitDir + @"\" + "Tab_" + tab.Name;
+
+                    string akkonDir = tabDir + @"\Akkon";
+                    tab.SaveAkkonParam(akkonDir);
+                }
+            }
         }
 
         private void SaveAkkonROI(string filePath, AppsInspModel inspModel)

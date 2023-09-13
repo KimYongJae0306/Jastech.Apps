@@ -120,7 +120,6 @@ namespace Jastech.Apps.Winform.UI.Forms
                 newModel.ModifiedDate = createModel.ModifiedDate;
                 newModel.Description = createModel.Description;
                 newModel.TabCount = createModel.TabCount;
-                newModel.SpecInfo = createModel.SpecInfo;
                 newModel.MaterialInfo = createModel.MaterialInfo;
 
                 InspModelService.AddModelData(newModel);
@@ -154,7 +153,6 @@ namespace Jastech.Apps.Winform.UI.Forms
                 var prevModel = InspModelService.Load(filePath) as AppsInspModel;
                 var editInspModel = editModel as AppsInspModel;
 
-                prevModel.SpecInfo = editInspModel.SpecInfo;
                 prevModel.MaterialInfo = editInspModel.MaterialInfo;
 
                 ModelFileHelper.Edit(modelDir, prevModel, editModel);

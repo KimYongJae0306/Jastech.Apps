@@ -7,6 +7,7 @@ using System.Data;
 using System.Linq;
 using static Jastech.Framework.Device.Motions.AxisMovingParam;
 using System.Xml.Linq;
+using System.IO;
 
 namespace Jastech.Apps.Structure.Data
 {
@@ -33,7 +34,7 @@ namespace Jastech.Apps.Structure.Data
         [JsonProperty]
         public List<AlignParam> AlignParamList { get; set; } = new List<AlignParam>();
 
-        [JsonProperty]
+        [JsonIgnore]
         public AkkonParam AkkonParam { get; set; } = new AkkonParam();
 
         public Tab DeepCopy()
@@ -93,6 +94,34 @@ namespace Jastech.Apps.Structure.Data
                 return AlignCamMark;
             else
                 return Mark;
+        }
+
+        public void SaveAkkonParam(string filePath)
+        {
+            if (Directory.Exists(filePath) == false)
+                Directory.CreateDirectory(filePath);
+
+            string fileFullPath = Path.Combine(filePath, "Akkon.json");
+
+            JsonConvertHelper.Save(fileFullPath, AkkonParam);
+        }
+
+        public void LoadAkkonParam(string filePath)
+        {
+            AkkonParam param = new AkkonParam();
+
+            string fileFullPath = Path.Combine(filePath, "Akkon.json");
+            if (File.Exists(fileFullPath))
+            {
+                JsonConvertHelper.LoadToExistingTarget<AkkonParam>(fileFullPath, param);
+            }
+            else
+            {
+                param.AkkonAlgoritmParam.Initalize();
+                param.AkkonAlgoritmParam.ImageFilterParam.AddMacronFilter();
+            }
+            
+            AkkonParam = param;
         }
     }
 
