@@ -13,6 +13,7 @@ using Jastech.Apps.Winform.Settings;
 using Jastech.Framework.Config;
 using Jastech.Framework.Device.Grabbers;
 using Jastech.Framework.Device.LAFCtrl;
+using Jastech.Framework.Device.Motions;
 using Jastech.Framework.Matrox;
 using Jastech.Framework.Structure;
 using Jastech.Framework.Users;
@@ -21,9 +22,11 @@ using Jastech.Framework.Winform.Forms;
 using Jastech.Framework.Winform.Helper;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -57,6 +60,7 @@ namespace ATT
         private readonly Queue<ICogImage> LastScanImageQueue = new Queue<ICogImage>();
         public ATTInspModelService ATTInspModelService { get; set; } = new ATTInspModelService();
         #endregion
+
         #region 델리게이트
         private delegate void UpdateLabelDelegate(string modelname);
         #endregion
@@ -95,6 +99,12 @@ namespace ATT
             SystemManager.Instance().AddSystemLogMessage("Start Program.");
 
             PlcControlManager.Instance().WriteVersion();
+
+            string suggestMessage = "Perform homing All axes?\r\n※ Highly recommended for stability.";
+            var messageBox = new MessageYesNoForm { Message = suggestMessage };
+
+            if (messageBox.ShowDialog() == DialogResult.Yes)
+                HomingAllAxes();
         }
 
         private void MainForm_InspRunnerHandler(bool isStart)
@@ -532,19 +542,52 @@ namespace ATT
             MainPageControl?.Enable(isEnable);
         }
         #endregion
+    }
+    public partial class MainForm : Form
+    {
+        #region 필드
+        private bool _isAxisHoming;
+        private Axis _currentHomingAxis;
+        private int _timeOutSec = 10;
+        #endregion
 
+        #region 메소드
         private void Test_Click(object sender, EventArgs e)
         {
             if (ConfigSet.Instance().Operation.VirtualMode == false)
                 return;
 
-            ProgressForm tpc2 = new ProgressForm();
-            var ctrl = LAFManager.Instance().GetLAF("Laf");
-            tpc2.SetRunTask($"LAF homing", new Func<bool>(() => ctrl.HomeSequenceAction()));
-            tpc2.StopInnerLoop += ctrl.StopHomeSequence;
-            tpc2.ShowDialog();
-
-            //new MultiProgressForm().ShowDialog();
+            HomingAllAxes();
         }
+
+        private void HomingAllAxes()
+        {
+            ProgressForm progressForm = new ProgressForm();
+            progressForm.Add($"Axis X Homing", AxisHoming, AxisName.X, StopAxisHoming);
+            progressForm.Add($"Axis Y Homing", AxisHoming, AxisName.Y, StopAxisHoming);
+            var laf = LAFManager.Instance().GetLAF("Laf");
+            progressForm.Add($"Axis Z (LAF) homing", laf.HomeSequenceAction, laf.StopHomeSequence);
+            progressForm.StartAllTasks();
+            progressForm.ShowDialog();
+        }
+
+        private bool AxisHoming(AxisName axisName)
+        {
+            _currentHomingAxis = MotionManager.Instance().GetAxis(AxisHandlerName.Handler0, axisName);
+            _currentHomingAxis.StartHome();
+            _isAxisHoming = true;
+
+            Stopwatch stopwatch = Stopwatch.StartNew();
+            while (_isAxisHoming == true && _currentHomingAxis.WaitForDone() == false && stopwatch.Elapsed.Seconds < _timeOutSec)
+                Thread.Sleep(50);
+
+            return _currentHomingAxis.WaitForDone();
+        }
+        private void StopAxisHoming()
+        {
+            _isAxisHoming = false;
+            _currentHomingAxis?.StopMove();
+        }
+        #endregion
     }
 }

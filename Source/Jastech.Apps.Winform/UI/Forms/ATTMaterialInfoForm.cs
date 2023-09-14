@@ -36,10 +36,9 @@ namespace Jastech.Apps.Winform.UI.Forms
             InitializeUICollections();
 
             if (PrevMaterialInfo == null)
-                NewMaterialInfo = new MaterialInfo();
-            else
-                NewMaterialInfo = PrevMaterialInfo.ShallowCopy();
+                PrevMaterialInfo = new MaterialInfo();
 
+            NewMaterialInfo = PrevMaterialInfo.ShallowCopy();
             if (NewMaterialInfo != null)
             {
                 // Data
@@ -121,11 +120,7 @@ namespace Jastech.Apps.Winform.UI.Forms
 
         private void lblCancel_Click(object sender, EventArgs e)
         {
-            if (PrevMaterialInfo == null)
-                NewMaterialInfo = new MaterialInfo();
-            else
-                NewMaterialInfo = PrevMaterialInfo;
-
+            NewMaterialInfo = PrevMaterialInfo;
             DialogResult = DialogResult.Cancel;
             Close();
         }
