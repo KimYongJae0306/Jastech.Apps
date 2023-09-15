@@ -184,7 +184,11 @@ namespace Jastech.Apps.Winform
             return isHomeComplete;
         }
 
-        public void StopHomeSequence() => _isHomeActionStop = true;
+        public void StopHomeSequence()
+        {
+            _isHomeActionStop = true;
+            LafCtrl.SetMotionStop();
+        }
 
         Stopwatch sw = null;
         private void HomeSequence()

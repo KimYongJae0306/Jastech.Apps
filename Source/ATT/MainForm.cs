@@ -100,11 +100,14 @@ namespace ATT
 
             PlcControlManager.Instance().WriteVersion();
 
-            string suggestMessage = "Perform homing All axes?\r\n※ Highly recommended for stability.";
-            var messageBox = new MessageYesNoForm { Message = suggestMessage };
+            if (ConfigSet.Instance().Operation.VirtualMode == false)
+            {
+                string suggestMessage = "Perform homing All axes?\r\n※ Highly recommended for stability.";
+                var messageBox = new MessageYesNoForm { Message = suggestMessage };
 
-            if (messageBox.ShowDialog() == DialogResult.Yes)
-                HomingAllAxes();
+                if (messageBox.ShowDialog() == DialogResult.Yes)
+                    HomingAllAxes();
+            }
         }
 
         private void MainForm_InspRunnerHandler(bool isStart)
@@ -548,15 +551,11 @@ namespace ATT
         #region 필드
         private bool _isAxisHoming;
         private Axis _currentHomingAxis;
-        private int _timeOutSec = 10;
         #endregion
 
         #region 메소드
         private void Test_Click(object sender, EventArgs e)
         {
-            if (ConfigSet.Instance().Operation.VirtualMode == false)
-                return;
-
             HomingAllAxes();
         }
 
@@ -573,16 +572,24 @@ namespace ATT
 
         private bool AxisHoming(AxisName axisName)
         {
+            int timeOutSec = 40;
             _currentHomingAxis = MotionManager.Instance().GetAxis(AxisHandlerName.Handler0, axisName);
             _currentHomingAxis.StartHome();
             _isAxisHoming = true;
 
             Stopwatch stopwatch = Stopwatch.StartNew();
-            while (_isAxisHoming == true && _currentHomingAxis.WaitForDone() == false && stopwatch.Elapsed.Seconds < _timeOutSec)
-                Thread.Sleep(50);
+            while (_isAxisHoming == true && _currentHomingAxis.IsHomeFound == false && stopwatch.Elapsed.Seconds < timeOutSec)
+            {
+                if (_currentHomingAxis.IsMoving() == false)
+                    _currentHomingAxis.IsHomeFound = true;
+                else
+                    Thread.Sleep(50);
+            }
 
-            return _currentHomingAxis.WaitForDone();
+            StopAxisHoming();
+            return _currentHomingAxis.IsHomeFound;
         }
+
         private void StopAxisHoming()
         {
             _isAxisHoming = false;
