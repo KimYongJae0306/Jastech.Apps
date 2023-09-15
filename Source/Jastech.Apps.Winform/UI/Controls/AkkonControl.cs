@@ -1321,6 +1321,7 @@ namespace Jastech.Apps.Winform.UI.Controls
                     }
                 }
             }
+
             return akkonRoiList;
         }
 
@@ -1346,6 +1347,7 @@ namespace Jastech.Apps.Winform.UI.Controls
                         filteredContourList.Add(contour);
                 }
             }
+
             Mat filteredImage = new Mat(new Size(mat.Width, mat.Height), DepthType.Cv8U, 1);
             byte[] tempArray = new byte[mat.Step * mat.Height];
             Marshal.Copy(tempArray, 0, filteredImage.DataPointer, mat.Step * mat.Height);
@@ -1353,6 +1355,7 @@ namespace Jastech.Apps.Winform.UI.Controls
             IInputArrayOfArrays contoursArray = new VectorOfVectorOfPoint(filteredContourList.Select(vector => vector.ToArray()).ToArray());
             CvInvoke.DrawContours(filteredImage, contoursArray, -1, new MCvScalar(255), -1);
             hierarchy.Dispose();
+
             return filteredImage;
         }
 
@@ -1361,7 +1364,7 @@ namespace Jastech.Apps.Winform.UI.Controls
             Mat maskImage = new Mat(size, DepthType.Cv8U, 1);
             VectorOfVectorOfPoint contours = new VectorOfVectorOfPoint();
             VectorOfPoint contour = new VectorOfPoint(new[]
-           {
+            {
                 new Point((int)roi.X - offsetX,  (int)roi.Y - offsetY),
                 new Point((int)(roi.X + roi.Width - offsetX), (int)(roi.Y - offsetY)),
                 new Point((int)(roi.X + roi.Width - offsetX), (int)(roi.Y + roi.Height - offsetY)),
@@ -1469,13 +1472,12 @@ namespace Jastech.Apps.Winform.UI.Controls
             {
                 int calcX = (int)Math.Round(x, 0);
                 int calcY = (int)Math.Round(y, 0);
+
                 if(prevX != calcX)
                 {
                     Point point = new Point(calcX, calcY);
-
                     rstPoints.Add(point);
                 }
-
 
                 x = x + dxD;
                 y = y + dyD ;
@@ -1510,7 +1512,6 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         private List<Point> GetRectPointList(Mat mat)
         {
-
             var contours = new VectorOfVectorOfPoint();
             Mat hierarchy = new Mat();
             CvInvoke.FindContours(mat, contours, hierarchy, RetrType.External, ChainApproxMethod.ChainApproxSimple);
@@ -1536,12 +1537,12 @@ namespace Jastech.Apps.Winform.UI.Controls
                     //// 변환된 행렬로 CogRectAffine 생성
                     //CogRectangleAffine cogRectAffine = new CogRectangleAffine();
                     //cogRectAffine.SetCenterLengthsRotationSkew
-
-
                 }
             }
+
             return new List<Point>();
         }
+
         private void AddAutoTeachingAkkonRoi(List<CogRectangleAffine> roiList)
         {
             if (GetGroup() is AkkonGroup group)

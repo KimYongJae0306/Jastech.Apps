@@ -11,6 +11,7 @@ using Jastech.Apps.Winform.Core;
 using Jastech.Apps.Winform.Service;
 using Jastech.Apps.Winform.Service.Plc.Maps;
 using Jastech.Apps.Winform.Settings;
+using Jastech.Apps.Winform.UI.Forms;
 using Jastech.Framework.Algorithms.Akkon.Parameters;
 using Jastech.Framework.Config;
 using Jastech.Framework.Device.Cameras;
@@ -464,7 +465,7 @@ namespace ATT_UT_IPAD.Core
 
                     PlcControlManager.Instance().EnableSendPeriodically = false;
 
-                    if (AppsConfig.Instance().EnableManualJudge /*&& NG*/)
+                    if (!AppsConfig.Instance().EnableManualJudge /*&& NG*/)
                         SeqStep = SeqStep.SEQ_MANUAL_JUDGE;
                     else
                         SeqStep = SeqStep.SEQ_SEND_RESULT;
@@ -473,7 +474,11 @@ namespace ATT_UT_IPAD.Core
                 // NG 날때만 탈 것
                 case SeqStep.SEQ_MANUAL_JUDGE:
                     PlcControlManager.Instance().WriteManualJudge();
-                    SystemManager.Instance().ShowManualJugdeForm(AppsInspResult.Instance());
+
+                    SetManualJudgeData(unit, AppsInspResult.Instance());
+
+                    SystemManager.Instance().ShowManualJugdeForm();
+
                     WriteLog("Show Manual Judge Form", false);
 
                     SeqStep = SeqStep.SEQ_SEND_RESULT;
@@ -1735,6 +1740,36 @@ namespace ATT_UT_IPAD.Core
                 Logger.Error(ErrorType.Etc, message);
                 _ClearBufferThread = null;
             }
+        }
+
+        private void SetManualJudgeData(Unit unit, AppsInspResult inspResult)
+        {
+            var inspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
+
+            List<ManualJudge> manualJudgeList = new List<ManualJudge>();
+
+            for (int tabNo = 0; tabNo < inspModel.TabCount; tabNo++)
+            {
+                ManualJudge manualJudge = new ManualJudge();
+
+                var akkonTabInspResult = AppsInspResult.Instance().GetAkkon(tabNo);
+                var alignTabInspResult = AppsInspResult.Instance().GetAlign(tabNo);
+
+                manualJudge.AlignJudgement = alignTabInspResult.AlignResult.Judgement;// inspResult.GetAlign(tabNo).Judgement;
+                manualJudge.Lx = unit.GetTab(tabNo).AlignSpec.LeftSpecX_um;
+                manualJudge.Ly = unit.GetTab(tabNo).AlignSpec.LeftSpecY_um;
+                manualJudge.Cx = unit.GetTab(tabNo).AlignSpec.CenterSpecX_um;
+                manualJudge.Rx = unit.GetTab(tabNo).AlignSpec.RightSpecX_um;
+                manualJudge.Ry = unit.GetTab(tabNo).AlignSpec.RightSpecY_um;
+
+                manualJudge.AkkonJudgement = akkonTabInspResult.AkkonResult.Judgement;// inspResult.GetAkkon(tabNo).Judgement;
+                manualJudge.Count = unit.GetTab(tabNo).AkkonParam.AkkonAlgoritmParam.JudgementParam.AkkonCount;
+                manualJudge.Length = unit.GetTab(tabNo).AkkonParam.AkkonAlgoritmParam.JudgementParam.LengthY_um;
+
+                manualJudgeList.Add(manualJudge);
+            }
+
+            SystemManager.Instance().SetManualJudgeData(manualJudgeList);
         }
         #endregion
     }

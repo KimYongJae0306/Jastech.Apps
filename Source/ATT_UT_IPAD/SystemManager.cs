@@ -8,6 +8,7 @@ using Jastech.Apps.Winform;
 using Jastech.Apps.Winform.Core;
 using Jastech.Apps.Winform.Service;
 using Jastech.Apps.Winform.Settings;
+using Jastech.Apps.Winform.UI.Forms;
 using Jastech.Framework.Config;
 using Jastech.Framework.Device.Cameras;
 using Jastech.Framework.Device.LAFCtrl;
@@ -369,9 +370,14 @@ namespace ATT_UT_IPAD
             _mainForm.ReleaseAlignLastScanImage();
         }
 
-        public void ShowManualJugdeForm(AppsInspResult inspResult)
+        public void SetManualJudgeData(List<ManualJudge> manualJudgeList)
         {
-            _mainForm.ShowManualJudgeForm(inspResult);
+            _mainForm.SetManualJudgeData(manualJudgeList);
+        }
+
+        public void ShowManualJugdeForm()
+        {
+            _mainForm.ShowManualJudgeForm();
         }
         #endregion
     }

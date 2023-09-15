@@ -524,11 +524,12 @@ namespace Jastech.Apps.Winform.UI.Controls
             }
         }
 
-        private PointF GetMainOrginPoint()
+        private PointF GetMainOriginPoint()
         {
             if (_curMaterial == Material.Panel)
             {
-                var panelMainMark = CurrentTab.Mark.PanelMarkList.Where(x => x.Name == MarkName.Main).First();
+                //var panelMainMark = CurrentTab.GetMarkParamter(UseAlignCamMark).PanelMarkList.Where(x => x.Name == MarkName.Main).First();
+                var panelMainMark = CurrentTab.GetMarkParamter(UseAlignCamMark).GetPanelMark(_curDirection, MarkName.Main);
                 var origin = panelMainMark.InspParam.GetOrigin();
                 double orginX = origin.TranslationX;
                 double originY = origin.TranslationY;
@@ -536,7 +537,8 @@ namespace Jastech.Apps.Winform.UI.Controls
             }
             else
             {
-                var fpcMainMark = CurrentTab.Mark.FpcMarkList.Where(x => x.Name == MarkName.Main).First();
+                //var fpcMainMark = CurrentTab.GetMarkParamter(UseAlignCamMark).FpcMarkList.Where(x => x.Name == MarkName.Main).First();
+                var fpcMainMark = CurrentTab.GetMarkParamter(UseAlignCamMark).GetFPCMark(_curDirection, MarkName.Main);
                 var orgin = fpcMainMark.InspParam.GetOrigin();
 
                 double originX = orgin.TranslationX;
@@ -688,7 +690,7 @@ namespace Jastech.Apps.Winform.UI.Controls
             VisionProPatternMatchingParam inspParam = currentParam.DeepCopy();
             ICogImage copyCogImage = cogImage.CopyBase(CogImageCopyModeConstants.CopyPixels);
 
-            PointF originPoint = GetMainOrginPoint();
+            PointF originPoint = GetMainOriginPoint();
 
             VisionProPatternMatchingResult result = Algorithm.RunPatternMatch(copyCogImage, inspParam);
 

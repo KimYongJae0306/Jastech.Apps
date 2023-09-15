@@ -239,22 +239,33 @@ namespace ATT_UT_IPAD.UI.Controls
                     cx = ((Convert.ToDouble(lx) + Convert.ToDouble(rx)) / 2.0).ToString();
 
                 InspAlignDisplay.UpdateLeftDisplay(image, leftShape.CaliperShapeList, leftShape.LineSegmentList, GetMinimumPointY(LeftPointList[tabNo]));
+
+                int decimalPlaces = 3;
                 if (InspAlignDisplay.IsLeftResultImageView && image != null)
                 {
                     if (lx == "-")
                         InspAlignDisplay.DrawLeftResult("X Align : " + lx, 0);
                     else
+                    {
+                        lx = MathHelper.GetFloorDecimal(lx, decimalPlaces).ToString();
                         InspAlignDisplay.DrawLeftResult("X Align : " + lx + " um", 0);
+                    }
 
                     if (ly == "-")
                         InspAlignDisplay.DrawLeftResult("Y Align : " + ly, 1);
                     else
+                    {
+                        ly = MathHelper.GetFloorDecimal(ly, decimalPlaces).ToString();
                         InspAlignDisplay.DrawLeftResult("Y Align : " + ly + " um", 1);
+                    }
 
                     if (cx == "-")
                         InspAlignDisplay.DrawLeftResult("CX Align : " + cx, 2);
                     else
+                    {
+                        cx = MathHelper.GetFloorDecimal(cx, decimalPlaces).ToString();
                         InspAlignDisplay.DrawLeftResult("CX Align : " + cx + " um", 2);
+                    }
                 }
 
                 InspAlignDisplay.UpdateRightDisplay(image, rightShape.CaliperShapeList, rightShape.LineSegmentList, GetMinimumPointY(RightPointList[tabNo]));
@@ -263,17 +274,26 @@ namespace ATT_UT_IPAD.UI.Controls
                     if (rx == "-")
                         InspAlignDisplay.DrawRightResult("X Align : " + rx, 0);
                     else
+                    {
+                        rx = MathHelper.GetFloorDecimal(rx, decimalPlaces).ToString();
                         InspAlignDisplay.DrawRightResult("X Align : " + rx + " um", 0);
+                    }
 
                     if (ry == "-")
                         InspAlignDisplay.DrawRightResult("Y Align : " + ry, 1);
                     else
+                    {
+                        ry = MathHelper.GetFloorDecimal(ry, decimalPlaces).ToString();
                         InspAlignDisplay.DrawRightResult("Y Align : " + ry + " um", 1);
+                    }
 
                     if (cx == "-")
                         InspAlignDisplay.DrawRightResult("CX Align : " + cx, 2);
                     else
+                    {
+                        cx = MathHelper.GetFloorDecimal(cx, decimalPlaces).ToString();
                         InspAlignDisplay.DrawRightResult("CX Align : " + cx + " um", 2);
+                    }
                 }
 
                 var centerImage = TabBtnControlList[tabNo].GetCenterImage();
