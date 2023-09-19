@@ -186,6 +186,12 @@ namespace ATT_UT_IPAD.Core
                 _updateThread = null;
 
                 WriteLog("Update UI Inspection Result.", true);
+
+                if (AppsConfig.Instance().EnableManualJudge && IsNg(AppsInspResult.Instance()))
+                {
+
+                }
+
             }
             catch (Exception err)
             {
@@ -465,15 +471,38 @@ namespace ATT_UT_IPAD.Core
 
                     PlcControlManager.Instance().EnableSendPeriodically = false;
 
+                    SeqStep = SeqStep.SEQ_SEND_RESULT;
+                    break;
+                case SeqStep.SEQ_SEND_RESULT:
+                    if (AppsConfig.Instance().EnableManualJudge && IsNg(AppsInspResult.Instance()))
+                    {
+                        PlcControlManager.Instance().WriteManualJudge();
+                        WriteLog("Completed Send Plc ManualJudge", true);
+                    }
+                    else
+                    {
+                        SendResultData();
+                        WriteLog("Completed Send Plc Tab Result Data", true);
+                    }
+
+                    SeqStep = SeqStep.SEQ_WAIT_UI_RESULT_UPDATE;
+                    break;
+
+                case SeqStep.SEQ_WAIT_UI_RESULT_UPDATE:
+                    MoveTo(TeachingPosType.Stage1_Scan_Start, out errorMessage, false);
+
+                    StartUpdateThread();
+
                     if (AppsConfig.Instance().EnableManualJudge && IsNg(AppsInspResult.Instance()))
                         SeqStep = SeqStep.SEQ_MANUAL_JUDGE;
                     else
-                        SeqStep = SeqStep.SEQ_SEND_RESULT;
+                        SeqStep = SeqStep.SEQ_SAVE_RESULT_DATA;
                     break;
 
                 case SeqStep.SEQ_MANUAL_JUDGE:
-                    PlcControlManager.Instance().WriteManualJudge();
-
+                    if (_updateThread != null)
+                        break;
+                    
                     AppsStatus.Instance().IsManualJudgeCompleted = false;
                     SetManualJudgeData(unit, AppsInspResult.Instance());
                     SystemManager.Instance().ShowManualJugdeForm();
@@ -491,24 +520,15 @@ namespace ATT_UT_IPAD.Core
                         SetManualJudge();
 
                     WriteLog("Manual Judge Complete", false);
-                    SeqStep = SeqStep.SEQ_SEND_RESULT;
+                    SeqStep = SeqStep.SEQ_SEND_MANUAL_JUDGE;
                     break;
+                case SeqStep.SEQ_SEND_MANUAL_JUDGE:
 
-                case SeqStep.SEQ_SEND_RESULT:
                     SendResultData();
-                    WriteLog("Completed Send Plc Tab Result Data", true);
-
-                    SeqStep = SeqStep.SEQ_WAIT_UI_RESULT_UPDATE;
-                    break;
-
-                case SeqStep.SEQ_WAIT_UI_RESULT_UPDATE:
-                    MoveTo(TeachingPosType.Stage1_Scan_Start, out errorMessage, false);
-
-                    StartUpdateThread();
+                    WriteLog("Completed Send Plc Tab Result Data(ManualJudge)", true);
 
                     SeqStep = SeqStep.SEQ_SAVE_RESULT_DATA;
                     break;
-               
                 case SeqStep.SEQ_SAVE_RESULT_DATA:
                     UpdateDailyInfo();
                     DailyInfoService.Save(inspModel.Name);
@@ -1830,6 +1850,7 @@ namespace ATT_UT_IPAD.Core
         SEQ_WAITING_INSPECTION_DONE,
         SEQ_MANUAL_JUDGE,
         SEQ_MANUAL_JUDGE_COMPLETED,
+        SEQ_SEND_MANUAL_JUDGE,
         SEQ_SEND_RESULT,
         SEQ_WAIT_UI_RESULT_UPDATE,
         SEQ_SAVE_RESULT_DATA,
