@@ -156,6 +156,8 @@ namespace ATT_UT_Remodeling
             ConfigSet.Instance().Operation.LastModelName = modelName;
             ConfigSet.Instance().Operation.Save(ConfigSet.Instance().Path.Config);
 
+            PlcControlManager.Instance().WriteModelData(ModelManager.Instance().CurrentModel as AppsInspModel);
+
             if (ManualJudgeForm != null)
             {
                 ManualJudgeForm.Close();

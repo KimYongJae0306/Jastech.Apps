@@ -44,10 +44,6 @@ namespace Jastech.Apps.Winform
         public bool EnableSendPeriodically { get; set; } = true;
         #endregion
 
-        #region MyRegion
-
-        #endregion
-
         #region 메서드
         public static PlcControlManager Instance()
         {
@@ -922,6 +918,70 @@ namespace Jastech.Apps.Winform
 
                 plc.Write("D" + map.AddressNum, stream.Data);
             }
+        }
+
+        public void WriteModelData(AppsInspModel inspModel)
+        {
+            if (inspModel == null)
+                return;
+
+            int tabCount = inspModel.TabCount;
+
+            for (int i = 0; i < tabCount; i++)
+            {
+                var tab = inspModel.GetUnit(UnitName.Unit0).GetTab(i);
+                WriteModelParameter(tab, i);
+            }
+        }
+
+        private void WriteModelParameter(Tab tab, int tabNo)
+        {
+            string leftFpcX = string.Format("Tab{0}_Left_FPC_X_Threshold", tabNo);
+            PlcResultMap plcResultMap = (PlcResultMap)Enum.Parse(typeof(PlcResultMap), leftFpcX);
+            var map = PlcControlManager.Instance().GetResultMap(plcResultMap);
+
+            if (DeviceManager.Instance().PlcHandler.Count > 0 && map != null)
+            {
+                int leftFpcX_param = (int)tab.GetAlignParam(ATTTabAlignName.LeftFPCX).CaliperParams.CaliperTool.RunParams.ContrastThreshold;
+                int leftFpcY_param = (int)tab.GetAlignParam(ATTTabAlignName.LeftFPCY).CaliperParams.CaliperTool.RunParams.ContrastThreshold;
+                int leftPanelX_param = (int)tab.GetAlignParam(ATTTabAlignName.LeftPanelX).CaliperParams.CaliperTool.RunParams.ContrastThreshold;
+                int leftPanelY_param = (int)tab.GetAlignParam(ATTTabAlignName.LeftPanelY).CaliperParams.CaliperTool.RunParams.ContrastThreshold;
+
+                int rightFpcX_param = (int)tab.GetAlignParam(ATTTabAlignName.RightFPCX).CaliperParams.CaliperTool.RunParams.ContrastThreshold;
+                int rightFpcY_param = (int)tab.GetAlignParam(ATTTabAlignName.RightFPCY).CaliperParams.CaliperTool.RunParams.ContrastThreshold;
+                int rightPanelX_param = (int)tab.GetAlignParam(ATTTabAlignName.RightPanelX).CaliperParams.CaliperTool.RunParams.ContrastThreshold;
+                int rightPanelY_param = (int)tab.GetAlignParam(ATTTabAlignName.RightPanelY).CaliperParams.CaliperTool.RunParams.ContrastThreshold;
+
+                var plc = DeviceManager.Instance().PlcHandler.First() as MelsecPlc;
+                PlcDataStream stream = new PlcDataStream();
+
+                if (plc.MelsecParser.ParserType == ParserType.Binary)
+                {
+                    stream.AddSwap16BitData(Convert.ToInt16(leftFpcX_param));
+                    stream.AddSwap16BitData(Convert.ToInt16(leftFpcY_param));
+                    stream.AddSwap16BitData(Convert.ToInt16(leftPanelX_param));
+                    stream.AddSwap16BitData(Convert.ToInt16(leftPanelY_param));
+                    
+                    stream.AddSwap16BitData(Convert.ToInt16(rightFpcX_param));
+                    stream.AddSwap16BitData(Convert.ToInt16(rightFpcY_param));
+                    stream.AddSwap16BitData(Convert.ToInt16(rightPanelX_param));
+                    stream.AddSwap16BitData(Convert.ToInt16(rightPanelY_param));
+                }
+                else
+                {
+                    stream.Add16BitData(Convert.ToInt16(leftFpcX_param));
+                    stream.Add16BitData(Convert.ToInt16(leftFpcY_param));
+                    stream.Add16BitData(Convert.ToInt16(leftPanelX_param));
+                    stream.Add16BitData(Convert.ToInt16(leftPanelY_param));
+
+                    stream.Add16BitData(Convert.ToInt16(rightFpcX_param));
+                    stream.Add16BitData(Convert.ToInt16(rightFpcY_param));
+                    stream.Add16BitData(Convert.ToInt16(rightPanelX_param));
+                    stream.Add16BitData(Convert.ToInt16(rightPanelY_param));
+                }
+                plc.Write("D" + map.AddressNum, stream.Data);
+            }
+
         }
         #endregion
     }
