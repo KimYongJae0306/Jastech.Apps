@@ -473,6 +473,7 @@ namespace ATT_UT_IPAD.Core
 
                     SeqStep = SeqStep.SEQ_SEND_RESULT;
                     break;
+
                 case SeqStep.SEQ_SEND_RESULT:
                     if (AppsConfig.Instance().EnableManualJudge && IsNg(AppsInspResult.Instance()))
                     {
@@ -506,7 +507,6 @@ namespace ATT_UT_IPAD.Core
                     AppsStatus.Instance().IsManualJudgeCompleted = false;
                     SetManualJudgeData(unit, AppsInspResult.Instance());
                     SystemManager.Instance().ShowManualJugdeForm();
-
                     WriteLog("Show Manual Judge Form", false);
 
                     SeqStep = SeqStep.SEQ_MANUAL_JUDGE_COMPLETED;
@@ -522,6 +522,7 @@ namespace ATT_UT_IPAD.Core
                     WriteLog("Manual Judge Complete", false);
                     SeqStep = SeqStep.SEQ_SEND_MANUAL_JUDGE;
                     break;
+
                 case SeqStep.SEQ_SEND_MANUAL_JUDGE:
 
                     SendResultData();
@@ -529,6 +530,7 @@ namespace ATT_UT_IPAD.Core
 
                     SeqStep = SeqStep.SEQ_SAVE_RESULT_DATA;
                     break;
+
                 case SeqStep.SEQ_SAVE_RESULT_DATA:
                     UpdateDailyInfo();
                     DailyInfoService.Save(inspModel.Name);
@@ -1848,11 +1850,11 @@ namespace ATT_UT_IPAD.Core
         SEQ_WAITING_AKKON_SCAN_COMPLETED,
         SEQ_WAITING_ALIGN_SCAN_COMPLETED,
         SEQ_WAITING_INSPECTION_DONE,
+        SEQ_SEND_RESULT,
+        SEQ_WAIT_UI_RESULT_UPDATE,
         SEQ_MANUAL_JUDGE,
         SEQ_MANUAL_JUDGE_COMPLETED,
         SEQ_SEND_MANUAL_JUDGE,
-        SEQ_SEND_RESULT,
-        SEQ_WAIT_UI_RESULT_UPDATE,
         SEQ_SAVE_RESULT_DATA,
         SEQ_SAVE_IMAGE,
         SEQ_DELETE_DATA,
