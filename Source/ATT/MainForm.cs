@@ -546,6 +546,7 @@ namespace ATT
         }
         #endregion
     }
+
     public partial class MainForm : Form
     {
         #region 필드
@@ -554,11 +555,6 @@ namespace ATT
         #endregion
 
         #region 메소드
-        private void Test_Click(object sender, EventArgs e)
-        {
-            HomingAllAxes();
-        }
-
         private void HomingAllAxes()
         {
             ProgressForm progressForm = new ProgressForm();
