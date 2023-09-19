@@ -439,24 +439,6 @@ namespace Jastech.Apps.Winform
             }
         }
 
-        public void WritePcCommand(PlcCommand command)
-        {
-            var map = PlcControlManager.Instance().GetAddressMap(PlcCommonMap.PC_Command);
-            if (DeviceManager.Instance().PlcHandler.Count > 0 && map != null)
-            {
-                var plc = DeviceManager.Instance().PlcHandler.First() as MelsecPlc;
-
-                PlcDataStream stream = new PlcDataStream();
-
-                if (plc.MelsecParser.ParserType == ParserType.Binary)
-                    stream.AddSwap16BitData(Convert.ToInt16(command));
-                else
-                    stream.Add16BitData(Convert.ToInt16(command));
-
-                plc.Write("D" + map.AddressNum, stream.Data);
-            }
-        }
-
         public short WritePcStatus(PlcCommand command, bool isFailed = false)
         {
             var map = PlcControlManager.Instance().GetAddressMap(PlcCommonMap.PC_Status);
@@ -931,7 +913,9 @@ namespace Jastech.Apps.Winform
             {
                 var tab = inspModel.GetUnit(UnitName.Unit0).GetTab(i);
                 WriteModelParameter(tab, i);
+                Thread.Sleep(50);
             }
+            WritePcCommand(PcCommand.Set_InspParameter);
         }
 
         private void WriteModelParameter(Tab tab, int tabNo)
