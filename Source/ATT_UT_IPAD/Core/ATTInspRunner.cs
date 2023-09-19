@@ -465,26 +465,35 @@ namespace ATT_UT_IPAD.Core
 
                     PlcControlManager.Instance().EnableSendPeriodically = false;
 
-                    if (!AppsConfig.Instance().EnableManualJudge /*&& NG*/)
+                    if (AppsConfig.Instance().EnableManualJudge && IsNg(AppsInspResult.Instance()))
                         SeqStep = SeqStep.SEQ_MANUAL_JUDGE;
                     else
                         SeqStep = SeqStep.SEQ_SEND_RESULT;
                     break;
 
-                // NG 날때만 탈 것
                 case SeqStep.SEQ_MANUAL_JUDGE:
                     PlcControlManager.Instance().WriteManualJudge();
 
+                    AppsStatus.Instance().IsManualJudgeCompleted = false;
                     SetManualJudgeData(unit, AppsInspResult.Instance());
-
                     SystemManager.Instance().ShowManualJugdeForm();
 
                     WriteLog("Show Manual Judge Form", false);
 
+                    SeqStep = SeqStep.SEQ_MANUAL_JUDGE_COMPLETED;
+                    break;
+
+                case SeqStep.SEQ_MANUAL_JUDGE_COMPLETED:
+                    if (AppsStatus.Instance().IsManualJudgeCompleted == false)
+                        break;
+
+                    if (AppsStatus.Instance().IsManual_OK)
+                        SetManualJudge();
+
+                    WriteLog("Manual Judge Complete", false);
                     SeqStep = SeqStep.SEQ_SEND_RESULT;
                     break;
 
-                    // 메뉴얼 판정하겠다 -> 메뉴얼 판정 -> PLC에서 받고 응답 오기까지 대기 루틴 필요
                 case SeqStep.SEQ_SEND_RESULT:
                     SendResultData();
                     WriteLog("Completed Send Plc Tab Result Data", true);
@@ -575,9 +584,7 @@ namespace ATT_UT_IPAD.Core
                     }
                 }
                 else
-                {
                     Console.WriteLine(string.Format("Get Akkon Result Image_Tab{0} Fail.", tabNo));
-                }
             }
         }
 
@@ -1742,6 +1749,27 @@ namespace ATT_UT_IPAD.Core
             }
         }
 
+        private bool IsNg(AppsInspResult inspResult)
+        {
+            bool isNg = false;
+
+            var inspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
+            int tabCount = inspModel.TabCount;
+
+            for (int tabIndex = 0; tabIndex < tabCount; tabIndex++)
+            {
+                var alignResult = inspResult.GetAlign(tabIndex).AlignResult.Judgement;
+                if (alignResult == Judgement.NG)
+                    isNg = true;
+
+                var akkonResult = inspResult.GetAkkon(tabIndex).AkkonResult.Judgement;
+                if (akkonResult == Judgement.NG)
+                    isNg = true;
+            }
+            
+            return isNg;
+        }
+
         private void SetManualJudgeData(Unit unit, AppsInspResult inspResult)
         {
             var inspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
@@ -1771,6 +1799,20 @@ namespace ATT_UT_IPAD.Core
 
             SystemManager.Instance().SetManualJudgeData(manualJudgeList);
         }
+
+        private void SetManualJudge()
+        {
+            var inspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
+
+            for (int tabIndex = 0; tabIndex < inspModel.TabCount; tabIndex++)
+            {
+                var akkonTabInspResult = AppsInspResult.Instance().GetAkkon(tabIndex);
+                akkonTabInspResult.IsManualOK = true;
+
+                var alignTabInspResult = AppsInspResult.Instance().GetAlign(tabIndex);
+                alignTabInspResult.IsManualOK = true;
+            }
+        }
         #endregion
     }
 
@@ -1787,6 +1829,7 @@ namespace ATT_UT_IPAD.Core
         SEQ_WAITING_ALIGN_SCAN_COMPLETED,
         SEQ_WAITING_INSPECTION_DONE,
         SEQ_MANUAL_JUDGE,
+        SEQ_MANUAL_JUDGE_COMPLETED,
         SEQ_SEND_RESULT,
         SEQ_WAIT_UI_RESULT_UPDATE,
         SEQ_SAVE_RESULT_DATA,

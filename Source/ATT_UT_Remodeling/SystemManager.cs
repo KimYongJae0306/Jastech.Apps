@@ -8,6 +8,7 @@ using Jastech.Apps.Winform.Core;
 using Jastech.Apps.Winform.Service;
 using Jastech.Apps.Winform.Service.Plc;
 using Jastech.Apps.Winform.Service.Plc.Maps;
+using Jastech.Apps.Winform.UI.Forms;
 using Jastech.Framework.Config;
 using Jastech.Framework.Device.Cameras;
 using Jastech.Framework.Device.LAFCtrl;
@@ -20,6 +21,7 @@ using Jastech.Framework.Util.Helper;
 using Jastech.Framework.Winform;
 using Jastech.Framework.Winform.Forms;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 using System.Windows.Forms;
@@ -326,9 +328,14 @@ namespace ATT_UT_Remodeling
             _mainForm.ClearPreAlignResult();
         }
 
-        public void ShowManualJugdeForm(AppsInspResult inspResult)
+        public void SetManualJudgeData(List<ManualJudge> manualJudgeList)
         {
-            _mainForm.ShowManualJudgeForm(inspResult);
+            _mainForm.SetManualJudgeData(manualJudgeList);
+        }
+
+        public void ShowManualJugdeForm()
+        {
+            _mainForm.ShowManualJudgeForm();
         }
         #endregion
     }
