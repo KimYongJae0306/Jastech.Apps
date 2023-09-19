@@ -21,6 +21,10 @@ namespace Jastech.Apps.Winform
         public bool IsPreAlignRunnerFlagFromPlc { get; set; } = false;
 
         public bool IsLastAutoInspGrab { get; set; } = false;
+
+        public bool IsManualJudgeCompleted { get; set; } = false;
+
+        public bool IsManual_OK { get; set; } = false;
         #endregion
 
         #region 메서드

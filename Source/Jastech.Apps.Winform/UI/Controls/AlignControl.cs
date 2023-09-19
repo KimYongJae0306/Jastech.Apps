@@ -47,6 +47,12 @@ namespace Jastech.Apps.Winform.UI.Controls
         public double Resolution_um { get; set; } = 1.0;
         #endregion
 
+        #region 이벤트
+        #endregion
+
+        #region 델리게이트
+        #endregion
+
         #region 생성자
         public AlignControl()
         {

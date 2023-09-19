@@ -106,6 +106,8 @@ namespace ATT_UT_Remodeling
             PlcControlManager.Instance().WriteVersion();
 
             ManualJudgeForm = new ManualJudgeForm();
+            ManualJudgeForm.ManualJudmentHandler += MainForm_ManualOkHandler;
+            ManualJudgeForm.Show();
             ManualJudgeForm.Hide();
         }
 
@@ -165,6 +167,7 @@ namespace ATT_UT_Remodeling
                 ManualJudgeForm = null;
 
                 ManualJudgeForm = new ManualJudgeForm();
+                ManualJudgeForm.ManualJudmentHandler += MainForm_ManualOkHandler;
                 ManualJudgeForm.Hide();
             }
         }
@@ -621,19 +624,14 @@ namespace ATT_UT_Remodeling
             MainPageControl?.Enable(isEnable);
         }
 
-        public void ShowManualJudgeForm(AppsInspResult inspResult)
+        public void SetManualJudgeData(List<ManualJudge> manualJudgeList)
         {
-            var inspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
-
-            for (int tabNo = 0; tabNo < inspModel.TabCount; tabNo++)
-            {
-                //ManualJudgeForm.SetTabAlignInspectionResult(inspResult.GetAlign(tabNo));
-                //ManualJudgeForm.SetTabAkkonInspectionResult(inspResult.GetAkkon(tabNo));
-                ManualJudgeForm.SetTabInspectionResult(inspResult.Get(tabNo));
-            }
-
+            ManualJudgeForm.SetManualJudge(manualJudgeList);
             ManualJudgeForm.SetInspectionResult();
+        }
 
+        public void ShowManualJudgeForm()
+        {
             if (ManualJudgeForm.InvokeRequired)
             {
                 ManualJudgeForm.Invoke(new MethodInvoker(delegate
@@ -643,6 +641,16 @@ namespace ATT_UT_Remodeling
             }
             else
                 ManualJudgeForm.Show();
+        }
+
+        private void MainForm_ManualJudmentHandler(bool isManualJudgeCompleted)
+        {
+            AppsStatus.Instance().IsManualJudgeCompleted = isManualJudgeCompleted;
+        }
+
+        private void MainForm_ManualOkHandler(bool isManualOk)
+        {
+            AppsStatus.Instance().IsManual_OK = isManualOk;
         }
 
         private void lblMachineName_Click(object sender, EventArgs e)

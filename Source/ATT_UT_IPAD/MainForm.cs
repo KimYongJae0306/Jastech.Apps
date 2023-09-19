@@ -13,6 +13,7 @@ using Jastech.Apps.Winform.Settings;
 using Jastech.Apps.Winform.UI.Forms;
 using Jastech.Framework.Config;
 using Jastech.Framework.Device.Grabbers;
+using Jastech.Framework.Device.Motions;
 using Jastech.Framework.Matrox;
 using Jastech.Framework.Structure;
 using Jastech.Framework.Users;
@@ -109,8 +110,18 @@ namespace ATT_UT_IPAD
             PlcControlManager.Instance().WriteVersion();
 
             ManualJudgeForm = new ManualJudgeForm();
+            ManualJudgeForm.ManualJudmentHandler += MainForm_ManualJudgmentHandler;
             ManualJudgeForm.Show();
             ManualJudgeForm.Hide();
+
+            if (ConfigSet.Instance().Operation.VirtualMode == false)
+            {
+                string suggestMessage = "Perform homing All axes?\r\n※ Highly recommended for stability.";
+                var messageBox = new MessageYesNoForm { Message = suggestMessage };
+
+                if (messageBox.ShowDialog() == DialogResult.Yes)
+                    HomingAllAxes();
+            }
         }
 
         private void MainForm_InspRunnerHandler(bool isStart)
@@ -164,6 +175,7 @@ namespace ATT_UT_IPAD
                 ManualJudgeForm = null;
 
                 ManualJudgeForm = new ManualJudgeForm();
+                ManualJudgeForm.ManualJudmentHandler += MainForm_ManualJudgmentHandler;
                 ManualJudgeForm.Hide();
             }
         }
@@ -625,9 +637,67 @@ namespace ATT_UT_IPAD
                 ManualJudgeForm.Show();
         }
 
+        private void MainForm_ManualJudmentHandler(bool isManualJudgeCompleted)
+        {
+            AppsStatus.Instance().IsManualJudgeCompleted = isManualJudgeCompleted;
+        }
+
+        private void MainForm_ManualJudgmentHandler(bool isManualOk)
+        {
+            AppsStatus.Instance().IsManual_OK = isManualOk;
+        }
+
         private void lblMachineName_Click(object sender, EventArgs e)
         {
             Process.Start(ConfigSet.Instance().Path.Result);
+        }
+        #endregion
+    }
+
+    public partial class MainForm : Form
+    {
+        #region 필드
+        private bool _isAxisHoming;
+        private Axis _currentHomingAxis;
+        #endregion
+
+        #region 메소드
+        private void HomingAllAxes()
+        {
+            ProgressForm progressForm = new ProgressForm();
+            progressForm.Add($"Axis X Homing", AxisHoming, AxisName.X, StopAxisHoming);
+            var akkonLaf = LAFManager.Instance().GetLAF("AkkonLaf");
+            progressForm.Add($"Axis Z1 (Akkon LAF) homing", akkonLaf.HomeSequenceAction, akkonLaf.StopHomeSequence);
+            var alignLaf = LAFManager.Instance().GetLAF("AlignLaf");
+            progressForm.Add($"Axis Z2 (Align LAF) homing", alignLaf.HomeSequenceAction, alignLaf.StopHomeSequence);
+            progressForm.StartAllTasks();
+            progressForm.ShowDialog();
+        }
+
+        private bool AxisHoming(AxisName axisName)
+        {
+            int timeOutSec = 40;
+            _currentHomingAxis = MotionManager.Instance().GetAxis(AxisHandlerName.Handler0, axisName);
+            _currentHomingAxis.StartHome();
+            _isAxisHoming = true;
+
+            Stopwatch stopwatch = Stopwatch.StartNew();
+            while (_isAxisHoming == true && _currentHomingAxis.IsHomeFound == false && stopwatch.Elapsed.Seconds < timeOutSec)
+            {
+                if (_currentHomingAxis.IsMoving() == false)
+                    _currentHomingAxis.IsHomeFound = true;
+                else
+                    Thread.Sleep(50);
+            }
+
+            StopAxisHoming();
+            return _currentHomingAxis.IsHomeFound;
+        }
+
+        private void StopAxisHoming()
+        {
+            _isAxisHoming = false;
+            _currentHomingAxis?.StopMove();
         }
         #endregion
     }

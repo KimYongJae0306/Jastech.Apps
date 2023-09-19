@@ -13,6 +13,7 @@ using Jastech.Apps.Winform.Core.Calibrations;
 using Jastech.Apps.Winform.Service;
 using Jastech.Apps.Winform.Service.Plc.Maps;
 using Jastech.Apps.Winform.Settings;
+using Jastech.Apps.Winform.UI.Forms;
 using Jastech.Framework.Algorithms.Akkon;
 using Jastech.Framework.Algorithms.Akkon.Parameters;
 using Jastech.Framework.Algorithms.Akkon.Results;
@@ -425,7 +426,11 @@ namespace ATT_UT_Remodeling.Core
                 // NG 날때만 탈 것
                 case SeqStep.SEQ_MANUAL_JUDGE:
                     PlcControlManager.Instance().WriteManualJudge();
-                    SystemManager.Instance().ShowManualJugdeForm(AppsInspResult.Instance());
+
+                    SetManualJudgeData(unit, AppsInspResult.Instance());
+
+                    SystemManager.Instance().ShowManualJugdeForm();
+
                     WriteLog("Show Manual Judge Form", false);
 
                     SeqStep = SeqStep.SEQ_SEND_RESULT;
@@ -1683,6 +1688,35 @@ namespace ATT_UT_Remodeling.Core
                 Logger.Error(ErrorType.Etc, message);
                 _ClearBufferThread = null;
             }
+        }
+
+        private void SetManualJudgeData(Unit unit, AppsInspResult inspResult)
+        {
+            var inspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
+
+            List<ManualJudge> manualJudgeList = new List<ManualJudge>();
+
+            for (int tabNo = 0; tabNo < inspModel.TabCount; tabNo++)
+            {
+                ManualJudge manualJudge = new ManualJudge();
+
+                var tabInspResult = AppsInspResult.Instance().Get(tabNo);
+
+                manualJudge.AlignJudgement = tabInspResult.AlignResult.Judgement;// inspResult.GetAlign(tabNo).Judgement;
+                manualJudge.Lx = unit.GetTab(tabNo).AlignSpec.LeftSpecX_um;
+                manualJudge.Ly = unit.GetTab(tabNo).AlignSpec.LeftSpecY_um;
+                manualJudge.Cx = unit.GetTab(tabNo).AlignSpec.CenterSpecX_um;
+                manualJudge.Rx = unit.GetTab(tabNo).AlignSpec.RightSpecX_um;
+                manualJudge.Ry = unit.GetTab(tabNo).AlignSpec.RightSpecY_um;
+
+                manualJudge.AkkonJudgement = tabInspResult.AkkonResult.Judgement;// inspResult.GetAkkon(tabNo).Judgement;
+                manualJudge.Count = unit.GetTab(tabNo).AkkonParam.AkkonAlgoritmParam.JudgementParam.AkkonCount;
+                manualJudge.Length = unit.GetTab(tabNo).AkkonParam.AkkonAlgoritmParam.JudgementParam.LengthY_um;
+
+                manualJudgeList.Add(manualJudge);
+            }
+
+            SystemManager.Instance().SetManualJudgeData(manualJudgeList);
         }
         #endregion
     }
