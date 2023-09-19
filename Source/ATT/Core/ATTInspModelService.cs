@@ -143,6 +143,10 @@ namespace ATT.Core
             LightParameter lightParameter = new LightParameter("Light");
 
             var lightCtrlHandler = DeviceManager.Instance().LightCtrlHandler;
+
+            if (lightCtrlHandler.Count == 0)
+                return lightParameter;
+
             var light12v = lightCtrlHandler.Get("LvsLight12V");
             var light24v = lightCtrlHandler.Get("LvsLight24V");
 

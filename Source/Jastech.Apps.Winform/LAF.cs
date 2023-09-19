@@ -177,10 +177,18 @@ namespace Jastech.Apps.Winform
                 if (_homeSequenceStep == HomeSequenceStep.Error)
                     return false;
             }
-            return true;
+
+            bool isHomeComplete = _homeSequenceStep == HomeSequenceStep.Stop;
+
+            _homeSequenceStep = HomeSequenceStep.Stop;
+            return isHomeComplete;
         }
 
-        public void StopHomeSequence() => _isHomeActionStop = true;
+        public void StopHomeSequence()
+        {
+            _isHomeActionStop = true;
+            LafCtrl.SetMotionStop();
+        }
 
         Stopwatch sw = null;
         private void HomeSequence()
