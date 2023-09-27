@@ -449,6 +449,17 @@ namespace ATT_UT_IPAD.UI.Forms
             GetCurrentVariableParams();
         }
 
+        private void SetCenterOfGravity()
+        {
+            int akkonCog = TeachingPositionList.Where(x => x.Name == TeachingPosType.Stage1_Scan_Start.ToString()).First().GetCenterOfGravity(AxisName.Z0);
+            if (LAFManager.Instance().GetLAF(AkkonLafCtrl.Name) is LAF akkonLAF)
+                akkonLAF.SetCenterOfGravity(akkonCog);
+
+            int alignCog = TeachingPositionList.Where(x => x.Name == TeachingPosType.Stage1_Scan_Start.ToString()).First().GetCenterOfGravity(AxisName.Z1);
+            if (LAFManager.Instance().GetLAF(AlignLafCtrl.Name) is LAF alignLAF)
+                alignLAF.SetCenterOfGravity(alignCog);
+        }
+
         private void GetCurrentCommonParams()
         {
             var axisHandler = MotionManager.Instance().GetAxisHandler(AxisHandlerName.Handler0);
@@ -490,6 +501,7 @@ namespace ATT_UT_IPAD.UI.Forms
             if (yesNoForm.ShowDialog() == DialogResult.Yes)
             {
                 UpdateCurrentData();
+                SetCenterOfGravity();
 
                 // Save AxisHandler
                 var axisHandler = MotionManager.Instance().GetAxisHandler(AxisHandlerName.Handler0);
