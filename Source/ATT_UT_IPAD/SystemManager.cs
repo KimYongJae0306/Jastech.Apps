@@ -166,12 +166,12 @@ namespace ATT_UT_IPAD
             if (motion == null)
                 return false;
 
-            string dir = Path.Combine(ConfigSet.Instance().Path.Config, "AxisHanlder");
+            string dir = Path.Combine(ConfigSet.Instance().Path.Config, "AxisHandler");
 
             if (Directory.Exists(dir) == false)
                 Directory.CreateDirectory(dir);
 
-            string unit0FileName = string.Format("AxisHanlder_{0}.json", AxisHandlerName.Handler0);
+            string unit0FileName = string.Format("AxisHandler_{0}.json", AxisHandlerName.Handler0);
             string unit0FilePath = Path.Combine(dir, unit0FileName);
             if (File.Exists(unit0FilePath) == false)
             {

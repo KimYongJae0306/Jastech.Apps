@@ -96,13 +96,17 @@ namespace ATT_UT_IPAD.UI.Pages
         {
             if (PlcControlManager.Instance().MachineStatus == MachineStatus.RUN)
             {
-                lblStartText.ForeColor = Color.Blue;
+                lblStartText.ForeColor = Color.LawnGreen;
                 lblStopText.ForeColor = Color.White;
+                lblStart.Image = Properties.Resources.Start_Green;
+                lblStop.Image = Properties.Resources.Stop_White;
             }
             else
             {
                 lblStartText.ForeColor = Color.White;
-                lblStopText.ForeColor = Color.Blue;
+                lblStopText.ForeColor = Color.FromArgb(255, 50, 100);
+                lblStart.Image = Properties.Resources.Start_White;
+                lblStop.Image = Properties.Resources.Stop_Red;
             }
         }
 

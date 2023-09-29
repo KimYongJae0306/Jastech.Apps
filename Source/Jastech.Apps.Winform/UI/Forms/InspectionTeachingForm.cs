@@ -260,6 +260,7 @@ namespace Jastech.Framework.Winform.Forms
                 return;
 
             Display.SetImage(cogImage);
+            Display.SetThumbnailImage(cogImage);
         }
 
         private void Display_DeleteEventHandler(object sender, EventArgs e)
@@ -426,9 +427,9 @@ namespace Jastech.Framework.Winform.Forms
                 TeachingUIManager.Instance().SetOrginCogImageBuffer(cogImage);
                 TeachingUIManager.Instance().SetOriginMatImageBuffer(new Mat(dlg.FileName, ImreadModes.Grayscale));
 
-                var orgImage = TeachingUIManager.Instance().GetOriginCogImageBuffer(false);
-                Display.SetImage(orgImage);
-                Display.SetThumbnailImage(orgImage);
+                //var orgImage = TeachingUIManager.Instance().GetOriginCogImageBuffer(false);
+                //Display.SetImage(orgImage);
+                //Display.SetThumbnailImage(orgImage);
 
                 int tabNo = Convert.ToInt32(_currentTabNo);
                 UpdateDisplayImage(tabNo);
@@ -636,6 +637,7 @@ namespace Jastech.Framework.Winform.Forms
                 ICogImage cogImage = teachingData.ConvertCogGrayImage(temp).CopyBase(CogImageCopyModeConstants.CopyPixels);
 
                 Display.SetImage(cogImage);
+                Display.SetThumbnailImage(cogImage);
                 TeachingUIManager.Instance().SetOrginCogImageBuffer(cogImage);
                 TeachingUIManager.Instance().SetOriginMatImageBuffer(temp);
 

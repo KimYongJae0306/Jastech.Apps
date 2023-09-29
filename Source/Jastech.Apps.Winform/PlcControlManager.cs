@@ -1146,7 +1146,7 @@ namespace Jastech.Apps.Winform
             string sendData = GetValue(plcCommonMap);
             if (sendData == null || sendData == string.Empty || sendData == "")
                 outputValue = "-";
-            else
+            else if (sendData.Length > 2)
                 outputValue = sendData.Substring(0, 1) + "#" + sendData.Substring(2, 1);
 
             return outputValue;

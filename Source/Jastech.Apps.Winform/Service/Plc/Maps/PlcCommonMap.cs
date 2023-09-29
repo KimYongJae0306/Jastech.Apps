@@ -7,6 +7,7 @@
         PC_AxisX_CurPos,
         PC_AxisX_ServoOn,
         PLC_Alive,
+        RUN_Status,
 
         PC_Ready,
         PLC_Ready,

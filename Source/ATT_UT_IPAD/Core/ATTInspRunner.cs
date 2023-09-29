@@ -9,6 +9,7 @@ using Jastech.Apps.Structure.Data;
 using Jastech.Apps.Winform;
 using Jastech.Apps.Winform.Core;
 using Jastech.Apps.Winform.Service;
+using Jastech.Apps.Winform.Service.Plc;
 using Jastech.Apps.Winform.Service.Plc.Maps;
 using Jastech.Apps.Winform.Settings;
 using Jastech.Apps.Winform.UI.Forms;
@@ -24,8 +25,10 @@ using Jastech.Framework.Imaging.Result;
 using Jastech.Framework.Imaging.VisionPro;
 using Jastech.Framework.Util.Helper;
 using Jastech.Framework.Winform;
+using Jastech.Framework.Winform.Forms;
 using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
@@ -338,6 +341,13 @@ namespace ATT_UT_IPAD.Core
                     break;
 
                 case SeqStep.SEQ_MOVE_START_POS:
+                    if (AkkonLAFCtrl.Status.IsNegativeLimit == true || AlignLAFCtrl.Status.IsNegativeLimit == true)
+                    {
+                        new MessageConfirmForm { Message = "LAF Z axis is not in Position.\r\nPlease perform an Axis Origin action" }.ShowDialog();
+                        WriteLog("Auto Mode stopped cause LAF Z axis is not in position", true);
+                        SeqStop();
+                    }
+
                     MotionManager.Instance().MoveAxisZ(TeachingPosType.Stage1_Scan_Start, AkkonLAFCtrl, AxisName.Z0);
                     MotionManager.Instance().MoveAxisZ(TeachingPosType.Stage1_Scan_Start, AlignLAFCtrl, AxisName.Z1);
 
@@ -359,6 +369,13 @@ namespace ATT_UT_IPAD.Core
                         break;
 
                     WriteLog("Receive Inspection Start Signal From PLC.", true);
+
+                    if (PlcControlManager.Instance().GetValue(PlcCommonMap.RUN_Status) == "2")
+                    {
+                        WriteLog("Start Idle Run sequence.", true);
+                        SeqStep = SeqStep.SEQ_PLC_IDLERUN;
+                        break;
+                    }
 
                     SystemManager.Instance().EnableMainView(false);
                     SystemManager.Instance().TabButtonResetColor();
@@ -563,6 +580,20 @@ namespace ATT_UT_IPAD.Core
                     WriteLog("Sequnce Error.", true);
                     ClearBuffer();
 
+                    SeqStep = SeqStep.SEQ_IDLE;
+                    break;
+
+                case SeqStep.SEQ_PLC_IDLERUN:
+                    if(MoveTo(TeachingPosType.Stage1_Scan_End, out errorMessage) == false)
+                    {
+                        WriteLog("Idle Run sequence timed out", true);
+                        SeqStop();
+                        break;
+                    }
+                    WriteLog("Idle Run sequence finished.", true);
+
+                    AppsStatus.Instance().IsInspRunnerFlagFromPlc = false;
+                    PlcControlManager.Instance().WritePcStatus(PlcCommand.StartInspection);
                     SeqStep = SeqStep.SEQ_IDLE;
                     break;
 
@@ -936,7 +967,6 @@ namespace ATT_UT_IPAD.Core
                 body.Add($"{akkonResult.Judgement}");                                       // Judge
                 body.Add($"{avgCount}");                                                    // Average Count
                 body.Add($"{avgLength:F3}");                                                // Average Length
-
             }
 
             CSVHelper.WriteData(csvFile, body);
@@ -1860,5 +1890,6 @@ namespace ATT_UT_IPAD.Core
         SEQ_DELETE_DATA,
         SEQ_CHECK_STANDBY,
         SEQ_ERROR,
+        SEQ_PLC_IDLERUN,
     }
 }

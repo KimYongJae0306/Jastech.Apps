@@ -5,6 +5,7 @@ using Jastech.Apps.Winform.Core.Calibrations;
 using Jastech.Apps.Winform.Service.Plc.Maps;
 using Jastech.Apps.Winform.Settings;
 using Jastech.Framework.Config;
+using Jastech.Framework.Device.LAFCtrl;
 using Jastech.Framework.Device.Motions;
 using Jastech.Framework.Structure;
 using Jastech.Framework.Structure.Helper;
@@ -171,6 +172,7 @@ namespace Jastech.Apps.Winform.Service.Plc
                     EnableActive = true;
                     PlcControlManager.Instance().ClearAddress(PlcCommonMap.PLC_Command_Common);
                     CommonCommandReceived((PlcCommonCommand)commonCommand);
+                    _prevCommonCommand = 0;
                     EnableActive = false;
                 }
 
@@ -179,6 +181,7 @@ namespace Jastech.Apps.Winform.Service.Plc
                     EnableActive = true;
                     PlcControlManager.Instance().ClearAddress(PlcCommonMap.PLC_Command);
                     PlcCommandReceived((PlcCommand)command);
+                    _prevCommand = 0;
                     EnableActive = false;
                 }
 
@@ -445,6 +448,7 @@ namespace Jastech.Apps.Winform.Service.Plc
                 case PlcCommand.Move_StandbyPos:
                     MoveTo(TeachingPosType.Standby);
                     PlcControlManager.Instance().WritePcStatus(PlcCommand.Move_StandbyPos);
+                    Logger.Write(LogType.Device, "Send to PLC Standby");
                     break;
 
                 case PlcCommand.Move_Left_AlignPos:
@@ -460,6 +464,7 @@ namespace Jastech.Apps.Winform.Service.Plc
                 case PlcCommand.Move_ScanStartPos:
                     MoveTo(TeachingPosType.Stage1_Scan_Start);
                     PlcControlManager.Instance().WritePcStatus(PlcCommand.Move_ScanStartPos);
+                    Logger.Write(LogType.Device, "Send to PLC ScanStart");
                     break;
 
                 default:
@@ -592,27 +597,28 @@ namespace Jastech.Apps.Winform.Service.Plc
                 foreach (var axis in axisHandler.GetAxisList())
                 {
                     if (axis.Name.ToUpper().Contains("X"))
+                    {
+                        if (axis.IsMoving() == false && axis.IsEnable() == false)
+                            axis.TurnOnServo();
+
                         allAxisHandler.AddAxis(axis);
+                    }
                 }
             }
             allAxisHandler.StopMove();
             Thread.Sleep(100);
 
-            var lafCtrlHandler = DeviceManager.Instance().LAFCtrlHandler;
-            PlcControlManager.Instance().WritePcCommand(PcCommand.ServoOn_1);
-
-            if (lafCtrlHandler.Count > 1)
-                PlcControlManager.Instance().WritePcCommand(PcCommand.ServoOn_2);
-
-            allAxisHandler.TurnOnServo(true);
-
-            foreach (var laf in lafCtrlHandler)
-            {
-                // LAF Homming
-            }
             allAxisHandler.StartHomeMove();
 
+            // LAF는 Scaling Sequence가 있어 별도 homing
+            var lafCtrlHandler = DeviceManager.Instance().LAFCtrlHandler;
+
+            for(int servoOnAddrShift =  0; servoOnAddrShift < lafCtrlHandler.Count; servoOnAddrShift += 10)
+                PlcControlManager.Instance().WritePcCommand(PcCommand.ServoOn_1 + servoOnAddrShift);
+            LAFManager.Instance().LAFList.ForEach(laf => laf.HomeSequenceAction());
+
             PlcControlManager.Instance().WritePcStatus(PlcCommand.Origin_All);
+            Logger.Write(LogType.Device, "Send to PLC Origin All");
         }
         #endregion
     }

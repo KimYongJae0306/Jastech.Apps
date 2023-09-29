@@ -205,6 +205,7 @@ namespace Jastech.Apps.Winform.Service.Plc
 
             // 100~109
             AddressMapList.Add(new PlcAddressMap(PlcCommonMap.PLC_Alive, WordType.DEC, index + 100, 1));
+            AddressMapList.Add(new PlcAddressMap(PlcCommonMap.RUN_Status, WordType.DEC, index + 101, 1));
             AddressMapList.Add(new PlcAddressMap(PlcCommonMap.PLC_Ready, WordType.DEC, index + 104, 1));
             AddressMapList.Add(new PlcAddressMap(PlcCommonMap.PLC_Command_Common, WordType.DEC, index + 106, 1));
 

@@ -34,6 +34,7 @@
             // btnTab
             // 
             this.btnTab.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.btnTab.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnTab.Font = new System.Drawing.Font("맑은 고딕", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.btnTab.ForeColor = System.Drawing.Color.White;
             this.btnTab.Location = new System.Drawing.Point(0, 0);

@@ -218,6 +218,9 @@
             this.tableLayoutPanel48 = new System.Windows.Forms.TableLayoutPanel();
             this.lblManualOK = new System.Windows.Forms.Label();
             this.label31 = new System.Windows.Forms.Label();
+            this.tableLayoutPanel49 = new System.Windows.Forms.TableLayoutPanel();
+            this.lblRunStatus = new System.Windows.Forms.Label();
+            this.label44 = new System.Windows.Forms.Label();
             this.tableLayoutPanel73.SuspendLayout();
             this.tableLayoutPanel71.SuspendLayout();
             this.tableLayoutPanel72.SuspendLayout();
@@ -274,6 +277,7 @@
             this.tableLayoutPanel52.SuspendLayout();
             this.tableLayoutPanel53.SuspendLayout();
             this.tableLayoutPanel48.SuspendLayout();
+            this.tableLayoutPanel49.SuspendLayout();
             this.SuspendLayout();
             // 
             // btnPcStatus
@@ -1121,6 +1125,7 @@
             this.tableLayoutPanel20.Name = "tableLayoutPanel20";
             this.tableLayoutPanel20.RowCount = 1;
             this.tableLayoutPanel20.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel20.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tableLayoutPanel20.Size = new System.Drawing.Size(282, 33);
             this.tableLayoutPanel20.TabIndex = 325;
             // 
@@ -3010,11 +3015,55 @@
             this.label31.Text = "Manual OK";
             this.label31.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
+            // tableLayoutPanel49
+            // 
+            this.tableLayoutPanel49.ColumnCount = 2;
+            this.tableLayoutPanel49.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 180F));
+            this.tableLayoutPanel49.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel49.Controls.Add(this.lblRunStatus, 0, 0);
+            this.tableLayoutPanel49.Controls.Add(this.label44, 0, 0);
+            this.tableLayoutPanel49.Location = new System.Drawing.Point(296, 78);
+            this.tableLayoutPanel49.Margin = new System.Windows.Forms.Padding(0);
+            this.tableLayoutPanel49.Name = "tableLayoutPanel49";
+            this.tableLayoutPanel49.RowCount = 1;
+            this.tableLayoutPanel49.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel49.Size = new System.Drawing.Size(282, 33);
+            this.tableLayoutPanel49.TabIndex = 399;
+            // 
+            // lblRunStatus
+            // 
+            this.lblRunStatus.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblRunStatus.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblRunStatus.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
+            this.lblRunStatus.ForeColor = System.Drawing.Color.White;
+            this.lblRunStatus.Location = new System.Drawing.Point(180, 0);
+            this.lblRunStatus.Margin = new System.Windows.Forms.Padding(0);
+            this.lblRunStatus.Name = "lblRunStatus";
+            this.lblRunStatus.Size = new System.Drawing.Size(102, 33);
+            this.lblRunStatus.TabIndex = 4;
+            this.lblRunStatus.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // label44
+            // 
+            this.label44.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(104)))), ((int)(((byte)(104)))), ((int)(((byte)(104)))));
+            this.label44.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.label44.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.label44.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
+            this.label44.ForeColor = System.Drawing.Color.White;
+            this.label44.Location = new System.Drawing.Point(0, 0);
+            this.label44.Margin = new System.Windows.Forms.Padding(0);
+            this.label44.Name = "label44";
+            this.label44.Size = new System.Drawing.Size(180, 33);
+            this.label44.TabIndex = 2;
+            this.label44.Text = "RunStatus";
+            this.label44.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
             // PlcCommandControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
+            this.Controls.Add(this.tableLayoutPanel49);
             this.Controls.Add(this.tableLayoutPanel48);
             this.Controls.Add(this.tableLayoutPanel52);
             this.Controls.Add(this.tableLayoutPanel53);
@@ -3149,6 +3198,7 @@
             this.tableLayoutPanel52.ResumeLayout(false);
             this.tableLayoutPanel53.ResumeLayout(false);
             this.tableLayoutPanel48.ResumeLayout(false);
+            this.tableLayoutPanel49.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -3344,5 +3394,8 @@
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel48;
         private System.Windows.Forms.Label lblManualOK;
         private System.Windows.Forms.Label label31;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel49;
+        private System.Windows.Forms.Label lblRunStatus;
+        private System.Windows.Forms.Label label44;
     }
 }

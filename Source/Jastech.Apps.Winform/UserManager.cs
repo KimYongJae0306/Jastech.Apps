@@ -6,7 +6,7 @@ namespace Jastech.Apps.Winform
 {
     public class UserManager
     {
-        public UserHanlder UserHandler { get; private set; } = new UserHanlder();
+        public UserHandler UserHandler { get; private set; } = new UserHandler();
 
         public User CurrentUser { get; private set; } = new User();
 

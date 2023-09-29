@@ -211,8 +211,9 @@ namespace Jastech.Apps.Winform
                     _scale = 1.0;
                     _homeSequenceStep = HomeSequenceStep.MoveFirstLimit;
                     break;
+
                 case HomeSequenceStep.MoveFirstLimit:
-                    PrepareHomeSequence();
+                    PrepareHomeSequence(isFirst: true);
                     Logger.Write(LogType.Device, "Prepare to laf home sequence.");
 
                     if (status.IsNegativeLimit == false)
@@ -279,8 +280,9 @@ namespace Jastech.Apps.Winform
                     double mPos = status.MPosPulse / LafCtrl.ResolutionAxisZ;
                     double calcMPos = mPos - LafCtrl.HomePosition_mm;
                     double vel = HOMING_SEARCH_VELOCITY * _scale;
-                    Console.WriteLine("mPos : " + mPos + "   calc :  " + calcMPos + " Ve; : " + vel); 
-                    if (mPos >= 0 && mPos < LafCtrl.HomePosition_mm && vel < 0.001)
+                    Console.WriteLine("mPos : " + mPos + "   calc :  " + calcMPos + " Ve; : " + vel);
+                    //if (mPos >= 0 && mPos < LafCtrl.HomePosition_mm && vel < 0.001)
+                    if (mPos >= 0 && mPos < LafCtrl.HomePosition_mm && vel < 0.01)
                     {
                         Logger.Write(LogType.Device, "Complete zero convergence.");
                         _homeSequenceStep = HomeSequenceStep.ZeroSet;
@@ -289,13 +291,16 @@ namespace Jastech.Apps.Winform
                     {
                         Logger.Write(LogType.Device, "Retry after scailing.");
                         Console.WriteLine("Retry after scailing.");
-                        if (calcMPos > 3)
+                        //if (calcMPos > 3)
+                        if (calcMPos > 2)
                         {
-                            _scale *= 0.9;
+                            //_scale *= 0.9;
+                            _scale *= 0.7;
                         }
                         else
                         {
-                            _scale *= 0.5;
+                            //_scale *= 0.5;
+                            _scale *= 0.3;
                         }
                         _homeSequenceStep = HomeSequenceStep.MoveLimit;
                     }
@@ -306,7 +311,7 @@ namespace Jastech.Apps.Winform
                     //Thread.Sleep(1000);
 
                     LafCtrl.SetMotionStop();
-                    Thread.Sleep(500);
+                    Thread.Sleep(100);
 
                     LafCtrl.SetMotionZeroSet();
                     Thread.Sleep(100);
@@ -318,10 +323,12 @@ namespace Jastech.Apps.Winform
 
                     // 대기 위치로 이동 - 포지션 필요함
                     var unit = TeachingData.Instance().GetUnit(UnitName.Unit0.ToString());
-                    var standbyPosition = unit.GetTeachingInfo(TeachingPosType.Stage1_Scan_Start).GetTargetPosition(LafCtrl.AxisName);
+                    double standbyPosition = 0.0;
+                    if (unit != null)
+                        standbyPosition = unit.GetTeachingInfo(TeachingPosType.Stage1_Scan_Start).GetTargetPosition(LafCtrl.AxisName);
                     LafCtrl.SetMotionAbsoluteMove(standbyPosition);
                     Logger.Write(LogType.Device, "Move to home position.");
-                    Thread.Sleep(3000);
+                    Thread.Sleep(2000);
 
                     Console.WriteLine("Completed Homming : " + LafCtrl.Status.MPosPulse);
 
@@ -429,11 +436,15 @@ namespace Jastech.Apps.Winform
             return result;
         }
 
-        private void PrepareHomeSequence()
+        private void PrepareHomeSequence(bool isFirst = false)
         {
             LafCtrl?.SetMotionNegativeLimit(0);
             LafCtrl?.SetMotionPositiveLimit(0);
-            LafCtrl?.SetMotionMaxSpeed(_scale);
+
+            if (isFirst)
+                LafCtrl?.SetMotionMaxSpeed(10);
+            else
+                LafCtrl?.SetMotionMaxSpeed(_scale);
             //lafCtrl.SetMotionZeroSet();
             Thread.Sleep(50);
         }

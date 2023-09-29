@@ -20,6 +20,7 @@ using Jastech.Framework.Users;
 using Jastech.Framework.Winform;
 using Jastech.Framework.Winform.Forms;
 using Jastech.Framework.Winform.Helper;
+using Microsoft.SqlServer.Server;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -296,8 +297,13 @@ namespace ATT_UT_IPAD
                 lblTeachingPageImage.Enabled = false;
                 lblTeachingPage.Enabled = false;
                 lblDataPageImage.Enabled = false;
-                lblDataPage.Enabled = false;
                 lblLogPage.Enabled = false;
+
+                if (user.Type == AuthorityType.Maker)
+                    lblDataPage.Enabled = true;
+                else
+                    lblDataPage.Enabled = false;
+
             }
             else
             {
@@ -603,6 +609,8 @@ namespace ATT_UT_IPAD
         {
             if (PlcControlManager.Instance().MachineStatus != MachineStatus.RUN)
                 return;
+            if (UserManager.Instance().CurrentUser.Type != AuthorityType.Maker)
+                return;
 
             if(AppsStatus.Instance().IsInspRunnerFlagFromPlc == false)
             {
@@ -652,10 +660,10 @@ namespace ATT_UT_IPAD
             Process.Start(ConfigSet.Instance().Path.Result);
         }
         #endregion
-    }
 
-    public partial class MainForm : Form
-    {
+        #region All axes homing on program loaded (MainForm.Optional)
+        // TODO: 클래스 단위 모듈화 고려, 혹은 AppsCore에 넣거나..
+
         #region 필드
         private bool _isAxisHoming;
         private Axis _currentHomingAxis;
@@ -665,10 +673,10 @@ namespace ATT_UT_IPAD
         private void HomingAllAxes()
         {
             ProgressForm progressForm = new ProgressForm();
-            progressForm.Add($"Axis X Homing", AxisHoming, AxisName.X, StopAxisHoming);
             var akkonLaf = LAFManager.Instance().GetLAF("AkkonLaf");
-            progressForm.Add($"Axis Z1 (Akkon LAF) homing", akkonLaf.HomeSequenceAction, akkonLaf.StopHomeSequence);
             var alignLaf = LAFManager.Instance().GetLAF("AlignLaf");
+            progressForm.Add($"Axis X Homing", AxisHoming, AxisName.X, StopAxisHoming);
+            progressForm.Add($"Axis Z1 (Akkon LAF) homing", akkonLaf.HomeSequenceAction, akkonLaf.StopHomeSequence);
             progressForm.Add($"Axis Z2 (Align LAF) homing", alignLaf.HomeSequenceAction, alignLaf.StopHomeSequence);
             progressForm.StartAllTasks();
             progressForm.ShowDialog();
@@ -700,5 +708,7 @@ namespace ATT_UT_IPAD
             _currentHomingAxis?.StopMove();
         }
         #endregion
+
+        #endregion All axes homing on program loaded (MainForm.Optional)
     }
 }

@@ -320,6 +320,7 @@ namespace Jastech.Framework.Winform.Forms
 
                 case ".bmp":
                 case ".jpg":
+                case ".jpeg":
                 case ".png":
                     DisplayImageFile(fullPath);
                     break;
@@ -524,10 +525,10 @@ namespace Jastech.Framework.Winform.Forms
         public int Tab { get; set; }
         public string Judge { get; set; }
         public string PreHead { get; set; }
-        public double Lx { get; set; }
-        public double Ly { get; set; }
         public double Cx { get; set; }
+        public double Lx { get; set; }
         public double Rx { get; set; }
+        public double Ly { get; set; }
         public double Ry { get; set; }
     }
 

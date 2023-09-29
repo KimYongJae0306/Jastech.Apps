@@ -15,6 +15,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 using static Jastech.Framework.Device.Motions.AxisMovingParam;
@@ -454,7 +455,7 @@ namespace ATT_UT_IPAD.UI.Forms
                 //model.SetUnitList(TeachingData.Instance().UnitList);
                 model.SetTeachingList(TeachingPositionList);
 
-                string fileName = System.IO.Path.Combine(ConfigSet.Instance().Path.Model, model.Name, InspModel.FileName);
+                string fileName = Path.Combine(ConfigSet.Instance().Path.Model, model.Name, InspModel.FileName);
 
                 InspModelService?.Save(fileName, model);
 
@@ -652,7 +653,7 @@ namespace ATT_UT_IPAD.UI.Forms
 
         private void lblCurrentToTargetZ1_Click(object sender, EventArgs e)
         {
-            double oldPosition = Convert.ToDouble(lblCurrentToTargetZ1.Text);
+            double oldPosition = Convert.ToDouble(lblTargetPositionZ1.Text);
             double newPosition = Convert.ToDouble(lblCurrentPositionZ1.Text);
 
             TeachingPositionList.First(x => x.Name == TeachingPositionType.ToString()).SetTargetPosition(AxisName.Z1, newPosition);

@@ -229,7 +229,7 @@ namespace ATT_UT_IPAD
             alignLaf.HomePosition_mm = 0.02;
             alignLaf.ResolutionAxisZ = 10000.0;
             alignLaf.MaxSppedAxisZ = 20;
-            alignLaf.AccDec = 15;
+            alignLaf.AccDec = 40;
             config.Add(alignLaf);
 
             // Light1
@@ -333,7 +333,7 @@ namespace ATT_UT_IPAD
             alignLaf.HomePosition_mm = 0.02;
             alignLaf.ResolutionAxisZ = 10000.0;
             alignLaf.MaxSppedAxisZ = 20;
-            alignLaf.AccDec = 15;
+            alignLaf.AccDec = 40;
             config.Add(alignLaf);
 
             // Light1

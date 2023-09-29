@@ -35,8 +35,8 @@ namespace Jastech.Apps.Winform
 
         public void Save(AxisHandler axishandler)
         {
-            string dir = Path.Combine(ConfigSet.Instance().Path.Config, "AxisHanlder");
-            string unit0FileName = string.Format("AxisHanlder_{0}.json", axishandler.Name);
+            string dir = Path.Combine(ConfigSet.Instance().Path.Config, "AxisHandler");
+            string unit0FileName = string.Format("AxisHandler_{0}.json", axishandler.Name);
             string unit0FilePath = Path.Combine(dir, unit0FileName);
 
             if (!Directory.Exists(dir))
