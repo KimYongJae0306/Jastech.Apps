@@ -93,6 +93,7 @@ namespace ATT_UT_IPAD
             ModelManager.Instance().CurrentModelChangedEvent += MainForm_CurrentModelChangedEvent;
             PlcScenarioManager.Instance().Initialize(ATTInspModelService);
             PlcScenarioManager.Instance().InspRunnerHandler += MainForm_InspRunnerHandler;
+            //PlcScenarioManager.Instance().OriginAllEvent += MainForm_HomeCompletedHandler;
 
             PlcControlManager.Instance().WritePcCommand(PcCommand.ServoOn_1);
 
@@ -128,6 +129,11 @@ namespace ATT_UT_IPAD
         private void MainForm_InspRunnerHandler(bool isStart)
         {
             AppsStatus.Instance().IsInspRunnerFlagFromPlc = isStart;
+        }
+
+        private void MainForm_HomeCompletedHandler(bool isCompleted)
+        {
+            AppsStatus.Instance().IsHomeCompleted = isCompleted;
         }
 
         private void AddControls()
@@ -193,7 +199,8 @@ namespace ATT_UT_IPAD
                 label.ForeColor = Color.White;
 
             Label currentLabel = sender as Label;
-            currentLabel.ForeColor = Color.Blue;
+            int labelIndex = Convert.ToInt32(currentLabel.Parent.Tag);
+            PageLabelList[labelIndex].ForeColor = Color.DodgerBlue;
         }
 
         private void SetSelectPage(UserControl selectedControl)
@@ -208,6 +215,9 @@ namespace ATT_UT_IPAD
 
         private void MainForm_CurrentModelChangedEvent(InspModel inspModel)
         {
+            //if (PlcControlManager.Instance().MachineStatus == MachineStatus.RUN)
+            //    SystemManager.Instance().SetStopMode();
+
             AppsInspModel model = inspModel as AppsInspModel;
 
             AppsInspResult.Instance().Dispose();
@@ -217,6 +227,9 @@ namespace ATT_UT_IPAD
             UpdateLabel(model.Name);
             ConfigSet.Instance().Operation.LastModelName = model.Name;
             ConfigSet.Instance().Operation.Save(ConfigSet.Instance().Path.Config);
+
+            //if (PlcControlManager.Instance().MachineStatus == MachineStatus.STOP)
+            //    SystemManager.Instance().SetAutoMode();
         }
      
         private void UpdateLabel(string modelname)

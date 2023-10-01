@@ -427,9 +427,9 @@ namespace Jastech.Framework.Winform.Forms
                 TeachingUIManager.Instance().SetOrginCogImageBuffer(cogImage);
                 TeachingUIManager.Instance().SetOriginMatImageBuffer(new Mat(dlg.FileName, ImreadModes.Grayscale));
 
-                //var orgImage = TeachingUIManager.Instance().GetOriginCogImageBuffer(false);
-                //Display.SetImage(orgImage);
-                //Display.SetThumbnailImage(orgImage);
+                var orgImage = TeachingUIManager.Instance().GetOriginCogImageBuffer(false);
+                Display.SetImage(orgImage);
+                Display.SetThumbnailImage(orgImage);
 
                 int tabNo = Convert.ToInt32(_currentTabNo);
                 UpdateDisplayImage(tabNo);

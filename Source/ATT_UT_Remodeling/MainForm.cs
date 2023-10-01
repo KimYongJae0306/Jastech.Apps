@@ -88,7 +88,7 @@ namespace ATT_UT_Remodeling
             PlcScenarioManager.Instance().Initialize(ATTInspModelService);
             PlcScenarioManager.Instance().InspRunnerHandler += MainForm_InspRunnerHandler;
             PlcScenarioManager.Instance().PreAlignRunnerHandler += MainForm_PreAlignRunnerHandler;
-
+            //PlcScenarioManager.Instance().OriginAllEvent += MainForm_HomeCompletedHandler;
             PlcControlManager.Instance().WritePcCommand(PcCommand.ServoOn_1);
 
             if (ModelManager.Instance().CurrentModel != null)
@@ -119,6 +119,11 @@ namespace ATT_UT_Remodeling
         private void MainForm_InspRunnerHandler(bool isStart)
         {
             AppsStatus.Instance().IsInspRunnerFlagFromPlc = isStart;
+        }
+
+        private void MainForm_HomeCompletedHandler(bool isCompleted)
+        {
+            AppsStatus.Instance().IsHomeCompleted = isCompleted;
         }
 
         private void AddControls()

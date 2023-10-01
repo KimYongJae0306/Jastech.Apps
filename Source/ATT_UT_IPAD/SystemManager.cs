@@ -295,10 +295,17 @@ namespace ATT_UT_IPAD
                     AddSystemLogMessage("Start Auto mode.");
 
                     PlcControlManager.Instance().MachineStatus = MachineStatus.RUN;
-                    //PlcControlManager.Instance().WritePcReady(MachineStatus.RUN);
                 }
             }
         }
+
+        //public void SetAutoMode()
+        //{
+        //    _inspRunner.SeqRun();
+        //    AddSystemLogMessage("Start Auto mode.");
+
+        //    PlcControlManager.Instance().MachineStatus = MachineStatus.RUN;
+        //}
 
         public void StopRun()
         {
@@ -322,6 +329,14 @@ namespace ATT_UT_IPAD
                     PlcControlManager.Instance().MachineStatus = MachineStatus.STOP;
                 }
             }
+        }
+
+        public void SetStopMode()
+        {
+            _inspRunner.SeqStop();
+            AddSystemLogMessage("Stop Auto Mode.");
+
+            PlcControlManager.Instance().MachineStatus = MachineStatus.STOP;
         }
 
         public void SetVirtualImage(int tabNo, string fileName)

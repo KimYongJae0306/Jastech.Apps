@@ -104,7 +104,7 @@ namespace ATT_UT_IPAD.UI.Pages
             else
             {
                 lblStartText.ForeColor = Color.White;
-                lblStopText.ForeColor = Color.FromArgb(255, 50, 100);
+                lblStopText.ForeColor = Color.Red;
                 lblStart.Image = Properties.Resources.Start_White;
                 lblStop.Image = Properties.Resources.Stop_Red;
             }

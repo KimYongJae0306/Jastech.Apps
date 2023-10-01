@@ -233,7 +233,7 @@ namespace Jastech.Framework.Winform.Forms
             // 
             // cdrMonthCalendar
             // 
-            this.cdrMonthCalendar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(104)))), ((int)(((byte)(104)))), ((int)(((byte)(104)))));
+            this.cdrMonthCalendar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(26)))), ((int)(((byte)(26)))), ((int)(((byte)(26)))));
             this.cdrMonthCalendar.Font = new System.Drawing.Font("맑은 고딕", 12.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.cdrMonthCalendar.ForeColor = System.Drawing.Color.White;
             this.cdrMonthCalendar.Location = new System.Drawing.Point(0, 0);
@@ -241,9 +241,9 @@ namespace Jastech.Framework.Winform.Forms
             this.cdrMonthCalendar.MaxSelectionCount = 28;
             this.cdrMonthCalendar.Name = "cdrMonthCalendar";
             this.cdrMonthCalendar.TabIndex = 7;
-            this.cdrMonthCalendar.TitleBackColor = System.Drawing.Color.Black;
+            this.cdrMonthCalendar.TitleBackColor = System.Drawing.Color.DimGray;
             this.cdrMonthCalendar.TitleForeColor = System.Drawing.Color.White;
-            this.cdrMonthCalendar.TrailingForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
+            this.cdrMonthCalendar.TrailingForeColor = System.Drawing.Color.Silver;
             this.cdrMonthCalendar.DateChanged += new System.Windows.Forms.DateRangeEventHandler(this.cdrMonthCalendar_DateChanged);
             // 
             // btnCancel

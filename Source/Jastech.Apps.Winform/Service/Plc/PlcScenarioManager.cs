@@ -113,20 +113,32 @@ namespace Jastech.Apps.Winform.Service.Plc
 
         public void AddCommonCommand(int command)
         {
+            if (command == 1400)
+            {
+                int gg = 0;
+            }
             if (_prevCommonCommand == command)
                 return;
 
-            if (command != 0 && EnableActive == false)
+            if (command != 0)
             {
-                lock (PlcCommonCommandQueue)
-                    PlcCommonCommandQueue.Enqueue(command);
-            }
+                if (command != 0 && EnableActive == false)
+                {
+                    lock (PlcCommonCommandQueue)
+                        PlcCommonCommandQueue.Enqueue(command);
+                }
 
-            _prevCommonCommand = command;
+                _prevCommonCommand = command;
+            }
         }
 
         public void AddCommand(int command)
         {
+            if (command == 1400)
+            {
+                int gg = 0;
+            }
+
             if (_prevCommand == command)
                 return;
 
@@ -135,6 +147,7 @@ namespace Jastech.Apps.Winform.Service.Plc
                 lock (PlcCommandQueue)
                     PlcCommandQueue.Enqueue(command);
             }
+
             _prevCommand = command;
         }
 
@@ -162,31 +175,43 @@ namespace Jastech.Apps.Winform.Service.Plc
 
         private void ScenarioTask()
         {
-            while (true)
+            try
             {
-                if (CommandTaskCancellationTokenSource.IsCancellationRequested)
-                    break;
-
-                if (GetCommonCommand() is int commonCommand)
+                while (true)
                 {
-                    EnableActive = true;
-                    PlcControlManager.Instance().ClearAddress(PlcCommonMap.PLC_Command_Common);
-                    CommonCommandReceived((PlcCommonCommand)commonCommand);
-                    _prevCommonCommand = 0;
-                    EnableActive = false;
-                }
+                    if (CommandTaskCancellationTokenSource.IsCancellationRequested)
+                        break;
 
-                if (GetCommand() is int command)
-                {
-                    EnableActive = true;
-                    PlcControlManager.Instance().ClearAddress(PlcCommonMap.PLC_Command);
-                    PlcCommandReceived((PlcCommand)command);
-                    _prevCommand = 0;
-                    EnableActive = false;
-                }
+                    if (GetCommonCommand() is int commonCommand)
+                    {
+                        if (commonCommand != 0)
+                        {
+                            EnableActive = true;
+                            CommonCommandReceived((PlcCommonCommand)commonCommand);
+                            PlcControlManager.Instance().ClearAddress(PlcCommonMap.PLC_Command_Common);
+                            EnableActive = false;
+                        }
+                    }
 
-                Thread.Sleep(100);
+                    if (GetCommand() is int command)
+                    {
+                        if (command == 0)
+                            continue;
+
+                        EnableActive = true;
+                        PlcCommandReceived((PlcCommand)command);
+                        PlcControlManager.Instance().ClearAddress(PlcCommonMap.PLC_Command);
+                        EnableActive = false;
+                    }
+
+                    Thread.Sleep(100);
+                }
             }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+            }
+            
         }
 
         public void CommonCommandReceived(PlcCommonCommand command)
@@ -446,25 +471,36 @@ namespace Jastech.Apps.Winform.Service.Plc
                     break;
 
                 case PlcCommand.Move_StandbyPos:
-                    MoveTo(TeachingPosType.Standby);
-                    PlcControlManager.Instance().WritePcStatus(PlcCommand.Move_StandbyPos);
-                    Logger.Write(LogType.Device, "Send to PLC Standby");
+                    int tt = 0;
+                    if (MoveTo(TeachingPosType.Standby))
+                    {
+                        PlcControlManager.Instance().WritePcStatus(PlcCommand.Move_StandbyPos);
+                        Logger.Write(LogType.Device, "Send to PLC Standby");
+                    }
                     break;
 
                 case PlcCommand.Move_Left_AlignPos:
-                    MoveTo(TeachingPosType.Stage1_PreAlign_Left);
-                    //PlcControlManager.Instance().WritePcStatus(PlcCommand.Move_StandbyPos);
+                    if (MoveTo(TeachingPosType.Stage1_PreAlign_Left))
+                    {
+                        PlcControlManager.Instance().WritePcStatus(PlcCommand.Move_StandbyPos);
+                        Logger.Write(LogType.Device, "Send to PLC PreAlign Left Pos");
+                    }
                     break;
 
                 case PlcCommand.Move_Right_AlignPos:
-                    MoveTo(TeachingPosType.Stage1_PreAlign_Right);
-                    //PlcControlManager.Instance().WritePcStatus(PlcCommand.Move_StandbyPos);
+                    if (MoveTo(TeachingPosType.Stage1_PreAlign_Right))
+                    {
+                        PlcControlManager.Instance().WritePcStatus(PlcCommand.Move_StandbyPos);
+                        Logger.Write(LogType.Device, "Send to PLC PreAlign Right Pos.");
+                    }
                     break;
 
                 case PlcCommand.Move_ScanStartPos:
-                    MoveTo(TeachingPosType.Stage1_Scan_Start);
-                    PlcControlManager.Instance().WritePcStatus(PlcCommand.Move_ScanStartPos);
-                    Logger.Write(LogType.Device, "Send to PLC ScanStart");
+                    if (MoveTo(TeachingPosType.Stage1_Scan_Start))
+                    {
+                        PlcControlManager.Instance().WritePcStatus(PlcCommand.Move_ScanStartPos);
+                        Logger.Write(LogType.Device, "Send to PLC ScanStart");
+                    }
                     break;
 
                 default:
@@ -611,11 +647,11 @@ namespace Jastech.Apps.Winform.Service.Plc
             allAxisHandler.StartHomeMove();
 
             // LAF는 Scaling Sequence가 있어 별도 homing
-            var lafCtrlHandler = DeviceManager.Instance().LAFCtrlHandler;
+            //var lafCtrlHandler = DeviceManager.Instance().LAFCtrlHandler;
 
-            for(int servoOnAddrShift =  0; servoOnAddrShift < lafCtrlHandler.Count; servoOnAddrShift += 10)
-                PlcControlManager.Instance().WritePcCommand(PcCommand.ServoOn_1 + servoOnAddrShift);
-            LAFManager.Instance().LAFList.ForEach(laf => laf.HomeSequenceAction());
+            //for(int servoOnAddrShift =  0; servoOnAddrShift < lafCtrlHandler.Count; servoOnAddrShift += 10)
+            //    PlcControlManager.Instance().WritePcCommand(PcCommand.ServoOn_1 + servoOnAddrShift);
+            //LAFManager.Instance().LAFList.ForEach(laf => laf.HomeSequenceAction());
 
             PlcControlManager.Instance().WritePcStatus(PlcCommand.Origin_All);
             Logger.Write(LogType.Device, "Send to PLC Origin All");

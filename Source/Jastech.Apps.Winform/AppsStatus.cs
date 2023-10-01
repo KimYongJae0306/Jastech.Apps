@@ -25,6 +25,8 @@ namespace Jastech.Apps.Winform
         public bool IsManualJudgeCompleted { get; set; } = false;
 
         public bool IsManual_OK { get; set; } = false;
+
+        public bool IsHomeCompleted { get; set; } = false;
         #endregion
 
         #region 메서드

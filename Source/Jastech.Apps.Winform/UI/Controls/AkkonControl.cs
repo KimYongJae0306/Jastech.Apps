@@ -1938,6 +1938,9 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         private void lblAdd_Click(object sender, EventArgs e)
         {
+            if (CurrentTab.AkkonParam.GroupList.Count == 0)
+                return;
+            
             int groupIndex = cbxGroupNumber.SelectedIndex;
             var group = CurrentTab.AkkonParam.GroupList[groupIndex];
 

@@ -43,21 +43,20 @@
             this.pnlPage = new System.Windows.Forms.Panel();
             this.tlpFunctionButtons = new System.Windows.Forms.TableLayoutPanel();
             this.lblCurrentTime = new System.Windows.Forms.Label();
-            this.panel2 = new System.Windows.Forms.Panel();
             this.panel4 = new System.Windows.Forms.Panel();
-            this.tableLayoutPanel4 = new System.Windows.Forms.TableLayoutPanel();
+            this.tlpSelectLogPage = new System.Windows.Forms.TableLayoutPanel();
             this.lblLogPageImage = new System.Windows.Forms.Label();
             this.lblLogPage = new System.Windows.Forms.Label();
             this.panel3 = new System.Windows.Forms.Panel();
-            this.tableLayoutPanel9 = new System.Windows.Forms.TableLayoutPanel();
+            this.tlpSelectDataPage = new System.Windows.Forms.TableLayoutPanel();
             this.lblDataPageImage = new System.Windows.Forms.Label();
             this.lblDataPage = new System.Windows.Forms.Label();
             this.panel8 = new System.Windows.Forms.Panel();
-            this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
+            this.tlpSelectMainPage = new System.Windows.Forms.TableLayoutPanel();
             this.lblInspectionPageImage = new System.Windows.Forms.Label();
             this.lblMainPage = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
+            this.tlpSelectTeachPage = new System.Windows.Forms.TableLayoutPanel();
             this.lblTeachingPageImage = new System.Windows.Forms.Label();
             this.lblTeachingPage = new System.Windows.Forms.Label();
             this.pnlMachineStatus = new System.Windows.Forms.Panel();
@@ -74,13 +73,13 @@
             this.tableLayoutPanel2.SuspendLayout();
             this.tlpFunctionButtons.SuspendLayout();
             this.panel4.SuspendLayout();
-            this.tableLayoutPanel4.SuspendLayout();
+            this.tlpSelectLogPage.SuspendLayout();
             this.panel3.SuspendLayout();
-            this.tableLayoutPanel9.SuspendLayout();
+            this.tlpSelectDataPage.SuspendLayout();
             this.panel8.SuspendLayout();
-            this.tableLayoutPanel1.SuspendLayout();
+            this.tlpSelectMainPage.SuspendLayout();
             this.panel1.SuspendLayout();
-            this.tableLayoutPanel3.SuspendLayout();
+            this.tlpSelectTeachPage.SuspendLayout();
             this.pnlMachineStatus.SuspendLayout();
             this.tlpMachineStatus.SuspendLayout();
             this.tableLayoutPanel5.SuspendLayout();
@@ -258,7 +257,6 @@
             this.tlpFunctionButtons.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 200F));
             this.tlpFunctionButtons.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tlpFunctionButtons.Controls.Add(this.lblCurrentTime, 8, 0);
-            this.tlpFunctionButtons.Controls.Add(this.panel2, 4, 0);
             this.tlpFunctionButtons.Controls.Add(this.panel4, 3, 0);
             this.tlpFunctionButtons.Controls.Add(this.panel3, 2, 0);
             this.tlpFunctionButtons.Controls.Add(this.panel8, 0, 0);
@@ -286,37 +284,30 @@
             this.lblCurrentTime.Text = "DateTime";
             this.lblCurrentTime.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // panel2
-            // 
-            this.panel2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel2.Location = new System.Drawing.Point(803, 3);
-            this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(194, 44);
-            this.panel2.TabIndex = 19;
-            // 
             // panel4
             // 
-            this.panel4.Controls.Add(this.tableLayoutPanel4);
+            this.panel4.Controls.Add(this.tlpSelectLogPage);
             this.panel4.Location = new System.Drawing.Point(603, 3);
             this.panel4.Name = "panel4";
             this.panel4.Size = new System.Drawing.Size(194, 44);
             this.panel4.TabIndex = 20;
             // 
-            // tableLayoutPanel4
+            // tlpSelectLogPage
             // 
-            this.tableLayoutPanel4.ColumnCount = 2;
-            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 50F));
-            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel4.Controls.Add(this.lblLogPageImage, 0, 0);
-            this.tableLayoutPanel4.Controls.Add(this.lblLogPage, 1, 0);
-            this.tableLayoutPanel4.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel4.Location = new System.Drawing.Point(0, 0);
-            this.tableLayoutPanel4.Margin = new System.Windows.Forms.Padding(0);
-            this.tableLayoutPanel4.Name = "tableLayoutPanel4";
-            this.tableLayoutPanel4.RowCount = 1;
-            this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel4.Size = new System.Drawing.Size(194, 44);
-            this.tableLayoutPanel4.TabIndex = 0;
+            this.tlpSelectLogPage.ColumnCount = 2;
+            this.tlpSelectLogPage.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 50F));
+            this.tlpSelectLogPage.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tlpSelectLogPage.Controls.Add(this.lblLogPageImage, 0, 0);
+            this.tlpSelectLogPage.Controls.Add(this.lblLogPage, 1, 0);
+            this.tlpSelectLogPage.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tlpSelectLogPage.Location = new System.Drawing.Point(0, 0);
+            this.tlpSelectLogPage.Margin = new System.Windows.Forms.Padding(0);
+            this.tlpSelectLogPage.Name = "tlpSelectLogPage";
+            this.tlpSelectLogPage.RowCount = 1;
+            this.tlpSelectLogPage.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tlpSelectLogPage.Size = new System.Drawing.Size(194, 44);
+            this.tlpSelectLogPage.TabIndex = 0;
+            this.tlpSelectLogPage.Tag = "3";
             // 
             // lblLogPageImage
             // 
@@ -343,28 +334,29 @@
             // 
             // panel3
             // 
-            this.panel3.Controls.Add(this.tableLayoutPanel9);
+            this.panel3.Controls.Add(this.tlpSelectDataPage);
             this.panel3.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel3.Location = new System.Drawing.Point(403, 3);
             this.panel3.Name = "panel3";
             this.panel3.Size = new System.Drawing.Size(194, 44);
             this.panel3.TabIndex = 20;
             // 
-            // tableLayoutPanel9
+            // tlpSelectDataPage
             // 
-            this.tableLayoutPanel9.ColumnCount = 2;
-            this.tableLayoutPanel9.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 50F));
-            this.tableLayoutPanel9.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel9.Controls.Add(this.lblDataPageImage, 0, 0);
-            this.tableLayoutPanel9.Controls.Add(this.lblDataPage, 1, 0);
-            this.tableLayoutPanel9.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel9.Location = new System.Drawing.Point(0, 0);
-            this.tableLayoutPanel9.Margin = new System.Windows.Forms.Padding(0);
-            this.tableLayoutPanel9.Name = "tableLayoutPanel9";
-            this.tableLayoutPanel9.RowCount = 1;
-            this.tableLayoutPanel9.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel9.Size = new System.Drawing.Size(194, 44);
-            this.tableLayoutPanel9.TabIndex = 0;
+            this.tlpSelectDataPage.ColumnCount = 2;
+            this.tlpSelectDataPage.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 50F));
+            this.tlpSelectDataPage.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tlpSelectDataPage.Controls.Add(this.lblDataPageImage, 0, 0);
+            this.tlpSelectDataPage.Controls.Add(this.lblDataPage, 1, 0);
+            this.tlpSelectDataPage.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tlpSelectDataPage.Location = new System.Drawing.Point(0, 0);
+            this.tlpSelectDataPage.Margin = new System.Windows.Forms.Padding(0);
+            this.tlpSelectDataPage.Name = "tlpSelectDataPage";
+            this.tlpSelectDataPage.RowCount = 1;
+            this.tlpSelectDataPage.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tlpSelectDataPage.Size = new System.Drawing.Size(194, 44);
+            this.tlpSelectDataPage.TabIndex = 0;
+            this.tlpSelectDataPage.Tag = "2";
             // 
             // lblDataPageImage
             // 
@@ -391,28 +383,29 @@
             // 
             // panel8
             // 
-            this.panel8.Controls.Add(this.tableLayoutPanel1);
+            this.panel8.Controls.Add(this.tlpSelectMainPage);
             this.panel8.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel8.Location = new System.Drawing.Point(3, 3);
             this.panel8.Name = "panel8";
             this.panel8.Size = new System.Drawing.Size(194, 44);
             this.panel8.TabIndex = 6;
             // 
-            // tableLayoutPanel1
+            // tlpSelectMainPage
             // 
-            this.tableLayoutPanel1.ColumnCount = 2;
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 50F));
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel1.Controls.Add(this.lblInspectionPageImage, 0, 0);
-            this.tableLayoutPanel1.Controls.Add(this.lblMainPage, 1, 0);
-            this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
-            this.tableLayoutPanel1.Margin = new System.Windows.Forms.Padding(0);
-            this.tableLayoutPanel1.Name = "tableLayoutPanel1";
-            this.tableLayoutPanel1.RowCount = 1;
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(194, 44);
-            this.tableLayoutPanel1.TabIndex = 0;
+            this.tlpSelectMainPage.ColumnCount = 2;
+            this.tlpSelectMainPage.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 50F));
+            this.tlpSelectMainPage.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tlpSelectMainPage.Controls.Add(this.lblInspectionPageImage, 0, 0);
+            this.tlpSelectMainPage.Controls.Add(this.lblMainPage, 1, 0);
+            this.tlpSelectMainPage.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tlpSelectMainPage.Location = new System.Drawing.Point(0, 0);
+            this.tlpSelectMainPage.Margin = new System.Windows.Forms.Padding(0);
+            this.tlpSelectMainPage.Name = "tlpSelectMainPage";
+            this.tlpSelectMainPage.RowCount = 1;
+            this.tlpSelectMainPage.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tlpSelectMainPage.Size = new System.Drawing.Size(194, 44);
+            this.tlpSelectMainPage.TabIndex = 0;
+            this.tlpSelectMainPage.Tag = "0";
             // 
             // lblInspectionPageImage
             // 
@@ -439,28 +432,29 @@
             // 
             // panel1
             // 
-            this.panel1.Controls.Add(this.tableLayoutPanel3);
+            this.panel1.Controls.Add(this.tlpSelectTeachPage);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel1.Location = new System.Drawing.Point(203, 3);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(194, 44);
             this.panel1.TabIndex = 18;
             // 
-            // tableLayoutPanel3
+            // tlpSelectTeachPage
             // 
-            this.tableLayoutPanel3.ColumnCount = 2;
-            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 50F));
-            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel3.Controls.Add(this.lblTeachingPageImage, 0, 0);
-            this.tableLayoutPanel3.Controls.Add(this.lblTeachingPage, 1, 0);
-            this.tableLayoutPanel3.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel3.Location = new System.Drawing.Point(0, 0);
-            this.tableLayoutPanel3.Margin = new System.Windows.Forms.Padding(0);
-            this.tableLayoutPanel3.Name = "tableLayoutPanel3";
-            this.tableLayoutPanel3.RowCount = 1;
-            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel3.Size = new System.Drawing.Size(194, 44);
-            this.tableLayoutPanel3.TabIndex = 0;
+            this.tlpSelectTeachPage.ColumnCount = 2;
+            this.tlpSelectTeachPage.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 50F));
+            this.tlpSelectTeachPage.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tlpSelectTeachPage.Controls.Add(this.lblTeachingPageImage, 0, 0);
+            this.tlpSelectTeachPage.Controls.Add(this.lblTeachingPage, 1, 0);
+            this.tlpSelectTeachPage.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tlpSelectTeachPage.Location = new System.Drawing.Point(0, 0);
+            this.tlpSelectTeachPage.Margin = new System.Windows.Forms.Padding(0);
+            this.tlpSelectTeachPage.Name = "tlpSelectTeachPage";
+            this.tlpSelectTeachPage.RowCount = 1;
+            this.tlpSelectTeachPage.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tlpSelectTeachPage.Size = new System.Drawing.Size(194, 44);
+            this.tlpSelectTeachPage.TabIndex = 0;
+            this.tlpSelectTeachPage.Tag = "1";
             // 
             // lblTeachingPageImage
             // 
@@ -629,13 +623,13 @@
             this.tableLayoutPanel2.ResumeLayout(false);
             this.tlpFunctionButtons.ResumeLayout(false);
             this.panel4.ResumeLayout(false);
-            this.tableLayoutPanel4.ResumeLayout(false);
+            this.tlpSelectLogPage.ResumeLayout(false);
             this.panel3.ResumeLayout(false);
-            this.tableLayoutPanel9.ResumeLayout(false);
+            this.tlpSelectDataPage.ResumeLayout(false);
             this.panel8.ResumeLayout(false);
-            this.tableLayoutPanel1.ResumeLayout(false);
+            this.tlpSelectMainPage.ResumeLayout(false);
             this.panel1.ResumeLayout(false);
-            this.tableLayoutPanel3.ResumeLayout(false);
+            this.tlpSelectTeachPage.ResumeLayout(false);
             this.pnlMachineStatus.ResumeLayout(false);
             this.tlpMachineStatus.ResumeLayout(false);
             this.tableLayoutPanel5.ResumeLayout(false);
@@ -651,21 +645,20 @@
         private System.Windows.Forms.Panel pnlPage;
         private System.Windows.Forms.TableLayoutPanel tlpFunctionButtons;
         private System.Windows.Forms.Label lblCurrentTime;
-        private System.Windows.Forms.Panel panel2;
         private System.Windows.Forms.Panel panel4;
-        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel4;
+        private System.Windows.Forms.TableLayoutPanel tlpSelectLogPage;
         private System.Windows.Forms.Label lblLogPageImage;
         private System.Windows.Forms.Label lblLogPage;
         private System.Windows.Forms.Panel panel3;
-        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel9;
+        private System.Windows.Forms.TableLayoutPanel tlpSelectDataPage;
         private System.Windows.Forms.Label lblDataPageImage;
         private System.Windows.Forms.Label lblDataPage;
         private System.Windows.Forms.Panel panel8;
-        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
+        private System.Windows.Forms.TableLayoutPanel tlpSelectMainPage;
         private System.Windows.Forms.Label lblInspectionPageImage;
         private System.Windows.Forms.Label lblMainPage;
         private System.Windows.Forms.Panel panel1;
-        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel3;
+        private System.Windows.Forms.TableLayoutPanel tlpSelectTeachPage;
         private System.Windows.Forms.Label lblTeachingPageImage;
         private System.Windows.Forms.Label lblTeachingPage;
         private System.Windows.Forms.Panel pnlMachineStatus;
