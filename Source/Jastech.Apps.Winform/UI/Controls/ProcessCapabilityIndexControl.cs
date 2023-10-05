@@ -1,7 +1,6 @@
 ﻿using Jastech.Apps.Structure;
 using Jastech.Apps.Structure.Data;
 using Jastech.Apps.Winform.Settings;
-using Jastech.Framework.Structure;
 using Jastech.Framework.Util.Helper;
 using Jastech.Framework.Winform.Forms;
 using Jastech.Framework.Winform.Helper;
@@ -11,7 +10,6 @@ using System.Data;
 using System.Drawing;
 using System.IO;
 using System.Linq;
-using System.Security.Policy;
 using System.Windows.Forms;
 
 namespace Jastech.Apps.Winform.UI.Controls
@@ -202,10 +200,25 @@ namespace Jastech.Apps.Winform.UI.Controls
             _alignResultType = alignResultType;
 
             _alignTypeLabelList[(int)alignResultType].BackColor = _selectedColor;
+            UpdateAlignResults(_alignResultType);
             UpdateChart(_tabType, _alignResultType);
         }
 
         private void UpdateChart(TabType tabType, AlignResultType alignResultType) => ChartControl.UpdateAlignChart(_alignTrendResults, tabType, alignResultType);
+
+        private void UpdateAlignResults(AlignResultType alignResultType)
+        {
+            foreach (var column in dgvAlignData.Columns.Cast<DataGridViewColumn>())
+                column.Visible = true;
+
+            if (alignResultType != AlignResultType.All)
+            {
+                var alignTypes = Enum.GetNames(typeof(AlignResultType));
+                string[] filters = alignTypes.Where(type => type != $"{AlignResultType.All}" && type != $"{alignResultType}").ToArray();
+                foreach (var column in dgvAlignData.Columns.Cast<DataGridViewColumn>().Where(column => filters.Any(filter => filter == column.HeaderText)))
+                    column.Visible = false;
+            }
+        }
 
         public void UpdateAlignDataGridView()
         {
@@ -213,6 +226,8 @@ namespace Jastech.Apps.Winform.UI.Controls
             for (int rowIndex = 0; rowIndex < _alignTrendResults.Count; rowIndex++)
                 dgvAlignData.Rows.Add(_alignTrendResults[rowIndex].GetAlignStringDatas().ToArray());
         }
+
+        private void dgvAlignData_SelectionChanged(object sender, EventArgs e) => UpdatePcInfoDataGridView(_tabType);
 
         private void UpdatePcInfoDataGridView(TabType tabType)
         {
@@ -323,6 +338,5 @@ namespace Jastech.Apps.Winform.UI.Controls
         }
         #endregion
 
-        private void dgvAlignData_SelectionChanged(object sender, EventArgs e) => UpdatePcInfoDataGridView(_tabType);
     }
 }
