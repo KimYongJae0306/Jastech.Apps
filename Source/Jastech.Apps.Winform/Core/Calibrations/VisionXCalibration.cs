@@ -268,7 +268,7 @@ namespace Jastech.Apps.Winform.Core.Calibrations
                     break;
 
                 case CalSeqStep.CAL_SEQ_XY_MOVE:
-                    ReqestMove(_absoluteAmountX[_matrixStepPoint], _absoluteAmountY[_matrixStepPoint], 0);
+                    RequestMove(_absoluteAmountX[_matrixStepPoint], _absoluteAmountY[_matrixStepPoint], 0);
                     logMessage = string.Format("Request move command. - position step : {0}", _matrixStepPoint);
                     Logger.Write(LogType.Device, logMessage);
 
@@ -334,14 +334,14 @@ namespace Jastech.Apps.Winform.Core.Calibrations
                     break;
 
                 case CalSeqStep.CAL_SEQ_XY_OFFSET:
-                    var resultList = GetMatrixPointResutlList();
+                    var resultList = GetMatrixPointResultList();
 
                     // offset = 카메라 중심 - 9캘 중심
                     Logger.Write(LogType.Device, "Calculate offset.");
                     double offsetX = (camera.ImageWidth / 2) - resultList[4].PixelX;
                     double offsetY = (camera.ImageHeight / 2) - resultList[4].PixelY;
 
-                    foreach (var item in GetMatrixPointResutlList())
+                    foreach (var item in GetMatrixPointResultList())
                     {
                         item.PixelX += offsetX;
                         item.PixelY += offsetY;
@@ -352,7 +352,7 @@ namespace Jastech.Apps.Winform.Core.Calibrations
 
                 case CalSeqStep.CAL_SEQ_XY_CALIBRATION:
                     Logger.Write(LogType.Device, "Calculate calibration.");
-                    if (CalculateCalibrationMatrix(GetMatrixPointResutlList(), ref _calibrationResult) == false)
+                    if (CalculateCalibrationMatrix(GetMatrixPointResultList(), ref _calibrationResult) == false)
                     {
                         Logger.Write(LogType.Error, "Failed to calculate calibration.");
                         CalSeqStep = CalSeqStep.CAL_SEQ_ERROR;
@@ -363,7 +363,7 @@ namespace Jastech.Apps.Winform.Core.Calibrations
                     break;
 
                 case CalSeqStep.CAL_SEQ_XY_MOVE_REF:
-                    ReqestMove(_absoluteAmountX[0], _absoluteAmountY[0], 0);
+                    RequestMove(_absoluteAmountX[0], _absoluteAmountY[0], 0);
                     Logger.Write(LogType.Device, "Request move command. - init position");
                     sw.Restart();
 
@@ -452,7 +452,7 @@ namespace Jastech.Apps.Winform.Core.Calibrations
                 case CalSeqStep.CAL_SEQ_T_MOVE:
                     directionT = -1;
 
-                    ReqestMove(0, 0, (MovePitchT + BackLashPitchT) * directionT);
+                    RequestMove(0, 0, (MovePitchT + BackLashPitchT) * directionT);
                     Logger.Write(LogType.Device, "Request move command.");
 
                     sw.Restart();
@@ -487,7 +487,7 @@ namespace Jastech.Apps.Winform.Core.Calibrations
 
                 case CalSeqStep.CAL_SEQ_T_COMPENSATION_BACKLASH:
                     directionT = 1;
-                    ReqestMove(0, 0, BackLashPitchT * directionT);
+                    RequestMove(0, 0, BackLashPitchT * directionT);
                     Logger.Write(LogType.Device, "Request compensation move command.");
                     sw.Restart();
 
@@ -541,7 +541,7 @@ namespace Jastech.Apps.Winform.Core.Calibrations
                 case CalSeqStep.CAL_SEQ_T_MOVE_X2:
                     directionT = 1;
 
-                    ReqestMove(0, 0, (MovePitchT * 2) * directionT);        // 설정값의 2배 돌리기
+                    RequestMove(0, 0, (MovePitchT * 2) * directionT);        // 설정값의 2배 돌리기
                     Logger.Write(LogType.Device, "Request x2 move command.");
                     sw.Restart();
 
@@ -604,7 +604,7 @@ namespace Jastech.Apps.Winform.Core.Calibrations
                 case CalSeqStep.CAL_SEQ_T_MOVE_OPPOSITE:
                     directionT = -1;
 
-                    ReqestMove(0, 0, (MovePitchT * directionT));
+                    RequestMove(0, 0, (MovePitchT * directionT));
                     Logger.Write(LogType.Device, "Request opposite direction move command.");
                     sw.Restart();
 
@@ -688,7 +688,7 @@ namespace Jastech.Apps.Winform.Core.Calibrations
                 case CalSeqStep.CAL_SEQ_ERROR_MOVE_REF:
                     directionT = 1;
 
-                    ReqestMove(GetInitPositionX(), GetInitPositionY(), GetInitPositionT());
+                    RequestMove(GetInitPositionX(), GetInitPositionY(), GetInitPositionT());
                     Logger.Write(LogType.Error, "Request initial position move command.");
                     sw.Restart();
 
@@ -734,7 +734,7 @@ namespace Jastech.Apps.Winform.Core.Calibrations
 
                     Logger.Write(LogType.Device, "Set calibration data.");
 
-                    var matrixPointResultList = GetMatrixPointResutlList();
+                    var matrixPointResultList = GetMatrixPointResultList();
 
                     // Set calibration log
                     CalibrationData.Instance().SetCalibrationLogData(matrixPointResultList);
@@ -938,7 +938,7 @@ namespace Jastech.Apps.Winform.Core.Calibrations
             }
         }
 
-        private void ReqestMove(double amountX, double amountY, double amountT)
+        private void RequestMove(double amountX, double amountY, double amountT)
         {
             SetCurrentPosition();
 
@@ -1245,7 +1245,7 @@ namespace Jastech.Apps.Winform.Core.Calibrations
             _matrixPointResultList.Add(matrixPointResult);
         }
 
-        private List<MatrixPointResult> GetMatrixPointResutlList()
+        private List<MatrixPointResult> GetMatrixPointResultList()
         {
             return _matrixPointResultList;
         }
