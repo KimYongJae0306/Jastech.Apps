@@ -96,7 +96,7 @@ namespace Jastech.Apps.Winform.UI.Controls
             this.tlpProcessCapabilityIndicies.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tlpProcessCapabilityIndicies.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 45F));
             this.tlpProcessCapabilityIndicies.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tlpProcessCapabilityIndicies.Size = new System.Drawing.Size(1072, 554);
+            this.tlpProcessCapabilityIndicies.Size = new System.Drawing.Size(1072, 900);
             this.tlpProcessCapabilityIndicies.TabIndex = 0;
             // 
             // pnlChart
@@ -105,7 +105,7 @@ namespace Jastech.Apps.Winform.UI.Controls
             this.pnlChart.Location = new System.Drawing.Point(536, 0);
             this.pnlChart.Margin = new System.Windows.Forms.Padding(0);
             this.pnlChart.Name = "pnlChart";
-            this.pnlChart.Size = new System.Drawing.Size(536, 254);
+            this.pnlChart.Size = new System.Drawing.Size(536, 427);
             this.pnlChart.TabIndex = 2;
             // 
             // panel1
@@ -116,7 +116,7 @@ namespace Jastech.Apps.Winform.UI.Controls
             this.panel1.Location = new System.Drawing.Point(0, 0);
             this.panel1.Margin = new System.Windows.Forms.Padding(0);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(536, 254);
+            this.panel1.Size = new System.Drawing.Size(536, 427);
             this.panel1.TabIndex = 1;
             // 
             // tlpTabSelection
@@ -260,32 +260,32 @@ namespace Jastech.Apps.Winform.UI.Controls
             // 
             // tlpSpecLimits
             // 
-            this.tlpSpecLimits.ColumnCount = 6;
-            this.tlpSpecLimits.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 16.66667F));
-            this.tlpSpecLimits.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 16.66667F));
-            this.tlpSpecLimits.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 16.66667F));
-            this.tlpSpecLimits.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 16.66667F));
-            this.tlpSpecLimits.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 16.66667F));
-            this.tlpSpecLimits.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 16.66667F));
+            this.tlpSpecLimits.ColumnCount = 2;
+            this.tlpSpecLimits.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 70F));
+            this.tlpSpecLimits.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 30F));
             this.tlpSpecLimits.Controls.Add(this.lblCapaUSL, 0, 0);
-            this.tlpSpecLimits.Controls.Add(this.lblCapaLSL, 1, 0);
-            this.tlpSpecLimits.Controls.Add(this.lblCapabilityUSL, 0, 1);
+            this.tlpSpecLimits.Controls.Add(this.lblCapabilityUSL, 1, 0);
             this.tlpSpecLimits.Controls.Add(this.lblCapabilityLSL, 1, 1);
-            this.tlpSpecLimits.Controls.Add(this.lblPerfUSL_Center, 2, 0);
-            this.tlpSpecLimits.Controls.Add(this.lblPerfLSL_Center, 3, 0);
-            this.tlpSpecLimits.Controls.Add(this.lblPerfUSL_Side, 4, 0);
-            this.tlpSpecLimits.Controls.Add(this.lblPerfLSL_Side, 5, 0);
-            this.tlpSpecLimits.Controls.Add(this.lblPerformanceLSL_Side, 5, 1);
-            this.tlpSpecLimits.Controls.Add(this.lblPerformanceUSL_Side, 4, 1);
-            this.tlpSpecLimits.Controls.Add(this.lblPerformanceLSL_Center, 3, 1);
-            this.tlpSpecLimits.Controls.Add(this.lblPerformanceUSL_Center, 2, 1);
+            this.tlpSpecLimits.Controls.Add(this.lblCapaLSL, 0, 1);
+            this.tlpSpecLimits.Controls.Add(this.lblPerfUSL_Center, 0, 2);
+            this.tlpSpecLimits.Controls.Add(this.lblPerformanceUSL_Center, 1, 2);
+            this.tlpSpecLimits.Controls.Add(this.lblPerfLSL_Center, 0, 3);
+            this.tlpSpecLimits.Controls.Add(this.lblPerformanceLSL_Center, 1, 3);
+            this.tlpSpecLimits.Controls.Add(this.lblPerfUSL_Side, 0, 4);
+            this.tlpSpecLimits.Controls.Add(this.lblPerformanceUSL_Side, 1, 4);
+            this.tlpSpecLimits.Controls.Add(this.lblPerfLSL_Side, 0, 5);
+            this.tlpSpecLimits.Controls.Add(this.lblPerformanceLSL_Side, 1, 5);
             this.tlpSpecLimits.Location = new System.Drawing.Point(18, 156);
             this.tlpSpecLimits.Margin = new System.Windows.Forms.Padding(0);
             this.tlpSpecLimits.Name = "tlpSpecLimits";
-            this.tlpSpecLimits.RowCount = 2;
-            this.tlpSpecLimits.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tlpSpecLimits.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tlpSpecLimits.Size = new System.Drawing.Size(495, 80);
+            this.tlpSpecLimits.RowCount = 6;
+            this.tlpSpecLimits.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 16.66667F));
+            this.tlpSpecLimits.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 16.66667F));
+            this.tlpSpecLimits.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 16.66667F));
+            this.tlpSpecLimits.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 16.66667F));
+            this.tlpSpecLimits.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 16.66667F));
+            this.tlpSpecLimits.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 16.66667F));
+            this.tlpSpecLimits.Size = new System.Drawing.Size(495, 159);
             this.tlpSpecLimits.TabIndex = 5;
             // 
             // lblCapaUSL
@@ -296,9 +296,9 @@ namespace Jastech.Apps.Winform.UI.Controls
             this.lblCapaUSL.Location = new System.Drawing.Point(0, 0);
             this.lblCapaUSL.Margin = new System.Windows.Forms.Padding(0);
             this.lblCapaUSL.Name = "lblCapaUSL";
-            this.lblCapaUSL.Size = new System.Drawing.Size(82, 40);
+            this.lblCapaUSL.Size = new System.Drawing.Size(346, 26);
             this.lblCapaUSL.TabIndex = 2;
-            this.lblCapaUSL.Text = "C.USL";
+            this.lblCapaUSL.Text = "Capability Upper Spec Limit";
             this.lblCapaUSL.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // lblCapaLSL
@@ -306,22 +306,22 @@ namespace Jastech.Apps.Winform.UI.Controls
             this.lblCapaLSL.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(104)))), ((int)(((byte)(104)))), ((int)(((byte)(104)))));
             this.lblCapaLSL.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.lblCapaLSL.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblCapaLSL.Location = new System.Drawing.Point(82, 0);
+            this.lblCapaLSL.Location = new System.Drawing.Point(0, 26);
             this.lblCapaLSL.Margin = new System.Windows.Forms.Padding(0);
             this.lblCapaLSL.Name = "lblCapaLSL";
-            this.lblCapaLSL.Size = new System.Drawing.Size(82, 40);
+            this.lblCapaLSL.Size = new System.Drawing.Size(346, 26);
             this.lblCapaLSL.TabIndex = 2;
-            this.lblCapaLSL.Text = "C.LSL";
+            this.lblCapaLSL.Text = "Capability Lower Spec Limit";
             this.lblCapaLSL.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // lblCapabilityUSL
             // 
             this.lblCapabilityUSL.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.lblCapabilityUSL.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblCapabilityUSL.Location = new System.Drawing.Point(0, 40);
+            this.lblCapabilityUSL.Location = new System.Drawing.Point(346, 0);
             this.lblCapabilityUSL.Margin = new System.Windows.Forms.Padding(0);
             this.lblCapabilityUSL.Name = "lblCapabilityUSL";
-            this.lblCapabilityUSL.Size = new System.Drawing.Size(82, 40);
+            this.lblCapabilityUSL.Size = new System.Drawing.Size(149, 26);
             this.lblCapabilityUSL.TabIndex = 2;
             this.lblCapabilityUSL.Text = "4";
             this.lblCapabilityUSL.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -331,10 +331,10 @@ namespace Jastech.Apps.Winform.UI.Controls
             // 
             this.lblCapabilityLSL.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.lblCapabilityLSL.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblCapabilityLSL.Location = new System.Drawing.Point(82, 40);
+            this.lblCapabilityLSL.Location = new System.Drawing.Point(346, 26);
             this.lblCapabilityLSL.Margin = new System.Windows.Forms.Padding(0);
             this.lblCapabilityLSL.Name = "lblCapabilityLSL";
-            this.lblCapabilityLSL.Size = new System.Drawing.Size(82, 40);
+            this.lblCapabilityLSL.Size = new System.Drawing.Size(149, 26);
             this.lblCapabilityLSL.TabIndex = 2;
             this.lblCapabilityLSL.Text = "-4";
             this.lblCapabilityLSL.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -345,12 +345,12 @@ namespace Jastech.Apps.Winform.UI.Controls
             this.lblPerfUSL_Center.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(104)))), ((int)(((byte)(104)))), ((int)(((byte)(104)))));
             this.lblPerfUSL_Center.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.lblPerfUSL_Center.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblPerfUSL_Center.Location = new System.Drawing.Point(164, 0);
+            this.lblPerfUSL_Center.Location = new System.Drawing.Point(0, 52);
             this.lblPerfUSL_Center.Margin = new System.Windows.Forms.Padding(0);
             this.lblPerfUSL_Center.Name = "lblPerfUSL_Center";
-            this.lblPerfUSL_Center.Size = new System.Drawing.Size(82, 40);
+            this.lblPerfUSL_Center.Size = new System.Drawing.Size(346, 26);
             this.lblPerfUSL_Center.TabIndex = 3;
-            this.lblPerfUSL_Center.Text = "P.USL\r\nCenter";
+            this.lblPerfUSL_Center.Text = "Performance Upper Spec Limit - Center";
             this.lblPerfUSL_Center.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // lblPerfLSL_Center
@@ -358,12 +358,12 @@ namespace Jastech.Apps.Winform.UI.Controls
             this.lblPerfLSL_Center.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(104)))), ((int)(((byte)(104)))), ((int)(((byte)(104)))));
             this.lblPerfLSL_Center.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.lblPerfLSL_Center.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblPerfLSL_Center.Location = new System.Drawing.Point(246, 0);
+            this.lblPerfLSL_Center.Location = new System.Drawing.Point(0, 78);
             this.lblPerfLSL_Center.Margin = new System.Windows.Forms.Padding(0);
             this.lblPerfLSL_Center.Name = "lblPerfLSL_Center";
-            this.lblPerfLSL_Center.Size = new System.Drawing.Size(82, 40);
+            this.lblPerfLSL_Center.Size = new System.Drawing.Size(346, 26);
             this.lblPerfLSL_Center.TabIndex = 4;
-            this.lblPerfLSL_Center.Text = "P.LSL\r\nCenter";
+            this.lblPerfLSL_Center.Text = "Performance Lower Spec Limit - Center";
             this.lblPerfLSL_Center.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // lblPerfUSL_Side
@@ -371,12 +371,12 @@ namespace Jastech.Apps.Winform.UI.Controls
             this.lblPerfUSL_Side.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(104)))), ((int)(((byte)(104)))), ((int)(((byte)(104)))));
             this.lblPerfUSL_Side.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.lblPerfUSL_Side.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblPerfUSL_Side.Location = new System.Drawing.Point(328, 0);
+            this.lblPerfUSL_Side.Location = new System.Drawing.Point(0, 104);
             this.lblPerfUSL_Side.Margin = new System.Windows.Forms.Padding(0);
             this.lblPerfUSL_Side.Name = "lblPerfUSL_Side";
-            this.lblPerfUSL_Side.Size = new System.Drawing.Size(82, 40);
+            this.lblPerfUSL_Side.Size = new System.Drawing.Size(346, 26);
             this.lblPerfUSL_Side.TabIndex = 5;
-            this.lblPerfUSL_Side.Text = "P.USL\r\nSide";
+            this.lblPerfUSL_Side.Text = "Performance Upper Spec Limit - Side";
             this.lblPerfUSL_Side.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // lblPerfLSL_Side
@@ -384,22 +384,22 @@ namespace Jastech.Apps.Winform.UI.Controls
             this.lblPerfLSL_Side.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(104)))), ((int)(((byte)(104)))), ((int)(((byte)(104)))));
             this.lblPerfLSL_Side.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.lblPerfLSL_Side.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblPerfLSL_Side.Location = new System.Drawing.Point(410, 0);
+            this.lblPerfLSL_Side.Location = new System.Drawing.Point(0, 130);
             this.lblPerfLSL_Side.Margin = new System.Windows.Forms.Padding(0);
             this.lblPerfLSL_Side.Name = "lblPerfLSL_Side";
-            this.lblPerfLSL_Side.Size = new System.Drawing.Size(85, 40);
+            this.lblPerfLSL_Side.Size = new System.Drawing.Size(346, 29);
             this.lblPerfLSL_Side.TabIndex = 6;
-            this.lblPerfLSL_Side.Text = "P.LSL\r\nSIde";
+            this.lblPerfLSL_Side.Text = "Performance Lower Spec Limit - Side";
             this.lblPerfLSL_Side.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // lblPerformanceLSL_Side
             // 
             this.lblPerformanceLSL_Side.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.lblPerformanceLSL_Side.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblPerformanceLSL_Side.Location = new System.Drawing.Point(410, 40);
+            this.lblPerformanceLSL_Side.Location = new System.Drawing.Point(346, 130);
             this.lblPerformanceLSL_Side.Margin = new System.Windows.Forms.Padding(0);
             this.lblPerformanceLSL_Side.Name = "lblPerformanceLSL_Side";
-            this.lblPerformanceLSL_Side.Size = new System.Drawing.Size(85, 40);
+            this.lblPerformanceLSL_Side.Size = new System.Drawing.Size(149, 29);
             this.lblPerformanceLSL_Side.TabIndex = 7;
             this.lblPerformanceLSL_Side.Text = "-9";
             this.lblPerformanceLSL_Side.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -409,10 +409,10 @@ namespace Jastech.Apps.Winform.UI.Controls
             // 
             this.lblPerformanceUSL_Side.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.lblPerformanceUSL_Side.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblPerformanceUSL_Side.Location = new System.Drawing.Point(328, 40);
+            this.lblPerformanceUSL_Side.Location = new System.Drawing.Point(346, 104);
             this.lblPerformanceUSL_Side.Margin = new System.Windows.Forms.Padding(0);
             this.lblPerformanceUSL_Side.Name = "lblPerformanceUSL_Side";
-            this.lblPerformanceUSL_Side.Size = new System.Drawing.Size(82, 40);
+            this.lblPerformanceUSL_Side.Size = new System.Drawing.Size(149, 26);
             this.lblPerformanceUSL_Side.TabIndex = 8;
             this.lblPerformanceUSL_Side.Text = "9";
             this.lblPerformanceUSL_Side.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -422,10 +422,10 @@ namespace Jastech.Apps.Winform.UI.Controls
             // 
             this.lblPerformanceLSL_Center.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.lblPerformanceLSL_Center.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblPerformanceLSL_Center.Location = new System.Drawing.Point(246, 40);
+            this.lblPerformanceLSL_Center.Location = new System.Drawing.Point(346, 78);
             this.lblPerformanceLSL_Center.Margin = new System.Windows.Forms.Padding(0);
             this.lblPerformanceLSL_Center.Name = "lblPerformanceLSL_Center";
-            this.lblPerformanceLSL_Center.Size = new System.Drawing.Size(82, 40);
+            this.lblPerformanceLSL_Center.Size = new System.Drawing.Size(149, 26);
             this.lblPerformanceLSL_Center.TabIndex = 9;
             this.lblPerformanceLSL_Center.Text = "-4";
             this.lblPerformanceLSL_Center.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -435,10 +435,10 @@ namespace Jastech.Apps.Winform.UI.Controls
             // 
             this.lblPerformanceUSL_Center.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.lblPerformanceUSL_Center.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblPerformanceUSL_Center.Location = new System.Drawing.Point(164, 40);
+            this.lblPerformanceUSL_Center.Location = new System.Drawing.Point(346, 52);
             this.lblPerformanceUSL_Center.Margin = new System.Windows.Forms.Padding(0);
             this.lblPerformanceUSL_Center.Name = "lblPerformanceUSL_Center";
-            this.lblPerformanceUSL_Center.Size = new System.Drawing.Size(82, 40);
+            this.lblPerformanceUSL_Center.Size = new System.Drawing.Size(149, 26);
             this.lblPerformanceUSL_Center.TabIndex = 10;
             this.lblPerformanceUSL_Center.Text = "4";
             this.lblPerformanceUSL_Center.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -451,12 +451,12 @@ namespace Jastech.Apps.Winform.UI.Controls
             this.tlpPCResult.Controls.Add(this.lblResultTitle1, 0, 0);
             this.tlpPCResult.Controls.Add(this.dgvPCResult, 0, 1);
             this.tlpPCResult.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tlpPCResult.Location = new System.Drawing.Point(3, 257);
+            this.tlpPCResult.Location = new System.Drawing.Point(3, 430);
             this.tlpPCResult.Name = "tlpPCResult";
             this.tlpPCResult.RowCount = 2;
             this.tlpPCResult.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
             this.tlpPCResult.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tlpPCResult.Size = new System.Drawing.Size(530, 248);
+            this.tlpPCResult.Size = new System.Drawing.Size(530, 421);
             this.tlpPCResult.TabIndex = 3;
             // 
             // lblResultTitle1
@@ -505,7 +505,7 @@ namespace Jastech.Apps.Winform.UI.Controls
             this.dgvPCResult.RowHeadersVisible = false;
             this.dgvPCResult.RowTemplate.Height = 23;
             this.dgvPCResult.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvPCResult.Size = new System.Drawing.Size(530, 218);
+            this.dgvPCResult.Size = new System.Drawing.Size(530, 391);
             this.dgvPCResult.TabIndex = 6;
             this.dgvPCResult.DataSourceChanged += new System.EventHandler(this.dgvPCResult_DataSourceChanged);
             // 
@@ -516,12 +516,12 @@ namespace Jastech.Apps.Winform.UI.Controls
             this.tlpAlignData.Controls.Add(this.lblResultTitle2, 0, 0);
             this.tlpAlignData.Controls.Add(this.dgvAlignData, 0, 1);
             this.tlpAlignData.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tlpAlignData.Location = new System.Drawing.Point(539, 257);
+            this.tlpAlignData.Location = new System.Drawing.Point(539, 430);
             this.tlpAlignData.Name = "tlpAlignData";
             this.tlpAlignData.RowCount = 2;
             this.tlpAlignData.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
             this.tlpAlignData.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tlpAlignData.Size = new System.Drawing.Size(530, 248);
+            this.tlpAlignData.Size = new System.Drawing.Size(530, 421);
             this.tlpAlignData.TabIndex = 4;
             // 
             // lblResultTitle2
@@ -568,7 +568,8 @@ namespace Jastech.Apps.Winform.UI.Controls
             this.dgvAlignData.ReadOnly = true;
             this.dgvAlignData.RowHeadersVisible = false;
             this.dgvAlignData.RowTemplate.Height = 23;
-            this.dgvAlignData.Size = new System.Drawing.Size(524, 212);
+            this.dgvAlignData.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.dgvAlignData.Size = new System.Drawing.Size(524, 385);
             this.dgvAlignData.TabIndex = 3;
             // 
             // ProcessCapabilityIndexControl
@@ -580,7 +581,7 @@ namespace Jastech.Apps.Winform.UI.Controls
             this.Font = new System.Drawing.Font("맑은 고딕", 11.25F, System.Drawing.FontStyle.Bold);
             this.ForeColor = System.Drawing.Color.White;
             this.Name = "ProcessCapabilityIndexControl";
-            this.Size = new System.Drawing.Size(1072, 554);
+            this.Size = new System.Drawing.Size(1072, 900);
             this.Load += new System.EventHandler(this.ProcessCapabilityIndexControl_Load);
             this.tlpProcessCapabilityIndicies.ResumeLayout(false);
             this.panel1.ResumeLayout(false);
