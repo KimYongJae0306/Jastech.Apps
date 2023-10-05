@@ -13,6 +13,7 @@ using Jastech.Apps.Winform.Core.Calibrations;
 using Jastech.Apps.Winform.Service;
 using Jastech.Apps.Winform.Service.Plc.Maps;
 using Jastech.Apps.Winform.Settings;
+using Jastech.Apps.Winform.UI.Forms;
 using Jastech.Framework.Algorithms.Akkon;
 using Jastech.Framework.Algorithms.Akkon.Parameters;
 using Jastech.Framework.Algorithms.Akkon.Results;
@@ -416,38 +417,63 @@ namespace ATT_UT_Remodeling.Core
 
                     PlcControlManager.Instance().EnableSendPeriodically = false;
 
-                    if (AppsConfig.Instance().EnableManualJudge /*&& NG*/)
-                        SeqStep = SeqStep.SEQ_MANUAL_JUDGE;
-                    else
-                        SeqStep = SeqStep.SEQ_SEND_RESULT;
-                    break;
-
-                // NG 날때만 탈 것
-                case SeqStep.SEQ_MANUAL_JUDGE:
-                    PlcControlManager.Instance().WriteManualJudge();
-                    SystemManager.Instance().ShowManualJugdeForm(AppsInspResult.Instance());
-                    WriteLog("Show Manual Judge Form", false);
-
                     SeqStep = SeqStep.SEQ_SEND_RESULT;
                     break;
 
                 case SeqStep.SEQ_SEND_RESULT:
-                    SendResultData();
-                    WriteLog("Completed Send Plc Tab Result Data", true);
+                    if (AppsConfig.Instance().EnableManualJudge && IsNg(AppsInspResult.Instance()))
+                    {
+                        PlcControlManager.Instance().WriteManualJudge();
+                        WriteLog("Completed Send Plc ManualJudge", true);
+                    }
+                    else
+                    {
+                        SendResultData();
+                        WriteLog("Completed Send Plc Tab Result Data", true);
+                    }
 
                     SeqStep = SeqStep.SEQ_WAIT_UI_RESULT_UPDATE;
                     break;
 
                 case SeqStep.SEQ_WAIT_UI_RESULT_UPDATE:
-                    //GetAkkonResultImage();
-                    //UpdateDailyInfo();
-
-                    //SystemManager.Instance().UpdateMainResult();
-                    //WriteLog("Update Inspection Result.", true);
 
                     MoveTo(TeachingPosType.Stage1_Scan_Start, out errorMessage, false);
 
                     StartUpdateThread();
+
+                    if (AppsConfig.Instance().EnableManualJudge && IsNg(AppsInspResult.Instance()))
+                        SeqStep = SeqStep.SEQ_MANUAL_JUDGE;
+                    else
+                        SeqStep = SeqStep.SEQ_SAVE_RESULT_DATA;
+                    break;
+
+                case SeqStep.SEQ_MANUAL_JUDGE:
+                    if (_updateThread != null)
+                        break;
+
+                    AppsStatus.Instance().IsManualJudgeCompleted = false;
+                    SetManualJudgeData(unit, AppsInspResult.Instance());
+                    SystemManager.Instance().ShowManualJugdeForm();
+                    WriteLog("Show Manual Judge Form", false);
+
+                    SeqStep = SeqStep.SEQ_MANUAL_JUDGE_COMPLETED;
+                    break;
+
+                case SeqStep.SEQ_MANUAL_JUDGE_COMPLETED:
+                    if (AppsStatus.Instance().IsManualJudgeCompleted == false)
+                        break;
+
+                    if (AppsStatus.Instance().IsManual_OK)
+                        SetManualJudge();
+
+                    WriteLog("Manual Judge Complete", false);
+                    SeqStep = SeqStep.SEQ_SEND_MANUAL_JUDGE;
+                    break;
+
+                case SeqStep.SEQ_SEND_MANUAL_JUDGE:
+
+                    SendResultData();
+                    WriteLog("Completed Send Plc Tab Result Data(ManualJudge)", true);
 
                     SeqStep = SeqStep.SEQ_SAVE_RESULT_DATA;
                     break;
@@ -1684,6 +1710,70 @@ namespace ATT_UT_Remodeling.Core
                 _ClearBufferThread = null;
             }
         }
+
+        private bool IsNg(AppsInspResult inspResult)
+        {
+            bool isNg = false;
+
+            var inspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
+            int tabCount = inspModel.TabCount;
+
+            for (int tabIndex = 0; tabIndex < tabCount; tabIndex++)
+            {
+                var alignResult = inspResult.Get(tabIndex).AlignResult.Judgement;
+                if (alignResult == Judgement.NG)
+                    isNg = true;
+
+                var akkonResult = inspResult.Get(tabIndex).AkkonResult.Judgement;
+                if (akkonResult == Judgement.NG)
+                    isNg = true;
+            }
+
+            return isNg;
+        }
+
+        private void SetManualJudgeData(Unit unit, AppsInspResult inspResult)
+        {
+            var inspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
+
+            List<ManualJudge> manualJudgeList = new List<ManualJudge>();
+
+            for (int tabNo = 0; tabNo < inspModel.TabCount; tabNo++)
+            {
+                ManualJudge manualJudge = new ManualJudge();
+
+                var tabInspResult = AppsInspResult.Instance().Get(tabNo);
+
+                manualJudge.AlignJudgement = tabInspResult.AlignResult.Judgement;// inspResult.GetAlign(tabNo).Judgement;
+                manualJudge.Lx = unit.GetTab(tabNo).AlignSpec.LeftSpecX_um;
+                manualJudge.Ly = unit.GetTab(tabNo).AlignSpec.LeftSpecY_um;
+                manualJudge.Cx = unit.GetTab(tabNo).AlignSpec.CenterSpecX_um;
+                manualJudge.Rx = unit.GetTab(tabNo).AlignSpec.RightSpecX_um;
+                manualJudge.Ry = unit.GetTab(tabNo).AlignSpec.RightSpecY_um;
+
+                manualJudge.AkkonJudgement = tabInspResult.AkkonResult.Judgement;// inspResult.GetAkkon(tabNo).Judgement;
+                manualJudge.Count = unit.GetTab(tabNo).AkkonParam.AkkonAlgoritmParam.JudgementParam.AkkonCount;
+                manualJudge.Length = unit.GetTab(tabNo).AkkonParam.AkkonAlgoritmParam.JudgementParam.LengthY_um;
+
+                manualJudgeList.Add(manualJudge);
+            }
+
+            SystemManager.Instance().SetManualJudgeData(manualJudgeList);
+        }
+
+        private void SetManualJudge()
+        {
+            var inspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
+
+            for (int tabIndex = 0; tabIndex < inspModel.TabCount; tabIndex++)
+            {
+                var akkonTabInspResult = AppsInspResult.Instance().Get(tabIndex);
+                akkonTabInspResult.IsManualOK = true;
+
+                var alignTabInspResult = AppsInspResult.Instance().Get(tabIndex);
+                alignTabInspResult.IsManualOK = true;
+            }
+        }
         #endregion
     }
 
@@ -1698,9 +1788,11 @@ namespace ATT_UT_Remodeling.Core
         SEQ_MOVE_END_POS,
         SEQ_WAITING_SCAN_COMPLETED,
         SEQ_WAITING_INSPECTION_DONE,
-        SEQ_MANUAL_JUDGE,
         SEQ_SEND_RESULT,
         SEQ_WAIT_UI_RESULT_UPDATE,
+        SEQ_MANUAL_JUDGE,
+        SEQ_MANUAL_JUDGE_COMPLETED,
+        SEQ_SEND_MANUAL_JUDGE,
         SEQ_SAVE_RESULT_DATA,
         SEQ_SAVE_IMAGE,
         SEQ_DELETE_DATA,

@@ -11,6 +11,15 @@
         Version_Revision,
 
         #region Tab0
+        Tab0_Left_FPC_X_Threshold,
+        Tab0_Left_FPC_Y_Threshold,
+        Tab0_Left_PANEL_X_Threshold,
+        Tab0_Left_PANEL_Y_Threshold,
+        Tab0_Right_FPC_X_Threshold,
+        Tab0_Right_FPC_Y_Threshold,
+        Tab0_Right_PANEL_X_Threshold,
+        Tab0_Right_PANEL_Y_Threshold,
+
         Tab0_Judgement,
 
         Tab0_Align_Judgement,
@@ -45,6 +54,15 @@
         #endregion
 
         #region Tab1
+        Tab1_Left_FPC_X_Threshold,
+        Tab1_Left_FPC_Y_Threshold,
+        Tab1_Left_PANEL_X_Threshold,
+        Tab1_Left_PANEL_Y_Threshold,
+        Tab1_Right_FPC_X_Threshold,
+        Tab1_Right_FPC_Y_Threshold,
+        Tab1_Right_PANEL_X_Threshold,
+        Tab1_Right_PANEL_Y_Threshold,
+
         Tab1_Judgement,
 
         Tab1_Align_Judgement,
@@ -79,6 +97,15 @@
         #endregion
 
         #region Tab2
+        Tab2_Left_FPC_X_Threshold,
+        Tab2_Left_FPC_Y_Threshold,
+        Tab2_Left_PANEL_X_Threshold,
+        Tab2_Left_PANEL_Y_Threshold,
+        Tab2_Right_FPC_X_Threshold,
+        Tab2_Right_FPC_Y_Threshold,
+        Tab2_Right_PANEL_X_Threshold,
+        Tab2_Right_PANEL_Y_Threshold,
+
         Tab2_Judgement,
 
         Tab2_Align_Judgement,
@@ -113,6 +140,15 @@
         #endregion
 
         #region Tab3
+        Tab3_Left_FPC_X_Threshold,
+        Tab3_Left_FPC_Y_Threshold,
+        Tab3_Left_PANEL_X_Threshold,
+        Tab3_Left_PANEL_Y_Threshold,
+        Tab3_Right_FPC_X_Threshold,
+        Tab3_Right_FPC_Y_Threshold,
+        Tab3_Right_PANEL_X_Threshold,
+        Tab3_Right_PANEL_Y_Threshold,
+
         Tab3_Judgement,
 
         Tab3_Align_Judgement,
@@ -147,6 +183,15 @@
         #endregion
 
         #region Tab4
+        Tab4_Left_FPC_X_Threshold,
+        Tab4_Left_FPC_Y_Threshold,
+        Tab4_Left_PANEL_X_Threshold,
+        Tab4_Left_PANEL_Y_Threshold,
+        Tab4_Right_FPC_X_Threshold,
+        Tab4_Right_FPC_Y_Threshold,
+        Tab4_Right_PANEL_X_Threshold,
+        Tab4_Right_PANEL_Y_Threshold,
+
         Tab4_Judgement,
 
         Tab4_Align_Judgement,
@@ -181,6 +226,15 @@
         #endregion
 
         #region Tab5
+        Tab5_Left_FPC_X_Threshold,
+        Tab5_Left_FPC_Y_Threshold,
+        Tab5_Left_PANEL_X_Threshold,
+        Tab5_Left_PANEL_Y_Threshold,
+        Tab5_Right_FPC_X_Threshold,
+        Tab5_Right_FPC_Y_Threshold,
+        Tab5_Right_PANEL_X_Threshold,
+        Tab5_Right_PANEL_Y_Threshold,
+
         Tab5_Judgement,
 
         Tab5_Align_Judgement,
@@ -215,6 +269,15 @@
         #endregion
 
         #region Tab6
+        Tab6_Left_FPC_X_Threshold,
+        Tab6_Left_FPC_Y_Threshold,
+        Tab6_Left_PANEL_X_Threshold,
+        Tab6_Left_PANEL_Y_Threshold,
+        Tab6_Right_FPC_X_Threshold,
+        Tab6_Right_FPC_Y_Threshold,
+        Tab6_Right_PANEL_X_Threshold,
+        Tab6_Right_PANEL_Y_Threshold,
+
         Tab6_Judgement,
 
         Tab6_Align_Judgement,
@@ -249,6 +312,15 @@
         #endregion
 
         #region Tab7
+        Tab7_Left_FPC_X_Threshold,
+        Tab7_Left_FPC_Y_Threshold,
+        Tab7_Left_PANEL_X_Threshold,
+        Tab7_Left_PANEL_Y_Threshold,
+        Tab7_Right_FPC_X_Threshold,
+        Tab7_Right_FPC_Y_Threshold,
+        Tab7_Right_PANEL_X_Threshold,
+        Tab7_Right_PANEL_Y_Threshold,
+
         Tab7_Judgement,
 
         Tab7_Align_Judgement,
@@ -283,6 +355,15 @@
         #endregion
 
         #region Tab8
+        Tab8_Left_FPC_X_Threshold,
+        Tab8_Left_FPC_Y_Threshold,
+        Tab8_Left_PANEL_X_Threshold,
+        Tab8_Left_PANEL_Y_Threshold,
+        Tab8_Right_FPC_X_Threshold,
+        Tab8_Right_FPC_Y_Threshold,
+        Tab8_Right_PANEL_X_Threshold,
+        Tab8_Right_PANEL_Y_Threshold,
+
         Tab8_Judgement,
 
         Tab8_Align_Judgement,
@@ -317,6 +398,15 @@
         #endregion
 
         #region Tab9
+        Tab9_Left_FPC_X_Threshold,
+        Tab9_Left_FPC_Y_Threshold,
+        Tab9_Left_PANEL_X_Threshold,
+        Tab9_Left_PANEL_Y_Threshold,
+        Tab9_Right_FPC_X_Threshold,
+        Tab9_Right_FPC_Y_Threshold,
+        Tab9_Right_PANEL_X_Threshold,
+        Tab9_Right_PANEL_Y_Threshold,
+
         Tab9_Judgement,
 
         Tab9_Align_Judgement,

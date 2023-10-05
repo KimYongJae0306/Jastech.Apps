@@ -215,7 +215,11 @@ namespace ATT_UT_IPAD.Core.AppTask
                 #region Align
                 if (AppsConfig.Instance().EnableAlign)
                 {
-                    tabInspResult.AlignResult.LeftX = algorithmTool.RunMainLeftAutoAlignX(inspTab.MergeCogImage, tab, fpcLeftOffset, panelLeftOffset, judgementX);
+                    if (tab.AlignSpec.UseAutoTracking)
+                        tabInspResult.AlignResult.LeftX = algorithmTool.RunMainLeftAutoAlignX(inspTab.MergeCogImage, tab, fpcLeftOffset, panelLeftOffset, judgementX);
+                    else
+                        tabInspResult.AlignResult.LeftX = algorithmTool.RunMainLeftAlignX(inspTab.MergeCogImage, tab, fpcLeftOffset, panelLeftOffset, judgementX);
+
                     if (tabInspResult.AlignResult.LeftX?.Judgement != Judgement.OK)
                     {
                         var leftAlignX = tabInspResult.AlignResult.LeftX;
@@ -232,8 +236,10 @@ namespace ATT_UT_IPAD.Core.AppTask
                         WriteLog(message, true);
                         Logger.Debug(LogType.Inspection, message);
                     }
-
-                    tabInspResult.AlignResult.RightX = algorithmTool.RunMainRightAutoAlignX(inspTab.MergeCogImage, tab, fpcRightOffset, panelRightOffset, judgementX);
+                    if (tab.AlignSpec.UseAutoTracking)
+                        tabInspResult.AlignResult.RightX = algorithmTool.RunMainRightAutoAlignX(inspTab.MergeCogImage, tab, fpcRightOffset, panelRightOffset, judgementX);
+                    else
+                        tabInspResult.AlignResult.RightX = algorithmTool.RunMainRightAlignX(inspTab.MergeCogImage, tab, fpcRightOffset, panelRightOffset, judgementX);
                     if (tabInspResult.AlignResult.RightX?.Judgement != Judgement.OK)
                     {
                         var rightAlignX = tabInspResult.AlignResult.RightX;

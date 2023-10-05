@@ -62,6 +62,7 @@ namespace Jastech.Apps.Winform.Service.Plc
             ResultMapList.Add(new PlcAddressMap(PlcResultMap.Version_Build, WordType.DEC, versionStart + 2, 1));
             ResultMapList.Add(new PlcAddressMap(PlcResultMap.Version_Revision, WordType.DEC, versionStart + 3, 1));
 
+            CreateAlignParameter(tabTotabInterval);
             // Align Results, Tab Result
             CreateAlignResult(AppsConfig.Instance().PlcAddressInfo.ResultStart_Align, tabTotabInterval);
 
@@ -70,6 +71,37 @@ namespace Jastech.Apps.Winform.Service.Plc
 
             // Mark Results
             CreateMarkResult(AppsConfig.Instance().PlcAddressInfo.ResultStart_Akkon, tabTotabInterval);
+        }
+
+        private void CreateAlignParameter(int tabTotabInterval)
+        {
+            int maxCount = AppsConfig.Instance().TabMaxCount;
+
+            for (int i = 0; i < maxCount; i++)
+            {
+                string left_FpcX = string.Format("Tab0_Left_FPC_X_Threshold", i);
+                string left_FpcY = string.Format("Tab0_Left_FPC_Y_Threshold", i);
+                string left_PanelX = string.Format("Tab0_Left_PANEL_X_Threshold", i);
+                string left_PanelY = string.Format("Tab0_Left_PANEL_Y_Threshold", i);
+
+                string right_FpcX = string.Format("Tab0_Right_FPC_X_Threshold", i);
+                string right_FpcY = string.Format("Tab0_Right_FPC_Y_Threshold", i);
+                string right_PanelX = string.Format("Tab0_Right_PANEL_X_Threshold", i);
+                string right_PanelY = string.Format("Tab0_Right_PANEL_Y_Threshold", i);
+
+                int addressNum = AppsConfig.Instance().PlcAddressInfo.ResultStart + 200;
+                int addressIndex = addressNum + (tabTotabInterval * i);
+
+                ResultMapList.Add(new PlcAddressMap((PlcResultMap)Enum.Parse(typeof(PlcResultMap), left_FpcX), WordType.DEC, addressIndex, 1));
+                ResultMapList.Add(new PlcAddressMap((PlcResultMap)Enum.Parse(typeof(PlcResultMap), left_FpcY), WordType.DEC, addressIndex, 1));
+                ResultMapList.Add(new PlcAddressMap((PlcResultMap)Enum.Parse(typeof(PlcResultMap), left_PanelX), WordType.DEC, addressIndex, 1));
+                ResultMapList.Add(new PlcAddressMap((PlcResultMap)Enum.Parse(typeof(PlcResultMap), left_PanelY), WordType.DEC, addressIndex, 1));
+
+                ResultMapList.Add(new PlcAddressMap((PlcResultMap)Enum.Parse(typeof(PlcResultMap), right_FpcX), WordType.DEC, addressIndex, 1));
+                ResultMapList.Add(new PlcAddressMap((PlcResultMap)Enum.Parse(typeof(PlcResultMap), right_FpcY), WordType.DEC, addressIndex, 1));
+                ResultMapList.Add(new PlcAddressMap((PlcResultMap)Enum.Parse(typeof(PlcResultMap), right_PanelX), WordType.DEC, addressIndex, 1));
+                ResultMapList.Add(new PlcAddressMap((PlcResultMap)Enum.Parse(typeof(PlcResultMap), right_PanelY), WordType.DEC, addressIndex, 1));
+            }
         }
 
         private void CreateAlignResult(int alignStartIndex, int tabTotabInterval)

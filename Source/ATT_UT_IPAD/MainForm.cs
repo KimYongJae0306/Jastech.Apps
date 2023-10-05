@@ -111,6 +111,7 @@ namespace ATT_UT_IPAD
             PlcControlManager.Instance().WriteVersion();
 
             ManualJudgeForm = new ManualJudgeForm();
+            ManualJudgeForm.ManualJudmentHandler += MainForm_ManualJudgmentHandler;
             ManualJudgeForm.Show();
             ManualJudgeForm.Hide();
 
@@ -168,6 +169,8 @@ namespace ATT_UT_IPAD
             ConfigSet.Instance().Operation.LastModelName = modelName;
             ConfigSet.Instance().Operation.Save(ConfigSet.Instance().Path.Config);
 
+            PlcControlManager.Instance().WriteModelData(ModelManager.Instance().CurrentModel as AppsInspModel);
+
             if (ManualJudgeForm != null)
             {
                 ManualJudgeForm.Close();
@@ -175,6 +178,7 @@ namespace ATT_UT_IPAD
                 ManualJudgeForm = null;
 
                 ManualJudgeForm = new ManualJudgeForm();
+                ManualJudgeForm.ManualJudmentHandler += MainForm_ManualJudgmentHandler;
                 ManualJudgeForm.Hide();
             }
         }
@@ -634,6 +638,16 @@ namespace ATT_UT_IPAD
             }
             else
                 ManualJudgeForm.Show();
+        }
+
+        private void MainForm_ManualJudmentHandler(bool isManualJudgeCompleted)
+        {
+            AppsStatus.Instance().IsManualJudgeCompleted = isManualJudgeCompleted;
+        }
+
+        private void MainForm_ManualJudgmentHandler(bool isManualOk)
+        {
+            AppsStatus.Instance().IsManual_OK = isManualOk;
         }
 
         private void lblMachineName_Click(object sender, EventArgs e)

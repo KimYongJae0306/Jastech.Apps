@@ -879,9 +879,18 @@ namespace Jastech.Framework.Winform.Forms
             double judgementX = CurrentTab.AlignSpec.LeftSpecX_um / resolution_um;
             double judgementY = CurrentTab.AlignSpec.LeftSpecY_um / resolution_um;
 
-            tabInspResult.AlignResult.LeftX = algorithmTool.RunMainLeftAutoAlignX(cogImage, CurrentTab, new PointF(0, 0), new PointF(0, 0), judgementX);
+            if (CurrentTab.AlignSpec.UseAutoTracking)
+            {
+                tabInspResult.AlignResult.LeftX = algorithmTool.RunMainLeftAutoAlignX(cogImage, CurrentTab, new PointF(0, 0), new PointF(0, 0), judgementX);
+                tabInspResult.AlignResult.RightX = algorithmTool.RunMainRightAutoAlignX(cogImage, CurrentTab, new PointF(0, 0), new PointF(0, 0), judgementX);
+            }
+            else
+            {
+                tabInspResult.AlignResult.LeftX = algorithmTool.RunMainLeftAlignX(cogImage, CurrentTab, new PointF(0, 0), new PointF(0, 0), judgementX);
+                tabInspResult.AlignResult.RightX = algorithmTool.RunMainRightAlignX(cogImage, CurrentTab, new PointF(0, 0), new PointF(0, 0), judgementX);
+            }
+
             tabInspResult.AlignResult.LeftY = algorithmTool.RunMainLeftAlignY(cogImage, CurrentTab, new PointF(0, 0), new PointF(0, 0), judgementY);
-            tabInspResult.AlignResult.RightX = algorithmTool.RunMainRightAutoAlignX(cogImage, CurrentTab, new PointF(0, 0), new PointF(0, 0), judgementX);
             tabInspResult.AlignResult.RightY = algorithmTool.RunMainRightAlignY(cogImage, CurrentTab, new PointF(0, 0), new PointF(0, 0), judgementY);
 
             display.ClearGraphic();

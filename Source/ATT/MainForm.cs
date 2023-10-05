@@ -151,6 +151,8 @@ namespace ATT
 
             ConfigSet.Instance().Operation.LastModelName = modelName;
             ConfigSet.Instance().Operation.Save(ConfigSet.Instance().Path.Config);
+
+            PlcControlManager.Instance().WriteModelData(ModelManager.Instance().CurrentModel as AppsInspModel);
         }
 
         private void SelectMainPage()

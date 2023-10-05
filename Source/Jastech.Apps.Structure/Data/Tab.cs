@@ -201,5 +201,8 @@ namespace Jastech.Apps.Structure.Data
 
         [JsonProperty]
         public float CenterSpecX_um { get; set; } = 0.5F;
+
+        [JsonProperty]
+        public bool UseAutoTracking { get; set; } = false;
     }
 }

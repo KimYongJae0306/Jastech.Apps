@@ -31,6 +31,8 @@ namespace Jastech.Apps.Winform.UI.Controls
         private Color _nonSelectedColor = new Color();
 
         private ROIJogForm _roiJogForm { get; set; } = null;
+
+        private List<VisionProAlignCaliperResult> _displayCaliperResult = null;
         #endregion
 
         #region 속성
@@ -45,6 +47,12 @@ namespace Jastech.Apps.Winform.UI.Controls
         private MainAlgorithmTool AlgorithmTool = new MainAlgorithmTool();
 
         public double Resolution_um { get; set; } = 1.0;
+        #endregion
+
+        #region 이벤트
+        #endregion
+
+        #region 델리게이트
         #endregion
 
         #region 생성자
@@ -138,7 +146,8 @@ namespace Jastech.Apps.Winform.UI.Controls
 
             lblLeftAlignSpecX.Text = CurrentTab.AlignSpec.LeftSpecX_um.ToString();
             lblLeftAlignSpecY.Text = CurrentTab.AlignSpec.LeftSpecY_um.ToString();
-            
+            mtgUseAutoTracking.Checked = CurrentTab.AlignSpec.UseAutoTracking;
+
             lblRightAlignSpecX.Text = CurrentTab.AlignSpec.RightSpecX_um.ToString();
             lblRightAlignSpecY.Text = CurrentTab.AlignSpec.RightSpecY_um.ToString();
 
@@ -609,7 +618,6 @@ namespace Jastech.Apps.Winform.UI.Controls
             panel.SetTargetData(searchedLeftPoint, searchedRightPoint);
         }
 
-        private List<VisionProAlignCaliperResult> _displayCaliperResult = null;
         private void AddAlignCaliperResult(VisionProAlignCaliperResult caliperResult)
         {
             _displayCaliperResult = new List<VisionProAlignCaliperResult>();
@@ -623,7 +631,6 @@ namespace Jastech.Apps.Winform.UI.Controls
 
             return _displayCaliperResult;
         }
-        #endregion
 
         private void lblCenter_Click(object sender, EventArgs e)
         {
@@ -696,6 +703,14 @@ namespace Jastech.Apps.Winform.UI.Controls
             }
         }
 
+        private void mtgUseAutoTracking_CheckedChanged(object sender, EventArgs e)
+        {
+            if (CurrentTab == null)
+                return;
+
+            CurrentTab.AlignSpec.UseAutoTracking = mtgUseAutoTracking.Checked;
+        }
+
         private void tt(ATTTabAlignName alignName)
         {
             var display = TeachingUIManager.Instance().TeachingDisplayControl.GetDisplay();
@@ -721,5 +736,6 @@ namespace Jastech.Apps.Winform.UI.Controls
             collection.Add(newRegion);
             display.SetInteractiveGraphics("tool", collection);
         }
+        #endregion
     }
 }
