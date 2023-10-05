@@ -571,6 +571,7 @@ namespace Jastech.Apps.Winform.UI.Controls
             this.dgvAlignData.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgvAlignData.Size = new System.Drawing.Size(524, 385);
             this.dgvAlignData.TabIndex = 3;
+            this.dgvAlignData.SelectionChanged += new System.EventHandler(this.dgvAlignData_SelectionChanged);
             // 
             // ProcessCapabilityIndexControl
             // 

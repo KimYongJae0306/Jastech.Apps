@@ -232,11 +232,24 @@ namespace Jastech.Apps.Winform.UI.Controls
             _processCapabilityIndex.PerformanceUSL_Side = config.PerformanceUSL_Side;
             _processCapabilityIndex.PerformanceLSL_Side = config.PerformanceLSL_Side;
 
-            listCapabilityResults.Add(_processCapabilityIndex.GetResult($"{AlignResultType.Lx}", lxData));
-            listCapabilityResults.Add(_processCapabilityIndex.GetResult($"{AlignResultType.Ly}", lyData));
-            listCapabilityResults.Add(_processCapabilityIndex.GetResult($"{AlignResultType.Cx}", cxData));
-            listCapabilityResults.Add(_processCapabilityIndex.GetResult($"{AlignResultType.Rx}", rxData));
-            listCapabilityResults.Add(_processCapabilityIndex.GetResult($"{AlignResultType.Ry}", ryData));
+            if (dgvAlignData.SelectedRows.Count > 0)
+            {
+                int skipIndex = dgvAlignData.SelectedRows.Cast<DataGridViewRow>().OrderBy(row => row.Index).First().Index;
+                int takeCount = dgvAlignData.SelectedRows.Count;
+                listCapabilityResults.Add(_processCapabilityIndex.GetResult($"{AlignResultType.Lx}", lxData.Skip(skipIndex).Take(takeCount).ToList()));
+                listCapabilityResults.Add(_processCapabilityIndex.GetResult($"{AlignResultType.Ly}", lyData.Skip(skipIndex).Take(takeCount).ToList()));
+                listCapabilityResults.Add(_processCapabilityIndex.GetResult($"{AlignResultType.Cx}", cxData.Skip(skipIndex).Take(takeCount).ToList()));
+                listCapabilityResults.Add(_processCapabilityIndex.GetResult($"{AlignResultType.Rx}", rxData.Skip(skipIndex).Take(takeCount).ToList()));
+                listCapabilityResults.Add(_processCapabilityIndex.GetResult($"{AlignResultType.Ry}", ryData.Skip(skipIndex).Take(takeCount).ToList()));
+            }
+            else
+            {
+                listCapabilityResults.Add(_processCapabilityIndex.GetResult($"{AlignResultType.Lx}", lxData));
+                listCapabilityResults.Add(_processCapabilityIndex.GetResult($"{AlignResultType.Ly}", lyData));
+                listCapabilityResults.Add(_processCapabilityIndex.GetResult($"{AlignResultType.Cx}", cxData));
+                listCapabilityResults.Add(_processCapabilityIndex.GetResult($"{AlignResultType.Rx}", rxData));
+                listCapabilityResults.Add(_processCapabilityIndex.GetResult($"{AlignResultType.Ry}", ryData));
+            }
 
             dgvPCResult.Rows.Clear();
             foreach (var pcResult in listCapabilityResults)
@@ -309,5 +322,7 @@ namespace Jastech.Apps.Winform.UI.Controls
             }
         }
         #endregion
+
+        private void dgvAlignData_SelectionChanged(object sender, EventArgs e) => UpdatePcInfoDataGridView(_tabType);
     }
 }
