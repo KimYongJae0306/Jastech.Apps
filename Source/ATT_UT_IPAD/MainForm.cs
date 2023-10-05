@@ -92,6 +92,7 @@ namespace ATT_UT_IPAD
             ModelManager.Instance().CurrentModelChangedEvent += MainForm_CurrentModelChangedEvent;
             PlcScenarioManager.Instance().Initialize(ATTInspModelService);
             PlcScenarioManager.Instance().InspRunnerHandler += MainForm_InspRunnerHandler;
+            PlcScenarioManager.Instance().OriginAllEvent += MainForm_OriginAllEvent;
 
             PlcControlManager.Instance().WritePcCommand(PcCommand.ServoOn_1);
 
@@ -119,9 +120,11 @@ namespace ATT_UT_IPAD
                 var messageBox = new MessageYesNoForm { Message = suggestMessage };
 
                 if (messageBox.ShowDialog() == DialogResult.Yes)
-                    HomingAllAxes();
+                    SystemManager.Instance().HomingAllAxes();
             }
         }
+
+        private void MainForm_OriginAllEvent() => BeginInvoke(new Action(SystemManager.Instance().HomingAllAxes));
 
         private void MainForm_InspRunnerHandler(bool isStart)
         {
@@ -638,53 +641,33 @@ namespace ATT_UT_IPAD
             Process.Start(ConfigSet.Instance().Path.Result);
         }
         #endregion
-    }
 
-    public partial class MainForm : Form
-    {
-        #region 필드
-        private bool _isAxisHoming;
-        private Axis _currentHomingAxis;
-        #endregion
-
-        #region 메소드
-        private void HomingAllAxes()
+        private void lblCurrentModel_Click(object sender, EventArgs e)
         {
-            ProgressForm progressForm = new ProgressForm();
-            progressForm.Add($"Axis X Homing", AxisHoming, AxisName.X, StopAxisHoming);
-            var akkonLaf = LAFManager.Instance().GetLAF("AkkonLaf");
-            progressForm.Add($"Axis Z1 (Akkon LAF) homing", akkonLaf.HomeSequenceAction, akkonLaf.StopHomeSequence);
-            var alignLaf = LAFManager.Instance().GetLAF("AlignLaf");
-            progressForm.Add($"Axis Z2 (Align LAF) homing", alignLaf.HomeSequenceAction, alignLaf.StopHomeSequence);
-            progressForm.StartAllTasks();
-            progressForm.ShowDialog();
+            testpr();
         }
 
-        private bool AxisHoming(AxisName axisName)
+        private void testpr()
         {
-            int timeOutSec = 40;
-            _currentHomingAxis = MotionManager.Instance().GetAxis(AxisHandlerName.Handler0, axisName);
-            _currentHomingAxis.StartHome();
-            _isAxisHoming = true;
+            //ProgressForm progressForm = new ProgressForm();
+            //progressForm.Add($"Wait 5 Sec", new Action(() => Thread.Sleep(5000)));
+            //progressForm.Add($"Wait 3 Sec", new Action(() => Thread.Sleep(3000)));
+            //progressForm.Add($"Wait 1 Sec", new Action(() => Thread.Sleep(1000)));
+            //progressForm.Add($"Wait 7 Sec", new Action(() => Thread.Sleep(7000)));
+            //progressForm.Add($"Wait 3 Sec", new Action(() => Thread.Sleep(3000)));
+            //progressForm.Add($"Wait 1 Sec", new Action(() => Thread.Sleep(1000)));
+            //progressForm.Add($"Wait 7 Sec", new Action(() => Thread.Sleep(7000)));
+            //progressForm.Add($"Wait 3 Sec", new Action(() => Thread.Sleep(3000)));
+            //progressForm.StartAllTasks();
+            //progressForm.ShowDialog();
 
-            Stopwatch stopwatch = Stopwatch.StartNew();
-            while (_isAxisHoming == true && _currentHomingAxis.IsHomeFound == false && stopwatch.Elapsed.Seconds < timeOutSec)
-            {
-                if (_currentHomingAxis.IsMoving() == false)
-                    _currentHomingAxis.IsHomeFound = true;
-                else
-                    Thread.Sleep(50);
-            }
-
-            StopAxisHoming();
-            return _currentHomingAxis.IsHomeFound;
+            ProgressForm progressForm2 = new ProgressForm("Test", ProgressForm.RunMode.Batch);
+            var rand = new Random();
+            progressForm2.Add($"Wait", new Action(() => Thread.Sleep(rand.Next() % 10000)));
+            progressForm2.Add($"Wait", new Action(() => Thread.Sleep(rand.Next() % 10000)));
+            progressForm2.Add($"Wait", new Action(() => Thread.Sleep(rand.Next() % 10000)));
+            progressForm2.Add($"Wait", new Action(() => Thread.Sleep(rand.Next() % 10000)));
+            BeginInvoke(new Func<DialogResult>(progressForm2.ShowDialog));
         }
-
-        private void StopAxisHoming()
-        {
-            _isAxisHoming = false;
-            _currentHomingAxis?.StopMove();
-        }
-        #endregion
     }
 }

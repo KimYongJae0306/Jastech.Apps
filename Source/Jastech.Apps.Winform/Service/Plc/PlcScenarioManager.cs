@@ -54,7 +54,7 @@ namespace Jastech.Apps.Winform.Service.Plc
 
         public event PreAlignRunnerEventHandler PreAlignRunnerHandler;
 
-        public OriginAllDelegate OriginAllEvent;
+        public event OriginAllDelegate OriginAllEvent;
         #endregion
 
         #region 델리게이트
@@ -62,7 +62,7 @@ namespace Jastech.Apps.Winform.Service.Plc
 
         public delegate void PreAlignRunnerEventHandler(bool isStart);
 
-        public delegate bool OriginAllDelegate();
+        public delegate void OriginAllDelegate();
         #endregion
 
         #region 생성자
@@ -585,32 +585,10 @@ namespace Jastech.Apps.Winform.Service.Plc
 
         private void StartOriginAll()
         {
-            AxisHandler allAxisHandler = new AxisHandler("All");
+            //PlcControlManager.Instance().WritePcCommand(PcCommand.ServoOn_1);
+            //PlcControlManager.Instance().WritePcCommand(PcCommand.ServoOn_2);
 
-            foreach (var axisHandler in MotionManager.Instance().AxisHandlerList)
-            {
-                foreach (var axis in axisHandler.GetAxisList())
-                {
-                    if (axis.Name.ToUpper().Contains("X"))
-                        allAxisHandler.AddAxis(axis);
-                }
-            }
-            allAxisHandler.StopMove();
-            Thread.Sleep(100);
-
-            var lafCtrlHandler = DeviceManager.Instance().LAFCtrlHandler;
-            PlcControlManager.Instance().WritePcCommand(PcCommand.ServoOn_1);
-
-            if (lafCtrlHandler.Count > 1)
-                PlcControlManager.Instance().WritePcCommand(PcCommand.ServoOn_2);
-
-            allAxisHandler.TurnOnServo(true);
-
-            foreach (var laf in lafCtrlHandler)
-            {
-                // LAF Homming
-            }
-            allAxisHandler.StartHomeMove();
+            OriginAllEvent?.Invoke();
 
             PlcControlManager.Instance().WritePcStatus(PlcCommand.Origin_All);
         }

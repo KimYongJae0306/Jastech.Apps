@@ -573,6 +573,7 @@
             this.lblCurrentModel.Size = new System.Drawing.Size(317, 42);
             this.lblCurrentModel.TabIndex = 3;
             this.lblCurrentModel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.lblCurrentModel.Click += new System.EventHandler(this.lblCurrentModel_Click);
             // 
             // picLogo
             // 

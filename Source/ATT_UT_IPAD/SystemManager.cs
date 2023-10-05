@@ -29,11 +29,12 @@ using System.Runtime.ExceptionServices;
 using System.Runtime.InteropServices;
 using System.Security;
 using System.Security.Permissions;
+using System.Threading;
 using System.Windows.Forms;
 
 namespace ATT_UT_IPAD
 {
-    public class SystemManager
+    public partial class SystemManager
     {
         #region 필드
         private static SystemManager _instance = null;
@@ -378,6 +379,55 @@ namespace ATT_UT_IPAD
         public void ShowManualJugdeForm()
         {
             _mainForm.ShowManualJudgeForm();
+        }
+        #endregion
+    }
+
+    // All Axes Homing
+    public partial class SystemManager
+    {
+        #region 필드
+        private bool _isAxisHoming;
+        private Axis _currentHomingAxis;
+        #endregion
+
+        #region 메소드
+        public void HomingAllAxes()
+        {
+            var akkonLaf = LAFManager.Instance().GetLAF("AkkonLaf");
+            var alignLaf = LAFManager.Instance().GetLAF("AlignLaf");
+
+            ProgressForm progressForm = new ProgressForm();
+            progressForm.Add($"Axis X Homing", AxisHoming, AxisName.X, StopAxisHoming);
+            progressForm.Add($"Axis Z1 (Akkon LAF) homing", akkonLaf.HomeSequenceAction, akkonLaf.StopHomeSequence);
+            progressForm.Add($"Axis Z2 (Align LAF) homing", alignLaf.HomeSequenceAction, alignLaf.StopHomeSequence);
+            progressForm.ShowDialog();
+        }
+
+        private bool AxisHoming(AxisName axisName)
+        {
+            int timeOutSec = 40;
+            _currentHomingAxis = MotionManager.Instance().GetAxis(AxisHandlerName.Handler0, axisName);
+            _currentHomingAxis.StartHome();
+            _isAxisHoming = true;
+
+            Stopwatch stopwatch = Stopwatch.StartNew();
+            while (_isAxisHoming == true && _currentHomingAxis.IsHomeFound == false && stopwatch.Elapsed.Seconds < timeOutSec)
+            {
+                if (_currentHomingAxis.IsMoving() == false)
+                    _currentHomingAxis.IsHomeFound = true;
+                else
+                    Thread.Sleep(50);
+            }
+
+            StopAxisHoming();
+            return _currentHomingAxis.IsHomeFound;
+        }
+
+        private void StopAxisHoming()
+        {
+            _isAxisHoming = false;
+            _currentHomingAxis?.StopMove();
         }
         #endregion
     }
