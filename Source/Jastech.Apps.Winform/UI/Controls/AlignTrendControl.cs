@@ -140,6 +140,7 @@ namespace Jastech.Apps.Winform.UI.Controls
             _alignResultType = alignResultType;
 
             _alignTypeLabelList[(int)alignResultType].BackColor = _selectedColor;
+            UpdateAlignResults(_alignResultType);
             UpdateChart(_tabType, alignResultType);
         }
 
@@ -163,6 +164,20 @@ namespace Jastech.Apps.Winform.UI.Controls
         private void lblRx_Click(object sender, EventArgs e) => SetAlignResultType(AlignResultType.Rx);
 
         private void lblRy_Click(object sender, EventArgs e) => SetAlignResultType(AlignResultType.Ry);
+
+        private void UpdateAlignResults(AlignResultType alignResultType)
+        {
+            foreach (var column in dgvAlignTrendData.Columns.Cast<DataGridViewColumn>())
+                column.Visible = true;
+
+            if (alignResultType != AlignResultType.All)
+            {
+                var alignTypes = Enum.GetNames(typeof(AlignResultType));
+                string[] filters = alignTypes.Where(type => type != $"{AlignResultType.All}" && type != $"{alignResultType}").ToArray();
+                foreach (var column in dgvAlignTrendData.Columns.Cast<DataGridViewColumn>().Where(column => filters.Any(filter => filter == column.HeaderText)))
+                    column.Visible = false;
+            }
+        }
 
         private void UpdateChart(TabType tabType, AlignResultType alignResultType) => ChartControl.UpdateAlignChart(_alignTrendResults, tabType, alignResultType);
 

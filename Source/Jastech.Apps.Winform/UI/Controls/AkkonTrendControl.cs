@@ -139,7 +139,8 @@ namespace Jastech.Apps.Winform.UI.Controls
             ClearSelectedLabel(pnlChartTypes);
             _akkonResultType = akkonResultType;
 
-            _akkonTypeLabelList[(int)_tabType].BackColor = _selectedColor;
+            _akkonTypeLabelList[(int)_akkonResultType].BackColor = _selectedColor;
+            UpdateAkkonResults(_akkonResultType);
             UpdateChart(_tabType, _akkonResultType);
         }
 
@@ -157,6 +158,20 @@ namespace Jastech.Apps.Winform.UI.Controls
         private void lblCount_Click(object sender, EventArgs e) => SetAkkonResultType(AkkonResultType.Count);
 
         private void lblLength_Click(object sender, EventArgs e) => SetAkkonResultType(AkkonResultType.Length);
+
+        private void UpdateAkkonResults(AkkonResultType akkonResultType)
+        {
+            foreach (var column in dgvAkkonTrendData.Columns.Cast<DataGridViewColumn>())
+                column.Visible = true;
+
+            if (akkonResultType != AkkonResultType.All)
+            {
+                var alignTypes = Enum.GetNames(typeof(AkkonResultType));
+                string[] filters = alignTypes.Where(type => type != $"{AkkonResultType.All}" && type != $"{akkonResultType}").ToArray();
+                foreach (var column in dgvAkkonTrendData.Columns.Cast<DataGridViewColumn>().Where(column => filters.Any(filter => column.HeaderText.Contains(filter))))
+                    column.Visible = false;
+            }
+        }
 
         private void UpdateChart(TabType tabType, AkkonResultType akkonResultType) => ChartControl.UpdateAkkonChart(_akkonTrendResults, tabType, akkonResultType);
 
