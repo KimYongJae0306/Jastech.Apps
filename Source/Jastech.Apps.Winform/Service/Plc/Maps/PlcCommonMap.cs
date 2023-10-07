@@ -6,8 +6,10 @@
         PC_AxisX_Busy,
         PC_AxisX_CurPos,
         PC_AxisX_ServoOn,
+
         PLC_Alive,
-        RUN_Status,
+        PLC_Run_Mode,
+        PLC_Door_Opened,
 
         PC_Ready,
         PLC_Ready,

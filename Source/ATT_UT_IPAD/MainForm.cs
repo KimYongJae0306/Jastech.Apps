@@ -55,6 +55,10 @@ namespace ATT_UT_IPAD
 
         private CancellationTokenSource CancelVirtualInspTask { get; set; }
 
+        private Task CheckSafetyDoorlockTask { get; set; }
+
+        private CancellationTokenSource CancelSafetyDoorlockTask { get; set; }
+
         private Queue<string> VirtualImagePathQueue = new Queue<string>();
 
         private Queue<ICogImage> AlignLastScanImageQueue = new Queue<ICogImage>();
@@ -123,6 +127,10 @@ namespace ATT_UT_IPAD
 
                 if (messageBox.ShowDialog() == DialogResult.Yes)
                     HomingAllAxes();
+
+                CancelSafetyDoorlockTask = new CancellationTokenSource();
+                CheckSafetyDoorlockTask = new Task(CheckDoorOpenedLoop, CancelSafetyDoorlockTask.Token);
+                CheckSafetyDoorlockTask.Start();
             }
         }
 
@@ -281,7 +289,7 @@ namespace ATT_UT_IPAD
             logForm.SetLogViewPath(logPath, resultPath, modelName);
             logForm.ShowDialog();
         }
-     
+
         private void tmrMainForm_Tick(object sender, EventArgs e)
         {
             DateTime now = DateTime.Now;
@@ -309,18 +317,25 @@ namespace ATT_UT_IPAD
             {
                 lblTeachingPageImage.Enabled = false;
                 lblTeachingPage.Enabled = false;
-                lblDataPageImage.Enabled = false;
-                lblLogPage.Enabled = false;
 
                 if (user.Type == AuthorityType.Maker)
+                {
+                    lblLogPageImage.Enabled = true;
+                    lblLogPage.Enabled = true;
+                    lblDataPageImage.Enabled = true;
                     lblDataPage.Enabled = true;
+                }
                 else
+                {
+                    lblLogPageImage.Enabled = false;
+                    lblLogPage.Enabled = false;
+                    lblDataPageImage.Enabled = false;
                     lblDataPage.Enabled = false;
-
+                }
             }
             else
             {
-                if(user.Type == AuthorityType.None)
+                if (user.Type == AuthorityType.None)
                 {
                     lblTeachingPage.Enabled = false;
                     lblTeachingPageImage.Enabled = false;
@@ -333,6 +348,7 @@ namespace ATT_UT_IPAD
 
                 lblDataPageImage.Enabled = true;
                 lblDataPage.Enabled = true;
+                lblLogPageImage.Enabled = true;
                 lblLogPage.Enabled = true;
             }
         }
@@ -422,6 +438,7 @@ namespace ATT_UT_IPAD
         {
             tmrMainForm.Stop();
             tmrUpdateStates.Stop();
+            CancelSafetyDoorlockTask.Cancel();
             StopVirtualInspTask();
 
             SystemManager.Instance().ReleaseInspRunner();
@@ -602,6 +619,23 @@ namespace ATT_UT_IPAD
             }
         }
 
+        public async void CheckDoorOpenedLoop()
+        {
+            while (CancelSafetyDoorlockTask?.IsCancellationRequested == false)
+            {
+                if (PlcControlManager.Instance().GetValue(PlcCommonMap.PLC_Door_Opened) == "2" && PlcControlManager.Instance().MachineStatus == MachineStatus.RUN)
+                {
+                    MotionManager.Instance().GetAxisHandler(AxisHandlerName.Handler0).StopMove();
+                    LAFManager.Instance().GetLAF("AkkonLaf").LafCtrl.SetMotionStop();
+                    LAFManager.Instance().GetLAF("AlignLaf").LafCtrl.SetMotionStop();
+                    SystemManager.Instance().StopSequence();
+
+                    new MessageConfirmForm { Message = "Door is opened.\r\nCheck the lock state and start AutoRun" }.ShowDialog();
+                }
+                await Task.Delay(20);
+            }
+        }
+
         private string GetVirtualImagePath()
         {
             lock (VirtualImagePathQueue)
@@ -670,7 +704,8 @@ namespace ATT_UT_IPAD
 
         private void lblMachineName_Click(object sender, EventArgs e)
         {
-            Process.Start(ConfigSet.Instance().Path.Result);
+            if (UserManager.Instance().CurrentUser.Type == AuthorityType.Maker)
+                Process.Start(ConfigSet.Instance().Path.Result);
         }
         #endregion
 

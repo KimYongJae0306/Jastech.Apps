@@ -322,13 +322,16 @@ namespace ATT_UT_IPAD
                 form.Message = "Do you want to Stop Auto Mode?";
 
                 if (form.ShowDialog() == DialogResult.Yes)
-                {
-                    _inspRunner.SeqStop();
-                    AddSystemLogMessage("Stop Auto Mode.");
-
-                    PlcControlManager.Instance().MachineStatus = MachineStatus.STOP;
-                }
+                    StopSequence();
             }
+        }
+
+        public void StopSequence()
+        {
+            _inspRunner.SeqStop();
+            AddSystemLogMessage("Stop Auto Mode.");
+
+            PlcControlManager.Instance().MachineStatus = MachineStatus.STOP;
         }
 
         public void SetStopMode()

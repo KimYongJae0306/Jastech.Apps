@@ -308,11 +308,11 @@ namespace ATT_UT_IPAD
             motion.TriggerBuffer = ACSBufferNumber.CameraTrigger_Unit2;
             config.Add(motion);
 
-            //Akkon LAF
+            ////Akkon LAF
             //var akkonLaf = new VirtualLAFCtrl("AkkonLaf");
             //config.Add(akkonLaf);
 
-            //Akkon LAF
+            ////Akkon LAF
             //var alignLaf = new VirtualLAFCtrl("AlignLaf");
             //config.Add(alignLaf);
 

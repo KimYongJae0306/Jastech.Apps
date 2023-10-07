@@ -126,19 +126,14 @@ namespace Jastech.Apps.Winform.Service.Plc
                 {
                     lock (PlcCommonCommandQueue)
                         PlcCommonCommandQueue.Enqueue(command);
-                }
 
-                _prevCommonCommand = command;
+                    _prevCommonCommand = command;
+                }
             }
         }
 
         public void AddCommand(int command)
         {
-            if (command == 1400)
-            {
-                int gg = 0;
-            }
-
             if (_prevCommand == command)
                 return;
 
@@ -146,9 +141,9 @@ namespace Jastech.Apps.Winform.Service.Plc
             {
                 lock (PlcCommandQueue)
                     PlcCommandQueue.Enqueue(command);
-            }
 
-            _prevCommand = command;
+                _prevCommand = command;
+            }
         }
 
         public int GetCommonCommand()
@@ -187,21 +182,23 @@ namespace Jastech.Apps.Winform.Service.Plc
                         if (commonCommand != 0)
                         {
                             EnableActive = true;
-                            CommonCommandReceived((PlcCommonCommand)commonCommand);
                             PlcControlManager.Instance().ClearAddress(PlcCommonMap.PLC_Command_Common);
+                            CommonCommandReceived((PlcCommonCommand)commonCommand);
+                            _prevCommonCommand = 0;
                             EnableActive = false;
                         }
                     }
 
                     if (GetCommand() is int command)
                     {
-                        if (command == 0)
-                            continue;
-
-                        EnableActive = true;
-                        PlcCommandReceived((PlcCommand)command);
-                        PlcControlManager.Instance().ClearAddress(PlcCommonMap.PLC_Command);
-                        EnableActive = false;
+                        if (command != 0)
+                        {
+                            EnableActive = true;
+                            PlcControlManager.Instance().ClearAddress(PlcCommonMap.PLC_Command);
+                            PlcCommandReceived((PlcCommand)command);
+                            _prevCommand = 0;
+                            EnableActive = false;
+                        }
                     }
 
                     Thread.Sleep(100);

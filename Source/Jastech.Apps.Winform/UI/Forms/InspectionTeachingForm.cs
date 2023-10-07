@@ -39,6 +39,8 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Runtime.InteropServices;
+using System.Security.Cryptography;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Windows.Forms;
 
@@ -431,8 +433,11 @@ namespace Jastech.Framework.Winform.Forms
                 Display.SetImage(orgImage);
                 Display.SetThumbnailImage(orgImage);
 
-                int tabNo = Convert.ToInt32(_currentTabNo);
-                UpdateDisplayImage(tabNo);
+                Match match = Regex.Match(dlg.FileName, $"[Tab_][0-{cbxTabList.Items.Count - 1}][_]");
+                if (match.Success == true)
+                    cbxTabList.SelectedIndex = Convert.ToInt32(match.Value.Replace("_", ""));
+
+                cbxTabList_SelectedIndexChanged(null, EventArgs.Empty);
             }
         }
 

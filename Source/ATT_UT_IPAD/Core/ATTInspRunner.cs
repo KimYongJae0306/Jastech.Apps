@@ -370,7 +370,7 @@ namespace ATT_UT_IPAD.Core
 
                     WriteLog("Receive Inspection Start Signal From PLC.", true);
 
-                    if (PlcControlManager.Instance().GetValue(PlcCommonMap.RUN_Status) == "2")
+                    if (PlcControlManager.Instance().GetValue(PlcCommonMap.PLC_Run_Mode) == "2")
                     {
                         WriteLog("Start Idle Run sequence.", true);
                         SeqStep = SeqStep.SEQ_PLC_IDLERUN;
@@ -499,6 +499,7 @@ namespace ATT_UT_IPAD.Core
                     }
                     else
                     {
+                        WaitPlcValueClear(PlcCommonMap.PC_GrabDone);
                         SendResultData();
                         WriteLog("Completed Send Plc Tab Result Data", true);
                     }
@@ -661,6 +662,16 @@ namespace ATT_UT_IPAD.Core
                 finalHead = "-";
 
             return finalHead;
+        }
+
+        private void WaitPlcValueClear(PlcCommonMap addr)
+        {
+            Stopwatch sw = Stopwatch.StartNew();
+            int timeOutMs = 3000;
+            while (PlcControlManager.Instance().GetValue(addr) != "0" && sw.ElapsedMilliseconds <= timeOutMs)
+                Thread.Sleep(20);   //plcScanTime
+            if (sw.ElapsedMilliseconds > timeOutMs)
+                new MessageConfirmForm { Message = $"Wait PLC value clear timed out.\r\nCommand : {addr}\r\nTime : {timeOutMs}" }.ShowDialog();
         }
 
         private void SendResultData()
@@ -1239,6 +1250,8 @@ namespace ATT_UT_IPAD.Core
                 {
                     while (manager.IsAxisInPosition(UnitName.Unit0, teachingPos, axis, cameraGap) == false)
                     {
+                        if (PlcControlManager.Instance().MachineStatus != MachineStatus.RUN)
+                            return false;
                         if (sw.ElapsedMilliseconds >= movingParam.MovingTimeOut)
                             return false;
 
