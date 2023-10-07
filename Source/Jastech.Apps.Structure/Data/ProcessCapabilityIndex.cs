@@ -50,6 +50,12 @@ namespace Jastech.Apps.Structure.Data
             result.Pp = Math.Abs(Math.Round(result.Pp, 3));
             result.Ppk = Math.Abs(Math.Round(result.Ppk, 3));
 
+            // Round the results and Get absolute value
+            result.Range = Math.Round(valueList.Max() - valueList.Min(), 3);
+            result.Mean = Math.Round(mean, 3);
+            result.Sigma = Math.Round(populationStdDev, 3);
+            result.SixSigma = Math.Round(populationStdDev * 6, 3);
+
             return result;
         }
     }
@@ -65,5 +71,13 @@ namespace Jastech.Apps.Structure.Data
         public double Pp { get; set; } = 0.0;
 
         public double Ppk { get; set; } = 0.0;
+
+        public double Range { get; set; } = 0.0;
+
+        public double Mean { get; set; } = 0.0;
+
+        public double Sigma { get; set; } = 0.0;
+
+        public double SixSigma { get; set; } = 0.0;
     }
 }

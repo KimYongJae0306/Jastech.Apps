@@ -55,7 +55,7 @@ namespace Jastech.Apps.Winform.Service.Plc
 
         public event PreAlignRunnerEventHandler PreAlignRunnerHandler;
 
-        public OriginAllDelegate OriginAllEvent;
+        public event OriginAllDelegate OriginAllEvent;
         #endregion
 
         #region 델리게이트
@@ -63,7 +63,7 @@ namespace Jastech.Apps.Winform.Service.Plc
 
         public delegate void PreAlignRunnerEventHandler(bool isStart);
 
-        public delegate bool OriginAllDelegate();
+        public delegate void OriginAllDelegate();
         #endregion
 
         #region 생성자
@@ -623,32 +623,10 @@ namespace Jastech.Apps.Winform.Service.Plc
 
         private void StartOriginAll()
         {
-            AxisHandler allAxisHandler = new AxisHandler("All");
+            //PlcControlManager.Instance().WritePcCommand(PcCommand.ServoOn_1);
+            //PlcControlManager.Instance().WritePcCommand(PcCommand.ServoOn_2);
 
-            foreach (var axisHandler in MotionManager.Instance().AxisHandlerList)
-            {
-                foreach (var axis in axisHandler.GetAxisList())
-                {
-                    if (axis.Name.ToUpper().Contains("X"))
-                    {
-                        if (axis.IsMoving() == false && axis.IsEnable() == false)
-                            axis.TurnOnServo();
-
-                        allAxisHandler.AddAxis(axis);
-                    }
-                }
-            }
-            allAxisHandler.StopMove();
-            Thread.Sleep(100);
-
-            allAxisHandler.StartHomeMove();
-
-            // LAF는 Scaling Sequence가 있어 별도 homing
-            //var lafCtrlHandler = DeviceManager.Instance().LAFCtrlHandler;
-
-            //for(int servoOnAddrShift =  0; servoOnAddrShift < lafCtrlHandler.Count; servoOnAddrShift += 10)
-            //    PlcControlManager.Instance().WritePcCommand(PcCommand.ServoOn_1 + servoOnAddrShift);
-            //LAFManager.Instance().LAFList.ForEach(laf => laf.HomeSequenceAction());
+            OriginAllEvent?.Invoke();
 
             PlcControlManager.Instance().WritePcStatus(PlcCommand.Origin_All);
             Logger.Write(LogType.Device, "Send to PLC Origin All");

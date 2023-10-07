@@ -97,7 +97,7 @@ namespace ATT_UT_IPAD
             ModelManager.Instance().CurrentModelChangedEvent += MainForm_CurrentModelChangedEvent;
             PlcScenarioManager.Instance().Initialize(ATTInspModelService);
             PlcScenarioManager.Instance().InspRunnerHandler += MainForm_InspRunnerHandler;
-            //PlcScenarioManager.Instance().OriginAllEvent += MainForm_HomeCompletedHandler;
+            PlcScenarioManager.Instance().OriginAllEvent += MainForm_OriginAllEvent;
 
             PlcControlManager.Instance().WritePcCommand(PcCommand.ServoOn_1);
 
@@ -126,7 +126,7 @@ namespace ATT_UT_IPAD
                 var messageBox = new MessageYesNoForm { Message = suggestMessage };
 
                 if (messageBox.ShowDialog() == DialogResult.Yes)
-                    HomingAllAxes();
+                    SystemManager.Instance().HomingAllAxes();
 
                 CancelSafetyDoorlockTask = new CancellationTokenSource();
                 CheckSafetyDoorlockTask = new Task(CheckDoorOpenedLoop, CancelSafetyDoorlockTask.Token);
@@ -134,14 +134,11 @@ namespace ATT_UT_IPAD
             }
         }
 
+        private void MainForm_OriginAllEvent() => BeginInvoke(new Action(SystemManager.Instance().HomingAllAxes));
+
         private void MainForm_InspRunnerHandler(bool isStart)
         {
             AppsStatus.Instance().IsInspRunnerFlagFromPlc = isStart;
-        }
-
-        private void MainForm_HomeCompletedHandler(bool isCompleted)
-        {
-            AppsStatus.Instance().IsHomeCompleted = isCompleted;
         }
 
         private void AddControls()
@@ -708,55 +705,5 @@ namespace ATT_UT_IPAD
                 Process.Start(ConfigSet.Instance().Path.Result);
         }
         #endregion
-
-        #region All axes homing on program loaded (MainForm.Optional)
-        // TODO: 클래스 단위 모듈화 고려, 혹은 AppsCore에 넣거나..
-
-        #region 필드
-        private bool _isAxisHoming;
-        private Axis _currentHomingAxis;
-        #endregion
-
-        #region 메소드
-        private void HomingAllAxes()
-        {
-            ProgressForm progressForm = new ProgressForm();
-            var akkonLaf = LAFManager.Instance().GetLAF("AkkonLaf");
-            var alignLaf = LAFManager.Instance().GetLAF("AlignLaf");
-            progressForm.Add($"Axis X Homing", AxisHoming, AxisName.X, StopAxisHoming);
-            progressForm.Add($"Axis Z1 (Akkon LAF) homing", akkonLaf.HomeSequenceAction, akkonLaf.StopHomeSequence);
-            progressForm.Add($"Axis Z2 (Align LAF) homing", alignLaf.HomeSequenceAction, alignLaf.StopHomeSequence);
-            progressForm.StartAllTasks();
-            progressForm.ShowDialog();
-        }
-
-        private bool AxisHoming(AxisName axisName)
-        {
-            int timeOutSec = 40;
-            _currentHomingAxis = MotionManager.Instance().GetAxis(AxisHandlerName.Handler0, axisName);
-            _currentHomingAxis.StartHome();
-            _isAxisHoming = true;
-
-            Stopwatch stopwatch = Stopwatch.StartNew();
-            while (_isAxisHoming == true && _currentHomingAxis.IsHomeFound == false && stopwatch.Elapsed.Seconds < timeOutSec)
-            {
-                if (_currentHomingAxis.IsMoving() == false)
-                    _currentHomingAxis.IsHomeFound = true;
-                else
-                    Thread.Sleep(50);
-            }
-
-            StopAxisHoming();
-            return _currentHomingAxis.IsHomeFound;
-        }
-
-        private void StopAxisHoming()
-        {
-            _isAxisHoming = false;
-            _currentHomingAxis?.StopMove();
-        }
-        #endregion
-
-        #endregion All axes homing on program loaded (MainForm.Optional)
     }
 }

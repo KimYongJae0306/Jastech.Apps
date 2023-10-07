@@ -17,7 +17,7 @@ namespace Jastech.Apps.Structure.VisionTool
 {
     public partial class MainAlgorithmTool : AlgorithmTool
     {
-        public AlignmentResult ExecuteAlignment(Unit unit, List<PointF> realCoordinateList, PointF calibrationStartPosition)
+        public AlignmentResult ExecuteAlignment(Unit unit, List<PointF> realCoordinateList, PointF calibrationStartPosition, PointF calibrationRobotCenterPosition)
         {
             double t1, t2, dt = 0.0;
             double cX = 0, cY = 0, pX = 0, pY = 0;
@@ -43,12 +43,26 @@ namespace Jastech.Apps.Structure.VisionTool
 
             double alignX = 0, alignY = 0;
 
+
+            /////////////////////////////////////////////////////////////////////
+            leftMotionX = 140;
+            leftMotionY = 78;
+            leftMotionT = 0;
+
+            rightMotionX = 360;
+            rightMotionY = 78;
+            rightMotionT = 0;
+            /////////////////////////////////////////////////////////////////////
+
+
+
             // 1. 보정각 Theta 구하기
             double dX = (rightMotionX + rightRealMarkX) - (leftMotionX + leftRealMarkX) + 0;    // (m_dMotionPosX[ALIGN_OBJ_RIGHT] + dMarkRightX) - (m_dMotionPosX[ALIGN_OBJ_LEFT] + dMarkLeftX) + m_dLRDistCamera;
             double dY = (rightMotionY + rightRealMarkY) - (leftMotionY + leftRealMarkY);        // (m_dMotionPosY[ALIGN_OBJ_RIGHT] + dMarkRightY) - (m_dMotionPosY[ALIGN_OBJ_LEFT] + dMarkLeftY);
 
             if (dX != 0)
-                t1 = Math.Atan2(dY, dX);
+                t1 = Math.Atan(dY / dX);
+            // t1 = Math.Atan2(dY, dX); Atan()과 위상차이 있으니 사용에 유의할 것
             else
                 t1 = 0.0;
 
@@ -66,12 +80,12 @@ namespace Jastech.Apps.Structure.VisionTool
             centerOffsetX = (leftMotionX - calibrationStartPosition.X); // m_dMotionPosX[ALIGN_OBJ_LEFT] - g_DataCalibration.GetCalStartPosX(m_nCurrentCamIndex, nStageNo);
             centerOffsetY = (leftMotionY - calibrationStartPosition.Y); // m_dMotionPosY[ALIGN_OBJ_LEFT] - g_DataCalibration.GetCalStartPosY(m_nCurrentCamIndex, nStageNo);
 
-            cX = centerOffsetX; // g_DataCalibration.GetRotCenterX(m_nCurrentCamIndex, nStageNo) + dCenterOffsetX;
-            cY = centerOffsetY; // g_DataCalibration.GetRotCenterY(m_nCurrentCamIndex, nStageNo) + dCenterOffsetY;
+            cX = calibrationRobotCenterPosition.X + centerOffsetX; // g_DataCalibration.GetRotCenterX(m_nCurrentCamIndex, nStageNo) + dCenterOffsetX;
+            cY = calibrationRobotCenterPosition.Y + centerOffsetY; // g_DataCalibration.GetRotCenterY(m_nCurrentCamIndex, nStageNo) + dCenterOffsetY;
 
             // 4. 회전 후 보정 위치 계산
             alignX = (pX - cX) * Math.Cos(dt) - (pY - cY) * Math.Sin(dt) + cX;
-            alignY = (pY - cY) * Math.Cos(dt) - (pX - cX) * Math.Sin(dt) + cY;
+            alignY = (pY - cY) * Math.Cos(dt) + (pX - cX) * Math.Sin(dt) + cY;
 
             // 5. 현재 위치 기준 보정 offset 계산
             double offsetX = leftMotionX - alignX;

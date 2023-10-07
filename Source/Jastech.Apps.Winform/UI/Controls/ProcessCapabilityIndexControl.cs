@@ -1,7 +1,6 @@
 ﻿using Jastech.Apps.Structure;
 using Jastech.Apps.Structure.Data;
 using Jastech.Apps.Winform.Settings;
-using Jastech.Framework.Structure;
 using Jastech.Framework.Util.Helper;
 using Jastech.Framework.Winform.Forms;
 using Jastech.Framework.Winform.Helper;
@@ -11,7 +10,6 @@ using System.Data;
 using System.Drawing;
 using System.IO;
 using System.Linq;
-using System.Security.Policy;
 using System.Windows.Forms;
 
 namespace Jastech.Apps.Winform.UI.Controls
@@ -146,6 +144,10 @@ namespace Jastech.Apps.Winform.UI.Controls
                 "Cpk",
                 "Pp",
                 "Ppk",
+                "Range",
+                "Mean",
+                "σ",
+                "6σ",
             };
             var pcColumns = pcHeader.Select(text => new DataGridViewTextBoxColumn { Name = text, SortMode = DataGridViewColumnSortMode.NotSortable});
             dgvPCResult.Columns.AddRange(pcColumns.ToArray());
@@ -202,10 +204,25 @@ namespace Jastech.Apps.Winform.UI.Controls
             _alignResultType = alignResultType;
 
             _alignTypeLabelList[(int)alignResultType].BackColor = _selectedColor;
+            UpdateAlignResults(_alignResultType);
             UpdateChart(_tabType, _alignResultType);
         }
 
         private void UpdateChart(TabType tabType, AlignResultType alignResultType) => ChartControl.UpdateAlignChart(_alignTrendResults, tabType, alignResultType);
+
+        private void UpdateAlignResults(AlignResultType alignResultType)
+        {
+            foreach (var column in dgvAlignData.Columns.Cast<DataGridViewColumn>())
+                column.Visible = true;
+
+            if (alignResultType != AlignResultType.All)
+            {
+                var alignTypes = Enum.GetNames(typeof(AlignResultType));
+                string[] filters = alignTypes.Where(type => type != $"{AlignResultType.All}" && type != $"{alignResultType}").ToArray();
+                foreach (var column in dgvAlignData.Columns.Cast<DataGridViewColumn>().Where(column => filters.Any(filter => filter == column.HeaderText)))
+                    column.Visible = false;
+            }
+        }
 
         public void UpdateAlignDataGridView()
         {
@@ -213,6 +230,8 @@ namespace Jastech.Apps.Winform.UI.Controls
             for (int rowIndex = 0; rowIndex < _alignTrendResults.Count; rowIndex++)
                 dgvAlignData.Rows.Add(_alignTrendResults[rowIndex].GetAlignStringDatas().ToArray());
         }
+
+        private void dgvAlignData_SelectionChanged(object sender, EventArgs e) => UpdatePcInfoDataGridView(_tabType);
 
         private void UpdatePcInfoDataGridView(TabType tabType)
         {
@@ -232,11 +251,24 @@ namespace Jastech.Apps.Winform.UI.Controls
             _processCapabilityIndex.PerformanceUSL_Side = config.PerformanceUSL_Side;
             _processCapabilityIndex.PerformanceLSL_Side = config.PerformanceLSL_Side;
 
-            listCapabilityResults.Add(_processCapabilityIndex.GetResult($"{AlignResultType.Lx}", lxData));
-            listCapabilityResults.Add(_processCapabilityIndex.GetResult($"{AlignResultType.Ly}", lyData));
-            listCapabilityResults.Add(_processCapabilityIndex.GetResult($"{AlignResultType.Cx}", cxData));
-            listCapabilityResults.Add(_processCapabilityIndex.GetResult($"{AlignResultType.Rx}", rxData));
-            listCapabilityResults.Add(_processCapabilityIndex.GetResult($"{AlignResultType.Ry}", ryData));
+            if (dgvAlignData.SelectedRows.Count > 0)
+            {
+                int skipIndex = dgvAlignData.SelectedRows.Cast<DataGridViewRow>().OrderBy(row => row.Index).First().Index;
+                int takeCount = dgvAlignData.SelectedRows.Count;
+                listCapabilityResults.Add(_processCapabilityIndex.GetResult($"{AlignResultType.Lx}", lxData.Skip(skipIndex).Take(takeCount).ToList()));
+                listCapabilityResults.Add(_processCapabilityIndex.GetResult($"{AlignResultType.Ly}", lyData.Skip(skipIndex).Take(takeCount).ToList()));
+                listCapabilityResults.Add(_processCapabilityIndex.GetResult($"{AlignResultType.Cx}", cxData.Skip(skipIndex).Take(takeCount).ToList()));
+                listCapabilityResults.Add(_processCapabilityIndex.GetResult($"{AlignResultType.Rx}", rxData.Skip(skipIndex).Take(takeCount).ToList()));
+                listCapabilityResults.Add(_processCapabilityIndex.GetResult($"{AlignResultType.Ry}", ryData.Skip(skipIndex).Take(takeCount).ToList()));
+            }
+            else
+            {
+                listCapabilityResults.Add(_processCapabilityIndex.GetResult($"{AlignResultType.Lx}", lxData));
+                listCapabilityResults.Add(_processCapabilityIndex.GetResult($"{AlignResultType.Ly}", lyData));
+                listCapabilityResults.Add(_processCapabilityIndex.GetResult($"{AlignResultType.Cx}", cxData));
+                listCapabilityResults.Add(_processCapabilityIndex.GetResult($"{AlignResultType.Rx}", rxData));
+                listCapabilityResults.Add(_processCapabilityIndex.GetResult($"{AlignResultType.Ry}", ryData));
+            }
 
             dgvPCResult.Rows.Clear();
             foreach (var pcResult in listCapabilityResults)
@@ -248,6 +280,10 @@ namespace Jastech.Apps.Winform.UI.Controls
                     $"{pcResult.Cpk}",
                     $"{pcResult.Pp}",
                     $"{pcResult.Ppk}",
+                    $"{pcResult.Range}",
+                    $"{pcResult.Mean}",
+                    $"{pcResult.Sigma}",
+                    $"{pcResult.SixSigma}",
                 };
                 dgvPCResult.Rows.Add(row);
             }
@@ -309,5 +345,6 @@ namespace Jastech.Apps.Winform.UI.Controls
             }
         }
         #endregion
+
     }
 }

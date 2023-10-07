@@ -407,8 +407,9 @@ namespace ATT_UT_Remodeling
                     return false;
 
                 PointF calibrationStartPosition = CalibrationData.Instance().GetCalibrationStartPosition();
+                PointF calibrationRobotPosition = CalibrationData.Instance().GetRotationCenter();
 
-                var alignmentResult = AlgorithmTool.ExecuteAlignment(unit, realCoordinateList, calibrationStartPosition);
+                var alignmentResult = AlgorithmTool.ExecuteAlignment(unit, realCoordinateList, calibrationStartPosition, calibrationRobotPosition);
 
                 preAlignResult.SetPreAlignResult(alignmentResult.OffsetX, alignmentResult.OffsetY, alignmentResult.OffsetT);
 
