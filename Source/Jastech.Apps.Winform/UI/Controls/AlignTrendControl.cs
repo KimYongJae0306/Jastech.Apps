@@ -215,10 +215,10 @@ namespace Jastech.Apps.Winform.UI.Controls
                         Tab = Convert.ToInt32(datas[columnSkip + 4]),
                         Judge = datas[columnSkip + 5],
                         PreHead = datas[columnSkip + 6],
-                        Cx = datas[columnSkip + 7] == "-" ? 0 : Convert.ToDouble(datas[columnSkip + 7]),
-                        Lx = datas[columnSkip + 8] == "-" ? 0 : Convert.ToDouble(datas[columnSkip + 8]),
-                        Rx = datas[columnSkip + 9] == "-" ? 0 : Convert.ToDouble(datas[columnSkip + 9]),
-                        Ly = datas[columnSkip + 10] == "-" ? 0 : Convert.ToDouble(datas[columnSkip + 10]),
+                        Lx = datas[columnSkip + 7] == "-" ? 0 : Convert.ToDouble(datas[columnSkip + 7]),
+                        Ly = datas[columnSkip + 8] == "-" ? 0 : Convert.ToDouble(datas[columnSkip + 8]),
+                        Cx = datas[columnSkip + 9] == "-" ? 0 : Convert.ToDouble(datas[columnSkip + 9]),
+                        Rx = datas[columnSkip + 10] == "-" ? 0 : Convert.ToDouble(datas[columnSkip + 10]),
                         Ry = datas[columnSkip + 11] == "-" ? 0 : Convert.ToDouble(datas[columnSkip + 11])
                     };
                     trendResult.TabAlignResults.Add(tabAlignResult);

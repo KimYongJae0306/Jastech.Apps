@@ -462,7 +462,7 @@ namespace ATT_UT_IPAD.Core
                         WriteLog("Complete Align LineScanner Grab.", true);
                     }
 
-                    PlcControlManager.Instance().WriteGrabDone();
+                    //PlcControlManager.Instance().WriteGrabDone();
                     WriteLog("Send to Plc Grab Done", true);
 
                     LightCtrlHandler.TurnOff();
@@ -891,10 +891,10 @@ namespace ATT_UT_IPAD.Core
                     header.Add($"Tab");
                     header.Add($"Judge");
                     header.Add($"P");
-                    header.Add($"Cx");
                     header.Add($"Lx");
-                    header.Add($"Rx");
                     header.Add($"Ly");
+                    header.Add($"Cx");
+                    header.Add($"Rx");
                     header.Add($"Ry");
                 }
 
@@ -928,10 +928,10 @@ namespace ATT_UT_IPAD.Core
                 body.Add($"{tabInspResult.TabNo + 1}");                                     // Tab No
                 body.Add($"{alignResult.Judgement}");                                       // Judge
                 body.Add($"{alignResult.PreHead}");                                         // Pre Head
-                body.Add($"{cx}");                                                       // Align Cx
                 body.Add($"{lx}");                                                       // Align Lx
-                body.Add($"{rx}");                                                       // Align Rx
                 body.Add($"{ly}");                                                       // Align Ly
+                body.Add($"{cx}");                                                       // Align Cx
+                body.Add($"{rx}");                                                       // Align Rx
                 body.Add($"{ry}");                                                       // Align Ry
             }
 

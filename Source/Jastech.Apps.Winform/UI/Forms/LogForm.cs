@@ -456,10 +456,10 @@ namespace Jastech.Framework.Winform.Forms
                 datas.Add($"{tab.Tab}");
                 datas.Add($"{tab.Judge}");
                 datas.Add($"{tab.PreHead}");
-                datas.Add($"{tab.Cx}");
                 datas.Add($"{tab.Lx}");
-                datas.Add($"{tab.Rx}");
                 datas.Add($"{tab.Ly}");
+                datas.Add($"{tab.Cx}");
+                datas.Add($"{tab.Rx}");
                 datas.Add($"{tab.Ry}");
             }
 
@@ -525,10 +525,10 @@ namespace Jastech.Framework.Winform.Forms
         public int Tab { get; set; }
         public string Judge { get; set; }
         public string PreHead { get; set; }
-        public double Cx { get; set; }
         public double Lx { get; set; }
-        public double Rx { get; set; }
         public double Ly { get; set; }
+        public double Cx { get; set; }
+        public double Rx { get; set; }
         public double Ry { get; set; }
     }
 

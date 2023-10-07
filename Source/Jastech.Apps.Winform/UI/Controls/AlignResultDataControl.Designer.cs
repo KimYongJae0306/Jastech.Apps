@@ -44,10 +44,10 @@
             this.colJudge = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colPreHead = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colFinalHead = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colCount = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colLength = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.dgvAlignHistory)).BeginInit();
             this.SuspendLayout();
@@ -75,10 +75,10 @@
             this.colJudge,
             this.colPreHead,
             this.colFinalHead,
-            this.Column3,
             this.colCount,
-            this.Column1,
             this.colLength,
+            this.Column3,
+            this.Column1,
             this.Column2});
             dataGridViewCellStyle8.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
             dataGridViewCellStyle8.BackColor = System.Drawing.SystemColors.Window;
@@ -101,7 +101,7 @@
             this.dgvAlignHistory.RowTemplate.DefaultCellStyle.BackColor = System.Drawing.Color.White;
             this.dgvAlignHistory.RowTemplate.Height = 23;
             this.dgvAlignHistory.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvAlignHistory.Size = new System.Drawing.Size(940, 341);
+            this.dgvAlignHistory.Size = new System.Drawing.Size(806, 369);
             this.dgvAlignHistory.TabIndex = 2;
             this.dgvAlignHistory.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvAlignHistory_CellContentClick);
             this.dgvAlignHistory.CellContentDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvAlignHistory_CellContentDoubleClick);
@@ -171,16 +171,6 @@
             this.colFinalHead.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
             this.colFinalHead.Width = 50;
             // 
-            // Column3
-            // 
-            this.Column3.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-            this.Column3.HeaderText = "Cx";
-            this.Column3.MinimumWidth = 60;
-            this.Column3.Name = "Column3";
-            this.Column3.ReadOnly = true;
-            this.Column3.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            this.Column3.Width = 60;
-            // 
             // colCount
             // 
             dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
@@ -192,15 +182,6 @@
             this.colCount.ReadOnly = true;
             this.colCount.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
             this.colCount.Width = 60;
-            // 
-            // Column1
-            // 
-            this.Column1.HeaderText = "Rx";
-            this.Column1.MinimumWidth = 60;
-            this.Column1.Name = "Column1";
-            this.Column1.ReadOnly = true;
-            this.Column1.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            this.Column1.Width = 60;
             // 
             // colLength
             // 
@@ -215,6 +196,25 @@
             this.colLength.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
             this.colLength.Width = 60;
             // 
+            // Column3
+            // 
+            this.Column3.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            this.Column3.HeaderText = "Cx";
+            this.Column3.MinimumWidth = 60;
+            this.Column3.Name = "Column3";
+            this.Column3.ReadOnly = true;
+            this.Column3.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            this.Column3.Width = 60;
+            // 
+            // Column1
+            // 
+            this.Column1.HeaderText = "Rx";
+            this.Column1.MinimumWidth = 60;
+            this.Column1.Name = "Column1";
+            this.Column1.ReadOnly = true;
+            this.Column1.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            this.Column1.Width = 60;
+            // 
             // Column2
             // 
             this.Column2.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
@@ -226,12 +226,11 @@
             // 
             // AlignResultDataControl
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.dgvAlignHistory);
-            this.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.Name = "AlignResultDataControl";
-            this.Size = new System.Drawing.Size(940, 341);
+            this.Size = new System.Drawing.Size(806, 369);
             ((System.ComponentModel.ISupportInitialize)(this.dgvAlignHistory)).EndInit();
             this.ResumeLayout(false);
 
@@ -246,10 +245,10 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn colJudge;
         private System.Windows.Forms.DataGridViewTextBoxColumn colPreHead;
         private System.Windows.Forms.DataGridViewTextBoxColumn colFinalHead;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column3;
         private System.Windows.Forms.DataGridViewTextBoxColumn colCount;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column1;
         private System.Windows.Forms.DataGridViewTextBoxColumn colLength;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column3;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column1;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column2;
     }
 }

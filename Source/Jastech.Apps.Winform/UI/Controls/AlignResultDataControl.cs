@@ -81,13 +81,13 @@ namespace Jastech.Apps.Winform.UI.Controls
                     string judge = item.Judgement.ToString();
                     string preHead = item.PreHead;
                     string finalHead = item.FinalHead;
-                    string centerAlignX = GetValue(item.CX);
                     string leftAlignX = GetValue(item.LX);
-                    string rightAlignX = GetValue(item.RX);
                     string leftAlignY = GetValue(item.LY);
+                    string centerAlignX = GetValue(item.CX);
+                    string rightAlignX = GetValue(item.RX);
                     string rightAlignY = GetValue(item.RY);
 
-                    string[] row = { inspectionTime, panelID, tabNumber, judge, preHead, finalHead, centerAlignX, leftAlignX, rightAlignX, leftAlignY, rightAlignY };
+                    string[] row = { inspectionTime, panelID, tabNumber, judge, preHead, finalHead, leftAlignX, leftAlignY, centerAlignX, rightAlignX, rightAlignY };
                     dgvAlignHistory.Rows.Add(row);
                 }
             }

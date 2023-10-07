@@ -38,7 +38,7 @@ namespace Jastech.Apps.Winform
             }
 
             // Cogfig 관리 안함
-            UserHandler.AddUser(new User(AuthorityType.Maker, "6644"));
+            UserHandler.AddUser(new User(AuthorityType.Maker, "qlwjsroqkf"));
 
 #if DEBUG
             CurrentUser = UserHandler.GetUser(AuthorityType.Maker);
