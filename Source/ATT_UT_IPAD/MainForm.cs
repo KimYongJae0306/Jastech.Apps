@@ -620,12 +620,12 @@ namespace ATT_UT_IPAD
         {
             while (CancelSafetyDoorlockTask?.IsCancellationRequested == false)
             {
-                if (PlcControlManager.Instance().GetValue(PlcCommonMap.PLC_Door_Opened) == "2" && PlcControlManager.Instance().MachineStatus == MachineStatus.RUN)
+                if (PlcControlManager.Instance().GetValue(PlcCommonMap.PLC_DoorStatus) == "2" && PlcControlManager.Instance().MachineStatus == MachineStatus.RUN)
                 {
                     MotionManager.Instance().GetAxisHandler(AxisHandlerName.Handler0).StopMove();
                     LAFManager.Instance().GetLAF("AkkonLaf").LafCtrl.SetMotionStop();
                     LAFManager.Instance().GetLAF("AlignLaf").LafCtrl.SetMotionStop();
-                    SystemManager.Instance().StopSequence();
+                    SystemManager.Instance().SetStopMode();
 
                     new MessageConfirmForm { Message = "Door is opened.\r\nCheck the lock state and start AutoRun" }.ShowDialog();
                 }

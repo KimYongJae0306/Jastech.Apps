@@ -88,7 +88,8 @@ namespace ATT_UT_Remodeling
             PlcScenarioManager.Instance().Initialize(ATTInspModelService);
             PlcScenarioManager.Instance().InspRunnerHandler += MainForm_InspRunnerHandler;
             PlcScenarioManager.Instance().PreAlignRunnerHandler += MainForm_PreAlignRunnerHandler;
-            //PlcScenarioManager.Instance().OriginAllEvent += MainForm_HomeCompletedHandler;
+            PlcScenarioManager.Instance().CalibrationRunnerHandler += MainForm_CalibrationRunnerHandler;
+
             PlcControlManager.Instance().WritePcCommand(PcCommand.ServoOn_1);
 
             if (ModelManager.Instance().CurrentModel != null)
@@ -121,9 +122,9 @@ namespace ATT_UT_Remodeling
             AppsStatus.Instance().IsInspRunnerFlagFromPlc = isStart;
         }
 
-        private void MainForm_HomeCompletedHandler(bool isCompleted)
+        private void MainForm_CalibrationRunnerHandler(bool isStart)
         {
-            AppsStatus.Instance().IsHomeCompleted = isCompleted;
+            AppsStatus.Instance().IsCalibrationing = isStart;
         }
 
         private void AddControls()
@@ -293,8 +294,18 @@ namespace ATT_UT_Remodeling
             {
                 lblTeachingPageImage.Enabled = false;
                 lblTeachingPage.Enabled = false;
-                lblDataPageImage.Enabled = false;
-                lblDataPage.Enabled = false;
+
+                if (UserManager.Instance().CurrentUser.Type == AuthorityType.Maker)
+                {
+                    lblDataPageImage.Enabled = true;
+                    lblDataPage.Enabled = true;
+                }
+                else
+                {
+                    lblDataPageImage.Enabled = false;
+                    lblDataPage.Enabled = false;
+                }
+
                 lblLogPage.Enabled = false;
             }
             else
@@ -611,16 +622,19 @@ namespace ATT_UT_Remodeling
 
         private void picLogo_Click(object sender, EventArgs e)
         {
-            if (PlcControlManager.Instance().MachineStatus != MachineStatus.RUN)
-                return;
-
-            if (AppsStatus.Instance().IsInspRunnerFlagFromPlc == false)
+            if(UserManager.Instance().CurrentUser.Type == AuthorityType.Maker)
             {
-                MessageYesNoForm form = new MessageYesNoForm();
-                form.Message = "Would you like to do a test run?";
+                if (PlcControlManager.Instance().MachineStatus != MachineStatus.RUN)
+                    return;
 
-                if (form.ShowDialog() == DialogResult.Yes)
-                    AppsStatus.Instance().IsInspRunnerFlagFromPlc = true;
+                if (AppsStatus.Instance().IsInspRunnerFlagFromPlc == false)
+                {
+                    MessageYesNoForm form = new MessageYesNoForm();
+                    form.Message = "Would you like to do a test run?";
+
+                    if (form.ShowDialog() == DialogResult.Yes)
+                        AppsStatus.Instance().IsInspRunnerFlagFromPlc = true;
+                }
             }
         }
 

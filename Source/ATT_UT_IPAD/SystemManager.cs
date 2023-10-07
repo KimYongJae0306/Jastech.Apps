@@ -300,14 +300,6 @@ namespace ATT_UT_IPAD
             }
         }
 
-        //public void SetAutoMode()
-        //{
-        //    _inspRunner.SeqRun();
-        //    AddSystemLogMessage("Start Auto mode.");
-
-        //    PlcControlManager.Instance().MachineStatus = MachineStatus.RUN;
-        //}
-
         public void StopRun()
         {
             if (ModelManager.Instance().CurrentModel == null)
@@ -323,16 +315,8 @@ namespace ATT_UT_IPAD
                 form.Message = "Do you want to Stop Auto Mode?";
 
                 if (form.ShowDialog() == DialogResult.Yes)
-                    StopSequence();
+                    SetStopMode();
             }
-        }
-
-        public void StopSequence()
-        {
-            _inspRunner.SeqStop();
-            AddSystemLogMessage("Stop Auto Mode.");
-
-            PlcControlManager.Instance().MachineStatus = MachineStatus.STOP;
         }
 
         public void SetStopMode()

@@ -370,7 +370,7 @@ namespace ATT_UT_IPAD.Core
 
                     WriteLog("Receive Inspection Start Signal From PLC.", true);
 
-                    if (PlcControlManager.Instance().GetValue(PlcCommonMap.PLC_Run_Mode) == "2")
+                    if (PlcControlManager.Instance().GetValue(PlcCommonMap.PLC_RunMode) == "2")
                     {
                         WriteLog("Start Idle Run sequence.", true);
                         SeqStep = SeqStep.SEQ_PLC_IDLERUN;

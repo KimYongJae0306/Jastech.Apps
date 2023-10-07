@@ -55,6 +55,7 @@ namespace Jastech.Apps.Winform.Service.Plc
 
         public event PreAlignRunnerEventHandler PreAlignRunnerHandler;
 
+        public event CalibrationRunnerEventHandler CalibrationRunnerHandler;
         public event OriginAllDelegate OriginAllEvent;
         #endregion
 
@@ -63,6 +64,7 @@ namespace Jastech.Apps.Winform.Service.Plc
 
         public delegate void PreAlignRunnerEventHandler(bool isStart);
 
+        public delegate void CalibrationRunnerEventHandler(bool isStart);
         public delegate void OriginAllDelegate();
         #endregion
 
@@ -113,22 +115,15 @@ namespace Jastech.Apps.Winform.Service.Plc
 
         public void AddCommonCommand(int command)
         {
-            if (command == 1400)
-            {
-                int gg = 0;
-            }
             if (_prevCommonCommand == command)
                 return;
 
-            if (command != 0)
+            if (command != 0 && EnableActive == false)
             {
-                if (command != 0 && EnableActive == false)
-                {
-                    lock (PlcCommonCommandQueue)
-                        PlcCommonCommandQueue.Enqueue(command);
-
-                    _prevCommonCommand = command;
-                }
+                lock (PlcCommonCommandQueue)
+                    PlcCommonCommandQueue.Enqueue(command);
+						
+				_prevCommonCommand = command;
             }
         }
 
@@ -141,9 +136,9 @@ namespace Jastech.Apps.Winform.Service.Plc
             {
                 lock (PlcCommandQueue)
                     PlcCommandQueue.Enqueue(command);
-
-                _prevCommand = command;
-            }
+					
+				_prevCommand = command;
+            }           
         }
 
         public int GetCommonCommand()
@@ -170,45 +165,37 @@ namespace Jastech.Apps.Winform.Service.Plc
 
         private void ScenarioTask()
         {
-            try
+            while (true)
             {
-                while (true)
+                if (CommandTaskCancellationTokenSource.IsCancellationRequested)
+                    break;
+
+                if (GetCommonCommand() is int commonCommand)
                 {
-                    if (CommandTaskCancellationTokenSource.IsCancellationRequested)
-                        break;
-
-                    if (GetCommonCommand() is int commonCommand)
+                    if (commonCommand != 0)
                     {
-                        if (commonCommand != 0)
-                        {
-                            EnableActive = true;
-                            PlcControlManager.Instance().ClearAddress(PlcCommonMap.PLC_Command_Common);
-                            CommonCommandReceived((PlcCommonCommand)commonCommand);
-                            _prevCommonCommand = 0;
-                            EnableActive = false;
-                        }
+                        EnableActive = true;
+                        PlcControlManager.Instance().ClearAddress(PlcCommonMap.PLC_Command_Common);
+                        CommonCommandReceived((PlcCommonCommand)commonCommand);
+                        _prevCommonCommand = 0;
+                        EnableActive = false;
                     }
-
-                    if (GetCommand() is int command)
-                    {
-                        if (command != 0)
-                        {
-                            EnableActive = true;
-                            PlcControlManager.Instance().ClearAddress(PlcCommonMap.PLC_Command);
-                            PlcCommandReceived((PlcCommand)command);
-                            _prevCommand = 0;
-                            EnableActive = false;
-                        }
-                    }
-
-                    Thread.Sleep(100);
                 }
+
+                if (GetCommand() is int command)
+                {
+                    if (command != 0)
+                    {
+                        EnableActive = true;
+                        PlcControlManager.Instance().ClearAddress(PlcCommonMap.PLC_Command);
+                        PlcCommandReceived((PlcCommand)command);
+                        _prevCommand = 0;
+                        EnableActive = false;
+                    }
+                }
+
+                Thread.Sleep(100);
             }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.ToString());
-            }
-            
         }
 
         public void CommonCommandReceived(PlcCommonCommand command)
@@ -460,7 +447,14 @@ namespace Jastech.Apps.Winform.Service.Plc
                     break;
 
                 case PlcCommand.Calibration:
-                    Calibration();
+                    if (AppsStatus.Instance().IsCalibrationing == false)
+                    {
+                        if (MoveTo(TeachingPosType.Stage1_PreAlign_Left))
+                        {
+                            Calibration();
+                            AppsStatus.Instance().IsCalibrationing = true;
+                        }
+                    }
                     break;
 
                 case PlcCommand.Origin_All:
@@ -531,7 +525,7 @@ namespace Jastech.Apps.Winform.Service.Plc
             var unit = inspModel.GetUnit(UnitName.Unit0);
             if (unit == null)
             {
-                short command = PlcControlManager.Instance().WritePcStatus(PlcCommand.StartPreAlign, true);
+                short command = PlcControlManager.Instance().WritePcStatus(PlcCommand.Calibration, true);
                 Logger.Debug(LogType.Device, $"Write Fail StartPreAlign[{command}] : Unit is null.");
                 return;
             }
@@ -539,7 +533,7 @@ namespace Jastech.Apps.Winform.Service.Plc
             var param = unit.PreAlign.CalibrationParam.InspParam;
             if (param == null)
             {
-                short command = PlcControlManager.Instance().WritePcStatus(PlcCommand.StartPreAlign, true);
+                short command = PlcControlManager.Instance().WritePcStatus(PlcCommand.Calibration, true);
                 Logger.Debug(LogType.Device, $"Write Fail StartPreAlign[{command}] : Calibration Param is null.");
                 return;
             }

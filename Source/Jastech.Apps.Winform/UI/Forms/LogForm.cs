@@ -456,10 +456,10 @@ namespace Jastech.Framework.Winform.Forms
                 datas.Add($"{tab.Tab}");
                 datas.Add($"{tab.Judge}");
                 datas.Add($"{tab.PreHead}");
-                datas.Add($"{tab.Lx}");
-                datas.Add($"{tab.Ly}");
                 datas.Add($"{tab.Cx}");
+                datas.Add($"{tab.Lx}");
                 datas.Add($"{tab.Rx}");
+                datas.Add($"{tab.Ly}");
                 datas.Add($"{tab.Ry}");
             }
 

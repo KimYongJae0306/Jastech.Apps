@@ -77,7 +77,7 @@ namespace ATT_UT_Remodeling.Core.AppTask
             {
                 // 검사 실패
                 message = string.Format("Mark Inspection NG !!! Tab_{0} / Fpc_{1}, Panel_{2}", tab.Index + 1, tabInspResult.MarkResult.FpcMark.Judgement, tabInspResult.MarkResult.PanelMark.Judgement);
-                WriteLog(message, false);
+                WriteLog(message, true);
                 Logger.Debug(LogType.Inspection, message);
                 tabInspResult.AlignResult = new TabAlignResult();
                 tabInspResult.AkkonResult = new AkkonResult();

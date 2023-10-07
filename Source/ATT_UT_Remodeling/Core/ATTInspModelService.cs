@@ -42,7 +42,7 @@ namespace ATT_UT_Remodeling.Core
 
                 // LineScan 조명 Parameter 생성
                 unit.CameraData = new LineCameraData();
-                unit.CameraData.Name = "Akkon";
+                unit.CameraData.Name = "LineCamera";
 
                 CalibrationParam calibrationMark = new CalibrationParam();
                 calibrationMark.MarkName = "Calibration";

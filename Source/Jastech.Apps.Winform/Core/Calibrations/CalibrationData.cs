@@ -151,7 +151,7 @@ namespace Jastech.Apps.Winform.Core.Calibrations
             return null;
         }
 
-        public PointF ConvertVisionToReal(PointF visionCooridnates)
+        public PointF ConvertVisionToReal(PointF visionCooridnates, bool useCal)
         {
             if (CalibrationMatrix.Count <= 0)
                 return new PointF();
@@ -161,8 +161,15 @@ namespace Jastech.Apps.Winform.Core.Calibrations
             double pX = visionCooridnates.X;
             double pY = visionCooridnates.Y;
 
-            realCoordinates.X = Convert.ToSingle((pX * CalibrationMatrix[0]) + (pY * CalibrationMatrix[1]) + CalibrationMatrix[2]);
-            realCoordinates.Y = Convert.ToSingle((pX * CalibrationMatrix[3]) + (pY * CalibrationMatrix[4]) + CalibrationMatrix[5]);
+            realCoordinates.X = Convert.ToSingle(pX * CalibrationMatrix[0]) + Convert.ToSingle(pY * CalibrationMatrix[1]) + Convert.ToSingle(CalibrationMatrix[2]);
+            realCoordinates.Y = Convert.ToSingle(pX * CalibrationMatrix[3]) + Convert.ToSingle(pY * CalibrationMatrix[4]) + Convert.ToSingle(CalibrationMatrix[5]);
+            var tempTheta = Convert.ToSingle(pX * CalibrationMatrix[6]) + Convert.ToSingle(pY * CalibrationMatrix[7]) + Convert.ToSingle(CalibrationMatrix[8]);
+
+            if(useCal)
+            {
+                realCoordinates.X = realCoordinates.X / tempTheta;
+                realCoordinates.Y = realCoordinates.Y / tempTheta;
+            }
 
             return realCoordinates;
         }

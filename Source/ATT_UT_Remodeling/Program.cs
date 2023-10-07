@@ -118,7 +118,7 @@ namespace ATT_UT_Remodeling
                 // AreaCamera
                 var areaScan = new CameraHIK("PreAlign", 2592, 1944, ColorFormat.Gray, SensorType.Area);
                 areaScan.SerialNo = "DA0228166";
-                areaScan.Exposure = 5000;
+                areaScan.Exposure = 1000;
                 areaScan.EnableReverseX = true;
                 config.Add(areaScan);
 
@@ -138,6 +138,7 @@ namespace ATT_UT_Remodeling
                     lineCamera.PixelResolution_um = 3.5F;
                     lineCamera.LensScale = 10F;
                     lineCamera.DigitizerNum = 0;
+                    lineCamera.TDIDirection = TDIDirectionType.Reverse;
 
                     lineCamera.DcfFile = CameraMil.GetDcfFile(CameraType.VT_6K3_5X_H160);
                     config.Add(lineCamera);
@@ -148,6 +149,11 @@ namespace ATT_UT_Remodeling
                 motion.IpAddress = "10.0.0.100";
                 motion.TriggerBuffer = ACSBufferNumber.CameraTrigger_Unit1;        // 재확인 필요
                 config.Add(motion);
+
+
+                ////Akkon LAF
+                //var akkonLaf = new VirtualLAFCtrl("Laf");
+                //config.Add(akkonLaf);
 
                 // LAF
                 var laf = new NuriOneLAFCtrl("Laf");

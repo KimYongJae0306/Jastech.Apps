@@ -34,6 +34,14 @@ namespace Jastech.Apps.Winform.UI.Controls
         private VisionXCalibration VisionXCalibration { get; set; } = new VisionXCalibration();
         #endregion
 
+        #region 이벤트
+        public AreaCameraGrabDelegate AreaCameraGrabEventHandler;
+        #endregion
+
+        #region 델리게이트
+        public delegate void AreaCameraGrabDelegate(bool isGrabStart);
+        #endregion
+
         #region 생성자
         public VisionCalibrationControl()
         {
@@ -114,6 +122,8 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         private void Inspection()
         {
+            AreaCameraGrabEventHandler.Invoke(false);
+
             var display = TeachingUIManager.Instance().TeachingDisplayControl.GetDisplay();
             var currentParam = ParamControl.GetCurrentParam();
 
@@ -151,6 +161,8 @@ namespace Jastech.Apps.Winform.UI.Controls
             result.Dispose();
             inspParam.Dispose();
             VisionProImageHelper.Dispose(ref copyCogImage);
+
+            AreaCameraGrabEventHandler.Invoke(true);
         }
 
         private void lblAddROI_Click(object sender, EventArgs e)

@@ -113,9 +113,11 @@ namespace Jastech.Apps.Winform.UI.Forms
             PreAlignControl = new PreAlignControl();
             PreAlignControl.Dock = DockStyle.Fill;
             PreAlignControl.MarkDirectionChanged += MarkDirectionChangedEvent;
+            PreAlignControl.AreaCameraGrabEventHandler += AreaCameraGrabEvent;
             pnlTeach.Controls.Add(PreAlignControl);
 
             VisionCalibrationControl = new VisionCalibrationControl();
+            VisionCalibrationControl.AreaCameraGrabEventHandler += AreaCameraGrabEvent;
             VisionCalibrationControl.Dock = DockStyle.Fill;
             pnlTeach.Controls.Add(VisionCalibrationControl);
         }
@@ -169,6 +171,14 @@ namespace Jastech.Apps.Winform.UI.Forms
                     break;
             }
             UpdateLightParam();
+        }
+
+        private void AreaCameraGrabEvent(bool isGrabStart)
+        {
+            if (isGrabStart)
+                AreaCamera.StartGrabContinous();
+            else
+                AreaCamera.StopGrab();
         }
 
         private void MarkDirectionChangedEvent(MarkDirection direction)
@@ -286,6 +296,8 @@ namespace Jastech.Apps.Winform.UI.Forms
         {
             AreaCamera.StopGrab();
             AreaCamera.OnImageGrabbed -= AreaCamera_OnImageGrabbed;
+            PreAlignControl.AreaCameraGrabEventHandler -= AreaCameraGrabEvent;
+            VisionCalibrationControl.AreaCameraGrabEventHandler -= AreaCameraGrabEvent;
 
             Display.DisposeImage();
             PreAlignControl.DisposeImage();

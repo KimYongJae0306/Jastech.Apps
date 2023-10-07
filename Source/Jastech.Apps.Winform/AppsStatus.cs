@@ -26,7 +26,7 @@ namespace Jastech.Apps.Winform
 
         public bool IsManual_OK { get; set; } = false;
 
-        public bool IsHomeCompleted { get; set; } = false;
+        public bool IsCalibrationing { get; set; } = false;
         #endregion
 
         #region 메서드

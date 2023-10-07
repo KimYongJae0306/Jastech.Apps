@@ -17,7 +17,7 @@ namespace Jastech.Apps.Structure.VisionTool
 {
     public partial class MainAlgorithmTool : AlgorithmTool
     {
-        public AlignmentResult ExecuteAlignment(Unit unit, List<PointF> realCoordinateList, PointF calibrationStartPosition, PointF calibrationRobotCenterPosition)
+        public AlignmentResult ExecuteAlignment(Unit unit, List<PointF> realCoordinateList, PointF calibrationStartPosition, PointF calibrationRotationCenter)
         {
             double t1, t2, dt = 0.0;
             double cX = 0, cY = 0, pX = 0, pY = 0;
@@ -34,7 +34,7 @@ namespace Jastech.Apps.Structure.VisionTool
             double leftMotionY = preAlignLeftData.GetMotionData(AxisName.Y);
             double leftMotionT = preAlignLeftData.GetMotionData(AxisName.T);
 
-            var preAlignRightData = unit.PreAlign.AlignParamList.Where(x => x.Direction == MarkDirection.Left).FirstOrDefault();
+            var preAlignRightData = unit.PreAlign.AlignParamList.Where(x => x.Direction == MarkDirection.Right).FirstOrDefault();
             double rightMotionX = preAlignRightData.GetMotionData(AxisName.X);
             double rightMotionY = preAlignRightData.GetMotionData(AxisName.Y);
             double rightMotionT = preAlignRightData.GetMotionData(AxisName.T);
@@ -43,26 +43,12 @@ namespace Jastech.Apps.Structure.VisionTool
 
             double alignX = 0, alignY = 0;
 
-
-            /////////////////////////////////////////////////////////////////////
-            leftMotionX = 140;
-            leftMotionY = 78;
-            leftMotionT = 0;
-
-            rightMotionX = 360;
-            rightMotionY = 78;
-            rightMotionT = 0;
-            /////////////////////////////////////////////////////////////////////
-
-
-
             // 1. 보정각 Theta 구하기
             double dX = (rightMotionX + rightRealMarkX) - (leftMotionX + leftRealMarkX) + 0;    // (m_dMotionPosX[ALIGN_OBJ_RIGHT] + dMarkRightX) - (m_dMotionPosX[ALIGN_OBJ_LEFT] + dMarkLeftX) + m_dLRDistCamera;
             double dY = (rightMotionY + rightRealMarkY) - (leftMotionY + leftRealMarkY);        // (m_dMotionPosY[ALIGN_OBJ_RIGHT] + dMarkRightY) - (m_dMotionPosY[ALIGN_OBJ_LEFT] + dMarkLeftY);
 
             if (dX != 0)
-                t1 = Math.Atan(dY / dX);
-            // t1 = Math.Atan2(dY, dX); Atan()과 위상차이 있으니 사용에 유의할 것
+                t1 = Math.Atan2(dY, dX);
             else
                 t1 = 0.0;
 
@@ -73,15 +59,13 @@ namespace Jastech.Apps.Structure.VisionTool
             // 2. 회전 대상 지정 ( Left 기준 )
             pX = leftMotionX; // m_dMotionPosX[ALIGN_OBJ_LEFT]
             pY = leftMotionY; // m_dMotionPosY[ALIGN_OBJ_LEFT]
-            imagePosX = leftRealMarkX;
-            imagePosY = leftRealMarkY;
 
             // 3. 회전 중심 보정
             centerOffsetX = (leftMotionX - calibrationStartPosition.X); // m_dMotionPosX[ALIGN_OBJ_LEFT] - g_DataCalibration.GetCalStartPosX(m_nCurrentCamIndex, nStageNo);
             centerOffsetY = (leftMotionY - calibrationStartPosition.Y); // m_dMotionPosY[ALIGN_OBJ_LEFT] - g_DataCalibration.GetCalStartPosY(m_nCurrentCamIndex, nStageNo);
 
-            cX = calibrationRobotCenterPosition.X + centerOffsetX; // g_DataCalibration.GetRotCenterX(m_nCurrentCamIndex, nStageNo) + dCenterOffsetX;
-            cY = calibrationRobotCenterPosition.Y + centerOffsetY; // g_DataCalibration.GetRotCenterY(m_nCurrentCamIndex, nStageNo) + dCenterOffsetY;
+            cX = calibrationRotationCenter.X + centerOffsetX; // g_DataCalibration.GetRotCenterX(m_nCurrentCamIndex, nStageNo) + dCenterOffsetX;
+            cY = calibrationRotationCenter.Y + centerOffsetY; // g_DataCalibration.GetRotCenterY(m_nCurrentCamIndex, nStageNo) + dCenterOffsetY;
 
             // 4. 회전 후 보정 위치 계산
             alignX = (pX - cX) * Math.Cos(dt) - (pY - cY) * Math.Sin(dt) + cX;
@@ -98,7 +82,8 @@ namespace Jastech.Apps.Structure.VisionTool
             //refAlignOffset.s_fOffsetX -= dImagePosX;
             //refAlignOffset.s_fOffsetY -= dImagePosY;
             //refAlignOffset.s_fOffsetT = (dt * 180.0 / M_PI);
-
+            imagePosX = leftRealMarkX;
+            imagePosY = leftRealMarkY;
             offsetX -= imagePosX;
             offsetY -= imagePosY;
             double offsetT = (dt * 180.0 / Math.PI);

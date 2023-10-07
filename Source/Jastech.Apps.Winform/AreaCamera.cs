@@ -39,7 +39,8 @@ namespace Jastech.Apps.Winform
                 return;
 
             if (Camera.IsGrabbing())
-                Camera.Stop();
+                return;
+                //Camera.Stop();
 
             Camera.GrabContinous();
         }

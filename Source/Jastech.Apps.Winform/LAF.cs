@@ -382,13 +382,13 @@ namespace Jastech.Apps.Winform
                         LafCtrl.SetMotionZeroSet();
                         Thread.Sleep(500);
                         step = UnitOperation.MoveToPositive;
-
                         break;
+						
                     case UnitOperation.MoveToPositive:
                         LafCtrl.SetMotionRelativeMove(Direction.CCW, _scale / 10.0);
 
                         Thread.Sleep(200);
-                        sw.Restart();
+                        //sw.Restart();
                         step = UnitOperation.ReleaseNegativeLimitDetection;
 
                         break;

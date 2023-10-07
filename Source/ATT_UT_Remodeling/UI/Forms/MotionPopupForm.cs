@@ -87,9 +87,10 @@ namespace ATT_UT_Remodeling.UI.Forms
         {
             AddControl();
             UpdateData();
-            StartTimer();
             InitializeUI();
             SetDefaultValue();
+
+            StatusTimer.Start();
         }
 
         private void SetDefaultValue()
@@ -203,23 +204,18 @@ namespace ATT_UT_Remodeling.UI.Forms
             LAFJogZControl.SetSelectedLafCtrl(LafCtrl);
         }
 
-        private void StartTimer()
-        {
-            _formTimer = new System.Threading.Timer(UpdateStatus, null, 100, 100);
-        }
+        //private void UpdateStatus(object obj)
+        //{
+        //    if (this.InvokeRequired)
+        //    {
+        //        UpdateStatusDelegate callback = UpdateStatus;
+        //        BeginInvoke(callback, obj);
+        //        return;
+        //    }
 
-        private void UpdateStatus(object obj)
-        {
-            if (this.InvokeRequired)
-            {
-                UpdateStatusDelegate callback = UpdateStatus;
-                BeginInvoke(callback, obj);
-                return;
-            }
-
-            UpdateStatusMotionX();
-            UpdateStatusAutoFocusZ();
-        }
+        //    UpdateStatusMotionX();
+        //    UpdateStatusAutoFocusZ();
+        //}
 
         private void UpdateStatusMotionX()
         {
@@ -360,6 +356,14 @@ namespace ATT_UT_Remodeling.UI.Forms
             //posData.SetMovingParams(AxisName.Z0, ZVariableControl.GetCurrentData());
         }
 
+        private void SetCenterOfGravity()
+        {
+            int Cog = TeachingPositionList.First(x => x.Name == TeachingPositionType.ToString()).GetCenterOfGravity(AxisName.Z0);
+
+            if (LAFManager.Instance().GetLAF(LafCtrl.Name) is LAF alignLAF)
+                alignLAF.SetCenterOfGravity(Cog);
+        }
+
         private void Save()
         {
             MessageYesNoForm yesNoForm = new MessageYesNoForm();
@@ -368,6 +372,8 @@ namespace ATT_UT_Remodeling.UI.Forms
             if (yesNoForm.ShowDialog() == DialogResult.Yes)
             {
                 UpdateCurrentData();
+
+                SetCenterOfGravity();
 
                 // Save AxisHandler
                 var axisHandler = MotionManager.Instance().GetAxisHandler(AxisHandlerName.Handler0);
@@ -484,7 +490,7 @@ namespace ATT_UT_Remodeling.UI.Forms
 
             //lblTargetPositionZ.Text = currentPosition.ToString("F3");
 
-            double oldPosition = Convert.ToDouble(lblCurrentToTargetZ.Text);
+            double oldPosition = Convert.ToDouble(lblTargetPositionZ.Text);
             double newPosition = Convert.ToDouble(lblCurrentPositionZ.Text);
 
             TeachingPositionList.First(x => x.Name == TeachingPositionType.ToString()).SetTargetPosition(AxisName.Z0, newPosition);
@@ -672,6 +678,7 @@ namespace ATT_UT_Remodeling.UI.Forms
             }
 
             UpdateStatusMotionX();
+            UpdateStatusAutoFocusZ();
         }
 
         private void pnlTop_MouseDown(object sender, MouseEventArgs e)

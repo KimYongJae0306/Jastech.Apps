@@ -38,10 +38,14 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         #region 이벤트
         public ChangeDirectionDelegate MarkDirectionChanged { get; set; }
+
+        public AreaCameraGrabDelegate AreaCameraGrabEventHandler;
         #endregion
 
         #region 델리게이트
         public delegate void ChangeDirectionDelegate(MarkDirection direction);
+
+        public delegate void AreaCameraGrabDelegate(bool isGrabStart);
         #endregion
 
         #region 생성자
@@ -95,6 +99,8 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         private void Inspection()
         {
+            AreaCameraGrabEventHandler.Invoke(false);
+
             var display = TeachingUIManager.Instance().TeachingDisplayControl.GetDisplay();
             var currentParam = ParamControl.GetCurrentParam();
 
@@ -104,7 +110,8 @@ namespace Jastech.Apps.Winform.UI.Controls
             ICogImage cogImage = display.GetImage();
             if (cogImage == null)
                 return;
-            display.Clear();
+
+            //display.Clear();
 
             if (currentParam.IsTrained() == false)
             {
@@ -133,6 +140,7 @@ namespace Jastech.Apps.Winform.UI.Controls
             result.Dispose();
             inspParam.Dispose();
             VisionProImageHelper.Dispose(ref copyCogImage);
+            AreaCameraGrabEventHandler.Invoke(true);
         }
 
         private void InitializeUI()

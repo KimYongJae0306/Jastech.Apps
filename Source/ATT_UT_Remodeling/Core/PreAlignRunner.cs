@@ -103,7 +103,7 @@ namespace ATT_UT_Remodeling
         {
             var cancellationToken = SeqTaskCancellationTokenSource.Token;
             cancellationToken.ThrowIfCancellationRequested();
-            SeqStep = SeqStep.SEQ_INIT;
+            SeqStep = SeqStep.SEQ_IDLE;
 
             while (true)
             {
@@ -152,6 +152,7 @@ namespace ATT_UT_Remodeling
             switch (SeqStep)
             {
                 case SeqStep.SEQ_IDLE:
+					AppsStatus.Instance().IsPreAlignRunnerFlagFromPlc = false;
                     break;
 
                 case SeqStep.SEQ_INIT:
@@ -163,7 +164,6 @@ namespace ATT_UT_Remodeling
                     WriteLog("Clear PLC Data.");
 
                     laf.SetTrackingOnOFF(false);
-                    laf.SetMotionAbsoluteMove(0);
                     WriteLog("LAF Off.");
 
                     var camera = areaCamera.Camera;
@@ -186,9 +186,9 @@ namespace ATT_UT_Remodeling
                     SystemManager.Instance().ClearPreAlignResult();
                     WriteLog("Clear PreAlign Display");
 
-                    AppsInspResult.Instance().StartInspTime = DateTime.Now;
-                    AppsInspResult.Instance().Cell_ID = GetCellID();
-                    WriteLog("Cell ID : " + AppsInspResult.Instance().Cell_ID, true);
+                    AppsPreAlignResult.Instance().StartInspTime = DateTime.Now;
+                    AppsPreAlignResult.Instance().Cell_ID = GetCellID();
+                    WriteLog("Cell ID : " + AppsPreAlignResult.Instance().Cell_ID, true);
 
                     SeqStep = SeqStep.SEQ_PREALIGN_R;
                     break;
@@ -304,17 +304,17 @@ namespace ATT_UT_Remodeling
                         }
                         else
                         {
-                            PlcControlManager.Instance().WritePcStatus(PlcCommand.StartPreAlign, true);
+                            PlcControlManager.Instance().WritePcStatus(PlcCommand.StartPreAlign, false);
                             WriteLog($"Send PreAlign NG Complete Signal.(SpecOut) {(int)PlcCommand.StartPreAlign * -1}", true);
                         }
                     }
                     else
                     {
-                        PlcControlManager.Instance().WritePcStatus(PlcCommand.StartPreAlign, true);
+                        PlcControlManager.Instance().WritePcStatus(PlcCommand.StartPreAlign, false);
                         WriteLog($"Send PreAlign NG Complete Signal.(Mark Fail) {(int)PlcCommand.StartPreAlign * -1}", true);
                     }
 
-                    AppsInspResult.Instance().EndInspTime = DateTime.Now;
+                    AppsPreAlignResult.Instance().EndInspTime = DateTime.Now;
 
                     SystemManager.Instance().UpdatePreAlignResult(AppsPreAlignResult.Instance());
                     SeqStep = SeqStep.SEQ_SAVE_RESULT_DATA;
@@ -392,8 +392,8 @@ namespace ATT_UT_Remodeling
                 PointF rightVisionCoordinates = preAlignResult.Right.MatchResult.MaxMatchPos.FoundPos;
 
                 List<PointF> realCoordinateList = new List<PointF>();
-                PointF leftRealCoordinates = CalibrationData.Instance().ConvertVisionToReal(leftVisionCoordinates);
-                PointF righttRealCoordinates = CalibrationData.Instance().ConvertVisionToReal(rightVisionCoordinates);
+                PointF leftRealCoordinates = CalibrationData.Instance().ConvertVisionToReal(leftVisionCoordinates, false);
+                PointF righttRealCoordinates = CalibrationData.Instance().ConvertVisionToReal(rightVisionCoordinates, false);
 
                 realCoordinateList.Add(leftRealCoordinates);
                 realCoordinateList.Add(righttRealCoordinates);
@@ -407,9 +407,9 @@ namespace ATT_UT_Remodeling
                     return false;
 
                 PointF calibrationStartPosition = CalibrationData.Instance().GetCalibrationStartPosition();
-                PointF calibrationRobotPosition = CalibrationData.Instance().GetRotationCenter();
+                PointF calibrationRotationCenter = CalibrationData.Instance().GetRotationCenter();
 
-                var alignmentResult = AlgorithmTool.ExecuteAlignment(unit, realCoordinateList, calibrationStartPosition, calibrationRobotPosition);
+                var alignmentResult = AlgorithmTool.ExecuteAlignment(unit, realCoordinateList, calibrationStartPosition, calibrationRotationCenter);
 
                 preAlignResult.SetPreAlignResult(alignmentResult.OffsetX, alignmentResult.OffsetY, alignmentResult.OffsetT);
 
@@ -668,8 +668,8 @@ namespace ATT_UT_Remodeling
             var preAlignParam = unit.PreAlign.AlignParamList.Where(x => x.Direction == markDirection).FirstOrDefault();
 
             var motionX = MotionManager.Instance().GetAxis(AxisHandlerName.Handler0, AxisName.X).GetActualPosition();
-            var motionY = PlcControlManager.Instance().GetReadPosition(AxisName.Y) / 1000;
-            var motionT = PlcControlManager.Instance().GetReadPosition(AxisName.T) / 1000;
+            var motionY = PlcControlManager.Instance().GetReadPosition(AxisName.Y);
+            var motionT = PlcControlManager.Instance().GetReadPosition(AxisName.T);
 
             preAlignParam.SetMotionData(motionX, motionY, motionT);
         }

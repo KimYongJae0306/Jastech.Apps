@@ -289,8 +289,9 @@ namespace ATT_UT_Remodeling.Core
             switch (SeqStep)
             {
                 case SeqStep.SEQ_IDLE:
-                    AppsStatus.Instance().IsInspRunnerFlagFromPlc = false;
+					AppsStatus.Instance().IsInspRunnerFlagFromPlc = false;
                     PlcControlManager.Instance().EnableSendPeriodically = true;
+
                     break;
 
                 case SeqStep.SEQ_INIT:
@@ -304,7 +305,6 @@ namespace ATT_UT_Remodeling.Core
                     WriteLog("Light Off.");
 
                     LAFCtrl.SetTrackingOnOFF(false);
-                    LAFCtrl.SetMotionAbsoluteMove(0);
                     WriteLog("Laf Off.");
 
                     SeqStep = SeqStep.SEQ_MOVE_START_POS;

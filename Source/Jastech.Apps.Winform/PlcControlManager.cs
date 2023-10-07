@@ -521,9 +521,14 @@ namespace Jastech.Apps.Winform
 
         public void WriteAlignData(double alignDataX_mm, double alignDataY_mm, double alignDataT_mm)
         {
-            int convertAlignX = ConvertDoubleWordData(alignDataX_mm);
-            int convertAlignY = ConvertDoubleWordData(alignDataY_mm);
-            int convertAlignT = ConvertDoubleWordData(alignDataT_mm);
+            //ConvertDoubleWordData
+            int convertAlignX = ConvertDoubleWordData(alignDataX_mm) + Convert.ToInt32(GetValue(PlcCommonMap.PLC_OffsetDataX));
+            int convertAlignY = ConvertDoubleWordData(alignDataY_mm) + Convert.ToInt32(GetValue(PlcCommonMap.PLC_OffsetDataY));
+            int convertAlignT = ConvertDoubleWordData(alignDataT_mm) + Convert.ToInt32(GetValue(PlcCommonMap.PLC_OffsetDataT));
+
+            Console.WriteLine("PLC_OffsetDataX : " + Convert.ToInt32(GetValue(PlcCommonMap.PLC_OffsetDataX)));
+            Console.WriteLine("PLC_OffsetDataY : " + Convert.ToInt32(GetValue(PlcCommonMap.PLC_OffsetDataY)));
+            Console.WriteLine("PLC_OffsetDataT : " + Convert.ToInt32(GetValue(PlcCommonMap.PLC_OffsetDataT)));
 
             var map = PlcControlManager.Instance().GetAddressMap(PlcCommonMap.PC_AlignDataX);
             if (DeviceManager.Instance().PlcHandler.Count > 0 && map != null)

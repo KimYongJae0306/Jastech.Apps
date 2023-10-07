@@ -89,7 +89,7 @@ namespace Jastech.Apps.Winform.UI.Controls
 
             // PLC
             lblPlcAlive.Text = manager.GetValue(PlcCommonMap.PLC_Alive);
-            lblRunStatus.Text = manager.GetValue(PlcCommonMap.PLC_Run_Mode) == "2" ? "IDLE" : "AUTO";
+            lblRunStatus.Text = manager.GetValue(PlcCommonMap.PLC_RunMode) == "2" ? "IDLE" : "AUTO";
 
             lblPlcReady.Text = manager.GetValue(PlcCommonMap.PLC_Ready);
             lblPlcCommandCommon.Text = manager.GetValue(PlcCommonMap.PLC_Command_Common);

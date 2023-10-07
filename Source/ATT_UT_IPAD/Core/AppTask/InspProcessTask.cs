@@ -94,7 +94,7 @@ namespace ATT_UT_IPAD.Core.AppTask
             {
                 // 검사 실패
                 message = string.Format("Akkon Mark Insp NG !!! Tab_{0} / Fpc_{1}, Panel_{2}", tab.Index + 1, inspResult.MarkResult.FpcMark.Judgement, inspResult.MarkResult.PanelMark.Judgement);
-                WriteLog(message);
+                WriteLog(message, true);
                 Logger.Debug(LogType.Inspection, message);
                 inspResult.AkkonResult = new AkkonResult();
             }

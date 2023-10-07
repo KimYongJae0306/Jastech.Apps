@@ -1,23 +1,21 @@
 ﻿using Cognex.VisionPro;
 using Jastech.Apps.Structure;
-using Jastech.Apps.Structure.Data;
 using Jastech.Apps.Structure.VisionTool;
 using Jastech.Apps.Winform.Service.Plc.Maps;
+using Jastech.Framework.Device.Cameras;
 using Jastech.Framework.Device.Motions;
-using Jastech.Framework.Imaging.Helper;
 using Jastech.Framework.Imaging.VisionPro;
 using Jastech.Framework.Imaging.VisionPro.VisionAlgorithms.Parameters;
 using Jastech.Framework.Imaging.VisionPro.VisionAlgorithms.Results;
-using Jastech.Framework.Structure;
 using Jastech.Framework.Util.Helper;
 using Jastech.Framework.Winform;
 using Jastech.Framework.Winform.Forms;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Drawing;
 using System.Linq;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace Jastech.Apps.Winform.Core.Calibrations
@@ -89,7 +87,7 @@ namespace Jastech.Apps.Winform.Core.Calibrations
 
         private CalibrationMode CalibrationMode { get; set; } = CalibrationMode.XY;
 
-        public double MovePitchT { get; set; } = 1.0;
+        public double MovePitchT { get; set; } = 0.7;
 
         private double BackLashPitchT = 0.1;
 
@@ -172,6 +170,7 @@ namespace Jastech.Apps.Winform.Core.Calibrations
             if (_workingThread == null)
                 return;
 
+            AppsStatus.Instance().IsCalibrationing = false;
             _workingThread = null;
         }
 
@@ -186,7 +185,15 @@ namespace Jastech.Apps.Winform.Core.Calibrations
                 CalibrationSequence();
                 Thread.Sleep(50);
             }
+
+            if (_isWorking == false)
+            {
+                AppsStatus.Instance().IsCalibrationing = false;
+                _workingThread = null;
+            }
         }
+
+        private double _x1, _x2, _y1, _y2, _theta;
 
         private void CalibrationSequence()
         {
@@ -202,12 +209,13 @@ namespace Jastech.Apps.Winform.Core.Calibrations
 
             string logMessage = string.Empty;
 
-            double intervalX = 10.0;
-            double intervalY = 10.0;
+            double intervalX = 1.5;
+            double intervalY = 1.5;
             //double intervalT = 0.1;
 
             int directionT = 1;
-
+            int directionX = 1;
+            directionX = -1;
             string savePath = string.Empty;
 
             Stopwatch sw = new Stopwatch();
@@ -217,7 +225,7 @@ namespace Jastech.Apps.Winform.Core.Calibrations
             ICogImage cogImage = null;
 
             // T Calibration
-            double x1 = 0.0, x2 = 0.0, y1 = 0.0, y2 = 0.0, theta = 0.0;
+            
 
             switch (CalSeqStep)
             {
@@ -227,23 +235,28 @@ namespace Jastech.Apps.Winform.Core.Calibrations
                     break;
 
                 case CalSeqStep.CAL_SEQ_INIT:
-                    Logger.Write(LogType.Device, "Initialize calibration.");
+                    _x1 = 0.0;
+                    _x2 = 0.0;
+                    _y1 = 0.0;
+                    _y2 = 0.0;
+                    _theta = 0.0;
+                    camera.Stop();
 
-                    PlcControlManager.Instance().ClearAddress(PlcCommonMap.PLC_Command);
+                    Logger.Write(LogType.Device, "Initialize calibration.");
 
                     ClearMatrixPointResultList();
 
                     // 조명 켜기
-                    light.TurnOn(unit.PreAlign.RightLightParam);
+                    light.TurnOn(unit.PreAlign.LeftLightParam);
 
                     Logger.Write(LogType.Device, "Light on.");
 
                     InitailizeOpticSetting();
                     Logger.Write(LogType.Device, "Initialize Camera.");
 
-                    double initX = AxisHandler.GetAxis(AxisName.X).GetActualPosition() / 1000.0;
-                    double initY = PlcControlManager.Instance().GetReadPosition(AxisName.Y) / 1000.0;
-                    double initT = PlcControlManager.Instance().GetReadPosition(AxisName.T) / 1000.0;
+                    double initX = AxisHandler.GetAxis(AxisName.X).GetActualPosition();
+                    double initY = PlcControlManager.Instance().GetReadPosition(AxisName.Y);
+                    double initT = PlcControlManager.Instance().GetReadPosition(AxisName.T);
 
                     SetInitPoistion(initX, initY, initT);
                     Logger.Write(LogType.Device, "Initialize position data.");
@@ -268,7 +281,8 @@ namespace Jastech.Apps.Winform.Core.Calibrations
                     break;
 
                 case CalSeqStep.CAL_SEQ_XY_MOVE:
-                    RequestMove(_absoluteAmountX[_matrixStepPoint], _absoluteAmountY[_matrixStepPoint], 0);
+                    RequestMove(_absoluteAmountX[_matrixStepPoint] * (directionX), _absoluteAmountY[_matrixStepPoint], 0);
+                    Console.WriteLine("_motionPositionY[_matrixStepPoint] : " + _motionPositionY[_matrixStepPoint].ToString("F3"));
                     logMessage = string.Format("Request move command. - position step : {0}", _matrixStepPoint);
                     Logger.Write(LogType.Device, logMessage);
 
@@ -306,11 +320,7 @@ namespace Jastech.Apps.Winform.Core.Calibrations
                     logMessage = string.Format("Start grab. - position step : {0}", _matrixStepPoint);
                     Logger.Write(LogType.Device, logMessage);
 
-                    camera.GrabOnce();
-                    imageData = camera.GetGrabbedImage();
-                    Thread.Sleep(50);
-                    cogImage = VisionProImageHelper.ConvertImage(imageData, camera.ImageWidth, camera.ImageHeight, Framework.Imaging.ColorFormat.Gray);
-
+                    cogImage = GetAreaCameraImage(camera);
                     savePath = string.Format(@"D:\PositionStep_{0}.bmp", _matrixStepPoint);
                     VisionProImageHelper.Save(cogImage, savePath);
                     Thread.Sleep(50);
@@ -358,12 +368,13 @@ namespace Jastech.Apps.Winform.Core.Calibrations
                         CalSeqStep = CalSeqStep.CAL_SEQ_ERROR;
                         break;
                     }
+                    CalibrationData.Instance().SetCalibrationData(_calibrationResult.ToList());
 
                     CalSeqStep = CalSeqStep.CAL_SEQ_XY_MOVE_REF;
                     break;
 
                 case CalSeqStep.CAL_SEQ_XY_MOVE_REF:
-                    RequestMove(_absoluteAmountX[0], _absoluteAmountY[0], 0);
+                    RequestMove(_absoluteAmountX[0] * (directionX), _absoluteAmountY[0], 0);
                     Logger.Write(LogType.Device, "Request move command. - init position");
                     sw.Restart();
 
@@ -522,16 +533,24 @@ namespace Jastech.Apps.Winform.Core.Calibrations
                 case CalSeqStep.CAL_SEQ_T_GRAB:
                     // 그랩
                     Logger.Write(LogType.Device, "Start grab.");
-                    camera.GrabOnce();
-                    imageData = camera.GetGrabbedImage();
+
+                    cogImage = GetAreaCameraImage(camera);
+                    savePath = string.Format(@"D:\Position_T_Step_1.bmp");
+                    VisionProImageHelper.Save(cogImage, savePath);
                     Thread.Sleep(50);
 
                     // 패턴 매칭
                     Logger.Write(LogType.Device, "Start pattern matching.");
                     var t1 = GetMatrixPoint(cogImage, inspParam);
 
-                    x1 = GetCurrentX() + t1.PixelX;
-                    y1 = GetCurrentY() + t1.PixelY;
+                    PointF calVision = new PointF();
+                    calVision.X = Convert.ToSingle(t1.PixelX);
+                    calVision.Y = Convert.ToSingle(t1.PixelY);
+
+                    PointF calReal = CalibrationData.Instance().ConvertVisionToReal(calVision, true);
+
+                    _x1 = GetCurrentX() + calReal.X;
+                    _y1 = GetCurrentY() + calReal.Y;
 
                     //matrixPointResultList.Add(matrixReferencePointResult);
 
@@ -576,16 +595,24 @@ namespace Jastech.Apps.Winform.Core.Calibrations
                 case CalSeqStep.CAL_SEQ_T_GRAB_X2:
                     // 그랩
                     Logger.Write(LogType.Device, "Start grab.");
-                    camera.GrabOnce();
-                    imageData = camera.GetGrabbedImage();
+                    Thread.Sleep(2000);
+                    cogImage = GetAreaCameraImage(camera);
+                    savePath = string.Format(@"D:\Position_T_Step_2.bmp");
+                    VisionProImageHelper.Save(cogImage, savePath);
                     Thread.Sleep(50);
 
                     // 패턴 매칭
                     Logger.Write(LogType.Device, "Start pattern matching.");
                     var t2 = GetMatrixPoint(cogImage, inspParam);
 
-                    x2 = GetCurrentX() + t2.PixelX;
-                    y2 = GetCurrentY() + t2.PixelY;
+                    PointF calVision2 = new PointF();
+                    calVision2.X = Convert.ToSingle(t2.PixelX);
+                    calVision2.Y = Convert.ToSingle(t2.PixelY);
+
+                    PointF calReal2 = CalibrationData.Instance().ConvertVisionToReal(calVision2, true);
+
+                    _x2 = (GetCurrentX()) + calReal2.X;
+                    _y2 = (GetCurrentY()) + calReal2.Y;
 
                     //matrixPointResultList.Add(matrixReferencePointResult);
 
@@ -593,9 +620,10 @@ namespace Jastech.Apps.Winform.Core.Calibrations
                     break;
 
                 case CalSeqStep.CAL_SEQ_T_CALC_THETA:
-                    theta = (MovePitchT * 2) * Math.PI / 180.0;
-                    _robotCenterX = x1 - 0.5 * ((x1 - x2) + (y1 - y2) * Math.Sin(theta) / (Math.Cos(theta) - 1.0));
-                    _robotCenterY = y1 - 0.5 * ((y1 - y2) - (x1 - x2) * Math.Sin(theta) / (Math.Cos(theta) - 1.0));
+                    _theta = (MovePitchT * 2) * Math.PI / 180.0;
+                    _robotCenterX = _x1 - 0.5 * ((_x1 - _x2) + (_y1 - _y2) * Math.Sin(_theta) / (Math.Cos(_theta) - 1.0));
+                    _robotCenterY = _y1 - 0.5 * ((_y1 - _y2) - (_x1 - _x2) * Math.Sin(_theta) / (Math.Cos(_theta) - 1.0));
+
                     Logger.Write(LogType.Device, "Calculate theta.");
 
                     CalSeqStep = CalSeqStep.CAL_SEQ_T_MOVE_OPPOSITE;
@@ -729,7 +757,7 @@ namespace Jastech.Apps.Winform.Core.Calibrations
 
                 case CalSeqStep.CAL_SEQ_SAVE_RESULT_DATA:
                     // Set calibration data
-                    CalibrationData.Instance().SetCalibrationData(_calibrationResult.ToList());
+                    //CalibrationData.Instance().SetCalibrationData(_calibrationResult.ToList());
                     CalibrationData.Instance().SetRotationCenter(_robotCenterX, _robotCenterY);
 
                     Logger.Write(LogType.Device, "Set calibration data.");
@@ -753,7 +781,7 @@ namespace Jastech.Apps.Winform.Core.Calibrations
 
                 case CalSeqStep.CAL_SEQ_SEND_RESULT_DATA:
                     
-                    PlcControlManager.Instance().ClearAddress(PlcCommonMap.PLC_Command);
+                    //PlcControlManager.Instance().ClearAddress(PlcCommonMap.PLC_Command);
                     Logger.Write(LogType.Device, "Send calibration data.");
 
                     // Send calibration abnormal complete signal
@@ -777,7 +805,9 @@ namespace Jastech.Apps.Winform.Core.Calibrations
                     // Light off
                     light.TurnOff();
                     Logger.Write(LogType.Device, "Light off.");
-                    _isWorking = false;
+                    _isWorking = false; 
+                    _workingThread = null;
+                    AppsStatus.Instance().IsCalibrationing = false;
                     Console.WriteLine("CalSeqStep : CAL_SEQ_STOP");
                     break;
 
@@ -786,9 +816,18 @@ namespace Jastech.Apps.Winform.Core.Calibrations
             }
         }
 
+        private ICogImage GetAreaCameraImage(Camera camera)
+        {
+            camera.GrabOnce();
+            byte[] dataArrayRight = camera.GetGrabbedImage();
+            var cogImage = VisionProImageHelper.ConvertImage(dataArrayRight, camera.ImageWidth, camera.ImageHeight, camera.ColorFormat);
+
+            return cogImage;
+        }
+
         private void InitailizeOpticSetting()
         {
-            AreaCamera.Camera.SetExposureTime(5000);
+            AreaCamera.Camera.SetExposureTime(1000);
             AreaCamera.Camera.SetAnalogGain(1);
             Thread.Sleep(50);
         }
@@ -817,17 +856,17 @@ namespace Jastech.Apps.Winform.Core.Calibrations
 
         private double GetCurrentX()
         {
-            return AxisHandler.GetAxis(AxisName.X).GetActualPosition() / 1000.0;
+            return AxisHandler.GetAxis(AxisName.X).GetActualPosition();
         }
 
         private double GetCurrentY()
         {
-            return 0;//PlcControlManager.Instance().GetReadPosition(AxisName.Y) / 1000.0;
+            return PlcControlManager.Instance().GetReadPosition(AxisName.Y);
         }
 
         private double GetCurrentT()
         {
-            return 0;//PlcControlManager.Instance().GetReadPosition(AxisName.T) / 1000.0;
+            return PlcControlManager.Instance().GetReadPosition(AxisName.T);
         }
 
         private void InitializeMoveAmount(double amountX, double amountY)
@@ -951,6 +990,9 @@ namespace Jastech.Apps.Winform.Core.Calibrations
 
             PlcControlManager.Instance().WriteMoveRequest();
 
+            string logMessage = string.Format("move amount - X : {0} / Y : {1}", amountX.ToString("F3"), amountY.ToString("F3"));
+            Logger.Write(LogType.Device, logMessage);
+
             SetMoveToPosition(amountX, amountY, amountT);
         }
 
@@ -994,7 +1036,7 @@ namespace Jastech.Apps.Winform.Core.Calibrations
 
                     case 1:
                         doneY = false;
-                        doneY = PlcControlManager.Instance().GetAddressMap(PlcCommonMap.PLC_Move_END).Value == "0" ? true : false;
+                        doneY = PlcControlManager.Instance().GetAddressMap(PlcCommonMap.PLC_Move_END).Value == "5" ? true : false;
                         if (doneY)
                             count++;
 
@@ -1004,6 +1046,7 @@ namespace Jastech.Apps.Winform.Core.Calibrations
 
                     case 2:
                         done = doneX && doneY;
+                        PlcControlManager.Instance().ClearAddress(PlcCommonMap.PLC_Move_END);
                         break;
 
                     default:
@@ -1077,8 +1120,10 @@ namespace Jastech.Apps.Winform.Core.Calibrations
                 visionCoordinates[index * 2] = resultList[index].PixelX;
                 visionCoordinates[index * 2 + 1] = resultList[index].PixelY;
 
-                robotCoordinates[index * 2] = resultList[index].MotionX;
-                robotCoordinates[index * 2 + 1] = resultList[index].MotionY;
+                robotCoordinates[index * 2] = _motionPositionX[index];
+                robotCoordinates[index * 2 + 1] = _motionPositionY[index];
+                Console.WriteLine("_motionPositionX[index] : " + _motionPositionX[index]);
+                Console.WriteLine("_motionPositionY[index] : " + _motionPositionY[index]);
             }
 
             for (int index = 0; index < MATRIX_DIMENSION; index++)
@@ -1107,7 +1152,7 @@ namespace Jastech.Apps.Winform.Core.Calibrations
             MultiplyMatrix(matrix2, matrix1, ref buffer1, 8, MATRIX_DIMENSION * 2, 8);
 
             if (InverseMatrix(buffer1, 8, ref buffer2) == false)
-            { }//return false;
+                return false;
 
             MultiplyMatrix(matrix2, robotCoordinates, ref calTemp, 8, MATRIX_DIMENSION * 2, 1);
             MultiplyMatrix(buffer2, calTemp, ref resultMatrix, 8, 8, 1);
