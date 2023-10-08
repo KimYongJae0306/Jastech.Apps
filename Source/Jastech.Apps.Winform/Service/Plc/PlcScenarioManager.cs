@@ -621,8 +621,6 @@ namespace Jastech.Apps.Winform.Service.Plc
             //PlcControlManager.Instance().WritePcCommand(PcCommand.ServoOn_2);
 
             OriginAllEvent?.Invoke();
-
-            PlcControlManager.Instance().WritePcStatus(PlcCommand.Origin_All);
             Logger.Write(LogType.Device, "Send to PLC Origin All");
         }
         #endregion

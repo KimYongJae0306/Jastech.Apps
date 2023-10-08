@@ -394,19 +394,8 @@ namespace ATT_UT_IPAD
         #endregion
 
         #region 메소드
-        public void HomingAllAxes()
-        {
-            var akkonLaf = LAFManager.Instance().GetLAF("AkkonLaf");
-            var alignLaf = LAFManager.Instance().GetLAF("AlignLaf");
 
-            ProgressForm progressForm = new ProgressForm();
-            progressForm.Add($"Axis X Homing", AxisHoming, AxisName.X, StopAxisHoming);
-            progressForm.Add($"Axis Z1 (Akkon LAF) homing", akkonLaf.HomeSequenceAction, akkonLaf.StopHomeSequence);
-            progressForm.Add($"Axis Z2 (Align LAF) homing", alignLaf.HomeSequenceAction, alignLaf.StopHomeSequence);
-            progressForm.ShowDialog();
-        }
-
-        private bool AxisHoming(AxisName axisName)
+        public bool AxisHoming(AxisName axisName)
         {
             int timeOutSec = 40;
             _currentHomingAxis = MotionManager.Instance().GetAxis(AxisHandlerName.Handler0, axisName);
@@ -426,7 +415,7 @@ namespace ATT_UT_IPAD
             return _currentHomingAxis.IsHomeFound;
         }
 
-        private void StopAxisHoming()
+        public void StopAxisHoming()
         {
             _isAxisHoming = false;
             _currentHomingAxis?.StopMove();

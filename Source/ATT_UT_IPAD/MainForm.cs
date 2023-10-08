@@ -122,19 +122,33 @@ namespace ATT_UT_IPAD
 
             if (ConfigSet.Instance().Operation.VirtualMode == false)
             {
-                string suggestMessage = "Perform homing All axes?\r\n※ Highly recommended for stability.";
-                var messageBox = new MessageYesNoForm { Message = suggestMessage };
+                // 231008 MC 트리거 후 OriginAll하면 되므로 임시제거
+                //string suggestMessage = "Perform homing All axes?\r\n※ Highly recommended for stability.";
+                //var messageBox = new MessageYesNoForm { Message = suggestMessage };
+                //if (messageBox.ShowDialog() == DialogResult.Yes)
+                //    SystemManager.Instance().HomingAllAxes();
 
-                if (messageBox.ShowDialog() == DialogResult.Yes)
-                    SystemManager.Instance().HomingAllAxes();
-
-                CancelSafetyDoorlockTask = new CancellationTokenSource();
-                CheckSafetyDoorlockTask = new Task(CheckDoorOpenedLoop, CancelSafetyDoorlockTask.Token);
-                CheckSafetyDoorlockTask.Start();
+                //// SafetyDoor 상태 확인 (다시 열린 경우 추가 전까지 보류)
+                //CancelSafetyDoorlockTask = new CancellationTokenSource();
+                //CheckSafetyDoorlockTask = new Task(CheckDoorOpenedLoop, CancelSafetyDoorlockTask.Token);
+                //CheckSafetyDoorlockTask.Start();
             }
         }
 
-        private void MainForm_OriginAllEvent() => BeginInvoke(new Action(SystemManager.Instance().HomingAllAxes));
+        private void MainForm_OriginAllEvent()
+        {
+            var akkonLaf = LAFManager.Instance().GetLAF("AkkonLaf");
+            var alignLaf = LAFManager.Instance().GetLAF("AlignLaf");
+
+            ProgressForm progressForm = new ProgressForm("Homing All Axes", ProgressForm.RunMode.Batch, true);
+            progressForm.Add($"Axis X Homing", SystemManager.Instance().AxisHoming, AxisName.X, SystemManager.Instance().StopAxisHoming);
+            progressForm.Add($"Axis Z1 (Akkon LAF) homing", akkonLaf.HomeSequenceAction, akkonLaf.StopHomeSequence);
+            progressForm.Add($"Axis Z2 (Align LAF) homing", alignLaf.HomeSequenceAction, alignLaf.StopHomeSequence);
+            progressForm.ShowDialog();
+
+            if (progressForm.IsSuccess == true)
+                PlcControlManager.Instance().WritePcStatus(PlcCommand.Origin_All);
+        }
 
         private void MainForm_InspRunnerHandler(bool isStart)
         {
