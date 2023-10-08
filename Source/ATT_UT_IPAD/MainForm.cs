@@ -449,7 +449,7 @@ namespace ATT_UT_IPAD
         {
             tmrMainForm.Stop();
             tmrUpdateStates.Stop();
-            CancelSafetyDoorlockTask.Cancel();
+            CancelSafetyDoorlockTask?.Cancel();
             StopVirtualInspTask();
 
             SystemManager.Instance().ReleaseInspRunner();
