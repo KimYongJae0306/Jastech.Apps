@@ -636,8 +636,8 @@ namespace ATT_UT_IPAD
                     PlcControlManager.Instance().IsDoorOpened = true;
 
                     MotionManager.Instance().GetAxisHandler(AxisHandlerName.Handler0).StopMove();
-                    //LAFManager.Instance().GetLAF("AkkonLaf").LafCtrl.SetMotionStop();
-                    //LAFManager.Instance().GetLAF("AlignLaf").LafCtrl.SetMotionStop();
+                    LAFManager.Instance().GetLAF("AkkonLaf").LafCtrl.SetMotionStop();
+                    LAFManager.Instance().GetLAF("AlignLaf").LafCtrl.SetMotionStop();
 
                     SystemManager.Instance().SetStopMode();
                 }
