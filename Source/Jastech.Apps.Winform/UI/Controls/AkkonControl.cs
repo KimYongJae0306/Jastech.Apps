@@ -277,8 +277,8 @@ namespace Jastech.Apps.Winform.UI.Controls
             display.ClearGraphic();
             ICogImage cogImage = display.GetImage();
 
-            double centerX = display.ImageWidth() / 2.0 - display.GetPan().X;
-            double centerY = display.ImageHeight() / 2.0 - display.GetPan().Y;
+            double centerX = display.GetImageWidth() / 2.0 - display.GetPan().X;
+            double centerY = display.GetImageHeight() / 2.0 - display.GetPan().Y;
 
             float roiwidth = Convert.ToSingle(lblROIWidthValue.Text);
             float roiheight = Convert.ToSingle(lblROIHeightValue.Text);
@@ -306,8 +306,8 @@ namespace Jastech.Apps.Winform.UI.Controls
 
             ICogImage cogImage = display.GetImage();
 
-            double centerX = display.ImageWidth() / 2.0 - display.GetPan().X;
-            double centerY = display.ImageHeight() / 2.0 - display.GetPan().Y;
+            double centerX = display.GetImageWidth() / 2.0 - display.GetPan().X;
+            double centerY = display.GetImageHeight() / 2.0 - display.GetPan().Y;
 
             _autoTeachingPolygon = new CogPolygon();
             _autoTeachingPolygon.GraphicDOFEnable = CogPolygonDOFConstants.All;

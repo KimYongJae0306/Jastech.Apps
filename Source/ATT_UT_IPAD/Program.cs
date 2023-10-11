@@ -1,4 +1,5 @@
 ﻿using Jastech.Apps.Winform;
+using Jastech.Apps.Winform.Core;
 using Jastech.Apps.Winform.Settings;
 using Jastech.Apps.Winform.UI.Forms;
 using Jastech.Framework.Comm;
@@ -78,7 +79,7 @@ namespace ATT_UT_IPAD
         {
             if (ConfigSet.Instance().Operation.VirtualMode)
             {
-                AppsConfig.Instance().MachineName = "ATT IPAD (Virtual)";
+                AppsConfig.Instance().MachineName = "UT COF ATT (Virtual)";
 
                 // Initialize Config by Program Types
                 string[] typeList = Enum.GetNames(typeof(ProgramType));
@@ -141,11 +142,11 @@ namespace ATT_UT_IPAD
                 switch (programType)
                 {
                     case ProgramType.ProgramType_1:
-                        AppsConfig.Instance().MachineName = "COF ATT #1";
+                        AppsConfig.Instance().MachineName = "UT COF ATT #1";
                         CreateDeviceConfigType1(config);
                         break;
                     case ProgramType.ProgramType_2:
-                        AppsConfig.Instance().MachineName = "COF ATT #2";
+                        AppsConfig.Instance().MachineName = "UT COF ATT #2";
                         CreateDeviceConfigType2(config);
                         break;
                 }
@@ -414,6 +415,7 @@ namespace ATT_UT_IPAD
 
         private static void Application_ThreadException(object sender, ThreadExceptionEventArgs e)
         {
+            PlcControlManager.Instance().WritePcVisionStatus(MachineStatus.STOP);
             string message = "Application_ThreadException " + e.Exception.Message;
             Logger.Error(ErrorType.Apps, message);
             System.Diagnostics.Trace.WriteLine(message);
@@ -423,6 +425,7 @@ namespace ATT_UT_IPAD
 
         private static void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
         {
+            PlcControlManager.Instance().WritePcVisionStatus(MachineStatus.STOP);
             var exception = (Exception)e.ExceptionObject;
             string message = "CurrentDomain_UnhandledException " + exception.Message + " Source: " + exception.Source.ToString() + "StackTrack :" + exception.StackTrace.ToString();
             Logger.Error(ErrorType.Apps, message);

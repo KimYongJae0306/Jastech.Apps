@@ -33,6 +33,8 @@ namespace Jastech.Apps.Winform
         #region 속성
         public MachineStatus MachineStatus { get; set; } = MachineStatus.STOP;
 
+        public bool IsDoorOpened { get; set; } = false;
+
         private ParserType ParserType { get; set; } = ParserType.Binary;
 
         private PlcAddressService PlcAddressService { get; set; } = new PlcAddressService();
@@ -271,7 +273,7 @@ namespace Jastech.Apps.Winform
                 var plc = DeviceManager.Instance().PlcHandler.First() as MelsecPlc;
                 var map = PlcControlManager.Instance().GetAddressMap(PlcCommonMap.PC_Alive);
 
-                int value = PlcControlManager.Instance().MachineStatus == MachineStatus.RUN ? 9000 : 0;
+
                 PlcDataStream stream = new PlcDataStream();
 
                 if (plc.MelsecParser.ParserType == ParserType.Binary)
@@ -280,7 +282,7 @@ namespace Jastech.Apps.Winform
                     stream.AddSwap16BitData(Convert.ToInt16(isMoving));
                     stream.AddSwap16BitData(Convert.ToInt16(currentPosX));
                     stream.AddSwap16BitData(Convert.ToInt16(isServoOn));
-                    stream.AddSwap16BitData(Convert.ToInt16(value));
+
                 }
                 else
                 {
@@ -288,11 +290,26 @@ namespace Jastech.Apps.Winform
                     stream.Add16BitData(Convert.ToInt16(isMoving));
                     stream.Add16BitData(Convert.ToInt16(currentPosX));
                     stream.Add16BitData(Convert.ToInt16(isServoOn));
-                    stream.Add16BitData(Convert.ToInt16(value));
+
                 }
 
                 plc.Write("D" + map.AddressNum, stream.Data);
             }
+        }
+        public void WritePcVisionStatus(MachineStatus status)
+        {
+            int value = status == MachineStatus.RUN ? 9000 : 0;
+            PlcDataStream stream = new PlcDataStream();
+            
+            var plc = DeviceManager.Instance().PlcHandler.First() as MelsecPlc;
+            var map = PlcControlManager.Instance().GetAddressMap(PlcCommonMap.PC_Ready);
+
+            if (plc.MelsecParser.ParserType == ParserType.Binary)
+                stream.AddSwap16BitData(Convert.ToInt16(value));
+            else
+                stream.Add16BitData(Convert.ToInt16(value));
+
+            plc.Write("D" + map.AddressNum, stream.Data);
         }
 
         public void WriteGrabDone()
@@ -521,14 +538,9 @@ namespace Jastech.Apps.Winform
 
         public void WriteAlignData(double alignDataX_mm, double alignDataY_mm, double alignDataT_mm)
         {
-            //ConvertDoubleWordData
-            int convertAlignX = ConvertDoubleWordData(alignDataX_mm) + Convert.ToInt32(GetValue(PlcCommonMap.PLC_OffsetDataX));
-            int convertAlignY = ConvertDoubleWordData(alignDataY_mm) + Convert.ToInt32(GetValue(PlcCommonMap.PLC_OffsetDataY));
-            int convertAlignT = ConvertDoubleWordData(alignDataT_mm) + Convert.ToInt32(GetValue(PlcCommonMap.PLC_OffsetDataT));
-
-            Console.WriteLine("PLC_OffsetDataX : " + Convert.ToInt32(GetValue(PlcCommonMap.PLC_OffsetDataX)));
-            Console.WriteLine("PLC_OffsetDataY : " + Convert.ToInt32(GetValue(PlcCommonMap.PLC_OffsetDataY)));
-            Console.WriteLine("PLC_OffsetDataT : " + Convert.ToInt32(GetValue(PlcCommonMap.PLC_OffsetDataT)));
+            int convertAlignX = ConvertDoubleWordData(alignDataX_mm);
+            int convertAlignY = ConvertDoubleWordData(alignDataY_mm);
+            int convertAlignT = ConvertDoubleWordData(alignDataT_mm);
 
             var map = PlcControlManager.Instance().GetAddressMap(PlcCommonMap.PC_AlignDataX);
             if (DeviceManager.Instance().PlcHandler.Count > 0 && map != null)
@@ -695,33 +707,44 @@ namespace Jastech.Apps.Winform
             else
             {
                 int alignJudgement = alignResult.Judgement == Judgement.OK ? 1 : 2;
-                
-                //double leftX_mm = alignResult.LeftX.ResultValue_pixel * resolution / 1000.0;
-                //double leftY_mm = alignResult.LeftY.ResultValue_pixel * resolution / 1000.0;
-                //double rightX_mm = alignResult.RightX.ResultValue_pixel * resolution / 1000.0;
-                //double rightY_mm = alignResult.RightY.ResultValue_pixel * resolution / 1000.0;
 
-                //int leftX_um = ConvertDoubleWordData(leftX_mm);
-                //int leftY_um = ConvertDoubleWordData(leftY_mm);
-                //int rightX_um = ConvertDoubleWordData(rightX_mm);
-                //int rightY_um = ConvertDoubleWordData(rightY_mm);
+                double leftX_mm = 0.0;
+                if (alignResult.LeftX != null)
+                    leftX_mm = alignResult.LeftX.ResultValue_pixel * resolution / 1000.0;
 
-                //if (parserType == ParserType.Binary)
-                //{
-                //    stream.AddSwap16BitData(Convert.ToInt16(alignJudgement));   // Align OK/NG
-                //    stream.AddSwap32BitData(leftX_um);                          // Left AlignX
-                //    stream.AddSwap32BitData(leftY_um);                          // Left AlignY
-                //    stream.AddSwap32BitData(rightX_um);                         // Right AlignX
-                //    stream.AddSwap32BitData(rightY_um);                         // Right AlignY
-                //}
-                //else
-                //{
-                //    stream.Add16BitData(Convert.ToInt16(alignJudgement));   // Align OK/NG
-                //    stream.Add32BitData(leftX_um);                          // Left AlignX
-                //    stream.Add32BitData(leftY_um);                          // Left AlignY
-                //    stream.Add32BitData(rightX_um);                         // Right AlignX
-                //    stream.Add32BitData(rightY_um);                         // Right AlignY
-                //}
+                double leftY_mm = 0.0;
+                if (alignResult.LeftY != null)
+                    leftY_mm = alignResult.LeftY.ResultValue_pixel * resolution / 1000.0;
+
+                double rightX_mm = 0.0;
+                if (alignResult.RightX != null)
+                    rightX_mm = alignResult.RightX.ResultValue_pixel * resolution / 1000.0;
+
+                double rightY_mm = 0.0;
+                if (alignResult.RightY != null)
+                    rightY_mm = alignResult.RightY.ResultValue_pixel * resolution / 1000.0;
+
+                int leftX_um = ConvertDoubleWordData(leftX_mm);
+                int leftY_um = ConvertDoubleWordData(leftY_mm);
+                int rightX_um = ConvertDoubleWordData(rightX_mm);
+                int rightY_um = ConvertDoubleWordData(rightY_mm);
+
+                if (parserType == ParserType.Binary)
+                {
+                    stream.AddSwap16BitData(Convert.ToInt16(alignJudgement));   // Align OK/NG
+                    stream.AddSwap32BitData(leftX_um);                          // Left AlignX
+                    stream.AddSwap32BitData(leftY_um);                          // Left AlignY
+                    stream.AddSwap32BitData(rightX_um);                         // Right AlignX
+                    stream.AddSwap32BitData(rightY_um);                         // Right AlignY
+                }
+                else
+                {
+                    stream.Add16BitData(Convert.ToInt16(alignJudgement));   // Align OK/NG
+                    stream.Add32BitData(leftX_um);                          // Left AlignX
+                    stream.Add32BitData(leftY_um);                          // Left AlignY
+                    stream.Add32BitData(rightX_um);                         // Right AlignX
+                    stream.Add32BitData(rightY_um);                         // Right AlignY
+                }
             }
         }
 

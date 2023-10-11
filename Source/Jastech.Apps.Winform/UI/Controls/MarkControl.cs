@@ -368,8 +368,8 @@ namespace Jastech.Apps.Winform.UI.Controls
         {
             ICogImage cogImage = display.GetImage();
 
-            double centerX = display.ImageWidth() / 2.0 - display.GetPan().X;
-            double centerY = display.ImageHeight() / 2.0 - display.GetPan().Y;
+            double centerX = display.GetImageWidth() / 2.0 - display.GetPan().X;
+            double centerY = display.GetImageHeight() / 2.0 - display.GetPan().Y;
 
             CogRectangle roi = VisionProImageHelper.CreateRectangle(centerX, centerY, 100, 100);
             CogRectangle searchRoi = VisionProImageHelper.CreateRectangle(roi.CenterX, roi.CenterY, roi.Width * 2, roi.Height * 2);

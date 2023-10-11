@@ -99,7 +99,15 @@ namespace ATT_UT_IPAD
             PlcScenarioManager.Instance().InspRunnerHandler += MainForm_InspRunnerHandler;
             PlcScenarioManager.Instance().OriginAllEvent += MainForm_OriginAllEvent;
 
+            PlcControlManager.Instance().WritePcCommand(PcCommand.ServoReset_1);
+            Thread.Sleep(100);
             PlcControlManager.Instance().WritePcCommand(PcCommand.ServoOn_1);
+            Thread.Sleep(100);
+            PlcControlManager.Instance().WritePcCommand(PcCommand.ServoReset_2);
+            Thread.Sleep(100);
+            PlcControlManager.Instance().WritePcCommand(PcCommand.ServoOn_2);
+
+            PlcControlManager.Instance().WritePcVisionStatus(MachineStatus.RUN);
 
             if (ModelManager.Instance().CurrentModel != null)
             {
@@ -122,16 +130,9 @@ namespace ATT_UT_IPAD
 
             if (ConfigSet.Instance().Operation.VirtualMode == false)
             {
-                // 231008 MC 트리거 후 OriginAll하면 되므로 임시제거
-                //string suggestMessage = "Perform homing All axes?\r\n※ Highly recommended for stability.";
-                //var messageBox = new MessageYesNoForm { Message = suggestMessage };
-                //if (messageBox.ShowDialog() == DialogResult.Yes)
-                //    SystemManager.Instance().HomingAllAxes();
-
-                //// SafetyDoor 상태 확인 (다시 열린 경우 추가 전까지 보류)
-                //CancelSafetyDoorlockTask = new CancellationTokenSource();
-                //CheckSafetyDoorlockTask = new Task(CheckDoorOpenedLoop, CancelSafetyDoorlockTask.Token);
-                //CheckSafetyDoorlockTask.Start();
+                CancelSafetyDoorlockTask = new CancellationTokenSource();
+                CheckSafetyDoorlockTask = new Task(CheckDoorOpenedLoop, CancelSafetyDoorlockTask.Token);
+                CheckSafetyDoorlockTask.Start();
             }
         }
 
@@ -234,9 +235,6 @@ namespace ATT_UT_IPAD
 
         private void MainForm_CurrentModelChangedEvent(InspModel inspModel)
         {
-            //if (PlcControlManager.Instance().MachineStatus == MachineStatus.RUN)
-            //    SystemManager.Instance().SetStopMode();
-
             AppsInspModel model = inspModel as AppsInspModel;
 
             AppsInspResult.Instance().Dispose();
@@ -246,9 +244,6 @@ namespace ATT_UT_IPAD
             UpdateLabel(model.Name);
             ConfigSet.Instance().Operation.LastModelName = model.Name;
             ConfigSet.Instance().Operation.Save(ConfigSet.Instance().Path.Config);
-
-            //if (PlcControlManager.Instance().MachineStatus == MachineStatus.STOP)
-            //    SystemManager.Instance().SetAutoMode();
         }
      
         private void UpdateLabel(string modelname)
@@ -455,6 +450,8 @@ namespace ATT_UT_IPAD
             SystemManager.Instance().ReleaseInspRunner();
             SystemManager.Instance().StopRun();
 
+            PlcControlManager.Instance().WritePcVisionStatus(MachineStatus.STOP);
+
             LAFManager.Instance().Release();
             PlcControlManager.Instance().Release();
             PlcScenarioManager.Instance().Release();
@@ -634,15 +631,24 @@ namespace ATT_UT_IPAD
         {
             while (CancelSafetyDoorlockTask?.IsCancellationRequested == false)
             {
-                if (PlcControlManager.Instance().GetValue(PlcCommonMap.PLC_DoorStatus) == "2" && PlcControlManager.Instance().MachineStatus == MachineStatus.RUN)
+                if (PlcControlManager.Instance().GetValue(PlcCommonMap.PLC_DoorStatus) == "2" && PlcControlManager.Instance().IsDoorOpened == false)
                 {
-                    MotionManager.Instance().GetAxisHandler(AxisHandlerName.Handler0).StopMove();
-                    LAFManager.Instance().GetLAF("AkkonLaf").LafCtrl.SetMotionStop();
-                    LAFManager.Instance().GetLAF("AlignLaf").LafCtrl.SetMotionStop();
-                    SystemManager.Instance().SetStopMode();
+                    PlcControlManager.Instance().IsDoorOpened = true;
 
-                    new MessageConfirmForm { Message = "Door is opened.\r\nCheck the lock state and start AutoRun" }.ShowDialog();
+                    MotionManager.Instance().GetAxisHandler(AxisHandlerName.Handler0).StopMove();
+                    //LAFManager.Instance().GetLAF("AkkonLaf").LafCtrl.SetMotionStop();
+                    //LAFManager.Instance().GetLAF("AlignLaf").LafCtrl.SetMotionStop();
+
+                    SystemManager.Instance().SetStopMode();
                 }
+                else if (PlcControlManager.Instance().GetValue(PlcCommonMap.PLC_DoorStatus) != "2" && PlcControlManager.Instance().IsDoorOpened == true)
+                {
+                    PlcControlManager.Instance().IsDoorOpened = false;
+                    SystemManager.Instance().SetRunMode();
+                }
+
+                lblDoorlockState.BackColor = PlcControlManager.Instance().IsDoorOpened ? Color.Red : BackColor;
+                lblDoorlockState.ForeColor = PlcControlManager.Instance().IsDoorOpened ? Color.Yellow : BackColor;
                 await Task.Delay(20);
             }
         }
@@ -663,7 +669,7 @@ namespace ATT_UT_IPAD
             return isNormalState ? Resources.Circle_Green : Resources.Circle_Red;
         }
 
-        private void picLogo_Click(object sender, EventArgs e)
+        private void lblDoorlockState_Click(object sender, EventArgs e)
         {
             if (PlcControlManager.Instance().MachineStatus != MachineStatus.RUN)
                 return;

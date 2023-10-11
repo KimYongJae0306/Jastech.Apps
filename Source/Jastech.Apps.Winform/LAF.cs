@@ -325,7 +325,15 @@ namespace Jastech.Apps.Winform
                     var unit = TeachingData.Instance().GetUnit(UnitName.Unit0.ToString());
                     double standbyPosition = 0.0;
                     if (unit != null)
+                    {
                         standbyPosition = unit.GetTeachingInfo(TeachingPosType.Stage1_Scan_Start).GetTargetPosition(LafCtrl.AxisName);
+                        string tt = string.Format("LAF Axis Name : {0}", LafCtrl.AxisName.ToString());
+                    }
+                    else
+                    {
+                        Logger.Write(LogType.Device, "Failed Move To Target Position [Unit is null].");
+                    }
+
                     LafCtrl.SetMotionAbsoluteMove(standbyPosition);
                     Logger.Write(LogType.Device, "Move to home position.");
                     Thread.Sleep(2000);

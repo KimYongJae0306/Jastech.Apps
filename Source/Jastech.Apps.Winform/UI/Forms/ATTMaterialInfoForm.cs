@@ -42,16 +42,16 @@ namespace Jastech.Apps.Winform.UI.Forms
             if (NewMaterialInfo != null)
             {
                 // Data
-                txtPanelXSize.DataBindings.Add("Text", NewMaterialInfo, "PanelXSize_mm", true, DataSourceUpdateMode.OnPropertyChanged, "0");
-                txtMarkToMark.DataBindings.Add("Text", NewMaterialInfo, "MarkToMark_mm", true, DataSourceUpdateMode.OnPropertyChanged, "0");
-                txtPanelEdgeToFirst.DataBindings.Add("Text", NewMaterialInfo, "PanelEdgeToFirst_mm", true, DataSourceUpdateMode.OnPropertyChanged, "0");
+                txtPanelXSize.DataBindings.Add("Text", NewMaterialInfo, "PanelXSize_mm", true, DataSourceUpdateMode.OnPropertyChanged);
+                txtMarkToMark.DataBindings.Add("Text", NewMaterialInfo, "MarkToMark_mm", true, DataSourceUpdateMode.OnPropertyChanged);
+                txtPanelEdgeToFirst.DataBindings.Add("Text", NewMaterialInfo, "PanelEdgeToFirst_mm", true, DataSourceUpdateMode.OnPropertyChanged);
 
                 // Tab Width
                 for (int index = 0; index < _layoutPanels["TabWidth"].Count; index++)
                 {
                     if (index < TabCount)
                     {
-                        var binding = new Binding("Text", NewMaterialInfo.TabWidth_mm, $"Tab{index}", true, DataSourceUpdateMode.OnPropertyChanged, "0");
+                        var binding = new Binding("Text", NewMaterialInfo.TabWidth_mm, $"Tab{index}", true, DataSourceUpdateMode.OnPropertyChanged);
                         _textBoxes["TabWidth"][index].DataBindings.Add(binding);
                     }
                     else
@@ -63,7 +63,7 @@ namespace Jastech.Apps.Winform.UI.Forms
                 {
                     if (index + 1 < TabCount)
                     {
-                        var binding = new Binding("Text", NewMaterialInfo.TabToTabDistance_mm, $"Tab{index}ToTab{index + 1}", true, DataSourceUpdateMode.OnPropertyChanged, "0");
+                        var binding = new Binding("Text", NewMaterialInfo.TabToTabDistance_mm, $"Tab{index}ToTab{index + 1}", true, DataSourceUpdateMode.OnPropertyChanged);
                         _textBoxes["Distance"][index].DataBindings.Add(binding);
                     }
                     else
@@ -75,7 +75,7 @@ namespace Jastech.Apps.Winform.UI.Forms
                 {
                     if (index < TabCount)
                     {
-                        var binding = new Binding("Text", NewMaterialInfo.LeftOffset, $"Tab{index}", true, DataSourceUpdateMode.OnPropertyChanged, "0");
+                        var binding = new Binding("Text", NewMaterialInfo.LeftOffset, $"Tab{index}", true, DataSourceUpdateMode.OnPropertyChanged);
                         _textBoxes["LeftOffset"][index].DataBindings.Add(binding);
                     }
                     else
@@ -87,7 +87,7 @@ namespace Jastech.Apps.Winform.UI.Forms
                 {
                     if (index < TabCount)
                     {
-                        var binding = new Binding("Text", NewMaterialInfo.RightOffset, $"Tab{index}", true, DataSourceUpdateMode.OnPropertyChanged, "0");
+                        var binding = new Binding("Text", NewMaterialInfo.RightOffset, $"Tab{index}", true, DataSourceUpdateMode.OnPropertyChanged);
                         _textBoxes["RightOffset"][index].DataBindings.Add(binding);
                     }
                     else

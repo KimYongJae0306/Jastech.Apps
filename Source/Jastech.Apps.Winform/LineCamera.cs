@@ -131,29 +131,27 @@ namespace Jastech.Apps.Winform
                     LAFTrackingPos_mm = tempPos - ((inspModel.MaterialInfo.PanelEdgeToFirst_mm / 2.0));
                 }
 
-                int startIndex = (int)(tempPos / resolution_mm / Camera.ImageHeight);
+                double tabLeftOffset = materialInfo.GetLeftOffset(i);
+
+                double startPos = tempPos + tabLeftOffset;
+                int startIndex = (int)(startPos / resolution_mm / Camera.ImageHeight);
 
                 double tabWidth = materialInfo.GetTabWidth(i);
-                double tabLeftOffset = materialInfo.GetLeftOffset(i);
                 double tabRightOffset = materialInfo.GetRightOffset(i);
-                tabLeftOffset = 0;
-                tabRightOffset = 0;
+
                 tempPos += tabWidth;
 
-                double calcPos = tempPos;
-                calcPos += tabLeftOffset;
-                calcPos += tabRightOffset;
+                double endPos = tempPos;
+                endPos += tabRightOffset;
 
-                int endIndex = (int)(calcPos / resolution_mm / Camera.ImageHeight);
-                if(maxEndIndex <= endIndex)
+                int endIndex = (int)(endPos / resolution_mm / Camera.ImageHeight);
+                if (maxEndIndex <= endIndex)
                     maxEndIndex = endIndex;
-
-                var temp = endIndex - startIndex;
 
                 tempPos += materialInfo.GetTabToTabDistance(i, tabCount);
 
                 TabScanBuffer scanImage = new TabScanBuffer(i, startIndex, endIndex, Camera.ImageWidth, Camera.ImageHeight);
-                lock(TabScanBufferList)
+                lock (TabScanBufferList)
                     TabScanBufferList.Add(scanImage);
             }
 
@@ -184,32 +182,27 @@ namespace Jastech.Apps.Winform
             {
                 if (i == 0)
                 {
-                    //Console.WriteLine("AlignX : " + plcAlignDataX_mm.ToString());
                     tempPos += plcAlignDataX_mm;
                     tempPos += delayStart_mm;
                     tempPos += inspModel.MaterialInfo.PanelEdgeToFirst_mm;
-
-                    //DelayGrabIndex = (int)(tempPos / resolution_mm / Camera.ImageHeight);
-                    //LAFTrackingPos_mm = tempPos - (inspModel.MaterialInfo.PanelEdgeToFirst_mm / 2.0);
                 }
 
-                int startIndex = (int)(tempPos / resolution_mm / Camera.ImageHeight);
-                //Console.WriteLine("StartIndex :" + startIndex.ToString()) ;
-                double tabWidth = materialInfo.GetTabWidth(i);
                 double tabLeftOffset = materialInfo.GetLeftOffset(i);
+                double startPos = tempPos + tabLeftOffset;
+
+                int startIndex = (int)(startPos / resolution_mm / Camera.ImageHeight);
+
+                double tabWidth = materialInfo.GetTabWidth(i);
                 double tabRightOffset = materialInfo.GetRightOffset(i);
 
                 tempPos += tabWidth;
 
-                double calcPos = tempPos;
-                calcPos += tabLeftOffset;
-                calcPos += tabRightOffset;
+                double endPos = tempPos;
+                endPos += tabRightOffset;
 
-                int endIndex = (int)(calcPos / resolution_mm / Camera.ImageHeight);
+                int endIndex = (int)(endPos / resolution_mm / Camera.ImageHeight);
                 if (maxEndIndex <= endIndex)
                     maxEndIndex = endIndex;
-
-                var temp = endIndex - startIndex;
 
                 tempPos += materialInfo.GetTabToTabDistance(i, tabCount);
 

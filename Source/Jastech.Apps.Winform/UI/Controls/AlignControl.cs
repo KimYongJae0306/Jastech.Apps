@@ -289,8 +289,8 @@ namespace Jastech.Apps.Winform.UI.Controls
         {
             ICogImage cogImage = display.GetImage();
 
-            double centerX = display.ImageWidth() / 2.0 - display.GetPan().X;
-            double centerY = display.ImageHeight() / 2.0 - display.GetPan().Y;
+            double centerX = display.GetImageWidth() / 2.0 - display.GetPan().X;
+            double centerY = display.GetImageHeight() / 2.0 - display.GetPan().Y;
 
             CogRectangleAffine roi = VisionProImageHelper.CreateRectangleAffine(centerX, centerY, 100, 100);
 

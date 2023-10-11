@@ -88,9 +88,11 @@ namespace ATT_UT_Remodeling
             PlcScenarioManager.Instance().Initialize(ATTInspModelService);
             PlcScenarioManager.Instance().InspRunnerHandler += MainForm_InspRunnerHandler;
             PlcScenarioManager.Instance().PreAlignRunnerHandler += MainForm_PreAlignRunnerHandler;
-            PlcScenarioManager.Instance().CalibrationRunnerHandler += MainForm_CalibrationRunnerHandler;
-
+            PlcControlManager.Instance().WritePcCommand(PcCommand.ServoReset_1);
+            Thread.Sleep(100);
             PlcControlManager.Instance().WritePcCommand(PcCommand.ServoOn_1);
+
+            PlcControlManager.Instance().WritePcVisionStatus(MachineStatus.RUN);
 
             if (ModelManager.Instance().CurrentModel != null)
             {
@@ -120,11 +122,6 @@ namespace ATT_UT_Remodeling
         private void MainForm_InspRunnerHandler(bool isStart)
         {
             AppsStatus.Instance().IsInspRunnerFlagFromPlc = isStart;
-        }
-
-        private void MainForm_CalibrationRunnerHandler(bool isStart)
-        {
-            AppsStatus.Instance().IsCalibrationing = isStart;
         }
 
         private void AddControls()
@@ -294,18 +291,8 @@ namespace ATT_UT_Remodeling
             {
                 lblTeachingPageImage.Enabled = false;
                 lblTeachingPage.Enabled = false;
-
-                if (UserManager.Instance().CurrentUser.Type == AuthorityType.Maker)
-                {
-                    lblDataPageImage.Enabled = true;
-                    lblDataPage.Enabled = true;
-                }
-                else
-                {
-                    lblDataPageImage.Enabled = false;
-                    lblDataPage.Enabled = false;
-                }
-
+                lblDataPageImage.Enabled = false;
+                lblDataPage.Enabled = false;
                 lblLogPage.Enabled = false;
             }
             else
@@ -428,6 +415,7 @@ namespace ATT_UT_Remodeling
             SystemManager.Instance().ReleaseInspRunner();
             SystemManager.Instance().StopRun();
 
+            PlcControlManager.Instance().WritePcVisionStatus(MachineStatus.STOP);
             LAFManager.Instance().Release();
             PlcControlManager.Instance().Release();
             PlcScenarioManager.Instance().Release();

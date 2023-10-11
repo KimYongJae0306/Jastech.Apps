@@ -285,18 +285,19 @@ namespace ATT_UT_IPAD
 
         public void StartRun()
         {
+            if(PlcControlManager.Instance().IsDoorOpened == true)
+            {
+                MessageConfirmForm alert = new MessageConfirmForm();
+                alert.Message = "Safety Doorlock is opened.\r\nPlease check the doorlock state";
+                alert.ShowDialog();
+            }
             if (PlcControlManager.Instance().MachineStatus != MachineStatus.RUN)
             {
                 MessageYesNoForm form = new MessageYesNoForm();
                 form.Message = "Do you want to Start Auto Mode?";
 
                 if (form.ShowDialog() == DialogResult.Yes)
-                {
-                    _inspRunner.SeqRun();
-                    AddSystemLogMessage("Start Auto mode.");
-
-                    PlcControlManager.Instance().MachineStatus = MachineStatus.RUN;
-                }
+                    SetRunMode();
             }
         }
 
@@ -318,13 +319,16 @@ namespace ATT_UT_IPAD
                     SetStopMode();
             }
         }
+        public void SetRunMode()
+        {
+            _inspRunner.SeqRun();
+            AddSystemLogMessage("Start Auto mode.");
+        }
 
         public void SetStopMode()
         {
             _inspRunner.SeqStop();
             AddSystemLogMessage("Stop Auto Mode.");
-
-            PlcControlManager.Instance().MachineStatus = MachineStatus.STOP;
         }
 
         public void SetVirtualImage(int tabNo, string fileName)

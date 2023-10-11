@@ -65,8 +65,8 @@
             this.lblCurrentUser = new System.Windows.Forms.Label();
             this.pictureBox2 = new System.Windows.Forms.PictureBox();
             this.lblCurrentModel = new System.Windows.Forms.Label();
-            this.picLogo = new System.Windows.Forms.PictureBox();
             this.lblMachineName = new System.Windows.Forms.Label();
+            this.lblDoorlockState = new System.Windows.Forms.Label();
             this.tmrMainForm = new System.Windows.Forms.Timer(this.components);
             this.tmrUpdateStates = new System.Windows.Forms.Timer(this.components);
             this.tlpMainForm.SuspendLayout();
@@ -84,7 +84,6 @@
             this.tlpMachineStatus.SuspendLayout();
             this.tableLayoutPanel5.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.picLogo)).BeginInit();
             this.SuspendLayout();
             // 
             // tlpMainForm
@@ -500,8 +499,8 @@
             this.tlpMachineStatus.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 180F));
             this.tlpMachineStatus.Controls.Add(this.tableLayoutPanel5, 3, 0);
             this.tlpMachineStatus.Controls.Add(this.lblCurrentModel, 2, 0);
-            this.tlpMachineStatus.Controls.Add(this.picLogo, 0, 0);
             this.tlpMachineStatus.Controls.Add(this.lblMachineName, 1, 0);
+            this.tlpMachineStatus.Controls.Add(this.lblDoorlockState, 0, 0);
             this.tlpMachineStatus.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tlpMachineStatus.Location = new System.Drawing.Point(0, 0);
             this.tlpMachineStatus.Margin = new System.Windows.Forms.Padding(0);
@@ -569,17 +568,6 @@
             this.lblCurrentModel.TabIndex = 3;
             this.lblCurrentModel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
-            // picLogo
-            // 
-            this.picLogo.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.picLogo.Location = new System.Drawing.Point(3, 3);
-            this.picLogo.Name = "picLogo";
-            this.picLogo.Size = new System.Drawing.Size(214, 42);
-            this.picLogo.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.picLogo.TabIndex = 0;
-            this.picLogo.TabStop = false;
-            this.picLogo.Click += new System.EventHandler(this.picLogo_Click);
-            // 
             // lblMachineName
             // 
             this.lblMachineName.BackColor = System.Drawing.Color.Transparent;
@@ -594,6 +582,20 @@
             this.lblMachineName.Text = "ATT Inspection";
             this.lblMachineName.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.lblMachineName.Click += new System.EventHandler(this.lblMachineName_Click);
+            // 
+            // lblDoorlockState
+            // 
+            this.lblDoorlockState.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
+            this.lblDoorlockState.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblDoorlockState.Font = new System.Drawing.Font("맑은 고딕", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblDoorlockState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
+            this.lblDoorlockState.Location = new System.Drawing.Point(3, 0);
+            this.lblDoorlockState.Name = "lblDoorlockState";
+            this.lblDoorlockState.Size = new System.Drawing.Size(214, 48);
+            this.lblDoorlockState.TabIndex = 4;
+            this.lblDoorlockState.Text = "Doorlock Opened";
+            this.lblDoorlockState.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblDoorlockState.Click += new System.EventHandler(this.lblDoorlockState_Click);
             // 
             // tmrMainForm
             // 
@@ -634,7 +636,6 @@
             this.tlpMachineStatus.ResumeLayout(false);
             this.tableLayoutPanel5.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.picLogo)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -667,7 +668,6 @@
         private System.Windows.Forms.Label lblCurrentUser;
         private System.Windows.Forms.PictureBox pictureBox2;
         private System.Windows.Forms.Label lblCurrentModel;
-        private System.Windows.Forms.PictureBox picLogo;
         private System.Windows.Forms.Label lblMachineName;
         private System.Windows.Forms.Timer tmrMainForm;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
@@ -680,6 +680,7 @@
         private System.Windows.Forms.Label lblLightState;
         private System.Windows.Forms.Label lblMotionStateText;
         private System.Windows.Forms.Label lblLightStateText;
+        private System.Windows.Forms.Label lblDoorlockState;
     }
 }
 
