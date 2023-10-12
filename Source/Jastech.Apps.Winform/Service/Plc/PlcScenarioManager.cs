@@ -318,7 +318,7 @@ namespace Jastech.Apps.Winform.Service.Plc
             Logger.Debug(LogType.Device, $"Write EditModelData.[{command}]");
         }
 
-        private MaterialInfo GetModelMaterialInfo()
+        public MaterialInfo GetModelMaterialInfo()
         {
             MaterialInfo meterialInfo = new MaterialInfo();
 

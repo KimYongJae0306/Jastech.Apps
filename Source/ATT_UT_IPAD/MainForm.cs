@@ -84,7 +84,7 @@ namespace ATT_UT_IPAD
         {
             if (UserManager.Instance().CurrentUser.Type == AuthorityType.Maker)
                 this.Text = " ";
-            
+
             lblMachineName.Text = AppsConfig.Instance().MachineName;
 
             AddControls();
@@ -245,10 +245,10 @@ namespace ATT_UT_IPAD
             ConfigSet.Instance().Operation.LastModelName = model.Name;
             ConfigSet.Instance().Operation.Save(ConfigSet.Instance().Path.Config);
         }
-     
+
         private void UpdateLabel(string modelname)
         {
-            if(this.InvokeRequired)
+            if (this.InvokeRequired)
             {
                 UpdateLabelDelegate callback = UpdateLabel;
                 BeginInvoke(callback, modelname);
@@ -723,7 +723,7 @@ namespace ATT_UT_IPAD
 
         private void lblMachineName_Click(object sender, EventArgs e)
         {
-            if (UserManager.Instance().CurrentUser.Type == AuthorityType.Maker)
+            if (UserManager.Instance().CurrentUser.Type != AuthorityType.None)
                 Process.Start(ConfigSet.Instance().Path.Result);
         }
         #endregion

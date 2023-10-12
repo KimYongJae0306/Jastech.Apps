@@ -1,4 +1,8 @@
 ﻿using Jastech.Apps.Structure.Data;
+using Jastech.Apps.Winform.Service.Plc.Maps;
+using Jastech.Apps.Winform.Service.Plc;
+using Jastech.Apps.Winform.Settings;
+using Jastech.Framework.Config;
 using Jastech.Framework.Util.Helper;
 using Jastech.Framework.Winform.Helper;
 using System;
@@ -16,6 +20,8 @@ namespace Jastech.Apps.Winform.UI.Forms
         #endregion
 
         #region 속성
+        public string ModelName { get; set; }
+
         public int TabCount { private get; set; } = 1;
 
         public MaterialInfo PrevMaterialInfo { get; set; } = null;
@@ -34,6 +40,14 @@ namespace Jastech.Apps.Winform.UI.Forms
         private void ATTMaterialInfoForm_Load(object sender, EventArgs e)
         {
             InitializeUICollections();
+
+            if (ModelName == PlcControlManager.Instance().ConvertDoubleWordStringFormat_mm(PlcCommonMap.PLC_PPID_ModelName)
+                && ConfigSet.Instance().Operation.VirtualMode == false)
+            {
+                PrevMaterialInfo = PlcScenarioManager.Instance().GetModelMaterialInfo();
+                TabCount = Convert.ToInt32(PlcControlManager.Instance().GetValue(PlcCommonMap.PLC_TabCount));
+                pnlMaterialDatas.Enabled = false;
+            }
 
             if (PrevMaterialInfo == null)
                 PrevMaterialInfo = new MaterialInfo();

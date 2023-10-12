@@ -71,6 +71,7 @@ namespace Jastech.Apps.Winform.UI.Forms
             if (AppsConfig.Instance().UseMaterialInfo)
             {
                 ATTMaterialInfoForm form = new ATTMaterialInfoForm();
+                form.ModelName = inspModel?.Name;
                 form.PrevMaterialInfo = PrevModel.MaterialInfo;
                 form.TabCount = Convert.ToInt32(txtTabCount.Text);
 
