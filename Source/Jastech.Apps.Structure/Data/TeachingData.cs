@@ -125,8 +125,7 @@ namespace Jastech.Apps.Structure.Data
 
         public Unit GetUnit(string name)
         {
-            lock (UnitList)
-                return UnitList.Where(x => x.Name == name).FirstOrDefault();
+            return UnitList.Where(x => x.Name == name).FirstOrDefault();
         }
 
         public List<Tab> GetTabList(string unitName)

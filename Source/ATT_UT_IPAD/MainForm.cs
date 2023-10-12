@@ -640,15 +640,17 @@ namespace ATT_UT_IPAD
                     LAFManager.Instance().GetLAF("AlignLaf").LafCtrl.SetMotionStop();
 
                     SystemManager.Instance().SetStopMode();
+                    lblDoorlockState.BackColor = Color.Red;
+                    lblDoorlockState.ForeColor = Color.Yellow;
                 }
                 else if (PlcControlManager.Instance().GetValue(PlcCommonMap.PLC_DoorStatus) != "2" && PlcControlManager.Instance().IsDoorOpened == true)
                 {
                     PlcControlManager.Instance().IsDoorOpened = false;
                     SystemManager.Instance().SetRunMode();
+                    lblDoorlockState.BackColor = BackColor;
+                    lblDoorlockState.ForeColor = BackColor;
                 }
 
-                lblDoorlockState.BackColor = PlcControlManager.Instance().IsDoorOpened ? Color.Red : BackColor;
-                lblDoorlockState.ForeColor = PlcControlManager.Instance().IsDoorOpened ? Color.Yellow : BackColor;
                 await Task.Delay(20);
             }
         }

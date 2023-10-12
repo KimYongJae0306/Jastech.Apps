@@ -57,11 +57,12 @@
             this.dgvAlignHistory.AllowUserToAddRows = false;
             this.dgvAlignHistory.AllowUserToDeleteRows = false;
             this.dgvAlignHistory.AllowUserToResizeRows = false;
+            this.dgvAlignHistory.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
             this.dgvAlignHistory.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
             this.dgvAlignHistory.BorderStyle = System.Windows.Forms.BorderStyle.None;
             dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
             dataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(104)))), ((int)(((byte)(104)))), ((int)(((byte)(104)))));
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("맑은 고딕", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("맑은 고딕", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             dataGridViewCellStyle1.ForeColor = System.Drawing.Color.White;
             dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
             dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
@@ -82,7 +83,7 @@
             this.Column2});
             dataGridViewCellStyle8.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
             dataGridViewCellStyle8.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle8.Font = new System.Drawing.Font("굴림", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            dataGridViewCellStyle8.Font = new System.Drawing.Font("맑은 고딕", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             dataGridViewCellStyle8.ForeColor = System.Drawing.SystemColors.ControlText;
             dataGridViewCellStyle8.SelectionBackColor = System.Drawing.SystemColors.Highlight;
             dataGridViewCellStyle8.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
@@ -117,6 +118,7 @@
             this.colTime.ReadOnly = true;
             this.colTime.Resizable = System.Windows.Forms.DataGridViewTriState.True;
             this.colTime.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            this.colTime.Width = 90;
             // 
             // colPanelID
             // 
@@ -139,7 +141,7 @@
             this.colTab.Name = "colTab";
             this.colTab.ReadOnly = true;
             this.colTab.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            this.colTab.Width = 35;
+            this.colTab.Width = 37;
             // 
             // colJudge
             // 
@@ -151,7 +153,7 @@
             this.colJudge.Name = "colJudge";
             this.colJudge.ReadOnly = true;
             this.colJudge.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            this.colJudge.Width = 50;
+            this.colJudge.Width = 51;
             // 
             // colPreHead
             // 
