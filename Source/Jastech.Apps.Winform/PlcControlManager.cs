@@ -304,12 +304,12 @@ namespace Jastech.Apps.Winform
             var plc = DeviceManager.Instance().PlcHandler.First() as MelsecPlc;
             var map = PlcControlManager.Instance().GetAddressMap(PlcCommonMap.PC_Ready);
 
-            if (plc.MelsecParser.ParserType == ParserType.Binary)
+            if (plc?.MelsecParser.ParserType == ParserType.Binary)
                 stream.AddSwap16BitData(Convert.ToInt16(value));
             else
                 stream.Add16BitData(Convert.ToInt16(value));
 
-            plc.Write("D" + map.AddressNum, stream.Data);
+            plc?.Write("D" + map.AddressNum, stream.Data);
         }
 
         public void WriteGrabDone()
