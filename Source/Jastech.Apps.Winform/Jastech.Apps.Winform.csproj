@@ -660,8 +660,5 @@
   <ItemGroup>
     <None Include="Resources\Warning.png" />
   </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\ROIMove_White.png" />
-  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
