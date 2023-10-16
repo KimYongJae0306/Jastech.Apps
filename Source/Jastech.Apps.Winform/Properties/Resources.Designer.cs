@@ -243,16 +243,6 @@ namespace Jastech.Apps.Winform.Properties {
         /// <summary>
         ///   System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
         /// </summary>
-        internal static System.Drawing.Bitmap ROIMove_White {
-            get {
-                object obj = ResourceManager.GetObject("ROIMove_White", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
-        /// </summary>
         internal static System.Drawing.Bitmap Save_White {
             get {
                 object obj = ResourceManager.GetObject("Save_White", resourceCulture);
