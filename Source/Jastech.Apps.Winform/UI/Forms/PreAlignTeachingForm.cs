@@ -108,7 +108,6 @@ namespace Jastech.Apps.Winform.UI.Forms
             LightControl.Dock = DockStyle.Fill;
             LightControl.SetParam(DeviceManager.Instance().LightCtrlHandler, CurrentUnit.PreAlign.LeftLightParam);
             pnlLight.Controls.Add(LightControl);
-
          
             PreAlignControl = new PreAlignControl();
             PreAlignControl.Dock = DockStyle.Fill;

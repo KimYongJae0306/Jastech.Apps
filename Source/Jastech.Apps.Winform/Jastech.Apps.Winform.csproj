@@ -196,6 +196,12 @@
     <Compile Include="UI\Forms\ManualJudgeForm.Designer.cs">
       <DependentUpon>ManualJudgeForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="UI\Forms\ManualMatchingForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\Forms\ManualMatchingForm.Designer.cs">
+      <DependentUpon>ManualMatchingForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="UI\Forms\ProgramSelectForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -488,6 +494,9 @@
     <EmbeddedResource Include="UI\Forms\ManualJudgeForm.resx">
       <DependentUpon>ManualJudgeForm.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="UI\Forms\ManualMatchingForm.resx">
+      <DependentUpon>ManualMatchingForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="UI\Forms\ProgramSelectForm.resx">
       <DependentUpon>ProgramSelectForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -650,6 +659,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Warning.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ROIMove_White.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
