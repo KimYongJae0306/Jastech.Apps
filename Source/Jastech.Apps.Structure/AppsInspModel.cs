@@ -8,6 +8,8 @@ namespace Jastech.Apps.Structure
 {
     public class AppsInspModel : InspModel
     {
+        private object _lock = new object();
+
         [JsonProperty]
         public int UnitCount { get; set; } = 1;
 
@@ -25,38 +27,54 @@ namespace Jastech.Apps.Structure
 
         public Unit GetUnit(string name)
         {
-            return UnitList.Where(x => x.Name == name).FirstOrDefault();
+            Unit unit = null;
+            lock(UnitList)
+                unit = UnitList.Where(x => x.Name == name).FirstOrDefault();
+
+            return unit;
         }
 
         public Unit GetUnit(UnitName name)
         {
-            return UnitList.Where(x => x.Name == name.ToString()).FirstOrDefault();
+            Unit unit = null;
+            lock(UnitList)
+                unit = UnitList.Where(x => x.Name == name.ToString()).FirstOrDefault();
+
+            return unit;
         }
 
         public void AddUnit(Unit unit)
         {
-            UnitList.Add(unit);
+            lock (UnitList)
+                UnitList.Add(unit);
         }
 
         public List<Unit> GetUnitList()
         {
-            return UnitList;
+            lock (UnitList)
+                return UnitList;
         }
 
         public void SetUnitList(List<Unit> newUnitList)
         {
-            foreach (var unit in UnitList)
-                unit.Dispose();
+            lock (UnitList)
+            {
+                foreach (var unit in UnitList)
+                    unit.Dispose();
 
-            UnitList.Clear();
+                UnitList.Clear();
 
-            UnitList.AddRange(newUnitList.Select(x => x.DeepCopy()).ToList());
+                UnitList.AddRange(newUnitList.Select(x => x.DeepCopy()).ToList());
+            }
         }
 
         public void SetTeachingList(List<TeachingInfo> teachingInfoList)
         {
-            foreach (var unit in UnitList)
-                unit.SetTeachingInfoList(teachingInfoList.ToList());
+            lock (UnitList)
+            {
+                foreach (var unit in UnitList)
+                    unit.SetTeachingInfoList(teachingInfoList.ToList());
+            }
         }
     }
 }

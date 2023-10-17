@@ -462,7 +462,7 @@ namespace Jastech.Apps.Winform.Service.Plc
                     break;
 
                 case PlcCommand.Move_StandbyPos:
-                    int tt = 0;
+
                     if (MoveTo(TeachingPosType.Standby))
                     {
                         PlcControlManager.Instance().WritePcStatus(PlcCommand.Move_StandbyPos);
