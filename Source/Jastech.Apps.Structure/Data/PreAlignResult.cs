@@ -11,12 +11,15 @@ namespace Jastech.Apps.Structure.Data
 {
     public class PreAlignResult
     {
+        #region 속성
         public ICogImage CogImage { get; set; } = null;
 
         public ICogImage OverlayImage { get; set; } = null;
 
         public VisionProPatternMatchingResult MatchResult { get; set; } = null;
+        #endregion
 
+        #region 메서드
         public PreAlignResult DeepCopy()
         {
             PreAlignResult result = new PreAlignResult();
@@ -36,5 +39,6 @@ namespace Jastech.Apps.Structure.Data
 
             MatchResult?.Dispose();
         }
+        #endregion
     }
 }

@@ -103,7 +103,10 @@ namespace ATT
             if (ConfigSet.Instance().Operation.VirtualMode == false)
             {
                 string suggestMessage = "Perform homing All axes?\r\n※ Highly recommended for stability.";
-                var messageBox = new MessageYesNoForm { Message = suggestMessage };
+                var messageBox = new MessageYesNoForm
+                {
+                    Message = suggestMessage
+                };
 
                 if (messageBox.ShowDialog() == DialogResult.Yes)
                     HomingAllAxes();
@@ -564,7 +567,7 @@ namespace ATT
             progressForm.Add($"Axis Y Homing", AxisHoming, AxisName.Y, StopAxisHoming);
             var laf = LAFManager.Instance().GetLAF("Laf");
             progressForm.Add($"Axis Z (LAF) homing", laf.HomeSequenceAction, laf.StopHomeSequence);
-            progressForm.StartAllTasks();
+            //progressForm.StartAllTasks();
             progressForm.ShowDialog();
         }
 

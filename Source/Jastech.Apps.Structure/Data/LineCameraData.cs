@@ -10,6 +10,7 @@ namespace Jastech.Apps.Structure.Data
 {
     public class LineCameraData
     {
+        #region 속성
         [JsonProperty]
         public string Name { get; set; }
 
@@ -18,10 +19,9 @@ namespace Jastech.Apps.Structure.Data
 
         [JsonProperty]
         public double DigitalGain { get; set; } = 8.0;        // TDI Mode
+        #endregion
 
-        //[JsonProperty]
-        //public LightParameter LightParam { get; set; } = null;   // LineScan 용 조명 파라메터
-
+        #region 메서드
         public LineCameraData DeepCopy()
         {
             LineCameraData lineCameraData = new LineCameraData();
@@ -29,9 +29,9 @@ namespace Jastech.Apps.Structure.Data
             lineCameraData.Name = Name;
             lineCameraData.AnalogGain = AnalogGain;
             lineCameraData.DigitalGain = DigitalGain;
-            //lineCameraData.LightParam = LightParam?.DeepCopy();
 
             return lineCameraData;
         }
+        #endregion
     }
 }

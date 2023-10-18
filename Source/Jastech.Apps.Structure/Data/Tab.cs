@@ -13,6 +13,7 @@ namespace Jastech.Apps.Structure.Data
 {
     public class Tab
     {
+        #region 속성
         [JsonProperty]
         public string Name { get; set; } = "";
 
@@ -36,7 +37,9 @@ namespace Jastech.Apps.Structure.Data
 
         [JsonIgnore]
         public AkkonParam AkkonParam { get; set; } = new AkkonParam();
+        #endregion
 
+        #region 메서드
         public Tab DeepCopy()
         {
             Tab tab = new Tab();
@@ -120,9 +123,10 @@ namespace Jastech.Apps.Structure.Data
                 param.AkkonAlgoritmParam.Initalize();
                 param.AkkonAlgoritmParam.ImageFilterParam.AddMacronFilter();
             }
-            
+
             AkkonParam = param;
         }
+        #endregion
     }
 
     public class MarkParamter
@@ -138,12 +142,18 @@ namespace Jastech.Apps.Structure.Data
         #region 메서드
         public MarkParam GetFPCMark(MarkDirection markDirection, MarkName markName)
         {
-            return FpcMarkList.Where(x => x.Name == markName && x.Direction == markDirection).FirstOrDefault();
+            MarkParam param = null;
+            lock (FpcMarkList)
+                param = FpcMarkList.Where(x => x.Name == markName && x.Direction == markDirection).FirstOrDefault();
+            return param;
         }
 
         public MarkParam GetPanelMark(MarkDirection markDirection, MarkName markName)
         {
-            return PanelMarkList.Where(x => x.Name == markName && x.Direction == markDirection).FirstOrDefault();
+            MarkParam param = null;
+            lock(PanelMarkList)
+                param = PanelMarkList.Where(x => x.Name == markName && x.Direction == markDirection).FirstOrDefault();
+            return param;
         }
 
         public void SetFPCMark(MarkDirection markDirection, MarkName markName, MarkParam param)
@@ -151,7 +161,8 @@ namespace Jastech.Apps.Structure.Data
             if (param == null)
                 return;
 
-            FpcMarkList.Where(x => x.Name == markName && x.Direction == markDirection).First().InspParam = param.InspParam.DeepCopy();
+            lock(FpcMarkList)
+                FpcMarkList.Where(x => x.Name == markName && x.Direction == markDirection).First().InspParam = param.InspParam.DeepCopy();
         }
 
         public void SetPanelMark(MarkDirection markDirection, MarkName markName, MarkParam param, bool isAlignParam)
@@ -159,7 +170,8 @@ namespace Jastech.Apps.Structure.Data
             if (param == null)
                 return;
 
-            PanelMarkList.Where(x => x.Name == markName && x.Direction == markDirection).First().InspParam = param.InspParam.DeepCopy();
+            lock(PanelMarkList)
+                PanelMarkList.Where(x => x.Name == markName && x.Direction == markDirection).First().InspParam = param.InspParam.DeepCopy();
         }
 
         public MarkParamter DeepCopy()
@@ -173,20 +185,27 @@ namespace Jastech.Apps.Structure.Data
 
         public void Dispose()
         {
-            foreach (var fpc in FpcMarkList)
-                fpc.Dispose();
+            lock(FpcMarkList)
+            {
+                foreach (var fpc in FpcMarkList)
+                    fpc.Dispose();
+                FpcMarkList.Clear();
+            }
+            
+            lock(PanelMarkList)
+            {
+                foreach (var panel in PanelMarkList)
+                    panel.Dispose();
 
-            foreach (var panel in PanelMarkList)
-                panel.Dispose();
-
-            FpcMarkList.Clear();
-            PanelMarkList.Clear();
+                PanelMarkList.Clear();
+            }
         }
         #endregion
     }
 
     public class AlignSpec
     {
+        #region 속성
         [JsonProperty]
         public float LeftSpecX_um { get; set; } = 0.5F;
 
@@ -204,5 +223,6 @@ namespace Jastech.Apps.Structure.Data
 
         [JsonProperty]
         public bool UseAutoTracking { get; set; } = false;
+        #endregion
     }
 }

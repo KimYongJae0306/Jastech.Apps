@@ -14,7 +14,6 @@ namespace Jastech.Apps.Structure.VisionTool
 {
     public class AlgorithmTool
     {
-       
         private VisionProPatternMatching PatternAlgorithm { get; set; } = new VisionProPatternMatching();
 
         public CogAlignCaliper AlignAlgorithm { get; set; } = new CogAlignCaliper();

@@ -6,6 +6,7 @@ using Jastech.Framework.Device.LAFCtrl;
 using Jastech.Framework.Device.Motions;
 using Jastech.Framework.Util.Helper;
 using Jastech.Framework.Winform;
+using Jastech.Framework.Winform.Forms;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -112,20 +113,25 @@ namespace Jastech.Apps.Winform
             return false;
         }
 
-        public bool MoveTo(TeachingPosType teachingPos, double offset = 0)
+        public bool MoveAxisX(UnitName unitName, TeachingPosType teachingPos, double offset = 0)
         {
             if (ConfigSet.Instance().Operation.VirtualMode)
                 return true;
 
             AppsInspModel inspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
 
-            var teachingInfo = inspModel.GetUnit(UnitName.Unit0).GetTeachingInfo(teachingPos);
-
-            Axis axisX = MotionManager.Instance().GetAxis(AxisHandlerName.Handler0, AxisName.X);
-
+            var teachingInfo = inspModel.GetUnit(unitName).GetTeachingInfo(teachingPos);
             var movingParamX = teachingInfo.GetMovingParam(AxisName.X.ToString());
 
-            if (MoveAxis(teachingPos, axisX, movingParamX, offset) == false)
+            Axis axisX = MotionManager.Instance().GetAxis(AxisHandlerName.Handler0, AxisName.X);
+            if (axisX.IsEnable() == false)
+            {
+                string error = string.Format("AxisX Servo Off.");
+                Logger.Write(LogType.Seq, error);
+                return false;
+            }
+            
+            if (MoveAxis(unitName, teachingPos, axisX, movingParamX, offset) == false)
             {
                 string error = string.Format("Move To Axis X TimeOut!({0})", movingParamX.MovingTimeOut.ToString());
                 Logger.Write(LogType.Seq, error);
@@ -138,16 +144,16 @@ namespace Jastech.Apps.Winform
             return true;
         }
 
-        private bool MoveAxis(TeachingPosType teachingPos, Axis axis, AxisMovingParam movingParam, double offset = 0)
+        private bool MoveAxis(UnitName unitName, TeachingPosType teachingPos, Axis axis, AxisMovingParam movingParam, double offset = 0)
         {
-            if (IsAxisInPosition(UnitName.Unit0, teachingPos, axis, offset) == false)
+            if (IsAxisInPosition(unitName, teachingPos, axis, offset) == false)
             {
                 Stopwatch sw = new Stopwatch();
                 sw.Restart();
 
-                StartAbsoluteMove(UnitName.Unit0, teachingPos, axis, offset);
+                StartAbsoluteMove(unitName, teachingPos, axis, offset);
 
-                while (IsAxisInPosition(UnitName.Unit0, teachingPos, axis, offset) == false)
+                while (IsAxisInPosition(unitName, teachingPos, axis, offset) == false)
                 {
                     if (sw.ElapsedMilliseconds >= movingParam.MovingTimeOut)
                     {
@@ -156,7 +162,6 @@ namespace Jastech.Apps.Winform
                     Thread.Sleep(10);
                 }
             }
-            Console.WriteLine(string.Format("Dove Done.{0}", axis.Name.ToString()));
             return true;
         }
 
@@ -194,19 +199,19 @@ namespace Jastech.Apps.Winform
             return false;
         }
 
-        public bool MoveAxisZ(TeachingPosType teachingPos, LAFCtrl lafCtrl, AxisName axisNameZ)
+        public bool MoveAxisZ(UnitName unitName, TeachingPosType teachingPos, LAFCtrl lafCtrl, AxisName axisNameZ)
         {
             if (ConfigSet.Instance().Operation.VirtualMode)
                 return true;
 
-            if(IsAxisZInPosition(teachingPos, lafCtrl, axisNameZ) == false)
+            if(IsAxisZInPosition(unitName, teachingPos, lafCtrl, axisNameZ) == false)
             {
                 Stopwatch sw = new Stopwatch();
                 sw.Restart();
 
                 var inspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
 
-                var posData = inspModel.GetUnit(UnitName.Unit0).GetTeachingInfo(teachingPos);
+                var posData = inspModel.GetUnit(unitName).GetTeachingInfo(teachingPos);
                 var targetPosition = posData.GetTargetPosition(axisNameZ);
                 var AlignMovingParamZ = posData.GetMovingParam(axisNameZ.ToString());
 
@@ -225,11 +230,11 @@ namespace Jastech.Apps.Winform
             return true;
         }
 
-        public bool IsAxisZInPosition(TeachingPosType teachingPosition, LAFCtrl lafCtrl, AxisName axisNameZ)
+        public bool IsAxisZInPosition(UnitName unitName, TeachingPosType teachingPosition, LAFCtrl lafCtrl, AxisName axisNameZ)
         {
             var inspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
 
-            var posData = inspModel.GetUnit(UnitName.Unit0).GetTeachingInfo(teachingPosition);
+            var posData = inspModel.GetUnit(unitName).GetTeachingInfo(teachingPosition);
             var targetPosition = posData.GetTargetPosition(axisNameZ);
             var curPos = lafCtrl.Status.MPosPulse / lafCtrl.ResolutionAxisZ;
 

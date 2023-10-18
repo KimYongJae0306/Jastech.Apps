@@ -10,7 +10,6 @@ namespace Jastech.Apps.Winform
 {
     public class AppsPreAlignResult
     {
-
         #region 필드
         private static AppsPreAlignResult _instance = null;
         #endregion

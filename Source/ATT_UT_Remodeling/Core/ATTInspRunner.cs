@@ -311,7 +311,7 @@ namespace ATT_UT_Remodeling.Core
                     break;
 
                 case SeqStep.SEQ_MOVE_START_POS:
-                    MotionManager.Instance().MoveAxisZ(TeachingPosType.Stage1_Scan_Start, LAFCtrl, AxisName.Z0);
+                    MotionManager.Instance().MoveAxisZ(UnitName.Unit0, TeachingPosType.Stage1_Scan_Start, LAFCtrl, AxisName.Z0);
 
                     if (_ClearBufferThread != null || _updateThread != null)
                         break;
@@ -1698,7 +1698,7 @@ namespace ATT_UT_Remodeling.Core
 
                 LineCamera.ClearTabScanBuffer();
 
-                MotionManager.Instance().MoveAxisZ(TeachingPosType.Stage1_Scan_Start, LAFCtrl, AxisName.Z0);
+                MotionManager.Instance().MoveAxisZ(UnitName.Unit0, TeachingPosType.Stage1_Scan_Start, LAFCtrl, AxisName.Z0);
 
                 _ClearBufferThread = null;
                 WriteLog("Clear Buffer.");

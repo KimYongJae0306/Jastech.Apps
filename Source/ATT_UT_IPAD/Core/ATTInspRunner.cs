@@ -348,8 +348,8 @@ namespace ATT_UT_IPAD.Core
                         SeqStop();
                     }
 
-                    MotionManager.Instance().MoveAxisZ(TeachingPosType.Stage1_Scan_Start, AkkonLAFCtrl, AxisName.Z0);
-                    MotionManager.Instance().MoveAxisZ(TeachingPosType.Stage1_Scan_Start, AlignLAFCtrl, AxisName.Z1);
+                    MotionManager.Instance().MoveAxisZ(UnitName.Unit0, TeachingPosType.Stage1_Scan_Start, AkkonLAFCtrl, AxisName.Z0);
+                    MotionManager.Instance().MoveAxisZ(UnitName.Unit0, TeachingPosType.Stage1_Scan_Start, AlignLAFCtrl, AxisName.Z1);
 
                     if (_ClearBufferThread != null || _updateThread != null)
                         break;
@@ -1101,8 +1101,6 @@ namespace ATT_UT_IPAD.Core
                 var akkonResult = AppsInspResult.Instance().GetAkkon(tabNo);
                 var positions = new string[] { "Left", "Center", "Right" };
 
-                //akkonResult.AkkonResult.LeadResultList.OrderBy(x => x.Id);dsfasdfd
-
                 // Add header strings
                 var header = new List<string>
                 {
@@ -1800,8 +1798,8 @@ namespace ATT_UT_IPAD.Core
                 AkkonCamera.ClearTabScanBuffer();
                 AlignCamera.ClearTabScanBuffer();
 
-                MotionManager.Instance().MoveAxisZ(TeachingPosType.Stage1_Scan_Start, AkkonLAFCtrl, AxisName.Z0);
-                MotionManager.Instance().MoveAxisZ(TeachingPosType.Stage1_Scan_Start, AlignLAFCtrl, AxisName.Z1);
+                MotionManager.Instance().MoveAxisZ(UnitName.Unit0, TeachingPosType.Stage1_Scan_Start, AkkonLAFCtrl, AxisName.Z0);
+                MotionManager.Instance().MoveAxisZ(UnitName.Unit0, TeachingPosType.Stage1_Scan_Start, AlignLAFCtrl, AxisName.Z1);
 
                 _ClearBufferThread = null;
                 WriteLog("Clear Buffer.");

@@ -12,6 +12,7 @@ using Jastech.Framework.Structure.Helper;
 using Jastech.Framework.Structure.Service;
 using Jastech.Framework.Util.Helper;
 using Jastech.Framework.Winform;
+using Jastech.Framework.Winform.Forms;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -56,6 +57,9 @@ namespace Jastech.Apps.Winform.Service.Plc
         public event PreAlignRunnerEventHandler PreAlignRunnerHandler;
 
         public event CalibrationRunnerEventHandler CalibrationRunnerHandler;
+
+        public event PlcScenarioMoveEventHandler MoveEventHandler;
+
         public event OriginAllDelegate OriginAllEvent;
         #endregion
 
@@ -65,7 +69,10 @@ namespace Jastech.Apps.Winform.Service.Plc
         public delegate void PreAlignRunnerEventHandler(bool isStart);
 
         public delegate void CalibrationRunnerEventHandler(bool isStart);
-        public delegate void OriginAllDelegate();
+
+        public delegate bool PlcScenarioMoveEventHandler(PlcCommand plcCommand, TeachingPosType teachingPosType, out string alarmMessage);
+
+        public delegate bool OriginAllDelegate();
         #endregion
 
         #region 생성자
@@ -449,10 +456,15 @@ namespace Jastech.Apps.Winform.Service.Plc
                 case PlcCommand.Calibration:
                     if (AppsStatus.Instance().IsCalibrationing == false)
                     {
-                        if (MoveTo(TeachingPosType.Stage1_PreAlign_Left))
+                        if(StartMovePosition(PlcCommand.Move_Left_AlignPos, TeachingPosType.Stage1_PreAlign_Left, false))
                         {
                             Calibration();
                             AppsStatus.Instance().IsCalibrationing = true;
+                        }
+                        else
+                        {
+                            short retCommand = PlcControlManager.Instance().WritePcStatus(command, true);
+                            Logger.Debug(LogType.Device, $"Write Fail Calibration[{retCommand}].");
                         }
                     }
                     break;
@@ -462,36 +474,19 @@ namespace Jastech.Apps.Winform.Service.Plc
                     break;
 
                 case PlcCommand.Move_StandbyPos:
-
-                    if (MoveTo(TeachingPosType.Standby))
-                    {
-                        PlcControlManager.Instance().WritePcStatus(PlcCommand.Move_StandbyPos);
-                        Logger.Write(LogType.Device, "Send to PLC Standby");
-                    }
+                    StartMovePosition(PlcCommand.Move_StandbyPos, TeachingPosType.Standby, true);
                     break;
 
                 case PlcCommand.Move_Left_AlignPos:
-                    if (MoveTo(TeachingPosType.Stage1_PreAlign_Left))
-                    {
-                        PlcControlManager.Instance().WritePcStatus(PlcCommand.Move_StandbyPos);
-                        Logger.Write(LogType.Device, "Send to PLC PreAlign Left Pos");
-                    }
+                    StartMovePosition(PlcCommand.Move_Left_AlignPos, TeachingPosType.Stage1_PreAlign_Left, true);
                     break;
 
                 case PlcCommand.Move_Right_AlignPos:
-                    if (MoveTo(TeachingPosType.Stage1_PreAlign_Right))
-                    {
-                        PlcControlManager.Instance().WritePcStatus(PlcCommand.Move_StandbyPos);
-                        Logger.Write(LogType.Device, "Send to PLC PreAlign Right Pos.");
-                    }
+                    StartMovePosition(PlcCommand.Move_Right_AlignPos, TeachingPosType.Stage1_PreAlign_Right, true);
                     break;
 
                 case PlcCommand.Move_ScanStartPos:
-                    if (MoveTo(TeachingPosType.Stage1_Scan_Start))
-                    {
-                        PlcControlManager.Instance().WritePcStatus(PlcCommand.Move_ScanStartPos);
-                        Logger.Write(LogType.Device, "Send to PLC ScanStart");
-                    }
+                    StartMovePosition(PlcCommand.Move_ScanStartPos, TeachingPosType.Stage1_Scan_Start, true);
                     break;
 
                 default:
@@ -504,10 +499,9 @@ namespace Jastech.Apps.Winform.Service.Plc
             if (ModelManager.Instance().CurrentModel == null)
             {
                 short command = PlcControlManager.Instance().WritePcStatus(PlcCommand.StartInspection, true);
-                Logger.Debug(LogType.Device, $"Write Fail StartInspection.[{command}]");
+                Logger.Debug(LogType.Device, $"Write Fail Start Inspection(Current Model is null).[{command}]");
                 return;
             }
-            //PlcControlManager.Instance().WritePcStatus(PlcCommand.StartInspection);
             // 검사 시작 InspRunner
             InspRunnerHandler?.Invoke(true);
         }
@@ -556,72 +550,68 @@ namespace Jastech.Apps.Winform.Service.Plc
             PreAlignRunnerHandler?.Invoke(true);
         }
 
-        private bool MoveTo(TeachingPosType teachingPos)
+        private bool StartMovePosition(PlcCommand plcCommand, TeachingPosType teachingPosType, bool isWritePlc)
         {
-            string errorMessage = string.Empty;
-
-            if (ConfigSet.Instance().Operation.VirtualMode)
-                return true;
-
-            AppsInspModel inspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
-
-            var teachingInfo = inspModel.GetUnit(UnitName.Unit0).GetTeachingInfo(teachingPos);
-
-            Axis axisX = MotionManager.Instance().GetAxis(AxisHandlerName.Handler0, AxisName.X);
-            Axis axisZ = MotionManager.Instance().GetAxis(AxisHandlerName.Handler0, AxisName.Z0);
-
-            var movingParamX = teachingInfo.GetMovingParam(AxisName.X.ToString());
-            var movingParamZ = teachingInfo.GetMovingParam(AxisName.Z0.ToString());
-
-            if (MoveAxis(teachingPos, axisX, movingParamX) == false)
+            short command = 0;
+            if (ModelManager.Instance().CurrentModel == null)
             {
-                errorMessage = string.Format("Move To Axis X TimeOut!({0})", movingParamX.MovingTimeOut.ToString());
-                Logger.Write(LogType.Device, errorMessage);
+                if (isWritePlc)
+                    command = PlcControlManager.Instance().WritePcStatus(plcCommand, true);
+
+                Logger.Debug(LogType.Device, $"Write Fail Move Position(Current Model is null).[{command}]");
                 return false;
             }
 
-            if (MoveAxis(teachingPos, axisZ, movingParamZ) == false)
+            if(MoveEventHandler != null)
             {
-                errorMessage = string.Format("Move To Axis Z TimeOut!({0})", movingParamZ.MovingTimeOut.ToString());
-                Logger.Write(LogType.Device, errorMessage);
-                return false;
-            }
+                string alarmMessage = "";
+                bool isSuccess = MoveEventHandler.Invoke(plcCommand, teachingPosType, out alarmMessage);
 
-            errorMessage = string.Format("Move Completed.(Teaching Pos : {0})", teachingPos.ToString());
-            Logger.Write(LogType.Device, errorMessage);
+                if (isWritePlc)
+                    command = PlcControlManager.Instance().WritePcStatus(plcCommand, isSuccess);
 
-            return true;
-        }
+                Logger.Write(LogType.Device, $"Send to PLC {plcCommand.ToString()}.[{command}]");
 
-        private bool MoveAxis(TeachingPosType teachingPos, Axis axis, AxisMovingParam movingParam)
-        {
-            MotionManager manager = MotionManager.Instance();
-            if (manager.IsAxisInPosition(UnitName.Unit0, teachingPos, axis) == false)
-            {
-                Stopwatch sw = new Stopwatch();
-                sw.Restart();
-
-                manager.StartAbsoluteMove(UnitName.Unit0, teachingPos, axis);
-
-                while (manager.IsAxisInPosition(UnitName.Unit0, teachingPos, axis) == false)
+                if(isSuccess == false)
                 {
-                    if (sw.ElapsedMilliseconds >= movingParam.MovingTimeOut)
-                        return false;
-
-                    Thread.Sleep(10);
+                    MessageConfirmForm form = new MessageConfirmForm();
+                    form.Message = alarmMessage;
+                    form.ShowDialog();
+                    return false;
+                         
                 }
             }
+            else
+            {
+                if (isWritePlc)
+                    command = PlcControlManager.Instance().WritePcStatus(plcCommand, false);
 
+                Logger.Write(LogType.Device, $"Move Event is null {plcCommand.ToString()}.[{command}]");
+                return false;
+            }
             return true;
         }
-
+    
         private void StartOriginAll()
         {
-            //PlcControlManager.Instance().WritePcCommand(PcCommand.ServoOn_1);
-            //PlcControlManager.Instance().WritePcCommand(PcCommand.ServoOn_2);
+            if (ModelManager.Instance().CurrentModel == null)
+            {
+                short command = PlcControlManager.Instance().WritePcStatus(PlcCommand.Origin_All, true);
+                Logger.Debug(LogType.Device, $"Send to PLC Orgin All [{command}] : Current Model is null.");
+                return;
+            }
 
-            OriginAllEvent?.Invoke();
-            Logger.Write(LogType.Device, "Send to PLC Origin All");
+            if (OriginAllEvent != null)
+            {
+                bool isSuccess = OriginAllEvent.Invoke();
+                short command = PlcControlManager.Instance().WritePcStatus(PlcCommand.Origin_All, isSuccess);
+                Logger.Write(LogType.Device, $"Send to PLC Origin All {PlcCommand.Origin_All.ToString()}.[{command}]");
+            }
+            else
+            {
+                short command = PlcControlManager.Instance().WritePcStatus(PlcCommand.Origin_All, true);
+                Logger.Write(LogType.Device, $"OriginAllEvent is null {PlcCommand.Origin_All.ToString()}.[{command}]");
+            }
         }
         #endregion
     }

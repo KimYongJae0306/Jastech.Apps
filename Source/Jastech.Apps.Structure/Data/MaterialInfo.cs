@@ -4,6 +4,7 @@ namespace Jastech.Apps.Structure.Data
 {
     public class MaterialInfo
     {
+        #region 속성
         [JsonProperty]
         public double PanelXSize_mm { get; set; }
 
@@ -21,7 +22,9 @@ namespace Jastech.Apps.Structure.Data
         public TabOffset LeftOffset { get; set; } = new TabOffset();
 
         public TabOffset RightOffset { get; set; } = new TabOffset();
+        #endregion
 
+        #region 메서드
         public double GetTabToTabDistance(int startTabNo, int maxTabCount)
         {
             if (startTabNo == 0)
@@ -128,12 +131,14 @@ namespace Jastech.Apps.Structure.Data
             else
                 return 0;
         }
+        #endregion
 
         public MaterialInfo ShallowCopy() => (MaterialInfo)MemberwiseClone();
     }
 
     public class TabWidth
     {
+        #region 속성
         [JsonProperty]
         public double Tab0 { get; set; }
 
@@ -163,10 +168,12 @@ namespace Jastech.Apps.Structure.Data
 
         [JsonProperty]
         public double Tab9 { get; set; }
+        #endregion
     }
 
     public class TabToTabDistance
     {
+        #region 속성
         [JsonProperty]
         public double Tab0ToTab1 { get; set; }
 
@@ -193,10 +200,12 @@ namespace Jastech.Apps.Structure.Data
 
         [JsonProperty]
         public double Tab8ToTab9 { get; set; }
+        #endregion
     }
 
     public class TabOffset
     {
+        #region 속성
         [JsonProperty]
         public double Tab0 { get; set; }
 
@@ -226,5 +235,6 @@ namespace Jastech.Apps.Structure.Data
 
         [JsonProperty]
         public double Tab9 { get; set; }
+        #endregion
     }
 }

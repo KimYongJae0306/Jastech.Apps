@@ -7,13 +7,21 @@ namespace Jastech.Apps.Structure.Data
 {
     public class ProcessCapabilityIndex
     {
+        #region 속성
         public double CapabilityUSL { private get; set; }
-        public double CapabilityLSL { private get; set; }
-        public double PerformanceUSL_Center { private get; set; }
-        public double PerformanceLSL_Center { private get; set; }
-        public double PerformanceUSL_Side { private get; set; }
-        public double PerformanceLSL_Side { private get; set; }
 
+        public double CapabilityLSL { private get; set; }
+
+        public double PerformanceUSL_Center { private get; set; }
+
+        public double PerformanceLSL_Center { private get; set; }
+
+        public double PerformanceUSL_Side { private get; set; }
+
+        public double PerformanceLSL_Side { private get; set; }
+        #endregion
+
+        #region 메서드
         public PcResult GetResult(string type, List<double> valueList)
         {
             PcResult result = new PcResult { Type = type };
@@ -58,10 +66,12 @@ namespace Jastech.Apps.Structure.Data
 
             return result;
         }
+        #endregion
     }
 
     public class PcResult
     {
+        #region 속성
         public string Type { get; set; } = "NaN";
 
         public double Cp { get; set; } = 0.0;
@@ -79,5 +89,6 @@ namespace Jastech.Apps.Structure.Data
         public double Sigma { get; set; } = 0.0;
 
         public double SixSigma { get; set; } = 0.0;
+        #endregion
     }
 }

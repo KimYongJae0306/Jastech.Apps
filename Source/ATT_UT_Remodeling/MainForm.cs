@@ -3,6 +3,7 @@ using ATT_UT_Remodeling.Core.Data;
 using ATT_UT_Remodeling.Properties;
 using ATT_UT_Remodeling.UI.Pages;
 using Jastech.Apps.Structure;
+using Jastech.Apps.Structure.Data;
 using Jastech.Apps.Winform;
 using Jastech.Apps.Winform.Core;
 using Jastech.Apps.Winform.Service.Plc;
@@ -11,6 +12,7 @@ using Jastech.Apps.Winform.Settings;
 using Jastech.Apps.Winform.UI.Forms;
 using Jastech.Framework.Config;
 using Jastech.Framework.Device.Grabbers;
+using Jastech.Framework.Device.Motions;
 using Jastech.Framework.Matrox;
 using Jastech.Framework.Structure;
 using Jastech.Framework.Users;
@@ -87,7 +89,11 @@ namespace ATT_UT_Remodeling
             ModelManager.Instance().CurrentModelChangedEvent += MainForm_CurrentModelChangedEvent;
             PlcScenarioManager.Instance().Initialize(ATTInspModelService);
             PlcScenarioManager.Instance().InspRunnerHandler += MainForm_InspRunnerHandler;
+            PlcScenarioManager.Instance().MoveEventHandler += MainForm_MoveEventHandler;
+            PlcScenarioManager.Instance().OriginAllEvent += MainForm_OriginAllEvent;
+
             PlcScenarioManager.Instance().PreAlignRunnerHandler += MainForm_PreAlignRunnerHandler;
+
             PlcControlManager.Instance().WritePcCommand(PcCommand.ServoReset_1);
             Thread.Sleep(100);
             PlcControlManager.Instance().WritePcCommand(PcCommand.ServoOn_1);
@@ -114,16 +120,6 @@ namespace ATT_UT_Remodeling
             ManualJudgeForm.Hide();
         }
 
-        private void MainForm_PreAlignRunnerHandler(bool isStart)
-        {
-            AppsStatus.Instance().IsPreAlignRunnerFlagFromPlc = isStart;
-        }
-
-        private void MainForm_InspRunnerHandler(bool isStart)
-        {
-            AppsStatus.Instance().IsInspRunnerFlagFromPlc = isStart;
-        }
-
         private void AddControls()
         {
             //// Page Control List
@@ -147,6 +143,33 @@ namespace ATT_UT_Remodeling
             PageLabelList.Add(lblTeachingPage);
             PageLabelList.Add(lblDataPage);
             PageLabelList.Add(lblLogPage);
+        }
+
+        private bool MainForm_OriginAllEvent()
+        {
+            var laf = LAFManager.Instance().GetLAF("Laf");
+
+            ProgressForm progressForm = new ProgressForm("Homing All Axes", ProgressForm.RunMode.Batch, true);
+            progressForm.Add($"Axis X Homing", SystemManager.Instance().AxisHoming, AxisName.X, SystemManager.Instance().StopAxisHoming);
+            progressForm.Add($"Axis Z1 (Akkon LAF) homing", laf.HomeSequenceAction, laf.StopHomeSequence);
+            progressForm.ShowDialog();
+
+            return progressForm.IsSuccess;
+        }
+
+        private bool MainForm_MoveEventHandler(PlcCommand plcCommand, TeachingPosType teachingPosType, out string alarmMessage)
+        {
+            return SystemManager.Instance().PlcScenarioMoveTo(plcCommand, teachingPosType, out alarmMessage);
+        }
+
+        private void MainForm_PreAlignRunnerHandler(bool isStart)
+        {
+            AppsStatus.Instance().IsPreAlignRunnerFlagFromPlc = isStart;
+        }
+
+        private void MainForm_InspRunnerHandler(bool isStart)
+        {
+            AppsStatus.Instance().IsInspRunnerFlagFromPlc = isStart;
         }
 
         private void ModelPageControl_ApplyModelEventHandler(string modelName)

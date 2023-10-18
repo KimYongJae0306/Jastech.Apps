@@ -18,10 +18,13 @@ namespace Jastech.Apps.Structure.Data
 {
     public class TabInspResult
     {
+        #region 필드
         private static CogColorConstants _fpcColor = CogColorConstants.Purple;
 
         private static CogColorConstants _panelColor = CogColorConstants.Orange;
+        #endregion
 
+        #region 속성
         public int TabNo { get; set; } = -1;
 
         public bool IsResultProcessDone { get; set; } = false;
@@ -76,17 +79,19 @@ namespace Jastech.Apps.Structure.Data
         public List<CogRectangleAffine> AkkonNGAffineList = new List<CogRectangleAffine>();
 
         public int ResultSamplingCount => 5;
+        #endregion
 
+        #region 메서드
         public void Dispose()
         {
             IsResultProcessDone = false;
-            
+
             if (Image != null)
             {
                 Image.Dispose();
                 Image = null;
             }
-            if(AkkonInspMatImage != null)
+            if (AkkonInspMatImage != null)
             {
                 AkkonInspMatImage.Dispose();
                 AkkonInspMatImage = null;
@@ -354,7 +359,7 @@ namespace Jastech.Apps.Structure.Data
                             rightResultList.AddRange(fpcGraphicList);
                     }
                 }
-          
+
                 if (rightAlignY.Panel.CogAlignResult.Count > 0)
                 {
                     if (rightAlignY.Panel.CogAlignResult[0].MaxCaliperMatch != null)
@@ -423,6 +428,15 @@ namespace Jastech.Apps.Structure.Data
 
             return positionList;
         }
+        #endregion
+
+
+
+
+
+
+
+
     }
 
     public class TabMarkResult

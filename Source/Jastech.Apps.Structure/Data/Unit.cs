@@ -10,6 +10,7 @@ namespace Jastech.Apps.Structure.Data
 {
     public class Unit
     {
+        #region 속성
         [JsonProperty]
         public string Name { get; set; } = "";
 
@@ -30,7 +31,9 @@ namespace Jastech.Apps.Structure.Data
 
         [JsonProperty]
         private List<TeachingInfo> TeachingInfoList { get; set; } = new List<TeachingInfo>();
+        #endregion
 
+        #region 메서드
         public Unit DeepCopy()
         {
             // Cognex Tool 때문에 개별 DeepCopy 호출 해줘야함(Json DeepCopy 안됨)
@@ -130,13 +133,13 @@ namespace Jastech.Apps.Structure.Data
 
         public LineCameraData GetLineCameraData(string name)
         {
-            if(CameraData != null)
+            if (CameraData != null)
             {
                 if (CameraData.Name == name)
                     return CameraData;
             }
 
-            if(AlignCamCameraData != null)
+            if (AlignCamCameraData != null)
             {
                 if (AlignCamCameraData.Name == name)
                     return AlignCamCameraData;
@@ -144,5 +147,6 @@ namespace Jastech.Apps.Structure.Data
 
             return null;
         }
+        #endregion
     }
 }

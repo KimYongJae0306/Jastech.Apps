@@ -17,6 +17,7 @@ using Jastech.Framework.Device.Motions;
 using Jastech.Framework.Matrox;
 using Jastech.Framework.Structure;
 using Jastech.Framework.Users;
+using Jastech.Framework.Util.Helper;
 using Jastech.Framework.Winform;
 using Jastech.Framework.Winform.Forms;
 using Jastech.Framework.Winform.Helper;
@@ -97,6 +98,7 @@ namespace ATT_UT_IPAD
             ModelManager.Instance().CurrentModelChangedEvent += MainForm_CurrentModelChangedEvent;
             PlcScenarioManager.Instance().Initialize(ATTInspModelService);
             PlcScenarioManager.Instance().InspRunnerHandler += MainForm_InspRunnerHandler;
+            PlcScenarioManager.Instance().MoveEventHandler += MainForm_MoveEventHandler;
             PlcScenarioManager.Instance().OriginAllEvent += MainForm_OriginAllEvent;
 
             PlcControlManager.Instance().WritePcCommand(PcCommand.ServoReset_1);
@@ -136,7 +138,12 @@ namespace ATT_UT_IPAD
             }
         }
 
-        private void MainForm_OriginAllEvent()
+        private bool MainForm_MoveEventHandler(PlcCommand plcCommand, TeachingPosType teachingPosType, out string alarmMessage)
+        {
+            return SystemManager.Instance().PlcScenarioMoveTo(plcCommand, teachingPosType, out alarmMessage);
+        }
+
+        private bool MainForm_OriginAllEvent()
         {
             var akkonLaf = LAFManager.Instance().GetLAF("AkkonLaf");
             var alignLaf = LAFManager.Instance().GetLAF("AlignLaf");
@@ -147,8 +154,7 @@ namespace ATT_UT_IPAD
             progressForm.Add($"Axis Z2 (Align LAF) homing", alignLaf.HomeSequenceAction, alignLaf.StopHomeSequence);
             progressForm.ShowDialog();
 
-            if (progressForm.IsSuccess == true)
-                PlcControlManager.Instance().WritePcStatus(PlcCommand.Origin_All);
+            return progressForm.IsSuccess;
         }
 
         private void MainForm_InspRunnerHandler(bool isStart)
@@ -627,10 +633,13 @@ namespace ATT_UT_IPAD
             }
         }
 
-        public async void CheckDoorOpenedLoop()
+        public void CheckDoorOpenedLoop()
         {
-            while (CancelSafetyDoorlockTask?.IsCancellationRequested == false)
+            while(true)
             {
+                if(CancelSafetyDoorlockTask.IsCancellationRequested)
+                    break;
+
                 if (PlcControlManager.Instance().GetValue(PlcCommonMap.PLC_DoorStatus) == "2" && PlcControlManager.Instance().IsDoorOpened == false)
                 {
                     PlcControlManager.Instance().IsDoorOpened = true;
@@ -651,7 +660,7 @@ namespace ATT_UT_IPAD
                     lblDoorlockState.ForeColor = BackColor;
                 }
 
-                await Task.Delay(20);
+                Thread.Sleep(500);
             }
         }
 

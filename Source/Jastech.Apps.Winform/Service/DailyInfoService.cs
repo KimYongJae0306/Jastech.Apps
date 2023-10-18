@@ -14,11 +14,6 @@
             DailyInfo.Load(modelName);
         }
 
-        //public static void SetModelName(string modelName)
-        //{
-        //    DailyInfo.SetModelName(modelName);
-        //}
-
         public static DailyInfo GetDailyInfo()
         {
             return DailyInfo;

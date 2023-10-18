@@ -12,6 +12,7 @@ namespace Jastech.Apps.Structure.Data
 {
     public class PreAlignData
     {
+        #region 속성
         [JsonProperty]
         public List<PreAlignParam> AlignParamList { get; set; } = new List<PreAlignParam>();
 
@@ -23,7 +24,9 @@ namespace Jastech.Apps.Structure.Data
 
         [JsonProperty]
         public LightParameter RightLightParam { get; set; } = null;
+        #endregion
 
+        #region 메서드
         public PreAlignData DeepCopy()
         {
             PreAlignData preAlign = new PreAlignData();
@@ -43,5 +46,6 @@ namespace Jastech.Apps.Structure.Data
             AlignParamList.Clear();
             CalibrationParam.Dispose();
         }
+        #endregion
     }
 }

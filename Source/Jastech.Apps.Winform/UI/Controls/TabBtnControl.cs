@@ -244,13 +244,13 @@ namespace Jastech.Apps.Winform.UI.Controls
         public void SetButtonClick()
         {
             btnTab.Text = "TAB " + (_tabIndex + 1).ToString();
-            btnTab.FlatAppearance.BorderSize = 5;
+            btnTab.FlatAppearance.BorderSize = 3;
         }
 
         public void SetButtonClickNone()
         {
             btnTab.Text = "TAB " + (_tabIndex + 1).ToString();
-            btnTab.FlatAppearance.BorderSize = 1;
+            btnTab.FlatAppearance.BorderSize = 0;
         }
 
         public ICogImage GetOrgImage()

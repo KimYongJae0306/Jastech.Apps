@@ -7,6 +7,7 @@ using Jastech.Apps.Structure.Data;
 using Jastech.Apps.Winform;
 using Jastech.Apps.Winform.Core;
 using Jastech.Apps.Winform.Service;
+using Jastech.Apps.Winform.Service.Plc.Maps;
 using Jastech.Apps.Winform.Settings;
 using Jastech.Apps.Winform.UI.Forms;
 using Jastech.Framework.Config;
@@ -285,12 +286,51 @@ namespace ATT_UT_IPAD
 
         public void StartRun()
         {
-            if(PlcControlManager.Instance().IsDoorOpened == true)
+            if(ConfigSet.Instance().Operation.VirtualMode == false)
             {
-                MessageConfirmForm alert = new MessageConfirmForm();
-                alert.Message = "Safety Doorlock is opened.\r\nPlease check the doorlock state";
-                alert.ShowDialog();
+                if (PlcControlManager.Instance().IsDoorOpened == true)
+                {
+                    MessageConfirmForm alert = new MessageConfirmForm();
+                    alert.Message = "Safety Doorlock is opened.\r\nPlease check the doorlock state";
+                    alert.ShowDialog();
+                    return;
+                }
+            
+                bool isServoOnAxisX = MotionManager.Instance().IsEnable(AxisHandlerName.Handler0, AxisName.X);
+                if(isServoOnAxisX == false)
+                {
+                    MessageConfirmForm alert = new MessageConfirmForm();
+                    alert.Message = "AxisX Servo Off. Please Servo On.";
+                    alert.ShowDialog();
+                    return;
+                }
+                else
+                {
+                    //Check : Command Position 만들고 주석 해제
+                    Axis axisX = MotionManager.Instance().GetAxis(AxisHandlerName.Handler0, AxisName.X);
+
+                    //if(Math.Abs(axisX.GetActualPosition() - axisX.GetCommandPosition()) <= 1)
+                    //{
+                    //    MessageConfirmForm confirmForm = new MessageConfirmForm();
+                    //    confirmForm.Message = "AxisX Position is incorrect. Please Run Homming Sequence.";
+                    //    confirmForm.ShowDialog();
+                    //    return;
+                    //}
+                }
+
+                bool isServoOnAxisZ0 = MotionManager.Instance().IsEnable(AxisHandlerName.Handler0, AxisName.Z0);
+                if (isServoOnAxisZ0 == false)
+                {
+                    MessageConfirmForm alert = new MessageConfirmForm();
+                    alert.Message = "AxisZ0 Servo Off. Please Servo On.";
+                    alert.ShowDialog();
+                    return;
+                }
+                Axis axisZ0 = MotionManager.Instance().GetAxis(AxisHandlerName.Handler0, AxisName.Z0);
+
+
             }
+            
             if (PlcControlManager.Instance().MachineStatus != MachineStatus.RUN)
             {
                 MessageYesNoForm form = new MessageYesNoForm();
@@ -386,6 +426,76 @@ namespace ATT_UT_IPAD
         {
             _mainForm.ShowManualJudgeForm();
         }
+
+        public bool PlcScenarioMoveTo(PlcCommand plcCommand, TeachingPosType teachingPosType, out string alarmMessage)
+        {
+            var inspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
+            alarmMessage = "";
+
+            if (inspModel == null)
+            {
+                alarmMessage = "Current Model is null.";
+                Logger.Write(LogType.Device, alarmMessage);
+                return false;
+            }
+
+            var teachingInfo = inspModel.GetUnit(UnitName.Unit0).GetTeachingInfo(teachingPosType);
+          
+            #region AxisX
+            Axis axisX = MotionManager.Instance().GetAxis(AxisHandlerName.Handler0, AxisName.X);
+            if (axisX.IsEnable() == false)
+            {
+                alarmMessage = "AxisX Servo Off. Please Servo On.";
+                Logger.Write(LogType.Device, alarmMessage);
+                return false;
+            }
+
+            if(MotionManager.Instance().MoveAxisX(UnitName.Unit0, teachingPosType) == false)
+            {
+                alarmMessage = "AxisX Moving Error.";
+                Logger.Write(LogType.Device, alarmMessage);
+                return false;
+            }
+            #endregion
+
+            #region AxisZ0(Akkon)
+            Axis axisZ0 = MotionManager.Instance().GetAxis(AxisHandlerName.Handler0, AxisName.Z0);
+
+            if(PlcControlManager.Instance().GetAddressMap(PlcCommonMap.PLC_AkkonZ_ServoOnOff).Value != "1")
+            {
+                alarmMessage = "Akkon AxisZ Servo Off.";
+                Logger.Write(LogType.Device, alarmMessage);
+                return false;
+            }
+            var akkonLAFCtrl = LAFManager.Instance().GetLAF("AkkonLaf").LafCtrl;
+            if(MotionManager.Instance().MoveAxisZ(UnitName.Unit0, teachingPosType, akkonLAFCtrl, AxisName.Z0) == false)
+            {
+                alarmMessage = "Akkon AxisZ Moving Error.";
+                Logger.Write(LogType.Device, alarmMessage);
+                return false;
+            }
+            #endregion
+
+            #region AxisZ1(Align)
+            Axis axisZ1 = MotionManager.Instance().GetAxis(AxisHandlerName.Handler0, AxisName.Z1);
+
+            if (PlcControlManager.Instance().GetAddressMap(PlcCommonMap.PLC_AlignZ_ServoOnOff).Value != "1")
+            {
+                alarmMessage = "Align AxisZ Servo Off.";
+                Logger.Write(LogType.Device, alarmMessage);
+                return false;
+            }
+            var alignLAFCtrl = LAFManager.Instance().GetLAF("AkkonLaf").LafCtrl;
+            if (MotionManager.Instance().MoveAxisZ(UnitName.Unit0, teachingPosType, alignLAFCtrl, AxisName.Z1) == false)
+            {
+                alarmMessage = "Align AxisZ Moving Error.";
+                Logger.Write(LogType.Device, alarmMessage);
+                return false;
+            }
+            #endregion
+
+            return true;
+        }
         #endregion
     }
 
@@ -393,12 +503,12 @@ namespace ATT_UT_IPAD
     public partial class SystemManager
     {
         #region 필드
-        private bool _isAxisHoming;
-        private Axis _currentHomingAxis;
+        private bool _isAxisHoming { get; set; }
+
+        private Axis _currentHomingAxis { get; set; }
         #endregion
 
         #region 메소드
-
         public bool AxisHoming(AxisName axisName)
         {
             int timeOutSec = 40;

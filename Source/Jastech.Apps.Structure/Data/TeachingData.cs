@@ -59,19 +59,25 @@ namespace Jastech.Apps.Structure.Data
         public void Initialize(AppsInspModel inspModel)
         {
             Dispose();
-            foreach (var unit in inspModel.GetUnitList())
+            lock(UnitList)
             {
-                UnitList.Add(unit.DeepCopy());
+                foreach (var unit in inspModel.GetUnitList())
+                {
+                    UnitList.Add(unit.DeepCopy());
+                }
             }
         }
 
         public void Dispose()
         {
-            foreach (var unit in UnitList)
-                unit.Dispose();
+            lock (UnitList)
+            {
+                foreach (var unit in UnitList)
+                    unit.Dispose();
 
-            UnitList.Clear();
+                UnitList.Clear();
 
+            }
             ClearTeachingImageBuffer();
         }
 

@@ -22,13 +22,15 @@ using Jastech.Framework.Winform;
 using Jastech.Framework.Winform.Forms;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Reflection;
+using System.Threading;
 using System.Windows.Forms;
 
 namespace ATT_UT_Remodeling
 {
-    public class SystemManager
+    public partial class SystemManager
     {
         #region 필드
         private static SystemManager _instance = null;
@@ -337,6 +339,78 @@ namespace ATT_UT_Remodeling
         {
             _mainForm.ShowManualJudgeForm();
         }
+
+        public bool PlcScenarioMoveTo(PlcCommand plcCommand, TeachingPosType teachingPosType)
+        {
+            var inspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
+            if (inspModel == null)
+            {
+                Logger.Write(LogType.Device, "Current Model is null.");
+                return false;
+            }
+            var teachingInfo = inspModel.GetUnit(UnitName.Unit0).GetTeachingInfo(teachingPosType);
+            // X 축, Z0
+            Axis axisX = MotionManager.Instance().GetAxis(AxisHandlerName.Handler0, AxisName.X);
+
+            if (axisX.IsEnable() == false)
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        public bool PlcScenarioMoveTo(PlcCommand plcCommand, TeachingPosType teachingPosType, out string alarmMessage)
+        {
+            var inspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
+            alarmMessage = "";
+
+            if (inspModel == null)
+            {
+                alarmMessage = "Current Model is null.";
+                Logger.Write(LogType.Device, alarmMessage);
+                return false;
+            }
+
+            var teachingInfo = inspModel.GetUnit(UnitName.Unit0).GetTeachingInfo(teachingPosType);
+
+            #region AxisX
+            Axis axisX = MotionManager.Instance().GetAxis(AxisHandlerName.Handler0, AxisName.X);
+            if (axisX.IsEnable() == false)
+            {
+                alarmMessage = "AxisX Servo Off. Please Servo On.";
+                Logger.Write(LogType.Device, alarmMessage);
+                return false;
+            }
+
+            if (MotionManager.Instance().MoveAxisX(UnitName.Unit0, teachingPosType) == false)
+            {
+                alarmMessage = "AxisX Moving Error.";
+                Logger.Write(LogType.Device, alarmMessage);
+                return false;
+            }
+            #endregion
+
+            #region AxisZ0
+            Axis axisZ0 = MotionManager.Instance().GetAxis(AxisHandlerName.Handler0, AxisName.Z0);
+
+            if (PlcControlManager.Instance().GetAddressMap(PlcCommonMap.PLC_AlignZ_ServoOnOff).Value != "1")
+            {
+                alarmMessage = "Axis Z Servo Off.";
+                Logger.Write(LogType.Device, alarmMessage);
+                return false;
+            }
+            var lafCtrl = LAFManager.Instance().GetLAF("Laf").LafCtrl;
+            if (MotionManager.Instance().MoveAxisZ(UnitName.Unit0, teachingPosType, lafCtrl, AxisName.Z0) == false)
+            {
+                alarmMessage = "Axis Z Moving Error.";
+                Logger.Write(LogType.Device, alarmMessage);
+                return false;
+            }
+            #endregion
+
+            return true;
+        }
         #endregion
     }
 
@@ -344,4 +418,43 @@ namespace ATT_UT_Remodeling
     {
         ProgramType_1 = 0, // UT Remodeling PC #1 (출하일 : 2023.08 )
     }
+
+    // All Axes Homing
+    public partial class SystemManager
+    {
+        #region 필드
+        private bool _isAxisHoming { get; set; }
+
+        private Axis _currentHomingAxis { get; set; }
+        #endregion
+
+        #region 메소드
+        public bool AxisHoming(AxisName axisName)
+        {
+            int timeOutSec = 40;
+            _currentHomingAxis = MotionManager.Instance().GetAxis(AxisHandlerName.Handler0, axisName);
+            _currentHomingAxis.StartHome();
+            _isAxisHoming = true;
+
+            Stopwatch stopwatch = Stopwatch.StartNew();
+            while (_isAxisHoming == true && _currentHomingAxis.IsHomeFound == false && stopwatch.Elapsed.Seconds < timeOutSec)
+            {
+                if (_currentHomingAxis.IsMoving() == false)
+                    _currentHomingAxis.IsHomeFound = true;
+                else
+                    Thread.Sleep(50);
+            }
+
+            StopAxisHoming();
+            return _currentHomingAxis.IsHomeFound;
+        }
+
+        public void StopAxisHoming()
+        {
+            _isAxisHoming = false;
+            _currentHomingAxis?.StopMove();
+        }
+        #endregion
+    }
+
 }

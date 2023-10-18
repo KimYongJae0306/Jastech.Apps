@@ -113,7 +113,6 @@
     <Compile Include="Data\PreAlignData.cs" />
     <Compile Include="Data\PreAlignResult.cs" />
     <Compile Include="Data\ProcessCapabilityIndex.cs" />
-    <Compile Include="Data\SpecInfo.cs" />
     <Compile Include="Data\TabInspResult.cs" />
     <Compile Include="Parameters\AkkonParam.cs" />
     <Compile Include="Parameters\AlignParam.cs" />

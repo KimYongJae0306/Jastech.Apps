@@ -460,27 +460,11 @@ namespace Jastech.Framework.Winform.Forms
         private void btnGrabStart_Click(object sender, EventArgs e)
         {
             LineCamera.StopGrab();
-
             LAFCtrl.SetTrackingOnOFF(false);
-            Thread.Sleep(100);
-
-            var inspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
-
-            TeachingImagePath = Path.Combine(ConfigSet.Instance().Path.Model, inspModel.Name, "TeachingImage", DateTime.Now.ToString("yyyyMMdd_HHmmss"));
-
-            // 정환 : 이벤트로 변경 
-            var teachingInfo = inspModel.GetUnit(UnitName).GetTeachingInfo(TeachingPosType.Stage1_Scan_Start);
-
-            double targetPosZ = 0.0;
-            
-            if (UseAlignCamMark == false)
-                targetPosZ = teachingInfo.GetTargetPosition(AxisName.Z0.ToString());
-            else
-                targetPosZ = teachingInfo.GetTargetPosition(AxisName.Z1.ToString());
-            /////////////////////////////
-            var cameraGap = AppsConfig.Instance().CameraGap_mm;
 
             TeachingData.Instance().ClearTeachingImageBuffer();
+
+            var cameraGap = AppsConfig.Instance().CameraGap_mm;
             LineCamera.ClearTabScanBuffer();
 
             if (UseDelayStart)
@@ -489,23 +473,30 @@ namespace Jastech.Framework.Winform.Forms
                 LineCamera.InitGrabSettings();
 
             InitalizeInspTab(LineCamera.TabScanBufferList);
+            if (MotionManager.Instance().MoveAxisX(UnitName, TeachingPosType.Stage1_Scan_Start) == false)
+            {
+                MessageConfirmForm form = new MessageConfirmForm();
+                form.Message = "Axis X Moving Error.(Scan Start)";
+                form.ShowDialog();
+                return;
+            }
+
+            var inspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
+            TeachingImagePath = Path.Combine(ConfigSet.Instance().Path.Model, inspModel.Name, "TeachingImage", DateTime.Now.ToString("yyyyMMdd_HHmmss"));
+            var teachingInfo = inspModel.GetUnit(UnitName).GetTeachingInfo(TeachingPosType.Stage1_Scan_Start);
 
             LAFCtrl.SetTrackingOnOFF(true);
             Thread.Sleep(100);
-
-            MotionManager.Instance().MoveTo(TeachingPosType.Stage1_Scan_Start);
-
-            string cameraName = LineCamera.Camera.Name;
-            var unit = inspModel.GetUnit(UnitName);
-            DeviceManager.Instance().LightCtrlHandler.TurnOn(unit.LightParam);
+          
+            DeviceManager.Instance().LightCtrlHandler.TurnOn(inspModel.GetUnit(UnitName).LightParam);
             Thread.Sleep(100);
 
             LineCamera.StartGrab();
             Thread.Sleep(50);
             if (UseDelayStart)
-                MotionManager.Instance().MoveTo(TeachingPosType.Stage1_Scan_End, cameraGap);
+                MotionManager.Instance().MoveAxisX(UnitName, TeachingPosType.Stage1_Scan_End, cameraGap);
             else
-                MotionManager.Instance().MoveTo(TeachingPosType.Stage1_Scan_End);
+                MotionManager.Instance().MoveAxisX(UnitName, TeachingPosType.Stage1_Scan_End);
 
             LAFCtrl.SetTrackingOnOFF(false);
             Thread.Sleep(100);
