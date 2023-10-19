@@ -578,7 +578,6 @@ namespace Jastech.Apps.Winform.Service.Plc
                     form.Message = alarmMessage;
                     form.ShowDialog();
                     return false;
-                         
                 }
             }
             else

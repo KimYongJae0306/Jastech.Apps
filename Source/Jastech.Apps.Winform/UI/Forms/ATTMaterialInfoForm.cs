@@ -141,8 +141,6 @@ namespace Jastech.Apps.Winform.UI.Forms
         
         private void InitializeUICollections()
         {
-
-
             _textBoxes["TabWidth"] = new List<TextBox>
             {
                 txtTab1Width,
