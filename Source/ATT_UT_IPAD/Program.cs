@@ -354,7 +354,7 @@ namespace ATT_UT_IPAD
             AppsConfig.Instance().PlcAddressInfo.CommonStart = 124000;
             AppsConfig.Instance().PlcAddressInfo.ResultStart = 125000;
             AppsConfig.Instance().PlcAddressInfo.ResultStart_Align = 125220;
-            AppsConfig.Instance().PlcAddressInfo.ResultTabToTabInterval = 4200;
+            AppsConfig.Instance().PlcAddressInfo.ResultTabToTabInterval = 200;
             AppsConfig.Instance().PlcAddressInfo.ResultStart_Akkon = 125230;
 
             var plc = new MelsecPlc("PLC", new SocketComm("192.168.130.2", 9023, SocketCommType.Udp, 9033), new MelsecBinaryParser());
