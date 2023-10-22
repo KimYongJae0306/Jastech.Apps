@@ -458,7 +458,7 @@ namespace Jastech.Apps.Winform.Service.Plc
                     {
                         if(StartMovePosition(PlcCommand.Move_Left_AlignPos, TeachingPosType.Stage1_PreAlign_Left, false))
                         {
-                            Calibration();
+                            Calibration(CalibrationMode.XYT);
                             AppsStatus.Instance().IsCalibrationing = true;
                         }
                         else
@@ -506,7 +506,7 @@ namespace Jastech.Apps.Winform.Service.Plc
             InspRunnerHandler?.Invoke(true);
         }
 
-        private void Calibration()
+        private void Calibration(CalibrationMode calibrationMode)
         {
             var inspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
             if (inspModel == null)
@@ -532,8 +532,10 @@ namespace Jastech.Apps.Winform.Service.Plc
                 return;
             }
 
+            VisionXCalibration.UnitName = UnitName.Unit0;
+            VisionXCalibration.SetInterval(intervalX: 1.5, intervalY: 1.5);
             VisionXCalibration.SetParam(param);
-            VisionXCalibration.SetCalibrationMode(CalibrationMode.XYT);
+            VisionXCalibration.SetCalibrationMode(calibrationMode);
             VisionXCalibration.StartCalSeqRun();
         }
 

@@ -219,6 +219,7 @@ namespace Jastech.Apps.Winform.UI.Controls
             if (VisionXCalibration == null)
                 return;
 
+            VisionXCalibration.SetInterval(intervalX: 1.5, intervalY: 1.5);
             VisionXCalibration.SetParam(ParamControl.GetCurrentParam());
             VisionXCalibration.SetCalibrationMode(CalibrationMode.XY);
             VisionXCalibration.StartCalSeqRun();

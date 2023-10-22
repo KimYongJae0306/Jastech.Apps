@@ -736,14 +736,16 @@ namespace Jastech.Framework.Winform.Forms
             }
 
             _tabInspResult = new TabInspResult();
-            if (UseAkkonTeaching && UseAlignTeaching == false)
+
+            if (UseAkkonTeaching == true)
             {
                 _tabInspResult.MarkResult.FpcMark = new MarkResult();
                 _tabInspResult.MarkResult.FpcMark.Judgement = Judgement.OK;
 
                 _tabInspResult.MarkResult.PanelMark = _algorithmTool.RunPanelMark(cogImage, CurrentTab, false);
             }
-            else
+
+            if (UseAlignTeaching == true)
             {
                 _tabInspResult.MarkResult.FpcMark = _algorithmTool.RunFpcMark(cogImage, CurrentTab, UseAlignCamMark);
                 _tabInspResult.MarkResult.PanelMark = _algorithmTool.RunPanelMark(cogImage, CurrentTab, UseAlignCamMark);
@@ -770,22 +772,35 @@ namespace Jastech.Framework.Winform.Forms
             if (isOn)
             {
                 lblTracking.BackColor = _selectedColor;
-                coordinate.SetCoordinateAkkon(CurrentTab, markResult.PanelMark.FoundedMark);
 
-                coordinate.SetCoordinateFpcAlign(CurrentTab, markResult.FpcMark.FoundedMark, UseAlignCamMark);
-                coordinate.SetCoordinatePanelAlign(CurrentTab, markResult.PanelMark.FoundedMark, UseAlignCamMark);
+                if (UseAkkonTeaching == true)
+                    coordinate.SetCoordinateAkkon(CurrentTab, markResult.PanelMark.FoundedMark);
+
+                if (UseAlignTeaching == true)
+                {
+                    coordinate.SetCoordinateFpcAlign(CurrentTab, markResult.FpcMark.FoundedMark, UseAlignCamMark);
+                    coordinate.SetCoordinatePanelAlign(CurrentTab, markResult.PanelMark.FoundedMark, UseAlignCamMark);
+                }
             }
             else
             {
                 lblTracking.BackColor = _nonSelectedColor;
-                coordinate.SetReverseCoordinateAkkon(CurrentTab, markResult.PanelMark.FoundedMark);
 
-                coordinate.SetReverseCoordinateFpcAlign(CurrentTab, markResult.FpcMark.FoundedMark, UseAlignCamMark);
-                coordinate.SetReverseCoordinatePanelAlign(CurrentTab, markResult.PanelMark.FoundedMark, UseAlignCamMark);
+                if (UseAkkonTeaching == true)
+                    coordinate.SetReverseCoordinateAkkon(CurrentTab, markResult.PanelMark.FoundedMark);
+
+                if (UseAlignTeaching == true)
+                {
+                    coordinate.SetReverseCoordinateFpcAlign(CurrentTab, markResult.FpcMark.FoundedMark, UseAlignCamMark);
+                    coordinate.SetReverseCoordinatePanelAlign(CurrentTab, markResult.PanelMark.FoundedMark, UseAlignCamMark);
+                }
             }
 
-            coordinate.ExcuteCoordinateAkkon(CurrentTab);
-            coordinate.ExecuteCoordinateAlign(CurrentTab);
+            if (UseAkkonTeaching == true)
+                coordinate.ExcuteCoordinateAkkon(CurrentTab);
+
+            if (UseAlignTeaching == true)
+                coordinate.ExecuteCoordinateAlign(CurrentTab);
 
 
             if (_displayType == DisplayType.Akkon)

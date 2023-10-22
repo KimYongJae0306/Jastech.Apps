@@ -1,5 +1,6 @@
 ﻿using Cognex.VisionPro;
 using Jastech.Apps.Structure;
+using Jastech.Apps.Structure.Data;
 using Jastech.Apps.Structure.VisionTool;
 using Jastech.Apps.Winform.Service.Plc.Maps;
 using Jastech.Framework.Device.Cameras;
@@ -87,6 +88,8 @@ namespace Jastech.Apps.Winform.Core.Calibrations
 
         private CalibrationMode CalibrationMode { get; set; } = CalibrationMode.XY;
 
+        public UnitName UnitName { get; set; } = UnitName.Unit0;
+
         public double MovePitchT { get; set; } = 0.7;
 
         private double BackLashPitchT = 0.1;
@@ -94,6 +97,10 @@ namespace Jastech.Apps.Winform.Core.Calibrations
         private double _robotCenterX { get; set; } = 0.0;
 
         private double _robotCenterY { get; set; } = 0.0;
+
+        public double IntervalX { get; private set; } = 0.0;
+
+        public double IntervalY { get; private set; } = 0.0;
         #endregion
 
         #region 이벤트
@@ -145,7 +152,11 @@ namespace Jastech.Apps.Winform.Core.Calibrations
         }
         #endregion
 
-
+        public void SetInterval(double intervalX, double intervalY)
+        {
+            IntervalX = intervalX;
+            IntervalY = intervalY;
+        }
 
         public void StartCalSeqRun()
         {
@@ -209,13 +220,9 @@ namespace Jastech.Apps.Winform.Core.Calibrations
 
             string logMessage = string.Empty;
 
-            double intervalX = 1.5;
-            double intervalY = 1.5;
-            //double intervalT = 0.1;
 
             int directionT = 1;
-            int directionX = 1;
-            directionX = -1;
+            int directionX = -1;
             string savePath = string.Empty;
 
             Stopwatch sw = new Stopwatch();
@@ -224,13 +231,11 @@ namespace Jastech.Apps.Winform.Core.Calibrations
             VisionProPatternMatchingParam inspParam = VisionProPatternMatchingParam;
             ICogImage cogImage = null;
 
-            // T Calibration
-            
 
             switch (CalSeqStep)
             {
                 case CalSeqStep.CAL_SEQ_IDLE:
-                    Console.WriteLine("CalSeqStep : CAL_SEQ_IDLE");
+                    Logger.Write(LogType.Device, "Start calibration sequence.");
                     CalSeqStep = CalSeqStep.CAL_SEQ_INIT;
                     break;
 
@@ -244,7 +249,11 @@ namespace Jastech.Apps.Winform.Core.Calibrations
 
                     Logger.Write(LogType.Device, "Initialize calibration.");
 
+                    MotionManager.Instance().MoveAxisX(UnitName, TeachingPosType.Stage1_PreAlign_Left);
+                    Logger.Write(LogType.Device, "Move to Calibration start position.");
+
                     ClearMatrixPointResultList();
+                    Logger.Write(LogType.Device, "Clear matrix.");
 
                     // 조명 켜기
                     light.TurnOn(unit.PreAlign.LeftLightParam);
@@ -266,14 +275,14 @@ namespace Jastech.Apps.Winform.Core.Calibrations
 
                 #region XY
                 case CalSeqStep.CAL_SEQ_XY_INIT:
-                    if (intervalX == 0.0 && intervalY == 0.0)
+                    if (IntervalX == 0.0 && IntervalY == 0.0)
                     {
                         CalSeqStep = CalSeqStep.CAL_SEQ_COMPLETED;
                         break;
                     }
 
-                    InitializeMoveAmount(intervalX, intervalY);
-                    InitializeMotionPosition(intervalX, intervalY);
+                    InitializeMoveAmount(IntervalX, IntervalY);
+                    InitializeMotionPosition(IntervalX, IntervalY);
                     Logger.Write(LogType.Device, "Initialize XY calibration.");
 
                     _matrixStepPoint = 0;
