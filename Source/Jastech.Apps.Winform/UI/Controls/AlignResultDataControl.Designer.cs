@@ -102,9 +102,8 @@
             this.dgvAlignHistory.RowTemplate.DefaultCellStyle.BackColor = System.Drawing.Color.White;
             this.dgvAlignHistory.RowTemplate.Height = 23;
             this.dgvAlignHistory.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvAlignHistory.Size = new System.Drawing.Size(806, 369);
+            this.dgvAlignHistory.Size = new System.Drawing.Size(940, 341);
             this.dgvAlignHistory.TabIndex = 2;
-            this.dgvAlignHistory.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvAlignHistory_CellContentClick);
             this.dgvAlignHistory.CellContentDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvAlignHistory_CellContentDoubleClick);
             // 
             // colTime
@@ -228,11 +227,12 @@
             // 
             // AlignResultDataControl
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.dgvAlignHistory);
+            this.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.Name = "AlignResultDataControl";
-            this.Size = new System.Drawing.Size(806, 369);
+            this.Size = new System.Drawing.Size(940, 341);
             ((System.ComponentModel.ISupportInitialize)(this.dgvAlignHistory)).EndInit();
             this.ResumeLayout(false);
 
