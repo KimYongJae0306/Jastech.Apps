@@ -35,8 +35,6 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         private List<CogRectangleAffine> AkkonNGAffineList { get; set; } = new List<CogRectangleAffine>();
 
-        private TabMarkResult AkkonTabMarkResult { get; set; } = new TabMarkResult();
-
         public string Lx { get; set; } = "-";//0.0F;
 
         public string Ly { get; set; } = "-";//0.0F;
@@ -127,13 +125,6 @@ namespace Jastech.Apps.Winform.UI.Controls
             AkkonNGAffineList.Clear();
 
             AkkonNGAffineList = akkonNGList;
-        }
-
-        public void SetAkkonMarkShapeResult(TabMarkResult markResult)
-        {
-            AkkonTabMarkResult?.Dispose();
-
-            AkkonTabMarkResult = markResult;
         }
 
         public void SetInspImage(ICogImage cogImage)
