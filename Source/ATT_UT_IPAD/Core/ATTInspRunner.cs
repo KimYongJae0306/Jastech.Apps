@@ -499,7 +499,8 @@ namespace ATT_UT_IPAD.Core
                     }
                     else
                     {
-                        WaitPlcValueClear(PlcCommonMap.PC_GrabDone);
+                        if (ConfigSet.Instance().Operation.VirtualMode == false)
+                            WaitPlcValueClear(PlcCommonMap.PC_GrabDone);
                         SendResultData();
                         WriteLog("Completed Send Plc Tab Result Data", true);
                     }
@@ -624,7 +625,9 @@ namespace ATT_UT_IPAD.Core
                         if(tabResult.AkkonInspMatImage != null)
                         {
                             Mat resultMat = GetResultImage(tabResult.AkkonInspMatImage, tabResult.AkkonResult.LeadResultList, tab.AkkonParam.AkkonAlgoritmParam, ref tabResult.AkkonNGAffineList);
+                            
                             ICogImage cogImage = ConvertCogColorImage(resultMat);
+
                             tabResult.AkkonResultCogImage = cogImage;
 
                             resultMat.Dispose();

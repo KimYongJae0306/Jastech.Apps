@@ -450,7 +450,7 @@ namespace ATT_UT_IPAD
                 return false;
             }
 
-            if(MotionManager.Instance().MoveAxisX(UnitName.Unit0, teachingPosType) == false)
+            if(MotionManager.Instance().MoveAxisX(AxisHandlerName.Handler0, UnitName.Unit0, teachingPosType) == false)
             {
                 alarmMessage = "AxisX Moving Error.";
                 Logger.Write(LogType.Device, alarmMessage);

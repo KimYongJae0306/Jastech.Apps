@@ -1,4 +1,5 @@
 ﻿using Cognex.VisionPro;
+using Jastech.Apps.Structure.Data;
 using Jastech.Framework.Imaging.Result;
 using Jastech.Framework.Imaging.VisionPro;
 using System;
@@ -34,6 +35,8 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         private List<CogRectangleAffine> AkkonNGAffineList { get; set; } = new List<CogRectangleAffine>();
 
+        private TabMarkResult AkkonTabMarkResult { get; set; } = new TabMarkResult();
+
         public string Lx { get; set; } = "-";//0.0F;
 
         public string Ly { get; set; } = "-";//0.0F;
@@ -64,6 +67,11 @@ namespace Jastech.Apps.Winform.UI.Controls
         {
             // UI 상 Tab 1부터 보여주기 위함
             btnTab.Text = "TAB " + (_tabIndex + 1).ToString();
+        }
+
+        private void btnTab_Click(object sender, EventArgs e)
+        {
+            UpdateData();
         }
 
         public void SetTabIndex(int tabIndex)
@@ -119,6 +127,13 @@ namespace Jastech.Apps.Winform.UI.Controls
             AkkonNGAffineList.Clear();
 
             AkkonNGAffineList = akkonNGList;
+        }
+
+        public void SetAkkonMarkShapeResult(TabMarkResult markResult)
+        {
+            AkkonTabMarkResult?.Dispose();
+
+            AkkonTabMarkResult = markResult;
         }
 
         public void SetInspImage(ICogImage cogImage)
@@ -184,7 +199,6 @@ namespace Jastech.Apps.Winform.UI.Controls
             }
         }
 
-
         public void SetLeftAlignShapeResult(List<CogCompositeShape> shapeList, List<CogLineSegment> lineSegmentList)
         {
             foreach (var shape in LeftShapeResultList.CaliperShapeList)
@@ -236,11 +250,6 @@ namespace Jastech.Apps.Winform.UI.Controls
             SetTabEventHandler?.Invoke(_tabIndex);
         }
 
-        private void btnTab_Click(object sender, EventArgs e)
-        {
-            UpdateData();
-        }
-
         public void SetButtonClick()
         {
             btnTab.Text = "TAB " + (_tabIndex + 1).ToString();
@@ -264,6 +273,7 @@ namespace Jastech.Apps.Winform.UI.Controls
             lock (_lock)
                 return CogResultImage;
         }
+
         public ICogImage GetAlignImage()
         {
             lock (_lock)

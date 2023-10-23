@@ -113,7 +113,7 @@ namespace Jastech.Apps.Winform
             return false;
         }
 
-        public bool MoveAxisX(UnitName unitName, TeachingPosType teachingPos, double offset = 0)
+        public bool MoveAxisX(AxisHandlerName axisHandlerName, UnitName unitName, TeachingPosType teachingPos,double offset = 0)
         {
             if (ConfigSet.Instance().Operation.VirtualMode)
                 return true;
@@ -123,7 +123,7 @@ namespace Jastech.Apps.Winform
             var teachingInfo = inspModel.GetUnit(unitName).GetTeachingInfo(teachingPos);
             var movingParamX = teachingInfo.GetMovingParam(AxisName.X.ToString());
 
-            Axis axisX = MotionManager.Instance().GetAxis(AxisHandlerName.Handler0, AxisName.X);
+            Axis axisX = MotionManager.Instance().GetAxis(axisHandlerName, AxisName.X);
             if (axisX.IsEnable() == false)
             {
                 string error = string.Format("AxisX Servo Off.");
@@ -131,6 +131,39 @@ namespace Jastech.Apps.Winform
                 return false;
             }
             
+            if (MoveAxis(unitName, teachingPos, axisX, movingParamX, offset) == false)
+            {
+                string error = string.Format("Move To Axis X TimeOut!({0})", movingParamX.MovingTimeOut.ToString());
+                Logger.Write(LogType.Seq, error);
+                return false;
+            }
+
+            string message = string.Format("Move Completed.(Teaching Pos : {0})", teachingPos.ToString());
+            Logger.Write(LogType.Seq, message);
+
+            return true;
+        }
+
+        public bool MoveAxisX(Axis axisX, UnitName unitName, TeachingPosType teachingPos, double offset = 0)
+        {
+            if (ConfigSet.Instance().Operation.VirtualMode)
+                return true;
+
+            AppsInspModel inspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
+
+            var teachingInfo = inspModel.GetUnit(unitName).GetTeachingInfo(teachingPos);
+            var movingParamX = teachingInfo.GetMovingParam(AxisName.X.ToString());
+
+            if (axisX == null)
+                return false;
+
+            if (axisX.IsEnable() == false)
+            {
+                string error = string.Format("AxisX Servo Off.");
+                Logger.Write(LogType.Seq, error);
+                return false;
+            }
+
             if (MoveAxis(unitName, teachingPos, axisX, movingParamX, offset) == false)
             {
                 string error = string.Format("Move To Axis X TimeOut!({0})", movingParamX.MovingTimeOut.ToString());

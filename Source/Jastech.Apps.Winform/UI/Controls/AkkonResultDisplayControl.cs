@@ -171,7 +171,6 @@ namespace ATT_UT_IPAD.UI.Controls
 
         private void UpdateImage(int tabNo)
         {
-            //var tabInspResult = GetTabInspResultEvent?.Invoke(tabNo);
             var tabControl = TabBtnControlList[tabNo];
             if (tabControl.GetOrgImage() is ICogImage orgImage)
             {
@@ -204,6 +203,8 @@ namespace ATT_UT_IPAD.UI.Controls
             TabBtnControlList[tabNo].SetOrgImage(tabInspResult.CogImage);
             TabBtnControlList[tabNo].SetResultImage(tabInspResult.AkkonResultCogImage);
             TabBtnControlList[tabNo].SetAkkonNGAffineRectList(tabInspResult.AkkonNGAffineList);
+            TabBtnControlList[tabNo].SetAkkonMarkShapeResult(tabInspResult.MarkResult);
+
             TabBtnControlList[tabNo].SetInspImage(tabInspResult.AkkonInspCogImage);
 
             if (tabInspResult != null)

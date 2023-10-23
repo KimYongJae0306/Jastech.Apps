@@ -249,7 +249,7 @@ namespace Jastech.Apps.Winform.Core.Calibrations
 
                     Logger.Write(LogType.Device, "Initialize calibration.");
 
-                    MotionManager.Instance().MoveAxisX(UnitName, TeachingPosType.Stage1_PreAlign_Left);
+                    MotionManager.Instance().MoveAxisX(AxisHandler.GetAxis(AxisName.X), UnitName, TeachingPosType.Stage1_PreAlign_Left);
                     Logger.Write(LogType.Device, "Move to Calibration start position.");
 
                     ClearMatrixPointResultList();

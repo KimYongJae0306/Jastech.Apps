@@ -206,8 +206,6 @@ namespace ATT_UT_IPAD.UI.Controls
                 if (CurrentTabNo == tabNo)
                     UpdateImage(tabNo);
             }
-            //else
-            //    InspAlignDisplay.ClearImage();
         }
 
         private void UpdateImage(int tabNo)
@@ -330,6 +328,34 @@ namespace ATT_UT_IPAD.UI.Controls
             List<CogCompositeShape> leftResultList = new List<CogCompositeShape>();
             LeftPointList[result.TabNo] = new List<PointF>();
 
+            var leftFpcMark = result.MarkResult.FpcMark.FoundedMark.Left;
+            if(leftFpcMark != null)
+            {
+                if (leftFpcMark.Found)
+                {
+                    var fpc = leftFpcMark.MaxMatchPos.ResultGraphics;
+                    if (leftFpcMark.Judgement == Judgement.OK)
+                        fpc.Color = CogColorConstants.Green;
+                    else
+                        fpc.Color = CogColorConstants.Red;
+                    leftResultList.Add(fpc);
+                }
+            }
+
+            var leftPanelMark = result.MarkResult.PanelMark.FoundedMark.Left;
+            if (leftPanelMark != null)
+            {
+                if (leftPanelMark.Found)
+                {
+                    var panel = leftPanelMark.MaxMatchPos.ResultGraphics;
+                    if (leftPanelMark.Judgement == Judgement.OK)
+                        panel.Color = CogColorConstants.Green;
+                    else
+                        panel.Color = CogColorConstants.Red;
+                    leftResultList.Add(panel);
+                }
+            }
+
             var leftAlignX = result.AlignResult.LeftX;
             if (leftAlignX != null)
             {
@@ -416,6 +442,34 @@ namespace ATT_UT_IPAD.UI.Controls
 
             List<CogCompositeShape> rightResultList = new List<CogCompositeShape>();
             RightPointList[result.TabNo] = new List<PointF>();
+
+            var rightFpcMark = result.MarkResult.FpcMark.FoundedMark.Right;
+            if (rightFpcMark != null)
+            {
+                if (rightFpcMark.Found)
+                {
+                    var fpc = rightFpcMark.MaxMatchPos.ResultGraphics;
+                    if (rightFpcMark.Judgement == Judgement.OK)
+                        fpc.Color = CogColorConstants.Green;
+                    else
+                        fpc.Color = CogColorConstants.Red;
+                    rightResultList.Add(fpc);
+                }
+            }
+
+            var rightPanelMark = result.MarkResult.PanelMark.FoundedMark.Right;
+            if (rightPanelMark != null)
+            {
+                if (rightPanelMark.Found)
+                {
+                    var panel = rightPanelMark.MaxMatchPos.ResultGraphics;
+                    if (rightPanelMark.Judgement == Judgement.OK)
+                        panel.Color = CogColorConstants.Green;
+                    else
+                        panel.Color = CogColorConstants.Red;
+                    rightResultList.Add(panel);
+                }
+            }
 
             var rightAlignX = result.AlignResult.RightX;
             if (rightAlignX != null)

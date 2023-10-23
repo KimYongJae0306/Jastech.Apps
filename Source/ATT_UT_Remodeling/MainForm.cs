@@ -6,6 +6,7 @@ using Jastech.Apps.Structure;
 using Jastech.Apps.Structure.Data;
 using Jastech.Apps.Winform;
 using Jastech.Apps.Winform.Core;
+using Jastech.Apps.Winform.Core.Calibrations;
 using Jastech.Apps.Winform.Service.Plc;
 using Jastech.Apps.Winform.Service.Plc.Maps;
 using Jastech.Apps.Winform.Settings;
@@ -94,6 +95,8 @@ namespace ATT_UT_Remodeling
 
             PlcScenarioManager.Instance().PreAlignRunnerHandler += MainForm_PreAlignRunnerHandler;
 
+            PlcScenarioManager.Instance().CalibrationRunnerHandler += MainForm_CalibrationRunnerHandler;
+
             PlcControlManager.Instance().WritePcCommand(PcCommand.ServoReset_1);
             Thread.Sleep(100);
             PlcControlManager.Instance().WritePcCommand(PcCommand.ServoOn_1);
@@ -118,6 +121,11 @@ namespace ATT_UT_Remodeling
             ManualJudgeForm.ManualJudmentHandler += MainForm_ManualOkHandler;
             ManualJudgeForm.Show();
             ManualJudgeForm.Hide();
+        }
+
+        private void MainForm_CalibrationRunnerHandler(UnitName unitName, CalibrationMode calibrationMode)
+        {
+            SystemManager.Instance().StartCalibration(unitName, calibrationMode);
         }
 
         private void AddControls()

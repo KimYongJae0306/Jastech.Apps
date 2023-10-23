@@ -81,6 +81,8 @@ namespace Jastech.Framework.Winform.Forms
 
         public UnitName UnitName { get; set; } = UnitName.Unit0;
 
+        public AxisHandlerName AxisHandlerName { get; set; } = AxisHandlerName.Handler0;
+
         public ICogImage ScanImage { get; set; } = null;
 
         public List<Tab> TeachingTabList { get; private set; } = null;
@@ -473,7 +475,7 @@ namespace Jastech.Framework.Winform.Forms
                 LineCamera.InitGrabSettings();
 
             InitalizeInspTab(LineCamera.TabScanBufferList);
-            if (MotionManager.Instance().MoveAxisX(UnitName, TeachingPosType.Stage1_Scan_Start) == false)
+            if (MotionManager.Instance().MoveAxisX(AxisHandlerName, UnitName, TeachingPosType.Stage1_Scan_Start) == false)
             {
                 MessageConfirmForm form = new MessageConfirmForm();
                 form.Message = "Axis X Moving Error.(Scan Start)";
@@ -494,9 +496,9 @@ namespace Jastech.Framework.Winform.Forms
             LineCamera.StartGrab();
             Thread.Sleep(50);
             if (UseDelayStart)
-                MotionManager.Instance().MoveAxisX(UnitName, TeachingPosType.Stage1_Scan_End, cameraGap);
+                MotionManager.Instance().MoveAxisX(AxisHandlerName, UnitName, TeachingPosType.Stage1_Scan_End, cameraGap);
             else
-                MotionManager.Instance().MoveAxisX(UnitName, TeachingPosType.Stage1_Scan_End);
+                MotionManager.Instance().MoveAxisX(AxisHandlerName, UnitName, TeachingPosType.Stage1_Scan_End);
 
             LAFCtrl.SetTrackingOnOFF(false);
             Thread.Sleep(100);

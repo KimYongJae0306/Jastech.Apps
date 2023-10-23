@@ -5,6 +5,7 @@ using Jastech.Apps.Structure;
 using Jastech.Apps.Structure.Data;
 using Jastech.Apps.Winform;
 using Jastech.Apps.Winform.Core;
+using Jastech.Apps.Winform.Core.Calibrations;
 using Jastech.Apps.Winform.Service;
 using Jastech.Apps.Winform.Service.Plc;
 using Jastech.Apps.Winform.Service.Plc.Maps;
@@ -43,7 +44,7 @@ namespace ATT_UT_Remodeling
         #endregion
 
         #region 속성
-        //public MachineStatus MachineStatus { get; set; } = MachineStatus.STOP;
+        public VisionXCalibration VisionXCalibration { get; set; } = new VisionXCalibration();
         #endregion
 
         #region 메서드
@@ -96,14 +97,14 @@ namespace ATT_UT_Remodeling
             LAFManager.Instance().Initialize();
             LineCameraManager.Instance().Initialize();
             AreaCameraManager.Instance().Initialize();
-           
+
             var areaCamera = AreaCameraManager.Instance().GetAppsCamera("PreAlign");
             if (areaCamera != null)
-                PlcScenarioManager.Instance().VisionXCalibration.SetCamera(areaCamera);
+                VisionXCalibration.SetCamera(areaCamera);
 
             var axisHandler = MotionManager.Instance().GetAxisHandler(AxisHandlerName.Handler0);
             if (axisHandler != null)
-                PlcScenarioManager.Instance().VisionXCalibration.SetAxisHandler(axisHandler);
+                VisionXCalibration.SetAxisHandler(axisHandler);
 
             if (ConfigSet.Instance().Operation.LastModelName != "")
             {
@@ -159,7 +160,7 @@ namespace ATT_UT_Remodeling
                 message = "Plc Initialize Fail";
             }
 
-            if(message != "")
+            if (message != "")
             {
                 MessageYesNoForm form = new MessageYesNoForm();
                 form.Message = message;
@@ -283,6 +284,19 @@ namespace ATT_UT_Remodeling
             }
         }
 
+        public void StartCalibration(UnitName unitName, CalibrationMode calibrationMode)
+        {
+            var inspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
+            var unit = inspModel.GetUnit(unitName);
+            var param = unit.PreAlign.CalibrationParam.InspParam;
+
+            VisionXCalibration.UnitName = UnitName.Unit0;
+            VisionXCalibration.SetInterval(intervalX: 1.5, intervalY: 1.5);
+            VisionXCalibration.SetParam(param);
+            VisionXCalibration.SetCalibrationMode(calibrationMode);
+            VisionXCalibration.StartCalSeqRun();
+        }
+
         public void SetVirtualImage(int tabNo, string fileName)
         {
             _inspRunner.SetVirtualmage(tabNo, fileName);
@@ -340,26 +354,6 @@ namespace ATT_UT_Remodeling
             _mainForm.ShowManualJudgeForm();
         }
 
-        public bool PlcScenarioMoveTo(PlcCommand plcCommand, TeachingPosType teachingPosType)
-        {
-            var inspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
-            if (inspModel == null)
-            {
-                Logger.Write(LogType.Device, "Current Model is null.");
-                return false;
-            }
-            var teachingInfo = inspModel.GetUnit(UnitName.Unit0).GetTeachingInfo(teachingPosType);
-            // X 축, Z0
-            Axis axisX = MotionManager.Instance().GetAxis(AxisHandlerName.Handler0, AxisName.X);
-
-            if (axisX.IsEnable() == false)
-            {
-                return false;
-            }
-
-            return true;
-        }
-
         public bool PlcScenarioMoveTo(PlcCommand plcCommand, TeachingPosType teachingPosType, out string alarmMessage)
         {
             var inspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
@@ -383,7 +377,7 @@ namespace ATT_UT_Remodeling
                 return false;
             }
 
-            if (MotionManager.Instance().MoveAxisX(UnitName.Unit0, teachingPosType) == false)
+            if (MotionManager.Instance().MoveAxisX(AxisHandlerName.Handler0, UnitName.Unit0, teachingPosType) == false)
             {
                 alarmMessage = "AxisX Moving Error.";
                 Logger.Write(LogType.Device, alarmMessage);
