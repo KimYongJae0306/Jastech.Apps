@@ -23,6 +23,7 @@ using Jastech.Framework.Imaging;
 using Jastech.Framework.Imaging.Helper;
 using Jastech.Framework.Imaging.Result;
 using Jastech.Framework.Imaging.VisionPro;
+using Jastech.Framework.Imaging.VisionPro.VisionAlgorithms.Results;
 using Jastech.Framework.Util.Helper;
 using Jastech.Framework.Winform;
 using Jastech.Framework.Winform.Forms;
@@ -1520,7 +1521,29 @@ namespace ATT_UT_IPAD.Core
             var leftAlignShapeList = tabInspResult.GetLeftAlignShapeList();
             if(leftAlignShapeList.Count() > 0)
             {
-                Mat cropLeftImage = GetAlignResultImage(tabInspResult, leftAlignShapeList);
+                PointF offset = new PointF();
+                Mat cropLeftImage = GetAlignResultImage(tabInspResult, leftAlignShapeList, out offset);
+
+                var leftFpcMark = tabInspResult.MarkResult.FpcMark.FoundedMark.Left;
+                if (leftFpcMark != null)
+                {
+                    if (leftFpcMark.Found)
+                    {
+                        var resultGraphics = leftFpcMark.MaxMatchPos.ResultGraphics;
+                        DrawPatternShape(ref cropLeftImage, leftFpcMark.Judgement, resultGraphics, offset);
+                    }
+                }
+
+                var leftPanelMark = tabInspResult.MarkResult.PanelMark.FoundedMark.Left;
+                if (leftPanelMark != null)
+                {
+                    if (leftPanelMark.Found)
+                    {
+                        var resultGraphics = leftPanelMark.MaxMatchPos.ResultGraphics;
+                        DrawPatternShape(ref cropLeftImage, leftPanelMark.Judgement, resultGraphics, offset);
+                    }
+                }
+
                 string fileName = string.Format("Left_Align_Tab_{0}.jpeg", tabInspResult.TabNo);
                 string filePath = Path.Combine(savePath, fileName);
                 cropLeftImage?.Save(filePath);
@@ -1529,15 +1552,79 @@ namespace ATT_UT_IPAD.Core
             var rightAlignShapeList = tabInspResult.GetRightAlignShapeList();
             if (rightAlignShapeList.Count() > 0)
             {
-                Mat cropRightImage = GetAlignResultImage(tabInspResult, rightAlignShapeList);
+                PointF offset = new PointF();
+                Mat cropRightImage = GetAlignResultImage(tabInspResult, rightAlignShapeList, out offset);
+
+                var rightFpcMark = tabInspResult.MarkResult.FpcMark.FoundedMark.Right;
+                if (rightFpcMark != null)
+                {
+                    if (rightFpcMark.Found)
+                    {
+                        var resultGraphics = rightFpcMark.MaxMatchPos.ResultGraphics;
+                        DrawPatternShape(ref cropRightImage, rightFpcMark.Judgement, resultGraphics, offset);
+                    }
+                }
+
+                var rightPanelMark = tabInspResult.MarkResult.PanelMark.FoundedMark.Right;
+                if (rightPanelMark != null)
+                {
+                    if (rightPanelMark.Found)
+                    {
+                        var resultGraphics = rightPanelMark.MaxMatchPos.ResultGraphics;
+                        DrawPatternShape(ref cropRightImage, rightPanelMark.Judgement, resultGraphics, offset);
+                    }
+                }
+
                 string fileName = string.Format("Right_Align_Tab_{0}.jpeg", tabInspResult.TabNo);
                 string filePath = Path.Combine(savePath, fileName);
                 cropRightImage?.Save(filePath);
             }
         }
 
-        private Mat GetAlignResultImage(TabInspResult tabInspResult, List<AlignGraphicPosition> graphicList)
+        private void DrawPatternResult(ref Mat mat, TabMarkResult tabMarkResult, PointF offset)
         {
+            var leftMark = tabMarkResult.FpcMark.FoundedMark.Left;
+            if (leftMark != null)
+            {
+                if (leftMark.Found)
+                {
+                    var resultGraphics = leftMark.MaxMatchPos.ResultGraphics;
+                    DrawPatternShape(ref mat, leftMark.Judgement, resultGraphics, offset);
+                }
+            }
+
+        }
+
+        private void DrawPatternShape(ref Mat mat, Judgement judgement, CogCompositeShape resultGraphics, PointF cropOffset)
+        {
+            var drawColor = new MCvScalar(50, 230, 50, 255);
+
+            if (judgement == Judgement.OK)
+                drawColor = new MCvScalar(50, 230, 50, 255);
+            else
+                drawColor = new MCvScalar(50, 50, 230, 255);
+
+            foreach (var shape in resultGraphics.Shapes)
+            {
+                if (shape is CogPointMarker marker)
+                {
+                    int newX = (int)(marker.X - cropOffset.X);
+                    int newY = (int)(marker.Y - cropOffset.Y);
+
+                    CvInvoke.DrawMarker(mat, new Point(newX, newY), drawColor, MarkerTypes.Cross);
+                }
+
+                if (shape is CogRectangleAffine pattern)
+                {
+                    Rectangle boundRect = VisionProShapeHelper.ConvertAffineRectToRect(pattern, -cropOffset.X, -cropOffset.Y);
+                    CvInvoke.Rectangle(mat, boundRect, drawColor);
+                }
+            }
+        }
+
+        private Mat GetAlignResultImage(TabInspResult tabInspResult, List<AlignGraphicPosition> graphicList, out PointF offsetPoint)
+        {
+            offsetPoint = new PointF();
             MCvScalar fpcColor = new MCvScalar(255, 0, 0);
             MCvScalar panelColor = new MCvScalar(0, 165, 255);
 
@@ -1545,6 +1632,9 @@ namespace ATT_UT_IPAD.Core
             var cropImage = new Mat(tabInspResult.Image, roi);
 
             CvInvoke.CvtColor(cropImage, cropImage, ColorConversion.Gray2Bgr);
+
+            offsetPoint.X = roi.X;
+            offsetPoint.Y = roi.Y;
 
             foreach (var shape in graphicList)
             {
