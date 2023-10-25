@@ -29,17 +29,17 @@
 
         #region RecipeData
 
-        PLC_PanelX_Size,
-        PLC_MarkToMarkDistance,
-        PLC_PanelLeftEdgeToTab1LeftEdgeDistance,
-        PLC_TabCount, 
-        PLC_Axis_X_Speed,
+        //PLC_PanelX_Size,
+        //PLC_MarkToMarkDistance,
+        //PLC_PanelLeftEdgeToTab1LeftEdgeDistance,
+        //PLC_TabCount, 
+        //PLC_Axis_X_Speed,
   
-        PLC_Akkon_Count,
-        PLC_Akkon_Length,
-        PLC_Akkon_Strength,
-        PLC_Akkon_Min_Size,
-        PLC_Akkon_Max_Size,
+        //PLC_Akkon_Count,
+        //PLC_Akkon_Length,
+        //PLC_Akkon_Strength,
+        //PLC_Akkon_Min_Size,
+        //PLC_Akkon_Max_Size,
 
         PLC_Tab0_Offset_Left,
         PLC_Tab1_Offset_Left,
@@ -83,6 +83,18 @@
         PLC_TabtoTab_Distance6,
         PLC_TabtoTab_Distance7,
         PLC_TabtoTab_Distance8,
+
+        PLC_PanelX_Size,
+        PLC_MarkToMarkDistance,
+        PLC_PanelLeftEdgeToTab1LeftEdgeDistance,
+        PLC_TabCount,
+        PLC_Axis_X_Speed,
+
+        PLC_Akkon_Count,
+        PLC_Akkon_Length,
+        PLC_Akkon_Strength,
+        PLC_Akkon_Min_Size,
+        PLC_Akkon_Max_Size,
         #endregion
 
         PC_GrabDone,

@@ -64,6 +64,9 @@ namespace Jastech.Framework.Winform.Forms
             mtgEnableTest1.Checked = appsConfig.EnableTest1;
             mtgEnableTest2.Checked = appsConfig.EnableTest2;
 
+            mtgEnableAkkonForceJudge.Checked = appsConfig.EnableAkkonForceOkay;
+            mtgEnableAlignForceJudge.Checked = appsConfig.EnableAlignForceOkay;
+
             mtgEnableManualJudge.Checked = appsConfig.EnableManualJudge;
 
             mtgLogAkkonLead.Checked = appsConfig.EnableAkkonLeadResultLog;

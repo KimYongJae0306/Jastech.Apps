@@ -3,6 +3,7 @@ using Jastech.Apps.Structure.Data;
 using Jastech.Apps.Winform.Core;
 using Jastech.Apps.Winform.Service.Plc;
 using Jastech.Apps.Winform.Service.Plc.Maps;
+using Jastech.Apps.Winform.Settings;
 using Jastech.Framework.Algorithms.Akkon.Results;
 using Jastech.Framework.Device.Motions;
 using Jastech.Framework.Device.Plcs;
@@ -705,6 +706,9 @@ namespace Jastech.Apps.Winform
             {
                 int alignJudgement = alignResult.Judgement == Judgement.OK ? 1 : 2;
 
+                if (AppsConfig.Instance().EnableAlignForceOkay)
+                    alignJudgement = 1;
+
                 double leftX_um = 0.0;
                 if (alignResult.LeftX != null)
                     leftX_um = alignResult.LeftX.ResultValue_pixel * resolution;
@@ -795,6 +799,9 @@ namespace Jastech.Apps.Winform
             else
             {
                 int akkonJudgement = akkonResult.Judgement == Judgement.OK ? 1 : 2;
+
+                if (AppsConfig.Instance().EnableAkkonForceOkay)
+                    akkonJudgement = 1;
 
                 int leftLengthAvg = ConvertDoubleWordData(akkonResult.Length_Left_Avg_um);
                 int leftLengthMin = ConvertDoubleWordData(akkonResult.Length_Left_Min_um);
