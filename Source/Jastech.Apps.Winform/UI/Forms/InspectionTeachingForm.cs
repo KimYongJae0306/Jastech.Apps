@@ -408,17 +408,50 @@ namespace Jastech.Framework.Winform.Forms
 
         private void btnLoadImage_Click(object sender, EventArgs e)
         {
-            OpenFileDialog dlg = new OpenFileDialog();
-            dlg.ReadOnlyChecked = true;
-            dlg.Filter = "BMP Files (*.bmp)|*.bmp";
-            dlg.ShowDialog();
-
             if (_isPrevTrackingOn == true)
                 SetTrackingOnOff(false);
 
+            OpenFileDialog dlg = new OpenFileDialog();
+            dlg.ReadOnlyChecked = true;
+            dlg.Filter = "BMP Files (*.bmp)|*.bmp; | "
+                + "JPG Files (*.jpg, *.jpeg)|*.jpg; *.jpeg; |"
+                + "모든 파일(*.*) | *.*;";
+            dlg.ShowDialog();
+
             if (dlg.FileName != "")
             {
-                Mat image = new Mat(dlg.FileName, ImreadModes.Grayscale);
+                string extension = Path.GetExtension(dlg.FileName);
+                Mat image = null;
+
+                if (extension == ".bmp")
+                {
+                    image = new Mat(dlg.FileName, ImreadModes.Grayscale);
+                }
+                else if(extension == ".jpg" || extension == ".jpeg")
+                {
+                    if(GetHalfFilePath(dlg.FileName, out string leftFilePath, out string rightFilePath))
+                    {
+                        Mat leftMatImage = new Mat(leftFilePath, ImreadModes.Grayscale);
+                        Mat rightMatImage = new Mat(rightFilePath, ImreadModes.Grayscale);
+
+                        Size mergeSize = new Size(leftMatImage.Width + rightMatImage.Width, leftMatImage.Height);
+                        image = new Mat(mergeSize, DepthType.Cv8U, 1);
+                        CvInvoke.HConcat(leftMatImage, rightMatImage, image);
+
+                        leftMatImage.Dispose();
+                        rightMatImage.Dispose();
+                    }
+                    else
+                    {
+                        MessageConfirmForm form = new MessageConfirmForm();
+                        form.Message = "The file name format is incorrect.";
+                        form.ShowDialog();
+                        return;
+                    }
+                }
+
+                if (image == null)
+                    return;
 
                 int size = image.Width * image.Height * image.NumberOfChannels;
                 byte[] dataArray = new byte[size];
@@ -441,6 +474,39 @@ namespace Jastech.Framework.Winform.Forms
 
                 cbxTabList_SelectedIndexChanged(null, EventArgs.Empty);
             }
+        }
+
+        private bool GetHalfFilePath(string fileName, out string leftFilePath, out string rightFilePath)
+        {
+            leftFilePath = "";
+            rightFilePath = "";
+
+            string dir = Path.GetDirectoryName(fileName);
+            string name = Path.GetFileName(fileName);
+
+            if (name.Contains("Left"))
+            {
+                string rightName = name.Replace("Left", "Right");
+                leftFilePath = fileName;
+                rightFilePath = Path.Combine(dir, rightName);
+            }
+            else if (name.Contains("Right"))
+            {
+                rightFilePath = fileName;
+                string leftName = name.Replace("Right", "Left");
+                leftFilePath = Path.Combine(dir, leftName);
+            }
+
+            if(leftFilePath != "" && rightFilePath != "")
+            {
+                bool isLeftExist = File.Exists(leftFilePath);
+                bool isRightExist = File.Exists(rightFilePath);
+
+                if (isLeftExist && isRightExist)
+                    return true;
+            }
+
+            return false;
         }
 
         private void SaveScanImage()
