@@ -683,6 +683,7 @@ namespace ATT_UT_IPAD.Core
             var inspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
             double resolution = AkkonCamera.Camera.PixelResolution_um / AkkonCamera.Camera.LensScale;
             bool inspFinalResult = true;
+
             for (int tabNo = 0; tabNo < inspModel.TabCount; tabNo++)
             {
                 var akkonTabInspResult = AppsInspResult.Instance().GetAkkon(tabNo);
@@ -692,8 +693,10 @@ namespace ATT_UT_IPAD.Core
 
                 if (judgement.Equals(TabJudgement.OK) == false)
                     inspFinalResult = false;
+
                 Thread.Sleep(20);
             }
+
             if (inspFinalResult)
                 PlcControlManager.Instance().WritePcStatus(PlcCommand.StartInspection);
             else
