@@ -55,6 +55,7 @@ namespace ATT.UI.Pages
         {
             InspectionTeachingForm form = new InspectionTeachingForm();
             form.ScanImage = ScanImage?.CopyBase(CogImageCopyModeConstants.CopyPixels);
+            form.AxisHandlerName = AxisHandlerName.Handler0;
             form.UnitName = UnitName.Unit0;
             form.LineCamera = LineCameraManager.Instance().GetLineCamera("LineCamera");
             form.LAFCtrl = LAFManager.Instance().GetLAF("Laf").LafCtrl;

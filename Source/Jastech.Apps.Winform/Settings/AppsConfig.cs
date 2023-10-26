@@ -89,6 +89,12 @@ namespace Jastech.Apps.Winform.Settings
 
         [JsonProperty]
         public bool EnableAkkonLeadResultLog{ get; set; } = false;
+
+        [JsonProperty]
+        public bool EnableAkkonForceOkay { get; set; } = false;
+
+        [JsonProperty]
+        public bool EnableAlignForceOkay { get; set; } = false;
         #endregion
 
         #region 메서드

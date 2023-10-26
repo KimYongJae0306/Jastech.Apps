@@ -3,14 +3,11 @@ using Jastech.Apps.Structure;
 using Jastech.Apps.Structure.Data;
 using Jastech.Apps.Winform;
 using Jastech.Apps.Winform.UI.Controls;
-using Jastech.Framework.Algorithms.Akkon.Results;
 using Jastech.Framework.Imaging.Result;
 using Jastech.Framework.Winform.VisionPro.Controls;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
-using System.Linq;
-using System.Runtime.CompilerServices;
 using System.Windows.Forms;
 
 namespace ATT_UT_IPAD.UI.Controls
@@ -171,7 +168,6 @@ namespace ATT_UT_IPAD.UI.Controls
 
         private void UpdateImage(int tabNo)
         {
-            //var tabInspResult = GetTabInspResultEvent?.Invoke(tabNo);
             var tabControl = TabBtnControlList[tabNo];
             if (tabControl.GetOrgImage() is ICogImage orgImage)
             {
@@ -204,6 +200,7 @@ namespace ATT_UT_IPAD.UI.Controls
             TabBtnControlList[tabNo].SetOrgImage(tabInspResult.CogImage);
             TabBtnControlList[tabNo].SetResultImage(tabInspResult.AkkonResultCogImage);
             TabBtnControlList[tabNo].SetAkkonNGAffineRectList(tabInspResult.AkkonNGAffineList);
+
             TabBtnControlList[tabNo].SetInspImage(tabInspResult.AkkonInspCogImage);
 
             if (tabInspResult != null)

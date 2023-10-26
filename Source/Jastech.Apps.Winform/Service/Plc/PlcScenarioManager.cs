@@ -38,7 +38,7 @@ namespace Jastech.Apps.Winform.Service.Plc
         #region 속성
         public InspModelService InspModelService = null;
 
-        public VisionXCalibration VisionXCalibration { get; set; } = new VisionXCalibration();
+     
 
         private bool EnableActive { get; set; } = false;
 
@@ -68,7 +68,7 @@ namespace Jastech.Apps.Winform.Service.Plc
 
         public delegate void PreAlignRunnerEventHandler(bool isStart);
 
-        public delegate void CalibrationRunnerEventHandler(bool isStart);
+        public delegate void CalibrationRunnerEventHandler(UnitName unitName, CalibrationMode calibrationMode);
 
         public delegate bool PlcScenarioMoveEventHandler(PlcCommand plcCommand, TeachingPosType teachingPosType, out string alarmMessage);
 
@@ -458,7 +458,8 @@ namespace Jastech.Apps.Winform.Service.Plc
                     {
                         if(StartMovePosition(PlcCommand.Move_Left_AlignPos, TeachingPosType.Stage1_PreAlign_Left, false))
                         {
-                            Calibration();
+                            // UnitName.Unit0 향 후 Unit이 늘어나면 여기서 Address에 맞춰 넣어주기
+                            Calibration(UnitName.Unit0, CalibrationMode.XYT);
                             AppsStatus.Instance().IsCalibrationing = true;
                         }
                         else
@@ -506,21 +507,21 @@ namespace Jastech.Apps.Winform.Service.Plc
             InspRunnerHandler?.Invoke(true);
         }
 
-        private void Calibration()
+        private void Calibration(UnitName unitName, CalibrationMode calibrationMode)
         {
             var inspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
             if (inspModel == null)
             {
                 short command = PlcControlManager.Instance().WritePcStatus(PlcCommand.Calibration, true);
-                Logger.Debug(LogType.Device, $"Write Fail StartPreAlign[{command}] : Current Model is null.");
+                Logger.Debug(LogType.Device, $"Write Fail Calibration[{command}] : Current Model is null.");
                 return;
             }
 
-            var unit = inspModel.GetUnit(UnitName.Unit0);
+            var unit = inspModel.GetUnit(unitName);
             if (unit == null)
             {
                 short command = PlcControlManager.Instance().WritePcStatus(PlcCommand.Calibration, true);
-                Logger.Debug(LogType.Device, $"Write Fail StartPreAlign[{command}] : Unit is null.");
+                Logger.Debug(LogType.Device, $"Write Fail Calibration[{command}] : Unit is null.");
                 return;
             }
 
@@ -528,13 +529,21 @@ namespace Jastech.Apps.Winform.Service.Plc
             if (param == null)
             {
                 short command = PlcControlManager.Instance().WritePcStatus(PlcCommand.Calibration, true);
-                Logger.Debug(LogType.Device, $"Write Fail StartPreAlign[{command}] : Calibration Param is null.");
+                Logger.Debug(LogType.Device, $"Write Fail Calibration[{command}] : Calibration Param is null.");
                 return;
             }
 
-            VisionXCalibration.SetParam(param);
-            VisionXCalibration.SetCalibrationMode(CalibrationMode.XYT);
-            VisionXCalibration.StartCalSeqRun();
+            if (CalibrationRunnerHandler != null)
+            {
+                CalibrationRunnerHandler.Invoke(unitName, calibrationMode);
+                short command = PlcControlManager.Instance().WritePcStatus(PlcCommand.Calibration);
+                Logger.Debug(LogType.Device, $"Write Calibration [{command}].");
+            }
+            else
+            {
+                short command = PlcControlManager.Instance().WritePcStatus(PlcCommand.Calibration, true);
+                Logger.Debug(LogType.Device, $"Write Fail Calibration[{command}] : CalibrationRunnerHandler is null.");
+            }
         }
 
         private void StartPreAlign()

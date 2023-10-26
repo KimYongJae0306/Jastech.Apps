@@ -6,6 +6,7 @@ using Jastech.Apps.Structure;
 using Jastech.Apps.Structure.Data;
 using Jastech.Apps.Winform;
 using Jastech.Apps.Winform.Core;
+using Jastech.Apps.Winform.Core.Calibrations;
 using Jastech.Apps.Winform.Service.Plc;
 using Jastech.Apps.Winform.Service.Plc.Maps;
 using Jastech.Apps.Winform.Settings;
@@ -70,7 +71,6 @@ namespace ATT_UT_Remodeling
         }
         #endregion
 
-
         #region 메서드
         private void MainForm_Load(object sender, EventArgs e)
         {
@@ -93,6 +93,8 @@ namespace ATT_UT_Remodeling
             PlcScenarioManager.Instance().OriginAllEvent += MainForm_OriginAllEvent;
 
             PlcScenarioManager.Instance().PreAlignRunnerHandler += MainForm_PreAlignRunnerHandler;
+
+            PlcScenarioManager.Instance().CalibrationRunnerHandler += MainForm_CalibrationRunnerHandler;
 
             PlcControlManager.Instance().WritePcCommand(PcCommand.ServoReset_1);
             Thread.Sleep(100);
@@ -118,6 +120,11 @@ namespace ATT_UT_Remodeling
             ManualJudgeForm.ManualJudmentHandler += MainForm_ManualOkHandler;
             ManualJudgeForm.Show();
             ManualJudgeForm.Hide();
+        }
+
+        private void MainForm_CalibrationRunnerHandler(UnitName unitName, CalibrationMode calibrationMode)
+        {
+            SystemManager.Instance().StartCalibration(unitName, calibrationMode);
         }
 
         private void AddControls()
@@ -685,10 +692,21 @@ namespace ATT_UT_Remodeling
 
         private void lblMachineName_Click(object sender, EventArgs e)
         {
-            Process.Start(ConfigSet.Instance().Path.Result);
+            var inspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
+
+            if (inspModel == null)
+            {
+                if (UserManager.Instance().CurrentUser.Type != AuthorityType.None)
+                    Process.Start(ConfigSet.Instance().Path.Result);
+            }
+            else
+            {
+                string path = Path.Combine(ConfigSet.Instance().Path.Result, inspModel.Name);
+
+                if (UserManager.Instance().CurrentUser.Type != AuthorityType.None)
+                    Process.Start(path);
+            }
         }
         #endregion
-
-        
     }
 }

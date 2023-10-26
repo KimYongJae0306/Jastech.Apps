@@ -164,6 +164,9 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         private void dgvAlignHistory_CellContentDoubleClick(object sender, DataGridViewCellEventArgs e)
         {
+            if (e.RowIndex < 0)
+                return;
+
             var dailyInfo = DailyInfoService.GetDailyInfo();
 
             string time = dgvAlignHistory.Rows[e.RowIndex].Cells[0].Value.ToString();

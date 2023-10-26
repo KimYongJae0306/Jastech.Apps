@@ -28,6 +28,7 @@ using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -480,6 +481,7 @@ namespace ATT_UT_IPAD
                         break;
                 }
             }
+
             return base.ProcessCmdKey(ref msg, keyData);
         }
 
@@ -500,7 +502,7 @@ namespace ATT_UT_IPAD
             OpenFileDialog dialog = new OpenFileDialog();
             dialog.Multiselect = true;
 
-            if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            if (dialog.ShowDialog() == DialogResult.OK)
             {
                 _virtualImageCount = 0;
                 string[] fileNames = dialog.FileNames;
@@ -609,6 +611,7 @@ namespace ATT_UT_IPAD
                     fileName = fileName.Replace("_NG", "");
 
                     int index = fileName.IndexOf(text);
+
                     if (index < 0)
                     {
                         MessageConfirmForm form = new MessageConfirmForm();
@@ -620,13 +623,13 @@ namespace ATT_UT_IPAD
                         string tabNoString = fileName.Substring(index + text.Length);
                         SystemManager.Instance().SetVirtualImage(Convert.ToInt32(tabNoString), filePath);
                     }
+
                     _virtualImageCount++;
 
                     var inspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
+
                     if (_virtualImageCount == inspModel.TabCount)
-                    {
                         AppsStatus.Instance().IsInspRunnerFlagFromPlc = true;
-                    }
                 }
 
                 Thread.Sleep(50);
@@ -732,8 +735,20 @@ namespace ATT_UT_IPAD
 
         private void lblMachineName_Click(object sender, EventArgs e)
         {
-            if (UserManager.Instance().CurrentUser.Type != AuthorityType.None)
-                Process.Start(ConfigSet.Instance().Path.Result);
+            var inspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
+
+            if (inspModel == null)
+            {
+                if (UserManager.Instance().CurrentUser.Type != AuthorityType.None)
+                    Process.Start(ConfigSet.Instance().Path.Result);
+            }
+            else
+            {
+                string path = Path.Combine(ConfigSet.Instance().Path.Result, inspModel.Name);
+
+                if (UserManager.Instance().CurrentUser.Type != AuthorityType.None)
+                    Process.Start(path);
+            }
         }
         #endregion
     }

@@ -19,6 +19,8 @@ using Jastech.Framework.Winform.Controls;
 using Jastech.Framework.Winform.Helper;
 using Cognex.VisionPro;
 using static Jastech.Framework.Device.Motions.AxisMovingParam;
+using Jastech.Framework.Winform.VisionPro.Helper;
+using Cognex.VisionPro.Display;
 
 namespace Jastech.Apps.Winform.UI.Forms
 {
@@ -40,12 +42,18 @@ namespace Jastech.Apps.Winform.UI.Forms
         public Unit CurrentUnit { get; private set; } = null;
 
         public UnitName UnitName { get; set; } = UnitName.Unit0;
+
+        public MarkDirection MarkDirection { get; set; } = MarkDirection.Left;
+
+        public MarkName MarkName { get; set; } = MarkName.Main;
         #endregion
 
         #region 이벤트
+        public GetOriginImageDelegate GetOriginImageHandler;
         #endregion
 
         #region 델리게이트
+        public delegate ICogImage GetOriginImageDelegate();
         #endregion
 
         #region 생성자
@@ -67,6 +75,8 @@ namespace Jastech.Apps.Winform.UI.Forms
             // TeachingUIManager 참조
             TeachingUIManager.Instance().TeachingDisplayControl = Display;
             AreaCamera.OnImageGrabbed += AreaCamera_OnImageGrabbed;
+
+            LoadPatternImage();
         }
 
         private void SetPitch(int pitch)
@@ -96,6 +106,41 @@ namespace Jastech.Apps.Winform.UI.Forms
             var image = VisionProImageHelper.ConvertImage(byteData, camera.ImageWidth, camera.ImageHeight, camera.ColorFormat);
 
             Display.SetImage(image);
+        }
+
+        private void LoadPatternImage()
+        {
+            if (GetOriginImage() != null)
+            {
+                CogDisplayHelper.DisposeDisplay(cogPatternDisplay);
+
+                ICogImage originImage = GetOriginImageHandler();
+
+                var preAlignMarkParam = CurrentUnit.PreAlign.AlignParamList.Where(x => x.Direction == MarkDirection && x.Name == MarkName).FirstOrDefault().InspParam;
+                if (preAlignMarkParam.Train(originImage))
+                {
+                    DisposePatternDisplay();
+                    cogPatternDisplay.Image = preAlignMarkParam.GetTrainedPatternImage();
+                    cogPatternDisplay.StaticGraphics.Add(preAlignMarkParam.GetOrigin() as ICogGraphic, "Origin");
+                }
+            }
+        }
+
+        private ICogImage GetOriginImage()
+        {
+            if (GetOriginImageHandler != null)
+            {
+                ICogImage originImage = GetOriginImageHandler();
+                return originImage;
+            }
+
+            return null;
+        }
+
+        private void DisposePatternDisplay()
+        {
+            CogDisplayHelper.DisposeDisplay(cogPatternDisplay);
+            cogPatternDisplay.Image = null;
         }
 
         private void Display_DeleteEventHandler(object sender, EventArgs e)

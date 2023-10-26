@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ManualMatchingForm));
             this.pnlManualMatching = new System.Windows.Forms.Panel();
             this.tlpManualMatching = new System.Windows.Forms.TableLayoutPanel();
@@ -37,27 +38,29 @@
             this.tlpBottom = new System.Windows.Forms.TableLayoutPanel();
             this.pnlApply = new System.Windows.Forms.Panel();
             this.tlpApply = new System.Windows.Forms.TableLayoutPanel();
+            this.lblApplyImage = new System.Windows.Forms.Label();
             this.lblApply = new System.Windows.Forms.Label();
             this.pnlCancel = new System.Windows.Forms.Panel();
             this.tlpCancel = new System.Windows.Forms.TableLayoutPanel();
+            this.lblCancelImage = new System.Windows.Forms.Label();
             this.lblCancel = new System.Windows.Forms.Label();
             this.tlpManualMatch = new System.Windows.Forms.TableLayoutPanel();
             this.pnlDisplay = new System.Windows.Forms.Panel();
             this.pnlTeach = new System.Windows.Forms.Panel();
-            this.pnlLight = new System.Windows.Forms.Panel();
             this.pnlROIJog = new System.Windows.Forms.Panel();
+            this.tlpROIJog = new System.Windows.Forms.TableLayoutPanel();
             this.tlpJog = new System.Windows.Forms.TableLayoutPanel();
-            this.lblApplyImage = new System.Windows.Forms.Label();
-            this.lblCancelImage = new System.Windows.Forms.Label();
             this.lblMove = new System.Windows.Forms.Label();
             this.lblMoveRight = new System.Windows.Forms.Label();
             this.lblMoveUp = new System.Windows.Forms.Label();
             this.lblMoveLeft = new System.Windows.Forms.Label();
             this.lblMoveDown = new System.Windows.Forms.Label();
-            this.tlpROIJog = new System.Windows.Forms.TableLayoutPanel();
             this.tlpJogMode = new System.Windows.Forms.TableLayoutPanel();
-            this.lblMovePixel = new System.Windows.Forms.Label();
             this.lblPitch = new System.Windows.Forms.Label();
+            this.lblMovePixel = new System.Windows.Forms.Label();
+            this.pnlLight = new System.Windows.Forms.Panel();
+            this.pnlPatternImage = new System.Windows.Forms.Panel();
+            this.cogPatternDisplay = new Cognex.VisionPro.CogRecordDisplay();
             this.pnlManualMatching.SuspendLayout();
             this.tlpManualMatching.SuspendLayout();
             this.pnlTop.SuspendLayout();
@@ -70,9 +73,11 @@
             this.tlpManualMatch.SuspendLayout();
             this.pnlTeach.SuspendLayout();
             this.pnlROIJog.SuspendLayout();
-            this.tlpJog.SuspendLayout();
             this.tlpROIJog.SuspendLayout();
+            this.tlpJog.SuspendLayout();
             this.tlpJogMode.SuspendLayout();
+            this.pnlPatternImage.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.cogPatternDisplay)).BeginInit();
             this.SuspendLayout();
             // 
             // pnlManualMatching
@@ -182,6 +187,16 @@
             this.tlpApply.Size = new System.Drawing.Size(158, 56);
             this.tlpApply.TabIndex = 1;
             // 
+            // lblApplyImage
+            // 
+            this.lblApplyImage.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblApplyImage.Image = global::Jastech.Apps.Winform.Properties.Resources.Select_White;
+            this.lblApplyImage.Location = new System.Drawing.Point(3, 0);
+            this.lblApplyImage.Name = "lblApplyImage";
+            this.lblApplyImage.Size = new System.Drawing.Size(44, 56);
+            this.lblApplyImage.TabIndex = 1;
+            this.lblApplyImage.Click += new System.EventHandler(this.lblApply_Click);
+            // 
             // lblApply
             // 
             this.lblApply.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -221,6 +236,16 @@
             this.tlpCancel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tlpCancel.Size = new System.Drawing.Size(158, 56);
             this.tlpCancel.TabIndex = 2;
+            // 
+            // lblCancelImage
+            // 
+            this.lblCancelImage.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblCancelImage.Image = global::Jastech.Apps.Winform.Properties.Resources.Cancel_White;
+            this.lblCancelImage.Location = new System.Drawing.Point(3, 0);
+            this.lblCancelImage.Name = "lblCancelImage";
+            this.lblCancelImage.Size = new System.Drawing.Size(44, 56);
+            this.lblCancelImage.TabIndex = 1;
+            this.lblCancelImage.Click += new System.EventHandler(this.lblCancel_Click);
             // 
             // lblCancel
             // 
@@ -263,6 +288,7 @@
             // 
             // pnlTeach
             // 
+            this.pnlTeach.Controls.Add(this.pnlPatternImage);
             this.pnlTeach.Controls.Add(this.pnlROIJog);
             this.pnlTeach.Controls.Add(this.pnlLight);
             this.pnlTeach.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -272,22 +298,30 @@
             this.pnlTeach.Size = new System.Drawing.Size(530, 528);
             this.pnlTeach.TabIndex = 1;
             // 
-            // pnlLight
-            // 
-            this.pnlLight.Location = new System.Drawing.Point(77, 294);
-            this.pnlLight.Margin = new System.Windows.Forms.Padding(0);
-            this.pnlLight.Name = "pnlLight";
-            this.pnlLight.Size = new System.Drawing.Size(378, 194);
-            this.pnlLight.TabIndex = 300;
-            // 
             // pnlROIJog
             // 
             this.pnlROIJog.Controls.Add(this.tlpROIJog);
-            this.pnlROIJog.Location = new System.Drawing.Point(158, 25);
+            this.pnlROIJog.Location = new System.Drawing.Point(26, 27);
             this.pnlROIJog.Margin = new System.Windows.Forms.Padding(0);
             this.pnlROIJog.Name = "pnlROIJog";
             this.pnlROIJog.Size = new System.Drawing.Size(210, 240);
             this.pnlROIJog.TabIndex = 301;
+            // 
+            // tlpROIJog
+            // 
+            this.tlpROIJog.ColumnCount = 1;
+            this.tlpROIJog.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tlpROIJog.Controls.Add(this.tlpJog, 0, 1);
+            this.tlpROIJog.Controls.Add(this.tlpJogMode, 0, 0);
+            this.tlpROIJog.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tlpROIJog.Location = new System.Drawing.Point(0, 0);
+            this.tlpROIJog.Margin = new System.Windows.Forms.Padding(0);
+            this.tlpROIJog.Name = "tlpROIJog";
+            this.tlpROIJog.RowCount = 2;
+            this.tlpROIJog.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
+            this.tlpROIJog.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tlpROIJog.Size = new System.Drawing.Size(210, 240);
+            this.tlpROIJog.TabIndex = 0;
             // 
             // tlpJog
             // 
@@ -311,26 +345,6 @@
             this.tlpJog.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tlpJog.Size = new System.Drawing.Size(210, 200);
             this.tlpJog.TabIndex = 1;
-            // 
-            // lblApplyImage
-            // 
-            this.lblApplyImage.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblApplyImage.Image = global::Jastech.Apps.Winform.Properties.Resources.Select_White;
-            this.lblApplyImage.Location = new System.Drawing.Point(3, 0);
-            this.lblApplyImage.Name = "lblApplyImage";
-            this.lblApplyImage.Size = new System.Drawing.Size(44, 56);
-            this.lblApplyImage.TabIndex = 1;
-            this.lblApplyImage.Click += new System.EventHandler(this.lblApply_Click);
-            // 
-            // lblCancelImage
-            // 
-            this.lblCancelImage.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblCancelImage.Image = global::Jastech.Apps.Winform.Properties.Resources.Cancel_White;
-            this.lblCancelImage.Location = new System.Drawing.Point(3, 0);
-            this.lblCancelImage.Name = "lblCancelImage";
-            this.lblCancelImage.Size = new System.Drawing.Size(44, 56);
-            this.lblCancelImage.TabIndex = 1;
-            this.lblCancelImage.Click += new System.EventHandler(this.lblCancel_Click);
             // 
             // lblMove
             // 
@@ -400,22 +414,6 @@
             this.lblMoveDown.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
             this.lblMoveDown.Click += new System.EventHandler(this.lblMoveDown_Click);
             // 
-            // tlpROIJog
-            // 
-            this.tlpROIJog.ColumnCount = 1;
-            this.tlpROIJog.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tlpROIJog.Controls.Add(this.tlpJog, 0, 1);
-            this.tlpROIJog.Controls.Add(this.tlpJogMode, 0, 0);
-            this.tlpROIJog.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tlpROIJog.Location = new System.Drawing.Point(0, 0);
-            this.tlpROIJog.Margin = new System.Windows.Forms.Padding(0);
-            this.tlpROIJog.Name = "tlpROIJog";
-            this.tlpROIJog.RowCount = 2;
-            this.tlpROIJog.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
-            this.tlpROIJog.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tlpROIJog.Size = new System.Drawing.Size(210, 240);
-            this.tlpROIJog.TabIndex = 0;
-            // 
             // tlpJogMode
             // 
             this.tlpJogMode.ColumnCount = 2;
@@ -432,20 +430,6 @@
             this.tlpJogMode.Size = new System.Drawing.Size(210, 40);
             this.tlpJogMode.TabIndex = 2;
             // 
-            // lblMovePixel
-            // 
-            this.lblMovePixel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lblMovePixel.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblMovePixel.Font = new System.Drawing.Font("맑은 고딕", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.lblMovePixel.ForeColor = System.Drawing.Color.White;
-            this.lblMovePixel.Location = new System.Drawing.Point(0, 0);
-            this.lblMovePixel.Margin = new System.Windows.Forms.Padding(0);
-            this.lblMovePixel.Name = "lblMovePixel";
-            this.lblMovePixel.Size = new System.Drawing.Size(105, 40);
-            this.lblMovePixel.TabIndex = 8;
-            this.lblMovePixel.Text = "Move Pixel";
-            this.lblMovePixel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
             // lblPitch
             // 
             this.lblPitch.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
@@ -461,6 +445,55 @@
             this.lblPitch.Text = "1.0";
             this.lblPitch.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.lblPitch.Click += new System.EventHandler(this.lblPitch_Click);
+            // 
+            // lblMovePixel
+            // 
+            this.lblMovePixel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblMovePixel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblMovePixel.Font = new System.Drawing.Font("맑은 고딕", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.lblMovePixel.ForeColor = System.Drawing.Color.White;
+            this.lblMovePixel.Location = new System.Drawing.Point(0, 0);
+            this.lblMovePixel.Margin = new System.Windows.Forms.Padding(0);
+            this.lblMovePixel.Name = "lblMovePixel";
+            this.lblMovePixel.Size = new System.Drawing.Size(105, 40);
+            this.lblMovePixel.TabIndex = 8;
+            this.lblMovePixel.Text = "Move Pixel";
+            this.lblMovePixel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // pnlLight
+            // 
+            this.pnlLight.Location = new System.Drawing.Point(26, 294);
+            this.pnlLight.Margin = new System.Windows.Forms.Padding(0);
+            this.pnlLight.Name = "pnlLight";
+            this.pnlLight.Size = new System.Drawing.Size(471, 194);
+            this.pnlLight.TabIndex = 300;
+            // 
+            // pnlPatternImage
+            // 
+            this.pnlPatternImage.Controls.Add(this.cogPatternDisplay);
+            this.pnlPatternImage.Location = new System.Drawing.Point(257, 27);
+            this.pnlPatternImage.Margin = new System.Windows.Forms.Padding(0);
+            this.pnlPatternImage.Name = "pnlPatternImage";
+            this.pnlPatternImage.Size = new System.Drawing.Size(240, 240);
+            this.pnlPatternImage.TabIndex = 302;
+            // 
+            // cogPatternDisplay
+            // 
+            this.cogPatternDisplay.ColorMapLowerClipColor = System.Drawing.SystemColors.AppWorkspace;
+            this.cogPatternDisplay.ColorMapLowerRoiLimit = 0D;
+            this.cogPatternDisplay.ColorMapPredefined = Cognex.VisionPro.Display.CogDisplayColorMapPredefinedConstants.None;
+            this.cogPatternDisplay.ColorMapUpperClipColor = System.Drawing.SystemColors.AppWorkspace;
+            this.cogPatternDisplay.ColorMapUpperRoiLimit = 1D;
+            this.cogPatternDisplay.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.cogPatternDisplay.DoubleTapZoomCycleLength = 2;
+            this.cogPatternDisplay.DoubleTapZoomSensitivity = 2.5D;
+            this.cogPatternDisplay.Location = new System.Drawing.Point(0, 0);
+            this.cogPatternDisplay.MouseWheelMode = Cognex.VisionPro.Display.CogDisplayMouseWheelModeConstants.None;
+            this.cogPatternDisplay.MouseWheelSensitivity = 1D;
+            this.cogPatternDisplay.Name = "cogPatternDisplay";
+            this.cogPatternDisplay.OcxState = ((System.Windows.Forms.AxHost.State)(resources.GetObject("cogPatternDisplay.OcxState")));
+            this.cogPatternDisplay.Size = new System.Drawing.Size(240, 240);
+            this.cogPatternDisplay.TabIndex = 1;
             // 
             // ManualMatchingForm
             // 
@@ -488,9 +521,11 @@
             this.tlpManualMatch.ResumeLayout(false);
             this.pnlTeach.ResumeLayout(false);
             this.pnlROIJog.ResumeLayout(false);
-            this.tlpJog.ResumeLayout(false);
             this.tlpROIJog.ResumeLayout(false);
+            this.tlpJog.ResumeLayout(false);
             this.tlpJogMode.ResumeLayout(false);
+            this.pnlPatternImage.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.cogPatternDisplay)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -526,5 +561,7 @@
         private System.Windows.Forms.TableLayoutPanel tlpJogMode;
         private System.Windows.Forms.Label lblMovePixel;
         private System.Windows.Forms.Label lblPitch;
+        private System.Windows.Forms.Panel pnlPatternImage;
+        private Cognex.VisionPro.CogRecordDisplay cogPatternDisplay;
     }
 }
