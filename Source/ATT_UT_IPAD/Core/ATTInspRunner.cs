@@ -682,6 +682,7 @@ namespace ATT_UT_IPAD.Core
         {
             var inspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
             double resolution = AkkonCamera.Camera.PixelResolution_um / AkkonCamera.Camera.LensScale;
+            bool inspFinalResult = true;
 
             for (int tabNo = 0; tabNo < inspModel.TabCount; tabNo++)
             {
@@ -690,10 +691,17 @@ namespace ATT_UT_IPAD.Core
                 TabJudgement judgement = GetJudgemnet(akkonTabInspResult, alignTabInspResult);
                 PlcControlManager.Instance().WriteTabResult(tabNo, judgement, alignTabInspResult.AlignResult, akkonTabInspResult.AkkonResult, resolution);
 
+                if (judgement.Equals(TabJudgement.OK) == false)
+                    inspFinalResult = false;
+
                 Thread.Sleep(20);
             }
 
-            PlcControlManager.Instance().WritePcStatus(PlcCommand.StartInspection);
+            if (inspFinalResult)
+                PlcControlManager.Instance().WritePcStatus(PlcCommand.StartInspection);
+            else
+                PlcControlManager.Instance().WritePcStatus(PlcCommand.StartInspection, true);
+
         }
 
         private TabJudgement GetJudgemnet(TabInspResult akkonInspResult, TabInspResult alignInspResult)

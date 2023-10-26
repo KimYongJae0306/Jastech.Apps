@@ -543,6 +543,8 @@ namespace ATT.UI.Forms
 
         private void lblOriginZ_Click(object sender, EventArgs e)
         {
+            if (LAFManager.Instance().GetLAF(LafCtrl.Name) is LAF laf)
+                laf.StartHomeThread();
             //LAFManager.Instance().StartHomeThread(LafCtrl.Name);
         }
 

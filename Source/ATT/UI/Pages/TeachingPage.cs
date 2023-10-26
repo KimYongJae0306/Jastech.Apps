@@ -48,7 +48,7 @@ namespace ATT.UI.Pages
             form.InspModelService = ATTInspModelService;
             form.OpenMotionPopupEventHandler += OpenMotionPopupEventHandler;
             form.CloseMotionPopupEventHandler += CloseMotionPopupEventHandler;
-            form.ShowDialog();
+            form.Show();
         }
 
         private void btnAkkonInspectionPage_Click(object sender, EventArgs e)

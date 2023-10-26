@@ -46,6 +46,7 @@
             this.tlpFunctionButtons = new System.Windows.Forms.TableLayoutPanel();
             this.lblCurrentTime = new System.Windows.Forms.Label();
             this.panel2 = new System.Windows.Forms.Panel();
+            this.lblDoorlockState = new System.Windows.Forms.Label();
             this.panel4 = new System.Windows.Forms.Panel();
             this.tableLayoutPanel4 = new System.Windows.Forms.TableLayoutPanel();
             this.lblLogPageImage = new System.Windows.Forms.Label();
@@ -62,6 +63,8 @@
             this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
             this.lblTeachingPageImage = new System.Windows.Forms.Label();
             this.lblTeachingPage = new System.Windows.Forms.Label();
+            this.panel5 = new System.Windows.Forms.Panel();
+            this.lblShowProgressForm = new System.Windows.Forms.Label();
             this.pnlMachineStatus = new System.Windows.Forms.Panel();
             this.tlpMachineStatus = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel5 = new System.Windows.Forms.TableLayoutPanel();
@@ -76,6 +79,7 @@
             this.pnlPage.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
             this.tlpFunctionButtons.SuspendLayout();
+            this.panel2.SuspendLayout();
             this.panel4.SuspendLayout();
             this.tableLayoutPanel4.SuspendLayout();
             this.panel3.SuspendLayout();
@@ -84,6 +88,7 @@
             this.tableLayoutPanel1.SuspendLayout();
             this.panel1.SuspendLayout();
             this.tableLayoutPanel3.SuspendLayout();
+            this.panel5.SuspendLayout();
             this.pnlMachineStatus.SuspendLayout();
             this.tlpMachineStatus.SuspendLayout();
             this.tableLayoutPanel5.SuspendLayout();
@@ -280,6 +285,7 @@
             this.tlpFunctionButtons.Controls.Add(this.panel3, 2, 0);
             this.tlpFunctionButtons.Controls.Add(this.panel8, 0, 0);
             this.tlpFunctionButtons.Controls.Add(this.panel1, 1, 0);
+            this.tlpFunctionButtons.Controls.Add(this.panel5, 5, 0);
             this.tlpFunctionButtons.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tlpFunctionButtons.Location = new System.Drawing.Point(0, 50);
             this.tlpFunctionButtons.Margin = new System.Windows.Forms.Padding(0);
@@ -305,11 +311,25 @@
             // 
             // panel2
             // 
+            this.panel2.Controls.Add(this.lblDoorlockState);
             this.panel2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel2.Location = new System.Drawing.Point(803, 3);
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(194, 44);
             this.panel2.TabIndex = 19;
+            // 
+            // lblDoorlockState
+            // 
+            this.lblDoorlockState.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblDoorlockState.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblDoorlockState.ForeColor = System.Drawing.Color.White;
+            this.lblDoorlockState.Location = new System.Drawing.Point(0, 0);
+            this.lblDoorlockState.Name = "lblDoorlockState";
+            this.lblDoorlockState.Size = new System.Drawing.Size(194, 44);
+            this.lblDoorlockState.TabIndex = 0;
+            this.lblDoorlockState.Text = "Door Opened (Test)";
+            this.lblDoorlockState.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblDoorlockState.Click += new System.EventHandler(this.lblDoorlockState_Click);
             // 
             // panel4
             // 
@@ -502,6 +522,27 @@
             this.lblTeachingPage.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.lblTeachingPage.Click += new System.EventHandler(this.lblTeachingPage_Click);
             // 
+            // panel5
+            // 
+            this.panel5.Controls.Add(this.lblShowProgressForm);
+            this.panel5.Location = new System.Drawing.Point(1003, 3);
+            this.panel5.Name = "panel5";
+            this.panel5.Size = new System.Drawing.Size(194, 44);
+            this.panel5.TabIndex = 21;
+            // 
+            // lblShowProgressForm
+            // 
+            this.lblShowProgressForm.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblShowProgressForm.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblShowProgressForm.ForeColor = System.Drawing.Color.White;
+            this.lblShowProgressForm.Location = new System.Drawing.Point(0, 0);
+            this.lblShowProgressForm.Name = "lblShowProgressForm";
+            this.lblShowProgressForm.Size = new System.Drawing.Size(194, 44);
+            this.lblShowProgressForm.TabIndex = 0;
+            this.lblShowProgressForm.Text = "Progress (Test)";
+            this.lblShowProgressForm.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblShowProgressForm.Click += new System.EventHandler(this.lblShowProgressForm_Click);
+            // 
             // pnlMachineStatus
             // 
             this.pnlMachineStatus.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
@@ -646,6 +687,7 @@
             this.tableLayoutPanel2.ResumeLayout(false);
             this.tableLayoutPanel2.PerformLayout();
             this.tlpFunctionButtons.ResumeLayout(false);
+            this.panel2.ResumeLayout(false);
             this.panel4.ResumeLayout(false);
             this.tableLayoutPanel4.ResumeLayout(false);
             this.panel3.ResumeLayout(false);
@@ -654,6 +696,7 @@
             this.tableLayoutPanel1.ResumeLayout(false);
             this.panel1.ResumeLayout(false);
             this.tableLayoutPanel3.ResumeLayout(false);
+            this.panel5.ResumeLayout(false);
             this.pnlMachineStatus.ResumeLayout(false);
             this.tlpMachineStatus.ResumeLayout(false);
             this.tableLayoutPanel5.ResumeLayout(false);
@@ -707,6 +750,9 @@
         private System.Windows.Forms.Label lblLightState;
         private System.Windows.Forms.Label lblMotionStateText;
         private System.Windows.Forms.Label lblLightStateText;
+        private System.Windows.Forms.Label lblDoorlockState;
+        private System.Windows.Forms.Panel panel5;
+        private System.Windows.Forms.Label lblShowProgressForm;
     }
 }
 

@@ -18,17 +18,19 @@ using Jastech.Framework.Winform;
 using Jastech.Framework.Winform.Forms;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.ExceptionServices;
 using System.Security;
 using System.Security.Permissions;
+using System.Threading;
 using System.Windows.Forms;
 
 namespace ATT
 {
-    public class SystemManager
+    public partial class SystemManager
     {
         #region 필드
         private static SystemManager _instance = null;
@@ -265,12 +267,7 @@ namespace ATT
                 form.Message = "Do you want to Start Auto Mode?";
 
                 if (form.ShowDialog() == DialogResult.Yes)
-                {
-                    _inspRunner.SeqRun();
-                    AddSystemLogMessage("Start Auto mode.");
-                    PlcControlManager.Instance().MachineStatus = MachineStatus.RUN;
-                    //PlcControlManager.Instance().WritePcReady(MachineStatus.RUN);
-                }
+                    SetRunMode();
             }
         }
 
@@ -289,14 +286,23 @@ namespace ATT
                 form.Message = "Do you want to Stop Auto Mode?";
 
                 if (form.ShowDialog() == DialogResult.Yes)
-                {
-                    _inspRunner.SeqStop();
-                    AddSystemLogMessage("Stop Auto Mode.");
-
-                    PlcControlManager.Instance().MachineStatus = MachineStatus.STOP;
-                    //PlcControlManager.Instance().WritePcReady(MachineStatus.STOP);
-                }
+                    SetStopMode();
             }
+        }
+
+        public void SetRunMode()
+        {
+            _inspRunner.SeqRun();
+            AddSystemLogMessage("Start Auto mode.");
+            PlcControlManager.Instance().MachineStatus = MachineStatus.RUN;
+        }
+
+        public void SetStopMode()
+        {
+            _inspRunner.SeqStop();
+            AddSystemLogMessage("Stop Auto Mode.");
+
+            PlcControlManager.Instance().MachineStatus = MachineStatus.STOP;
         }
 
         public void SetVirtualImage(int tabNo, string fileName)
@@ -312,6 +318,44 @@ namespace ATT
         public void ReleaseInspRunner()
         {
             _inspRunner.Release();
+        }
+        #endregion
+    }
+
+    // All Axes Homing
+    public partial class SystemManager
+    {
+        #region 필드
+        private bool _isAxisHoming { get; set; }
+
+        private Axis _currentHomingAxis { get; set; }
+        #endregion
+
+        #region 메소드
+        public bool AxisHoming(AxisName axisName)
+        {
+            int timeOutSec = 40;
+            _currentHomingAxis = MotionManager.Instance().GetAxis(AxisHandlerName.Handler0, axisName);
+            _currentHomingAxis.StartHome();
+            _isAxisHoming = true;
+
+            Stopwatch stopwatch = Stopwatch.StartNew();
+            while (_isAxisHoming == true && _currentHomingAxis.IsHomeFound == false && stopwatch.Elapsed.Seconds < timeOutSec)
+            {
+                if (_currentHomingAxis.IsMoving() == false)
+                    _currentHomingAxis.IsHomeFound = true;
+                else
+                    Thread.Sleep(50);
+            }
+
+            StopAxisHoming();
+            return _currentHomingAxis.IsHomeFound;
+        }
+
+        public void StopAxisHoming()
+        {
+            _isAxisHoming = false;
+            _currentHomingAxis?.StopMove();
         }
         #endregion
     }
