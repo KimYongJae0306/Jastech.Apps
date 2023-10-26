@@ -585,8 +585,16 @@ namespace ATT.UI.Forms
 
         private void lblOriginZ_Click(object sender, EventArgs e)
         {
-            if (LAFManager.Instance().GetLAF(LafCtrl.Name) is LAF laf)
-                laf.StartHomeThread();
+            var unit = TeachingData.Instance().GetUnit(UnitName.ToString());
+
+            if(unit != null)
+            {
+                if (LAFManager.Instance().GetLAF(LafCtrl.Name) is LAF laf)
+                {
+                    double standbyPosition = unit.GetTeachingInfo(TeachingPosType.Stage1_Scan_Start).GetTargetPosition(LafCtrl.AxisName);
+                    laf.StartHomeThread(standbyPosition);
+                }
+            }
         }
 
         private void lblLaserOnZ_Click(object sender, EventArgs e)

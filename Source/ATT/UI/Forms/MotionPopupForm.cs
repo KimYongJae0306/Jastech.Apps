@@ -543,9 +543,22 @@ namespace ATT.UI.Forms
 
         private void lblOriginZ_Click(object sender, EventArgs e)
         {
-            if (LAFManager.Instance().GetLAF(LafCtrl.Name) is LAF laf)
-                laf.StartHomeThread();
-            //LAFManager.Instance().StartHomeThread(LafCtrl.Name);
+            var unit = TeachingData.Instance().GetUnit(UnitName.ToString());
+            if (unit != null)
+            {
+                if (LAFManager.Instance().GetLAF(LafCtrl.Name) is LAF laf)
+                {
+                    double standbyPosition = unit.GetTeachingInfo(TeachingPosType.Stage1_Scan_Start).GetTargetPosition(LafCtrl.AxisName);
+                    bool ret = laf.StartHomeThread(standbyPosition);
+
+                    if (ret == false)
+                    {
+                        MessageConfirmForm form = new MessageConfirmForm();
+                        form.Message = "Origin sequence is in operation.";
+                        form.ShowDialog();
+                    }
+                }
+            }
         }
 
         private void lblLaserOnZ_Click(object sender, EventArgs e)

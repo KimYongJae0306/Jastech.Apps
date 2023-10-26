@@ -154,10 +154,14 @@ namespace ATT_UT_Remodeling
 
         private bool MainForm_OriginAllEvent()
         {
+            var inspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
+            var teachingPos = inspModel.GetUnit(UnitName.Unit0).GetTeachingInfo(TeachingPosType.Stage1_Scan_Start);
             var laf = LAFManager.Instance().GetLAF("Laf");
 
             ProgressForm progressForm = new ProgressForm("Homing All Axes", ProgressForm.RunMode.Batch, true);
             progressForm.Add($"Axis X Homing", SystemManager.Instance().AxisHoming, AxisName.X, SystemManager.Instance().StopAxisHoming);
+
+            laf.SetHomeStandbyPosition(teachingPos.GetTargetPosition(AxisName.Z0));
             progressForm.Add($"Axis Z1 (Akkon LAF) homing", laf.HomeSequenceAction, laf.StopHomeSequence);
             progressForm.ShowDialog();
 

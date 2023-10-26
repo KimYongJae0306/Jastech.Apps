@@ -27,6 +27,8 @@ namespace Jastech.Apps.Winform
         private double _scale = 1.0;
 
         private double _target = 100;
+
+        private double _standbyPosition = 0.0;
         #endregion
 
         #region 속성
@@ -79,9 +81,7 @@ namespace Jastech.Apps.Winform
             while (true)
             {
                 if (cancellationTokenSource.IsCancellationRequested)
-                {
                     break;
-                }
 
                 if (LafCtrl is NuriOneLAFCtrl laf)
                 {
@@ -103,10 +103,7 @@ namespace Jastech.Apps.Winform
                 if (int.TryParse(GetValue(dataString, "cog:"), out int cog))
                     status.CenterofGravity = cog;
                 if (double.TryParse(GetValue(dataString, "mpos:"), out double mposPulse))
-                {
-                    //if (mposPulse > -50000) // 임시 -> 누리원한테 물어봐야함  정지 상태 일 때 Mpos가 4300 -> -53123 -> 4300 -> -53123
                     status.MPosPulse = mposPulse;
-                }
 
                 if (int.TryParse(GetValue(dataString, "ls1:"), out int ls1))
                     status.IsNegativeLimit = Convert.ToBoolean(ls1);
@@ -140,12 +137,15 @@ namespace Jastech.Apps.Winform
             LafCtrl?.SetTrackingOnOFF(isOn);
         }
 
-        public bool StartHomeThread()
+        public bool StartHomeThread(double standbyPosition)
         {
             if (_homeThread != null)
                 return false;
 
             _isHomeThreadStop = false;
+
+            _standbyPosition = standbyPosition;
+
             _homeThread = new Thread(HomeSequenceThread);
             _homeThread.Start();
 
@@ -237,10 +237,8 @@ namespace Jastech.Apps.Winform
                     }
 
                     if (status.IsNegativeLimit == false)
-                    {
                         _homeSequenceStep = HomeSequenceStep.MoveLimit;
-                        break;
-                    }
+
                     break;
                 case HomeSequenceStep.MoveLimit:
                     PrepareHomeSequence();
@@ -276,12 +274,12 @@ namespace Jastech.Apps.Winform
                     break;
 
                 case HomeSequenceStep.CheckZeroConvergence:
-                    //if (Math.Abs(status.MPosPulse - /*HOMING_DISTANCE_AWAY_FROM_LIMIT*/0.0002) <= 0.0002/*float.Epsilon*/)
+                    
                     double mPos = status.MPosPulse / LafCtrl.ResolutionAxisZ;
                     double calcMPos = mPos - LafCtrl.HomePosition_mm;
                     double vel = HOMING_SEARCH_VELOCITY * _scale;
                     Console.WriteLine("mPos : " + mPos + "   calc :  " + calcMPos + " Ve; : " + vel);
-                    //if (mPos >= 0 && mPos < LafCtrl.HomePosition_mm && vel < 0.001)
+
                     if (mPos >= 0 && mPos < LafCtrl.HomePosition_mm && vel < 0.01)
                     {
                         Logger.Write(LogType.Device, "Complete zero convergence.");
@@ -291,24 +289,17 @@ namespace Jastech.Apps.Winform
                     {
                         Logger.Write(LogType.Device, "Retry after scailing.");
                         Console.WriteLine("Retry after scailing.");
-                        //if (calcMPos > 3)
+
                         if (calcMPos > 2)
-                        {
-                            //_scale *= 0.9;
                             _scale *= 0.7;
-                        }
                         else
-                        {
-                            //_scale *= 0.5;
                             _scale *= 0.3;
-                        }
+
                         _homeSequenceStep = HomeSequenceStep.MoveLimit;
                     }
                     break;
 
                 case HomeSequenceStep.ZeroSet:
-                    //lafCtrl.SetMotionRelativeMove(Direction.CCW, HOMING_DISTANCE_AWAY_FROM_LIMIT);
-                    //Thread.Sleep(1000);
 
                     LafCtrl.SetMotionStop();
                     Thread.Sleep(100);
@@ -322,35 +313,35 @@ namespace Jastech.Apps.Winform
                     Logger.Write(LogType.Device, "Complete zeroset.");
 
                     // 대기 위치로 이동 - 포지션 필요함
-                    var unit = TeachingData.Instance().GetUnit(UnitName.Unit0.ToString());
-                    double standbyPosition = 0.0;
-                    if (unit != null)
-                    {
-                        standbyPosition = unit.GetTeachingInfo(TeachingPosType.Stage1_Scan_Start).GetTargetPosition(LafCtrl.AxisName);
-                        string tt = string.Format("LAF Axis Name : {0}", LafCtrl.AxisName.ToString());
-                    }
-                    else
-                    {
-                        Logger.Write(LogType.Device, "Failed Move To Target Position [Unit is null].");
-                    }
+                    //var unit = TeachingData.Instance().GetUnit(UnitName.Unit0.ToString());
+                    //double standbyPosition = 0.0;
+                    //if (unit != null)
+                    //{
+                    //    standbyPosition = unit.GetTeachingInfo(TeachingPosType.Stage1_Scan_Start).GetTargetPosition(LafCtrl.AxisName);
+                    //    string tt = string.Format("LAF Axis Name : {0}", LafCtrl.AxisName.ToString());
+                    //}
+                    //else
+                    //{
+                    //    Logger.Write(LogType.Device, "Failed Move To Target Position [Unit is null].");
+                    //}
 
-                    LafCtrl.SetMotionAbsoluteMove(standbyPosition);
-                    Logger.Write(LogType.Device, "Move to home position.");
+                    LafCtrl.SetMotionAbsoluteMove(_standbyPosition);
+                    Logger.Write(LogType.Device, $"Move to home position.[Name : {LafCtrl.Name}]");
                     Thread.Sleep(2000);
 
                     Console.WriteLine("Completed Homming : " + LafCtrl.Status.MPosPulse);
 
-                    Logger.Write(LogType.Device, "Complete LAF home.");
+                    Logger.Write(LogType.Device, $"Complete LAF home.[Name : {LafCtrl.Name}]");
                     _homeSequenceStep = HomeSequenceStep.End;
                     break;
 
                 case HomeSequenceStep.Error:
-                    Logger.Write(LogType.Device, "Failed LAF home.");
+                    Logger.Write(LogType.Device, $"Failed LAF home.[Name : {LafCtrl.Name}]");
                     _homeSequenceStep = HomeSequenceStep.End;
                     break;
 
                 case HomeSequenceStep.End:
-                    Logger.Write(LogType.Device, "End of LAF home sequence.");
+                    Logger.Write(LogType.Device, $"End of LAF home sequence.[Name : {LafCtrl.Name}]");
                     _scale = 1.0;
 
                     _isHomeThreadStop = true;
@@ -455,6 +446,11 @@ namespace Jastech.Apps.Winform
                 LafCtrl?.SetMotionMaxSpeed(_scale);
             //lafCtrl.SetMotionZeroSet();
             Thread.Sleep(50);
+        }
+
+        public void SetHomeStandbyPosition(double standbyPos)
+        {
+            _standbyPosition = standbyPos;
         }
         #endregion
     }

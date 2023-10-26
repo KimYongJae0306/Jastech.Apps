@@ -603,15 +603,21 @@ namespace ATT_UT_IPAD.UI.Forms
 
         private void lblOriginZ0_Click(object sender, EventArgs e)
         {
-            if (LAFManager.Instance().GetLAF(AkkonLafCtrl.Name) is LAF akkonLAF)
-            {
-                bool ret = akkonLAF.StartHomeThread();
+            var unit = TeachingData.Instance().GetUnit(UnitName.ToString());
 
-                if(ret == false)
+            if (unit != null)
+            {
+                if (LAFManager.Instance().GetLAF(AkkonLafCtrl.Name) is LAF akkonLAF)
                 {
-                    MessageConfirmForm form = new MessageConfirmForm();
-                    form.Message = "Origin sequence is in operation.";
-                    form.ShowDialog();
+                    double standbyPosition = unit.GetTeachingInfo(TeachingPosType.Stage1_Scan_Start).GetTargetPosition(AkkonLafCtrl.AxisName);
+                    bool ret = akkonLAF.StartHomeThread(standbyPosition);
+
+                    if (ret == false)
+                    {
+                        MessageConfirmForm form = new MessageConfirmForm();
+                        form.Message = "Origin sequence is in operation.";
+                        form.ShowDialog();
+                    }
                 }
             }
         }
@@ -714,8 +720,23 @@ namespace ATT_UT_IPAD.UI.Forms
 
         private void lblOriginZ1_Click(object sender, EventArgs e)
         {
-            if (LAFManager.Instance().GetLAF(AlignLafCtrl.Name) is LAF alignLAF)
-                alignLAF.StartHomeThread();
+            var unit = TeachingData.Instance().GetUnit(UnitName.ToString());
+
+            if (unit != null)
+            {
+                if (LAFManager.Instance().GetLAF(AlignLafCtrl.Name) is LAF alignLAF)
+                {
+                    double standbyPosition = unit.GetTeachingInfo(TeachingPosType.Stage1_Scan_Start).GetTargetPosition(AlignLafCtrl.AxisName);
+                    bool ret = alignLAF.StartHomeThread(standbyPosition);
+
+                    if (ret == false)
+                    {
+                        MessageConfirmForm form = new MessageConfirmForm();
+                        form.Message = "Origin sequence is in operation.";
+                        form.ShowDialog();
+                    }
+                }
+            }
         }
 
         private void lblLaserOnZ1_Click(object sender, EventArgs e)
