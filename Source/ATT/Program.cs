@@ -141,13 +141,16 @@ namespace ATT
                 //light2.ChannelNameMap["Ch.RedRing"] = 0;
                 //config.Add(light2);
 
-                var laf = new NuriOneLAFCtrl("Laf");
-                laf.SerialPortComm = new SerialPortComm("COM1", 9600);
-                laf.AxisName = AxisName.Z0.ToString();
-                laf.HomePosition_mm = 0.02;
-                laf.ResolutionAxisZ = 10000.0;
-                laf.MaxSppedAxisZ = 20;
-                laf.AccDec = 15;
+                //var laf = new NuriOneLAFCtrl("Laf");
+                //laf.SerialPortComm = new SerialPortComm("COM1", 9600);
+                //laf.AxisName = AxisName.Z0.ToString();
+                //laf.HomePosition_mm = 0.02;
+                //laf.ResolutionAxisZ = 10000.0;
+                //laf.MaxSppedAxisZ = 20;
+                //laf.AccDec = 30;
+                //config.Add(laf);
+
+                var laf = new VirtualLAFCtrl("Laf");
                 config.Add(laf);
 
                 // PLC ATT Tester

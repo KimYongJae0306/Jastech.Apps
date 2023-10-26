@@ -348,7 +348,7 @@ namespace ATT.Core
 
                     if(unit.LightParam != null)
                     {
-                        LightCtrlHandler.TurnOn(unit.LightParam);
+                        LightCtrlHandler?.TurnOn(unit.LightParam);
                         WriteLog("Light Turn On.", true);
                     }
 
