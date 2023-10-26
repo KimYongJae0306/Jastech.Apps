@@ -562,7 +562,7 @@
             this.lblJog.Name = "lblJog";
             this.lblJog.Size = new System.Drawing.Size(89, 399);
             this.lblJog.TabIndex = 0;
-            this.lblJog.Text = "Jog";
+            this.lblJog.Text = "Motion\r\nControl";
             this.lblJog.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // tlpStatus
