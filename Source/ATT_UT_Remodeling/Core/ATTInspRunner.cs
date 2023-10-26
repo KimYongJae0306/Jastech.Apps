@@ -601,17 +601,22 @@ namespace ATT_UT_Remodeling.Core
         {
             var inspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
             double resolution = LineCamera.Camera.PixelResolution_um / LineCamera.Camera.LensScale;
-
+            bool inspFinalResult = true;
             for (int tabNo = 0; tabNo < inspModel.TabCount; tabNo++)
             {
                 var tabInspResult = AppsInspResult.Instance().Get(tabNo);
                 TabJudgement judgement = GetJudgemnet(tabInspResult, tabInspResult);
                 PlcControlManager.Instance().WriteTabResult(tabNo, judgement, tabInspResult.AlignResult, tabInspResult.AkkonResult, resolution);
 
+                if (judgement.Equals(TabJudgement.OK) == false)
+                    inspFinalResult = false;
                 Thread.Sleep(20);
             }
 
-            PlcControlManager.Instance().WritePcStatus(PlcCommand.StartInspection);
+            if(inspFinalResult)
+                PlcControlManager.Instance().WritePcStatus(PlcCommand.StartInspection);
+            else
+                PlcControlManager.Instance().WritePcStatus(PlcCommand.StartInspection, true);
         }
 
         private TabJudgement GetJudgemnet(TabInspResult akkonInspResult, TabInspResult alignInspResult)
