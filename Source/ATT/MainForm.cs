@@ -55,6 +55,10 @@ namespace ATT
 
         private CancellationTokenSource CancelVirtualInspTask { get; set; }
 
+        private Task CheckSafetyDoorlockTask { get; set; }
+
+        private CancellationTokenSource CancelSafetyDoorlockTask { get; set; }
+
         private readonly Queue<string> VirtualImagePathQueue = new Queue<string>();
 
         private readonly Queue<ICogImage> LastScanImageQueue = new Queue<ICogImage>();
@@ -102,14 +106,9 @@ namespace ATT
 
             if (ConfigSet.Instance().Operation.VirtualMode == false)
             {
-                string suggestMessage = "Perform homing All axes?\r\n※ Highly recommended for stability.";
-                var messageBox = new MessageYesNoForm
-                {
-                    Message = suggestMessage
-                };
-
-                if (messageBox.ShowDialog() == DialogResult.Yes)
-                    HomingAllAxes();
+                CancelSafetyDoorlockTask = new CancellationTokenSource();
+                CheckSafetyDoorlockTask = new Task(CheckDoorOpenedLoop, CancelSafetyDoorlockTask.Token);
+                CheckSafetyDoorlockTask.Start();
             }
         }
 
@@ -524,6 +523,37 @@ namespace ATT
             }
         }
 
+        bool testForceDoorLockToggle = false;
+        public void CheckDoorOpenedLoop()
+        {
+            while (true)
+            {
+                if (CancelSafetyDoorlockTask.IsCancellationRequested)
+                    break;
+
+                if (testForceDoorLockToggle == true && PlcControlManager.Instance().IsDoorOpened == false)
+                {
+                    PlcControlManager.Instance().IsDoorOpened = true;
+
+                    MotionManager.Instance().GetAxisHandler(AxisHandlerName.Handler0).StopMove();
+                    LAFManager.Instance().GetLAF("Laf").LafCtrl.SetMotionStop();
+
+                    SystemManager.Instance().SetStopMode();
+                    lblDoorlockState.BackColor = Color.Red;
+                    lblDoorlockState.ForeColor = Color.Yellow;
+                }
+                else if (testForceDoorLockToggle == false && PlcControlManager.Instance().IsDoorOpened == true)
+                {
+                    PlcControlManager.Instance().IsDoorOpened = false;
+                    SystemManager.Instance().SetRunMode();
+                    lblDoorlockState.BackColor = BackColor;
+                    lblDoorlockState.ForeColor = BackColor;
+                }
+
+                Thread.Sleep(500);
+            }
+        }
+
         private string GetVirtualImagePath()
         {
             lock (VirtualImagePathQueue)
@@ -549,52 +579,28 @@ namespace ATT
         {
             MainPageControl?.Enable(isEnable);
         }
-        #endregion
-    }
 
-    public partial class MainForm : Form
-    {
-        #region 필드
-        private bool _isAxisHoming;
-        private Axis _currentHomingAxis;
-        #endregion
-
-        #region 메소드
-        private void HomingAllAxes()
+        private void lblDoorlockState_Click(object sender, EventArgs e)
         {
-            ProgressForm progressForm = new ProgressForm();
-            progressForm.Add($"Axis X Homing", AxisHoming, AxisName.X, StopAxisHoming);
-            progressForm.Add($"Axis Y Homing", AxisHoming, AxisName.Y, StopAxisHoming);
-            var laf = LAFManager.Instance().GetLAF("Laf");
-            progressForm.Add($"Axis Z (LAF) homing", laf.HomeSequenceAction, laf.StopHomeSequence);
-            //progressForm.StartAllTasks();
-            progressForm.ShowDialog();
+            testForceDoorLockToggle = !testForceDoorLockToggle;
         }
 
-        private bool AxisHoming(AxisName axisName)
+        private void lblShowProgressForm_Click(object sender, EventArgs e)
         {
-            int timeOutSec = 40;
-            _currentHomingAxis = MotionManager.Instance().GetAxis(AxisHandlerName.Handler0, axisName);
-            _currentHomingAxis.StartHome();
-            _isAxisHoming = true;
-
-            Stopwatch stopwatch = Stopwatch.StartNew();
-            while (_isAxisHoming == true && _currentHomingAxis.IsHomeFound == false && stopwatch.Elapsed.Seconds < timeOutSec)
+            ProgressForm progressForm = new ProgressForm("test", ProgressForm.RunMode.Batch);
+            progressForm.Add("Test", new Action(() =>
             {
-                if (_currentHomingAxis.IsMoving() == false)
-                    _currentHomingAxis.IsHomeFound = true;
-                else
-                    Thread.Sleep(50);
-            }
-
-            StopAxisHoming();
-            return _currentHomingAxis.IsHomeFound;
-        }
-
-        private void StopAxisHoming()
-        {
-            _isAxisHoming = false;
-            _currentHomingAxis?.StopMove();
+                Thread.Sleep(1000);
+            }));
+            progressForm.Add("Test", new Action(() =>
+            {
+                Thread.Sleep(2000);
+            }));
+            progressForm.Add("Test", new Action(() =>
+            {
+                Thread.Sleep(3000);
+            }));
+            progressForm.Show();
         }
         #endregion
     }
