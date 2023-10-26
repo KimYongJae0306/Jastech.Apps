@@ -64,8 +64,8 @@ namespace Jastech.Framework.Winform.Forms
             mtgEnableTest1.Checked = appsConfig.EnableTest1;
             mtgEnableTest2.Checked = appsConfig.EnableTest2;
 
-            mtgEnableAkkonForceJudge.Checked = appsConfig.EnableAkkonForceOkay;
-            mtgEnableAlignForceJudge.Checked = appsConfig.EnableAlignForceOkay;
+            mtgEnableAkkonByPass.Checked = appsConfig.EnableAkkonByPass;
+            mtgEnableAlignByPass.Checked = appsConfig.EnableAlignByPass;
 
             mtgEnableManualJudge.Checked = appsConfig.EnableManualJudge;
 
@@ -110,6 +110,9 @@ namespace Jastech.Framework.Winform.Forms
             appsConfig.EnableAkkon = mtgEnableAkkon.Checked;
             appsConfig.EnableTest1 = mtgEnableTest1.Checked;
             appsConfig.EnableTest2 = mtgEnableTest2.Checked;
+
+            appsConfig.EnableAkkonByPass = mtgEnableAkkonByPass.Checked;
+            appsConfig.EnableAlignByPass = mtgEnableAlignByPass.Checked;
 
             appsConfig.EnableManualJudge = mtgEnableManualJudge.Checked;
 

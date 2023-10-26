@@ -706,7 +706,7 @@ namespace Jastech.Apps.Winform
             {
                 int alignJudgement = alignResult.Judgement == Judgement.OK ? 1 : 2;
 
-                if (AppsConfig.Instance().EnableAlignForceOkay)
+                if (AppsConfig.Instance().EnableAlignByPass)
                     alignJudgement = 1;
 
                 double leftX_um = 0.0;
@@ -800,7 +800,7 @@ namespace Jastech.Apps.Winform
             {
                 int akkonJudgement = akkonResult.Judgement == Judgement.OK ? 1 : 2;
 
-                if (AppsConfig.Instance().EnableAkkonForceOkay)
+                if (AppsConfig.Instance().EnableAkkonByPass)
                     akkonJudgement = 1;
 
                 int leftLengthAvg = ConvertDoubleWordData(akkonResult.Length_Left_Avg_um);
