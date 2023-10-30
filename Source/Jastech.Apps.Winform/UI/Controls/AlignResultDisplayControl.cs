@@ -183,18 +183,22 @@ namespace ATT_UT_IPAD.UI.Controls
             var tabInspResult = GetTabInspResultEvent?.Invoke(tabNo);
             if (tabInspResult == null)
                 return;
-            
-            TabBtnControlList[tabNo].SetAlignImage(tabInspResult.CogImage);
 
+            ClearResult(tabNo);
+
+            TabBtnControlList[tabNo].SetAlignImage(tabInspResult.CogImage);
             TabBtnControlList[tabNo].SetLeftAlignShapeResult(GetLeftAlignShape(tabInspResult), tabInspResult.GetCenterLineByAlignLeftResult());
             TabBtnControlList[tabNo].SetRightAlignShapeResult(GetRightAlignShape(tabInspResult), tabInspResult.GetCenterLineByAlignRightResult());
 
             if(tabInspResult.AlignResult.LeftX != null)
                 TabBtnControlList[tabNo].Lx = GetResultAlignResultValue(tabInspResult.AlignResult.LeftX, tabInspResult.Resolution_um);
+
             if(tabInspResult.AlignResult.LeftY != null)
                 TabBtnControlList[tabNo].Ly = GetResultAlignResultValue(tabInspResult.AlignResult.LeftY, tabInspResult.Resolution_um);
+
             if (tabInspResult.AlignResult.RightX != null)
                 TabBtnControlList[tabNo].Rx = GetResultAlignResultValue(tabInspResult.AlignResult.RightX, tabInspResult.Resolution_um);
+
             if (tabInspResult.AlignResult.RightY != null)
                 TabBtnControlList[tabNo].Ry = GetResultAlignResultValue(tabInspResult.AlignResult.RightY, tabInspResult.Resolution_um);
 
@@ -208,11 +212,19 @@ namespace ATT_UT_IPAD.UI.Controls
             }
         }
 
+        private void ClearResult(int tabNo)
+        {
+            TabBtnControlList[tabNo].Lx = "-";
+            TabBtnControlList[tabNo].Ly = "-";
+            TabBtnControlList[tabNo].Rx = "-";
+            TabBtnControlList[tabNo].Ry = "-";
+        }
+
         private void UpdateImage(int tabNo)
         {
             var image = TabBtnControlList[tabNo].GetAlignImage();
 
-            if(IsResultImageView == false)
+            if (IsResultImageView == false)
             {
                 InspAlignDisplay.UpdateLeftDisplay(image);
                 InspAlignDisplay.UpdateRightDisplay(image);
@@ -328,31 +340,45 @@ namespace ATT_UT_IPAD.UI.Controls
             List<CogCompositeShape> leftResultList = new List<CogCompositeShape>();
             LeftPointList[result.TabNo] = new List<PointF>();
 
-            var leftFpcMark = result.MarkResult.FpcMark.FoundedMark.Left;
-            if(leftFpcMark != null)
+            var leftFpcMark = result.MarkResult.FpcMark;
+            if (leftFpcMark != null)
             {
-                if (leftFpcMark.Found)
+                var foundMark = leftFpcMark.FoundedMark;
+                if (foundMark != null)
                 {
-                    var fpc = leftFpcMark.MaxMatchPos.ResultGraphics;
-                    if (leftFpcMark.Judgement == Judgement.OK)
-                        fpc.Color = CogColorConstants.Green;
-                    else
-                        fpc.Color = CogColorConstants.Red;
-                    leftResultList.Add(fpc);
+                    var leftFoundMark = foundMark.Left;
+                    if (leftFoundMark.Found)
+                    {
+                        var fpc = leftFoundMark.MaxMatchPos.ResultGraphics;
+
+                        if (leftFoundMark.Judgement == Judgement.OK)
+                            fpc.Color = CogColorConstants.Green;
+                        else
+                            fpc.Color = CogColorConstants.Red;
+
+                        leftResultList.Add(fpc);
+                    }
                 }
             }
 
-            var leftPanelMark = result.MarkResult.PanelMark.FoundedMark.Left;
+            var leftPanelMark = result.MarkResult.PanelMark;
             if (leftPanelMark != null)
             {
-                if (leftPanelMark.Found)
+                var foundMark = leftPanelMark.FoundedMark;
+                if (foundMark != null)
                 {
-                    var panel = leftPanelMark.MaxMatchPos.ResultGraphics;
-                    if (leftPanelMark.Judgement == Judgement.OK)
-                        panel.Color = CogColorConstants.Green;
-                    else
-                        panel.Color = CogColorConstants.Red;
-                    leftResultList.Add(panel);
+                    var leftFoundMark = foundMark.Left;
+                    if (leftFoundMark.Found)
+                    {
+                        var panel = leftFoundMark.MaxMatchPos.ResultGraphics;
+
+                        if (leftFoundMark.Judgement == Judgement.OK)
+                            panel.Color = CogColorConstants.Green;
+                        else
+                            panel.Color = CogColorConstants.Red;
+
+                        leftResultList.Add(panel);
+                    }
                 }
             }
 
@@ -443,31 +469,45 @@ namespace ATT_UT_IPAD.UI.Controls
             List<CogCompositeShape> rightResultList = new List<CogCompositeShape>();
             RightPointList[result.TabNo] = new List<PointF>();
 
-            var rightFpcMark = result.MarkResult.FpcMark.FoundedMark.Right;
+            var rightFpcMark = result.MarkResult.FpcMark;
             if (rightFpcMark != null)
             {
-                if (rightFpcMark.Found)
+                var foundMark = rightFpcMark.FoundedMark;
+                if (foundMark != null)
                 {
-                    var fpc = rightFpcMark.MaxMatchPos.ResultGraphics;
-                    if (rightFpcMark.Judgement == Judgement.OK)
-                        fpc.Color = CogColorConstants.Green;
-                    else
-                        fpc.Color = CogColorConstants.Red;
-                    rightResultList.Add(fpc);
+                    var rightFoundMark = foundMark.Right;
+                    if (rightFoundMark.Found)
+                    {
+                        var fpc = rightFoundMark.MaxMatchPos.ResultGraphics;
+
+                        if (rightFoundMark.Judgement == Judgement.OK)
+                            fpc.Color = CogColorConstants.Green;
+                        else
+                            fpc.Color = CogColorConstants.Red;
+
+                        rightResultList.Add(fpc);
+                    }
                 }
             }
 
-            var rightPanelMark = result.MarkResult.PanelMark.FoundedMark.Right;
+            var rightPanelMark = result.MarkResult.PanelMark;
             if (rightPanelMark != null)
             {
-                if (rightPanelMark.Found)
+                var foundMark = rightPanelMark.FoundedMark;
+                if (foundMark != null)
                 {
-                    var panel = rightPanelMark.MaxMatchPos.ResultGraphics;
-                    if (rightPanelMark.Judgement == Judgement.OK)
-                        panel.Color = CogColorConstants.Green;
-                    else
-                        panel.Color = CogColorConstants.Red;
-                    rightResultList.Add(panel);
+                    var rightFoundMark = foundMark.Right;
+                    if (rightFoundMark.Found)
+                    {
+                        var panel = rightFoundMark.MaxMatchPos.ResultGraphics;
+
+                        if (rightFoundMark.Judgement == Judgement.OK)
+                            panel.Color = CogColorConstants.Green;
+                        else
+                            panel.Color = CogColorConstants.Red;
+
+                        rightResultList.Add(panel);
+                    }
                 }
             }
 
@@ -492,6 +532,7 @@ namespace ATT_UT_IPAD.UI.Controls
                         }
                     }
                 }
+
                 if (rightAlignX.Panel.CogAlignResult.Count() > 0)
                 {
                     foreach (var panel in rightAlignX.Panel.CogAlignResult)

@@ -180,12 +180,14 @@ namespace Jastech.Apps.Winform.UI.Controls
                         grey.Dispose();
                         grey = null;
                     }
+
                     if (CogCenterImage is CogImage24PlanarColor color)
                     {
                         color.Dispose();
                         color = null;
                     }
                 }
+
                 CogCenterImage = cogImage;//?.CopyBase(CogImageCopyModeConstants.CopyPixels);
             }
         }

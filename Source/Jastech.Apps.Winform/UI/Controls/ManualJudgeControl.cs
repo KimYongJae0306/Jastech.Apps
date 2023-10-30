@@ -106,17 +106,17 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         private void UpdateUI()
         {
-            if (_alignResult.ToUpper().ToString().Contains("NG"))
-                lblAlign.BackColor = Color.Red;
-            else
+            if (_alignResult.ToUpper().ToString().Contains("OK"))
                 lblAlign.BackColor = Color.MediumSeaGreen;
+            else
+                lblAlign.BackColor = Color.Red;
 
             lblAlign.Text = _alignResult;
 
-            if (_akkonResult.ToUpper().ToString().Contains("NG"))
-                lblAkkon.BackColor = Color.Red;
-            else
+            if (_akkonResult.ToUpper().ToString().Contains("OK"))
                 lblAkkon.BackColor = Color.MediumSeaGreen;
+            else
+                lblAkkon.BackColor = Color.Red;
 
             lblAkkon.Text = _akkonResult;
         }
