@@ -593,6 +593,7 @@ namespace ATT_UT_IPAD.UI.Controls
         {
             if (pointList == null)
                 return new PointF();
+
             if (pointList.Count() == 0)
                 return new PointF();
 
@@ -625,6 +626,7 @@ namespace ATT_UT_IPAD.UI.Controls
         {
             if (pointList == null)
                 return new PointF();
+
             if (pointList.Count() == 0)
                 return new PointF();
 
@@ -652,7 +654,6 @@ namespace ATT_UT_IPAD.UI.Controls
             else
                 return new PointF();
         }
-        #endregion
 
         private void btnOrgImage_Click(object sender, EventArgs e)
         {
@@ -685,6 +686,6 @@ namespace ATT_UT_IPAD.UI.Controls
                 btnResultImage.BackColor = _noneSelectedColor;
             }
         }
-
+        #endregion
     }
 }
