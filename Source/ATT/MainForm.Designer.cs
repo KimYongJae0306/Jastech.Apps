@@ -45,41 +45,37 @@
             this.lblLightStateText = new System.Windows.Forms.Label();
             this.tlpFunctionButtons = new System.Windows.Forms.TableLayoutPanel();
             this.lblCurrentTime = new System.Windows.Forms.Label();
-            this.panel2 = new System.Windows.Forms.Panel();
             this.lblDoorlockState = new System.Windows.Forms.Label();
             this.panel4 = new System.Windows.Forms.Panel();
             this.tableLayoutPanel4 = new System.Windows.Forms.TableLayoutPanel();
-            this.lblLogPageImage = new System.Windows.Forms.Label();
             this.lblLogPage = new System.Windows.Forms.Label();
             this.panel3 = new System.Windows.Forms.Panel();
             this.tableLayoutPanel9 = new System.Windows.Forms.TableLayoutPanel();
-            this.lblDataPageImage = new System.Windows.Forms.Label();
             this.lblDataPage = new System.Windows.Forms.Label();
             this.panel8 = new System.Windows.Forms.Panel();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
-            this.lblInspectionPageImage = new System.Windows.Forms.Label();
             this.lblMainPage = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
             this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
-            this.lblTeachingPageImage = new System.Windows.Forms.Label();
             this.lblTeachingPage = new System.Windows.Forms.Label();
-            this.panel5 = new System.Windows.Forms.Panel();
-            this.lblShowProgressForm = new System.Windows.Forms.Label();
             this.pnlMachineStatus = new System.Windows.Forms.Panel();
             this.tlpMachineStatus = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel5 = new System.Windows.Forms.TableLayoutPanel();
             this.lblCurrentUser = new System.Windows.Forms.Label();
-            this.pictureBox2 = new System.Windows.Forms.PictureBox();
             this.lblCurrentModel = new System.Windows.Forms.Label();
-            this.picLogo = new System.Windows.Forms.PictureBox();
             this.lblMachineName = new System.Windows.Forms.Label();
             this.tmrMainForm = new System.Windows.Forms.Timer(this.components);
             this.tmrUpdateStates = new System.Windows.Forms.Timer(this.components);
+            this.lblLogPageImage = new System.Windows.Forms.Label();
+            this.lblDataPageImage = new System.Windows.Forms.Label();
+            this.lblInspectionPageImage = new System.Windows.Forms.Label();
+            this.lblTeachingPageImage = new System.Windows.Forms.Label();
+            this.pictureBox2 = new System.Windows.Forms.PictureBox();
+            this.picLogo = new System.Windows.Forms.PictureBox();
             this.tlpMainForm.SuspendLayout();
             this.pnlPage.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
             this.tlpFunctionButtons.SuspendLayout();
-            this.panel2.SuspendLayout();
             this.panel4.SuspendLayout();
             this.tableLayoutPanel4.SuspendLayout();
             this.panel3.SuspendLayout();
@@ -88,7 +84,6 @@
             this.tableLayoutPanel1.SuspendLayout();
             this.panel1.SuspendLayout();
             this.tableLayoutPanel3.SuspendLayout();
-            this.panel5.SuspendLayout();
             this.pnlMachineStatus.SuspendLayout();
             this.tlpMachineStatus.SuspendLayout();
             this.tableLayoutPanel5.SuspendLayout();
@@ -280,12 +275,11 @@
             this.tlpFunctionButtons.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 200F));
             this.tlpFunctionButtons.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tlpFunctionButtons.Controls.Add(this.lblCurrentTime, 8, 0);
-            this.tlpFunctionButtons.Controls.Add(this.panel2, 4, 0);
             this.tlpFunctionButtons.Controls.Add(this.panel4, 3, 0);
             this.tlpFunctionButtons.Controls.Add(this.panel3, 2, 0);
             this.tlpFunctionButtons.Controls.Add(this.panel8, 0, 0);
             this.tlpFunctionButtons.Controls.Add(this.panel1, 1, 0);
-            this.tlpFunctionButtons.Controls.Add(this.panel5, 5, 0);
+            this.tlpFunctionButtons.Controls.Add(this.lblDoorlockState, 4, 0);
             this.tlpFunctionButtons.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tlpFunctionButtons.Location = new System.Drawing.Point(0, 50);
             this.tlpFunctionButtons.Margin = new System.Windows.Forms.Padding(0);
@@ -309,23 +303,14 @@
             this.lblCurrentTime.Text = "DateTime";
             this.lblCurrentTime.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // panel2
-            // 
-            this.panel2.Controls.Add(this.lblDoorlockState);
-            this.panel2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel2.Location = new System.Drawing.Point(803, 3);
-            this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(194, 44);
-            this.panel2.TabIndex = 19;
-            // 
             // lblDoorlockState
             // 
             this.lblDoorlockState.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lblDoorlockState.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblDoorlockState.ForeColor = System.Drawing.Color.White;
-            this.lblDoorlockState.Location = new System.Drawing.Point(0, 0);
+            this.lblDoorlockState.Location = new System.Drawing.Point(803, 0);
             this.lblDoorlockState.Name = "lblDoorlockState";
-            this.lblDoorlockState.Size = new System.Drawing.Size(194, 44);
+            this.lblDoorlockState.Size = new System.Drawing.Size(194, 50);
             this.lblDoorlockState.TabIndex = 0;
             this.lblDoorlockState.Text = "Door Opened (Test)";
             this.lblDoorlockState.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -354,16 +339,6 @@
             this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel4.Size = new System.Drawing.Size(194, 44);
             this.tableLayoutPanel4.TabIndex = 0;
-            // 
-            // lblLogPageImage
-            // 
-            this.lblLogPageImage.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblLogPageImage.Image = global::ATT.Properties.Resources.Log;
-            this.lblLogPageImage.Location = new System.Drawing.Point(3, 0);
-            this.lblLogPageImage.Name = "lblLogPageImage";
-            this.lblLogPageImage.Size = new System.Drawing.Size(44, 44);
-            this.lblLogPageImage.TabIndex = 1;
-            this.lblLogPageImage.Click += new System.EventHandler(this.lblLogPage_Click);
             // 
             // lblLogPage
             // 
@@ -403,16 +378,6 @@
             this.tableLayoutPanel9.Size = new System.Drawing.Size(194, 44);
             this.tableLayoutPanel9.TabIndex = 0;
             // 
-            // lblDataPageImage
-            // 
-            this.lblDataPageImage.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblDataPageImage.Image = global::ATT.Properties.Resources.Settings;
-            this.lblDataPageImage.Location = new System.Drawing.Point(3, 0);
-            this.lblDataPageImage.Name = "lblDataPageImage";
-            this.lblDataPageImage.Size = new System.Drawing.Size(44, 44);
-            this.lblDataPageImage.TabIndex = 1;
-            this.lblDataPageImage.Click += new System.EventHandler(this.lblDataPage_Click);
-            // 
             // lblDataPage
             // 
             this.lblDataPage.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -450,16 +415,6 @@
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel1.Size = new System.Drawing.Size(194, 44);
             this.tableLayoutPanel1.TabIndex = 0;
-            // 
-            // lblInspectionPageImage
-            // 
-            this.lblInspectionPageImage.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblInspectionPageImage.Image = ((System.Drawing.Image)(resources.GetObject("lblInspectionPageImage.Image")));
-            this.lblInspectionPageImage.Location = new System.Drawing.Point(3, 0);
-            this.lblInspectionPageImage.Name = "lblInspectionPageImage";
-            this.lblInspectionPageImage.Size = new System.Drawing.Size(44, 44);
-            this.lblInspectionPageImage.TabIndex = 1;
-            this.lblInspectionPageImage.Click += new System.EventHandler(this.lblMainPage_Click);
             // 
             // lblMainPage
             // 
@@ -499,16 +454,6 @@
             this.tableLayoutPanel3.Size = new System.Drawing.Size(194, 44);
             this.tableLayoutPanel3.TabIndex = 0;
             // 
-            // lblTeachingPageImage
-            // 
-            this.lblTeachingPageImage.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblTeachingPageImage.Image = global::ATT.Properties.Resources.Teaching;
-            this.lblTeachingPageImage.Location = new System.Drawing.Point(3, 0);
-            this.lblTeachingPageImage.Name = "lblTeachingPageImage";
-            this.lblTeachingPageImage.Size = new System.Drawing.Size(44, 44);
-            this.lblTeachingPageImage.TabIndex = 1;
-            this.lblTeachingPageImage.Click += new System.EventHandler(this.lblTeachingPage_Click);
-            // 
             // lblTeachingPage
             // 
             this.lblTeachingPage.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -521,27 +466,6 @@
             this.lblTeachingPage.Text = "TEACH";
             this.lblTeachingPage.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.lblTeachingPage.Click += new System.EventHandler(this.lblTeachingPage_Click);
-            // 
-            // panel5
-            // 
-            this.panel5.Controls.Add(this.lblShowProgressForm);
-            this.panel5.Location = new System.Drawing.Point(1003, 3);
-            this.panel5.Name = "panel5";
-            this.panel5.Size = new System.Drawing.Size(194, 44);
-            this.panel5.TabIndex = 21;
-            // 
-            // lblShowProgressForm
-            // 
-            this.lblShowProgressForm.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblShowProgressForm.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblShowProgressForm.ForeColor = System.Drawing.Color.White;
-            this.lblShowProgressForm.Location = new System.Drawing.Point(0, 0);
-            this.lblShowProgressForm.Name = "lblShowProgressForm";
-            this.lblShowProgressForm.Size = new System.Drawing.Size(194, 44);
-            this.lblShowProgressForm.TabIndex = 0;
-            this.lblShowProgressForm.Text = "Progress (Test)";
-            this.lblShowProgressForm.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.lblShowProgressForm.Click += new System.EventHandler(this.lblShowProgressForm_Click);
             // 
             // pnlMachineStatus
             // 
@@ -606,20 +530,6 @@
             this.lblCurrentUser.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.lblCurrentUser.Click += new System.EventHandler(this.lblCurrentUser_Click);
             // 
-            // pictureBox2
-            // 
-            this.pictureBox2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pictureBox2.Image = global::ATT.Properties.Resources.People;
-            this.pictureBox2.Location = new System.Drawing.Point(134, 0);
-            this.pictureBox2.Margin = new System.Windows.Forms.Padding(0);
-            this.pictureBox2.Name = "pictureBox2";
-            this.pictureBox2.Padding = new System.Windows.Forms.Padding(6);
-            this.pictureBox2.Size = new System.Drawing.Size(46, 48);
-            this.pictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.pictureBox2.TabIndex = 4;
-            this.pictureBox2.TabStop = false;
-            this.pictureBox2.Click += new System.EventHandler(this.lblCurrentUser_Click);
-            // 
             // lblCurrentModel
             // 
             this.lblCurrentModel.BackColor = System.Drawing.Color.Transparent;
@@ -632,18 +542,6 @@
             this.lblCurrentModel.Size = new System.Drawing.Size(174, 42);
             this.lblCurrentModel.TabIndex = 3;
             this.lblCurrentModel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // picLogo
-            // 
-            this.picLogo.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.picLogo.Image = global::ATT.Properties.Resources.JastechLogo;
-            this.picLogo.Location = new System.Drawing.Point(3, 3);
-            this.picLogo.Name = "picLogo";
-            this.picLogo.Size = new System.Drawing.Size(214, 42);
-            this.picLogo.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.picLogo.TabIndex = 0;
-            this.picLogo.TabStop = false;
-            this.picLogo.Click += new System.EventHandler(this.picLogo_Click);
             // 
             // lblMachineName
             // 
@@ -669,6 +567,72 @@
             this.tmrUpdateStates.Interval = 300;
             this.tmrUpdateStates.Tick += new System.EventHandler(this.tmrUpdateStates_Tick);
             // 
+            // lblLogPageImage
+            // 
+            this.lblLogPageImage.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblLogPageImage.Image = global::ATT.Properties.Resources.Log;
+            this.lblLogPageImage.Location = new System.Drawing.Point(3, 0);
+            this.lblLogPageImage.Name = "lblLogPageImage";
+            this.lblLogPageImage.Size = new System.Drawing.Size(44, 44);
+            this.lblLogPageImage.TabIndex = 1;
+            this.lblLogPageImage.Click += new System.EventHandler(this.lblLogPage_Click);
+            // 
+            // lblDataPageImage
+            // 
+            this.lblDataPageImage.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblDataPageImage.Image = global::ATT.Properties.Resources.Settings;
+            this.lblDataPageImage.Location = new System.Drawing.Point(3, 0);
+            this.lblDataPageImage.Name = "lblDataPageImage";
+            this.lblDataPageImage.Size = new System.Drawing.Size(44, 44);
+            this.lblDataPageImage.TabIndex = 1;
+            this.lblDataPageImage.Click += new System.EventHandler(this.lblDataPage_Click);
+            // 
+            // lblInspectionPageImage
+            // 
+            this.lblInspectionPageImage.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblInspectionPageImage.Image = ((System.Drawing.Image)(resources.GetObject("lblInspectionPageImage.Image")));
+            this.lblInspectionPageImage.Location = new System.Drawing.Point(3, 0);
+            this.lblInspectionPageImage.Name = "lblInspectionPageImage";
+            this.lblInspectionPageImage.Size = new System.Drawing.Size(44, 44);
+            this.lblInspectionPageImage.TabIndex = 1;
+            this.lblInspectionPageImage.Click += new System.EventHandler(this.lblMainPage_Click);
+            // 
+            // lblTeachingPageImage
+            // 
+            this.lblTeachingPageImage.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblTeachingPageImage.Image = global::ATT.Properties.Resources.Teaching;
+            this.lblTeachingPageImage.Location = new System.Drawing.Point(3, 0);
+            this.lblTeachingPageImage.Name = "lblTeachingPageImage";
+            this.lblTeachingPageImage.Size = new System.Drawing.Size(44, 44);
+            this.lblTeachingPageImage.TabIndex = 1;
+            this.lblTeachingPageImage.Click += new System.EventHandler(this.lblTeachingPage_Click);
+            // 
+            // pictureBox2
+            // 
+            this.pictureBox2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pictureBox2.Image = global::ATT.Properties.Resources.People;
+            this.pictureBox2.Location = new System.Drawing.Point(134, 0);
+            this.pictureBox2.Margin = new System.Windows.Forms.Padding(0);
+            this.pictureBox2.Name = "pictureBox2";
+            this.pictureBox2.Padding = new System.Windows.Forms.Padding(6);
+            this.pictureBox2.Size = new System.Drawing.Size(46, 48);
+            this.pictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.pictureBox2.TabIndex = 4;
+            this.pictureBox2.TabStop = false;
+            this.pictureBox2.Click += new System.EventHandler(this.lblCurrentUser_Click);
+            // 
+            // picLogo
+            // 
+            this.picLogo.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.picLogo.Image = global::ATT.Properties.Resources.JastechLogo;
+            this.picLogo.Location = new System.Drawing.Point(3, 3);
+            this.picLogo.Name = "picLogo";
+            this.picLogo.Size = new System.Drawing.Size(214, 42);
+            this.picLogo.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.picLogo.TabIndex = 0;
+            this.picLogo.TabStop = false;
+            this.picLogo.Click += new System.EventHandler(this.picLogo_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
@@ -687,7 +651,6 @@
             this.tableLayoutPanel2.ResumeLayout(false);
             this.tableLayoutPanel2.PerformLayout();
             this.tlpFunctionButtons.ResumeLayout(false);
-            this.panel2.ResumeLayout(false);
             this.panel4.ResumeLayout(false);
             this.tableLayoutPanel4.ResumeLayout(false);
             this.panel3.ResumeLayout(false);
@@ -696,7 +659,6 @@
             this.tableLayoutPanel1.ResumeLayout(false);
             this.panel1.ResumeLayout(false);
             this.tableLayoutPanel3.ResumeLayout(false);
-            this.panel5.ResumeLayout(false);
             this.pnlMachineStatus.ResumeLayout(false);
             this.tlpMachineStatus.ResumeLayout(false);
             this.tableLayoutPanel5.ResumeLayout(false);
@@ -712,7 +674,6 @@
         private System.Windows.Forms.Panel pnlPage;
         private System.Windows.Forms.TableLayoutPanel tlpFunctionButtons;
         private System.Windows.Forms.Label lblCurrentTime;
-        private System.Windows.Forms.Panel panel2;
         private System.Windows.Forms.Panel panel4;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel4;
         private System.Windows.Forms.Label lblLogPageImage;
@@ -751,8 +712,6 @@
         private System.Windows.Forms.Label lblMotionStateText;
         private System.Windows.Forms.Label lblLightStateText;
         private System.Windows.Forms.Label lblDoorlockState;
-        private System.Windows.Forms.Panel panel5;
-        private System.Windows.Forms.Label lblShowProgressForm;
     }
 }
 
