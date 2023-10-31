@@ -117,7 +117,7 @@ namespace ATT_UT_Remodeling
             PlcControlManager.Instance().WriteVersion();
 
             ManualJudgeForm = new ManualJudgeForm();
-            ManualJudgeForm.ManualJudmentHandler += MainForm_ManualOkHandler;
+            ManualJudgeForm.ManualJudmentHandler += MainForm_ManualJudgmentHandler;
             ManualJudgeForm.Show();
             ManualJudgeForm.Hide();
         }
@@ -204,7 +204,7 @@ namespace ATT_UT_Remodeling
                 ManualJudgeForm = null;
 
                 ManualJudgeForm = new ManualJudgeForm();
-                ManualJudgeForm.ManualJudmentHandler += MainForm_ManualOkHandler;
+                ManualJudgeForm.ManualJudmentHandler += MainForm_ManualJudgmentHandler;
                 ManualJudgeForm.Hide();
             }
         }
@@ -684,15 +684,15 @@ namespace ATT_UT_Remodeling
                 ManualJudgeForm.Show();
         }
 
-        private void MainForm_ManualJudmentHandler(bool isManualJudgeCompleted)
+        private void MainForm_ManualJudgmentHandler(bool isManualJudgeCompleted)
         {
             AppsStatus.Instance().IsManualJudgeCompleted = isManualJudgeCompleted;
         }
 
-        private void MainForm_ManualOkHandler(bool isManualOk)
-        {
-            AppsStatus.Instance().IsManual_OK = isManualOk;
-        }
+        //private void MainForm_ManualOkHandler(bool isManualOk)
+        //{
+        //    AppsStatus.Instance().IsManual_OK = isManualOk;
+        //}
 
         private void lblMachineName_Click(object sender, EventArgs e)
         {
@@ -706,6 +706,9 @@ namespace ATT_UT_Remodeling
             else
             {
                 string path = Path.Combine(ConfigSet.Instance().Path.Result, inspModel.Name);
+
+                if (Directory.Exists(path) == false)
+                    Directory.CreateDirectory(path);
 
                 if (UserManager.Instance().CurrentUser.Type != AuthorityType.None)
                     Process.Start(path);

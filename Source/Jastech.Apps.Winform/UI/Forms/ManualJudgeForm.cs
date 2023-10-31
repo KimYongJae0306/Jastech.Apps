@@ -75,7 +75,8 @@ namespace Jastech.Apps.Winform.UI.Forms
 
             if (IsNg())
             {
-                AppsStatus.Instance().IsManualJudgeCompleted = false;
+                //AppsStatus.Instance().IsManualJudgeCompleted = false;
+                ManualJudmentHandler?.Invoke(false);
 
                 if (this.Visible)
                 {
@@ -171,7 +172,8 @@ namespace Jastech.Apps.Winform.UI.Forms
                 this.Hide();
             }
 
-            AppsStatus.Instance().IsManualJudgeCompleted = true;
+            //AppsStatus.Instance().IsManualJudgeCompleted = true;
+            ManualJudmentHandler?.Invoke(true);
             _onFocus = true;
         }
 
@@ -187,7 +189,8 @@ namespace Jastech.Apps.Winform.UI.Forms
                 this.Hide();
             }
 
-            AppsStatus.Instance().IsManualJudgeCompleted = true;
+            //AppsStatus.Instance().IsManualJudgeCompleted = true;
+            ManualJudmentHandler?.Invoke(true);
             _onFocus = true;
         }
 
