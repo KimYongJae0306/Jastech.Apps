@@ -244,8 +244,8 @@ namespace Jastech.Apps.Winform.UI.Forms
          
             string selectedModel = lblSelectedName.Text;
 
-            DailyInfoService.Reset();
-            DailyInfoService.Load(selectedModel);
+            //DailyInfoService.Reset();
+            //DailyInfoService.Load(selectedModel);
 
             ApplyModelEventHandler?.Invoke(selectedModel);
 

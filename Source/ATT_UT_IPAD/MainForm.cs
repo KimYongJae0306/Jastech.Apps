@@ -3,10 +3,12 @@ using ATT_UT_IPAD.Core.Data;
 using ATT_UT_IPAD.Properties;
 using ATT_UT_IPAD.UI.Pages;
 using Cognex.VisionPro;
+using Emgu.CV.Dnn;
 using Jastech.Apps.Structure;
 using Jastech.Apps.Structure.Data;
 using Jastech.Apps.Winform;
 using Jastech.Apps.Winform.Core;
+using Jastech.Apps.Winform.Service;
 using Jastech.Apps.Winform.Service.Plc;
 using Jastech.Apps.Winform.Service.Plc.Maps;
 using Jastech.Apps.Winform.Settings;
@@ -16,6 +18,7 @@ using Jastech.Framework.Device.Grabbers;
 using Jastech.Framework.Device.Motions;
 using Jastech.Framework.Matrox;
 using Jastech.Framework.Structure;
+using Jastech.Framework.Structure.Service;
 using Jastech.Framework.Users;
 using Jastech.Framework.Util.Helper;
 using Jastech.Framework.Winform;
@@ -253,6 +256,9 @@ namespace ATT_UT_IPAD
             AppsInspModel model = inspModel as AppsInspModel;
 
             AppsInspResult.Instance().Dispose();
+
+            DailyInfoService.Reset();
+            DailyInfoService.Load(model.Name);
 
             MainPageControl.UpdateTabCount(model.TabCount);
 
@@ -731,15 +737,15 @@ namespace ATT_UT_IPAD
                 ManualJudgeForm.Show();
         }
 
-        private void MainForm_ManualJudmentHandler(bool isManualJudgeCompleted)
+        private void MainForm_ManualJudgmentHandler(bool isManualJudgeCompleted)
         {
             AppsStatus.Instance().IsManualJudgeCompleted = isManualJudgeCompleted;
         }
 
-        private void MainForm_ManualJudgmentHandler(bool isManualOk)
-        {
-            AppsStatus.Instance().IsManual_OK = isManualOk;
-        }
+        //private void MainForm_ManualJudgmentHandler(bool isManualOk)
+        //{
+        //    AppsStatus.Instance().IsManual_OK = isManualOk;
+        //}
 
         private void lblMachineName_Click(object sender, EventArgs e)
         {
@@ -753,6 +759,9 @@ namespace ATT_UT_IPAD
             else
             {
                 string path = Path.Combine(ConfigSet.Instance().Path.Result, inspModel.Name);
+
+                if (Directory.Exists(path) == false)
+                    Directory.CreateDirectory(path);
 
                 if (UserManager.Instance().CurrentUser.Type != AuthorityType.None)
                     Process.Start(path);

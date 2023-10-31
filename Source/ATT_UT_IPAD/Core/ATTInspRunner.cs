@@ -366,8 +366,12 @@ namespace ATT_UT_IPAD.Core
                     break;
 
                 case SeqStep.SEQ_WAITING:
+                    AppsStatus.Instance().IsRunning = false;
+
                     if (AppsStatus.Instance().IsInspRunnerFlagFromPlc == false)
                         break;
+
+                    AppsStatus.Instance().IsRunning = true;
 
                     WriteLog("Receive Inspection Start Signal From PLC.", true);
 
@@ -502,6 +506,7 @@ namespace ATT_UT_IPAD.Core
                     {
                         if (ConfigSet.Instance().Operation.VirtualMode == false)
                             WaitPlcValueClear(PlcCommonMap.PC_GrabDone);
+
                         SendResultData();
                         WriteLog("Completed Send Plc Tab Result Data", true);
                     }

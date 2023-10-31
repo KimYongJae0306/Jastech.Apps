@@ -24,8 +24,6 @@ namespace ATT_UT_Remodeling.UI.Forms
     public partial class MotionPopupForm : Form
     {
         #region 필드
-        private System.Threading.Timer _formTimer = null;
-
         private Color _selectedColor;
 
         private Color _nonSelectedColor;

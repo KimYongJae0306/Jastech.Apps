@@ -38,8 +38,6 @@ namespace Jastech.Apps.Winform.Service.Plc
         #region 속성
         public InspModelService InspModelService = null;
 
-     
-
         private bool EnableActive { get; set; } = false;
 
         private Queue<int> PlcCommonCommandQueue { get; set; } = new Queue<int>();
@@ -212,21 +210,27 @@ namespace Jastech.Apps.Winform.Service.Plc
                 case PlcCommonCommand.Time_Change:
                     ReceivedTimeChange();
                     break;
+
                 case PlcCommonCommand.Model_Change:
                     ChangeModelData();
                     break;
+
                 case PlcCommonCommand.Model_Create:
                     CreateModelData();
                     break;
+
                 case PlcCommonCommand.Model_Edit:
                     EditModelData();
                     break;
+
                 case PlcCommonCommand.Command_Clear:
                     ReceivedCommandClear();
                     break;
+
                 case PlcCommonCommand.Light_Off:
                     ReceivedLightOff();
                     break;
+
                 default:
                     break;
             }
@@ -269,7 +273,13 @@ namespace Jastech.Apps.Winform.Service.Plc
         private void ChangeModelData()
         {
             var manager = PlcControlManager.Instance();
+            var previousModel = ModelManager.Instance().CurrentModel as AppsInspModel;
+            string previousModelName = previousModel.Name;
+
             string modelName = manager.GetValue(PlcCommonMap.PLC_PPID_ModelName);
+            //string modelName = "TT_AMUA11CF01";
+            //string modelName = "NewTest";
+            //string modelName = "tt";
 
             string modelDir = ConfigSet.Instance().Path.Model;
             string filePath = Path.Combine(modelDir, modelName, InspModel.FileName);
@@ -284,6 +294,21 @@ namespace Jastech.Apps.Winform.Service.Plc
             }
 
             ModelManager.Instance().CurrentModel = InspModelService.Load(filePath);
+            var currentModel = ModelManager.Instance().CurrentModel as AppsInspModel;
+            string currentModelName = currentModel.Name;
+
+            if (previousModelName?.Equals(currentModelName) == false)
+                ParamTrackingLogger.AddChangeHistory("Inspector", "InspectionModel", previousModel, currentModel);
+
+            if (ParamTrackingLogger.IsEmpty == false)
+            {
+                ParamTrackingLogger.AddLog("Inspection Model Changed.");
+                ParamTrackingLogger.WriteLogToFile();
+            }
+
+            MessageConfirmForm form = new MessageConfirmForm();
+            form.Message = "Model Load Completed.";
+            form.ShowDialog();
 
             command = manager.WritePcStatusCommon(PlcCommonCommand.Model_Change);
             Logger.Debug(LogType.Device, $"Write ChangeModelData.[{command}]");
@@ -314,6 +339,7 @@ namespace Jastech.Apps.Winform.Service.Plc
                 Logger.Debug(LogType.Device, $"Write Fail EditModelData[{command}] : Tab Count not Changed.");
                 return;
             }
+
             currentModel.Name = manager.GetValue(PlcCommonMap.PLC_PPID_ModelName);
             currentModel.ModifiedDate = DateTime.Now;
             currentModel.AxisSpeed = Convert.ToInt32(manager.GetValue(PlcCommonMap.PLC_Axis_X_Speed));
