@@ -7,6 +7,7 @@ using Jastech.Apps.Structure.Data;
 using Jastech.Apps.Winform;
 using Jastech.Apps.Winform.Core;
 using Jastech.Apps.Winform.Core.Calibrations;
+using Jastech.Apps.Winform.Service;
 using Jastech.Apps.Winform.Service.Plc;
 using Jastech.Apps.Winform.Service.Plc.Maps;
 using Jastech.Apps.Winform.Settings;
@@ -239,6 +240,9 @@ namespace ATT_UT_Remodeling
             AppsInspModel model = inspModel as AppsInspModel;
 
             AppsInspResult.Instance().Dispose();
+
+            DailyInfoService.Reset();
+            DailyInfoService.Load(model.Name);
 
             MainPageControl.UpdateTabCount(model.TabCount);
             MainPageControl.ClearPreAlignResult();
