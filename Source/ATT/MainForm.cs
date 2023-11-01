@@ -584,24 +584,6 @@ namespace ATT
         {
             testForceDoorLockToggle = !testForceDoorLockToggle;
         }
-
-        private void lblShowProgressForm_Click(object sender, EventArgs e)
-        {
-            ProgressForm progressForm = new ProgressForm("test", ProgressForm.RunMode.Batch);
-            progressForm.Add("Test", new Action(() =>
-            {
-                Thread.Sleep(1000);
-            }));
-            progressForm.Add("Test", new Action(() =>
-            {
-                Thread.Sleep(2000);
-            }));
-            progressForm.Add("Test", new Action(() =>
-            {
-                Thread.Sleep(3000);
-            }));
-            progressForm.Show();
-        }
         #endregion
     }
 }

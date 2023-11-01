@@ -249,6 +249,9 @@ namespace Jastech.Apps.Winform
             lock(TabScanBufferList)
                 TabScanBufferList.Add(buffer);
 
+            //test
+            //buffer.GetMergeMatImage().Save(string.Format("D:\\TestKang.bmp"));
+
             GrabCount = totalScanSubImageCount;
             // LineScan Page에서 Line 모드 GrabStart 할 때 Height Set 해줘야함
             Console.WriteLine("Length Grab Count :" + GrabCount);

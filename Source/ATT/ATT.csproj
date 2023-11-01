@@ -74,6 +74,7 @@
     <Reference Include="Cognex.VisionPro.Core, Version=71.2.0.0, Culture=neutral, PublicKeyToken=ef0f902af9dee505, processorArchitecture=AMD64" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Windows.Forms.DataVisualization" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -121,6 +122,18 @@
     </Compile>
     <Compile Include="UI\Controls\MainViewControl.Designer.cs">
       <DependentUpon>MainViewControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Controls\ACSParameterVariableControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UI\Controls\ACSParameterVariableControl.Designer.cs">
+      <DependentUpon>ACSParameterVariableControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Forms\DataChartingForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\Forms\DataChartingForm.Designer.cs">
+      <DependentUpon>DataChartingForm.cs</DependentUpon>
     </Compile>
     <Compile Include="UI\Forms\MotionSettingsForm.cs">
       <SubType>Form</SubType>
@@ -182,6 +195,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UI\Controls\MainViewControl.resx">
       <DependentUpon>MainViewControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\Controls\ACSParameterVariableControl.resx">
+      <DependentUpon>ACSParameterVariableControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\Forms\DataChartingForm.resx">
+      <DependentUpon>DataChartingForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\Forms\MotionSettingsForm.resx">
       <DependentUpon>MotionSettingsForm.cs</DependentUpon>

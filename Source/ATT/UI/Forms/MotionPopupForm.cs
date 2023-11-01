@@ -2,6 +2,7 @@
 using Jastech.Apps.Structure;
 using Jastech.Apps.Structure.Data;
 using Jastech.Apps.Winform;
+using Jastech.Apps.Winform.UI.Controls;
 using Jastech.Framework.Config;
 using Jastech.Framework.Device.LAFCtrl;
 using Jastech.Framework.Device.Motions;
@@ -50,6 +51,8 @@ namespace ATT.UI.Forms
         private MotionParameterVariableControl YVariableControl = null;
 
         //private MotionParameterVariableControl ZVariableControl = null;
+
+        private ACSParameterVariableControl ZACSVariableControl = null;
 
         public TeachingPosType TeachingPositionType = TeachingPosType.Standby;
 
@@ -193,6 +196,11 @@ namespace ATT.UI.Forms
             //ZVariableControl.Dock = DockStyle.Fill;
             //ZVariableControl.SetAxis(AxisHandler.GetAxis(AxisName.Z0));
             //tlpVariableParameter.Controls.Add(ZVariableControl);
+
+            ZACSVariableControl = new ACSParameterVariableControl();
+            ZACSVariableControl.Dock = DockStyle.Fill;
+            ZACSVariableControl.SetAxis(AxisHandler.GetAxis(AxisName.Z0));
+            tlpVariableParameter.Controls.Add(ZACSVariableControl);
         }
 
         private void AddJogControl()
@@ -651,6 +659,7 @@ namespace ATT.UI.Forms
 
         private void MotionPopupForm_FormClosing(object sender, FormClosingEventArgs e)
         {
+            ZACSVariableControl.TaskCancellation.Cancel();
             StatusTimer.Stop();
         }
 
