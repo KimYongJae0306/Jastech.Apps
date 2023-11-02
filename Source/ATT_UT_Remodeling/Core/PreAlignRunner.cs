@@ -219,6 +219,7 @@ namespace ATT_UT_Remodeling
                     WriteLog($"Set Camera Property. Expose : {PreAlignCamera.Camera.Exposure}, AnalogGain : {PreAlignCamera.Camera.AnalogGain}");
 
                     // CELL ID 넣는곳이 없음
+                    WriteLog("Wait PreAlign Start Signal From PLC.", true);
                     SeqStep = SeqStep.SEQ_WAITING;
                     break;
 

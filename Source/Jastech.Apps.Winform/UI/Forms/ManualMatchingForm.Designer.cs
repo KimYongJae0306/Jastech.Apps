@@ -47,6 +47,8 @@
             this.tlpManualMatch = new System.Windows.Forms.TableLayoutPanel();
             this.pnlDisplay = new System.Windows.Forms.Panel();
             this.pnlTeach = new System.Windows.Forms.Panel();
+            this.pnlPatternImage = new System.Windows.Forms.Panel();
+            this.cogPatternDisplay = new Cognex.VisionPro.CogRecordDisplay();
             this.pnlROIJog = new System.Windows.Forms.Panel();
             this.tlpROIJog = new System.Windows.Forms.TableLayoutPanel();
             this.tlpJog = new System.Windows.Forms.TableLayoutPanel();
@@ -59,8 +61,6 @@
             this.lblPitch = new System.Windows.Forms.Label();
             this.lblMovePixel = new System.Windows.Forms.Label();
             this.pnlLight = new System.Windows.Forms.Panel();
-            this.pnlPatternImage = new System.Windows.Forms.Panel();
-            this.cogPatternDisplay = new Cognex.VisionPro.CogRecordDisplay();
             this.pnlManualMatching.SuspendLayout();
             this.tlpManualMatching.SuspendLayout();
             this.pnlTop.SuspendLayout();
@@ -72,12 +72,12 @@
             this.tlpCancel.SuspendLayout();
             this.tlpManualMatch.SuspendLayout();
             this.pnlTeach.SuspendLayout();
+            this.pnlPatternImage.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.cogPatternDisplay)).BeginInit();
             this.pnlROIJog.SuspendLayout();
             this.tlpROIJog.SuspendLayout();
             this.tlpJog.SuspendLayout();
             this.tlpJogMode.SuspendLayout();
-            this.pnlPatternImage.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.cogPatternDisplay)).BeginInit();
             this.SuspendLayout();
             // 
             // pnlManualMatching
@@ -298,6 +298,33 @@
             this.pnlTeach.Size = new System.Drawing.Size(530, 528);
             this.pnlTeach.TabIndex = 1;
             // 
+            // pnlPatternImage
+            // 
+            this.pnlPatternImage.Controls.Add(this.cogPatternDisplay);
+            this.pnlPatternImage.Location = new System.Drawing.Point(257, 27);
+            this.pnlPatternImage.Margin = new System.Windows.Forms.Padding(0);
+            this.pnlPatternImage.Name = "pnlPatternImage";
+            this.pnlPatternImage.Size = new System.Drawing.Size(240, 240);
+            this.pnlPatternImage.TabIndex = 302;
+            // 
+            // cogPatternDisplay
+            // 
+            this.cogPatternDisplay.ColorMapLowerClipColor = System.Drawing.SystemColors.AppWorkspace;
+            this.cogPatternDisplay.ColorMapLowerRoiLimit = 0D;
+            this.cogPatternDisplay.ColorMapPredefined = Cognex.VisionPro.Display.CogDisplayColorMapPredefinedConstants.None;
+            this.cogPatternDisplay.ColorMapUpperClipColor = System.Drawing.SystemColors.AppWorkspace;
+            this.cogPatternDisplay.ColorMapUpperRoiLimit = 1D;
+            this.cogPatternDisplay.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.cogPatternDisplay.DoubleTapZoomCycleLength = 2;
+            this.cogPatternDisplay.DoubleTapZoomSensitivity = 2.5D;
+            this.cogPatternDisplay.Location = new System.Drawing.Point(0, 0);
+            this.cogPatternDisplay.MouseWheelMode = Cognex.VisionPro.Display.CogDisplayMouseWheelModeConstants.None;
+            this.cogPatternDisplay.MouseWheelSensitivity = 1D;
+            this.cogPatternDisplay.Name = "cogPatternDisplay";
+            this.cogPatternDisplay.OcxState = ((System.Windows.Forms.AxHost.State)(resources.GetObject("cogPatternDisplay.OcxState")));
+            this.cogPatternDisplay.Size = new System.Drawing.Size(240, 240);
+            this.cogPatternDisplay.TabIndex = 1;
+            // 
             // pnlROIJog
             // 
             this.pnlROIJog.Controls.Add(this.tlpROIJog);
@@ -442,7 +469,7 @@
             this.lblPitch.Name = "lblPitch";
             this.lblPitch.Size = new System.Drawing.Size(105, 40);
             this.lblPitch.TabIndex = 9;
-            this.lblPitch.Text = "1.0";
+            this.lblPitch.Text = "1";
             this.lblPitch.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.lblPitch.Click += new System.EventHandler(this.lblPitch_Click);
             // 
@@ -467,33 +494,6 @@
             this.pnlLight.Name = "pnlLight";
             this.pnlLight.Size = new System.Drawing.Size(471, 194);
             this.pnlLight.TabIndex = 300;
-            // 
-            // pnlPatternImage
-            // 
-            this.pnlPatternImage.Controls.Add(this.cogPatternDisplay);
-            this.pnlPatternImage.Location = new System.Drawing.Point(257, 27);
-            this.pnlPatternImage.Margin = new System.Windows.Forms.Padding(0);
-            this.pnlPatternImage.Name = "pnlPatternImage";
-            this.pnlPatternImage.Size = new System.Drawing.Size(240, 240);
-            this.pnlPatternImage.TabIndex = 302;
-            // 
-            // cogPatternDisplay
-            // 
-            this.cogPatternDisplay.ColorMapLowerClipColor = System.Drawing.SystemColors.AppWorkspace;
-            this.cogPatternDisplay.ColorMapLowerRoiLimit = 0D;
-            this.cogPatternDisplay.ColorMapPredefined = Cognex.VisionPro.Display.CogDisplayColorMapPredefinedConstants.None;
-            this.cogPatternDisplay.ColorMapUpperClipColor = System.Drawing.SystemColors.AppWorkspace;
-            this.cogPatternDisplay.ColorMapUpperRoiLimit = 1D;
-            this.cogPatternDisplay.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.cogPatternDisplay.DoubleTapZoomCycleLength = 2;
-            this.cogPatternDisplay.DoubleTapZoomSensitivity = 2.5D;
-            this.cogPatternDisplay.Location = new System.Drawing.Point(0, 0);
-            this.cogPatternDisplay.MouseWheelMode = Cognex.VisionPro.Display.CogDisplayMouseWheelModeConstants.None;
-            this.cogPatternDisplay.MouseWheelSensitivity = 1D;
-            this.cogPatternDisplay.Name = "cogPatternDisplay";
-            this.cogPatternDisplay.OcxState = ((System.Windows.Forms.AxHost.State)(resources.GetObject("cogPatternDisplay.OcxState")));
-            this.cogPatternDisplay.Size = new System.Drawing.Size(240, 240);
-            this.cogPatternDisplay.TabIndex = 1;
             // 
             // ManualMatchingForm
             // 
@@ -520,12 +520,12 @@
             this.tlpCancel.ResumeLayout(false);
             this.tlpManualMatch.ResumeLayout(false);
             this.pnlTeach.ResumeLayout(false);
+            this.pnlPatternImage.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.cogPatternDisplay)).EndInit();
             this.pnlROIJog.ResumeLayout(false);
             this.tlpROIJog.ResumeLayout(false);
             this.tlpJog.ResumeLayout(false);
             this.tlpJogMode.ResumeLayout(false);
-            this.pnlPatternImage.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.cogPatternDisplay)).EndInit();
             this.ResumeLayout(false);
 
         }

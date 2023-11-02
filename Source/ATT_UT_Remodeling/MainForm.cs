@@ -762,6 +762,11 @@ namespace ATT_UT_Remodeling
 
         private void lblMachineName_Click(object sender, EventArgs e)
         {
+            //ManualMatchingForm tt = new ManualMatchingForm();
+            //tt.AreaCamera = AreaCameraManager.Instance().GetAppsCamera("PreAlign");
+            //tt.Show();
+            //return;
+
             var inspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
 
             if (inspModel == null)
