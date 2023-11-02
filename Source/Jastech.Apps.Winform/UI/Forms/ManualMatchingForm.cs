@@ -57,10 +57,14 @@ namespace Jastech.Apps.Winform.UI.Forms
 
         #region 이벤트
         public GetOriginImageDelegate GetOriginImageHandler;
+
+        public event ManualMatchingEventHandler ManualMatchingHandler;
         #endregion
 
         #region 델리게이트
         public delegate ICogImage GetOriginImageDelegate();
+
+        public delegate void ManualMatchingEventHandler(AreaCamera areaCamera, MarkDirection markDirection);
         #endregion
 
         #region 생성자
@@ -76,10 +80,25 @@ namespace Jastech.Apps.Winform.UI.Forms
             OriginPoint = PointMarkerParam.GetOriginPoint();
             return OriginPoint;
         }
-        public void SetMarkDirection(MarkDirection PrealignMarkDirection)
+
+        public void SetParams(AreaCamera areaCamera, MarkDirection markDirection)
+        {
+            SetAreaCamera(areaCamera);
+            SetMarkDirection(markDirection);
+
+            // 트레인 이미지 불러오기
+        }
+
+        private void SetAreaCamera(AreaCamera areaCamera)
+        {
+            AreaCamera = AreaCamera;
+        }
+
+        private void SetMarkDirection(MarkDirection PrealignMarkDirection)
         {
             MarkDirection = PrealignMarkDirection;
         }
+
         public void SetImage(ICogImage image)
         {
             Display.SetImage(image);
@@ -92,22 +111,28 @@ namespace Jastech.Apps.Winform.UI.Forms
 
             SetPitch(Convert.ToInt32(lblPitch.Text));
             AddControls();
-
+            
             // TeachingUIManager 참조
             //TeachingUIManager.Instance().TeachingDisplayControl = Display;
 
+            //AreaCamera.OnImageGrabbed += AreaCamera_OnImageGrabbed;
+            //LoadPatternImage();
+
+            //var param = CurrentUnit.GetPreAlignMark(MarkDirection, MarkName.Main);
+
+            //if (param != null)
+            //{
+            //    CogTransform2DLinear OriginPosition = param.InspParam.GetOrigin();
+            //    DrawOriginPointMark(Display, new PointF((float)OriginPosition.TranslationX, (float)OriginPosition.TranslationY), 200);
+            //}
+            //else
+            //    DrawOriginPointMark(Display, new PointF(100, 100), 200);
+        }
+
+        public void RegisterAreaCameraEvent(AreaCamera areaCamera)
+        {
+            AreaCamera = areaCamera;
             AreaCamera.OnImageGrabbed += AreaCamera_OnImageGrabbed;
-            LoadPatternImage();
-
-            var param = CurrentUnit.GetPreAlignMark(MarkDirection, MarkName.Main);
-
-            if (param != null)
-            {
-                CogTransform2DLinear OriginPosition = param.InspParam.GetOrigin();
-                DrawOriginPointMark(Display, new PointF((float)OriginPosition.TranslationX, (float)OriginPosition.TranslationY), 200);
-            }
-            else
-                DrawOriginPointMark(Display, new PointF(100, 100), 200);
         }
 
         private void DrawOriginPointMark(CogDisplayControl display, PointF centerPoint, int size)
@@ -116,6 +141,7 @@ namespace Jastech.Apps.Winform.UI.Forms
             PointMarkerParam.SetOriginPoint(Convert.ToSingle(centerPoint.X), Convert.ToSingle(centerPoint.Y), size);
             display.SetInteractiveGraphics("tool", PointMarkerParam.GetCurrentRecord());
         }
+
         private void SetPitch(int pitch)
         {
             _pitch = pitch;

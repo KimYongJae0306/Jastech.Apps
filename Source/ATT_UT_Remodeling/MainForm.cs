@@ -63,6 +63,8 @@ namespace ATT_UT_Remodeling
         private CancellationTokenSource CancelSafetyDoorlockTask { get; set; }
 
         public ManualJudgeForm ManualJudgeForm { get; set; } = null;
+
+        public ManualMatchingForm ManualMatchingForm { get; set; } = null;
         #endregion
 
         #region 델리게이트
@@ -127,6 +129,11 @@ namespace ATT_UT_Remodeling
             ManualJudgeForm.ManualJudmentHandler += MainForm_ManualJudgmentHandler;
             ManualJudgeForm.Show();
             ManualJudgeForm.Hide();
+
+            ManualMatchingForm = new ManualMatchingForm();
+            //ManualMatchingForm.ManualMatchingHandler += MainForm_ManualMatchingHandler;
+            ManualMatchingForm.Show();
+            ManualMatchingForm.Hide();
 
             if (ConfigSet.Instance().Operation.VirtualMode == false)
             {
@@ -651,13 +658,12 @@ namespace ATT_UT_Remodeling
                         string tabNoString = fileName.Substring(index + text.Length);
                         SystemManager.Instance().SetVirtualImage(Convert.ToInt32(tabNoString), filePath);
                     }
+
                     _virtualImageCount++;
 
                     var inspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
                     if(_virtualImageCount == inspModel.TabCount)
-                    {
                         AppsStatus.Instance().IsInspRunnerFlagFromPlc = true;
-                    }
                 }
                 
                 Thread.Sleep(50);
@@ -721,6 +727,7 @@ namespace ATT_UT_Remodeling
             {
                 MessageYesNoForm form = new MessageYesNoForm();
                 form.Message = "Would you like to do a test run?";
+
                 if (form.ShowDialog() == DialogResult.Yes)
                     AppsStatus.Instance().IsInspRunnerFlagFromPlc = true;
             }
@@ -755,10 +762,49 @@ namespace ATT_UT_Remodeling
             AppsStatus.Instance().IsManualJudgeCompleted = isManualJudgeCompleted;
         }
 
+        public void ShowManualMatchingForm(AreaCamera areaCamera, MarkDirection markDirection)
+        {
+            if (ManualMatchingForm == null)
+                ManualMatchingForm = new ManualMatchingForm();
+
+            ManualMatchingForm.SetParams(areaCamera, markDirection);
+
+            if (ManualMatchingForm.InvokeRequired)
+            {
+                ManualMatchingForm.Invoke(new MethodInvoker(delegate
+                {
+                    ManualMatchingForm.ShowDialog();
+                }));
+            }
+            else
+                ManualMatchingForm.ShowDialog();
+        }
+
         //private void MainForm_ManualOkHandler(bool isManualOk)
         //{
         //    AppsStatus.Instance().IsManual_OK = isManualOk;
         //}
+
+        public void MainForm_ManualMatchingHandler(AreaCamera areaCamera, MarkDirection markDirection)
+        {
+            if (ManualMatchingForm == null)
+            {
+                ManualMatchingForm = new ManualMatchingForm();
+                ManualMatchingForm.AreaCamera = areaCamera;
+            }
+
+            ManualMatchingForm.MarkDirection = markDirection;
+
+            if (ManualMatchingForm.InvokeRequired)
+            {
+                ManualMatchingForm.Invoke(new MethodInvoker(delegate
+                {
+                    ManualMatchingForm.ShowDialog();
+                }));
+            }
+            else
+                ManualMatchingForm.ShowDialog();
+        }
 
         private void lblMachineName_Click(object sender, EventArgs e)
         {

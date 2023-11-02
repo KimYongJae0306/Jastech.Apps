@@ -462,6 +462,11 @@ namespace ATT_UT_Remodeling
 
             return true;
         }
+
+        public void ShowManualMatchingForm(AreaCamera areaCamera, MarkDirection markDirection)
+        {
+            _mainForm.ShowManualMatchingForm(areaCamera, markDirection);
+        }
         #endregion
     }
 

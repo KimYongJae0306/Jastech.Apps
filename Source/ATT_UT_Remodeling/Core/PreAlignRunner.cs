@@ -269,26 +269,25 @@ namespace ATT_UT_Remodeling
 
                         if (AppsPreAlignResult.Instance().Right.MatchResult == null)
                         {
-                            ManualMatchingForm Manualform = new ManualMatchingForm();
-                            Manualform.SetMarkDirection(MarkDirection.Right);
-                            if (ConfigSet.Instance().Operation.VirtualMode == true)
-                                Manualform.SetImage(VirtualRightImage);
-                            Manualform.ShowDialog();
+                            SystemManager.Instance().ShowManualMatchingForm(PreAlignCamera, MarkDirection.Right);
+                            //SystemManager.Instance().ShowManualMatchingForm(PreAlignCamera, MarkDirection.Right);
+                            //if (ConfigSet.Instance().Operation.VirtualMode == true)
+                            //    Manualform.SetImage(VirtualRightImage);
 
-                            if (Manualform.DialogResult == DialogResult.OK)
-                            {
-                                CogTransform2DLinear manualOrigin = Manualform.GetOriginPosition();
-                                VisionProPatternMatchingResult patternResult = new VisionProPatternMatchingResult();
-                                PointF temp = new PointF();
-                                temp.X = (float)manualOrigin.TranslationX;
-                                temp.Y = (float)manualOrigin.TranslationY;
-                                patternResult.MaxMatchPos.FoundPos = temp;
-                                AppsPreAlignResult.Instance().Right.MatchResult = patternResult;
-                            }
-                            else
-                            {
-                                SeqStep = SeqStep.SEQ_ERROR;
-                            }
+                            //if (Manualform.DialogResult == DialogResult.OK)
+                            //{
+                            //    CogTransform2DLinear manualOrigin = Manualform.GetOriginPosition();
+                            //    VisionProPatternMatchingResult patternResult = new VisionProPatternMatchingResult();
+                            //    PointF temp = new PointF();
+                            //    temp.X = (float)manualOrigin.TranslationX;
+                            //    temp.Y = (float)manualOrigin.TranslationY;
+                            //    patternResult.MaxMatchPos.FoundPos = temp;
+                            //    AppsPreAlignResult.Instance().Right.MatchResult = patternResult;
+                            //}
+                            //else
+                            //{
+                            //    SeqStep = SeqStep.SEQ_ERROR;
+                            //}
                         }
                         else
                         {
@@ -334,9 +333,10 @@ namespace ATT_UT_Remodeling
                         if (AppsPreAlignResult.Instance().Right.MatchResult == null)
                         {
                             ManualMatchingForm Manualform = new ManualMatchingForm();
-                            Manualform.SetMarkDirection(MarkDirection.Left);
+                            //Manualform.SetMarkDirection(MarkDirection.Left);
                             if (ConfigSet.Instance().Operation.VirtualMode == true)
-                                Manualform.SetImage(VirtualLeftImage);
+                                Manualform.
+                                    SetImage(VirtualLeftImage);
                             Manualform.ShowDialog();
 
                             if (Manualform.DialogResult == DialogResult.OK)
