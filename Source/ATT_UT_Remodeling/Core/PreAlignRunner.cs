@@ -273,7 +273,7 @@ namespace ATT_UT_Remodeling
                             //SystemManager.Instance().ShowManualMatchingForm(PreAlignCamera, MarkDirection.Right);
                             //if (ConfigSet.Instance().Operation.VirtualMode == true)
                             //    Manualform.SetImage(VirtualRightImage);
-
+                            
                             //if (Manualform.DialogResult == DialogResult.OK)
                             //{
                             //    CogTransform2DLinear manualOrigin = Manualform.GetOriginPosition();
