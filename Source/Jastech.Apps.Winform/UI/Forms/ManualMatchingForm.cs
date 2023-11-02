@@ -34,7 +34,7 @@ namespace Jastech.Apps.Winform.UI.Forms
         #region 속성
         private CogDisplayControl Display { get; set; } = null;
 
-        private CogRecordDisplay cogPattern { get; set; } = null;
+        private CogRecordDisplay PatternDisplay { get; set; } = null;
 
         private LightControl LightControl { get; set; } = null;
 
@@ -175,7 +175,7 @@ namespace Jastech.Apps.Winform.UI.Forms
         {
             if (GetOriginImage() != null)
             {
-                CogDisplayHelper.DisposeDisplay(cogPattern);
+                CogDisplayHelper.DisposeDisplay(PatternDisplay);
 
                 ICogImage originImage = GetOriginImageHandler();
 
@@ -183,8 +183,8 @@ namespace Jastech.Apps.Winform.UI.Forms
                 if (preAlignMarkParam.Train(originImage))
                 {
                     DisposePatternDisplay();
-                    cogPattern.Image = preAlignMarkParam.GetTrainedPatternImage();
-                    cogPattern.StaticGraphics.Add(preAlignMarkParam.GetOrigin() as ICogGraphic, "Origin");
+                    PatternDisplay.Image = preAlignMarkParam.GetTrainedPatternImage();
+                    PatternDisplay.StaticGraphics.Add(preAlignMarkParam.GetOrigin() as ICogGraphic, "Origin");
                 }
             }
         }
