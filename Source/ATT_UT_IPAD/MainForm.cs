@@ -342,9 +342,6 @@ namespace ATT_UT_IPAD
 
             if (PlcControlManager.Instance().MachineStatus == MachineStatus.RUN)
             {
-                lblTeachingPageImage.Enabled = false;
-                lblTeachingPage.Enabled = false;
-
                 if (user.Type == AuthorityType.Maker)
                 {
                     lblLogPageImage.Enabled = true;
@@ -359,6 +356,9 @@ namespace ATT_UT_IPAD
                     lblDataPageImage.Enabled = false;
                     lblDataPage.Enabled = false;
                 }
+
+                lblTeachingPageImage.Enabled = false;
+                lblTeachingPage.Enabled = false;
             }
             else
             {
@@ -701,6 +701,7 @@ namespace ATT_UT_IPAD
         {
             if (PlcControlManager.Instance().MachineStatus != MachineStatus.RUN)
                 return;
+
             if (UserManager.Instance().CurrentUser.Type != AuthorityType.Maker)
                 return;
 
@@ -708,6 +709,7 @@ namespace ATT_UT_IPAD
             {
                 MessageYesNoForm form = new MessageYesNoForm();
                 form.Message = "Would you like to do a test run?";
+
                 if (form.ShowDialog() == DialogResult.Yes)
                     AppsStatus.Instance().IsInspRunnerFlagFromPlc = true;
             }

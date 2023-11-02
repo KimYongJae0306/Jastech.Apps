@@ -90,7 +90,7 @@ namespace Jastech.Apps.Winform.UI.Forms
             TeachingData.Instance().UpdateTeachingData();
             CurrentUnit = TeachingData.Instance().GetUnit(UnitName.ToString());
 
-            SetPitch(Convert.ToInt16(lblPitch.Text));
+            SetPitch(Convert.ToInt32(lblPitch.Text));
             AddControls();
 
             // TeachingUIManager 참조

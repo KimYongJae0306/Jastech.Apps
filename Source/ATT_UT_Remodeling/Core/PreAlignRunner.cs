@@ -27,20 +27,29 @@ using ATT_UT_Remodeling.Core.Data;
 using Emgu.CV;
 using System.Windows.Forms;
 using Jastech.Apps.Winform.UI.Forms;
+using Jastech.Framework.Device.LAFCtrl;
+using Jastech.Framework.Device.LightCtrls;
 
 namespace ATT_UT_Remodeling
 {
     public partial class PreAlignRunner
     {
         #region 필드
+        #endregion
+
+        #region 속성
+        private AreaCamera PreAlignCamera { get; set; } = null;
+
+        private LAFCtrl LAFCtrl { get; set; } = null;
+
+        private LightCtrlHandler LightCtrlHandler { get; set; } = null;
+
         private Task SeqTask { get; set; }
 
         private CancellationTokenSource SeqTaskCancellationTokenSource { get; set; }
 
         private SeqStep SeqStep { get; set; } = SeqStep.SEQ_IDLE;
-        #endregion
 
-        #region 속성
         private MainAlgorithmTool AlgorithmTool = new MainAlgorithmTool();
 
         private CogImage8Grey VirtualLeftImage = null;
@@ -60,42 +69,98 @@ namespace ATT_UT_Remodeling
         #region 메서드
         #endregion
 
-        public void SeqRun()
+        public void StartSeqTask()
         {
-            if (ModelManager.Instance().CurrentModel == null)
-                return;
-
-            PlcControlManager.Instance().MachineStatus = MachineStatus.RUN;
-
             if (SeqTask != null)
-            {
-                SeqStep = SeqStep.SEQ_START;
                 return;
-            }
 
             SeqTaskCancellationTokenSource = new CancellationTokenSource();
             SeqTask = new Task(SeqTaskAction, SeqTaskCancellationTokenSource.Token);
             SeqTask.Start();
         }
 
+        public void StopSeqTask()
+        {
+            if (SeqTask != null)
+            {
+                SeqTaskCancellationTokenSource.Cancel();
+                SeqTask.Wait();
+                SeqTask = null;
+            }
+        }
+
+        public void Initialize()
+        {
+            PreAlignCamera = AreaCameraManager.Instance().GetAreaCamera("PreAlign");
+
+            LAFCtrl = LAFManager.Instance().GetLAF("Laf").LafCtrl;
+
+            LightCtrlHandler = DeviceManager.Instance().LightCtrlHandler;
+
+            StartSeqTask();
+        }
+
+        public void Release()
+        {
+            StopDevice();
+            StopSeqTask();
+        }
+
+        private void StopDevice()
+        {
+            // Light off
+            DeviceManager.Instance().LightCtrlHandler.TurnOff();
+            WriteLog("PreAlign Light Off.");
+
+            LAFManager.Instance().GetLAF("Laf").LafCtrl.SetTrackingOnOFF(false);
+            WriteLog("LAF AutoFocus Off.");
+
+            // Camera stop
+            LineCameraManager.Instance().Stop("LineCamera");
+            WriteLog("LineCamera Stop Grab.");
+
+            AreaCameraManager.Instance().Stop("PreAlign");
+            WriteLog("AreaCamera Stop Grab.");
+        }
+
+        public void SeqRun()
+        {
+            if (ModelManager.Instance().CurrentModel == null)
+                return;
+
+            PlcControlManager.Instance().MachineStatus = MachineStatus.RUN;
+            SeqStep = SeqStep.SEQ_INIT;
+            WriteLog("Start PreAlign Sequence.");
+            //if (SeqTask != null)
+            //{
+            //    SeqStep = SeqStep.SEQ_START;
+            //    return;
+            //}
+
+            //SeqTaskCancellationTokenSource = new CancellationTokenSource();
+            //SeqTask = new Task(SeqTaskAction, SeqTaskCancellationTokenSource.Token);
+            //SeqTask.Start();
+        }
+
         public void SeqStop()
         {
             PlcControlManager.Instance().MachineStatus = MachineStatus.STOP;
+            SeqStep = SeqStep.SEQ_IDLE;
 
-            var areaCamera = AreaCameraManager.Instance().GetAppsCamera("PreAlign");
-            areaCamera.StopGrab();
-            AreaCameraManager.Instance().GetAreaCamera("PreAlign").StopGrab();
+            //var areaCamera = AreaCameraManager.Instance().GetAppsCamera("PreAlign");
+            //areaCamera.StopGrab();
+            //AreaCameraManager.Instance().GetAreaCamera("PreAlign").StopGrab();
 
-            // 조명 off
-            LAFManager.Instance().GetLAF("Laf").LafCtrl.SetTrackingOnOFF(false);
-            WriteLog("AutoFocus Off.");
+            //// 조명 off
+            //LAFManager.Instance().GetLAF("Laf").LafCtrl.SetTrackingOnOFF(false);
+            //WriteLog("AutoFocus Off.");
 
-            if (SeqTask == null)
-                return;
+            //if (SeqTask == null)
+            //    return;
 
-            SeqTaskCancellationTokenSource.Cancel();
-            SeqTask.Wait();
-            SeqTask = null;
+            //SeqTaskCancellationTokenSource.Cancel();
+            //SeqTask.Wait();
+            //SeqTask = null;
 
             WriteLog("Stop Sequence.");
         }
@@ -111,14 +176,9 @@ namespace ATT_UT_Remodeling
                 // 작업 취소
                 if (cancellationToken.IsCancellationRequested)
                 {
+                    StopDevice();
+
                     SeqStep = SeqStep.SEQ_IDLE;
-
-                    // Light off
-                    DeviceManager.Instance().LightCtrlHandler.TurnOff();
-
-                    // Camera stop
-                    LineCameraManager.Instance().Stop("LineCamera");
-                    AreaCameraManager.Instance().Stop("PreAlign");
                     break;
                 }
 
@@ -137,16 +197,6 @@ namespace ATT_UT_Remodeling
             if (unit == null)
                 return;
 
-            var areaCamera = AreaCameraManager.Instance().GetAreaCamera("PreAlign");
-            if (areaCamera == null)
-                return;
-
-            var laf = LAFManager.Instance().GetLAF("Laf").LafCtrl;
-            if (laf == null)
-                return;
-
-            var light = DeviceManager.Instance().LightCtrlHandler;
-            
             string systemLogMessage = string.Empty;
             string errorMessage = string.Empty;
 
@@ -157,21 +207,20 @@ namespace ATT_UT_Remodeling
                     break;
 
                 case SeqStep.SEQ_INIT:
-                  
-                    light.TurnOff();
+                    LightCtrlHandler.TurnOff();
                     WriteLog("Light Off.");
 
                     PlcControlManager.Instance().ClearAlignData();
                     WriteLog("Clear PLC Data.");
 
-                    laf.SetTrackingOnOFF(false);
+                    LAFCtrl.SetTrackingOnOFF(false);
                     WriteLog("LAF Off.");
 
-                    var camera = areaCamera.Camera;
-                    camera.Stop();
-                    WriteLog($"Set Camera Property. Expose : {camera.Exposure}, AnalogGain : {camera.AnalogGain}");
+                    PreAlignCamera.Camera.Stop();
+                    WriteLog($"Set Camera Property. Expose : {PreAlignCamera.Camera.Exposure}, AnalogGain : {PreAlignCamera.Camera.AnalogGain}");
 
                     // CELL ID 넣는곳이 없음
+                    WriteLog("Wait PreAlign Start Signal From PLC.", true);
                     SeqStep = SeqStep.SEQ_WAITING;
                     break;
 
@@ -201,14 +250,14 @@ namespace ATT_UT_Remodeling
                     else
                     {
                         // Light On
-                        light.TurnOn(unit.PreAlign.RightLightParam);
+                        LightCtrlHandler.TurnOn(unit.PreAlign.RightLightParam);
                         Thread.Sleep(100);
                         WriteLog("Left Prealign Light On.");
 
                         // Grab
                         if(ConfigSet.Instance().Operation.VirtualMode == false)
                         {
-                            var preAlignRightImage = GetAreaCameraImage(areaCamera.Camera) as CogImage8Grey;
+                            var preAlignRightImage = GetAreaCameraImage(PreAlignCamera.Camera) as CogImage8Grey;
                             AppsPreAlignResult.Instance().Right.CogImage = preAlignRightImage;
                             AppsPreAlignResult.Instance().Right.MatchResult = RunPreAlignMark(unit, preAlignRightImage, MarkDirection.Right);
                         }
@@ -255,6 +304,7 @@ namespace ATT_UT_Remodeling
                             SeqStep = SeqStep.SEQ_PREALIGN_L;
                         }
                     }
+
                     break;
 
                 case SeqStep.SEQ_PREALIGN_L:
@@ -264,14 +314,14 @@ namespace ATT_UT_Remodeling
                     else
                     {
                         // Light On
-                        light.TurnOn(unit.PreAlign.LeftLightParam);
+                        LightCtrlHandler.TurnOn(unit.PreAlign.LeftLightParam);
                         Thread.Sleep(100);
                         WriteLog("Left PreAlign Light On.", true);
 
                         // Grab
                         if (ConfigSet.Instance().Operation.VirtualMode == false)
                         {
-                            var preAlignLeftImage = GetAreaCameraImage(areaCamera.Camera);
+                            var preAlignLeftImage = GetAreaCameraImage(PreAlignCamera.Camera);
                             AppsPreAlignResult.Instance().Left.CogImage = preAlignLeftImage;
                             AppsPreAlignResult.Instance().Left.MatchResult = RunPreAlignMark(unit, preAlignLeftImage, MarkDirection.Left);
                         }
@@ -322,11 +372,12 @@ namespace ATT_UT_Remodeling
                             SeqStep = SeqStep.SEQ_SEND_PREALIGN_DATA;
                         }
                     }
+
                     break;
 
                 case SeqStep.SEQ_SEND_PREALIGN_DATA:
 
-                    light.TurnOff();
+                    LightCtrlHandler.TurnOff();
                     WriteLog("PreAlign Light Off.",true);
 
                     if (RunPreAlign() == true)
@@ -398,8 +449,10 @@ namespace ATT_UT_Remodeling
 
                     Thread.Sleep(300);
 
-                    SeqStep = SeqStep.SEQ_IDLE;
+                    AppsStatus.Instance().IsPreAlignRunnerFlagFromPlc = false;
+                    SeqStep = SeqStep.SEQ_INIT;
                     break;
+
                 default:
                     break;
             }

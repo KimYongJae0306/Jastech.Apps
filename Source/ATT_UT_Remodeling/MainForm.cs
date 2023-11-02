@@ -58,6 +58,10 @@ namespace ATT_UT_Remodeling
 
         public ATTInspModelService ATTInspModelService { get; set; } = new ATTInspModelService();
 
+        private Task CheckSafetyDoorlockTask { get; set; }
+
+        private CancellationTokenSource CancelSafetyDoorlockTask { get; set; }
+
         public ManualJudgeForm ManualJudgeForm { get; set; } = null;
         #endregion
 
@@ -113,6 +117,8 @@ namespace ATT_UT_Remodeling
             tmrUpdateStates.Start();
             StartVirtualInspTask();
             SystemManager.Instance().InitializeInspRunner();
+
+            SystemManager.Instance().InitializePreAlignRunner();
             SystemManager.Instance().AddSystemLogMessage("Start Program.");
 
             PlcControlManager.Instance().WriteVersion();
@@ -121,11 +127,49 @@ namespace ATT_UT_Remodeling
             ManualJudgeForm.ManualJudmentHandler += MainForm_ManualJudgmentHandler;
             ManualJudgeForm.Show();
             ManualJudgeForm.Hide();
+
+            if (ConfigSet.Instance().Operation.VirtualMode == false)
+            {
+                CancelSafetyDoorlockTask = new CancellationTokenSource();
+                CheckSafetyDoorlockTask = new Task(CheckDoorOpenedLoop, CancelSafetyDoorlockTask.Token);
+                CheckSafetyDoorlockTask.Start();
+            }
         }
 
         private void MainForm_CalibrationRunnerHandler(UnitName unitName, CalibrationMode calibrationMode)
         {
             SystemManager.Instance().StartCalibration(unitName, calibrationMode);
+        }
+
+        private bool MainForm_MoveEventHandler(PlcCommand plcCommand, TeachingPosType teachingPosType, out string alarmMessage)
+        {
+            return SystemManager.Instance().PlcScenarioMoveTo(plcCommand, teachingPosType, out alarmMessage);
+        }
+
+        private bool MainForm_OriginAllEvent()
+        {
+            var inspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
+            var teachingPos = inspModel.GetUnit(UnitName.Unit0).GetTeachingInfo(TeachingPosType.Stage1_Scan_Start);
+            var laf = LAFManager.Instance().GetLAF("Laf");
+
+            ProgressForm progressForm = new ProgressForm("Homing All Axes", ProgressForm.RunMode.Batch, true);
+            progressForm.Add($"Axis X Homing", SystemManager.Instance().AxisHoming, AxisName.X, SystemManager.Instance().StopAxisHoming);
+
+            laf.SetHomeStandbyPosition(teachingPos.GetTargetPosition(AxisName.Z0));
+            progressForm.Add($"Axis Z1 (Akkon LAF) homing", laf.HomeSequenceAction, laf.StopHomeSequence);
+            progressForm.ShowDialog();
+
+            return progressForm.IsSuccess;
+        }
+
+        private void MainForm_PreAlignRunnerHandler(bool isStart)
+        {
+            AppsStatus.Instance().IsPreAlignRunnerFlagFromPlc = isStart;
+        }
+
+        private void MainForm_InspRunnerHandler(bool isStart)
+        {
+            AppsStatus.Instance().IsInspRunnerFlagFromPlc = isStart;
         }
 
         private void AddControls()
@@ -151,37 +195,6 @@ namespace ATT_UT_Remodeling
             PageLabelList.Add(lblTeachingPage);
             PageLabelList.Add(lblDataPage);
             PageLabelList.Add(lblLogPage);
-        }
-
-        private bool MainForm_OriginAllEvent()
-        {
-            var inspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
-            var teachingPos = inspModel.GetUnit(UnitName.Unit0).GetTeachingInfo(TeachingPosType.Stage1_Scan_Start);
-            var laf = LAFManager.Instance().GetLAF("Laf");
-
-            ProgressForm progressForm = new ProgressForm("Homing All Axes", ProgressForm.RunMode.Batch, true);
-            progressForm.Add($"Axis X Homing", SystemManager.Instance().AxisHoming, AxisName.X, SystemManager.Instance().StopAxisHoming);
-
-            laf.SetHomeStandbyPosition(teachingPos.GetTargetPosition(AxisName.Z0));
-            progressForm.Add($"Axis Z1 (Akkon LAF) homing", laf.HomeSequenceAction, laf.StopHomeSequence);
-            progressForm.ShowDialog();
-
-            return progressForm.IsSuccess;
-        }
-
-        private bool MainForm_MoveEventHandler(PlcCommand plcCommand, TeachingPosType teachingPosType, out string alarmMessage)
-        {
-            return SystemManager.Instance().PlcScenarioMoveTo(plcCommand, teachingPosType, out alarmMessage);
-        }
-
-        private void MainForm_PreAlignRunnerHandler(bool isStart)
-        {
-            AppsStatus.Instance().IsPreAlignRunnerFlagFromPlc = isStart;
-        }
-
-        private void MainForm_InspRunnerHandler(bool isStart)
-        {
-            AppsStatus.Instance().IsInspRunnerFlagFromPlc = isStart;
         }
 
         private void ModelPageControl_ApplyModelEventHandler(string modelName)
@@ -327,11 +340,23 @@ namespace ATT_UT_Remodeling
 
             if (PlcControlManager.Instance().MachineStatus == MachineStatus.RUN)
             {
+                if (user.Type == AuthorityType.Maker)
+                {
+                    lblLogPageImage.Enabled = true;
+                    lblLogPage.Enabled = true;
+                    lblDataPageImage.Enabled = true;
+                    lblDataPage.Enabled = true;
+                }
+                else
+                {
+                    lblLogPageImage.Enabled = false;
+                    lblLogPage.Enabled = false;
+                    lblDataPageImage.Enabled = false;
+                    lblDataPage.Enabled = false;
+                }
+
                 lblTeachingPageImage.Enabled = false;
                 lblTeachingPage.Enabled = false;
-                lblDataPageImage.Enabled = false;
-                lblDataPage.Enabled = false;
-                lblLogPage.Enabled = false;
             }
             else
             {
@@ -348,6 +373,7 @@ namespace ATT_UT_Remodeling
 
                 lblDataPageImage.Enabled = true;
                 lblDataPage.Enabled = true;
+                lblLogPageImage.Enabled = true;
                 lblLogPage.Enabled = true;
             }
         }
@@ -443,17 +469,21 @@ namespace ATT_UT_Remodeling
             //Application.ExitThread();
         }
 
-
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
             tmrMainForm.Stop();
             tmrUpdateStates.Stop();
+            CancelSafetyDoorlockTask?.Cancel();
             StopVirtualInspTask();
 
             SystemManager.Instance().ReleaseInspRunner();
             SystemManager.Instance().StopRun();
 
+            SystemManager.Instance().ReleasePreAlignRunner();
+            SystemManager.Instance().StopRun();
+
             PlcControlManager.Instance().WritePcVisionStatus(MachineStatus.STOP);
+
             LAFManager.Instance().Release();
             PlcControlManager.Instance().Release();
             PlcScenarioManager.Instance().Release();
@@ -474,6 +504,7 @@ namespace ATT_UT_Remodeling
                             return true;
                         }
                         break;
+
                     case Keys.S:
                         if ((keyData & Keys.Control) != 0)
                         {
@@ -483,6 +514,7 @@ namespace ATT_UT_Remodeling
                         break;
                 }
             }
+
             return base.ProcessCmdKey(ref msg, keyData);
         }
 
@@ -503,7 +535,7 @@ namespace ATT_UT_Remodeling
             OpenFileDialog dialog = new OpenFileDialog();
             dialog.Multiselect = true;
 
-            if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            if (dialog.ShowDialog() == DialogResult.OK)
             {
                 _virtualImageCount = 0;
                 string[] fileNames = dialog.FileNames;
@@ -534,6 +566,7 @@ namespace ATT_UT_Remodeling
                 form.ShowDialog();
                 return;
             }
+
             OpenFileDialog dialog = new OpenFileDialog();
             dialog.Multiselect = true;
 
@@ -555,6 +588,7 @@ namespace ATT_UT_Remodeling
                     if (fileName.Contains("_Right"))
                         SystemManager.Instance().SetRightPreAlignImage(fileName);
                 }
+
                 AppsStatus.Instance().IsPreAlignRunnerFlagFromPlc = true;
             }
         }
@@ -630,6 +664,36 @@ namespace ATT_UT_Remodeling
             }
         }
 
+        public void CheckDoorOpenedLoop()
+        {
+            while (true)
+            {
+                if (CancelSafetyDoorlockTask.IsCancellationRequested)
+                    break;
+
+                if (PlcControlManager.Instance().GetValue(PlcCommonMap.PLC_DoorStatus) == "2" && PlcControlManager.Instance().IsDoorOpened == false)
+                {
+                    PlcControlManager.Instance().IsDoorOpened = true;
+
+                    MotionManager.Instance().GetAxisHandler(AxisHandlerName.Handler0).StopMove();
+                    LAFManager.Instance().GetLAF("Laf").LafCtrl.SetMotionStop();
+
+                    SystemManager.Instance().SetStopMode();
+                    lblDoorlockState.BackColor = Color.Red;
+                    lblDoorlockState.ForeColor = Color.Yellow;
+                }
+                else if (PlcControlManager.Instance().GetValue(PlcCommonMap.PLC_DoorStatus) != "2" && PlcControlManager.Instance().IsDoorOpened == true)
+                {
+                    PlcControlManager.Instance().IsDoorOpened = false;
+                    SystemManager.Instance().SetRunMode();
+                    lblDoorlockState.BackColor = BackColor;
+                    lblDoorlockState.ForeColor = BackColor;
+                }
+
+                Thread.Sleep(500);
+            }
+        }
+
         private string GetVirtualImagePath()
         {
             lock (VirtualImagePathQueue)
@@ -646,21 +710,19 @@ namespace ATT_UT_Remodeling
             return isNormalState ? Resources.Circle_Green : Resources.Circle_Red;
         }
 
-        private void picLogo_Click(object sender, EventArgs e)
+        private void lblDoorlockState_Click(object sender, EventArgs e)
         {
-            if(UserManager.Instance().CurrentUser.Type == AuthorityType.Maker)
+            if (PlcControlManager.Instance().MachineStatus != MachineStatus.RUN)
+                return;
+            if (UserManager.Instance().CurrentUser.Type != AuthorityType.Maker)
+                return;
+
+            if (AppsStatus.Instance().IsInspRunnerFlagFromPlc == false)
             {
-                if (PlcControlManager.Instance().MachineStatus != MachineStatus.RUN)
-                    return;
-
-                if (AppsStatus.Instance().IsInspRunnerFlagFromPlc == false)
-                {
-                    MessageYesNoForm form = new MessageYesNoForm();
-                    form.Message = "Would you like to do a test run?";
-
-                    if (form.ShowDialog() == DialogResult.Yes)
-                        AppsStatus.Instance().IsInspRunnerFlagFromPlc = true;
-                }
+                MessageYesNoForm form = new MessageYesNoForm();
+                form.Message = "Would you like to do a test run?";
+                if (form.ShowDialog() == DialogResult.Yes)
+                    AppsStatus.Instance().IsInspRunnerFlagFromPlc = true;
             }
         }
 
@@ -700,6 +762,11 @@ namespace ATT_UT_Remodeling
 
         private void lblMachineName_Click(object sender, EventArgs e)
         {
+            ManualMatchingForm tt = new ManualMatchingForm();
+            tt.AreaCamera = AreaCameraManager.Instance().GetAppsCamera("PreAlign");
+            tt.Show();
+            return;
+
             var inspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
 
             if (inspModel == null)
