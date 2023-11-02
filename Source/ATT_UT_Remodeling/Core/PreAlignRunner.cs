@@ -26,6 +26,7 @@ using Jastech.Apps.Winform.Core;
 using ATT_UT_Remodeling.Core.Data;
 using Emgu.CV;
 using System.Windows.Forms;
+using Jastech.Apps.Winform.UI.Forms;
 
 namespace ATT_UT_Remodeling
 {
@@ -218,7 +219,28 @@ namespace ATT_UT_Remodeling
                         }
 
                         if (AppsPreAlignResult.Instance().Right.MatchResult == null)
-                            SeqStep = SeqStep.SEQ_ERROR;
+                        {
+                            ManualMatchingForm Manualform = new ManualMatchingForm();
+                            Manualform.SetMarkDirection(MarkDirection.Right);
+                            if (ConfigSet.Instance().Operation.VirtualMode == true)
+                                Manualform.SetImage(VirtualRightImage);
+                            Manualform.ShowDialog();
+
+                            if (Manualform.DialogResult == DialogResult.OK)
+                            {
+                                CogTransform2DLinear manualOrigin = Manualform.GetOriginPosition();
+                                VisionProPatternMatchingResult patternResult = new VisionProPatternMatchingResult();
+                                PointF temp = new PointF();
+                                temp.X = (float)manualOrigin.TranslationX;
+                                temp.Y = (float)manualOrigin.TranslationY;
+                                patternResult.MaxMatchPos.FoundPos = temp;
+                                AppsPreAlignResult.Instance().Right.MatchResult = patternResult;
+                            }
+                            else
+                            {
+                                SeqStep = SeqStep.SEQ_ERROR;
+                            }
+                        }
                         else
                         {
                             WriteLog("Complete PreAlign Right Mark Search.", true);
@@ -259,8 +281,30 @@ namespace ATT_UT_Remodeling
                             AppsPreAlignResult.Instance().Left.MatchResult = RunPreAlignMark(unit, VirtualLeftImage, MarkDirection.Left);
                         }
 
-                        if (AppsPreAlignResult.Instance().Right.MatchResult == null)
-                            SeqStep = SeqStep.SEQ_ERROR;
+                        if (AppsPreAlignResult.Instance().Left.MatchResult == null)
+                        {                   
+                            ManualMatchingForm Manualform = new ManualMatchingForm();
+                            Manualform.SetMarkDirection(MarkDirection.Left);
+                            if (ConfigSet.Instance().Operation.VirtualMode == true)
+                                Manualform.SetImage(VirtualLeftImage);
+                            Manualform.ShowDialog();
+
+                            if(Manualform.DialogResult == DialogResult.OK)
+                            {
+                                CogTransform2DLinear manualOrigin = Manualform.GetOriginPosition();
+                                VisionProPatternMatchingResult patternResult = new VisionProPatternMatchingResult();
+                                PointF temp = new PointF();
+                                temp.X = (float)manualOrigin.TranslationX;
+                                temp.Y = (float)manualOrigin.TranslationY;
+                                patternResult.MaxMatchPos.FoundPos = temp;
+                                AppsPreAlignResult.Instance().Left.MatchResult = patternResult;
+                            }
+                            else
+                            {
+                                SeqStep = SeqStep.SEQ_ERROR;
+                            }
+                        }
+
                         else
                         {
                             WriteLog("Complete PreAlign Left Mark Search.", true);

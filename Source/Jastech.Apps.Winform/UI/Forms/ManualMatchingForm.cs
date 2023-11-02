@@ -21,6 +21,7 @@ using Cognex.VisionPro;
 using static Jastech.Framework.Device.Motions.AxisMovingParam;
 using Jastech.Framework.Winform.VisionPro.Helper;
 using Cognex.VisionPro.Display;
+using Jastech.Framework.Imaging.VisionPro.VisionAlgorithms.Parameters;
 
 namespace Jastech.Apps.Winform.UI.Forms
 {
@@ -31,9 +32,13 @@ namespace Jastech.Apps.Winform.UI.Forms
         #endregion
 
         #region 속성
-        private CogTeachingDisplayControl Display { get; set; } = null;
+        private CogDisplayControl Display { get; set; } = null;
+
+        private CogRecordDisplay cogPattern { get; set; } = null;
 
         private LightControl LightControl { get; set; } = null;
+
+        private VisionProPointMarkerParam PointMarkerParam { get; set; } = null;
 
         public AreaCamera AreaCamera { get; set; } = null;
 
@@ -46,6 +51,8 @@ namespace Jastech.Apps.Winform.UI.Forms
         public MarkDirection MarkDirection { get; set; } = MarkDirection.Left;
 
         public MarkName MarkName { get; set; } = MarkName.Main;
+
+        public CogTransform2DLinear OriginPoint { get; set; }
         #endregion
 
         #region 이벤트
@@ -64,6 +71,20 @@ namespace Jastech.Apps.Winform.UI.Forms
         #endregion
 
         #region 메서드
+        public CogTransform2DLinear GetOriginPosition()
+        {
+            OriginPoint = PointMarkerParam.GetOriginPoint();
+            return OriginPoint;
+        }
+        public void SetMarkDirection(MarkDirection PrealignMarkDirection)
+        {
+            MarkDirection = PrealignMarkDirection;
+        }
+        public void SetImage(ICogImage image)
+        {
+            Display.SetImage(image);
+        }
+
         private void ManualMatchingForm_Load(object sender, EventArgs e)
         {
             TeachingData.Instance().UpdateTeachingData();
@@ -73,12 +94,28 @@ namespace Jastech.Apps.Winform.UI.Forms
             AddControls();
 
             // TeachingUIManager 참조
-            TeachingUIManager.Instance().TeachingDisplayControl = Display;
-            AreaCamera.OnImageGrabbed += AreaCamera_OnImageGrabbed;
+            //TeachingUIManager.Instance().TeachingDisplayControl = Display;
 
+            AreaCamera.OnImageGrabbed += AreaCamera_OnImageGrabbed;
             LoadPatternImage();
+
+            var param = CurrentUnit.GetPreAlignMark(MarkDirection, MarkName.Main);
+
+            if (param != null)
+            {
+                CogTransform2DLinear OriginPosition = param.InspParam.GetOrigin();
+                DrawOriginPointMark(Display, new PointF((float)OriginPosition.TranslationX, (float)OriginPosition.TranslationY), 200);
+            }
+            else
+                DrawOriginPointMark(Display, new PointF(100, 100), 200);
         }
 
+        private void DrawOriginPointMark(CogDisplayControl display, PointF centerPoint, int size)
+        {
+            display.ClearGraphic();
+            PointMarkerParam.SetOriginPoint(Convert.ToSingle(centerPoint.X), Convert.ToSingle(centerPoint.Y), size);
+            display.SetInteractiveGraphics("tool", PointMarkerParam.GetCurrentRecord());
+        }
         private void SetPitch(int pitch)
         {
             _pitch = pitch;
@@ -86,11 +123,11 @@ namespace Jastech.Apps.Winform.UI.Forms
 
         private void AddControls()
         {
-            Display = new CogTeachingDisplayControl();
+            Display = new CogDisplayControl();
             Display.Dock = DockStyle.Fill;
             Display.DeleteEventHandler += Display_DeleteEventHandler;
             pnlDisplay.Controls.Add(Display);
-
+   
             LightControl = new LightControl();
             LightControl.Dock = DockStyle.Fill;
             LightControl.SetParam(DeviceManager.Instance().LightCtrlHandler, CurrentUnit.PreAlign.LeftLightParam);
@@ -112,7 +149,7 @@ namespace Jastech.Apps.Winform.UI.Forms
         {
             if (GetOriginImage() != null)
             {
-                CogDisplayHelper.DisposeDisplay(cogPatternDisplay);
+                CogDisplayHelper.DisposeDisplay(cogPattern);
 
                 ICogImage originImage = GetOriginImageHandler();
 
@@ -120,8 +157,8 @@ namespace Jastech.Apps.Winform.UI.Forms
                 if (preAlignMarkParam.Train(originImage))
                 {
                     DisposePatternDisplay();
-                    cogPatternDisplay.Image = preAlignMarkParam.GetTrainedPatternImage();
-                    cogPatternDisplay.StaticGraphics.Add(preAlignMarkParam.GetOrigin() as ICogGraphic, "Origin");
+                    cogPattern.Image = preAlignMarkParam.GetTrainedPatternImage();
+                    cogPattern.StaticGraphics.Add(preAlignMarkParam.GetOrigin() as ICogGraphic, "Origin");
                 }
             }
         }
@@ -156,31 +193,37 @@ namespace Jastech.Apps.Winform.UI.Forms
 
         private void lblMoveUp_Click(object sender, EventArgs e)
         {
-
+            float moveY = (float)PointMarkerParam.GetOriginPoint().TranslationY - _pitch;
+            DrawOriginPointMark(Display, new PointF((float)PointMarkerParam.GetOriginPoint().TranslationX, moveY), 200);
         }
 
         private void lblMoveLeft_Click(object sender, EventArgs e)
         {
-
+            float moveX = (float)PointMarkerParam.GetOriginPoint().TranslationX - _pitch;
+            DrawOriginPointMark(Display, new PointF(moveX, (float)PointMarkerParam.GetOriginPoint().TranslationY), 200);
         }
 
         private void lblMoveRight_Click(object sender, EventArgs e)
         {
-
+            float moveX = (float)PointMarkerParam.GetOriginPoint().TranslationX + _pitch;
+            DrawOriginPointMark(Display, new PointF(moveX, (float)PointMarkerParam.GetOriginPoint().TranslationY), 200);
         }
 
         private void lblMoveDown_Click(object sender, EventArgs e)
         {
-
+            float moveY = (float)PointMarkerParam.GetOriginPoint().TranslationY + _pitch;
+            DrawOriginPointMark(Display, new PointF((float)PointMarkerParam.GetOriginPoint().TranslationX, moveY), 200);
         }
 
         private void lblApply_Click(object sender, EventArgs e)
         {
-
+            this.DialogResult = DialogResult.OK;
+            this.Close();
         }
 
         private void lblCancel_Click(object sender, EventArgs e)
         {
+            this.DialogResult = DialogResult.No;
             this.Close();
         }
         #endregion

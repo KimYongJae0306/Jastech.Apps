@@ -648,7 +648,7 @@ namespace ATT_UT_Remodeling
 
         private void picLogo_Click(object sender, EventArgs e)
         {
-            if(UserManager.Instance().CurrentUser.Type == AuthorityType.Maker)
+            if (UserManager.Instance().CurrentUser.Type == AuthorityType.Maker)
             {
                 if (PlcControlManager.Instance().MachineStatus != MachineStatus.RUN)
                     return;
