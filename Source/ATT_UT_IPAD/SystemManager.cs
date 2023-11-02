@@ -326,9 +326,8 @@ namespace ATT_UT_IPAD
                     alert.ShowDialog();
                     return;
                 }
+
                 Axis axisZ0 = MotionManager.Instance().GetAxis(AxisHandlerName.Handler0, AxisName.Z0);
-
-
             }
             
             if (PlcControlManager.Instance().MachineStatus != MachineStatus.RUN)
@@ -359,6 +358,7 @@ namespace ATT_UT_IPAD
                     SetStopMode();
             }
         }
+
         public void SetRunMode()
         {
             _inspRunner.SeqRun();

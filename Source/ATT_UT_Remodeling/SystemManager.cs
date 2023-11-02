@@ -243,19 +243,57 @@ namespace ATT_UT_Remodeling
 
         public void StartRun()
         {
+            if (ConfigSet.Instance().Operation.VirtualMode == false)
+            {
+                if (PlcControlManager.Instance().IsDoorOpened == true)
+                {
+                    MessageConfirmForm alert = new MessageConfirmForm();
+                    alert.Message = "Safety Doorlock is opened.\r\nPlease check the doorlock state";
+                    alert.ShowDialog();
+                    return;
+                }
+
+                bool isServoOnAxisX = MotionManager.Instance().IsEnable(AxisHandlerName.Handler0, AxisName.X);
+                if (isServoOnAxisX == false)
+                {
+                    MessageConfirmForm alert = new MessageConfirmForm();
+                    alert.Message = "AxisX Servo Off. Please Servo On.";
+                    alert.ShowDialog();
+                    return;
+                }
+                else
+                {
+                    //Check : Command Position 만들고 주석 해제
+                    Axis axisX = MotionManager.Instance().GetAxis(AxisHandlerName.Handler0, AxisName.X);
+
+                    //if(Math.Abs(axisX.GetActualPosition() - axisX.GetCommandPosition()) <= 1)
+                    //{
+                    //    MessageConfirmForm confirmForm = new MessageConfirmForm();
+                    //    confirmForm.Message = "AxisX Position is incorrect. Please Run Homming Sequence.";
+                    //    confirmForm.ShowDialog();
+                    //    return;
+                    //}
+                }
+
+                bool isServoOnAxisZ0 = MotionManager.Instance().IsEnable(AxisHandlerName.Handler0, AxisName.Z0);
+                if (isServoOnAxisZ0 == false)
+                {
+                    MessageConfirmForm alert = new MessageConfirmForm();
+                    alert.Message = "AxisZ0 Servo Off. Please Servo On.";
+                    alert.ShowDialog();
+                    return;
+                }
+
+                Axis axisZ0 = MotionManager.Instance().GetAxis(AxisHandlerName.Handler0, AxisName.Z0);
+            }
+
             if (PlcControlManager.Instance().MachineStatus != MachineStatus.RUN)
             {
                 MessageYesNoForm form = new MessageYesNoForm();
                 form.Message = "Do you want to Start Auto Mode?";
 
                 if (form.ShowDialog() == DialogResult.Yes)
-                {
-                    _preAlignRunner.SeqRun();
-                    _inspRunner.SeqRun();
-                    AddSystemLogMessage("Start Auto mode.");
-
-                    PlcControlManager.Instance().MachineStatus = MachineStatus.RUN;
-                }
+                    SetRunMode();
             }
         }
 
@@ -273,15 +311,24 @@ namespace ATT_UT_Remodeling
                 MessageYesNoForm form = new MessageYesNoForm();
                 form.Message = "Do you want to Stop Auto Mode?";
 
-                if (form.ShowDialog() == DialogResult.Yes)
-                {
-                    _preAlignRunner.SeqStop();
-                    _inspRunner.SeqStop();
-                    AddSystemLogMessage("Stop Auto Mode.");
 
-                    PlcControlManager.Instance().MachineStatus = MachineStatus.STOP;
-                }
+                if (form.ShowDialog() == DialogResult.Yes)
+                    SetStopMode();
             }
+        }
+
+        public void SetRunMode()
+        {
+            _inspRunner.SeqRun();
+            _preAlignRunner.SeqRun();
+            AddSystemLogMessage("Start Auto mode.");
+        }
+
+        public void SetStopMode()
+        {
+            _inspRunner.SeqStop();
+            _preAlignRunner.SeqStop();
+            AddSystemLogMessage("Stop Auto Mode.");
         }
 
         public void StartCalibration(UnitName unitName, CalibrationMode calibrationMode)
@@ -312,10 +359,20 @@ namespace ATT_UT_Remodeling
             _inspRunner.Release();
         }
 
+        public void InitializePreAlignRunner()
+        {
+            _preAlignRunner.Initialize();
+        }
+
+        public void ReleasePreAlignRunner()
+        {
+            _preAlignRunner.Release();
+        }
+
         public void SetLeftPreAlignImage(string filePath)
         {
             ICogImage cogImage = VisionProImageHelper.Load(filePath);
-             _preAlignRunner.SetPreAlignLeftImage(cogImage as CogImage8Grey);
+            _preAlignRunner.SetPreAlignLeftImage(cogImage as CogImage8Grey);
         }
 
         public void SetRightPreAlignImage(string filePath)
