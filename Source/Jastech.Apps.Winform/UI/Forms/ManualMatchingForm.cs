@@ -127,7 +127,7 @@ namespace Jastech.Apps.Winform.UI.Forms
             Display.Dock = DockStyle.Fill;
             Display.DeleteEventHandler += Display_DeleteEventHandler;
             pnlDisplay.Controls.Add(Display);
-   
+
             LightControl = new LightControl();
             LightControl.Dock = DockStyle.Fill;
             LightControl.SetParam(DeviceManager.Instance().LightCtrlHandler, CurrentUnit.PreAlign.LeftLightParam);

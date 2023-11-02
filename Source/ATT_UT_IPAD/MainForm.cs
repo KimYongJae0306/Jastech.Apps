@@ -530,6 +530,7 @@ namespace ATT_UT_IPAD
                 }
 
                 LoadImage(fileNames);
+                AppsStatus.Instance().IsInspRunnerFlagFromPlc = true;
             }
         }
 

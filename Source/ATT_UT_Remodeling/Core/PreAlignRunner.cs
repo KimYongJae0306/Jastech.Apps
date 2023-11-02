@@ -281,15 +281,15 @@ namespace ATT_UT_Remodeling
                             AppsPreAlignResult.Instance().Left.MatchResult = RunPreAlignMark(unit, VirtualLeftImage, MarkDirection.Left);
                         }
 
-                        if (AppsPreAlignResult.Instance().Left.MatchResult == null)
-                        {                   
+                        if (AppsPreAlignResult.Instance().Right.MatchResult == null)
+                        {
                             ManualMatchingForm Manualform = new ManualMatchingForm();
                             Manualform.SetMarkDirection(MarkDirection.Left);
                             if (ConfigSet.Instance().Operation.VirtualMode == true)
                                 Manualform.SetImage(VirtualLeftImage);
                             Manualform.ShowDialog();
 
-                            if(Manualform.DialogResult == DialogResult.OK)
+                            if (Manualform.DialogResult == DialogResult.OK)
                             {
                                 CogTransform2DLinear manualOrigin = Manualform.GetOriginPosition();
                                 VisionProPatternMatchingResult patternResult = new VisionProPatternMatchingResult();
