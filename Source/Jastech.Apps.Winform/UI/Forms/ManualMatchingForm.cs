@@ -2,26 +2,18 @@
 using Jastech.Framework.Winform.VisionPro.Controls;
 using Jastech.Framework.Winform;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using Jastech.Framework.Device.LAFCtrl;
 using Jastech.Apps.Structure.Data;
 using Jastech.Apps.Structure;
 using Jastech.Framework.Imaging.VisionPro;
 using Jastech.Framework.Device.Cameras;
-using Jastech.Framework.Winform.Controls;
 using Jastech.Framework.Winform.Helper;
 using Cognex.VisionPro;
-using static Jastech.Framework.Device.Motions.AxisMovingParam;
 using Jastech.Framework.Winform.VisionPro.Helper;
-using Cognex.VisionPro.Display;
 using Jastech.Framework.Imaging.VisionPro.VisionAlgorithms.Parameters;
+using Cognex.VisionPro.PMAlign;
 
 namespace Jastech.Apps.Winform.UI.Forms
 {
@@ -52,19 +44,15 @@ namespace Jastech.Apps.Winform.UI.Forms
 
         public MarkName MarkName { get; set; } = MarkName.Main;
 
-        public CogTransform2DLinear OriginPoint { get; set; }
+        public CogTransform2DLinear CogTransformOrigin { get; set; }
         #endregion
 
         #region 이벤트
-        public GetOriginImageDelegate GetOriginImageHandler;
-
         public event ManualMatchingEventHandler ManualMatchingHandler;
         #endregion
 
         #region 델리게이트
-        public delegate ICogImage GetOriginImageDelegate();
-
-        public delegate void ManualMatchingEventHandler(AreaCamera areaCamera, MarkDirection markDirection);
+        public delegate void ManualMatchingEventHandler(bool isManualMatchCompleted);
         #endregion
 
         #region 생성자
@@ -75,35 +63,6 @@ namespace Jastech.Apps.Winform.UI.Forms
         #endregion
 
         #region 메서드
-        public CogTransform2DLinear GetOriginPosition()
-        {
-            OriginPoint = PointMarkerParam.GetOriginPoint();
-            return OriginPoint;
-        }
-
-        public void SetParams(AreaCamera areaCamera, MarkDirection markDirection)
-        {
-            SetAreaCamera(areaCamera);
-            SetMarkDirection(markDirection);
-
-            // 트레인 이미지 불러오기
-        }
-
-        private void SetAreaCamera(AreaCamera areaCamera)
-        {
-            AreaCamera = AreaCamera;
-        }
-
-        private void SetMarkDirection(MarkDirection PrealignMarkDirection)
-        {
-            MarkDirection = PrealignMarkDirection;
-        }
-
-        public void SetImage(ICogImage image)
-        {
-            Display.SetImage(image);
-        }
-
         private void ManualMatchingForm_Load(object sender, EventArgs e)
         {
             TeachingData.Instance().UpdateTeachingData();
@@ -111,7 +70,7 @@ namespace Jastech.Apps.Winform.UI.Forms
 
             SetPitch(Convert.ToInt32(lblPitch.Text));
             AddControls();
-            
+
             // TeachingUIManager 참조
             //TeachingUIManager.Instance().TeachingDisplayControl = Display;
 
@@ -129,10 +88,56 @@ namespace Jastech.Apps.Winform.UI.Forms
             //    DrawOriginPointMark(Display, new PointF(100, 100), 200);
         }
 
-        public void RegisterAreaCameraEvent(AreaCamera areaCamera)
+        public void SetParams(UnitName unitName, AreaCamera areaCamera, MarkDirection markDirection)
+        {
+            SetUnit(unitName);
+            SetAreaCamera(areaCamera);
+            RegisterAreaCameraEvent(areaCamera);
+            SetMarkDirection(markDirection);
+            // 트레인 이미지 불러오기
+            LoadOriginPatternImage();
+        }
+
+        private void SetUnit(UnitName unitName)
+        {
+            UnitName = unitName;
+            TeachingData.Instance().UpdateTeachingData();
+            CurrentUnit = TeachingData.Instance().GetUnit(UnitName.ToString());
+        }
+
+        private void SetAreaCamera(AreaCamera areaCamera)
         {
             AreaCamera = areaCamera;
+        }
+
+        private void RegisterAreaCameraEvent(AreaCamera areaCamera)
+        {
             AreaCamera.OnImageGrabbed += AreaCamera_OnImageGrabbed;
+        }
+
+        private void SetMarkDirection(MarkDirection PrealignMarkDirection)
+        {
+            MarkDirection = PrealignMarkDirection;
+        }
+
+        public void SetImage(ICogImage image)
+        {
+            Display.SetImage(image);
+        }
+
+        public PointF GetOriginPoint()
+        {
+            PointF originPoint = new PointF();
+
+            originPoint.X = Convert.ToSingle(CogTransformOrigin.TranslationX);
+            originPoint.Y = Convert.ToSingle(CogTransformOrigin.TranslationY);
+
+            return originPoint;
+        }
+
+        private void SetOriginPoint()
+        {
+            CogTransformOrigin = PointMarkerParam.GetOriginPoint();
         }
 
         private void DrawOriginPointMark(CogDisplayControl display, PointF centerPoint, int size)
@@ -171,33 +176,25 @@ namespace Jastech.Apps.Winform.UI.Forms
             Display.SetImage(image);
         }
 
-        private void LoadPatternImage()
+        private void LoadOriginPatternImage()
         {
-            if (GetOriginImage() != null)
+            var currentParam = CurrentUnit.GetPreAlignMark(MarkDirection, MarkName.Main).InspParam;
+
+
+            cogPatternDisplay.InteractiveGraphics.Clear();
+            cogPatternDisplay.StaticGraphics.Clear();
+
+            CogDisplayHelper.DisposeDisplay(cogPatternDisplay);
+
+            if (currentParam.IsTrained())
             {
-                CogDisplayHelper.DisposeDisplay(PatternDisplay);
-
-                ICogImage originImage = GetOriginImageHandler();
-
-                var preAlignMarkParam = CurrentUnit.PreAlign.AlignParamList.Where(x => x.Direction == MarkDirection && x.Name == MarkName).FirstOrDefault().InspParam;
-                if (preAlignMarkParam.Train(originImage))
-                {
-                    DisposePatternDisplay();
-                    PatternDisplay.Image = preAlignMarkParam.GetTrainedPatternImage();
-                    PatternDisplay.StaticGraphics.Add(preAlignMarkParam.GetOrigin() as ICogGraphic, "Origin");
-                }
+                cogPatternDisplay.Image = null;
+                cogPatternDisplay.Image = currentParam.GetTrainedPatternImage();
+                CogPMAlignCurrentRecordConstants constants = CogPMAlignCurrentRecordConstants.TrainImage |
+                                                        CogPMAlignCurrentRecordConstants.TrainImageMask;
             }
-        }
-
-        private ICogImage GetOriginImage()
-        {
-            if (GetOriginImageHandler != null)
-            {
-                ICogImage originImage = GetOriginImageHandler();
-                return originImage;
-            }
-
-            return null;
+            else
+                DisposePatternDisplay();
         }
 
         private void DisposePatternDisplay()
@@ -243,13 +240,19 @@ namespace Jastech.Apps.Winform.UI.Forms
 
         private void lblApply_Click(object sender, EventArgs e)
         {
-            this.DialogResult = DialogResult.OK;
+            SetManualMatching();
+            ManualMatchingHandler?.Invoke(true);
             this.Close();
+        }
+
+        private void SetManualMatching()
+        {
+            SetOriginPoint();
         }
 
         private void lblCancel_Click(object sender, EventArgs e)
         {
-            this.DialogResult = DialogResult.No;
+            ManualMatchingHandler?.Invoke(false);
             this.Close();
         }
         #endregion

@@ -131,7 +131,7 @@ namespace ATT_UT_Remodeling
             ManualJudgeForm.Hide();
 
             ManualMatchingForm = new ManualMatchingForm();
-            //ManualMatchingForm.ManualMatchingHandler += MainForm_ManualMatchingHandler;
+            ManualMatchingForm.ManualMatchingHandler += MainForm_ManualMatchingHandler;
             ManualMatchingForm.Show();
             ManualMatchingForm.Hide();
 
@@ -767,7 +767,7 @@ namespace ATT_UT_Remodeling
             if (ManualMatchingForm == null)
                 ManualMatchingForm = new ManualMatchingForm();
 
-            ManualMatchingForm.SetParams(areaCamera, markDirection);
+            ManualMatchingForm.SetParams(UnitName.Unit0, areaCamera, markDirection);
 
             if (ManualMatchingForm.InvokeRequired)
             {
@@ -780,39 +780,18 @@ namespace ATT_UT_Remodeling
                 ManualMatchingForm.ShowDialog();
         }
 
-        //private void MainForm_ManualOkHandler(bool isManualOk)
-        //{
-        //    AppsStatus.Instance().IsManual_OK = isManualOk;
-        //}
-
-        public void MainForm_ManualMatchingHandler(AreaCamera areaCamera, MarkDirection markDirection)
+        public void MainForm_ManualMatchingHandler(bool isManualMatchCompleted)
         {
-            if (ManualMatchingForm == null)
-            {
-                ManualMatchingForm = new ManualMatchingForm();
-                ManualMatchingForm.AreaCamera = areaCamera;
-            }
+            AppsStatus.Instance().IsManualMatching_OK = isManualMatchCompleted;
+        }
 
-            ManualMatchingForm.MarkDirection = markDirection;
-
-            if (ManualMatchingForm.InvokeRequired)
-            {
-                ManualMatchingForm.Invoke(new MethodInvoker(delegate
-                {
-                    ManualMatchingForm.ShowDialog();
-                }));
-            }
-            else
-                ManualMatchingForm.ShowDialog();
+        public PointF GetManualMatchingOriginPoint()
+        {
+            return ManualMatchingForm.GetOriginPoint();
         }
 
         private void lblMachineName_Click(object sender, EventArgs e)
         {
-            ManualMatchingForm tt = new ManualMatchingForm();
-            tt.AreaCamera = AreaCameraManager.Instance().GetAppsCamera("PreAlign");
-            tt.Show();
-            return;
-
             var inspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
 
             if (inspModel == null)

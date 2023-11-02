@@ -269,7 +269,21 @@ namespace ATT_UT_Remodeling
 
                         if (AppsPreAlignResult.Instance().Right.MatchResult == null)
                         {
-                            SystemManager.Instance().ShowManualMatchingForm(PreAlignCamera, MarkDirection.Right);
+                            if (true /*메뉴얼매칭*/)
+                                SystemManager.Instance().ShowManualMatchingForm(PreAlignCamera, MarkDirection.Right);
+
+                            if (AppsStatus.Instance().IsManualMatching_OK)
+                            {
+                                VisionProPatternMatchingResult patternResult = new VisionProPatternMatchingResult();
+                               
+                                patternResult.MaxMatchPos.FoundPos = SystemManager.Instance().GetManualMatchingOrigin();
+                                AppsPreAlignResult.Instance().Right.MatchResult = patternResult;
+                            }
+                            else
+                            {
+                                SeqStep = SeqStep.SEQ_ERROR;
+                            }
+
                             //SystemManager.Instance().ShowManualMatchingForm(PreAlignCamera, MarkDirection.Right);
                             //if (ConfigSet.Instance().Operation.VirtualMode == true)
                             //    Manualform.SetImage(VirtualRightImage);
@@ -330,23 +344,16 @@ namespace ATT_UT_Remodeling
                             AppsPreAlignResult.Instance().Left.MatchResult = RunPreAlignMark(unit, VirtualLeftImage, MarkDirection.Left);
                         }
 
-                        if (AppsPreAlignResult.Instance().Right.MatchResult == null)
+                        if (AppsPreAlignResult.Instance().Left.MatchResult == null)
                         {
-                            ManualMatchingForm Manualform = new ManualMatchingForm();
-                            //Manualform.SetMarkDirection(MarkDirection.Left);
-                            if (ConfigSet.Instance().Operation.VirtualMode == true)
-                                Manualform.
-                                    SetImage(VirtualLeftImage);
-                            Manualform.ShowDialog();
+                            if (true /*메뉴얼매칭*/)
+                                SystemManager.Instance().ShowManualMatchingForm(PreAlignCamera, MarkDirection.Left);
 
-                            if (Manualform.DialogResult == DialogResult.OK)
+                            if (AppsStatus.Instance().IsManualMatching_OK)
                             {
-                                CogTransform2DLinear manualOrigin = Manualform.GetOriginPosition();
                                 VisionProPatternMatchingResult patternResult = new VisionProPatternMatchingResult();
-                                PointF temp = new PointF();
-                                temp.X = (float)manualOrigin.TranslationX;
-                                temp.Y = (float)manualOrigin.TranslationY;
-                                patternResult.MaxMatchPos.FoundPos = temp;
+
+                                patternResult.MaxMatchPos.FoundPos = SystemManager.Instance().GetManualMatchingOrigin();
                                 AppsPreAlignResult.Instance().Left.MatchResult = patternResult;
                             }
                             else

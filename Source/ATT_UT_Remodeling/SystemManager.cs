@@ -24,6 +24,7 @@ using Jastech.Framework.Winform.Forms;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Drawing;
 using System.IO;
 using System.Reflection;
 using System.Threading;
@@ -466,6 +467,11 @@ namespace ATT_UT_Remodeling
         public void ShowManualMatchingForm(AreaCamera areaCamera, MarkDirection markDirection)
         {
             _mainForm.ShowManualMatchingForm(areaCamera, markDirection);
+        }
+
+        public PointF GetManualMatchingOrigin()
+        {
+            return _mainForm.GetManualMatchingOriginPoint();
         }
         #endregion
     }

@@ -169,6 +169,7 @@ namespace Jastech.Apps.Winform.UI.Forms
                     pnlTeach.Controls.Add(VisionCalibrationControl);
                     break;
             }
+
             UpdateLightParam();
         }
 
@@ -203,6 +204,7 @@ namespace Jastech.Apps.Winform.UI.Forms
                 LightControl.UpdateSetParam(CalibLightParameter);
             }
         }
+
         private void ClearSelectedButton()
         {
             foreach (Control control in tlpTeachingItems.Controls)
