@@ -12,6 +12,9 @@ using Jastech.Framework.Util;
 using Jastech.Framework.Imaging.VisionPro.VisionAlgorithms.Results;
 using Jastech.Framework.Algorithms.Akkon.Results;
 using Jastech.Framework.Imaging.VisionPro;
+using Emgu.CV.CvEnum;
+using Emgu.CV;
+using System.Runtime.InteropServices;
 
 namespace Jastech.Apps.Structure.VisionTool
 {
@@ -720,6 +723,99 @@ namespace Jastech.Apps.Structure.VisionTool
             return (a * x + b * y + c) / Math.Sqrt(a * a + b * b);
         }
     }
+
+    public partial class MainAlgorithmTool
+    {
+        public void CompensatePanelMarkOrigin(ICogImage cogImage, TabMarkResult markResult, MarkDirection markDirection, int pixelBaseline, out PointF detectedEdgeCoord)
+        {
+            if (markResult.PanelMark.Judgement == Judgement.NG)
+            {
+                detectedEdgeCoord = new PointF();
+                return;
+            }
+
+            VisionProPatternMatchingResult foundedMark;
+            if (markDirection == MarkDirection.Left)
+                foundedMark = markResult.PanelMark.FoundedMark.Left;
+            else
+                foundedMark = markResult.PanelMark.FoundedMark.Right;
+
+            // Compensate mark origin X
+            detectedEdgeCoord = GetVerticalEdgeCoord(cogImage, foundedMark, markDirection);
+            double originDifference = detectedEdgeCoord.X - foundedMark.MaxMatchPos.FoundPos.X;
+            if (Math.Abs(originDifference) > pixelBaseline)
+            {
+                PointF compensatedCoord = new PointF((float)(foundedMark.MaxMatchPos.FoundPos.X + originDifference), foundedMark.MaxMatchPos.FoundPos.Y);
+                foundedMark.MaxMatchPos.FoundPos = compensatedCoord;
+                foundedMark.MaxMatchPos.ResultGraphics.Shapes.OfType<CogPointMarker>().First().X = compensatedCoord.X;
+            }
+        }
+
+        private PointF GetVerticalEdgeCoord(ICogImage cogImage, VisionProPatternMatchingResult matchedMark, MarkDirection markdirection, int threshold = 127)
+        {
+            try
+            {
+                var foundPos = matchedMark.MaxMatchPos.FoundPos;
+
+                // Create ROI
+                CogRectangle roi = VisionProImageHelper.CreateRectangle(foundPos.X, foundPos.Y + 25, width: 100, height: 50);
+
+                // Crop CogImage and convert to Mat
+                CogImage8Grey cropedImage = VisionProImageHelper.CropImage(cogImage, roi) as CogImage8Grey;
+                Mat matImage = Cog8GreyToMat(cropedImage);
+                cropedImage.Dispose();
+
+                // Processing Image
+                Mat avgResult = new Mat();
+                CvInvoke.Reduce(matImage, avgResult, ReduceDimension.SingleRow, ReduceType.ReduceAvg, matImage.Depth);
+                CvInvoke.Normalize(avgResult, avgResult, 0, 255, NormType.MinMax, matImage.Depth);
+                CvInvoke.Threshold(avgResult, avgResult, threshold, 255, ThresholdType.Binary);
+
+                // Convert Mat to byte array
+                byte[] convertedResultData = new byte[avgResult.Width * avgResult.Height];
+                Marshal.Copy(avgResult.DataPointer, convertedResultData, 0, convertedResultData.Length);
+
+                // Get 2nd derivative matrix from byte array
+                List<byte> derivedData = MathHelper.GetDerivedArray(convertedResultData, 2, exceptFirstElement: markdirection == MarkDirection.Left).ToList();
+
+                if (markdirection == MarkDirection.Left)
+                    derivedData.Reverse();
+
+                // Return Edge coordinate
+                int edgeIndex = derivedData.FindIndex(value => value == 255);
+                if (edgeIndex != -1)
+                {
+                    edgeIndex = markdirection == MarkDirection.Right ? edgeIndex : derivedData.Count - edgeIndex;
+                    double diffToRoiCenterX = (roi.Width / 2) - edgeIndex;
+                    return new PointF((float)(roi.CenterX - diffToRoiCenterX), (float)roi.CenterY);
+                }
+                else
+                    return new PointF();
+
+            }
+            catch (Exception ex)
+            {
+                Logger.Write(LogType.Error, $"{ex.Message}\r\n{ex.StackTrace}");
+                return new PointF();
+            }
+        }
+
+        private Mat Cog8GreyToMat(CogImage8Grey cogImage8Grey)
+        {
+            ICogImage8PixelMemory pixelMemory = cogImage8Grey.Get8GreyPixelMemory(CogImageDataModeConstants.Read, 0, 0, cogImage8Grey.Width, cogImage8Grey.Height);
+
+            Mat matImage = new Mat(pixelMemory.Height, pixelMemory.Stride, DepthType.Cv8U, 1);
+            int imageSize = pixelMemory.Stride * pixelMemory.Height;
+            int imageOffset = pixelMemory.Stride - pixelMemory.Width;       // Remove empty space
+            byte[] imageRawData = new byte[imageSize];
+
+            Marshal.Copy(pixelMemory.Scan0, imageRawData, 0, imageSize);
+            matImage.SetTo(imageRawData);
+
+            return new Mat(matImage, new Rectangle(0, 0, matImage.Width - imageOffset, matImage.Height));
+        }
+    }
+
     public class AlignmentResult
     {
         #region 속성

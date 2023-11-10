@@ -1,7 +1,10 @@
 ﻿using Cognex.VisionPro;
+using Cognex.VisionPro.Exceptions;
+using Cognex.VisionPro.ImageProcessing;
 using Emgu.CV;
 using Emgu.CV.CvEnum;
 using Emgu.CV.Structure;
+using Emgu.CV.Util;
 using Jastech.Apps.Structure;
 using Jastech.Apps.Structure.Data;
 using Jastech.Apps.Structure.Parameters;
@@ -22,6 +25,7 @@ using Jastech.Framework.Imaging;
 using Jastech.Framework.Imaging.Helper;
 using Jastech.Framework.Imaging.Result;
 using Jastech.Framework.Imaging.VisionPro;
+using Jastech.Framework.Imaging.VisionPro.VisionAlgorithms;
 using Jastech.Framework.Imaging.VisionPro.VisionAlgorithms.Results;
 using Jastech.Framework.Structure;
 using Jastech.Framework.Structure.Service;
@@ -30,6 +34,7 @@ using Jastech.Framework.Util;
 using Jastech.Framework.Util.Helper;
 using Jastech.Framework.Winform.Helper;
 using Jastech.Framework.Winform.VisionPro.Controls;
+using Jastech.Framework.Winform.VisionPro.Helper;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -43,6 +48,7 @@ using System.Security.Cryptography;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Windows.Forms;
+using System.Windows.Media.Media3D;
 
 namespace Jastech.Framework.Winform.Forms
 {
@@ -427,9 +433,9 @@ namespace Jastech.Framework.Winform.Forms
                 {
                     image = new Mat(dlg.FileName, ImreadModes.Grayscale);
                 }
-                else if(extension == ".jpg" || extension == ".jpeg")
+                else if (extension == ".jpg" || extension == ".jpeg")
                 {
-                    if(GetHalfFilePath(dlg.FileName, out string leftFilePath, out string rightFilePath))
+                    if (GetHalfFilePath(dlg.FileName, out string leftFilePath, out string rightFilePath))
                     {
                         Mat leftMatImage = new Mat(leftFilePath, ImreadModes.Grayscale);
                         Mat rightMatImage = new Mat(rightFilePath, ImreadModes.Grayscale);
@@ -497,7 +503,7 @@ namespace Jastech.Framework.Winform.Forms
                 leftFilePath = Path.Combine(dir, leftName);
             }
 
-            if(leftFilePath != "" && rightFilePath != "")
+            if (leftFilePath != "" && rightFilePath != "")
             {
                 bool isLeftExist = File.Exists(leftFilePath);
                 bool isRightExist = File.Exists(rightFilePath);
@@ -555,7 +561,7 @@ namespace Jastech.Framework.Winform.Forms
 
             LAFCtrl.SetTrackingOnOFF(true);
             Thread.Sleep(100);
-          
+
             DeviceManager.Instance().LightCtrlHandler.TurnOn(inspModel.GetUnit(UnitName).LightParam);
             Thread.Sleep(100);
 
@@ -918,7 +924,7 @@ namespace Jastech.Framework.Winform.Forms
             MainAlgorithmTool algorithmTool = new MainAlgorithmTool();
             TabInspResult tabInspResult = new TabInspResult();
 
-            if(UseAkkonTeaching && UseAlignTeaching == false)
+            if (UseAkkonTeaching && UseAlignTeaching == false)
                 algorithmTool.MainPanelMarkInspect(cogImage, CurrentTab, ref tabInspResult);
             else
                 algorithmTool.MainMarkInspect(cogImage, CurrentTab, ref tabInspResult, UseAlignCamMark);
@@ -934,9 +940,33 @@ namespace Jastech.Framework.Winform.Forms
                 form.ShowDialog();
             }
             display.ClearGraphic();
+            CalcOriginDistanceFromMark(display, tabInspResult, true);
             display.UpdateGraphic(GetMarkResultGrapics(tabInspResult));
         }
 
+        private void CalcOriginDistanceFromMark(CogDisplayControl display, TabInspResult tabInspResult, bool showEdges = false)
+        {
+            var cogImage = display.GetImage();
+
+            MainAlgorithmTool mainAlgorithmTool = new MainAlgorithmTool();
+            mainAlgorithmTool.CompensatePanelMarkOrigin(cogImage, tabInspResult.MarkResult, MarkDirection.Left, 0, out PointF leftEdge);
+            mainAlgorithmTool.CompensatePanelMarkOrigin(cogImage, tabInspResult.MarkResult, MarkDirection.Right, 0, out PointF rightEdge);
+
+            if (showEdges)
+            {
+                AddEdgeToDisplay(display, leftEdge, 100);
+                AddEdgeToDisplay(display, rightEdge, 100);
+            }
+        }
+
+        private void AddEdgeToDisplay(CogDisplayControl display, PointF anchor, double length, bool isVertical = true)
+        {
+            CogPolygon edge = new CogPolygon();
+            edge.Color = CogColorConstants.Yellow;
+            edge.AddVertex(anchor.X, anchor.Y, 0);
+            edge.AddVertex(anchor.X + (isVertical == false ? length : 0), anchor.Y + (isVertical == true ? length : 0), 0);
+            display.AddGraphics("Result", edge);
+        }
 
         public void InspectionAlign()
         {
