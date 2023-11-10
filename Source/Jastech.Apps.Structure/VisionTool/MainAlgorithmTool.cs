@@ -756,9 +756,10 @@ namespace Jastech.Apps.Structure.VisionTool
             try
             {
                 var foundPos = matchedMark.MaxMatchPos.FoundPos;
+                int offsetY = 25;
 
                 // Create ROI
-                CogRectangle roi = VisionProImageHelper.CreateRectangle(foundPos.X, foundPos.Y + 25, width: 100, height: 50);
+                CogRectangle roi = VisionProImageHelper.CreateRectangle(foundPos.X, foundPos.Y + offsetY, width: 100, height: 50);
 
                 // Crop CogImage and convert to Mat
                 CogImage8Grey cropedImage = VisionProImageHelper.CropImage(cogImage, roi) as CogImage8Grey;
@@ -787,7 +788,7 @@ namespace Jastech.Apps.Structure.VisionTool
                 {
                     edgeIndex = markdirection == MarkDirection.Right ? edgeIndex : derivedData.Count - edgeIndex;
                     double diffToRoiCenterX = (roi.Width / 2) - edgeIndex;
-                    return new PointF((float)(roi.CenterX - diffToRoiCenterX), (float)roi.CenterY);
+                    return new PointF((float)(roi.CenterX - diffToRoiCenterX), (float)roi.CenterY - offsetY);
                 }
                 else
                     return new PointF();

@@ -940,8 +940,9 @@ namespace Jastech.Framework.Winform.Forms
                 form.ShowDialog();
             }
             display.ClearGraphic();
-            CalcOriginDistanceFromMark(display, tabInspResult, true);
             display.UpdateGraphic(GetMarkResultGrapics(tabInspResult));
+
+            CalcOriginDistanceFromMark(display, tabInspResult, true);
         }
 
         private void CalcOriginDistanceFromMark(CogDisplayControl display, TabInspResult tabInspResult, bool showEdges = false)
@@ -954,17 +955,19 @@ namespace Jastech.Framework.Winform.Forms
 
             if (showEdges)
             {
-                AddEdgeToDisplay(display, leftEdge, 100);
-                AddEdgeToDisplay(display, rightEdge, 100);
+                AddEdgeToDisplay(display, leftEdge);
+                AddEdgeToDisplay(display, rightEdge);
             }
         }
 
-        private void AddEdgeToDisplay(CogDisplayControl display, PointF anchor, double length, bool isVertical = true)
+        private void AddEdgeToDisplay(CogDisplayControl display, PointF anchor, double length = 1)
         {
             CogPolygon edge = new CogPolygon();
             edge.Color = CogColorConstants.Yellow;
-            edge.AddVertex(anchor.X, anchor.Y, 0);
-            edge.AddVertex(anchor.X + (isVertical == false ? length : 0), anchor.Y + (isVertical == true ? length : 0), 0);
+            edge.AddVertex(anchor.X - length, anchor.Y, 0);
+            edge.AddVertex(anchor.X, anchor.Y - length, 0);
+            edge.AddVertex(anchor.X + length, anchor.Y, 0);
+            edge.AddVertex(anchor.X, anchor.Y + length, 0);
             display.AddGraphics("Result", edge);
         }
 
