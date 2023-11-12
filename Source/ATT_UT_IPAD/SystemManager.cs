@@ -485,7 +485,7 @@ namespace ATT_UT_IPAD
                 Logger.Write(LogType.Device, alarmMessage);
                 return false;
             }
-            var alignLAFCtrl = LAFManager.Instance().GetLAF("AkkonLaf").LafCtrl;
+            var alignLAFCtrl = LAFManager.Instance().GetLAF("AlignLaf").LafCtrl;
             if (MotionManager.Instance().MoveAxisZ(UnitName.Unit0, teachingPosType, alignLAFCtrl, AxisName.Z1) == false)
             {
                 alarmMessage = "Align AxisZ Moving Error.";
