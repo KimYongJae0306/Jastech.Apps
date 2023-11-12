@@ -344,7 +344,7 @@ namespace ATT_UT_IPAD.Core
                     break;
 
                 case SeqStep.SEQ_MOVE_START_POS:
-                    //if (AkkonLAFCtrl.Status.IsNegativeLimit == true || AlignLAFCtrl.Status.IsNegativeLimit == true)
+                    if (AkkonLAFCtrl.Status.IsNegativeLimit == true || AlignLAFCtrl.Status.IsNegativeLimit == true)
                     {
                         SeqStop();
                         WriteLog("Auto Mode stopped cause LAF Z axis is not in position", true);
