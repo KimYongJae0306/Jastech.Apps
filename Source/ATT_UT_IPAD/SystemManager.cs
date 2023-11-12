@@ -61,7 +61,6 @@ namespace ATT_UT_IPAD
         public bool Initialize(MainForm mainForm)
         {
             _mainForm = mainForm;
-
             Logger.Write(LogType.System, "Init SplashForm");
 
             SplashForm form = new SplashForm();
@@ -495,6 +494,11 @@ namespace ATT_UT_IPAD
             #endregion
 
             return true;
+        }
+
+        public void MessageConfirm(string message)
+        {
+            _mainForm.MessageConfirm(message);
         }
         #endregion
     }

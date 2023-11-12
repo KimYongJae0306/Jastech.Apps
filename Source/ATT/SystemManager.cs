@@ -357,6 +357,11 @@ namespace ATT
             _isAxisHoming = false;
             _currentHomingAxis?.StopMove();
         }
+
+        public void MessageConfirm(string message)
+        {
+            _mainForm.MessageConfirm(message);
+        }
         #endregion
     }
 

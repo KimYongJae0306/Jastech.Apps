@@ -810,6 +810,14 @@ namespace ATT_UT_Remodeling
                     Process.Start(path);
             }
         }
+
+        public void MessageConfirm(string message)
+        {
+            this.Invoke((MethodInvoker)delegate
+            {
+                new MessageConfirmForm { Message = message }.ShowDialog();
+            });
+        }
         #endregion
     }
 }

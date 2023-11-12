@@ -87,9 +87,11 @@ namespace ATT_UT_IPAD.Core
         #endregion
 
         #region 이벤트
+        public event MessageConfirmDelegate MessageConfirmEvent;
         #endregion
 
         #region 델리게이트
+        public delegate void MessageConfirmDelegate(string message);
         #endregion
 
         #region 생성자
@@ -342,11 +344,12 @@ namespace ATT_UT_IPAD.Core
                     break;
 
                 case SeqStep.SEQ_MOVE_START_POS:
-                    if (AkkonLAFCtrl.Status.IsNegativeLimit == true || AlignLAFCtrl.Status.IsNegativeLimit == true)
+                    //if (AkkonLAFCtrl.Status.IsNegativeLimit == true || AlignLAFCtrl.Status.IsNegativeLimit == true)
                     {
-                        new MessageConfirmForm { Message = "LAF Z axis is not in Position.\r\nPlease perform an Axis Origin action" }.ShowDialog();
-                        WriteLog("Auto Mode stopped cause LAF Z axis is not in position", true);
                         SeqStop();
+                        WriteLog("Auto Mode stopped cause LAF Z axis is not in position", true);
+                        SystemManager.Instance().MessageConfirm("LAF Z axis is not in Position.\r\nPlease perform an Axis Origin action");
+                        break;
                     }
 
                     MotionManager.Instance().MoveAxisZ(UnitName.Unit0, TeachingPosType.Stage1_Scan_Start, AkkonLAFCtrl, AxisName.Z0);

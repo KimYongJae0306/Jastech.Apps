@@ -473,6 +473,11 @@ namespace ATT_UT_Remodeling
         {
             return _mainForm.GetManualMatchingOriginPoint();
         }
+
+        public void MessageConfirm(string message)
+        {
+            _mainForm.MessageConfirm(message);
+        }
         #endregion
     }
 

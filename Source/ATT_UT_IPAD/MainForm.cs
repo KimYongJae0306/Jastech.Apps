@@ -769,6 +769,14 @@ namespace ATT_UT_IPAD
                     Process.Start(path);
             }
         }
+
+        public void MessageConfirm(string message)
+        {
+            this.Invoke((MethodInvoker)delegate
+            {
+                new MessageConfirmForm { Message = message }.ShowDialog();
+            });
+        }
         #endregion
     }
 }
