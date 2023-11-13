@@ -133,25 +133,15 @@ namespace ATT_UT_IPAD
 
             string message = "";
             if (deviceType == typeof(Camera))
-            {
                 message = "Camera Initialize Fail";
-            }
             else if (deviceType == typeof(Motion))
-            {
                 message = "Motion Initialize Fail";
-            }
             else if (deviceType == typeof(LightCtrl))
-            {
                 message = "LightCtrl Initialize Fail";
-            }
             else if (deviceType == typeof(LAFCtrl))
-            {
                 message = "LAF Initialize Fail";
-            }
             else if (deviceType == typeof(Plc))
-            {
                 message = "Plc Initialize Fail";
-            }
 
             if (message != "")
             {
@@ -198,9 +188,7 @@ namespace ATT_UT_IPAD
                 JsonConvertHelper.LoadToExistingTarget<AxisHandler>(unit0FilePath, unit0);
 
                 foreach (var axis in unit0.GetAxisList())
-                {
                     axis.SetMotion(motion);
-                }
 
                 MotionManager.Instance().AxisHandlerList.Add(unit0);
             }
@@ -326,31 +314,7 @@ namespace ATT_UT_IPAD
                     return;
                 }
 
-                bool isServoOnAxisZ1 = MotionManager.Instance().IsEnable(AxisHandlerName.Handler0, AxisName.Z1);
-                if (isServoOnAxisZ1 == false)
-                {
-                    MessageConfirmForm alert = new MessageConfirmForm();
-                    alert.Message = "AxisZ1 Servo Off. Please Servo On.";
-                    alert.ShowDialog();
-                    return;
-                }
-
-                bool isNeedHomming = false;
-                foreach (var laf in DeviceManager.Instance().LAFCtrlHandler)
-                {
-                    isNeedHomming |= laf.Status.NeedHomming;
-                }
-
-                if(isNeedHomming)
-                {
-                    // PLC 측에 Homming 요청
-                    PlcControlManager.Instance().WritePcCommand(PcCommand.Required_Origin);
-
-                    MessageConfirmForm alert = new MessageConfirmForm();
-                    alert.Message = "AxisZ is need Homming. Please Homming seqeunce.";
-                    alert.ShowDialog();
-                    return;
-                }
+                Axis axisZ0 = MotionManager.Instance().GetAxis(AxisHandlerName.Handler0, AxisName.Z0);
             }
             
             if (PlcControlManager.Instance().MachineStatus != MachineStatus.RUN)
