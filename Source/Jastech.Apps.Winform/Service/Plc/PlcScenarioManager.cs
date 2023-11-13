@@ -597,13 +597,13 @@ namespace Jastech.Apps.Winform.Service.Plc
                 return false;
             }
 
-            if(MoveEventHandler != null)
+            if (MoveEventHandler != null)
             {
                 string alarmMessage = "";
                 bool isSuccess = MoveEventHandler.Invoke(plcCommand, teachingPosType, out alarmMessage);
 
                 if (isWritePlc)
-                    command = PlcControlManager.Instance().WritePcStatus(plcCommand, isSuccess);
+                    command = PlcControlManager.Instance().WritePcStatus(plcCommand, isSuccess == false);
 
                 Logger.Write(LogType.Device, $"Send to PLC {plcCommand.ToString()}.[{command}]");
 
@@ -618,7 +618,7 @@ namespace Jastech.Apps.Winform.Service.Plc
             else
             {
                 if (isWritePlc)
-                    command = PlcControlManager.Instance().WritePcStatus(plcCommand, false);
+                    command = PlcControlManager.Instance().WritePcStatus(plcCommand, true);
 
                 Logger.Write(LogType.Device, $"Move Event is null {plcCommand.ToString()}.[{command}]");
                 return false;
@@ -638,7 +638,8 @@ namespace Jastech.Apps.Winform.Service.Plc
             if (OriginAllEvent != null)
             {
                 bool isSuccess = OriginAllEvent.Invoke();
-                short command = PlcControlManager.Instance().WritePcStatus(PlcCommand.Origin_All, isSuccess);
+
+                short command = PlcControlManager.Instance().WritePcStatus(PlcCommand.Origin_All, isSuccess == false);
                 Logger.Write(LogType.Device, $"Send to PLC Origin All {PlcCommand.Origin_All.ToString()}.[{command}]");
             }
             else

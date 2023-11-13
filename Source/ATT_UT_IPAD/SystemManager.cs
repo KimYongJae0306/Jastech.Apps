@@ -326,7 +326,31 @@ namespace ATT_UT_IPAD
                     return;
                 }
 
-                Axis axisZ0 = MotionManager.Instance().GetAxis(AxisHandlerName.Handler0, AxisName.Z0);
+                bool isServoOnAxisZ1 = MotionManager.Instance().IsEnable(AxisHandlerName.Handler0, AxisName.Z1);
+                if (isServoOnAxisZ1 == false)
+                {
+                    MessageConfirmForm alert = new MessageConfirmForm();
+                    alert.Message = "AxisZ1 Servo Off. Please Servo On.";
+                    alert.ShowDialog();
+                    return;
+                }
+
+                bool isNeedHomming = false;
+                foreach (var laf in DeviceManager.Instance().LAFCtrlHandler)
+                {
+                    isNeedHomming |= laf.Status.NeedHomming;
+                }
+
+                if(isNeedHomming)
+                {
+                    // PLC 측에 Homming 요청
+                    PlcControlManager.Instance().WritePcCommand(PcCommand.Required_Origin);
+
+                    MessageConfirmForm alert = new MessageConfirmForm();
+                    alert.Message = "AxisZ is need Homming. Please Homming seqeunce.";
+                    alert.ShowDialog();
+                    return;
+                }
             }
             
             if (PlcControlManager.Instance().MachineStatus != MachineStatus.RUN)

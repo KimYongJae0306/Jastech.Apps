@@ -37,6 +37,8 @@ namespace ATT_UT_Remodeling
     {
         #region 필드
         private int _virtualImageCount { get; set; } = 0;
+
+        private MachineStatus _prevMachineStatus { get; set; } = MachineStatus.STOP;
         #endregion
 
         #region 속성
@@ -677,21 +679,26 @@ namespace ATT_UT_Remodeling
                 if (CancelSafetyDoorlockTask.IsCancellationRequested)
                     break;
 
+                _prevMachineStatus = PlcControlManager.Instance().MachineStatus;
+
                 if (PlcControlManager.Instance().GetValue(PlcCommonMap.PLC_DoorStatus) == "2" && PlcControlManager.Instance().IsDoorOpened == false)
                 {
                     PlcControlManager.Instance().IsDoorOpened = true;
 
                     MotionManager.Instance().GetAxisHandler(AxisHandlerName.Handler0).StopMove();
                     LAFManager.Instance().GetLAF("Laf").LafCtrl.SetMotionStop();
-
                     SystemManager.Instance().SetStopMode();
+
                     lblDoorlockState.BackColor = Color.Red;
                     lblDoorlockState.ForeColor = Color.Yellow;
                 }
                 else if (PlcControlManager.Instance().GetValue(PlcCommonMap.PLC_DoorStatus) != "2" && PlcControlManager.Instance().IsDoorOpened == true)
                 {
                     PlcControlManager.Instance().IsDoorOpened = false;
-                    SystemManager.Instance().SetRunMode();
+
+                    if (_prevMachineStatus == MachineStatus.RUN)
+                        SystemManager.Instance().SetRunMode();
+
                     lblDoorlockState.BackColor = BackColor;
                     lblDoorlockState.ForeColor = BackColor;
                 }

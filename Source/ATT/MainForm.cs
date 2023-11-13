@@ -37,6 +37,8 @@ namespace ATT
     {
         #region 필드
         private int _virtualImageCount { get; set; } = 0;
+
+        private MachineStatus _prevMachineStatus { get; set; } = MachineStatus.STOP;
         #endregion
 
         #region 속성
@@ -531,6 +533,8 @@ namespace ATT
                 if (CancelSafetyDoorlockTask.IsCancellationRequested)
                     break;
 
+                _prevMachineStatus = PlcControlManager.Instance().MachineStatus;
+
                 if (testForceDoorLockToggle == true && PlcControlManager.Instance().IsDoorOpened == false)
                 {
                     PlcControlManager.Instance().IsDoorOpened = true;
@@ -545,7 +549,10 @@ namespace ATT
                 else if (testForceDoorLockToggle == false && PlcControlManager.Instance().IsDoorOpened == true)
                 {
                     PlcControlManager.Instance().IsDoorOpened = false;
-                    SystemManager.Instance().SetRunMode();
+
+                    if (_prevMachineStatus == MachineStatus.RUN)
+                        SystemManager.Instance().SetRunMode();
+
                     lblDoorlockState.BackColor = BackColor;
                     lblDoorlockState.ForeColor = BackColor;
                 }

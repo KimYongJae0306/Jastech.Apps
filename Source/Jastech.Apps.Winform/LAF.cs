@@ -347,6 +347,7 @@ namespace Jastech.Apps.Winform
                     _isHomeThreadStop = true;
                     _isHomeActionStop = true;
                     LafCtrl?.SetDefaultParameter();
+                    LafCtrl.Status.NeedHomming = false;
                     _homeSequenceStep = HomeSequenceStep.Stop;
                     break;
 

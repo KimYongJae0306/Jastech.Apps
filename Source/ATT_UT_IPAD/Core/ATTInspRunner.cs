@@ -192,12 +192,6 @@ namespace ATT_UT_IPAD.Core
                 _updateThread = null;
 
                 WriteLog("Update UI Inspection Result.", true);
-
-                if (AppsConfig.Instance().EnableManualJudge && IsNg(AppsInspResult.Instance()))
-                {
-
-                }
-
             }
             catch (Exception err)
             {
@@ -346,7 +340,13 @@ namespace ATT_UT_IPAD.Core
                 case SeqStep.SEQ_MOVE_START_POS:
                     if (AkkonLAFCtrl.Status.IsNegativeLimit == true || AlignLAFCtrl.Status.IsNegativeLimit == true)
                     {
+                        AkkonLAFCtrl.Status.NeedHomming = true;
+                        AlignLAFCtrl.Status.NeedHomming = true;
+
                         SeqStop();
+
+                        PlcControlManager.Instance().WritePcCommand(PcCommand.Required_Origin);
+
                         WriteLog("Auto Mode stopped cause LAF Z axis is not in position", true);
                         SystemManager.Instance().MessageConfirm("LAF Z axis is not in Position.\r\nPlease perform an Axis Origin action");
                         break;

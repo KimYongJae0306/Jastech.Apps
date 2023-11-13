@@ -162,6 +162,7 @@
         ServoOn_2 = 1010,               // Z축#2 Servo On
         ServoOff_2 = 1011,            // Z축#2 Servo Off
         ServoReset_2 = 1012,            // Z축#2 Servo Reset
+        Required_Origin = 1050,     // Homming 요청
         Set_InspParameter = 1100,       // Align Edge Threshold 값 변경 알림
     }
 

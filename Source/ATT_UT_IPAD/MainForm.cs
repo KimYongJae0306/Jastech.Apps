@@ -672,7 +672,10 @@ namespace ATT_UT_IPAD
                 else if (PlcControlManager.Instance().GetValue(PlcCommonMap.PLC_DoorStatus) != "2" && PlcControlManager.Instance().IsDoorOpened == true)
                 {
                     PlcControlManager.Instance().IsDoorOpened = false;
-                    SystemManager.Instance().SetRunMode();
+
+                    if(PlcControlManager.Instance().MachineStatus == MachineStatus.RUN)
+                        SystemManager.Instance().SetRunMode();
+
                     lblDoorlockState.BackColor = BackColor;
                     lblDoorlockState.ForeColor = BackColor;
                 }
