@@ -237,7 +237,7 @@ namespace Jastech.Apps.Winform
             if (ConfigSet.Instance().Operation.VirtualMode)
                 return true;
 
-            if(IsAxisZInPosition(unitName, teachingPos, lafCtrl, axisNameZ) == false)
+            if (IsAxisZInPosition(unitName, teachingPos, lafCtrl, axisNameZ) == false)
             {
                 Stopwatch sw = new Stopwatch();
                 sw.Restart();

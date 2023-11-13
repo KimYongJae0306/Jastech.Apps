@@ -199,7 +199,8 @@ namespace Jastech.Apps.Winform.UI.Forms
                 else if (_curMark == MarkDirection.Right)
                     LightControl.UpdateSetParam(CurrentUnit.PreAlign.RightLightParam);
             }
-            if(btnCalibration.BackColor == _selectedColor)
+
+            if (btnCalibration.BackColor == _selectedColor)
             {
                 LightControl.UpdateSetParam(CalibLightParameter);
             }
