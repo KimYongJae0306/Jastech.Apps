@@ -150,7 +150,6 @@
         Model_Change = 8000,
         Model_Create = 8200,
         Model_Edit = 8400,
-        Model_Copy = 8500,
         Command_Clear = 9000,
         Light_Off = 9100,
     }

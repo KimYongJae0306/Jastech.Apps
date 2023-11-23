@@ -222,9 +222,6 @@ namespace Jastech.Apps.Winform.Service.Plc
                 case PlcCommonCommand.Model_Edit:
                     EditModelData();
                     break;
-                case PlcCommonCommand.Model_Copy:
-                    CopyModelData();
-                    break;
 
                 case PlcCommonCommand.Command_Clear:
                     ReceivedCommandClear();
@@ -239,38 +236,54 @@ namespace Jastech.Apps.Winform.Service.Plc
             }
         }
 
-        private void CreateModelData()
+        public void CreateModelData()
         {
+            var currentModel = ModelManager.Instance().CurrentModel as AppsInspModel;
             var manager = PlcControlManager.Instance();
-
-            string modelName = manager.GetValue(PlcCommonMap.PLC_PPID_ModelName).TrimEnd();
+            string newModelName = manager.GetValue(PlcCommonMap.PLC_PPID_ModelName).TrimEnd();
             string modelDir = ConfigSet.Instance().Path.Model;
-            string filePath = Path.Combine(modelDir, modelName, InspModel.FileName);
             short command = -1;
 
-            if (File.Exists(modelName) || AppsStatus.Instance().IsRunning)
+            if(newModelName == null || newModelName == "" || AppsStatus.Instance().IsRunning)
             {
-                // 모델이 존재O, 검사 중일 때
+                // 모델이름 존재X, 검사 중일 때
                 command = manager.WritePcStatusCommon(PlcCommonCommand.Model_Create, true);
                 Logger.Debug(LogType.Device, $"Write Fail CreateModelData.[{command}]");
                 return;
             }
 
-            AppsInspModel inspModel = InspModelService.New() as AppsInspModel;
+            if (currentModel == null)
+            {
+                string newModelPath = Path.Combine(modelDir, newModelName, InspModel.FileName);
 
-            inspModel.Name = modelName;
-            inspModel.CreateDate = DateTime.Now;
-            inspModel.ModifiedDate = inspModel.CreateDate;
-            inspModel.TabCount = Convert.ToInt32(manager.GetValue(PlcCommonMap.PLC_TabCount));
-            inspModel.AxisSpeed = Convert.ToInt32(manager.GetValue(PlcCommonMap.PLC_Axis_X_Speed));
-            inspModel.MaterialInfo = GetModelMaterialInfo();
+                if(File.Exists(newModelName))
+                {
+                    command = manager.WritePcStatusCommon(PlcCommonCommand.Model_Create, true);
+                    Logger.Debug(LogType.Device, $"Write Fail CreateModelData.[{command}]");
+                    return;
+                }
 
-            InspModelService.AddModelData(inspModel);
+                AppsInspModel inspModel = InspModelService.New() as AppsInspModel;
 
-            ModelFileHelper.Save(ConfigSet.Instance().Path.Model, inspModel);
+                inspModel.Name = newModelName;
+                inspModel.CreateDate = DateTime.Now;
+                inspModel.ModifiedDate = inspModel.CreateDate;
+                inspModel.TabCount = Convert.ToInt32(manager.GetValue(PlcCommonMap.PLC_TabCount));
+                inspModel.AxisSpeed = Convert.ToInt32(manager.GetValue(PlcCommonMap.PLC_Axis_X_Speed));
+                inspModel.MaterialInfo = GetModelMaterialInfo();
 
-            command = manager.WritePcStatusCommon(PlcCommonCommand.Model_Create);
-            Logger.Debug(LogType.Device, $"Write CreateModelData.[{command}]");
+                InspModelService.AddModelData(inspModel);
+
+                ModelFileHelper.Save(ConfigSet.Instance().Path.Model, inspModel);
+            }
+            else
+            {
+                if(CopyModelData())
+                {
+                    command = manager.WritePcStatusCommon(PlcCommonCommand.Model_Create);
+                    Logger.Debug(LogType.Device, $"Write CreateModelData.[{command}]");
+                }
+            }
         }
 
         private void ChangeModelData()
@@ -317,39 +330,23 @@ namespace Jastech.Apps.Winform.Service.Plc
             Logger.Debug(LogType.Device, $"Write ChangeModelData.[{command}]");
         }
 
-        private void CopyModelData()
+        private bool CopyModelData()
         {
             var currentModel = ModelManager.Instance().CurrentModel as AppsInspModel;
             var manager = PlcControlManager.Instance();
             short command = -1;
 
-            if(currentModel == null)
-            {
-                // 현재 모델이 null 일 때
-                command = manager.WritePcStatusCommon(PlcCommonCommand.Model_Copy, true);
-                Logger.Debug(LogType.Device, $"Write Fail CopyModelData.[{command}]");
-                return;
-            }
-
             string modelDir = ConfigSet.Instance().Path.Model;
             string currentFilePath = Path.Combine(modelDir, currentModel.Name, InspModel.FileName);
-
-            if (File.Exists(currentFilePath) == false || AppsStatus.Instance().IsRunning)
-            {
-                // 모델 존재 X, 검사 중 때
-                command = manager.WritePcStatusCommon(PlcCommonCommand.Model_Copy, true);
-                Logger.Debug(LogType.Device, $"Write Fail CopyModelData.[{command}]");
-                return;
-            }
 
             string newModelName = manager.GetValue(PlcCommonMap.PLC_PPID_ModelName);
             string newModelDir = Path.Combine(modelDir, newModelName);
             if (Directory.Exists(newModelDir) == true)
             {
                 // 동일한 모델이 존재할 때
-                command = manager.WritePcStatusCommon(PlcCommonCommand.Model_Copy, true);
+                command = manager.WritePcStatusCommon(PlcCommonCommand.Model_Create, true);
                 Logger.Debug(LogType.Device, $"Write Fail CopyModelData.[{command}]");
-                return;
+                return false;
             }
 
             Directory.CreateDirectory(newModelDir);
@@ -362,8 +359,7 @@ namespace Jastech.Apps.Winform.Service.Plc
             string newFilePath = Path.Combine(modelDir, newModelName, InspModel.FileName);
             InspModelService.Save(newFilePath, tempModel);
 
-            command = manager.WritePcStatusCommon(PlcCommonCommand.Model_Copy);
-            Logger.Debug(LogType.Device, $"Write CopyModelData.[{command}]");
+            return true;
         }
 
         private void EditModelData()

@@ -195,6 +195,8 @@ namespace ATT
             UpdateLabel(model.Name);
             ConfigSet.Instance().Operation.LastModelName = model.Name;
             ConfigSet.Instance().Operation.Save(ConfigSet.Instance().Path.Config);
+
+            AppsInspResult.Instance().Dispose();
         }
      
         private void UpdateLabel(string modelname)

@@ -255,8 +255,6 @@ namespace ATT_UT_IPAD
         {
             AppsInspModel model = inspModel as AppsInspModel;
 
-            AppsInspResult.Instance().Dispose();
-
             DailyInfoService.Reset();
             DailyInfoService.Load(model.Name);
 
@@ -265,6 +263,8 @@ namespace ATT_UT_IPAD
             UpdateLabel(model.Name);
             ConfigSet.Instance().Operation.LastModelName = model.Name;
             ConfigSet.Instance().Operation.Save(ConfigSet.Instance().Path.Config);
+
+            AppsInspResult.Instance().Dispose();
         }
 
         private void UpdateLabel(string modelname)
