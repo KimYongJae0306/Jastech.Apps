@@ -106,7 +106,16 @@ namespace Jastech.Apps.Winform
                     status.MPosPulse = mposPulse;
 
                 if (int.TryParse(GetValue(dataString, "ls1:"), out int ls1))
+                {
                     status.IsNegativeLimit = Convert.ToBoolean(ls1);
+
+                    if (status.IsNegativeLimit)
+                    {
+                        Logger.Debug(LogType.Device, $"Detected -Limit / Deivce name : {name} / MPos : {status.MPosPulse}");
+                        Logger.Debug(LogType.Device, $"Raw Packet : {dataString}");
+                    }
+                }
+
                 if (int.TryParse(GetValue(dataString, "ls2:"), out int ls2))
                     status.IsPositiveLimit = Convert.ToBoolean(ls2);
                 if (int.TryParse(GetValue(dataString, "mbusy:"), out int mbusy))
