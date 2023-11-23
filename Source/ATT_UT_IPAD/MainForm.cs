@@ -104,6 +104,7 @@ namespace ATT_UT_IPAD
             PlcScenarioManager.Instance().InspRunnerHandler += MainForm_InspRunnerHandler;
             PlcScenarioManager.Instance().MoveEventHandler += MainForm_MoveEventHandler;
             PlcScenarioManager.Instance().OriginAllEvent += MainForm_OriginAllEvent;
+            PlcScenarioManager.Instance().MainTaskHandler += MainForm_MainTaskHandler;
 
             PlcControlManager.Instance().WritePcCommand(PcCommand.ServoReset_1);
             Thread.Sleep(100);
@@ -140,6 +141,14 @@ namespace ATT_UT_IPAD
                 CheckSafetyDoorlockTask = new Task(CheckDoorOpenedLoop, CancelSafetyDoorlockTask.Token);
                 CheckSafetyDoorlockTask.Start();
             }
+        }
+
+        private void MainForm_MainTaskHandler(bool isStart)
+        {
+            if (isStart)
+                SystemManager.Instance().SetRunMode();
+            else
+                SystemManager.Instance().SetStopMode();
         }
 
         private bool MainForm_MoveEventHandler(PlcCommand plcCommand, TeachingPosType teachingPosType, out string alarmMessage)
@@ -779,6 +788,52 @@ namespace ATT_UT_IPAD
             {
                 new MessageConfirmForm { Message = message }.ShowDialog();
             });
+        }
+
+        private int _negativeLimitCount = 0;
+
+        public bool IsNegativeLimit(AxisName axisName)
+        {
+            bool isNegatvieLimit = false;
+
+            bool isSensing = false;
+
+            switch (axisName)
+            {
+                case AxisName.X:
+                    isSensing = MotionManager.Instance().GetAxisHandler(AxisHandlerName.Handler0).GetAxis(axisName).IsNegativeLimit();
+                    break;
+
+                case AxisName.Y:
+                    break;
+
+                case AxisName.Z0:
+                    isSensing = LAFManager.Instance().GetLAF("AkkonLaf").LafCtrl.Status.IsNegativeLimit;
+                    break;
+
+                case AxisName.Z1:
+                    isSensing = LAFManager.Instance().GetLAF("AlignLaf").LafCtrl.Status.IsNegativeLimit;
+                    break;
+
+                case AxisName.T:
+                    break;
+
+                default:
+                    break;
+            }
+
+            if (isSensing)
+                _negativeLimitCount++;
+            else
+                _negativeLimitCount = 0;
+
+            if (_negativeLimitCount >= 10)
+            {
+                _negativeLimitCount = 0;
+                isNegatvieLimit = true;
+            }
+
+            return isNegatvieLimit;
         }
         #endregion
     }

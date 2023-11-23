@@ -59,6 +59,8 @@ namespace Jastech.Apps.Winform.Service.Plc
         public event PlcScenarioMoveEventHandler MoveEventHandler;
 
         public event OriginAllDelegate OriginAllEvent;
+
+        public event MainTaskEventHandler MainTaskHandler;
         #endregion
 
         #region 델리게이트
@@ -71,6 +73,8 @@ namespace Jastech.Apps.Winform.Service.Plc
         public delegate bool PlcScenarioMoveEventHandler(PlcCommand plcCommand, TeachingPosType teachingPosType, out string alarmMessage);
 
         public delegate bool OriginAllDelegate();
+
+        public delegate void MainTaskEventHandler(bool isStart);
         #endregion
 
         #region 생성자
@@ -281,9 +285,17 @@ namespace Jastech.Apps.Winform.Service.Plc
             //string modelName = "NewTest";
             //string modelName = "tt";
 
+            short command = -1;
+
+            if (previousModelName.Equals(modelName) == true)
+            {
+                command = manager.WritePcStatusCommon(PlcCommonCommand.Model_Change, true);
+                Logger.Debug(LogType.Device, $"Already applied model.[{command}]");
+                return;
+            }
+
             string modelDir = ConfigSet.Instance().Path.Model;
             string filePath = Path.Combine(modelDir, modelName, InspModel.FileName);
-            short command = -1;
 
             if (File.Exists(filePath) == false || AppsStatus.Instance().IsRunning)
             {
@@ -292,6 +304,8 @@ namespace Jastech.Apps.Winform.Service.Plc
                 Logger.Debug(LogType.Device, $"Write Fail ChangeModelData.[{command}]");
                 return;
             }
+
+            MainTaskHandler.Invoke(false);// SeqStop 할 것
 
             ModelManager.Instance().CurrentModel = InspModelService.Load(filePath);
             var currentModel = ModelManager.Instance().CurrentModel as AppsInspModel;
@@ -312,6 +326,8 @@ namespace Jastech.Apps.Winform.Service.Plc
 
             command = manager.WritePcStatusCommon(PlcCommonCommand.Model_Change);
             Logger.Debug(LogType.Device, $"Write ChangeModelData.[{command}]");
+
+            MainTaskHandler.Invoke(true);// SeqRun 해야함
         }
 
         private void EditModelData()
