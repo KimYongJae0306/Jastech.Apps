@@ -226,6 +226,9 @@ namespace Jastech.Apps.Winform.Service.Plc
                 case PlcCommonCommand.Model_Edit:
                     EditModelData();
                     break;
+                case PlcCommonCommand.Model_Copy:
+                    CopyModelData();
+                    break;
 
                 case PlcCommonCommand.Command_Clear:
                     ReceivedCommandClear();
@@ -330,17 +333,73 @@ namespace Jastech.Apps.Winform.Service.Plc
             MainTaskHandler.Invoke(true);// SeqRun 해야함
         }
 
+        private void CopyModelData()
+        {
+            var currentModel = ModelManager.Instance().CurrentModel as AppsInspModel;
+            var manager = PlcControlManager.Instance();
+            short command = -1;
+
+            if(currentModel == null)
+            {
+                // 현재 모델이 null 일 때
+                command = manager.WritePcStatusCommon(PlcCommonCommand.Model_Copy, true);
+                Logger.Debug(LogType.Device, $"Write Fail CopyModelData.[{command}]");
+                return;
+            }
+
+            string modelDir = ConfigSet.Instance().Path.Model;
+            string currentFilePath = Path.Combine(modelDir, currentModel.Name, InspModel.FileName);
+
+            if (File.Exists(currentFilePath) == false || AppsStatus.Instance().IsRunning)
+            {
+                // 모델 존재 X, 검사 중 때
+                command = manager.WritePcStatusCommon(PlcCommonCommand.Model_Copy, true);
+                Logger.Debug(LogType.Device, $"Write Fail CopyModelData.[{command}]");
+                return;
+            }
+
+            string newModelName = manager.GetValue(PlcCommonMap.PLC_PPID_ModelName);
+            string newModelDir = Path.Combine(modelDir, newModelName);
+            if (Directory.Exists(newModelDir) == true)
+            {
+                // 동일한 모델이 존재할 때
+                command = manager.WritePcStatusCommon(PlcCommonCommand.Model_Copy, true);
+                Logger.Debug(LogType.Device, $"Write Fail CopyModelData.[{command}]");
+                return;
+            }
+
+            Directory.CreateDirectory(newModelDir);
+
+            InspModel tempModel = InspModelService.Load(currentFilePath);
+            tempModel.Name = newModelName;
+            tempModel.CreateDate = DateTime.Now;
+            tempModel.ModifiedDate = DateTime.Now;
+
+            string newFilePath = Path.Combine(modelDir, newModelName, InspModel.FileName);
+            InspModelService.Save(newFilePath, tempModel);
+
+            command = manager.WritePcStatusCommon(PlcCommonCommand.Model_Copy);
+            Logger.Debug(LogType.Device, $"Write CopyModelData.[{command}]");
+        }
+
         private void EditModelData()
         {
             var currentModel = ModelManager.Instance().CurrentModel as AppsInspModel;
             var manager = PlcControlManager.Instance();
+            short command = -1;
+
+            if (currentModel == null)
+            {
+                command = manager.WritePcStatusCommon(PlcCommonCommand.Model_Edit, true);
+                Logger.Debug(LogType.Device, $"Write Fail EditModelData.[{command}]");
+                return;
+            }
 
             string modelName = manager.GetValue(PlcCommonMap.PLC_PPID_ModelName);
             string modelDir = ConfigSet.Instance().Path.Model;
             string filePath = Path.Combine(modelDir, modelName, InspModel.FileName);
-            short command = -1;
 
-            if (File.Exists(filePath) == false || AppsStatus.Instance().IsRunning || currentModel == null)
+            if (File.Exists(filePath) == false || AppsStatus.Instance().IsRunning)
             {
                 // 모델 존재 X, 검사 중, 현재 모델이 없을 때
                 command = manager.WritePcStatusCommon(PlcCommonCommand.Model_Edit, true);
