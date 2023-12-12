@@ -1704,6 +1704,7 @@
             this.btnLoadImage.TabIndex = 201;
             this.btnLoadImage.Text = "LOAD IMAGE";
             this.btnLoadImage.UseVisualStyleBackColor = false;
+            this.btnLoadImage.Click += new System.EventHandler(this.btnLoadImage_Click);
             // 
             // btnGrabStop
             // 
