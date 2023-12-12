@@ -699,11 +699,26 @@ namespace ATT_UT_IPAD.Core
                 TabJudgement judgement = GetJudgemnet(akkonTabInspResult, alignTabInspResult);
                 PlcControlManager.Instance().WriteTabResult(tabNo, judgement, alignTabInspResult.AlignResult, akkonTabInspResult.AkkonResult, resolution);
 
-                if (judgement.Equals(TabJudgement.OK) == false)
-                    inspFinalResult = false;
+                //if (judgement.Equals(TabJudgement.OK) == false)
+                //    inspFinalResult = false;
+
+                if (tabInspResult.AkkonResult.Judgement.Equals(Judgement.OK) == false)
+                    inspAkkonResult = false;
+
+                if (tabInspResult.AlignResult.Judgement.Equals(Judgement.OK) == false)
+                    inspAlignResult = false;
 
                 Thread.Sleep(20);
             }
+
+            if (AppsConfig.Instance().EnableAkkonByPass)
+                inspAkkonResult = true;
+
+            if (AppsConfig.Instance().EnableAlignByPass)
+                inspAlignResult = true;
+
+            if (inspAkkonResult == false || inspAlignResult == false)
+                inspFinalResult = false;
 
             if (inspFinalResult)
                 PlcControlManager.Instance().WritePcStatus(PlcCommand.StartInspection);

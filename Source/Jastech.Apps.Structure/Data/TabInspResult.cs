@@ -42,14 +42,17 @@ namespace Jastech.Apps.Structure.Data
                     if (MarkResult.Judgement != Framework.Imaging.Result.Judgement.OK)
                         return TabJudgement.Mark_NG;
 
-                    if (AlignResult.Judgement != Framework.Imaging.Result.Judgement.OK)
-                        return TabJudgement.NG;
+                    if (AlignResult != null)
+                    {
+                        if (AlignResult.Judgement != Framework.Imaging.Result.Judgement.OK)
+                            return TabJudgement.NG;
+                    }
 
-                    if (AkkonResult == null)
-                        return TabJudgement.NG;
-
-                    if (AkkonResult.Judgement != Framework.Imaging.Result.Judgement.OK)
-                        return TabJudgement.NG;
+                    if (AkkonResult != null)
+                    {
+                        if (AkkonResult.Judgement != Framework.Imaging.Result.Judgement.OK)
+                            return TabJudgement.NG;
+                    }
 
                     return TabJudgement.OK;
                 }
@@ -70,7 +73,7 @@ namespace Jastech.Apps.Structure.Data
 
         public TabMarkResult MarkResult { get; set; } = new TabMarkResult();
 
-        public TabAlignResult AlignResult { get; set; } = new TabAlignResult();
+        public TabAlignResult AlignResult { get; set; } = null; // new TabAlignResult();
 
         public float Resolution_um { get; set; } = 0.0F;
 

@@ -19,6 +19,7 @@ namespace Jastech.Apps.Winform.UI.Controls
         #region 속성
         public double Resolution_um { get; set; } = 1;
         #endregion
+
         #region 생성자
         public PlcCommandControl()
         {

@@ -170,6 +170,8 @@ namespace ATT_UT_IPAD.Core.AppTask
             tabInspResult.Image = inspTab.MergeMatImage;
             tabInspResult.CogImage = inspTab.MergeCogImage;
             tabInspResult.Resolution_um = resolution_um;
+
+            tabInspResult.AlignResult = new TabAlignResult();
             tabInspResult.AlignResult.PreHead = PlcControlManager.Instance().GetPreHeadData(tabInspResult.TabNo);
 
             algorithmTool.MainMarkInspect(inspTab.MergeCogImage, tab, ref tabInspResult, true);
@@ -181,7 +183,7 @@ namespace ATT_UT_IPAD.Core.AppTask
                 message = string.Format("Align Mark Insp NG !!! Tab_{0} / Fpc_{1}, Panel_{2}", tab.Index + 1, tabInspResult.MarkResult.FpcMark.Judgement, tabInspResult.MarkResult.PanelMark.Judgement);
                 WriteLog(message, true);
                 Logger.Debug(LogType.Inspection, message);
-                tabInspResult.AlignResult = new TabAlignResult();
+                // tabInspResult.AlignResult = new TabAlignResult();
             }
             else
             {

@@ -601,17 +601,37 @@ namespace ATT_UT_Remodeling.Core
         {
             var inspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
             double resolution = LineCamera.Camera.PixelResolution_um / LineCamera.Camera.LensScale;
+
+            bool inspAkkonResult = true;
+            bool inspAlignResult = true;
             bool inspFinalResult = true;
+
             for (int tabNo = 0; tabNo < inspModel.TabCount; tabNo++)
             {
                 var tabInspResult = AppsInspResult.Instance().Get(tabNo);
-                TabJudgement judgement = GetJudgemnet(tabInspResult, tabInspResult);
+                TabJudgement judgement = GetJudgemnet(tabInspResult);
                 PlcControlManager.Instance().WriteTabResult(tabNo, judgement, tabInspResult.AlignResult, tabInspResult.AkkonResult, resolution);
 
-                if (judgement.Equals(TabJudgement.OK) == false)
-                    inspFinalResult = false;
+                //if (judgement.Equals(TabJudgement.OK) == false)
+                //    inspFinalResult = false;
+
+                if (tabInspResult.AkkonResult.Judgement.Equals(Judgement.OK) == false)
+                    inspAkkonResult = false;
+
+                if (tabInspResult.AlignResult.Judgement.Equals(Judgement.OK) == false)
+                    inspAlignResult = false;
+
                 Thread.Sleep(20);
             }
+
+            if (AppsConfig.Instance().EnableAkkonByPass)
+                inspAkkonResult = true;
+
+            if (AppsConfig.Instance().EnableAlignByPass)
+                inspAlignResult = true;
+
+            if (inspAkkonResult == false || inspAlignResult == false)
+                inspFinalResult = false;
 
             if(inspFinalResult)
                 PlcControlManager.Instance().WritePcStatus(PlcCommand.StartInspection);
@@ -619,27 +639,27 @@ namespace ATT_UT_Remodeling.Core
                 PlcControlManager.Instance().WritePcStatus(PlcCommand.StartInspection, true);
         }
 
-        private TabJudgement GetJudgemnet(TabInspResult akkonInspResult, TabInspResult alignInspResult)
+        private TabJudgement GetJudgemnet(TabInspResult tabInspResult)
         {
-            if (akkonInspResult.IsManualOK || alignInspResult.IsManualOK)
+            if (tabInspResult.IsManualOK)
             {
                 return TabJudgement.Manual_OK;
             }
             else
             {
-                if (akkonInspResult.MarkResult.Judgement != Judgement.OK)
+                if (tabInspResult.MarkResult.Judgement != Judgement.OK)
                     return TabJudgement.Mark_NG;
 
-                if (alignInspResult.MarkResult.Judgement != Judgement.OK)
+                if (tabInspResult.MarkResult.Judgement != Judgement.OK)
                     return TabJudgement.Mark_NG;
 
-                if (alignInspResult.AlignResult.Judgement != Judgement.OK)
+                if (tabInspResult.AlignResult.Judgement != Judgement.OK)
                     return TabJudgement.NG;
 
-                if (akkonInspResult.AkkonResult == null)
+                if (tabInspResult.AkkonResult == null)
                     return TabJudgement.NG;
 
-                if (akkonInspResult.AkkonResult.Judgement != Judgement.OK)
+                if (tabInspResult.AkkonResult.Judgement != Judgement.OK)
                     return TabJudgement.NG;
 
                 return TabJudgement.OK;
