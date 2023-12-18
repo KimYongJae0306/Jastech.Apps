@@ -221,6 +221,8 @@ namespace ATT_UT_IPAD
             akkonLaf.ResolutionAxisZ = 10000.0;
             akkonLaf.MaxSppedAxisZ = 20;
             akkonLaf.AccDec = 70;
+            //akkonLaf.MinimumReturn_db = -1.0;
+            //akkonLaf.MaximumReturn_db = -1.0;
             config.Add(akkonLaf);
 
             // Align LAF
@@ -231,6 +233,8 @@ namespace ATT_UT_IPAD
             alignLaf.ResolutionAxisZ = 10000.0;
             alignLaf.MaxSppedAxisZ = 20;
             alignLaf.AccDec = 40;
+            //alignLaf.MinimumReturn_db = -1.0;
+            //alignLaf.MaximumReturn_db = -1.0;
             config.Add(alignLaf);
 
             // Light1
@@ -261,7 +265,7 @@ namespace ATT_UT_IPAD
         {
             // Akkon LineScanCamera
             int akkonCameraWidth = 3072;
-            int akkonCameraOffsetX = 0;
+            int akkonCameraOffsetX = 768;
             if (CheckCameraProperty(ref akkonCameraWidth, ref akkonCameraOffsetX, 6560) == true)
             {
                 var akkonCamera = new CameraMil("AkkonCamera", akkonCameraWidth, 1024, ColorFormat.Gray, SensorType.Line);
@@ -283,7 +287,7 @@ namespace ATT_UT_IPAD
 
             // Align LineScanCamera
             int alignCameraWidth = 3072;
-            int alignCameraOffsetX = 0;
+            int alignCameraOffsetX = 512;
             if (CheckCameraProperty(ref alignCameraWidth, ref alignCameraOffsetX, 6560) == true)
             {
                 var alignCamera = new CameraMil("AlignCamera", alignCameraWidth, 1024, ColorFormat.Gray, SensorType.Line);
@@ -325,6 +329,8 @@ namespace ATT_UT_IPAD
             akkonLaf.ResolutionAxisZ = 10000.0;
             akkonLaf.MaxSppedAxisZ = 20;
             akkonLaf.AccDec = 70;
+            //akkonLaf.MinimumReturn_db = -1.0;
+            //akkonLaf.MaximumReturn_db = -1.0;
             config.Add(akkonLaf);
 
             //// Align LAF
@@ -335,6 +341,8 @@ namespace ATT_UT_IPAD
             alignLaf.ResolutionAxisZ = 10000.0;
             alignLaf.MaxSppedAxisZ = 20;
             alignLaf.AccDec = 40;
+            //alignLaf.MinimumReturn_db = -1.0;
+            //alignLaf.MaximumReturn_db = -1.0;
             config.Add(alignLaf);
 
             // Light1

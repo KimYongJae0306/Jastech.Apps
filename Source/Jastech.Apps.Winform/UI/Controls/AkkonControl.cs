@@ -844,6 +844,7 @@ namespace Jastech.Apps.Winform.UI.Controls
             if (lblResultImage.BackColor == _selectedColor)
                 SetOrginImageView();
 
+            ckbDrawIndex.Checked = false;
             display.ClearGraphic();
             display.SetInteractiveGraphics("lead", collect);
         }

@@ -1887,7 +1887,7 @@
             this.lblJog.Name = "lblJog";
             this.lblJog.Size = new System.Drawing.Size(58, 158);
             this.lblJog.TabIndex = 0;
-            this.lblJog.Text = "Motion\r\nControl";
+            this.lblJog.Text = "Jog";
             this.lblJog.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // pnlTeachingPositionList

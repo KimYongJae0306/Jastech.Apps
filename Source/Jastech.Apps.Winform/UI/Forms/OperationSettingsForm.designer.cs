@@ -86,6 +86,9 @@
             this.panel6 = new System.Windows.Forms.Panel();
             this.label21 = new System.Windows.Forms.Label();
             this.label22 = new System.Windows.Forms.Label();
+            this.tableLayoutPanel5 = new System.Windows.Forms.TableLayoutPanel();
+            this.label37 = new System.Windows.Forms.Label();
+            this.mtgEnableMsaSummary = new MetroFramework.Controls.MetroToggle();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.label32 = new System.Windows.Forms.Label();
             this.mtgEnableManualJudge = new MetroFramework.Controls.MetroToggle();
@@ -97,8 +100,10 @@
             this.label17 = new System.Windows.Forms.Label();
             this.label18 = new System.Windows.Forms.Label();
             this.txtDataStoringDays = new System.Windows.Forms.TextBox();
+            this.panel17 = new System.Windows.Forms.Panel();
             this.panel15 = new System.Windows.Forms.Panel();
             this.panel5 = new System.Windows.Forms.Panel();
+            this.label36 = new System.Windows.Forms.Label();
             this.tlpDailyResultEnableAkkon = new System.Windows.Forms.TableLayoutPanel();
             this.label27 = new System.Windows.Forms.Label();
             this.label28 = new System.Windows.Forms.Label();
@@ -141,6 +146,7 @@
             this.panel3.SuspendLayout();
             this.tlpImageSaveNG.SuspendLayout();
             this.tlpImageSaveOK.SuspendLayout();
+            this.tableLayoutPanel5.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
             this.tlpDataStoreCapacity.SuspendLayout();
             this.tlpDataStoreDuration.SuspendLayout();
@@ -773,11 +779,14 @@
             this.panel3.Controls.Add(this.panel6);
             this.panel3.Controls.Add(this.label21);
             this.panel3.Controls.Add(this.label22);
+            this.panel3.Controls.Add(this.tableLayoutPanel5);
             this.panel3.Controls.Add(this.tableLayoutPanel2);
             this.panel3.Controls.Add(this.tlpDataStoreCapacity);
             this.panel3.Controls.Add(this.tlpDataStoreDuration);
+            this.panel3.Controls.Add(this.panel17);
             this.panel3.Controls.Add(this.panel15);
             this.panel3.Controls.Add(this.panel5);
+            this.panel3.Controls.Add(this.label36);
             this.panel3.Controls.Add(this.tlpDailyResultEnableAkkon);
             this.panel3.Controls.Add(this.label31);
             this.panel3.Controls.Add(this.label19);
@@ -940,6 +949,48 @@
             this.label22.Text = "Image Save Options";
             this.label22.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
+            // tableLayoutPanel5
+            // 
+            this.tableLayoutPanel5.ColumnCount = 3;
+            this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 120F));
+            this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 100F));
+            this.tableLayoutPanel5.Controls.Add(this.label37, 0, 0);
+            this.tableLayoutPanel5.Controls.Add(this.mtgEnableMsaSummary, 1, 0);
+            this.tableLayoutPanel5.Location = new System.Drawing.Point(64, 682);
+            this.tableLayoutPanel5.Name = "tableLayoutPanel5";
+            this.tableLayoutPanel5.RowCount = 1;
+            this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 36F));
+            this.tableLayoutPanel5.Size = new System.Drawing.Size(298, 36);
+            this.tableLayoutPanel5.TabIndex = 29;
+            // 
+            // label37
+            // 
+            this.label37.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.label37.Font = new System.Drawing.Font("맑은 고딕", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.label37.ForeColor = System.Drawing.Color.White;
+            this.label37.Location = new System.Drawing.Point(3, 0);
+            this.label37.Name = "label37";
+            this.label37.Size = new System.Drawing.Size(114, 36);
+            this.label37.TabIndex = 5;
+            this.label37.Text = "Use";
+            this.label37.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // mtgEnableMsaSummary
+            // 
+            this.mtgEnableMsaSummary.AutoSize = true;
+            this.mtgEnableMsaSummary.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.mtgEnableMsaSummary.FontWeight = MetroFramework.MetroLinkWeight.Bold;
+            this.mtgEnableMsaSummary.Location = new System.Drawing.Point(123, 3);
+            this.mtgEnableMsaSummary.Name = "mtgEnableMsaSummary";
+            this.mtgEnableMsaSummary.Size = new System.Drawing.Size(72, 30);
+            this.mtgEnableMsaSummary.TabIndex = 12;
+            this.mtgEnableMsaSummary.Text = "Off";
+            this.mtgEnableMsaSummary.Theme = MetroFramework.MetroThemeStyle.Dark;
+            this.mtgEnableMsaSummary.UseSelectable = true;
+            this.mtgEnableMsaSummary.CheckedChanged += new System.EventHandler(this.mtgOperationSetting_CheckedChanged);
+            // 
             // tableLayoutPanel2
             // 
             this.tableLayoutPanel2.ColumnCount = 3;
@@ -1094,6 +1145,15 @@
             this.txtDataStoringDays.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtDataStoringDays_KeyPress);
             this.txtDataStoringDays.Leave += new System.EventHandler(this.txtDataStoringDays_Leave);
             // 
+            // panel17
+            // 
+            this.panel17.BackColor = System.Drawing.SystemColors.Highlight;
+            this.panel17.Location = new System.Drawing.Point(20, 667);
+            this.panel17.Margin = new System.Windows.Forms.Padding(0);
+            this.panel17.Name = "panel17";
+            this.panel17.Size = new System.Drawing.Size(345, 2);
+            this.panel17.TabIndex = 27;
+            // 
             // panel15
             // 
             this.panel15.BackColor = System.Drawing.SystemColors.Highlight;
@@ -1111,6 +1171,17 @@
             this.panel5.Name = "panel5";
             this.panel5.Size = new System.Drawing.Size(345, 2);
             this.panel5.TabIndex = 17;
+            // 
+            // label36
+            // 
+            this.label36.Font = new System.Drawing.Font("맑은 고딕", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.label36.ForeColor = System.Drawing.Color.White;
+            this.label36.Location = new System.Drawing.Point(15, 634);
+            this.label36.Name = "label36";
+            this.label36.Size = new System.Drawing.Size(350, 33);
+            this.label36.TabIndex = 28;
+            this.label36.Text = "MSA Summary";
+            this.label36.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // tlpDailyResultEnableAkkon
             // 
@@ -1501,6 +1572,8 @@
             this.tlpImageSaveNG.PerformLayout();
             this.tlpImageSaveOK.ResumeLayout(false);
             this.tlpImageSaveOK.PerformLayout();
+            this.tableLayoutPanel5.ResumeLayout(false);
+            this.tableLayoutPanel5.PerformLayout();
             this.tableLayoutPanel2.ResumeLayout(false);
             this.tableLayoutPanel2.PerformLayout();
             this.tlpDataStoreCapacity.ResumeLayout(false);
@@ -1625,5 +1698,10 @@
         private MetroFramework.Controls.MetroToggle mtgEnableAkkonByPass;
         private System.Windows.Forms.Panel panel16;
         private System.Windows.Forms.Label label34;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel5;
+        private System.Windows.Forms.Label label37;
+        private MetroFramework.Controls.MetroToggle mtgEnableMsaSummary;
+        private System.Windows.Forms.Panel panel17;
+        private System.Windows.Forms.Label label36;
     }
 }

@@ -171,7 +171,10 @@ namespace ATT_UT_IPAD.Core.AppTask
             tabInspResult.CogImage = inspTab.MergeCogImage;
             tabInspResult.Resolution_um = resolution_um;
 
+            // 231128_S
             tabInspResult.AlignResult = new TabAlignResult();
+            // 231128_E
+
             tabInspResult.AlignResult.PreHead = PlcControlManager.Instance().GetPreHeadData(tabInspResult.TabNo);
 
             algorithmTool.MainMarkInspect(inspTab.MergeCogImage, tab, ref tabInspResult, true);
@@ -183,7 +186,9 @@ namespace ATT_UT_IPAD.Core.AppTask
                 message = string.Format("Align Mark Insp NG !!! Tab_{0} / Fpc_{1}, Panel_{2}", tab.Index + 1, tabInspResult.MarkResult.FpcMark.Judgement, tabInspResult.MarkResult.PanelMark.Judgement);
                 WriteLog(message, true);
                 Logger.Debug(LogType.Inspection, message);
-                // tabInspResult.AlignResult = new TabAlignResult();
+                // 231128_S
+                //tabInspResult.AlignResult = new TabAlignResult();
+                // 231128_E
             }
             else
             {
@@ -429,6 +434,7 @@ namespace ATT_UT_IPAD.Core.AppTask
                 inspTab.InspectEvent -= AddInspAkkonEventFuction;
                 inspTab.Dispose();
             }
+
             InspAkkonTabList.Clear();
         }
 
@@ -440,6 +446,7 @@ namespace ATT_UT_IPAD.Core.AppTask
                 inspTab.InspectEvent -= AddInspAlignEventFuction;
                 inspTab.Dispose();
             }
+
             InspAlignTabList.Clear();
         }
 

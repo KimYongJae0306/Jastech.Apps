@@ -20,7 +20,6 @@ namespace ATT_UT_IPAD.UI.Controls
         private Color _selectedColor;
 
         private Color _noneSelectedColor;
-
         #endregion
 
         #region 속성
@@ -43,6 +42,8 @@ namespace ATT_UT_IPAD.UI.Controls
         public delegate void SendTabNumberDelegate(int tabNo);
 
         public delegate TabInspResult GetTabInspResultDele(int tabNo);
+
+        public delegate void UpdateTabButtonDelegate(int tabNo);
         #endregion
 
         #region 생성자
@@ -102,7 +103,19 @@ namespace ATT_UT_IPAD.UI.Controls
             }
         }
 
-        public void UpdateTabCount(int tabCount)
+        public void UpdateTabButtons(int tabCount)
+        {
+            if (this.InvokeRequired)
+            {
+                UpdateTabButtonDelegate callback = UpdateTabButtons;
+                BeginInvoke(callback, tabCount);
+                return;
+            }
+
+            UpdateTabCount(tabCount);
+        }
+
+        private void UpdateTabCount(int tabCount)
         {
             InspDisplayControl.ClearImage();
 
@@ -200,7 +213,6 @@ namespace ATT_UT_IPAD.UI.Controls
             TabBtnControlList[tabNo].SetOrgImage(tabInspResult.CogImage);
             TabBtnControlList[tabNo].SetResultImage(tabInspResult.AkkonResultCogImage);
             TabBtnControlList[tabNo].SetAkkonNGAffineRectList(tabInspResult.AkkonNGAffineList);
-
             TabBtnControlList[tabNo].SetInspImage(tabInspResult.AkkonInspCogImage);
 
             if (tabInspResult != null)

@@ -52,7 +52,7 @@ namespace ATT.UI.Controls
 
         public void UpdateTabCount(int tabCount)
         {
-            AlignResultDisplayControl.UpdateTabCount(tabCount);
+            AlignResultDisplayControl.UpdateTabButtons(tabCount);
         }
 
         public void UpdateMainResult(int tabNo)

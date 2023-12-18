@@ -4,6 +4,7 @@ using Jastech.Apps.Structure.Data;
 using Jastech.Apps.Winform;
 using Jastech.Apps.Winform.Core;
 using Jastech.Apps.Winform.UI.Controls;
+using Jastech.Framework.Util.Helper;
 using Jastech.Framework.Winform.Forms;
 using System;
 using System.Drawing;
@@ -75,6 +76,46 @@ namespace ATT_UT_Remodeling.UI.Pages
             pnlSystemLog.Controls.Add(SystemLogControl);
         }
 
+        private void lblStart_Click(object sender, EventArgs e)
+        {
+            if (ModelManager.Instance().CurrentModel == null)
+            {
+                MessageConfirmForm form = new MessageConfirmForm();
+                form.Message = "Current Model is null.";
+                form.ShowDialog();
+                return;
+            }
+
+            SystemManager.Instance().StartRun();
+
+            Logger.Write(LogType.GUI, "Clicked Start Button");
+        }
+
+        private void lblStop_Click(object sender, EventArgs e)
+        {
+            SystemManager.Instance().StopRun();
+
+            Logger.Write(LogType.GUI, "Clicked Stop Button");
+        }
+
+        public void UpdateButton()
+        {
+            if (PlcControlManager.Instance().MachineStatus == MachineStatus.RUN)
+            {
+                lblStartText.ForeColor = Color.LawnGreen;
+                lblStopText.ForeColor = Color.White;
+                lblStart.Image = Properties.Resources.Start_Green;
+                lblStop.Image = Properties.Resources.Stop_White;
+            }
+            else
+            {
+                lblStartText.ForeColor = Color.White;
+                lblStopText.ForeColor = Color.Red;
+                lblStart.Image = Properties.Resources.Start_White;
+                lblStop.Image = Properties.Resources.Stop_Red;
+            }
+        }
+
         private void AkkonViewerControl_SetTabEventHandler(int tabNo)
         {
             DailyInfoViewerControl.UpdateAkkonResult(tabNo);
@@ -138,38 +179,6 @@ namespace ATT_UT_Remodeling.UI.Pages
         public void AddSystemLogMessage(string logMessage)
         {
             SystemLogControl.AddLogMessage(logMessage);
-        }
-
-        private void lblStart_Click(object sender, EventArgs e)
-        {
-            if (ModelManager.Instance().CurrentModel == null)
-            {
-                MessageConfirmForm form = new MessageConfirmForm();
-                form.Message = "Current Model is null.";
-                form.ShowDialog();
-                return;
-            }
-
-            SystemManager.Instance().StartRun();
-        }
-
-        private void lblStop_Click(object sender, EventArgs e)
-        {
-            SystemManager.Instance().StopRun();
-        }
-
-        public void UpdateButton()
-        {
-            if (PlcControlManager.Instance().MachineStatus == MachineStatus.RUN)
-            {
-                lblStartText.ForeColor = Color.Blue;
-                lblStopText.ForeColor = Color.White;
-            }
-            else
-            {
-                lblStartText.ForeColor = Color.White;
-                lblStopText.ForeColor = Color.Blue;
-            }
         }
 
         public void Enable(bool isEnable)

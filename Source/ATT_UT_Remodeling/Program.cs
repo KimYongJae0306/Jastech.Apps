@@ -1,4 +1,5 @@
 ﻿using Jastech.Apps.Winform;
+using Jastech.Apps.Winform.Core;
 using Jastech.Apps.Winform.Core.Calibrations;
 using Jastech.Apps.Winform.Settings;
 using Jastech.Framework.Comm;
@@ -124,7 +125,7 @@ namespace ATT_UT_Remodeling
 
                 // LineScanCamera
                 int lineCameraWidth = 3072;
-                int lineCameraOffsetX = 1536;
+                int lineCameraOffsetX = 1792;
                 if (CheckCameraProperty(ref lineCameraWidth, ref lineCameraOffsetX, 6560) == true)
                 {
                     var lineCamera = new CameraMil("LineCamera", lineCameraWidth, 1024, ColorFormat.Gray, SensorType.Line);
@@ -145,7 +146,7 @@ namespace ATT_UT_Remodeling
                 }
 
                 // Motion
-                var motion = new ACSMotion("Motion", 2, ACSConnectType.Ethernet);
+                var motion = new ACSMotion("Motion", 1, ACSConnectType.Ethernet);
                 motion.IpAddress = "10.0.0.100";
                 motion.TriggerBuffer = ACSBufferNumber.CameraTrigger_Unit1;        // 재확인 필요
                 config.Add(motion);
@@ -159,7 +160,7 @@ namespace ATT_UT_Remodeling
                 var laf = new NuriOneLAFCtrl("Laf");
                 laf.SerialPortComm = new SerialPortComm("COM1", 9600);
                 laf.AxisName = AxisName.Z0.ToString();
-                laf.HomePosition_mm = 0.02;
+                laf.HomePosition_mm = 0.025;
                 laf.ResolutionAxisZ = 10000.0;
                 laf.MaxSppedAxisZ = 20;
                 laf.AccDec = 15;
@@ -188,6 +189,9 @@ namespace ATT_UT_Remodeling
                 var plc = new MelsecPlc("PLC", new SocketComm("192.168.130.2", 9021, SocketCommType.Udp, 9031), new MelsecBinaryParser());
                 config.Add(plc);
             }
+			
+            AppsConfig.Instance().ProgramType = "ProgramType_1";
+            AppsConfig.Instance().MachineName = "OLB_ATT";
         }
 
         private static bool CheckCameraProperty(ref int width, ref int offsetX, int fullPixelSize)
@@ -244,6 +248,7 @@ namespace ATT_UT_Remodeling
 
         private static void Application_ThreadException(object sender, ThreadExceptionEventArgs e)
         {
+            PlcControlManager.Instance().WritePcVisionStatus(MachineStatus.STOP);
             string message = "Application_ThreadException " + e.Exception.Message;
             Logger.Error(ErrorType.Apps, message);
             System.Diagnostics.Trace.WriteLine(message);
@@ -253,6 +258,7 @@ namespace ATT_UT_Remodeling
 
         private static void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
         {
+            PlcControlManager.Instance().WritePcVisionStatus(MachineStatus.STOP);
             var exception = (Exception)e.ExceptionObject;
             string message = "CurrentDomain_UnhandledException " + exception.Message + " Source: " + exception.Source.ToString() + "StackTrack :" + exception.StackTrace.ToString();
             Logger.Error(ErrorType.Apps, message);

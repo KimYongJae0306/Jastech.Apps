@@ -42,17 +42,27 @@ namespace Jastech.Apps.Structure.Data
                     if (MarkResult.Judgement != Framework.Imaging.Result.Judgement.OK)
                         return TabJudgement.Mark_NG;
 
+                    // 231128_S
                     if (AlignResult != null)
                     {
                         if (AlignResult.Judgement != Framework.Imaging.Result.Judgement.OK)
                             return TabJudgement.NG;
                     }
+                    //if (AlignResult.Judgement != Framework.Imaging.Result.Judgement.OK)
+                    //    return TabJudgement.NG;
+
+                    //if (AkkonResult == null)
+                    //    return TabJudgement.NG;
 
                     if (AkkonResult != null)
                     {
                         if (AkkonResult.Judgement != Framework.Imaging.Result.Judgement.OK)
                             return TabJudgement.NG;
                     }
+
+                    //if (AkkonResult.Judgement != Framework.Imaging.Result.Judgement.OK)
+                    //    return TabJudgement.NG;
+                    // 231128_E
 
                     return TabJudgement.OK;
                 }
@@ -432,14 +442,6 @@ namespace Jastech.Apps.Structure.Data
             return positionList;
         }
         #endregion
-
-
-
-
-
-
-
-
     }
 
     public class TabMarkResult
@@ -555,7 +557,8 @@ namespace Jastech.Apps.Structure.Data
                 if (LeftX.Judgement == Judgement.OK && LeftY.Judgement == Judgement.OK && RightX.Judgement == Judgement.OK && RightY.Judgement == Judgement.OK)
                 {
                     var cx = GetCx_um();
-                    if (GetCx_um() <= Math.Abs(CxJudegementValue_pixel * Resolution_um))
+                    //if (GetCx_um() <= Math.Abs(CxJudegementValue_pixel * Resolution_um))
+                    if (Math.Abs(cx) <= Math.Abs(CxJudegementValue_pixel * Resolution_um))
                         return Judgement.OK;
                     else
                         return Judgement.NG;

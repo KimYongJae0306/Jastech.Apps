@@ -3,6 +3,7 @@ using ATT_UT_IPAD.UI.Forms;
 using Jastech.Apps.Structure;
 using Jastech.Apps.Winform;
 using Jastech.Apps.Winform.UI.Forms;
+using Jastech.Framework.Util.Helper;
 using Jastech.Framework.Winform;
 using Jastech.Framework.Winform.Forms;
 using System;
@@ -39,6 +40,8 @@ namespace ATT_UT_IPAD.UI.Pages
             form.InspModelService = ATTInspModelService;
             form.ApplyModelEventHandler += Form_ApplyModelEventHandler;
             form.ShowDialog();
+
+            Logger.Write(LogType.GUI, "Clicked Model List Dialog");
         }
 
         private void Form_ApplyModelEventHandler(string modelName)
@@ -69,12 +72,16 @@ namespace ATT_UT_IPAD.UI.Pages
             }
             else
                 MotionSettingsForm.Focus();
+
+            Logger.Write(LogType.GUI, "Clicked Motion Data Dialog");
         }
 
         private void btnSettings_Click(object sender, EventArgs e)
         {
             OperationSettingsForm form = new OperationSettingsForm();
             form.ShowDialog();
+
+            Logger.Write(LogType.GUI, "Clicked System Data Dialog");
         }
 
         public void SetInspModelService(ATTInspModelService inspModelService)
@@ -95,6 +102,8 @@ namespace ATT_UT_IPAD.UI.Pages
             }
             else
                 PlcStatusForm.Focus();
+
+            Logger.Write(LogType.GUI, "Clicked PLC Viewer Dialog");
         }
         #endregion
     }

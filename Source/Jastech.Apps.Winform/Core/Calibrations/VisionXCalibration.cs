@@ -249,11 +249,7 @@ namespace Jastech.Apps.Winform.Core.Calibrations
 
                     Logger.Write(LogType.Device, "Initialize calibration.");
 
-                    MotionManager.Instance().MoveAxisX(AxisHandler.GetAxis(AxisName.X), UnitName, TeachingPosType.Stage1_PreAlign_Left);
-                    Logger.Write(LogType.Device, "Move to Calibration start position.");
-
                     ClearMatrixPointResultList();
-                    Logger.Write(LogType.Device, "Clear matrix.");
 
                     // 조명 켜기
                     light.TurnOn(unit.PreAlign.LeftLightParam);
@@ -758,7 +754,7 @@ namespace Jastech.Apps.Winform.Core.Calibrations
                 case CalSeqStep.CAL_SEQ_ERROR_SEND:
                     Logger.Write(LogType.Device, "Failed calibration.");
 
-                    PlcControlManager.Instance().WritePcStatus(PlcCommand.Calibration, false);
+                    PlcControlManager.Instance().WritePcStatus(PlcCommand.Calibration, true);
                     Logger.Write(LogType.Device, "Send calibration abnormal complete signal.");
 
                     CalSeqStep = CalSeqStep.CAL_SEQ_COMPLETED;

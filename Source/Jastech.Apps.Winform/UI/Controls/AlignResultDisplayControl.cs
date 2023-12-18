@@ -54,6 +54,8 @@ namespace ATT_UT_IPAD.UI.Controls
         public delegate void SendTabNumberDelegate(int tabNo);
 
         public delegate TabInspResult GetTabInspResultDele(int tabNo);
+
+        public delegate void UpdateTabButtonDelegate(int tabCount);
         #endregion
 
         #region 생성자
@@ -99,9 +101,21 @@ namespace ATT_UT_IPAD.UI.Controls
             BeginInvoke(new Action(() => Enabled = isEnable));
         }
 
-        public void UpdateTabCount(int tabCount)
+        public void UpdateTabButtons(int tabCount)
         {
-            InspAlignDisplay.ClearImage();
+            if (this.InvokeRequired)
+            {
+                UpdateTabButtonDelegate callback = UpdateTabButtons;
+                BeginInvoke(callback, tabCount);
+                return;
+            }
+
+            UpdateTabCount(tabCount);
+        }
+
+        private void UpdateTabCount(int tabCount)
+        {
+            InspAlignDisplay?.ClearImage();
 
             ClearTabBtnList();
 
@@ -133,9 +147,8 @@ namespace ATT_UT_IPAD.UI.Controls
         private void ClearTabBtnList()
         {
             foreach (var btn in TabBtnControlList)
-            {
                 btn.SetTabEventHandler -= ButtonControl_SetTabEventHandler;
-            }
+
             TabBtnControlList.Clear();
             pnlTabButton.Controls.Clear();
         }
@@ -649,7 +662,7 @@ namespace ATT_UT_IPAD.UI.Controls
                 float width = Math.Abs(maxX - minX) / 2.0f;
                 float height = Math.Abs(maxY - minY) / 2.0f;
 
-                return new PointF((minX + width), (minY + (height / 2.0f)));
+                return new PointF((minX + width), (minY + height));
             }
             else
                 return new PointF();

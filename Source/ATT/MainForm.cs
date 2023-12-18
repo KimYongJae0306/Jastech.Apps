@@ -469,6 +469,7 @@ namespace ATT
         {
             LastScanImageQueue.Clear();
         }
+		
         private void StartVirtualInspTask()
         {
             if (ConfigSet.Instance().Operation.VirtualMode)
@@ -535,10 +536,9 @@ namespace ATT
                 if (CancelSafetyDoorlockTask.IsCancellationRequested)
                     break;
 
-                _prevMachineStatus = PlcControlManager.Instance().MachineStatus;
-
                 if (testForceDoorLockToggle == true && PlcControlManager.Instance().IsDoorOpened == false)
                 {
+					_prevMachineStatus = PlcControlManager.Instance().MachineStatus;
                     PlcControlManager.Instance().IsDoorOpened = true;
 
                     MotionManager.Instance().GetAxisHandler(AxisHandlerName.Handler0).StopMove();

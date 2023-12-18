@@ -1,6 +1,5 @@
 ﻿using Cognex.VisionPro;
 using Emgu.CV;
-using Emgu.CV.CvEnum;
 using Jastech.Apps.Structure;
 using Jastech.Apps.Structure.Data;
 using Jastech.Apps.Winform;
@@ -23,7 +22,6 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
-using System.IO;
 using System.Runtime.InteropServices;
 using System.Threading;
 using System.Windows.Forms;
@@ -621,6 +619,8 @@ namespace Jastech.Framework.Winform.Forms
                 confirmForm.Message = "Save Model Completed.";
                 confirmForm.ShowDialog();
             }
+
+            Logger.Write(LogType.GUI, "Clicked OpticTeachingForm Save Button");
         }
 
         private void SaveModelData(AppsInspModel model)
@@ -639,11 +639,16 @@ namespace Jastech.Framework.Winform.Forms
         {
             RollbackPrevData();
             this.Close();
+
+            AppsStatus.Instance().IsRepeat = false;
+            Logger.Write(LogType.GUI, "Clicked OpticTeachingForm Cancle Button");
         }
 
         private void btnMotionPopup_Click(object sender, EventArgs e)
         {
             OpenMotionPopupEventHandler?.Invoke(UnitName);
+
+            Logger.Write(LogType.GUI, "Clicked OpticTeachingForm Motion Button");
         }
 
         private void LiveDisplay(string cameraName, Mat image)
@@ -687,6 +692,8 @@ namespace Jastech.Framework.Winform.Forms
                 LineCamera.IsLive = false;
             }
             StartGrab(false);
+
+            Logger.Write(LogType.GUI, "Clicked OpticTeachingForm Grab Start Button");
         }
 
         private void StartGrab(bool isRepeat)
@@ -713,87 +720,8 @@ namespace Jastech.Framework.Winform.Forms
         {
             LineCamera.IsLive = false;
             StopGrab();
-        }
 
-        private void btnLoadImage_Click(object sender, EventArgs e)
-        {
-            OpenFileDialog dlg = new OpenFileDialog();
-            dlg.ReadOnlyChecked = true;
-            dlg.Filter = "BMP Files (*.bmp)|*.bmp; | "
-                + "JPG Files (*.jpg, *.jpeg)|*.jpg; *.jpeg; |"
-                + "모든 파일(*.*) | *.*;";
-            dlg.ShowDialog();
-
-            if (dlg.FileName != "")
-            {
-                string extension = Path.GetExtension(dlg.FileName);
-                Mat image = null;
-
-                if (extension == ".bmp")
-                {
-                    image = new Mat(dlg.FileName, ImreadModes.Grayscale);
-                }
-                else if (extension == ".jpg" || extension == ".jpeg")
-                {
-                    if (GetHalfFilePath(dlg.FileName, out string leftFilePath, out string rightFilePath))
-                    {
-                        Mat leftMatImage = new Mat(leftFilePath, ImreadModes.Grayscale);
-                        Mat rightMatImage = new Mat(rightFilePath, ImreadModes.Grayscale);
-
-                        Size mergeSize = new Size(leftMatImage.Width + rightMatImage.Width, leftMatImage.Height);
-                        image = new Mat(mergeSize, DepthType.Cv8U, 1);
-                        CvInvoke.HConcat(leftMatImage, rightMatImage, image);
-
-                        leftMatImage.Dispose();
-                        rightMatImage.Dispose();
-                    }
-                    else
-                    {
-                        MessageConfirmForm form = new MessageConfirmForm();
-                        form.Message = "The file name format is incorrect.";
-                        form.ShowDialog();
-                        return;
-                    }
-                }
-
-                if (image == null)
-                    return;
-
-                DrawBoxControl.SetImage(image.ToBitmap());
-            }
-        }
-
-        private bool GetHalfFilePath(string fileName, out string leftFilePath, out string rightFilePath)
-        {
-            leftFilePath = "";
-            rightFilePath = "";
-
-            string dir = Path.GetDirectoryName(fileName);
-            string name = Path.GetFileName(fileName);
-
-            if (name.Contains("Left"))
-            {
-                string rightName = name.Replace("Left", "Right");
-                leftFilePath = fileName;
-                rightFilePath = Path.Combine(dir, rightName);
-            }
-            else if (name.Contains("Right"))
-            {
-                rightFilePath = fileName;
-                string leftName = name.Replace("Right", "Left");
-                leftFilePath = Path.Combine(dir, leftName);
-            }
-
-            if (leftFilePath != "" && rightFilePath != "")
-            {
-                bool isLeftExist = File.Exists(leftFilePath);
-                bool isRightExist = File.Exists(rightFilePath);
-
-                if (isLeftExist && isRightExist)
-                    return true;
-            }
-
-            return false;
+            Logger.Write(LogType.GUI, "Clicked OpticTeachingForm Grab Start Button");
         }
 
         private void StopGrab()
@@ -879,6 +807,8 @@ namespace Jastech.Framework.Winform.Forms
 
         private void MoveRepeat(bool isRepeat)
         {
+            AppsStatus.Instance().IsRepeat = isRepeat;
+
             if (isRepeat)
             {
                 LineCamera.StopGrab();

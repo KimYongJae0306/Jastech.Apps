@@ -1,6 +1,7 @@
 ﻿using Emgu.CV.XFeatures2D;
 using Jastech.Apps.Structure;
 using Jastech.Apps.Structure.Data;
+using Jastech.Apps.Winform.Service.Plc.Maps;
 using Jastech.Framework.Config;
 using Jastech.Framework.Device.LAFCtrl;
 using Jastech.Framework.Device.Motions;
@@ -13,6 +14,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading;
+using static Jastech.Apps.Winform.Service.Plc.PlcScenarioManager;
 
 namespace Jastech.Apps.Winform
 {
@@ -107,7 +109,7 @@ namespace Jastech.Apps.Winform
             var targetPosition = posData.GetTargetPosition(axis.Name) + offset;
             var actualPosition = axis.GetActualPosition();
 
-            if (Math.Abs(targetPosition - actualPosition) <= /*double.Epsilon*/0.0001)
+            if (Math.Abs(targetPosition - actualPosition) <= /*double.Epsilon*/0.0002)
                 return true;
 
             return false;
@@ -189,12 +191,12 @@ namespace Jastech.Apps.Winform
                 while (IsAxisInPosition(unitName, teachingPos, axis, offset) == false)
                 {
                     if (sw.ElapsedMilliseconds >= movingParam.MovingTimeOut)
-                    {
                         return false;
-                    }
+
                     Thread.Sleep(10);
                 }
             }
+
             return true;
         }
 
@@ -209,6 +211,7 @@ namespace Jastech.Apps.Winform
                     var axis = GetAxis(axisHandlerName, axisName);
                     return motion.IsEnable(axis.AxisNo);
                 }
+
                 return false;
             }
 
@@ -226,6 +229,7 @@ namespace Jastech.Apps.Winform
                     var axis = GetAxis(axisHandlerName, axisName);
                     return motion.IsMoving(axis.AxisNo);
                 }
+
                 return false;
             }
 
@@ -237,7 +241,7 @@ namespace Jastech.Apps.Winform
             if (ConfigSet.Instance().Operation.VirtualMode)
                 return true;
 
-            //if (IsAxisZInPosition(unitName, teachingPos, lafCtrl, axisNameZ) == false)
+            if (IsAxisZInPosition(unitName, teachingPos, lafCtrl, axisNameZ) == false)
             {
                 Stopwatch sw = new Stopwatch();
                 sw.Restart();
@@ -249,8 +253,9 @@ namespace Jastech.Apps.Winform
                 var AlignMovingParamZ = posData.GetMovingParam(axisNameZ.ToString());
 
                 lafCtrl.SetMotionAbsoluteMove(targetPosition);
+                Console.WriteLine(string.Format("Dove Done.{0}", axisNameZ.ToString()));
             }
-            Console.WriteLine(string.Format("Dove Done.{0}", axisNameZ.ToString()));
+
             return true;
         }
 

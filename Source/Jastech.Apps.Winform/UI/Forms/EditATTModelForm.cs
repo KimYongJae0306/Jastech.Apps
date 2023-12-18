@@ -85,6 +85,8 @@ namespace Jastech.Apps.Winform.UI.Forms
             Close();
 
             EditModelEvent?.Invoke(PrevModelName, inspModel);
+
+            Logger.Write(LogType.GUI, "Clicked EditATTModelForm Apply Button");
         }
 
         private void lblCancel_Click(object sender, EventArgs e)
@@ -92,6 +94,8 @@ namespace Jastech.Apps.Winform.UI.Forms
             ParamTrackingLogger.ClearChangedLog();
             DialogResult = DialogResult.Cancel;
             Close();
+
+            Logger.Write(LogType.GUI, "Clicked EditATTModelForm Cancle Button");
         }
 
         private void textbox_KeyBoard_Click(object sender, EventArgs e)

@@ -181,6 +181,16 @@ namespace Jastech.Apps.Winform.UI.Controls
                     Process.Start(path);
                     return;
                 }
+                else
+                {
+                    path = Path.Combine(alignDailyInfo.ResultPath, "Result");
+
+                    if (Directory.Exists(path))
+                    {
+                        Process.Start(path);
+                        return;
+                    }
+                }
             }
 
             MessageConfirmForm form = new MessageConfirmForm();

@@ -9,7 +9,6 @@ using Jastech.Apps.Structure.Data;
 using Jastech.Apps.Winform;
 using Jastech.Apps.Winform.Core;
 using Jastech.Apps.Winform.Service;
-using Jastech.Apps.Winform.Service.Plc;
 using Jastech.Apps.Winform.Service.Plc.Maps;
 using Jastech.Apps.Winform.Settings;
 using Jastech.Apps.Winform.UI.Forms;
@@ -23,13 +22,11 @@ using Jastech.Framework.Imaging;
 using Jastech.Framework.Imaging.Helper;
 using Jastech.Framework.Imaging.Result;
 using Jastech.Framework.Imaging.VisionPro;
-using Jastech.Framework.Imaging.VisionPro.VisionAlgorithms.Results;
 using Jastech.Framework.Util.Helper;
 using Jastech.Framework.Winform;
 using Jastech.Framework.Winform.Forms;
 using System;
 using System.Collections.Generic;
-using System.Data.SqlClient;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
@@ -124,7 +121,10 @@ namespace ATT_UT_IPAD.Core
                 if(IsAkkonGrabDone)
                 {
                     AkkonCamera.StopGrab();
-                    AkkonLAFCtrl.SetTrackingOnOFF(false);
+
+                    if (AppsStatus.Instance().IsRepeat == false)
+                        AkkonLAFCtrl.SetTrackingOnOFF(false);
+
 
                     WriteLog("Received Akkon Camera Grab Done Event.");
                 }
@@ -137,7 +137,9 @@ namespace ATT_UT_IPAD.Core
                 if (IsAlignGrabDone)
                 {
                     AlignCamera.StopGrab();
-                    AlignLAFCtrl.SetTrackingOnOFF(false);
+
+                    if (AppsStatus.Instance().IsRepeat == false)
+                        AlignLAFCtrl.SetTrackingOnOFF(false);
 
                     WriteLog("Received Align Camera Grab Done Event.");
                 }
@@ -270,7 +272,9 @@ namespace ATT_UT_IPAD.Core
             if (ModelManager.Instance().CurrentModel == null)
                 return;
 
-            PlcControlManager.Instance().MachineStatus = MachineStatus.RUN;
+            if (AppsStatus.Instance().IsModelChanging == false)
+                PlcControlManager.Instance().MachineStatus = MachineStatus.RUN;
+
             SeqStep = SeqStep.SEQ_INIT;
 
             WriteLog("Start Sequence.");
@@ -278,7 +282,9 @@ namespace ATT_UT_IPAD.Core
 
         public void SeqStop()
         {
-            PlcControlManager.Instance().MachineStatus = MachineStatus.STOP;
+            if (AppsStatus.Instance().IsModelChanging == false)
+                PlcControlManager.Instance().MachineStatus = MachineStatus.STOP;
+
             SeqStep = SeqStep.SEQ_IDLE;
 
             WriteLog("Stop Sequence.");
@@ -333,7 +339,6 @@ namespace ATT_UT_IPAD.Core
 
                 case SeqStep.SEQ_INIT:
                     ClearBufferThread();
-
                     SeqStep = SeqStep.SEQ_MOVE_START_POS;
                     break;
 
@@ -369,12 +374,12 @@ namespace ATT_UT_IPAD.Core
                     break;
 
                 case SeqStep.SEQ_WAITING:
-                    AppsStatus.Instance().IsRunning = false;
+                    AppsStatus.Instance().IsInspRunnerRunning = false;
 
                     if (AppsStatus.Instance().IsInspRunnerFlagFromPlc == false)
                         break;
 
-                    AppsStatus.Instance().IsRunning = true;
+                    AppsStatus.Instance().IsInspRunnerRunning = true;
 
                     WriteLog("Receive Inspection Start Signal From PLC.", true);
 
@@ -552,7 +557,6 @@ namespace ATT_UT_IPAD.Core
                     break;
 
                 case SeqStep.SEQ_SEND_MANUAL_JUDGE:
-
                     SendResultData();
                     WriteLog("Completed Send Plc Tab Result Data(ManualJudge)", true);
 
@@ -601,6 +605,7 @@ namespace ATT_UT_IPAD.Core
                         SeqStop();
                         break;
                     }
+
                     WriteLog("Idle Run sequence finished.", true);
 
                     AppsStatus.Instance().IsInspRunnerFlagFromPlc = false;
@@ -680,8 +685,10 @@ namespace ATT_UT_IPAD.Core
         {
             Stopwatch sw = Stopwatch.StartNew();
             int timeOutMs = 3000;
+
             while (PlcControlManager.Instance().GetValue(addr) != "0" && sw.ElapsedMilliseconds <= timeOutMs)
                 Thread.Sleep(20);   //plcScanTime
+
             if (sw.ElapsedMilliseconds > timeOutMs)
                 new MessageConfirmForm { Message = $"Wait PLC value clear timed out.\r\nCommand : {addr}\r\nTime : {timeOutMs}" }.ShowDialog();
         }
@@ -697,42 +704,24 @@ namespace ATT_UT_IPAD.Core
                 var akkonTabInspResult = AppsInspResult.Instance().GetAkkon(tabNo);
                 var alignTabInspResult = AppsInspResult.Instance().GetAlign(tabNo);
                 TabJudgement judgement = GetJudgemnet(akkonTabInspResult, alignTabInspResult);
-                PlcControlManager.Instance().WriteTabResult(tabNo, judgement, alignTabInspResult.AlignResult, akkonTabInspResult.AkkonResult, resolution);
+                PlcControlManager.Instance().WriteTabResult(tabNo, judgement, alignTabInspResult.AlignResult, akkonTabInspResult.AkkonResult, alignTabInspResult.MarkResult, resolution);
 
-                //if (judgement.Equals(TabJudgement.OK) == false)
-                //    inspFinalResult = false;
-
-                if (tabInspResult.AkkonResult.Judgement.Equals(Judgement.OK) == false)
-                    inspAkkonResult = false;
-
-                if (tabInspResult.AlignResult.Judgement.Equals(Judgement.OK) == false)
-                    inspAlignResult = false;
+                if (judgement.Equals(TabJudgement.OK) == false)
+                    inspFinalResult = false;
 
                 Thread.Sleep(20);
             }
-
-            if (AppsConfig.Instance().EnableAkkonByPass)
-                inspAkkonResult = true;
-
-            if (AppsConfig.Instance().EnableAlignByPass)
-                inspAlignResult = true;
-
-            if (inspAkkonResult == false || inspAlignResult == false)
-                inspFinalResult = false;
 
             if (inspFinalResult)
                 PlcControlManager.Instance().WritePcStatus(PlcCommand.StartInspection);
             else
                 PlcControlManager.Instance().WritePcStatus(PlcCommand.StartInspection, true);
-
         }
 
         private TabJudgement GetJudgemnet(TabInspResult akkonInspResult, TabInspResult alignInspResult)
         {
             if (akkonInspResult.IsManualOK || alignInspResult.IsManualOK)
-            {
                 return TabJudgement.Manual_OK;
-            }
             else
             {
                 if (akkonInspResult.MarkResult.Judgement != Judgement.OK)
@@ -905,8 +894,12 @@ namespace ATT_UT_IPAD.Core
 
             if (AppsConfig.Instance().EnableAkkonLeadResultLog == true)
                 SaveAkkonLeadResults(path, inspModel.TabCount);
-            //SaveAkkonResultAsMsaSummary(path, inspModel.TabCount);
-            //SaveAlignResultAsMsaSummary(path, inspModel.TabCount);
+
+            if(AppsConfig.Instance().EnableMsaSummary == true)
+            {
+                SaveAkkonResultAsMsaSummary(path, inspModel.TabCount);
+                SaveAlignResultAsMsaSummary(path, inspModel.TabCount);
+            }
         }
 
         private void SaveAlignResult(string resultPath, int tabCount)
@@ -1267,10 +1260,9 @@ namespace ATT_UT_IPAD.Core
         {
             MotionManager manager = MotionManager.Instance();
             double cameraGap = 0;
+
             if (teachingPos == TeachingPosType.Stage1_Scan_End)
-            {
                 cameraGap = AppsConfig.Instance().CameraGap_mm;
-            }
                 
             if (manager.IsAxisInPosition(UnitName.Unit0, teachingPos, axis, cameraGap) == false)
             {
@@ -1285,6 +1277,7 @@ namespace ATT_UT_IPAD.Core
                     {
                         if (PlcControlManager.Instance().MachineStatus != MachineStatus.RUN)
                             return false;
+
                         if (sw.ElapsedMilliseconds >= movingParam.MovingTimeOut)
                             return false;
 
@@ -1321,7 +1314,7 @@ namespace ATT_UT_IPAD.Core
                 Point rightTop = new Point((int)lead.RightTopX + startPoint.X, (int)lead.RightTopY + startPoint.Y);
                 Point rightBottom = new Point((int)lead.RightBottomX + startPoint.X, (int)lead.RightBottomY + startPoint.Y);
 
-                // 향 후 Main 페이지 ROI 보여 달라고 하면 ContainLeadROI = true로 속성 변경
+                // 향후 Main 페이지 ROI 보여 달라고 하면 ContainLeadROI = true로 속성 변경
                 if (autoDrawParam.ContainLeadROI)
                 {
                     CvInvoke.Line(colorMat, leftTop, leftBottom, new MCvScalar(50, 230, 50, 255), 1);
@@ -1329,6 +1322,7 @@ namespace ATT_UT_IPAD.Core
                     CvInvoke.Line(colorMat, rightTop, rightBottom, new MCvScalar(50, 230, 50, 255), 1);
                     CvInvoke.Line(colorMat, rightBottom, leftBottom, new MCvScalar(50, 230, 50, 255), 1);
                 }
+
                 if (result.Judgement == Judgement.NG)
                 {
                     CvInvoke.Line(colorMat, leftTop, leftBottom, redColor, 1);
@@ -1363,6 +1357,7 @@ namespace ATT_UT_IPAD.Core
                     else
                     {
                         double strengthValue = Math.Abs(blob.Strength - akkonParameters.ShapeFilterParam.MinAkkonStrength);
+
                         if (strengthValue <= 1)
                         {
                             int temp = (int)(radius / 2.0);
@@ -1507,10 +1502,9 @@ namespace ATT_UT_IPAD.Core
                 {
                     string imageName = AppsInspResult.Instance().Cell_ID + "_Tab_" + tabInspResult.TabNo.ToString();
                     string filePath = Path.Combine(resultPath, imageName);
+
                     if (operation.ExtensionNGImage == ImageExtension.Bmp)
-                    {
                         SaveImage(tabInspResult.Image, filePath, Judgement.NG, ImageExtension.Bmp, false);
-                    }
                     else if (operation.ExtensionNGImage == ImageExtension.Jpg)
                     {
                         if (tabInspResult.Image.Width > SAVE_IMAGE_MAX_WIDTH)
@@ -1519,7 +1513,7 @@ namespace ATT_UT_IPAD.Core
                             SaveImage(tabInspResult.Image, filePath, Judgement.NG, ImageExtension.Jpg, false);
                     }
 
-                    if(isAkkonResult)
+                    if (isAkkonResult)
                     {
                         if (tabInspResult.AkkonResult.Judgement == Judgement.NG)
                             SaveAkkonDefectLeadImage(resultPath, tabInspResult);
@@ -1528,15 +1522,14 @@ namespace ATT_UT_IPAD.Core
             }
 
             if(isAkkonResult == false)
-            {
                 SaveAlignResult(tabInspResult, resultPath);
-            }
         }
 
         public void SaveAlignResult(TabInspResult tabInspResult, string path)
         {
             if (tabInspResult == null)
                 return;
+
             string savePath = Path.Combine(path, "Result");
 
             if (Directory.Exists(savePath) == false)
@@ -1671,6 +1664,7 @@ namespace ATT_UT_IPAD.Core
             {
                 Point startPoint = new Point((int)shape.StartX - roi.X, (int)shape.StartY - roi.Y);
                 Point endPoint = new Point((int)shape.EndX - roi.X, (int)shape.EndY - roi.Y);
+
                 if (shape.IsFpc)
                     CvInvoke.Line(cropImage, startPoint, endPoint, fpcColor);
                 else
@@ -1765,9 +1759,9 @@ namespace ATT_UT_IPAD.Core
                             cropAkkonMat.Dispose();
                             saveCount++;
                         }
-                        catch (Exception)
+                        catch (Exception ex)
                         {
-
+                            Logger.Error(ErrorType.Etc, "Save Akkon defect lead image error : " + ex.Message);
                         }
                     }
                 }
@@ -1892,6 +1886,7 @@ namespace ATT_UT_IPAD.Core
                 _ClearBufferThread.Start();
                 return true;
             }
+
             return false;
         }
 

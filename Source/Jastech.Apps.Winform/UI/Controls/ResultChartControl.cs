@@ -15,9 +15,11 @@ namespace Jastech.Apps.Winform.UI.Controls
     public partial class ResultChartControl : UserControl
     {
         #region 필드
-        private int _selectedTabNo { get; set; } = -1;
+        private int _selectedTabNo { get; set; } = 0;
 
         private AlignResultType _selectedAlignResult { get; set; } = AlignResultType.All;
+
+        private AkkonResultType _selectedAkkonResult { get; set; } = AkkonResultType.All;
         #endregion
 
         public enum InspChartType
@@ -56,6 +58,8 @@ namespace Jastech.Apps.Winform.UI.Controls
         private delegate void UpdateAkkonChartDelegate(int tabNo);
 
         private delegate void ClearChartDelegate();
+
+        private delegate void ReUpdateChartDelegate(InspChartType inspChartType);
         #endregion
 
         #region 생성자
@@ -98,7 +102,7 @@ namespace Jastech.Apps.Winform.UI.Controls
                 AlignSeriesLx.Color = Color.Blue;
                 AlignSeriesLx.Name = "Lx";
 
-                
+
                 //AlignSeriesLx.XValueMember = "ea";
                 //AlignSeriesLx.YValueMembers = "um";
 
@@ -153,12 +157,22 @@ namespace Jastech.Apps.Winform.UI.Controls
             UpdateAlignChart(tabNo, _selectedAlignResult);
         }
 
-        public void ReUpdate()
+        public void ReUpdate(InspChartType inspChartType)
         {
-            UpdateAlignChart(_selectedTabNo, _selectedAlignResult);
+            if (this.InvokeRequired)
+            {
+                ReUpdateChartDelegate callback = ReUpdate;
+                BeginInvoke(callback, inspChartType);
+                return;
+            }
+
+            if (inspChartType == InspChartType.Align)
+                UpdateAlignChart(_selectedTabNo, _selectedAlignResult);
+            else if (inspChartType == InspChartType.Akkon)
+                UpdateAkkonChart(_selectedTabNo, _selectedAkkonResult);
         }
 
-         private void InitializeAlignChart()
+        private void InitializeAlignChart()
         {
             //chtData.Titles[0].Position.Auto = false;
 
@@ -172,6 +186,32 @@ namespace Jastech.Apps.Winform.UI.Controls
             chtData.ChartAreas[0].AxisX.MajorGrid.LineDashStyle = ChartDashStyle.Dash;
 
             chtData.ChartAreas[0].AxisY.Title = "um";
+            chtData.ChartAreas[0].AxisY.TextOrientation = TextOrientation.Auto;
+            chtData.ChartAreas[0].AxisY.TitleForeColor = Color.White;
+            chtData.ChartAreas[0].AxisY.TitleAlignment = StringAlignment.Far;
+            chtData.ChartAreas[0].AxisY.MajorGrid.LineDashStyle = ChartDashStyle.Dash;
+        }
+
+        private void InitializeAkkonChart(AkkonResultType akkonResultType)
+        {
+            //chtData.Titles[0].Position.Auto = false;
+
+            //chtData.ChartAreas[0].Position.Auto = false;
+
+            chtData.ChartAreas[0].AxisX.Interval = 10;
+            chtData.ChartAreas[0].AxisX.Title = "ea";
+            chtData.ChartAreas[0].AxisX.TextOrientation = TextOrientation.Auto;
+            chtData.ChartAreas[0].AxisX.TitleForeColor = Color.White;
+            chtData.ChartAreas[0].AxisX.TitleAlignment = StringAlignment.Far;
+            chtData.ChartAreas[0].AxisX.MajorGrid.LineDashStyle = ChartDashStyle.Dash;
+
+            if (akkonResultType == AkkonResultType.Length)
+                chtData.ChartAreas[0].AxisY.Title = "um";
+            else if (akkonResultType == AkkonResultType.Count)
+                chtData.ChartAreas[0].AxisY.Title = "ea";
+            else
+                chtData.ChartAreas[0].AxisY.Title = "";
+
             chtData.ChartAreas[0].AxisY.TextOrientation = TextOrientation.Auto;
             chtData.ChartAreas[0].AxisY.TitleForeColor = Color.White;
             chtData.ChartAreas[0].AxisY.TitleAlignment = StringAlignment.Far;
@@ -205,7 +245,7 @@ namespace Jastech.Apps.Winform.UI.Controls
             switch (alignResultType)
             {
                 case AlignResultType.All:
-                    if(double.TryParse(tabData.LX, out double lx1))
+                    if (double.TryParse(tabData.LX, out double lx1))
                         AlignSeriesLx.Points.Add(lx1);
                     else
                         AlignSeriesLx.Points.Add(0);
@@ -280,12 +320,15 @@ namespace Jastech.Apps.Winform.UI.Controls
                 return;
             }
 
-            UpdateAkkonChart(tabNo);
+            _selectedTabNo = tabNo;
+
+            UpdateAkkonChart(tabNo, _selectedAkkonResult);
         }
 
-        private void UpdateAkkonChart(int tabNo)
+        private void UpdateAkkonChart(int tabNo, AkkonResultType akkonResultType = AkkonResultType.All)
         {
             ClearChartData();
+            InitializeAkkonChart(akkonResultType);
 
             var dailyInfo = DailyInfoService.GetDailyInfo();
 
@@ -295,12 +338,53 @@ namespace Jastech.Apps.Winform.UI.Controls
                 {
                     var tabData = item.AkkonDailyInfoList.Where(x => x.TabNo == tabNo).FirstOrDefault();
 
-                    if(tabData != null)
-                    {
-                        AkkonSeriesCount.Points.Add(tabData.MinBlobCount);
-                        AkkonSeriesLength.Points.Add(tabData.MinLength);
-                    }
+                    if (tabData == null)
+                        continue;
+
+                    AddSeriesPoint(tabData, akkonResultType);
                 }
+            }
+        }
+
+        private void AddSeriesPoint(AkkonDailyInfo tabData, AkkonResultType akkonResultType)
+        {
+            switch (akkonResultType)
+            {
+                case AkkonResultType.All:
+                    if (double.TryParse(tabData.MinBlobCount.ToString(), out double minBlobCount1))
+                        AkkonSeriesCount.Points.Add(minBlobCount1);
+                    else
+                        AkkonSeriesCount.Points.Add(0);
+
+                    if (double.TryParse(tabData.MinLength.ToString(), out double minLength1))
+                        AkkonSeriesLength.Points.Add(minLength1);
+                    else
+                        AkkonSeriesLength.Points.Add(0);
+
+                    break;
+
+                case AkkonResultType.Count:
+                    if (double.TryParse(tabData.MinBlobCount.ToString(), out double minBlobCount2))
+                        AkkonSeriesCount.Points.Add(minBlobCount2);
+                    else
+                        AkkonSeriesCount.Points.Add(0);
+                    break;
+
+                case AkkonResultType.Length:
+                    if (double.TryParse(tabData.MinLength.ToString(), out double minLength2))
+                        AkkonSeriesLength.Points.Add(minLength2);
+                    else
+                        AkkonSeriesLength.Points.Add(0);
+                    break;
+
+                case AkkonResultType.Strength:
+                    break;
+
+                case AkkonResultType.STD:
+                    break;
+
+                default:
+                    break;
             }
         }
 
@@ -405,10 +489,25 @@ namespace Jastech.Apps.Winform.UI.Controls
         {
             if (IsDailyInfo == false)
                 return;
-            if (ChartType == InspChartType.Akkon)
-                return;
 
-            HitTestResult result = chtData.HitTest(e.X, e.Y);
+            switch (ChartType)
+            {
+                case InspChartType.Akkon:
+                    ShowSelectedAkkonLegend(e.X, e.Y);
+                    break;
+
+                case InspChartType.Align:
+                    ShowSelectedAlignLegend(e.X, e.Y);
+                    break;
+
+                default:
+                    break;
+            }
+        }
+
+        private void ShowSelectedAlignLegend(int x, int y)
+        {
+            HitTestResult result = chtData.HitTest(x, y);
 
             if (result != null && result.Object != null)
             {
@@ -424,6 +523,27 @@ namespace Jastech.Apps.Winform.UI.Controls
             {
                 _selectedAlignResult = AlignResultType.All;
                 UpdateAlignChart(_selectedTabNo, _selectedAlignResult);
+            }
+        }
+
+        private void ShowSelectedAkkonLegend(int x, int y)
+        {
+            HitTestResult result = chtData.HitTest(x, y);
+
+            if (result != null && result.Object != null)
+            {
+                if (result.Object is LegendItem)
+                {
+                    LegendItem legendItem = (LegendItem)result.Object;
+
+                    _selectedAkkonResult = (AkkonResultType)Enum.Parse(typeof(AkkonResultType), legendItem.SeriesName);
+                    UpdateAkkonChart(_selectedTabNo, _selectedAkkonResult);
+                }
+            }
+            else
+            {
+                _selectedAkkonResult = AkkonResultType.All;
+                UpdateAkkonChart(_selectedTabNo, _selectedAkkonResult);
             }
         }
         #endregion

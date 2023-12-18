@@ -120,7 +120,10 @@ namespace ATT_UT_Remodeling.Core
             if(IsGrabDone)
             {
                 LineCamera.StopGrab();
-                LAFCtrl.SetTrackingOnOFF(false);
+
+                if (AppsStatus.Instance().IsRepeat == false)
+                    LAFCtrl.SetTrackingOnOFF(false);
+				// 반복 촬상 시 위 구문 주석 처리할 것
 
                 WriteLog("Received Camera Grab Done Event.");
             }
@@ -234,7 +237,9 @@ namespace ATT_UT_Remodeling.Core
             if (ModelManager.Instance().CurrentModel == null)
                 return;
 
-            PlcControlManager.Instance().MachineStatus = MachineStatus.RUN;
+            if (AppsStatus.Instance().IsModelChanging == false)
+                PlcControlManager.Instance().MachineStatus = MachineStatus.RUN;
+
             SeqStep = SeqStep.SEQ_INIT;
 
             WriteLog("Start Sequence.");
@@ -242,7 +247,9 @@ namespace ATT_UT_Remodeling.Core
 
         public void SeqStop()
         {
-            PlcControlManager.Instance().MachineStatus = MachineStatus.STOP;
+            if (AppsStatus.Instance().IsModelChanging == false)
+                PlcControlManager.Instance().MachineStatus = MachineStatus.STOP;
+
             SeqStep = SeqStep.SEQ_IDLE;
 
             WriteLog("Stop Sequence.");
@@ -291,7 +298,6 @@ namespace ATT_UT_Remodeling.Core
                 case SeqStep.SEQ_IDLE:
 					AppsStatus.Instance().IsInspRunnerFlagFromPlc = false;
                     PlcControlManager.Instance().EnableSendPeriodically = true;
-
                     break;
 
                 case SeqStep.SEQ_INIT:
@@ -315,10 +321,7 @@ namespace ATT_UT_Remodeling.Core
 
                     if (_ClearBufferThread != null || _updateThread != null)
                         break;
-
-                    if (MoveTo(TeachingPosType.Stage1_Scan_Start, out errorMessage) == false)
-                        break;
-
+             
                     PlcControlManager.Instance().WritePcStatus(PlcCommand.Move_ScanStartPos);
                     WriteLog("Send Scan Start Position", true);
 
@@ -330,6 +333,18 @@ namespace ATT_UT_Remodeling.Core
                     if (AppsStatus.Instance().IsInspRunnerFlagFromPlc == false)
                         break;
 
+                    if (PlcControlManager.Instance().GetValue(PlcCommonMap.PLC_RunMode) == "2")
+                    {
+                        WriteLog("Start Idle Run sequence.", true);
+                        SeqStep = SeqStep.SEQ_PLC_IDLERUN;
+                        break;
+                    }
+
+                    if (MoveTo(TeachingPosType.Stage1_Scan_Start, out errorMessage) == false)
+                        break;
+
+                    MotionManager.Instance().MoveAxisZ(UnitName.Unit0, TeachingPosType.Stage1_Scan_Start, LAFCtrl, AxisName.Z0);
+
                     WriteLog("Receive Inspection Start Signal From PLC.", true);
 
                     SystemManager.Instance().EnableMainView(false);
@@ -337,9 +352,9 @@ namespace ATT_UT_Remodeling.Core
 
                     LAFCtrl.SetTrackingOnOFF(true);
                     WriteLog("LAF Tracking On.");
-                    Thread.Sleep(300);
+                    Thread.Sleep(100);
 
-                    SeqStep = SeqStep.SEQ_SCAN_START;
+                    SeqStep = SeqStep.SEQ_BUFFER_INIT;
                     break;
 
                 case SeqStep.SEQ_BUFFER_INIT:
@@ -494,7 +509,7 @@ namespace ATT_UT_Remodeling.Core
                     //break;
                     UpdateDailyInfo();
                     DailyInfoService.Save(inspModel.Name);
-                    SaveInspResultCSV();
+                    //SaveInspResultCSV();
 
                     SeqStep = SeqStep.SEQ_DELETE_DATA;
                     break;
@@ -533,6 +548,27 @@ namespace ATT_UT_Remodeling.Core
                     SeqStep = SeqStep.SEQ_IDLE;
                     break;
 
+                case SeqStep.SEQ_PLC_IDLERUN:
+                    if (MoveTo(TeachingPosType.Stage1_Scan_Start, out errorMessage) == false)
+                    {
+                        WriteLog("Idle Run Inspection Scan_Start sequence timed out", true);
+                        SeqStop();
+                        break;
+                    }
+
+                    if (MoveTo(TeachingPosType.Stage1_Scan_End, out errorMessage) == false)
+                    {
+                        WriteLog("Idle Run Inspection Scan_End sequence timed out", true);
+                        SeqStop();
+                        break;
+                    }
+                    WriteLog("Idle Run Inspection sequence finished.", true);
+
+                    AppsStatus.Instance().IsInspRunnerFlagFromPlc = false;
+                    PlcControlManager.Instance().WritePcStatus(PlcCommand.StartInspection);
+                    SeqStep = SeqStep.SEQ_INIT;  
+                    break;
+
                 default:
                     break;
             }
@@ -569,9 +605,7 @@ namespace ATT_UT_Remodeling.Core
                     }
                 }
                 else
-                {
                     Console.WriteLine(string.Format("Get Akkon Result Image_Tab{0} Fail.", tabNo));
-                }
             }
         }
 
@@ -601,37 +635,17 @@ namespace ATT_UT_Remodeling.Core
         {
             var inspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
             double resolution = LineCamera.Camera.PixelResolution_um / LineCamera.Camera.LensScale;
-
-            bool inspAkkonResult = true;
-            bool inspAlignResult = true;
             bool inspFinalResult = true;
-
             for (int tabNo = 0; tabNo < inspModel.TabCount; tabNo++)
             {
                 var tabInspResult = AppsInspResult.Instance().Get(tabNo);
                 TabJudgement judgement = GetJudgemnet(tabInspResult);
-                PlcControlManager.Instance().WriteTabResult(tabNo, judgement, tabInspResult.AlignResult, tabInspResult.AkkonResult, resolution);
+                PlcControlManager.Instance().WriteTabResult(tabNo, judgement, tabInspResult.AlignResult, tabInspResult.AkkonResult, tabInspResult.MarkResult, resolution);
 
-                //if (judgement.Equals(TabJudgement.OK) == false)
-                //    inspFinalResult = false;
-
-                if (tabInspResult.AkkonResult.Judgement.Equals(Judgement.OK) == false)
-                    inspAkkonResult = false;
-
-                if (tabInspResult.AlignResult.Judgement.Equals(Judgement.OK) == false)
-                    inspAlignResult = false;
-
+                if (judgement.Equals(TabJudgement.OK) == false)
+                    inspFinalResult = false;
                 Thread.Sleep(20);
             }
-
-            if (AppsConfig.Instance().EnableAkkonByPass)
-                inspAkkonResult = true;
-
-            if (AppsConfig.Instance().EnableAlignByPass)
-                inspAlignResult = true;
-
-            if (inspAkkonResult == false || inspAlignResult == false)
-                inspFinalResult = false;
 
             if(inspFinalResult)
                 PlcControlManager.Instance().WritePcStatus(PlcCommand.StartInspection);
@@ -642,14 +656,9 @@ namespace ATT_UT_Remodeling.Core
         private TabJudgement GetJudgemnet(TabInspResult tabInspResult)
         {
             if (tabInspResult.IsManualOK)
-            {
                 return TabJudgement.Manual_OK;
-            }
             else
             {
-                if (tabInspResult.MarkResult.Judgement != Judgement.OK)
-                    return TabJudgement.Mark_NG;
-
                 if (tabInspResult.MarkResult.Judgement != Judgement.OK)
                     return TabJudgement.Mark_NG;
 
@@ -809,6 +818,12 @@ namespace ATT_UT_Remodeling.Core
 
             if (AppsConfig.Instance().EnableAkkonLeadResultLog == true)
                 SaveAkkonLeadResults(path, inspModel.TabCount);
+				
+			if (AppsConfig.Instance().EnableMsaSummary == true)
+            {
+                SaveAkkonResultAsMsaSummary(path, inspModel.TabCount);
+                SaveAlignResultAsMsaSummary(path, inspModel.TabCount);
+            }
         }
 
         private void SaveAlignResult(string resultPath, int tabCount)
@@ -1161,6 +1176,7 @@ namespace ATT_UT_Remodeling.Core
                 WriteLog(errorMessage);
                 return false;
             }
+
             string message = string.Format("Move Completed.(Teaching Pos : {0})", teachingPos.ToString());
             WriteLog(message);
 
@@ -1172,9 +1188,7 @@ namespace ATT_UT_Remodeling.Core
             MotionManager manager = MotionManager.Instance();
             double cameraGap = 0;
             if (teachingPos == TeachingPosType.Stage1_Scan_End)
-            {
                 cameraGap = AppsConfig.Instance().CameraGap_mm;
-            }
 
             if (manager.IsAxisInPosition(UnitName.Unit0, teachingPos, axis, cameraGap) == false)
             {
@@ -1233,10 +1247,10 @@ namespace ATT_UT_Remodeling.Core
                 }
                 if (result.Judgement == Judgement.NG)
                 {
-                    CvInvoke.Line(colorMat, leftTop, leftBottom, redColor, 3);
-                    CvInvoke.Line(colorMat, leftTop, rightTop, redColor, 3);
-                    CvInvoke.Line(colorMat, rightTop, rightBottom, redColor, 3);
-                    CvInvoke.Line(colorMat, rightBottom, leftBottom, redColor, 3);
+                    CvInvoke.Line(colorMat, leftTop, leftBottom, redColor, 1);
+                    CvInvoke.Line(colorMat, leftTop, rightTop, redColor, 1);
+                    CvInvoke.Line(colorMat, rightTop, rightBottom, redColor, 1);
+                    CvInvoke.Line(colorMat, rightBottom, leftBottom, redColor, 1);
 
                     var rect = VisionProShapeHelper.ConvertToCogRectAffine(leftTop, rightTop, leftBottom);
                     akkonNGAffineList.Add(rect);
@@ -1259,7 +1273,7 @@ namespace ATT_UT_Remodeling.Core
                     if (blob.IsAkkonShape)
                     {
                         blobCount++;
-                        CvInvoke.Circle(colorMat, center, radius / 2, new MCvScalar(255), 1);
+                        CvInvoke.Circle(colorMat, center, radius / 2, greenColor, 1);
                     }
                     else
                     {
@@ -1335,29 +1349,6 @@ namespace ATT_UT_Remodeling.Core
 
         private void SaveImage()
         {
-            //if (ConfigSet.Instance().Operation.VirtualMode)
-            //    return;
-
-            //var inspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
-
-            //Stopwatch sw = new Stopwatch();
-            //sw.Restart();
-
-            //for (int tabNo = 0; tabNo < inspModel.TabCount; tabNo++)
-            //{
-            //    DateTime currentTime = AppsInspResult.Instance().StartInspTime;
-
-            //    string month = currentTime.ToString("MM");
-            //    string day = currentTime.ToString("dd");
-            //    string folderPath = AppsInspResult.Instance().Cell_ID;
-
-            //    string path = Path.Combine(ConfigSet.Instance().Path.Result, inspModel.Name, month, day, folderPath);
-
-            //    SaveResultImage(path, tabNo);
-            //}
-
-            //sw.Stop();
-            //Console.WriteLine("Save Image : " + sw.ElapsedMilliseconds.ToString() + "ms");
             try
             {
                 if (ConfigSet.Instance().Operation.VirtualMode)
@@ -1395,8 +1386,9 @@ namespace ATT_UT_Remodeling.Core
             var tabInspResult = AppsInspResult.Instance().Get(tabNo);
             var operation = ConfigSet.Instance().Operation;
 
-            if (Directory.Exists(resultPath) == false)
-                Directory.CreateDirectory(resultPath);
+            string path = Path.Combine(resultPath, "Inspection");
+            if (Directory.Exists(path) == false)
+                Directory.CreateDirectory(path);
 
             string okExtension = operation.GetExtensionOKImage();
             string ngExtension = operation.GetExtensionNGImage();
@@ -1406,7 +1398,7 @@ namespace ATT_UT_Remodeling.Core
                 if (ConfigSet.Instance().Operation.SaveImageOK)
                 {
                     string imageName = AppsInspResult.Instance().Cell_ID + "_Tab_" + tabInspResult.TabNo.ToString();
-                    string filePath = Path.Combine(resultPath, imageName);
+                    string filePath = Path.Combine(path, imageName);
                     
                     if (operation.ExtensionOKImage == ImageExtension.Bmp)
                         SaveImage(tabInspResult.Image, filePath, Judgement.OK, ImageExtension.Bmp, false);
@@ -1424,11 +1416,9 @@ namespace ATT_UT_Remodeling.Core
                 if (ConfigSet.Instance().Operation.SaveImageNG)
                 {
                     string imageName = AppsInspResult.Instance().Cell_ID + "_Tab_" + tabInspResult.TabNo.ToString();
-                    string filePath = Path.Combine(resultPath, imageName);
+                    string filePath = Path.Combine(path, imageName);
                     if (operation.ExtensionNGImage == ImageExtension.Bmp)
-                    {
                         SaveImage(tabInspResult.Image, filePath, Judgement.NG, ImageExtension.Bmp, false);
-                    }
                     else if (operation.ExtensionNGImage == ImageExtension.Jpg)
                     {
                         if (tabInspResult.Image.Width > SAVE_IMAGE_MAX_WIDTH)
@@ -1437,18 +1427,24 @@ namespace ATT_UT_Remodeling.Core
                             SaveImage(tabInspResult.Image, filePath, Judgement.NG, ImageExtension.Jpg, false);
                     }
 
-                    SaveAkkonDefectLeadImage(resultPath, tabInspResult);
+                    if(tabInspResult.AkkonResult.Judgement == Judgement.NG)
+                    {
+                        string akkonLeadImagePath = Path.Combine(resultPath, "Inspection", "AkkonLeadImage");
+                        if (Directory.Exists(akkonLeadImagePath) == false)
+                            Directory.CreateDirectory(akkonLeadImagePath);
+                        SaveAkkonDefectLeadImage(akkonLeadImagePath, tabInspResult);
+                    }                 
                 }
             }
 
-            SaveAlignResult(tabInspResult, resultPath);
+            SaveAlignResult(tabInspResult, path);
         }
 
         public void SaveAlignResult(TabInspResult tabInspResult, string path)
         {
             if (tabInspResult == null)
                 return;
-            string savePath = Path.Combine(path, "Result");
+            string savePath = Path.Combine(path, "AlignResult");
 
             if (Directory.Exists(savePath) == false)
                 Directory.CreateDirectory(savePath);
@@ -1580,12 +1576,12 @@ namespace ATT_UT_Remodeling.Core
         private string GetResultPath()
         {
             var inspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
-            DateTime currentTime = AppsInspResult.Instance().StartInspTime;
+            DateTime currentTime = AppsPreAlignResult.Instance().StartInspTime;
 
             string month = currentTime.ToString("MM");
             string day = currentTime.ToString("dd");
             string timeStamp = currentTime.ToString("yyyyMMddHHmmss");
-            string folderPath = AppsInspResult.Instance().Cell_ID + "_" + timeStamp;
+            string folderPath = AppsPreAlignResult.Instance().Cell_ID + "_" + timeStamp;
 
             string path = Path.Combine(ConfigSet.Instance().Path.Result, inspModel.Name, month, day, folderPath);
 
@@ -1662,9 +1658,9 @@ namespace ATT_UT_Remodeling.Core
                             cropAkkonMat.Dispose();
                             saveCount++;
                         }
-                        catch (Exception)
+                        catch (Exception ex)
                         {
-
+                            Logger.Error(ErrorType.Etc, "Save Akkon defect lead image error : " + ex.Message);
                         }
                     }
                 }
@@ -1673,14 +1669,14 @@ namespace ATT_UT_Remodeling.Core
 
         private void SaveImage(Mat image, string filePath, Judgement judgement, ImageExtension extension, bool isHalfSave)
         {
-            if(extension == ImageExtension.Bmp)
+            if (extension == ImageExtension.Bmp)
             {
                 filePath += $"_{judgement}.bmp";
                 image.Save(filePath);
             }
-            else if(extension == ImageExtension.Jpg)
+            else if (extension == ImageExtension.Jpg)
             {
-                if(isHalfSave)
+                if (isHalfSave)
                 {
                     string leftPath = $"{filePath}_{judgement}_Left.jpg";
                     string rightPath = $"{filePath}_{judgement}_Right.jpg";
@@ -1798,7 +1794,7 @@ namespace ATT_UT_Remodeling.Core
 
                 LineCamera.ClearTabScanBuffer();
 
-                MotionManager.Instance().MoveAxisZ(UnitName.Unit0, TeachingPosType.Stage1_Scan_Start, LAFCtrl, AxisName.Z0);
+                //MotionManager.Instance().MoveAxisZ(UnitName.Unit0, TeachingPosType.Stage1_Scan_Start, LAFCtrl, AxisName.Z0);
 
                 _ClearBufferThread = null;
                 WriteLog("Clear Buffer.");
@@ -1898,5 +1894,6 @@ namespace ATT_UT_Remodeling.Core
         SEQ_DELETE_DATA,
         SEQ_CHECK_STANDBY,
         SEQ_ERROR,
+        SEQ_PLC_IDLERUN,
     }
 }

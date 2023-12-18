@@ -291,16 +291,20 @@ namespace Jastech.Framework.Winform.Forms
             if (_isPrevTrackingOn)
                 SetTrackingOnOff(false);
             SelectPage(DisplayType.Mark);
+
+            Logger.Write(LogType.GUI, "Clicked InpectionTeachingForm Mark Button");
         }
 
         private void btnAlign_Click(object sender, EventArgs e)
         {
             SelectPage(DisplayType.Align);
+            Logger.Write(LogType.GUI, "Clicked InpectionTeachingForm Align Button");
         }
 
         private void btnAkkon_Click(object sender, EventArgs e)
         {
             SelectPage(DisplayType.Akkon);
+            Logger.Write(LogType.GUI, "Clicked InpectionTeachingForm Akkon Button");
         }
 
         private void SelectPage(DisplayType type)
@@ -394,6 +398,8 @@ namespace Jastech.Framework.Winform.Forms
                     ParamTrackingLogger.WriteLogToFile();
                 }
             }
+
+            Logger.Write(LogType.GUI, "Clicked InpectionTeachingForm Save Button");
         }
 
         private void SaveModelData(AppsInspModel model)
@@ -410,6 +416,8 @@ namespace Jastech.Framework.Winform.Forms
         {
             ParamTrackingLogger.ClearChangedLog();
             this.Close();
+
+            Logger.Write(LogType.GUI, "Clicked InpectionTeachingForm Cancle Button");
         }
 
         private void btnLoadImage_Click(object sender, EventArgs e)
@@ -430,9 +438,7 @@ namespace Jastech.Framework.Winform.Forms
                 Mat image = null;
 
                 if (extension == ".bmp")
-                {
                     image = new Mat(dlg.FileName, ImreadModes.Grayscale);
-                }
                 else if (extension == ".jpg" || extension == ".jpeg")
                 {
                     if (GetHalfFilePath(dlg.FileName, out string leftFilePath, out string rightFilePath))
@@ -480,6 +486,8 @@ namespace Jastech.Framework.Winform.Forms
 
                 cbxTabList_SelectedIndexChanged(null, EventArgs.Empty);
             }
+
+            Logger.Write(LogType.GUI, "Clicked InpectionTeachingForm Load Image Button");
         }
 
         private bool GetHalfFilePath(string fileName, out string leftFilePath, out string rightFilePath)
@@ -529,6 +537,7 @@ namespace Jastech.Framework.Winform.Forms
         private void btnMotionPopup_Click(object sender, EventArgs e)
         {
             OpenMotionPopupEventHandler?.Invoke(UnitName);
+            Logger.Write(LogType.GUI, "Clicked InpectionTeachingForm Motion Button");
         }
 
         private void btnGrabStart_Click(object sender, EventArgs e)
@@ -575,6 +584,8 @@ namespace Jastech.Framework.Winform.Forms
             LAFCtrl.SetTrackingOnOFF(false);
             Thread.Sleep(100);
             DeviceManager.Instance().LightCtrlHandler.TurnOff();
+
+            Logger.Write(LogType.GUI, "Clicked InpectionTeachingForm Grab Start Button");
         }
 
         public void InitalizeInspTab(List<TabScanBuffer> bufferList)
@@ -612,6 +623,7 @@ namespace Jastech.Framework.Winform.Forms
         private void btnGrabStop_Click(object sender, EventArgs e)
         {
             LineCamera.StopGrab();
+            Logger.Write(LogType.GUI, "Clicked InpectionTeachingForm Grab Stop Button");
         }
 
         private void InspectionTeachingForm_FormClosing(object sender, FormClosingEventArgs e)
@@ -692,6 +704,8 @@ namespace Jastech.Framework.Winform.Forms
             _currentTabNo = tabIndex;
 
             UpdateDisplayImage(tabNo);
+
+            Logger.Write(LogType.GUI, "Clicked InpectionTeachingForm Tab Combo Button");
         }
 
         private void UpdateDisplayImage(int tabNo)
@@ -740,6 +754,8 @@ namespace Jastech.Framework.Winform.Forms
                 return;
 
             cbxTabList.SelectedIndex -= 1;
+
+            Logger.Write(LogType.GUI, "Clicked InpectionTeachingForm Prev Tab Button");
         }
 
         private void lblNext_Click(object sender, EventArgs e)
@@ -748,6 +764,8 @@ namespace Jastech.Framework.Winform.Forms
 
             if (cbxTabList.Items.Count > nextIndex)
                 cbxTabList.SelectedIndex = nextIndex;
+
+            Logger.Write(LogType.GUI, "Clicked InpectionTeachingForm Next Tab Button");
         }
 
         private void lblInspection_Click(object sender, EventArgs e)
@@ -758,6 +776,8 @@ namespace Jastech.Framework.Winform.Forms
                 InspectionAlign();
             else if (_displayType == DisplayType.Akkon)
                 InspectionAkkon();
+
+            Logger.Write(LogType.GUI, "Clicked InpectionTeachingForm Inspection Button");
         }
 
         private void lblAddROI_Click(object sender, EventArgs e)
@@ -768,6 +788,8 @@ namespace Jastech.Framework.Winform.Forms
                 AlignControl.AddROI();
             else if (_displayType == DisplayType.Akkon)
                 AkkonControl.AddROI();
+
+            Logger.Write(LogType.GUI, "Clicked InpectionTeachingForm Add ROI Button");
         }
 
         private void lblROIJog_Click(object sender, EventArgs e)
@@ -778,6 +800,8 @@ namespace Jastech.Framework.Winform.Forms
                 AlignControl.ShowROIJog();
             else if (_displayType == DisplayType.Akkon)
                 AkkonControl.ShowROIJog();
+
+            Logger.Write(LogType.GUI, "Clicked InpectionTeachingForm ROi Jog Button");
         }
 
         private void lblTracking_Click(object sender, EventArgs e)
@@ -789,6 +813,8 @@ namespace Jastech.Framework.Winform.Forms
                 SetTrackingOnOff(true);
             else
                 SetTrackingOnOff(false);
+
+            Logger.Write(LogType.GUI, "Clicked InpectionTeachingForm Tracking Button");
         }
 
         private Tab _originTabData { get; set; } = null;
@@ -898,6 +924,7 @@ namespace Jastech.Framework.Winform.Forms
         private void lblImageSave_Click(object sender, EventArgs e)
         {
             SaveScanImage();
+            Logger.Write(LogType.GUI, "Clicked InpectionTeachingForm Image Save Button");
         }
 
         private void lblROICopy_Click(object sender, EventArgs e)
@@ -906,6 +933,8 @@ namespace Jastech.Framework.Winform.Forms
             form.SetUnitName(UnitName);
             form.UseAlignCamMark = UseAlignCamMark;
             form.ShowDialog();
+
+            Logger.Write(LogType.GUI, "Clicked InpectionTeachingForm ROI Copy Button");
         }
 
         public void InspectionMark()

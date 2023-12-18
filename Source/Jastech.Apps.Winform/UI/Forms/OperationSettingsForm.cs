@@ -68,6 +68,7 @@ namespace Jastech.Framework.Winform.Forms
             mtgEnableAlignByPass.Checked = appsConfig.EnableAlignByPass;
 
             mtgEnableManualJudge.Checked = appsConfig.EnableManualJudge;
+            mtgEnableMsaSummary.Checked = appsConfig.EnableMsaSummary;
 
             mtgLogAkkonLead.Checked = appsConfig.EnableAkkonLeadResultLog;
 
@@ -115,6 +116,7 @@ namespace Jastech.Framework.Winform.Forms
             appsConfig.EnableAlignByPass = mtgEnableAlignByPass.Checked;
 
             appsConfig.EnableManualJudge = mtgEnableManualJudge.Checked;
+            appsConfig.EnableMsaSummary = mtgEnableMsaSummary.Checked;
 
             appsConfig.EnableAkkonLeadResultLog = mtgLogAkkonLead.Checked;
 
@@ -135,6 +137,7 @@ namespace Jastech.Framework.Winform.Forms
         {
             if (value == "")
                 value = "0";
+
             return value;
         }
 
@@ -154,29 +157,28 @@ namespace Jastech.Framework.Winform.Forms
             MessageConfirmForm form = new MessageConfirmForm();
             form.Message = "Save Completed.";
             form.ShowDialog();
+
+            Logger.Write(LogType.GUI, "Clicked OperationSettingsForm Save Button");
         }
 
         private void lblCancel_Click(object sender, EventArgs e)
         {
             this.Close();
+            Logger.Write(LogType.GUI, "Clicked OperationSettingsForm Cancle Button");
         }
 
         private void txtKeyPad_KeyPress(object sender, KeyPressEventArgs e)
         {
             //숫자, 백스페이스, '.' 를 제외한 나머지를 바로 처리             
             if (!(char.IsDigit(e.KeyChar) || e.KeyChar == Convert.ToChar(Keys.Back) || e.KeyChar == Convert.ToChar('.')))
-            {
                 e.Handled = true;
-            }
         }
 
         private void txtDataStoringDays_KeyPress(object sender, KeyPressEventArgs e)
         {
             //숫자, 백스페이스 를 제외한 나머지를 바로 처리             
             if (!(char.IsDigit(e.KeyChar) || e.KeyChar == Convert.ToChar(Keys.Back)))
-            {
                 e.Handled = true;
-            }
         }
 
         private void txtDataStoringCapcity_Leave(object sender, EventArgs e)

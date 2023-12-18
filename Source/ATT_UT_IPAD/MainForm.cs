@@ -42,6 +42,8 @@ namespace ATT_UT_IPAD
     {
         #region 필드
         private int _virtualImageCount { get; set; } = 0;
+
+        private MachineStatus _prevMachineStatus { get; set; } = MachineStatus.STOP;
         #endregion
 
         #region 속성
@@ -55,7 +57,6 @@ namespace ATT_UT_IPAD
 
         private List<Label> PageLabelList = null;
 
-
         private Task VirtualInspTask { get; set; }
 
         private CancellationTokenSource CancelVirtualInspTask { get; set; }
@@ -67,7 +68,9 @@ namespace ATT_UT_IPAD
         private Queue<string> VirtualImagePathQueue = new Queue<string>();
 
         private Queue<ICogImage> AlignLastScanImageQueue = new Queue<ICogImage>();
+
         private Queue<ICogImage> AkkonLastScanImageQueue = new Queue<ICogImage>();
+
         public ATTInspModelService ATTInspModelService { get; set; } = new ATTInspModelService();
 
         public ManualJudgeForm ManualJudgeForm { get; set; } = null;
@@ -104,6 +107,8 @@ namespace ATT_UT_IPAD
             PlcScenarioManager.Instance().InspRunnerHandler += MainForm_InspRunnerHandler;
             PlcScenarioManager.Instance().MoveEventHandler += MainForm_MoveEventHandler;
             PlcScenarioManager.Instance().OriginAllEvent += MainForm_OriginAllEvent;
+            PlcControlManager.Instance().AxisNegativeLimitEventHandler += MainForm_AxisNegativeLimitEventHandler;
+            PlcControlManager.Instance().AxisPositiveLimitEventHandler += MainForm_AxisPositiveLimitEventHandler;
             PlcScenarioManager.Instance().MainTaskHandler += MainForm_MainTaskHandler;
 
             PlcControlManager.Instance().WritePcCommand(PcCommand.ServoReset_1);
@@ -114,7 +119,7 @@ namespace ATT_UT_IPAD
             Thread.Sleep(100);
             PlcControlManager.Instance().WritePcCommand(PcCommand.ServoOn_2);
 
-            PlcControlManager.Instance().WritePcVisionStatus(MachineStatus.RUN);
+            //PlcControlManager.Instance().WritePcVisionStatus(MachineStatus.RUN);
 
             if (ModelManager.Instance().CurrentModel != null)
             {
@@ -126,7 +131,7 @@ namespace ATT_UT_IPAD
             tmrUpdateStates.Start();
             StartVirtualInspTask();
             SystemManager.Instance().InitializeInspRunner();
-            SystemManager.Instance().AddSystemLogMessage("Start Program.");
+            AddSystemLogMessage("Start Program.");
 
             PlcControlManager.Instance().WriteVersion();
 
@@ -143,12 +148,14 @@ namespace ATT_UT_IPAD
             }
         }
 
-        private void MainForm_MainTaskHandler(bool isStart)
+        private void MainForm_MainTaskHandler(bool isStart, string message)
         {
             if (isStart)
                 SystemManager.Instance().SetRunMode();
             else
                 SystemManager.Instance().SetStopMode();
+
+            AddSystemLogMessage(message);
         }
 
         private bool MainForm_MoveEventHandler(PlcCommand plcCommand, TeachingPosType teachingPosType, out string alarmMessage)
@@ -163,7 +170,6 @@ namespace ATT_UT_IPAD
             var akkonLaf = LAFManager.Instance().GetLAF("AkkonLaf");
             var alignLaf = LAFManager.Instance().GetLAF("AlignLaf");
 
-
             ProgressForm progressForm = new ProgressForm("Homing All Axes", ProgressForm.RunMode.Batch, true);
             progressForm.Add($"Axis X Homing", SystemManager.Instance().AxisHoming, AxisName.X, SystemManager.Instance().StopAxisHoming);
 
@@ -174,6 +180,12 @@ namespace ATT_UT_IPAD
             progressForm.Add($"Axis Z2 (Align LAF) homing", alignLaf.HomeSequenceAction, alignLaf.StopHomeSequence);
 
             progressForm.ShowDialog();
+
+            if (progressForm.IsSuccess)
+            {
+                akkonLaf.LafCtrl.SetMotionAbsoluteMove(teachingPos.GetTargetPosition(AxisName.Z0));
+                alignLaf.LafCtrl.SetMotionAbsoluteMove(teachingPos.GetTargetPosition(AxisName.Z1));
+            }
 
             return progressForm.IsSuccess;
         }
@@ -273,6 +285,9 @@ namespace ATT_UT_IPAD
             ConfigSet.Instance().Operation.LastModelName = model.Name;
             ConfigSet.Instance().Operation.Save(ConfigSet.Instance().Path.Config);
 
+            PlcControlManager.Instance().WriteCurrentModelName(model.Name);
+			Logger.Debug(LogType.Parameter, $"Applied Model name : {model.Name}");
+			
             AppsInspResult.Instance().Dispose();
         }
 
@@ -409,7 +424,7 @@ namespace ATT_UT_IPAD
             bool isLafConnected = laf.Count > 0 && laf.All(h => h.IsConnected());
             ControlDisplayHelper.DisposeDisplay(lblLafState);
             lblLafState.Image = GetStateImage(isLafConnected);
-            
+
             var light = DeviceManager.Instance().LightCtrlHandler;
             bool isLightConnected = light.Count > 0 && light.All(h => h.IsConnected());
             ControlDisplayHelper.DisposeDisplay(lblLightState);
@@ -661,13 +676,14 @@ namespace ATT_UT_IPAD
 
         public void CheckDoorOpenedLoop()
         {
-            while(true)
+            while (true)
             {
-                if(CancelSafetyDoorlockTask.IsCancellationRequested)
+                if (CancelSafetyDoorlockTask.IsCancellationRequested)
                     break;
 
                 if (PlcControlManager.Instance().GetValue(PlcCommonMap.PLC_DoorStatus) == "2" && PlcControlManager.Instance().IsDoorOpened == false)
                 {
+                    _prevMachineStatus = PlcControlManager.Instance().MachineStatus;
                     PlcControlManager.Instance().IsDoorOpened = true;
 
                     MotionManager.Instance().GetAxisHandler(AxisHandlerName.Handler0).StopMove();
@@ -677,16 +693,20 @@ namespace ATT_UT_IPAD
                     SystemManager.Instance().SetStopMode();
                     lblDoorlockState.BackColor = Color.Red;
                     lblDoorlockState.ForeColor = Color.Yellow;
+
+                    AddSystemLogMessage("Door is opened.");
                 }
                 else if (PlcControlManager.Instance().GetValue(PlcCommonMap.PLC_DoorStatus) != "2" && PlcControlManager.Instance().IsDoorOpened == true)
                 {
                     PlcControlManager.Instance().IsDoorOpened = false;
 
-                    if(PlcControlManager.Instance().MachineStatus == MachineStatus.RUN)
+                    if (_prevMachineStatus == MachineStatus.RUN)
                         SystemManager.Instance().SetRunMode();
 
                     lblDoorlockState.BackColor = BackColor;
                     lblDoorlockState.ForeColor = BackColor;
+
+                    AddSystemLogMessage("Door is closed.");
                 }
 
                 Thread.Sleep(500);
@@ -717,7 +737,7 @@ namespace ATT_UT_IPAD
             if (UserManager.Instance().CurrentUser.Type != AuthorityType.Maker)
                 return;
 
-            if(AppsStatus.Instance().IsInspRunnerFlagFromPlc == false)
+            if (AppsStatus.Instance().IsInspRunnerFlagFromPlc == false)
             {
                 MessageYesNoForm form = new MessageYesNoForm();
                 form.Message = "Would you like to do a test run?";
@@ -761,7 +781,30 @@ namespace ATT_UT_IPAD
         //    AppsStatus.Instance().IsManual_OK = isManualOk;
         //}
 
-        private void lblMachineName_Click(object sender, EventArgs e)
+        public void MessageConfirm(string message)
+        {
+            this.Invoke((MethodInvoker)delegate
+            {
+                new MessageConfirmForm { Message = message }.ShowDialog();
+            });
+        }
+
+        public bool MainForm_AxisNegativeLimitEventHandler(AxisName axisName) //=> SystemManager.Instance().IsLimitSensorStatus();
+        {
+            return SystemManager.Instance().IsNegativeLimitStatus(axisName);
+        }
+
+        public bool MainForm_AxisPositiveLimitEventHandler(AxisName axisName) //=> SystemManager.Instance().IsLimitSensorStatus();
+        {
+            return SystemManager.Instance().IsPositiveLimitStatus(axisName);
+        }
+
+        private void lblMachineName_DoubleClick(object sender, EventArgs e)
+        {
+            OpenResultDirectory();
+        }
+
+        private void OpenResultDirectory()
         {
             var inspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
 
@@ -780,60 +823,6 @@ namespace ATT_UT_IPAD
                 if (UserManager.Instance().CurrentUser.Type != AuthorityType.None)
                     Process.Start(path);
             }
-        }
-
-        public void MessageConfirm(string message)
-        {
-            this.Invoke((MethodInvoker)delegate
-            {
-                new MessageConfirmForm { Message = message }.ShowDialog();
-            });
-        }
-
-        private int _negativeLimitCount = 0;
-
-        public bool IsNegativeLimit(AxisName axisName)
-        {
-            bool isNegatvieLimit = false;
-
-            bool isSensing = false;
-
-            switch (axisName)
-            {
-                case AxisName.X:
-                    isSensing = MotionManager.Instance().GetAxisHandler(AxisHandlerName.Handler0).GetAxis(axisName).IsNegativeLimit();
-                    break;
-
-                case AxisName.Y:
-                    break;
-
-                case AxisName.Z0:
-                    isSensing = LAFManager.Instance().GetLAF("AkkonLaf").LafCtrl.Status.IsNegativeLimit;
-                    break;
-
-                case AxisName.Z1:
-                    isSensing = LAFManager.Instance().GetLAF("AlignLaf").LafCtrl.Status.IsNegativeLimit;
-                    break;
-
-                case AxisName.T:
-                    break;
-
-                default:
-                    break;
-            }
-
-            if (isSensing)
-                _negativeLimitCount++;
-            else
-                _negativeLimitCount = 0;
-
-            if (_negativeLimitCount >= 10)
-            {
-                _negativeLimitCount = 0;
-                isNegatvieLimit = true;
-            }
-
-            return isNegatvieLimit;
         }
         #endregion
     }

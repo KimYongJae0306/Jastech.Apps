@@ -539,7 +539,7 @@ namespace ATT.Core
                 var akkonTabInspResult = AppsInspResult.Instance().GetAkkon(tabNo);
                 var alignTabInspResult = AppsInspResult.Instance().GetAlign(tabNo);
                 TabJudgement judgement = GetJudgemnet(akkonTabInspResult, alignTabInspResult);
-                PlcControlManager.Instance().WriteTabResult(tabNo, judgement, alignTabInspResult.AlignResult, akkonTabInspResult.AkkonResult, resolution);
+                PlcControlManager.Instance().WriteTabResult(tabNo, judgement, alignTabInspResult.AlignResult, akkonTabInspResult.AkkonResult, alignTabInspResult.MarkResult, resolution);
 
                 Thread.Sleep(10);
             }

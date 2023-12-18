@@ -95,6 +95,9 @@ namespace Jastech.Apps.Winform.Settings
 
         [JsonProperty]
         public bool EnableAlignByPass { get; set; } = false;
+
+        [JsonProperty]
+        public bool EnableMsaSummary { get; set; } = false;
         #endregion
 
         #region 메서드

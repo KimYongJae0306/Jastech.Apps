@@ -459,7 +459,7 @@
             this.lblMachineName.TabIndex = 1;
             this.lblMachineName.Text = "ATT Inspection";
             this.lblMachineName.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.lblMachineName.Click += new System.EventHandler(this.lblMachineName_Click);
+            this.lblMachineName.DoubleClick += new System.EventHandler(this.lblMachineName_DoubleClick);
             // 
             // tmrMainForm
             // 
@@ -555,6 +555,7 @@
             this.lblLicenseStateText.TabIndex = 2;
             this.lblLicenseStateText.Text = "Cognex";
             this.lblLicenseStateText.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.lblLicenseStateText.Visible = false;
             // 
             // lblLicenseState
             // 
@@ -567,6 +568,7 @@
             this.lblLicenseState.Size = new System.Drawing.Size(19, 25);
             this.lblLicenseState.TabIndex = 3;
             this.lblLicenseState.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblLicenseState.Visible = false;
             // 
             // lblLafStateText
             // 
@@ -642,7 +644,7 @@
             this.Controls.Add(this.tlpMainForm);
             this.Font = new System.Drawing.Font("맑은 고딕", 11.25F, System.Drawing.FontStyle.Bold);
             this.ForeColor = System.Drawing.Color.White;
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.Name = "MainForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;

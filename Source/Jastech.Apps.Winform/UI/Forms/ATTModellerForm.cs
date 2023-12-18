@@ -107,6 +107,8 @@ namespace Jastech.Apps.Winform.UI.Forms
                 UpdateModelList();
             }
             form.CreateModelEvent -= ATTModellerForm_CreateModelEvent;
+
+            Logger.Write(LogType.GUI, "Clicked ATTModellerFom Create Button");
         }
 
         private void ATTModellerForm_CreateModelEvent(InspModel model)
@@ -142,6 +144,8 @@ namespace Jastech.Apps.Winform.UI.Forms
             {
                 UpdateModelList();
             }
+
+            Logger.Write(LogType.GUI, "Clicked ATTModellerFom Edit Button");
         }
 
         private void ATTModellerForm_EditModelEvent(string prevModelName, InspModel editModel)
@@ -178,6 +182,8 @@ namespace Jastech.Apps.Winform.UI.Forms
                 ModelFileHelper.Delete(ModelPath, lblSelectedName.Text);
                 UpdateModelList();
             }
+
+            Logger.Write(LogType.GUI, "Clicked ATTModellerFom Delete Button");
         }
 
         private void lblCopyModel_Click(object sender, EventArgs e)
@@ -195,6 +201,8 @@ namespace Jastech.Apps.Winform.UI.Forms
                 UpdateModelList();
             }
             form.CopyModelEvent -= ATTModellerForm_CopyModelEvent;
+
+            Logger.Write(LogType.GUI, "Clicked ATTModellerFom Copy Button");
         }
 
         private void ATTModellerForm_CopyModelEvent(string prevModelName, string newModelName)
@@ -233,6 +241,7 @@ namespace Jastech.Apps.Winform.UI.Forms
         private void lblApply_Click(object sender, EventArgs e)
         {
             ApplyModel();
+            Logger.Write(LogType.GUI, "Clicked ATTModellerFom Apply Button");
         }
 
         private void ApplyModel()
@@ -243,10 +252,7 @@ namespace Jastech.Apps.Winform.UI.Forms
             var inspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
          
             string selectedModel = lblSelectedName.Text;
-
-            //DailyInfoService.Reset();
-            //DailyInfoService.Load(selectedModel);
-
+			
             ApplyModelEventHandler?.Invoke(selectedModel);
 
             string previousModel = inspModel?.Name;
@@ -297,6 +303,8 @@ namespace Jastech.Apps.Winform.UI.Forms
         {
             ParamTrackingLogger.ClearChangedLog();
             this.Close();
+
+            Logger.Write(LogType.GUI, "Clicked ATTModellerFom Cancle Button");
         }
         #endregion
     }

@@ -312,6 +312,7 @@ namespace ATT_UT_Remodeling.UI.Forms
         private void btnExit_Click(object sender, EventArgs e)
         {
             this.Close();
+            Logger.Write(LogType.GUI, "Clicked MotionPopupForm Close Button");
         }
 
         private void btnCommand_Click(object sender, EventArgs e)
@@ -339,6 +340,7 @@ namespace ATT_UT_Remodeling.UI.Forms
         private void btnSave_Click(object sender, EventArgs e)
         {
             Save();
+            Logger.Write(LogType.GUI, "Clicked MotionPopupForm Save Button");
         }
 
         private void UpdateCurrentData()
@@ -454,7 +456,11 @@ namespace ATT_UT_Remodeling.UI.Forms
 
         private void lblOriginX_Click(object sender, EventArgs e)
         {
-            AxisHandler.GetAxis(AxisName.X).StartHome();
+            //AxisHandler.GetAxis(AxisName.X).StartHome();
+
+            ProgressForm progressForm = new ProgressForm();
+            progressForm.Add($"Axis X homing", SystemManager.Instance().AxisHoming, AxisName.X, SystemManager.Instance().StopAxisHoming);
+            progressForm.ShowDialog();
         }
 
         private void lblServoOnX_Click(object sender, EventArgs e)
@@ -558,20 +564,16 @@ namespace ATT_UT_Remodeling.UI.Forms
         private void lblOriginZ_Click(object sender, EventArgs e)
         {
             var unit = TeachingData.Instance().GetUnit(UnitName.ToString());
-
-            if(unit != null)
+            if (unit != null)
             {
                 if (LAFManager.Instance().GetLAF(LafCtrl.Name) is LAF laf)
                 {
                     double standbyPosition = unit.GetTeachingInfo(TeachingPosType.Stage1_Scan_Start).GetTargetPosition(LafCtrl.AxisName);
-                    bool ret = laf.StartHomeThread(standbyPosition);
 
-                    if (ret == false)
-                    {
-                        MessageConfirmForm form = new MessageConfirmForm();
-                        form.Message = "Origin sequence is in operation.";
-                        form.ShowDialog();
-                    }
+                    ProgressForm progressForm = new ProgressForm();
+                    laf.SetHomeStandbyPosition(standbyPosition);
+                    progressForm.Add($"Axis Z0 (Laf) homing", laf.HomeSequenceAction, laf.StopHomeSequence);
+                    progressForm.ShowDialog();
                 }
             }
         }

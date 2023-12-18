@@ -14,7 +14,9 @@ namespace Jastech.Apps.Winform
         #endregion
 
         #region 속성
-        public bool IsRunning { get; set; } = false;
+        public bool IsInspRunnerRunning { get; set; } = false;
+
+        public bool IsPreAlignRunnerRunning { get; set; } = false;
 
         public bool IsInspRunnerFlagFromPlc { get; set; } = false;
 
@@ -29,6 +31,10 @@ namespace Jastech.Apps.Winform
         public bool IsCalibrationing { get; set; } = false;
 
         public bool IsManualMatching_OK { get; set; } = false;
+
+        public bool IsRepeat { get; set; } = false;
+
+        public bool IsModelChanging { get; set; } = false;
         #endregion
 
         #region 메서드

@@ -196,15 +196,15 @@ namespace ATT_UT_IPAD.UI.Forms
             if (param == null)
                 return;
 
-            lblTargetPositionX.Text = param.GetTargetPosition(AxisName.X).ToString();
+            lblTargetPositionX.Text = param.GetTargetPosition(AxisName.X).ToString("F3");
             lblOffsetX.Text = param.GetOffset(AxisName.X).ToString();
             XVariableControl.UpdateData(param.GetMovingParams(AxisName.X));
 
-            lblTargetPositionZ0.Text = param.GetTargetPosition(AxisName.Z0).ToString();
+            lblTargetPositionZ0.Text = param.GetTargetPosition(AxisName.Z0).ToString("F3");
             lblTeachedCenterOfGravityZ0.Text = param.GetCenterOfGravity(AxisName.Z0).ToString();
             //Z1VariableControl.UpdateData(param.GetMovingParams(AxisName.Z0));
 
-            lblTargetPositionZ1.Text = param.GetTargetPosition(AxisName.Z1).ToString();
+            lblTargetPositionZ1.Text = param.GetTargetPosition(AxisName.Z1).ToString("F3");
             lblTeachedCenterOfGravityZ1.Text = param.GetCenterOfGravity(AxisName.Z1).ToString();
             //Z2VariableControl.UpdateData(param.GetMovingParams(AxisName.Z1));
         }
@@ -486,11 +486,13 @@ namespace ATT_UT_IPAD.UI.Forms
         private void lblSave_Click(object sender, EventArgs e)
         {
             Save();
+            Logger.Write(LogType.GUI, "Clicked MotionSettingForm Save Button");
         }
 
         private void lblCancel_Click(object sender, EventArgs e)
         {
             this.Close();
+            Logger.Write(LogType.GUI, "Clicked MotionSettingForm Close Button");
         }
 
         private void Save()
@@ -664,20 +666,16 @@ namespace ATT_UT_IPAD.UI.Forms
         private void lblOriginZ0_Click(object sender, EventArgs e)
         {
             var unit = TeachingData.Instance().GetUnit(UnitName.ToString());
-
-            if(unit != null)
+            if (unit != null)
             {
                 if (LAFManager.Instance().GetLAF(AkkonLafCtrl.Name) is LAF akkonLAF)
                 {
                     double standbyPosition = unit.GetTeachingInfo(TeachingPosType.Stage1_Scan_Start).GetTargetPosition(AkkonLafCtrl.AxisName);
-                    bool ret = akkonLAF.StartHomeThread(standbyPosition);
 
-                    if (ret == false)
-                    {
-                        MessageConfirmForm form = new MessageConfirmForm();
-                        form.Message = "Origin sequence is in operation.";
-                        form.ShowDialog();
-                    }
+                    ProgressForm progressForm = new ProgressForm();
+                    akkonLAF.SetHomeStandbyPosition(standbyPosition);
+                    progressForm.Add($"Axis Z0 (Laf) homing", akkonLAF.HomeSequenceAction, akkonLAF.StopHomeSequence);
+                    progressForm.ShowDialog();
                 }
             }
         }
@@ -781,20 +779,16 @@ namespace ATT_UT_IPAD.UI.Forms
         private void lblOriginZ1_Click(object sender, EventArgs e)
         {
             var unit = TeachingData.Instance().GetUnit(UnitName.ToString());
-
             if (unit != null)
             {
                 if (LAFManager.Instance().GetLAF(AlignLafCtrl.Name) is LAF alignLAF)
                 {
                     double standbyPosition = unit.GetTeachingInfo(TeachingPosType.Stage1_Scan_Start).GetTargetPosition(AlignLafCtrl.AxisName);
-                    bool ret = alignLAF.StartHomeThread(standbyPosition);
 
-                    if (ret == false)
-                    {
-                        MessageConfirmForm form = new MessageConfirmForm();
-                        form.Message = "Origin sequence is in operation.";
-                        form.ShowDialog();
-                    }
+                    ProgressForm progressForm = new ProgressForm();
+                    alignLAF.SetHomeStandbyPosition(standbyPosition);
+                    progressForm.Add($"Axis Z0 (Laf) homing", alignLAF.HomeSequenceAction, alignLAF.StopHomeSequence);
+                    progressForm.ShowDialog();
                 }
             }
         }

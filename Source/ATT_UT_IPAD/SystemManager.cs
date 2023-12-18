@@ -305,16 +305,34 @@ namespace ATT_UT_IPAD
                     //}
                 }
 
-                bool isServoOnAxisZ0 = MotionManager.Instance().IsEnable(AxisHandlerName.Handler0, AxisName.Z0);
-                if (isServoOnAxisZ0 == false)
+                //bool isServoOnAxisZ0 = MotionManager.Instance().IsEnable(AxisHandlerName.Handler0, AxisName.Z0);
+                //if (isServoOnAxisZ0 == false)
+                //{
+                //    MessageConfirmForm alert = new MessageConfirmForm();
+                //    alert.Message = "AxisZ0 Servo Off. Please Servo On.";
+                //    alert.ShowDialog();
+                //    return;
+                //}
+
+                //Axis axisZ0 = MotionManager.Instance().GetAxis(AxisHandlerName.Handler0, AxisName.Z0);
+
+                if (PlcControlManager.Instance().GetAddressMap(PlcCommonMap.PLC_AlignZ_ServoOnOff).Value != "1")
                 {
                     MessageConfirmForm alert = new MessageConfirmForm();
-                    alert.Message = "AxisZ0 Servo Off. Please Servo On.";
+
+                    alert.Message = "Axis Z1 Servo Off.";
                     alert.ShowDialog();
                     return;
                 }
 
-                Axis axisZ0 = MotionManager.Instance().GetAxis(AxisHandlerName.Handler0, AxisName.Z0);
+                if (PlcControlManager.Instance().GetAddressMap(PlcCommonMap.PLC_AkkonZ_ServoOnOff).Value != "1")
+                {
+                    MessageConfirmForm alert = new MessageConfirmForm();
+
+                    alert.Message = "Axis Z0 Servo Off.";
+                    alert.ShowDialog();
+                    return;
+                }
             }
             
             if (PlcControlManager.Instance().MachineStatus != MachineStatus.RUN)
@@ -348,6 +366,8 @@ namespace ATT_UT_IPAD
 
         public void SetRunMode()
         {
+            AppsStatus.Instance().IsRepeat = false;
+
             _inspRunner.SeqRun();
             AddSystemLogMessage("Start Auto mode.");
         }
@@ -437,7 +457,7 @@ namespace ATT_UT_IPAD
                 return false;
             }
 
-            if(MotionManager.Instance().MoveAxisX(AxisHandlerName.Handler0, UnitName.Unit0, teachingPosType) == false)
+            if (MotionManager.Instance().MoveAxisX(AxisHandlerName.Handler0, UnitName.Unit0, teachingPosType) == false)
             {
                 alarmMessage = "AxisX Moving Error.";
                 Logger.Write(LogType.Device, alarmMessage);
@@ -454,8 +474,9 @@ namespace ATT_UT_IPAD
                 Logger.Write(LogType.Device, alarmMessage);
                 return false;
             }
+
             var akkonLAFCtrl = LAFManager.Instance().GetLAF("AkkonLaf").LafCtrl;
-            if(MotionManager.Instance().MoveAxisZ(UnitName.Unit0, teachingPosType, akkonLAFCtrl, AxisName.Z0) == false)
+            if (MotionManager.Instance().MoveAxisZ(UnitName.Unit0, teachingPosType, akkonLAFCtrl, AxisName.Z0) == false)
             {
                 alarmMessage = "Akkon AxisZ Moving Error.";
                 Logger.Write(LogType.Device, alarmMessage);
@@ -529,6 +550,130 @@ namespace ATT_UT_IPAD
         #endregion
     }
 
+    public partial class SystemManager
+    {
+        #region 필드
+        private int _isNegativeLimitCount_X = 0;
+
+        private int _isPositiveLimitCount_X = 0;
+
+        private int _isNegativeLimitCount_Z0 = 0;
+
+        private int _isPositiveLimitCount_Z0 = 0;
+
+        private int _isNegativeLimitCount_Z1 = 0;
+
+        private int _isPositiveLimitCount_Z1 = 0;
+
+        private const int SensingCount = 10;
+        #endregion
+
+        #region 메서드
+        public bool IsNegativeLimitStatus(AxisName axisName)
+        {
+            bool isNegativeLimit = false;
+
+            switch (axisName)
+            {
+                case AxisName.X:
+                    if (MotionManager.Instance().GetAxisHandler(AxisHandlerName.Handler0).GetAxis(axisName).IsNegativeLimit())
+                    {
+                        Logger.Write(LogType.Device, "Detected -Limit : " + axisName);
+                        _isNegativeLimitCount_X++;
+                    }
+                    else
+                        _isNegativeLimitCount_X = 0;
+                    break;
+
+                case AxisName.Y:
+                    break;
+
+                case AxisName.Z0:
+                    if (LAFManager.Instance().GetLAF("AkkonLaf").LafCtrl.Status.IsNegativeLimit)
+                    {
+                        Logger.Write(LogType.Device, "Detected -Limit : " + axisName);
+                        _isNegativeLimitCount_Z0++;
+                    }
+                    else
+                        _isNegativeLimitCount_Z0 = 0;
+                    break;
+
+                case AxisName.Z1:
+                    if (LAFManager.Instance().GetLAF("AlignLaf").LafCtrl.Status.IsNegativeLimit)
+                    {
+                        Logger.Write(LogType.Device, "Detected -Limit : " + axisName);
+                        _isNegativeLimitCount_Z1++;
+                    }
+                    else
+                        _isNegativeLimitCount_Z1 = 0;
+                    break;
+
+                case AxisName.T:
+                    break;
+
+                default:
+                    break;
+            }
+
+            if (_isNegativeLimitCount_X >= SensingCount || _isNegativeLimitCount_Z0 >= SensingCount || _isNegativeLimitCount_Z1 >= SensingCount)
+                isNegativeLimit = true;
+
+            return isNegativeLimit;
+        }
+
+        public bool IsPositiveLimitStatus(AxisName axisName)
+        {
+            bool isPositiveLimit = false;
+
+            switch (axisName)
+            {
+                case AxisName.X:
+                    if (MotionManager.Instance().GetAxisHandler(AxisHandlerName.Handler0).GetAxis(axisName).IsPositiveLimit())
+                    {
+                        Logger.Write(LogType.Device, "Detected +Limit : " + axisName);
+                        _isPositiveLimitCount_X++;
+                    }
+                    else
+                        _isPositiveLimitCount_X = 0;
+                    break;
+
+                case AxisName.Y:
+                    break;
+
+                case AxisName.Z0:
+                    if (LAFManager.Instance().GetLAF("AkkonLaf").LafCtrl.Status.IsPositiveLimit)
+                    {
+                        Logger.Write(LogType.Device, "Detected +Limit : " + axisName);
+                        _isPositiveLimitCount_Z0++;
+                    }
+                    else
+                        _isPositiveLimitCount_Z0 = 0;
+                    break;
+
+                case AxisName.Z1:
+                    if (LAFManager.Instance().GetLAF("AlignLaf").LafCtrl.Status.IsPositiveLimit)
+                    {
+                        Logger.Write(LogType.Device, "Detected +Limit : " + axisName);
+                        _isPositiveLimitCount_Z1++;
+                    }
+                    else
+                        _isPositiveLimitCount_Z1 = 0;
+                    break;
+
+                case AxisName.T:
+                    break;
+
+                default:
+                    break;
+            }
+
+            if (_isPositiveLimitCount_X >= SensingCount || _isPositiveLimitCount_Z0 >= SensingCount || _isPositiveLimitCount_Z1 >= SensingCount)
+                isPositiveLimit = true;
+
+            return isPositiveLimit;
+        }
+        #endregion
+    }
     public enum ProgramType
     {
         ProgramType_1, // UT IPAD PC #1 (출하일 : 2023.08 )

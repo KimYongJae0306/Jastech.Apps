@@ -120,7 +120,10 @@ namespace ATT.UI.Controls
         public void ReUpdate()
         {
             AkkonResultDataControl.UpdateAkkonDaily();
-            AkkonResultChartControl.ReUpdate();
+            AkkonResultChartControl.ReUpdate(InspChartType.Akkon);
+
+            AlignResultDataControl.UpdateAlignDaily();
+            AlignResultChartControl.ReUpdate(InspChartType.Align);
         }
 
         public void UpdateAlignResult(int tabNo)
