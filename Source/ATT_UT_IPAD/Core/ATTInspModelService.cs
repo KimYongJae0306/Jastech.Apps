@@ -46,6 +46,12 @@ namespace ATT_UT_IPAD.Core
                 unit.AlignCamCameraData = new LineCameraData();
                 unit.AlignCamCameraData.Name = "AlignCamera";
 
+                unit.AkkonLafData = new LAFData();
+                unit.AkkonLafData.Name = "AkkonLaf";
+
+                unit.AlignLafData = new LAFData();
+                unit.AlignLafData.Name = "AlignLaf";
+
                 for (int tabIndex = 0; tabIndex < appInspModel.TabCount; tabIndex++)
                 {
                     Tab tab = new Tab();

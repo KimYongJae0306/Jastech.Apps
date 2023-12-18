@@ -144,9 +144,7 @@ namespace Jastech.Framework.Winform.Forms
             if(lblAreaMode.BackColor == _selectedColor)
             {
                 if (inspTab.MergeMatImage != null)
-                {
                     DrawBoxControl.SetImage(inspTab.MergeMatImage.ToBitmap());
-                }
             }
             else
             {
@@ -210,6 +208,9 @@ namespace Jastech.Framework.Winform.Forms
         {
             var unit = TeachingData.Instance().GetUnit(UnitName.ToString());
             var posData = unit.GetTeachingInfo(TeachingPosType.Stage1_Scan_Start);
+
+            var lafData = unit.GetLafData(LAFCtrl.Name);
+            AutoFocusControl.SetLAFData(lafData);
 
             AutoFocusControl.SetAxis(AxisHandler.GetAxis(AxisNameZ));
             AutoFocusControl.SetLAFCtrl(LAFCtrl);
@@ -587,6 +588,8 @@ namespace Jastech.Framework.Winform.Forms
             //axis.AxisCommonParams.NegativeLimit = AutoFocusControl.GetAxisCommonParams().NegativeLimit;
             //axis.AxisCommonParams.PositiveLimit = AutoFocusControl.GetAxisCommonParams().PositiveLimit;
             AxisHandler.GetAxis(AxisNameZ).AxisCommonParams.SetCommonParams(AutoFocusControl.GetAxisCommonParams());
+
+            var lafData = unit.GetLafData(LAFCtrl.Name);
 
             var lineCameraData = unit.GetLineCameraData(LineCamera.Camera.Name);
             lineCameraData.DigitalGain = Convert.ToDouble(lblDigitalGainValue.Text);

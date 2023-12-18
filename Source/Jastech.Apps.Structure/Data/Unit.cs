@@ -32,11 +32,11 @@ namespace Jastech.Apps.Structure.Data
         [JsonProperty]
         private List<TeachingInfo> TeachingInfoList { get; set; } = new List<TeachingInfo>();
 
-        //[JsonProperty]
-        //public LAFData AkkonLafData { get; set; } = null;
+        [JsonProperty]
+        public LAFData AkkonLafData { get; set; } = null;
 
-        //[JsonProperty]
-        //public LAFData AlignLafData { get; set; } = null;
+        [JsonProperty]
+        public LAFData AlignLafData { get; set; } = null;
         #endregion
 
         #region 메서드
@@ -52,8 +52,8 @@ namespace Jastech.Apps.Structure.Data
             unit.LightParam = LightParam?.DeepCopy();
             unit.TabList = TabList.Select(x => x.DeepCopy()).ToList();
             unit.TeachingInfoList = TeachingInfoList.Select(x => x.DeepCopy()).ToList();
-            //unit.AkkonLafData = AkkonLafData?.DeppCopy();
-            //unit.AlignLafData = AlignLafData?.DeppCopy();
+            unit.AkkonLafData = AkkonLafData?.DeepCopy();
+            unit.AlignLafData = AlignLafData?.DeepCopy();
 
             return unit;
         }
@@ -158,22 +158,22 @@ namespace Jastech.Apps.Structure.Data
             return null;
         }
 
-        //public LAFData GetLafData(string name)
-        //{
-        //    if (AkkonLafData != null)
-        //    {
-        //        if (AkkonLafData.Name == name)
-        //            return AkkonLafData;
-        //    }
+        public LAFData GetLafData(string name)
+        {
+            if (AkkonLafData != null)
+            {
+                if (AkkonLafData.Name == name)
+                    return AkkonLafData;
+            }
 
-        //    if (AlignLafData != null)
-        //    {
-        //        if (AlignLafData.Name == name)
-        //            return AlignLafData;
-        //    }
+            if (AlignLafData != null)
+            {
+                if (AlignLafData.Name == name)
+                    return AlignLafData;
+            }
 
-        //    return null;
-        //}
+            return null;
+        }
         #endregion
     }
 }

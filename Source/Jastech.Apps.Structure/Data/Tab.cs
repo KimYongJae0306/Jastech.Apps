@@ -151,7 +151,7 @@ namespace Jastech.Apps.Structure.Data
         public MarkParam GetPanelMark(MarkDirection markDirection, MarkName markName)
         {
             MarkParam param = null;
-            lock(PanelMarkList)
+            lock (PanelMarkList)
                 param = PanelMarkList.Where(x => x.Name == markName && x.Direction == markDirection).FirstOrDefault();
             return param;
         }
@@ -161,7 +161,7 @@ namespace Jastech.Apps.Structure.Data
             if (param == null)
                 return;
 
-            lock(FpcMarkList)
+            lock (FpcMarkList)
                 FpcMarkList.Where(x => x.Name == markName && x.Direction == markDirection).First().InspParam = param.InspParam.DeepCopy();
         }
 
@@ -170,7 +170,7 @@ namespace Jastech.Apps.Structure.Data
             if (param == null)
                 return;
 
-            lock(PanelMarkList)
+            lock (PanelMarkList)
                 PanelMarkList.Where(x => x.Name == markName && x.Direction == markDirection).First().InspParam = param.InspParam.DeepCopy();
         }
 

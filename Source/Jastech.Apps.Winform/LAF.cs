@@ -3,6 +3,7 @@ using Jastech.Apps.Structure.Data;
 using Jastech.Framework.Device.LAFCtrl;
 using Jastech.Framework.Util.Helper;
 using Jastech.Framework.Winform;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -441,8 +442,7 @@ namespace Jastech.Apps.Winform
 
         private void PrepareHomeSequence(bool isFirst = false)
         {
-            LafCtrl?.SetMotionNegativeLimit(0);
-            LafCtrl?.SetMotionPositiveLimit(0);
+            DisableSoftwareLimit();
 
             if (isFirst)
                 LafCtrl?.SetMotionMaxSpeed(10);
@@ -455,6 +455,38 @@ namespace Jastech.Apps.Winform
         public void SetHomeStandbyPosition(double standbyPos)
         {
             _standbyPosition = standbyPos;
+        }
+
+        public void DisableSoftwareLimit()
+        {
+            LafCtrl?.SetMotionNegativeLimit(0);
+            LafCtrl?.SetMotionPositiveLimit(0);
+        }
+
+        public void SetNegativeSoftwareLimit(double value)
+        {
+            LafCtrl?.SetMotionNegativeLimit(value);
+        }
+
+        public void SetPositiveSoftwareLimit(double value)
+        {
+            LafCtrl?.SetMotionPositiveLimit(value);
+        }
+
+        public void DisableReturndB()
+        {
+            LafCtrl?.SetLowerReturndB(0);
+            LafCtrl?.SetUpperReturndB(0);
+        }
+
+        public void SetLowerReturndB(double value)
+        {
+            LafCtrl?.SetLowerReturndB(value);
+        }
+
+        public void SetUpperReturndB(int value)
+        {
+            LafCtrl?.SetUpperReturndB(value);
         }
         #endregion
     }
