@@ -271,12 +271,6 @@ namespace Jastech.Apps.Winform
 
         public void SetLafTrigger(UnitName unitName, AxisHandlerName axisHandlerName, AxisName axisName)
         {
-            AppsInspModel inspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
-            var unit = inspModel.GetUnit(unitName);
-
-            var standbyPosition = inspModel.GetUnit(unitName).GetTeachingInfo(TeachingPosType.Standby).GetTargetPosition(nameof(axisName));
-            var mm = inspModel.MaterialInfo;
-            
             if (DeviceManager.Instance().MotionHandler.Count > 0)
             {
                 var motion = DeviceManager.Instance().MotionHandler.First() as ACSMotion;
@@ -285,8 +279,7 @@ namespace Jastech.Apps.Winform
                 {
                     var axis = GetAxis(axisHandlerName, axisName);
 
-                    var tlqkf = axis.AxisNo;
-                    motion.SetLafTrigger(ACSBufferNumber.LAFTrigger_Unit1, nameof(ACSGlobalVariable.LAF_ON_POS_0), "0");
+                    //motion.SetLafTrigger(ACSBufferNumber.LAFTrigger_Unit1, nameof(ACSGlobalVariable.LAF_ON_POS_0), nameof(standbyPosition));
                 }
             }
         }
