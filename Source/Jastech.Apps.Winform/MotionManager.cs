@@ -1,20 +1,16 @@
-﻿using Emgu.CV.XFeatures2D;
-using Jastech.Apps.Structure;
+﻿using Jastech.Apps.Structure;
 using Jastech.Apps.Structure.Data;
-using Jastech.Apps.Winform.Service.Plc.Maps;
 using Jastech.Framework.Config;
 using Jastech.Framework.Device.LAFCtrl;
 using Jastech.Framework.Device.Motions;
 using Jastech.Framework.Util.Helper;
 using Jastech.Framework.Winform;
-using Jastech.Framework.Winform.Forms;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading;
-using static Jastech.Apps.Winform.Service.Plc.PlcScenarioManager;
 
 namespace Jastech.Apps.Winform
 {
@@ -272,6 +268,28 @@ namespace Jastech.Apps.Winform
 
             return false;
         }
+
+        public void SetLafTrigger(UnitName unitName, AxisHandlerName axisHandlerName, AxisName axisName)
+        {
+            AppsInspModel inspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
+            var unit = inspModel.GetUnit(unitName);
+
+            var standbyPosition = inspModel.GetUnit(unitName).GetTeachingInfo(TeachingPosType.Standby).GetTargetPosition(nameof(axisName));
+            var mm = inspModel.MaterialInfo;
+            
+            if (DeviceManager.Instance().MotionHandler.Count > 0)
+            {
+                var motion = DeviceManager.Instance().MotionHandler.First() as ACSMotion;
+
+                if (motion != null)
+                {
+                    var axis = GetAxis(axisHandlerName, axisName);
+
+                    var tlqkf = axis.AxisNo;
+                    motion.SetLafTrigger(ACSBufferNumber.LAFTrigger_Unit1, nameof(ACSGlobalVariable.LAF_ON_POS_0), "0");
+                }
+            }
+        }
         #endregion
     }
 
@@ -280,5 +298,35 @@ namespace Jastech.Apps.Winform
         Handler0,
         Handler1,
         Handler2,
+    }
+
+    public enum ACSGlobalVariable
+    {
+        AF_DIFF,        // Test#7 AF Difference
+        AF_SW,          // Test#7 AF On/Off Switch
+        AF_OFFSET,      // Test#7 AF Difference Offset
+        AF_FACTOR,      // Test#7 AF Axis Gain Factor
+        JUDGE_RANGE,    // Test#7 Judge Range (MSG dB Ret와 동일 기능)
+
+        LAF_ON_POS_0,
+        LAF_OFF_POS_0,
+        LAF_ON_POS_1,
+        LAF_OFF_POS_1,
+        LAF_ON_POS_2,
+        LAF_OFF_POS_2,
+        LAF_ON_POS_3,
+        LAF_OFF_POS_3,
+        LAF_ON_POS_4,
+        LAF_OFF_POS_4,
+        LAF_ON_POS_5,
+        LAF_OFF_POS_5,
+        LAF_ON_POS_6,
+        LAF_OFF_POS_6,
+        LAF_ON_POS_7,
+        LAF_OFF_POS_7,
+        LAF_ON_POS_8,
+        LAF_OFF_POS_8,
+        LAF_ON_POS_9,
+        LAF_OFF_POS_9,
     }
 }
