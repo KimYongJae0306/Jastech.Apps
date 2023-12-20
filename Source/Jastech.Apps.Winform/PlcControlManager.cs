@@ -5,6 +5,7 @@ using Jastech.Apps.Winform.Service.Plc;
 using Jastech.Apps.Winform.Service.Plc.Maps;
 using Jastech.Apps.Winform.Settings;
 using Jastech.Framework.Algorithms.Akkon.Results;
+using Jastech.Framework.Config;
 using Jastech.Framework.Device.Motions;
 using Jastech.Framework.Device.Plcs;
 using Jastech.Framework.Device.Plcs.Melsec;
@@ -193,8 +194,15 @@ namespace Jastech.Apps.Winform
 
             lock (PlcAddressService.AddressMapList)
             {
-                if (PlcAddressService.AddressMapList.Count() > 0)
-                    value = PlcAddressService.AddressMapList.Where(x => x.Name == map.ToString()).First().Value;
+                if(ConfigSet.Instance().Operation.VirtualMode)
+                {
+                    value = "0";
+                }
+                else
+                {
+                    if (PlcAddressService.AddressMapList.Count() > 0)
+                        value = PlcAddressService.AddressMapList.Where(x => x.Name == map.ToString()).First().Value;
+                }
             }
 
             return value;
