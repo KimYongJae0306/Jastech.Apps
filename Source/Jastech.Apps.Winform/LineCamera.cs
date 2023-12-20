@@ -125,6 +125,9 @@ namespace Jastech.Apps.Winform
 
             double tempPos = 0.0;
             int maxEndIndex = 0;
+
+            Dictionary<double, bool> lafTriggerDataDic = new Dictionary<double, bool>();
+
             for (int i = 0; i < tabCount; i++)
             {
                 if (i == 0)
@@ -156,9 +159,14 @@ namespace Jastech.Apps.Winform
                 TabScanBuffer scanImage = new TabScanBuffer(i, startIndex, endIndex, Camera.ImageWidth, Camera.ImageHeight);
                 lock (TabScanBufferList)
                     TabScanBufferList.Add(scanImage);
+
+                lafTriggerDataDic.Add(startPos, true);
+                lafTriggerDataDic.Add(endPos, false);
             }
 
             GrabCount = maxEndIndex;
+
+            MotionManager.Instance().SetLafTrigger(AxisHandlerName.Handler0, AxisName.X, lafTriggerDataDic);
         }
 
         public void InitGrabSettings(float delayStart_mm)
@@ -181,6 +189,9 @@ namespace Jastech.Apps.Winform
 
             double tempPos = 0.0;
             int maxEndIndex = 0;
+
+            Dictionary<double, bool> lafTriggerDataDic = new Dictionary<double, bool>();
+
             for (int i = 0; i < tabCount; i++)
             {
                 if (i == 0)
@@ -212,9 +223,14 @@ namespace Jastech.Apps.Winform
                 TabScanBuffer scanImage = new TabScanBuffer(i, startIndex, endIndex, Camera.ImageWidth, Camera.ImageHeight);
                 lock (TabScanBufferList)
                     TabScanBufferList.Add(scanImage);
+
+                lafTriggerDataDic.Add(startPos, true);
+                lafTriggerDataDic.Add(endPos, false);
             }
+
             GrabCount = maxEndIndex;
-            //Console.WriteLine("Align Grab Max Count : " + GrabCount);
+
+            MotionManager.Instance().SetLafTrigger(AxisHandlerName.Handler0, AxisName.X, lafTriggerDataDic);
         }
 
         private double GetCurrentAxisXPosition()

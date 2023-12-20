@@ -269,7 +269,7 @@ namespace Jastech.Apps.Winform
             return false;
         }
 
-        public void SetLafTrigger(UnitName unitName, AxisHandlerName axisHandlerName, AxisName axisName)
+        public void SetLafTrigger(AxisHandlerName axisHandlerName, AxisName axisName, Dictionary<double, bool> lafTriggerDataDic/*List<Tuple<double, bool>> lafTriggerDataList*//*List<double> posData*/)
         {
             if (DeviceManager.Instance().MotionHandler.Count > 0)
             {
@@ -279,7 +279,9 @@ namespace Jastech.Apps.Winform
                 {
                     var axis = GetAxis(axisHandlerName, axisName);
 
-                    //motion.SetLafTrigger(ACSBufferNumber.LAFTrigger_Unit1, nameof(ACSGlobalVariable.LAF_ON_POS_0), nameof(standbyPosition));
+                    //if (lafTriggerDataDic.ContainsKey())
+
+                    //motion.SetLafTrigger(ACSBufferNumber.LAFTrigger_Unit1, nameof(ACSGlobalVariable.LAF_ON_POS_0), nameof(posData));
                 }
             }
         }
