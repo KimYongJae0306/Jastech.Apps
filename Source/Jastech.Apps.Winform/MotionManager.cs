@@ -280,14 +280,23 @@ namespace Jastech.Apps.Winform
                 {
                     if (lafTriggerDataDic.Count > 0)
                     {
-                        foreach (var item in lafTriggerDataDic)
+                        var keys = lafTriggerDataDic.Keys.ToArray();
+
+                        for (int index = 0; index < lafTriggerDataDic.Count; index++)
                         {
-                            motion.SetLafTrigger(ACSBufferNumber.LAFTrigger_Unit1, nameof(ACSGlobalVariable.LASER_ENABLE_POS_0), item.Key.ToString());
-                            motion.SetLafTrigger(ACSBufferNumber.LAFTrigger_Unit1, nameof(ACSGlobalVariable.LASER_ENABLE_COMMAND), item.Value.ToString());
+                            motion.WriteRealVariable(nameof(ACSGlobalVariable.LASER_ENABLE_POS), keys[index], 0, index);
                         }
 
+                        motion.RunBuffer(ACSBufferNumber.LAFTrigger_Unit1);
+                        //foreach (var item in lafTriggerDataDic)
+                        //{
+                        //    motion.WriteRealVariable()
+                        //    //motion.SetLafTrigger(ACSBufferNumber.LAFTrigger_Unit1, nameof(ACSGlobalVariable.LASER_ENABLE_POS_0), item.Key.ToString());
+                        //    //motion.SetLafTrigger(ACSBufferNumber.LAFTrigger_Unit1, nameof(ACSGlobalVariable.LASER_ENABLE_COMMAND), item.Value.ToString());
+                        //}
+
                     }
-                    var axis = GetAxis(axisHandlerName, axisName);
+                    //var axis = GetAxis(axisHandlerName, axisName);
 
                     //if (lafTriggerDataDic.ContainsKey())
 
@@ -334,6 +343,7 @@ namespace Jastech.Apps.Winform
         LASER_ENABLE_POS_9,
         LASER_DISABLE_POS_9,
 
+        LASER_ENABLE_POS,
         LASER_ENABLE_COMMAND,
         LASER_DISABLE_COMMAND,
     }
