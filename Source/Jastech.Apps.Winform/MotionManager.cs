@@ -270,7 +270,7 @@ namespace Jastech.Apps.Winform
             return false;
         }
 
-        public void SetLafTrigger(AxisHandlerName axisHandlerName, AxisName axisName, Dictionary<double, bool> lafTriggerDataDic/*List<Tuple<double, bool>> lafTriggerDataList*//*List<double> posData*/)
+        public void SetLafTrigger(AxisHandlerName axisHandlerName, AxisName axisName, Dictionary<string, double> lafTriggerDataDic/*List<Tuple<double, bool>> lafTriggerDataList*//*List<double> posData*/)
         {
             if (DeviceManager.Instance().MotionHandler.Count > 0)
             {
@@ -280,11 +280,10 @@ namespace Jastech.Apps.Winform
                 {
                     if (lafTriggerDataDic.Count > 0)
                     {
-                        var keys = lafTriggerDataDic.Keys.ToArray();
-
                         for (int index = 0; index < lafTriggerDataDic.Count; index++)
                         {
-                            motion.WriteRealVariable(nameof(ACSGlobalVariable.LASER_ENABLE_POS), keys[index], 0, index);
+                            motion.WriteRealVariable(nameof(ACSGlobalVariable.LASER_ENABLE_POS), lafTriggerDataDic["LaserEnable" + index], index, index);
+                            motion.WriteRealVariable(nameof(ACSGlobalVariable.LASER_DISABLE_POS), lafTriggerDataDic["LaserDisable" + index], index, index);
                         }
 
                         motion.RunBuffer(ACSBufferNumber.LAFTrigger_Unit1);
@@ -344,7 +343,6 @@ namespace Jastech.Apps.Winform
         LASER_DISABLE_POS_9,
 
         LASER_ENABLE_POS,
-        LASER_ENABLE_COMMAND,
-        LASER_DISABLE_COMMAND,
+        LASER_DISABLE_POS
     }
 }

@@ -126,7 +126,7 @@ namespace Jastech.Apps.Winform
             double tempPos = 0.0;
             int maxEndIndex = 0;
 
-            Dictionary<double, bool> lafTriggerDataDic = new Dictionary<double, bool>();
+            Dictionary<string, double> lafTriggerDataDic = new Dictionary<string, double>();
 
             for (int i = 0; i < tabCount; i++)
             {
@@ -160,8 +160,8 @@ namespace Jastech.Apps.Winform
                 lock (TabScanBufferList)
                     TabScanBufferList.Add(scanImage);
 
-                lafTriggerDataDic.Add(startPos, true);
-                lafTriggerDataDic.Add(endPos, false);
+                lafTriggerDataDic.Add("LaserEnable" + i, startPos);
+                lafTriggerDataDic.Add("LaserDisable" + i, endPos);
             }
 
             GrabCount = maxEndIndex;
@@ -190,7 +190,7 @@ namespace Jastech.Apps.Winform
             double tempPos = 0.0;
             int maxEndIndex = 0;
 
-            Dictionary<double, bool> lafTriggerDataDic = new Dictionary<double, bool>();
+            Dictionary<string, double> lafTriggerDataDic = new Dictionary<string, double>();
 
             for (int i = 0; i < tabCount; i++)
             {
@@ -224,8 +224,8 @@ namespace Jastech.Apps.Winform
                 lock (TabScanBufferList)
                     TabScanBufferList.Add(scanImage);
 
-                lafTriggerDataDic.Add(startPos, true);
-                lafTriggerDataDic.Add(endPos, false);
+                lafTriggerDataDic.Add("LaserEnable" + i, startPos);
+                lafTriggerDataDic.Add("LaserDisable" + i, endPos);
             }
 
             GrabCount = maxEndIndex;
