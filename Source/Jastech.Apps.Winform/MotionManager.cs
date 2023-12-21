@@ -1,4 +1,5 @@
-﻿using Jastech.Apps.Structure;
+﻿using Emgu.CV.Flann;
+using Jastech.Apps.Structure;
 using Jastech.Apps.Structure.Data;
 using Jastech.Framework.Config;
 using Jastech.Framework.Device.LAFCtrl;
@@ -277,6 +278,15 @@ namespace Jastech.Apps.Winform
 
                 if (motion != null)
                 {
+                    if (lafTriggerDataDic.Count > 0)
+                    {
+                        foreach (var item in lafTriggerDataDic)
+                        {
+                            motion.SetLafTrigger(ACSBufferNumber.LAFTrigger_Unit1, nameof(ACSGlobalVariable.LASER_ENABLE_POS_0), item.Key.ToString());
+                            motion.SetLafTrigger(ACSBufferNumber.LAFTrigger_Unit1, nameof(ACSGlobalVariable.LASER_ENABLE_COMMAND), item.Value.ToString());
+                        }
+
+                    }
                     var axis = GetAxis(axisHandlerName, axisName);
 
                     //if (lafTriggerDataDic.ContainsKey())
@@ -303,25 +313,28 @@ namespace Jastech.Apps.Winform
         AF_FACTOR,      // Test#7 AF Axis Gain Factor
         JUDGE_RANGE,    // Test#7 Judge Range (MSG dB Ret와 동일 기능)
 
-        LAF_ON_POS_0,
-        LAF_OFF_POS_0,
-        LAF_ON_POS_1,
-        LAF_OFF_POS_1,
-        LAF_ON_POS_2,
-        LAF_OFF_POS_2,
-        LAF_ON_POS_3,
-        LAF_OFF_POS_3,
-        LAF_ON_POS_4,
-        LAF_OFF_POS_4,
-        LAF_ON_POS_5,
-        LAF_OFF_POS_5,
-        LAF_ON_POS_6,
-        LAF_OFF_POS_6,
-        LAF_ON_POS_7,
-        LAF_OFF_POS_7,
-        LAF_ON_POS_8,
-        LAF_OFF_POS_8,
-        LAF_ON_POS_9,
-        LAF_OFF_POS_9,
+        LASER_ENABLE_POS_0,
+        LASER_DISABLE_POS_0,
+        LASER_ENABLE_POS_1,
+        LASER_DISABLE_POS_1,
+        LASER_ENABLE_POS_2,
+        LASER_DISABLE_POS_2,
+        LASER_ENABLE_POS_3,
+        LASER_DISABLE_POS_3,
+        LASER_ENABLE_POS_4,
+        LASER_DISABLE_POS_4,
+        LASER_ENABLE_POS_5,
+        LASER_DISABLE_POS_5,
+        LASER_ENABLE_POS_6,
+        LASER_DISABLE_POS_6,
+        LASER_ENABLE_POS_7,
+        LASER_DISABLE_POS_7,
+        LASER_ENABLE_POS_8,
+        LASER_DISABLE_POS_8,
+        LASER_ENABLE_POS_9,
+        LASER_DISABLE_POS_9,
+
+        LASER_ENABLE_COMMAND,
+        LASER_DISABLE_COMMAND,
     }
 }
