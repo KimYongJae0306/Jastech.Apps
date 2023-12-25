@@ -210,10 +210,16 @@ namespace Jastech.Framework.Winform.Forms
             var posData = unit.GetTeachingInfo(TeachingPosType.Stage1_Scan_Start);
 
             var lafData = unit.GetLafData(LAFCtrl.Name);
-            AutoFocusControl.SetLAFData(lafData);
+            
+            if(lafData == null)
+            {
+                unit.LafData = new LAFData();
+                unit.LafData.Name = LAFCtrl.Name;
+                lafData = unit.GetLafData(LAFCtrl.Name);
+            }
 
             AutoFocusControl.SetAxis(AxisHandler.GetAxis(AxisNameZ));
-            AutoFocusControl.SetLAFCtrl(LAFCtrl);
+            AutoFocusControl.SetLAFCtrl(LAFCtrl, lafData);
             AutoFocusControl.UpdateData(posData.GetAxisInfo(AxisNameZ));
 
             if (MotionJogXControl != null)

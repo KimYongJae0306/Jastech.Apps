@@ -43,6 +43,9 @@ namespace ATT.Core
                 unit.CameraData = new LineCameraData();
                 unit.CameraData.Name = "LineCamera";
 
+                unit.LafData = new LAFData();
+                unit.LafData.Name = "Laf";
+
                 for (int tabIndex = 0; tabIndex < appInspModel.TabCount; tabIndex++)
                 {
                     Tab tab = new Tab();

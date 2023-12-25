@@ -46,8 +46,8 @@ namespace ATT_UT_IPAD.Core
                 unit.AlignCamCameraData = new LineCameraData();
                 unit.AlignCamCameraData.Name = "AlignCamera";
 
-                unit.AkkonLafData = new LAFData();
-                unit.AkkonLafData.Name = "AkkonLaf";
+                unit.LafData = new LAFData();
+                unit.LafData.Name = "AkkonLaf";
 
                 unit.AlignLafData = new LAFData();
                 unit.AlignLafData.Name = "AlignLaf";

@@ -33,7 +33,7 @@ namespace Jastech.Apps.Structure.Data
         private List<TeachingInfo> TeachingInfoList { get; set; } = new List<TeachingInfo>();
 
         [JsonProperty]
-        public LAFData AkkonLafData { get; set; } = null;
+        public LAFData LafData { get; set; } = null;
 
         [JsonProperty]
         public LAFData AlignLafData { get; set; } = null;
@@ -52,7 +52,7 @@ namespace Jastech.Apps.Structure.Data
             unit.LightParam = LightParam?.DeepCopy();
             unit.TabList = TabList.Select(x => x.DeepCopy()).ToList();
             unit.TeachingInfoList = TeachingInfoList.Select(x => x.DeepCopy()).ToList();
-            unit.AkkonLafData = AkkonLafData?.DeepCopy();
+            unit.LafData = LafData?.DeepCopy();
             unit.AlignLafData = AlignLafData?.DeepCopy();
 
             return unit;
@@ -160,17 +160,11 @@ namespace Jastech.Apps.Structure.Data
 
         public LAFData GetLafData(string name)
         {
-            if (AkkonLafData != null)
-            {
-                if (AkkonLafData.Name == name)
-                    return AkkonLafData;
-            }
+            if (LafData?.Name == name)
+                return LafData;
 
-            if (AlignLafData != null)
-            {
-                if (AlignLafData.Name == name)
-                    return AlignLafData;
-            }
+            if (AlignLafData?.Name == name)
+                return AlignLafData;
 
             return null;
         }

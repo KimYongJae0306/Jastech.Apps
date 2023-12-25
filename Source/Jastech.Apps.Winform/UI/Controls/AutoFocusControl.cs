@@ -128,14 +128,9 @@ namespace Jastech.Apps.Winform.UI.Controls
             SelectedAxis = axis;
         }
 
-        public void SetLAFCtrl(LAFCtrl lafCtrl)
+        public void SetLAFCtrl(LAFCtrl lafCtrl, LAFData lafData)
         {
             LAFCtrl = lafCtrl;
-        }
-
-        public void SetLAFData(LAFData lafData)
-        {
-            LAFData = lafData;
         }
 
         private void lblTargetPositionZValue_Click(object sender, EventArgs e)

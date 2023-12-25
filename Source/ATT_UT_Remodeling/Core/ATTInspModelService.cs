@@ -44,6 +44,9 @@ namespace ATT_UT_Remodeling.Core
                 unit.CameraData = new LineCameraData();
                 unit.CameraData.Name = "LineCamera";
 
+                unit.LafData = new LAFData();
+                unit.LafData.Name = "Laf";
+
                 CalibrationParam calibrationMark = new CalibrationParam();
                 calibrationMark.MarkName = "Calibration";
                 calibrationMark.InspParam.Name = "Calibration";
