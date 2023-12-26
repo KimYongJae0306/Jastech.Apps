@@ -1,4 +1,5 @@
-﻿using Jastech.Apps.Winform;
+﻿using ATT_UT_Remodeling.Settings;
+using Jastech.Apps.Winform;
 using Jastech.Apps.Winform.Core;
 using Jastech.Apps.Winform.Core.Calibrations;
 using Jastech.Apps.Winform.Settings;
@@ -61,6 +62,9 @@ namespace ATT_UT_Remodeling
                 ConfigSet.Instance().MachineConfigCreated += ConfigSet_MachineConfigCreated;
                 ConfigSet.Instance().Initialize();
 
+                ACSBufferConfig.Instance().NewAcsBufferSettingEventHandler += NewAcsBufferSettingEventHandler;
+                ACSBufferConfig.Instance().Initialize();
+
                 AppsConfig.Instance().Initialize();
                 CalibrationData.Instance().LoadCalibrationData();
                 UserManager.Instance().Initialize();
@@ -74,6 +78,11 @@ namespace ATT_UT_Remodeling
                 MessageBox.Show("The program already started.");
                 Application.Exit();
             }
+        }
+
+        private static void NewAcsBufferSettingEventHandler()
+        {
+            ACSBufferConfig.Instance().CameraTrigger = 4;
         }
 
         private static void ConfigSet_MachineConfigCreated(MachineConfig config)
@@ -148,9 +157,7 @@ namespace ATT_UT_Remodeling
                 // Motion
                 var motion = new ACSMotion("Motion", 1, ACSConnectType.Ethernet);
                 motion.IpAddress = "10.0.0.100";
-                motion.TriggerBuffer = ACSBufferNumber.CameraTrigger_Unit1;        // 재확인 필요
                 config.Add(motion);
-
 
                 ////Akkon LAF
                 //var akkonLaf = new VirtualLAFCtrl("Laf");

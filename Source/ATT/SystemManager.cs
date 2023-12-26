@@ -84,6 +84,8 @@ namespace ATT
             DeviceManager.Instance().Initialize(ConfigSet.Instance());
             PlcControlManager.Instance().Initialize();
 
+            SetACSBuffer();
+
             percent = 50;
             DoReportProgress(reportProgress, percent, "Create Axis Info");
 
@@ -201,6 +203,7 @@ namespace ATT
         {
             handler = new AxisHandler(AxisHandlerName.Handler0.ToString());
 
+            // ACS의 경우 AxisNo 는 Home Buffer Index로 정의해야 한다.
             handler.AddAxis(AxisName.X, motion, axisNo: 0, homeOrder: 2);
 			handler.AddAxis(AxisName.Y, motion, axisNo: 8, homeOrder: 1);
             handler.AddAxis(AxisName.Z0, motion, axisNo: -1, homeOrder: 1);

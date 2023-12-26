@@ -1,4 +1,5 @@
-﻿using Jastech.Apps.Winform;
+﻿using ATT_UT_IPAD.Settings;
+using Jastech.Apps.Winform;
 using Jastech.Apps.Winform.Core;
 using Jastech.Apps.Winform.Settings;
 using Jastech.Apps.Winform.UI.Forms;
@@ -61,6 +62,9 @@ namespace ATT_UT_IPAD
                 ConfigSet.Instance().MachineConfigCreated += ConfigSet_MachineConfigCreated;
                 ConfigSet.Instance().Initialize();
 
+                ACSBufferConfig.Instance().NewAcsBufferSettingEventHandler += NewAcsBufferSettingEventHandler;
+                ACSBufferConfig.Instance().Initialize();
+
                 AppsConfig.Instance().Initialize();
                 UserManager.Instance().Initialize();
 
@@ -72,6 +76,18 @@ namespace ATT_UT_IPAD
             {
                 MessageBox.Show("The program already started.");
                 Application.Exit();
+            }
+        }
+
+        private static void NewAcsBufferSettingEventHandler()
+        {
+            if(AppsConfig.Instance().ProgramType == ProgramType.ProgramType_1.ToString())
+            {
+                ACSBufferConfig.Instance().CameraTrigger = 4;
+            }
+            else if (AppsConfig.Instance().ProgramType == ProgramType.ProgramType_2.ToString())
+            {
+                ACSBufferConfig.Instance().CameraTrigger = 5;
             }
         }
 
@@ -202,7 +218,6 @@ namespace ATT_UT_IPAD
             // Motion
             var motion = new ACSMotion("Motion", 2, ACSConnectType.Ethernet);
             motion.IpAddress = "10.0.0.100";
-            motion.TriggerBuffer = ACSBufferNumber.CameraTrigger_Unit1;
             config.Add(motion);
 
             ////Akkon LAF
@@ -310,7 +325,6 @@ namespace ATT_UT_IPAD
             // Motion
             var motion = new ACSMotion("Motion", 2, ACSConnectType.Ethernet);
             motion.IpAddress = "10.0.0.100";
-            motion.TriggerBuffer = ACSBufferNumber.CameraTrigger_Unit2;
             config.Add(motion);
 
             ////Akkon LAF

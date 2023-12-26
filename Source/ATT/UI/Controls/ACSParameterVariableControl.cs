@@ -128,9 +128,9 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         private void btnApply_Click(object sender, EventArgs e)
         {
-            Thread.Sleep(1000);
-            if (SelectedAxis?.Motion is ACSMotion motion)
-                motion.ApplyLafParameters(ACSBufferNumber.CameraTrigger_Unit2, nameof(ACSGlobalVariable.AF_SW));
+            //Thread.Sleep(1000);
+            //if (SelectedAxis?.Motion is ACSMotion motion)
+            //    motion.ApplyLafParameters(ACSBufferNumber.CameraTrigger_Unit2, nameof(ACSGlobalVariable.AF_SW));
         }
         #endregion
 

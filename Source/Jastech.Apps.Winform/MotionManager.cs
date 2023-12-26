@@ -286,7 +286,9 @@ namespace Jastech.Apps.Winform
                             motion.WriteRealVariable(nameof(ACSGlobalVariable.LASER_DISABLE_POS), lafTriggerDataDic["LaserDisable" + index], index, index);
                         }
 
-                        motion.RunBuffer(ACSBufferNumber.LAFTrigger_Unit1);
+                        //motion.RunBuffer(ACSBufferNumber.LAFTrigger_Unit1);
+
+
                         //foreach (var item in lafTriggerDataDic)
                         //{
                         //    motion.WriteRealVariable()
@@ -345,4 +347,16 @@ namespace Jastech.Apps.Winform
         LASER_ENABLE_POS,
         LASER_DISABLE_POS
     }
+
+    //public enum ACSBufferNumber
+    //{
+    //    Homing_Unit1 = 0,
+    //    Homing_Unit2 = 1,
+    //    Buffer2 = 2,
+    //    Buffer3 = 3,
+    //    CameraTrigger_Unit1 = 4,
+    //    CameraTrigger_Unit2 = 5,
+    //    LAFTrigger_Unit1 = 6,
+    //    LAFTrigger_Unit2 = 7,
+    //}
 }

@@ -129,7 +129,6 @@ namespace ATT
                 // Motion
                 var motion = new ACSMotion("Motion", 2, ACSConnectType.Ethernet);
                 motion.IpAddress = "10.0.0.100";
-                motion.TriggerBuffer = ACSBufferNumber.CameraTrigger_Unit1;
                 config.Add(motion);
 
                 //var light1 = new LvsLightCtrl("LvsLight12V", 6, new SerialPortComm("COM2", 9600), new LvsSerialParser());

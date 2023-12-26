@@ -1,5 +1,6 @@
 ﻿using ATT_UT_IPAD.Core;
 using ATT_UT_IPAD.Core.Data;
+using ATT_UT_IPAD.Settings;
 using ATT_UT_IPAD.UI.Controls;
 using Cognex.VisionPro;
 using Jastech.Apps.Structure;
@@ -88,6 +89,8 @@ namespace ATT_UT_IPAD
             DeviceManager.Instance().Initialize(ConfigSet.Instance());
             PlcControlManager.Instance().Initialize();
 
+            SetACSBuffer();
+
             percent = 50;
             DoReportProgress(reportProgress, percent, "Create Axis Info");
 
@@ -117,6 +120,16 @@ namespace ATT_UT_IPAD
             percent = 100;
             DoReportProgress(reportProgress, percent, "Initialize Completed.");
             return true;
+        }
+
+        private void SetACSBuffer()
+        {
+            int index = ACSBufferConfig.Instance().CameraTrigger;
+            if (DeviceManager.Instance().MotionHandler.Count > 0)
+            {
+                var motion = DeviceManager.Instance().MotionHandler.First() as ACSMotion;
+                motion?.RunBuffer(index);
+            }
         }
 
         private void DoReportProgress(IReportProgress reportProgress, int percentage, string message)
@@ -199,6 +212,7 @@ namespace ATT_UT_IPAD
         {
             handler = new AxisHandler(AxisHandlerName.Handler0.ToString());
 
+            // ACS의 경우 AxisNo 는 Home Buffer Index로 정의해야 한다.
             handler.AddAxis(AxisName.X, motion, axisNo: 0, homeOrder: 2);
             handler.AddAxis(AxisName.Z0, motion, axisNo: -1, homeOrder: 1);
             handler.AddAxis(AxisName.Z1, motion, axisNo: -1, homeOrder: 1);
@@ -207,6 +221,7 @@ namespace ATT_UT_IPAD
         {
             handler = new AxisHandler(AxisHandlerName.Handler0.ToString());
 
+            // ACS의 경우 AxisNo 는 Home Buffer Index로 정의해야 한다.
             handler.AddAxis(AxisName.X, motion, axisNo: 1, homeOrder: 2);
             handler.AddAxis(AxisName.Z0, motion, axisNo: -1, homeOrder: 1);
             handler.AddAxis(AxisName.Z1, motion, axisNo: -1, homeOrder: 1);
