@@ -99,6 +99,7 @@
     <Reference Include="WindowsFormsIntegration" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ACSBufferManager.cs" />
     <Compile Include="AppsPreAlignResult.cs" />
     <Compile Include="AppsStatus.cs" />
     <Compile Include="AreaCamera.cs" />
@@ -117,6 +118,7 @@
     <Compile Include="Service\Plc\PlcAddressMap.cs" />
     <Compile Include="Service\Plc\PlcAddressService.cs" />
     <Compile Include="Service\Plc\PlcScenarioManager.cs" />
+    <Compile Include="Settings\ACSBufferConfig.cs" />
     <Compile Include="TeachingUIManager.cs" />
     <Compile Include="UI\Controls\AkkonResultDataControl.cs">
       <SubType>UserControl</SubType>

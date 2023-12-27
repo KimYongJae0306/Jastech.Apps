@@ -269,42 +269,6 @@ namespace Jastech.Apps.Winform
 
             return false;
         }
-
-        public void SetLafTrigger(AxisHandlerName axisHandlerName, AxisName axisName, Dictionary<string, double> lafTriggerDataDic/*List<Tuple<double, bool>> lafTriggerDataList*//*List<double> posData*/)
-        {
-            if (DeviceManager.Instance().MotionHandler.Count > 0)
-            {
-                var motion = DeviceManager.Instance().MotionHandler.First() as ACSMotion;
-
-                if (motion != null)
-                {
-                    if (lafTriggerDataDic.Count > 0)
-                    {
-                        for (int index = 0; index < lafTriggerDataDic.Count; index++)
-                        {
-                            motion.WriteRealVariable(nameof(ACSGlobalVariable.LASER_ENABLE_POS), lafTriggerDataDic["LaserEnable" + index], index, index);
-                            motion.WriteRealVariable(nameof(ACSGlobalVariable.LASER_DISABLE_POS), lafTriggerDataDic["LaserDisable" + index], index, index);
-                        }
-
-                        //motion.RunBuffer(ACSBufferNumber.LAFTrigger_Unit1);
-
-
-                        //foreach (var item in lafTriggerDataDic)
-                        //{
-                        //    motion.WriteRealVariable()
-                        //    //motion.SetLafTrigger(ACSBufferNumber.LAFTrigger_Unit1, nameof(ACSGlobalVariable.LASER_ENABLE_POS_0), item.Key.ToString());
-                        //    //motion.SetLafTrigger(ACSBufferNumber.LAFTrigger_Unit1, nameof(ACSGlobalVariable.LASER_ENABLE_COMMAND), item.Value.ToString());
-                        //}
-
-                    }
-                    //var axis = GetAxis(axisHandlerName, axisName);
-
-                    //if (lafTriggerDataDic.ContainsKey())
-
-                    //motion.SetLafTrigger(ACSBufferNumber.LAFTrigger_Unit1, nameof(ACSGlobalVariable.LAF_ON_POS_0), nameof(posData));
-                }
-            }
-        }
         #endregion
     }
 

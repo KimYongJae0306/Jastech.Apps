@@ -551,11 +551,18 @@ namespace Jastech.Framework.Winform.Forms
             LineCamera.ClearTabScanBuffer();
 
             if (UseDelayStart)
+            {
                 LineCamera.InitGrabSettings(cameraGap);
+                ACSBufferManager.Instance().SetLafTriggerPosition(LAFCtrl.Name, LineCamera.TabScanBufferList, cameraGap);
+            }
             else
+            {
                 LineCamera.InitGrabSettings();
+                ACSBufferManager.Instance().SetLafTriggerPosition(LAFCtrl.Name, LineCamera.TabScanBufferList, 0);
+            }
 
             InitalizeInspTab(LineCamera.TabScanBufferList);
+
             if (MotionManager.Instance().MoveAxisX(AxisHandlerName, UnitName, TeachingPosType.Stage1_Scan_Start) == false)
             {
                 MessageConfirmForm form = new MessageConfirmForm();

@@ -121,11 +121,14 @@ namespace Jastech.Framework.Winform.Forms
             lblStageCam.Text = $"STAGE : {UnitName} / CAM : {LineCamera.Camera.Name}";
 
             StatusTimer.Start();
+
+            ACSBufferManager.Instance().SetManualMode(LAFCtrl.Name);
         }
 
         private void OpticTeachingForm_FormClosed(object sender, FormClosedEventArgs e)
         {
             ParamTrackingLogger.ClearChangedLog();
+            ACSBufferManager.Instance().SetStopMode();
         }
 
         private void RollbackPrevData()
@@ -820,6 +823,9 @@ namespace Jastech.Framework.Winform.Forms
 
             if (isRepeat)
             {
+                if (_repeatThread != null)
+                    return;
+
                 LineCamera.StopGrab();
                 LineCamera.IsLive = false;
 
@@ -900,6 +906,7 @@ namespace Jastech.Framework.Winform.Forms
             }
             lblStartRepeat.BeginInvoke(new Action(() => lblStartRepeat.Text = "Start"));
             UpdateGrabButton(true);
+            _repeatThread = null;
         }
 
         public void UpdateRepeatCount()

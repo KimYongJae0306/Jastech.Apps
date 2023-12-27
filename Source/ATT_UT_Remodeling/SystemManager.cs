@@ -1,5 +1,4 @@
 ﻿using ATT_UT_Remodeling.Core;
-using ATT_UT_Remodeling.Settings;
 using Cognex.VisionPro;
 using Jastech.Apps.Structure;
 using Jastech.Apps.Structure.Data;
@@ -9,6 +8,7 @@ using Jastech.Apps.Winform.Core.Calibrations;
 using Jastech.Apps.Winform.Service;
 using Jastech.Apps.Winform.Service.Plc;
 using Jastech.Apps.Winform.Service.Plc.Maps;
+using Jastech.Apps.Winform.Settings;
 using Jastech.Apps.Winform.UI.Forms;
 using Jastech.Framework.Config;
 using Jastech.Framework.Device.Cameras;
@@ -108,6 +108,8 @@ namespace ATT_UT_Remodeling
             var axisHandler = MotionManager.Instance().GetAxisHandler(AxisHandlerName.Handler0);
             if (axisHandler != null)
                 VisionXCalibration.SetAxisHandler(axisHandler);
+
+            ACSBufferManager.Instance().Initialize();
 
             if (ConfigSet.Instance().Operation.LastModelName != "")
             {
@@ -324,9 +326,11 @@ namespace ATT_UT_Remodeling
                 MessageYesNoForm form = new MessageYesNoForm();
                 form.Message = "Do you want to Stop Auto Mode?";
 
-
                 if (form.ShowDialog() == DialogResult.Yes)
+                {
+                    ACSBufferManager.Instance().SetStopMode();
                     SetStopMode();
+                }
             }
         }
 

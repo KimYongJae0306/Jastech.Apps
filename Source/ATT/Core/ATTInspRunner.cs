@@ -588,6 +588,8 @@ namespace ATT.Core
         	LineCamera.InitGrabSettings();
             InspProcessTask.InitalizeInspAkkonBuffer(LineCamera.Camera.Name, LineCamera.TabScanBufferList);
             InspProcessTask.InitalizeInspAlignBuffer(LineCamera.Camera.Name, LineCamera.TabScanBufferList);
+
+            ACSBufferManager.Instance().SetLafTriggerPosition(LAFCtrl.Name, LineCamera.TabScanBufferList, 0);
         }
 
         public void RunVirtual()
@@ -971,10 +973,7 @@ namespace ATT.Core
             MotionManager manager = MotionManager.Instance();
             double cameraGap = 0;
             if (teachingPos == TeachingPosType.Stage1_Scan_End)
-            {
                 cameraGap = AppsConfig.Instance().CameraGap_mm;
-                //cameraGap += 50;
-            }
                 
             if (manager.IsAxisInPosition(UnitName.Unit0, teachingPos, axis, cameraGap) == false)
             {

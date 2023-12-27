@@ -1,5 +1,4 @@
-﻿using ATT_UT_Remodeling.Settings;
-using Jastech.Apps.Winform;
+﻿using Jastech.Apps.Winform;
 using Jastech.Apps.Winform.Core;
 using Jastech.Apps.Winform.Core.Calibrations;
 using Jastech.Apps.Winform.Settings;

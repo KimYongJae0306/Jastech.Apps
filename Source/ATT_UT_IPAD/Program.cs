@@ -1,5 +1,4 @@
-﻿using ATT_UT_IPAD.Settings;
-using Jastech.Apps.Winform;
+﻿using Jastech.Apps.Winform;
 using Jastech.Apps.Winform.Core;
 using Jastech.Apps.Winform.Settings;
 using Jastech.Apps.Winform.UI.Forms;
@@ -62,10 +61,10 @@ namespace ATT_UT_IPAD
                 ConfigSet.Instance().MachineConfigCreated += ConfigSet_MachineConfigCreated;
                 ConfigSet.Instance().Initialize();
 
+                AppsConfig.Instance().Initialize();
                 ACSBufferConfig.Instance().NewAcsBufferSettingEventHandler += NewAcsBufferSettingEventHandler;
                 ACSBufferConfig.Instance().Initialize();
 
-                AppsConfig.Instance().Initialize();
                 UserManager.Instance().Initialize();
 
                 var mainForm = new MainForm();
@@ -81,13 +80,54 @@ namespace ATT_UT_IPAD
 
         private static void NewAcsBufferSettingEventHandler()
         {
-            if(AppsConfig.Instance().ProgramType == ProgramType.ProgramType_1.ToString())
+            var buffer = ACSBufferConfig.Instance();
+
+            if (AppsConfig.Instance().ProgramType == ProgramType.ProgramType_1.ToString())
             {
-                ACSBufferConfig.Instance().CameraTrigger = 4;
+                buffer.CameraTrigger = 4;
+
+                LafTriggerBuffer alignLaf = new LafTriggerBuffer
+                {
+                    LafName = "AlignLaf",
+                    LafIndex = 0,
+                    OutputBit = 1,
+                    BufferNumber = 5,
+                };
+
+                LafTriggerBuffer akkonLaf = new LafTriggerBuffer
+                {
+                    LafName = "AkkonLaf",
+                    LafIndex = 1,
+                    OutputBit = 3,
+                    BufferNumber = 6,
+                };
+
+                buffer.LafTriggerBufferList.Add(alignLaf);
+                buffer.LafTriggerBufferList.Add(akkonLaf);
+
             }
             else if (AppsConfig.Instance().ProgramType == ProgramType.ProgramType_2.ToString())
             {
-                ACSBufferConfig.Instance().CameraTrigger = 5;
+                buffer.CameraTrigger = 5;
+
+                LafTriggerBuffer alignLaf = new LafTriggerBuffer
+                {
+                    LafName = "AlignLaf",
+                    LafIndex = 2,
+                    OutputBit = 5,
+                    BufferNumber = 7,
+                };
+
+                LafTriggerBuffer akkonLaf = new LafTriggerBuffer
+                {
+                    LafName = "AkkonLaf",
+                    LafIndex = 3,
+                    OutputBit = 7,
+                    BufferNumber = 8,
+                };
+
+                buffer.LafTriggerBufferList.Add(alignLaf);
+                buffer.LafTriggerBufferList.Add(akkonLaf);
             }
         }
 
@@ -105,14 +145,14 @@ namespace ATT_UT_IPAD
                 AppsConfig.Instance().ProgramType = form.SelectedProgramType;
 
                 // Akkon LineScanCamera
-                var alignCamera = new CameraVirtual("AkkonCamera", 6560, 1024, ColorFormat.Gray, SensorType.Line);
+                var alignCamera = new CameraVirtual("AlignCamera", 6560, 1024, ColorFormat.Gray, SensorType.Line);
                 alignCamera.OffsetX = 0;
                 alignCamera.PixelResolution_um = 3.5F;
                 alignCamera.LensScale = 10F;
                 config.Add(alignCamera);
 
                 // Align LineScanCamera
-                var akkonCamera = new CameraVirtual("AlignCamera", 6560, 1024, ColorFormat.Gray, SensorType.Line);
+                var akkonCamera = new CameraVirtual("AkkonCamera", 6560, 1024, ColorFormat.Gray, SensorType.Line);
                 akkonCamera.OffsetX = 0;
                 akkonCamera.PixelResolution_um = 3.5F;
                 akkonCamera.LensScale = 10F;

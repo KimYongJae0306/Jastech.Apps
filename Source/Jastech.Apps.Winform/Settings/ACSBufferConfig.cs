@@ -8,7 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ATT_UT_IPAD.Settings
+namespace Jastech.Apps.Winform.Settings
 {
     public class ACSBufferConfig
     {
@@ -19,9 +19,21 @@ namespace ATT_UT_IPAD.Settings
         #region 속성
         [JsonProperty]
         public int CameraTrigger { get; set; }
+
+        [JsonProperty]
+        public List<LafTriggerBuffer> LafTriggerBufferList { get; set; } = new List<LafTriggerBuffer>();
+
+        public string IoEnableModeName { get; set; } = "IoEnableMode";                      // IoEnableMode(4)
+
+        public string IoPositionUsagesName { get; set; } = "IoPositionUsages";              // IoPositionUsages(4)(10)
+
+        public string LaserStartPositionsName { get; set; } = "LaserStartPositions";        // LaserStartPositions(4)(10)
+
+        public string LaserEndPositionsName { get; set; } = "LaserEndPositions";            // LaserEndPositions(4)(10)
         #endregion
 
         #region 이벤트
+        [JsonIgnore]
         public NewAcsBufferSettingDelegate NewAcsBufferSettingEventHandler;
         #endregion
 
@@ -54,6 +66,11 @@ namespace ATT_UT_IPAD.Settings
             Load();
         }
 
+        public LafTriggerBuffer GetTriggerBuffer(string lafName)
+        {
+            return LafTriggerBufferList.Where(x => x.LafName == lafName).FirstOrDefault();
+        }
+
         public void Save()
         {
             string dirPath = ConfigSet.Instance().Path.Config;
@@ -79,6 +96,35 @@ namespace ATT_UT_IPAD.Settings
 
             JsonConvertHelper.LoadToExistingTarget<ACSBufferConfig>(fullPath, this);
         }
+        #endregion
+    }
+
+    public class LafTriggerBuffer
+    {
+        #region 속성
+        public string LafName { get; set; }
+
+        public int LafIndex { get; set; }
+
+        public int OutputBit { get; set; }
+
+        public int BufferNumber { get; set; }
+        #endregion
+    }
+
+    public enum IoEnableMode
+    {
+        Auto = 0,
+        On = 1,
+        Off = 2,
+    }
+
+    public class IoPositionData
+    {
+        #region 속성
+        public double Start { get; set; }
+
+        public double End { get; set; }
         #endregion
     }
 }

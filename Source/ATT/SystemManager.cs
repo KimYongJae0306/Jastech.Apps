@@ -84,7 +84,7 @@ namespace ATT
             DeviceManager.Instance().Initialize(ConfigSet.Instance());
             PlcControlManager.Instance().Initialize();
 
-            SetACSBuffer();
+            //SetACSBuffer();
 
             percent = 50;
             DoReportProgress(reportProgress, percent, "Create Axis Info");
@@ -95,6 +95,8 @@ namespace ATT
             DoReportProgress(reportProgress, percent, "Initialize Manager.");
             LAFManager.Instance().Initialize();
             LineCameraManager.Instance().Initialize();
+
+            ACSBufferManager.Instance().Initialize();
 
             if (ConfigSet.Instance().Operation.LastModelName != "")
             {
@@ -289,7 +291,10 @@ namespace ATT
                 form.Message = "Do you want to Stop Auto Mode?";
 
                 if (form.ShowDialog() == DialogResult.Yes)
+                {
+                    ACSBufferManager.Instance().SetStopMode();
                     SetStopMode();
+                }
             }
         }
 

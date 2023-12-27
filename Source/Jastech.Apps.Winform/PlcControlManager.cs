@@ -194,16 +194,12 @@ namespace Jastech.Apps.Winform
 
             lock (PlcAddressService.AddressMapList)
             {
-                if(ConfigSet.Instance().Operation.VirtualMode)
-                {
-                    value = "0";
-                }
-                else
-                {
-                    if (PlcAddressService.AddressMapList.Count() > 0)
-                        value = PlcAddressService.AddressMapList.Where(x => x.Name == map.ToString()).First().Value;
-                }
+                if (PlcAddressService.AddressMapList.Count() > 0)
+                    value = PlcAddressService.AddressMapList.Where(x => x.Name == map.ToString()).First().Value;
             }
+
+            if (value == "")
+                value = "0";
 
             return value;
         }

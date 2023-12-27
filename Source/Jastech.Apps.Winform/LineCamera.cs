@@ -126,8 +126,6 @@ namespace Jastech.Apps.Winform
             double tempPos = 0.0;
             int maxEndIndex = 0;
 
-            Dictionary<string, double> lafTriggerDataDic = new Dictionary<string, double>();
-
             for (int i = 0; i < tabCount; i++)
             {
                 if (i == 0)
@@ -159,14 +157,9 @@ namespace Jastech.Apps.Winform
                 TabScanBuffer scanImage = new TabScanBuffer(i, startIndex, endIndex, Camera.ImageWidth, Camera.ImageHeight);
                 lock (TabScanBufferList)
                     TabScanBufferList.Add(scanImage);
-
-                lafTriggerDataDic.Add("LaserEnable" + i, startPos);
-                lafTriggerDataDic.Add("LaserDisable" + i, endPos);
             }
 
             GrabCount = maxEndIndex;
-
-            MotionManager.Instance().SetLafTrigger(AxisHandlerName.Handler0, AxisName.X, lafTriggerDataDic);
         }
 
         public void InitGrabSettings(float delayStart_mm)
@@ -189,8 +182,6 @@ namespace Jastech.Apps.Winform
 
             double tempPos = 0.0;
             int maxEndIndex = 0;
-
-            Dictionary<string, double> lafTriggerDataDic = new Dictionary<string, double>();
 
             for (int i = 0; i < tabCount; i++)
             {
@@ -223,14 +214,9 @@ namespace Jastech.Apps.Winform
                 TabScanBuffer scanImage = new TabScanBuffer(i, startIndex, endIndex, Camera.ImageWidth, Camera.ImageHeight);
                 lock (TabScanBufferList)
                     TabScanBufferList.Add(scanImage);
-
-                lafTriggerDataDic.Add("LaserEnable" + i, startPos);
-                lafTriggerDataDic.Add("LaserDisable" + i, endPos);
             }
 
             GrabCount = maxEndIndex;
-
-            MotionManager.Instance().SetLafTrigger(AxisHandlerName.Handler0, AxisName.X, lafTriggerDataDic);
         }
 
         private double GetCurrentAxisXPosition()

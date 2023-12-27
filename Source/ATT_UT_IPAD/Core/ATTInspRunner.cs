@@ -756,10 +756,13 @@ namespace ATT_UT_IPAD.Core
         {
             AkkonCamera.InitGrabSettings();
             InspProcessTask.InitalizeInspAkkonBuffer(AkkonCamera.Camera.Name, AkkonCamera.TabScanBufferList);
+            ACSBufferManager.Instance().SetLafTriggerPosition(AkkonLAFCtrl.Name, AkkonCamera.TabScanBufferList, 0);
 
+            //
             float akkonToAlignGap_mm = AppsConfig.Instance().CameraGap_mm;
             AlignCamera.InitGrabSettings(akkonToAlignGap_mm);
             InspProcessTask.InitalizeInspAlignBuffer(AlignCamera.Camera.Name, AlignCamera.TabScanBufferList);
+            ACSBufferManager.Instance().SetLafTriggerPosition(AlignLAFCtrl.Name, AlignCamera.TabScanBufferList, AppsConfig.Instance().CameraGap_mm);
         }
 
         public void RunVirtual()
