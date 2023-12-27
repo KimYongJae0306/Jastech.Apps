@@ -285,6 +285,9 @@ namespace ATT.Core
                 case SeqStep.SEQ_IDLE:
                     AppsStatus.Instance().IsInspRunnerFlagFromPlc = false;
                     PlcControlManager.Instance().EnableSendPeriodically = true;
+
+                    // tt
+                    InitializeBuffer();
                     break;
 
                 case SeqStep.SEQ_INIT:
