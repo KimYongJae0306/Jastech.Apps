@@ -27,6 +27,9 @@ namespace Jastech.Apps.Structure.Data
         public AlignSpec AlignSpec { get; set; } = new AlignSpec();
 
         [JsonProperty]
+        public LafTriggerOffset LafTriggerOffset { get; set; } = new LafTriggerOffset();
+
+        [JsonProperty]
         public MarkParamter Mark = new MarkParamter();
 
         [JsonProperty]
@@ -223,6 +226,15 @@ namespace Jastech.Apps.Structure.Data
 
         [JsonProperty]
         public bool UseAutoTracking { get; set; } = false;
+        #endregion
+    }
+
+    public class LafTriggerOffset
+    {
+        #region 속성
+        public double Left { get; set; } = 0.0;
+
+        public double Right { get; set; } = 0.0;
         #endregion
     }
 }

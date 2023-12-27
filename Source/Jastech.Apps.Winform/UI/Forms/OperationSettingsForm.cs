@@ -59,6 +59,7 @@ namespace Jastech.Framework.Winform.Forms
             txtPreAlignToleranceY.Text = appsConfig.PreAlignToleranceY.ToString();
             txtPreAlignToleranceTheta.Text = appsConfig.PreAlignToleranceTheta.ToString();
 
+            mtgEnableAFTrigger.Checked = appsConfig.EnableLafTrigger;
             mtgEnableAlign.Checked = appsConfig.EnableAlign;
             mtgEnableAkkon.Checked = appsConfig.EnableAkkon;
             mtgEnableTest1.Checked = appsConfig.EnableTest1;
@@ -107,6 +108,7 @@ namespace Jastech.Framework.Winform.Forms
             appsConfig.PreAlignToleranceY = Convert.ToSingle(GetValue(txtPreAlignToleranceY.Text));
             appsConfig.PreAlignToleranceTheta = Convert.ToSingle(GetValue(txtPreAlignToleranceTheta.Text));
 
+            appsConfig.EnableLafTrigger = mtgEnableAFTrigger.Checked;
             appsConfig.EnableAlign = mtgEnableAlign.Checked;
             appsConfig.EnableAkkon = mtgEnableAkkon.Checked;
             appsConfig.EnableTest1 = mtgEnableTest1.Checked;

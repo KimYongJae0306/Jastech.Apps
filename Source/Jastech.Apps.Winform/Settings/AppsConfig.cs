@@ -25,7 +25,7 @@ namespace Jastech.Apps.Winform.Settings
         public int TabMaxCount { get; set; } = 10;
 
         [JsonProperty]
-        public bool UseLafTrigger { get; set; } = false;
+        public bool EnableLafTrigger { get; set; } = false;
 
         [JsonProperty]
         public PlcAddressInfo PlcAddressInfo { get; set; } = new PlcAddressInfo();
