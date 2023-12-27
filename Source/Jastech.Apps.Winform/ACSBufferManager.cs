@@ -190,7 +190,6 @@ namespace Jastech.Apps.Winform
                 var motion = DeviceManager.Instance().MotionHandler.First() as ACSMotion;
                 var config = ACSBufferConfig.Instance();
 
-                int tabMaxCount = AppsConfig.Instance().TabMaxCount;
                 int lafIndex = triggerBuffer.LafIndex;
                 for (int tabNum = 0; tabNum < positionList.Count; tabNum++)
                 {
@@ -212,7 +211,7 @@ namespace Jastech.Apps.Winform
             var posData = inspModel.GetUnit(UnitName.Unit0).GetTeachingInfo(TeachingPosType.Stage1_Scan_Start);
             double teachingStartPos = posData.GetTargetPosition(AxisName.X) + offset;
 
-            double subImageSize = resolution_um * camera.ImageHeight;
+            double subImageSize = (resolution_um * camera.ImageHeight) / 1000.0;
 
             List<IoPositionData> dataList = new List<IoPositionData>();
 
