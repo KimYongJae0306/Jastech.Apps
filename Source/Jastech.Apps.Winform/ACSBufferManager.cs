@@ -52,7 +52,7 @@ namespace Jastech.Apps.Winform
                 int index = ACSBufferConfig.Instance().CameraTrigger;
                 motion?.RunBuffer(index);
 
-                if(AppsConfig.Instance().UseLafTrigger)
+                if(AppsConfig.Instance().EnableLafTrigger)
                 {
                     _activeLafTrigger = true;
 
@@ -67,7 +67,7 @@ namespace Jastech.Apps.Winform
 
         private void ConstructBuffer()
         {
-            if (AppsConfig.Instance().UseLafTrigger == false)
+            if (AppsConfig.Instance().EnableLafTrigger == false)
                 return;
 
             if (DeviceManager.Instance().MotionHandler.Count > 0)
@@ -108,7 +108,7 @@ namespace Jastech.Apps.Winform
 
         public void SetAutoMode()
         {
-            if (AppsConfig.Instance().UseLafTrigger == false)
+            if (AppsConfig.Instance().EnableLafTrigger == false)
                 return;
 
             if (DeviceManager.Instance().MotionHandler.Count > 0)
@@ -123,7 +123,7 @@ namespace Jastech.Apps.Winform
 
         public void SetStopMode()
         {
-            if (AppsConfig.Instance().UseLafTrigger == false)
+            if (AppsConfig.Instance().EnableLafTrigger == false)
                 return;
 
             if (DeviceManager.Instance().MotionHandler.Count > 0)
@@ -138,7 +138,7 @@ namespace Jastech.Apps.Winform
 
         public void SetManualMode(string lafName)
         {
-            if (AppsConfig.Instance().UseLafTrigger == false)
+            if (AppsConfig.Instance().EnableLafTrigger == false)
                 return;
 
             SetStopMode();
@@ -156,7 +156,7 @@ namespace Jastech.Apps.Winform
 
         public void EnableTabCount(string lafName, int tabCount)
         {
-            if (AppsConfig.Instance().UseLafTrigger == false)
+            if (AppsConfig.Instance().EnableLafTrigger == false)
                 return;
 
             if (DeviceManager.Instance().MotionHandler.Count > 0)
@@ -179,7 +179,7 @@ namespace Jastech.Apps.Winform
 
         private void SetTriggerPosition(string lafName, List<IoPositionData> positionList)
         {
-            if (AppsConfig.Instance().UseLafTrigger == false)
+            if (AppsConfig.Instance().EnableLafTrigger == false)
                 return;
 
             EnableTabCount(lafName, positionList.Count);
@@ -201,7 +201,7 @@ namespace Jastech.Apps.Winform
 
         public void SetLafTriggerPosition(string lafName, List<TabScanBuffer> tabScanBufferList, double offset = 0)
         {
-            if (ConfigSet.Instance().Operation.VirtualMode || AppsConfig.Instance().UseLafTrigger == false)
+            if (ConfigSet.Instance().Operation.VirtualMode || AppsConfig.Instance().EnableLafTrigger == false)
                 return;
 
             var camera = DeviceManager.Instance().CameraHandler.First();
