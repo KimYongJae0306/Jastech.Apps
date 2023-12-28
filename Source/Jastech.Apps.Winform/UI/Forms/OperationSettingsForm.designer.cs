@@ -33,6 +33,9 @@
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.panel13 = new System.Windows.Forms.Panel();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.tableLayoutPanel6 = new System.Windows.Forms.TableLayoutPanel();
+            this.label38 = new System.Windows.Forms.Label();
+            this.mtgEnableAFTrigger = new MetroFramework.Controls.MetroToggle();
             this.tableLayoutPanel4 = new System.Windows.Forms.TableLayoutPanel();
             this.label35 = new System.Windows.Forms.Label();
             this.mtgEnableAlignByPass = new MetroFramework.Controls.MetroToggle();
@@ -131,11 +134,9 @@
             this.tableLayoutPanel16 = new System.Windows.Forms.TableLayoutPanel();
             this.lblApplyImage = new System.Windows.Forms.Label();
             this.lblSave = new System.Windows.Forms.Label();
-            this.tableLayoutPanel6 = new System.Windows.Forms.TableLayoutPanel();
-            this.label38 = new System.Windows.Forms.Label();
-            this.mtgEnableAFTrigger = new MetroFramework.Controls.MetroToggle();
             this.tableLayoutPanel1.SuspendLayout();
             this.panel1.SuspendLayout();
+            this.tableLayoutPanel6.SuspendLayout();
             this.tableLayoutPanel4.SuspendLayout();
             this.tableLayoutPanel3.SuspendLayout();
             this.tlpVisionAlgotirhmTest2.SuspendLayout();
@@ -164,7 +165,6 @@
             this.tableLayoutPanel15.SuspendLayout();
             this.panel11.SuspendLayout();
             this.tableLayoutPanel16.SuspendLayout();
-            this.tableLayoutPanel6.SuspendLayout();
             this.SuspendLayout();
             // 
             // panel7
@@ -243,6 +243,48 @@
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(382, 802);
             this.panel1.TabIndex = 0;
+            // 
+            // tableLayoutPanel6
+            // 
+            this.tableLayoutPanel6.ColumnCount = 3;
+            this.tableLayoutPanel6.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 120F));
+            this.tableLayoutPanel6.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel6.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 100F));
+            this.tableLayoutPanel6.Controls.Add(this.label38, 0, 0);
+            this.tableLayoutPanel6.Controls.Add(this.mtgEnableAFTrigger, 1, 0);
+            this.tableLayoutPanel6.Location = new System.Drawing.Point(64, 311);
+            this.tableLayoutPanel6.Name = "tableLayoutPanel6";
+            this.tableLayoutPanel6.RowCount = 1;
+            this.tableLayoutPanel6.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel6.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 36F));
+            this.tableLayoutPanel6.Size = new System.Drawing.Size(298, 36);
+            this.tableLayoutPanel6.TabIndex = 37;
+            // 
+            // label38
+            // 
+            this.label38.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.label38.Font = new System.Drawing.Font("맑은 고딕", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.label38.ForeColor = System.Drawing.Color.White;
+            this.label38.Location = new System.Drawing.Point(3, 0);
+            this.label38.Name = "label38";
+            this.label38.Size = new System.Drawing.Size(114, 36);
+            this.label38.TabIndex = 5;
+            this.label38.Text = "AF Trigger";
+            this.label38.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // mtgEnableAFTrigger
+            // 
+            this.mtgEnableAFTrigger.AutoSize = true;
+            this.mtgEnableAFTrigger.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.mtgEnableAFTrigger.FontWeight = MetroFramework.MetroLinkWeight.Bold;
+            this.mtgEnableAFTrigger.Location = new System.Drawing.Point(123, 3);
+            this.mtgEnableAFTrigger.Name = "mtgEnableAFTrigger";
+            this.mtgEnableAFTrigger.Size = new System.Drawing.Size(72, 30);
+            this.mtgEnableAFTrigger.TabIndex = 12;
+            this.mtgEnableAFTrigger.Text = "Off";
+            this.mtgEnableAFTrigger.Theme = MetroFramework.MetroThemeStyle.Dark;
+            this.mtgEnableAFTrigger.UseSelectable = true;
+            this.mtgEnableAFTrigger.CheckedChanged += new System.EventHandler(this.mtgOperationSetting_CheckedChanged);
             // 
             // tableLayoutPanel4
             // 
@@ -1536,47 +1578,6 @@
             this.lblSave.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.lblSave.Click += new System.EventHandler(this.lblSave_Click);
             // 
-            // tableLayoutPanel6
-            // 
-            this.tableLayoutPanel6.ColumnCount = 3;
-            this.tableLayoutPanel6.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 120F));
-            this.tableLayoutPanel6.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel6.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 100F));
-            this.tableLayoutPanel6.Controls.Add(this.label38, 0, 0);
-            this.tableLayoutPanel6.Controls.Add(this.mtgEnableAFTrigger, 1, 0);
-            this.tableLayoutPanel6.Location = new System.Drawing.Point(64, 311);
-            this.tableLayoutPanel6.Name = "tableLayoutPanel6";
-            this.tableLayoutPanel6.RowCount = 1;
-            this.tableLayoutPanel6.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel6.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 36F));
-            this.tableLayoutPanel6.Size = new System.Drawing.Size(298, 36);
-            this.tableLayoutPanel6.TabIndex = 37;
-            // 
-            // label38
-            // 
-            this.label38.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.label38.Font = new System.Drawing.Font("맑은 고딕", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.label38.ForeColor = System.Drawing.Color.White;
-            this.label38.Location = new System.Drawing.Point(3, 0);
-            this.label38.Name = "label38";
-            this.label38.Size = new System.Drawing.Size(114, 36);
-            this.label38.TabIndex = 5;
-            this.label38.Text = "AF Trigger";
-            this.label38.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // mtgEnableAFTrigger
-            // 
-            this.mtgEnableAFTrigger.AutoSize = true;
-            this.mtgEnableAFTrigger.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.mtgEnableAFTrigger.FontWeight = MetroFramework.MetroLinkWeight.Bold;
-            this.mtgEnableAFTrigger.Location = new System.Drawing.Point(123, 3);
-            this.mtgEnableAFTrigger.Name = "mtgEnableAFTrigger";
-            this.mtgEnableAFTrigger.Size = new System.Drawing.Size(72, 30);
-            this.mtgEnableAFTrigger.TabIndex = 12;
-            this.mtgEnableAFTrigger.Text = "Off";
-            this.mtgEnableAFTrigger.Theme = MetroFramework.MetroThemeStyle.Dark;
-            this.mtgEnableAFTrigger.UseSelectable = true;
-            // 
             // OperationSettingsForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
@@ -1593,6 +1594,8 @@
             this.Load += new System.EventHandler(this.OperationSettingsForm_Load);
             this.tableLayoutPanel1.ResumeLayout(false);
             this.panel1.ResumeLayout(false);
+            this.tableLayoutPanel6.ResumeLayout(false);
+            this.tableLayoutPanel6.PerformLayout();
             this.tableLayoutPanel4.ResumeLayout(false);
             this.tableLayoutPanel4.PerformLayout();
             this.tableLayoutPanel3.ResumeLayout(false);
@@ -1640,8 +1643,6 @@
             this.tableLayoutPanel15.ResumeLayout(false);
             this.panel11.ResumeLayout(false);
             this.tableLayoutPanel16.ResumeLayout(false);
-            this.tableLayoutPanel6.ResumeLayout(false);
-            this.tableLayoutPanel6.PerformLayout();
             this.ResumeLayout(false);
 
         }

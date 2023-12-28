@@ -21,6 +21,8 @@ namespace Jastech.Framework.Winform.Forms
                 return cp;
             }
         }
+
+        public bool NeedProgramRebot { get; set; } = false;
         #endregion
 
         #region 생성자
@@ -38,7 +40,7 @@ namespace Jastech.Framework.Winform.Forms
                 mcbxOKExtension.Items.Add(type.ToString());
                 mcbxNGExtension.Items.Add(type.ToString());
             }
-
+            NeedProgramRebot = false;
             LoadData();
         }
 
@@ -108,6 +110,9 @@ namespace Jastech.Framework.Winform.Forms
             appsConfig.PreAlignToleranceY = Convert.ToSingle(GetValue(txtPreAlignToleranceY.Text));
             appsConfig.PreAlignToleranceTheta = Convert.ToSingle(GetValue(txtPreAlignToleranceTheta.Text));
 
+            if (appsConfig.EnableLafTrigger != mtgEnableAFTrigger.Checked)
+                NeedProgramRebot = true;
+
             appsConfig.EnableLafTrigger = mtgEnableAFTrigger.Checked;
             appsConfig.EnableAlign = mtgEnableAlign.Checked;
             appsConfig.EnableAkkon = mtgEnableAkkon.Checked;
@@ -159,6 +164,13 @@ namespace Jastech.Framework.Winform.Forms
             MessageConfirmForm form = new MessageConfirmForm();
             form.Message = "Save Completed.";
             form.ShowDialog();
+
+            if(NeedProgramRebot)
+            {
+                form.Message = "Changing the Device settings will require you to restart the program.";
+                form.ShowDialog();
+                NeedProgramRebot = false;
+            }
 
             Logger.Write(LogType.GUI, "Clicked OperationSettingsForm Save Button");
         }

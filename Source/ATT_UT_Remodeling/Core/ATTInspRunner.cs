@@ -688,7 +688,7 @@ namespace ATT_UT_Remodeling.Core
         {
             LineCamera.InitGrabSettings();
             InspProcessTask.InitalizeInspBuffer(LineCamera.Camera.Name, LineCamera.TabScanBufferList);
-            ACSBufferManager.Instance().SetLafTriggerPosition(LAFCtrl.Name, LineCamera.TabScanBufferList, 0);
+            ACSBufferManager.Instance().SetLafTriggerPosition(UnitName.Unit0, LAFCtrl.Name, LineCamera.TabScanBufferList, 0);
         }
 
         public void StartDeleteData()
