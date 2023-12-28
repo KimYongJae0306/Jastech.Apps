@@ -60,6 +60,9 @@ namespace ATT
                 ConfigSet.Instance().Initialize();
 
                 AppsConfig.Instance().Initialize();
+                ACSBufferConfig.Instance().NewAcsBufferSettingEventHandler += NewAcsBufferSettingEventHandler;
+                ACSBufferConfig.Instance().Initialize();
+
                 UserManager.Instance().Initialize();
 
                 var mainForm = new MainForm();
@@ -70,6 +73,27 @@ namespace ATT
             {
                 MessageBox.Show("The program already started.");
                 Application.Exit();
+            }
+        }
+
+        private static void NewAcsBufferSettingEventHandler()
+        {
+            var buffer = ACSBufferConfig.Instance();
+
+            if (AppsConfig.Instance().ProgramType == ProgramType.ProgramType_1.ToString())
+            {
+                buffer.CameraTrigger = 7;
+
+                LafTriggerBuffer lafTriggerBuffer = new LafTriggerBuffer
+                {
+                    LafName = "Laf",
+                    LafIndex = 0,
+                    OutputBit = 1,
+                    BufferNumber = 25,
+                };
+
+                buffer.LafTriggerBufferList.Add(lafTriggerBuffer);
+
             }
         }
 
