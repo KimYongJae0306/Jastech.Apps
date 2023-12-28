@@ -5,6 +5,7 @@ using Jastech.Apps.Structure;
 using Jastech.Apps.Winform;
 using Jastech.Apps.Winform.UI.Forms;
 using Jastech.Framework.Device.LightCtrls;
+using Jastech.Framework.Util.Helper;
 using Jastech.Framework.Winform;
 using Jastech.Framework.Winform.Forms;
 using System;
@@ -36,6 +37,7 @@ namespace ATT_UT_Remodeling.UI.Pages
         private void btnPreAlign_Click(object sender, EventArgs e)
         {
             PreAlignSetting();
+            Logger.Write(LogType.GUI, "Clicked PreAlign Camera Setting Dialog");
         }
 
         private void PreAlignSetting()
@@ -86,6 +88,8 @@ namespace ATT_UT_Remodeling.UI.Pages
             form.OpenMotionPopupEventHandler += OpenMotionPopupEventHandler;
             form.CloseMotionPopupEventHandler += CloseMotionPopupEventHandler;
             form.ShowDialog();
+
+            Logger.Write(LogType.GUI, "Clicked Inspection Setting Dialog");
         }
 
         private void OpenMotionPopupEventHandler(UnitName unitName)
@@ -124,6 +128,8 @@ namespace ATT_UT_Remodeling.UI.Pages
             form.OpenMotionPopupEventHandler += OpenMotionPopupEventHandler;
             form.CloseMotionPopupEventHandler += CloseMotionPopupEventHandler;
             form.ShowDialog();
+
+            Logger.Write(LogType.GUI, "Clicked Inspection Camera Setting Dialog");
         }
         #endregion
     }

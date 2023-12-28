@@ -16,6 +16,13 @@
         PC_Status_Common,
         PLC_Command_Common,
 
+        PC_X_NegativeLimit,
+        PC_X_PositiveLimit,
+        PC_Z0_NegativeLimit,
+        PC_Z0_PositiveLimit,
+        PC_Z1_NegativeLimit,
+        PC_Z1_PositiveLimit,
+
         PLC_PPID_ModelName,
 
         PLC_Time_Year,
@@ -124,7 +131,6 @@
         PLC_PreBond_Tab7,
         PLC_PreBond_Tab8,
         PLC_PreBond_Tab9,
-
 
         PLC_AkkonZ_ServoOnOff,
         PLC_AkkonZ_Alarm,

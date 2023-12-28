@@ -30,10 +30,10 @@ namespace Jastech.Apps.Winform.UI.Controls
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle9 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle10 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle11 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle12 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle8 = new System.Windows.Forms.DataGridViewCellStyle();
             this.tlpProcessCapabilityIndicies = new System.Windows.Forms.TableLayoutPanel();
             this.pnlChart = new System.Windows.Forms.Panel();
             this.panel1 = new System.Windows.Forms.Panel();
@@ -50,17 +50,17 @@ namespace Jastech.Apps.Winform.UI.Controls
             this.lblAllData = new System.Windows.Forms.Label();
             this.tlpSpecLimits = new System.Windows.Forms.TableLayoutPanel();
             this.lblCapaUSL = new System.Windows.Forms.Label();
-            this.lblCapaLSL = new System.Windows.Forms.Label();
             this.lblCapabilityUSL = new System.Windows.Forms.Label();
             this.lblCapabilityLSL = new System.Windows.Forms.Label();
+            this.lblCapaLSL = new System.Windows.Forms.Label();
             this.lblPerfUSL_Center = new System.Windows.Forms.Label();
+            this.lblPerformanceUSL_Center = new System.Windows.Forms.Label();
             this.lblPerfLSL_Center = new System.Windows.Forms.Label();
+            this.lblPerformanceLSL_Center = new System.Windows.Forms.Label();
             this.lblPerfUSL_Side = new System.Windows.Forms.Label();
+            this.lblPerformanceUSL_Side = new System.Windows.Forms.Label();
             this.lblPerfLSL_Side = new System.Windows.Forms.Label();
             this.lblPerformanceLSL_Side = new System.Windows.Forms.Label();
-            this.lblPerformanceUSL_Side = new System.Windows.Forms.Label();
-            this.lblPerformanceLSL_Center = new System.Windows.Forms.Label();
-            this.lblPerformanceUSL_Center = new System.Windows.Forms.Label();
             this.tlpPCResult = new System.Windows.Forms.TableLayoutPanel();
             this.lblResultTitle1 = new System.Windows.Forms.Label();
             this.dgvPCResult = new Jastech.Framework.Winform.Controls.DoubleBufferedDatagridView();
@@ -301,19 +301,6 @@ namespace Jastech.Apps.Winform.UI.Controls
             this.lblCapaUSL.Text = "Capability Upper Spec Limit";
             this.lblCapaUSL.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // lblCapaLSL
-            // 
-            this.lblCapaLSL.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(104)))), ((int)(((byte)(104)))), ((int)(((byte)(104)))));
-            this.lblCapaLSL.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lblCapaLSL.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblCapaLSL.Location = new System.Drawing.Point(0, 26);
-            this.lblCapaLSL.Margin = new System.Windows.Forms.Padding(0);
-            this.lblCapaLSL.Name = "lblCapaLSL";
-            this.lblCapaLSL.Size = new System.Drawing.Size(346, 26);
-            this.lblCapaLSL.TabIndex = 2;
-            this.lblCapaLSL.Text = "Capability Lower Spec Limit";
-            this.lblCapaLSL.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
             // lblCapabilityUSL
             // 
             this.lblCapabilityUSL.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
@@ -340,6 +327,19 @@ namespace Jastech.Apps.Winform.UI.Controls
             this.lblCapabilityLSL.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.lblCapabilityLSL.Click += new System.EventHandler(this.lblSpecLimit_Click);
             // 
+            // lblCapaLSL
+            // 
+            this.lblCapaLSL.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(104)))), ((int)(((byte)(104)))), ((int)(((byte)(104)))));
+            this.lblCapaLSL.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblCapaLSL.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblCapaLSL.Location = new System.Drawing.Point(0, 26);
+            this.lblCapaLSL.Margin = new System.Windows.Forms.Padding(0);
+            this.lblCapaLSL.Name = "lblCapaLSL";
+            this.lblCapaLSL.Size = new System.Drawing.Size(346, 26);
+            this.lblCapaLSL.TabIndex = 2;
+            this.lblCapaLSL.Text = "Capability Lower Spec Limit";
+            this.lblCapaLSL.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
             // lblPerfUSL_Center
             // 
             this.lblPerfUSL_Center.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(104)))), ((int)(((byte)(104)))), ((int)(((byte)(104)))));
@@ -352,6 +352,19 @@ namespace Jastech.Apps.Winform.UI.Controls
             this.lblPerfUSL_Center.TabIndex = 3;
             this.lblPerfUSL_Center.Text = "Performance Upper Spec Limit - Center";
             this.lblPerfUSL_Center.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // lblPerformanceUSL_Center
+            // 
+            this.lblPerformanceUSL_Center.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.lblPerformanceUSL_Center.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblPerformanceUSL_Center.Location = new System.Drawing.Point(346, 52);
+            this.lblPerformanceUSL_Center.Margin = new System.Windows.Forms.Padding(0);
+            this.lblPerformanceUSL_Center.Name = "lblPerformanceUSL_Center";
+            this.lblPerformanceUSL_Center.Size = new System.Drawing.Size(149, 26);
+            this.lblPerformanceUSL_Center.TabIndex = 10;
+            this.lblPerformanceUSL_Center.Text = "4";
+            this.lblPerformanceUSL_Center.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblPerformanceUSL_Center.Click += new System.EventHandler(this.lblSpecLimit_Click);
             // 
             // lblPerfLSL_Center
             // 
@@ -366,6 +379,19 @@ namespace Jastech.Apps.Winform.UI.Controls
             this.lblPerfLSL_Center.Text = "Performance Lower Spec Limit - Center";
             this.lblPerfLSL_Center.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
+            // lblPerformanceLSL_Center
+            // 
+            this.lblPerformanceLSL_Center.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.lblPerformanceLSL_Center.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblPerformanceLSL_Center.Location = new System.Drawing.Point(346, 78);
+            this.lblPerformanceLSL_Center.Margin = new System.Windows.Forms.Padding(0);
+            this.lblPerformanceLSL_Center.Name = "lblPerformanceLSL_Center";
+            this.lblPerformanceLSL_Center.Size = new System.Drawing.Size(149, 26);
+            this.lblPerformanceLSL_Center.TabIndex = 9;
+            this.lblPerformanceLSL_Center.Text = "-4";
+            this.lblPerformanceLSL_Center.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblPerformanceLSL_Center.Click += new System.EventHandler(this.lblSpecLimit_Click);
+            // 
             // lblPerfUSL_Side
             // 
             this.lblPerfUSL_Side.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(104)))), ((int)(((byte)(104)))), ((int)(((byte)(104)))));
@@ -378,6 +404,19 @@ namespace Jastech.Apps.Winform.UI.Controls
             this.lblPerfUSL_Side.TabIndex = 5;
             this.lblPerfUSL_Side.Text = "Performance Upper Spec Limit - Side";
             this.lblPerfUSL_Side.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // lblPerformanceUSL_Side
+            // 
+            this.lblPerformanceUSL_Side.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.lblPerformanceUSL_Side.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblPerformanceUSL_Side.Location = new System.Drawing.Point(346, 104);
+            this.lblPerformanceUSL_Side.Margin = new System.Windows.Forms.Padding(0);
+            this.lblPerformanceUSL_Side.Name = "lblPerformanceUSL_Side";
+            this.lblPerformanceUSL_Side.Size = new System.Drawing.Size(149, 26);
+            this.lblPerformanceUSL_Side.TabIndex = 8;
+            this.lblPerformanceUSL_Side.Text = "9";
+            this.lblPerformanceUSL_Side.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblPerformanceUSL_Side.Click += new System.EventHandler(this.lblSpecLimit_Click);
             // 
             // lblPerfLSL_Side
             // 
@@ -404,45 +443,6 @@ namespace Jastech.Apps.Winform.UI.Controls
             this.lblPerformanceLSL_Side.Text = "-9";
             this.lblPerformanceLSL_Side.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.lblPerformanceLSL_Side.Click += new System.EventHandler(this.lblSpecLimit_Click);
-            // 
-            // lblPerformanceUSL_Side
-            // 
-            this.lblPerformanceUSL_Side.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.lblPerformanceUSL_Side.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblPerformanceUSL_Side.Location = new System.Drawing.Point(346, 104);
-            this.lblPerformanceUSL_Side.Margin = new System.Windows.Forms.Padding(0);
-            this.lblPerformanceUSL_Side.Name = "lblPerformanceUSL_Side";
-            this.lblPerformanceUSL_Side.Size = new System.Drawing.Size(149, 26);
-            this.lblPerformanceUSL_Side.TabIndex = 8;
-            this.lblPerformanceUSL_Side.Text = "9";
-            this.lblPerformanceUSL_Side.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.lblPerformanceUSL_Side.Click += new System.EventHandler(this.lblSpecLimit_Click);
-            // 
-            // lblPerformanceLSL_Center
-            // 
-            this.lblPerformanceLSL_Center.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.lblPerformanceLSL_Center.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblPerformanceLSL_Center.Location = new System.Drawing.Point(346, 78);
-            this.lblPerformanceLSL_Center.Margin = new System.Windows.Forms.Padding(0);
-            this.lblPerformanceLSL_Center.Name = "lblPerformanceLSL_Center";
-            this.lblPerformanceLSL_Center.Size = new System.Drawing.Size(149, 26);
-            this.lblPerformanceLSL_Center.TabIndex = 9;
-            this.lblPerformanceLSL_Center.Text = "-4";
-            this.lblPerformanceLSL_Center.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.lblPerformanceLSL_Center.Click += new System.EventHandler(this.lblSpecLimit_Click);
-            // 
-            // lblPerformanceUSL_Center
-            // 
-            this.lblPerformanceUSL_Center.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.lblPerformanceUSL_Center.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblPerformanceUSL_Center.Location = new System.Drawing.Point(346, 52);
-            this.lblPerformanceUSL_Center.Margin = new System.Windows.Forms.Padding(0);
-            this.lblPerformanceUSL_Center.Name = "lblPerformanceUSL_Center";
-            this.lblPerformanceUSL_Center.Size = new System.Drawing.Size(149, 26);
-            this.lblPerformanceUSL_Center.TabIndex = 10;
-            this.lblPerformanceUSL_Center.Text = "4";
-            this.lblPerformanceUSL_Center.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.lblPerformanceUSL_Center.Click += new System.EventHandler(this.lblSpecLimit_Click);
             // 
             // tlpPCResult
             // 
@@ -479,23 +479,23 @@ namespace Jastech.Apps.Winform.UI.Controls
             this.dgvPCResult.AllowUserToResizeRows = false;
             this.dgvPCResult.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
             this.dgvPCResult.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
-            dataGridViewCellStyle9.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle9.BackColor = System.Drawing.Color.Black;
-            dataGridViewCellStyle9.Font = new System.Drawing.Font("맑은 고딕", 11.25F, System.Drawing.FontStyle.Bold);
-            dataGridViewCellStyle9.ForeColor = System.Drawing.Color.White;
-            dataGridViewCellStyle9.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(104)))), ((int)(((byte)(104)))), ((int)(((byte)(104)))));
-            dataGridViewCellStyle9.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle9.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgvPCResult.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle9;
+            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle5.BackColor = System.Drawing.Color.Black;
+            dataGridViewCellStyle5.Font = new System.Drawing.Font("맑은 고딕", 11.25F, System.Drawing.FontStyle.Bold);
+            dataGridViewCellStyle5.ForeColor = System.Drawing.Color.White;
+            dataGridViewCellStyle5.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(104)))), ((int)(((byte)(104)))), ((int)(((byte)(104)))));
+            dataGridViewCellStyle5.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle5.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvPCResult.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle5;
             this.dgvPCResult.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridViewCellStyle10.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle10.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
-            dataGridViewCellStyle10.Font = new System.Drawing.Font("맑은 고딕", 11.25F, System.Drawing.FontStyle.Bold);
-            dataGridViewCellStyle10.ForeColor = System.Drawing.Color.White;
-            dataGridViewCellStyle10.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(104)))), ((int)(((byte)(104)))), ((int)(((byte)(104)))));
-            dataGridViewCellStyle10.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle10.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgvPCResult.DefaultCellStyle = dataGridViewCellStyle10;
+            dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle6.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
+            dataGridViewCellStyle6.Font = new System.Drawing.Font("맑은 고딕", 11.25F, System.Drawing.FontStyle.Bold);
+            dataGridViewCellStyle6.ForeColor = System.Drawing.Color.White;
+            dataGridViewCellStyle6.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(104)))), ((int)(((byte)(104)))), ((int)(((byte)(104)))));
+            dataGridViewCellStyle6.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle6.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvPCResult.DefaultCellStyle = dataGridViewCellStyle6;
             this.dgvPCResult.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgvPCResult.EnableHeadersVisualStyles = false;
             this.dgvPCResult.Location = new System.Drawing.Point(0, 30);
@@ -544,23 +544,23 @@ namespace Jastech.Apps.Winform.UI.Controls
             this.dgvAlignData.AllowUserToResizeRows = false;
             this.dgvAlignData.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
             this.dgvAlignData.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
-            dataGridViewCellStyle11.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle11.BackColor = System.Drawing.Color.Black;
-            dataGridViewCellStyle11.Font = new System.Drawing.Font("맑은 고딕", 11.25F, System.Drawing.FontStyle.Bold);
-            dataGridViewCellStyle11.ForeColor = System.Drawing.Color.White;
-            dataGridViewCellStyle11.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(104)))), ((int)(((byte)(104)))), ((int)(((byte)(104)))));
-            dataGridViewCellStyle11.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle11.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgvAlignData.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle11;
+            dataGridViewCellStyle7.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle7.BackColor = System.Drawing.Color.Black;
+            dataGridViewCellStyle7.Font = new System.Drawing.Font("맑은 고딕", 11.25F, System.Drawing.FontStyle.Bold);
+            dataGridViewCellStyle7.ForeColor = System.Drawing.Color.White;
+            dataGridViewCellStyle7.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(104)))), ((int)(((byte)(104)))), ((int)(((byte)(104)))));
+            dataGridViewCellStyle7.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle7.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvAlignData.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle7;
             this.dgvAlignData.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridViewCellStyle12.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle12.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
-            dataGridViewCellStyle12.Font = new System.Drawing.Font("맑은 고딕", 11.25F, System.Drawing.FontStyle.Bold);
-            dataGridViewCellStyle12.ForeColor = System.Drawing.Color.White;
-            dataGridViewCellStyle12.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(104)))), ((int)(((byte)(104)))), ((int)(((byte)(104)))));
-            dataGridViewCellStyle12.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle12.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgvAlignData.DefaultCellStyle = dataGridViewCellStyle12;
+            dataGridViewCellStyle8.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle8.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
+            dataGridViewCellStyle8.Font = new System.Drawing.Font("맑은 고딕", 11.25F, System.Drawing.FontStyle.Bold);
+            dataGridViewCellStyle8.ForeColor = System.Drawing.Color.White;
+            dataGridViewCellStyle8.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(104)))), ((int)(((byte)(104)))), ((int)(((byte)(104)))));
+            dataGridViewCellStyle8.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle8.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvAlignData.DefaultCellStyle = dataGridViewCellStyle8;
             this.dgvAlignData.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgvAlignData.EnableHeadersVisualStyles = false;
             this.dgvAlignData.Location = new System.Drawing.Point(3, 33);

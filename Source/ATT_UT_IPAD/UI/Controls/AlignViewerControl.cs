@@ -52,7 +52,7 @@ namespace ATT_UT_IPAD.UI.Controls
 
         public void UpdateTabCount(int tabCount)
         {
-            AlignResultDisplayControl.UpdateTabCount(tabCount);
+            AlignResultDisplayControl.UpdateTabButtons(tabCount);
         }
 
         public void UpdateMainResult(int tabNo)

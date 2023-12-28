@@ -99,6 +99,7 @@
     <Reference Include="WindowsFormsIntegration" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ACSBufferManager.cs" />
     <Compile Include="AppsPreAlignResult.cs" />
     <Compile Include="AppsStatus.cs" />
     <Compile Include="AreaCamera.cs" />
@@ -117,7 +118,14 @@
     <Compile Include="Service\Plc\PlcAddressMap.cs" />
     <Compile Include="Service\Plc\PlcAddressService.cs" />
     <Compile Include="Service\Plc\PlcScenarioManager.cs" />
+    <Compile Include="Settings\ACSBufferConfig.cs" />
     <Compile Include="TeachingUIManager.cs" />
+    <Compile Include="UI\Controls\AFTriggerOffsetSettingControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UI\Controls\AFTriggerOffsetSettingControl.Designer.cs">
+      <DependentUpon>AFTriggerOffsetSettingControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="UI\Controls\AkkonResultDataControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -388,6 +396,9 @@
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\Controls\AFTriggerOffsetSettingControl.resx">
+      <DependentUpon>AFTriggerOffsetSettingControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\Controls\AkkonControl.resx">
       <DependentUpon>AkkonControl.cs</DependentUpon>

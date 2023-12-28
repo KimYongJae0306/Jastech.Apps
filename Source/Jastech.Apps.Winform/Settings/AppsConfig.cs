@@ -25,6 +25,9 @@ namespace Jastech.Apps.Winform.Settings
         public int TabMaxCount { get; set; } = 10;
 
         [JsonProperty]
+        public bool EnableLafTrigger { get; set; } = false;
+
+        [JsonProperty]
         public PlcAddressInfo PlcAddressInfo { get; set; } = new PlcAddressInfo();
 
         [JsonProperty]
@@ -95,6 +98,9 @@ namespace Jastech.Apps.Winform.Settings
 
         [JsonProperty]
         public bool EnableAlignByPass { get; set; } = false;
+
+        [JsonProperty]
+        public bool EnableMsaSummary { get; set; } = false;
         #endregion
 
         #region 메서드

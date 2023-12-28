@@ -46,6 +46,12 @@ namespace ATT_UT_IPAD.Core
                 unit.AlignCamCameraData = new LineCameraData();
                 unit.AlignCamCameraData.Name = "AlignCamera";
 
+                unit.LafData = new LAFData();
+                unit.LafData.Name = "AkkonLaf";
+
+                unit.AlignLafData = new LAFData();
+                unit.AlignLafData.Name = "AlignLaf";
+
                 for (int tabIndex = 0; tabIndex < appInspModel.TabCount; tabIndex++)
                 {
                     Tab tab = new Tab();
@@ -225,6 +231,7 @@ namespace ATT_UT_IPAD.Core
                         alignParam.CaliperParams.LoadTool(tabAlignDir, alignParam.Name);
                 }
             }
+
             return model;
         }
 

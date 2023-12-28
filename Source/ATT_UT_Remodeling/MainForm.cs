@@ -18,6 +18,7 @@ using Jastech.Framework.Device.Motions;
 using Jastech.Framework.Matrox;
 using Jastech.Framework.Structure;
 using Jastech.Framework.Users;
+using Jastech.Framework.Util.Helper;
 using Jastech.Framework.Winform;
 using Jastech.Framework.Winform.Forms;
 using Jastech.Framework.Winform.Helper;
@@ -100,16 +101,17 @@ namespace ATT_UT_Remodeling
             PlcScenarioManager.Instance().InspRunnerHandler += MainForm_InspRunnerHandler;
             PlcScenarioManager.Instance().MoveEventHandler += MainForm_MoveEventHandler;
             PlcScenarioManager.Instance().OriginAllEvent += MainForm_OriginAllEvent;
-
+            PlcControlManager.Instance().AxisNegativeLimitEventHandler += MainForm_AxisNegativeLimitEventHandler;
+            PlcControlManager.Instance().AxisPositiveLimitEventHandler += MainForm_AxisPositiveLimitEventHandler;
             PlcScenarioManager.Instance().PreAlignRunnerHandler += MainForm_PreAlignRunnerHandler;
-
             PlcScenarioManager.Instance().CalibrationRunnerHandler += MainForm_CalibrationRunnerHandler;
-
+            PlcScenarioManager.Instance().MainTaskHandler += MainForm_MainTaskHandler;
+			
             PlcControlManager.Instance().WritePcCommand(PcCommand.ServoReset_1);
             Thread.Sleep(100);
             PlcControlManager.Instance().WritePcCommand(PcCommand.ServoOn_1);
 
-            PlcControlManager.Instance().WritePcVisionStatus(MachineStatus.RUN);
+            //PlcControlManager.Instance().WritePcVisionStatus(MachineStatus.RUN);
 
             if (ModelManager.Instance().CurrentModel != null)
             {
@@ -145,6 +147,16 @@ namespace ATT_UT_Remodeling
             }
         }
 
+        private void MainForm_MainTaskHandler(bool isStart, string message = "")
+        {
+            if (isStart)
+                SystemManager.Instance().SetRunMode();
+            else
+                SystemManager.Instance().SetStopMode();
+
+            AddSystemLogMessage(message);
+        }
+
         private void MainForm_CalibrationRunnerHandler(UnitName unitName, CalibrationMode calibrationMode)
         {
             SystemManager.Instance().StartCalibration(unitName, calibrationMode);
@@ -167,6 +179,9 @@ namespace ATT_UT_Remodeling
             laf.SetHomeStandbyPosition(teachingPos.GetTargetPosition(AxisName.Z0));
             progressForm.Add($"Axis Z1 (Akkon LAF) homing", laf.HomeSequenceAction, laf.StopHomeSequence);
             progressForm.ShowDialog();
+
+            if (progressForm.IsSuccess == true)
+                laf.LafCtrl.SetMotionAbsoluteMove(teachingPos.GetTargetPosition(AxisName.Z0));
 
             return progressForm.IsSuccess;
         }
@@ -261,8 +276,6 @@ namespace ATT_UT_Remodeling
         {
             AppsInspModel model = inspModel as AppsInspModel;
 
-            AppsInspResult.Instance().Dispose();
-
             DailyInfoService.Reset();
             DailyInfoService.Load(model.Name);
 
@@ -272,6 +285,11 @@ namespace ATT_UT_Remodeling
             UpdateLabel(model.Name);
             ConfigSet.Instance().Operation.LastModelName = model.Name;
             ConfigSet.Instance().Operation.Save(ConfigSet.Instance().Path.Config);
+
+            PlcControlManager.Instance().WriteCurrentModelName(model.Name);
+            Logger.Debug(LogType.Parameter, $"Applied Model name : {model.Name}");
+
+            AppsInspResult.Instance().Dispose();
         }
 
         private void UpdateLabel(string modelname)
@@ -502,7 +520,7 @@ namespace ATT_UT_Remodeling
         {
             Keys key = keyData & ~(Keys.Shift | Keys.Control);
 
-            if(ConfigSet.Instance().Operation.VirtualMode)
+            if (ConfigSet.Instance().Operation.VirtualMode)
             {
                 switch (key)
                 {
@@ -533,7 +551,7 @@ namespace ATT_UT_Remodeling
             if (inspModel == null)
                 return;
 
-            if(PlcControlManager.Instance().MachineStatus != MachineStatus.RUN)
+            if (PlcControlManager.Instance().MachineStatus != MachineStatus.RUN)
             {
                 MessageConfirmForm form = new MessageConfirmForm();
                 form.Message = "Change Auto Run.";
@@ -603,7 +621,7 @@ namespace ATT_UT_Remodeling
         }
 
         private void LoadImage(string[] fileNames)
-        { 
+        {
             foreach (var fileName in fileNames)
                 AddVirtualImagePath(fileName);
         }
@@ -616,7 +634,7 @@ namespace ATT_UT_Remodeling
 
         private void StartVirtualInspTask()
         {
-            if(ConfigSet.Instance().Operation.VirtualMode)
+            if (ConfigSet.Instance().Operation.VirtualMode)
             {
                 CancelVirtualInspTask = new CancellationTokenSource();
                 VirtualInspTask = new Task(VirtualInspTaskLoop, CancelVirtualInspTask.Token);
@@ -636,7 +654,7 @@ namespace ATT_UT_Remodeling
 
         public void VirtualInspTaskLoop()
         {
-            while(true)
+            while (true)
             {
                 if (CancelVirtualInspTask.IsCancellationRequested)
                     break;
@@ -649,7 +667,7 @@ namespace ATT_UT_Remodeling
                     fileName = fileName.Replace("_NG", "");
 
                     int index = fileName.IndexOf(text);
-                    if(index < 0)
+                    if (index < 0)
                     {
                         MessageConfirmForm form = new MessageConfirmForm();
                         form.Message = "The format of the file name is not correct.";
@@ -664,10 +682,10 @@ namespace ATT_UT_Remodeling
                     _virtualImageCount++;
 
                     var inspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
-                    if(_virtualImageCount == inspModel.TabCount)
+                    if (_virtualImageCount == inspModel.TabCount)
                         AppsStatus.Instance().IsInspRunnerFlagFromPlc = true;
                 }
-                
+
                 Thread.Sleep(50);
             }
         }
@@ -679,10 +697,9 @@ namespace ATT_UT_Remodeling
                 if (CancelSafetyDoorlockTask.IsCancellationRequested)
                     break;
 
-                _prevMachineStatus = PlcControlManager.Instance().MachineStatus;
-
                 if (PlcControlManager.Instance().GetValue(PlcCommonMap.PLC_DoorStatus) == "2" && PlcControlManager.Instance().IsDoorOpened == false)
                 {
+                    _prevMachineStatus = PlcControlManager.Instance().MachineStatus;
                     PlcControlManager.Instance().IsDoorOpened = true;
 
                     MotionManager.Instance().GetAxisHandler(AxisHandlerName.Handler0).StopMove();
@@ -797,7 +814,30 @@ namespace ATT_UT_Remodeling
             return ManualMatchingForm.GetOriginPoint();
         }
 
-        private void lblMachineName_Click(object sender, EventArgs e)
+        public void MessageConfirm(string message)
+        {
+            this.Invoke((MethodInvoker)delegate
+            {
+                new MessageConfirmForm { Message = message }.ShowDialog();
+            });
+        }
+
+        public bool MainForm_AxisNegativeLimitEventHandler(AxisName axisName) //=> SystemManager.Instance().IsLimitSensorStatus();
+        {
+            return SystemManager.Instance().IsNegativeLimitStatus(axisName);
+        }
+
+        public bool MainForm_AxisPositiveLimitEventHandler(AxisName axisName) //=> SystemManager.Instance().IsLimitSensorStatus();
+        {
+            return SystemManager.Instance().IsPositiveLimitStatus(axisName);
+        }
+
+        private void lblMachineName_DoubleClick(object sender, EventArgs e)
+        {
+            OpenResultDirectory();
+        }
+
+        private void OpenResultDirectory()
         {
             var inspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
 
@@ -816,14 +856,6 @@ namespace ATT_UT_Remodeling
                 if (UserManager.Instance().CurrentUser.Type != AuthorityType.None)
                     Process.Start(path);
             }
-        }
-
-        public void MessageConfirm(string message)
-        {
-            this.Invoke((MethodInvoker)delegate
-            {
-                new MessageConfirmForm { Message = message }.ShowDialog();
-            });
         }
         #endregion
     }

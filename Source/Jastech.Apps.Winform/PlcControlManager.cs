@@ -5,6 +5,7 @@ using Jastech.Apps.Winform.Service.Plc;
 using Jastech.Apps.Winform.Service.Plc.Maps;
 using Jastech.Apps.Winform.Settings;
 using Jastech.Framework.Algorithms.Akkon.Results;
+using Jastech.Framework.Config;
 using Jastech.Framework.Device.Motions;
 using Jastech.Framework.Device.Plcs;
 using Jastech.Framework.Device.Plcs.Melsec;
@@ -18,11 +19,24 @@ using System.Reflection;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using static Jastech.Apps.Winform.Service.Plc.PlcScenarioManager;
 
 namespace Jastech.Apps.Winform
 {
     public partial class PlcControlManager
     {
+        #region 이벤트
+        public event PlcAxisNegativeLimitEventHandler AxisNegativeLimitEventHandler;
+
+        public event PlcAxisPositiveLimitEventHandler AxisPositiveLimitEventHandler;
+        #endregion
+
+        #region 델리게이트
+        public delegate bool PlcAxisNegativeLimitEventHandler(AxisName axisName);
+
+        public delegate bool PlcAxisPositiveLimitEventHandler(AxisName axisName);
+        #endregion
+
         #region 필드
         private bool _pcHeartBit { get; set; } = false;
 
@@ -51,9 +65,7 @@ namespace Jastech.Apps.Winform
         public static PlcControlManager Instance()
         {
             if (_instance == null)
-            {
                 _instance = new PlcControlManager();
-            }
 
             return _instance;
         }
@@ -79,6 +91,7 @@ namespace Jastech.Apps.Winform
         {
             if (data == null)
                 return;
+
             if (data.Length > 0)
             {
                 lock (PlcAddressService.AddressMapList)
@@ -103,6 +116,7 @@ namespace Jastech.Apps.Winform
                     int command = Convert.ToInt32(GetAddressMap(PlcCommonMap.PLC_Command_Common).Value);
                     PlcScenarioManager.Instance().AddCommonCommand(command);
                 }
+
                 if (GetAddressMap(PlcCommonMap.PC_Status).Value == "0")
                 {
                     var commandMap = GetAddressMap(PlcCommonMap.PLC_Command);
@@ -152,9 +166,7 @@ namespace Jastech.Apps.Winform
             while (true)
             {
                 if (CancelPlcActionTask.IsCancellationRequested)
-                {
                     break;
-                }
 
                 if(EnableSendPeriodically)
                 {
@@ -185,6 +197,9 @@ namespace Jastech.Apps.Winform
                 if (PlcAddressService.AddressMapList.Count() > 0)
                     value = PlcAddressService.AddressMapList.Where(x => x.Name == map.ToString()).First().Value;
             }
+
+            if (value == "")
+                value = "0";
 
             return value;
         }
@@ -267,6 +282,7 @@ namespace Jastech.Apps.Winform
 
                 var plc = DeviceManager.Instance().PlcHandler.First() as MelsecPlc;
                 var map = PlcControlManager.Instance().GetAddressMap(PlcCommonMap.PC_Alive);
+                int machineStatus = PlcControlManager.Instance().MachineStatus == MachineStatus.RUN ? 9000 : 0;
 
                 PlcDataStream stream = new PlcDataStream();
 
@@ -276,7 +292,7 @@ namespace Jastech.Apps.Winform
                     stream.AddSwap16BitData(Convert.ToInt16(isMoving));
                     stream.AddSwap16BitData(Convert.ToInt16(currentPosX));
                     stream.AddSwap16BitData(Convert.ToInt16(isServoOn));
-
+                    stream.AddSwap16BitData(Convert.ToInt16(machineStatus));
                 }
                 else
                 {
@@ -284,26 +300,80 @@ namespace Jastech.Apps.Winform
                     stream.Add16BitData(Convert.ToInt16(isMoving));
                     stream.Add16BitData(Convert.ToInt16(currentPosX));
                     stream.Add16BitData(Convert.ToInt16(isServoOn));
+                    stream.Add16BitData(Convert.ToInt16(machineStatus));
+                }
 
+                plc.Write("D" + map.AddressNum, stream.Data);
+            }
+
+            WriteAxisLimitStatus();
+        }
+
+        private void WriteAxisLimitStatus()
+        {
+            if (DeviceManager.Instance().PlcHandler.Count > 0)
+            {
+                var plc = DeviceManager.Instance().PlcHandler.First() as MelsecPlc;
+                var map = PlcControlManager.Instance().GetAddressMap(PlcCommonMap.PC_X_NegativeLimit);
+
+                if (AxisNegativeLimitEventHandler == null || AxisPositiveLimitEventHandler == null)
+                    return;
+
+                bool isNegativeLimitX = AxisNegativeLimitEventHandler.Invoke(AxisName.X);
+                bool isPositiveLimitX = AxisPositiveLimitEventHandler.Invoke(AxisName.X);
+
+                bool isNegativeLimitZ0 = AxisNegativeLimitEventHandler.Invoke(AxisName.Z0);
+                bool isPositiveLimitZ0 = AxisPositiveLimitEventHandler.Invoke(AxisName.Z0);
+
+                bool isNegativeLimitZ1 = AxisNegativeLimitEventHandler.Invoke(AxisName.Z1);
+                bool isPositiveLimitZ1 = AxisPositiveLimitEventHandler.Invoke(AxisName.Z1);
+
+                PlcDataStream stream = new PlcDataStream();
+
+                if (plc.MelsecParser.ParserType == ParserType.Binary)
+                {
+                    stream.AddSwap16BitData(Convert.ToInt16(isNegativeLimitX));
+                    stream.AddSwap16BitData(Convert.ToInt16(isPositiveLimitX));
+                    stream.AddSwap16BitData(Convert.ToInt16(0));
+                    stream.AddSwap16BitData(Convert.ToInt16(0));
+                    stream.AddSwap16BitData(Convert.ToInt16(isNegativeLimitZ0));
+                    stream.AddSwap16BitData(Convert.ToInt16(isPositiveLimitZ0));
+                    stream.AddSwap16BitData(Convert.ToInt16(isNegativeLimitZ1));
+                    stream.AddSwap16BitData(Convert.ToInt16(isPositiveLimitZ1));
+                }
+                else
+                {
+                    stream.Add16BitData(Convert.ToInt16(isNegativeLimitX));
+                    stream.Add16BitData(Convert.ToInt16(isPositiveLimitX));
+                    stream.Add16BitData(Convert.ToInt16(0));
+                    stream.Add16BitData(Convert.ToInt16(0));
+                    stream.Add16BitData(Convert.ToInt16(isNegativeLimitZ0));
+                    stream.Add16BitData(Convert.ToInt16(isPositiveLimitZ0));
+                    stream.Add16BitData(Convert.ToInt16(isNegativeLimitZ1));
+                    stream.Add16BitData(Convert.ToInt16(isPositiveLimitZ1));
                 }
 
                 plc.Write("D" + map.AddressNum, stream.Data);
             }
         }
+
         public void WritePcVisionStatus(MachineStatus status)
         {
             int value = status == MachineStatus.RUN ? 9000 : 0;
             PlcDataStream stream = new PlcDataStream();
-            
-            var plc = DeviceManager.Instance().PlcHandler.First() as MelsecPlc;
             var map = PlcControlManager.Instance().GetAddressMap(PlcCommonMap.PC_Ready);
 
-            if (plc?.MelsecParser.ParserType == ParserType.Binary)
-                stream.AddSwap16BitData(Convert.ToInt16(value));
-            else
-                stream.Add16BitData(Convert.ToInt16(value));
+            if (DeviceManager.Instance().PlcHandler.Count > 0 && map != null)
+            {
+                var plc = DeviceManager.Instance().PlcHandler.First() as MelsecPlc;
 
-            plc?.Write("D" + map.AddressNum, stream.Data);
+                if (plc?.MelsecParser.ParserType == ParserType.Binary)
+                    stream.AddSwap16BitData(Convert.ToInt16(value));
+                else
+                    stream.Add16BitData(Convert.ToInt16(value));
+
+                plc.Write("D" + map.AddressNum, stream.Data);
+            }
         }
 
         public void WriteGrabDone()
@@ -594,7 +664,7 @@ namespace Jastech.Apps.Winform
 
         public void WriteCurrentModelName(string modelName)
         {
-            modelName = modelName.PadRight(20, Convert.ToChar("\0"));
+            modelName = modelName.PadRight(40, Convert.ToChar("\0"));
             byte[] modelNameByte = Encoding.Default.GetBytes(modelName);
             var map = PlcControlManager.Instance().GetResultMap(PlcResultMap.Current_ModelName);
 
@@ -608,7 +678,7 @@ namespace Jastech.Apps.Winform
                     {
                         int num = i * 2;
                         int value = BitConverter.ToUInt16(modelNameByte, num);
-                        stream.Add16BitData(Convert.ToInt16(value));
+                        stream.AddSwap16BitData(Convert.ToInt16(value));
                     }
                 }
                 else
@@ -650,12 +720,13 @@ namespace Jastech.Apps.Winform
 
                 AddAlignResult(plc.MelsecParser.ParserType, tabInspResult.AlignResult, resolution, ref stream);
                 AddAkkonResult(plc.MelsecParser.ParserType, tabInspResult.AkkonResult, ref stream);
+                AddMarkResult(plc.MelsecParser.ParserType, tabInspResult.MarkResult, ref stream);
 
                 plc.Write("D" + map.AddressNum, stream.Data);
             }
         }
 
-        public void WriteTabResult(int tabNo, TabJudgement judgement, TabAlignResult alignResult, AkkonResult akkonResult, double resolution)
+        public void WriteTabResult(int tabNo, TabJudgement judgement, TabAlignResult alignResult, AkkonResult akkonResult, TabMarkResult markResult, double resolution)
         {
             string tabJudgementName = string.Format("Tab{0}_Judgement", tabNo);
             PlcResultMap plcResultMap = (PlcResultMap)Enum.Parse(typeof(PlcResultMap), tabJudgementName);
@@ -676,6 +747,7 @@ namespace Jastech.Apps.Winform
 
                 AddAlignResult(plc.MelsecParser.ParserType, alignResult, resolution, ref stream);
                 AddAkkonResult(plc.MelsecParser.ParserType, akkonResult, ref stream);
+                AddMarkResult(plc.MelsecParser.ParserType, markResult, ref stream);
 
                 plc.Write("D" + map.AddressNum, stream.Data);
             }
@@ -855,6 +927,86 @@ namespace Jastech.Apps.Winform
             }
         }
 
+        private void AddMarkResult(ParserType parserType, TabMarkResult markResult, ref PlcDataStream stream)
+        {
+            if (markResult == null)
+            {
+                if (parserType == ParserType.Binary)
+                {
+                    stream.AddSwap16BitData(0); // Panel Left Mark Sccore
+                    stream.AddSwap32BitData(0); // Panel Right Mark Score
+                    stream.AddSwap32BitData(0); // COF Left Mark Score
+                    stream.AddSwap32BitData(0); // COF Right Mark Score
+                }
+                else
+                {
+                    stream.Add16BitData(0); // Panel Left Mark Sccore
+                    stream.Add32BitData(0); // Panel Right Mark Score
+                    stream.Add32BitData(0); // COF Left Mark Score
+                    stream.Add32BitData(0); // COF Right Mark Score
+                }
+            }
+            else
+            {
+                var panel = markResult.PanelMark;
+                int panelLeft = 0;
+                int panelRight = 0;
+
+                if (panel.FoundedMark != null)
+                {
+                    var left = panel.FoundedMark.Left;
+                    if (left != null)
+                    {
+                        if (left.MatchPosList.Count > 0)
+                            panelLeft = ConvertDoubleWordData(left.MaxScore);
+                    }
+
+                    var right = panel.FoundedMark.Right;
+                    if (right != null)
+                    {
+                        if (right.MatchPosList.Count > 0)
+                            panelRight = ConvertDoubleWordData(right.MaxScore);
+                    }
+                }
+
+                var fpc = markResult.FpcMark;
+                int cofLeft = 0;
+                int cofRight = 0;
+
+                if (fpc.FoundedMark != null)
+                {
+                    var left = fpc.FoundedMark.Left;
+                    if (left != null)
+                    {
+                        if (left.MatchPosList.Count > 0)
+                            cofLeft = ConvertDoubleWordData(left.MaxScore);
+                    }
+
+                    var right = fpc.FoundedMark.Right;
+                    if (right != null)
+                    {
+                        if (right.MatchPosList.Count > 0)
+                            cofRight = ConvertDoubleWordData(right.MaxScore);
+                    }
+                }
+
+                if (parserType == ParserType.Binary)
+                {
+                    stream.AddSwap32BitData(panelLeft);     // Panel Left Mark Sccore
+                    stream.AddSwap32BitData(panelRight);    // Panel Right Mark Score 
+                    stream.AddSwap32BitData(cofLeft);       // COF Left Mark Score
+                    stream.AddSwap32BitData(cofRight);      // COF Right Mark Score
+                }
+                else
+                {
+                    stream.Add32BitData(panelLeft);         // Panel Left Mark Score
+                    stream.Add32BitData(panelRight);        // Panel Right Mark Score
+                    stream.Add32BitData(cofLeft);           // COF Left Mark Score
+                    stream.Add32BitData(cofRight);          // COF Right Mark Score
+                }
+            }
+        }
+
         public void WriteTabAlignResult(int tabNo, int judgement, double leftAlignX_mm, double leftAlignY_mm, double rightAlignX_mm, double rightAlignY_mm)
         {
             string alignJudegmentName = string.Format("Tab{0}_Align_Judgement", tabNo);
@@ -882,6 +1034,7 @@ namespace Jastech.Apps.Winform
                     stream.Add16BitData(Convert.ToInt16((int)rightAlignX_mm));
                     stream.Add16BitData(Convert.ToInt16((int)rightAlignY_mm));
                 }
+
                 plc.Write("D" + map.AddressNum, stream.Data);
             }
         }
@@ -950,15 +1103,15 @@ namespace Jastech.Apps.Winform
 
             if (DeviceManager.Instance().PlcHandler.Count > 0 && map != null)
             {
-                int leftFpcX_param = (int)tab.GetAlignParam(ATTTabAlignName.LeftFPCX).CaliperParams.CaliperTool.RunParams.ContrastThreshold;
-                int leftFpcY_param = (int)tab.GetAlignParam(ATTTabAlignName.LeftFPCY).CaliperParams.CaliperTool.RunParams.ContrastThreshold;
-                int leftPanelX_param = (int)tab.GetAlignParam(ATTTabAlignName.LeftPanelX).CaliperParams.CaliperTool.RunParams.ContrastThreshold;
-                int leftPanelY_param = (int)tab.GetAlignParam(ATTTabAlignName.LeftPanelY).CaliperParams.CaliperTool.RunParams.ContrastThreshold;
+                int leftFpcX_param = (int)tab.GetAlignParam(ATTTabAlignName.LeftFPCX).CaliperParams.GetContrastThreshold();
+                int leftFpcY_param = (int)tab.GetAlignParam(ATTTabAlignName.LeftFPCY).CaliperParams.GetContrastThreshold();
+                int leftPanelX_param = (int)tab.GetAlignParam(ATTTabAlignName.LeftPanelX).CaliperParams.GetContrastThreshold();
+                int leftPanelY_param = (int)tab.GetAlignParam(ATTTabAlignName.LeftPanelY).CaliperParams.GetContrastThreshold();
 
-                int rightFpcX_param = (int)tab.GetAlignParam(ATTTabAlignName.RightFPCX).CaliperParams.CaliperTool.RunParams.ContrastThreshold;
-                int rightFpcY_param = (int)tab.GetAlignParam(ATTTabAlignName.RightFPCY).CaliperParams.CaliperTool.RunParams.ContrastThreshold;
-                int rightPanelX_param = (int)tab.GetAlignParam(ATTTabAlignName.RightPanelX).CaliperParams.CaliperTool.RunParams.ContrastThreshold;
-                int rightPanelY_param = (int)tab.GetAlignParam(ATTTabAlignName.RightPanelY).CaliperParams.CaliperTool.RunParams.ContrastThreshold;
+                int rightFpcX_param = (int)tab.GetAlignParam(ATTTabAlignName.RightFPCX).CaliperParams.GetContrastThreshold();
+                int rightFpcY_param = (int)tab.GetAlignParam(ATTTabAlignName.RightFPCY).CaliperParams.GetContrastThreshold();
+                int rightPanelX_param = (int)tab.GetAlignParam(ATTTabAlignName.RightPanelX).CaliperParams.GetContrastThreshold();
+                int rightPanelY_param = (int)tab.GetAlignParam(ATTTabAlignName.RightPanelY).CaliperParams.GetContrastThreshold();
 
                 var plc = DeviceManager.Instance().PlcHandler.First() as MelsecPlc;
                 PlcDataStream stream = new PlcDataStream();
@@ -1002,6 +1155,7 @@ namespace Jastech.Apps.Winform
             double noneDotValue = Convert.ToDouble(value_mm.ToString("F4")) * 10000;
 
             int returnValue = Convert.ToInt32(noneDotValue);
+
             return returnValue;
         }
 
@@ -1029,6 +1183,7 @@ namespace Jastech.Apps.Winform
         private byte[] SplitData(byte[] dataBuffer, int addressNumber, int wordSize, int minAddressNumber)
         {
             byte[] resultByte = null;
+
             try
             {
                 int startAddress = (addressNumber - minAddressNumber) * 2;
@@ -1041,6 +1196,7 @@ namespace Jastech.Apps.Winform
             {
                 return resultByte;
             }
+
             return resultByte;
         }
 
@@ -1049,6 +1205,7 @@ namespace Jastech.Apps.Winform
             string resultStr = "";
             byte[] dataArray;
             int value;
+
             switch (wordType)
             {
                 case WordType.DoubleWord:
@@ -1070,6 +1227,7 @@ namespace Jastech.Apps.Winform
                         resultStr += value.ToString();
                     }
                     break;
+
                 case WordType.HEX:
 
                     string strValue = Encoding.Default.GetString(hexBuffer, 0, hexBuffer.Length);
@@ -1078,6 +1236,7 @@ namespace Jastech.Apps.Winform
                 default:
                     break;
             }
+
             return resultStr;
         }
 
@@ -1089,7 +1248,6 @@ namespace Jastech.Apps.Winform
             switch (wordType)
             {
                 case WordType.DEC:
-
                     for (int i = 0; i < hexBuffer.Length; i += 4)
                     {
                         string code = asciiHexBuffer.Substring(i, 4);
@@ -1099,6 +1257,7 @@ namespace Jastech.Apps.Winform
                     }
 
                     break;
+
                 case WordType.HEX:
                     for (int i = 0; i < hexBuffer.Length; i += 4)
                     {
@@ -1120,6 +1279,7 @@ namespace Jastech.Apps.Winform
                     }
 
                     break;
+
                 default:
                     break;
             }
@@ -1151,6 +1311,7 @@ namespace Jastech.Apps.Winform
         public string GetPreHeadData(int tabNo)
         {
             PlcCommonMap plcCommonMap = PlcCommonMap.PLC_PreBond_Tab0;
+
             if (tabNo == 0)
                 plcCommonMap = PlcCommonMap.PLC_PreBond_Tab0;
             else if (tabNo == 1)

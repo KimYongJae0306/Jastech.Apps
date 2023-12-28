@@ -3,6 +3,7 @@ using Jastech.Apps.Structure.Data;
 using Jastech.Framework.Device.LAFCtrl;
 using Jastech.Framework.Util.Helper;
 using Jastech.Framework.Winform;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -108,16 +109,15 @@ namespace Jastech.Apps.Winform
                 if (int.TryParse(GetValue(dataString, "ls1:"), out int ls1))
                 {
                     status.IsNegativeLimit = Convert.ToBoolean(ls1);
-
                     if (status.IsNegativeLimit)
-                    {
-                        Logger.Debug(LogType.Device, $"Detected -Limit / Deivce name : {name} / MPos : {status.MPosPulse}");
-                        Logger.Debug(LogType.Device, $"Raw Packet : {dataString}");
-                    }
+                        Logger.Debug(LogType.Device, $"[DataReceived] Detected -Limit / Device name : {name} / MPos : {status.MPosPulse}");
                 }
-
                 if (int.TryParse(GetValue(dataString, "ls2:"), out int ls2))
+                {
                     status.IsPositiveLimit = Convert.ToBoolean(ls2);
+                    if (status.IsPositiveLimit)
+                        Logger.Debug(LogType.Device, $"[DataReceived] Detected +Limit / Device name : {name} / MPos : {status.MPosPulse}");
+                }
                 if (int.TryParse(GetValue(dataString, "mbusy:"), out int mbusy))
                     status.IsBusy = Convert.ToBoolean(mbusy);
 
@@ -232,11 +232,9 @@ namespace Jastech.Apps.Winform
                         _homeSequenceStep = HomeSequenceStep.CheckFirstLimit;
                     }
                     else
-                    {
                         _homeSequenceStep = HomeSequenceStep.UnitOperation;
-                    }
-
                     break;
+
                 case HomeSequenceStep.CheckFirstLimit:
                     if (sw.ElapsedMilliseconds > HOMING_TIME_OUT)
                     {
@@ -247,8 +245,8 @@ namespace Jastech.Apps.Winform
 
                     if (status.IsNegativeLimit == false)
                         _homeSequenceStep = HomeSequenceStep.MoveLimit;
-
                     break;
+					
                 case HomeSequenceStep.MoveLimit:
                     PrepareHomeSequence();
                     double target2 = _target * _scale;
@@ -256,8 +254,8 @@ namespace Jastech.Apps.Winform
                     LafCtrl.SetMotionRelativeMove(Direction.CW, target2);      // -Limit 감지까지 이동
                     _homeSequenceStep = HomeSequenceStep.CheckLimit;
                     break;
-                case HomeSequenceStep.CheckLimit:
 
+                case HomeSequenceStep.CheckLimit:
                     if (sw.ElapsedMilliseconds > HOMING_TIME_OUT)
                     {
                         Logger.Write(LogType.Device, "Time over check limit.");
@@ -273,7 +271,6 @@ namespace Jastech.Apps.Winform
                     break;
 
                 case HomeSequenceStep.UnitOperation:
-
                     bool isUnitOperation = ExecuteUnit(HOMING_SEARCH_VELOCITY * _scale);
                     Logger.Write(LogType.Device, "Execute unit operation.");
                     if (isUnitOperation == true)
@@ -283,13 +280,12 @@ namespace Jastech.Apps.Winform
                     break;
 
                 case HomeSequenceStep.CheckZeroConvergence:
-                    
                     double mPos = status.MPosPulse / LafCtrl.ResolutionAxisZ;
                     double calcMPos = mPos - LafCtrl.HomePosition_mm;
                     double vel = HOMING_SEARCH_VELOCITY * _scale;
-                    Console.WriteLine("mPos : " + mPos + "   calc :  " + calcMPos + " Ve; : " + vel);
+                    Console.WriteLine("mPos : " + mPos + "   calc :  " + calcMPos + " Vel : " + vel);
 
-                    if (mPos >= 0 && mPos < LafCtrl.HomePosition_mm && vel < 0.01)
+                    if (mPos >= 0 && mPos < LafCtrl.HomePosition_mm && vel < 0.02)
                     {
                         Logger.Write(LogType.Device, "Complete zero convergence.");
                         _homeSequenceStep = HomeSequenceStep.ZeroSet;
@@ -309,12 +305,11 @@ namespace Jastech.Apps.Winform
                     break;
 
                 case HomeSequenceStep.ZeroSet:
-
                     LafCtrl.SetMotionStop();
                     Thread.Sleep(100);
 
                     LafCtrl.SetMotionZeroSet();
-                    Thread.Sleep(100);
+                    Thread.Sleep(3000);
 
                     LafCtrl.SetMotionMaxSpeed(LafCtrl.MaxSppedAxisZ);
                     Thread.Sleep(100);
@@ -447,8 +442,7 @@ namespace Jastech.Apps.Winform
 
         private void PrepareHomeSequence(bool isFirst = false)
         {
-            LafCtrl?.SetMotionNegativeLimit(0);
-            LafCtrl?.SetMotionPositiveLimit(0);
+            DisableSoftwareLimit();
 
             if (isFirst)
                 LafCtrl?.SetMotionMaxSpeed(10);
@@ -461,6 +455,38 @@ namespace Jastech.Apps.Winform
         public void SetHomeStandbyPosition(double standbyPos)
         {
             _standbyPosition = standbyPos;
+        }
+
+        public void DisableSoftwareLimit()
+        {
+            LafCtrl?.SetMotionNegativeLimit(0);
+            LafCtrl?.SetMotionPositiveLimit(0);
+        }
+
+        public void SetNegativeSoftwareLimit(double value)
+        {
+            LafCtrl?.SetMotionNegativeLimit(value);
+        }
+
+        public void SetPositiveSoftwareLimit(double value)
+        {
+            LafCtrl?.SetMotionPositiveLimit(value);
+        }
+
+        public void DisableReturndB()
+        {
+            LafCtrl?.SetLowerReturndB(0);
+            LafCtrl?.SetUpperReturndB(0);
+        }
+
+        public void SetLowerReturndB(double value)
+        {
+            LafCtrl?.SetLowerReturndB(value);
+        }
+
+        public void SetUpperReturndB(int value)
+        {
+            LafCtrl?.SetUpperReturndB(value);
         }
         #endregion
     }

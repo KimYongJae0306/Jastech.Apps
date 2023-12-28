@@ -60,6 +60,9 @@ namespace ATT
                 ConfigSet.Instance().Initialize();
 
                 AppsConfig.Instance().Initialize();
+                ACSBufferConfig.Instance().NewAcsBufferSettingEventHandler += NewAcsBufferSettingEventHandler;
+                ACSBufferConfig.Instance().Initialize();
+
                 UserManager.Instance().Initialize();
 
                 var mainForm = new MainForm();
@@ -70,6 +73,27 @@ namespace ATT
             {
                 MessageBox.Show("The program already started.");
                 Application.Exit();
+            }
+        }
+
+        private static void NewAcsBufferSettingEventHandler()
+        {
+            var buffer = ACSBufferConfig.Instance();
+
+            if (AppsConfig.Instance().ProgramType == ProgramType.ProgramType_1.ToString())
+            {
+                buffer.CameraTrigger = 7;
+
+                LafTriggerBuffer lafTriggerBuffer = new LafTriggerBuffer
+                {
+                    LafName = "Laf",
+                    LafArrayIndex = 0,
+                    OutputBit = 1,
+                    BufferNumber = 25,
+                };
+
+                buffer.LafTriggerBufferList.Add(lafTriggerBuffer);
+
             }
         }
 
@@ -120,7 +144,7 @@ namespace ATT
                     lineCamera.PixelResolution_um = 3.5F;
                     lineCamera.LensScale = 10F;
                     lineCamera.DigitizerNum = 0;
-                    lineCamera.TDIDirection = TDIDirectionType.Reverse;
+                    lineCamera.TDIDirection = TDIDirectionType.Forward;
 
                     lineCamera.DcfFile = CameraMil.GetDcfFile(CameraType.VT_4K5X_H200);
                     config.Add(lineCamera);
@@ -129,7 +153,6 @@ namespace ATT
                 // Motion
                 var motion = new ACSMotion("Motion", 2, ACSConnectType.Ethernet);
                 motion.IpAddress = "10.0.0.100";
-                motion.TriggerBuffer = ACSBufferNumber.CameraTrigger_Unit1;
                 config.Add(motion);
 
                 //var light1 = new LvsLightCtrl("LvsLight12V", 6, new SerialPortComm("COM2", 9600), new LvsSerialParser());
@@ -141,17 +164,17 @@ namespace ATT
                 //light2.ChannelNameMap["Ch.RedRing"] = 0;
                 //config.Add(light2);
 
-                //var laf = new NuriOneLAFCtrl("Laf");
-                //laf.SerialPortComm = new SerialPortComm("COM1", 9600);
-                //laf.AxisName = AxisName.Z0.ToString();
-                //laf.HomePosition_mm = 0.02;
-                //laf.ResolutionAxisZ = 10000.0;
-                //laf.MaxSppedAxisZ = 20;
-                //laf.AccDec = 30;
-                //config.Add(laf);
-
-                var laf = new VirtualLAFCtrl("Laf");
+                var laf = new NuriOneLAFCtrl("Laf");
+                laf.SerialPortComm = new SerialPortComm("COM1", 9600);
+                laf.AxisName = AxisName.Z0.ToString();
+                laf.HomePosition_mm = 0.02;
+                laf.ResolutionAxisZ = 10000.0;
+                laf.MaxSppedAxisZ = 20;
+                laf.AccDec = 30;
                 config.Add(laf);
+
+                //var laf = new VirtualLAFCtrl("Laf");
+                //config.Add(laf);
 
                 // PLC ATT Tester
                 AppsConfig.Instance().PlcAddressInfo.CommonStart = 20000;

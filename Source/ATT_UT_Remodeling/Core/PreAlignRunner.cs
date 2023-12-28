@@ -177,7 +177,6 @@ namespace ATT_UT_Remodeling
                 if (cancellationToken.IsCancellationRequested)
                 {
                     StopDevice();
-
                     SeqStep = SeqStep.SEQ_IDLE;
                     break;
                 }
@@ -203,15 +202,15 @@ namespace ATT_UT_Remodeling
             switch (SeqStep)
             {
                 case SeqStep.SEQ_IDLE:
-					AppsStatus.Instance().IsPreAlignRunnerFlagFromPlc = false;
+                    AppsStatus.Instance().IsPreAlignRunnerFlagFromPlc = false;
                     break;
 
                 case SeqStep.SEQ_INIT:
                     LightCtrlHandler.TurnOff();
                     WriteLog("Light Off.");
 
-                    PlcControlManager.Instance().ClearAlignData();
-                    WriteLog("Clear PLC Data.");
+                    //PlcControlManager.Instance().ClearAlignData();
+                    //WriteLog("Clear PLC Data.");
 
                     LAFCtrl.SetTrackingOnOFF(false);
                     WriteLog("LAF Off.");
@@ -225,8 +224,19 @@ namespace ATT_UT_Remodeling
                     break;
 
                 case SeqStep.SEQ_WAITING:
+                    AppsStatus.Instance().IsPreAlignRunnerRunning = false;
+
                     if (AppsStatus.Instance().IsPreAlignRunnerFlagFromPlc == false)
                         break;
+
+                    AppsStatus.Instance().IsPreAlignRunnerRunning = true;
+
+                    if (PlcControlManager.Instance().GetValue(PlcCommonMap.PLC_RunMode) == "2")
+                    {
+                        WriteLog("Start Idle Run Prealign sequence.", true);
+                        SeqStep = SeqStep.SEQ_PLC_IDLERUN;
+                        break;
+                    }
 
                     WriteLog("Receive PreAlign Start Signal From PLC.", true);
 
@@ -242,8 +252,9 @@ namespace ATT_UT_Remodeling
 
                     SeqStep = SeqStep.SEQ_PREALIGN_R;
                     break;
-           
+
                 case SeqStep.SEQ_PREALIGN_R:
+                    MotionManager.Instance().MoveAxisZ(UnitName.Unit0, TeachingPosType.Stage1_PreAlign_Right, LAFCtrl, AxisName.Z0);
 
                     if (MoveTo(TeachingPosType.Stage1_PreAlign_Right, out errorMessage) == false)
                         SeqStep = SeqStep.SEQ_ERROR;
@@ -255,7 +266,7 @@ namespace ATT_UT_Remodeling
                         WriteLog("Left Prealign Light On.");
 
                         // Grab
-                        if(ConfigSet.Instance().Operation.VirtualMode == false)
+                        if (ConfigSet.Instance().Operation.VirtualMode == false)
                         {
                             var preAlignRightImage = GetAreaCameraImage(PreAlignCamera.Camera) as CogImage8Grey;
                             AppsPreAlignResult.Instance().Right.CogImage = preAlignRightImage;
@@ -275,7 +286,7 @@ namespace ATT_UT_Remodeling
                             if (AppsStatus.Instance().IsManualMatching_OK)
                             {
                                 VisionProPatternMatchingResult patternResult = new VisionProPatternMatchingResult();
-                               
+
                                 patternResult.MaxMatchPos.FoundPos = SystemManager.Instance().GetManualMatchingOrigin();
                                 AppsPreAlignResult.Instance().Right.MatchResult = patternResult;
                             }
@@ -287,7 +298,7 @@ namespace ATT_UT_Remodeling
                             //SystemManager.Instance().ShowManualMatchingForm(PreAlignCamera, MarkDirection.Right);
                             //if (ConfigSet.Instance().Operation.VirtualMode == true)
                             //    Manualform.SetImage(VirtualRightImage);
-                            
+
                             //if (Manualform.DialogResult == DialogResult.OK)
                             //{
                             //    CogTransform2DLinear manualOrigin = Manualform.GetOriginPosition();
@@ -321,6 +332,7 @@ namespace ATT_UT_Remodeling
                     break;
 
                 case SeqStep.SEQ_PREALIGN_L:
+                    MotionManager.Instance().MoveAxisZ(UnitName.Unit0, TeachingPosType.Stage1_PreAlign_Left, LAFCtrl, AxisName.Z0);
 
                     if (MoveTo(TeachingPosType.Stage1_PreAlign_Left, out errorMessage) == false)
                         SeqStep = SeqStep.SEQ_ERROR;
@@ -385,7 +397,7 @@ namespace ATT_UT_Remodeling
                 case SeqStep.SEQ_SEND_PREALIGN_DATA:
 
                     LightCtrlHandler.TurnOff();
-                    WriteLog("PreAlign Light Off.",true);
+                    WriteLog("PreAlign Light Off.", true);
 
                     if (RunPreAlign() == true)
                     {
@@ -406,19 +418,22 @@ namespace ATT_UT_Remodeling
                         }
                         else
                         {
-                            PlcControlManager.Instance().WritePcStatus(PlcCommand.StartPreAlign, false);
+                            PlcControlManager.Instance().WritePcStatus(PlcCommand.StartPreAlign, true);
                             WriteLog($"Send PreAlign NG Complete Signal.(SpecOut) {(int)PlcCommand.StartPreAlign * -1}", true);
                         }
                     }
                     else
                     {
-                        PlcControlManager.Instance().WritePcStatus(PlcCommand.StartPreAlign, false);
+                        PlcControlManager.Instance().WritePcStatus(PlcCommand.StartPreAlign, true);
                         WriteLog($"Send PreAlign NG Complete Signal.(Mark Fail) {(int)PlcCommand.StartPreAlign * -1}", true);
                     }
 
                     AppsPreAlignResult.Instance().EndInspTime = DateTime.Now;
 
                     SystemManager.Instance().UpdatePreAlignResult(AppsPreAlignResult.Instance());
+
+                    AppsStatus.Instance().IsPreAlignRunnerFlagFromPlc = false;
+
                     SeqStep = SeqStep.SEQ_SAVE_RESULT_DATA;
                     break;
 
@@ -443,7 +458,7 @@ namespace ATT_UT_Remodeling
                     break;
 
                 case SeqStep.SEQ_ERROR:
-
+                    AppsStatus.Instance().IsPreAlignRunnerFlagFromPlc = false;
                     WriteLog("SEQ_ERROR.", true);
 
                     // Light off
@@ -451,12 +466,33 @@ namespace ATT_UT_Remodeling
                     // Camera stop
                     AreaCameraManager.Instance().Stop("PreAlign");
 
-                    PlcControlManager.Instance().WritePcStatus(PlcCommand.StartPreAlign, false);
+                    PlcControlManager.Instance().WritePcStatus(PlcCommand.StartPreAlign, true);
                     WriteLog($"Send PreAlign NG Complete Signal.{(int)PlcCommand.StartPreAlign * -1}", true);
 
                     Thread.Sleep(300);
 
+                    SeqStep = SeqStep.SEQ_INIT;
+                    break;
+                case SeqStep.SEQ_PLC_IDLERUN:
+                    if (MoveTo(TeachingPosType.Stage1_PreAlign_Right, out errorMessage) == false)
+                    {
+                        WriteLog("Idle Run PreAlign_Right sequence timed out", true);
+                        SeqStop();
+                        SeqStep = SeqStep.SEQ_ERROR;
+                        break;
+                    }
+
+                    if (MoveTo(TeachingPosType.Stage1_PreAlign_Left, out errorMessage) == false)
+                    {
+                        WriteLog("Idle Run PreAlign_Left sequence timed out", true);
+                        SeqStop();
+                        SeqStep = SeqStep.SEQ_ERROR;
+                        break;
+                    }
+                    WriteLog("Idle Run PreAlign sequence finished.", true);
+
                     AppsStatus.Instance().IsPreAlignRunnerFlagFromPlc = false;
+                    PlcControlManager.Instance().WritePcStatus(PlcCommand.StartPreAlign);
                     SeqStep = SeqStep.SEQ_INIT;
                     break;
 
@@ -473,6 +509,21 @@ namespace ATT_UT_Remodeling
                 return DateTime.Now.ToString("yyyyMMddHHmmss");
             else
                 return cellId;
+        }
+
+        private string GetResultPath()
+        {
+            var inspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
+            DateTime currentTime = AppsPreAlignResult.Instance().StartInspTime;
+
+            string month = currentTime.ToString("MM");
+            string day = currentTime.ToString("dd");
+            string timeStamp = currentTime.ToString("yyyyMMddHHmmss");
+            string folderPath = AppsPreAlignResult.Instance().Cell_ID + "_" + timeStamp;
+
+            string path = Path.Combine(ConfigSet.Instance().Path.Result, inspModel.Name, month, day, folderPath);
+
+            return path;
         }
 
         private void SetPreAlignPatternResult()
@@ -536,10 +587,10 @@ namespace ATT_UT_Remodeling
                 WriteLog($"NG Mark Search For PreAlign. (Left : {leftJudgement.ToString()}, Right : {rightJudgement.ToString()})", true);
                 WriteLog($"FoundedMark Score. (Left : {(leftScore * 100).ToString("F2")}, Right : {(rightScore * 100).ToString("F2")})", true);
                 return false;
-            } 
+            }
         }
 
-        private VisionProPatternMatchingResult RunPreAlignMark( Unit unit, ICogImage cogImage, MarkDirection markDirection)
+        private VisionProPatternMatchingResult RunPreAlignMark(Unit unit, ICogImage cogImage, MarkDirection markDirection)
         {
             var preAlignParam = unit.PreAlign.AlignParamList.Where(x => x.Direction == markDirection).FirstOrDefault();
 
@@ -556,16 +607,15 @@ namespace ATT_UT_Remodeling
             //if (ConfigSet.Instance().Operation.VirtualMode)
             //    return;
 
-            var appsInspResult = AppsInspResult.Instance();
+            var appsPreAlignResult = AppsPreAlignResult.Instance();
 
             AppsInspModel inspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
-            DateTime currentTime = appsInspResult.StartInspTime;
+            DateTime currentTime = appsPreAlignResult.StartInspTime;
 
             string month = currentTime.ToString("MM");
             string day = currentTime.ToString("dd");
-            string folderPath = appsInspResult.Cell_ID;
-
-            string path = Path.Combine(ConfigSet.Instance().Path.Result, inspModel.Name, month, day, folderPath, "Orgin");
+            string path = Path.Combine(GetResultPath(), "Prealign");
+            //string path = Path.Combine(ConfigSet.Instance().Path.Result, inspModel.Name, month, day, folderPath, "Prealign");
 
             if (Directory.Exists(path) == false)
                 Directory.CreateDirectory(path);
@@ -574,7 +624,7 @@ namespace ATT_UT_Remodeling
             string okExtension = operation.GetExtensionOKImage();
             string ngExtension = operation.GetExtensionNGImage();
 
-            var appsPreAlignResult = AppsPreAlignResult.Instance();
+            //var appsPreAlignResult = AppsPreAlignResult.Instance();
 
             //appsPreAlignResult.Left.CogImage
             if (appsPreAlignResult.Judgement == Judgement.OK)
@@ -628,11 +678,11 @@ namespace ATT_UT_Remodeling
         private void SavePreAlignResultCSV()
         {
             var inspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
-            DateTime currentTime = AppsInspResult.Instance().StartInspTime;
+            DateTime currentTime = AppsPreAlignResult.Instance().StartInspTime;
 
             string month = currentTime.ToString("MM");
             string day = currentTime.ToString("dd");
-            string folderPath = AppsInspResult.Instance().Cell_ID;
+            string folderPath = AppsPreAlignResult.Instance().Cell_ID;
 
             string path = Path.Combine(ConfigSet.Instance().Path.Result, inspModel.Name, month, day);
             if (Directory.Exists(path) == false)
@@ -640,7 +690,7 @@ namespace ATT_UT_Remodeling
 
             string fileName = string.Format("PreAlign.csv");
             string csvFile = Path.Combine(path, fileName);
-            
+
             if (File.Exists(csvFile) == false)
             {
                 List<string> header = new List<string>
@@ -659,8 +709,8 @@ namespace ATT_UT_Remodeling
 
             List<string> dataList = new List<string>
             {
-                AppsInspResult.Instance().EndInspTime.ToString("HH:mm:ss"),
-                AppsInspResult.Instance().Cell_ID,
+                AppsPreAlignResult.Instance().EndInspTime.ToString("HH:mm:ss"),
+                AppsPreAlignResult.Instance().Cell_ID,
                 appsPreAlignResult.OffsetX.ToString("F4"),
                 appsPreAlignResult.OffsetY.ToString("F4"),
                 appsPreAlignResult.OffsetT.ToString("F4"),
@@ -691,10 +741,10 @@ namespace ATT_UT_Remodeling
             var teachingInfo = inspModel.GetUnit(UnitName.Unit0).GetTeachingInfo(teachingPos);
 
             Axis axisX = GetAxis(AxisHandlerName.Handler0, AxisName.X);
-            Axis axisZ = GetAxis(AxisHandlerName.Handler0, AxisName.Z0);
+            //Axis axisZ = GetAxis(AxisHandlerName.Handler0, AxisName.Z0);
 
             var movingParamX = teachingInfo.GetMovingParam(AxisName.X.ToString());
-            var movingParamZ = teachingInfo.GetMovingParam(AxisName.Z0.ToString());
+            //var movingParamZ = teachingInfo.GetMovingParam(AxisName.Z0.ToString());
 
             if (MoveAxis(teachingPos, axisX, movingParamX) == false)
             {
@@ -703,12 +753,12 @@ namespace ATT_UT_Remodeling
                 return false;
             }
 
-            if (MoveAxis(teachingPos, axisZ, movingParamZ) == false)
-            {
-                errorMessage = string.Format("Move To Axis Z TimeOut!({0})", movingParamZ.MovingTimeOut.ToString());
-                Logger.Write(LogType.Seq, errorMessage);
-                return false;
-            }
+            //if (MoveAxis(teachingPos, axisZ, movingParamZ) == false)
+            //{
+            //    errorMessage = string.Format("Move To Axis Z TimeOut!({0})", movingParamZ.MovingTimeOut.ToString());
+            //    Logger.Write(LogType.Seq, errorMessage);
+            //    return false;
+            //}
 
             string message = string.Format("Move Completed.(Teaching Pos : {0})", teachingPos.ToString());
             WriteLog(message);
@@ -819,5 +869,6 @@ namespace ATT_UT_Remodeling
         SEQ_SAVE_IMAGE,
         SEQ_END,
         SEQ_ERROR,
+        SEQ_PLC_IDLERUN,
     }
 }

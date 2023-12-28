@@ -68,8 +68,11 @@ namespace Jastech.Apps.Winform.UI.Forms
             TeachingData.Instance().UpdateTeachingData();
             CurrentUnit = TeachingData.Instance().GetUnit(UnitName.ToString());
 
-            SetPitch(Convert.ToInt32(lblPitch.Text));
-            AddControls();
+            if (CurrentUnit != null)
+            {
+                SetPitch(Convert.ToInt32(lblPitch.Text));
+                AddControls();
+            }
 
             // TeachingUIManager 참조
             //TeachingUIManager.Instance().TeachingDisplayControl = Display;
@@ -179,7 +182,6 @@ namespace Jastech.Apps.Winform.UI.Forms
         private void LoadOriginPatternImage()
         {
             var currentParam = CurrentUnit.GetPreAlignMark(MarkDirection, MarkName.Main).InspParam;
-
 
             cogPatternDisplay.InteractiveGraphics.Clear();
             cogPatternDisplay.StaticGraphics.Clear();

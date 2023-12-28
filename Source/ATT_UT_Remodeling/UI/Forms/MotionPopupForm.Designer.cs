@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.tlpMotionPopup = new System.Windows.Forms.TableLayoutPanel();
             this.pnlTop = new System.Windows.Forms.Panel();
             this.lblTop = new System.Windows.Forms.Label();
@@ -118,7 +119,7 @@
             this.rdoJogSlowMode = new System.Windows.Forms.RadioButton();
             this.lblJog = new System.Windows.Forms.Label();
             this.pnlTeachingPositionList = new System.Windows.Forms.Panel();
-            this.StatusTimer = new System.Windows.Forms.Timer();
+            this.StatusTimer = new System.Windows.Forms.Timer(this.components);
             this.tlpMotionPopup.SuspendLayout();
             this.pnlTop.SuspendLayout();
             this.tlpFormFunction.SuspendLayout();
@@ -540,6 +541,7 @@
             // 
             // label11
             // 
+            this.label11.BackColor = System.Drawing.Color.Black;
             this.label11.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.label11.Dock = System.Windows.Forms.DockStyle.Fill;
             this.label11.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
@@ -554,6 +556,7 @@
             // 
             // label12
             // 
+            this.label12.BackColor = System.Drawing.Color.Black;
             this.label12.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.label12.Dock = System.Windows.Forms.DockStyle.Fill;
             this.label12.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
@@ -568,6 +571,7 @@
             // 
             // label13
             // 
+            this.label13.BackColor = System.Drawing.Color.Black;
             this.label13.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.label13.Dock = System.Windows.Forms.DockStyle.Fill;
             this.label13.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
@@ -582,6 +586,7 @@
             // 
             // label14
             // 
+            this.label14.BackColor = System.Drawing.Color.Black;
             this.label14.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.label14.Dock = System.Windows.Forms.DockStyle.Fill;
             this.label14.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
@@ -596,6 +601,7 @@
             // 
             // label15
             // 
+            this.label15.BackColor = System.Drawing.Color.Black;
             this.label15.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.label15.Dock = System.Windows.Forms.DockStyle.Fill;
             this.label15.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
@@ -610,6 +616,7 @@
             // 
             // label16
             // 
+            this.label16.BackColor = System.Drawing.Color.Black;
             this.label16.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.label16.Dock = System.Windows.Forms.DockStyle.Fill;
             this.label16.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
@@ -624,6 +631,7 @@
             // 
             // label17
             // 
+            this.label17.BackColor = System.Drawing.Color.Black;
             this.label17.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.label17.Dock = System.Windows.Forms.DockStyle.Fill;
             this.label17.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
@@ -638,6 +646,7 @@
             // 
             // label18
             // 
+            this.label18.BackColor = System.Drawing.Color.Black;
             this.label18.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.label18.Dock = System.Windows.Forms.DockStyle.Fill;
             this.label18.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
@@ -668,6 +677,7 @@
             // 
             // label19
             // 
+            this.label19.BackColor = System.Drawing.Color.Black;
             this.label19.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.label19.Dock = System.Windows.Forms.DockStyle.Fill;
             this.label19.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
@@ -682,7 +692,7 @@
             // 
             // lblAxisZ
             // 
-            this.lblAxisZ.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
+            this.lblAxisZ.BackColor = System.Drawing.Color.Black;
             this.lblAxisZ.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.lblAxisZ.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lblAxisZ.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
@@ -806,6 +816,7 @@
             // 
             // label20
             // 
+            this.label20.BackColor = System.Drawing.Color.Black;
             this.label20.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.label20.Dock = System.Windows.Forms.DockStyle.Fill;
             this.label20.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
@@ -835,6 +846,7 @@
             // 
             // label22
             // 
+            this.label22.BackColor = System.Drawing.Color.Black;
             this.label22.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.label22.Dock = System.Windows.Forms.DockStyle.Fill;
             this.label22.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
@@ -849,6 +861,7 @@
             // 
             // label23
             // 
+            this.label23.BackColor = System.Drawing.Color.Black;
             this.label23.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.label23.Dock = System.Windows.Forms.DockStyle.Fill;
             this.label23.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
@@ -909,6 +922,7 @@
             // 
             // label9
             // 
+            this.label9.BackColor = System.Drawing.Color.Black;
             this.label9.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.label9.Dock = System.Windows.Forms.DockStyle.Fill;
             this.label9.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
@@ -923,6 +937,7 @@
             // 
             // label8
             // 
+            this.label8.BackColor = System.Drawing.Color.Black;
             this.label8.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.label8.Dock = System.Windows.Forms.DockStyle.Fill;
             this.label8.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
@@ -937,6 +952,7 @@
             // 
             // label7
             // 
+            this.label7.BackColor = System.Drawing.Color.Black;
             this.label7.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.label7.Dock = System.Windows.Forms.DockStyle.Fill;
             this.label7.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
@@ -981,6 +997,7 @@
             // 
             // label2
             // 
+            this.label2.BackColor = System.Drawing.Color.Black;
             this.label2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.label2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.label2.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
@@ -1011,6 +1028,7 @@
             // 
             // label1
             // 
+            this.label1.BackColor = System.Drawing.Color.Black;
             this.label1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.label1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.label1.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
@@ -1025,7 +1043,7 @@
             // 
             // lblAxisX
             // 
-            this.lblAxisX.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
+            this.lblAxisX.BackColor = System.Drawing.Color.Black;
             this.lblAxisX.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.lblAxisX.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lblAxisX.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
@@ -1040,6 +1058,7 @@
             // 
             // label4
             // 
+            this.label4.BackColor = System.Drawing.Color.Black;
             this.label4.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.label4.Dock = System.Windows.Forms.DockStyle.Fill;
             this.label4.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
@@ -1086,6 +1105,7 @@
             // 
             // label6
             // 
+            this.label6.BackColor = System.Drawing.Color.Black;
             this.label6.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.label6.Dock = System.Windows.Forms.DockStyle.Fill;
             this.label6.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
@@ -1100,6 +1120,7 @@
             // 
             // label5
             // 
+            this.label5.BackColor = System.Drawing.Color.Black;
             this.label5.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.label5.Dock = System.Windows.Forms.DockStyle.Fill;
             this.label5.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
@@ -1129,6 +1150,7 @@
             // 
             // label3
             // 
+            this.label3.BackColor = System.Drawing.Color.Black;
             this.label3.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.label3.Dock = System.Windows.Forms.DockStyle.Fill;
             this.label3.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
@@ -1159,6 +1181,7 @@
             // 
             // label21
             // 
+            this.label21.BackColor = System.Drawing.Color.Black;
             this.label21.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.label21.Dock = System.Windows.Forms.DockStyle.Fill;
             this.label21.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
@@ -1363,7 +1386,7 @@
             // 
             // lblPitchZ
             // 
-            this.lblPitchZ.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
+            this.lblPitchZ.BackColor = System.Drawing.Color.Black;
             this.lblPitchZ.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.lblPitchZ.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lblPitchZ.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
@@ -1409,7 +1432,7 @@
             // 
             // lblPitchXY
             // 
-            this.lblPitchXY.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
+            this.lblPitchXY.BackColor = System.Drawing.Color.Black;
             this.lblPitchXY.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.lblPitchXY.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lblPitchXY.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
@@ -1546,6 +1569,7 @@
             // 
             // lblJog
             // 
+            this.lblJog.BackColor = System.Drawing.Color.Black;
             this.lblJog.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.lblJog.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lblJog.ForeColor = System.Drawing.Color.White;
@@ -1554,7 +1578,7 @@
             this.lblJog.Name = "lblJog";
             this.lblJog.Size = new System.Drawing.Size(58, 158);
             this.lblJog.TabIndex = 0;
-            this.lblJog.Text = "Motion\r\nControl";
+            this.lblJog.Text = "Jog";
             this.lblJog.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // pnlTeachingPositionList

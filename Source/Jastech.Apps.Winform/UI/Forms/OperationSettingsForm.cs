@@ -21,6 +21,8 @@ namespace Jastech.Framework.Winform.Forms
                 return cp;
             }
         }
+
+        public bool NeedProgramRebot { get; set; } = false;
         #endregion
 
         #region 생성자
@@ -38,7 +40,7 @@ namespace Jastech.Framework.Winform.Forms
                 mcbxOKExtension.Items.Add(type.ToString());
                 mcbxNGExtension.Items.Add(type.ToString());
             }
-
+            NeedProgramRebot = false;
             LoadData();
         }
 
@@ -59,6 +61,7 @@ namespace Jastech.Framework.Winform.Forms
             txtPreAlignToleranceY.Text = appsConfig.PreAlignToleranceY.ToString();
             txtPreAlignToleranceTheta.Text = appsConfig.PreAlignToleranceTheta.ToString();
 
+            mtgEnableAFTrigger.Checked = appsConfig.EnableLafTrigger;
             mtgEnableAlign.Checked = appsConfig.EnableAlign;
             mtgEnableAkkon.Checked = appsConfig.EnableAkkon;
             mtgEnableTest1.Checked = appsConfig.EnableTest1;
@@ -68,6 +71,7 @@ namespace Jastech.Framework.Winform.Forms
             mtgEnableAlignByPass.Checked = appsConfig.EnableAlignByPass;
 
             mtgEnableManualJudge.Checked = appsConfig.EnableManualJudge;
+            mtgEnableMsaSummary.Checked = appsConfig.EnableMsaSummary;
 
             mtgLogAkkonLead.Checked = appsConfig.EnableAkkonLeadResultLog;
 
@@ -106,6 +110,10 @@ namespace Jastech.Framework.Winform.Forms
             appsConfig.PreAlignToleranceY = Convert.ToSingle(GetValue(txtPreAlignToleranceY.Text));
             appsConfig.PreAlignToleranceTheta = Convert.ToSingle(GetValue(txtPreAlignToleranceTheta.Text));
 
+            if (appsConfig.EnableLafTrigger != mtgEnableAFTrigger.Checked)
+                NeedProgramRebot = true;
+
+            appsConfig.EnableLafTrigger = mtgEnableAFTrigger.Checked;
             appsConfig.EnableAlign = mtgEnableAlign.Checked;
             appsConfig.EnableAkkon = mtgEnableAkkon.Checked;
             appsConfig.EnableTest1 = mtgEnableTest1.Checked;
@@ -115,6 +123,7 @@ namespace Jastech.Framework.Winform.Forms
             appsConfig.EnableAlignByPass = mtgEnableAlignByPass.Checked;
 
             appsConfig.EnableManualJudge = mtgEnableManualJudge.Checked;
+            appsConfig.EnableMsaSummary = mtgEnableMsaSummary.Checked;
 
             appsConfig.EnableAkkonLeadResultLog = mtgLogAkkonLead.Checked;
 
@@ -135,6 +144,7 @@ namespace Jastech.Framework.Winform.Forms
         {
             if (value == "")
                 value = "0";
+
             return value;
         }
 
@@ -154,29 +164,35 @@ namespace Jastech.Framework.Winform.Forms
             MessageConfirmForm form = new MessageConfirmForm();
             form.Message = "Save Completed.";
             form.ShowDialog();
+
+            if(NeedProgramRebot)
+            {
+                form.Message = "Changing the Device settings will require you to restart the program.";
+                form.ShowDialog();
+                NeedProgramRebot = false;
+            }
+
+            Logger.Write(LogType.GUI, "Clicked OperationSettingsForm Save Button");
         }
 
         private void lblCancel_Click(object sender, EventArgs e)
         {
             this.Close();
+            Logger.Write(LogType.GUI, "Clicked OperationSettingsForm Cancle Button");
         }
 
         private void txtKeyPad_KeyPress(object sender, KeyPressEventArgs e)
         {
             //숫자, 백스페이스, '.' 를 제외한 나머지를 바로 처리             
             if (!(char.IsDigit(e.KeyChar) || e.KeyChar == Convert.ToChar(Keys.Back) || e.KeyChar == Convert.ToChar('.')))
-            {
                 e.Handled = true;
-            }
         }
 
         private void txtDataStoringDays_KeyPress(object sender, KeyPressEventArgs e)
         {
             //숫자, 백스페이스 를 제외한 나머지를 바로 처리             
             if (!(char.IsDigit(e.KeyChar) || e.KeyChar == Convert.ToChar(Keys.Back)))
-            {
                 e.Handled = true;
-            }
         }
 
         private void txtDataStoringCapcity_Leave(object sender, EventArgs e)

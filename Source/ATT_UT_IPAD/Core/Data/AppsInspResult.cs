@@ -45,29 +45,24 @@ namespace ATT_UT_IPAD.Core.Data
             sw.Restart();
 
             foreach (var inspAkkonResult in InspAkkonResultDic)
-            {
                 inspAkkonResult.Value.Dispose();
-            }
 
             foreach (var inspAlignResult in InspAlignResultDic)
-            {
                 inspAlignResult.Value.Dispose();
-            }
+
             sw.Stop();
         }
 
         public void Dispose()
         {
             foreach (var inspAkkonResult in InspAkkonResultDic)
-            {
                 inspAkkonResult.Value.Dispose();
-            }
+
             InspAkkonResultDic.Clear();
 
             foreach (var inspAlignResult in InspAlignResultDic)
-            {
                 inspAlignResult.Value.Dispose();
-            }
+
             InspAlignResultDic.Clear();
         }
 
@@ -76,11 +71,13 @@ namespace ATT_UT_IPAD.Core.Data
             lock (InspAkkonResultDic)
             {
                 int tabNo = tabInspResult.TabNo;
+
                 if (InspAkkonResultDic.ContainsKey(tabNo))
                 {
                     InspAkkonResultDic[tabNo].Dispose();
                     InspAkkonResultDic.Remove(tabNo);
                 }
+
                 InspAkkonResultDic.Add(tabNo, tabInspResult);
             }
         }

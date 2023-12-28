@@ -121,11 +121,14 @@ namespace Jastech.Framework.Winform.Forms
             lblStageCam.Text = $"STAGE : {UnitName} / CAM : {LineCamera.Camera.Name}";
 
             StatusTimer.Start();
+
+            ACSBufferManager.Instance().SetManualMode(LAFCtrl.Name);
         }
 
         private void OpticTeachingForm_FormClosed(object sender, FormClosedEventArgs e)
         {
             ParamTrackingLogger.ClearChangedLog();
+            ACSBufferManager.Instance().SetStopMode();
         }
 
         private void RollbackPrevData()
@@ -144,9 +147,7 @@ namespace Jastech.Framework.Winform.Forms
             if(lblAreaMode.BackColor == _selectedColor)
             {
                 if (inspTab.MergeMatImage != null)
-                {
                     DrawBoxControl.SetImage(inspTab.MergeMatImage.ToBitmap());
-                }
             }
             else
             {
@@ -211,8 +212,17 @@ namespace Jastech.Framework.Winform.Forms
             var unit = TeachingData.Instance().GetUnit(UnitName.ToString());
             var posData = unit.GetTeachingInfo(TeachingPosType.Stage1_Scan_Start);
 
+            var lafData = unit.GetLafData(LAFCtrl.Name);
+            
+            if(lafData == null)
+            {
+                unit.LafData = new LAFData();
+                unit.LafData.Name = LAFCtrl.Name;
+                lafData = unit.GetLafData(LAFCtrl.Name);
+            }
+
             AutoFocusControl.SetAxis(AxisHandler.GetAxis(AxisNameZ));
-            AutoFocusControl.SetLAFCtrl(LAFCtrl);
+            AutoFocusControl.SetLAFCtrl(LAFCtrl, lafData);
             AutoFocusControl.UpdateData(posData.GetAxisInfo(AxisNameZ));
 
             if (MotionJogXControl != null)
@@ -588,6 +598,8 @@ namespace Jastech.Framework.Winform.Forms
             //axis.AxisCommonParams.PositiveLimit = AutoFocusControl.GetAxisCommonParams().PositiveLimit;
             AxisHandler.GetAxis(AxisNameZ).AxisCommonParams.SetCommonParams(AutoFocusControl.GetAxisCommonParams());
 
+            var lafData = unit.GetLafData(LAFCtrl.Name);
+
             var lineCameraData = unit.GetLineCameraData(LineCamera.Camera.Name);
             lineCameraData.DigitalGain = Convert.ToDouble(lblDigitalGainValue.Text);
             lineCameraData.AnalogGain = Convert.ToInt16(lblAnalogGainValue.Text);
@@ -619,6 +631,8 @@ namespace Jastech.Framework.Winform.Forms
                 confirmForm.Message = "Save Model Completed.";
                 confirmForm.ShowDialog();
             }
+
+            Logger.Write(LogType.GUI, "Clicked OpticTeachingForm Save Button");
         }
 
         private void SaveModelData(AppsInspModel model)
@@ -637,11 +651,16 @@ namespace Jastech.Framework.Winform.Forms
         {
             RollbackPrevData();
             this.Close();
+
+            AppsStatus.Instance().IsRepeat = false;
+            Logger.Write(LogType.GUI, "Clicked OpticTeachingForm Cancle Button");
         }
 
         private void btnMotionPopup_Click(object sender, EventArgs e)
         {
             OpenMotionPopupEventHandler?.Invoke(UnitName);
+
+            Logger.Write(LogType.GUI, "Clicked OpticTeachingForm Motion Button");
         }
 
         private void LiveDisplay(string cameraName, Mat image)
@@ -685,6 +704,8 @@ namespace Jastech.Framework.Winform.Forms
                 LineCamera.IsLive = false;
             }
             StartGrab(false);
+
+            Logger.Write(LogType.GUI, "Clicked OpticTeachingForm Grab Start Button");
         }
 
         private void StartGrab(bool isRepeat)
@@ -711,6 +732,8 @@ namespace Jastech.Framework.Winform.Forms
         {
             LineCamera.IsLive = false;
             StopGrab();
+
+            Logger.Write(LogType.GUI, "Clicked OpticTeachingForm Grab Start Button");
         }
 
         private void StopGrab()
@@ -796,8 +819,13 @@ namespace Jastech.Framework.Winform.Forms
 
         private void MoveRepeat(bool isRepeat)
         {
+            AppsStatus.Instance().IsRepeat = isRepeat;
+
             if (isRepeat)
             {
+                if (_repeatThread != null)
+                    return;
+
                 LineCamera.StopGrab();
                 LineCamera.IsLive = false;
 
@@ -878,6 +906,7 @@ namespace Jastech.Framework.Winform.Forms
             }
             lblStartRepeat.BeginInvoke(new Action(() => lblStartRepeat.Text = "Start"));
             UpdateGrabButton(true);
+            _repeatThread = null;
         }
 
         public void UpdateRepeatCount()

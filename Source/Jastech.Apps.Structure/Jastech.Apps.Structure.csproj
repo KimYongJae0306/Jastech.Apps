@@ -108,6 +108,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Data\LAFData.cs" />
     <Compile Include="Data\LineCameraData.cs" />
     <Compile Include="Data\MaterialInfo.cs" />
     <Compile Include="Data\PreAlignData.cs" />

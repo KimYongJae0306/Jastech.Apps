@@ -581,7 +581,7 @@
             this.lblMachineName.TabIndex = 1;
             this.lblMachineName.Text = "ATT Inspection";
             this.lblMachineName.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.lblMachineName.Click += new System.EventHandler(this.lblMachineName_Click);
+            this.lblMachineName.DoubleClick += new System.EventHandler(this.lblMachineName_DoubleClick);
             // 
             // lblDoorlockState
             // 
@@ -613,6 +613,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
             this.ClientSize = new System.Drawing.Size(1540, 1061);
+            this.ControlBox = false;
             this.Controls.Add(this.tlpMainForm);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Name = "MainForm";

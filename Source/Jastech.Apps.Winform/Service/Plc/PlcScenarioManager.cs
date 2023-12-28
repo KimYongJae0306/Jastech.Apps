@@ -27,7 +27,6 @@ namespace Jastech.Apps.Winform.Service.Plc
     public class PlcScenarioManager
     {
         #region 필드
-
         private static PlcScenarioManager _instance = null;
 
         private int _prevCommonCommand { get; set; } = 0;
@@ -74,7 +73,7 @@ namespace Jastech.Apps.Winform.Service.Plc
 
         public delegate bool OriginAllDelegate();
 
-        public delegate void MainTaskEventHandler(bool isStart);
+        public delegate void MainTaskEventHandler(bool isStart, string message = "");
         #endregion
 
         #region 생성자
@@ -84,9 +83,7 @@ namespace Jastech.Apps.Winform.Service.Plc
         public static PlcScenarioManager Instance()
         {
             if (_instance == null)
-            {
                 _instance = new PlcScenarioManager();
-            }
 
             return _instance;
         }
@@ -131,8 +128,8 @@ namespace Jastech.Apps.Winform.Service.Plc
             {
                 lock (PlcCommonCommandQueue)
                     PlcCommonCommandQueue.Enqueue(command);
-						
-				_prevCommonCommand = command;
+
+                _prevCommonCommand = command;
             }
         }
 
@@ -145,9 +142,9 @@ namespace Jastech.Apps.Winform.Service.Plc
             {
                 lock (PlcCommandQueue)
                     PlcCommandQueue.Enqueue(command);
-					
-				_prevCommand = command;
-            }           
+
+                _prevCommand = command;
+            }
         }
 
         public int GetCommonCommand()
@@ -240,17 +237,60 @@ namespace Jastech.Apps.Winform.Service.Plc
             }
         }
 
-        public void CreateModelData()
+        private void CreateModelData()
         {
+            //var manager = PlcControlManager.Instance();
+            //string modelName = manager.GetValue(PlcCommonMap.PLC_PPID_ModelName).TrimEnd();
+            //string modelDir = ConfigSet.Instance().Path.Model;
+            //string filePath = Path.Combine(modelDir, modelName, InspModel.FileName);
+            //short command = -1;
+
+            //if (File.Exists(modelName) || AppsStatus.Instance().IsInspRunnerRunning || AppsStatus.Instance().IsPreAlignRunnerRunning)
+            //{
+            //    // 모델이 존재O, 검사 중일 때
+            //    command = manager.WritePcStatusCommon(PlcCommonCommand.Model_Create, true);
+            //    Logger.Debug(LogType.Device, $"Write Fail CreateModelData.[{command}]");
+            //    return;
+            //}
+
+            //MainTaskHandler?.Invoke(false, "Main Task Stop. Request model Create from PLC.");
+            //AppsInspModel inspModel = InspModelService.New() as AppsInspModel;
+
+            //inspModel.Name = modelName;
+            //inspModel.CreateDate = DateTime.Now;
+            //inspModel.ModifiedDate = inspModel.CreateDate;
+            //inspModel.TabCount = Convert.ToInt32(manager.GetValue(PlcCommonMap.PLC_TabCount));
+            //inspModel.AxisSpeed = Convert.ToInt32(manager.GetValue(PlcCommonMap.PLC_Axis_X_Speed));
+            //inspModel.MaterialInfo = GetModelMaterialInfo();
+            //InspModelService.AddModelData(inspModel);
+
+            //ModelFileHelper.Save(ConfigSet.Instance().Path.Model, inspModel);
+
+            //ModelManager.Instance().CurrentModel = InspModelService.Load(filePath);
+
+            //MainTaskHandler?.Invoke(true, "Main Task Start. Applied model Create from PLC.");
+
+            //command = manager.WritePcStatusCommon(PlcCommonCommand.Model_Create);
+            //Logger.Debug(LogType.Device, $"Write CreateModelData.[{command}]");
+
             var currentModel = ModelManager.Instance().CurrentModel as AppsInspModel;
             var manager = PlcControlManager.Instance();
             string newModelName = manager.GetValue(PlcCommonMap.PLC_PPID_ModelName).TrimEnd();
             string modelDir = ConfigSet.Instance().Path.Model;
             short command = -1;
 
-            if(newModelName == null || newModelName == "" || AppsStatus.Instance().IsRunning)
+            Logger.Debug(LogType.Device, $"Requested Model Create signal from PLC. Current : {currentModel.Name} / Request : {newModelName}");
+
+            if (File.Exists(newModelName) || newModelName == null || newModelName == "" || AppsStatus.Instance().IsInspRunnerRunning || AppsStatus.Instance().IsPreAlignRunnerRunning)
             {
-                // 모델이름 존재X, 검사 중일 때
+                // 모델이 존재O, 검사 중일 때
+                command = manager.WritePcStatusCommon(PlcCommonCommand.Model_Create, true);
+                Logger.Debug(LogType.Device, $"Write Fail CreateModelData.[{command}]");
+                return;
+            }
+
+            if (currentModel.Name == newModelName)
+            {
                 command = manager.WritePcStatusCommon(PlcCommonCommand.Model_Create, true);
                 Logger.Debug(LogType.Device, $"Write Fail CreateModelData.[{command}]");
                 return;
@@ -260,10 +300,10 @@ namespace Jastech.Apps.Winform.Service.Plc
             {
                 string newModelPath = Path.Combine(modelDir, newModelName, InspModel.FileName);
 
-                if(File.Exists(newModelName))
+                if (File.Exists(newModelPath))
                 {
                     command = manager.WritePcStatusCommon(PlcCommonCommand.Model_Create, true);
-                    Logger.Debug(LogType.Device, $"Write Fail CreateModelData.[{command}]");
+                    Logger.Debug(LogType.Device, $"Write Fail CreateModelData. [{command}]");
                     return;
                 }
 
@@ -282,7 +322,7 @@ namespace Jastech.Apps.Winform.Service.Plc
             }
             else
             {
-                if(CopyModelData())
+                if (CopyModelData())
                 {
                     command = manager.WritePcStatusCommon(PlcCommonCommand.Model_Create);
                     Logger.Debug(LogType.Device, $"Write CreateModelData.[{command}]");
@@ -290,22 +330,75 @@ namespace Jastech.Apps.Winform.Service.Plc
             }
         }
 
+        private bool CopyModelData()
+        {
+            var currentModel = ModelManager.Instance().CurrentModel as AppsInspModel;
+            var manager = PlcControlManager.Instance();
+            short command = -1;
+
+            string modelDir = ConfigSet.Instance().Path.Model;
+            string currentFilePath = Path.Combine(modelDir, currentModel.Name, InspModel.FileName);
+
+            string newModelName = manager.GetValue(PlcCommonMap.PLC_PPID_ModelName);
+            string newModelDir = Path.Combine(modelDir, newModelName);
+
+            Logger.Debug(LogType.Device, $"Requested Model Copy signal from PLC. Current : {currentModel.Name} / Request : {newModelName}");
+
+            if (Directory.Exists(newModelDir))
+            {
+                // 동일한 모델이 존재할 때
+                command = manager.WritePcStatusCommon(PlcCommonCommand.Model_Create, true);
+                Logger.Debug(LogType.Device, $"Write Fail CopyModelData.[{command}]");
+                return false;
+            }
+
+            Directory.CreateDirectory(newModelDir);
+
+            InspModel tempModel = InspModelService.Load(currentFilePath);
+            tempModel.Name = newModelName;
+            tempModel.CreateDate = DateTime.Now;
+            tempModel.ModifiedDate = tempModel.CreateDate;
+
+            string newFilePath = Path.Combine(modelDir, newModelName, InspModel.FileName);
+            InspModelService.Save(newFilePath, tempModel);
+
+            // Model 변경
+            MainTaskHandler?.Invoke(false, "Main Task Stop. Request model change from PLC.");
+
+            ModelManager.Instance().CurrentModel = InspModelService.Load(newFilePath);
+            var appliedModel = ModelManager.Instance().CurrentModel as AppsInspModel;
+
+            string currentModelName = currentModel.Name;
+
+            //if (previousModelName?.Equals(currentModelName) == false)
+            //    ParamTrackingLogger.AddChangeHistory("Inspector", "InspectionModel", previousModel, currentModel);
+
+            //if (ParamTrackingLogger.IsEmpty == false)
+            //{
+            //    ParamTrackingLogger.AddLog("Inspection Model Changed.");
+            //    ParamTrackingLogger.WriteLogToFile();
+            //}
+
+            MainTaskHandler.Invoke(true, "Main Task Start. Applied model change from PLC.");
+
+            return true;
+        }
+
         private void ChangeModelData()
         {
+            short command = -1;
+
             var manager = PlcControlManager.Instance();
             var previousModel = ModelManager.Instance().CurrentModel as AppsInspModel;
             string previousModelName = previousModel.Name;
 
             string modelName = manager.GetValue(PlcCommonMap.PLC_PPID_ModelName);
-            //string modelName = "TT_AMUA11CF01";
-            //string modelName = "NewTest";
-            //string modelName = "tt";
 
-            short command = -1;
+            Logger.Debug(LogType.Device, $"Request Model Change signal from PLC. Current : {previousModel.Name} / Request : {modelName}");
 
-            if (previousModelName.Equals(modelName) == true)
+            if (previousModelName.Equals(modelName))
             {
-                command = manager.WritePcStatusCommon(PlcCommonCommand.Model_Change, true);
+                command = manager.WritePcStatusCommon(PlcCommonCommand.Model_Change);
                 Logger.Debug(LogType.Device, $"Already applied model.[{command}]");
                 return;
             }
@@ -313,7 +406,7 @@ namespace Jastech.Apps.Winform.Service.Plc
             string modelDir = ConfigSet.Instance().Path.Model;
             string filePath = Path.Combine(modelDir, modelName, InspModel.FileName);
 
-            if (File.Exists(filePath) == false || AppsStatus.Instance().IsRunning)
+            if (File.Exists(filePath) == false || AppsStatus.Instance().IsInspRunnerRunning || AppsStatus.Instance().IsPreAlignRunnerRunning)
             {
                 // 모델 존재X, 검사 중일 때
                 command = manager.WritePcStatusCommon(PlcCommonCommand.Model_Change, true);
@@ -321,7 +414,8 @@ namespace Jastech.Apps.Winform.Service.Plc
                 return;
             }
 
-            MainTaskHandler.Invoke(false);// SeqStop 할 것
+            AppsStatus.Instance().IsModelChanging = true;
+            MainTaskHandler?.Invoke(false, "Main Task Stop. Request model change from PLC.");
 
             ModelManager.Instance().CurrentModel = InspModelService.Load(filePath);
             var currentModel = ModelManager.Instance().CurrentModel as AppsInspModel;
@@ -336,66 +430,26 @@ namespace Jastech.Apps.Winform.Service.Plc
                 ParamTrackingLogger.WriteLogToFile();
             }
 
-            MessageConfirmForm form = new MessageConfirmForm();
-            form.Message = "Model Load Completed.";
-            form.ShowDialog();
-
             command = manager.WritePcStatusCommon(PlcCommonCommand.Model_Change);
             Logger.Debug(LogType.Device, $"Write ChangeModelData.[{command}]");
-
-            MainTaskHandler.Invoke(true);// SeqRun 해야함
-        }
-
-        private bool CopyModelData()
-        {
-            var currentModel = ModelManager.Instance().CurrentModel as AppsInspModel;
-            var manager = PlcControlManager.Instance();
-            short command = -1;
-
-            string modelDir = ConfigSet.Instance().Path.Model;
-            string currentFilePath = Path.Combine(modelDir, currentModel.Name, InspModel.FileName);
-
-            string newModelName = manager.GetValue(PlcCommonMap.PLC_PPID_ModelName);
-            string newModelDir = Path.Combine(modelDir, newModelName);
-            if (Directory.Exists(newModelDir) == true)
-            {
-                // 동일한 모델이 존재할 때
-                command = manager.WritePcStatusCommon(PlcCommonCommand.Model_Create, true);
-                Logger.Debug(LogType.Device, $"Write Fail CopyModelData.[{command}]");
-                return false;
-            }
-
-            Directory.CreateDirectory(newModelDir);
-
-            InspModel tempModel = InspModelService.Load(currentFilePath);
-            tempModel.Name = newModelName;
-            tempModel.CreateDate = DateTime.Now;
-            tempModel.ModifiedDate = DateTime.Now;
-
-            string newFilePath = Path.Combine(modelDir, newModelName, InspModel.FileName);
-            InspModelService.Save(newFilePath, tempModel);
-
-            return true;
+			MainTaskHandler.Invoke(true, "Main Task Start. Applied model change from PLC.");
+            AppsStatus.Instance().IsModelChanging = false;
         }
 
         private void EditModelData()
         {
             var currentModel = ModelManager.Instance().CurrentModel as AppsInspModel;
-            var manager = PlcControlManager.Instance();
-            short command = -1;
-
             if (currentModel == null)
-            {
-                command = manager.WritePcStatusCommon(PlcCommonCommand.Model_Edit, true);
-                Logger.Debug(LogType.Device, $"Write Fail EditModelData.[{command}]");
                 return;
-            }
+
+            var manager = PlcControlManager.Instance();
 
             string modelName = manager.GetValue(PlcCommonMap.PLC_PPID_ModelName);
             string modelDir = ConfigSet.Instance().Path.Model;
             string filePath = Path.Combine(modelDir, modelName, InspModel.FileName);
+            short command = -1;
 
-            if (File.Exists(filePath) == false || AppsStatus.Instance().IsRunning)
+            if (File.Exists(filePath) == false || currentModel == null || AppsStatus.Instance().IsInspRunnerRunning || AppsStatus.Instance().IsPreAlignRunnerRunning)
             {
                 // 모델 존재 X, 검사 중, 현재 모델이 없을 때
                 command = manager.WritePcStatusCommon(PlcCommonCommand.Model_Edit, true);
@@ -445,7 +499,7 @@ namespace Jastech.Apps.Winform.Service.Plc
             meterialInfo.LeftOffset.Tab9 = manager.ConvertDoubleWordDoubleFormat_mm(PlcCommonMap.PLC_Tab9_Offset_Left);
             #endregion
 
-            #region RrightOffset
+            #region RightOffset
             meterialInfo.RightOffset.Tab0 = manager.ConvertDoubleWordDoubleFormat_mm(PlcCommonMap.PLC_Tab0_Offset_Right);
             meterialInfo.RightOffset.Tab1 = manager.ConvertDoubleWordDoubleFormat_mm(PlcCommonMap.PLC_Tab1_Offset_Right);
             meterialInfo.RightOffset.Tab2 = manager.ConvertDoubleWordDoubleFormat_mm(PlcCommonMap.PLC_Tab2_Offset_Right);
@@ -512,7 +566,6 @@ namespace Jastech.Apps.Winform.Service.Plc
                 PlcControlManager.Instance().WritePcStatusCommon(PlcCommonCommand.Time_Change, true);
                 Logger.Debug(LogType.Device, $"Fail Write TimeChanged.[{err}]");
             }
-
         }
 
         private void ReceivedCommandClear()
@@ -553,7 +606,7 @@ namespace Jastech.Apps.Winform.Service.Plc
                 case PlcCommand.Calibration:
                     if (AppsStatus.Instance().IsCalibrationing == false)
                     {
-                        if(StartMovePosition(PlcCommand.Move_Left_AlignPos, TeachingPosType.Stage1_PreAlign_Left, false))
+                        if (StartMovePosition(PlcCommand.Move_Left_AlignPos, TeachingPosType.Stage1_PreAlign_Left, false))
                         {
                             // UnitName.Unit0 향 후 Unit이 늘어나면 여기서 Address에 맞춰 넣어주기
                             Calibration(UnitName.Unit0, CalibrationMode.XYT);
@@ -678,7 +731,7 @@ namespace Jastech.Apps.Winform.Service.Plc
 
                 Logger.Write(LogType.Device, $"Send to PLC {plcCommand.ToString()}.[{command}]");
 
-                if(isSuccess == false)
+                if (isSuccess == false)
                 {
                     MessageConfirmForm form = new MessageConfirmForm();
                     form.Message = alarmMessage;
@@ -696,7 +749,7 @@ namespace Jastech.Apps.Winform.Service.Plc
             }
             return true;
         }
-    
+
         private void StartOriginAll()
         {
             if (ModelManager.Instance().CurrentModel == null)

@@ -53,7 +53,7 @@ namespace ATT_UT_Remodeling.UI.Controls
 
         public void UpdateTabCount(int tabCount)
         {
-            AkkonResultDisplayControl.UpdateTabCount(tabCount);
+            AkkonResultDisplayControl.UpdateTabButtons(tabCount);
         }
 
         public void UpdateMainResult(int tabNo)

@@ -285,6 +285,7 @@ namespace ATT.Core
                 case SeqStep.SEQ_IDLE:
                     AppsStatus.Instance().IsInspRunnerFlagFromPlc = false;
                     PlcControlManager.Instance().EnableSendPeriodically = true;
+
                     break;
 
                 case SeqStep.SEQ_INIT:
@@ -539,7 +540,7 @@ namespace ATT.Core
                 var akkonTabInspResult = AppsInspResult.Instance().GetAkkon(tabNo);
                 var alignTabInspResult = AppsInspResult.Instance().GetAlign(tabNo);
                 TabJudgement judgement = GetJudgemnet(akkonTabInspResult, alignTabInspResult);
-                PlcControlManager.Instance().WriteTabResult(tabNo, judgement, alignTabInspResult.AlignResult, akkonTabInspResult.AkkonResult, resolution);
+                PlcControlManager.Instance().WriteTabResult(tabNo, judgement, alignTabInspResult.AlignResult, akkonTabInspResult.AkkonResult, alignTabInspResult.MarkResult, resolution);
 
                 Thread.Sleep(10);
             }
@@ -588,6 +589,8 @@ namespace ATT.Core
         	LineCamera.InitGrabSettings();
             InspProcessTask.InitalizeInspAkkonBuffer(LineCamera.Camera.Name, LineCamera.TabScanBufferList);
             InspProcessTask.InitalizeInspAlignBuffer(LineCamera.Camera.Name, LineCamera.TabScanBufferList);
+
+            ACSBufferManager.Instance().SetLafTriggerPosition(UnitName.Unit0, LAFCtrl.Name, LineCamera.TabScanBufferList, 0);
         }
 
         public void RunVirtual()
@@ -971,10 +974,7 @@ namespace ATT.Core
             MotionManager manager = MotionManager.Instance();
             double cameraGap = 0;
             if (teachingPos == TeachingPosType.Stage1_Scan_End)
-            {
                 cameraGap = AppsConfig.Instance().CameraGap_mm;
-                //cameraGap += 50;
-            }
                 
             if (manager.IsAxisInPosition(UnitName.Unit0, teachingPos, axis, cameraGap) == false)
             {

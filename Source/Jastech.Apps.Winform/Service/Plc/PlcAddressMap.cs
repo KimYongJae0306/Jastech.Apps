@@ -12,7 +12,7 @@ namespace Jastech.Apps.Winform.Service.Plc
 
         public int WordSize { get; set; }
 
-        public string Value { get; set; }
+        public string Value { get; set; } = "";
 
         public PlcAddressMap(PlcResultMap name, WordType wordType, int addressNum, int wordSize)
         {

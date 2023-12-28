@@ -201,9 +201,7 @@ namespace Jastech.Apps.Winform.UI.Forms
             }
 
             if (btnCalibration.BackColor == _selectedColor)
-            {
                 LightControl.UpdateSetParam(CalibLightParameter);
-            }
         }
 
         private void ClearSelectedButton()

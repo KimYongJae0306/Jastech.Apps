@@ -137,7 +137,10 @@ namespace ATT_UT_IPAD.UI.Controls
         public void ReUpdate()
         {
             AkkonResultDataControl.UpdateAkkonDaily();
-            AkkonResultChartControl.ReUpdate();
+            AkkonResultChartControl.ReUpdate(InspChartType.Akkon);
+
+            AlignResultDataControl.UpdateAlignDaily();
+            AlignResultChartControl.ReUpdate(InspChartType.Align);
         }
 
         public void ClearAkkonData()

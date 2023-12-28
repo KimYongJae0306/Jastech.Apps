@@ -29,6 +29,8 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         private LAFCtrl LAFCtrl { get; set; } = null;
 
+        private LAFData LAFData { get; set; } = null;
+
         private List<TeachingInfo> TeachingPositionList { get; set; } = null;
         
         public TeachingPosType TeachingPositionType = TeachingPosType.Stage1_Scan_Start;
@@ -67,6 +69,9 @@ namespace Jastech.Apps.Winform.UI.Controls
             
             lblNegativeLimit.Text = SelectedAxis.AxisCommonParams.NegativeLimit.ToString("F3");
             lblPositiveLimit.Text = SelectedAxis.AxisCommonParams.PositiveLimit.ToString("F3");
+
+            lblLowerReturndB.Text = "0.0";
+            lblUpperReturndB.Text = "0.0";
         }
 
         public void UpdateAxisStatus()
@@ -104,6 +109,8 @@ namespace Jastech.Apps.Winform.UI.Controls
             lblCuttentPositionValue.Text = mPos_um.ToString();
             lblCurrentCogValue.Text = status.CenterofGravity.ToString();
 
+            lblCurrentReturndB.Text = status.ReturndB.ToString();
+
             if (status.IsTrackingOn)
             {
                 lblTrackingOn.BackColor = _selectedColor;
@@ -121,7 +128,7 @@ namespace Jastech.Apps.Winform.UI.Controls
             SelectedAxis = axis;
         }
 
-        public void SetLAFCtrl(LAFCtrl lafCtrl)
+        public void SetLAFCtrl(LAFCtrl lafCtrl, LAFData lafData)
         {
             LAFCtrl = lafCtrl;
         }
@@ -200,8 +207,33 @@ namespace Jastech.Apps.Winform.UI.Controls
 
             return param;
         }
+
         #endregion
 
+        private void lblLowerReturndB_Click(object sender, EventArgs e)
+        {
+            double lowerReturndB = KeyPadHelper.SetLabelDoubleData((Label)sender);
+            LAFData.LowerReturndB = lowerReturndB;
+        }
 
+        private void lblUpperReturndB_Click(object sender, EventArgs e)
+        {
+            double upperReturndB = KeyPadHelper.SetLabelDoubleData((Label)sender);
+            LAFData.UpperReturndB = upperReturndB;
+        }
+
+        private void cbxEnableRetrundB_CheckedChanged(object sender, EventArgs e)
+        {
+            if (cbxEnableRetrundB.Checked)
+            {
+                LAFCtrl?.SetUpperReturndB(LAFData.LowerReturndB);
+                LAFCtrl?.SetUpperReturndB(LAFData.UpperReturndB);
+            }
+            else
+            {
+                LAFCtrl?.SetUpperReturndB(0);
+                LAFCtrl?.SetUpperReturndB(0);
+            }
+        }
     }
 }

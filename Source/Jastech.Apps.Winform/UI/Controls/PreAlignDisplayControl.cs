@@ -86,9 +86,16 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         private void UpdateLeftMessage(PreAlignResult result)
         {
-            string resultMessage = string.Format("Judge : {0}\nScore : {1}%\nX : {2}\nY : {3}",
-                                                result.MatchResult.Judgement.ToString(), (result.MatchResult.MaxScore * 100).ToString("F2"),
-                                                result.MatchResult.MaxMatchPos.FoundPos.X.ToString("F2"), result.MatchResult.MaxMatchPos.FoundPos.Y.ToString("F2"));
+            string resultMessage = string.Empty;
+
+            if (result.MatchResult.MatchPosList.Count > 0)
+            {
+                resultMessage = string.Format("Judge : {0}\nScore : {1}%\nX : {2}\nY : {3}",
+                                            result.MatchResult.Judgement.ToString(), (result.MatchResult.MaxScore * 100).ToString("F2"),
+                                            result.MatchResult.MaxMatchPos.FoundPos.X.ToString("F2"), result.MatchResult.MaxMatchPos.FoundPos.Y.ToString("F2"));
+            }
+            else
+                resultMessage = string.Format("Mark Search Fail");
 
             lblLeftPreAlignResult.Text = resultMessage;
         }
@@ -108,9 +115,16 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         public void UpdateRightMessage(PreAlignResult result)
         {
-            string resultMessage = string.Format("Judge : {0}\nScore : {1}%\nX : {2}\nY : {3}",
+            string resultMessage = string.Empty;
+
+            if (result.MatchResult.MatchPosList.Count > 0)
+            {
+                resultMessage = string.Format("Judge : {0}\nScore : {1}%\nX : {2}\nY : {3}",
                                             result.MatchResult.Judgement.ToString(), (result.MatchResult.MaxScore * 100).ToString("F2"),
                                             result.MatchResult.MaxMatchPos.FoundPos.X.ToString("F2"), result.MatchResult.MaxMatchPos.FoundPos.Y.ToString("F2"));
+            }
+            else
+                resultMessage = string.Format("Mark Search Fail");
 
             lblRightPreAlignResult.Text = resultMessage;
         }

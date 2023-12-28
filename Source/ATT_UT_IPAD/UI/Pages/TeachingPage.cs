@@ -4,6 +4,7 @@ using Cognex.VisionPro;
 using Jastech.Apps.Structure;
 using Jastech.Apps.Winform;
 using Jastech.Framework.Device.LAFCtrl;
+using Jastech.Framework.Util.Helper;
 using Jastech.Framework.Winform.Forms;
 using System;
 using System.Windows.Forms;
@@ -42,7 +43,10 @@ namespace ATT_UT_IPAD.UI.Pages
             form.InspModelService = ATTInspModelService;
             form.OpenMotionPopupEventHandler += OpenMotionPopupEventHandler;
             form.CloseMotionPopupEventHandler += CloseMotionPopupEventHandler;
+
             form.ShowDialog();
+
+            Logger.Write(LogType.GUI, "Clicked Align Camera Setting Dialog");
         }
 
         private void CloseMotionPopupEventHandler(UnitName unitName)
@@ -65,6 +69,8 @@ namespace ATT_UT_IPAD.UI.Pages
             form.OpenMotionPopupEventHandler += OpenMotionPopupEventHandler;
             form.CloseMotionPopupEventHandler += CloseMotionPopupEventHandler;
             form.ShowDialog();
+
+            Logger.Write(LogType.GUI, "Clicked Akkon Camera Setting Dialog");
         }
 
         private void btnAlignInspectionPage_Click(object sender, EventArgs e)
@@ -83,6 +89,8 @@ namespace ATT_UT_IPAD.UI.Pages
             form.OpenMotionPopupEventHandler += OpenMotionPopupEventHandler;
             form.CloseMotionPopupEventHandler += CloseMotionPopupEventHandler;
             form.ShowDialog();
+
+            Logger.Write(LogType.GUI, "Clicked Align Inspection Setting Dialog");
         }
 
         private void btnAkkonInspectionPage_Click(object sender, EventArgs e)
@@ -100,6 +108,8 @@ namespace ATT_UT_IPAD.UI.Pages
             form.OpenMotionPopupEventHandler += OpenMotionPopupEventHandler;
             form.CloseMotionPopupEventHandler += CloseMotionPopupEventHandler;
             form.ShowDialog();
+
+            Logger.Write(LogType.GUI, "Clicked Akkon Inspection Setting Dialog");
         }
 
         private void OpenMotionPopupEventHandler(UnitName unitName)

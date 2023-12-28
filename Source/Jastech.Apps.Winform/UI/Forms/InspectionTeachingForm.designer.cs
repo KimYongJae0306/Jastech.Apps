@@ -55,6 +55,7 @@
             this.pnlTeachingItems = new System.Windows.Forms.Panel();
             this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
             this.tlpTeachingItems = new System.Windows.Forms.TableLayoutPanel();
+            this.btnAFOffset = new System.Windows.Forms.Button();
             this.btnMark = new System.Windows.Forms.Button();
             this.btnAkkon = new System.Windows.Forms.Button();
             this.btnAlign = new System.Windows.Forms.Button();
@@ -469,6 +470,7 @@
             // 
             this.tlpTeachingItems.ColumnCount = 1;
             this.tlpTeachingItems.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tlpTeachingItems.Controls.Add(this.btnAFOffset, 0, 6);
             this.tlpTeachingItems.Controls.Add(this.btnMark, 0, 0);
             this.tlpTeachingItems.Controls.Add(this.btnAkkon, 0, 4);
             this.tlpTeachingItems.Controls.Add(this.btnAlign, 0, 3);
@@ -476,15 +478,31 @@
             this.tlpTeachingItems.Location = new System.Drawing.Point(0, 0);
             this.tlpTeachingItems.Margin = new System.Windows.Forms.Padding(0);
             this.tlpTeachingItems.Name = "tlpTeachingItems";
-            this.tlpTeachingItems.RowCount = 6;
+            this.tlpTeachingItems.RowCount = 7;
             this.tlpTeachingItems.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 100F));
             this.tlpTeachingItems.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 100F));
             this.tlpTeachingItems.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 100F));
             this.tlpTeachingItems.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 100F));
             this.tlpTeachingItems.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 100F));
             this.tlpTeachingItems.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tlpTeachingItems.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 100F));
             this.tlpTeachingItems.Size = new System.Drawing.Size(144, 711);
             this.tlpTeachingItems.TabIndex = 0;
+            // 
+            // btnAFOffset
+            // 
+            this.btnAFOffset.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(34)))), ((int)(((byte)(34)))), ((int)(((byte)(34)))));
+            this.btnAFOffset.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.btnAFOffset.Font = new System.Drawing.Font("맑은 고딕", 20F, System.Drawing.FontStyle.Bold);
+            this.btnAFOffset.ForeColor = System.Drawing.Color.White;
+            this.btnAFOffset.Location = new System.Drawing.Point(2, 613);
+            this.btnAFOffset.Margin = new System.Windows.Forms.Padding(2);
+            this.btnAFOffset.Name = "btnAFOffset";
+            this.btnAFOffset.Size = new System.Drawing.Size(140, 96);
+            this.btnAFOffset.TabIndex = 20;
+            this.btnAFOffset.Text = "A.F Offset";
+            this.btnAFOffset.UseVisualStyleBackColor = false;
+            this.btnAFOffset.Click += new System.EventHandler(this.btnAFOffset_Click);
             // 
             // btnMark
             // 
@@ -623,5 +641,6 @@
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel3;
         private System.Windows.Forms.Label lblImageSave;
         private System.Windows.Forms.Label lblROICopy;
+        private System.Windows.Forms.Button btnAFOffset;
     }
 }

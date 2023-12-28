@@ -203,6 +203,14 @@ namespace Jastech.Apps.Winform.Service.Plc
             AddressMapList.Add(new PlcAddressMap(PlcCommonMap.PC_Ready, WordType.DEC, index + 4, 1));
             AddressMapList.Add(new PlcAddressMap(PlcCommonMap.PC_Status_Common, WordType.DEC, index + 6, 1));
 
+            // 10~19
+            AddressMapList.Add(new PlcAddressMap(PlcCommonMap.PC_X_NegativeLimit, WordType.DEC, index + 10, 1));
+            AddressMapList.Add(new PlcAddressMap(PlcCommonMap.PC_X_PositiveLimit, WordType.DEC, index + 11, 1));
+            AddressMapList.Add(new PlcAddressMap(PlcCommonMap.PC_Z0_NegativeLimit, WordType.DEC, index + 14, 1));
+            AddressMapList.Add(new PlcAddressMap(PlcCommonMap.PC_Z0_PositiveLimit, WordType.DEC, index + 15, 1));
+            AddressMapList.Add(new PlcAddressMap(PlcCommonMap.PC_Z1_NegativeLimit, WordType.DEC, index + 16, 1));
+            AddressMapList.Add(new PlcAddressMap(PlcCommonMap.PC_Z1_PositiveLimit, WordType.DEC, index + 17, 1));
+
             // 100~109
             AddressMapList.Add(new PlcAddressMap(PlcCommonMap.PLC_Alive, WordType.DEC, index + 100, 1));
             AddressMapList.Add(new PlcAddressMap(PlcCommonMap.PLC_RunMode, WordType.DEC, index + 101, 1));
@@ -227,8 +235,8 @@ namespace Jastech.Apps.Winform.Service.Plc
 
             #region Model 정보
             //// 210~219
-            //AddressMapList.Add(new PlcAddressMap(PlcCommonMap.PLC_PanelX_Size, WordType.DoubleWord, index + 210, 1));
-            //AddressMapList.Add(new PlcAddressMap(PlcCommonMap.PLC_MarkToMarkDistance, WordType.DoubleWord, index + 212, 1));
+            //AddressMapList.Add(new PlcAddressMap(PlcCommonMap.PLC_PanelX_Size, WordType.DoubleWord, index + 210, 2));
+            //AddressMapList.Add(new PlcAddressMap(PlcCommonMap.PLC_MarkToMarkDistance, WordType.DoubleWord, index + 212, 2));
             //AddressMapList.Add(new PlcAddressMap(PlcCommonMap.PLC_PanelLeftEdgeToTab1LeftEdgeDistance, WordType.DoubleWord, index + 214, 2));
             //AddressMapList.Add(new PlcAddressMap(PlcCommonMap.PLC_TabCount, WordType.DEC, index + 216, 1));
             //AddressMapList.Add(new PlcAddressMap(PlcCommonMap.PLC_Axis_X_Speed, WordType.DEC, index + 217, 1));
@@ -294,7 +302,7 @@ namespace Jastech.Apps.Winform.Service.Plc
             AddressMapList.Add(new PlcAddressMap(PlcCommonMap.PLC_TabCount, WordType.DEC, index + 806, 1));
             AddressMapList.Add(new PlcAddressMap(PlcCommonMap.PLC_Axis_X_Speed, WordType.DEC, index + 807, 1));
 
-            // 810~819
+            // 810~814
             AddressMapList.Add(new PlcAddressMap(PlcCommonMap.PLC_Akkon_Count, WordType.DEC, index + 810, 1));
             AddressMapList.Add(new PlcAddressMap(PlcCommonMap.PLC_Akkon_Length, WordType.DEC, index + 811, 1));
             AddressMapList.Add(new PlcAddressMap(PlcCommonMap.PLC_Akkon_Strength, WordType.DEC, index + 812, 1));

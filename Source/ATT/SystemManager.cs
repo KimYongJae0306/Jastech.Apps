@@ -84,6 +84,8 @@ namespace ATT
             DeviceManager.Instance().Initialize(ConfigSet.Instance());
             PlcControlManager.Instance().Initialize();
 
+            //SetACSBuffer();
+
             percent = 50;
             DoReportProgress(reportProgress, percent, "Create Axis Info");
 
@@ -93,6 +95,8 @@ namespace ATT
             DoReportProgress(reportProgress, percent, "Initialize Manager.");
             LAFManager.Instance().Initialize();
             LineCameraManager.Instance().Initialize();
+
+            ACSBufferManager.Instance().Initialize();
 
             if (ConfigSet.Instance().Operation.LastModelName != "")
             {
@@ -201,6 +205,7 @@ namespace ATT
         {
             handler = new AxisHandler(AxisHandlerName.Handler0.ToString());
 
+            // ACS의 경우 AxisNo 는 Home Buffer Index로 정의해야 한다.
             handler.AddAxis(AxisName.X, motion, axisNo: 0, homeOrder: 2);
 			handler.AddAxis(AxisName.Y, motion, axisNo: 8, homeOrder: 1);
             handler.AddAxis(AxisName.Z0, motion, axisNo: -1, homeOrder: 1);
@@ -286,7 +291,10 @@ namespace ATT
                 form.Message = "Do you want to Stop Auto Mode?";
 
                 if (form.ShowDialog() == DialogResult.Yes)
+                {
+                    ACSBufferManager.Instance().SetStopMode();
                     SetStopMode();
+                }
             }
         }
 
@@ -370,12 +378,12 @@ namespace ATT
         ProgramType_1,  // ATT TEST#7호기
     }
 
-    public enum ACSGlobalVariable
-    {
-        AF_DIFF,        // Test#7 AF Difference
-        AF_SW,          // Test#7 AF On/Off Switch
-        AF_OFFSET,      // Test#7 AF Difference Offset
-        AF_FACTOR,      // Test#7 AF Axis Gain Factor
-        JUDGE_RANGE,    // Test#7 Judge Range (MSG dB Ret와 동일 기능)
-    }
+    //public enum ACSGlobalVariable
+    //{
+    //    AF_DIFF,        // Test#7 AF Difference
+    //    AF_SW,          // Test#7 AF On/Off Switch
+    //    AF_OFFSET,      // Test#7 AF Difference Offset
+    //    AF_FACTOR,      // Test#7 AF Axis Gain Factor
+    //    JUDGE_RANGE,    // Test#7 Judge Range (MSG dB Ret와 동일 기능)
+    //}
 }

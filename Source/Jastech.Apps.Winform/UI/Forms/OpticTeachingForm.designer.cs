@@ -1466,9 +1466,9 @@
             this.tlpAutoFocus.Name = "tlpAutoFocus";
             this.tlpAutoFocus.RowCount = 3;
             this.tlpAutoFocus.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
-            this.tlpAutoFocus.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 240F));
+            this.tlpAutoFocus.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 280F));
             this.tlpAutoFocus.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tlpAutoFocus.Size = new System.Drawing.Size(400, 360);
+            this.tlpAutoFocus.Size = new System.Drawing.Size(400, 380);
             this.tlpAutoFocus.TabIndex = 7;
             // 
             // pnlAutoFocus
@@ -1477,7 +1477,7 @@
             this.pnlAutoFocus.Location = new System.Drawing.Point(0, 30);
             this.pnlAutoFocus.Margin = new System.Windows.Forms.Padding(0);
             this.pnlAutoFocus.Name = "pnlAutoFocus";
-            this.pnlAutoFocus.Size = new System.Drawing.Size(400, 240);
+            this.pnlAutoFocus.Size = new System.Drawing.Size(400, 280);
             this.pnlAutoFocus.TabIndex = 0;
             // 
             // lblAutoFocus

@@ -62,6 +62,9 @@ namespace ATT_UT_IPAD
                 ConfigSet.Instance().Initialize();
 
                 AppsConfig.Instance().Initialize();
+                ACSBufferConfig.Instance().NewAcsBufferSettingEventHandler += NewAcsBufferSettingEventHandler;
+                ACSBufferConfig.Instance().Initialize();
+
                 UserManager.Instance().Initialize();
 
                 var mainForm = new MainForm();
@@ -72,6 +75,59 @@ namespace ATT_UT_IPAD
             {
                 MessageBox.Show("The program already started.");
                 Application.Exit();
+            }
+        }
+
+        private static void NewAcsBufferSettingEventHandler()
+        {
+            var buffer = ACSBufferConfig.Instance();
+
+            if (AppsConfig.Instance().ProgramType == ProgramType.ProgramType_1.ToString())
+            {
+                buffer.CameraTrigger = 4;
+
+                LafTriggerBuffer alignLaf = new LafTriggerBuffer
+                {
+                    LafName = "AlignLaf",
+                    LafArrayIndex = 0,
+                    OutputBit = 1,
+                    BufferNumber = 5,
+                };
+
+                LafTriggerBuffer akkonLaf = new LafTriggerBuffer
+                {
+                    LafName = "AkkonLaf",
+                    LafArrayIndex = 1,
+                    OutputBit = 3,
+                    BufferNumber = 6,
+                };
+
+                buffer.LafTriggerBufferList.Add(alignLaf);
+                buffer.LafTriggerBufferList.Add(akkonLaf);
+
+            }
+            else if (AppsConfig.Instance().ProgramType == ProgramType.ProgramType_2.ToString())
+            {
+                buffer.CameraTrigger = 5;
+
+                LafTriggerBuffer alignLaf = new LafTriggerBuffer
+                {
+                    LafName = "AlignLaf",
+                    LafArrayIndex = 2,
+                    OutputBit = 5,
+                    BufferNumber = 7,
+                };
+
+                LafTriggerBuffer akkonLaf = new LafTriggerBuffer
+                {
+                    LafName = "AkkonLaf",
+                    LafArrayIndex = 3,
+                    OutputBit = 7,
+                    BufferNumber = 8,
+                };
+
+                buffer.LafTriggerBufferList.Add(alignLaf);
+                buffer.LafTriggerBufferList.Add(akkonLaf);
             }
         }
 
@@ -89,14 +145,14 @@ namespace ATT_UT_IPAD
                 AppsConfig.Instance().ProgramType = form.SelectedProgramType;
 
                 // Akkon LineScanCamera
-                var alignCamera = new CameraVirtual("AkkonCamera", 6560, 1024, ColorFormat.Gray, SensorType.Line);
+                var alignCamera = new CameraVirtual("AlignCamera", 6560, 1024, ColorFormat.Gray, SensorType.Line);
                 alignCamera.OffsetX = 0;
                 alignCamera.PixelResolution_um = 3.5F;
                 alignCamera.LensScale = 10F;
                 config.Add(alignCamera);
 
                 // Align LineScanCamera
-                var akkonCamera = new CameraVirtual("AlignCamera", 6560, 1024, ColorFormat.Gray, SensorType.Line);
+                var akkonCamera = new CameraVirtual("AkkonCamera", 6560, 1024, ColorFormat.Gray, SensorType.Line);
                 akkonCamera.OffsetX = 0;
                 akkonCamera.PixelResolution_um = 3.5F;
                 akkonCamera.LensScale = 10F;
@@ -202,7 +258,6 @@ namespace ATT_UT_IPAD
             // Motion
             var motion = new ACSMotion("Motion", 2, ACSConnectType.Ethernet);
             motion.IpAddress = "10.0.0.100";
-            motion.TriggerBuffer = ACSBufferNumber.CameraTrigger_Unit1;
             config.Add(motion);
 
             ////Akkon LAF
@@ -221,6 +276,8 @@ namespace ATT_UT_IPAD
             akkonLaf.ResolutionAxisZ = 10000.0;
             akkonLaf.MaxSppedAxisZ = 20;
             akkonLaf.AccDec = 70;
+            //akkonLaf.MinimumReturn_db = -1.0;
+            //akkonLaf.MaximumReturn_db = -1.0;
             config.Add(akkonLaf);
 
             // Align LAF
@@ -231,6 +288,8 @@ namespace ATT_UT_IPAD
             alignLaf.ResolutionAxisZ = 10000.0;
             alignLaf.MaxSppedAxisZ = 20;
             alignLaf.AccDec = 40;
+            //alignLaf.MinimumReturn_db = -1.0;
+            //alignLaf.MaximumReturn_db = -1.0;
             config.Add(alignLaf);
 
             // Light1
@@ -261,7 +320,7 @@ namespace ATT_UT_IPAD
         {
             // Akkon LineScanCamera
             int akkonCameraWidth = 3072;
-            int akkonCameraOffsetX = 0;
+            int akkonCameraOffsetX = 768;
             if (CheckCameraProperty(ref akkonCameraWidth, ref akkonCameraOffsetX, 6560) == true)
             {
                 var akkonCamera = new CameraMil("AkkonCamera", akkonCameraWidth, 1024, ColorFormat.Gray, SensorType.Line);
@@ -283,7 +342,7 @@ namespace ATT_UT_IPAD
 
             // Align LineScanCamera
             int alignCameraWidth = 3072;
-            int alignCameraOffsetX = 0;
+            int alignCameraOffsetX = 512;
             if (CheckCameraProperty(ref alignCameraWidth, ref alignCameraOffsetX, 6560) == true)
             {
                 var alignCamera = new CameraMil("AlignCamera", alignCameraWidth, 1024, ColorFormat.Gray, SensorType.Line);
@@ -306,7 +365,6 @@ namespace ATT_UT_IPAD
             // Motion
             var motion = new ACSMotion("Motion", 2, ACSConnectType.Ethernet);
             motion.IpAddress = "10.0.0.100";
-            motion.TriggerBuffer = ACSBufferNumber.CameraTrigger_Unit2;
             config.Add(motion);
 
             ////Akkon LAF
@@ -325,6 +383,8 @@ namespace ATT_UT_IPAD
             akkonLaf.ResolutionAxisZ = 10000.0;
             akkonLaf.MaxSppedAxisZ = 20;
             akkonLaf.AccDec = 70;
+            //akkonLaf.MinimumReturn_db = -1.0;
+            //akkonLaf.MaximumReturn_db = -1.0;
             config.Add(akkonLaf);
 
             //// Align LAF
@@ -335,6 +395,8 @@ namespace ATT_UT_IPAD
             alignLaf.ResolutionAxisZ = 10000.0;
             alignLaf.MaxSppedAxisZ = 20;
             alignLaf.AccDec = 40;
+            //alignLaf.MinimumReturn_db = -1.0;
+            //alignLaf.MaximumReturn_db = -1.0;
             config.Add(alignLaf);
 
             // Light1

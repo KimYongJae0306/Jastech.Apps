@@ -27,6 +27,9 @@ namespace Jastech.Apps.Structure.Data
         public AlignSpec AlignSpec { get; set; } = new AlignSpec();
 
         [JsonProperty]
+        public LafTriggerOffset LafTriggerOffset { get; set; } = new LafTriggerOffset();
+
+        [JsonProperty]
         public MarkParamter Mark = new MarkParamter();
 
         [JsonProperty]
@@ -47,6 +50,7 @@ namespace Jastech.Apps.Structure.Data
             tab.Index = Index;
             tab.StageIndex = StageIndex;
             tab.AlignSpec = JsonConvertHelper.DeepCopy(AlignSpec) as AlignSpec;
+            tab.LafTriggerOffset = JsonConvertHelper.DeepCopy(LafTriggerOffset) as LafTriggerOffset;
             tab.Mark = Mark.DeepCopy();
             tab.AlignCamMark = AlignCamMark?.DeepCopy();
             tab.AlignParamList = AlignParamList.Select(x => x.DeepCopy()).ToList();
@@ -151,7 +155,7 @@ namespace Jastech.Apps.Structure.Data
         public MarkParam GetPanelMark(MarkDirection markDirection, MarkName markName)
         {
             MarkParam param = null;
-            lock(PanelMarkList)
+            lock (PanelMarkList)
                 param = PanelMarkList.Where(x => x.Name == markName && x.Direction == markDirection).FirstOrDefault();
             return param;
         }
@@ -161,7 +165,7 @@ namespace Jastech.Apps.Structure.Data
             if (param == null)
                 return;
 
-            lock(FpcMarkList)
+            lock (FpcMarkList)
                 FpcMarkList.Where(x => x.Name == markName && x.Direction == markDirection).First().InspParam = param.InspParam.DeepCopy();
         }
 
@@ -170,7 +174,7 @@ namespace Jastech.Apps.Structure.Data
             if (param == null)
                 return;
 
-            lock(PanelMarkList)
+            lock (PanelMarkList)
                 PanelMarkList.Where(x => x.Name == markName && x.Direction == markDirection).First().InspParam = param.InspParam.DeepCopy();
         }
 
@@ -223,6 +227,17 @@ namespace Jastech.Apps.Structure.Data
 
         [JsonProperty]
         public bool UseAutoTracking { get; set; } = false;
+        #endregion
+    }
+
+    public class LafTriggerOffset
+    {
+        #region 속성
+        [JsonProperty]
+        public double Left { get; set; } = 0.0;
+
+        [JsonProperty]
+        public double Right { get; set; } = 0.0;
         #endregion
     }
 }

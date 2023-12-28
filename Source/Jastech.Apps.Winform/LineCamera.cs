@@ -113,6 +113,9 @@ namespace Jastech.Apps.Winform
                 return;
 
             double plcAlignDataX_mm = PlcControlManager.Instance().ConvertDoubleWordDoubleFormat_mm(Service.Plc.Maps.PlcCommonMap.PLC_AlignDataX);
+            string alignLog = string.Format("Align X from PLC : {0} mm", plcAlignDataX_mm);
+            Logger.Write(LogType.Device, alignLog);
+
             float resolution_mm = (float)(Camera.PixelResolution_um / Camera.LensScale) / 1000; // ex) 3.5 um / 5 / 1000 = 0.0007mm
             int totalScanSubImageCount = (int)Math.Ceiling(materialInfo.PanelXSize_mm / resolution_mm / Camera.ImageHeight); // ex) 500mm / 0.0007mm / 1024 pixel
 
@@ -122,11 +125,12 @@ namespace Jastech.Apps.Winform
 
             double tempPos = 0.0;
             int maxEndIndex = 0;
+
             for (int i = 0; i < tabCount; i++)
             {
                 if (i == 0)
                 {
-                    tempPos += plcAlignDataX_mm;
+                    tempPos -= plcAlignDataX_mm;
                     tempPos += inspModel.MaterialInfo.PanelEdgeToFirst_mm;
                     LAFTrackingPos_mm = tempPos - ((inspModel.MaterialInfo.PanelEdgeToFirst_mm / 2.0));
                 }
@@ -178,11 +182,12 @@ namespace Jastech.Apps.Winform
 
             double tempPos = 0.0;
             int maxEndIndex = 0;
+
             for (int i = 0; i < tabCount; i++)
             {
                 if (i == 0)
                 {
-                    tempPos += plcAlignDataX_mm;
+                    tempPos -= plcAlignDataX_mm;
                     tempPos += delayStart_mm;
                     tempPos += inspModel.MaterialInfo.PanelEdgeToFirst_mm;
                 }
@@ -210,8 +215,8 @@ namespace Jastech.Apps.Winform
                 lock (TabScanBufferList)
                     TabScanBufferList.Add(scanImage);
             }
+
             GrabCount = maxEndIndex;
-            //Console.WriteLine("Align Grab Max Count : " + GrabCount);
         }
 
         private double GetCurrentAxisXPosition()
@@ -248,9 +253,6 @@ namespace Jastech.Apps.Winform
             TabScanBuffer buffer = new TabScanBuffer(0, 0, totalScanSubImageCount, Camera.ImageWidth, Camera.ImageHeight);
             lock(TabScanBufferList)
                 TabScanBufferList.Add(buffer);
-
-            //test
-            //buffer.GetMergeMatImage().Save(string.Format("D:\\TestKang.bmp"));
 
             GrabCount = totalScanSubImageCount;
             // LineScan Page에서 Line 모드 GrabStart 할 때 Height Set 해줘야함

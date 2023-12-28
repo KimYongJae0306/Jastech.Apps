@@ -58,11 +58,8 @@ namespace Jastech.Apps.Winform
         public void Release()
         {
             foreach (var laf in LAFList)
-            {
                 laf.Release();
-            }
         }
-       
 
         public LAF GetLAF(string name)
         {

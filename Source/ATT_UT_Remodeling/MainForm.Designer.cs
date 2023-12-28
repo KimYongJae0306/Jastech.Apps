@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.tlpMainForm = new System.Windows.Forms.TableLayoutPanel();
             this.pnlPage = new System.Windows.Forms.Panel();
@@ -52,12 +53,13 @@
             this.lblTeachingPage = new System.Windows.Forms.Label();
             this.pnlMachineStatus = new System.Windows.Forms.Panel();
             this.tlpMachineStatus = new System.Windows.Forms.TableLayoutPanel();
+            this.lblDoorlockState = new System.Windows.Forms.Label();
             this.tableLayoutPanel5 = new System.Windows.Forms.TableLayoutPanel();
             this.lblCurrentUser = new System.Windows.Forms.Label();
             this.pictureBox2 = new System.Windows.Forms.PictureBox();
             this.lblCurrentModel = new System.Windows.Forms.Label();
             this.lblMachineName = new System.Windows.Forms.Label();
-            this.tmrMainForm = new System.Windows.Forms.Timer();
+            this.tmrMainForm = new System.Windows.Forms.Timer(this.components);
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.lblMotionState = new System.Windows.Forms.Label();
             this.lblLightState = new System.Windows.Forms.Label();
@@ -69,8 +71,7 @@
             this.lblLafState = new System.Windows.Forms.Label();
             this.lblMotionStateText = new System.Windows.Forms.Label();
             this.lblLightStateText = new System.Windows.Forms.Label();
-            this.tmrUpdateStates = new System.Windows.Forms.Timer();
-            this.lblDoorlockState = new System.Windows.Forms.Label();
+            this.tmrUpdateStates = new System.Windows.Forms.Timer(this.components);
             this.tlpMainForm.SuspendLayout();
             this.tlpFunctionButtons.SuspendLayout();
             this.panel4.SuspendLayout();
@@ -388,6 +389,20 @@
             this.tlpMachineStatus.Size = new System.Drawing.Size(1922, 48);
             this.tlpMachineStatus.TabIndex = 1;
             // 
+            // lblDoorlockState
+            // 
+            this.lblDoorlockState.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
+            this.lblDoorlockState.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblDoorlockState.Font = new System.Drawing.Font("맑은 고딕", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblDoorlockState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
+            this.lblDoorlockState.Location = new System.Drawing.Point(3, 0);
+            this.lblDoorlockState.Name = "lblDoorlockState";
+            this.lblDoorlockState.Size = new System.Drawing.Size(214, 48);
+            this.lblDoorlockState.TabIndex = 5;
+            this.lblDoorlockState.Text = "Doorlock Opened";
+            this.lblDoorlockState.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblDoorlockState.Click += new System.EventHandler(this.lblDoorlockState_Click);
+            // 
             // tableLayoutPanel5
             // 
             this.tableLayoutPanel5.ColumnCount = 2;
@@ -459,7 +474,7 @@
             this.lblMachineName.TabIndex = 1;
             this.lblMachineName.Text = "ATT Inspection";
             this.lblMachineName.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.lblMachineName.Click += new System.EventHandler(this.lblMachineName_Click);
+            this.lblMachineName.DoubleClick += new System.EventHandler(this.lblMachineName_DoubleClick);
             // 
             // tmrMainForm
             // 
@@ -555,6 +570,7 @@
             this.lblLicenseStateText.TabIndex = 2;
             this.lblLicenseStateText.Text = "Cognex";
             this.lblLicenseStateText.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.lblLicenseStateText.Visible = false;
             // 
             // lblLicenseState
             // 
@@ -567,6 +583,7 @@
             this.lblLicenseState.Size = new System.Drawing.Size(19, 25);
             this.lblLicenseState.TabIndex = 3;
             this.lblLicenseState.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblLicenseState.Visible = false;
             // 
             // lblLafStateText
             // 
@@ -618,26 +635,13 @@
             this.tmrUpdateStates.Interval = 300;
             this.tmrUpdateStates.Tick += new System.EventHandler(this.tmrUpdateStates_Tick);
             // 
-            // lblDoorlockState
-            // 
-            this.lblDoorlockState.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
-            this.lblDoorlockState.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblDoorlockState.Font = new System.Drawing.Font("맑은 고딕", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblDoorlockState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
-            this.lblDoorlockState.Location = new System.Drawing.Point(3, 0);
-            this.lblDoorlockState.Name = "lblDoorlockState";
-            this.lblDoorlockState.Size = new System.Drawing.Size(214, 48);
-            this.lblDoorlockState.TabIndex = 5;
-            this.lblDoorlockState.Text = "Doorlock Opened";
-            this.lblDoorlockState.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.lblDoorlockState.Click += new System.EventHandler(this.lblDoorlockState_Click);
-            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
             this.ClientSize = new System.Drawing.Size(1924, 806);
+            this.ControlBox = false;
             this.Controls.Add(this.tableLayoutPanel2);
             this.Controls.Add(this.tlpMainForm);
             this.Font = new System.Drawing.Font("맑은 고딕", 11.25F, System.Drawing.FontStyle.Bold);

@@ -68,6 +68,10 @@ namespace ATT_UT_Remodeling.Core.AppTask
             tabInspResult.Image = inspTab.MergeMatImage;
             tabInspResult.CogImage = inspTab.MergeCogImage;
             tabInspResult.Resolution_um = resolution_um;
+
+            // 231128_S
+            tabInspResult.AlignResult = new TabAlignResult();
+            // 231128_E
             tabInspResult.AlignResult.PreHead = PlcControlManager.Instance().GetPreHeadData(tabInspResult.TabNo);
 
             algorithmTool.MainMarkInspect(inspTab.MergeCogImage, tab, ref tabInspResult, false);
@@ -79,7 +83,10 @@ namespace ATT_UT_Remodeling.Core.AppTask
                 message = string.Format("Mark Inspection NG !!! Tab_{0} / Fpc_{1}, Panel_{2}", tab.Index + 1, tabInspResult.MarkResult.FpcMark.Judgement, tabInspResult.MarkResult.PanelMark.Judgement);
                 WriteLog(message, true);
                 Logger.Debug(LogType.Inspection, message);
-                tabInspResult.AlignResult = new TabAlignResult();
+
+                // 231128_S
+                //tabInspResult.AlignResult = new TabAlignResult();
+                // 231128_E
                 tabInspResult.AkkonResult = new AkkonResult();
             }
             else
@@ -391,13 +398,13 @@ namespace ATT_UT_Remodeling.Core.AppTask
         {
             AppsInspModel inspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
 
-            DateTime currentTime = AppsInspResult.Instance().StartInspTime;
+            DateTime currentTime = AppsPreAlignResult.Instance().StartInspTime;
             string timeStamp = currentTime.ToString("yyyyMMddHHmmss");
             string month = currentTime.ToString("MM");
             string day = currentTime.ToString("dd");
             string folderPath = AppsInspResult.Instance().Cell_ID + "_" + timeStamp;
 
-            string path = Path.Combine(ConfigSet.Instance().Path.Result, inspModel.Name, month, day, folderPath, "Akkon");
+            string path = Path.Combine(ConfigSet.Instance().Path.Result, inspModel.Name, month, day, folderPath, "AkkonROI");
             if (Directory.Exists(path) == false)
                 Directory.CreateDirectory(path);
 

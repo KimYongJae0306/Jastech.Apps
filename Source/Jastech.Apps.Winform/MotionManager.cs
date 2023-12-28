@@ -1,4 +1,4 @@
-﻿using Emgu.CV.XFeatures2D;
+﻿using Emgu.CV.Flann;
 using Jastech.Apps.Structure;
 using Jastech.Apps.Structure.Data;
 using Jastech.Framework.Config;
@@ -6,7 +6,6 @@ using Jastech.Framework.Device.LAFCtrl;
 using Jastech.Framework.Device.Motions;
 using Jastech.Framework.Util.Helper;
 using Jastech.Framework.Winform;
-using Jastech.Framework.Winform.Forms;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -107,7 +106,7 @@ namespace Jastech.Apps.Winform
             var targetPosition = posData.GetTargetPosition(axis.Name) + offset;
             var actualPosition = axis.GetActualPosition();
 
-            if (Math.Abs(targetPosition - actualPosition) <= /*double.Epsilon*/0.0001)
+            if (Math.Abs(targetPosition - actualPosition) <= /*double.Epsilon*/0.0002)
                 return true;
 
             return false;
@@ -189,12 +188,12 @@ namespace Jastech.Apps.Winform
                 while (IsAxisInPosition(unitName, teachingPos, axis, offset) == false)
                 {
                     if (sw.ElapsedMilliseconds >= movingParam.MovingTimeOut)
-                    {
                         return false;
-                    }
+
                     Thread.Sleep(10);
                 }
             }
+
             return true;
         }
 
@@ -209,6 +208,7 @@ namespace Jastech.Apps.Winform
                     var axis = GetAxis(axisHandlerName, axisName);
                     return motion.IsEnable(axis.AxisNo);
                 }
+
                 return false;
             }
 
@@ -226,6 +226,7 @@ namespace Jastech.Apps.Winform
                     var axis = GetAxis(axisHandlerName, axisName);
                     return motion.IsMoving(axis.AxisNo);
                 }
+
                 return false;
             }
 
@@ -237,7 +238,7 @@ namespace Jastech.Apps.Winform
             if (ConfigSet.Instance().Operation.VirtualMode)
                 return true;
 
-            //if (IsAxisZInPosition(unitName, teachingPos, lafCtrl, axisNameZ) == false)
+            if (IsAxisZInPosition(unitName, teachingPos, lafCtrl, axisNameZ) == false)
             {
                 Stopwatch sw = new Stopwatch();
                 sw.Restart();
@@ -249,8 +250,9 @@ namespace Jastech.Apps.Winform
                 var AlignMovingParamZ = posData.GetMovingParam(axisNameZ.ToString());
 
                 lafCtrl.SetMotionAbsoluteMove(targetPosition);
+                Console.WriteLine(string.Format("Dove Done.{0}", axisNameZ.ToString()));
             }
-            Console.WriteLine(string.Format("Dove Done.{0}", axisNameZ.ToString()));
+
             return true;
         }
 
@@ -276,4 +278,49 @@ namespace Jastech.Apps.Winform
         Handler1,
         Handler2,
     }
+
+    public enum ACSGlobalVariable
+    {
+        AF_DIFF,        // Test#7 AF Difference
+        AF_SW,          // Test#7 AF On/Off Switch
+        AF_OFFSET,      // Test#7 AF Difference Offset
+        AF_FACTOR,      // Test#7 AF Axis Gain Factor
+        JUDGE_RANGE,    // Test#7 Judge Range (MSG dB Ret와 동일 기능)
+
+        LASER_ENABLE_POS_0,
+        LASER_DISABLE_POS_0,
+        LASER_ENABLE_POS_1,
+        LASER_DISABLE_POS_1,
+        LASER_ENABLE_POS_2,
+        LASER_DISABLE_POS_2,
+        LASER_ENABLE_POS_3,
+        LASER_DISABLE_POS_3,
+        LASER_ENABLE_POS_4,
+        LASER_DISABLE_POS_4,
+        LASER_ENABLE_POS_5,
+        LASER_DISABLE_POS_5,
+        LASER_ENABLE_POS_6,
+        LASER_DISABLE_POS_6,
+        LASER_ENABLE_POS_7,
+        LASER_DISABLE_POS_7,
+        LASER_ENABLE_POS_8,
+        LASER_DISABLE_POS_8,
+        LASER_ENABLE_POS_9,
+        LASER_DISABLE_POS_9,
+
+        LASER_ENABLE_POS,
+        LASER_DISABLE_POS
+    }
+
+    //public enum ACSBufferNumber
+    //{
+    //    Homing_Unit1 = 0,
+    //    Homing_Unit2 = 1,
+    //    Buffer2 = 2,
+    //    Buffer3 = 3,
+    //    CameraTrigger_Unit1 = 4,
+    //    CameraTrigger_Unit2 = 5,
+    //    LAFTrigger_Unit1 = 6,
+    //    LAFTrigger_Unit2 = 7,
+    //}
 }

@@ -1,5 +1,4 @@
 ﻿using ATT_UT_Remodeling.Core;
-using ATT_UT_Remodeling.Core.Data;
 using Cognex.VisionPro;
 using Jastech.Apps.Structure;
 using Jastech.Apps.Structure.Data;
@@ -9,6 +8,7 @@ using Jastech.Apps.Winform.Core.Calibrations;
 using Jastech.Apps.Winform.Service;
 using Jastech.Apps.Winform.Service.Plc;
 using Jastech.Apps.Winform.Service.Plc.Maps;
+using Jastech.Apps.Winform.Settings;
 using Jastech.Apps.Winform.UI.Forms;
 using Jastech.Framework.Config;
 using Jastech.Framework.Device.Cameras;
@@ -88,6 +88,8 @@ namespace ATT_UT_Remodeling
             DeviceManager.Instance().Initialize(ConfigSet.Instance());
             PlcControlManager.Instance().Initialize();
 
+            SetACSBuffer();
+
             percent = 50;
             DoReportProgress(reportProgress, percent, "Create Axis Info");
 
@@ -106,6 +108,8 @@ namespace ATT_UT_Remodeling
             var axisHandler = MotionManager.Instance().GetAxisHandler(AxisHandlerName.Handler0);
             if (axisHandler != null)
                 VisionXCalibration.SetAxisHandler(axisHandler);
+
+            ACSBufferManager.Instance().Initialize();
 
             if (ConfigSet.Instance().Operation.LastModelName != "")
             {
@@ -127,6 +131,16 @@ namespace ATT_UT_Remodeling
             return true;
         }
 
+        private void SetACSBuffer()
+        {
+            int index = ACSBufferConfig.Instance().CameraTrigger;
+            if (DeviceManager.Instance().MotionHandler.Count > 0)
+            {
+                var motion = DeviceManager.Instance().MotionHandler.First() as ACSMotion;
+                motion?.RunBuffer(index);
+            }
+        }
+
         private void DoReportProgress(IReportProgress reportProgress, int percentage, string message)
         {
             Logger.Write(LogType.System, message);
@@ -141,25 +155,15 @@ namespace ATT_UT_Remodeling
 
             string message = "";
             if (deviceType == typeof(Camera))
-            {
                 message = "Camera Initialize Fail";
-            }
             else if (deviceType == typeof(Motion))
-            {
                 message = "Motion Initialize Fail";
-            }
             else if (deviceType == typeof(LightCtrl))
-            {
                 message = "LightCtrl Initialize Fail";
-            }
             else if (deviceType == typeof(LAFCtrl))
-            {
                 message = "LAF Initialize Fail";
-            }
             else if (deviceType == typeof(Plc))
-            {
                 message = "Plc Initialize Fail";
-            }
 
             if (message != "")
             {
@@ -186,6 +190,7 @@ namespace ATT_UT_Remodeling
             {
                 AxisHandler handler0 = new AxisHandler(AxisHandlerName.Handler0.ToString());
 
+                // ACS의 경우 AxisNo 는 Home Buffer Index로 정의해야 한다.
                 handler0.AddAxis(AxisName.X, motion, axisNo: 0, homeOrder: 3);
                 handler0.AddAxis(AxisName.Z0, motion, axisNo: 1, homeOrder: 1);
 
@@ -276,16 +281,25 @@ namespace ATT_UT_Remodeling
                     //}
                 }
 
-                bool isServoOnAxisZ0 = MotionManager.Instance().IsEnable(AxisHandlerName.Handler0, AxisName.Z0);
-                if (isServoOnAxisZ0 == false)
+                //bool isServoOnAxisZ0 = MotionManager.Instance().IsEnable(AxisHandlerName.Handler0, AxisName.Z0);
+                //if (isServoOnAxisZ0 == false)
+                //{
+                //    MessageConfirmForm alert = new MessageConfirmForm();
+                //    alert.Message = "AxisZ0 Servo Off. Please Servo On.";
+                //    alert.ShowDialog();
+                //    return;
+                //}
+
+                //Axis axisZ0 = MotionManager.Instance().GetAxis(AxisHandlerName.Handler0, AxisName.Z0);
+
+                if (PlcControlManager.Instance().GetAddressMap(PlcCommonMap.PLC_AlignZ_ServoOnOff).Value != "1")
                 {
                     MessageConfirmForm alert = new MessageConfirmForm();
-                    alert.Message = "AxisZ0 Servo Off. Please Servo On.";
+
+                    alert.Message = "Axis Z Servo Off.";
                     alert.ShowDialog();
                     return;
                 }
-
-                Axis axisZ0 = MotionManager.Instance().GetAxis(AxisHandlerName.Handler0, AxisName.Z0);
             }
 
             if (PlcControlManager.Instance().MachineStatus != MachineStatus.RUN)
@@ -312,14 +326,18 @@ namespace ATT_UT_Remodeling
                 MessageYesNoForm form = new MessageYesNoForm();
                 form.Message = "Do you want to Stop Auto Mode?";
 
-
                 if (form.ShowDialog() == DialogResult.Yes)
+                {
+                    ACSBufferManager.Instance().SetStopMode();
                     SetStopMode();
+                }
             }
         }
 
         public void SetRunMode()
         {
+            AppsStatus.Instance().IsRepeat = false;
+
             _inspRunner.SeqRun();
             _preAlignRunner.SeqRun();
             AddSystemLogMessage("Start Auto mode.");
@@ -479,11 +497,137 @@ namespace ATT_UT_Remodeling
             _mainForm.MessageConfirm(message);
         }
         #endregion
+
+
+        public void CalculateAxisPosition()
+        {
+            AppsInspModel inspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
+            inspModel.MaterialInfo =  PlcScenarioManager.Instance().GetModelMaterialInfo();
+            List<TeachingInfo> teachingInfoList = new List<TeachingInfo>();
+            
+            //1. Prealign Left Position
+            var teachingInfo = inspModel.GetUnit(UnitName.Unit0).GetTeachingInfo(TeachingPosType.Stage1_PreAlign_Left);
+            
+
+            //2. Prealign Right Position
+
+            //3. Inspection Scan Start Position
+
+            //4. Inspection Scan End Position
+        }
     }
+
 
     public enum ProgramType
     {
         ProgramType_1 = 0, // UT Remodeling PC #1 (출하일 : 2023.08 )
+    }
+
+    public partial class SystemManager
+    {
+        #region 필드
+        private int _isNegativeLimitCount_X = 0;
+
+        private int _isPositiveLimitCount_X = 0;
+
+        private int _isNegativeLimitCount_Z = 0;
+
+        private int _isPositiveLimitCount_Z = 0;
+
+        private const int SensingCount = 10;
+        #endregion
+
+        #region 메서드
+        public bool IsNegativeLimitStatus(AxisName axisName)
+        {
+            bool isNegativeLimit = false;
+
+            switch (axisName)
+            {
+                case AxisName.X:
+                    if (MotionManager.Instance().GetAxisHandler(AxisHandlerName.Handler0).GetAxis(axisName).IsNegativeLimit())
+                    {
+                        Logger.Write(LogType.Device, $"Detected -Limit : {axisName}");
+                        _isNegativeLimitCount_X++;
+                    }
+                    else
+                        _isNegativeLimitCount_X = 0;
+                    break;
+
+                case AxisName.Y:
+                    break;
+
+                case AxisName.Z0:
+                    if (LAFManager.Instance().GetLAF("Laf").LafCtrl.Status.IsNegativeLimit)
+                    {
+                        Logger.Write(LogType.Device, $"Detected -Limit : {axisName}");
+                        _isNegativeLimitCount_Z++;
+                    }
+                    else
+                        _isNegativeLimitCount_Z = 0;
+                    break;
+
+                case AxisName.Z1:
+                    break;
+
+                case AxisName.T:
+                    break;
+
+                default:
+                    break;
+            }
+
+            if (_isNegativeLimitCount_X >= SensingCount || _isNegativeLimitCount_Z >= SensingCount)
+                isNegativeLimit = true;
+
+            return isNegativeLimit;
+        }
+
+        public bool IsPositiveLimitStatus(AxisName axisName)
+        {
+            bool isPositiveLimit = false;
+
+            switch (axisName)
+            {
+                case AxisName.X:
+                    if (MotionManager.Instance().GetAxisHandler(AxisHandlerName.Handler0).GetAxis(axisName).IsPositiveLimit())
+                    {
+                        Logger.Write(LogType.Device, $"Detected +Limit : {axisName}");
+                        _isPositiveLimitCount_X++;
+                    }
+                    else
+                        _isPositiveLimitCount_X = 0;
+                    break;
+
+                case AxisName.Y:
+                    break;
+
+                case AxisName.Z0:
+                    if (LAFManager.Instance().GetLAF("Laf").LafCtrl.Status.IsPositiveLimit)
+                    {
+                        Logger.Write(LogType.Device, $"Detected +Limit : {axisName}");
+                        _isPositiveLimitCount_Z++;
+                    }
+                    else
+                        _isPositiveLimitCount_Z = 0;
+                    break;
+
+                case AxisName.Z1:
+                    break;
+
+                case AxisName.T:
+                    break;
+
+                default:
+                    break;
+            }
+
+            if (_isPositiveLimitCount_X >= SensingCount || _isPositiveLimitCount_Z >= SensingCount)
+                isPositiveLimit = true;
+
+            return isPositiveLimit;
+        }
+        #endregion
     }
 
     // All Axes Homing
@@ -523,5 +667,4 @@ namespace ATT_UT_Remodeling
         }
         #endregion
     }
-
 }

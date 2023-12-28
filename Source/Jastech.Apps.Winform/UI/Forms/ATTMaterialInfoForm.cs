@@ -130,6 +130,8 @@ namespace Jastech.Apps.Winform.UI.Forms
         {
             DialogResult = DialogResult.OK;
             Close();
+
+            Logger.Write(LogType.GUI, "Clicked ATTMaterialInfoForm Apply Button");
         }
 
         private void lblCancel_Click(object sender, EventArgs e)
@@ -137,6 +139,7 @@ namespace Jastech.Apps.Winform.UI.Forms
             NewMaterialInfo = PrevMaterialInfo;
             DialogResult = DialogResult.Cancel;
             Close();
+            Logger.Write(LogType.GUI, "Clicked ATTMaterialInfoForm Cancle Button");
         }
         
         private void InitializeUICollections()

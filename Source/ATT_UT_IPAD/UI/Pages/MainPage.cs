@@ -5,6 +5,7 @@ using Jastech.Apps.Structure.Data;
 using Jastech.Apps.Winform;
 using Jastech.Apps.Winform.Core;
 using Jastech.Apps.Winform.UI.Controls;
+using Jastech.Framework.Util.Helper;
 using Jastech.Framework.Winform.Forms;
 using System;
 using System.Drawing;
@@ -15,10 +16,6 @@ namespace ATT_UT_IPAD.UI.Pages
     public partial class MainPage : UserControl
     {
         #region 필드
-        private Color _noneSelectColor { get; set; } = Color.FromArgb(52, 52, 52);
-
-        private Color _selectedColor { get; set; } = Color.FromArgb(104, 104, 104);
-
         protected override CreateParams CreateParams
         {
             get
@@ -85,11 +82,15 @@ namespace ATT_UT_IPAD.UI.Pages
             }
 
             SystemManager.Instance().StartRun();
+
+            Logger.Write(LogType.GUI, "Clicked Start Button");
         }
 
         private void lblStop_Click(object sender, EventArgs e)
         {
             SystemManager.Instance().StopRun();
+
+            Logger.Write(LogType.GUI, "Clicked Stop Button");
         }
 
         public void UpdateButton()
@@ -125,11 +126,6 @@ namespace ATT_UT_IPAD.UI.Pages
             AkkonViewerControl.UpdateTabCount(tabCount);
             AlignViewerControl.UpdateTabCount(tabCount);
             DailyInfoViewerControl.ReUpdate();
-        }
-
-        public void UpdateMainAkkonResultDisplay(int tabNo)
-        {
-            AkkonViewerControl.UpdateMainResult(tabNo);
         }
 
         public void UpdateMainAkkonResultData(int tabNo)

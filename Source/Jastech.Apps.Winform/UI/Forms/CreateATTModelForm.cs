@@ -2,6 +2,7 @@
 using Jastech.Apps.Winform.Settings;
 using Jastech.Framework.Config;
 using Jastech.Framework.Structure.Helper;
+using Jastech.Framework.Util.Helper;
 using Jastech.Framework.Winform.Forms;
 using System;
 using System.Windows.Forms;
@@ -82,12 +83,16 @@ namespace Jastech.Apps.Winform.UI.Forms
             Close();
 
             CreateModelEvent?.Invoke(model);
+
+            Logger.Write(LogType.GUI, "Clicked CreateATTModelForm Apply Button");
         }
 
         private void lblCancel_Click(object sender, EventArgs e)
         {
             DialogResult = DialogResult.Cancel;
             Close();
+
+            Logger.Write(LogType.GUI, "Clicked CreateATTModelForm Cancle Button");
         }
 
         private void ShowMessageBox(string message)
