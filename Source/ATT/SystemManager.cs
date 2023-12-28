@@ -272,7 +272,10 @@ namespace ATT
                 form.Message = "Do you want to Start Auto Mode?";
 
                 if (form.ShowDialog() == DialogResult.Yes)
+                {
+                    ACSBufferManager.Instance().SetAutoMode();
                     SetRunMode();
+                }
             }
         }
 
