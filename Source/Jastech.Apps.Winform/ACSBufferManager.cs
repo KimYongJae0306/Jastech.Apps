@@ -4,6 +4,7 @@ using Jastech.Apps.Winform.Core;
 using Jastech.Apps.Winform.Settings;
 using Jastech.Framework.Config;
 using Jastech.Framework.Device.Motions;
+using Jastech.Framework.Structure;
 using Jastech.Framework.Winform;
 using System;
 using System.Collections.Generic;
@@ -78,13 +79,14 @@ namespace Jastech.Apps.Winform
 
                 foreach (var buffer in ACSBufferConfig.Instance().LafTriggerBufferList)
                 {
-                    motion?.WriteRealVariable(config.IoEnableModeName, (int)IoEnableMode.Off, buffer.LafIndex, buffer.LafIndex);
+                    motion?.WriteRealVariable(config.IoEnableModeName, (int)IoEnableMode.Off, buffer.LafArrayIndex, buffer.LafArrayIndex);
+                    motion?.WriteRealVariable(config.IoAddrName, buffer.OutputBit, buffer.LafArrayIndex, buffer.LafArrayIndex);
 
                     for (int tabNum = 0; tabNum < tabMaxCount; tabNum++)
                     {
-                        motion?.WriteRealVariable(config.IoPositionUsagesName, 0, buffer.LafIndex, buffer.LafIndex, tabNum, tabNum);
-                        motion?.WriteRealVariable(config.LaserStartPositionsName, 0, buffer.LafIndex, buffer.LafIndex, tabNum, tabNum);
-                        motion?.WriteRealVariable(config.LaserEndPositionsName, 0, buffer.LafIndex, buffer.LafIndex, tabNum, tabNum);
+                        motion?.WriteRealVariable(config.IoPositionUsagesName, 0, buffer.LafArrayIndex, buffer.LafArrayIndex, tabNum, tabNum);
+                        motion?.WriteRealVariable(config.LaserStartPositionsName, 0, buffer.LafArrayIndex, buffer.LafArrayIndex, tabNum, tabNum);
+                        motion?.WriteRealVariable(config.LaserEndPositionsName, 0, buffer.LafArrayIndex, buffer.LafArrayIndex, tabNum, tabNum);
                     }
                 }
             }
@@ -117,7 +119,7 @@ namespace Jastech.Apps.Winform
                 var config = ACSBufferConfig.Instance();
 
                 foreach (var buffer in ACSBufferConfig.Instance().LafTriggerBufferList)
-                    motion?.WriteRealVariable(config.IoEnableModeName, (int)IoEnableMode.Auto, buffer.LafIndex, buffer.LafIndex);
+                    motion?.WriteRealVariable(config.IoEnableModeName, (int)IoEnableMode.Auto, buffer.LafArrayIndex, buffer.LafArrayIndex);
             }
         }
 
@@ -132,7 +134,7 @@ namespace Jastech.Apps.Winform
                 var config = ACSBufferConfig.Instance();
 
                 foreach (var buffer in ACSBufferConfig.Instance().LafTriggerBufferList)
-                    motion?.WriteRealVariable(config.IoEnableModeName, (int)IoEnableMode.Off, buffer.LafIndex, buffer.LafIndex);
+                    motion?.WriteRealVariable(config.IoEnableModeName, (int)IoEnableMode.Off, buffer.LafArrayIndex, buffer.LafArrayIndex);
             }
         }
 
@@ -150,7 +152,7 @@ namespace Jastech.Apps.Winform
                 var motion = DeviceManager.Instance().MotionHandler.First() as ACSMotion;
                 var config = ACSBufferConfig.Instance();
 
-                motion?.WriteRealVariable(config.IoEnableModeName, (int)IoEnableMode.On, triggerBuffer.LafIndex, triggerBuffer.LafIndex);
+                motion?.WriteRealVariable(config.IoEnableModeName, (int)IoEnableMode.On, triggerBuffer.LafArrayIndex, triggerBuffer.LafArrayIndex);
             }
         }
 
@@ -170,9 +172,9 @@ namespace Jastech.Apps.Winform
                 for (int tabNum = 0; tabNum < tabMaxCount; tabNum++)
                 {
                     if (tabNum < tabCount)
-                        motion?.WriteRealVariable(config.IoPositionUsagesName, 1, triggerBuffer.LafIndex, triggerBuffer.LafIndex, tabNum, tabNum);
+                        motion?.WriteRealVariable(config.IoPositionUsagesName, 1, triggerBuffer.LafArrayIndex, triggerBuffer.LafArrayIndex, tabNum, tabNum);
                     else
-                        motion?.WriteRealVariable(config.IoPositionUsagesName, 0, triggerBuffer.LafIndex, triggerBuffer.LafIndex, tabNum, tabNum);
+                        motion?.WriteRealVariable(config.IoPositionUsagesName, 0, triggerBuffer.LafArrayIndex, triggerBuffer.LafArrayIndex, tabNum, tabNum);
                 }
             }
         }
@@ -190,7 +192,7 @@ namespace Jastech.Apps.Winform
                 var motion = DeviceManager.Instance().MotionHandler.First() as ACSMotion;
                 var config = ACSBufferConfig.Instance();
 
-                int lafIndex = triggerBuffer.LafIndex;
+                int lafIndex = triggerBuffer.LafArrayIndex;
                 for (int tabNum = 0; tabNum < positionList.Count; tabNum++)
                 {
                     motion?.WriteRealVariable(config.LaserStartPositionsName, positionList[tabNum].Start, lafIndex, lafIndex, tabNum, tabNum);
@@ -237,6 +239,45 @@ namespace Jastech.Apps.Winform
 
             SetTriggerPosition(lafName, dataList);
         }
+
+        //public void SetLafTriggerPosition(UnitName unitName, string lafName, TabScanBuffer tabScanBuffer, double leftOffset, double rightOffset)
+        //{
+        //    if (ConfigSet.Instance().Operation.VirtualMode || AppsConfig.Instance().EnableLafTrigger == false)
+        //        return;
+
+        //    var camera = DeviceManager.Instance().CameraHandler.First();
+        //    double resolution_um = camera.PixelResolution_um / camera.LensScale;
+
+        //    AppsInspModel inspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
+        //    var unit = inspModel.GetUnit(unitName);
+
+        //    var posData = unit.GetTeachingInfo(TeachingPosType.Stage1_Scan_Start);
+        //    double teachingStartPos = posData.GetTargetPosition(AxisName.X) + offset;
+
+        //    double subImageSize = (resolution_um * camera.ImageHeight) / 1000.0;
+
+        //    List<IoPositionData> dataList = new List<IoPositionData>();
+
+        //    foreach (var scanBuffer in tabScanBufferList)
+        //    {
+        //        double tempStart = teachingStartPos + (scanBuffer.StartIndex * subImageSize);
+        //        double tempEnd = teachingStartPos + ((scanBuffer.EndIndex + 1) * subImageSize);
+
+        //        double afLeftOffset = unit.GetTab(scanBuffer.TabNo).LafTriggerOffset.Left;
+        //        double afRightOffset = unit.GetTab(scanBuffer.TabNo).LafTriggerOffset.Right;
+
+        //        IoPositionData data = new IoPositionData
+        //        {
+        //            Start = tempStart + afLeftOffset,
+        //            End = tempEnd + afRightOffset,
+        //        };
+
+        //        dataList.Add(data);
+        //    }
+        //    dataList.Sort((x, y) => x.Start.CompareTo(y.Start));
+
+        //    SetTriggerPosition(lafName, dataList);
+        //}
         #endregion
     }
 }

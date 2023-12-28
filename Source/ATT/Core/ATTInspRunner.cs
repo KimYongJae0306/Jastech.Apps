@@ -286,8 +286,6 @@ namespace ATT.Core
                     AppsStatus.Instance().IsInspRunnerFlagFromPlc = false;
                     PlcControlManager.Instance().EnableSendPeriodically = true;
 
-                    // tt
-                    InitializeBuffer();
                     break;
 
                 case SeqStep.SEQ_INIT:

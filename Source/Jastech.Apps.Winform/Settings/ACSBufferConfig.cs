@@ -25,6 +25,8 @@ namespace Jastech.Apps.Winform.Settings
 
         public string IoEnableModeName { get; set; } = "IoEnableMode";                      // IoEnableMode(4)
 
+        public String IoAddrName { get; set; } = "IoAddr";                                  // IoAddr(4)
+
         public string IoPositionUsagesName { get; set; } = "IoPositionUsages";              // IoPositionUsages(4)(10)
 
         public string LaserStartPositionsName { get; set; } = "LaserStartPositions";        // LaserStartPositions(4)(10)
@@ -104,7 +106,7 @@ namespace Jastech.Apps.Winform.Settings
         #region 속성
         public string LafName { get; set; }
 
-        public int LafIndex { get; set; }
+        public int LafArrayIndex { get; set; }
 
         public int OutputBit { get; set; }
 

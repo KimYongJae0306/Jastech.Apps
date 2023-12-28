@@ -89,7 +89,7 @@ namespace ATT_UT_IPAD
                 LafTriggerBuffer alignLaf = new LafTriggerBuffer
                 {
                     LafName = "AlignLaf",
-                    LafIndex = 0,
+                    LafArrayIndex = 0,
                     OutputBit = 1,
                     BufferNumber = 5,
                 };
@@ -97,7 +97,7 @@ namespace ATT_UT_IPAD
                 LafTriggerBuffer akkonLaf = new LafTriggerBuffer
                 {
                     LafName = "AkkonLaf",
-                    LafIndex = 1,
+                    LafArrayIndex = 1,
                     OutputBit = 3,
                     BufferNumber = 6,
                 };
@@ -113,7 +113,7 @@ namespace ATT_UT_IPAD
                 LafTriggerBuffer alignLaf = new LafTriggerBuffer
                 {
                     LafName = "AlignLaf",
-                    LafIndex = 2,
+                    LafArrayIndex = 2,
                     OutputBit = 5,
                     BufferNumber = 7,
                 };
@@ -121,7 +121,7 @@ namespace ATT_UT_IPAD
                 LafTriggerBuffer akkonLaf = new LafTriggerBuffer
                 {
                     LafName = "AkkonLaf",
-                    LafIndex = 3,
+                    LafArrayIndex = 3,
                     OutputBit = 7,
                     BufferNumber = 8,
                 };

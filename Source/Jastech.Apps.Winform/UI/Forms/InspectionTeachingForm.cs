@@ -594,6 +594,8 @@ namespace Jastech.Framework.Winform.Forms
             TeachingImagePath = Path.Combine(ConfigSet.Instance().Path.Model, inspModel.Name, "TeachingImage", DateTime.Now.ToString("yyyyMMdd_HHmmss"));
             var teachingInfo = inspModel.GetUnit(UnitName).GetTeachingInfo(TeachingPosType.Stage1_Scan_Start);
 
+            ACSBufferManager.Instance().SetAutoMode();
+
             LAFCtrl.SetTrackingOnOFF(true);
             Thread.Sleep(100);
 
@@ -606,6 +608,8 @@ namespace Jastech.Framework.Winform.Forms
                 MotionManager.Instance().MoveAxisX(AxisHandlerName, UnitName, TeachingPosType.Stage1_Scan_End, cameraGap);
             else
                 MotionManager.Instance().MoveAxisX(AxisHandlerName, UnitName, TeachingPosType.Stage1_Scan_End);
+
+            ACSBufferManager.Instance().SetStopMode();
 
             LAFCtrl.SetTrackingOnOFF(false);
             Thread.Sleep(100);

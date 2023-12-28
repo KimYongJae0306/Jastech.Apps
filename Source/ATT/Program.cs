@@ -87,7 +87,7 @@ namespace ATT
                 LafTriggerBuffer lafTriggerBuffer = new LafTriggerBuffer
                 {
                     LafName = "Laf",
-                    LafIndex = 0,
+                    LafArrayIndex = 0,
                     OutputBit = 1,
                     BufferNumber = 25,
                 };
@@ -144,7 +144,7 @@ namespace ATT
                     lineCamera.PixelResolution_um = 3.5F;
                     lineCamera.LensScale = 10F;
                     lineCamera.DigitizerNum = 0;
-                    lineCamera.TDIDirection = TDIDirectionType.Reverse;
+                    lineCamera.TDIDirection = TDIDirectionType.Forward;
 
                     lineCamera.DcfFile = CameraMil.GetDcfFile(CameraType.VT_4K5X_H200);
                     config.Add(lineCamera);
@@ -164,17 +164,17 @@ namespace ATT
                 //light2.ChannelNameMap["Ch.RedRing"] = 0;
                 //config.Add(light2);
 
-                //var laf = new NuriOneLAFCtrl("Laf");
-                //laf.SerialPortComm = new SerialPortComm("COM1", 9600);
-                //laf.AxisName = AxisName.Z0.ToString();
-                //laf.HomePosition_mm = 0.02;
-                //laf.ResolutionAxisZ = 10000.0;
-                //laf.MaxSppedAxisZ = 20;
-                //laf.AccDec = 30;
-                //config.Add(laf);
-
-                var laf = new VirtualLAFCtrl("Laf");
+                var laf = new NuriOneLAFCtrl("Laf");
+                laf.SerialPortComm = new SerialPortComm("COM1", 9600);
+                laf.AxisName = AxisName.Z0.ToString();
+                laf.HomePosition_mm = 0.02;
+                laf.ResolutionAxisZ = 10000.0;
+                laf.MaxSppedAxisZ = 20;
+                laf.AccDec = 30;
                 config.Add(laf);
+
+                //var laf = new VirtualLAFCtrl("Laf");
+                //config.Add(laf);
 
                 // PLC ATT Tester
                 AppsConfig.Instance().PlcAddressInfo.CommonStart = 20000;
