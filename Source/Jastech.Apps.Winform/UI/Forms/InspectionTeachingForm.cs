@@ -569,15 +569,16 @@ namespace Jastech.Framework.Winform.Forms
             var cameraGap = AppsConfig.Instance().CameraGap_mm;
             LineCamera.ClearTabScanBuffer();
 
+            var unit = TeachingData.Instance().GetUnit(UnitName.ToString());
             if (UseDelayStart)
             {
                 LineCamera.InitGrabSettings(cameraGap);
-                ACSBufferManager.Instance().SetLafTriggerPosition(UnitName, LAFCtrl.Name, LineCamera.TabScanBufferList, cameraGap);
+                ACSBufferManager.Instance().SetLafTriggerPosition(unit, LAFCtrl.Name, LineCamera.TabScanBufferList, cameraGap);
             }
             else
             {
                 LineCamera.InitGrabSettings();
-                ACSBufferManager.Instance().SetLafTriggerPosition(UnitName, LAFCtrl.Name, LineCamera.TabScanBufferList, 0);
+                ACSBufferManager.Instance().SetLafTriggerPosition(unit, LAFCtrl.Name, LineCamera.TabScanBufferList, 0);
             }
 
             InitalizeInspTab(LineCamera.TabScanBufferList);
@@ -604,6 +605,7 @@ namespace Jastech.Framework.Winform.Forms
 
             LineCamera.StartGrab();
             Thread.Sleep(50);
+
             if (UseDelayStart)
                 MotionManager.Instance().MoveAxisX(AxisHandlerName, UnitName, TeachingPosType.Stage1_Scan_End, cameraGap);
             else
@@ -614,7 +616,7 @@ namespace Jastech.Framework.Winform.Forms
             LAFCtrl.SetTrackingOnOFF(false);
             Thread.Sleep(100);
             DeviceManager.Instance().LightCtrlHandler.TurnOff();
-
+            
             Logger.Write(LogType.GUI, "Clicked InpectionTeachingForm Grab Start Button");
         }
 
