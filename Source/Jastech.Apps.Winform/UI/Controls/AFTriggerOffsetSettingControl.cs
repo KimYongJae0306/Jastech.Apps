@@ -14,13 +14,18 @@ namespace Jastech.Apps.Winform.UI.Controls
 {
     public partial class AFTriggerOffsetSettingControl : UserControl
     {
+        #region 속성
         private Tab CurrentTab { get; set; } = null;
+        #endregion
 
+        #region 생성자
         public AFTriggerOffsetSettingControl()
         {
             InitializeComponent();
         }
+        #endregion
 
+        #region 메서드
         private void AFTriggerOffsetSettingControl_Load(object sender, EventArgs e)
         {
             UpdateData();
@@ -65,5 +70,6 @@ namespace Jastech.Apps.Winform.UI.Controls
             CurrentTab.LafTriggerOffset.Right = rightOffset;
             lblRightOffset.Text = rightOffset.ToString();
         }
+        #endregion
     }
 }

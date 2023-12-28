@@ -572,12 +572,12 @@ namespace Jastech.Framework.Winform.Forms
             if (UseDelayStart)
             {
                 LineCamera.InitGrabSettings(cameraGap);
-                ACSBufferManager.Instance().SetLafTriggerPosition(LAFCtrl.Name, LineCamera.TabScanBufferList, cameraGap);
+                ACSBufferManager.Instance().SetLafTriggerPosition(UnitName, LAFCtrl.Name, LineCamera.TabScanBufferList, cameraGap);
             }
             else
             {
                 LineCamera.InitGrabSettings();
-                ACSBufferManager.Instance().SetLafTriggerPosition(LAFCtrl.Name, LineCamera.TabScanBufferList, 0);
+                ACSBufferManager.Instance().SetLafTriggerPosition(UnitName, LAFCtrl.Name, LineCamera.TabScanBufferList, 0);
             }
 
             InitalizeInspTab(LineCamera.TabScanBufferList);
