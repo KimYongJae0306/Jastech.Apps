@@ -111,6 +111,8 @@ namespace Jastech.Framework.Winform.Forms
 
         private MarkControl MarkControl { get; set; } = null;
 
+        private AFTriggerOffsetSettingControl TriggerSettingControl { get; set; } = null;
+
         public LAFCtrl LAFCtrl { get; set; } = null;
 
         public bool UseAlignTeaching { get; set; } = true;
@@ -147,7 +149,9 @@ namespace Jastech.Framework.Winform.Forms
             TeachingData.Instance().UpdateTeachingData();
             TeachingData.Instance().GetUnit(UnitName.ToString()).GetTabList().Sort((x, y) => x.Index.CompareTo(y.Index));
             TeachingTabList = TeachingData.Instance().GetUnit(UnitName.ToString()).GetTabList();
+
             InitializeTabComboBox();
+
             AddControl();
             InitializeUI();
 
@@ -219,25 +223,35 @@ namespace Jastech.Framework.Winform.Forms
             AkkonControl.SetParams(CurrentTab);
             pnlTeach.Controls.Add(AkkonControl);
 
+            TriggerSettingControl = new AFTriggerOffsetSettingControl();
+            TriggerSettingControl.Dock = DockStyle.Fill;
+            pnlTeach.Controls.Add(TriggerSettingControl);
+
             OptimizeUIByTeachingItem();
         }
 
         private void OptimizeUIByTeachingItem()
         {
+            List<Button> buttonList = new List<Button>();
+
             if (UseAlignTeaching)
-                tlpTeachingItems.Controls.Add(btnAlign, 0, 1);
+                buttonList.Add(btnAlign);
             else
                 btnAlign.Visible = false;
 
             if (UseAkkonTeaching)
-                tlpTeachingItems.Controls.Add(btnAkkon, 0, 1);
+                buttonList.Add(btnAkkon);
             else
                 btnAkkon.Visible = false;
 
-            if (UseAlignTeaching && UseAkkonTeaching)
+            if (AppsConfig.Instance().EnableLafTrigger)
+                buttonList.Add(btnAFOffset);
+            else
+                btnAFOffset.Visible = false;
+
+            for (int i = 0; i < buttonList.Count(); i++)
             {
-                tlpTeachingItems.Controls.Add(btnAlign, 0, 1);
-                tlpTeachingItems.Controls.Add(btnAkkon, 0, 2);
+                tlpTeachingItems.Controls.Add(buttonList[i], 0, i + 1);
             }
         }
 
@@ -357,7 +371,12 @@ namespace Jastech.Framework.Winform.Forms
                     pnlTeach.Controls.Add(AkkonControl);
                     AkkonControl.DrawROI();
                     break;
+                case DisplayType.Trigger:
+                    btnAFOffset.BackColor = _selectedColor;
+                    TriggerSettingControl.SetParams(CurrentTab);
+                    pnlTeach.Controls.Add(TriggerSettingControl);
 
+                    break;
                 default:
                     break;
             }
@@ -751,7 +770,11 @@ namespace Jastech.Framework.Winform.Forms
                 AkkonControl.SetParams(CurrentTab);
                 AkkonControl.DrawROI();
             }
-
+            else if(_displayType == DisplayType.Trigger)
+            {
+                TriggerSettingControl.SetParams(CurrentTab);
+            }
+             
             GC.Collect();
         }
 
@@ -1200,6 +1223,12 @@ namespace Jastech.Framework.Winform.Forms
             return shapeList;
         }
         #endregion
+
+        private void btnAFOffset_Click(object sender, EventArgs e)
+        {
+            SelectPage(DisplayType.Trigger);
+            Logger.Write(LogType.GUI, "Clicked InpectionTeachingForm AF Trigger Button");
+        }
     }
 
     public enum DisplayType
@@ -1210,5 +1239,7 @@ namespace Jastech.Framework.Winform.Forms
 
         PreAlign,
         Calibration,
+
+        Trigger,
     }
 }
