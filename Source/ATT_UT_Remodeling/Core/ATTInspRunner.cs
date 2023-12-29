@@ -904,6 +904,8 @@ namespace ATT_UT_Remodeling.Core
                 {
                     header.Add($"Tab_{index + 1}");
                     header.Add($"Judge_{index + 1}");
+                    header.Add($"Min Count_{index + 1}");
+                    header.Add($"Max Count_{index + 1}");
                     header.Add($"Avg Count_{index + 1}");
                     header.Add($"Avg Length_{index + 1}");
                 }
@@ -923,11 +925,16 @@ namespace ATT_UT_Remodeling.Core
                 var tabInspResult = AppsInspResult.Instance().Get(tabNo);
                 var akkonResult = tabInspResult.AkkonResult;
 
+                int minCount = Math.Min(akkonResult.LeftCount_Min, akkonResult.RightCount_Min);
+                int maxCount = Math.Max(akkonResult.LeftCount_Max, akkonResult.RightCount_Max);
+
                 int avgCount = (akkonResult.LeftCount_Avg + akkonResult.RightCount_Avg) / 2;
                 float avgLength = (akkonResult.Length_Left_Avg_um + akkonResult.Length_Right_Avg_um) / 2.0F;
 
                 body.Add($"{tabInspResult.TabNo + 1}");                                     // Tab No
                 body.Add($"{akkonResult.Judgement}");                                       // Judge
+                body.Add($"{minCount}");                                                    // Min Count
+                body.Add($"{maxCount}");                                                    // Max Count
                 body.Add($"{avgCount}");                                                    // Average Count
                 body.Add($"{avgLength:F3}");                                                // Average Length
 
