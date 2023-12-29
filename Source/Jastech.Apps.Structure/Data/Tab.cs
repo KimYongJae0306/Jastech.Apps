@@ -234,10 +234,10 @@ namespace Jastech.Apps.Structure.Data
     {
         #region 속성
         [JsonProperty]
-        public double Left { get; set; } = 0.0;
+        public float Left { get; set; } = 0.0F;
 
         [JsonProperty]
-        public double Right { get; set; } = 0.0;
+        public float Right { get; set; } = 0.0F;
         #endregion
     }
 }
