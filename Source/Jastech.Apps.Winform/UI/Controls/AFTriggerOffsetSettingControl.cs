@@ -54,7 +54,7 @@ namespace Jastech.Apps.Winform.UI.Controls
             if (CurrentTab == null)
                 return;
 
-            double leftOffset = KeyPadHelper.SetLabelDoubleData((Label)sender);
+            float leftOffset = KeyPadHelper.SetLabelFloatData((Label)sender);
 
             CurrentTab.LafTriggerOffset.Left = leftOffset;
             lblLeftOffset.Text = leftOffset.ToString();
@@ -65,7 +65,7 @@ namespace Jastech.Apps.Winform.UI.Controls
             if (CurrentTab == null)
                 return;
 
-            double rightOffset = KeyPadHelper.SetLabelDoubleData((Label)sender);
+            float rightOffset = KeyPadHelper.SetLabelFloatData((Label)sender);
 
             CurrentTab.LafTriggerOffset.Right = rightOffset;
             lblRightOffset.Text = rightOffset.ToString();

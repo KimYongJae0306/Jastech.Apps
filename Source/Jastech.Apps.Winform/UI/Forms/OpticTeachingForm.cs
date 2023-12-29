@@ -823,8 +823,8 @@ namespace Jastech.Framework.Winform.Forms
 
             if (isRepeat)
             {
-                if (_repeatThread != null)
-                    return;
+                //if (_repeatThread != null)
+                //    return;
 
                 LineCamera.StopGrab();
                 LineCamera.IsLive = false;

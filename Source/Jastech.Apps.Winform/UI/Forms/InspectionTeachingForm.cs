@@ -744,6 +744,10 @@ namespace Jastech.Framework.Winform.Forms
         {
             var teachingData = TeachingData.Instance();
 
+            // 임시. Sleep 그랩 순서 변경해야함
+            // 마지막 Tab teachingData Add(Merge) 하기전에 GrabDone이 들어와서 생긴 문제
+            Thread.Sleep(100);
+
             if (teachingData.GetBufferImage(tabNo) is TeachingImageBuffer buffer)
             {
                 if (buffer.TabImage == null)
@@ -759,7 +763,7 @@ namespace Jastech.Framework.Winform.Forms
 
                 (cogImage as CogImage8Grey).Dispose();
             }
-
+      
             if (_displayType == DisplayType.Mark)
             {
                 MarkControl.SetParams(CurrentTab);
