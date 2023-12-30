@@ -173,7 +173,7 @@ namespace ATT_UT_IPAD.Core
                     //AutoRun 일때만 동작, List에 계속 add하고 런 완료 시 한꺼번에 Save하는 방식
                     getData = AkkonLAFCtrl.Status.MPosPulse;
                     MPosDataList.Add(getData);
-                    getData = AkkonLAFCtrl.Status.ReturnDb;
+                    getData = AkkonLAFCtrl.Status.ReturndB;
                     RetDataList.Add(getData);
                 }
                 Thread.Sleep(50);

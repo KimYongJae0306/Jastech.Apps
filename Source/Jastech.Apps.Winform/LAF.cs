@@ -121,7 +121,7 @@ namespace Jastech.Apps.Winform
                     status.IsBusy = Convert.ToBoolean(mbusy);
 
                 if (double.TryParse(GetValue(dataString, "ret:"), out double ret))
-                    status.ReturnDb = ret;
+                    status.ReturndB = ret;
 
                 status.IsLaserOn = laf.IsLaserOn;
                 status.IsTrackingOn = laf.IsTrackingOn;

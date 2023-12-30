@@ -438,7 +438,7 @@ namespace ATT_UT_Remodeling.Core
                 case SeqStep.SEQ_SEND_RESULT:
                     if (AppsConfig.Instance().EnableManualJudge && IsNg(AppsInspResult.Instance()))
                     {
-                        PlcControlManager.Instance().WriteManualJudge();
+                        PlcControlManager.Instance().WriteManualJudge(true);
                         WriteLog("Completed Send Plc ManualJudge", true);
                     }
                     else
