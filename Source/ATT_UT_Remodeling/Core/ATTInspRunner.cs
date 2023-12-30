@@ -635,19 +635,38 @@ namespace ATT_UT_Remodeling.Core
         {
             var inspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
             double resolution = LineCamera.Camera.PixelResolution_um / LineCamera.Camera.LensScale;
+
+            bool inspAkkonResult = true;
+            bool inspAlignResult = true;
             bool inspFinalResult = true;
+
             for (int tabNo = 0; tabNo < inspModel.TabCount; tabNo++)
             {
                 var tabInspResult = AppsInspResult.Instance().Get(tabNo);
                 TabJudgement judgement = GetJudgemnet(tabInspResult);
                 PlcControlManager.Instance().WriteTabResult(tabNo, judgement, tabInspResult.AlignResult, tabInspResult.AkkonResult, tabInspResult.MarkResult, resolution);
 
-                if (judgement.Equals(TabJudgement.OK) == false)
-                    inspFinalResult = false;
+                //if (judgement.Equals(TabJudgement.OK) == false)
+                //    inspFinalResult = false;
+
+                if (tabInspResult.AkkonResult.Judgement.Equals(Judgement.OK) == false)
+                    inspAkkonResult = false;
+
+                if (tabInspResult.AlignResult.Judgement.Equals(Judgement.OK) == false)
+                    inspAkkonResult = false;
+
                 Thread.Sleep(20);
             }
+            if (AppsConfig.Instance().EnableAkkonByPass)
+                inspAkkonResult = true;
 
-            if(inspFinalResult)
+            if (AppsConfig.Instance().EnableAlignByPass)
+                inspAlignResult = true;
+
+            if (inspAkkonResult == false || inspAlignResult == false)
+                inspFinalResult = false;
+
+            if (inspFinalResult)
                 PlcControlManager.Instance().WritePcStatus(PlcCommand.StartInspection);
             else
                 PlcControlManager.Instance().WritePcStatus(PlcCommand.StartInspection, true);

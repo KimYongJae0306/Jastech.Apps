@@ -1060,7 +1060,7 @@ namespace Jastech.Apps.Winform
             return position;
         }
 
-        public void WriteManualJudge()
+        public void WriteManualJudge(bool manualFlag)
         {
             var map = GetAddressMap(PlcCommonMap.PLC_ManualMatch);
             if (DeviceManager.Instance().PlcHandler.Count > 0 && map != null)
@@ -1069,11 +1069,20 @@ namespace Jastech.Apps.Winform
 
                 PlcDataStream stream = new PlcDataStream();
 
-                if (plc.MelsecParser.ParserType == ParserType.Binary)
-                    stream.AddSwap16BitData(5);
+                if(manualFlag == true)
+                {
+                    if (plc.MelsecParser.ParserType == ParserType.Binary)
+                        stream.AddSwap16BitData(5);
+                    else
+                        stream.Add16BitData(5);
+                }
                 else
-                    stream.Add16BitData(5);
-
+                {
+                    if (plc.MelsecParser.ParserType == ParserType.Binary)
+                        stream.AddSwap16BitData(0);
+                    else
+                        stream.Add16BitData(0);
+                }
                 plc.Write("D" + map.AddressNum, stream.Data);
             }
         }

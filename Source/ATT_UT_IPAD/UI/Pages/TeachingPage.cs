@@ -43,7 +43,6 @@ namespace ATT_UT_IPAD.UI.Pages
             form.InspModelService = ATTInspModelService;
             form.OpenMotionPopupEventHandler += OpenMotionPopupEventHandler;
             form.CloseMotionPopupEventHandler += CloseMotionPopupEventHandler;
-
             form.ShowDialog();
 
             Logger.Write(LogType.GUI, "Clicked Align Camera Setting Dialog");

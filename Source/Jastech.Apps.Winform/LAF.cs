@@ -78,7 +78,6 @@ namespace Jastech.Apps.Winform
 
         public void RequestStatusData(CancellationTokenSource cancellationTokenSource)
         {
-
             while (true)
             {
                 if (cancellationTokenSource.IsCancellationRequested)
@@ -87,10 +86,10 @@ namespace Jastech.Apps.Winform
                 if (LafCtrl is NuriOneLAFCtrl laf)
                 {
                     // cog, mpos, ls1, ls2 값 동시 요청
-                    string command = "uc rep cog mpos ls1 ls2 mbusy";
+                    string command = "uc rep cog mpos ls1 ls2 ret mbusy";
                     laf.RequestData(command);
                 }
-                Thread.Sleep(150);
+                Thread.Sleep(100); //원래 150ms
             }
         }
 
@@ -120,6 +119,9 @@ namespace Jastech.Apps.Winform
                 }
                 if (int.TryParse(GetValue(dataString, "mbusy:"), out int mbusy))
                     status.IsBusy = Convert.ToBoolean(mbusy);
+
+                if (double.TryParse(GetValue(dataString, "ret:"), out double ret))
+                    status.ReturnDb = ret;
 
                 status.IsLaserOn = laf.IsLaserOn;
                 status.IsTrackingOn = laf.IsTrackingOn;

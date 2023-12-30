@@ -55,6 +55,8 @@ namespace ATT_UT_IPAD.Core
         private Thread _saveThread { get; set; } = null;
 
         private Thread _updateThread { get; set; } = null;
+
+        private Thread _getLAFDataThread { get; set; } = null;
         #endregion
 
         #region 속성
@@ -79,6 +81,8 @@ namespace ATT_UT_IPAD.Core
         private bool IsAlignGrabDone { get; set; } = false;
 
         private Stopwatch LastInspSW { get; set; } = new Stopwatch();
+        private List<double> MPosDataList { get; set; } = new List<double>();
+        private List<double> RetDataList { get; set; } = new List<double>();
 
         public InspProcessTask InspProcessTask { get; set; } = new InspProcessTask();
         #endregion
@@ -114,11 +118,11 @@ namespace ATT_UT_IPAD.Core
 
         private void ATTSeqRunner_GrabDoneEventHandler(string cameraName, bool isGrabDone)
         {
-            if(AkkonCamera.Camera.Name == cameraName)
+            if (AkkonCamera.Camera.Name == cameraName)
             {
                 IsAkkonGrabDone = isGrabDone;
 
-                if(IsAkkonGrabDone)
+                if (IsAkkonGrabDone)
                 {
                     AkkonCamera.StopGrab();
 
@@ -146,6 +150,36 @@ namespace ATT_UT_IPAD.Core
             }
         }
 
+        public void StartGetLAFDataThread()
+        {
+            if (_getLAFDataThread == null)
+            {
+                _getLAFDataThread = new Thread(getLAFData);
+                _getLAFDataThread.Start();
+            }
+        }
+        public void StopGetLAFDataThread()
+        {
+            _getLAFDataThread.Abort();
+            _getLAFDataThread = null;
+        }
+        private void getLAFData()
+        {
+            double getData = 0;
+            while (true)
+            {
+                if (AppsStatus.Instance().IsInspRunnerFlagFromPlc == true)
+                {
+                    //AutoRun 일때만 동작, List에 계속 add하고 런 완료 시 한꺼번에 Save하는 방식
+                    getData = AkkonLAFCtrl.Status.MPosPulse;
+                    MPosDataList.Add(getData);
+                    getData = AkkonLAFCtrl.Status.ReturnDb;
+                    RetDataList.Add(getData);
+                }
+                Thread.Sleep(50);
+            }
+        }
+
         public void StartSeqTask()
         {
             if (SeqTask != null)
@@ -168,7 +202,7 @@ namespace ATT_UT_IPAD.Core
 
         public void StartUpdateThread()
         {
-            if(_updateThread == null)
+            if (_updateThread == null)
             {
                 _updateThread = new Thread(UpdateUI);
                 _updateThread.Start();
@@ -236,12 +270,13 @@ namespace ATT_UT_IPAD.Core
 
             InspProcessTask.StartTask();
             StartSeqTask();
+            StartGetLAFDataThread();
         }
 
         public void Release()
         {
             StopDevice();
-
+            StopGetLAFDataThread();
             InspProcessTask.StopTask();
             StopSeqTask();
         }
@@ -379,8 +414,11 @@ namespace ATT_UT_IPAD.Core
                     if (AppsStatus.Instance().IsInspRunnerFlagFromPlc == false)
                         break;
 
-                    AppsStatus.Instance().IsInspRunnerRunning = true;
+                    MPosDataList.Clear();
+                    RetDataList.Clear();
 
+                    AppsStatus.Instance().IsInspRunnerRunning = true;
+             
                     WriteLog("Receive Inspection Start Signal From PLC.", true);
 
                     if (PlcControlManager.Instance().GetValue(PlcCommonMap.PLC_RunMode) == "2")
@@ -424,17 +462,17 @@ namespace ATT_UT_IPAD.Core
                     IsAkkonGrabDone = false;
                     IsAlignGrabDone = false;
 
-                    if(unit.LightParam != null)
+                    if (unit.LightParam != null)
                     {
                         LightCtrlHandler.TurnOn(unit.LightParam);
                         WriteLog("Light Turn On.", true);
                     }
 
                     AkkonCamera.StartGrab();
-                   
+
                     WriteLog("Start Akkon LineScanner Grab.", true);
 
-                    if(AppsConfig.Instance().EnableTest1 == false)
+                    if (AppsConfig.Instance().EnableTest1 == false)
                     {
                         AlignCamera.StartGrab();
                         WriteLog("Start Align LineScanner Grab.", true);
@@ -488,7 +526,7 @@ namespace ATT_UT_IPAD.Core
                 case SeqStep.SEQ_WAITING_INSPECTION_DONE:
                     if (IsInspAkkonDone() == false)
                         break;
-              
+
                     if (IsInspAlignDone() == false)
                         break;
 
@@ -507,7 +545,7 @@ namespace ATT_UT_IPAD.Core
                 case SeqStep.SEQ_SEND_RESULT:
                     if (AppsConfig.Instance().EnableManualJudge && IsNg(AppsInspResult.Instance()))
                     {
-                        PlcControlManager.Instance().WriteManualJudge();
+                        PlcControlManager.Instance().WriteManualJudge(true);
                         WriteLog("Completed Send Plc ManualJudge", true);
                     }
                     else
@@ -541,7 +579,7 @@ namespace ATT_UT_IPAD.Core
                     SetManualJudgeData(unit, AppsInspResult.Instance());
                     SystemManager.Instance().ShowManualJugdeForm();
                     WriteLog("Show Manual Judge Form", false);
-
+                    PlcControlManager.Instance().WriteManualJudge(false);
                     SeqStep = SeqStep.SEQ_MANUAL_JUDGE_COMPLETED;
                     break;
 
@@ -599,7 +637,7 @@ namespace ATT_UT_IPAD.Core
                     break;
 
                 case SeqStep.SEQ_PLC_IDLERUN:
-                    if(MoveTo(TeachingPosType.Stage1_Scan_End, out errorMessage) == false)
+                    if (MoveTo(TeachingPosType.Stage1_Scan_End, out errorMessage) == false)
                     {
                         WriteLog("Idle Run sequence timed out", true);
                         SeqStop();
@@ -636,16 +674,16 @@ namespace ATT_UT_IPAD.Core
                         var tab = inspModel.GetUnit(UnitName.Unit0).GetTab(tabNo);
 
                         // Overlay Image
-                        if(tabResult.AkkonInspMatImage != null)
+                        if (tabResult.AkkonInspMatImage != null)
                         {
                             Mat resultMat = GetResultImage(tabResult.AkkonInspMatImage, tabResult.AkkonResult.LeadResultList, tab.AkkonParam.AkkonAlgoritmParam, ref tabResult.AkkonNGAffineList);
-                            
+
                             ICogImage cogImage = ConvertCogColorImage(resultMat);
 
                             tabResult.AkkonResultCogImage = cogImage;
 
                             resultMat.Dispose();
-                            
+
                             // AkkonInspCogImage
                             tabResult.AkkonInspCogImage = ConvertCogGrayImage(tabResult.AkkonInspMatImage);
                         }
@@ -662,7 +700,7 @@ namespace ATT_UT_IPAD.Core
         private string GetCellID()
         {
             string cellId = PlcControlManager.Instance().GetAddressMap(PlcCommonMap.PLC_Cell_Id).Value;
-            
+
             if (cellId == "0" || cellId == null || cellId == "")
                 return DateTime.Now.ToString("yyyyMMddHHmmss");
             else
@@ -697,6 +735,8 @@ namespace ATT_UT_IPAD.Core
         {
             var inspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
             double resolution = AkkonCamera.Camera.PixelResolution_um / AkkonCamera.Camera.LensScale;
+            bool inspAkkonResult = true;
+            bool inspAlignResult = true;
             bool inspFinalResult = true;
 
             for (int tabNo = 0; tabNo < inspModel.TabCount; tabNo++)
@@ -706,11 +746,26 @@ namespace ATT_UT_IPAD.Core
                 TabJudgement judgement = GetJudgemnet(akkonTabInspResult, alignTabInspResult);
                 PlcControlManager.Instance().WriteTabResult(tabNo, judgement, alignTabInspResult.AlignResult, akkonTabInspResult.AkkonResult, alignTabInspResult.MarkResult, resolution);
 
-                if (judgement.Equals(TabJudgement.OK) == false)
-                    inspFinalResult = false;
+                //if (judgement.Equals(TabJudgement.OK) == false)
+                //    inspFinalResult = false;
+
+                if (akkonTabInspResult.AkkonResult.Judgement.Equals(Judgement.OK) == false)
+                    inspAkkonResult = false;
+
+                if (alignTabInspResult.AlignResult.Judgement.Equals(Judgement.OK) == false)
+                    inspAlignResult = false;
 
                 Thread.Sleep(20);
             }
+
+            if (AppsConfig.Instance().EnableAkkonByPass)
+                inspAkkonResult = true;
+
+            if (AppsConfig.Instance().EnableAlignByPass)
+                inspAlignResult = true;
+
+            if (inspAkkonResult == false || inspAlignResult == false)
+                inspFinalResult = false;
 
             if (inspFinalResult)
                 PlcControlManager.Instance().WritePcStatus(PlcCommand.StartInspection);
@@ -745,7 +800,7 @@ namespace ATT_UT_IPAD.Core
 
         public void StartSaveThread()
         {
-            if(_saveThread == null)
+            if (_saveThread == null)
             {
                 _saveThread = new Thread(SaveImage);
                 _saveThread.Start();
@@ -758,7 +813,6 @@ namespace ATT_UT_IPAD.Core
             InspProcessTask.InitalizeInspAkkonBuffer(AkkonCamera.Camera.Name, AkkonCamera.TabScanBufferList);
             ACSBufferManager.Instance().SetLafTriggerPosition(UnitName.Unit0, AkkonLAFCtrl.Name, AkkonCamera.TabScanBufferList, 0);
 
-            //
             float akkonToAlignGap_mm = AppsConfig.Instance().CameraGap_mm;
             AlignCamera.InitGrabSettings(akkonToAlignGap_mm);
             InspProcessTask.InitalizeInspAlignBuffer(AlignCamera.Camera.Name, AlignCamera.TabScanBufferList);
@@ -845,6 +899,35 @@ namespace ATT_UT_IPAD.Core
             return value.ToString();
         }
 
+        private double GetPanelMarkToMarkDistance(TabInspResult tabInspResult)
+        {
+            var lineCamera = LineCameraManager.Instance().GetLineCamera("AlignCamera").Camera;
+            float resolution_um = lineCamera.PixelResolution_um / lineCamera.LensScale;
+
+            var leftPanelMarkOriginPoint = tabInspResult.MarkResult.PanelMark.FoundedMark.Left.MaxMatchPos.FoundPos;
+            var rightPanelMarkOriginPoint = tabInspResult.MarkResult.PanelMark.FoundedMark.Right.MaxMatchPos.FoundPos;
+
+            var panelDistance = MathHelper.GetDistance(leftPanelMarkOriginPoint, rightPanelMarkOriginPoint);
+            panelDistance = Math.Round(panelDistance * resolution_um, 1, MidpointRounding.AwayFromZero);
+            
+
+            return panelDistance;
+        }
+
+        private double GetCOFMarkToMarkDistance(TabInspResult tabInspResult)
+        {
+            var lineCamera = LineCameraManager.Instance().GetLineCamera("AlignCamera").Camera;
+            float resolution_um = lineCamera.PixelResolution_um / lineCamera.LensScale;
+
+            var leftFpcMarkOriginPoint = tabInspResult.MarkResult.FpcMark.FoundedMark.Left.MaxMatchPos.FoundPos;
+            var rightFpcMarkOriginPoint = tabInspResult.MarkResult.FpcMark.FoundedMark.Right.MaxMatchPos.FoundPos;
+
+            var cofDistance = MathHelper.GetDistance(leftFpcMarkOriginPoint, rightFpcMarkOriginPoint);
+            cofDistance = Math.Round(cofDistance * resolution_um, 1, MidpointRounding.AwayFromZero);
+
+            return cofDistance;
+        }
+
         private void UpdateAkkonDailyInfo(ref DailyData dailyData)
         {
             int tabCount = (ModelManager.Instance().CurrentModel as AppsInspModel).TabCount;
@@ -894,11 +977,15 @@ namespace ATT_UT_IPAD.Core
             SaveAlignResult(path, inspModel.TabCount);
             SaveAkkonResult(path, inspModel.TabCount);
             SaveUPHResult(path, inspModel.TabCount);
+            SaveAxisZMposData(path);
+            SaveRetData(path);
+            SaveMarkToMarkDistanceData(path, inspModel.TabCount);
+            SaveMarkScoreData(path, inspModel.TabCount);
 
             if (AppsConfig.Instance().EnableAkkonLeadResultLog == true)
                 SaveAkkonLeadResults(path, inspModel.TabCount);
 
-            if(AppsConfig.Instance().EnableMsaSummary == true)
+            if (AppsConfig.Instance().EnableMsaSummary == true)
             {
                 SaveAkkonResultAsMsaSummary(path, inspModel.TabCount);
                 SaveAlignResultAsMsaSummary(path, inspModel.TabCount);
@@ -1214,6 +1301,232 @@ namespace ATT_UT_IPAD.Core
             }
         }
 
+        private void SaveAxisZMposData(string resultPath)
+        {
+            string csvFile = Path.Combine(resultPath, "MPosData.csv");
+            if (File.Exists(csvFile) == false)
+            {
+                List<string> header = new List<string>
+                {
+                    "Inspection Time",
+                    "Panel ID",
+                    "Stage No",
+                    "Z Mpos",
+                };
+                CSVHelper.WriteHeader(csvFile, header);
+            }
+
+            List<string> body = new List<string>();
+
+            var programType = StringHelper.StringToEnum<ProgramType>(AppsConfig.Instance().ProgramType);
+            body.Add($"{AppsInspResult.Instance().EndInspTime:HH:mm:ss}");                  // Insp Time
+            body.Add($"{AppsInspResult.Instance().Cell_ID}");                               // Panel ID
+            body.Add($"{(int)programType + 1}");                                            // Stage No
+
+            for (int dataCount = 0; dataCount < MPosDataList.Count; dataCount++)
+            {
+                string mpos = Convert.ToString(MPosDataList[dataCount]);
+                body.Add($"{mpos}");
+            }
+
+            CSVHelper.WriteData(csvFile, body);
+        }
+        private void SaveRetData(string resultPath)
+        {
+            string csvFile = Path.Combine(resultPath, "RetData.csv");
+            if (File.Exists(csvFile) == false)
+            {
+                List<string> header = new List<string>
+                {
+                    "Inspection Time",
+                    "Panel ID",
+                    "Stage No",
+                    "Ret",
+                };
+                CSVHelper.WriteHeader(csvFile, header);
+            }
+
+            List<string> body = new List<string>();
+
+            var programType = StringHelper.StringToEnum<ProgramType>(AppsConfig.Instance().ProgramType);
+            body.Add($"{AppsInspResult.Instance().EndInspTime:HH:mm:ss}");                  // Insp Time
+            body.Add($"{AppsInspResult.Instance().Cell_ID}");                               // Panel ID
+            body.Add($"{(int)programType + 1}");                                            // Stage No
+
+            for (int dataCount = 0; dataCount < RetDataList.Count; dataCount++)
+            {
+                string ret = Convert.ToString(RetDataList[dataCount]);
+                body.Add($"{ret}");
+            }
+
+            CSVHelper.WriteData(csvFile, body);
+        }
+
+        private void SaveMarkToMarkDistanceData(string resultPath,int tabCount)
+        {
+            string csvFile = Path.Combine(resultPath, "MarkToMarkDistanceData.csv");
+            if (File.Exists(csvFile) == false)
+            {
+                List<string> header = new List<string>
+                {
+                    "Inspection Time",
+                    "Panel ID",
+                    "Stage No",
+                };
+                for (int index = 0; index < tabCount; index++)
+                {
+                    header.Add($"Tab");
+                    header.Add($"Judge");
+                    header.Add($"Panel");
+                    header.Add($"COF");
+                }
+
+                CSVHelper.WriteHeader(csvFile, header);
+            }
+
+            List<string> body = new List<string>();
+
+            var programType = StringHelper.StringToEnum<ProgramType>(AppsConfig.Instance().ProgramType);
+            body.Add($"{AppsInspResult.Instance().EndInspTime:HH:mm:ss}");                  // Insp Time
+            body.Add($"{AppsInspResult.Instance().Cell_ID}");                               // Panel ID
+            body.Add($"{(int)programType + 1}");                                            // Stage No
+
+            for (int tabNo = 0; tabNo < tabCount; tabNo++)
+            {
+                var tabInspResult = AppsInspResult.Instance().GetAlign(tabNo);
+                var alignResult = tabInspResult.AlignResult;
+
+                var panelDistance = GetPanelMarkToMarkDistance(tabInspResult);
+                var cofDistance = GetCOFMarkToMarkDistance(tabInspResult);
+
+                body.Add($"{tabInspResult.TabNo + 1}");                                     // Tab No
+                body.Add($"{alignResult.Judgement}");                                       // Judge
+                body.Add($"{panelDistance}");                                               // Panel Mark to Mark Distance
+                body.Add($"{cofDistance}");                                                 // COF Mark to Mark Distance
+            }
+
+            CSVHelper.WriteData(csvFile, body);
+
+        }
+
+        private void SaveMarkScoreData(string resultPath, int tabCount)
+        {
+            string csvFile = Path.Combine(resultPath, "MarkScoreData.csv");
+            if (File.Exists(csvFile) == false)
+            {
+                List<string> header = new List<string>
+                {
+                    "Inspection Time",
+                    "Panel ID",
+                    "Stage No",
+                };
+                for (int index = 0; index < tabCount; index++)
+                {
+                    header.Add($"Tab");
+                    header.Add($"Judge");
+                    header.Add($"Akkon Left Panel Mark");
+                    header.Add($"Judge");
+                    header.Add($"Akkon Right Panel Mark");
+                    header.Add($"Judge");
+                    header.Add($"Align Left Panel Mark");
+                    header.Add($"Judge");
+                    header.Add($"Align Right Panel Mark");
+                    header.Add($"Judge");
+                    header.Add($"Align Left COF Mark");
+                    header.Add($"Judge");
+                    header.Add($"Align Right COF Mark");
+                }
+
+                CSVHelper.WriteHeader(csvFile, header);
+            }
+
+            List<string> body = new List<string>();
+
+            var programType = StringHelper.StringToEnum<ProgramType>(AppsConfig.Instance().ProgramType);
+            body.Add($"{AppsInspResult.Instance().EndInspTime:HH:mm:ss}");                  // Insp Time
+            body.Add($"{AppsInspResult.Instance().Cell_ID}");                               // Panel ID
+            body.Add($"{(int)programType + 1}");                                            // Stage No
+
+            for (int tabNo = 0; tabNo < tabCount; tabNo++)
+            {
+                var tabAlignInspResult = AppsInspResult.Instance().GetAlign(tabNo);
+                var tabAkkonInspResult = AppsInspResult.Instance().GetAkkon(tabNo);
+
+                var leftAkkonPanelMarkScore = 0.0;
+                var leftAkkonPanelMarkJudge = Judgement.FAIL;
+                var rightAkkonPanelMarkScore = 0.0;
+                var rightAkkonPanelMarkJudge = Judgement.FAIL;
+                var leftAlignPanelMarkScore = 0.0;
+                var leftAlignPanelMarkJudge = Judgement.FAIL;
+                var rightAlignPanelMarkScore = 0.0;
+                var rightAlignPanelMarkJudge = Judgement.FAIL;
+                var leftAlignFpcMarkScore = 0.0;
+                var leftAlignFpcMarkJudge = Judgement.FAIL;
+                var rightAlignFpcMarkScore = 0.0;
+                var rightAlignFpcMarkJudge = Judgement.FAIL;
+
+                //Akkon Panel Mark Left Score&Judge
+                if (tabAkkonInspResult.MarkResult.PanelMark.Judgement != Judgement.FAIL && tabAkkonInspResult.MarkResult.PanelMark.FoundedMark != null)
+                {
+                    leftAkkonPanelMarkScore = tabAkkonInspResult.MarkResult.PanelMark.FoundedMark.Left.MaxMatchPos.Score;
+                    leftAkkonPanelMarkJudge = tabAkkonInspResult.MarkResult.PanelMark.FoundedMark.Left.Judgement;
+                }
+
+                //Akkon Panel Mark Right Score&Judge
+                if (tabAkkonInspResult.MarkResult.PanelMark.Judgement != Judgement.FAIL && tabAkkonInspResult.MarkResult.PanelMark.FoundedMark != null)
+                {
+                    rightAkkonPanelMarkScore = tabAkkonInspResult.MarkResult.PanelMark.FoundedMark.Right.MaxMatchPos.Score;
+                    rightAkkonPanelMarkJudge = tabAkkonInspResult.MarkResult.PanelMark.FoundedMark.Right.Judgement;
+                }
+
+                //Align Panel Mark Left Score&Judge
+                if (tabAlignInspResult.MarkResult.PanelMark.Judgement != Judgement.FAIL && tabAlignInspResult.MarkResult.PanelMark.FoundedMark != null)
+                {
+                    leftAlignPanelMarkScore = tabAlignInspResult.MarkResult.PanelMark.FoundedMark.Left.MaxMatchPos.Score;
+                    leftAlignPanelMarkJudge = tabAlignInspResult.MarkResult.PanelMark.FoundedMark.Left.Judgement;
+                }
+
+                //Align Panel Mark Right Score&Judge
+                if (tabAlignInspResult.MarkResult.PanelMark.Judgement != Judgement.FAIL && tabAlignInspResult.MarkResult.PanelMark.FoundedMark != null)
+                {
+                    rightAlignPanelMarkScore = tabAlignInspResult.MarkResult.PanelMark.FoundedMark.Right.MaxMatchPos.Score;
+                    rightAlignPanelMarkJudge = tabAlignInspResult.MarkResult.PanelMark.FoundedMark.Right.Judgement;
+                }
+
+                //Align COF Mark Left Score&Judge
+                if (tabAlignInspResult.MarkResult.FpcMark.Judgement != Judgement.FAIL && tabAlignInspResult.MarkResult.FpcMark.FoundedMark != null)
+                {
+                    leftAlignFpcMarkScore = tabAlignInspResult.MarkResult.FpcMark.FoundedMark.Left.MaxMatchPos.Score;
+                    leftAlignFpcMarkJudge = tabAlignInspResult.MarkResult.FpcMark.FoundedMark.Left.Judgement;
+                }
+
+                //Align COF Mark Right Score&Judge
+                if (tabAlignInspResult.MarkResult.FpcMark.Judgement != Judgement.FAIL && tabAlignInspResult.MarkResult.FpcMark.FoundedMark != null)
+                {
+                    rightAlignFpcMarkScore = tabAlignInspResult.MarkResult.FpcMark.FoundedMark.Right.MaxMatchPos.Score;
+                    rightAlignFpcMarkJudge = tabAlignInspResult.MarkResult.FpcMark.FoundedMark.Right.Judgement;
+                }
+
+
+                body.Add($"{tabAlignInspResult.TabNo + 1}");                                     // Tab No
+                body.Add($"{leftAkkonPanelMarkJudge}");                                          // Judge
+                body.Add($"{leftAkkonPanelMarkScore}");                                          // Akkon Panel Left
+                body.Add($"{rightAkkonPanelMarkJudge}");                                         // Judge
+                body.Add($"{rightAkkonPanelMarkScore}");                                         // Akkon Panel Right
+                body.Add($"{leftAlignPanelMarkJudge}");                                          // Judge
+                body.Add($"{leftAlignPanelMarkScore}");                                          // Align Panel Left
+                body.Add($"{rightAlignPanelMarkJudge}");                                         // Judge
+                body.Add($"{rightAlignPanelMarkScore}");                                         // Align Panel Right
+                body.Add($"{leftAlignFpcMarkJudge}");                                            // Judge
+                body.Add($"{leftAlignFpcMarkScore}");                                            // Align COF Left
+                body.Add($"{rightAlignFpcMarkJudge}");                                           // Judge
+                body.Add($"{rightAlignFpcMarkScore}");                                           // Align COF Right
+            }
+
+            CSVHelper.WriteData(csvFile, body);
+
+        }
+
         private double CheckAlignResultValue(AlignResult alignResult)
         {
             float resolution = AlignCamera.Camera.PixelResolution_um / AlignCamera.Camera.LensScale;
@@ -1266,7 +1579,7 @@ namespace ATT_UT_IPAD.Core
 
             if (teachingPos == TeachingPosType.Stage1_Scan_End)
                 cameraGap = AppsConfig.Instance().CameraGap_mm;
-                
+
             if (manager.IsAxisInPosition(UnitName.Unit0, teachingPos, axis, cameraGap) == false)
             {
                 Stopwatch sw = new Stopwatch();
@@ -1274,7 +1587,7 @@ namespace ATT_UT_IPAD.Core
 
                 manager.StartAbsoluteMove(UnitName.Unit0, teachingPos, axis, cameraGap);
 
-                if(isEnableInPosition)
+                if (isEnableInPosition)
                 {
                     while (manager.IsAxisInPosition(UnitName.Unit0, teachingPos, axis, cameraGap) == false)
                     {
@@ -1338,7 +1651,7 @@ namespace ATT_UT_IPAD.Core
                 }
 
                 int blobCount = 0;
-   
+
                 foreach (var blob in result.BlobList)
                 {
                     Rectangle rectRect = new Rectangle();
@@ -1351,7 +1664,7 @@ namespace ATT_UT_IPAD.Core
                     int radius = rectRect.Width > rectRect.Height ? rectRect.Width : rectRect.Height;
 
                     int size = blob.BoundingRect.Width * blob.BoundingRect.Height;
-            
+
                     if (blob.IsAkkonShape)
                     {
                         blobCount++;
@@ -1448,7 +1761,7 @@ namespace ATT_UT_IPAD.Core
                 for (int tabNo = 0; tabNo < inspModel.TabCount; tabNo++)
                 {
                     string path = GetResultPath();
-                    
+
                     SaveResultImage(Path.Combine(path, "Akkon"), tabNo, true);
                     SaveResultImage(Path.Combine(path, "Align"), tabNo, false);
                 }
@@ -1524,7 +1837,7 @@ namespace ATT_UT_IPAD.Core
                 }
             }
 
-            if(isAkkonResult == false)
+            if (isAkkonResult == false)
                 SaveAlignResult(tabInspResult, resultPath);
         }
 
@@ -1538,15 +1851,15 @@ namespace ATT_UT_IPAD.Core
             if (Directory.Exists(savePath) == false)
                 Directory.CreateDirectory(savePath);
 
-            if(tabInspResult.AlignResult.CenterImage != null)
+            if (tabInspResult.AlignResult.CenterImage != null)
             {
                 string fileName = string.Format("Center_Align_Tab_{0}.jpeg", tabInspResult.TabNo);
                 string filePath = Path.Combine(savePath, fileName);
                 VisionProImageHelper.Save(tabInspResult.AlignResult.CenterImage, filePath);
             }
-            
+
             var leftAlignShapeList = tabInspResult.GetLeftAlignShapeList();
-            if(leftAlignShapeList.Count() > 0)
+            if (leftAlignShapeList.Count() > 0)
             {
                 PointF offset = new PointF();
                 Mat cropLeftImage = GetAlignResultImage(tabInspResult, leftAlignShapeList, out offset);
@@ -1821,10 +2134,10 @@ namespace ATT_UT_IPAD.Core
                 string logPath = ConfigSet.Instance().Path.Log;
 
                 int capacity = ConfigSet.Instance().Operation.DataStoringCapacity;
-                
+
                 DeleteDirectoryByCapacity(Path.Combine(resultPath, inspModel.Name), capacity);
                 DeleteDirectoryByCapacity(logPath, capacity);
-                
+
                 int duration = ConfigSet.Instance().Operation.DataStoringDuration;
                 FileHelper.DeleteFilesInDirectory(resultPath, ".*", duration);
                 FileHelper.DeleteFilesInDirectory(logPath, ".*", duration);
@@ -1951,7 +2264,7 @@ namespace ATT_UT_IPAD.Core
                 if (akkonResult == Judgement.NG)
                     isNg = true;
             }
-            
+
             return isNg;
         }
 

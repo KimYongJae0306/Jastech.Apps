@@ -529,6 +529,7 @@
             this.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.Name = "ManualMatchingForm";
             this.Text = "ManualMatchingForm";
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.ManualMatchingForm_FormClosed);
             this.Load += new System.EventHandler(this.ManualMatchingForm_Load);
             this.pnlManualMatching.ResumeLayout(false);
             this.tlpManualMatching.ResumeLayout(false);
