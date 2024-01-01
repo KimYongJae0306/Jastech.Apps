@@ -750,28 +750,5 @@ namespace Jastech.Apps.Winform.UI.Controls
         {
         }
         #endregion
-
-        private void lblPMAlign_Click(object sender, EventArgs e)
-        {
-            //var display = TeachingUIManager.Instance().TeachingDisplayControl.GetDisplay();
-            //var currentParam = ParamControl.GetCurrentParam();
-            //CogPMAlignToolForm form = new CogPMAlignToolForm();
-            //form.Initialize(currentParam, display.GetImage());
-            //if (form.ShowDialog() == DialogResult.OK)
-            //{
-            //    currentParam = form.GetCurrentParam().DeepCopy();
-            //    MarkParam param = new MarkParam();
-            //    param.Name = _curMarkName;
-            //    param.Direction = _curDirection;
-            //    param.InspParam = currentParam;
-            //    if (_curMaterial == Material.Fpc) 
-            //        CurrentTab.GetMarkParamter(UseAlignCamMark).SetFPCMark(_curDirection, _curMarkName, param);
-            //    else
-            //        CurrentTab.GetMarkParamter(UseAlignCamMark).SetPanelMark(_curDirection, _curMarkName, param);
-
-            //    ParamControl?.UpdateData(currentParam);
-            //    DrawROI();
-            //}
-        }
     }
 }

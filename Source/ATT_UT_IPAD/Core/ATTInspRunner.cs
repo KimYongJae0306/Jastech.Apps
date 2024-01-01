@@ -154,16 +154,18 @@ namespace ATT_UT_IPAD.Core
         {
             if (_getLAFDataThread == null)
             {
-                _getLAFDataThread = new Thread(getLAFData);
+                _getLAFDataThread = new Thread(GetLAFData);
                 _getLAFDataThread.Start();
             }
         }
+
         public void StopGetLAFDataThread()
         {
             _getLAFDataThread.Abort();
             _getLAFDataThread = null;
         }
-        private void getLAFData()
+
+        private void GetLAFData()
         {
             double getData = 0;
             while (true)
