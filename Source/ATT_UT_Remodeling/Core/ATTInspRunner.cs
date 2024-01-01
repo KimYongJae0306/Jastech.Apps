@@ -1487,7 +1487,7 @@ namespace ATT_UT_Remodeling.Core
                 PointF offset = new PointF();
                 Mat cropLeftImage = GetAlignResultImage(tabInspResult, leftAlignShapeList, out offset);
 
-                string orgFileName = string.Format("Left_Align_Tab_{0}_Org.bmp", tabInspResult.TabNo);
+                string orgFileName = string.Format("Left_Align_Tab_{0}_Org.jepg", tabInspResult.TabNo);
                 string orgFilePath = Path.Combine(savePath, orgFileName);
                 cropLeftImage?.Save(orgFilePath);
 
@@ -1522,7 +1522,7 @@ namespace ATT_UT_Remodeling.Core
                 PointF offset = new PointF();
                 Mat cropRightImage = GetAlignResultImage(tabInspResult, rightAlignShapeList, out offset);
 
-                string orgFileName = string.Format("Right_Align_Tab_{0}_Org.bmp", tabInspResult.TabNo);
+                string orgFileName = string.Format("Right_Align_Tab_{0}_Org.jepg", tabInspResult.TabNo);
                 string orgFilePath = Path.Combine(savePath, orgFileName);
                 cropRightImage?.Save(orgFilePath);
 
