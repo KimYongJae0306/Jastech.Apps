@@ -30,7 +30,8 @@ namespace Jastech.Apps.Winform.UI.Forms
 
         private LightControl LightControl { get; set; } = null;
 
-        private VisionProPointMarkerParam PointMarkerParam { get; set; } = null;
+        //private VisionProPointMarkerParam PointMarkerParam { get; set; } = null;
+        private VisionProPointMarkerParam PointMarkerParam { get; set; } = new VisionProPointMarkerParam();
 
         public AreaCamera AreaCamera { get; set; } = null;
 
@@ -97,8 +98,10 @@ namespace Jastech.Apps.Winform.UI.Forms
             SetAreaCamera(areaCamera);
             RegisterAreaCameraEvent(areaCamera);
             SetMarkDirection(markDirection);
+            AreaCamera.StartGrabContinous();
             // 트레인 이미지 불러오기
             LoadOriginPatternImage();
+            DrawOriginPointMark(Display, new PointF(areaCamera.Camera.ImageWidth / 2, areaCamera.Camera.ImageHeight / 2), 200);   
         }
 
         private void SetUnit(UnitName unitName)
@@ -207,7 +210,7 @@ namespace Jastech.Apps.Winform.UI.Forms
 
         private void Display_DeleteEventHandler(object sender, EventArgs e)
         {
-
+            
         }
 
         private void lblPitch_Click(object sender, EventArgs e)
@@ -243,6 +246,9 @@ namespace Jastech.Apps.Winform.UI.Forms
         private void lblApply_Click(object sender, EventArgs e)
         {
             SetManualMatching();
+            AreaCamera.StopGrab();
+            AreaCamera.OnImageGrabbed -= AreaCamera_OnImageGrabbed;
+            Display.DisposeImage();
             ManualMatchingHandler?.Invoke(true);
             this.Close();
         }
@@ -258,5 +264,12 @@ namespace Jastech.Apps.Winform.UI.Forms
             this.Close();
         }
         #endregion
+
+        private void ManualMatchingForm_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            //AreaCamera.StopGrab();
+            //AreaCamera.OnImageGrabbed -= AreaCamera_OnImageGrabbed;
+            //Display.DisposeImage();
+        }
     }
 }

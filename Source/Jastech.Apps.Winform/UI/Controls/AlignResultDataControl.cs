@@ -174,7 +174,7 @@ namespace Jastech.Apps.Winform.UI.Controls
 
             if (alignDailyInfo != null)
             {
-                string path = Path.Combine(alignDailyInfo.ResultPath, "Align", "Result");
+                string path = Path.Combine(alignDailyInfo.ResultPath, "Inspection", "AlignResult");
 
                 if (Directory.Exists(path))
                 {
@@ -183,7 +183,7 @@ namespace Jastech.Apps.Winform.UI.Controls
                 }
                 else
                 {
-                    path = Path.Combine(alignDailyInfo.ResultPath, "Result");
+                    path = Path.Combine(alignDailyInfo.ResultPath, "AlignResult");
 
                     if (Directory.Exists(path))
                     {

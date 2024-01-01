@@ -13,6 +13,7 @@ using Jastech.Framework.Util;
 using Jastech.Framework.Util.Helper;
 using Jastech.Framework.Winform.Forms;
 using Jastech.Framework.Winform.VisionPro.Controls;
+using Jastech.Framework.Winform.VisionPro.Forms;
 using System;
 using System.Collections.Generic;
 using System.Drawing;

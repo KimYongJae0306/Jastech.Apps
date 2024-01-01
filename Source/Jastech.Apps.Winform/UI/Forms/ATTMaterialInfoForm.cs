@@ -40,9 +40,12 @@ namespace Jastech.Apps.Winform.UI.Forms
         private void ATTMaterialInfoForm_Load(object sender, EventArgs e)
         {
             InitializeUICollections();
-
-            if (ModelName == PlcControlManager.Instance().ConvertDoubleWordStringFormat_mm(PlcCommonMap.PLC_PPID_ModelName)
-                && ConfigSet.Instance().Operation.VirtualMode == false)
+            var manager = PlcControlManager.Instance();
+            
+            //if (ModelName == PlcControlManager.Instance().ConvertDoubleWordStringFormat_mm(PlcCommonMap.PLC_PPID_ModelName)
+            //    && ConfigSet.Instance().Operation.VirtualMode == false)
+            if (ModelName == manager.GetValue(PlcCommonMap.PLC_PPID_ModelName)
+                  && ConfigSet.Instance().Operation.VirtualMode == false)
             {
                 PrevMaterialInfo = PlcScenarioManager.Instance().GetModelMaterialInfo();
                 TabCount = Convert.ToInt32(PlcControlManager.Instance().GetValue(PlcCommonMap.PLC_TabCount));

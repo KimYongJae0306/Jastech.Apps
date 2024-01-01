@@ -1055,7 +1055,7 @@ namespace Jastech.Framework.Winform.Forms
 
             MainAlgorithmTool algorithmTool = new MainAlgorithmTool();
             TabInspResult tabInspResult = new TabInspResult();
-
+            tabInspResult.AlignResult = new TabAlignResult();
             var camera = LineCamera.Camera;
             double resolution_um = camera.PixelResolution_um / camera.LensScale;
 
