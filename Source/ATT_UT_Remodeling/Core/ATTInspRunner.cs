@@ -884,10 +884,10 @@ namespace ATT_UT_Remodeling.Core
                 var tabInspResult = AppsInspResult.Instance().Get(tabNo);
                 var alignResult = tabInspResult.AlignResult;
 
-                string lx = GetResultAlignResultValue(alignResult.LeftX, 3);
-                string rx = GetResultAlignResultValue(alignResult.RightX, 3);
-                string ly = GetResultAlignResultValue(alignResult.LeftY, 3);
-                string ry = GetResultAlignResultValue(alignResult.RightY, 3);
+                string lx = GetResultAlignResultValue(alignResult.LeftX, 4);
+                string rx = GetResultAlignResultValue(alignResult.RightX, 4);
+                string ly = GetResultAlignResultValue(alignResult.LeftY, 4);
+                string ry = GetResultAlignResultValue(alignResult.RightY, 4);
                 string cx;
 
                 if (double.TryParse(lx, out double lx1) && double.TryParse(rx, out double rx1))
