@@ -901,30 +901,29 @@ namespace ATT_UT_IPAD.Core
             return value.ToString();
         }
 
-        private double GetPanelMarkToMarkDistance(TabInspResult tabInspResult)
+        private double GetMarkToMarkOriginDistance(TabInspResult tabInspResult, Material material)
         {
             var lineCamera = LineCameraManager.Instance().GetLineCamera("AlignCamera").Camera;
             float resolution_um = lineCamera.PixelResolution_um / lineCamera.LensScale;
 
-            var leftPanelMarkOriginPoint = tabInspResult.MarkResult.PanelMark.FoundedMark.Left.MaxMatchPos.FoundPos;
-            var rightPanelMarkOriginPoint = tabInspResult.MarkResult.PanelMark.FoundedMark.Right.MaxMatchPos.FoundPos;
+            PointF leftMarkOriginPoint = new PointF(0, 0);
+            PointF rightMarkOriginPoint = new PointF(0, 0);
 
-            var panelDistance = MathHelper.GetDistance(leftPanelMarkOriginPoint, rightPanelMarkOriginPoint);
-            panelDistance = Math.Round(panelDistance * resolution_um, 1, MidpointRounding.AwayFromZero);
-            
+            if (tabInspResult.MarkResult.PanelMark.Judgement != Judgement.FAIL && tabInspResult.MarkResult.FpcMark.Judgement != Judgement.FAIL)
+            {
+                if (material == Material.Panel) 
+                {
+                    leftMarkOriginPoint = tabInspResult.MarkResult.PanelMark.FoundedMark.Left.MaxMatchPos.FoundPos;
+                    rightMarkOriginPoint = tabInspResult.MarkResult.PanelMark.FoundedMark.Right.MaxMatchPos.FoundPos;
+                }
+                else
+                {
+                    leftMarkOriginPoint = tabInspResult.MarkResult.FpcMark.FoundedMark.Left.MaxMatchPos.FoundPos;
+                    rightMarkOriginPoint = tabInspResult.MarkResult.FpcMark.FoundedMark.Right.MaxMatchPos.FoundPos;
+                }
+            }
 
-            return panelDistance;
-        }
-
-        private double GetCOFMarkToMarkDistance(TabInspResult tabInspResult)
-        {
-            var lineCamera = LineCameraManager.Instance().GetLineCamera("AlignCamera").Camera;
-            float resolution_um = lineCamera.PixelResolution_um / lineCamera.LensScale;
-
-            var leftFpcMarkOriginPoint = tabInspResult.MarkResult.FpcMark.FoundedMark.Left.MaxMatchPos.FoundPos;
-            var rightFpcMarkOriginPoint = tabInspResult.MarkResult.FpcMark.FoundedMark.Right.MaxMatchPos.FoundPos;
-
-            var cofDistance = MathHelper.GetDistance(leftFpcMarkOriginPoint, rightFpcMarkOriginPoint);
+            var cofDistance = MathHelper.GetDistance(leftMarkOriginPoint, rightMarkOriginPoint);
             cofDistance = Math.Round(cofDistance * resolution_um, 1, MidpointRounding.AwayFromZero);
 
             return cofDistance;
@@ -1405,8 +1404,8 @@ namespace ATT_UT_IPAD.Core
                 var tabInspResult = AppsInspResult.Instance().GetAlign(tabNo);
                 var alignResult = tabInspResult.AlignResult;
 
-                var panelDistance = GetPanelMarkToMarkDistance(tabInspResult);
-                var cofDistance = GetCOFMarkToMarkDistance(tabInspResult);
+                var panelDistance = GetMarkToMarkOriginDistance(tabInspResult, Material.Panel);
+                var cofDistance = GetMarkToMarkOriginDistance(tabInspResult, Material.Fpc);
 
                 body.Add($"{tabInspResult.TabNo + 1}");                                     // Tab No
                 body.Add($"{alignResult.Judgement}");                                       // Judge
@@ -1415,7 +1414,6 @@ namespace ATT_UT_IPAD.Core
             }
 
             CSVHelper.WriteData(csvFile, body);
-
         }
 
         private void SaveMarkScoreData(string resultPath, int tabCount)
@@ -1516,7 +1514,6 @@ namespace ATT_UT_IPAD.Core
                     rightAlignFpcMarkJudge = tabAlignInspResult.MarkResult.FpcMark.FoundedMark.Right.Judgement;
                 }
 
-
                 body.Add($"{tabAlignInspResult.TabNo + 1}");                                     // Tab No
                 body.Add($"{leftAkkonPanelMarkJudge}");                                          // Judge
                 body.Add($"{leftAkkonPanelMarkScore}");                                          // Akkon Panel Left
@@ -1533,7 +1530,6 @@ namespace ATT_UT_IPAD.Core
             }
 
             CSVHelper.WriteData(csvFile, body);
-
         }
 
         private double CheckAlignResultValue(AlignResult alignResult)
