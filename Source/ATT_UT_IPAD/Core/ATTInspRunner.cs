@@ -948,35 +948,7 @@ namespace ATT_UT_IPAD.Core
                 SaveAlignResultAsMsaSummary(path, inspModel.TabCount);
             }
         }
-
-        private double GetPanelMarkToMarkDistance(TabInspResult tabInspResult)
-        {
-            var lineCamera = LineCameraManager.Instance().GetLineCamera("AlignCamera").Camera;
-            float resolution_um = lineCamera.PixelResolution_um / lineCamera.LensScale;
-
-            var leftPanelMarkOriginPoint = tabInspResult.MarkResult.PanelMark.FoundedMark.Left.MaxMatchPos.FoundPos;
-            var rightPanelMarkOriginPoint = tabInspResult.MarkResult.PanelMark.FoundedMark.Right.MaxMatchPos.FoundPos;
-
-            var panelDistance = MathHelper.GetDistance(leftPanelMarkOriginPoint, rightPanelMarkOriginPoint);
-            panelDistance = Math.Round(panelDistance * resolution_um, 1, MidpointRounding.AwayFromZero);
-            
-            return panelDistance;
-        }
-
-        private double GetCOFMarkToMarkDistance(TabInspResult tabInspResult)
-        {
-            var lineCamera = LineCameraManager.Instance().GetLineCamera("AlignCamera").Camera;
-            float resolution_um = lineCamera.PixelResolution_um / lineCamera.LensScale;
-
-            var leftFpcMarkOriginPoint = tabInspResult.MarkResult.FpcMark.FoundedMark.Left.MaxMatchPos.FoundPos;
-            var rightFpcMarkOriginPoint = tabInspResult.MarkResult.FpcMark.FoundedMark.Right.MaxMatchPos.FoundPos;
-
-            var cofDistance = MathHelper.GetDistance(leftFpcMarkOriginPoint, rightFpcMarkOriginPoint);
-            cofDistance = Math.Round(cofDistance * resolution_um, 1, MidpointRounding.AwayFromZero);
-
-            return cofDistance;
-        }
-
+        
         private void SaveAlignResult(string resultPath, int tabCount)
         {
             string csvFile = Path.Combine(resultPath, "Align.csv");
@@ -1294,7 +1266,7 @@ namespace ATT_UT_IPAD.Core
             }
         }
 
-        private double CheckAlignResultValue(AlignResult alignResult)
+               private double CheckAlignResultValue(AlignResult alignResult)
         {
             float resolution = AlignCamera.Camera.PixelResolution_um / AlignCamera.Camera.LensScale;
             if (alignResult == null)

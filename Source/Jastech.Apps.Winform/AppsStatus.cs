@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -31,6 +32,8 @@ namespace Jastech.Apps.Winform
         public bool IsCalibrationing { get; set; } = false;
 
         public bool IsManualMatching_OK { get; set; } = false;
+
+        public PointF ManualMatchingPoint { get; set; } = new PointF();
 
         public bool IsRepeat { get; set; } = false;
 
