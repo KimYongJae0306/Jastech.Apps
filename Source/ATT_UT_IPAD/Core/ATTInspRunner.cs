@@ -1017,10 +1017,10 @@ namespace ATT_UT_IPAD.Core
                 var tabInspResult = AppsInspResult.Instance().GetAlign(tabNo);
                 var alignResult = tabInspResult.AlignResult;
 
-                string lx = GetResultAlignResultValue(alignResult.LeftX, 3);
-                string rx = GetResultAlignResultValue(alignResult.RightX, 3);
-                string ly = GetResultAlignResultValue(alignResult.LeftY, 3);
-                string ry = GetResultAlignResultValue(alignResult.RightY, 3);
+                string lx = GetResultAlignResultValue(alignResult.LeftX, 4);
+                string rx = GetResultAlignResultValue(alignResult.RightX, 4);
+                string ly = GetResultAlignResultValue(alignResult.LeftY, 4);
+                string ry = GetResultAlignResultValue(alignResult.RightY, 4);
                 string cx;
 
                 if (double.TryParse(lx, out double lx1) && double.TryParse(rx, out double rx1))
@@ -1056,6 +1056,8 @@ namespace ATT_UT_IPAD.Core
                 {
                     header.Add($"Tab_{index + 1}");
                     header.Add($"Judge_{index + 1}");
+                    header.Add($"Min Count_{index + 1}");
+                    header.Add($"Max Count_{index + 1}");
                     header.Add($"Avg Count_{index + 1}");
                     header.Add($"Avg Length_{index + 1}");
                 }
@@ -1075,11 +1077,16 @@ namespace ATT_UT_IPAD.Core
                 var tabInspResult = AppsInspResult.Instance().GetAkkon(tabNo);
                 var akkonResult = tabInspResult.AkkonResult;
 
+                int minCount = Math.Min(akkonResult.LeftCount_Min, akkonResult.RightCount_Min);
+                int maxCount = Math.Max(akkonResult.LeftCount_Max, akkonResult.RightCount_Max);
+
                 int avgCount = (akkonResult.LeftCount_Avg + akkonResult.RightCount_Avg) / 2;
                 float avgLength = (akkonResult.Length_Left_Avg_um + akkonResult.Length_Right_Avg_um) / 2.0F;
 
                 body.Add($"{tabInspResult.TabNo + 1}");                                     // Tab No
                 body.Add($"{akkonResult.Judgement}");                                       // Judge
+                body.Add($"{minCount}");                                                    // Min Count
+                body.Add($"{maxCount}");                                                    // Max Count
                 body.Add($"{avgCount}");                                                    // Average Count
                 body.Add($"{avgLength:F3}");                                                // Average Length
             }
@@ -1850,7 +1857,7 @@ namespace ATT_UT_IPAD.Core
                 PointF offset = new PointF();
                 Mat cropLeftImage = GetAlignResultImage(tabInspResult, leftAlignShapeList, out offset);
 
-                string orgFileName = string.Format("Left_Align_Tab_{0}_Org.bmp", tabInspResult.TabNo);
+                string orgFileName = string.Format("Left_Align_Tab_{0}_Org.jepg", tabInspResult.TabNo);
                 string orgFilePath = Path.Combine(savePath, orgFileName);
                 cropLeftImage?.Save(orgFilePath);
 
@@ -1885,7 +1892,7 @@ namespace ATT_UT_IPAD.Core
                 PointF offset = new PointF();
                 Mat cropRightImage = GetAlignResultImage(tabInspResult, rightAlignShapeList, out offset);
 
-                string orgFileName = string.Format("Right_Align_Tab_{0}_Org.bmp", tabInspResult.TabNo);
+                string orgFileName = string.Format("Right_Align_Tab_{0}_Org.jepg", tabInspResult.TabNo);
                 string orgFilePath = Path.Combine(savePath, orgFileName);
                 cropRightImage?.Save(orgFilePath);
 
