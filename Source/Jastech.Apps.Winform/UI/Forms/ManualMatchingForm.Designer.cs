@@ -530,7 +530,6 @@
             this.Name = "ManualMatchingForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "ManualMatchingForm";
-            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.ManualMatchingForm_FormClosing);
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.ManualMatchingForm_FormClosed);
             this.Load += new System.EventHandler(this.ManualMatchingForm_Load);
             this.pnlManualMatching.ResumeLayout(false);
