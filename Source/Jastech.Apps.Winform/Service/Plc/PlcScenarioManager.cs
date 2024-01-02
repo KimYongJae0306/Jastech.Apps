@@ -313,7 +313,7 @@ namespace Jastech.Apps.Winform.Service.Plc
                 inspModel.CreateDate = DateTime.Now;
                 inspModel.ModifiedDate = inspModel.CreateDate;
                 inspModel.TabCount = Convert.ToInt32(manager.GetValue(PlcCommonMap.PLC_TabCount));
-                inspModel.AxisSpeed = Convert.ToInt32(manager.GetValue(PlcCommonMap.PLC_Axis_X_Speed));
+                inspModel.AxisSpeed = manager.ConvertDoubleWordDoubleFormat_mm(PlcCommonMap.PLC_Axis_X_Speed);
                 inspModel.MaterialInfo = GetModelMaterialInfo();
 
                 InspModelService.AddModelData(inspModel);
@@ -467,7 +467,7 @@ namespace Jastech.Apps.Winform.Service.Plc
 
             currentModel.Name = manager.GetValue(PlcCommonMap.PLC_PPID_ModelName);
             currentModel.ModifiedDate = DateTime.Now;
-            currentModel.AxisSpeed = Convert.ToInt32(manager.GetValue(PlcCommonMap.PLC_Axis_X_Speed));
+            currentModel.AxisSpeed = manager.ConvertDoubleWordDoubleFormat_mm(PlcCommonMap.PLC_Axis_X_Speed);
             currentModel.MaterialInfo = GetModelMaterialInfo();
 
             ModelFileHelper.Save(ConfigSet.Instance().Path.Model, currentModel);
