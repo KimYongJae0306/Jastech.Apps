@@ -261,12 +261,17 @@ namespace ATT_UT_Remodeling
                     if (AppsPreAlignResult.Instance().Right.MatchResult == null)
                     {
                         SystemManager.Instance().ShowManualMatchingForm(PreAlignCamera, MarkDirection.Right, UnitName.Unit0);
-
+                        
                         if (AppsStatus.Instance().IsManualMatching_OK)
                         {
                             VisionProPatternMatchingResult patternResult = new VisionProPatternMatchingResult();
 
-                            patternResult.MaxMatchPos.FoundPos = AppsStatus.Instance().ManualMatchingPoint;
+                            VisionProPatternMatchPos pos = new VisionProPatternMatchPos();
+                            pos.FoundPos = AppsStatus.Instance().ManualMatchingPoint;
+                            pos.Score = 1;
+
+                            patternResult.Judgement = Judgement.OK;
+                            patternResult.MatchPosList.Add(pos);
                             AppsPreAlignResult.Instance().Right.MatchResult = patternResult;
                         }
                         else
@@ -326,12 +331,19 @@ namespace ATT_UT_Remodeling
                         {
                             VisionProPatternMatchingResult patternResult = new VisionProPatternMatchingResult();
 
-                            patternResult.MaxMatchPos.FoundPos = AppsStatus.Instance().ManualMatchingPoint;
+                            VisionProPatternMatchPos pos = new VisionProPatternMatchPos();
+                            pos.FoundPos = AppsStatus.Instance().ManualMatchingPoint;
+                            pos.Score = 1;
+
+                            patternResult.Judgement = Judgement.OK;
+                            patternResult.MatchPosList.Add(pos);
+
                             AppsPreAlignResult.Instance().Left.MatchResult = patternResult;
                         }
                         else
                         {
                             SeqStep = SeqStep.SEQ_ERROR;
+                            break;
                         }
                     }
 

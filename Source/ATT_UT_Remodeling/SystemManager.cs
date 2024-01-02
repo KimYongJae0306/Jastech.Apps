@@ -251,55 +251,31 @@ namespace ATT_UT_Remodeling
         {
             if (ConfigSet.Instance().Operation.VirtualMode == false)
             {
-                if (PlcControlManager.Instance().IsDoorOpened == true)
-                {
-                    MessageConfirmForm alert = new MessageConfirmForm();
-                    alert.Message = "Safety Doorlock is opened.\r\nPlease check the doorlock state";
-                    alert.ShowDialog();
-                    return;
-                }
-
-                bool isServoOnAxisX = MotionManager.Instance().IsEnable(AxisHandlerName.Handler0, AxisName.X);
-                if (isServoOnAxisX == false)
-                {
-                    MessageConfirmForm alert = new MessageConfirmForm();
-                    alert.Message = "AxisX Servo Off. Please Servo On.";
-                    alert.ShowDialog();
-                    return;
-                }
-                else
-                {
-                    //Check : Command Position 만들고 주석 해제
-                    Axis axisX = MotionManager.Instance().GetAxis(AxisHandlerName.Handler0, AxisName.X);
-
-                    //if(Math.Abs(axisX.GetActualPosition() - axisX.GetCommandPosition()) <= 1)
-                    //{
-                    //    MessageConfirmForm confirmForm = new MessageConfirmForm();
-                    //    confirmForm.Message = "AxisX Position is incorrect. Please Run Homming Sequence.";
-                    //    confirmForm.ShowDialog();
-                    //    return;
-                    //}
-                }
-
-                //bool isServoOnAxisZ0 = MotionManager.Instance().IsEnable(AxisHandlerName.Handler0, AxisName.Z0);
-                //if (isServoOnAxisZ0 == false)
+                //if (PlcControlManager.Instance().IsDoorOpened == true)
                 //{
                 //    MessageConfirmForm alert = new MessageConfirmForm();
-                //    alert.Message = "AxisZ0 Servo Off. Please Servo On.";
+                //    alert.Message = "Safety Doorlock is opened.\r\nPlease check the doorlock state";
                 //    alert.ShowDialog();
                 //    return;
                 //}
 
-                //Axis axisZ0 = MotionManager.Instance().GetAxis(AxisHandlerName.Handler0, AxisName.Z0);
+                //bool isServoOnAxisX = MotionManager.Instance().IsEnable(AxisHandlerName.Handler0, AxisName.X);
+                //if (isServoOnAxisX == false)
+                //{
+                //    MessageConfirmForm alert = new MessageConfirmForm();
+                //    alert.Message = "AxisX Servo Off. Please Servo On.";
+                //    alert.ShowDialog();
+                //    return;
+                //}
 
-                if (PlcControlManager.Instance().GetAddressMap(PlcCommonMap.PLC_AlignZ_ServoOnOff).Value != "1")
-                {
-                    MessageConfirmForm alert = new MessageConfirmForm();
+                //if (PlcControlManager.Instance().GetAddressMap(PlcCommonMap.PLC_AlignZ_ServoOnOff).Value != "1")
+                //{
+                //    MessageConfirmForm alert = new MessageConfirmForm();
 
-                    alert.Message = "Axis Z Servo Off.";
-                    alert.ShowDialog();
-                    return;
-                }
+                //    alert.Message = "Axis Z Servo Off.";
+                //    alert.ShowDialog();
+                //    return;
+                //}
             }
 
             if (PlcControlManager.Instance().MachineStatus != MachineStatus.RUN)
