@@ -74,22 +74,6 @@ namespace Jastech.Apps.Winform.UI.Forms
                 SetPitch(Convert.ToInt32(lblPitch.Text));
                 AddControls();
             }
-
-            // TeachingUIManager 참조
-            //TeachingUIManager.Instance().TeachingDisplayControl = Display;
-
-            //AreaCamera.OnImageGrabbed += AreaCamera_OnImageGrabbed;
-            //LoadPatternImage();
-
-            //var param = CurrentUnit.GetPreAlignMark(MarkDirection, MarkName.Main);
-
-            //if (param != null)
-            //{
-            //    CogTransform2DLinear OriginPosition = param.InspParam.GetOrigin();
-            //    DrawOriginPointMark(Display, new PointF((float)OriginPosition.TranslationX, (float)OriginPosition.TranslationY), 200);
-            //}
-            //else
-            //    DrawOriginPointMark(Display, new PointF(100, 100), 200);
         }
 
         public void SetParams(UnitName unitName, AreaCamera areaCamera, MarkDirection markDirection)
@@ -101,7 +85,22 @@ namespace Jastech.Apps.Winform.UI.Forms
             AreaCamera.StartGrabContinous();
             // 트레인 이미지 불러오기
             LoadOriginPatternImage();
+            PointMarkerParam.SetOriginEventHandler += VerifyOriginPointWithDrawingArea;
             DrawOriginPointMark(Display, new PointF(areaCamera.Camera.ImageWidth / 2, areaCamera.Camera.ImageHeight / 2), 200);   
+        }
+
+        private void VerifyOriginPointWithDrawingArea(CogTransform2DLinear originPoint)
+        {
+            // originPoint의 X,Y를 Display 너비,높이 범위 내에 들어오도록 변환
+            PointF drawPoint = new PointF
+            {
+                X = Math.Min(Math.Max((float)originPoint.TranslationX, 0), Display.GetImageWidth()),
+                Y = Math.Min(Math.Max((float)originPoint.TranslationY, 0), Display.GetImageHeight())
+            };
+
+            // 인자랑 다르면 다시 그리기
+            if (drawPoint.X != (float)originPoint.TranslationX || drawPoint.Y != (float)originPoint.TranslationY)
+                DrawOriginPointMark(Display, drawPoint, 200);
         }
 
         private void SetUnit(UnitName unitName)
