@@ -93,12 +93,27 @@ namespace Jastech.Apps.Winform.UI.Forms
             }
 
             pnlLight.Controls.Add(LightControl);
+
         }
 
         private void Initialize()
         {
             AreaCamera.StartGrabContinous();
             DrawOriginPointMark(new PointF(AreaCamera.Camera.ImageWidth / 2, AreaCamera.Camera.ImageHeight / 2));
+        }
+
+        private void VerifyOriginPointWithDrawingArea(CogTransform2DLinear originPoint)
+        {
+            // originPoint의 X,Y를 Display 너비,높이 범위 내에 들어오도록 변환
+            PointF drawPoint = new PointF
+            {
+                X = Math.Min(Math.Max((float)originPoint.TranslationX, 0), CogDisplayControl.GetImageWidth()),
+                Y = Math.Min(Math.Max((float)originPoint.TranslationY, 0), CogDisplayControl.GetImageHeight())
+            };
+
+            // 인자랑 다르면 다시 그리기
+            if (drawPoint.X != (float)originPoint.TranslationX || drawPoint.Y != (float)originPoint.TranslationY)
+                DrawOriginPointMark(drawPoint);
         }
 
         private void Release()
