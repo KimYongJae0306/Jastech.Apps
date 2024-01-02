@@ -22,18 +22,6 @@ namespace Jastech.Apps.Winform
         private bool _activeLafTrigger { get; set; } = false;
         #endregion
 
-        #region 속성
-        #endregion
-
-        #region 이벤트
-        #endregion
-
-        #region 델리게이트
-        #endregion
-
-        #region 생성자
-        #endregion
-
         #region 메서드
         public static ACSBufferManager Instance()
         {
