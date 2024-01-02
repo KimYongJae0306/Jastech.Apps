@@ -123,7 +123,6 @@ namespace ATT_UT_Remodeling
             tmrUpdateStates.Start();
             StartVirtualInspTask();
             SystemManager.Instance().InitializeInspRunner();
-
             SystemManager.Instance().InitializePreAlignRunner();
             SystemManager.Instance().AddSystemLogMessage("Start Program.");
 
@@ -413,10 +412,6 @@ namespace ATT_UT_Remodeling
             ControlDisplayHelper.DisposeDisplay(lblMotionState);
             lblMotionState.Image = GetStateImage(isMotionConnected);
 
-            //bool isCognexLicenseNormal = Cognex.VisionPro.CogLicense.GetLicensedFeatures(false, false).Count != 0;
-            //ControlDisplayHelper.DisposeDisplay(lblLicenseState);
-            //lblLicenseState.Image = GetStateImage(isCognexLicenseNormal);
-
             var laf = DeviceManager.Instance().LAFCtrlHandler;
             bool isLafConnected = laf.Count > 0 && laf.All(h => h.IsConnected());
             ControlDisplayHelper.DisposeDisplay(lblLafState);
@@ -489,7 +484,6 @@ namespace ATT_UT_Remodeling
             DeviceManager.Instance().Release();
             GrabberMil.Release();
             MilHelper.FreeApplication();
-            //Application.ExitThread();
         }
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
@@ -740,6 +734,7 @@ namespace ATT_UT_Remodeling
         {
             if (PlcControlManager.Instance().MachineStatus != MachineStatus.RUN)
                 return;
+
             if (UserManager.Instance().CurrentUser.Type != AuthorityType.Maker)
                 return;
 

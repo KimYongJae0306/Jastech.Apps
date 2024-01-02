@@ -84,8 +84,6 @@ namespace ATT
             DeviceManager.Instance().Initialize(ConfigSet.Instance());
             PlcControlManager.Instance().Initialize();
 
-            //SetACSBuffer();
-
             percent = 50;
             DoReportProgress(reportProgress, percent, "Create Axis Info");
 
@@ -132,25 +130,15 @@ namespace ATT
 
             string message = "";
             if (deviceType == typeof(Camera))
-            {
                 message = "Camera Initialize Fail";
-            }
             else if (deviceType == typeof(Motion))
-            {
                 message = "Motion Initialize Fail";
-            }
             else if (deviceType == typeof(LightCtrl))
-            {
                 message = "LightCtrl Initialize Fail";
-            }
             else if (deviceType == typeof(LAFCtrl))
-            {
                 message = "LAF Initialize Fail";
-            }
             else if (deviceType == typeof(Plc))
-            {
                 message = "Plc Initialize Fail";
-            }
 
             if (message != "")
             {
