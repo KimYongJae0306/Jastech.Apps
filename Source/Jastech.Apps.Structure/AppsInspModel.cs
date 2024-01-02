@@ -20,7 +20,7 @@ namespace Jastech.Apps.Structure
         public MaterialInfo MaterialInfo { get; set; } = new MaterialInfo();
 
         [JsonProperty]
-        public int AxisSpeed { get; set; } = 48;
+        public double AxisSpeed { get; set; } = 48.0;
 
         [JsonProperty]
         public List<Unit> UnitList { get; set; } = new List<Unit>();

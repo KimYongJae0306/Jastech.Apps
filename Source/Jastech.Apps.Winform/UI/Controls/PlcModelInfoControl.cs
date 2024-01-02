@@ -37,7 +37,7 @@ namespace Jastech.Apps.Winform.UI.Controls
             lblPanelXSize.Text = manager.ConvertDoubleWordStringFormat_mm(PlcCommonMap.PLC_PanelX_Size);
             lblMarkToMark.Text = manager.ConvertDoubleWordStringFormat_mm(PlcCommonMap.PLC_MarkToMarkDistance);
             lblEdgeDistance.Text = manager.ConvertDoubleWordStringFormat_mm(PlcCommonMap.PLC_PanelLeftEdgeToTab1LeftEdgeDistance);
-            lblAxisXSpeed.Text = manager.GetValue(PlcCommonMap.PLC_Axis_X_Speed);
+            lblAxisXSpeed.Text = manager.ConvertDoubleWordStringFormat_mm(PlcCommonMap.PLC_Axis_X_Speed);
 
             // Recipe Data
             lblTabWidth_0.Text = manager.ConvertDoubleWordStringFormat_mm(PlcCommonMap.PLC_Tab0_Width);
