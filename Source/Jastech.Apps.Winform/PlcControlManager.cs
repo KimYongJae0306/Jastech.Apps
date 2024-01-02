@@ -933,14 +933,14 @@ namespace Jastech.Apps.Winform
             {
                 if (parserType == ParserType.Binary)
                 {
-                    stream.AddSwap16BitData(0); // Panel Left Mark Sccore
+                    stream.AddSwap32BitData(0); // Panel Left Mark Sccore
                     stream.AddSwap32BitData(0); // Panel Right Mark Score
                     stream.AddSwap32BitData(0); // COF Left Mark Score
                     stream.AddSwap32BitData(0); // COF Right Mark Score
                 }
                 else
                 {
-                    stream.Add16BitData(0); // Panel Left Mark Sccore
+                    stream.Add32BitData(0); // Panel Left Mark Sccore
                     stream.Add32BitData(0); // Panel Right Mark Score
                     stream.Add32BitData(0); // COF Left Mark Score
                     stream.Add32BitData(0); // COF Right Mark Score

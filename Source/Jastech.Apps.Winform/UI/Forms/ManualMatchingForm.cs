@@ -246,11 +246,11 @@ namespace Jastech.Apps.Winform.UI.Forms
         private void lblApply_Click(object sender, EventArgs e)
         {
             SetManualMatching();
-            AreaCamera.StopGrab();
-            AreaCamera.OnImageGrabbed -= AreaCamera_OnImageGrabbed;
-            Display.DisposeImage();
+            //AreaCamera.StopGrab();
+            //AreaCamera.OnImageGrabbed -= AreaCamera_OnImageGrabbed;
+            //Display.DisposeImage();
             ManualMatchingHandler?.Invoke(true);
-            this.Close();
+            FormHide();
         }
 
         private void SetManualMatching()
@@ -261,12 +261,22 @@ namespace Jastech.Apps.Winform.UI.Forms
         private void lblCancel_Click(object sender, EventArgs e)
         {
             ManualMatchingHandler?.Invoke(false);
-            this.Close();
+            FormHide();
         }
         #endregion
 
+        private void FormHide()
+        {
+            AreaCamera.StopGrab();
+            Display.DisposeImage();
+            this.Hide();
+        }
+
         private void ManualMatchingForm_FormClosed(object sender, FormClosedEventArgs e)
         {
+            AreaCamera.StopGrab();
+            AreaCamera.OnImageGrabbed -= AreaCamera_OnImageGrabbed;
+            Display.DisposeImage();
             //AreaCamera.StopGrab();
             //AreaCamera.OnImageGrabbed -= AreaCamera_OnImageGrabbed;
             //Display.DisposeImage();

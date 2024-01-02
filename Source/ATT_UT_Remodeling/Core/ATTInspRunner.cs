@@ -1089,8 +1089,6 @@ namespace ATT_UT_Remodeling.Core
                 var tabInspResult = AppsInspResult.Instance().Get(tabNo);
                 var positions = new string[] { "Left", "Center", "Right" };
 
-                //akkonResult.AkkonResult.LeadResultList.OrderBy(x => x.Id);dsfasdfd
-
                 // Add header strings
                 var header = new List<string>
                 {
@@ -1273,7 +1271,7 @@ namespace ATT_UT_Remodeling.Core
                 Point rightTop = new Point((int)lead.RightTopX + startPoint.X, (int)lead.RightTopY + startPoint.Y);
                 Point rightBottom = new Point((int)lead.RightBottomX + startPoint.X, (int)lead.RightBottomY + startPoint.Y);
 
-                // 향 후 Main 페이지 ROI 보여 달라고 하면 ContainLeadROI = true로 속성 변경
+                // 향후 Main 페이지 ROI 보여 달라고 하면 ContainLeadROI = true로 속성 변경
                 if (autoDrawParam.ContainLeadROI)
                 {
                     CvInvoke.Line(colorMat, leftTop, leftBottom, new MCvScalar(50, 230, 50, 255), 1);

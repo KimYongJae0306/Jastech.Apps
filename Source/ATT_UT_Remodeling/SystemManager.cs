@@ -60,7 +60,6 @@ namespace ATT_UT_Remodeling
         public bool Initialize(MainForm mainForm)
         {
             _mainForm = mainForm;
-
             Logger.Write(LogType.System, "Init SplashForm");
 
             SplashForm form = new SplashForm();
@@ -68,7 +67,6 @@ namespace ATT_UT_Remodeling
             form.Title = "ATT Inspection";
             form.Version = Assembly.GetExecutingAssembly().GetName().Version.ToString();
             form.SetupActionEventHandler = SplashSetupAction;
-
             form.ShowDialog();
 
             var recentModelName = ConfigSet.Instance().Operation.LastModelName;
@@ -87,8 +85,6 @@ namespace ATT_UT_Remodeling
             DeviceManager.Instance().Initialized += SystemManager_Initialized;
             DeviceManager.Instance().Initialize(ConfigSet.Instance());
             PlcControlManager.Instance().Initialize();
-
-            SetACSBuffer();
 
             percent = 50;
             DoReportProgress(reportProgress, percent, "Create Axis Info");
@@ -129,16 +125,6 @@ namespace ATT_UT_Remodeling
             percent = 100;
             DoReportProgress(reportProgress, percent, "Initialize Completed.");
             return true;
-        }
-
-        private void SetACSBuffer()
-        {
-            int index = ACSBufferConfig.Instance().CameraTrigger;
-            if (DeviceManager.Instance().MotionHandler.Count > 0)
-            {
-                var motion = DeviceManager.Instance().MotionHandler.First() as ACSMotion;
-                motion?.RunBuffer(index);
-            }
         }
 
         private void DoReportProgress(IReportProgress reportProgress, int percentage, string message)
@@ -186,6 +172,7 @@ namespace ATT_UT_Remodeling
 
             string unit0FileName = string.Format("AxisHanlder_{0}.json", AxisHandlerName.Handler0);
             string unit0FilePath = Path.Combine(dir, unit0FileName);
+
             if (File.Exists(unit0FilePath) == false)
             {
                 AxisHandler handler0 = new AxisHandler(AxisHandlerName.Handler0.ToString());
@@ -194,9 +181,7 @@ namespace ATT_UT_Remodeling
                 handler0.AddAxis(AxisName.X, motion, axisNo: 0, homeOrder: 3);
                 handler0.AddAxis(AxisName.Z0, motion, axisNo: 1, homeOrder: 1);
 
-                //AxisHandlerList.Add(handler0);
                 MotionManager.Instance().AxisHandlerList.Add(handler0);
-
                 JsonConvertHelper.Save(unit0FilePath, handler0);
             }
             else
@@ -267,30 +252,6 @@ namespace ATT_UT_Remodeling
                     alert.ShowDialog();
                     return;
                 }
-                else
-                {
-                    //Check : Command Position 만들고 주석 해제
-                    Axis axisX = MotionManager.Instance().GetAxis(AxisHandlerName.Handler0, AxisName.X);
-
-                    //if(Math.Abs(axisX.GetActualPosition() - axisX.GetCommandPosition()) <= 1)
-                    //{
-                    //    MessageConfirmForm confirmForm = new MessageConfirmForm();
-                    //    confirmForm.Message = "AxisX Position is incorrect. Please Run Homming Sequence.";
-                    //    confirmForm.ShowDialog();
-                    //    return;
-                    //}
-                }
-
-                //bool isServoOnAxisZ0 = MotionManager.Instance().IsEnable(AxisHandlerName.Handler0, AxisName.Z0);
-                //if (isServoOnAxisZ0 == false)
-                //{
-                //    MessageConfirmForm alert = new MessageConfirmForm();
-                //    alert.Message = "AxisZ0 Servo Off. Please Servo On.";
-                //    alert.ShowDialog();
-                //    return;
-                //}
-
-                //Axis axisZ0 = MotionManager.Instance().GetAxis(AxisHandlerName.Handler0, AxisName.Z0);
 
                 if (PlcControlManager.Instance().GetAddressMap(PlcCommonMap.PLC_AlignZ_ServoOnOff).Value != "1")
                 {

@@ -1294,232 +1294,6 @@ namespace ATT_UT_IPAD.Core
             }
         }
 
-        private void SaveAxisZMposData(string resultPath)
-        {
-            string csvFile = Path.Combine(resultPath, "MPosData.csv");
-            if (File.Exists(csvFile) == false)
-            {
-                List<string> header = new List<string>
-                {
-                    "Inspection Time",
-                    "Panel ID",
-                    "Stage No",
-                    "Z Mpos",
-                };
-                CSVHelper.WriteHeader(csvFile, header);
-            }
-
-            List<string> body = new List<string>();
-
-            var programType = StringHelper.StringToEnum<ProgramType>(AppsConfig.Instance().ProgramType);
-            body.Add($"{AppsInspResult.Instance().EndInspTime:HH:mm:ss}");                  // Insp Time
-            body.Add($"{AppsInspResult.Instance().Cell_ID}");                               // Panel ID
-            body.Add($"{(int)programType + 1}");                                            // Stage No
-
-            for (int dataCount = 0; dataCount < MPosDataList.Count; dataCount++)
-            {
-                string mpos = Convert.ToString(MPosDataList[dataCount]);
-                body.Add($"{mpos}");
-            }
-
-            CSVHelper.WriteData(csvFile, body);
-        }
-        private void SaveRetData(string resultPath)
-        {
-            string csvFile = Path.Combine(resultPath, "RetData.csv");
-            if (File.Exists(csvFile) == false)
-            {
-                List<string> header = new List<string>
-                {
-                    "Inspection Time",
-                    "Panel ID",
-                    "Stage No",
-                    "Ret",
-                };
-                CSVHelper.WriteHeader(csvFile, header);
-            }
-
-            List<string> body = new List<string>();
-
-            var programType = StringHelper.StringToEnum<ProgramType>(AppsConfig.Instance().ProgramType);
-            body.Add($"{AppsInspResult.Instance().EndInspTime:HH:mm:ss}");                  // Insp Time
-            body.Add($"{AppsInspResult.Instance().Cell_ID}");                               // Panel ID
-            body.Add($"{(int)programType + 1}");                                            // Stage No
-
-            for (int dataCount = 0; dataCount < RetDataList.Count; dataCount++)
-            {
-                string ret = Convert.ToString(RetDataList[dataCount]);
-                body.Add($"{ret}");
-            }
-
-            CSVHelper.WriteData(csvFile, body);
-        }
-
-        private void SaveMarkToMarkDistanceData(string resultPath,int tabCount)
-        {
-            string csvFile = Path.Combine(resultPath, "MarkToMarkDistanceData.csv");
-            if (File.Exists(csvFile) == false)
-            {
-                List<string> header = new List<string>
-                {
-                    "Inspection Time",
-                    "Panel ID",
-                    "Stage No",
-                };
-                for (int index = 0; index < tabCount; index++)
-                {
-                    header.Add($"Tab");
-                    header.Add($"Judge");
-                    header.Add($"Panel");
-                    header.Add($"COF");
-                }
-
-                CSVHelper.WriteHeader(csvFile, header);
-            }
-
-            List<string> body = new List<string>();
-
-            var programType = StringHelper.StringToEnum<ProgramType>(AppsConfig.Instance().ProgramType);
-            body.Add($"{AppsInspResult.Instance().EndInspTime:HH:mm:ss}");                  // Insp Time
-            body.Add($"{AppsInspResult.Instance().Cell_ID}");                               // Panel ID
-            body.Add($"{(int)programType + 1}");                                            // Stage No
-
-            for (int tabNo = 0; tabNo < tabCount; tabNo++)
-            {
-                var tabInspResult = AppsInspResult.Instance().GetAlign(tabNo);
-                var alignResult = tabInspResult.AlignResult;
-
-                var panelDistance = GetPanelMarkToMarkDistance(tabInspResult);
-                var cofDistance = GetCOFMarkToMarkDistance(tabInspResult);
-
-                body.Add($"{tabInspResult.TabNo + 1}");                                     // Tab No
-                body.Add($"{alignResult.Judgement}");                                       // Judge
-                body.Add($"{panelDistance}");                                               // Panel Mark to Mark Distance
-                body.Add($"{cofDistance}");                                                 // COF Mark to Mark Distance
-            }
-
-            CSVHelper.WriteData(csvFile, body);
-
-        }
-
-        private void SaveMarkScoreData(string resultPath, int tabCount)
-        {
-            string csvFile = Path.Combine(resultPath, "MarkScoreData.csv");
-            if (File.Exists(csvFile) == false)
-            {
-                List<string> header = new List<string>
-                {
-                    "Inspection Time",
-                    "Panel ID",
-                    "Stage No",
-                };
-                for (int index = 0; index < tabCount; index++)
-                {
-                    header.Add($"Tab");
-                    header.Add($"Judge");
-                    header.Add($"Akkon Left Panel Mark");
-                    header.Add($"Judge");
-                    header.Add($"Akkon Right Panel Mark");
-                    header.Add($"Judge");
-                    header.Add($"Align Left Panel Mark");
-                    header.Add($"Judge");
-                    header.Add($"Align Right Panel Mark");
-                    header.Add($"Judge");
-                    header.Add($"Align Left COF Mark");
-                    header.Add($"Judge");
-                    header.Add($"Align Right COF Mark");
-                }
-
-                CSVHelper.WriteHeader(csvFile, header);
-            }
-
-            List<string> body = new List<string>();
-
-            var programType = StringHelper.StringToEnum<ProgramType>(AppsConfig.Instance().ProgramType);
-            body.Add($"{AppsInspResult.Instance().EndInspTime:HH:mm:ss}");                  // Insp Time
-            body.Add($"{AppsInspResult.Instance().Cell_ID}");                               // Panel ID
-            body.Add($"{(int)programType + 1}");                                            // Stage No
-
-            for (int tabNo = 0; tabNo < tabCount; tabNo++)
-            {
-                var tabAlignInspResult = AppsInspResult.Instance().GetAlign(tabNo);
-                var tabAkkonInspResult = AppsInspResult.Instance().GetAkkon(tabNo);
-
-                var leftAkkonPanelMarkScore = 0.0;
-                var leftAkkonPanelMarkJudge = Judgement.FAIL;
-                var rightAkkonPanelMarkScore = 0.0;
-                var rightAkkonPanelMarkJudge = Judgement.FAIL;
-                var leftAlignPanelMarkScore = 0.0;
-                var leftAlignPanelMarkJudge = Judgement.FAIL;
-                var rightAlignPanelMarkScore = 0.0;
-                var rightAlignPanelMarkJudge = Judgement.FAIL;
-                var leftAlignFpcMarkScore = 0.0;
-                var leftAlignFpcMarkJudge = Judgement.FAIL;
-                var rightAlignFpcMarkScore = 0.0;
-                var rightAlignFpcMarkJudge = Judgement.FAIL;
-
-                //Akkon Panel Mark Left Score&Judge
-                if (tabAkkonInspResult.MarkResult.PanelMark.Judgement != Judgement.FAIL && tabAkkonInspResult.MarkResult.PanelMark.FoundedMark != null)
-                {
-                    leftAkkonPanelMarkScore = tabAkkonInspResult.MarkResult.PanelMark.FoundedMark.Left.MaxMatchPos.Score;
-                    leftAkkonPanelMarkJudge = tabAkkonInspResult.MarkResult.PanelMark.FoundedMark.Left.Judgement;
-                }
-
-                //Akkon Panel Mark Right Score&Judge
-                if (tabAkkonInspResult.MarkResult.PanelMark.Judgement != Judgement.FAIL && tabAkkonInspResult.MarkResult.PanelMark.FoundedMark != null)
-                {
-                    rightAkkonPanelMarkScore = tabAkkonInspResult.MarkResult.PanelMark.FoundedMark.Right.MaxMatchPos.Score;
-                    rightAkkonPanelMarkJudge = tabAkkonInspResult.MarkResult.PanelMark.FoundedMark.Right.Judgement;
-                }
-
-                //Align Panel Mark Left Score&Judge
-                if (tabAlignInspResult.MarkResult.PanelMark.Judgement != Judgement.FAIL && tabAlignInspResult.MarkResult.PanelMark.FoundedMark != null)
-                {
-                    leftAlignPanelMarkScore = tabAlignInspResult.MarkResult.PanelMark.FoundedMark.Left.MaxMatchPos.Score;
-                    leftAlignPanelMarkJudge = tabAlignInspResult.MarkResult.PanelMark.FoundedMark.Left.Judgement;
-                }
-
-                //Align Panel Mark Right Score&Judge
-                if (tabAlignInspResult.MarkResult.PanelMark.Judgement != Judgement.FAIL && tabAlignInspResult.MarkResult.PanelMark.FoundedMark != null)
-                {
-                    rightAlignPanelMarkScore = tabAlignInspResult.MarkResult.PanelMark.FoundedMark.Right.MaxMatchPos.Score;
-                    rightAlignPanelMarkJudge = tabAlignInspResult.MarkResult.PanelMark.FoundedMark.Right.Judgement;
-                }
-
-                //Align COF Mark Left Score&Judge
-                if (tabAlignInspResult.MarkResult.FpcMark.Judgement != Judgement.FAIL && tabAlignInspResult.MarkResult.FpcMark.FoundedMark != null)
-                {
-                    leftAlignFpcMarkScore = tabAlignInspResult.MarkResult.FpcMark.FoundedMark.Left.MaxMatchPos.Score;
-                    leftAlignFpcMarkJudge = tabAlignInspResult.MarkResult.FpcMark.FoundedMark.Left.Judgement;
-                }
-
-                //Align COF Mark Right Score&Judge
-                if (tabAlignInspResult.MarkResult.FpcMark.Judgement != Judgement.FAIL && tabAlignInspResult.MarkResult.FpcMark.FoundedMark != null)
-                {
-                    rightAlignFpcMarkScore = tabAlignInspResult.MarkResult.FpcMark.FoundedMark.Right.MaxMatchPos.Score;
-                    rightAlignFpcMarkJudge = tabAlignInspResult.MarkResult.FpcMark.FoundedMark.Right.Judgement;
-                }
-
-
-                body.Add($"{tabAlignInspResult.TabNo + 1}");                                     // Tab No
-                body.Add($"{leftAkkonPanelMarkJudge}");                                          // Judge
-                body.Add($"{leftAkkonPanelMarkScore}");                                          // Akkon Panel Left
-                body.Add($"{rightAkkonPanelMarkJudge}");                                         // Judge
-                body.Add($"{rightAkkonPanelMarkScore}");                                         // Akkon Panel Right
-                body.Add($"{leftAlignPanelMarkJudge}");                                          // Judge
-                body.Add($"{leftAlignPanelMarkScore}");                                          // Align Panel Left
-                body.Add($"{rightAlignPanelMarkJudge}");                                         // Judge
-                body.Add($"{rightAlignPanelMarkScore}");                                         // Align Panel Right
-                body.Add($"{leftAlignFpcMarkJudge}");                                            // Judge
-                body.Add($"{leftAlignFpcMarkScore}");                                            // Align COF Left
-                body.Add($"{rightAlignFpcMarkJudge}");                                           // Judge
-                body.Add($"{rightAlignFpcMarkScore}");                                           // Align COF Right
-            }
-
-            CSVHelper.WriteData(csvFile, body);
-
-        }
-
         private double CheckAlignResultValue(AlignResult alignResult)
         {
             float resolution = AlignCamera.Camera.PixelResolution_um / AlignCamera.Camera.LensScale;
@@ -1922,20 +1696,6 @@ namespace ATT_UT_IPAD.Core
             }
         }
 
-        private void DrawPatternResult(ref Mat mat, TabMarkResult tabMarkResult, PointF offset)
-        {
-            var leftMark = tabMarkResult.FpcMark.FoundedMark.Left;
-            if (leftMark != null)
-            {
-                if (leftMark.Found)
-                {
-                    var resultGraphics = leftMark.MaxMatchPos.ResultGraphics;
-                    DrawPatternShape(ref mat, leftMark.Judgement, resultGraphics, offset);
-                }
-            }
-
-        }
-
         private void DrawPatternShape(ref Mat mat, Judgement judgement, CogCompositeShape resultGraphics, PointF cropOffset)
         {
             var drawColor = new MCvScalar(50, 230, 50, 255);
@@ -2178,17 +1938,6 @@ namespace ATT_UT_IPAD.Core
             }
         }
 
-        private void SetMarkMotionPosition(Unit unit, MarkDirection markDirection)
-        {
-            var preAlignParam = unit.PreAlign.AlignParamList.Where(x => x.Direction == markDirection).FirstOrDefault();
-
-            var motionX = MotionManager.Instance().GetAxis(AxisHandlerName.Handler0, AxisName.X).GetActualPosition();
-            var motionY = PlcControlManager.Instance().GetReadPosition(AxisName.Y) / 1000;
-            var motionT = PlcControlManager.Instance().GetReadPosition(AxisName.T) / 1000;
-
-            preAlignParam.SetMotionData(motionX, motionY, motionT);
-        }
-
         public void VirtualGrabDone()
         {
             IsAkkonGrabDone = true;
@@ -2311,6 +2060,230 @@ namespace ATT_UT_IPAD.Core
                 var alignTabInspResult = AppsInspResult.Instance().GetAlign(tabIndex);
                 alignTabInspResult.IsManualOK = true;
             }
+        }
+
+        private void SaveAxisZMposData(string resultPath)
+        {
+            string csvFile = Path.Combine(resultPath, "MPosData.csv");
+            if (File.Exists(csvFile) == false)
+            {
+                List<string> header = new List<string>
+                {
+                    "Inspection Time",
+                    "Panel ID",
+                    "Stage No",
+                    "Z Mpos",
+                };
+                CSVHelper.WriteHeader(csvFile, header);
+            }
+
+            List<string> body = new List<string>();
+
+            var programType = StringHelper.StringToEnum<ProgramType>(AppsConfig.Instance().ProgramType);
+            body.Add($"{AppsInspResult.Instance().EndInspTime:HH:mm:ss}");                  // Insp Time
+            body.Add($"{AppsInspResult.Instance().Cell_ID}");                               // Panel ID
+            body.Add($"{(int)programType + 1}");                                            // Stage No
+
+            for (int dataCount = 0; dataCount < MPosDataList.Count; dataCount++)
+            {
+                string mpos = Convert.ToString(MPosDataList[dataCount]);
+                body.Add($"{mpos}");
+            }
+
+            CSVHelper.WriteData(csvFile, body);
+        }
+        private void SaveRetData(string resultPath)
+        {
+            string csvFile = Path.Combine(resultPath, "RetData.csv");
+            if (File.Exists(csvFile) == false)
+            {
+                List<string> header = new List<string>
+                {
+                    "Inspection Time",
+                    "Panel ID",
+                    "Stage No",
+                    "Ret",
+                };
+                CSVHelper.WriteHeader(csvFile, header);
+            }
+
+            List<string> body = new List<string>();
+
+            var programType = StringHelper.StringToEnum<ProgramType>(AppsConfig.Instance().ProgramType);
+            body.Add($"{AppsInspResult.Instance().EndInspTime:HH:mm:ss}");                  // Insp Time
+            body.Add($"{AppsInspResult.Instance().Cell_ID}");                               // Panel ID
+            body.Add($"{(int)programType + 1}");                                            // Stage No
+
+            for (int dataCount = 0; dataCount < RetDataList.Count; dataCount++)
+            {
+                string ret = Convert.ToString(RetDataList[dataCount]);
+                body.Add($"{ret}");
+            }
+
+            CSVHelper.WriteData(csvFile, body);
+        }
+
+        private void SaveMarkToMarkDistanceData(string resultPath,int tabCount)
+        {
+            string csvFile = Path.Combine(resultPath, "MarkToMarkDistanceData.csv");
+            if (File.Exists(csvFile) == false)
+            {
+                List<string> header = new List<string>
+                {
+                    "Inspection Time",
+                    "Panel ID",
+                    "Stage No",
+                };
+                for (int index = 0; index < tabCount; index++)
+                {
+                    header.Add($"Tab");
+                    header.Add($"Judge");
+                    header.Add($"Panel");
+                    header.Add($"COF");
+                }
+
+                CSVHelper.WriteHeader(csvFile, header);
+            }
+
+            List<string> body = new List<string>();
+
+            var programType = StringHelper.StringToEnum<ProgramType>(AppsConfig.Instance().ProgramType);
+            body.Add($"{AppsInspResult.Instance().EndInspTime:HH:mm:ss}");                  // Insp Time
+            body.Add($"{AppsInspResult.Instance().Cell_ID}");                               // Panel ID
+            body.Add($"{(int)programType + 1}");                                            // Stage No
+
+            for (int tabNo = 0; tabNo < tabCount; tabNo++)
+            {
+                var tabInspResult = AppsInspResult.Instance().GetAlign(tabNo);
+                var alignResult = tabInspResult.AlignResult;
+
+                var panelDistance = GetPanelMarkToMarkDistance(tabInspResult);
+                var cofDistance = GetCOFMarkToMarkDistance(tabInspResult);
+
+                body.Add($"{tabInspResult.TabNo + 1}");                                     // Tab No
+                body.Add($"{alignResult.Judgement}");                                       // Judge
+                body.Add($"{panelDistance}");                                               // Panel Mark to Mark Distance
+                body.Add($"{cofDistance}");                                                 // COF Mark to Mark Distance
+            }
+
+            CSVHelper.WriteData(csvFile, body);
+        }
+
+        private void SaveMarkScoreData(string resultPath, int tabCount)
+        {
+            string csvFile = Path.Combine(resultPath, "MarkScoreData.csv");
+            if (File.Exists(csvFile) == false)
+            {
+                List<string> header = new List<string>
+                {
+                    "Inspection Time",
+                    "Panel ID",
+                    "Stage No",
+                };
+                for (int index = 0; index < tabCount; index++)
+                {
+                    header.Add($"Tab");
+                    header.Add($"Judge");
+                    header.Add($"Akkon Left Panel Mark");
+                    header.Add($"Judge");
+                    header.Add($"Akkon Right Panel Mark");
+                    header.Add($"Judge");
+                    header.Add($"Align Left Panel Mark");
+                    header.Add($"Judge");
+                    header.Add($"Align Right Panel Mark");
+                    header.Add($"Judge");
+                    header.Add($"Align Left COF Mark");
+                    header.Add($"Judge");
+                    header.Add($"Align Right COF Mark");
+                }
+
+                CSVHelper.WriteHeader(csvFile, header);
+            }
+
+            List<string> body = new List<string>();
+
+            var programType = StringHelper.StringToEnum<ProgramType>(AppsConfig.Instance().ProgramType);
+            body.Add($"{AppsInspResult.Instance().EndInspTime:HH:mm:ss}");                  // Insp Time
+            body.Add($"{AppsInspResult.Instance().Cell_ID}");                               // Panel ID
+            body.Add($"{(int)programType + 1}");                                            // Stage No
+
+            for (int tabNo = 0; tabNo < tabCount; tabNo++)
+            {
+                var tabAlignInspResult = AppsInspResult.Instance().GetAlign(tabNo);
+                var tabAkkonInspResult = AppsInspResult.Instance().GetAkkon(tabNo);
+
+                var leftAkkonPanelMarkScore = 0.0;
+                var leftAkkonPanelMarkJudge = Judgement.FAIL;
+                var rightAkkonPanelMarkScore = 0.0;
+                var rightAkkonPanelMarkJudge = Judgement.FAIL;
+                var leftAlignPanelMarkScore = 0.0;
+                var leftAlignPanelMarkJudge = Judgement.FAIL;
+                var rightAlignPanelMarkScore = 0.0;
+                var rightAlignPanelMarkJudge = Judgement.FAIL;
+                var leftAlignFpcMarkScore = 0.0;
+                var leftAlignFpcMarkJudge = Judgement.FAIL;
+                var rightAlignFpcMarkScore = 0.0;
+                var rightAlignFpcMarkJudge = Judgement.FAIL;
+
+                //Akkon Panel Mark Left Score&Judge
+                if (tabAkkonInspResult.MarkResult.PanelMark.Judgement != Judgement.FAIL && tabAkkonInspResult.MarkResult.PanelMark.FoundedMark != null)
+                {
+                    leftAkkonPanelMarkScore = tabAkkonInspResult.MarkResult.PanelMark.FoundedMark.Left.MaxMatchPos.Score;
+                    leftAkkonPanelMarkJudge = tabAkkonInspResult.MarkResult.PanelMark.FoundedMark.Left.Judgement;
+                }
+
+                //Akkon Panel Mark Right Score&Judge
+                if (tabAkkonInspResult.MarkResult.PanelMark.Judgement != Judgement.FAIL && tabAkkonInspResult.MarkResult.PanelMark.FoundedMark != null)
+                {
+                    rightAkkonPanelMarkScore = tabAkkonInspResult.MarkResult.PanelMark.FoundedMark.Right.MaxMatchPos.Score;
+                    rightAkkonPanelMarkJudge = tabAkkonInspResult.MarkResult.PanelMark.FoundedMark.Right.Judgement;
+                }
+
+                //Align Panel Mark Left Score&Judge
+                if (tabAlignInspResult.MarkResult.PanelMark.Judgement != Judgement.FAIL && tabAlignInspResult.MarkResult.PanelMark.FoundedMark != null)
+                {
+                    leftAlignPanelMarkScore = tabAlignInspResult.MarkResult.PanelMark.FoundedMark.Left.MaxMatchPos.Score;
+                    leftAlignPanelMarkJudge = tabAlignInspResult.MarkResult.PanelMark.FoundedMark.Left.Judgement;
+                }
+
+                //Align Panel Mark Right Score&Judge
+                if (tabAlignInspResult.MarkResult.PanelMark.Judgement != Judgement.FAIL && tabAlignInspResult.MarkResult.PanelMark.FoundedMark != null)
+                {
+                    rightAlignPanelMarkScore = tabAlignInspResult.MarkResult.PanelMark.FoundedMark.Right.MaxMatchPos.Score;
+                    rightAlignPanelMarkJudge = tabAlignInspResult.MarkResult.PanelMark.FoundedMark.Right.Judgement;
+                }
+
+                //Align COF Mark Left Score&Judge
+                if (tabAlignInspResult.MarkResult.FpcMark.Judgement != Judgement.FAIL && tabAlignInspResult.MarkResult.FpcMark.FoundedMark != null)
+                {
+                    leftAlignFpcMarkScore = tabAlignInspResult.MarkResult.FpcMark.FoundedMark.Left.MaxMatchPos.Score;
+                    leftAlignFpcMarkJudge = tabAlignInspResult.MarkResult.FpcMark.FoundedMark.Left.Judgement;
+                }
+
+                //Align COF Mark Right Score&Judge
+                if (tabAlignInspResult.MarkResult.FpcMark.Judgement != Judgement.FAIL && tabAlignInspResult.MarkResult.FpcMark.FoundedMark != null)
+                {
+                    rightAlignFpcMarkScore = tabAlignInspResult.MarkResult.FpcMark.FoundedMark.Right.MaxMatchPos.Score;
+                    rightAlignFpcMarkJudge = tabAlignInspResult.MarkResult.FpcMark.FoundedMark.Right.Judgement;
+                }
+
+
+                body.Add($"{tabAlignInspResult.TabNo + 1}");                                     // Tab No
+                body.Add($"{leftAkkonPanelMarkJudge}");                                          // Judge
+                body.Add($"{leftAkkonPanelMarkScore}");                                          // Akkon Panel Left
+                body.Add($"{rightAkkonPanelMarkJudge}");                                         // Judge
+                body.Add($"{rightAkkonPanelMarkScore}");                                         // Akkon Panel Right
+                body.Add($"{leftAlignPanelMarkJudge}");                                          // Judge
+                body.Add($"{leftAlignPanelMarkScore}");                                          // Align Panel Left
+                body.Add($"{rightAlignPanelMarkJudge}");                                         // Judge
+                body.Add($"{rightAlignPanelMarkScore}");                                         // Align Panel Right
+                body.Add($"{leftAlignFpcMarkJudge}");                                            // Judge
+                body.Add($"{leftAlignFpcMarkScore}");                                            // Align COF Left
+                body.Add($"{rightAlignFpcMarkJudge}");                                           // Judge
+                body.Add($"{rightAlignFpcMarkScore}");                                           // Align COF Right
+            }
+
+            CSVHelper.WriteData(csvFile, body);
         }
         #endregion
     }
