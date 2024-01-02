@@ -50,7 +50,7 @@ namespace ATT_UT_IPAD.Core
 
         private Thread _deleteThread { get; set; } = null;
 
-        private Thread _ClearBufferThread { get; set; } = null;
+        private Thread _clearBufferThread { get; set; } = null;
 
         private Thread _saveThread { get; set; } = null;
 
@@ -81,7 +81,9 @@ namespace ATT_UT_IPAD.Core
         private bool IsAlignGrabDone { get; set; } = false;
 
         private Stopwatch LastInspSW { get; set; } = new Stopwatch();
+
         private List<double> MPosDataList { get; set; } = new List<double>();
+
         private List<double> RetDataList { get; set; } = new List<double>();
 
         public InspProcessTask InspProcessTask { get; set; } = new InspProcessTask();
@@ -128,7 +130,6 @@ namespace ATT_UT_IPAD.Core
 
                     if (AppsStatus.Instance().IsRepeat == false)
                         AkkonLAFCtrl.SetTrackingOnOFF(false);
-
 
                     WriteLog("Received Akkon Camera Grab Done Event.");
                 }
@@ -361,12 +362,8 @@ namespace ATT_UT_IPAD.Core
             if (unit == null)
                 return;
 
-            var tab = unit.GetTab(0);
-
-            string systemLogMessage = string.Empty;
             string errorMessage = string.Empty;
 
-            Stopwatch sw = new Stopwatch();
             switch (SeqStep)
             {
                 case SeqStep.SEQ_IDLE:
@@ -397,7 +394,7 @@ namespace ATT_UT_IPAD.Core
                     MotionManager.Instance().MoveAxisZ(UnitName.Unit0, TeachingPosType.Stage1_Scan_Start, AkkonLAFCtrl, AxisName.Z0);
                     MotionManager.Instance().MoveAxisZ(UnitName.Unit0, TeachingPosType.Stage1_Scan_Start, AlignLAFCtrl, AxisName.Z1);
 
-                    if (_ClearBufferThread != null || _updateThread != null)
+                    if (_clearBufferThread != null || _updateThread != null)
                         break;
 
                     if (MoveTo(TeachingPosType.Stage1_Scan_Start, out errorMessage) == false)
@@ -471,7 +468,6 @@ namespace ATT_UT_IPAD.Core
                     }
 
                     AkkonCamera.StartGrab();
-
                     WriteLog("Start Akkon LineScanner Grab.", true);
 
                     if (AppsConfig.Instance().EnableTest1 == false)
@@ -679,11 +675,8 @@ namespace ATT_UT_IPAD.Core
                         if (tabResult.AkkonInspMatImage != null)
                         {
                             Mat resultMat = GetResultImage(tabResult.AkkonInspMatImage, tabResult.AkkonResult.LeadResultList, tab.AkkonParam.AkkonAlgoritmParam, ref tabResult.AkkonNGAffineList);
-
                             ICogImage cogImage = ConvertCogColorImage(resultMat);
-
                             tabResult.AkkonResultCogImage = cogImage;
-
                             resultMat.Dispose();
 
                             // AkkonInspCogImage
@@ -721,22 +714,23 @@ namespace ATT_UT_IPAD.Core
             return finalHead;
         }
 
-        private void WaitPlcValueClear(PlcCommonMap addr)
+        private void WaitPlcValueClear(PlcCommonMap address)
         {
             Stopwatch sw = Stopwatch.StartNew();
             int timeOutMs = 3000;
 
-            while (PlcControlManager.Instance().GetValue(addr) != "0" && sw.ElapsedMilliseconds <= timeOutMs)
+            while (PlcControlManager.Instance().GetValue(address) != "0" && sw.ElapsedMilliseconds <= timeOutMs)
                 Thread.Sleep(20);   //plcScanTime
 
             if (sw.ElapsedMilliseconds > timeOutMs)
-                new MessageConfirmForm { Message = $"Wait PLC value clear timed out.\r\nCommand : {addr}\r\nTime : {timeOutMs}" }.ShowDialog();
+                new MessageConfirmForm { Message = $"Wait PLC value clear timed out.\r\nCommand : {address}\r\nTime : {timeOutMs}" }.ShowDialog();
         }
 
         private void SendResultData()
         {
             var inspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
             double resolution = AkkonCamera.Camera.PixelResolution_um / AkkonCamera.Camera.LensScale;
+
             bool inspAkkonResult = true;
             bool inspAlignResult = true;
             bool inspFinalResult = true;
@@ -747,9 +741,6 @@ namespace ATT_UT_IPAD.Core
                 var alignTabInspResult = AppsInspResult.Instance().GetAlign(tabNo);
                 TabJudgement judgement = GetJudgemnet(akkonTabInspResult, alignTabInspResult);
                 PlcControlManager.Instance().WriteTabResult(tabNo, judgement, alignTabInspResult.AlignResult, akkonTabInspResult.AkkonResult, alignTabInspResult.MarkResult, resolution);
-
-                //if (judgement.Equals(TabJudgement.OK) == false)
-                //    inspFinalResult = false;
 
                 if (akkonTabInspResult.AkkonResult.Judgement.Equals(Judgement.OK) == false)
                     inspAkkonResult = false;
@@ -819,13 +810,6 @@ namespace ATT_UT_IPAD.Core
             AlignCamera.InitGrabSettings(akkonToAlignGap_mm);
             InspProcessTask.InitalizeInspAlignBuffer(AlignCamera.Camera.Name, AlignCamera.TabScanBufferList);
             ACSBufferManager.Instance().SetLafTriggerPosition(UnitName.Unit0, AlignLAFCtrl.Name, AlignCamera.TabScanBufferList, AppsConfig.Instance().CameraGap_mm);
-        }
-
-        public void RunVirtual()
-        {
-            AppsInspModel inspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
-
-            Tab tab = inspModel.GetUnit(UnitName.Unit0).GetTab(0);
         }
 
         public void StartDeleteData()
@@ -901,35 +885,6 @@ namespace ATT_UT_IPAD.Core
             return value.ToString();
         }
 
-        private double GetPanelMarkToMarkDistance(TabInspResult tabInspResult)
-        {
-            var lineCamera = LineCameraManager.Instance().GetLineCamera("AlignCamera").Camera;
-            float resolution_um = lineCamera.PixelResolution_um / lineCamera.LensScale;
-
-            var leftPanelMarkOriginPoint = tabInspResult.MarkResult.PanelMark.FoundedMark.Left.MaxMatchPos.FoundPos;
-            var rightPanelMarkOriginPoint = tabInspResult.MarkResult.PanelMark.FoundedMark.Right.MaxMatchPos.FoundPos;
-
-            var panelDistance = MathHelper.GetDistance(leftPanelMarkOriginPoint, rightPanelMarkOriginPoint);
-            panelDistance = Math.Round(panelDistance * resolution_um, 1, MidpointRounding.AwayFromZero);
-            
-
-            return panelDistance;
-        }
-
-        private double GetCOFMarkToMarkDistance(TabInspResult tabInspResult)
-        {
-            var lineCamera = LineCameraManager.Instance().GetLineCamera("AlignCamera").Camera;
-            float resolution_um = lineCamera.PixelResolution_um / lineCamera.LensScale;
-
-            var leftFpcMarkOriginPoint = tabInspResult.MarkResult.FpcMark.FoundedMark.Left.MaxMatchPos.FoundPos;
-            var rightFpcMarkOriginPoint = tabInspResult.MarkResult.FpcMark.FoundedMark.Right.MaxMatchPos.FoundPos;
-
-            var cofDistance = MathHelper.GetDistance(leftFpcMarkOriginPoint, rightFpcMarkOriginPoint);
-            cofDistance = Math.Round(cofDistance * resolution_um, 1, MidpointRounding.AwayFromZero);
-
-            return cofDistance;
-        }
-
         private void UpdateAkkonDailyInfo(ref DailyData dailyData)
         {
             int tabCount = (ModelManager.Instance().CurrentModel as AppsInspModel).TabCount;
@@ -992,6 +947,34 @@ namespace ATT_UT_IPAD.Core
                 SaveAkkonResultAsMsaSummary(path, inspModel.TabCount);
                 SaveAlignResultAsMsaSummary(path, inspModel.TabCount);
             }
+        }
+
+        private double GetPanelMarkToMarkDistance(TabInspResult tabInspResult)
+        {
+            var lineCamera = LineCameraManager.Instance().GetLineCamera("AlignCamera").Camera;
+            float resolution_um = lineCamera.PixelResolution_um / lineCamera.LensScale;
+
+            var leftPanelMarkOriginPoint = tabInspResult.MarkResult.PanelMark.FoundedMark.Left.MaxMatchPos.FoundPos;
+            var rightPanelMarkOriginPoint = tabInspResult.MarkResult.PanelMark.FoundedMark.Right.MaxMatchPos.FoundPos;
+
+            var panelDistance = MathHelper.GetDistance(leftPanelMarkOriginPoint, rightPanelMarkOriginPoint);
+            panelDistance = Math.Round(panelDistance * resolution_um, 1, MidpointRounding.AwayFromZero);
+            
+            return panelDistance;
+        }
+
+        private double GetCOFMarkToMarkDistance(TabInspResult tabInspResult)
+        {
+            var lineCamera = LineCameraManager.Instance().GetLineCamera("AlignCamera").Camera;
+            float resolution_um = lineCamera.PixelResolution_um / lineCamera.LensScale;
+
+            var leftFpcMarkOriginPoint = tabInspResult.MarkResult.FpcMark.FoundedMark.Left.MaxMatchPos.FoundPos;
+            var rightFpcMarkOriginPoint = tabInspResult.MarkResult.FpcMark.FoundedMark.Right.MaxMatchPos.FoundPos;
+
+            var cofDistance = MathHelper.GetDistance(leftFpcMarkOriginPoint, rightFpcMarkOriginPoint);
+            cofDistance = Math.Round(cofDistance * resolution_um, 1, MidpointRounding.AwayFromZero);
+
+            return cofDistance;
         }
 
         private void SaveAlignResult(string resultPath, int tabCount)
@@ -1086,6 +1069,7 @@ namespace ATT_UT_IPAD.Core
             body.Add($"{AppsInspResult.Instance().EndInspTime:HH:mm:ss}");                  // Insp Time
             body.Add($"{AppsInspResult.Instance().Cell_ID}");                               // Panel ID
             body.Add($"{(int)programType + 1}");                                            // Stage No
+
             for (int tabNo = 0; tabNo < tabCount; tabNo++)
             {
                 var tabInspResult = AppsInspResult.Instance().GetAkkon(tabNo);
@@ -2206,10 +2190,10 @@ namespace ATT_UT_IPAD.Core
 
         public bool ClearBufferThread()
         {
-            if (_ClearBufferThread == null)
+            if (_clearBufferThread == null)
             {
-                _ClearBufferThread = new Thread(ClearBuffer);
-                _ClearBufferThread.Start();
+                _clearBufferThread = new Thread(ClearBuffer);
+                _clearBufferThread.Start();
                 return true;
             }
 
@@ -2246,14 +2230,14 @@ namespace ATT_UT_IPAD.Core
                 MotionManager.Instance().MoveAxisZ(UnitName.Unit0, TeachingPosType.Stage1_Scan_Start, AkkonLAFCtrl, AxisName.Z0);
                 MotionManager.Instance().MoveAxisZ(UnitName.Unit0, TeachingPosType.Stage1_Scan_Start, AlignLAFCtrl, AxisName.Z1);
 
-                _ClearBufferThread = null;
+                _clearBufferThread = null;
                 WriteLog("Clear Buffer.");
             }
             catch (Exception err)
             {
                 string message = string.Format("Clear Buffer : {0}", err.Message);
                 Logger.Error(ErrorType.Etc, message);
-                _ClearBufferThread = null;
+                _clearBufferThread = null;
             }
         }
 

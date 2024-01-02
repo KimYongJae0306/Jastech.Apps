@@ -30,6 +30,7 @@ using Jastech.Framework.Imaging.VisionPro.VisionAlgorithms.Results;
 using Jastech.Framework.Util;
 using Jastech.Framework.Util.Helper;
 using Jastech.Framework.Winform;
+using Jastech.Framework.Winform.Forms;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -56,7 +57,7 @@ namespace ATT_UT_Remodeling.Core
 
         private Thread _deleteThread { get; set; } = null;
 
-        private Thread _ClearBufferThread { get; set; } = null;
+        private Thread _clearBufferThread { get; set; } = null;
 
         private Thread _saveThread { get; set; } = null;
 
@@ -115,17 +116,19 @@ namespace ATT_UT_Remodeling.Core
 
         private void ATTSeqRunner_GrabDoneEventHandler(string cameraName, bool isGrabDone)
         {
-            IsGrabDone = isGrabDone;
-
-            if(IsGrabDone)
+            if (LineCamera.Camera.Name == cameraName)
             {
-                LineCamera.StopGrab();
+                IsGrabDone = isGrabDone;
 
-                if (AppsStatus.Instance().IsRepeat == false)
-                    LAFCtrl.SetTrackingOnOFF(false);
-				// 반복 촬상 시 위 구문 주석 처리할 것
+                if(IsGrabDone)
+                {
+                    LineCamera.StopGrab();
 
-                WriteLog("Received Camera Grab Done Event.");
+                    if (AppsStatus.Instance().IsRepeat == false)
+                        LAFCtrl.SetTrackingOnOFF(false);
+
+                    WriteLog("Received Camera Grab Done Event.");
+                }
             }
         }
 
@@ -223,7 +226,6 @@ namespace ATT_UT_Remodeling.Core
 
             WriteLog("AutoFocus Off.");
 
-            LineCamera.StopGrab();
             LineCamera.GrabDoneEventHandler -= ATTSeqRunner_GrabDoneEventHandler;
             LineCamera.StopGrab();
             WriteLog("LinceCamera Stop Grab.");
@@ -288,9 +290,6 @@ namespace ATT_UT_Remodeling.Core
             if (unit == null)
                 return;
 
-            var tab = unit.GetTab(0);
-
-            string systemLogMessage = string.Empty;
             string errorMessage = string.Empty;
 
             switch (SeqStep)
@@ -319,7 +318,7 @@ namespace ATT_UT_Remodeling.Core
                 case SeqStep.SEQ_MOVE_START_POS:
                     MotionManager.Instance().MoveAxisZ(UnitName.Unit0, TeachingPosType.Stage1_Scan_Start, LAFCtrl, AxisName.Z0);
 
-                    if (_ClearBufferThread != null || _updateThread != null)
+                    if (_clearBufferThread != null || _updateThread != null)
                         break;
              
                     PlcControlManager.Instance().WritePcStatus(PlcCommand.Move_ScanStartPos);
@@ -443,6 +442,9 @@ namespace ATT_UT_Remodeling.Core
                     }
                     else
                     {
+                        if (ConfigSet.Instance().Operation.VirtualMode == false)
+                            WaitPlcValueClear(PlcCommonMap.PC_GrabDone);
+
                         SendResultData();
                         WriteLog("Completed Send Plc Tab Result Data", true);
                     }
@@ -451,7 +453,6 @@ namespace ATT_UT_Remodeling.Core
                     break;
 
                 case SeqStep.SEQ_WAIT_UI_RESULT_UPDATE:
-
                     MoveTo(TeachingPosType.Stage1_Scan_Start, out errorMessage, false);
 
                     StartUpdateThread();
@@ -486,7 +487,6 @@ namespace ATT_UT_Remodeling.Core
                     break;
 
                 case SeqStep.SEQ_SEND_MANUAL_JUDGE:
-
                     SendResultData();
                     WriteLog("Completed Send Plc Tab Result Data(ManualJudge)", true);
 
@@ -562,6 +562,7 @@ namespace ATT_UT_Remodeling.Core
                         SeqStop();
                         break;
                     }
+
                     WriteLog("Idle Run Inspection sequence finished.", true);
 
                     AppsStatus.Instance().IsInspRunnerFlagFromPlc = false;
@@ -631,6 +632,18 @@ namespace ATT_UT_Remodeling.Core
             return finalHead;
         }
 
+        private void WaitPlcValueClear(PlcCommonMap address)
+        {
+            Stopwatch sw = Stopwatch.StartNew();
+            int timeOutMs = 3000;
+
+            while (PlcControlManager.Instance().GetValue(address) != "0" && sw.ElapsedMilliseconds <= timeOutMs)
+                Thread.Sleep(20);   //plcScanTime
+
+            if (sw.ElapsedMilliseconds > timeOutMs)
+                new MessageConfirmForm { Message = $"Wait PLC value clear timed out.\r\nCommand : {address}\r\nTime : {timeOutMs}" }.ShowDialog();
+        }
+
         private void SendResultData()
         {
             var inspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
@@ -646,9 +659,6 @@ namespace ATT_UT_Remodeling.Core
                 TabJudgement judgement = GetJudgemnet(tabInspResult);
                 PlcControlManager.Instance().WriteTabResult(tabNo, judgement, tabInspResult.AlignResult, tabInspResult.AkkonResult, tabInspResult.MarkResult, resolution);
 
-                //if (judgement.Equals(TabJudgement.OK) == false)
-                //    inspFinalResult = false;
-
                 if (tabInspResult.AkkonResult.Judgement.Equals(Judgement.OK) == false)
                     inspAkkonResult = false;
 
@@ -657,6 +667,7 @@ namespace ATT_UT_Remodeling.Core
 
                 Thread.Sleep(20);
             }
+
             if (AppsConfig.Instance().EnableAkkonByPass)
                 inspAkkonResult = true;
 
@@ -1800,10 +1811,10 @@ namespace ATT_UT_Remodeling.Core
 
         public bool ClearBufferThread()
         {
-            if (_ClearBufferThread == null)
+            if (_clearBufferThread == null)
             {
-                _ClearBufferThread = new Thread(ClearBuffer);
-                _ClearBufferThread.Start();
+                _clearBufferThread = new Thread(ClearBuffer);
+                _clearBufferThread.Start();
                 return true;
             }
             return false;
@@ -1829,14 +1840,14 @@ namespace ATT_UT_Remodeling.Core
 
                 //MotionManager.Instance().MoveAxisZ(UnitName.Unit0, TeachingPosType.Stage1_Scan_Start, LAFCtrl, AxisName.Z0);
 
-                _ClearBufferThread = null;
+                _clearBufferThread = null;
                 WriteLog("Clear Buffer.");
             }
             catch (Exception err)
             {
                 string message = string.Format("Clear Buffer : {0}", err.Message);
                 Logger.Error(ErrorType.Etc, message);
-                _ClearBufferThread = null;
+                _clearBufferThread = null;
             }
         }
 
