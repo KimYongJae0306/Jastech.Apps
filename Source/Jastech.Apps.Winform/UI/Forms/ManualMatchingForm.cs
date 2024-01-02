@@ -14,46 +14,49 @@ using Cognex.VisionPro;
 using Jastech.Framework.Winform.VisionPro.Helper;
 using Jastech.Framework.Imaging.VisionPro.VisionAlgorithms.Parameters;
 using Cognex.VisionPro.PMAlign;
+using Jastech.Apps.Structure.Parameters;
+using Jastech.Framework.Device.LightCtrls;
 
 namespace Jastech.Apps.Winform.UI.Forms
 {
     public partial class ManualMatchingForm : Form
     {
         #region 필드
-        private int _pitch = 0;
+        private int _pitch { get; set; } = 0;
         #endregion
 
         #region 속성
-        private CogDisplayControl Display { get; set; } = null;
+        public MarkDirection MarkDirection { get; set; } = MarkDirection.Left;
+
+        public MarkName MarkName { get; set; } = MarkName.Main;
+
+        private Unit Unit { get; set; } = null;
+
+        private CogDisplayControl CogDisplayControl { get; set; } = null;
 
         private CogRecordDisplay PatternDisplay { get; set; } = null;
 
         private LightControl LightControl { get; set; } = null;
 
-        //private VisionProPointMarkerParam PointMarkerParam { get; set; } = null;
         private VisionProPointMarkerParam PointMarkerParam { get; set; } = new VisionProPointMarkerParam();
 
         public AreaCamera AreaCamera { get; set; } = null;
 
-        public LAFCtrl LAFCtrl { get; set; } = null;
-
-        public Unit CurrentUnit { get; private set; } = null;
-
-        public UnitName UnitName { get; set; } = UnitName.Unit0;
-
-        public MarkDirection MarkDirection { get; set; } = MarkDirection.Left;
-
-        public MarkName MarkName { get; set; } = MarkName.Main;
-
         public CogTransform2DLinear CogTransformOrigin { get; set; }
+
+        public int MarkSize { get; set; } = 200;
+
+        public PointF NewOriginPoint { get; set; } = new PointF();
         #endregion
 
         #region 이벤트
+        public Action CloseEventDelegate;
+
         public event ManualMatchingEventHandler ManualMatchingHandler;
         #endregion
 
         #region 델리게이트
-        public delegate void ManualMatchingEventHandler(bool isManualMatchCompleted);
+        public delegate void ManualMatchingEventHandler(bool isManualMatchCompleted, PointF originPoint);
         #endregion
 
         #region 생성자
@@ -66,109 +69,76 @@ namespace Jastech.Apps.Winform.UI.Forms
         #region 메서드
         private void ManualMatchingForm_Load(object sender, EventArgs e)
         {
-            TeachingData.Instance().UpdateTeachingData();
-            CurrentUnit = TeachingData.Instance().GetUnit(UnitName.ToString());
-
-            if (CurrentUnit != null)
-            {
-                SetPitch(Convert.ToInt32(lblPitch.Text));
-                AddControls();
-            }
-
-            // TeachingUIManager 참조
-            //TeachingUIManager.Instance().TeachingDisplayControl = Display;
-
-            //AreaCamera.OnImageGrabbed += AreaCamera_OnImageGrabbed;
-            //LoadPatternImage();
-
-            //var param = CurrentUnit.GetPreAlignMark(MarkDirection, MarkName.Main);
-
-            //if (param != null)
-            //{
-            //    CogTransform2DLinear OriginPosition = param.InspParam.GetOrigin();
-            //    DrawOriginPointMark(Display, new PointF((float)OriginPosition.TranslationX, (float)OriginPosition.TranslationY), 200);
-            //}
-            //else
-            //    DrawOriginPointMark(Display, new PointF(100, 100), 200);
-        }
-
-        public void SetParams(UnitName unitName, AreaCamera areaCamera, MarkDirection markDirection)
-        {
-            SetUnit(unitName);
-            SetAreaCamera(areaCamera);
-            RegisterAreaCameraEvent(areaCamera);
-            SetMarkDirection(markDirection);
-            AreaCamera.StartGrabContinous();
-            // 트레인 이미지 불러오기
+            AddControls();
             LoadOriginPatternImage();
-            DrawOriginPointMark(Display, new PointF(areaCamera.Camera.ImageWidth / 2, areaCamera.Camera.ImageHeight / 2), 200);   
-        }
 
-        private void SetUnit(UnitName unitName)
-        {
-            UnitName = unitName;
-            TeachingData.Instance().UpdateTeachingData();
-            CurrentUnit = TeachingData.Instance().GetUnit(UnitName.ToString());
-        }
+            if (AreaCamera != null)
+                AreaCamera.OnImageGrabbed += AreaCamera_OnImageGrabbed;
 
-        private void SetAreaCamera(AreaCamera areaCamera)
-        {
-            AreaCamera = areaCamera;
-        }
-
-        private void RegisterAreaCameraEvent(AreaCamera areaCamera)
-        {
-            AreaCamera.OnImageGrabbed += AreaCamera_OnImageGrabbed;
-        }
-
-        private void SetMarkDirection(MarkDirection PrealignMarkDirection)
-        {
-            MarkDirection = PrealignMarkDirection;
-        }
-
-        public void SetImage(ICogImage image)
-        {
-            Display.SetImage(image);
-        }
-
-        public PointF GetOriginPoint()
-        {
-            PointF originPoint = new PointF();
-
-            originPoint.X = Convert.ToSingle(CogTransformOrigin.TranslationX);
-            originPoint.Y = Convert.ToSingle(CogTransformOrigin.TranslationY);
-
-            return originPoint;
-        }
-
-        private void SetOriginPoint()
-        {
-            CogTransformOrigin = PointMarkerParam.GetOriginPoint();
-        }
-
-        private void DrawOriginPointMark(CogDisplayControl display, PointF centerPoint, int size)
-        {
-            display.ClearGraphic();
-            PointMarkerParam.SetOriginPoint(Convert.ToSingle(centerPoint.X), Convert.ToSingle(centerPoint.Y), size);
-            display.SetInteractiveGraphics("tool", PointMarkerParam.GetCurrentRecord());
-        }
-
-        private void SetPitch(int pitch)
-        {
-            _pitch = pitch;
+            Initialize();
         }
 
         private void AddControls()
         {
-            Display = new CogDisplayControl();
-            Display.Dock = DockStyle.Fill;
-            Display.DeleteEventHandler += Display_DeleteEventHandler;
-            pnlDisplay.Controls.Add(Display);
+            CogDisplayControl = new CogDisplayControl();
+            CogDisplayControl.Dock = DockStyle.Fill;
+            pnlDisplay.Controls.Add(CogDisplayControl);
 
             LightControl = new LightControl();
             LightControl.Dock = DockStyle.Fill;
-            LightControl.SetParam(DeviceManager.Instance().LightCtrlHandler, CurrentUnit.PreAlign.LeftLightParam);
+            if(Unit != null)
+            {
+                var lightParameter = MarkDirection == MarkDirection.Left ? Unit.PreAlign.LeftLightParam : Unit.PreAlign.RightLightParam;
+                LightControl.SetParam(DeviceManager.Instance().LightCtrlHandler, lightParameter);
+            }
+
             pnlLight.Controls.Add(LightControl);
+        }
+
+        private void Initialize()
+        {
+            AreaCamera.StartGrabContinous();
+            DrawOriginPointMark(new PointF(AreaCamera.Camera.ImageWidth / 2, AreaCamera.Camera.ImageHeight / 2));
+        }
+
+        private void Release()
+        {
+            AreaCamera.StopGrab();
+            if (AreaCamera != null)
+                AreaCamera.OnImageGrabbed -= AreaCamera_OnImageGrabbed;
+
+            CogDisplayControl.DisposeImage();
+            DisposePatternDisplay();
+        }
+
+        public void SetParams(AreaCamera areaCamera, Unit unit, MarkDirection markDirection)
+        {
+            AreaCamera = areaCamera;
+            Unit = unit;
+            MarkDirection = MarkDirection;
+        }
+
+        public void SetImage(ICogImage image)
+        {
+            CogDisplayControl.SetImage(image);
+        }
+
+        private PointF GetOriginPoint()
+        {
+            var origin = PointMarkerParam.GetOriginPoint();
+
+            PointF currentOrigin = new PointF();
+            currentOrigin.X = Convert.ToSingle(origin.TranslationX);
+            currentOrigin.Y = Convert.ToSingle(origin.TranslationY);
+
+            return currentOrigin;
+        }
+
+        private void DrawOriginPointMark(PointF centerPoint)
+        {
+            CogDisplayControl.ClearGraphic();
+            PointMarkerParam.SetOriginPoint(Convert.ToSingle(centerPoint.X), Convert.ToSingle(centerPoint.Y), MarkSize);
+            CogDisplayControl.SetInteractiveGraphics("tool", PointMarkerParam.GetCurrentRecord());
         }
 
         private void AreaCamera_OnImageGrabbed(Camera camera)
@@ -179,27 +149,28 @@ namespace Jastech.Apps.Winform.UI.Forms
 
             var image = VisionProImageHelper.ConvertImage(byteData, camera.ImageWidth, camera.ImageHeight, camera.ColorFormat);
 
-            Display.SetImage(image);
+            CogDisplayControl.SetImage(image);
         }
 
         private void LoadOriginPatternImage()
         {
-            var currentParam = CurrentUnit.GetPreAlignMark(MarkDirection, MarkName.Main).InspParam;
-
-            cogPatternDisplay.InteractiveGraphics.Clear();
-            cogPatternDisplay.StaticGraphics.Clear();
-
-            CogDisplayHelper.DisposeDisplay(cogPatternDisplay);
-
-            if (currentParam.IsTrained())
+            if(Unit != null)
             {
-                cogPatternDisplay.Image = null;
-                cogPatternDisplay.Image = currentParam.GetTrainedPatternImage();
-                CogPMAlignCurrentRecordConstants constants = CogPMAlignCurrentRecordConstants.TrainImage |
-                                                        CogPMAlignCurrentRecordConstants.TrainImageMask;
+                var preAlignParam = Unit.GetPreAlignMark(MarkDirection, MarkName).InspParam;
+
+                cogPatternDisplay.InteractiveGraphics.Clear();
+                cogPatternDisplay.StaticGraphics.Clear();
+
+                CogDisplayHelper.DisposeDisplay(cogPatternDisplay);
+
+                if (preAlignParam.IsTrained())
+                {
+                    cogPatternDisplay.Image = null;
+                    cogPatternDisplay.Image = preAlignParam.GetTrainedPatternImage();
+                }
+                else
+                    DisposePatternDisplay();
             }
-            else
-                DisposePatternDisplay();
         }
 
         private void DisposePatternDisplay()
@@ -208,68 +179,60 @@ namespace Jastech.Apps.Winform.UI.Forms
             cogPatternDisplay.Image = null;
         }
 
-        private void Display_DeleteEventHandler(object sender, EventArgs e)
-        {
-            
-        }
-
         private void lblPitch_Click(object sender, EventArgs e)
         {
-            int pitch = KeyPadHelper.SetLabelIntegerData((Label)sender);
-            SetPitch(pitch);
+            _pitch = KeyPadHelper.SetLabelIntegerData((Label)sender);
         }
 
         private void lblMoveUp_Click(object sender, EventArgs e)
         {
             float moveY = (float)PointMarkerParam.GetOriginPoint().TranslationY - _pitch;
-            DrawOriginPointMark(Display, new PointF((float)PointMarkerParam.GetOriginPoint().TranslationX, moveY), 200);
+            DrawOriginPointMark(new PointF((float)PointMarkerParam.GetOriginPoint().TranslationX, moveY));
         }
 
         private void lblMoveLeft_Click(object sender, EventArgs e)
         {
             float moveX = (float)PointMarkerParam.GetOriginPoint().TranslationX - _pitch;
-            DrawOriginPointMark(Display, new PointF(moveX, (float)PointMarkerParam.GetOriginPoint().TranslationY), 200);
+            DrawOriginPointMark(new PointF(moveX, (float)PointMarkerParam.GetOriginPoint().TranslationY));
         }
 
         private void lblMoveRight_Click(object sender, EventArgs e)
         {
             float moveX = (float)PointMarkerParam.GetOriginPoint().TranslationX + _pitch;
-            DrawOriginPointMark(Display, new PointF(moveX, (float)PointMarkerParam.GetOriginPoint().TranslationY), 200);
+            DrawOriginPointMark(new PointF(moveX, (float)PointMarkerParam.GetOriginPoint().TranslationY));
         }
 
         private void lblMoveDown_Click(object sender, EventArgs e)
         {
             float moveY = (float)PointMarkerParam.GetOriginPoint().TranslationY + _pitch;
-            DrawOriginPointMark(Display, new PointF((float)PointMarkerParam.GetOriginPoint().TranslationX, moveY), 200);
+            DrawOriginPointMark(new PointF((float)PointMarkerParam.GetOriginPoint().TranslationX, moveY));
         }
 
         private void lblApply_Click(object sender, EventArgs e)
         {
-            SetManualMatching();
             AreaCamera.StopGrab();
             AreaCamera.OnImageGrabbed -= AreaCamera_OnImageGrabbed;
-            Display.DisposeImage();
-            ManualMatchingHandler?.Invoke(true);
+            CogDisplayControl.DisposeImage();
+
+            ManualMatchingHandler?.Invoke(true, GetOriginPoint());
+            DialogResult = DialogResult.OK;
             this.Close();
         }
 
-        private void SetManualMatching()
-        {
-            SetOriginPoint();
-        }
 
         private void lblCancel_Click(object sender, EventArgs e)
         {
-            ManualMatchingHandler?.Invoke(false);
+            Release();
+            ManualMatchingHandler?.Invoke(false, GetOriginPoint());
+            DialogResult = DialogResult.Cancel;
             this.Close();
         }
         #endregion
 
         private void ManualMatchingForm_FormClosed(object sender, FormClosedEventArgs e)
         {
-            //AreaCamera.StopGrab();
-            //AreaCamera.OnImageGrabbed -= AreaCamera_OnImageGrabbed;
-            //Display.DisposeImage();
+            Release();
+            CloseEventDelegate?.Invoke();
         }
     }
 }

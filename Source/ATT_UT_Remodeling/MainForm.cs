@@ -786,32 +786,46 @@ namespace ATT_UT_Remodeling
             AppsStatus.Instance().IsManualJudgeCompleted = isManualJudgeCompleted;
         }
 
-        public void ShowManualMatchingForm(AreaCamera areaCamera, MarkDirection markDirection)
+        public void SetManualMatchingData(MarkDirection markDirection)
         {
-            if (ManualMatchingForm == null)
-                ManualMatchingForm = new ManualMatchingForm();
 
-            ManualMatchingForm.SetParams(UnitName.Unit0, areaCamera, markDirection);
-
-            if (ManualMatchingForm.InvokeRequired)
-            {
-                ManualMatchingForm.Invoke(new MethodInvoker(delegate
-                {
-                    ManualMatchingForm.ShowDialog();
-                }));
-            }
-            else
-                ManualMatchingForm.ShowDialog();
         }
 
-        public void MainForm_ManualMatchingHandler(bool isManualMatchCompleted)
+        public void ShowManualMatchingForm(AreaCamera areaCamera, MarkDirection markDirection, UnitName unitName)
+        {
+            var inspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
+            if (inspModel == null)
+                return;
+
+            var unit = inspModel.GetUnit(unitName);
+            if (ManualMatchingForm == null)
+            {
+                ManualMatchingForm = new ManualMatchingForm();
+                ManualMatchingForm.SetParams(areaCamera, unit, markDirection);
+                ManualMatchingForm.CloseEventDelegate = () => this.ManualJudgeForm = null;
+            }
+            if(ManualMatchingForm.ShowDialog() == DialogResult.OK)
+            {
+
+            }
+            
+            //if (ManualMatchingForm.InvokeRequired)
+            //{
+            //    ManualMatchingForm.Invoke(new MethodInvoker(delegate
+            //    {
+            //        ManualMatchingForm.ShowDialog();
+            //    }));
+            //}
+            //else
+            //    ManualMatchingForm.ShowDialog();
+
+
+        }
+
+        public void MainForm_ManualMatchingHandler(bool isManualMatchCompleted, PointF orginPoint)
         {
             AppsStatus.Instance().IsManualMatching_OK = isManualMatchCompleted;
-        }
-
-        public PointF GetManualMatchingOriginPoint()
-        {
-            return ManualMatchingForm.GetOriginPoint();
+            AppsStatus.Instance().ManualMatchingPoint = orginPoint;
         }
 
         public void MessageConfirm(string message)
@@ -822,12 +836,12 @@ namespace ATT_UT_Remodeling
             });
         }
 
-        public bool MainForm_AxisNegativeLimitEventHandler(AxisName axisName) //=> SystemManager.Instance().IsLimitSensorStatus();
+        public bool MainForm_AxisNegativeLimitEventHandler(AxisName axisName)
         {
             return SystemManager.Instance().IsNegativeLimitStatus(axisName);
         }
 
-        public bool MainForm_AxisPositiveLimitEventHandler(AxisName axisName) //=> SystemManager.Instance().IsLimitSensorStatus();
+        public bool MainForm_AxisPositiveLimitEventHandler(AxisName axisName)
         {
             return SystemManager.Instance().IsPositiveLimitStatus(axisName);
         }

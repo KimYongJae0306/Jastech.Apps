@@ -482,14 +482,9 @@ namespace ATT_UT_Remodeling
             return true;
         }
 
-        public void ShowManualMatchingForm(AreaCamera areaCamera, MarkDirection markDirection)
+        public void ShowManualMatchingForm(AreaCamera areaCamera, MarkDirection markDirection, UnitName unitName)
         {
-            _mainForm.ShowManualMatchingForm(areaCamera, markDirection);
-        }
-
-        public PointF GetManualMatchingOrigin()
-        {
-            return _mainForm.GetManualMatchingOriginPoint();
+            _mainForm.ShowManualMatchingForm(areaCamera, markDirection, unitName);
         }
 
         public void MessageConfirm(string message)

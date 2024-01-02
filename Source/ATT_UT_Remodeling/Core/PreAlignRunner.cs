@@ -281,13 +281,13 @@ namespace ATT_UT_Remodeling
                         if (AppsPreAlignResult.Instance().Right.MatchResult == null)
                         {
                             if (true /*메뉴얼매칭*/)
-                                SystemManager.Instance().ShowManualMatchingForm(PreAlignCamera, MarkDirection.Right);
+                                SystemManager.Instance().ShowManualMatchingForm(PreAlignCamera, MarkDirection.Right, UnitName.Unit0);
 
                             if (AppsStatus.Instance().IsManualMatching_OK)
                             {
                                 VisionProPatternMatchingResult patternResult = new VisionProPatternMatchingResult();
 
-                                patternResult.MaxMatchPos.FoundPos = SystemManager.Instance().GetManualMatchingOrigin();
+                                patternResult.MaxMatchPos.FoundPos = AppsStatus.Instance().ManualMatchingPoint;
                                 AppsPreAlignResult.Instance().Right.MatchResult = patternResult;
                             }
                             else
@@ -359,13 +359,13 @@ namespace ATT_UT_Remodeling
                         if (AppsPreAlignResult.Instance().Left.MatchResult == null)
                         {
                             if (true /*메뉴얼매칭*/)
-                                SystemManager.Instance().ShowManualMatchingForm(PreAlignCamera, MarkDirection.Left);
+                                SystemManager.Instance().ShowManualMatchingForm(PreAlignCamera, MarkDirection.Left, UnitName.Unit0);
 
                             if (AppsStatus.Instance().IsManualMatching_OK)
                             {
                                 VisionProPatternMatchingResult patternResult = new VisionProPatternMatchingResult();
 
-                                patternResult.MaxMatchPos.FoundPos = SystemManager.Instance().GetManualMatchingOrigin();
+                                patternResult.MaxMatchPos.FoundPos = AppsStatus.Instance().ManualMatchingPoint;
                                 AppsPreAlignResult.Instance().Left.MatchResult = patternResult;
                             }
                             else
