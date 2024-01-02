@@ -134,10 +134,6 @@ namespace ATT_UT_Remodeling
             ManualJudgeForm.Show();
             ManualJudgeForm.Hide();
 
-            ManualMatchingForm = new ManualMatchingForm();
-            ManualMatchingForm.ManualMatchingHandler += MainForm_ManualMatchingHandler;
-            ManualMatchingForm.Show();
-            ManualMatchingForm.Hide();
 
             if (ConfigSet.Instance().Operation.VirtualMode == false)
             {
@@ -786,11 +782,6 @@ namespace ATT_UT_Remodeling
             AppsStatus.Instance().IsManualJudgeCompleted = isManualJudgeCompleted;
         }
 
-        public void SetManualMatchingData(MarkDirection markDirection)
-        {
-
-        }
-
         public void ShowManualMatchingForm(AreaCamera areaCamera, MarkDirection markDirection, UnitName unitName)
         {
             var inspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
@@ -798,28 +789,19 @@ namespace ATT_UT_Remodeling
                 return;
 
             var unit = inspModel.GetUnit(unitName);
-            if (ManualMatchingForm == null)
+
+            this.Invoke(new MethodInvoker(delegate
             {
                 ManualMatchingForm = new ManualMatchingForm();
                 ManualMatchingForm.SetParams(areaCamera, unit, markDirection);
-                ManualMatchingForm.CloseEventDelegate = () => this.ManualJudgeForm = null;
-            }
-            if(ManualMatchingForm.ShowDialog() == DialogResult.OK)
-            {
-
-            }
-            
-            //if (ManualMatchingForm.InvokeRequired)
-            //{
-            //    ManualMatchingForm.Invoke(new MethodInvoker(delegate
-            //    {
-            //        ManualMatchingForm.ShowDialog();
-            //    }));
-            //}
-            //else
-            //    ManualMatchingForm.ShowDialog();
-
-
+                ManualMatchingForm.ManualMatchingHandler += MainForm_ManualMatchingHandler;
+                ManualMatchingForm.CloseEventDelegate = () =>
+                {
+                    ManualMatchingForm.ManualMatchingHandler -= MainForm_ManualMatchingHandler;
+                    this.ManualMatchingForm = null;
+                };
+                ManualMatchingForm.ShowDialog();
+            }));
         }
 
         public void MainForm_ManualMatchingHandler(bool isManualMatchCompleted, PointF orginPoint)
@@ -872,5 +854,11 @@ namespace ATT_UT_Remodeling
             }
         }
         #endregion
+
+        private void lblMachineName_Click(object sender, EventArgs e)
+        {
+            AppsStatus.Instance().IsPreAlignRunnerFlagFromPlc = true;
+            //SystemManager.Instance().ShowManualMatchingForm(AreaCameraManager.Instance().GetAreaCamera("PreAlign"), MarkDirection.Left, UnitName.Unit0);
+        }
     }
 }

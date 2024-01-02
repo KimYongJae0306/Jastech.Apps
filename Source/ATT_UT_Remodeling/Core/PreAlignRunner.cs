@@ -278,6 +278,7 @@ namespace ATT_UT_Remodeling
                             AppsPreAlignResult.Instance().Right.MatchResult = RunPreAlignMark(unit, VirtualRightImage, MarkDirection.Right);
                         }
 
+                        //SEQ_PREALIGN_R_MANUALMATCHING
                         if (AppsPreAlignResult.Instance().Right.MatchResult == null)
                         {
                             if (true /*메뉴얼매칭*/)
@@ -294,25 +295,6 @@ namespace ATT_UT_Remodeling
                             {
                                 SeqStep = SeqStep.SEQ_ERROR;
                             }
-
-                            //SystemManager.Instance().ShowManualMatchingForm(PreAlignCamera, MarkDirection.Right);
-                            //if (ConfigSet.Instance().Operation.VirtualMode == true)
-                            //    Manualform.SetImage(VirtualRightImage);
-
-                            //if (Manualform.DialogResult == DialogResult.OK)
-                            //{
-                            //    CogTransform2DLinear manualOrigin = Manualform.GetOriginPosition();
-                            //    VisionProPatternMatchingResult patternResult = new VisionProPatternMatchingResult();
-                            //    PointF temp = new PointF();
-                            //    temp.X = (float)manualOrigin.TranslationX;
-                            //    temp.Y = (float)manualOrigin.TranslationY;
-                            //    patternResult.MaxMatchPos.FoundPos = temp;
-                            //    AppsPreAlignResult.Instance().Right.MatchResult = patternResult;
-                            //}
-                            //else
-                            //{
-                            //    SeqStep = SeqStep.SEQ_ERROR;
-                            //}
                         }
                         else
                         {
@@ -863,6 +845,7 @@ namespace ATT_UT_Remodeling
         SEQ_WAITING,
         SEQ_START,
         SEQ_PREALIGN_R,
+        SEQ_PREALIGN_R_MANUALMATCHING,
         SEQ_PREALIGN_L,
         SEQ_SEND_PREALIGN_DATA,
         SEQ_SAVE_RESULT_DATA,

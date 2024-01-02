@@ -1,4 +1,5 @@
 ﻿using Jastech.Framework.Device.Cameras;
+using System.Threading;
 
 namespace Jastech.Apps.Winform
 {
@@ -38,10 +39,7 @@ namespace Jastech.Apps.Winform
             if (Camera == null)
                 return;
 
-            if (Camera.IsGrabbing())
-                return;
-                //Camera.Stop();
-
+            StopGrab();
             Camera.GrabContinous();
         }
 
@@ -52,6 +50,8 @@ namespace Jastech.Apps.Winform
 
             if (Camera.IsGrabbing())
                 Camera.Stop();
+
+            Thread.Sleep(50);
         }
         #endregion
     }

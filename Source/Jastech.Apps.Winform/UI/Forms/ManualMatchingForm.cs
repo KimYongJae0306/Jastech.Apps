@@ -16,6 +16,7 @@ using Jastech.Framework.Imaging.VisionPro.VisionAlgorithms.Parameters;
 using Cognex.VisionPro.PMAlign;
 using Jastech.Apps.Structure.Parameters;
 using Jastech.Framework.Device.LightCtrls;
+using System.Diagnostics;
 
 namespace Jastech.Apps.Winform.UI.Forms
 {
@@ -23,6 +24,8 @@ namespace Jastech.Apps.Winform.UI.Forms
     {
         #region 필드
         private int _pitch { get; set; } = 0;
+
+        private bool _isFirstGrab { get; set; } = true;
         #endregion
 
         #region 속성
@@ -93,13 +96,13 @@ namespace Jastech.Apps.Winform.UI.Forms
             }
 
             pnlLight.Controls.Add(LightControl);
-
         }
 
         private void Initialize()
         {
+            _pitch = Convert.ToInt32(lblPitch.Text);
+            PointMarkerParam.SetOriginEventHandler += VerifyOriginPointWithDrawingArea;
             AreaCamera.StartGrabContinous();
-            DrawOriginPointMark(new PointF(AreaCamera.Camera.ImageWidth / 2, AreaCamera.Camera.ImageHeight / 2));
         }
 
         private void VerifyOriginPointWithDrawingArea(CogTransform2DLinear originPoint)
@@ -119,11 +122,9 @@ namespace Jastech.Apps.Winform.UI.Forms
         private void Release()
         {
             AreaCamera.StopGrab();
+
             if (AreaCamera != null)
                 AreaCamera.OnImageGrabbed -= AreaCamera_OnImageGrabbed;
-
-            CogDisplayControl.DisposeImage();
-            DisposePatternDisplay();
         }
 
         public void SetParams(AreaCamera areaCamera, Unit unit, MarkDirection markDirection)
@@ -141,6 +142,8 @@ namespace Jastech.Apps.Winform.UI.Forms
         private PointF GetOriginPoint()
         {
             var origin = PointMarkerParam.GetOriginPoint();
+            if (origin == null)
+                return new PointF();
 
             PointF currentOrigin = new PointF();
             currentOrigin.X = Convert.ToSingle(origin.TranslationX);
@@ -158,6 +161,9 @@ namespace Jastech.Apps.Winform.UI.Forms
 
         private void AreaCamera_OnImageGrabbed(Camera camera)
         {
+            if (camera.IsGrabbing() == false)
+                return;
+
             byte[] byteData = camera.GetGrabbedImage();
             if (byteData == null)
                 return;
@@ -165,6 +171,12 @@ namespace Jastech.Apps.Winform.UI.Forms
             var image = VisionProImageHelper.ConvertImage(byteData, camera.ImageWidth, camera.ImageHeight, camera.ColorFormat);
 
             CogDisplayControl.SetImage(image);
+
+            if (_isFirstGrab)
+            {
+                DrawOriginPointMark(new PointF(AreaCamera.Camera.ImageWidth / 2, AreaCamera.Camera.ImageHeight / 2));
+                _isFirstGrab = false;
+            }
         }
 
         private void LoadOriginPatternImage()
@@ -225,29 +237,30 @@ namespace Jastech.Apps.Winform.UI.Forms
 
         private void lblApply_Click(object sender, EventArgs e)
         {
-            AreaCamera.StopGrab();
-            AreaCamera.OnImageGrabbed -= AreaCamera_OnImageGrabbed;
-            CogDisplayControl.DisposeImage();
-
             ManualMatchingHandler?.Invoke(true, GetOriginPoint());
-            DialogResult = DialogResult.OK;
             this.Close();
         }
 
 
         private void lblCancel_Click(object sender, EventArgs e)
         {
-            Release();
             ManualMatchingHandler?.Invoke(false, GetOriginPoint());
-            DialogResult = DialogResult.Cancel;
             this.Close();
         }
-        #endregion
 
         private void ManualMatchingForm_FormClosed(object sender, FormClosedEventArgs e)
         {
             Release();
+            PointMarkerParam.SetOriginEventHandler -= VerifyOriginPointWithDrawingArea;
+
+            CogDisplayControl.DisposeImage();
+            DisposePatternDisplay();
             CloseEventDelegate?.Invoke();
+        }
+        #endregion
+
+        private void ManualMatchingForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
         }
     }
 }
