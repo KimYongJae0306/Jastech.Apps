@@ -50,9 +50,10 @@ namespace Jastech.Apps.Winform.UI.Controls
 
             var matchResult = result.MatchResult;
             var graphics = matchResult.MaxMatchPos.ResultGraphics;
-            resultList.Add(graphics);
-            var deepCopyImage = result.CogImage.CopyBase(CogImageCopyModeConstants.CopyPixels);
+            if (graphics != null)
+                resultList.Add(graphics);
 
+            var deepCopyImage = result.CogImage.CopyBase(CogImageCopyModeConstants.CopyPixels);
             PreAlignDisplay.UpdateLeftDisplay(deepCopyImage, resultList);
         }
 
@@ -65,9 +66,10 @@ namespace Jastech.Apps.Winform.UI.Controls
                 return;
 
             var graphics = matchResult.MaxMatchPos.ResultGraphics;
-            resultList.Add(graphics);
-            var deepCopyImage = result.CogImage.CopyBase(CogImageCopyModeConstants.CopyPixels);
+            if (graphics != null)
+                resultList.Add(graphics);
 
+            var deepCopyImage = result.CogImage.CopyBase(CogImageCopyModeConstants.CopyPixels);
             PreAlignDisplay.UpdateRightDisplay(deepCopyImage, resultList);
         }
 

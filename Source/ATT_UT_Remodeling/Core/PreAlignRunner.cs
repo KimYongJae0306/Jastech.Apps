@@ -131,36 +131,12 @@ namespace ATT_UT_Remodeling
             PlcControlManager.Instance().MachineStatus = MachineStatus.RUN;
             SeqStep = SeqStep.SEQ_INIT;
             WriteLog("Start PreAlign Sequence.");
-            //if (SeqTask != null)
-            //{
-            //    SeqStep = SeqStep.SEQ_START;
-            //    return;
-            //}
-
-            //SeqTaskCancellationTokenSource = new CancellationTokenSource();
-            //SeqTask = new Task(SeqTaskAction, SeqTaskCancellationTokenSource.Token);
-            //SeqTask.Start();
         }
 
         public void SeqStop()
         {
             PlcControlManager.Instance().MachineStatus = MachineStatus.STOP;
             SeqStep = SeqStep.SEQ_IDLE;
-
-            //var areaCamera = AreaCameraManager.Instance().GetAppsCamera("PreAlign");
-            //areaCamera.StopGrab();
-            //AreaCameraManager.Instance().GetAreaCamera("PreAlign").StopGrab();
-
-            //// 조명 off
-            //LAFManager.Instance().GetLAF("Laf").LafCtrl.SetTrackingOnOFF(false);
-            //WriteLog("AutoFocus Off.");
-
-            //if (SeqTask == null)
-            //    return;
-
-            //SeqTaskCancellationTokenSource.Cancel();
-            //SeqTask.Wait();
-            //SeqTask = null;
 
             WriteLog("Stop Sequence.");
         }
@@ -209,16 +185,12 @@ namespace ATT_UT_Remodeling
                     LightCtrlHandler.TurnOff();
                     WriteLog("Light Off.");
 
-                    //PlcControlManager.Instance().ClearAlignData();
-                    //WriteLog("Clear PLC Data.");
-
                     LAFCtrl.SetTrackingOnOFF(false);
                     WriteLog("LAF Off.");
 
                     PreAlignCamera.Camera.Stop();
                     WriteLog($"Set Camera Property. Expose : {PreAlignCamera.Camera.Exposure}, AnalogGain : {PreAlignCamera.Camera.AnalogGain}");
 
-                    // CELL ID 넣는곳이 없음
                     WriteLog("Wait PreAlign Start Signal From PLC.", true);
                     SeqStep = SeqStep.SEQ_WAITING;
                     break;
@@ -257,141 +229,134 @@ namespace ATT_UT_Remodeling
                     MotionManager.Instance().MoveAxisZ(UnitName.Unit0, TeachingPosType.Stage1_PreAlign_Right, LAFCtrl, AxisName.Z0);
 
                     if (MoveTo(TeachingPosType.Stage1_PreAlign_Right, out errorMessage) == false)
+                    {
                         SeqStep = SeqStep.SEQ_ERROR;
+                        break;
+                    }
+
+                    // Light On
+                    LightCtrlHandler.TurnOn(unit.PreAlign.RightLightParam);
+                    Thread.Sleep(100);
+                    WriteLog("Left Prealign Light On.");
+
+                    // Grab
+                    if (ConfigSet.Instance().Operation.VirtualMode == false)
+                    {
+                        var preAlignRightImage = GetAreaCameraImage(PreAlignCamera.Camera) as CogImage8Grey;
+                        AppsPreAlignResult.Instance().Right.CogImage = preAlignRightImage;
+                        AppsPreAlignResult.Instance().Right.MatchResult = RunPreAlignMark(unit, preAlignRightImage, MarkDirection.Right);
+                    }
                     else
                     {
-                        // Light On
-                        LightCtrlHandler.TurnOn(unit.PreAlign.RightLightParam);
-                        Thread.Sleep(100);
-                        WriteLog("Left Prealign Light On.");
+                        AppsPreAlignResult.Instance().Right.CogImage = VirtualRightImage;
+                        AppsPreAlignResult.Instance().Right.MatchResult = RunPreAlignMark(unit, VirtualRightImage, MarkDirection.Right);
+                    }
+                    SeqStep = SeqStep.SEQ_PREALIGN_R_MANUAL_MATCHING;
 
-                        // Grab
-                        if (ConfigSet.Instance().Operation.VirtualMode == false)
+                    break;
+                case SeqStep.SEQ_PREALIGN_R_MANUAL_MATCHING:
+                    if (AppsPreAlignResult.Instance().Right.MatchResult == null)
+                    {
+                        SystemManager.Instance().ShowManualMatchingForm(PreAlignCamera, MarkDirection.Right, UnitName.Unit0);
+                        
+                        if (AppsStatus.Instance().IsManualMatching_OK)
                         {
-                            var preAlignRightImage = GetAreaCameraImage(PreAlignCamera.Camera) as CogImage8Grey;
-                            AppsPreAlignResult.Instance().Right.CogImage = preAlignRightImage;
-                            AppsPreAlignResult.Instance().Right.MatchResult = RunPreAlignMark(unit, preAlignRightImage, MarkDirection.Right);
+                            VisionProPatternMatchingResult patternResult = new VisionProPatternMatchingResult();
+
+                            VisionProPatternMatchPos pos = new VisionProPatternMatchPos();
+                            pos.FoundPos = AppsStatus.Instance().ManualMatchingPoint;
+                            pos.Score = 1;
+
+                            patternResult.Judgement = Judgement.OK;
+                            patternResult.MatchPosList.Add(pos);
+                            AppsPreAlignResult.Instance().Right.MatchResult = patternResult;
                         }
                         else
                         {
-                            AppsPreAlignResult.Instance().Right.CogImage = VirtualRightImage;
-                            AppsPreAlignResult.Instance().Right.MatchResult = RunPreAlignMark(unit, VirtualRightImage, MarkDirection.Right);
-                        }
-
-                        if (AppsPreAlignResult.Instance().Right.MatchResult == null)
-                        {
-                            if (true /*메뉴얼매칭*/)
-                                SystemManager.Instance().ShowManualMatchingForm(PreAlignCamera, MarkDirection.Right);
-
-                            if (AppsStatus.Instance().IsManualMatching_OK)
-                            {
-                                VisionProPatternMatchingResult patternResult = new VisionProPatternMatchingResult();
-
-                                patternResult.MaxMatchPos.FoundPos = SystemManager.Instance().GetManualMatchingOrigin();
-                                AppsPreAlignResult.Instance().Right.MatchResult = patternResult;
-                            }
-                            else
-                            {
-                                SeqStep = SeqStep.SEQ_ERROR;
-                            }
-
-                            //SystemManager.Instance().ShowManualMatchingForm(PreAlignCamera, MarkDirection.Right);
-                            //if (ConfigSet.Instance().Operation.VirtualMode == true)
-                            //    Manualform.SetImage(VirtualRightImage);
-
-                            //if (Manualform.DialogResult == DialogResult.OK)
-                            //{
-                            //    CogTransform2DLinear manualOrigin = Manualform.GetOriginPosition();
-                            //    VisionProPatternMatchingResult patternResult = new VisionProPatternMatchingResult();
-                            //    PointF temp = new PointF();
-                            //    temp.X = (float)manualOrigin.TranslationX;
-                            //    temp.Y = (float)manualOrigin.TranslationY;
-                            //    patternResult.MaxMatchPos.FoundPos = temp;
-                            //    AppsPreAlignResult.Instance().Right.MatchResult = patternResult;
-                            //}
-                            //else
-                            //{
-                            //    SeqStep = SeqStep.SEQ_ERROR;
-                            //}
-                        }
-                        else
-                        {
-                            WriteLog("Complete PreAlign Right Mark Search.", true);
-
-                            SystemManager.Instance().UpdateRightPreAlignResult(AppsPreAlignResult.Instance());
-                            WriteLog("Update Right PreAlign Image.", true);
-
-                            // Set prealign motion position
-                            SetMarkMotionPosition(unit, MarkDirection.Right);
-                            WriteLog("Set Axis Information For PreAlign Right Mark Position.");
-
-                            SeqStep = SeqStep.SEQ_PREALIGN_L;
+                            SeqStep = SeqStep.SEQ_ERROR;
+                            break;
                         }
                     }
 
-                    break;
+                    WriteLog("Complete PreAlign Right Mark Search.", true);
 
+                    SystemManager.Instance().UpdateRightPreAlignResult(AppsPreAlignResult.Instance());
+                    WriteLog("Update Right PreAlign Image.", true);
+
+                    // Set prealign motion position
+                    SetMarkMotionPosition(unit, MarkDirection.Right);
+                    WriteLog("Set Axis Information For PreAlign Right Mark Position.");
+
+                    SeqStep = SeqStep.SEQ_PREALIGN_L;
+
+                    break;
                 case SeqStep.SEQ_PREALIGN_L:
                     MotionManager.Instance().MoveAxisZ(UnitName.Unit0, TeachingPosType.Stage1_PreAlign_Left, LAFCtrl, AxisName.Z0);
 
                     if (MoveTo(TeachingPosType.Stage1_PreAlign_Left, out errorMessage) == false)
+                    {
                         SeqStep = SeqStep.SEQ_ERROR;
+                        break;
+                    }
+
+                    // Light On
+                    LightCtrlHandler.TurnOn(unit.PreAlign.LeftLightParam);
+                    Thread.Sleep(100);
+                    WriteLog("Left PreAlign Light On.", true);
+
+                    // Grab
+                    if (ConfigSet.Instance().Operation.VirtualMode == false)
+                    {
+                        var preAlignLeftImage = GetAreaCameraImage(PreAlignCamera.Camera);
+                        AppsPreAlignResult.Instance().Left.CogImage = preAlignLeftImage;
+                        AppsPreAlignResult.Instance().Left.MatchResult = RunPreAlignMark(unit, preAlignLeftImage, MarkDirection.Left);
+                    }
                     else
                     {
-                        // Light On
-                        LightCtrlHandler.TurnOn(unit.PreAlign.LeftLightParam);
-                        Thread.Sleep(100);
-                        WriteLog("Left PreAlign Light On.", true);
+                        AppsPreAlignResult.Instance().Left.CogImage = VirtualLeftImage;
+                        AppsPreAlignResult.Instance().Left.MatchResult = RunPreAlignMark(unit, VirtualLeftImage, MarkDirection.Left);
+                    }
 
-                        // Grab
-                        if (ConfigSet.Instance().Operation.VirtualMode == false)
+                    SeqStep = SeqStep.SEQ_PREALIGN_L_MANUAL_MATCHING;
+                    break;
+                case SeqStep.SEQ_PREALIGN_L_MANUAL_MATCHING:
+                    if (AppsPreAlignResult.Instance().Left.MatchResult == null)
+                    {
+                        SystemManager.Instance().ShowManualMatchingForm(PreAlignCamera, MarkDirection.Left, UnitName.Unit0);
+
+                        if (AppsStatus.Instance().IsManualMatching_OK)
                         {
-                            var preAlignLeftImage = GetAreaCameraImage(PreAlignCamera.Camera);
-                            AppsPreAlignResult.Instance().Left.CogImage = preAlignLeftImage;
-                            AppsPreAlignResult.Instance().Left.MatchResult = RunPreAlignMark(unit, preAlignLeftImage, MarkDirection.Left);
+                            VisionProPatternMatchingResult patternResult = new VisionProPatternMatchingResult();
+
+                            VisionProPatternMatchPos pos = new VisionProPatternMatchPos();
+                            pos.FoundPos = AppsStatus.Instance().ManualMatchingPoint;
+                            pos.Score = 1;
+
+                            patternResult.Judgement = Judgement.OK;
+                            patternResult.MatchPosList.Add(pos);
+
+                            AppsPreAlignResult.Instance().Left.MatchResult = patternResult;
                         }
                         else
                         {
-                            AppsPreAlignResult.Instance().Left.CogImage = VirtualLeftImage;
-                            AppsPreAlignResult.Instance().Left.MatchResult = RunPreAlignMark(unit, VirtualLeftImage, MarkDirection.Left);
-                        }
-
-                        if (AppsPreAlignResult.Instance().Left.MatchResult == null)
-                        {
-                            if (true /*메뉴얼매칭*/)
-                                SystemManager.Instance().ShowManualMatchingForm(PreAlignCamera, MarkDirection.Left);
-
-                            if (AppsStatus.Instance().IsManualMatching_OK)
-                            {
-                                VisionProPatternMatchingResult patternResult = new VisionProPatternMatchingResult();
-
-                                patternResult.MaxMatchPos.FoundPos = SystemManager.Instance().GetManualMatchingOrigin();
-                                AppsPreAlignResult.Instance().Left.MatchResult = patternResult;
-                            }
-                            else
-                            {
-                                SeqStep = SeqStep.SEQ_ERROR;
-                            }
-                        }
-
-                        else
-                        {
-                            WriteLog("Complete PreAlign Left Mark Search.", true);
-
-                            SystemManager.Instance().UpdateLeftPreAlignResult(AppsPreAlignResult.Instance());
-                            WriteLog("Update Left PreAlign Image.", true);
-
-                            // Set prealign pattern match result
-                            SetPreAlignPatternResult();
-
-                            // Set prealign motion position
-                            SetMarkMotionPosition(unit, MarkDirection.Left);
-                            WriteLog("Set Axis Information For Prealign Left Mark Position.");
-
-                            SeqStep = SeqStep.SEQ_SEND_PREALIGN_DATA;
+                            SeqStep = SeqStep.SEQ_ERROR;
+                            break;
                         }
                     }
 
+                    WriteLog("Complete PreAlign Left Mark Search.", true);
+
+                    SystemManager.Instance().UpdateLeftPreAlignResult(AppsPreAlignResult.Instance());
+                    WriteLog("Update Left PreAlign Image.", true);
+
+                    // Set prealign pattern match result
+                    SetPreAlignPatternResult();
+
+                    // Set prealign motion position
+                    SetMarkMotionPosition(unit, MarkDirection.Left);
+                    WriteLog("Set Axis Information For Prealign Left Mark Position.");
+
+                    SeqStep = SeqStep.SEQ_SEND_PREALIGN_DATA;
                     break;
 
                 case SeqStep.SEQ_SEND_PREALIGN_DATA:
@@ -444,8 +409,6 @@ namespace ATT_UT_Remodeling
                     break;
 
                 case SeqStep.SEQ_SAVE_IMAGE:
-                    AddOverlay();
-
                     SaveResultImage();
                     SeqStep = SeqStep.SEQ_END;
                     break;
@@ -505,7 +468,7 @@ namespace ATT_UT_Remodeling
         {
             string cellId = PlcControlManager.Instance().GetAddressMap(PlcCommonMap.PLC_Cell_Id).Value;
 
-            if (cellId == "0" || cellId == null)
+            if (cellId == "0" || cellId == null || cellId == "")
                 return DateTime.Now.ToString("yyyyMMddHHmmss");
             else
                 return cellId;
@@ -604,8 +567,8 @@ namespace ATT_UT_Remodeling
     {
         private void SaveResultImage()
         {
-            //if (ConfigSet.Instance().Operation.VirtualMode)
-            //    return;
+            if (ConfigSet.Instance().Operation.VirtualMode)
+                return;
 
             var appsPreAlignResult = AppsPreAlignResult.Instance();
 
@@ -615,7 +578,6 @@ namespace ATT_UT_Remodeling
             string month = currentTime.ToString("MM");
             string day = currentTime.ToString("dd");
             string path = Path.Combine(GetResultPath(), "Prealign");
-            //string path = Path.Combine(ConfigSet.Instance().Path.Result, inspModel.Name, month, day, folderPath, "Prealign");
 
             if (Directory.Exists(path) == false)
                 Directory.CreateDirectory(path);
@@ -624,9 +586,6 @@ namespace ATT_UT_Remodeling
             string okExtension = operation.GetExtensionOKImage();
             string ngExtension = operation.GetExtensionNGImage();
 
-            //var appsPreAlignResult = AppsPreAlignResult.Instance();
-
-            //appsPreAlignResult.Left.CogImage
             if (appsPreAlignResult.Judgement == Judgement.OK)
             {
                 if (operation.SaveImageOK)
@@ -655,24 +614,12 @@ namespace ATT_UT_Remodeling
             }
         }
 
-        private void SaveImage(Mat image, string filePath)
+        private void SaveImage(ICogImage image, string filePath)
         {
             if (image == null)
                 return;
 
-            image.Save(filePath);
-        }
-
-        private void SaveImage(ICogImage image, string filePath, bool isOverlay = false)
-        {
-            if (image == null)
-                return;
-
-            if (isOverlay)
-            {
-            }
-            else
-                VisionProImageHelper.Save(image, filePath);
+            VisionProImageHelper.Save(image, filePath);
         }
 
         private void SavePreAlignResultCSV()
@@ -835,25 +782,6 @@ namespace ATT_UT_Remodeling
 
             Logger.Write(LogType.Seq, logMessage);
         }
-
-        private ICogImage AddOverlay()
-        {
-            var result = AppsPreAlignResult.Instance().Left;
-            List<CogCompositeShape> shapes = new List<CogCompositeShape>();
-
-            var graphics = result.MatchResult.MaxMatchPos.ResultGraphics;
-
-            shapes.Add(graphics);
-
-            var deepCopyImage = result.CogImage.CopyBase(CogImageCopyModeConstants.CopyPixels);
-
-            CogGraphicInteractiveCollection collect = new CogGraphicInteractiveCollection();
-
-            foreach (var item in shapes)
-                collect.Add(item);
-
-            return null;
-        }
     }
 
     public enum SeqStep
@@ -863,7 +791,9 @@ namespace ATT_UT_Remodeling
         SEQ_WAITING,
         SEQ_START,
         SEQ_PREALIGN_R,
+        SEQ_PREALIGN_R_MANUAL_MATCHING,
         SEQ_PREALIGN_L,
+        SEQ_PREALIGN_L_MANUAL_MATCHING,
         SEQ_SEND_PREALIGN_DATA,
         SEQ_SAVE_RESULT_DATA,
         SEQ_SAVE_IMAGE,

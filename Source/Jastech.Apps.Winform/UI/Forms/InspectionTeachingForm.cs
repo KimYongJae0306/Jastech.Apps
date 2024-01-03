@@ -1,40 +1,26 @@
 ﻿using Cognex.VisionPro;
-using Cognex.VisionPro.Exceptions;
-using Cognex.VisionPro.ImageProcessing;
 using Emgu.CV;
 using Emgu.CV.CvEnum;
-using Emgu.CV.Structure;
-using Emgu.CV.Util;
 using Jastech.Apps.Structure;
 using Jastech.Apps.Structure.Data;
-using Jastech.Apps.Structure.Parameters;
 using Jastech.Apps.Structure.VisionTool;
 using Jastech.Apps.Winform;
 using Jastech.Apps.Winform.Core;
 using Jastech.Apps.Winform.Settings;
 using Jastech.Apps.Winform.UI.Controls;
 using Jastech.Apps.Winform.UI.Forms;
-using Jastech.Framework.Algorithms.Akkon;
-using Jastech.Framework.Algorithms.Akkon.Parameters;
-using Jastech.Framework.Algorithms.UI.Controls;
 using Jastech.Framework.Config;
 using Jastech.Framework.Device.LAFCtrl;
-using Jastech.Framework.Device.LightCtrls;
-using Jastech.Framework.Device.Motions;
 using Jastech.Framework.Imaging;
 using Jastech.Framework.Imaging.Helper;
 using Jastech.Framework.Imaging.Result;
 using Jastech.Framework.Imaging.VisionPro;
-using Jastech.Framework.Imaging.VisionPro.VisionAlgorithms;
-using Jastech.Framework.Imaging.VisionPro.VisionAlgorithms.Results;
 using Jastech.Framework.Structure;
 using Jastech.Framework.Structure.Service;
 using Jastech.Framework.Users;
-using Jastech.Framework.Util;
 using Jastech.Framework.Util.Helper;
 using Jastech.Framework.Winform.Helper;
 using Jastech.Framework.Winform.VisionPro.Controls;
-using Jastech.Framework.Winform.VisionPro.Helper;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -42,13 +28,10 @@ using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
-using System.Net;
 using System.Runtime.InteropServices;
-using System.Security.Cryptography;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Windows.Forms;
-using System.Windows.Media.Media3D;
 
 namespace Jastech.Framework.Winform.Forms
 {
@@ -595,7 +578,7 @@ namespace Jastech.Framework.Winform.Forms
             TeachingImagePath = Path.Combine(ConfigSet.Instance().Path.Model, inspModel.Name, "TeachingImage", DateTime.Now.ToString("yyyyMMdd_HHmmss"));
             var teachingInfo = inspModel.GetUnit(UnitName).GetTeachingInfo(TeachingPosType.Stage1_Scan_Start);
 
-            ACSBufferManager.Instance().SetAutoMode();
+            ACSBufferManager.Instance().SetAutoMode(LAFCtrl.Name);
 
             LAFCtrl.SetTrackingOnOFF(true);
             Thread.Sleep(100);

@@ -148,7 +148,7 @@ namespace ATT_UT_IPAD
             }
         }
 
-        private void MainForm_MainTaskHandler(bool isStart, string message)
+        private void MainForm_MainTaskHandler(bool isStart, string message = "")
         {
             if (isStart)
                 SystemManager.Instance().SetRunMode();
@@ -416,10 +416,6 @@ namespace ATT_UT_IPAD
             ControlDisplayHelper.DisposeDisplay(lblMotionState);
             lblMotionState.Image = GetStateImage(isMotionConnected);
 
-            //bool isCognexLicenseNormal = Cognex.VisionPro.CogLicense.GetLicensedFeatures(false, false).Count != 0;
-            //ControlDisplayHelper.DisposeDisplay(lblLicenseState);
-            //lblLicenseState.Image = GetStateImage(isCognexLicenseNormal);
-
             var laf = DeviceManager.Instance().LAFCtrlHandler;
             bool isLafConnected = laf.Count > 0 && laf.All(h => h.IsConnected());
             ControlDisplayHelper.DisposeDisplay(lblLafState);
@@ -482,7 +478,6 @@ namespace ATT_UT_IPAD
             DeviceManager.Instance().Release();
             GrabberMil.Release();
             MilHelper.FreeApplication();
-            //Application.ExitThread();
         }
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
@@ -570,50 +565,6 @@ namespace ATT_UT_IPAD
                 VirtualImagePathQueue.Enqueue(filePath);
         }
 
-        public void SetAkkonLastScanImage(ICogImage cogImage)
-        {
-            lock (AkkonLastScanImageQueue)
-                AkkonLastScanImageQueue.Enqueue(cogImage);
-        }
-
-        public ICogImage GetAkkonLastScanImage()
-        {
-            lock (AkkonLastScanImageQueue)
-            {
-                if (AkkonLastScanImageQueue.Count > 0)
-                    return AkkonLastScanImageQueue.Dequeue();
-                else
-                    return null;
-            }
-        }
-
-        public void ReleaseAkkonLastScanImage()
-        {
-            AkkonLastScanImageQueue.Clear();
-        }
-
-        public void SetAlignLastScanImage(ICogImage cogImage)
-        {
-            lock (AlignLastScanImageQueue)
-                AlignLastScanImageQueue.Enqueue(cogImage);
-        }
-
-        public ICogImage GetAlignLastScanImage()
-        {
-            lock (AlignLastScanImageQueue)
-            {
-                if (AlignLastScanImageQueue.Count > 0)
-                    return AlignLastScanImageQueue.Dequeue();
-                else
-                    return null;
-            }
-        }
-
-        public void ReleaseAlignLastScanImage()
-        {
-            AlignLastScanImageQueue.Clear();
-        }
-
         private void StartVirtualInspTask()
         {
             if (ConfigSet.Instance().Operation.VirtualMode)
@@ -689,8 +640,8 @@ namespace ATT_UT_IPAD
                     MotionManager.Instance().GetAxisHandler(AxisHandlerName.Handler0).StopMove();
                     LAFManager.Instance().GetLAF("AkkonLaf").LafCtrl.SetMotionStop();
                     LAFManager.Instance().GetLAF("AlignLaf").LafCtrl.SetMotionStop();
-
                     SystemManager.Instance().SetStopMode();
+
                     lblDoorlockState.BackColor = Color.Red;
                     lblDoorlockState.ForeColor = Color.Yellow;
 
@@ -776,11 +727,6 @@ namespace ATT_UT_IPAD
             AppsStatus.Instance().IsManualJudgeCompleted = isManualJudgeCompleted;
         }
 
-        //private void MainForm_ManualJudgmentHandler(bool isManualOk)
-        //{
-        //    AppsStatus.Instance().IsManual_OK = isManualOk;
-        //}
-
         public void MessageConfirm(string message)
         {
             this.Invoke((MethodInvoker)delegate
@@ -789,12 +735,12 @@ namespace ATT_UT_IPAD
             });
         }
 
-        public bool MainForm_AxisNegativeLimitEventHandler(AxisName axisName) //=> SystemManager.Instance().IsLimitSensorStatus();
+        public bool MainForm_AxisNegativeLimitEventHandler(AxisName axisName)
         {
             return SystemManager.Instance().IsNegativeLimitStatus(axisName);
         }
 
-        public bool MainForm_AxisPositiveLimitEventHandler(AxisName axisName) //=> SystemManager.Instance().IsLimitSensorStatus();
+        public bool MainForm_AxisPositiveLimitEventHandler(AxisName axisName)
         {
             return SystemManager.Instance().IsPositiveLimitStatus(axisName);
         }

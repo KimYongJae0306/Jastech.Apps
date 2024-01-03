@@ -107,7 +107,7 @@ namespace Jastech.Apps.Winform
                         if (ParserType == ParserType.Binary)
                             map.Value = ConvertBinary(buffer, map.WordType);
                         else
-                            map.Value = ConvertAscll(buffer, map.WordType);
+                            map.Value = ConvertToAscii(buffer, map.WordType);
                     }
                 }
 
@@ -933,14 +933,14 @@ namespace Jastech.Apps.Winform
             {
                 if (parserType == ParserType.Binary)
                 {
-                    stream.AddSwap16BitData(0); // Panel Left Mark Sccore
+                    stream.AddSwap32BitData(0); // Panel Left Mark Sccore
                     stream.AddSwap32BitData(0); // Panel Right Mark Score
                     stream.AddSwap32BitData(0); // COF Left Mark Score
                     stream.AddSwap32BitData(0); // COF Right Mark Score
                 }
                 else
                 {
-                    stream.Add16BitData(0); // Panel Left Mark Sccore
+                    stream.Add32BitData(0); // Panel Left Mark Sccore
                     stream.Add32BitData(0); // Panel Right Mark Score
                     stream.Add32BitData(0); // COF Left Mark Score
                     stream.Add32BitData(0); // COF Right Mark Score
@@ -1083,6 +1083,7 @@ namespace Jastech.Apps.Winform
                     else
                         stream.Add16BitData(0);
                 }
+
                 plc.Write("D" + map.AddressNum, stream.Data);
             }
         }
@@ -1094,10 +1095,10 @@ namespace Jastech.Apps.Winform
 
             int tabCount = inspModel.TabCount;
 
-            for (int i = 0; i < tabCount; i++)
+            for (int tabNo = 0; tabNo < tabCount; tabNo++)
             {
-                var tab = inspModel.GetUnit(UnitName.Unit0).GetTab(i);
-                WriteModelParameter(tab, i);
+                var tab = inspModel.GetUnit(UnitName.Unit0).GetTab(tabNo);
+                WriteModelParameter(tab, tabNo);
                 Thread.Sleep(50);
             }
 
@@ -1249,7 +1250,7 @@ namespace Jastech.Apps.Winform
             return resultStr;
         }
 
-        private string ConvertAscll(byte[] hexBuffer, WordType wordType)
+        private string ConvertToAscii(byte[] hexBuffer, WordType wordType)
         {
             string asciiHexBuffer = BitConverter.ToString(hexBuffer).Replace("-", string.Empty);
             string resultStr = "";

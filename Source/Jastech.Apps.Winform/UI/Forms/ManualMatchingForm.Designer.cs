@@ -48,6 +48,8 @@
             this.pnlDisplay = new System.Windows.Forms.Panel();
             this.pnlTeach = new System.Windows.Forms.Panel();
             this.pnlPatternImage = new System.Windows.Forms.Panel();
+            this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
+            this.label1 = new System.Windows.Forms.Label();
             this.cogPatternDisplay = new Cognex.VisionPro.CogRecordDisplay();
             this.pnlROIJog = new System.Windows.Forms.Panel();
             this.tlpROIJog = new System.Windows.Forms.TableLayoutPanel();
@@ -60,8 +62,6 @@
             this.lblPitch = new System.Windows.Forms.Label();
             this.lblMovePixel = new System.Windows.Forms.Label();
             this.pnlLight = new System.Windows.Forms.Panel();
-            this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
-            this.label1 = new System.Windows.Forms.Label();
             this.pnlManualMatching.SuspendLayout();
             this.tlpManualMatching.SuspendLayout();
             this.pnlTop.SuspendLayout();
@@ -74,12 +74,12 @@
             this.tlpManualMatch.SuspendLayout();
             this.pnlTeach.SuspendLayout();
             this.pnlPatternImage.SuspendLayout();
+            this.tableLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.cogPatternDisplay)).BeginInit();
             this.pnlROIJog.SuspendLayout();
             this.tlpROIJog.SuspendLayout();
             this.tlpJog.SuspendLayout();
             this.tlpJogMode.SuspendLayout();
-            this.tableLayoutPanel1.SuspendLayout();
             this.SuspendLayout();
             // 
             // pnlManualMatching
@@ -310,6 +310,36 @@
             this.pnlPatternImage.Size = new System.Drawing.Size(240, 240);
             this.pnlPatternImage.TabIndex = 302;
             // 
+            // tableLayoutPanel1
+            // 
+            this.tableLayoutPanel1.ColumnCount = 1;
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel1.Controls.Add(this.label1, 0, 0);
+            this.tableLayoutPanel1.Controls.Add(this.cogPatternDisplay, 0, 1);
+            this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
+            this.tableLayoutPanel1.Margin = new System.Windows.Forms.Padding(0);
+            this.tableLayoutPanel1.Name = "tableLayoutPanel1";
+            this.tableLayoutPanel1.RowCount = 2;
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(238, 238);
+            this.tableLayoutPanel1.TabIndex = 2;
+            // 
+            // label1
+            // 
+            this.label1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(104)))), ((int)(((byte)(104)))), ((int)(((byte)(104)))));
+            this.label1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.label1.Font = new System.Drawing.Font("맑은 고딕", 12F, System.Drawing.FontStyle.Bold);
+            this.label1.ForeColor = System.Drawing.Color.White;
+            this.label1.Location = new System.Drawing.Point(0, 0);
+            this.label1.Margin = new System.Windows.Forms.Padding(0);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(238, 40);
+            this.label1.TabIndex = 1;
+            this.label1.Text = "Trained Image";
+            this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
             // cogPatternDisplay
             // 
             this.cogPatternDisplay.ColorMapLowerClipColor = System.Drawing.SystemColors.AppWorkspace;
@@ -487,36 +517,6 @@
             this.pnlLight.Size = new System.Drawing.Size(471, 194);
             this.pnlLight.TabIndex = 300;
             // 
-            // tableLayoutPanel1
-            // 
-            this.tableLayoutPanel1.ColumnCount = 1;
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel1.Controls.Add(this.label1, 0, 0);
-            this.tableLayoutPanel1.Controls.Add(this.cogPatternDisplay, 0, 1);
-            this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
-            this.tableLayoutPanel1.Margin = new System.Windows.Forms.Padding(0);
-            this.tableLayoutPanel1.Name = "tableLayoutPanel1";
-            this.tableLayoutPanel1.RowCount = 2;
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(238, 238);
-            this.tableLayoutPanel1.TabIndex = 2;
-            // 
-            // label1
-            // 
-            this.label1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(104)))), ((int)(((byte)(104)))), ((int)(((byte)(104)))));
-            this.label1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.label1.Font = new System.Drawing.Font("맑은 고딕", 12F, System.Drawing.FontStyle.Bold);
-            this.label1.ForeColor = System.Drawing.Color.White;
-            this.label1.Location = new System.Drawing.Point(0, 0);
-            this.label1.Margin = new System.Windows.Forms.Padding(0);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(238, 40);
-            this.label1.TabIndex = 1;
-            this.label1.Text = "Trained Image";
-            this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
             // ManualMatchingForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
@@ -528,6 +528,7 @@
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.Name = "ManualMatchingForm";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "ManualMatchingForm";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.ManualMatchingForm_FormClosed);
             this.Load += new System.EventHandler(this.ManualMatchingForm_Load);
@@ -544,12 +545,12 @@
             this.tlpManualMatch.ResumeLayout(false);
             this.pnlTeach.ResumeLayout(false);
             this.pnlPatternImage.ResumeLayout(false);
+            this.tableLayoutPanel1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.cogPatternDisplay)).EndInit();
             this.pnlROIJog.ResumeLayout(false);
             this.tlpROIJog.ResumeLayout(false);
             this.tlpJog.ResumeLayout(false);
             this.tlpJogMode.ResumeLayout(false);
-            this.tableLayoutPanel1.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }

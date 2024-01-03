@@ -46,7 +46,6 @@ namespace ATT_UT_IPAD
         #endregion
 
         #region 속성
-      
         #endregion
 
         #region 메서드
@@ -68,7 +67,6 @@ namespace ATT_UT_IPAD
             form.Title = "ATT Inspection";
             form.Version = Assembly.GetExecutingAssembly().GetName().Version.ToString();
             form.SetupActionEventHandler = SplashSetupAction;
-
             form.ShowDialog();
 
             var recentModelName = ConfigSet.Instance().Operation.LastModelName;
@@ -167,6 +165,7 @@ namespace ATT_UT_IPAD
 
             string unit0FileName = string.Format("AxisHandler_{0}.json", AxisHandlerName.Handler0);
             string unit0FilePath = Path.Combine(dir, unit0FileName);
+
             if (File.Exists(unit0FilePath) == false)
             {
                 AxisHandler handler = new AxisHandler();
@@ -177,6 +176,7 @@ namespace ATT_UT_IPAD
                     case ProgramType.ProgramType_1:
                         AddAxisHandlerType1(motion, out handler);
                         break;
+
                     case ProgramType.ProgramType_2:
                         AddAxisHandlerType2(motion, out handler);
                         break;
@@ -195,6 +195,7 @@ namespace ATT_UT_IPAD
 
                 MotionManager.Instance().AxisHandlerList.Add(unit0);
             }
+
             return true;
         }
 
@@ -207,6 +208,7 @@ namespace ATT_UT_IPAD
             handler.AddAxis(AxisName.Z0, motion, axisNo: -1, homeOrder: 1);
             handler.AddAxis(AxisName.Z1, motion, axisNo: -1, homeOrder: 1);
         }
+
         private void AddAxisHandlerType2(Motion motion, out AxisHandler handler)
         {
             handler = new AxisHandler(AxisHandlerName.Handler0.ToString());
@@ -217,45 +219,17 @@ namespace ATT_UT_IPAD
             handler.AddAxis(AxisName.Z1, motion, axisNo: -1, homeOrder: 1);
         }
 
-        public void UpdateAkkonResultTabButton(int tabNo)
-        {
-            _mainForm.UpdateAkkonResultTabButton(tabNo);
-        }
-
-        public void UpdateAlignResultTabButton(int tabNo)
-        {
-            _mainForm.UpdateAlignResultTabButton(tabNo);
-        }
-
-
-        //public void UpdateMainResult()
-        //{
-        //    var inspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
-
-        //    for (int tabNo = 0; tabNo < inspModel.TabCount; tabNo++)
-        //    {
-        //        _mainForm.UpdateMainAkkonResult(tabNo);
-        //        _mainForm.UpdateMainAlignResult(tabNo);
-        //    }
-        //}
-
         public void UpdateMainAkkonResult()
         {
             Stopwatch sw = new Stopwatch();
             sw.Restart();
 
-            // 탭별로 안들어올 수도 있을텐데....
             var inspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
 
             for (int tabNo = 0; tabNo < inspModel.TabCount; tabNo++)
                 _mainForm.UpdateMainAkkonResult(tabNo);
 
             sw.Stop();
-        }
-
-        public void EnableMainView(bool isEnable)
-        {
-            _mainForm.Enable(isEnable);
         }
 
         public void UpdateMainAlignResult()
@@ -266,9 +240,24 @@ namespace ATT_UT_IPAD
                 _mainForm.UpdateMainAlignResult(tabNo);
         }
 
+        public void EnableMainView(bool isEnable)
+        {
+            _mainForm.Enable(isEnable);
+        }
+
         public void TabButtonResetColor()
         {
             _mainForm.TabButtonResetColor();
+        }
+
+        public void UpdateAkkonResultTabButton(int tabNo)
+        {
+            _mainForm.UpdateAkkonResultTabButton(tabNo);
+        }
+
+        public void UpdateAlignResultTabButton(int tabNo)
+        {
+            _mainForm.UpdateAlignResultTabButton(tabNo);
         }
 
         public void AddSystemLogMessage(string logMessage)
@@ -296,30 +285,6 @@ namespace ATT_UT_IPAD
                     alert.ShowDialog();
                     return;
                 }
-                else
-                {
-                    //Check : Command Position 만들고 주석 해제
-                    Axis axisX = MotionManager.Instance().GetAxis(AxisHandlerName.Handler0, AxisName.X);
-
-                    //if(Math.Abs(axisX.GetActualPosition() - axisX.GetCommandPosition()) <= 1)
-                    //{
-                    //    MessageConfirmForm confirmForm = new MessageConfirmForm();
-                    //    confirmForm.Message = "AxisX Position is incorrect. Please Run Homming Sequence.";
-                    //    confirmForm.ShowDialog();
-                    //    return;
-                    //}
-                }
-
-                //bool isServoOnAxisZ0 = MotionManager.Instance().IsEnable(AxisHandlerName.Handler0, AxisName.Z0);
-                //if (isServoOnAxisZ0 == false)
-                //{
-                //    MessageConfirmForm alert = new MessageConfirmForm();
-                //    alert.Message = "AxisZ0 Servo Off. Please Servo On.";
-                //    alert.ShowDialog();
-                //    return;
-                //}
-
-                //Axis axisZ0 = MotionManager.Instance().GetAxis(AxisHandlerName.Handler0, AxisName.Z0);
 
                 if (PlcControlManager.Instance().GetAddressMap(PlcCommonMap.PLC_AlignZ_ServoOnOff).Value != "1")
                 {
@@ -399,37 +364,6 @@ namespace ATT_UT_IPAD
         public void ReleaseInspRunner()
         {
             _inspRunner.Release();
-        }
-
-        // 정환
-        public void SetAkkonLastScanImage(ICogImage cogImage)
-        {
-            _mainForm.SetAkkonLastScanImage(cogImage);
-        }
-
-        public ICogImage GetAkkonLastScanImage()
-        {
-            return _mainForm.GetAkkonLastScanImage();
-        }
-
-        public void ReleaseAkkonLastScanImage()
-        {
-            _mainForm.ReleaseAkkonLastScanImage();
-        }
-
-        public void SetAlignLastScanImage(ICogImage cogImage)
-        {
-            _mainForm.SetAlignLastScanImage(cogImage);
-        }
-
-        public ICogImage GetAlignLastScanImage()
-        {
-            return _mainForm.GetAlignLastScanImage();
-        }
-
-        public void ReleaseAlignLastScanImage()
-        {
-            _mainForm.ReleaseAlignLastScanImage();
         }
 
         public void SetManualJudgeData(List<ManualJudge> manualJudgeList)

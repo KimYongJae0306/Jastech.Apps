@@ -22,18 +22,6 @@ namespace Jastech.Apps.Winform
         private bool _activeLafTrigger { get; set; } = false;
         #endregion
 
-        #region 속성
-        #endregion
-
-        #region 이벤트
-        #endregion
-
-        #region 델리게이트
-        #endregion
-
-        #region 생성자
-        #endregion
-
         #region 메서드
         public static ACSBufferManager Instance()
         {
@@ -108,7 +96,7 @@ namespace Jastech.Apps.Winform
             }
         }
 
-        public void SetAutoMode()
+        public void SetAutoMode(string targetAFName = "")
         {
             if (AppsConfig.Instance().EnableLafTrigger == false)
                 return;
@@ -119,7 +107,18 @@ namespace Jastech.Apps.Winform
                 var config = ACSBufferConfig.Instance();
 
                 foreach (var buffer in ACSBufferConfig.Instance().LafTriggerBufferList)
-                    motion?.WriteRealVariable(config.IoEnableModeName, (int)IoEnableMode.Auto, buffer.LafArrayIndex, buffer.LafArrayIndex);
+                {
+                    if(targetAFName == "")
+                        motion?.WriteRealVariable(config.IoEnableModeName, (int)IoEnableMode.Auto, buffer.LafArrayIndex, buffer.LafArrayIndex);
+                    else
+                    {
+                        if(buffer.LafName == targetAFName)
+                            motion?.WriteRealVariable(config.IoEnableModeName, (int)IoEnableMode.Auto, buffer.LafArrayIndex, buffer.LafArrayIndex);
+                        else
+                            motion?.WriteRealVariable(config.IoEnableModeName, (int)IoEnableMode.Off, buffer.LafArrayIndex, buffer.LafArrayIndex);
+                    }
+
+                }
             }
         }
 
