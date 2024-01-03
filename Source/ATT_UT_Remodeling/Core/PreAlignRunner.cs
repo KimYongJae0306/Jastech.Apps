@@ -618,24 +618,12 @@ namespace ATT_UT_Remodeling
             }
         }
 
-        private void SaveImage(Mat image, string filePath)
+        private void SaveImage(ICogImage image, string filePath)
         {
             if (image == null)
                 return;
 
-            image.Save(filePath);
-        }
-
-        private void SaveImage(ICogImage image, string filePath, bool isOverlay = false)
-        {
-            if (image == null)
-                return;
-
-            if (isOverlay)
-            {
-            }
-            else
-                VisionProImageHelper.Save(image, filePath);
+            VisionProImageHelper.Save(image, filePath);
         }
 
         private void SavePreAlignResultCSV()
