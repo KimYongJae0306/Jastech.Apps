@@ -1528,9 +1528,9 @@ namespace ATT_UT_Remodeling.Core
 
                 if (tabInspResult.AlignResult != null)
                 {
-                    DrawAlignResultString(ref cropLeftImage, $"{AlignResultType.Lx} : {lxData}um", 0);
-                    DrawAlignResultString(ref cropLeftImage, $"{AlignResultType.Ly} : {lyData}um", 1);
-                    DrawAlignResultString(ref cropLeftImage, $"{AlignResultType.Cx} : {cxData}um", 1);
+                    DrawAlignResultString(ref cropLeftImage, $"{AlignResultType.Lx} : {lxData}um", 1);
+                    DrawAlignResultString(ref cropLeftImage, $"{AlignResultType.Ly} : {lyData}um", 2);
+                    DrawAlignResultString(ref cropLeftImage, $"{AlignResultType.Cx} : {cxData}um", 3);
                 }
 
                 string fileName = string.Format("Left_Align_Tab_{0}.jpg", tabInspResult.TabNo);
@@ -1570,9 +1570,9 @@ namespace ATT_UT_Remodeling.Core
 
                 if (tabInspResult.AlignResult != null)
                 {
-                    DrawAlignResultString(ref cropRightImage, $"{AlignResultType.Rx} : {rxData}um", 0);
-                    DrawAlignResultString(ref cropRightImage, $"{AlignResultType.Ry} : {ryData}um", 1);
-                    DrawAlignResultString(ref cropRightImage, $"{AlignResultType.Cx} : {cxData}um", 1);
+                    DrawAlignResultString(ref cropRightImage, $"{AlignResultType.Rx} : {rxData}um", 1);
+                    DrawAlignResultString(ref cropRightImage, $"{AlignResultType.Ry} : {ryData}um", 2);
+                    DrawAlignResultString(ref cropRightImage, $"{AlignResultType.Cx} : {cxData}um", 3);
                 }
 
                 string fileName = string.Format("Right_Align_Tab_{0}.jpg", tabInspResult.TabNo);
