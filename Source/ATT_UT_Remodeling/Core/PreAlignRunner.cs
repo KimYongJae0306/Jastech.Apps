@@ -185,9 +185,6 @@ namespace ATT_UT_Remodeling
                     LightCtrlHandler.TurnOff();
                     WriteLog("Light Off.");
 
-                    //PlcControlManager.Instance().ClearAlignData();
-                    //WriteLog("Clear PLC Data.");
-
                     LAFCtrl.SetTrackingOnOFF(false);
                     WriteLog("LAF Off.");
 
@@ -412,8 +409,6 @@ namespace ATT_UT_Remodeling
                     break;
 
                 case SeqStep.SEQ_SAVE_IMAGE:
-                    AddOverlay();
-
                     SaveResultImage();
                     SeqStep = SeqStep.SEQ_END;
                     break;
@@ -473,7 +468,7 @@ namespace ATT_UT_Remodeling
         {
             string cellId = PlcControlManager.Instance().GetAddressMap(PlcCommonMap.PLC_Cell_Id).Value;
 
-            if (cellId == "0" || cellId == null)
+            if (cellId == "0" || cellId == null || cellId == "")
                 return DateTime.Now.ToString("yyyyMMddHHmmss");
             else
                 return cellId;
@@ -802,25 +797,6 @@ namespace ATT_UT_Remodeling
                 SystemManager.Instance().AddSystemLogMessage(logMessage);
 
             Logger.Write(LogType.Seq, logMessage);
-        }
-
-        private ICogImage AddOverlay()
-        {
-            var result = AppsPreAlignResult.Instance().Left;
-            List<CogCompositeShape> shapes = new List<CogCompositeShape>();
-
-            var graphics = result.MatchResult.MaxMatchPos.ResultGraphics;
-
-            shapes.Add(graphics);
-
-            var deepCopyImage = result.CogImage.CopyBase(CogImageCopyModeConstants.CopyPixels);
-
-            CogGraphicInteractiveCollection collect = new CogGraphicInteractiveCollection();
-
-            foreach (var item in shapes)
-                collect.Add(item);
-
-            return null;
         }
     }
 

@@ -236,31 +236,31 @@ namespace ATT_UT_Remodeling
         {
             if (ConfigSet.Instance().Operation.VirtualMode == false)
             {
-                //if (PlcControlManager.Instance().IsDoorOpened == true)
-                //{
-                //    MessageConfirmForm alert = new MessageConfirmForm();
-                //    alert.Message = "Safety Doorlock is opened.\r\nPlease check the doorlock state";
-                //    alert.ShowDialog();
-                //    return;
-                //}
+                if (PlcControlManager.Instance().IsDoorOpened == true)
+                {
+                    MessageConfirmForm alert = new MessageConfirmForm();
+                    alert.Message = "Safety Doorlock is opened.\r\nPlease check the doorlock state";
+                    alert.ShowDialog();
+                    return;
+                }
 
-                //bool isServoOnAxisX = MotionManager.Instance().IsEnable(AxisHandlerName.Handler0, AxisName.X);
-                //if (isServoOnAxisX == false)
-                //{
-                //    MessageConfirmForm alert = new MessageConfirmForm();
-                //    alert.Message = "AxisX Servo Off. Please Servo On.";
-                //    alert.ShowDialog();
-                //    return;
-                //}
+                bool isServoOnAxisX = MotionManager.Instance().IsEnable(AxisHandlerName.Handler0, AxisName.X);
+                if (isServoOnAxisX == false)
+                {
+                    MessageConfirmForm alert = new MessageConfirmForm();
+                    alert.Message = "AxisX Servo Off. Please Servo On.";
+                    alert.ShowDialog();
+                    return;
+                }
 
-                //if (PlcControlManager.Instance().GetAddressMap(PlcCommonMap.PLC_AlignZ_ServoOnOff).Value != "1")
-                //{
-                //    MessageConfirmForm alert = new MessageConfirmForm();
+                if (PlcControlManager.Instance().GetAddressMap(PlcCommonMap.PLC_AlignZ_ServoOnOff).Value != "1")
+                {
+                    MessageConfirmForm alert = new MessageConfirmForm();
 
-                //    alert.Message = "Axis Z Servo Off.";
-                //    alert.ShowDialog();
-                //    return;
-                //}
+                    alert.Message = "Axis Z Servo Off.";
+                    alert.ShowDialog();
+                    return;
+                }
             }
 
             if (PlcControlManager.Instance().MachineStatus != MachineStatus.RUN)
