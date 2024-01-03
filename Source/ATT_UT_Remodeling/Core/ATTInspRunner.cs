@@ -30,6 +30,7 @@ using Jastech.Framework.Imaging.VisionPro.VisionAlgorithms.Results;
 using Jastech.Framework.Util;
 using Jastech.Framework.Util.Helper;
 using Jastech.Framework.Winform;
+using Jastech.Framework.Winform.Forms;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -1476,10 +1477,16 @@ namespace ATT_UT_Remodeling.Core
 
             if (tabInspResult.AlignResult.CenterImage != null)
             {
-                string fileName = string.Format("Center_Align_Tab_{0}.jpeg", tabInspResult.TabNo);
+                string fileName = string.Format("Center_Align_Tab_{0}.jpg", tabInspResult.TabNo);
                 string filePath = Path.Combine(savePath, fileName);
                 VisionProImageHelper.Save(tabInspResult.AlignResult.CenterImage, filePath);
             }
+
+            string lxData = GetResultAlignResultValue(tabInspResult.AlignResult.LeftX, 4);
+            string lyData = GetResultAlignResultValue(tabInspResult.AlignResult.LeftY, 4);
+            string rxData = GetResultAlignResultValue(tabInspResult.AlignResult.RightX, 4);
+            string ryData = GetResultAlignResultValue(tabInspResult.AlignResult.RightY, 4);
+            string cxData = $"{Convert.ToDouble(lxData) + Convert.ToDouble(rxData)}";
 
             var leftAlignShapeList = tabInspResult.GetLeftAlignShapeList();
             if (leftAlignShapeList.Count() > 0)
@@ -1487,7 +1494,7 @@ namespace ATT_UT_Remodeling.Core
                 PointF offset = new PointF();
                 Mat cropLeftImage = GetAlignResultImage(tabInspResult, leftAlignShapeList, out offset);
 
-                string orgFileName = string.Format("Left_Align_Tab_{0}_Org.jepg", tabInspResult.TabNo);
+                string orgFileName = string.Format("Left_Align_Tab_{0}_Org.jpg", tabInspResult.TabNo);
                 string orgFilePath = Path.Combine(savePath, orgFileName);
                 cropLeftImage?.Save(orgFilePath);
 
@@ -1511,7 +1518,14 @@ namespace ATT_UT_Remodeling.Core
                     }
                 }
 
-                string fileName = string.Format("Left_Align_Tab_{0}.jpeg", tabInspResult.TabNo);
+                if (tabInspResult.AlignResult != null)
+                {
+                    DrawAlignResultString(ref cropLeftImage, $"{AlignResultType.Lx} : {lxData}um", 0);
+                    DrawAlignResultString(ref cropLeftImage, $"{AlignResultType.Ly} : {lyData}um", 1);
+                    DrawAlignResultString(ref cropLeftImage, $"{AlignResultType.Cx} : {cxData}um", 1);
+                }
+
+                string fileName = string.Format("Left_Align_Tab_{0}.jpg", tabInspResult.TabNo);
                 string filePath = Path.Combine(savePath, fileName);
                 cropLeftImage?.Save(filePath);
             }
@@ -1522,7 +1536,7 @@ namespace ATT_UT_Remodeling.Core
                 PointF offset = new PointF();
                 Mat cropRightImage = GetAlignResultImage(tabInspResult, rightAlignShapeList, out offset);
 
-                string orgFileName = string.Format("Right_Align_Tab_{0}_Org.jepg", tabInspResult.TabNo);
+                string orgFileName = string.Format("Right_Align_Tab_{0}_Org.jpg", tabInspResult.TabNo);
                 string orgFilePath = Path.Combine(savePath, orgFileName);
                 cropRightImage?.Save(orgFilePath);
 
@@ -1546,7 +1560,14 @@ namespace ATT_UT_Remodeling.Core
                     }
                 }
 
-                string fileName = string.Format("Right_Align_Tab_{0}.jpeg", tabInspResult.TabNo);
+                if (tabInspResult.AlignResult != null)
+                {
+                    DrawAlignResultString(ref cropRightImage, $"{AlignResultType.Rx} : {rxData}um", 0);
+                    DrawAlignResultString(ref cropRightImage, $"{AlignResultType.Ry} : {ryData}um", 1);
+                    DrawAlignResultString(ref cropRightImage, $"{AlignResultType.Cx} : {cxData}um", 1);
+                }
+
+                string fileName = string.Format("Right_Align_Tab_{0}.jpg", tabInspResult.TabNo);
                 string filePath = Path.Combine(savePath, fileName);
                 cropRightImage?.Save(filePath);
             }
@@ -1577,6 +1598,16 @@ namespace ATT_UT_Remodeling.Core
                     CvInvoke.Rectangle(mat, boundRect, drawColor);
                 }
             }
+        }
+
+        private void DrawAlignResultString(ref Mat mat, string resultString, int lineIndex)
+        {
+            double fontScale = 3;
+            int lineOffset = 100;
+            Point coord = new Point((int)fontScale * 10, lineIndex * (lineOffset + (int)fontScale));
+            MCvScalar color = new MCvScalar(50, 230, 50, 255);
+
+            CvInvoke.PutText(mat, resultString, coord, FontFace.HersheySimplex, fontScale, color);
         }
 
         private Mat GetAlignResultImage(TabInspResult tabInspResult, List<AlignGraphicPosition> graphicList, out PointF offsetPoint)
