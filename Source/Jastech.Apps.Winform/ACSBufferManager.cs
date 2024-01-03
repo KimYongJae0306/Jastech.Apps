@@ -4,13 +4,8 @@ using Jastech.Apps.Winform.Core;
 using Jastech.Apps.Winform.Settings;
 using Jastech.Framework.Config;
 using Jastech.Framework.Device.Motions;
-using Jastech.Framework.Structure;
 using Jastech.Framework.Winform;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Jastech.Apps.Winform
 {
@@ -117,7 +112,6 @@ namespace Jastech.Apps.Winform
                         else
                             motion?.WriteRealVariable(config.IoEnableModeName, (int)IoEnableMode.Off, buffer.LafArrayIndex, buffer.LafArrayIndex);
                     }
-
                 }
             }
         }

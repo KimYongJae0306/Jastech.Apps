@@ -40,12 +40,6 @@ namespace Jastech.Apps.Winform
         private CancellationTokenSource cancelTokenSource { get; set; }
         #endregion
 
-        #region 이벤트
-        #endregion
-
-        #region 델리게이트
-        #endregion
-
         #region 생성자
         public LAF(LAFCtrl lafCtrl)
         {
@@ -317,19 +311,6 @@ namespace Jastech.Apps.Winform
                     Thread.Sleep(100);
 
                     Logger.Write(LogType.Device, "Complete zeroset.");
-
-                    // 대기 위치로 이동 - 포지션 필요함
-                    //var unit = TeachingData.Instance().GetUnit(UnitName.Unit0.ToString());
-                    //double standbyPosition = 0.0;
-                    //if (unit != null)
-                    //{
-                    //    standbyPosition = unit.GetTeachingInfo(TeachingPosType.Stage1_Scan_Start).GetTargetPosition(LafCtrl.AxisName);
-                    //    string tt = string.Format("LAF Axis Name : {0}", LafCtrl.AxisName.ToString());
-                    //}
-                    //else
-                    //{
-                    //    Logger.Write(LogType.Device, "Failed Move To Target Position [Unit is null].");
-                    //}
 
                     LafCtrl.SetMotionAbsoluteMove(_standbyPosition);
                     Logger.Write(LogType.Device, $"Move to home position.[Name : {LafCtrl.Name}]");

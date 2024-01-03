@@ -25,6 +25,7 @@ namespace Jastech.Apps.Winform.Core.Calibrations
     {
         #region 필드
         private const int MATRIX_DIMENSION = 9;
+        private const int CAL_TIME_OUT = 5 * 1000;
 
         private double[] _absoluteAmountX = new double[MATRIX_DIMENSION];
         private double[] _absoluteAmountY = new double[MATRIX_DIMENSION];
@@ -50,12 +51,8 @@ namespace Jastech.Apps.Winform.Core.Calibrations
         private double[] _prevPositionY = new double[MATRIX_DIMENSION];
         private double[] _prevPositionT = new double[MATRIX_DIMENSION];
 
-        private const int CAL_TIME_OUT = 5 * 1000;
-
         private double _initPositionX { get; set; } = 0.0;
-
         private double _initPositionY { get; set; } = 0.0;
-
         private double _initPositionT { get; set; } = 0.0;
 
         private double[] _calibrationResult = new double[MATRIX_DIMENSION];
@@ -63,6 +60,7 @@ namespace Jastech.Apps.Winform.Core.Calibrations
         public CalibrationData CalibrationData = new CalibrationData();
 
         private int _matrixStepPoint = 0;
+
         private List<MatrixPointResult> _matrixPointResultList = new List<MatrixPointResult>();
         #endregion
 
@@ -74,13 +72,12 @@ namespace Jastech.Apps.Winform.Core.Calibrations
         private CalSeqStep CalSeqStep { get; set; } = CalSeqStep.CAL_SEQ_INIT;
 
         private AreaCamera AreaCamera { get; set; } = null;
+
         private byte[] imageData = null;
 
-        //private Task CalSeqTask { get; set; }
-
         private Thread _workingThread = null;
+
         private bool _isWorking = false;
-        //private CancellationTokenSource SeqTaskCancellationTokenSource { get; set; }
 
         private VisionProPatternMatchingParam VisionProPatternMatchingParam { get; set; } = null;
 
@@ -101,12 +98,6 @@ namespace Jastech.Apps.Winform.Core.Calibrations
         public double IntervalX { get; private set; } = 0.0;
 
         public double IntervalY { get; private set; } = 0.0;
-        #endregion
-
-        #region 이벤트
-        #endregion
-
-        #region 델리게이트
         #endregion
 
         #region 생성자
@@ -150,7 +141,6 @@ namespace Jastech.Apps.Winform.Core.Calibrations
         {
             CalibrationMode = calibrationMode;
         }
-        #endregion
 
         public void SetInterval(double intervalX, double intervalY)
         {
@@ -187,8 +177,6 @@ namespace Jastech.Apps.Winform.Core.Calibrations
 
         private void CalibrationThread()
         {
-            //var cancellationToken = SeqTaskCancellationTokenSource.Token;
-            //cancellationToken.ThrowIfCancellationRequested();
             CalSeqStep = CalSeqStep.CAL_SEQ_IDLE;
 
             while (_isWorking)
@@ -703,7 +691,7 @@ namespace Jastech.Apps.Winform.Core.Calibrations
                 case CalSeqStep.CAL_SEQ_ERROR:
                     Logger.Write(LogType.Error, "Occur error at calibration sequence.");
 
-                    string message = string.Format("Calibration Error.\nDo you want to go to Origin?\nX : {0}, Y : {1}, T : {2}", 
+                    string message = string.Format("Calibration Error.\nDo you want to go to Origin?\nX : {0}, Y : {1}, T : {2}",
                         GetInitPositionX().ToString("F4"), GetInitPositionY().ToString("F4"), GetInitPositionT().ToString("F4"));
 
                     MessageYesNoForm form = new MessageYesNoForm();
@@ -785,7 +773,7 @@ namespace Jastech.Apps.Winform.Core.Calibrations
                     break;
 
                 case CalSeqStep.CAL_SEQ_SEND_RESULT_DATA:
-                    
+
                     //PlcControlManager.Instance().ClearAddress(PlcCommonMap.PLC_Command);
                     Logger.Write(LogType.Device, "Send calibration data.");
 
@@ -810,7 +798,7 @@ namespace Jastech.Apps.Winform.Core.Calibrations
                     // Light off
                     light.TurnOff();
                     Logger.Write(LogType.Device, "Light off.");
-                    _isWorking = false; 
+                    _isWorking = false;
                     _workingThread = null;
                     AppsStatus.Instance().IsCalibrationing = false;
                     Console.WriteLine("CalSeqStep : CAL_SEQ_STOP");
@@ -1082,28 +1070,6 @@ namespace Jastech.Apps.Winform.Core.Calibrations
             return Math.Abs(_currPositionT - _moveToPositionT) <= double.Epsilon;
         }
 
-        //private void SetCalibrationStepPosition(int matrixPoint, double x, double y, double t)
-        //{
-        //    _calStepPositionX[matrixPoint] = x;
-        //    _calStepPositionY[matrixPoint] = y;
-        //    _calStepPositionT[matrixPoint] = t;
-        //}
-
-        //private double GetCalStepPositionX(int matrixPoint)
-        //{
-        //    return _calStepPositionX[matrixPoint];
-        //}
-
-        //private double GetCalStepPositionY(int matrixPoint)
-        //{
-        //    return _calStepPositionY[matrixPoint];
-        //}
-
-        //private double GetCalStepPositionT(int matrixPoint)
-        //{
-        //    return _calStepPositionT[matrixPoint];
-        //}
-
         private bool CalculateCalibrationMatrix(List<MatrixPointResult> resultList, ref double[] resultMatrix)
         {
             double[] visionCoordinates = new double[MATRIX_DIMENSION * 2];
@@ -1299,6 +1265,7 @@ namespace Jastech.Apps.Winform.Core.Calibrations
         {
             return _matrixPointResultList;
         }
+        #endregion
     }
 
     public enum CalibrationMode

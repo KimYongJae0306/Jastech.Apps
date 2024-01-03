@@ -6,19 +6,24 @@ namespace Jastech.Apps.Winform
 {
     public class UserManager
     {
+        #region 필드
+        private static UserManager _instance = null;
+        #endregion
+
+        #region 속성
         public UserHandler UserHandler { get; private set; } = new UserHandler();
 
         public User CurrentUser { get; private set; } = new User();
+        #endregion
 
-        private static UserManager _instance = null;
-
+        #region 메서드
         public static UserManager Instance()
         {
             if (_instance == null)
             {
                 _instance = new UserManager();
             }
-            
+
             return _instance;
         }
 
@@ -29,7 +34,7 @@ namespace Jastech.Apps.Winform
             {
                 UserHandler.AddUser(new User(AuthorityType.None, ""));
                 UserHandler.AddUser(new User(AuthorityType.Engineer, "1"));
-                
+
                 Save(filePath);
             }
             else
@@ -50,7 +55,7 @@ namespace Jastech.Apps.Winform
 
         public void SetCurrentUser(string id)
         {
-            if(UserHandler.GetUser(id) is User user)
+            if (UserHandler.GetUser(id) is User user)
             {
                 CurrentUser = user;
             }
@@ -67,5 +72,6 @@ namespace Jastech.Apps.Winform
             UserHandler.ClearUser();
             UserHandler.Load(filePath);
         }
+        #endregion
     }
 }

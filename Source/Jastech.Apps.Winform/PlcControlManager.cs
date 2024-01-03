@@ -5,38 +5,23 @@ using Jastech.Apps.Winform.Service.Plc;
 using Jastech.Apps.Winform.Service.Plc.Maps;
 using Jastech.Apps.Winform.Settings;
 using Jastech.Framework.Algorithms.Akkon.Results;
-using Jastech.Framework.Config;
 using Jastech.Framework.Device.Motions;
 using Jastech.Framework.Device.Plcs;
 using Jastech.Framework.Device.Plcs.Melsec;
 using Jastech.Framework.Device.Plcs.Melsec.Parsers;
 using Jastech.Framework.Imaging.Result;
 using Jastech.Framework.Winform;
-using Newtonsoft.Json.Linq;
 using System;
 using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using static Jastech.Apps.Winform.Service.Plc.PlcScenarioManager;
 
 namespace Jastech.Apps.Winform
 {
     public partial class PlcControlManager
     {
-        #region 이벤트
-        public event PlcAxisNegativeLimitEventHandler AxisNegativeLimitEventHandler;
-
-        public event PlcAxisPositiveLimitEventHandler AxisPositiveLimitEventHandler;
-        #endregion
-
-        #region 델리게이트
-        public delegate bool PlcAxisNegativeLimitEventHandler(AxisName axisName);
-
-        public delegate bool PlcAxisPositiveLimitEventHandler(AxisName axisName);
-        #endregion
-
         #region 필드
         private bool _pcHeartBit { get; set; } = false;
 
@@ -59,6 +44,18 @@ namespace Jastech.Apps.Winform
         public CancellationTokenSource CancelPlcActionTask { get; set; }
 
         public bool EnableSendPeriodically { get; set; } = true;
+        #endregion
+
+        #region 이벤트
+        public event PlcAxisNegativeLimitEventHandler AxisNegativeLimitEventHandler;
+
+        public event PlcAxisPositiveLimitEventHandler AxisPositiveLimitEventHandler;
+        #endregion
+
+        #region 델리게이트
+        public delegate bool PlcAxisNegativeLimitEventHandler(AxisName axisName);
+
+        public delegate bool PlcAxisPositiveLimitEventHandler(AxisName axisName);
         #endregion
 
         #region 메서드

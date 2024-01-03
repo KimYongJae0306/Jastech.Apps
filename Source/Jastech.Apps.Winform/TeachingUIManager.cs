@@ -27,15 +27,6 @@ namespace Jastech.Apps.Winform
         private ICogImage AkkonCogImageBuffer { get; set; } = null;
         #endregion
 
-        #region 이벤트
-        #endregion
-
-        #region 델리게이트
-        #endregion
-
-        #region 생성자
-        #endregion
-
         #region 메서드
         public static TeachingUIManager Instance()
         {
@@ -46,24 +37,6 @@ namespace Jastech.Apps.Winform
 
             return _instance;
         }
-
-        //public CogDisplayControl GetDisplay()
-        //{
-        //    if (TeachingDisplay == null)
-        //        return null;
-
-        //    return TeachingDisplay.GetDisplay();
-        //}
-
-        //public CogTeachingDisplayControl GetTeachingDisplayControl()
-        //{
-        //    return TeachingDisplayControl;
-        //}
-
-        //public void SetTeachingDisplayControl(CogTeachingDisplayControl display)
-        //{
-        //    TeachingDisplayControl = display;
-        //}
 
         public ICogImage GetOriginCogImageBuffer(bool isDeepCopy)
         {
@@ -103,8 +76,6 @@ namespace Jastech.Apps.Winform
                 OriginMatImageBuffer.Dispose();
                 OriginMatImageBuffer = null;
             }
-
-            //TeachingDisplay?.SetImage(OrginCogImageBuffer);
         }
 
         public void SetOriginMatImageBuffer(Mat mat)

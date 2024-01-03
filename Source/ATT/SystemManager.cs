@@ -368,13 +368,4 @@ namespace ATT
     {
         ProgramType_1,  // ATT TEST#7호기
     }
-
-    //public enum ACSGlobalVariable
-    //{
-    //    AF_DIFF,        // Test#7 AF Difference
-    //    AF_SW,          // Test#7 AF On/Off Switch
-    //    AF_OFFSET,      // Test#7 AF Difference Offset
-    //    AF_FACTOR,      // Test#7 AF Axis Gain Factor
-    //    JUDGE_RANGE,    // Test#7 Judge Range (MSG dB Ret와 동일 기능)
-    //}
 }
