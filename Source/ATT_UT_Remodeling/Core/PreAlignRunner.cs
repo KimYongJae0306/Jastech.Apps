@@ -567,8 +567,8 @@ namespace ATT_UT_Remodeling
     {
         private void SaveResultImage()
         {
-            //if (ConfigSet.Instance().Operation.VirtualMode)
-            //    return;
+            if (ConfigSet.Instance().Operation.VirtualMode)
+                return;
 
             var appsPreAlignResult = AppsPreAlignResult.Instance();
 
@@ -578,7 +578,6 @@ namespace ATT_UT_Remodeling
             string month = currentTime.ToString("MM");
             string day = currentTime.ToString("dd");
             string path = Path.Combine(GetResultPath(), "Prealign");
-            //string path = Path.Combine(ConfigSet.Instance().Path.Result, inspModel.Name, month, day, folderPath, "Prealign");
 
             if (Directory.Exists(path) == false)
                 Directory.CreateDirectory(path);
@@ -587,9 +586,6 @@ namespace ATT_UT_Remodeling
             string okExtension = operation.GetExtensionOKImage();
             string ngExtension = operation.GetExtensionNGImage();
 
-            //var appsPreAlignResult = AppsPreAlignResult.Instance();
-
-            //appsPreAlignResult.Left.CogImage
             if (appsPreAlignResult.Judgement == Judgement.OK)
             {
                 if (operation.SaveImageOK)
