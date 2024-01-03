@@ -14,19 +14,22 @@ namespace Jastech.Apps.Winform.Core
 {
     public class ATTInspTab
     {
+        #region 필드
         private object _lock = new object();
+        #endregion
 
+        #region 속성
         public string CameraName { get; set; }
 
         public Queue<byte[]> DataQueue = new Queue<byte[]>();
 
-        public Task InspTask { get; set; }
+        private Task InspTask { get; set; }
 
-        public CancellationTokenSource CancelInspTask { get; set; }
+        private CancellationTokenSource CancelInspTask { get; set; }
 
-        public Task TeachingGrabTask { get; set; }
+        private Task TeachingGrabTask { get; set; }
 
-        public CancellationTokenSource CancelTeachingGrabTask { get; set; }
+        private CancellationTokenSource CancelTeachingGrabTask { get; set; }
 
         public TabScanBuffer TabScanBuffer { get; set; } = null;
 
@@ -37,13 +40,19 @@ namespace Jastech.Apps.Winform.Core
         public CogImage8Grey MergeCogImage { get; set; } = null;
 
         public bool IsAddStart { get; set; }
+        #endregion
 
+        #region 이벤트
         public SomeThingDelegate InspectEvent;
 
         public SomeThingDelegate TeachingEvent;
+        #endregion
 
+        #region 델리게이트
         public delegate void SomeThingDelegate(ATTInspTab inspTab);
+        #endregion
 
+        #region 메서드
         public void Dispose()
         {
             StopInspTask();
@@ -181,7 +190,7 @@ namespace Jastech.Apps.Winform.Core
             TeachingGrabTask = new Task(TeachingGrabMergeTask, CancelTeachingGrabTask.Token);
             TeachingGrabTask.Start();
 
-            while(TeachingGrabTask.Status != TaskStatus.Running)
+            while (TeachingGrabTask.Status != TaskStatus.Running)
             {
                 Thread.Sleep(10);
             }
@@ -258,5 +267,6 @@ namespace Jastech.Apps.Winform.Core
             InspectEvent?.Invoke(this);
             TabScanBuffer.TeachingGrabDone = true;
         }
+        #endregion
     }
 }

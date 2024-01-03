@@ -5,9 +5,6 @@ namespace Jastech.Apps.Winform
 {
     public class AreaCamera
     {
-        #region 필드
-        #endregion
-
         #region 속성
         public Camera Camera { get; private set; } = null;
         #endregion
@@ -26,14 +23,14 @@ namespace Jastech.Apps.Winform
             Camera = camera;
             Camera.ImageGrabbed += Camera_ImageGrabbed;
         }
+        #endregion
 
+        #region 메서드
         private void Camera_ImageGrabbed(Camera camera)
         {
             OnImageGrabbed?.Invoke(camera);
         }
-        #endregion
 
-        #region 메서드
         public void StartGrabContinous()
         {
             if (Camera == null)

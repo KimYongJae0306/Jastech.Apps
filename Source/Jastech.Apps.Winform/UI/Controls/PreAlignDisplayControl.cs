@@ -1,11 +1,8 @@
 ﻿using Cognex.VisionPro;
 using Jastech.Apps.Structure.Data;
 using Jastech.Framework.Winform.VisionPro.Controls;
-using System.CodeDom;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Windows.Forms;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.ProgressBar;
 
 namespace Jastech.Apps.Winform.UI.Controls
 {

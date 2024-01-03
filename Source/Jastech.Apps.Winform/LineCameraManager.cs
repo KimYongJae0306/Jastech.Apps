@@ -22,15 +22,7 @@ namespace Jastech.Apps.Winform
         public bool IsLive { get; set; } = false;
         #endregion
 
-        #region 이벤트
-      
-        #endregion
-
-        #region 델리게이트
-     
-        #endregion
-
-        #region 생성자
+        #region 메서드
         public static LineCameraManager Instance()
         {
             if (_instance == null)
@@ -40,9 +32,7 @@ namespace Jastech.Apps.Winform
 
             return _instance;
         }
-        #endregion
 
-        #region 메서드
         public void Initialize()
         {
             // Program 시작 후 처음 Mat을 할당하면 로딩 시간이 필요

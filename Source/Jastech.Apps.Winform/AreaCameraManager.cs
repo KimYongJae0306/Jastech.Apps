@@ -15,12 +15,6 @@ namespace Jastech.Apps.Winform
         public List<AreaCamera> CameraList = new List<AreaCamera>();
         #endregion
 
-        #region 이벤트
-        #endregion
-
-        #region 델리게이트
-        #endregion
-
         #region 생성자
         public static AreaCameraManager Instance()
         {
@@ -43,6 +37,10 @@ namespace Jastech.Apps.Winform
 
             foreach (var camera in cameraCtrlHandler)
                 CameraList.Add(new AreaCamera(camera));
+        }
+
+        public void Release()
+        {
         }
 
         public AreaCamera GetAppsCamera(string name)
@@ -71,18 +69,6 @@ namespace Jastech.Apps.Winform
         public AreaCamera GetAreaCamera(string cameraName)
         {
             return CameraList.Where(x => x.Camera.Name == cameraName).FirstOrDefault();
-        }
-
-        public void Dispose()
-        {
-            var cameraCtrlHandler = DeviceManager.Instance().CameraHandler;
-
-            if (cameraCtrlHandler == null)
-                return;
-
-            foreach (var camera in cameraCtrlHandler)
-            {
-            }
         }
         #endregion
     }

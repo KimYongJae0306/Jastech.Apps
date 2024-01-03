@@ -10,8 +10,11 @@ namespace Jastech.Apps.Winform.Core.Calibrations
 {
     public class CalibrationData
     {
+        #region 필드
         private static CalibrationData _instance = null;
+        #endregion
 
+        #region 속성
         public string FileName { get; private set; } = "Calibration.cfg";
 
         public List<MatrixPointResult> MatrixPointDataList { get; private set; } = new List<MatrixPointResult>();
@@ -30,7 +33,9 @@ namespace Jastech.Apps.Winform.Core.Calibrations
 
         [JsonProperty]
         public double CalibrationStartPositionY { get; private set; } = 0.0;
+        #endregion
 
+        #region 메서드
         public static CalibrationData Instance()
         {
             if (_instance == null)
@@ -165,7 +170,7 @@ namespace Jastech.Apps.Winform.Core.Calibrations
             realCoordinates.Y = Convert.ToSingle(pX * CalibrationMatrix[3]) + Convert.ToSingle(pY * CalibrationMatrix[4]) + Convert.ToSingle(CalibrationMatrix[5]);
             var tempTheta = Convert.ToSingle(pX * CalibrationMatrix[6]) + Convert.ToSingle(pY * CalibrationMatrix[7]) + Convert.ToSingle(CalibrationMatrix[8]);
 
-            if(useCal)
+            if (useCal)
             {
                 realCoordinates.X = realCoordinates.X / tempTheta;
                 realCoordinates.Y = realCoordinates.Y / tempTheta;
@@ -173,10 +178,12 @@ namespace Jastech.Apps.Winform.Core.Calibrations
 
             return realCoordinates;
         }
+        #endregion
     }
 
     public class MatrixPointResult
     {
+        #region 속성
         public double PixelX { get; set; } = 0.0;
 
         public double PixelY { get; set; } = 0.0;
@@ -188,5 +195,6 @@ namespace Jastech.Apps.Winform.Core.Calibrations
         public double MotionT { get; set; } = 0.0;
 
         public double Score { get; set; } = 0.0;
+        #endregion
     }
 }

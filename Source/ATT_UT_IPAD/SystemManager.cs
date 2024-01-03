@@ -1,7 +1,4 @@
 ﻿using ATT_UT_IPAD.Core;
-using ATT_UT_IPAD.Core.Data;
-using ATT_UT_IPAD.UI.Controls;
-using Cognex.VisionPro;
 using Jastech.Apps.Structure;
 using Jastech.Apps.Structure.Data;
 using Jastech.Apps.Winform;
@@ -22,14 +19,9 @@ using Jastech.Framework.Winform;
 using Jastech.Framework.Winform.Forms;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Reflection;
-using System.Runtime.ExceptionServices;
-using System.Runtime.InteropServices;
-using System.Security;
-using System.Security.Permissions;
 using System.Threading;
 using System.Windows.Forms;
 

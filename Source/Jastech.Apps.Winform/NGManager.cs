@@ -20,15 +20,6 @@ namespace Jastech.Apps.Winform
         private List<TabInspResult> _tabInspResult = new List<TabInspResult>();
         #endregion
 
-        #region 이벤트
-        #endregion
-
-        #region 델리게이트
-        #endregion
-
-        #region 생성자
-        #endregion
-
         #region 메서드
         public static NGManager Instance()
         {

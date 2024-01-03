@@ -1,10 +1,6 @@
 ﻿using Jastech.Apps.Structure.Data;
 using Jastech.Framework.Imaging.Result;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Jastech.Apps.Winform
 {
