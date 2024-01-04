@@ -28,6 +28,9 @@ namespace Jastech.Apps.Winform.Settings
         public bool EnableLafTrigger { get; set; } = false;
 
         [JsonProperty]
+        public bool EnableLafTriggerAutoMode { get; set; } = false;
+
+        [JsonProperty]
         public PlcAddressInfo PlcAddressInfo { get; set; } = new PlcAddressInfo();
 
         [JsonProperty]

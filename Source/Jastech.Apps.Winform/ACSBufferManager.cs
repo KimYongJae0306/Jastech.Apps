@@ -104,7 +104,12 @@ namespace Jastech.Apps.Winform
                 foreach (var buffer in ACSBufferConfig.Instance().LafTriggerBufferList)
                 {
                     if(targetAFName == "")
-                        motion?.WriteRealVariable(config.IoEnableModeName, (int)IoEnableMode.Auto, buffer.LafArrayIndex, buffer.LafArrayIndex);
+                    {
+                        if (AppsConfig.Instance().EnableLafTriggerAutoMode)
+                            motion?.WriteRealVariable(config.IoEnableModeName, (int)IoEnableMode.Auto, buffer.LafArrayIndex, buffer.LafArrayIndex);
+                        else
+                            motion?.WriteRealVariable(config.IoEnableModeName, (int)IoEnableMode.On, buffer.LafArrayIndex, buffer.LafArrayIndex);
+                    }
                     else
                     {
                         if(buffer.LafName == targetAFName)
