@@ -457,7 +457,7 @@ namespace ATT_UT_Remodeling
 
         public void CalculateAxisPosition()
         {
-            //List<TeachingInfo> calcTeachingInfoList = new List<TeachingInfo>();
+            List<TeachingInfo> calcTeachingInfoList = new List<TeachingInfo>();
 
             AppsInspModel inspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
             inspModel.MaterialInfo = PlcScenarioManager.Instance().GetModelMaterialInfo();
