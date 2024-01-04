@@ -137,6 +137,7 @@
             this.lblJog = new System.Windows.Forms.Label();
             this.pnlTeachingPositionList = new System.Windows.Forms.Panel();
             this.StatusTimer = new System.Windows.Forms.Timer(this.components);
+            this.panel1 = new System.Windows.Forms.Panel();
             this.tlpMotionPopup.SuspendLayout();
             this.pnlTop.SuspendLayout();
             this.tlpFormFunction.SuspendLayout();
@@ -161,6 +162,7 @@
             this.tlpPitchXY.SuspendLayout();
             this.tlpJogMode.SuspendLayout();
             this.tlpJogSpeedMode.SuspendLayout();
+            this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
             // tlpMotionPopup
@@ -181,7 +183,7 @@
             this.tlpMotionPopup.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tlpMotionPopup.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 100F));
             this.tlpMotionPopup.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tlpMotionPopup.Size = new System.Drawing.Size(684, 861);
+            this.tlpMotionPopup.Size = new System.Drawing.Size(682, 859);
             this.tlpMotionPopup.TabIndex = 2;
             // 
             // pnlTop
@@ -193,7 +195,7 @@
             this.pnlTop.Location = new System.Drawing.Point(0, 0);
             this.pnlTop.Margin = new System.Windows.Forms.Padding(0);
             this.pnlTop.Name = "pnlTop";
-            this.pnlTop.Size = new System.Drawing.Size(684, 60);
+            this.pnlTop.Size = new System.Drawing.Size(682, 60);
             this.pnlTop.TabIndex = 1;
             this.pnlTop.MouseDown += new System.Windows.Forms.MouseEventHandler(this.pnlTop_MouseDown);
             this.pnlTop.MouseMove += new System.Windows.Forms.MouseEventHandler(this.pnlTop_MouseMove);
@@ -227,12 +229,12 @@
             this.tlpFormFunction.Controls.Add(this.btnCommand, 0, 0);
             this.tlpFormFunction.Controls.Add(this.btnParameter, 1, 0);
             this.tlpFormFunction.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tlpFormFunction.Location = new System.Drawing.Point(0, 761);
+            this.tlpFormFunction.Location = new System.Drawing.Point(0, 759);
             this.tlpFormFunction.Margin = new System.Windows.Forms.Padding(0);
             this.tlpFormFunction.Name = "tlpFormFunction";
             this.tlpFormFunction.RowCount = 1;
             this.tlpFormFunction.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tlpFormFunction.Size = new System.Drawing.Size(684, 100);
+            this.tlpFormFunction.Size = new System.Drawing.Size(682, 100);
             this.tlpFormFunction.TabIndex = 1;
             // 
             // btnMoveTeachingPosition
@@ -241,7 +243,7 @@
             this.btnMoveTeachingPosition.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.btnMoveTeachingPosition.Dock = System.Windows.Forms.DockStyle.Fill;
             this.btnMoveTeachingPosition.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
-            this.btnMoveTeachingPosition.Location = new System.Drawing.Point(245, 3);
+            this.btnMoveTeachingPosition.Location = new System.Drawing.Point(244, 3);
             this.btnMoveTeachingPosition.Name = "btnMoveTeachingPosition";
             this.btnMoveTeachingPosition.Size = new System.Drawing.Size(94, 94);
             this.btnMoveTeachingPosition.TabIndex = 199;
@@ -256,7 +258,7 @@
             this.btnExit.Dock = System.Windows.Forms.DockStyle.Fill;
             this.btnExit.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
             this.btnExit.Image = global::ATT_UT_IPAD.Properties.Resources.Exit_White;
-            this.btnExit.Location = new System.Drawing.Point(587, 3);
+            this.btnExit.Location = new System.Drawing.Point(585, 3);
             this.btnExit.Name = "btnExit";
             this.btnExit.Size = new System.Drawing.Size(94, 94);
             this.btnExit.TabIndex = 293;
@@ -271,7 +273,7 @@
             this.btnStopTeachingPosition.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.btnStopTeachingPosition.Dock = System.Windows.Forms.DockStyle.Fill;
             this.btnStopTeachingPosition.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
-            this.btnStopTeachingPosition.Location = new System.Drawing.Point(345, 3);
+            this.btnStopTeachingPosition.Location = new System.Drawing.Point(344, 3);
             this.btnStopTeachingPosition.Name = "btnStopTeachingPosition";
             this.btnStopTeachingPosition.Size = new System.Drawing.Size(94, 94);
             this.btnStopTeachingPosition.TabIndex = 200;
@@ -286,7 +288,7 @@
             this.btnSave.Dock = System.Windows.Forms.DockStyle.Fill;
             this.btnSave.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
             this.btnSave.Image = global::ATT_UT_IPAD.Properties.Resources.Save_White;
-            this.btnSave.Location = new System.Drawing.Point(487, 3);
+            this.btnSave.Location = new System.Drawing.Point(485, 3);
             this.btnSave.Name = "btnSave";
             this.btnSave.Size = new System.Drawing.Size(94, 94);
             this.btnSave.TabIndex = 292;
@@ -331,7 +333,7 @@
             this.pnlFunction.Location = new System.Drawing.Point(0, 160);
             this.pnlFunction.Margin = new System.Windows.Forms.Padding(0);
             this.pnlFunction.Name = "pnlFunction";
-            this.pnlFunction.Size = new System.Drawing.Size(684, 601);
+            this.pnlFunction.Size = new System.Drawing.Size(682, 599);
             this.pnlFunction.TabIndex = 2;
             // 
             // tlpVariableParameters
@@ -1896,12 +1898,22 @@
             this.pnlTeachingPositionList.Location = new System.Drawing.Point(0, 60);
             this.pnlTeachingPositionList.Margin = new System.Windows.Forms.Padding(0);
             this.pnlTeachingPositionList.Name = "pnlTeachingPositionList";
-            this.pnlTeachingPositionList.Size = new System.Drawing.Size(684, 100);
+            this.pnlTeachingPositionList.Size = new System.Drawing.Size(682, 100);
             this.pnlTeachingPositionList.TabIndex = 3;
             // 
             // StatusTimer
             // 
             this.StatusTimer.Tick += new System.EventHandler(this.StatusTimer_Tick);
+            // 
+            // panel1
+            // 
+            this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel1.Controls.Add(this.tlpMotionPopup);
+            this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panel1.Location = new System.Drawing.Point(0, 0);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(684, 861);
+            this.panel1.TabIndex = 3;
             // 
             // MotionPopupForm
             // 
@@ -1910,7 +1922,7 @@
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
             this.ClientSize = new System.Drawing.Size(684, 861);
             this.ControlBox = false;
-            this.Controls.Add(this.tlpMotionPopup);
+            this.Controls.Add(this.panel1);
             this.Font = new System.Drawing.Font("맑은 고딕", 14F, System.Drawing.FontStyle.Bold);
             this.ForeColor = System.Drawing.Color.White;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
@@ -1946,6 +1958,7 @@
             this.tlpPitchXY.ResumeLayout(false);
             this.tlpJogMode.ResumeLayout(false);
             this.tlpJogSpeedMode.ResumeLayout(false);
+            this.panel1.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -2060,5 +2073,6 @@
         private System.Windows.Forms.Timer StatusTimer;
         private System.Windows.Forms.Panel pnlTop;
         private System.Windows.Forms.Label lblTop;
+        private System.Windows.Forms.Panel panel1;
     }
 }
