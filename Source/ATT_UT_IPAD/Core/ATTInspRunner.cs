@@ -578,6 +578,7 @@ namespace ATT_UT_IPAD.Core
                     SystemManager.Instance().ShowManualJugdeForm();
                     WriteLog("Show Manual Judge Form", false);
                     PlcControlManager.Instance().WriteManualJudge(false);
+
                     SeqStep = SeqStep.SEQ_MANUAL_JUDGE_COMPLETED;
                     break;
 

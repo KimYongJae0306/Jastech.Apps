@@ -261,6 +261,9 @@ namespace ATT_UT_Remodeling
                         
                         if (AppsStatus.Instance().IsManualMatching_OK)
                         {
+                            PlcControlManager.Instance().WriteManualJudge(true);
+                            WriteLog("Send Plc ManualJudge[Right]", true);
+
                             VisionProPatternMatchingResult patternResult = new VisionProPatternMatchingResult();
 
                             VisionProPatternMatchPos pos = new VisionProPatternMatchPos();
@@ -270,6 +273,8 @@ namespace ATT_UT_Remodeling
                             patternResult.Judgement = Judgement.OK;
                             patternResult.MatchPosList.Add(pos);
                             AppsPreAlignResult.Instance().Right.MatchResult = patternResult;
+
+                            PlcControlManager.Instance().WriteManualJudge(false);
                         }
                         else
                         {
@@ -326,6 +331,9 @@ namespace ATT_UT_Remodeling
 
                         if (AppsStatus.Instance().IsManualMatching_OK)
                         {
+                            PlcControlManager.Instance().WriteManualJudge(true);
+                            WriteLog("Send Plc ManualJudge[Left]", true);
+
                             VisionProPatternMatchingResult patternResult = new VisionProPatternMatchingResult();
 
                             VisionProPatternMatchPos pos = new VisionProPatternMatchPos();
@@ -336,6 +344,8 @@ namespace ATT_UT_Remodeling
                             patternResult.MatchPosList.Add(pos);
 
                             AppsPreAlignResult.Instance().Left.MatchResult = patternResult;
+
+                            PlcControlManager.Instance().WriteManualJudge(false);
                         }
                         else
                         {

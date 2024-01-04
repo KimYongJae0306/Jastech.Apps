@@ -471,6 +471,7 @@ namespace ATT_UT_Remodeling.Core
                     SetManualJudgeData(unit, AppsInspResult.Instance());
                     SystemManager.Instance().ShowManualJugdeForm();
                     WriteLog("Show Manual Judge Form", false);
+                    PlcControlManager.Instance().WriteManualJudge(false);
 
                     SeqStep = SeqStep.SEQ_MANUAL_JUDGE_COMPLETED;
                     break;
