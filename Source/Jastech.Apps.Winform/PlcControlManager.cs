@@ -10,6 +10,7 @@ using Jastech.Framework.Device.Plcs;
 using Jastech.Framework.Device.Plcs.Melsec;
 using Jastech.Framework.Device.Plcs.Melsec.Parsers;
 using Jastech.Framework.Imaging.Result;
+using Jastech.Framework.Util.Helper;
 using Jastech.Framework.Winform;
 using System;
 using System.Linq;
@@ -1159,7 +1160,7 @@ namespace Jastech.Apps.Winform
         #region 메서드
         public int ConvertDoubleWordData(double value_mm)
         {
-            double noneDotValue = Convert.ToDouble(value_mm.ToString("F4")) * 10000;
+            double noneDotValue = MathHelper.GetFloorDecimal(value_mm, 4) * 10000;
 
             int returnValue = Convert.ToInt32(noneDotValue);
 

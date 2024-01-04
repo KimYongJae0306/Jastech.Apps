@@ -608,6 +608,7 @@ namespace ATT_UT_IPAD
         }
         #endregion
     }
+
     public enum ProgramType
     {
         ProgramType_1, // UT IPAD PC #1 (출하일 : 2023.08 )

@@ -457,53 +457,58 @@ namespace ATT_UT_Remodeling
 
         public void CalculateAxisPosition()
         {
+            //List<TeachingInfo> calcTeachingInfoList = new List<TeachingInfo>();
+
             AppsInspModel inspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
             inspModel.MaterialInfo = PlcScenarioManager.Instance().GetModelMaterialInfo();
-            List<TeachingInfo> teachingInfoList = new List<TeachingInfo>();
+
             double offset = 0;
             PointF rotationCenter = CalibrationData.Instance().GetRotationCenter();
 
-            //1. Prealign Left Position
+            // 1. Prealign Left Position
             // Stage 회전 중심 X - (Mark to Mark Distance / 2)
             var preAlignLeftTeachInfo = inspModel.GetUnit(UnitName.Unit0).GetTeachingInfo(TeachingPosType.Stage1_PreAlign_Left);
             double preAlignLeftPosition = rotationCenter.X - (inspModel.MaterialInfo.MarkToMark_mm / 2);
             offset = preAlignLeftTeachInfo.GetOffset(AxisName.X);
             preAlignLeftTeachInfo.SetTargetPosition(AxisName.X, preAlignLeftPosition + offset);
-            teachingInfoList.Add(preAlignLeftTeachInfo);
+            //calcTeachingInfoList.Add(preAlignLeftTeachInfo);
 
-            //2. Prealign Right Position
+            // 2. Prealign Right Position
             // Stage 회전 중심 X + (Mark to Mark Distance / 2)
             var preAlignRightTeachInfo = inspModel.GetUnit(UnitName.Unit0).GetTeachingInfo(TeachingPosType.Stage1_PreAlign_Right);
             double preAlignRightPosition = rotationCenter.X + (inspModel.MaterialInfo.MarkToMark_mm / 2);
             offset = preAlignRightTeachInfo.GetOffset(AxisName.X);
             preAlignRightTeachInfo.SetTargetPosition(AxisName.X, preAlignRightPosition + offset);
-            teachingInfoList.Add(preAlignRightTeachInfo);
+            //calcTeachingInfoList.Add(preAlignRightTeachInfo);
 
-            //3. Inspection Scan Start Position
+            // 3. Inspection Scan Start Position
             // Prealign Left Position +  Camera Distance + Panel Left Edge ~ Tab1 Left Mark Distance
             var scanStartTeachInfo = inspModel.GetUnit(UnitName.Unit0).GetTeachingInfo(TeachingPosType.Stage1_Scan_Start);
             offset = scanStartTeachInfo.GetOffset(AxisName.X);
             double scanStartPosition = preAlignLeftTeachInfo.GetTargetPosition(AxisName.X) + offset +
-                Jastech.Apps.Winform.Settings.AppsConfig.Instance().CameraGap_mm + inspModel.MaterialInfo.PanelEdgeToFirst_mm;
+                AppsConfig.Instance().CameraGap_mm + inspModel.MaterialInfo.PanelEdgeToFirst_mm;
             scanStartTeachInfo.SetTargetPosition(AxisName.X, scanStartPosition);
 
-            //4. Inspection Scan End Position
+            // 4. Inspection Scan End Position
             // Inspection Scan Start Position + Mark to Mark Distance
             var scanEndTeachInfo = inspModel.GetUnit(UnitName.Unit0).GetTeachingInfo(TeachingPosType.Stage1_Scan_End);
             offset = scanEndTeachInfo.GetOffset(AxisName.X);
-            double totalScanLength = 0;
-            for (int tabCnt = 0; tabCnt < inspModel.TabCount; tabCnt++)
-            {
-                totalScanLength += inspModel.MaterialInfo.GetTabToTabDistance(tabCnt, inspModel.TabCount);
-            }
-            
-            scanEndTeachInfo.SetTargetPosition(AxisName.X, totalScanLength);
-            //double scanEndPosition = scanStartPosition + 
 
+            // 계산하든
+            double totalScanLength = 0;
+            for (int tabNo = 0; tabNo < inspModel.TabCount; tabNo++)
+            {
+                totalScanLength += inspModel.MaterialInfo.GetTabToTabDistance(tabNo, inspModel.TabCount);
+                totalScanLength += inspModel.MaterialInfo.GetTabWidth(tabNo);
+            }
+            scanEndTeachInfo.SetTargetPosition(AxisName.X, totalScanLength);
+
+            // 패널 전체 넣든
+            scanEndTeachInfo.SetTargetPosition(AxisName.X, inspModel.MaterialInfo.PanelXSize_mm);
 
             //////// PJH
             //var currentUnit = TeachingData.Instance().GetUnit(UnitName.Unit0.ToString());
-            //currentUnit.SetTeachingInfoList(teachingInfoList);
+            //currentUnit.SetTeachingInfoList(calcTeachingInfoList);
 
             //AppsInspModel model = ModelManager.Instance().CurrentModel as AppsInspModel;
             //model.SetUnitList(TeachingData.Instance().UnitList);
