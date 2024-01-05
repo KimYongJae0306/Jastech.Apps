@@ -601,8 +601,8 @@ namespace Jastech.Apps.Structure.Data
 
         private double GetCx_um()
         {
-            double lx = MathHelper.GetFloorDecimal(LeftX.ResultValue_pixel * Resolution_um, 3);
-            double rx = MathHelper.GetFloorDecimal(RightX.ResultValue_pixel * Resolution_um, 3);
+            double lx = MathHelper.GetFloorDecimal(LeftX.ResultValue_pixel * Resolution_um, 4);
+            double rx = MathHelper.GetFloorDecimal(RightX.ResultValue_pixel * Resolution_um, 4);
 
             double cx = (lx + rx) / 2.0;
 

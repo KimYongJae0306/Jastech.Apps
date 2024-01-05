@@ -49,7 +49,7 @@ namespace Jastech.Apps.Winform.UI.Controls
                     string tabNumber = (item.TabNo + 1).ToString();
                     string judge = item.Judgement.ToString();
                     string count = item.MinBlobCount.ToString();
-                    string length = $"{MathHelper.GetFloorDecimal(item.MinLength, 2):F2}";
+                    string length = MathHelper.GetFloorDecimal(item.MinLength, 4).ToString();
 
                     string[] row = { inspectionTime, panelID, tabNumber, judge, count, length };
                     dgvAkkonHistory.Rows.Add(row);

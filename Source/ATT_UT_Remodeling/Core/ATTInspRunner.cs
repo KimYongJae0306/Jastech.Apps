@@ -766,10 +766,10 @@ namespace ATT_UT_Remodeling.Core
                 alignInfo.Judgement = tabInspResult.AlignResult.Judgement;
                 alignInfo.PreHead = tabInspResult.AlignResult.PreHead;
                 alignInfo.FinalHead = AppsInspResult.Instance().FinalHead;
-                alignInfo.LX = GetResultAlignResultValue(tabInspResult.AlignResult.LeftX, 3);
-                alignInfo.LY = GetResultAlignResultValue(tabInspResult.AlignResult.LeftY, 3);
-                alignInfo.RX = GetResultAlignResultValue(tabInspResult.AlignResult.RightX, 3);
-                alignInfo.RY = GetResultAlignResultValue(tabInspResult.AlignResult.RightY, 3);
+                alignInfo.LX = GetResultAlignResultValue(tabInspResult.AlignResult.LeftX, 4);
+                alignInfo.LY = GetResultAlignResultValue(tabInspResult.AlignResult.LeftY, 4);
+                alignInfo.RX = GetResultAlignResultValue(tabInspResult.AlignResult.RightX, 4);
+                alignInfo.RY = GetResultAlignResultValue(tabInspResult.AlignResult.RightY, 4);
                 alignInfo.ResultPath = GetResultPath();
 
                 if (double.TryParse(alignInfo.LX, out double lx) && double.TryParse(alignInfo.RX, out double rx))
@@ -1178,7 +1178,7 @@ namespace ATT_UT_Remodeling.Core
             if (alignResult == null)
                 return 0.0F;
             else
-                return MathHelper.GetFloorDecimal(alignResult.ResultValue_pixel * resolution, 3);
+                return MathHelper.GetFloorDecimal(alignResult.ResultValue_pixel * resolution, 4);
         }
 
         private Axis GetAxis(AxisHandlerName axisHandlerName, AxisName axisName)

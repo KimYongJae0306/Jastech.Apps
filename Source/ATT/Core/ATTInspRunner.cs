@@ -666,7 +666,7 @@ namespace ATT.Core
                 return "-";
 
             double resolution = LineCamera.Camera.PixelResolution_um / LineCamera.Camera.LensScale;
-            double value = MathHelper.GetFloorDecimal(alignResult.ResultValue_pixel * (float)resolution, 2);
+            double value = MathHelper.GetFloorDecimal(alignResult.ResultValue_pixel * (float)resolution, 4);
             return value.ToString();
         }
 

@@ -187,7 +187,7 @@ namespace ATT_UT_IPAD.UI.Controls
             if (alignResult.AlignMissing)
                 return "-";
 
-            double value = MathHelper.GetFloorDecimal(alignResult.ResultValue_pixel * (float)resolution, 3);
+            double value = MathHelper.GetFloorDecimal(alignResult.ResultValue_pixel * (float)resolution, 4);
             return value.ToString();
         }
 

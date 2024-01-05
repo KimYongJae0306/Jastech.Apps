@@ -97,7 +97,7 @@ namespace Jastech.Apps.Winform.UI.Controls
         {
             if(double.TryParse(value, out double temp))
             {
-                return MathHelper.GetFloorDecimal(temp, 2).ToString();
+                return MathHelper.GetFloorDecimal(temp, 4).ToString();
             }
             else
                 return "-";
