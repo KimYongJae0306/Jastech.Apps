@@ -557,7 +557,7 @@ namespace Jastech.Apps.Structure.Data
                 if (LeftX.Judgement == Judgement.OK && LeftY.Judgement == Judgement.OK && RightX.Judgement == Judgement.OK && RightY.Judgement == Judgement.OK)
                 {
                     var cx = GetCx_um();
-                    //if (GetCx_um() <= Math.Abs(CxJudegementValue_pixel * Resolution_um))
+
                     if (Math.Abs(cx) <= Math.Abs(CxJudegementValue_pixel * Resolution_um))
                         return Judgement.OK;
                     else
@@ -599,8 +599,11 @@ namespace Jastech.Apps.Structure.Data
             return result;
         }
 
-        private double GetCx_um()
+        public double GetCx_um()
         {
+            if (LeftX == null || RightX == null)
+                return 0.0;
+
             double lx = MathHelper.GetFloorDecimal(LeftX.ResultValue_pixel * Resolution_um, 4);
             double rx = MathHelper.GetFloorDecimal(RightX.ResultValue_pixel * Resolution_um, 4);
 

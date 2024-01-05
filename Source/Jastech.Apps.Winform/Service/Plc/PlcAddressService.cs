@@ -117,6 +117,7 @@ namespace Jastech.Apps.Winform.Service.Plc
                 string alignLeftY = string.Format("Tab{0}_Align_Left_Y", i);
                 string alignRightX = string.Format("Tab{0}_Align_Right_X", i);
                 string alignRightY = string.Format("Tab{0}_Align_Right_Y", i);
+                string alignCx = string.Format("Tab{0}_Align_Cx", i);
 
                 int addressIndex = addressNum + (tabTotabInterval * i);
                 ResultMapList.Add(new PlcAddressMap((PlcResultMap)Enum.Parse(typeof(PlcResultMap), tabJudgement), WordType.DEC, addressIndex, 1));
@@ -126,6 +127,9 @@ namespace Jastech.Apps.Winform.Service.Plc
                 ResultMapList.Add(new PlcAddressMap((PlcResultMap)Enum.Parse(typeof(PlcResultMap), alignLeftY), WordType.DoubleWord, addressIndex + 2, 2));
                 ResultMapList.Add(new PlcAddressMap((PlcResultMap)Enum.Parse(typeof(PlcResultMap), alignRightX), WordType.DoubleWord, addressIndex + 3, 2));
                 ResultMapList.Add(new PlcAddressMap((PlcResultMap)Enum.Parse(typeof(PlcResultMap), alignRightY), WordType.DoubleWord, addressIndex + 4, 2));
+                
+                int tempAddresIndex = addressNum + (tabTotabInterval * i) + 100;
+                ResultMapList.Add(new PlcAddressMap((PlcResultMap)Enum.Parse(typeof(PlcResultMap), alignCx), WordType.DoubleWord, tempAddresIndex, 2));
             }
         }
 

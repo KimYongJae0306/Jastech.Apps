@@ -121,6 +121,13 @@ namespace ATT_UT_Remodeling
                 ringLight.ChannelNameMap["Ch.RedRing1"] = 1; // channel 지정
                 ringLight.ChannelNameMap["Ch.RedRing2"] = 2; // channel 지정
                 config.Add(ringLight);
+
+                // PLC
+                AppsConfig.Instance().PlcAddressInfo.CommonStart = 104000;
+                AppsConfig.Instance().PlcAddressInfo.ResultStart = 105000;
+                AppsConfig.Instance().PlcAddressInfo.ResultStart_Align = 105220;
+                AppsConfig.Instance().PlcAddressInfo.ResultTabToTabInterval = 200;
+                AppsConfig.Instance().PlcAddressInfo.ResultStart_Akkon = 105230;
             }
             else
             {

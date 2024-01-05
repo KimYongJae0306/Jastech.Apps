@@ -182,6 +182,16 @@ namespace ATT_UT_IPAD
                 ringLight.ChannelNameMap["Ch.RedRing1"] = 1; // channel 지정
                 ringLight.ChannelNameMap["Ch.RedRing2"] = 2; // channel 지정
                 config.Add(ringLight);
+
+                // PLC UT IPAD
+                AppsConfig.Instance().PlcAddressInfo.CommonStart = 120000;
+                AppsConfig.Instance().PlcAddressInfo.ResultStart = 121000;
+                AppsConfig.Instance().PlcAddressInfo.ResultStart_Align = 121220;
+                AppsConfig.Instance().PlcAddressInfo.ResultTabToTabInterval = 200;
+                AppsConfig.Instance().PlcAddressInfo.ResultStart_Akkon = 121230;
+
+                var plc = new MelsecPlc("PLC", new SocketComm("127.0.0.1", 9021, SocketCommType.Udp, 9031), new MelsecBinaryParser());
+                config.Add(plc);
             }
             else
             {

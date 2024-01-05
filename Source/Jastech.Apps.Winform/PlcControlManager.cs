@@ -748,6 +748,19 @@ namespace Jastech.Apps.Winform
                 AddMarkResult(plc.MelsecParser.ParserType, markResult, ref stream);
 
                 plc.Write("D" + map.AddressNum, stream.Data);
+
+                Thread.Sleep(10);
+
+                // Second Stream
+                string tabCxName = string.Format("Tab{0}_Align_Cx", tabNo);
+                PlcResultMap plcCxResultMap = (PlcResultMap)Enum.Parse(typeof(PlcResultMap), tabCxName);
+
+                var secondMap = PlcControlManager.Instance().GetResultMap(plcCxResultMap);
+
+                PlcDataStream secondStream = new PlcDataStream();
+                AddSecondAlignResult(plc.MelsecParser.ParserType, alignResult, resolution, ref secondStream);
+
+                plc.Write("D" + secondMap.AddressNum, secondStream.Data);
             }
         }
 
@@ -816,6 +829,30 @@ namespace Jastech.Apps.Winform
                     stream.Add32BitData(rightX);                         // Right AlignX
                     stream.Add32BitData(rightY);                         // Right AlignY
                 }
+            }
+        }
+
+        private void AddSecondAlignResult(ParserType parserType, TabAlignResult alignResult, double resolution, ref PlcDataStream stream)
+        {
+            if (alignResult == null)
+            {
+                if (parserType == ParserType.Binary)
+                    stream.AddSwap16BitData(0); // CX
+                else
+                    stream.Add16BitData(0); // Cx
+            }
+            else
+            {
+                double cx_um = 0.0;
+                if (alignResult.LeftX != null)
+                    cx_um = alignResult.GetCx_um();
+
+                int cx = ConvertDoubleWordData(cx_um);
+
+                if (parserType == ParserType.Binary)
+                    stream.AddSwap32BitData(cx);   // Align Cx
+                else
+                    stream.Add32BitData(cx);       // Align Cx
             }
         }
 

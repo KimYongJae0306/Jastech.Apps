@@ -28,6 +28,8 @@
         Tab0_Align_Right_X,
         Tab0_Align_Right_Y,
 
+        Tab0_Align_Cx,
+
         Tab0_Akkon_Judgement,
 
         Tab0_Akkon_Count_Left_Avg,
@@ -70,6 +72,8 @@
         Tab1_Align_Left_Y,
         Tab1_Align_Right_X,
         Tab1_Align_Right_Y,
+
+        Tab1_Align_Cx,
 
         Tab1_Akkon_Judgement,
 
@@ -114,6 +118,8 @@
         Tab2_Align_Right_X,
         Tab2_Align_Right_Y,
 
+        Tab2_Align_Cx,
+
         Tab2_Akkon_Judgement,
 
         Tab2_Akkon_Count_Left_Avg,
@@ -156,6 +162,8 @@
         Tab3_Align_Left_Y,
         Tab3_Align_Right_X,
         Tab3_Align_Right_Y,
+
+        Tab3_Align_Cx,
 
         Tab3_Akkon_Judgement,
 
@@ -200,6 +208,8 @@
         Tab4_Align_Right_X,
         Tab4_Align_Right_Y,
 
+        Tab4_Align_Cx,
+
         Tab4_Akkon_Judgement,
 
         Tab4_Akkon_Count_Left_Avg,
@@ -242,6 +252,8 @@
         Tab5_Align_Left_Y,
         Tab5_Align_Right_X,
         Tab5_Align_Right_Y,
+
+        Tab5_Align_Cx,
 
         Tab5_Akkon_Judgement,
 
@@ -286,6 +298,8 @@
         Tab6_Align_Right_X,
         Tab6_Align_Right_Y,
 
+        Tab6_Align_Cx,
+
         Tab6_Akkon_Judgement,
 
         Tab6_Akkon_Count_Left_Avg,
@@ -328,6 +342,8 @@
         Tab7_Align_Left_Y,
         Tab7_Align_Right_X,
         Tab7_Align_Right_Y,
+
+        Tab7_Align_Cx,
 
         Tab7_Akkon_Judgement,
 
@@ -372,6 +388,8 @@
         Tab8_Align_Right_X,
         Tab8_Align_Right_Y,
 
+        Tab8_Align_Cx,
+
         Tab8_Akkon_Judgement,
 
         Tab8_Akkon_Count_Left_Avg,
@@ -414,6 +432,8 @@
         Tab9_Align_Left_Y,
         Tab9_Align_Right_X,
         Tab9_Align_Right_Y,
+
+        Tab9_Align_Cx,
 
         Tab9_Akkon_Judgement,
 
