@@ -199,29 +199,24 @@ namespace Jastech.Apps.Winform
             }
         }
 
-        public void SetLafTriggerPosition(UnitName unitName, string lafName, List<TabScanBuffer> tabScanBufferList, double offset = 0)
+        public void SetLafTriggerPosition(UnitName unitName, string lafName, List<TabScanBuffer> tabScanBufferList, bool useAlignCam, double offset = 0)
         {
             if (ConfigSet.Instance().Operation.VirtualMode || AppsConfig.Instance().EnableLafTrigger == false)
                 return;
 
-            var camera = DeviceManager.Instance().CameraHandler.First();
-            double resolution_um = camera.PixelResolution_um / camera.LensScale;
-
             AppsInspModel inspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
             var unit = inspModel.GetUnit(unitName);
 
-            SetLafTriggerPosition(unit, lafName, tabScanBufferList, offset);
+            SetLafTriggerPosition(unit, lafName, tabScanBufferList, useAlignCam, offset);
         }
 
-        public void SetLafTriggerPosition(Unit unit, string lafName, List<TabScanBuffer> tabScanBufferList, double offset = 0)
+        public void SetLafTriggerPosition(Unit unit, string lafName, List<TabScanBuffer> tabScanBufferList, bool useAlignCam, double offset = 0)
         {
             if (ConfigSet.Instance().Operation.VirtualMode || AppsConfig.Instance().EnableLafTrigger == false)
                 return;
 
             var camera = DeviceManager.Instance().CameraHandler.First();
             float resolution_um = camera.PixelResolution_um / camera.LensScale;
-
-            AppsInspModel inspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
 
             var posData = unit.GetTeachingInfo(TeachingPosType.Stage1_Scan_Start);
             double teachingStartPos = posData.GetTargetPosition(AxisName.X) + offset;
@@ -235,8 +230,9 @@ namespace Jastech.Apps.Winform
                 double tempStart = teachingStartPos + (scanBuffer.StartIndex * subImageSize);
                 double tempEnd = teachingStartPos + ((scanBuffer.EndIndex + 1) * subImageSize);
 
-                float afLeftOffset = unit.GetTab(scanBuffer.TabNo).LafTriggerOffset.Left;
-                float afRightOffset = unit.GetTab(scanBuffer.TabNo).LafTriggerOffset.Right;
+                var triggerOffset = unit.GetTab(scanBuffer.TabNo).GetTriggerOffsetParameter(useAlignCam);
+                float afLeftOffset = triggerOffset.Left;
+                float afRightOffset = triggerOffset.Right;
 
                 IoPositionData data = new IoPositionData
                 {

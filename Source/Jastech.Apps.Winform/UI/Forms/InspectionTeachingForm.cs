@@ -562,7 +562,7 @@ namespace Jastech.Framework.Winform.Forms
             {
                 LineCamera.InitGrabSettings();
             }
-            ACSBufferManager.Instance().SetLafTriggerPosition(unit, LAFCtrl.Name, LineCamera.TabScanBufferList);
+            ACSBufferManager.Instance().SetLafTriggerPosition(unit, LAFCtrl.Name, LineCamera.TabScanBufferList, UseAlignCamMark);
 
             InitalizeInspTab(LineCamera.TabScanBufferList);
 

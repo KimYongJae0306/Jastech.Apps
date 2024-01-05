@@ -805,12 +805,12 @@ namespace ATT_UT_IPAD.Core
         {
             AkkonCamera.InitGrabSettings();
             InspProcessTask.InitalizeInspAkkonBuffer(AkkonCamera.Camera.Name, AkkonCamera.TabScanBufferList);
-            ACSBufferManager.Instance().SetLafTriggerPosition(UnitName.Unit0, AkkonLAFCtrl.Name, AkkonCamera.TabScanBufferList, 0);
+            ACSBufferManager.Instance().SetLafTriggerPosition(UnitName.Unit0, AkkonLAFCtrl.Name, AkkonCamera.TabScanBufferList, false);
 
             float akkonToAlignGap_mm = AppsConfig.Instance().CameraGap_mm;
             AlignCamera.InitGrabSettings(akkonToAlignGap_mm);
             InspProcessTask.InitalizeInspAlignBuffer(AlignCamera.Camera.Name, AlignCamera.TabScanBufferList);
-            ACSBufferManager.Instance().SetLafTriggerPosition(UnitName.Unit0, AlignLAFCtrl.Name, AlignCamera.TabScanBufferList, AppsConfig.Instance().CameraGap_mm);
+            ACSBufferManager.Instance().SetLafTriggerPosition(UnitName.Unit0, AlignLAFCtrl.Name, AlignCamera.TabScanBufferList, true);
         }
 
         public void StartDeleteData()

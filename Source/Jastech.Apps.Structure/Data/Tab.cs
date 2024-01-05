@@ -107,6 +107,14 @@ namespace Jastech.Apps.Structure.Data
                 return Mark;
         }
 
+        public LafTriggerOffset GetTriggerOffsetParameter(bool isAlignCam)
+        {
+            if (isAlignCam)
+                return AlignLafTriggerOffset;
+            else
+                return LafTriggerOffset;
+        }
+
         public void SaveAkkonParam(string filePath)
         {
             if (Directory.Exists(filePath) == false)
