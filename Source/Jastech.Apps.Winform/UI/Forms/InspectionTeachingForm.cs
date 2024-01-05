@@ -208,6 +208,7 @@ namespace Jastech.Framework.Winform.Forms
 
             TriggerSettingControl = new AFTriggerOffsetSettingControl();
             TriggerSettingControl.Dock = DockStyle.Fill;
+            TriggerSettingControl.UseAlignCamMark = UseAlignCamMark;
             pnlTeach.Controls.Add(TriggerSettingControl);
 
             OptimizeUIByTeachingItem();

@@ -16,6 +16,8 @@ namespace Jastech.Apps.Winform.UI.Controls
     {
         #region 속성
         private Tab CurrentTab { get; set; } = null;
+
+        public bool UseAlignCamMark { get; set; } = false;
         #endregion
 
         #region 생성자
@@ -45,9 +47,18 @@ namespace Jastech.Apps.Winform.UI.Controls
             if (CurrentTab == null)
                 return;
 
-            lblLeftOffset.Text = CurrentTab.LafTriggerOffset.Left.ToString();
-            lblRightOffset.Text = CurrentTab.LafTriggerOffset.Right.ToString();
+            lblLeftOffset.Text = GetTriggerOffset().Left.ToString();
+            lblRightOffset.Text = GetTriggerOffset().Right.ToString();
         }
+
+        private LafTriggerOffset GetTriggerOffset()
+        {
+            if (UseAlignCamMark)
+                return CurrentTab.AlignLafTriggerOffset;
+            else
+                return CurrentTab.LafTriggerOffset;
+        }
+
 
         private void lblLeftOffset_Click(object sender, EventArgs e)
         {
@@ -56,7 +67,7 @@ namespace Jastech.Apps.Winform.UI.Controls
 
             float leftOffset = KeyPadHelper.SetLabelFloatData((Label)sender);
 
-            CurrentTab.LafTriggerOffset.Left = leftOffset;
+            GetTriggerOffset().Left = leftOffset;
             lblLeftOffset.Text = leftOffset.ToString();
         }
 
@@ -67,7 +78,7 @@ namespace Jastech.Apps.Winform.UI.Controls
 
             float rightOffset = KeyPadHelper.SetLabelFloatData((Label)sender);
 
-            CurrentTab.LafTriggerOffset.Right = rightOffset;
+            GetTriggerOffset().Right = rightOffset;
             lblRightOffset.Text = rightOffset.ToString();
         }
         #endregion

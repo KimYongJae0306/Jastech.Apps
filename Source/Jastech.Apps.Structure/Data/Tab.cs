@@ -30,6 +30,9 @@ namespace Jastech.Apps.Structure.Data
         public LafTriggerOffset LafTriggerOffset { get; set; } = new LafTriggerOffset();
 
         [JsonProperty]
+        public LafTriggerOffset AlignLafTriggerOffset { get; set; } = new LafTriggerOffset();
+
+        [JsonProperty]
         public MarkParamter Mark = new MarkParamter();
 
         [JsonProperty]
@@ -51,6 +54,7 @@ namespace Jastech.Apps.Structure.Data
             tab.StageIndex = StageIndex;
             tab.AlignSpec = JsonConvertHelper.DeepCopy(AlignSpec) as AlignSpec;
             tab.LafTriggerOffset = JsonConvertHelper.DeepCopy(LafTriggerOffset) as LafTriggerOffset;
+            tab.AlignLafTriggerOffset = JsonConvertHelper.DeepCopy(AlignLafTriggerOffset) as LafTriggerOffset;
             tab.Mark = Mark.DeepCopy();
             tab.AlignCamMark = AlignCamMark?.DeepCopy();
             tab.AlignParamList = AlignParamList.Select(x => x.DeepCopy()).ToList();
