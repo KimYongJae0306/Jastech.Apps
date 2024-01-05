@@ -556,13 +556,12 @@ namespace Jastech.Framework.Winform.Forms
             if (UseDelayStart)
             {
                 LineCamera.InitGrabSettings(cameraGap);
-                ACSBufferManager.Instance().SetLafTriggerPosition(unit, LAFCtrl.Name, LineCamera.TabScanBufferList, cameraGap);
             }
             else
             {
                 LineCamera.InitGrabSettings();
-                ACSBufferManager.Instance().SetLafTriggerPosition(unit, LAFCtrl.Name, LineCamera.TabScanBufferList, 0);
             }
+            ACSBufferManager.Instance().SetLafTriggerPosition(unit, LAFCtrl.Name, LineCamera.TabScanBufferList);
 
             InitalizeInspTab(LineCamera.TabScanBufferList);
 

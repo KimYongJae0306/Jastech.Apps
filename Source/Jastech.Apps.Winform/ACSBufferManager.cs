@@ -209,33 +209,8 @@ namespace Jastech.Apps.Winform
 
             AppsInspModel inspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
             var unit = inspModel.GetUnit(unitName);
-            
-            var posData = unit.GetTeachingInfo(TeachingPosType.Stage1_Scan_Start);
-            double teachingStartPos = posData.GetTargetPosition(AxisName.X) + offset;
 
-            double subImageSize = (resolution_um * camera.ImageHeight) / 1000.0;
-
-            List<IoPositionData> dataList = new List<IoPositionData>();
-
-            foreach (var scanBuffer in tabScanBufferList)
-            {
-                double tempStart = teachingStartPos + (scanBuffer.StartIndex * subImageSize);
-                double tempEnd = teachingStartPos + ((scanBuffer.EndIndex + 1) * subImageSize);
-
-                double afLeftOffset = unit.GetTab(scanBuffer.TabNo).LafTriggerOffset.Left;
-                double afRightOffset = unit.GetTab(scanBuffer.TabNo).LafTriggerOffset.Right;
-
-                IoPositionData data = new IoPositionData
-                {
-                    Start = tempStart + afLeftOffset,
-                    End = tempEnd + afRightOffset,
-                };
-
-                dataList.Add(data);
-            }
-            dataList.Sort((x, y) => x.Start.CompareTo(y.Start));
-
-            SetTriggerPosition(lafName, dataList);
+            SetLafTriggerPosition(unit, lafName, tabScanBufferList, offset);
         }
 
         public void SetLafTriggerPosition(Unit unit, string lafName, List<TabScanBuffer> tabScanBufferList, double offset = 0)
