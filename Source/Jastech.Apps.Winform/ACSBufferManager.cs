@@ -35,6 +35,7 @@ namespace Jastech.Apps.Winform
                 var motion = DeviceManager.Instance().MotionHandler.First() as ACSMotion;
                 int index = ACSBufferConfig.Instance().CameraTrigger;
                 motion?.RunBuffer(index);
+                motion?.RunCompile(index);
 
                 if(AppsConfig.Instance().EnableLafTrigger)
                 {
@@ -46,6 +47,7 @@ namespace Jastech.Apps.Winform
                     foreach (var trigger in ACSBufferConfig.Instance().LafTriggerBufferList)
                         //motion?.RunBuffer(trigger.BufferNumber);
                         motion?.CompileBuffer(trigger.BufferNumber);
+                    }
                 }
             }
         }

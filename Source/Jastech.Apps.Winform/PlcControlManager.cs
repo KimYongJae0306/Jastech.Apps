@@ -726,11 +726,19 @@ namespace Jastech.Apps.Winform
 
         public void WriteTabResult(int tabNo, TabJudgement judgement, TabAlignResult alignResult, AkkonResult akkonResult, TabMarkResult markResult, double resolution)
         {
+            WriteFirstResultStream(tabNo, judgement, alignResult, akkonResult, markResult, resolution);
+
+            Thread.Sleep(10);
+
+            WriteSecondResultStream(tabNo, judgement, alignResult, akkonResult, markResult, resolution);
+        }
+
+        private void WriteFirstResultStream(int tabNo, TabJudgement judgement, TabAlignResult alignResult, AkkonResult akkonResult, TabMarkResult markResult, double resolution)
+        {
             string tabJudgementName = string.Format("Tab{0}_Judgement", tabNo);
             PlcResultMap plcResultMap = (PlcResultMap)Enum.Parse(typeof(PlcResultMap), tabJudgementName);
 
             var map = PlcControlManager.Instance().GetResultMap(plcResultMap);
-
             if (DeviceManager.Instance().PlcHandler.Count > 0 && map != null)
             {
                 var plc = DeviceManager.Instance().PlcHandler.First() as MelsecPlc;
@@ -748,19 +756,23 @@ namespace Jastech.Apps.Winform
                 AddMarkResult(plc.MelsecParser.ParserType, markResult, ref stream);
 
                 plc.Write("D" + map.AddressNum, stream.Data);
+            }
+        }
 
-                Thread.Sleep(10);
+        private void WriteSecondResultStream(int tabNo, TabJudgement judgement, TabAlignResult alignResult, AkkonResult akkonResult, TabMarkResult markResult, double resolution)
+        {
+            string tabCxName = string.Format("Tab{0}_Align_Cx", tabNo);
+            PlcResultMap plcCxResultMap = (PlcResultMap)Enum.Parse(typeof(PlcResultMap), tabCxName);
 
-                // Second Stream
-                string tabCxName = string.Format("Tab{0}_Align_Cx", tabNo);
-                PlcResultMap plcCxResultMap = (PlcResultMap)Enum.Parse(typeof(PlcResultMap), tabCxName);
-
-                var secondMap = PlcControlManager.Instance().GetResultMap(plcCxResultMap);
-
+            var map = PlcControlManager.Instance().GetResultMap(plcCxResultMap);
+            if (DeviceManager.Instance().PlcHandler.Count > 0 && map != null)
+            {
+                var plc = DeviceManager.Instance().PlcHandler.First() as MelsecPlc;
                 PlcDataStream secondStream = new PlcDataStream();
+
                 AddSecondAlignResult(plc.MelsecParser.ParserType, alignResult, resolution, ref secondStream);
 
-                plc.Write("D" + secondMap.AddressNum, secondStream.Data);
+                plc.Write("D" + map.AddressNum, secondStream.Data);
             }
         }
 
