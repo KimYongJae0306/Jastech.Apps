@@ -44,7 +44,8 @@ namespace Jastech.Apps.Winform
                     SetStopMode();
 
                     foreach (var trigger in ACSBufferConfig.Instance().LafTriggerBufferList)
-                        motion?.RunBuffer(trigger.BufferNumber);
+                        //motion?.RunBuffer(trigger.BufferNumber);
+                        motion?.CompileBuffer(trigger.BufferNumber);
                 }
             }
         }
