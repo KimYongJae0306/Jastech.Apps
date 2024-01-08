@@ -121,13 +121,13 @@ namespace Jastech.Apps.Winform.UI.Controls
                 AlignSeriesRy = new Series();
                 AlignSeriesRy = chtData.Series.Add("Ry");
                 AlignSeriesRy.ChartType = SeriesChartType.Line;
-                AlignSeriesRy.Color = Color.Yellow;
+                AlignSeriesRy.Color = Color.FromArgb(142, 89, 159);
                 AlignSeriesRy.Name = "Ry";
 
                 AlignSeriesCx = new Series();
                 AlignSeriesCx = chtData.Series.Add("Cx");
                 AlignSeriesCx.ChartType = SeriesChartType.Line;
-                AlignSeriesCx.Color = Color.FromArgb(142, 89, 159);
+                AlignSeriesCx.Color = Color.Yellow;
                 AlignSeriesCx.Name = "Cx";
 
                 AlignSeriesList.Add(AlignSeriesLx);
