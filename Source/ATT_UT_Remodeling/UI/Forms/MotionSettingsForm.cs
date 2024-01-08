@@ -599,7 +599,7 @@ namespace ATT_UT_Remodeling.UI.Forms
 
                     ProgressForm progressForm = new ProgressForm();
                     laf.SetHomeStandbyPosition(standbyPosition);
-                    progressForm.Add($"Axis Z0 (Laf) homing", laf.HomeSequenceAction, laf.StopHomeSequence);
+                    progressForm.Add($"Axis Z ({LafCtrl.Name}) homing", laf.HomeSequenceAction, laf.StopHomeSequence);
                     progressForm.ShowDialog();
                 }
             }

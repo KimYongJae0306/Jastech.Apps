@@ -614,7 +614,7 @@ namespace ATT_UT_IPAD.UI.Forms
 
                     ProgressForm progressForm = new ProgressForm();
                     akkonLAF.SetHomeStandbyPosition(standbyPosition);
-                    progressForm.Add($"Axis Z0 (Laf) homing", akkonLAF.HomeSequenceAction, akkonLAF.StopHomeSequence);
+                    progressForm.Add($"Axis Z0 ({AkkonLafCtrl.Name}) homing", akkonLAF.HomeSequenceAction, akkonLAF.StopHomeSequence);
                     progressForm.ShowDialog();
                 }
             }
@@ -727,7 +727,7 @@ namespace ATT_UT_IPAD.UI.Forms
 
                     ProgressForm progressForm = new ProgressForm();
                     alignLAF.SetHomeStandbyPosition(standbyPosition);
-                    progressForm.Add($"Axis Z0 (Laf) homing", alignLAF.HomeSequenceAction, alignLAF.StopHomeSequence);
+                    progressForm.Add($"Axis Z1 ({AlignLafCtrl.Name}) homing", alignLAF.HomeSequenceAction, alignLAF.StopHomeSequence);
                     progressForm.ShowDialog();
                 }
             }
