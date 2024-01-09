@@ -13,6 +13,7 @@ using Jastech.Apps.Structure;
 using Jastech.Apps.Winform.Service.Plc;
 using Jastech.Framework.Winform.Forms;
 using Jastech.Framework.Structure;
+using System.Windows.Forms.VisualStyles;
 
 namespace Jastech.Apps.Winform.UI.Controls
 {
@@ -71,7 +72,7 @@ namespace Jastech.Apps.Winform.UI.Controls
             string oldOffset = lblLeftOffset.Text;
             float leftOffset = KeyPadHelper.SetLabelFloatData((Label)sender);
 
-            if (CheckOffsetRange(leftOffset, MarkDirection.Left))
+            if (CheckOffsetRange(leftOffset, isLeft: true))
             {
                 GetTriggerOffset().Left = leftOffset;
                 lblLeftOffset.Text = leftOffset.ToString();
@@ -88,7 +89,7 @@ namespace Jastech.Apps.Winform.UI.Controls
             string oldOffset = lblRightOffset.Text;
             float rightOffset = KeyPadHelper.SetLabelFloatData((Label)sender);
 
-            if (CheckOffsetRange(rightOffset, MarkDirection.Right))
+            if (CheckOffsetRange(rightOffset, isLeft: false))
             {
                 GetTriggerOffset().Right = rightOffset;
                 lblRightOffset.Text = rightOffset.ToString();
@@ -98,7 +99,7 @@ namespace Jastech.Apps.Winform.UI.Controls
         }
 
         #endregion
-        private bool CheckOffsetRange(float offset, MarkDirection direction)
+        private bool CheckOffsetRange(float offset, bool isLeft)
         {
             AppsInspModel inspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
             var materialInfo = inspModel.MaterialInfo;
@@ -106,15 +107,14 @@ namespace Jastech.Apps.Winform.UI.Controls
 
             double distance = 0.0;
 
-            if (MarkDirection.Left == direction)
+            if (isLeft == true) 
             {
                 if (tabNo == 0)
                     distance = materialInfo.PanelEdgeToFirst_mm;
                 else
                     distance = materialInfo.GetTabToTabDistance(tabNo - 1, inspModel.TabCount) / 2;
             }
-
-            if (MarkDirection.Right == direction)
+            else
             {
                 if (tabNo == inspModel.TabCount - 1)    //TabCount 맞추기위해 -1
                     distance = materialInfo.PanelEdgeToFirst_mm;
