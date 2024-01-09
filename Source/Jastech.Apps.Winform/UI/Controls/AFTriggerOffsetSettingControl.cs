@@ -9,6 +9,8 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using Jastech.Apps.Structure.Data;
 using Jastech.Framework.Winform.Helper;
+using Emgu.CV.Dnn;
+using Jastech.Apps.Structure;
 
 namespace Jastech.Apps.Winform.UI.Controls
 {

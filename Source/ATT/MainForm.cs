@@ -349,7 +349,8 @@ namespace ATT
             LoginForm form = new LoginForm();
             form.CurrentUser = UserManager.Instance().CurrentUser;
             form.UserHandler = UserManager.Instance().UserHandler;
-            form.StopProgramRequest += StopProgramEventFunction;
+            form.StopProgramRequest += SystemManager.Instance().StopAutoMode;
+            form.StopProgram += StopProgramEventFunction;
             form.ShowDialog();
 
             UserManager.Instance().SetCurrentUser(form.CurrentUser.Id);

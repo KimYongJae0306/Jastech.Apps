@@ -473,6 +473,9 @@ namespace ATT_UT_Remodeling
             AppsInspModel inspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
             inspModel.MaterialInfo = PlcScenarioManager.Instance().GetModelMaterialInfo();
 
+            //var unit = inspModel.GetUnit(UnitName.Unit0);
+            //unit.SetTeachingInfoList(null);
+
             double offset = 0;
             PointF rotationCenter = CalibrationData.Instance().GetRotationCenter();
 
