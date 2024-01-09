@@ -1,6 +1,7 @@
 ﻿using Cognex.VisionPro;
 using Emgu.CV;
 using Emgu.CV.CvEnum;
+using Emgu.CV.Flann;
 using Emgu.CV.Structure;
 using Emgu.CV.Util;
 using Jastech.Apps.Structure;
@@ -360,6 +361,10 @@ namespace Jastech.Apps.Winform.UI.Controls
             List<AkkonROI> roiList = new List<AkkonROI>();
             var akkonRoi = ConvertCogRectAffineToAkkonRoi(_firstCogRectAffine);
             roiList.Add(akkonRoi);
+
+            _cogRectAffineList.Add(_firstCogRectAffine);
+            var group = CurrentTab.AkkonParam.GroupList[groupIndex];
+            group.AkkonROIList.Add(akkonRoi);
 
             SetFirstROI(akkonRoi);
             UpdateROIDataGridView(roiList);
