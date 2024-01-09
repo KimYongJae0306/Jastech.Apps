@@ -42,27 +42,17 @@ namespace Jastech.Apps.Structure.Data
                     if (MarkResult.Judgement != Framework.Imaging.Result.Judgement.OK)
                         return TabJudgement.Mark_NG;
 
-                    // 231128_S
                     if (AlignResult != null)
                     {
                         if (AlignResult.Judgement != Framework.Imaging.Result.Judgement.OK)
                             return TabJudgement.NG;
                     }
-                    //if (AlignResult.Judgement != Framework.Imaging.Result.Judgement.OK)
-                    //    return TabJudgement.NG;
-
-                    //if (AkkonResult == null)
-                    //    return TabJudgement.NG;
 
                     if (AkkonResult != null)
                     {
                         if (AkkonResult.Judgement != Framework.Imaging.Result.Judgement.OK)
                             return TabJudgement.NG;
                     }
-
-                    //if (AkkonResult.Judgement != Framework.Imaging.Result.Judgement.OK)
-                    //    return TabJudgement.NG;
-                    // 231128_E
 
                     return TabJudgement.OK;
                 }

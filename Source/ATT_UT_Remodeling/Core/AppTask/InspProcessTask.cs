@@ -161,6 +161,8 @@ namespace ATT_UT_Remodeling.Core.AppTask
                         message = string.Format("Right AlignY Inspection NG !!! Tab_{0} / Fpc_{1}, Panel_{2}", tab.Index, rightAlignY.Fpc.Judgement, rightAlignY.Panel.Judgement);
                         Logger.Debug(LogType.Inspection, message);
                     }
+
+                    tabInspResult.AlignResult.CenterImage = algorithmTool.CropCenterAlign(inspTab.MergeCogImage, tab, fpcLeftOffset);
                 }
                 else
                 {
@@ -369,6 +371,7 @@ namespace ATT_UT_Remodeling.Core.AppTask
         {
             List<AkkonROI> newList = new List<AkkonROI>();
 
+            int id = 0;
             foreach (var item in roiList)
             {
                 PointF leftTop = item.GetLeftTopPoint();
@@ -383,12 +386,14 @@ namespace ATT_UT_Remodeling.Core.AppTask
 
                 AkkonROI akkonRoi = new AkkonROI();
 
+                akkonRoi.Index = id;
                 akkonRoi.SetLeftTopPoint(newLeftTop);
                 akkonRoi.SetRightTopPoint(newRightTop);
                 akkonRoi.SetLeftBottomPoint(newLeftBottom);
                 akkonRoi.SetRightBottomPoint(newRightBottom);
 
                 newList.Add(akkonRoi);
+                id++;
             }
 
             return newList;

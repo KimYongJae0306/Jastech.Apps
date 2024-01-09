@@ -524,13 +524,9 @@ namespace ATT_UT_Remodeling.Core
 
                 case SeqStep.SEQ_CHECK_STANDBY:
 
-                    ////if (!AppsMotionManager.Instance().IsMotionInPosition(UnitName.Unit0, AxisHandlerName.Handler0, AxisName.X, TeachingPosType.Standby))
-                    ////    break;
-                    //if (ConfigSet.Instance().Operation.VirtualMode)
-                    //    AppsStatus.Instance().IsInspRunnerFlagFromPlc = false;
+                    if (ConfigSet.Instance().Operation.VirtualMode)
+                        AppsStatus.Instance().IsInspRunnerFlagFromPlc = false;
 
-                    //SeqStep = SeqStep.SEQ_INIT;
-                    //break;
                     ClearBufferThread();
                     SeqStep = SeqStep.SEQ_INIT;
                     break;
@@ -594,13 +590,16 @@ namespace ATT_UT_Remodeling.Core
                         var tab = inspModel.GetUnit(UnitName.Unit0).GetTab(tabNo);
 
                         // Overlay Image
-                        Mat resultMat = GetResultImage(tabResult.AkkonInspMatImage, tabResult.AkkonResult.LeadResultList, tab.AkkonParam.AkkonAlgoritmParam, ref tabResult.AkkonNGAffineList);
-                        ICogImage cogImage = ConvertCogColorImage(resultMat);
-                        tabResult.AkkonResultCogImage = cogImage;
-                        resultMat.Dispose();
-                        
-                        // AkkonInspCogImage
-                        tabResult.AkkonInspCogImage = ConvertCogGrayImage(tabResult.AkkonInspMatImage);
+                        if(tabResult.AkkonInspMatImage != null)
+                        {
+                            Mat resultMat = GetResultImage(tabResult.AkkonInspMatImage, tabResult.AkkonResult.LeadResultList, tab.AkkonParam.AkkonAlgoritmParam, ref tabResult.AkkonNGAffineList);
+                            ICogImage cogImage = ConvertCogColorImage(resultMat);
+                            tabResult.AkkonResultCogImage = cogImage;
+                            resultMat.Dispose();
+
+                            // AkkonInspCogImage
+                            tabResult.AkkonInspCogImage = ConvertCogGrayImage(tabResult.AkkonInspMatImage);
+                        }
 
                         sw.Stop();
                         Console.WriteLine(string.Format("Get Akkon Result Image_Tab{0} : {1}ms", tabNo, sw.ElapsedMilliseconds.ToString()));
