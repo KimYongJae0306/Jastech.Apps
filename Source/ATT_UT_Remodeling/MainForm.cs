@@ -254,7 +254,7 @@ namespace ATT_UT_Remodeling
                 label.ForeColor = Color.White;
 
             Label currentLabel = sender as Label;
-            currentLabel.ForeColor = Color.Blue;
+            currentLabel.ForeColor = Color.DodgerBlue;
         }
 
         private void SetSelectPage(UserControl selectedControl)
