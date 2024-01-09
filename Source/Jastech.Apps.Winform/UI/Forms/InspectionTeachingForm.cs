@@ -355,6 +355,7 @@ namespace Jastech.Framework.Winform.Forms
                     pnlTeach.Controls.Add(AkkonControl);
                     AkkonControl.DrawROI();
                     break;
+
                 case DisplayType.Trigger:
                     btnAFOffset.BackColor = _selectedColor;
                     TriggerSettingControl.SetParams(CurrentTab);
