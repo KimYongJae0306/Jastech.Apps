@@ -316,7 +316,7 @@ namespace Jastech.Apps.Winform.UI.Controls
             display.SetInteractiveGraphics("tool", currentParam.CreateCurrentRecord(constants));
 
             var rect = currentParam.GetRegion() as CogRectangleAffine;
-            if (rect != null)
+            if (rect.CenterX > 100 && rect.CenterY > 100)       // 100은 임시..초기값을 구분할 수 있는 인자가 존재하지 않음.
                 display.SetDisplayToCenter(new Point((int)rect.CenterX, (int)rect.CenterY));
         }
 
