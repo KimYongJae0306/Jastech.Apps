@@ -104,6 +104,9 @@ namespace Jastech.Apps.Winform.Settings
 
         [JsonProperty]
         public bool EnableMsaSummary { get; set; } = false;
+
+        [JsonProperty]
+        public bool EnablePLCTime { get; set; } = false;
         #endregion
 
         #region 메서드

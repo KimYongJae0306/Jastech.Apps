@@ -64,6 +64,8 @@ namespace Jastech.Framework.Winform.Forms
             mtgEnableAFTrigger.Checked = appsConfig.EnableLafTrigger;
             mtgEnableAutoTrigger.Checked = appsConfig.EnableLafTriggerAutoMode;
 
+            mtgEnablePlcTime.Checked = appsConfig.EnablePLCTime;
+
             mtgEnableAlign.Checked = appsConfig.EnableAlign;
             mtgEnableAkkon.Checked = appsConfig.EnableAkkon;
             mtgEnableTest1.Checked = appsConfig.EnableTest1;
@@ -117,6 +119,8 @@ namespace Jastech.Framework.Winform.Forms
 
             appsConfig.EnableLafTrigger = mtgEnableAFTrigger.Checked;
             appsConfig.EnableLafTriggerAutoMode = mtgEnableAutoTrigger.Checked;
+
+            appsConfig.EnablePLCTime = mtgEnablePlcTime.Checked;
 
             appsConfig.EnableAlign = mtgEnableAlign.Checked;
             appsConfig.EnableAkkon = mtgEnableAkkon.Checked;

@@ -554,8 +554,11 @@ namespace Jastech.Apps.Winform.Service.Plc
 
             try
             {
-                DateTime changeTime = Convert.ToDateTime(time);
-                SystemHelper.SetSystemTime(changeTime);
+                if (AppsConfig.Instance().EnablePLCTime)
+                {
+                    DateTime changeTime = Convert.ToDateTime(time);
+                    SystemHelper.SetSystemTime(changeTime);
+                }
 
                 short command = PlcControlManager.Instance().WritePcStatusCommon(PlcCommonCommand.Time_Change);
                 Logger.Debug(LogType.Device, $"Write TimeChanged.[{command}]");
