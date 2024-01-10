@@ -65,8 +65,6 @@
             this.lblLightState = new System.Windows.Forms.Label();
             this.lblPlcStateText = new System.Windows.Forms.Label();
             this.lblPLCState = new System.Windows.Forms.Label();
-            this.lblLicenseStateText = new System.Windows.Forms.Label();
-            this.lblLicenseState = new System.Windows.Forms.Label();
             this.lblLafStateText = new System.Windows.Forms.Label();
             this.lblLafState = new System.Windows.Forms.Label();
             this.lblMotionStateText = new System.Windows.Forms.Label();
@@ -110,6 +108,7 @@
             // pnlPage
             // 
             this.pnlPage.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pnlPage.Font = new System.Drawing.Font("굴림", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.pnlPage.Location = new System.Drawing.Point(0, 100);
             this.pnlPage.Margin = new System.Windows.Forms.Padding(0);
             this.pnlPage.Name = "pnlPage";
@@ -485,28 +484,26 @@
             // tableLayoutPanel2
             // 
             this.tableLayoutPanel2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(104)))), ((int)(((byte)(104)))), ((int)(((byte)(104)))));
-            this.tableLayoutPanel2.ColumnCount = 11;
+            this.tableLayoutPanel2.ColumnCount = 9;
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 60F));
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 25F));
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 80F));
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 25F));
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 85F));
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 25F));
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 60F));
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 25F));
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 70F));
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 25F));
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tableLayoutPanel2.Controls.Add(this.lblMotionState, 4, 0);
-            this.tableLayoutPanel2.Controls.Add(this.lblLightState, 10, 0);
+            this.tableLayoutPanel2.Controls.Add(this.lblLightState, 8, 0);
             this.tableLayoutPanel2.Controls.Add(this.lblPlcStateText, 1, 0);
             this.tableLayoutPanel2.Controls.Add(this.lblPLCState, 2, 0);
-            this.tableLayoutPanel2.Controls.Add(this.lblLicenseStateText, 5, 0);
-            this.tableLayoutPanel2.Controls.Add(this.lblLicenseState, 6, 0);
-            this.tableLayoutPanel2.Controls.Add(this.lblLafStateText, 7, 0);
-            this.tableLayoutPanel2.Controls.Add(this.lblLafState, 8, 0);
+            this.tableLayoutPanel2.Controls.Add(this.lblLafStateText, 5, 0);
+            this.tableLayoutPanel2.Controls.Add(this.lblLafState, 6, 0);
             this.tableLayoutPanel2.Controls.Add(this.lblMotionStateText, 3, 0);
-            this.tableLayoutPanel2.Controls.Add(this.lblLightStateText, 9, 0);
+            this.tableLayoutPanel2.Controls.Add(this.lblLightStateText, 7, 0);
             this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.tableLayoutPanel2.Font = new System.Drawing.Font("맑은 고딕", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.tableLayoutPanel2.ForeColor = System.Drawing.Color.White;
@@ -523,7 +520,7 @@
             this.lblMotionState.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lblMotionState.Image = ((System.Drawing.Image)(resources.GetObject("lblMotionState.Image")));
             this.lblMotionState.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.lblMotionState.Location = new System.Drawing.Point(1612, 0);
+            this.lblMotionState.Location = new System.Drawing.Point(1722, 0);
             this.lblMotionState.Name = "lblMotionState";
             this.lblMotionState.Size = new System.Drawing.Size(19, 25);
             this.lblMotionState.TabIndex = 9;
@@ -544,7 +541,7 @@
             // lblPlcStateText
             // 
             this.lblPlcStateText.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblPlcStateText.Location = new System.Drawing.Point(1447, 0);
+            this.lblPlcStateText.Location = new System.Drawing.Point(1557, 0);
             this.lblPlcStateText.Name = "lblPlcStateText";
             this.lblPlcStateText.Size = new System.Drawing.Size(54, 25);
             this.lblPlcStateText.TabIndex = 0;
@@ -556,35 +553,11 @@
             this.lblPLCState.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lblPLCState.Image = ((System.Drawing.Image)(resources.GetObject("lblPLCState.Image")));
             this.lblPLCState.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.lblPLCState.Location = new System.Drawing.Point(1507, 0);
+            this.lblPLCState.Location = new System.Drawing.Point(1617, 0);
             this.lblPLCState.Name = "lblPLCState";
             this.lblPLCState.Size = new System.Drawing.Size(19, 25);
             this.lblPLCState.TabIndex = 1;
             this.lblPLCState.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // lblLicenseStateText
-            // 
-            this.lblLicenseStateText.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblLicenseStateText.Location = new System.Drawing.Point(1637, 0);
-            this.lblLicenseStateText.Name = "lblLicenseStateText";
-            this.lblLicenseStateText.Size = new System.Drawing.Size(79, 25);
-            this.lblLicenseStateText.TabIndex = 2;
-            this.lblLicenseStateText.Text = "Cognex";
-            this.lblLicenseStateText.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.lblLicenseStateText.Visible = false;
-            // 
-            // lblLicenseState
-            // 
-            this.lblLicenseState.AutoSize = true;
-            this.lblLicenseState.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblLicenseState.Image = ((System.Drawing.Image)(resources.GetObject("lblLicenseState.Image")));
-            this.lblLicenseState.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.lblLicenseState.Location = new System.Drawing.Point(1722, 0);
-            this.lblLicenseState.Name = "lblLicenseState";
-            this.lblLicenseState.Size = new System.Drawing.Size(19, 25);
-            this.lblLicenseState.TabIndex = 3;
-            this.lblLicenseState.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.lblLicenseState.Visible = false;
             // 
             // lblLafStateText
             // 
@@ -613,7 +586,7 @@
             // 
             this.lblMotionStateText.AutoSize = true;
             this.lblMotionStateText.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblMotionStateText.Location = new System.Drawing.Point(1532, 0);
+            this.lblMotionStateText.Location = new System.Drawing.Point(1642, 0);
             this.lblMotionStateText.Name = "lblMotionStateText";
             this.lblMotionStateText.Size = new System.Drawing.Size(74, 25);
             this.lblMotionStateText.TabIndex = 6;
@@ -711,8 +684,6 @@
         private System.Windows.Forms.Label lblLightState;
         private System.Windows.Forms.Label lblPlcStateText;
         private System.Windows.Forms.Label lblPLCState;
-        private System.Windows.Forms.Label lblLicenseStateText;
-        private System.Windows.Forms.Label lblLicenseState;
         private System.Windows.Forms.Label lblLafStateText;
         private System.Windows.Forms.Label lblLafState;
         private System.Windows.Forms.Label lblMotionStateText;
