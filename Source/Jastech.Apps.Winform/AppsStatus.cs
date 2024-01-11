@@ -32,6 +32,8 @@ namespace Jastech.Apps.Winform
         public bool IsRepeat { get; set; } = false;
 
         public bool IsModelChanging { get; set; } = false;
+
+        public bool IsAlignMonitoringView { get; set; } = false;
         #endregion
 
         #region 메서드
