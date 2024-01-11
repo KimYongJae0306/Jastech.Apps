@@ -1,7 +1,9 @@
 ﻿using Emgu.CV.ML.MlEnum;
 using Jastech.Apps.Structure;
+using Jastech.Apps.Structure.Data;
 using Jastech.Apps.Winform.Service;
 using Jastech.Framework.Winform.Forms;
+using MetroFramework.Components;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -502,22 +504,22 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         private void chtData_MouseDown(object sender, MouseEventArgs e)
         {
-            if (IsDailyInfo == false)
-                return;
+            //if (IsDailyInfo == false)
+            //    return;
 
-            switch (ChartType)
-            {
-                case InspChartType.Akkon:
-                    ShowSelectedAkkonLegend(e.X, e.Y);
-                    break;
+            //switch (ChartType)
+            //{
+            //    case InspChartType.Akkon:
+            //        ShowSelectedAkkonLegend(e.X, e.Y);
+            //        break;
 
-                case InspChartType.Align:
-                    ShowSelectedAlignLegend(e.X, e.Y);
-                    break;
+            //    case InspChartType.Align:
+            //        ShowSelectedAlignLegend(e.X, e.Y);
+            //        break;
 
-                default:
-                    break;
-            }
+            //    default:
+            //        break;
+            //}
         }
 
         private void ShowSelectedAlignLegend(int x, int y)
@@ -563,24 +565,71 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         private void chtData_MouseDoubleClick(object sender, MouseEventArgs e)
         {
-            HitTestResult result = chtData.HitTest(e.X, e.Y);
+            //HitTestResult result = chtData.HitTest(e.X, e.Y);
+
+            //if (result != null && result.Object != null)
+            //{
+            //    if (result.PointIndex >= 0)
+            //    {
+            //        double selectedValue = chtData.ChartAreas[0].AxisY.PixelPositionToValue(e.Y);
+
+            //        var tlqkf = chtData.ChartAreas[0].AxisX.PixelPositionToValue(e.X);
+
+
+            //        var alignData = chtData.Series[$"{SeriesType}"].Points[result.PointIndex].YValues;
+            //        //chtData.Series[$"{SeriesType}"].Points[result.PointIndex].Color = Color.Red;
+
+
+            //        mtipAlignResult.ToolTipTitle = "AlignData";
+            //        mtipAlignResult.IsBalloon = false;
+            //        mtipAlignResult.SetToolTip(this.chtData, $"X : {result.PointIndex + 1} / Y : {alignData[0]}");
+            //        mtipAlignResult.ToolTipIcon = ToolTipIcon.Info;
+            //        mtipAlignResult.Active = false;
+            //    }
+            //}
+        }
+        #endregion
+
+        private void chtData_MouseClick(object sender, MouseEventArgs e)
+        {
+            if (IsDailyInfo)
+            {
+                switch (ChartType)
+                {
+                    case InspChartType.Akkon:
+                        ShowSelectedAkkonLegend(e.X, e.Y);
+                        break;
+
+                    case InspChartType.Align:
+                        ShowSelectedAlignLegend(e.X, e.Y);
+                        break;
+
+                    default:
+                        break;
+                }
+            }
+            else
+                ShowAlignResultToolTip(e.X, e.Y);
+        }
+
+        private void ShowAlignResultToolTip(int x, int y)
+        {
+            HitTestResult result = chtData.HitTest(x, y);
 
             if (result != null && result.Object != null)
             {
                 if (result.PointIndex >= 0)
                 {
-                    double selectedValue = chtData.ChartAreas[0].AxisY.PixelPositionToValue(e.Y);
-                    //chtData.Series[result.PointIndex].ToolTip = selectedValue.ToString("F4");
-                    //chtData.Text = selectedValue.ToString("F4");
+                    //double selectedValue = chtData.ChartAreas[0].AxisY.PixelPositionToValue(Y);
+                    //var tlqkf = chtData.ChartAreas[0].AxisX.PixelPositionToValue(X);
 
-                    int tt = 0;
+                    var alignData = chtData.Series[$"{SeriesType}"].Points[result.PointIndex].YValues;
 
-                    var tlqkf = chtData.Series[$"{SeriesType}"].Points[result.PointIndex].YValues;
-
-                    int gg = 0;
+                    mtipAlignResult.SetToolTip(this.chtData, $"X : {result.PointIndex + 1} / Y : {alignData[0]}");
+                    mtipAlignResult.ToolTipIcon = ToolTipIcon.Info;
+                    mtipAlignResult.Active = false;
                 }
             }
         }
-        #endregion
     }
 }

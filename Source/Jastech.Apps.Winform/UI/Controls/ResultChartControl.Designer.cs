@@ -31,6 +31,7 @@
             System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
             System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
             this.chtData = new System.Windows.Forms.DataVisualization.Charting.Chart();
+            this.mtipAlignResult = new MetroFramework.Components.MetroToolTip();
             ((System.ComponentModel.ISupportInitialize)(this.chtData)).BeginInit();
             this.SuspendLayout();
             // 
@@ -71,8 +72,15 @@
             this.chtData.Size = new System.Drawing.Size(495, 433);
             this.chtData.TabIndex = 1;
             this.chtData.Text = "chart1";
+            this.chtData.MouseClick += new System.Windows.Forms.MouseEventHandler(this.chtData_MouseClick);
             this.chtData.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.chtData_MouseDoubleClick);
             this.chtData.MouseDown += new System.Windows.Forms.MouseEventHandler(this.chtData_MouseDown);
+            // 
+            // mtipAlignResult
+            // 
+            this.mtipAlignResult.Style = MetroFramework.MetroColorStyle.Blue;
+            this.mtipAlignResult.StyleManager = null;
+            this.mtipAlignResult.Theme = MetroFramework.MetroThemeStyle.Light;
             // 
             // ResultChartControl
             // 
@@ -91,5 +99,6 @@
         #endregion
 
         private System.Windows.Forms.DataVisualization.Charting.Chart chtData;
+        private MetroFramework.Components.MetroToolTip mtipAlignResult;
     }
 }
