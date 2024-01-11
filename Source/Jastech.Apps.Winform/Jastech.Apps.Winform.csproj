@@ -132,6 +132,12 @@
     <Compile Include="UI\Controls\AkkonResultDataControl.Designer.cs">
       <DependentUpon>AkkonResultDataControl.cs</DependentUpon>
     </Compile>
+    <Compile Include="UI\Controls\AlignMonitoringControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UI\Controls\AlignMonitoringControl.Designer.cs">
+      <DependentUpon>AlignMonitoringControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="UI\Controls\AlignResultDataControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -426,6 +432,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UI\Controls\AlignControl.resx">
       <DependentUpon>AlignControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\Controls\AlignMonitoringControl.resx">
+      <DependentUpon>AlignMonitoringControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\Controls\AlignResultDataControl.resx">
       <DependentUpon>AlignResultDataControl.cs</DependentUpon>

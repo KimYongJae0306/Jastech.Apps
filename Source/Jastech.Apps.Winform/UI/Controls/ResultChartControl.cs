@@ -82,7 +82,7 @@ namespace Jastech.Apps.Winform.UI.Controls
         {
             if (EnableLegend == false)
                 chtData.Legends.Clear();
-                
+
             if (ChartType == InspChartType.Akkon)
             {
                 AkkonSeriesCount = new Series();
@@ -410,7 +410,7 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         public void UpdateAlignChart(List<TrendResult> alignTrendResults, TabType tabType, AlignResultType alignResultType)
         {
-            if (alignTrendResults == null)
+            if (alignTrendResults == null || alignTrendResults.Count <= 0)
                 return;
 
             _selectedTabNo = (int)tabType;
@@ -437,16 +437,22 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         public void UpdateAlignChart(List<TrendResult> alignTrendResultList, AlignResultType alignResultType, int tabNo, int dataCount)
         {
-            if (alignTrendResultList == null)
+            if (alignTrendResultList == null || alignTrendResultList.Count <= 0)
                 return;
 
             ClearChartData();
 
             var alignSeries = AlignSeriesList.First(x => x.Name == alignResultType.ToString());
-            foreach (TrendResult trendResult in alignTrendResultList)
+
+            List<TrendResult> reverseList = Enumerable.Reverse(alignTrendResultList).ToList();
+            List<TrendResult> viewDataList = new List<TrendResult>();
+
+            for (int index = 0; index < dataCount; index++)
+                viewDataList.Add(reverseList[index]);
+
+            foreach (TrendResult trendResult in Enumerable.Reverse(viewDataList).ToList())
                 alignSeries?.Points.Add(trendResult.GetAlignDatas((TabType)Enum.Parse(typeof(TabType), tabNo.ToString()), alignResultType));
         }
-
 
         public void UpdateAkkonChart(List<TrendResult> akkonTrendResults, TabType tabType, AkkonResultType akkonResultType)
         {
@@ -550,6 +556,35 @@ namespace Jastech.Apps.Winform.UI.Controls
             {
                 _selectedAkkonResult = AkkonResultType.All;
                 UpdateAkkonChart(_selectedTabNo, _selectedAkkonResult);
+            }
+        }
+
+        private void chtData_MouseDoubleClick(object sender, MouseEventArgs e)
+        {
+            HitTestResult result = chtData.HitTest(e.X, e.Y);
+
+            if (result != null && result.Object != null)
+            {
+                if (result.PointIndex >= 0)
+                {
+                    double selectedValue = chtData.ChartAreas[0].AxisY.PixelPositionToValue(e.Y);
+                    //chtData.Series[result.PointIndex].ToolTip = selectedValue.ToString("F4");
+                    //chtData.Text = selectedValue.ToString("F4");
+
+                    //var tlbvkf = chtData.ChartAreas[0].AxisY.PositionToValue(e.Y);
+
+                    var t1 = chtData.ChartAreas[0].AxisY.PixelPositionToValue(e.Y);
+                    //var t2 = chtData.ChartAreas[0].AxisY.PixelPositionToValue(e.X);
+                    //var t3 = chtData.ChartAreas[0].AxisY.PositionToValue(e.Y);
+                    //var t4 = chtData.ChartAreas[0].AxisY.PositionToValue(e.X);
+                    //var t5 = chtData.ChartAreas[0].AxisY.
+                    int gg = 0;
+
+                    var alignSeries = AlignSeriesList.First(x => x.Name == AlignResultType.Lx.ToString());
+
+                    var tlqkf = alignSeries.Points[result.PointIndex].YValues;
+                    //var tlvkf = chtData.ChartAreas[0].AxisY.
+                }
             }
         }
         #endregion

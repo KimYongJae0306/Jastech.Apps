@@ -176,6 +176,7 @@ namespace Jastech.Framework.Winform.Forms
             this.btnSelectionAlignTrend_Old.TabIndex = 202;
             this.btnSelectionAlignTrend_Old.Text = "ALIGN\r\nTREND";
             this.btnSelectionAlignTrend_Old.UseVisualStyleBackColor = false;
+            this.btnSelectionAlignTrend_Old.Visible = false;
             this.btnSelectionAlignTrend_Old.Click += new System.EventHandler(this.btnSelectionAlignTrend_Old_Click);
             // 
             // btnSelectionImage
