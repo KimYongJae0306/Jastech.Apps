@@ -34,8 +34,10 @@ namespace Jastech.Apps.Winform.UI.Controls
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             this.tlpAlignTrend = new System.Windows.Forms.TableLayoutPanel();
             this.tlpData = new System.Windows.Forms.TableLayoutPanel();
-            this.dgvAlignTrendData = new Jastech.Framework.Winform.Controls.DoubleBufferedDatagridView();
             this.pnlChart = new System.Windows.Forms.Panel();
+            this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
+            this.lblResult = new System.Windows.Forms.Label();
+            this.dgvAlignTrendData = new Jastech.Framework.Winform.Controls.DoubleBufferedDatagridView();
             this.tclChartType = new System.Windows.Forms.TableLayoutPanel();
             this.lblChartType = new System.Windows.Forms.Label();
             this.pnlChartTypes = new System.Windows.Forms.Panel();
@@ -48,15 +50,13 @@ namespace Jastech.Apps.Winform.UI.Controls
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.pnlTabs = new System.Windows.Forms.Panel();
             this.lblTabSelection = new System.Windows.Forms.Label();
-            this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
-            this.lblResult = new System.Windows.Forms.Label();
             this.tlpAlignTrend.SuspendLayout();
             this.tlpData.SuspendLayout();
+            this.tableLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvAlignTrendData)).BeginInit();
             this.tclChartType.SuspendLayout();
             this.pnlChartTypes.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
-            this.tableLayoutPanel1.SuspendLayout();
             this.SuspendLayout();
             // 
             // tlpAlignTrend
@@ -95,6 +95,44 @@ namespace Jastech.Apps.Winform.UI.Controls
             this.tlpData.Size = new System.Drawing.Size(860, 405);
             this.tlpData.TabIndex = 3;
             // 
+            // pnlChart
+            // 
+            this.pnlChart.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pnlChart.Location = new System.Drawing.Point(0, 0);
+            this.pnlChart.Margin = new System.Windows.Forms.Padding(0);
+            this.pnlChart.Name = "pnlChart";
+            this.tlpData.SetRowSpan(this.pnlChart, 2);
+            this.pnlChart.Size = new System.Drawing.Size(430, 405);
+            this.pnlChart.TabIndex = 1;
+            // 
+            // tableLayoutPanel1
+            // 
+            this.tableLayoutPanel1.ColumnCount = 1;
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel1.Controls.Add(this.lblResult, 0, 0);
+            this.tableLayoutPanel1.Controls.Add(this.dgvAlignTrendData, 0, 1);
+            this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel1.Location = new System.Drawing.Point(433, 3);
+            this.tableLayoutPanel1.Name = "tableLayoutPanel1";
+            this.tableLayoutPanel1.RowCount = 2;
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(424, 354);
+            this.tableLayoutPanel1.TabIndex = 2;
+            // 
+            // lblResult
+            // 
+            this.lblResult.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(32)))), ((int)(((byte)(32)))), ((int)(((byte)(32)))));
+            this.lblResult.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblResult.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblResult.Location = new System.Drawing.Point(0, 0);
+            this.lblResult.Margin = new System.Windows.Forms.Padding(0);
+            this.lblResult.Name = "lblResult";
+            this.lblResult.Size = new System.Drawing.Size(424, 30);
+            this.lblResult.TabIndex = 8;
+            this.lblResult.Text = "Align Result";
+            this.lblResult.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
             // dgvAlignTrendData
             // 
             this.dgvAlignTrendData.AllowUserToAddRows = false;
@@ -124,18 +162,9 @@ namespace Jastech.Apps.Winform.UI.Controls
             this.dgvAlignTrendData.ReadOnly = true;
             this.dgvAlignTrendData.RowHeadersVisible = false;
             this.dgvAlignTrendData.RowTemplate.Height = 23;
+            this.dgvAlignTrendData.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgvAlignTrendData.Size = new System.Drawing.Size(418, 318);
             this.dgvAlignTrendData.TabIndex = 0;
-            // 
-            // pnlChart
-            // 
-            this.pnlChart.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pnlChart.Location = new System.Drawing.Point(0, 0);
-            this.pnlChart.Margin = new System.Windows.Forms.Padding(0);
-            this.pnlChart.Name = "pnlChart";
-            this.tlpData.SetRowSpan(this.pnlChart, 2);
-            this.pnlChart.Size = new System.Drawing.Size(430, 405);
-            this.pnlChart.TabIndex = 1;
             // 
             // tclChartType
             // 
@@ -288,34 +317,6 @@ namespace Jastech.Apps.Winform.UI.Controls
             this.lblTabSelection.Text = "Tab Selection";
             this.lblTabSelection.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // tableLayoutPanel1
-            // 
-            this.tableLayoutPanel1.ColumnCount = 1;
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel1.Controls.Add(this.lblResult, 0, 0);
-            this.tableLayoutPanel1.Controls.Add(this.dgvAlignTrendData, 0, 1);
-            this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel1.Location = new System.Drawing.Point(433, 3);
-            this.tableLayoutPanel1.Name = "tableLayoutPanel1";
-            this.tableLayoutPanel1.RowCount = 2;
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(424, 354);
-            this.tableLayoutPanel1.TabIndex = 2;
-            // 
-            // lblResult
-            // 
-            this.lblResult.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(32)))), ((int)(((byte)(32)))), ((int)(((byte)(32)))));
-            this.lblResult.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lblResult.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblResult.Location = new System.Drawing.Point(0, 0);
-            this.lblResult.Margin = new System.Windows.Forms.Padding(0);
-            this.lblResult.Name = "lblResult";
-            this.lblResult.Size = new System.Drawing.Size(424, 30);
-            this.lblResult.TabIndex = 8;
-            this.lblResult.Text = "Align Result";
-            this.lblResult.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
             // AlignTrendControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
@@ -329,11 +330,11 @@ namespace Jastech.Apps.Winform.UI.Controls
             this.Load += new System.EventHandler(this.AlignTrendControl_Load);
             this.tlpAlignTrend.ResumeLayout(false);
             this.tlpData.ResumeLayout(false);
+            this.tableLayoutPanel1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgvAlignTrendData)).EndInit();
             this.tclChartType.ResumeLayout(false);
             this.pnlChartTypes.ResumeLayout(false);
             this.tableLayoutPanel2.ResumeLayout(false);
-            this.tableLayoutPanel1.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }

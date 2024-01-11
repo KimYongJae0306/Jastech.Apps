@@ -1,4 +1,5 @@
-﻿using Jastech.Apps.Structure;
+﻿using Emgu.CV.ML.MlEnum;
+using Jastech.Apps.Structure;
 using Jastech.Apps.Winform.Service;
 using Jastech.Framework.Winform.Forms;
 using System;
@@ -50,6 +51,8 @@ namespace Jastech.Apps.Winform.UI.Controls
         public Series AlignSeriesCx { get; private set; } = null;
 
         private List<Series> AlignSeriesList { get; set; } = new List<Series>();
+
+        public bool EnableLegend { get; set; } = true;
         #endregion
 
         #region 델리게이트
@@ -77,6 +80,9 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         private void Initialize()
         {
+            if (EnableLegend == false)
+                chtData.Legends.Clear();
+                
             if (ChartType == InspChartType.Akkon)
             {
                 AkkonSeriesCount = new Series();
@@ -101,10 +107,6 @@ namespace Jastech.Apps.Winform.UI.Controls
                 AlignSeriesLx.ChartType = SeriesChartType.Line;
                 AlignSeriesLx.Color = Color.Blue;
                 AlignSeriesLx.Name = "Lx";
-
-
-                //AlignSeriesLx.XValueMember = "ea";
-                //AlignSeriesLx.YValueMembers = "um";
 
                 AlignSeriesLy = new Series();
                 AlignSeriesLy = chtData.Series.Add("Ly");
@@ -174,10 +176,6 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         private void InitializeAlignChart()
         {
-            //chtData.Titles[0].Position.Auto = false;
-
-            //chtData.ChartAreas[0].Position.Auto = false;
-
             chtData.ChartAreas[0].AxisX.Interval = 10;
             chtData.ChartAreas[0].AxisX.Title = "ea";
             chtData.ChartAreas[0].AxisX.TextOrientation = TextOrientation.Auto;
@@ -194,10 +192,6 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         private void InitializeAkkonChart(AkkonResultType akkonResultType)
         {
-            //chtData.Titles[0].Position.Auto = false;
-
-            //chtData.ChartAreas[0].Position.Auto = false;
-
             chtData.ChartAreas[0].AxisX.Interval = 10;
             chtData.ChartAreas[0].AxisX.Title = "ea";
             chtData.ChartAreas[0].AxisX.TextOrientation = TextOrientation.Auto;
@@ -440,6 +434,19 @@ namespace Jastech.Apps.Winform.UI.Controls
                     alignSeries?.Points.Add(trendResult.GetAlignDatas(tabType, alignResultType));
             }
         }
+
+        public void UpdateAlignChart(List<TrendResult> alignTrendResultList, AlignResultType alignResultType, int tabNo, int dataCount)
+        {
+            if (alignTrendResultList == null)
+                return;
+
+            ClearChartData();
+
+            var alignSeries = AlignSeriesList.First(x => x.Name == alignResultType.ToString());
+            foreach (TrendResult trendResult in alignTrendResultList)
+                alignSeries?.Points.Add(trendResult.GetAlignDatas((TabType)Enum.Parse(typeof(TabType), tabNo.ToString()), alignResultType));
+        }
+
 
         public void UpdateAkkonChart(List<TrendResult> akkonTrendResults, TabType tabType, AkkonResultType akkonResultType)
         {

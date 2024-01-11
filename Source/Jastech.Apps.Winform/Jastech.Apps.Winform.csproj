@@ -138,6 +138,18 @@
     <Compile Include="UI\Controls\AlignResultDataControl.Designer.cs">
       <DependentUpon>AlignResultDataControl.cs</DependentUpon>
     </Compile>
+    <Compile Include="UI\Controls\AlignTrendPreviewControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UI\Controls\AlignTrendPreviewControl.Designer.cs">
+      <DependentUpon>AlignTrendPreviewControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Controls\AlignTrendXControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UI\Controls\AlignTrendXControl.Designer.cs">
+      <DependentUpon>AlignTrendXControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="UI\Controls\LightControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -421,8 +433,14 @@
     <EmbeddedResource Include="UI\Controls\AlignResultDisplayControl.resx">
       <DependentUpon>AlignResultDisplayControl.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="UI\Controls\AlignTrendPreviewControl.resx">
+      <DependentUpon>AlignTrendPreviewControl.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="UI\Controls\AlignTrendControl.resx">
       <DependentUpon>AlignTrendControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\Controls\AlignTrendXControl.resx">
+      <DependentUpon>AlignTrendXControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\Controls\AutoFocusControl.resx">
       <DependentUpon>AutoFocusControl.cs</DependentUpon>

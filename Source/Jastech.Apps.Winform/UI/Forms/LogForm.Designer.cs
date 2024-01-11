@@ -33,10 +33,11 @@ namespace Jastech.Framework.Winform.Forms
             this.tlpLog = new System.Windows.Forms.TableLayoutPanel();
             this.tlpContents = new System.Windows.Forms.TableLayoutPanel();
             this.pnlLogType = new System.Windows.Forms.Panel();
+            this.btnSelectionAlignTrend = new System.Windows.Forms.Button();
             this.btnSelectionProcessCapability = new System.Windows.Forms.Button();
             this.btnSelectionUPH = new System.Windows.Forms.Button();
             this.btnSelectionAkkonTrend = new System.Windows.Forms.Button();
-            this.btnSelectionAlignTrend = new System.Windows.Forms.Button();
+            this.btnSelectionAlignTrend_Old = new System.Windows.Forms.Button();
             this.btnSelectionImage = new System.Windows.Forms.Button();
             this.btnSelectionLog = new System.Windows.Forms.Button();
             this.pnlContents = new System.Windows.Forms.Panel();
@@ -85,10 +86,11 @@ namespace Jastech.Framework.Winform.Forms
             // pnlLogType
             // 
             this.pnlLogType.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.pnlLogType.Controls.Add(this.btnSelectionAlignTrend);
             this.pnlLogType.Controls.Add(this.btnSelectionProcessCapability);
             this.pnlLogType.Controls.Add(this.btnSelectionUPH);
             this.pnlLogType.Controls.Add(this.btnSelectionAkkonTrend);
-            this.pnlLogType.Controls.Add(this.btnSelectionAlignTrend);
+            this.pnlLogType.Controls.Add(this.btnSelectionAlignTrend_Old);
             this.pnlLogType.Controls.Add(this.btnSelectionImage);
             this.pnlLogType.Controls.Add(this.btnSelectionLog);
             this.pnlLogType.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -98,19 +100,35 @@ namespace Jastech.Framework.Winform.Forms
             this.pnlLogType.Size = new System.Drawing.Size(1097, 162);
             this.pnlLogType.TabIndex = 8;
             // 
+            // btnSelectionAlignTrend
+            // 
+            this.btnSelectionAlignTrend.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
+            this.btnSelectionAlignTrend.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.btnSelectionAlignTrend.Font = new System.Drawing.Font("맑은 고딕", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.btnSelectionAlignTrend.ForeColor = System.Drawing.Color.White;
+            this.btnSelectionAlignTrend.Location = new System.Drawing.Point(300, 20);
+            this.btnSelectionAlignTrend.Margin = new System.Windows.Forms.Padding(0);
+            this.btnSelectionAlignTrend.Name = "btnSelectionAlignTrend";
+            this.btnSelectionAlignTrend.Size = new System.Drawing.Size(120, 80);
+            this.btnSelectionAlignTrend.TabIndex = 205;
+            this.btnSelectionAlignTrend.Text = "ALIGN\r\nTREND";
+            this.btnSelectionAlignTrend.UseVisualStyleBackColor = false;
+            this.btnSelectionAlignTrend.Click += new System.EventHandler(this.btnSelectionAlignTrend_Click);
+            // 
             // btnSelectionProcessCapability
             // 
             this.btnSelectionProcessCapability.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
             this.btnSelectionProcessCapability.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.btnSelectionProcessCapability.Font = new System.Drawing.Font("맑은 고딕", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.btnSelectionProcessCapability.ForeColor = System.Drawing.Color.White;
-            this.btnSelectionProcessCapability.Location = new System.Drawing.Point(645, 19);
+            this.btnSelectionProcessCapability.Location = new System.Drawing.Point(860, 20);
             this.btnSelectionProcessCapability.Margin = new System.Windows.Forms.Padding(0);
             this.btnSelectionProcessCapability.Name = "btnSelectionProcessCapability";
-            this.btnSelectionProcessCapability.Size = new System.Drawing.Size(117, 67);
+            this.btnSelectionProcessCapability.Size = new System.Drawing.Size(120, 80);
             this.btnSelectionProcessCapability.TabIndex = 204;
             this.btnSelectionProcessCapability.Text = "PROCESS\r\nCAPABILITY";
             this.btnSelectionProcessCapability.UseVisualStyleBackColor = false;
+            this.btnSelectionProcessCapability.Visible = false;
             this.btnSelectionProcessCapability.Click += new System.EventHandler(this.btnSelectionProcessCapability_Click);
             // 
             // btnSelectionUPH
@@ -119,13 +137,14 @@ namespace Jastech.Framework.Winform.Forms
             this.btnSelectionUPH.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.btnSelectionUPH.Font = new System.Drawing.Font("맑은 고딕", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.btnSelectionUPH.ForeColor = System.Drawing.Color.White;
-            this.btnSelectionUPH.Location = new System.Drawing.Point(520, 19);
+            this.btnSelectionUPH.Location = new System.Drawing.Point(720, 20);
             this.btnSelectionUPH.Margin = new System.Windows.Forms.Padding(0);
             this.btnSelectionUPH.Name = "btnSelectionUPH";
-            this.btnSelectionUPH.Size = new System.Drawing.Size(117, 67);
+            this.btnSelectionUPH.Size = new System.Drawing.Size(120, 80);
             this.btnSelectionUPH.TabIndex = 204;
             this.btnSelectionUPH.Text = "UPH";
             this.btnSelectionUPH.UseVisualStyleBackColor = false;
+            this.btnSelectionUPH.Visible = false;
             this.btnSelectionUPH.Click += new System.EventHandler(this.btnSelectionUPH_Click);
             // 
             // btnSelectionAkkonTrend
@@ -134,29 +153,30 @@ namespace Jastech.Framework.Winform.Forms
             this.btnSelectionAkkonTrend.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.btnSelectionAkkonTrend.Font = new System.Drawing.Font("맑은 고딕", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.btnSelectionAkkonTrend.ForeColor = System.Drawing.Color.White;
-            this.btnSelectionAkkonTrend.Location = new System.Drawing.Point(395, 19);
+            this.btnSelectionAkkonTrend.Location = new System.Drawing.Point(580, 20);
             this.btnSelectionAkkonTrend.Margin = new System.Windows.Forms.Padding(0);
             this.btnSelectionAkkonTrend.Name = "btnSelectionAkkonTrend";
-            this.btnSelectionAkkonTrend.Size = new System.Drawing.Size(117, 67);
+            this.btnSelectionAkkonTrend.Size = new System.Drawing.Size(120, 80);
             this.btnSelectionAkkonTrend.TabIndex = 203;
             this.btnSelectionAkkonTrend.Text = "AKKON\r\nTREND";
             this.btnSelectionAkkonTrend.UseVisualStyleBackColor = false;
+            this.btnSelectionAkkonTrend.Visible = false;
             this.btnSelectionAkkonTrend.Click += new System.EventHandler(this.btnSelectionAkkonTrend_Click);
             // 
-            // btnSelectionAlignTrend
+            // btnSelectionAlignTrend_Old
             // 
-            this.btnSelectionAlignTrend.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
-            this.btnSelectionAlignTrend.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.btnSelectionAlignTrend.Font = new System.Drawing.Font("맑은 고딕", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.btnSelectionAlignTrend.ForeColor = System.Drawing.Color.White;
-            this.btnSelectionAlignTrend.Location = new System.Drawing.Point(270, 19);
-            this.btnSelectionAlignTrend.Margin = new System.Windows.Forms.Padding(0);
-            this.btnSelectionAlignTrend.Name = "btnSelectionAlignTrend";
-            this.btnSelectionAlignTrend.Size = new System.Drawing.Size(117, 67);
-            this.btnSelectionAlignTrend.TabIndex = 202;
-            this.btnSelectionAlignTrend.Text = "ALIGN\r\nTREND";
-            this.btnSelectionAlignTrend.UseVisualStyleBackColor = false;
-            this.btnSelectionAlignTrend.Click += new System.EventHandler(this.btnSelectionAlignTrend_Click);
+            this.btnSelectionAlignTrend_Old.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
+            this.btnSelectionAlignTrend_Old.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.btnSelectionAlignTrend_Old.Font = new System.Drawing.Font("맑은 고딕", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.btnSelectionAlignTrend_Old.ForeColor = System.Drawing.Color.White;
+            this.btnSelectionAlignTrend_Old.Location = new System.Drawing.Point(440, 20);
+            this.btnSelectionAlignTrend_Old.Margin = new System.Windows.Forms.Padding(0);
+            this.btnSelectionAlignTrend_Old.Name = "btnSelectionAlignTrend_Old";
+            this.btnSelectionAlignTrend_Old.Size = new System.Drawing.Size(120, 80);
+            this.btnSelectionAlignTrend_Old.TabIndex = 202;
+            this.btnSelectionAlignTrend_Old.Text = "ALIGN\r\nTREND";
+            this.btnSelectionAlignTrend_Old.UseVisualStyleBackColor = false;
+            this.btnSelectionAlignTrend_Old.Click += new System.EventHandler(this.btnSelectionAlignTrend_Old_Click);
             // 
             // btnSelectionImage
             // 
@@ -164,10 +184,10 @@ namespace Jastech.Framework.Winform.Forms
             this.btnSelectionImage.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.btnSelectionImage.Font = new System.Drawing.Font("맑은 고딕", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.btnSelectionImage.ForeColor = System.Drawing.Color.White;
-            this.btnSelectionImage.Location = new System.Drawing.Point(145, 19);
+            this.btnSelectionImage.Location = new System.Drawing.Point(160, 20);
             this.btnSelectionImage.Margin = new System.Windows.Forms.Padding(0);
             this.btnSelectionImage.Name = "btnSelectionImage";
-            this.btnSelectionImage.Size = new System.Drawing.Size(117, 67);
+            this.btnSelectionImage.Size = new System.Drawing.Size(120, 80);
             this.btnSelectionImage.TabIndex = 201;
             this.btnSelectionImage.Text = "IMAGE";
             this.btnSelectionImage.UseVisualStyleBackColor = false;
@@ -179,10 +199,10 @@ namespace Jastech.Framework.Winform.Forms
             this.btnSelectionLog.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.btnSelectionLog.Font = new System.Drawing.Font("맑은 고딕", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.btnSelectionLog.ForeColor = System.Drawing.Color.White;
-            this.btnSelectionLog.Location = new System.Drawing.Point(20, 19);
+            this.btnSelectionLog.Location = new System.Drawing.Point(20, 20);
             this.btnSelectionLog.Margin = new System.Windows.Forms.Padding(0);
             this.btnSelectionLog.Name = "btnSelectionLog";
-            this.btnSelectionLog.Size = new System.Drawing.Size(117, 67);
+            this.btnSelectionLog.Size = new System.Drawing.Size(120, 80);
             this.btnSelectionLog.TabIndex = 200;
             this.btnSelectionLog.Text = "LOG";
             this.btnSelectionLog.UseVisualStyleBackColor = false;
@@ -297,11 +317,12 @@ namespace Jastech.Framework.Winform.Forms
         private System.Windows.Forms.Button btnSelectionProcessCapability;
         private System.Windows.Forms.Button btnSelectionUPH;
         private System.Windows.Forms.Button btnSelectionAkkonTrend;
-        private System.Windows.Forms.Button btnSelectionAlignTrend;
+        private System.Windows.Forms.Button btnSelectionAlignTrend_Old;
         private System.Windows.Forms.Button btnSelectionImage;
         private System.Windows.Forms.Button btnSelectionLog;
         private System.Windows.Forms.Button btnCancel;
         private System.Windows.Forms.TreeView tvwLogPath;
         private StyledCalender cdrMonthCalendar;
+        private System.Windows.Forms.Button btnSelectionAlignTrend;
     }
 }

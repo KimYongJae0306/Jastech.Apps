@@ -45,6 +45,8 @@ namespace Jastech.Framework.Winform.Forms
 
         private AlignTrendControl AlignTrendControl { get; set; } = null;
 
+        private AlignTrendPreviewControl AlignTrendPreviewControl { get; set; } = null;
+
         private AkkonTrendControl AkkonTrendControl { get; set; } = null;
 
         private UPHControl UPHControl { get; set; } = null;
@@ -77,6 +79,7 @@ namespace Jastech.Framework.Winform.Forms
             ControlDisplayHelper.DisposeChildControls(InspDisplayControl);
             ControlDisplayHelper.DisposeChildControls(LogControl);
             ControlDisplayHelper.DisposeChildControls(AlignTrendControl);
+            ControlDisplayHelper.DisposeChildControls(AlignTrendPreviewControl);
             ControlDisplayHelper.DisposeChildControls(AkkonTrendControl);
             ControlDisplayHelper.DisposeChildControls(UPHControl);
             ControlDisplayHelper.DisposeChildControls(ProcessCapabilityControl);
@@ -87,6 +90,7 @@ namespace Jastech.Framework.Winform.Forms
             LogControl = new LogControl { Dock = DockStyle.Fill };
             InspDisplayControl = new CogInspDisplayControl { Dock = DockStyle.Top, Height = tvwLogPath.Height + cdrMonthCalendar.Height - pnlLogType.Height};
             AlignTrendControl = new AlignTrendControl { Dock = DockStyle.Fill };
+            AlignTrendPreviewControl = new AlignTrendPreviewControl { Dock = DockStyle.Fill };
             AkkonTrendControl = new AkkonTrendControl { Dock = DockStyle.Fill };
             UPHControl = new UPHControl { Dock = DockStyle.Fill };
             ProcessCapabilityControl = new ProcessCapabilityIndexControl { Dock = DockStyle.Fill };
@@ -128,10 +132,17 @@ namespace Jastech.Framework.Winform.Forms
 
                 case PageType.AlignTrend:
                     _selectedPagePath = _resultPath;
-                    btnSelectionAlignTrend.BackColor = _selectedColor;
+                    btnSelectionAlignTrend_Old.BackColor = _selectedColor;
 
                     AlignTrendControl.MakeTabListControl(inspModel.TabCount);
                     pnlContents.Controls.Add(AlignTrendControl);
+                    break;
+
+                case PageType.AlignTrendPreview:
+                    _selectedPagePath = _resultPath;
+                    btnSelectionAlignTrend.BackColor = _selectedColor;
+
+                    pnlContents.Controls.Add(AlignTrendPreviewControl);
                     break;
 
                 case PageType.AkkonTrend:
@@ -188,9 +199,14 @@ namespace Jastech.Framework.Winform.Forms
             SetPageType(PageType.Image);
         }
 
-        private void btnSelectionAlignTrend_Click(object sender, EventArgs e)
+        private void btnSelectionAlignTrend_Old_Click(object sender, EventArgs e)
         {
             SetPageType(PageType.AlignTrend);
+        }
+
+        private void btnSelectionAlignTrend_Click(object sender, EventArgs e)
+        {
+            SetPageType(PageType.AlignTrendPreview);
         }
 
         private void btnSelectionAkkonTrend_Click(object sender, EventArgs e)
@@ -231,7 +247,6 @@ namespace Jastech.Framework.Winform.Forms
                 string month = dateTime.Month.ToString("D2");
                 string day = dateTime.Day.ToString("D2");
                 string rootPath = Path.Combine(_selectedPagePath, month);
-
 
                 DirectoryInfo rootDirectoryInfo = new DirectoryInfo(rootPath);
                 TreeNode rootNode;
@@ -328,7 +343,6 @@ namespace Jastech.Framework.Winform.Forms
 
                 case ".csv":
                     DisplayCSVFile(fullPath);
-                    
                     break;
 
                 default:
@@ -370,6 +384,11 @@ namespace Jastech.Framework.Winform.Forms
                     AlignTrendControl.UpdateDataGridView();
                     break;
 
+                case PageType.AlignTrendPreview:
+                    AlignTrendPreviewControl.SetAlignResultData(fullPath);
+                    AlignTrendPreviewControl.UpdateDataGridView();
+                    break;
+
                 case PageType.AkkonTrend:
                     AkkonTrendControl.SetAkkonResultData(fullPath);
                     AkkonTrendControl.SetAkkonResultType(AkkonResultType.All);
@@ -400,6 +419,7 @@ namespace Jastech.Framework.Winform.Forms
         Log,
         Image,
         AlignTrend,
+        AlignTrendPreview,
         AkkonTrend,
         UPH,
         ProcessCapability,
@@ -436,10 +456,15 @@ namespace Jastech.Framework.Winform.Forms
     public class TrendResult
     {
         public string InspectionTime { get; set; }
+
         public string PanelID { get; set; }
+
         public int StageNo { get; set; }
+
         public string FinalHead { get; set; }
+
         public List<TabAlignTrendResult> TabAlignResults { get; private set; } = new List<TabAlignTrendResult>();
+
         public List<TabAkkonTrendResult> TabAkkonResults { get; private set; } = new List<TabAkkonTrendResult>();
 
         public List<string> GetAlignStringDatas()
@@ -451,6 +476,7 @@ namespace Jastech.Framework.Winform.Forms
                 $"{StageNo}",
                 $"{FinalHead}",
             };
+
             foreach (var tab in TabAlignResults)
             {
                 datas.Add($"{tab.Tab}");

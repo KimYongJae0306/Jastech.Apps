@@ -106,7 +106,8 @@ namespace ATT_UT_Remodeling
             PlcScenarioManager.Instance().PreAlignRunnerHandler += MainForm_PreAlignRunnerHandler;
             PlcScenarioManager.Instance().CalibrationRunnerHandler += MainForm_CalibrationRunnerHandler;
             PlcScenarioManager.Instance().MainTaskHandler += MainForm_MainTaskHandler;
-			
+            PlcScenarioManager.Instance().CreateModelHandler += MainForm_CreateModelHandler;
+
             PlcControlManager.Instance().WritePcCommand(PcCommand.ServoReset_1);
             Thread.Sleep(100);
             PlcControlManager.Instance().WritePcCommand(PcCommand.ServoOn_1);
@@ -140,6 +141,11 @@ namespace ATT_UT_Remodeling
                 CheckSafetyDoorlockTask = new Task(CheckDoorOpenedLoop, CancelSafetyDoorlockTask.Token);
                 CheckSafetyDoorlockTask.Start();
             }
+        }
+
+        private void MainForm_CreateModelHandler()
+        {
+            SystemManager.Instance().CalculateAxisPosition();
         }
 
         private void MainForm_MainTaskHandler(bool isStart, string message = "")
@@ -853,8 +859,12 @@ namespace ATT_UT_Remodeling
 
         private void lblMachineName_Click(object sender, EventArgs e)
         {
-            AppsStatus.Instance().IsPreAlignRunnerFlagFromPlc = true;
+            //AppsStatus.Instance().IsPreAlignRunnerFlagFromPlc = true;
             //SystemManager.Instance().ShowManualMatchingForm(AreaCameraManager.Instance().GetAreaCamera("PreAlign"), MarkDirection.Left, UnitName.Unit0);
+
+
+            // 자재정보를 이용한 ScanStart 위치 설정하는 부분 테스트 코드
+            //PlcScenarioManager.Instance().TTEST();
         }
     }
 }
