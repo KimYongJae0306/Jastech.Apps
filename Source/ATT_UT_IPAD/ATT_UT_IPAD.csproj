@@ -347,5 +347,11 @@
   <ItemGroup>
     <None Include="Resources\Stop_Red.png" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\AlignView_Green.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\AlignView_White.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
