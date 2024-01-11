@@ -32,6 +32,8 @@ namespace Jastech.Apps.Winform.UI.Controls
         #region 속성
         public InspChartType ChartType { get; set; } = InspChartType.Akkon;
 
+        public AlignResultType SeriesType { get; set; } = AlignResultType.All;
+
         public bool IsDailyInfo { get; set; } = true;
 
         public Series AkkonSeriesCount { get; private set; } = null;
@@ -571,19 +573,11 @@ namespace Jastech.Apps.Winform.UI.Controls
                     //chtData.Series[result.PointIndex].ToolTip = selectedValue.ToString("F4");
                     //chtData.Text = selectedValue.ToString("F4");
 
-                    //var tlbvkf = chtData.ChartAreas[0].AxisY.PositionToValue(e.Y);
+                    int tt = 0;
 
-                    var t1 = chtData.ChartAreas[0].AxisY.PixelPositionToValue(e.Y);
-                    //var t2 = chtData.ChartAreas[0].AxisY.PixelPositionToValue(e.X);
-                    //var t3 = chtData.ChartAreas[0].AxisY.PositionToValue(e.Y);
-                    //var t4 = chtData.ChartAreas[0].AxisY.PositionToValue(e.X);
-                    //var t5 = chtData.ChartAreas[0].AxisY.
+                    var tlqkf = chtData.Series[$"{SeriesType}"].Points[result.PointIndex].YValues;
+
                     int gg = 0;
-
-                    var alignSeries = AlignSeriesList.First(x => x.Name == AlignResultType.Lx.ToString());
-
-                    var tlqkf = alignSeries.Points[result.PointIndex].YValues;
-                    //var tlvkf = chtData.ChartAreas[0].AxisY.
                 }
             }
         }

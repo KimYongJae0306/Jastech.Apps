@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Jastech.Framework.Winform.Forms;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -61,6 +62,7 @@ namespace Jastech.Apps.Winform.UI.Controls
             LxChartControl.Dock = DockStyle.Fill;
             LxChartControl.IsDailyInfo = false;
             LxChartControl.ChartType = ResultChartControl.InspChartType.Align;
+            LxChartControl.SeriesType = AlignResultType.Lx;
             LxChartControl.EnableLegend = false;
             pnlLxChart.Controls.Add(LxChartControl);
 
@@ -68,6 +70,7 @@ namespace Jastech.Apps.Winform.UI.Controls
             CxChartControl.Dock = DockStyle.Fill;
             CxChartControl.IsDailyInfo = false;
             CxChartControl.ChartType = ResultChartControl.InspChartType.Align;
+            CxChartControl.SeriesType = AlignResultType.Cx;
             CxChartControl.EnableLegend = false;
             pnlCxChart.Controls.Add(CxChartControl);
 
@@ -75,6 +78,7 @@ namespace Jastech.Apps.Winform.UI.Controls
             RxChartControl.Dock = DockStyle.Fill;
             RxChartControl.IsDailyInfo = false;
             RxChartControl.ChartType = ResultChartControl.InspChartType.Align;
+            RxChartControl.SeriesType = AlignResultType.Rx;
             RxChartControl.EnableLegend = false;
             pnlRxChart.Controls.Add(RxChartControl);
         }
