@@ -569,10 +569,22 @@ namespace Jastech.Apps.Winform.UI.Controls
                 if (result.PointIndex >= 0)
                 {
                     double selectedValue = chtData.ChartAreas[0].AxisY.PixelPositionToValue(e.Y);
-                    chtData.Series[result.PointIndex].ToolTip = selectedValue.ToString("F4");
-                    chtData.Text = selectedValue.ToString("F4");
+                    //chtData.Series[result.PointIndex].ToolTip = selectedValue.ToString("F4");
+                    //chtData.Text = selectedValue.ToString("F4");
 
-                    var tlbvkf = chtData.ChartAreas[0].AxisY.PositionToValue(e.Y);
+                    //var tlbvkf = chtData.ChartAreas[0].AxisY.PositionToValue(e.Y);
+
+                    var t1 = chtData.ChartAreas[0].AxisY.PixelPositionToValue(e.Y);
+                    //var t2 = chtData.ChartAreas[0].AxisY.PixelPositionToValue(e.X);
+                    //var t3 = chtData.ChartAreas[0].AxisY.PositionToValue(e.Y);
+                    //var t4 = chtData.ChartAreas[0].AxisY.PositionToValue(e.X);
+                    //var t5 = chtData.ChartAreas[0].AxisY.
+                    int gg = 0;
+
+                    var alignSeries = AlignSeriesList.First(x => x.Name == AlignResultType.Lx.ToString());
+
+                    var tlqkf = alignSeries.Points[result.PointIndex].YValues;
+                    //var tlvkf = chtData.ChartAreas[0].AxisY.
                 }
             }
         }
