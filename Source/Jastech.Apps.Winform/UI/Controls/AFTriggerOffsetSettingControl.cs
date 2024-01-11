@@ -98,7 +98,6 @@ namespace Jastech.Apps.Winform.UI.Controls
                 lblRightOffset.Text = oldOffset;
         }
 
-        #endregion
         private bool CheckOffsetRange(float offset, bool isLeft)
         {
             AppsInspModel inspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
@@ -133,5 +132,6 @@ namespace Jastech.Apps.Winform.UI.Controls
 
             return true;
         }
+        #endregion
     }
 }
