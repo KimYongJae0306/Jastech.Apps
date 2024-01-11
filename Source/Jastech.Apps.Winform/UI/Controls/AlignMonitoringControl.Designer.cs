@@ -28,47 +28,30 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.tableLayoutPanel11 = new System.Windows.Forms.TableLayoutPanel();
+            this.tlpSplitView = new System.Windows.Forms.TableLayoutPanel();
             this.tlpAlignViewer = new System.Windows.Forms.TableLayoutPanel();
             this.pnlResultDisplay = new System.Windows.Forms.Panel();
             this.lblAlignViewer = new System.Windows.Forms.Label();
-            this.pnlTab1 = new System.Windows.Forms.Panel();
-            this.pnlTab2 = new System.Windows.Forms.Panel();
-            this.pnlTab3 = new System.Windows.Forms.Panel();
-            this.pnlTab4 = new System.Windows.Forms.Panel();
-            this.pnlTab0 = new System.Windows.Forms.Panel();
-            this.pnlTab5 = new System.Windows.Forms.Panel();
-            this.pnlTab6 = new System.Windows.Forms.Panel();
-            this.pnlTab7 = new System.Windows.Forms.Panel();
-            this.tableLayoutPanel11.SuspendLayout();
             this.tlpAlignViewer.SuspendLayout();
             this.pnlResultDisplay.SuspendLayout();
             this.SuspendLayout();
             // 
-            // tableLayoutPanel11
+            // tlpSplitView
             // 
-            this.tableLayoutPanel11.ColumnCount = 2;
-            this.tableLayoutPanel11.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel11.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel11.Controls.Add(this.pnlTab0, 0, 0);
-            this.tableLayoutPanel11.Controls.Add(this.pnlTab7, 1, 3);
-            this.tableLayoutPanel11.Controls.Add(this.pnlTab3, 1, 1);
-            this.tableLayoutPanel11.Controls.Add(this.pnlTab6, 0, 3);
-            this.tableLayoutPanel11.Controls.Add(this.pnlTab1, 1, 0);
-            this.tableLayoutPanel11.Controls.Add(this.pnlTab5, 1, 2);
-            this.tableLayoutPanel11.Controls.Add(this.pnlTab2, 0, 1);
-            this.tableLayoutPanel11.Controls.Add(this.pnlTab4, 0, 2);
-            this.tableLayoutPanel11.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel11.Location = new System.Drawing.Point(0, 0);
-            this.tableLayoutPanel11.Margin = new System.Windows.Forms.Padding(0);
-            this.tableLayoutPanel11.Name = "tableLayoutPanel11";
-            this.tableLayoutPanel11.RowCount = 4;
-            this.tableLayoutPanel11.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25F));
-            this.tableLayoutPanel11.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25F));
-            this.tableLayoutPanel11.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25F));
-            this.tableLayoutPanel11.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25F));
-            this.tableLayoutPanel11.Size = new System.Drawing.Size(1365, 820);
-            this.tableLayoutPanel11.TabIndex = 1;
+            this.tlpSplitView.ColumnCount = 2;
+            this.tlpSplitView.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tlpSplitView.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tlpSplitView.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tlpSplitView.Location = new System.Drawing.Point(0, 0);
+            this.tlpSplitView.Margin = new System.Windows.Forms.Padding(0);
+            this.tlpSplitView.Name = "tlpSplitView";
+            this.tlpSplitView.RowCount = 4;
+            this.tlpSplitView.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25F));
+            this.tlpSplitView.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25F));
+            this.tlpSplitView.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25F));
+            this.tlpSplitView.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25F));
+            this.tlpSplitView.Size = new System.Drawing.Size(1365, 820);
+            this.tlpSplitView.TabIndex = 1;
             // 
             // tlpAlignViewer
             // 
@@ -88,7 +71,7 @@
             // 
             // pnlResultDisplay
             // 
-            this.pnlResultDisplay.Controls.Add(this.tableLayoutPanel11);
+            this.pnlResultDisplay.Controls.Add(this.tlpSplitView);
             this.pnlResultDisplay.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pnlResultDisplay.Location = new System.Drawing.Point(0, 40);
             this.pnlResultDisplay.Margin = new System.Windows.Forms.Padding(0);
@@ -110,78 +93,6 @@
             this.lblAlignViewer.Text = "ALIGN MONITORING";
             this.lblAlignViewer.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // pnlTab1
-            // 
-            this.pnlTab1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pnlTab1.Location = new System.Drawing.Point(682, 0);
-            this.pnlTab1.Margin = new System.Windows.Forms.Padding(0);
-            this.pnlTab1.Name = "pnlTab1";
-            this.pnlTab1.Size = new System.Drawing.Size(683, 205);
-            this.pnlTab1.TabIndex = 3;
-            // 
-            // pnlTab2
-            // 
-            this.pnlTab2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pnlTab2.Location = new System.Drawing.Point(0, 205);
-            this.pnlTab2.Margin = new System.Windows.Forms.Padding(0);
-            this.pnlTab2.Name = "pnlTab2";
-            this.pnlTab2.Size = new System.Drawing.Size(682, 205);
-            this.pnlTab2.TabIndex = 4;
-            // 
-            // pnlTab3
-            // 
-            this.pnlTab3.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pnlTab3.Location = new System.Drawing.Point(682, 205);
-            this.pnlTab3.Margin = new System.Windows.Forms.Padding(0);
-            this.pnlTab3.Name = "pnlTab3";
-            this.pnlTab3.Size = new System.Drawing.Size(683, 205);
-            this.pnlTab3.TabIndex = 4;
-            // 
-            // pnlTab4
-            // 
-            this.pnlTab4.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pnlTab4.Location = new System.Drawing.Point(0, 410);
-            this.pnlTab4.Margin = new System.Windows.Forms.Padding(0);
-            this.pnlTab4.Name = "pnlTab4";
-            this.pnlTab4.Size = new System.Drawing.Size(682, 205);
-            this.pnlTab4.TabIndex = 4;
-            // 
-            // pnlTab0
-            // 
-            this.pnlTab0.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pnlTab0.Location = new System.Drawing.Point(0, 0);
-            this.pnlTab0.Margin = new System.Windows.Forms.Padding(0);
-            this.pnlTab0.Name = "pnlTab0";
-            this.pnlTab0.Size = new System.Drawing.Size(682, 205);
-            this.pnlTab0.TabIndex = 4;
-            // 
-            // pnlTab5
-            // 
-            this.pnlTab5.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pnlTab5.Location = new System.Drawing.Point(682, 410);
-            this.pnlTab5.Margin = new System.Windows.Forms.Padding(0);
-            this.pnlTab5.Name = "pnlTab5";
-            this.pnlTab5.Size = new System.Drawing.Size(683, 205);
-            this.pnlTab5.TabIndex = 5;
-            // 
-            // pnlTab6
-            // 
-            this.pnlTab6.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pnlTab6.Location = new System.Drawing.Point(0, 615);
-            this.pnlTab6.Margin = new System.Windows.Forms.Padding(0);
-            this.pnlTab6.Name = "pnlTab6";
-            this.pnlTab6.Size = new System.Drawing.Size(682, 205);
-            this.pnlTab6.TabIndex = 5;
-            // 
-            // pnlTab7
-            // 
-            this.pnlTab7.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pnlTab7.Location = new System.Drawing.Point(682, 615);
-            this.pnlTab7.Margin = new System.Windows.Forms.Padding(0);
-            this.pnlTab7.Name = "pnlTab7";
-            this.pnlTab7.Size = new System.Drawing.Size(683, 205);
-            this.pnlTab7.TabIndex = 5;
-            // 
             // AlignMonitoringControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
@@ -192,7 +103,6 @@
             this.Name = "AlignMonitoringControl";
             this.Size = new System.Drawing.Size(1365, 860);
             this.Load += new System.EventHandler(this.AlignMonitoringControl_Load);
-            this.tableLayoutPanel11.ResumeLayout(false);
             this.tlpAlignViewer.ResumeLayout(false);
             this.pnlResultDisplay.ResumeLayout(false);
             this.ResumeLayout(false);
@@ -201,17 +111,9 @@
 
         #endregion
 
-        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel11;
+        private System.Windows.Forms.TableLayoutPanel tlpSplitView;
         private System.Windows.Forms.TableLayoutPanel tlpAlignViewer;
         private System.Windows.Forms.Panel pnlResultDisplay;
         private System.Windows.Forms.Label lblAlignViewer;
-        private System.Windows.Forms.Panel pnlTab0;
-        private System.Windows.Forms.Panel pnlTab7;
-        private System.Windows.Forms.Panel pnlTab3;
-        private System.Windows.Forms.Panel pnlTab6;
-        private System.Windows.Forms.Panel pnlTab1;
-        private System.Windows.Forms.Panel pnlTab5;
-        private System.Windows.Forms.Panel pnlTab2;
-        private System.Windows.Forms.Panel pnlTab4;
     }
 }

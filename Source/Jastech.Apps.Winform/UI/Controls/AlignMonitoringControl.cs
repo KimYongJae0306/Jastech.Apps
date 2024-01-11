@@ -16,33 +16,19 @@ namespace Jastech.Apps.Winform.UI.Controls
     {
 
         #region 필드
+        private const int MaxTabCount = 8;
+
         private double _leftDisplayZoomRatio { get; set; } = 0.1;
 
         private double _rightDisplayZoomRatio { get; set; } = 0.1;
 
-        private double _centerDisplayZoomRatio { get; set; } = 0.1;
+        private double _centerDisplayZoomRatio { get; set; } = 0.2;
         #endregion
 
         #region 속성
         private List<AlignResultDisplayControl> DisplayControlList { get; set; } = new List<AlignResultDisplayControl>();
 
         private List<Panel> TabPanelList { get; set; } = new List<Panel>();
-
-        private AlignResultDisplayControl Tab0DisplayControl { get; set; } = null;
-
-        private AlignResultDisplayControl Tab1DisplayControl { get; set; } = null;
-
-        private AlignResultDisplayControl Tab2DisplayControl { get; set; } = null;
-
-        private AlignResultDisplayControl Tab3DisplayControl { get; set; } = null;
-
-        private AlignResultDisplayControl Tab4DisplayControl { get; set; } = null;
-
-        private AlignResultDisplayControl Tab5DisplayControl { get; set; } = null;
-
-        private AlignResultDisplayControl Tab6DisplayControl { get; set; } = null;
-
-        private AlignResultDisplayControl Tab7DisplayControl { get; set; } = null;
         #endregion
 
         #region 이벤트
@@ -74,87 +60,23 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         private void AddControl()
         {
-            Tab0DisplayControl = new AlignResultDisplayControl();
-            Tab0DisplayControl.UseTabFixed = true;
-            Tab0DisplayControl.FixedTabIndex = 0;
-            Tab0DisplayControl.SendTabNumberEvent += UpdateResultChart;
-            Tab0DisplayControl.GetTabInspResultEvent += DisplayControl_GetTabInspResultEvent;
-            Tab0DisplayControl.Dock = DockStyle.Fill;
-            pnlTab0.Controls.Add(Tab0DisplayControl);
+            for (int tabNo = 0; tabNo < MaxTabCount; tabNo++)
+            {
+                Panel panel = new Panel();
+                panel.Margin = new Padding(0);
+                panel.Dock = DockStyle.Fill;
 
-            Tab1DisplayControl = new AlignResultDisplayControl();
-            Tab1DisplayControl.UseTabFixed = true;
-            Tab1DisplayControl.FixedTabIndex = 1;
-            Tab1DisplayControl.SendTabNumberEvent += UpdateResultChart;
-            Tab1DisplayControl.GetTabInspResultEvent += DisplayControl_GetTabInspResultEvent;
-            Tab1DisplayControl.Dock = DockStyle.Fill;
-            pnlTab1.Controls.Add(Tab1DisplayControl);
+                AlignResultDisplayControl displayControl = new AlignResultDisplayControl();
+                displayControl.UseTabFixed = true;
+                displayControl.FixedTabIndex = tabNo;
+                displayControl.SendTabNumberEvent += UpdateResultChart;
+                displayControl.GetTabInspResultEvent += DisplayControl_GetTabInspResultEvent;
+                displayControl.Dock = DockStyle.Fill;
+                panel.Controls.Add(displayControl);
 
-            Tab2DisplayControl = new AlignResultDisplayControl();
-            Tab2DisplayControl.UseTabFixed = true;
-            Tab2DisplayControl.FixedTabIndex = 2;
-            Tab2DisplayControl.SendTabNumberEvent += UpdateResultChart;
-            Tab2DisplayControl.GetTabInspResultEvent += DisplayControl_GetTabInspResultEvent;
-            Tab2DisplayControl.Dock = DockStyle.Fill;
-            pnlTab2.Controls.Add(Tab2DisplayControl);
-
-            Tab3DisplayControl = new AlignResultDisplayControl();
-            Tab3DisplayControl.UseTabFixed = true;
-            Tab3DisplayControl.FixedTabIndex = 3;
-            Tab3DisplayControl.SendTabNumberEvent += UpdateResultChart;
-            Tab3DisplayControl.GetTabInspResultEvent += DisplayControl_GetTabInspResultEvent;
-            Tab3DisplayControl.Dock = DockStyle.Fill;
-            pnlTab3.Controls.Add(Tab3DisplayControl);
-
-            Tab4DisplayControl = new AlignResultDisplayControl();
-            Tab4DisplayControl.UseTabFixed = true;
-            Tab4DisplayControl.FixedTabIndex = 4;
-            Tab4DisplayControl.SendTabNumberEvent += UpdateResultChart;
-            Tab4DisplayControl.GetTabInspResultEvent += DisplayControl_GetTabInspResultEvent;
-            Tab4DisplayControl.Dock = DockStyle.Fill;
-            pnlTab4.Controls.Add(Tab4DisplayControl);
-
-            Tab5DisplayControl = new AlignResultDisplayControl();
-            Tab5DisplayControl.UseTabFixed = true;
-            Tab5DisplayControl.FixedTabIndex = 5;
-            Tab5DisplayControl.SendTabNumberEvent += UpdateResultChart;
-            Tab5DisplayControl.GetTabInspResultEvent += DisplayControl_GetTabInspResultEvent;
-            Tab5DisplayControl.Dock = DockStyle.Fill;
-            pnlTab5.Controls.Add(Tab5DisplayControl);
-
-            Tab6DisplayControl = new AlignResultDisplayControl();
-            Tab6DisplayControl.UseTabFixed = true;
-            Tab6DisplayControl.FixedTabIndex = 6;
-            Tab6DisplayControl.SendTabNumberEvent += UpdateResultChart;
-            Tab6DisplayControl.GetTabInspResultEvent += DisplayControl_GetTabInspResultEvent;
-            Tab6DisplayControl.Dock = DockStyle.Fill;
-            pnlTab6.Controls.Add(Tab6DisplayControl);
-
-            Tab7DisplayControl = new AlignResultDisplayControl();
-            Tab7DisplayControl.UseTabFixed = true;
-            Tab7DisplayControl.FixedTabIndex = 7;
-            Tab7DisplayControl.SendTabNumberEvent += UpdateResultChart;
-            Tab7DisplayControl.GetTabInspResultEvent += DisplayControl_GetTabInspResultEvent;
-            Tab7DisplayControl.Dock = DockStyle.Fill;
-            pnlTab7.Controls.Add(Tab7DisplayControl);
-
-            DisplayControlList.Add(Tab0DisplayControl);
-            DisplayControlList.Add(Tab1DisplayControl);
-            DisplayControlList.Add(Tab2DisplayControl);
-            DisplayControlList.Add(Tab3DisplayControl);
-            DisplayControlList.Add(Tab4DisplayControl);
-            DisplayControlList.Add(Tab5DisplayControl);
-            DisplayControlList.Add(Tab6DisplayControl);
-            DisplayControlList.Add(Tab7DisplayControl);
-
-            TabPanelList.Add(pnlTab0);
-            TabPanelList.Add(pnlTab1);
-            TabPanelList.Add(pnlTab2);
-            TabPanelList.Add(pnlTab3);
-            TabPanelList.Add(pnlTab4);
-            TabPanelList.Add(pnlTab5);
-            TabPanelList.Add(pnlTab6);
-            TabPanelList.Add(pnlTab7);
+                TabPanelList.Add(panel);
+                DisplayControlList.Add(displayControl);
+            }
         }
 
         public void UpdateMainResult(int tabNo)
@@ -190,8 +112,56 @@ namespace Jastech.Apps.Winform.UI.Controls
                 BeginInvoke(callback, tabCount);
                 return;
             }
-
+            CreateTableLayout(tabCount);
             RefreshControl(tabCount);
+        }
+
+        private void CreateTableLayout(int tabCount)
+        {
+            tlpSplitView.RowStyles.Clear();
+            tlpSplitView.ColumnStyles.Clear();
+
+            if (tabCount <= 0)
+                return;
+
+            if(tabCount <= 2)
+            {
+                tlpSplitView.ColumnCount = 1;
+                tlpSplitView.RowCount = tabCount;
+            }
+            else
+            {
+                tlpSplitView.ColumnCount = 2;
+                var remain = tabCount % 2.0;
+
+
+                if (remain == 0)
+                    tlpSplitView.RowCount = (tabCount / 2);
+                else
+                    tlpSplitView.RowCount = (tabCount / 2) + 1;
+            }
+
+
+
+            for (int rowIndex = 0; rowIndex < tlpSplitView.RowCount; rowIndex++)
+                tlpSplitView.RowStyles.Add(new RowStyle(SizeType.Percent, (float)(100 / tlpSplitView.RowCount)));
+
+            for (int columnIndex = 0; columnIndex < tlpSplitView.ColumnCount; columnIndex++)
+                tlpSplitView.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, (float)(100 / tlpSplitView.ColumnCount)));
+
+            for (int i = 0; i < DisplayControlList.Count(); i++)
+            {
+                var display = DisplayControlList[i];
+
+                display.UpdateTabButtons(1);
+
+                if (i <= tabCount - 1)
+                    display.Visible = true;
+                else
+                    display.Visible = false;
+
+                tlpSplitView.Controls.Add(display);
+            }
         }
 
         public void UpdateResultTabButton(int tabNo)
@@ -222,27 +192,6 @@ namespace Jastech.Apps.Winform.UI.Controls
                     display.Visible = false;
             }
         }
-
-        private void UpdatePanelView(int tabIndex, bool visible)
-        {
-            if (tabIndex == 0)
-                pnlTab0.Visible = visible;
-            else if (tabIndex == 1)
-                pnlTab1.Visible = visible;
-            else if (tabIndex == 2)
-                pnlTab2.Visible = visible;
-            else if (tabIndex == 3)
-                pnlTab3.Visible = visible;
-            else if (tabIndex == 4)
-                pnlTab4.Visible = visible;
-            else if (tabIndex == 5)
-                pnlTab5.Visible = visible;
-            else if (tabIndex == 6)
-                pnlTab6.Visible = visible;
-            else if (tabIndex == 7)
-                pnlTab7.Visible = visible;
-        }
-
         #endregion
     }
 }
