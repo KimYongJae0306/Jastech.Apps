@@ -286,6 +286,9 @@ namespace ATT_UT_IPAD
             akkonLaf.ResolutionAxisZ = 10000.0;
             akkonLaf.MaxSppedAxisZ = 20;
             akkonLaf.AccDec = 70;
+            akkonLaf.YWindowOnOff = true;
+            akkonLaf.YWindowStart = 200;
+            akkonLaf.YWindowWidth = 80;
             //akkonLaf.MinimumReturn_db = -1.0;
             //akkonLaf.MaximumReturn_db = -1.0;
             config.Add(akkonLaf);
@@ -297,7 +300,10 @@ namespace ATT_UT_IPAD
             alignLaf.HomePosition_mm = 0.02;
             alignLaf.ResolutionAxisZ = 10000.0;
             alignLaf.MaxSppedAxisZ = 20;
-            alignLaf.AccDec = 40;
+            alignLaf.AccDec = 70;
+            alignLaf.YWindowOnOff = true;
+            alignLaf.YWindowStart = 200;
+            alignLaf.YWindowWidth = 80;
             //alignLaf.MinimumReturn_db = -1.0;
             //alignLaf.MaximumReturn_db = -1.0;
             config.Add(alignLaf);
@@ -330,7 +336,7 @@ namespace ATT_UT_IPAD
         {
             // Akkon LineScanCamera
             int akkonCameraWidth = 3072;
-            int akkonCameraOffsetX = 768;
+            int akkonCameraOffsetX = 1536;
             if (CheckCameraProperty(ref akkonCameraWidth, ref akkonCameraOffsetX, 6560) == true)
             {
                 var akkonCamera = new CameraMil("AkkonCamera", akkonCameraWidth, 1024, ColorFormat.Gray, SensorType.Line);
@@ -352,7 +358,7 @@ namespace ATT_UT_IPAD
 
             // Align LineScanCamera
             int alignCameraWidth = 3072;
-            int alignCameraOffsetX = 512;
+            int alignCameraOffsetX = 2560;
             if (CheckCameraProperty(ref alignCameraWidth, ref alignCameraOffsetX, 6560) == true)
             {
                 var alignCamera = new CameraMil("AlignCamera", alignCameraWidth, 1024, ColorFormat.Gray, SensorType.Line);
@@ -393,6 +399,9 @@ namespace ATT_UT_IPAD
             akkonLaf.ResolutionAxisZ = 10000.0;
             akkonLaf.MaxSppedAxisZ = 20;
             akkonLaf.AccDec = 70;
+            akkonLaf.YWindowOnOff = true;
+            akkonLaf.YWindowStart = 200;
+            akkonLaf.YWindowWidth = 80;
             //akkonLaf.MinimumReturn_db = -1.0;
             //akkonLaf.MaximumReturn_db = -1.0;
             config.Add(akkonLaf);
@@ -404,7 +413,10 @@ namespace ATT_UT_IPAD
             alignLaf.HomePosition_mm = 0.02;
             alignLaf.ResolutionAxisZ = 10000.0;
             alignLaf.MaxSppedAxisZ = 20;
-            alignLaf.AccDec = 40;
+            alignLaf.AccDec = 70;
+            alignLaf.YWindowOnOff = true;
+            alignLaf.YWindowStart = 200;
+            alignLaf.YWindowWidth = 80;
             //alignLaf.MinimumReturn_db = -1.0;
             //alignLaf.MaximumReturn_db = -1.0;
             config.Add(alignLaf);
