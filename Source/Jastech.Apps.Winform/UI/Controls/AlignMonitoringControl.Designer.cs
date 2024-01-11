@@ -81,7 +81,7 @@
             // 
             // lblAlignViewer
             // 
-            this.lblAlignViewer.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(104)))), ((int)(((byte)(104)))), ((int)(((byte)(104)))));
+            this.lblAlignViewer.BackColor = System.Drawing.Color.DodgerBlue;
             this.lblAlignViewer.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lblAlignViewer.Font = new System.Drawing.Font("맑은 고딕", 14F, System.Drawing.FontStyle.Bold);
             this.lblAlignViewer.ForeColor = System.Drawing.Color.White;

@@ -141,8 +141,6 @@ namespace Jastech.Apps.Winform.UI.Controls
                     tlpSplitView.RowCount = (tabCount / 2) + 1;
             }
 
-
-
             for (int rowIndex = 0; rowIndex < tlpSplitView.RowCount; rowIndex++)
                 tlpSplitView.RowStyles.Add(new RowStyle(SizeType.Percent, (float)(100 / tlpSplitView.RowCount)));
 
