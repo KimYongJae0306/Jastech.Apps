@@ -1038,6 +1038,49 @@ namespace Jastech.Framework.Winform.Forms
         {
             ParamTrackingLogger.AddChangeHistory($"{LineCamera.Camera.Name}", $"Light_{component}_{channel}", oldValue, newValue);
         }
+
+        private void btnSaveImage_Click(object sender, EventArgs e)
+        {
+            if (pnlDrawBox.Visible)
+            {
+                lock (DrawBoxControl)
+                {
+                    var orgImage = DrawBoxControl.OrgImage;
+                    if(orgImage != null)
+                    {
+                        if(OpenSaveFileDialog() is string filePath)
+                            orgImage.Save(filePath);
+                    }
+                }
+            }
+            else if (pnlCogDisplay.Visible)
+            {
+                lock (cogDisplay)
+                {
+                    var image = cogDisplay.Image;
+                    if (image != null)
+                    {
+                        if (OpenSaveFileDialog() is string filePath)
+                            VisionProImageHelper.Save(image, filePath);
+                    }
+                }
+            }
+        }
+
+        private string OpenSaveFileDialog()
+        {
+            SaveFileDialog dlg = new SaveFileDialog();
+            dlg.Filter = "Image files(*.jpeg,*.png,*.bmp) |*.jpeg;*.png;*.bmp;|"
+                  + "jpeg file(*.jpeg)|*.jpeg; |"
+                  + "png file(*.png) | *.png; |"
+                  + "bmp file(*.bmp) | *.bmp; |"
+                  + "All files(*.*) | *.*;";
+
+            if (dlg.ShowDialog() == DialogResult.OK)
+                return dlg.FileName;
+            else
+                return null;
+        }
         #endregion
     }
 

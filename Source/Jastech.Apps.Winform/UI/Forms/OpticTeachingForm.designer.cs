@@ -126,7 +126,7 @@
             this.btnMotionPopup = new System.Windows.Forms.Button();
             this.lblStageCam = new System.Windows.Forms.Label();
             this.tlpLoadImage = new System.Windows.Forms.TableLayoutPanel();
-            this.btnLoadImage = new System.Windows.Forms.Button();
+            this.btnSaveImage = new System.Windows.Forms.Button();
             this.btnGrabStop = new System.Windows.Forms.Button();
             this.btnGrabStart = new System.Windows.Forms.Button();
             this.pnlTeach = new System.Windows.Forms.Panel();
@@ -1678,7 +1678,7 @@
             this.tlpLoadImage.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
             this.tlpLoadImage.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
             this.tlpLoadImage.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tlpLoadImage.Controls.Add(this.btnLoadImage, 0, 0);
+            this.tlpLoadImage.Controls.Add(this.btnSaveImage, 0, 0);
             this.tlpLoadImage.Controls.Add(this.btnGrabStop, 0, 0);
             this.tlpLoadImage.Controls.Add(this.btnGrabStart, 0, 0);
             this.tlpLoadImage.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -1690,20 +1690,21 @@
             this.tlpLoadImage.Size = new System.Drawing.Size(851, 40);
             this.tlpLoadImage.TabIndex = 2;
             // 
-            // btnLoadImage
+            // btnSaveImage
             // 
-            this.btnLoadImage.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
-            this.btnLoadImage.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.btnLoadImage.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.btnLoadImage.Font = new System.Drawing.Font("맑은 고딕", 14F, System.Drawing.FontStyle.Bold);
-            this.btnLoadImage.ForeColor = System.Drawing.Color.White;
-            this.btnLoadImage.Location = new System.Drawing.Point(566, 0);
-            this.btnLoadImage.Margin = new System.Windows.Forms.Padding(0);
-            this.btnLoadImage.Name = "btnLoadImage";
-            this.btnLoadImage.Size = new System.Drawing.Size(285, 40);
-            this.btnLoadImage.TabIndex = 201;
-            this.btnLoadImage.Text = "LOAD IMAGE";
-            this.btnLoadImage.UseVisualStyleBackColor = false;
+            this.btnSaveImage.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
+            this.btnSaveImage.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.btnSaveImage.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.btnSaveImage.Font = new System.Drawing.Font("맑은 고딕", 14F, System.Drawing.FontStyle.Bold);
+            this.btnSaveImage.ForeColor = System.Drawing.Color.White;
+            this.btnSaveImage.Location = new System.Drawing.Point(566, 0);
+            this.btnSaveImage.Margin = new System.Windows.Forms.Padding(0);
+            this.btnSaveImage.Name = "btnSaveImage";
+            this.btnSaveImage.Size = new System.Drawing.Size(285, 40);
+            this.btnSaveImage.TabIndex = 201;
+            this.btnSaveImage.Text = "SAVE IMAGE";
+            this.btnSaveImage.UseVisualStyleBackColor = false;
+            this.btnSaveImage.Click += new System.EventHandler(this.btnSaveImage_Click);
             // 
             // btnGrabStop
             // 
@@ -1973,7 +1974,7 @@
         private System.Windows.Forms.Button btnMotionPopup;
         private System.Windows.Forms.Label lblStageCam;
         private System.Windows.Forms.TableLayoutPanel tlpLoadImage;
-        private System.Windows.Forms.Button btnLoadImage;
+        private System.Windows.Forms.Button btnSaveImage;
         private System.Windows.Forms.Button btnGrabStop;
         private System.Windows.Forms.Button btnGrabStart;
         private System.Windows.Forms.Panel pnlTeach;

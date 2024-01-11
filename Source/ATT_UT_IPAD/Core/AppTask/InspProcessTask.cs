@@ -137,7 +137,9 @@ namespace ATT_UT_IPAD.Core.AppTask
                     inspResult.AkkonInspMatImage = AkkonAlgorithm.ResizeMat;
                 }
                 else
+                {
                     inspResult.AkkonResult = new AkkonResult();
+                }
 
                 sw.Stop();
                 string resultMessage = string.Format("Tab {0} Akkon Insp Completed.({1}ms)", (inspTab.TabScanBuffer.TabNo + 1), sw.ElapsedMilliseconds);
@@ -186,9 +188,6 @@ namespace ATT_UT_IPAD.Core.AppTask
                 message = string.Format("Align Mark Insp NG !!! Tab_{0} / Fpc_{1}, Panel_{2}", tab.Index + 1, tabInspResult.MarkResult.FpcMark.Judgement, tabInspResult.MarkResult.PanelMark.Judgement);
                 WriteLog(message, true);
                 Logger.Debug(LogType.Inspection, message);
-                // 231128_S
-                //tabInspResult.AlignResult = new TabAlignResult();
-                // 231128_E
             }
             else
             {
