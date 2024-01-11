@@ -71,6 +71,7 @@
             this.chtData.Size = new System.Drawing.Size(495, 433);
             this.chtData.TabIndex = 1;
             this.chtData.Text = "chart1";
+            this.chtData.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.chtData_MouseDoubleClick);
             this.chtData.MouseDown += new System.Windows.Forms.MouseEventHandler(this.chtData_MouseDown);
             // 
             // ResultChartControl
