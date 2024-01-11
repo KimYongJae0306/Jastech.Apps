@@ -60,6 +60,8 @@ namespace Jastech.Apps.Winform.Service.Plc
         public event OriginAllDelegate OriginAllEvent;
 
         public event MainTaskEventHandler MainTaskHandler;
+
+        public event CreateModelEventHandler CreateModelHandler;
         #endregion
 
         #region 델리게이트
@@ -74,6 +76,8 @@ namespace Jastech.Apps.Winform.Service.Plc
         public delegate bool OriginAllDelegate();
 
         public delegate void MainTaskEventHandler(bool isStart, string message = "");
+
+        public delegate void CreateModelEventHandler();
         #endregion
 
         #region 생성자
@@ -239,40 +243,6 @@ namespace Jastech.Apps.Winform.Service.Plc
 
         private void CreateModelData()
         {
-            //var manager = PlcControlManager.Instance();
-            //string modelName = manager.GetValue(PlcCommonMap.PLC_PPID_ModelName).TrimEnd();
-            //string modelDir = ConfigSet.Instance().Path.Model;
-            //string filePath = Path.Combine(modelDir, modelName, InspModel.FileName);
-            //short command = -1;
-
-            //if (File.Exists(modelName) || AppsStatus.Instance().IsInspRunnerRunning || AppsStatus.Instance().IsPreAlignRunnerRunning)
-            //{
-            //    // 모델이 존재O, 검사 중일 때
-            //    command = manager.WritePcStatusCommon(PlcCommonCommand.Model_Create, true);
-            //    Logger.Debug(LogType.Device, $"Write Fail CreateModelData.[{command}]");
-            //    return;
-            //}
-
-            //MainTaskHandler?.Invoke(false, "Main Task Stop. Request model Create from PLC.");
-            //AppsInspModel inspModel = InspModelService.New() as AppsInspModel;
-
-            //inspModel.Name = modelName;
-            //inspModel.CreateDate = DateTime.Now;
-            //inspModel.ModifiedDate = inspModel.CreateDate;
-            //inspModel.TabCount = Convert.ToInt32(manager.GetValue(PlcCommonMap.PLC_TabCount));
-            //inspModel.AxisSpeed = Convert.ToInt32(manager.GetValue(PlcCommonMap.PLC_Axis_X_Speed));
-            //inspModel.MaterialInfo = GetModelMaterialInfo();
-            //InspModelService.AddModelData(inspModel);
-
-            //ModelFileHelper.Save(ConfigSet.Instance().Path.Model, inspModel);
-
-            //ModelManager.Instance().CurrentModel = InspModelService.Load(filePath);
-
-            //MainTaskHandler?.Invoke(true, "Main Task Start. Applied model Create from PLC.");
-
-            //command = manager.WritePcStatusCommon(PlcCommonCommand.Model_Create);
-            //Logger.Debug(LogType.Device, $"Write CreateModelData.[{command}]");
-
             var currentModel = ModelManager.Instance().CurrentModel as AppsInspModel;
             var manager = PlcControlManager.Instance();
             string newModelName = manager.GetValue(PlcCommonMap.PLC_PPID_ModelName).TrimEnd();
@@ -370,14 +340,7 @@ namespace Jastech.Apps.Winform.Service.Plc
 
             string currentModelName = currentModel.Name;
 
-            //if (previousModelName?.Equals(currentModelName) == false)
-            //    ParamTrackingLogger.AddChangeHistory("Inspector", "InspectionModel", previousModel, currentModel);
-
-            //if (ParamTrackingLogger.IsEmpty == false)
-            //{
-            //    ParamTrackingLogger.AddLog("Inspection Model Changed.");
-            //    ParamTrackingLogger.WriteLogToFile();
-            //}
+            CreateModelHandler.Invoke();
 
             MainTaskHandler.Invoke(true, "Main Task Start. Applied model change from PLC.");
 
@@ -776,5 +739,10 @@ namespace Jastech.Apps.Winform.Service.Plc
             }
         }
         #endregion
+
+        public void TTEST()
+        {
+            CopyModelData();
+        }
     }
 }
