@@ -72,6 +72,10 @@ namespace Jastech.Apps.Winform.UI.Controls
                 displayControl.SendTabNumberEvent += UpdateResultChart;
                 displayControl.GetTabInspResultEvent += DisplayControl_GetTabInspResultEvent;
                 displayControl.Dock = DockStyle.Fill;
+
+                // 디자이너에서 생성된 컨트롤에 Add를 해야 Load 이벤트를 발생함
+                // 따라서, 임시로 pnlResultDisplay에 넣어 Load 이벤트 실행 후 panel로 이동
+                pnlResultDisplay.Controls.Add(displayControl);
                 panel.Controls.Add(displayControl);
 
                 TabPanelList.Add(panel);
