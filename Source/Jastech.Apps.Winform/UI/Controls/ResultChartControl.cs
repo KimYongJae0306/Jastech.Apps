@@ -542,7 +542,6 @@ namespace Jastech.Apps.Winform.UI.Controls
                 if (result.Object is LegendItem)
                 {
                     LegendItem legendItem = (LegendItem)result.Object;
-
                     _selectedAkkonResult = (AkkonResultType)Enum.Parse(typeof(AkkonResultType), legendItem.SeriesName);
                     UpdateAkkonChart(_selectedTabNo, _selectedAkkonResult);
                 }
