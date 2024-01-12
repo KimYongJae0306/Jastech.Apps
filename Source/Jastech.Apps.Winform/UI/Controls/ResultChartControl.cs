@@ -624,9 +624,8 @@ namespace Jastech.Apps.Winform.UI.Controls
                     //var tlqkf = chtData.ChartAreas[0].AxisX.PixelPositionToValue(X);
 
                     var alignData = chtData.Series[$"{SeriesType}"].Points[result.PointIndex].YValues;
-
+                    chtData.Series[$"{SeriesType}"].Points[result.PointIndex].LabelToolTip = "tlqkf";
                     mtipAlignResult.SetToolTip(this.chtData, $"X : {result.PointIndex + 1} / Y : {alignData[0]}");
-                    mtipAlignResult.ToolTipIcon = ToolTipIcon.Info;
                     mtipAlignResult.Active = false;
                 }
             }
