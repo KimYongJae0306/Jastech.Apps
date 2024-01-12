@@ -624,15 +624,22 @@ namespace Jastech.Apps.Winform.UI.Controls
 
             if (result != null && result.Object != null)
             {
+                var seriesPointList = chtData.Series[$"{SeriesType}"].Points;
+
+                foreach (var item in seriesPointList)
+                    item.MarkerStyle = MarkerStyle.None;
+
                 if (result.PointIndex >= 0)
                 {
-                    //double selectedValue = chtData.ChartAreas[0].AxisY.PixelPositionToValue(Y);
-                    //var tlqkf = chtData.ChartAreas[0].AxisX.PixelPositionToValue(X);
+                    seriesPointList[result.PointIndex].MarkerStyle = MarkerStyle.Circle;
+                    seriesPointList[result.PointIndex].MarkerSize = 10;
+                    seriesPointList[result.PointIndex].MarkerColor = Color.Red;
+                    seriesPointList[result.PointIndex].MarkerBorderColor = Color.White;
+                    seriesPointList[result.PointIndex].MarkerBorderWidth = 3;
 
                     var alignData = chtData.Series[$"{SeriesType}"].Points[result.PointIndex].YValues;
-                    chtData.Series[$"{SeriesType}"].Points[result.PointIndex].LabelToolTip = "tlqkf";
-                    mtipAlignResult.SetToolTip(this.chtData, $"X : {result.PointIndex + 1} / Y : {alignData[0]}");
-                    mtipAlignResult.Active = false;
+                    mtipAlignResult.SetToolTip(chtData, $"X : {result.PointIndex + 1} / Y : {alignData[0]}");
+                    mtipAlignResult.AutoPopDelay = 60000;
                 }
             }
         }
