@@ -626,8 +626,8 @@ namespace Jastech.Apps.Winform.UI.Controls
             {
                 var seriesPointList = chtData.Series[$"{SeriesType}"].Points;
 
-                foreach (var item in seriesPointList)
-                    item.MarkerStyle = MarkerStyle.None;
+                foreach (var point in seriesPointList)
+                    point.MarkerStyle = MarkerStyle.None;
 
                 if (result.PointIndex >= 0)
                 {
@@ -637,7 +637,7 @@ namespace Jastech.Apps.Winform.UI.Controls
                     seriesPointList[result.PointIndex].MarkerBorderColor = Color.White;
                     seriesPointList[result.PointIndex].MarkerBorderWidth = 3;
 
-                    var alignData = chtData.Series[$"{SeriesType}"].Points[result.PointIndex].YValues;
+                    var alignData = seriesPointList[result.PointIndex].YValues;
                     mtipAlignResult.SetToolTip(chtData, $"X : {result.PointIndex + 1} / Y : {alignData[0]}");
                     mtipAlignResult.AutoPopDelay = 60000;
                 }
