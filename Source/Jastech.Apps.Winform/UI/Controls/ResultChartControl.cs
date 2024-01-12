@@ -437,7 +437,7 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         public void UpdateAlignChart(List<TrendResult> alignTrendResultList, AlignResultType alignResultType, int tabNo, int dataCount)
         {
-            if (alignTrendResultList == null)
+            if (alignTrendResultList == null || alignTrendResultList.Count <= 0)
                 return;
 
             ClearChartData();
@@ -450,7 +450,7 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         public void UpdateAkkonChart(List<TrendResult> akkonTrendResults, TabType tabType, AkkonResultType akkonResultType)
         {
-            if (akkonTrendResults == null)
+            if (akkonTrendResults == null || akkonTrendResults.Count <= 0)
                 return;
 
             _selectedTabNo = (int)tabType;
