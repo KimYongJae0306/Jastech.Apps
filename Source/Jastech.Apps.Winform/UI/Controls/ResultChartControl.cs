@@ -158,6 +158,12 @@ namespace Jastech.Apps.Winform.UI.Controls
                 return;
             }
 
+            var inspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
+            if (inspModel == null)
+                return;
+            if (inspModel.TabCount < tabNo + 1)
+                tabNo = 0;
+
             _selectedTabNo = tabNo;
 
             UpdateAlignChart(tabNo, _selectedAlignResult);
