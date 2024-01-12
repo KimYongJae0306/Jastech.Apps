@@ -101,8 +101,16 @@ namespace ATT_UT_IPAD
             TeachingPageControl.SetInspModelService(ATTInspModelService);
             DataPageControl.SetInspModelService(ATTInspModelService);
             DataPageControl.ApplyModelEventHandler += ModelPageControl_ApplyModelEventHandler;
-
             ModelManager.Instance().CurrentModelChangedEvent += MainForm_CurrentModelChangedEvent;
+
+            if (ModelManager.Instance().CurrentModel != null)
+            {
+                lblCurrentModel.Text = ModelManager.Instance().CurrentModel.Name;
+                ModelManager.Instance().ApplyChangedEvent();
+            }
+
+            SystemManager.Instance().Initialize();
+            
             PlcScenarioManager.Instance().Initialize(ATTInspModelService);
             PlcScenarioManager.Instance().InspRunnerHandler += MainForm_InspRunnerHandler;
             PlcScenarioManager.Instance().MoveEventHandler += MainForm_MoveEventHandler;
@@ -118,14 +126,6 @@ namespace ATT_UT_IPAD
             PlcControlManager.Instance().WritePcCommand(PcCommand.ServoReset_2);
             Thread.Sleep(100);
             PlcControlManager.Instance().WritePcCommand(PcCommand.ServoOn_2);
-
-            //PlcControlManager.Instance().WritePcVisionStatus(MachineStatus.RUN);
-
-            if (ModelManager.Instance().CurrentModel != null)
-            {
-                lblCurrentModel.Text = ModelManager.Instance().CurrentModel.Name;
-                ModelManager.Instance().ApplyChangedEvent();
-            }
 
             tmrMainForm.Start();
             tmrUpdateStates.Start();
