@@ -273,7 +273,8 @@ namespace Jastech.Framework.Winform.Forms
                 {
                     if (file.Name.ToLower().Contains("summary"))
                         continue;
-                    if ((_selectedPageType == PageType.AlignTrend || _selectedPageType == PageType.ProcessCapability) && file.Name.ToLower().Contains("align") == false)
+                    if ((_selectedPageType == PageType.AlignTrend || _selectedPageType == PageType.AlignTrendPreview ||
+                        _selectedPageType == PageType.ProcessCapability) && file.Name.ToLower().Contains("align") == false)
                         continue;
                     if (_selectedPageType == PageType.AkkonTrend && file.Name.ToLower().Contains("akkon") == false)
                         continue;

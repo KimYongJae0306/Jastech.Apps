@@ -205,10 +205,24 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         private void lblSearch_Click(object sender, EventArgs e)
         {
+            SearchAlignData();
+        }
+
+        private void SearchAlignData()
+        {
             if (_dataCount <= 0)
                 return;
 
-            UpdateChart(_dataCount);
+            if (_dataCount > _alignTrendResults.Count)
+            {
+                MessageConfirmForm confirmForm = new MessageConfirmForm();
+                confirmForm.Message = $"Align data count in csv are {_alignTrendResults.Count}pieces of data. \nSearch {_alignTrendResults.Count}pieces of data.";
+                confirmForm.ShowDialog();
+
+                UpdateChart(_alignTrendResults.Count);
+            }
+            else
+                UpdateChart(_dataCount);
         }
         #endregion
     }

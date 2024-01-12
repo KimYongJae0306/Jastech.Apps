@@ -1,7 +1,9 @@
 ﻿using Emgu.CV.ML.MlEnum;
 using Jastech.Apps.Structure;
+using Jastech.Apps.Structure.Data;
 using Jastech.Apps.Winform.Service;
 using Jastech.Framework.Winform.Forms;
+using MetroFramework.Components;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -31,6 +33,8 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         #region 속성
         public InspChartType ChartType { get; set; } = InspChartType.Akkon;
+
+        public AlignResultType SeriesType { get; set; } = AlignResultType.All;
 
         public bool IsDailyInfo { get; set; } = true;
 
@@ -82,7 +86,7 @@ namespace Jastech.Apps.Winform.UI.Controls
         {
             if (EnableLegend == false)
                 chtData.Legends.Clear();
-                
+
             if (ChartType == InspChartType.Akkon)
             {
                 AkkonSeriesCount = new Series();
@@ -153,6 +157,12 @@ namespace Jastech.Apps.Winform.UI.Controls
                 BeginInvoke(callback, tabNo);
                 return;
             }
+
+            var inspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
+            if (inspModel == null)
+                return;
+            if (inspModel.TabCount < tabNo + 1)
+                tabNo = 0;
 
             _selectedTabNo = tabNo;
 
@@ -410,7 +420,7 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         public void UpdateAlignChart(List<TrendResult> alignTrendResults, TabType tabType, AlignResultType alignResultType)
         {
-            if (alignTrendResults == null)
+            if (alignTrendResults == null || alignTrendResults.Count <= 0)
                 return;
 
             _selectedTabNo = (int)tabType;
@@ -443,10 +453,16 @@ namespace Jastech.Apps.Winform.UI.Controls
             ClearChartData();
 
             var alignSeries = AlignSeriesList.First(x => x.Name == alignResultType.ToString());
-            foreach (TrendResult trendResult in alignTrendResultList)
+
+            List<TrendResult> reverseList = Enumerable.Reverse(alignTrendResultList).ToList();
+            List<TrendResult> viewDataList = new List<TrendResult>();
+
+            for (int index = 0; index < dataCount; index++)
+                viewDataList.Add(reverseList[index]);
+
+            foreach (TrendResult trendResult in Enumerable.Reverse(viewDataList).ToList())
                 alignSeries?.Points.Add(trendResult.GetAlignDatas((TabType)Enum.Parse(typeof(TabType), tabNo.ToString()), alignResultType));
         }
-
 
         public void UpdateAkkonChart(List<TrendResult> akkonTrendResults, TabType tabType, AkkonResultType akkonResultType)
         {
@@ -494,22 +510,22 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         private void chtData_MouseDown(object sender, MouseEventArgs e)
         {
-            if (IsDailyInfo == false)
-                return;
+            //if (IsDailyInfo == false)
+            //    return;
 
-            switch (ChartType)
-            {
-                case InspChartType.Akkon:
-                    ShowSelectedAkkonLegend(e.X, e.Y);
-                    break;
+            //switch (ChartType)
+            //{
+            //    case InspChartType.Akkon:
+            //        ShowSelectedAkkonLegend(e.X, e.Y);
+            //        break;
 
-                case InspChartType.Align:
-                    ShowSelectedAlignLegend(e.X, e.Y);
-                    break;
+            //    case InspChartType.Align:
+            //        ShowSelectedAlignLegend(e.X, e.Y);
+            //        break;
 
-                default:
-                    break;
-            }
+            //    default:
+            //        break;
+            //}
         }
 
         private void ShowSelectedAlignLegend(int x, int y)
@@ -542,7 +558,6 @@ namespace Jastech.Apps.Winform.UI.Controls
                 if (result.Object is LegendItem)
                 {
                     LegendItem legendItem = (LegendItem)result.Object;
-
                     _selectedAkkonResult = (AkkonResultType)Enum.Parse(typeof(AkkonResultType), legendItem.SeriesName);
                     UpdateAkkonChart(_selectedTabNo, _selectedAkkonResult);
                 }
@@ -553,6 +568,80 @@ namespace Jastech.Apps.Winform.UI.Controls
                 UpdateAkkonChart(_selectedTabNo, _selectedAkkonResult);
             }
         }
+
+        private void chtData_MouseDoubleClick(object sender, MouseEventArgs e)
+        {
+            //HitTestResult result = chtData.HitTest(e.X, e.Y);
+
+            //if (result != null && result.Object != null)
+            //{
+            //    if (result.PointIndex >= 0)
+            //    {
+            //        double selectedValue = chtData.ChartAreas[0].AxisY.PixelPositionToValue(e.Y);
+
+            //        var tlqkf = chtData.ChartAreas[0].AxisX.PixelPositionToValue(e.X);
+
+
+            //        var alignData = chtData.Series[$"{SeriesType}"].Points[result.PointIndex].YValues;
+            //        //chtData.Series[$"{SeriesType}"].Points[result.PointIndex].Color = Color.Red;
+
+
+            //        mtipAlignResult.ToolTipTitle = "AlignData";
+            //        mtipAlignResult.IsBalloon = false;
+            //        mtipAlignResult.SetToolTip(this.chtData, $"X : {result.PointIndex + 1} / Y : {alignData[0]}");
+            //        mtipAlignResult.ToolTipIcon = ToolTipIcon.Info;
+            //        mtipAlignResult.Active = false;
+            //    }
+            //}
+        }
         #endregion
+
+        private void chtData_MouseClick(object sender, MouseEventArgs e)
+        {
+            if (IsDailyInfo)
+            {
+                switch (ChartType)
+                {
+                    case InspChartType.Akkon:
+                        ShowSelectedAkkonLegend(e.X, e.Y);
+                        break;
+
+                    case InspChartType.Align:
+                        ShowSelectedAlignLegend(e.X, e.Y);
+                        break;
+
+                    default:
+                        break;
+                }
+            }
+            else
+                ShowAlignResultToolTip(e.X, e.Y);
+        }
+
+        private void ShowAlignResultToolTip(int x, int y)
+        {
+            HitTestResult result = chtData.HitTest(x, y);
+
+            if (result != null && result.Object != null)
+            {
+                var seriesPointList = chtData.Series[$"{SeriesType}"].Points;
+
+                foreach (var point in seriesPointList)
+                    point.MarkerStyle = MarkerStyle.None;
+
+                if (result.PointIndex >= 0)
+                {
+                    seriesPointList[result.PointIndex].MarkerStyle = MarkerStyle.Circle;
+                    seriesPointList[result.PointIndex].MarkerSize = 10;
+                    seriesPointList[result.PointIndex].MarkerColor = Color.Red;
+                    seriesPointList[result.PointIndex].MarkerBorderColor = Color.White;
+                    seriesPointList[result.PointIndex].MarkerBorderWidth = 3;
+
+                    var alignData = seriesPointList[result.PointIndex].YValues;
+                    mtipAlignResult.SetToolTip(chtData, $"X : {result.PointIndex + 1} / Y : {alignData[0]}");
+                    mtipAlignResult.AutoPopDelay = 60000;
+                }
+            }
+        }
     }
 }
