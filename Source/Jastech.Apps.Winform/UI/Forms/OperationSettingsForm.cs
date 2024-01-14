@@ -101,6 +101,11 @@ namespace Jastech.Framework.Winform.Forms
 
             txtAlignResultCount.Text = AppsConfig.Instance().AlignResultDailyCount.ToString();
             txtAkkonResultCount.Text = AppsConfig.Instance().AkkonResultDailyCount.ToString();
+
+            mtgWriteMarkScore.Checked = appsConfig.WriteMarkScore;
+            mtgWriteMarkDistance.Checked = appsConfig.WriteMarkToMarkDistance;
+            mtgWriteMPosData.Checked = appsConfig.WriteMPosData;
+            mtgWriteRetData.Checked = appsConfig.WriteRetData;
         }
 
         public void UpdateCurrentData()
@@ -146,6 +151,11 @@ namespace Jastech.Framework.Winform.Forms
 
             AppsConfig.Instance().AlignResultDailyCount = Convert.ToInt32(GetValue(txtAlignResultCount.Text));
             AppsConfig.Instance().AkkonResultDailyCount = Convert.ToInt32(GetValue(txtAkkonResultCount.Text));
+
+            appsConfig.WriteMarkScore = mtgWriteMarkScore.Checked;
+            appsConfig.WriteMarkToMarkDistance = mtgWriteMarkDistance.Checked;
+            appsConfig.WriteMPosData = mtgWriteMPosData.Checked;
+            appsConfig.WriteRetData = mtgWriteRetData.Checked;
         }
 
         public string GetValue(string value)

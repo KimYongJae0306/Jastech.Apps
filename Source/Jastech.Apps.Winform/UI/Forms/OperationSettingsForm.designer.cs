@@ -115,6 +115,11 @@
             this.label26 = new System.Windows.Forms.Label();
             this.txtAlignResultCount = new System.Windows.Forms.TextBox();
             this.panel4 = new System.Windows.Forms.Panel();
+            this.tableLayoutPanel8 = new System.Windows.Forms.TableLayoutPanel();
+            this.label41 = new System.Windows.Forms.Label();
+            this.mtgEnablePlcTime = new MetroFramework.Controls.MetroToggle();
+            this.label42 = new System.Windows.Forms.Label();
+            this.panel19 = new System.Windows.Forms.Panel();
             this.tableLayoutPanel7 = new System.Windows.Forms.TableLayoutPanel();
             this.label40 = new System.Windows.Forms.Label();
             this.mtgEnableAutoTrigger = new MetroFramework.Controls.MetroToggle();
@@ -139,11 +144,20 @@
             this.tableLayoutPanel16 = new System.Windows.Forms.TableLayoutPanel();
             this.lblApplyImage = new System.Windows.Forms.Label();
             this.lblSave = new System.Windows.Forms.Label();
-            this.tableLayoutPanel8 = new System.Windows.Forms.TableLayoutPanel();
-            this.label41 = new System.Windows.Forms.Label();
-            this.mtgEnablePlcTime = new MetroFramework.Controls.MetroToggle();
-            this.label42 = new System.Windows.Forms.Label();
-            this.panel19 = new System.Windows.Forms.Panel();
+            this.tableLayoutPanel9 = new System.Windows.Forms.TableLayoutPanel();
+            this.label43 = new System.Windows.Forms.Label();
+            this.mtgWriteMarkScore = new MetroFramework.Controls.MetroToggle();
+            this.label44 = new System.Windows.Forms.Label();
+            this.panel20 = new System.Windows.Forms.Panel();
+            this.tableLayoutPanel10 = new System.Windows.Forms.TableLayoutPanel();
+            this.label45 = new System.Windows.Forms.Label();
+            this.mtgWriteMarkDistance = new MetroFramework.Controls.MetroToggle();
+            this.tableLayoutPanel11 = new System.Windows.Forms.TableLayoutPanel();
+            this.label46 = new System.Windows.Forms.Label();
+            this.mtgWriteMPosData = new MetroFramework.Controls.MetroToggle();
+            this.tableLayoutPanel12 = new System.Windows.Forms.TableLayoutPanel();
+            this.label47 = new System.Windows.Forms.Label();
+            this.mtgWriteRetData = new MetroFramework.Controls.MetroToggle();
             this.tableLayoutPanel1.SuspendLayout();
             this.panel1.SuspendLayout();
             this.tableLayoutPanel4.SuspendLayout();
@@ -166,6 +180,7 @@
             this.tlpDailyResultEnableAkkon.SuspendLayout();
             this.tlpDailyResultEnableAlign.SuspendLayout();
             this.panel4.SuspendLayout();
+            this.tableLayoutPanel8.SuspendLayout();
             this.tableLayoutPanel7.SuspendLayout();
             this.tableLayoutPanel6.SuspendLayout();
             this.tlpLogSaveAkkonLeadResult.SuspendLayout();
@@ -176,7 +191,10 @@
             this.tableLayoutPanel15.SuspendLayout();
             this.panel11.SuspendLayout();
             this.tableLayoutPanel16.SuspendLayout();
-            this.tableLayoutPanel8.SuspendLayout();
+            this.tableLayoutPanel9.SuspendLayout();
+            this.tableLayoutPanel10.SuspendLayout();
+            this.tableLayoutPanel11.SuspendLayout();
+            this.tableLayoutPanel12.SuspendLayout();
             this.SuspendLayout();
             // 
             // panel7
@@ -1335,6 +1353,12 @@
             // 
             // panel4
             // 
+            this.panel4.Controls.Add(this.tableLayoutPanel12);
+            this.panel4.Controls.Add(this.tableLayoutPanel11);
+            this.panel4.Controls.Add(this.tableLayoutPanel10);
+            this.panel4.Controls.Add(this.tableLayoutPanel9);
+            this.panel4.Controls.Add(this.label44);
+            this.panel4.Controls.Add(this.panel20);
             this.panel4.Controls.Add(this.tableLayoutPanel8);
             this.panel4.Controls.Add(this.label42);
             this.panel4.Controls.Add(this.panel19);
@@ -1350,6 +1374,67 @@
             this.panel4.Name = "panel4";
             this.panel4.Size = new System.Drawing.Size(382, 802);
             this.panel4.TabIndex = 2;
+            // 
+            // tableLayoutPanel8
+            // 
+            this.tableLayoutPanel8.ColumnCount = 3;
+            this.tableLayoutPanel8.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 120F));
+            this.tableLayoutPanel8.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel8.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 100F));
+            this.tableLayoutPanel8.Controls.Add(this.label41, 0, 0);
+            this.tableLayoutPanel8.Controls.Add(this.mtgEnablePlcTime, 1, 0);
+            this.tableLayoutPanel8.Location = new System.Drawing.Point(76, 289);
+            this.tableLayoutPanel8.Name = "tableLayoutPanel8";
+            this.tableLayoutPanel8.RowCount = 1;
+            this.tableLayoutPanel8.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel8.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 36F));
+            this.tableLayoutPanel8.Size = new System.Drawing.Size(298, 36);
+            this.tableLayoutPanel8.TabIndex = 41;
+            // 
+            // label41
+            // 
+            this.label41.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.label41.Font = new System.Drawing.Font("맑은 고딕", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.label41.ForeColor = System.Drawing.Color.White;
+            this.label41.Location = new System.Drawing.Point(3, 0);
+            this.label41.Name = "label41";
+            this.label41.Size = new System.Drawing.Size(114, 36);
+            this.label41.TabIndex = 5;
+            this.label41.Text = "PLC Time";
+            this.label41.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // mtgEnablePlcTime
+            // 
+            this.mtgEnablePlcTime.AutoSize = true;
+            this.mtgEnablePlcTime.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.mtgEnablePlcTime.FontWeight = MetroFramework.MetroLinkWeight.Bold;
+            this.mtgEnablePlcTime.Location = new System.Drawing.Point(123, 3);
+            this.mtgEnablePlcTime.Name = "mtgEnablePlcTime";
+            this.mtgEnablePlcTime.Size = new System.Drawing.Size(72, 30);
+            this.mtgEnablePlcTime.TabIndex = 12;
+            this.mtgEnablePlcTime.Text = "Off";
+            this.mtgEnablePlcTime.Theme = MetroFramework.MetroThemeStyle.Dark;
+            this.mtgEnablePlcTime.UseSelectable = true;
+            // 
+            // label42
+            // 
+            this.label42.Font = new System.Drawing.Font("맑은 고딕", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.label42.ForeColor = System.Drawing.Color.White;
+            this.label42.Location = new System.Drawing.Point(24, 250);
+            this.label42.Name = "label42";
+            this.label42.Size = new System.Drawing.Size(347, 33);
+            this.label42.TabIndex = 40;
+            this.label42.Text = "PLC";
+            this.label42.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // panel19
+            // 
+            this.panel19.BackColor = System.Drawing.SystemColors.Highlight;
+            this.panel19.Location = new System.Drawing.Point(29, 283);
+            this.panel19.Margin = new System.Windows.Forms.Padding(0);
+            this.panel19.Name = "panel19";
+            this.panel19.Size = new System.Drawing.Size(345, 2);
+            this.panel19.TabIndex = 39;
             // 
             // tableLayoutPanel7
             // 
@@ -1657,66 +1742,185 @@
             this.lblSave.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.lblSave.Click += new System.EventHandler(this.lblSave_Click);
             // 
-            // tableLayoutPanel8
+            // tableLayoutPanel9
             // 
-            this.tableLayoutPanel8.ColumnCount = 3;
-            this.tableLayoutPanel8.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 120F));
-            this.tableLayoutPanel8.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel8.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 100F));
-            this.tableLayoutPanel8.Controls.Add(this.label41, 0, 0);
-            this.tableLayoutPanel8.Controls.Add(this.mtgEnablePlcTime, 1, 0);
-            this.tableLayoutPanel8.Location = new System.Drawing.Point(76, 289);
-            this.tableLayoutPanel8.Name = "tableLayoutPanel8";
-            this.tableLayoutPanel8.RowCount = 1;
-            this.tableLayoutPanel8.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel8.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 36F));
-            this.tableLayoutPanel8.Size = new System.Drawing.Size(298, 36);
-            this.tableLayoutPanel8.TabIndex = 41;
+            this.tableLayoutPanel9.ColumnCount = 3;
+            this.tableLayoutPanel9.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 150F));
+            this.tableLayoutPanel9.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel9.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 70F));
+            this.tableLayoutPanel9.Controls.Add(this.label43, 0, 0);
+            this.tableLayoutPanel9.Controls.Add(this.mtgWriteMarkScore, 1, 0);
+            this.tableLayoutPanel9.Location = new System.Drawing.Point(78, 380);
+            this.tableLayoutPanel9.Name = "tableLayoutPanel9";
+            this.tableLayoutPanel9.RowCount = 1;
+            this.tableLayoutPanel9.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel9.Size = new System.Drawing.Size(298, 36);
+            this.tableLayoutPanel9.TabIndex = 44;
             // 
-            // label41
+            // label43
             // 
-            this.label41.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.label41.Font = new System.Drawing.Font("맑은 고딕", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.label41.ForeColor = System.Drawing.Color.White;
-            this.label41.Location = new System.Drawing.Point(3, 0);
-            this.label41.Name = "label41";
-            this.label41.Size = new System.Drawing.Size(114, 36);
-            this.label41.TabIndex = 5;
-            this.label41.Text = "PLC Time";
-            this.label41.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.label43.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.label43.Font = new System.Drawing.Font("맑은 고딕", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.label43.ForeColor = System.Drawing.Color.White;
+            this.label43.Location = new System.Drawing.Point(3, 0);
+            this.label43.Name = "label43";
+            this.label43.Size = new System.Drawing.Size(144, 36);
+            this.label43.TabIndex = 5;
+            this.label43.Text = "Mark Score";
+            this.label43.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // mtgEnableUsePlcTime
+            // mtgWriteMarkScore
             // 
-            this.mtgEnablePlcTime.AutoSize = true;
-            this.mtgEnablePlcTime.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.mtgEnablePlcTime.FontWeight = MetroFramework.MetroLinkWeight.Bold;
-            this.mtgEnablePlcTime.Location = new System.Drawing.Point(123, 3);
-            this.mtgEnablePlcTime.Name = "mtgEnableUsePlcTime";
-            this.mtgEnablePlcTime.Size = new System.Drawing.Size(72, 30);
-            this.mtgEnablePlcTime.TabIndex = 12;
-            this.mtgEnablePlcTime.Text = "Off";
-            this.mtgEnablePlcTime.Theme = MetroFramework.MetroThemeStyle.Dark;
-            this.mtgEnablePlcTime.UseSelectable = true;
+            this.mtgWriteMarkScore.AutoSize = true;
+            this.mtgWriteMarkScore.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.mtgWriteMarkScore.FontWeight = MetroFramework.MetroLinkWeight.Bold;
+            this.mtgWriteMarkScore.Location = new System.Drawing.Point(153, 3);
+            this.mtgWriteMarkScore.Name = "mtgWriteMarkScore";
+            this.mtgWriteMarkScore.Size = new System.Drawing.Size(72, 30);
+            this.mtgWriteMarkScore.TabIndex = 12;
+            this.mtgWriteMarkScore.Text = "Off";
+            this.mtgWriteMarkScore.Theme = MetroFramework.MetroThemeStyle.Dark;
+            this.mtgWriteMarkScore.UseSelectable = true;
             // 
-            // label42
+            // label44
             // 
-            this.label42.Font = new System.Drawing.Font("맑은 고딕", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.label42.ForeColor = System.Drawing.Color.White;
-            this.label42.Location = new System.Drawing.Point(24, 250);
-            this.label42.Name = "label42";
-            this.label42.Size = new System.Drawing.Size(347, 33);
-            this.label42.TabIndex = 40;
-            this.label42.Text = "PLC";
-            this.label42.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.label44.Font = new System.Drawing.Font("맑은 고딕", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.label44.ForeColor = System.Drawing.Color.White;
+            this.label44.Location = new System.Drawing.Point(24, 341);
+            this.label44.Name = "label44";
+            this.label44.Size = new System.Drawing.Size(347, 33);
+            this.label44.TabIndex = 43;
+            this.label44.Text = "CSV";
+            this.label44.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
-            // panel19
+            // panel20
             // 
-            this.panel19.BackColor = System.Drawing.SystemColors.Highlight;
-            this.panel19.Location = new System.Drawing.Point(29, 283);
-            this.panel19.Margin = new System.Windows.Forms.Padding(0);
-            this.panel19.Name = "panel19";
-            this.panel19.Size = new System.Drawing.Size(345, 2);
-            this.panel19.TabIndex = 39;
+            this.panel20.BackColor = System.Drawing.SystemColors.Highlight;
+            this.panel20.Location = new System.Drawing.Point(29, 374);
+            this.panel20.Margin = new System.Windows.Forms.Padding(0);
+            this.panel20.Name = "panel20";
+            this.panel20.Size = new System.Drawing.Size(345, 2);
+            this.panel20.TabIndex = 42;
+            // 
+            // tableLayoutPanel10
+            // 
+            this.tableLayoutPanel10.ColumnCount = 3;
+            this.tableLayoutPanel10.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 150F));
+            this.tableLayoutPanel10.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel10.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 70F));
+            this.tableLayoutPanel10.Controls.Add(this.label45, 0, 0);
+            this.tableLayoutPanel10.Controls.Add(this.mtgWriteMarkDistance, 1, 0);
+            this.tableLayoutPanel10.Location = new System.Drawing.Point(78, 422);
+            this.tableLayoutPanel10.Name = "tableLayoutPanel10";
+            this.tableLayoutPanel10.RowCount = 1;
+            this.tableLayoutPanel10.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel10.Size = new System.Drawing.Size(298, 36);
+            this.tableLayoutPanel10.TabIndex = 45;
+            // 
+            // label45
+            // 
+            this.label45.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.label45.Font = new System.Drawing.Font("맑은 고딕", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.label45.ForeColor = System.Drawing.Color.White;
+            this.label45.Location = new System.Drawing.Point(3, 0);
+            this.label45.Name = "label45";
+            this.label45.Size = new System.Drawing.Size(144, 36);
+            this.label45.TabIndex = 5;
+            this.label45.Text = "Mark Distance";
+            this.label45.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // mtgWriteMarkDistance
+            // 
+            this.mtgWriteMarkDistance.AutoSize = true;
+            this.mtgWriteMarkDistance.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.mtgWriteMarkDistance.FontWeight = MetroFramework.MetroLinkWeight.Bold;
+            this.mtgWriteMarkDistance.Location = new System.Drawing.Point(153, 3);
+            this.mtgWriteMarkDistance.Name = "mtgWriteMarkDistance";
+            this.mtgWriteMarkDistance.Size = new System.Drawing.Size(72, 30);
+            this.mtgWriteMarkDistance.TabIndex = 12;
+            this.mtgWriteMarkDistance.Text = "Off";
+            this.mtgWriteMarkDistance.Theme = MetroFramework.MetroThemeStyle.Dark;
+            this.mtgWriteMarkDistance.UseSelectable = true;
+            // 
+            // tableLayoutPanel11
+            // 
+            this.tableLayoutPanel11.ColumnCount = 3;
+            this.tableLayoutPanel11.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 150F));
+            this.tableLayoutPanel11.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel11.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 70F));
+            this.tableLayoutPanel11.Controls.Add(this.label46, 0, 0);
+            this.tableLayoutPanel11.Controls.Add(this.mtgWriteMPosData, 1, 0);
+            this.tableLayoutPanel11.Location = new System.Drawing.Point(78, 464);
+            this.tableLayoutPanel11.Name = "tableLayoutPanel11";
+            this.tableLayoutPanel11.RowCount = 1;
+            this.tableLayoutPanel11.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel11.Size = new System.Drawing.Size(298, 36);
+            this.tableLayoutPanel11.TabIndex = 46;
+            // 
+            // label46
+            // 
+            this.label46.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.label46.Font = new System.Drawing.Font("맑은 고딕", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.label46.ForeColor = System.Drawing.Color.White;
+            this.label46.Location = new System.Drawing.Point(3, 0);
+            this.label46.Name = "label46";
+            this.label46.Size = new System.Drawing.Size(144, 36);
+            this.label46.TabIndex = 5;
+            this.label46.Text = "MPos Data";
+            this.label46.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // mtgWriteMPosData
+            // 
+            this.mtgWriteMPosData.AutoSize = true;
+            this.mtgWriteMPosData.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.mtgWriteMPosData.FontWeight = MetroFramework.MetroLinkWeight.Bold;
+            this.mtgWriteMPosData.Location = new System.Drawing.Point(153, 3);
+            this.mtgWriteMPosData.Name = "mtgWriteMPosData";
+            this.mtgWriteMPosData.Size = new System.Drawing.Size(72, 30);
+            this.mtgWriteMPosData.TabIndex = 12;
+            this.mtgWriteMPosData.Text = "Off";
+            this.mtgWriteMPosData.Theme = MetroFramework.MetroThemeStyle.Dark;
+            this.mtgWriteMPosData.UseSelectable = true;
+            // 
+            // tableLayoutPanel12
+            // 
+            this.tableLayoutPanel12.ColumnCount = 3;
+            this.tableLayoutPanel12.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 150F));
+            this.tableLayoutPanel12.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel12.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 70F));
+            this.tableLayoutPanel12.Controls.Add(this.label47, 0, 0);
+            this.tableLayoutPanel12.Controls.Add(this.mtgWriteRetData, 1, 0);
+            this.tableLayoutPanel12.Location = new System.Drawing.Point(78, 506);
+            this.tableLayoutPanel12.Name = "tableLayoutPanel12";
+            this.tableLayoutPanel12.RowCount = 1;
+            this.tableLayoutPanel12.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel12.Size = new System.Drawing.Size(298, 36);
+            this.tableLayoutPanel12.TabIndex = 47;
+            // 
+            // label47
+            // 
+            this.label47.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.label47.Font = new System.Drawing.Font("맑은 고딕", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.label47.ForeColor = System.Drawing.Color.White;
+            this.label47.Location = new System.Drawing.Point(3, 0);
+            this.label47.Name = "label47";
+            this.label47.Size = new System.Drawing.Size(144, 36);
+            this.label47.TabIndex = 5;
+            this.label47.Text = "Ret Data";
+            this.label47.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // mtgWriteRetData
+            // 
+            this.mtgWriteRetData.AutoSize = true;
+            this.mtgWriteRetData.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.mtgWriteRetData.FontWeight = MetroFramework.MetroLinkWeight.Bold;
+            this.mtgWriteRetData.Location = new System.Drawing.Point(153, 3);
+            this.mtgWriteRetData.Name = "mtgWriteRetData";
+            this.mtgWriteRetData.Size = new System.Drawing.Size(72, 30);
+            this.mtgWriteRetData.TabIndex = 12;
+            this.mtgWriteRetData.Text = "Off";
+            this.mtgWriteRetData.Theme = MetroFramework.MetroThemeStyle.Dark;
+            this.mtgWriteRetData.UseSelectable = true;
             // 
             // OperationSettingsForm
             // 
@@ -1772,6 +1976,8 @@
             this.tlpDailyResultEnableAlign.ResumeLayout(false);
             this.tlpDailyResultEnableAlign.PerformLayout();
             this.panel4.ResumeLayout(false);
+            this.tableLayoutPanel8.ResumeLayout(false);
+            this.tableLayoutPanel8.PerformLayout();
             this.tableLayoutPanel7.ResumeLayout(false);
             this.tableLayoutPanel7.PerformLayout();
             this.tableLayoutPanel6.ResumeLayout(false);
@@ -1785,8 +1991,14 @@
             this.tableLayoutPanel15.ResumeLayout(false);
             this.panel11.ResumeLayout(false);
             this.tableLayoutPanel16.ResumeLayout(false);
-            this.tableLayoutPanel8.ResumeLayout(false);
-            this.tableLayoutPanel8.PerformLayout();
+            this.tableLayoutPanel9.ResumeLayout(false);
+            this.tableLayoutPanel9.PerformLayout();
+            this.tableLayoutPanel10.ResumeLayout(false);
+            this.tableLayoutPanel10.PerformLayout();
+            this.tableLayoutPanel11.ResumeLayout(false);
+            this.tableLayoutPanel11.PerformLayout();
+            this.tableLayoutPanel12.ResumeLayout(false);
+            this.tableLayoutPanel12.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -1909,5 +2121,19 @@
         private MetroFramework.Controls.MetroToggle mtgEnablePlcTime;
         private System.Windows.Forms.Label label42;
         private System.Windows.Forms.Panel panel19;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel9;
+        private System.Windows.Forms.Label label43;
+        private MetroFramework.Controls.MetroToggle mtgWriteMarkScore;
+        private System.Windows.Forms.Label label44;
+        private System.Windows.Forms.Panel panel20;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel10;
+        private System.Windows.Forms.Label label45;
+        private MetroFramework.Controls.MetroToggle mtgWriteMarkDistance;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel12;
+        private System.Windows.Forms.Label label47;
+        private MetroFramework.Controls.MetroToggle mtgWriteRetData;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel11;
+        private System.Windows.Forms.Label label46;
+        private MetroFramework.Controls.MetroToggle mtgWriteMPosData;
     }
 }

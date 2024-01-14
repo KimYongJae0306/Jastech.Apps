@@ -935,6 +935,8 @@ namespace ATT_UT_IPAD.Core
             SaveAlignResult(path, inspModel.TabCount);
             SaveAkkonResult(path, inspModel.TabCount);
             SaveUPHResult(path, inspModel.TabCount);
+
+
             SaveAxisZMposData(path);
             SaveRetData(path);
             SaveMarkToMarkDistanceData(path, inspModel.TabCount);
@@ -2069,6 +2071,9 @@ namespace ATT_UT_IPAD.Core
 
         private void SaveAxisZMposData(string resultPath)
         {
+            if (AppsConfig.Instance().WriteMPosData == false)
+                return;
+
             string csvFile = Path.Combine(resultPath, "MPosData.csv");
             if (File.Exists(csvFile) == false)
             {
@@ -2099,6 +2104,9 @@ namespace ATT_UT_IPAD.Core
         }
         private void SaveRetData(string resultPath)
         {
+            if (AppsConfig.Instance().WriteRetData == false)
+                return;
+
             string csvFile = Path.Combine(resultPath, "RetData.csv");
             if (File.Exists(csvFile) == false)
             {
@@ -2130,6 +2138,9 @@ namespace ATT_UT_IPAD.Core
 
         private void SaveMarkToMarkDistanceData(string resultPath,int tabCount)
         {
+            if (AppsConfig.Instance().WriteMarkToMarkDistance == false)
+                return;
+
             string csvFile = Path.Combine(resultPath, "MarkToMarkDistanceData.csv");
             if (File.Exists(csvFile) == false)
             {
@@ -2176,6 +2187,9 @@ namespace ATT_UT_IPAD.Core
 
         private void SaveMarkScoreData(string resultPath, int tabCount)
         {
+            if (AppsConfig.Instance().WriteMarkScore == false)
+                return;
+
             string csvFile = Path.Combine(resultPath, "MarkScoreData.csv");
             if (File.Exists(csvFile) == false)
             {
