@@ -183,7 +183,9 @@ namespace ATT_UT_IPAD.UI.Pages
         public void UpdateMainAlignResult(int tabNo)
         {
             AlignViewerControl.UpdateMainResult(tabNo);
-            AlignMonitoringControl.UpdateMainResult(tabNo);
+
+            if(AppsConfig.Instance().EnableAlignMonitoring)
+                AlignMonitoringControl.UpdateMainResult(tabNo);
         }
         
         public void UpdateDailyInfo()
