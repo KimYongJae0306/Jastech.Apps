@@ -226,7 +226,6 @@ namespace Jastech.Apps.Winform.UI.Controls
         {
             ClearChartData();
             InitializeAlignChart();
-            //chtData.AlignDataPointsByAxisLabel();
 
             var dailyInfo = DailyInfoService.GetDailyInfo();
 

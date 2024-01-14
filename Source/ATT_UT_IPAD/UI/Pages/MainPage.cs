@@ -141,33 +141,38 @@ namespace ATT_UT_IPAD.UI.Pages
 
         private void AkkonViewerControl_SetTabEventHandler(int tabNo)
         {
-            DailyInfoViewerControl.UpdateAkkonResult(tabNo);
+            DailyInfoViewerControl.UpdateAkkonChart(tabNo);
         }
 
         private void AlignViewerControl_SetTabEventHandler(int tabNo)
         {
-            DailyInfoViewerControl.UpdateAlignResult(tabNo);
+            DailyInfoViewerControl.UpdateAlignChart(tabNo);
         }
 
-        public void UpdateTabCount(int tabCount)
+        public void ChangeModel(AppsInspModel inspModel)
         {
-            AkkonViewerControl.UpdateTabCount(tabCount);
-            AlignViewerControl.UpdateTabCount(tabCount);
-            AlignMonitoringControl.UpdateRefreshControl(tabCount);
-            DailyInfoViewerControl.ReUpdate();
+            DailyInfoViewerControl.UpdateDailyInfo();
+
+            AkkonViewerControl.CreateTabButton(inspModel.TabCount);
+            AlignViewerControl.CreateTabButton(inspModel.TabCount);
+            AlignMonitoringControl.UpdateRefreshControl(inspModel.TabCount);
         }
 
         public void UpdateMainAkkonResultData(int tabNo)
         {
             AkkonViewerControl.UpdateMainResult(tabNo);
-            DailyInfoViewerControl.UpdateAkkonResult(tabNo);
+            //DailyInfoViewerControl.UpdateCurrentData();
         }
 
         public void UpdateMainAlignResult(int tabNo)
         {
             AlignViewerControl.UpdateMainResult(tabNo);
             AlignMonitoringControl.UpdateMainResult(tabNo);
-            DailyInfoViewerControl.UpdateAlignResult(tabNo);
+        }
+        
+        public void UpdateDailyInfo()
+        {
+            DailyInfoViewerControl.UpdateDailyInfo();
         }
 
         public void UpdateAkkonResultTabButton(int tabNo)

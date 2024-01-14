@@ -50,9 +50,9 @@ namespace ATT_UT_IPAD.UI.Controls
             return AppsInspResult.Instance().GetAkkon(tabNo);
         }
 
-        public void UpdateTabCount(int tabCount)
+        public void CreateTabButton(int tabCount)
         {
-            AkkonResultDisplayControl.UpdateTabButtons(tabCount);
+            AkkonResultDisplayControl.CreateTabButton(tabCount);
         }
 
         public void UpdateMainResult(int tabNo)

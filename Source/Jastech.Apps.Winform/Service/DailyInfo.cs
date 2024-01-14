@@ -17,7 +17,7 @@ namespace Jastech.Apps.Winform.Service
 
         public void AddDailyDataList(DailyData dailyData)
         {
-            if (DailyDataList.Count >= AppsConfig.Instance().AlignResultDailyCount)
+            while(DailyDataList.Count >= AppsConfig.Instance().AlignResultDailyCount)
                 DailyDataList.RemoveAt(0);
 
             DailyDataList.Add(dailyData);
@@ -36,6 +36,8 @@ namespace Jastech.Apps.Winform.Service
 
         public void Load(string modelName)
         {
+            DailyDataList.Clear();
+
             string filePath = Path.Combine(ConfigSet.Instance().Path.Temp, modelName, FileName);
             JsonConvertHelper.LoadToExistingTarget<DailyInfo>(filePath, this);
         }

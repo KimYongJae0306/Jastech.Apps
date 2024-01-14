@@ -46,11 +46,11 @@ namespace Jastech.Apps.Winform.UI.Controls
         #endregion
 
         #region 이벤트
-        public event SetTabDelegate SetTabEventHandler;
+        public event ClickDelegate ClickEventHandler;
         #endregion
 
         #region 델리게이트
-        public delegate void SetTabDelegate(int tabNum);
+        public delegate void ClickDelegate(int tabNum);
         #endregion
 
         #region 생성자
@@ -240,7 +240,7 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         public void UpdateData()
         {
-            SetTabEventHandler?.Invoke(_tabIndex);
+            ClickEventHandler?.Invoke(_tabIndex);
         }
 
         public void SetButtonClick()

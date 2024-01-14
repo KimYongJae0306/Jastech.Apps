@@ -5,7 +5,7 @@
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{0A20EA96-7D45-4BFF-B061-A97AFE741C5C}</ProjectGuid>
-    <OutputType>WinExe</OutputType>
+    <OutputType>Exe</OutputType>
     <RootNamespace>ATT_UT_IPAD</RootNamespace>
     <AssemblyName>ATT_UT_IPAD</AssemblyName>
     <TargetFrameworkVersion>v4.8.1</TargetFrameworkVersion>

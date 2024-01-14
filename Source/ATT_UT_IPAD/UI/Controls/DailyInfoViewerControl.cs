@@ -19,6 +19,10 @@ namespace ATT_UT_IPAD.UI.Controls
         private Color _selectedColor = new Color();
 
         private Color _nonSelectedColor = new Color();
+
+        private int _prevAkkonTabNumber { get; set; } = 0;
+
+        private int _prevAlignTabNumber { get; set; } = 0;
         #endregion
 
         #region 속성
@@ -112,29 +116,52 @@ namespace ATT_UT_IPAD.UI.Controls
             ShowAlignDailyInfo();
         }
 
-        public void UpdateAkkonResult(int tabNo)
+        public void UpdateCurrentData()
         {
-            AkkonResultDataControl.UpdateAkkonDaily();
-            UpdateAkkonChart(tabNo);
+            if(lblAkkon.BackColor == _selectedColor)
+                AkkonResultChartControl.UpdateAkkonDaily(_prevAkkonTabNumber);
+            if (lblAlign.BackColor == _selectedColor)
+                AlignResultChartControl.UpdateAlignDaily(_prevAlignTabNumber);
         }
+        //public void UpdateAkkonResult(int tabNo)
+        //{
+        //    AkkonResultDataControl.UpdateAkkonDaily();
+        //    UpdateAkkonChart(tabNo);
+        //}
 
-        public void UpdateAlignResult(int tabNo)
-        {
-            AlignResultDataControl.UpdateAlignDaily();
-            UpdateAlignChart(tabNo);
-        }
+        //public void UpdateAlignResult(int tabNo)
+        //{
+        //    
+        //    UpdateAlignChart(tabNo);
+        //}
 
-        private void UpdateAkkonChart(int tabNo)
+        //public void UpdateDailyInfo()
+        //{
+        //    AlignResultDataControl.UpdateAlignDaily();
+        //    AkkonResultDataControl.UpdateAkkonDaily();
+
+        //    if(lblAkkon.BackColor == _selectedColor)
+        //        AkkonResultChartControl.ReUpdate(InspChartType.Akkon);
+        //}
+
+        //public void UpdateChart()
+        //{
+        //    UpdateAkkonChart();
+        //}
+
+        public void UpdateAkkonChart(int tabNo)
         {
             AkkonResultChartControl.UpdateAkkonDaily(tabNo);
+            _prevAkkonTabNumber = tabNo;
         }
 
-        private void UpdateAlignChart(int tabNo)
+        public void UpdateAlignChart(int tabNo)
         {
             AlignResultChartControl.UpdateAlignDaily(tabNo);
+            _prevAlignTabNumber = tabNo;
         }
 
-        public void ReUpdate()
+        public void UpdateDailyInfo()
         {
             AkkonResultDataControl.UpdateAkkonDaily();
             AkkonResultChartControl.ReUpdate(InspChartType.Akkon);

@@ -224,6 +224,7 @@ namespace ATT_UT_IPAD.Core
                 SystemManager.Instance().UpdateMainAkkonResult();
                 SystemManager.Instance().UpdateMainAlignResult();
 
+                //_mainForm.UpdateDailyView();
                 AppsStatus.Instance().IsInspRunnerFlagFromPlc = false;
                 PlcControlManager.Instance().EnableSendPeriodically = true;
                 SystemManager.Instance().EnableMainView(true);
@@ -603,6 +604,8 @@ namespace ATT_UT_IPAD.Core
                 case SeqStep.SEQ_SAVE_RESULT_DATA:
                     UpdateDailyInfo();
                     DailyInfoService.Save(inspModel.Name);
+                    SystemManager.Instance().UpdateDailyInfo();
+
                     SaveInspResultCSV();
 
                     SeqStep = SeqStep.SEQ_DELETE_DATA;
@@ -2071,7 +2074,7 @@ namespace ATT_UT_IPAD.Core
 
         private void SaveAxisZMposData(string resultPath)
         {
-            if (AppsConfig.Instance().WriteMPosData == false)
+            if (AppsConfig.Instance().EnableWriteMPosData == false)
                 return;
 
             string csvFile = Path.Combine(resultPath, "MPosData.csv");
@@ -2102,9 +2105,10 @@ namespace ATT_UT_IPAD.Core
 
             CSVHelper.WriteData(csvFile, body);
         }
+
         private void SaveRetData(string resultPath)
         {
-            if (AppsConfig.Instance().WriteRetData == false)
+            if (AppsConfig.Instance().EnableWriteRetData == false)
                 return;
 
             string csvFile = Path.Combine(resultPath, "RetData.csv");
@@ -2138,7 +2142,7 @@ namespace ATT_UT_IPAD.Core
 
         private void SaveMarkToMarkDistanceData(string resultPath,int tabCount)
         {
-            if (AppsConfig.Instance().WriteMarkToMarkDistance == false)
+            if (AppsConfig.Instance().EnableWriteMarkToMarkDistance == false)
                 return;
 
             string csvFile = Path.Combine(resultPath, "MarkToMarkDistanceData.csv");
@@ -2187,7 +2191,7 @@ namespace ATT_UT_IPAD.Core
 
         private void SaveMarkScoreData(string resultPath, int tabCount)
         {
-            if (AppsConfig.Instance().WriteMarkScore == false)
+            if (AppsConfig.Instance().EnableWriteMarkScore == false)
                 return;
 
             string csvFile = Path.Combine(resultPath, "MarkScoreData.csv");

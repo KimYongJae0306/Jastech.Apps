@@ -86,8 +86,8 @@ namespace ATT_UT_IPAD
             form.SetupActionEventHandler = SplashSetupAction;
             form.ShowDialog();
 
-            var recentModelName = ConfigSet.Instance().Operation.LastModelName;
-            DailyInfoService.Load(recentModelName);
+            //var recentModelName = ConfigSet.Instance().Operation.LastModelName;
+            //DailyInfoService.Load(recentModelName);
 
             return true;
         }
@@ -247,14 +247,32 @@ namespace ATT_UT_IPAD
                 _mainForm.UpdateMainAkkonResult(tabNo);
 
             sw.Stop();
+            Console.WriteLine("Akkon : " + sw.ElapsedMilliseconds);
+        }
+
+        public void UpdateDailyInfo()
+        {
+            Stopwatch sw = new Stopwatch();
+            sw.Restart();
+            _mainForm.UpdateDailyInfo();
+
+            sw.Stop();
+            Console.WriteLine("Chart : " + sw.ElapsedMilliseconds);
         }
 
         public void UpdateMainAlignResult()
         {
+            Stopwatch sw = new Stopwatch();
+            sw.Restart();
+
             var inspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
 
             for (int tabNo = 0; tabNo < inspModel.TabCount; tabNo++)
                 _mainForm.UpdateMainAlignResult(tabNo);
+
+            sw.Stop();
+
+            Console.WriteLine("Align : " + sw.ElapsedMilliseconds);
         }
 
         public void EnableMainView(bool isEnable)

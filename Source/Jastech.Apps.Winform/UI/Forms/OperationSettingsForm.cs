@@ -102,10 +102,12 @@ namespace Jastech.Framework.Winform.Forms
             txtAlignResultCount.Text = AppsConfig.Instance().AlignResultDailyCount.ToString();
             txtAkkonResultCount.Text = AppsConfig.Instance().AkkonResultDailyCount.ToString();
 
-            mtgWriteMarkScore.Checked = appsConfig.WriteMarkScore;
-            mtgWriteMarkDistance.Checked = appsConfig.WriteMarkToMarkDistance;
-            mtgWriteMPosData.Checked = appsConfig.WriteMPosData;
-            mtgWriteRetData.Checked = appsConfig.WriteRetData;
+            mtgEnableWriteMarkScore.Checked = appsConfig.EnableWriteMarkScore;
+            mtgEnableWriteMarkDistance.Checked = appsConfig.EnableWriteMarkToMarkDistance;
+            mtgEnableWriteMPosData.Checked = appsConfig.EnableWriteMPosData;
+            mtgEnableWriteRetData.Checked = appsConfig.EnableWriteRetData;
+
+            mtgEnableAlignMonitoring.Checked = appsConfig.EnableAlignMonitoring;
         }
 
         public void UpdateCurrentData()
@@ -152,10 +154,12 @@ namespace Jastech.Framework.Winform.Forms
             AppsConfig.Instance().AlignResultDailyCount = Convert.ToInt32(GetValue(txtAlignResultCount.Text));
             AppsConfig.Instance().AkkonResultDailyCount = Convert.ToInt32(GetValue(txtAkkonResultCount.Text));
 
-            appsConfig.WriteMarkScore = mtgWriteMarkScore.Checked;
-            appsConfig.WriteMarkToMarkDistance = mtgWriteMarkDistance.Checked;
-            appsConfig.WriteMPosData = mtgWriteMPosData.Checked;
-            appsConfig.WriteRetData = mtgWriteRetData.Checked;
+            appsConfig.EnableWriteMarkScore = mtgEnableWriteMarkScore.Checked;
+            appsConfig.EnableWriteMarkToMarkDistance = mtgEnableWriteMarkDistance.Checked;
+            appsConfig.EnableWriteMPosData = mtgEnableWriteMPosData.Checked;
+            appsConfig.EnableWriteRetData = mtgEnableWriteRetData.Checked;
+
+            appsConfig.EnableAlignMonitoring = mtgEnableAlignMonitoring.Checked;
         }
 
         public string GetValue(string value)

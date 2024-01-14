@@ -78,9 +78,9 @@ namespace ATT_UT_IPAD.UI.Controls
 
             AppsInspModel inspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
             if (inspModel == null)
-                UpdateTabCount(1);
+                CreateTabButton(1);
             else
-                UpdateTabCount(inspModel.TabCount);
+                CreateTabButton(inspModel.TabCount);
         }
 
         public void Enable(bool isEnable)
@@ -112,11 +112,18 @@ namespace ATT_UT_IPAD.UI.Controls
                 return;
             }
 
-            UpdateTabCount(tabCount);
+            CreateTabButton(tabCount);
         }
 
-        private void UpdateTabCount(int tabCount)
+        public void CreateTabButton(int tabCount)
         {
+            if (this.InvokeRequired)
+            {
+                UpdateTabButtonDelegate callback = CreateTabButton;
+                BeginInvoke(callback, tabCount);
+                return;
+            }
+
             InspDisplayControl.ClearImage();
 
             ClearTabBtnList();
@@ -128,7 +135,7 @@ namespace ATT_UT_IPAD.UI.Controls
             {
                 TabBtnControl buttonControl = new TabBtnControl();
                 buttonControl.SetTabIndex(i);
-                buttonControl.SetTabEventHandler += ButtonControl_SetTabEventHandler;
+                buttonControl.ClickEventHandler += ButtonControl_SetTabEventHandler;
                 buttonControl.Size = new Size(controlWidth, (int)(pnlTabButton.Height));
                 buttonControl.Location = point;
 
@@ -137,17 +144,26 @@ namespace ATT_UT_IPAD.UI.Controls
                 TabBtnControlList.Add(buttonControl);
             }
 
-            if (TabBtnControlList.Count > 0)
-                TabBtnControlList[0].UpdateData();
+            SelectButton(0);
 
-            _prevTabCount = tabCount;
+            _prevTabCount = 0;
+        }
+
+        public void SelectButton(int tabNo)
+        {
+            TabBtnControlList.ForEach(x => x.SetButtonClickNone());
+            if (TabBtnControlList.Count >= tabNo)
+            {
+                TabBtnControlList[tabNo].SetButtonClick();
+                CurrentTabNo = tabNo;
+            }
         }
 
         private void ClearTabBtnList()
         {
             foreach (var btn in TabBtnControlList)
             {
-                btn.SetTabEventHandler -= ButtonControl_SetTabEventHandler;
+                btn.ClickEventHandler -= ButtonControl_SetTabEventHandler;
             }
             TabBtnControlList.Clear();
             pnlTabButton.Controls.Clear();
@@ -163,7 +179,7 @@ namespace ATT_UT_IPAD.UI.Controls
 
             CurrentTabNo = tabNo;
             UpdateImage(tabNo);
-            SendTabNumberEvent(tabNo);
+            //SendTabNumberEvent(tabNo);
         }
 
         public delegate void TabButtonResetColorDele();

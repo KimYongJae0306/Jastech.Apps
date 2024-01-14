@@ -103,9 +103,9 @@ namespace ATT_UT_IPAD.UI.Controls
 
             AppsInspModel inspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
             if (inspModel == null || UseTabFixed)
-                UpdateTabCount(1);
+                CreateTabButton(1);
             else
-                UpdateTabCount(inspModel.TabCount);
+                CreateTabButton(inspModel.TabCount);
         }
 
         public void SetRatio(double leftRatio, double centerRatio, double rightRatio)
@@ -137,11 +137,18 @@ namespace ATT_UT_IPAD.UI.Controls
                 return;
             }
 
-            UpdateTabCount(tabCount);
+            //InitTabCount(tabCount);
         }
 
-        private void UpdateTabCount(int tabCount)
+        public void CreateTabButton(int tabCount)
         {
+            if (this.InvokeRequired)
+            {
+                UpdateTabButtonDelegate callback = CreateTabButton;
+                BeginInvoke(callback, tabCount);
+                return;
+            }
+
             InspAlignDisplay?.ClearImage();
 
             ClearTabBtnList();
@@ -160,14 +167,25 @@ namespace ATT_UT_IPAD.UI.Controls
                 for (int i = 0; i < tabCount; i++)
                     AddTabButton(ref point, i);
 
-                _prevTabCount = tabCount;
+           
 
                 LeftPointList = new List<PointF>[tabCount];
                 RightPointList = new List<PointF>[tabCount];
             }
 
-            if (TabBtnControlList.Count > 0)
-                TabBtnControlList[0].UpdateData();
+            SelectButton(0);
+
+            _prevTabCount = tabCount;
+        }
+
+        public void SelectButton(int tabNo)
+        {
+            TabBtnControlList.ForEach(x => x.SetButtonClickNone());
+            if (TabBtnControlList.Count >= tabNo)
+            {
+                TabBtnControlList[tabNo].SetButtonClick();
+                CurrentTabNo = tabNo;
+            }
         }
 
         private void AddTabButton(ref Point point, int tabIndex)
@@ -176,7 +194,7 @@ namespace ATT_UT_IPAD.UI.Controls
 
             TabBtnControl buttonControl = new TabBtnControl();
             buttonControl.SetTabIndex(tabIndex);
-            buttonControl.SetTabEventHandler += ButtonControl_SetTabEventHandler;
+            buttonControl.ClickEventHandler += ButtonControl_SetTabEventHandler;
             buttonControl.Size = new Size(controlWidth, (int)(pnlTabButton.Height));
             buttonControl.Location = point;
 
@@ -188,7 +206,7 @@ namespace ATT_UT_IPAD.UI.Controls
         private void ClearTabBtnList()
         {
             foreach (var btn in TabBtnControlList)
-                btn.SetTabEventHandler -= ButtonControl_SetTabEventHandler;
+                btn.ClickEventHandler -= ButtonControl_SetTabEventHandler;
 
             TabBtnControlList.Clear();
             pnlTabButton.Controls.Clear();
@@ -276,7 +294,7 @@ namespace ATT_UT_IPAD.UI.Controls
 
             if (tabInspResult != null)
             {
-                if(UseTabFixed)
+                if (UseTabFixed)
                 {
                     UpdateImage(index);
                 }
@@ -356,7 +374,6 @@ namespace ATT_UT_IPAD.UI.Controls
                         InspAlignDisplay.DrawLeftResult("CX Align : " + cx + " um", 2);
                     }
                 }
-
                 InspAlignDisplay.UpdateRightDisplay(image, rightShape.CaliperShapeList, rightShape.LineSegmentList, GetMinimumPointY(RightPointList[tabNo]));
                 if (InspAlignDisplay.IsRightResultImageView && image != null)
                 {

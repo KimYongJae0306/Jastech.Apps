@@ -50,9 +50,9 @@ namespace ATT_UT_IPAD.UI.Controls
             return AppsInspResult.Instance().GetAlign(tabNo);
         }
 
-        public void UpdateTabCount(int tabCount)
+        public void CreateTabButton(int tabCount)
         {
-            AlignResultDisplayControl.UpdateTabButtons(tabCount);
+            AlignResultDisplayControl.CreateTabButton(tabCount);
         }
 
         public void UpdateMainResult(int tabNo)

@@ -274,19 +274,19 @@ namespace ATT_UT_IPAD
 
         private void MainForm_CurrentModelChangedEvent(InspModel inspModel)
         {
-            AppsInspModel model = inspModel as AppsInspModel;
+            AppsInspModel appsInspModel = inspModel as AppsInspModel;
 
             DailyInfoService.Reset();
-            DailyInfoService.Load(model.Name);
+            DailyInfoService.Load(appsInspModel.Name);
 
-            MainPageControl.UpdateTabCount(model.TabCount);
+            MainPageControl.ChangeModel(appsInspModel);
 
-            UpdateLabel(model.Name);
-            ConfigSet.Instance().Operation.LastModelName = model.Name;
+            UpdateLabel(appsInspModel.Name);
+            ConfigSet.Instance().Operation.LastModelName = appsInspModel.Name;
             ConfigSet.Instance().Operation.Save(ConfigSet.Instance().Path.Config);
 
-            PlcControlManager.Instance().WriteCurrentModelName(model.Name);
-			Logger.Debug(LogType.Parameter, $"Applied Model name : {model.Name}");
+            PlcControlManager.Instance().WriteCurrentModelName(appsInspModel.Name);
+			Logger.Debug(LogType.Parameter, $"Applied Model name : {appsInspModel.Name}");
 			
             AppsInspResult.Instance().Dispose();
         }
@@ -435,6 +435,11 @@ namespace ATT_UT_IPAD
         public void UpdateMainAlignResult(int tabNo)
         {
             MainPageControl.UpdateMainAlignResult(tabNo);
+        }
+
+        public void UpdateDailyInfo()
+        {
+            MainPageControl.UpdateDailyInfo();
         }
 
         public void UpdateAkkonResultTabButton(int tabNo)

@@ -109,16 +109,19 @@ namespace Jastech.Apps.Winform.Settings
         public bool EnablePLCTime { get; set; } = false;
 
         [JsonProperty]
-        public bool WriteMarkScore { get; set; } = false;
+        public bool EnableWriteMarkScore { get; set; } = false;
 
         [JsonProperty]
-        public bool WriteMarkToMarkDistance { get; set; } = false;
+        public bool EnableWriteMarkToMarkDistance { get; set; } = false;
 
         [JsonProperty]
-        public bool WriteMPosData { get; set; } = false;
+        public bool EnableWriteMPosData { get; set; } = false;
 
         [JsonProperty]
-        public bool WriteRetData { get; set; } = false;
+        public bool EnableWriteRetData { get; set; } = false;
+
+        [JsonProperty]
+        public bool EnableAlignMonitoring { get; set; } = false;
         #endregion
 
         #region 메서드

@@ -155,7 +155,7 @@ namespace Jastech.Apps.Winform.UI.Controls
             {
                 var display = DisplayControlList[i];
 
-                display.UpdateTabButtons(1);
+                //display.UpdateTabButtons(1);
 
                 if (i <= tabCount - 1)
                     display.Visible = true;
