@@ -132,6 +132,17 @@ namespace ATT_UT_IPAD.UI.Pages
             {
                 if (tlpAlignMonitoring.Visible == false)
                     tlpAlignMonitoring.Visible = true;
+
+                if (AppsStatus.Instance().IsAlignMonitoringView)
+                {
+                    lblAlignMonitoringText.ForeColor = Color.LawnGreen;
+                    lblAlignMonitoring.Image = Properties.Resources.AlignView_Green;
+                }
+                else
+                {
+                    lblAlignMonitoringText.ForeColor = Color.White;
+                    lblAlignMonitoring.Image = Properties.Resources.AlignView_White;
+                }
             }
             else
             {
@@ -141,16 +152,6 @@ namespace ATT_UT_IPAD.UI.Pages
                     AppsStatus.Instance().IsAlignMonitoringView = false;
                     UpdateView();
                 }
-            }
-            if (AppsStatus.Instance().IsAlignMonitoringView)
-            {
-                lblAlignMonitoringText.ForeColor = Color.LawnGreen;
-                lblAlignMonitoring.Image = Properties.Resources.AlignView_Green;
-            }
-            else
-            {
-                lblAlignMonitoringText.ForeColor = Color.White;
-                lblAlignMonitoring.Image = Properties.Resources.AlignView_White;
             }
         }
 
