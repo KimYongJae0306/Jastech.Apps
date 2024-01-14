@@ -4,6 +4,7 @@ using Jastech.Apps.Structure;
 using Jastech.Apps.Structure.Data;
 using Jastech.Apps.Winform;
 using Jastech.Apps.Winform.Core;
+using Jastech.Apps.Winform.Settings;
 using Jastech.Apps.Winform.UI.Controls;
 using Jastech.Framework.Util.Helper;
 using Jastech.Framework.Winform.Forms;
@@ -127,7 +128,21 @@ namespace ATT_UT_IPAD.UI.Pages
                 lblStop.Image = Properties.Resources.Stop_Red;
             }
 
-            if(AppsStatus.Instance().IsAlignMonitoringView)
+            if (AppsConfig.Instance().EnableAlignMonitoring)
+            {
+                if (tlpAlignMonitoring.Visible == false)
+                    tlpAlignMonitoring.Visible = true;
+            }
+            else
+            {
+                if (tlpAlignMonitoring.Visible == true)
+                {
+                    tlpAlignMonitoring.Visible = false;
+                    AppsStatus.Instance().IsAlignMonitoringView = false;
+                    UpdateView();
+                }
+            }
+            if (AppsStatus.Instance().IsAlignMonitoringView)
             {
                 lblAlignMonitoringText.ForeColor = Color.LawnGreen;
                 lblAlignMonitoring.Image = Properties.Resources.AlignView_Green;

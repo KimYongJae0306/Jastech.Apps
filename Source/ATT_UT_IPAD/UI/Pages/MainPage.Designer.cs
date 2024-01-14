@@ -33,36 +33,36 @@
             this.tableLayoutPanel8 = new System.Windows.Forms.TableLayoutPanel();
             this.pnlDailyInfo = new System.Windows.Forms.Panel();
             this.pnlSystemLog = new System.Windows.Forms.Panel();
+            this.pnlView = new System.Windows.Forms.Panel();
+            this.pnlAlignMonitoringView = new System.Windows.Forms.Panel();
+            this.pnlMainView = new System.Windows.Forms.Panel();
             this.tableLayoutPanel9 = new System.Windows.Forms.TableLayoutPanel();
             this.pnlAlign = new System.Windows.Forms.Panel();
             this.pnlAkkon = new System.Windows.Forms.Panel();
             this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel7 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel4 = new System.Windows.Forms.TableLayoutPanel();
+            this.tlpAlignMonitoring = new System.Windows.Forms.TableLayoutPanel();
+            this.lblAlignMonitoring = new System.Windows.Forms.Label();
+            this.lblAlignMonitoringText = new System.Windows.Forms.Label();
             this.tableLayoutPanel5 = new System.Windows.Forms.TableLayoutPanel();
+            this.lblStop = new System.Windows.Forms.Label();
             this.lblStopText = new System.Windows.Forms.Label();
             this.tableLayoutPanel6 = new System.Windows.Forms.TableLayoutPanel();
-            this.lblStartText = new System.Windows.Forms.Label();
-            this.tableLayoutPanel10 = new System.Windows.Forms.TableLayoutPanel();
-            this.lblAlignMonitoringText = new System.Windows.Forms.Label();
-            this.lblAlignMonitoring = new System.Windows.Forms.Label();
-            this.lblStop = new System.Windows.Forms.Label();
             this.lblStart = new System.Windows.Forms.Label();
-            this.pnlMainView = new System.Windows.Forms.Panel();
-            this.pnlAlignMonitoringView = new System.Windows.Forms.Panel();
-            this.pnlView = new System.Windows.Forms.Panel();
+            this.lblStartText = new System.Windows.Forms.Label();
             this.tableLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
             this.tableLayoutPanel8.SuspendLayout();
+            this.pnlView.SuspendLayout();
+            this.pnlMainView.SuspendLayout();
             this.tableLayoutPanel9.SuspendLayout();
             this.tableLayoutPanel3.SuspendLayout();
             this.tableLayoutPanel7.SuspendLayout();
             this.tableLayoutPanel4.SuspendLayout();
+            this.tlpAlignMonitoring.SuspendLayout();
             this.tableLayoutPanel5.SuspendLayout();
             this.tableLayoutPanel6.SuspendLayout();
-            this.tableLayoutPanel10.SuspendLayout();
-            this.pnlMainView.SuspendLayout();
-            this.pnlView.SuspendLayout();
             this.SuspendLayout();
             // 
             // tableLayoutPanel1
@@ -132,6 +132,33 @@
             this.pnlSystemLog.Name = "pnlSystemLog";
             this.pnlSystemLog.Size = new System.Drawing.Size(283, 148);
             this.pnlSystemLog.TabIndex = 1;
+            // 
+            // pnlView
+            // 
+            this.pnlView.Controls.Add(this.pnlAlignMonitoringView);
+            this.pnlView.Controls.Add(this.pnlMainView);
+            this.pnlView.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pnlView.Location = new System.Drawing.Point(0, 0);
+            this.pnlView.Margin = new System.Windows.Forms.Padding(0);
+            this.pnlView.Name = "pnlView";
+            this.pnlView.Size = new System.Drawing.Size(658, 498);
+            this.pnlView.TabIndex = 4;
+            // 
+            // pnlAlignMonitoringView
+            // 
+            this.pnlAlignMonitoringView.Location = new System.Drawing.Point(357, 80);
+            this.pnlAlignMonitoringView.Name = "pnlAlignMonitoringView";
+            this.pnlAlignMonitoringView.Size = new System.Drawing.Size(200, 100);
+            this.pnlAlignMonitoringView.TabIndex = 4;
+            // 
+            // pnlMainView
+            // 
+            this.pnlMainView.Controls.Add(this.tableLayoutPanel9);
+            this.pnlMainView.Location = new System.Drawing.Point(76, 80);
+            this.pnlMainView.Margin = new System.Windows.Forms.Padding(0);
+            this.pnlMainView.Name = "pnlMainView";
+            this.pnlMainView.Size = new System.Drawing.Size(200, 100);
+            this.pnlMainView.TabIndex = 4;
             // 
             // tableLayoutPanel9
             // 
@@ -204,7 +231,7 @@
             this.tableLayoutPanel4.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(104)))), ((int)(((byte)(104)))), ((int)(((byte)(104)))));
             this.tableLayoutPanel4.ColumnCount = 1;
             this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel4.Controls.Add(this.tableLayoutPanel10, 0, 3);
+            this.tableLayoutPanel4.Controls.Add(this.tlpAlignMonitoring, 0, 3);
             this.tableLayoutPanel4.Controls.Add(this.tableLayoutPanel5, 0, 1);
             this.tableLayoutPanel4.Controls.Add(this.tableLayoutPanel6, 0, 0);
             this.tableLayoutPanel4.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -218,6 +245,47 @@
             this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 80F));
             this.tableLayoutPanel4.Size = new System.Drawing.Size(70, 498);
             this.tableLayoutPanel4.TabIndex = 1;
+            // 
+            // tlpAlignMonitoring
+            // 
+            this.tlpAlignMonitoring.ColumnCount = 1;
+            this.tlpAlignMonitoring.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tlpAlignMonitoring.Controls.Add(this.lblAlignMonitoring, 0, 0);
+            this.tlpAlignMonitoring.Controls.Add(this.lblAlignMonitoringText, 0, 1);
+            this.tlpAlignMonitoring.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tlpAlignMonitoring.Location = new System.Drawing.Point(0, 418);
+            this.tlpAlignMonitoring.Margin = new System.Windows.Forms.Padding(0);
+            this.tlpAlignMonitoring.Name = "tlpAlignMonitoring";
+            this.tlpAlignMonitoring.RowCount = 2;
+            this.tlpAlignMonitoring.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tlpAlignMonitoring.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
+            this.tlpAlignMonitoring.Size = new System.Drawing.Size(70, 80);
+            this.tlpAlignMonitoring.TabIndex = 3;
+            this.tlpAlignMonitoring.Visible = false;
+            // 
+            // lblAlignMonitoring
+            // 
+            this.lblAlignMonitoring.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblAlignMonitoring.Image = global::ATT_UT_IPAD.Properties.Resources.AlignView_White;
+            this.lblAlignMonitoring.Location = new System.Drawing.Point(0, 0);
+            this.lblAlignMonitoring.Margin = new System.Windows.Forms.Padding(0);
+            this.lblAlignMonitoring.Name = "lblAlignMonitoring";
+            this.lblAlignMonitoring.Size = new System.Drawing.Size(70, 50);
+            this.lblAlignMonitoring.TabIndex = 3;
+            this.lblAlignMonitoring.Click += new System.EventHandler(this.lblAlignMonitoring_Click);
+            // 
+            // lblAlignMonitoringText
+            // 
+            this.lblAlignMonitoringText.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblAlignMonitoringText.Font = new System.Drawing.Font("맑은 고딕", 10F, System.Drawing.FontStyle.Bold);
+            this.lblAlignMonitoringText.ForeColor = System.Drawing.Color.White;
+            this.lblAlignMonitoringText.Location = new System.Drawing.Point(0, 50);
+            this.lblAlignMonitoringText.Margin = new System.Windows.Forms.Padding(0);
+            this.lblAlignMonitoringText.Name = "lblAlignMonitoringText";
+            this.lblAlignMonitoringText.Size = new System.Drawing.Size(70, 30);
+            this.lblAlignMonitoringText.TabIndex = 2;
+            this.lblAlignMonitoringText.Text = "Align";
+            this.lblAlignMonitoringText.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // tableLayoutPanel5
             // 
@@ -234,6 +302,17 @@
             this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
             this.tableLayoutPanel5.Size = new System.Drawing.Size(70, 80);
             this.tableLayoutPanel5.TabIndex = 2;
+            // 
+            // lblStop
+            // 
+            this.lblStop.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblStop.Image = global::ATT_UT_IPAD.Properties.Resources.Stop_White;
+            this.lblStop.Location = new System.Drawing.Point(0, 0);
+            this.lblStop.Margin = new System.Windows.Forms.Padding(0);
+            this.lblStop.Name = "lblStop";
+            this.lblStop.Size = new System.Drawing.Size(70, 50);
+            this.lblStop.TabIndex = 3;
+            this.lblStop.Click += new System.EventHandler(this.lblStop_Click);
             // 
             // lblStopText
             // 
@@ -264,6 +343,17 @@
             this.tableLayoutPanel6.Size = new System.Drawing.Size(70, 80);
             this.tableLayoutPanel6.TabIndex = 1;
             // 
+            // lblStart
+            // 
+            this.lblStart.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblStart.Image = global::ATT_UT_IPAD.Properties.Resources.Start_White;
+            this.lblStart.Location = new System.Drawing.Point(0, 0);
+            this.lblStart.Margin = new System.Windows.Forms.Padding(0);
+            this.lblStart.Name = "lblStart";
+            this.lblStart.Size = new System.Drawing.Size(70, 50);
+            this.lblStart.TabIndex = 3;
+            this.lblStart.Click += new System.EventHandler(this.lblStart_Click);
+            // 
             // lblStartText
             // 
             this.lblStartText.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -276,95 +366,6 @@
             this.lblStartText.TabIndex = 2;
             this.lblStartText.Text = "START";
             this.lblStartText.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // tableLayoutPanel10
-            // 
-            this.tableLayoutPanel10.ColumnCount = 1;
-            this.tableLayoutPanel10.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel10.Controls.Add(this.lblAlignMonitoring, 0, 0);
-            this.tableLayoutPanel10.Controls.Add(this.lblAlignMonitoringText, 0, 1);
-            this.tableLayoutPanel10.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel10.Location = new System.Drawing.Point(0, 418);
-            this.tableLayoutPanel10.Margin = new System.Windows.Forms.Padding(0);
-            this.tableLayoutPanel10.Name = "tableLayoutPanel10";
-            this.tableLayoutPanel10.RowCount = 2;
-            this.tableLayoutPanel10.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel10.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
-            this.tableLayoutPanel10.Size = new System.Drawing.Size(70, 80);
-            this.tableLayoutPanel10.TabIndex = 3;
-            // 
-            // lblAlignMonitoringText
-            // 
-            this.lblAlignMonitoringText.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblAlignMonitoringText.Font = new System.Drawing.Font("맑은 고딕", 10F, System.Drawing.FontStyle.Bold);
-            this.lblAlignMonitoringText.ForeColor = System.Drawing.Color.White;
-            this.lblAlignMonitoringText.Location = new System.Drawing.Point(0, 50);
-            this.lblAlignMonitoringText.Margin = new System.Windows.Forms.Padding(0);
-            this.lblAlignMonitoringText.Name = "lblAlignMonitoringText";
-            this.lblAlignMonitoringText.Size = new System.Drawing.Size(70, 30);
-            this.lblAlignMonitoringText.TabIndex = 2;
-            this.lblAlignMonitoringText.Text = "Align";
-            this.lblAlignMonitoringText.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // lblAlignMonitoring
-            // 
-            this.lblAlignMonitoring.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblAlignMonitoring.Image = global::ATT_UT_IPAD.Properties.Resources.AlignView_White;
-            this.lblAlignMonitoring.Location = new System.Drawing.Point(0, 0);
-            this.lblAlignMonitoring.Margin = new System.Windows.Forms.Padding(0);
-            this.lblAlignMonitoring.Name = "lblAlignMonitoring";
-            this.lblAlignMonitoring.Size = new System.Drawing.Size(70, 50);
-            this.lblAlignMonitoring.TabIndex = 3;
-            this.lblAlignMonitoring.Click += new System.EventHandler(this.lblAlignMonitoring_Click);
-            // 
-            // lblStop
-            // 
-            this.lblStop.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblStop.Image = global::ATT_UT_IPAD.Properties.Resources.Stop_White;
-            this.lblStop.Location = new System.Drawing.Point(0, 0);
-            this.lblStop.Margin = new System.Windows.Forms.Padding(0);
-            this.lblStop.Name = "lblStop";
-            this.lblStop.Size = new System.Drawing.Size(70, 50);
-            this.lblStop.TabIndex = 3;
-            this.lblStop.Click += new System.EventHandler(this.lblStop_Click);
-            // 
-            // lblStart
-            // 
-            this.lblStart.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblStart.Image = global::ATT_UT_IPAD.Properties.Resources.Start_White;
-            this.lblStart.Location = new System.Drawing.Point(0, 0);
-            this.lblStart.Margin = new System.Windows.Forms.Padding(0);
-            this.lblStart.Name = "lblStart";
-            this.lblStart.Size = new System.Drawing.Size(70, 50);
-            this.lblStart.TabIndex = 3;
-            this.lblStart.Click += new System.EventHandler(this.lblStart_Click);
-            // 
-            // pnlMainView
-            // 
-            this.pnlMainView.Controls.Add(this.tableLayoutPanel9);
-            this.pnlMainView.Location = new System.Drawing.Point(76, 80);
-            this.pnlMainView.Margin = new System.Windows.Forms.Padding(0);
-            this.pnlMainView.Name = "pnlMainView";
-            this.pnlMainView.Size = new System.Drawing.Size(200, 100);
-            this.pnlMainView.TabIndex = 4;
-            // 
-            // pnlAlignMonitoringView
-            // 
-            this.pnlAlignMonitoringView.Location = new System.Drawing.Point(357, 80);
-            this.pnlAlignMonitoringView.Name = "pnlAlignMonitoringView";
-            this.pnlAlignMonitoringView.Size = new System.Drawing.Size(200, 100);
-            this.pnlAlignMonitoringView.TabIndex = 4;
-            // 
-            // pnlView
-            // 
-            this.pnlView.Controls.Add(this.pnlAlignMonitoringView);
-            this.pnlView.Controls.Add(this.pnlMainView);
-            this.pnlView.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pnlView.Location = new System.Drawing.Point(0, 0);
-            this.pnlView.Margin = new System.Windows.Forms.Padding(0);
-            this.pnlView.Name = "pnlView";
-            this.pnlView.Size = new System.Drawing.Size(658, 498);
-            this.pnlView.TabIndex = 4;
             // 
             // MainPage
             // 
@@ -379,15 +380,15 @@
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel2.ResumeLayout(false);
             this.tableLayoutPanel8.ResumeLayout(false);
+            this.pnlView.ResumeLayout(false);
+            this.pnlMainView.ResumeLayout(false);
             this.tableLayoutPanel9.ResumeLayout(false);
             this.tableLayoutPanel3.ResumeLayout(false);
             this.tableLayoutPanel7.ResumeLayout(false);
             this.tableLayoutPanel4.ResumeLayout(false);
+            this.tlpAlignMonitoring.ResumeLayout(false);
             this.tableLayoutPanel5.ResumeLayout(false);
             this.tableLayoutPanel6.ResumeLayout(false);
-            this.tableLayoutPanel10.ResumeLayout(false);
-            this.pnlMainView.ResumeLayout(false);
-            this.pnlView.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -411,7 +412,7 @@
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel9;
         private System.Windows.Forms.Panel pnlAlign;
         private System.Windows.Forms.Panel pnlAkkon;
-        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel10;
+        private System.Windows.Forms.TableLayoutPanel tlpAlignMonitoring;
         private System.Windows.Forms.Label lblAlignMonitoring;
         private System.Windows.Forms.Label lblAlignMonitoringText;
         private System.Windows.Forms.Panel pnlMainView;
