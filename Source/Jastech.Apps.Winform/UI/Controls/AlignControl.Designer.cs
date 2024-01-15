@@ -56,6 +56,9 @@
             this.lblLeadCount = new System.Windows.Forms.Label();
             this.lblLead = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.tlpImageSaveNG = new System.Windows.Forms.TableLayoutPanel();
+            this.label23 = new System.Windows.Forms.Label();
+            this.mtgUseAutoTracking = new MetroFramework.Controls.MetroToggle();
             this.label3 = new System.Windows.Forms.Label();
             this.lblCenterAlignSpecX = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
@@ -84,16 +87,16 @@
             this.lblLeftAlignSpecX = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
-            this.tlpImageSaveNG = new System.Windows.Forms.TableLayoutPanel();
-            this.label23 = new System.Windows.Forms.Label();
-            this.mtgUseAutoTracking = new MetroFramework.Controls.MetroToggle();
+            this.label11 = new System.Windows.Forms.Label();
+            this.lblInsideSearchDirection = new System.Windows.Forms.Label();
+            this.lblOutsideSearchDirection = new System.Windows.Forms.Label();
             this.tlpAlign.SuspendLayout();
             this.pnlPosition.SuspendLayout();
             this.tlpParams.SuspendLayout();
             this.pnlLeadParam.SuspendLayout();
             this.panel1.SuspendLayout();
-            this.tableLayoutPanel6.SuspendLayout();
             this.tlpImageSaveNG.SuspendLayout();
+            this.tableLayoutPanel6.SuspendLayout();
             this.SuspendLayout();
             // 
             // tlpAlign
@@ -369,6 +372,9 @@
             // 
             // pnlLeadParam
             // 
+            this.pnlLeadParam.Controls.Add(this.lblOutsideSearchDirection);
+            this.pnlLeadParam.Controls.Add(this.lblInsideSearchDirection);
+            this.pnlLeadParam.Controls.Add(this.label11);
             this.pnlLeadParam.Controls.Add(this.lblPanelToFpcOffset);
             this.pnlLeadParam.Controls.Add(this.lblOffset);
             this.pnlLeadParam.Controls.Add(this.lblApply);
@@ -459,6 +465,49 @@
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(893, 407);
             this.panel1.TabIndex = 26;
+            // 
+            // tlpImageSaveNG
+            // 
+            this.tlpImageSaveNG.ColumnCount = 3;
+            this.tlpImageSaveNG.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 199F));
+            this.tlpImageSaveNG.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tlpImageSaveNG.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 100F));
+            this.tlpImageSaveNG.Controls.Add(this.label23, 0, 0);
+            this.tlpImageSaveNG.Controls.Add(this.mtgUseAutoTracking, 1, 0);
+            this.tlpImageSaveNG.Location = new System.Drawing.Point(436, 114);
+            this.tlpImageSaveNG.Name = "tlpImageSaveNG";
+            this.tlpImageSaveNG.RowCount = 1;
+            this.tlpImageSaveNG.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tlpImageSaveNG.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
+            this.tlpImageSaveNG.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
+            this.tlpImageSaveNG.Size = new System.Drawing.Size(421, 40);
+            this.tlpImageSaveNG.TabIndex = 27;
+            // 
+            // label23
+            // 
+            this.label23.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.label23.Font = new System.Drawing.Font("맑은 고딕", 11.25F, System.Drawing.FontStyle.Bold);
+            this.label23.ForeColor = System.Drawing.Color.White;
+            this.label23.Location = new System.Drawing.Point(3, 0);
+            this.label23.Name = "label23";
+            this.label23.Size = new System.Drawing.Size(193, 40);
+            this.label23.TabIndex = 5;
+            this.label23.Text = "Use Auto Tracking";
+            this.label23.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // mtgUseAutoTracking
+            // 
+            this.mtgUseAutoTracking.AutoSize = true;
+            this.mtgUseAutoTracking.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.mtgUseAutoTracking.FontWeight = MetroFramework.MetroLinkWeight.Bold;
+            this.mtgUseAutoTracking.Location = new System.Drawing.Point(202, 3);
+            this.mtgUseAutoTracking.Name = "mtgUseAutoTracking";
+            this.mtgUseAutoTracking.Size = new System.Drawing.Size(116, 34);
+            this.mtgUseAutoTracking.TabIndex = 12;
+            this.mtgUseAutoTracking.Text = "Off";
+            this.mtgUseAutoTracking.Theme = MetroFramework.MetroThemeStyle.Dark;
+            this.mtgUseAutoTracking.UseSelectable = true;
+            this.mtgUseAutoTracking.CheckedChanged += new System.EventHandler(this.mtgUseAutoTracking_CheckedChanged);
             // 
             // label3
             // 
@@ -814,48 +863,40 @@
             this.label1.Text = "Left Align SpecX(um)";
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // tlpImageSaveNG
+            // label11
             // 
-            this.tlpImageSaveNG.ColumnCount = 3;
-            this.tlpImageSaveNG.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 199F));
-            this.tlpImageSaveNG.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tlpImageSaveNG.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 100F));
-            this.tlpImageSaveNG.Controls.Add(this.label23, 0, 0);
-            this.tlpImageSaveNG.Controls.Add(this.mtgUseAutoTracking, 1, 0);
-            this.tlpImageSaveNG.Location = new System.Drawing.Point(436, 114);
-            this.tlpImageSaveNG.Name = "tlpImageSaveNG";
-            this.tlpImageSaveNG.RowCount = 1;
-            this.tlpImageSaveNG.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tlpImageSaveNG.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 36F));
-            this.tlpImageSaveNG.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 36F));
-            this.tlpImageSaveNG.Size = new System.Drawing.Size(421, 40);
-            this.tlpImageSaveNG.TabIndex = 27;
+            this.label11.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.label11.Location = new System.Drawing.Point(436, 62);
+            this.label11.Margin = new System.Windows.Forms.Padding(0);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(200, 40);
+            this.label11.TabIndex = 6;
+            this.label11.Text = "Search Direction";
+            this.label11.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // label23
+            // lblInsideSearchDirection
             // 
-            this.label23.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.label23.Font = new System.Drawing.Font("맑은 고딕", 11.25F, System.Drawing.FontStyle.Bold);
-            this.label23.ForeColor = System.Drawing.Color.White;
-            this.label23.Location = new System.Drawing.Point(3, 0);
-            this.label23.Name = "label23";
-            this.label23.Size = new System.Drawing.Size(193, 40);
-            this.label23.TabIndex = 5;
-            this.label23.Text = "Use Auto Tracking";
-            this.label23.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblInsideSearchDirection.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblInsideSearchDirection.Location = new System.Drawing.Point(648, 62);
+            this.lblInsideSearchDirection.Margin = new System.Windows.Forms.Padding(0);
+            this.lblInsideSearchDirection.Name = "lblInsideSearchDirection";
+            this.lblInsideSearchDirection.Size = new System.Drawing.Size(106, 40);
+            this.lblInsideSearchDirection.TabIndex = 7;
+            this.lblInsideSearchDirection.Text = "InSide";
+            this.lblInsideSearchDirection.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblInsideSearchDirection.Click += new System.EventHandler(this.lblInsideSearchDirection_Click);
             // 
-            // mtgUseAutoTracking
+            // lblOutsideSearchDirection
             // 
-            this.mtgUseAutoTracking.AutoSize = true;
-            this.mtgUseAutoTracking.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.mtgUseAutoTracking.FontWeight = MetroFramework.MetroLinkWeight.Bold;
-            this.mtgUseAutoTracking.Location = new System.Drawing.Point(202, 3);
-            this.mtgUseAutoTracking.Name = "mtgUseAutoTracking";
-            this.mtgUseAutoTracking.Size = new System.Drawing.Size(116, 34);
-            this.mtgUseAutoTracking.TabIndex = 12;
-            this.mtgUseAutoTracking.Text = "Off";
-            this.mtgUseAutoTracking.Theme = MetroFramework.MetroThemeStyle.Dark;
-            this.mtgUseAutoTracking.UseSelectable = true;
-            this.mtgUseAutoTracking.CheckedChanged += new System.EventHandler(this.mtgUseAutoTracking_CheckedChanged);
+            this.lblOutsideSearchDirection.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblOutsideSearchDirection.Location = new System.Drawing.Point(754, 62);
+            this.lblOutsideSearchDirection.Margin = new System.Windows.Forms.Padding(0);
+            this.lblOutsideSearchDirection.Name = "lblOutsideSearchDirection";
+            this.lblOutsideSearchDirection.Size = new System.Drawing.Size(106, 40);
+            this.lblOutsideSearchDirection.TabIndex = 8;
+            this.lblOutsideSearchDirection.Text = "OutSide";
+            this.lblOutsideSearchDirection.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblOutsideSearchDirection.Click += new System.EventHandler(this.lblOutsideSearchDirection_Click);
             // 
             // AlignControl
             // 
@@ -874,9 +915,9 @@
             this.tlpParams.ResumeLayout(false);
             this.pnlLeadParam.ResumeLayout(false);
             this.panel1.ResumeLayout(false);
-            this.tableLayoutPanel6.ResumeLayout(false);
             this.tlpImageSaveNG.ResumeLayout(false);
             this.tlpImageSaveNG.PerformLayout();
+            this.tableLayoutPanel6.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -942,5 +983,8 @@
         private System.Windows.Forms.TableLayoutPanel tlpImageSaveNG;
         private System.Windows.Forms.Label label23;
         private MetroFramework.Controls.MetroToggle mtgUseAutoTracking;
+        private System.Windows.Forms.Label label11;
+        private System.Windows.Forms.Label lblInsideSearchDirection;
+        private System.Windows.Forms.Label lblOutsideSearchDirection;
     }
 }

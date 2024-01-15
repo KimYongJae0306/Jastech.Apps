@@ -1,10 +1,12 @@
 ﻿using Jastech.Framework.Imaging.VisionPro.VisionAlgorithms.Parameters;
 using Newtonsoft.Json;
+using static Jastech.Framework.Imaging.VisionPro.VisionAlgorithms.Parameters.VisionProCaliperParam;
 
 namespace Jastech.Apps.Structure.Parameters
 {
     public class AlignParam
     {
+        #region 속성
         [JsonProperty]
         public string Name { get; set; } = string.Empty;
 
@@ -15,8 +17,13 @@ namespace Jastech.Apps.Structure.Parameters
         public double PanelToFpcOffset { get; set; } = 130.0;
 
         [JsonProperty]
-        public VisionProCaliperParam CaliperParams { get; set; } = new VisionProCaliperParam();
+        public CaliperSearchDirection SearchDirection { get; set; } = CaliperSearchDirection.InsideToOutside;
 
+        [JsonProperty]
+        public VisionProCaliperParam CaliperParams { get; set; } = new VisionProCaliperParam();
+        #endregion
+
+        #region 메서드
         public void Dispose()
         {
             CaliperParams.Dispose();
@@ -28,9 +35,11 @@ namespace Jastech.Apps.Structure.Parameters
             align.Name = Name;
             align.LeadCount = LeadCount;
             align.PanelToFpcOffset = PanelToFpcOffset;
+            align.SearchDirection = SearchDirection;
             align.CaliperParams = CaliperParams.DeepCopy();
 
             return align;
         }
+        #endregion
     }
 }

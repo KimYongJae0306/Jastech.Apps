@@ -1,5 +1,6 @@
 ﻿using Cognex.VisionPro;
 using Emgu.CV;
+using Jastech.Apps.Structure.Parameters;
 using Jastech.Framework.Imaging;
 using Jastech.Framework.Imaging.Result;
 using Jastech.Framework.Imaging.VisionPro;
@@ -9,6 +10,7 @@ using Jastech.Framework.Imaging.VisionPro.VisionAlgorithms.Results;
 using Jastech.Framework.Util.Helper;
 using System.Linq;
 using System.Runtime.InteropServices;
+using static Jastech.Framework.Imaging.VisionPro.VisionAlgorithms.Parameters.VisionProCaliperParam;
 
 namespace Jastech.Apps.Structure.VisionTool
 {
@@ -32,13 +34,13 @@ namespace Jastech.Apps.Structure.VisionTool
             return cogImage;
         }
 
-        public VisionProAlignCaliperResult RunAlignX(ICogImage image, VisionProCaliperParam param, int leadCount, bool isPanel)
+        public VisionProAlignCaliperResult RunAlignX(ICogImage image, VisionProCaliperParam param, int leadCount, CaliperSearchDirection searchDirecton, bool isPanel)
         {
             if (image == null || param == null)
                 return null;
 
             VisionProAlignCaliperResult alignResult = new VisionProAlignCaliperResult();
-            var result = AlignAlgorithm.RunAlignX(image, param, leadCount, isPanel);
+            var result = AlignAlgorithm.RunAlignX(image, param, leadCount, searchDirecton, isPanel);
             alignResult.AddAlignResult(result);
 
             bool isFounded = false;

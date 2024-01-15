@@ -18,6 +18,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
+using static Jastech.Framework.Imaging.VisionPro.VisionAlgorithms.Parameters.VisionProCaliperParam;
 
 namespace Jastech.Apps.Winform.UI.Controls
 {
@@ -153,7 +154,24 @@ namespace Jastech.Apps.Winform.UI.Controls
 
 			lblCenterAlignSpecX.Text = CurrentTab.AlignSpec.CenterSpecX_um.ToString();
  			EnableUIPanelToFpcOffset(alignName);
+
+            UpdateSearchDirectionUI(alignParam.SearchDirection);
+
             DrawROI();
+        }
+
+        private void UpdateSearchDirectionUI(CaliperSearchDirection searchDirection)
+        {
+            if (searchDirection == CaliperSearchDirection.InsideToOutside)
+            {
+                lblInsideSearchDirection.BackColor = _selectedColor;
+                lblOutsideSearchDirection.BackColor = _nonSelectedColor;
+            }
+            else
+            {
+                lblInsideSearchDirection.BackColor = _nonSelectedColor;
+                lblOutsideSearchDirection.BackColor = _selectedColor;
+            }
         }
 
         private void lblLeftFPCX_Click(object sender, EventArgs e)
@@ -253,13 +271,12 @@ namespace Jastech.Apps.Winform.UI.Controls
         public void Apply()
         {
             var alignParam = CurrentTab.GetAlignParam(CurrentAlignName);
-
             int leadCount = alignParam.LeadCount;
 
             var currentParam = CogCaliperParamControl.GetCurrentParam();
             CogRectangleAffine rect = new CogRectangleAffine(currentParam.CaliperTool.Region);
-
-            List<CogRectangleAffine> cropRectList = VisionProShapeHelper.DivideRegion(rect, leadCount);
+            
+            List<CogRectangleAffine> cropRectList = VisionProShapeHelper.DivideRegion(rect, leadCount, alignParam.SearchDirection);
 
             var display = TeachingUIManager.Instance().TeachingDisplayControl.GetDisplay();
 
@@ -343,13 +360,13 @@ namespace Jastech.Apps.Winform.UI.Controls
             VisionProAlignCaliperResult result = new VisionProAlignCaliperResult();
 
             VisionProCaliperParam inspParam = currentParam.DeepCopy();
-    
+
             bool usePanel = false;
             if (CurrentAlignName.ToString().ToUpper().Contains("PANEL"))
                 usePanel = true;
 
             if (CurrentAlignName.ToString().Contains("X"))
-                result = AlgorithmTool.RunAlignX(copyCogImage, inspParam, param.LeadCount, usePanel);
+                result = AlgorithmTool.RunAlignX(copyCogImage, inspParam, param.LeadCount, param.SearchDirection, usePanel);
             else
                 result = AlgorithmTool.RunAlignY(copyCogImage, inspParam);
 
@@ -736,6 +753,22 @@ namespace Jastech.Apps.Winform.UI.Controls
             collection.Add(newRegion);
             display.SetInteractiveGraphics("tool", collection);
         }
+
+        private void lblInsideSearchDirection_Click(object sender, EventArgs e)
+        {
+            var alignParam = CurrentTab.GetAlignParam(CurrentAlignName);
+            alignParam.SearchDirection = CaliperSearchDirection.InsideToOutside;
+            UpdateSearchDirectionUI(alignParam.SearchDirection);
+        }
+
+        private void lblOutsideSearchDirection_Click(object sender, EventArgs e)
+        {
+            var alignParam = CurrentTab.GetAlignParam(CurrentAlignName);
+            alignParam.SearchDirection = CaliperSearchDirection.OutsideToInside;
+            UpdateSearchDirectionUI(alignParam.SearchDirection);
+        }
         #endregion
+
+
     }
 }

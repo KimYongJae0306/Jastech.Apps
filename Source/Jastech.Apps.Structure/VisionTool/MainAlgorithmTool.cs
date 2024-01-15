@@ -251,8 +251,8 @@ namespace Jastech.Apps.Structure.VisionTool
             fpcRegion.Skew = panelRegion.Skew;
             // test
 
-            result.Panel = RunAlignX(cogImage, panelParam.CaliperParams, panelParam.LeadCount, true);
-            result.Fpc = RunAlignX(cogImage, fpcParam.CaliperParams, fpcParam.LeadCount, false);
+            result.Panel = RunAlignX(cogImage, panelParam.CaliperParams, panelParam.LeadCount, panelParam.SearchDirection, true);
+            result.Fpc = RunAlignX(cogImage, fpcParam.CaliperParams, fpcParam.LeadCount, fpcParam.SearchDirection, false);
 
             List<LeadAlignResult> leadAlignResultList = new List<LeadAlignResult>();
 
@@ -356,8 +356,8 @@ namespace Jastech.Apps.Structure.VisionTool
             fpcRegion.Skew = panelRegion.Skew;
             // test
 
-            result.Panel = RunAlignX(cogImage, panelParam.CaliperParams, panelParam.LeadCount, true);
-            result.Fpc = RunAlignX(cogImage, fpcParam.CaliperParams, fpcParam.LeadCount, false);
+            result.Panel = RunAlignX(cogImage, panelParam.CaliperParams, panelParam.LeadCount, panelParam.SearchDirection, true);
+            result.Fpc = RunAlignX(cogImage, fpcParam.CaliperParams, fpcParam.LeadCount, fpcParam.SearchDirection, false);
 
             List<LeadAlignResult> leadAlignResultList = new List<LeadAlignResult>();
 
