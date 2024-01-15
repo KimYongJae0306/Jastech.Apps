@@ -18,8 +18,6 @@ namespace Jastech.Apps.Winform.UI.Controls
     public partial class ResultChartControl : UserControl
     {
         #region 필드
-        private int _selectedTabNo { get; set; } = 0;
-
         private AlignResultType _selectedAlignResult { get; set; } = AlignResultType.All;
 
         private AkkonResultType _selectedAkkonResult { get; set; } = AkkonResultType.All;
@@ -32,6 +30,8 @@ namespace Jastech.Apps.Winform.UI.Controls
         }
 
         #region 속성
+        public int SelectedTabNo { get; set; } = 0;
+
         public InspChartType ChartType { get; set; } = InspChartType.Akkon;
 
         public AlignResultType SeriesType { get; set; } = AlignResultType.All;
@@ -66,7 +66,7 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         private delegate void ClearChartDelegate();
 
-        private delegate void ReUpdateChartDelegate(InspChartType inspChartType);
+        private delegate void UpdateChartDelegate();
         #endregion
 
         #region 생성자
@@ -164,24 +164,24 @@ namespace Jastech.Apps.Winform.UI.Controls
             if (inspModel.TabCount < tabNo + 1)
                 tabNo = 0;
 
-            _selectedTabNo = tabNo;
+            SelectedTabNo = tabNo;
 
             UpdateAlignChart(tabNo, _selectedAlignResult);
         }
 
-        public void ReUpdate(InspChartType inspChartType)
+        public void UpdateChart()
         {
             if (this.InvokeRequired)
             {
-                ReUpdateChartDelegate callback = ReUpdate;
-                BeginInvoke(callback, inspChartType);
+                UpdateChartDelegate callback = UpdateChart;
+                BeginInvoke(callback);
                 return;
             }
 
-            if (inspChartType == InspChartType.Align)
-                UpdateAlignChart(_selectedTabNo, _selectedAlignResult);
-            else if (inspChartType == InspChartType.Akkon)
-                UpdateAkkonChart(_selectedTabNo, _selectedAkkonResult);
+            if (ChartType == InspChartType.Align)
+                UpdateAlignChart(SelectedTabNo, _selectedAlignResult);
+            else if (ChartType == InspChartType.Akkon)
+                UpdateAkkonChart(SelectedTabNo, _selectedAkkonResult);
         }
 
         private void InitializeAlignChart()
@@ -323,7 +323,7 @@ namespace Jastech.Apps.Winform.UI.Controls
                 return;
             }
 
-            _selectedTabNo = tabNo;
+            SelectedTabNo = tabNo;
 
             UpdateAkkonChart(tabNo, _selectedAkkonResult);
         }
@@ -422,7 +422,7 @@ namespace Jastech.Apps.Winform.UI.Controls
             if (alignTrendResults == null || alignTrendResults.Count <= 0)
                 return;
 
-            _selectedTabNo = (int)tabType;
+            SelectedTabNo = (int)tabType;
             ClearChartData();
 
             if (alignResultType == AlignResultType.All)
@@ -468,7 +468,7 @@ namespace Jastech.Apps.Winform.UI.Controls
             if (akkonTrendResults == null || akkonTrendResults.Count <= 0)
                 return;
 
-            _selectedTabNo = (int)tabType;
+            SelectedTabNo = (int)tabType;
             ClearChartData();
 
             if (akkonResultType == AkkonResultType.All)
@@ -538,13 +538,13 @@ namespace Jastech.Apps.Winform.UI.Controls
                     LegendItem legendItem = (LegendItem)result.Object;
 
                     _selectedAlignResult = (AlignResultType)Enum.Parse(typeof(AlignResultType), legendItem.SeriesName);
-                    UpdateAlignChart(_selectedTabNo, _selectedAlignResult);
+                    UpdateAlignChart(SelectedTabNo, _selectedAlignResult);
                 }
             }
             else
             {
                 _selectedAlignResult = AlignResultType.All;
-                UpdateAlignChart(_selectedTabNo, _selectedAlignResult);
+                UpdateAlignChart(SelectedTabNo, _selectedAlignResult);
             }
         }
 
@@ -558,13 +558,13 @@ namespace Jastech.Apps.Winform.UI.Controls
                 {
                     LegendItem legendItem = (LegendItem)result.Object;
                     _selectedAkkonResult = (AkkonResultType)Enum.Parse(typeof(AkkonResultType), legendItem.SeriesName);
-                    UpdateAkkonChart(_selectedTabNo, _selectedAkkonResult);
+                    UpdateAkkonChart(SelectedTabNo, _selectedAkkonResult);
                 }
             }
             else
             {
                 _selectedAkkonResult = AkkonResultType.All;
-                UpdateAkkonChart(_selectedTabNo, _selectedAkkonResult);
+                UpdateAkkonChart(SelectedTabNo, _selectedAkkonResult);
             }
         }
 

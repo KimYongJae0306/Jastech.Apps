@@ -24,10 +24,10 @@ namespace Jastech.Apps.Winform.UI.Controls
     public partial class AlignResultDataControl : UserControl
     {
         #region 속성
+        public ResultChartControl ResultChartControl { get; private set; } = null;
         #endregion
 
         #region 이벤트
-        //public event SelectAlignResultTypeDelegate SelectAlignResultTypeEventHandler;
         #endregion
 
         #region 델리게이트
@@ -44,25 +44,39 @@ namespace Jastech.Apps.Winform.UI.Controls
         #endregion
 
         #region 메서드
-        public void UpdateAlignDaily()
+        private void AlignResultDataControl_Load(object sender, EventArgs e)
+        {
+            AddControls();
+        }
+
+        private void AddControls()
+        {
+            ResultChartControl = new ResultChartControl();
+            ResultChartControl.Dock = DockStyle.Fill;
+            ResultChartControl.SetInspChartType(ResultChartControl.InspChartType.Align);
+            pnlChart.Controls.Add(ResultChartControl);
+        }
+
+        public void UpdateData()
         {
             try
             {
                 if (this.InvokeRequired)
                 {
-                    UpdateAlignResultDelegate callback = UpdateAlignDaily;
+                    UpdateAlignResultDelegate callback = UpdateData;
                     BeginInvoke(callback);
                     return;
                 }
 
                 UpdateDataGridView();
+                UpdateChart();
             }
             catch (Exception ex)
             {
                 Console.WriteLine(System.Reflection.MethodBase.GetCurrentMethod().Name.ToString() + " : " + ex.Message);
             }
         }
-
+        
         private void UpdateDataGridView()
         {
             dgvAlignHistory.Rows.Clear();
@@ -93,6 +107,16 @@ namespace Jastech.Apps.Winform.UI.Controls
             }
         }
 
+        public void SetSelectedTabNo(int tabNo)
+        {
+            ResultChartControl.SelectedTabNo = tabNo;
+        }
+
+        private void UpdateChart()
+        {
+            ResultChartControl.UpdateChart();
+        }
+
         private string GetValue(string value)
         {
             if(double.TryParse(value, out double temp))
@@ -110,56 +134,7 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         private void dgvAlignHistory_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
-            //string basePath = ConfigSet.Instance().Path.Result;
-
-            //var model = ModelManager.Instance().CurrentModel as InspModel;
-            //string modelName = model.Name;
-
-            //string fullPath = Path.Combine(basePath, modelName);
-
-            //var directoryList = Directory.EnumerateDirectories(fullPath, "*", SearchOption.AllDirectories);
-
-            //string cellID = dgvAlignHistory.Rows[e.RowIndex].Cells[1].Value.ToString();
-            //string tabNo = dgvAlignHistory.Rows[e.RowIndex].Cells[2].Value.ToString();
-            //string selectedPath = string.Empty;
-
-            //foreach (var directory in directoryList)
-            //{
-            //    if (directory.Contains(cellID) && directory.Contains("Align"))
-            //    {
-            //        selectedPath = directory;
-            //        break;
-            //    }
-            //}
-
-            //if (selectedPath == string.Empty)
-            //{
-            //    MessageConfirmForm confirmForm = new MessageConfirmForm();
-            //    confirmForm.Message = "The selected cell id does not have an image file.";
-            //    confirmForm.ShowDialog();
-            //    return;
-            //}
-
-            //var imageFiles = Directory.GetFiles(selectedPath, "*.bmp");
-
-            //string selectedImageFilePath = string.Empty; 
-            //foreach (var file in imageFiles)
-            //{
-            //    if (file.ToUpper().Contains($"TAB_{tabNo}"))
-            //    {
-            //        selectedImageFilePath = file;
-            //        break;
-            //    }
-            //}
-
-            //if (selectedImageFilePath == string.Empty)
-            //{
-            //    MessageConfirmForm confirmForm = new MessageConfirmForm();
-            //    confirmForm.Message = "The selected cell id does not have an image file.";
-            //    confirmForm.ShowDialog();
-            //}
-            //else
-            //    Process.Start(selectedImageFilePath);
+           
         }
 
         private void dgvAlignHistory_CellContentDoubleClick(object sender, DataGridViewCellEventArgs e)

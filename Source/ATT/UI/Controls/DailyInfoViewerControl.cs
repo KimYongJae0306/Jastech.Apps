@@ -53,7 +53,7 @@ namespace ATT.UI.Controls
         private void AddControls()
         {
             AkkonResultDataControl = new AkkonResultDataControl() { Dock = DockStyle.Fill};
-            AkkonResultDataControl.UpdateAkkonDaily();
+            AkkonResultDataControl.UpdateData();
             pnlDailyResult.Controls.Add(AkkonResultDataControl);
 
             AkkonResultChartControl = new ResultChartControl() { Dock = DockStyle.Fill };
@@ -61,7 +61,7 @@ namespace ATT.UI.Controls
             pnlDailyChart.Controls.Add(AkkonResultChartControl);
 
             AlignResultDataControl = new AlignResultDataControl() { Dock = DockStyle.Fill };
-            AlignResultDataControl.UpdateAlignDaily();
+            AlignResultDataControl.UpdateData();
             pnlDailyResult.Controls.Add(AlignResultDataControl);
 
             AlignResultChartControl = new ResultChartControl() { Dock = DockStyle.Fill };
@@ -113,22 +113,22 @@ namespace ATT.UI.Controls
 
         public void UpdateAkkonResult(int tabNo)
         {
-            AkkonResultDataControl.UpdateAkkonDaily();
+            AkkonResultDataControl.UpdateData();
             UpdateAkkonChart(tabNo);
         }
 
         public void ReUpdate()
         {
-            AkkonResultDataControl.UpdateAkkonDaily();
-            AkkonResultChartControl.ReUpdate(InspChartType.Akkon);
+            //AkkonResultDataControl.UpdateData();
+            //AkkonResultChartControl.UpdateChart(InspChartType.Akkon);
 
-            AlignResultDataControl.UpdateAlignDaily();
-            AlignResultChartControl.ReUpdate(InspChartType.Align);
+            //AlignResultDataControl.UpdateData();
+            //AlignResultChartControl.UpdateChart(InspChartType.Align);
         }
 
         public void UpdateAlignResult(int tabNo)
         {
-            AlignResultDataControl.UpdateAlignDaily();
+            AlignResultDataControl.UpdateData();
             UpdateAlignChart(tabNo);
         }
 

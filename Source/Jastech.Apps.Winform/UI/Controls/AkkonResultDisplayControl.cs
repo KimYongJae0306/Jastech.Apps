@@ -179,7 +179,7 @@ namespace ATT_UT_IPAD.UI.Controls
 
             CurrentTabNo = tabNo;
             UpdateImage(tabNo);
-            //SendTabNumberEvent(tabNo);
+            SendTabNumberEvent(tabNo);
         }
 
         public delegate void TabButtonResetColorDele();

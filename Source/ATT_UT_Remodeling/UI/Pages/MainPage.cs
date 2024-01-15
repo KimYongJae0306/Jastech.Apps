@@ -130,7 +130,6 @@ namespace ATT_UT_Remodeling.UI.Pages
         {
             AkkonViewerControl.UpdateTabCount(tabCount);
             AlignViewerControl.UpdateTabCount(tabCount);
-            DailyInfoViewerControl.ReUpdate();
         }
 
         public void UpdateMainResult(int tabNo)

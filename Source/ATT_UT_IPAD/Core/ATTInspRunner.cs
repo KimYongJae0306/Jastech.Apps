@@ -203,7 +203,7 @@ namespace ATT_UT_IPAD.Core
             }
         }
 
-        public void StartUpdateThread()
+        public void UpdateUIThread()
         {
             if (_updateThread == null)
             {
@@ -224,7 +224,6 @@ namespace ATT_UT_IPAD.Core
                 SystemManager.Instance().UpdateMainAkkonResult();
                 SystemManager.Instance().UpdateMainAlignResult();
 
-                //_mainForm.UpdateDailyView();
                 AppsStatus.Instance().IsInspRunnerFlagFromPlc = false;
                 PlcControlManager.Instance().EnableSendPeriodically = true;
                 SystemManager.Instance().EnableMainView(true);
@@ -562,7 +561,7 @@ namespace ATT_UT_IPAD.Core
                 case SeqStep.SEQ_WAIT_UI_RESULT_UPDATE:
                     MoveTo(TeachingPosType.Stage1_Scan_Start, out errorMessage, false);
 
-                    StartUpdateThread();
+                    UpdateUIThread();
 
                     if (AppsConfig.Instance().EnableManualJudge && IsNg(AppsInspResult.Instance()))
                         SeqStep = SeqStep.SEQ_MANUAL_JUDGE;
@@ -575,6 +574,7 @@ namespace ATT_UT_IPAD.Core
                         break;
                     
                     AppsStatus.Instance().IsManualJudgeCompleted = false;
+
                     SetManualJudgeData(unit, AppsInspResult.Instance());
                     SystemManager.Instance().ShowManualJugdeForm();
                     WriteLog("Show Manual Judge Form", false);
@@ -602,10 +602,8 @@ namespace ATT_UT_IPAD.Core
                     break;
 
                 case SeqStep.SEQ_SAVE_RESULT_DATA:
-                    UpdateDailyInfo();
-                    DailyInfoService.Save(inspModel.Name);
-                    SystemManager.Instance().UpdateDailyInfo();
 
+                    UpdateDailyInfo();
                     SaveInspResultCSV();
 
                     SeqStep = SeqStep.SEQ_DELETE_DATA;
@@ -832,8 +830,10 @@ namespace ATT_UT_IPAD.Core
         #region 메서드
         private void UpdateDailyInfo()
         {
+            AppsInspModel inspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
             var dailyInfo = DailyInfoService.GetDailyInfo();
-            if (dailyInfo == null)
+
+            if (dailyInfo == null || inspModel == null)
                 return;
 
             var dailyData = new DailyData();
@@ -842,6 +842,9 @@ namespace ATT_UT_IPAD.Core
             UpdateAkkonDailyInfo(ref dailyData);
 
             dailyInfo.AddDailyDataList(dailyData);
+
+            SystemManager.Instance().UpdateDailyInfo();
+            DailyInfoService.Save(inspModel.Name);
         }
 
         private void UpdateAlignDailyInfo(ref DailyData dailyData)
