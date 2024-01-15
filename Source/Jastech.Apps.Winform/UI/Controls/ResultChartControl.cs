@@ -593,7 +593,6 @@ namespace Jastech.Apps.Winform.UI.Controls
             //    }
             //}
         }
-        #endregion
 
         private void chtData_MouseClick(object sender, MouseEventArgs e)
         {
@@ -642,5 +641,6 @@ namespace Jastech.Apps.Winform.UI.Controls
                 }
             }
         }
+        #endregion
     }
 }
