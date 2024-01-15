@@ -68,20 +68,26 @@ namespace ATT_UT_IPAD.UI.Controls
 
         private void ShowAkkonDailyInfo()
         {
-            lblAkkon.BackColor = _selectedColor;
-            lblAlign.BackColor = _nonSelectedColor;
+            if(lblAkkon.BackColor != _selectedColor)
+            {
+                lblAkkon.BackColor = _selectedColor;
+                lblAlign.BackColor = _nonSelectedColor;
 
-            pnlDailyResult.Controls.Clear();
-            pnlDailyResult.Controls.Add(AkkonResultDataControl);
+                pnlDailyResult.Controls.Clear();
+                pnlDailyResult.Controls.Add(AkkonResultDataControl);
+            }
         }
 
         private void ShowAlignDailyInfo()
         {
-            lblAkkon.BackColor = _nonSelectedColor;
-            lblAlign.BackColor = _selectedColor;
+            if(lblAlign.BackColor != _selectedColor)
+            {
+                lblAkkon.BackColor = _nonSelectedColor;
+                lblAlign.BackColor = _selectedColor;
 
-            pnlDailyResult.Controls.Clear();
-            pnlDailyResult.Controls.Add(AlignResultDataControl);
+                pnlDailyResult.Controls.Clear();
+                pnlDailyResult.Controls.Add(AlignResultDataControl);
+            }
         }
 
         private void lblAkkon_Click(object sender, EventArgs e)
