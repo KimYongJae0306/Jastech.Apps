@@ -68,6 +68,10 @@ namespace Jastech.Apps.Winform.UI.Controls
                     return;
                 }
 
+                var dailyInfo = DailyInfoService.GetDailyInfo();
+                if (dailyInfo.GetAlignDailyInfoCount() == dgvAlignHistory.Rows.Count)
+                    return;
+
                 UpdateDataGridView();
                 UpdateChart();
             }
@@ -79,9 +83,9 @@ namespace Jastech.Apps.Winform.UI.Controls
         
         private void UpdateDataGridView()
         {
-            dgvAlignHistory.Rows.Clear();
-
             var dailyInfo = DailyInfoService.GetDailyInfo();
+
+            dgvAlignHistory.Rows.Clear();
 
             List<DailyData> reverseList = Enumerable.Reverse(dailyInfo.DailyDataList).ToList();
 

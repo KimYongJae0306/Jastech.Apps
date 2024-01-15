@@ -50,6 +50,10 @@ namespace Jastech.Apps.Winform.UI.Controls
                 return;
             }
 
+            var dailyInfo = DailyInfoService.GetDailyInfo();
+            if (dailyInfo.GetAkkonDailyInfoCount() == dgvAkkonHistory.Rows.Count)
+                return;
+
             UpdateDataGridView();
             UpdateChart();
         }

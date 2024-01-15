@@ -55,6 +55,24 @@ namespace Jastech.Apps.Winform.Service
 
             return null;
         }
+
+        public int GetAlignDailyInfoCount()
+        {
+            int count = 0;
+            foreach (var dailyData in DailyDataList)
+                count += dailyData.AlignDailyInfoList.Count;
+
+            return count;
+        }
+
+        public int GetAkkonDailyInfoCount()
+        {
+            int count = 0;
+            foreach (var dailyData in DailyDataList)
+                count += dailyData.AkkonDailyInfoList.Count;
+
+            return count;
+        }
     }
 
     public class DailyData
