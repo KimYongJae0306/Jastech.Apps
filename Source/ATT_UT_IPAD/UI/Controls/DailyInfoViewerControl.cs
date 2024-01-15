@@ -68,7 +68,7 @@ namespace ATT_UT_IPAD.UI.Controls
 
         private void ShowAkkonDailyInfo()
         {
-            if(lblAkkon.BackColor != _selectedColor)
+            if (lblAkkon.BackColor != _selectedColor)
             {
                 lblAkkon.BackColor = _selectedColor;
                 lblAlign.BackColor = _nonSelectedColor;
@@ -80,7 +80,7 @@ namespace ATT_UT_IPAD.UI.Controls
 
         private void ShowAlignDailyInfo()
         {
-            if(lblAlign.BackColor != _selectedColor)
+            if (lblAlign.BackColor != _selectedColor)
             {
                 lblAkkon.BackColor = _nonSelectedColor;
                 lblAlign.BackColor = _selectedColor;
